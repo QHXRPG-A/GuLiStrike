@@ -90,3 +90,22 @@ git push -u origin main
 2. CRLF warnings on Windows (`LF will be replaced by CRLF`) are noise; do not "fix" them mid-push.
 3. The 615MB `LVL_Main.umap` history: 4 versions exist in `.git`. If quota errors occur, the cold-mirror-then-squash path is the sanctioned escape hatch — but ONLY with the user's explicit approval (destroys rollback history).
 4. `ssh.github.com:443` fails with SSLError on this network — HTTPS remote URLs only, no SSH.
+
+## Session-verified workflow updates (2026-08-15, first successful push)
+
+1. **Network flaps**: github.com reachability oscillates (blocked → open → blocked within an hour). api.github.com has never been blocked. When direct fails, switch to user's Clash Verge proxy at `127.0.0.1:7897`:
+   ```
+   git config http.https://github.com.proxy http://127.0.0.1:7897   # per-repo
+   export HTTPS_PROXY=http://127.0.0.1:7897                          # for gh
+   ```
+2. **gh auth login web flow fails when github.com is blocked** (device endpoint unreachable). Use PAT: `echo <token> | gh auth login --with-token`.
+3. **Fine-grained PATs cannot create repos** (GraphQL AND REST both 403 "Resource not accessible") unless granted repo-create on all repos. Pragmatic path: user creates repo in browser, token with Contents:RW on that repo suffices for push.
+4. **403 "denied to <user>" on push despite valid gh auth** = Windows Credential Manager holds a stale `manager` helper entry shadowing gh's token. Fix:
+   ```
+   git config --global --unset-all credential.https://github.com.helper
+   git config --global credential.https://github.com.helper "!'C:/Program Files/GitHub CLI/gh.exe' auth git-credential"
+   ```
+   (absolute path with forward slashes — `gh` alone is not on the credential-helper subshell PATH)
+5. **MSYS path mangling**: `gh api -X POST /user/repos` → `/user/repos` rewritten to `C:/Program Files/Git/user/repos`. Omit the leading slash.
+6. **LFS quota reality**: first push uploaded 966MB / 131 objects (12MB/s via proxy). Free tier = 1GB — this repo fits only because demo maps (3.1GB) and unreferenced Mannequins (130MB) were excluded in .gitignore. Future large maps will need either LFS data packs or per-iteration Squash.
+7. Repo is currently PUBLIC and contains Fab marketplace assets (Scifi_Skies) — user should flip to private if licensing requires.
