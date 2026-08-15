@@ -1,0 +1,24 @@
+{
+  "mcp": {
+    "servers": {
+      "unrealMCP": {
+        "command": "C:\\Users\\a\\AppData\\Roaming\\Python\\Python313\\Scripts\\uv.exe",
+        "args": [
+          "--directory",
+          "D:\\UE_5.7\\unreal-engine-mcp\\Python",
+          "run",
+          "unreal_mcp_server_advanced.py"
+        ]
+      },
+      "unreal-mcpython": {
+        "command": "C:\\Users\\a\\AppData\\Roaming\\Python\\Python313\\Scripts\\uv.exe",
+        "args": [
+          "--directory",
+          "D:\\UE_5.7\\UnrealMCPython_Server",
+          "run",
+          "src/unreal_mcp/main.py"
+        ]
+      }
+    }
+  }
+}

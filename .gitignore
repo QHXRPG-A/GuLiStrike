@@ -1,0 +1,31 @@
+# Build artifacts
+Binaries/
+Intermediate/
+DerivedDataCache/
+Build/
+
+# IDE
+.vs/
+.vscode/
+.idea/
+*.sln
+*.suo
+*.opensdf
+*.sdf
+*.VC.db
+*.VC.opendb
+
+# UE generated
+Saved/
+Plugins/**/Binaries/
+Plugins/**/Intermediate/
+
+# OS
+Thumbs.db
+Desktop.ini
+__pycache__/
+Downloads/
+
+# Fab asset-pack demo maps (3.1GB, not needed - LVL_Main embeds Map_03 content)
+Content/Scifi_Skies/Maps/
+Content/Characters/Mannequins/
