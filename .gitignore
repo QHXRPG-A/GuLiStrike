@@ -29,3 +29,17 @@ Downloads/
 # Fab asset-pack demo maps (3.1GB, not needed - LVL_Main embeds Map_03 content)
 Content/Scifi_Skies/Maps/
 Content/Characters/Mannequins/
+
+# Large binary assets (10MB+, kept locally but not versioned)
+Content/Maps/LVL_Main.umap
+Content/Scifi_Skies/Textures/Skies/T_scifiskies_bg_03.uasset
+Content/Scifi_Skies/Textures/Terrain/T_Grass_Color_02.uasset
+Content/Scifi_Skies/Textures/Terrain/T_Grass_normal.uasset
+Content/Scifi_Skies/Textures/Terrain/T_Rock_Base_Color.uasset
+Content/Scifi_Skies/Textures/Terrain/T_Rock_Base_Normal.uasset
+Content/Scifi_Skies/Textures/Terrain/T_Rock_High_Color.uasset
+Content/Assets/Environments/KiteDemo/
+
+# Any future oversized binary
+*.uexp
+*.ubulk
