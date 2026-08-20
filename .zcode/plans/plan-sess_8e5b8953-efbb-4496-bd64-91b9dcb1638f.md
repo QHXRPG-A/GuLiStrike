@@ -1,39 +1,48 @@
-# 全量重命名：彻底抹除 TwinStick → GuLiStrike
+# 创建 titan-progress skill：ProjectTitan 开发归档体系
 
-## 范围盘点
+## 现状依据（已探查）
 
-- **C++ 12 个类**：ATwinStick{Character, GameMode, PlayerController, AIController, NPC, NPCDestruction, Spawner, Projectile, Pickup, AoEAttack}、UTwinStickUI、TwinStickStateTreeUtility（26 个源文件 + Source/Variant_TwinStick 目录名）
-- **16 个内容资产**：11 个 BP_TwinStick*、ST_TwinStickNPC、IMC_TwinStick(_MouseShoot)、BPI/UI_TouchInterface_TwinStick、UI_TwinStick
-- **配置**：DefaultEngine.ini 的 GlobalDefaultGameMode 指向 BP_TwinStickGameMode
-- **LVL_Main**：内含 44 处 TwinStick 字符串（Spawner/Pickup 引用，重存即消）
+- `D:\UE_5.7\ProjectTitan` 是独立 UE 5.7 项目（Epic 示例衍生：Mover 2.0、GAS、CommonUI、PCG、Water）
+- `Progress\` 下四个空目录今天已建好：RequirementDocument / DevelopmentDocumentation / Archive / Gameplay——等 workflow 驱动
+- 当前 test1 工作区与 ProjectTitan 无关；skill 按工作区发现，**以后在 ZCode 打开 ProjectTitan 工作区即生效**
 
-## 关键冲突与解法
+## 交付物
 
-目标名 `AGuLiStrikeCharacter/GameMode/PlayerController` 当前被**孤儿模板类**占用（原 test1*，其唯一使用者 BP_TopDown* 三张蓝图已在内容合并中删除，全项目零引用）。**先删除这 6 个死代码文件腾出名字**——这是实现"TwinStick 类改名为 GuLiStrike 类"的必要前提，也符合彻底抹除的意图。DefaultGame.ini 里对应的 `[/Script/GuLiStrike.GuLiStrikeCharacter]` section 一并删除。
+### 1. `D:\UE_5.7\ProjectTitan\.agents\skills\titan-progress\SKILL.md`
 
-## 执行步骤（编辑器需关闭，全程 git 可回退）
+**Frontmatter**：name `titan-progress`；description 同时含英文与中文触发词（requirement / dev doc / task list / gameplay record / archive / 需求 / 开发文档 / 任务清单 / 玩法记录 / 归档 / Progress），确保中英文请求都能命中。
 
-### R1：C++ 重构（离线）
-1. 删除 6 个孤儿模板文件（GuLiStrike{Character,GameMode,PlayerController}.h/.cpp）
-2. 26 个 TwinStick 源文件 git mv 到模块根（AI/、Gameplay/、UI/ 子结构保留），删除 Variant_TwinStick 目录，文件与类名 TwinStick*→GuLiStrike*
-3. 全模块标识符替换（类名、include、generated.h、ForwardDeclare、日志文本中的 TwinStick 字样）
-4. Build.cs 的 PublicIncludePaths 更新（去掉 Variant_TwinStick 层级）
-5. DefaultEngine.ini [CoreRedirects] 加 12 条 ClassRedirects（TwinStick* → GuLiStrike*，保住全部 BP 的父类引用）
+**Body 结构**（<250 行）：
 
-### R2：编译验证（UBT Development Editor，零错误才继续）
+1. **目录契约**：四个目录的职责、命名规则、一一对应关系
+   - 命名统一 `YYYYMMDD-名称.md`（年月日紧凑格式，如 `20260816-冲刺手感优化.md`）；Gameplay 例外：`模块名.md`（循环、战斗、技能、交友、组队联机…）
+2. **四条工作流**：
+   - **A 需求落档**：用户提出点子 → 先澄清（玩法/UI/技术边界、验收标准）→ 写 `RequirementDocument/YYYYMMDD-名称.md`
+   - **B 技术文档**：基于对应需求文档，同名生成 `DevelopmentDocumentation/YYYYMMDD-名称.md`（技术选型、涉及类/资产、风险、**可勾选任务清单** spec 风格）
+   - **C 会话归档**：每次开发收尾时写 `Archive/YYYYMMDD-解决了什么事.md`（变更文件清单、结果、验证证据、遗留问题）——append-only，不改旧档
+   - **D 玩法记录**：行为变更时更新对应 `Gameplay/模块.md`（活文档，原地演进，带版本小节）
+3. **四套文档模板**（内嵌，含字段：背景/目标/验收标准；技术方案/任务清单；变更/验证/遗留；模块概述/机制细节/数值）
+4. **铁律**：日期取当天；需求↔开发文档严格同名配对；归档只增不改；玩法文档原地更新；文档间相对链接互引；每次归档后更新 `Progress/README.md` 索引表
 
-### R3：资产重命名（编辑器内，吸取前两次教训）
-1. 先写 DefaultEditorPerProjectUserSettings.ini 关闭 checkout/保存弹窗（上次卡死的嫌疑主因之一）
-2. 启动编辑器，TCP 逐个 rename_assets：**一次一个、每个之后 save_dirty、检查落盘**（上次失败根因是我并发跑了两份脚本互锁 + GameMode 是激活资产）
-3. BP_TwinStickGameMode 放最后；完成后 GlobalDefaultGameMode 同步改为 BP_GuLiStrikeGameMode
-4. rename_assets 自带 referencer 修复（不同于文件移动），BP 间引用自动更新并留重定向器
+### 2. `Progress\README.md`（人读索引 + 体系说明）
 
-### R4：收尾
-1. LVL_Main 重存（消除 44 处 TwinStick 字符串）
-2. **审计**：Content/Config/Source 全域 grep "TwinStick" 归零（git 历史除外）
-3. PIE 复验：GameMode/玩家/刷怪/NPC/拾取物全链路
-4. git 提交
+四目录说明、命名规则速查、最近文档索引表（skill 每次归档后追加维护）。
 
-## 明确不动的东西
+### 3. 示例文档一套（格式范本，日期 20260816）
 
-- ABlinkVFX（名字不含 TwinStick）、IA_Action_* 输入动作（已无 TwinStick 字样）、Strategy 孤儿类（本轮范围外）、Scifi_Skies 与 Maps 目录
+- `RequirementDocument/20260816-示例-商店系统需求.md`
+- `DevelopmentDocumentation/20260816-示例-商店系统需求.md`（同名列演示配对，含勾选任务清单示例）
+- `Archive/20260816-示例-搭建进度文档体系.md`（把本次建 skill 这件事作为第一条真实归档）
+- `Gameplay/战斗.md`（以占位结构演示模块活文档格式）
+
+## 执行步骤
+
+1. 写 SKILL.md（含模板与工作流）
+2. 写 Progress/README.md
+3. 写 4 个示例/首批文档
+4. 校验 frontmatter（name 与目录名一致、description 完整）
+
+## 不做的事
+
+- 不动 test1 工作区任何文件；不装 MCP；不改 ProjectTitan 的 UE 工程内容
+- 不做自动 git 提交（ProjectTitan 尚无仓库，是否 init 由你后续决定）

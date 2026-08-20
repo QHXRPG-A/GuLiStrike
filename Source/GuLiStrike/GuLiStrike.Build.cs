@@ -29,6 +29,7 @@ public class GuLiStrike : ModuleRules
 			"GuLiStrike",
 			"GuLiStrike/AI",
 			"GuLiStrike/Gameplay",
+			"GuLiStrike/Gameplay/Ship",
 			"GuLiStrike/UI",
 			"GuLiStrike/Variant_Strategy",
 			"GuLiStrike/Variant_Strategy/UI"
