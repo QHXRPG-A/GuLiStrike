@@ -1,0 +1,261 @@
+"""Create/update DataTable assets from Data/Json/*.json in the live editor (pipeline stage 2).
+
+Run via:  python Scripts/ue_exec.py Scripts/import_data_to_engine.py
+Note:    MCPython TCP 服务是排队异步执行——连接立刻关闭、脚本稍后在游戏线程跑。
+         发送后轮询 Data/tmp_import_report.json 的 mtime，再读结果。
+         Data/tmp_import_progress.log 记录逐步进度，用于定位挂死点。
+
+通用性约定（与 Tools/DataPipeline/export_data_from_excel.py 共享 tables.json）：
+    - 表名 = DT_{Excel文件名主干}_{sheet名}（例：GuLiStrikeShip.xlsx 的 Parts sheet
+      -> DT_GuLiStrikeShip_Parts）；
+    - tables.json 里每个 sheet 声明行结构（struct）与可选的属性接线（assign_to）；
+      没登记 struct 的 sheet 会被跳过并警告（JSON 已产出，等 C++ 行结构就绪后登记即可）；
+    - CSV 侧车的列名直接从 JSON 行键自派生，脚本本身不包含任何表结构知识。
+
+路线（踩坑记录见 Progress/Archive/20260822-数据管线开发总归档-0821至0822.md）：
+  - 资产：create_asset(DataTableFactory+struct) 首次建 DT —— 安全，已验证。
+  - 行数据：CSVImportFactory + AutomatedImportSettings(ImportRowStruct/ImportType)，
+    经 AssetImportTask 导入 CSV 侧车（JSON 数据先在本脚本内转 CSV；向量列用
+    "(X=..,Y=..,Z=..)" ImportText 格式）。
+  - 禁用：delete_asset（弹模态框卡死）、fill_data_table_from_csv_string /
+    fill_data_table_from_json_string（导入完成后收尾路径必挂，复现两次）。
+
+游戏侧接线（新增游戏系统时在此扩展）：
+  - assign_to 目前统一赋到 BP_GuLiStrikeShip 的 CDO 属性上；
+  - 文件末尾的"部件蓝图 PartId"步骤是飞船系统专属逻辑。
+
+Report:  Data/tmp_import_report.json
+"""
+import csv
+import io
+import json
+import re
+import traceback
+
+import unreal
+
+PROJECT = "D:/UE_5.7/test1"
+DEST_PATH = "/Game/GuLiStrike/Data"
+SHIP_BP_PATH = "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip.BP_GuLiStrikeShip"
+CONFIG_PATH = f"{PROJECT}/Tools/DataPipeline/tables.json"
+REPORT = f"{PROJECT}/Data/tmp_import_report.json"
+PROGRESS = f"{PROJECT}/Data/tmp_import_progress.log"
+
+
+def mark(msg):
+    with open(PROGRESS, "a", encoding="utf-8") as f:
+        f.write(str(msg) + "\n")
+
+
+def to_cell(value):
+    """JSON 值 -> DataTable CSV 单元格（ImportText 格式）。"""
+    if value is None:
+        return ""
+    if isinstance(value, bool):
+        return "True" if value else "False"
+    if isinstance(value, dict):  # 向量：结构体 ImportText 需要带括号格式
+        return "(X={:.6f},Y={:.6f},Z={:.6f})".format(
+            float(value["X"]), float(value["Y"]), float(value["Z"]))
+    if isinstance(value, float) and value == int(value):
+        return str(int(value))
+    return str(value)
+
+
+def write_csv_sidecar(rows, path):
+    """列名从 JSON 行键自派生（按首次出现顺序），不含任何表结构知识。"""
+    columns = []
+    for r in rows:
+        for k in r:
+            if k != "Name" and k not in columns:
+                columns.append(k)
+    buf = io.StringIO()
+    w = csv.writer(buf, lineterminator="\n")
+    w.writerow(["Name"] + columns)
+    for r in rows:
+        w.writerow([r["Name"]] + [to_cell(r.get(c)) for c in columns])
+    with open(path, "w", encoding="utf-8", newline="") as f:
+        f.write(buf.getvalue())
+
+
+def import_table(table_name, sheet_cfg):
+    entry = {"asset": table_name}
+    try:
+        json_path = f"{PROJECT}/Data/Json/{table_name}.json"
+        mark(f"begin {table_name}")
+        with open(json_path, encoding="utf-8") as f:
+            src_rows = json.load(f)
+        entry["source_rows"] = [r["Name"] for r in src_rows]
+        csv_path = json_path.replace(".json", ".csv")
+        write_csv_sidecar(src_rows, csv_path)
+        mark("csv-sidecar-written")
+
+        row_struct = unreal.find_object(None, sheet_cfg["struct"])
+        if not row_struct:
+            raise RuntimeError(f"struct not found: {sheet_cfg['struct']}")
+        mark("find-struct")
+
+        # 首次建资产（已存在则复用；重导入整表替换）
+        asset_path = f"{DEST_PATH}/{table_name}"
+        dt = unreal.load_object(None, f"{asset_path}.{table_name}")
+        entry["created"] = dt is None
+        if dt is None:
+            factory = unreal.DataTableFactory()
+            factory.set_editor_property("struct", row_struct)
+            dt = unreal.AssetToolsHelpers.get_asset_tools().create_asset(
+                asset_name=table_name,
+                package_path=DEST_PATH,
+                asset_class=unreal.DataTable,
+                factory=factory,
+            )
+            if not dt:
+                raise RuntimeError("create_asset returned None")
+        mark(f"dt-ready created={entry['created']}")
+
+        # CSVImportFactory + AutomatedImportSettings：官方自动导入通道
+        try:
+            import_type = unreal.CSVImportType.ECSV_DATA_TABLE
+        except AttributeError:
+            import_type = 0
+        settings = unreal.CSVImportSettings()
+        settings.set_editor_property("import_row_struct", row_struct)
+        settings.set_editor_property("import_type", import_type)
+        csv_factory = unreal.CSVImportFactory()
+        csv_factory.set_editor_property("automated_import_settings", settings)
+
+        task = unreal.AssetImportTask()
+        task.set_editor_property("factory", csv_factory)
+        task.set_editor_property("filename", csv_path)
+        task.set_editor_property("destination_path", DEST_PATH)
+        task.set_editor_property("destination_name", table_name)
+        task.set_editor_property("automated", True)
+        task.set_editor_property("replace_existing", True)
+        task.set_editor_property("save", False)
+        unreal.AssetToolsHelpers.get_asset_tools().import_asset_tasks([task])
+        mark("import-task-done")
+
+        lib = unreal.DataTableFunctionLibrary
+        row_names = [str(n) for n in lib.get_data_table_row_names(dt)]
+        mark(f"rows={row_names}")
+        entry["row_names"] = row_names
+        if set(row_names) != set(entry["source_rows"]):
+            raise RuntimeError(f"row mismatch: json={entry['source_rows']} dt={row_names}")
+
+        # 回读校验：导出 JSON 与源数据全量比对（比抽查更严）
+        # 注意导出格式：FText 带 NSLOCTEXT 包装、向量是 "(X=..,Y=..,Z=..)" 字符串
+        exported = lib.export_data_table_to_json_string(dt)
+        mark("exported")
+        ex_rows = {r["Name"]: r for r in json.loads(exported)}
+
+        def parse_vec(v):
+            if isinstance(v, dict):
+                return [float(v.get("X", 0)), float(v.get("Y", 0)), float(v.get("Z", 0))]
+            nums = [float(x) for x in re.findall(r"[-+0-9.eE]+", str(v))]
+            return nums[:3] if len(nums) >= 3 else None
+
+        checks = {}
+        for src in src_rows:
+            name = src["Name"]
+            ex = ex_rows.get(name)
+            if ex is None:
+                checks[name] = False
+                continue
+            ok_row = True
+            for key, sv in src.items():
+                if key == "Name":
+                    continue
+                ev = ex.get(key)
+                if isinstance(sv, dict):  # 向量
+                    ev_vec = parse_vec(ev) if ev is not None else None
+                    ok_row = ok_row and ev_vec is not None and all(
+                        round(a, 3) == round(float(b), 3) for a, b in zip(ev_vec, [sv["X"], sv["Y"], sv["Z"]]))
+                elif isinstance(sv, bool):
+                    ok_row = ok_row and bool(ev) == sv
+                elif isinstance(sv, (int, float)):
+                    ok_row = ok_row and ev is not None and round(float(ev), 3) == round(float(sv), 3)
+                else:  # 文本/路径：FText 带 NSLOCTEXT 包装、软引用带路径，统一用包含判断
+                    ok_row = ok_row and ev is not None and str(sv) in str(ev)
+            checks[name] = ok_row
+        entry["row_checks"] = checks
+        if not all(checks.values()):
+            raise RuntimeError(f"row value mismatch: {checks}")
+
+        unreal.EditorAssetLibrary.save_loaded_asset(dt, False)
+        entry["imported"] = True
+        mark("saved")
+    except Exception:  # noqa: BLE001
+        entry["imported"] = False
+        entry["err"] = traceback.format_exc()[-600:]
+        mark("error: " + entry["err"].splitlines()[-1])
+    return entry
+
+
+report = {"tables": [], "skipped": [], "errors": []}
+try:
+    config = json.loads(open(CONFIG_PATH, encoding="utf-8").read())
+    stem = config["excel"].rsplit("/", 1)[-1].rsplit(".", 1)[0]
+    imported_dts = {}
+    for sheet, sheet_cfg in config["sheets"].items():
+        table_name = f"DT_{stem}_{sheet}"
+        if not sheet_cfg.get("struct"):
+            report["skipped"].append(f"{table_name}（tables.json 未登记 struct，跳过导入）")
+            mark(f"skip {table_name}: no struct")
+            continue
+        entry = import_table(table_name, sheet_cfg)
+        report["tables"].append(entry)
+        if entry.get("imported") and sheet_cfg.get("assign_to"):
+            imported_dts[sheet_cfg["assign_to"]] = unreal.load_object(
+                None, f"{DEST_PATH}/{table_name}.{table_name}")
+
+    # --- 游戏侧接线：赋值到飞船蓝图 CDO（属性名来自 tables.json 的 assign_to） ---
+    if imported_dts:
+        mark("ship-assign-begin")
+        ship_bp = unreal.load_object(None, SHIP_BP_PATH)
+        scdo = unreal.get_default_object(ship_bp.generated_class())
+        for prop_name, dt in imported_dts.items():
+            scdo.set_editor_property(prop_name, dt)
+        report["ship_assigned"] = sorted(imported_dts)
+        ship_bp.modify()
+        report["ship_saved"] = bool(unreal.EditorAssetLibrary.save_loaded_asset(ship_bp, False))
+        mark("ship-assigned")
+
+    # --- 游戏侧接线（飞船专属）：部件蓝图 PartId（= 资产名去 BP_ 前缀） ---
+    ar = unreal.AssetRegistryHelpers.get_asset_registry()
+    part_ids = {}
+    for ad in ar.get_assets_by_path("/Game/GuLiStrike", recursive=True):
+        asset = ad.get_asset()
+        if not isinstance(asset, unreal.Blueprint):
+            continue
+        generated = asset.generated_class()
+        if not generated:
+            continue
+        cdo = unreal.get_default_object(generated)
+        if not isinstance(cdo, unreal.GuLiStrikeShipPartComponent):
+            continue
+        name = str(ad.asset_name)
+        part_id = name[3:] if name.startswith("BP_") else name
+        cdo.set_editor_property("part_id", part_id)
+        asset.modify()
+        unreal.EditorAssetLibrary.save_loaded_asset(asset, False)
+        part_ids[name] = part_id
+    report["part_ids"] = part_ids
+    mark("part-ids-done")
+
+    # --- 孤儿资产警告：目录里不在配置派生名之列的 DataTable ---
+    expected = {f"DT_{stem}_{s}" for s in config["sheets"]}
+    orphans = []
+    for ad in ar.get_assets_by_path(DEST_PATH, recursive=False):
+        an = str(ad.asset_name)
+        if an not in expected and "DataTable" in str(ad.asset_class_path):
+            orphans.append(f"{DEST_PATH}/{an}")
+    report["orphan_tables"] = orphans
+    if orphans:
+        mark(f"WARNING orphan tables: {orphans}")
+except Exception:  # noqa: BLE001
+    report["errors"].append(traceback.format_exc()[-600:])
+    mark("fatal-error")
+
+mark("report-write")
+with open(REPORT, "w", encoding="utf-8") as f:
+    json.dump(report, f, ensure_ascii=False, indent=2, default=str)
+
+print("import done, report at", REPORT)

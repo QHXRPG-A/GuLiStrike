@@ -1,0 +1,40 @@
+[
+  {
+    "Name": "Engine_Heavy",
+    "PartDisplayName": "重型引擎",
+    "PartMass": 30,
+    "Thrust": 1000
+  },
+  {
+    "Name": "Engine_Standard",
+    "PartDisplayName": "标准引擎",
+    "PartMass": 10,
+    "Thrust": 600
+  },
+  {
+    "Name": "Weapon_Laser",
+    "PartDisplayName": "激光炮",
+    "PartMass": 10,
+    "Damage": 10,
+    "FireRate": 3,
+    "MuzzleOffset": {
+      "X": 350,
+      "Y": 0,
+      "Z": 0
+    },
+    "ProjectileClass": "/Game/GuLiStrike/Ship/BP_ShipProjectile.BP_ShipProjectile_C"
+  },
+  {
+    "Name": "Weapon_RocketPod",
+    "PartDisplayName": "火箭巢",
+    "PartMass": 10,
+    "Damage": 40,
+    "FireRate": 0.8,
+    "MuzzleOffset": {
+      "X": 450,
+      "Y": 0,
+      "Z": 0
+    },
+    "ProjectileClass": "/Game/GuLiStrike/Ship/BP_ShipProjectile.BP_ShipProjectile_C"
+  }
+]

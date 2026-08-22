@@ -11,27 +11,47 @@ class USpringArmComponent;
 class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
+class UDataTable;
 class UGuLiStrikeShipPartComponent;
 class UGuLiStrikeEnginePart;
 class UGuLiStrikeWeaponPart;
 struct FInputActionValue;
 
-/** A part the ship spawns with, paired with the hull socket it is installed on */
+/** 出生时自带的部件及其安装的舰体 socket */
 USTRUCT(BlueprintType)
 struct FGuLiStrikeShipDefaultPart
 {
 	GENERATED_BODY()
 
-	/** Hull socket to install this part on */
+	/** 该部件要安装到的舰体 socket */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ship")
 	FName SocketName;
 
-	/** Part component class to install */
+	/** 要安装的部件组件类 */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ship")
 	TSubclassOf<UGuLiStrikeShipPartComponent> PartClass;
 };
 
-/** Internal bookkeeping for one installed part */
+/** 数值修饰：临时改变飞行参数的倍率（超载/减速等），统一在 RecomputeStats 里结算 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeStatModifier
+{
+	GENERATED_BODY()
+
+	/** 修饰名（添加时同名覆盖，移除按名移除） */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ship")
+	FName Name;
+
+	/** 极速倍率（1 = 不变） */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ship", meta=(ClampMin = 0))
+	float MaxSpeedMultiplier = 1.0f;
+
+	/** 加速度倍率（1 = 不变） */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ship", meta=(ClampMin = 0))
+	float AccelerationMultiplier = 1.0f;
+};
+
+/** 已安装部件的内部记录 */
 struct FGuLiStrikeInstalledPart
 {
 	FName SocketName;
@@ -39,264 +59,351 @@ struct FGuLiStrikeInstalledPart
 };
 
 /**
- *  A player-controlled, modular DIY spaceship.
- *  The hull is a single StaticMesh (sockets on the mesh act as hardpoints);
- *  parts are UStaticMeshComponent subclasses attached to those sockets at
- *  runtime and can be hot-swapped in flight. Thrust and mass of all installed
- *  engine parts drive the flight performance.
+ *  玩家操控的模块化 DIY 飞船。
+ *  舰体是单个静态网格体（网格上的 socket 即挂点）；
+ *  部件是运行时挂到这些 socket 上的 UStaticMeshComponent 子类，
+ *  支持飞行中热切换。部件行为（数值贡献、开火等）由部件类自己实现
+ *  （多态分发），飞船只负责装配与聚合——新增部件类型无需改飞船代码。
  */
 UCLASS(abstract)
 class AGuLiStrikeShip : public ACharacter
 {
 	GENERATED_BODY()
 
-	/** Static mesh of the ship hull; its sockets are the part hardpoints */
+	/** 飞船舰体静态网格体；其上的 socket 是部件挂点 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UStaticMeshComponent* HullMesh;
 
-	/** Camera boom following behind and above the ship */
+	/** 跟随在飞船后上方的相机臂 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	USpringArmComponent* SpringArm;
 
-	/** Player camera */
+	/** 玩家相机 */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
 
 protected:
 
-	/** Mapping context added while this ship is possessed */
+	/** 本飞船被操控期间添加的输入映射上下文 */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputMappingContext* ShipMappingContext;
 
-	/** Forward thrust input action (W) */
+	/** 前进推进输入（W） */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* ForwardAction;
 
-	/** Backward thrust input action (S) */
+	/** 后退推进输入（S） */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* BackwardAction;
 
-	/** Strafe right input action (D) */
+	/** 右移平移输入（D） */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* StrafeRightAction;
 
-	/** Strafe left input action (A) */
+	/** 左移平移输入（A） */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* StrafeLeftAction;
 
-	/** Ascend input action (Space) */
+	/** 上升输入（Space） */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* AscendAction;
 
-	/** Descend input action (C) */
+	/** 下降输入（C） */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* DescendAction;
 
-	/** Roll left input action (Q) */
+	/** 左转输入（Q，偏航） */
 	UPROPERTY(EditAnywhere, Category="Input")
-	UInputAction* RollLeftAction;
+	UInputAction* TurnLeftAction;
 
-	/** Roll right input action (E) */
+	/** 右转输入（E，偏航） */
 	UPROPERTY(EditAnywhere, Category="Input")
-	UInputAction* RollRightAction;
+	UInputAction* TurnRightAction;
 
-	/** Mouse look input action (2D delta) */
+	/** 鼠标视角输入（2D 增量） */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* LookAction;
 
-	/** Boost input action */
-	UPROPERTY(EditAnywhere, Category="Input")
-	UInputAction* BoostAction;
-
-	/** Fire input action */
+	/** 开火输入 */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* FireAction;
 
-	/** Cycle engine parts input action */
+	/** 加力输入 */
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* BoostAction;
+
+	/** 循环更换引擎部件的输入 */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* CycleEnginesAction;
 
-	/** Cycle weapon parts input action */
+	/** 循环更换武器部件的输入 */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* CycleWeaponsAction;
 
-	/** Parts installed on spawn */
+	/** 出生时装上的部件 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship")
 	TArray<FGuLiStrikeShipDefaultPart> DefaultParts;
 
-	/** All part classes the hot-swap keys may cycle through */
+	/** 全部部件类的热切换目录 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship")
 	TArray<TSubclassOf<UGuLiStrikeShipPartComponent>> PartCatalogue;
 
-	/** Mass of the bare hull (without any parts) */
+	/** 部件数值表（RowName = 部件的 PartId）；空表 = 全部沿用部件蓝图默认数值 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ship|Data")
+	UDataTable* PartDataTable;
+
+	/** 飞船调参表（RowName = TuningPreset）；空表 = 沿用本类默认数值 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ship|Data")
+	UDataTable* TuningDataTable;
+
+	/** 出生时应用的调参预设行名 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ship|Data")
+	FName TuningPreset = FName(TEXT("Default"));
+
+	/** 生效中的数值修饰列表（超载/减速等）；仅 RecomputeStats 依据它写移动参数 */
+	UPROPERTY(BlueprintReadWrite, Category="Ship|Stats")
+	TArray<FGuLiStrikeStatModifier> StatModifiers;
+
+	/** 裸舰体质量（不含任何部件） */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Stats", meta=(ClampMin = 1))
 	float HullMass = 100.0f;
 
-	/** Max speed at the nominal thrust-to-mass ratio */
+	/** 标称推重比对应的极速 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Stats", meta=(ClampMin = 0))
-	float BaseMaxSpeed = 2000.0f;
+	float BaseMaxSpeed = 1200.0f;
 
-	/** Acceleration at the nominal thrust-to-mass ratio */
+	/** 标称推重比对应的加速度 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Stats", meta=(ClampMin = 0))
-	float BaseAcceleration = 800.0f;
+	float BaseAcceleration = 400.0f;
 
-	/** Thrust-to-mass ratio that maps to the base flight stats */
+	/** 映射到基础飞行性能的推重比 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Stats", meta=(ClampMin = 0.01))
 	float NominalThrustRatio = 6.0f;
 
-	/** Lower clamp for the thrust-ratio speed multiplier */
+	/** 推重比速度倍率的下限 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Stats", meta=(ClampMin = 0.1))
 	float SpeedMultiplierMin = 0.5f;
 
-	/** Upper clamp for the thrust-ratio speed multiplier */
+	/** 推重比速度倍率的上限 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Stats", meta=(ClampMin = 1))
 	float SpeedMultiplierMax = 2.0f;
 
-	/** Extra thrust multiplier while the boost input is held */
+	/** 按住加力键时的额外推力倍率 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Stats", meta=(ClampMin = 1))
 	float BoostThrustMultiplier = 2.0f;
 
-	/** Degrees of pitch per unit of mouse Y delta */
+	/** 鼠标 Y 增量每单位对应的相机俯仰角度 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling")
 	float MousePitchScale = 1.0f;
 
-	/** Degrees of yaw per unit of mouse X delta */
+	/** 鼠标 X 增量每单位对应的相机偏航角度 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling")
 	float MouseYawScale = 1.0f;
 
-	/** Degrees of roll per second at full roll input */
+	/** 偏航最大角速度（度/秒，Q/E） */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
-	float RollRate = 90.0f;
+	float YawRate = 40.0f;
 
-	/** Offset applied to the hull mesh so the ship is centered on the actor */
+	/** 偏航响应速度：按键后角速度爬升到目标的快慢（越大起步越快） */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0.1))
+	float YawResponseSpeed = 3.0f;
+
+	/** 偏航惯性衰减速度：松键后角速度归零的快慢（越小惯性越足、滑得越远） */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0.05))
+	float YawStopDamping = 1.0f;
+
+	/** 转向时机身向转弯侧的倾斜角（压弯效果） */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0, ClampMax = 45))
+	float MaxBankAngle = 5.0f;
+
+	/** 倾斜回正的插值速度 */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0.1))
+	float BankInterpSpeed = 4.0f;
+
+	/** 自动转向的插值速度（越小转向越沉稳） */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0.1))
+	float OrientTurnSpeed = 2.5f;
+
+	/** 推进时是否自动转向推进方向（默认关闭：平移玩法，朝向只由 Q/E 偏航控制） */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling")
+	bool bOrientToMovement = false;
+
+	/** 推进意图与船头夹角余弦低于此值时不自动转向（倒退/纯侧移保持船头，S 作为反推减速） */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = -1, ClampMax = 1))
+	float OrientMinForwardDot = 0.3f;
+
+	/** 相机臂俯仰下限（度） */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling")
+	float CameraPitchMin = -80.0f;
+
+	/** 相机臂俯仰上限（度） */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling")
+	float CameraPitchMax = 80.0f;
+
+	/** 舰体网格体偏移，让飞船几何中心对齐 Actor 原点 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Components")
 	FVector HullMeshOffset = FVector(0.0f, 0.0f, 700.0f);
 
-	/** Parts currently installed (one per socket) */
+	/** 当前已安装的部件（每个 socket 一个） */
 	TArray<FGuLiStrikeInstalledPart> InstalledParts;
 
-	/** Whether the boost input is currently held */
+	/** 加力键当前是否按住 */
 	bool bBoosting = false;
 
-	/** Aggregated thrust of all installed engine parts */
+	/** 本帧推进意图的世界空间累积（Tick 里消费，用于自动转向判定） */
+	FVector PendingThrustIntent = FVector::ZeroVector;
+
+	/** 当前转向输入累积：-1 左 / +1 右（Tick 里消费，用于压弯倾斜） */
+	float PendingTurnInput = 0.0f;
+
+	/** 本帧侧移输入累积：-1 左 / +1 右（Tick 里消费，用于侧移压弯倾斜） */
+	float PendingStrafeInput = 0.0f;
+
+	/** 当前偏航角速度（度/秒，带正负号）——转向惯性来源 */
+	float YawVelocity = 0.0f;
+
+	/** 当前压弯倾斜角（平滑过渡用） */
+	float CurrentBankRoll = 0.0f;
+
+	/** 全部已装引擎部件的推力总和 */
 	float TotalThrust = 0.0f;
 
-	/** Hull mass plus every installed part mass */
+	/** 舰体质量加上所有已装部件质量 */
 	float TotalMass = 0.0f;
 
-	/** Current max speed after the last stats recompute */
+	/** 最近一次数值重算后的当前极速 */
 	float CurrentMaxSpeed = 0.0f;
 
 public:
 
-	/** Constructor */
+	/** 构造函数 */
 	AGuLiStrikeShip();
+
+	/** 每帧更新：依据推进意图自动转向（倒退/纯侧移除外） */
+	virtual void Tick(float DeltaTime) override;
 
 protected:
 
-	/** Gameplay initialization */
+	/** 玩法初始化 */
 	virtual void BeginPlay() override;
 
-	/** Possessed by controller initialization */
+	/** 被控制器操控时的初始化 */
 	virtual void NotifyControllerChanged() override;
 
-	/** Adds input bindings */
+	/** 添加输入绑定 */
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
 
-	/** Handles forward thrust input */
+	/** 处理前进推进输入 */
 	void ThrustForward(const FInputActionValue& Value);
 
-	/** Handles backward thrust input */
+	/** 处理后退推进输入 */
 	void ThrustBackward(const FInputActionValue& Value);
 
-	/** Handles strafe right input */
+	/** 处理右移平移输入 */
 	void ThrustRight(const FInputActionValue& Value);
 
-	/** Handles strafe left input */
+	/** 处理左移平移输入 */
 	void ThrustLeft(const FInputActionValue& Value);
 
-	/** Handles ascend input */
+	/** 处理上升输入 */
 	void ThrustUp(const FInputActionValue& Value);
 
-	/** Handles descend input */
+	/** 处理下降输入 */
 	void ThrustDown(const FInputActionValue& Value);
 
-	/** Handles roll left input */
-	void RollLeft(const FInputActionValue& Value);
+	/** 处理左转输入（Q，偏航 + 左倾压弯） */
+	void TurnLeft(const FInputActionValue& Value);
 
-	/** Handles roll right input */
-	void RollRight(const FInputActionValue& Value);
+	/** 处理右转输入（E，偏航 + 右倾压弯） */
+	void TurnRight(const FInputActionValue& Value);
 
-	/** Handles mouse look inputs (pitch/yaw) */
+	/** 处理鼠标视角输入（只环绕相机，不改变飞船朝向） */
 	void Look(const FInputActionValue& Value);
 
-	/** Handles boost press */
+	/** 处理加力按下 */
 	void BoostStart(const FInputActionValue& Value);
 
-	/** Handles boost release */
+	/** 处理加力松开 */
 	void BoostEnd(const FInputActionValue& Value);
 
-	/** Handles the fire input */
+	/** 处理开火输入 */
 	void Fire(const FInputActionValue& Value);
 
-	/** Handles the engine hot-swap input */
+	/** 处理引擎热切换输入 */
 	void CycleEngines(const FInputActionValue& Value);
 
-	/** Handles the weapon hot-swap input */
+	/** 处理武器热切换输入 */
 	void CycleWeapons(const FInputActionValue& Value);
 
-	/** Allows Blueprint code to react to a part installation */
+	/** 供蓝图响应部件安装 */
 	UFUNCTION(BlueprintImplementableEvent, Category="Ship", meta=(DisplayName = "Part Installed"))
 	void BP_OnPartInstalled(UGuLiStrikeShipPartComponent* Part, FName SocketName);
 
-	/** Allows Blueprint code to react to a part removal */
+	/** 供蓝图响应部件拆除 */
 	UFUNCTION(BlueprintImplementableEvent, Category="Ship", meta=(DisplayName = "Part Uninstalled"))
 	void BP_OnPartUninstalled(UGuLiStrikeShipPartComponent* Part, FName SocketName);
 
-	/** Allows Blueprint code to react to flight stat changes */
+	/** 供蓝图响应飞行数值变化 */
 	UFUNCTION(BlueprintImplementableEvent, Category="Ship", meta=(DisplayName = "Stats Changed"))
 	void BP_OnStatsChanged();
 
 public:
 
-	/** Installs a part of the given class on a hull socket, replacing any part already there */
+	/** 在舰体 socket 上安装指定类的部件，替换该槽位上已有的部件 */
 	UFUNCTION(BlueprintCallable, Category="Ship")
 	bool InstallPart(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass, FName SocketName);
 
-	/** Removes the part installed on the given socket (if any) */
+	/** 拆除指定 socket 上的部件（如有） */
 	UFUNCTION(BlueprintCallable, Category="Ship")
 	bool UninstallPart(FName SocketName);
 
-	/** Returns the part currently installed on the given socket (or nullptr) */
+	/** 返回指定 socket 上当前安装的部件（没有则返回空） */
 	UFUNCTION(BlueprintCallable, Category="Ship")
 	UGuLiStrikeShipPartComponent* GetPartAt(FName SocketName) const;
 
-	/** Cycles every installed part of the given base class (e.g. engines) to its next catalogue entry */
+	/** 循环切换指定基类（如引擎）的全部已装部件到目录中的下一个 */
 	UFUNCTION(BlueprintCallable, Category="Ship")
 	void CycleParts(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass);
 
-	/** Fires every installed weapon part that is off cooldown */
+	/** 让所有已脱离冷却的武器部件开火 */
 	UFUNCTION(BlueprintCallable, Category="Ship")
 	void FireInstalledWeapons();
 
-	/** Recomputes flight stats from the installed parts and applies them to the movement component */
+	/** 重算飞行数值并应用到移动组件 */
 	UFUNCTION(BlueprintCallable, Category="Ship")
 	void RecomputeStats();
 
-	/** Total thrust of all installed engine parts */
+	/** 添加/同名覆盖一个数值修饰并立即应用（如超载 +20% 极速） */
+	UFUNCTION(BlueprintCallable, Category="Ship|Stats")
+	void AddStatModifier(FName Name, float MaxSpeedMultiplier, float AccelerationMultiplier);
+
+	/** 按名移除一个数值修饰并立即应用 */
+	UFUNCTION(BlueprintCallable, Category="Ship|Stats")
+	void RemoveStatModifier(FName Name);
+
+	/** 部件被外部直接销毁时由部件回调：同步注册表并重算数值 */
+	void NotifyPartDestroyed(UGuLiStrikeShipPartComponent* Part);
+
+	/** 全部已装引擎部件的推力总和 */
 	UFUNCTION(BlueprintPure, Category="Ship|Stats")
 	float GetTotalThrust() const { return TotalThrust; }
 
-	/** Hull mass plus all installed part masses */
+	/** 舰体质量加全部已装部件质量 */
 	UFUNCTION(BlueprintPure, Category="Ship|Stats")
 	float GetTotalMass() const { return TotalMass; }
 
-	/** Current max speed derived from the thrust-to-mass ratio */
+	/** 由推重比推导的当前极速 */
 	UFUNCTION(BlueprintPure, Category="Ship|Stats")
 	float GetCurrentMaxSpeed() const { return CurrentMaxSpeed; }
 
 private:
 
-	/** Cycles the socket's part within the catalogue entries compatible with the socket */
+	/** 在与该 socket 兼容的目录条目内循环切换此槽位的部件 */
 	bool CyclePartAtSocket(UClass* PartClass, FName SocketName);
+
+	/** 从 PartDataTable 按 PartId 查行并覆盖部件实例数值；无表/无行时保持蓝图默认值 */
+	bool ApplyPartRow(UGuLiStrikeShipPartComponent* Part) const;
+
+	/** 从 TuningDataTable 按 TuningPreset 查行并覆盖本飞船飞行数值 */
+	bool ApplyTuningRow();
 };

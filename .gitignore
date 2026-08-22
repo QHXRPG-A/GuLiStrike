@@ -52,3 +52,10 @@ Content/Assets/Environments/KiteDemo/
 Plugins/Tripo3DUEBridge-UE5.7-Win64/
 Plugins/UnrealMCP/
 Plugins/UnrealMCPython/
+
+# 数据管线：临时产物与导入侧车（由 Tools/DataPipeline 与 Scripts/import_data_to_engine.py 再生）
+Data/tmp_*
+Data/Json/*.csv
+
+# ZCode 会话产物（本地计划文件）
+.zcode/

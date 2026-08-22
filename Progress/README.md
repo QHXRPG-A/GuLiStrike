@@ -19,6 +19,7 @@
 
 | 日期 | 名称 | 需求 | 开发 |
 |---|---|---|---|
+| 2026-08-21 | 数据管线：Excel 配置飞船数值 | [需求](./RequirementDocument/20260821-数据管线Excel配置.md) | [开发](./DevelopmentDocumentation/20260821-数据管线Excel配置.md) |
 | 2026-08-20 | DIY 飞船 | [需求](./RequirementDocument/20260820-DIY飞船.md) | [开发](./DevelopmentDocumentation/20260820-DIY飞船.md) |
 | 2026-08-16 | 示例-商店系统 | [需求](./RequirementDocument/20260816-示例-商店系统需求.md) | [开发](./DevelopmentDocumentation/20260816-示例-商店系统需求.md) |
 
@@ -26,7 +27,8 @@
 
 | 日期 | 事项 |
 |---|---|
-| 2026-08-20 | [DIY 飞船 MVP（模块化装配+6DOF+热切换框架）](./Archive/20260820-DIY飞船MVP.md) |
+| 2026-08-21~22 | [数据管线开发总归档：Excel→JSON→DataTable（MVP → 通用化 → 校验配置化）](./Archive/20260822-数据管线开发总归档-0821至0822.md) |
+| 2026-08-20~21 | [DIY 飞船开发总归档（MVP → 手感调校 → 架构演进）](./Archive/20260821-DIY飞船开发总归档-0820至0821.md) |
 | 2026-08-16 | [资产整合-Marketplace 资产包统一归档至 Assets](./Archive/20260816-资产整合-Marketplace资产包统一归档至Assets.md) |
 | 2026-08-16 | [搭建进度文档体系](./Archive/20260816-示例-搭建进度文档体系.md) |
 
