@@ -1,357 +1,319 @@
-"""Export every sheet of the pipeline workbook to UE DataTable JSON (validated).
+"""数据管线 stage 1（v2：Excel 元数据驱动，无 tables.json）。
 
-Pipeline stage 1 (system Python + openpyxl), 通用脚本——不含任何具体表的字段知识：
-    Data/Excel/<stem>.xlsx  ->  Data/Json/DT_<stem>_<Sheet>.json   （每个 sheet 一张表）
+用法:  python Tools/DataPipeline/export_data_from_excel.py
 
-通用性约定：
-    - 脚本只实现【通用规则】：行名唯一非空、列类型（num/str/bool/enum/vector/aux/any）、
-      数值范围（min/max）、必填列、按列值条件必填（required_by）、跨字段比较（compare）。
-    - 每个 sheet 的具体规则全部是数据，放在 Tools/DataPipeline/tables.json：
-        schema:   { C++属性名: [类型, 参数1, 参数2, Excel列名?] }
-                  - JSON 输出键 = C++属性名；Excel 列名缺省同属性名；
-                  - vector 类型在 Excel 里是 <Excel列名>X/Y/Z 三列（第 4 元素即前缀）；
-                  - aux 类型只参与校验（enum 合法性、required_by 判定），不进 JSON
-                    （如 Parts 的 Type 列只是 Excel 里的分类辅助列）；
-                  - 类型: num(数值,参数为min/max) / str / bool / enum(参数为取值列表)
-                         / vector / aux(同enum但不导出) / any(原样透传)。
-        required:     所有行都必填的属性名列表
-        required_by:  { 判定列: { 列值: [必填属性...] } }
-        compare:      [ {col, op(>=/>/<=/<), other} ]
-        row_name:     行名列的属性名（缺省 "Name"）
-    - 换一张表、加一张表都不需要改本脚本，只改配置。
-    - 没登记 schema 的 sheet 走推断兜底：首列 Name 唯一非空、单元格类型自动推断、
-      <前缀>X/Y/Z 三列自动合并为向量（产出 JSON，等登记后再严格化）。
-    - 表名 = DT_{Excel文件名主干}_{sheet名}。
+输入:  Data/Excel/*.xlsx（顶层；_ 开头的 sheet 跳过；_legacy/ 等子目录不扫）
 
-Run: python Tools/DataPipeline/export_data_from_excel.py [xlsx路径]
-Exit: 0 ok (json written), 1 validation failure.
+表格式约定（每个 sheet）:
+  第 1 行 = 列名（合法 C++ 标识符，全表唯一）
+  第 2 行 = 类型: int | float | bool | str | softclass
+  第 3 行 = 必要性: Necessary | Optional
+  第 4 行起 = 数据
+  标准三列每表必有: id(int/Necessary)、name(str/Necessary)、Note(str/Optional)
+  向量: PrefixX/PrefixY/PrefixZ 三个 float 列 -> FVector Prefix
+  name 列 = DataTable 的 RowName（全表唯一），不生成 C++ 属性
+  softclass = /Game/... 类路径 -> TSoftClassPtr<UObject>
+
+产出:
+  1. Data/Json/DT_{主干}_{sheet}.json    行数据（首键 "Name" = name 列值）
+  2. Data/Json/manifest.json             表清单（DT 资产名 -> struct 路径）
+  3. Source/GuLiStrike/Gameplay/Data/Generated/{主干}TableRows.h
+     C++ 行结构，自动生成禁止手改；内容不变不写（改数值不触发重编译）
+
+工作流:
+  改数值       -> 跑本脚本 -> 跑 Scripts/import_data_to_engine.py（不碰 C++）
+  加列/新表    -> 跑本脚本（自动重生成 .h）-> 重编译模块 -> 跑导入
+
+生成结构命名: F{主干}{sheet}Row（如 FGuLiStrikeShipPartsRow）
 """
 import json
+import re
 import sys
 from pathlib import Path
 
-from openpyxl import load_workbook
-from openpyxl.utils import get_column_letter
+import openpyxl
 
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-DEFAULT_CONFIG = PROJECT_ROOT / "Tools" / "DataPipeline" / "tables.json"
-JSON_DIR = PROJECT_ROOT / "Data" / "Json"
+PROJECT = Path(__file__).resolve().parents[2]
+EXCEL_DIR = PROJECT / "Data/Excel"
+JSON_DIR = PROJECT / "Data/Json"
+GEN_HEADER_DIR = PROJECT / "Source/GuLiStrike/Gameplay/Data/Generated"
+MODULE = "GuLiStrike"
 
-COMPARE_OPS = {
-    ">=": lambda a, b: a >= b,
-    ">": lambda a, b: a > b,
-    "<=": lambda a, b: a <= b,
-    "<": lambda a, b: a < b,
+TYPES = {"int", "float", "bool", "str", "softclass"}
+MARKS = {"Necessary", "Optional"}
+IDENT_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
+
+# C++ 类型/默认值映射（向量与标准三列另行处理）
+CPP_OF = {
+    "int": ("int32", "0"),
+    "float": ("float", "0.0f"),
+    "bool": ("bool", "false"),
+    "str": ("FString", None),
+    "softclass": ("TSoftClassPtr<UObject>", None),
 }
+VECTOR_CPP = ("FVector", "FVector::ZeroVector")
 
 
-# ---------------------------------------------------------------------------
-# 通用小工具
-# ---------------------------------------------------------------------------
-
-def cell_ref(ws_title, row, col):
-    return f"{ws_title}!{get_column_letter(col)}{row}"
+def cell_ref(sheet, row, col):
+    return f"{sheet}!{openpyxl.utils.get_column_letter(col)}{row}"
 
 
-def excel_name_of(schema, key):
-    """schema 属性对应的 Excel 列名（vector 为前缀）。第 4 元素可覆盖，缺省 = 属性名。"""
-    spec = schema.get(key)
-    if spec is None:
-        return key
-    if spec[0] == "vector":
-        return spec[3] if len(spec) > 3 else key
-    return spec[3] if len(spec) > 3 else key
+class SheetError(Exception):
+    pass
 
 
-def excel_columns_of(schema):
-    """schema -> {Excel 列名: 属性名}（vector 展开为 <前缀>X/Y/Z 三列）。"""
-    out = {}
-    for key in schema:
-        base = excel_name_of(schema, key)
-        if schema[key][0] == "vector":
-            for axis in "XYZ":
-                out[f"{base}{axis}"] = key
-        else:
-            out[base] = key
-    return out
+def load_schema(ws):
+    """解析三行元数据 -> (列定义列表, 向量前缀集合)。"""
+    if ws.max_row < 3 or ws.max_column < 3:
+        raise SheetError(f"至少需要 3 行元数据 x 3 列（当前 {ws.max_row} 行 x {ws.max_column} 列）")
+
+    names, types, marks = [], [], []
+    for r_idx, bucket in ((1, names), (2, types), (3, marks)):
+        for c_idx in range(1, ws.max_column + 1):
+            v = ws.cell(row=r_idx, column=c_idx).value
+            bucket.append(str(v).strip() if v is not None else "")
+
+    # 截掉表头的空列（openpyxl 有时会撑出格式残留列）
+    last = max((i for i, n in enumerate(names) if n), default=-1)
+    if last < 0:
+        raise SheetError("第 1 行（列名）为空")
+    if any(n is not None and i > last for i, n in enumerate(names)):
+        raise SheetError("列名行中间有空列")
+    names, types, marks = names[: last + 1], types[: last + 1], marks[: last + 1]
+    ncols = len(names)
+
+    for i, n in enumerate(names):
+        if not IDENT_RE.match(n):
+            raise SheetError(f"{cell_ref(ws.title, 1, i + 1)}: 列名 '{n}' 不是合法标识符（字母/下划线开头）")
+    dup = {n for n in names if names.count(n) > 1}
+    if dup:
+        raise SheetError(f"列名重复: {sorted(dup)}")
+
+    for i in range(ncols):
+        if types[i] not in TYPES:
+            raise SheetError(f"{cell_ref(ws.title, 2, i + 1)}: 未知类型 '{types[i]}'（可选: {sorted(TYPES)}）")
+        if marks[i] not in MARKS:
+            raise SheetError(f"{cell_ref(ws.title, 3, i + 1)}: 未知标记 '{marks[i]}'（可选: {sorted(MARKS)}）")
+
+    # 标准三列
+    for std_name, std_type in (("id", "int"), ("name", "str"), ("Note", "str")):
+        if std_name not in names:
+            raise SheetError(f"缺少标准列 '{std_name}'")
+        i = names.index(std_name)
+        if types[i] != std_type:
+            raise SheetError(f"标准列 '{std_name}' 类型应为 {std_type}，实际 '{types[i]}'")
+    if marks[names.index("id")] != "Necessary" or marks[names.index("name")] != "Necessary":
+        raise SheetError("标准列 id/name 必须标记为 Necessary")
+    if marks[names.index("Note")] != "Optional":
+        raise SheetError("标准列 Note 必须标记为 Optional")
+
+    # 向量三件套：同前缀的 X/Y/Z 三列，必须 float、缺一不可
+    vec_members = {n for n in names for suffix in ("X", "Y", "Z") if n.endswith(suffix)}
+    prefixes = {n[:-1] for n in vec_members}
+    for p in prefixes:
+        have = {a for a in "XYZ" if f"{p}{a}" in names}
+        if have != set("XYZ"):
+            raise SheetError(f"向量列不完整: {p}X/{p}Y/{p}Z 必须成组出现（当前 {sorted(have)}）")
+        if p in names:
+            raise SheetError(f"列 '{p}' 与向量列 {p}X/{p}Y/{p}Z 冲突")
+        for a in "XYZ":
+            if types[names.index(f"{p}{a}")] != "float":
+                raise SheetError(f"向量列 {p}{a} 类型必须为 float")
+
+    cols = [{"name": n, "type": types[i], "necessary": marks[i] == "Necessary", "col": i + 1}
+            for i, n in enumerate(names)]
+    return cols, prefixes
 
 
-def check_value(kind, value, p1, p2):
-    """按 schema 规则校验单值：返回 (status, payload)。status ∈ ok / empty / bad。"""
-    if value is None or value == "":
-        return "empty", None
-    if kind == "num":
-        if isinstance(value, str):
-            return "bad", f"应为数字，得到文本 '{value}'"
-        v = float(value)
-        if p1 is not None and v < p1:
-            return "bad", f"{v} 低于下限 {p1}"
-        if p2 is not None and v > p2:
-            return "bad", f"{v} 超过上限 {p2}"
-        return "ok", v
-    if kind == "bool":
-        if isinstance(value, bool):
-            return "ok", value
-        if isinstance(value, str) and value.strip().lower() in ("true", "false"):
-            return "ok", value.strip().lower() == "true"
-        return "bad", f"应为 TRUE/FALSE，得到 {value!r}"
-    if kind in ("enum", "aux"):
-        s = str(value).strip()
-        if s not in p1:
-            return "bad", f"必须是 {'/'.join(p1)}，得到 {s!r}"
-        return "ok", s
-    if kind == "str":
-        return "ok", str(value).strip()
-    return "ok", value  # any
+def check_value(sheet, col, row_idx, raw):
+    """单元格值 vs 类型标记一致性。返回归一化值（空 = None）。"""
+    where = cell_ref(sheet, row_idx, col["col"])
+    if raw is None or (isinstance(raw, str) and not raw.strip()):
+        if col["necessary"]:
+            raise SheetError(f"{where}: 列 '{col['name']}' 标记 Necessary 但单元格为空")
+        return None
+    t = col["type"]
+    if t == "int":
+        if isinstance(raw, bool) or not isinstance(raw, (int, float)) or float(raw) != int(raw):
+            raise SheetError(f"{where}: int 列 '{col['name']}' 的值不是整数: {raw!r}")
+        return int(raw)
+    if t == "float":
+        if isinstance(raw, bool) or not isinstance(raw, (int, float)):
+            raise SheetError(f"{where}: float 列 '{col['name']}' 的值不是数字: {raw!r}")
+        return float(raw)
+    if t == "bool":
+        if not isinstance(raw, bool):
+            raise SheetError(f"{where}: bool 列 '{col['name']}' 的值不是布尔（Excel 里用 TRUE/FALSE）: {raw!r}")
+        return raw
+    # str / softclass：数字或布尔出现在字符串列 = 类型行笔误（如把 float 标成了 str）
+    if isinstance(raw, (int, float, bool)):
+        raise SheetError(f"{where}: 列 '{col['name']}' 标记 {t} 但单元格是 {type(raw).__name__} "
+                         f"{raw!r}（检查第 2 行类型是否写错）")
+    return str(raw).strip()
 
 
-def normalize_num(value):
-    """数值统一成 int/float（整数值转 int，便于 JSON 干净）。"""
-    v = float(value)
-    return int(v) if v == int(v) else v
+def export_sheet(ws):
+    """一个 sheet -> (json 行列表, 结构属性列表)。校验失败抛 SheetError。"""
+    cols, vec_prefixes = load_schema(ws)
+    by_name = {c["name"]: c for c in cols}
+    vec_axis_cols = {f"{p}{a}": p for p in vec_prefixes for a in "XYZ"}
 
+    rows, seen_names, seen_ids = [], set(), set()
+    for r_idx in range(4, ws.max_row + 1):
+        if all(ws.cell(row=r_idx, column=c["col"]).value is None for c in cols):
+            continue  # 全空行（表尾格式残留）
+        row = {}
+        for col in cols:
+            v = check_value(ws.title, col, r_idx, ws.cell(row=r_idx, column=col["col"]).value)
+            if v is not None:
+                row[col["name"]] = v
+        name_v, id_v = row.get("name"), row.get("id")
+        if name_v in seen_names:
+            raise SheetError(f"{cell_ref(ws.title, r_idx, by_name['name']['col'])}: "
+                             f"name '{name_v}' 重复（name 是行名，必须全表唯一）")
+        if id_v in seen_ids:
+            raise SheetError(f"{cell_ref(ws.title, r_idx, by_name['id']['col'])}: id {id_v} 重复")
+        seen_names.add(name_v)
+        seen_ids.add(id_v)
+        rows.append(row)
 
-# ---------------------------------------------------------------------------
-# 配置驱动导出（登记过 schema 的 sheet）
-# ---------------------------------------------------------------------------
-
-def export_configured(ws, cfg):
-    errors = []
-    schema = cfg["schema"]
-    row_name_key = cfg.get("row_name", "Name")
-    excel_of = excel_columns_of(schema)  # Excel 列名 -> 属性名
-
-    # 表头匹配（未知列报错，防拼错）
-    header = {}  # excel 列名 -> 工作表列号
-    for col in range(1, ws.max_column + 1):
-        name = ws.cell(row=1, column=col).value
-        if name is None:
-            continue
-        name = str(name).strip()
-        if name in excel_of:
-            header[name] = col
-        else:
-            errors.append(f"{ws.title}!{get_column_letter(col)}1: 未知列 '{name}'（拼写错误？已知列: {', '.join(excel_of)}）")
-
-    # 必需列存在性（row_name + required + required_by 涉及列 + compare 涉及列）
-    need_cols = {row_name_key} | set(cfg.get("required", []))
-    for by_col, mapping in (cfg.get("required_by") or {}).items():
-        need_cols.add(by_col)
-        for cols in mapping.values():
-            need_cols.update(cols)
-    for rule in (cfg.get("compare") or []):
-        need_cols.update((rule["col"], rule["other"]))
-    for col_name in need_cols:
-        base = excel_name_of(schema, col_name)
-        excel_names = [f"{base}{a}" for a in "XYZ"] if schema.get(col_name, [None])[0] == "vector" else [base]
-        for en in excel_names:
-            if en not in header:
-                errors.append(f"{ws.title}: 缺少必需列 '{en}'")
-
+    # JSON 行：首键 Name = name 列值；其余键 = 生成的 C++ 属性名；向量合并为 {X,Y,Z}
     out_rows = []
-    seen = set()
-    for row in range(2, ws.max_row + 1):
-        if all(ws.cell(row=row, column=c).value in (None, "") for c in range(1, ws.max_column + 1)):
-            continue
-
-        def cell(col_key):
-            en = excel_name_of(schema, col_key)
-            return ws.cell(row=row, column=header[en]).value if en in header else None
-
-        def err(col_key, msg):
-            en = excel_name_of(schema, col_key)
-            errors.append(f"{cell_ref(ws.title, row, header.get(en, 1))}: {msg}")
-
-        # 行名（唯一非空）
-        status, row_name = check_value("str", cell(row_name_key), None, None)
-        if status != "ok" or not row_name:
-            errors.append(f"{cell_ref(ws.title, row, header.get(excel_name_of(schema, row_name_key), 1))}: 行名（{row_name_key}）不能为空")
-            continue
-        if row_name in seen:
-            err(row_name_key, f"行名重复: {row_name}")
-            continue
-        seen.add(row_name)
-
-        # 必填（vector 类型要求三个分量都非空）
-        for col_name in cfg.get("required", []):
-            if schema.get(col_name, [None])[0] == "vector":
-                for axis in "XYZ":
-                    en = f"{excel_name_of(schema, col_name)}{axis}"
-                    v = ws.cell(row=row, column=header[en]).value if en in header else None
-                    if v in (None, ""):
-                        errors.append(f"{cell_ref(ws.title, row, header.get(en, 1))}: {en} 为必填项")
-            elif cell(col_name) in (None, ""):
-                err(col_name, f"{col_name} 为必填项")
-
-        # 按列值条件必填（如 Type=Engine 的行必须填 Thrust）
-        for by_col, mapping in (cfg.get("required_by") or {}).items():
-            status, by_val = check_value("str", cell(by_col), None, None)
-            if status == "ok" and by_val in mapping:
-                for col_name in mapping[by_val]:
-                    if cell(col_name) in (None, ""):
-                        err(col_name, f"{col_name} 为必填项（{by_col}={by_val} 行）")
-
-        # 逐列转值
-        entry = {"Name": row_name}
-        values = {}  # 属性名 -> 已校验的值（compare 用）
-        for key, spec in schema.items():
-            kind, p1, p2 = spec[0], spec[1], spec[2]  # 第 4 元素是 Excel 列名覆盖
-            if key == row_name_key or kind == "aux":
-                # aux 参与上面的校验/条件判定，但不导出
-                if kind == "aux":
-                    status, pv = check_value(kind, cell(key), p1, p2)
-                    if status == "bad":
-                        err(key, pv)
+    for src in rows:
+        out = {"Name": src["name"]}
+        for col in cols:
+            n = col["name"]
+            if n == "name":
                 continue
-            if kind == "vector":
-                base = excel_name_of(schema, key)
-                axes = {}
-                bad = False
-                for axis in "XYZ":
-                    en = f"{base}{axis}"
-                    v = ws.cell(row=row, column=header[en]).value if en in header else None
-                    if v in (None, ""):
-                        continue
-                    st, pv = check_value("num", v, p1, p2)
-                    if st == "bad":
-                        errors.append(f"{cell_ref(ws.title, row, header.get(en, 1))}: {pv}")
-                        bad = True
-                    else:
-                        axes[axis] = normalize_num(pv)
-                if not bad and axes:
-                    entry[key] = {a: axes.get(a, 0) for a in "XYZ"}  # 缺失分量补 0
-            else:
-                st, pv = check_value(kind, cell(key), p1, p2)
-                if st == "ok":
-                    entry[key] = normalize_num(pv) if kind == "num" else pv
-                    values[key] = pv
-                elif st == "bad":
-                    err(key, pv)
-
-        # 跨字段比较（如 SpeedMultiplierMax >= SpeedMultiplierMin）
-        for rule in (cfg.get("compare") or []):
-            a, b = values.get(rule["col"]), values.get(rule["other"])
-            if isinstance(a, (int, float)) and isinstance(b, (int, float)):
-                if not COMPARE_OPS[rule["op"]](float(a), float(b)):
-                    err(rule["col"], f"{rule['col']}（{a:g}）应 {rule['op']} {rule['other']}（{b:g}）")
-
-        out_rows.append(entry)
-    return out_rows, errors
-
-
-# ---------------------------------------------------------------------------
-# 推断兜底导出（未登记 schema 的 sheet）
-# ---------------------------------------------------------------------------
-
-def guess_cell(value):
-    """单元格 -> JSON 值（通用类型推断）。返回 (status, value)；status ∈ ok/empty。"""
-    if value is None or value == "":
-        return "empty", None
-    if isinstance(value, bool):
-        return "ok", value
-    if isinstance(value, (int, float)):
-        return "ok", normalize_num(value)
-    s = str(value).strip()
-    if s.lower() in ("true", "false"):
-        return "ok", s.lower() == "true"
-    return "ok", s
-
-
-def export_generic(ws):
-    errors = []
-    headers = []
-    for col in range(1, ws.max_column + 1):
-        name = ws.cell(row=1, column=col).value
-        if name is not None and str(name).strip():
-            headers.append((str(name).strip(), col))
-
-    # <前缀>X/Y/Z 三列合并为向量
-    vec_prefixes = []
-    for name, _ in headers:
-        if name.endswith(("X", "Y", "Z")) and len(name) > 1:
-            pfx = name[:-1]
-            if len({n[-1] for n, _ in headers if n[:-1] == pfx}) == 3 and pfx not in vec_prefixes:
-                vec_prefixes.append(pfx)
-
-    out_rows = []
-    seen = set()
-    for row in range(2, ws.max_row + 1):
-        if all(ws.cell(row=row, column=c).value in (None, "") for c in range(1, ws.max_column + 1)):
-            continue
-        vals = {name: ws.cell(row=row, column=col).value for name, col in headers}
-        name_val = str(vals.get("Name", "") or "").strip()
-        if not name_val:
-            errors.append(f"{ws.title}!A{row}: 首列 Name 为空（通用导出要求首列为行名）")
-            continue
-        if name_val in seen:
-            errors.append(f"{ws.title}!A{row}: 行名重复: {name_val}")
-            continue
-        seen.add(name_val)
-
-        entry = {"Name": name_val}
-        vec_acc = {}
-        for name, _ in headers:
-            if name == "Name":
+            if n in vec_axis_cols:
+                p = vec_axis_cols[n]
+                if p not in out and any(f"{p}{a}" in src for a in "XYZ"):
+                    out[p] = {a: src.get(f"{p}{a}", 0.0) for a in "XYZ"}
                 continue
-            status, v = guess_cell(vals.get(name))
-            if status == "empty":
+            key = "Id" if n == "id" else n
+            if n in src:
+                out[key] = src[n]
+        out_rows.append(out)
+
+    # 结构属性列表（供代码生成）
+    props = []
+    for col in cols:
+        n = col["name"]
+        if n == "name":
+            continue  # 行名列，不生成属性
+        if n in vec_axis_cols:
+            p = vec_axis_cols[n]
+            if p not in {x["prop"] for x in props}:
+                cpp, default = VECTOR_CPP
+                props.append({"prop": p, "cpp": cpp, "default": default,
+                              "comment": f"{n[:-1]}X/{n[:-1]}Y/{n[:-1]}Z (float)"})
+            continue
+        cpp, default = CPP_OF[col["type"]]
+        props.append({"prop": "Id" if n == "id" else n, "cpp": cpp, "default": default,
+                      "comment": f"{n} ({col['type']}, {col['necessary'] and 'Necessary' or 'Optional'})"})
+
+    if not out_rows:
+        print(f"note: [{ws.title}] 没有数据行，产出空表")
+    return out_rows, props
+
+
+def gen_header_text(stem, sheets_props):
+    """sheets_props: [(sheet 名, props)]，按工作簿内 sheet 顺序。"""
+    lines = [
+        "// ====================================================================",
+        f"// 自动生成自 Data/Excel/{stem}.xlsx —— 禁止手改。",
+        "// 由 Tools/DataPipeline/export_data_from_excel.py 生成。",
+        "// 表结构变更（加列/新表）后重跑导出并重编译 GuLiStrike 模块。",
+        "// 约定: name 列是 DataTable 行名（不生成属性）；id -> Id；",
+        "//       PrefixX/Y/Z 三列 -> FVector Prefix；softclass -> TSoftClassPtr<UObject>。",
+        "// ====================================================================",
+        "",
+        "#pragma once",
+        "",
+        '#include "CoreMinimal.h"',
+        '#include "Engine/DataTable.h"',
+        f'#include "{stem}TableRows.generated.h"',
+        "",
+    ]
+    for sheet, props in sheets_props:
+        struct = f"F{stem}{sheet}Row"
+        lines += [
+            f"/** DataTable DT_{stem}_{sheet} 的行结构（源: {stem}.xlsx 的 {sheet} sheet）。 */",
+            "USTRUCT(BlueprintType)",
+            f"struct {struct} : public FTableRowBase",
+            "{",
+            "\tGENERATED_BODY()",
+            "",
+        ]
+        for p in props:
+            init = f" = {p['default']}" if p["default"] else ""
+            lines.append(f"\t/** {p['comment']} */")
+            lines.append(f'\tUPROPERTY(EditAnywhere, BlueprintReadOnly, Category="{sheet}")')
+            lines.append(f"\t{p['cpp']} {p['prop']}{init};")
+            lines.append("")
+        lines += ["};", ""]
+    return "\n".join(lines).rstrip() + "\n"
+
+
+def write_if_changed(path, text):
+    """内容不变不写（保持 mtime，避免无谓重编译）。"""
+    if path.exists() and path.read_text(encoding="utf-8") == text:
+        return False
+    path.parent.mkdir(parents=True, exist_ok=True)
+    path.write_text(text, encoding="utf-8", newline="\n")
+    return True
+
+
+def main():
+    workbooks = [w for w in sorted(EXCEL_DIR.glob("*.xlsx")) if not w.name.startswith("~$")]
+    if not workbooks:
+        print(f"error: {EXCEL_DIR} 下没有 xlsx", file=sys.stderr)
+        sys.exit(1)
+
+    manifest = {"tables": {}}
+    failed = False
+    for wb_path in workbooks:
+        stem = wb_path.stem
+        if not IDENT_RE.match(stem):
+            print(f"error: 文件名主干 '{stem}' 不是合法标识符（用作 C++ 结构名前缀）", file=sys.stderr)
+            failed = True
+            continue
+        wb = openpyxl.load_workbook(wb_path, data_only=True)
+        sheets_props = []
+        for ws in wb.worksheets:
+            if ws.title.startswith("_"):
+                print(f"note: 跳过 sheet '{ws.title}'（_ 前缀）")
                 continue
-            pfx = name[:-1] if name[-1] in "XYZ" and name[:-1] in vec_prefixes else None
-            if pfx is not None:
-                vec_acc.setdefault(pfx, {})[name[-1]] = v
-            else:
-                entry[name] = v
-        for pfx, axes in vec_acc.items():
-            if len(axes) == 3:
-                entry[pfx] = axes
-        out_rows.append(entry)
-    return out_rows, errors
+            try:
+                rows, props = export_sheet(ws)
+            except SheetError as e:
+                print(f"error: [{wb_path.name}::{ws.title}] {e}", file=sys.stderr)
+                failed = True
+                continue
+            table = f"DT_{stem}_{ws.title}"
+            json_path = JSON_DIR / f"{table}.json"
+            write_if_changed(json_path, json.dumps(rows, ensure_ascii=False, indent=2))
+            manifest["tables"][table] = {
+                "excel": wb_path.name,
+                "sheet": ws.title,
+                "struct": f"/Script/{MODULE}.{stem}{ws.title}Row",
+                "row_key_column": "name",
+            }
+            sheets_props.append((ws.title, props))
+            print(f"OK: {json_path.relative_to(PROJECT)} ({len(rows)} 行)")
+        if sheets_props:
+            header = GEN_HEADER_DIR / f"{stem}TableRows.h"
+            changed = write_if_changed(header, gen_header_text(stem, sheets_props))
+            state = "GEN" if changed else "keep"
+            hint = "（有变化，需重编译）" if changed else "（无变化）"
+            print(f"{state}: {header.relative_to(PROJECT)}{hint}")
 
-
-# ---------------------------------------------------------------------------
-# 入口
-# ---------------------------------------------------------------------------
-
-def main() -> int:
-    config = json.loads(DEFAULT_CONFIG.read_text(encoding="utf-8"))
-    xlsx_arg = sys.argv[1] if len(sys.argv) > 1 else None
-    xlsx_path = (PROJECT_ROOT / xlsx_arg).resolve() if xlsx_arg else (PROJECT_ROOT / config["excel"]).resolve()
-    stem = xlsx_path.stem  # 例：GuLiStrikeShip
-    if not xlsx_path.exists():
-        print(f"missing {xlsx_path}")
-        return 1
-    wb = load_workbook(xlsx_path, data_only=True)  # data_only: 读公式的缓存值
-
-    all_errors = []
-    written = []
-    unconfigured = []
-    for sheet in wb.sheetnames:
-        cfg = config["sheets"].get(sheet)
-        if cfg and cfg.get("schema"):
-            out_rows, errors = export_configured(wb[sheet], cfg)
-            strict = True
-        else:
-            out_rows, errors = export_generic(wb[sheet])
-            strict = False
-            unconfigured.append(sheet)
-        all_errors += errors
-        written.append((f"DT_{stem}_{sheet}", out_rows, strict))
-
-    if all_errors:
-        print(f"校验失败（{len(all_errors)} 处），未生成 JSON：")
-        for e in all_errors:
-            print("  -", e)
-        return 1
-
-    JSON_DIR.mkdir(parents=True, exist_ok=True)
-    for table_name, out_rows, strict in written:
-        out_path = JSON_DIR / f"{table_name}.json"
-        out_path.write_text(json.dumps(out_rows, ensure_ascii=False, indent=2), encoding="utf-8")
-        print(f"OK: {out_path} ({len(out_rows)} 行{'，配置校验' if strict else '，推断导出（未登记 schema）'})")
-    if unconfigured:
-        print(f"note: 以下 sheet 未登记 schema，走推断导出（建议在 tables.json 登记）: {', '.join(unconfigured)}")
-    return 0
+    if failed:
+        print("导出失败，manifest 未更新", file=sys.stderr)
+        sys.exit(1)
+    write_if_changed(JSON_DIR / "manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2))
+    print(f"manifest: {JSON_DIR / 'manifest.json'}（{len(manifest['tables'])} 表）")
 
 
 if __name__ == "__main__":
-    sys.exit(main())
+    main()

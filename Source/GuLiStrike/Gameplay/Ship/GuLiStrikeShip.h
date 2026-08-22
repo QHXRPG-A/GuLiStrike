@@ -401,9 +401,9 @@ private:
 	/** 在与该 socket 兼容的目录条目内循环切换此槽位的部件 */
 	bool CyclePartAtSocket(UClass* PartClass, FName SocketName);
 
-	/** 从 PartDataTable 按 PartId 查行并覆盖部件实例数值；无表/无行时保持蓝图默认值 */
+	/** 从 PartDataTable 按 PartId 列匹配行（行名 = 表内 name 列）并覆盖部件实例数值；无表/无行时保持蓝图默认值 */
 	bool ApplyPartRow(UGuLiStrikeShipPartComponent* Part) const;
 
-	/** 从 TuningDataTable 按 TuningPreset 查行并覆盖本飞船飞行数值 */
+	/** 从 TuningDataTable 按 TuningPreset（= 表内 name 列）查行并覆盖本飞船飞行数值 */
 	bool ApplyTuningRow();
 };

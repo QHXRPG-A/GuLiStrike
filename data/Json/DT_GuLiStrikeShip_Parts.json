@@ -1,39 +1,47 @@
 [
   {
-    "Name": "Engine_Heavy",
-    "PartDisplayName": "重型引擎",
-    "PartMass": 30,
-    "Thrust": 1000
+    "Name": "重型引擎",
+    "Id": 1,
+    "PartId": "Engine_Heavy",
+    "Type": "Engine",
+    "PartMass": 30.0,
+    "Thrust": 1000.0
   },
   {
-    "Name": "Engine_Standard",
-    "PartDisplayName": "标准引擎",
-    "PartMass": 10,
-    "Thrust": 600
+    "Name": "标准引擎",
+    "Id": 2,
+    "PartId": "Engine_Standard",
+    "Type": "Engine",
+    "PartMass": 10.0,
+    "Thrust": 600.0
   },
   {
-    "Name": "Weapon_Laser",
-    "PartDisplayName": "激光炮",
-    "PartMass": 10,
-    "Damage": 10,
-    "FireRate": 3,
-    "MuzzleOffset": {
-      "X": 350,
-      "Y": 0,
-      "Z": 0
+    "Name": "激光炮",
+    "Id": 3,
+    "PartId": "Weapon_Laser",
+    "Type": "Weapon",
+    "PartMass": 10.0,
+    "Damage": 10.0,
+    "FireRate": 3.0,
+    "Muzzle": {
+      "X": 350.0,
+      "Y": 0.0,
+      "Z": 0.0
     },
     "ProjectileClass": "/Game/GuLiStrike/Ship/BP_ShipProjectile.BP_ShipProjectile_C"
   },
   {
-    "Name": "Weapon_RocketPod",
-    "PartDisplayName": "火箭巢",
-    "PartMass": 10,
-    "Damage": 40,
+    "Name": "火箭巢",
+    "Id": 4,
+    "PartId": "Weapon_RocketPod",
+    "Type": "Weapon",
+    "PartMass": 10.0,
+    "Damage": 40.0,
     "FireRate": 0.8,
-    "MuzzleOffset": {
-      "X": 450,
-      "Y": 0,
-      "Z": 0
+    "Muzzle": {
+      "X": 450.0,
+      "Y": 0.0,
+      "Z": 0.0
     },
     "ProjectileClass": "/Game/GuLiStrike/Ship/BP_ShipProjectile.BP_ShipProjectile_C"
   }

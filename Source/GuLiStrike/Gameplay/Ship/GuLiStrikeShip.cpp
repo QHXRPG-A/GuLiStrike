@@ -2,7 +2,7 @@
 
 #include "GuLiStrikeShip.h"
 #include "GuLiStrikeShipPartComponent.h"
-#include "GuLiStrikeShipData.h"
+#include "GuLiStrikeShipTableRows.h"
 #include "GuLiStrikeEnginePart.h"
 #include "GuLiStrikeWeaponPart.h"
 #include "GuLiStrike.h"
@@ -572,16 +572,30 @@ bool AGuLiStrikeShip::ApplyPartRow(UGuLiStrikeShipPartComponent* Part) const
 		return false;
 	}
 
-	const FGuLiStrikeShipPartRow* Row = PartDataTable->FindRow<FGuLiStrikeShipPartRow>(Part->PartId, TEXT("ApplyPartRow"));
+	// 行名 = 表内 name 列（部件显示名）；按 PartId 列匹配行
+	const FGuLiStrikeShipPartsRow* Row = nullptr;
+	FName RowName = NAME_None;
+	for (const FName& RowKey : PartDataTable->GetRowNames())
+	{
+		const FGuLiStrikeShipPartsRow* Candidate =
+			PartDataTable->FindRow<FGuLiStrikeShipPartsRow>(RowKey, TEXT("ApplyPartRow"));
+		if (Candidate && Candidate->PartId == Part->PartId.ToString())
+		{
+			Row = Candidate;
+			RowName = RowKey;
+			break;
+		}
+	}
+
 	if (!Row)
 	{
-		UE_LOG(LogGuLiStrike, Warning, TEXT("ApplyPartRow: no row '%s' for part %s, keeping class defaults"), *Part->PartId.ToString(), *Part->GetName());
+		UE_LOG(LogGuLiStrike, Warning, TEXT("ApplyPartRow: no row with PartId '%s' for part %s, keeping class defaults"), *Part->PartId.ToString(), *Part->GetName());
 		return false;
 	}
 
 	// 通用数值
 	Part->PartMass = Row->PartMass;
-	Part->PartDisplayName = Row->PartDisplayName;
+	Part->PartDisplayName = FText::FromString(RowName.ToString());
 
 	// 类型专属数值：行里的值写到对应子类实例上
 	if (UGuLiStrikeEnginePart* Engine = Cast<UGuLiStrikeEnginePart>(Part))
@@ -593,7 +607,7 @@ bool AGuLiStrikeShip::ApplyPartRow(UGuLiStrikeShipPartComponent* Part) const
 	{
 		Weapon->Damage = Row->Damage;
 		Weapon->FireRate = Row->FireRate;
-		Weapon->MuzzleOffset = Row->MuzzleOffset;
+		Weapon->MuzzleOffset = Row->Muzzle;
 		if (UClass* LoadedClass = Row->ProjectileClass.LoadSynchronous())
 		{
 			Weapon->ProjectileClass = LoadedClass;
@@ -634,7 +648,7 @@ bool AGuLiStrikeShip::ApplyTuningRow()
 	MaxBankAngle = Row->MaxBankAngle;
 	BankInterpSpeed = Row->BankInterpSpeed;
 	OrientTurnSpeed = Row->OrientTurnSpeed;
-	bOrientToMovement = Row->bOrientToMovement;
+	bOrientToMovement = Row->OrientToMovement;
 	OrientMinForwardDot = Row->OrientMinForwardDot;
 	CameraPitchMin = Row->CameraPitchMin;
 	CameraPitchMax = Row->CameraPitchMax;

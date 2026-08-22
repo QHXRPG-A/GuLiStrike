@@ -5,12 +5,13 @@ Note:    MCPython TCP 服务是排队异步执行——连接立刻关闭、脚�
          发送后轮询 Data/tmp_import_report.json 的 mtime，再读结果。
          Data/tmp_import_progress.log 记录逐步进度，用于定位挂死点。
 
-通用性约定（与 Tools/DataPipeline/export_data_from_excel.py 共享 tables.json）：
-    - 表名 = DT_{Excel文件名主干}_{sheet名}（例：GuLiStrikeShip.xlsx 的 Parts sheet
-      -> DT_GuLiStrikeShip_Parts）；
-    - tables.json 里每个 sheet 声明行结构（struct）与可选的属性接线（assign_to）；
-      没登记 struct 的 sheet 会被跳过并警告（JSON 已产出，等 C++ 行结构就绪后登记即可）；
-    - CSV 侧车的列名直接从 JSON 行键自派生，脚本本身不包含任何表结构知识。
+输入（stage 1 产出，见 Tools/DataPipeline/export_data_from_excel.py）:
+    - Data/Json/DT_*.json        行数据（首键 "Name" = Excel 的 name 列）
+    - Data/Json/manifest.json    表清单（DT 资产名 -> struct 路径，导出脚本自动生成）
+
+游戏侧接线（新增游戏系统时在此扩展）:
+    - WIRING: DT 资产名 -> 要赋值的 CDO 属性名（目前统一赋到 BP_GuLiStrikeShip）；
+    - 文件末尾的"部件蓝图 PartId"步骤是飞船系统专属逻辑。
 
 路线（踩坑记录见 Progress/Archive/20260822-数据管线开发总归档-0821至0822.md）：
   - 资产：create_asset(DataTableFactory+struct) 首次建 DT —— 安全，已验证。
@@ -19,10 +20,6 @@ Note:    MCPython TCP 服务是排队异步执行——连接立刻关闭、脚�
     "(X=..,Y=..,Z=..)" ImportText 格式）。
   - 禁用：delete_asset（弹模态框卡死）、fill_data_table_from_csv_string /
     fill_data_table_from_json_string（导入完成后收尾路径必挂，复现两次）。
-
-游戏侧接线（新增游戏系统时在此扩展）：
-  - assign_to 目前统一赋到 BP_GuLiStrikeShip 的 CDO 属性上；
-  - 文件末尾的"部件蓝图 PartId"步骤是飞船系统专属逻辑。
 
 Report:  Data/tmp_import_report.json
 """
@@ -37,9 +34,15 @@ import unreal
 PROJECT = "D:/UE_5.7/test1"
 DEST_PATH = "/Game/GuLiStrike/Data"
 SHIP_BP_PATH = "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip.BP_GuLiStrikeShip"
-CONFIG_PATH = f"{PROJECT}/Tools/DataPipeline/tables.json"
+MANIFEST_PATH = f"{PROJECT}/Data/Json/manifest.json"
 REPORT = f"{PROJECT}/Data/tmp_import_report.json"
 PROGRESS = f"{PROJECT}/Data/tmp_import_progress.log"
+
+# DT 资产名 -> BP_GuLiStrikeShip CDO 上的属性名（游戏侧接线，新系统在此登记）
+WIRING = {
+    "DT_GuLiStrikeShip_Parts": "part_data_table",
+    "DT_GuLiStrikeShip_Tuning": "tuning_data_table",
+}
 
 
 def mark(msg):
@@ -77,7 +80,7 @@ def write_csv_sidecar(rows, path):
         f.write(buf.getvalue())
 
 
-def import_table(table_name, sheet_cfg):
+def import_table(table_name, table_cfg):
     entry = {"asset": table_name}
     try:
         json_path = f"{PROJECT}/Data/Json/{table_name}.json"
@@ -89,9 +92,9 @@ def import_table(table_name, sheet_cfg):
         write_csv_sidecar(src_rows, csv_path)
         mark("csv-sidecar-written")
 
-        row_struct = unreal.find_object(None, sheet_cfg["struct"])
+        row_struct = unreal.find_object(None, table_cfg["struct"])
         if not row_struct:
-            raise RuntimeError(f"struct not found: {sheet_cfg['struct']}")
+            raise RuntimeError(f"struct not found: {table_cfg['struct']}")
         mark("find-struct")
 
         # 首次建资产（已存在则复用；重导入整表替换）
@@ -141,7 +144,7 @@ def import_table(table_name, sheet_cfg):
             raise RuntimeError(f"row mismatch: json={entry['source_rows']} dt={row_names}")
 
         # 回读校验：导出 JSON 与源数据全量比对（比抽查更严）
-        # 注意导出格式：FText 带 NSLOCTEXT 包装、向量是 "(X=..,Y=..,Z=..)" 字符串
+        # 注意导出格式：向量是 "(X=..,Y=..,Z=..)" 字符串、软引用带路径，统一用包含判断
         exported = lib.export_data_table_to_json_string(dt)
         mark("exported")
         ex_rows = {r["Name"]: r for r in json.loads(exported)}
@@ -172,7 +175,7 @@ def import_table(table_name, sheet_cfg):
                     ok_row = ok_row and bool(ev) == sv
                 elif isinstance(sv, (int, float)):
                     ok_row = ok_row and ev is not None and round(float(ev), 3) == round(float(sv), 3)
-                else:  # 文本/路径：FText 带 NSLOCTEXT 包装、软引用带路径，统一用包含判断
+                else:  # 文本/路径：软引用带路径后缀，统一用包含判断
                     ok_row = ok_row and ev is not None and str(sv) in str(ev)
             checks[name] = ok_row
         entry["row_checks"] = checks
@@ -189,24 +192,22 @@ def import_table(table_name, sheet_cfg):
     return entry
 
 
-report = {"tables": [], "skipped": [], "errors": []}
+report = {"tables": [], "unwired": [], "errors": []}
 try:
-    config = json.loads(open(CONFIG_PATH, encoding="utf-8").read())
-    stem = config["excel"].rsplit("/", 1)[-1].rsplit(".", 1)[0]
+    manifest = json.loads(open(MANIFEST_PATH, encoding="utf-8").read())
     imported_dts = {}
-    for sheet, sheet_cfg in config["sheets"].items():
-        table_name = f"DT_{stem}_{sheet}"
-        if not sheet_cfg.get("struct"):
-            report["skipped"].append(f"{table_name}（tables.json 未登记 struct，跳过导入）")
-            mark(f"skip {table_name}: no struct")
-            continue
-        entry = import_table(table_name, sheet_cfg)
+    for table_name, table_cfg in manifest["tables"].items():
+        entry = import_table(table_name, table_cfg)
         report["tables"].append(entry)
-        if entry.get("imported") and sheet_cfg.get("assign_to"):
-            imported_dts[sheet_cfg["assign_to"]] = unreal.load_object(
+        prop = WIRING.get(table_name)
+        if entry.get("imported") and prop:
+            imported_dts[prop] = unreal.load_object(
                 None, f"{DEST_PATH}/{table_name}.{table_name}")
+        elif prop is None:
+            report["unwired"].append(f"{table_name}（WIRING 未登记，已导入但未接线）")
+            mark(f"note: {table_name} not in WIRING")
 
-    # --- 游戏侧接线：赋值到飞船蓝图 CDO（属性名来自 tables.json 的 assign_to） ---
+    # --- 游戏侧接线：赋值到飞船蓝图 CDO（属性名来自 WIRING） ---
     if imported_dts:
         mark("ship-assign-begin")
         ship_bp = unreal.load_object(None, SHIP_BP_PATH)
@@ -240,8 +241,8 @@ try:
     report["part_ids"] = part_ids
     mark("part-ids-done")
 
-    # --- 孤儿资产警告：目录里不在配置派生名之列的 DataTable ---
-    expected = {f"DT_{stem}_{s}" for s in config["sheets"]}
+    # --- 孤儿资产警告：目录里不在 manifest 之列的 DataTable ---
+    expected = set(manifest["tables"].keys())
     orphans = []
     for ad in ar.get_assets_by_path(DEST_PATH, recursive=False):
         an = str(ad.asset_name)
