@@ -26,5 +26,34 @@
       "Y": 0.0,
       "Z": 700.0
     }
+  },
+  {
+    "Name": "Dreadnought",
+    "Id": 2,
+    "Note": "无畏舰 CombatAvatarFly-01 裸舰体；HullMeshOffset 为居中补偿(艏向+X)",
+    "HullMass": 100.0,
+    "BaseMaxSpeed": 1200.0,
+    "BaseAcceleration": 400.0,
+    "NominalThrustRatio": 6.0,
+    "SpeedMultiplierMin": 0.5,
+    "SpeedMultiplierMax": 2.0,
+    "BoostThrustMultiplier": 2.0,
+    "MousePitchScale": 1.0,
+    "MouseYawScale": 1.0,
+    "YawRate": 40.0,
+    "YawResponseSpeed": 3.0,
+    "YawStopDamping": 1.0,
+    "MaxBankAngle": 5.0,
+    "BankInterpSpeed": 4.0,
+    "OrientTurnSpeed": 2.5,
+    "OrientToMovement": false,
+    "OrientMinForwardDot": 0.3,
+    "CameraPitchMin": -80.0,
+    "CameraPitchMax": 80.0,
+    "HullMeshOffset": {
+      "X": -14162.0,
+      "Y": 0.0,
+      "Z": -929.0
+    }
   }
 ]

@@ -23,7 +23,26 @@ public class GuLiStrike : ModuleRules
 			"Slate"
 		});
 
-		PrivateDependencyModuleNames.AddRange(new string[] { });
+		PrivateDependencyModuleNames.AddRange(new string[] {
+			// Landscape：相机避障命中过滤需要 ALandscapeProxy 类型判断
+			"Landscape",
+			// Mass 框架（UE5.7：核心 MassEntity 已并入引擎，其余在 MassGameplay/MassAI/MassCrowd 插件中）
+			"MassEntity",
+			"MassCommon",
+			"MassActors",
+			"MassSpawner",
+			"MassSimulation",
+			"MassSignals",
+			"MassRepresentation",
+			"MassLOD",
+			"MassMovement",
+			"MassNavigation",
+			"MassNavMeshNavigation",
+			"MassZoneGraphNavigation",
+			"MassCrowd",
+			"MassAIBehavior",
+			"ZoneGraph"
+		});
 
 		PublicIncludePaths.AddRange(new string[] {
 			"GuLiStrike",

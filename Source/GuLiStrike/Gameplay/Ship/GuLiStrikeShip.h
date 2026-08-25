@@ -124,6 +124,10 @@ protected:
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* LookAction;
 
+	/** 滚轮缩放输入（拉近/拉远相机） */
+	UPROPERTY(EditAnywhere, Category="Input")
+	UInputAction* ZoomAction;
+
 	/** 开火输入 */
 	UPROPERTY(EditAnywhere, Category="Input")
 	UInputAction* FireAction;
@@ -240,6 +244,26 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling")
 	float CameraPitchMax = 80.0f;
 
+	/** 滚轮每格伸缩的相机臂长度（厘米） */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
+	float CameraZoomStep = 4000.0f;
+
+	/** 相机臂长度下限（厘米）；须大于舰体最大半径，否则镜头穿进自身舰体（探测不覆盖 Owner） */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
+	float CameraZoomMin = 50000.0f;
+
+	/** 相机臂长度上限（厘米） */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
+	float CameraZoomMax = 160000.0f;
+
+	/** 相机避障扫掠的球半径（厘米）；同时是贴面时镜头与舰面的最小间隙 */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 10))
+	float CameraCollisionProbeRadius = 250.0f;
+
+	/** 避障拉回时的臂长下限（厘米），防止贴死轨道球心 */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
+	float CameraCollisionMinArm = 500.0f;
+
 	/** 舰体网格体偏移，让飞船几何中心对齐 Actor 原点 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Components")
 	FVector HullMeshOffset = FVector(0.0f, 0.0f, 700.0f);
@@ -261,6 +285,12 @@ protected:
 
 	/** 当前偏航角速度（度/秒，带正负号）——转向惯性来源 */
 	float YawVelocity = 0.0f;
+
+	/** 玩家滚轮设定的期望臂长（厘米）；实际臂长每帧由自身舰避障扫掠结算 */
+	float DesiredArmLength = 0.0f;
+
+	/** 舰体包围球半径（厘米，BeginPlay 从舰体资产缓存）；相机避障第一段短走廊的边界 */
+	float HullBoundingRadius = 0.0f;
 
 	/** 当前压弯倾斜角（平滑过渡用） */
 	float CurrentBankRoll = 0.0f;
@@ -319,6 +349,9 @@ protected:
 
 	/** 处理鼠标视角输入（只环绕相机，不改变飞船朝向） */
 	void Look(const FInputActionValue& Value);
+
+	/** 处理滚轮缩放输入（伸缩相机臂，钳制在限位内） */
+	void ZoomCamera(const FInputActionValue& Value);
 
 	/** 处理加力按下 */
 	void BoostStart(const FInputActionValue& Value);
