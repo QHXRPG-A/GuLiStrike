@@ -26,12 +26,13 @@ Report:  Data/tmp_import_report.json
 import csv
 import io
 import json
+import math
 import re
 import traceback
 
 import unreal
 
-PROJECT = "D:/UE_5.7/test1"
+PROJECT = unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()).rstrip("/\\")
 DEST_PATH = "/Game/GuLiStrike/Data"
 SHIP_BP_PATH = "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip.BP_GuLiStrikeShip"
 MANIFEST_PATH = f"{PROJECT}/Data/Json/manifest.json"
@@ -42,6 +43,7 @@ PROGRESS = f"{PROJECT}/Data/tmp_import_progress.log"
 WIRING = {
     "DT_GuLiStrikeShip_Parts": "part_data_table",
     "DT_GuLiStrikeShip_Tuning": "tuning_data_table",
+    "DT_GuLiStrikeShip_Camera": "camera_data_table",
 }
 
 
@@ -174,7 +176,11 @@ def import_table(table_name, table_cfg):
                 elif isinstance(sv, bool):
                     ok_row = ok_row and bool(ev) == sv
                 elif isinstance(sv, (int, float)):
-                    ok_row = ok_row and ev is not None and round(float(ev), 3) == round(float(sv), 3)
+                    # DataTable JSON export formats large floats with limited significant digits
+                    # (for example 13333.333 -> 13333.3). Compare with a tight relative
+                    # tolerance instead of fixed three-decimal equality.
+                    ok_row = ok_row and ev is not None and math.isclose(
+                        float(ev), float(sv), rel_tol=5e-6, abs_tol=1e-3)
                 else:  # 文本/路径：软引用带路径后缀，统一用包含判断
                     ok_row = ok_row and ev is not None and str(sv) in str(ev)
             checks[name] = ok_row

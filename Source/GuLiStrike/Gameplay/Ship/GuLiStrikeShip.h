@@ -160,6 +160,10 @@ protected:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ship|Data")
 	UDataTable* TuningDataTable;
 
+	/** 相机参数表（RowName = TuningPreset，与调参表共用预设名）；空表 = 沿用本类默认数值 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ship|Data")
+	UDataTable* CameraDataTable;
+
 	/** 出生时应用的调参预设行名 */
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ship|Data")
 	FName TuningPreset = FName(TEXT("Default"));
@@ -244,11 +248,15 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling")
 	float CameraPitchMax = 80.0f;
 
+	/** 默认相机臂长（厘米）：出生时的期望臂长与滚轮缩放起点 */
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
+	float CameraDefaultArmLength = 3000.0f;
+
 	/** 滚轮每格伸缩的相机臂长度（厘米） */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
 	float CameraZoomStep = 4000.0f;
 
-	/** 相机臂长度下限（厘米）；须大于舰体最大半径，否则镜头穿进自身舰体（探测不覆盖 Owner） */
+	/** 滚轮期望臂长下限（厘米）；实际臂长由 Tick 避障每帧结算，此值只约束期望值 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
 	float CameraZoomMin = 50000.0f;
 
@@ -439,4 +447,10 @@ private:
 
 	/** 从 TuningDataTable 按 TuningPreset（= 表内 name 列）查行并覆盖本飞船飞行数值 */
 	bool ApplyTuningRow();
+
+	/** 从 CameraDataTable 按 TuningPreset 查行并覆盖相机/避障数值（含默认臂长） */
+	bool ApplyCameraRow();
+
+	/** 相机避障：端点门控 + 两段式由外向内扫掠，把实际臂长结算进 SpringArm（唯一写者，Tick 调用） */
+	void ResolveCameraArmCollision();
 };

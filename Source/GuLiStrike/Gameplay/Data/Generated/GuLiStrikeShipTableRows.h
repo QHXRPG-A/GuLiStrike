@@ -142,16 +142,56 @@ struct FGuLiStrikeShipTuningRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Tuning")
 	float OrientMinForwardDot = 0.0f;
 
-	/** CameraPitchMin (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Tuning")
-	float CameraPitchMin = 0.0f;
-
-	/** CameraPitchMax (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Tuning")
-	float CameraPitchMax = 0.0f;
-
 	/** HullMeshOffsetX/HullMeshOffsetY/HullMeshOffsetZ (float) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Tuning")
 	FVector HullMeshOffset = FVector::ZeroVector;
+
+};
+
+/** DataTable DT_GuLiStrikeShip_Camera 的行结构（源: GuLiStrikeShip.xlsx 的 Camera sheet）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeShipCameraRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	FString Note;
+
+	/** CameraDefaultArmLength (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float CameraDefaultArmLength = 0.0f;
+
+	/** CameraZoomStep (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float CameraZoomStep = 0.0f;
+
+	/** CameraZoomMin (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float CameraZoomMin = 0.0f;
+
+	/** CameraZoomMax (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float CameraZoomMax = 0.0f;
+
+	/** CameraCollisionProbeRadius (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float CameraCollisionProbeRadius = 0.0f;
+
+	/** CameraCollisionMinArm (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float CameraCollisionMinArm = 0.0f;
+
+	/** CameraPitchMin (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float CameraPitchMin = 0.0f;
+
+	/** CameraPitchMax (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Camera")
+	float CameraPitchMax = 0.0f;
 
 };

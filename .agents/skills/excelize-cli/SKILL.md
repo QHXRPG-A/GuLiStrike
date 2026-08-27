@@ -43,7 +43,16 @@ xlsx import-csv <in.csv> -o out.xlsx [--sheet S] [--delimiter ,|;|tab]
 xlsx help / xlsx version
 ```
 
-`--sheet` 省略时作用于**活动 sheet**（通常是你刚 add-sheet 或最后操作的）。flag 和文件路径顺序随意。所有编辑命令**原地保存**——重要文件先备份。
+`--sheet` 省略时作用于**活动 sheet**（通常是你刚 add-sheet 或最后操作的）。flag 和文件路径顺序随意。所有编辑命令**原地保存**。
+
+## 备份策略（重要：默认不生成任何附属文件）
+
+- 编辑命令**默认不产生** `.bak` 等任何备份/附属文件，也**不要手动 `cp` 复制出 .bak 备份**——xlsx 源表都在 git 里，需要旧版本用 git 历史回溯。
+- 确实要备份时才加全局开关 `--backup`（位置随意）：保存前会在原文件旁生成 `<原名>.bak-YYYYMMDD-HHMMSS`。
+  ```bash
+  xlsx write Data.xlsx --sheet S --cell A1 --value V --backup
+  ```
+- 用完的 `.bak-*` 是临时文件，及时删除，不要提交进 git。
 
 ## style 的样式 flags
 

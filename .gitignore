@@ -59,3 +59,25 @@ Data/Json/*.csv
 
 # ZCode 会话产物（本地计划文件）
 .zcode/
+
+# xlsx 备份侧车文件（xlsx CLI --backup 临时产物，勿提交）
+*.xlsx.bak-*
+
+# ===== 外部引入的 skill / MCP / 第三方工具目录（本地使用，不入库）=====
+.agents/tmp/
+.codex-tmp/
+outputs/
+TripoGenerated/
+Tripo3d_UE_Bridge/
+UE5_Skills_MCP_Package/
+UnrealEngine5-Skills/
+UnrealMCPython_Server/
+tripo-mcp/
+tripo-ue-mcp/
+unreal-engine-mcp/
+Plugins/VibeUE/
+
+# 大体积渲染对比截图（MB 级 editor 截图，本地留档，勿入库）
+Progress/TerrainGeneration/LVL_Main_before_crater_20260826.png
+Progress/TerrainGeneration/LVL_Main_after_crater_20260826.png
+Progress/TerrainGeneration/LVL_Main_crater_plateau_8161.png

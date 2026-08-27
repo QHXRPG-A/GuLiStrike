@@ -19,6 +19,9 @@
 
 | 日期 | 名称 | 需求 | 开发 |
 |---|---|---|---|
+| 2026-08-27 | Mass 双端同步架构（25 人基本指挥单位） | [需求](./RequirementDocument/20260827-Mass双端同步架构草案.md) | [开发](./DevelopmentDocumentation/20260827-Mass双端同步架构草案.md) |
+| 2026-08-27 | 飞船与场景模型尺寸归一 | [需求](./RequirementDocument/20260827-飞船与场景模型尺寸归一.md) | [开发](./DevelopmentDocumentation/20260827-飞船与场景模型尺寸归一.md) |
+| 2026-08-26 | 5v5 大战场玩法草案 | [需求](./RequirementDocument/20260826-5v5大战场玩法草案.md) | —（策划草案阶段） |
 | 2026-08-24 | Mass 框架启用与源码导读（大规模部队技术预研） | —（对话演进出的技术方向，未立需求文档） | [开发](./DevelopmentDocumentation/20260824-Mass框架启用与源码导读.md) |
 | 2026-08-21 | 数据管线：Excel 配置飞船数值 | [需求](./RequirementDocument/20260821-数据管线Excel配置.md) | [开发](./DevelopmentDocumentation/20260821-数据管线Excel配置.md) |
 | 2026-08-20 | DIY 飞船 | [需求](./RequirementDocument/20260820-DIY飞船.md) | [开发](./DevelopmentDocumentation/20260820-DIY飞船.md) |
@@ -28,6 +31,11 @@
 
 | 日期 | 事项 |
 |---|---|
+| 2026-08-27 | **[飞船与场景模型尺寸归一：Dreadnought/无人机/机器人缩放烘焙进资源，2/1/128 实例归一为 Scale 1；当前飞船子根取消 0.3、相机按 5/3 更新并修正 PlayerStart 出生高度](./Archive/20260827-飞船与场景模型尺寸归一.md)** |
+| 2026-08-26 | **[动画资产回退：walkcycle 四件套/演示 Actor/Blender Action 全删，用户改为自己在 UE 内制作动画；管线教程保留作参考](./Archive/20260826-动画资产回退-用户改为UE内自制.md)** |
+| 2026-08-26 | **[WM01 程序化六足行走动画管线：Blender 脚本三角步态 K 帧（48 帧闭环）→ 后台 GLB 导出 → UE AnimSequence 入库并播放验证，附完整教程](./Archive/20260826-WM01程序化六足行走动画管线.md)**（教程：[DevelopmentDocumentation](./DevelopmentDocumentation/20260826-WM01程序化六足行走动画-Blender到UE管线教程.md)） |
+| 2026-08-25 | **[相机避障函数化：Tick 避障段提取为 ResolveCameraArmCollision()，纯搬移零逻辑变更，PIE 门控直通 15000 基线无回归](./Archive/20260825-相机避障函数化-Tick去散落逻辑.md)** |
+| 2026-08-25 | **[相机参数进表：新增 Camera sheet（8 列，含新提列 CameraDefaultArmLength），Pitch 自 Tuning 迁入，ApplyCameraRow 表驱动，Fly01 BP 覆盖值清理；PIE 实测表值逐项生效](./Archive/20260825-相机参数进表Camera-sheet与BP覆盖清理.md)** |
 | 2026-08-24~25 | **[飞船 3C 与相机避障总归档：滚轮缩放（8000~50000 默认 15000）+ 舰体避障六轮演进（舰心外扫→舰外回扫→端点重叠→凸包资产化→由外向内→间隙 20m）+ 命中过滤（只认舰/地形）与两段式扫掠 + 单写者纪律；含引擎扫掠语义/Live Coding/工具链踩坑实录](./Archive/20260825-飞船3C与相机避障总归档-0824至0825.md)** |
 | 2026-08-24 | **[CombatAvatarFly 归位勘误：重巡舰体从 Blender 导出入库（SM_Maelstrom_Hull），无畏舰/重巡全套分驻 CombatAvatarFly-01/02，主控舰体换为无畏舰裸舰体](./Archive/20260824-CombatAvatarFly归位勘误-重巡舰体入库与两舰归位.md)**（勘误早前误把 fly-01/02 当目标舰的记录，已并入上篇总归档） |
 | 2026-08-23~24 | **[第一批飞船组件拆分入库（总归档）：A/B 两舰 14 件武器组件 + 舰体入库 ShipComponent，固化 Blender→UE 拆件流水线](./Archive/20260824-第一批飞船组件拆分入库-总归档.md)** |

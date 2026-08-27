@@ -83,7 +83,7 @@ void AGuLiStrikeShip::BeginPlay()
 
 	// 兜底：实例上的表指针为空时回退到类 CDO 的配置
 	// （经 MCPython 赋值的蓝图 CDO 指针在 PIE 实例上偶发取不到，根因见数据管线归档 20260821~22）
-	if (!PartDataTable || !TuningDataTable)
+	if (!PartDataTable || !TuningDataTable || !CameraDataTable)
 	{
 		const AGuLiStrikeShip* ShipCDO = GetClass()->GetDefaultObject<AGuLiStrikeShip>();
 		if (!PartDataTable)
@@ -94,10 +94,15 @@ void AGuLiStrikeShip::BeginPlay()
 		{
 			TuningDataTable = ShipCDO->TuningDataTable;
 		}
+		if (!CameraDataTable)
+		{
+			CameraDataTable = ShipCDO->CameraDataTable;
+		}
 	}
 
-	// 先应用调参表预设（可能覆盖本类默认值），再装配部件与推导数值
+	// 先应用调参表/相机表预设（可能覆盖本类默认值），再装配部件与推导数值
 	ApplyTuningRow();
+	ApplyCameraRow();
 
 	// 滚轮期望臂长从蓝图配置的臂长起步；实际臂长由 Tick 的自身舰避障统一结算
 	DesiredArmLength = SpringArm ? SpringArm->TargetArmLength : CameraZoomMax;
@@ -272,87 +277,8 @@ void AGuLiStrikeShip::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
-	// ===== 相机 vs 舰体/地形避障（只认 Ship 与 Landscape，其余实体过滤）=====
-	// SpringArm 的探测按引擎设计忽略 Owner 且已关闭（会幽灵回缩，另案归档）。判据两级：
-	// 1) 端点门控——探针球在期望机位压不到相关几何体就直接用期望臂长（臂的路径
-	//    不需要干净，只有镜头端点需要；大探针半径下按整条路径扫掠会误推，已踩坑）；
-	// 2) 压到才推出——由外向内扫掠取相关命中面（凸包内起步的向外扫掠引擎不报命中，
-	//    方向必须由外向内）。两段式：先走舰体包围球外的短走廊（自身舰必被覆盖，
-	//    密集场景下走廊内的无关候选最少），短走廊无相关命中（压的是地形/他舰）再
-	//    退全长扫掠，语义与单段全长完全等价。
-	if (SpringArm)
-	{
-		const FVector PivotLocation = SpringArm->GetComponentLocation();
-		const FVector ArmDirection = -SpringArm->GetForwardVector().GetSafeNormal();
-
-		// Socket 偏移（拔高相机等）计入扫掠线：期望机位 = 球心 + 偏移 + 臂方向 × 期望臂长
-		const FVector CurrentSocket = SpringArm->GetSocketLocation(USpringArmComponent::SocketName);
-		const FVector SocketOffsetWorld = CurrentSocket - (PivotLocation + ArmDirection * SpringArm->TargetArmLength);
-		const FVector OrbitPivot = PivotLocation + SocketOffsetWorld;
-		const FVector DesiredLocation = OrbitPivot + ArmDirection * DesiredArmLength;
-
-		const FCollisionObjectQueryParams ObjectQuery(
-			ECC_TO_BITFIELD(ECC_WorldStatic) | ECC_TO_BITFIELD(ECC_WorldDynamic));
-		const FCollisionShape ProbeShape = FCollisionShape::MakeSphere(CameraCollisionProbeRadius);
-		FCollisionQueryParams Params(TEXT("ShipCameraVsHull"), /*bTraceComplex=*/false, /*IgnoreActor=*/nullptr);
-		Params.bFindInitialOverlaps = false;
-
-		// 门控：期望点压到的实体里有没有舰船/地形
-		bool bBlocked = false;
-		TArray<FOverlapResult> Overlaps;
-		GetWorld()->OverlapMultiByObjectType(Overlaps, DesiredLocation, FQuat::Identity, ObjectQuery, ProbeShape, Params);
-		for (const FOverlapResult& Overlap : Overlaps)
-		{
-			if (IsCameraRelevantOwner(Overlap.GetActor()))
-			{
-				bBlocked = true;
-				break;
-			}
-		}
-
-		float NewArm = DesiredArmLength;
-		if (bBlocked)
-		{
-			// 由外向内扫到期望点，取相关命中的最外侧面（保守推出：镜头在走廊内所有相关几何体外）
-			auto SweepRelevantFace = [this, &DesiredLocation, &ObjectQuery, &ProbeShape, &Params](const FVector& Start, float Length) -> float
-			{
-				TArray<FHitResult> Hits;
-				GetWorld()->SweepMultiByObjectType(
-					Hits, Start, DesiredLocation, FQuat::Identity, ObjectQuery, ProbeShape, Params);
-				float Face = -1.0f;
-				for (const FHitResult& Hit : Hits)
-				{
-					if (IsCameraRelevantOwner(Hit.GetActor()))
-					{
-						Face = FMath::Max(Face, Length - Hit.Distance);
-					}
-				}
-				return Face;
-			};
-
-			float NearestFace = -1.0f;
-
-			// 第一段：舰体包围球外沿（短走廊），期望点在球内时才有效
-			const float ShipSphereArm = HullBoundingRadius + CameraCollisionProbeRadius * 2.0f;
-			if (ShipSphereArm > DesiredArmLength)
-			{
-				NearestFace = SweepRelevantFace(OrbitPivot + ArmDirection * ShipSphereArm, ShipSphereArm - DesiredArmLength);
-			}
-
-			// 第二段：短走廊无相关命中（压的是地形/他舰等非自身舰物体）→ 全长扫掠
-			if (NearestFace < 0.0f)
-			{
-				const float TraceLength = CameraZoomMax + CameraCollisionProbeRadius * 2.0f;
-				NearestFace = SweepRelevantFace(OrbitPivot + ArmDirection * TraceLength, TraceLength - DesiredArmLength);
-			}
-
-			if (NearestFace > 0.0f)
-			{
-				NewArm = FMath::Max(DesiredArmLength + NearestFace, CameraCollisionMinArm);
-			}
-		}
-		SpringArm->TargetArmLength = NewArm;
-	}
+	// ===== 相机 vs 舰体/地形避障（单写者：只有 ResolveCameraArmCollision 写臂长）=====
+	ResolveCameraArmCollision();
 
 	// ===== 偏航角速度（惯性模型）=====
 	// 有输入：角速度向目标（±YawRate）平滑爬升；
@@ -407,6 +333,95 @@ void AGuLiStrikeShip::Tick(float DeltaTime)
 	PendingThrustIntent = FVector::ZeroVector;
 	PendingTurnInput = 0.0f;
 	PendingStrafeInput = 0.0f;
+}
+
+void AGuLiStrikeShip::ResolveCameraArmCollision()
+{
+	// 只认舰船与地形，其余实体由谓词过滤。SpringArm 自带探测按引擎设计忽略
+	// Owner 且已关闭（会幽灵回缩，另案归档）。判据两级：
+	// 1) 端点门控——探针球在期望机位压不到相关几何体就直接用期望臂长（臂的路径
+	//    不需要干净，只有镜头端点需要；大探针半径下按整条路径扫掠会误推，已踩坑）；
+	// 2) 压到才推出——由外向内扫掠取相关命中面（凸包内起步的向外扫掠引擎不报命中，
+	//    方向必须由外向内）。两段式：先走舰体包围球外的短走廊（自身舰必被覆盖，
+	//    密集场景下走廊内的无关候选最少），短走廊无相关命中（压的是地形/他舰）再
+	//    退全长扫掠，语义与单段全长完全等价。
+	if (!SpringArm)
+	{
+		return;
+	}
+
+	const FVector PivotLocation = SpringArm->GetComponentLocation();
+	const FVector ArmDirection = -SpringArm->GetForwardVector().GetSafeNormal();
+
+	// Socket 偏移（拔高相机等）计入扫掠线：期望机位 = 球心 + 偏移 + 臂方向 × 期望臂长
+	const FVector CurrentSocket = SpringArm->GetSocketLocation(USpringArmComponent::SocketName);
+	const FVector SocketOffsetWorld = CurrentSocket - (PivotLocation + ArmDirection * SpringArm->TargetArmLength);
+	const FVector OrbitPivot = PivotLocation + SocketOffsetWorld;
+	const FVector DesiredLocation = OrbitPivot + ArmDirection * DesiredArmLength;
+
+	const FCollisionObjectQueryParams ObjectQuery(
+		ECC_TO_BITFIELD(ECC_WorldStatic) | ECC_TO_BITFIELD(ECC_WorldDynamic));
+	const FCollisionShape ProbeShape = FCollisionShape::MakeSphere(CameraCollisionProbeRadius);
+	FCollisionQueryParams Params(TEXT("ShipCameraVsHull"), /*bTraceComplex=*/false, /*IgnoreActor=*/nullptr);
+	Params.bFindInitialOverlaps = false;
+
+	// 门控：期望点压到的实体里有没有舰船/地形
+	bool bBlocked = false;
+	TArray<FOverlapResult> Overlaps;
+	GetWorld()->OverlapMultiByObjectType(Overlaps, DesiredLocation, FQuat::Identity, ObjectQuery, ProbeShape, Params);
+	for (const FOverlapResult& Overlap : Overlaps)
+	{
+		if (IsCameraRelevantOwner(Overlap.GetActor()))
+		{
+			bBlocked = true;
+			break;
+		}
+	}
+
+	float NewArm = DesiredArmLength;
+	if (bBlocked)
+	{
+		// 由外向内扫到期望点，取相关命中的最外侧面（保守推出：镜头在走廊内所有相关几何体外）
+		auto SweepRelevantFace = [this, &DesiredLocation, &ObjectQuery, &ProbeShape, &Params](const FVector& Start, float Length) -> float
+		{
+			TArray<FHitResult> Hits;
+			GetWorld()->SweepMultiByObjectType(
+				Hits, Start, DesiredLocation, FQuat::Identity, ObjectQuery, ProbeShape, Params);
+			float Face = -1.0f;
+			for (const FHitResult& Hit : Hits)
+			{
+				if (IsCameraRelevantOwner(Hit.GetActor()))
+				{
+					Face = FMath::Max(Face, Length - Hit.Distance);
+				}
+			}
+			return Face;
+		};
+
+		float NearestFace = -1.0f;
+
+		// 第一段：舰体包围球外沿（短走廊），期望点在球内时才有效
+		const float ShipSphereArm = HullBoundingRadius + CameraCollisionProbeRadius * 2.0f;
+		if (ShipSphereArm > DesiredArmLength)
+		{
+			NearestFace = SweepRelevantFace(OrbitPivot + ArmDirection * ShipSphereArm, ShipSphereArm - DesiredArmLength);
+		}
+
+		// 第二段：短走廊无相关命中（压的是地形/他舰等非自身舰物体）→ 全长扫掠
+		if (NearestFace < 0.0f)
+		{
+			const float TraceLength = CameraZoomMax + CameraCollisionProbeRadius * 2.0f;
+			NearestFace = SweepRelevantFace(OrbitPivot + ArmDirection * TraceLength, TraceLength - DesiredArmLength);
+		}
+
+		if (NearestFace > 0.0f)
+		{
+			NewArm = FMath::Max(DesiredArmLength + NearestFace, CameraCollisionMinArm);
+		}
+	}
+
+	// 单写者纪律：实际臂长只有这一处结算
+	SpringArm->TargetArmLength = NewArm;
 }
 
 void AGuLiStrikeShip::BoostStart(const FInputActionValue& Value)
@@ -783,14 +798,46 @@ bool AGuLiStrikeShip::ApplyTuningRow()
 	OrientTurnSpeed = Row->OrientTurnSpeed;
 	bOrientToMovement = Row->OrientToMovement;
 	OrientMinForwardDot = Row->OrientMinForwardDot;
-	CameraPitchMin = Row->CameraPitchMin;
-	CameraPitchMax = Row->CameraPitchMax;
 
 	// 舰体偏移在构造函数里已按默认值定位过一次，预设覆盖后需重新应用
 	if (HullMesh && HullMeshOffset != Row->HullMeshOffset)
 	{
 		HullMeshOffset = Row->HullMeshOffset;
 		HullMesh->SetRelativeLocation(HullMeshOffset);
+	}
+
+	return true;
+}
+
+bool AGuLiStrikeShip::ApplyCameraRow()
+{
+	// 无表或未选预设：保持本类默认数值（向后兼容）
+	if (!CameraDataTable || TuningPreset.IsNone())
+	{
+		return false;
+	}
+
+	const FGuLiStrikeShipCameraRow* Row = CameraDataTable->FindRow<FGuLiStrikeShipCameraRow>(TuningPreset, TEXT("ApplyCameraRow"));
+	if (!Row)
+	{
+		UE_LOG(LogGuLiStrike, Warning, TEXT("ApplyCameraRow: no preset '%s' in camera table, keeping class defaults"), *TuningPreset.ToString());
+		return false;
+	}
+
+	CameraDefaultArmLength = Row->CameraDefaultArmLength;
+	CameraZoomStep = Row->CameraZoomStep;
+	CameraZoomMin = Row->CameraZoomMin;
+	CameraZoomMax = Row->CameraZoomMax;
+	CameraCollisionProbeRadius = Row->CameraCollisionProbeRadius;
+	CameraCollisionMinArm = Row->CameraCollisionMinArm;
+	CameraPitchMin = Row->CameraPitchMin;
+	CameraPitchMax = Row->CameraPitchMax;
+
+	// 蓝图模板臂长只是初值，表值覆盖后同步给弹簧臂
+	// （随后 DesiredArmLength 的初始化从 SpringArm->TargetArmLength 起步）
+	if (SpringArm && SpringArm->TargetArmLength != CameraDefaultArmLength)
+	{
+		SpringArm->TargetArmLength = CameraDefaultArmLength;
 	}
 
 	return true;
