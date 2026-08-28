@@ -1,294 +1,477 @@
-# 精读笔记：MassArchetypeTypes.h / .cpp —— Archetype 的对外零件
+# 精读笔记：MassArchetypeTypes.h —— 从服务器权威体与客户端镜像理解 Archetype
 
-> 原文件：`C:\Program Files\Epic Games\UE_5.7\Engine\Source\Runtime\MassEntity\Public\MassArchetypeTypes.h`（474 行）
-> 配套实现：`Private/MassArchetypeTypes.cpp`（491 行）
-> 引擎版本：5.7.4 ｜ 阅读路线第 3 步（原计划第 2 步的后半）
+> 重写日期：2026-08-28
+>
+> 引擎基线：Unreal Engine 5.7.4，CL 51494982
+>
+> 引擎原文件：`C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassArchetypeTypes.h`
+>
+> 关联定义：`MassEntityTypes.h` 中的 `FMassArchetypeCompositionDescriptor`、`FMassArchetypeSharedFragmentValues`、`FMassArchetypeCreationParams`
+>
+> 项目样本：2026-08-27 Commander/Mass 服务器实现，以及跨午夜续改后的客户端 Presentation 当前版本。
+>
+> Git 边界：Commander 目录当前仍未提交；日期归属依据文件时间、当天归档和日志，不是 Git commit 的逐行历史。
 
----
+## 一句话结论
 
-## 预备知识1：Archetype 是什么
+Archetype 不是兵种类、不是 25 人小队、不是队伍，也不是某个 Entity。
 
-一句话：**Archetype（原型）= 一种特定的 Fragment/Tag 组合。组合完全相同的实体，归入同一个原型。**
+它是“拥有完全相同 Mass 元素类型的一批 Entity”的存储与处理合同。昨天的代码给出了最清楚的对照：
 
-拿"户型"打比方最直观——户型就是图纸（Fragment 怎么摆），住户就是实体（按户型分楼栋入住）：
+- 服务器 Soldier 需要移动、导航、避障、指令等 12 个 Fragment，加 ServerAuthorityTag 和两种 ConstShared 参数类型。
+- 客户端镜像 Soldier 只需要 Transform、Identity、Health 和 ClientMirrorTag。
+- 同一名业务 Soldier 在双端因此属于两套不同 Archetype，并由同一个 SoldierId 关联。
 
-```
-原型 A：{ Velocity, Health }              原型 B：{ Velocity, Health, FGSNeedRepairTag }
-  Chunk 0: Velocity[0..127] Health[0..127]     Chunk 0: Velocity[0..7] Health[0..7]
-  Chunk 1: Velocity[0..63]  Health[0..63]      （待维修的僚机不多，一个 Chunk 都占不满）
-```
+## 一、先把四个概念分开
 
-五条要点：
+| 概念 | Commander 中的实例 | 它回答的问题 |
+|---|---|---|
+| Entity | 一名独立 Soldier 的本地 `FMassEntityHandle` | “具体是哪一个运行时实体？” |
+| Fragment/Tag | Health、Order、Transform、ServerAuthorityTag | “这个实体拥有哪些数据列/标记？” |
+| Archetype | ServerAuthority500DynamicSoldiers、ClientSnapshotMirrorSoldiers | “这一批实体的数据类型组合是什么？” |
+| Chunk | Archetype 内连续存储若干 Entity 的物理块 | “这些列在内存中按什么批次排列？” |
 
-1. **身份就是组合本身**。`{Velocity, Health}` 和 `{Velocity, Health, Target}` 是两个不同原型——没有继承链、没有类名，组合即身份。这就是"出新兵种不用写新类"的底层原因：换一组 Fragment 拼装，就是一个新原型。
-2. **它为批处理而生**。同原型实体在 Chunk 里连续平铺，"给所有带 Velocity 的实体跑移动逻辑"时命中的内存天然聚簇。原型是查询和 Chunk 之间的索引单位：查询先按组合匹配原型，再对命中的原型整块迭代。
-3. **加删 Fragment = 换原型 = 搬家**。给实体加一个 Tag，组合就变了，实体得从旧原型的 Chunk 搬进新原型——之前说的"运行时改结构有成本"，成本就是这个。所以状态表达优先用 Fragment 里的枚举字段，别靠动态加删 Tag。
-4. **共享 Fragment 的取值也算进身份**。同样 Fragment 但 ConstSharedFragment 数值不同（不同兵种参数）的实体属于不同原型——同兵种自然聚簇，批量处理反而更顺（这点在第一篇讲 `FMassArchetypeSharedFragmentValues` 时提过）。
-5. **代码里的真身**是 `FMassArchetypeData`（`Private/MassArchetypeData.h`，本对文件的幕后主角）：记录每类 Fragment 在 Chunk 里的布局偏移、Chunk 列表、每 Chunk 容量。本文件造的句柄、区间集合，全是为安全访问它服务的。
+再加两个项目业务概念：
 
-顺带说术语：Archetype 是 ECS 行业的通用叫法（Unity DOTS、Flecs、Bevy 同名同义），直译"原型"，Mass 沿用行业标准，不是 Epic 自造词。
+| 业务概念 | 本质 | 为什么不是 Archetype/Chunk |
+|---|---|---|
+| ControlCohort | 一次选择后冻结的 1–25 个 SoldierId | 成员会随下一次选择重新组合；它表达控制语义 |
+| OrderFormation | 一次已接受指令的 SoldierId、路径与槽位运行时记录 | 生命周期属于该指令；不是数据列组合 |
 
+“25 人”只是一项玩法容量合同。Mass Chunk 的容量由数据布局和 ChunkMemorySize 决定，两者没有一一对应关系。
 
-## 预备知识2：Entity（实体）、Fragment（片段）、Archetype（原型）、Chunk（块）的关系
-Mass 中可以把它理解成一张按“组件组合”分表存储的列式数据库：
+## 二、Archetype 的组成由五类类型位集描述
 
-```text
-Archetype（相同 Fragment/Tag 组合）
-└─ Chunk 0（连续的一批实体行）
-   ├─ Entity：E0  E1  E2 ...
-   ├─ Transform：T0  T1  T2 ...   ← Fragment 列
-   └─ Velocity ：V0  V1  V2 ...   ← Fragment 列
-└─ Chunk 1 ...
-```
+UE 5.7.4 的 `FMassArchetypeCompositionDescriptor` 持有：
 
-- **Entity（实体）**：`FMassEntityHandle`，只是一个轻量的身份/索引，不是 `UObject` 或 `AActor`。它在某个 Archetype 的某个 Chunk 中占一“行”。
-
-- **Fragment（片段）**：类似 ECS 的组件，通常是继承 `FMassFragment` 的纯数据 `UStruct`，例如位置、速度、生命值。某实体拥有的每种 Fragment 对应该行中的一个数据元素。
-
-- **Archetype（原型）**：拥有完全相同 Fragment、Tag（以及相关共享数据配置）的一组实体的存储布局。例如所有同时有 `TransformFragment + VelocityFragment` 的实体属于同一个 Archetype。Archetype 决定有哪些“列”。
-
-- **Chunk（块）**：一个 Archetype 的实际连续内存分块，容纳一批该 Archetype 的实体。Fragment 在 Chunk 内采用 **SoA（数组结构）** 布局：同类 Fragment 连续放在一起，便于 Processor 批量遍历和 CPU 缓存命中。
-
-最关键的对应关系是：
-
-> Entity 是一行；Fragment 是列中的单元格；Chunk 是一批连续的行；Archetype 是具有相同列定义的所有 Chunk 的集合。
-
-当实体新增或移除 Fragment 时，它的“列集合”变了，因此 Mass 通常会把它迁移到匹配的新 Archetype，并复制保留的数据。这也是为什么 Mass 更适合大量、结构相似、按批处理的对象。
-
-补充：`FMassChunkFragment` 是“每个 Chunk 一份”的数据，不是每实体一份；例如某批实体共享的临时处理状态。
-
----
-
-## 全文一句话总结
-
-这对文件讲的是 Archetype 的**周边零件**，不是 Archetype 本体——真正的 `FMassArchetypeData`（管 Chunk 内存和 Fragment 布局的那位）藏在 `Private/MassArchetypeData.h` 里。这里造的是你天天会碰到的那几样：Archetype 的句柄、**把任意一堆实体压成"Chunk 区间序列"的集合类型**、Chunk 迭代器、以及"Chunk 内物理地址"句柄。其中区间集合（`FMassArchetypeEntityCollection`）是重点——它是 Mass 一切批处理操作的通用货币，查询结果、延迟命令、批量修改，底层运输格式全是它。
-
-## 类型速查表
-
-| 类型 | 一句话职责 |
-|---|---|
-| `FMassArchetypeHandle` | Archetype 的"不透明"句柄（内部其实是 `TSharedPtr`） |
-| `FMassArchetypeVersionedHandle` | 带版本快照的句柄，判断"实体顺序变过没" |
-| `FArchetypeEntityRange` | 一段区间：哪个 Chunk、从第几个开始、多长 |
-| `FMassArchetypeEntityCollection` | 任意实体列表 → 排好序的区间序列 |
-| `FMassArchetypeEntityCollectionWithPayload` | 区间 + 与实体对齐的附带数据（命令缓冲专用） |
-| `FMassArchetypeChunkIterator` | 在区间序列上走一遍的小迭代器 |
-| `FMassRawEntityInChunkData` | Chunk 内物理地址：裸内存指针 + 槽内下标 |
-| `FMassEntityInChunkDataHandle` | 物理地址 + Chunk 序号（可检测数据变动） |
-| `FMassQueryRequirementIndicesMapping` | 查询需求 → 原型布局下标的缓存映射 |
-
----
-
-## 两个前置概念
-
-### 概念一：实体有两套坐标
-
-上一篇讲过，`FMassEntityHandle::Index` 是**全局槽位号**——全世界实体共用一本账，槽位回收复用，所以它是"稀疏"的，相邻两个号在物理上八竿子打不着。
-
-但实体落进 Archetype 之后，它在原型内部还有另一个下标：**稠密序号**（源码里叫 TrueIndex / InternalIndex）。同一个原型里第 0 个、第 1 个、第 2 个实体……物理上真的肩并肩躺在 Chunk 里。于是有一个换算：
-
-```cpp
-// CreateRangeForEntity（节选）
-const int32* TrueIndexPtr = ArchetypeData->GetInternalIndexForEntity(EntityHandle.Index);
-const int32 TrueIndex = *TrueIndexPtr;
-const int32 NumEntitiesPerChunk = ArchetypeData->GetNumEntitiesPerChunk();
-const int32 ChunkIndex = TrueIndex / NumEntitiesPerChunk;      // 在第几个 Chunk
-const int32 SubchunkStart = TrueIndex % NumEntitiesPerChunk;   // 槽内第几个
-```
-
-除一下、模一下，稠密序号就变成了"第几 Chunk 第几个"。后面所有区间算法都建立在这个换算上。
-
-### 概念二：Archetype 句柄为什么用 TSharedPtr
-
-上一篇的实体句柄是两个 `int32`，这里却包了个 `TSharedPtr<FMassArchetypeData>`——同一框架内两套哲学，原因是数量级：
-
-- 实体上万级，句柄必须压到 8 字节纯数值，靠代际号保安全；
-- Archetype 只有几十上百个（Fragment 组合数有限），共享指针那点开销无所谓，换来的是**免费的生命周期管理**（原型被销毁时句柄自动失效）和**指针即身份**（比较、哈希都直接用指针）。
-
-代价引擎自己认账——代码里两处 `@todo` 原话：*"Once ArchetypeHandle switches to using an index we'll use that instead"*、*"if FMassArchetypeHandle used indices the look up would be a lot faster"*。读源码看到这种注释，就知道 Epic 也把这当成待还的技术债。另外构造函数是 private 的，只对 `FMassEntityManager` 等友元开放——想拿句柄只能找管理器要，防止绕过账本私造。
-
----
-
-## 逐段精读
-
-### 1. FMassArchetypeVersionedHandle：给句柄盖个时间戳
-
-```cpp
-FMassArchetypeVersionedHandle::FMassArchetypeVersionedHandle(const FMassArchetypeHandle& InHandle)
-    : ArchetypeHandle(InHandle)
-    , HandleVersion(ArchetypeHandle.IsValid() ? ArchetypeHandle.DataPtr->GetEntityOrderVersion() : 0)
+~~~cpp
+struct FMassArchetypeCompositionDescriptor
 {
+    FMassFragmentBitSet Fragments;
+    FMassTagBitSet Tags;
+    FMassChunkFragmentBitSet ChunkFragments;
+    FMassSharedFragmentBitSet SharedFragments;
+    FMassConstSharedFragmentBitSet ConstSharedFragments;
+};
+~~~
+
+5.7 已把直接访问成员标为 deprecated，外部代码应使用：
+
+~~~cpp
+Descriptor.GetFragments();
+Descriptor.GetTags();
+Descriptor.GetChunkFragments();
+Descriptor.GetSharedFragments();
+Descriptor.GetConstSharedFragments();
+~~~
+
+描述符提供 `HasAll`、`Append`、`Remove`、`CalculateDifference` 和 Hash 等操作，本质上都在比较**类型集合**。
+
+因此：
+
+- 红队与蓝队的 Team 字段值不同，但类型集合相同，可以位于同一 Archetype。
+- Health=100 与 Health=0 不会拆成两个 Archetype。
+- ActiveOrderId 不同不会拆 Archetype。
+- 增加/移除一个 Fragment 或 Tag 才是组成变化。
+- Shared/ConstShared 的**类型**进入组成描述；具体共享值不成为新的元素类型。
+
+## 三、FMassArchetypeHandle 是不透明的 Archetype 引用
+
+引擎定义：
+
+~~~cpp
+/** An opaque handle to an archetype */
+struct FMassArchetypeHandle final
+{
+    FMassArchetypeHandle() = default;
+    bool IsValid() const;
+    void Reset();
+
+private:
+    FMassArchetypeHandle(
+        const TSharedPtr<FMassArchetypeData>& InDataPtr);
+
+    TSharedPtr<FMassArchetypeData> DataPtr;
+};
+~~~
+
+内联实现的核心是：
+
+~~~cpp
+inline bool FMassArchetypeHandle::IsValid() const
+{
+    return DataPtr.IsValid();
 }
+~~~
 
-bool FMassArchetypeVersionedHandle::IsUpToDate() const
+与 `FMassEntityHandle` 不同：
+
+- Entity Handle 是 Index + SerialNumber。
+- Archetype Handle 内部持有不透明的 `FMassArchetypeData` 共享指针。
+- 项目代码不能直接依赖 Archetype 内部数据布局。
+- 两个 Archetype Handle 相等，意味着它们持有同一 `DataPtr`。
+
+昨天服务器把最终出生 Archetype Handle 存在：
+
+~~~cpp
+struct FGuLiBattleAuthorityState
 {
-    return ArchetypeHandle.IsValid() && (ArchetypeHandle.DataPtr->GetEntityOrderVersion() == HandleVersion);
+    TWeakObjectPtr<UMassEntitySubsystem> MassEntitySubsystem;
+    FMassArchetypeHandle AuthorityArchetype;
+    TArray<FSoldierRuntime> Soldiers;
+    // ...
+};
+~~~
+
+客户端则保存另一份：
+
+~~~cpp
+FMassArchetypeHandle ClientMirrorArchetype;
+TMap<FGuLiSoldierId, FMassEntityHandle> ClientMirrorEntities;
+~~~
+
+远端客户端通常拥有不同 World/EntityManager；Listen Server 或 Standalone 的 Authority 与本地镜像则可能共处同一 Manager。无论是否同 Manager，它们都是两套独立 Entity/Archetype Handle，组成不同，也不能拿 Handle 数值表达跨端身份。
+
+## 四、真实案例一：创建服务器 500 人出生 Archetype
+
+源码：`UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation`
+
+### 4.1 先列出普通 Fragment 与 Tag 类型
+
+~~~cpp
+FMassEntityManager& EntityManager =
+    MassSubsystem->GetMutableEntityManager();
+
+const TArray<const UScriptStruct*> FragmentAndTagTypes = {
+    FTransformFragment::StaticStruct(),
+    FAgentRadiusFragment::StaticStruct(),
+    FMassVelocityFragment::StaticStruct(),
+    FMassForceFragment::StaticStruct(),
+    FMassMoveTargetFragment::StaticStruct(),
+    FMassNavigationEdgesFragment::StaticStruct(),
+    FMassNavigationObstacleGridCellLocationFragment::StaticStruct(),
+    FGuLiMassIdentityFragment::StaticStruct(),
+    FGuLiMassHealthFragment::StaticStruct(),
+    FGuLiMassOrderFragment::StaticStruct(),
+    FGuLiMassSlotTargetFragment::StaticStruct(),
+    FGuLiMassAvoidanceOutputFragment::StaticStruct(),
+    FGuLiServerAuthorityMassTag::StaticStruct()
+};
+~~~
+
+这是 12 个 Fragment 加 1 个 Tag。
+
+每一列都有明确职责：
+
+| 类型组 | 类型 | 服务器用途 |
+|---|---|---|
+| 空间 | Transform、Velocity、AgentRadius | 位置、朝向、速度与个体半径 |
+| 移动 | Force、MoveTarget | 引擎移动与避障输出 |
+| 导航 | NavigationEdges、ObstacleGridCellLocation | CommanderSoldier NavData 与障碍网格参与 |
+| 玩法 | Identity、Health、Order、SlotTarget | 独立身份、生命、指令和弹性槽位 |
+| 桥接 | AvoidanceOutput | 世界帧 Avoidance → 30Hz 权威固定步 |
+| 处理域 | ServerAuthorityTag | 被 Capture Query 显式要求；Processor 是否在服务器运行另由 ExecutionFlags 限定 |
+
+准确类型是 `FTransformFragment`，不是 `FMassTransformFragment`。
+
+### 4.2 用 DebugName 创建基础 Archetype
+
+~~~cpp
+FMassArchetypeCreationParams ArchetypeParams;
+ArchetypeParams.DebugName =
+    TEXT("GuLiServerAuthority500DynamicSoldiers");
+
+const FMassArchetypeHandle BaseAuthorityArchetype =
+    EntityManager.CreateArchetype(
+        FragmentAndTagTypes,
+        ArchetypeParams);
+
+if (!BaseAuthorityArchetype.IsValid())
+{
+    UE_LOG(
+        LogGuLiCommanderMass,
+        Error,
+        TEXT("Failed to create Soldier authority archetype."));
+    return false;
 }
-```
+~~~
 
-创建时抄一份当前"实体顺序版本号"，`IsUpToDate()` 就是比较两版是否一致。什么时候版本会变？原型内有实体进进出出（加删 Fragment 搬家、销毁）的时候。**它要保护的是区间集合**——你手里那串 `{Chunk2: 5~80, Chunk7: 0~30}` 是按当时的实体排布算的，排布一变就可能指向别人。头文件注释也说得很实在：多数用户不用关心这个值，内部拿来确保集合没过期（`ExportEntityHandles` 里过期就直接拒绝导出）。
+`DebugName` 是调试标签，不是组成身份。即便名称相同，仍应以 EntityManager 返回的 Handle 和组成合同为准。
 
-和上一篇实体代际号对照着记：**实体句柄的 SerialNumber 防"实体没了"，Archetype 的 HandleVersion 防"队伍重排了"**。都是"对账"思想，管的对象不同。
+`FMassArchetypeCreationParams` 还可指定 `ChunkMemorySize`；当前项目保持 0，使用引擎默认 Chunk 大小。
 
-### 2. FMassArchetypeEntityCollection：把散装实体压成区间
+### 4.3 把两种 ConstShared 类型加入组成
 
-为什么需要它？因为 Mass 的所有批量操作（一条延迟命令作用到 500 个实体、一次查询遍历结果）底层都希望拿到**连续区间**——连续才好按 Chunk 整块处理。而调用方手里往往是"一把随机的实体句柄"。这个类型就是两种形态之间的转换器：
+项目构造两份经过校验的共享参数：
 
-```cpp
-FMassArchetypeEntityCollection::FMassArchetypeEntityCollection(
-    const FMassArchetypeHandle& InArchetype, TConstArrayView<FMassEntityHandle> InEntities,
-    EDuplicatesHandling DuplicatesHandling)
-    : Archetype(InArchetype)
-{
-    // ... 单实体走快速通道 CreateRangeForEntity，这里看多实体路径
-    TArray<int32> TrueIndices;
-    TrueIndices.AddUninitialized(InEntities.Num());
-    int32 NumValidEntities = 0;
-    for (const FMassEntityHandle& Entity : InEntities)
-    {
-        if (Entity.IsValid())
-        {
-            if (const int32* TrueIndex = ArchetypeData->GetInternalIndexForEntity(Entity.Index))
-            {
-                TrueIndices[NumValidEntities++] = *TrueIndex;
-            }
-        }
-    }
-    TrueIndices.SetNum(NumValidEntities, EAllowShrinking::No);
-    TrueIndices.Sort();
-    // ... 去重（若选 FoldDuplicates）
-    BuildEntityRanges(MakeStridedView<const int32>(TrueIndices));
-}
-```
+~~~cpp
+FMassArchetypeSharedFragmentValues SharedValues;
+SharedValues.Add(
+    EntityManager.GetOrCreateConstSharedFragment(
+        MovementParameters.GetValidated()));
+SharedValues.Add(
+    EntityManager.GetOrCreateConstSharedFragment(
+        AvoidanceParameters.GetValidated()));
+SharedValues.Sort();
 
-流程四步：全局号换稠密序号（顺手滤掉无效实体）→ 排序 → 可选去重 → 压区间。注意一个贴心的分支：实体还没挂上 Archetype（Reserved 态）时拿不到稠密序号，就用全局号凑合排——注释说这样"多少还能沾点性能好处，而且 API 保持统一"。
+AuthorityState->AuthorityArchetype =
+    EntityManager.GetOrCreateSuitableArchetype(
+        BaseAuthorityArchetype,
+        SharedValues.GetSharedFragmentBitSet(),
+        SharedValues.GetConstSharedFragmentBitSet());
+~~~
 
-去重的枚举也有讲究：`NoDuplicates` 是调用方拍胸脯保证没有重复，非 Shipping 构建下发现重复会直接 `check` 炸给你看；`FoldDuplicates` 则老实折叠掉。**给引擎交数据前先想清楚自己保证得了什么，选 NoDuplicates 能白拿运行时收益**——这个 API 设计习惯值得抄。
+这段容易被误读，拆成四步：
 
-### 3. BuildEntityRanges：20 行的明星算法
+1. `BaseAuthorityArchetype` 已有 12 Fragment + Server Tag。
+2. `SharedValues` 装入 Movement 与 MovingAvoidance 两个 ConstShared 实例。
+3. 两个 BitSet 只表达“需要哪些 Shared/ConstShared 类型”。
+4. `GetOrCreateSuitableArchetype` 返回包含这些类型的最终组成。
 
-```cpp
-void FMassArchetypeEntityCollection::BuildEntityRanges(TStridedView<const int32> TrueIndices)
-{
-    const FMassArchetypeData* ArchetypeData = FMassArchetypeHelper::ArchetypeDataFromHandle(Archetype);
-    const int32 NumEntitiesPerChunk = ArchetypeData ? ArchetypeData->GetNumEntitiesPerChunk() : MAX_int32;
+项目在取得类型位集和批量创建前显式调用 `Sort()`，把 Shared/ConstShared 容器规范化为稳定顺序，便于后续比较、哈希与绑定；不应让调用方依赖加入顺序。
 
-    int32 ChunkEnd = INDEX_NONE;
-    FArchetypeEntityRange DummyChunk;
-    FArchetypeEntityRange* SubChunkPtr = &DummyChunk;
-    int32 SubchunkLen = 0;
-    int32 PrevAbsoluteIndex = INDEX_NONE;
-    for (const int32 Index : TrueIndices)
-    {
-        // 跨过 Chunk 边界，或者序号不连续了，就得开新区间
-        if (Index >= ChunkEnd || Index != (PrevAbsoluteIndex + 1))
-        {
-            SubChunkPtr->Length = SubchunkLen;   // 给上一段写长度（写到 Dummy 上也无妨）
-            const int32 ChunkIndex = Index / NumEntitiesPerChunk;
-            ChunkEnd = (ChunkIndex + 1) * NumEntitiesPerChunk;
-            SubchunkLen = 0;
-            const int32 SubchunkStart = Index % NumEntitiesPerChunk;
-            SubChunkPtr = &Ranges.Add_GetRef(FArchetypeEntityRange(ChunkIndex, SubchunkStart));
-        }
-        ++SubchunkLen;
-        PrevAbsoluteIndex = Index;
-    }
-    SubChunkPtr->Length = SubchunkLen;
-}
-```
+### 4.4 用最终 Archetype 和具体共享值批量创建
 
-输入已排序的稠密序号，输出尽量长的连续区间。读它的技巧就一条：**循环里只在"开新区间"时动笔，长度都留到最后补写**。开新区间的条件有两个——跨 Chunk 边界（区间不能横跨两个 Chunk），或者序号断档（断档处后面的实体不归这次操作管）。第一个 `SubChunkPtr` 指向栈上的 `DummyChunk`，所以循环第一次"补写长度"写进了废纸——省掉一次"是不是第一个区间"的判断。这种小手法读引擎代码时会反复见到。
+~~~cpp
+TArray<FMassEntityHandle> EntityHandles;
+EntityHandles.Reserve(TotalSoldierCount);
 
-区间长度的特殊语义也在这对文件里定义：`Length == 0` 表示"从这个起点到 Chunk 末尾全算"。`GatherChunksFromArchetype()`（收集整个原型）就是每个 Chunk 塞一条 `{i, 0, 0}`，零成本表达"全要"。
+TSharedRef<FMassEntityManager::FEntityCreationContext>
+    CreationContext =
+        EntityManager.BatchCreateEntities(
+            AuthorityState->AuthorityArchetype,
+            SharedValues,
+            TotalSoldierCount,
+            EntityHandles);
+~~~
 
-### 4. WithPayload：命令缓冲的运输包装
+这里同时传入：
 
-```cpp
-// CreateEntityRangesWithPayload（节选，删减约 60%）
-for (int32 i = 0; i < Entities.Num(); ++i)
-{
-    const FMassEntityHandle& Entity = Entities[i];
-    if (EntityManager.IsEntityValid(Entity))
-    {
-        const FMassArchetypeHandle ArchetypeHandle = EntityManager.GetArchetypeForEntityUnsafe(Entity);
-        // ... 找到/登记该原型的分桶，记录 {ArchetypeIndex, TrueIndex}
-        EntityData[i] = { ArchetypeIndex, ArchetypePtr ? ArchetypePtr->GetInternalIndexForEntityChecked(Entity.Index) : Entity.Index };
-    }
-    else
-    {
-        EntityData[i] = FEntityInArchetype();  // {INDEX_NONE, INDEX_NONE}
-        UE_LOG(LogMass, Warning, TEXT("Invalid entity handle passed in. Ignoring it, but check your code "
-            "to make sure you don't mix synchronous entity-mutating Mass API function calls with Mass commands"));
-    }
-}
+- 最终 Archetype：列类型合同。
+- `SharedValues`：这批实体所在 Chunk 应绑定的具体共享配置。
+- `TotalSoldierCount`：500。
+- 输出 Handle 数组。
 
-// 带 swap 回调的排序：实体数据和载荷同步换位
-UE::Mass::Utils::AbstractSort(Entities.Num(), [...](const int32 LHS, const int32 RHS) { ... }
-    , [&EntityData, &Payload](const int32 A, const int32 B)
-    {
-        ::Swap(EntityData[A], EntityData[B]);
-        Payload.Swap(A, B);   // ← 载荷跟着实体一起搬家
-    });
-```
+不同共享参数值可以让 Chunk 绑定不同共享值集合，但不会凭空创造一种新的 Fragment 类型。Archetype 的组成仍由五类类型位集决定。
 
-延迟命令长这样："这 300 个实体，每人加 5 点血"。实体和载荷（+5）必须**一一配对着**重排，不然血就加错人了。这里的排序比较器故意写成 `A.ArchetypeIndex > B.ArchetypeIndex`——大于号让 `INDEX_NONE`（无效实体）全部沉到队尾，而后面的分桶循环按 Count 切片时自然把它们切掉。**静默过滤 + 一条警告日志**，既不崩也不装看不见。
+### 4.5 红蓝两队为什么仍在同一 Archetype
 
-这条警告日志本身就是一份教材：它点名的错误是"同步改实体的 API 和延迟命令混用"——命令还在排队，实体已经被同步 API 动过了，句柄自然失效。我们写僚机系统时的纪律同源：**改实体结构一律走命令缓冲，别在处理器循环里直呼管理器的同步接口**。
+出生循环给每名 Soldier 写：
 
-去重在这个版本里还有个漂亮处理：载荷只是个视图（View），没法删元素，于是把重复项**换位挪到末尾**晾着，同时把分桶计数减掉——排序后的世界照样干净。
+~~~cpp
+FGuLiMassIdentityFragment& Identity =
+    EntityManager.GetFragmentDataChecked<
+        FGuLiMassIdentityFragment>(Soldier.Entity);
+Identity.SoldierId = Soldier.SoldierId;
+Identity.Team = Team;
+~~~
 
-### 5. FMassEntityInChunkDataHandle：Chunk 里的"门牌 + 门牌版本"
+Team 是 Identity Fragment 里的字段值，不是 Tag 类型。因此红方 250 人与蓝方 250 人仍能使用同一出生 Archetype。
 
-```cpp
-struct FMassRawEntityInChunkData
-{
-    uint8* const ChunkRawMemory = nullptr;   // Chunk 裸内存起点
-    const int32 IndexWithinChunk = INDEX_NONE; // 槽内第几个
+如果未来需要“只匹配红队”，当前设计不能靠 Archetype 类型缓存直接区分；要么在 Chunk/Entity 遍历中检查 Team 值，要么经过专门设计引入队伍 Tag。昨天实现没有引入 RedTeamTag/BlueTeamTag。
+
+## 五、真实案例二：客户端只创建精简镜像 Archetype
+
+源码：`AGuLiCommanderPresentationActor::EnsureClientMirrorArchetype`
+
+~~~cpp
+const TArray<const UScriptStruct*> FragmentAndTagTypes = {
+    FTransformFragment::StaticStruct(),
+    FGuLiMassIdentityFragment::StaticStruct(),
+    FGuLiMassHealthFragment::StaticStruct(),
+    FGuLiClientSnapshotMirrorMassTag::StaticStruct()
 };
 
-struct FMassEntityInChunkDataHandle : FMassRawEntityInChunkData
+FMassArchetypeCreationParams ArchetypeParams;
+ArchetypeParams.DebugName =
+    TEXT("GuLiClientSnapshotMirrorSoldiers");
+
+ClientMirrorArchetype =
+    EntityManager.CreateArchetype(
+        FragmentAndTagTypes,
+        ArchetypeParams);
+~~~
+
+当前客户端镜像只有 3 个 Fragment + 1 个 Tag。它没有：
+
+- AgentRadius
+- Velocity
+- Force
+- MoveTarget
+- NavigationEdges
+- ObstacleGridCellLocation
+- Order
+- SlotTarget
+- AvoidanceOutput
+- ServerAuthorityTag
+- Movement/Avoidance ConstShared 参数
+
+插值样本、外推、短时预测和 ISM 实例池由 Presentation Actor 自己的容器管理；当前 Archetype 清单也没有显式加入 Representation 或插值 Fragment。不能把技术方案中的理想描述误写成当前源码事实。
+
+### 为什么故意精简
+
+客户端不是玩法权威：
+
+- 服务器负责路径、避障、速度、碰撞、生命和指令事实。
+- 客户端只根据可靠 Soldier 状态和不可靠 Pose 样本更新本地镜像及表现。
+- 注释明确说明客户端没有 Mass Processor 拥有 Transform，Presentation 是唯一写入者。
+
+Archetype 在这里直接表达“双端职责边界”，而不只是内存优化。
+
+## 六、真实案例三：死亡时发生 Archetype 迁移
+
+大多数状态变化只改值：
+
+~~~cpp
+Health.Health = Soldier.Health;
+Health.bDead = Soldier.Health == 0u;
+Order.ActiveOrderId = 0u;
+Velocity.Value = FVector::ZeroVector;
+~~~
+
+这些不会改变类型组合。
+
+死亡流程末尾才执行结构变化：
+
+~~~cpp
+EntityManager.RemoveFragmentFromEntity(
+    Soldier.Entity,
+    FMassNavigationObstacleGridCellLocationFragment::StaticStruct());
+~~~
+
+Mass 必须把该 Entity 从：
+
+~~~text
+{Transform, Radius, Velocity, Force, MoveTarget,
+ NavigationEdges, ObstacleGridCellLocation,
+ Identity, Health, Order, SlotTarget, AvoidanceOutput,
+ ServerAuthorityTag, MovementParams, AvoidanceParams}
+~~~
+
+迁往：
+
+~~~text
+{Transform, Radius, Velocity, Force, MoveTarget,
+ NavigationEdges,
+ Identity, Health, Order, SlotTarget, AvoidanceOutput,
+ ServerAuthorityTag, MovementParams, AvoidanceParams}
+~~~
+
+差异就是 `ObstacleGridCellLocation`。
+
+迁移后的关键性质：
+
+- `FMassEntityHandle` 仍是同一个业务 Entity 的本地句柄。
+- `FGuLiSoldierId` 不变。
+- Fragment 列在新 Archetype/Chunk 中重新安置。
+- 原 Chunk 的 Entity 顺序可能变化。
+- 旧的 Fragment 引用、View、Chunk 内索引或范围缓存不能继续假定有效。
+
+`AuthorityState->AuthorityArchetype` 更准确地说是“服务器人口的出生 Archetype”。发生结构迁移后，不应假设所有 500 个 Soldier 永远还位于这个单一 Handle 指向的 Archetype。
+
+## 七、Query 为什么按 Archetype 缓存，而不是逐实体猜
+
+昨天唯一真实 Query 要求：
+
+~~~cpp
+ForceFragment                  ReadWrite + All
+AvoidanceOutputFragment        ReadWrite + All
+ServerAuthorityTag             All
+~~~
+
+Mass 可以先比较每个 Archetype 的组成位集：
+
+- 客户端镜像：缺 Force、AvoidanceOutput、Server Tag，整套 Archetype 排除。
+- 服务器出生 Archetype：满足，整套纳入。
+- 死亡后 Archetype：虽然少了 ObstacleGridCellLocation，但 Query 没要求它，仍然满足。
+
+这就是 Archetype Query 的成本优势：大量实体先在“类型组合”层面批量筛选，随后按 Chunk 绑定连续列 View。
+
+## 八、MassArchetypeTypes.h 中项目尚未直接使用的类型
+
+以下是引擎能力，不是昨天 Commander 已落地的项目 API。
+
+### 8.1 FMassArchetypeVersionedHandle
+
+它把 `FMassArchetypeHandle` 与 `HandleVersion` 放在一起。版本用于判断目标 Archetype 内的 Entity 是否发生过搬动，适合保护缓存的 Entity Range。
+
+项目当前只长期保存普通 Archetype Handle，没有直接声明 VersionedHandle。
+
+### 8.2 FMassArchetypeEntityCollection
+
+它把“同一 Archetype 的任意 Entity Handle 列表”压成：
+
+~~~cpp
+struct FArchetypeEntityRange
 {
-    const int32 ChunkIndex = INDEX_NONE;
-    const int32 ChunkSerialNumber = INDEX_NONE;  // ← 又见代际号
-    MASSENTITY_API bool IsValid(const FMassArchetypeData* ArchetypeData) const;
+    int32 ChunkIndex;
+    int32 SubchunkStart;
+    int32 Length;
 };
-```
+~~~
 
-这是实体的**物理地址**：哪块内存、偏移多少。用起来最快（省掉句柄对账和 `GetInternalIndexForEntity` 查表），但地址这东西随时会因整理而变——所以又挂了一个 `ChunkSerialNumber`，校验时和原型账本对一下（`ArchetypeData->IsValidHandle(*this)`）。你会发现这是引擎里第三次用同一招：实体有 SerialNumber、Archetype 有 HandleVersion、Chunk 地址有 ChunkSerialNumber。**"值 + 代际号，用时对账"就是 Mass 的安全哲学**，认出这个模式，后面读 Query 和 CommandBuffer 会非常顺。
+用途是把散装实体整理成连续 Chunk/Subchunk 范围，供 Query 只处理一部分 Entity。
 
-顺带一个 C++ 小品：这个结构俩成员都声明成 `const`，赋值运算符就只能用 placement new 整体重造——`new (this) FMassEntityInChunkDataHandle(Other);`。宁可这么别扭也不放开 const，是为了防误改（这两个值一旦错了就是写错内存）。引擎对"不变量"的执念随处可见。
+昨天 Commander 没有直接创建 `FMassArchetypeEntityCollection`。选择与指令集合保存 SoldierId，主权威移动遍历自己的 Soldier 注册表，避障捕获 Processor 则处理所有匹配 Chunk。
 
-### 6. FMassQueryRequirementIndicesMapping：查询和布局之间的翻译表
+### 8.3 FMassArchetypeEntityCollectionWithPayload
 
-```cpp
-using FMassFragmentIndicesMapping = TArray<int32, TInlineAllocator<16>>;
+它在 EntityCollection 旁附带与输入对齐的 Payload Slice，适合批量命令缓冲等场景。当前项目未使用。
 
-struct FMassQueryRequirementIndicesMapping
-{
-    FMassFragmentIndicesMapping EntityFragments;
-    FMassFragmentIndicesMapping ChunkFragments;
-    FMassFragmentIndicesMapping ConstSharedFragments;
-    FMassFragmentIndicesMapping SharedFragments;
-};
-```
+### 8.4 FMassArchetypeChunkIterator 与 EntityInChunkDataHandle
 
-一个查询说"我要读写 Velocity、只读 Health"；一个原型说"我的 Chunk 里 Velocity 排第 3、Health 排第 7"。**每个（查询 × 原型）组合缓存一张翻译表**，执行时按表取数，不用每次字符串或反射比对。`TInlineAllocator<16>` 表示 16 个需求以内连堆都不分配——典型查询的需求就那几个。这个结构是下一篇（`MassEntityQuery.h`）的主角之一，这里先混个脸熟。
+它们是引擎内部/底层工具：
 
----
+- ChunkIterator 遍历 collection 中的连续范围。
+- EntityInChunkDataHandle 用 ChunkIndex、ChunkSerialNumber 检测底层数据是否变化。
 
-## 设计启示（落到僚机系统）
+项目 Processor 使用更高层的 `FMassEntityQuery::ForEachEntityChunk` 和 `FMassExecutionContext`，没有手写这些迭代器。
 
-1. **批处理思维**：给部队下指令（整队转向、批量受伤）时，底层最优形态就是"区间集合"。自研 Processor 里如果先收集再操作，优先攒实体句柄、一次性交给命令缓冲，让引擎帮你排序压区间——别在循环里一条条发命令。
-2. **去重枚举的 API 设计**：自己写批量接口时抄 `NoDuplicates / FoldDuplicates` 这手——调用方给保证就免检查，给不了就明说，非 Shipping 构建还能兜底验证。
-3. **区间集合会过期**：拿着 `FMassArchetypeEntityCollection` 跨过会改实体结构的操作后，先 `IsUpToDate()` 再用；引擎导出句据时就是这么把关的。
-4. **同步 API 和命令别混用**：WithPayload 那条警告日志值得抄进团队规范——它对应的正是最难查的一类"时好时坏" bug。
+## 九、昨天实现纠正了哪些常见误解
 
-## 收尾自测
+### 误解 1：一个兵种就是一个 Archetype
 
-- **Q1：`Entity.Index` 和 TrueIndex 有什么区别？** 前者是全局账本上的槽位号（稀疏、会复用）；后者是实体在原型内的稠密下标（物理相邻）。换算 `ChunkIndex = TrueIndex / 每Chunk容量`。
-- **Q2：为什么 Archetype 句柄敢用 TSharedPtr？** 原型数量级小，共享指针的开销可换生命周期安全；引擎留了 @todo 承认索引化会更快。
-- **Q3：Length = 0 的区间是什么意思？** "从 SubchunkStart 到这个 Chunk 末尾的全部实体"。
-- **Q4：Mass 里"代际号"思想出现在哪几处？** 实体句柄的 SerialNumber、Archetype 的 HandleVersion、Chunk 内地址的 ChunkSerialNumber——同一套"值 + 版本，用时对账"。
-- **Q5：给受伤僚机动态加一个 FGSNeedRepairTag，运行时发生了什么？** 组合变化 → 换原型 → 实体从旧原型 Chunk 搬进新原型（还触发原型的 HandleVersion 变化）。偶发没事，高频发生就是性能坑——状态多档时改用 Fragment 内枚举。
+不对。Archetype 看当前元素类型组合。同一 Soldier 死亡并移除导航 Fragment 后就迁移了，但仍是同一业务兵种和同一 SoldierId。
 
-**下一步** → `MassEntityQuery.h` + `MassExecutionContext.h`：查询如何声明需求、如何被翻译成翻译表、`ForEachEntityChunk` 一路走到 Chunk 内存的全过程。
+### 误解 2：红队和蓝队必须两个 Archetype
+
+不对。Team 当前只是 Identity Fragment 的字段值。
+
+### 误解 3：25 人 Cohort 就是一个 Archetype 或 Chunk
+
+不对。Cohort 是临时 SoldierId 集合；Chunk 是 Mass 的物理存储批次。
+
+### 误解 4：SharedFragment 的具体值决定 Archetype 身份
+
+不准确。组成描述记录 Shared/ConstShared 的类型位集；具体值随 Entity 创建传入并用于共享值绑定/Chunk 分组。
+
+### 误解 5：客户端镜像应该复制服务器完整 Archetype
+
+不对。客户端不拥有移动和碰撞事实，精简组成避免了双写 Transform 和误命中服务器 Processor。
+
+### 误解 6：项目使用 MassSpawner 生成 500 人
+
+没有。当前源码直接调用 `CreateArchetype + BatchCreateEntities`，客户端镜像按可靠状态调用 `CreateEntity`。MassSpawner 只是既有模块依赖，并非昨天的出生链。
+
+## 十、运行证据与边界
+
+`Progress/CommanderDynamicPIE-FinalReliable.log` 记录：
+
+- 创建 500 个独立服务器权威 Mass Soldier。
+- 500/500 出生点投射到半径 750cm 的 CommanderSoldier NavData。
+- smoke 中动态成员数 25、移动 1813cm、摧毁 25、未知 ID 被拒绝。
+
+`Progress/CommanderPIEValidation.json` 记录客户端 UnitInstances=500、RingInstances=500、两套 NavData 和顶层 `errors=[]`。其中名册私有属性探针失败，不能据此声称 JSON 验证了可靠名册数量。
+
+当前 `GuLiCommanderPresentationActor.cpp` 在 01:08 续改，晚于约 01:03 的最后一次成功 smoke；01:09 Live Coding 没有新的成功记录。因此客户端镜像 Archetype 的当前精确源码属于审计事实，不能把现有 PIE 结果当成这一跨午夜版本的逐行运行证明。
+
+现有 18 项 Automation 没有专门验证 Archetype 组成、共享值绑定或死亡结构迁移。本文对这些部分的依据是 UE 5.7.4 源码合同和项目源码审计；整体 Commander 功能链有 PIE 运行证据，但不是 Archetype 专项单测。
+
+## 关联阅读
+
+- 前置：[MassEntityElementTypes：组成中的五种元素](./MassEntityElementTypes.md)
+- 前置：[MassEntityHandle：Entity 迁移时什么保持稳定](./MassEntityHandle.md)
+- 下一篇：[MassEntityQuery 与 ExecutionContext：Query 如何匹配这些 Archetype](./MassEntityQuery与ExecutionContext.md)
+- 技术方案：[20260827-Mass 双端同步架构草案](../20260827-Mass双端同步架构草案.md)
+- 总归档：[20260827-Mass 动态 25 人控制组与双端平滑同步](../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)
+- 玩法记录：[指挥官](../../Gameplay/指挥官.md)

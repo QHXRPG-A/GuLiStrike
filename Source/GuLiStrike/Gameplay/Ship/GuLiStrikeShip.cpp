@@ -7,6 +7,7 @@
 #include "GuLiStrikeWeaponPart.h"
 #include "GuLiStrike.h"
 #include "GuLiStrikeProjectile.h"
+#include "Gameplay/Tuning/GuLiRuntimeTuningSubsystem.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/CapsuleComponent.h"
 #include "GameFramework/SpringArmComponent.h"
@@ -22,9 +23,17 @@
 #include "InputMappingContext.h"
 #include "Engine/World.h"
 #include "Engine/DataTable.h"
+#include "Net/UnrealNetwork.h"
+
+namespace GuLiStrikeShipPrivate
+{
+	const FName GMRuntimeModifierName(TEXT("GM.Runtime"));
+}
 
 AGuLiStrikeShip::AGuLiStrikeShip()
 {
+	bReplicates = true;
+
 	// 飞船自己掌控完整的三维姿态
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
@@ -72,6 +81,13 @@ AGuLiStrikeShip::AGuLiStrikeShip()
 	GetCharacterMovement()->MaxAcceleration = BaseAcceleration;
 	GetCharacterMovement()->BrakingDecelerationFlying = 60.0f;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 0.0f, 0.0f);
+}
+
+void AGuLiStrikeShip::GetLifetimeReplicatedProps(
+	TArray<FLifetimeProperty>& OutLifetimeProps) const
+{
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	DOREPLIFETIME(AGuLiStrikeShip, GMRuntimeState);
 }
 
 void AGuLiStrikeShip::BeginPlay()
@@ -122,7 +138,24 @@ void AGuLiStrikeShip::BeginPlay()
 		InstallPart(Entry.PartClass, Entry.SocketName);
 	}
 
-	// 推导初始飞行数值
+	// 服务器从当前 World Registry 初始化后续出生飞船；客户端只消费该
+	// Actor 的原子复制状态，避免本地 Registry 与服务器状态抢写。
+	if (HasAuthority())
+	{
+		if (UGuLiRuntimeTuningSubsystem* RuntimeTuning =
+			GetWorld()->GetSubsystem<UGuLiRuntimeTuningSubsystem>())
+		{
+			RuntimeTuning->ApplyCurrentShipTuning(*this);
+		}
+	}
+	else
+	{
+		ApplyGMRuntimeStateLocally(false);
+	}
+
+	// GM state may have arrived before/during BeginPlay. Only now are tuning
+	// tables and default parts ready for the first Blueprint-visible recompute.
+	bRuntimeStatsInitialized = true;
 	RecomputeStats();
 }
 
@@ -542,8 +575,21 @@ void AGuLiStrikeShip::NotifyPartDestroyed(UGuLiStrikeShipPartComponent* Part)
 
 void AGuLiStrikeShip::AddStatModifier(FName Name, float MaxSpeedMultiplier, float AccelerationMultiplier)
 {
-	// 同名覆盖
-	RemoveStatModifier(Name);
+	if (Name == GuLiStrikeShipPrivate::GMRuntimeModifierName)
+	{
+		UE_LOG(
+			LogGuLiStrike,
+			Warning,
+			TEXT("AddStatModifier rejected reserved modifier name '%s'; use the server GM runtime interface."),
+			*Name.ToString());
+		return;
+	}
+
+	// 同名覆盖；直接清理后只重算一次。
+	StatModifiers.RemoveAll([Name](const FGuLiStrikeStatModifier& Modifier)
+	{
+		return Modifier.Name == Name;
+	});
 
 	FGuLiStrikeStatModifier Modifier;
 	Modifier.Name = Name;
@@ -556,14 +602,137 @@ void AGuLiStrikeShip::AddStatModifier(FName Name, float MaxSpeedMultiplier, floa
 
 void AGuLiStrikeShip::RemoveStatModifier(FName Name)
 {
-	for (int32 Index = 0; Index < StatModifiers.Num(); ++Index)
+	if (Name == GuLiStrikeShipPrivate::GMRuntimeModifierName)
 	{
-		if (StatModifiers[Index].Name == Name)
+		UE_LOG(
+			LogGuLiStrike,
+			Warning,
+			TEXT("RemoveStatModifier rejected reserved modifier name '%s'; use the server GM runtime interface."),
+			*Name.ToString());
+		return;
+	}
+
+	const int32 RemovedCount = StatModifiers.RemoveAll(
+		[Name](const FGuLiStrikeStatModifier& Modifier)
 		{
-			StatModifiers.RemoveAt(Index);
-			RecomputeStats();
-			return;
+			return Modifier.Name == Name;
+		});
+	if (RemovedCount > 0)
+	{
+		RecomputeStats();
+	}
+}
+
+bool AGuLiStrikeShip::SetGMRuntimeMultipliers(
+	const float MaxSpeedMultiplier,
+	const float AccelerationMultiplier)
+{
+	if (!FMath::IsFinite(MaxSpeedMultiplier)
+		|| !FMath::IsFinite(AccelerationMultiplier)
+		|| MaxSpeedMultiplier < 0.0f
+		|| AccelerationMultiplier < 0.0f
+		|| MaxSpeedMultiplier > 100.0f
+		|| AccelerationMultiplier > 100.0f
+		|| !HasAuthority())
+	{
+		return false;
+	}
+
+	const bool bStateChanged = !GMRuntimeState.bActive
+		|| !FMath::IsNearlyEqual(GMRuntimeState.MaxSpeedMultiplier, MaxSpeedMultiplier)
+		|| !FMath::IsNearlyEqual(
+			GMRuntimeState.AccelerationMultiplier,
+			AccelerationMultiplier);
+	GMRuntimeState.bActive = true;
+	GMRuntimeState.MaxSpeedMultiplier = MaxSpeedMultiplier;
+	GMRuntimeState.AccelerationMultiplier = AccelerationMultiplier;
+	if (bStateChanged)
+	{
+		++GMRuntimeState.Revision;
+		if (GMRuntimeState.Revision == 0u)
+		{
+			GMRuntimeState.Revision = 1u;
 		}
+	}
+
+	ApplyGMRuntimeStateLocally(bRuntimeStatsInitialized);
+	if (bStateChanged)
+	{
+		ForceNetUpdate();
+	}
+	return true;
+}
+
+void AGuLiStrikeShip::ClearGMRuntimeMultipliers()
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+
+	const bool bStateChanged = GMRuntimeState.bActive
+		|| !FMath::IsNearlyEqual(GMRuntimeState.MaxSpeedMultiplier, 1.0f)
+		|| !FMath::IsNearlyEqual(GMRuntimeState.AccelerationMultiplier, 1.0f);
+	GMRuntimeState.bActive = false;
+	GMRuntimeState.MaxSpeedMultiplier = 1.0f;
+	GMRuntimeState.AccelerationMultiplier = 1.0f;
+	if (bStateChanged)
+	{
+		++GMRuntimeState.Revision;
+		if (GMRuntimeState.Revision == 0u)
+		{
+			GMRuntimeState.Revision = 1u;
+		}
+	}
+
+	ApplyGMRuntimeStateLocally(bRuntimeStatsInitialized);
+	if (bStateChanged)
+	{
+		ForceNetUpdate();
+	}
+}
+
+bool AGuLiStrikeShip::GetGMRuntimeMultipliers(
+	float& OutMaxSpeedMultiplier,
+	float& OutAccelerationMultiplier) const
+{
+	if (GMRuntimeState.bActive)
+	{
+		OutMaxSpeedMultiplier = GMRuntimeState.MaxSpeedMultiplier;
+		OutAccelerationMultiplier = GMRuntimeState.AccelerationMultiplier;
+		return true;
+	}
+
+	OutMaxSpeedMultiplier = 1.0f;
+	OutAccelerationMultiplier = 1.0f;
+	return false;
+}
+
+void AGuLiStrikeShip::OnRep_GMRuntimeState()
+{
+	// Initial replicated properties may arrive before BeginPlay. Build the
+	// modifier layer immediately, but defer Blueprint-visible stat callbacks
+	// until BeginPlay has initialized tuning tables and default parts.
+	ApplyGMRuntimeStateLocally(bRuntimeStatsInitialized);
+}
+
+void AGuLiStrikeShip::ApplyGMRuntimeStateLocally(const bool bRecompute)
+{
+	StatModifiers.RemoveAll([](const FGuLiStrikeStatModifier& Modifier)
+	{
+		return Modifier.Name == GuLiStrikeShipPrivate::GMRuntimeModifierName;
+	});
+
+	if (GMRuntimeState.bActive)
+	{
+		FGuLiStrikeStatModifier& Modifier = StatModifiers.AddDefaulted_GetRef();
+		Modifier.Name = GuLiStrikeShipPrivate::GMRuntimeModifierName;
+		Modifier.MaxSpeedMultiplier = GMRuntimeState.MaxSpeedMultiplier;
+		Modifier.AccelerationMultiplier = GMRuntimeState.AccelerationMultiplier;
+	}
+	if (bRecompute)
+	{
+		RecomputeStats();
 	}
 }
 

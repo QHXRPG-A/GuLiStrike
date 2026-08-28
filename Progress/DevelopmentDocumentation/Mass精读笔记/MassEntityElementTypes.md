@@ -1,226 +1,416 @@
-# 精读笔记：MassEntityElementTypes.h —— Mass 框架的"词汇表"
+# 精读笔记：MassEntityElementTypes.h —— 用 Commander 500 人实现理解五种 Mass 元素
 
-> 原文件：`C:\Program Files\Epic Games\UE_5.7\Engine\Source\Runtime\MassEntity\Public\MassEntityElementTypes.h`
-> 引擎版本：5.7.4 ｜ 原文 83 行
-> 阅读路线第 1 步（共 12 步，见《20260824-Mass框架启用与源码导读.md》第 4 节）
+> 重写日期：2026-08-28
+>
+> 引擎基线：Unreal Engine 5.7.4，CL 51494982
+>
+> 引擎原文件：`C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassEntityElementTypes.h`
+>
+> 项目样本：2026-08-27 新增的 `Source/GuLiStrike/Commander/` 实现
+>
+> 时间边界：Commander/Mass、Network、Framework 源码均在 8 月 27 日创建；`GuLiCommanderPresentationActor.cpp` 在 8 月 28 日 01:08 跨午夜续改，涉及它的内容按“昨夜开发后的当前版本”表述。
+>
+> Git 边界：`Source/GuLiStrike/Commander/` 当前仍未提交；“8 月 27 日新增”依据文件时间、当天归档和运行日志，不是某个 Git commit 的逐行历史。
 
----
+## 先说结论
 
-## 预备知识
+`MassEntityElementTypes.h` 只定义五个几乎没有实现代码的基类，但它们决定了数据的**拥有粒度**：
 
-### 1. 平凡复制（Trivially Copyable）
-
-Fragment 的所有硬约束都源于这一个 C++ 概念，先讲清楚它，后面处处要用。
-
-**定义**：一个类型是"平凡可复制"的，当且仅当（对应标准库 `std::is_trivially_copyable_v<T>`）：
-
-1. 没有虚函数、没有虚基类；
-2. 拷贝构造、移动构造、拷贝赋值、移动赋值全部"平凡"——即编译器默认生成（没写、也没 `=delete`）或显式 `=default`；
-3. 析构函数平凡（同样：非自定义、非 `=delete`）。
-
-**它意味着什么**：这种类型的对象可以被当作"一坨可搬运的字节"——把它的内存快照 `memcpy` 到另一块内存，新位置上的字节**直接就是一个合法有效的对象**，全程不需要调用任何构造/析构函数。
-
-**正例 / 反例：**
-
-| 类型 | 平凡可复制 | 原因 |
-|---|---|---|
-| `float`、`FVector`、`FTransform`、枚举 | ✓ | 纯数值字节 |
-| 裸指针、实体句柄、定长数组 `T[4]` | ✓ | 指针/数值的排布，无堆所有权 |
-| `TObjectPtr<T>` | ✓ | 只是指针的薄包装，拷贝/析构都平凡 |
-| `FString`、`TArray<T>`、`TMap<K,V>` | ✗ | 内部持有堆内存：拷贝要分配、析构要释放，`memcpy` 会双重释放/悬垂 |
-| 带虚函数的类 | ✗ | 有 vptr/vtable，不能当字节搬 |
-
-**两个容易误解的点：**
-
-1. **可以写默认成员赋值**，如 `FVector Velocity = FVector::ZeroVector;`——这不会破坏平凡可复制性。被约束的只有**拷贝/移动/析构**这些"搬运相关"的特殊成员。引擎自己的 Fragment 就是这么用的（`MassMovementFragments.h` 里满是 `FVector Value = FVector::ZeroVector;`）。
-2. **"平凡可复制" ≠ "POD"**：POD 额外要求默认构造也平凡、且是 standard layout。Mass 只要求前者，所以给成员设初值完全没问题。
-
-**为什么 Mass 把它当铁律**：实体在 Archetype 之间迁移（加删 Fragment）、Chunk 整理碎片时，引擎对内存块做的是**批量裸 memcpy**——快就快在跳过所有构造/析构调用。类型不可平凡复制，这套搬运会静默产生悬垂指针和双重释放。下文「逐段精读」第 2 段讲的静态检查报错宏，就是这条规则的守门员。
-
-### 2. Chunk——存实体的"集装箱"
-
-"Chunk"直译"大块"，在 Mass（以及几乎所有现代 ECS 框架）里指**一块大小固定的连续内存，是存放实体数据的基本容器**。
-
-**里面的布局**：同一个 Archetype（= 同一种 Fragment 组合）的实体，按"每类 Fragment 一段连续数组"的方式平铺在 Chunk 里。比如 1000 架僚机的组合是 `{Velocity, Health}`，那每个 Chunk 里装的就是：一段连续的 Velocity 数组 + 一段连续的 Health 数组。这种布局叫 **SoA**（Structure of Arrays，按列平铺），与传统 OOP"每实体一个结构体对象"的 AoS（Array of Structures）相对。组合越大，一个 Chunk 装得下的实体越少（容量由 `FMassArchetypeData::GetNumEntitiesPerChunk()` 按 Fragment 组合大小动态算出）。
-
-**为什么值得费这个劲**，三个原因：
-
-1. **缓存友好**：批量遍历时同类数据在内存里紧挨着，CPU 缓存行命中率极高——这是 Mass 能跑万级单位的物理基础；
-2. **批处理单位**：`ForEachEntityChunk` 每次把一整 Chunk 交给你的 lambda，一次循环几百个实体，把每实体的调度开销摊到接近零；
-3. **并行单位**：不同 Chunk 可以安全地分给不同线程，互不冲突——这正是 `FMassChunkFragment`（Chunk 内共享、Chunk 间独立）这个粒度存在的意义。
-
-**和第 1 节的关系**：实体加删 Fragment 时要在 Archetype 之间搬家，Chunk 里出现空洞要整理（Defrag）——这些搬移全是整块 memcpy。第 1 节的"平凡复制"约束，就是保证这种搬运合法的纪律。
-
-后文速查表、`FMassChunkFragment`、`ForEachEntityChunk` 里出现的"Chunk"，指的都是它。
-
----
-
-## 全文一句话总结
-
-这个文件定义了 Mass 世界里"数据"的**五种粒度**。所有游戏数据结构（僚机的速度、血量、编队位置……）都必须从这五个基类之一继承。基类本身全是空壳——存在的唯一意义是"打标记"：内存管理器（`FMassEntityManager`）根据继承的基类决定数据被放进 Chunk 的哪一层。
-
-## 五种元素速查表
-
-| 基类 | 数据量 | 可变性 | 典型用途（僚机示例） |
+| 基类 | 数据粒度 | Commander 当前实例 | 当前是否使用 |
 |---|---|---|---|
-| `FMassFragment` | 每实体 1 份 | 自由读写 | 位置/速度/血量/目标句柄 |
-| `FMassTag` | 零数据 | — | 状态开关：`FGSWingmanTag` |
-| `FMassChunkFragment` | 每 Chunk 1 份 | 自由读写 | 一批实体的聚合统计 |
-| `FMassSharedFragment` | 跨实体共享 | 可变 | 同款舰船的渲染描述（ISM） |
-| `FMassConstSharedFragment` | 跨实体共享 | 只读 | 兵种数值表（万机只存一份） |
+| `FMassFragment` | 每个 Entity 一份 | Identity、Health、Order、SlotTarget、AvoidanceOutput，以及引擎 Transform/Velocity/Force 等 | 是 |
+| `FMassTag` | 只表达组成中的有/无，不携带每实体 payload | ServerAuthority、ClientSnapshotMirror | 是 |
+| `FMassChunkFragment` | 每个 Mass Chunk 一份 | 无 | 否 |
+| `FMassSharedFragment` | 一组实体共享一份、允许修改 | 无 | 否 |
+| `FMassConstSharedFragment` | 一组实体共享一份、查询侧只读 | MovementParameters、MovingAvoidanceParameters | 是，使用引擎内建类型 |
 
-记忆模型：同一"Fragment 组合"的实体连续存放在同一组 Chunk 里（内存连续 = 缓存友好 = 可按 Chunk 批量并行处理，这就是 Mass 快的根源）。
+昨天的实现没有自定义 `FMassChunkFragment` 或可变 `FMassSharedFragment`。本文不会为它们编造项目案例；只解释它们与现有代码的边界。
 
----
+## 一、引擎头文件究竟定义了什么
 
-## 逐段精读
+UE 5.7.4 的核心定义可以压缩为：
 
-### 1. FMassFragment —— 每实体一份的核心数据
-
-```cpp
-// This is the base class for all lightweight fragments
-// 译：所有"轻量 Fragment"的基类
+~~~cpp
 USTRUCT()
 struct FMassFragment
 {
     GENERATED_BODY()
 };
-```
 
-**解读：**
-
-1. "lightweight" 不是修辞，是硬约束：Fragment 必须是 **trivially copyable**（可平凡复制，见下一段的报错宏），即能被安全 `memcpy` 的纯数据。因为实体在 Archetype 之间迁移、Chunk 整块搬移时引擎直接按内存拷贝，**不会调用构造/析构函数**。实践中意味着：不要放 `FString`、`TArray` 等带堆内存的成员；需要动态数据时放裸指针 / `TObjectPtr` / 固定大小数组。
-2. 写法示例：
-
-```cpp
-USTRUCT()
-struct FGSWingmanStateFragment : public FMassFragment
-{
-    GENERATED_BODY()
-    FVector Velocity;   // 每架僚机独立一份
-    float Health;
-};
-```
-
-3. 查询侧通过 `EntityQuery.AddRequirement<FGSWingmanStateFragment>(EMassFragmentAccess::ReadWrite)` 声明访问意图；Processor 拿到的是一整 Chunk 的连续数组（`GetMutableFragmentView<T>`），一个循环处理上百实体。
-
-### 2. 静态检查报错宏 —— 藏着 Fragment 的三条规则
-
-```cpp
-// these are the messages we'll print out when static checks whether a
-// given type is a fragment fails
-// 译：当静态检查发现"某个类型不是合法 Fragment"时打印的报错信息
-#define _MASS_INVALID_FRAGMENT_CORE_MESSAGE "Make sure to inherit from FMassFragment or one of its child-types and ensure that the struct is trivially copyable, or opt out by specializing TMassFragmentTraits for this type and setting AuthorAcceptsItsNotTriviallyCopyable = true"
-#define MASS_INVALID_FRAGMENT_MSG  "Given struct doesn't represent a valid fragment type." _MASS_INVALID_FRAGMENT_CORE_MESSAGE
-#define MASS_INVALID_FRAGMENT_MSG_F  "Type %s is not a valid fragment type." _MASS_INVALID_FRAGMENT_CORE_MESSAGE
-```
-
-**解读——这条报错信息拆出三条规则：**
-
-- **必须从对应基类继承**（inherit from FMassFragment or one of its child-types）；
-- **必须可平凡复制**（trivially copyable）——原因见上一节；
-- **存在逃生舱**：特化 `TMassFragmentTraits` 并设置 `AuthorAcceptsItsNotTriviallyCopyable = true`，可以强行让不可平凡复制的类型当 Fragment 用——但搬移时构造/析构不会被调用，极易产生悬垂堆指针。参数名里的 "Author Accepts"（作者自担风险）就是 Epic 的态度：除非完全清楚后果，别碰。
-
-### 3. FMassTag —— 零字节的"有无开关"
-
-```cpp
-// This is the base class for types that will only be tested for presence/absence, i.e. Tags.
-// Subclasses should never contain any member properties.
-// 译：Tag 的基类——只用于测试"有/无"的类型。子类永远不要包含任何成员属性。
 USTRUCT()
 struct FMassTag
 {
     GENERATED_BODY()
 };
-```
 
-**解读：**
-
-1. Tag 零字节存储，只在 Archetype 组合里占一个"有没有"的位。查询用 `AddTagRequirement<T>(Presence)` 过滤，比读 Fragment 再 `if` 判断快得多——命中筛选发生在 **Chunk 级**，整 Chunk 直接跳过或全收。
-2. 正确用法：表达"类别归属"或"待办状态"，如 `FGSWingmanTag`（是僚机）、`FGSNeedNewTargetTag`（需要重新索敌，配合信号/观察者做事件驱动）。
-3. 错误用法：当成枚举容器——想放数据的那一刻，它就该是 Fragment 了；"状态值多于一档"也别用多个 Tag 硬凑，放 Fragment 里存枚举。
-
-### 4. FMassChunkFragment —— 每 Chunk 一份的组共享数据
-
-```cpp
-// （原文此处无注释）
 USTRUCT()
 struct FMassChunkFragment
 {
     GENERATED_BODY()
 };
-```
 
-**解读：**
-
-- 一个 Chunk 是同组合实体的一段连续内存块，**容量随 Fragment 组合大小浮动**（组合越大每 Chunk 实体越少，见 `FMassArchetypeData::GetNumEntitiesPerChunk()`）。
-- 用途：一批实体共享的临时聚合/缓存——这一 Chunk 的平均位置、批处理计数器、本批次的移动网格。
-- 注意：同一个 Processor 的并行 Chunk 迭代里各 Chunk 互不可见，ChunkFragment 正是"Chunk 内共享、Chunk 间独立"的那个粒度。
-
-### 5. FMassSharedFragment —— 跨实体共享的可变数据
-
-```cpp
-// （原文此处无注释）
 USTRUCT()
 struct FMassSharedFragment
 {
     GENERATED_BODY()
 };
-```
 
-**解读：**
-
-- 引擎**按内容哈希去重**：N 个实体带等值的 SharedFragment 时，内存里只有一份实例。经典用法是渲染描述——1000 架同型号僚机共享同一个"网格+材质"描述，ISM 批量绘制靠它成立。
-- "可变"是双刃剑：改一处，所有共享者同时生效。渲染参数这种"大家一起变"的场景正合适；每实体独立的数据绝对别放这。
-
-### 6. FMassConstSharedFragment —— 跨实体共享的只读数据
-
-```cpp
-// （原文此处无注释）
 USTRUCT()
 struct FMassConstSharedFragment
 {
     GENERATED_BODY()
 };
-```
+~~~
 
-**解读：**
+它们本身不提供移动、生命、查询或存储逻辑。派生关系的作用是让 Mass 在编译期和运行时把一个 `UScriptStruct` 归入正确类别，随后放进对应的类型位集：
 
-- 最安全的共享：声明期赋值、运行期只读。兵种数值表（最大速度、加速度、规避半径）做成它，一万架僚机也只在内存里存一份。
-- 细节：共享 Fragment 的**取值参与 Archetype 身份**（证据：`MassEntityTypes.h` 里的 `FMassArchetypeSharedFragmentValues`）——同 Fragment 组合但兵种参数不同的实体会落在不同 Archetype 里。这通常是好事（同兵种聚在一起，批量处理更顺），但设计 Fragment 切分时要有意识。
+- `FMassFragmentBitSet`
+- `FMassTagBitSet`
+- `FMassChunkFragmentBitSet`
+- `FMassSharedFragmentBitSet`
+- `FMassConstSharedFragmentBitSet`
 
-### 7. UE::Mass::IsA\<T\> —— 运行时类型归类工具
+这些位集共同描述 Archetype 的数据组成。也就是说，继承哪个基类不是命名偏好，而是存储和查询合同。
 
-```cpp
-// 【解读】给定一个 UScriptStruct*，判断它属于五类元素中的哪一类。
-// 泛型版本直接返回 false，五个特化版本各自沿 UStruct 继承链检查。
-namespace UE::Mass
+## 二、FMassFragment：每名 Soldier 自己的数据
+
+### 2.1 昨天新增的真实 Fragment
+
+源码：`Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h`
+
+~~~cpp
+/** Stable per-match Soldier identity. It is independent of selection and order formations. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiMassIdentityFragment : public FMassFragment
 {
-    template<typename T>
-    bool IsA(const UStruct* /*Struct*/)
-    {
-        return false;
-    }
+    GENERATED_BODY()
 
-    template<>
-    inline bool IsA<FMassFragment>(const UStruct* Struct)
-    {
-        return Struct && Struct->IsChildOf(FMassFragment::StaticStruct());
-    }
+    UPROPERTY(Transient)
+    FGuLiSoldierId SoldierId;
 
-    // ……FMassTag / FMassChunkFragment / FMassSharedFragment /
-    //    FMassConstSharedFragment 四个特化同构，略
-}
-```
+    UPROPERTY(Transient)
+    EGuLiTeam Team = EGuLiTeam::Unassigned;
+};
 
-**解读：** 查询注册、静态检查、调试器都用它给类型归类。平时写业务代码用不到，读它只需记住：**五类元素的"身份"完全由继承链表达**，没有任何魔法。
+/** Server-authoritative health and the five-second destroyed presentation window. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiMassHealthFragment : public FMassFragment
+{
+    GENERATED_BODY()
 
----
+    UPROPERTY(Transient)
+    uint8 Health = 100u;
 
-## 收尾自测
+    UPROPERTY(Transient)
+    bool bDead = false;
 
-- **Q1：什么时候用 SharedFragment？** —— 数据"跨实体相同、且适合一起变"用 SharedFragment（渲染描述）；"跨实体相同但永不改"用 ConstSharedFragment（数值表）；"每实体各一份"用 Fragment；"只有有无两态"用 Tag。
-- **Q2：为什么 Fragment 禁止 FString/TArray 成员？** —— 平凡复制约束，Chunk 搬移是裸 memcpy，堆成员会双重释放/悬垂。
-- **Q3：Tag 和"值为 bool 的 Fragment"怎么选？** —— Tag 零存储且 Chunk 级过滤；bool Fragment 每实体 1 字节还得读出来判断。纯开关必用 Tag。
+    UPROPERTY(Transient)
+    float WreckSecondsRemaining = 0.0f;
 
-**下一步** → `MassEntityHandle.h`（85 行）：实体句柄与代际号（SerialNumber）如何防止悬垂引用。
+    bool IsAlive() const;
+};
+
+/** The latest accepted server order for one Soldier. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiMassOrderFragment : public FMassFragment
+{
+    GENERATED_BODY()
+
+    UPROPERTY(Transient)
+    uint32 ActiveOrderId = 0u;
+
+    UPROPERTY(Transient)
+    uint32 OrderRevision = 0u;
+
+    UPROPERTY(Transient)
+    FVector FormationTarget = FVector::ZeroVector;
+
+    UPROPERTY(Transient)
+    bool bHasMoveTarget = false;
+};
+~~~
+
+逐个看它们在玩法中的职责：
+
+> 本文中文术语：服务端接受并持续执行的 `Order` 统一称为“单位指令”，当前 `IssueMove` 场景具体称为“移动指令”；不使用容易与商业购买混淆的“订单”。
+
+- `FGuLiMassIdentityFragment` 在 Mass 数据中保存 `SoldierId` 与队伍的副本，供 Mass 侧处理、调试和客户端镜像使用。当前选择、指令和网络查找的主路径实际走 `FSoldierRuntime`、业务映射与 `SoldierId`，并没有靠查询这个 Fragment 完成业务寻址。
+- `FGuLiMassHealthFragment` 保存服务器权威生命状态，并实现了 5 秒残骸展示窗口；不过现有 smoke 没有专项验证客户端确实完整显示了这 5 秒，因此这里应区分“源码已实现”和“运行已验证”。
+- `FGuLiMassOrderFragment` 保存某名 Soldier 最新接受的移动指令。动态 25 人 Cohort 只是一次选择结果，不是永久编制；指令最终仍写回每名独立 Soldier。
+
+同一文件还定义：
+
+| Fragment | 字段 | 真实用途 |
+|---|---|---|
+| `FGuLiMassSlotTargetFragment` | `LocalOffset`、`WorldTarget` | 保存弹性编队槽位及当前世界目标 |
+| `FGuLiMassAvoidanceOutputFragment` | `Value` | 保存引擎 Mass Avoidance 在当前世界帧算出的力，供 30Hz 权威固定步消费 |
+
+服务器 Archetype 还实际使用引擎 Fragment：
+
+- `FTransformFragment`
+- `FAgentRadiusFragment`
+- `FMassVelocityFragment`
+- `FMassForceFragment`
+- `FMassMoveTargetFragment`
+- `FMassNavigationEdgesFragment`
+- `FMassNavigationObstacleGridCellLocationFragment`
+
+自定义 Fragment 并没有取代引擎移动数据，而是补上 GuLiStrike 自己的身份、生命、指令、编队槽位和固定步避障桥接。
+
+### 2.2 右键移动如何真正写入 Fragment
+
+源码：`UGuLiBattleAuthoritySubsystem::IssueMove`
+
+~~~cpp
+FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
+Soldier.ActiveOrderId = BatchOrderId;
+++Soldier.StateRevision;
+
+FGuLiMassOrderFragment& Order =
+    AuthorityState->MassEntitySubsystem->GetMutableEntityManager()
+        .GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+Order.ActiveOrderId = BatchOrderId;
+Order.OrderRevision = Soldier.StateRevision;
+Order.FormationTarget = Formation.TargetAnchor;
+Order.bHasMoveTarget = true;
+
+FMassMoveTargetFragment& MoveTarget =
+    AuthorityState->MassEntitySubsystem->GetMutableEntityManager()
+        .GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+MoveTarget.CreateNewAction(EMassMovementAction::Move, *GetWorld());
+MoveTarget.IntentAtGoal = EMassMovementAction::Stand;
+MoveTarget.DesiredSpeed = FMassInt16Real(MovementSpeedCentimetersPerSecond);
+~~~
+
+这段代码对应玩家的一次右键移动：
+
+1. 网络请求先通过 SelectionRevision、队伍、存活、路径和终点足迹校验。
+2. 服务端把新的 BatchOrderId 写入自己的 Soldier 注册表。
+3. 再用该 Soldier 的 `FMassEntityHandle` 找到 `OrderFragment` 和引擎 `MoveTargetFragment`。
+4. Order 保存业务事实；MoveTarget 接入 Mass 移动管线。
+
+Fragment 是数据，不是行为类。真正决定“什么时候写、谁有权写”的，是服务端子系统和 Processor。
+
+### 2.3 每个固定步如何回写可见状态
+
+源码：`UGuLiBattleAuthoritySubsystem::TickAuthority`
+
+~~~cpp
+FTransformFragment& Transform =
+    EntityManager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity);
+Transform.SetTransform(FTransform(
+    FRotator(0.0f, Soldier.FacingYawDegrees, 0.0f),
+    Soldier.Location));
+
+EntityManager
+    .GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity)
+    .Value = Soldier.Velocity;
+
+FGuLiMassOrderFragment& Order =
+    EntityManager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+Order.ActiveOrderId = Soldier.ActiveOrderId;
+Order.OrderRevision = Soldier.StateRevision;
+Order.bHasMoveTarget = Soldier.ActiveOrderId != 0u;
+~~~
+
+这解释了为什么每个实体需要自己的 Fragment：500 名 Soldier 的位置、速度、朝向和指令可以不同，不能把它们塞进 SharedFragment。
+
+## 三、FMassTag：把服务端权威体和客户端镜像彻底隔开
+
+### 3.1 两个真实 Tag
+
+源码：`GuLiCommanderMassFragments.h`
+
+~~~cpp
+/** Snapshot-driven client mirror. It intentionally carries no movement or avoidance tag. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiClientSnapshotMirrorMassTag : public FMassTag
+{
+    GENERATED_BODY()
+};
+
+/** Marks the exact 500-member server archetype. Client mirrors must never carry this tag. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiServerAuthorityMassTag : public FMassTag
+{
+    GENERATED_BODY()
+};
+~~~
+
+Tag 的准确理解是：它没有每实体业务 payload，不需要像 Health 那样建立一列数值；它以“该组成是否包含此类型”参与 Archetype 和 Query 匹配。不要把它简单理解成 C++ 层面“结构体大小绝对为零”。
+
+### 3.2 Tag 如何阻止客户端镜像被服务器 Processor 处理
+
+服务器避障捕获 Query：
+
+~~~cpp
+EntityQuery.AddRequirement<FMassForceFragment>(EMassFragmentAccess::ReadWrite);
+EntityQuery.AddRequirement<FGuLiMassAvoidanceOutputFragment>(EMassFragmentAccess::ReadWrite);
+EntityQuery.AddTagRequirement<FGuLiServerAuthorityMassTag>(EMassFragmentPresence::All);
+~~~
+
+客户端镜像 Archetype 只有：
+
+~~~cpp
+const TArray<const UScriptStruct*> FragmentAndTagTypes = {
+    FTransformFragment::StaticStruct(),
+    FGuLiMassIdentityFragment::StaticStruct(),
+    FGuLiMassHealthFragment::StaticStruct(),
+    FGuLiClientSnapshotMirrorMassTag::StaticStruct()
+};
+~~~
+
+因此有两道隔离：
+
+1. 客户端镜像没有 Force 和 AvoidanceOutput。
+2. 客户端镜像没有 ServerAuthorityTag。
+
+即使未来某一侧补了相同 Fragment，Tag 仍能表达“这是不是服务器权威模拟体”。这比只依赖当前列集合更稳健。
+
+源码注释把 ServerAuthorityTag 写作标记“exact 500-member server archetype”，这是出生组成的设计意图；死亡移除导航 Fragment 后，该 Tag 仍保留在迁移后的 Archetype。按当前实际行为，它更准确地表达 Authority 处理域，而不是“永远只对应一个 Archetype Handle”。
+
+## 四、FMassConstSharedFragment：500 人共享移动与避障参数
+
+项目没有自定义 ConstShared 类型，但真实使用了两个引擎类型：
+
+- `FMassMovementParameters : FMassConstSharedFragment`
+- `FMassMovingAvoidanceParameters : FMassConstSharedFragment`
+
+源码：`UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation`
+
+~~~cpp
+FMassMovementParameters MovementParameters;
+MovementParameters.MaxSpeed = MovementSpeedCentimetersPerSecond;
+MovementParameters.DefaultDesiredSpeed = MovementSpeedCentimetersPerSecond;
+MovementParameters.DefaultDesiredSpeedVariance = 0.0f;
+MovementParameters.MaxAcceleration = MovementSpeedCentimetersPerSecond * 4.0f;
+MovementParameters.bIsCodeDrivenMovement = true;
+MovementParameters.Update();
+
+FMassMovingAvoidanceParameters AvoidanceParameters;
+AvoidanceParameters.ObstacleDetectionDistance = MemberAgentRadiusCentimeters * 8.0f;
+AvoidanceParameters.SeparationRadiusScale = 0.95f;
+AvoidanceParameters.ObstacleSeparationDistance = MemberAgentRadiusCentimeters * 0.35f;
+AvoidanceParameters.PredictiveAvoidanceDistance = MemberAgentRadiusCentimeters * 0.35f;
+
+FMassArchetypeSharedFragmentValues SharedValues;
+SharedValues.Add(
+    EntityManager.GetOrCreateConstSharedFragment(MovementParameters.GetValidated()));
+SharedValues.Add(
+    EntityManager.GetOrCreateConstSharedFragment(AvoidanceParameters.GetValidated()));
+SharedValues.Sort();
+~~~
+
+为什么这两个参数适合 ConstShared：
+
+- 500 名服务器 Soldier 使用同一套最大速度、加速度和避障尺度。
+- 它们是配置，不是某名 Soldier 的瞬时状态。
+- Query/Processor 只应读取，不应逐实体改写。
+- 共享一份可以避免把相同配置复制 500 次。
+
+`FMassArchetypeSharedFragmentValues` 是“共享值容器”，不是某一种 SharedFragment。它同时装可变 Shared 和 ConstShared，并维护各自类型位集。
+
+还有一个容易写错的点：**共享值本身不是 Archetype 身份的一部分**。Archetype 的组成描述记录 Shared/ConstShared 的类型位集；具体值随创建请求传入，并用于 Chunk 的共享值分组和绑定。昨天的代码也正是先用类型位集取得合适 Archetype，再把 `SharedValues` 传给批量创建。
+
+## 五、当前没有使用的两种元素
+
+### 5.1 FMassSharedFragment
+
+当前 `Source/` 与 `Plugins/**/Source/` 没有项目自定义可变 SharedFragment。
+
+服务器的临时编队关系放在：
+
+~~~cpp
+struct FOrderFormationRuntime
+{
+    uint32 FormationId = 0u;
+    uint32 BatchOrderId = 0u;
+    FGuLiControlCohortId SourceCohortId;
+    EGuLiTeam Team = EGuLiTeam::Unassigned;
+    TArray<FGuLiSoldierId> MemberIds;
+    TMap<uint32, uint8> SlotBySoldierId;
+    FVector GuideAnchor = FVector::ZeroVector;
+    FVector TargetAnchor = FVector::ZeroVector;
+    // ...
+};
+~~~
+
+从当前代码可以作如下设计解读（推断，不是源码注释明确声明的动机）：ControlCohort 和 OrderFormation 生命周期短、成员会变化，而且“25 人”不是永久 Mass 分组。如果把它们做成 SharedFragment，成员或路径变化会频繁改变共享值，使实体重新归组到具有匹配共享值的 Chunk。共享值改变通常仍发生在同一 Archetype 内；只有共享 Fragment 的类型组成改变时，才涉及 Archetype 结构迁移。
+
+未来只有在“一批实体确实共享同一份、允许运行期整体替换的状态”出现时，才值得评估 `FMassSharedFragment`。
+
+### 5.2 FMassChunkFragment
+
+当前也没有项目自定义 ChunkFragment。空间索引由 Authority 状态中的 `TMap<FIntPoint, TArray<int32>> SpatialGrid` 管理，而不是挂在 Mass Chunk 上。
+
+ChunkFragment 适合“每个物理 Chunk 一份”的缓存、统计或粗筛状态。它不等于玩法里的 25 人 Cohort；Mass Chunk 是存储容器，Cohort 是一次选择形成的业务集合，两者不能混用。
+
+## 六、值修改与结构修改不是一回事
+
+下面这些操作只改 Fragment 内的数据，不改变 Archetype：
+
+- Health 100 → 0。
+- `bDead=false` → `true`。
+- ActiveOrderId 更新。
+- Transform、Velocity、SlotTarget 每固定步更新。
+
+死亡流程最后还有一项真实的结构修改：
+
+~~~cpp
+EntityManager.RemoveFragmentFromEntity(
+    Soldier.Entity,
+    FMassNavigationObstacleGridCellLocationFragment::StaticStruct());
+~~~
+
+移除 Fragment 会让该实体迁往“不含 ObstacleGridCellLocation”的合适 Archetype。其 `FMassEntityHandle` 和 `FGuLiSoldierId` 没有因此改变，但旧 Chunk 的布局和实体顺序可能变化。
+
+当前代码把结构操作放在 `ApplyDamage` 的末尾，之后不再使用先前取得的 Fragment 引用。这一点很重要：结构迁移后，之前指向 Chunk 数据的引用或 View 不应继续保存和访问。
+
+## 七、从玩家操作到五种元素的真实链路
+
+| 玩家行为/运行阶段 | 写入或读取的数据 | 所属元素 |
+|---|---|---|
+| 左键圆选 | 读取 Authority `FSoldierRuntime` 中的 SoldierId、Team、Location，并用 SpatialGrid 生成临时 Cohort | 当前不读 Mass Fragment；Cohort 也不是 Mass 元素 |
+| 右键移动 | 移动指令受理时立即写 Order、MoveTarget；SlotTarget 在后续权威固定步回写 | 每实体 Fragment |
+| Mass Avoidance 阶段 | 产生 Force | 引擎每实体 Fragment |
+| Avoidance Capture Processor | Force → AvoidanceOutput，并清空 Force | 每实体 Fragment + ServerAuthority Tag |
+| 30Hz 权威固定步 | 合成目标速度、手写分离和引擎避障，写 Transform/Velocity | 每实体 Fragment |
+| 可靠状态到客户端 | 以 SoldierId 找到或按需创建本地镜像 Entity，再写 Identity/Health | 每实体 Fragment + ClientMirror Tag |
+| 10Hz Pose 到客户端 | 只更新可靠名册中已经存在的 SoldierId；未知 ID 直接丢弃 | 已有镜像的 Transform/表现缓存，不创建权威身份 |
+| 统一移动/避障配置 | 500 人共用 Movement/Avoidance 参数 | ConstSharedFragment |
+
+## 八、源码与验证边界
+
+主要源码：
+
+- `Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h/.cpp`
+- `Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp`
+- `Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp`
+- `Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp`
+
+运行证据：
+
+- `Progress/CommanderDynamicPIE-FinalReliable.log` 记录创建 500 个独立服务器权威 Mass Soldier，500/500 投射到 CommanderSoldier NavData。
+- 同一日志的 command-flow smoke 记录 `dynamic_members=25`、`moved=1813cm`、`destroyed=25`、`unknown_id=rejected`。
+- `Progress/CommanderPIEValidation.json` 记录客户端 UnitInstances=500、RingInstances=500、顶层 `errors=[]`；但其嵌套的 private probe 字段仍有 4 个 `ERROR:Exception` 字符串，不能据此把整份 JSON 概括成“零错误”。
+
+当前 `GuLiCommanderPresentationActor.cpp` 的精确文件版本修改于 01:08，晚于约 01:03 的最后一次成功 smoke；01:09 的 Live Coding 没有新的成功记录。因此本文引用的当前客户端实现属于源码审计事实，不能说它的每一行都已被现有 PIE/Automation 精确覆盖。
+
+边界：现有 18 项 Automation 主要覆盖 Cohort、Navigation 和 Network 合同，没有专门针对这些自定义 Fragment/Tag、ConstShared 组装或结构迁移的单元测试。因此本文只能说“源码实现存在，整体 PIE 流程有运行证据”，不能写成“每一种元素已有专项自动化覆盖”。
+
+## 九、读完后的检查题
+
+1. Soldier 的当前生命值应该放 Fragment 还是 SharedFragment？为什么？
+2. ServerAuthorityTag 为什么比“服务器 Entity 有 Force”这条隐含规则更可靠？
+3. 500 人相同的 MaxSpeed 为什么适合 ConstShared，而每人的 Velocity 不适合？
+4. 25 人 ControlCohort 为什么不是 ChunkFragment？
+5. `RemoveFragmentFromEntity` 之后，为什么不能继续持有原 Fragment 引用？
+
+## 关联阅读
+
+- 下一篇：[MassEntityHandle：本地句柄与网络稳定身份](./MassEntityHandle.md)
+- 后续：[MassArchetypeTypes：服务器权威体与客户端镜像为何是两套 Archetype](./MassArchetypeTypes.md)
+- 后续：[MassEntityQuery 与 ExecutionContext：避障捕获 Processor 的真实执行链](./MassEntityQuery与ExecutionContext.md)
+- 技术方案：[20260827-Mass 双端同步架构草案](../20260827-Mass双端同步架构草案.md)
+- 总归档：[20260827-Mass 动态 25 人控制组与双端平滑同步](../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)
+- 玩法记录：[指挥官](../../Gameplay/指挥官.md)

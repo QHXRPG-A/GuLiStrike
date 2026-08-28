@@ -39,11 +39,16 @@ MANIFEST_PATH = f"{PROJECT}/Data/Json/manifest.json"
 REPORT = f"{PROJECT}/Data/tmp_import_report.json"
 PROGRESS = f"{PROJECT}/Data/tmp_import_progress.log"
 
-# DT 资产名 -> BP_GuLiStrikeShip CDO 上的属性名（游戏侧接线，新系统在此登记）
+# DT 资产名 -> BP_GuLiStrikeShip CDO 上的属性名（飞船游戏侧接线）
 WIRING = {
     "DT_GuLiStrikeShip_Parts": "part_data_table",
     "DT_GuLiStrikeShip_Tuning": "tuning_data_table",
     "DT_GuLiStrikeShip_Camera": "camera_data_table",
+}
+
+# 由 C++ Config settings 通过软引用接线；成功导入后不应被误报为未接线。
+CONFIG_WIRED_TABLES = {
+    "DT_GuLiStrikeCommander_Soldiers",
 }
 
 
@@ -198,7 +203,7 @@ def import_table(table_name, table_cfg):
     return entry
 
 
-report = {"tables": [], "unwired": [], "errors": []}
+report = {"tables": [], "config_wired": [], "unwired": [], "errors": []}
 try:
     manifest = json.loads(open(MANIFEST_PATH, encoding="utf-8").read())
     imported_dts = {}
@@ -209,6 +214,9 @@ try:
         if entry.get("imported") and prop:
             imported_dts[prop] = unreal.load_object(
                 None, f"{DEST_PATH}/{table_name}.{table_name}")
+        elif entry.get("imported") and table_name in CONFIG_WIRED_TABLES:
+            report["config_wired"].append(table_name)
+            mark(f"note: {table_name} is wired through C++ config settings")
         elif prop is None:
             report["unwired"].append(f"{table_name}（WIRING 未登记，已导入但未接线）")
             mark(f"note: {table_name} not in WIRING")

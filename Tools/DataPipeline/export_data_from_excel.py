@@ -6,13 +6,14 @@
 
 表格式约定（每个 sheet）:
   第 1 行 = 列名（合法 C++ 标识符，全表唯一）
-  第 2 行 = 类型: int | float | bool | str | softclass
+  第 2 行 = 类型: int | float | bool | str | softclass | softobject
   第 3 行 = 必要性: Necessary | Optional
   第 4 行起 = 数据
   标准三列每表必有: id(int/Necessary)、name(str/Necessary)、Note(str/Optional)
   向量: PrefixX/PrefixY/PrefixZ 三个 float 列 -> FVector Prefix
   name 列 = DataTable 的 RowName（全表唯一），不生成 C++ 属性
   softclass = /Game/... 类路径 -> TSoftClassPtr<UObject>
+  softobject = /Game/... 资产路径 -> TSoftObjectPtr<UObject>
 
 产出:
   1. Data/Json/DT_{主干}_{sheet}.json    行数据（首键 "Name" = name 列值）
@@ -39,7 +40,7 @@ JSON_DIR = PROJECT / "Data/Json"
 GEN_HEADER_DIR = PROJECT / "Source/GuLiStrike/Gameplay/Data/Generated"
 MODULE = "GuLiStrike"
 
-TYPES = {"int", "float", "bool", "str", "softclass"}
+TYPES = {"int", "float", "bool", "str", "softclass", "softobject"}
 MARKS = {"Necessary", "Optional"}
 IDENT_RE = re.compile(r"^[A-Za-z_][A-Za-z0-9_]*$")
 
@@ -50,6 +51,7 @@ CPP_OF = {
     "bool": ("bool", "false"),
     "str": ("FString", None),
     "softclass": ("TSoftClassPtr<UObject>", None),
+    "softobject": ("TSoftObjectPtr<UObject>", None),
 }
 VECTOR_CPP = ("FVector", "FVector::ZeroVector")
 
@@ -145,7 +147,7 @@ def check_value(sheet, col, row_idx, raw):
         if not isinstance(raw, bool):
             raise SheetError(f"{where}: bool 列 '{col['name']}' 的值不是布尔（Excel 里用 TRUE/FALSE）: {raw!r}")
         return raw
-    # str / softclass：数字或布尔出现在字符串列 = 类型行笔误（如把 float 标成了 str）
+    # str / softclass / softobject：数字或布尔出现在字符串列 = 类型行笔误
     if isinstance(raw, (int, float, bool)):
         raise SheetError(f"{where}: 列 '{col['name']}' 标记 {t} 但单元格是 {type(raw).__name__} "
                          f"{raw!r}（检查第 2 行类型是否写错）")
@@ -225,7 +227,8 @@ def gen_header_text(stem, sheets_props):
         "// 由 Tools/DataPipeline/export_data_from_excel.py 生成。",
         "// 表结构变更（加列/新表）后重跑导出并重编译 GuLiStrike 模块。",
         "// 约定: name 列是 DataTable 行名（不生成属性）；id -> Id；",
-        "//       PrefixX/Y/Z 三列 -> FVector Prefix；softclass -> TSoftClassPtr<UObject>。",
+        "//       PrefixX/Y/Z 三列 -> FVector Prefix；softclass -> TSoftClassPtr<UObject>；",
+        "//       softobject -> TSoftObjectPtr<UObject>。",
         "// ====================================================================",
         "",
         "#pragma once",

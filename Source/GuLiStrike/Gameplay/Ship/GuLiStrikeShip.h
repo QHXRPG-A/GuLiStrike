@@ -51,6 +51,29 @@ struct FGuLiStrikeStatModifier
 	float AccelerationMultiplier = 1.0f;
 };
 
+/**
+ * Server-authored GM.Runtime state replicated as one property so clients never
+ * observe a speed multiplier from one revision and an acceleration multiplier
+ * from another.
+ */
+USTRUCT()
+struct FGuLiShipGMRuntimeReplicatedState
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	float MaxSpeedMultiplier = 1.0f;
+
+	UPROPERTY()
+	float AccelerationMultiplier = 1.0f;
+
+	UPROPERTY()
+	uint32 Revision = 0u;
+
+	UPROPERTY()
+	bool bActive = false;
+};
+
 /** 已安装部件的内部记录 */
 struct FGuLiStrikeInstalledPart
 {
@@ -171,6 +194,10 @@ protected:
 	/** 生效中的数值修饰列表（超载/减速等）；仅 RecomputeStats 依据它写移动参数 */
 	UPROPERTY(BlueprintReadWrite, Category="Ship|Stats")
 	TArray<FGuLiStrikeStatModifier> StatModifiers;
+
+	/** Server-owned atomic state for the reserved GM.Runtime modifier layer. */
+	UPROPERTY(ReplicatedUsing=OnRep_GMRuntimeState)
+	FGuLiShipGMRuntimeReplicatedState GMRuntimeState;
 
 	/** 裸舰体质量（不含任何部件） */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Stats", meta=(ClampMin = 1))
@@ -312,6 +339,9 @@ protected:
 	/** 最近一次数值重算后的当前极速 */
 	float CurrentMaxSpeed = 0.0f;
 
+	/** Prevents replicated/World-subsystem GM state from firing stat events before BeginPlay setup. */
+	bool bRuntimeStatsInitialized = false;
+
 public:
 
 	/** 构造函数 */
@@ -319,6 +349,8 @@ public:
 
 	/** 每帧更新：依据推进意图自动转向（倒退/纯侧移除外） */
 	virtual void Tick(float DeltaTime) override;
+
+	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
 protected:
 
@@ -388,6 +420,9 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category="Ship", meta=(DisplayName = "Stats Changed"))
 	void BP_OnStatsChanged();
 
+	UFUNCTION()
+	void OnRep_GMRuntimeState();
+
 public:
 
 	/** 在舰体 socket 上安装指定类的部件，替换该槽位上已有的部件 */
@@ -422,6 +457,17 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Ship|Stats")
 	void RemoveStatModifier(FName Name);
 
+	/** 设置保留的 GM.Runtime 修饰层；不会覆盖其它 Gameplay Modifier。 */
+	bool SetGMRuntimeMultipliers(float MaxSpeedMultiplier, float AccelerationMultiplier);
+
+	/** 仅移除保留的 GM.Runtime 修饰层。 */
+	void ClearGMRuntimeMultipliers();
+
+	/** 查询 GM.Runtime 修饰层，供非 Shipping GM 注册表和自动化验证使用。 */
+	bool GetGMRuntimeMultipliers(float& OutMaxSpeedMultiplier, float& OutAccelerationMultiplier) const;
+
+	uint32 GetGMRuntimeTuningRevision() const { return GMRuntimeState.Revision; }
+
 	/** 部件被外部直接销毁时由部件回调：同步注册表并重算数值 */
 	void NotifyPartDestroyed(UGuLiStrikeShipPartComponent* Part);
 
@@ -438,6 +484,9 @@ public:
 	float GetCurrentMaxSpeed() const { return CurrentMaxSpeed; }
 
 private:
+
+	/** Rebuilds exactly one reserved modifier entry from the replicated state. */
+	void ApplyGMRuntimeStateLocally(bool bRecompute = true);
 
 	/** 在与该 socket 兼容的目录条目内循环切换此槽位的部件 */
 	bool CyclePartAtSocket(UClass* PartClass, FName SocketName);

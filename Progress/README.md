@@ -19,7 +19,8 @@
 
 | 日期 | 名称 | 需求 | 开发 |
 |---|---|---|---|
-| 2026-08-27 | Mass 双端同步架构（25 人基本指挥单位） | [需求](./RequirementDocument/20260827-Mass双端同步架构草案.md) | [开发](./DevelopmentDocumentation/20260827-Mass双端同步架构草案.md) |
+| 2026-08-28 | 指挥官 3C、Soldier 数据化与运行时 GM 调参 | [需求](./RequirementDocument/20260828-指挥官3C与运行时GM调参.md) | [开发](./DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) |
+| 2026-08-27 | Mass 双端同步架构（动态 25 人控制粒度） | [需求](./RequirementDocument/20260827-Mass双端同步架构草案.md) | [开发](./DevelopmentDocumentation/20260827-Mass双端同步架构草案.md) |
 | 2026-08-27 | 飞船与场景模型尺寸归一 | [需求](./RequirementDocument/20260827-飞船与场景模型尺寸归一.md) | [开发](./DevelopmentDocumentation/20260827-飞船与场景模型尺寸归一.md) |
 | 2026-08-26 | 5v5 大战场玩法草案 | [需求](./RequirementDocument/20260826-5v5大战场玩法草案.md) | —（策划草案阶段） |
 | 2026-08-24 | Mass 框架启用与源码导读（大规模部队技术预研） | —（对话演进出的技术方向，未立需求文档） | [开发](./DevelopmentDocumentation/20260824-Mass框架启用与源码导读.md) |
@@ -31,6 +32,9 @@
 
 | 日期 | 事项 |
 |---|---|
+| 2026-08-28 | **[Commander 指令术语统一：Request=请求、Command=网络命令、Order=单位指令/移动指令、MoveTarget=移动目标；开发文档与玩法总册完成整改](./Archive/20260828-Commander指令术语统一.md)** |
+| 2026-08-28 | **[指挥官 3C、Soldier 数据化与运行时 GM 调参：36m/s 表驱动 Soldier、远距 Landscape 点选、共享目标松散到达、heading-up 小地图、7-key World GM Registry 与 Ship 原子复制](./Archive/20260828-指挥官3C与运行时GM调参.md)** |
+| 2026-08-27 | **[Mass 动态 25 人控制组与双端平滑同步：500 名独立士兵、服务端动态编组与权威移动、10Hz 精确姿态帧、客户端 Hermite 插值/短时预测、共享 NavMesh 编队移动及指挥官 UI](./Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)** |
 | 2026-08-27 | **[飞船与场景模型尺寸归一：Dreadnought/无人机/机器人缩放烘焙进资源，2/1/128 实例归一为 Scale 1；当前飞船子根取消 0.3、相机按 5/3 更新并修正 PlayerStart 出生高度](./Archive/20260827-飞船与场景模型尺寸归一.md)** |
 | 2026-08-26 | **[动画资产回退：walkcycle 四件套/演示 Actor/Blender Action 全删，用户改为自己在 UE 内制作动画；管线教程保留作参考](./Archive/20260826-动画资产回退-用户改为UE内自制.md)** |
 | 2026-08-26 | **[WM01 程序化六足行走动画管线：Blender 脚本三角步态 K 帧（48 帧闭环）→ 后台 GLB 导出 → UE AnimSequence 入库并播放验证，附完整教程](./Archive/20260826-WM01程序化六足行走动画管线.md)**（教程：[DevelopmentDocumentation](./DevelopmentDocumentation/20260826-WM01程序化六足行走动画-Blender到UE管线教程.md)） |
@@ -51,5 +55,6 @@
 
 | 模块 | 文档 |
 |---|---|
+| 指挥官 | [指挥官](./Gameplay/指挥官.md) |
 | 飞船 | [飞船](./Gameplay/飞船.md) |
 | 战斗 | [战斗](./Gameplay/战斗.md) |
