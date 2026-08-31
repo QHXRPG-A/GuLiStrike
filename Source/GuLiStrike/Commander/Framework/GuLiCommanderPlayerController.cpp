@@ -3,7 +3,7 @@
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
-#include "Commander/Framework/GuLiCommanderPlayerState.h"
+#include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 #include "Commander/Presentation/GuLiCommanderHUD.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
@@ -78,28 +78,24 @@ bool GuLiCommanderToolPolicy::AllowsWorldIntent(const bool bCursorOverCommanderU
 	return !bCursorOverCommanderUI;
 }
 
-AGuLiCommanderPlayerController::AGuLiCommanderPlayerController()
+AGuLiCommanderPlayerController::AGuLiCommanderPlayerController(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UGuLiCommanderNetSyncComponent>(PlayerNetSyncComponentName))
 {
-	bShowMouseCursor = true;
-	bEnableClickEvents = true;
-	bEnableMouseOverEvents = true;
+	bShowMouseCursor = false;
+	bEnableClickEvents = false;
+	bEnableMouseOverEvents = false;
 	DefaultMouseCursor = EMouseCursor::Default;
 	HitResultTraceDistance = GuLiCommanderCursorTrace::MaximumGroundTraceDistanceCentimeters;
 
-	NetSyncComponent = CreateDefaultSubobject<UGuLiCommanderNetSyncComponent>(TEXT("CommanderNetSync"));
+	// 替换公共默认子对象的具体类型；旧属性继续指向同一个对象，不再额外创建组件。
+	NetSyncComponent = CastChecked<UGuLiCommanderNetSyncComponent>(GetPlayerNetSyncComponent());
 }
 
 void AGuLiCommanderPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
 
-	if (IsLocalController())
-	{
-		FInputModeGameAndUI InputMode;
-		InputMode.SetHideCursorDuringCapture(false);
-		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-		SetInputMode(InputMode);
-	}
+	UpdateCommanderInputMode();
 }
 
 void AGuLiCommanderPlayerController::SetupInputComponent()
@@ -110,23 +106,28 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 		return;
 	}
 
-	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor);
-	InputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor);
-	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleCancelInput);
-	InputComponent->BindKey(EKeys::One, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleArmMoveToolInput);
-	InputComponent->BindKey(EKeys::Seven, IE_Pressed, this, &AGuLiCommanderPlayerController::ActivateSelectionTool);
-	InputComponent->BindKey(EKeys::Add, IE_Pressed, this, &AGuLiCommanderPlayerController::StepSelectionRadiusUp);
-	InputComponent->BindKey(FInputChord(EKeys::Equals, true, false, false, false), IE_Pressed, this, &AGuLiCommanderPlayerController::StepSelectionRadiusUp);
-	InputComponent->BindKey(EKeys::MouseScrollUp, IE_Pressed, this, &AGuLiCommanderPlayerController::ZoomCameraIn);
-	InputComponent->BindKey(EKeys::MouseScrollDown, IE_Pressed, this, &AGuLiCommanderPlayerController::ZoomCameraOut);
+	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleCancelInput).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::One, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleArmMoveToolInput).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::Seven, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleActivateSelectionToolInput).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::Add, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleStepSelectionRadiusInput).bConsumeInput = false;
+	InputComponent->BindKey(FInputChord(EKeys::Equals, true, false, false, false), IE_Pressed, this, &AGuLiCommanderPlayerController::HandleStepSelectionRadiusInput).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::MouseScrollUp, IE_Pressed, this, &AGuLiCommanderPlayerController::ZoomCameraIn).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::MouseScrollDown, IE_Pressed, this, &AGuLiCommanderPlayerController::ZoomCameraOut).bConsumeInput = false;
 }
 
 void AGuLiCommanderPlayerController::PlayerTick(const float DeltaTime)
 {
 	Super::PlayerTick(DeltaTime);
 
+	UpdateCommanderInputMode();
+	if (!IsCommanderViewActive())
+	{
+		bHasCursorGroundLocation = false;
+		return;
+	}
 	bHasCursorGroundLocation = TraceGroundUnderCursor(CachedCursorGroundLocation);
-	UpdateBootstrapRetry();
 	if (GuLiCommanderToolPolicy::ResolveModeForSelectionAvailability(
 		CommanderToolMode,
 		HasConfirmedSelection()) != CommanderToolMode)
@@ -139,10 +140,11 @@ void AGuLiCommanderPlayerController::PlayerTick(const float DeltaTime)
 
 bool AGuLiCommanderPlayerController::CanIssueCommanderOrders() const
 {
-	const AGuLiCommanderPlayerState* CommanderPlayerState = GetPlayerState<AGuLiCommanderPlayerState>();
+	const AGuLiBattlePlayerState* CommanderPlayerState = GetPlayerState<AGuLiBattlePlayerState>();
 	return CommanderPlayerState
 		&& CommanderPlayerState->IsCommander()
-		&& CommanderPlayerState->IsSyncReady();
+		&& NetSyncComponent && NetSyncComponent->IsConnectionReady()
+		&& NetSyncComponent->IsSoldierStreamReady();
 }
 
 void AGuLiCommanderPlayerController::ActivateSelectionTool()
@@ -235,6 +237,11 @@ bool AGuLiCommanderPlayerController::GetActiveCommandLine(
 
 void AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor()
 {
+	if (!IsCommanderViewActive())
+	{
+		return;
+	}
+
 	if (CommanderToolMode == EGuLiCommanderToolMode::Move)
 	{
 		const bool bMoveSubmitted = TryIssueMoveAtCursor();
@@ -252,6 +259,11 @@ void AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor()
 
 void AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor()
 {
+	if (!IsCommanderViewActive())
+	{
+		return;
+	}
+
 	const bool bMoveSubmitted = TryIssueMoveAtCursor();
 	if (GuLiCommanderToolPolicy::ResolveModeAfterMoveAttempt(
 		CommanderToolMode,
@@ -261,13 +273,42 @@ void AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor()
 	}
 }
 
+// 只在本地指挥角色中解释这些快捷键；共享 helper 本身不绑定 World/PlayerState。
+void AGuLiCommanderPlayerController::HandleActivateSelectionToolInput()
+{
+	if (!IsCommanderViewActive())
+	{
+		return;
+	}
+	ActivateSelectionTool();
+}
+
+void AGuLiCommanderPlayerController::HandleStepSelectionRadiusInput()
+{
+	if (!IsCommanderViewActive())
+	{
+		return;
+	}
+	StepSelectionRadiusUp();
+}
+
 void AGuLiCommanderPlayerController::HandleArmMoveToolInput()
 {
+	if (!IsCommanderViewActive())
+	{
+		return;
+	}
+
 	ArmMoveTool();
 }
 
 void AGuLiCommanderPlayerController::HandleCancelInput()
 {
+	if (!IsCommanderViewActive())
+	{
+		return;
+	}
+
 	if (GuLiCommanderToolPolicy::ResolveCancelAction(CommanderToolMode)
 		== GuLiCommanderToolPolicy::ECancelAction::CancelMove)
 	{
@@ -399,6 +440,11 @@ bool AGuLiCommanderPlayerController::HasConfirmedSelection() const
 
 void AGuLiCommanderPlayerController::ZoomCameraIn()
 {
+	if (!IsCommanderViewActive())
+	{
+		return;
+	}
+
 	if (AGuLiCommanderCameraPawn* CameraPawn = GetPawn<AGuLiCommanderCameraPawn>())
 	{
 		CameraPawn->AddZoomInput(-1.0f);
@@ -407,6 +453,11 @@ void AGuLiCommanderPlayerController::ZoomCameraIn()
 
 void AGuLiCommanderPlayerController::ZoomCameraOut()
 {
+	if (!IsCommanderViewActive())
+	{
+		return;
+	}
+
 	if (AGuLiCommanderCameraPawn* CameraPawn = GetPawn<AGuLiCommanderCameraPawn>())
 	{
 		CameraPawn->AddZoomInput(1.0f);
@@ -545,34 +596,48 @@ uint32 AGuLiCommanderPlayerController::AllocateMoveCommandId()
 	return Result;
 }
 
-// 本地两秒重试负责登录先于名册创建等情况；服务器可重发同一代次标记。
-void AGuLiCommanderPlayerController::UpdateBootstrapRetry()
+bool AGuLiCommanderPlayerController::IsCommanderViewActive() const
 {
-	if (!IsLocalController() || !NetSyncComponent || !GetWorld())
-	{
-		return;
-	}
-
-	const AGuLiCommanderPlayerState* CommanderPlayerState = GetPlayerState<AGuLiCommanderPlayerState>();
-	if (!CommanderPlayerState || CommanderPlayerState->IsSyncReady())
-	{
-		return;
-	}
-
-	const double Now = GetWorld()->GetTimeSeconds();
-	if (Now < NextBootstrapRetryTime)
-	{
-		return;
-	}
-
-	NetSyncComponent->ServerRequestBootstrap(NextBootstrapRequestId++);
-	if (NextBootstrapRequestId == 0u)
-	{
-		NextBootstrapRequestId = 1u;
-	}
-	NextBootstrapRetryTime = Now + 2.0;
+	const AGuLiBattlePlayerState* BattlePlayerState = GetPlayerState<AGuLiBattlePlayerState>();
+	return IsLocalController() && BattlePlayerState && BattlePlayerState->IsCommander();
 }
 
+void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
+{
+	if (!IsLocalController())
+	{
+		return;
+	}
+	const bool bShouldEnable = IsCommanderViewActive();
+	if (bCommanderInputModeInitialized && bCommanderInputActive == bShouldEnable)
+	{
+		return;
+	}
+	bCommanderInputModeInitialized = true;
+	bCommanderInputActive = bShouldEnable;
+	// HUD 可能晚于 PC 创建，由其 BeginPlay 补齐；角色切换释放不等待 DrawHUD。
+	if (AGuLiCommanderHUD* CommanderHUD = Cast<AGuLiCommanderHUD>(GetHUD()))
+	{
+		CommanderHUD->RefreshCommanderRole();
+	}
+	bShowMouseCursor = bShouldEnable;
+	bEnableClickEvents = bShouldEnable;
+	bEnableMouseOverEvents = bShouldEnable;
+	if (bShouldEnable)
+	{
+		FInputModeGameAndUI InputMode;
+		InputMode.SetHideCursorDuringCapture(false);
+		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+		SetInputMode(InputMode);
+	}
+	else
+	{
+		SetInputMode(FInputModeGameOnly());
+		CommandLineState = EGuLiCommandLineState::None;
+		PendingMoveCommandId = 0u;
+		ActivateSelectionTool();
+	}
+}
 void AGuLiCommanderPlayerController::UpdateCameraInput(const float DeltaTime)
 {
 	AGuLiCommanderCameraPawn* CameraPawn = GetPawn<AGuLiCommanderCameraPawn>();

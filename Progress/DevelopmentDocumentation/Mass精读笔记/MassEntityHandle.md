@@ -1,20 +1,24 @@
 # 精读笔记：MassEntityHandle.h —— 本地运行时句柄与 SoldierId 的分工
 
-> 重写日期：2026-08-28
+> 源码核对日期：2026-08-31（原笔记始于 2026-08-28）
 >
 > 引擎基线：Unreal Engine 5.7.4，CL 51494982
 >
 > 引擎原文件：`C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassEntityHandle.h`
 >
-> 项目样本：2026-08-27 新增的 Commander 服务器权威实现；客户端 Presentation 源文件在 8 月 28 日 01:08 跨午夜续改。
 >
-> Git 边界：`Source/GuLiStrike/Commander/` 当前仍未提交；日期归属来自文件时间、归档与日志，不是 Git commit 的逐行差异。
+>
+> 项目基线：当前工作区源码，包含公共 Battle 提取及已有未提交修改；历史运行记录与本次静态核对分开列示。
+>
+> 阅读约定：源码摘录可省略外围代码；概念化定义、假设用法与错误示例明确标作“示意代码”，不表示项目已实现。
+
+[Mass 阅读目录](./README.md) · [UE 网络教材](../UE网络教材/README.md)
 
 ## 一句话结论
 
 `FMassEntityHandle` 是某个 `FMassEntityManager` 内定位 Entity 的 8 字节运行时钥匙，不是网络身份、不是指针，也不是永久 ID。
 
-昨天的 Commander 实现把这个边界落得很清楚：
+当前的 Commander 实现把这个边界落得很清楚：
 
 - 服务器用 `FMassEntityHandle` 访问本地 Mass Fragment。
 - 选择、指令、可靠状态和 10Hz 姿态流使用 `FGuLiSoldierId`。
@@ -24,6 +28,8 @@
 ## 一、引擎句柄只有 Index 和 SerialNumber
 
 UE 5.7.4 的核心定义：
+
+> **示意代码**：按 [FMassEntityHandle](<C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassEntityHandle.h>) 提炼相关声明，省略其他成员与导出标记。
 
 ~~~cpp
 USTRUCT()
@@ -73,6 +79,8 @@ static_assert(alignof(FMassEntityHandle) == sizeof(uint64));
 
 所以：
 
+> **示意代码**：只演示 Handle 自身的非零检查。
+
 ~~~cpp
 if (Entity.IsValid())
 {
@@ -82,6 +90,8 @@ if (Entity.IsValid())
 
 不等于：
 
+> **示意代码**：演示向拥有该实体的 EntityManager 查询；不代表任意 Handle 都安全。
+
 ~~~cpp
 if (EntityManager.IsEntityValid(Entity))
 {
@@ -89,43 +99,40 @@ if (EntityManager.IsEntityValid(Entity))
 }
 ~~~
 
-昨天的项目代码使用的是第二种。
+项目对跨帧、清理等不确定句柄使用第二种；部分内部路径依赖生命周期不变量直接 Checked 访问，不代表可以普遍省略验证。
 
-## 二、昨天的服务器 Soldier 同时保存 Handle 与稳定 ID
+## 二、当前的服务器 Soldier 同时保存 Handle 与稳定 ID
 
 源码：`Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp`
 
+> **当前源码摘录**：[FSoldierRuntime 的身份、数值和指令字段](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+
 ~~~cpp
-struct FSoldierRuntime
-{
-    FMassEntityHandle Entity;
-    FGuLiSoldierId SoldierId;
-    EGuLiTeam Team = EGuLiTeam::Unassigned;
-    FVector Location = FVector::ZeroVector;
-    FVector Velocity = FVector::ZeroVector;
-    float FacingYawDegrees = 0.0f;
-    uint8 Health = 100u;
-    uint32 StateRevision = 1u;
-    uint32 ActiveOrderId = 0u;
-    // ...
-};
+FMassEntityHandle Entity;
+FGuLiSoldierId SoldierId;
+EGuLiTeam Team = EGuLiTeam::Unassigned;
+FVector Location = FVector::ZeroVector;
+FVector Velocity = FVector::ZeroVector;
+float FacingYawDegrees = 0.0f;
+uint8 Health = 100u;
+uint8 MaxHealth = 100u;
+float AttackPower = 0.0f;
+float Defense = 0.0f;
+float AttackRangeCentimeters = 0.0f;
+// StateRevision 标识离散状态变化；ActiveOrderId 指向当前批次，0 表示无活动指令。
+uint32 StateRevision = 1u;
+uint32 ActiveOrderId = 0u;
 ~~~
 
-公共头文件还直接写明边界：
+公共头文件将它声明为 WorldSubsystem；控制组和编队仍是服务器记录，Handle 不进入网络协议：
+
+> **当前源码摘录**：[UGuLiBattleAuthoritySubsystem 声明起始；余下成员省略](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h)。
 
 ~~~cpp
-/**
- * Server-only authority for 500 independently identified Mass Soldiers.
- *
- * ControlCohorts and OrderFormations are transient server records. FMassEntityHandle
- * remains private to this subsystem and never crosses the network contract boundary.
- */
 UCLASS(Config = Game)
-class GULISTRIKE_API UGuLiBattleAuthoritySubsystem final
-    : public UTickableWorldSubsystem
+class GULISTRIKE_API UGuLiBattleAuthoritySubsystem final : public UTickableWorldSubsystem
 {
-    // ...
-};
+    GENERATED_BODY()
 ~~~
 
 这里不是重复存两份“ID”：
@@ -136,6 +143,8 @@ class GULISTRIKE_API UGuLiBattleAuthoritySubsystem final
 ## 三、为什么网络一定使用 FGuLiSoldierId
 
 源码：`Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h`
+
+> **当前源码摘录**：[FGuLiSoldierId](D:/UE5.7/test1/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h)。
 
 ~~~cpp
 /** Stable, match-local soldier identity. Zero is invalid and values are never reused in a match. */
@@ -166,6 +175,8 @@ struct GULISTRIKE_API FGuLiSoldierId
 
 它的网络序列化实现：
 
+> **当前源码摘录**：[FGuLiSoldierId::NetSerialize](D:/UE5.7/test1/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp)。
+
 ~~~cpp
 bool FGuLiSoldierId::NetSerialize(
     FArchive& Ar,
@@ -183,7 +194,7 @@ bool FGuLiSoldierId::NetSerialize(
 
 - SelectionState 与动态 ControlCohort 成员列表。
 - 服务器内部 ControlCohort 与 OrderFormation 的成员列表。
-- 可靠 Soldier FastArray。
+- Soldier FastArray 属性状态；保证状态收敛，不逐次通知全部中间变化。
 - 不可靠 PoseChunk。
 - 客户端表现、选中脚环和 ISM 实例映射。
 
@@ -195,12 +206,13 @@ bool FGuLiSoldierId::NetSerialize(
 
 源码：`UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation`
 
+> **当前源码摘录**：[TrySpawnAuthorityPopulation](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+
 ~~~cpp
 TArray<FMassEntityHandle> EntityHandles;
 EntityHandles.Reserve(TotalSoldierCount);
 
-TSharedRef<FMassEntityManager::FEntityCreationContext> CreationContext =
-    EntityManager.BatchCreateEntities(
+TSharedRef<FMassEntityManager::FEntityCreationContext> CreationContext = EntityManager.BatchCreateEntities(
         AuthorityState->AuthorityArchetype,
         SharedValues,
         TotalSoldierCount,
@@ -218,21 +230,17 @@ if (EntityHandles.Num() != TotalSoldierCount)
 }
 ~~~
 
-代码没有使用 `UMassSpawner`。它直接创建 Archetype，再一次批量创建 500 个 Entity。
+代码没有使用 `UMassSpawner`。发布组件启用士兵模拟、世界与专用导航就绪后，Authority 直接创建 Archetype，再批量创建 500 个 Entity；创建子系统本身不保证已经有人口。
 
 随后每个 Handle 被绑定到一个新的 SoldierId：
+
+> **当前源码摘录**：[TrySpawnAuthorityPopulation 的逐兵身份初始化](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 FSoldierRuntime& Soldier = AuthorityState->Soldiers.AddDefaulted_GetRef();
 Soldier.Entity = EntityHandles[EntityIndex++];
-Soldier.SoldierId =
-    FGuLiSoldierId(AllocateNonZero(AuthorityState->NextSoldierId));
+Soldier.SoldierId = FGuLiSoldierId(AllocateNonZero(AuthorityState->NextSoldierId));
 Soldier.Team = Team;
-
-const int32 SoldierIndex = AuthorityState->Soldiers.Num() - 1;
-AuthorityState->SoldierIndexById.Add(
-    Soldier.SoldierId.Value,
-    SoldierIndex);
 ~~~
 
 这里形成两条索引路径：
@@ -252,6 +260,8 @@ AuthorityState->SoldierIndexById.Add(
 
 固定步遍历中的代码：
 
+> **当前源码摘录**：[TickAuthority](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+
 ~~~cpp
 FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
 if (!EntityManager.IsEntityValid(Soldier.Entity))
@@ -259,8 +269,7 @@ if (!EntityManager.IsEntityValid(Soldier.Entity))
     continue;
 }
 
-FGuLiMassHealthFragment& Health =
-    EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(
+FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(
         Soldier.Entity);
 ~~~
 
@@ -276,16 +285,19 @@ FGuLiMassHealthFragment& Health =
 
 客户端头文件保存：
 
+> **当前源码摘录**：[AGuLiCommanderPresentationActor 的镜像成员](D:/UE5.7/test1/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h)。
+
 ~~~cpp
 FMassArchetypeHandle ClientMirrorArchetype;
 TMap<FGuLiSoldierId, FMassEntityHandle> ClientMirrorEntities;
 ~~~
 
-客户端收到可靠 Soldier 状态后，按 SoldierId 查本地 Handle；如果旧 Handle 已失效，就移除映射并创建新的本地 Entity：
+客户端收到 Soldier FastArray 状态后，按 SoldierId 查本地 Handle；如果旧 Handle 已失效，就移除映射并创建新的本地 Entity：
+
+> **当前源码摘录**：[EnsureClientMirrorEntity](D:/UE5.7/test1/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp)。
 
 ~~~cpp
-if (const FMassEntityHandle* Existing =
-        ClientMirrorEntities.Find(ReliableState.SoldierId))
+if (const FMassEntityHandle* Existing = ClientMirrorEntities.Find(ReliableState.SoldierId))
 {
     if (EntityManager.IsEntityValid(*Existing))
     {
@@ -294,19 +306,16 @@ if (const FMassEntityHandle* Existing =
     ClientMirrorEntities.Remove(ReliableState.SoldierId);
 }
 
-const FMassEntityHandle Entity =
-    EntityManager.CreateEntity(ClientMirrorArchetype);
+const FMassEntityHandle Entity = EntityManager.CreateEntity(ClientMirrorArchetype);
 if (!EntityManager.IsEntityValid(Entity))
 {
     return;
 }
 
-FGuLiMassIdentityFragment& Identity =
-    EntityManager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(Entity);
+FGuLiMassIdentityFragment& Identity = EntityManager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(Entity);
 Identity.SoldierId = ReliableState.SoldierId;
 Identity.Team = ReliableState.Team;
-FGuLiMassHealthFragment& Health =
-    EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Entity);
+FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Entity);
 Health.Health = ReliableState.Health;
 Health.bDead = !ReliableState.IsAlive();
 Health.WreckSecondsRemaining = 0.0f;
@@ -316,7 +325,7 @@ EntityManager.GetFragmentDataChecked<FTransformFragment>(Entity)
 ClientMirrorEntities.Add(ReliableState.SoldierId, Entity);
 ~~~
 
-这段 Presentation 源文件在 8 月 27 日创建、8 月 28 日 01:08 续改；因为目录尚未提交，无法恢复逐行归属，本文按昨夜开发后的当前实现解释。
+这里的创建发生在合法名册驱动的表现重建流程；姿态包不能凭未知 SoldierId 创建身份。`UpdateNetworkPresentationSource` 发现连接、PlayerState、Replicator、战局、代次或就绪边沿变化时，清理样本、预测和全部旧镜像，之后再使用新名册重建映射。
 
 完整关系是：
 
@@ -326,26 +335,18 @@ ClientMirrorEntities.Add(ReliableState.SoldierId, Entity);
 | 客户端 Mirror World | SoldierId=42 | 可能是 Index=19、Serial=44 |
 | 第二个客户端 | SoldierId=42 | 又可能是另一组数值 |
 
-只有 SoldierId=42 能跨端表达“同一名 Soldier”。在同一个 EntityManager 内，Handle 可以正常复制、比较、哈希并作为 `TMap` 键；禁止的是把它复制到另一个 World/EntityManager 后，再通过 Handle 数值比较来认定同一业务对象。
+只有在相同战局范围内，SoldierId=42 才能跨端表达“同一名 Soldier”；它不是 BattlePlayerState 的玩家 GUID 或席位。在同一个 EntityManager 内，Handle 可以正常复制、比较、哈希并作为 `TMap` 键；禁止的是把它复制到另一个 World/EntityManager 后，再通过 Handle 数值比较来认定同一业务对象。
 
 ## 七、Archetype 迁移不会更换 Entity Handle
 
 真实死亡流程：
 
-~~~cpp
-FGuLiMassHealthFragment& Health =
-    EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(
-        Soldier.Entity);
-Health.Health = Soldier.Health;
-Health.bDead = Soldier.Health == 0u;
+> **当前源码摘录**：[ApplyDamage 的死亡分支末尾；此前已更新生命和指令](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
-if (Soldier.Health == 0u)
-{
-    // 停止当前指令与速度……
-    EntityManager.RemoveFragmentFromEntity(
-        Soldier.Entity,
-        FMassNavigationObstacleGridCellLocationFragment::StaticStruct());
-}
+~~~cpp
+EntityManager.RemoveFragmentFromEntity(
+    Soldier.Entity,
+    FMassNavigationObstacleGridCellLocationFragment::StaticStruct());
 ~~~
 
 `RemoveFragmentFromEntity` 是结构修改。Mass 会把 Entity 从原 Archetype 搬到一个不含该 Fragment 的 Archetype，但：
@@ -355,6 +356,8 @@ if (Soldier.Health == 0u)
 - 旧 Archetype/Chunk 中的物理位置和数据地址会变化。
 
 后续 30Hz 固定步仍用同一 Handle 读取 Health，并更新 5 秒残骸倒计时：
+
+> **当前源码摘录**：[TickAuthority](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 if (!Soldier.IsAlive())
@@ -369,8 +372,7 @@ if (!Soldier.IsAlive())
     if (!Soldier.bWreckExpired
         && Health.WreckSecondsRemaining <= 0.0f)
     {
-        FTransformFragment& Transform =
-            EntityManager.GetFragmentDataChecked<FTransformFragment>(
+        FTransformFragment& Transform = EntityManager.GetFragmentDataChecked<FTransformFragment>(
                 Soldier.Entity);
         FTransform HiddenTransform = Transform.GetTransform();
         HiddenTransform.SetScale3D(FVector::ZeroVector);
@@ -387,25 +389,22 @@ if (!Soldier.IsAlive())
 
 服务器清理人口：
 
+> **当前源码摘录**：[DestroyAuthorityPopulation 的实体收集与销毁；外层条件见原函数](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+
 ~~~cpp
 TArray<FMassEntityHandle> Entities;
 Entities.Reserve(AuthorityState->Soldiers.Num());
-
-for (const FSoldierRuntime& Soldier : AuthorityState->Soldiers)
+for (const GuLiCommanderMassPrivate::FSoldierRuntime& Soldier : AuthorityState->Soldiers)
 {
     if (EntityManager.IsEntityValid(Soldier.Entity))
     {
         Entities.Add(Soldier.Entity);
     }
 }
-
 if (!Entities.IsEmpty())
 {
     EntityManager.BatchDestroyEntities(Entities);
 }
-
-AuthorityState->Soldiers.Reset();
-AuthorityState->SoldierIndexById.Reset();
 ~~~
 
 客户端镜像清理采用同一模式：
@@ -420,6 +419,8 @@ AuthorityState->SoldierIndexById.Reset();
 ## 九、Handle 自身还提供了什么
 
 ### 相等与哈希
+
+> **示意代码**：提炼 [相等与哈希](<C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassEntityHandle.h>) 的相关成员，省略导出宏与中间声明。
 
 ~~~cpp
 bool operator==(const FMassEntityHandle Other) const
@@ -437,6 +438,8 @@ friend uint32 GetTypeHash(const FMassEntityHandle Entity)
 所以 `TMap<FMassEntityHandle, TValue>` 在本地运行时可用，但查到后仍可能需要向 EntityManager 验证。
 
 ### 排序
+
+> **引擎源码摘录**：[FMassEntityHandle::operator<](<C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassEntityHandle.h>)。
 
 ~~~cpp
 bool operator<(const FMassEntityHandle Other) const
@@ -458,16 +461,16 @@ bool operator<(const FMassEntityHandle Other) const
 3. 对来自外部、缓存、跨帧或清理路径的“不确定 Handle”，访问前用 `EntityManager.IsEntityValid`，不要只看 `Handle.IsValid()`。
 4. 对生命周期受控、由当前内部状态保证有效的路径，项目也会直接调用 `GetFragmentDataChecked`；这是依赖 Archetype 与生命周期不变量的 checked 合同，违反时会断言，而不是普遍免检规则。
 5. 结构修改后不保留旧 Fragment 引用、数组 View 或 Chunk 内位置。
-6. 世界结束、实体销毁、失败回滚时批量销毁并清空业务映射。
+6. 世界结束、士兵模块停用、实体销毁或失败回滚时清理实体和映射；客户端还必须处理同步源失效。
 7. 不把 Handle 的 Index、SerialNumber 或 AsNumber 作为 SoldierId、CohortId、OrderId 或网络键。
 
 ## 十一、验证边界
 
-`CommanderDynamicPIE-FinalReliable.log` 证明当前流程曾创建 500 个服务器权威 Mass Soldier，并通过动态 25 人选择、移动、摧毁与未知 SoldierId 拒绝 smoke。`CommanderPIEValidation.json` 记录客户端 500 个 Unit/Ring 实例。
+**当前源码：** 本次只核对当前项目与本机 UE 5.7.4 源码，没有重新编译、启动 PIE 或执行网络测试。
 
-当前 `GuLiCommanderPresentationActor.cpp` 在 01:08 续改，晚于约 01:03 的最后一次成功 smoke；随后 01:09 的 Live Coding 没有新的成功记录。因此客户端 Handle 映射的当前精确代码属于源码审计事实，不应表述成已被现有运行证据逐行覆盖。
+**历史验证：** [2026-08-27 总归档](../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)保存了当时 500 兵、动态选兵与移动冒烟的记录；原始临时日志和 JSON 已清理，不能再把它们列成可读取的现存证据。[2026-08-31 公共框架归档](../../Archive/20260831-公共战局框架与三类角色接入.md)记录冷编译成功、现有测试 50/50 通过及混合战局联调。NetworkGate 最终 ACK P95=138.1ms 达标，但未标记硬跳变 1 次，整体验收仍未通过；本次文档修订没有修复该问题。
 
-但现有 Automation 没有为 Handle 代际复用、BatchCreate/Destroy 或服务器/客户端 Handle 隔离建立专项测试。上述规则一部分来自 UE 5.7.4 引擎合同，一部分来自项目源码审计；不能把它们写成“已有 Handle 专项自动化验证”。
+**专项边界：** 50 项测试不代表 Handle 代际复用、BatchCreate/Destroy 或跨 Manager 隔离都有专项覆盖；访问规则依靠引擎合同及项目生命周期审查。
 
 ## 关联阅读
 

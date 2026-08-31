@@ -1,18 +1,22 @@
 # 精读笔记：MassEntityQuery 与 ExecutionContext —— 避障捕获 Processor 的真实执行链
 
-> 重写日期：2026-08-28
+> 源码核对日期：2026-08-31（原笔记始于 2026-08-28）
 >
 > 引擎基线：Unreal Engine 5.7.4，CL 51494982
 >
 > 引擎原文件：`MassEntity/Public/MassEntityQuery.h`、`MassExecutionContext.h`、`MassRequirements.h`
 >
-> 项目样本：2026-08-27 新增的 `UGuLiCommanderAvoidanceCaptureProcessor` 与服务器 30Hz Authority 固定步。
 >
-> Git 边界：Commander 目录当前仍未提交；日期归属依据文件时间、当天归档和日志，不是 Git commit 的逐行历史。
+>
+> 项目基线：当前工作区源码，包含公共 Battle 提取及已有未提交修改；历史运行记录与本次静态核对分开列示。
+>
+> 阅读约定：源码摘录可省略外围代码；概念化定义、假设用法与错误示例明确标作“示意代码”，不表示项目已实现。
+
+[Mass 阅读目录](./README.md) · [UE 网络教材](../UE网络教材/README.md)
 
 ## 先说最重要的事实
 
-当前项目只有一个真实的 `FMassEntityQuery`：
+当前项目自有士兵代码只有一个实际使用的 `FMassEntityQuery`：
 
 `Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp`
 
@@ -23,7 +27,7 @@
 3. 按 Chunk 批量取得两列可写 View。
 4. 把引擎 `FMassForceFragment::Value` 复制到项目 `FGuLiMassAvoidanceOutputFragment::Value`。
 5. 清空源 Force。
-6. 服务器自己的 30Hz 固定步随后读取这个稳定快照。
+6. 服务器 30Hz 固定步读取最近捕获的结果；这是数据依赖，不保证两者处于同一个 World Tick，补步也可能复用最近缓存。
 
 圆形选兵、动态 25 人 Cohort、指令路径、生命伤害都**不是** Mass Query：
 
@@ -50,11 +54,13 @@ Processor 决定执行时机
                 -> lambda 执行项目逻辑
 ~~~
 
-## 二、为什么昨天需要这个 Processor
+## 二、为什么当前需要这个 Processor
 
 Commander 权威模拟使用 30Hz 固定步，但 Epic Mass Avoidance 跟随 Mass 世界处理阶段产生 `FMassForceFragment`。
 
-如果固定步直接把同一个累积 Force 在多个步骤或不同渲染帧节奏下反复消费，结果会随帧率和积累时机变化。昨天的实现增加一个项目 Fragment：
+项目将 Mass 世界处理阶段的 Force 与固定步消费分开，避免直接共用未清理的累积列。固定步仍会按自身节拍读取最近一次快照；桥接 Fragment 不意味着两套调度已锁定为一一对应。当前使用：
+
+> **当前源码摘录**：[FGuLiMassAvoidanceOutputFragment](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h)。
 
 ~~~cpp
 /** Latest Epic Mass avoidance acceleration captured once per world frame for 30 Hz authority use. */
@@ -77,18 +83,11 @@ Capture Processor 把“Mass 世界帧的输出”快照到这个 Fragment，再
 
 源码：`GuLiCommanderAvoidanceCaptureProcessor.h`
 
-~~~cpp
-#include "MassEntityQuery.h"
-#include "MassProcessor.h"
+> **当前源码摘录**：[UGuLiCommanderAvoidanceCaptureProcessor 完整类声明](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.h)。
 
-/**
- * Captures Epic MovingAvoidance's result after the Avoidance phase and clears the
- * shared force accumulator. The 30 Hz authority integrator then reads the stable
- * project fragment, avoiding frame-rate-dependent accumulation between fixed steps.
- */
+~~~cpp
 UCLASS()
-class GULISTRIKE_API UGuLiCommanderAvoidanceCaptureProcessor final
-    : public UMassProcessor
+class GULISTRIKE_API UGuLiCommanderAvoidanceCaptureProcessor final : public UMassProcessor
 {
     GENERATED_BODY()
 
@@ -96,12 +95,8 @@ public:
     UGuLiCommanderAvoidanceCaptureProcessor();
 
 protected:
-    virtual void ConfigureQueries(
-        const TSharedRef<FMassEntityManager>& EntityManager) override;
-
-    virtual void Execute(
-        FMassEntityManager& EntityManager,
-        FMassExecutionContext& Context) override;
+    virtual void ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager) override;
+    virtual void Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context) override;
 
 private:
     FMassEntityQuery EntityQuery;
@@ -114,6 +109,8 @@ Query 是 Processor 的长期成员；Fragment View 则不是。Query 可以缓�
 
 真实代码：
 
+> **当前源码摘录**：[UGuLiCommanderAvoidanceCaptureProcessor 构造函数](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp)。
+
 ~~~cpp
 UGuLiCommanderAvoidanceCaptureProcessor::
 UGuLiCommanderAvoidanceCaptureProcessor()
@@ -124,8 +121,7 @@ UGuLiCommanderAvoidanceCaptureProcessor()
         EProcessorExecutionFlags::Standalone
         | EProcessorExecutionFlags::Server);
 
-    ExecutionOrder.ExecuteInGroup =
-        UE::Mass::ProcessorGroupNames::ApplyForces;
+    ExecutionOrder.ExecuteInGroup = UE::Mass::ProcessorGroupNames::ApplyForces;
     ExecutionOrder.ExecuteAfter.Add(
         UE::Mass::ProcessorGroupNames::Avoidance);
 }
@@ -134,6 +130,8 @@ UGuLiCommanderAvoidanceCaptureProcessor()
 ### 4.1 EntityQuery(*this) 做了什么
 
 UE 5.7.4 的构造实现：
+
+> **示意代码**：两段引擎实现拼接，中间其他函数省略；参见 [MassEntityQuery.cpp](<C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Private/MassEntityQuery.cpp>)。
 
 ~~~cpp
 FMassEntityQuery::FMassEntityQuery(UMassProcessor& Owner)
@@ -149,6 +147,8 @@ void FMassEntityQuery::RegisterWithProcessor(UMassProcessor& Owner)
 ~~~
 
 UE 5.7 也支持默认构造后显式注册：
+
+> **示意代码**：显式注册的假设用法，当前 Processor 使用构造初始化列表；参见 [MassEntityQuery.h](<C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassEntityQuery.h>)。
 
 ~~~cpp
 FMassEntityQuery EntityQuery;
@@ -170,7 +170,7 @@ EntityQuery.RegisterWithProcessor(*this);
 
 ### 4.3 为什么必须在 Avoidance 之后
 
-`ExecuteAfter(Avoidance)` 保证引擎先产出 Force；Capture Processor 再读取并清空。
+`ExecutionOrder.ExecuteAfter.Add(Avoidance)` 声明在该 Mass 处理图中的先后依赖：Avoidance 之后再捕获并清空。它不决定 WorldSubsystem Tick 与整张 Mass 处理图的跨系统先后。
 
 如果顺序反了：
 
@@ -183,6 +183,8 @@ EntityQuery.RegisterWithProcessor(*this);
 ## 五、ConfigureQueries：声明数据合同
 
 真实代码：
+
+> **当前源码摘录**：[ConfigureQueries](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp)。
 
 ~~~cpp
 void UGuLiCommanderAvoidanceCaptureProcessor::ConfigureQueries(
@@ -209,6 +211,8 @@ void UGuLiCommanderAvoidanceCaptureProcessor::ConfigureQueries(
 
 完整形式：
 
+> **示意代码**：API 参数形式，省略模板声明与返回类型；参见 [MassRequirements.h](<C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassRequirements.h>)。
+
 ~~~cpp
 AddRequirement<TFragment>(
     EMassFragmentAccess Access,
@@ -221,6 +225,8 @@ AddRequirement<TFragment>(
 
 真实执行中：
 
+> **当前源码摘录**：[Execute](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp)。
+
 ~~~cpp
 Outputs[It].Value = Forces[It].Value;
 Forces[It].Value = FVector::ZeroVector;
@@ -229,6 +235,8 @@ Forces[It].Value = FVector::ZeroVector;
 两列都被修改，所以都必须声明 `ReadWrite`。若声明 `ReadOnly` 却调用 `GetMutableFragmentView<T>()`，ExecutionContext 的检查会失败。
 
 ### 5.3 Tag Requirement 为什么是 All
+
+> **当前源码摘录**：[ConfigureQueries](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp)。
 
 ~~~cpp
 EntityQuery.AddTagRequirement<FGuLiServerAuthorityMassTag>(
@@ -251,6 +259,8 @@ EntityQuery.AddTagRequirement<FGuLiServerAuthorityMassTag>(
 
 引擎定义：
 
+> **引擎源码摘录**：[EMassFragmentPresence](<C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassRequirements.h>)。
+
 ~~~cpp
 enum class EMassFragmentPresence : uint8
 {
@@ -269,7 +279,7 @@ enum class EMassFragmentPresence : uint8
 | `None` | 指定类型必须不存在 | 不绑定该列 |
 | `Optional` | 有也匹配、没有也匹配 | 有时绑定，使用前需处理缺失 |
 
-昨天的 Capture Query 只用 `All`。以下类型当前未在 Commander Query 中使用，不能冒充项目案例：
+当前的 Capture Query 只用 `All`。以下类型当前未在 Commander Query 中使用，不能冒充项目案例：
 
 - `Any`
 - `None`
@@ -283,6 +293,8 @@ enum class EMassFragmentPresence : uint8
 
 ## 七、Execute：完整的真实 Chunk 代码
 
+> **当前源码摘录**：[Execute](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp)。
+
 ~~~cpp
 void UGuLiCommanderAvoidanceCaptureProcessor::Execute(
     FMassEntityManager& EntityManager,
@@ -292,17 +304,14 @@ void UGuLiCommanderAvoidanceCaptureProcessor::Execute(
         Context,
         [](FMassExecutionContext& ChunkContext)
         {
-            const TArrayView<FMassForceFragment> Forces =
-                ChunkContext
+            const TArrayView<FMassForceFragment> Forces = ChunkContext
                     .GetMutableFragmentView<FMassForceFragment>();
 
-            const TArrayView<FGuLiMassAvoidanceOutputFragment> Outputs =
-                ChunkContext
+            const TArrayView<FGuLiMassAvoidanceOutputFragment> Outputs = ChunkContext
                     .GetMutableFragmentView<
                         FGuLiMassAvoidanceOutputFragment>();
 
-            for (FMassExecutionContext::FEntityIterator It =
-                    ChunkContext.CreateEntityIterator();
+            for (FMassExecutionContext::FEntityIterator It = ChunkContext.CreateEntityIterator();
                  It;
                  ++It)
             {
@@ -368,6 +377,8 @@ Team 是否为 Red？
 
 Context 为当前 Chunk 绑定了：
 
+> **示意代码**：仅列 Context 相关存储成员，省略引擎宏及中间字段；参见 [MassExecutionContext.h](<C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassExecutionContext.h>)。
+
 ~~~cpp
 TArrayView<FMassEntityHandle> EntityListView;
 TArray<FFragmentView, TInlineAllocator<8>> FragmentViews;
@@ -379,6 +390,8 @@ TArray<FSharedFragmentView, TInlineAllocator<4>> SharedFragmentViews;
 内部 `EntityListView` 是可绑定的 `TArrayView`；对外公开的 `GetEntities()` 返回 `TConstArrayView<FMassEntityHandle>`，调用方不能借它改写 Handle 列表。
 
 项目取得：
+
+> **示意代码**：只表示两种 View 类型，实际 Execute 使用 const 局部变量并立即初始化；参见 [GuLiCommanderAvoidanceCaptureProcessor.cpp](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp)。
 
 ~~~cpp
 TArrayView<FMassForceFragment> Forces;
@@ -394,6 +407,8 @@ Outputs[It]         = 该 Entity 的 AvoidanceOutput 列
 ~~~
 
 所以：
+
+> **当前源码摘录**：[Execute](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp)。
 
 ~~~cpp
 Outputs[It].Value = Forces[It].Value;
@@ -412,16 +427,20 @@ Outputs[It].Value = Forces[It].Value;
 
 当前 lambda 不需要具体 Handle，所以没有调用：
 
+> **示意代码**：可用 API 的示例调用，当前 Execute 未使用；参见 [MassExecutionContext.h](<C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassExecutionContext.h>)。
+
 ~~~cpp
 ChunkContext.GetEntity(It);
 ChunkContext.GetEntities();
 ~~~
 
-如果未来日志或命令需要实体句柄，可以从 Context 取；但这是 API 扩展方向，不是昨天已经存在的代码。
+如果未来日志或命令需要实体句柄，可以从 Context 取；但这是 API 扩展方向，不是当前已经存在的代码。
 
 ## 十一、GetMutableFragmentView 的权限检查
 
 引擎内部逻辑：
+
+> **示意代码**：GetMutableFragmentView 检查步骤的伪代码，不是引擎函数体；参见 [MassExecutionContext.h](<C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassExecutionContext.h>)。
 
 ~~~cpp
 template<typename TFragment>
@@ -457,18 +476,17 @@ View 的寿命只覆盖当前 Chunk 回调：
 
 源码：`UGuLiBattleAuthoritySubsystem::TickAuthority`
 
+> **当前源码摘录**：[TickAuthority](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+
 ~~~cpp
-const FGuLiMassAvoidanceOutputFragment& AvoidanceOutput =
-    EntityManager.GetFragmentDataChecked<
+const FGuLiMassAvoidanceOutputFragment& AvoidanceOutput = EntityManager.GetFragmentDataChecked<
         FGuLiMassAvoidanceOutputFragment>(Soldier.Entity);
 
-const FVector EngineAvoidanceDelta =
-    AvoidanceOutput.Value.GetClampedToMaxSize(
+const FVector EngineAvoidanceDelta = AvoidanceOutput.Value.GetClampedToMaxSize(
         MovementSpeedCentimetersPerSecond * 4.0f)
     * FixedDeltaSeconds;
 
-const FVector TargetVelocity =
-    (DesiredVelocities[SoldierIndex]
+const FVector TargetVelocity = (DesiredVelocities[SoldierIndex]
         + AvoidanceVelocity
         + EngineAvoidanceDelta)
     .GetClampedToMaxSize(
@@ -487,7 +505,7 @@ Soldier.Velocity = FMath::VInterpTo(
 2. `AvoidanceVelocity`：项目空间哈希计算的局部分离。
 3. `EngineAvoidanceDelta`：Capture Query 保存的 Epic Mass Avoidance 输出。
 
-随后写回 Transform、Velocity、Order Fragment，并由 10Hz Pose 捕获发给客户端表现。
+随后写回 Transform、Velocity、Order Fragment。唯一的 `GuLiCommanderWorldReplicationComponent` 按目标 10Hz 请求 Authority 捕获，再经专业 NetSync 发给已通过名册门的连接；Query 自身不发 RPC。
 
 这条真实链路说明：Query 本身不“让 Soldier 移动”，它只高效搬运某个处理阶段的数据；最终玩法由多个系统接力完成。
 
@@ -498,6 +516,7 @@ Soldier.Velocity = FMath::VInterpTo(
 - SoldierId
 - Team
 - Location/Velocity/Yaw
+- Health / MaxHealth 与兵种数值
 - StateRevision
 - ActiveOrderId
 - DeathSimulationSeconds
@@ -510,7 +529,7 @@ Soldier.Velocity = FMath::VInterpTo(
 - `OrderFormations`
 - ControlCohort 的 SoldierId 成员
 
-所以昨天采用两条访问路径：
+所以当前采用两条访问路径：
 
 | 工作 | 当前路径 | 原因 |
 |---|---|---|
@@ -521,11 +540,13 @@ Soldier.Velocity = FMath::VInterpTo(
 | 30Hz 权威移动 | Runtime 数组 + Handle | 与编队、路径、空间哈希和网络状态紧密耦合 |
 | 单兵伤害/死亡 | SoldierId → Handle | 点操作，并包含结构迁移 |
 
-Query 不是越多越“Mass”。选择最符合数据访问模式的路径，才是当前实现的真实设计。
+这些路径分别适配批处理和按业务身份访问。公共 Battle 框架负责玩家身份、连接及 Pawn 生命周期；发布组件控制士兵模拟启停。停用时 Authority 无人口，Capture Query 即使注册在处理阶段也没有本项目权威实体可匹配。Ground/Air 的 CharacterMovement 不经过此 Query。
 
 ## 十四、结构修改与 Context.Defer 的边界
 
 当前 Capture Processor 只改现有 Fragment 的值：
+
+> **当前源码摘录**：[Execute](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp)。
 
 ~~~cpp
 Outputs[It].Value = Forces[It].Value;
@@ -543,7 +564,9 @@ Forces[It].Value = FVector::ZeroVector;
 
 如果未来要在 `ForEachEntityChunk` 中根据条件移除导航 Fragment或销毁 Entity，应通过 Context 的 Deferred Command Buffer 记录结构命令，让 Chunk 遍历结束后统一执行。否则当前 Archetype/Chunk 正在迭代时就被改写，会让 View、Entity 顺序和 Range 失效。
 
-昨天真实的：
+当前真实的：
+
+> **当前源码摘录**：[ApplyDamage](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 EntityManager.RemoveFragmentFromEntity(
@@ -587,6 +610,8 @@ EntityManager.RemoveFragmentFromEntity(
 
 UE 5.7 的 Requirement 修改要求 Query 已初始化。Processor 成员采用：
 
+> **当前源码摘录**：[UGuLiCommanderAvoidanceCaptureProcessor 构造初始化列表](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp)。
+
 ~~~cpp
 UGuLiCommanderAvoidanceCaptureProcessor()
     : EntityQuery(*this)
@@ -616,7 +641,7 @@ View 指向当前 Chunk 连续列；下一 Chunk、结构迁移或 Query 结束�
 
 ### 错误 7：把圆选改写成“Query 自动选出 25 人”
 
-昨天的动态 Cohort 算法依赖圆心、空间哈希、同队过滤、SoldierId 确定性排序、动态质心与 300m 补员限制，当前不由 Mass Query 实现。
+当前的动态 Cohort 算法依赖圆心、空间哈希、同队过滤、SoldierId 确定性排序、动态质心与 300m 补员限制，当前不由 Mass Query 实现。
 
 ## 十七、真实执行链汇总
 
@@ -650,26 +675,24 @@ UGuLiBattleAuthoritySubsystem 30Hz fixed step
 Transform / Velocity / Order
         |
         v
-10Hz PoseChunk + Reliable Soldier State
+GuLiCommanderWorldReplicationComponent
+    目标 10Hz 捕获与分摊调度
         |
         v
-客户端插值、预测、ISM 与脚环表现
+StateReplicator 属性复制 + NetSync 姿态 RPC
+    公共就绪不代替士兵名册门
+        |
+        v
+客户端样本、Mass 镜像、ISM 与脚环表现
 ~~~
 
 ## 十八、验证证据与边界
 
-已存在的整体链路证据：
+**当前源码：** 本次只核对当前项目与本机 UE 5.7.4 源码，没有重新编译、启动 PIE 或执行网络测试。
 
-- `Progress/CommanderDynamicCohortTests-FinalReliableFallback.log`：18 项 Automation 成功、0 失败；覆盖 Cohort、Navigation、Network/Protocol。
-- `Progress/CommanderDynamicPIE-FinalReliable.log`：500 个独立 Authority Soldier、500/500 CommanderSoldier NavMesh 投射；smoke 记录动态成员 25、移动 1813cm、摧毁 25、未知 ID 拒绝。
-- `Progress/CommanderPIEValidation.json`：UnitInstances=500、RingInstances=500、两套 NavData、顶层 `errors=[]`。
+**历史验证：** [2026-08-27 总归档](../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)保存了当时 500 兵、动态选兵与移动冒烟的记录；原始临时日志和 JSON 已清理，不能再把它们列成可读取的现存证据。[2026-08-31 公共框架归档](../../Archive/20260831-公共战局框架与三类角色接入.md)记录冷编译成功、现有测试 50/50 通过及混合战局联调。NetworkGate 最终 ACK P95=138.1ms 达标，但未标记硬跳变 1 次，整体验收仍未通过；本次文档修订没有修复该问题。
 
-边界：
-
-- 没有名为 Query/ExecutionContext/AvoidanceCapture 的专项 Automation。
-- 源码已编译接入，整体 Commander 流程有 PIE 运行证据；现有日志没有该 Processor/Fragment 的专属 marker，也没有非零 Force 复制并清空的观测值，因此不能直接证明当前 `Execute` 被调用，更不能量化逐 Chunk 次数或独立性能收益。
-- 当前跨午夜 Presentation 源码版本晚于最后一次成功 smoke；这不影响本篇 8 月 27 日 Capture Processor 的源码归属，但限制了对完整“直到当前客户端版本”端到端链路的验证表述。
-- 500 人同时移动、复杂窄口长期拥堵、服务器 GameThread p95/p99 等性能 Gate 仍未完成。
+**专项边界：** 未新增 Query/ExecutionContext/AvoidanceCapture 专项测试，也没有本轮非零 Force 捕获清空、逐 Chunk 次数或独立性能采样；不能由整体测试通过推断这些观测已经完成。500 人窄口拥堵和长期性能仍需专门验证。
 
 ## 十九、写新的 Mass Processor 时检查什么
 

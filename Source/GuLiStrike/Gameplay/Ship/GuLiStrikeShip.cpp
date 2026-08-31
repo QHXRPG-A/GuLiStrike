@@ -1,6 +1,12 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GuLiStrikeShip.h"
+#include "GuLiShipMovementComponent.h"
+#include "Battle/Framework/GuLiBattlePlayerState.h"
+#include "Battle/Framework/GuLiBattleGameState.h"
+#include "Battle/Network/GuLiPlayerNetSyncComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "GameFramework/PlayerController.h"
 #include "GuLiStrikeShipPartComponent.h"
 #include "GuLiStrikeShipTableRows.h"
 #include "GuLiStrikeEnginePart.h"
@@ -30,9 +36,12 @@ namespace GuLiStrikeShipPrivate
 	const FName GMRuntimeModifierName(TEXT("GM.Runtime"));
 }
 
-AGuLiStrikeShip::AGuLiStrikeShip()
+AGuLiStrikeShip::AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UGuLiShipMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	bReplicates = true;
+	// 固定 5v5 的玩家载具始终相关；远距飞船相机不能把近旁玩家按默认 150m 距离剔除。
+	bAlwaysRelevant = true;
 
 	// 飞船自己掌控完整的三维姿态
 	bUseControllerRotationPitch = false;
@@ -41,7 +50,8 @@ AGuLiStrikeShip::AGuLiStrikeShip()
 
 	// 创建舰体网格体；其上的 socket 是部件挂点
 	HullMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hull Mesh"));
-	HullMesh->SetupAttachment(GetRootComponent());
+	// 静态舰体跟随 CharacterMesh0 的网络平滑偏移；胶囊仍是服务器碰撞与预测根。
+	HullMesh->SetupAttachment(GetMesh());
 	// 舰体只参与查询不产生阻挡：相机避障扫掠需要能命中自身舰体
 	// （对象类型查询不看响应矩阵，Ignore 所有通道也不妨碍被扫到）
 	HullMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -87,13 +97,26 @@ void AGuLiStrikeShip::GetLifetimeReplicatedProps(
 	TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
-	// 此处新增的项目复制字段只有 GM 调参状态；不能仅凭它宣称飞船所有移动/武器行为已完成联机。
+	// GM 状态和装配分别复制；移动组件用完整配置屏障处理它们的跨属性到达顺序。
 	DOREPLIFETIME(AGuLiStrikeShip, GMRuntimeState);
+	DOREPLIFETIME(AGuLiStrikeShip, LoadoutState);
 }
 
 void AGuLiStrikeShip::BeginPlay()
 {
 	Super::BeginPlay();
+	// 旧蓝图可能序列化了原 CharacterMovement 模板；未迁移时明确关闭操控，不能解引用空的专用组件。
+	if (!GetShipMovement())
+	{
+		UE_LOG(LogGuLiStrike, Error, TEXT("Ship %s has an incompatible CharMoveComp; recompile its Blueprint with GuLiShipMovementComponent before play."), *GetName());
+		if (UCharacterMovementComponent* Movement = GetCharacterMovement())
+		{
+			Movement->StopMovementImmediately();
+			Movement->DisableMovement();
+		}
+		SetActorTickEnabled(false);
+		return;
+	}
 
 	// 切换到自由飞行模式
 	GetCharacterMovement()->SetMovementMode(MOVE_Flying);
@@ -133,10 +156,15 @@ void AGuLiStrikeShip::BeginPlay()
 		}
 	}
 
-	// 安装出生配装
-	for (const FGuLiStrikeShipDefaultPart& Entry : DefaultParts)
+	// 默认装配只由服务器决定。客户端等待名册，不能在复制到达前擅自装一套默认部件。
+	if (HasAuthority())
 	{
-		InstallPart(Entry.PartClass, Entry.SocketName);
+		bEditingLoadout = true;
+		for (const FGuLiStrikeShipDefaultPart& Entry : DefaultParts)
+		{
+			InstallPartLocally(Entry.PartClass, Entry.SocketName);
+		}
+		bEditingLoadout = false;
 	}
 
 	// 服务器从当前 World Registry 初始化后续出生飞船；客户端只消费该
@@ -156,31 +184,28 @@ void AGuLiStrikeShip::BeginPlay()
 	// GM state may have arrived before/during BeginPlay. Only now are tuning
 	// tables and default parts ready for the first Blueprint-visible recompute.
 	bRuntimeStatsInitialized = true;
-	RecomputeStats();
+	if (HasAuthority())
+	{
+		PublishLoadout();
+	}
+	else
+	{
+		ApplyReplicatedLoadout();
+	}
+	UpdateShipInputContext();
 }
 
 void AGuLiStrikeShip::NotifyControllerChanged()
 {
 	Super::NotifyControllerChanged();
-
-	// 玩家操控时抬高近裁剪面：贴面机位（探针间隙 250cm）下，视野边缘擦过的
-	// 舰面细结构直接裁掉，避免近处切片闪烁（UCameraComponent 无逐相机覆盖，走全局 CVar）
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
+	if (UGuLiShipMovementComponent* Movement = GetShipMovement())
 	{
-		if (IConsoleVariable* NearClipCVar = IConsoleManager::Get().FindConsoleVariable(TEXT("r.SetNearClippingPlane")))
-		{
-			NearClipCVar->Set(150.0f, ECVF_SetByGameSetting);
-		}
+		Movement->ClearFlightInput();
+		// 当帧短暂解除并重新占有也必须推进身份屏障，不能等 Tick 才发现连接变化。
+		Movement->SetAppliedLoadoutRevision(AppliedLoadoutRevision);
 	}
-
-	// 添加飞船专属映射上下文，避免与默认角色上下文打架
-	if (APlayerController* PC = Cast<APlayerController>(GetController()))
-	{
-		if (UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer()))
-		{
-			Subsystem->AddMappingContext(ShipMappingContext, 0);
-		}
-	}
+	bServerFiring = false;
+	UpdateShipInputContext();
 }
 
 void AGuLiStrikeShip::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -201,8 +226,15 @@ void AGuLiStrikeShip::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 		EnhancedInputComponent->BindAction(LookAction, ETriggerEvent::Triggered, this, &AGuLiStrikeShip::Look);
 		EnhancedInputComponent->BindAction(ZoomAction, ETriggerEvent::Triggered, this, &AGuLiStrikeShip::ZoomCamera);
 		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Started, this, &AGuLiStrikeShip::BoostStart);
+		// 屏障期间清空输入，按住的键在新配置就绪后重新采样；不会产生逐帧移动之外的 RPC。
+		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Triggered, this, &AGuLiStrikeShip::BoostStart);
 		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Completed, this, &AGuLiStrikeShip::BoostEnd);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Started, this, &AGuLiStrikeShip::Fire);
+		// SetFiringIntent 仅在有效意图变动时发 RPC；持键跨换装屏障后可恢复，稳态每帧不会重发。
 		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Triggered, this, &AGuLiStrikeShip::Fire);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Completed, this, &AGuLiStrikeShip::StopFire);
+		EnhancedInputComponent->BindAction(FireAction, ETriggerEvent::Canceled, this, &AGuLiStrikeShip::StopFire);
+		EnhancedInputComponent->BindAction(BoostAction, ETriggerEvent::Canceled, this, &AGuLiStrikeShip::BoostEnd);
 		EnhancedInputComponent->BindAction(CycleEnginesAction, ETriggerEvent::Started, this, &AGuLiStrikeShip::CycleEngines);
 		EnhancedInputComponent->BindAction(CycleWeaponsAction, ETriggerEvent::Started, this, &AGuLiStrikeShip::CycleWeapons);
 	}
@@ -210,71 +242,73 @@ void AGuLiStrikeShip::SetupPlayerInputComponent(UInputComponent* PlayerInputComp
 
 void AGuLiStrikeShip::ThrustForward(const FInputActionValue& Value)
 {
-	// 记录推进意图（自动转向判定用）
-	PendingThrustIntent += GetActorForwardVector();
-
-	// 加力按住时推力翻倍
-	AddMovementInput(GetActorForwardVector(), bBoosting ? BoostThrustMultiplier : 1.0f);
+	if (CanUseShipControls())
+	{
+		GetShipMovement()->AddThrustInput(FVector(1.0, 0.0, 0.0));
+	}
 }
 
 void AGuLiStrikeShip::ThrustBackward(const FInputActionValue& Value)
 {
-	PendingThrustIntent -= GetActorForwardVector();
-
-	// 反推减速
-	AddMovementInput(GetActorForwardVector(), bBoosting ? -BoostThrustMultiplier : -1.0f);
+	if (CanUseShipControls())
+	{
+		GetShipMovement()->AddThrustInput(FVector(-1.0, 0.0, 0.0));
+	}
 }
 
 void AGuLiStrikeShip::ThrustRight(const FInputActionValue& Value)
 {
-	// 记录侧移输入（Tick 里用于压弯倾斜）
-	PendingStrafeInput += 1.0f;
-	PendingThrustIntent += GetActorRightVector();
-
-	// 加力按住时推力翻倍
-	AddMovementInput(GetActorRightVector(), bBoosting ? BoostThrustMultiplier : 1.0f);
+	if (CanUseShipControls())
+	{
+		GetShipMovement()->AddThrustInput(FVector(0.0, 1.0, 0.0));
+		GetShipMovement()->AddStrafeInput(1.0f);
+	}
 }
 
 void AGuLiStrikeShip::ThrustLeft(const FInputActionValue& Value)
 {
-	// 记录侧移输入（Tick 里用于压弯倾斜）
-	PendingStrafeInput -= 1.0f;
-	PendingThrustIntent -= GetActorRightVector();
-
-	// 加力按住时推力翻倍
-	AddMovementInput(GetActorRightVector(), bBoosting ? -BoostThrustMultiplier : -1.0f);
+	if (CanUseShipControls())
+	{
+		GetShipMovement()->AddThrustInput(FVector(0.0, -1.0, 0.0));
+		GetShipMovement()->AddStrafeInput(-1.0f);
+	}
 }
 
 void AGuLiStrikeShip::ThrustUp(const FInputActionValue& Value)
 {
-	PendingThrustIntent += GetActorUpVector();
-
-	// 加力按住时推力翻倍
-	AddMovementInput(GetActorUpVector(), bBoosting ? BoostThrustMultiplier : 1.0f);
+	if (CanUseShipControls())
+	{
+		GetShipMovement()->AddThrustInput(FVector(0.0, 0.0, 1.0));
+	}
 }
 
 void AGuLiStrikeShip::ThrustDown(const FInputActionValue& Value)
 {
-	PendingThrustIntent -= GetActorUpVector();
-
-	// 加力按住时推力翻倍
-	AddMovementInput(GetActorUpVector(), bBoosting ? -BoostThrustMultiplier : -1.0f);
+	if (CanUseShipControls())
+	{
+		GetShipMovement()->AddThrustInput(FVector(0.0, 0.0, -1.0));
+	}
 }
 
 void AGuLiStrikeShip::TurnLeft(const FInputActionValue& Value)
 {
-	// 记录转向输入（角速度与压弯都在 Tick 里统一结算）
-	PendingTurnInput -= 1.0f;
+	if (CanUseShipControls())
+	{
+		GetShipMovement()->AddTurnInput(-1.0f);
+	}
 }
 
 void AGuLiStrikeShip::TurnRight(const FInputActionValue& Value)
 {
-	// 记录转向输入（角速度与压弯都在 Tick 里统一结算）
-	PendingTurnInput += 1.0f;
+	if (CanUseShipControls())
+	{
+		GetShipMovement()->AddTurnInput(1.0f);
+	}
 }
 
 void AGuLiStrikeShip::Look(const FInputActionValue& Value)
 {
+	if (!IsLocallyControlled()) { return; }
 	// 取输入向量
 	const FVector2D InputVector = Value.Get<FVector2D>();
 
@@ -292,6 +326,7 @@ void AGuLiStrikeShip::Look(const FInputActionValue& Value)
 
 void AGuLiStrikeShip::ZoomCamera(const FInputActionValue& Value)
 {
+	if (!IsLocallyControlled()) { return; }
 	// 滚轮上滚（+1）= 拉近；只改期望臂长，实际臂长由 Tick 的自身舰避障统一结算
 	const float Notches = Value.Get<float>();
 	DesiredArmLength = FMath::Clamp(DesiredArmLength - Notches * CameraZoomStep, CameraZoomMin, CameraZoomMax);
@@ -309,63 +344,29 @@ namespace
 void AGuLiStrikeShip::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-
-	// ===== 相机 vs 舰体/地形避障（单写者：只有 ResolveCameraArmCollision 写臂长）=====
-	ResolveCameraArmCollision();
-
-	// ===== 偏航角速度（惯性模型）=====
-	// 有输入：角速度向目标（±YawRate）平滑爬升；
-	// 无输入：角速度按阻尼衰减——松键后飞船带着惯性继续转、缓缓停住
-	const float TargetYawVelocity = FMath::Clamp(PendingTurnInput, -1.0f, 1.0f) * YawRate;
-	if (PendingTurnInput != 0.0f)
+	UpdateShipInputContext();
+	if (IsLocallyControlled())
 	{
-		YawVelocity = FMath::FInterpTo(YawVelocity, TargetYawVelocity, DeltaTime, YawResponseSpeed);
+		ResolveCameraArmCollision();
 	}
-	else
+	if (!HasAuthority() && AppliedLoadoutRevision != LoadoutState.Revision
+		&& GetWorld()->GetTimeSeconds() >= NextLoadoutRetryTime)
 	{
-		YawVelocity = FMath::FInterpTo(YawVelocity, 0.0f, DeltaTime, YawStopDamping);
-		if (FMath::Abs(YawVelocity) < 0.05f)
+		NextLoadoutRetryTime = GetWorld()->GetTimeSeconds() + 1.0;
+		ApplyReplicatedLoadout();
+	}
+	if (HasAuthority() && bServerFiring)
+	{
+		if (CanAcceptServerIntent())
 		{
-			YawVelocity = 0.0f;
+			FireInstalledWeapons();
+		}
+		else
+		{
+			// 失去占有、配置切代、公共断线或比赛结束均停止持续射击。
+			bServerFiring = false;
 		}
 	}
-
-	// 应用偏航：只改欧拉偏航分量（等效绕世界竖直轴转向）。
-	// 不能用 AddActorLocalRotation——压弯倾斜会让局部上轴歪掉，
-	// 绕歪轴偏航会让船头画圆锥、俯仰角随转向相位漂移。
-	if (!FMath::IsNearlyZero(YawVelocity))
-	{
-		FRotator Rotation = GetActorRotation();
-		Rotation.Yaw += YawVelocity * DeltaTime;
-		SetActorRotation(Rotation);
-	}
-
-	// ===== 自动转向（默认关闭）=====
-	// 依据推进意图方向自动转向；意图大体朝前才转（倒退/纯侧移保持船头，
-	// 避免"船头追速度"的正反馈打转）
-	if (bOrientToMovement && PendingThrustIntent.SizeSquared() > KINDA_SMALL_NUMBER)
-	{
-		const FVector IntentDirection = PendingThrustIntent.GetSafeNormal();
-		if (FVector::DotProduct(IntentDirection, GetActorForwardVector()) > OrientMinForwardDot)
-		{
-			const FRotator TargetRotation = IntentDirection.Rotation();
-			SetActorRotation(FMath::RInterpTo(GetActorRotation(), TargetRotation, DeltaTime, OrientTurnSpeed));
-		}
-	}
-
-	// ===== 压弯倾斜 =====
-	// 偏航（跟随实际角速度，惯性旋转期间保持倾斜）或侧移（A/D，含 W+侧移组合）
-	// 时机身向对应侧倾斜 MaxBankAngle，输入结束后平滑回正；直接接管滚转分量
-	const float BankDirection = FMath::Clamp(YawVelocity / YawRate + PendingStrafeInput, -1.0f, 1.0f);
-	CurrentBankRoll = FMath::FInterpTo(CurrentBankRoll, -BankDirection * MaxBankAngle, DeltaTime, BankInterpSpeed);
-	FRotator LeveledRotation = GetActorRotation();
-	LeveledRotation.Roll = CurrentBankRoll;
-	SetActorRotation(LeveledRotation);
-
-	// 消费本帧输入；下一次输入事件会重新累积
-	PendingThrustIntent = FVector::ZeroVector;
-	PendingTurnInput = 0.0f;
-	PendingStrafeInput = 0.0f;
 }
 
 void AGuLiStrikeShip::ResolveCameraArmCollision()
@@ -459,33 +460,46 @@ void AGuLiStrikeShip::ResolveCameraArmCollision()
 
 void AGuLiStrikeShip::BoostStart(const FInputActionValue& Value)
 {
-	bBoosting = true;
+	if (CanUseShipControls())
+	{
+		GetShipMovement()->SetBoostInput(true);
+	}
 }
 
 void AGuLiStrikeShip::BoostEnd(const FInputActionValue& Value)
 {
-	bBoosting = false;
+	if (GetShipMovement())
+	{
+		GetShipMovement()->SetBoostInput(false);
+	}
 }
 
 void AGuLiStrikeShip::Fire(const FInputActionValue& Value)
 {
-	FireInstalledWeapons();
+	SetFiringIntent(true);
+}
+
+void AGuLiStrikeShip::StopFire(const FInputActionValue& Value)
+{
+	SetFiringIntent(false);
 }
 
 void AGuLiStrikeShip::CycleEngines(const FInputActionValue& Value)
 {
-	CycleParts(UGuLiStrikeEnginePart::StaticClass());
+	if (!CanUseShipControls()) { return; }
+	ServerRequestCycleParts(true, LoadoutState.Revision, GetShipMovement()->GetMovementBarrierGeneration());
 }
 
 void AGuLiStrikeShip::CycleWeapons(const FInputActionValue& Value)
 {
-	CycleParts(UGuLiStrikeWeaponPart::StaticClass());
+	if (!CanUseShipControls()) { return; }
+	ServerRequestCycleParts(false, LoadoutState.Revision, GetShipMovement()->GetMovementBarrierGeneration());
 }
 
-bool AGuLiStrikeShip::InstallPart(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass, FName SocketName)
+bool AGuLiStrikeShip::InstallPartLocally(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass, FName SocketName)
 {
 	// 校验部件类
-	if (!PartClass)
+	if (!PartClass || PartClass->HasAnyClassFlags(CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists))
 	{
 		UE_LOG(LogGuLiStrike, Warning, TEXT("InstallPart: null part class for socket %s"), *SocketName.ToString());
 		return false;
@@ -506,46 +520,58 @@ bool AGuLiStrikeShip::InstallPart(TSubclassOf<UGuLiStrikeShipPartComponent> Part
 		return false;
 	}
 
-	// 替换该槽位上已有的部件
-	UninstallPart(SocketName);
-
-	// 动态创建部件组件并挂接到 socket
+	// 先确认新组件能注册，再卸旧件；无效蓝图配置不能令已有槽位被先清空。
 	UGuLiStrikeShipPartComponent* Part = NewObject<UGuLiStrikeShipPartComponent>(this, PartClass);
+	if (!IsValid(Part)) { return false; }
 	Part->RegisterComponent();
-	Part->AttachToComponent(HullMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketName);
+	if (!IsValid(Part) || !Part->IsRegistered())
+	{
+		if (IsValid(Part)) { Part->DestroyComponent(); }
+		return false;
+	}
+	if (!Part->AttachToComponent(HullMesh, FAttachmentTransformRules::KeepRelativeTransform, SocketName))
+	{
+		Part->DestroyComponent();
+		return false;
+	}
+	UninstallPartLocally(SocketName);
 	Part->SetRelativeTransform(PartCDO->PartRelativeTransform);
 
 	// 数据表数值覆盖（无表/无行时保持蓝图默认值），随后照常走 ContributeStats 聚合
 	ApplyPartRow(Part);
 
 	InstalledParts.Add({SocketName, Part});
+	bLoadoutDirty = true;
 
 	BP_OnPartInstalled(Part, SocketName);
+	if (!IsValid(Part) || !Part->IsRegistered() || GetPartAt(SocketName) != Part
+		|| Part->GetAttachParent() != HullMesh || Part->GetAttachSocketName() != SocketName)
+	{
+		// 蓝图事件也可能销毁/改挂接；失败不能把半套名册 ACK 为就绪。
+		if (GetPartAt(SocketName) == Part) { UninstallPartLocally(SocketName); }
+		return false;
+	}
 	RecomputeStats();
 
 	UE_LOG(LogGuLiStrike, Log, TEXT("InstallPart: %s installed on %s"), *PartClass->GetName(), *SocketName.ToString());
 	return true;
 }
 
-bool AGuLiStrikeShip::UninstallPart(FName SocketName)
+bool AGuLiStrikeShip::UninstallPartLocally(FName SocketName)
 {
 	for (int32 Index = 0; Index < InstalledParts.Num(); ++Index)
 	{
 		if (InstalledParts[Index].SocketName == SocketName)
 		{
-			if (UGuLiStrikeShipPartComponent* Part = InstalledParts[Index].Part.Get())
+			const TWeakObjectPtr<UGuLiStrikeShipPartComponent> RemovedPart = InstalledParts[Index].Part;
+			// 蓝图卸载通知可以再次换装；必须先注销，不能在回调后继续使用旧数组索引。
+			InstalledParts.RemoveAt(Index);
+			bLoadoutDirty = true;
+			if (UGuLiStrikeShipPartComponent* Part = RemovedPart.Get())
 			{
 				BP_OnPartUninstalled(Part, SocketName);
-
-				// 先移出注册表再销毁：销毁触发的 NotifyPartDestroyed
-				// 会发现部件已注销而自然跳过，避免双重事件/重算
-				InstalledParts.RemoveAt(Index);
-				Part->DestroyComponent();
-			}
-			else
-			{
-				// 陈旧条目清理
-				InstalledParts.RemoveAt(Index);
+				// 回调可能已销毁旧件；同槽位新装的部件不属于这次卸载。
+				if (RemovedPart.IsValid()) { RemovedPart->DestroyComponent(); }
 			}
 
 			RecomputeStats();
@@ -558,16 +584,26 @@ bool AGuLiStrikeShip::UninstallPart(FName SocketName)
 
 void AGuLiStrikeShip::NotifyPartDestroyed(UGuLiStrikeShipPartComponent* Part)
 {
-	// 部件被外部直接销毁（未经 UninstallPart）时的兜底同步
+	if (bEditingLoadout || bEndingShipPlay) { return; }
+	// 部件被外部直接销毁（未经 UninstallPart）时的兜底同步。
 	for (int32 Index = 0; Index < InstalledParts.Num(); ++Index)
 	{
 		if (InstalledParts[Index].Part.Get() == Part)
 		{
-			BP_OnPartUninstalled(Part, InstalledParts[Index].SocketName);
+			const FName SocketName = InstalledParts[Index].SocketName;
+			const FString PartName = GetNameSafe(Part);
 			InstalledParts.RemoveAt(Index);
-			RecomputeStats();
+			bLoadoutDirty = true;
+			// 先注销再通知，避免蓝图回调卸下另一槽位后使 Index 失效。
+			BP_OnPartUninstalled(Part, SocketName);
+			if (HasAuthority()) { PublishLoadout(); }
+			else
+			{
+				AppliedLoadoutRevision = 0u;
+				if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->SetAppliedLoadoutRevision(0u); }
+			}
 
-			UE_LOG(LogGuLiStrike, Log, TEXT("NotifyPartDestroyed: %s was destroyed externally, registry synced"), *Part->GetName());
+			UE_LOG(LogGuLiStrike, Log, TEXT("NotifyPartDestroyed: %s was destroyed externally, registry synced"), *PartName);
 			return;
 		}
 	}
@@ -575,6 +611,11 @@ void AGuLiStrikeShip::NotifyPartDestroyed(UGuLiStrikeShipPartComponent* Part)
 
 void AGuLiStrikeShip::AddStatModifier(FName Name, float MaxSpeedMultiplier, float AccelerationMultiplier)
 {
+	if (!HasAuthority() || !FMath::IsFinite(MaxSpeedMultiplier) || !FMath::IsFinite(AccelerationMultiplier)
+		|| MaxSpeedMultiplier < 0.0f || AccelerationMultiplier < 0.0f)
+	{
+		return;
+	}
 	if (Name == GuLiStrikeShipPrivate::GMRuntimeModifierName)
 	{
 		UE_LOG(
@@ -602,6 +643,7 @@ void AGuLiStrikeShip::AddStatModifier(FName Name, float MaxSpeedMultiplier, floa
 
 void AGuLiStrikeShip::RemoveStatModifier(FName Name)
 {
+	if (!HasAuthority()) { return; }
 	if (Name == GuLiStrikeShipPrivate::GMRuntimeModifierName)
 	{
 		UE_LOG(
@@ -754,6 +796,14 @@ UGuLiStrikeShipPartComponent* AGuLiStrikeShip::GetPartAt(FName SocketName) const
 
 void AGuLiStrikeShip::CycleParts(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass)
 {
+	if (!HasAuthority())
+	{
+		if (CanUseShipControls() && (PartClass == UGuLiStrikeEnginePart::StaticClass() || PartClass == UGuLiStrikeWeaponPart::StaticClass()))
+		{
+			ServerRequestCycleParts(PartClass == UGuLiStrikeEnginePart::StaticClass(), LoadoutState.Revision, GetShipMovement()->GetMovementBarrierGeneration());
+		}
+		return;
+	}
 	if (!PartClass)
 	{
 		return;
@@ -775,10 +825,15 @@ void AGuLiStrikeShip::CycleParts(TSubclassOf<UGuLiStrikeShipPartComponent> PartC
 		return;
 	}
 
+	const bool bWasEditing = bEditingLoadout;
+	bEditingLoadout = true;
+	bool bChanged = false;
 	for (const FName& SocketName : SocketsToCycle)
 	{
-		CyclePartAtSocket(PartClass, SocketName);
+		bChanged |= CyclePartAtSocket(PartClass, SocketName);
 	}
+	bEditingLoadout = bWasEditing;
+	if ((bChanged || bLoadoutDirty) && !bEditingLoadout) { PublishLoadout(); }
 }
 
 bool AGuLiStrikeShip::CyclePartAtSocket(UClass* PartClass, FName SocketName)
@@ -823,30 +878,69 @@ bool AGuLiStrikeShip::CyclePartAtSocket(UClass* PartClass, FName SocketName)
 
 	// 切换到下一个候选（循环回绕，只有一个候选时就等于重装一次）
 	const int32 NextIndex = (CurrentIndex + 1) % Candidates.Num();
-	return InstallPart(Candidates[NextIndex], SocketName);
+	return InstallPartLocally(Candidates[NextIndex], SocketName);
 }
 
 void AGuLiStrikeShip::FireInstalledWeapons()
 {
-	// 开火行为由各部件自己实现（武器部件自查冷却并出弹，其它部件不响应）
-	for (const FGuLiStrikeInstalledPart& Entry : InstalledParts)
+	if (!CanAcceptServerIntent())
 	{
+		return;
+	}
+	// Fire 是可重写的蓝图事件；回调热换装不得使迭代器失效，也不能继续旧配置的这一轮开火。
+	const TArray<FGuLiStrikeInstalledPart> PartsSnapshot = InstalledParts;
+	const uint32 LoadoutRevision = LoadoutState.Revision;
+	const uint32 MovementBarrier = GetShipMovement()->GetMovementBarrierGeneration();
+	for (const FGuLiStrikeInstalledPart& Entry : PartsSnapshot)
+	{
+		if (!CanAcceptServerIntent() || LoadoutState.Revision != LoadoutRevision
+			|| GetShipMovement()->GetMovementBarrierGeneration() != MovementBarrier)
+		{
+			break;
+		}
 		if (UGuLiStrikeShipPartComponent* Part = Entry.Part.Get())
 		{
-			Part->Fire(this);
+			if (GetPartAt(Entry.SocketName) == Part && CanExecuteServerWeapon(Part))
+			{
+				Part->Fire(this);
+			}
 		}
 	}
 }
 
 void AGuLiStrikeShip::RecomputeStats()
 {
-	// 各部件多态贡献自己的数值，飞船只负责聚合与应用
+	if (bEditingLoadout || !bRuntimeStatsInitialized || bEndingShipPlay)
+	{
+		return;
+	}
+	// ContributeStats 是蓝图事件，使用快照防止回调换装修改正在遍历的数组。
+	const TArray<FGuLiStrikeInstalledPart> PartsSnapshot = InstalledParts;
+	const uint32 LoadoutRevision = LoadoutState.Revision;
+	const auto HasSameInstalledParts = [this, &PartsSnapshot]()
+	{
+		if (InstalledParts.Num() != PartsSnapshot.Num()) { return false; }
+		for (int32 Index = 0; Index < PartsSnapshot.Num(); ++Index)
+		{
+			if (InstalledParts[Index].SocketName != PartsSnapshot[Index].SocketName
+				|| InstalledParts[Index].Part != PartsSnapshot[Index].Part)
+			{
+				return false;
+			}
+		}
+		return true;
+	};
 	FGuLiStrikeShipStats Stats;
-	for (const FGuLiStrikeInstalledPart& Entry : InstalledParts)
+	for (const FGuLiStrikeInstalledPart& Entry : PartsSnapshot)
 	{
 		if (UGuLiStrikeShipPartComponent* Part = Entry.Part.Get())
 		{
 			Part->ContributeStats(Stats);
+			// 嵌套换装已经按新名册重算；外层旧快照不能覆盖较新的配置或 UI 数值。
+			if (bEndingShipPlay || LoadoutState.Revision != LoadoutRevision || !HasSameInstalledParts())
+			{
+				return;
+			}
 		}
 	}
 
@@ -868,12 +962,28 @@ void AGuLiStrikeShip::RecomputeStats()
 
 	CurrentMaxSpeed = BaseMaxSpeed * SpeedMultiplier * ModifierSpeedMultiplier;
 
-	// 移动参数只在 RecomputeStats 里写入——其它系统请走 AddStatModifier，
-	// 避免多方直写互相覆盖
-	if (UCharacterMovementComponent* Movement = GetCharacterMovement())
+	// 服务器提交一份完整配置；移动组件通过版本屏障切换，两端禁止混用旧预测与新参数。
+	// 客户端计算出的 UI 数值不能越过权威配置直接改 CMC。
+	if (HasAuthority())
 	{
-		Movement->MaxFlySpeed = CurrentMaxSpeed;
-		Movement->MaxAcceleration = BaseAcceleration * SpeedMultiplier * ModifierAccelerationMultiplier;
+		FGuLiShipMovementConfig Config;
+		Config.MaxFlySpeed = CurrentMaxSpeed;
+		Config.MaxAcceleration = BaseAcceleration * SpeedMultiplier * ModifierAccelerationMultiplier;
+		Config.BrakingDecelerationFlying = GetCharacterMovement()->BrakingDecelerationFlying;
+		Config.BoostThrustMultiplier = BoostThrustMultiplier;
+		Config.YawRate = YawRate;
+		Config.YawResponseSpeed = YawResponseSpeed;
+		Config.YawStopDamping = YawStopDamping;
+		Config.MaxBankAngle = MaxBankAngle;
+		Config.BankInterpSpeed = BankInterpSpeed;
+		Config.OrientTurnSpeed = OrientTurnSpeed;
+		Config.OrientMinForwardDot = OrientMinForwardDot;
+		Config.bOrientToMovement = bOrientToMovement;
+		if (!GetShipMovement() || !GetShipMovement()->CommitServerMovementConfig(Config, LoadoutState.Revision))
+		{
+			UE_LOG(LogGuLiStrike, Error, TEXT("Ship movement configuration rejected: ship=%s loadout=%u; movement remains gated."),
+				*GetName(), LoadoutState.Revision);
+		}
 	}
 
 	BP_OnStatsChanged();
@@ -1012,4 +1122,278 @@ bool AGuLiStrikeShip::ApplyCameraRow()
 	}
 
 	return true;
+}
+
+
+UGuLiShipMovementComponent* AGuLiStrikeShip::GetShipMovement() const
+{
+	return Cast<UGuLiShipMovementComponent>(GetCharacterMovement());
+}
+
+bool AGuLiStrikeShip::IsShipReady() const
+{
+	const UGuLiShipMovementComponent* Movement = GetShipMovement();
+	return !bEndingShipPlay && AppliedLoadoutRevision != 0u
+		&& AppliedLoadoutRevision == LoadoutState.Revision && Movement && Movement->IsMovementConfigReady();
+}
+
+bool AGuLiStrikeShip::CanUseShipControls() const
+{
+	return IsLocallyControlled() && IsShipReady();
+}
+
+bool AGuLiStrikeShip::CanAcceptServerIntent() const
+{
+	const APlayerController* OwningPC = Cast<APlayerController>(GetController());
+	const AGuLiBattlePlayerState* BattlePS = OwningPC ? OwningPC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
+	const AGuLiBattleGameState* BattleGS = GetWorld() ? GetWorld()->GetGameState<AGuLiBattleGameState>() : nullptr;
+	return HasAuthority() && OwningPC && OwningPC->GetPawn() == this
+		&& BattlePS && BattlePS->GetBattleRole() == EGuLiCommanderRole::Air && BattlePS->IsBattleReady()
+		&& BattleGS && BattleGS->IsMatchInProgress() && IsShipReady();
+}
+
+bool AGuLiStrikeShip::CanExecuteServerWeapon(const UGuLiStrikeShipPartComponent* Part) const
+{
+	return CanAcceptServerIntent() && Part && Part->GetOwner() == this
+		&& Part->GetAttachParent() == HullMesh && HullMesh->DoesSocketExist(Part->GetAttachSocketName())
+		&& InstalledParts.ContainsByPredicate([Part](const FGuLiStrikeInstalledPart& Entry) { return Entry.Part.Get() == Part; });
+}
+
+bool AGuLiStrikeShip::GetServerPartTransform(const UGuLiStrikeShipPartComponent* Part, FTransform& OutTransform) const
+{
+	if (!CanExecuteServerWeapon(Part) || !GetMesh()) { return false; }
+	const FTransform MeshBase(GetBaseRotationOffset(), GetBaseTranslationOffset(), GetMesh()->GetRelativeScale3D());
+	OutTransform = Part->GetRelativeTransform()
+		* HullMesh->GetSocketTransform(Part->GetAttachSocketName(), RTS_Component)
+		* HullMesh->GetRelativeTransform() * MeshBase * GetActorTransform();
+	return true;
+}
+
+bool AGuLiStrikeShip::IsKnownPartClass(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass) const
+{
+	return PartClass && !PartClass->HasAnyClassFlags(CLASS_Abstract | CLASS_Deprecated | CLASS_NewerVersionExists)
+		&& (PartCatalogue.Contains(PartClass) || DefaultParts.ContainsByPredicate(
+			[PartClass](const FGuLiStrikeShipDefaultPart& Entry) { return Entry.PartClass == PartClass; }));
+}
+
+bool AGuLiStrikeShip::InstallPart(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass, FName SocketName)
+{
+	if (!HasAuthority())
+	{
+		const int32 CatalogueIndex = PartCatalogue.IndexOfByKey(PartClass);
+		if (CanUseShipControls() && CatalogueIndex != INDEX_NONE)
+		{
+			ServerRequestPartChange(SocketName, CatalogueIndex, LoadoutState.Revision, GetShipMovement()->GetMovementBarrierGeneration());
+		}
+		// 异步请求不等于装配成功；旧 bool 返回值只有服务器同步安装成功才为 true。
+		return false;
+	}
+	if (!IsKnownPartClass(PartClass) || bEndingShipPlay) { return false; }
+	const bool bWasEditing = bEditingLoadout;
+	bEditingLoadout = true;
+	const bool bInstalled = InstallPartLocally(PartClass, SocketName);
+	bEditingLoadout = bWasEditing;
+	if (bLoadoutDirty && !bEditingLoadout && bRuntimeStatsInitialized) { PublishLoadout(); }
+	return bInstalled;
+}
+
+bool AGuLiStrikeShip::UninstallPart(FName SocketName)
+{
+	if (!HasAuthority())
+	{
+		if (CanUseShipControls()) { ServerRequestPartChange(SocketName, INDEX_NONE, LoadoutState.Revision, GetShipMovement()->GetMovementBarrierGeneration()); }
+		return false;
+	}
+	if (bEndingShipPlay) { return false; }
+	const bool bWasEditing = bEditingLoadout;
+	bEditingLoadout = true;
+	const bool bRemoved = UninstallPartLocally(SocketName);
+	bEditingLoadout = bWasEditing;
+	if (bLoadoutDirty && !bEditingLoadout && bRuntimeStatsInitialized) { PublishLoadout(); }
+	return bRemoved;
+}
+
+void AGuLiStrikeShip::PublishLoadout()
+{
+	if (!HasAuthority() || bEditingLoadout || !bRuntimeStatsInitialized || bEndingShipPlay || !GetShipMovement()) { return; }
+	LoadoutState.Parts.Reset();
+	for (const FGuLiStrikeInstalledPart& Entry : InstalledParts)
+	{
+		if (const UGuLiStrikeShipPartComponent* Part = Entry.Part.Get())
+		{
+			FGuLiStrikeShipDefaultPart& Published = LoadoutState.Parts.AddDefaulted_GetRef();
+			Published.SocketName = Entry.SocketName;
+			Published.PartClass = Part->GetClass();
+		}
+	}
+	if (++LoadoutState.Revision == 0u) { ++LoadoutState.Revision; }
+	bLoadoutDirty = false;
+	AppliedLoadoutRevision = LoadoutState.Revision;
+	GetShipMovement()->SetAppliedLoadoutRevision(AppliedLoadoutRevision);
+	bServerFiring = false;
+	RecomputeStats();
+	ForceNetUpdate();
+}
+
+void AGuLiStrikeShip::OnRep_LoadoutState()
+{
+	// 复制可能早于 BeginPlay；名册留在属性中，BeginPlay 会消费相同入口。
+	ApplyReplicatedLoadout();
+}
+
+void AGuLiStrikeShip::ApplyReplicatedLoadout()
+{
+	if (HasAuthority() || !bRuntimeStatsInitialized || bEndingShipPlay || !GetShipMovement()
+		|| LoadoutState.Revision == 0u || AppliedLoadoutRevision == LoadoutState.Revision) { return; }
+	GetShipMovement()->SetAppliedLoadoutRevision(0u);
+	AppliedLoadoutRevision = 0u;
+	bEditingLoadout = true;
+	// 先注销，再销毁，防止部件 OnComponentDestroyed 回调再次修改迭代中的名册。
+	const TArray<FGuLiStrikeInstalledPart> PreviousParts = InstalledParts;
+	InstalledParts.Reset();
+	for (const FGuLiStrikeInstalledPart& Entry : PreviousParts)
+	{
+		if (UGuLiStrikeShipPartComponent* Part = Entry.Part.Get())
+		{
+			BP_OnPartUninstalled(Part, Entry.SocketName);
+			Part->DestroyComponent();
+		}
+	}
+	bool bComplete = true;
+	TSet<FName> SeenSockets;
+	for (const FGuLiStrikeShipDefaultPart& Entry : LoadoutState.Parts)
+	{
+		if (SeenSockets.Contains(Entry.SocketName) || !IsKnownPartClass(Entry.PartClass)
+			|| !InstallPartLocally(Entry.PartClass, Entry.SocketName))
+		{
+			bComplete = false;
+			break;
+		}
+		SeenSockets.Add(Entry.SocketName);
+	}
+	bEditingLoadout = false;
+	if (bComplete)
+	{
+		AppliedLoadoutRevision = LoadoutState.Revision;
+		GetShipMovement()->SetAppliedLoadoutRevision(AppliedLoadoutRevision);
+		RecomputeStats();
+	}
+	// 资产/组件未能完整准备时保持关闭，Tick 低频重试；不能 ACK 半套装配。
+}
+
+void AGuLiStrikeShip::ServerRequestPartChange_Implementation(FName SocketName, int32 CatalogueIndex, uint32 ExpectedRevision, uint32 ExpectedBarrier)
+{
+	const double Now = GetWorld()->GetTimeSeconds();
+	if (!CanAcceptServerIntent() || ExpectedRevision != LoadoutState.Revision || ExpectedBarrier != GetShipMovement()->GetMovementBarrierGeneration()
+		|| Now - LastServerLoadoutIntentTime < 0.1 || !HullMesh || !HullMesh->DoesSocketExist(SocketName))
+	{
+		return;
+	}
+	LastServerLoadoutIntentTime = Now;
+	if (CatalogueIndex == INDEX_NONE)
+	{
+		UninstallPart(SocketName);
+	}
+	else if (PartCatalogue.IsValidIndex(CatalogueIndex))
+	{
+		// 内部安装仍校验部件类型、真实 socket 和部件 CDO 兼容表。
+		InstallPart(PartCatalogue[CatalogueIndex], SocketName);
+	}
+}
+
+void AGuLiStrikeShip::ServerRequestCycleParts_Implementation(bool bEngines, uint32 ExpectedRevision, uint32 ExpectedBarrier)
+{
+	const double Now = GetWorld()->GetTimeSeconds();
+	if (!CanAcceptServerIntent() || ExpectedRevision != LoadoutState.Revision || ExpectedBarrier != GetShipMovement()->GetMovementBarrierGeneration() || Now - LastServerLoadoutIntentTime < 0.1) { return; }
+	LastServerLoadoutIntentTime = Now;
+	CycleParts(bEngines ? UGuLiStrikeEnginePart::StaticClass() : UGuLiStrikeWeaponPart::StaticClass());
+}
+
+void AGuLiStrikeShip::SetFiringIntent(bool bRequested)
+{
+	if (!GetShipMovement()) { bLocalFireHeld = false; bServerFiring = false; return; }
+	if (bRequested && !CanUseShipControls()) { return; }
+	if (bLocalFireHeld == bRequested) { return; }
+	bLocalFireHeld = bRequested;
+	if (HasAuthority())
+	{
+		ServerSetFiring_Implementation(bRequested, GetShipMovement()->GetMovementConfigRevision(), GetShipMovement()->GetMovementBarrierGeneration());
+	}
+	else
+	{
+		ServerSetFiring(bRequested, GetShipMovement()->GetMovementConfigRevision(), GetShipMovement()->GetMovementBarrierGeneration());
+	}
+}
+
+void AGuLiStrikeShip::ServerSetFiring_Implementation(bool bRequested, uint32 ExpectedConfigRevision, uint32 ExpectedBarrier)
+{
+	// 停火必须能在就绪被撤销后执行；旧配置的迟到开火不能重启新配置下的武器。
+	if (!bRequested)
+	{
+		bServerFiring = false;
+		return;
+	}
+	bServerFiring = CanAcceptServerIntent() && ExpectedConfigRevision == GetShipMovement()->GetMovementConfigRevision()
+		&& ExpectedBarrier == GetShipMovement()->GetMovementBarrierGeneration();
+}
+
+void AGuLiStrikeShip::RemoveShipInputContext()
+{
+	if (UEnhancedInputLocalPlayerSubsystem* Subsystem = InstalledInputSubsystem.Get())
+	{
+		if (ShipMappingContext) { Subsystem->RemoveMappingContext(ShipMappingContext); }
+	}
+	InstalledInputSubsystem.Reset();
+}
+
+void AGuLiStrikeShip::UpdateShipInputContext()
+{
+	APlayerController* OwningPC = Cast<APlayerController>(GetController());
+	const AGuLiBattlePlayerState* BattlePS = OwningPC ? OwningPC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
+	const bool bOwnAirView = !bEndingShipPlay && IsLocallyControlled() && OwningPC
+		&& BattlePS && BattlePS->GetBattleRole() == EGuLiCommanderRole::Air;
+	UEnhancedInputLocalPlayerSubsystem* DesiredSubsystem = bOwnAirView
+		? ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(OwningPC->GetLocalPlayer()) : nullptr;
+	if (InstalledInputSubsystem.Get() != DesiredSubsystem)
+	{
+		SetFiringIntent(false);
+		if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }
+		RemoveShipInputContext();
+		if (DesiredSubsystem && ShipMappingContext)
+		{
+			DesiredSubsystem->AddMappingContext(ShipMappingContext, 0);
+			InstalledInputSubsystem = DesiredSubsystem;
+			OwningPC->SetInputMode(FInputModeGameOnly());
+			OwningPC->bShowMouseCursor = false;
+			// 相机近裁剪仅在本地拥有者启用，远端副本/独立服务器不改本地渲染设置。
+			if (IConsoleVariable* NearClipCVar = IConsoleManager::Get().FindConsoleVariable(TEXT("r.SetNearClippingPlane")))
+			{
+				NearClipCVar->Set(150.0f, ECVF_SetByGameSetting);
+			}
+		}
+	}
+	if (!CanUseShipControls())
+	{
+		SetFiringIntent(false);
+		if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }
+	}
+}
+
+void AGuLiStrikeShip::UnPossessed()
+{
+	bServerFiring = false;
+	bLocalFireHeld = false;
+	if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }
+	RemoveShipInputContext();
+	Super::UnPossessed();
+}
+
+void AGuLiStrikeShip::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	bEndingShipPlay = true;
+	bServerFiring = false;
+	bLocalFireHeld = false;
+	if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }
+	RemoveShipInputContext();
+	Super::EndPlay(EndPlayReason);
 }

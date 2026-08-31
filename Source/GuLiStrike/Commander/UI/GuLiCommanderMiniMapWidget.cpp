@@ -268,8 +268,7 @@ void UGuLiCommanderMiniMapWidget::RefreshSnapshot()
 	TSet<uint32> SelectedSoldierValues;
 	if (Controller)
 	{
-		if (const UGuLiCommanderNetSyncComponent* NetSync =
-			Controller->GetCommanderNetSyncComponent())
+		if (const UGuLiCommanderNetSyncComponent* NetSync = Controller->GetCommanderNetSyncComponent())
 		{
 			const FGuLiCommanderSelectionState& Selection = NetSync->GetSelectionState();
 			for (const FGuLiControlCohortDescriptor& Cohort : Selection.Cohorts)
@@ -388,10 +387,8 @@ void UGuLiCommanderMiniMapWidget::EnsureTerrainCache()
 	{
 		for (int32 Column = 0; Column < Resolution; ++Column)
 		{
-			const float NormalizedX =
-				(static_cast<float>(Column) + 0.5f) / static_cast<float>(Resolution);
-			const float NormalizedY =
-				(static_cast<float>(Row) + 0.5f) / static_cast<float>(Resolution);
+			const float NormalizedX = (static_cast<float>(Column) + 0.5f) / static_cast<float>(Resolution);
+			const float NormalizedY = (static_cast<float>(Row) + 0.5f) / static_cast<float>(Resolution);
 			const FVector2D SampleXY(
 				TerrainWorldBounds.Min.X + WorldSize.X * NormalizedX,
 				TerrainWorldBounds.Min.Y + WorldSize.Y * NormalizedY);
@@ -513,8 +510,7 @@ float UGuLiCommanderMiniMapWidget::ResolveCameraYawDegrees() const
 		}
 	}
 
-	if (const AGuLiCommanderCameraPawn* CameraPawn =
-		Controller->GetPawn<AGuLiCommanderCameraPawn>())
+	if (const AGuLiCommanderCameraPawn* CameraPawn = Controller->GetPawn<AGuLiCommanderCameraPawn>())
 	{
 		const float Yaw = CameraPawn->GetActorRotation().Yaw;
 		return FMath::IsFinite(Yaw) ? FRotator::NormalizeAxis(Yaw) : 0.0f;
@@ -532,8 +528,7 @@ void UGuLiCommanderMiniMapWidget::RefreshCameraFootprint()
 		return;
 	}
 
-	const AGuLiCommanderCameraPawn* CameraPawn =
-		Controller->GetPawn<AGuLiCommanderCameraPawn>();
+	const AGuLiCommanderCameraPawn* CameraPawn = Controller->GetPawn<AGuLiCommanderCameraPawn>();
 	if (!CameraPawn)
 	{
 		return;
@@ -857,6 +852,13 @@ int32 UGuLiCommanderMiniMapWidget::NativePaint(
 bool UGuLiCommanderMiniMapWidget::HandleMapClickAtScreenPosition(
 	const FVector2D& ScreenPixelPosition)
 {
+	// 角色复制可以先于旧 HUD 析构到达；迟到点击不得再移动旧指挥相机。
+	const AGuLiCommanderPlayerController* InputOwner = CommanderController.Get();
+	if (!InputOwner || !InputOwner->IsCommanderViewActive())
+	{
+		return false;
+	}
+
 	const FGeometry& InGeometry = GetCachedGeometry();
 	const FVector2D WidgetSize = InGeometry.GetLocalSize();
 	FVector2D PixelMinimum;
@@ -894,8 +896,7 @@ bool UGuLiCommanderMiniMapWidget::HandleMapClickAtScreenPosition(
 	const FBox2D WorldBounds = TerrainWorldBounds.bIsValid
 		? TerrainWorldBounds
 		: GuLiCommanderNativeMiniMap::GetFallbackWorldBounds();
-	const GuLiCommanderMiniMap::FHeadingUpTransform Transform =
-		GuLiCommanderNativeMiniMap::MakeHeadingTransform(
+	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = GuLiCommanderNativeMiniMap::MakeHeadingTransform(
 			WorldBounds,
 			ContentBounds,
 			CameraYawDegrees);
@@ -904,8 +905,7 @@ bool UGuLiCommanderMiniMapWidget::HandleMapClickAtScreenPosition(
 	{
 		if (AGuLiCommanderPlayerController* Controller = CommanderController.Get())
 		{
-			if (AGuLiCommanderCameraPawn* CameraPawn =
-				Controller->GetPawn<AGuLiCommanderCameraPawn>())
+			if (AGuLiCommanderCameraPawn* CameraPawn = Controller->GetPawn<AGuLiCommanderCameraPawn>())
 			{
 				CameraPawn->JumpToWorldLocation(
 					FVector(WorldPosition.X, WorldPosition.Y, 0.0));

@@ -12,6 +12,8 @@ class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
 class UDataTable;
+class UGuLiShipMovementComponent;
+class UEnhancedInputLocalPlayerSubsystem;
 class UGuLiStrikeShipPartComponent;
 class UGuLiStrikeEnginePart;
 class UGuLiStrikeWeaponPart;
@@ -71,6 +73,19 @@ struct FGuLiShipGMRuntimeReplicatedState
 
 	UPROPERTY()
 	bool bActive = false;
+};
+
+/** 服务器发布的完整装配名册；空数组也是有效裸舰配置，Revision=0 才表示尚未发布。 */
+USTRUCT()
+struct FGuLiShipLoadoutState
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	uint32 Revision = 0u;
+
+	UPROPERTY()
+	TArray<FGuLiStrikeShipDefaultPart> Parts;
 };
 
 /** 已安装部件的内部记录 */
@@ -199,6 +214,10 @@ protected:
 	UPROPERTY(ReplicatedUsing=OnRep_GMRuntimeState)
 	FGuLiShipGMRuntimeReplicatedState GMRuntimeState;
 
+	/** 所有相关客户端重建部件；组件对象不直接跨端共享。 */
+	UPROPERTY(ReplicatedUsing=OnRep_LoadoutState)
+	FGuLiShipLoadoutState LoadoutState;
+
 	/** 裸舰体质量（不含任何部件） */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Stats", meta=(ClampMin = 1))
 	float HullMass = 100.0f;
@@ -306,29 +325,11 @@ protected:
 	/** 当前已安装的部件（每个 socket 一个） */
 	TArray<FGuLiStrikeInstalledPart> InstalledParts;
 
-	/** 加力键当前是否按住 */
-	bool bBoosting = false;
-
-	/** 本帧推进意图的世界空间累积（Tick 里消费，用于自动转向判定） */
-	FVector PendingThrustIntent = FVector::ZeroVector;
-
-	/** 当前转向输入累积：-1 左 / +1 右（Tick 里消费，用于压弯倾斜） */
-	float PendingTurnInput = 0.0f;
-
-	/** 本帧侧移输入累积：-1 左 / +1 右（Tick 里消费，用于侧移压弯倾斜） */
-	float PendingStrafeInput = 0.0f;
-
-	/** 当前偏航角速度（度/秒，带正负号）——转向惯性来源 */
-	float YawVelocity = 0.0f;
-
 	/** 玩家滚轮设定的期望臂长（厘米）；实际臂长每帧由自身舰避障扫掠结算 */
 	float DesiredArmLength = 0.0f;
 
 	/** 舰体包围球半径（厘米，BeginPlay 从舰体资产缓存）；相机避障第一段短走廊的边界 */
 	float HullBoundingRadius = 0.0f;
-
-	/** 当前压弯倾斜角（平滑过渡用） */
-	float CurrentBankRoll = 0.0f;
 
 	/** 全部已装引擎部件的推力总和 */
 	float TotalThrust = 0.0f;
@@ -345,9 +346,9 @@ protected:
 public:
 
 	/** 构造函数 */
-	AGuLiStrikeShip();
+	AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-	/** 每帧更新：依据推进意图自动转向（倒退/纯侧移除外） */
+	/** 本地相机与输入上下文维护；服务器持续开火。飞行积分仅由移动组件执行。 */
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -359,6 +360,8 @@ protected:
 
 	/** 被控制器操控时的初始化 */
 	virtual void NotifyControllerChanged() override;
+	virtual void UnPossessed() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	/** 添加输入绑定 */
 	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
@@ -401,6 +404,7 @@ protected:
 
 	/** 处理开火输入 */
 	void Fire(const FInputActionValue& Value);
+	void StopFire(const FInputActionValue& Value);
 
 	/** 处理引擎热切换输入 */
 	void CycleEngines(const FInputActionValue& Value);
@@ -426,11 +430,11 @@ protected:
 
 public:
 
-	/** 在舰体 socket 上安装指定类的部件，替换该槽位上已有的部件 */
+	/** 服务器校验后同步安装并返回成功；拥有客户端只发送目录意图并返回 false，最终状态由 OnRep 确认。 */
 	UFUNCTION(BlueprintCallable, Category="Ship")
 	bool InstallPart(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass, FName SocketName);
 
-	/** 拆除指定 socket 上的部件（如有） */
+	/** 服务器拆除指定槽位；拥有客户端仅发异步意图，不能在本地改变权威装配。 */
 	UFUNCTION(BlueprintCallable, Category="Ship")
 	bool UninstallPart(FName SocketName);
 
@@ -442,7 +446,7 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Ship")
 	void CycleParts(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass);
 
-	/** 让所有已脱离冷却的武器部件开火 */
+	/** 服务器本地执行一次武器冷却检查；客户端调用不会开火，不是 RPC。 */
 	UFUNCTION(BlueprintCallable, Category="Ship")
 	void FireInstalledWeapons();
 
@@ -487,7 +491,57 @@ public:
 	UFUNCTION(BlueprintPure, Category="Ship|Stats")
 	float GetCurrentMaxSpeed() const { return CurrentMaxSpeed; }
 
+public:
+	/** 本端只读；权限来自当前拥有者、Air 身份、公共握手和装配/移动配置屏障，与士兵名册无关。 */
+	UFUNCTION(BlueprintPure, Category="Ship|Network")
+	bool IsShipReady() const;
+
+	uint32 GetLoadoutRevision() const { return LoadoutState.Revision; }
+
+	UFUNCTION(BlueprintPure, Category="Ship|Network")
+	UGuLiShipMovementComponent* GetShipMovement() const;
+
+	/** 武器部件执行前的服务器资格检查；不能在客户端当成授权。 */
+	bool CanExecuteServerWeapon(const UGuLiStrikeShipPartComponent* Part) const;
+	/** 服务器以胶囊权威变换和原始网格基准组合炮口父变换，排除 Listen Server 的视觉平滑偏移。 */
+	bool GetServerPartTransform(const UGuLiStrikeShipPartComponent* Part, FTransform& OutTransform) const;
+
 private:
+	UFUNCTION()
+	void OnRep_LoadoutState();
+
+	// 拥有客户端只提交目录索引/槽位/所见装配版本；-1 表示卸下，不接受客户端任意类。
+	UFUNCTION(Server, Reliable)
+	void ServerRequestPartChange(FName SocketName, int32 CatalogueIndex, uint32 ExpectedRevision, uint32 ExpectedBarrier);
+
+	// 批量循环只允许引擎/武器两类，候选及最终装配均由服务器当前目录决定。
+	UFUNCTION(Server, Reliable)
+	void ServerRequestCycleParts(bool bEngines, uint32 ExpectedRevision, uint32 ExpectedBarrier);
+
+	// 只在按下/松开时调用；连续出弹在服务器 Tick 内依照每个武器原有冷却执行。
+	UFUNCTION(Server, Reliable)
+	void ServerSetFiring(bool bRequested, uint32 ExpectedConfigRevision, uint32 ExpectedBarrier);
+
+	bool CanUseShipControls() const;
+	bool CanAcceptServerIntent() const;
+	bool IsKnownPartClass(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass) const;
+	bool InstallPartLocally(TSubclassOf<UGuLiStrikeShipPartComponent> PartClass, FName SocketName);
+	bool UninstallPartLocally(FName SocketName);
+	void PublishLoadout();
+	void ApplyReplicatedLoadout();
+	void UpdateShipInputContext();
+	void RemoveShipInputContext();
+	void SetFiringIntent(bool bRequested);
+
+	TWeakObjectPtr<UEnhancedInputLocalPlayerSubsystem> InstalledInputSubsystem;
+	uint32 AppliedLoadoutRevision = 0u;
+	bool bEditingLoadout = false;
+	bool bLoadoutDirty = false;
+	bool bLocalFireHeld = false;
+	bool bServerFiring = false;
+	bool bEndingShipPlay = false;
+	double LastServerLoadoutIntentTime = -1.0;
+	double NextLoadoutRetryTime = 0.0;
 
 	/** Rebuilds exactly one reserved modifier entry from the replicated state. */
 	void ApplyGMRuntimeStateLocally(bool bRecompute = true);

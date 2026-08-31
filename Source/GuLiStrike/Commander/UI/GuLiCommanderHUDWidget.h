@@ -8,7 +8,7 @@
 #include "GuLiCommanderHUDWidget.generated.h"
 
 class AGuLiCommanderPlayerController;
-class AGuLiCommanderPlayerState;
+class AGuLiBattlePlayerState;
 class AGuLiSoldierStateReplicator;
 class UButton;
 class UGuLiCommanderMiniMapWidget;
@@ -95,7 +95,7 @@ private:
 
 	TWeakObjectPtr<AGuLiCommanderPlayerController> CommanderController;
 	TWeakObjectPtr<UGuLiCommanderNetSyncComponent> NetSyncComponent;
-	TWeakObjectPtr<AGuLiCommanderPlayerState> CommanderPlayerState;
+	TWeakObjectPtr<AGuLiBattlePlayerState> CommanderPlayerState;
 	TWeakObjectPtr<AGuLiSoldierStateReplicator> SoldierStateReplicator;
 	TMap<FName, TWeakObjectPtr<UWidget>> WidgetCache;
 

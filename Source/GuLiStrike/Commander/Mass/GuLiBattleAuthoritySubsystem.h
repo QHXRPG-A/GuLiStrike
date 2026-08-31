@@ -8,7 +8,7 @@
 #include "Gameplay/Tuning/GuLiRuntimeTuningTypes.h"
 #include "GuLiBattleAuthoritySubsystem.generated.h"
 
-class AGuLiCommanderPlayerState;
+class AGuLiBattlePlayerState;
 class ANavigationData;
 struct FGuLiBattleAuthorityState;
 
@@ -68,13 +68,16 @@ public:
 	virtual TStatId GetStatId() const override;
 	//~ 更新与统计接口结束
 
+	/** 服务器本地模块生命周期入口，由唯一士兵发布组件调用；公共 Battle 世界默认不启动部队模拟。 */
+	void SetSoldierSimulationEnabled(bool bEnabled);
+
 	/**
 	 * 按服务端位置、阵营和存活状态解析圆形选择意图，生成目标 25 人、允许不足的临时控制组。
 	 * 检查权限、请求结构和已知选择版本；接受后提交 InOutSelection，并通过 OutAck 返回结果。
 	 * 返回 true 表示请求被接受，选择内容未变化时也可成功。
 	 */
 	bool ResolveSelection(
-		const AGuLiCommanderPlayerState& PlayerState,
+		const AGuLiBattlePlayerState& PlayerState,
 		const FGuLiSelectionRequest& Request,
 		FGuLiCommanderSelectionState& InOutSelection,
 		FGuLiCommandAck& OutAck);
@@ -85,7 +88,7 @@ public:
 	 * 返回 true 表示至少一组接令，OutAck 区分全部接受、部分接受和失败，不表示已经到达。
 	 */
 	bool IssueMove(
-		const AGuLiCommanderPlayerState& PlayerState,
+		const AGuLiBattlePlayerState& PlayerState,
 		const FGuLiMoveRequest& Request,
 		const FGuLiCommanderSelectionState& Selection,
 		FGuLiCommandAck& OutAck);
@@ -244,4 +247,5 @@ private:
 
 	/** 独占本 World 的运行时状态；Initialize 分配、Deinitialize 释放，Mass 子系统只被弱引用。 */
 	TUniquePtr<FGuLiBattleAuthorityState, FGuLiBattleAuthorityStateDeleter> AuthorityState;
+	bool bSoldierSimulationEnabled = false;
 };

@@ -4,10 +4,10 @@
 
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetTree.h"
-#include "Commander/Framework/GuLiCommanderGameState.h"
+#include "Battle/Framework/GuLiBattleGameState.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
-#include "Commander/Framework/GuLiCommanderPlayerState.h"
+#include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/UI/GuLiCommanderMiniMapWidget.h"
 #include "Commander/UI/GuLiCommanderUnitTypeSummary.h"
@@ -168,7 +168,7 @@ void UGuLiCommanderHUDWidget::NativeDestruct()
 void UGuLiCommanderHUDWidget::ResolveRuntimeSources()
 {
 	TWeakObjectPtr<UGuLiCommanderNetSyncComponent> NewNetSync;
-	TWeakObjectPtr<AGuLiCommanderPlayerState> NewPlayerState;
+	TWeakObjectPtr<AGuLiBattlePlayerState> NewPlayerState;
 	TWeakObjectPtr<AGuLiSoldierStateReplicator> NewReplicator = SoldierStateReplicator;
 	if (NewReplicator.IsValid() && NewReplicator->GetWorld() != GetWorld())
 	{
@@ -178,7 +178,7 @@ void UGuLiCommanderHUDWidget::ResolveRuntimeSources()
 	if (AGuLiCommanderPlayerController* Controller = CommanderController.Get())
 	{
 		NewNetSync = Controller->GetCommanderNetSyncComponent();
-		NewPlayerState = Controller->GetPlayerState<AGuLiCommanderPlayerState>();
+		NewPlayerState = Controller->GetPlayerState<AGuLiBattlePlayerState>();
 	}
 
 	if (!NewReplicator.IsValid())
@@ -234,7 +234,7 @@ void UGuLiCommanderHUDWidget::BindRuntimeSources()
 	if (AGuLiCommanderPlayerController* Controller = CommanderController.Get())
 	{
 		NetSyncComponent = Controller->GetCommanderNetSyncComponent();
-		CommanderPlayerState = Controller->GetPlayerState<AGuLiCommanderPlayerState>();
+		CommanderPlayerState = Controller->GetPlayerState<AGuLiBattlePlayerState>();
 		ToolModeChangedHandle = Controller->OnCommanderToolModeChanged.AddUObject(
 			this,
 			&ThisClass::HandleToolModeChanged);
@@ -250,7 +250,7 @@ void UGuLiCommanderHUDWidget::BindRuntimeSources()
 			&ThisClass::RefreshCommandAck);
 	}
 
-	if (AGuLiCommanderPlayerState* PlayerState = CommanderPlayerState.Get())
+	if (AGuLiBattlePlayerState* PlayerState = CommanderPlayerState.Get())
 	{
 		PlayerState->OnCommanderPlayerStateChanged.AddUniqueDynamic(
 			this,
@@ -278,7 +278,7 @@ void UGuLiCommanderHUDWidget::UnbindRuntimeSources()
 		NetSync->OnSelectionChanged.Remove(SelectionChangedHandle);
 		NetSync->OnCommandAckChanged.Remove(CommandAckChangedHandle);
 	}
-	if (AGuLiCommanderPlayerState* PlayerState = CommanderPlayerState.Get())
+	if (AGuLiBattlePlayerState* PlayerState = CommanderPlayerState.Get())
 	{
 		PlayerState->OnCommanderPlayerStateChanged.RemoveDynamic(
 			this,
@@ -414,12 +414,13 @@ void UGuLiCommanderHUDWidget::RefreshElapsedTime()
 
 void UGuLiCommanderHUDWidget::RefreshCoreAndRoster()
 {
-	const AGuLiCommanderPlayerState* PlayerState = CommanderPlayerState.Get();
+	const AGuLiBattlePlayerState* PlayerState = CommanderPlayerState.Get();
 	const EGuLiTeam LocalTeam = PlayerState ? PlayerState->GetTeam() : EGuLiTeam::Unassigned;
 	const EGuLiCommanderRole Role = PlayerState
 		? PlayerState->GetCommanderRole()
 		: EGuLiCommanderRole::Unassigned;
-	const bool bOnline = PlayerState && PlayerState->IsSyncReady();
+	const bool bOnline = PlayerState && PlayerState->IsBattleReady();
+	const bool bRosterReady = PlayerState && PlayerState->IsSoldierStreamReady();
 	SetText(
 		TEXT("TXT_CoreSystem"),
 		FText::Format(
@@ -466,19 +467,19 @@ void UGuLiCommanderHUDWidget::RefreshCoreAndRoster()
 	SetText(
 		TEXT("TXT_RosterValue"),
 		FText::FromString(
-			Initial > 0
+			bRosterReady && Initial > 0
 				? FString::Printf(TEXT("%d / %d"), Alive, Initial)
 				: FString(TEXT("-- / --"))));
 	SetImageFraction(
 		TEXT("I_RosterFill"),
-		Initial > 0 ? static_cast<float>(Alive) / static_cast<float>(Initial) : 0.0f);
+		bRosterReady && Initial > 0 ? static_cast<float>(Alive) / static_cast<float>(Initial) : 0.0f);
 }
 
 uint32 UGuLiCommanderHUDWidget::GetCurrentMatchEpoch() const
 {
 	if (const UWorld* World = GetWorld())
 	{
-		if (const AGuLiCommanderGameState* GameState = World->GetGameState<AGuLiCommanderGameState>())
+		if (const AGuLiBattleGameState* GameState = World->GetGameState<AGuLiBattleGameState>())
 		{
 			return GameState->GetMatchEpoch();
 		}
@@ -498,8 +499,8 @@ void UGuLiCommanderHUDWidget::RefreshUnitTypeCard()
 		CachedSelectionMatchEpoch = MatchEpoch;
 	}
 	const AGuLiSoldierStateReplicator* Replicator = SoldierStateReplicator.Get();
-	const AGuLiCommanderPlayerState* PlayerState = CommanderPlayerState.Get();
-	const bool bReliableStateReady = PlayerState && PlayerState->IsSyncReady()
+	const AGuLiBattlePlayerState* PlayerState = CommanderPlayerState.Get();
+	const bool bReliableStateReady = PlayerState && PlayerState->IsSoldierStreamReady()
 		&& Replicator && Replicator->GetSnapshotRevision() != 0u
 		&& MatchEpoch != 0u && Replicator->GetSnapshotMatchEpoch() == MatchEpoch;
 	if (bReliableStateReady && CachedSelectionMatchEpoch == 0u)
@@ -574,6 +575,12 @@ void UGuLiCommanderHUDWidget::HandleToolModeChanged(const EGuLiCommanderToolMode
 
 void UGuLiCommanderHUDWidget::HandleMoveClicked()
 {
+	const AGuLiCommanderPlayerController* InputOwner = CommanderController.Get();
+	if (!InputOwner || !InputOwner->IsCommanderViewActive())
+	{
+		return;
+	}
+
 	if (AGuLiCommanderPlayerController* Controller = CommanderController.Get())
 	{
 		Controller->ArmMoveTool();
@@ -582,6 +589,12 @@ void UGuLiCommanderHUDWidget::HandleMoveClicked()
 
 void UGuLiCommanderHUDWidget::HandleSelectClicked()
 {
+	const AGuLiCommanderPlayerController* InputOwner = CommanderController.Get();
+	if (!InputOwner || !InputOwner->IsCommanderViewActive())
+	{
+		return;
+	}
+
 	if (AGuLiCommanderPlayerController* Controller = CommanderController.Get())
 	{
 		Controller->ActivateSelectionTool();
@@ -590,6 +603,12 @@ void UGuLiCommanderHUDWidget::HandleSelectClicked()
 
 void UGuLiCommanderHUDWidget::HandleMiniMapClicked()
 {
+	const AGuLiCommanderPlayerController* InputOwner = CommanderController.Get();
+	if (!InputOwner || !InputOwner->IsCommanderViewActive())
+	{
+		return;
+	}
+
 	if (!MiniMapWidget)
 	{
 		return;

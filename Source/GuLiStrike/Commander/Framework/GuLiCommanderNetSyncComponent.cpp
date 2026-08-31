@@ -2,9 +2,9 @@
 
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 
-#include "Commander/Framework/GuLiCommanderGameState.h"
-#include "Commander/Framework/GuLiCommanderPlayerController.h"
-#include "Commander/Framework/GuLiCommanderPlayerState.h"
+#include "Battle/Framework/GuLiBattleGameState.h"
+#include "GameFramework/PlayerController.h"
+#include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "GuLiStrike.h"
@@ -128,8 +128,143 @@ void UGuLiCommanderNetSyncComponent::TickComponent(
 	FActorComponentTickFunction* ThisTickFunction)
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+	TickSoldierBootstrap();
 	TryCompleteClientBootstrap();
 	TickPendingCommandRetries();
+}
+
+bool UGuLiCommanderNetSyncComponent::IsSoldierStreamReady() const
+{
+	if (!IsConnectionReady())
+	{
+		return false;
+	}
+	const AGuLiBattleGameState* BattleGameState = GetBattleGameState();
+	if (!BattleGameState || BattleGameState->GetMatchEpoch() == 0u)
+	{
+		return false;
+	}
+	if (SoldierBootstrapBinding.ConnectionGeneration != GetConnectionGeneration()
+		|| SoldierBootstrapBinding.SoldierSyncGeneration != SyncGeneration)
+	{
+		return false;
+	}
+	if (GetOwner()->HasAuthority())
+	{
+		const AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState();
+		return BattlePlayerState && BattlePlayerState->IsSoldierStreamReady()
+			&& SyncGeneration != 0u && ServerAcceptedSyncGeneration == SyncGeneration
+			&& ServerAcceptedMatchEpoch == BattleGameState->GetMatchEpoch();
+	}
+	return bClientPoseReady && ClientAcceptedSyncGeneration == SyncGeneration
+		&& ClientAcceptedMatchEpoch == BattleGameState->GetMatchEpoch();
+}
+
+void UGuLiCommanderNetSyncComponent::ResetClientSoldierState()
+{
+	PendingPoseChunks.Reset();
+	PendingCommandAcks.Reset();
+	QueuedSelectionIntents.Reset();
+	bClientPoseReady = false;
+	ClientAcceptedMatchEpoch = 0u;
+	ClientAcceptedSyncGeneration = 0u;
+	ClientAppliedRosterCount = 0u;
+	ClientAppliedSnapshotRevision = 0u;
+	PendingBootstrapGeneration = 0u;
+	PendingBootstrapMatchEpoch = 0u;
+	PendingBootstrapRosterCount = 0u;
+	PendingBootstrapSnapshotRevision = 0u;
+	bPendingSelectionIntent = false;
+	bPendingSelectionFastRetry = false;
+	bPendingSelectionReliableFallback = false;
+	bPendingMoveIntent = false;
+	bPendingMoveFastRetry = false;
+	bPendingMoveReliableFallback = false;
+	bQueuedMoveAfterSelection = false;
+	PendingSelectionFastRetryTimeSeconds = 0.0;
+	PendingSelectionReliableFallbackTimeSeconds = 0.0;
+	PendingMoveFastRetryTimeSeconds = 0.0;
+	PendingMoveReliableFallbackTimeSeconds = 0.0;
+	PendingSelectionIntent = FGuLiSelectionRequest{};
+	PendingMoveIntent = FGuLiMoveRequest{};
+	QueuedMoveAfterSelection = FGuLiMoveRequest{};
+	LastCommandAck = FGuLiCommandAck{};
+	LastDeliveredAckKind = EGuLiCommandKind::None;
+	LastDeliveredAckCommandId = 0u;
+	bLoggedBootstrapProtocolMismatch = false;
+#if !UE_BUILD_SHIPPING
+	AcceptedPoseFrameCount = 0u;
+	LastAcceptedPoseFrameSequence = 0u;
+	LastAcceptedPoseReceiveTimeSeconds = 0.0;
+#endif
+}
+
+void UGuLiCommanderNetSyncComponent::OnConnectionBootstrapReset()
+{
+	Super::OnConnectionBootstrapReset();
+	ResetClientSoldierState();
+	SelectionState = FGuLiCommanderSelectionState{};
+	LastSelectionAck = FGuLiCommandAck{};
+	LastMoveAck = FGuLiCommandAck{};
+	LastSelectionRequest = FGuLiSelectionRequest{};
+	LastMoveRequest = FGuLiMoveRequest{};
+	// 同一 PlayerController 的输入序号仍递增；保留高水位，避免迟到的旧不可靠请求在重握手后被当成新命令。
+	// 请求内容、回执与重试队列均清空；新 Controller 的新组件本来就从零开始。
+	LastBootstrapRequestId = 0u;
+	HighestAckedStreamSeq = 0u;
+	BootstrapMatchEpoch = 0u;
+	BootstrapExpectedRosterCount = 0u;
+	BootstrapExpectedSnapshotRevision = 0u;
+	ServerAcceptedSyncGeneration = 0u;
+	ServerAcceptedMatchEpoch = 0u;
+	NextServerBootstrapMarkerTime = 0.0;
+	SelectionCachedFastReplayCount = 0u;
+	MoveCachedFastReplayCount = 0u;
+	CommanderRequestWindow.Reset();
+	LastSecurityLogTime = -1.0;
+	SuppressedSecurityLogCount = 0u;
+	// SyncGeneration 保留为递增计数器；清空期望战局撤销当前代次，下一次启动不会复用旧数字。
+	if (GetOwner() && GetOwner()->HasAuthority())
+	{
+		// 客户端不能清写此复制属性：下一代绑定可能先于公共 marker 到达，清写会丢掉已复制的值。
+		SoldierBootstrapBinding = FGuLiSoldierBootstrapBinding{};
+		if (AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState())
+		{
+			BattlePlayerState->SetServerSoldierStreamReady(false);
+			MirrorSyncReadyToRoleSlot(*BattlePlayerState, false);
+		}
+		GetOwner()->ForceNetUpdate();
+	}
+	NotifySelectionChanged();
+	OnCommandAckChanged.Broadcast(LastCommandAck);
+}
+
+void UGuLiCommanderNetSyncComponent::OnConnectionBootstrapReady()
+{
+	Super::OnConnectionBootstrapReady();
+	TickSoldierBootstrap();
+	TryCompleteClientBootstrap();
+}
+
+void UGuLiCommanderNetSyncComponent::TickSoldierBootstrap()
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority() || !IsConnectionReady() || !GetWorld())
+	{
+		return;
+	}
+	const AGuLiBattleGameState* BattleGameState = GetBattleGameState();
+	if (!BattleGameState)
+	{
+		return;
+	}
+	EnsureServerBootstrapForMatch(BattleGameState->GetMatchEpoch());
+	const double Now = GetWorld()->GetRealTimeSeconds();
+	if (!IsSoldierStreamReady() && SyncGeneration != 0u
+		&& Now >= NextServerBootstrapMarkerTime)
+	{
+		NextServerBootstrapMarkerTime = Now + 2.0;
+		ResendServerBootstrapMarker();
+	}
 }
 
 void UGuLiCommanderNetSyncComponent::GetLifetimeReplicatedProps(
@@ -139,25 +274,26 @@ void UGuLiCommanderNetSyncComponent::GetLifetimeReplicatedProps(
 
 	DOREPLIFETIME_CONDITION(UGuLiCommanderNetSyncComponent, SelectionState, COND_OwnerOnly);
 	DOREPLIFETIME_CONDITION(UGuLiCommanderNetSyncComponent, SyncGeneration, COND_OwnerOnly);
+	DOREPLIFETIME_CONDITION(UGuLiCommanderNetSyncComponent, SoldierBootstrapBinding, COND_OwnerOnly);
 }
 
 // 服务器先发布权威名册，再发送期望值标记；这只是发送侧顺序，客户端仍必须检查到达条件。
 void UGuLiCommanderNetSyncComponent::StartServerBootstrap()
 {
-	if (!GetOwner() || !GetOwner()->HasAuthority())
+	if (!GetOwner() || !GetOwner()->HasAuthority() || !IsConnectionReady())
 	{
 		return;
 	}
 
-	AGuLiCommanderPlayerState* CommanderPlayerState = GetCommanderPlayerState();
-	if (!CommanderPlayerState)
+	AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState();
+	if (!BattlePlayerState)
 	{
 		return;
 	}
 
 	UWorld* World = GetWorld();
-	const AGuLiCommanderGameState* CommanderGameState = World
-		? World->GetGameState<AGuLiCommanderGameState>()
+	const AGuLiBattleGameState* BattleGameState = World
+		? World->GetGameState<AGuLiBattleGameState>()
 		: nullptr;
 	UGuLiBattleAuthoritySubsystem* Authority = World
 		? World->GetSubsystem<UGuLiBattleAuthoritySubsystem>()
@@ -173,8 +309,8 @@ void UGuLiCommanderNetSyncComponent::StartServerBootstrap()
 	}
 
 	const int32 ExpectedRosterCount = Authority ? Authority->GetAuthoritativeMemberCount() : 0;
-	if (!CommanderGameState || CommanderGameState->GetProtocolVersion() != GULI_COMMANDER_PROTOCOL_VERSION
-		|| CommanderGameState->GetMatchEpoch() == 0u || !SoldierReplicator
+	if (!BattleGameState || BattleGameState->GetProtocolVersion() != GULI_COMMANDER_PROTOCOL_VERSION
+		|| BattleGameState->GetMatchEpoch() == 0u || !SoldierReplicator
 		|| ExpectedRosterCount <= 0 || ExpectedRosterCount > MAX_uint16)
 	{
 		return;
@@ -182,8 +318,8 @@ void UGuLiCommanderNetSyncComponent::StartServerBootstrap()
 	if (GuLiCommanderNetwork::EvaluateBootstrapAuthorityAction(
 		SyncGeneration,
 		BootstrapMatchEpoch,
-		CommanderGameState->GetMatchEpoch(),
-		CommanderPlayerState->IsSyncReady())
+		BattleGameState->GetMatchEpoch(),
+		BattlePlayerState->IsSoldierStreamReady())
 		!= GuLiCommanderNetwork::EBootstrapAuthorityAction::StartNewGeneration)
 	{
 		return;
@@ -193,9 +329,9 @@ void UGuLiCommanderNetSyncComponent::StartServerBootstrap()
 	Authority->BuildSoldierStateSnapshot(SoldierStates);
 	SoldierReplicator->ApplyAuthoritySnapshot(
 		SoldierStates,
-		CommanderGameState->GetMatchEpoch());
+		BattleGameState->GetMatchEpoch());
 	if (SoldierReplicator->GetItems().Num() < ExpectedRosterCount
-		|| SoldierReplicator->GetSnapshotMatchEpoch() != CommanderGameState->GetMatchEpoch()
+		|| SoldierReplicator->GetSnapshotMatchEpoch() != BattleGameState->GetMatchEpoch()
 		|| SoldierReplicator->GetSnapshotRevision() == 0u)
 	{
 		return;
@@ -203,9 +339,11 @@ void UGuLiCommanderNetSyncComponent::StartServerBootstrap()
 
 	// 战局切换时撤销就绪并清除上一局的选择/去重缓存；普通重试不会反复创建新代次。
 	const bool bMatchEpochChanged = BootstrapMatchEpoch != 0u
-		&& BootstrapMatchEpoch != CommanderGameState->GetMatchEpoch();
-	CommanderPlayerState->SetServerSyncReady(false);
-	MirrorSyncReadyToRoleSlot(*CommanderPlayerState, false);
+		&& BootstrapMatchEpoch != BattleGameState->GetMatchEpoch();
+	BattlePlayerState->SetServerSoldierStreamReady(false);
+	ServerAcceptedSyncGeneration = 0u;
+	ServerAcceptedMatchEpoch = 0u;
+	MirrorSyncReadyToRoleSlot(*BattlePlayerState, false);
 	if (bMatchEpochChanged)
 	{
 		SelectionState = FGuLiCommanderSelectionState{};
@@ -214,11 +352,9 @@ void UGuLiCommanderNetSyncComponent::StartServerBootstrap()
 		LastMoveAck = FGuLiCommandAck{};
 		LastSelectionRequest = FGuLiSelectionRequest{};
 		LastMoveRequest = FGuLiMoveRequest{};
-		LastSelectionRequestId = 0u;
-		LastMoveCommandId = 0u;
 		SelectionCachedFastReplayCount = 0u;
 		MoveCachedFastReplayCount = 0u;
-		RecentCommanderRequestTimes.Reset();
+		CommanderRequestWindow.Reset();
 		NotifySelectionChanged();
 	}
 
@@ -227,23 +363,27 @@ void UGuLiCommanderNetSyncComponent::StartServerBootstrap()
 	{
 		++SyncGeneration;
 	}
+	SoldierBootstrapBinding.ConnectionGeneration = GetConnectionGeneration();
+	SoldierBootstrapBinding.SoldierSyncGeneration = SyncGeneration;
 	HighestAckedStreamSeq = 0u;
-	BootstrapMatchEpoch = CommanderGameState->GetMatchEpoch();
+	BootstrapMatchEpoch = BattleGameState->GetMatchEpoch();
 	BootstrapExpectedRosterCount = static_cast<uint16>(ExpectedRosterCount);
 	BootstrapExpectedSnapshotRevision = SoldierReplicator->GetSnapshotRevision();
 	GetOwner()->ForceNetUpdate();
+	NextServerBootstrapMarkerTime = World->GetRealTimeSeconds() + 2.0;
 	ResendServerBootstrapMarker();
 }
 
 void UGuLiCommanderNetSyncComponent::EnsureServerBootstrapForMatch(
 	const uint32 AuthorityMatchEpoch)
 {
-	if (!GetOwner() || !GetOwner()->HasAuthority() || AuthorityMatchEpoch == 0u)
+	if (!GetOwner() || !GetOwner()->HasAuthority() || AuthorityMatchEpoch == 0u
+		|| !IsConnectionReady())
 	{
 		return;
 	}
-	const AGuLiCommanderPlayerState* CommanderPlayerState = GetCommanderPlayerState();
-	if (!CommanderPlayerState)
+	const AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState();
+	if (!BattlePlayerState)
 	{
 		return;
 	}
@@ -251,7 +391,7 @@ void UGuLiCommanderNetSyncComponent::EnsureServerBootstrapForMatch(
 		SyncGeneration,
 		BootstrapMatchEpoch,
 		AuthorityMatchEpoch,
-		CommanderPlayerState->IsSyncReady())
+		BattlePlayerState->IsSoldierStreamReady())
 		== GuLiCommanderNetwork::EBootstrapAuthorityAction::StartNewGeneration)
 	{
 		StartServerBootstrap();
@@ -261,6 +401,7 @@ void UGuLiCommanderNetSyncComponent::EnsureServerBootstrapForMatch(
 void UGuLiCommanderNetSyncComponent::SendPoseChunk(const FGuLiSoldierPoseChunk& Chunk)
 {
 	if (!GetOwner() || !GetOwner()->HasAuthority()
+		|| !IsSoldierStreamReady() || Chunk.AuthorityEpoch != ServerAcceptedMatchEpoch
 		|| Chunk.ProtocolVersion != GULI_COMMANDER_PROTOCOL_VERSION)
 	{
 		return;
@@ -271,14 +412,14 @@ void UGuLiCommanderNetSyncComponent::SendPoseChunk(const FGuLiSoldierPoseChunk& 
 
 bool UGuLiCommanderNetSyncComponent::RefreshServerSelection()
 {
-	if (!GetOwner() || !GetOwner()->HasAuthority() || !GetWorld())
+	if (!GetOwner() || !GetOwner()->HasAuthority() || !GetWorld() || !IsSoldierStreamReady())
 	{
 		return false;
 	}
-	AGuLiCommanderPlayerState* CommanderPlayerState = GetCommanderPlayerState();
+	AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState();
 	UGuLiBattleAuthoritySubsystem* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
-	if (!CommanderPlayerState || !Authority
-		|| !Authority->RefreshSelection(CommanderPlayerState->GetTeam(), SelectionState))
+	if (!BattlePlayerState || !Authority
+		|| !Authority->RefreshSelection(BattlePlayerState->GetTeam(), SelectionState))
 	{
 		return false;
 	}
@@ -394,7 +535,7 @@ void UGuLiCommanderNetSyncComponent::BeginMoveIntent(const FGuLiMoveRequest& Req
 // 快速补发与可靠回退各最多触发一次；收到匹配的业务 ACK 会清除对应标志。
 void UGuLiCommanderNetSyncComponent::TickPendingCommandRetries()
 {
-	if (!GetOwner() || GetOwner()->HasAuthority())
+	if (!GetOwner() || GetOwner()->HasAuthority() || !IsSoldierStreamReady())
 	{
 		return;
 	}
@@ -514,11 +655,11 @@ void UGuLiCommanderNetSyncComponent::HandleSelectionRequest(
 		return;
 	}
 
-	AGuLiCommanderPlayerState* CommanderPlayerState = GetCommanderPlayerState();
+	AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState();
 	UGuLiBattleAuthoritySubsystem* Authority = GetWorld()
 		? GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()
 		: nullptr;
-	if (!CommanderPlayerState || !Authority || !Request.IsWellFormed())
+	if (!BattlePlayerState || !Authority || !Request.IsWellFormed())
 	{
 		Ack.Result = EGuLiCommandAckResult::InvalidRequest;
 		LastSelectionAck = Ack;
@@ -529,7 +670,7 @@ void UGuLiCommanderNetSyncComponent::HandleSelectionRequest(
 	// 先在候选副本上解算；仅接受后替换复制状态，拒绝不能破坏原有选择。
 	FGuLiCommanderSelectionState CandidateSelection = SelectionState;
 	const bool bAccepted = Authority->ResolveSelection(
-		*CommanderPlayerState,
+		*BattlePlayerState,
 		Request,
 		CandidateSelection,
 		Ack);
@@ -627,11 +768,11 @@ void UGuLiCommanderNetSyncComponent::HandleMoveRequest(
 		return;
 	}
 
-	AGuLiCommanderPlayerState* CommanderPlayerState = GetCommanderPlayerState();
+	AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState();
 	UGuLiBattleAuthoritySubsystem* Authority = GetWorld()
 		? GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()
 		: nullptr;
-	if (!CommanderPlayerState || !Authority || !Request.IsWellFormed())
+	if (!BattlePlayerState || !Authority || !Request.IsWellFormed())
 	{
 		Ack.Result = EGuLiCommandAckResult::InvalidRequest;
 		LastMoveAck = Ack;
@@ -641,7 +782,7 @@ void UGuLiCommanderNetSyncComponent::HandleMoveRequest(
 
 	// Authority 决定版本/归属/目标/寻路和部分接受，bool 表示是否至少接受部分，详细原因写入 Ack。
 	const bool bAccepted = Authority->IssueMove(
-		*CommanderPlayerState,
+		*BattlePlayerState,
 		Request,
 		SelectionState,
 		Ack);
@@ -658,6 +799,11 @@ void UGuLiCommanderNetSyncComponent::HandleMoveRequest(
 // 客户端请求可重发当前未完成代次的标记；不要把每次重试都变成新的 SyncGeneration。
 void UGuLiCommanderNetSyncComponent::ServerRequestBootstrap_Implementation(uint32 ClientBootstrapRequestId)
 {
+	EnsureServerConnectionBootstrap();
+	if (!GetOwner() || !GetOwner()->HasAuthority() || !IsConnectionReady())
+	{
+		return;
+	}
 	if (ClientBootstrapRequestId == 0)
 	{
 		LogRejectedRpc(TEXT("ServerRequestBootstrap"), EGuLiCommandAckResult::InvalidRequest);
@@ -680,22 +826,22 @@ void UGuLiCommanderNetSyncComponent::ServerRequestBootstrap_Implementation(uint3
 	}
 
 	LastBootstrapRequestId = ClientBootstrapRequestId;
-	if (!GetCommanderPlayerState() || !ConsumeCommandRateLimit())
+	if (!GetBattlePlayerState() || !ConsumeCommandRateLimit())
 	{
 		LogRejectedRpc(TEXT("ServerRequestBootstrap"), EGuLiCommandAckResult::RateLimited);
 		return;
 	}
-	const AGuLiCommanderGameState* CommanderGameState = GetWorld()
-		? GetWorld()->GetGameState<AGuLiCommanderGameState>()
+	const AGuLiBattleGameState* BattleGameState = GetWorld()
+		? GetWorld()->GetGameState<AGuLiBattleGameState>()
 		: nullptr;
-	const uint32 AuthorityMatchEpoch = CommanderGameState
-		? CommanderGameState->GetMatchEpoch()
+	const uint32 AuthorityMatchEpoch = BattleGameState
+		? BattleGameState->GetMatchEpoch()
 		: 0u;
 	const GuLiCommanderNetwork::EBootstrapAuthorityAction BootstrapAction = GuLiCommanderNetwork::EvaluateBootstrapAuthorityAction(
 			SyncGeneration,
 			BootstrapMatchEpoch,
 			AuthorityMatchEpoch,
-			GetCommanderPlayerState()->IsSyncReady());
+			GetBattlePlayerState()->IsSoldierStreamReady());
 	if (BootstrapAction == GuLiCommanderNetwork::EBootstrapAuthorityAction::StartNewGeneration)
 	{
 		StartServerBootstrap();
@@ -716,15 +862,22 @@ void UGuLiCommanderNetSyncComponent::ServerAcknowledgeBootstrap_Implementation(
 	const uint16 AppliedRosterCount,
 	const uint32 AppliedSnapshotRevision)
 {
-	const AGuLiCommanderGameState* CommanderGameState = GetWorld()
-		? GetWorld()->GetGameState<AGuLiCommanderGameState>()
+	EnsureServerConnectionBootstrap();
+	if (!GetOwner() || !GetOwner()->HasAuthority() || !IsConnectionReady())
+	{
+		return;
+	}
+	const AGuLiBattleGameState* BattleGameState = GetWorld()
+		? GetWorld()->GetGameState<AGuLiBattleGameState>()
 		: nullptr;
 	if (InSyncGeneration == 0u || InSyncGeneration != SyncGeneration
-		|| !CommanderGameState
-		|| CommanderGameState->GetProtocolVersion() != GULI_COMMANDER_PROTOCOL_VERSION
+		|| SoldierBootstrapBinding.ConnectionGeneration != GetConnectionGeneration()
+		|| SoldierBootstrapBinding.SoldierSyncGeneration != SyncGeneration
+		|| !BattleGameState
+		|| BattleGameState->GetProtocolVersion() != GULI_COMMANDER_PROTOCOL_VERSION
 		|| !GuLiCommanderNetwork::IsBootstrapSnapshotCompatible(
 			ClientProtocolVersion,
-			CommanderGameState->GetMatchEpoch(),
+			BattleGameState->GetMatchEpoch(),
 			ClientMatchEpoch,
 			AppliedSnapshotRevision,
 			static_cast<int32>(AppliedRosterCount),
@@ -736,17 +889,19 @@ void UGuLiCommanderNetSyncComponent::ServerAcknowledgeBootstrap_Implementation(
 		return;
 	}
 
-	if (AGuLiCommanderPlayerState* CommanderPlayerState = GetCommanderPlayerState())
+	if (AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState())
 	{
-		CommanderPlayerState->SetServerSyncReady(true);
-		MirrorSyncReadyToRoleSlot(*CommanderPlayerState, true);
+		ServerAcceptedSyncGeneration = SyncGeneration;
+		ServerAcceptedMatchEpoch = BootstrapMatchEpoch;
+		BattlePlayerState->SetServerSoldierStreamReady(true);
+		MirrorSyncReadyToRoleSlot(*BattlePlayerState, true);
 		UE_LOG(
 			LogGuLiStrike,
 			Display,
 			TEXT("Commander bootstrap ready: generation=%u owner=%s player=%s."),
 			SyncGeneration,
 			*GetNameSafe(GetOwner()),
-			*CommanderPlayerState->GetPlayerGuid().ToString());
+			*BattlePlayerState->GetPlayerGuid().ToString());
 	}
 }
 
@@ -755,8 +910,8 @@ void UGuLiCommanderNetSyncComponent::ServerAcknowledgeFacts_Implementation(
 	uint32 InSyncGeneration,
 	uint32 HighestContiguousStreamSeq)
 {
-	const AGuLiCommanderPlayerState* CommanderPlayerState = GetCommanderPlayerState();
-	if (!CommanderPlayerState || !CommanderPlayerState->IsSyncReady()
+	const AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState();
+	if (!BattlePlayerState || !IsSoldierStreamReady()
 		|| InSyncGeneration == 0 || InSyncGeneration != SyncGeneration)
 	{
 		return;
@@ -777,30 +932,39 @@ void UGuLiCommanderNetSyncComponent::ClientBootstrapStarted_Implementation(
 	const uint32 ExpectedSnapshotRevision)
 {
 	if (NewSyncGeneration == 0u || MatchEpoch == 0u || ExpectedRosterCount == 0u
-		|| ExpectedSnapshotRevision == 0u)
+		|| ExpectedSnapshotRevision == 0u || !IsConnectionReady()
+		|| SoldierBootstrapBinding.ConnectionGeneration != GetConnectionGeneration()
+		|| SoldierBootstrapBinding.SoldierSyncGeneration != NewSyncGeneration)
 	{
 		return;
 	}
-
-	PendingPoseChunks.Reset();
-	PendingCommandAcks.Reset();
-	bClientPoseReady = false;
-	bPendingSelectionIntent = false;
-	bPendingSelectionFastRetry = false;
-	bPendingSelectionReliableFallback = false;
-	bPendingMoveIntent = false;
-	bPendingMoveFastRetry = false;
-	bPendingMoveReliableFallback = false;
-	bQueuedMoveAfterSelection = false;
-	QueuedSelectionIntents.Reset();
-	LastDeliveredAckKind = EGuLiCommandKind::None;
-	LastDeliveredAckCommandId = 0u;
-	ClientAcceptedMatchEpoch = 0u;
-#if !UE_BUILD_SHIPPING
-	AcceptedPoseFrameCount = 0u;
-	LastAcceptedPoseFrameSequence = 0u;
-	LastAcceptedPoseReceiveTimeSeconds = 0.0;
-#endif
+	const AGuLiBattleGameState* BattleGameState = GetBattleGameState();
+	if (!BattleGameState || BattleGameState->GetMatchEpoch() != MatchEpoch
+		|| (SyncGeneration != 0u && NewSyncGeneration != SyncGeneration
+			&& !IsNewerSerial(NewSyncGeneration, SyncGeneration)))
+	{
+		return;
+	}
+	// 同代次标记重发只补查依赖，不能清除已确认命令；旧代次不能覆盖新名册门。
+	if (ServerProtocolVersion == GULI_COMMANDER_PROTOCOL_VERSION
+		&& bClientPoseReady && ClientAcceptedSyncGeneration == NewSyncGeneration
+		&& ClientAcceptedMatchEpoch == MatchEpoch)
+	{
+		ServerAcknowledgeBootstrap(
+			NewSyncGeneration, ServerProtocolVersion, MatchEpoch,
+			ClientAppliedRosterCount, ClientAppliedSnapshotRevision);
+		return;
+	}
+	if (ServerProtocolVersion == GULI_COMMANDER_PROTOCOL_VERSION
+		&& PendingBootstrapGeneration == NewSyncGeneration
+		&& PendingBootstrapMatchEpoch == MatchEpoch
+		&& PendingBootstrapRosterCount == ExpectedRosterCount
+		&& PendingBootstrapSnapshotRevision == ExpectedSnapshotRevision)
+	{
+		TryCompleteClientBootstrap();
+		return;
+	}
+	ResetClientSoldierState();
 	if (SyncGeneration != NewSyncGeneration)
 	{
 		SyncGeneration = NewSyncGeneration;
@@ -844,6 +1008,11 @@ void UGuLiCommanderNetSyncComponent::ClientReceiveCommandAckFast_Implementation(
 // 可靠/快速 ACK 共用本地消费路径；先按命令种类和 ID 停止重试，再排队并通知 UI。
 void UGuLiCommanderNetSyncComponent::ReceiveCommandAck(const FGuLiCommandAck& Ack)
 {
+	// 无拥有者的对象仅用于原生协议测试；真实连接在公共握手失效后不能继续消费旧 ACK。
+	if (GetOwner() && !IsConnectionReady())
+	{
+		return;
+	}
 	FGuLiCommandAck Sanitized = Ack;
 	Sanitized.Sanitize();
 	if (Sanitized.CommandKind == EGuLiCommandKind::None
@@ -921,6 +1090,11 @@ void UGuLiCommanderNetSyncComponent::ReceiveCommandAck(const FGuLiCommandAck& Ac
 void UGuLiCommanderNetSyncComponent::ClientReceiveSoldierPoseChunk_Implementation(
 	const FGuLiSoldierPoseChunk& Chunk)
 {
+	// 测试注入没有 Actor/World，仍复用下方原始协议谓词；网络接收须先通过公共连接门。
+	if (GetOwner() && !IsSoldierStreamReady())
+	{
+		return;
+	}
 	if (!GuLiCommanderNetwork::IsClientPoseChunkAcceptable(
 		Chunk,
 		bClientPoseReady,
@@ -960,10 +1134,12 @@ void UGuLiCommanderNetSyncComponent::OnRep_SelectionState()
 
 void UGuLiCommanderNetSyncComponent::OnRep_SyncGeneration()
 {
-	if (PendingBootstrapGeneration != 0u
-		&& PendingBootstrapGeneration != SyncGeneration)
+	if ((PendingBootstrapGeneration != 0u && PendingBootstrapGeneration != SyncGeneration)
+		|| (ClientAcceptedSyncGeneration != 0u && ClientAcceptedSyncGeneration != SyncGeneration))
 	{
 		bClientPoseReady = false;
+		ClientAcceptedSyncGeneration = 0u;
+		ClientAcceptedMatchEpoch = 0u;
 		PendingPoseChunks.Reset();
 	}
 }
@@ -972,7 +1148,7 @@ void UGuLiCommanderNetSyncComponent::ResendServerBootstrapMarker()
 {
 	if (!GetOwner() || !GetOwner()->HasAuthority() || SyncGeneration == 0u
 		|| BootstrapMatchEpoch == 0u || BootstrapExpectedRosterCount == 0u
-		|| BootstrapExpectedSnapshotRevision == 0u)
+		|| BootstrapExpectedSnapshotRevision == 0u || !IsConnectionReady())
 	{
 		return;
 	}
@@ -988,22 +1164,24 @@ void UGuLiCommanderNetSyncComponent::ResendServerBootstrapMarker()
 // 本地控制端持续检查跨对象依赖；GameState、快照版本和有效唯一 SoldierId 名册都满足后确认。
 void UGuLiCommanderNetSyncComponent::TryCompleteClientBootstrap()
 {
-	AGuLiCommanderPlayerController* Controller = GetCommanderController();
+	APlayerController* Controller = GetOwningPlayerController();
 	UWorld* World = GetWorld();
 	if (!Controller || !Controller->IsLocalController() || !World
 		|| PendingBootstrapGeneration == 0u || PendingBootstrapMatchEpoch == 0u
 		|| PendingBootstrapRosterCount == 0u || PendingBootstrapSnapshotRevision == 0u
-		|| bClientPoseReady)
+		|| bClientPoseReady || !IsConnectionReady()
+		|| SoldierBootstrapBinding.ConnectionGeneration != GetConnectionGeneration()
+		|| SoldierBootstrapBinding.SoldierSyncGeneration != PendingBootstrapGeneration)
 	{
 		return;
 	}
 
-	const AGuLiCommanderGameState* CommanderGameState = World->GetGameState<AGuLiCommanderGameState>();
-	if (!CommanderGameState)
+	const AGuLiBattleGameState* BattleGameState = World->GetGameState<AGuLiBattleGameState>();
+	if (!BattleGameState)
 	{
 		return;
 	}
-	if (CommanderGameState->GetProtocolVersion() != GULI_COMMANDER_PROTOCOL_VERSION)
+	if (BattleGameState->GetProtocolVersion() != GULI_COMMANDER_PROTOCOL_VERSION)
 	{
 		if (!bLoggedBootstrapProtocolMismatch)
 		{
@@ -1011,15 +1189,15 @@ void UGuLiCommanderNetSyncComponent::TryCompleteClientBootstrap()
 				LogGuLiStrike,
 				Error,
 				TEXT("Commander GameState protocol mismatch: server=%u client=%u generation=%u."),
-				CommanderGameState->GetProtocolVersion(),
+				BattleGameState->GetProtocolVersion(),
 				GULI_COMMANDER_PROTOCOL_VERSION,
 				PendingBootstrapGeneration);
 			bLoggedBootstrapProtocolMismatch = true;
 		}
 		return;
 	}
-	if (CommanderGameState->GetMatchEpoch() == 0u
-		|| CommanderGameState->GetMatchEpoch() != PendingBootstrapMatchEpoch)
+	if (BattleGameState->GetMatchEpoch() == 0u
+		|| BattleGameState->GetMatchEpoch() != PendingBootstrapMatchEpoch)
 	{
 		return;
 	}
@@ -1032,8 +1210,8 @@ void UGuLiCommanderNetSyncComponent::TryCompleteClientBootstrap()
 	}
 	if (!SoldierReplicator
 		|| !GuLiCommanderNetwork::IsBootstrapSnapshotCompatible(
-			CommanderGameState->GetProtocolVersion(),
-			CommanderGameState->GetMatchEpoch(),
+			BattleGameState->GetProtocolVersion(),
+			BattleGameState->GetMatchEpoch(),
 			SoldierReplicator->GetSnapshotMatchEpoch(),
 			SoldierReplicator->GetSnapshotRevision(),
 			SoldierReplicator->GetItems().Num(),
@@ -1067,6 +1245,9 @@ void UGuLiCommanderNetSyncComponent::TryCompleteClientBootstrap()
 	PendingBootstrapRosterCount = 0u;
 	PendingBootstrapSnapshotRevision = 0u;
 	ClientAcceptedMatchEpoch = CompletedMatchEpoch;
+	ClientAcceptedSyncGeneration = CompletedGeneration;
+	ClientAppliedRosterCount = CompletedRosterCount;
+	ClientAppliedSnapshotRevision = CompletedSnapshotRevision;
 	// 客户端先打开本地姿态门并回报；服务器收到下面的可靠 ACK 后才设置 PlayerState 的 bSyncReady。
 	bClientPoseReady = true;
 	ServerAcknowledgeBootstrap(
@@ -1134,28 +1315,15 @@ void UGuLiCommanderNetSyncComponent::TestOnly_ReceivePoseChunk(
 }
 #endif
 
-AGuLiCommanderPlayerController* UGuLiCommanderNetSyncComponent::GetCommanderController() const
-{
-	return Cast<AGuLiCommanderPlayerController>(GetOwner());
-}
-
-AGuLiCommanderPlayerState* UGuLiCommanderNetSyncComponent::GetCommanderPlayerState() const
-{
-	const AGuLiCommanderPlayerController* CommanderController = GetCommanderController();
-	return CommanderController
-		? CommanderController->GetPlayerState<AGuLiCommanderPlayerState>()
-		: nullptr;
-}
-
 // 拥有 RPC 通道不等于具有玩法权限：还要求服务器端、Commander 角色和初始同步就绪。
 // 未就绪与非指挥官在当前实现中都返回 Unauthorized；通过后才消耗普通命令限流额度。
 bool UGuLiCommanderNetSyncComponent::CanProcessCommanderRequest(
 	FGuLiCommandAck& InOutAck,
 	const TCHAR* RpcName)
 {
-	AGuLiCommanderPlayerState* CommanderPlayerState = GetCommanderPlayerState();
-	if (!GetOwner() || !GetOwner()->HasAuthority() || !CommanderPlayerState
-		|| !CommanderPlayerState->IsCommander() || !CommanderPlayerState->IsSyncReady())
+	AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState();
+	if (!GetOwner() || !GetOwner()->HasAuthority() || !BattlePlayerState
+		|| !BattlePlayerState->IsCommander() || !IsConnectionReady() || !IsSoldierStreamReady())
 	{
 		InOutAck.Result = EGuLiCommandAckResult::Unauthorized;
 		LogRejectedRpc(RpcName, InOutAck.Result);
@@ -1181,20 +1349,10 @@ bool UGuLiCommanderNetSyncComponent::ConsumeCommandRateLimit()
 		return false;
 	}
 
-	const double Now = World->GetRealTimeSeconds();
-	RecentCommanderRequestTimes.RemoveAll(
-		[Now](double RequestTime)
-		{
-			return Now - RequestTime >= GuLiCommanderNetwork::CommanderRequestWindowSeconds;
-		});
-
-	if (RecentCommanderRequestTimes.Num() >= GuLiCommanderNetwork::MaxCommanderRequestsPerSecond)
-	{
-		return false;
-	}
-
-	RecentCommanderRequestTimes.Add(Now);
-	return true;
+	return CommanderRequestWindow.Consume(
+		World->GetRealTimeSeconds(),
+		GuLiCommanderNetwork::MaxCommanderRequestsPerSecond,
+		GuLiCommanderNetwork::CommanderRequestWindowSeconds);
 }
 
 // 快速缓存回执每命令最多补发两次；此预算独立于普通新命令的一秒窗口。
@@ -1278,21 +1436,21 @@ void UGuLiCommanderNetSyncComponent::LogRejectedRpc(
 }
 
 void UGuLiCommanderNetSyncComponent::MirrorSyncReadyToRoleSlot(
-	const AGuLiCommanderPlayerState& CommanderPlayerState,
+	const AGuLiBattlePlayerState& BattlePlayerState,
 	bool bReady) const
 {
-	if (CommanderPlayerState.GetCommanderSlotIndex() == AGuLiCommanderPlayerState::InvalidSlotIndex)
+	if (BattlePlayerState.GetBattleSlotIndex() == AGuLiBattlePlayerState::InvalidSlotIndex)
 	{
 		return;
 	}
 
 	if (UWorld* World = GetWorld())
 	{
-		if (AGuLiCommanderGameState* CommanderGameState = World->GetGameState<AGuLiCommanderGameState>())
+		if (AGuLiBattleGameState* BattleGameState = World->GetGameState<AGuLiBattleGameState>())
 		{
-			CommanderGameState->SetRoleSlotSyncReady(
-				CommanderPlayerState.GetCommanderSlotIndex(),
-				CommanderPlayerState.GetPlayerGuid(),
+			BattleGameState->SetRoleSlotSyncReady(
+				BattlePlayerState.GetBattleSlotIndex(),
+				BattlePlayerState.GetPlayerGuid(),
 				bReady);
 		}
 	}

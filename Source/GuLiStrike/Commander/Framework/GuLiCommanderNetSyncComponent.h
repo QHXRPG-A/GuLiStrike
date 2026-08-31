@@ -3,12 +3,24 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Battle/Network/GuLiPlayerNetSyncComponent.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
-#include "Components/ActorComponent.h"
 #include "GuLiCommanderNetSyncComponent.generated.h"
 
-class AGuLiCommanderPlayerController;
-class AGuLiCommanderPlayerState;
+class AGuLiBattlePlayerState;
+
+/** 把专业名册代次绑定到公共连接；单独属性用于保留旧 Bootstrap RPC 的参数布局。 */
+USTRUCT()
+struct FGuLiSoldierBootstrapBinding
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	uint32 ConnectionGeneration = 0u;
+
+	UPROPERTY()
+	uint32 SoldierSyncGeneration = 0u;
+};
 
 DECLARE_MULTICAST_DELEGATE_OneParam(
 	FGuLiCommanderSelectionChangedSignature,
@@ -21,12 +33,13 @@ DECLARE_MULTICAST_DELEGATE_OneParam(
 	const FGuLiSoldierPoseChunk&);
 
 /**
- * PlayerController 所属连接的双端通信组件：命令意图、初始同步、业务 ACK 和姿态 RPC。
+ * 公共连接组件的指挥官扩展：命令意图、士兵名册初始同步、业务 ACK 和姿态 RPC。
+ * 公共身份握手由基类完成；士兵就绪是独立门，Ground/Air 的公共就绪不替代它。
  * 组件借用拥有者的连接路由；SelectionState/SyncGeneration 属性仅复制给拥有者。
  * 网络层负责校验/去重/限流，具体选兵、成员归属与寻路仍由 Authority 判定。
  */
 UCLASS(ClassGroup = (GuLiStrike), meta = (BlueprintSpawnableComponent))
-class UGuLiCommanderNetSyncComponent : public UActorComponent
+class UGuLiCommanderNetSyncComponent : public UGuLiPlayerNetSyncComponent
 {
 	GENERATED_BODY()
 
@@ -44,6 +57,10 @@ public:
 
 	/** 服务器检查当前战局；仅缺少代次或战局改变时启动，不因重复 Tick 持续增加代次。 */
 	void EnsureServerBootstrapForMatch(uint32 AuthorityMatchEpoch);
+
+	/** 公共连接及当前战局的士兵名册都已就绪；发送姿态和下指挥命令必须检查此门。 */
+	UFUNCTION(BlueprintPure, Category = "Commander|Network")
+	bool IsSoldierStreamReady() const;
 
 	/** 服务器把已构造的姿态块发给拥有者；捕获目标为 10 Hz，具体分块/调度不在本函数。 */
 	void SendPoseChunk(const FGuLiSoldierPoseChunk& Chunk);
@@ -136,6 +153,10 @@ public:
 	void TestOnly_ReceivePoseChunk(const FGuLiSoldierPoseChunk& Chunk);
 #endif
 
+protected:
+	virtual void OnConnectionBootstrapReset() override;
+	virtual void OnConnectionBootstrapReady() override;
+
 private:
 	// 拥有客户端 → 服务器，不可靠快速选兵入口；与可靠版本共用 HandleSelectionRequest。
 	UFUNCTION(Server, Unreliable)
@@ -172,11 +193,11 @@ private:
 	UFUNCTION()
 	void OnRep_SyncGeneration();
 
-	AGuLiCommanderPlayerController* GetCommanderController() const;
-	AGuLiCommanderPlayerState* GetCommanderPlayerState() const;
 	void BeginSelectionIntent(const FGuLiSelectionRequest& Request);
 	void BeginMoveIntent(const FGuLiMoveRequest& Request);
 	void TickPendingCommandRetries();
+	void TickSoldierBootstrap();
+	void ResetClientSoldierState();
 	void HandleSelectionRequest(const FGuLiSelectionRequest& Request, bool bReliableAck);
 	void HandleMoveRequest(const FGuLiMoveRequest& Request, bool bReliableAck);
 	void ReceiveCommandAck(const FGuLiCommandAck& Ack);
@@ -189,7 +210,7 @@ private:
 	void TryCompleteClientBootstrap();
 	void NotifySelectionChanged();
 	void LogRejectedRpc(const TCHAR* RpcName, EGuLiCommandAckResult Result);
-	void MirrorSyncReadyToRoleSlot(const AGuLiCommanderPlayerState& CommanderPlayerState, bool bReady) const;
+	void MirrorSyncReadyToRoleSlot(const AGuLiBattlePlayerState& BattlePlayerState, bool bReady) const;
 	static bool IsNewerSerial(uint32 Candidate, uint32 Baseline);
 
 	// 服务器确认的选择，OwnerOnly 属性复制；客户端预测不能修改服务器这份权威值。
@@ -203,6 +224,10 @@ private:
 	UPROPERTY(ReplicatedUsing = OnRep_SyncGeneration)
 	uint32 SyncGeneration = 0;
 
+	// 跨属性/RPC 顺序不作假设；客户端等此绑定与公共代次、启动标记都一致后才处理名册。
+	UPROPERTY(Replicated)
+	FGuLiSoldierBootstrapBinding SoldierBootstrapBinding;
+
 	// 服务器去重状态：选兵与移动各有独立序号空间，并分别缓存最近请求及 ACK。
 	uint32 LastSelectionRequestId = 0;
 	uint32 LastMoveCommandId = 0;
@@ -211,12 +236,18 @@ private:
 	uint32 BootstrapMatchEpoch = 0;
 	uint16 BootstrapExpectedRosterCount = 0;
 	uint32 BootstrapExpectedSnapshotRevision = 0;
+	uint32 ServerAcceptedSyncGeneration = 0u;
+	uint32 ServerAcceptedMatchEpoch = 0u;
+	double NextServerBootstrapMarkerTime = 0.0;
 	// 客户端待满足的同步条件；与服务器 Bootstrap* 期望值分开保存。
 	uint32 PendingBootstrapGeneration = 0;
 	uint32 PendingBootstrapMatchEpoch = 0;
 	uint16 PendingBootstrapRosterCount = 0;
 	uint32 PendingBootstrapSnapshotRevision = 0;
 	uint32 ClientAcceptedMatchEpoch = 0;
+	uint32 ClientAcceptedSyncGeneration = 0u;
+	uint16 ClientAppliedRosterCount = 0u;
+	uint32 ClientAppliedSnapshotRevision = 0u;
 	bool bLoggedBootstrapProtocolMismatch = false;
 	bool bClientPoseReady = false;
 	// 客户端重试状态机；这是本地缓存，不是需要复制给服务器的字段。
@@ -243,7 +274,7 @@ private:
 	uint8 MoveCachedFastReplayCount = 0u;
 	EGuLiCommandKind LastDeliveredAckKind = EGuLiCommandKind::None;
 	uint32 LastDeliveredAckCommandId = 0u;
-	TArray<double> RecentCommanderRequestTimes;
+	FGuLiNetworkRequestWindow CommanderRequestWindow;
 	double LastSecurityLogTime = -1.0;
 	uint32 SuppressedSecurityLogCount = 0;
 	// 本地有界消费队列：ACK 上限 64，姿态上限为一帧协议允许的块数。

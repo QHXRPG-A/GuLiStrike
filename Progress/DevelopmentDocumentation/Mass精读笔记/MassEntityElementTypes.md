@@ -1,16 +1,19 @@
 # 精读笔记：MassEntityElementTypes.h —— 用 Commander 500 人实现理解五种 Mass 元素
 
-> 重写日期：2026-08-28
+> 源码核对日期：2026-08-31（原笔记始于 2026-08-28）
 >
 > 引擎基线：Unreal Engine 5.7.4，CL 51494982
 >
 > 引擎原文件：`C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassEntityElementTypes.h`
 >
-> 项目样本：2026-08-27 新增的 `Source/GuLiStrike/Commander/` 实现
 >
-> 时间边界：Commander/Mass、Network、Framework 源码均在 8 月 27 日创建；`GuLiCommanderPresentationActor.cpp` 在 8 月 28 日 01:08 跨午夜续改，涉及它的内容按“昨夜开发后的当前版本”表述。
 >
-> Git 边界：`Source/GuLiStrike/Commander/` 当前仍未提交；“8 月 27 日新增”依据文件时间、当天归档和运行日志，不是某个 Git commit 的逐行历史。
+>
+> 项目基线：当前工作区源码，包含公共 Battle 提取及已有未提交修改；历史运行记录与本次静态核对分开列示。
+>
+> 阅读约定：源码摘录可省略外围代码；概念化定义、假设用法与错误示例明确标作“示意代码”，不表示项目已实现。
+
+[Mass 阅读目录](./README.md) · [UE 网络教材](../UE网络教材/README.md)
 
 ## 先说结论
 
@@ -18,17 +21,19 @@
 
 | 基类 | 数据粒度 | Commander 当前实例 | 当前是否使用 |
 |---|---|---|---|
-| `FMassFragment` | 每个 Entity 一份 | Identity、Health、Order、SlotTarget、AvoidanceOutput，以及引擎 Transform/Velocity/Force 等 | 是 |
-| `FMassTag` | 只表达组成中的有/无，不携带每实体 payload | ServerAuthority、ClientSnapshotMirror | 是 |
+| `FMassFragment` | 每个 Entity 一份 | Identity、Health、SoldierStats、Order、SlotTarget、AvoidanceOutput，以及引擎 Transform/Velocity/Force 等 | 是 |
+| `FMassTag` | 只表达组成中的有/无，不携带每实体 payload | ServerAuthority、ClientSnapshotMirror、RuntimeTuningEven/Odd | 是 |
 | `FMassChunkFragment` | 每个 Mass Chunk 一份 | 无 | 否 |
 | `FMassSharedFragment` | 一组实体共享一份、允许修改 | 无 | 否 |
 | `FMassConstSharedFragment` | 一组实体共享一份、查询侧只读 | MovementParameters、MovingAvoidanceParameters | 是，使用引擎内建类型 |
 
-昨天的实现没有自定义 `FMassChunkFragment` 或可变 `FMassSharedFragment`。本文不会为它们编造项目案例；只解释它们与现有代码的边界。
+当前的实现没有自定义 `FMassChunkFragment` 或可变 `FMassSharedFragment`。本文不会为它们编造项目案例；只解释它们与现有代码的边界。
 
 ## 一、引擎头文件究竟定义了什么
 
 UE 5.7.4 的核心定义可以压缩为：
+
+> **示意代码**：仅提炼五类基类，省略引擎导出、弃用与辅助声明；参见 [MassEntityElementTypes.h](<C:/Program Files/Epic Games/UE_5.7/Engine/Source/Runtime/MassEntity/Public/MassEntityElementTypes.h>)。
 
 ~~~cpp
 USTRUCT()
@@ -74,12 +79,13 @@ struct FMassConstSharedFragment
 
 ## 二、FMassFragment：每名 Soldier 自己的数据
 
-### 2.1 昨天新增的真实 Fragment
+### 2.1 当前新增的真实 Fragment
 
 源码：`Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h`
 
+> **当前源码摘录**：[Identity / Health / SoldierStats / Order 声明](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h)。
+
 ~~~cpp
-/** Stable per-match Soldier identity. It is independent of selection and order formations. */
 USTRUCT()
 struct GULISTRIKE_API FGuLiMassIdentityFragment : public FMassFragment
 {
@@ -110,6 +116,25 @@ struct GULISTRIKE_API FGuLiMassHealthFragment : public FMassFragment
     bool IsAlive() const;
 };
 
+/** Authoritative data-bearing stats. Combat systems do not consume these yet. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiMassSoldierStatsFragment : public FMassFragment
+{
+    GENERATED_BODY()
+
+    UPROPERTY(Transient)
+    uint8 MaxHealth = 100u;
+
+    UPROPERTY(Transient)
+    float AttackPower = 0.0f;
+
+    UPROPERTY(Transient)
+    float Defense = 0.0f;
+
+    UPROPERTY(Transient)
+    float AttackRangeCentimeters = 0.0f;
+};
+
 /** The latest accepted server order for one Soldier. */
 USTRUCT()
 struct GULISTRIKE_API FGuLiMassOrderFragment : public FMassFragment
@@ -135,7 +160,8 @@ struct GULISTRIKE_API FGuLiMassOrderFragment : public FMassFragment
 > 本文中文术语：服务端接受并持续执行的 `Order` 统一称为“单位指令”，当前 `IssueMove` 场景具体称为“移动指令”；不使用容易与商业购买混淆的“订单”。
 
 - `FGuLiMassIdentityFragment` 在 Mass 数据中保存 `SoldierId` 与队伍的副本，供 Mass 侧处理、调试和客户端镜像使用。当前选择、指令和网络查找的主路径实际走 `FSoldierRuntime`、业务映射与 `SoldierId`，并没有靠查询这个 Fragment 完成业务寻址。
-- `FGuLiMassHealthFragment` 保存服务器权威生命状态，并实现了 5 秒残骸展示窗口；不过现有 smoke 没有专项验证客户端确实完整显示了这 5 秒，因此这里应区分“源码已实现”和“运行已验证”。
+- `FGuLiMassHealthFragment` 保存生命、死亡标志及残骸剩余秒数；默认五秒的计时由 Authority 与 Presentation 管理，Fragment 自身不执行计时。当前没有本轮残骸时长专项实测。
+- `FGuLiMassSoldierStatsFragment` 保存 MaxHealth、AttackPower、Defense 和 AttackRangeCentimeters。Health 是当前生命，Stats.MaxHealth 是上限；攻击、防御和射程目前没有正式战斗消费者。
 - `FGuLiMassOrderFragment` 保存某名 Soldier 最新接受的移动指令。动态 25 人 Cohort 只是一次选择结果，不是永久编制；指令最终仍写回每名独立 Soldier。
 
 同一文件还定义：
@@ -161,22 +187,17 @@ struct GULISTRIKE_API FGuLiMassOrderFragment : public FMassFragment
 
 源码：`UGuLiBattleAuthoritySubsystem::IssueMove`
 
+> **当前源码摘录**：[IssueMove 的成功批次提交段](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+
 ~~~cpp
-FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
 Soldier.ActiveOrderId = BatchOrderId;
 ++Soldier.StateRevision;
-
-FGuLiMassOrderFragment& Order =
-    AuthorityState->MassEntitySubsystem->GetMutableEntityManager()
-        .GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+FGuLiMassOrderFragment& Order = EntityManager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
 Order.ActiveOrderId = BatchOrderId;
 Order.OrderRevision = Soldier.StateRevision;
 Order.FormationTarget = Formation.TargetAnchor;
 Order.bHasMoveTarget = true;
-
-FMassMoveTargetFragment& MoveTarget =
-    AuthorityState->MassEntitySubsystem->GetMutableEntityManager()
-        .GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+FMassMoveTargetFragment& MoveTarget = EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
 MoveTarget.CreateNewAction(EMassMovementAction::Move, *GetWorld());
 MoveTarget.IntentAtGoal = EMassMovementAction::Stand;
 MoveTarget.DesiredSpeed = FMassInt16Real(MovementSpeedCentimetersPerSecond);
@@ -184,10 +205,10 @@ MoveTarget.DesiredSpeed = FMassInt16Real(MovementSpeedCentimetersPerSecond);
 
 这段代码对应玩家的一次右键移动：
 
-1. 网络请求先通过 SelectionRevision、队伍、存活、路径和终点足迹校验。
+1. CommanderNetSync 先检查公共与士兵就绪、Commander 权限；Authority 再检查选择版本、队伍、存活、路径及终点。
 2. 服务端把新的 BatchOrderId 写入自己的 Soldier 注册表。
 3. 再用该 Soldier 的 `FMassEntityHandle` 找到 `OrderFragment` 和引擎 `MoveTargetFragment`。
-4. Order 保存业务事实；MoveTarget 接入 Mass 移动管线。
+4. Order 保存业务事实；MoveTarget 提供给 Mass 相关处理器，实际位置积分仍由 Authority 完成。
 
 Fragment 是数据，不是行为类。真正决定“什么时候写、谁有权写”的，是服务端子系统和 Processor。
 
@@ -195,9 +216,10 @@ Fragment 是数据，不是行为类。真正决定“什么时候写、谁有�
 
 源码：`UGuLiBattleAuthoritySubsystem::TickAuthority`
 
+> **当前源码摘录**：[TickAuthority](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+
 ~~~cpp
-FTransformFragment& Transform =
-    EntityManager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity);
+FTransformFragment& Transform = EntityManager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity);
 Transform.SetTransform(FTransform(
     FRotator(0.0f, Soldier.FacingYawDegrees, 0.0f),
     Soldier.Location));
@@ -206,8 +228,7 @@ EntityManager
     .GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity)
     .Value = Soldier.Velocity;
 
-FGuLiMassOrderFragment& Order =
-    EntityManager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+FGuLiMassOrderFragment& Order = EntityManager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
 Order.ActiveOrderId = Soldier.ActiveOrderId;
 Order.OrderRevision = Soldier.StateRevision;
 Order.bHasMoveTarget = Soldier.ActiveOrderId != 0u;
@@ -217,9 +238,11 @@ Order.bHasMoveTarget = Soldier.ActiveOrderId != 0u;
 
 ## 三、FMassTag：把服务端权威体和客户端镜像彻底隔开
 
-### 3.1 两个真实 Tag
+### 3.1 权威、镜像与调参标签
 
 源码：`GuLiCommanderMassFragments.h`
+
+> **当前源码摘录**：[ClientSnapshotMirror / ServerAuthority Tag](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h)。
 
 ~~~cpp
 /** Snapshot-driven client mirror. It intentionally carries no movement or avoidance tag. */
@@ -243,6 +266,8 @@ Tag 的准确理解是：它没有每实体业务 payload，不需要像 Health 
 
 服务器避障捕获 Query：
 
+> **当前源码摘录**：[ConfigureQueries](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp)。
+
 ~~~cpp
 EntityQuery.AddRequirement<FMassForceFragment>(EMassFragmentAccess::ReadWrite);
 EntityQuery.AddRequirement<FGuLiMassAvoidanceOutputFragment>(EMassFragmentAccess::ReadWrite);
@@ -250,6 +275,8 @@ EntityQuery.AddTagRequirement<FGuLiServerAuthorityMassTag>(EMassFragmentPresence
 ~~~
 
 客户端镜像 Archetype 只有：
+
+> **当前源码摘录**：[EnsureClientMirrorArchetype](D:/UE5.7/test1/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp)。
 
 ~~~cpp
 const TArray<const UScriptStruct*> FragmentAndTagTypes = {
@@ -267,7 +294,9 @@ const TArray<const UScriptStruct*> FragmentAndTagTypes = {
 
 即使未来某一侧补了相同 Fragment，Tag 仍能表达“这是不是服务器权威模拟体”。这比只依赖当前列集合更稳健。
 
-源码注释把 ServerAuthorityTag 写作标记“exact 500-member server archetype”，这是出生组成的设计意图；死亡移除导航 Fragment 后，该 Tag 仍保留在迁移后的 Archetype。按当前实际行为，它更准确地表达 Authority 处理域，而不是“永远只对应一个 Archetype Handle”。
+源码注释中的“exact 500-member server archetype”描述出生设计；死亡或调参迁移后 ServerAuthorityTag 仍保留，实际表达 Authority 处理域，而非某个永久 Archetype Handle。
+
+同文件还定义 `FGuLiMassRuntimeTuningEvenTag` / `OddTag`。初始组成带 Even，提交新速度时交替切换标签，使新的 ConstShared 参数随实体迁移绑定。它们不表示队伍、玩家角色或网络连接代次。客户端镜像不带这些调参标签。
 
 ## 四、FMassConstSharedFragment：500 人共享移动与避障参数
 
@@ -277,6 +306,8 @@ const TArray<const UScriptStruct*> FragmentAndTagTypes = {
 - `FMassMovingAvoidanceParameters : FMassConstSharedFragment`
 
 源码：`UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation`
+
+> **当前源码摘录**：[GuLiCommanderMassPrivate::MakeAuthoritySharedFragmentValues](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
 
 ~~~cpp
 FMassMovementParameters MovementParameters;
@@ -288,17 +319,18 @@ MovementParameters.bIsCodeDrivenMovement = true;
 MovementParameters.Update();
 
 FMassMovingAvoidanceParameters AvoidanceParameters;
-AvoidanceParameters.ObstacleDetectionDistance = MemberAgentRadiusCentimeters * 8.0f;
+AvoidanceParameters.ObstacleDetectionDistance = AgentRadiusCentimeters * 8.0f;
 AvoidanceParameters.SeparationRadiusScale = 0.95f;
-AvoidanceParameters.ObstacleSeparationDistance = MemberAgentRadiusCentimeters * 0.35f;
-AvoidanceParameters.PredictiveAvoidanceDistance = MemberAgentRadiusCentimeters * 0.35f;
+AvoidanceParameters.ObstacleSeparationDistance = AgentRadiusCentimeters * 0.35f;
+AvoidanceParameters.PredictiveAvoidanceDistance = AgentRadiusCentimeters * 0.35f;
 
 FMassArchetypeSharedFragmentValues SharedValues;
-SharedValues.Add(
-    EntityManager.GetOrCreateConstSharedFragment(MovementParameters.GetValidated()));
-SharedValues.Add(
-    EntityManager.GetOrCreateConstSharedFragment(AvoidanceParameters.GetValidated()));
+SharedValues.Add(EntityManager.GetOrCreateConstSharedFragment(
+    MovementParameters.GetValidated()));
+SharedValues.Add(EntityManager.GetOrCreateConstSharedFragment(
+    AvoidanceParameters.GetValidated()));
 SharedValues.Sort();
+return SharedValues;
 ~~~
 
 为什么这两个参数适合 ConstShared：
@@ -310,29 +342,28 @@ SharedValues.Sort();
 
 `FMassArchetypeSharedFragmentValues` 是“共享值容器”，不是某一种 SharedFragment。它同时装可变 Shared 和 ConstShared，并维护各自类型位集。
 
-还有一个容易写错的点：**共享值本身不是 Archetype 身份的一部分**。Archetype 的组成描述记录 Shared/ConstShared 的类型位集；具体值随创建请求传入，并用于 Chunk 的共享值分组和绑定。昨天的代码也正是先用类型位集取得合适 Archetype，再把 `SharedValues` 传给批量创建。
+还有一个容易写错的点：**共享值本身不是 Archetype 身份的一部分**。Archetype 的组成描述记录 Shared/ConstShared 的类型位集；具体值随创建请求传入，并用于 Chunk 的共享值分组和绑定。当前的代码也正是先用类型位集取得合适 Archetype，再把 `SharedValues` 传给批量创建。
 
 ## 五、当前没有使用的两种元素
 
 ### 5.1 FMassSharedFragment
 
-当前 `Source/` 与 `Plugins/**/Source/` 没有项目自定义可变 SharedFragment。
+当前指挥官士兵实现没有自定义可变 SharedFragment；这里不对引擎或第三方插件作全局断言。
 
 服务器的临时编队关系放在：
 
+> **当前源码摘录**：[FOrderFormationRuntime 的部分字段](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+
 ~~~cpp
-struct FOrderFormationRuntime
-{
-    uint32 FormationId = 0u;
-    uint32 BatchOrderId = 0u;
-    FGuLiControlCohortId SourceCohortId;
-    EGuLiTeam Team = EGuLiTeam::Unassigned;
-    TArray<FGuLiSoldierId> MemberIds;
-    TMap<uint32, uint8> SlotBySoldierId;
-    FVector GuideAnchor = FVector::ZeroVector;
-    FVector TargetAnchor = FVector::ZeroVector;
-    // ...
-};
+uint32 FormationId = 0u;
+uint32 BatchOrderId = 0u;
+FGuLiControlCohortId SourceCohortId;
+EGuLiTeam Team = EGuLiTeam::Unassigned;
+TArray<FGuLiSoldierId> MemberIds;
+TMap<uint32, uint8> SlotBySoldierId;
+// GuideAnchor 是沿共享路径推进的虚拟领队；TargetAnchor 是本批移动的共同终点。
+FVector GuideAnchor = FVector::ZeroVector;
+FVector TargetAnchor = FVector::ZeroVector;
 ~~~
 
 从当前代码可以作如下设计解读（推断，不是源码注释明确声明的动机）：ControlCohort 和 OrderFormation 生命周期短、成员会变化，而且“25 人”不是永久 Mass 分组。如果把它们做成 SharedFragment，成员或路径变化会频繁改变共享值，使实体重新归组到具有匹配共享值的 Chunk。共享值改变通常仍发生在同一 Archetype 内；只有共享 Fragment 的类型组成改变时，才涉及 Archetype 结构迁移。
@@ -356,6 +387,8 @@ ChunkFragment 适合“每个物理 Chunk 一份”的缓存、统计或粗筛�
 
 死亡流程最后还有一项真实的结构修改：
 
+> **当前源码摘录**：[ApplyDamage](D:/UE5.7/test1/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)。
+
 ~~~cpp
 EntityManager.RemoveFragmentFromEntity(
     Soldier.Entity,
@@ -364,7 +397,7 @@ EntityManager.RemoveFragmentFromEntity(
 
 移除 Fragment 会让该实体迁往“不含 ObstacleGridCellLocation”的合适 Archetype。其 `FMassEntityHandle` 和 `FGuLiSoldierId` 没有因此改变，但旧 Chunk 的布局和实体顺序可能变化。
 
-当前代码把结构操作放在 `ApplyDamage` 的末尾，之后不再使用先前取得的 Fragment 引用。这一点很重要：结构迁移后，之前指向 Chunk 数据的引用或 View 不应继续保存和访问。
+当前代码把死亡结构操作放在 `ApplyDamage` 末尾，之后不再使用旧 Fragment 引用。`ApplyPendingMovementSpeed` 则在固定步边界通过 Even/Odd 组成迁移更新共享速度，再重新取得所需 Fragment。两条路径都不能跨迁移保存旧引用或 View；共享值改变本身不定义新类型，这里是项目主动切换 Tag 的实现策略。
 
 ## 七、从玩家操作到五种元素的真实链路
 
@@ -377,26 +410,15 @@ EntityManager.RemoveFragmentFromEntity(
 | 30Hz 权威固定步 | 合成目标速度、手写分离和引擎避障，写 Transform/Velocity | 每实体 Fragment |
 | 可靠状态到客户端 | 以 SoldierId 找到或按需创建本地镜像 Entity，再写 Identity/Health | 每实体 Fragment + ClientMirror Tag |
 | 10Hz Pose 到客户端 | 只更新可靠名册中已经存在的 SoldierId；未知 ID 直接丢弃 | 已有镜像的 Transform/表现缓存，不创建权威身份 |
-| 统一移动/避障配置 | 500 人共用 Movement/Avoidance 参数 | ConstSharedFragment |
+| 统一移动/避障配置 | 全体士兵共用 Movement/Avoidance 参数；新速度提交时 Even/Odd 迁移替换 | ConstSharedFragment + 调参 Tag |
 
 ## 八、源码与验证边界
 
-主要源码：
+**当前源码：** 本次只核对当前项目与本机 UE 5.7.4 源码，没有重新编译、启动 PIE 或执行网络测试。
 
-- `Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h/.cpp`
-- `Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp`
-- `Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp`
-- `Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp`
+**历史验证：** [2026-08-27 总归档](../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)保存了当时 500 兵、动态选兵与移动冒烟的记录；原始临时日志和 JSON 已清理，不能再把它们列成可读取的现存证据。[2026-08-31 公共框架归档](../../Archive/20260831-公共战局框架与三类角色接入.md)记录冷编译成功、现有测试 50/50 通过及混合战局联调。NetworkGate 最终 ACK P95=138.1ms 达标，但未标记硬跳变 1 次，整体验收仍未通过；本次文档修订没有修复该问题。
 
-运行证据：
-
-- `Progress/CommanderDynamicPIE-FinalReliable.log` 记录创建 500 个独立服务器权威 Mass Soldier，500/500 投射到 CommanderSoldier NavData。
-- 同一日志的 command-flow smoke 记录 `dynamic_members=25`、`moved=1813cm`、`destroyed=25`、`unknown_id=rejected`。
-- `Progress/CommanderPIEValidation.json` 记录客户端 UnitInstances=500、RingInstances=500、顶层 `errors=[]`；但其嵌套的 private probe 字段仍有 4 个 `ERROR:Exception` 字符串，不能据此把整份 JSON 概括成“零错误”。
-
-当前 `GuLiCommanderPresentationActor.cpp` 的精确文件版本修改于 01:08，晚于约 01:03 的最后一次成功 smoke；01:09 的 Live Coding 没有新的成功记录。因此本文引用的当前客户端实现属于源码审计事实，不能说它的每一行都已被现有 PIE/Automation 精确覆盖。
-
-边界：现有 18 项 Automation 主要覆盖 Cohort、Navigation 和 Network 合同，没有专门针对这些自定义 Fragment/Tag、ConstShared 组装或结构迁移的单元测试。因此本文只能说“源码实现存在，整体 PIE 流程有运行证据”，不能写成“每一种元素已有专项自动化覆盖”。
+**专项边界：** 这些整体结果不等于自定义 Fragment/Tag、ConstShared 绑定、迁移安全性或客户端五秒残骸均有专项测试；本文对这些细节的依据是源码。
 
 ## 九、读完后的检查题
 

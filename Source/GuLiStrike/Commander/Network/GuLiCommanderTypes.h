@@ -3,12 +3,10 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Battle/Network/GuLiBattleTypes.h"
 #include "Engine/NetSerialization.h"
 #include "Net/Serialization/FastArraySerializer.h"
 #include "GuLiCommanderTypes.generated.h"
-
-/** 线协议版本；双方布局约定必须兼容，当前值为 3，不是运行时快照版本。 */
-inline constexpr uint16 GULI_COMMANDER_PROTOCOL_VERSION = 3u;
 
 /** 一个临时控制组最多 25 名士兵，允许不足额；不是网络 Actor 数量。 */
 inline constexpr uint32 GULI_CONTROL_COHORT_TARGET_SIZE = 25u;
@@ -31,24 +29,6 @@ inline constexpr float GULI_POSE_QUANTIZATION_CENTIMETERS = 10.0f;
 /** 表现瞬移标志；生命等玩法事实仍以离散状态复制为准。 */
 inline constexpr uint8 GULI_SOLDIER_POSE_FLAG_TELEPORT = 1u << 0u;
 inline constexpr uint8 GULI_VALID_SOLDIER_POSE_FLAGS = GULI_SOLDIER_POSE_FLAG_TELEPORT;
-
-UENUM(BlueprintType)
-enum class EGuLiTeam : uint8
-{
-	Unassigned = 0,
-	Red,
-	Blue
-};
-
-UENUM(BlueprintType)
-enum class EGuLiCommanderRole : uint8
-{
-	Unassigned = 0,
-	Commander,
-	Ground,
-	Air,
-	Observer
-};
 
 UENUM(BlueprintType)
 enum class EGuLiSelectionRadiusPreset : uint8

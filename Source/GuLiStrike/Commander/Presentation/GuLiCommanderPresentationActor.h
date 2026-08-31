@@ -11,7 +11,9 @@
 #include "MassEntityTypes.h"
 #include "GuLiCommanderPresentationActor.generated.h"
 
-class AGuLiCommanderPlayerController;
+class APlayerController;
+class AGuLiBattlePlayerState;
+class UGuLiCommanderNetSyncComponent;
 class AGuLiSoldierStateReplicator;
 class UInstancedStaticMeshComponent;
 class UMaterialInterface;
@@ -201,7 +203,7 @@ private:
 	void ApplyPresentationPerformanceSettings();
 	void ResolveSoftAssets();
 	AGuLiSoldierStateReplicator* FindStateReplicator();
-	AGuLiCommanderPlayerController* FindLocalController();
+	APlayerController* FindLocalController();
 	// 本地拉取 NetSync 队列并按样本时间排序；不发送 RPC，也不等待整帧重组。
 	void ConsumePoseChunks(double LocalNowSeconds);
 	void IngestPoseChunk(const FGuLiSoldierPoseChunk& Chunk, double LocalNowSeconds);
@@ -227,6 +229,8 @@ private:
 		const FTransform* PresentedTransform);
 	void DestroyClientMirrorEntities();
 	void ResetNetworkPresentationState();
+	// 每 Tick 只检查来源/就绪边沿；失效时一次性清样本与镜像，保留稳定 ISM 槽位。
+	bool UpdateNetworkPresentationSource(AGuLiSoldierStateReplicator* Replicator);
 	void EnsureStableInstancePool(const AGuLiSoldierStateReplicator& Replicator);
 	void RebuildLocalInstances(float DeltaSeconds);
 	FTransform BuildRingTransform(const FTransform& SoldierTransform) const;
@@ -299,7 +303,10 @@ private:
 	FGuLiCommanderPresentationPerformanceRegistry PerformanceSettingsRegistry;
 
 	TWeakObjectPtr<AGuLiSoldierStateReplicator> StateReplicator;
-	TWeakObjectPtr<AGuLiCommanderPlayerController> LocalController;
+	TWeakObjectPtr<APlayerController> LocalController;
+	TWeakObjectPtr<UGuLiCommanderNetSyncComponent> ObservedNetSyncComponent;
+	TWeakObjectPtr<AGuLiBattlePlayerState> ObservedPlayerState;
+	TWeakObjectPtr<AGuLiSoldierStateReplicator> ObservedStateReplicator;
 	TWeakObjectPtr<UMassEntitySubsystem> ClientMirrorMassSubsystem;
 	FMassArchetypeHandle ClientMirrorArchetype;
 	// SoldierId 到本地实体句柄的映射；两端 FMassEntityHandle 不相同，不能当网络身份发送。
@@ -319,6 +326,10 @@ private:
 	// 战局与同步代次变化都会触发本地重建；Epoch 只比较身份，不按数值大小判断新旧。
 	uint32 CurrentAuthorityEpoch = 0u;
 	uint32 LastObservedSyncGeneration = 0u;
+	uint32 LastObservedConnectionGeneration = 0u;
+	uint32 LastObservedMatchEpoch = 0u;
+	bool bObservedSoldierStreamReady = false;
+	bool bNetworkPresentationHidden = false;
 	bool bServerClockInitialized = false;
 	bool bLatestClockRoundTripFromConnectionStats = false;
 	bool bLoggedInstancePoolFailure = false;

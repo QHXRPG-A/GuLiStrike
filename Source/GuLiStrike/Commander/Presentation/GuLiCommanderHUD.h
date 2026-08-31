@@ -29,6 +29,9 @@ public:
 	virtual void DrawHUD() override;
 	virtual void NotifyHitBoxClick(FName BoxName) override;
 
+	// 本地角色生命周期入口，由 PC 角色变化及 HUD BeginPlay 调用；不依赖 Canvas/bShowHUD。
+	void RefreshCommanderRole();
+
 	/** Prevents world selection/move commands from leaking through the tactical HUD. */
 	bool IsScreenPositionOverCommanderUI(const FVector2D& ScreenPosition) const;
 

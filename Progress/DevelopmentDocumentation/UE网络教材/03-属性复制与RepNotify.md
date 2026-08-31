@@ -14,29 +14,26 @@ Actor 开启 `bReplicates` 后，还要声明需要复制的字段，并在 GetL
 
 ## 项目调用链与源码
 
-NetSync 的选择与代次只给拥有者：
+公共 NetSync 的 ConnectionBootstrap 标记使用 OwnerOnly；它将身份、公共代次及服务器确认位放在同一结构中。专业扩展另外复制私人选择、士兵代次和两种代次的绑定：
 
-
-项目源码节选（[DOREPLIFETIME_CONDITION(UGuLiCommanderNetSyncComponent, SelectionState](D:/UE5.7/test1/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp:140)）：
+项目源码节选（[GetLifetimeReplicatedProps](D:/UE5.7/test1/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp)）：
 
 ```cpp
 DOREPLIFETIME_CONDITION(UGuLiCommanderNetSyncComponent, SelectionState, COND_OwnerOnly);
 DOREPLIFETIME_CONDITION(UGuLiCommanderNetSyncComponent, SyncGeneration, COND_OwnerOnly);
+DOREPLIFETIME_CONDITION(UGuLiCommanderNetSyncComponent, SoldierBootstrapBinding, COND_OwnerOnly);
 ```
 
+选择链路仍是 HandleSelectionRequest → SelectionState 属性复制 → [OnRep_SelectionState](D:/UE5.7/test1/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp) → 本地 OnSelectionChanged → HUD。服务器主动通知主机界面。BattlePlayerState 则公开复制公共与士兵两个就绪位；旧 IsSyncReady 只读士兵位，不能当公共连接状态。
 
-链路为服务器 HandleSelectionRequest 更新 SelectionState → 属性复制 → [UGuLiCommanderNetSyncComponent::OnRep_SelectionState](D:/UE5.7/test1/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp:956) → 本地 OnSelectionChanged → HUD。服务器更新时也主动调用 NotifySelectionChanged，使主机本地界面得到通知。
+士兵名册走 [AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot](D:/UE5.7/test1/Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.cpp)。新增/修改调用 MarkItemDirty，删除调用 MarkArrayDirty；FastArray 根据内部复制标识发送增量，业务 SoldierId 仍用于稳定关联。
 
-公共名册走 [AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot](D:/UE5.7/test1/Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.cpp:27)。新增/修改调用 MarkItemDirty，删除调用 MarkArrayDirty；FastArray 根据内部复制标识发送增量，业务 SoldierId 仍用于稳定关联。
-
-
-项目源码节选（[ReplicatedSoldiers.MarkItemDirty(ExistingItem);](D:/UE5.7/test1/Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.cpp:93)）：
+项目源码节选（[ApplyAuthoritySnapshot 的修改分支](D:/UE5.7/test1/Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.cpp)）：
 
 ```cpp
 ReplicatedSoldiers.MarkItemDirty(ExistingItem);
 ++ChangedItemCount;
 ```
-
 
 快照变化推进 SnapshotRevision，客户端 OnRep_SnapshotRevision 广播 OnSoldierStatesChanged。这里的“可靠状态”指持续同步的事实副本，不能推导每次变化都作为 Reliable RPC 被完整重放。
 

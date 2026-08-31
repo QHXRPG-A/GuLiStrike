@@ -4,8 +4,9 @@
 
 #include "GuLiStrike.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
-#include "Commander/Framework/GuLiCommanderPlayerController.h"
-#include "Commander/Framework/GuLiCommanderPlayerState.h"
+#include "GameFramework/PlayerController.h"
+#include "Battle/Framework/GuLiBattlePlayerState.h"
+#include "Battle/Framework/GuLiBattleGameState.h"
 #include "Commander/Framework/GuLiCommanderGameState.h"
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
@@ -748,9 +749,10 @@ AGuLiSoldierStateReplicator* AGuLiCommanderPresentationActor::FindStateReplicato
 	return nullptr;
 }
 
-AGuLiCommanderPlayerController* AGuLiCommanderPresentationActor::FindLocalController()
+APlayerController* AGuLiCommanderPresentationActor::FindLocalController()
 {
-	if (LocalController.IsValid() && LocalController->IsLocalController())
+	if (LocalController.IsValid() && LocalController->IsLocalController()
+		&& LocalController->FindComponentByClass<UGuLiCommanderNetSyncComponent>())
 	{
 		return LocalController.Get();
 	}
@@ -762,9 +764,9 @@ AGuLiCommanderPlayerController* AGuLiCommanderPresentationActor::FindLocalContro
 	}
 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
 	{
-		if (AGuLiCommanderPlayerController* Candidate = Cast<AGuLiCommanderPlayerController>(It->Get()))
+		if (APlayerController* Candidate = Cast<APlayerController>(It->Get()))
 		{
-			if (Candidate->IsLocalController())
+			if (Candidate->IsLocalController() && Candidate->FindComponentByClass<UGuLiCommanderNetSyncComponent>())
 			{
 				LocalController = Candidate;
 				return Candidate;
@@ -777,14 +779,14 @@ AGuLiCommanderPlayerController* AGuLiCommanderPresentationActor::FindLocalContro
 // 先对本帧收取的块排序，再逐块入样本缓存；同帧缺块不会阻塞已收到的其他士兵。
 void AGuLiCommanderPresentationActor::ConsumePoseChunks(const double LocalNowSeconds)
 {
-	AGuLiCommanderPlayerController* Controller = FindLocalController();
+	APlayerController* Controller = FindLocalController();
 	AGuLiSoldierStateReplicator* Replicator = FindStateReplicator();
 	if (!Controller || !Replicator)
 	{
 		return;
 	}
 
-	UGuLiCommanderNetSyncComponent* NetSync = Controller->GetCommanderNetSyncComponent();
+	UGuLiCommanderNetSyncComponent* NetSync = Controller->FindComponentByClass<UGuLiCommanderNetSyncComponent>();
 	if (!NetSync)
 	{
 		return;
@@ -817,7 +819,7 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 	const double LocalNowSeconds)
 {
 	if (Chunk.ProtocolVersion != GULI_COMMANDER_PROTOCOL_VERSION
-		|| Chunk.AuthorityEpoch == 0u
+		|| Chunk.AuthorityEpoch == 0u || Chunk.AuthorityEpoch != LastObservedMatchEpoch
 		|| Chunk.FrameSequence == 0u || Chunk.ChunkCount == 0u
 		|| Chunk.ChunkIndex >= Chunk.ChunkCount || Chunk.Samples.IsEmpty())
 	{
@@ -878,9 +880,9 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 	if (!bServerClockInitialized || bAdvancesClockFrame)
 	{
 		float PlayerStateRoundTripMilliseconds = 0.0f;
-		if (const AGuLiCommanderPlayerController* Controller = FindLocalController())
+		if (const APlayerController* Controller = FindLocalController())
 		{
-			if (const AGuLiCommanderPlayerState* PlayerState = Controller->GetPlayerState<AGuLiCommanderPlayerState>())
+			if (const AGuLiBattlePlayerState* PlayerState = Controller->GetPlayerState<AGuLiBattlePlayerState>())
 			{
 				PlayerStateRoundTripMilliseconds = PlayerState->GetPingInMilliseconds();
 			}
@@ -1413,6 +1415,52 @@ void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 	bLatestClockRoundTripFromConnectionStats = false;
 }
 
+bool AGuLiCommanderPresentationActor::UpdateNetworkPresentationSource(
+	AGuLiSoldierStateReplicator* Replicator)
+{
+	APlayerController* Controller = FindLocalController();
+	UGuLiCommanderNetSyncComponent* NetSync = Controller
+		? Controller->FindComponentByClass<UGuLiCommanderNetSyncComponent>() : nullptr;
+	AGuLiBattlePlayerState* BattlePlayerState = Controller
+		? Controller->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
+	const AGuLiBattleGameState* BattleGameState = GetWorld()
+		? GetWorld()->GetGameState<AGuLiBattleGameState>() : nullptr;
+	const uint32 MatchEpoch = BattleGameState ? BattleGameState->GetMatchEpoch() : 0u;
+	const uint32 ConnectionGeneration = NetSync ? NetSync->GetConnectionGeneration() : 0u;
+	const uint32 SyncGeneration = NetSync ? NetSync->GetSyncGeneration() : 0u;
+	const bool bStreamReady = NetSync && BattlePlayerState && Replicator && MatchEpoch != 0u
+		&& SyncGeneration != 0u && NetSync->IsConnectionReady() && NetSync->IsSoldierStreamReady()
+		&& Replicator->GetSnapshotRevision() != 0u && Replicator->GetSnapshotMatchEpoch() == MatchEpoch;
+	const bool bSourceChanged = ObservedNetSyncComponent.Get() != NetSync
+		|| ObservedPlayerState.Get() != BattlePlayerState || ObservedStateReplicator.Get() != Replicator
+		|| LastObservedMatchEpoch != MatchEpoch || LastObservedConnectionGeneration != ConnectionGeneration
+		|| LastObservedSyncGeneration != SyncGeneration;
+
+	if (bSourceChanged || bObservedSoldierStreamReady != bStreamReady)
+	{
+		// 同一 SoldierId 可在新战局复用；新姿态未到时也不能继续旧样本、预测或 Mass 镜像。
+		ResetNetworkPresentationState();
+		DestroyClientMirrorEntities();
+		if (UnitInstances)
+		{
+			UnitInstances->SetVisibility(false);
+		}
+		if (RingInstances)
+		{
+			RingInstances->SetVisibility(false);
+		}
+		bNetworkPresentationHidden = true;
+		ObservedNetSyncComponent = NetSync;
+		ObservedPlayerState = BattlePlayerState;
+		ObservedStateReplicator = Replicator;
+		LastObservedMatchEpoch = MatchEpoch;
+		LastObservedConnectionGeneration = ConnectionGeneration;
+		LastObservedSyncGeneration = SyncGeneration;
+		bObservedSoldierStreamReady = bStreamReady;
+	}
+	return bStreamReady;
+}
+
 void AGuLiCommanderPresentationActor::EnsureStableInstancePool(
 	const AGuLiSoldierStateReplicator& Replicator)
 {
@@ -1487,24 +1535,13 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	CSV_SCOPED_TIMING_STAT(GuLiCommanderPresentation, RebuildLocalInstances);
 
 	AGuLiSoldierStateReplicator* Replicator = FindStateReplicator();
-	if (!Replicator || !UnitInstances || !RingInstances || !GetWorld())
+	// 先检查失效边沿，Replicator/Controller 暂时消失时也要立即隐藏旧表现。
+	if (!UpdateNetworkPresentationSource(Replicator) || !UnitInstances || !RingInstances || !GetWorld())
 	{
 		return;
 	}
 
 	const double LocalNowSeconds = GetWorld()->GetTimeSeconds();
-	if (AGuLiCommanderPlayerController* Controller = FindLocalController())
-	{
-		if (const UGuLiCommanderNetSyncComponent* NetSync = Controller->GetCommanderNetSyncComponent())
-		{
-			const uint32 SyncGeneration = NetSync->GetSyncGeneration();
-			if (SyncGeneration != 0u && SyncGeneration != LastObservedSyncGeneration)
-			{
-				ResetNetworkPresentationState();
-				LastObservedSyncGeneration = SyncGeneration;
-			}
-		}
-	}
 	ConsumePoseChunks(LocalNowSeconds);
 	EnsureStableInstancePool(*Replicator);
 	if (bServerClockInitialized)
@@ -1523,9 +1560,9 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		InterpolationBackTimeSeconds);
 
 	TSet<FGuLiSoldierId> SelectedSoldiers;
-	if (AGuLiCommanderPlayerController* Controller = FindLocalController())
+	if (APlayerController* Controller = FindLocalController())
 	{
-		if (const UGuLiCommanderNetSyncComponent* NetSync = Controller->GetCommanderNetSyncComponent())
+		if (const UGuLiCommanderNetSyncComponent* NetSync = Controller->FindComponentByClass<UGuLiCommanderNetSyncComponent>())
 		{
 			for (const FGuLiControlCohortDescriptor& Cohort : NetSync->GetSelectionState().Cohorts)
 			{
@@ -1707,6 +1744,14 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		}
 		CachedRingColors = DesiredRingColors;
 		RingInstances->MarkRenderStateDirty();
+	}
+
+	if (bNetworkPresentationHidden)
+	{
+		// 先用当前同步源更新/隐藏各槽位，再恢复可见，避免短暂显示前一代次的变换。
+		UnitInstances->SetVisibility(true);
+		RingInstances->SetVisibility(true);
+		bNetworkPresentationHidden = false;
 	}
 }
 

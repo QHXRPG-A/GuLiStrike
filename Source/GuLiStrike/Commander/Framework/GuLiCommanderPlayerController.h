@@ -4,7 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
-#include "GameFramework/PlayerController.h"
+#include "Battle/Framework/GuLiBattlePlayerController.h"
 #include "GuLiCommanderPlayerController.generated.h"
 
 class UGuLiCommanderNetSyncComponent;
@@ -63,12 +63,12 @@ DECLARE_MULTICAST_DELEGATE_OneParam(
 
 /** 指挥官输入与连接所有者；服务器和拥有客户端各有实例，RPC 实际声明在其 NetSync 默认组件中。 */
 UCLASS()
-class AGuLiCommanderPlayerController : public APlayerController
+class AGuLiCommanderPlayerController : public AGuLiBattlePlayerController
 {
 	GENERATED_BODY()
 
 public:
-	AGuLiCommanderPlayerController();
+	AGuLiCommanderPlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	virtual void BeginPlay() override;
 	virtual void SetupInputComponent() override;
@@ -77,6 +77,9 @@ public:
 	// 本端输入资格查询：PlayerState 为已同步的指挥官才返回 true；本地控制上下文由调用方保证，服务器仍会重验。
 	UFUNCTION(BlueprintPure, Category = "Commander")
 	bool CanIssueCommanderOrders() const;
+
+	/** 本地指挥视图资格；只依赖角色，网络未就绪时仍可移动相机，但不能发命令。 */
+	bool IsCommanderViewActive() const;
 
 	UFUNCTION(BlueprintPure, Category = "Commander|Network")
 	UGuLiCommanderNetSyncComponent* GetCommanderNetSyncComponent() const { return NetSyncComponent; }
@@ -106,6 +109,9 @@ public:
 private:
 	void HandlePrimaryActionAtCursor();
 	void HandleSecondaryActionAtCursor();
+	// 键盘入口单独守角色门；public tool/radius helper 仍可用于本地复位和纯逻辑测试。
+	void HandleActivateSelectionToolInput();
+	void HandleStepSelectionRadiusInput();
 	void HandleArmMoveToolInput();
 	void HandleCancelInput();
 	// 本地把光标落点封装成选兵意图；返回 true 仅表示已提交，不代表服务器接受。
@@ -121,8 +127,7 @@ private:
 	FVector FindConfirmedSelectionCenter() const;
 	uint32 AllocateSelectionRequestId();
 	uint32 AllocateMoveCommandId();
-	// 本地控制端每两秒尝试请求 Bootstrap，直到 PlayerState 的就绪位到达。
-	void UpdateBootstrapRetry();
+	void UpdateCommanderInputMode();
 	void UpdateCameraInput(float DeltaTime);
 	// 消费 ACK FIFO，只把匹配当前待显示移动的回执交给表现层，选兵 ACK 不得清除移动反馈。
 	void UpdateAcceptedCommandVisual();
@@ -137,7 +142,6 @@ private:
 	bool bHasCursorGroundLocation = false;
 	uint32 NextSelectionRequestId = 1u;
 	uint32 NextMoveCommandId = 1u;
-	uint32 NextBootstrapRequestId = 1u;
 	uint32 PendingMoveCommandId = 0u;
 	uint32 LastVisualizedMoveCommandId = 0u;
 	FVector PendingMoveTarget = FVector::ZeroVector;
@@ -146,5 +150,6 @@ private:
 	double CommandLineExpireTime = 0.0;
 	float CommandLineFadeDurationSeconds = 0.0f;
 	EGuLiCommandLineState CommandLineState = EGuLiCommandLineState::None;
-	double NextBootstrapRetryTime = 0.0;
+	bool bCommanderInputModeInitialized = false;
+	bool bCommanderInputActive = false;
 };

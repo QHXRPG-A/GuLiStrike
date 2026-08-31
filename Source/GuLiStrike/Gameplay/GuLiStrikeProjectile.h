@@ -11,7 +11,7 @@ class UStaticMeshComponent;
 class UProjectileMovementComponent;
 
 /**
- *  A simple bouncing projectile for a Twin Stick shooter game
+ *  服务器模拟与命中结算的弹丸；客户端消费移动复制与服务器销毁，沿用旧 NPC 命中行为。
  */
 UCLASS(abstract)
 class AGuLiStrikeProjectile : public AActor
@@ -39,6 +39,7 @@ public:
 	virtual void NotifyHit(class UPrimitiveComponent* MyComp, AActor* Other, class UPrimitiveComponent* OtherComp, bool bSelfMoved, FVector HitLocation, FVector HitNormal, FVector NormalImpulse, const FHitResult& Hit) override;
 
 protected:
+	virtual void BeginPlay() override;
 	
 	/** Handles collisions that stop this projectile from moving */
 	UFUNCTION()

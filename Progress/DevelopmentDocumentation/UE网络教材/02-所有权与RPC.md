@@ -14,33 +14,37 @@ Reliable 提供可靠传输机制，但不是“玩法成功”。RPC 没有同�
 
 ## 项目调用链与源码
 
-[SetIsReplicatedByDefault(true)](D:/UE5.7/test1/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp:116) 打开组件复制；组件是 PlayerController 的默认子对象。可靠选兵入口的声明如下：
+[UGuLiPlayerNetSyncComponent](D:/UE5.7/test1/Source/GuLiStrike/Battle/Network/GuLiPlayerNetSyncComponent.cpp) 打开组件复制并处理公共握手。BattlePlayerController 创建名为 `CommanderNetSync` 的唯一默认网络子对象；旧 CommanderController 用构造初始化器替换其具体类型，旧属性仍指向同一对象，没有增加第二条连接。
 
+项目源码节选（[AGuLiCommanderPlayerController 构造函数初始化列表](D:/UE5.7/test1/Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp)）：
 
-项目源码节选（[UFUNCTION(Server, Reliable)](D:/UE5.7/test1/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h:66)）：
+```cpp
+: Super(ObjectInitializer.SetDefaultSubobjectClass<UGuLiCommanderNetSyncComponent>(PlayerNetSyncComponentName))
+```
+
+派生 NetSync 保留选兵、移动与姿态 RPC。可靠选兵声明如下：
+
+项目源码节选（[UGuLiCommanderNetSyncComponent::ServerRequestSelection](D:/UE5.7/test1/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h)）：
 
 ```cpp
 UFUNCTION(Server, Reliable)
 void ServerRequestSelection(const FGuLiSelectionRequest& Request);
 ```
 
-
 移动采用同样的声明形式；接收实现不直接把请求判为成功：
 
-
-项目源码节选（[void UGuLiCommanderNetSyncComponent::ServerIssueMove_Implementation](D:/UE5.7/test1/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp:555)）：
+项目源码节选（[void UGuLiCommanderNetSyncComponent::ServerIssueMove_Implementation](D:/UE5.7/test1/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp)）：
 
 ```cpp
 void UGuLiCommanderNetSyncComponent::ServerIssueMove_Implementation(const FGuLiMoveRequest& Request)
 {
-	HandleMoveRequest(Request, true);
+    HandleMoveRequest(Request, true);
 }
 ```
 
+它将工作交给 [UGuLiCommanderNetSyncComponent::HandleMoveRequest](D:/UE5.7/test1/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp)；服务器结果由 PublishAck 选择可靠或快速 Client RPC，最终汇入 ReceiveCommandAck。
 
-它将工作交给 [UGuLiCommanderNetSyncComponent::HandleMoveRequest](D:/UE5.7/test1/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp:568)；服务器结果由 PublishAck 选择可靠或快速 Client RPC，最终汇入 ReceiveCommandAck。
-
-可靠 RPC 在同一 Actor 及所属子对象通道内的顺序约束，不能扩展为跨 Actor 的全局顺序，也不能据此断言可靠与不可靠 RPC 混用时总按调用顺序到达；不同复制变量的 OnRep 顺序同样不能依赖。[Epic 执行顺序文档（检索时标为 UE 5.7）](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/replicated-object-execution-order-in-unreal-engine)
+可靠 RPC 在同一 Actor 及所属子对象通道内的顺序约束，不能扩展为跨 Actor 的全局顺序，也不能据此断言可靠与不可靠 RPC 混用时总按调用顺序到达；不同复制变量的 OnRep 顺序同样不能依赖。[Epic 执行顺序说明（版本边界见教材目录）](https://dev.epicgames.com/documentation/zh-cn/unreal-engine/replicated-object-execution-order-in-unreal-engine)
 
 ## 易错点
 

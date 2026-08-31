@@ -152,7 +152,7 @@ AGuLiCommanderHUD::AGuLiCommanderHUD()
 void AGuLiCommanderHUD::BeginPlay()
 {
 	Super::BeginPlay();
-	CreateRuntimeHUD();
+	RefreshCommanderRole();
 }
 
 void AGuLiCommanderHUD::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -161,10 +161,24 @@ void AGuLiCommanderHUD::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	Super::EndPlay(EndPlayReason);
 }
 
+void AGuLiCommanderHUD::RefreshCommanderRole()
+{
+	const AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
+	if (CommanderController && CommanderController->IsCommanderViewActive())
+	{
+		CreateRuntimeHUD();
+	}
+	else
+	{
+		// RemoveFromParent 会触发 Widget 清理定时器与委托；离开指挥角色时同步释放血条 Actor。
+		DestroyRuntimeHUD();
+	}
+}
+
 void AGuLiCommanderHUD::CreateRuntimeHUD()
 {
 	AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
-	if (!CommanderController || !CommanderController->IsLocalController())
+	if (!CommanderController || !CommanderController->IsCommanderViewActive())
 	{
 		return;
 	}
@@ -227,7 +241,8 @@ void AGuLiCommanderHUD::DrawHUD()
 	}
 
 	const AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
-	if (CommanderController)
+	// 绘制回调只负责 Canvas；角色/UI 生命周期不能依赖 showhud 或视口是否渲染。
+	if (CommanderController && CommanderController->IsCommanderViewActive())
 	{
 		if (CommanderController->GetCommanderToolMode() == EGuLiCommanderToolMode::Select)
 		{
@@ -245,6 +260,12 @@ void AGuLiCommanderHUD::NotifyHitBoxClick(const FName BoxName)
 bool AGuLiCommanderHUD::IsScreenPositionOverCommanderUI(
 	const FVector2D& ScreenPosition) const
 {
+	const AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
+	if (!CommanderController || !CommanderController->IsCommanderViewActive())
+	{
+		return false;
+	}
+
 	if (RuntimeHUDWidget && RuntimeHUDWidget->HasValidBlockingGeometry())
 	{
 		return RuntimeHUDWidget->IsScreenPositionBlocked(ScreenPosition);

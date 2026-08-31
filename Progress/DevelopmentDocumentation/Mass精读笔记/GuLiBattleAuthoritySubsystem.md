@@ -1,8 +1,8 @@
 # 精读笔记：GuLiBattleAuthoritySubsystem.cpp —— 从选兵意图到服务端权威移动
 
-- 日期：2026-08-30
-- 对应需求：本次直接提出的中文注释与源码导读请求，无配对需求文档；本文不是新功能方案。
-- 状态：注释、排版与导读已完成；验证范围见文末。
+- 源码核对日期：2026-08-31（初稿：2026-08-30）
+- 对应需求：UE 网络教材与 Mass 精读笔记同步修订；本文是现有源码导读，不是新功能方案。
+- 状态：已同步公共 Battle 框架；本文是源码导读，验证事实与未通过项见文末。
 - 阅读基线：当前工作区源码，包含本次开始前已有的未提交修改，不以旧归档或 Git HEAD 代替现状。
 - 主文件：[GuLiBattleAuthoritySubsystem.cpp](../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)
 - 接口与配置声明：[GuLiBattleAuthoritySubsystem.h](../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h)
@@ -17,28 +17,35 @@
 
 | 阅读顺序 | 入口 | 先回答的问题 |
 |---|---|---|
-| 第一遍：数据与生命周期 | 三个运行时结构、`ShouldCreateSubsystem`、`TrySpawnAuthorityPopulation` | 谁拥有士兵？客户端会不会再跑一套？500 人从哪里来？ |
+| 第一遍：数据与生命周期 | 三个运行时结构、`ShouldCreateSubsystem`、`SetSoldierSimulationEnabled`、`TrySpawnAuthorityPopulation` | 谁启用士兵？何时生成 500 人？客户端是否模拟？ |
 | 第二遍：完整业务链 | `ResolveSelection` → `IssueMove` → `TickAuthority` | 一次点击如何改变哪些士兵的移动？ |
 | 第三遍：支撑机制 | `AssignFormationSlots`、`TickLocalFlowFields`、热调参、快照输出 | 槽位如何分配？异步结果如何防止过期？数据如何出网？ |
 
 ```mermaid
 flowchart TD
-    A[指挥官选择 / 移动请求] --> B[NetSyncComponent 网络校验与去重]
-    B --> C[ResolveSelection 生成临时控制组]
-    B --> D[IssueMove 建立移动编队]
-    C --> D
-    D --> E[TickAuthority 以 30 Hz 推进权威状态]
-    E --> F[写回 Mass Fragment]
-    F --> G[Mass 避让与 CaptureProcessor]
+    W["CommanderWorldReplicationComponent：唯一发布者"] -->|BeginPlay 启用 / EndPlay 停用| U["Authority：士兵模拟开关"]
+    A["指挥官选择 / 移动意图"] --> B["CommanderNetSync：双就绪门、权限、限流和去重"]
+    B --> C["ResolveSelection：临时控制组"]
+    B --> D["IssueMove：提交移动编队"]
+    C -.选择数据依赖.-> D
+    U --> E["TickAuthority：30 Hz 权威模拟"]
+    D --> E
+    E --> F["写回 Mass Fragment"]
+    F --> G["Mass 避让 → CaptureProcessor"]
     G -->|缓存避让输出| E
-    E --> H[GameMode 调度快照捕获]
-    H --> I[离散状态交给 StateReplicator]
-    H --> J[姿态分块交给 NetSyncComponent]
+    W -->|目标每 3 个模拟步捕获| H["Authority 构造状态快照与姿态块"]
+    E -.提供当前状态.-> H
+    H --> I["StateReplicator：FastArray 属性复制"]
+    H --> J["发布组件分摊 → NetSync.SendPoseChunk"]
+    J -->|不可靠 Client RPC| K["客户端名册门 → 样本与本地镜像"]
+    I --> K
 ```
 
 图中的 `ResolveSelection → IssueMove` 表示选择数据的依赖关系，不是选兵函数会自动调用移动函数；避让箭头表示数据往返，不保证同一世界帧内先后次序。
 
-公开的选择、移动、伤害、调参入口是 C++ API。头文件中用于导航重建回调的 `UFUNCTION` 不是客户端移动 RPC；RPC 接入点在 `UGuLiCommanderNetSyncComponent`。
+公开的选择、移动、伤害、调参入口是服务器本地 C++ API。导航重建回调的 `UFUNCTION` 不是移动 RPC。请求从 [CommanderNetSync::HandleSelectionRequest / HandleMoveRequest](../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp) 进入；公共身份握手由 [PlayerNetSync](../../../Source/GuLiStrike/Battle/Network/GuLiPlayerNetSyncComponent.cpp) 承担。
+
+指挥命令要求公共连接就绪、士兵流就绪和 Commander 权限。Ground/Air 可在公共握手后使用自己的 Pawn，也可通过专业名册门观察士兵；公共就绪不授予选兵权限。公共 GameMode 的玩家 Pawn 复活与本文的士兵死亡/残骸清理是两条生命周期。
 
 ## 2. 四种身份不能混用
 
@@ -71,11 +78,13 @@ flowchart TD
 
 `ShouldCreateSubsystem` 要求是游戏 World 且 `NetMode != NM_Client`。单机、Listen Server 和 Dedicated Server 可以运行；普通客户端不创建这个权威子系统。
 
-`Initialize` 先声明对 `UMassEntitySubsystem` 和 `UGuLiRuntimeTuningSubsystem` 的依赖，然后分配权威状态，读取基线与当前有效 Soldier 数值。`OnWorldBeginPlay` 订阅导航重建事件并尝试生成部队。
+`Initialize` 声明 Mass 与运行时调参依赖，分配权威状态、读取有效数值；这不等于已经生成部队。模拟开关 `bSoldierSimulationEnabled` 默认 false。`OnWorldBeginPlay` 订阅导航事件并尝试生成，但仍受开关约束。
+
+[GuLiCommanderWorldReplicationComponent::BeginPlay](../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp) 取得本 World 唯一调度权后，本地调用 `SetSoldierSimulationEnabled(true)`。组件可能晚于 Subsystem BeginPlay，因此启用时再尝试生成，导航未就绪则由后续 Tick 重试。组件 EndPlay 调用 false，停止模拟并清理部队；纯公共 BattleGameMode 没有此模块，不会自动生成 500 兵。
 
 `TrySpawnAuthorityPopulation` 的顺序值得完整读一遍：
 
-1. 确认世界已开始运行、Mass 子系统存在、尚未生成部队。
+1. 确认模拟已启用、世界已开始运行、Mass 子系统存在、尚未生成部队。
 2. 找到 **CommanderSoldier 专用 NavData**，并确认红蓝双方部署中心都能投影。
 3. 创建包含移动、导航、身份、生命、指令等 Fragment 的 Archetype。
 4. 预建仅 Even/Odd 调参标签不同的基础组合，添加只读共享移动/避让参数。
@@ -85,7 +94,7 @@ flowchart TD
 
 这里容易误读一个 `else`：单个位置投影失败时，会暂存 `RequestedLocation`。但函数末尾会检查成功数，不足 500 就销毁本批 Entity、清空记录并返回 false。因此不能据此理解成“允许失败士兵在 NavMesh 外出生”。
 
-生成失败会由后续 `Tick` 重试。导航没有准备好时没有部队，先看这个生成条件，而不是先排查表现网格。
+模拟保持启用时，生成失败会由后续 `Tick` 重试。导航没有准备好时没有部队，先看这个生成条件，而不是先排查表现网格。
 
 `OnWorldEndPlay` 解绑导航回调并清理部队；`Deinitialize` 再次清理并释放状态。清理函数通过 `bPopulationSpawned` 避免重复处理，在世界仍处于 BeginPlay 时显式销毁有效实体，随后清空本地集合。
 
@@ -162,7 +171,7 @@ flowchart TD
 |---|---|
 | 权威移动 | 固定 30 Hz 模拟步 |
 | 流场可走性采样 | 每个 World Tick 的预算，在固定步循环外 |
-| 姿态捕获 | GameMode 按模拟 tick 差值调度，目标每 3 步一次，即 10 Hz；上一帧分块未发完时等待 |
+| 姿态捕获 | WorldReplicationComponent 按模拟 tick 差值调度，目标每 3 步一次，即 10 Hz；上一帧分块未发完时等待 |
 
 ### 第一段：提交速度与建立空间索引
 
@@ -269,7 +278,7 @@ flowchart TD
 
 速度有三个层次需要区分：请求中的新值、`PendingMovementSpeedCmPerSecond`、当前已提交的 `MovementSpeedCentimetersPerSecond`。最后一次请求覆盖尚未提交的速度意图；固定步前先改新值再恢复旧值，会取消过期的 Pending。
 
-`ApplyPendingMovementSpeed` 在固定步开头生成新的 const-shared 参数，将实体迁移到交替的 Even/Odd Archetype，再重新读取 Fragment、限制已有速度、更新 MoveTarget。不能跨迁移继续使用旧 Fragment 引用。完成后通知运行时调参子系统已提交多少实体。
+`ApplyPendingMovementSpeed` 在固定步开头生成新的 const-shared 参数，将实体迁移到交替的 Even/Odd Archetype，再重新读取 Fragment、限制已有速度、更新 MoveTarget。不能跨迁移继续使用旧 Fragment 引用。当前调参循环迁移全部有效实体，没有为尸体单独保留已删除的导航障碍格列；不要把死亡后的组成描述理解为跨调参永久不变，参见 [Archetype 迁移边界](./MassArchetypeTypes.md)。完成后通过 `NotifyMovementSpeedCommitted` 通知运行时调参子系统；后者核对当前目标并经 CommanderGameState 发布已提交速度，客户端表现预测不会直接读取尚未提交的目标值。
 
 `ApplyDamage` 是服务端 C++ 扣血入口。死亡时清除活动指令和速度，移除导航障碍网格 Fragment，记录死亡模拟时间。默认 5 秒后本地残骸 Transform 缩放归零，**不删除 SoldierId，也不立即销毁 Entity**。
 
@@ -281,8 +290,8 @@ flowchart TD
 
 | 输出函数 | 主要内容 | 后续使用 |
 |---|---|---|
-| `BuildSoldierStateSnapshot` | SoldierId、阵营、生命状态、Health / MaxHealth、StateRevision、ActiveOrderId | GameMode 交给 StateReplicator 的可靠状态通道 |
-| `CaptureSoldierPoseChunks` | 锚点、相对位置、速度、朝向、姿态状态、当前指令、帧与战局标识 | GameMode 调度并经 NetSyncComponent 发送不可靠姿态分块 |
+| `BuildSoldierStateSnapshot` | SoldierId、阵营、生命状态、Health / MaxHealth、StateRevision、ActiveOrderId | 发布组件交给 StateReplicator，以 FastArray 属性复制持续同步 |
+| `CaptureSoldierPoseChunks` | 锚点、相对位置、速度、朝向、姿态状态、当前指令、帧与战局标识 | 发布组件分摊调度，NetSync 经不可靠 Client RPC 逐连接发送 |
 
 姿态分块先按阵营、空间格和 SoldierId 排序，尽量把邻近士兵装在一起。每块最多 32 人，但空间跨度过大时会更早拆块，因为相对位置用 10 cm 单位的 `int16` 表示。
 
@@ -294,7 +303,9 @@ flowchart TD
 
 `Pose.State` 中的 Moving 根据是否有活动指令设置，并不直接根据速度是否为零设置。松散到达但仍等待同批其他成员时，这个区别尤其重要。生命事实仍应以离散状态通道为准。
 
-调度细节见 [GuLiCommanderGameMode.cpp](../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderGameMode.cpp) 的 `PublishSoldierSnapshotAndPoses`；协议尺寸与量化常量见 [GuLiCommanderTypes.h](../../../Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h)。
+调度细节见 [GuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses](../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp)：发现带专业网络组件的 Controller，完成士兵名册门后调用 `SendPoseChunk`；不要求特定 Commander Controller 类，也不会为没有就绪连接而积压旧帧。旧 GameMode 只组合此模块。协议尺寸与量化常量见 [GuLiCommanderTypes.h](../../../Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h)。
+
+“可靠状态”指属性副本持续收敛，不是把每次变化作为 Reliable RPC 重放。姿态到达后，NetSync 先校验就绪与战局，再交给 [PresentationActor::ConsumePoseChunks / IngestPoseChunk](../../../Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp)。`UpdateNetworkPresentationSource` 发现连接组件、PlayerState、Replicator、战局、同步代次或就绪状态变化时，会清理样本、时钟、预测及本地 Mass 镜像；新名册门满足后重建，不能沿用上一战局的 SoldierId→Handle 映射。
 
 ## 11. 常量速查与易错判断
 
@@ -324,39 +335,12 @@ flowchart TD
 - 流场异步结果返回，不代表其导航版本和当前路径仍然匹配。
 - 残骸不可见，不代表 Entity、SoldierId 或快照条目已移除。
 
-## 12. 本次整理范围与验证
+## 12. 核对范围与验证边界
 
-### 技术选型与范围
+本篇按 2026-08-31 当前工作区源码更新生命周期、发布职责、外围就绪条件及镜像清理；固定步、寻路、松散到达和流场部分保留仍然准确的解释。本轮仅修改文档，未改源码，也没有重新编译或运行 PIE。
 
-采用贴近当前调用链的中文注释、分阶段导读和一张数据流图。保留现有算法、API、配置和协议，不抽函数、不改变量名、不引入依赖。赋值表达式从 `=` 所在行开始，较长函数的参数仍分行；不对整个 Commander 模块执行自动格式化。
+[公共战局框架正式归档](../../Archive/20260831-公共战局框架与三类角色接入.md)记录此前冷编译成功、50/50 现有测试通过，以及重连、原生切图、复活和混合战局验证。NetworkGate 最终 ACK P95=138.1ms 达标，但未标记硬跳变 1 次，原因尚未确定；这些整体测试不能替代每个 Mass 算法的专项验证。
 
-### 涉及模块
+2026-08-30 的注释、57 处排版及当时词法核对属于[初次整理归档](../../Archive/20260830-战斗权威子系统中文注释与导读.md)，不再作为本轮任务清单。当前文档修订过程见[本次文档归档](../../Archive/20260831-网络教材与Mass精读笔记同步修订.md)。
 
-| 文件 | 本次处理 |
-|---|---|
-| `GuLiBattleAuthoritySubsystem.cpp` | 补充关键数据边界、算法意图、线程约束与失败分支注释，整理赋值换行 |
-| 本篇精读笔记 | 新增源码导读与相关文件阅读入口 |
-| `Progress/Archive/20260830-战斗权威子系统中文注释与导读.md` | 新增归档，不改旧归档 |
-| `Progress/README.md` | 增补精读与归档索引，保留已有内容 |
-
-关联头文件、导航策略、Builder、CaptureProcessor、NetSyncComponent 和 GameMode 仅用于核对说明，本次未修改。
-
-### 任务清单
-
-- [x] 通读目标源码，并核对关键关联实现。
-- [x] 补充中文注释，说明身份、生命周期、选择、移动、到达、流场、调参与快照。
-- [x] 整理 57 处赋值运算符后换行（含复合赋值），保留必要的参数换行。
-- [x] 将拆开的限定函数名合并，避免 `GuLiCommanderNavigationPolicy::` 单独悬空。
-- [x] 相对本次开始前的工作区副本，核对去除注释和空白后的 15927 个代码词法单元完全一致，预处理指令一致。
-- [x] 保留源码原有 UTF-8 无 BOM、CRLF 换行，检查新增文档链接与索引。
-
-### 风险与备忘
-
-本次属于注释与文档整理，未执行 UE 编译或 PIE，不据此宣称运行时导航、网络或性能测试通过。源码中既有未提交逻辑改动被完整保留；验证比较的是本轮修改前后的工作区，不是当前文件与 Git HEAD 的差异。
-
-这篇笔记描述 2026-08-30 的代码现状。未来若修改成员生命周期、批次完成策略或共享参数迁移方式，应同步更新本篇；不要把历史实现说明当成新的功能约束。
-
-### 结果链接
-
-- [本次归档](../../Archive/20260830-战斗权威子系统中文注释与导读.md)
-- 相关基础笔记：[MassEntityHandle](MassEntityHandle.md)、[MassArchetypeTypes](MassArchetypeTypes.md)、[MassEntityQuery 与 ExecutionContext](MassEntityQuery与ExecutionContext.md)
+[Mass 阅读目录](./README.md) · [网络教材第 07 章：士兵发送](../UE网络教材/07-士兵状态与姿态发送.md) · [第 08 章：客户端重建](../UE网络教材/08-客户端重建与平滑.md)

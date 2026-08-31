@@ -4,7 +4,7 @@
 
 #include "Avoidance/MassAvoidanceFragments.h"
 #include "Async/Async.h"
-#include "Commander/Framework/GuLiCommanderPlayerState.h"
+#include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
 #include "Commander/Mass/GuLiControlCohortBuilder.h"
 #include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
@@ -849,7 +849,7 @@ void UGuLiBattleAuthoritySubsystem::OnWorldEndPlay(UWorld& InWorld)
 
 void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 {
-	if (!AuthorityState || !IsAuthorityWorld())
+	if (!bSoldierSimulationEnabled || !AuthorityState || !IsAuthorityWorld())
 	{
 		return;
 	}
@@ -882,11 +882,29 @@ bool UGuLiBattleAuthoritySubsystem::IsAuthorityWorld() const
 	return World != nullptr && World->GetNetMode() != NM_Client;
 }
 
+void UGuLiBattleAuthoritySubsystem::SetSoldierSimulationEnabled(const bool bEnabled)
+{
+	if (!GetWorld() || GetWorld()->GetNetMode() == NM_Client || bSoldierSimulationEnabled == bEnabled)
+	{
+		return;
+	}
+	bSoldierSimulationEnabled = bEnabled;
+	if (bEnabled)
+	{
+		// WorldSubsystem 的 BeginPlay 可以先于组件；启用时再尝试生成，导航未就绪则按原 Tick 路径重试。
+		TrySpawnAuthorityPopulation();
+	}
+	else
+	{
+		DestroyAuthorityPopulation();
+	}
+}
+
 // 导航或世界尚未准备好时返回 false，由 Tick 重试；只有 500 个出生点全部投影成功才提交。
 bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 {
 	using namespace GuLiCommanderMassPrivate;
-	if (!AuthorityState || AuthorityState->bPopulationSpawned || !IsAuthorityWorld())
+	if (!bSoldierSimulationEnabled || !AuthorityState || AuthorityState->bPopulationSpawned || !IsAuthorityWorld())
 	{
 		return AuthorityState && AuthorityState->bPopulationSpawned;
 	}
@@ -1973,7 +1991,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 // 把客户端的圆形选择意图解析成服务端 ControlCohort；成员位置、阵营和存活均以本地权威记录为准。
 // 请求限流、去重与 ACK 重放在 NetSyncComponent；这里再次检查权限、结构与选择版本。
 bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
-	const AGuLiCommanderPlayerState& PlayerState,
+	const AGuLiBattlePlayerState& PlayerState,
 	const FGuLiSelectionRequest& Request,
 	FGuLiCommanderSelectionState& InOutSelection,
 	FGuLiCommandAck& OutAck)
@@ -2248,7 +2266,7 @@ bool UGuLiBattleAuthoritySubsystem::RefreshSelection(
 // 将当前选择转成一次批量移动：先验证公共目标并为每个组寻路，再提交成功编队。
 // 单个组失败不会阻止其他组接令；失败组不会在此覆盖其成员原有的 ActiveOrderId。
 bool UGuLiBattleAuthoritySubsystem::IssueMove(
-	const AGuLiCommanderPlayerState& PlayerState,
+	const AGuLiBattlePlayerState& PlayerState,
 	const FGuLiMoveRequest& Request,
 	const FGuLiCommanderSelectionState& Selection,
 	FGuLiCommandAck& OutAck)
@@ -2739,9 +2757,9 @@ void UGuLiBattleAuthoritySubsystem::BuildSoldierStateSnapshot(
 	}
 }
 
-// 这里只捕获/压缩一帧，不自行计时或发 RPC；GameMode 按 30 Hz 模拟每 3 步调度一次（目标 10 Hz）。
+// 这里只捕获/压缩一帧；WorldReplicationComponent 按 30 Hz 模拟每 3 步调度一次（目标 10 Hz）。
 // 同一帧各分块共享 FrameSequence、ServerSimTick 和 AuthorityEpoch，接收端据此识别时序与战局。
-// 跨文件出口：这里只捕获、量化并分块；GameMode 调度这些块，NetSync::SendPoseChunk 才发 Client RPC。
+// 跨文件出口：这里只捕获、量化并分块；WorldReplicationComponent 调度，NetSync::SendPoseChunk 发 Client RPC。
 void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 	TArray<FGuLiSoldierPoseChunk>& OutChunks,
 	const uint32 AuthorityEpoch)

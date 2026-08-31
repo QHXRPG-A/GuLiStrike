@@ -40,6 +40,6 @@ public:
 
 protected:
 
-	/** 武器响应开火：自查冷却后从自身炮口生成投射物（蓝图子类可重写换弹型/射线型） */
+	/** 服务器本地部件事件（不是 RPC）：检查当前 Air Pawn/已装部件资格，自查冷却，从服务器炮口出弹。 */
 	virtual void Fire_Implementation(AActor* Instigator) override;
 };
