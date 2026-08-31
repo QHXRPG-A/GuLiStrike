@@ -24,16 +24,22 @@
 
 DEFINE_LOG_CATEGORY_STATIC(LogGuLiCommanderMass, Log, All);
 
+// 本文件是 Commander 的服务端战斗权威入口：维护独立士兵、解析选兵/移动意图，
+// 以 30 Hz 推进位置并生成网络快照。SoldierId 跨网络，Mass Entity 句柄只在本地使用。
+// 建议阅读顺序：生命周期与生成 -> ResolveSelection -> IssueMove -> TickAuthority -> 快照输出。
 namespace GuLiCommanderMassPrivate
 {
+	// 2 队 × 10 个出生方阵 × 25 人 = 500 人；出生方阵只是摆放规则，不是永久编制。
 	constexpr int32 SpawnFormationsPerTeam = 10;
 	constexpr int32 TeamCount = 2;
 	constexpr int32 SoldierCountPerFormation = 25;
 	constexpr int32 TotalSoldierCount = SpawnFormationsPerTeam * TeamCount * SoldierCountPerFormation;
 	constexpr int32 FormationColumns = 5;
 	constexpr int32 FormationRows = 5;
+	// 模拟按固定步长推进；最多积累 4 步，卡顿时舍弃超额时间，避免单帧无限追赶。
 	constexpr float FixedStepSeconds = 1.0f / 30.0f;
 	constexpr float MaxAccumulatedSeconds = FixedStepSeconds * 4.0f;
+	// 此常量及下方 FRequestGate 当前未接入请求路径；实际网络限流由 NetSyncComponent 负责。
 	constexpr int32 MaxRequestsPerSecond = 10;
 	constexpr float SpatialCellSizeCentimeters = 10000.0f;
 	constexpr float MaximumAutomaticFillDistanceCentimeters = 30000.0f;
@@ -49,8 +55,10 @@ namespace GuLiCommanderMassPrivate
 	static_assert(FormationColumns == GuLiCommanderNavigationPolicy::MaximumFormationColumns);
 	static_assert(SoldierCountPerFormation == GuLiCommanderNavigationPolicy::FormationMemberCapacity);
 
+	// 每名士兵的权威运行时记录。位置/速度在本类推进，再同步到 Mass Fragment 供处理器读取。
 	struct FSoldierRuntime
 	{
+		// Entity 是当前 EntityManager 的访问键；SoldierId 不随选择组、移动编队或 Archetype 改变。
 		FMassEntityHandle Entity;
 		FGuLiSoldierId SoldierId;
 		EGuLiTeam Team = EGuLiTeam::Unassigned;
@@ -62,13 +70,16 @@ namespace GuLiCommanderMassPrivate
 		float AttackPower = 0.0f;
 		float Defense = 0.0f;
 		float AttackRangeCentimeters = 0.0f;
+		// StateRevision 标识离散状态变化；ActiveOrderId 指向当前批次，0 表示无活动指令。
 		uint32 StateRevision = 1u;
 		uint32 ActiveOrderId = 0u;
 		uint32 LastGroundSampleTick = 0u;
 		FVector LastCapturedPoseLocation = FVector::ZeroVector;
 		uint32 LastCapturedPoseFrameSequence = 0u;
+		// 死亡后保留实体和身份；残骸到期只隐藏，统一销毁发生在战局清理时。
 		double DeathSimulationSeconds = -1.0;
 		bool bWreckExpired = false;
+		bool bCollapseFinalCorridorLaneOnNextStep = false;
 
 		bool IsAlive() const
 		{
@@ -76,6 +87,8 @@ namespace GuLiCommanderMassPrivate
 		}
 	};
 
+	// 一个合法 ControlCohort 在一次移动请求中对应一个临时编队。
+	// 同一请求的编队共享 BatchOrderId、TargetAnchor 和到达域，但各自持有路径与引导点。
 	struct FOrderFormationRuntime
 	{
 		uint32 FormationId = 0u;
@@ -84,6 +97,7 @@ namespace GuLiCommanderMassPrivate
 		EGuLiTeam Team = EGuLiTeam::Unassigned;
 		TArray<FGuLiSoldierId> MemberIds;
 		TMap<uint32, uint8> SlotBySoldierId;
+		// GuideAnchor 是沿共享路径推进的虚拟领队；TargetAnchor 是本批移动的共同终点。
 		FVector GuideAnchor = FVector::ZeroVector;
 		FVector TargetAnchor = FVector::ZeroVector;
 		TArray<FVector> PathPoints;
@@ -91,15 +105,24 @@ namespace GuLiCommanderMassPrivate
 		float TravelFacingYawDegrees = 0.0f;
 		GuLiCommanderNavigationPolicy::FFinalPathFrame FinalPathFrame;
 		uint32 PathRevision = 1u;
+		// 主线程分帧采样可走性，线程池只计算脱离 UObject 的数据；版本键决定结果能否安装。
 		TSharedPtr<const FGuLiLocalFlowField, ESPMode::ThreadSafe> FlowField;
 		FGuLiLocalFlowFieldBuildData PendingFlowBuildData;
 		int32 NextFlowWalkabilitySample = INDEX_NONE;
 		TFuture<TSharedPtr<FGuLiLocalFlowField, ESPMode::ThreadSafe>> FlowBuildFuture;
 		bool bFlowBuildInFlight = false;
 		bool bPathValid = true;
+		// 到达域按接令时整个批次的去重人数计算并缓存，不随死亡或改令重新缩小。
 		int32 InitialAcceptedBatchMemberCount = 0;
 		float ArrivalDomainRadiusCentimeters = 0.0f;
 		int32 TransitColumnCount = FormationColumns;
+		// 成员分别记录过弯/到达状态、路径游标、末段横向通道以及释放后的停留点。
+		TMap<uint32, GuLiCommanderNavigationPolicy::FLooseArrivalMemberState>
+			LooseArrivalStateBySoldierId;
+		TMap<uint32, int32> MemberPathPointIndexBySoldierId;
+		TMap<uint32, float> FinalCorridorLateralOffsetBySoldierId;
+		TMap<uint32, FVector> LooseArrivalHoldAnchorBySoldierId;
+		bool bFinalCorridorStarted = false;
 	};
 
 	struct FRequestGate
@@ -110,6 +133,7 @@ namespace GuLiCommanderMassPrivate
 		FGuLiCommandAck LastMoveAck;
 	};
 
+	// 跳过协议保留的 0；这里只分配非零序号，不保证 uint32 回绕后仍全局唯一。
 	uint32 AllocateNonZero(uint32& Counter)
 	{
 		const uint32 Result = Counter++;
@@ -141,6 +165,7 @@ namespace GuLiCommanderMassPrivate
 			RequestedColumnCount);
 	}
 
+	// 只接受 CommanderSoldier 专用导航数据；不回退到默认 Agent，以免通行半径不匹配。
 	ANavigationData* GetCommanderNavigationData(UNavigationSystemV1& NavigationSystem)
 	{
 		return GuLiCommanderNavigationPolicy::ResolveRequiredNavigationData(NavigationSystem);
@@ -160,6 +185,7 @@ namespace GuLiCommanderMassPrivate
 			&NavigationData);
 	}
 
+	// 沿横向逐列投影探测当前引导点能容纳的宽度；这是局部探测，不是整条路径的宽度证明。
 	bool CanFitFormationColumns(
 		UNavigationSystemV1& NavigationSystem,
 		const ANavigationData& NavigationData,
@@ -172,8 +198,7 @@ namespace GuLiCommanderMassPrivate
 		for (int32 ProbeIndex = 0; ProbeIndex < ColumnCount; ++ProbeIndex)
 		{
 			FVector LocalOffset = FVector::ZeroVector;
-			LocalOffset.Y =
-				(static_cast<float>(ProbeIndex) - static_cast<float>(ColumnCount - 1) * 0.5f)
+			LocalOffset.Y = (static_cast<float>(ProbeIndex) - static_cast<float>(ColumnCount - 1) * 0.5f)
 				* Spacing;
 			const FVector RequestedPoint = Anchor + FacingRotation.RotateVector(LocalOffset);
 			FNavLocation ProjectedPoint;
@@ -193,6 +218,7 @@ namespace GuLiCommanderMassPrivate
 		return true;
 	}
 
+	// 从 5 列向 1 列收窄；没有成功探测时返回单列，路径有效性仍由独立检查决定。
 	int32 DetermineTransitFormationColumns(
 		UNavigationSystemV1* NavigationSystem,
 		const ANavigationData* NavigationData,
@@ -224,6 +250,8 @@ namespace GuLiCommanderMassPrivate
 			FitsByColumnCount);
 	}
 
+	// 同速士兵共享只读移动/避让参数，避免每个实体存一份。
+	// bIsCodeDrivenMovement 表示由项目代码推进位移；Mass 的避让输出仍会被采集使用。
 	FMassArchetypeSharedFragmentValues MakeAuthoritySharedFragmentValues(
 		FMassEntityManager& EntityManager,
 		const float MovementSpeedCentimetersPerSecond,
@@ -259,6 +287,7 @@ namespace GuLiCommanderMassPrivate
 			FMath::FloorToInt(Location.Y / SpatialCellSizeCentimeters));
 	}
 
+	// 空间格只做粗筛，返回覆盖查询包围盒的候选；阵营、存活和圆形距离由调用者精筛。
 	void GatherSpatialCandidateIndices(
 		const TMap<FIntPoint, TArray<int32>>& SpatialGrid,
 		const FVector& Center,
@@ -274,8 +303,7 @@ namespace GuLiCommanderMassPrivate
 		{
 			for (int32 CellY = MinimumCell.Y; CellY <= MaximumCell.Y; ++CellY)
 			{
-				if (const TArray<int32>* CellMembers =
-					SpatialGrid.Find(FIntPoint(CellX, CellY)))
+				if (const TArray<int32>* CellMembers = SpatialGrid.Find(FIntPoint(CellX, CellY)))
 				{
 					OutIndices.Append(*CellMembers);
 				}
@@ -283,6 +311,7 @@ namespace GuLiCommanderMassPrivate
 		}
 	}
 
+	// 只投影一次公共终点；允许修正高度，但 XY 偏移不得超过一个 Agent 半径。
 	bool ResolveSharedMoveTarget(
 		UNavigationSystemV1& NavigationSystem,
 		const ANavigationData& NavigationData,
@@ -312,6 +341,7 @@ namespace GuLiCommanderMassPrivate
 		return true;
 	}
 
+	// 每个临时编队从成员质心寻路一次，只接受至少两个点的完整路径，拒绝 partial path。
 	bool BuildSharedPath(
 		UNavigationSystemV1& NavigationSystem,
 		const ANavigationData& NavigationData,
@@ -372,6 +402,7 @@ namespace GuLiCommanderMassPrivate
 		return false;
 	}
 
+	// 只平均存活且仍服从指定指令的成员；RequiredOrderId 为 0 时不限制指令归属。
 	FVector ComputeCentroid(
 		TConstArrayView<FGuLiSoldierId> MemberIds,
 		const TArray<FSoldierRuntime>& Soldiers,
@@ -399,6 +430,8 @@ namespace GuLiCommanderMassPrivate
 		return Count > 0 ? Sum / static_cast<double>(Count) : FVector::ZeroVector;
 	}
 
+	// 匈牙利算法：给 Count 个成员与 Count 个候选槽位做一对一最小总代价匹配。
+	// 内部使用 1-based 索引，右侧 0 是增广路径的哨兵；输出恢复为 0-based 槽位索引。
 	void SolveMinimumCostAssignment(
 		const int32 Count,
 		const TFunctionRef<double(int32, int32)>& Cost,
@@ -410,6 +443,7 @@ namespace GuLiCommanderMassPrivate
 			return;
 		}
 
+		// 左/右势用于计算约化代价；PreviousRight 记录增广路径，最终重接匹配关系。
 		TArray<double> LeftPotential;
 		TArray<double> RightPotential;
 		TArray<int32> MatchedLeftByRight;
@@ -489,6 +523,8 @@ namespace GuLiCommanderMassPrivate
 		}
 	}
 
+	// 只给仍在行进的有效成员分配槽位，已松散到达的成员不会被重新拉回方阵。
+	// 先取靠近中心的 N 个槽位，再以 XY 距离平方为代价匹配，减少成员互相穿越。
 	void AssignFormationSlots(
 		FOrderFormationRuntime& Formation,
 		const TArray<FSoldierRuntime>& Soldiers,
@@ -502,8 +538,10 @@ namespace GuLiCommanderMassPrivate
 		for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
 		{
 			const int32* Index = SoldierIndexById.Find(SoldierId.Value);
+			const GuLiCommanderNavigationPolicy::FLooseArrivalMemberState* ArrivalState = Formation.LooseArrivalStateBySoldierId.Find(SoldierId.Value);
 			if (Index && Soldiers.IsValidIndex(*Index) && Soldiers[*Index].IsAlive()
-				&& (RequiredOrderId == 0u || Soldiers[*Index].ActiveOrderId == RequiredOrderId))
+				&& (RequiredOrderId == 0u || Soldiers[*Index].ActiveOrderId == RequiredOrderId)
+				&& (!ArrivalState || !ArrivalState->bHasReachedArrival))
 			{
 				ValidMembers.Add(SoldierId);
 			}
@@ -621,6 +659,7 @@ namespace GuLiCommanderMassPrivate
 		return false;
 	}
 
+	// 构造引导点所在的局部瓦片；目标不在瓦片内时，取朝目标方向与瓦片内边界的交点。
 	void PrepareFlowFieldBuild(
 		FOrderFormationRuntime& Formation,
 		const uint32 NavigationGeneration)
@@ -712,6 +751,8 @@ namespace GuLiCommanderMassPrivate
 	}
 }
 
+// PImpl：头文件只暴露不完整类型，实体管理器、索引、路径与异步任务留在实现文件中。
+// 自定义 Deleter 在此处看到完整定义后再 delete，避免生成代码对不完整类型执行删除。
 struct FGuLiBattleAuthorityState
 {
 	TWeakObjectPtr<UMassEntitySubsystem> MassEntitySubsystem;
@@ -746,6 +787,7 @@ void FGuLiBattleAuthorityStateDeleter::operator()(FGuLiBattleAuthorityState* Sta
 UGuLiBattleAuthoritySubsystem::UGuLiBattleAuthoritySubsystem() = default;
 UGuLiBattleAuthoritySubsystem::~UGuLiBattleAuthoritySubsystem() = default;
 
+// 仅在游戏世界的服务器或单机创建；普通客户端不运行第二套权威模拟。
 bool UGuLiBattleAuthoritySubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	const UWorld* World = Cast<UWorld>(Outer);
@@ -755,6 +797,7 @@ bool UGuLiBattleAuthoritySubsystem::ShouldCreateSubsystem(UObject* Outer) const
 		&& World->GetNetMode() != NM_Client;
 }
 
+// 先初始化 Mass 与运行时调参依赖，再建立本世界独占的权威记录。
 void UGuLiBattleAuthoritySubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
@@ -764,13 +807,11 @@ void UGuLiBattleAuthoritySubsystem::Initialize(FSubsystemCollectionBase& Collect
 	if (UWorld* World = GetWorld())
 	{
 		AuthorityState->MassEntitySubsystem = World->GetSubsystem<UMassEntitySubsystem>();
-		if (const UGuLiRuntimeTuningSubsystem* RuntimeTuning =
-			World->GetSubsystem<UGuLiRuntimeTuningSubsystem>())
+		if (const UGuLiRuntimeTuningSubsystem* RuntimeTuning = World->GetSubsystem<UGuLiRuntimeTuningSubsystem>())
 		{
 			BaselineRuntimeTuning = RuntimeTuning->GetBaselineSoldierValues();
 			EffectiveRuntimeTuning = RuntimeTuning->GetEffectiveSoldierValues();
-			MovementSpeedCentimetersPerSecond =
-				EffectiveRuntimeTuning.MovementSpeedCmPerSecond;
+			MovementSpeedCentimetersPerSecond = EffectiveRuntimeTuning.MovementSpeedCmPerSecond;
 		}
 	}
 }
@@ -785,8 +826,7 @@ void UGuLiBattleAuthoritySubsystem::Deinitialize()
 void UGuLiBattleAuthoritySubsystem::OnWorldBeginPlay(UWorld& InWorld)
 {
 	Super::OnWorldBeginPlay(InWorld);
-	if (UNavigationSystemV1* NavigationSystem =
-		FNavigationSystem::GetCurrent<UNavigationSystemV1>(&InWorld))
+	if (UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(&InWorld))
 	{
 		NavigationSystem->OnNavigationGenerationFinishedDelegate.AddUniqueDynamic(
 			this,
@@ -797,8 +837,7 @@ void UGuLiBattleAuthoritySubsystem::OnWorldBeginPlay(UWorld& InWorld)
 
 void UGuLiBattleAuthoritySubsystem::OnWorldEndPlay(UWorld& InWorld)
 {
-	if (UNavigationSystemV1* NavigationSystem =
-		FNavigationSystem::GetCurrent<UNavigationSystemV1>(&InWorld))
+	if (UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(&InWorld))
 	{
 		NavigationSystem->OnNavigationGenerationFinishedDelegate.RemoveDynamic(
 			this,
@@ -818,10 +857,10 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 	{
 		return;
 	}
-	// Walkability sampling is a game-thread/world-frame budget, not a fixed-step
-	// budget, so catch-up simulation cannot multiply NavMesh queries in one frame.
+	// 可走性采样按世界帧分配预算，放在固定步循环外，避免补帧时成倍增加 NavMesh 查询。
 	TickLocalFlowFields();
 
+	// 负 DeltaTime 按 0 处理；每次消耗 1/30 秒，累计上限把本帧模拟工作限制在最多 4 步。
 	AuthorityState->FixedStepAccumulator = FMath::Min(
 		AuthorityState->FixedStepAccumulator + static_cast<double>(FMath::Max(0.0f, DeltaTime)),
 		static_cast<double>(GuLiCommanderMassPrivate::MaxAccumulatedSeconds));
@@ -843,6 +882,7 @@ bool UGuLiBattleAuthoritySubsystem::IsAuthorityWorld() const
 	return World != nullptr && World->GetNetMode() != NM_Client;
 }
 
+// 导航或世界尚未准备好时返回 false，由 Tick 重试；只有 500 个出生点全部投影成功才提交。
 bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 {
 	using namespace GuLiCommanderMassPrivate;
@@ -857,8 +897,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 	{
 		return false;
 	}
-	UNavigationSystemV1* NavigationSystem =
-		FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+	UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
 	ANavigationData* CommanderNavigationData = NavigationSystem
 		? GetCommanderNavigationData(*NavigationSystem)
 		: nullptr;
@@ -876,8 +915,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 			FVector(10000.0f, 10000.0f, 50000.0f),
 			ProjectedCenter))
 		{
-			// Population creation is retried by Tick only after the baked/dynamic
-			// CommanderSoldier NavData can represent both deployment areas.
+			// 两个部署区都必须落在专用 NavMesh 上，否则本次不创建，留待后续 Tick 重试。
 			return false;
 		}
 	}
@@ -903,19 +941,18 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 
 	FMassArchetypeCreationParams ArchetypeParams;
 	ArchetypeParams.DebugName = TEXT("GuLiServerAuthority500DynamicSoldiers");
-	const FMassArchetypeHandle BaseAuthorityArchetype =
-		EntityManager.CreateArchetype(FragmentAndTagTypes, ArchetypeParams);
+	const FMassArchetypeHandle BaseAuthorityArchetype = EntityManager.CreateArchetype(FragmentAndTagTypes, ArchetypeParams);
 	if (!BaseAuthorityArchetype.IsValid())
 	{
 		UE_LOG(LogGuLiCommanderMass, Error, TEXT("Failed to create Soldier authority archetype."));
 		return false;
 	}
+	// 预建仅 Even/Odd 标签不同的两套基础组合，供后续替换只读共享参数时交替迁移。
 	FragmentAndTagTypes.RemoveSingle(FGuLiMassRuntimeTuningEvenTag::StaticStruct());
 	FragmentAndTagTypes.Add(FGuLiMassRuntimeTuningOddTag::StaticStruct());
 	FMassArchetypeCreationParams OddArchetypeParams;
 	OddArchetypeParams.DebugName = TEXT("GuLiServerAuthority500DynamicSoldiers_RuntimeTuningOdd");
-	const FMassArchetypeHandle OddBaseAuthorityArchetype =
-		EntityManager.CreateArchetype(FragmentAndTagTypes, OddArchetypeParams);
+	const FMassArchetypeHandle OddBaseAuthorityArchetype = EntityManager.CreateArchetype(FragmentAndTagTypes, OddArchetypeParams);
 	if (!OddBaseAuthorityArchetype.IsValid())
 	{
 		UE_LOG(LogGuLiCommanderMass, Error, TEXT("Failed to create alternate Soldier tuning archetype."));
@@ -936,6 +973,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 
 	TArray<FMassEntityHandle> EntityHandles;
 	EntityHandles.Reserve(TotalSoldierCount);
+	// 保持创建上下文存活到初始化结束，使创建通知发出时 Fragment 已填好业务数据。
 	TSharedRef<FMassEntityManager::FEntityCreationContext> CreationContext = EntityManager.BatchCreateEntities(
 		AuthorityState->AuthorityArchetype,
 		SharedValues,
@@ -972,8 +1010,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 				Soldier.Health = Soldier.MaxHealth;
 				Soldier.AttackPower = EffectiveRuntimeTuning.AttackPower;
 				Soldier.Defense = EffectiveRuntimeTuning.Defense;
-				Soldier.AttackRangeCentimeters =
-					EffectiveRuntimeTuning.AttackRangeCentimeters;
+				Soldier.AttackRangeCentimeters = EffectiveRuntimeTuning.AttackRangeCentimeters;
 				const FVector RequestedLocation = FormationAnchor
 					+ FRotator(0.0f, FacingYaw, 0.0f).RotateVector(
 						MakeFormationSlotOffset(SlotIndex, MemberSpacingCentimeters));
@@ -1028,6 +1065,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 			}
 		}
 	}
+	// 单个投影失败分支里的 RequestedLocation 只是暂存；失败会整批回滚，不允许离网士兵入场。
 	if (NavigationProjectionCount != TotalSoldierCount)
 	{
 		UE_LOG(
@@ -1061,6 +1099,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 	return true;
 }
 
+// 生命周期收尾：世界仍处于 BeginPlay 时显式销毁有效实体，随后清空本地运行时记录。
 void UGuLiBattleAuthoritySubsystem::DestroyAuthorityPopulation()
 {
 	if (!AuthorityState || !AuthorityState->bPopulationSpawned)
@@ -1101,6 +1140,7 @@ void UGuLiBattleAuthoritySubsystem::DestroyAuthorityPopulation()
 	AuthorityState->bPopulationSpawned = false;
 }
 
+// 可选方向引导层：没有可用流场时，行进分支继续使用已验证的共享 NavMesh 路径方向。
 void UGuLiBattleAuthoritySubsystem::TickLocalFlowFields()
 {
 	using namespace GuLiCommanderMassPrivate;
@@ -1109,8 +1149,7 @@ void UGuLiBattleAuthoritySubsystem::TickLocalFlowFields()
 		return;
 	}
 
-	UNavigationSystemV1* NavigationSystem =
-		FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 	ANavigationData* CommanderNavigationData = NavigationSystem
 		? GetCommanderNavigationData(*NavigationSystem)
 		: nullptr;
@@ -1119,15 +1158,16 @@ void UGuLiBattleAuthoritySubsystem::TickLocalFlowFields()
 		return;
 	}
 
+	// 全部编队共用本帧预算；每个编队本轮最多检查 128 格，避免一次扫描完整 64×64 瓦片。
 	int32 RemainingSampleBudget = FMath::Max(1, FlowFieldWalkabilitySamplesPerTick);
 	for (FOrderFormationRuntime& Formation : AuthorityState->OrderFormations)
 	{
 		if (Formation.bFlowBuildInFlight && Formation.FlowBuildFuture.IsReady())
 		{
-			TSharedPtr<FGuLiLocalFlowField, ESPMode::ThreadSafe> BuiltField =
-				Formation.FlowBuildFuture.Get();
+			TSharedPtr<FGuLiLocalFlowField, ESPMode::ThreadSafe> BuiltField = Formation.FlowBuildFuture.Get();
 			Formation.bFlowBuildInFlight = false;
 			const FIntPoint CurrentTile = MakeFlowFieldTileCoordinate(Formation.GuideAnchor);
+			// 指令、导航代际、路径版本、路径点和瓦片必须全匹配，异步旧结果不能覆盖当前状态。
 			if (BuiltField.IsValid())
 			{
 				const FGuLiFlowFieldBuildKey& Key = BuiltField->GetBuildKey();
@@ -1222,16 +1262,15 @@ void UGuLiBattleAuthoritySubsystem::TickLocalFlowFields()
 
 		if (Formation.NextFlowWalkabilitySample >= FGuLiLocalFlowField::CellCount)
 		{
-			FGuLiLocalFlowFieldBuildData DetachedBuildData =
-				MoveTemp(Formation.PendingFlowBuildData);
+			FGuLiLocalFlowFieldBuildData DetachedBuildData = MoveTemp(Formation.PendingFlowBuildData);
 			Formation.NextFlowWalkabilitySample = INDEX_NONE;
 			Formation.bFlowBuildInFlight = true;
+			// Lambda 只按值接管 BuildData，不捕获 this/Formation/NavData，避免工作线程访问世界对象。
 			Formation.FlowBuildFuture = Async(
 				EAsyncExecution::ThreadPool,
 				[BuildData = MoveTemp(DetachedBuildData)]() mutable
 				{
-					TSharedPtr<FGuLiLocalFlowField, ESPMode::ThreadSafe> Field =
-						MakeShared<FGuLiLocalFlowField, ESPMode::ThreadSafe>();
+					TSharedPtr<FGuLiLocalFlowField, ESPMode::ThreadSafe> Field = MakeShared<FGuLiLocalFlowField, ESPMode::ThreadSafe>();
 					if (!Field->Build(BuildData))
 					{
 						Field.Reset();
@@ -1242,6 +1281,7 @@ void UGuLiBattleAuthoritySubsystem::TickLocalFlowFields()
 	}
 }
 
+// 专用导航重建后重新寻路并递增版本；旧流场失效，尚未到达成员的过弯进度重新建立。
 void UGuLiBattleAuthoritySubsystem::HandleNavigationGenerationFinished(
 	ANavigationData* NavigationData)
 {
@@ -1270,8 +1310,7 @@ void UGuLiBattleAuthoritySubsystem::HandleNavigationGenerationFinished(
 			++Formation.PathRevision;
 		}
 
-		UNavigationSystemV1* NavigationSystem =
-			FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+		UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
 		FVector ReprojectedTarget = Formation.TargetAnchor;
 		TArray<FVector> RebuiltPath;
 		Formation.bPathValid = NavigationSystem
@@ -1287,17 +1326,39 @@ void UGuLiBattleAuthoritySubsystem::HandleNavigationGenerationFinished(
 				Formation.GuideAnchor,
 				ReprojectedTarget,
 				RebuiltPath);
-		const GuLiCommanderNavigationPolicy::FFinalPathFrame RebuiltFinalPathFrame =
-			GuLiCommanderNavigationPolicy::ResolveFinalPathFrame(
-				RebuiltPath,
-				Formation.GuideAnchor,
-				ReprojectedTarget);
+		const GuLiCommanderNavigationPolicy::FFinalPathFrame RebuiltFinalPathFrame = GuLiCommanderNavigationPolicy::ResolveFinalPathFrame(
+			RebuiltPath,
+			Formation.GuideAnchor,
+			ReprojectedTarget);
+		Formation.bPathValid &= RebuiltFinalPathFrame.bHasUsableDirection;
 		if (Formation.bPathValid)
 		{
 			Formation.TargetAnchor = ReprojectedTarget;
 			Formation.PathPoints = MoveTemp(RebuiltPath);
 			Formation.PathPointIndex = Formation.PathPoints.Num() > 1 ? 1 : 0;
 			Formation.FinalPathFrame = RebuiltFinalPathFrame;
+			Formation.bFinalCorridorStarted = false;
+			Formation.FinalCorridorLateralOffsetBySoldierId.Reset();
+			for (TPair<uint32, GuLiCommanderNavigationPolicy::FLooseArrivalMemberState>& Pair
+				: Formation.LooseArrivalStateBySoldierId)
+			{
+				if (!Pair.Value.bHasReachedArrival)
+				{
+					Pair.Value.bTailCleared = false;
+					Pair.Value.bRecovering = false;
+				}
+			}
+			const int32 RebuiltInitialPathPointIndex = Formation.PathPoints.Num() > 1 ? 1 : 0;
+			for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
+			{
+				const GuLiCommanderNavigationPolicy::FLooseArrivalMemberState* ArrivalState = Formation.LooseArrivalStateBySoldierId.Find(SoldierId.Value);
+				if (!ArrivalState || !ArrivalState->bHasReachedArrival)
+				{
+					Formation.MemberPathPointIndexBySoldierId.Add(
+						SoldierId.Value,
+						RebuiltInitialPathPointIndex);
+				}
+			}
 		}
 		else
 		{
@@ -1310,6 +1371,8 @@ void UGuLiBattleAuthoritySubsystem::HandleNavigationGenerationFinished(
 	}
 }
 
+// 一个固定模拟步分四段：空间索引 -> 编队期望速度 -> 士兵避让与位移 -> 按批次收尾。
+// 实际位置由这里积分并写回 Fragment；导航策略函数负责判定，不直接改世界状态。
 void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 {
 	using namespace GuLiCommanderMassPrivate;
@@ -1320,11 +1383,11 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 	{
 		return;
 	}
+	// 在本步读取速度、推进实体之前统一提交待生效速度，避免同一步混用新旧共享参数。
 	ApplyPendingMovementSpeed();
 
 	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
-	UNavigationSystemV1* NavigationSystem =
-		FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+	UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
 	ANavigationData* CommanderNavigationData = NavigationSystem
 		? GetCommanderNavigationData(*NavigationSystem)
 		: nullptr;
@@ -1340,23 +1403,32 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			AuthorityState->SpatialGrid.FindOrAdd(MakeSpatialCell(Soldier.Location)).Add(SoldierIndex);
 		}
 	}
+	// 没有有效指令的成员期望速度保持 0；后面的局部分离仍可能推动这些成员。
 	TArray<FVector> DesiredVelocities;
 	DesiredVelocities.Init(FVector::ZeroVector, AuthorityState->Soldiers.Num());
+	TBitArray<> bUsingFinalCorridorLane;
+	bUsingFinalCorridorLane.Init(false, AuthorityState->Soldiers.Num());
 
 	for (FOrderFormationRuntime& Formation : AuthorityState->OrderFormations)
 	{
 		int32 ActiveMemberCount = 0;
+		int32 ActiveTransitMemberCount = 0;
 		for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
 		{
 			const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
 			if (SoldierIndex && AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
 			{
 				const FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
-				ActiveMemberCount += Soldier.IsAlive()
-					&& Soldier.ActiveOrderId == Formation.BatchOrderId ? 1 : 0;
+				const bool bActive = Soldier.IsAlive()
+					&& Soldier.ActiveOrderId == Formation.BatchOrderId;
+				ActiveMemberCount += bActive ? 1 : 0;
+				const GuLiCommanderNavigationPolicy::FLooseArrivalMemberState* ArrivalState = Formation.LooseArrivalStateBySoldierId.Find(SoldierId.Value);
+				ActiveTransitMemberCount += bActive
+					&& (!ArrivalState || !ArrivalState->bHasReachedArrival) ? 1 : 0;
 			}
 		}
-		if (Formation.SlotBySoldierId.Num() != ActiveMemberCount)
+		// 死亡、改令或到达释放都会减少行进成员；槽位数量失配时重新分配。
+		if (Formation.SlotBySoldierId.Num() != ActiveTransitMemberCount)
 		{
 			AssignFormationSlots(
 				Formation,
@@ -1394,13 +1466,22 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			Formation.NextFlowWalkabilitySample = INDEX_NONE;
 			Formation.PendingFlowBuildData = FGuLiLocalFlowFieldBuildData{};
 		}
+		Formation.bFinalCorridorStarted |= GuLiCommanderNavigationPolicy::HasEnteredLooseArrivalTerminalPhase(
+			Formation.PathPointIndex,
+			Formation.PathPoints.Num(),
+			Formation.GuideAnchor,
+			Formation.TargetAnchor,
+			Formation.ArrivalDomainRadiusCentimeters,
+			FormationWaypointToleranceCentimeters);
 
 		FVector GuideDirection = Formation.PathPoints[Formation.PathPointIndex] - Formation.GuideAnchor;
 		GuideDirection.Z = 0.0f;
 		const float GuideDistance = GuideDirection.Size2D();
 		const float MaximumStep = MovementSpeedCentimetersPerSecond * FixedDeltaSeconds;
-		const bool bGuideMayAdvance = FVector::DistSquared2D(ActiveCentroid, Formation.GuideAnchor)
-			<= FMath::Square(FormationGuideMaximumLeadCentimeters);
+		// 普通行进限制领队领先质心的距离；进入末段后解除限制，避免领队被尾部成员拖停。
+		const bool bGuideMayAdvance = Formation.bFinalCorridorStarted
+			|| FVector::DistSquared2D(ActiveCentroid, Formation.GuideAnchor)
+				<= FMath::Square(FormationGuideMaximumLeadCentimeters);
 		if (bGuideMayAdvance && GuideDistance > UE_KINDA_SMALL_NUMBER)
 		{
 			const FVector NormalizedDirection = GuideDirection / GuideDistance;
@@ -1416,18 +1497,15 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		{
 			TravelDirection = (Formation.TargetAnchor - Formation.GuideAnchor).GetSafeNormal2D();
 		}
-		const bool bGuideAtFinal = Formation.PathPointIndex == Formation.PathPoints.Num() - 1
-			&& FVector::DistSquared2D(Formation.GuideAnchor, Formation.TargetAnchor)
-				<= FMath::Square(FormationWaypointToleranceCentimeters);
-		const bool bInTerminalSegment =
-			GuLiCommanderNavigationPolicy::HasEnteredLooseArrivalTerminalPhase(
-				Formation.PathPointIndex,
-				Formation.PathPoints.Num(),
-				Formation.GuideAnchor,
-				Formation.TargetAnchor,
-				Formation.ArrivalDomainRadiusCentimeters,
-				FormationWaypointToleranceCentimeters);
-		if (!bInTerminalSegment)
+		Formation.bFinalCorridorStarted |= GuLiCommanderNavigationPolicy::HasEnteredLooseArrivalTerminalPhase(
+			Formation.PathPointIndex,
+			Formation.PathPoints.Num(),
+			Formation.GuideAnchor,
+			Formation.TargetAnchor,
+			Formation.ArrivalDomainRadiusCentimeters,
+			FormationWaypointToleranceCentimeters);
+		// 只有行进阶段动态调整列数；末段保持既有通道，避免到达附近反复重排。
+		if (!Formation.bFinalCorridorStarted)
 		{
 			const int32 DesiredColumnCount = DetermineTransitFormationColumns(
 				NavigationSystem,
@@ -1462,62 +1540,154 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				continue;
 			}
 
-			FVector LocalSlotOffset = FVector::ZeroVector;
-			FVector WorldSlotTarget = Formation.TargetAnchor;
-			if (!bInTerminalSegment)
+			const float DistanceToTargetCentimeters = FVector::Dist2D(
+				Soldier.Location,
+				Formation.TargetAnchor);
+			int32* MemberPathPointIndex = Formation.MemberPathPointIndexBySoldierId.Find(SoldierId.Value);
+			if (!MemberPathPointIndex)
 			{
-				const uint8* SlotIndexPtr = Formation.SlotBySoldierId.Find(SoldierId.Value);
-				if (!SlotIndexPtr)
+				MemberPathPointIndex = &Formation.MemberPathPointIndexBySoldierId.Add(
+					SoldierId.Value,
+					Formation.PathPoints.Num() > 1 ? 1 : 0);
+			}
+			// 每名士兵独立推进路径游标，不能仅凭领队到终点就认定尾部成员已绕过最后一个弯。
+			*MemberPathPointIndex = GuLiCommanderNavigationPolicy::AdvanceMemberPathPointIndex(
+				Formation.PathPoints,
+				*MemberPathPointIndex,
+				Soldier.Location,
+				MemberAgentRadiusCentimeters,
+				0.5f * static_cast<float>(Formation.TransitColumnCount - 1)
+					* MemberSpacingCentimeters + MemberAgentRadiusCentimeters);
+			const bool bTailClearObserved = GuLiCommanderNavigationPolicy::HasClearedFinalTurn(
+				Formation.FinalPathFrame,
+				*MemberPathPointIndex);
+			const GuLiCommanderNavigationPolicy::FLooseArrivalMemberState PreviousArrivalState = Formation.LooseArrivalStateBySoldierId.FindRef(SoldierId.Value);
+			const GuLiCommanderNavigationPolicy::FLooseArrivalMemberState ArrivalState = GuLiCommanderNavigationPolicy::UpdateLooseArrivalMemberState(
+				PreviousArrivalState,
+				bTailClearObserved,
+				Formation.bFinalCorridorStarted,
+				DistanceToTargetCentimeters,
+				Formation.ArrivalDomainRadiusCentimeters,
+				FormationArrivalToleranceCentimeters);
+			Formation.LooseArrivalStateBySoldierId.Add(SoldierId.Value, ArrivalState);
+
+			// 到达是锁存状态：首次到达释放槽位；被挤出外圈时回收，重回内圈后记录新的停留点。
+			const bool bJustReleased = ArrivalState.bHasReachedArrival
+				&& !PreviousArrivalState.bHasReachedArrival;
+			const bool bRecoveryJustEnded = PreviousArrivalState.bRecovering
+				&& !ArrivalState.bRecovering;
+			if (bJustReleased)
+			{
+				Formation.SlotBySoldierId.Remove(SoldierId.Value);
+			}
+			if (bJustReleased || bRecoveryJustEnded)
+			{
+				Formation.LooseArrivalHoldAnchorBySoldierId.Add(
+					SoldierId.Value,
+					Soldier.Location);
+			}
+
+			FVector LocalSlotOffset = FVector::ZeroVector;
+			FVector WorldSlotTarget = Soldier.Location;
+			FVector DesiredVelocity = FVector::ZeroVector;
+			const uint8* TransitSlotIndexPtr = Formation.SlotBySoldierId.Find(SoldierId.Value);
+			const float TransitLaneOffsetCentimeters = TransitSlotIndexPtr
+				? MakeFormationSlotOffset(
+					static_cast<int32>(*TransitSlotIndexPtr),
+					MemberSpacingCentimeters,
+					Formation.TransitColumnCount).Y
+				: 0.0f;
+			// 末段速度分支依次处理：已到达、尚未过弯、已过弯的固定横向通道、普通弹性方阵。
+			if (ArrivalState.bHasReachedArrival)
+			{
+				if (ArrivalState.bRecovering)
+				{
+					const FVector RecoveryDirection = (Formation.TargetAnchor - Soldier.Location).GetSafeNormal2D();
+					WorldSlotTarget = Soldier.Location
+						+ RecoveryDirection * FormationWaypointToleranceCentimeters;
+					DesiredVelocity = RecoveryDirection * MovementSpeedCentimetersPerSecond;
+				}
+				else if (const FVector* HoldAnchor = Formation.LooseArrivalHoldAnchorBySoldierId.Find(SoldierId.Value))
+				{
+					WorldSlotTarget = *HoldAnchor;
+				}
+			}
+			else if (Formation.bFinalCorridorStarted && !ArrivalState.bTailCleared)
+			{
+				LocalSlotOffset.Y = TransitLaneOffsetCentimeters;
+				const FVector MemberPathTarget = GuLiCommanderNavigationPolicy::CalculatePathLaneWaypoint(
+					Formation.PathPoints,
+					FMath::Clamp(*MemberPathPointIndex, 1, Formation.PathPoints.Num() - 1),
+					TransitLaneOffsetCentimeters);
+				const FVector MemberPathDirection = (MemberPathTarget - Soldier.Location).GetSafeNormal2D();
+				WorldSlotTarget = Soldier.Location
+					+ MemberPathDirection * FormationWaypointToleranceCentimeters;
+				DesiredVelocity = MemberPathDirection * MovementSpeedCentimetersPerSecond;
+			}
+			else if (Formation.bFinalCorridorStarted && ArrivalState.bTailCleared)
+			{
+				float* FrozenLateralOffset = Formation.FinalCorridorLateralOffsetBySoldierId.Find(SoldierId.Value);
+				// 上一步通道投影失败时，将横向偏移收为 0；仍必须通过后续 NavMesh 投影检查。
+				if (Soldier.bCollapseFinalCorridorLaneOnNextStep)
+				{
+					FrozenLateralOffset = &Formation.FinalCorridorLateralOffsetBySoldierId.Add(
+						SoldierId.Value,
+						0.0f);
+					Soldier.bCollapseFinalCorridorLaneOnNextStep = false;
+				}
+				if (!FrozenLateralOffset)
+				{
+					const float MaximumLaneOffsetCentimeters = GuLiCommanderNavigationPolicy::CalculateLooseArrivalMaximumLaneOffsetCentimeters(
+						Formation.ArrivalDomainRadiusCentimeters,
+						FormationArrivalToleranceCentimeters,
+						MemberAgentRadiusCentimeters,
+						MovementSpeedCentimetersPerSecond,
+						FixedStepSeconds);
+					const float InitialLateralOffset = FMath::Clamp(
+						TransitLaneOffsetCentimeters,
+						-MaximumLaneOffsetCentimeters,
+						MaximumLaneOffsetCentimeters);
+					FrozenLateralOffset = &Formation.FinalCorridorLateralOffsetBySoldierId.Add(
+						SoldierId.Value,
+						InitialLateralOffset);
+				}
+				LocalSlotOffset.Y = *FrozenLateralOffset;
+				WorldSlotTarget = GuLiCommanderNavigationPolicy::CalculateFinalCorridorLaneTarget(
+					Formation.FinalPathFrame,
+					Formation.TargetAnchor,
+					Soldier.Location,
+					*FrozenLateralOffset,
+					FormationWaypointToleranceCentimeters);
+				DesiredVelocity = (WorldSlotTarget - Soldier.Location).GetSafeNormal2D()
+					* MovementSpeedCentimetersPerSecond;
+				bUsingFinalCorridorLane[*SoldierIndexPtr] = true;
+			}
+			else
+			{
+				if (!TransitSlotIndexPtr)
 				{
 					continue;
 				}
 				LocalSlotOffset = MakeFormationSlotOffset(
-					static_cast<int32>(*SlotIndexPtr),
+					static_cast<int32>(*TransitSlotIndexPtr),
 					MemberSpacingCentimeters,
 					Formation.TransitColumnCount);
 				WorldSlotTarget = Formation.GuideAnchor
 					+ FRotator(0.0f, Formation.TravelFacingYawDegrees, 0.0f)
 						.RotateVector(LocalSlotOffset);
-			}
-			FVector SlotDelta = WorldSlotTarget - Soldier.Location;
-			SlotDelta.Z = 0.0f;
-			FVector SoldierTravelDirection = TravelDirection;
-			if (bInTerminalSegment)
-			{
-				SoldierTravelDirection =
-					GuLiCommanderNavigationPolicy::CalculateSharedPathFollowDirection(
-						Formation.PathPoints,
-						Soldier.Location,
-						MemberAgentRadiusCentimeters);
-				if (SoldierTravelDirection.IsNearlyZero())
+				FVector SlotDelta = WorldSlotTarget - Soldier.Location;
+				SlotDelta.Z = 0.0f;
+				FVector SoldierTravelDirection = TravelDirection;
+				if (bEnableLocalFlowField && Formation.FlowField.IsValid())
 				{
-					SoldierTravelDirection =
-						(Formation.TargetAnchor - Soldier.Location).GetSafeNormal2D();
+					FVector FlowDirection;
+					if (Formation.FlowField->SampleDirection(Soldier.Location, FlowDirection)
+						&& !FlowDirection.IsNearlyZero())
+					{
+						SoldierTravelDirection = FlowDirection;
+					}
 				}
-			}
-			else if (bEnableLocalFlowField && Formation.FlowField.IsValid())
-			{
-				FVector FlowDirection;
-				if (Formation.FlowField->SampleDirection(Soldier.Location, FlowDirection)
-					&& !FlowDirection.IsNearlyZero())
-				{
-					SoldierTravelDirection = FlowDirection;
-				}
-			}
-
-			FVector DesiredVelocity;
-			if (bInTerminalSegment)
-			{
-				const bool bInsideArrivalDomain = FVector::DistSquared2D(
-					Soldier.Location,
-					Formation.TargetAnchor)
-					<= FMath::Square(Formation.ArrivalDomainRadiusCentimeters);
-				DesiredVelocity = bGuideAtFinal && bInsideArrivalDomain
-					? FVector::ZeroVector
-					: SoldierTravelDirection * MovementSpeedCentimetersPerSecond;
-			}
-			else
-			{
+				// 行进贡献 70% 速度，槽位纠偏最多 30%，合成后再次限速；不是直接把士兵吸到槽位。
 				const FVector TravelVelocity = SoldierTravelDirection
 					* MovementSpeedCentimetersPerSecond
 					* TravelWeight;
@@ -1530,16 +1700,16 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 
 			if (EntityManager.IsEntityValid(Soldier.Entity))
 			{
-				FGuLiMassSlotTargetFragment& SlotTarget =
-					EntityManager.GetFragmentDataChecked<FGuLiMassSlotTargetFragment>(Soldier.Entity);
+				FGuLiMassSlotTargetFragment& SlotTarget = EntityManager.GetFragmentDataChecked<FGuLiMassSlotTargetFragment>(Soldier.Entity);
 				SlotTarget.LocalOffset = LocalSlotOffset;
 				SlotTarget.WorldTarget = WorldSlotTarget;
 
-				FMassMoveTargetFragment& MoveTarget =
-					EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+				FMassMoveTargetFragment& MoveTarget = EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
 				MoveTarget.Center = WorldSlotTarget;
 				MoveTarget.Forward = DesiredVelocity.GetSafeNormal2D();
-				MoveTarget.DistanceToGoal = FVector::Dist2D(Soldier.Location, Formation.TargetAnchor);
+				MoveTarget.DistanceToGoal = ArrivalState.bHasReachedArrival
+					? FVector::Dist2D(Soldier.Location, WorldSlotTarget)
+					: FVector::Dist2D(Soldier.Location, Formation.TargetAnchor);
 				MoveTarget.DesiredSpeed = FMassInt16Real(
 					DesiredVelocity.IsNearlyZero(1.0f)
 						? 0.0f
@@ -1556,8 +1726,8 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			continue;
 		}
 
-		FGuLiMassHealthFragment& Health =
-			EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Soldier.Entity);
+		// 第二遍按士兵处理死亡窗口和位移；记录与实体都保留，因此总人数不会因死亡减少。
+		FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Soldier.Entity);
 		if (!Soldier.IsAlive())
 		{
 			Health.WreckSecondsRemaining = FMath::Max(
@@ -1566,8 +1736,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 					- AuthorityState->SimulationSeconds));
 			if (!Soldier.bWreckExpired && Health.WreckSecondsRemaining <= 0.0f)
 			{
-				FTransformFragment& Transform =
-					EntityManager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity);
+				FTransformFragment& Transform = EntityManager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity);
 				FTransform HiddenTransform = Transform.GetTransform();
 				HiddenTransform.SetScale3D(FVector::ZeroVector);
 				Transform.SetTransform(HiddenTransform);
@@ -1576,6 +1745,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			continue;
 		}
 
+		// 手工局部分离只查相邻九格；位置重合时用 SoldierId 决定推开方向，避免零向量。
 		FVector AvoidanceVelocity = FVector::ZeroVector;
 		const FIntPoint Cell = MakeSpatialCell(Soldier.Location);
 		for (int32 CellX = Cell.X - 1; CellX <= Cell.X + 1; ++CellX)
@@ -1614,8 +1784,8 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			}
 		}
 
-		const FGuLiMassAvoidanceOutputFragment& AvoidanceOutput =
-			EntityManager.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(Soldier.Entity);
+		// CaptureProcessor 保存世界帧的 Mass 避让加速度，这里乘固定步长后与期望速度、分离速度合成。
+		const FGuLiMassAvoidanceOutputFragment& AvoidanceOutput = EntityManager.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(Soldier.Entity);
 		const FVector EngineAvoidanceDelta = AvoidanceOutput.Value.GetClampedToMaxSize(
 			MovementSpeedCentimetersPerSecond * 4.0f) * FixedDeltaSeconds;
 
@@ -1639,6 +1809,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		if (!Soldier.Velocity.IsNearlyZero(1.0f))
 		{
 			FVector NewLocation = Soldier.Location + Soldier.Velocity * FixedDeltaSeconds;
+			// 移动时首次及每隔 6 个模拟步采样一次地面；间隔内维持 Z，不是每步做导航投影。
 			const bool bGroundSampleDue = Soldier.LastGroundSampleTick == 0u
 				|| AuthorityState->ServerSimTick - Soldier.LastGroundSampleTick >= 6u;
 			if (bGroundSampleDue)
@@ -1662,9 +1833,13 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				}
 				else
 				{
-					// Never replace failed navigation with a Landscape straight-line step.
+					// 投影失败则撤销本步位移并停速，不以 Landscape 直线移动绕过 NavMesh 约束。
 					NewLocation = Soldier.Location;
 					Soldier.Velocity = FVector::ZeroVector;
+					if (bUsingFinalCorridorLane[SoldierIndex])
+					{
+						Soldier.bCollapseFinalCorridorLaneOnNextStep = true;
+					}
 				}
 				Soldier.LastGroundSampleTick = AuthorityState->ServerSimTick;
 			}
@@ -1691,6 +1866,8 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		Order.bHasMoveTarget = Soldier.ActiveOrderId != 0u;
 	}
 
+	// 先收集各编队完成状态，再按 BatchOrderId 统一收尾；同批次不能有一个编队提前撤令。
+	// 判定读取成员的过弯/到达锁存标记，死亡或已经接受新指令的成员不再阻塞旧批次。
 	TMap<uint32, TArray<GuLiCommanderNavigationPolicy::FBatchOrderFormationCompletionSample>>
 		CompletionSamplesByBatch;
 	for (const FOrderFormationRuntime& Formation : AuthorityState->OrderFormations)
@@ -1706,11 +1883,15 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				continue;
 			}
 			const FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
-			GuLiCommanderNavigationPolicy::FFormationMemberProgressSample& Sample =
-				MemberProgressSamples.AddDefaulted_GetRef();
+			GuLiCommanderNavigationPolicy::FFormationMemberProgressSample& Sample = MemberProgressSamples.AddDefaulted_GetRef();
 			Sample.Location = Soldier.Location;
 			Sample.bAlive = Soldier.IsAlive();
 			Sample.bFollowsOrder = Soldier.ActiveOrderId == Formation.BatchOrderId;
+			if (const GuLiCommanderNavigationPolicy::FLooseArrivalMemberState* ArrivalState = Formation.LooseArrivalStateBySoldierId.Find(SoldierId.Value))
+			{
+				Sample.bTailCleared = ArrivalState->bTailCleared;
+				Sample.bHasReachedArrival = ArrivalState->bHasReachedArrival;
+			}
 			bAnyActive |= Sample.bAlive && Sample.bFollowsOrder;
 		}
 
@@ -1727,8 +1908,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			MemberProgressSamples,
 			Formation.ArrivalDomainRadiusCentimeters,
 			FormationArrivalToleranceCentimeters);
-		GuLiCommanderNavigationPolicy::FBatchOrderFormationCompletionSample& CompletionSample =
-			CompletionSamplesByBatch.FindOrAdd(Formation.BatchOrderId).AddDefaulted_GetRef();
+		GuLiCommanderNavigationPolicy::FBatchOrderFormationCompletionSample& CompletionSample = CompletionSamplesByBatch.FindOrAdd(Formation.BatchOrderId).AddDefaulted_GetRef();
 		CompletionSample.bHasActiveMembers = bAnyActive;
 		CompletionSample.bPathValid = Formation.bPathValid;
 		CompletionSample.bGuideAndMembersReady = bOrderComplete;
@@ -1747,6 +1927,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			bAnyActive |= Sample.bHasActiveMembers;
 			bAnyActivePathInvalid |= Sample.bHasActiveMembers && !Sample.bPathValid;
 		}
+		// 无人继续执行、任一活动编队路径失效，或所有活动编队完成，都会移除整个批次。
 		if (!bAnyActive || bAnyActivePathInvalid
 			|| GuLiCommanderNavigationPolicy::ShouldCompleteBatchOrder(Pair.Value))
 		{
@@ -1769,6 +1950,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 					continue;
 				}
 				FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
+				// 只清除仍属于旧批次的指令，避免旧编队收尾覆盖士兵刚收到的新指令。
 				if (Soldier.ActiveOrderId == Formation.BatchOrderId)
 				{
 					Soldier.ActiveOrderId = 0u;
@@ -1788,6 +1970,8 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 	}
 }
 
+// 把客户端的圆形选择意图解析成服务端 ControlCohort；成员位置、阵营和存活均以本地权威记录为准。
+// 请求限流、去重与 ACK 重放在 NetSyncComponent；这里再次检查权限、结构与选择版本。
 bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
 	const AGuLiCommanderPlayerState& PlayerState,
 	const FGuLiSelectionRequest& Request,
@@ -1816,6 +2000,7 @@ bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
 		return false;
 	}
 
+	// 在副本上刷新和编组，最后统一提交选择结果；成员变动才推进 SelectionRevision。
 	FGuLiCommanderSelectionState WorkingSelection = InOutSelection;
 	RefreshSelection(PlayerState.GetTeam(), WorkingSelection);
 	const TArray<FGuLiControlCohortDescriptor> PreviousCohorts = WorkingSelection.Cohorts;
@@ -1867,6 +2052,7 @@ bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
 		{
 			WorkingSelection.Cohorts.Reset();
 		}
+		// Toggle 命中任意成员就移除整个既有控制组，并排除旧成员，避免同次点击又自动补回。
 		else if (Request.Modifier == EGuLiSelectionModifier::Toggle)
 		{
 			TSet<uint32> HitSoldiers;
@@ -1926,6 +2112,7 @@ bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
 				}
 			}
 
+			// 圈内成员先按邻近关系组成至多 25 人的小组；仅最后一个不足组从邻近候选中补齐。
 			TArray<TArray<FGuLiSoldierId>> BuiltCohorts;
 			GuLiControlCohortBuilder::Build(
 				InCircleSeeds,
@@ -1938,8 +2125,7 @@ bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
 				{
 					continue;
 				}
-				FGuLiControlCohortDescriptor& Descriptor =
-					WorkingSelection.Cohorts.AddDefaulted_GetRef();
+				FGuLiControlCohortDescriptor& Descriptor = WorkingSelection.Cohorts.AddDefaulted_GetRef();
 				Descriptor.CohortId = FGuLiControlCohortId(
 					AllocateNonZero(AuthorityState->NextControlCohortId));
 				Descriptor.MemberIds = MoveTemp(MemberIds);
@@ -1978,6 +2164,8 @@ bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
 	return true;
 }
 
+// 保持已有控制组身份并刷新摘要：去掉无效/重复/异阵营成员，整组无人存活才移除。
+// 部分死亡成员仍留在 MemberIds；AliveCount 与共同 ActiveOrderId 是独立的动态摘要。
 bool UGuLiBattleAuthoritySubsystem::RefreshSelection(
 	const EGuLiTeam Team,
 	FGuLiCommanderSelectionState& InOutSelection) const
@@ -2007,8 +2195,7 @@ bool UGuLiBattleAuthoritySubsystem::RefreshSelection(
 				bMembershipChanged = true;
 				continue;
 			}
-			const GuLiCommanderMassPrivate::FSoldierRuntime& Soldier =
-				AuthorityState->Soldiers[*SoldierIndex];
+			const GuLiCommanderMassPrivate::FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
 			if (Soldier.Team != Team)
 			{
 				bMembershipChanged = true;
@@ -2058,6 +2245,8 @@ bool UGuLiBattleAuthoritySubsystem::RefreshSelection(
 	return bChanged;
 }
 
+// 将当前选择转成一次批量移动：先验证公共目标并为每个组寻路，再提交成功编队。
+// 单个组失败不会阻止其他组接令；失败组不会在此覆盖其成员原有的 ActiveOrderId。
 bool UGuLiBattleAuthoritySubsystem::IssueMove(
 	const AGuLiCommanderPlayerState& PlayerState,
 	const FGuLiMoveRequest& Request,
@@ -2091,6 +2280,7 @@ bool UGuLiBattleAuthoritySubsystem::IssueMove(
 		return false;
 	}
 
+	// 固定按 CohortId 处理，使编队创建和逐组 ACK 的顺序稳定。
 	TArray<const FGuLiControlCohortDescriptor*> SortedCohorts;
 	for (const FGuLiControlCohortDescriptor& Cohort : Selection.Cohorts)
 	{
@@ -2102,8 +2292,7 @@ bool UGuLiBattleAuthoritySubsystem::IssueMove(
 	{
 		return Lhs.CohortId.Value < Rhs.CohortId.Value;
 	});
-	UNavigationSystemV1* NavigationSystem =
-		FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 	ANavigationData* CommanderNavigationData = NavigationSystem
 		? GetCommanderNavigationData(*NavigationSystem)
 		: nullptr;
@@ -2205,6 +2394,20 @@ bool UGuLiBattleAuthoritySubsystem::IssueMove(
 			Formation.PathPoints,
 			Formation.GuideAnchor,
 			Formation.TargetAnchor);
+		if (!Formation.FinalPathFrame.bHasUsableDirection)
+		{
+			UE_LOG(
+				LogGuLiCommanderMass,
+				Warning,
+				TEXT("Move cohort %u rejected: CommanderSoldier shared path has no usable direction."),
+				Cohort.CohortId.Value);
+			CohortAck.Result = EGuLiCommandAckResult::PathFailed;
+			continue;
+		}
+		Formation.LooseArrivalStateBySoldierId.Reserve(Formation.MemberIds.Num());
+		Formation.MemberPathPointIndexBySoldierId.Reserve(Formation.MemberIds.Num());
+		Formation.FinalCorridorLateralOffsetBySoldierId.Reserve(Formation.MemberIds.Num());
+		Formation.LooseArrivalHoldAnchorBySoldierId.Reserve(Formation.MemberIds.Num());
 		FVector InitialTravelDirection = Formation.PathPoints[Formation.PathPointIndex]
 			- Formation.GuideAnchor;
 		InitialTravelDirection.Z = 0.0f;
@@ -2216,6 +2419,7 @@ bool UGuLiBattleAuthoritySubsystem::IssueMove(
 		++AcceptedCohorts;
 	}
 
+	// 只有寻路成功的编队参与人数统计；同批成员去重后共同确定一个到达域。
 	TSet<uint32> AcceptedSoldierIds;
 	for (const FOrderFormationRuntime& Formation : AcceptedFormations)
 	{
@@ -2224,13 +2428,12 @@ bool UGuLiBattleAuthoritySubsystem::IssueMove(
 			AcceptedSoldierIds.Add(SoldierId.Value);
 		}
 	}
+	// 策略按六角环容量估算半径；这是整个成功批次的宽松容纳范围，不是单个 25 人方阵半径。
 	const int32 InitialAcceptedBatchMemberCount = AcceptedSoldierIds.Num();
-	const float ArrivalDomainRadiusCentimeters =
-		GuLiCommanderNavigationPolicy::CalculateArrivalDomainRadiusCentimeters(
-			InitialAcceptedBatchMemberCount,
-			MemberAgentRadiusCentimeters);
-	FMassEntityManager& EntityManager =
-		AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
+	const float ArrivalDomainRadiusCentimeters = GuLiCommanderNavigationPolicy::CalculateArrivalDomainRadiusCentimeters(
+		InitialAcceptedBatchMemberCount,
+		MemberAgentRadiusCentimeters);
+	FMassEntityManager& EntityManager = AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
 	for (FOrderFormationRuntime& Formation : AcceptedFormations)
 	{
 		Formation.InitialAcceptedBatchMemberCount = InitialAcceptedBatchMemberCount;
@@ -2243,16 +2446,18 @@ bool UGuLiBattleAuthoritySubsystem::IssueMove(
 				continue;
 			}
 			FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
+			Formation.MemberPathPointIndexBySoldierId.Add(
+				SoldierId.Value,
+				Formation.PathPoints.Num() > 1 ? 1 : 0);
+			Soldier.bCollapseFinalCorridorLaneOnNextStep = false;
 			Soldier.ActiveOrderId = BatchOrderId;
 			++Soldier.StateRevision;
-			FGuLiMassOrderFragment& Order =
-				EntityManager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+			FGuLiMassOrderFragment& Order = EntityManager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
 			Order.ActiveOrderId = BatchOrderId;
 			Order.OrderRevision = Soldier.StateRevision;
 			Order.FormationTarget = Formation.TargetAnchor;
 			Order.bHasMoveTarget = true;
-			FMassMoveTargetFragment& MoveTarget =
-				EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+			FMassMoveTargetFragment& MoveTarget = EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
 			MoveTarget.CreateNewAction(EMassMovementAction::Move, *GetWorld());
 			MoveTarget.IntentAtGoal = EMassMovementAction::Stand;
 			MoveTarget.DesiredSpeed = FMassInt16Real(MovementSpeedCentimetersPerSecond);
@@ -2276,6 +2481,7 @@ bool UGuLiBattleAuthoritySubsystem::IssueMove(
 	return AcceptedCohorts > 0;
 }
 
+// 普通数值立即同步；最大生命变化按比例保留当前生命，速度则排队到下一个固定步提交。
 int32 UGuLiBattleAuthoritySubsystem::ApplyRuntimeTuning(
 	const FGuLiSoldierRuntimeTuningValues& Values)
 {
@@ -2306,8 +2512,7 @@ int32 UGuLiBattleAuthoritySubsystem::ApplyRuntimeTuning(
 	}
 	else
 	{
-		// The latest request always wins. In particular, Set(new) followed by
-		// Reset(baseline) before the next fixed step must cancel the stale Set.
+		// 最后一次请求生效：同一步前先 Set(new) 再 Reset(baseline)，必须取消尚未提交的旧 Set。
 		PendingMovementSpeedCmPerSecond.Reset();
 	}
 
@@ -2362,6 +2567,7 @@ int32 UGuLiBattleAuthoritySubsystem::ApplyRuntimeTuning(
 	return AuthorityState->Soldiers.Num();
 }
 
+// 通过 Even/Odd Archetype 迁移替换 const-shared 参数，迁移后重新取 Fragment，避免持有旧引用。
 void UGuLiBattleAuthoritySubsystem::ApplyPendingMovementSpeed()
 {
 	using namespace GuLiCommanderMassPrivate;
@@ -2378,8 +2584,7 @@ void UGuLiBattleAuthoritySubsystem::ApplyPendingMovementSpeed()
 	}
 	if (!AuthorityState->bPopulationSpawned)
 	{
-		// No Mass shared parameters exist yet. TrySpawnAuthorityPopulation will
-		// consume this pending value only after the full population succeeds.
+		// 尚未生成完整部队时保留待提交值；生成成功后由固定步开头再次调用本函数提交。
 		return;
 	}
 
@@ -2389,8 +2594,7 @@ void UGuLiBattleAuthoritySubsystem::ApplyPendingMovementSpeed()
 		return;
 	}
 	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
-	const FMassArchetypeHandle TargetBaseArchetype =
-		AuthorityState->bUsingRuntimeTuningEvenArchetype
+	const FMassArchetypeHandle TargetBaseArchetype = AuthorityState->bUsingRuntimeTuningEvenArchetype
 		? AuthorityState->RuntimeTuningOddBaseArchetype
 		: AuthorityState->RuntimeTuningEvenBaseArchetype;
 	if (!TargetBaseArchetype.IsValid())
@@ -2426,8 +2630,7 @@ void UGuLiBattleAuthoritySubsystem::ApplyPendingMovementSpeed()
 			&SharedValues);
 
 		Soldier.Velocity = Soldier.Velocity.GetClampedToMaxSize(NewMovementSpeed);
-		EntityManager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value =
-			Soldier.Velocity;
+		EntityManager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = Soldier.Velocity;
 		if (Soldier.ActiveOrderId != 0u)
 		{
 			EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity)
@@ -2437,8 +2640,7 @@ void UGuLiBattleAuthoritySubsystem::ApplyPendingMovementSpeed()
 	}
 
 	AuthorityState->AuthorityArchetype = TargetArchetype;
-	AuthorityState->bUsingRuntimeTuningEvenArchetype =
-		!AuthorityState->bUsingRuntimeTuningEvenArchetype;
+	AuthorityState->bUsingRuntimeTuningEvenArchetype = !AuthorityState->bUsingRuntimeTuningEvenArchetype;
 	MovementSpeedCentimetersPerSecond = NewMovementSpeed;
 	PendingMovementSpeedCmPerSecond.Reset();
 	NotifyMovementSpeedCommitted(UpdatedEntityCount);
@@ -2455,8 +2657,7 @@ void UGuLiBattleAuthoritySubsystem::NotifyMovementSpeedCommitted(
 {
 	if (UWorld* World = GetWorld())
 	{
-		if (UGuLiRuntimeTuningSubsystem* RuntimeTuning =
-			World->GetSubsystem<UGuLiRuntimeTuningSubsystem>())
+		if (UGuLiRuntimeTuningSubsystem* RuntimeTuning = World->GetSubsystem<UGuLiRuntimeTuningSubsystem>())
 		{
 			RuntimeTuning->NotifySoldierMovementSpeedCommitted(
 				MovementSpeedCentimetersPerSecond,
@@ -2465,6 +2666,8 @@ void UGuLiBattleAuthoritySubsystem::NotifyMovementSpeedCommitted(
 	}
 }
 
+// 服务端 C++ 伤害入口只做扣血与死亡转换，未在这里执行攻击力/防御力结算。
+// 死亡即清除指令、速度和导航障碍网格 Fragment，但不立刻销毁 Entity 或移除 SoldierId。
 bool UGuLiBattleAuthoritySubsystem::ApplyDamage(const FGuLiSoldierId SoldierId, const uint8 Amount)
 {
 	if (!AuthorityState || Amount == 0u || !SoldierId.IsValid())
@@ -2511,6 +2714,7 @@ bool UGuLiBattleAuthoritySubsystem::ApplyDamage(const FGuLiSoldierId SoldierId, 
 	return true;
 }
 
+// 构造可靠复制使用的离散状态：生命、阵营、指令等；连续位置走下面独立的姿态通道。
 void UGuLiBattleAuthoritySubsystem::BuildSoldierStateSnapshot(
 	TArray<FGuLiSoldierStateItem>& OutStates) const
 {
@@ -2529,11 +2733,15 @@ void UGuLiBattleAuthoritySubsystem::BuildSoldierStateSnapshot(
 			? EGuLiSoldierLifeState::Alive
 			: EGuLiSoldierLifeState::Destroyed;
 		State.Health = Soldier.Health;
+		State.MaxHealth = Soldier.MaxHealth;
 		State.StateRevision = Soldier.StateRevision;
 		State.ActiveOrderId = Soldier.ActiveOrderId;
 	}
 }
 
+// 这里只捕获/压缩一帧，不自行计时或发 RPC；GameMode 按 30 Hz 模拟每 3 步调度一次（目标 10 Hz）。
+// 同一帧各分块共享 FrameSequence、ServerSimTick 和 AuthorityEpoch，接收端据此识别时序与战局。
+// 跨文件出口：这里只捕获、量化并分块；GameMode 调度这些块，NetSync::SendPoseChunk 才发 Client RPC。
 void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 	TArray<FGuLiSoldierPoseChunk>& OutChunks,
 	const uint32 AuthorityEpoch)
@@ -2551,6 +2759,7 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 	{
 		SortedIndices.Add(Index);
 	}
+	// 按阵营、空间格、SoldierId 排序，把邻近成员尽量装在一起；分块不是控制组或编队。
 	SortedIndices.Sort([this](const int32 LhsIndex, const int32 RhsIndex)
 	{
 		const GuLiCommanderMassPrivate::FSoldierRuntime& Lhs = AuthorityState->Soldiers[LhsIndex];
@@ -2573,8 +2782,7 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 	});
 
 	const int32 ChunkSize = static_cast<int32>(GULI_MAX_POSE_SAMPLES_PER_CHUNK);
-	constexpr double MaximumEncodableRelativeCentimeters =
-		static_cast<double>(MAX_int16 - 1) * GULI_POSE_QUANTIZATION_CENTIMETERS;
+	constexpr double MaximumEncodableRelativeCentimeters = static_cast<double>(MAX_int16 - 1) * GULI_POSE_QUANTIZATION_CENTIMETERS;
 	TArray<TArray<int32>> ChunkSoldierIndices;
 	TArray<FVector> ChunkLocationSums;
 	ChunkSoldierIndices.Reserve(FMath::DivideAndRoundUp(SortedIndices.Num(), ChunkSize));
@@ -2584,11 +2792,11 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 		const FVector CandidateLocation = AuthorityState->Soldiers[SoldierIndex].Location;
 		bool bStartNewChunk = ChunkSoldierIndices.IsEmpty()
 			|| ChunkSoldierIndices.Last().Num() >= ChunkSize;
+		// 最多 32 人之外还检查 int16 相对坐标范围；候选加入后锚点变化，已有成员也必须重新检查。
 		if (!bStartNewChunk)
 		{
 			const TArray<int32>& CurrentChunk = ChunkSoldierIndices.Last();
-			const FVector CandidateAnchor =
-				(ChunkLocationSums.Last() + CandidateLocation)
+			const FVector CandidateAnchor = (ChunkLocationSums.Last() + CandidateLocation)
 				/ static_cast<double>(CurrentChunk.Num() + 1);
 			auto FitsRelativeEncoding = [&CandidateAnchor](const FVector& Location)
 			{
@@ -2649,8 +2857,7 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 		Chunk.Samples.Reserve(Count);
 		for (int32 Offset = 0; Offset < Count; ++Offset)
 		{
-			GuLiCommanderMassPrivate::FSoldierRuntime& Soldier =
-				AuthorityState->Soldiers[ChunkIndices[Offset]];
+			GuLiCommanderMassPrivate::FSoldierRuntime& Soldier = AuthorityState->Soldiers[ChunkIndices[Offset]];
 			if (Soldier.LastCapturedPoseFrameSequence != 0u)
 			{
 				const float CapturedStepCentimeters = FVector::Dist(
@@ -2682,12 +2889,12 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 			FGuLiCompressedSoldierPose& Pose = Chunk.Samples.AddDefaulted_GetRef();
 			Pose.SoldierId = Soldier.SoldierId;
 			Pose.SetRelativeLocationCentimeters(Soldier.Location - FVector(Chunk.Anchor));
+			// 用网络锚点的厘米舍入方式在本地重建位置，检测量化/溢出异常；日志不会自动修正位置。
 			const FVector QuantizedAnchor(
 				FMath::RoundToDouble(Chunk.Anchor.X),
 				FMath::RoundToDouble(Chunk.Anchor.Y),
 				FMath::RoundToDouble(Chunk.Anchor.Z));
-			const FVector LocallyReconstructedLocation =
-				QuantizedAnchor + Pose.GetRelativeLocationCentimeters();
+			const FVector LocallyReconstructedLocation = QuantizedAnchor + Pose.GetRelativeLocationCentimeters();
 			const float LocalCompressionErrorCentimeters = FVector::Dist(
 				Soldier.Location,
 				LocallyReconstructedLocation);
@@ -2752,6 +2959,7 @@ int32 UGuLiBattleAuthoritySubsystem::GetActiveOrderFormationCount() const
 	return AuthorityState ? AuthorityState->OrderFormations.Num() : 0;
 }
 
+// 返回保留的权威记录数（包含死亡/残骸已隐藏成员），不是当前存活人数。
 int32 UGuLiBattleAuthoritySubsystem::GetAuthoritativeMemberCount() const
 {
 	return AuthorityState ? AuthorityState->Soldiers.Num() : 0;

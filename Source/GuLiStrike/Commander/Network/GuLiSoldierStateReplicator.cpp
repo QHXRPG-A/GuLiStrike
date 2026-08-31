@@ -10,6 +10,7 @@ AGuLiSoldierStateReplicator::AGuLiSoldierStateReplicator()
 	bAlwaysRelevant = true;
 	bNetLoadOnClient = true;
 	SetReplicateMovement(false);
+	// Actor 更新频率是复制调度参数；不等于名册每秒必变 20 次，更不保证每客户端收包 20 Hz。
 	SetNetUpdateFrequency(20.0f);
 	SetMinNetUpdateFrequency(2.0f);
 }
@@ -35,7 +36,8 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(
 	if (bEpochChanged)
 	{
 		SnapshotMatchEpoch = MatchEpoch;
-		SnapshotRevision = 0u;
+		// Keep the RepNotify high-water mark monotonic across matches so a client
+		// can never miss an epoch transition because the replicated value repeats.
 	}
 
 	TSet<FGuLiSoldierId> SnapshotIds;
@@ -44,42 +46,50 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(
 
 	for (const FGuLiSoldierStateItem& InState : InStates)
 	{
-		if (!InState.SoldierId.IsValid() || SnapshotIds.Contains(InState.SoldierId))
+		FGuLiSoldierStateItem SanitizedState = InState;
+		SanitizedState.Sanitize();
+		if (!SanitizedState.SoldierId.IsValid()
+			|| SnapshotIds.Contains(SanitizedState.SoldierId))
 		{
 			continue;
 		}
 
-		SnapshotIds.Add(InState.SoldierId);
-		const int32 ExistingIndex = FindItemIndex(InState.SoldierId);
+		SnapshotIds.Add(SanitizedState.SoldierId);
+		const int32 ExistingIndex = FindItemIndex(SanitizedState.SoldierId);
 		if (ExistingIndex == INDEX_NONE)
 		{
 			FGuLiSoldierStateItem& NewItem = ReplicatedSoldiers.Items.AddDefaulted_GetRef();
-			NewItem.SoldierId = InState.SoldierId;
-			NewItem.Team = InState.Team;
-			NewItem.LifeState = InState.LifeState;
-			NewItem.Health = InState.Health;
-			NewItem.StateRevision = InState.StateRevision;
-			NewItem.ActiveOrderId = InState.ActiveOrderId;
+			NewItem.SoldierId = SanitizedState.SoldierId;
+			NewItem.Team = SanitizedState.Team;
+			NewItem.LifeState = SanitizedState.LifeState;
+			NewItem.Health = SanitizedState.Health;
+			NewItem.MaxHealth = SanitizedState.MaxHealth;
+			NewItem.StateRevision = SanitizedState.StateRevision;
+			NewItem.ActiveOrderId = SanitizedState.ActiveOrderId;
+			// 新增条目需 MarkItemDirty 分配/更新 FastArray 复制标识；业务 SoldierId 与内部复制 ID 不同。
 			ReplicatedSoldiers.MarkItemDirty(NewItem);
 			++ChangedItemCount;
 			continue;
 		}
 
 		FGuLiSoldierStateItem& ExistingItem = ReplicatedSoldiers.Items[ExistingIndex];
-		if (ExistingItem.Team == InState.Team
-			&& ExistingItem.LifeState == InState.LifeState
-			&& ExistingItem.Health == InState.Health
-			&& ExistingItem.StateRevision == InState.StateRevision
-			&& ExistingItem.ActiveOrderId == InState.ActiveOrderId)
+		if (ExistingItem.Team == SanitizedState.Team
+			&& ExistingItem.LifeState == SanitizedState.LifeState
+			&& ExistingItem.Health == SanitizedState.Health
+			&& ExistingItem.MaxHealth == SanitizedState.MaxHealth
+			&& ExistingItem.StateRevision == SanitizedState.StateRevision
+			&& ExistingItem.ActiveOrderId == SanitizedState.ActiveOrderId)
 		{
 			continue;
 		}
 
-		ExistingItem.Team = InState.Team;
-		ExistingItem.LifeState = InState.LifeState;
-		ExistingItem.Health = InState.Health;
-		ExistingItem.StateRevision = InState.StateRevision;
-		ExistingItem.ActiveOrderId = InState.ActiveOrderId;
+		ExistingItem.Team = SanitizedState.Team;
+		ExistingItem.LifeState = SanitizedState.LifeState;
+		ExistingItem.Health = SanitizedState.Health;
+		ExistingItem.MaxHealth = SanitizedState.MaxHealth;
+		ExistingItem.StateRevision = SanitizedState.StateRevision;
+		ExistingItem.ActiveOrderId = SanitizedState.ActiveOrderId;
+		// 只给变化条目标脏，静止不变的离散状态不随每次姿态捕获重复发送。
 		ReplicatedSoldiers.MarkItemDirty(ExistingItem);
 		++ChangedItemCount;
 	}
@@ -99,6 +109,7 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(
 
 	if (bRemovedAny)
 	{
+		// 删除改变集合结构，必须标记数组脏；只修改 TArray 本身不足以告知 FastArray 增量系统。
 		ReplicatedSoldiers.MarkArrayDirty();
 	}
 	if (ChangedItemCount > 0 || bEpochChanged)
@@ -109,8 +120,15 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(
 			++SnapshotRevision;
 		}
 		ForceNetUpdate();
+		OnSoldierStatesChanged.Broadcast(SnapshotRevision);
 	}
 	return ChangedItemCount;
+}
+
+// 客户端版本到达后广播本地通知；不能由此推导所有相关复制字段已原子到齐。
+void AGuLiSoldierStateReplicator::OnRep_SnapshotRevision()
+{
+	OnSoldierStatesChanged.Broadcast(SnapshotRevision);
 }
 
 const FGuLiSoldierStateItem* AGuLiSoldierStateReplicator::FindSoldierState(

@@ -49,9 +49,18 @@ public class GuLiStrike : ModuleRules
 		if (Target.bBuildEditor)
 		{
 			PrivateDependencyModuleNames.AddRange(new string[] {
+				"AssetRegistry",
+				"MaterialUtilities",
+				"MeshMergeUtilities",
 				"UnrealEd",
 				"MeshUtilities",
-				"RenderCore"
+				"MeshDescription",
+				"StaticMeshDescription",
+				"SlateCore",
+				"ImageCore",
+				"Json",
+				"RenderCore",
+				"StaticMeshEditor"
 			});
 		}
 

@@ -9,7 +9,11 @@
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 #include "Commander/Presentation/GuLiCommanderMiniMapTransform.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
+#include "Commander/UI/GuLiCommanderHUDWidget.h"
 #include "Camera/PlayerCameraManager.h"
+#include "Blueprint/UserWidget.h"
+#include "UObject/ConstructorHelpers.h"
 #include "Engine/Canvas.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
@@ -89,6 +93,7 @@ namespace GuLiCommanderHUD
 		FLinearColor Color = FLinearColor(0.65f, 0.78f, 0.9f, 0.95f);
 	};
 
+	// 旧 HUD 的本地消费入口：按选择版本关联移动回执，再结合当前组摘要展示等待/执行/拒绝。
 	FCohortCardStatus BuildCohortCardStatus(
 		const FGuLiControlCohortDescriptor& Cohort,
 		const FGuLiCommandAck& LastAck,
@@ -134,6 +139,85 @@ namespace GuLiCommanderHUD
 	}
 }
 
+AGuLiCommanderHUD::AGuLiCommanderHUD()
+{
+	static ConstructorHelpers::FClassFinder<UGuLiCommanderHUDWidget> CommanderHUDWidgetFinder(
+		TEXT("/Game/Commander/UI/Widgets/WBP_CommanderHUD"));
+	if (CommanderHUDWidgetFinder.Succeeded())
+	{
+		CommanderHUDWidgetClass = CommanderHUDWidgetFinder.Class;
+	}
+}
+
+void AGuLiCommanderHUD::BeginPlay()
+{
+	Super::BeginPlay();
+	CreateRuntimeHUD();
+}
+
+void AGuLiCommanderHUD::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	DestroyRuntimeHUD();
+	Super::EndPlay(EndPlayReason);
+}
+
+void AGuLiCommanderHUD::CreateRuntimeHUD()
+{
+	AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
+	if (!CommanderController || !CommanderController->IsLocalController())
+	{
+		return;
+	}
+
+	if (!RuntimeHUDWidget)
+	{
+		if (CommanderHUDWidgetClass)
+		{
+			RuntimeHUDWidget = CreateWidget<UGuLiCommanderHUDWidget>(
+				CommanderController,
+				CommanderHUDWidgetClass);
+		}
+		if (RuntimeHUDWidget)
+		{
+			RuntimeHUDWidget->InitializeForController(CommanderController);
+			RuntimeHUDWidget->AddToPlayerScreen(10);
+		}
+	}
+
+	if (!HealthBarRenderer)
+	{
+		if (UWorld* World = GetWorld())
+		{
+			FActorSpawnParameters SpawnParameters;
+			SpawnParameters.Owner = CommanderController;
+			SpawnParameters.ObjectFlags |= RF_Transient;
+			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+			HealthBarRenderer = World->SpawnActor<AGuLiCommanderHealthBarRenderer>(
+				AGuLiCommanderHealthBarRenderer::StaticClass(),
+				FTransform::Identity,
+				SpawnParameters);
+			if (HealthBarRenderer)
+			{
+				HealthBarRenderer->InitializeForController(CommanderController);
+			}
+		}
+	}
+}
+
+void AGuLiCommanderHUD::DestroyRuntimeHUD()
+{
+	if (RuntimeHUDWidget)
+	{
+		RuntimeHUDWidget->RemoveFromParent();
+		RuntimeHUDWidget = nullptr;
+	}
+	if (HealthBarRenderer)
+	{
+		HealthBarRenderer->Destroy();
+		HealthBarRenderer = nullptr;
+	}
+}
+
 void AGuLiCommanderHUD::DrawHUD()
 {
 	Super::DrawHUD();
@@ -142,44 +226,13 @@ void AGuLiCommanderHUD::DrawHUD()
 		return;
 	}
 
-	const AGuLiCommanderPlayerController* CommanderController =
-		Cast<AGuLiCommanderPlayerController>(PlayerOwner);
-	const UGuLiCommanderNetSyncComponent* NetSync = CommanderController
-		? CommanderController->GetCommanderNetSyncComponent()
-		: nullptr;
-	const FGuLiCommanderSelectionState EmptySelection;
-	const FGuLiCommandAck EmptyAck;
-	const FGuLiCommanderSelectionState& Selection = NetSync
-		? NetSync->GetSelectionState()
-		: EmptySelection;
-	const FGuLiCommandAck& LastAck = NetSync
-		? NetSync->GetLastCommandAck()
-		: EmptyAck;
-	TSet<uint32> SelectedSoldierValues;
-	GatherSelectedSoldierValues(Selection, SelectedSoldierValues);
-
-	EGuLiTeam LocalTeam = EGuLiTeam::Unassigned;
+	const AGuLiCommanderPlayerController* CommanderController = Cast<AGuLiCommanderPlayerController>(PlayerOwner);
 	if (CommanderController)
 	{
-		if (const AGuLiCommanderPlayerState* CommanderPlayerState =
-			CommanderController->GetPlayerState<AGuLiCommanderPlayerState>())
+		if (CommanderController->GetCommanderToolMode() == EGuLiCommanderToolMode::Select)
 		{
-			LocalTeam = CommanderPlayerState->GetTeam();
+			DrawSelectionCircle(*CommanderController);
 		}
-	}
-
-	DrawCohortCards(Selection, LastAck, LocalTeam);
-	DrawMiniMap(
-		FindSoldierStateReplicator(),
-		FindPresentationActor(),
-		SelectedSoldierValues);
-	DrawSelectionPresetButtons(
-		CommanderController
-			? CommanderController->GetSelectionRadiusPreset()
-			: EGuLiSelectionRadiusPreset::Small);
-	if (CommanderController)
-	{
-		DrawSelectionCircle(*CommanderController);
 		DrawActiveCommandLine(*CommanderController);
 	}
 }
@@ -187,58 +240,46 @@ void AGuLiCommanderHUD::DrawHUD()
 void AGuLiCommanderHUD::NotifyHitBoxClick(const FName BoxName)
 {
 	Super::NotifyHitBoxClick(BoxName);
-	AGuLiCommanderPlayerController* CommanderController =
-		Cast<AGuLiCommanderPlayerController>(PlayerOwner);
-	if (!CommanderController)
-	{
-		return;
-	}
-
-	if (BoxName == GuLiCommanderHUD::SmallPresetHitBox)
-	{
-		CommanderController->SetSelectionRadiusPreset(EGuLiSelectionRadiusPreset::Small);
-	}
-	else if (BoxName == GuLiCommanderHUD::MediumPresetHitBox)
-	{
-		CommanderController->SetSelectionRadiusPreset(EGuLiSelectionRadiusPreset::Medium);
-	}
-	else if (BoxName == GuLiCommanderHUD::LargePresetHitBox)
-	{
-		CommanderController->SetSelectionRadiusPreset(EGuLiSelectionRadiusPreset::Large);
-	}
-	else if (BoxName == GuLiCommanderHUD::MiniMapHitBox)
-	{
-		float MouseX = 0.0f;
-		float MouseY = 0.0f;
-		FVector WorldLocation;
-		if (CommanderController->GetMousePosition(MouseX, MouseY)
-			&& TryMiniMapScreenToWorld(FVector2D(MouseX, MouseY), WorldLocation))
-		{
-			if (AGuLiCommanderCameraPawn* CameraPawn =
-				CommanderController->GetPawn<AGuLiCommanderCameraPawn>())
-			{
-				CameraPawn->JumpToWorldLocation(WorldLocation);
-			}
-		}
-	}
 }
 
 bool AGuLiCommanderHUD::IsScreenPositionOverCommanderUI(
 	const FVector2D& ScreenPosition) const
 {
-	if (!Canvas)
+	if (RuntimeHUDWidget && RuntimeHUDWidget->HasValidBlockingGeometry())
+	{
+		return RuntimeHUDWidget->IsScreenPositionBlocked(ScreenPosition);
+	}
+
+	int32 ViewportWidth = 0;
+	int32 ViewportHeight = 0;
+	if (!PlayerOwner)
+	{
+		return false;
+	}
+	PlayerOwner->GetViewportSize(ViewportWidth, ViewportHeight);
+	if (ViewportWidth <= 0 || ViewportHeight <= 0)
 	{
 		return false;
 	}
 
-	// The bottom strip is intentionally treated as one command-safe panel, like
-	// an RTS command card. The tactical map is a separate protected panel.
-	const FBox2D BottomCommandPanel(
-		FVector2D(0.0f, FMath::Max(0.0f, Canvas->SizeY - 156.0f)),
-		FVector2D(Canvas->SizeX, Canvas->SizeY));
-	const FBox2D TacticalMapPanel = GuLiCommanderHUD::GetMiniMapScreenBounds(*Canvas);
-	return BottomCommandPanel.IsInsideOrOn(ScreenPosition)
-		|| TacticalMapPanel.IsInsideOrOn(ScreenPosition);
+	// Conservative warm-up fallback before Slate has produced cached geometry.
+	const FVector2D ViewportSize(
+		static_cast<float>(ViewportWidth),
+		static_cast<float>(ViewportHeight));
+	const float DockScale = FMath::Min(1.0f, ViewportSize.X / 1120.0f);
+	const FVector2D DockSize(1120.0f * DockScale, 204.0f * DockScale);
+	const FBox2D TopPanel(
+		FVector2D((ViewportSize.X - 420.0f) * 0.5f, 18.0f),
+		FVector2D((ViewportSize.X + 420.0f) * 0.5f, 82.0f));
+	const FBox2D TacticalMapPanel(
+		FVector2D(24.0f, FMath::Max(0.0f, ViewportSize.Y - 300.0f)),
+		FVector2D(300.0f, FMath::Max(276.0f, ViewportSize.Y - 24.0f)));
+	const FBox2D DockPanel(
+		FVector2D((ViewportSize.X - DockSize.X) * 0.5f, ViewportSize.Y - DockSize.Y),
+		FVector2D((ViewportSize.X + DockSize.X) * 0.5f, ViewportSize.Y));
+	return TopPanel.IsInsideOrOn(ScreenPosition)
+		|| TacticalMapPanel.IsInsideOrOn(ScreenPosition)
+		|| DockPanel.IsInsideOrOn(ScreenPosition);
 }
 
 AGuLiSoldierStateReplicator* AGuLiCommanderHUD::FindSoldierStateReplicator() const
@@ -404,8 +445,7 @@ bool AGuLiCommanderHUD::TryMiniMapScreenToWorld(
 	const FBox2D WorldBounds = MiniMapWorldBounds.bIsValid
 		? MiniMapWorldBounds
 		: GuLiCommanderHUD::GetFallbackWorldBounds();
-	const GuLiCommanderMiniMap::FHeadingUpTransform Transform =
-		GuLiCommanderHUD::MakeMiniMapTransform(
+	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = GuLiCommanderHUD::MakeMiniMapTransform(
 			WorldBounds,
 			ScreenBounds,
 			GetMiniMapCameraYawDegrees());
@@ -500,8 +540,7 @@ float AGuLiCommanderHUD::GetMiniMapCameraYawDegrees() const
 
 	if (PlayerOwner)
 	{
-		if (const AGuLiCommanderCameraPawn* CameraPawn =
-			PlayerOwner->GetPawn<AGuLiCommanderCameraPawn>())
+		if (const AGuLiCommanderCameraPawn* CameraPawn = PlayerOwner->GetPawn<AGuLiCommanderCameraPawn>())
 		{
 			const float CameraYaw = CameraPawn->GetActorRotation().Yaw;
 			return FMath::IsFinite(CameraYaw)
@@ -536,8 +575,7 @@ void AGuLiCommanderHUD::DrawMiniMapTerrain(
 	const FBox2D ScreenBounds(
 		FVector2D(MapX, MapY),
 		FVector2D(MapX + MapSize, MapY + MapSize));
-	const GuLiCommanderMiniMap::FHeadingUpTransform Transform =
-		GuLiCommanderHUD::MakeMiniMapTransform(
+	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = GuLiCommanderHUD::MakeMiniMapTransform(
 			MiniMapWorldBounds,
 			ScreenBounds,
 			CameraYawDegrees);
@@ -593,8 +631,7 @@ void AGuLiCommanderHUD::DrawMiniMapCameraFrame(
 	{
 		return;
 	}
-	const AGuLiCommanderCameraPawn* CameraPawn =
-		PlayerOwner->GetPawn<AGuLiCommanderCameraPawn>();
+	const AGuLiCommanderCameraPawn* CameraPawn = PlayerOwner->GetPawn<AGuLiCommanderCameraPawn>();
 	if (!CameraPawn)
 	{
 		return;
@@ -613,8 +650,7 @@ void AGuLiCommanderHUD::DrawMiniMapCameraFrame(
 	const FBox2D ScreenBounds(
 		FVector2D(MapX, MapY),
 		FVector2D(MapX + MapSize, MapY + MapSize));
-	const GuLiCommanderMiniMap::FHeadingUpTransform Transform =
-		GuLiCommanderHUD::MakeMiniMapTransform(
+	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = GuLiCommanderHUD::MakeMiniMapTransform(
 			WorldBounds,
 			ScreenBounds,
 			CameraYawDegrees);
@@ -764,8 +800,7 @@ void AGuLiCommanderHUD::DrawCohortCards(
 		const FString AliveLabel = bUnderstrength
 			? FString::Printf(TEXT("%u / 25  UNDER"), static_cast<uint32>(Cohort.AliveCount))
 			: FString::Printf(TEXT("%u / 25"), static_cast<uint32>(Cohort.AliveCount));
-		const GuLiCommanderHUD::FCohortCardStatus Status =
-			GuLiCommanderHUD::BuildCohortCardStatus(
+		const GuLiCommanderHUD::FCohortCardStatus Status = GuLiCommanderHUD::BuildCohortCardStatus(
 				Cohort,
 				LastAck,
 				Selection.SelectionRevision);
@@ -834,14 +869,12 @@ void AGuLiCommanderHUD::DrawMiniMap(
 	const FBox2D WorldBounds = MiniMapWorldBounds.bIsValid
 		? MiniMapWorldBounds
 		: GuLiCommanderHUD::GetFallbackWorldBounds();
-	const GuLiCommanderMiniMap::FHeadingUpTransform Transform =
-		GuLiCommanderHUD::MakeMiniMapTransform(
+	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = GuLiCommanderHUD::MakeMiniMapTransform(
 			WorldBounds,
 			ScreenBounds,
 			CameraYawDegrees);
 	const FLinearColor AxisColor(0.3f, 0.55f, 0.4f, 0.22f);
-	const auto DrawClippedWorldLine =
-		[this, &Transform, &ScreenBounds, &AxisColor](
+	const auto DrawClippedWorldLine = [this, &Transform, &ScreenBounds, &AxisColor](
 			const FVector2D& WorldStart,
 			const FVector2D& WorldEnd)
 		{

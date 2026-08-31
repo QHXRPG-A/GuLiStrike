@@ -142,13 +142,13 @@ void AGuLiCommanderGameMode::PublishSoldierSnapshotAndPoses()
 		return;
 	}
 
-	UGuLiBattleAuthoritySubsystem* Authority =
-		GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+	UGuLiBattleAuthoritySubsystem* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
 	if (!Authority || !Authority->HasSpawnedAuthorityPopulation())
 	{
 		return;
 	}
 	const uint32 CurrentSimTick = Authority->GetServerSimTick();
+	// 30 Hz 权威模拟每三个 Tick 目标捕获一次；渲染 Tick 不等于模拟 Tick，也不等于网络包到达频率。
 	constexpr uint32 SimulationTicksPerPoseFrame = 30u / GULI_POSE_CAPTURE_RATE_HZ;
 	if (CurrentSimTick == 0u || CurrentSimTick == LastPoseChunkDispatchSimTick)
 	{
@@ -163,6 +163,7 @@ void AGuLiCommanderGameMode::PublishSoldierSnapshotAndPoses()
 		return;
 	}
 
+	// 上一帧的块发送完才捕获新帧；同次捕获分别生成离散状态与连续姿态，两条通路独立到达。
 	const bool bCapturePoseFrame = PendingPoseChunks.IsEmpty()
 		&& (LastPublishedPoseSimTick == 0u
 			|| CurrentSimTick - LastPublishedPoseSimTick >= SimulationTicksPerPoseFrame);
@@ -189,6 +190,7 @@ void AGuLiCommanderGameMode::PublishSoldierSnapshotAndPoses()
 		return;
 	}
 
+	// 把一帧的块分摊到三个模拟步；轮换起始块，避免固定尾部总是较晚发出。
 	const int32 ChunksPerDispatch = FMath::DivideAndRoundUp(
 		PendingPoseChunks.Num(),
 		static_cast<int32>(SimulationTicksPerPoseFrame));
@@ -199,8 +201,7 @@ void AGuLiCommanderGameMode::PublishSoldierSnapshotAndPoses()
 	{
 		if (UGuLiCommanderNetSyncComponent* NetSync = It->GetCommanderNetSyncComponent())
 		{
-			const AGuLiCommanderPlayerState* CommanderPlayerState =
-				It->GetPlayerState<AGuLiCommanderPlayerState>();
+			const AGuLiCommanderPlayerState* CommanderPlayerState = It->GetPlayerState<AGuLiCommanderPlayerState>();
 			NetSync->EnsureServerBootstrapForMatch(MatchEpoch);
 			if (!CommanderPlayerState || !CommanderPlayerState->IsSyncReady())
 			{
@@ -214,8 +215,8 @@ void AGuLiCommanderGameMode::PublishSoldierSnapshotAndPoses()
 			for (int32 ChunkOffset = 0; ChunkOffset < DispatchChunkCount; ++ChunkOffset)
 			{
 				const int32 OrderedChunkOffset = PendingPoseChunkOffset + ChunkOffset;
-				const int32 ChunkIndex =
-					(PendingPoseChunkStartIndex + OrderedChunkOffset) % PendingPoseChunks.Num();
+				const int32 ChunkIndex = (PendingPoseChunkStartIndex + OrderedChunkOffset) % PendingPoseChunks.Num();
+				// 这里才逐连接调用发送入口；压缩/分块已在 Authority 完成，NetSync 负责 Client RPC。
 				NetSync->SendPoseChunk(
 					PendingPoseChunks[ChunkIndex]);
 			}
@@ -225,6 +226,7 @@ void AGuLiCommanderGameMode::PublishSoldierSnapshotAndPoses()
 	// Pose chunks are an unreliable, perishable snapshot. Advance this frame even
 	// when there is no ready client; otherwise a server that has been running
 	// empty can retain one old frame indefinitely and feed it to the next login.
+	// 即使没有就绪客户端也推进并丢弃过时帧，晚加入者不能收到空服期间积压的旧姿态。
 	PendingPoseChunkOffset += DispatchChunkCount;
 	if (PendingPoseChunkOffset >= PendingPoseChunks.Num())
 	{
@@ -237,8 +239,7 @@ void AGuLiCommanderGameMode::PublishSoldierSnapshotAndPoses()
 void AGuLiCommanderGameMode::AssignRoleAndBootstrap(
 	AGuLiCommanderPlayerController& CommanderController)
 {
-	AGuLiCommanderPlayerState* CommanderPlayerState =
-		CommanderController.GetPlayerState<AGuLiCommanderPlayerState>();
+	AGuLiCommanderPlayerState* CommanderPlayerState = CommanderController.GetPlayerState<AGuLiCommanderPlayerState>();
 	AGuLiCommanderGameState* CommanderGameState = GetGameState<AGuLiCommanderGameState>();
 	if (!CommanderPlayerState || !CommanderGameState)
 	{
@@ -258,6 +259,7 @@ void AGuLiCommanderGameMode::AssignRoleAndBootstrap(
 		AssignedTeam,
 		AssignedRole);
 
+	// 席位占满时转观察者；同步就绪与是否拥有指挥权限是两个独立条件。
 	if (bClaimedGameplaySlot)
 	{
 		CommanderPlayerState->SetServerRoleAssignment(AssignedTeam, AssignedRole, AssignedSlotIndex);

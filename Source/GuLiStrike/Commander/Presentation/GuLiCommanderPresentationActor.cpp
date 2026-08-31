@@ -22,6 +22,11 @@
 #include "MassEntityManager.h"
 #include "MassEntitySubsystem.h"
 #include "Materials/MaterialInterface.h"
+#include "Misc/ConfigCacheIni.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
+#include "ProfilingDebugging/CsvProfiler.h"
+
+CSV_DEFINE_CATEGORY(GuLiCommanderPresentation, true);
 
 namespace GuLiCommanderPresentation
 {
@@ -94,6 +99,7 @@ namespace GuLiCommanderPresentation
 		return static_cast<int32>(Candidate - Baseline) > 0;
 	}
 
+	// 收样本时估计服务器当前时间 = 样本服务器时间 + RTT/2；假定链路近似对称，调度/抖动仍会带来误差。
 	double EstimateServerNowAtPoseReceipt(
 		const double SampleServerTimeSeconds,
 		const float RoundTripMilliseconds)
@@ -109,6 +115,7 @@ namespace GuLiCommanderPresentation
 			+ static_cast<double>(SanitizedRoundTripMilliseconds) * 0.0005;
 	}
 
+	// 在本地帧推进上限幅修正时钟；不让估计时间倒退，避免插值回放。
 	double AdvanceEstimatedServerTime(
 		const double CurrentEstimateSeconds,
 		const double LatestMeasuredServerNowSeconds,
@@ -147,6 +154,7 @@ namespace GuLiCommanderPresentation
 			+ FMath::Max(0.0, SecondsSinceReceipt);
 	}
 
+	// 优先连接统计中的有效 RTT，缺失时退回 PlayerState ping；毫秒/秒转换在此集中处理。
 	float SelectClockRoundTripMilliseconds(
 		const float ConnectionAverageLagSeconds,
 		const double ConnectionRawPingSeconds,
@@ -193,6 +201,7 @@ AGuLiCommanderPresentationActor::AGuLiCommanderPresentationActor()
 	bReplicates = true;
 	bAlwaysRelevant = true;
 	bNetLoadOnClient = true;
+	// 只复制 Actor 的存在；每名士兵/ISM 的变换从独立姿态流本地重建。
 	SetReplicateMovement(false);
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
@@ -207,7 +216,13 @@ AGuLiCommanderPresentationActor::AGuLiCommanderPresentationActor()
 	UnitInstances->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	UnitInstances->SetCanEverAffectNavigation(false);
 	UnitInstances->SetIsReplicated(false);
-	UnitInstances->SetCullDistances(150000, 500000);
+	UnitInstances->SetCullDistances(
+		FGuLiCommanderPresentationPerformanceSettings::DefaultUnitCullDistanceCentimeters,
+		FGuLiCommanderPresentationPerformanceSettings::DefaultUnitCullDistanceCentimeters);
+	UnitInstances->SetCastShadow(false);
+	UnitInstances->SetAffectDistanceFieldLighting(false);
+	UnitInstances->SetAffectDynamicIndirectLighting(false);
+	UnitInstances->SetVisibleInRayTracing(false);
 
 	RingInstances = CreateDefaultSubobject<UInstancedStaticMeshComponent>(TEXT("RingInstances"));
 	RingInstances->SetupAttachment(SceneRoot);
@@ -216,13 +231,16 @@ AGuLiCommanderPresentationActor::AGuLiCommanderPresentationActor()
 	RingInstances->SetCanEverAffectNavigation(false);
 	RingInstances->SetIsReplicated(false);
 	RingInstances->SetCastShadow(false);
-	RingInstances->SetCullDistances(150000, 500000);
+	RingInstances->SetAffectDistanceFieldLighting(false);
+	RingInstances->SetAffectDynamicIndirectLighting(false);
+	RingInstances->SetVisibleInRayTracing(false);
+	RingInstances->SetCullDistances(0, 0);
 	RingInstances->NumCustomDataFloats = 4;
 
 	UnitMeshAsset = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(
-		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot.SM_CommanderFourFRobot")));
+		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd")));
 	RingMeshAsset = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(
-		TEXT("/Engine/BasicShapes/Cylinder.Cylinder")));
+		TEXT("/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing")));
 	UnitMaterialAsset = TSoftObjectPtr<UMaterialInterface>(FSoftObjectPath(
 		TEXT("/Game/Commander/Units/M_CommanderUnitProxy.M_CommanderUnitProxy")));
 	RingMaterialAsset = TSoftObjectPtr<UMaterialInterface>(FSoftObjectPath(
@@ -238,8 +256,8 @@ void AGuLiCommanderPresentationActor::BeginPlay()
 		SetActorTickEnabled(false);
 		return;
 	}
-	if (const UGuLiCommanderDataSubsystem* DataSubsystem =
-		GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
+	InitializePresentationPerformanceSettings();
+	if (const UGuLiCommanderDataSubsystem* DataSubsystem = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
 	{
 		if (UStaticMesh* SoldierModel = DataSubsystem->GetDefaultSoldierDefinition().Model)
 		{
@@ -254,6 +272,143 @@ void AGuLiCommanderPresentationActor::BeginPlay()
 	FindStateReplicator();
 	FindLocalController();
 	RebuildLocalInstances(0.0f);
+}
+
+TArray<FGuLiCommanderPresentationSettingView>
+AGuLiCommanderPresentationActor::ListPresentationPerformanceSettings(const FString& Prefix) const
+{
+	return PerformanceSettingsRegistry.List(Prefix);
+}
+
+FGuLiCommanderPresentationSettingResult
+AGuLiCommanderPresentationActor::GetPresentationPerformanceSetting(const FString& Key) const
+{
+	return PerformanceSettingsRegistry.Get(Key);
+}
+
+FGuLiCommanderPresentationSettingResult
+AGuLiCommanderPresentationActor::ApplyLocalPresentationPerformanceOverride(
+	const FString& Key,
+	const FString& Value)
+{
+	FGuLiCommanderPresentationSettingResult Result = PerformanceSettingsRegistry.Set(Key, Value);
+	if (Result.bSuccess)
+	{
+		ApplyPresentationPerformanceSettings();
+		Result.AppliedActorCount = 1;
+	}
+	return Result;
+}
+
+TArray<FGuLiCommanderPresentationSettingResult>
+AGuLiCommanderPresentationActor::ClearLocalPresentationPerformanceOverrides(
+	const FString& KeyOrAll)
+{
+	TArray<FGuLiCommanderPresentationSettingResult> Results = PerformanceSettingsRegistry.Reset(KeyOrAll);
+	bool bHasSuccess = false;
+	for (FGuLiCommanderPresentationSettingResult& Result : Results)
+	{
+		if (Result.bSuccess)
+		{
+			Result.AppliedActorCount = 1;
+			bHasSuccess = true;
+		}
+	}
+	if (bHasSuccess)
+	{
+		ApplyPresentationPerformanceSettings();
+	}
+	return Results;
+}
+
+void AGuLiCommanderPresentationActor::InitializePresentationPerformanceSettings()
+{
+	FGuLiCommanderPresentationRawConfigSettings ConfigSettings;
+	const FString ConfigSection = GetClass()->GetPathName();
+	const auto ReadRawConfig = [&ConfigSection](
+		const FName PropertyName,
+		TOptional<FString>& OutRawValue)
+	{
+		FString RawValue;
+		if (GConfig
+			&& GConfig->GetString(
+				*ConfigSection,
+				*PropertyName.ToString(),
+				RawValue,
+				GGameIni))
+		{
+			OutRawValue = MoveTemp(RawValue);
+		}
+	};
+
+	ReadRawConfig(
+		GET_MEMBER_NAME_CHECKED(
+			AGuLiCommanderPresentationActor,
+			UnitCullDistanceCentimeters),
+		ConfigSettings.UnitCullDistanceCentimeters);
+	ReadRawConfig(
+		GET_MEMBER_NAME_CHECKED(
+			AGuLiCommanderPresentationActor,
+			RingCullDistanceCentimeters),
+		ConfigSettings.RingCullDistanceCentimeters);
+	ReadRawConfig(
+		GET_MEMBER_NAME_CHECKED(AGuLiCommanderPresentationActor, bUnitCastShadow),
+		ConfigSettings.bUnitCastShadow);
+	ReadRawConfig(
+		GET_MEMBER_NAME_CHECKED(
+			AGuLiCommanderPresentationActor,
+			bUnitAffectDistanceFieldLighting),
+		ConfigSettings.bUnitAffectDistanceFieldLighting);
+	ReadRawConfig(
+		GET_MEMBER_NAME_CHECKED(
+			AGuLiCommanderPresentationActor,
+			bUnitAffectDynamicIndirectLighting),
+		ConfigSettings.bUnitAffectDynamicIndirectLighting);
+	ReadRawConfig(
+		GET_MEMBER_NAME_CHECKED(
+			AGuLiCommanderPresentationActor,
+			bUnitVisibleInRayTracing),
+		ConfigSettings.bUnitVisibleInRayTracing);
+
+	TArray<FString> ValidationErrors;
+	PerformanceSettingsRegistry.InitializeFromRawConfig(ConfigSettings, ValidationErrors);
+	if (!ValidationErrors.IsEmpty() && !bLoggedInvalidPerformanceConfig)
+	{
+		UE_LOG(
+			LogGuLiStrike,
+			Error,
+			TEXT("Commander presentation Config rejected; invalid keys use C++ defaults: %s"),
+			*FString::Join(ValidationErrors, TEXT("; ")));
+		bLoggedInvalidPerformanceConfig = true;
+	}
+	ApplyPresentationPerformanceSettings();
+}
+
+void AGuLiCommanderPresentationActor::ApplyPresentationPerformanceSettings()
+{
+	if (!UnitInstances || !RingInstances)
+	{
+		return;
+	}
+
+	const FGuLiCommanderPresentationPerformanceSettings Effective = PerformanceSettingsRegistry.GetEffectiveSettings();
+	UnitInstances->SetCullDistances(
+		Effective.UnitCullDistanceCentimeters,
+		Effective.UnitCullDistanceCentimeters);
+	UnitInstances->SetCastShadow(Effective.bUnitCastShadow);
+	UnitInstances->SetAffectDistanceFieldLighting(
+		Effective.bUnitAffectDistanceFieldLighting);
+	UnitInstances->SetAffectDynamicIndirectLighting(
+		Effective.bUnitAffectDynamicIndirectLighting);
+	UnitInstances->SetVisibleInRayTracing(Effective.bUnitVisibleInRayTracing);
+
+	RingInstances->SetCullDistances(
+		Effective.RingCullDistanceCentimeters,
+		Effective.RingCullDistanceCentimeters);
+	RingInstances->SetCastShadow(false);
+	RingInstances->SetAffectDistanceFieldLighting(false);
+	RingInstances->SetAffectDynamicIndirectLighting(false);
+	RingInstances->SetVisibleInRayTracing(false);
 }
 
 void AGuLiCommanderPresentationActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -282,6 +437,7 @@ bool AGuLiCommanderPresentationActor::TryGetPresentedSoldierTransform(
 	return true;
 }
 
+// 预测距离由已发布速度、持续时间和上限计算；不在客户端执行权威导航或写 Authority。
 void AGuLiCommanderPresentationActor::BeginPredictedMove(
 	const FGuLiCommanderSelectionState& Selection,
 	const FVector& Target,
@@ -300,16 +456,13 @@ void AGuLiCommanderPresentationActor::BeginPredictedMove(
 
 	const double Now = GetWorld()->GetTimeSeconds();
 	float EffectiveMoveSpeedCmPerSecond = 0.0f;
-	if (const AGuLiCommanderGameState* GameState =
-		GetWorld()->GetGameState<AGuLiCommanderGameState>())
+	if (const AGuLiCommanderGameState* GameState = GetWorld()->GetGameState<AGuLiCommanderGameState>())
 	{
-		EffectiveMoveSpeedCmPerSecond =
-			GameState->GetEffectiveSoldierMoveSpeedCmPerSecond();
+		EffectiveMoveSpeedCmPerSecond = GameState->GetEffectiveSoldierMoveSpeedCmPerSecond();
 	}
 	if (EffectiveMoveSpeedCmPerSecond <= 0.0f)
 	{
-		if (const UGuLiCommanderDataSubsystem* DataSubsystem =
-			GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
+		if (const UGuLiCommanderDataSubsystem* DataSubsystem = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
 		{
 			EffectiveMoveSpeedCmPerSecond = DataSubsystem
 				->GetDefaultSoldierDefinition().MovementSpeedCmPerSecond;
@@ -362,6 +515,7 @@ void AGuLiCommanderPresentationActor::BeginPredictedMove(
 	}
 }
 
+// 总体部分接受时必须看本组结果；成功组记录批次号，失败组开始撤销本地偏移。
 void AGuLiCommanderPresentationActor::ResolvePredictedMove(const FGuLiCommandAck& Ack)
 {
 	if (Ack.CommandKind != EGuLiCommandKind::Move
@@ -620,6 +774,7 @@ AGuLiCommanderPlayerController* AGuLiCommanderPresentationActor::FindLocalContro
 	return nullptr;
 }
 
+// 先对本帧收取的块排序，再逐块入样本缓存；同帧缺块不会阻塞已收到的其他士兵。
 void AGuLiCommanderPresentationActor::ConsumePoseChunks(const double LocalNowSeconds)
 {
 	AGuLiCommanderPlayerController* Controller = FindLocalController();
@@ -656,6 +811,7 @@ void AGuLiCommanderPresentationActor::ConsumePoseChunks(const double LocalNowSec
 	}
 }
 
+// NetSync 已校验 Bootstrap 战局；这里进一步解压并绑定名册身份，未知 SoldierId 的姿态不能创建士兵。
 void AGuLiCommanderPresentationActor::IngestPoseChunk(
 	const FGuLiSoldierPoseChunk& Chunk,
 	const double LocalNowSeconds)
@@ -714,6 +870,7 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 	{
 		ServerTimeSeconds = static_cast<double>(Chunk.ServerSimTick) / 30.0;
 	}
+	// 同捕获帧的后续块不会反复更新时钟测量，避免发送分摊时间被当成样本时间推进。
 	const bool bAdvancesClockFrame = LatestClockFrameSequence == 0u
 		|| GuLiCommanderPresentation::IsNewerSerial(
 			Chunk.FrameSequence,
@@ -723,8 +880,7 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 		float PlayerStateRoundTripMilliseconds = 0.0f;
 		if (const AGuLiCommanderPlayerController* Controller = FindLocalController())
 		{
-			if (const AGuLiCommanderPlayerState* PlayerState =
-				Controller->GetPlayerState<AGuLiCommanderPlayerState>())
+			if (const AGuLiCommanderPlayerState* PlayerState = Controller->GetPlayerState<AGuLiCommanderPlayerState>())
 			{
 				PlayerStateRoundTripMilliseconds = PlayerState->GetPingInMilliseconds();
 			}
@@ -739,15 +895,13 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 				ConnectionRawPingSeconds = Connection->RawPingInSeconds;
 			}
 		}
-		const float RoundTripMilliseconds =
-			GuLiCommanderPresentation::SelectClockRoundTripMilliseconds(
+		const float RoundTripMilliseconds = GuLiCommanderPresentation::SelectClockRoundTripMilliseconds(
 				ConnectionAverageLagSeconds,
 				ConnectionRawPingSeconds,
 				PlayerStateRoundTripMilliseconds,
 				bLatestClockRoundTripFromConnectionStats);
 		LatestClockRoundTripMilliseconds = RoundTripMilliseconds;
-		const double MeasuredServerNowSeconds =
-			GuLiCommanderPresentation::EstimateServerNowAtPoseReceipt(
+		const double MeasuredServerNowSeconds = GuLiCommanderPresentation::EstimateServerNowAtPoseReceipt(
 				ServerTimeSeconds,
 				RoundTripMilliseconds);
 		LatestMeasuredServerNowSeconds = MeasuredServerNowSeconds;
@@ -780,6 +934,7 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 		Sample.FrameSequence = Chunk.FrameSequence;
 		Sample.ChunkAnchor = FVector(Chunk.Anchor);
 		Sample.RelativeLocation = CompressedPose.GetRelativeLocationCentimeters();
+		// 恢复世界位置；若出现大跳变，应同时检查锚点和相对偏移，而不只检查单个 int16。
 		Sample.Location = Sample.ChunkAnchor + Sample.RelativeLocation;
 		Sample.Velocity = CompressedPose.GetVelocityCentimetersPerSecond();
 		Sample.FacingYawDegrees = GuLiCommanderProtocol::DequantizeYawDegrees(CompressedPose.FacingYaw);
@@ -791,6 +946,7 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 	}
 }
 
+// 按单兵维护时间线：同帧替换、窗口内迟到可补洞，窗口外旧样本和历史瞬移不能让表现倒退。
 void AGuLiCommanderPresentationActor::InsertPoseSample(
 	const FGuLiSoldierId SoldierId,
 	const FGuLiCommanderBufferedSoldierPose& Sample,
@@ -830,6 +986,7 @@ void AGuLiCommanderPresentationActor::InsertPoseSample(
 		}
 	}
 
+	// 仅最新帧可触发硬校正；显式瞬移与未标记的大误差分别计数，后者用于网络验收排错。
 	const bool bCorrectionTooLarge = bAdvancesLatest && Soldier.bHasPresentedTransform
 		&& FVector::DistSquared(
 			Soldier.PresentedTransform.GetLocation(),
@@ -843,8 +1000,7 @@ void AGuLiCommanderPresentationActor::InsertPoseSample(
 		else if (bCorrectionTooLarge)
 		{
 			++Soldier.UntaggedHardSnapCount;
-			Soldier.LastUntaggedHardSnapDelta =
-				Sample.Location - Soldier.PresentedTransform.GetLocation();
+			Soldier.LastUntaggedHardSnapDelta = Sample.Location - Soldier.PresentedTransform.GetLocation();
 			Soldier.LastHardSnapSampleVelocity = Sample.Velocity;
 			Soldier.LastHardSnapCurrentAnchor = Sample.ChunkAnchor;
 			Soldier.LastHardSnapCurrentRelative = Sample.RelativeLocation;
@@ -963,6 +1119,7 @@ bool AGuLiCommanderPresentationActor::EvaluateAuthoritativeTransform(
 			(RenderServerTimeSeconds - Previous.ServerTimeSeconds) / IntervalSeconds,
 			0.0,
 			1.0));
+		// 以速度乘样本间隔作为切线做三次插值；结果异常时退回线性插值，朝向走最短角差。
 		FVector InterpolatedLocation = FMath::CubicInterp(
 			Previous.Location,
 			Previous.Velocity * IntervalSeconds,
@@ -984,6 +1141,7 @@ bool AGuLiCommanderPresentationActor::EvaluateAuthoritativeTransform(
 	}
 
 	const FGuLiCommanderBufferedSoldierPose& Latest = Soldier.Samples.Last();
+	// 越过最新样本只能按最后速度短时外推；不使用无限外推掩盖长时间断流。
 	const double ExtrapolationSeconds = FMath::Clamp(
 		RenderServerTimeSeconds - Latest.ServerTimeSeconds,
 		0.0,
@@ -994,6 +1152,7 @@ bool AGuLiCommanderPresentationActor::EvaluateAuthoritativeTransform(
 	return true;
 }
 
+// 在样本求值结果上叠加本地偏移；到期或收到拒绝/对应命令样本后渐退，不改服务器状态。
 void AGuLiCommanderPresentationActor::ApplyPrediction(
 	const FGuLiSoldierId SoldierId,
 	const double LocalNowSeconds,
@@ -1016,8 +1175,7 @@ void AGuLiCommanderPresentationActor::ApplyPrediction(
 				1.0))
 			: 1.0f;
 		const float SmoothedAlpha = FMath::SmoothStep(0.0f, 1.0f, PredictionAlpha);
-		Prediction->LastAppliedOffset =
-			Prediction->Direction * Prediction->MaximumDistance * SmoothedAlpha;
+		Prediction->LastAppliedOffset = Prediction->Direction * Prediction->MaximumDistance * SmoothedAlpha;
 		Prediction->LastAppliedYawOffsetDegrees = FMath::FindDeltaAngleDegrees(
 			BaseYaw,
 			Prediction->TargetYawDegrees) * SmoothedAlpha;
@@ -1090,6 +1248,7 @@ bool AGuLiCommanderPresentationActor::EnsureClientMirrorArchetype()
 	}
 
 	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
+	// 镜像没有导航/速度/移动目标等模拟 Fragment，Transform 由表现层唯一写入。
 	const TArray<const UScriptStruct*> FragmentAndTagTypes = {
 		FTransformFragment::StaticStruct(),
 		FGuLiMassIdentityFragment::StaticStruct(),
@@ -1137,12 +1296,10 @@ void AGuLiCommanderPresentationActor::EnsureClientMirrorEntity(
 		return;
 	}
 
-	FGuLiMassIdentityFragment& Identity =
-		EntityManager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(Entity);
+	FGuLiMassIdentityFragment& Identity = EntityManager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(Entity);
 	Identity.SoldierId = ReliableState.SoldierId;
 	Identity.Team = ReliableState.Team;
-	FGuLiMassHealthFragment& Health =
-		EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Entity);
+	FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Entity);
 	Health.Health = ReliableState.Health;
 	Health.bDead = !ReliableState.IsAlive();
 	Health.WreckSecondsRemaining = 0.0f;
@@ -1169,12 +1326,10 @@ void AGuLiCommanderPresentationActor::UpdateClientMirrorEntity(
 		return;
 	}
 
-	FGuLiMassIdentityFragment& Identity =
-		EntityManager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(*Entity);
+	FGuLiMassIdentityFragment& Identity = EntityManager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(*Entity);
 	Identity.SoldierId = ReliableState.SoldierId;
 	Identity.Team = ReliableState.Team;
-	FGuLiMassHealthFragment& Health =
-		EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(*Entity);
+	FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(*Entity);
 	Health.Health = ReliableState.Health;
 	Health.bDead = !ReliableState.IsAlive();
 	Health.WreckSecondsRemaining = 0.0f;
@@ -1219,6 +1374,7 @@ void AGuLiCommanderPresentationActor::DestroyClientMirrorEntities()
 	ClientMirrorMassSubsystem.Reset();
 }
 
+// 同步代次变化时丢弃旧样本、预测和时钟，防止把新战局数据接到旧时间线上。
 void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 {
 	PredictedMoves.Reset();
@@ -1327,6 +1483,9 @@ void AGuLiCommanderPresentationActor::EnsureStableInstancePool(
 
 void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSeconds)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_RebuildLocalInstances);
+	CSV_SCOPED_TIMING_STAT(GuLiCommanderPresentation, RebuildLocalInstances);
+
 	AGuLiSoldierStateReplicator* Replicator = FindStateReplicator();
 	if (!Replicator || !UnitInstances || !RingInstances || !GetWorld())
 	{
@@ -1336,8 +1495,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	const double LocalNowSeconds = GetWorld()->GetTimeSeconds();
 	if (AGuLiCommanderPlayerController* Controller = FindLocalController())
 	{
-		if (const UGuLiCommanderNetSyncComponent* NetSync =
-			Controller->GetCommanderNetSyncComponent())
+		if (const UGuLiCommanderNetSyncComponent* NetSync = Controller->GetCommanderNetSyncComponent())
 		{
 			const uint32 SyncGeneration = NetSync->GetSyncGeneration();
 			if (SyncGeneration != 0u && SyncGeneration != LastObservedSyncGeneration)
@@ -1351,8 +1509,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	EnsureStableInstancePool(*Replicator);
 	if (bServerClockInitialized)
 	{
-		const double ExtrapolatedMeasuredServerNowSeconds =
-			GuLiCommanderPresentation::ExtrapolateMeasuredServerNow(
+		const double ExtrapolatedMeasuredServerNowSeconds = GuLiCommanderPresentation::ExtrapolateMeasuredServerNow(
 				LatestMeasuredServerNowSeconds,
 				LocalNowSeconds - LatestClockMeasurementLocalTimeSeconds);
 		EstimatedServerTimeSeconds = GuLiCommanderPresentation::AdvanceEstimatedServerTime(
@@ -1360,6 +1517,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			ExtrapolatedMeasuredServerNowSeconds,
 			DeltaSeconds);
 	}
+	// 先估计服务器当前时间，再减插值回退时间；不可在旧样本时间上重复叠加网络延迟。
 	const double RenderServerTimeSeconds = GuLiCommanderPresentation::CalculateRenderServerTime(
 		EstimatedServerTimeSeconds,
 		InterpolationBackTimeSeconds);
@@ -1411,14 +1569,12 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			Soldier.bLifeStateInitialized = true;
 			if (!bAlive)
 			{
-				WreckExpireTimes.FindOrAdd(ReliableState.SoldierId) =
-					LocalNowSeconds + static_cast<double>(WreckLifetimeSeconds);
+				WreckExpireTimes.FindOrAdd(ReliableState.SoldierId) = LocalNowSeconds + static_cast<double>(WreckLifetimeSeconds);
 			}
 		}
 		else if (Soldier.LastLifeState == EGuLiSoldierLifeState::Alive && !bAlive)
 		{
-			WreckExpireTimes.FindOrAdd(ReliableState.SoldierId) =
-				LocalNowSeconds + static_cast<double>(WreckLifetimeSeconds);
+			WreckExpireTimes.FindOrAdd(ReliableState.SoldierId) = LocalNowSeconds + static_cast<double>(WreckLifetimeSeconds);
 		}
 		if (bAlive)
 		{

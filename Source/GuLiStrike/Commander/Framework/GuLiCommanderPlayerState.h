@@ -9,7 +9,7 @@
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGuLiCommanderPlayerStateChangedSignature);
 
-/** Replicated identity and authoritative 5v5 role assignment for one connection. */
+/** 每位玩家的复制身份与服务器分配结果；其他相关客户端也可读取，不是仅拥有者可见。 */
 UCLASS()
 class AGuLiCommanderPlayerState : public APlayerState
 {
@@ -19,14 +19,16 @@ public:
 	static constexpr uint8 InvalidSlotIndex = MAX_uint8;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	// 引擎的 PlayerState 状态迁移钩子；复制身份和席位，但不沿用旧战局的同步就绪资格。
 	virtual void CopyProperties(APlayerState* PlayerState) override;
 	virtual void OverrideWith(APlayerState* PlayerState) override;
 
-	/** Server-only identity creation; preserves a valid reconnect/seamless-travel guid. */
+	/** 仅服务器创建缺失 GUID；已有 GUID 保留，供重连/无缝切图路径恢复身份。 */
 	void EnsureServerPlayerGuid();
 
-	/** Server-only assignment mutation. */
+	/** 服务器本地修改阵营/角色/席位并撤销旧就绪状态；远端客户端不能通过此普通函数发起 RPC。 */
 	void SetServerRoleAssignment(EGuLiTeam NewTeam, EGuLiCommanderRole NewRole, uint8 NewSlotIndex);
+	// 服务器 Bootstrap 校验通过后设置；不代表角色一定是 Commander。
 	void SetServerSyncReady(bool bNewSyncReady);
 	void SetServerObserver();
 
@@ -51,6 +53,7 @@ public:
 		return CommanderRole == EGuLiCommanderRole::Commander && Team != EGuLiTeam::Unassigned;
 	}
 
+	// 本地 UI/逻辑通知，由服务器 setter 或客户端 RepNotify 触发，委托本身不跨网。
 	UPROPERTY(BlueprintAssignable, Category = "Commander|Player")
 	FGuLiCommanderPlayerStateChangedSignature OnCommanderPlayerStateChanged;
 

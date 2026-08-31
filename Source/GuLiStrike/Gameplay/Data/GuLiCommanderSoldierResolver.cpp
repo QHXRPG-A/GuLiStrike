@@ -13,7 +13,7 @@ namespace GuLiCommanderSoldierResolverPrivate
 	constexpr float MaximumReasonableMovementSpeed = static_cast<float>(MAX_int16);
 	constexpr float MaximumReasonableCombatValue = 1000000.0f;
 	constexpr TCHAR FallbackModelPath[] =
-		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot.SM_CommanderFourFRobot");
+		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd");
 
 	void LogWarningOnce(const FName Key, const FString& Message)
 	{

@@ -11,6 +11,7 @@ class USceneComponent;
 class USpringArmComponent;
 
 /** Lightweight perspective RTS camera used by the commander prototype. */
+// 相机 Pawn 仅与拥有者相关；位置不通过 ReplicateMovement 同步，输入/视角由本地控制端维护。
 UCLASS()
 class GULISTRIKE_API AGuLiCommanderCameraPawn : public APawn
 {

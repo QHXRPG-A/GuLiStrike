@@ -25,6 +25,7 @@ AGuLiCommanderCameraPawn::AGuLiCommanderCameraPawn()
 {
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+	// 允许 Pawn 随拥有关系存在于双端，但仅拥有者相关且关闭移动复制；不把相机移动当作单位命令。
 	bReplicates = true;
 	bOnlyRelevantToOwner = true;
 	SetReplicateMovement(false);

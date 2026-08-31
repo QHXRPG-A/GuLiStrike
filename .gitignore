@@ -33,9 +33,13 @@ Content/Characters/Mannequins/
 # Marketplace / asset packs (not versioned, huge binary trees)
 Content/Assets/
 Content/MafiaBarnPack/
+# Five locally baked FourFRobot derivatives; public redistribution not verified
+Content/Commander/Units/*FourFRobot_Crowd*.uasset
 
 # Large binary assets (10MB+, kept locally but not versioned)
 Content/Maps/LVL_Main.umap
+# Commander prototype map (521MB; local level, same policy as LVL_Main)
+Content/Maps/LVL_CommanderMassPrototype.umap
 Content/Scifi_Skies/Textures/Skies/T_scifiskies_bg_03.uasset
 Content/Scifi_Skies/Textures/Terrain/T_Grass_Color_02.uasset
 Content/Scifi_Skies/Textures/Terrain/T_Grass_normal.uasset
@@ -62,6 +66,27 @@ Data/Json/*.csv
 
 # xlsx 备份侧车文件（xlsx CLI --backup 临时产物，勿提交）
 *.xlsx.bak-*
+# Excel creates these lock files while a workbook is open
+~$*.xlsx
+
+# Local credentials and environment overrides (keep shareable examples)
+.env
+.env.*
+!.env.example
+!.env.sample
+!.env.template
+
+# Python/tool caches and temporary diagnostics
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+*.log
+*.tmp
+*.temp
+*.dmp
 
 # ===== 外部引入的 skill / MCP / 第三方工具目录（本地使用，不入库）=====
 .agents/tmp/

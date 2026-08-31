@@ -21,6 +21,7 @@
 
 namespace GuLiCommanderNetworkGate
 {
+	// 仅非 Shipping 的主动验收状态机；会实际提交选兵和移动，不能当作无副作用查询。
 	enum class EStage : uint8
 	{
 		WaitingForBootstrap,
@@ -133,8 +134,7 @@ namespace GuLiCommanderNetworkGate
 
 			case EStage::WaitingForPresentationEvidence:
 			{
-				const double EvidenceDurationSeconds =
-					NowSeconds - PresentationEvidenceStartTimeSeconds;
+				const double EvidenceDurationSeconds = NowSeconds - PresentationEvidenceStartTimeSeconds;
 				const bool bHasEnoughSamples = PresentedStepCentimeters.Num()
 					>= GuLiCommanderNetworkGateValidation::RequiredPresentedStepSamples;
 				const bool bHasMovedFarEnough = PresentedTravelDistanceCentimeters
@@ -162,6 +162,7 @@ namespace GuLiCommanderNetworkGate
 			return true;
 		}
 
+		// 只寻找 NM_Client World；Listen Server 的本地主机不能替代真实远端连接验收。
 		bool ResolveClientContext()
 		{
 			if (World.IsValid() && Controller.IsValid() && NetSync.IsValid())
@@ -184,8 +185,7 @@ namespace GuLiCommanderNetworkGate
 
 				for (FConstPlayerControllerIterator It = CandidateWorld->GetPlayerControllerIterator(); It; ++It)
 				{
-					AGuLiCommanderPlayerController* CandidateController =
-						Cast<AGuLiCommanderPlayerController>(It->Get());
+					AGuLiCommanderPlayerController* CandidateController = Cast<AGuLiCommanderPlayerController>(It->Get());
 					if (!CandidateController || !CandidateController->IsLocalController())
 					{
 						continue;
@@ -208,8 +208,7 @@ namespace GuLiCommanderNetworkGate
 				return false;
 			}
 
-			const AGuLiCommanderPlayerState* PlayerState =
-				Controller->GetPlayerState<AGuLiCommanderPlayerState>();
+			const AGuLiCommanderPlayerState* PlayerState = Controller->GetPlayerState<AGuLiCommanderPlayerState>();
 			if (!PlayerState || !PlayerState->IsCommander() || !PlayerState->IsSyncReady())
 			{
 				return false;
@@ -263,8 +262,7 @@ namespace GuLiCommanderNetworkGate
 			const UNetConnection* Connection = NetDriver
 				? NetDriver->ServerConnection
 				: nullptr;
-			const AGuLiCommanderPlayerState* PlayerState =
-				Controller->GetPlayerState<AGuLiCommanderPlayerState>();
+			const AGuLiCommanderPlayerState* PlayerState = Controller->GetPlayerState<AGuLiCommanderPlayerState>();
 			const float MeasuredRoundTripMilliseconds = PlayerState
 				? PlayerState->GetPingInMilliseconds()
 				: 0.0f;
@@ -277,8 +275,7 @@ namespace GuLiCommanderNetworkGate
 				NetDriver->PacketSimulationSettings,
 				Connection != nullptr,
 				MeasuredRoundTripMilliseconds);
-			bRuntimeImpairmentValid =
-				GuLiCommanderNetworkGateValidation::MeetsRequiredImpairment(RuntimeImpairment);
+			bRuntimeImpairmentValid = GuLiCommanderNetworkGateValidation::MeetsRequiredImpairment(RuntimeImpairment);
 			return bRuntimeImpairmentValid;
 #else
 			return false;
@@ -345,6 +342,7 @@ namespace GuLiCommanderNetworkGate
 			NetSync->SubmitMoveRequest(Request);
 		}
 
+		// 按种类+ID 匹配回执；ACK 延迟包含发送调度、网络、服务器处理和回程，并非单纯 ping。
 		void HandleAck(const FGuLiCommandAck& Ack)
 		{
 			if (Stage == EStage::Finished
@@ -394,6 +392,7 @@ namespace GuLiCommanderNetworkGate
 			NextMoveIssueTimeSeconds = NowSeconds + 0.2;
 		}
 
+		// 每秒采集客户端连接入站总字节率并换算 Mbps；包含该连接其他复制流量，不是姿态净载荷。
 		void CaptureBandwidthSample(const double NowSeconds)
 		{
 			if (!World.IsValid() || NowSeconds < NextBandwidthSampleTimeSeconds)
@@ -411,6 +410,7 @@ namespace GuLiCommanderNetworkGate
 			}
 		}
 
+		// 测量最终显示位置的帧间位移；移动距离记录相对观察起点的最大二维偏移，不是累计路程。
 		void CapturePresentationStep()
 		{
 			if (!Presentation.IsValid() || !SeedSoldierId.IsValid())
@@ -425,8 +425,7 @@ namespace GuLiCommanderNetworkGate
 			const FVector Location = Transform.GetLocation();
 			if (bHasLastPresentedLocation)
 			{
-				const double PresentedStepCentimetersValue =
-					FVector::Dist(Location, LastPresentedLocation);
+				const double PresentedStepCentimetersValue = FVector::Dist(Location, LastPresentedLocation);
 				MaximumPresentedStepCentimeters = FMath::Max(
 					MaximumPresentedStepCentimeters,
 					static_cast<float>(PresentedStepCentimetersValue));
@@ -447,6 +446,7 @@ namespace GuLiCommanderNetworkGate
 			++PresentedFrameSamples;
 		}
 
+		// 对有限样本排序，取 ceil(N*0.95)-1 下标；必须结合样本数量解释 P95。
 		static double Percentile95(TArray<double> Values)
 		{
 			if (Values.IsEmpty())
@@ -475,6 +475,7 @@ namespace GuLiCommanderNetworkGate
 			return Sum / static_cast<double>(Values.Num());
 		}
 
+		// 收集证据交给 CanPass 统一判定；命令都成功只是必要条件，仍可能因链路/带宽/平滑指标失败。
 		void Finish(const bool bCommandsSucceeded, const TCHAR* Reason)
 		{
 			if (Stage == EStage::Finished)
@@ -528,15 +529,11 @@ namespace GuLiCommanderNetworkGate
 			GateEvidence.BandwidthP95Megabits = BandwidthP95Megabits;
 			GateEvidence.FreshPoseFrameCount = FreshPoseFrameCount;
 			GateEvidence.PresentedStepSampleCount = PresentedStepCentimeters.Num();
-			GateEvidence.PresentedTravelDistanceCentimeters =
-				PresentedTravelDistanceCentimeters;
+			GateEvidence.PresentedTravelDistanceCentimeters = PresentedTravelDistanceCentimeters;
 			GateEvidence.PresentedStepP95Centimeters = PresentedStepP95Centimeters;
-			GateEvidence.PresentationClockRoundTripMilliseconds =
-				PresentationClockRoundTripMilliseconds;
-			GateEvidence.MaximumSeedPoseGapSeconds =
-				PresentationDiagnostics.MaximumPoseReceiptGapSeconds;
-			GateEvidence.UntaggedHardSnapCount =
-				PresentationDiagnostics.UntaggedHardSnapCount;
+			GateEvidence.PresentationClockRoundTripMilliseconds = PresentationClockRoundTripMilliseconds;
+			GateEvidence.MaximumSeedPoseGapSeconds = PresentationDiagnostics.MaximumPoseReceiptGapSeconds;
+			GateEvidence.UntaggedHardSnapCount = PresentationDiagnostics.UntaggedHardSnapCount;
 			const bool bGatePassed = GuLiCommanderNetworkGateValidation::CanPass(GateEvidence);
 
 			const FString Summary = FString::Printf(
@@ -644,6 +641,8 @@ namespace GuLiCommanderNetworkGate
 
 	TSharedPtr<FRunner> ActiveRunner;
 
+	// 控制台 gs.Commander.NetworkGate [move_ack_samples]，默认 20、内部限制 5..100。
+	// 使用独立测试会话：运行器自行分配较大的命令序号，可能使同连接后续普通输入序号被视为旧请求。
 	void StartNetworkGate(const TArray<FString>& Args, UWorld* CommandWorld)
 	{
 		(void)CommandWorld;

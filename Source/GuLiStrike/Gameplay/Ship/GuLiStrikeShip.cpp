@@ -87,6 +87,7 @@ void AGuLiStrikeShip::GetLifetimeReplicatedProps(
 	TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+	// 此处新增的项目复制字段只有 GM 调参状态；不能仅凭它宣称飞船所有移动/武器行为已完成联机。
 	DOREPLIFETIME(AGuLiStrikeShip, GMRuntimeState);
 }
 
@@ -142,8 +143,7 @@ void AGuLiStrikeShip::BeginPlay()
 	// Actor 的原子复制状态，避免本地 Registry 与服务器状态抢写。
 	if (HasAuthority())
 	{
-		if (UGuLiRuntimeTuningSubsystem* RuntimeTuning =
-			GetWorld()->GetSubsystem<UGuLiRuntimeTuningSubsystem>())
+		if (UGuLiRuntimeTuningSubsystem* RuntimeTuning = GetWorld()->GetSubsystem<UGuLiRuntimeTuningSubsystem>())
 		{
 			RuntimeTuning->ApplyCurrentShipTuning(*this);
 		}
@@ -623,6 +623,7 @@ void AGuLiStrikeShip::RemoveStatModifier(FName Name)
 	}
 }
 
+// 服务器先改复制状态，再主动应用到本机；C++ 属性赋值不会自动替服务器执行客户端 RepNotify。
 bool AGuLiStrikeShip::SetGMRuntimeMultipliers(
 	const float MaxSpeedMultiplier,
 	const float AccelerationMultiplier)
@@ -708,6 +709,7 @@ bool AGuLiStrikeShip::GetGMRuntimeMultipliers(
 	return false;
 }
 
+// 初始复制可能早于 BeginPlay；bRuntimeStatsInitialized 防止在表与默认部件就绪前重算反馈。
 void AGuLiStrikeShip::OnRep_GMRuntimeState()
 {
 	// Initial replicated properties may arrive before BeginPlay. Build the
@@ -716,6 +718,7 @@ void AGuLiStrikeShip::OnRep_GMRuntimeState()
 	ApplyGMRuntimeStateLocally(bRuntimeStatsInitialized);
 }
 
+// 按保留名称先删后建，重复 OnRep 不会叠加多个 GM.Runtime 修饰；bRecompute 控制初始化期间的重算。
 void AGuLiStrikeShip::ApplyGMRuntimeStateLocally(const bool bRecompute)
 {
 	StatModifiers.RemoveAll([](const FGuLiStrikeStatModifier& Modifier)
@@ -894,8 +897,7 @@ bool AGuLiStrikeShip::ApplyPartRow(UGuLiStrikeShipPartComponent* Part) const
 	FName RowName = NAME_None;
 	for (const FName& RowKey : PartDataTable->GetRowNames())
 	{
-		const FGuLiStrikeShipPartsRow* Candidate =
-			PartDataTable->FindRow<FGuLiStrikeShipPartsRow>(RowKey, TEXT("ApplyPartRow"));
+		const FGuLiStrikeShipPartsRow* Candidate = PartDataTable->FindRow<FGuLiStrikeShipPartsRow>(RowKey, TEXT("ApplyPartRow"));
 		if (Candidate && Candidate->PartId == Part->PartId.ToString())
 		{
 			Row = Candidate;

@@ -26,9 +26,11 @@ namespace GuLiCommanderNetwork
 	constexpr int32 MaxQueuedSelectionIntents = 64;
 	constexpr double CommanderRequestWindowSeconds = 1.0;
 	constexpr double SecurityLogIntervalSeconds = 1.0;
+	// 重试阈值为真实时间：约 15 ms 后再发一次快速请求，约 150 ms 后可靠回退；由 Tick 检查，非硬实时。
 	constexpr double FastCommandRetryDelaySeconds = 0.015;
 	constexpr double ReliableCommandFallbackDelaySeconds = 0.15;
 
+	// 幂等判断不仅比较 ID，还比较选择版本/预设/修饰键/中心；向量比较容差为 0.5 cm。
 	static bool IsSameSelectionRequest(
 		const FGuLiSelectionRequest& Lhs,
 		const FGuLiSelectionRequest& Rhs)
@@ -47,6 +49,8 @@ namespace GuLiCommanderNetwork
 			&& FVector(Lhs.Target).Equals(FVector(Rhs.Target), 0.5f);
 	}
 
+	// 跨 Actor 的属性与 RPC 不构成原子快照：显式核对同战局、非零版本和名册数量。
+	// 允许已应用的快照比启动标记更新，不能要求版本严格相等而把持续更新的客户端卡住。
 	static bool IsBootstrapSnapshotCompatible(
 		const uint16 ProtocolVersion,
 		const uint32 GameStateMatchEpoch,
@@ -108,6 +112,7 @@ namespace GuLiCommanderNetwork
 
 UGuLiCommanderNetSyncComponent::UGuLiCommanderNetSyncComponent()
 {
+	// 组件默认参与复制；RPC 的连接仍取自所属 PlayerController，不是组件自己建立网络连接。
 	SetIsReplicatedByDefault(true);
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.bStartWithTickEnabled = true;
@@ -136,6 +141,7 @@ void UGuLiCommanderNetSyncComponent::GetLifetimeReplicatedProps(
 	DOREPLIFETIME_CONDITION(UGuLiCommanderNetSyncComponent, SyncGeneration, COND_OwnerOnly);
 }
 
+// 服务器先发布权威名册，再发送期望值标记；这只是发送侧顺序，客户端仍必须检查到达条件。
 void UGuLiCommanderNetSyncComponent::StartServerBootstrap()
 {
 	if (!GetOwner() || !GetOwner()->HasAuthority())
@@ -195,6 +201,7 @@ void UGuLiCommanderNetSyncComponent::StartServerBootstrap()
 		return;
 	}
 
+	// 战局切换时撤销就绪并清除上一局的选择/去重缓存；普通重试不会反复创建新代次。
 	const bool bMatchEpochChanged = BootstrapMatchEpoch != 0u
 		&& BootstrapMatchEpoch != CommanderGameState->GetMatchEpoch();
 	CommanderPlayerState->SetServerSyncReady(false);
@@ -258,6 +265,7 @@ void UGuLiCommanderNetSyncComponent::SendPoseChunk(const FGuLiSoldierPoseChunk& 
 	{
 		return;
 	}
+	// 调用 RPC 包装函数才会按所有权路由；不要在发送处直接调用 _Implementation。
 	ClientReceiveSoldierPoseChunk(Chunk);
 }
 
@@ -268,8 +276,7 @@ bool UGuLiCommanderNetSyncComponent::RefreshServerSelection()
 		return false;
 	}
 	AGuLiCommanderPlayerState* CommanderPlayerState = GetCommanderPlayerState();
-	UGuLiBattleAuthoritySubsystem* Authority =
-		GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+	UGuLiBattleAuthoritySubsystem* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
 	if (!CommanderPlayerState || !Authority
 		|| !Authority->RefreshSelection(CommanderPlayerState->GetTeam(), SelectionState))
 	{
@@ -294,6 +301,7 @@ void UGuLiCommanderNetSyncComponent::ConsumePendingCommandAcks(
 	PendingCommandAcks.Reset();
 }
 
+// 服务器本机路径直接调用可靠入口；远端拥有客户端才使用快速发送与延迟回退状态机。
 void UGuLiCommanderNetSyncComponent::SubmitSelectionRequest(
 	const FGuLiSelectionRequest& Request)
 {
@@ -322,6 +330,7 @@ void UGuLiCommanderNetSyncComponent::SubmitSelectionRequest(
 }
 
 
+// 保存同一份请求供重试使用，避免重发时换 ID 或改变内容而被服务器视为冲突。
 void UGuLiCommanderNetSyncComponent::BeginSelectionIntent(
 	const FGuLiSelectionRequest& Request)
 {
@@ -335,13 +344,12 @@ void UGuLiCommanderNetSyncComponent::BeginSelectionIntent(
 	bPendingSelectionIntent = true;
 	bPendingSelectionFastRetry = true;
 	bPendingSelectionReliableFallback = true;
-	PendingSelectionFastRetryTimeSeconds =
-		NowSeconds + GuLiCommanderNetwork::FastCommandRetryDelaySeconds;
-	PendingSelectionReliableFallbackTimeSeconds =
-		NowSeconds + GuLiCommanderNetwork::ReliableCommandFallbackDelaySeconds;
+	PendingSelectionFastRetryTimeSeconds = NowSeconds + GuLiCommanderNetwork::FastCommandRetryDelaySeconds;
+	PendingSelectionReliableFallbackTimeSeconds = NowSeconds + GuLiCommanderNetwork::ReliableCommandFallbackDelaySeconds;
 	ServerRequestSelectionFast(Request);
 }
 
+// 选兵尚未确认时暂存最新移动；普通移动没有 FIFO，BeginMoveIntent 会替换当前待重试移动。
 void UGuLiCommanderNetSyncComponent::SubmitMoveRequest(const FGuLiMoveRequest& Request)
 {
 	if (!GetOwner() || GetOwner()->HasAuthority())
@@ -378,13 +386,12 @@ void UGuLiCommanderNetSyncComponent::BeginMoveIntent(const FGuLiMoveRequest& Req
 	bPendingMoveIntent = true;
 	bPendingMoveFastRetry = true;
 	bPendingMoveReliableFallback = true;
-	PendingMoveFastRetryTimeSeconds =
-		NowSeconds + GuLiCommanderNetwork::FastCommandRetryDelaySeconds;
-	PendingMoveReliableFallbackTimeSeconds =
-		NowSeconds + GuLiCommanderNetwork::ReliableCommandFallbackDelaySeconds;
+	PendingMoveFastRetryTimeSeconds = NowSeconds + GuLiCommanderNetwork::FastCommandRetryDelaySeconds;
+	PendingMoveReliableFallbackTimeSeconds = NowSeconds + GuLiCommanderNetwork::ReliableCommandFallbackDelaySeconds;
 	ServerIssueMoveFast(Request);
 }
 
+// 快速补发与可靠回退各最多触发一次；收到匹配的业务 ACK 会清除对应标志。
 void UGuLiCommanderNetSyncComponent::TickPendingCommandRetries()
 {
 	if (!GetOwner() || GetOwner()->HasAuthority())
@@ -442,6 +449,8 @@ void UGuLiCommanderNetSyncComponent::ServerRequestSelectionFast_Implementation(
 	HandleSelectionRequest(Request, false);
 }
 
+// 两种 Server RPC 的共用服务器处理路径：先去重，再校验权限/限流与输入，最后交给 Authority。
+// 重复最近请求只重放缓存结果，不再次执行选兵；这不是无限历史请求的结果存储。
 void UGuLiCommanderNetSyncComponent::HandleSelectionRequest(
 	const FGuLiSelectionRequest& Request,
 	const bool bReliableAck)
@@ -493,6 +502,7 @@ void UGuLiCommanderNetSyncComponent::HandleSelectionRequest(
 		PublishAck(Ack, bReliableAck);
 		return;
 	}
+	// 新序号在业务校验前登记；即使被拒绝，结果也会缓存，同 ID 重试不会重新执行。
 	LastSelectionRequestId = Request.ClientRequestId;
 	LastSelectionRequest = Request;
 	SelectionCachedFastReplayCount = 0u;
@@ -516,6 +526,7 @@ void UGuLiCommanderNetSyncComponent::HandleSelectionRequest(
 		return;
 	}
 
+	// 先在候选副本上解算；仅接受后替换复制状态，拒绝不能破坏原有选择。
 	FGuLiCommanderSelectionState CandidateSelection = SelectionState;
 	const bool bAccepted = Authority->ResolveSelection(
 		*CommanderPlayerState,
@@ -552,6 +563,8 @@ void UGuLiCommanderNetSyncComponent::ServerIssueMoveFast_Implementation(
 	HandleMoveRequest(Request, false);
 }
 
+// 与选兵采用相同去重规则：最近同 ID 同内容重放；同 ID 异内容拒绝；更旧 ID 返回 Duplicate。
+// 可靠回退可重放缓存 ACK，快速重复回执有每命令次数上限。
 void UGuLiCommanderNetSyncComponent::HandleMoveRequest(
 	const FGuLiMoveRequest& Request,
 	const bool bReliableAck)
@@ -626,6 +639,7 @@ void UGuLiCommanderNetSyncComponent::HandleMoveRequest(
 		return;
 	}
 
+	// Authority 决定版本/归属/目标/寻路和部分接受，bool 表示是否至少接受部分，详细原因写入 Ack。
 	const bool bAccepted = Authority->IssueMove(
 		*CommanderPlayerState,
 		Request,
@@ -641,6 +655,7 @@ void UGuLiCommanderNetSyncComponent::HandleMoveRequest(
 	PublishAck(Ack, bReliableAck);
 }
 
+// 客户端请求可重发当前未完成代次的标记；不要把每次重试都变成新的 SyncGeneration。
 void UGuLiCommanderNetSyncComponent::ServerRequestBootstrap_Implementation(uint32 ClientBootstrapRequestId)
 {
 	if (ClientBootstrapRequestId == 0)
@@ -676,8 +691,7 @@ void UGuLiCommanderNetSyncComponent::ServerRequestBootstrap_Implementation(uint3
 	const uint32 AuthorityMatchEpoch = CommanderGameState
 		? CommanderGameState->GetMatchEpoch()
 		: 0u;
-	const GuLiCommanderNetwork::EBootstrapAuthorityAction BootstrapAction =
-		GuLiCommanderNetwork::EvaluateBootstrapAuthorityAction(
+	const GuLiCommanderNetwork::EBootstrapAuthorityAction BootstrapAction = GuLiCommanderNetwork::EvaluateBootstrapAuthorityAction(
 			SyncGeneration,
 			BootstrapMatchEpoch,
 			AuthorityMatchEpoch,
@@ -694,6 +708,7 @@ void UGuLiCommanderNetSyncComponent::ServerRequestBootstrap_Implementation(uint3
 	}
 }
 
+// 服务器再次核对客户端的就绪声明，旧代次或旧战局 ACK 不能打开当前连接的就绪门。
 void UGuLiCommanderNetSyncComponent::ServerAcknowledgeBootstrap_Implementation(
 	const uint32 InSyncGeneration,
 	const uint16 ClientProtocolVersion,
@@ -735,6 +750,7 @@ void UGuLiCommanderNetSyncComponent::ServerAcknowledgeBootstrap_Implementation(
 	}
 }
 
+// 占位路径只推进 HighestAckedStreamSeq；当前没有在此组装、发送或补传事实分块。
 void UGuLiCommanderNetSyncComponent::ServerAcknowledgeFacts_Implementation(
 	uint32 InSyncGeneration,
 	uint32 HighestContiguousStreamSeq)
@@ -752,6 +768,7 @@ void UGuLiCommanderNetSyncComponent::ServerAcknowledgeFacts_Implementation(
 	}
 }
 
+// 收到启动标记先清空旧接收/重试状态并关闭姿态门；满足名册条件后才重新开放。
 void UGuLiCommanderNetSyncComponent::ClientBootstrapStarted_Implementation(
 	const uint32 NewSyncGeneration,
 	const uint16 ServerProtocolVersion,
@@ -824,6 +841,7 @@ void UGuLiCommanderNetSyncComponent::ClientReceiveCommandAckFast_Implementation(
 	ReceiveCommandAck(Ack);
 }
 
+// 可靠/快速 ACK 共用本地消费路径；先按命令种类和 ID 停止重试，再排队并通知 UI。
 void UGuLiCommanderNetSyncComponent::ReceiveCommandAck(const FGuLiCommandAck& Ack)
 {
 	FGuLiCommandAck Sanitized = Ack;
@@ -848,6 +866,8 @@ void UGuLiCommanderNetSyncComponent::ReceiveCommandAck(const FGuLiCommandAck& Ac
 		{
 			NextSelectionRequest = QueuedSelectionIntents[0];
 			QueuedSelectionIntents.RemoveAt(0, 1, EAllowShrinking::No);
+			// 后续意图使用 ACK 携带的服务器选择版本，不依赖 SelectionState 属性恰好先到达。
+			// 此分支没有以 IsAccepted 过滤：拒绝回执也会推动队列，下一请求仍由服务器独立校验。
 			NextSelectionRequest.KnownSelectionRevision = Sanitized.ServerSelectionRevision;
 			bStartNextSelection = true;
 		}
@@ -868,6 +888,7 @@ void UGuLiCommanderNetSyncComponent::ReceiveCommandAck(const FGuLiCommandAck& Ac
 		bPendingMoveReliableFallback = false;
 	}
 
+	// 这里只抑制与上一次相同种类/ID 的重复通知，不是全历史去重集合。
 	if (LastDeliveredAckKind == Sanitized.CommandKind
 		&& LastDeliveredAckCommandId == Sanitized.ClientCommandId)
 	{
@@ -896,6 +917,7 @@ void UGuLiCommanderNetSyncComponent::ReceiveCommandAck(const FGuLiCommandAck& Ac
 	}
 }
 
+// 先检查协议/初始同步/战局，再整理数据并入队；后续样本排序与旧数据过滤在 PresentationActor。
 void UGuLiCommanderNetSyncComponent::ClientReceiveSoldierPoseChunk_Implementation(
 	const FGuLiSoldierPoseChunk& Chunk)
 {
@@ -909,8 +931,7 @@ void UGuLiCommanderNetSyncComponent::ClientReceiveSoldierPoseChunk_Implementatio
 
 	FGuLiSoldierPoseChunk Sanitized = Chunk;
 	Sanitized.Sanitize();
-	const int32 MaximumPendingPoseChunks =
-		static_cast<int32>(GULI_MAX_POSE_CHUNKS_PER_FRAME);
+	const int32 MaximumPendingPoseChunks = static_cast<int32>(GULI_MAX_POSE_CHUNKS_PER_FRAME);
 	if (PendingPoseChunks.Num() >= MaximumPendingPoseChunks)
 	{
 		PendingPoseChunks.RemoveAt(
@@ -920,6 +941,7 @@ void UGuLiCommanderNetSyncComponent::ClientReceiveSoldierPoseChunk_Implementatio
 	}
 	PendingPoseChunks.Add(Sanitized);
 #if !UE_BUILD_SHIPPING
+	// 仅用于非 Shipping 的新帧统计，不意味着整帧所有块已收齐，也不会据此拒绝其他块。
 	if (LastAcceptedPoseFrameSequence == 0u
 		|| IsNewerSerial(Sanitized.FrameSequence, LastAcceptedPoseFrameSequence))
 	{
@@ -963,6 +985,7 @@ void UGuLiCommanderNetSyncComponent::ResendServerBootstrapMarker()
 		BootstrapExpectedSnapshotRevision);
 }
 
+// 本地控制端持续检查跨对象依赖；GameState、快照版本和有效唯一 SoldierId 名册都满足后确认。
 void UGuLiCommanderNetSyncComponent::TryCompleteClientBootstrap()
 {
 	AGuLiCommanderPlayerController* Controller = GetCommanderController();
@@ -975,8 +998,7 @@ void UGuLiCommanderNetSyncComponent::TryCompleteClientBootstrap()
 		return;
 	}
 
-	const AGuLiCommanderGameState* CommanderGameState =
-		World->GetGameState<AGuLiCommanderGameState>();
+	const AGuLiCommanderGameState* CommanderGameState = World->GetGameState<AGuLiCommanderGameState>();
 	if (!CommanderGameState)
 	{
 		return;
@@ -1045,6 +1067,7 @@ void UGuLiCommanderNetSyncComponent::TryCompleteClientBootstrap()
 	PendingBootstrapRosterCount = 0u;
 	PendingBootstrapSnapshotRevision = 0u;
 	ClientAcceptedMatchEpoch = CompletedMatchEpoch;
+	// 客户端先打开本地姿态门并回报；服务器收到下面的可靠 ACK 后才设置 PlayerState 的 bSyncReady。
 	bClientPoseReady = true;
 	ServerAcknowledgeBootstrap(
 		CompletedGeneration,
@@ -1124,6 +1147,8 @@ AGuLiCommanderPlayerState* UGuLiCommanderNetSyncComponent::GetCommanderPlayerSta
 		: nullptr;
 }
 
+// 拥有 RPC 通道不等于具有玩法权限：还要求服务器端、Commander 角色和初始同步就绪。
+// 未就绪与非指挥官在当前实现中都返回 Unauthorized；通过后才消耗普通命令限流额度。
 bool UGuLiCommanderNetSyncComponent::CanProcessCommanderRequest(
 	FGuLiCommandAck& InOutAck,
 	const TCHAR* RpcName)
@@ -1147,6 +1172,7 @@ bool UGuLiCommanderNetSyncComponent::CanProcessCommanderRequest(
 	return true;
 }
 
+// 每连接共享一秒滑动窗口，保留最近请求时间，最多十次；超限分支可能静默丢弃而不再发 ACK。
 bool UGuLiCommanderNetSyncComponent::ConsumeCommandRateLimit()
 {
 	const UWorld* World = GetWorld();
@@ -1171,6 +1197,7 @@ bool UGuLiCommanderNetSyncComponent::ConsumeCommandRateLimit()
 	return true;
 }
 
+// 快速缓存回执每命令最多补发两次；此预算独立于普通新命令的一秒窗口。
 bool UGuLiCommanderNetSyncComponent::ConsumeCachedAckReplayLimit(
 	uint8& ReplayCount)
 {
@@ -1196,6 +1223,7 @@ void UGuLiCommanderNetSyncComponent::InitializeAck(
 	Ack.CohortResults.Reset();
 }
 
+// 服务器把业务回执送回拥有客户端；可靠性由请求入口决定，LastCommandAck 本身没有属性复制。
 void UGuLiCommanderNetSyncComponent::PublishAck(
 	const FGuLiCommandAck& Ack,
 	const bool bReliableDelivery)
@@ -1270,6 +1298,7 @@ void UGuLiCommanderNetSyncComponent::MirrorSyncReadyToRoleSlot(
 	}
 }
 
+// 无符号差值再转有符号值用于序号回绕比较；前提是新旧距离小于半个 uint32 序号空间。
 bool UGuLiCommanderNetSyncComponent::IsNewerSerial(uint32 Candidate, uint32 Baseline)
 {
 	return static_cast<int32>(Candidate - Baseline) > 0;

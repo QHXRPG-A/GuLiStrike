@@ -21,8 +21,9 @@ DECLARE_MULTICAST_DELEGATE_OneParam(
 	const FGuLiSoldierPoseChunk&);
 
 /**
- * Owner-only command and bootstrap channel. Gameplay requests contain only
- * intent-only inputs and are revalidated by the authority subsystem.
+ * PlayerController 所属连接的双端通信组件：命令意图、初始同步、业务 ACK 和姿态 RPC。
+ * 组件借用拥有者的连接路由；SelectionState/SyncGeneration 属性仅复制给拥有者。
+ * 网络层负责校验/去重/限流，具体选兵、成员归属与寻路仍由 Authority 判定。
  */
 UCLASS(ClassGroup = (GuLiStrike), meta = (BlueprintSpawnableComponent))
 class UGuLiCommanderNetSyncComponent : public UActorComponent
@@ -38,37 +39,43 @@ public:
 		ELevelTick TickType,
 		FActorComponentTickFunction* ThisTickFunction) override;
 
-	/** Server entry used by GameMode and reconnect handling. */
+	/** 服务器本地入口：准备名册并启动新同步代次；依赖尚未就绪时返回，后续可再尝试。 */
 	void StartServerBootstrap();
 
-	/** Starts a fresh generation only when the authority MatchEpoch is not already covered. */
+	/** 服务器检查当前战局；仅缺少代次或战局改变时启动，不因重复 Tick 持续增加代次。 */
 	void EnsureServerBootstrapForMatch(uint32 AuthorityMatchEpoch);
 
-	/** Server-only 10 Hz owner-channel movement publication. */
+	/** 服务器把已构造的姿态块发给拥有者；捕获目标为 10 Hz，具体分块/调度不在本函数。 */
 	void SendPoseChunk(const FGuLiSoldierPoseChunk& Chunk);
 
-	/** Refreshes alive/order summaries and removes fully destroyed cohorts. */
+	/** 服务器刷新选择中的存活/命令摘要并剔除全灭控制组；仅发生变化时返回 true 并请求复制。 */
 	bool RefreshServerSelection();
 
-	/** Presentation drains received chunks every rendered frame. */
+	/** 客户端本地消费：将接收队列移到 OutChunks 并清空内部队列；非网络调用。 */
 	void ConsumePendingPoseChunks(TArray<FGuLiSoldierPoseChunk>& OutChunks);
 
-	/** Owning controller drains authoritative ACKs without latest-value coalescing. */
+	/** 拥有者本地按队列取走 ACK；避免只读 LastCommandAck 时漏掉同帧多个结果，队列有上限。 */
 	void ConsumePendingCommandAcks(TArray<FGuLiCommandAck>& OutAcks);
 
-	/** Low-latency idempotent command path with a delayed reliable fallback. */
+	/** 拥有者提交选兵意图：快速 RPC、一次快速重试及延迟可靠回退；同类选兵请求串行排队。 */
 	void SubmitSelectionRequest(const FGuLiSelectionRequest& Request);
+	// 拥有者提交移动意图；有待确认选兵时只保留最新延后移动，ACK 到达后补入选择版本。
 	void SubmitMoveRequest(const FGuLiMoveRequest& Request);
 
+	// 拥有客户端 → 服务器，可靠选兵 RPC；Request 只含意图，处理结果经 Client ACK 返回。
 	UFUNCTION(Server, Reliable)
 	void ServerRequestSelection(const FGuLiSelectionRequest& Request);
 
+	// 拥有客户端 → 服务器，可靠移动 RPC；无同步返回值，不能将调用返回视为接令成功。
 	UFUNCTION(Server, Reliable)
 	void ServerIssueMove(const FGuLiMoveRequest& Request);
 
+	// 拥有客户端 → 服务器，请求初始同步；非零请求序号用于去重，未就绪时可重发已有标记。
 	UFUNCTION(Server, Reliable)
 	void ServerRequestBootstrap(uint32 ClientBootstrapRequestId);
 
+	// 拥有客户端 → 服务器，确认已具备名册；服务器核对代次、协议、战局、数量与快照版本后放行。
+	// 参数来自客户端当前已应用的数据，不能只凭收到 ClientBootstrapStarted 就确认。
 	UFUNCTION(Server, Reliable)
 	void ServerAcknowledgeBootstrap(
 		uint32 InSyncGeneration,
@@ -77,7 +84,7 @@ public:
 		uint16 AppliedRosterCount,
 		uint32 AppliedSnapshotRevision);
 
-	/** Placeholder fact-stream ACK; retained so the 8 KiB chunk stream can land without changing RPC ownership. */
+	/** 预留事实流确认 RPC：当前仅记录连续序号，尚无配套 8 KiB 事实分块发送/重传实现。 */
 	UFUNCTION(Server, Unreliable)
 	void ServerAcknowledgeFacts(uint32 InSyncGeneration, uint32 HighestContiguousStreamSeq);
 
@@ -93,6 +100,7 @@ public:
 	double GetLastAcceptedPoseReceiveTimeSeconds() const { return LastAcceptedPoseReceiveTimeSeconds; }
 #endif
 
+	// 以下三个委托只在本进程广播；分别由属性通知、ACK 接收、姿态接收驱动。
 	FGuLiCommanderSelectionChangedSignature OnSelectionChanged;
 
 	FGuLiCommanderCommandAckChangedSignature OnCommandAckChanged;
@@ -129,12 +137,15 @@ public:
 #endif
 
 private:
+	// 拥有客户端 → 服务器，不可靠快速选兵入口；与可靠版本共用 HandleSelectionRequest。
 	UFUNCTION(Server, Unreliable)
 	void ServerRequestSelectionFast(const FGuLiSelectionRequest& Request);
 
+	// 拥有客户端 → 服务器，不可靠快速移动入口；同一命令重试必须保留原序号与内容。
 	UFUNCTION(Server, Unreliable)
 	void ServerIssueMoveFast(const FGuLiMoveRequest& Request);
 
+	// 服务器 → 拥有客户端，可靠同步标记；携带期望值，不携带完整名册，也不保证其他 Actor 已到达。
 	UFUNCTION(Client, Reliable)
 	void ClientBootstrapStarted(
 		uint32 NewSyncGeneration,
@@ -143,12 +154,15 @@ private:
 		uint16 ExpectedRosterCount,
 		uint32 ExpectedSnapshotRevision);
 
+	// 服务器 → 拥有客户端，可靠业务回执；Ack 是数据结构，RPC 才是运输入口。
 	UFUNCTION(Client, Reliable)
 	void ClientReceiveCommandAck(const FGuLiCommandAck& Ack);
 
+	// 服务器 → 拥有客户端，不可靠快速回执；丢失时客户端重发请求，服务器可重放缓存 ACK。
 	UFUNCTION(Client, Unreliable)
 	void ClientReceiveCommandAckFast(const FGuLiCommandAck& Ack);
 
+	// 服务器 → 拥有客户端，不可靠姿态块；每块可独立消费，不等待整帧凑齐。
 	UFUNCTION(Client, Unreliable)
 	void ClientReceiveSoldierPoseChunk(const FGuLiSoldierPoseChunk& Chunk);
 
@@ -178,14 +192,18 @@ private:
 	void MirrorSyncReadyToRoleSlot(const AGuLiCommanderPlayerState& CommanderPlayerState, bool bReady) const;
 	static bool IsNewerSerial(uint32 Candidate, uint32 Baseline);
 
+	// 服务器确认的选择，OwnerOnly 属性复制；客户端预测不能修改服务器这份权威值。
 	UPROPERTY(ReplicatedUsing = OnRep_SelectionState)
 	FGuLiCommanderSelectionState SelectionState;
 
+	// 本地最近回执缓存，不是复制属性；跨网传递在 PublishAck 的 Client RPC 中完成。
 	FGuLiCommandAck LastCommandAck;
 
+	// 每连接的同步代次，OwnerOnly 复制；0 表示尚无有效同步代次。
 	UPROPERTY(ReplicatedUsing = OnRep_SyncGeneration)
 	uint32 SyncGeneration = 0;
 
+	// 服务器去重状态：选兵与移动各有独立序号空间，并分别缓存最近请求及 ACK。
 	uint32 LastSelectionRequestId = 0;
 	uint32 LastMoveCommandId = 0;
 	uint32 LastBootstrapRequestId = 0;
@@ -193,6 +211,7 @@ private:
 	uint32 BootstrapMatchEpoch = 0;
 	uint16 BootstrapExpectedRosterCount = 0;
 	uint32 BootstrapExpectedSnapshotRevision = 0;
+	// 客户端待满足的同步条件；与服务器 Bootstrap* 期望值分开保存。
 	uint32 PendingBootstrapGeneration = 0;
 	uint32 PendingBootstrapMatchEpoch = 0;
 	uint16 PendingBootstrapRosterCount = 0;
@@ -200,6 +219,7 @@ private:
 	uint32 ClientAcceptedMatchEpoch = 0;
 	bool bLoggedBootstrapProtocolMismatch = false;
 	bool bClientPoseReady = false;
+	// 客户端重试状态机；这是本地缓存，不是需要复制给服务器的字段。
 	bool bPendingSelectionIntent = false;
 	bool bPendingSelectionFastRetry = false;
 	bool bPendingSelectionReliableFallback = false;
@@ -226,6 +246,7 @@ private:
 	TArray<double> RecentCommanderRequestTimes;
 	double LastSecurityLogTime = -1.0;
 	uint32 SuppressedSecurityLogCount = 0;
+	// 本地有界消费队列：ACK 上限 64，姿态上限为一帧协议允许的块数。
 	TArray<FGuLiCommandAck> PendingCommandAcks;
 	TArray<FGuLiSoldierPoseChunk> PendingPoseChunks;
 #if !UE_BUILD_SHIPPING

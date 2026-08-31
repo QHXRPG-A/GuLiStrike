@@ -60,6 +60,7 @@ namespace
 	}
 }
 
+// 双端按同样顺序读写：SerializeIntPacked 压缩整数；return true 表示走自定义序列化，bOutSuccess 才报告数据成功。
 bool FGuLiSoldierId::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
 {
 	(void)Map;
@@ -68,6 +69,7 @@ bool FGuLiSoldierId::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSucc
 	return true;
 }
 
+// 控制组 ID 同样采用压缩整数；结构序列化只传数值，不验证该组是否属于调用玩家。
 bool FGuLiControlCohortId::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
 {
 	(void)Map;
@@ -96,6 +98,7 @@ float GuLiCommanderProtocol::GetSelectionRadiusCentimeters(const EGuLiSelectionR
 	}
 }
 
+// 先拒绝非有限数，再把角度归一到一周，量化后按 16 位回绕。
 uint16 GuLiCommanderProtocol::QuantizeYawDegrees(const float YawDegrees)
 {
 	if (!FMath::IsFinite(YawDegrees))
@@ -113,6 +116,7 @@ float GuLiCommanderProtocol::DequantizeYawDegrees(const uint16 QuantizedYaw)
 	return static_cast<float>(QuantizedYaw) * (360.0f / 65536.0f);
 }
 
+// 每 10 cm 一个量化单位，四舍五入后钳制 int16；空间分块应提前避免位置超界而不是依赖截断。
 int16 GuLiCommanderProtocol::QuantizeCentimetersToDecimeters(const float Centimeters)
 {
 	if (!FMath::IsFinite(Centimeters))
@@ -132,6 +136,7 @@ float GuLiCommanderProtocol::DequantizeDecimetersToCentimeters(const int16 Decim
 	return static_cast<float>(Decimeters) * GULI_POSE_QUANTIZATION_CENTIMETERS;
 }
 
+// 格式检查只验证非零 ID、有限坐标与枚举范围；权限、版本与可选单位仍由服务器判定。
 bool FGuLiSelectionRequest::IsWellFormed() const
 {
 	return ClientRequestId != 0u
@@ -157,6 +162,7 @@ bool FGuLiControlCohortDescriptor::Contains(const FGuLiSoldierId SoldierId) cons
 	return SoldierId.IsValid() && MemberIds.Contains(SoldierId);
 }
 
+// 输入整理会删除无效/重复成员并限制数量；这是数据约束，不是网络授权或反作弊验证。
 void FGuLiControlCohortDescriptor::Sanitize()
 {
 	TSet<FGuLiSoldierId> SeenSoldiers;
@@ -185,6 +191,7 @@ void FGuLiControlCohortDescriptor::Sanitize()
 	}
 }
 
+// 发送前/接收后整理控制组；数量先按有界整数编码，再逐项编码成员，读写顺序必须一致。
 bool FGuLiControlCohortDescriptor::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
 {
 	if (Ar.IsSaving())
@@ -227,6 +234,7 @@ bool FGuLiControlCohortDescriptor::NetSerialize(FArchive& Ar, UPackageMap* Map, 
 	return true;
 }
 
+// 除组内去重，还剔除跨组重复士兵和空组，保证一个选择内每名士兵至多出现一次。
 void FGuLiCommanderSelectionState::Sanitize()
 {
 	TSet<FGuLiControlCohortId> SeenCohorts;
@@ -271,6 +279,7 @@ void FGuLiCommanderSelectionState::Sanitize()
 	}
 }
 
+// 先组列表、后选择版本和已接受请求号；修改字段顺序/数量编码上限会改变线协议。
 bool FGuLiCommanderSelectionState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
 {
 	if (Ar.IsSaving())
@@ -304,12 +313,14 @@ bool FGuLiCommanderSelectionState::NetSerialize(FArchive& Ar, UPackageMap* Map, 
 	return true;
 }
 
+// 这是业务是否接受的便捷判断，不是 RPC 投递确认，也不是移动完成事件。
 bool FGuLiCommandAck::IsAccepted() const
 {
 	return Result == EGuLiCommandAckResult::Accepted
 		|| Result == EGuLiCommandAckResult::PartiallyAccepted;
 }
 
+// 只整理种类/控制组列表及上限；不能替代服务器权限、寻路校验，也不是对全部结果枚举的验证。
 void FGuLiCommandAck::Sanitize()
 {
 	if (!IsValidCommandKind(CommandKind))
@@ -351,6 +362,7 @@ bool FGuLiSoldierStateItem::IsAlive() const
 	return LifeState == EGuLiSoldierLifeState::Alive && Health > 0u;
 }
 
+// 生命事实保持一致：最大生命至少为 1，死亡时生命/活动命令归零；客户端表现据此判定存活。
 void FGuLiSoldierStateItem::Sanitize()
 {
 	if (!GuLiCommanderProtocol::IsPlayableTeam(Team))
@@ -361,6 +373,8 @@ void FGuLiSoldierStateItem::Sanitize()
 	{
 		LifeState = EGuLiSoldierLifeState::Alive;
 	}
+	MaxHealth = FMath::Max<uint8>(MaxHealth, 1u);
+	Health = FMath::Min(Health, MaxHealth);
 
 	if (Health == 0u || LifeState == EGuLiSoldierLifeState::Destroyed)
 	{
@@ -459,6 +473,7 @@ void FGuLiCompressedSoldierPose::Sanitize()
 	}
 }
 
+// 位置/速度为 int16，朝向为 uint16，命令号压缩；状态占 2 bit、标志占 1 bit。
 bool FGuLiCompressedSoldierPose::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
 {
 	if (Ar.IsSaving())
@@ -493,6 +508,7 @@ bool FGuLiCompressedSoldierPose::NetSerialize(FArchive& Ar, UPackageMap* Map, bo
 	return true;
 }
 
+// 整理会重置协议字段并裁剪数量，因此不能先整理再据其验证原始协议版本。
 void FGuLiSoldierPoseChunk::Sanitize()
 {
 	ProtocolVersion = GULI_COMMANDER_PROTOCOL_VERSION;
@@ -571,6 +587,7 @@ bool FGuLiSoldierPoseChunk::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& b
 		bOutSuccess = bOutSuccess && bFieldSuccess;
 	}
 
+	// 在接收后 Sanitize 之前保存原始头部有效性，避免非法协议/战局/块号被整理后掩盖。
 	const bool bHeaderValid = ProtocolVersion == GULI_COMMANDER_PROTOCOL_VERSION
 		&& AuthorityEpoch != 0u
 		&& FrameSequence != 0u

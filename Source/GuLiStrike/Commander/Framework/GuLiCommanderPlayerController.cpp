@@ -20,6 +20,64 @@ namespace GuLiCommanderCursorTrace
 	constexpr int32 MaximumIgnoredNonLandscapeBlockers = 16;
 }
 
+bool GuLiCommanderToolPolicy::CanArmMove(
+	const bool bCanIssueOrders,
+	const bool bHasNetSync,
+	const bool bHasConfirmedSelection)
+{
+	return bCanIssueOrders && bHasNetSync && bHasConfirmedSelection;
+}
+
+EGuLiSelectionRadiusPreset GuLiCommanderToolPolicy::ResolveRadiusStep(
+	const EGuLiCommanderToolMode ToolMode,
+	const EGuLiSelectionRadiusPreset CurrentPreset)
+{
+	if (ToolMode != EGuLiCommanderToolMode::Select)
+	{
+		return CurrentPreset;
+	}
+
+	switch (CurrentPreset)
+	{
+	case EGuLiSelectionRadiusPreset::Small:
+		return EGuLiSelectionRadiusPreset::Medium;
+	case EGuLiSelectionRadiusPreset::Medium:
+		return EGuLiSelectionRadiusPreset::Large;
+	case EGuLiSelectionRadiusPreset::Large:
+	default:
+		return EGuLiSelectionRadiusPreset::Small;
+	}
+}
+
+GuLiCommanderToolPolicy::ECancelAction GuLiCommanderToolPolicy::ResolveCancelAction(
+	const EGuLiCommanderToolMode ToolMode)
+{
+	return ToolMode == EGuLiCommanderToolMode::Move
+		? ECancelAction::CancelMove
+		: ECancelAction::ClearSelection;
+}
+
+EGuLiCommanderToolMode GuLiCommanderToolPolicy::ResolveModeAfterMoveAttempt(
+	const EGuLiCommanderToolMode CurrentMode,
+	const bool bMoveSubmitted)
+{
+	return bMoveSubmitted ? EGuLiCommanderToolMode::Select : CurrentMode;
+}
+
+EGuLiCommanderToolMode GuLiCommanderToolPolicy::ResolveModeForSelectionAvailability(
+	const EGuLiCommanderToolMode CurrentMode,
+	const bool bHasConfirmedSelection)
+{
+	return CurrentMode == EGuLiCommanderToolMode::Move && !bHasConfirmedSelection
+		? EGuLiCommanderToolMode::Select
+		: CurrentMode;
+}
+
+bool GuLiCommanderToolPolicy::AllowsWorldIntent(const bool bCursorOverCommanderUI)
+{
+	return !bCursorOverCommanderUI;
+}
+
 AGuLiCommanderPlayerController::AGuLiCommanderPlayerController()
 {
 	bShowMouseCursor = true;
@@ -52,12 +110,13 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 		return;
 	}
 
-	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::SelectAtCursor);
-	InputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::MoveAtCursor);
-	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AGuLiCommanderPlayerController::ClearSelection);
-	InputComponent->BindKey(EKeys::One, IE_Pressed, this, &AGuLiCommanderPlayerController::SelectSmallRadius);
-	InputComponent->BindKey(EKeys::Two, IE_Pressed, this, &AGuLiCommanderPlayerController::SelectMediumRadius);
-	InputComponent->BindKey(EKeys::Three, IE_Pressed, this, &AGuLiCommanderPlayerController::SelectLargeRadius);
+	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor);
+	InputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor);
+	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleCancelInput);
+	InputComponent->BindKey(EKeys::One, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleArmMoveToolInput);
+	InputComponent->BindKey(EKeys::Seven, IE_Pressed, this, &AGuLiCommanderPlayerController::ActivateSelectionTool);
+	InputComponent->BindKey(EKeys::Add, IE_Pressed, this, &AGuLiCommanderPlayerController::StepSelectionRadiusUp);
+	InputComponent->BindKey(FInputChord(EKeys::Equals, true, false, false, false), IE_Pressed, this, &AGuLiCommanderPlayerController::StepSelectionRadiusUp);
 	InputComponent->BindKey(EKeys::MouseScrollUp, IE_Pressed, this, &AGuLiCommanderPlayerController::ZoomCameraIn);
 	InputComponent->BindKey(EKeys::MouseScrollDown, IE_Pressed, this, &AGuLiCommanderPlayerController::ZoomCameraOut);
 }
@@ -68,6 +127,12 @@ void AGuLiCommanderPlayerController::PlayerTick(const float DeltaTime)
 
 	bHasCursorGroundLocation = TraceGroundUnderCursor(CachedCursorGroundLocation);
 	UpdateBootstrapRetry();
+	if (GuLiCommanderToolPolicy::ResolveModeForSelectionAvailability(
+		CommanderToolMode,
+		HasConfirmedSelection()) != CommanderToolMode)
+	{
+		ActivateSelectionTool();
+	}
 	UpdateCameraInput(DeltaTime);
 	UpdateAcceptedCommandVisual();
 }
@@ -80,6 +145,42 @@ bool AGuLiCommanderPlayerController::CanIssueCommanderOrders() const
 		&& CommanderPlayerState->IsSyncReady();
 }
 
+void AGuLiCommanderPlayerController::ActivateSelectionTool()
+{
+	if (CommanderToolMode == EGuLiCommanderToolMode::Select)
+	{
+		return;
+	}
+
+	CommanderToolMode = EGuLiCommanderToolMode::Select;
+	OnCommanderToolModeChanged.Broadcast(CommanderToolMode);
+}
+
+bool AGuLiCommanderPlayerController::ArmMoveTool()
+{
+	if (!GuLiCommanderToolPolicy::CanArmMove(
+		CanIssueCommanderOrders(),
+		NetSyncComponent != nullptr,
+		HasConfirmedSelection()))
+	{
+		return false;
+	}
+
+	if (CommanderToolMode != EGuLiCommanderToolMode::Move)
+	{
+		CommanderToolMode = EGuLiCommanderToolMode::Move;
+		OnCommanderToolModeChanged.Broadcast(CommanderToolMode);
+	}
+	return true;
+}
+
+void AGuLiCommanderPlayerController::StepSelectionRadiusUp()
+{
+	SetSelectionRadiusPreset(GuLiCommanderToolPolicy::ResolveRadiusStep(
+		CommanderToolMode,
+		SelectionRadiusPreset));
+}
+
 void AGuLiCommanderPlayerController::SetSelectionRadiusPreset(
 	const EGuLiSelectionRadiusPreset NewPreset)
 {
@@ -88,7 +189,12 @@ void AGuLiCommanderPlayerController::SetSelectionRadiusPreset(
 	case EGuLiSelectionRadiusPreset::Small:
 	case EGuLiSelectionRadiusPreset::Medium:
 	case EGuLiSelectionRadiusPreset::Large:
+		if (SelectionRadiusPreset == NewPreset)
+		{
+			return;
+		}
 		SelectionRadiusPreset = NewPreset;
+		OnSelectionRadiusPresetChanged.Broadcast(SelectionRadiusPreset);
 		break;
 	default:
 		break;
@@ -127,29 +233,68 @@ bool AGuLiCommanderPlayerController::GetActiveCommandLine(
 	return true;
 }
 
-void AGuLiCommanderPlayerController::SelectAtCursor()
+void AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor()
 {
-	float MouseX = 0.0f;
-	float MouseY = 0.0f;
-	if (const AGuLiCommanderHUD* CommanderHUD = Cast<AGuLiCommanderHUD>(GetHUD());
-		CommanderHUD
-		&& GetMousePosition(MouseX, MouseY)
-		&& CommanderHUD->IsScreenPositionOverCommanderUI(FVector2D(MouseX, MouseY)))
+	if (CommanderToolMode == EGuLiCommanderToolMode::Move)
 	{
-		// Canvas hit boxes receive their click later in the input frame. Do not
-		// also turn the same LMB press into a world selection RPC.
+		const bool bMoveSubmitted = TryIssueMoveAtCursor();
+		if (GuLiCommanderToolPolicy::ResolveModeAfterMoveAttempt(
+			CommanderToolMode,
+			bMoveSubmitted) == EGuLiCommanderToolMode::Select)
+		{
+			ActivateSelectionTool();
+		}
 		return;
+	}
+
+	TryIssueSelectionAtCursor();
+}
+
+void AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor()
+{
+	const bool bMoveSubmitted = TryIssueMoveAtCursor();
+	if (GuLiCommanderToolPolicy::ResolveModeAfterMoveAttempt(
+		CommanderToolMode,
+		bMoveSubmitted) == EGuLiCommanderToolMode::Select)
+	{
+		ActivateSelectionTool();
+	}
+}
+
+void AGuLiCommanderPlayerController::HandleArmMoveToolInput()
+{
+	ArmMoveTool();
+}
+
+void AGuLiCommanderPlayerController::HandleCancelInput()
+{
+	if (GuLiCommanderToolPolicy::ResolveCancelAction(CommanderToolMode)
+		== GuLiCommanderToolPolicy::ECancelAction::CancelMove)
+	{
+		ActivateSelectionTool();
+		return;
+	}
+
+	ClearSelection();
+}
+
+// 生成区域意图和非零请求号；不把本地推测的士兵/控制组列表传给服务器。
+bool AGuLiCommanderPlayerController::TryIssueSelectionAtCursor()
+{
+	if (!GuLiCommanderToolPolicy::AllowsWorldIntent(IsCursorOverCommanderUI()))
+	{
+		return false;
 	}
 
 	if (!CanIssueCommanderOrders() || !NetSyncComponent)
 	{
-		return;
+		return false;
 	}
 
 	FVector GroundLocation;
 	if (!TraceGroundUnderCursor(GroundLocation))
 	{
-		return;
+		return false;
 	}
 
 	FGuLiSelectionRequest Request;
@@ -161,30 +306,26 @@ void AGuLiCommanderPlayerController::SelectAtCursor()
 	Request.ClientRequestId = AllocateSelectionRequestId();
 	Request.KnownSelectionRevision = NetSyncComponent->GetSelectionState().SelectionRevision;
 	NetSyncComponent->SubmitSelectionRequest(Request);
+	return true;
 }
 
-void AGuLiCommanderPlayerController::MoveAtCursor()
+// 先展示 Pending 与短时预测，再发移动意图；成功返回只表示本地提交路径完成。
+bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 {
-	float MouseX = 0.0f;
-	float MouseY = 0.0f;
-	if (const AGuLiCommanderHUD* CommanderHUD = Cast<AGuLiCommanderHUD>(GetHUD());
-		CommanderHUD
-		&& GetMousePosition(MouseX, MouseY)
-		&& CommanderHUD->IsScreenPositionOverCommanderUI(FVector2D(MouseX, MouseY)))
+	if (!GuLiCommanderToolPolicy::AllowsWorldIntent(IsCursorOverCommanderUI()))
 	{
-		return;
+		return false;
 	}
 
-	if (!CanIssueCommanderOrders() || !NetSyncComponent
-		|| NetSyncComponent->GetSelectionState().Cohorts.IsEmpty())
+	if (!CanIssueCommanderOrders() || !NetSyncComponent || !HasConfirmedSelection())
 	{
-		return;
+		return false;
 	}
 
 	FVector GroundLocation;
 	if (!TraceGroundUnderCursor(GroundLocation))
 	{
-		return;
+		return false;
 	}
 
 	FGuLiMoveRequest Request;
@@ -209,8 +350,10 @@ void AGuLiCommanderPlayerController::MoveAtCursor()
 		break;
 	}
 	NetSyncComponent->SubmitMoveRequest(Request);
+	return true;
 }
 
+// 清空同样是一条选兵请求，必须经过服务器版本/权限判定，不能只清客户端副本。
 void AGuLiCommanderPlayerController::ClearSelection()
 {
 	if (!CanIssueCommanderOrders() || !NetSyncComponent)
@@ -227,19 +370,31 @@ void AGuLiCommanderPlayerController::ClearSelection()
 	NetSyncComponent->SubmitSelectionRequest(Request);
 }
 
-void AGuLiCommanderPlayerController::SelectSmallRadius()
+bool AGuLiCommanderPlayerController::IsCursorOverCommanderUI() const
 {
-	SetSelectionRadiusPreset(EGuLiSelectionRadiusPreset::Small);
+	float MouseX = 0.0f;
+	float MouseY = 0.0f;
+	const AGuLiCommanderHUD* CommanderHUD = Cast<AGuLiCommanderHUD>(GetHUD());
+	return CommanderHUD
+		&& GetMousePosition(MouseX, MouseY)
+		&& CommanderHUD->IsScreenPositionOverCommanderUI(FVector2D(MouseX, MouseY));
 }
 
-void AGuLiCommanderPlayerController::SelectMediumRadius()
+bool AGuLiCommanderPlayerController::HasConfirmedSelection() const
 {
-	SetSelectionRadiusPreset(EGuLiSelectionRadiusPreset::Medium);
-}
+	if (!NetSyncComponent)
+	{
+		return false;
+	}
 
-void AGuLiCommanderPlayerController::SelectLargeRadius()
-{
-	SetSelectionRadiusPreset(EGuLiSelectionRadiusPreset::Large);
+	for (const FGuLiControlCohortDescriptor& Cohort : NetSyncComponent->GetSelectionState().Cohorts)
+	{
+		if (!Cohort.MemberIds.IsEmpty())
+		{
+			return true;
+		}
+	}
+	return false;
 }
 
 void AGuLiCommanderPlayerController::ZoomCameraIn()
@@ -341,8 +496,7 @@ FVector AGuLiCommanderPlayerController::FindConfirmedSelectionCenter() const
 		return PendingMoveTarget;
 	}
 
-	const TArray<FGuLiControlCohortDescriptor>& Cohorts =
-		NetSyncComponent->GetSelectionState().Cohorts;
+	const TArray<FGuLiControlCohortDescriptor>& Cohorts = NetSyncComponent->GetSelectionState().Cohorts;
 	if (Cohorts.IsEmpty())
 	{
 		return PendingMoveTarget;
@@ -370,6 +524,7 @@ FVector AGuLiCommanderPlayerController::FindConfirmedSelectionCenter() const
 	return PendingMoveTarget;
 }
 
+// 选兵序号与移动序号分别增长并跳过 0；因此相同数字必须结合 CommandKind 区分。
 uint32 AGuLiCommanderPlayerController::AllocateSelectionRequestId()
 {
 	const uint32 Result = NextSelectionRequestId++;
@@ -390,6 +545,7 @@ uint32 AGuLiCommanderPlayerController::AllocateMoveCommandId()
 	return Result;
 }
 
+// 本地两秒重试负责登录先于名册创建等情况；服务器可重发同一代次标记。
 void AGuLiCommanderPlayerController::UpdateBootstrapRetry()
 {
 	if (!IsLocalController() || !NetSyncComponent || !GetWorld())
@@ -397,8 +553,7 @@ void AGuLiCommanderPlayerController::UpdateBootstrapRetry()
 		return;
 	}
 
-	const AGuLiCommanderPlayerState* CommanderPlayerState =
-		GetPlayerState<AGuLiCommanderPlayerState>();
+	const AGuLiCommanderPlayerState* CommanderPlayerState = GetPlayerState<AGuLiCommanderPlayerState>();
 	if (!CommanderPlayerState || CommanderPlayerState->IsSyncReady())
 	{
 		return;
@@ -458,6 +613,7 @@ void AGuLiCommanderPlayerController::UpdateAcceptedCommandVisual()
 	}
 
 	TArray<FGuLiCommandAck> PendingAcks;
+	// 逐条消费回执，避免同帧只读最近值丢失反馈；只呈现当前 PendingMoveCommandId 的结果。
 	NetSyncComponent->ConsumePendingCommandAcks(PendingAcks);
 	for (const FGuLiCommandAck& Ack : PendingAcks)
 	{

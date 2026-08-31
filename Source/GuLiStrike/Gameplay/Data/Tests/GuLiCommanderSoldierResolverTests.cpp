@@ -9,6 +9,7 @@
 #include "Engine/StaticMesh.h"
 #include "Misc/AutomationTest.h"
 #include "UObject/StrongObjectPtr.h"
+#include "UObject/UObjectGlobals.h"
 
 #include <limits>
 
@@ -152,9 +153,59 @@ bool FGuLiCommanderSoldierDefaultBaselineTest::RunTest(const FString& Parameters
 	TestEqual(TEXT("fallback speed is the 36 m/s baseline"), Fallback.MovementSpeedCmPerSecond, 3600.0f);
 	TestEqual(TEXT("fallback health"), Fallback.MaxHealth, static_cast<uint8>(100u));
 	TestTrue(TEXT("fallback model is a UStaticMesh"), IsValid(Fallback.Model));
+	if (IsValid(Fallback.Model))
+	{
+		TestEqual(
+			TEXT("fallback resolves to the dedicated Crowd mesh"),
+			Fallback.Model->GetPathName(),
+			FString(TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd")));
+	}
 	TestEqual(TEXT("fallback attack"), Fallback.AttackPower, 0.0f);
 	TestEqual(TEXT("fallback defense"), Fallback.Defense, 0.0f);
 	TestEqual(TEXT("fallback attack range"), Fallback.AttackRangeCentimeters, 0.0f);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiCommanderSoldierImportedBaselineTest,
+	"GuLiStrike.Commander.Data.SoldierResolver.ImportedBaseline",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiCommanderSoldierImportedBaselineTest::RunTest(const FString& Parameters)
+{
+	(void)Parameters;
+	constexpr TCHAR TablePath[] =
+		TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Soldiers.DT_GuLiStrikeCommander_Soldiers");
+	constexpr TCHAR CrowdMeshPath[] =
+		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd");
+
+	const UDataTable* DataTable = LoadObject<UDataTable>(nullptr, TablePath);
+	if (!TestNotNull(TEXT("imported Soldier DataTable is available"), DataTable))
+	{
+		return false;
+	}
+
+	bool bEntireDefinitionFromDataTable = false;
+	const FGuLiSoldierDefinition Resolved = FGuLiCommanderSoldierResolver::Resolve(
+		DataTable,
+		TEXT("DefaultSoldier"),
+		FGuLiCommanderSoldierResolver::MakeFallbackDefinition(),
+		bEntireDefinitionFromDataTable);
+
+	TestTrue(TEXT("DefaultSoldier resolves entirely from the imported row"), bEntireDefinitionFromDataTable);
+	TestEqual(TEXT("imported movement speed"), Resolved.MovementSpeedCmPerSecond, 3600.0f);
+	TestEqual(TEXT("imported maximum health"), Resolved.MaxHealth, static_cast<uint8>(100u));
+	TestNotNull(TEXT("imported model resolves to a UStaticMesh"), Resolved.Model.Get());
+	if (IsValid(Resolved.Model))
+	{
+		TestEqual(
+			TEXT("imported model resolves to the dedicated Crowd mesh"),
+			Resolved.Model->GetPathName(),
+			FString(CrowdMeshPath));
+	}
+	TestEqual(TEXT("imported attack power"), Resolved.AttackPower, 0.0f);
+	TestEqual(TEXT("imported defense"), Resolved.Defense, 0.0f);
+	TestEqual(TEXT("imported attack range"), Resolved.AttackRangeCentimeters, 0.0f);
 	return true;
 }
 

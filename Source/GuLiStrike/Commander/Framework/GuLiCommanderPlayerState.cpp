@@ -4,6 +4,7 @@
 
 #include "Net/UnrealNetwork.h"
 
+// 身份、分配结果与就绪位走属性复制；C++ 服务器 setter 另行广播本地通知。
 void AGuLiCommanderPlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -30,6 +31,7 @@ void AGuLiCommanderPlayerState::CopyProperties(APlayerState* PlayerState)
 	}
 }
 
+// 恢复旧 PlayerState 的身份，不恢复 bSyncReady；新连接/World 必须重新完成初始同步。
 void AGuLiCommanderPlayerState::OverrideWith(APlayerState* PlayerState)
 {
 	Super::OverrideWith(PlayerState);
@@ -100,6 +102,7 @@ void AGuLiCommanderPlayerState::NotifyStateChanged()
 	OnCommanderPlayerStateChanged.Broadcast();
 }
 
+// 客户端副本更新后的本地消费入口；不能在这里向服务器反向提交权威分配。
 void AGuLiCommanderPlayerState::OnRep_Assignment()
 {
 	NotifyStateChanged();

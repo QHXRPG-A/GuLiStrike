@@ -11,8 +11,8 @@ TABLE_PATH = (
     "DT_GuLiStrikeCommander_Soldiers"
 )
 MODEL_PATH = (
-    "/Game/Commander/Units/SM_CommanderFourFRobot."
-    "SM_CommanderFourFRobot"
+    "/Game/Commander/Units/SM_CommanderFourFRobot_Crowd."
+    "SM_CommanderFourFRobot_Crowd"
 )
 EXPECTED_STRUCT = "/Script/GuLiStrike.GuLiStrikeCommanderSoldiersRow"
 
@@ -53,7 +53,7 @@ if table:
     )
     result["checks"]["model_reference"] = (
         row is not None
-        and "/Game/Commander/Units/SM_CommanderFourFRobot" in str(row.get("ModelAsset"))
+        and MODEL_PATH in str(row.get("ModelAsset"))
     )
 
 model = unreal.load_object(None, MODEL_PATH)

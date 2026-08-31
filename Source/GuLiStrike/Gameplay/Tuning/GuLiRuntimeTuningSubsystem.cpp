@@ -51,8 +51,7 @@ void UGuLiRuntimeTuningSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 	Super::OnWorldBeginPlay(InWorld);
 	ApplyEffectiveSoldierValues();
 	ApplyEffectiveShipValues();
-	if (const UGuLiBattleAuthoritySubsystem* Authority =
-		InWorld.GetSubsystem<UGuLiBattleAuthoritySubsystem>())
+	if (const UGuLiBattleAuthoritySubsystem* Authority = InWorld.GetSubsystem<UGuLiBattleAuthoritySubsystem>())
 	{
 		PublishReplicatedState(Authority->GetCommittedMovementSpeedCmPerSecond());
 	}
@@ -153,6 +152,7 @@ FGuLiShipRuntimeTuningValues UGuLiRuntimeTuningSubsystem::GetEffectiveShipValues
 	return Values;
 }
 
+// 仅服务器从注册表写入飞船复制状态；倍率均为 1 时移除保留层，不清除其他玩法修饰。
 bool UGuLiRuntimeTuningSubsystem::ApplyCurrentShipTuning(AGuLiStrikeShip& Ship) const
 {
 	if (!Ship.HasAuthority())
@@ -171,6 +171,7 @@ bool UGuLiRuntimeTuningSubsystem::ApplyCurrentShipTuning(AGuLiStrikeShip& Ship) 
 		Values.AccelerationMultiplier);
 }
 
+// 异步/延迟提交可能已被后来的 Set/Reset 取代；只发布仍等于当前目标值的提交回调。
 void UGuLiRuntimeTuningSubsystem::NotifySoldierMovementSpeedCommitted(
 	const float CommittedMoveSpeedCmPerSecond,
 	const int32 AppliedEntityCount)
@@ -226,8 +227,7 @@ void UGuLiRuntimeTuningSubsystem::LoadSoldierBaselines()
 	}
 
 	const FGuLiSoldierDefinition& Definition = DataSubsystem->GetDefaultSoldierDefinition();
-	const EGuLiRuntimeTuningValueSource Source =
-		DataSubsystem->IsDefaultSoldierDefinitionFromDataTable()
+	const EGuLiRuntimeTuningValueSource Source = DataSubsystem->IsDefaultSoldierDefinitionFromDataTable()
 		? EGuLiRuntimeTuningValueSource::DataTable
 		: EGuLiRuntimeTuningValueSource::CppFallback;
 	Registry.SetBaseline(
@@ -311,13 +311,13 @@ void UGuLiRuntimeTuningSubsystem::ApplyChangedResults(
 			: ShipAppliedCount;
 	}
 
+	// 注册表生效值和 Mass 已提交值不同就延迟发布；两者已一致时取消旧待发布请求。
 	if (bSoldierMovementSpeedChanged)
 	{
 		const UGuLiBattleAuthoritySubsystem* Authority = GetWorld()
 			? GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()
 			: nullptr;
-		const float EffectiveMoveSpeed =
-			GetEffectiveSoldierValues().MovementSpeedCmPerSecond;
+		const float EffectiveMoveSpeed = GetEffectiveSoldierValues().MovementSpeedCmPerSecond;
 		if (!Authority || !FMath::IsNearlyEqual(
 			Authority->GetCommittedMovementSpeedCmPerSecond(),
 			EffectiveMoveSpeed))
@@ -352,6 +352,7 @@ void UGuLiRuntimeTuningSubsystem::AdvanceRevisionAndPublish(
 	PublishReplicatedState(CommittedMoveSpeedCmPerSecond);
 }
 
+// 网络承载对象是 GameState；服务器 setter 广播本地通知，并让复制系统将值送到客户端预测层。
 void UGuLiRuntimeTuningSubsystem::PublishReplicatedState(
 	const float CommittedMoveSpeedCmPerSecond) const
 {

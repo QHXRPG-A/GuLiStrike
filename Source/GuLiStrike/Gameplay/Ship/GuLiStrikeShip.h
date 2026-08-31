@@ -52,9 +52,8 @@ struct FGuLiStrikeStatModifier
 };
 
 /**
- * Server-authored GM.Runtime state replicated as one property so clients never
- * observe a speed multiplier from one revision and an acceleration multiplier
- * from another.
+ * 服务器编写的 GM.Runtime 状态：把极速/加速度倍率、启用位与版本放在同一个复制结构中消费。
+ * 客户端 OnRep 按整份当前结构重建保留修饰层；这不代表跨 Actor 的状态也会原子到达。
  */
 USTRUCT()
 struct FGuLiShipGMRuntimeReplicatedState
@@ -196,6 +195,7 @@ protected:
 	TArray<FGuLiStrikeStatModifier> StatModifiers;
 
 	/** Server-owned atomic state for the reserved GM.Runtime modifier layer. */
+	// 由 GetLifetimeReplicatedProps 注册，无 OwnerOnly 条件；相关客户端通过 OnRep 重建本地层。
 	UPROPERTY(ReplicatedUsing=OnRep_GMRuntimeState)
 	FGuLiShipGMRuntimeReplicatedState GMRuntimeState;
 
@@ -420,6 +420,7 @@ protected:
 	UFUNCTION(BlueprintImplementableEvent, Category="Ship", meta=(DisplayName = "Stats Changed"))
 	void BP_OnStatsChanged();
 
+	// 客户端复制回调；可能早于 BeginPlay，先重建修饰层，初始化完成后才重算并触发蓝图可见反馈。
 	UFUNCTION()
 	void OnRep_GMRuntimeState();
 
@@ -458,12 +459,15 @@ public:
 	void RemoveStatModifier(FName Name);
 
 	/** 设置保留的 GM.Runtime 修饰层；不会覆盖其它 Gameplay Modifier。 */
+	// 服务器本地 setter，倍率必须有限且在 0..100；无权限/非法输入返回 false，不是客户端可发的 RPC。
 	bool SetGMRuntimeMultipliers(float MaxSpeedMultiplier, float AccelerationMultiplier);
 
 	/** 仅移除保留的 GM.Runtime 修饰层。 */
+	// 服务器撤销保留层并复制默认倍率/停用位；不会删除其他数值修饰。
 	void ClearGMRuntimeMultipliers();
 
 	/** 查询 GM.Runtime 修饰层，供非 Shipping GM 注册表和自动化验证使用。 */
+	// 读取本端副本；活动时写出倍率并返回 true，停用时输出 1/1 并返回 false。
 	bool GetGMRuntimeMultipliers(float& OutMaxSpeedMultiplier, float& OutAccelerationMultiplier) const;
 
 	uint32 GetGMRuntimeTuningRevision() const { return GMRuntimeState.Revision; }

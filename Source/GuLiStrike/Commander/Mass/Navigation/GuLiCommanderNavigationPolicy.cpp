@@ -7,47 +7,6 @@
 
 namespace GuLiCommanderNavigationPolicy
 {
-	namespace Private
-	{
-		double CalculateClosestPathProgress2D(
-			const TConstArrayView<FVector> PathPoints,
-			const FVector& Location)
-		{
-			double BestDistanceSquared = TNumericLimits<double>::Max();
-			double BestProgress = -1.0;
-			double AccumulatedDistance = 0.0;
-			for (int32 PointIndex = 1; PointIndex < PathPoints.Num(); ++PointIndex)
-			{
-				FVector Segment = PathPoints[PointIndex] - PathPoints[PointIndex - 1];
-				Segment.Z = 0.0f;
-				const double SegmentLength = Segment.Size2D();
-				if (Segment.ContainsNaN() || SegmentLength <= 1.0)
-				{
-					continue;
-				}
-				FVector FromStart = Location - PathPoints[PointIndex - 1];
-				FromStart.Z = 0.0f;
-				const double Alpha = FMath::Clamp(
-					static_cast<double>(FVector::DotProduct(FromStart, Segment))
-						/ FMath::Square(SegmentLength),
-					0.0,
-					1.0);
-				const FVector Projected = PathPoints[PointIndex - 1] + Segment * Alpha;
-				const double DistanceSquared = FVector::DistSquared2D(Location, Projected);
-				const double Progress = AccumulatedDistance + SegmentLength * Alpha;
-				if (DistanceSquared < BestDistanceSquared
-					|| (FMath::IsNearlyEqual(DistanceSquared, BestDistanceSquared)
-						&& Progress > BestProgress))
-				{
-					BestDistanceSquared = DistanceSquared;
-					BestProgress = Progress;
-				}
-				AccumulatedDistance += SegmentLength;
-			}
-			return BestProgress;
-		}
-	}
-
 	FName GetRequiredAgentName()
 	{
 		static const FName RequiredAgentName(TEXT("CommanderSoldier"));
@@ -167,6 +126,45 @@ namespace GuLiCommanderNavigationPolicy
 			+ PaddingCentimeters;
 	}
 
+	float CalculateLooseArrivalHoldRadiusCentimeters(
+		const float ArrivalDomainRadiusCentimeters,
+		const float HysteresisCentimeters)
+	{
+		if (!FMath::IsFinite(ArrivalDomainRadiusCentimeters)
+			|| !FMath::IsFinite(HysteresisCentimeters)
+			|| ArrivalDomainRadiusCentimeters < 0.0f
+			|| HysteresisCentimeters < 0.0f)
+		{
+			return 0.0f;
+		}
+		return FMath::Max(500.0f, ArrivalDomainRadiusCentimeters - HysteresisCentimeters);
+	}
+
+	float CalculateLooseArrivalMaximumLaneOffsetCentimeters(
+		const float ArrivalDomainRadiusCentimeters,
+		const float HysteresisCentimeters,
+		const float AgentRadiusCentimeters,
+		const float MovementSpeedCentimetersPerSecond,
+		const float FixedDeltaSeconds)
+	{
+		if (!FMath::IsFinite(AgentRadiusCentimeters)
+			|| !FMath::IsFinite(MovementSpeedCentimetersPerSecond)
+			|| !FMath::IsFinite(FixedDeltaSeconds)
+			|| AgentRadiusCentimeters < 0.0f
+			|| MovementSpeedCentimetersPerSecond < 0.0f
+			|| FixedDeltaSeconds < 0.0f)
+		{
+			return 0.0f;
+		}
+		const float HoldRadius = CalculateLooseArrivalHoldRadiusCentimeters(
+			ArrivalDomainRadiusCentimeters,
+			HysteresisCentimeters);
+		const float CaptureMargin = FMath::Max(
+			AgentRadiusCentimeters,
+			2.0f * MovementSpeedCentimetersPerSecond * FixedDeltaSeconds);
+		return FMath::Max(0.0f, HoldRadius - CaptureMargin);
+	}
+
 	bool HasEnteredLooseArrivalTerminalPhase(
 		const int32 PathPointIndex,
 		const int32 PathPointCount,
@@ -190,6 +188,162 @@ namespace GuLiCommanderNavigationPolicy
 			+ static_cast<double>(ApproachPaddingCentimeters);
 		return FVector::DistSquared2D(GuideAnchor, TargetAnchor)
 			<= FMath::Square(TerminalApproachRadius);
+	}
+
+	int32 AdvanceMemberPathPointIndex(
+		const TConstArrayView<FVector> PathPoints,
+		const int32 CurrentPathPointIndex,
+		const FVector& MemberLocation,
+		const float WaypointToleranceCentimeters,
+		const float MaximumCrossTrackCentimeters)
+	{
+		if (PathPoints.Num() < 2 || MemberLocation.ContainsNaN()
+			|| !FMath::IsFinite(WaypointToleranceCentimeters)
+			|| !FMath::IsFinite(MaximumCrossTrackCentimeters)
+			|| WaypointToleranceCentimeters < 0.0f
+			|| MaximumCrossTrackCentimeters < 0.0f)
+		{
+			return FMath::Clamp(CurrentPathPointIndex, 0, FMath::Max(0, PathPoints.Num() - 1));
+		}
+
+		int32 Result = FMath::Clamp(CurrentPathPointIndex, 1, PathPoints.Num() - 1);
+		while (Result < PathPoints.Num() - 1)
+		{
+			FVector Segment = PathPoints[Result] - PathPoints[Result - 1];
+			Segment.Z = 0.0f;
+			if (Segment.ContainsNaN() || Segment.SizeSquared2D() <= 1.0)
+			{
+				++Result;
+				continue;
+			}
+			FVector FromWaypoint = MemberLocation - PathPoints[Result];
+			FromWaypoint.Z = 0.0f;
+			const bool bReachedWaypoint = FromWaypoint.SizeSquared2D()
+				<= FMath::Square(static_cast<double>(WaypointToleranceCentimeters));
+			const FVector SegmentDirection = Segment.GetSafeNormal2D();
+			const FVector SegmentRight(-SegmentDirection.Y, SegmentDirection.X, 0.0f);
+			const bool bPassedWaypointPlane = FVector::DotProduct(
+				FromWaypoint,
+				SegmentDirection) >= 0.0f
+				&& FMath::Abs(FVector::DotProduct(FromWaypoint, SegmentRight))
+					<= MaximumCrossTrackCentimeters;
+			if (!bReachedWaypoint && !bPassedWaypointPlane)
+			{
+				break;
+			}
+			++Result;
+			// A member may fold degenerate points, but never crosses two physical turns in one step.
+			break;
+		}
+		return Result;
+	}
+
+	bool HasClearedFinalTurn(
+		const FFinalPathFrame& FinalPathFrame,
+		const int32 MemberPathPointIndex)
+	{
+		if (!FinalPathFrame.bHasUsableDirection || MemberPathPointIndex < 0)
+		{
+			return false;
+		}
+		return !FinalPathFrame.bRequiresTailClear
+			|| (FinalPathFrame.TailClearPathPointIndex != INDEX_NONE
+				&& MemberPathPointIndex > FinalPathFrame.TailClearPathPointIndex);
+	}
+
+	FVector CalculatePathLaneWaypoint(
+		const TConstArrayView<FVector> PathPoints,
+		const int32 PathPointIndex,
+		const float LateralOffsetCentimeters)
+	{
+		if (PathPoints.Num() < 2
+			|| PathPointIndex <= 0
+			|| PathPointIndex >= PathPoints.Num()
+			|| !FMath::IsFinite(LateralOffsetCentimeters))
+		{
+			return FVector::ZeroVector;
+		}
+		FVector Segment = PathPoints[PathPointIndex] - PathPoints[PathPointIndex - 1];
+		Segment.Z = 0.0f;
+		if (Segment.ContainsNaN() || Segment.SizeSquared2D() <= 1.0)
+		{
+			return PathPoints[PathPointIndex];
+		}
+		const FVector SegmentDirection = Segment.GetSafeNormal2D();
+		const FVector SegmentRight(-SegmentDirection.Y, SegmentDirection.X, 0.0f);
+		return PathPoints[PathPointIndex] + SegmentRight * LateralOffsetCentimeters;
+	}
+
+	FLooseArrivalMemberState UpdateLooseArrivalMemberState(
+		const FLooseArrivalMemberState& PreviousState,
+		const bool bTailClearObserved,
+		const bool bFinalCorridorActive,
+		const float DistanceToTargetCentimeters,
+		const float ArrivalDomainRadiusCentimeters,
+		const float HysteresisCentimeters)
+	{
+		FLooseArrivalMemberState Result = PreviousState;
+		Result.bTailCleared |= bTailClearObserved;
+		if (!FMath::IsFinite(DistanceToTargetCentimeters)
+			|| !FMath::IsFinite(ArrivalDomainRadiusCentimeters)
+			|| !FMath::IsFinite(HysteresisCentimeters)
+			|| DistanceToTargetCentimeters < 0.0f
+			|| ArrivalDomainRadiusCentimeters < 0.0f
+			|| HysteresisCentimeters < 0.0f)
+		{
+			return Result;
+		}
+
+		const float HoldRadius = CalculateLooseArrivalHoldRadiusCentimeters(
+			ArrivalDomainRadiusCentimeters,
+			HysteresisCentimeters);
+		Result.bHasReachedArrival |= bFinalCorridorActive
+			&& Result.bTailCleared
+			&& DistanceToTargetCentimeters <= HoldRadius;
+		if (!Result.bHasReachedArrival)
+		{
+			Result.bRecovering = false;
+		}
+		else if (Result.bRecovering)
+		{
+			Result.bRecovering = DistanceToTargetCentimeters > HoldRadius;
+		}
+		else
+		{
+			Result.bRecovering = DistanceToTargetCentimeters > ArrivalDomainRadiusCentimeters;
+		}
+		return Result;
+	}
+
+	FVector CalculateFinalCorridorLaneTarget(
+		const FFinalPathFrame& FinalPathFrame,
+		const FVector& TargetAnchor,
+		const FVector& MemberLocation,
+		const float FrozenLateralOffsetCentimeters,
+		const float LookAheadCentimeters)
+	{
+		if (!FinalPathFrame.bHasUsableDirection || TargetAnchor.ContainsNaN()
+			|| MemberLocation.ContainsNaN()
+			|| !FMath::IsFinite(FrozenLateralOffsetCentimeters)
+			|| !FMath::IsFinite(LookAheadCentimeters)
+			|| LookAheadCentimeters < 0.0f)
+		{
+			return MemberLocation;
+		}
+
+		const FVector Right(-FinalPathFrame.Forward.Y, FinalPathFrame.Forward.X, 0.0f);
+		const float CurrentLateralOffset = FVector::DotProduct(
+			MemberLocation - TargetAnchor,
+			Right);
+		const float RemainingLongitudinalDistance = FVector::DotProduct(
+			TargetAnchor - MemberLocation,
+			FinalPathFrame.Forward);
+		return MemberLocation
+			+ FinalPathFrame.Forward * FMath::Clamp(
+				RemainingLongitudinalDistance,
+				-LookAheadCentimeters,
+				LookAheadCentimeters)
+			+ Right * (FrozenLateralOffsetCentimeters - CurrentLateralOffset);
 	}
 
 	int32 SelectTransitColumnCount(const TConstArrayView<uint8> FitsByColumnCount)
@@ -277,6 +431,9 @@ namespace GuLiCommanderNavigationPolicy
 			Result.TailClearPathDistanceCentimeters +=
 				FVector::Dist2D(PathPoints[PointIndex - 1], PathPoints[PointIndex]);
 		}
+		Result.TailClearPathPointIndex = Result.bRequiresTailClear
+			? TerminalRunStartIndex
+			: INDEX_NONE;
 		return Result;
 	}
 
@@ -288,6 +445,10 @@ namespace GuLiCommanderNavigationPolicy
 		const float ArrivalDomainRadiusCentimeters,
 		const float TailClearToleranceCentimeters)
 	{
+		static_cast<void>(PathPoints);
+		static_cast<void>(TargetAnchor);
+		static_cast<void>(ArrivalDomainRadiusCentimeters);
+		static_cast<void>(TailClearToleranceCentimeters);
 		if (!FinalPathFrame.bHasUsableDirection || TargetAnchor.ContainsNaN()
 			|| !FMath::IsFinite(ArrivalDomainRadiusCentimeters)
 			|| !FMath::IsFinite(TailClearToleranceCentimeters))
@@ -295,9 +456,6 @@ namespace GuLiCommanderNavigationPolicy
 			return false;
 		}
 
-		const double ArrivalRadiusSquared = FMath::Square(
-			static_cast<double>(FMath::Max(0.0f, ArrivalDomainRadiusCentimeters)));
-		const double TailClearTolerance = FMath::Max(0.0f, TailClearToleranceCentimeters);
 		int32 ActiveMemberCount = 0;
 		for (const FFormationMemberProgressSample& Member : Members)
 		{
@@ -306,25 +464,9 @@ namespace GuLiCommanderNavigationPolicy
 				continue;
 			}
 			++ActiveMemberCount;
-			if (Member.Location.ContainsNaN())
-			{
-				return false;
-			}
-			if (FVector::DistSquared2D(Member.Location, TargetAnchor) > ArrivalRadiusSquared)
-			{
-				return false;
-			}
-			if (!FinalPathFrame.bRequiresTailClear)
-			{
-				continue;
-			}
-
-			const double MemberPathProgress = Private::CalculateClosestPathProgress2D(
-				PathPoints,
-				Member.Location);
-			if (MemberPathProgress < 0.0
-				|| MemberPathProgress + TailClearTolerance
-					< FinalPathFrame.TailClearPathDistanceCentimeters)
+			if (Member.Location.ContainsNaN()
+				|| !Member.bTailCleared
+				|| !Member.bHasReachedArrival)
 			{
 				return false;
 			}
@@ -370,75 +512,4 @@ namespace GuLiCommanderNavigationPolicy
 		return ActiveFormationCount > 0;
 	}
 
-	FVector CalculateSharedPathFollowDirection(
-		const TConstArrayView<FVector> PathPoints,
-		const FVector& MemberLocation,
-		const float LookAheadCentimeters)
-	{
-		if (PathPoints.Num() < 2 || MemberLocation.ContainsNaN()
-			|| !FMath::IsFinite(LookAheadCentimeters))
-		{
-			return FVector::ZeroVector;
-		}
-
-		constexpr double MinimumSegmentLengthSquared = 1.0;
-		double BestDistanceSquared = TNumericLimits<double>::Max();
-		int32 BestSegmentEndIndex = INDEX_NONE;
-		double BestAlpha = 0.0;
-		for (int32 SegmentEndIndex = 1; SegmentEndIndex < PathPoints.Num(); ++SegmentEndIndex)
-		{
-			FVector Segment = PathPoints[SegmentEndIndex] - PathPoints[SegmentEndIndex - 1];
-			Segment.Z = 0.0f;
-			const double SegmentLengthSquared = Segment.SizeSquared2D();
-			if (Segment.ContainsNaN() || SegmentLengthSquared <= MinimumSegmentLengthSquared)
-			{
-				continue;
-			}
-			FVector FromStart = MemberLocation - PathPoints[SegmentEndIndex - 1];
-			FromStart.Z = 0.0f;
-			const double Alpha = FMath::Clamp(
-				static_cast<double>(FVector::DotProduct(FromStart, Segment)) / SegmentLengthSquared,
-				0.0,
-				1.0);
-			const FVector Projected = PathPoints[SegmentEndIndex - 1] + Segment * Alpha;
-			const double DistanceSquared = FVector::DistSquared2D(MemberLocation, Projected);
-			if (DistanceSquared < BestDistanceSquared
-				|| (FMath::IsNearlyEqual(DistanceSquared, BestDistanceSquared)
-					&& SegmentEndIndex > BestSegmentEndIndex))
-			{
-				BestDistanceSquared = DistanceSquared;
-				BestSegmentEndIndex = SegmentEndIndex;
-				BestAlpha = Alpha;
-			}
-		}
-		if (BestSegmentEndIndex == INDEX_NONE)
-		{
-			return FVector::ZeroVector;
-		}
-
-		FVector Cursor = FMath::Lerp(
-			PathPoints[BestSegmentEndIndex - 1],
-			PathPoints[BestSegmentEndIndex],
-			BestAlpha);
-		double RemainingLookAhead = FMath::Max(0.0f, LookAheadCentimeters);
-		for (int32 SegmentEndIndex = BestSegmentEndIndex;
-			SegmentEndIndex < PathPoints.Num();
-			++SegmentEndIndex)
-		{
-			FVector Segment = PathPoints[SegmentEndIndex] - Cursor;
-			Segment.Z = 0.0f;
-			const double SegmentLength = Segment.Size2D();
-			if (SegmentLength > UE_DOUBLE_SMALL_NUMBER)
-			{
-				if (RemainingLookAhead <= SegmentLength)
-				{
-					Cursor += Segment / SegmentLength * RemainingLookAhead;
-					break;
-				}
-				RemainingLookAhead -= SegmentLength;
-			}
-			Cursor = PathPoints[SegmentEndIndex];
-		}
-		return (Cursor - MemberLocation).GetSafeNormal2D();
-	}
 }

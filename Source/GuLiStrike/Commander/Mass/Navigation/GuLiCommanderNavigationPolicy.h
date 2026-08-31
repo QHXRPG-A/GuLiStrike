@@ -26,6 +26,7 @@ namespace GuLiCommanderNavigationPolicy
 		FVector Forward = FVector::ForwardVector;
 		FVector TailClearOrigin = FVector::ZeroVector;
 		double TailClearPathDistanceCentimeters = 0.0;
+		int32 TailClearPathPointIndex = INDEX_NONE;
 		float YawDegrees = 0.0f;
 		bool bHasUsableDirection = false;
 		bool bRequiresTailClear = false;
@@ -37,6 +38,16 @@ namespace GuLiCommanderNavigationPolicy
 		FVector Location = FVector::ZeroVector;
 		bool bAlive = false;
 		bool bFollowsOrder = false;
+		bool bTailCleared = false;
+		bool bHasReachedArrival = false;
+	};
+
+	/** Monotonic per-member arrival state plus a hysteretic recovery sub-state. */
+	struct GULISTRIKE_API FLooseArrivalMemberState
+	{
+		bool bTailCleared = false;
+		bool bHasReachedArrival = false;
+		bool bRecovering = false;
 	};
 
 	/** One accepted formation's contribution to its shared batch completion gate. */
@@ -85,6 +96,19 @@ namespace GuLiCommanderNavigationPolicy
 		float AgentRadiusCentimeters,
 		float PaddingCentimeters = 500.0f);
 
+	/** Inner radius at which a member is released; the outer domain is the recovery threshold. */
+	GULISTRIKE_API float CalculateLooseArrivalHoldRadiusCentimeters(
+		float ArrivalDomainRadiusCentimeters,
+		float HysteresisCentimeters = 500.0f);
+
+	/** Largest safe frozen lane offset that still guarantees a discrete inner-domain crossing. */
+	GULISTRIKE_API float CalculateLooseArrivalMaximumLaneOffsetCentimeters(
+		float ArrivalDomainRadiusCentimeters,
+		float HysteresisCentimeters,
+		float AgentRadiusCentimeters,
+		float MovementSpeedCentimetersPerSecond,
+		float FixedDeltaSeconds);
+
 	/**
 	 * The final path point alone is not a terminal phase: a two-point open-ground
 	 * path keeps its transit columns until the guide reaches the loose-arrival approach.
@@ -96,6 +120,42 @@ namespace GuLiCommanderNavigationPolicy
 		const FVector& TargetAnchor,
 		float ArrivalDomainRadiusCentimeters,
 		float ApproachPaddingCentimeters);
+
+	/** Advances a per-member path cursor sequentially; total work is amortized per PathRevision. */
+	GULISTRIKE_API int32 AdvanceMemberPathPointIndex(
+		TConstArrayView<FVector> PathPoints,
+		int32 CurrentPathPointIndex,
+		const FVector& MemberLocation,
+		float WaypointToleranceCentimeters,
+		float MaximumCrossTrackCentimeters);
+
+	/** O(1) final-turn test backed by the member's monotonic shared-path cursor. */
+	GULISTRIKE_API bool HasClearedFinalTurn(
+		const FFinalPathFrame& FinalPathFrame,
+		int32 MemberPathPointIndex);
+
+	/** Shared-path waypoint shifted by the member's current transit lane. */
+	GULISTRIKE_API FVector CalculatePathLaneWaypoint(
+		TConstArrayView<FVector> PathPoints,
+		int32 PathPointIndex,
+		float LateralOffsetCentimeters);
+
+	/** Applies monotonic tail/release state and inner/outer arrival hysteresis. */
+	GULISTRIKE_API FLooseArrivalMemberState UpdateLooseArrivalMemberState(
+		const FLooseArrivalMemberState& PreviousState,
+		bool bTailClearObserved,
+		bool bFinalCorridorActive,
+		float DistanceToTargetCentimeters,
+		float ArrivalDomainRadiusCentimeters,
+		float HysteresisCentimeters = 500.0f);
+
+	/** Moving local waypoint that preserves a frozen lateral lane without a longitudinal slot. */
+	GULISTRIKE_API FVector CalculateFinalCorridorLaneTarget(
+		const FFinalPathFrame& FinalPathFrame,
+		const FVector& TargetAnchor,
+		const FVector& MemberLocation,
+		float FrozenLateralOffsetCentimeters,
+		float LookAheadCentimeters);
 
 	/**
 	 * Chooses the widest successful transit layout from columns 1..5. The array is
@@ -115,7 +175,7 @@ namespace GuLiCommanderNavigationPolicy
 		const FVector& FallbackStart,
 		const FVector& FallbackEnd);
 
-	/** Ignores dead/superseded members and requires every active member inside the domain and past the last turn. */
+	/** Ignores dead/superseded members and requires every active member's monotonic tail/arrival latches. */
 	GULISTRIKE_API bool AreActiveMembersInsideArrivalDomainAndPastTail(
 		const FFinalPathFrame& FinalPathFrame,
 		TConstArrayView<FVector> PathPoints,
@@ -137,10 +197,4 @@ namespace GuLiCommanderNavigationPolicy
 	/** Every formation with active followers in a shared BatchOrderId must be ready. */
 	GULISTRIKE_API bool ShouldCompleteBatchOrder(
 		TConstArrayView<FBatchOrderFormationCompletionSample> Formations);
-
-	/** Per-member direction along the one shared path, used while the tail clears the final turn. */
-	GULISTRIKE_API FVector CalculateSharedPathFollowDirection(
-		TConstArrayView<FVector> PathPoints,
-		const FVector& MemberLocation,
-		float LookAheadCentimeters);
 }

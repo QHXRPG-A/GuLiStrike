@@ -19,7 +19,49 @@ enum class EGuLiCommandLineState : uint8
 	Rejected
 };
 
-/** Owner of commander input and the only actor that exposes commander RPCs. */
+/** Local-only commander tool selected by keyboard or HUD input. */
+enum class EGuLiCommanderToolMode : uint8
+{
+	Select,
+	Move
+};
+
+/** Pure local-input decisions shared by the controller and automation tests. */
+namespace GuLiCommanderToolPolicy
+{
+	inline constexpr EGuLiCommanderToolMode DefaultToolMode = EGuLiCommanderToolMode::Select;
+
+	enum class ECancelAction : uint8
+	{
+		ClearSelection,
+		CancelMove
+	};
+
+	bool CanArmMove(
+		bool bCanIssueOrders,
+		bool bHasNetSync,
+		bool bHasConfirmedSelection);
+	EGuLiSelectionRadiusPreset ResolveRadiusStep(
+		EGuLiCommanderToolMode ToolMode,
+		EGuLiSelectionRadiusPreset CurrentPreset);
+	ECancelAction ResolveCancelAction(EGuLiCommanderToolMode ToolMode);
+	EGuLiCommanderToolMode ResolveModeAfterMoveAttempt(
+		EGuLiCommanderToolMode CurrentMode,
+		bool bMoveSubmitted);
+	EGuLiCommanderToolMode ResolveModeForSelectionAvailability(
+		EGuLiCommanderToolMode CurrentMode,
+		bool bHasConfirmedSelection);
+	bool AllowsWorldIntent(bool bCursorOverCommanderUI);
+}
+
+DECLARE_MULTICAST_DELEGATE_OneParam(
+	FGuLiCommanderToolModeChanged,
+	EGuLiCommanderToolMode);
+DECLARE_MULTICAST_DELEGATE_OneParam(
+	FGuLiSelectionRadiusPresetChanged,
+	EGuLiSelectionRadiusPreset);
+
+/** 指挥官输入与连接所有者；服务器和拥有客户端各有实例，RPC 实际声明在其 NetSync 默认组件中。 */
 UCLASS()
 class AGuLiCommanderPlayerController : public APlayerController
 {
@@ -32,11 +74,17 @@ public:
 	virtual void SetupInputComponent() override;
 	virtual void PlayerTick(float DeltaTime) override;
 
+	// 本端输入资格查询：PlayerState 为已同步的指挥官才返回 true；本地控制上下文由调用方保证，服务器仍会重验。
 	UFUNCTION(BlueprintPure, Category = "Commander")
 	bool CanIssueCommanderOrders() const;
 
 	UFUNCTION(BlueprintPure, Category = "Commander|Network")
 	UGuLiCommanderNetSyncComponent* GetCommanderNetSyncComponent() const { return NetSyncComponent; }
+
+	void ActivateSelectionTool();
+	bool ArmMoveTool();
+	void StepSelectionRadiusUp();
+	EGuLiCommanderToolMode GetCommanderToolMode() const { return CommanderToolMode; }
 
 	void SetSelectionRadiusPreset(EGuLiSelectionRadiusPreset NewPreset);
 	EGuLiSelectionRadiusPreset GetSelectionRadiusPreset() const { return SelectionRadiusPreset; }
@@ -47,26 +95,43 @@ public:
 		float& OutAlpha,
 		EGuLiCommandLineState& OutState) const;
 
+	FGuLiCommanderToolModeChanged OnCommanderToolModeChanged;
+	FGuLiSelectionRadiusPresetChanged OnSelectionRadiusPresetChanged;
+
+#if WITH_EDITOR
+	/** Local PIE QA must share normal input's sequence instead of poisoning its high-water mark. */
+	uint32 AllocateEditorQASelectionRequestId() { return AllocateSelectionRequestId(); }
+#endif
+
 private:
-	void SelectAtCursor();
-	void MoveAtCursor();
+	void HandlePrimaryActionAtCursor();
+	void HandleSecondaryActionAtCursor();
+	void HandleArmMoveToolInput();
+	void HandleCancelInput();
+	// 本地把光标落点封装成选兵意图；返回 true 仅表示已提交，不代表服务器接受。
+	bool TryIssueSelectionAtCursor();
+	// 本地创建移动请求并启动有限表现预测；网络结果稍后通过 ACK 更新。
+	bool TryIssueMoveAtCursor();
 	void ClearSelection();
-	void SelectSmallRadius();
-	void SelectMediumRadius();
-	void SelectLargeRadius();
 	void ZoomCameraIn();
 	void ZoomCameraOut();
+	bool IsCursorOverCommanderUI() const;
+	bool HasConfirmedSelection() const;
 	bool TraceGroundUnderCursor(FVector& OutLocation) const;
 	FVector FindConfirmedSelectionCenter() const;
 	uint32 AllocateSelectionRequestId();
 	uint32 AllocateMoveCommandId();
+	// 本地控制端每两秒尝试请求 Bootstrap，直到 PlayerState 的就绪位到达。
 	void UpdateBootstrapRetry();
 	void UpdateCameraInput(float DeltaTime);
+	// 消费 ACK FIFO，只把匹配当前待显示移动的回执交给表现层，选兵 ACK 不得清除移动反馈。
 	void UpdateAcceptedCommandVisual();
 
+	// 默认子对象借用此 PlayerController 的 Owning Connection；指针不是额外的通信连接。
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Network", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UGuLiCommanderNetSyncComponent> NetSyncComponent;
 
+	EGuLiCommanderToolMode CommanderToolMode = GuLiCommanderToolPolicy::DefaultToolMode;
 	EGuLiSelectionRadiusPreset SelectionRadiusPreset = EGuLiSelectionRadiusPreset::Small;
 	FVector CachedCursorGroundLocation = FVector::ZeroVector;
 	bool bHasCursorGroundLocation = false;

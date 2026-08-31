@@ -21,6 +21,7 @@ namespace
 	}
 }
 
+// 把出入站名义延迟合并为 RTT 配置证据；抖动取各配置的最大等效范围，不是实测延迟分布。
 FGuLiCommanderNetworkImpairmentEvidence GuLiCommanderNetworkGateValidation::EvaluateImpairment(
 	const FPacketSimulationSettings& Settings,
 	const bool bHasServerConnection,
@@ -35,8 +36,7 @@ FGuLiCommanderNetworkImpairmentEvidence GuLiCommanderNetworkGateValidation::Eval
 		0,
 		Settings.PktIncomingLagMin,
 		Settings.PktIncomingLagMax);
-	Evidence.ConfiguredNominalRoundTripLagMilliseconds =
-		OutgoingNominalLag + IncomingNominalLag;
+	Evidence.ConfiguredNominalRoundTripLagMilliseconds = OutgoingNominalLag + IncomingNominalLag;
 	Evidence.ConfiguredJitterMilliseconds = FMath::Max3(
 		FMath::Max(0, Settings.PktJitter),
 		FMath::Max(0, Settings.PktLagVariance) * 2,
@@ -54,12 +54,12 @@ FGuLiCommanderNetworkImpairmentEvidence GuLiCommanderNetworkGateValidation::Eval
 	return Evidence;
 }
 
+// 必须存在服务器连接且确实配置延迟；RTT 可由配置或实测达到门槛，抖动/丢包/乱序仍需配置达标。
 bool GuLiCommanderNetworkGateValidation::MeetsRequiredImpairment(
 	const FGuLiCommanderNetworkImpairmentEvidence& Evidence)
 {
 	const bool bLagIsConfigured = Evidence.ConfiguredNominalRoundTripLagMilliseconds > 0;
-	const bool bRequiredLagObserved =
-		Evidence.ConfiguredNominalRoundTripLagMilliseconds >= RequiredRoundTripLagMilliseconds
+	const bool bRequiredLagObserved = Evidence.ConfiguredNominalRoundTripLagMilliseconds >= RequiredRoundTripLagMilliseconds
 		|| Evidence.MeasuredRoundTripMilliseconds >= static_cast<float>(RequiredRoundTripLagMilliseconds);
 	return Evidence.bHasServerConnection
 		&& bLagIsConfigured
@@ -69,6 +69,8 @@ bool GuLiCommanderNetworkGateValidation::MeetsRequiredImpairment(
 		&& Evidence.bPacketReorderingEnabled;
 }
 
+// 完整样本数、ACK P95、入站带宽、新姿态、移动距离/步长、时钟、断流间隔和硬校正共同判定。
+// P95 是有限样本统计，不能推导所有网络环境下的最坏延迟保证。
 bool GuLiCommanderNetworkGateValidation::CanPass(
 	const FGuLiCommanderNetworkGateEvidence& Evidence)
 {

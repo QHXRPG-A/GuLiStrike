@@ -7,28 +7,28 @@
 #include "Net/Serialization/FastArraySerializer.h"
 #include "GuLiCommanderTypes.generated.h"
 
-/** Wire contract version for the dynamic Soldier/ControlCohort prototype. */
-inline constexpr uint16 GULI_COMMANDER_PROTOCOL_VERSION = 2u;
+/** 线协议版本；双方布局约定必须兼容，当前值为 3，不是运行时快照版本。 */
+inline constexpr uint16 GULI_COMMANDER_PROTOCOL_VERSION = 3u;
 
-/** A player control cohort targets 25 soldiers, but can be understrength. */
+/** 一个临时控制组最多 25 名士兵，允许不足额；不是网络 Actor 数量。 */
 inline constexpr uint32 GULI_CONTROL_COHORT_TARGET_SIZE = 25u;
 
-/** Protocol ceiling for an owner-only selection, not the current spawn count. */
+/** 拥有者选择状态最多 400 个控制组；协议上限不等于当前生成数量。 */
 inline constexpr uint32 GULI_MAX_CONTROL_COHORTS = 400u;
 
-/** Unreliable pose packets stay below the project MTU budget at this bound. */
+/** 每块最多 32 个姿态样本，用于控制载荷；实际网络包还包含 UE/传输层开销。 */
 inline constexpr uint32 GULI_MAX_POSE_SAMPLES_PER_CHUNK = 32u;
 
-/** The authority captures one pose frame every three ticks of its 30 Hz simulation. */
+/** 30 Hz 权威模拟每三个 Tick 目标捕获一次姿态，即 10 Hz。 */
 inline constexpr uint32 GULI_POSE_CAPTURE_RATE_HZ = 10u;
 
-/** Supports a future 10,000-soldier frame while keeping chunk indices bounded. */
+/** 每帧最多 512 块；为空间分块留余量，不表示当前已有一万士兵。 */
 inline constexpr uint32 GULI_MAX_POSE_CHUNKS_PER_FRAME = 512u;
 
-/** Position and velocity components use signed ten-centimeter units. */
+/** 相对位置每单位 10 cm，速度每单位 10 cm/s；使用有符号 int16。 */
 inline constexpr float GULI_POSE_QUANTIZATION_CENTIMETERS = 10.0f;
 
-/** Presentational discontinuity marker; gameplay facts still come from reliable state. */
+/** 表现瞬移标志；生命等玩法事实仍以离散状态复制为准。 */
 inline constexpr uint8 GULI_SOLDIER_POSE_FLAG_TELEPORT = 1u << 0u;
 inline constexpr uint8 GULI_VALID_SOLDIER_POSE_FLAGS = GULI_SOLDIER_POSE_FLAG_TELEPORT;
 
@@ -66,6 +66,7 @@ enum class EGuLiSelectionModifier : uint8
 	Clear
 };
 
+// Accepted/PartiallyAccepted 只代表接令结果，不代表单位已到目标；其他枚举给出具体拒绝原因。
 UENUM(BlueprintType)
 enum class EGuLiCommandAckResult : uint8
 {
@@ -81,7 +82,7 @@ enum class EGuLiCommandAckResult : uint8
 	PathFailed
 };
 
-/** Distinguishes independent client request-id spaces and prevents selection ACKs consuming move feedback. */
+/** 区分选兵与移动两个独立请求序号空间；路由 ACK 时必须同时比较种类和 ID。 */
 UENUM(BlueprintType)
 enum class EGuLiCommandKind : uint8
 {
@@ -112,7 +113,7 @@ enum class EGuLiOrderType : uint8
 	Move
 };
 
-/** Stable, match-local soldier identity. Zero is invalid and values are never reused in a match. */
+/** 战局内稳定的士兵身份，0 无效，同一战局不复用；不是数组下标或客户端 Mass 句柄。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiSoldierId
 {
@@ -143,7 +144,7 @@ struct TStructOpsTypeTraits<FGuLiSoldierId> : public TStructOpsTypeTraitsBase2<F
 	enum { WithNetSerializer = true, WithIdenticalViaEquality = true };
 };
 
-/** Ephemeral server-issued identity for one frozen selection cohort. */
+/** 服务器分配的临时控制组身份；与某次选择的冻结成员集合关联，不是永久编队 ID。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiControlCohortId
 {
@@ -184,7 +185,7 @@ namespace GuLiCommanderProtocol
 	GULISTRIKE_API float DequantizeDecimetersToCentimeters(int16 Decimeters);
 }
 
-/** Client intent. It intentionally contains no cohort or soldier identifiers. */
+/** 客户端选兵意图：仅描述区域/操作，不允许客户端直接指定 SoldierId 或 CohortId。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiSelectionRequest
 {
@@ -202,13 +203,14 @@ struct GULISTRIKE_API FGuLiSelectionRequest
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
 	uint32 ClientRequestId = 0u;
 
+	// 客户端已知的选择版本；排队选兵会用前一 ACK 的服务器版本更新此值。
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
 	uint32 KnownSelectionRevision = 0u;
 
 	bool IsWellFormed() const;
 };
 
-/** Client move intent. The server resolves the selection revision to frozen cohort membership. */
+/** 客户端移动意图：Target 为目标，SelectionRevision 指向服务器已有的冻结选择，ClientCommandId 用于回执关联。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiMoveRequest
 {
@@ -226,7 +228,7 @@ struct GULISTRIKE_API FGuLiMoveRequest
 	bool IsWellFormed() const;
 };
 
-/** One temporary, owner-only selection cohort. Membership is frozen for its selection revision. */
+/** 仅拥有者可见的临时控制组：MemberIds 为冻结成员，AliveCount/ActiveOrderId 为可刷新的摘要。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiControlCohortDescriptor
 {
@@ -257,7 +259,7 @@ struct TStructOpsTypeTraits<FGuLiControlCohortDescriptor>
 	enum { WithNetSerializer = true };
 };
 
-/** Owner-only confirmed selection. Cohorts may be understrength but never exceed 25 members. */
+/** 服务器确认的 OwnerOnly 选择；每组最多 25 人，SelectionRevision 标识成员选择版本。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiCommanderSelectionState
 {
@@ -269,6 +271,7 @@ struct GULISTRIKE_API FGuLiCommanderSelectionState
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 SelectionRevision = 0u;
 
+	// 服务器最后接受的选兵请求 ID；用于把属性副本与本地选兵意图对应。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 AcceptedClientRequestId = 0u;
 
@@ -295,7 +298,9 @@ struct GULISTRIKE_API FGuLiCohortCommandAck
 	EGuLiCommandAckResult Result = EGuLiCommandAckResult::InvalidRequest;
 };
 
-/** Server result for one client command; per-cohort results preserve partial acceptance. */
+/** 服务器对一次意图的业务回执；数据本身不是 RPC，由 NetSync 的 Client RPC 运送。
+ * CommandKind + ClientCommandId 关联原请求；BatchOrderId 关联服务器接受的移动批次。
+ * Result 是总体结果，CohortResults 是逐组结果，ServerSelectionRevision 是本回执携带的选择版本。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiCommandAck
 {
@@ -307,23 +312,27 @@ struct GULISTRIKE_API FGuLiCommandAck
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 ClientCommandId = 0u;
 
+	// 服务器接受移动时生成的批次号；普通选兵/新拒绝通常为 0，旧 Duplicate 可能携带缓存批次。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 BatchOrderId = 0u;
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	EGuLiCommandAckResult Result = EGuLiCommandAckResult::InvalidRequest;
 
+	// 该 ACK 对应的服务器选择版本；缓存重放时不保证等于服务器此刻最新版本。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 ServerSelectionRevision = 0u;
 
+	// 逐控制组结果保留部分成功信息；不能把所有失败组当作已加入 BatchOrderId。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	TArray<FGuLiCohortCommandAck> CohortResults;
 
+	// 仅检查总体结果为全部或部分接受；不检查抵达、执行结束或复制状态是否已到达。
 	bool IsAccepted() const;
 	void Sanitize();
 };
 
-/** Reliable per-soldier gameplay fact carried by a FastArray replicator. */
+/** FastArray 承载的单兵离散状态：身份、阵营、生命和命令编号；不包含连续位置。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiSoldierStateItem : public FFastArraySerializerItem
 {
@@ -342,6 +351,10 @@ struct GULISTRIKE_API FGuLiSoldierStateItem : public FFastArraySerializerItem
 	uint8 Health = 100u;
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	uint8 MaxHealth = 100u;
+
+	// 单兵离散状态版本，与整份名册的 SnapshotRevision、选择版本互相独立。
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 StateRevision = 0u;
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
@@ -351,7 +364,7 @@ struct GULISTRIKE_API FGuLiSoldierStateItem : public FFastArraySerializerItem
 	void Sanitize();
 };
 
-/** Generic FastArray wire container; the owning actor controls mutation and replication scope. */
+/** FastArray 增量容器；由所属 Replicator 决定复制范围，并在增改/删除后标脏。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiSoldierStateFastArray : public FFastArraySerializer
 {
@@ -360,6 +373,7 @@ struct GULISTRIKE_API FGuLiSoldierStateFastArray : public FFastArraySerializer
 	UPROPERTY()
 	TArray<FGuLiSoldierStateItem> Items;
 
+	// UE 增量序列化入口，由 WithNetDeltaSerializer 接入；脏标记由 Replicator 维护。
 	bool NetDeltaSerialize(FNetDeltaSerializeInfo& DeltaParams)
 	{
 		return FFastArraySerializer::FastArrayDeltaSerialize<
@@ -379,7 +393,7 @@ struct TStructOpsTypeTraits<FGuLiSoldierStateFastArray>
 	enum { WithNetDeltaSerializer = true };
 };
 
-/** One stable-identity pose sample relative to its containing chunk anchor. */
+/** 单兵压缩姿态：以 SoldierId 关联名册，位置相对所属块 Anchor，速度与朝向用于平滑。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiCompressedSoldierPose
 {
@@ -388,6 +402,7 @@ struct GULISTRIKE_API FGuLiCompressedSoldierPose
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	FGuLiSoldierId SoldierId;
 
+	// 三轴相对位置采用分米；世界坐标需要 Anchor + 解量化偏移，不能直接将该值当厘米。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	int16 RelativeXDecimeters = 0;
 
@@ -397,6 +412,7 @@ struct GULISTRIKE_API FGuLiCompressedSoldierPose
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	int16 RelativeZDecimeters = 0;
 
+	// 三轴速度采用分米/秒；不是两次包到达时间之间的位移。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	int16 VelocityXDecimetersPerSecond = 0;
 
@@ -406,6 +422,7 @@ struct GULISTRIKE_API FGuLiCompressedSoldierPose
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	int16 VelocityZDecimetersPerSecond = 0;
 
+	// 一周朝向量化到 uint16；绕回 0/65535 时需要按角度而非普通整数差插值。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint16 FacingYaw = 0u;
 
@@ -434,7 +451,7 @@ struct TStructOpsTypeTraits<FGuLiCompressedSoldierPose>
 	enum { WithNetSerializer = true };
 };
 
-/** One independently consumable fragment of a 10 Hz authoritative soldier pose frame. */
+/** 一帧权威姿态中可独立消费的块；丢块不补齐整帧，由后续新样本恢复表现。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiSoldierPoseChunk
 {
@@ -443,24 +460,29 @@ struct GULISTRIKE_API FGuLiSoldierPoseChunk
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint16 ProtocolVersion = GULI_COMMANDER_PROTOCOL_VERSION;
 
+	// 所属战局，必须与 Bootstrap 接受的 MatchEpoch 一致，隔离旧战局迟到数据。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 AuthorityEpoch = 0u;
 
+	// 捕获帧序号；同帧多个块共享此值，不能用它直接过滤该帧后续块。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 FrameSequence = 0u;
 
+	// 服务器模拟步编号；ServerTimeSeconds 是样本时间，客户端收包时间不是样本生成时间。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 ServerSimTick = 0u;
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	float ServerTimeSeconds = 0.0f;
 
+	// 块号从 0 开始，必须小于 ChunkCount；并不要求客户端等待全部块到齐。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint16 ChunkIndex = 0u;
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint16 ChunkCount = 1u;
 
+	// 本块公共世界坐标锚点；每个压缩样本只传相对该锚点的位置。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	FVector_NetQuantize Anchor = FVector::ZeroVector;
 

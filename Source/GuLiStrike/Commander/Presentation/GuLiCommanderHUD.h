@@ -9,16 +9,23 @@
 
 class AGuLiCommanderPlayerController;
 class AGuLiCommanderCameraPawn;
+class AGuLiCommanderHealthBarRenderer;
 class AGuLiCommanderPresentationActor;
 class AGuLiSoldierStateReplicator;
+class UGuLiCommanderHUDWidget;
 
 /** Canvas-only commander prototype HUD; it does not own replicated state. */
+// 本地界面消费层；读取复制状态与业务回执，不承担网络身份分配或权威命令执行。
 UCLASS()
 class GULISTRIKE_API AGuLiCommanderHUD : public AHUD
 {
 	GENERATED_BODY()
 
 public:
+	AGuLiCommanderHUD();
+
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void DrawHUD() override;
 	virtual void NotifyHitBoxClick(FName BoxName) override;
 
@@ -26,6 +33,8 @@ public:
 	bool IsScreenPositionOverCommanderUI(const FVector2D& ScreenPosition) const;
 
 private:
+	void CreateRuntimeHUD();
+	void DestroyRuntimeHUD();
 	AGuLiSoldierStateReplicator* FindSoldierStateReplicator() const;
 	AGuLiCommanderPresentationActor* FindPresentationActor() const;
 	void GatherSelectedSoldierValues(
@@ -57,4 +66,13 @@ private:
 	float MiniMapTerrainMinimumHeight = 0.0f;
 	float MiniMapTerrainMaximumHeight = 1.0f;
 	bool bMiniMapTerrainCacheInitialized = false;
+
+	UPROPERTY(EditDefaultsOnly, Category = "Commander|UI")
+	TSubclassOf<UGuLiCommanderHUDWidget> CommanderHUDWidgetClass;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UGuLiCommanderHUDWidget> RuntimeHUDWidget;
+
+	UPROPERTY(Transient)
+	TObjectPtr<AGuLiCommanderHealthBarRenderer> HealthBarRenderer;
 };

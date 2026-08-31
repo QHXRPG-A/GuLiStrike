@@ -18,6 +18,7 @@ AGuLiCommanderGameState::AGuLiCommanderGameState()
 	InitializeDefaultRoleSlots();
 }
 
+// 复制注册只声明字段及条件；ForceNetUpdate 促使尽早更新，不保证本帧到达所有客户端。
 void AGuLiCommanderGameState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -209,6 +210,7 @@ bool AGuLiCommanderGameState::TryClaimRoleSlot(
 	return true;
 }
 
+// 服务器赋值后主动通知本地订阅者；客户端则从 OnRep_RoleSlots 进入同一类本地通知。
 void AGuLiCommanderGameState::NotifyRoleSlotsChanged()
 {
 	OnRoleSlotsChanged.Broadcast();
@@ -220,6 +222,7 @@ void AGuLiCommanderGameState::OnRep_RoleSlots()
 	OnRoleSlotsChanged.Broadcast();
 }
 
+// 客户端读取此刻的速度/版本并广播；订阅者应容忍重复通知，不能假设跨属性通知顺序。
 void AGuLiCommanderGameState::OnRep_RuntimeTuning()
 {
 	OnRuntimeTuningChanged.Broadcast(

@@ -101,6 +101,7 @@ namespace GuLiRuntimeTuningCommands
 		}
 	}
 
+	// 控制台只操作所选 World 的本地 Subsystem，不自动跨网；客户端 Set/Reset 由 Subsystem 拒绝。
 	void Set(const TArray<FString>& Args, UWorld* World)
 	{
 		if (Args.Num() != 2)

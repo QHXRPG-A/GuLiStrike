@@ -6,8 +6,10 @@
 
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Commander/Framework/GuLiCommanderNetworkGateValidation.h"
+#include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Engine/NetDriver.h"
+#include "Engine/World.h"
 #include "Misc/AutomationTest.h"
 #include "Serialization/MemoryReader.h"
 #include "Serialization/MemoryWriter.h"
@@ -100,7 +102,7 @@ bool FGuLiCommanderDynamicCohortContractTest::RunTest(const FString& Parameters)
 {
 	(void)Parameters;
 
-	TestEqual(TEXT("Dynamic soldier/cohort protocol is version 2"), GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(2u));
+	TestEqual(TEXT("Dynamic soldier/cohort protocol is version 3"), GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(3u));
 	TestEqual(TEXT("Control granularity remains capped at 25 soldiers"),
 		GULI_CONTROL_COHORT_TARGET_SIZE, static_cast<uint32>(25u));
 	TestEqual(TEXT("Authoritative pose contract is captured at 10 Hz"),
@@ -209,6 +211,7 @@ bool FGuLiCommanderSoldierFastArrayContractTest::RunTest(const FString& Paramete
 	First.SoldierId = FGuLiSoldierId(1u);
 	First.Team = EGuLiTeam::Red;
 	First.Health = 75u;
+	First.MaxHealth = 120u;
 	First.StateRevision = 3u;
 	First.ActiveOrderId = 8u;
 
@@ -229,16 +232,29 @@ bool FGuLiCommanderSoldierFastArrayContractTest::RunTest(const FString& Paramete
 	ZeroHealth.Health = 0u;
 	ZeroHealth.ActiveOrderId = 100u;
 
+	FGuLiSoldierStateItem& OverMaximumHealth = States.Items.AddDefaulted_GetRef();
+	OverMaximumHealth.SoldierId = FGuLiSoldierId(4u);
+	OverMaximumHealth.Team = EGuLiTeam::Blue;
+	OverMaximumHealth.Health = 250u;
+	OverMaximumHealth.MaxHealth = 120u;
+
+	FGuLiSoldierStateItem& InvalidMaximumHealth = States.Items.AddDefaulted_GetRef();
+	InvalidMaximumHealth.SoldierId = FGuLiSoldierId(5u);
+	InvalidMaximumHealth.Team = EGuLiTeam::Red;
+	InvalidMaximumHealth.Health = 10u;
+	InvalidMaximumHealth.MaxHealth = 0u;
+
 	FGuLiSoldierStateItem& Invalid = States.Items.AddDefaulted_GetRef();
 	Invalid.SoldierId.Reset();
 	States.Sanitize();
 
-	TestEqual(TEXT("FastArray removes invalid and duplicate soldier identities"), States.Items.Num(), 3);
+	TestEqual(TEXT("FastArray removes invalid and duplicate soldier identities"), States.Items.Num(), 5);
 	const FGuLiSoldierStateItem* FirstResult = States.Find(FGuLiSoldierId(1u));
 	TestNotNull(TEXT("FastArray lookup uses stable SoldierId"), FirstResult);
 	if (FirstResult)
 	{
 		TestEqual(TEXT("First duplicate occurrence wins deterministically"), FirstResult->Health, static_cast<uint8>(75u));
+		TestEqual(TEXT("Maximum health remains a reliable gameplay fact"), FirstResult->MaxHealth, static_cast<uint8>(120u));
 		TestTrue(TEXT("Living soldier remains alive"), FirstResult->IsAlive());
 	}
 
@@ -259,6 +275,146 @@ bool FGuLiCommanderSoldierFastArrayContractTest::RunTest(const FString& Paramete
 		TestEqual(TEXT("Zero health clears active order"), ZeroHealthResult->ActiveOrderId, 0u);
 	}
 
+	const FGuLiSoldierStateItem* OverMaximumResult = States.Find(FGuLiSoldierId(4u));
+	TestNotNull(TEXT("Over-maximum-health soldier remains addressable"), OverMaximumResult);
+	if (OverMaximumResult)
+	{
+		TestEqual(TEXT("Health is clamped to replicated MaxHealth"),
+			OverMaximumResult->Health, static_cast<uint8>(120u));
+		TestTrue(TEXT("Clamped positive health remains alive"), OverMaximumResult->IsAlive());
+	}
+
+	const FGuLiSoldierStateItem* InvalidMaximumResult = States.Find(FGuLiSoldierId(5u));
+	TestNotNull(TEXT("Invalid-maximum-health soldier remains addressable"), InvalidMaximumResult);
+	if (InvalidMaximumResult)
+	{
+		TestEqual(TEXT("Zero MaxHealth normalizes to the minimum wire value"),
+			InvalidMaximumResult->MaxHealth, static_cast<uint8>(1u));
+		TestEqual(TEXT("Health is clamped after MaxHealth normalization"),
+			InvalidMaximumResult->Health, static_cast<uint8>(1u));
+	}
+
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiCommanderSoldierSnapshotNotificationTest,
+	"GuLiStrike.Commander.Network.SoldierSnapshotNotification",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiCommanderSoldierSnapshotNotificationTest::RunTest(const FString& Parameters)
+{
+	(void)Parameters;
+
+	UWorld* TestWorld = UWorld::CreateWorld(EWorldType::Game, false);
+	TestNotNull(TEXT("An isolated authority World exists"), TestWorld);
+	if (!TestWorld)
+	{
+		return false;
+	}
+
+	AGuLiSoldierStateReplicator* Replicator =
+		TestWorld->SpawnActor<AGuLiSoldierStateReplicator>();
+	TestNotNull(TEXT("The isolated World owns a Soldier state replicator"), Replicator);
+	if (!Replicator)
+	{
+		TestWorld->DestroyWorld(false);
+		return false;
+	}
+
+	int32 NotificationCount = 0;
+	uint32 LastNotifiedRevision = 0u;
+	Replicator->OnSoldierStatesChanged.AddLambda(
+		[&NotificationCount, &LastNotifiedRevision](const uint32 SnapshotRevision)
+		{
+			++NotificationCount;
+			LastNotifiedRevision = SnapshotRevision;
+		});
+
+	TArray<FGuLiSoldierStateItem> Snapshot;
+	FGuLiSoldierStateItem& State = Snapshot.AddDefaulted_GetRef();
+	State.SoldierId = FGuLiSoldierId(1u);
+	State.Team = EGuLiTeam::Red;
+	State.Health = 90u;
+	State.MaxHealth = 100u;
+	State.StateRevision = 1u;
+
+	TestEqual(TEXT("The first authority snapshot adds one Soldier"),
+		Replicator->ApplyAuthoritySnapshot(Snapshot, 1001u), 1);
+	TestEqual(TEXT("A changed authority snapshot emits exactly one batch notification"),
+		NotificationCount, 1);
+	TestEqual(TEXT("The authority notification carries the applied revision"),
+		LastNotifiedRevision, Replicator->GetSnapshotRevision());
+
+	TestEqual(TEXT("An identical authority snapshot changes no Soldier"),
+		Replicator->ApplyAuthoritySnapshot(Snapshot, 1001u), 0);
+	TestEqual(TEXT("An identical authority snapshot emits no notification"),
+		NotificationCount, 1);
+
+	const uint32 RevisionBeforeEpochChange = Replicator->GetSnapshotRevision();
+	TestEqual(TEXT("The first snapshot establishes revision one"),
+		RevisionBeforeEpochChange, 1u);
+	TestEqual(TEXT("A new MatchEpoch can reuse an identical roster"),
+		Replicator->ApplyAuthoritySnapshot(Snapshot, 2002u), 0);
+	TestEqual(TEXT("A new MatchEpoch still emits one coherent snapshot notification"),
+		NotificationCount, 2);
+	TestEqual(TEXT("Snapshot revision advances across MatchEpoch so RepNotify cannot be elided"),
+		Replicator->GetSnapshotRevision(), RevisionBeforeEpochChange + 1u);
+	TestEqual(TEXT("Repeating the identical snapshot in the new MatchEpoch changes nothing"),
+		Replicator->ApplyAuthoritySnapshot(Snapshot, 2002u), 0);
+	TestEqual(TEXT("The repeated new-MatchEpoch snapshot emits no notification"),
+		NotificationCount, 2);
+
+	Snapshot[0].Health = 180u;
+	Snapshot[0].MaxHealth = 200u;
+	Snapshot[0].StateRevision = 2u;
+	TestEqual(TEXT("A MaxHealth change updates the reliable Soldier item"),
+		Replicator->ApplyAuthoritySnapshot(Snapshot, 2002u), 1);
+	TestEqual(TEXT("A second changed snapshot emits one additional notification"),
+		NotificationCount, 3);
+	const FGuLiSoldierStateItem* UpdatedState =
+		Replicator->FindSoldierState(FGuLiSoldierId(1u));
+	TestNotNull(TEXT("The updated Soldier remains available"), UpdatedState);
+	if (UpdatedState)
+	{
+		TestEqual(TEXT("Snapshot application copies MaxHealth"),
+			UpdatedState->MaxHealth, static_cast<uint8>(200u));
+	}
+
+	Snapshot[0].Team = static_cast<EGuLiTeam>(255u);
+	Snapshot[0].LifeState = static_cast<EGuLiSoldierLifeState>(255u);
+	Snapshot[0].Health = 250u;
+	Snapshot[0].MaxHealth = 0u;
+	Snapshot[0].StateRevision = 3u;
+	TestEqual(TEXT("The authority path accepts one sanitized Soldier update"),
+		Replicator->ApplyAuthoritySnapshot(Snapshot, 2002u), 1);
+	TestEqual(TEXT("The sanitized authority update emits one batch notification"),
+		NotificationCount, 4);
+	const FGuLiSoldierStateItem* SanitizedState =
+		Replicator->FindSoldierState(FGuLiSoldierId(1u));
+	TestNotNull(TEXT("The sanitized Soldier remains available"), SanitizedState);
+	if (SanitizedState)
+	{
+		TestTrue(TEXT("Invalid team normalizes before replication"),
+			SanitizedState->Team == EGuLiTeam::Unassigned);
+		TestTrue(TEXT("Invalid life state normalizes before replication"),
+			SanitizedState->LifeState == EGuLiSoldierLifeState::Alive);
+		TestEqual(TEXT("Zero MaxHealth normalizes in the authority apply path"),
+			SanitizedState->MaxHealth, static_cast<uint8>(1u));
+		TestEqual(TEXT("Health clamps after authority MaxHealth normalization"),
+			SanitizedState->Health, static_cast<uint8>(1u));
+	}
+
+	const int32 NotificationsBeforeOnRep = NotificationCount;
+	UFunction* OnRepFunction = Replicator->FindFunction(TEXT("OnRep_SnapshotRevision"));
+	TestNotNull(TEXT("SnapshotRevision exposes a RepNotify handler"), OnRepFunction);
+	Replicator->TestOnly_InvokeSnapshotRevisionRepNotify();
+	TestEqual(TEXT("One replicated revision emits one client-side batch notification"),
+		NotificationCount, NotificationsBeforeOnRep + 1);
+	TestEqual(TEXT("The RepNotify notification carries the replicated revision"),
+		LastNotifiedRevision, Replicator->GetSnapshotRevision());
+
+	TestWorld->DestroyWorld(false);
 	return true;
 }
 
@@ -590,6 +746,16 @@ bool FGuLiCommanderBootstrapSnapshotGateTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("A mismatched protocol cannot open bootstrap"),
 		PassesGate(
 			GULI_COMMANDER_PROTOCOL_VERSION + 1u,
+			MatchEpoch,
+			MatchEpoch,
+			SnapshotRevision,
+			RosterCount,
+			MatchEpoch,
+			SnapshotRevision,
+			RosterCount));
+	TestFalse(TEXT("A protocol-v2 client cannot join the MaxHealth wire contract"),
+		PassesGate(
+			GULI_COMMANDER_PROTOCOL_VERSION - 1u,
 			MatchEpoch,
 			MatchEpoch,
 			SnapshotRevision,

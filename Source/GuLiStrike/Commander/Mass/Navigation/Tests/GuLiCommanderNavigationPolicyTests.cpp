@@ -124,6 +124,24 @@ namespace GuLiCommanderNavigationPolicyTests
 			TEXT("An empty batch cannot create an arrival domain"),
 			CalculateArrivalDomainRadiusCentimeters(0, RequiredAgentRadiusCentimeters),
 			0.0f);
+		TestEqual(
+			TEXT("The 50m domain releases members at 45m and keeps a 5m recovery band"),
+			CalculateLooseArrivalHoldRadiusCentimeters(5000.0f),
+			4500.0f);
+		TestEqual(
+			TEXT("A one-member domain retains the minimum 5m hold radius"),
+			CalculateLooseArrivalHoldRadiusCentimeters(500.0f),
+			500.0f);
+		TestEqual(
+			TEXT("A 36m/s Soldier lane retains one agent radius of discrete capture margin"),
+			CalculateLooseArrivalMaximumLaneOffsetCentimeters(
+				5000.0f, 500.0f, RequiredAgentRadiusCentimeters, 3600.0f, 1.0f / 30.0f),
+			3750.0f);
+		TestEqual(
+			TEXT("A one-member domain falls back to its center lane"),
+			CalculateLooseArrivalMaximumLaneOffsetCentimeters(
+				500.0f, 500.0f, RequiredAgentRadiusCentimeters, 3600.0f, 1.0f / 30.0f),
+			0.0f);
 		return true;
 	}
 
@@ -153,6 +171,70 @@ namespace GuLiCommanderNavigationPolicyTests
 			TEXT("A multi-bend path releases slots after reaching its final near-target segment"),
 			HasEnteredLooseArrivalTerminalPhase(
 				3, 4, FVector(94000.0, 0.0, 0.0), Target, ArrivalRadius, ApproachPadding));
+		return true;
+	}
+
+	IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+		FCommanderPerMemberLooseArrivalStateTest,
+		"GuLiStrike.Commander.Mass.Navigation.PerMemberLooseArrivalState",
+		EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+	bool FCommanderPerMemberLooseArrivalStateTest::RunTest(const FString& Parameters)
+	{
+		constexpr float ArrivalRadius = 5000.0f;
+		FLooseArrivalMemberState State;
+		State = UpdateLooseArrivalMemberState(
+			State, true, false, 4000.0f, ArrivalRadius);
+		TestTrue(TEXT("Tail clearance latches before the final corridor"), State.bTailCleared);
+		TestFalse(TEXT("Tail clearance alone cannot release a member"), State.bHasReachedArrival);
+
+		State = UpdateLooseArrivalMemberState(
+			State, false, true, 4600.0f, ArrivalRadius);
+		TestTrue(TEXT("Tail clearance is monotonic"), State.bTailCleared);
+		TestFalse(TEXT("A member outside the 45m hold radius retains its lane"),
+			State.bHasReachedArrival);
+
+		State = UpdateLooseArrivalMemberState(
+			State, false, true, 4500.0f, ArrivalRadius);
+		TestTrue(TEXT("Entering the inner radius latches arrival"), State.bHasReachedArrival);
+		TestFalse(TEXT("A newly arrived member holds position"), State.bRecovering);
+
+		State = UpdateLooseArrivalMemberState(
+			State, false, true, 5100.0f, ArrivalRadius);
+		TestTrue(TEXT("Crossing the outer radius starts recovery without clearing arrival"),
+			State.bHasReachedArrival && State.bRecovering);
+		State = UpdateLooseArrivalMemberState(
+			State, false, true, 4800.0f, ArrivalRadius);
+		TestTrue(TEXT("Recovery persists through the 5m hysteresis band"), State.bRecovering);
+		State = UpdateLooseArrivalMemberState(
+			State, false, true, 4500.0f, ArrivalRadius);
+		TestFalse(TEXT("Recovery ends only after returning to the inner radius"),
+			State.bRecovering);
+
+		const float MaximumLaneOffset =
+			CalculateLooseArrivalMaximumLaneOffsetCentimeters(
+				ArrivalRadius,
+				500.0f,
+				RequiredAgentRadiusCentimeters,
+				3600.0f,
+				1.0f / 30.0f);
+		FLooseArrivalMemberState DiscreteCrossingState;
+		for (float LongitudinalOffset = -6000.0f;
+			LongitudinalOffset <= 6000.0f;
+			LongitudinalOffset += 120.0f)
+		{
+			const float Distance = FMath::Sqrt(
+				FMath::Square(LongitudinalOffset)
+				+ FMath::Square(MaximumLaneOffset));
+			DiscreteCrossingState = UpdateLooseArrivalMemberState(
+				DiscreteCrossingState,
+				true,
+				true,
+				Distance,
+				ArrivalRadius);
+		}
+		TestTrue(TEXT("A 36m/s discrete lane crossing cannot skip the inner arrival domain"),
+			DiscreteCrossingState.bHasReachedArrival);
 		return true;
 	}
 
@@ -239,13 +321,86 @@ namespace GuLiCommanderNavigationPolicyTests
 			LFrame.bRequiresTailClear);
 		TestTrue(TEXT("The last turn begins 100m along the shared path"),
 			FMath::IsNearlyEqual(LFrame.TailClearPathDistanceCentimeters, 10000.0, 0.01));
+		TestEqual(TEXT("The L-shaped path caches its final-turn path point"),
+			LFrame.TailClearPathPointIndex, 1);
 
-		const FVector TailDirection = CalculateSharedPathFollowDirection(
+		int32 MemberPathPointIndex = AdvanceMemberPathPointIndex(
 			LShapedPath,
+			1,
 			FVector(5000.0, 0.0, 0.0),
-			750.0f);
-		TestTrue(TEXT("A tail member before the bend follows the shared path toward the corner"),
-			TailDirection.X > 0.99f && FMath::Abs(TailDirection.Y) < 0.01f);
+			RequiredAgentRadiusCentimeters,
+			4350.0f);
+		TestEqual(TEXT("A tail member before the bend retains the corner as its next point"),
+			MemberPathPointIndex, 1);
+		TestFalse(TEXT("The cached cursor prevents an early L-bend tail-clear latch"),
+			HasClearedFinalTurn(LFrame, MemberPathPointIndex));
+		MemberPathPointIndex = AdvanceMemberPathPointIndex(
+			LShapedPath,
+			MemberPathPointIndex,
+			FVector(10000.0, 500.0, 0.0),
+			RequiredAgentRadiusCentimeters,
+			4350.0f);
+		TestEqual(TEXT("Crossing the corner advances the member onto the final segment"),
+			MemberPathPointIndex, 2);
+		TestTrue(TEXT("The final-turn latch becomes true after sequential path progress"),
+			HasClearedFinalTurn(LFrame, MemberPathPointIndex));
+
+		const TArray<FVector> HairpinPath = {
+			FVector(0.0, 0.0, 0.0),
+			FVector(10000.0, 0.0, 0.0),
+			FVector(0.0, 0.0, 0.0)
+		};
+		const FFinalPathFrame HairpinFrame = ResolveFinalPathFrame(
+			HairpinPath, HairpinPath[0], HairpinPath.Last());
+		const int32 HairpinCursor = AdvanceMemberPathPointIndex(
+			HairpinPath, 1, FVector(5000.0, 0.0, 0.0), 100.0f, 4350.0f);
+		TestFalse(TEXT("A member on an overlapping hairpin ray cannot skip the actual turn"),
+			HasClearedFinalTurn(HairpinFrame, HairpinCursor));
+		const int32 OffCorridorCursor = AdvanceMemberPathPointIndex(
+			LShapedPath,
+			1,
+			FVector(10100.0, 5000.0, 0.0),
+			RequiredAgentRadiusCentimeters,
+			4350.0f);
+		TestEqual(TEXT("Crossing a waypoint plane far outside its corridor cannot skip the turn"),
+			OffCorridorCursor, 1);
+		const int32 WideFormationCursor = AdvanceMemberPathPointIndex(
+			LShapedPath,
+			1,
+			FVector(10001.0, 3600.0, 0.0),
+			RequiredAgentRadiusCentimeters,
+			4350.0f);
+		TestEqual(TEXT("A five-column outer lane can clear the turn without converging on its center"),
+			WideFormationCursor, 2);
+		const int32 SingleColumnCursor = AdvanceMemberPathPointIndex(
+			LShapedPath,
+			1,
+			FVector(10001.0, 3600.0, 0.0),
+			RequiredAgentRadiusCentimeters,
+			RequiredAgentRadiusCentimeters);
+		TestEqual(TEXT("The same offset cannot bypass a one-column corridor"),
+			SingleColumnCursor, 1);
+		const TArray<FVector> CloseZigzagPath = {
+			FVector::ZeroVector,
+			FVector(100.0, 0.0, 0.0),
+			FVector(100.0, 100.0, 0.0),
+			FVector(200.0, 100.0, 0.0)
+		};
+		const int32 CloseZigzagCursor = AdvanceMemberPathPointIndex(
+			CloseZigzagPath,
+			1,
+			FVector(100.0, 100.0, 0.0),
+			RequiredAgentRadiusCentimeters,
+			4350.0f);
+		TestEqual(TEXT("Closely spaced physical turns advance at most one waypoint per fixed step"),
+			CloseZigzagCursor, 2);
+		const FVector ShiftedIncomingWaypoint = CalculatePathLaneWaypoint(
+			LShapedPath,
+			1,
+			3600.0f);
+		TestTrue(TEXT("An outer transit lane approaches its own offset corner instead of the center"),
+			FMath::IsNearlyEqual(ShiftedIncomingWaypoint.X, 10000.0f, 0.01f)
+				&& FMath::IsNearlyEqual(ShiftedIncomingWaypoint.Y, 3600.0f, 0.01f));
 
 		const TArray<FVector> DegeneratePath = {
 			FVector(10.0, 20.0, 0.0),
@@ -258,6 +413,53 @@ namespace GuLiCommanderNavigationPolicyTests
 		TestTrue(TEXT("An entirely degenerate path uses the deterministic fallback direction"),
 			FallbackFrame.bHasUsableDirection
 				&& FMath::IsNearlyEqual(FallbackFrame.YawDegrees, -90.0f, 0.01f));
+		const FFinalPathFrame UnusableFrame = ResolveFinalPathFrame(
+			DegeneratePath,
+			DegeneratePath[0],
+			DegeneratePath[0]);
+		TestFalse(TEXT("A coincident shared path is explicitly unusable instead of becoming a permanent order"),
+			UnusableFrame.bHasUsableDirection);
+		return true;
+	}
+
+	IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+		FCommanderFinalCorridorLaneTest,
+		"GuLiStrike.Commander.Mass.Navigation.FinalCorridorLane",
+		EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+	bool FCommanderFinalCorridorLaneTest::RunTest(const FString& Parameters)
+	{
+		const TArray<FVector> StraightPath = {
+			FVector::ZeroVector,
+			FVector(10000.0, 0.0, 0.0)
+		};
+		const FFinalPathFrame Frame = ResolveFinalPathFrame(
+			StraightPath, StraightPath[0], StraightPath.Last());
+		constexpr float Spacing = 1800.0f;
+		const FVector CornerSlot = MakeFormationSlotOffset(0, Spacing, 5);
+		TestTrue(TEXT("The legacy 5x5 corner lies outside the 25-member 50m domain"),
+			CornerSlot.Size2D() > 5000.0f);
+		const FVector CornerMember(2000.0, CornerSlot.Y, 0.0);
+		const FVector CornerLaneTarget = CalculateFinalCorridorLaneTarget(
+			Frame, StraightPath.Last(), CornerMember, CornerSlot.Y, 1800.0f);
+		TestTrue(TEXT("A corner member keeps its lateral lane and advances longitudinally"),
+			FMath::IsNearlyEqual(CornerLaneTarget.Y, CornerMember.Y, 0.01f)
+				&& CornerLaneTarget.X > CornerMember.X);
+
+		const FVector OneColumnRearSlot = MakeFormationSlotOffset(24, Spacing, 1);
+		TestTrue(TEXT("A one-column rear transit slot can be more than 200m behind its guide"),
+			FMath::Abs(OneColumnRearSlot.X) > 20000.0f);
+		const FVector RearMember(-21600.0, 0.0, 0.0);
+		const FVector RearLaneTarget = CalculateFinalCorridorLaneTarget(
+			Frame, StraightPath.Last(), RearMember, 0.0f, 1800.0f);
+		TestTrue(TEXT("Final-corridor steering discards the one-column longitudinal slot"),
+			RearLaneTarget.X > RearMember.X
+				&& FMath::IsNearlyEqual(RearLaneTarget.Y, RearMember.Y, 0.01f));
+		const FVector OvershotMember(12000.0, 0.0, 0.0);
+		const FVector OvershotLaneTarget = CalculateFinalCorridorLaneTarget(
+			Frame, StraightPath.Last(), OvershotMember, 0.0f, 1800.0f);
+		TestTrue(TEXT("A member that overshoots the arrival disk turns back along its lane"),
+			OvershotLaneTarget.X < OvershotMember.X);
 		return true;
 	}
 
@@ -284,8 +486,12 @@ namespace GuLiCommanderNavigationPolicyTests
 			Members[MemberIndex].Location = FVector(10000.0, 1000.0 + MemberIndex * 10.0, 0.0);
 			Members[MemberIndex].bAlive = true;
 			Members[MemberIndex].bFollowsOrder = true;
+			Members[MemberIndex].bTailCleared = true;
+			Members[MemberIndex].bHasReachedArrival = true;
 		}
 		Members[0].Location = FVector(9500.0, 0.0, 0.0);
+		Members[0].bTailCleared = false;
+		Members[0].bHasReachedArrival = false;
 
 		TestFalse(TEXT("Even an Euclidean-near tail cannot complete through the wall before the L bend"),
 			ShouldCompleteOrder(
@@ -304,6 +510,8 @@ namespace GuLiCommanderNavigationPolicyTests
 
 		Members[0].bFollowsOrder = true;
 		Members[0].Location = FVector(10000.0, 500.0, 0.0);
+		Members[0].bTailCleared = true;
+		Members[0].bHasReachedArrival = true;
 		TestFalse(TEXT("Member readiness cannot bypass leader arrival"),
 			ShouldCompleteOrder(
 				false, LFrame, LShapedPath, LShapedPath.Last(), Members, 11000.0f, 100.0f));
@@ -322,6 +530,8 @@ namespace GuLiCommanderNavigationPolicyTests
 			Member.Location = FVector(-1000.0, 0.0, 0.0);
 			Member.bAlive = true;
 			Member.bFollowsOrder = true;
+			Member.bTailCleared = true;
+			Member.bHasReachedArrival = false;
 		}
 		TestFalse(TEXT("A short straight path still waits for a distant tail to enter the arrival domain"),
 			ShouldCompleteOrder(
@@ -335,8 +545,9 @@ namespace GuLiCommanderNavigationPolicyTests
 		for (FFormationMemberProgressSample& Member : Members)
 		{
 			Member.Location = FVector(750.0, 0.0, 0.0);
+			Member.bHasReachedArrival = true;
 		}
-		TestTrue(TEXT("A short straight path completes after every active member enters the domain"),
+		TestTrue(TEXT("A latched arrival remains complete after avoidance moves members outside the domain"),
 			ShouldCompleteOrder(
 				true,
 				StraightFrame,
