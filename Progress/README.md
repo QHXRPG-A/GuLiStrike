@@ -41,24 +41,31 @@
 | 2026-08-20 | DIY 飞船 | [需求](./RequirementDocument/20260820-DIY飞船.md) | [开发](./DevelopmentDocumentation/20260820-DIY飞船.md) |
 | 2026-08-16 | 示例-商店系统 | [需求](./RequirementDocument/20260816-示例-商店系统需求.md) | [开发](./DevelopmentDocumentation/20260816-示例-商店系统需求.md) |
 
+### GAS 学习笔记
+
+| 日期 | 文档 |
+|---|---|
+| 2026-09-01 | [GAS 基础：ASC、Ability、Tag、Event 与当前指挥官军队技能桥接](./DevelopmentDocumentation/相关读物/GAS/README.md) |
+
 ### UE 网络教材
 
 | 日期 | 文档 |
 |---|---|
-| 2026-08-31 | [UE 网络基础到当前项目实现：公共 Battle、三角色网络链路、10 章源码与练习](./DevelopmentDocumentation/UE网络教材/README.md) |
-| 2026-08-31 | [理论篇（新增）：网络同步概念理解，Jerish 原作按 UE 5.7 引擎源码改编，附差异速查表](./DevelopmentDocumentation/UE网络教材/00-理论篇-网络同步概念理解.md) |
+| 2026-08-31 | [UE 网络基础到当前项目实现：公共 Battle、三角色网络链路、10 章源码与练习](./DevelopmentDocumentation/相关读物/UE网络教材/README.md) |
+| 2026-08-31 | [理论篇（新增）：网络同步概念理解，Jerish 原作按 UE 5.7 引擎源码改编，附差异速查表](./DevelopmentDocumentation/相关读物/UE网络教材/00-理论篇-网络同步概念理解.md) |
 
 ### Mass 精读笔记
 
 | 日期 | 文档 |
 |---|---|
-| 2026-08-31 | [阅读目录：元素 → Handle → Archetype → Query → Authority，与 UE 网络教材衔接](./DevelopmentDocumentation/Mass精读笔记/README.md) |
-| 2026-08-31 | [GuLiBattleAuthoritySubsystem：士兵模块启停、选兵与移动、30 Hz 模拟、调参与发布组件协作](./DevelopmentDocumentation/Mass精读笔记/GuLiBattleAuthoritySubsystem.md) |
+| 2026-08-31 | [阅读目录：元素 → Handle → Archetype → Query → Authority，与 UE 网络教材衔接](./DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) |
+| 2026-08-31 | [GuLiBattleAuthoritySubsystem：士兵模块启停、选兵与移动、30 Hz 模拟、调参与发布组件协作](./DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md) |
 
 ### 归档（倒序）
 
 | 日期 | 事项 |
 |---|---|
+| 2026-09-01 | [GAS 基础教材与项目桥接导读：从 ASC、Ability、Tag、Event 等基础概念映射到指挥官 PlayerState、团队技能桥接与 Mass 扫射，并修复相关读物目录移动后的主要索引链接；本轮仅静态文档核对](./Archive/20260901-GAS基础教材与项目桥接导读.md) |
 | 2026-09-01 | [移动命令自由扩散、单兵部分接受与静态寻路线：六角候选、分帧规划、v6掩码、OwnerOnly终点和无动画1px绿线已实现；Editor/Game构建、全量99项、网络19/19、导航24/24及默认地图20兵无头命令链通过，交互PIE、双客户端和性能待验证](./Archive/20260901-移动命令自由扩散与静态寻路线实现与验证.md) |
 | 2026-09-01 | [指挥官相机、编队导航与移动射击：真实Landscape边界、固定5×5终点、每步NavMesh约束、恢复/Blocked与移动射击已实现；Game、DebugGame/Development Editor构建成功，DebugGame全量89/89与Development导航20/20通过；交互PIE/双客户端/性能待验证，Launcher不支持Server target](./Archive/20260901-指挥官相机编队导航与移动射击优化实现与验证.md) |
 | 2026-09-01 | [小兵扫射与指挥官GAS桥接：两兵种表驱动、来源原子叠加/替换、float生命与v5、服务器GM；79项自动化和专服双客户端通过，500交战及万人驻停采样，万人完整性能未判定达标](./Archive/20260901-小兵扫射与指挥官GAS桥接实现与验证.md) |

@@ -392,7 +392,7 @@ Mass 必须把该 Entity 从：
 
 因此，除了死亡移列，当前项目主动切换 Even/Odd Tag 也会改变 Archetype；这不否定“共享值不属于类型组成”的引擎规则。两种迁移都保留 Entity Handle，重新获取 Fragment，并不表示所有 500 名士兵永远处于同一个 Archetype。
 
-公共框架变化只影响启停与消费边界：[发布组件](../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp) 启用 Authority 后才尝试整批生成；[Presentation::UpdateNetworkPresentationSource](../../../Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp) 在同步源失效时销毁旧镜像，名册门重新满足后再按当前 SoldierId 建立本地实体。
+公共框架变化只影响启停与消费边界：[发布组件](../../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp) 启用 Authority 后才尝试整批生成；[Presentation::UpdateNetworkPresentationSource](../../../../Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp) 在同步源失效时销毁旧镜像，名册门重新满足后再按当前 SoldierId 建立本地实体。
 
 ## 七、Query 为什么按 Archetype 缓存，而不是逐实体猜
 
@@ -486,7 +486,7 @@ struct FArchetypeEntityRange
 
 **当前源码：** 本次只核对当前项目与本机 UE 5.7.4 源码，没有重新编译、启动 PIE 或执行网络测试。
 
-**历史验证：** [2026-08-27 总归档](../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)保存了当时 500 兵、动态选兵与移动冒烟的记录；原始临时日志和 JSON 已清理，不能再把它们列成可读取的现存证据。[2026-08-31 公共框架归档](../../Archive/20260831-公共战局框架与三类角色接入.md)记录冷编译成功、现有测试 50/50 通过及混合战局联调。NetworkGate 最终 ACK P95=138.1ms 达标，但未标记硬跳变 1 次，整体验收仍未通过；本次文档修订没有修复该问题。
+**历史验证：** [2026-08-27 总归档](../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)保存了当时 500 兵、动态选兵与移动冒烟的记录；原始临时日志和 JSON 已清理，不能再把它们列成可读取的现存证据。[2026-08-31 公共框架归档](../../../Archive/20260831-公共战局框架与三类角色接入.md)记录冷编译成功、现有测试 50/50 通过及混合战局联调。NetworkGate 最终 ACK P95=138.1ms 达标，但未标记硬跳变 1 次，整体验收仍未通过；本次文档修订没有修复该问题。
 
 **专项边界：** 未新增 Archetype 组成、共享值分组、Even/Odd 参数迁移或死亡迁移专项测试；这些说明来自源码，不能用整体冒烟代替逐项证明。
 
@@ -495,6 +495,6 @@ struct FArchetypeEntityRange
 - 前置：[MassEntityElementTypes：组成中的五种元素](./MassEntityElementTypes.md)
 - 前置：[MassEntityHandle：Entity 迁移时什么保持稳定](./MassEntityHandle.md)
 - 下一篇：[MassEntityQuery 与 ExecutionContext：Query 如何匹配这些 Archetype](./MassEntityQuery与ExecutionContext.md)
-- 技术方案：[20260827-Mass 双端同步架构草案](../20260827-Mass双端同步架构草案.md)
-- 总归档：[20260827-Mass 动态 25 人控制组与双端平滑同步](../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)
-- 玩法记录：[指挥官](../../Gameplay/指挥官.md)
+- 技术方案：[20260827-Mass 双端同步架构草案](../../20260827-Mass双端同步架构草案.md)
+- 总归档：[20260827-Mass 动态 25 人控制组与双端平滑同步](../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)
+- 玩法记录：[指挥官](../../../Gameplay/指挥官.md)

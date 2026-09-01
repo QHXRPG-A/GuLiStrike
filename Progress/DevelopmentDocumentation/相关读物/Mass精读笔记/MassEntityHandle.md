@@ -468,7 +468,7 @@ bool operator<(const FMassEntityHandle Other) const
 
 **当前源码：** 本次只核对当前项目与本机 UE 5.7.4 源码，没有重新编译、启动 PIE 或执行网络测试。
 
-**历史验证：** [2026-08-27 总归档](../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)保存了当时 500 兵、动态选兵与移动冒烟的记录；原始临时日志和 JSON 已清理，不能再把它们列成可读取的现存证据。[2026-08-31 公共框架归档](../../Archive/20260831-公共战局框架与三类角色接入.md)记录冷编译成功、现有测试 50/50 通过及混合战局联调。NetworkGate 最终 ACK P95=138.1ms 达标，但未标记硬跳变 1 次，整体验收仍未通过；本次文档修订没有修复该问题。
+**历史验证：** [2026-08-27 总归档](../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)保存了当时 500 兵、动态选兵与移动冒烟的记录；原始临时日志和 JSON 已清理，不能再把它们列成可读取的现存证据。[2026-08-31 公共框架归档](../../../Archive/20260831-公共战局框架与三类角色接入.md)记录冷编译成功、现有测试 50/50 通过及混合战局联调。NetworkGate 最终 ACK P95=138.1ms 达标，但未标记硬跳变 1 次，整体验收仍未通过；本次文档修订没有修复该问题。
 
 **专项边界：** 50 项测试不代表 Handle 代际复用、BatchCreate/Destroy 或跨 Manager 隔离都有专项覆盖；访问规则依靠引擎合同及项目生命周期审查。
 
@@ -477,5 +477,5 @@ bool operator<(const FMassEntityHandle Other) const
 - 前置：[MassEntityElementTypes：Fragment、Tag 与 ConstShared 的真实使用](./MassEntityElementTypes.md)
 - 下一篇：[MassArchetypeTypes：Handle 指向的 Entity 如何按数据组合存放](./MassArchetypeTypes.md)
 - 后续：[MassEntityQuery 与 ExecutionContext：如何批量访问匹配 Entity](./MassEntityQuery与ExecutionContext.md)
-- 技术方案：[20260827-Mass 双端同步架构草案](../20260827-Mass双端同步架构草案.md)
-- 总归档：[20260827-Mass 动态 25 人控制组与双端平滑同步](../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)
+- 技术方案：[20260827-Mass 双端同步架构草案](../../20260827-Mass双端同步架构草案.md)
+- 总归档：[20260827-Mass 动态 25 人控制组与双端平滑同步](../../../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md)

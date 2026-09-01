@@ -1,6 +1,6 @@
 # 02 所有权与 RPC
 
-[教材目录](D:/UE5.7/test1/Progress/DevelopmentDocumentation/UE网络教材/README.md) · [上一章](D:/UE5.7/test1/Progress/DevelopmentDocumentation/UE网络教材/01-UE网络模型与对象职责.md) · [下一章](D:/UE5.7/test1/Progress/DevelopmentDocumentation/UE网络教材/03-属性复制与RepNotify.md)
+[教材目录](D:/UE5.7/test1/Progress/DevelopmentDocumentation/相关读物/UE网络教材/README.md) · [上一章](D:/UE5.7/test1/Progress/DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) · [下一章](D:/UE5.7/test1/Progress/DevelopmentDocumentation/相关读物/UE网络教材/03-属性复制与RepNotify.md)
 
 ## 学习目标
 

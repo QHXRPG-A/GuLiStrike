@@ -1,6 +1,6 @@
 # 03 属性复制与 RepNotify
 
-[教材目录](D:/UE5.7/test1/Progress/DevelopmentDocumentation/UE网络教材/README.md) · [上一章](D:/UE5.7/test1/Progress/DevelopmentDocumentation/UE网络教材/02-所有权与RPC.md) · [下一章](D:/UE5.7/test1/Progress/DevelopmentDocumentation/UE网络教材/04-项目协议与序列化.md)
+[教材目录](D:/UE5.7/test1/Progress/DevelopmentDocumentation/相关读物/UE网络教材/README.md) · [上一章](D:/UE5.7/test1/Progress/DevelopmentDocumentation/相关读物/UE网络教材/02-所有权与RPC.md) · [下一章](D:/UE5.7/test1/Progress/DevelopmentDocumentation/相关读物/UE网络教材/04-项目协议与序列化.md)
 
 ## 学习目标
 

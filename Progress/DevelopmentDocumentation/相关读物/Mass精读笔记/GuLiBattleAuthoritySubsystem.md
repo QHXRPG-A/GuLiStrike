@@ -5,12 +5,12 @@
 - 对应需求：UE 网络教材与 Mass 精读笔记同步修订；本文是现有源码导读，不是新功能方案。
 - 状态：已同步公共 Battle 框架；本文是源码导读，验证事实与未通过项见文末。
 - 阅读基线：当前工作区源码，包含本次开始前已有的未提交修改，不以旧归档或 Git HEAD 代替现状。
-- 主文件：[GuLiBattleAuthoritySubsystem.cpp](../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)
-- 接口与配置声明：[GuLiBattleAuthoritySubsystem.h](../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h)
+- 主文件：[GuLiBattleAuthoritySubsystem.cpp](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp)
+- 接口与配置声明：[GuLiBattleAuthoritySubsystem.h](../../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h)
 
 `UGuLiBattleAuthoritySubsystem` 把指挥官的选择、移动意图变成服务端认可的士兵状态，以固定步长推进位置，再提供给网络复制与表现层。读懂它的关键，是分清“士兵身份”“临时控制组”“一次移动的编队”，以及谁最终写入位置。
 
-> 2026-09-01提示：[移动命令自由扩散与静态寻路线](../20260901-移动命令自由扩散与静态寻路线.md)已经把固定终点整组裁决改为自由候选、单兵部分接受和分帧规划。下方第5节按当前源码描述；构建、自动化与无头冒烟已经通过，交互PIE、双客户端和完整性能仍以文末边界为准。
+> 2026-09-01提示：[移动命令自由扩散与静态寻路线](../../20260901-移动命令自由扩散与静态寻路线.md)已经把固定终点整组裁决改为自由候选、单兵部分接受和分帧规划。下方第5节按当前源码描述；构建、自动化与无头冒烟已经通过，交互PIE、双客户端和完整性能仍以文末边界为准。
 
 ## 1. 先看全貌，再看辅助算法
 
@@ -46,7 +46,7 @@ flowchart TD
 
 图中的 `ResolveSelection → IssueMove` 表示选择数据的依赖关系，不是选兵函数会自动调用移动函数；避让箭头表示数据往返，不保证同一世界帧内先后次序。
 
-公开的选择、移动、伤害、调参入口是服务器本地 C++ API。导航重建回调的 `UFUNCTION` 不是移动 RPC。请求从 [CommanderNetSync::HandleSelectionRequest / HandleMoveRequest](../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp) 进入；公共身份握手由 [PlayerNetSync](../../../Source/GuLiStrike/Battle/Network/GuLiPlayerNetSyncComponent.cpp) 承担。
+公开的选择、移动、伤害、调参入口是服务器本地 C++ API。导航重建回调的 `UFUNCTION` 不是移动 RPC。请求从 [CommanderNetSync::HandleSelectionRequest / HandleMoveRequest](../../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp) 进入；公共身份握手由 [PlayerNetSync](../../../../Source/GuLiStrike/Battle/Network/GuLiPlayerNetSyncComponent.cpp) 承担。
 
 指挥命令要求公共连接就绪、士兵流就绪和 Commander 权限。Ground/Air 可在公共握手后使用自己的 Pawn，也可通过专业名册门观察士兵；公共就绪不授予选兵权限。公共 GameMode 的玩家 Pawn 复活与本文的士兵死亡/残骸清理是两条生命周期。
 
@@ -83,7 +83,7 @@ flowchart TD
 
 `Initialize` 声明 Mass 与运行时调参依赖，分配权威状态、读取有效数值；这不等于已经生成部队。模拟开关 `bSoldierSimulationEnabled` 默认 false。`OnWorldBeginPlay` 订阅导航事件并尝试生成，但仍受开关约束。
 
-[GuLiCommanderWorldReplicationComponent::BeginPlay](../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp) 取得本 World 唯一调度权后，本地调用 `SetSoldierSimulationEnabled(true)`。组件可能晚于 Subsystem BeginPlay，因此启用时再尝试生成，导航未就绪则由后续 Tick 重试。组件 EndPlay 调用 false，停止模拟并清理部队；纯公共 BattleGameMode 没有此模块，不会自动生成 500 兵。
+[GuLiCommanderWorldReplicationComponent::BeginPlay](../../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp) 取得本 World 唯一调度权后，本地调用 `SetSoldierSimulationEnabled(true)`。组件可能晚于 Subsystem BeginPlay，因此启用时再尝试生成，导航未就绪则由后续 Tick 重试。组件 EndPlay 调用 false，停止模拟并清理部队；纯公共 BattleGameMode 没有此模块，不会自动生成 500 兵。
 
 `TrySpawnAuthorityPopulation` 的顺序值得完整读一遍：
 
@@ -123,7 +123,7 @@ flowchart TD
 
 `ActiveOrderId` 摘要仅在所有存活成员的指令一致时保留共同值，否则为 0。摘要变化本身不一定改变选择版本；不要把 `AliveCount`、`MemberIds.Num()`、`SelectionRevision` 当成同一个概念。
 
-本文件虽然还保留 `FRequestGate`、`RequestGates`、`MaxRequestsPerSecond`，当前选择/移动路径没有使用它们。实际请求限流、重复检测和缓存 ACK 重放应读 [GuLiCommanderNetSyncComponent.cpp](../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp) 的 `HandleSelectionRequest`、`HandleMoveRequest`。
+本文件虽然还保留 `FRequestGate`、`RequestGates`、`MaxRequestsPerSecond`，当前选择/移动路径没有使用它们。实际请求限流、重复检测和缓存 ACK 重放应读 [GuLiCommanderNetSyncComponent.cpp](../../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp) 的 `HandleSelectionRequest`、`HandleMoveRequest`。
 
 ## 5. IssueMove：自由候选、分帧规划、单兵提交
 
@@ -212,7 +212,7 @@ NavMesh生成代次变化也不再在回调里同步查询全部活动单位。�
 
 地面检查发生在移动时的首次及每隔 6 个模拟 tick，约每 0.2 秒一次；中间步只保留原 Z。采样失败会取消本步位移、清零速度，末段通道还会申请下步收回中心线。**本轮没有把它改成每步投影或连续碰撞检测，不能由这些检查推断所有中间位移都做过导航验证。**
 
-项目的 [GuLiCommanderAvoidanceCaptureProcessor.cpp](../../../Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp) 在 Mass 避让之后缓存 Force 并清零原 Force。本子系统消费缓存来推进固定步。它借用了 Mass 数据与避让能力，实际 Location 积分仍在本文件。
+项目的 [GuLiCommanderAvoidanceCaptureProcessor.cpp](../../../../Source/GuLiStrike/Commander/Mass/GuLiCommanderAvoidanceCaptureProcessor.cpp) 在 Mass 避让之后缓存 Force 并清零原 Force。本子系统消费缓存来推进固定步。它借用了 Mass 数据与避让能力，实际 Location 积分仍在本文件。
 
 ### 第四段：整个 Batch 一起结束
 
@@ -254,7 +254,7 @@ NavMesh生成代次变化也不再在回调里同步查询全部活动单位。�
 
 冻结的横向通道还会按 Agent 半径和固定步位移预留余量，避免通道从到达内圈外侧掠过。若通道投影失败，下步横向偏移归零，但后续仍要接受 NavMesh 检查。
 
-数学细节集中在 [GuLiCommanderNavigationPolicy.cpp](../../../Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.cpp)，优先继续读 `AdvanceMemberPathPointIndex`、`UpdateLooseArrivalMemberState`、`CalculateFinalCorridorLaneTarget` 和 `ShouldCompleteOrder`。
+数学细节集中在 [GuLiCommanderNavigationPolicy.cpp](../../../../Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.cpp)，优先继续读 `AdvanceMemberPathPointIndex`、`UpdateLooseArrivalMemberState`、`CalculateFinalCorridorLaneTarget` 和 `ShouldCompleteOrder`。
 
 ## 8. 局部流场：主线程采样，后台只做纯数据计算
 
@@ -272,7 +272,7 @@ NavMesh生成代次变化也不再在回调里同步查询全部活动单位。�
 
 `HandleNavigationGenerationFinished` 只处理指定 Agent 的导航数据，递增导航代际与路径版本，重新投影目标和寻路。重建失败会使路径无效，随后由固定步中的批次清理处理；它不会强行改成穿过地形的直线路径。
 
-继续阅读：[GuLiLocalFlowField.h](../../../Source/GuLiStrike/Commander/Mass/Navigation/GuLiLocalFlowField.h) 与 [GuLiLocalFlowField.cpp](../../../Source/GuLiStrike/Commander/Mass/Navigation/GuLiLocalFlowField.cpp)。
+继续阅读：[GuLiLocalFlowField.h](../../../../Source/GuLiStrike/Commander/Mass/Navigation/GuLiLocalFlowField.h) 与 [GuLiLocalFlowField.cpp](../../../../Source/GuLiStrike/Commander/Mass/Navigation/GuLiLocalFlowField.cpp)。
 
 ## 9. 热调参和死亡：实体仍然存在
 
@@ -305,9 +305,9 @@ NavMesh生成代次变化也不再在回调里同步查询全部活动单位。�
 
 `Pose.State` 中的 Moving 根据是否有活动指令设置，并不直接根据速度是否为零设置。松散到达但仍等待同批其他成员时，这个区别尤其重要。生命事实仍应以离散状态通道为准。
 
-调度细节见 [GuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses](../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp)：发现带专业网络组件的 Controller，完成士兵名册门后调用 `SendPoseChunk`；不要求特定 Commander Controller 类，也不会为没有就绪连接而积压旧帧。旧 GameMode 只组合此模块。协议尺寸与量化常量见 [GuLiCommanderTypes.h](../../../Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h)。
+调度细节见 [GuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses](../../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp)：发现带专业网络组件的 Controller，完成士兵名册门后调用 `SendPoseChunk`；不要求特定 Commander Controller 类，也不会为没有就绪连接而积压旧帧。旧 GameMode 只组合此模块。协议尺寸与量化常量见 [GuLiCommanderTypes.h](../../../../Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h)。
 
-“可靠状态”指属性副本持续收敛，不是把每次变化作为 Reliable RPC 重放。姿态到达后，NetSync 先校验就绪与战局，再交给 [PresentationActor::ConsumePoseChunks / IngestPoseChunk](../../../Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp)。`UpdateNetworkPresentationSource` 发现连接组件、PlayerState、Replicator、战局、同步代次或就绪状态变化时，会清理样本、时钟、预测及本地 Mass 镜像；新名册门满足后重建，不能沿用上一战局的 SoldierId→Handle 映射。
+“可靠状态”指属性副本持续收敛，不是把每次变化作为 Reliable RPC 重放。姿态到达后，NetSync 先校验就绪与战局，再交给 [PresentationActor::ConsumePoseChunks / IngestPoseChunk](../../../../Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp)。`UpdateNetworkPresentationSource` 发现连接组件、PlayerState、Replicator、战局、同步代次或就绪状态变化时，会清理样本、时钟、预测及本地 Mass 镜像；新名册门满足后重建，不能沿用上一战局的 SoldierId→Handle 映射。
 
 ## 11. 常量速查与易错判断
 
@@ -351,10 +351,10 @@ NavMesh生成代次变化也不再在回调里同步查询全部活动单位。�
 
 2026-09-01已按当前源码核对自由候选、分帧规划、单兵部分接受、协议v6、终点FastArray和NavMesh分帧修复。`GuLiStrikeEditor Win64 Development`与`GuLiStrike Win64 Development`构建成功；全量99项均Success，网络19/19、导航24/24。默认地图无头运行加载原生Commander GameMode、生成500兵，并让一次20人命令20/20 Accepted、移动3870cm后完成销毁，最终PASS。
 
-无头冒烟不是完整交互和性能验收。25/250/500兵交互PIE、Standalone双客户端、500条静态绿线绘制成本、500活动单位NavMesh动态重建峰值和Dedicated Server仍未验证；Launcher引擎不支持Server Target。完整证据和遗留见[本轮受限验证归档](../../Archive/20260901-移动命令自由扩散与静态寻路线实现与验证.md)。
+无头冒烟不是完整交互和性能验收。25/250/500兵交互PIE、Standalone双客户端、500条静态绿线绘制成本、500活动单位NavMesh动态重建峰值和Dedicated Server仍未验证；Launcher引擎不支持Server Target。完整证据和遗留见[本轮受限验证归档](../../../Archive/20260901-移动命令自由扩散与静态寻路线实现与验证.md)。
 
-[公共战局框架正式归档](../../Archive/20260831-公共战局框架与三类角色接入.md)记录此前冷编译成功、50/50 现有测试通过，以及重连、原生切图、复活和混合战局验证。NetworkGate 最终 ACK P95=138.1ms 达标，但未标记硬跳变 1 次，原因尚未确定；这些整体测试不能替代每个 Mass 算法的专项验证。
+[公共战局框架正式归档](../../../Archive/20260831-公共战局框架与三类角色接入.md)记录此前冷编译成功、50/50 现有测试通过，以及重连、原生切图、复活和混合战局验证。NetworkGate 最终 ACK P95=138.1ms 达标，但未标记硬跳变 1 次，原因尚未确定；这些整体测试不能替代每个 Mass 算法的专项验证。
 
-2026-08-30 的注释、57 处排版及当时词法核对属于[初次整理归档](../../Archive/20260830-战斗权威子系统中文注释与导读.md)，不再作为本轮任务清单。当前文档修订过程见[本次文档归档](../../Archive/20260831-网络教材与Mass精读笔记同步修订.md)。
+2026-08-30 的注释、57 处排版及当时词法核对属于[初次整理归档](../../../Archive/20260830-战斗权威子系统中文注释与导读.md)，不再作为本轮任务清单。当前文档修订过程见[本次文档归档](../../../Archive/20260831-网络教材与Mass精读笔记同步修订.md)。
 
 [Mass 阅读目录](./README.md) · [网络教材第 07 章：士兵发送](../UE网络教材/07-士兵状态与姿态发送.md) · [第 08 章：客户端重建](../UE网络教材/08-客户端重建与平滑.md)
