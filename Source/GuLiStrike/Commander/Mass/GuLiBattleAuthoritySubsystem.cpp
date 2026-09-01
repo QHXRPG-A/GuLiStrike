@@ -2,15 +2,24 @@
 
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 
+#include "Algo/MinElement.h"
 #include "Avoidance/MassAvoidanceFragments.h"
 #include "Async/Async.h"
+#include "Battle/Framework/GuLiBattleGameState.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
+#include "Commander/Mass/GuLiCommanderSelectionQuery.h"
 #include "Commander/Mass/GuLiControlCohortBuilder.h"
+#include "Commander/Mass/Navigation/GuLiCommanderDestinationPlanner.h"
 #include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
 #include "Commander/Mass/Navigation/GuLiLocalFlowField.h"
+#include "Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.h"
 #include "Engine/World.h"
+#include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
+#include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
 #include "Gameplay/Tuning/GuLiRuntimeTuningSubsystem.h"
+#include "GameFramework/Controller.h"
+#include "HAL/PlatformTime.h"
 #include "MassCommonFragments.h"
 #include "MassEntityManager.h"
 #include "MassEntitySubsystem.h"
@@ -19,6 +28,7 @@
 #include "NavigationData.h"
 #include "NavigationPath.h"
 #include "NavigationSystem.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Subsystems/SubsystemCollection.h"
 #include "UObject/ObjectKey.h"
 
@@ -26,7 +36,7 @@ DEFINE_LOG_CATEGORY_STATIC(LogGuLiCommanderMass, Log, All);
 
 // 本文件是 Commander 的服务端战斗权威入口：维护独立士兵、解析选兵/移动意图，
 // 以 30 Hz 推进位置并生成网络快照。SoldierId 跨网络，Mass Entity 句柄只在本地使用。
-// 建议阅读顺序：生命周期与生成 -> ResolveSelection -> IssueMove -> TickAuthority -> 快照输出。
+// 建议阅读顺序：生命周期与生成 -> ResolveSelection -> BeginMovePlanning -> TickAuthority -> 快照输出。
 namespace GuLiCommanderMassPrivate
 {
 	// 2 队 × 10 个出生方阵 × 25 人 = 500 人；出生方阵只是摆放规则，不是永久编制。
@@ -42,13 +52,31 @@ namespace GuLiCommanderMassPrivate
 	// 此常量及下方 FRequestGate 当前未接入请求路径；实际网络限流由 NetSyncComponent 负责。
 	constexpr int32 MaxRequestsPerSecond = 10;
 	constexpr float SpatialCellSizeCentimeters = 10000.0f;
-	constexpr float MaximumAutomaticFillDistanceCentimeters = 30000.0f;
 	constexpr float FormationGuideMaximumLeadCentimeters = 9000.0f;
 	constexpr float FormationWaypointToleranceCentimeters = 1800.0f;
 	constexpr float FormationArrivalToleranceCentimeters = 500.0f;
 	constexpr float TravelWeight = 0.70f;
 	constexpr float SlotCorrectionWeight = 0.30f;
-	constexpr float ManualAvoidanceStrength = 0.85f;
+	constexpr float ManualAvoidanceStrength = 0.25f;
+	constexpr float MaximumSurfaceStepZCentimeters = 250.0f;
+	constexpr float ProgressDistanceCentimeters = 30.0f;
+	constexpr float CenterlineRecoverySeconds = 1.0f;
+	constexpr float PersonalRecoveryRetrySeconds = 2.0f;
+	constexpr float PersonalRecoveryBlockedSeconds = 4.0f;
+	constexpr int32 SurfaceFailuresBeforeCenterline = 2;
+	constexpr int32 SurfaceFailuresBeforePersonalPath = 6;
+	constexpr int32 MaximumPersonalPathQueriesPerStep = 4;
+	constexpr int32 ExpansionSuccessfulStepsRequired = 15;
+	constexpr float TransitReassignmentCooldownSeconds = 0.5f;
+	constexpr float DestinationMinimumSeparationCentimeters = 1600.0f;
+	constexpr float DestinationMaximumProjectionCorrectionCentimeters = 750.0f;
+	constexpr float FreeDestinationMaximumRadiusCentimeters = 45000.0f;
+	constexpr int32 MoveCandidateProjectionBudgetPerFrame = 64;
+	constexpr int32 MovePathQueryBudgetPerFrame = 4;
+	constexpr int32 MoveCommitConnectionRetryLimit = 2;
+	// Spawn centers are authored in XY with Z=0 while the terrain is far from world zero.
+	// Keep the strict XY correction, but search the full map-height range vertically.
+	constexpr float SpawnProjectionVerticalExtentCentimeters = 50000.0f;
 
 	static_assert(FormationColumns * FormationRows == SoldierCountPerFormation);
 	static_assert(SoldierCountPerFormation == static_cast<int32>(GULI_CONTROL_COHORT_TARGET_SIZE));
@@ -62,30 +90,63 @@ namespace GuLiCommanderMassPrivate
 		FMassEntityHandle Entity;
 		FGuLiSoldierId SoldierId;
 		EGuLiTeam Team = EGuLiTeam::Unassigned;
+		uint16 UnitTypeId = GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID;
 		FVector Location = FVector::ZeroVector;
 		FVector Velocity = FVector::ZeroVector;
 		float FacingYawDegrees = 0.0f;
-		uint8 Health = 100u;
-		uint8 MaxHealth = 100u;
-		float AttackPower = 0.0f;
+		float Health = 100.0f;
+		float MaxHealth = 100.0f;
 		float Defense = 0.0f;
-		float AttackRangeCentimeters = 0.0f;
+		FGuLiResolvedSkillProfile CombatProfile;
+		FGuLiSoldierAttackState Attack;
 		// StateRevision 标识离散状态变化；ActiveOrderId 指向当前批次，0 表示无活动指令。
 		uint32 StateRevision = 1u;
 		uint32 ActiveOrderId = 0u;
-		uint32 LastGroundSampleTick = 0u;
+		FNavLocation LastValidNavLocation;
+		FNavLocation FinalDestination;
+		FVector CurrentNavigationWaypoint = FVector::ZeroVector;
+		EGuLiSoldierNavigationState NavigationState = EGuLiSoldierNavigationState::Idle;
+		EGuLiSoldierNavigationFailure NavigationFailure = EGuLiSoldierNavigationFailure::None;
+		uint32 LastCompletedOrderId = 0u;
+		uint32 LastFailedOrderId = 0u;
+		uint32 FinalDestinationNavigationGeneration = 0u;
+		float NoProgressSeconds = 0.0f;
+		double FailureSimulationSeconds = 0.0;
+		float BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
+		int32 LastProgressPathPointIndex = INDEX_NONE;
+		int32 ConsecutiveSurfaceFailures = 0;
+		int32 TotalSurfaceFailures = 0;
+		TArray<FVector> PersonalPathPoints;
+		int32 PersonalPathPointIndex = 0;
+		int32 PersonalPathRetries = 0;
+		bool bHasFinalDestination = false;
 		FVector LastCapturedPoseLocation = FVector::ZeroVector;
 		uint32 LastCapturedPoseFrameSequence = 0u;
 		// 死亡后保留实体和身份；残骸到期只隐藏，统一销毁发生在战局清理时。
 		double DeathSimulationSeconds = -1.0;
 		bool bWreckExpired = false;
-		bool bCollapseFinalCorridorLaneOnNextStep = false;
 
 		bool IsAlive() const
 		{
-			return Health > 0u;
+			return FMath::IsFinite(Health) && Health > 0.0f;
 		}
 	};
+
+	void InitializeSoldierCombat(FSoldierRuntime& Soldier, const FGuLiSoldierDefinition& Definition,
+		const FGuLiSoldierRuntimeTuningValues& Tuning, const UGuLiArmySkillSubsystem* Skills)
+	{
+		Soldier.UnitTypeId = Definition.UnitTypeId;
+		Soldier.MaxHealth = Tuning.bOverrideMaxHealth ? Tuning.MaxHealth : Definition.MaxHealth;
+		Soldier.Health = Soldier.MaxHealth;
+		Soldier.Defense = Tuning.bOverrideDefense ? Tuning.Defense : Definition.Defense;
+		if (Skills)
+		{
+			if (const FGuLiResolvedSkillProfile* Profile = Skills->FindResolvedSkill(Soldier.Team, Soldier.UnitTypeId))
+			{
+				Soldier.CombatProfile = *Profile;
+			}
+		}
+	}
 
 	// 一个合法 ControlCohort 在一次移动请求中对应一个临时编队。
 	// 同一请求的编队共享 BatchOrderId、TargetAnchor 和到达域，但各自持有路径与引导点。
@@ -97,6 +158,8 @@ namespace GuLiCommanderMassPrivate
 		EGuLiTeam Team = EGuLiTeam::Unassigned;
 		TArray<FGuLiSoldierId> MemberIds;
 		TMap<uint32, uint8> SlotBySoldierId;
+		TMap<uint32, FNavLocation> CommandStartNavLocationBySoldierId;
+		TMap<uint32, FNavLocation> FinalDestinationBySoldierId;
 		// GuideAnchor 是沿共享路径推进的虚拟领队；TargetAnchor 是本批移动的共同终点。
 		FVector GuideAnchor = FVector::ZeroVector;
 		FVector TargetAnchor = FVector::ZeroVector;
@@ -112,17 +175,14 @@ namespace GuLiCommanderMassPrivate
 		TFuture<TSharedPtr<FGuLiLocalFlowField, ESPMode::ThreadSafe>> FlowBuildFuture;
 		bool bFlowBuildInFlight = false;
 		bool bPathValid = true;
-		// 到达域按接令时整个批次的去重人数计算并缓存，不随死亡或改令重新缩小。
-		int32 InitialAcceptedBatchMemberCount = 0;
-		float ArrivalDomainRadiusCentimeters = 0.0f;
 		int32 TransitColumnCount = FormationColumns;
-		// 成员分别记录过弯/到达状态、路径游标、末段横向通道以及释放后的停留点。
-		TMap<uint32, GuLiCommanderNavigationPolicy::FLooseArrivalMemberState>
-			LooseArrivalStateBySoldierId;
+		int32 ConsecutiveExpansionFitSteps = 0;
+		double LastTransitReassignmentSeconds = -TNumericLimits<double>::Max();
+		bool bLastMovementStepSucceeded = true;
+		float FinalApproachTriggerRadiusCentimeters = 0.0f;
+		bool bFinalApproachStarted = false;
+		// 成员分别维护共享路径游标；最终槽位在当前 OrderId 生命周期内不重排。
 		TMap<uint32, int32> MemberPathPointIndexBySoldierId;
-		TMap<uint32, float> FinalCorridorLateralOffsetBySoldierId;
-		TMap<uint32, FVector> LooseArrivalHoldAnchorBySoldierId;
-		bool bFinalCorridorStarted = false;
 	};
 
 	struct FRequestGate
@@ -132,6 +192,334 @@ namespace GuLiCommanderMassPrivate
 		uint32 LastMoveClientCommandId = 0u;
 		FGuLiCommandAck LastMoveAck;
 	};
+
+	struct FMoveDestinationReservation
+	{
+		uint32 OwnerSoldierId = 0u;
+		FVector Location = FVector::ZeroVector;
+	};
+
+	struct FMoveMemberPlan
+	{
+		FGuLiSoldierId SoldierId;
+		FGuLiControlCohortId CohortId;
+		int32 CohortMemberIndex = INDEX_NONE;
+		FNavLocation CommandStart;
+		FNavLocation DestinationNav;
+		FVector OldReservation = FVector::ZeroVector;
+		GuLiCommanderDestinationPlanner::FFreeDestinationSlot Destination;
+		EGuLiMovePlanFailureStage FailureStage = EGuLiMovePlanFailureStage::None;
+		int32 LastCandidateIndex = INDEX_NONE;
+		int32 CommitConnectionRetryCount = 0;
+		bool bEligible = false;
+		bool bStartValid = false;
+		bool bHasDestination = false;
+		bool bAccepted = false;
+	};
+
+	struct FMoveCohortPlan
+	{
+		FGuLiControlCohortId CohortId;
+		TArray<FGuLiSoldierId> FrozenMemberIds;
+		TArray<int32> MemberPlanIndices;
+	};
+
+	struct FMoveRouteTask
+	{
+		FGuLiControlCohortId CohortId;
+		TArray<int32> MemberPlanIndices;
+	};
+
+	enum class EMovePlanningStage : uint8
+	{
+		ValidateStarts,
+		ProjectCandidates,
+		AssignDestinations,
+		Route,
+		ReconcileReservations,
+		ReadyToCommit,
+		Completed
+	};
+
+	struct FMovePlanningJob
+	{
+		TWeakObjectPtr<const AGuLiBattlePlayerState> PlayerState;
+		TWeakObjectPtr<const AController> OwningController;
+		EGuLiTeam Team = EGuLiTeam::Unassigned;
+		FGuLiMoveRequest Request;
+		FGuLiCommanderSelectionState FrozenSelection;
+		FGuLiCommanderSelectionState UpdatedSelection;
+		FGuLiCommandAck Ack;
+		GuLiCommanderDestinationPlanner::FRequest PlannerRequest;
+		TArray<GuLiCommanderDestinationPlanner::FFreeDestinationCandidate> HexCandidates;
+		TArray<GuLiCommanderDestinationPlanner::FFreeDestinationSlot> LegalSlots;
+		TMap<int32, FNavLocation> ProjectedNavByCandidateIndex;
+		TArray<FMoveDestinationReservation> HardReservations;
+		TArray<FMoveMemberPlan> Members;
+		TArray<FMoveCohortPlan> Cohorts;
+		TArray<FMoveRouteTask> RouteTasks;
+		TArray<FOrderFormationRuntime> PreparedFormations;
+		TMap<int32, int32> CandidateOwnerMemberPlanIndex;
+		TSet<uint64> RejectedCandidatePairs;
+		TMap<FIntPoint, TArray<int32>> HardReservationBuckets;
+		TMap<FIntPoint, TArray<int32>> LegalSlotBuckets;
+		FGuLiMovePlanningDebug Debug;
+		EMovePlanningStage Stage = EMovePlanningStage::ValidateStarts;
+		uint32 NavigationGeneration = 0u;
+		uint32 AuthorityEpoch = 0u;
+		int32 NextStartValidationIndex = 0;
+		int32 NextCandidateProjectionIndex = 0;
+		double PlanningStartedAt = 0.0;
+		bool bSelectionChanged = false;
+		bool bRequireOwningController = false;
+	};
+
+	enum class ENavigationRepairMemberStage : uint8
+	{
+		ProjectCurrent,
+		ProjectFinal,
+		ProjectCandidate,
+		QueryCandidatePath,
+		Ready,
+		Failed,
+		Discarded
+	};
+
+	struct FNavigationRepairMemberTask
+	{
+		FGuLiSoldierId SoldierId;
+		EGuLiTeam Team = EGuLiTeam::Unassigned;
+		uint32 FormationId = 0u;
+		uint32 ExpectedOrderId = 0u;
+		FVector PreviousCurrentLocation = FVector::ZeroVector;
+		FVector PreviousFinalLocation = FVector::ZeroVector;
+		FNavLocation RefreshedCurrentLocation;
+		FNavLocation RepairedFinalLocation;
+		FNavLocation PendingCandidate;
+		ENavigationRepairMemberStage Stage = ENavigationRepairMemberStage::ProjectCurrent;
+		int32 NextCandidateIndex = 0;
+		bool bHadFinalDestination = false;
+		bool bWasArrived = false;
+	};
+
+	enum class ENavigationRepairFormationStage : uint8
+	{
+		ProjectTarget,
+		ProjectGuide,
+		QueryPath,
+		Ready,
+		Discarded
+	};
+
+	struct FNavigationRepairFormationTask
+	{
+		uint32 FormationId = 0u;
+		uint32 ExpectedOrderId = 0u;
+		FVector PreviousGuideAnchor = FVector::ZeroVector;
+		FVector PreviousTargetAnchor = FVector::ZeroVector;
+		FNavLocation ProjectedGuideAnchor;
+		FNavLocation ProjectedTargetAnchor;
+		TArray<FVector> RebuiltPathPoints;
+		ENavigationRepairFormationStage Stage = ENavigationRepairFormationStage::ProjectTarget;
+		bool bPathValid = false;
+	};
+
+	struct FNavigationRepairJob
+	{
+		uint32 NavigationGeneration = 0u;
+		uint32 AuthorityEpoch = 0u;
+		TArray<FNavigationRepairMemberTask> Members;
+		TArray<FNavigationRepairFormationTask> Formations;
+		TSet<uint32> PendingActiveSoldierIds;
+		int32 NextMemberIndex = 0;
+		int32 NextFormationIndex = 0;
+		bool bReadyToCommit = false;
+	};
+
+	bool IsMovePlanningOwnerCurrent(
+		const FMovePlanningJob& Job,
+		const AGuLiBattlePlayerState& PlayerState)
+	{
+		if (!Job.bRequireOwningController)
+		{
+			return true;
+		}
+		const AController* Controller = Job.OwningController.Get();
+		return Controller
+			&& Controller->GetPlayerState<AGuLiBattlePlayerState>() == &PlayerState;
+	}
+
+	uint64 MakeMoveCandidatePairKey(const FGuLiSoldierId SoldierId, const int32 CandidateIndex)
+	{
+		return (static_cast<uint64>(SoldierId.Value) << 32u)
+			| static_cast<uint64>(static_cast<uint32>(CandidateIndex));
+	}
+
+	FIntPoint MakeMoveDestinationBucket(const FVector& Location)
+	{
+		return FIntPoint(
+			FMath::FloorToInt(Location.X / DestinationMinimumSeparationCentimeters),
+			FMath::FloorToInt(Location.Y / DestinationMinimumSeparationCentimeters));
+	}
+
+	void AddHardReservationToMoveJob(
+		FMovePlanningJob& Job,
+		const FMoveDestinationReservation& Reservation)
+	{
+		const int32 ReservationIndex = Job.HardReservations.Add(Reservation);
+		Job.HardReservationBuckets.FindOrAdd(
+			MakeMoveDestinationBucket(Reservation.Location)).Add(ReservationIndex);
+	}
+
+	bool IsMoveCandidateBlockedByHardReservation(
+		const FMovePlanningJob& Job,
+		const FVector& CandidateLocation)
+	{
+		const FIntPoint CenterBucket = MakeMoveDestinationBucket(CandidateLocation);
+		const double MinimumSeparationSquared =
+			FMath::Square(static_cast<double>(DestinationMinimumSeparationCentimeters));
+		for (int32 OffsetX = -1; OffsetX <= 1; ++OffsetX)
+		{
+			for (int32 OffsetY = -1; OffsetY <= 1; ++OffsetY)
+			{
+				const TArray<int32>* ReservationIndices = Job.HardReservationBuckets.Find(
+					CenterBucket + FIntPoint(OffsetX, OffsetY));
+				if (!ReservationIndices)
+				{
+					continue;
+				}
+				for (const int32 ReservationIndex : *ReservationIndices)
+				{
+					if (Job.HardReservations.IsValidIndex(ReservationIndex)
+						&& FVector::DistSquared2D(
+							Job.HardReservations[ReservationIndex].Location,
+							CandidateLocation) < MinimumSeparationSquared)
+					{
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	bool IsMoveCandidateTooCloseToLegalSlot(
+		const FMovePlanningJob& Job,
+		const FVector& CandidateLocation)
+	{
+		const FIntPoint CenterBucket = MakeMoveDestinationBucket(CandidateLocation);
+		const double MinimumSeparationSquared =
+			FMath::Square(static_cast<double>(DestinationMinimumSeparationCentimeters));
+		for (int32 OffsetX = -1; OffsetX <= 1; ++OffsetX)
+		{
+			for (int32 OffsetY = -1; OffsetY <= 1; ++OffsetY)
+			{
+				const TArray<int32>* SlotIndices = Job.LegalSlotBuckets.Find(
+					CenterBucket + FIntPoint(OffsetX, OffsetY));
+				if (!SlotIndices)
+				{
+					continue;
+				}
+				for (const int32 SlotIndex : *SlotIndices)
+				{
+					if (Job.LegalSlots.IsValidIndex(SlotIndex)
+						&& FVector::DistSquared2D(
+							Job.LegalSlots[SlotIndex].WorldDestination,
+							CandidateLocation) < MinimumSeparationSquared)
+					{
+						return true;
+					}
+				}
+			}
+		}
+		return false;
+	}
+
+	void ReleaseMoveMemberDestination(
+		FMovePlanningJob& Job,
+		const int32 MemberPlanIndex,
+		const bool bRejectPair)
+	{
+		if (!Job.Members.IsValidIndex(MemberPlanIndex))
+		{
+			return;
+		}
+		FMoveMemberPlan& Member = Job.Members[MemberPlanIndex];
+		if (Member.LastCandidateIndex != INDEX_NONE)
+		{
+			if (bRejectPair)
+			{
+				Job.RejectedCandidatePairs.Add(
+					MakeMoveCandidatePairKey(Member.SoldierId, Member.LastCandidateIndex));
+			}
+			if (const int32* Owner =
+				Job.CandidateOwnerMemberPlanIndex.Find(Member.LastCandidateIndex);
+				Owner && *Owner == MemberPlanIndex)
+			{
+				Job.CandidateOwnerMemberPlanIndex.Remove(Member.LastCandidateIndex);
+			}
+		}
+		Member.bHasDestination = false;
+		Member.bAccepted = false;
+	}
+
+	bool IsMoveCandidateAvailableForMember(
+		const FMovePlanningJob& Job,
+		const FMoveMemberPlan& Member,
+		const int32 CandidateIndex)
+	{
+		return !Job.CandidateOwnerMemberPlanIndex.Contains(CandidateIndex)
+			&& !Job.RejectedCandidatePairs.Contains(
+				MakeMoveCandidatePairKey(Member.SoldierId, CandidateIndex));
+	}
+
+	void ClaimMoveCandidate(
+		FMovePlanningJob& Job,
+		const int32 MemberPlanIndex,
+		const GuLiCommanderDestinationPlanner::FFreeDestinationSlot& Slot,
+		const FNavLocation& DestinationNav)
+	{
+		check(Job.Members.IsValidIndex(MemberPlanIndex));
+		FMoveMemberPlan& Member = Job.Members[MemberPlanIndex];
+		Member.Destination = Slot;
+		Member.DestinationNav = DestinationNav;
+		Member.LastCandidateIndex = Slot.CandidateIndex;
+		Member.bHasDestination = true;
+		Member.FailureStage = EGuLiMovePlanFailureStage::None;
+		Job.CandidateOwnerMemberPlanIndex.Add(Slot.CandidateIndex, MemberPlanIndex);
+	}
+
+	void RemoveMoveMemberFromPreparedFormations(
+		FMovePlanningJob& Job,
+		const FGuLiSoldierId SoldierId)
+	{
+		for (FOrderFormationRuntime& Formation : Job.PreparedFormations)
+		{
+			Formation.MemberIds.Remove(SoldierId);
+			Formation.CommandStartNavLocationBySoldierId.Remove(SoldierId.Value);
+			Formation.FinalDestinationBySoldierId.Remove(SoldierId.Value);
+		}
+	}
+
+	void CompleteMovePlanningJobWithSystemFailure(
+		FMovePlanningJob& Job,
+		const EGuLiCommandAckResult Result = EGuLiCommandAckResult::PathFailed)
+	{
+		Job.Ack.Result = Result;
+		Job.Ack.BatchOrderId = 0u;
+		for (FGuLiCohortCommandAck& CohortAck : Job.Ack.CohortResults)
+		{
+			CohortAck.AcceptedMemberMask = 0u;
+			CohortAck.Result = CohortAck.EligibleMemberMask != 0u
+				? Result
+				: EGuLiCommandAckResult::NoSelection;
+		}
+		Job.UpdatedSelection = Job.FrozenSelection;
+		Job.bSelectionChanged = false;
+		Job.Ack.ServerSelectionRevision = Job.FrozenSelection.SelectionRevision;
+		Job.Ack.Sanitize();
+		Job.Stage = EMovePlanningStage::Completed;
+	}
 
 	// 跳过协议保留的 0；这里只分配非零序号，不保证 uint32 回绕后仍全局唯一。
 	uint32 AllocateNonZero(uint32& Counter)
@@ -287,30 +675,6 @@ namespace GuLiCommanderMassPrivate
 			FMath::FloorToInt(Location.Y / SpatialCellSizeCentimeters));
 	}
 
-	// 空间格只做粗筛，返回覆盖查询包围盒的候选；阵营、存活和圆形距离由调用者精筛。
-	void GatherSpatialCandidateIndices(
-		const TMap<FIntPoint, TArray<int32>>& SpatialGrid,
-		const FVector& Center,
-		const float RadiusCentimeters,
-		TArray<int32>& OutIndices)
-	{
-		OutIndices.Reset();
-		const FIntPoint MinimumCell = MakeSpatialCell(
-			Center - FVector(RadiusCentimeters, RadiusCentimeters, 0.0f));
-		const FIntPoint MaximumCell = MakeSpatialCell(
-			Center + FVector(RadiusCentimeters, RadiusCentimeters, 0.0f));
-		for (int32 CellX = MinimumCell.X; CellX <= MaximumCell.X; ++CellX)
-		{
-			for (int32 CellY = MinimumCell.Y; CellY <= MaximumCell.Y; ++CellY)
-			{
-				if (const TArray<int32>* CellMembers = SpatialGrid.Find(FIntPoint(CellX, CellY)))
-				{
-					OutIndices.Append(*CellMembers);
-				}
-			}
-		}
-	}
-
 	// 只投影一次公共终点；允许修正高度，但 XY 偏移不得超过一个 Agent 半径。
 	bool ResolveSharedMoveTarget(
 		UNavigationSystemV1& NavigationSystem,
@@ -341,6 +705,46 @@ namespace GuLiCommanderMassPrivate
 		return true;
 	}
 
+	bool HasCompletePath(
+		UNavigationSystemV1& NavigationSystem,
+		const ANavigationData& NavigationData,
+		const FVector& Start,
+		const FVector& Target)
+	{
+		FPathFindingQuery Query(nullptr, NavigationData, Start, Target);
+		const FPathFindingResult Result = NavigationSystem.FindPathSync(MoveTemp(Query));
+		return Result.IsSuccessful()
+			&& Result.Path.IsValid()
+			&& !Result.Path->IsPartial();
+	}
+
+	bool HasReachableSurfaceSegment(
+		const ANavigationData& NavigationData,
+		const FNavLocation& Start,
+		const FVector& Target,
+		const float TargetToleranceCentimeters = 100.0f,
+		uint64* const InOutFallbackPathQueryCount = nullptr)
+	{
+		FNavLocation ReachedLocation;
+		if (NavigationData.FindMoveAlongSurface(
+				Start,
+				Target,
+				ReachedLocation,
+				nullptr,
+				nullptr)
+			&& FVector::DistSquared(ReachedLocation.Location, Target)
+				<= FMath::Square(static_cast<double>(TargetToleranceCentimeters)))
+		{
+			return true;
+		}
+		if (InOutFallbackPathQueryCount)
+		{
+			++(*InOutFallbackPathQueryCount);
+		}
+		FPathFindingQuery Query(nullptr, NavigationData, Start.Location, Target);
+		return NavigationData.TestPath(NavigationData.GetConfig(), Query, nullptr);
+	}
+
 	// 每个临时编队从成员质心寻路一次，只接受至少两个点的完整路径，拒绝 partial path。
 	bool BuildSharedPath(
 		UNavigationSystemV1& NavigationSystem,
@@ -351,13 +755,18 @@ namespace GuLiCommanderMassPrivate
 	{
 		OutPathPoints.Reset();
 		FNavLocation ProjectedStart;
-		const FVector StartProjectionExtent(10000.0f, 10000.0f, 50000.0f);
+		const FVector StartProjectionExtent(
+			DestinationMaximumProjectionCorrectionCentimeters,
+			DestinationMaximumProjectionCorrectionCentimeters,
+			5000.0f);
 		if (!ProjectPointToCommanderNavigation(
 			NavigationSystem,
 			NavigationData,
 			Start,
 			StartProjectionExtent,
-			ProjectedStart))
+			ProjectedStart)
+			|| FVector::DistSquared2D(Start, ProjectedStart.Location)
+				> FMath::Square(DestinationMaximumProjectionCorrectionCentimeters))
 		{
 			UE_LOG(
 				LogGuLiCommanderMass,
@@ -378,12 +787,16 @@ namespace GuLiCommanderMassPrivate
 		if (Result.IsSuccessful() && Result.Path.IsValid() && !Result.Path->IsPartial())
 		{
 			const TArray<FNavPathPoint>& PathPoints = Result.Path->GetPathPoints();
-			if (PathPoints.Num() >= 2)
+			if (PathPoints.Num() >= 1)
 			{
-				OutPathPoints.Reserve(PathPoints.Num());
+				OutPathPoints.Reserve(FMath::Max(2, PathPoints.Num()));
 				for (const FNavPathPoint& PathPoint : PathPoints)
 				{
 					OutPathPoints.Add(PathPoint.Location);
+				}
+				if (OutPathPoints.Num() == 1)
+				{
+					OutPathPoints.Add(SharedTarget);
 				}
 				return true;
 			}
@@ -400,6 +813,48 @@ namespace GuLiCommanderMassPrivate
 			*ProjectedStart.Location.ToCompactString(),
 			*SharedTarget.ToCompactString());
 		return false;
+	}
+
+	// Move-plan retries are expected while splitting groups, so this variant records no per-attempt log.
+	bool BuildCompletePathQuiet(
+		UNavigationSystemV1& NavigationSystem,
+		const ANavigationData& NavigationData,
+		const FNavLocation& Start,
+		const FVector& Target,
+		TArray<FVector>& OutPathPoints)
+	{
+		OutPathPoints.Reset();
+		FPathFindingQuery Query(nullptr, NavigationData, Start.Location, Target);
+		const FPathFindingResult Result = NavigationSystem.FindPathSync(MoveTemp(Query));
+		if (!Result.IsSuccessful() || !Result.Path.IsValid() || Result.Path->IsPartial())
+		{
+			return false;
+		}
+		for (const FNavPathPoint& Point : Result.Path->GetPathPoints())
+		{
+			OutPathPoints.Add(Point.Location);
+		}
+		if (OutPathPoints.IsEmpty())
+		{
+			return false;
+		}
+		if (OutPathPoints.Num() == 1)
+		{
+			OutPathPoints.Add(Target);
+		}
+		return true;
+	}
+
+	bool HasDirectSurfaceConnection(
+		const ANavigationData& NavigationData,
+		const FNavLocation& Start,
+		const FVector& Target,
+		const float ToleranceCentimeters = 100.0f)
+	{
+		FNavLocation Reached;
+		return NavigationData.FindMoveAlongSurface(Start, Target, Reached, nullptr, nullptr)
+			&& FVector::DistSquared(Reached.Location, Target)
+				<= FMath::Square(static_cast<double>(ToleranceCentimeters));
 	}
 
 	// 只平均存活且仍服从指定指令的成员；RequiredOrderId 为 0 时不限制指令归属。
@@ -523,7 +978,7 @@ namespace GuLiCommanderMassPrivate
 		}
 	}
 
-	// 只给仍在行进的有效成员分配槽位，已松散到达的成员不会被重新拉回方阵。
+	// 只给仍执行当前指令的有效成员分配途中槽位；最终槽位由独立规划器固定。
 	// 先取靠近中心的 N 个槽位，再以 XY 距离平方为代价匹配，减少成员互相穿越。
 	void AssignFormationSlots(
 		FOrderFormationRuntime& Formation,
@@ -538,10 +993,8 @@ namespace GuLiCommanderMassPrivate
 		for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
 		{
 			const int32* Index = SoldierIndexById.Find(SoldierId.Value);
-			const GuLiCommanderNavigationPolicy::FLooseArrivalMemberState* ArrivalState = Formation.LooseArrivalStateBySoldierId.Find(SoldierId.Value);
 			if (Index && Soldiers.IsValidIndex(*Index) && Soldiers[*Index].IsAlive()
-				&& (RequiredOrderId == 0u || Soldiers[*Index].ActiveOrderId == RequiredOrderId)
-				&& (!ArrivalState || !ArrivalState->bHasReachedArrival))
+				&& (RequiredOrderId == 0u || Soldiers[*Index].ActiveOrderId == RequiredOrderId))
 			{
 				ValidMembers.Add(SoldierId);
 			}
@@ -762,7 +1215,13 @@ struct FGuLiBattleAuthorityState
 	TArray<GuLiCommanderMassPrivate::FSoldierRuntime> Soldiers;
 	TMap<uint32, int32> SoldierIndexById;
 	TArray<GuLiCommanderMassPrivate::FOrderFormationRuntime> OrderFormations;
+	TArray<TUniquePtr<GuLiCommanderMassPrivate::FMovePlanningJob>> MovePlanningJobs;
+	TUniquePtr<GuLiCommanderMassPrivate::FNavigationRepairJob> NavigationRepairJob;
 	TMap<FIntPoint, TArray<int32>> SpatialGrid;
+	FGuLiCombatExecutorRegistry CombatExecutors;
+	TArray<FGuLiCombatSample> CombatSamples;
+	TArray<FGuLiCombatDamageEvent> PendingDamage;
+	uint32 CommittedCombatRevision = 0;
 	TMap<FObjectKey, GuLiCommanderMassPrivate::FRequestGate> RequestGates;
 	double FixedStepAccumulator = 0.0;
 	double SimulationSeconds = 0.0;
@@ -774,8 +1233,21 @@ struct FGuLiBattleAuthorityState
 	uint32 NextPoseFrameSequence = 1u;
 	uint32 AuthorityEpoch = 1u;
 	uint32 NavigationGeneration = 1u;
+	uint64 SurfaceMoveCalls = 0u;
+	uint64 SurfaceMoveFailures = 0u;
+	uint64 PathQueries = 0u;
+	uint64 PersonalPathQueries = 0u;
+	uint64 MoveCandidateProjectionQueries = 0u;
+	uint64 MovePlanningPathQueries = 0u;
+	uint64 PartiallyAcceptedMoveCommands = 0u;
+	uint64 MovePlanningFailureCounts[static_cast<uint8>(EGuLiMovePlanFailureStage::Count)] = {};
+	double LastDestinationPlanningMilliseconds = 0.0;
+	double MaximumDestinationPlanningMilliseconds = 0.0;
+	FGuLiMovePlanningDebug LastMovePlanningDebug;
+	bool bHasLastMovePlanningDebug = false;
 	bool bPopulationSpawned = false;
 	bool bLoggedNavigationFallback = false;
+	bool bLoggedSpawnValidationFailure = false;
 	bool bUsingRuntimeTuningEvenArchetype = true;
 };
 
@@ -803,6 +1275,8 @@ void UGuLiBattleAuthoritySubsystem::Initialize(FSubsystemCollectionBase& Collect
 	Super::Initialize(Collection);
 	Collection.InitializeDependency<UMassEntitySubsystem>();
 	Collection.InitializeDependency<UGuLiRuntimeTuningSubsystem>();
+	Collection.InitializeDependency<UGuLiCommanderDataSubsystem>();
+	Collection.InitializeDependency<UGuLiArmySkillSubsystem>();
 	AuthorityState.Reset(new FGuLiBattleAuthorityState());
 	if (UWorld* World = GetWorld())
 	{
@@ -858,7 +1332,11 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 		return;
 	}
 	// 可走性采样按世界帧分配预算，放在固定步循环外，避免补帧时成倍增加 NavMesh 查询。
+	int32 RemainingProjectionBudget = GuLiCommanderMassPrivate::MoveCandidateProjectionBudgetPerFrame;
+	int32 RemainingPathBudget = GuLiCommanderMassPrivate::MovePathQueryBudgetPerFrame;
+	TickNavigationRepairs(RemainingProjectionBudget, RemainingPathBudget);
 	TickLocalFlowFields();
+	TickMovePlanning(RemainingProjectionBudget, RemainingPathBudget);
 
 	// 负 DeltaTime 按 0 处理；每次消耗 1/30 秒，累计上限把本帧模拟工作限制在最多 4 步。
 	AuthorityState->FixedStepAccumulator = FMath::Min(
@@ -911,7 +1389,8 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 
 	UWorld* World = GetWorld();
 	UMassEntitySubsystem* MassSubsystem = AuthorityState->MassEntitySubsystem.Get();
-	if (!World || !World->HasBegunPlay() || !MassSubsystem)
+	const UGuLiCommanderDataSubsystem* SoldierData = World ? World->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr;
+	if (!World || !World->HasBegunPlay() || !MassSubsystem || !SoldierData)
 	{
 		return false;
 	}
@@ -923,20 +1402,121 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 	{
 		return false;
 	}
-	for (const FVector& TeamCenter : {RedSpawnCenter, BlueSpawnCenter})
+
+	// Validate the complete deployment before creating a single Mass entity. A failed slot must
+	// never fall back to its requested world position because that can start an agent off NavMesh.
+	struct FValidatedSpawnSlot
 	{
-		FNavLocation ProjectedCenter;
-		if (!ProjectPointToCommanderNavigation(
-			*NavigationSystem,
-			*CommanderNavigationData,
-			TeamCenter,
-			FVector(10000.0f, 10000.0f, 50000.0f),
-			ProjectedCenter))
+		EGuLiTeam Team = EGuLiTeam::Unassigned;
+		int32 FormationIndex = 0;
+		int32 SlotIndex = 0;
+		float FacingYawDegrees = 0.0f;
+		FNavLocation NavigationLocation;
+	};
+
+	TArray<FValidatedSpawnSlot> ValidatedSpawnSlots;
+	ValidatedSpawnSlots.Reserve(TotalSoldierCount);
+	bool bSpawnValidationSucceeded = true;
+	FString SpawnValidationFailure;
+	for (int32 TeamIndex = 0; TeamIndex < TeamCount && bSpawnValidationSucceeded; ++TeamIndex)
+	{
+		const EGuLiTeam Team = TeamIndex == 0 ? EGuLiTeam::Red : EGuLiTeam::Blue;
+		const FVector TeamCenter = Team == EGuLiTeam::Red ? RedSpawnCenter : BlueSpawnCenter;
+		const FVector OpposingCenter = Team == EGuLiTeam::Red ? BlueSpawnCenter : RedSpawnCenter;
+		for (int32 FormationIndex = 0;
+			FormationIndex < SpawnFormationsPerTeam && bSpawnValidationSucceeded;
+			++FormationIndex)
 		{
-			// 两个部署区都必须落在专用 NavMesh 上，否则本次不创建，留待后续 Tick 重试。
-			return false;
+			const FVector FormationAnchor = TeamCenter
+				+ MakeSpawnFormationOffset(FormationIndex, GroupSpacingCentimeters);
+			const float FacingYawDegrees = (OpposingCenter - FormationAnchor)
+				.GetSafeNormal2D().Rotation().Yaw;
+			for (int32 SlotIndex = 0; SlotIndex < SoldierCountPerFormation; ++SlotIndex)
+			{
+				const FVector RequestedLocation = FormationAnchor
+					+ FRotator(0.0f, FacingYawDegrees, 0.0f).RotateVector(
+						MakeFormationSlotOffset(SlotIndex, MemberSpacingCentimeters));
+				FNavLocation ProjectedLocation;
+				const bool bProjected = ProjectPointToCommanderNavigation(
+						*NavigationSystem,
+						*CommanderNavigationData,
+						RequestedLocation,
+						FVector(
+							DestinationMaximumProjectionCorrectionCentimeters,
+							DestinationMaximumProjectionCorrectionCentimeters,
+							SpawnProjectionVerticalExtentCentimeters),
+						ProjectedLocation);
+				const float ProjectionCorrection = bProjected
+					? FVector::Dist2D(RequestedLocation, ProjectedLocation.Location)
+					: TNumericLimits<float>::Max();
+				if (!bProjected
+					|| ProjectionCorrection > DestinationMaximumProjectionCorrectionCentimeters)
+				{
+					bSpawnValidationSucceeded = false;
+					SpawnValidationFailure = FString::Printf(
+						TEXT("team=%u formation=%d slot=%d requested=%s projected=%d correction=%.1fcm"),
+						static_cast<uint8>(Team),
+						FormationIndex,
+						SlotIndex,
+						*RequestedLocation.ToCompactString(),
+						bProjected ? 1 : 0,
+						ProjectionCorrection);
+					break;
+				}
+				FValidatedSpawnSlot& Slot = ValidatedSpawnSlots.AddDefaulted_GetRef();
+				Slot.Team = Team;
+				Slot.FormationIndex = FormationIndex;
+				Slot.SlotIndex = SlotIndex;
+				Slot.FacingYawDegrees = FacingYawDegrees;
+				Slot.NavigationLocation = ProjectedLocation;
+			}
 		}
 	}
+	if (bSpawnValidationSucceeded)
+	{
+		const float MinimumDistanceSquared = FMath::Square(DestinationMinimumSeparationCentimeters);
+		for (int32 Left = 0; Left < ValidatedSpawnSlots.Num() && bSpawnValidationSucceeded; ++Left)
+		{
+			for (int32 Right = Left + 1; Right < ValidatedSpawnSlots.Num(); ++Right)
+			{
+				if (FVector::DistSquared2D(
+						ValidatedSpawnSlots[Left].NavigationLocation.Location,
+						ValidatedSpawnSlots[Right].NavigationLocation.Location)
+					< MinimumDistanceSquared)
+				{
+					bSpawnValidationSucceeded = false;
+					SpawnValidationFailure = FString::Printf(
+						TEXT("slots=%d/%d distance=%.1fcm left=%s right=%s"),
+						Left,
+						Right,
+						FVector::Dist2D(
+							ValidatedSpawnSlots[Left].NavigationLocation.Location,
+							ValidatedSpawnSlots[Right].NavigationLocation.Location),
+						*ValidatedSpawnSlots[Left].NavigationLocation.Location.ToCompactString(),
+						*ValidatedSpawnSlots[Right].NavigationLocation.Location.ToCompactString());
+					break;
+				}
+			}
+		}
+	}
+	if (!bSpawnValidationSucceeded || ValidatedSpawnSlots.Num() != TotalSoldierCount)
+	{
+		if (!AuthorityState->bLoggedSpawnValidationFailure)
+		{
+			UE_LOG(
+				LogGuLiCommanderMass,
+				Error,
+				TEXT("Deferred complete Soldier population: deployment validation produced %d/%d unique CommanderSoldier slots with <=%.0fcm correction and >=%.0fcm separation; reason=%s."),
+				ValidatedSpawnSlots.Num(),
+				TotalSoldierCount,
+				DestinationMaximumProjectionCorrectionCentimeters,
+				DestinationMinimumSeparationCentimeters,
+				SpawnValidationFailure.IsEmpty() ? TEXT("count mismatch") : *SpawnValidationFailure);
+			AuthorityState->bLoggedSpawnValidationFailure = true;
+		}
+		return false;
+	}
+	AuthorityState->bLoggedSpawnValidationFailure = false;
 
 	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
 	TArray<const UScriptStruct*> FragmentAndTagTypes = {
@@ -1006,49 +1586,28 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 
 	AuthorityState->Soldiers.Reset(TotalSoldierCount);
 	AuthorityState->SoldierIndexById.Reset();
+	const UGuLiArmySkillSubsystem* Skills = World->GetSubsystem<UGuLiArmySkillSubsystem>();
+	const TArray<FGuLiSoldierDefinition>& Definitions = SoldierData->GetSoldierDefinitions();
 	int32 EntityIndex = 0;
 	int32 NavigationProjectionCount = 0;
-	for (int32 TeamIndex = 0; TeamIndex < TeamCount; ++TeamIndex)
+	for (const FValidatedSpawnSlot& ValidatedSlot : ValidatedSpawnSlots)
 	{
-		const EGuLiTeam Team = TeamIndex == 0 ? EGuLiTeam::Red : EGuLiTeam::Blue;
-		const FVector TeamCenter = Team == EGuLiTeam::Red ? RedSpawnCenter : BlueSpawnCenter;
-		for (int32 FormationIndex = 0; FormationIndex < SpawnFormationsPerTeam; ++FormationIndex)
-		{
-			const FVector FormationAnchor = TeamCenter
-				+ MakeSpawnFormationOffset(FormationIndex, GroupSpacingCentimeters);
-			const float FacingYaw = (FVector::ZeroVector - FormationAnchor).GetSafeNormal2D().Rotation().Yaw;
-			for (int32 SlotIndex = 0; SlotIndex < SoldierCountPerFormation; ++SlotIndex)
-			{
+				const EGuLiTeam Team = ValidatedSlot.Team;
+				const int32 FormationIndex = ValidatedSlot.FormationIndex;
+				const float FacingYaw = ValidatedSlot.FacingYawDegrees;
 				FSoldierRuntime& Soldier = AuthorityState->Soldiers.AddDefaulted_GetRef();
 				Soldier.Entity = EntityHandles[EntityIndex++];
 				Soldier.SoldierId = FGuLiSoldierId(AllocateNonZero(AuthorityState->NextSoldierId));
 				Soldier.Team = Team;
 				Soldier.FacingYawDegrees = FacingYaw;
-				Soldier.MaxHealth = EffectiveRuntimeTuning.MaxHealth;
-				Soldier.Health = Soldier.MaxHealth;
-				Soldier.AttackPower = EffectiveRuntimeTuning.AttackPower;
-				Soldier.Defense = EffectiveRuntimeTuning.Defense;
-				Soldier.AttackRangeCentimeters = EffectiveRuntimeTuning.AttackRangeCentimeters;
-				const FVector RequestedLocation = FormationAnchor
-					+ FRotator(0.0f, FacingYaw, 0.0f).RotateVector(
-						MakeFormationSlotOffset(SlotIndex, MemberSpacingCentimeters));
-				FNavLocation ProjectedLocation;
-				if (ProjectPointToCommanderNavigation(
-					*NavigationSystem,
-					*CommanderNavigationData,
-					RequestedLocation,
-					FVector(5000.0f, 5000.0f, 50000.0f),
-					ProjectedLocation)
-					&& FVector::DistSquared2D(RequestedLocation, ProjectedLocation.Location)
-						<= FMath::Square(10000.0f))
-				{
-					Soldier.Location = ProjectedLocation.Location;
-					++NavigationProjectionCount;
-				}
-				else
-				{
-					Soldier.Location = RequestedLocation;
-				}
+				// Alternating five formations per type gives 125 A + 125 B for each team.
+				const FGuLiSoldierDefinition& Definition = Definitions.IsEmpty()
+					? SoldierData->GetDefaultSoldierDefinition()
+					: Definitions[FormationIndex % FMath::Min(2, Definitions.Num())];
+				InitializeSoldierCombat(Soldier, Definition, EffectiveRuntimeTuning, Skills);
+				Soldier.LastValidNavLocation = ValidatedSlot.NavigationLocation;
+				Soldier.Location = Soldier.LastValidNavLocation.Location;
+				++NavigationProjectionCount;
 
 				const int32 SoldierIndex = AuthorityState->Soldiers.Num() - 1;
 				AuthorityState->SoldierIndexById.Add(Soldier.SoldierId.Value, SoldierIndex);
@@ -1076,14 +1635,10 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 				FGuLiMassSoldierStatsFragment& Stats = EntityManager
 					.GetFragmentDataChecked<FGuLiMassSoldierStatsFragment>(Soldier.Entity);
 				Stats.MaxHealth = Soldier.MaxHealth;
-				Stats.AttackPower = Soldier.AttackPower;
 				Stats.Defense = Soldier.Defense;
-				Stats.AttackRangeCentimeters = Soldier.AttackRangeCentimeters;
 				EntityManager.GetFragmentDataChecked<FGuLiMassSlotTargetFragment>(Soldier.Entity).WorldTarget = Soldier.Location;
-			}
-		}
 	}
-	// 单个投影失败分支里的 RequestedLocation 只是暂存；失败会整批回滚，不允许离网士兵入场。
+	// The preflight is atomic; this guard catches only an unexpected initialization mismatch.
 	if (NavigationProjectionCount != TotalSoldierCount)
 	{
 		UE_LOG(
@@ -1149,13 +1704,1305 @@ void UGuLiBattleAuthoritySubsystem::DestroyAuthorityPopulation()
 	AuthorityState->Soldiers.Reset();
 	AuthorityState->SoldierIndexById.Reset();
 	AuthorityState->OrderFormations.Reset();
+	AuthorityState->MovePlanningJobs.Reset();
+	AuthorityState->NavigationRepairJob.Reset();
 	AuthorityState->SpatialGrid.Reset();
 	AuthorityState->RequestGates.Reset();
+	AuthorityState->CombatSamples.Reset();
+	AuthorityState->PendingDamage.Reset();
+	AuthorityState->CommittedCombatRevision = 0;
+	AuthorityState->SurfaceMoveCalls = 0u;
+	AuthorityState->SurfaceMoveFailures = 0u;
+	AuthorityState->PathQueries = 0u;
+	AuthorityState->PersonalPathQueries = 0u;
+	AuthorityState->MoveCandidateProjectionQueries = 0u;
+	AuthorityState->MovePlanningPathQueries = 0u;
+	AuthorityState->PartiallyAcceptedMoveCommands = 0u;
+	FMemory::Memzero(AuthorityState->MovePlanningFailureCounts);
+	AuthorityState->LastDestinationPlanningMilliseconds = 0.0;
+	AuthorityState->MaximumDestinationPlanningMilliseconds = 0.0;
+	AuthorityState->LastMovePlanningDebug = FGuLiMovePlanningDebug{};
+	AuthorityState->bHasLastMovePlanningDebug = false;
 	AuthorityState->AuthorityArchetype = FMassArchetypeHandle();
 	AuthorityState->RuntimeTuningEvenBaseArchetype = FMassArchetypeHandle();
 	AuthorityState->RuntimeTuningOddBaseArchetype = FMassArchetypeHandle();
 	AuthorityState->bUsingRuntimeTuningEvenArchetype = true;
 	AuthorityState->bPopulationSpawned = false;
+}
+
+void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
+	int32& RemainingProjectionBudget,
+	int32& RemainingPathBudget)
+{
+	using namespace GuLiCommanderMassPrivate;
+	using namespace GuLiCommanderDestinationPlanner;
+	if (!AuthorityState || !AuthorityState->bPopulationSpawned)
+	{
+		return;
+	}
+	// A destroyed owner can never poll its terminal result. Remove both terminal and
+	// in-flight work immediately so reconnects do not inherit an unreachable job.
+	AuthorityState->MovePlanningJobs.RemoveAll(
+		[](const TUniquePtr<FMovePlanningJob>& Job)
+		{
+			return !Job || !Job->PlayerState.IsValid();
+		});
+
+	UWorld* World = GetWorld();
+	const AGuLiBattleGameState* BattleGameState = World
+		? World->GetGameState<AGuLiBattleGameState>()
+		: nullptr;
+	const uint32 CurrentAuthorityEpoch = BattleGameState
+		? BattleGameState->GetMatchEpoch()
+		: 0u;
+	UNavigationSystemV1* NavigationSystem = World
+		? FNavigationSystem::GetCurrent<UNavigationSystemV1>(World)
+		: nullptr;
+	ANavigationData* NavigationData = NavigationSystem
+		? GetCommanderNavigationData(*NavigationSystem)
+		: nullptr;
+	if (!World || !NavigationSystem || !NavigationData || CurrentAuthorityEpoch == 0u)
+	{
+		for (const TUniquePtr<FMovePlanningJob>& Job : AuthorityState->MovePlanningJobs)
+		{
+			if (Job && Job->Stage != EMovePlanningStage::Completed)
+			{
+				CompleteMovePlanningJobWithSystemFailure(*Job);
+			}
+		}
+		return;
+	}
+	const UGuLiCommanderLandscapeQuerySubsystem* LandscapeQuery =
+		World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>();
+
+	auto RebuildHardReservations = [this](FMovePlanningJob& Job)
+	{
+		TSet<uint32> ReleasedIds;
+		for (FMoveMemberPlan& Member : Job.Members)
+		{
+			Member.bStartValid = false;
+			Member.bHasDestination = false;
+			Member.bAccepted = false;
+			Member.LastCandidateIndex = INDEX_NONE;
+			if (Member.bEligible)
+			{
+				ReleasedIds.Add(Member.SoldierId.Value);
+				Member.FailureStage = EGuLiMovePlanFailureStage::None;
+			}
+		}
+		Job.HardReservations.Reset();
+		Job.HardReservationBuckets.Reset();
+		for (const FSoldierRuntime& Soldier : AuthorityState->Soldiers)
+		{
+			if (!Soldier.IsAlive() || Soldier.Team != Job.Team)
+			{
+				continue;
+			}
+			const FVector ReservationLocation = Soldier.bHasFinalDestination
+				&& Soldier.ActiveOrderId != 0u
+				? Soldier.FinalDestination.Location
+				: Soldier.Location;
+			if (ReleasedIds.Contains(Soldier.SoldierId.Value))
+			{
+				if (FMoveMemberPlan* Member = Job.Members.FindByPredicate(
+					[&Soldier](const FMoveMemberPlan& Candidate)
+					{
+						return Candidate.SoldierId == Soldier.SoldierId;
+					}))
+				{
+					Member->OldReservation = ReservationLocation;
+				}
+				continue;
+			}
+			FMoveDestinationReservation Reservation;
+			Reservation.OwnerSoldierId = Soldier.SoldierId.Value;
+			Reservation.Location = ReservationLocation;
+			AddHardReservationToMoveJob(Job, Reservation);
+		}
+		Job.PlannerRequest = FRequest{};
+		Job.PlannerRequest.TargetAnchor = FVector(Job.Request.Target);
+		Job.PlannerRequest.MemberSpacingCentimeters = MemberSpacingCentimeters;
+		Job.LegalSlots.Reset();
+		Job.LegalSlotBuckets.Reset();
+		Job.ProjectedNavByCandidateIndex.Reset();
+		Job.CandidateOwnerMemberPlanIndex.Reset();
+		Job.RejectedCandidatePairs.Reset();
+		Job.RouteTasks.Reset();
+		Job.PreparedFormations.Reset();
+		Job.NextStartValidationIndex = 0;
+		Job.NextCandidateProjectionIndex = 0;
+		Job.Debug.ProjectedCandidates = 0;
+		Job.Debug.LegalCandidates = 0;
+		Job.Stage = EMovePlanningStage::ValidateStarts;
+	};
+
+	for (const TUniquePtr<FMovePlanningJob>& JobPointer : AuthorityState->MovePlanningJobs)
+	{
+		if (!JobPointer || JobPointer->Stage == EMovePlanningStage::Completed
+			|| JobPointer->Stage == EMovePlanningStage::ReadyToCommit)
+		{
+			continue;
+		}
+		FMovePlanningJob& Job = *JobPointer;
+		const AGuLiBattlePlayerState* PlayerState = Job.PlayerState.Get();
+		if (!PlayerState || !IsMovePlanningOwnerCurrent(Job, *PlayerState)
+			|| !PlayerState->IsCommander() || PlayerState->GetTeam() != Job.Team)
+		{
+			Job.Ack.Result = EGuLiCommandAckResult::Unauthorized;
+			Job.Ack.BatchOrderId = 0u;
+			Job.UpdatedSelection = Job.FrozenSelection;
+			Job.bSelectionChanged = false;
+			Job.Stage = EMovePlanningStage::Completed;
+			continue;
+		}
+		if (Job.AuthorityEpoch != CurrentAuthorityEpoch)
+		{
+			Job.Ack.Result = EGuLiCommandAckResult::InvalidRequest;
+			Job.Ack.BatchOrderId = 0u;
+			Job.UpdatedSelection = Job.FrozenSelection;
+			Job.bSelectionChanged = false;
+			Job.Stage = EMovePlanningStage::Completed;
+			continue;
+		}
+		if (Job.NavigationGeneration != AuthorityState->NavigationGeneration)
+		{
+			Job.NavigationGeneration = AuthorityState->NavigationGeneration;
+			RebuildHardReservations(Job);
+		}
+
+		if (Job.Stage == EMovePlanningStage::ValidateStarts)
+		{
+			while (RemainingProjectionBudget > 0
+				&& Job.NextStartValidationIndex < Job.Members.Num())
+			{
+				FMoveMemberPlan& Member = Job.Members[Job.NextStartValidationIndex++];
+				if (!Member.bEligible)
+				{
+					continue;
+				}
+				--RemainingProjectionBudget;
+				++AuthorityState->MoveCandidateProjectionQueries;
+				++Job.Debug.CandidateProjectionQueries;
+				const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(Member.SoldierId.Value);
+				if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
+				{
+					Member.FailureStage = EGuLiMovePlanFailureStage::MemberInvalid;
+					continue;
+				}
+				const FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
+				FNavLocation ProjectedStart;
+				if (!Soldier.IsAlive() || Soldier.Team != Job.Team
+					|| !ProjectPointToCommanderNavigation(
+						*NavigationSystem,
+						*NavigationData,
+						Soldier.Location,
+						FVector(10.0f, 10.0f, 5000.0f),
+						ProjectedStart)
+					|| FVector::DistSquared2D(Soldier.Location, ProjectedStart.Location)
+						> FMath::Square(10.0f))
+				{
+					Member.FailureStage = EGuLiMovePlanFailureStage::StartInvalid;
+					FMoveDestinationReservation Restored;
+					Restored.OwnerSoldierId = Member.SoldierId.Value;
+					Restored.Location = Member.OldReservation;
+					AddHardReservationToMoveJob(Job, Restored);
+					continue;
+				}
+				ProjectedStart.Location.X = Soldier.Location.X;
+				ProjectedStart.Location.Y = Soldier.Location.Y;
+				Member.CommandStart = ProjectedStart;
+				Member.bStartValid = true;
+			}
+			if (Job.NextStartValidationIndex >= Job.Members.Num())
+			{
+				Job.PlannerRequest = FRequest{};
+				Job.PlannerRequest.TargetAnchor = FVector(Job.Request.Target);
+				Job.PlannerRequest.MemberSpacingCentimeters = MemberSpacingCentimeters;
+				for (const FMoveCohortPlan& Cohort : Job.Cohorts)
+				{
+					FCohortInput CohortInput;
+					CohortInput.CohortId = Cohort.CohortId;
+					for (const int32 MemberPlanIndex : Cohort.MemberPlanIndices)
+					{
+						if (!Job.Members.IsValidIndex(MemberPlanIndex)
+							|| !Job.Members[MemberPlanIndex].bStartValid)
+						{
+							continue;
+						}
+						const FMoveMemberPlan& Member = Job.Members[MemberPlanIndex];
+						FMemberInput& Input = CohortInput.Members.AddDefaulted_GetRef();
+						Input.SoldierId = Member.SoldierId;
+						Input.Location = Member.CommandStart.Location;
+						const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(Member.SoldierId.Value);
+						Input.Facing = SoldierIndex && AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
+							? FRotator(0.0f, AuthorityState->Soldiers[*SoldierIndex].FacingYawDegrees, 0.0f).Vector()
+							: FVector::ForwardVector;
+					}
+					if (!CohortInput.Members.IsEmpty())
+					{
+						Job.PlannerRequest.Cohorts.Add(MoveTemp(CohortInput));
+					}
+				}
+				Job.Stage = Job.PlannerRequest.Cohorts.IsEmpty()
+					? EMovePlanningStage::ReadyToCommit
+					: EMovePlanningStage::ProjectCandidates;
+			}
+			continue;
+		}
+
+		if (Job.Stage == EMovePlanningStage::ProjectCandidates)
+		{
+			while (RemainingProjectionBudget > 0
+				&& Job.NextCandidateProjectionIndex < Job.HexCandidates.Num())
+			{
+				const FFreeDestinationCandidate& Candidate =
+					Job.HexCandidates[Job.NextCandidateProjectionIndex++];
+				--RemainingProjectionBudget;
+				++AuthorityState->MoveCandidateProjectionQueries;
+				++Job.Debug.CandidateProjectionQueries;
+				++Job.Debug.ProjectedCandidates;
+				FVector Seed = Candidate.WorldCandidate;
+				float LandscapeHeight = 0.0f;
+				if (!LandscapeQuery
+					|| !LandscapeQuery->TryGetLandscapeHeight(FVector2D(Seed.X, Seed.Y), LandscapeHeight))
+				{
+					++Job.Debug.FailureCounts[
+						static_cast<uint8>(EGuLiMovePlanFailureStage::CandidateProjection)];
+					continue;
+				}
+				Seed.Z = LandscapeHeight;
+				FNavLocation Projected;
+				if (!ProjectPointToCommanderNavigation(
+						*NavigationSystem,
+						*NavigationData,
+						Seed,
+						FVector(
+							DestinationMaximumProjectionCorrectionCentimeters,
+							DestinationMaximumProjectionCorrectionCentimeters,
+							5000.0f),
+						Projected)
+					|| FVector::DistSquared2D(Seed, Projected.Location)
+						> FMath::Square(DestinationMaximumProjectionCorrectionCentimeters)
+					|| FVector::DistSquared2D(FVector(Job.Request.Target), Projected.Location)
+						> FMath::Square(FreeDestinationMaximumRadiusCentimeters))
+				{
+					++Job.Debug.FailureCounts[
+						static_cast<uint8>(EGuLiMovePlanFailureStage::CandidateProjection)];
+					continue;
+				}
+
+				if (IsMoveCandidateBlockedByHardReservation(Job, Projected.Location))
+				{
+					++Job.Debug.ReservationConflictCount;
+					++Job.Debug.FailureCounts[
+						static_cast<uint8>(EGuLiMovePlanFailureStage::FriendlyReservation)];
+					continue;
+				}
+				if (IsMoveCandidateTooCloseToLegalSlot(Job, Projected.Location))
+				{
+					++Job.Debug.FailureCounts[
+						static_cast<uint8>(EGuLiMovePlanFailureStage::Separation)];
+					continue;
+				}
+				FFreeDestinationSlot& Slot = Job.LegalSlots.AddDefaulted_GetRef();
+				Slot.CandidateIndex = Candidate.CandidateIndex;
+				Slot.AxialQ = Candidate.AxialQ;
+				Slot.AxialR = Candidate.AxialR;
+				Slot.OriginalWorldCandidate = Seed;
+				Slot.WorldDestination = Projected.Location;
+				Job.ProjectedNavByCandidateIndex.Add(Candidate.CandidateIndex, Projected);
+				Job.LegalSlotBuckets.FindOrAdd(
+					MakeMoveDestinationBucket(Projected.Location)).Add(Job.LegalSlots.Num() - 1);
+			}
+			Job.Debug.LegalCandidates = Job.LegalSlots.Num();
+			if (Job.NextCandidateProjectionIndex >= Job.HexCandidates.Num())
+			{
+				Job.Stage = EMovePlanningStage::AssignDestinations;
+			}
+			continue;
+		}
+
+		if (Job.Stage == EMovePlanningStage::AssignDestinations)
+		{
+			FFreeAssignmentPlan Assignment;
+			if (!AssignFreeDestinations(
+					Job.PlannerRequest,
+					Job.LegalSlots,
+					DefaultSoftAnchorPitchCentimeters,
+					Assignment))
+			{
+				for (FMoveMemberPlan& Member : Job.Members)
+				{
+					if (Member.bStartValid)
+					{
+						Member.FailureStage = EGuLiMovePlanFailureStage::CandidatesExhausted;
+					}
+				}
+				Job.Stage = EMovePlanningStage::ReadyToCommit;
+				continue;
+			}
+			for (const FFreeCohortAssignment& CohortAssignment : Assignment.Cohorts)
+			{
+				FMoveRouteTask RouteTask;
+				RouteTask.CohortId = CohortAssignment.CohortId;
+				for (const FFreeMemberAssignment& Assigned : CohortAssignment.Members)
+				{
+					FMoveMemberPlan* Member = Job.Members.FindByPredicate(
+						[&Assigned](const FMoveMemberPlan& Candidate)
+						{
+							return Candidate.SoldierId == Assigned.SoldierId;
+						});
+					const FFreeDestinationSlot* Slot = Job.LegalSlots.FindByPredicate(
+						[&Assigned](const FFreeDestinationSlot& Candidate)
+						{
+							return Candidate.CandidateIndex == Assigned.CandidateIndex;
+						});
+					const FNavLocation* DestinationNav = Slot
+						? Job.ProjectedNavByCandidateIndex.Find(Slot->CandidateIndex)
+						: nullptr;
+					if (!Member || !Slot || !DestinationNav)
+					{
+						continue;
+					}
+					const int32 MemberPlanIndex =
+						static_cast<int32>(Member - Job.Members.GetData());
+					if (!IsMoveCandidateAvailableForMember(Job, *Member, Slot->CandidateIndex))
+					{
+						continue;
+					}
+					ClaimMoveCandidate(Job, MemberPlanIndex, *Slot, *DestinationNav);
+					RouteTask.MemberPlanIndices.Add(MemberPlanIndex);
+				}
+				if (!RouteTask.MemberPlanIndices.IsEmpty())
+				{
+					Job.RouteTasks.Add(MoveTemp(RouteTask));
+				}
+			}
+			for (FMoveMemberPlan& Member : Job.Members)
+			{
+				if (Member.bStartValid && !Member.bHasDestination)
+				{
+					Member.FailureStage = EGuLiMovePlanFailureStage::CandidatesExhausted;
+				}
+			}
+			Job.Stage = EMovePlanningStage::Route;
+			continue;
+		}
+
+		if (Job.Stage == EMovePlanningStage::Route)
+		{
+			while (RemainingPathBudget > 0 && !Job.RouteTasks.IsEmpty())
+			{
+				FMoveRouteTask Task = MoveTemp(Job.RouteTasks[0]);
+				Job.RouteTasks.RemoveAt(0, 1, EAllowShrinking::No);
+				Task.MemberPlanIndices.RemoveAll([this, &Job](const int32 MemberPlanIndex)
+				{
+					if (!Job.Members.IsValidIndex(MemberPlanIndex))
+					{
+						return true;
+					}
+					FMoveMemberPlan& Member = Job.Members[MemberPlanIndex];
+					const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(Member.SoldierId.Value);
+					if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
+						|| !AuthorityState->Soldiers[*SoldierIndex].IsAlive()
+						|| AuthorityState->Soldiers[*SoldierIndex].Team != Job.Team)
+					{
+						Member.FailureStage = EGuLiMovePlanFailureStage::MemberInvalid;
+						ReleaseMoveMemberDestination(Job, MemberPlanIndex, false);
+						return true;
+					}
+					Member.CommandStart = AuthorityState->Soldiers[*SoldierIndex].LastValidNavLocation;
+					return !Member.bHasDestination;
+				});
+				if (Task.MemberPlanIndices.IsEmpty())
+				{
+					continue;
+				}
+
+				FVector StartCentroid = FVector::ZeroVector;
+				FVector DestinationCentroid = FVector::ZeroVector;
+				for (const int32 MemberPlanIndex : Task.MemberPlanIndices)
+				{
+					StartCentroid += Job.Members[MemberPlanIndex].CommandStart.Location;
+					DestinationCentroid += Job.Members[MemberPlanIndex].Destination.WorldDestination;
+				}
+				StartCentroid /= static_cast<double>(Task.MemberPlanIndices.Num());
+				DestinationCentroid /= static_cast<double>(Task.MemberPlanIndices.Num());
+				const int32 StartMedoidIndex = *Algo::MinElementBy(
+					Task.MemberPlanIndices,
+					[&Job, &StartCentroid](const int32 Index)
+					{
+						return FVector::DistSquared2D(
+							Job.Members[Index].CommandStart.Location,
+							StartCentroid);
+					});
+				const int32 DestinationMedoidIndex = *Algo::MinElementBy(
+					Task.MemberPlanIndices,
+					[&Job, &DestinationCentroid](const int32 Index)
+					{
+						return FVector::DistSquared2D(
+							Job.Members[Index].Destination.WorldDestination,
+							DestinationCentroid);
+					});
+				FMoveMemberPlan& StartMedoid = Job.Members[StartMedoidIndex];
+				FMoveMemberPlan& DestinationMedoid = Job.Members[DestinationMedoidIndex];
+				TArray<FVector> PathPoints;
+				--RemainingPathBudget;
+				++AuthorityState->PathQueries;
+				++AuthorityState->MovePlanningPathQueries;
+				++Job.Debug.PathQueries;
+				bool bRouteValid = BuildCompletePathQuiet(
+					*NavigationSystem,
+					*NavigationData,
+					StartMedoid.CommandStart,
+					DestinationMedoid.Destination.WorldDestination,
+					PathPoints);
+				EGuLiMovePlanFailureStage RouteFailure = EGuLiMovePlanFailureStage::SharedPath;
+				if (bRouteValid)
+				{
+					for (const int32 MemberPlanIndex : Task.MemberPlanIndices)
+					{
+						const FMoveMemberPlan& Member = Job.Members[MemberPlanIndex];
+						if (!HasDirectSurfaceConnection(
+								*NavigationData,
+								Member.CommandStart,
+								PathPoints[0])
+							|| !HasDirectSurfaceConnection(
+								*NavigationData,
+								DestinationMedoid.DestinationNav,
+								Member.Destination.WorldDestination))
+						{
+							bRouteValid = false;
+							RouteFailure = EGuLiMovePlanFailureStage::Connector;
+							break;
+						}
+					}
+				}
+
+				if (!bRouteValid && Task.MemberPlanIndices.Num() > 1)
+				{
+					FBox2D DestinationBounds(ForceInit);
+					for (const int32 Index : Task.MemberPlanIndices)
+					{
+						const FVector& Destination = Job.Members[Index].Destination.WorldDestination;
+						DestinationBounds += FVector2D(Destination.X, Destination.Y);
+					}
+					const bool bSplitX = DestinationBounds.GetSize().X >= DestinationBounds.GetSize().Y;
+					Task.MemberPlanIndices.Sort([&Job, bSplitX](const int32 Lhs, const int32 Rhs)
+					{
+						const FVector& A = Job.Members[Lhs].Destination.WorldDestination;
+						const FVector& B = Job.Members[Rhs].Destination.WorldDestination;
+						const double PrimaryA = bSplitX ? A.X : A.Y;
+						const double PrimaryB = bSplitX ? B.X : B.Y;
+						if (PrimaryA < PrimaryB)
+						{
+							return true;
+						}
+						if (PrimaryB < PrimaryA)
+						{
+							return false;
+						}
+						const double SecondaryA = bSplitX ? A.Y : A.X;
+						const double SecondaryB = bSplitX ? B.Y : B.X;
+						if (SecondaryA < SecondaryB)
+						{
+							return true;
+						}
+						if (SecondaryB < SecondaryA)
+						{
+							return false;
+						}
+						return Job.Members[Lhs].SoldierId.Value
+							< Job.Members[Rhs].SoldierId.Value;
+					});
+					const int32 Mid = Task.MemberPlanIndices.Num() / 2;
+					FMoveRouteTask Left;
+					Left.CohortId = Task.CohortId;
+					Left.MemberPlanIndices.Append(Task.MemberPlanIndices.GetData(), Mid);
+					FMoveRouteTask Right;
+					Right.CohortId = Task.CohortId;
+					Right.MemberPlanIndices.Append(
+						Task.MemberPlanIndices.GetData() + Mid,
+						Task.MemberPlanIndices.Num() - Mid);
+					Job.RouteTasks.Insert(MoveTemp(Right), 0);
+					Job.RouteTasks.Insert(MoveTemp(Left), 0);
+					++Job.Debug.RouteSplitCount;
+					++Job.Debug.FailureCounts[static_cast<uint8>(RouteFailure)];
+					continue;
+				}
+
+				if (!bRouteValid)
+				{
+					const int32 MemberPlanIndex = Task.MemberPlanIndices[0];
+					FMoveMemberPlan& Member = Job.Members[MemberPlanIndex];
+					const int32 FailedCandidateIndex = Member.LastCandidateIndex;
+					ReleaseMoveMemberDestination(Job, MemberPlanIndex, true);
+					const FFreeDestinationSlot* Fallback = Job.LegalSlots.FindByPredicate(
+						[&Job, &Member, FailedCandidateIndex](const FFreeDestinationSlot& Candidate)
+						{
+							return Candidate.CandidateIndex > FailedCandidateIndex
+								&& IsMoveCandidateAvailableForMember(
+									Job,
+									Member,
+									Candidate.CandidateIndex)
+								&& Job.ProjectedNavByCandidateIndex.Contains(Candidate.CandidateIndex);
+						});
+					if (Fallback)
+					{
+						ClaimMoveCandidate(
+							Job,
+							MemberPlanIndex,
+							*Fallback,
+							Job.ProjectedNavByCandidateIndex.FindChecked(Fallback->CandidateIndex));
+						Job.RouteTasks.Add(MoveTemp(Task));
+					}
+					else
+					{
+						Member.FailureStage = EGuLiMovePlanFailureStage::CandidatesExhausted;
+						++Job.Debug.FailureCounts[
+							static_cast<uint8>(EGuLiMovePlanFailureStage::PersonalPath)];
+					}
+					continue;
+				}
+
+				FOrderFormationRuntime Formation;
+				Formation.SourceCohortId = Task.CohortId;
+				Formation.Team = Job.Team;
+				Formation.GuideAnchor = PathPoints[0];
+				Formation.TargetAnchor = DestinationMedoid.Destination.WorldDestination;
+				Formation.PathPoints = MoveTemp(PathPoints);
+				Formation.PathPointIndex = Formation.PathPoints.Num() > 1 ? 1 : 0;
+				Formation.FinalPathFrame = GuLiCommanderNavigationPolicy::ResolveFinalPathFrame(
+					Formation.PathPoints,
+					Formation.GuideAnchor,
+					Formation.TargetAnchor);
+				const FVector InitialTravelDirection =
+					Formation.PathPoints[Formation.PathPointIndex] - Formation.GuideAnchor;
+				Formation.TravelFacingYawDegrees = InitialTravelDirection.IsNearlyZero()
+					? 0.0f
+					: InitialTravelDirection.GetSafeNormal2D().Rotation().Yaw;
+				const float ArrivalSnapDistance = FMath::Max(
+					100.0f,
+					MovementSpeedCentimetersPerSecond * FixedStepSeconds);
+				for (const int32 MemberPlanIndex : Task.MemberPlanIndices)
+				{
+					FMoveMemberPlan& Member = Job.Members[MemberPlanIndex];
+					Member.bAccepted = true;
+					Formation.MemberIds.Add(Member.SoldierId);
+					Formation.CommandStartNavLocationBySoldierId.Add(
+						Member.SoldierId.Value,
+						Member.CommandStart);
+					Formation.FinalDestinationBySoldierId.Add(
+						Member.SoldierId.Value,
+						Member.DestinationNav);
+					Formation.FinalApproachTriggerRadiusCentimeters = FMath::Max(
+						Formation.FinalApproachTriggerRadiusCentimeters,
+						FVector::Dist2D(Formation.TargetAnchor, Member.DestinationNav.Location)
+							+ ArrivalSnapDistance);
+				}
+				Job.PreparedFormations.Add(MoveTemp(Formation));
+			}
+			if (Job.RouteTasks.IsEmpty())
+			{
+				Job.Stage = EMovePlanningStage::ReconcileReservations;
+			}
+			continue;
+		}
+
+		if (Job.Stage == EMovePlanningStage::ReconcileReservations)
+		{
+			TArray<FVector> RestoredReservations;
+			for (FMoveMemberPlan& Member : Job.Members)
+			{
+				if (!Member.bEligible)
+				{
+					continue;
+				}
+				// Pending units continue their old command, so the reservation captured at
+				// request time may no longer describe the endpoint they currently own.
+				bool bHasLiveReservation = false;
+				const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(
+					Member.SoldierId.Value);
+				if (SoldierIndex && AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
+				{
+					const FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
+					if (Soldier.IsAlive() && Soldier.Team == Job.Team)
+					{
+						bHasLiveReservation = true;
+						Member.OldReservation = Soldier.bHasFinalDestination
+							&& Soldier.ActiveOrderId != 0u
+							&& Soldier.FinalDestinationNavigationGeneration
+								== AuthorityState->NavigationGeneration
+							? Soldier.FinalDestination.Location
+							: Soldier.LastValidNavLocation.Location;
+					}
+				}
+				if (!Member.bAccepted && bHasLiveReservation)
+				{
+					RestoredReservations.Add(Member.OldReservation);
+				}
+			}
+			bool bQueuedRepair = false;
+			bool bRestoredReservationSetChanged = false;
+			for (int32 MemberPlanIndex = 0; MemberPlanIndex < Job.Members.Num(); ++MemberPlanIndex)
+			{
+				FMoveMemberPlan& Member = Job.Members[MemberPlanIndex];
+				if (!Member.bAccepted)
+				{
+					continue;
+				}
+				const bool bConflicts = RestoredReservations.ContainsByPredicate(
+					[&Member](const FVector& Restored)
+					{
+						return FVector::DistSquared2D(Restored, Member.Destination.WorldDestination)
+							< FMath::Square(DestinationMinimumSeparationCentimeters);
+					});
+				if (!bConflicts)
+				{
+					continue;
+				}
+				++Job.Debug.ReservationConflictCount;
+				RemoveMoveMemberFromPreparedFormations(Job, Member.SoldierId);
+				const int32 ConflictingCandidateIndex = Member.LastCandidateIndex;
+				ReleaseMoveMemberDestination(Job, MemberPlanIndex, false);
+				const FFreeDestinationSlot* Fallback = Job.LegalSlots.FindByPredicate(
+					[&Job, &Member, &RestoredReservations, ConflictingCandidateIndex](
+						const FFreeDestinationSlot& Candidate)
+					{
+						return Candidate.CandidateIndex > ConflictingCandidateIndex
+							&& IsMoveCandidateAvailableForMember(
+								Job,
+								Member,
+								Candidate.CandidateIndex)
+							&& Job.ProjectedNavByCandidateIndex.Contains(Candidate.CandidateIndex)
+							&& !RestoredReservations.ContainsByPredicate(
+								[&Candidate](const FVector& Restored)
+								{
+									return FVector::DistSquared2D(Restored, Candidate.WorldDestination)
+										< FMath::Square(DestinationMinimumSeparationCentimeters);
+								});
+					});
+				if (!Fallback)
+				{
+					Member.FailureStage = EGuLiMovePlanFailureStage::RestoredReservation;
+					RestoredReservations.AddUnique(Member.OldReservation);
+					bRestoredReservationSetChanged = true;
+					continue;
+				}
+				ClaimMoveCandidate(
+					Job,
+					MemberPlanIndex,
+					*Fallback,
+					Job.ProjectedNavByCandidateIndex.FindChecked(Fallback->CandidateIndex));
+				FMoveRouteTask Retry;
+				Retry.CohortId = Member.CohortId;
+				Retry.MemberPlanIndices.Add(MemberPlanIndex);
+				Job.RouteTasks.Add(MoveTemp(Retry));
+				bQueuedRepair = true;
+			}
+			Job.PreparedFormations.RemoveAll([](const FOrderFormationRuntime& Formation)
+			{
+				return Formation.MemberIds.IsEmpty();
+			});
+			Job.Stage = bQueuedRepair
+				? EMovePlanningStage::Route
+				: bRestoredReservationSetChanged
+					? EMovePlanningStage::ReconcileReservations
+					: EMovePlanningStage::ReadyToCommit;
+		}
+	}
+}
+
+void UGuLiBattleAuthoritySubsystem::CommitReadyMovePlans()
+{
+	using namespace GuLiCommanderMassPrivate;
+	if (!AuthorityState || !AuthorityState->bPopulationSpawned)
+	{
+		return;
+	}
+	UWorld* World = GetWorld();
+	const AGuLiBattleGameState* BattleGameState = World
+		? World->GetGameState<AGuLiBattleGameState>()
+		: nullptr;
+	const uint32 CurrentAuthorityEpoch = BattleGameState
+		? BattleGameState->GetMatchEpoch()
+		: 0u;
+	UNavigationSystemV1* NavigationSystem = World
+		? FNavigationSystem::GetCurrent<UNavigationSystemV1>(World)
+		: nullptr;
+	ANavigationData* NavigationData = NavigationSystem
+		? GetCommanderNavigationData(*NavigationSystem)
+		: nullptr;
+	UMassEntitySubsystem* MassSubsystem = AuthorityState->MassEntitySubsystem.Get();
+	if (!World || !NavigationSystem || !NavigationData || !MassSubsystem
+		|| CurrentAuthorityEpoch == 0u)
+	{
+		for (const TUniquePtr<FMovePlanningJob>& Job : AuthorityState->MovePlanningJobs)
+		{
+			if (Job && Job->Stage == EMovePlanningStage::ReadyToCommit)
+			{
+				CompleteMovePlanningJobWithSystemFailure(*Job);
+			}
+		}
+		return;
+	}
+	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
+
+	for (const TUniquePtr<FMovePlanningJob>& JobPointer : AuthorityState->MovePlanningJobs)
+	{
+		if (!JobPointer || JobPointer->Stage != EMovePlanningStage::ReadyToCommit)
+		{
+			continue;
+		}
+		FMovePlanningJob& Job = *JobPointer;
+		const AGuLiBattlePlayerState* PlayerState = Job.PlayerState.Get();
+		if (!PlayerState || !IsMovePlanningOwnerCurrent(Job, *PlayerState)
+			|| !PlayerState->IsCommander() || PlayerState->GetTeam() != Job.Team)
+		{
+			Job.Ack.Result = EGuLiCommandAckResult::Unauthorized;
+			Job.Ack.BatchOrderId = 0u;
+			Job.UpdatedSelection = Job.FrozenSelection;
+			Job.bSelectionChanged = false;
+			Job.Stage = EMovePlanningStage::Completed;
+			continue;
+		}
+		if (Job.AuthorityEpoch != CurrentAuthorityEpoch)
+		{
+			Job.Ack.Result = EGuLiCommandAckResult::InvalidRequest;
+			Job.Ack.BatchOrderId = 0u;
+			Job.UpdatedSelection = Job.FrozenSelection;
+			Job.bSelectionChanged = false;
+			Job.Stage = EMovePlanningStage::Completed;
+			continue;
+		}
+		if (Job.NavigationGeneration != AuthorityState->NavigationGeneration)
+		{
+			Job.LegalSlots.Reset();
+			Job.LegalSlotBuckets.Reset();
+			Job.ProjectedNavByCandidateIndex.Reset();
+			Job.CandidateOwnerMemberPlanIndex.Reset();
+			Job.RejectedCandidatePairs.Reset();
+			Job.RouteTasks.Reset();
+			Job.PreparedFormations.Reset();
+			Job.NextStartValidationIndex = 0;
+			Job.NextCandidateProjectionIndex = 0;
+			for (FMoveMemberPlan& Member : Job.Members)
+			{
+				Member.bStartValid = false;
+				Member.bHasDestination = false;
+				Member.bAccepted = false;
+				Member.CommitConnectionRetryCount = 0;
+				if (Member.bEligible)
+				{
+					Member.FailureStage = EGuLiMovePlanFailureStage::None;
+				}
+			}
+			Job.Stage = EMovePlanningStage::ValidateStarts;
+			continue;
+		}
+
+		bool bNeedsReservationReconcile = false;
+		for (FOrderFormationRuntime& Formation : Job.PreparedFormations)
+		{
+			FMoveRouteTask RetryTask;
+			RetryTask.CohortId = Formation.SourceCohortId;
+			const TArray<FGuLiSoldierId> MembersToValidate = Formation.MemberIds;
+			for (const FGuLiSoldierId SoldierId : MembersToValidate)
+			{
+				const int32 MemberPlanIndex = Job.Members.IndexOfByPredicate(
+					[SoldierId](const FMoveMemberPlan& Candidate)
+					{
+						return Candidate.SoldierId == SoldierId;
+					});
+				const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
+				if (!Job.Members.IsValidIndex(MemberPlanIndex) || !SoldierIndex
+					|| !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
+				{
+					if (Job.Members.IsValidIndex(MemberPlanIndex))
+					{
+						FMoveMemberPlan& Member = Job.Members[MemberPlanIndex];
+						Member.FailureStage = EGuLiMovePlanFailureStage::MemberInvalid;
+						ReleaseMoveMemberDestination(Job, MemberPlanIndex, false);
+					}
+					RemoveMoveMemberFromPreparedFormations(Job, SoldierId);
+					bNeedsReservationReconcile = true;
+					continue;
+				}
+				const FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
+				FMoveMemberPlan& Member = Job.Members[MemberPlanIndex];
+				if (!Soldier.IsAlive() || Soldier.Team != Job.Team
+					|| !EntityManager.IsEntityValid(Soldier.Entity))
+				{
+					Member.FailureStage = EGuLiMovePlanFailureStage::MemberInvalid;
+					ReleaseMoveMemberDestination(Job, MemberPlanIndex, false);
+					RemoveMoveMemberFromPreparedFormations(Job, SoldierId);
+					bNeedsReservationReconcile = true;
+					continue;
+				}
+				if (Formation.PathPoints.IsEmpty()
+					|| !HasDirectSurfaceConnection(
+						*NavigationData,
+						Soldier.LastValidNavLocation,
+						Formation.PathPoints[0],
+						MovementSpeedCentimetersPerSecond * FixedStepSeconds + 250.0f))
+				{
+					Member.bAccepted = false;
+					RemoveMoveMemberFromPreparedFormations(Job, SoldierId);
+					if (Member.CommitConnectionRetryCount < MoveCommitConnectionRetryLimit)
+					{
+						++Member.CommitConnectionRetryCount;
+						Member.CommandStart = Soldier.LastValidNavLocation;
+						RetryTask.MemberPlanIndices.Add(MemberPlanIndex);
+					}
+					else
+					{
+						Member.FailureStage = EGuLiMovePlanFailureStage::Connector;
+						ReleaseMoveMemberDestination(Job, MemberPlanIndex, true);
+						bNeedsReservationReconcile = true;
+					}
+					continue;
+				}
+				Formation.CommandStartNavLocationBySoldierId.Add(
+					SoldierId.Value,
+					Soldier.LastValidNavLocation);
+			}
+			if (!RetryTask.MemberPlanIndices.IsEmpty())
+			{
+				Job.RouteTasks.Add(MoveTemp(RetryTask));
+			}
+		}
+		Job.PreparedFormations.RemoveAll([](const FOrderFormationRuntime& Formation)
+		{
+			return Formation.MemberIds.IsEmpty();
+		});
+		if (!Job.RouteTasks.IsEmpty())
+		{
+			Job.Stage = EMovePlanningStage::Route;
+			continue;
+		}
+		if (bNeedsReservationReconcile)
+		{
+			Job.Stage = EMovePlanningStage::ReconcileReservations;
+			continue;
+		}
+
+		// The route pass and fixed-step commit are separated by at least one tick.
+		// Clear any member that became invalid before deriving the batch id or masks.
+		TSet<uint32> PreparedMemberIds;
+		for (const FOrderFormationRuntime& Formation : Job.PreparedFormations)
+		{
+			for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
+			{
+				if (Formation.CommandStartNavLocationBySoldierId.Contains(SoldierId.Value)
+					&& Formation.FinalDestinationBySoldierId.Contains(SoldierId.Value))
+				{
+					PreparedMemberIds.Add(SoldierId.Value);
+				}
+			}
+		}
+		bool bFinalMembershipChanged = false;
+		for (int32 MemberPlanIndex = 0; MemberPlanIndex < Job.Members.Num(); ++MemberPlanIndex)
+		{
+			FMoveMemberPlan& Member = Job.Members[MemberPlanIndex];
+			if (!Member.bAccepted)
+			{
+				continue;
+			}
+			const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(Member.SoldierId.Value);
+			const bool bValidAtCommit = Member.bHasDestination
+				&& PreparedMemberIds.Contains(Member.SoldierId.Value)
+				&& SoldierIndex
+				&& AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
+				&& AuthorityState->Soldiers[*SoldierIndex].IsAlive()
+				&& AuthorityState->Soldiers[*SoldierIndex].Team == Job.Team
+				&& EntityManager.IsEntityValid(AuthorityState->Soldiers[*SoldierIndex].Entity);
+			if (bValidAtCommit)
+			{
+				continue;
+			}
+			Member.FailureStage = EGuLiMovePlanFailureStage::MemberInvalid;
+			ReleaseMoveMemberDestination(Job, MemberPlanIndex, false);
+			RemoveMoveMemberFromPreparedFormations(Job, Member.SoldierId);
+			bFinalMembershipChanged = true;
+		}
+		Job.PreparedFormations.RemoveAll([](const FOrderFormationRuntime& Formation)
+		{
+			return Formation.MemberIds.IsEmpty();
+		});
+		if (bFinalMembershipChanged)
+		{
+			Job.Stage = EMovePlanningStage::ReconcileReservations;
+			continue;
+		}
+
+		int32 AcceptedMembers = 0;
+		for (const FMoveMemberPlan& Member : Job.Members)
+		{
+			AcceptedMembers += Member.bAccepted ? 1 : 0;
+		}
+		const uint32 BatchOrderId = AcceptedMembers > 0
+			? AllocateNonZero(AuthorityState->NextBatchOrderId)
+			: 0u;
+
+		for (FOrderFormationRuntime& Formation : Job.PreparedFormations)
+		{
+			Formation.MemberIds.RemoveAll([this, &Job](const FGuLiSoldierId SoldierId)
+			{
+				const FMoveMemberPlan* Member = Job.Members.FindByPredicate(
+					[SoldierId](const FMoveMemberPlan& Candidate)
+					{
+						return Candidate.SoldierId == SoldierId;
+					});
+				const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
+				return !Member || !Member->bAccepted || !SoldierIndex
+					|| !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
+					|| !AuthorityState->Soldiers[*SoldierIndex].IsAlive();
+			});
+			if (Formation.MemberIds.IsEmpty())
+			{
+				continue;
+			}
+			Formation.FormationId = AllocateNonZero(AuthorityState->NextFormationId);
+			Formation.BatchOrderId = BatchOrderId;
+			Formation.MemberPathPointIndexBySoldierId.Reset();
+			for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
+			{
+				const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
+				FNavLocation* CommandStart = Formation.CommandStartNavLocationBySoldierId.Find(SoldierId.Value);
+				const FNavLocation* FinalDestination = Formation.FinalDestinationBySoldierId.Find(SoldierId.Value);
+				if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
+					|| !CommandStart || !FinalDestination)
+				{
+					continue;
+				}
+				FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
+				*CommandStart = Soldier.LastValidNavLocation;
+				Soldier.ActiveOrderId = BatchOrderId;
+				Soldier.FinalDestination = *FinalDestination;
+				Soldier.FinalDestinationNavigationGeneration = AuthorityState->NavigationGeneration;
+				Soldier.bHasFinalDestination = true;
+				Soldier.NavigationState = EGuLiSoldierNavigationState::Normal;
+				Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::None;
+				Soldier.FailureSimulationSeconds = 0.0;
+				Soldier.NoProgressSeconds = 0.0f;
+				Soldier.BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
+				Soldier.LastProgressPathPointIndex = Formation.PathPoints.Num() > 1 ? 1 : 0;
+				Soldier.ConsecutiveSurfaceFailures = 0;
+				Soldier.TotalSurfaceFailures = 0;
+				Soldier.PersonalPathPoints.Reset();
+				Soldier.PersonalPathPointIndex = 0;
+				Soldier.PersonalPathRetries = 0;
+				++Soldier.StateRevision;
+				Formation.MemberPathPointIndexBySoldierId.Add(
+					SoldierId.Value,
+					Formation.PathPoints.Num() > 1 ? 1 : 0);
+
+				FGuLiMassOrderFragment& Order = EntityManager
+					.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+				Order.ActiveOrderId = BatchOrderId;
+				Order.OrderRevision = Soldier.StateRevision;
+				Order.FormationTarget = FinalDestination->Location;
+				Order.bHasMoveTarget = true;
+				FMassMoveTargetFragment& MoveTarget = EntityManager
+					.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+				MoveTarget.CreateNewAction(EMassMovementAction::Move, *World);
+				MoveTarget.IntentAtGoal = EMassMovementAction::Stand;
+				MoveTarget.Center = FinalDestination->Location;
+				MoveTarget.DesiredSpeed = FMassInt16Real(MovementSpeedCentimetersPerSecond);
+			}
+			AssignFormationSlots(
+				Formation,
+				AuthorityState->Soldiers,
+				AuthorityState->SoldierIndexById,
+				MemberSpacingCentimeters,
+				BatchOrderId,
+				Formation.TransitColumnCount);
+			AuthorityState->OrderFormations.Add(MoveTemp(Formation));
+		}
+
+		Job.Ack.BatchOrderId = BatchOrderId;
+		int32 EligibleMembers = 0;
+		for (FGuLiCohortCommandAck& CohortAck : Job.Ack.CohortResults)
+		{
+			EligibleMembers += FPlatformMath::CountBits(CohortAck.EligibleMemberMask);
+			CohortAck.AcceptedMemberMask = 0u;
+			for (const FMoveMemberPlan& Member : Job.Members)
+			{
+				if (Member.CohortId == CohortAck.CohortId && Member.bAccepted
+					&& Member.CohortMemberIndex >= 0 && Member.CohortMemberIndex < 32)
+				{
+					CohortAck.AcceptedMemberMask |= 1u << Member.CohortMemberIndex;
+				}
+			}
+			if (CohortAck.EligibleMemberMask == 0u)
+			{
+				CohortAck.Result = EGuLiCommandAckResult::NoSelection;
+			}
+			else if (CohortAck.AcceptedMemberMask == CohortAck.EligibleMemberMask)
+			{
+				CohortAck.Result = EGuLiCommandAckResult::Accepted;
+			}
+			else if (CohortAck.AcceptedMemberMask != 0u)
+			{
+				CohortAck.Result = EGuLiCommandAckResult::PartiallyAccepted;
+			}
+			else
+			{
+				CohortAck.Result = EGuLiCommandAckResult::PathFailed;
+			}
+		}
+		Job.Ack.Result = AcceptedMembers == 0
+			? EligibleMembers > 0
+				? EGuLiCommandAckResult::PathFailed
+				: EGuLiCommandAckResult::NoSelection
+			: AcceptedMembers == EligibleMembers
+				? EGuLiCommandAckResult::Accepted
+				: EGuLiCommandAckResult::PartiallyAccepted;
+		if (Job.Ack.Result == EGuLiCommandAckResult::PartiallyAccepted)
+		{
+			++AuthorityState->PartiallyAcceptedMoveCommands;
+		}
+
+		Job.UpdatedSelection = Job.FrozenSelection;
+		Job.UpdatedSelection.Cohorts.Reset();
+		for (const FGuLiControlCohortDescriptor& FrozenCohort : Job.FrozenSelection.Cohorts)
+		{
+			FGuLiControlCohortDescriptor UpdatedCohort;
+			UpdatedCohort.CohortId = FrozenCohort.CohortId;
+			for (const FGuLiSoldierId SoldierId : FrozenCohort.MemberIds)
+			{
+				const FMoveMemberPlan* Member = Job.Members.FindByPredicate(
+					[SoldierId, &FrozenCohort](const FMoveMemberPlan& Candidate)
+					{
+						return Candidate.CohortId == FrozenCohort.CohortId
+							&& Candidate.SoldierId == SoldierId;
+					});
+				if (Member && Member->bAccepted)
+				{
+					UpdatedCohort.MemberIds.Add(SoldierId);
+				}
+			}
+			if (!UpdatedCohort.MemberIds.IsEmpty())
+			{
+				UpdatedCohort.AliveCount = static_cast<uint8>(UpdatedCohort.MemberIds.Num());
+				UpdatedCohort.ActiveOrderId = BatchOrderId;
+				Job.UpdatedSelection.Cohorts.Add(MoveTemp(UpdatedCohort));
+			}
+		}
+		bool bMembershipPruned =
+			Job.FrozenSelection.Cohorts.Num() != Job.UpdatedSelection.Cohorts.Num();
+		if (!bMembershipPruned)
+		{
+			for (int32 CohortIndex = 0;
+				CohortIndex < Job.FrozenSelection.Cohorts.Num();
+				++CohortIndex)
+			{
+				const FGuLiControlCohortDescriptor& Before =
+					Job.FrozenSelection.Cohorts[CohortIndex];
+				const FGuLiControlCohortDescriptor& After =
+					Job.UpdatedSelection.Cohorts[CohortIndex];
+				if (Before.CohortId != After.CohortId || Before.MemberIds != After.MemberIds)
+				{
+					bMembershipPruned = true;
+					break;
+				}
+			}
+		}
+		Job.bSelectionChanged = !AreSelectionsEqual(Job.FrozenSelection, Job.UpdatedSelection);
+		if (bMembershipPruned)
+		{
+			++Job.UpdatedSelection.SelectionRevision;
+			if (Job.UpdatedSelection.SelectionRevision == 0u)
+			{
+				++Job.UpdatedSelection.SelectionRevision;
+			}
+		}
+		Job.UpdatedSelection.Sanitize();
+		Job.Ack.ServerSelectionRevision = Job.UpdatedSelection.SelectionRevision;
+		Job.Ack.Sanitize();
+
+		Job.Debug.BatchOrderId = BatchOrderId;
+		Job.Debug.AcceptedMembers = AcceptedMembers;
+		Job.Debug.FailedMembers = Job.Members.Num() - AcceptedMembers;
+		Job.Debug.FailedSoldierIds.Reset();
+		Job.Debug.Cohorts.Reset();
+		for (const FGuLiCohortCommandAck& CohortAck : Job.Ack.CohortResults)
+		{
+			FGuLiMoveCohortPlanningDebug& CohortDebug =
+				Job.Debug.Cohorts.AddDefaulted_GetRef();
+			CohortDebug.CohortId = CohortAck.CohortId;
+			CohortDebug.MemberCount = CohortAck.MemberCount;
+			CohortDebug.EligibleMemberMask = CohortAck.EligibleMemberMask;
+			CohortDebug.AcceptedMemberMask = CohortAck.AcceptedMemberMask;
+			const FMoveCohortPlan* CohortPlan = Job.Cohorts.FindByPredicate(
+				[&CohortAck](const FMoveCohortPlan& Candidate)
+				{
+					return Candidate.CohortId == CohortAck.CohortId;
+				});
+			if (CohortPlan)
+			{
+				for (int32 MemberIndex = 0;
+					MemberIndex < CohortPlan->FrozenMemberIds.Num() && MemberIndex < 32;
+					++MemberIndex)
+				{
+					if ((CohortAck.AcceptedMemberMask & (1u << MemberIndex)) == 0u)
+					{
+						CohortDebug.FailedSoldierIds.Add(CohortPlan->FrozenMemberIds[MemberIndex]);
+					}
+				}
+			}
+		}
+		for (const FMoveMemberPlan& Member : Job.Members)
+		{
+			if (Member.bAccepted)
+			{
+				continue;
+			}
+			Job.Debug.FailedSoldierIds.Add(Member.SoldierId);
+			const EGuLiMovePlanFailureStage Stage = Member.FailureStage == EGuLiMovePlanFailureStage::None
+				? EGuLiMovePlanFailureStage::CandidatesExhausted
+				: Member.FailureStage;
+			++AuthorityState->MovePlanningFailureCounts[static_cast<uint8>(Stage)];
+		}
+		Job.Debug.PlanningMilliseconds =
+			(FPlatformTime::Seconds() - Job.PlanningStartedAt) * 1000.0;
+		AuthorityState->LastDestinationPlanningMilliseconds = Job.Debug.PlanningMilliseconds;
+		AuthorityState->MaximumDestinationPlanningMilliseconds = FMath::Max(
+			AuthorityState->MaximumDestinationPlanningMilliseconds,
+			Job.Debug.PlanningMilliseconds);
+		AuthorityState->LastMovePlanningDebug = Job.Debug;
+		AuthorityState->bHasLastMovePlanningDebug = true;
+		UE_LOG(
+			LogGuLiCommanderMass,
+			Display,
+			TEXT("Move plan command=%u batch=%u target=%s candidates=%d/%d accepted=%d failed=%d projections=%d paths=%d splits=%d reservationConflicts=%d planningMs=%.3f."),
+			Job.Request.ClientCommandId,
+			BatchOrderId,
+			*FVector(Job.Request.Target).ToCompactString(),
+			Job.Debug.LegalCandidates,
+			Job.Debug.TheoreticalCandidates,
+			AcceptedMembers,
+			Job.Debug.FailedMembers,
+			Job.Debug.CandidateProjectionQueries,
+			Job.Debug.PathQueries,
+			Job.Debug.RouteSplitCount,
+			Job.Debug.ReservationConflictCount,
+			Job.Debug.PlanningMilliseconds);
+		Job.Stage = EMovePlanningStage::Completed;
+	}
+}
+
+EGuLiMovePlanningStatus UGuLiBattleAuthoritySubsystem::PollMovePlanning(
+	const AGuLiBattlePlayerState& PlayerState,
+	const uint32 ClientCommandId,
+	FGuLiCommandAck& OutAck,
+	FGuLiCommanderSelectionState& OutUpdatedSelection,
+	bool& bOutSelectionChanged)
+{
+	bOutSelectionChanged = false;
+	if (!AuthorityState)
+	{
+		return EGuLiMovePlanningStatus::NotFound;
+	}
+	for (int32 JobIndex = 0; JobIndex < AuthorityState->MovePlanningJobs.Num(); ++JobIndex)
+	{
+		const TUniquePtr<GuLiCommanderMassPrivate::FMovePlanningJob>& Job =
+			AuthorityState->MovePlanningJobs[JobIndex];
+		if (!Job || Job->PlayerState.Get() != &PlayerState
+			|| Job->Request.ClientCommandId != ClientCommandId)
+		{
+			continue;
+		}
+		if (Job->Stage != GuLiCommanderMassPrivate::EMovePlanningStage::Completed)
+		{
+			return EGuLiMovePlanningStatus::Pending;
+		}
+		OutAck = Job->Ack;
+		OutUpdatedSelection = Job->UpdatedSelection;
+		bOutSelectionChanged = Job->bSelectionChanged;
+		AuthorityState->MovePlanningJobs.RemoveAt(JobIndex);
+		return EGuLiMovePlanningStatus::Completed;
+	}
+	return EGuLiMovePlanningStatus::NotFound;
+}
+
+void UGuLiBattleAuthoritySubsystem::CancelMovePlanning(
+	const AGuLiBattlePlayerState& PlayerState)
+{
+	if (!AuthorityState)
+	{
+		return;
+	}
+	AuthorityState->MovePlanningJobs.RemoveAll(
+		[&PlayerState](const TUniquePtr<GuLiCommanderMassPrivate::FMovePlanningJob>& Job)
+		{
+			return Job && Job->PlayerState.Get() == &PlayerState;
+		});
+}
+
+void UGuLiBattleAuthoritySubsystem::BuildActiveMoveEndpointSnapshot(
+	const EGuLiTeam Team,
+	TArray<FGuLiMoveEndpointSnapshot>& OutEndpoints) const
+{
+	using namespace GuLiCommanderMassPrivate;
+	OutEndpoints.Reset();
+	if (!AuthorityState || !GuLiCommanderProtocol::IsPlayableTeam(Team))
+	{
+		return;
+	}
+	TSet<uint32> AddedSoldierIds;
+	for (const FOrderFormationRuntime& Formation : AuthorityState->OrderFormations)
+	{
+		if (Formation.Team != Team || Formation.BatchOrderId == 0u)
+		{
+			continue;
+		}
+		for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
+		{
+			if (AddedSoldierIds.Contains(SoldierId.Value))
+			{
+				continue;
+			}
+			const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
+			const FNavLocation* CommandStart =
+				Formation.CommandStartNavLocationBySoldierId.Find(SoldierId.Value);
+			const FNavLocation* FinalDestination =
+				Formation.FinalDestinationBySoldierId.Find(SoldierId.Value);
+			if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
+				|| !CommandStart || !FinalDestination)
+			{
+				continue;
+			}
+			const FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
+			if (!Soldier.IsAlive() || Soldier.Team != Team
+				|| Soldier.ActiveOrderId != Formation.BatchOrderId)
+			{
+				continue;
+			}
+			FGuLiMoveEndpointSnapshot& Endpoint = OutEndpoints.AddDefaulted_GetRef();
+			Endpoint.SoldierId = SoldierId;
+			Endpoint.ActiveOrderId = Formation.BatchOrderId;
+			Endpoint.CommandStart = CommandStart->Location;
+			Endpoint.FinalDestination = FinalDestination->Location;
+			Endpoint.Revision = Soldier.StateRevision;
+			AddedSoldierIds.Add(SoldierId.Value);
+		}
+	}
+	OutEndpoints.Sort([](const FGuLiMoveEndpointSnapshot& Lhs, const FGuLiMoveEndpointSnapshot& Rhs)
+	{
+		return Lhs.SoldierId.Value < Rhs.SoldierId.Value;
+	});
+}
+
+bool UGuLiBattleAuthoritySubsystem::TryGetLastMovePlanningDebug(
+	FGuLiMovePlanningDebug& OutDebug) const
+{
+	if (!AuthorityState || !AuthorityState->bHasLastMovePlanningDebug)
+	{
+		return false;
+	}
+	OutDebug = AuthorityState->LastMovePlanningDebug;
+	return true;
 }
 
 // 可选方向引导层：没有可用流场时，行进分支继续使用已验证的共享 NavMesh 路径方向。
@@ -1180,6 +3027,16 @@ void UGuLiBattleAuthoritySubsystem::TickLocalFlowFields()
 	int32 RemainingSampleBudget = FMath::Max(1, FlowFieldWalkabilitySamplesPerTick);
 	for (FOrderFormationRuntime& Formation : AuthorityState->OrderFormations)
 	{
+		if (AuthorityState->NavigationRepairJob
+			&& AuthorityState->NavigationRepairJob->Formations.ContainsByPredicate(
+				[&Formation](const FNavigationRepairFormationTask& Repair)
+				{
+					return Repair.FormationId == Formation.FormationId
+						&& Repair.ExpectedOrderId == Formation.BatchOrderId;
+				}))
+		{
+			continue;
+		}
 		if (Formation.bFlowBuildInFlight && Formation.FlowBuildFuture.IsReady())
 		{
 			TSharedPtr<FGuLiLocalFlowField, ESPMode::ThreadSafe> BuiltField = Formation.FlowBuildFuture.Get();
@@ -1303,107 +3160,715 @@ void UGuLiBattleAuthoritySubsystem::TickLocalFlowFields()
 void UGuLiBattleAuthoritySubsystem::HandleNavigationGenerationFinished(
 	ANavigationData* NavigationData)
 {
+	using namespace GuLiCommanderMassPrivate;
 	UWorld* World = GetWorld();
-	if (!AuthorityState || !World)
-	{
-		return;
-	}
-	if (!NavigationData
+	if (!AuthorityState || !World || !NavigationData
 		|| NavigationData->GetConfig().Name
 			!= GuLiCommanderNavigationPolicy::GetRequiredAgentName())
 	{
 		return;
 	}
+
 	++AuthorityState->NavigationGeneration;
 	if (AuthorityState->NavigationGeneration == 0u)
 	{
 		++AuthorityState->NavigationGeneration;
 	}
-	for (GuLiCommanderMassPrivate::FOrderFormationRuntime& Formation :
-		AuthorityState->OrderFormations)
+
+	TUniquePtr<FNavigationRepairJob> RepairJob = MakeUnique<FNavigationRepairJob>();
+	RepairJob->NavigationGeneration = AuthorityState->NavigationGeneration;
+	if (const AGuLiBattleGameState* BattleGameState = World->GetGameState<AGuLiBattleGameState>())
+	{
+		RepairJob->AuthorityEpoch = BattleGameState->GetMatchEpoch();
+	}
+
+	TMap<uint32, uint32> FormationIdBySoldierId;
+	for (FOrderFormationRuntime& Formation : AuthorityState->OrderFormations)
 	{
 		++Formation.PathRevision;
 		if (Formation.PathRevision == 0u)
 		{
 			++Formation.PathRevision;
 		}
-
-		UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
-		FVector ReprojectedTarget = Formation.TargetAnchor;
-		TArray<FVector> RebuiltPath;
-		Formation.bPathValid = NavigationSystem
-			&& GuLiCommanderMassPrivate::ResolveSharedMoveTarget(
-				*NavigationSystem,
-				*NavigationData,
-				Formation.TargetAnchor,
-				MemberAgentRadiusCentimeters,
-				ReprojectedTarget)
-			&& GuLiCommanderMassPrivate::BuildSharedPath(
-				*NavigationSystem,
-				*NavigationData,
-				Formation.GuideAnchor,
-				ReprojectedTarget,
-				RebuiltPath);
-		const GuLiCommanderNavigationPolicy::FFinalPathFrame RebuiltFinalPathFrame = GuLiCommanderNavigationPolicy::ResolveFinalPathFrame(
-			RebuiltPath,
-			Formation.GuideAnchor,
-			ReprojectedTarget);
-		Formation.bPathValid &= RebuiltFinalPathFrame.bHasUsableDirection;
-		if (Formation.bPathValid)
+		FNavigationRepairFormationTask FormationTask;
+		FormationTask.FormationId = Formation.FormationId;
+		FormationTask.ExpectedOrderId = Formation.BatchOrderId;
+		FormationTask.PreviousGuideAnchor = Formation.GuideAnchor;
+		FormationTask.PreviousTargetAnchor = Formation.TargetAnchor;
+		bool bHasActiveMember = false;
+		for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
 		{
-			Formation.TargetAnchor = ReprojectedTarget;
-			Formation.PathPoints = MoveTemp(RebuiltPath);
-			Formation.PathPointIndex = Formation.PathPoints.Num() > 1 ? 1 : 0;
-			Formation.FinalPathFrame = RebuiltFinalPathFrame;
-			Formation.bFinalCorridorStarted = false;
-			Formation.FinalCorridorLateralOffsetBySoldierId.Reset();
-			for (TPair<uint32, GuLiCommanderNavigationPolicy::FLooseArrivalMemberState>& Pair
-				: Formation.LooseArrivalStateBySoldierId)
+			const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
+			if (SoldierIndex && AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
+				&& AuthorityState->Soldiers[*SoldierIndex].IsAlive()
+				&& AuthorityState->Soldiers[*SoldierIndex].ActiveOrderId == Formation.BatchOrderId)
 			{
-				if (!Pair.Value.bHasReachedArrival)
-				{
-					Pair.Value.bTailCleared = false;
-					Pair.Value.bRecovering = false;
-				}
-			}
-			const int32 RebuiltInitialPathPointIndex = Formation.PathPoints.Num() > 1 ? 1 : 0;
-			for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
-			{
-				const GuLiCommanderNavigationPolicy::FLooseArrivalMemberState* ArrivalState = Formation.LooseArrivalStateBySoldierId.Find(SoldierId.Value);
-				if (!ArrivalState || !ArrivalState->bHasReachedArrival)
-				{
-					Formation.MemberPathPointIndexBySoldierId.Add(
-						SoldierId.Value,
-						RebuiltInitialPathPointIndex);
-				}
+				FormationIdBySoldierId.Add(SoldierId.Value, Formation.FormationId);
+				bHasActiveMember = true;
 			}
 		}
-		else
+		if (bHasActiveMember)
 		{
-			Formation.PathPoints.Reset();
-			Formation.PathPointIndex = 0;
+			RepairJob->Formations.Add(MoveTemp(FormationTask));
 		}
+		Formation.bPathValid = false;
+		Formation.PathPoints.Reset();
+		Formation.PathPointIndex = 0;
+		Formation.bFinalApproachStarted = false;
 		Formation.FlowField.Reset();
 		Formation.NextFlowWalkabilitySample = INDEX_NONE;
 		Formation.PendingFlowBuildData = FGuLiLocalFlowFieldBuildData{};
 	}
+	RepairJob->Formations.Sort([](const FNavigationRepairFormationTask& Lhs,
+		const FNavigationRepairFormationTask& Rhs)
+	{
+		return Lhs.FormationId < Rhs.FormationId;
+	});
+
+	UMassEntitySubsystem* MassSubsystem = AuthorityState->MassEntitySubsystem.Get();
+	FMassEntityManager* EntityManager = MassSubsystem
+		? &MassSubsystem->GetMutableEntityManager()
+		: nullptr;
+	for (FSoldierRuntime& Soldier : AuthorityState->Soldiers)
+	{
+		if (!Soldier.IsAlive())
+		{
+			continue;
+		}
+		FNavigationRepairMemberTask& Task = RepairJob->Members.AddDefaulted_GetRef();
+		Task.SoldierId = Soldier.SoldierId;
+		Task.Team = Soldier.Team;
+		Task.ExpectedOrderId = Soldier.ActiveOrderId;
+		Task.FormationId = FormationIdBySoldierId.FindRef(Soldier.SoldierId.Value);
+		Task.PreviousCurrentLocation = Soldier.Location;
+		Task.PreviousFinalLocation = Soldier.FinalDestination.Location;
+		Task.bWasArrived = Soldier.NavigationState == EGuLiSoldierNavigationState::Arrived;
+		Task.bHadFinalDestination = Soldier.bHasFinalDestination
+			&& (Soldier.ActiveOrderId != 0u || Task.bWasArrived);
+		if (Soldier.ActiveOrderId != 0u)
+		{
+			RepairJob->PendingActiveSoldierIds.Add(Soldier.SoldierId.Value);
+			Soldier.Velocity = FVector::ZeroVector;
+			if (EntityManager && EntityManager->IsEntityValid(Soldier.Entity))
+			{
+				FMassMoveTargetFragment& MoveTarget = EntityManager
+					->GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+				MoveTarget.CreateNewAction(EMassMovementAction::Stand, *World);
+				MoveTarget.Center = Soldier.Location;
+				MoveTarget.DesiredSpeed = FMassInt16Real(0.0f);
+				EntityManager->GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+				EntityManager->GetFragmentDataChecked<FMassForceFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+				EntityManager->GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+			}
+		}
+	}
+	RepairJob->Members.Sort([](const FNavigationRepairMemberTask& Lhs,
+		const FNavigationRepairMemberTask& Rhs)
+	{
+		return Lhs.SoldierId < Rhs.SoldierId;
+	});
+	RepairJob->bReadyToCommit = RepairJob->Members.IsEmpty()
+		&& RepairJob->Formations.IsEmpty();
+	AuthorityState->NavigationRepairJob = MoveTemp(RepairJob);
 }
 
-// 一个固定模拟步分四段：空间索引 -> 编队期望速度 -> 士兵避让与位移 -> 按批次收尾。
+void UGuLiBattleAuthoritySubsystem::TickNavigationRepairs(
+	int32& RemainingProjectionBudget,
+	int32& RemainingPathBudget)
+{
+	using namespace GuLiCommanderMassPrivate;
+	if (!AuthorityState || !AuthorityState->NavigationRepairJob
+		|| AuthorityState->NavigationRepairJob->bReadyToCommit)
+	{
+		return;
+	}
+	FNavigationRepairJob& Job = *AuthorityState->NavigationRepairJob;
+	UWorld* World = GetWorld();
+	const AGuLiBattleGameState* BattleGameState = World
+		? World->GetGameState<AGuLiBattleGameState>()
+		: nullptr;
+	const uint32 CurrentAuthorityEpoch = BattleGameState
+		? BattleGameState->GetMatchEpoch()
+		: 0u;
+	UNavigationSystemV1* NavigationSystem = World
+		? FNavigationSystem::GetCurrent<UNavigationSystemV1>(World)
+		: nullptr;
+	ANavigationData* NavigationData = NavigationSystem
+		? GetCommanderNavigationData(*NavigationSystem)
+		: nullptr;
+	if (Job.AuthorityEpoch == 0u && CurrentAuthorityEpoch != 0u)
+	{
+		Job.AuthorityEpoch = CurrentAuthorityEpoch;
+	}
+	const bool bRepairBecameStale =
+		Job.NavigationGeneration != AuthorityState->NavigationGeneration
+		|| (Job.AuthorityEpoch != 0u && CurrentAuthorityEpoch != 0u
+			&& Job.AuthorityEpoch != CurrentAuthorityEpoch);
+	if (bRepairBecameStale)
+	{
+		UMassEntitySubsystem* MassSubsystem = AuthorityState->MassEntitySubsystem.Get();
+		if (World && MassSubsystem)
+		{
+			FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
+			for (const FNavigationRepairMemberTask& Task : Job.Members)
+			{
+				if (Task.ExpectedOrderId == 0u)
+				{
+					continue;
+				}
+				const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(Task.SoldierId.Value);
+				if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
+				{
+					continue;
+				}
+				FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
+				if (!Soldier.IsAlive() || Soldier.ActiveOrderId != Task.ExpectedOrderId
+					|| !EntityManager.IsEntityValid(Soldier.Entity))
+				{
+					continue;
+				}
+				FMassMoveTargetFragment& MoveTarget = EntityManager
+					.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+				MoveTarget.CreateNewAction(EMassMovementAction::Move, *World);
+				MoveTarget.IntentAtGoal = EMassMovementAction::Stand;
+				MoveTarget.Center = Soldier.bHasFinalDestination
+					? Soldier.FinalDestination.Location
+					: Soldier.Location;
+				MoveTarget.DesiredSpeed = FMassInt16Real(MovementSpeedCentimetersPerSecond);
+			}
+		}
+		AuthorityState->NavigationRepairJob.Reset();
+		return;
+	}
+	if (!World || !NavigationSystem || !NavigationData
+		|| !BattleGameState || CurrentAuthorityEpoch == 0u)
+	{
+		return;
+	}
+
+	for (FNavigationRepairMemberTask& Task : Job.Members)
+	{
+		if (Task.ExpectedOrderId == 0u)
+		{
+			continue;
+		}
+		const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(Task.SoldierId.Value);
+		if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
+			|| !AuthorityState->Soldiers[*SoldierIndex].IsAlive()
+			|| AuthorityState->Soldiers[*SoldierIndex].ActiveOrderId != Task.ExpectedOrderId)
+		{
+			Task.Stage = ENavigationRepairMemberStage::Discarded;
+			Job.PendingActiveSoldierIds.Remove(Task.SoldierId.Value);
+		}
+	}
+
+	auto MakeRepairCandidate = [](const FVector& Center, const int32 CandidateIndex)
+	{
+		if (CandidateIndex <= 0)
+		{
+			return Center;
+		}
+		const int32 RingIndex = CandidateIndex - 1;
+		const float Radius = 250.0f * static_cast<float>(RingIndex / 8 + 1);
+		const int32 DirectionIndex = RingIndex % 8;
+		const float AngleRadians = UE_TWO_PI * static_cast<float>(DirectionIndex) / 8.0f;
+		return Center + FVector(
+			FMath::Cos(AngleRadians) * Radius,
+			FMath::Sin(AngleRadians) * Radius,
+			0.0f);
+	};
+	auto IsCandidateClear = [this, &Job](const FNavigationRepairMemberTask& Task,
+		const FVector& CandidateLocation)
+	{
+		const double MinimumDistanceSquared = FMath::Square(
+			static_cast<double>(DestinationMinimumSeparationCentimeters));
+		for (const FSoldierRuntime& Other : AuthorityState->Soldiers)
+		{
+			if (!Other.IsAlive() || Other.Team != Task.Team || Other.SoldierId == Task.SoldierId)
+			{
+				continue;
+			}
+			const bool bOtherReservesFinal = Other.bHasFinalDestination
+				&& (Other.ActiveOrderId != 0u
+					|| Other.NavigationState == EGuLiSoldierNavigationState::Arrived);
+			const FVector& Reservation = bOtherReservesFinal
+				? Other.FinalDestination.Location
+				: Other.Location;
+			if (FVector::DistSquared2D(CandidateLocation, Reservation) < MinimumDistanceSquared)
+			{
+				return false;
+			}
+		}
+		for (const FNavigationRepairMemberTask& OtherTask : Job.Members)
+		{
+			if (OtherTask.SoldierId == Task.SoldierId || OtherTask.Team != Task.Team
+				|| OtherTask.Stage != ENavigationRepairMemberStage::Ready
+				|| !OtherTask.bHadFinalDestination)
+			{
+				continue;
+			}
+			if (FVector::DistSquared2D(
+					CandidateLocation,
+					OtherTask.RepairedFinalLocation.Location) < MinimumDistanceSquared)
+			{
+				return false;
+			}
+		}
+		return true;
+	};
+
+	while (Job.NextMemberIndex < Job.Members.Num())
+	{
+		FNavigationRepairMemberTask& Task = Job.Members[Job.NextMemberIndex];
+		if (Task.Stage == ENavigationRepairMemberStage::Ready
+			|| Task.Stage == ENavigationRepairMemberStage::Failed
+			|| Task.Stage == ENavigationRepairMemberStage::Discarded)
+		{
+			++Job.NextMemberIndex;
+			continue;
+		}
+		const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(Task.SoldierId.Value);
+		if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
+		{
+			Task.Stage = ENavigationRepairMemberStage::Discarded;
+			continue;
+		}
+		if (Task.Stage == ENavigationRepairMemberStage::ProjectCurrent)
+		{
+			if (RemainingProjectionBudget <= 0)
+			{
+				break;
+			}
+			--RemainingProjectionBudget;
+			FNavLocation Projected;
+			if (!ProjectPointToCommanderNavigation(*NavigationSystem, *NavigationData,
+					Task.PreviousCurrentLocation, FVector(10.0f, 10.0f, 5000.0f), Projected)
+				|| FVector::DistSquared2D(Task.PreviousCurrentLocation, Projected.Location)
+					> FMath::Square(10.0f))
+			{
+				Task.Stage = ENavigationRepairMemberStage::Failed;
+				continue;
+			}
+			Projected.Location.X = Task.PreviousCurrentLocation.X;
+			Projected.Location.Y = Task.PreviousCurrentLocation.Y;
+			Task.RefreshedCurrentLocation = Projected;
+			Task.Stage = Task.bHadFinalDestination
+				? ENavigationRepairMemberStage::ProjectFinal
+				: ENavigationRepairMemberStage::Ready;
+			continue;
+		}
+		if (Task.Stage == ENavigationRepairMemberStage::ProjectFinal)
+		{
+			if (RemainingProjectionBudget <= 0)
+			{
+				break;
+			}
+			--RemainingProjectionBudget;
+			FNavLocation Projected;
+			if (ProjectPointToCommanderNavigation(*NavigationSystem, *NavigationData,
+					Task.PreviousFinalLocation, FVector(10.0f, 10.0f, 5000.0f), Projected)
+				&& FVector::DistSquared2D(Task.PreviousFinalLocation, Projected.Location)
+					<= FMath::Square(10.0f))
+			{
+				Projected.Location.X = Task.PreviousFinalLocation.X;
+				Projected.Location.Y = Task.PreviousFinalLocation.Y;
+				Task.RepairedFinalLocation = Projected;
+				Task.Stage = ENavigationRepairMemberStage::Ready;
+			}
+			else
+			{
+				Task.Stage = Task.ExpectedOrderId != 0u
+					? ENavigationRepairMemberStage::ProjectCandidate
+					: ENavigationRepairMemberStage::Failed;
+			}
+			continue;
+		}
+		if (Task.Stage == ENavigationRepairMemberStage::ProjectCandidate)
+		{
+			if (Task.NextCandidateIndex >= 25)
+			{
+				Task.Stage = ENavigationRepairMemberStage::Failed;
+				continue;
+			}
+			if (RemainingProjectionBudget <= 0)
+			{
+				break;
+			}
+			--RemainingProjectionBudget;
+			const FVector Requested = MakeRepairCandidate(
+				Task.PreviousFinalLocation, Task.NextCandidateIndex);
+			FNavLocation Projected;
+			if (ProjectPointToCommanderNavigation(*NavigationSystem, *NavigationData,
+					Requested, FVector(100.0f, 100.0f, 5000.0f), Projected)
+				&& FVector::DistSquared2D(Task.PreviousFinalLocation, Projected.Location)
+					<= FMath::Square(DestinationMaximumProjectionCorrectionCentimeters)
+				&& IsCandidateClear(Task, Projected.Location))
+			{
+				Task.PendingCandidate = Projected;
+				Task.Stage = ENavigationRepairMemberStage::QueryCandidatePath;
+			}
+			else
+			{
+				++Task.NextCandidateIndex;
+			}
+			continue;
+		}
+		if (RemainingPathBudget <= 0)
+		{
+			break;
+		}
+		--RemainingPathBudget;
+		++AuthorityState->PathQueries;
+		if (HasCompletePath(*NavigationSystem, *NavigationData,
+				Task.RefreshedCurrentLocation.Location, Task.PendingCandidate.Location))
+		{
+			Task.RepairedFinalLocation = Task.PendingCandidate;
+			Task.Stage = ENavigationRepairMemberStage::Ready;
+		}
+		else
+		{
+			++Task.NextCandidateIndex;
+			Task.Stage = ENavigationRepairMemberStage::ProjectCandidate;
+		}
+	}
+	if (Job.NextMemberIndex < Job.Members.Num())
+	{
+		return;
+	}
+
+	while (Job.NextFormationIndex < Job.Formations.Num())
+	{
+		FNavigationRepairFormationTask& Task = Job.Formations[Job.NextFormationIndex];
+		if (Task.Stage == ENavigationRepairFormationStage::Ready
+			|| Task.Stage == ENavigationRepairFormationStage::Discarded)
+		{
+			++Job.NextFormationIndex;
+			continue;
+		}
+		FOrderFormationRuntime* Formation = AuthorityState->OrderFormations.FindByPredicate(
+			[&Task](const FOrderFormationRuntime& Candidate)
+			{
+				return Candidate.FormationId == Task.FormationId
+					&& Candidate.BatchOrderId == Task.ExpectedOrderId;
+			});
+		if (!Formation)
+		{
+			Task.Stage = ENavigationRepairFormationStage::Discarded;
+			continue;
+		}
+		const bool bHasRepairableActiveMember = Job.Members.ContainsByPredicate(
+			[this, &Task](const FNavigationRepairMemberTask& MemberTask)
+			{
+				if (MemberTask.FormationId != Task.FormationId
+					|| MemberTask.ExpectedOrderId != Task.ExpectedOrderId
+					|| MemberTask.Stage != ENavigationRepairMemberStage::Ready)
+				{
+					return false;
+				}
+				const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(
+					MemberTask.SoldierId.Value);
+				return SoldierIndex && AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
+					&& AuthorityState->Soldiers[*SoldierIndex].IsAlive()
+					&& AuthorityState->Soldiers[*SoldierIndex].ActiveOrderId
+						== Task.ExpectedOrderId;
+			});
+		if (!bHasRepairableActiveMember)
+		{
+			Task.bPathValid = false;
+			Task.Stage = ENavigationRepairFormationStage::Ready;
+			continue;
+		}
+		if (Task.Stage == ENavigationRepairFormationStage::ProjectTarget)
+		{
+			if (RemainingProjectionBudget <= 0)
+			{
+				break;
+			}
+			--RemainingProjectionBudget;
+			if (!ProjectPointToCommanderNavigation(*NavigationSystem, *NavigationData,
+					Task.PreviousTargetAnchor,
+					FVector(MemberAgentRadiusCentimeters, MemberAgentRadiusCentimeters, 5000.0f),
+					Task.ProjectedTargetAnchor)
+				|| !GuLiCommanderNavigationPolicy::IsProjectedTargetAcceptable(
+					Task.PreviousTargetAnchor, Task.ProjectedTargetAnchor.Location,
+					MemberAgentRadiusCentimeters))
+			{
+				Task.bPathValid = false;
+				Task.Stage = ENavigationRepairFormationStage::Ready;
+			}
+			else
+			{
+				Task.Stage = ENavigationRepairFormationStage::ProjectGuide;
+			}
+			continue;
+		}
+		if (Task.Stage == ENavigationRepairFormationStage::ProjectGuide)
+		{
+			if (RemainingProjectionBudget <= 0)
+			{
+				break;
+			}
+			--RemainingProjectionBudget;
+			if (!ProjectPointToCommanderNavigation(*NavigationSystem, *NavigationData,
+					Task.PreviousGuideAnchor,
+					FVector(DestinationMaximumProjectionCorrectionCentimeters,
+						DestinationMaximumProjectionCorrectionCentimeters, 5000.0f),
+					Task.ProjectedGuideAnchor)
+				|| FVector::DistSquared2D(
+						Task.PreviousGuideAnchor, Task.ProjectedGuideAnchor.Location)
+					> FMath::Square(DestinationMaximumProjectionCorrectionCentimeters))
+			{
+				Task.bPathValid = false;
+				Task.Stage = ENavigationRepairFormationStage::Ready;
+			}
+			else
+			{
+				Task.Stage = ENavigationRepairFormationStage::QueryPath;
+			}
+			continue;
+		}
+		if (RemainingPathBudget <= 0)
+		{
+			break;
+		}
+		--RemainingPathBudget;
+		++AuthorityState->PathQueries;
+		Task.bPathValid = BuildCompletePathQuiet(*NavigationSystem, *NavigationData,
+			Task.ProjectedGuideAnchor, Task.ProjectedTargetAnchor.Location,
+			Task.RebuiltPathPoints);
+		Task.Stage = ENavigationRepairFormationStage::Ready;
+	}
+	Job.bReadyToCommit = Job.NextFormationIndex >= Job.Formations.Num();
+}
+
+void UGuLiBattleAuthoritySubsystem::CommitReadyNavigationRepairs()
+{
+	using namespace GuLiCommanderMassPrivate;
+	if (!AuthorityState || !AuthorityState->NavigationRepairJob
+		|| !AuthorityState->NavigationRepairJob->bReadyToCommit)
+	{
+		return;
+	}
+	FNavigationRepairJob& Job = *AuthorityState->NavigationRepairJob;
+	UWorld* World = GetWorld();
+	const AGuLiBattleGameState* BattleGameState = World
+		? World->GetGameState<AGuLiBattleGameState>()
+		: nullptr;
+	UMassEntitySubsystem* MassSubsystem = AuthorityState->MassEntitySubsystem.Get();
+	if (!World || !BattleGameState || !MassSubsystem
+		|| Job.NavigationGeneration != AuthorityState->NavigationGeneration
+		|| Job.AuthorityEpoch == 0u || Job.AuthorityEpoch != BattleGameState->GetMatchEpoch())
+	{
+		if (World && MassSubsystem)
+		{
+			FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
+			for (const FNavigationRepairMemberTask& Task : Job.Members)
+			{
+				const int32* SoldierIndex = Task.ExpectedOrderId != 0u
+					? AuthorityState->SoldierIndexById.Find(Task.SoldierId.Value)
+					: nullptr;
+				if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
+				{
+					continue;
+				}
+				FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
+				if (!Soldier.IsAlive() || Soldier.ActiveOrderId != Task.ExpectedOrderId
+					|| !EntityManager.IsEntityValid(Soldier.Entity))
+				{
+					continue;
+				}
+				FMassMoveTargetFragment& MoveTarget = EntityManager
+					.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+				MoveTarget.CreateNewAction(EMassMovementAction::Move, *World);
+				MoveTarget.IntentAtGoal = EMassMovementAction::Stand;
+				MoveTarget.Center = Soldier.bHasFinalDestination
+					? Soldier.FinalDestination.Location
+					: Soldier.Location;
+				MoveTarget.DesiredSpeed = FMassInt16Real(MovementSpeedCentimetersPerSecond);
+			}
+		}
+		AuthorityState->NavigationRepairJob.Reset();
+		return;
+	}
+	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
+
+	auto BlockInvalidated = [this, World, &EntityManager](FSoldierRuntime& Soldier,
+		const uint32 FailedOrderId)
+	{
+		Soldier.Location = Soldier.LastValidNavLocation.Location;
+		Soldier.Velocity = FVector::ZeroVector;
+		Soldier.ActiveOrderId = 0u;
+		Soldier.LastFailedOrderId = FailedOrderId;
+		Soldier.NavigationState = EGuLiSoldierNavigationState::Blocked;
+		Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::FinalSlotInvalidated;
+		Soldier.FailureSimulationSeconds = AuthorityState->SimulationSeconds;
+		++Soldier.StateRevision;
+		if (!EntityManager.IsEntityValid(Soldier.Entity))
+		{
+			return;
+		}
+		FMassMoveTargetFragment& MoveTarget = EntityManager
+			.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+		MoveTarget.CreateNewAction(EMassMovementAction::Stand, *World);
+		MoveTarget.Center = Soldier.Location;
+		MoveTarget.DesiredSpeed = FMassInt16Real(0.0f);
+		EntityManager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+		EntityManager.GetFragmentDataChecked<FMassForceFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+		EntityManager.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+		FGuLiMassOrderFragment& Order = EntityManager
+			.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+		Order.ActiveOrderId = 0u;
+		Order.OrderRevision = Soldier.StateRevision;
+		Order.bHasMoveTarget = false;
+	};
+
+	for (const FNavigationRepairMemberTask& Task : Job.Members)
+	{
+		const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(Task.SoldierId.Value);
+		if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
+		{
+			continue;
+		}
+		FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
+		if (!Soldier.IsAlive() || Soldier.ActiveOrderId != Task.ExpectedOrderId)
+		{
+			continue;
+		}
+		FOrderFormationRuntime* Formation = Task.FormationId != 0u
+			? AuthorityState->OrderFormations.FindByPredicate(
+				[&Task](const FOrderFormationRuntime& Candidate)
+				{
+					return Candidate.FormationId == Task.FormationId
+						&& Candidate.BatchOrderId == Task.ExpectedOrderId;
+				})
+			: nullptr;
+		if (Task.Stage != ENavigationRepairMemberStage::Ready)
+		{
+			const uint32 FailedOrderId = Task.bWasArrived
+				? Soldier.LastCompletedOrderId
+				: Soldier.ActiveOrderId;
+			BlockInvalidated(Soldier, FailedOrderId);
+			if (Formation)
+			{
+				Formation->FinalDestinationBySoldierId.Remove(Task.SoldierId.Value);
+			}
+			continue;
+		}
+
+		Soldier.LastValidNavLocation = Task.RefreshedCurrentLocation;
+		Soldier.Location = Task.RefreshedCurrentLocation.Location;
+		if (Task.bHadFinalDestination)
+		{
+			Soldier.FinalDestination = Task.RepairedFinalLocation;
+			Soldier.FinalDestinationNavigationGeneration = AuthorityState->NavigationGeneration;
+			if (Formation)
+			{
+				Formation->FinalDestinationBySoldierId.Add(
+					Task.SoldierId.Value, Task.RepairedFinalLocation);
+			}
+		}
+		if (Task.bWasArrived && Task.bHadFinalDestination)
+		{
+			Soldier.LastValidNavLocation = Task.RepairedFinalLocation;
+			Soldier.Location = Task.RepairedFinalLocation.Location;
+		}
+		if (Task.ExpectedOrderId == 0u)
+		{
+			continue;
+		}
+		Soldier.PersonalPathPoints.Reset();
+		Soldier.PersonalPathPointIndex = 0;
+		Soldier.PersonalPathRetries = 0;
+		Soldier.NoProgressSeconds = 0.0f;
+		Soldier.BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
+		Soldier.LastProgressPathPointIndex = INDEX_NONE;
+		Soldier.ConsecutiveSurfaceFailures = 0;
+		Soldier.TotalSurfaceFailures = 0;
+		Soldier.NavigationState = EGuLiSoldierNavigationState::Normal;
+		Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::None;
+		Soldier.FailureSimulationSeconds = 0.0;
+		++Soldier.StateRevision;
+		if (EntityManager.IsEntityValid(Soldier.Entity))
+		{
+			FMassMoveTargetFragment& MoveTarget = EntityManager
+				.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+			MoveTarget.CreateNewAction(EMassMovementAction::Move, *World);
+			MoveTarget.IntentAtGoal = EMassMovementAction::Stand;
+			MoveTarget.Center = Soldier.FinalDestination.Location;
+			MoveTarget.DesiredSpeed = FMassInt16Real(MovementSpeedCentimetersPerSecond);
+			FGuLiMassOrderFragment& Order = EntityManager
+				.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+			Order.ActiveOrderId = Soldier.ActiveOrderId;
+			Order.OrderRevision = Soldier.StateRevision;
+			Order.FormationTarget = Soldier.FinalDestination.Location;
+			Order.bHasMoveTarget = true;
+		}
+	}
+
+	for (const FNavigationRepairFormationTask& Task : Job.Formations)
+	{
+		FOrderFormationRuntime* Formation = AuthorityState->OrderFormations.FindByPredicate(
+			[&Task](const FOrderFormationRuntime& Candidate)
+			{
+				return Candidate.FormationId == Task.FormationId
+					&& Candidate.BatchOrderId == Task.ExpectedOrderId;
+			});
+		if (!Formation || Task.Stage == ENavigationRepairFormationStage::Discarded)
+		{
+			continue;
+		}
+		Formation->bPathValid = Task.bPathValid;
+		Formation->FlowField.Reset();
+		Formation->NextFlowWalkabilitySample = INDEX_NONE;
+		Formation->PendingFlowBuildData = FGuLiLocalFlowFieldBuildData{};
+		if (!Task.bPathValid)
+		{
+			Formation->PathPoints.Reset();
+			Formation->PathPointIndex = 0;
+			continue;
+		}
+		Formation->GuideAnchor = Task.ProjectedGuideAnchor.Location;
+		Formation->TargetAnchor = Task.ProjectedTargetAnchor.Location;
+		Formation->PathPoints = Task.RebuiltPathPoints;
+		Formation->PathPointIndex = Formation->PathPoints.Num() > 1 ? 1 : 0;
+		Formation->FinalPathFrame = GuLiCommanderNavigationPolicy::ResolveFinalPathFrame(
+			Formation->PathPoints, Formation->GuideAnchor, Formation->TargetAnchor);
+		Formation->bFinalApproachStarted = false;
+		Formation->MemberPathPointIndexBySoldierId.Reset();
+		for (const FGuLiSoldierId SoldierId : Formation->MemberIds)
+		{
+			const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
+			if (SoldierIndex && AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
+				&& AuthorityState->Soldiers[*SoldierIndex].IsAlive()
+				&& AuthorityState->Soldiers[*SoldierIndex].ActiveOrderId == Formation->BatchOrderId)
+			{
+				Formation->MemberPathPointIndexBySoldierId.Add(
+					SoldierId.Value, Formation->PathPointIndex);
+			}
+		}
+	}
+	AuthorityState->NavigationRepairJob.Reset();
+}
+// 固定步：提交配置 -> 空间索引/编队速度 -> 避让与位移 -> 按批次收尾 -> 统一攻击/伤害。
 // 实际位置由这里积分并写回 Fragment；导航策略函数负责判定，不直接改世界状态。
 void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 {
 	using namespace GuLiCommanderMassPrivate;
 	check(AuthorityState);
+#if !UE_BUILD_SHIPPING
+	const double StepStartedAt = FPlatformTime::Seconds();
+#endif
 	UMassEntitySubsystem* MassSubsystem = AuthorityState->MassEntitySubsystem.Get();
 	UWorld* World = GetWorld();
 	if (!MassSubsystem || !World)
 	{
 		return;
 	}
-	// 在本步读取速度、推进实体之前统一提交待生效速度，避免同一步混用新旧共享参数。
-	ApplyPendingMovementSpeed();
+	CommitReadyMovePlans();
+	CommitReadyNavigationRepairs();
 
+	CommitCombatProfiles();
+	ApplyPendingMovementSpeed();
 	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
 	UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
 	ANavigationData* CommanderNavigationData = NavigationSystem
@@ -1412,7 +3877,72 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 	AuthorityState->SimulationSeconds += FixedDeltaSeconds;
 	++AuthorityState->ServerSimTick;
 
+	auto SetTerminalNavigationState = [this, World, &EntityManager](
+		FSoldierRuntime& Soldier,
+		const EGuLiSoldierNavigationState TerminalState,
+		const EGuLiSoldierNavigationFailure Failure)
+	{
+		const uint32 FinishedOrderId = Soldier.ActiveOrderId;
+		if (TerminalState == EGuLiSoldierNavigationState::Arrived)
+		{
+			Soldier.Location = Soldier.FinalDestination.Location;
+			Soldier.LastValidNavLocation = Soldier.FinalDestination;
+			Soldier.LastCompletedOrderId = FinishedOrderId;
+			Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::None;
+			Soldier.FailureSimulationSeconds = 0.0;
+		}
+		else
+		{
+			Soldier.Location = Soldier.LastValidNavLocation.Location;
+			Soldier.LastFailedOrderId = FinishedOrderId;
+			Soldier.NavigationFailure = Failure;
+			Soldier.FailureSimulationSeconds = AuthorityState->SimulationSeconds;
+		}
+		Soldier.NavigationState = TerminalState;
+		Soldier.ActiveOrderId = 0u;
+		Soldier.Velocity = FVector::ZeroVector;
+		Soldier.CurrentNavigationWaypoint = Soldier.Location;
+		++Soldier.StateRevision;
+
+		if (!EntityManager.IsEntityValid(Soldier.Entity))
+		{
+			return;
+		}
+		FMassMoveTargetFragment& MoveTarget = EntityManager
+			.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+		MoveTarget.CreateNewAction(EMassMovementAction::Stand, *World);
+		MoveTarget.Center = Soldier.Location;
+		MoveTarget.DesiredSpeed = FMassInt16Real(0.0f);
+		EntityManager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+		EntityManager.GetFragmentDataChecked<FMassForceFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+		EntityManager.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+		FGuLiMassOrderFragment& Order = EntityManager
+			.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+		Order.ActiveOrderId = 0u;
+		Order.OrderRevision = Soldier.StateRevision;
+		Order.bHasMoveTarget = false;
+	};
+
+	auto EnterCenterlineRecovery = [](FSoldierRuntime& Soldier)
+	{
+		Soldier.NavigationState = EGuLiSoldierNavigationState::CenterlineRecovery;
+		Soldier.NoProgressSeconds = 0.0f;
+		Soldier.BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
+	};
+	auto EnterPersonalPathRecovery = [](FSoldierRuntime& Soldier)
+	{
+		Soldier.NavigationState = EGuLiSoldierNavigationState::PersonalPathRecovery;
+		Soldier.NoProgressSeconds = 0.0f;
+		Soldier.BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
+		Soldier.PersonalPathPoints.Reset();
+		Soldier.PersonalPathPointIndex = 0;
+		Soldier.PersonalPathRetries = 0;
+	};
+
 	AuthorityState->SpatialGrid.Reset();
+	const float AvoidanceAgentHeightCentimeters = CommanderNavigationData
+		? FMath::Max(1.0f, CommanderNavigationData->GetConfig().AgentHeight)
+		: 144.0f;
 	for (int32 SoldierIndex = 0; SoldierIndex < AuthorityState->Soldiers.Num(); ++SoldierIndex)
 	{
 		const FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
@@ -1421,32 +3951,88 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			AuthorityState->SpatialGrid.FindOrAdd(MakeSpatialCell(Soldier.Location)).Add(SoldierIndex);
 		}
 	}
-	// 没有有效指令的成员期望速度保持 0；后面的局部分离仍可能推动这些成员。
+
 	TArray<FVector> DesiredVelocities;
 	DesiredVelocities.Init(FVector::ZeroVector, AuthorityState->Soldiers.Num());
-	TBitArray<> bUsingFinalCorridorLane;
-	bUsingFinalCorridorLane.Init(false, AuthorityState->Soldiers.Num());
+	TBitArray<> bReceivesAvoidance;
+	bReceivesAvoidance.Init(false, AuthorityState->Soldiers.Num());
+	TBitArray<> bSuppressMovementForStep;
+	bSuppressMovementForStep.Init(false, AuthorityState->Soldiers.Num());
+	TMap<uint32, FOrderFormationRuntime*> FormationBySoldierId;
+	FormationBySoldierId.Reserve(AuthorityState->Soldiers.Num());
 
 	for (FOrderFormationRuntime& Formation : AuthorityState->OrderFormations)
 	{
-		int32 ActiveMemberCount = 0;
-		int32 ActiveTransitMemberCount = 0;
+		TArray<int32, TInlineAllocator<SoldierCountPerFormation>> ActiveIndices;
 		for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
 		{
 			const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
 			if (SoldierIndex && AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
 			{
 				const FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
-				const bool bActive = Soldier.IsAlive()
-					&& Soldier.ActiveOrderId == Formation.BatchOrderId;
-				ActiveMemberCount += bActive ? 1 : 0;
-				const GuLiCommanderNavigationPolicy::FLooseArrivalMemberState* ArrivalState = Formation.LooseArrivalStateBySoldierId.Find(SoldierId.Value);
-				ActiveTransitMemberCount += bActive
-					&& (!ArrivalState || !ArrivalState->bHasReachedArrival) ? 1 : 0;
+				if (Soldier.IsAlive() && Soldier.ActiveOrderId == Formation.BatchOrderId)
+				{
+					ActiveIndices.Add(*SoldierIndex);
+				}
 			}
 		}
-		// 死亡、改令或到达释放都会减少行进成员；槽位数量失配时重新分配。
-		if (Formation.SlotBySoldierId.Num() != ActiveTransitMemberCount)
+		if (ActiveIndices.IsEmpty())
+		{
+			continue;
+		}
+		const bool bFormationPendingNavigationRepair = AuthorityState->NavigationRepairJob
+			&& ActiveIndices.ContainsByPredicate([this](const int32 SoldierIndex)
+			{
+				return AuthorityState->Soldiers.IsValidIndex(SoldierIndex)
+					&& AuthorityState->NavigationRepairJob->PendingActiveSoldierIds.Contains(
+						AuthorityState->Soldiers[SoldierIndex].SoldierId.Value);
+			});
+		if (bFormationPendingNavigationRepair)
+		{
+			Formation.bLastMovementStepSucceeded = false;
+			for (const int32 SoldierIndex : ActiveIndices)
+			{
+				FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
+				Soldier.Location = Soldier.LastValidNavLocation.Location;
+				Soldier.Velocity = FVector::ZeroVector;
+				bSuppressMovementForStep[SoldierIndex] = true;
+			}
+			continue;
+		}
+		if (!NavigationSystem || !CommanderNavigationData)
+		{
+			Formation.bLastMovementStepSucceeded = false;
+			for (const int32 SoldierIndex : ActiveIndices)
+			{
+				FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
+				Soldier.Location = Soldier.LastValidNavLocation.Location;
+				Soldier.Velocity = FVector::ZeroVector;
+				Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::NavigationUnavailable;
+				bSuppressMovementForStep[SoldierIndex] = true;
+			}
+			continue;
+		}
+		if (!Formation.bPathValid || Formation.PathPoints.Num() < 2)
+		{
+			Formation.bLastMovementStepSucceeded = false;
+			Formation.PathPoints.Reset(2);
+			Formation.PathPoints.Add(Formation.GuideAnchor);
+			Formation.PathPoints.Add(Formation.TargetAnchor);
+			Formation.PathPointIndex = 1;
+			for (const int32 SoldierIndex : ActiveIndices)
+			{
+				FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
+				if (Soldier.NavigationState != EGuLiSoldierNavigationState::PersonalPathRecovery)
+				{
+					EnterPersonalPathRecovery(Soldier);
+				}
+				Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::NavigationUnavailable;
+				Formation.MemberPathPointIndexBySoldierId.Add(Soldier.SoldierId.Value, 1);
+			}
+		}
+
+		if (!Formation.bFinalApproachStarted
+			&& Formation.SlotBySoldierId.Num() != ActiveIndices.Num())
 		{
 			AssignFormationSlots(
 				Formation,
@@ -1455,21 +4041,26 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				MemberSpacingCentimeters,
 				Formation.BatchOrderId,
 				Formation.TransitColumnCount);
+			Formation.LastTransitReassignmentSeconds = AuthorityState->SimulationSeconds;
+			for (const int32 SoldierIndex : ActiveIndices)
+			{
+				FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
+				Soldier.NoProgressSeconds = 0.0f;
+				Soldier.BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
+				Soldier.LastProgressPathPointIndex = INDEX_NONE;
+			}
 		}
+
 		const FVector ActiveCentroid = ComputeCentroid(
 			Formation.MemberIds,
 			AuthorityState->Soldiers,
 			AuthorityState->SoldierIndexById,
 			Formation.BatchOrderId);
-		if (ActiveMemberCount == 0 || !Formation.bPathValid || Formation.PathPoints.IsEmpty())
-		{
-			continue;
-		}
 		Formation.PathPointIndex = FMath::Clamp(
 			Formation.PathPointIndex,
-			0,
+			1,
 			Formation.PathPoints.Num() - 1);
-		const int32 PreviousPathPointIndex = Formation.PathPointIndex;
+		const int32 PreviousGuidePathIndex = Formation.PathPointIndex;
 		while (Formation.PathPointIndex < Formation.PathPoints.Num() - 1
 			&& FVector::DistSquared2D(
 				Formation.GuideAnchor,
@@ -1478,52 +4069,33 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		{
 			++Formation.PathPointIndex;
 		}
-		if (Formation.PathPointIndex != PreviousPathPointIndex)
+		if (Formation.PathPointIndex != PreviousGuidePathIndex)
 		{
 			Formation.FlowField.Reset();
 			Formation.NextFlowWalkabilitySample = INDEX_NONE;
 			Formation.PendingFlowBuildData = FGuLiLocalFlowFieldBuildData{};
 		}
-		Formation.bFinalCorridorStarted |= GuLiCommanderNavigationPolicy::HasEnteredLooseArrivalTerminalPhase(
-			Formation.PathPointIndex,
-			Formation.PathPoints.Num(),
-			Formation.GuideAnchor,
-			Formation.TargetAnchor,
-			Formation.ArrivalDomainRadiusCentimeters,
-			FormationWaypointToleranceCentimeters);
 
-		FVector GuideDirection = Formation.PathPoints[Formation.PathPointIndex] - Formation.GuideAnchor;
-		GuideDirection.Z = 0.0f;
-		const float GuideDistance = GuideDirection.Size2D();
 		const float MaximumStep = MovementSpeedCentimetersPerSecond * FixedDeltaSeconds;
-		// 普通行进限制领队领先质心的距离；进入末段后解除限制，避免领队被尾部成员拖停。
-		const bool bGuideMayAdvance = Formation.bFinalCorridorStarted
+		FVector GuideDelta = Formation.PathPoints[Formation.PathPointIndex] - Formation.GuideAnchor;
+		const float GuideDistance = GuideDelta.Size();
+		const bool bGuideMayAdvance = Formation.bFinalApproachStarted
 			|| FVector::DistSquared2D(ActiveCentroid, Formation.GuideAnchor)
 				<= FMath::Square(FormationGuideMaximumLeadCentimeters);
 		if (bGuideMayAdvance && GuideDistance > UE_KINDA_SMALL_NUMBER)
 		{
-			const FVector NormalizedDirection = GuideDirection / GuideDistance;
-			Formation.GuideAnchor += NormalizedDirection * FMath::Min(MaximumStep, GuideDistance);
+			const FVector GuideDirection = GuideDelta / GuideDistance;
+			Formation.GuideAnchor += GuideDirection * FMath::Min(MaximumStep, GuideDistance);
 			Formation.TravelFacingYawDegrees = FMath::FixedTurn(
 				Formation.TravelFacingYawDegrees,
-				NormalizedDirection.Rotation().Yaw,
+				GuideDirection.GetSafeNormal2D().Rotation().Yaw,
 				FacingRateDegreesPerSecond * FixedDeltaSeconds);
 		}
+		Formation.bFinalApproachStarted |= Formation.PathPointIndex == Formation.PathPoints.Num() - 1
+			&& FVector::DistSquared2D(Formation.GuideAnchor, Formation.TargetAnchor)
+				<= FMath::Square(Formation.FinalApproachTriggerRadiusCentimeters);
 
-		FVector TravelDirection = GuideDirection.GetSafeNormal2D();
-		if (TravelDirection.IsNearlyZero())
-		{
-			TravelDirection = (Formation.TargetAnchor - Formation.GuideAnchor).GetSafeNormal2D();
-		}
-		Formation.bFinalCorridorStarted |= GuLiCommanderNavigationPolicy::HasEnteredLooseArrivalTerminalPhase(
-			Formation.PathPointIndex,
-			Formation.PathPoints.Num(),
-			Formation.GuideAnchor,
-			Formation.TargetAnchor,
-			Formation.ArrivalDomainRadiusCentimeters,
-			FormationWaypointToleranceCentimeters);
-		// 只有行进阶段动态调整列数；末段保持既有通道，避免到达附近反复重排。
-		if (!Formation.bFinalCorridorStarted)
+		if (!Formation.bFinalApproachStarted)
 		{
 			const int32 DesiredColumnCount = DetermineTransitFormationColumns(
 				NavigationSystem,
@@ -1531,9 +4103,29 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				Formation.GuideAnchor,
 				Formation.TravelFacingYawDegrees,
 				MemberSpacingCentimeters);
-			if (DesiredColumnCount != Formation.TransitColumnCount)
+			GuLiCommanderNavigationPolicy::FTransitColumnHysteresisState PreviousColumnState;
+			PreviousColumnState.ColumnCount = Formation.TransitColumnCount;
+			PreviousColumnState.ConsecutiveExpansionSuccessSteps =
+				Formation.ConsecutiveExpansionFitSteps;
+			PreviousColumnState.LastRearrangementTimeSeconds =
+				Formation.LastTransitReassignmentSeconds;
+			const GuLiCommanderNavigationPolicy::FTransitColumnHysteresisState NextColumnState =
+				GuLiCommanderNavigationPolicy::UpdateTransitColumnHysteresis(
+					PreviousColumnState,
+					DesiredColumnCount,
+					Formation.bLastMovementStepSucceeded,
+					AuthorityState->SimulationSeconds,
+					ExpansionSuccessfulStepsRequired,
+					TransitReassignmentCooldownSeconds);
+			const bool bReassignTransitSlots =
+				NextColumnState.ColumnCount != Formation.TransitColumnCount;
+			Formation.TransitColumnCount = NextColumnState.ColumnCount;
+			Formation.ConsecutiveExpansionFitSteps =
+				NextColumnState.ConsecutiveExpansionSuccessSteps;
+			Formation.LastTransitReassignmentSeconds =
+				NextColumnState.LastRearrangementTimeSeconds;
+			if (bReassignTransitSlots)
 			{
-				Formation.TransitColumnCount = DesiredColumnCount;
 				AssignFormationSlots(
 					Formation,
 					AuthorityState->Soldiers,
@@ -1541,34 +4133,63 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 					MemberSpacingCentimeters,
 					Formation.BatchOrderId,
 					Formation.TransitColumnCount);
+				for (const int32 SoldierIndex : ActiveIndices)
+				{
+					FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
+					Soldier.NoProgressSeconds = 0.0f;
+					Soldier.BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
+					Soldier.LastProgressPathPointIndex = INDEX_NONE;
+				}
 			}
 		}
+		Formation.bLastMovementStepSucceeded = true;
 
-		for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
+		for (const int32 SoldierIndex : ActiveIndices)
 		{
-			const int32* SoldierIndexPtr = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
-			if (!SoldierIndexPtr || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndexPtr))
+			FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
+			FormationBySoldierId.Add(Soldier.SoldierId.Value, &Formation);
+			if (Soldier.NavigationState != EGuLiSoldierNavigationState::Normal)
 			{
+				Formation.bLastMovementStepSucceeded = false;
+			}
+			const FNavLocation* FinalDestination = Formation.FinalDestinationBySoldierId.Find(
+				Soldier.SoldierId.Value);
+			if (!FinalDestination)
+			{
+				SetTerminalNavigationState(
+					Soldier,
+					EGuLiSoldierNavigationState::Blocked,
+					EGuLiSoldierNavigationFailure::FinalSlotInvalidated);
 				continue;
 			}
 
-			FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndexPtr];
-			if (!Soldier.IsAlive() || Soldier.ActiveOrderId != Formation.BatchOrderId)
+			if (Soldier.NavigationState == EGuLiSoldierNavigationState::Normal
+				&& GuLiCommanderNavigationPolicy::ShouldEnterCenterlineRecovery(
+					Soldier.ConsecutiveSurfaceFailures,
+					Soldier.NoProgressSeconds,
+					SurfaceFailuresBeforeCenterline,
+					CenterlineRecoverySeconds))
 			{
-				continue;
+				EnterCenterlineRecovery(Soldier);
+			}
+			else if (Soldier.NavigationState == EGuLiSoldierNavigationState::CenterlineRecovery
+				&& GuLiCommanderNavigationPolicy::ShouldEnterPersonalPathRecovery(
+					Soldier.TotalSurfaceFailures,
+					Soldier.NoProgressSeconds,
+					SurfaceFailuresBeforePersonalPath,
+					CenterlineRecoverySeconds))
+			{
+				EnterPersonalPathRecovery(Soldier);
 			}
 
-			const float DistanceToTargetCentimeters = FVector::Dist2D(
-				Soldier.Location,
-				Formation.TargetAnchor);
-			int32* MemberPathPointIndex = Formation.MemberPathPointIndexBySoldierId.Find(SoldierId.Value);
+			int32* MemberPathPointIndex = Formation.MemberPathPointIndexBySoldierId.Find(
+				Soldier.SoldierId.Value);
 			if (!MemberPathPointIndex)
 			{
 				MemberPathPointIndex = &Formation.MemberPathPointIndexBySoldierId.Add(
-					SoldierId.Value,
+					Soldier.SoldierId.Value,
 					Formation.PathPoints.Num() > 1 ? 1 : 0);
 			}
-			// 每名士兵独立推进路径游标，不能仅凭领队到终点就认定尾部成员已绕过最后一个弯。
 			*MemberPathPointIndex = GuLiCommanderNavigationPolicy::AdvanceMemberPathPointIndex(
 				Formation.PathPoints,
 				*MemberPathPointIndex,
@@ -1576,163 +4197,292 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				MemberAgentRadiusCentimeters,
 				0.5f * static_cast<float>(Formation.TransitColumnCount - 1)
 					* MemberSpacingCentimeters + MemberAgentRadiusCentimeters);
-			const bool bTailClearObserved = GuLiCommanderNavigationPolicy::HasClearedFinalTurn(
-				Formation.FinalPathFrame,
-				*MemberPathPointIndex);
-			const GuLiCommanderNavigationPolicy::FLooseArrivalMemberState PreviousArrivalState = Formation.LooseArrivalStateBySoldierId.FindRef(SoldierId.Value);
-			const GuLiCommanderNavigationPolicy::FLooseArrivalMemberState ArrivalState = GuLiCommanderNavigationPolicy::UpdateLooseArrivalMemberState(
-				PreviousArrivalState,
-				bTailClearObserved,
-				Formation.bFinalCorridorStarted,
-				DistanceToTargetCentimeters,
-				Formation.ArrivalDomainRadiusCentimeters,
-				FormationArrivalToleranceCentimeters);
-			Formation.LooseArrivalStateBySoldierId.Add(SoldierId.Value, ArrivalState);
 
-			// 到达是锁存状态：首次到达释放槽位；被挤出外圈时回收，重回内圈后记录新的停留点。
-			const bool bJustReleased = ArrivalState.bHasReachedArrival
-				&& !PreviousArrivalState.bHasReachedArrival;
-			const bool bRecoveryJustEnded = PreviousArrivalState.bRecovering
-				&& !ArrivalState.bRecovering;
-			if (bJustReleased)
-			{
-				Formation.SlotBySoldierId.Remove(SoldierId.Value);
-			}
-			if (bJustReleased || bRecoveryJustEnded)
-			{
-				Formation.LooseArrivalHoldAnchorBySoldierId.Add(
-					SoldierId.Value,
-					Soldier.Location);
-			}
-
-			FVector LocalSlotOffset = FVector::ZeroVector;
-			FVector WorldSlotTarget = Soldier.Location;
+			FVector WorldTarget = Soldier.Location;
 			FVector DesiredVelocity = FVector::ZeroVector;
-			const uint8* TransitSlotIndexPtr = Formation.SlotBySoldierId.Find(SoldierId.Value);
-			const float TransitLaneOffsetCentimeters = TransitSlotIndexPtr
-				? MakeFormationSlotOffset(
-					static_cast<int32>(*TransitSlotIndexPtr),
-					MemberSpacingCentimeters,
-					Formation.TransitColumnCount).Y
-				: 0.0f;
-			// 末段速度分支依次处理：已到达、尚未过弯、已过弯的固定横向通道、普通弹性方阵。
-			if (ArrivalState.bHasReachedArrival)
+			int32 ProgressPathIndex = *MemberPathPointIndex;
+			const bool bSharedPathAtLastPoint = *MemberPathPointIndex
+				>= Formation.PathPoints.Num() - 1;
+			bool bCanApproachFinalSlot = Formation.bFinalApproachStarted
+				&& bSharedPathAtLastPoint;
+
+			if (Soldier.NavigationState == EGuLiSoldierNavigationState::PersonalPathRecovery)
 			{
-				if (ArrivalState.bRecovering)
+				if (!Soldier.PersonalPathPoints.IsEmpty())
 				{
-					const FVector RecoveryDirection = (Formation.TargetAnchor - Soldier.Location).GetSafeNormal2D();
-					WorldSlotTarget = Soldier.Location
-						+ RecoveryDirection * FormationWaypointToleranceCentimeters;
-					DesiredVelocity = RecoveryDirection * MovementSpeedCentimetersPerSecond;
+					Soldier.PersonalPathPointIndex = FMath::Clamp(
+						Soldier.PersonalPathPointIndex,
+						0,
+						Soldier.PersonalPathPoints.Num() - 1);
+					while (Soldier.PersonalPathPointIndex < Soldier.PersonalPathPoints.Num() - 1
+						&& FVector::DistSquared2D(
+							Soldier.Location,
+							Soldier.PersonalPathPoints[Soldier.PersonalPathPointIndex])
+							<= FMath::Square(FormationWaypointToleranceCentimeters))
+					{
+						++Soldier.PersonalPathPointIndex;
+					}
+					WorldTarget = Soldier.PersonalPathPoints[Soldier.PersonalPathPointIndex];
+					DesiredVelocity = (WorldTarget - Soldier.Location).GetSafeNormal()
+						* MovementSpeedCentimetersPerSecond;
+					ProgressPathIndex = 100000 + Soldier.PersonalPathPointIndex;
+					bCanApproachFinalSlot = Soldier.PersonalPathPointIndex
+						>= Soldier.PersonalPathPoints.Num() - 1;
 				}
-				else if (const FVector* HoldAnchor = Formation.LooseArrivalHoldAnchorBySoldierId.Find(SoldierId.Value))
+				else
 				{
-					WorldSlotTarget = *HoldAnchor;
+					WorldTarget = FinalDestination->Location;
+					ProgressPathIndex = 100000;
 				}
 			}
-			else if (Formation.bFinalCorridorStarted && !ArrivalState.bTailCleared)
+			else if (Soldier.NavigationState == EGuLiSoldierNavigationState::CenterlineRecovery)
 			{
-				LocalSlotOffset.Y = TransitLaneOffsetCentimeters;
-				const FVector MemberPathTarget = GuLiCommanderNavigationPolicy::CalculatePathLaneWaypoint(
-					Formation.PathPoints,
-					FMath::Clamp(*MemberPathPointIndex, 1, Formation.PathPoints.Num() - 1),
-					TransitLaneOffsetCentimeters);
-				const FVector MemberPathDirection = (MemberPathTarget - Soldier.Location).GetSafeNormal2D();
-				WorldSlotTarget = Soldier.Location
-					+ MemberPathDirection * FormationWaypointToleranceCentimeters;
-				DesiredVelocity = MemberPathDirection * MovementSpeedCentimetersPerSecond;
-			}
-			else if (Formation.bFinalCorridorStarted && ArrivalState.bTailCleared)
-			{
-				float* FrozenLateralOffset = Formation.FinalCorridorLateralOffsetBySoldierId.Find(SoldierId.Value);
-				// 上一步通道投影失败时，将横向偏移收为 0；仍必须通过后续 NavMesh 投影检查。
-				if (Soldier.bCollapseFinalCorridorLaneOnNextStep)
-				{
-					FrozenLateralOffset = &Formation.FinalCorridorLateralOffsetBySoldierId.Add(
-						SoldierId.Value,
-						0.0f);
-					Soldier.bCollapseFinalCorridorLaneOnNextStep = false;
-				}
-				if (!FrozenLateralOffset)
-				{
-					const float MaximumLaneOffsetCentimeters = GuLiCommanderNavigationPolicy::CalculateLooseArrivalMaximumLaneOffsetCentimeters(
-						Formation.ArrivalDomainRadiusCentimeters,
-						FormationArrivalToleranceCentimeters,
-						MemberAgentRadiusCentimeters,
-						MovementSpeedCentimetersPerSecond,
-						FixedStepSeconds);
-					const float InitialLateralOffset = FMath::Clamp(
-						TransitLaneOffsetCentimeters,
-						-MaximumLaneOffsetCentimeters,
-						MaximumLaneOffsetCentimeters);
-					FrozenLateralOffset = &Formation.FinalCorridorLateralOffsetBySoldierId.Add(
-						SoldierId.Value,
-						InitialLateralOffset);
-				}
-				LocalSlotOffset.Y = *FrozenLateralOffset;
-				WorldSlotTarget = GuLiCommanderNavigationPolicy::CalculateFinalCorridorLaneTarget(
-					Formation.FinalPathFrame,
-					Formation.TargetAnchor,
-					Soldier.Location,
-					*FrozenLateralOffset,
-					FormationWaypointToleranceCentimeters);
-				DesiredVelocity = (WorldSlotTarget - Soldier.Location).GetSafeNormal2D()
+				WorldTarget = Formation.PathPoints[*MemberPathPointIndex];
+				DesiredVelocity = (WorldTarget - Soldier.Location).GetSafeNormal()
 					* MovementSpeedCentimetersPerSecond;
-				bUsingFinalCorridorLane[*SoldierIndexPtr] = true;
+			}
+			else if (bCanApproachFinalSlot)
+			{
+				WorldTarget = FinalDestination->Location;
+				DesiredVelocity = (WorldTarget - Soldier.Location).GetSafeNormal()
+					* MovementSpeedCentimetersPerSecond;
 			}
 			else
 			{
-				if (!TransitSlotIndexPtr)
-				{
-					continue;
-				}
-				LocalSlotOffset = MakeFormationSlotOffset(
-					static_cast<int32>(*TransitSlotIndexPtr),
-					MemberSpacingCentimeters,
-					Formation.TransitColumnCount);
-				WorldSlotTarget = Formation.GuideAnchor
-					+ FRotator(0.0f, Formation.TravelFacingYawDegrees, 0.0f)
-						.RotateVector(LocalSlotOffset);
-				FVector SlotDelta = WorldSlotTarget - Soldier.Location;
-				SlotDelta.Z = 0.0f;
-				FVector SoldierTravelDirection = TravelDirection;
+				const uint8* TransitSlotIndex = Formation.SlotBySoldierId.Find(
+					Soldier.SoldierId.Value);
+				const float LaneOffset = TransitSlotIndex
+					? MakeFormationSlotOffset(
+						static_cast<int32>(*TransitSlotIndex),
+						MemberSpacingCentimeters,
+						Formation.TransitColumnCount).Y
+					: 0.0f;
+				const FVector LaneWaypoint = GuLiCommanderNavigationPolicy::CalculatePathLaneWaypoint(
+					Formation.PathPoints,
+					FMath::Clamp(*MemberPathPointIndex, 1, Formation.PathPoints.Num() - 1),
+					LaneOffset);
+				FVector TravelDirection = (LaneWaypoint - Soldier.Location).GetSafeNormal();
 				if (bEnableLocalFlowField && Formation.FlowField.IsValid())
 				{
 					FVector FlowDirection;
 					if (Formation.FlowField->SampleDirection(Soldier.Location, FlowDirection)
 						&& !FlowDirection.IsNearlyZero())
 					{
-						SoldierTravelDirection = FlowDirection;
+						TravelDirection = FlowDirection;
 					}
 				}
-				// 行进贡献 70% 速度，槽位纠偏最多 30%，合成后再次限速；不是直接把士兵吸到槽位。
-				const FVector TravelVelocity = SoldierTravelDirection
-					* MovementSpeedCentimetersPerSecond
-					* TravelWeight;
-				const FVector SlotVelocity = SlotDelta.GetClampedToMaxSize(
-					MovementSpeedCentimetersPerSecond * SlotCorrectionWeight);
-				DesiredVelocity = (TravelVelocity + SlotVelocity).GetClampedToMaxSize(
-					MovementSpeedCentimetersPerSecond);
+				FVector SlotCorrectionTarget = Formation.GuideAnchor;
+				FVector LocalSlotOffset = FVector::ZeroVector;
+				if (TransitSlotIndex)
+				{
+					LocalSlotOffset = MakeFormationSlotOffset(
+						static_cast<int32>(*TransitSlotIndex),
+						MemberSpacingCentimeters,
+						Formation.TransitColumnCount);
+					SlotCorrectionTarget += FRotator(
+						0.0f,
+						Formation.TravelFacingYawDegrees,
+						0.0f).RotateVector(LocalSlotOffset);
+				}
+				const FVector SlotVelocity = (SlotCorrectionTarget - Soldier.Location)
+					.GetClampedToMaxSize(MovementSpeedCentimetersPerSecond * SlotCorrectionWeight);
+				DesiredVelocity = (TravelDirection
+						* MovementSpeedCentimetersPerSecond * TravelWeight
+						+ SlotVelocity)
+					.GetClampedToMaxSize(MovementSpeedCentimetersPerSecond);
+				WorldTarget = LaneWaypoint;
+				if (EntityManager.IsEntityValid(Soldier.Entity))
+				{
+					FGuLiMassSlotTargetFragment& SlotTarget = EntityManager
+						.GetFragmentDataChecked<FGuLiMassSlotTargetFragment>(Soldier.Entity);
+					SlotTarget.LocalOffset = LocalSlotOffset;
+					SlotTarget.WorldTarget = SlotCorrectionTarget;
+				}
 			}
-			DesiredVelocities[*SoldierIndexPtr] = DesiredVelocity;
 
+			const float ArrivalSnapDistance = FMath::Max(
+				100.0f,
+				MovementSpeedCentimetersPerSecond * FixedDeltaSeconds);
+			if (bCanApproachFinalSlot
+				&& FVector::Dist2D(Soldier.Location, FinalDestination->Location)
+					<= ArrivalSnapDistance)
+			{
+				FNavLocation SurfaceDestination;
+				++AuthorityState->SurfaceMoveCalls;
+				const bool bFinalSurfaceMoveSucceeded = CommanderNavigationData->FindMoveAlongSurface(
+					Soldier.LastValidNavLocation,
+					FinalDestination->Location,
+					SurfaceDestination,
+					nullptr,
+					this);
+				const bool bFinalSurfaceMoveAccepted =
+					GuLiCommanderNavigationPolicy::IsSurfaceMoveResultAcceptable(
+						bFinalSurfaceMoveSucceeded,
+						Soldier.LastValidNavLocation.Location,
+						SurfaceDestination.Location,
+						MaximumSurfaceStepZCentimeters);
+				const bool bFinalSegmentValid = bFinalSurfaceMoveAccepted
+					&& FVector::DistSquared2D(
+						SurfaceDestination.Location,
+						FinalDestination->Location) <= FMath::Square(10.0f)
+					&& FMath::Abs(
+						SurfaceDestination.Location.Z - FinalDestination->Location.Z) <= 10.0f;
+				if (bFinalSegmentValid)
+				{
+					SurfaceDestination.Location.X = FinalDestination->Location.X;
+					SurfaceDestination.Location.Y = FinalDestination->Location.Y;
+					Soldier.FinalDestination = SurfaceDestination;
+					Formation.FinalDestinationBySoldierId.Add(
+						Soldier.SoldierId.Value,
+						SurfaceDestination);
+					SetTerminalNavigationState(
+						Soldier,
+						EGuLiSoldierNavigationState::Arrived,
+						EGuLiSoldierNavigationFailure::None);
+					continue;
+				}
+				++AuthorityState->SurfaceMoveFailures;
+				++Soldier.ConsecutiveSurfaceFailures;
+				++Soldier.TotalSurfaceFailures;
+				Formation.bLastMovementStepSucceeded = false;
+				Soldier.NavigationFailure = bFinalSurfaceMoveSucceeded
+					&& !bFinalSurfaceMoveAccepted
+					? EGuLiSoldierNavigationFailure::ExcessiveHeightDelta
+					: EGuLiSoldierNavigationFailure::SurfaceMoveFailed;
+				DesiredVelocity = FVector::ZeroVector;
+				Soldier.Velocity = FVector::ZeroVector;
+				bSuppressMovementForStep[SoldierIndex] = true;
+				if (Soldier.NavigationState == EGuLiSoldierNavigationState::Normal
+					&& GuLiCommanderNavigationPolicy::ShouldEnterCenterlineRecovery(
+						Soldier.ConsecutiveSurfaceFailures,
+						Soldier.NoProgressSeconds,
+						SurfaceFailuresBeforeCenterline,
+						CenterlineRecoverySeconds))
+				{
+					EnterCenterlineRecovery(Soldier);
+				}
+				else if (Soldier.NavigationState == EGuLiSoldierNavigationState::CenterlineRecovery
+					&& GuLiCommanderNavigationPolicy::ShouldEnterPersonalPathRecovery(
+						Soldier.TotalSurfaceFailures,
+						Soldier.NoProgressSeconds,
+						SurfaceFailuresBeforePersonalPath,
+						CenterlineRecoverySeconds))
+				{
+					EnterPersonalPathRecovery(Soldier);
+				}
+			}
+
+			Soldier.CurrentNavigationWaypoint = WorldTarget;
+			const float DistanceToWaypoint = FVector::Dist(Soldier.Location, WorldTarget);
+			const bool bHasProgressBaseline =
+				FMath::IsFinite(Soldier.BestWaypointDistanceCentimeters);
+			const bool bMadeMeaningfulProgress = bHasProgressBaseline
+				&& GuLiCommanderNavigationPolicy::HasMeaningfulNavigationProgress(
+					Soldier.LastProgressPathPointIndex,
+					ProgressPathIndex,
+					Soldier.BestWaypointDistanceCentimeters,
+					DistanceToWaypoint,
+					ProgressDistanceCentimeters);
+			if (!bHasProgressBaseline || bMadeMeaningfulProgress)
+			{
+				Soldier.NoProgressSeconds = 0.0f;
+				Soldier.BestWaypointDistanceCentimeters = DistanceToWaypoint;
+				Soldier.LastProgressPathPointIndex = ProgressPathIndex;
+			}
+			else
+			{
+				Soldier.NoProgressSeconds += FixedDeltaSeconds;
+				Soldier.BestWaypointDistanceCentimeters = FMath::Min(
+					Soldier.BestWaypointDistanceCentimeters,
+					DistanceToWaypoint);
+			}
+
+			DesiredVelocities[SoldierIndex] = DesiredVelocity;
+			bReceivesAvoidance[SoldierIndex] = Soldier.NavigationState
+				== EGuLiSoldierNavigationState::Normal;
 			if (EntityManager.IsEntityValid(Soldier.Entity))
 			{
-				FGuLiMassSlotTargetFragment& SlotTarget = EntityManager.GetFragmentDataChecked<FGuLiMassSlotTargetFragment>(Soldier.Entity);
-				SlotTarget.LocalOffset = LocalSlotOffset;
-				SlotTarget.WorldTarget = WorldSlotTarget;
-
-				FMassMoveTargetFragment& MoveTarget = EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
-				MoveTarget.Center = WorldSlotTarget;
+				FMassMoveTargetFragment& MoveTarget = EntityManager
+					.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+				MoveTarget.Center = WorldTarget;
 				MoveTarget.Forward = DesiredVelocity.GetSafeNormal2D();
-				MoveTarget.DistanceToGoal = ArrivalState.bHasReachedArrival
-					? FVector::Dist2D(Soldier.Location, WorldSlotTarget)
-					: FVector::Dist2D(Soldier.Location, Formation.TargetAnchor);
+				MoveTarget.DistanceToGoal = FVector::Dist2D(Soldier.Location, FinalDestination->Location);
 				MoveTarget.DesiredSpeed = FMassInt16Real(
 					DesiredVelocity.IsNearlyZero(1.0f)
 						? 0.0f
 						: MovementSpeedCentimetersPerSecond);
 			}
+		}
+	}
+
+	TArray<int32> PersonalPathQueryCandidates;
+	for (int32 SoldierIndex = 0; SoldierIndex < AuthorityState->Soldiers.Num(); ++SoldierIndex)
+	{
+		FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
+		if (!Soldier.IsAlive() || Soldier.ActiveOrderId == 0u
+			|| Soldier.NavigationState != EGuLiSoldierNavigationState::PersonalPathRecovery)
+		{
+			continue;
+		}
+		if (GuLiCommanderNavigationPolicy::ShouldBlockPersonalPathRecovery(
+				Soldier.PersonalPathRetries,
+				Soldier.NoProgressSeconds,
+				2,
+				PersonalRecoveryRetrySeconds))
+		{
+			SetTerminalNavigationState(
+				Soldier,
+				EGuLiSoldierNavigationState::Blocked,
+				EGuLiSoldierNavigationFailure::PersonalPathFailed);
+			continue;
+		}
+		const bool bNeedsInitialQuery = Soldier.PersonalPathRetries == 0;
+		const bool bNeedsSingleRetry = Soldier.PersonalPathRetries == 1
+			&& Soldier.NoProgressSeconds >= PersonalRecoveryRetrySeconds;
+		if (bNeedsInitialQuery || bNeedsSingleRetry)
+		{
+			PersonalPathQueryCandidates.Add(SoldierIndex);
+		}
+	}
+	PersonalPathQueryCandidates.Sort([this](const int32 Left, const int32 Right)
+	{
+		return AuthorityState->Soldiers[Left].SoldierId
+			< AuthorityState->Soldiers[Right].SoldierId;
+	});
+	const int32 PathQueryCount = FMath::Min(
+		MaximumPersonalPathQueriesPerStep,
+		PersonalPathQueryCandidates.Num());
+	for (int32 QueryIndex = 0; QueryIndex < PathQueryCount; ++QueryIndex)
+	{
+		FSoldierRuntime& Soldier = AuthorityState->Soldiers[PersonalPathQueryCandidates[QueryIndex]];
+		if (!NavigationSystem || !CommanderNavigationData || !Soldier.bHasFinalDestination)
+		{
+			continue;
+		}
+		Soldier.PersonalPathPoints.Reset();
+		Soldier.PersonalPathPointIndex = 0;
+		Soldier.NoProgressSeconds = 0.0f;
+		Soldier.BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
+		++Soldier.PersonalPathRetries;
+		++AuthorityState->PathQueries;
+		++AuthorityState->PersonalPathQueries;
+		FPathFindingQuery Query(
+			nullptr,
+			*CommanderNavigationData,
+			Soldier.LastValidNavLocation.Location,
+			Soldier.FinalDestination.Location);
+		const FPathFindingResult Result = NavigationSystem->FindPathSync(MoveTemp(Query));
+		if (!Result.IsSuccessful() || !Result.Path.IsValid() || Result.Path->IsPartial())
+		{
+			continue;
+		}
+		for (const FNavPathPoint& Point : Result.Path->GetPathPoints())
+		{
+			Soldier.PersonalPathPoints.Add(Point.Location);
+		}
+		if (!Soldier.PersonalPathPoints.IsEmpty())
+		{
+			Soldier.PersonalPathPointIndex = Soldier.PersonalPathPoints.Num() > 1 ? 1 : 0;
 		}
 	}
 
@@ -1744,8 +4494,8 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			continue;
 		}
 
-		// 第二遍按士兵处理死亡窗口和位移；记录与实体都保留，因此总人数不会因死亡减少。
-		FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Soldier.Entity);
+		FGuLiMassHealthFragment& Health = EntityManager
+			.GetFragmentDataChecked<FGuLiMassHealthFragment>(Soldier.Entity);
 		if (!Soldier.IsAlive())
 		{
 			Health.WreckSecondsRemaining = FMath::Max(
@@ -1754,7 +4504,8 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 					- AuthorityState->SimulationSeconds));
 			if (!Soldier.bWreckExpired && Health.WreckSecondsRemaining <= 0.0f)
 			{
-				FTransformFragment& Transform = EntityManager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity);
+				FTransformFragment& Transform = EntityManager
+					.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity);
 				FTransform HiddenTransform = Transform.GetTransform();
 				HiddenTransform.SetScale3D(FVector::ZeroVector);
 				Transform.SetTransform(HiddenTransform);
@@ -1763,232 +4514,201 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			continue;
 		}
 
-		// 手工局部分离只查相邻九格；位置重合时用 SoldierId 决定推开方向，避免零向量。
-		FVector AvoidanceVelocity = FVector::ZeroVector;
-		const FIntPoint Cell = MakeSpatialCell(Soldier.Location);
-		for (int32 CellX = Cell.X - 1; CellX <= Cell.X + 1; ++CellX)
+		const bool bHasMovingOrder = Soldier.ActiveOrderId != 0u
+			&& (Soldier.NavigationState == EGuLiSoldierNavigationState::Normal
+				|| Soldier.NavigationState == EGuLiSoldierNavigationState::CenterlineRecovery
+				|| Soldier.NavigationState == EGuLiSoldierNavigationState::PersonalPathRecovery);
+		if (bHasMovingOrder && !bSuppressMovementForStep[SoldierIndex])
 		{
-			for (int32 CellY = Cell.Y - 1; CellY <= Cell.Y + 1; ++CellY)
+			FVector AvoidanceVelocity = FVector::ZeroVector;
+			if (bReceivesAvoidance[SoldierIndex])
 			{
-				const TArray<int32>* NeighborIndices = AuthorityState->SpatialGrid.Find(FIntPoint(CellX, CellY));
-				if (!NeighborIndices)
+				const FIntPoint Cell = MakeSpatialCell(Soldier.Location);
+				for (int32 CellX = Cell.X - 1; CellX <= Cell.X + 1; ++CellX)
 				{
-					continue;
-				}
-				for (const int32 NeighborIndex : *NeighborIndices)
-				{
-					if (NeighborIndex == SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(NeighborIndex))
+					for (int32 CellY = Cell.Y - 1; CellY <= Cell.Y + 1; ++CellY)
 					{
-						continue;
+						const TArray<int32>* NeighborIndices = AuthorityState->SpatialGrid.Find(
+							FIntPoint(CellX, CellY));
+						if (!NeighborIndices)
+						{
+							continue;
+						}
+						for (const int32 NeighborIndex : *NeighborIndices)
+						{
+							if (NeighborIndex == SoldierIndex
+								|| !AuthorityState->Soldiers.IsValidIndex(NeighborIndex))
+							{
+								continue;
+							}
+							const FSoldierRuntime& Neighbor = AuthorityState->Soldiers[NeighborIndex];
+							if (FMath::Abs(Soldier.Location.Z - Neighbor.Location.Z)
+								>= AvoidanceAgentHeightCentimeters)
+							{
+								continue;
+							}
+							FVector Separation = Soldier.Location - Neighbor.Location;
+							Separation.Z = 0.0f;
+							const float MinimumDistance = MemberAgentRadiusCentimeters * 2.0f;
+							const float DistanceSquared = Separation.SizeSquared2D();
+							if (DistanceSquared >= FMath::Square(MinimumDistance))
+							{
+								continue;
+							}
+							const float Distance = FMath::Sqrt(FMath::Max(1.0f, DistanceSquared));
+							const FVector Normal = DistanceSquared > 1.0f
+								? Separation / Distance
+								: FVector(
+									Soldier.SoldierId.Value < Neighbor.SoldierId.Value ? -1.0f : 1.0f,
+									0.0f,
+									0.0f);
+							AvoidanceVelocity += Normal
+								* ((MinimumDistance - Distance) / MinimumDistance)
+								* MovementSpeedCentimetersPerSecond
+								* ManualAvoidanceStrength;
+						}
 					}
-					const FSoldierRuntime& Neighbor = AuthorityState->Soldiers[NeighborIndex];
-					FVector Separation = Soldier.Location - Neighbor.Location;
-					Separation.Z = 0.0f;
-					const float MinimumDistance = MemberAgentRadiusCentimeters * 2.0f;
-					const float DistanceSquared = Separation.SizeSquared2D();
-					if (DistanceSquared >= FMath::Square(MinimumDistance))
-					{
-						continue;
-					}
-					const float Distance = FMath::Sqrt(FMath::Max(1.0f, DistanceSquared));
-					const FVector Normal = DistanceSquared > 1.0f
-						? Separation / Distance
-						: FVector(Soldier.SoldierId.Value < Neighbor.SoldierId.Value ? -1.0f : 1.0f, 0.0f, 0.0f);
-					AvoidanceVelocity += Normal
-						* ((MinimumDistance - Distance) / MinimumDistance)
-						* MovementSpeedCentimetersPerSecond
-						* ManualAvoidanceStrength;
 				}
+				const FGuLiMassAvoidanceOutputFragment& AvoidanceOutput = EntityManager
+					.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(Soldier.Entity);
+				AvoidanceVelocity += AvoidanceOutput.Value.GetClampedToMaxSize(
+					MovementSpeedCentimetersPerSecond * 4.0f) * FixedDeltaSeconds;
 			}
-		}
 
-		// CaptureProcessor 保存世界帧的 Mass 避让加速度，这里乘固定步长后与期望速度、分离速度合成。
-		const FGuLiMassAvoidanceOutputFragment& AvoidanceOutput = EntityManager.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(Soldier.Entity);
-		const FVector EngineAvoidanceDelta = AvoidanceOutput.Value.GetClampedToMaxSize(
-			MovementSpeedCentimetersPerSecond * 4.0f) * FixedDeltaSeconds;
+			const FVector TargetVelocity = (DesiredVelocities[SoldierIndex] + AvoidanceVelocity)
+				.GetClampedToMaxSize(MovementSpeedCentimetersPerSecond);
+			Soldier.Velocity = TargetVelocity.IsNearlyZero(1.0f)
+				? FVector::ZeroVector
+				: FMath::VInterpTo(
+					Soldier.Velocity,
+					TargetVelocity,
+					FixedDeltaSeconds,
+					8.0f);
 
-		const FVector TargetVelocity = (DesiredVelocities[SoldierIndex]
-			+ AvoidanceVelocity
-			+ EngineAvoidanceDelta).GetClampedToMaxSize(MovementSpeedCentimetersPerSecond);
-		Soldier.Velocity = FMath::VInterpTo(
-			Soldier.Velocity,
-			TargetVelocity,
-			FixedDeltaSeconds,
-			8.0f);
-		if (TargetVelocity.IsNearlyZero(1.0f))
-		{
-			Soldier.Velocity = FMath::VInterpTo(
-				Soldier.Velocity,
-				FVector::ZeroVector,
-				FixedDeltaSeconds,
-				10.0f);
-		}
-
-		if (!Soldier.Velocity.IsNearlyZero(1.0f))
-		{
-			FVector NewLocation = Soldier.Location + Soldier.Velocity * FixedDeltaSeconds;
-			// 移动时首次及每隔 6 个模拟步采样一次地面；间隔内维持 Z，不是每步做导航投影。
-			const bool bGroundSampleDue = Soldier.LastGroundSampleTick == 0u
-				|| AuthorityState->ServerSimTick - Soldier.LastGroundSampleTick >= 6u;
-			if (bGroundSampleDue)
+			if (!Soldier.Velocity.IsNearlyZero(1.0f))
 			{
-				FNavLocation ProjectedLocation;
-				const FVector ProjectionExtent(
-					MemberAgentRadiusCentimeters,
-					MemberAgentRadiusCentimeters,
-					5000.0f);
-				if (NavigationSystem && CommanderNavigationData
-					&& ProjectPointToCommanderNavigation(
-						*NavigationSystem,
-						*CommanderNavigationData,
-					NewLocation,
-						ProjectionExtent,
-						ProjectedLocation)
-					&& FVector::DistSquared2D(NewLocation, ProjectedLocation.Location)
-						<= FMath::Square(MemberAgentRadiusCentimeters * 1.25f))
+				const FVector CandidateLocation = Soldier.LastValidNavLocation.Location
+					+ Soldier.Velocity * FixedDeltaSeconds;
+				FNavLocation SurfaceLocation;
+				++AuthorityState->SurfaceMoveCalls;
+				const bool bSurfaceMoveSucceeded = CommanderNavigationData
+					&& CommanderNavigationData->FindMoveAlongSurface(
+						Soldier.LastValidNavLocation,
+						CandidateLocation,
+						SurfaceLocation,
+						nullptr,
+						this);
+				const bool bSurfaceMoveAccepted =
+					GuLiCommanderNavigationPolicy::IsSurfaceMoveResultAcceptable(
+						bSurfaceMoveSucceeded,
+						Soldier.LastValidNavLocation.Location,
+						SurfaceLocation.Location,
+						MaximumSurfaceStepZCentimeters);
+				if (bSurfaceMoveAccepted)
 				{
-					NewLocation = ProjectedLocation.Location;
+					Soldier.Location = SurfaceLocation.Location;
+					Soldier.LastValidNavLocation = SurfaceLocation;
+					Soldier.ConsecutiveSurfaceFailures = 0;
+					Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::None;
+					if (!Soldier.Velocity.IsNearlyZero(1.0f))
+					{
+						Soldier.FacingYawDegrees = FMath::FixedTurn(
+							Soldier.FacingYawDegrees,
+							Soldier.Velocity.GetSafeNormal2D().Rotation().Yaw,
+							FacingRateDegreesPerSecond * FixedDeltaSeconds);
+					}
 				}
 				else
 				{
-					// 投影失败则撤销本步位移并停速，不以 Landscape 直线移动绕过 NavMesh 约束。
-					NewLocation = Soldier.Location;
+					Soldier.Location = Soldier.LastValidNavLocation.Location;
 					Soldier.Velocity = FVector::ZeroVector;
-					if (bUsingFinalCorridorLane[SoldierIndex])
+					++AuthorityState->SurfaceMoveFailures;
+					++Soldier.ConsecutiveSurfaceFailures;
+					++Soldier.TotalSurfaceFailures;
+					if (FOrderFormationRuntime* const* Formation =
+						FormationBySoldierId.Find(Soldier.SoldierId.Value))
 					{
-						Soldier.bCollapseFinalCorridorLaneOnNextStep = true;
+						(*Formation)->bLastMovementStepSucceeded = false;
+					}
+					Soldier.NavigationFailure = bSurfaceMoveSucceeded
+						? EGuLiSoldierNavigationFailure::ExcessiveHeightDelta
+						: EGuLiSoldierNavigationFailure::SurfaceMoveFailed;
+					if (Soldier.NavigationState == EGuLiSoldierNavigationState::Normal
+						&& GuLiCommanderNavigationPolicy::ShouldEnterCenterlineRecovery(
+							Soldier.ConsecutiveSurfaceFailures,
+							Soldier.NoProgressSeconds,
+							SurfaceFailuresBeforeCenterline,
+							CenterlineRecoverySeconds))
+					{
+						EnterCenterlineRecovery(Soldier);
+					}
+					else if (Soldier.NavigationState == EGuLiSoldierNavigationState::CenterlineRecovery
+						&& GuLiCommanderNavigationPolicy::ShouldEnterPersonalPathRecovery(
+							Soldier.TotalSurfaceFailures,
+							Soldier.NoProgressSeconds,
+							SurfaceFailuresBeforePersonalPath,
+							CenterlineRecoverySeconds))
+					{
+						EnterPersonalPathRecovery(Soldier);
 					}
 				}
-				Soldier.LastGroundSampleTick = AuthorityState->ServerSimTick;
 			}
-			else
-			{
-				NewLocation.Z = Soldier.Location.Z;
-			}
-			Soldier.Location = NewLocation;
-			Soldier.FacingYawDegrees = FMath::FixedTurn(
-				Soldier.FacingYawDegrees,
-				Soldier.Velocity.GetSafeNormal2D().Rotation().Yaw,
-				FacingRateDegreesPerSecond * FixedDeltaSeconds);
+		}
+		else
+		{
+			Soldier.Velocity = FVector::ZeroVector;
 		}
 
-		FTransformFragment& Transform = EntityManager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity);
+		FTransformFragment& Transform = EntityManager
+			.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity);
 		Transform.SetTransform(FTransform(
 			FRotator(0.0f, Soldier.FacingYawDegrees, 0.0f),
 			Soldier.Location));
 		EntityManager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = Soldier.Velocity;
-
-		FGuLiMassOrderFragment& Order = EntityManager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+		EntityManager.GetFragmentDataChecked<FMassForceFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+		FGuLiMassOrderFragment& Order = EntityManager
+			.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
 		Order.ActiveOrderId = Soldier.ActiveOrderId;
 		Order.OrderRevision = Soldier.StateRevision;
 		Order.bHasMoveTarget = Soldier.ActiveOrderId != 0u;
-	}
-
-	// 先收集各编队完成状态，再按 BatchOrderId 统一收尾；同批次不能有一个编队提前撤令。
-	// 判定读取成员的过弯/到达锁存标记，死亡或已经接受新指令的成员不再阻塞旧批次。
-	TMap<uint32, TArray<GuLiCommanderNavigationPolicy::FBatchOrderFormationCompletionSample>>
-		CompletionSamplesByBatch;
-	for (const FOrderFormationRuntime& Formation : AuthorityState->OrderFormations)
-	{
-		bool bAnyActive = false;
-		TArray<GuLiCommanderNavigationPolicy::FFormationMemberProgressSample,
-			TInlineAllocator<SoldierCountPerFormation>> MemberProgressSamples;
-		for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
-		{
-			const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
-			if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
-			{
-				continue;
-			}
-			const FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
-			GuLiCommanderNavigationPolicy::FFormationMemberProgressSample& Sample = MemberProgressSamples.AddDefaulted_GetRef();
-			Sample.Location = Soldier.Location;
-			Sample.bAlive = Soldier.IsAlive();
-			Sample.bFollowsOrder = Soldier.ActiveOrderId == Formation.BatchOrderId;
-			if (const GuLiCommanderNavigationPolicy::FLooseArrivalMemberState* ArrivalState = Formation.LooseArrivalStateBySoldierId.Find(SoldierId.Value))
-			{
-				Sample.bTailCleared = ArrivalState->bTailCleared;
-				Sample.bHasReachedArrival = ArrivalState->bHasReachedArrival;
-			}
-			bAnyActive |= Sample.bAlive && Sample.bFollowsOrder;
-		}
-
-		const bool bGuideAtFinal = Formation.bPathValid
-			&& !Formation.PathPoints.IsEmpty()
-			&& Formation.PathPointIndex == Formation.PathPoints.Num() - 1
-			&& FVector::DistSquared2D(Formation.GuideAnchor, Formation.TargetAnchor)
-				<= FMath::Square(FormationWaypointToleranceCentimeters);
-		const bool bOrderComplete = GuLiCommanderNavigationPolicy::ShouldCompleteOrder(
-			bGuideAtFinal,
-			Formation.FinalPathFrame,
-			Formation.PathPoints,
-			Formation.TargetAnchor,
-			MemberProgressSamples,
-			Formation.ArrivalDomainRadiusCentimeters,
-			FormationArrivalToleranceCentimeters);
-		GuLiCommanderNavigationPolicy::FBatchOrderFormationCompletionSample& CompletionSample = CompletionSamplesByBatch.FindOrAdd(Formation.BatchOrderId).AddDefaulted_GetRef();
-		CompletionSample.bHasActiveMembers = bAnyActive;
-		CompletionSample.bPathValid = Formation.bPathValid;
-		CompletionSample.bGuideAndMembersReady = bOrderComplete;
-	}
-
-	TSet<uint32> BatchIdsToRemove;
-	for (const TPair<uint32,
-		TArray<GuLiCommanderNavigationPolicy::FBatchOrderFormationCompletionSample>>& Pair
-		: CompletionSamplesByBatch)
-	{
-		bool bAnyActive = false;
-		bool bAnyActivePathInvalid = false;
-		for (const GuLiCommanderNavigationPolicy::FBatchOrderFormationCompletionSample& Sample
-			: Pair.Value)
-		{
-			bAnyActive |= Sample.bHasActiveMembers;
-			bAnyActivePathInvalid |= Sample.bHasActiveMembers && !Sample.bPathValid;
-		}
-		// 无人继续执行、任一活动编队路径失效，或所有活动编队完成，都会移除整个批次。
-		if (!bAnyActive || bAnyActivePathInvalid
-			|| GuLiCommanderNavigationPolicy::ShouldCompleteBatchOrder(Pair.Value))
-		{
-			BatchIdsToRemove.Add(Pair.Key);
-		}
 	}
 
 	for (int32 FormationIndex = AuthorityState->OrderFormations.Num() - 1;
 		FormationIndex >= 0;
 		--FormationIndex)
 	{
-		FOrderFormationRuntime& Formation = AuthorityState->OrderFormations[FormationIndex];
-		if (BatchIdsToRemove.Contains(Formation.BatchOrderId))
-		{
-			for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
+		const FOrderFormationRuntime& Formation = AuthorityState->OrderFormations[FormationIndex];
+		const bool bAnyMemberStillExecuting = Formation.MemberIds.ContainsByPredicate(
+			[this, &Formation](const FGuLiSoldierId SoldierId)
 			{
 				const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
-				if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
-				{
-					continue;
-				}
-				FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
-				// 只清除仍属于旧批次的指令，避免旧编队收尾覆盖士兵刚收到的新指令。
-				if (Soldier.ActiveOrderId == Formation.BatchOrderId)
-				{
-					Soldier.ActiveOrderId = 0u;
-					++Soldier.StateRevision;
-					FMassMoveTargetFragment& MoveTarget = EntityManager
-						.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
-					MoveTarget.CreateNewAction(EMassMovementAction::Stand, *World);
-					FGuLiMassOrderFragment& Order = EntityManager
-						.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
-					Order.ActiveOrderId = 0u;
-					Order.OrderRevision = Soldier.StateRevision;
-					Order.bHasMoveTarget = false;
-				}
-			}
-			AuthorityState->OrderFormations.RemoveAtSwap(FormationIndex, 1, EAllowShrinking::No);
+				return SoldierIndex
+					&& AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
+					&& AuthorityState->Soldiers[*SoldierIndex].IsAlive()
+					&& AuthorityState->Soldiers[*SoldierIndex].ActiveOrderId
+						== Formation.BatchOrderId;
+			});
+		if (!bAnyMemberStillExecuting)
+		{
+			AuthorityState->OrderFormations.RemoveAtSwap(
+				FormationIndex,
+				1,
+				EAllowShrinking::No);
 		}
 	}
-}
 
-// 把客户端的圆形选择意图解析成服务端 ControlCohort；成员位置、阵营和存活均以本地权威记录为准。
+	// Movement, arrival and recovery state are authoritative before combat samples positions.
+	TickSoldierCombat();
+#if !UE_BUILD_SHIPPING
+	const double StepMilliseconds = (FPlatformTime::Seconds() - StepStartedAt) * 1000.0;
+	++PerformanceCounters.Steps;
+	PerformanceCounters.SimulationMilliseconds += StepMilliseconds;
+	PerformanceCounters.MaxSimulationMilliseconds = FMath::Max(
+		PerformanceCounters.MaxSimulationMilliseconds,
+		StepMilliseconds);
+#endif
+}
+// 解析点/框/范围/同兵种意图；最终成员的位置、阵营、兵种和存活均以权威记录为准。
 // 请求限流、去重与 ACK 重放在 NetSyncComponent；这里再次检查权限、结构与选择版本。
 bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
 	const AGuLiBattlePlayerState& PlayerState,
@@ -2023,133 +4743,87 @@ bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
 	RefreshSelection(PlayerState.GetTeam(), WorkingSelection);
 	const TArray<FGuLiControlCohortDescriptor> PreviousCohorts = WorkingSelection.Cohorts;
 
-	if (Request.Modifier == EGuLiSelectionModifier::Clear)
+	TArray<GuLiCommanderSelectionQuery::FCandidate> Population;
+	Population.Reserve(AuthorityState->Soldiers.Num());
+	for (const FSoldierRuntime& Soldier : AuthorityState->Soldiers)
+	{
+		Population.Add({Soldier.SoldierId, Soldier.Location, Soldier.Velocity,
+			Soldier.Team, Soldier.UnitTypeId, Soldier.IsAlive()});
+	}
+	TArray<FGuLiSoldierId> HitIds;
+	if (!GuLiCommanderSelectionQuery::ResolveCandidates(Request, PlayerState.GetTeam(), Population, HitIds))
+	{
+		OutAck.Result = EGuLiCommandAckResult::InvalidTarget;
+		return false;
+	}
+
+	TArray<FGuLiSoldierId> ExistingIds;
+	for (const FGuLiControlCohortDescriptor& Cohort : WorkingSelection.Cohorts)
+	{
+		for (const FGuLiSoldierId Id : Cohort.MemberIds)
+		{
+			const int32* Index = AuthorityState->SoldierIndexById.Find(Id.Value);
+			if (Index && AuthorityState->Soldiers.IsValidIndex(*Index)
+				&& AuthorityState->Soldiers[*Index].IsAlive())
+			{
+				ExistingIds.Add(Id);
+			}
+		}
+	}
+	ExistingIds.Sort();
+	// Legacy native QA can still request Toggle. Player Shift sends Add and never enters this branch.
+	if (Request.Modifier == EGuLiSelectionModifier::Toggle)
+	{
+		const TSet<FGuLiSoldierId> OriginalHits(HitIds);
+		for (const FGuLiControlCohortDescriptor& Cohort : WorkingSelection.Cohorts)
+		{
+			if (Cohort.MemberIds.ContainsByPredicate([&OriginalHits](const FGuLiSoldierId Id)
+				{ return OriginalHits.Contains(Id); }))
+			{
+				for (const FGuLiSoldierId Id : Cohort.MemberIds)
+				{
+					if (ExistingIds.Contains(Id))
+					{
+						HitIds.AddUnique(Id);
+					}
+				}
+			}
+		}
+	}
+	TArray<FGuLiSoldierId> NewIds;
+	GuLiCommanderSelectionQuery::CombineMembership(ExistingIds, HitIds, Request.Modifier, NewIds);
+	// Membership equality preserves cohort IDs/revision for repeated Shift hits. Changed unions
+	// are regrouped together so hundreds of one-person additions cannot consume 400 cohort slots.
+	if (NewIds != ExistingIds)
 	{
 		WorkingSelection.Cohorts.Reset();
-	}
-	else
-	{
-		const FVector SelectionCenter = Request.Center;
-		const float SelectionRadius = GuLiCommanderProtocol::GetSelectionRadiusCentimeters(
-			Request.RadiusPreset);
-		const double SelectionRadiusSquared = FMath::Square(static_cast<double>(SelectionRadius));
-
-		TArray<GuLiControlCohortBuilder::FCandidate> InCircleSeeds;
-		TArray<int32> SpatialCandidateIndices;
-		GatherSpatialCandidateIndices(
-			AuthorityState->SpatialGrid,
-			SelectionCenter,
-			SelectionRadius,
-			SpatialCandidateIndices);
-		for (const int32 SoldierIndex : SpatialCandidateIndices)
+		TArray<GuLiControlCohortBuilder::FCandidate> SelectedCandidates;
+		SelectedCandidates.Reserve(NewIds.Num());
+		for (const FGuLiSoldierId Id : NewIds)
 		{
-			if (!AuthorityState->Soldiers.IsValidIndex(SoldierIndex))
+			const int32* Index = AuthorityState->SoldierIndexById.Find(Id.Value);
+			if (Index && AuthorityState->Soldiers.IsValidIndex(*Index))
 			{
-				continue;
-			}
-			const FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
-			if (Soldier.IsAlive() && Soldier.Team == PlayerState.GetTeam()
-				&& FVector::DistSquared2D(Soldier.Location, SelectionCenter) <= SelectionRadiusSquared)
-			{
-				InCircleSeeds.Add({ Soldier.SoldierId, Soldier.Location });
+				SelectedCandidates.Add({Id, AuthorityState->Soldiers[*Index].Location});
 			}
 		}
-		InCircleSeeds.Sort([SelectionCenter](
-			const GuLiControlCohortBuilder::FCandidate& Lhs,
-			const GuLiControlCohortBuilder::FCandidate& Rhs)
+		TArray<TArray<FGuLiSoldierId>> BuiltCohorts;
+		// All shapes select exact hits. Cohort partitioning never adds unselected neighbours.
+		GuLiControlCohortBuilder::Build(SelectedCandidates, {}, 0.0f, BuiltCohorts);
+		for (TArray<FGuLiSoldierId>& MemberIds : BuiltCohorts)
 		{
-			const double LhsDistance = FVector::DistSquared2D(Lhs.Location, SelectionCenter);
-			const double RhsDistance = FVector::DistSquared2D(Rhs.Location, SelectionCenter);
-			return !FMath::IsNearlyEqual(LhsDistance, RhsDistance)
-				? LhsDistance < RhsDistance
-				: Lhs.SoldierId.Value < Rhs.SoldierId.Value;
-		});
-
-		TSet<uint32> ExcludedSoldiers;
-		if (Request.Modifier == EGuLiSelectionModifier::Replace)
-		{
-			WorkingSelection.Cohorts.Reset();
-		}
-		// Toggle 命中任意成员就移除整个既有控制组，并排除旧成员，避免同次点击又自动补回。
-		else if (Request.Modifier == EGuLiSelectionModifier::Toggle)
-		{
-			TSet<uint32> HitSoldiers;
-			for (const GuLiControlCohortBuilder::FCandidate& Candidate : InCircleSeeds)
+			FGuLiControlCohortDescriptor& Descriptor = WorkingSelection.Cohorts.AddDefaulted_GetRef();
+			Descriptor.CohortId = FGuLiControlCohortId(AllocateNonZero(AuthorityState->NextControlCohortId));
+			Descriptor.MemberIds = MoveTemp(MemberIds);
+			Descriptor.AliveCount = static_cast<uint8>(Descriptor.MemberIds.Num());
+			TArray<uint32, TInlineAllocator<GuLiCommanderMassPrivate::SoldierCountPerFormation>> ActiveOrderIds;
+			for (const FGuLiSoldierId Id : Descriptor.MemberIds)
 			{
-				HitSoldiers.Add(Candidate.SoldierId.Value);
+				const uint32 ActiveOrder = AuthorityState->Soldiers[AuthorityState->SoldierIndexById.FindChecked(Id.Value)].ActiveOrderId;
+				ActiveOrderIds.Add(ActiveOrder);
 			}
-
-			TArray<FGuLiControlCohortDescriptor> RetainedCohorts;
-			for (const FGuLiControlCohortDescriptor& Cohort : WorkingSelection.Cohorts)
-			{
-				bool bCohortWasHit = false;
-				for (const FGuLiSoldierId SoldierId : Cohort.MemberIds)
-				{
-					ExcludedSoldiers.Add(SoldierId.Value);
-					bCohortWasHit |= HitSoldiers.Contains(SoldierId.Value);
-				}
-				if (!bCohortWasHit)
-				{
-					RetainedCohorts.Add(Cohort);
-				}
-			}
-			WorkingSelection.Cohorts = MoveTemp(RetainedCohorts);
-			InCircleSeeds.RemoveAll([&ExcludedSoldiers](
-				const GuLiControlCohortBuilder::FCandidate& Candidate)
-			{
-				return ExcludedSoldiers.Contains(Candidate.SoldierId.Value);
-			});
-		}
-
-		if (!InCircleSeeds.IsEmpty())
-		{
-			TSet<uint32> SeedIds;
-			for (const GuLiControlCohortBuilder::FCandidate& Candidate : InCircleSeeds)
-			{
-				SeedIds.Add(Candidate.SoldierId.Value);
-			}
-
-			TArray<GuLiControlCohortBuilder::FCandidate> FillCandidates;
-			GatherSpatialCandidateIndices(
-				AuthorityState->SpatialGrid,
-				SelectionCenter,
-				SelectionRadius + MaximumAutomaticFillDistanceCentimeters,
-				SpatialCandidateIndices);
-			for (const int32 SoldierIndex : SpatialCandidateIndices)
-			{
-				if (!AuthorityState->Soldiers.IsValidIndex(SoldierIndex))
-				{
-					continue;
-				}
-				const FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
-				if (Soldier.IsAlive() && Soldier.Team == PlayerState.GetTeam()
-					&& !SeedIds.Contains(Soldier.SoldierId.Value)
-					&& !ExcludedSoldiers.Contains(Soldier.SoldierId.Value))
-				{
-					FillCandidates.Add({ Soldier.SoldierId, Soldier.Location });
-				}
-			}
-
-			// 圈内成员先按邻近关系组成至多 25 人的小组；仅最后一个不足组从邻近候选中补齐。
-			TArray<TArray<FGuLiSoldierId>> BuiltCohorts;
-			GuLiControlCohortBuilder::Build(
-				InCircleSeeds,
-				FillCandidates,
-				MaximumAutomaticFillDistanceCentimeters,
-				BuiltCohorts);
-			for (TArray<FGuLiSoldierId>& MemberIds : BuiltCohorts)
-			{
-				if (MemberIds.IsEmpty())
-				{
-					continue;
-				}
-				FGuLiControlCohortDescriptor& Descriptor = WorkingSelection.Cohorts.AddDefaulted_GetRef();
-				Descriptor.CohortId = FGuLiControlCohortId(
-					AllocateNonZero(AuthorityState->NextControlCohortId));
-				Descriptor.MemberIds = MoveTemp(MemberIds);
-				Descriptor.AliveCount = static_cast<uint8>(Descriptor.MemberIds.Num());
-				Descriptor.ActiveOrderId = 0u;
-			}
+			Descriptor.ActiveOrderId =
+				GuLiCommanderNavigationPolicy::ResolveCommonActiveOrderId(ActiveOrderIds);
 		}
 	}
 
@@ -2201,9 +4875,7 @@ bool UGuLiBattleAuthoritySubsystem::RefreshSelection(
 	{
 		FGuLiControlCohortDescriptor Descriptor;
 		Descriptor.CohortId = Existing.CohortId;
-		uint32 SharedActiveOrderId = 0u;
-		bool bHasAliveMember = false;
-		bool bOrdersMatch = true;
+		TArray<uint32, TInlineAllocator<GuLiCommanderMassPrivate::SoldierCountPerFormation>> ActiveOrderIds;
 		for (const FGuLiSoldierId SoldierId : Existing.MemberIds)
 		{
 			const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
@@ -2224,15 +4896,7 @@ bool UGuLiBattleAuthoritySubsystem::RefreshSelection(
 			if (Soldier.IsAlive())
 			{
 				++Descriptor.AliveCount;
-				if (!bHasAliveMember)
-				{
-					SharedActiveOrderId = Soldier.ActiveOrderId;
-					bHasAliveMember = true;
-				}
-				else
-				{
-					bOrdersMatch &= SharedActiveOrderId == Soldier.ActiveOrderId;
-				}
+				ActiveOrderIds.Add(Soldier.ActiveOrderId);
 			}
 		}
 
@@ -2241,7 +4905,8 @@ bool UGuLiBattleAuthoritySubsystem::RefreshSelection(
 			bMembershipChanged = true;
 			continue;
 		}
-		Descriptor.ActiveOrderId = bOrdersMatch ? SharedActiveOrderId : 0u;
+		Descriptor.ActiveOrderId =
+			GuLiCommanderNavigationPolicy::ResolveCommonActiveOrderId(ActiveOrderIds);
 		Refreshed.Cohorts.Add(MoveTemp(Descriptor));
 	}
 
@@ -2263,242 +4928,185 @@ bool UGuLiBattleAuthoritySubsystem::RefreshSelection(
 	return bChanged;
 }
 
-// 将当前选择转成一次批量移动：先验证公共目标并为每个组寻路，再提交成功编队。
-// 单个组失败不会阻止其他组接令；失败组不会在此覆盖其成员原有的 ActiveOrderId。
-bool UGuLiBattleAuthoritySubsystem::IssueMove(
+bool UGuLiBattleAuthoritySubsystem::BeginMovePlanning(
 	const AGuLiBattlePlayerState& PlayerState,
 	const FGuLiMoveRequest& Request,
 	const FGuLiCommanderSelectionState& Selection,
-	FGuLiCommandAck& OutAck)
+	FGuLiCommandAck& OutImmediateAck)
 {
 	using namespace GuLiCommanderMassPrivate;
+	using namespace GuLiCommanderDestinationPlanner;
 
-	OutAck.ClientCommandId = Request.ClientCommandId;
-	OutAck.ServerSelectionRevision = Selection.SelectionRevision;
-	OutAck.CohortResults.Reset();
+	OutImmediateAck = FGuLiCommandAck{};
+	OutImmediateAck.CommandKind = EGuLiCommandKind::Move;
+	OutImmediateAck.ClientCommandId = Request.ClientCommandId;
+	OutImmediateAck.ServerSelectionRevision = Selection.SelectionRevision;
 	if (!AuthorityState || !AuthorityState->bPopulationSpawned || !IsAuthorityWorld()
 		|| !PlayerState.IsCommander() || !GuLiCommanderProtocol::IsPlayableTeam(PlayerState.GetTeam()))
 	{
-		OutAck.Result = EGuLiCommandAckResult::Unauthorized;
+		OutImmediateAck.Result = EGuLiCommandAckResult::Unauthorized;
 		return false;
 	}
 	if (!Request.IsWellFormed())
 	{
-		OutAck.Result = EGuLiCommandAckResult::InvalidRequest;
+		OutImmediateAck.Result = EGuLiCommandAckResult::InvalidRequest;
 		return false;
 	}
 	if (Request.SelectionRevision != Selection.SelectionRevision)
 	{
-		OutAck.Result = EGuLiCommandAckResult::StaleSelectionRevision;
+		OutImmediateAck.Result = EGuLiCommandAckResult::StaleSelectionRevision;
 		return false;
 	}
 	if (Selection.Cohorts.IsEmpty())
 	{
-		OutAck.Result = EGuLiCommandAckResult::NoSelection;
+		OutImmediateAck.Result = EGuLiCommandAckResult::NoSelection;
 		return false;
 	}
 
-	// 固定按 CohortId 处理，使编队创建和逐组 ACK 的顺序稳定。
-	TArray<const FGuLiControlCohortDescriptor*> SortedCohorts;
-	for (const FGuLiControlCohortDescriptor& Cohort : Selection.Cohorts)
+	for (const TUniquePtr<FMovePlanningJob>& Existing : AuthorityState->MovePlanningJobs)
 	{
-		SortedCohorts.Add(&Cohort);
+		if (!Existing || Existing->PlayerState.Get() != &PlayerState
+			|| Existing->Request.ClientCommandId != Request.ClientCommandId)
+		{
+			continue;
+		}
+		if (Existing->Request.SelectionRevision != Request.SelectionRevision
+			|| !FVector(Existing->Request.Target).Equals(FVector(Request.Target), 0.01))
+		{
+			OutImmediateAck.Result = EGuLiCommandAckResult::InvalidRequest;
+			return false;
+		}
+		OutImmediateAck = Existing->Ack;
+		return true;
 	}
-	SortedCohorts.Sort([](
-		const FGuLiControlCohortDescriptor& Lhs,
-		const FGuLiControlCohortDescriptor& Rhs)
+	// Destination reservations are built in an isolated scratch table. Keep one in-flight
+	// planner per team so two authority owners can never commit overlapping scratch results.
+	// Red and Blue remain independent and may plan concurrently.
+	for (const TUniquePtr<FMovePlanningJob>& Existing : AuthorityState->MovePlanningJobs)
 	{
-		return Lhs.CohortId.Value < Rhs.CohortId.Value;
-	});
-	UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
-	ANavigationData* CommanderNavigationData = NavigationSystem
+		if (Existing && Existing->Stage != EMovePlanningStage::Completed
+			&& Existing->Team == PlayerState.GetTeam())
+		{
+			OutImmediateAck.Result = EGuLiCommandAckResult::RateLimited;
+			return false;
+		}
+	}
+
+	UWorld* World = GetWorld();
+	const AGuLiBattleGameState* BattleGameState = World
+		? World->GetGameState<AGuLiBattleGameState>()
+		: nullptr;
+	const uint32 CurrentAuthorityEpoch = BattleGameState
+		? BattleGameState->GetMatchEpoch()
+		: 0u;
+	UNavigationSystemV1* NavigationSystem = World
+		? FNavigationSystem::GetCurrent<UNavigationSystemV1>(World)
+		: nullptr;
+	ANavigationData* NavigationData = NavigationSystem
 		? GetCommanderNavigationData(*NavigationSystem)
 		: nullptr;
-	if (!NavigationSystem || !CommanderNavigationData)
+	if (!World || !NavigationSystem || !NavigationData || CurrentAuthorityEpoch == 0u)
 	{
-		for (const FGuLiControlCohortDescriptor* Cohort : SortedCohorts)
-		{
-			FGuLiCohortCommandAck& CohortAck = OutAck.CohortResults.AddDefaulted_GetRef();
-			CohortAck.CohortId = Cohort->CohortId;
-			CohortAck.Result = EGuLiCommandAckResult::PathFailed;
-		}
-		OutAck.Result = EGuLiCommandAckResult::PathFailed;
-		OutAck.Sanitize();
+		OutImmediateAck.Result = EGuLiCommandAckResult::PathFailed;
 		return false;
 	}
 
-	FVector SharedTargetAnchor;
-	if (!ResolveSharedMoveTarget(
-		*NavigationSystem,
-		*CommanderNavigationData,
-		FVector(Request.Target),
-		MemberAgentRadiusCentimeters,
-		SharedTargetAnchor))
+	TUniquePtr<FMovePlanningJob> NewJob = MakeUnique<FMovePlanningJob>();
+	FMovePlanningJob& Job = *NewJob;
+	Job.PlayerState = &PlayerState;
+	if (const AController* OwningController = Cast<AController>(PlayerState.GetOwner()))
 	{
-		UE_LOG(
-			LogGuLiCommanderMass,
-			Warning,
-			TEXT("Move rejected: target %s has no CommanderSoldier NavMesh projection within %.0fcm."),
-			*FVector(Request.Target).ToCompactString(),
-			MemberAgentRadiusCentimeters);
-		for (const FGuLiControlCohortDescriptor* Cohort : SortedCohorts)
-		{
-			FGuLiCohortCommandAck& CohortAck = OutAck.CohortResults.AddDefaulted_GetRef();
-			CohortAck.CohortId = Cohort->CohortId;
-			CohortAck.Result = EGuLiCommandAckResult::InvalidTarget;
-		}
-		OutAck.Result = EGuLiCommandAckResult::InvalidTarget;
-		OutAck.Sanitize();
-		return false;
+		Job.OwningController = OwningController;
+		Job.bRequireOwningController = true;
 	}
+	Job.Team = PlayerState.GetTeam();
+	Job.Request = Request;
+	Job.FrozenSelection = Selection;
+	Job.UpdatedSelection = Selection;
+	Job.NavigationGeneration = AuthorityState->NavigationGeneration;
+	Job.AuthorityEpoch = CurrentAuthorityEpoch;
+	Job.PlanningStartedAt = FPlatformTime::Seconds();
+	Job.Ack.CommandKind = EGuLiCommandKind::Move;
+	Job.Ack.ClientCommandId = Request.ClientCommandId;
+	Job.Ack.ServerSelectionRevision = Selection.SelectionRevision;
+	Job.Ack.Result = EGuLiCommandAckResult::InvalidRequest;
+	Job.Debug.ClientCommandId = Request.ClientCommandId;
+	Job.Debug.RequestedTarget = FVector(Request.Target);
+	Job.Debug.MaximumSearchRadiusCentimeters = FreeDestinationMaximumRadiusCentimeters;
 
-	const uint32 BatchOrderId = AllocateNonZero(AuthorityState->NextBatchOrderId);
-	TArray<FOrderFormationRuntime> AcceptedFormations;
-	AcceptedFormations.Reserve(SortedCohorts.Num());
-	int32 AcceptedCohorts = 0;
-	for (const FGuLiControlCohortDescriptor* CohortPtr : SortedCohorts)
+	TSet<uint32> RequestedEligibleIds;
+	for (const FGuLiControlCohortDescriptor& SourceCohort : Selection.Cohorts)
 	{
-		const FGuLiControlCohortDescriptor& Cohort = *CohortPtr;
-		FGuLiCohortCommandAck& CohortAck = OutAck.CohortResults.AddDefaulted_GetRef();
-		CohortAck.CohortId = Cohort.CohortId;
+		FMoveCohortPlan& Cohort = Job.Cohorts.AddDefaulted_GetRef();
+		Cohort.CohortId = SourceCohort.CohortId;
+		const int32 MemberCount = FMath::Min(
+			SourceCohort.MemberIds.Num(),
+			static_cast<int32>(GULI_CONTROL_COHORT_TARGET_SIZE));
+		Cohort.FrozenMemberIds.Append(SourceCohort.MemberIds.GetData(), MemberCount);
+
+		FGuLiCohortCommandAck& CohortAck = Job.Ack.CohortResults.AddDefaulted_GetRef();
+		CohortAck.CohortId = SourceCohort.CohortId;
+		CohortAck.MemberCount = static_cast<uint8>(MemberCount);
 		CohortAck.Result = EGuLiCommandAckResult::NoSelection;
-
-		FOrderFormationRuntime Formation;
-		Formation.FormationId = AllocateNonZero(AuthorityState->NextFormationId);
-		Formation.BatchOrderId = BatchOrderId;
-		Formation.SourceCohortId = Cohort.CohortId;
-		Formation.Team = PlayerState.GetTeam();
-		for (const FGuLiSoldierId SoldierId : Cohort.MemberIds)
+		for (int32 MemberIndex = 0; MemberIndex < MemberCount; ++MemberIndex)
 		{
-			const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
-			if (SoldierIndex && AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
+			FMoveMemberPlan& Member = Job.Members.AddDefaulted_GetRef();
+			Member.SoldierId = SourceCohort.MemberIds[MemberIndex];
+			Member.CohortId = SourceCohort.CohortId;
+			Member.CohortMemberIndex = MemberIndex;
+			Cohort.MemberPlanIndices.Add(Job.Members.Num() - 1);
+			const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(Member.SoldierId.Value);
+			if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
+				|| RequestedEligibleIds.Contains(Member.SoldierId.Value))
 			{
-				const FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
-				if (Soldier.IsAlive() && Soldier.Team == PlayerState.GetTeam())
-				{
-					Formation.MemberIds.Add(SoldierId);
-				}
-			}
-		}
-		if (Formation.MemberIds.IsEmpty())
-		{
-			continue;
-		}
-
-		Formation.GuideAnchor = ComputeCentroid(
-			Formation.MemberIds,
-			AuthorityState->Soldiers,
-			AuthorityState->SoldierIndexById);
-		Formation.TargetAnchor = SharedTargetAnchor;
-		if (!BuildSharedPath(
-			*NavigationSystem,
-			*CommanderNavigationData,
-			Formation.GuideAnchor,
-			Formation.TargetAnchor,
-			Formation.PathPoints))
-		{
-			UE_LOG(
-				LogGuLiCommanderMass,
-				Warning,
-				TEXT("Move cohort %u rejected: CommanderSoldier shared NavMesh path failed from %s to %s."),
-				Cohort.CohortId.Value,
-				*Formation.GuideAnchor.ToCompactString(),
-				*Formation.TargetAnchor.ToCompactString());
-			CohortAck.Result = EGuLiCommandAckResult::PathFailed;
-			continue;
-		}
-		Formation.PathPointIndex = Formation.PathPoints.Num() > 1 ? 1 : 0;
-		Formation.FinalPathFrame = GuLiCommanderNavigationPolicy::ResolveFinalPathFrame(
-			Formation.PathPoints,
-			Formation.GuideAnchor,
-			Formation.TargetAnchor);
-		if (!Formation.FinalPathFrame.bHasUsableDirection)
-		{
-			UE_LOG(
-				LogGuLiCommanderMass,
-				Warning,
-				TEXT("Move cohort %u rejected: CommanderSoldier shared path has no usable direction."),
-				Cohort.CohortId.Value);
-			CohortAck.Result = EGuLiCommandAckResult::PathFailed;
-			continue;
-		}
-		Formation.LooseArrivalStateBySoldierId.Reserve(Formation.MemberIds.Num());
-		Formation.MemberPathPointIndexBySoldierId.Reserve(Formation.MemberIds.Num());
-		Formation.FinalCorridorLateralOffsetBySoldierId.Reserve(Formation.MemberIds.Num());
-		Formation.LooseArrivalHoldAnchorBySoldierId.Reserve(Formation.MemberIds.Num());
-		FVector InitialTravelDirection = Formation.PathPoints[Formation.PathPointIndex]
-			- Formation.GuideAnchor;
-		InitialTravelDirection.Z = 0.0f;
-		Formation.TravelFacingYawDegrees = InitialTravelDirection.IsNearlyZero()
-			? Formation.FinalPathFrame.YawDegrees
-			: InitialTravelDirection.Rotation().Yaw;
-		AcceptedFormations.Add(MoveTemp(Formation));
-		CohortAck.Result = EGuLiCommandAckResult::Accepted;
-		++AcceptedCohorts;
-	}
-
-	// 只有寻路成功的编队参与人数统计；同批成员去重后共同确定一个到达域。
-	TSet<uint32> AcceptedSoldierIds;
-	for (const FOrderFormationRuntime& Formation : AcceptedFormations)
-	{
-		for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
-		{
-			AcceptedSoldierIds.Add(SoldierId.Value);
-		}
-	}
-	// 策略按六角环容量估算半径；这是整个成功批次的宽松容纳范围，不是单个 25 人方阵半径。
-	const int32 InitialAcceptedBatchMemberCount = AcceptedSoldierIds.Num();
-	const float ArrivalDomainRadiusCentimeters = GuLiCommanderNavigationPolicy::CalculateArrivalDomainRadiusCentimeters(
-		InitialAcceptedBatchMemberCount,
-		MemberAgentRadiusCentimeters);
-	FMassEntityManager& EntityManager = AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
-	for (FOrderFormationRuntime& Formation : AcceptedFormations)
-	{
-		Formation.InitialAcceptedBatchMemberCount = InitialAcceptedBatchMemberCount;
-		Formation.ArrivalDomainRadiusCentimeters = ArrivalDomainRadiusCentimeters;
-		for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
-		{
-			const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
-			if (!SoldierIndex || !AuthorityState->Soldiers.IsValidIndex(*SoldierIndex))
-			{
+				Member.FailureStage = EGuLiMovePlanFailureStage::MemberInvalid;
 				continue;
 			}
-			FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
-			Formation.MemberPathPointIndexBySoldierId.Add(
-				SoldierId.Value,
-				Formation.PathPoints.Num() > 1 ? 1 : 0);
-			Soldier.bCollapseFinalCorridorLaneOnNextStep = false;
-			Soldier.ActiveOrderId = BatchOrderId;
-			++Soldier.StateRevision;
-			FGuLiMassOrderFragment& Order = EntityManager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
-			Order.ActiveOrderId = BatchOrderId;
-			Order.OrderRevision = Soldier.StateRevision;
-			Order.FormationTarget = Formation.TargetAnchor;
-			Order.bHasMoveTarget = true;
-			FMassMoveTargetFragment& MoveTarget = EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
-			MoveTarget.CreateNewAction(EMassMovementAction::Move, *GetWorld());
-			MoveTarget.IntentAtGoal = EMassMovementAction::Stand;
-			MoveTarget.DesiredSpeed = FMassInt16Real(MovementSpeedCentimetersPerSecond);
+			const FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
+			if (!Soldier.IsAlive() || Soldier.Team != Job.Team)
+			{
+				Member.FailureStage = EGuLiMovePlanFailureStage::MemberInvalid;
+				continue;
+			}
+			Member.bEligible = true;
+			Member.OldReservation = Soldier.bHasFinalDestination
+				&& Soldier.ActiveOrderId != 0u
+				? Soldier.FinalDestination.Location
+				: Soldier.Location;
+			RequestedEligibleIds.Add(Member.SoldierId.Value);
+			CohortAck.EligibleMemberMask |= 1u << MemberIndex;
 		}
-		AssignFormationSlots(
-			Formation,
-			AuthorityState->Soldiers,
-			AuthorityState->SoldierIndexById,
-			MemberSpacingCentimeters,
-			Formation.BatchOrderId);
-		AuthorityState->OrderFormations.Add(MoveTemp(Formation));
 	}
 
-	OutAck.BatchOrderId = AcceptedCohorts > 0 ? BatchOrderId : 0u;
-	OutAck.Result = AcceptedCohorts == SortedCohorts.Num()
-		? EGuLiCommandAckResult::Accepted
-		: AcceptedCohorts > 0
-			? EGuLiCommandAckResult::PartiallyAccepted
-			: EGuLiCommandAckResult::PathFailed;
-	OutAck.Sanitize();
-	return AcceptedCohorts > 0;
-}
+	for (const FSoldierRuntime& Soldier : AuthorityState->Soldiers)
+	{
+		if (!Soldier.IsAlive() || Soldier.Team != Job.Team
+			|| RequestedEligibleIds.Contains(Soldier.SoldierId.Value))
+		{
+			continue;
+		}
+		FMoveDestinationReservation Reservation;
+		Reservation.OwnerSoldierId = Soldier.SoldierId.Value;
+		Reservation.Location = Soldier.bHasFinalDestination && Soldier.ActiveOrderId != 0u
+			? Soldier.FinalDestination.Location
+			: Soldier.Location;
+		AddHardReservationToMoveJob(Job, Reservation);
+	}
 
+	FHexCandidateRequest CandidateRequest;
+	CandidateRequest.TargetAnchor = FVector(Request.Target);
+	CandidateRequest.CandidatePitchCentimeters = DefaultFreeCandidatePitchCentimeters;
+	CandidateRequest.MaximumRadiusCentimeters = FreeDestinationMaximumRadiusCentimeters;
+	if (!BuildHexCandidates(CandidateRequest, Job.HexCandidates))
+	{
+		OutImmediateAck.Result = EGuLiCommandAckResult::InvalidTarget;
+		return false;
+	}
+	Job.Debug.TheoreticalCandidates = Job.HexCandidates.Num();
+	OutImmediateAck = Job.Ack;
+	AuthorityState->MovePlanningJobs.Add(MoveTemp(NewJob));
+	return true;
+}
 // 普通数值立即同步；最大生命变化按比例保留当前生命，速度则排队到下一个固定步提交。
 int32 UGuLiBattleAuthoritySubsystem::ApplyRuntimeTuning(
 	const FGuLiSoldierRuntimeTuningValues& Values)
@@ -2506,11 +5114,8 @@ int32 UGuLiBattleAuthoritySubsystem::ApplyRuntimeTuning(
 	const bool bValuesValid = FMath::IsFinite(Values.MovementSpeedCmPerSecond)
 		&& Values.MovementSpeedCmPerSecond > 0.0f
 		&& Values.MovementSpeedCmPerSecond <= static_cast<float>(MAX_int16)
-		&& Values.MaxHealth > 0u
-		&& FMath::IsFinite(Values.AttackPower) && Values.AttackPower >= 0.0f
-		&& FMath::IsFinite(Values.Defense) && Values.Defense >= 0.0f
-		&& FMath::IsFinite(Values.AttackRangeCentimeters)
-		&& Values.AttackRangeCentimeters >= 0.0f;
+		&& FMath::IsFinite(Values.MaxHealth) && Values.MaxHealth > 0.0f && Values.MaxHealth <= 1.e9f
+		&& FMath::IsFinite(Values.Defense) && Values.Defense >= 0.0f;
 	if (!bValuesValid || !IsAuthorityWorld() || !AuthorityState)
 	{
 		UE_LOG(
@@ -2520,7 +5125,6 @@ int32 UGuLiBattleAuthoritySubsystem::ApplyRuntimeTuning(
 		return 0;
 	}
 
-	const FGuLiSoldierRuntimeTuningValues PreviousValues = EffectiveRuntimeTuning;
 	EffectiveRuntimeTuning = Values;
 	if (!FMath::IsNearlyEqual(
 		MovementSpeedCentimetersPerSecond,
@@ -2545,7 +5149,7 @@ int32 UGuLiBattleAuthoritySubsystem::ApplyRuntimeTuning(
 	}
 
 	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
-	const bool bMaximumHealthChanged = PreviousValues.MaxHealth != Values.MaxHealth;
+	const UGuLiCommanderDataSubsystem* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 	for (GuLiCommanderMassPrivate::FSoldierRuntime& Soldier : AuthorityState->Soldiers)
 	{
 		if (!EntityManager.IsEntityValid(Soldier.Entity))
@@ -2553,33 +5157,34 @@ int32 UGuLiBattleAuthoritySubsystem::ApplyRuntimeTuning(
 			continue;
 		}
 
-		const uint8 PreviousHealth = Soldier.Health;
+		const FGuLiSoldierDefinition* Definition = Data ? Data->FindSoldierDefinition(Soldier.UnitTypeId) : nullptr;
+		const float NewMaxHealth = Values.bOverrideMaxHealth ? Values.MaxHealth
+			: (Definition ? Definition->MaxHealth : BaselineRuntimeTuning.MaxHealth);
+		const float PreviousHealth = Soldier.Health;
+		const bool bMaximumHealthChanged = Soldier.MaxHealth != NewMaxHealth;
 		if (bMaximumHealthChanged)
 		{
 			Soldier.Health = GuLiRuntimeTuning::ScaleHealthPreservingRatio(
 				Soldier.Health,
 				Soldier.MaxHealth,
-				Values.MaxHealth);
+				NewMaxHealth);
 		}
-		Soldier.MaxHealth = Values.MaxHealth;
-		Soldier.AttackPower = Values.AttackPower;
-		Soldier.Defense = Values.Defense;
-		Soldier.AttackRangeCentimeters = Values.AttackRangeCentimeters;
+		Soldier.MaxHealth = NewMaxHealth;
+		Soldier.Defense = Values.bOverrideDefense ? Values.Defense
+			: (Definition ? Definition->Defense : BaselineRuntimeTuning.Defense);
 
 		FGuLiMassSoldierStatsFragment& Stats = EntityManager
 			.GetFragmentDataChecked<FGuLiMassSoldierStatsFragment>(Soldier.Entity);
 		Stats.MaxHealth = Soldier.MaxHealth;
-		Stats.AttackPower = Soldier.AttackPower;
 		Stats.Defense = Soldier.Defense;
-		Stats.AttackRangeCentimeters = Soldier.AttackRangeCentimeters;
 
-		if (Soldier.Health != PreviousHealth)
+		if (Soldier.Health != PreviousHealth || bMaximumHealthChanged)
 		{
 			++Soldier.StateRevision;
 			FGuLiMassHealthFragment& Health = EntityManager
 				.GetFragmentDataChecked<FGuLiMassHealthFragment>(Soldier.Entity);
 			Health.Health = Soldier.Health;
-			Health.bDead = Soldier.Health == 0u;
+			Health.bDead = Soldier.Health <= 0.0f;
 		}
 	}
 	return AuthorityState->Soldiers.Num();
@@ -2686,9 +5291,9 @@ void UGuLiBattleAuthoritySubsystem::NotifyMovementSpeedCommitted(
 
 // 服务端 C++ 伤害入口只做扣血与死亡转换，未在这里执行攻击力/防御力结算。
 // 死亡即清除指令、速度和导航障碍网格 Fragment，但不立刻销毁 Entity 或移除 SoldierId。
-bool UGuLiBattleAuthoritySubsystem::ApplyDamage(const FGuLiSoldierId SoldierId, const uint8 Amount)
+bool UGuLiBattleAuthoritySubsystem::ApplyDamage(const FGuLiSoldierId SoldierId, const float Amount)
 {
-	if (!AuthorityState || Amount == 0u || !SoldierId.IsValid())
+	if (!IsAuthorityWorld() || !AuthorityState || !FMath::IsFinite(Amount) || Amount <= 0.0f || !SoldierId.IsValid())
 	{
 		return false;
 	}
@@ -2703,16 +5308,24 @@ bool UGuLiBattleAuthoritySubsystem::ApplyDamage(const FGuLiSoldierId SoldierId, 
 	{
 		return false;
 	}
-	Soldier.Health = Amount >= Soldier.Health ? 0u : static_cast<uint8>(Soldier.Health - Amount);
+	UMassEntitySubsystem* MassSubsystem = AuthorityState->MassEntitySubsystem.Get();
+	if (!MassSubsystem) return false;
+	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
+	if (!EntityManager.IsEntityValid(Soldier.Entity)) return false;
+	Soldier.Health = FMath::Max(0.0f, Soldier.Health - Amount);
 	++Soldier.StateRevision;
-	FMassEntityManager& EntityManager = AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
 	FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(
 		Soldier.Entity);
 	Health.Health = Soldier.Health;
-	Health.bDead = Soldier.Health == 0u;
-	if (Soldier.Health == 0u)
+	Health.bDead = Soldier.Health <= 0.0f;
+	if (Soldier.Health <= 0.0f)
 	{
+		Soldier.Attack.TargetId = FGuLiSoldierId();
+		Soldier.Attack.StopReason = EGuLiCombatStopReason::Dead;
+		Soldier.Attack.NextFireSeconds = 0.0;
 		Soldier.ActiveOrderId = 0u;
+		Soldier.NavigationState = EGuLiSoldierNavigationState::Idle;
+		Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::None;
 		Soldier.Velocity = FVector::ZeroVector;
 		Soldier.DeathSimulationSeconds = AuthorityState->SimulationSeconds;
 		Health.WreckSecondsRemaining = WreckLifetimeSeconds;
@@ -2722,6 +5335,7 @@ bool UGuLiBattleAuthoritySubsystem::ApplyDamage(const FGuLiSoldierId SoldierId, 
 		Order.OrderRevision = Soldier.StateRevision;
 		Order.bHasMoveTarget = false;
 		EntityManager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+		EntityManager.GetFragmentDataChecked<FMassForceFragment>(Soldier.Entity).Value = FVector::ZeroVector;
 		EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity).CreateNewAction(
 			EMassMovementAction::Stand,
 			*GetWorld());
@@ -2747,6 +5361,7 @@ void UGuLiBattleAuthoritySubsystem::BuildSoldierStateSnapshot(
 		FGuLiSoldierStateItem& State = OutStates.AddDefaulted_GetRef();
 		State.SoldierId = Soldier.SoldierId;
 		State.Team = Soldier.Team;
+		State.UnitTypeId = Soldier.UnitTypeId;
 		State.LifeState = Soldier.IsAlive()
 			? EGuLiSoldierLifeState::Alive
 			: EGuLiSoldierLifeState::Destroyed;
@@ -2991,4 +5606,273 @@ uint32 UGuLiBattleAuthoritySubsystem::GetServerSimTick() const
 bool UGuLiBattleAuthoritySubsystem::HasSpawnedAuthorityPopulation() const
 {
 	return AuthorityState && AuthorityState->bPopulationSpawned;
+}
+
+void UGuLiBattleAuthoritySubsystem::CommitCombatProfiles()
+{
+	UGuLiArmySkillSubsystem* Skills = GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
+	if (!Skills || !AuthorityState) return;
+	Skills->CommitPendingChanges();
+	uint32 Revision = 0;
+	for (const FGuLiResolvedSkillProfile& Profile : Skills->GetResolvedSkills())
+	{
+		Revision = FMath::Max(Revision, Profile.Revision);
+	}
+	if (Revision == AuthorityState->CommittedCombatRevision) return;
+	for (GuLiCommanderMassPrivate::FSoldierRuntime& Soldier : AuthorityState->Soldiers)
+	{
+		const FGuLiResolvedSkillProfile* Profile = Skills->FindResolvedSkill(Soldier.Team, Soldier.UnitTypeId);
+		const FGuLiResolvedSkillProfile Next = Profile ? *Profile : FGuLiResolvedSkillProfile();
+		if (Soldier.CombatProfile.Revision == Next.Revision && Soldier.CombatProfile.HasSameConfiguration(Next)) continue;
+		GuLiSoldierCombat::ReplaceProfile(Soldier.CombatProfile, Next, AuthorityState->SimulationSeconds, Soldier.Attack);
+		Soldier.CombatProfile = Next;
+	}
+	AuthorityState->CommittedCombatRevision = Revision;
+}
+
+void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_SoldierCombat);
+	if (!AuthorityState) return;
+#if !UE_BUILD_SHIPPING
+	const double CombatStartedAt = FPlatformTime::Seconds();
+#endif
+	AuthorityState->CombatSamples.Reset(AuthorityState->Soldiers.Num());
+	for (GuLiCommanderMassPrivate::FSoldierRuntime& Soldier : AuthorityState->Soldiers)
+	{
+		AuthorityState->CombatSamples.Add({Soldier.SoldierId, Soldier.Team, Soldier.Location,
+			Soldier.IsAlive(), Soldier.ActiveOrderId != 0u, &Soldier.CombatProfile, &Soldier.Attack});
+	}
+	// The avoidance grid was built before movement. Rebuild with the final positions for range tests.
+	GuLiSoldierCombat::BuildSpatialGrid(AuthorityState->CombatSamples, AuthorityState->SpatialGrid);
+	const FGuLiCombatStepMetrics Metrics = GuLiSoldierCombat::CollectAttacks(AuthorityState->CombatSamples, AuthorityState->SoldierIndexById,
+		AuthorityState->SpatialGrid, AuthorityState->ServerSimTick, AuthorityState->SimulationSeconds,
+		AuthorityState->CombatExecutors, AuthorityState->PendingDamage);
+	// Do not hold Mass fragment references here: death may change an entity's archetype.
+	// All shots were accepted against one alive-state snapshot, permitting simultaneous kills.
+	for (const FGuLiCombatDamageEvent& Event : AuthorityState->PendingDamage)
+	{
+		ApplyDamage(Event.TargetId, Event.Damage);
+	}
+#if !UE_BUILD_SHIPPING
+	const double CombatMilliseconds = (FPlatformTime::Seconds() - CombatStartedAt) * 1000.0;
+	PerformanceCounters.Shots += Metrics.Shots;
+	PerformanceCounters.CombatMilliseconds += CombatMilliseconds;
+	PerformanceCounters.MaxCombatMilliseconds = FMath::Max(PerformanceCounters.MaxCombatMilliseconds, CombatMilliseconds);
+#else
+	(void)Metrics;
+#endif
+}
+
+bool UGuLiBattleAuthoritySubsystem::TryGetSoldierCombatDebug(const FGuLiSoldierId SoldierId,
+	FGuLiSoldierCombatDebug& OutDebug) const
+{
+	OutDebug = {};
+	if (!AuthorityState) return false;
+	const int32* Index = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
+	if (!Index || !AuthorityState->Soldiers.IsValidIndex(*Index)) return false;
+	const GuLiCommanderMassPrivate::FSoldierRuntime& Soldier = AuthorityState->Soldiers[*Index];
+	OutDebug.SoldierId = Soldier.SoldierId;
+	OutDebug.Team = Soldier.Team;
+	OutDebug.UnitTypeId = Soldier.UnitTypeId;
+	OutDebug.SkillId = Soldier.CombatProfile.SkillId;
+	OutDebug.ExecutorId = Soldier.CombatProfile.ExecutorId;
+	OutDebug.TargetId = Soldier.Attack.TargetId;
+	OutDebug.Location = Soldier.Location;
+	OutDebug.Health = Soldier.Health;
+	OutDebug.MaxHealth = Soldier.MaxHealth;
+	OutDebug.Damage = Soldier.CombatProfile.Damage;
+	OutDebug.AttackRate = Soldier.CombatProfile.AttackRatePerSecond;
+	OutDebug.RangeCentimeters = Soldier.CombatProfile.RangeCentimeters;
+	OutDebug.CooldownRemaining = FMath::Max(0.0, Soldier.Attack.NextFireSeconds - AuthorityState->SimulationSeconds);
+	OutDebug.ProfileRevision = Soldier.CombatProfile.Revision;
+	OutDebug.ShotsFired = Soldier.Attack.ShotsFired;
+	OutDebug.StopReason = Soldier.Attack.StopReason;
+	return true;
+}
+
+bool UGuLiBattleAuthoritySubsystem::TryGetSoldierNavigationDebug(
+	const FGuLiSoldierId SoldierId,
+	FGuLiSoldierNavigationDebug& OutDebug) const
+{
+	OutDebug = {};
+	if (!AuthorityState)
+	{
+		return false;
+	}
+	const int32* Index = AuthorityState->SoldierIndexById.Find(SoldierId.Value);
+	if (!Index || !AuthorityState->Soldiers.IsValidIndex(*Index))
+	{
+		return false;
+	}
+	const GuLiCommanderMassPrivate::FSoldierRuntime& Soldier = AuthorityState->Soldiers[*Index];
+	OutDebug.SoldierId = Soldier.SoldierId;
+	OutDebug.Team = Soldier.Team;
+	OutDebug.State = Soldier.NavigationState;
+	OutDebug.Failure = Soldier.NavigationFailure;
+	OutDebug.ActiveOrderId = Soldier.ActiveOrderId;
+	OutDebug.LastCompletedOrderId = Soldier.LastCompletedOrderId;
+	OutDebug.LastFailedOrderId = Soldier.LastFailedOrderId;
+	OutDebug.Location = Soldier.Location;
+	OutDebug.LastValidNavLocation = Soldier.LastValidNavLocation.Location;
+	OutDebug.FinalSlot = Soldier.FinalDestination.Location;
+	OutDebug.CurrentWaypoint = Soldier.CurrentNavigationWaypoint;
+	OutDebug.DistanceToFinalSlotCentimeters = Soldier.bHasFinalDestination
+		? FVector::Dist(Soldier.Location, Soldier.FinalDestination.Location)
+		: 0.0f;
+	OutDebug.NoProgressSeconds = Soldier.NoProgressSeconds;
+	OutDebug.FailureSimulationSeconds = Soldier.FailureSimulationSeconds;
+	OutDebug.PathPointIndex = Soldier.LastProgressPathPointIndex;
+	OutDebug.ConsecutiveSurfaceFailures = Soldier.ConsecutiveSurfaceFailures;
+	OutDebug.TotalSurfaceFailures = Soldier.TotalSurfaceFailures;
+	OutDebug.PersonalPathRetries = Soldier.PersonalPathRetries;
+	OutDebug.bHasFinalSlot = Soldier.bHasFinalDestination;
+	OutDebug.bMoving = Soldier.ActiveOrderId != 0u
+		&& (Soldier.NavigationState == EGuLiSoldierNavigationState::Normal
+			|| Soldier.NavigationState == EGuLiSoldierNavigationState::CenterlineRecovery
+			|| Soldier.NavigationState == EGuLiSoldierNavigationState::PersonalPathRecovery);
+	return true;
+}
+
+FGuLiNavigationStats UGuLiBattleAuthoritySubsystem::GetNavigationStats() const
+{
+	FGuLiNavigationStats Result;
+	if (!AuthorityState)
+	{
+		return Result;
+	}
+	Result.SurfaceMoveCalls = AuthorityState->SurfaceMoveCalls;
+	Result.SurfaceMoveFailures = AuthorityState->SurfaceMoveFailures;
+	Result.PathQueries = AuthorityState->PathQueries;
+	Result.PersonalPathQueries = AuthorityState->PersonalPathQueries;
+	for (const TUniquePtr<GuLiCommanderMassPrivate::FMovePlanningJob>& Job
+		: AuthorityState->MovePlanningJobs)
+	{
+		Result.PendingMovePlanningTasks += Job
+			&& Job->Stage != GuLiCommanderMassPrivate::EMovePlanningStage::Completed
+			? 1
+			: 0;
+	}
+	Result.MoveCandidateProjectionQueries = AuthorityState->MoveCandidateProjectionQueries;
+	Result.MovePlanningPathQueries = AuthorityState->MovePlanningPathQueries;
+	Result.PartiallyAcceptedMoveCommands = AuthorityState->PartiallyAcceptedMoveCommands;
+	for (uint8 StageIndex = 1u;
+		StageIndex < static_cast<uint8>(EGuLiMovePlanFailureStage::Count);
+		++StageIndex)
+	{
+		Result.MovePlanningFailureCounts[StageIndex - 1u] =
+			AuthorityState->MovePlanningFailureCounts[StageIndex];
+	}
+	Result.LastDestinationPlanningMilliseconds = AuthorityState->LastDestinationPlanningMilliseconds;
+	Result.MaximumDestinationPlanningMilliseconds = AuthorityState->MaximumDestinationPlanningMilliseconds;
+	for (const GuLiCommanderMassPrivate::FSoldierRuntime& Soldier : AuthorityState->Soldiers)
+	{
+		if (!Soldier.IsAlive())
+		{
+			continue;
+		}
+		++Result.Alive;
+		Result.Active += Soldier.ActiveOrderId != 0u ? 1 : 0;
+		switch (Soldier.NavigationState)
+		{
+		case EGuLiSoldierNavigationState::Idle:
+			++Result.Idle;
+			break;
+		case EGuLiSoldierNavigationState::Normal:
+			break;
+		case EGuLiSoldierNavigationState::CenterlineRecovery:
+			++Result.CenterlineRecovery;
+			break;
+		case EGuLiSoldierNavigationState::PersonalPathRecovery:
+			++Result.PersonalPathRecovery;
+			break;
+		case EGuLiSoldierNavigationState::Arrived:
+			++Result.Arrived;
+			break;
+		case EGuLiSoldierNavigationState::Blocked:
+			++Result.Blocked;
+			break;
+		default:
+			break;
+		}
+		if (Soldier.ActiveOrderId != 0u
+			&& Soldier.NoProgressSeconds > Result.SlowestNoProgressSeconds)
+		{
+			Result.SlowestNoProgressSeconds = Soldier.NoProgressSeconds;
+			Result.SlowestSoldierId = Soldier.SoldierId;
+		}
+	}
+	return Result;
+}
+
+bool UGuLiBattleAuthoritySubsystem::RegisterCombatExecutor(const FName ExecutorId,
+	FGuLiCombatExecutorRegistry::FExecutor Executor)
+{
+	if (!IsInGameThread() || !IsAuthorityWorld() || !AuthorityState || !Executor) return false;
+	UGuLiArmySkillSubsystem* Skills = GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
+	if (!Skills || Skills->IsExecutorRegistered(ExecutorId)
+		|| !AuthorityState->CombatExecutors.RegisterExecutor(ExecutorId, MoveTemp(Executor))) return false;
+	return Skills->RegisterExecutor(ExecutorId);
+}
+
+bool UGuLiBattleAuthoritySubsystem::SpawnDebugSoldier(const EGuLiTeam Team, const uint16 UnitTypeId,
+	const FVector& Location, FGuLiSoldierId& OutId)
+{
+	OutId = FGuLiSoldierId();
+#if UE_BUILD_SHIPPING
+	return false;
+#else
+	using namespace GuLiCommanderMassPrivate;
+	if (!IsInGameThread() || !IsAuthorityWorld() || !AuthorityState || !AuthorityState->bPopulationSpawned
+		|| !GuLiCommanderProtocol::IsPlayableTeam(Team) || Location.ContainsNaN()
+		|| AuthorityState->Soldiers.Num() >= 10000) return false;
+	UWorld* World = GetWorld();
+	const UGuLiCommanderDataSubsystem* Data = World->GetSubsystem<UGuLiCommanderDataSubsystem>();
+	const FGuLiSoldierDefinition* Definition = Data ? Data->FindSoldierDefinition(UnitTypeId) : nullptr;
+	UMassEntitySubsystem* MassSubsystem = AuthorityState->MassEntitySubsystem.Get();
+	UNavigationSystemV1* Navigation = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+	ANavigationData* NavData = Navigation ? GetCommanderNavigationData(*Navigation) : nullptr;
+	if (!Definition || !MassSubsystem || !Navigation || !NavData) return false;
+	FNavLocation Projected;
+	if (!ProjectPointToCommanderNavigation(*Navigation, *NavData, Location,
+		FVector(MemberAgentRadiusCentimeters, MemberAgentRadiusCentimeters, 5000.0f), Projected)
+		|| FVector::DistSquared2D(Location, Projected.Location) > FMath::Square(MemberAgentRadiusCentimeters)) return false;
+	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
+	FMassArchetypeSharedFragmentValues SharedValues = MakeAuthoritySharedFragmentValues(
+		EntityManager, MovementSpeedCentimetersPerSecond, MemberAgentRadiusCentimeters);
+	TArray<FMassEntityHandle> Handles;
+	TSharedRef<FMassEntityManager::FEntityCreationContext> CreationContext = EntityManager.BatchCreateEntities(
+		AuthorityState->AuthorityArchetype, SharedValues, 1, Handles);
+	if (Handles.Num() != 1)
+	{
+		if (!Handles.IsEmpty()) EntityManager.BatchDestroyEntities(Handles);
+		return false;
+	}
+	FSoldierRuntime& Soldier = AuthorityState->Soldiers.AddDefaulted_GetRef();
+	Soldier.Entity = Handles[0];
+	Soldier.SoldierId = FGuLiSoldierId(AllocateNonZero(AuthorityState->NextSoldierId));
+	Soldier.Team = Team;
+	Soldier.Location = Projected.Location;
+	Soldier.LastValidNavLocation = Projected;
+	InitializeSoldierCombat(Soldier, *Definition, EffectiveRuntimeTuning, World->GetSubsystem<UGuLiArmySkillSubsystem>());
+	AuthorityState->SoldierIndexById.Add(Soldier.SoldierId.Value, AuthorityState->Soldiers.Num() - 1);
+	EntityManager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity).SetTransform(FTransform(Soldier.Location));
+	EntityManager.GetFragmentDataChecked<FAgentRadiusFragment>(Soldier.Entity).Radius = MemberAgentRadiusCentimeters;
+	FMassMoveTargetFragment& MoveTarget = EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+	MoveTarget.CreateNewAction(EMassMovementAction::Stand, *World);
+	MoveTarget.Center = Soldier.Location;
+	MoveTarget.Forward = FVector::ForwardVector;
+	FGuLiMassIdentityFragment& Identity = EntityManager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(Soldier.Entity);
+	Identity.SoldierId = Soldier.SoldierId;
+	Identity.Team = Team;
+	FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Soldier.Entity);
+	Health.Health = Soldier.Health;
+	Health.bDead = false;
+	FGuLiMassSoldierStatsFragment& Stats = EntityManager.GetFragmentDataChecked<FGuLiMassSoldierStatsFragment>(Soldier.Entity);
+	Stats.MaxHealth = Soldier.MaxHealth;
+	Stats.Defense = Soldier.Defense;
+	EntityManager.GetFragmentDataChecked<FGuLiMassSlotTargetFragment>(Soldier.Entity).WorldTarget = Soldier.Location;
+	OutId = Soldier.SoldierId;
+	return true;
+#endif
 }

@@ -10,6 +10,9 @@ struct FGuLiStrikeCommanderSoldiersRow;
 /** Converts generated table rows into the validated runtime Soldier contract. */
 struct GULISTRIKE_API FGuLiCommanderSoldierResolver final
 {
+	/** Float health is absolute gameplay health, with a finite authoring safety bound. */
+	static constexpr float MaximumSupportedHealth = 1000000000.0f;
+
 	/** Stable C++ fallback used when the table, row, value or model is invalid. */
 	static FGuLiSoldierDefinition MakeFallbackDefinition();
 

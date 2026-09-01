@@ -129,4 +129,59 @@ bool FGuLiCommanderWorldIntentBlockingTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiCommanderMoveAckRoutingTest,
+	"GuLiStrike.Commander.Framework.ToolMode.MoveAckRouting",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiCommanderMoveAckRoutingTest::RunTest(const FString& Parameters)
+{
+	(void)Parameters;
+	using GuLiCommanderToolPolicy::ResolveMoveAckRouting;
+
+	const auto OldAckBeforeReplacement = ResolveMoveAckRouting(
+		EGuLiCommandKind::Move,
+		90u,
+		92u,
+		90u,
+		0u);
+	TestTrue(TEXT("The first ACK always resolves its own prediction"),
+		OldAckBeforeReplacement.bResolvePrediction);
+	TestFalse(TEXT("The first ACK cannot replace feedback for the latest click"),
+		OldAckBeforeReplacement.bUpdateCommandLine);
+	TestTrue(TEXT("Synchronous handling clears the first dispatched command"),
+		OldAckBeforeReplacement.bClearDispatchedCommand);
+
+	const auto OldAckAfterReplacement = ResolveMoveAckRouting(
+		EGuLiCommandKind::Move,
+		90u,
+		92u,
+		92u,
+		0u);
+	TestTrue(TEXT("FIFO fallback still resolves an older ACK by its own ID"),
+		OldAckAfterReplacement.bResolvePrediction);
+	TestFalse(TEXT("An older ACK cannot clear the newer dispatched command"),
+		OldAckAfterReplacement.bClearDispatchedCommand);
+
+	const auto LatestAck = ResolveMoveAckRouting(
+		EGuLiCommandKind::Move,
+		92u,
+		92u,
+		92u,
+		90u);
+	TestTrue(TEXT("The latest ACK resolves prediction"), LatestAck.bResolvePrediction);
+	TestTrue(TEXT("The latest ACK updates command-line feedback"), LatestAck.bUpdateCommandLine);
+	TestTrue(TEXT("The latest ACK clears its dispatched command"), LatestAck.bClearDispatchedCommand);
+
+	const auto SelectionAck = ResolveMoveAckRouting(
+		EGuLiCommandKind::Selection,
+		92u,
+		92u,
+		92u,
+		0u);
+	TestFalse(TEXT("Selection ACKs never enter move prediction routing"),
+		SelectionAck.bResolvePrediction);
+	return true;
+}
+
 #endif // WITH_DEV_AUTOMATION_TESTS

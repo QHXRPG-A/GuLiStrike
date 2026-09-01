@@ -9,6 +9,8 @@
 #include "Misc/AutomationTest.h"
 #include "UObject/UnrealType.h"
 
+#include <limits>
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FGuLiRuntimeTuningRegistryTest,
 	"GuLiStrike.RuntimeTuning.Registry",
@@ -20,7 +22,7 @@ bool FGuLiRuntimeTuningRegistryTest::RunTest(const FString& Parameters)
 
 	FGuLiRuntimeTuningRegistry Registry;
 	const TArray<FGuLiRuntimeTuningEntryView> AllEntries = Registry.List();
-	TestEqual(TEXT("The GM whitelist contains exactly seven keys"), AllEntries.Num(), 7);
+	TestEqual(TEXT("The global GM whitelist contains five keys; skill tuning has its own scoped commands"), AllEntries.Num(), 5);
 	for (int32 Index = 1; Index < AllEntries.Num(); ++Index)
 	{
 		TestTrue(
@@ -69,22 +71,44 @@ bool FGuLiRuntimeTuningRegistryTest::RunTest(const FString& Parameters)
 		Registry.Set(TEXT("soldier.unknown"), TEXT("1")).bSuccess);
 	TestFalse(
 		TEXT("NaN is rejected"),
-		Registry.Set(TEXT("soldier.attack_power"), TEXT("nan")).bSuccess);
+		Registry.Set(TEXT("soldier.max_health"), TEXT("nan")).bSuccess);
 	TestFalse(
 		TEXT("Infinity is rejected"),
-		Registry.Set(TEXT("soldier.attack_power"), TEXT("inf")).bSuccess);
+		Registry.Set(TEXT("soldier.max_health"), TEXT("inf")).bSuccess);
 	TestFalse(
 		TEXT("Trailing junk is rejected"),
-		Registry.Set(TEXT("soldier.attack_power"), TEXT("12junk")).bSuccess);
+		Registry.Set(TEXT("soldier.defense"), TEXT("12junk")).bSuccess);
 	TestFalse(
 		TEXT("Out-of-range health is rejected instead of clamped"),
-		Registry.Set(TEXT("soldier.max_health"), TEXT("256")).bSuccess);
+		Registry.Set(TEXT("soldier.max_health"), TEXT("1000000001")).bSuccess);
 	TestFalse(
 		TEXT("Movement speed beyond the Mass wire representation is rejected"),
 		Registry.Set(TEXT("soldier.move_speed_cm_s"), TEXT("32768")).bSuccess);
-	TestFalse(
-		TEXT("Fractional health is rejected"),
+	TestTrue(
+		TEXT("Fractional health is accepted"),
 		Registry.Set(TEXT("soldier.max_health"), TEXT("99.5")).bSuccess);
+	TestTrue(TEXT("Health above the removed uint8 ceiling is accepted"),
+		Registry.Set(TEXT("soldier.max_health"), TEXT("300.5")).bSuccess);
+	TestTrue(TEXT("Positive maximum health below one is accepted"),
+		Registry.Set(TEXT("soldier.max_health"), TEXT("0.5")).bSuccess);
+	TestFalse(TEXT("Zero maximum health is rejected"),
+		Registry.Set(TEXT("soldier.max_health"), TEXT("0")).bSuccess);
+	for (const TCHAR* LegacyKey : {TEXT("soldier.attack_power"), TEXT("soldier.attack_range_cm")})
+	{
+		const FGuLiRuntimeTuningResult Legacy = Registry.Set(LegacyKey, TEXT("10"));
+		TestFalse(TEXT("Legacy global skill overrides cannot overwrite per-type profiles"), Legacy.bSuccess);
+		TestTrue(TEXT("Legacy command explains the replacement scope and command"),
+			Legacy.Error.Contains(TEXT("gs.GM.Skill.Set <Red|Blue> <UnitTypeId>")));
+	}
+	FGuLiRuntimeTuningRegistry LayerRegistry;
+	TestTrue(TEXT("An override equal to the default type still affects other types"),
+		LayerRegistry.Set(TEXT("soldier.max_health"), TEXT("100")).bChanged);
+	TestFalse(TEXT("Repeating the identical active override is a no-op"),
+		LayerRegistry.Set(TEXT("soldier.max_health"), TEXT("100")).bChanged);
+	TestTrue(TEXT("Reset restores each type's baseline even if default type's number is unchanged"),
+		LayerRegistry.Reset(TEXT("soldier.max_health")).bChanged);
+	TestFalse(TEXT("Reset without an override is a no-op"),
+		LayerRegistry.Reset(TEXT("soldier.max_health")).bChanged);
 
 	FGuLiRuntimeTuningRegistry OtherWorldRegistry;
 	Registry.Set(TEXT("ship.max_speed_multiplier"), TEXT("2"));
@@ -139,15 +163,23 @@ bool FGuLiRuntimeTuningRegistryTest::RunTest(const FString& Parameters)
 	TestEqual(
 		TEXT("Living health keeps its ratio when maximum health doubles"),
 		GuLiRuntimeTuning::ScaleHealthPreservingRatio(50u, 100u, 200u),
-		static_cast<uint8>(100u));
+		100.0f);
 	TestEqual(
-		TEXT("A living Soldier never becomes dead through ratio rounding"),
+		TEXT("Small surviving health retains its fractional ratio instead of rounding to one"),
 		GuLiRuntimeTuning::ScaleHealthPreservingRatio(1u, 255u, 1u),
-		static_cast<uint8>(1u));
+		1.0f / 255.0f);
 	TestEqual(
 		TEXT("A dead Soldier remains dead when maximum health changes"),
 		GuLiRuntimeTuning::ScaleHealthPreservingRatio(0u, 100u, 200u),
-		static_cast<uint8>(0u));
+		0.0f);
+	TestEqual(TEXT("Fractional health above 255 preserves its ratio exactly"),
+		GuLiRuntimeTuning::ScaleHealthPreservingRatio(150.25f, 300.5f, 601.0f), 300.5f);
+	TestEqual(TEXT("Over-healed data cannot scale beyond the new maximum"),
+		GuLiRuntimeTuning::ScaleHealthPreservingRatio(250.0f, 100.0f, 300.5f), 300.5f);
+	TestEqual(TEXT("Non-finite health does not revive or propagate NaN"),
+		GuLiRuntimeTuning::ScaleHealthPreservingRatio(std::numeric_limits<float>::quiet_NaN(), 100.0f, 300.5f), 0.0f);
+	TestEqual(TEXT("Invalid new maximum does not propagate infinity"),
+		GuLiRuntimeTuning::ScaleHealthPreservingRatio(50.0f, 100.0f, std::numeric_limits<float>::infinity()), 0.0f);
 	TestEqual(
 		TEXT("The 3600 cm/s baseline predicts exactly one quarter second"),
 		GuLiRuntimeTuning::CalculatePredictionDistance(3600.0f, 0.25f, 450.0f),

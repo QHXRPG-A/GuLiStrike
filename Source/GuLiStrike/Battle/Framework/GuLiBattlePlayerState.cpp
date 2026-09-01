@@ -3,6 +3,58 @@
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 
 #include "Net/UnrealNetwork.h"
+#include "AbilitySystemComponent.h"
+#include "Gameplay/Skills/GuLiArmySkillAbility.h"
+#include "Gameplay/Skills/GuLiSkillTags.h"
+
+AGuLiBattlePlayerState::AGuLiBattlePlayerState()
+{
+	ArmyAbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ArmyAbilitySystem"));
+	ArmyAbilitySystem->SetIsReplicated(true);
+	ArmyAbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+}
+
+void AGuLiBattlePlayerState::BeginPlay()
+{
+	Super::BeginPlay();
+	InitializeArmyAbilitySystem();
+}
+
+UAbilitySystemComponent* AGuLiBattlePlayerState::GetAbilitySystemComponent() const
+{
+	return ArmyAbilitySystem;
+}
+
+void AGuLiBattlePlayerState::InitializeArmyAbilitySystem()
+{
+	if (!ArmyAbilitySystem) return;
+	// Army commands belong to the player state, and do not depend on its current Pawn.
+	ArmyAbilitySystem->InitAbilityActorInfo(this, this);
+	if (HasAuthority() && !bArmySkillAbilityGranted)
+	{
+		ArmyAbilitySystem->GiveAbility(FGameplayAbilitySpec(UGuLiArmySkillAbility::StaticClass(), 1));
+		bArmySkillAbilityGranted = true;
+	}
+}
+
+bool AGuLiBattlePlayerState::ExecuteArmySkillCommand(const FGuLiArmySkillCommand& Command, FString& OutError)
+{
+	if (!HasAuthority() || !ArmyAbilitySystem)
+	{
+		OutError = TEXT("Army skill commands execute only on the server."); return false;
+	}
+	InitializeArmyAbilitySystem();
+	auto* Payload = NewObject<UGuLiArmySkillCommandPayload>(this);
+	Payload->Request = Command;
+	FGameplayEventData Event;
+	Event.EventTag = TAG_GuLi_ArmySkillCommand;
+	Event.Instigator = this;
+	Event.Target = this;
+	Event.OptionalObject = Payload;
+	ArmyAbilitySystem->HandleGameplayEvent(TAG_GuLi_ArmySkillCommand, &Event);
+	OutError = Payload->bExecuted ? Payload->Error : TEXT("ServerOnly army skill ability did not activate.");
+	return Payload->bExecuted && Payload->bSucceeded;
+}
 
 // 身份、分配结果与就绪位走属性复制；C++ 服务器 setter 另行广播本地通知。
 void AGuLiBattlePlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const

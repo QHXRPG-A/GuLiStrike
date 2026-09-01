@@ -27,7 +27,7 @@ struct GULISTRIKE_API FGuLiMassHealthFragment : public FMassFragment
 	GENERATED_BODY()
 
 	UPROPERTY(Transient)
-	uint8 Health = 100u;
+	float Health = 100.0f;
 
 	UPROPERTY(Transient)
 	bool bDead = false;
@@ -38,23 +38,18 @@ struct GULISTRIKE_API FGuLiMassHealthFragment : public FMassFragment
 	bool IsAlive() const;
 };
 
-/** Authoritative data-bearing stats. Combat systems do not consume these yet. */
+/** Authoritative base stats. Resolved skill profiles own damage, range and attack rate. */
 USTRUCT()
 struct GULISTRIKE_API FGuLiMassSoldierStatsFragment : public FMassFragment
 {
 	GENERATED_BODY()
 
 	UPROPERTY(Transient)
-	uint8 MaxHealth = 100u;
-
-	UPROPERTY(Transient)
-	float AttackPower = 0.0f;
+	float MaxHealth = 100.0f;
 
 	UPROPERTY(Transient)
 	float Defense = 0.0f;
 
-	UPROPERTY(Transient)
-	float AttackRangeCentimeters = 0.0f;
 };
 
 /** The latest accepted server order for one Soldier. */

@@ -1,0 +1,50 @@
+[
+  {
+    "Name": "SoldierA_Strafe",
+    "Id": 1,
+    "Note": "A默认普攻",
+    "UnitTypeId": 1,
+    "SlotId": "BasicAttack",
+    "SkillId": "Strafe",
+    "bDefault": true,
+    "Damage": 10.0,
+    "AttackRatePerSecond": 2.0,
+    "RangeCentimeters": 10000.0
+  },
+  {
+    "Name": "SoldierB_Strafe",
+    "Id": 2,
+    "Note": "B默认普攻",
+    "UnitTypeId": 2,
+    "SlotId": "BasicAttack",
+    "SkillId": "Strafe",
+    "bDefault": true,
+    "Damage": 7.5,
+    "AttackRatePerSecond": 4.0,
+    "RangeCentimeters": 15000.0
+  },
+  {
+    "Name": "SoldierA_Test",
+    "Id": 3,
+    "Note": "A替换验证",
+    "UnitTypeId": 1,
+    "SlotId": "BasicAttack",
+    "SkillId": "StrafeTest",
+    "bDefault": false,
+    "Damage": 25.0,
+    "AttackRatePerSecond": 1.0,
+    "RangeCentimeters": 12000.0
+  },
+  {
+    "Name": "SoldierB_Test",
+    "Id": 4,
+    "Note": "B替换验证",
+    "UnitTypeId": 2,
+    "SlotId": "BasicAttack",
+    "SkillId": "StrafeTest",
+    "bDefault": false,
+    "Damage": 15.0,
+    "AttackRatePerSecond": 2.0,
+    "RangeCentimeters": 18000.0
+  }
+]

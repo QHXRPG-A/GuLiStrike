@@ -1,6 +1,7 @@
 # 精读笔记：GuLiBattleAuthoritySubsystem.cpp —— 从选兵意图到服务端权威移动
 
 - 源码核对日期：2026-08-31（初稿：2026-08-30）
+- 源码增补日期：2026-09-01（自由落位、单兵部分接受与NavMesh分帧修复已按当前源码复核）
 - 对应需求：UE 网络教材与 Mass 精读笔记同步修订；本文是现有源码导读，不是新功能方案。
 - 状态：已同步公共 Battle 框架；本文是源码导读，验证事实与未通过项见文末。
 - 阅读基线：当前工作区源码，包含本次开始前已有的未提交修改，不以旧归档或 Git HEAD 代替现状。
@@ -8,6 +9,8 @@
 - 接口与配置声明：[GuLiBattleAuthoritySubsystem.h](../../../Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h)
 
 `UGuLiBattleAuthoritySubsystem` 把指挥官的选择、移动意图变成服务端认可的士兵状态，以固定步长推进位置，再提供给网络复制与表现层。读懂它的关键，是分清“士兵身份”“临时控制组”“一次移动的编队”，以及谁最终写入位置。
+
+> 2026-09-01提示：[移动命令自由扩散与静态寻路线](../20260901-移动命令自由扩散与静态寻路线.md)已经把固定终点整组裁决改为自由候选、单兵部分接受和分帧规划。下方第5节按当前源码描述；构建、自动化与无头冒烟已经通过，交互PIE、双客户端和完整性能仍以文末边界为准。
 
 ## 1. 先看全貌，再看辅助算法
 
@@ -122,23 +125,22 @@ flowchart TD
 
 本文件虽然还保留 `FRequestGate`、`RequestGates`、`MaxRequestsPerSecond`，当前选择/移动路径没有使用它们。实际请求限流、重复检测和缓存 ACK 重放应读 [GuLiCommanderNetSyncComponent.cpp](../../../Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp) 的 `HandleSelectionRequest`、`HandleMoveRequest`。
 
-## 5. IssueMove：公共终点，各自寻路，最后提交
+## 5. IssueMove：自由候选、分帧规划、单兵提交
 
-移动请求必须引用当前的 `SelectionRevision`，并且当前选择非空。组按 CohortId 排序，处理与 ACK 输出顺序保持稳定。
+移动请求必须引用当前`SelectionRevision`且选择非空。`BeginMovePlanning`冻结Cohort和成员顺序、战局、队伍、请求目标与NavMesh代次；同ID同内容补发关联现有任务，同队同一时刻只推进一个未完成移动任务，避免并发scratch预约互相穿透。
 
-公共目标通过 `ResolveSharedMoveTarget` 投影到专用 NavMesh：允许高度修正，但 XY 修正不能超过一个 Agent 半径。没有专用导航数据返回 `PathFailed`，公共目标不合法返回 `InvalidTarget`。
+规划状态机按World帧推进：
 
-然后逐组尝试建立编队：
+1. `ValidateStarts`重新读取存活、阵营、身份和当前权威起点。Nav起点失败的成员仍属于Eligible，但不会Accepted。
+2. `ProjectCandidates`从点击点周围1800cm世界轴六角格按二维距离和六角坐标稳定向外搜索至45000cm，理论候选2263；每帧最多64次Nav投影。
+3. `AssignDestinations`用9000cm软锚帮助Cohort集中，再以确定性匈牙利匹配成员与自由槽。750cm XY修正、450m边界和1600cm槽/硬预约间距才是合法性条件，点击中心和固定5×5块不再是硬门槛。
+4. `Route`优先从实际起点medoid到终点medoid建立共享长路径并检查连接段；失败时沿终点包围盒最长轴稳定二分内部Formation，最终降级为单兵完整路径。每帧最多4次路径查询。
+5. `ReconcileReservations`恢复失败成员的旧预约；若压住暂定新槽，受影响成员按稳定顺序继续向外分配。任务内黑名单避免重复尝试已失败的成员—槽位配对。
+6. `ReadyToCommit`再次核对战局、NavMesh代次、成员状态与起点。可恢复变化回到相应阶段；准备结果只在下一次30Hz权威步一次提交。
 
-1. 仅保留当前存活且阵营合法的成员。
-2. 用这些成员的质心作为 `GuideAnchor`，公共目标作为 `TargetAnchor`。
-3. `BuildSharedPath` 为该编队寻路，只接受至少两个路径点的完整路径，不接受 partial path。
-4. 解析最后一段有效路径的 `FinalPathFrame`，建立初始朝向与成员状态容器。
-5. 暂存到 `AcceptedFormations`，暂不覆盖士兵当前指令。
+Pending期间不覆盖旧Formation或`ActiveOrderId`。成功成员共享同一个非零`BatchOrderId`；失败成员保留旧指令但从当前选择移除，整批最多推进一次`SelectionRevision`。v6 ACK按冻结成员位序携带`EligibleMemberMask`与`AcceptedMemberMask`，允许同一Cohort内部部分成功。“已接受”只表示新命令已经权威提交，不表示成员已经到达。
 
-全部组检查完毕后，才统计成功成员、计算共同到达域、给成功成员写入 `ActiveOrderId`，更新 Order / MoveTarget Fragment，分配槽位并加入活动编队集合。
-
-这允许 `PartiallyAccepted`：有的组路径失败，其他组仍然接令。失败组的原指令不会在此被覆盖。“已接受”仅表示指令已经提交，不表示士兵已经到达。
+NavMesh生成代次变化也不再在回调里同步查询全部活动单位。回调建立按SoldierId/Formation稳定排序的`NavigationRepairJob`并冻结受影响成员；`TickNavigationRepairs`继续使用64次投影、4次规划路径的帧预算，`CommitReadyNavigationRepairs`在固定步前复核并提交。失败成员进入既有个人恢复或Blocked路径。
 
 ### 截图中的到达半径到底算了什么？
 
@@ -326,6 +328,16 @@ flowchart TD
 | 流场默认开关 / 全帧扫描预算 | false / 512 格 | `.h` 声明默认值 |
 | 姿态帧目标频率 / 分块容量 | 10 Hz / 32 人 | 网络协议常量 |
 
+自由落位当前实现参数另列如下；参数有源码与自动化覆盖，但大规模运行性能边界仍见下一节：
+
+| 规划项 | 设计值 | 用途 |
+|---|---:|---|
+| 六角候选格距 / 搜索半径 | 1800 cm / 45000 cm | 中心向外自由落位；圆内理论候选2263 |
+| 投影XY修正 / 最小间距 | 750 cm / 1600 cm | NavMesh候选和硬预约约束 |
+| 软锚间距 | 9000 cm | 只帮助cohort局部集中，不决定合法性 |
+| 每帧规划预算 | 64次投影 / 4次路径查询 | 跨帧推进，禁止单帧穷举 |
+| 当前协议版本 | v6 | cohort内Eligible/Accepted单兵掩码与OwnerOnly活动终点 |
+
 阅读或排查时尤其避免以下推断：
 
 - 有 20 个出生方阵，不代表存在 20 个永久控制组。
@@ -337,7 +349,9 @@ flowchart TD
 
 ## 12. 核对范围与验证边界
 
-本篇按 2026-08-31 当前工作区源码更新生命周期、发布职责、外围就绪条件及镜像清理；固定步、寻路、松散到达和流场部分保留仍然准确的解释。本轮仅修改文档，未改源码，也没有重新编译或运行 PIE。
+2026-09-01已按当前源码核对自由候选、分帧规划、单兵部分接受、协议v6、终点FastArray和NavMesh分帧修复。`GuLiStrikeEditor Win64 Development`与`GuLiStrike Win64 Development`构建成功；全量99项均Success，网络19/19、导航24/24。默认地图无头运行加载原生Commander GameMode、生成500兵，并让一次20人命令20/20 Accepted、移动3870cm后完成销毁，最终PASS。
+
+无头冒烟不是完整交互和性能验收。25/250/500兵交互PIE、Standalone双客户端、500条静态绿线绘制成本、500活动单位NavMesh动态重建峰值和Dedicated Server仍未验证；Launcher引擎不支持Server Target。完整证据和遗留见[本轮受限验证归档](../../Archive/20260901-移动命令自由扩散与静态寻路线实现与验证.md)。
 
 [公共战局框架正式归档](../../Archive/20260831-公共战局框架与三类角色接入.md)记录此前冷编译成功、50/50 现有测试通过，以及重连、原生切图、复活和混合战局验证。NetworkGate 最终 ACK P95=138.1ms 达标，但未标记硬跳变 1 次，原因尚未确定；这些整体测试不能替代每个 Mass 算法的专项验证。
 

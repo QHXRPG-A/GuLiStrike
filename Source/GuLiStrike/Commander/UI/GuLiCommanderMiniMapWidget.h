@@ -83,6 +83,7 @@ private:
 	TArray<uint8> TerrainValidity;
 	float TerrainMinimumHeight = 0.0f;
 	float TerrainMaximumHeight = 1.0f;
+	uint32 TerrainLandscapeRevision = 0u;
 	bool bTerrainCacheInitialized = false;
 	bool bNativeConstructed = false;
 

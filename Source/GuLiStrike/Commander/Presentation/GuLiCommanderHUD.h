@@ -14,6 +14,21 @@ class AGuLiCommanderPresentationActor;
 class AGuLiSoldierStateReplicator;
 class UGuLiCommanderHUDWidget;
 
+namespace GuLiCommanderHUD
+{
+	/** Pure visibility policy for one authoritative route; used by HUD and regression tests. */
+	GULISTRIKE_API bool ShouldDrawMoveEndpoint(
+		const FGuLiMoveEndpointItem& Endpoint,
+		bool bIsSelected,
+		const FGuLiSoldierStateItem* SoldierState);
+
+	/** Clips a projected line against the player canvas without animating or changing its direction. */
+	GULISTRIKE_API bool ClipScreenLineToBounds(
+		const FBox2D& Bounds,
+		FVector2D& InOutStart,
+		FVector2D& InOutEnd);
+}
+
 /** Canvas-only commander prototype HUD; it does not own replicated state. */
 // 本地界面消费层；读取复制状态与业务回执，不承担网络身份分配或权威命令执行。
 UCLASS()
@@ -59,6 +74,7 @@ private:
 	void DrawMiniMapCameraFrame(float MapX, float MapY, float MapSize, float CameraYawDegrees);
 	void DrawSelectionPresetButtons(EGuLiSelectionRadiusPreset ActivePreset);
 	void DrawSelectionCircle(const AGuLiCommanderPlayerController& Controller);
+	void DrawSelectionRectangle(const AGuLiCommanderPlayerController& Controller);
 	void DrawActiveCommandLine(const AGuLiCommanderPlayerController& Controller);
 
 	mutable TWeakObjectPtr<AGuLiSoldierStateReplicator> CachedSoldierStateReplicator;
@@ -68,6 +84,7 @@ private:
 	TArray<uint8> MiniMapTerrainValidity;
 	float MiniMapTerrainMinimumHeight = 0.0f;
 	float MiniMapTerrainMaximumHeight = 1.0f;
+	uint32 MiniMapLandscapeRevision = 0u;
 	bool bMiniMapTerrainCacheInitialized = false;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Commander|UI")

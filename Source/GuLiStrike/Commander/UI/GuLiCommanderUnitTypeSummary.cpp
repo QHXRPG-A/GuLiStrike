@@ -64,8 +64,9 @@ namespace GuLiCommanderUnitTypeSummary
 
 float FGuLiCommanderUnitTypeSummary::GetHealthFraction() const
 {
-	return !bSyncing && TotalMaxHealth > 0
-		? FMath::Clamp(static_cast<float>(TotalHealth) / static_cast<float>(TotalMaxHealth), 0.0f, 1.0f)
+	return !bSyncing && FMath::IsFinite(TotalHealth) && FMath::IsFinite(TotalMaxHealth)
+		&& TotalMaxHealth > 0.0f
+		? FMath::Clamp(TotalHealth / TotalMaxHealth, 0.0f, 1.0f)
 		: 0.0f;
 }
 
@@ -119,14 +120,23 @@ FGuLiCommanderUnitTypeSummary BuildGuLiCommanderUnitTypeSummary(
 	{
 		FGuLiControlCohortId CohortId;
 		// Removal also prevents any repeated snapshot identity from being counted twice.
-		if (!PendingMembers.RemoveAndCopyValue(Soldier.SoldierId, CohortId) || !Soldier.IsAlive())
+		if (!PendingMembers.RemoveAndCopyValue(Soldier.SoldierId, CohortId))
+		{
+			continue;
+		}
+		if (!FMath::IsFinite(Soldier.Health) || !FMath::IsFinite(Soldier.MaxHealth)
+			|| Soldier.MaxHealth <= 0.0f || Soldier.Health < 0.0f || Soldier.Health > Soldier.MaxHealth)
+		{
+			Summary.bSyncing = true;
+			continue;
+		}
+		if (!Soldier.IsAlive())
 		{
 			continue;
 		}
 		++Summary.AliveCount;
 		Summary.TotalHealth += Soldier.Health;
 		Summary.TotalMaxHealth += Soldier.MaxHealth;
-		Summary.bSyncing |= Soldier.MaxHealth == 0u || Soldier.Health > Soldier.MaxHealth;
 
 		const EGuLiCommandAckResult* EffectiveResult = nullptr;
 		if (bHasCurrentMoveAck)

@@ -21,7 +21,13 @@ public:
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")
 	TSoftObjectPtr<UDataTable> SoldierDataTable;
 
-	/** Static archetype row used by all Soldiers in this implementation. */
+	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")
+	TSoftObjectPtr<UDataTable> SkillDataTable;
+
+	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")
+	TSoftObjectPtr<UDataTable> UnitSkillDataTable;
+
+	/** Default archetype for legacy consumers; additional unit types use their own rows. */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")
 	FName DefaultSoldierRowName = TEXT("DefaultSoldier");
 };

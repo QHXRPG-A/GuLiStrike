@@ -19,15 +19,24 @@ def read_property(obj, name):
 
 result = {
     "world": None,
+    "world_settings_game_mode": None,
     "supported_agents": [],
     "nav_data": [],
     "nav_bounds_count": 0,
+    "landscape_count": 0,
+    "landscape_bounds": [],
     "errors": [],
 }
 try:
     editor = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem)
     world = editor.get_editor_world()
     result["world"] = world.get_path_name() if world else None
+    if world:
+        world_settings = world.get_world_settings()
+        game_mode = world_settings.get_editor_property("default_game_mode")
+        result["world_settings_game_mode"] = (
+            game_mode.get_path_name() if game_mode else None
+        )
     nav_default = unreal.get_default_object(unreal.NavigationSystemV1)
     try:
         supported = nav_default.get_editor_property("supported_agents")
@@ -66,6 +75,17 @@ try:
                     "origin": list(origin.to_tuple()),
                     "extent": list(extent.to_tuple()),
                     "scale": list(bounds.get_actor_scale3d().to_tuple()),
+                }
+            )
+        landscapes = unreal.GameplayStatics.get_all_actors_of_class(world, unreal.LandscapeProxy)
+        result["landscape_count"] = len(landscapes)
+        for landscape in landscapes:
+            origin, extent = landscape.get_actor_bounds(False, False)
+            result["landscape_bounds"].append(
+                {
+                    "actor": landscape.get_name(),
+                    "origin": list(origin.to_tuple()),
+                    "extent": list(extent.to_tuple()),
                 }
             )
 except Exception as exc:  # noqa: BLE001

@@ -29,10 +29,45 @@ namespace
 		case EGuLiSelectionModifier::Replace:
 		case EGuLiSelectionModifier::Toggle:
 		case EGuLiSelectionModifier::Clear:
+		case EGuLiSelectionModifier::Add:
 			return true;
 		default:
 			return false;
 		}
+	}
+
+	bool IsUnitSelectionRay(const FVector& Ray)
+	{
+		return IsFiniteVector(Ray) && FMath::IsNearlyEqual(Ray.SizeSquared(), 1.0, 0.002);
+	}
+
+	bool IsValidSelectionBox(const FGuLiSelectionRequest& Request)
+	{
+		const FVector Rays[] = {
+			Request.BoxTopLeftRay, Request.BoxTopRightRay,
+			Request.BoxBottomRightRay, Request.BoxBottomLeftRay
+		};
+		const FVector CenterRay = (Rays[0] + Rays[1] + Rays[2] + Rays[3]).GetSafeNormal();
+		if (CenterRay.IsNearlyZero())
+		{
+			return false;
+		}
+		double WindingSign = 0.0;
+		for (int32 Index = 0; Index < 4; ++Index)
+		{
+			if (!IsUnitSelectionRay(Rays[Index]) || FVector::DotProduct(Rays[Index], CenterRay) <= 0.0)
+			{
+				return false;
+			}
+			const FVector EdgeNormal = FVector::CrossProduct(Rays[Index], Rays[(Index + 1) % 4]);
+			const double Side = FVector::DotProduct(EdgeNormal, CenterRay);
+			if (FMath::Abs(Side) < 1.e-10 || (Index > 0 && Side * WindingSign <= 0.0))
+			{
+				return false;
+			}
+			WindingSign = Side;
+		}
+		return true;
 	}
 
 	bool IsValidLifeState(const EGuLiSoldierLifeState State)
@@ -136,13 +171,34 @@ float GuLiCommanderProtocol::DequantizeDecimetersToCentimeters(const int16 Decim
 	return static_cast<float>(Decimeters) * GULI_POSE_QUANTIZATION_CENTIMETERS;
 }
 
-// 格式检查只验证非零 ID、有限坐标与枚举范围；权限、版本与可选单位仍由服务器判定。
+// 验证各选择操作使用的几何；权限、版本与点选种子仍由服务器独立判定。
 bool FGuLiSelectionRequest::IsWellFormed() const
 {
-	return ClientRequestId != 0u
-		&& IsFiniteVector(Center)
-		&& IsValidSelectionPreset(RadiusPreset)
-		&& IsValidSelectionModifier(Modifier);
+	if (ClientRequestId == 0u || !IsFiniteVector(Center)
+		|| !IsValidSelectionPreset(RadiusPreset) || !IsValidSelectionModifier(Modifier))
+	{
+		return false;
+	}
+	if (Kind != EGuLiSelectionKind::Radius && Kind != EGuLiSelectionKind::Point
+		&& Kind != EGuLiSelectionKind::Box && Kind != EGuLiSelectionKind::SameType)
+	{
+		return false;
+	}
+	if (Modifier == EGuLiSelectionModifier::Clear || Kind == EGuLiSelectionKind::Radius)
+	{
+		return true;
+	}
+	if (!IsFiniteVector(RayOrigin) || FVector(RayOrigin).GetAbsMax() > 2000000.0)
+	{
+		return false;
+	}
+	if (Kind == EGuLiSelectionKind::Box)
+	{
+		return IsValidSelectionBox(*this);
+	}
+	return SeedSoldierId.IsValid() && IsUnitSelectionRay(RayDirection)
+		&& FMath::IsFinite(PickHalfAngleRadians)
+		&& PickHalfAngleRadians >= 0.0001f && PickHalfAngleRadians <= 0.05f;
 }
 
 bool FGuLiMoveRequest::IsWellFormed() const
@@ -320,7 +376,71 @@ bool FGuLiCommandAck::IsAccepted() const
 		|| Result == EGuLiCommandAckResult::PartiallyAccepted;
 }
 
-// 只整理种类/控制组列表及上限；不能替代服务器权限、寻路校验，也不是对全部结果枚举的验证。
+uint32 FGuLiCohortCommandAck::GetValidMemberMask() const
+{
+	const uint32 ClampedCount = FMath::Min<uint32>(MemberCount, GULI_CONTROL_COHORT_TARGET_SIZE);
+	return ClampedCount == 0u ? 0u : ((1u << ClampedCount) - 1u);
+}
+
+bool FGuLiCohortCommandAck::IsMemberEligible(const uint8 MemberIndex) const
+{
+	return MemberIndex < MemberCount
+		&& MemberIndex < GULI_CONTROL_COHORT_TARGET_SIZE
+		&& (EligibleMemberMask & (1u << MemberIndex)) != 0u;
+}
+
+bool FGuLiCohortCommandAck::IsMemberAccepted(const uint8 MemberIndex) const
+{
+	return MemberIndex < MemberCount
+		&& MemberIndex < GULI_CONTROL_COHORT_TARGET_SIZE
+		&& (AcceptedMemberMask & (1u << MemberIndex)) != 0u;
+}
+
+uint8 FGuLiCohortCommandAck::GetAcceptedMemberCount() const
+{
+	return static_cast<uint8>(FPlatformMath::CountBits(AcceptedMemberMask & GetValidMemberMask()));
+}
+
+// Bit positions are meaningful only inside the frozen cohort membership. Never accept an ineligible member.
+void FGuLiCohortCommandAck::Sanitize()
+{
+	MemberCount = FMath::Min<uint8>(
+		MemberCount,
+		static_cast<uint8>(GULI_CONTROL_COHORT_TARGET_SIZE));
+	const uint32 ValidMask = GetValidMemberMask();
+	EligibleMemberMask &= ValidMask;
+	AcceptedMemberMask &= EligibleMemberMask;
+
+	if (MemberCount == 0u)
+	{
+		EligibleMemberMask = 0u;
+		AcceptedMemberMask = 0u;
+		if (Result == EGuLiCommandAckResult::Accepted
+			|| Result == EGuLiCommandAckResult::PartiallyAccepted)
+		{
+			Result = EGuLiCommandAckResult::NoSelection;
+		}
+		return;
+	}
+
+	if (AcceptedMemberMask != 0u)
+	{
+		Result = AcceptedMemberMask == EligibleMemberMask
+			? EGuLiCommandAckResult::Accepted
+			: EGuLiCommandAckResult::PartiallyAccepted;
+	}
+	else if (EligibleMemberMask != 0u)
+	{
+		Result = EGuLiCommandAckResult::PathFailed;
+	}
+	else
+	{
+		Result = EGuLiCommandAckResult::NoSelection;
+	}
+}
+
+// 整理种类与控制组，并让 v6 移动顶层结果、批次号和逐兵掩码保持同一事实。
+// 权限、寻路和成员资格仍只能由服务器 Authority 决定。
 void FGuLiCommandAck::Sanitize()
 {
 	if (!IsValidCommandKind(CommandKind))
@@ -340,7 +460,9 @@ void FGuLiCommandAck::Sanitize()
 	TSet<FGuLiControlCohortId> SeenCohorts;
 	for (int32 Index = 0; Index < CohortResults.Num();)
 	{
-		const FGuLiControlCohortId CohortId = CohortResults[Index].CohortId;
+		FGuLiCohortCommandAck& CohortResult = CohortResults[Index];
+		CohortResult.Sanitize();
+		const FGuLiControlCohortId CohortId = CohortResult.CohortId;
 		if (!CohortId.IsValid() || SeenCohorts.Contains(CohortId))
 		{
 			CohortResults.RemoveAt(Index, 1, EAllowShrinking::No);
@@ -355,16 +477,78 @@ void FGuLiCommandAck::Sanitize()
 	{
 		CohortResults.SetNum(static_cast<int32>(GULI_MAX_CONTROL_COHORTS), EAllowShrinking::No);
 	}
+
+	// A v6 planning result is a single coherent contract: accepted bits require a batch,
+	// and the top-level result is derived from the sanitized per-member masks. Transport,
+	// permission and lifecycle rejections keep their explicit reason even when an asynchronous
+	// planner already attached frozen cohort diagnostics.
+	if (CommandKind != EGuLiCommandKind::Move)
+	{
+		return;
+	}
+	const bool bDerivePlanningResultFromMasks =
+		Result == EGuLiCommandAckResult::Accepted
+		|| Result == EGuLiCommandAckResult::PartiallyAccepted
+		|| Result == EGuLiCommandAckResult::PathFailed
+		|| Result == EGuLiCommandAckResult::NoSelection;
+	if (!bDerivePlanningResultFromMasks)
+	{
+		BatchOrderId = 0u;
+		for (FGuLiCohortCommandAck& CohortResult : CohortResults)
+		{
+			CohortResult.AcceptedMemberMask = 0u;
+			CohortResult.Sanitize();
+		}
+		return;
+	}
+	if (CohortResults.IsEmpty())
+	{
+		BatchOrderId = 0u;
+		if (Result == EGuLiCommandAckResult::Accepted
+			|| Result == EGuLiCommandAckResult::PartiallyAccepted)
+		{
+			Result = EGuLiCommandAckResult::InvalidRequest;
+		}
+		return;
+	}
+	uint32 EligibleMemberCount = 0u;
+	uint32 AcceptedMemberCount = 0u;
+	for (const FGuLiCohortCommandAck& CohortResult : CohortResults)
+	{
+		EligibleMemberCount += FPlatformMath::CountBits(CohortResult.EligibleMemberMask);
+		AcceptedMemberCount += FPlatformMath::CountBits(CohortResult.AcceptedMemberMask);
+	}
+	if (BatchOrderId == 0u && AcceptedMemberCount > 0u)
+	{
+		AcceptedMemberCount = 0u;
+		for (FGuLiCohortCommandAck& CohortResult : CohortResults)
+		{
+			CohortResult.AcceptedMemberMask = 0u;
+			CohortResult.Sanitize();
+		}
+	}
+	if (AcceptedMemberCount == 0u)
+	{
+		BatchOrderId = 0u;
+		Result = EligibleMemberCount > 0u
+			? EGuLiCommandAckResult::PathFailed
+			: EGuLiCommandAckResult::NoSelection;
+		return;
+	}
+	Result = AcceptedMemberCount == EligibleMemberCount
+		? EGuLiCommandAckResult::Accepted
+		: EGuLiCommandAckResult::PartiallyAccepted;
 }
 
 bool FGuLiSoldierStateItem::IsAlive() const
 {
-	return LifeState == EGuLiSoldierLifeState::Alive && Health > 0u;
+	return LifeState == EGuLiSoldierLifeState::Alive && FMath::IsFinite(Health) && Health > 0.0f;
 }
 
-// 生命事实保持一致：最大生命至少为 1，死亡时生命/活动命令归零；客户端表现据此判定存活。
+// 生命是绝对浮点值；非法最大值回退为 1，非法健康值不复活单位。
 void FGuLiSoldierStateItem::Sanitize()
 {
+	UnitTypeId = FMath::Max<uint16>(UnitTypeId, GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID);
 	if (!GuLiCommanderProtocol::IsPlayableTeam(Team))
 	{
 		Team = EGuLiTeam::Unassigned;
@@ -373,12 +557,13 @@ void FGuLiSoldierStateItem::Sanitize()
 	{
 		LifeState = EGuLiSoldierLifeState::Alive;
 	}
-	MaxHealth = FMath::Max<uint8>(MaxHealth, 1u);
-	Health = FMath::Min(Health, MaxHealth);
+	MaxHealth = FMath::IsFinite(MaxHealth) && MaxHealth > 0.0f
+		? FMath::Min(MaxHealth, 1000000000.0f) : 1.0f;
+	Health = FMath::IsFinite(Health) ? FMath::Clamp(Health, 0.0f, MaxHealth) : 0.0f;
 
-	if (Health == 0u || LifeState == EGuLiSoldierLifeState::Destroyed)
+	if (Health <= 0.0f || LifeState == EGuLiSoldierLifeState::Destroyed)
 	{
-		Health = 0u;
+		Health = 0.0f;
 		LifeState = EGuLiSoldierLifeState::Destroyed;
 		ActiveOrderId = 0u;
 	}
@@ -420,6 +605,225 @@ FGuLiSoldierStateItem* FGuLiSoldierStateFastArray::FindMutable(const FGuLiSoldie
 			return Item.SoldierId == SoldierId;
 		})
 		: nullptr;
+}
+
+bool FGuLiMoveEndpointItem::IsValid() const
+{
+	return SoldierId.IsValid() && ActiveOrderId != 0u && Revision != 0u
+		&& IsFiniteVector(CommandStart) && IsFiniteVector(FinalDestination);
+}
+
+void FGuLiMoveEndpointItem::Sanitize()
+{
+	if (!SoldierId.IsValid() || ActiveOrderId == 0u
+		|| !IsFiniteVector(CommandStart) || !IsFiniteVector(FinalDestination))
+	{
+		SoldierId.Reset();
+		ActiveOrderId = 0u;
+		CommandStart = FVector::ZeroVector;
+		FinalDestination = FVector::ZeroVector;
+		Revision = 0u;
+		return;
+	}
+	if (Revision == 0u)
+	{
+		Revision = 1u;
+	}
+}
+
+void FGuLiMoveEndpointFastArray::Sanitize()
+{
+	TSet<FGuLiSoldierId> SeenSoldiers;
+	for (int32 Index = 0; Index < Items.Num();)
+	{
+		FGuLiMoveEndpointItem& Item = Items[Index];
+		Item.Sanitize();
+		if (!Item.IsValid() || SeenSoldiers.Contains(Item.SoldierId))
+		{
+			Items.RemoveAt(Index, 1, EAllowShrinking::No);
+			continue;
+		}
+		SeenSoldiers.Add(Item.SoldierId);
+		++Index;
+	}
+	const int32 MaximumEndpoints = static_cast<int32>(
+		GULI_MAX_CONTROL_COHORTS * GULI_CONTROL_COHORT_TARGET_SIZE);
+	if (Items.Num() > MaximumEndpoints)
+	{
+		Items.SetNum(MaximumEndpoints, EAllowShrinking::No);
+	}
+}
+
+const FGuLiMoveEndpointItem* FGuLiMoveEndpointFastArray::Find(const FGuLiSoldierId SoldierId) const
+{
+	return SoldierId.IsValid()
+		? Items.FindByPredicate([SoldierId](const FGuLiMoveEndpointItem& Item)
+		{
+			return Item.SoldierId == SoldierId;
+		})
+		: nullptr;
+}
+
+FGuLiMoveEndpointItem* FGuLiMoveEndpointFastArray::FindMutable(const FGuLiSoldierId SoldierId)
+{
+	return SoldierId.IsValid()
+		? Items.FindByPredicate([SoldierId](const FGuLiMoveEndpointItem& Item)
+		{
+			return Item.SoldierId == SoldierId;
+		})
+		: nullptr;
+}
+
+bool FGuLiMoveEndpointFastArray::Upsert(
+	const FGuLiSoldierId SoldierId,
+	const uint32 ActiveOrderId,
+	const FVector& CommandStart,
+	const FVector& FinalDestination)
+{
+	FGuLiMoveEndpointItem Candidate;
+	Candidate.SoldierId = SoldierId;
+	Candidate.ActiveOrderId = ActiveOrderId;
+	Candidate.CommandStart = CommandStart;
+	Candidate.FinalDestination = FinalDestination;
+	Candidate.Revision = 1u;
+	Candidate.Sanitize();
+	if (!Candidate.IsValid())
+	{
+		return false;
+	}
+
+	if (FGuLiMoveEndpointItem* Existing = FindMutable(SoldierId))
+	{
+		if (Existing->ActiveOrderId == Candidate.ActiveOrderId
+			&& FVector(Existing->CommandStart).Equals(CommandStart, 0.01)
+			&& FVector(Existing->FinalDestination).Equals(FinalDestination, 0.01))
+		{
+			return false;
+		}
+		Candidate.Revision = Existing->Revision + 1u;
+		if (Candidate.Revision == 0u)
+		{
+			Candidate.Revision = 1u;
+		}
+		Existing->ActiveOrderId = Candidate.ActiveOrderId;
+		Existing->CommandStart = Candidate.CommandStart;
+		Existing->FinalDestination = Candidate.FinalDestination;
+		Existing->Revision = Candidate.Revision;
+		MarkItemDirty(*Existing);
+		return true;
+	}
+	const int32 MaximumEndpoints = static_cast<int32>(
+		GULI_MAX_CONTROL_COHORTS * GULI_CONTROL_COHORT_TARGET_SIZE);
+	if (Items.Num() >= MaximumEndpoints)
+	{
+		return false;
+	}
+
+	FGuLiMoveEndpointItem& Added = Items.Add_GetRef(Candidate);
+	MarkItemDirty(Added);
+	return true;
+}
+
+bool FGuLiMoveEndpointFastArray::Remove(const FGuLiSoldierId SoldierId)
+{
+	const int32 Index = Items.IndexOfByPredicate([SoldierId](const FGuLiMoveEndpointItem& Item)
+	{
+		return Item.SoldierId == SoldierId;
+	});
+	if (Index == INDEX_NONE)
+	{
+		return false;
+	}
+	Items.RemoveAtSwap(Index, 1, EAllowShrinking::No);
+	MarkArrayDirty();
+	return true;
+}
+
+int32 FGuLiMoveEndpointFastArray::ReplaceWith(const TConstArrayView<FGuLiMoveEndpointItem> Endpoints)
+{
+	const int32 MaximumEndpoints = static_cast<int32>(
+		GULI_MAX_CONTROL_COHORTS * GULI_CONTROL_COHORT_TARGET_SIZE);
+	TMap<FGuLiSoldierId, FGuLiMoveEndpointItem> SanitizedBySoldier;
+	SanitizedBySoldier.Reserve(FMath::Min(Endpoints.Num(), MaximumEndpoints));
+	for (const FGuLiMoveEndpointItem& Endpoint : Endpoints)
+	{
+		FGuLiMoveEndpointItem Sanitized = Endpoint;
+		Sanitized.Sanitize();
+		if (Sanitized.IsValid()
+			&& SanitizedBySoldier.Num() < MaximumEndpoints
+			&& !SanitizedBySoldier.Contains(Sanitized.SoldierId))
+		{
+			SanitizedBySoldier.Add(Sanitized.SoldierId, Sanitized);
+		}
+	}
+
+	int32 ChangedCount = 0;
+	for (int32 Index = Items.Num() - 1; Index >= 0; --Index)
+	{
+		if (!SanitizedBySoldier.Contains(Items[Index].SoldierId))
+		{
+			Items.RemoveAtSwap(Index, 1, EAllowShrinking::No);
+			++ChangedCount;
+		}
+	}
+	if (ChangedCount > 0)
+	{
+		MarkArrayDirty();
+	}
+	TMap<FGuLiSoldierId, int32> ExistingIndexBySoldier;
+	ExistingIndexBySoldier.Reserve(Items.Num());
+	for (int32 Index = 0; Index < Items.Num(); ++Index)
+	{
+		ExistingIndexBySoldier.Add(Items[Index].SoldierId, Index);
+	}
+
+	TArray<FGuLiSoldierId> SortedIds;
+	SanitizedBySoldier.GetKeys(SortedIds);
+	SortedIds.Sort();
+	for (const FGuLiSoldierId SoldierId : SortedIds)
+	{
+		const FGuLiMoveEndpointItem& Incoming = SanitizedBySoldier.FindChecked(SoldierId);
+		if (const int32* ExistingIndex = ExistingIndexBySoldier.Find(SoldierId))
+		{
+			FGuLiMoveEndpointItem& Existing = Items[*ExistingIndex];
+			if (Existing.ActiveOrderId == Incoming.ActiveOrderId
+				&& FVector(Existing.CommandStart).Equals(FVector(Incoming.CommandStart), 0.01)
+				&& FVector(Existing.FinalDestination).Equals(
+					FVector(Incoming.FinalDestination), 0.01))
+			{
+				continue;
+			}
+			Existing.ActiveOrderId = Incoming.ActiveOrderId;
+			Existing.CommandStart = Incoming.CommandStart;
+			Existing.FinalDestination = Incoming.FinalDestination;
+			++Existing.Revision;
+			if (Existing.Revision == 0u)
+			{
+				Existing.Revision = 1u;
+			}
+			MarkItemDirty(Existing);
+		}
+		else
+		{
+			FGuLiMoveEndpointItem Added = Incoming;
+			Added.Revision = 1u;
+			FGuLiMoveEndpointItem& AddedItem = Items.Add_GetRef(MoveTemp(Added));
+			MarkItemDirty(AddedItem);
+		}
+		++ChangedCount;
+	}
+	return ChangedCount;
+}
+
+bool FGuLiMoveEndpointFastArray::ResetEndpoints()
+{
+	if (Items.IsEmpty())
+	{
+		return false;
+	}
+	Items.Reset();
+	MarkArrayDirty();
+	return true;
 }
 
 void FGuLiCompressedSoldierPose::SetRelativeLocationCentimeters(const FVector& RelativeLocation)

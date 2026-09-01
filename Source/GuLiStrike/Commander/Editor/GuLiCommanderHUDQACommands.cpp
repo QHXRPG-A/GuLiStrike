@@ -98,7 +98,7 @@ namespace GuLiCommanderHUDQA
 			for (const FGuLiSoldierStateItem& Item : Replicator->GetItems())
 			{
 				if (Changed < Limit && Members.Contains(Item.SoldierId) && Item.IsAlive()
-					&& Authority->ApplyDamage(Item.SoldierId, Action == TEXT("injure") ? 50u : 255u))
+					&& Authority->ApplyDamage(Item.SoldierId, Action == TEXT("injure") ? 50.0f : 1000000000.0f))
 				{
 					++Changed;
 				}

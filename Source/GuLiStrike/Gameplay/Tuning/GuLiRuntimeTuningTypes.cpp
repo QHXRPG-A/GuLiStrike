@@ -4,15 +4,25 @@
 
 #include "String/LexFromString.h"
 
+#include <limits>
+
 namespace GuLiRuntimeTuningKeys
 {
 	constexpr TCHAR SoldierMoveSpeed[] = TEXT("soldier.move_speed_cm_s");
 	constexpr TCHAR SoldierMaxHealth[] = TEXT("soldier.max_health");
-	constexpr TCHAR SoldierAttackPower[] = TEXT("soldier.attack_power");
 	constexpr TCHAR SoldierDefense[] = TEXT("soldier.defense");
-	constexpr TCHAR SoldierAttackRange[] = TEXT("soldier.attack_range_cm");
 	constexpr TCHAR ShipMaxSpeedMultiplier[] = TEXT("ship.max_speed_multiplier");
 	constexpr TCHAR ShipAccelerationMultiplier[] = TEXT("ship.acceleration_multiplier");
+
+	FString UnknownKeyError(const FString& Key)
+	{
+		if (Key.Equals(TEXT("soldier.attack_power"), ESearchCase::IgnoreCase)
+			|| Key.Equals(TEXT("soldier.attack_range_cm"), ESearchCase::IgnoreCase))
+		{
+			return TEXT("Soldier attack tuning moved to gs.GM.Skill.Set <Red|Blue> <UnitTypeId> <damage|rate|range> <value>; use gs.GM.Skill.Reset to restore that type's skill baseline");
+		}
+		return FString::Printf(TEXT("unknown key '%s'"), *Key);
+	}
 
 	bool IsStrictNumber(const FString& Text)
 	{
@@ -70,10 +80,9 @@ FGuLiRuntimeTuningRegistry::FGuLiRuntimeTuningRegistry()
 {
 	// FMassMoveTargetFragment stores desired speed in FMassInt16Real (1 cm precision).
 	Register(GuLiRuntimeTuningKeys::SoldierMoveSpeed, 3600.0, 1.0, MAX_int16);
-	Register(GuLiRuntimeTuningKeys::SoldierMaxHealth, 100.0, 1.0, 255.0, true);
-	Register(GuLiRuntimeTuningKeys::SoldierAttackPower, 0.0, 0.0, 1000000.0);
+	Register(GuLiRuntimeTuningKeys::SoldierMaxHealth, 100.0,
+		static_cast<double>(std::numeric_limits<float>::denorm_min()), 1000000000.0);
 	Register(GuLiRuntimeTuningKeys::SoldierDefense, 0.0, 0.0, 1000000.0);
-	Register(GuLiRuntimeTuningKeys::SoldierAttackRange, 0.0, 0.0, 1000000.0);
 	Register(GuLiRuntimeTuningKeys::ShipMaxSpeedMultiplier, 1.0, 0.0, 100.0);
 	Register(GuLiRuntimeTuningKeys::ShipAccelerationMultiplier, 1.0, 0.0, 100.0);
 }
@@ -89,7 +98,7 @@ bool FGuLiRuntimeTuningRegistry::SetBaseline(
 	{
 		if (OutError)
 		{
-			*OutError = FString::Printf(TEXT("unknown key '%s'"), *Key.ToString());
+			*OutError = GuLiRuntimeTuningKeys::UnknownKeyError(Key.ToString());
 		}
 		return false;
 	}
@@ -124,7 +133,7 @@ FGuLiRuntimeTuningResult FGuLiRuntimeTuningRegistry::Get(const FString& Key) con
 	if (!Entry)
 	{
 		FGuLiRuntimeTuningResult Result;
-		Result.Error = FString::Printf(TEXT("unknown key '%s'"), *TrimmedKey);
+		Result.Error = GuLiRuntimeTuningKeys::UnknownKeyError(TrimmedKey);
 		return Result;
 	}
 	return MakeResult(*Entry);
@@ -139,15 +148,12 @@ FGuLiRuntimeTuningResult FGuLiRuntimeTuningRegistry::Set(
 	if (!Entry)
 	{
 		FGuLiRuntimeTuningResult Result;
-		Result.Error = FString::Printf(TEXT("unknown key '%s'"), *TrimmedKey);
+		Result.Error = GuLiRuntimeTuningKeys::UnknownKeyError(TrimmedKey);
 		return Result;
 	}
 
-	const FString TrimmedValue = ValueText.TrimStartAndEnd();
 	double ParsedValue = 0.0;
-	if (!GuLiRuntimeTuningKeys::IsStrictNumber(TrimmedValue)
-		|| !LexTryParseString(ParsedValue, *TrimmedValue)
-		|| !FMath::IsFinite(ParsedValue))
+	if (!GuLiRuntimeTuning::TryParseFiniteNumber(ValueText, ParsedValue))
 	{
 		FGuLiRuntimeTuningResult Result = MakeResult(*Entry);
 		Result.bSuccess = false;
@@ -165,11 +171,13 @@ FGuLiRuntimeTuningResult FGuLiRuntimeTuningRegistry::Set(
 	}
 
 	const double PreviousEffective = Entry->GetEffective();
+	const bool bHadOverride = Entry->bHasOverride;
 	Entry->Override = ParsedValue;
 	Entry->bHasOverride = true;
 	FGuLiRuntimeTuningResult Result = MakeResult(*Entry);
 	Result.PreviousEffective = PreviousEffective;
-	Result.bChanged = !FMath::IsNearlyEqual(PreviousEffective, Result.Effective);
+	// An equal-valued override still changes all other types that have their own baselines.
+	Result.bChanged = !bHadOverride || PreviousEffective != Result.Effective;
 	return Result;
 }
 
@@ -180,7 +188,7 @@ FGuLiRuntimeTuningResult FGuLiRuntimeTuningRegistry::Reset(const FString& Key)
 	if (!Entry)
 	{
 		FGuLiRuntimeTuningResult Result;
-		Result.Error = FString::Printf(TEXT("unknown key '%s'"), *TrimmedKey);
+		Result.Error = GuLiRuntimeTuningKeys::UnknownKeyError(TrimmedKey);
 		return Result;
 	}
 
@@ -189,7 +197,7 @@ FGuLiRuntimeTuningResult FGuLiRuntimeTuningRegistry::Reset(const FString& Key)
 	Entry->bHasOverride = false;
 	FGuLiRuntimeTuningResult Result = MakeResult(*Entry);
 	Result.PreviousEffective = PreviousEffective;
-	Result.bChanged = bHadOverride && !FMath::IsNearlyEqual(PreviousEffective, Result.Effective);
+	Result.bChanged = bHadOverride;
 	return Result;
 }
 
@@ -280,6 +288,12 @@ bool FGuLiRuntimeTuningRegistry::IsValidValue(
 		OutError = TEXT("value must be finite");
 		return false;
 	}
+	if (Entry.Key == FName(GuLiRuntimeTuningKeys::SoldierMaxHealth)
+		&& (Value <= 0.0 || static_cast<float>(Value) <= 0.0f))
+	{
+		OutError = TEXT("maximum health must be a positive representable float, at most 1e9");
+		return false;
+	}
 	if (Value < Entry.Minimum || Value > Entry.Maximum)
 	{
 		OutError = FString::Printf(
@@ -309,26 +323,39 @@ FGuLiRuntimeTuningResult FGuLiRuntimeTuningRegistry::MakeResult(const FEntry& En
 	return Result;
 }
 
-uint8 GuLiRuntimeTuning::ScaleHealthPreservingRatio(
-	const uint8 CurrentHealth,
-	const uint8 PreviousMaximumHealth,
-	const uint8 NewMaximumHealth)
+bool GuLiRuntimeTuning::TryParseFiniteNumber(const FString& ValueText, double& OutValue)
 {
-	if (CurrentHealth == 0u)
+	const FString TrimmedValue = ValueText.TrimStartAndEnd();
+	double ParsedValue = 0.0;
+	if (!GuLiRuntimeTuningKeys::IsStrictNumber(TrimmedValue)
+		|| !LexTryParseString(ParsedValue, *TrimmedValue) || !FMath::IsFinite(ParsedValue))
 	{
-		return 0u;
+		return false;
 	}
-	if (PreviousMaximumHealth == 0u || NewMaximumHealth == 0u)
+	OutValue = ParsedValue;
+	return true;
+}
+
+float GuLiRuntimeTuning::ScaleHealthPreservingRatio(
+	const float CurrentHealth,
+	const float PreviousMaximumHealth,
+	const float NewMaximumHealth)
+{
+	if (!FMath::IsFinite(CurrentHealth) || CurrentHealth <= 0.0f
+		|| !FMath::IsFinite(NewMaximumHealth) || NewMaximumHealth <= 0.0f)
 	{
-		return NewMaximumHealth > 0u ? 1u : 0u;
+		return 0.0f;
+	}
+	if (!FMath::IsFinite(PreviousMaximumHealth) || PreviousMaximumHealth <= 0.0f)
+	{
+		return FMath::Min(CurrentHealth, NewMaximumHealth);
 	}
 
-	const double HealthRatio = static_cast<double>(CurrentHealth)
-		/ static_cast<double>(PreviousMaximumHealth);
-	return static_cast<uint8>(FMath::Clamp(
-		FMath::RoundToInt(HealthRatio * static_cast<double>(NewMaximumHealth)),
-		1,
-		static_cast<int32>(NewMaximumHealth)));
+	const double HealthRatio = FMath::Clamp(static_cast<double>(CurrentHealth)
+		/ static_cast<double>(PreviousMaximumHealth), 0.0, 1.0);
+	const float ScaledHealth = static_cast<float>(HealthRatio * static_cast<double>(NewMaximumHealth));
+	return FMath::Min(NewMaximumHealth,
+		FMath::Max(ScaledHealth, std::numeric_limits<float>::denorm_min()));
 }
 
 float GuLiRuntimeTuning::CalculatePredictionDistance(

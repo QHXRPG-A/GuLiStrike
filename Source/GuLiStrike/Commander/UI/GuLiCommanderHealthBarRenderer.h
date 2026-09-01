@@ -47,12 +47,12 @@ public:
 	/** Pure production-policy accessors used by focused automation tests. */
 	static bool TestOnly_ShouldDisplayHealthBar(
 		bool bAlive,
-		uint8 Health,
-		uint8 MaxHealth,
+		float Health,
+		float MaxHealth,
 		bool bSelected,
 		float DistanceCentimeters,
 		float MaximumDistanceCentimeters);
-	static float TestOnly_CalculateHealthFraction(uint8 Health, uint8 MaxHealth);
+	static float TestOnly_CalculateHealthFraction(float Health, float MaxHealth);
 	static FVector2D TestOnly_CalculateWorldSizeCentimeters(
 		float DistanceCentimeters,
 		float HorizontalFieldOfViewDegrees,
@@ -77,12 +77,12 @@ private:
 
 	static bool ShouldDisplayHealthBar(
 		bool bAlive,
-		uint8 Health,
-		uint8 MaxHealth,
+		float Health,
+		float MaxHealth,
 		bool bSelected,
 		float DistanceCentimeters,
 		float MaximumDistanceCentimeters);
-	static float CalculateHealthFraction(uint8 Health, uint8 MaxHealth);
+	static float CalculateHealthFraction(float Health, float MaxHealth);
 	static FVector2D CalculateWorldSizeCentimeters(
 		float DistanceCentimeters,
 		float HorizontalFieldOfViewDegrees,

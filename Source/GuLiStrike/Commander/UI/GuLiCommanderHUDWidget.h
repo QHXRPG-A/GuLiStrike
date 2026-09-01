@@ -15,8 +15,33 @@ class UGuLiCommanderMiniMapWidget;
 class UGuLiCommanderNetSyncComponent;
 class UImage;
 class UTextBlock;
+class UTexture2D;
 class UWidget;
 enum class EGuLiCommanderToolMode : uint8;
+enum class EGuLiCommanderSelectionShape : uint8;
+
+/** Authored button/icon names keep shortcut layout in UMG and behavior in C++. */
+USTRUCT(BlueprintType)
+struct FGuLiCommanderShortcutEntry
+{
+	GENERATED_BODY()
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shortcut")
+	FName ButtonName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shortcut")
+	FName IconName;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Shortcut")
+	FText Tooltip;
+};
+
+namespace GuLiCommanderHUDLayout
+{
+	/** All coordinates are HUD-local, including under DPI and offscreen captures. */
+	GULISTRIKE_API FBox2D PlaceTooltip(
+		const FBox2D& Anchor, const FVector2D& DesiredSize, const FVector2D& ViewportSize);
+}
 
 /**
  * Native, event-driven runtime adapter for the authored commander HUD.
@@ -31,6 +56,8 @@ class GULISTRIKE_API UGuLiCommanderHUDWidget : public UUserWidget
 	GENERATED_BODY()
 
 public:
+	UGuLiCommanderHUDWidget(const FObjectInitializer& ObjectInitializer);
+
 	/** Called by AGuLiCommanderHUD before the widget is added to the viewport. */
 	void InitializeForController(AGuLiCommanderPlayerController* InController);
 
@@ -47,7 +74,7 @@ public:
 	UFUNCTION()
 	void RefreshPlayerState();
 
-	/** Tests the real cached Slate geometry of the three HUD islands in pixels. */
+	/** Tests the real cached Slate geometry of all four HUD islands in pixels. */
 	bool IsScreenPositionBlocked(const FVector2D& ScreenPixelPosition) const;
 	bool HasValidBlockingGeometry() const;
 
@@ -56,6 +83,11 @@ public:
 protected:
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
+	virtual FReply NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent) override;
+
+	/** Add an authored button/icon pair here to extend the passive shortcut strip. */
+	UPROPERTY(EditDefaultsOnly, Category = "Commander|UI")
+	TArray<FGuLiCommanderShortcutEntry> ShortcutEntries;
 
 private:
 	void ResolveRuntimeSources();
@@ -69,11 +101,23 @@ private:
 	uint32 GetCurrentMatchEpoch() const;
 	void BuildMiniMapLayer();
 	void HideReviewOnlyMapWidgets();
+	void BindShortcutControls();
+	void UnbindShortcutControls();
+	void PositionShortcutTooltip();
+	void HideShortcutTooltip();
 
 	UFUNCTION()
 	void HandlePlayerStateChanged();
 
 	void HandleToolModeChanged(EGuLiCommanderToolMode NewMode);
+	void HandleSelectionShapeChanged(EGuLiCommanderSelectionShape NewShape);
+	void HandleSelectionRadiusChanged(EGuLiSelectionRadiusPreset NewPreset);
+
+	UFUNCTION()
+	void HandleShortcutHovered();
+
+	UFUNCTION()
+	void HandleShortcutUnhovered();
 
 	UFUNCTION()
 	void HandleMoveClicked();
@@ -108,6 +152,15 @@ private:
 	FDelegateHandle CommandAckChangedHandle;
 	FDelegateHandle SoldierStatesChangedHandle;
 	FDelegateHandle ToolModeChangedHandle;
+	FDelegateHandle SelectionShapeChangedHandle;
+	FDelegateHandle SelectionRadiusChangedHandle;
+	FName ActiveShortcutButton;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UTexture2D> BoxSelectionTexture;
+
+	UPROPERTY(Transient)
+	TObjectPtr<UTexture2D> RadiusSelectionTexture;
 	FTimerHandle SourceResolveTimer;
 	FTimerHandle ElapsedTimeTimer;
 	int32 InitialBlueRoster = 0;

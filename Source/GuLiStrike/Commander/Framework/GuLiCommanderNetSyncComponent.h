@@ -31,6 +31,11 @@ DECLARE_MULTICAST_DELEGATE_OneParam(
 DECLARE_MULTICAST_DELEGATE_OneParam(
 	FGuLiSoldierPoseChunkReceivedSignature,
 	const FGuLiSoldierPoseChunk&);
+DECLARE_MULTICAST_DELEGATE_OneParam(
+	FGuLiMoveEndpointsChangedSignature,
+	const FGuLiMoveEndpointFastArray&);
+DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiMoveReadyToSendSignature,
+	const FGuLiMoveRequest&, const FGuLiCommanderSelectionState&);
 
 /**
  * 公共连接组件的指挥官扩展：命令意图、士兵名册初始同步、业务 ACK 和姿态 RPC。
@@ -51,6 +56,7 @@ public:
 		float DeltaTime,
 		ELevelTick TickType,
 		FActorComponentTickFunction* ThisTickFunction) override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	/** 服务器本地入口：准备名册并启动新同步代次；依赖尚未就绪时返回，后续可再尝试。 */
 	void StartServerBootstrap();
@@ -78,6 +84,8 @@ public:
 	void SubmitSelectionRequest(const FGuLiSelectionRequest& Request);
 	// 拥有者提交移动意图；有待确认选兵时只保留最新延后移动，ACK 到达后补入选择版本。
 	void SubmitMoveRequest(const FGuLiMoveRequest& Request);
+	bool HasUnresolvedSelectionIntent() const;
+	FGuLiMoveReadyToSendSignature OnMoveReadyToSend;
 
 	// 拥有客户端 → 服务器，可靠选兵 RPC；Request 只含意图，处理结果经 Client ACK 返回。
 	UFUNCTION(Server, Reliable)
@@ -109,6 +117,35 @@ public:
 
 	const FGuLiCommandAck& GetLastCommandAck() const { return LastCommandAck; }
 
+	/** Current OwnerOnly authoritative endpoints; consumers must still check IsSoldierStreamReady(). */
+	const FGuLiMoveEndpointFastArray& GetMoveEndpoints() const { return MoveEndpoints; }
+	const FGuLiMoveEndpointItem* FindMoveEndpoint(FGuLiSoldierId SoldierId) const
+	{
+		return MoveEndpoints.Find(SoldierId);
+	}
+
+	/** Authority-only endpoint mutation API used by the movement planner and completion/blocked cleanup. */
+	bool ServerUpsertMoveEndpoint(
+		FGuLiSoldierId SoldierId,
+		uint32 ActiveOrderId,
+		const FVector& CommandStart,
+		const FVector& FinalDestination);
+	bool ServerRemoveMoveEndpoint(FGuLiSoldierId SoldierId);
+	int32 ServerBootstrapMoveEndpoints(TConstArrayView<FGuLiMoveEndpointItem> Endpoints);
+	bool ServerClearMoveEndpoints();
+
+	/**
+	 * Async planner bridge. Begin suppresses duplicate-request ACK replay while work is pending;
+	 * Finalize atomically publishes the final ACK and optional pruned selection snapshot.
+	 */
+	bool BeginServerMovePlanning(const FGuLiMoveRequest& Request, bool bReliableDelivery);
+	bool FinalizeServerMovePlanning(
+		const FGuLiMoveRequest& Request,
+		const FGuLiCommandAck& FinalAck,
+		const FGuLiCommanderSelectionState* UpdatedSelection = nullptr);
+	bool IsServerMovePlanningPending(const FGuLiMoveRequest& Request) const;
+	bool IsMoveCommandPending(uint32 ClientCommandId) const;
+
 	uint32 GetSyncGeneration() const { return SyncGeneration; }
 
 #if !UE_BUILD_SHIPPING
@@ -124,7 +161,16 @@ public:
 
 	FGuLiSoldierPoseChunkReceivedSignature OnPoseChunkReceived;
 
+	FGuLiMoveEndpointsChangedSignature OnMoveEndpointsChanged;
+
 #if WITH_DEV_AUTOMATION_TESTS
+	void TestOnly_ConfigureDeferredSelectionMove(const FGuLiSelectionRequest& Selection, const FGuLiMoveRequest& Move);
+	void TestOnly_ApplySelectionSnapshot(const FGuLiCommanderSelectionState& State);
+	const FGuLiMoveRequest& TestOnly_GetDispatchedMove() const { return TestDispatchedMove; }
+	bool TestOnly_HasQueuedMove() const { return !MovesAwaitingSelection.IsEmpty(); }
+	void TestOnly_QueueMoveForSelection(uint32 SelectionRequestId, const FGuLiMoveRequest& Move) { MovesAwaitingSelection.Add(SelectionRequestId, Move); }
+	int32 TestOnly_GetQueuedMoveCount() const { return MovesAwaitingSelection.Num(); }
+	static bool TestOnly_IsSameSelectionRequest(const FGuLiSelectionRequest& A, const FGuLiSelectionRequest& B);
 	/** Test-only access to the shared bootstrap contract predicate. Not compiled into Shipping. */
 	static bool TestOnly_IsBootstrapSnapshotCompatible(
 		uint16 ProtocolVersion,
@@ -145,6 +191,19 @@ public:
 
 	/** Test-only injection through the same client ACK implementation used by the reliable RPC. */
 	void TestOnly_ReceiveCommandAck(const FGuLiCommandAck& Ack);
+	bool TestOnly_IsAwaitingSelectionSnapshot() const { return bAwaitingSelectionSnapshot; }
+	uint32 TestOnly_GetAwaitedSelectionRevision() const { return AwaitedSelectionRevision; }
+	void TestOnly_QueueMoveUntilSelectionSnapshot(const FGuLiMoveRequest& Move);
+	void TestOnly_ConfigurePendingMoveIntent(const FGuLiMoveRequest& Move);
+	void TestOnly_DeferMoveUntilCurrentAck(const FGuLiMoveRequest& Move);
+	uint32 TestOnly_GetPendingMoveCommandId() const
+	{
+		return bPendingMoveIntent ? PendingMoveIntent.ClientCommandId : 0u;
+	}
+	uint32 TestOnly_GetDeferredMoveCommandId() const
+	{
+		return bHasDeferredMoveAfterCurrentAck ? DeferredMoveAfterCurrentAck.ClientCommandId : 0u;
+	}
 
 	/** Test-only configuration for exercising the production pose admission gate. */
 	void TestOnly_ConfigureClientPoseGate(bool bReady, uint32 AcceptedMatchEpoch);
@@ -193,11 +252,20 @@ private:
 	UFUNCTION()
 	void OnRep_SyncGeneration();
 
+	UFUNCTION()
+	void OnRep_MoveEndpoints();
+
 	void BeginSelectionIntent(const FGuLiSelectionRequest& Request);
 	void BeginMoveIntent(const FGuLiMoveRequest& Request);
+	void QueueOrBeginMoveIntent(const FGuLiMoveRequest& Request);
+	void DeferMoveUntilCurrentAck(const FGuLiMoveRequest& Request);
+	void ReleaseDeferredMoveAfterCurrentAck();
+	void AdvanceSelectionQueue();
+	void RejectDeferredMove(uint32 SelectionRequestId, EGuLiCommandAckResult Result);
 	void TickPendingCommandRetries();
 	void TickSoldierBootstrap();
 	void ResetClientSoldierState();
+	void CancelPendingServerMovePlanning();
 	void HandleSelectionRequest(const FGuLiSelectionRequest& Request, bool bReliableAck);
 	void HandleMoveRequest(const FGuLiMoveRequest& Request, bool bReliableAck);
 	void ReceiveCommandAck(const FGuLiCommandAck& Ack);
@@ -228,6 +296,10 @@ private:
 	UPROPERTY(Replicated)
 	FGuLiSoldierBootstrapBinding SoldierBootstrapBinding;
 
+	// 仅拥有者需要查看选中单位的权威起终点；连续姿态仍走独立 10 Hz 流。
+	UPROPERTY(ReplicatedUsing = OnRep_MoveEndpoints)
+	FGuLiMoveEndpointFastArray MoveEndpoints;
+
 	// 服务器去重状态：选兵与移动各有独立序号空间，并分别缓存最近请求及 ACK。
 	uint32 LastSelectionRequestId = 0;
 	uint32 LastMoveCommandId = 0;
@@ -239,6 +311,7 @@ private:
 	uint32 ServerAcceptedSyncGeneration = 0u;
 	uint32 ServerAcceptedMatchEpoch = 0u;
 	double NextServerBootstrapMarkerTime = 0.0;
+	double NextServerMoveEndpointRefreshTimeSeconds = 0.0;
 	// 客户端待满足的同步条件；与服务器 Bootstrap* 期望值分开保存。
 	uint32 PendingBootstrapGeneration = 0;
 	uint32 PendingBootstrapMatchEpoch = 0;
@@ -257,19 +330,40 @@ private:
 	bool bPendingMoveIntent = false;
 	bool bPendingMoveFastRetry = false;
 	bool bPendingMoveReliableFallback = false;
-	bool bQueuedMoveAfterSelection = false;
+	bool bHasDeferredMoveAfterCurrentAck = false;
+	bool bDeferredMoveHasSelectionDependency = false;
+	bool bAwaitingSelectionSnapshot = false;
+	bool bResolvedSelectionAccepted = false;
+	bool bAdvancingSelectionQueue = false;
+	uint32 ResolvedSelectionRequestId = 0u;
+	uint32 ResolvedSelectionRevision = 0u;
+	uint32 DeferredMoveSelectionDependencyKey = 0u;
+	// Any ACK may carry a selection revision newer than the property; queues wait for this high-water mark.
+	uint32 AwaitedSelectionRevision = 0u;
+#if WITH_DEV_AUTOMATION_TESTS
+	FGuLiMoveRequest TestDispatchedMove;
+#endif
 	double PendingSelectionFastRetryTimeSeconds = 0.0;
 	double PendingSelectionReliableFallbackTimeSeconds = 0.0;
 	double PendingMoveFastRetryTimeSeconds = 0.0;
 	double PendingMoveReliableFallbackTimeSeconds = 0.0;
 	FGuLiSelectionRequest PendingSelectionIntent;
 	FGuLiMoveRequest PendingMoveIntent;
-	FGuLiMoveRequest QueuedMoveAfterSelection;
+	// A move already in flight owns prediction/retry state until its final ACK. Later clicks
+	// coalesce here and are admitted through the normal selection-revision gate afterward.
+	FGuLiMoveRequest DeferredMoveAfterCurrentAck;
+	// Coalesce repeated destinations only within one selection intent; preserve orders for other selections.
+	TMap<uint32, FGuLiMoveRequest> MovesAwaitingSelection;
 	FGuLiSelectionRequest LastSelectionRequest;
 	FGuLiMoveRequest LastMoveRequest;
 	TArray<FGuLiSelectionRequest> QueuedSelectionIntents;
 	FGuLiCommandAck LastSelectionAck;
 	FGuLiCommandAck LastMoveAck;
+	bool bServerMovePlanningPending = false;
+	bool bPendingServerMoveReliableDelivery = false;
+	FGuLiMoveRequest PendingServerMovePlanningRequest;
+	TWeakObjectPtr<const AGuLiBattlePlayerState> PendingServerMovePlanningPlayerState;
+	uint32 PendingServerMovePlanningConnectionGeneration = 0u;
 	uint8 SelectionCachedFastReplayCount = 0u;
 	uint8 MoveCachedFastReplayCount = 0u;
 	EGuLiCommandKind LastDeliveredAckKind = EGuLiCommandKind::None;

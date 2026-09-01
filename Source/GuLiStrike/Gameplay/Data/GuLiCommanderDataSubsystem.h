@@ -3,6 +3,7 @@
 #pragma once
 
 #include "Gameplay/Data/GuLiCommanderSoldierDefinition.h"
+#include "Gameplay/Skills/GuLiSkillTypes.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "GuLiCommanderDataSubsystem.generated.h"
 
@@ -20,6 +21,12 @@ class GULISTRIKE_API UGuLiCommanderDataSubsystem final : public UWorldSubsystem
 public:
 	virtual bool ShouldCreateSubsystem(UObject* Outer) const override;
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
+	const TArray<FGuLiSoldierDefinition>& GetSoldierDefinitions() const { return SoldierDefinitions; }
+	const FGuLiSoldierDefinition* FindSoldierDefinition(uint16 UnitTypeId) const;
+	const TArray<FGuLiSkillDefinition>& GetSkillDefinitions() const { return SkillDefinitions; }
+	const TArray<FGuLiUnitSkillConfig>& GetUnitSkillConfigs() const { return UnitSkillConfigs; }
+	bool IsSkillCatalogValid() const { return SkillCatalogError.IsEmpty(); }
+	const FString& GetSkillCatalogError() const { return SkillCatalogError; }
 
 	const FGuLiSoldierDefinition& GetDefaultSoldierDefinition() const
 	{
@@ -33,6 +40,11 @@ public:
 	}
 
 private:
+	void LoadSkillCatalog(const class UGuLiCommanderDataSettings* Settings);
+	UPROPERTY(Transient) TArray<FGuLiSoldierDefinition> SoldierDefinitions;
+	UPROPERTY(Transient) TArray<FGuLiSkillDefinition> SkillDefinitions;
+	UPROPERTY(Transient) TArray<FGuLiUnitSkillConfig> UnitSkillConfigs;
+	FString SkillCatalogError;
 	UPROPERTY(Transient)
 	FGuLiSoldierDefinition DefaultSoldierDefinition;
 

@@ -16,9 +16,7 @@ namespace GuLiRuntimeTuningSubsystemPrivate
 {
 	const FName SoldierMoveSpeed(TEXT("soldier.move_speed_cm_s"));
 	const FName SoldierMaxHealth(TEXT("soldier.max_health"));
-	const FName SoldierAttackPower(TEXT("soldier.attack_power"));
 	const FName SoldierDefense(TEXT("soldier.defense"));
-	const FName SoldierAttackRange(TEXT("soldier.attack_range_cm"));
 	const FName ShipMaxSpeedMultiplier(TEXT("ship.max_speed_multiplier"));
 	const FName ShipAccelerationMultiplier(TEXT("ship.acceleration_multiplier"));
 
@@ -124,10 +122,8 @@ FGuLiSoldierRuntimeTuningValues UGuLiRuntimeTuningSubsystem::GetBaselineSoldierV
 	using namespace GuLiRuntimeTuningSubsystemPrivate;
 	FGuLiSoldierRuntimeTuningValues Values;
 	Values.MovementSpeedCmPerSecond = static_cast<float>(Baseline(Registry, SoldierMoveSpeed));
-	Values.MaxHealth = static_cast<uint8>(Baseline(Registry, SoldierMaxHealth));
-	Values.AttackPower = static_cast<float>(Baseline(Registry, SoldierAttackPower));
+	Values.MaxHealth = static_cast<float>(Baseline(Registry, SoldierMaxHealth));
 	Values.Defense = static_cast<float>(Baseline(Registry, SoldierDefense));
-	Values.AttackRangeCentimeters = static_cast<float>(Baseline(Registry, SoldierAttackRange));
 	return Values;
 }
 
@@ -136,10 +132,12 @@ FGuLiSoldierRuntimeTuningValues UGuLiRuntimeTuningSubsystem::GetEffectiveSoldier
 	using namespace GuLiRuntimeTuningSubsystemPrivate;
 	FGuLiSoldierRuntimeTuningValues Values;
 	Values.MovementSpeedCmPerSecond = static_cast<float>(Effective(Registry, SoldierMoveSpeed));
-	Values.MaxHealth = static_cast<uint8>(Effective(Registry, SoldierMaxHealth));
-	Values.AttackPower = static_cast<float>(Effective(Registry, SoldierAttackPower));
+	Values.MaxHealth = static_cast<float>(Effective(Registry, SoldierMaxHealth));
 	Values.Defense = static_cast<float>(Effective(Registry, SoldierDefense));
-	Values.AttackRangeCentimeters = static_cast<float>(Effective(Registry, SoldierAttackRange));
+	Values.bOverrideMaxHealth = Registry.Get(SoldierMaxHealth.ToString()).Source
+		== EGuLiRuntimeTuningValueSource::GMOverride;
+	Values.bOverrideDefense = Registry.Get(SoldierDefense.ToString()).Source
+		== EGuLiRuntimeTuningValueSource::GMOverride;
 	return Values;
 }
 
@@ -239,16 +237,8 @@ void UGuLiRuntimeTuningSubsystem::LoadSoldierBaselines()
 		Definition.MaxHealth,
 		Source);
 	Registry.SetBaseline(
-		GuLiRuntimeTuningSubsystemPrivate::SoldierAttackPower,
-		Definition.AttackPower,
-		Source);
-	Registry.SetBaseline(
 		GuLiRuntimeTuningSubsystemPrivate::SoldierDefense,
 		Definition.Defense,
-		Source);
-	Registry.SetBaseline(
-		GuLiRuntimeTuningSubsystemPrivate::SoldierAttackRange,
-		Definition.AttackRangeCentimeters,
 		Source);
 }
 

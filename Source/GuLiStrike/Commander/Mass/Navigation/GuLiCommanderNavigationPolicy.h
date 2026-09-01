@@ -19,6 +19,10 @@ namespace GuLiCommanderNavigationPolicy
 	inline constexpr int32 FormationMemberCapacity = 25;
 	inline constexpr int32 MaximumFormationColumns = 5;
 	inline constexpr float RequiredAgentRadiusCentimeters = 750.0f;
+	inline constexpr float MaximumSurfaceMoveZDeltaCentimeters = 250.0f;
+	inline constexpr float MinimumNavigationProgressCentimeters = 30.0f;
+	inline constexpr int32 RequiredTransitExpansionSuccessSteps = 15;
+	inline constexpr double MinimumTransitRearrangementIntervalSeconds = 0.5;
 
 	/** Frozen terminal coordinate frame derived from the last usable NavMesh path segment. */
 	struct GULISTRIKE_API FFinalPathFrame
@@ -58,6 +62,14 @@ namespace GuLiCommanderNavigationPolicy
 		bool bGuideAndMembersReady = false;
 	};
 
+	/** Persistent inputs for deterministic transit-column expansion hysteresis. */
+	struct GULISTRIKE_API FTransitColumnHysteresisState
+	{
+		int32 ColumnCount = MaximumFormationColumns;
+		int32 ConsecutiveExpansionSuccessSteps = 0;
+		double LastRearrangementTimeSeconds = -1.0;
+	};
+
 	/** The only SupportedAgent name legal for Commander movement. */
 	GULISTRIKE_API FName GetRequiredAgentName();
 
@@ -86,6 +98,47 @@ namespace GuLiCommanderNavigationPolicy
 		const FVector& RequestedTarget,
 		const FVector& ProjectedTarget,
 		float AgentRadiusCentimeters);
+
+	/**
+	 * Accepts a FindMoveAlongSurface result only when the query succeeded and the
+	 * candidate remains finite and within the permitted vertical step.
+	 */
+	GULISTRIKE_API bool IsSurfaceMoveResultAcceptable(
+		bool bSurfaceMoveSucceeded,
+		const FVector& PreviousLocation,
+		const FVector& CandidateLocation,
+		float MaximumZDeltaCentimeters = MaximumSurfaceMoveZDeltaCentimeters);
+
+	/**
+	 * A navigation step makes progress only by advancing its monotonic path cursor
+	 * or reducing the current-waypoint distance by at least the configured amount.
+	 */
+	GULISTRIKE_API bool HasMeaningfulNavigationProgress(
+		int32 PreviousPathPointIndex,
+		int32 CurrentPathPointIndex,
+		float PreviousWaypointDistanceCentimeters,
+		float CurrentWaypointDistanceCentimeters,
+		float RequiredImprovementCentimeters = MinimumNavigationProgressCentimeters);
+
+	/** Ignores zero/terminal orders and returns the one common executing order, or zero for none/mixed. */
+	GULISTRIKE_API uint32 ResolveCommonActiveOrderId(TConstArrayView<uint32> ActiveOrderIds);
+
+	/** Pure threshold gates used by the authority recovery state machine. */
+	GULISTRIKE_API bool ShouldEnterCenterlineRecovery(
+		int32 ConsecutiveSurfaceFailures,
+		float NoProgressSeconds,
+		int32 FailureThreshold = 2,
+		float NoProgressThresholdSeconds = 1.0f);
+	GULISTRIKE_API bool ShouldEnterPersonalPathRecovery(
+		int32 TotalSurfaceFailures,
+		float NoProgressSeconds,
+		int32 FailureThreshold = 6,
+		float NoProgressThresholdSeconds = 1.0f);
+	GULISTRIKE_API bool ShouldBlockPersonalPathRecovery(
+		int32 CompletedPathQueries,
+		float NoProgressSeconds,
+		int32 RequiredPathQueries = 2,
+		float NoProgressThresholdSeconds = 2.0f);
 
 	/**
 	 * Returns the cached loose-arrival radius for a whole accepted batch. The ring
@@ -164,6 +217,19 @@ namespace GuLiCommanderNavigationPolicy
 	 */
 	GULISTRIKE_API int32 SelectTransitColumnCount(
 		TConstArrayView<uint8> FitsByColumnCount);
+
+	/**
+	 * Narrows immediately. Widening requires uninterrupted successful movement
+	 * steps and cannot occur until the minimum interval after the last rearrange.
+	 */
+	GULISTRIKE_API FTransitColumnHysteresisState UpdateTransitColumnHysteresis(
+		const FTransitColumnHysteresisState& PreviousState,
+		int32 WidestFittingColumnCount,
+		bool bMovementStepSucceeded,
+		double CurrentTimeSeconds,
+		int32 RequiredExpansionSuccessSteps = RequiredTransitExpansionSuccessSteps,
+		double MinimumRearrangementIntervalSeconds =
+			MinimumTransitRearrangementIntervalSeconds);
 
 	/**
 	 * Resolves the last non-degenerate path direction. Repeated terminal points are

@@ -17,6 +17,7 @@
 #include "Components/TextBlock.h"
 #include "Engine/Engine.h"
 #include "Engine/TextureRenderTarget2D.h"
+#include "Engine/Texture2D.h"
 #include "Engine/UserInterfaceSettings.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -43,7 +44,7 @@ namespace GuLiCommanderUIRevisionCommands
 	constexpr TCHAR HUDClassPath[] =
 		TEXT("/Game/Commander/UI/Widgets/WBP_CommanderHUD.WBP_CommanderHUD_C");
 	const FName BlockingIslandNames[] = {
-		TEXT("SB_TopStatus"), TEXT("SB_MapDesign"), TEXT("SB_DockDesign")
+		TEXT("SB_TopStatus"), TEXT("SB_MapDesign"), TEXT("SB_DockDesign"), TEXT("SB_ShortcutsDesign")
 	};
 
 	AGuLiCommanderPlayerController* FindLocalCommander(UWorld* World)
@@ -195,10 +196,10 @@ namespace GuLiCommanderUIRevisionCommands
 		if (bDockOnly)
 		{
 			UWidget* Dock = Capture.Widget->WidgetTree
-				? Capture.Widget->WidgetTree->FindWidget(TEXT("SB_DockDesign")) : nullptr;
+				? Capture.Widget->WidgetTree->FindWidget(TEXT("SB_CommandDockDesign")) : nullptr;
 			if (!Dock)
 			{
-				UE_LOG(LogGuLiStrike, Error, TEXT("HUD capture cannot find SB_DockDesign."));
+				UE_LOG(LogGuLiStrike, Error, TEXT("HUD capture cannot find SB_CommandDockDesign."));
 				return false;
 			}
 			WidgetToDraw = Dock->TakeWidget();
@@ -261,7 +262,7 @@ namespace GuLiCommanderUIRevisionCommands
 	{
 		FIntPoint ImageSize;
 		const bool bDockOnly = Args.Num() > 0 && Args[0].Equals(TEXT("dock"), ESearchCase::IgnoreCase);
-		if (bDockOnly) ImageSize = FIntPoint(1120, 204);
+		if (bDockOnly) ImageSize = FIntPoint(1120, 260);
 		else if (Args.Num() > 0 && Args[0] == TEXT("1280x720")) ImageSize = FIntPoint(1280, 720);
 		else if (Args.Num() > 0 && Args[0] == TEXT("1920x1080")) ImageSize = FIntPoint(1920, 1080);
 		else if (Args.Num() > 0 && Args[0] == TEXT("2560x1080")) ImageSize = FIntPoint(2560, 1080);
@@ -313,7 +314,8 @@ namespace GuLiCommanderUIRevisionCommands
 				return;
 			}
 			const FName TextNames[] = {
-				TEXT("TXT_UnitTypeName"), TEXT("TXT_UnitTypeCount"), TEXT("TXT_UnitTypeHealth"), TEXT("TXT_UnitTypeStatus")
+				TEXT("TXT_UnitTypeName"), TEXT("TXT_UnitTypeCount"), TEXT("TXT_UnitTypeHealth"), TEXT("TXT_UnitTypeStatus"),
+				TEXT("TXT_CmdLabel_Select")
 			};
 			for (const FName TextName : TextNames)
 			{
@@ -418,7 +420,33 @@ namespace GuLiCommanderUIRevisionCommands
 			TestEqual(TEXT("Dock keeps its approved width"), Dock->GetWidthOverride(), 1120.0f);
 			TestEqual(TEXT("Dock keeps its approved height"), Dock->GetHeightOverride(), 204.0f);
 		}
-		const FName ButtonNames[] = {TEXT("BTN_Cmd_Move"), TEXT("BTN_Cmd_Select"), TEXT("BTN_MiniMapJump")};
+		USizeBox* Shortcuts = Cast<USizeBox>(Tree->FindWidget(TEXT("SB_ShortcutsDesign")));
+		if (TestNotNull(TEXT("Shortcut strip is a separate blocking island"), Shortcuts))
+		{
+			TestEqual(TEXT("Shortcut strip matches the bottom dock width"), Shortcuts->GetWidthOverride(), 1120.0f);
+			TestEqual(TEXT("Shortcut strip adds exactly 56 design pixels"), Shortcuts->GetHeightOverride(), 56.0f);
+		}
+		TestNotNull(TEXT("Combined dock capture includes the shortcut strip"), Tree->FindWidget(TEXT("SB_CommandDockDesign")));
+		TestNotNull(TEXT("The selection mode uses one replaceable icon"), Cast<UImage>(Tree->FindWidget(TEXT("I_CmdIcon_Select"))));
+		UWidget* Tooltip = Tree->FindWidget(TEXT("C_SelectionTooltip"));
+		if (TestNotNull(TEXT("Tooltip belongs to the viewport rather than a desktop popup"), Tooltip))
+		{
+			TestEqual(TEXT("Tooltip starts hidden"), Tooltip->GetVisibility(), ESlateVisibility::Collapsed);
+		}
+		TestNotNull(TEXT("Tooltip text is authored without Blueprint binding"), Cast<UTextBlock>(Tree->FindWidget(TEXT("TXT_SelectionTooltip"))));
+		for (const FName IconName : {FName(TEXT("I_Shortcut_SameType")), FName(TEXT("I_Shortcut_AddSelection"))})
+		{
+			UImage* Icon = Cast<UImage>(Tree->FindWidget(IconName));
+			if (TestNotNull(FString::Printf(TEXT("Shortcut icon %s is present"), *IconName.ToString()), Icon))
+			{
+				TestEqual(TEXT("Shortcut icons are always bright"), Icon->GetRenderOpacity(), 1.0f);
+				TestNotNull(TEXT("Shortcut uses a real imported texture"), Cast<UTexture2D>(Icon->GetBrush().GetResourceObject()));
+			}
+		}
+		const FName ButtonNames[] = {
+			TEXT("BTN_Cmd_Move"), TEXT("BTN_Cmd_Select"), TEXT("BTN_MiniMapJump"),
+			TEXT("BTN_Shortcut_SameType"), TEXT("BTN_Shortcut_AddSelection")
+		};
 		for (const FName ButtonName : ButtonNames)
 		{
 			UButton* Button = Cast<UButton>(Tree->FindWidget(ButtonName));

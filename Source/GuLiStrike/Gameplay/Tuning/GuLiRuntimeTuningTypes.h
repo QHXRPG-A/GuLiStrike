@@ -16,10 +16,11 @@ enum class EGuLiRuntimeTuningValueSource : uint8
 struct GULISTRIKE_API FGuLiSoldierRuntimeTuningValues
 {
 	float MovementSpeedCmPerSecond = 3600.0f;
-	uint8 MaxHealth = 100u;
-	float AttackPower = 0.0f;
+	float MaxHealth = 100.0f;
 	float Defense = 0.0f;
-	float AttackRangeCentimeters = 0.0f;
+	/** False restores each Soldier type's own table baseline, not the default type's value. */
+	bool bOverrideMaxHealth = false;
+	bool bOverrideDefense = false;
 };
 
 /** Effective GM-only modifiers applied to the reserved Ship modifier layer. */
@@ -123,11 +124,14 @@ private:
 
 namespace GuLiRuntimeTuning
 {
+	/** Shared console grammar: consumes the whole token, accepts decimal/exponent form, rejects NaN/Inf. */
+	GULISTRIKE_API bool TryParseFiniteNumber(const FString& ValueText, double& OutValue);
+
 	/** Preserves the health ratio for living Soldiers; zero remains dead. */
-	GULISTRIKE_API uint8 ScaleHealthPreservingRatio(
-		uint8 CurrentHealth,
-		uint8 PreviousMaximumHealth,
-		uint8 NewMaximumHealth);
+	GULISTRIKE_API float ScaleHealthPreservingRatio(
+		float CurrentHealth,
+		float PreviousMaximumHealth,
+		float NewMaximumHealth);
 
 	/** Keeps local command prediction tied to the replicated effective speed. */
 	GULISTRIKE_API float CalculatePredictionDistance(

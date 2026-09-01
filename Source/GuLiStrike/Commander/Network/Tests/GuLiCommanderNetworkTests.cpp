@@ -13,6 +13,9 @@
 #include "Misc/AutomationTest.h"
 #include "Serialization/MemoryReader.h"
 #include "Serialization/MemoryWriter.h"
+#include "UObject/UnrealType.h"
+
+#include <limits>
 
 namespace GuLiCommanderNetworkTests
 {
@@ -68,6 +71,15 @@ namespace GuLiCommanderNetworkTests
 		Ack.ClientCommandId = ClientCommandId;
 		Ack.BatchOrderId = BatchOrderId;
 		Ack.Result = EGuLiCommandAckResult::Accepted;
+		if (CommandKind == EGuLiCommandKind::Move && BatchOrderId != 0u)
+		{
+			FGuLiCohortCommandAck& CohortAck = Ack.CohortResults.AddDefaulted_GetRef();
+			CohortAck.CohortId = FGuLiControlCohortId(1u);
+			CohortAck.Result = EGuLiCommandAckResult::Accepted;
+			CohortAck.MemberCount = 1u;
+			CohortAck.EligibleMemberMask = 1u;
+			CohortAck.AcceptedMemberMask = 1u;
+		}
 		return Ack;
 	}
 
@@ -102,7 +114,7 @@ bool FGuLiCommanderDynamicCohortContractTest::RunTest(const FString& Parameters)
 {
 	(void)Parameters;
 
-	TestEqual(TEXT("Dynamic soldier/cohort protocol is version 3"), GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(3u));
+	TestEqual(TEXT("Partial-member move ACK and endpoint protocol is version 6"), GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(6u));
 	TestEqual(TEXT("Control granularity remains capped at 25 soldiers"),
 		GULI_CONTROL_COHORT_TARGET_SIZE, static_cast<uint32>(25u));
 	TestEqual(TEXT("Authoritative pose contract is captured at 10 Hz"),
@@ -165,28 +177,117 @@ bool FGuLiCommanderDynamicCohortContractTest::RunTest(const FString& Parameters)
 	FGuLiCommandAck Ack;
 	Ack.CommandKind = EGuLiCommandKind::Move;
 	Ack.ClientCommandId = 7u;
+	Ack.BatchOrderId = 17u;
+	Ack.Result = EGuLiCommandAckResult::PartiallyAccepted;
 	FGuLiCohortCommandAck& AcceptedAck = Ack.CohortResults.AddDefaulted_GetRef();
 	AcceptedAck.CohortId = FGuLiControlCohortId(5u);
 	AcceptedAck.Result = EGuLiCommandAckResult::Accepted;
+	AcceptedAck.MemberCount = 2u;
+	AcceptedAck.EligibleMemberMask = 0b11u;
+	AcceptedAck.AcceptedMemberMask = 0b11u;
 	FGuLiCohortCommandAck& DuplicateAck = Ack.CohortResults.AddDefaulted_GetRef();
 	DuplicateAck.CohortId = FGuLiControlCohortId(5u);
 	DuplicateAck.Result = EGuLiCommandAckResult::PathFailed;
+	DuplicateAck.MemberCount = 1u;
+	DuplicateAck.EligibleMemberMask = 0b1u;
 	FGuLiCohortCommandAck& InvalidAck = Ack.CohortResults.AddDefaulted_GetRef();
 	InvalidAck.Result = EGuLiCommandAckResult::InvalidRequest;
 	FGuLiCohortCommandAck& FailedAck = Ack.CohortResults.AddDefaulted_GetRef();
 	FailedAck.CohortId = FGuLiControlCohortId(6u);
 	FailedAck.Result = EGuLiCommandAckResult::PathFailed;
+	FailedAck.MemberCount = 2u;
+	FailedAck.EligibleMemberMask = 0b11u;
 	Ack.Sanitize();
 	TestEqual(TEXT("ACK results are keyed by unique valid temporary cohorts"), Ack.CohortResults.Num(), 2);
 	TestTrue(TEXT("ACK keeps the first deterministic result"),
 		Ack.CohortResults[0].Result == EGuLiCommandAckResult::Accepted);
 	TestTrue(TEXT("ACK preserves its request namespace"),
 		Ack.CommandKind == EGuLiCommandKind::Move && Ack.ClientCommandId == 7u);
+	TestTrue(TEXT("Mixed accepted and failed eligible members normalize the top-level result"),
+		Ack.Result == EGuLiCommandAckResult::PartiallyAccepted);
+
+	FGuLiCommandAck MissingBatchAck = Ack;
+	MissingBatchAck.BatchOrderId = 0u;
+	MissingBatchAck.Result = EGuLiCommandAckResult::Accepted;
+	MissingBatchAck.Sanitize();
+	TestEqual(TEXT("Accepted member masks require a non-zero batch"),
+		MissingBatchAck.CohortResults[0].AcceptedMemberMask, 0u);
+	TestTrue(TEXT("A missing batch safely rolls the move result back to failure"),
+		MissingBatchAck.Result == EGuLiCommandAckResult::PathFailed);
+
+	FGuLiCohortCommandAck PartialAck;
+	PartialAck.CohortId = FGuLiControlCohortId(9u);
+	PartialAck.Result = EGuLiCommandAckResult::Accepted;
+	PartialAck.MemberCount = 30u;
+	PartialAck.EligibleMemberMask = MAX_uint32;
+	PartialAck.AcceptedMemberMask = (1u << 0u) | (1u << 24u) | (1u << 29u);
+	PartialAck.Sanitize();
+	TestEqual(TEXT("ACK member count is clamped to the 25-member wire contract"),
+		PartialAck.MemberCount, static_cast<uint8>(GULI_CONTROL_COHORT_TARGET_SIZE));
+	TestEqual(TEXT("ACK masks drop bits outside frozen membership"),
+		PartialAck.AcceptedMemberMask, (1u << 0u) | (1u << 24u));
+	TestTrue(TEXT("A strict accepted mask can never contain an ineligible bit"),
+		(PartialAck.AcceptedMemberMask & ~PartialAck.EligibleMemberMask) == 0u);
+	TestEqual(TEXT("Two accepted members are counted from the sanitized mask"),
+		PartialAck.GetAcceptedMemberCount(), static_cast<uint8>(2u));
+	TestTrue(TEXT("Per-member acceptance uses the frozen membership index"),
+		PartialAck.IsMemberAccepted(0u) && PartialAck.IsMemberAccepted(24u)
+			&& !PartialAck.IsMemberAccepted(1u));
+	TestTrue(TEXT("A non-full accepted mask is normalized to partial acceptance"),
+		PartialAck.Result == EGuLiCommandAckResult::PartiallyAccepted);
+
+	FGuLiCohortCommandAck IneligibleAccepted;
+	IneligibleAccepted.CohortId = FGuLiControlCohortId(10u);
+	IneligibleAccepted.MemberCount = 3u;
+	IneligibleAccepted.EligibleMemberMask = 0b001u;
+	IneligibleAccepted.AcceptedMemberMask = 0b111u;
+	IneligibleAccepted.Result = EGuLiCommandAckResult::Accepted;
+	IneligibleAccepted.Sanitize();
+	TestEqual(TEXT("Accepted bits are intersected with eligibility"),
+		IneligibleAccepted.AcceptedMemberMask, 0b001u);
+	TestTrue(TEXT("All eligible members accepted makes the cohort accepted"),
+		IneligibleAccepted.Result == EGuLiCommandAckResult::Accepted);
+
+	FGuLiCommandAck UnauthorizedAck = Ack;
+	UnauthorizedAck.Result = EGuLiCommandAckResult::Unauthorized;
+	UnauthorizedAck.Sanitize();
+	TestTrue(TEXT("An asynchronous authority rejection keeps its explicit reason"),
+		UnauthorizedAck.Result == EGuLiCommandAckResult::Unauthorized);
+	TestEqual(TEXT("A rejected asynchronous move cannot retain an active batch"),
+		UnauthorizedAck.BatchOrderId, 0u);
+	for (const FGuLiCohortCommandAck& CohortAck : UnauthorizedAck.CohortResults)
+	{
+		TestEqual(TEXT("A rejected asynchronous move clears every accepted member bit"),
+			CohortAck.AcceptedMemberMask, 0u);
+	}
+
+	FGuLiCommandAck OlderDuplicateAck = Ack;
+	OlderDuplicateAck.Result = EGuLiCommandAckResult::Duplicate;
+	OlderDuplicateAck.Sanitize();
+	TestTrue(TEXT("An older move serial remains Duplicate instead of inheriting a cached success"),
+		OlderDuplicateAck.Result == EGuLiCommandAckResult::Duplicate);
+	TestEqual(TEXT("An older duplicate cannot claim the cached move batch"),
+		OlderDuplicateAck.BatchOrderId, 0u);
+	for (const FGuLiCohortCommandAck& CohortAck : OlderDuplicateAck.CohortResults)
+	{
+		TestEqual(TEXT("An older duplicate cannot claim cached accepted members"),
+			CohortAck.AcceptedMemberMask, 0u);
+	}
+	FGuLiCommandAck EmptyUnauthorizedAck;
+	EmptyUnauthorizedAck.CommandKind = EGuLiCommandKind::Move;
+	EmptyUnauthorizedAck.ClientCommandId = 8u;
+	EmptyUnauthorizedAck.BatchOrderId = 99u;
+	EmptyUnauthorizedAck.Result = EGuLiCommandAckResult::Unauthorized;
+	EmptyUnauthorizedAck.Sanitize();
+	TestTrue(TEXT("An empty-cohort authority rejection keeps its explicit reason"),
+		EmptyUnauthorizedAck.Result == EGuLiCommandAckResult::Unauthorized);
+	TestEqual(TEXT("An empty-cohort authority rejection clears a stray batch"),
+		EmptyUnauthorizedAck.BatchOrderId, 0u);
 
 	FGuLiSelectionRequest SelectionRequest;
 	SelectionRequest.Center = FVector(100.0, 200.0, 300.0);
 	SelectionRequest.ClientRequestId = 1u;
-	TestTrue(TEXT("Selection intent remains world-space only and well formed"), SelectionRequest.IsWellFormed());
+	TestTrue(TEXT("Legacy radius intent remains well formed"), SelectionRequest.IsWellFormed());
 
 	FGuLiMoveRequest MoveRequest;
 	MoveRequest.Target = FVector(1000.0, 2000.0, 30.0);
@@ -194,6 +295,72 @@ bool FGuLiCommanderDynamicCohortContractTest::RunTest(const FString& Parameters)
 	MoveRequest.ClientCommandId = 2u;
 	TestTrue(TEXT("Move intent fields remain valid"), MoveRequest.IsWellFormed());
 
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiCommanderMoveEndpointFastArrayContractTest,
+	"GuLiStrike.Commander.Network.MoveEndpointFastArrayContract",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiCommanderMoveEndpointFastArrayContractTest::RunTest(const FString& Parameters)
+{
+	(void)Parameters;
+	FGuLiMoveEndpointFastArray Endpoints;
+	TestTrue(TEXT("A valid active move endpoint is inserted"), Endpoints.Upsert(
+		FGuLiSoldierId(1u), 7u, FVector(100.0, 200.0, 30.0), FVector(400.0, 500.0, 60.0)));
+	const FGuLiMoveEndpointItem* First = Endpoints.Find(FGuLiSoldierId(1u));
+	TestNotNull(TEXT("Endpoint lookup uses stable SoldierId"), First);
+	if (First)
+	{
+		TestEqual(TEXT("New endpoint starts with a non-zero revision"), First->Revision, 1u);
+		TestEqual(TEXT("Endpoint keeps the committed order"), First->ActiveOrderId, 7u);
+	}
+	TestFalse(TEXT("An identical upsert does not dirty the item"), Endpoints.Upsert(
+		FGuLiSoldierId(1u), 7u, FVector(100.0, 200.0, 30.0), FVector(400.0, 500.0, 60.0)));
+	TestTrue(TEXT("Changing the actual final slot advances the endpoint"), Endpoints.Upsert(
+		FGuLiSoldierId(1u), 7u, FVector(100.0, 200.0, 30.0), FVector(800.0, 500.0, 60.0)));
+	First = Endpoints.Find(FGuLiSoldierId(1u));
+	if (First)
+	{
+		TestEqual(TEXT("Changed endpoint increments its per-soldier revision"), First->Revision, 2u);
+	}
+	TestFalse(TEXT("Zero order cannot create an active endpoint"), Endpoints.Upsert(
+		FGuLiSoldierId(2u), 0u, FVector::ZeroVector, FVector::OneVector));
+	TestFalse(TEXT("Non-finite endpoint coordinates are rejected"), Endpoints.Upsert(
+		FGuLiSoldierId(2u), 8u,
+		FVector(std::numeric_limits<double>::quiet_NaN(), 0.0, 0.0), FVector::OneVector));
+
+	FGuLiMoveEndpointItem Replacement;
+	Replacement.SoldierId = FGuLiSoldierId(2u);
+	Replacement.ActiveOrderId = 9u;
+	Replacement.CommandStart = FVector(10.0, 20.0, 30.0);
+	Replacement.FinalDestination = FVector(40.0, 50.0, 60.0);
+	TestEqual(TEXT("Bootstrap replacement removes stale endpoints and inserts active ones"),
+		Endpoints.ReplaceWith(TConstArrayView<FGuLiMoveEndpointItem>(&Replacement, 1)), 2);
+	TestNull(TEXT("Bootstrap replacement removes a no-longer-active soldier"),
+		Endpoints.Find(FGuLiSoldierId(1u)));
+	TestNotNull(TEXT("Bootstrap replacement exposes the current active endpoint"),
+		Endpoints.Find(FGuLiSoldierId(2u)));
+	TestEqual(TEXT("An identical full endpoint refresh is a no-op"),
+		Endpoints.ReplaceWith(TConstArrayView<FGuLiMoveEndpointItem>(&Replacement, 1)), 0);
+	const FGuLiMoveEndpointItem* Replaced = Endpoints.Find(FGuLiSoldierId(2u));
+	TestNotNull(TEXT("No-op refresh preserves the endpoint"), Replaced);
+	if (Replaced)
+	{
+		TestEqual(TEXT("No-op refresh preserves its revision"), Replaced->Revision, 1u);
+	}
+	Replacement.FinalDestination = FVector(80.0, 50.0, 60.0);
+	TestEqual(TEXT("A changed full endpoint refresh touches only that soldier"),
+		Endpoints.ReplaceWith(TConstArrayView<FGuLiMoveEndpointItem>(&Replacement, 1)), 1);
+	Replaced = Endpoints.Find(FGuLiSoldierId(2u));
+	if (Replaced)
+	{
+		TestEqual(TEXT("Changed full refresh advances its revision"), Replaced->Revision, 2u);
+	}
+	TestTrue(TEXT("Endpoint reset marks a non-empty set removed"), Endpoints.ResetEndpoints());
+	TestTrue(TEXT("Endpoint reset leaves no stale entries"), Endpoints.Items.IsEmpty());
+	TestFalse(TEXT("Resetting an already empty endpoint set is a no-op"), Endpoints.ResetEndpoints());
 	return true;
 }
 
@@ -210,8 +377,9 @@ bool FGuLiCommanderSoldierFastArrayContractTest::RunTest(const FString& Paramete
 	FGuLiSoldierStateItem& First = States.Items.AddDefaulted_GetRef();
 	First.SoldierId = FGuLiSoldierId(1u);
 	First.Team = EGuLiTeam::Red;
-	First.Health = 75u;
-	First.MaxHealth = 120u;
+	First.UnitTypeId = 7u;
+	First.Health = 75.25f;
+	First.MaxHealth = 300.5f;
 	First.StateRevision = 3u;
 	First.ActiveOrderId = 8u;
 
@@ -253,8 +421,9 @@ bool FGuLiCommanderSoldierFastArrayContractTest::RunTest(const FString& Paramete
 	TestNotNull(TEXT("FastArray lookup uses stable SoldierId"), FirstResult);
 	if (FirstResult)
 	{
-		TestEqual(TEXT("First duplicate occurrence wins deterministically"), FirstResult->Health, static_cast<uint8>(75u));
-		TestEqual(TEXT("Maximum health remains a reliable gameplay fact"), FirstResult->MaxHealth, static_cast<uint8>(120u));
+		TestEqual(TEXT("First duplicate occurrence preserves fractional health"), FirstResult->Health, 75.25f);
+		TestEqual(TEXT("Maximum health above 255 remains a reliable gameplay fact"), FirstResult->MaxHealth, 300.5f);
+		TestEqual(TEXT("Unit type remains a reliable gameplay fact"), FirstResult->UnitTypeId, static_cast<uint16>(7u));
 		TestTrue(TEXT("Living soldier remains alive"), FirstResult->IsAlive());
 	}
 
@@ -262,7 +431,7 @@ bool FGuLiCommanderSoldierFastArrayContractTest::RunTest(const FString& Paramete
 	TestNotNull(TEXT("Destroyed soldier remains in reliable roster"), DestroyedResult);
 	if (DestroyedResult)
 	{
-		TestEqual(TEXT("Destroyed state forces zero health"), DestroyedResult->Health, static_cast<uint8>(0u));
+		TestEqual(TEXT("Destroyed state forces zero health"), DestroyedResult->Health, 0.0f);
 		TestEqual(TEXT("Destroyed state clears active order"), DestroyedResult->ActiveOrderId, 0u);
 	}
 
@@ -280,7 +449,7 @@ bool FGuLiCommanderSoldierFastArrayContractTest::RunTest(const FString& Paramete
 	if (OverMaximumResult)
 	{
 		TestEqual(TEXT("Health is clamped to replicated MaxHealth"),
-			OverMaximumResult->Health, static_cast<uint8>(120u));
+			OverMaximumResult->Health, 120.0f);
 		TestTrue(TEXT("Clamped positive health remains alive"), OverMaximumResult->IsAlive());
 	}
 
@@ -288,10 +457,10 @@ bool FGuLiCommanderSoldierFastArrayContractTest::RunTest(const FString& Paramete
 	TestNotNull(TEXT("Invalid-maximum-health soldier remains addressable"), InvalidMaximumResult);
 	if (InvalidMaximumResult)
 	{
-		TestEqual(TEXT("Zero MaxHealth normalizes to the minimum wire value"),
-			InvalidMaximumResult->MaxHealth, static_cast<uint8>(1u));
+		TestEqual(TEXT("Zero MaxHealth normalizes to the safe fallback value"),
+			InvalidMaximumResult->MaxHealth, 1.0f);
 		TestEqual(TEXT("Health is clamped after MaxHealth normalization"),
-			InvalidMaximumResult->Health, static_cast<uint8>(1u));
+			InvalidMaximumResult->Health, 1.0f);
 	}
 
 	return true;
@@ -335,8 +504,9 @@ bool FGuLiCommanderSoldierSnapshotNotificationTest::RunTest(const FString& Param
 	FGuLiSoldierStateItem& State = Snapshot.AddDefaulted_GetRef();
 	State.SoldierId = FGuLiSoldierId(1u);
 	State.Team = EGuLiTeam::Red;
-	State.Health = 90u;
-	State.MaxHealth = 100u;
+	State.UnitTypeId = 7u;
+	State.Health = 90.25f;
+	State.MaxHealth = 300.5f;
 	State.StateRevision = 1u;
 
 	TestEqual(TEXT("The first authority snapshot adds one Soldier"),
@@ -365,8 +535,8 @@ bool FGuLiCommanderSoldierSnapshotNotificationTest::RunTest(const FString& Param
 	TestEqual(TEXT("The repeated new-MatchEpoch snapshot emits no notification"),
 		NotificationCount, 2);
 
-	Snapshot[0].Health = 180u;
-	Snapshot[0].MaxHealth = 200u;
+	Snapshot[0].Health = 180.125f;
+	Snapshot[0].MaxHealth = 600.5f;
 	Snapshot[0].StateRevision = 2u;
 	TestEqual(TEXT("A MaxHealth change updates the reliable Soldier item"),
 		Replicator->ApplyAuthoritySnapshot(Snapshot, 2002u), 1);
@@ -378,7 +548,11 @@ bool FGuLiCommanderSoldierSnapshotNotificationTest::RunTest(const FString& Param
 	if (UpdatedState)
 	{
 		TestEqual(TEXT("Snapshot application copies MaxHealth"),
-			UpdatedState->MaxHealth, static_cast<uint8>(200u));
+			UpdatedState->MaxHealth, 600.5f);
+		TestEqual(TEXT("Snapshot application preserves fractional absolute health"),
+			UpdatedState->Health, 180.125f);
+		TestEqual(TEXT("New snapshot items copy their authority unit type"),
+			UpdatedState->UnitTypeId, static_cast<uint16>(7u));
 	}
 
 	Snapshot[0].Team = static_cast<EGuLiTeam>(255u);
@@ -400,10 +574,22 @@ bool FGuLiCommanderSoldierSnapshotNotificationTest::RunTest(const FString& Param
 		TestTrue(TEXT("Invalid life state normalizes before replication"),
 			SanitizedState->LifeState == EGuLiSoldierLifeState::Alive);
 		TestEqual(TEXT("Zero MaxHealth normalizes in the authority apply path"),
-			SanitizedState->MaxHealth, static_cast<uint8>(1u));
+			SanitizedState->MaxHealth, 1.0f);
 		TestEqual(TEXT("Health clamps after authority MaxHealth normalization"),
-			SanitizedState->Health, static_cast<uint8>(1u));
+			SanitizedState->Health, 1.0f);
 	}
+
+	Snapshot[0].UnitTypeId = 9u;
+	TestEqual(TEXT("A type-only change dirties the reliable item even without a state revision change"),
+		Replicator->ApplyAuthoritySnapshot(Snapshot, 2002u), 1);
+	const FGuLiSoldierStateItem* RetypedState = Replicator->FindSoldierState(FGuLiSoldierId(1u));
+	TestNotNull(TEXT("Retyped Soldier remains available"), RetypedState);
+	if (RetypedState)
+	{
+		TestEqual(TEXT("Type-only update reaches the replicated roster"), RetypedState->UnitTypeId, static_cast<uint16>(9u));
+	}
+	TestEqual(TEXT("Unchanged unit type does not dirty the roster again"),
+		Replicator->ApplyAuthoritySnapshot(Snapshot, 2002u), 0);
 
 	const int32 NotificationsBeforeOnRep = NotificationCount;
 	UFunction* OnRepFunction = Replicator->FindFunction(TEXT("OnRep_SnapshotRevision"));
@@ -753,7 +939,7 @@ bool FGuLiCommanderBootstrapSnapshotGateTest::RunTest(const FString& Parameters)
 			MatchEpoch,
 			SnapshotRevision,
 			RosterCount));
-	TestFalse(TEXT("A protocol-v2 client cannot join the MaxHealth wire contract"),
+	TestFalse(TEXT("A protocol-v5 client cannot join the partial-member move wire contract"),
 		PassesGate(
 			GULI_COMMANDER_PROTOCOL_VERSION - 1u,
 			MatchEpoch,
@@ -1067,6 +1253,86 @@ bool FGuLiCommanderPresentationServerClockTest::RunTest(const FString& Parameter
 			100.0f,
 			0.01f));
 	TestFalse(TEXT("The fallback source is reported as PlayerState"), bFromConnectionStats);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiCommanderFloatHealthContractTest,
+	"GuLiStrike.Commander.Network.FloatHealthContract",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiCommanderFloatHealthContractTest::RunTest(const FString& Parameters)
+{
+	(void)Parameters;
+	TestNotNull(TEXT("Reliable Health is a reflected float, not an integer or normalized byte"),
+		FindFProperty<FFloatProperty>(FGuLiSoldierStateItem::StaticStruct(),
+			GET_MEMBER_NAME_CHECKED(FGuLiSoldierStateItem, Health)));
+	TestNotNull(TEXT("Reliable MaxHealth is a reflected float"),
+		FindFProperty<FFloatProperty>(FGuLiSoldierStateItem::StaticStruct(),
+			GET_MEMBER_NAME_CHECKED(FGuLiSoldierStateItem, MaxHealth)));
+
+	FGuLiSoldierStateItem Small;
+	Small.Health = 0.25f;
+	Small.MaxHealth = 0.5f;
+	Small.Sanitize();
+	TestEqual(TEXT("Positive maximum below one is not silently raised"), Small.MaxHealth, 0.5f);
+	TestEqual(TEXT("Sub-unit health remains fractional"), Small.Health, 0.25f);
+	TestTrue(TEXT("Sub-unit health is alive"), Small.IsAlive());
+	for (const float InvalidHealth : {-1.0f, std::numeric_limits<float>::quiet_NaN(),
+		std::numeric_limits<float>::infinity()})
+	{
+		FGuLiSoldierStateItem Invalid;
+		Invalid.Health = InvalidHealth;
+		Invalid.ActiveOrderId = 10u;
+		Invalid.Sanitize();
+		TestEqual(TEXT("Invalid health is finite zero"), Invalid.Health, 0.0f);
+		TestFalse(TEXT("Invalid health cannot leave a live unit"), Invalid.IsAlive());
+		TestEqual(TEXT("Invalid health clears active orders on death"), Invalid.ActiveOrderId, 0u);
+	}
+	Small.Health = 0.0f;
+	Small.Sanitize();
+	Small.MaxHealth = 300.5f;
+	Small.Sanitize();
+	TestFalse(TEXT("Increasing a dead unit's maximum never revives it"), Small.IsAlive());
+
+	UWorld* TestWorld = UWorld::CreateWorld(EWorldType::Game, false);
+	if (!TestNotNull(TEXT("An isolated replication World exists"), TestWorld))
+	{
+		return false;
+	}
+	AGuLiSoldierStateReplicator* Replicator = TestWorld->SpawnActor<AGuLiSoldierStateReplicator>();
+	if (!TestNotNull(TEXT("Float-health snapshot replicator exists"), Replicator))
+	{
+		TestWorld->DestroyWorld(false);
+		return false;
+	}
+	TArray<FGuLiSoldierStateItem> Snapshot;
+	FGuLiSoldierStateItem& State = Snapshot.AddDefaulted_GetRef();
+	State.SoldierId = FGuLiSoldierId(1u);
+	State.Team = EGuLiTeam::Red;
+	State.MaxHealth = 300.5f;
+	State.Health = 299.75f;
+	TestEqual(TEXT("Initial fractional snapshot creates one item"), Replicator->ApplyAuthoritySnapshot(Snapshot, 1u), 1);
+	State.Health -= 0.125f;
+	TestEqual(TEXT("Fractional damage alone dirties the reliable item without a revision change"),
+		Replicator->ApplyAuthoritySnapshot(Snapshot, 1u), 1);
+	const FGuLiSoldierStateItem* Stored = Replicator->FindSoldierState(State.SoldierId);
+	if (TestNotNull(TEXT("Fractional snapshot is addressable"), Stored))
+	{
+		TestEqual(TEXT("Fractional damage is not truncated at the replication boundary"), Stored->Health, 299.625f);
+	}
+	State.Health = std::numeric_limits<float>::quiet_NaN();
+	State.MaxHealth = std::numeric_limits<float>::infinity();
+	TestEqual(TEXT("Malformed float snapshot is sanitized once"), Replicator->ApplyAuthoritySnapshot(Snapshot, 1u), 1);
+	TestEqual(TEXT("Repeated NaN input does not dirty or notify every capture"),
+		Replicator->ApplyAuthoritySnapshot(Snapshot, 1u), 0);
+	Stored = Replicator->FindSoldierState(State.SoldierId);
+	if (TestNotNull(TEXT("Sanitized snapshot remains addressable"), Stored))
+	{
+		TestEqual(TEXT("Non-finite maximum falls back safely"), Stored->MaxHealth, 1.0f);
+		TestEqual(TEXT("Non-finite health is never replicated"), Stored->Health, 0.0f);
+	}
+	TestWorld->DestroyWorld(false);
 	return true;
 }
 

@@ -103,6 +103,115 @@ namespace GuLiCommanderNavigationPolicy
 			<= FMath::Square(static_cast<double>(AgentRadiusCentimeters));
 	}
 
+	bool IsSurfaceMoveResultAcceptable(
+		const bool bSurfaceMoveSucceeded,
+		const FVector& PreviousLocation,
+		const FVector& CandidateLocation,
+		const float MaximumZDeltaCentimeters)
+	{
+		if (!bSurfaceMoveSucceeded
+			|| PreviousLocation.ContainsNaN()
+			|| CandidateLocation.ContainsNaN()
+			|| !FMath::IsFinite(MaximumZDeltaCentimeters)
+			|| MaximumZDeltaCentimeters < 0.0f)
+		{
+			return false;
+		}
+
+		return FMath::Abs(CandidateLocation.Z - PreviousLocation.Z)
+			<= static_cast<double>(MaximumZDeltaCentimeters);
+	}
+
+	bool HasMeaningfulNavigationProgress(
+		const int32 PreviousPathPointIndex,
+		const int32 CurrentPathPointIndex,
+		const float PreviousWaypointDistanceCentimeters,
+		const float CurrentWaypointDistanceCentimeters,
+		const float RequiredImprovementCentimeters)
+	{
+		if (CurrentPathPointIndex > PreviousPathPointIndex)
+		{
+			return true;
+		}
+
+		if (!FMath::IsFinite(PreviousWaypointDistanceCentimeters)
+			|| !FMath::IsFinite(CurrentWaypointDistanceCentimeters)
+			|| !FMath::IsFinite(RequiredImprovementCentimeters)
+			|| PreviousWaypointDistanceCentimeters < 0.0f
+			|| CurrentWaypointDistanceCentimeters < 0.0f
+			|| RequiredImprovementCentimeters <= 0.0f)
+		{
+			return false;
+		}
+
+		return PreviousWaypointDistanceCentimeters
+			- CurrentWaypointDistanceCentimeters
+			>= RequiredImprovementCentimeters;
+	}
+
+	uint32 ResolveCommonActiveOrderId(const TConstArrayView<uint32> ActiveOrderIds)
+	{
+		uint32 CommonOrderId = 0u;
+		for (const uint32 ActiveOrderId : ActiveOrderIds)
+		{
+			if (ActiveOrderId == 0u)
+			{
+				continue;
+			}
+			if (CommonOrderId == 0u)
+			{
+				CommonOrderId = ActiveOrderId;
+			}
+			else if (CommonOrderId != ActiveOrderId)
+			{
+				return 0u;
+			}
+		}
+		return CommonOrderId;
+	}
+
+	bool ShouldEnterCenterlineRecovery(
+		const int32 ConsecutiveSurfaceFailures,
+		const float NoProgressSeconds,
+		const int32 FailureThreshold,
+		const float NoProgressThresholdSeconds)
+	{
+		return FailureThreshold > 0
+			&& FMath::IsFinite(NoProgressSeconds)
+			&& FMath::IsFinite(NoProgressThresholdSeconds)
+			&& NoProgressThresholdSeconds >= 0.0f
+			&& (ConsecutiveSurfaceFailures >= FailureThreshold
+				|| NoProgressSeconds >= NoProgressThresholdSeconds);
+	}
+
+	bool ShouldEnterPersonalPathRecovery(
+		const int32 TotalSurfaceFailures,
+		const float NoProgressSeconds,
+		const int32 FailureThreshold,
+		const float NoProgressThresholdSeconds)
+	{
+		return FailureThreshold > 0
+			&& FMath::IsFinite(NoProgressSeconds)
+			&& FMath::IsFinite(NoProgressThresholdSeconds)
+			&& NoProgressThresholdSeconds >= 0.0f
+			&& (TotalSurfaceFailures >= FailureThreshold
+				|| NoProgressSeconds >= NoProgressThresholdSeconds);
+	}
+
+	bool ShouldBlockPersonalPathRecovery(
+		const int32 CompletedPathQueries,
+		const float NoProgressSeconds,
+		const int32 RequiredPathQueries,
+		const float NoProgressThresholdSeconds)
+	{
+		return RequiredPathQueries > 0
+			&& CompletedPathQueries >= RequiredPathQueries
+			&& FMath::IsFinite(NoProgressSeconds)
+			&& FMath::IsFinite(NoProgressThresholdSeconds)
+			&& NoProgressThresholdSeconds >= 0.0f
+			&& NoProgressSeconds >= NoProgressThresholdSeconds;
+	}
+
 	float CalculateArrivalDomainRadiusCentimeters(
 		const int32 InitialAcceptedMemberCount,
 		const float AgentRadiusCentimeters,
@@ -359,6 +468,72 @@ namespace GuLiCommanderNavigationPolicy
 			}
 		}
 		return 1;
+	}
+
+	FTransitColumnHysteresisState UpdateTransitColumnHysteresis(
+		const FTransitColumnHysteresisState& PreviousState,
+		const int32 WidestFittingColumnCount,
+		const bool bMovementStepSucceeded,
+		const double CurrentTimeSeconds,
+		const int32 RequiredExpansionSuccessSteps,
+		const double MinimumRearrangementIntervalSeconds)
+	{
+		FTransitColumnHysteresisState Result = PreviousState;
+		Result.ColumnCount = FMath::Clamp(
+			PreviousState.ColumnCount,
+			1,
+			MaximumFormationColumns);
+		Result.ConsecutiveExpansionSuccessSteps = FMath::Max(
+			0,
+			PreviousState.ConsecutiveExpansionSuccessSteps);
+
+		const int32 CandidateColumnCount = FMath::Clamp(
+			WidestFittingColumnCount,
+			1,
+			MaximumFormationColumns);
+		const bool bValidTime = FMath::IsFinite(CurrentTimeSeconds);
+		const bool bValidPolicy = RequiredExpansionSuccessSteps > 0
+			&& FMath::IsFinite(MinimumRearrangementIntervalSeconds)
+			&& MinimumRearrangementIntervalSeconds >= 0.0;
+
+		if (CandidateColumnCount < Result.ColumnCount)
+		{
+			Result.ColumnCount = CandidateColumnCount;
+			Result.ConsecutiveExpansionSuccessSteps = 0;
+			if (bValidTime)
+			{
+				Result.LastRearrangementTimeSeconds = CurrentTimeSeconds;
+			}
+			return Result;
+		}
+
+		if (CandidateColumnCount == Result.ColumnCount || !bValidPolicy)
+		{
+			Result.ConsecutiveExpansionSuccessSteps = 0;
+			return Result;
+		}
+
+		if (!bMovementStepSucceeded)
+		{
+			Result.ConsecutiveExpansionSuccessSteps = 0;
+			return Result;
+		}
+
+		Result.ConsecutiveExpansionSuccessSteps = FMath::Min(
+			Result.ConsecutiveExpansionSuccessSteps + 1,
+			RequiredExpansionSuccessSteps);
+		if (!bValidTime
+			|| Result.ConsecutiveExpansionSuccessSteps < RequiredExpansionSuccessSteps
+			|| CurrentTimeSeconds - Result.LastRearrangementTimeSeconds
+				< MinimumRearrangementIntervalSeconds)
+		{
+			return Result;
+		}
+
+		Result.ColumnCount = CandidateColumnCount;
+		Result.ConsecutiveExpansionSuccessSteps = 0;
+		Result.LastRearrangementTimeSeconds = CurrentTimeSeconds;
+		return Result;
 	}
 
 	FFinalPathFrame ResolveFinalPathFrame(

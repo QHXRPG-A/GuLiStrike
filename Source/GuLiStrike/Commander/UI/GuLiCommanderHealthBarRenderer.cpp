@@ -659,13 +659,14 @@ void AGuLiCommanderHealthBarRenderer::HideAllInstances()
 
 bool AGuLiCommanderHealthBarRenderer::ShouldDisplayHealthBar(
 	const bool bAlive,
-	const uint8 Health,
-	const uint8 MaxHealth,
+	const float Health,
+	const float MaxHealth,
 	const bool bSelected,
 	const float DistanceCentimeters,
 	const float MaximumDistanceCentimeters)
 {
-	if (!bAlive || (!bSelected && Health >= FMath::Max<uint8>(1u, MaxHealth)))
+	if (!bAlive || !FMath::IsFinite(Health) || !FMath::IsFinite(MaxHealth)
+		|| Health <= 0.0f || MaxHealth <= 0.0f || (!bSelected && Health >= MaxHealth))
 	{
 		return false;
 	}
@@ -677,11 +678,14 @@ bool AGuLiCommanderHealthBarRenderer::ShouldDisplayHealthBar(
 }
 
 float AGuLiCommanderHealthBarRenderer::CalculateHealthFraction(
-	const uint8 Health,
-	const uint8 MaxHealth)
+	const float Health,
+	const float MaxHealth)
 {
-	const float SafeMaximum = static_cast<float>(FMath::Max<uint8>(1u, MaxHealth));
-	return FMath::Clamp(static_cast<float>(Health) / SafeMaximum, 0.0f, 1.0f);
+	if (!FMath::IsFinite(Health) || !FMath::IsFinite(MaxHealth) || MaxHealth <= 0.0f)
+	{
+		return 0.0f;
+	}
+	return FMath::Clamp(Health / MaxHealth, 0.0f, 1.0f);
 }
 
 FVector2D AGuLiCommanderHealthBarRenderer::CalculateWorldSizeCentimeters(
@@ -715,8 +719,8 @@ FVector2D AGuLiCommanderHealthBarRenderer::CalculateWorldSizeCentimeters(
 #if WITH_DEV_AUTOMATION_TESTS
 bool AGuLiCommanderHealthBarRenderer::TestOnly_ShouldDisplayHealthBar(
 	const bool bAlive,
-	const uint8 Health,
-	const uint8 MaxHealth,
+	const float Health,
+	const float MaxHealth,
 	const bool bSelected,
 	const float DistanceCentimeters,
 	const float MaximumDistanceCentimeters)
@@ -731,8 +735,8 @@ bool AGuLiCommanderHealthBarRenderer::TestOnly_ShouldDisplayHealthBar(
 }
 
 float AGuLiCommanderHealthBarRenderer::TestOnly_CalculateHealthFraction(
-	const uint8 Health,
-	const uint8 MaxHealth)
+	const float Health,
+	const float MaxHealth)
 {
 	return CalculateHealthFraction(Health, MaxHealth);
 }

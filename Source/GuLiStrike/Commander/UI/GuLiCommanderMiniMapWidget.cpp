@@ -9,17 +9,16 @@
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
+#include "Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.h"
 #include "Commander/Presentation/GuLiCommanderMiniMapTransform.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
-#include "LandscapeProxy.h"
 #include "Slate/SlateBrushAsset.h"
 #include "TimerManager.h"
 
 namespace GuLiCommanderNativeMiniMap
 {
-	constexpr float BattlefieldHalfExtent = 380000.0f;
 	constexpr float RefreshIntervalSeconds = 0.1f;
 	constexpr float ContentPadding = 8.0f;
 	constexpr int32 TerrainResolution = 20;
@@ -37,11 +36,17 @@ namespace GuLiCommanderNativeMiniMap
 	const FLinearColor SelectionColor(0.20f, 1.0f, 0.92f, 1.0f);
 	const FLinearColor CameraFrameColor(0.82f, 0.69f, 0.52f, 0.95f);
 
-	FBox2D GetFallbackWorldBounds()
+	FBox2D GetWorldBounds(const UWorld* World)
 	{
-		return FBox2D(
-			FVector2D(-BattlefieldHalfExtent, -BattlefieldHalfExtent),
-			FVector2D(BattlefieldHalfExtent, BattlefieldHalfExtent));
+		FBox2D Bounds(ForceInit);
+		const UGuLiCommanderLandscapeQuerySubsystem* Query = World
+			? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
+			: nullptr;
+		if (Query && Query->TryGetBounds(Bounds))
+		{
+			return Bounds;
+		}
+		return FBox2D(FVector2D(-1.0), FVector2D(1.0));
 	}
 
 	GuLiCommanderMiniMap::FHeadingUpTransform MakeHeadingTransform(
@@ -325,52 +330,33 @@ void UGuLiCommanderMiniMapWidget::RefreshSnapshot()
 
 void UGuLiCommanderMiniMapWidget::EnsureTerrainCache()
 {
-	if (bTerrainCacheInitialized)
+	UWorld* World = GetWorld();
+	const UGuLiCommanderLandscapeQuerySubsystem* LandscapeQuery = World
+		? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
+		: nullptr;
+	const uint32 LandscapeRevision = LandscapeQuery ? LandscapeQuery->GetCacheRevision() : 0u;
+	if (bTerrainCacheInitialized && TerrainLandscapeRevision == LandscapeRevision)
 	{
 		return;
 	}
 	bTerrainCacheInitialized = true;
+	TerrainLandscapeRevision = LandscapeRevision;
 	TerrainWorldBounds = FBox2D(ForceInit);
 	TerrainHeights.Reset();
 	TerrainValidity.Reset();
 	TerrainMinimumHeight = 0.0f;
 	TerrainMaximumHeight = 1.0f;
 
-	UWorld* World = GetWorld();
 	if (!World)
 	{
-		TerrainWorldBounds = GuLiCommanderNativeMiniMap::GetFallbackWorldBounds();
+		TerrainWorldBounds = GuLiCommanderNativeMiniMap::GetWorldBounds(nullptr);
 		bTerrainCacheInitialized = false;
 		return;
 	}
 
-	TArray<ALandscapeProxy*> LandscapeProxies;
-	TArray<FBox2D> LandscapeBounds;
-	for (TActorIterator<ALandscapeProxy> It(World); It; ++It)
+	if (!LandscapeQuery || !LandscapeQuery->TryGetBounds(TerrainWorldBounds))
 	{
-		const FBox Bounds = It->GetComponentsBoundingBox(true);
-		if (!Bounds.IsValid)
-		{
-			continue;
-		}
-
-		const FBox2D Bounds2D(
-			FVector2D(Bounds.Min.X, Bounds.Min.Y),
-			FVector2D(Bounds.Max.X, Bounds.Max.Y));
-		if (Bounds2D.GetSize().GetMin() <= 1.0f)
-		{
-			continue;
-		}
-
-		LandscapeProxies.Add(*It);
-		LandscapeBounds.Add(Bounds2D);
-		TerrainWorldBounds += Bounds2D.Min;
-		TerrainWorldBounds += Bounds2D.Max;
-	}
-
-	if (!TerrainWorldBounds.bIsValid || LandscapeProxies.IsEmpty())
-	{
-		TerrainWorldBounds = GuLiCommanderNativeMiniMap::GetFallbackWorldBounds();
+		TerrainWorldBounds = GuLiCommanderNativeMiniMap::GetWorldBounds(World);
 		return;
 	}
 
@@ -394,26 +380,14 @@ void UGuLiCommanderMiniMapWidget::EnsureTerrainCache()
 				TerrainWorldBounds.Min.Y + WorldSize.Y * NormalizedY);
 			const int32 SampleIndex = Row * Resolution + Column;
 
-			for (int32 ProxyIndex = 0; ProxyIndex < LandscapeProxies.Num(); ++ProxyIndex)
+			float Height = 0.0f;
+			if (LandscapeQuery->TryGetLandscapeHeight(SampleXY, Height))
 			{
-				if (!LandscapeBounds[ProxyIndex].IsInsideOrOn(SampleXY))
-				{
-					continue;
-				}
-
-				const TOptional<float> Height = LandscapeProxies[ProxyIndex]->GetHeightAtLocation(
-					FVector(SampleXY.X, SampleXY.Y, 0.0f));
-				if (!Height.IsSet() || !FMath::IsFinite(Height.GetValue()))
-				{
-					continue;
-				}
-
-				TerrainHeights[SampleIndex] = Height.GetValue();
+				TerrainHeights[SampleIndex] = Height;
 				TerrainValidity[SampleIndex] = 1u;
-				TerrainMinimumHeight = FMath::Min(TerrainMinimumHeight, Height.GetValue());
-				TerrainMaximumHeight = FMath::Max(TerrainMaximumHeight, Height.GetValue());
+				TerrainMinimumHeight = FMath::Min(TerrainMinimumHeight, Height);
+				TerrainMaximumHeight = FMath::Max(TerrainMaximumHeight, Height);
 				++ValidSampleCount;
-				break;
 			}
 		}
 	}
@@ -424,6 +398,7 @@ void UGuLiCommanderMiniMapWidget::EnsureTerrainCache()
 		TerrainValidity.Reset();
 		TerrainMinimumHeight = 0.0f;
 		TerrainMaximumHeight = 1.0f;
+		bTerrainCacheInitialized = false;
 	}
 }
 
@@ -659,7 +634,7 @@ int32 UGuLiCommanderMiniMapWidget::NativePaint(
 
 	const FBox2D WorldBounds = TerrainWorldBounds.bIsValid
 		? TerrainWorldBounds
-		: GetFallbackWorldBounds();
+		: GetWorldBounds(GetWorld());
 	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = MakeHeadingTransform(
 		WorldBounds,
 		ContentBounds,
@@ -895,7 +870,7 @@ bool UGuLiCommanderMiniMapWidget::HandleMapClickAtScreenPosition(
 	const FBox2D ContentBounds = GetLocalContentBounds(InGeometry);
 	const FBox2D WorldBounds = TerrainWorldBounds.bIsValid
 		? TerrainWorldBounds
-		: GuLiCommanderNativeMiniMap::GetFallbackWorldBounds();
+		: GuLiCommanderNativeMiniMap::GetWorldBounds(GetWorld());
 	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = GuLiCommanderNativeMiniMap::MakeHeadingTransform(
 			WorldBounds,
 			ContentBounds,

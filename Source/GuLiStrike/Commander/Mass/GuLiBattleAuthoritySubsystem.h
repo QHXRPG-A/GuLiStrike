@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
+#include "Commander/Mass/GuLiSoldierCombat.h"
 #include "Gameplay/Tuning/GuLiRuntimeTuningTypes.h"
 #include "GuLiBattleAuthoritySubsystem.generated.h"
 
@@ -19,6 +20,155 @@ struct FGuLiBattleAuthorityState;
 struct FGuLiBattleAuthorityStateDeleter
 {
 	void operator()(FGuLiBattleAuthorityState* State) const;
+};
+
+/** Development measurements of completed fixed steps; excludes snapshot/network publication and rendering. */
+struct FGuLiAuthorityPerformanceCounters
+{
+	uint64 Steps = 0;
+	uint64 Shots = 0;
+	double SimulationMilliseconds = 0.0;
+	double CombatMilliseconds = 0.0;
+	double MaxSimulationMilliseconds = 0.0;
+	double MaxCombatMilliseconds = 0.0;
+};
+
+/** Server-only navigation state. Arrived and Blocked are terminal for the current order. */
+enum class EGuLiSoldierNavigationState : uint8
+{
+	Idle,
+	Normal,
+	CenterlineRecovery,
+	PersonalPathRecovery,
+	Arrived,
+	Blocked
+};
+
+/** Stable reason retained after a Soldier leaves an order in the Blocked state. */
+enum class EGuLiSoldierNavigationFailure : uint8
+{
+	None,
+	NavigationUnavailable,
+	SurfaceMoveFailed,
+	ExcessiveHeightDelta,
+	PersonalPathFailed,
+	FinalSlotInvalidated
+};
+
+/** Read-only authoritative state for one Soldier; never enters the v5 snapshot wire format. */
+struct FGuLiSoldierNavigationDebug
+{
+	FGuLiSoldierId SoldierId;
+	EGuLiTeam Team = EGuLiTeam::Unassigned;
+	EGuLiSoldierNavigationState State = EGuLiSoldierNavigationState::Idle;
+	EGuLiSoldierNavigationFailure Failure = EGuLiSoldierNavigationFailure::None;
+	uint32 ActiveOrderId = 0u;
+	uint32 LastCompletedOrderId = 0u;
+	uint32 LastFailedOrderId = 0u;
+	FVector Location = FVector::ZeroVector;
+	FVector LastValidNavLocation = FVector::ZeroVector;
+	FVector FinalSlot = FVector::ZeroVector;
+	FVector CurrentWaypoint = FVector::ZeroVector;
+	float DistanceToFinalSlotCentimeters = 0.0f;
+	float NoProgressSeconds = 0.0f;
+	double FailureSimulationSeconds = 0.0;
+	int32 PathPointIndex = 0;
+	int32 ConsecutiveSurfaceFailures = 0;
+	int32 TotalSurfaceFailures = 0;
+	int32 PersonalPathRetries = 0;
+	bool bHasFinalSlot = false;
+	bool bMoving = false;
+};
+
+/** Aggregate fixed-step navigation diagnostics. Querying this does not mutate simulation state. */
+struct FGuLiNavigationStats
+{
+	int32 Alive = 0;
+	int32 Idle = 0;
+	int32 Active = 0;
+	int32 Arrived = 0;
+	int32 CenterlineRecovery = 0;
+	int32 PersonalPathRecovery = 0;
+	int32 Blocked = 0;
+	uint64 SurfaceMoveCalls = 0u;
+	uint64 SurfaceMoveFailures = 0u;
+	uint64 PathQueries = 0u;
+	uint64 PersonalPathQueries = 0u;
+	double LastDestinationPlanningMilliseconds = 0.0;
+	double MaximumDestinationPlanningMilliseconds = 0.0;
+	int32 PendingMovePlanningTasks = 0;
+	uint64 MoveCandidateProjectionQueries = 0u;
+	uint64 MovePlanningPathQueries = 0u;
+	uint64 PartiallyAcceptedMoveCommands = 0u;
+	uint64 MovePlanningFailureCounts[10] = {};
+	FGuLiSoldierId SlowestSoldierId;
+	float SlowestNoProgressSeconds = 0.0f;
+};
+
+/** Finite stages used by the async free-destination planner and its GM summary. */
+enum class EGuLiMovePlanFailureStage : uint8
+{
+	None = 0,
+	MemberInvalid,
+	StartInvalid,
+	CandidateProjection,
+	Separation,
+	FriendlyReservation,
+	RestoredReservation,
+	SharedPath,
+	Connector,
+	PersonalPath,
+	CandidatesExhausted,
+	Count
+};
+
+/** Poll result for a move request that is prepared across world frames. */
+enum class EGuLiMovePlanningStatus : uint8
+{
+	NotFound,
+	Pending,
+	Completed
+};
+
+/** Server snapshot converted by NetSync into the OwnerOnly endpoint FastArray. */
+struct FGuLiMoveEndpointSnapshot
+{
+	FGuLiSoldierId SoldierId;
+	uint32 ActiveOrderId = 0u;
+	FVector CommandStart = FVector::ZeroVector;
+	FVector FinalDestination = FVector::ZeroVector;
+	uint32 Revision = 0u;
+};
+
+/** One completed request's bounded diagnostics; candidate failures are aggregated, never spammed. */
+struct FGuLiMoveCohortPlanningDebug
+{
+	FGuLiControlCohortId CohortId;
+	uint8 MemberCount = 0u;
+	uint32 EligibleMemberMask = 0u;
+	uint32 AcceptedMemberMask = 0u;
+	TArray<FGuLiSoldierId> FailedSoldierIds;
+};
+
+struct FGuLiMovePlanningDebug
+{
+	uint32 ClientCommandId = 0u;
+	uint32 BatchOrderId = 0u;
+	FVector RequestedTarget = FVector::ZeroVector;
+	int32 TheoreticalCandidates = 0;
+	int32 ProjectedCandidates = 0;
+	int32 LegalCandidates = 0;
+	int32 CandidateProjectionQueries = 0;
+	int32 PathQueries = 0;
+	int32 RouteSplitCount = 0;
+	int32 ReservationConflictCount = 0;
+	int32 AcceptedMembers = 0;
+	int32 FailedMembers = 0;
+	float MaximumSearchRadiusCentimeters = 0.0f;
+	double PlanningMilliseconds = 0.0;
+	TArray<FGuLiSoldierId> FailedSoldierIds;
+	TArray<FGuLiMoveCohortPlanningDebug> Cohorts;
+	uint64 FailureCounts[static_cast<uint8>(EGuLiMovePlanFailureStage::Count)] = {};
 };
 
 /**
@@ -72,7 +222,7 @@ public:
 	void SetSoldierSimulationEnabled(bool bEnabled);
 
 	/**
-	 * 按服务端位置、阵营和存活状态解析圆形选择意图，生成目标 25 人、允许不足的临时控制组。
+	 * 按权威位置、兵种、阵营和存活状态解析点/框/范围/同兵种意图，精确成员按最多 25 人分组。
 	 * 检查权限、请求结构和已知选择版本；接受后提交 InOutSelection，并通过 OutAck 返回结果。
 	 * 返回 true 表示请求被接受，选择内容未变化时也可成功。
 	 */
@@ -83,15 +233,33 @@ public:
 		FGuLiCommandAck& OutAck);
 
 	/**
-	 * 检查选择版本，将各合法控制组转为共享目标、各自寻路的临时移动编队。
-	 * 仅对寻路成功的组提交新指令；同批编队共享 BatchOrderId 和按成功总人数计算的到达域。
-	 * 返回 true 表示至少一组接令，OutAck 区分全部接受、部分接受和失败，不表示已经到达。
+	 * Starts or attaches to a deterministic, frame-budgeted free-destination plan.
+	 * Global validation errors are returned immediately; accepted work remains Pending until a fixed-step commit.
 	 */
-	bool IssueMove(
+	bool BeginMovePlanning(
 		const AGuLiBattlePlayerState& PlayerState,
 		const FGuLiMoveRequest& Request,
 		const FGuLiCommanderSelectionState& Selection,
-		FGuLiCommandAck& OutAck);
+		FGuLiCommandAck& OutImmediateAck);
+
+	/** Returns and consumes a completed result; Pending and NotFound never mutate OutUpdatedSelection. */
+	EGuLiMovePlanningStatus PollMovePlanning(
+		const AGuLiBattlePlayerState& PlayerState,
+		uint32 ClientCommandId,
+		FGuLiCommandAck& OutAck,
+		FGuLiCommanderSelectionState& OutUpdatedSelection,
+		bool& bOutSelectionChanged);
+
+	/** Cancels every unconsumed plan owned by this PlayerState; used by connection/match reset. */
+	void CancelMovePlanning(const AGuLiBattlePlayerState& PlayerState);
+
+	/** Rebuilds the currently active endpoint set for one team; arrival/failure/death are omitted. */
+	void BuildActiveMoveEndpointSnapshot(
+		EGuLiTeam Team,
+		TArray<FGuLiMoveEndpointSnapshot>& OutEndpoints) const;
+
+	/** Last completed move-plan summary for GM inspection; optional cohort filtering is applied by the caller. */
+	bool TryGetLastMovePlanningDebug(FGuLiMovePlanningDebug& OutDebug) const;
 
 	/**
 	 * 服务端刷新选择：去掉无效、重复和异阵营成员，整组无人存活时移除该组。
@@ -104,7 +272,19 @@ public:
 	 * 服务端 C++ 扣血入口；未知/无效 SoldierId、已死亡士兵或零伤害返回 false。
 	 * 此处不计算攻防公式；死亡时清除指令和速度，保留实体用于残骸窗口及后续状态同步。
 	 */
-	bool ApplyDamage(FGuLiSoldierId SoldierId, uint8 Amount);
+	bool ApplyDamage(FGuLiSoldierId SoldierId, float Amount);
+
+	/** Read-only server diagnostics; a valid ID can describe a dead Soldier. */
+	bool TryGetSoldierCombatDebug(FGuLiSoldierId SoldierId, FGuLiSoldierCombatDebug& OutDebug) const;
+	/** Read-only server navigation diagnostics; terminal failure data remains available after ActiveOrderId clears. */
+	bool TryGetSoldierNavigationDebug(FGuLiSoldierId SoldierId, FGuLiSoldierNavigationDebug& OutDebug) const;
+	/** Returns a fresh state census plus cumulative surface/path-query counters. */
+	FGuLiNavigationStats GetNavigationStats() const;
+	/** Extends the executor registry and the skill resolver together. Game-thread/server only. */
+	bool RegisterCombatExecutor(FName ExecutorId, FGuLiCombatExecutorRegistry::FExecutor Executor);
+	/** Non-shipping authoritative test spawn. Uses the same data and current profile as initial Soldiers. */
+	bool SpawnDebugSoldier(EGuLiTeam Team, uint16 UnitTypeId, const FVector& Location, FGuLiSoldierId& OutId);
+	const FGuLiAuthorityPerformanceCounters& GetPerformanceCounters() const { return PerformanceCounters; }
 
 	/**
 	 * 校验并应用本 World 的士兵调参：普通属性立即同步，最大生命变化按比例保留当前生命。
@@ -177,9 +357,23 @@ private:
 
 	/** 执行一个固定步：提交待生效速度、更新编队、积分士兵位移，再按批次收尾。 */
 	void TickAuthority(float FixedDeltaSeconds);
+	void CommitCombatProfiles();
+	void TickSoldierCombat();
 
 	/** 每世界帧按预算采样可走性、提交纯数据后台构建，并核对版本后接收流场结果。 */
 	void TickLocalFlowFields();
+
+	/** Advances candidate projection/routing budgets once per rendered world frame. */
+	void TickMovePlanning(int32& RemainingProjectionBudget, int32& RemainingPathBudget);
+
+	/** Advances a NavMesh-generation repair job without exceeding the shared per-frame query budgets. */
+	void TickNavigationRepairs(int32& RemainingProjectionBudget, int32& RemainingPathBudget);
+
+	/** Commits every ready plan at the start of one authoritative 30 Hz step. */
+	void CommitReadyMovePlans();
+
+	/** Applies one completed navigation repair at a 30 Hz boundary before movement reads its results. */
+	void CommitReadyNavigationRepairs();
 
 	/** 在固定步边界交替迁移 Even/Odd Archetype，以替换只读共享的移动参数。 */
 	void ApplyPendingMovementSpeed();
@@ -194,11 +388,11 @@ private:
 	// 配置声明中的初始值可被 Game 配置覆盖；移动速度还会在 Initialize 中读取运行时调参值。
 	/** 红方出生布局中心，使用世界坐标（cm）；实际士兵出生位置还需投影到专用 NavMesh。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Spawn")
-	FVector RedSpawnCenter = FVector(-221397.0, 130463.0, 0.0);
+	FVector RedSpawnCenter = FVector(-10000.0, 127500.0, 0.0);
 
 	/** 蓝方出生布局中心，使用世界坐标（cm）；与红方一样须满足导航就绪条件。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Spawn")
-	FVector BlueSpawnCenter = FVector(221397.0, -130463.0, 0.0);
+	FVector BlueSpawnCenter = FVector(110000.0, 37500.0, 0.0);
 
 	/** 出生方阵之间的间距（cm），仅用于初始部署，不表示移动指令中的编队间距。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Formation", meta = (ClampMin = "1000.0", Units = "cm"))
@@ -208,7 +402,7 @@ private:
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Formation", meta = (ClampMin = "100.0", Units = "cm"))
 	float MemberSpacingCentimeters = 1800.0f;
 
-	/** 士兵导航/分离半径（cm），也参与到达域估算；需与 CommanderSoldier 导航 Agent 匹配。 */
+	/** 士兵导航/分离半径（cm），参与路径游标与重叠分离；需与 CommanderSoldier 导航 Agent 匹配。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Formation", meta = (ClampMin = "1.0", Units = "cm"))
 	float MemberAgentRadiusCentimeters = 750.0f;
 
@@ -248,4 +442,5 @@ private:
 	/** 独占本 World 的运行时状态；Initialize 分配、Deinitialize 释放，Mass 子系统只被弱引用。 */
 	TUniquePtr<FGuLiBattleAuthorityState, FGuLiBattleAuthorityStateDeleter> AuthorityState;
 	bool bSoldierSimulationEnabled = false;
+	FGuLiAuthorityPerformanceCounters PerformanceCounters;
 };

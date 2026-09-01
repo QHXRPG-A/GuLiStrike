@@ -94,6 +94,7 @@ struct FGuLiCommanderSoldierPresentationDiagnostics
 struct FGuLiCommanderPredictedMove
 {
 	FGuLiControlCohortId CohortId;
+	uint8 FrozenMemberIndex = 0u;
 	uint32 ClientCommandId = 0u;
 	uint32 ExpectedOrderId = 0u;
 	double StartTimeSeconds = 0.0;
@@ -108,6 +109,52 @@ struct FGuLiCommanderPredictedMove
 	bool bAwaitingAuthoritativeOrder = false;
 	bool bResolving = false;
 };
+
+#if !UE_BUILD_SHIPPING
+/** Opt-in, bounded single-soldier capture. No strings or file writes on the sampled frame. */
+enum class EGuLiPredictionTraceEvent : uint8
+{
+	Start, Input, MouseInput, ReplacedPrediction, AckAccepted, AckRejected, SampleArrival,
+	RenderHandoff, Resolve, Frame, HardSnap, NetworkReset, Stop
+};
+
+struct FGuLiPredictionTraceRow
+{
+	EGuLiPredictionTraceEvent Event = EGuLiPredictionTraceEvent::Frame;
+	double LocalSeconds = 0.0;
+	double RenderServerSeconds = 0.0;
+	double SampleServerSeconds = 0.0;
+	uint64 LocalFrame = 0;
+	uint32 SoldierId = 0;
+	uint32 CommandId = 0;
+	uint32 OrderId = 0;
+	uint32 SampleFrame = 0;
+	FVector Authoritative = FVector::ZeroVector;
+	FVector Presented = FVector::ZeroVector;
+	FVector Offset = FVector::ZeroVector;
+	FVector RequestedOffset = FVector::ZeroVector;
+	FVector SampleLocation = FVector::ZeroVector;
+	FVector SampleVelocity = FVector::ZeroVector;
+	FVector Direction = FVector::ZeroVector;
+	FVector Target = FVector::ZeroVector;
+	double SignedPresentedSpeed = 0.0;
+	double SignedAuthoritativeSpeed = 0.0;
+	bool bHasSpeed = false;
+	bool bHasPrediction = false;
+	bool bResolving = false;
+};
+
+/** Retained independently of the short-lived prediction, so late ACKs remain observable. */
+struct FGuLiPredictionTraceCommand
+{
+	uint32 CommandId = 0;
+	FGuLiControlCohortId CohortId;
+	uint8 FrozenMemberIndex = 0u;
+	FVector Direction = FVector::ZeroVector;
+	FVector Target = FVector::ZeroVector;
+	bool bAckRecorded = false;
+};
+#endif
 
 /**
  * Actor 本身复制以便客户端发现；单位表现由名册与拥有者姿态流在本地重建。
@@ -145,6 +192,14 @@ public:
 	/** Accepts or rejects only the matching prediction; authority state is never mutated here. */
 	// 本地消费匹配移动 ACK；按控制组区分接受/拒绝，接受后等待对应权威命令样本收敛。
 	void ResolvePredictedMove(const FGuLiCommandAck& Ack);
+
+#if !UE_BUILD_SHIPPING
+	/** Temporary diagnostic override; does not change config, server movement or prediction timing. */
+	bool StartPredictionTrace(bool bDisableDisplacement, uint32 SoldierId, float DurationSeconds);
+	bool StopPredictionTrace(FString& OutCsvPath);
+	bool IsPredictionTraceActive() const { return bPredictionTraceActive; }
+	void TraceCommanderMoveInput(uint32 ClientCommandId, const FVector& Target);
+#endif
 
 	/** Resets and reads a per-Soldier observation window without changing presentation state. */
 	void ResetSoldierPresentationDiagnostics(FGuLiSoldierId SoldierId);
@@ -235,6 +290,33 @@ private:
 	void RebuildLocalInstances(float DeltaSeconds);
 	FTransform BuildRingTransform(const FTransform& SoldierTransform) const;
 	static bool IsAckResultAccepted(EGuLiCommandAckResult Result);
+
+#if !UE_BUILD_SHIPPING
+	void AppendPredictionTrace(EGuLiPredictionTraceEvent Event,
+		const FGuLiCommanderBufferedSoldierPose* Sample = nullptr);
+	void CapturePredictionTraceFrame(FGuLiSoldierId SoldierId, double RenderServerSeconds);
+	void TracePredictionAck(const FGuLiCommandAck& Ack);
+	TArray<FGuLiPredictionTraceRow> PredictionTraceRows;
+	TArray<FGuLiPredictionTraceCommand> PredictionTraceCommands;
+	TWeakObjectPtr<UGuLiCommanderNetSyncComponent> PredictionTraceAckSource;
+	FDelegateHandle PredictionTraceAckHandle;
+	TMap<uint32, double> PredictionTraceOrderSampleTimes;
+	FGuLiSoldierId PredictionTraceSoldier;
+	FVector PredictionTraceDirection = FVector::ZeroVector;
+	FVector PredictionTraceTarget = FVector::ZeroVector;
+	FVector PredictionTraceRequestedOffset = FVector::ZeroVector;
+	FVector PredictionTracePreviousPresented = FVector::ZeroVector;
+	FVector PredictionTracePreviousAuthoritative = FVector::ZeroVector;
+	double PredictionTracePreviousTime = 0.0;
+	double PredictionTraceEndTime = 0.0;
+	double PredictionTraceRenderServerTime = 0.0;
+	uint32 PredictionTraceCommandId = 0;
+	uint32 PredictionTraceOrderId = 0;
+	bool bPredictionTraceActive = false;
+	bool bPredictionTraceDisableDisplacement = false;
+	bool bPredictionTraceHasPreviousFrame = false;
+	bool bPredictionTraceHandoffRecorded = false;
+#endif
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Presentation")
 	TObjectPtr<USceneComponent> SceneRoot;

@@ -151,6 +151,16 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 
 	FGuLiSoldierDefinition Resolved = Fallback;
 	bOutEntireDefinitionFromDataTable = true;
+	if (Row->Id > 0 && Row->Id <= MAX_uint16)
+	{
+		Resolved.UnitTypeId = static_cast<uint16>(Row->Id);
+	}
+	else
+	{
+		bOutEntireDefinitionFromDataTable = false;
+		LogWarningOnce(TEXT("InvalidUnitTypeId"), FString::Printf(
+			TEXT("invalid Soldier Id %d; using fallback %u."), Row->Id, Fallback.UnitTypeId));
+	}
 	Resolved.MovementSpeedCmPerSecond = ResolveFiniteRange(
 		Row->MovementSpeedCmPerSecond,
 		UE_SMALL_NUMBER,
@@ -160,9 +170,10 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 		TEXT("MovementSpeedCmPerSecond"),
 		bOutEntireDefinitionFromDataTable);
 
-	if (Row->MaxHealth >= 1 && Row->MaxHealth <= MAX_uint8)
+	if (FMath::IsFinite(Row->MaxHealth) && Row->MaxHealth > 0.0f
+		&& Row->MaxHealth <= MaximumSupportedHealth)
 	{
-		Resolved.MaxHealth = static_cast<uint8>(Row->MaxHealth);
+		Resolved.MaxHealth = Row->MaxHealth;
 	}
 	else
 	{
@@ -170,19 +181,11 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 		LogWarningOnce(
 			TEXT("InvalidMaxHealth"),
 			FString::Printf(
-				TEXT("invalid MaxHealth value %d; using fallback %u (wire contract is uint8)."),
+				TEXT("invalid MaxHealth value %.9g; using fallback %.9g (valid range: finite, >0, <=1e9)."),
 				Row->MaxHealth,
 				Fallback.MaxHealth));
 	}
 
-	Resolved.AttackPower = ResolveFiniteRange(
-		Row->AttackPower,
-		0.0f,
-		MaximumReasonableCombatValue,
-		Fallback.AttackPower,
-		TEXT("InvalidAttackPower"),
-		TEXT("AttackPower"),
-		bOutEntireDefinitionFromDataTable);
 	Resolved.Defense = ResolveFiniteRange(
 		Row->Defense,
 		0.0f,
@@ -190,14 +193,6 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 		Fallback.Defense,
 		TEXT("InvalidDefense"),
 		TEXT("Defense"),
-		bOutEntireDefinitionFromDataTable);
-	Resolved.AttackRangeCentimeters = ResolveFiniteRange(
-		Row->AttackRangeCentimeters,
-		0.0f,
-		MaximumReasonableCombatValue,
-		Fallback.AttackRangeCentimeters,
-		TEXT("InvalidAttackRange"),
-		TEXT("AttackRangeCentimeters"),
 		bOutEntireDefinitionFromDataTable);
 
 	UObject* LoadedModel = Row->ModelAsset.LoadSynchronous();

@@ -17,6 +17,7 @@
 #include "Components/Image.h"
 #include "Components/PanelWidget.h"
 #include "Components/TextBlock.h"
+#include "Engine/Texture2D.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/GameState.h"
@@ -56,6 +57,40 @@ namespace GuLiCommanderHUDWidget
 			return FText::FromString(TEXT("未分配"));
 		}
 	}
+}
+
+FBox2D GuLiCommanderHUDLayout::PlaceTooltip(
+	const FBox2D& Anchor, const FVector2D& DesiredSize, const FVector2D& ViewportSize)
+{
+	const FVector2D ViewSize(FMath::Max(1.0, ViewportSize.X), FMath::Max(1.0, ViewportSize.Y));
+	const FVector2D Margin(FMath::Min(8.0, ViewSize.X * 0.1), FMath::Min(8.0, ViewSize.Y * 0.1));
+	const FVector2D Size(
+		FMath::Clamp(DesiredSize.X, 1.0, FMath::Max(1.0, ViewSize.X - Margin.X * 2.0)),
+		FMath::Clamp(DesiredSize.Y, 1.0, FMath::Max(1.0, ViewSize.Y - Margin.Y * 2.0)));
+	FVector2D Position(Anchor.Min.X, Anchor.Min.Y - Size.Y - 8.0);
+	if (Position.Y < Margin.Y)
+	{
+		Position.Y = Anchor.Max.Y + 8.0;
+	}
+	Position.X = FMath::Clamp(Position.X, Margin.X, ViewSize.X - Margin.X - Size.X);
+	Position.Y = FMath::Clamp(Position.Y, Margin.Y, ViewSize.Y - Margin.Y - Size.Y);
+	return FBox2D(Position, Position + Size);
+}
+
+UGuLiCommanderHUDWidget::UGuLiCommanderHUDWidget(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer)
+{
+	FGuLiCommanderShortcutEntry SameType;
+	SameType.ButtonName = TEXT("BTN_Shortcut_SameType");
+	SameType.IconName = TEXT("I_Shortcut_SameType");
+	SameType.Tooltip = FText::FromString(TEXT(
+		"Alt + 左键点击士兵\n选择同兵种：以该士兵为中心，从近到远选择最多 1000 人；附近不足时从全地图补足。\nAlt + Shift + 左键：追加到当前选择。\n只选择己方可控、存活的同兵种。"));
+	FGuLiCommanderShortcutEntry AddSelection;
+	AddSelection.ButtonName = TEXT("BTN_Shortcut_AddSelection");
+	AddSelection.IconName = TEXT("I_Shortcut_AddSelection");
+	AddSelection.Tooltip = FText::FromString(TEXT(
+		"Shift + 左键点击 / 拖拽 / 范围选取\n追加选择：保留已选单位，再加入本次命中的单位。\n重复命中不会取消或重复计数；未命中时保持原选择。"));
+	ShortcutEntries = {SameType, AddSelection};
 }
 
 void UGuLiCommanderHUDWidget::InitializeForController(
@@ -116,6 +151,11 @@ void UGuLiCommanderHUDWidget::NativeConstruct()
 
 	BuildMiniMapLayer();
 	HideReviewOnlyMapWidgets();
+	BindShortcutControls();
+	BoxSelectionTexture = LoadObject<UTexture2D>(nullptr,
+		TEXT("/Game/Commander/UI/Textures/Icons/T_UI_Cmd_Box.T_UI_Cmd_Box"));
+	RadiusSelectionTexture = LoadObject<UTexture2D>(nullptr,
+		TEXT("/Game/Commander/UI/Textures/Icons/T_UI_Cmd_Radius.T_UI_Cmd_Radius"));
 
 	if (UButton* MoveButton = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Move"))))
 	{
@@ -157,6 +197,15 @@ void UGuLiCommanderHUDWidget::NativeDestruct()
 		World->GetTimerManager().ClearTimer(ElapsedTimeTimer);
 	}
 	UnbindRuntimeSources();
+	UnbindShortcutControls();
+	HideShortcutTooltip();
+	for (const FName ButtonName : {FName(TEXT("BTN_Cmd_Move")), FName(TEXT("BTN_Cmd_Select")), FName(TEXT("BTN_MiniMapJump"))})
+	{
+		if (UButton* Button = Cast<UButton>(FindRuntimeWidget(ButtonName)))
+		{
+			Button->OnClicked.RemoveAll(this);
+		}
+	}
 	CachedSelection = FGuLiCommanderSelectionState();
 	CachedCommandAck = FGuLiCommandAck();
 	CachedSelectionMatchEpoch = 0u;
@@ -238,6 +287,10 @@ void UGuLiCommanderHUDWidget::BindRuntimeSources()
 		ToolModeChangedHandle = Controller->OnCommanderToolModeChanged.AddUObject(
 			this,
 			&ThisClass::HandleToolModeChanged);
+		SelectionShapeChangedHandle = Controller->OnSelectionShapeChanged.AddUObject(
+			this, &ThisClass::HandleSelectionShapeChanged);
+		SelectionRadiusChangedHandle = Controller->OnSelectionRadiusPresetChanged.AddUObject(
+			this, &ThisClass::HandleSelectionRadiusChanged);
 	}
 
 	if (UGuLiCommanderNetSyncComponent* NetSync = NetSyncComponent.Get())
@@ -272,6 +325,8 @@ void UGuLiCommanderHUDWidget::UnbindRuntimeSources()
 	if (AGuLiCommanderPlayerController* Controller = CommanderController.Get())
 	{
 		Controller->OnCommanderToolModeChanged.Remove(ToolModeChangedHandle);
+		Controller->OnSelectionShapeChanged.Remove(SelectionShapeChangedHandle);
+		Controller->OnSelectionRadiusPresetChanged.Remove(SelectionRadiusChangedHandle);
 	}
 	if (UGuLiCommanderNetSyncComponent* NetSync = NetSyncComponent.Get())
 	{
@@ -293,6 +348,8 @@ void UGuLiCommanderHUDWidget::UnbindRuntimeSources()
 	CommandAckChangedHandle.Reset();
 	SoldierStatesChangedHandle.Reset();
 	ToolModeChangedHandle.Reset();
+	SelectionShapeChangedHandle.Reset();
+	SelectionRadiusChangedHandle.Reset();
 	bRuntimeSourcesBound = false;
 }
 
@@ -530,7 +587,7 @@ void UGuLiCommanderHUDWidget::RefreshUnitTypeCard()
 		TEXT("TXT_UnitTypeHealth"),
 		FText::FromString(Summary.bSyncing
 			? FString(TEXT("-- / --"))
-			: FString::Printf(TEXT("%d / %d"), Summary.TotalHealth, Summary.TotalMaxHealth)));
+			: FString::Printf(TEXT("%.2f / %.2f"), Summary.TotalHealth, Summary.TotalMaxHealth)));
 	SetText(TEXT("TXT_UnitTypeStatus"), Summary.CommandStatus);
 	SetImageFraction(TEXT("I_UnitTypeHealthFill"), Summary.GetHealthFraction());
 }
@@ -565,11 +622,38 @@ void UGuLiCommanderHUDWidget::RefreshCommandControls()
 	{
 		MoveButton->SetIsEnabled(bCanMove);
 	}
+	const bool bRadius = Controller && Controller->GetSelectionShape() == EGuLiCommanderSelectionShape::Radius;
+	SetText(TEXT("TXT_CmdLabel_Select"), FText::FromString(bRadius ? TEXT("范围") : TEXT("框选")));
+	if (UImage* SelectionIcon = FindImage(TEXT("I_CmdIcon_Select")))
+	{
+		SelectionIcon->SetBrushFromTexture(bRadius ? RadiusSelectionTexture.Get() : BoxSelectionTexture.Get());
+	}
+	if (UButton* SelectButton = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Select"))))
+	{
+		const int32 RadiusMeters = Controller
+			? FMath::RoundToInt(GuLiCommanderProtocol::GetSelectionRadiusCentimeters(Controller->GetSelectionRadiusPreset()) / 100.0f)
+			: 80;
+		SelectButton->SetToolTipText(FText::FromString(bRadius
+			? FString::Printf(TEXT("7：切换为矩形框选\n当前范围半径 %dm；+ 切换 80 / 200 / 450m。\nShift：追加选择。"), RadiusMeters)
+			: FString(TEXT("7：切换为范围选取\n左键点击单选；按住左键拖拽框选。\nShift：追加选择。"))));
+	}
 }
 
 void UGuLiCommanderHUDWidget::HandleToolModeChanged(const EGuLiCommanderToolMode NewMode)
 {
 	(void)NewMode;
+	RefreshCommandControls();
+}
+
+void UGuLiCommanderHUDWidget::HandleSelectionShapeChanged(const EGuLiCommanderSelectionShape NewShape)
+{
+	(void)NewShape;
+	RefreshCommandControls();
+}
+
+void UGuLiCommanderHUDWidget::HandleSelectionRadiusChanged(const EGuLiSelectionRadiusPreset NewPreset)
+{
+	(void)NewPreset;
 	RefreshCommandControls();
 }
 
@@ -597,8 +681,115 @@ void UGuLiCommanderHUDWidget::HandleSelectClicked()
 
 	if (AGuLiCommanderPlayerController* Controller = CommanderController.Get())
 	{
-		Controller->ActivateSelectionTool();
+		Controller->ToggleSelectionShape();
 	}
+}
+
+void UGuLiCommanderHUDWidget::BindShortcutControls()
+{
+	for (const FGuLiCommanderShortcutEntry& Entry : ShortcutEntries)
+	{
+		if (UButton* Button = Cast<UButton>(FindRuntimeWidget(Entry.ButtonName)))
+		{
+			// A button consumes presses/releases but deliberately has no command callback.
+			Button->SetIsEnabled(true);
+			Button->SetRenderOpacity(1.0f);
+			Button->OnHovered.AddUniqueDynamic(this, &ThisClass::HandleShortcutHovered);
+			Button->OnUnhovered.AddUniqueDynamic(this, &ThisClass::HandleShortcutUnhovered);
+		}
+		if (UWidget* Icon = FindRuntimeWidget(Entry.IconName))
+		{
+			Icon->SetRenderOpacity(1.0f);
+		}
+	}
+	HideShortcutTooltip();
+}
+
+void UGuLiCommanderHUDWidget::UnbindShortcutControls()
+{
+	for (const FGuLiCommanderShortcutEntry& Entry : ShortcutEntries)
+	{
+		if (UButton* Button = Cast<UButton>(FindRuntimeWidget(Entry.ButtonName)))
+		{
+			Button->OnHovered.RemoveDynamic(this, &ThisClass::HandleShortcutHovered);
+			Button->OnUnhovered.RemoveDynamic(this, &ThisClass::HandleShortcutUnhovered);
+		}
+	}
+}
+
+void UGuLiCommanderHUDWidget::HandleShortcutHovered()
+{
+	for (const FGuLiCommanderShortcutEntry& Entry : ShortcutEntries)
+	{
+		const UButton* Button = Cast<UButton>(FindRuntimeWidget(Entry.ButtonName));
+		if (Button && Button->IsHovered())
+		{
+			ActiveShortcutButton = Entry.ButtonName;
+			SetText(TEXT("TXT_SelectionTooltip"), Entry.Tooltip);
+			if (UWidget* Tooltip = FindRuntimeWidget(TEXT("C_SelectionTooltip")))
+			{
+				Tooltip->SetVisibility(ESlateVisibility::HitTestInvisible);
+				Tooltip->ForceLayoutPrepass();
+			}
+			PositionShortcutTooltip();
+			return;
+		}
+	}
+}
+
+void UGuLiCommanderHUDWidget::HandleShortcutUnhovered()
+{
+	HideShortcutTooltip();
+	// Enter/leave may share a Slate event. Resolve another active icon, if any.
+	HandleShortcutHovered();
+}
+
+void UGuLiCommanderHUDWidget::HideShortcutTooltip()
+{
+	ActiveShortcutButton = NAME_None;
+	if (UWidget* Tooltip = FindRuntimeWidget(TEXT("C_SelectionTooltip")))
+	{
+		Tooltip->SetVisibility(ESlateVisibility::Collapsed);
+	}
+}
+
+void UGuLiCommanderHUDWidget::PositionShortcutTooltip()
+{
+	UWidget* Tooltip = FindRuntimeWidget(TEXT("C_SelectionTooltip"));
+	const UWidget* Anchor = FindRuntimeWidget(ActiveShortcutButton);
+	const UWidget* Root = FindRuntimeWidget(TEXT("RootCanvas"));
+	UTextBlock* TooltipText = FindText(TEXT("TXT_SelectionTooltip"));
+	UCanvasPanelSlot* TooltipSlot = Tooltip ? Cast<UCanvasPanelSlot>(Tooltip->Slot) : nullptr;
+	if (!TooltipSlot || !Anchor || !Root || !TooltipText)
+	{
+		return;
+	}
+	const FGeometry& RootGeometry = Root->GetCachedGeometry();
+	const FVector2D ViewSize = RootGeometry.GetLocalSize();
+	if (ViewSize.X <= 1.0 || ViewSize.Y <= 1.0)
+	{
+		return;
+	}
+	const double Width = FMath::Min(368.0, FMath::Max(1.0, ViewSize.X - 16.0));
+	TooltipText->SetWrapTextAt(FMath::Max(1.0, Width - 24.0));
+	TooltipText->ForceLayoutPrepass();
+	const double Height = TooltipText->GetDesiredSize().Y + 24.0;
+	const FGeometry& AnchorGeometry = Anchor->GetCachedGeometry();
+	const FBox2D AnchorRect(
+		RootGeometry.AbsoluteToLocal(AnchorGeometry.LocalToAbsolute(FVector2D::ZeroVector)),
+		RootGeometry.AbsoluteToLocal(AnchorGeometry.LocalToAbsolute(AnchorGeometry.GetLocalSize())));
+	const FBox2D Bounds = GuLiCommanderHUDLayout::PlaceTooltip(AnchorRect, FVector2D(Width, Height), ViewSize);
+	TooltipSlot->SetPosition(Bounds.Min);
+	TooltipSlot->SetSize(Bounds.GetSize());
+}
+
+FReply UGuLiCommanderHUDWidget::NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	if (!ActiveShortcutButton.IsNone())
+	{
+		PositionShortcutTooltip();
+	}
+	return Super::NativeOnMouseMove(InGeometry, InMouseEvent);
 }
 
 void UGuLiCommanderHUDWidget::HandleMiniMapClicked()
@@ -798,12 +989,14 @@ bool UGuLiCommanderHUDWidget::IsScreenPositionBlocked(
 {
 	return IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_TopStatus")), ScreenPixelPosition)
 		|| IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_MapDesign")), ScreenPixelPosition)
-		|| IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_DockDesign")), ScreenPixelPosition);
+		|| IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_DockDesign")), ScreenPixelPosition)
+		|| IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_ShortcutsDesign")), ScreenPixelPosition);
 }
 
 bool UGuLiCommanderHUDWidget::HasValidBlockingGeometry() const
 {
 	return IsWidgetGeometryReady(FindRuntimeWidget(TEXT("SB_TopStatus")))
 		&& IsWidgetGeometryReady(FindRuntimeWidget(TEXT("SB_MapDesign")))
-		&& IsWidgetGeometryReady(FindRuntimeWidget(TEXT("SB_DockDesign")));
+		&& IsWidgetGeometryReady(FindRuntimeWidget(TEXT("SB_DockDesign")))
+		&& IsWidgetGeometryReady(FindRuntimeWidget(TEXT("SB_ShortcutsDesign")));
 }

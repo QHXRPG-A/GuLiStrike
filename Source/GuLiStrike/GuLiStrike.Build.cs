@@ -18,6 +18,9 @@ public class GuLiStrike : ModuleRules
 			"NavigationSystem",
 			"StateTreeModule",
 			"GameplayStateTreeModule",
+			"GameplayAbilities",
+			"GameplayTags",
+			"GameplayTasks",
 			"Niagara",
 			"UMG",
 			"Slate"
@@ -26,6 +29,8 @@ public class GuLiStrike : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new string[] {
 			// Commander 网络合同使用 FastArray 与自定义 NetSerialize。
 			"NetCore",
+			// Non-shipping skill network QA writes structured JSON evidence.
+			"Json",
 			// Landscape：相机避障命中过滤需要 ALandscapeProxy 类型判断
 			"Landscape",
 			// Mass 框架（UE5.7：核心 MassEntity 已并入引擎，其余在 MassGameplay/MassAI/MassCrowd 插件中）
@@ -58,7 +63,6 @@ public class GuLiStrike : ModuleRules
 				"StaticMeshDescription",
 				"SlateCore",
 				"ImageCore",
-				"Json",
 				"RenderCore",
 				"StaticMeshEditor"
 			});

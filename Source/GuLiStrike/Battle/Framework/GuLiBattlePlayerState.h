@@ -5,17 +5,26 @@
 #include "CoreMinimal.h"
 #include "Battle/Network/GuLiBattleTypes.h"
 #include "GameFramework/PlayerState.h"
+#include "AbilitySystemInterface.h"
 #include "GuLiBattlePlayerState.generated.h"
+
+class UAbilitySystemComponent;
+struct FGuLiArmySkillCommand;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGuLiCommanderPlayerStateChangedSignature);
 
 /** 通用玩家身份与角色复制；公共战局就绪、士兵流就绪分别维护，不互相替代。 */
 UCLASS()
-class GULISTRIKE_API AGuLiBattlePlayerState : public APlayerState
+class GULISTRIKE_API AGuLiBattlePlayerState : public APlayerState, public IAbilitySystemInterface
 {
 	GENERATED_BODY()
 
 public:
+	AGuLiBattlePlayerState();
+	virtual void BeginPlay() override;
+	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
+	/** Server-local GM/gameplay entry through a real ServerOnly GameplayAbility; no client RPC. */
+	bool ExecuteArmySkillCommand(const FGuLiArmySkillCommand& Command, FString& OutError);
 	static constexpr uint8 InvalidSlotIndex = MAX_uint8;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -78,6 +87,11 @@ public:
 	FGuLiCommanderPlayerStateChangedSignature OnCommanderPlayerStateChanged;
 
 private:
+	UPROPERTY(VisibleAnywhere, Category = "Battle|Abilities")
+	TObjectPtr<UAbilitySystemComponent> ArmyAbilitySystem;
+	bool bArmySkillAbilityGranted = false;
+	void InitializeArmyAbilitySystem();
+
 	void NotifyStateChanged();
 
 	UFUNCTION()

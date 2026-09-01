@@ -7,6 +7,7 @@
 #include "Commander/Framework/GuLiCommanderPlayerState.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
+#include "Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.h"
 #include "Commander/Presentation/GuLiCommanderMiniMapTransform.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
@@ -16,9 +17,9 @@
 #include "UObject/ConstructorHelpers.h"
 #include "Engine/Canvas.h"
 #include "Engine/Engine.h"
+#include "Engine/UserInterfaceSettings.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
-#include "LandscapeProxy.h"
 
 namespace GuLiCommanderHUD
 {
@@ -26,10 +27,79 @@ namespace GuLiCommanderHUD
 	const FName MediumPresetHitBox(TEXT("Commander.SelectionPreset.Medium"));
 	const FName LargePresetHitBox(TEXT("Commander.SelectionPreset.Large"));
 	const FName MiniMapHitBox(TEXT("Commander.TacticalMap.Jump"));
-	constexpr float BattlefieldHalfExtent = 380000.0f;
 	constexpr int32 SelectionCircleSegments = 32;
 	constexpr int32 MaxVisibleCohortCards = 10;
 	constexpr int32 MiniMapTerrainResolution = 20;
+
+	bool ShouldDrawMoveEndpoint(
+		const FGuLiMoveEndpointItem& Endpoint,
+		const bool bIsSelected,
+		const FGuLiSoldierStateItem* SoldierState)
+	{
+		return Endpoint.IsValid()
+			&& bIsSelected
+			&& SoldierState
+			&& SoldierState->SoldierId == Endpoint.SoldierId
+			&& SoldierState->IsAlive()
+			&& SoldierState->ActiveOrderId != 0u
+			&& SoldierState->ActiveOrderId == Endpoint.ActiveOrderId;
+	}
+
+	bool ClipScreenLineToBounds(
+		const FBox2D& Bounds,
+		FVector2D& InOutStart,
+		FVector2D& InOutEnd)
+	{
+		if (!Bounds.bIsValid
+			|| !FMath::IsFinite(Bounds.Min.X) || !FMath::IsFinite(Bounds.Min.Y)
+			|| !FMath::IsFinite(Bounds.Max.X) || !FMath::IsFinite(Bounds.Max.Y)
+			|| !FMath::IsFinite(InOutStart.X) || !FMath::IsFinite(InOutStart.Y)
+			|| !FMath::IsFinite(InOutEnd.X) || !FMath::IsFinite(InOutEnd.Y)
+			|| Bounds.Min.X > Bounds.Max.X || Bounds.Min.Y > Bounds.Max.Y)
+		{
+			return false;
+		}
+		const FVector2D OriginalStart = InOutStart;
+		const FVector2D Delta = InOutEnd - OriginalStart;
+		float EnterTime = 0.0f;
+		float ExitTime = 1.0f;
+		auto ClipBoundary = [&EnterTime, &ExitTime](const float Direction, const float Distance)
+		{
+			if (FMath::IsNearlyZero(Direction))
+			{
+				return Distance >= 0.0f;
+			}
+			const float Time = Distance / Direction;
+			if (Direction < 0.0f)
+			{
+				if (Time > ExitTime)
+				{
+					return false;
+				}
+				EnterTime = FMath::Max(EnterTime, Time);
+			}
+			else
+			{
+				if (Time < EnterTime)
+				{
+					return false;
+				}
+				ExitTime = FMath::Min(ExitTime, Time);
+			}
+			return true;
+		};
+
+		if (!ClipBoundary(-Delta.X, OriginalStart.X - Bounds.Min.X)
+			|| !ClipBoundary(Delta.X, Bounds.Max.X - OriginalStart.X)
+			|| !ClipBoundary(-Delta.Y, OriginalStart.Y - Bounds.Min.Y)
+			|| !ClipBoundary(Delta.Y, Bounds.Max.Y - OriginalStart.Y))
+		{
+			return false;
+		}
+		InOutStart = OriginalStart + Delta * EnterTime;
+		InOutEnd = OriginalStart + Delta * ExitTime;
+		return true;
+	}
 
 	FBox2D GetMiniMapScreenBounds(const UCanvas& Canvas)
 	{
@@ -38,11 +108,18 @@ namespace GuLiCommanderHUD
 		return FBox2D(MapMinimum, MapMinimum + FVector2D(MapSize, MapSize));
 	}
 
-	FBox2D GetFallbackWorldBounds()
+	FBox2D GetWorldBounds(const UWorld* World)
 	{
-		return FBox2D(
-			FVector2D(-BattlefieldHalfExtent, -BattlefieldHalfExtent),
-			FVector2D(BattlefieldHalfExtent, BattlefieldHalfExtent));
+		FBox2D Bounds(ForceInit);
+		const UGuLiCommanderLandscapeQuerySubsystem* Query = World
+			? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
+			: nullptr;
+		if (Query && Query->TryGetBounds(Bounds))
+		{
+			return Bounds;
+		}
+		// A tiny valid box keeps pure map transforms safe while a streamed landscape is unavailable.
+		return FBox2D(FVector2D(-1.0), FVector2D(1.0));
 	}
 
 	GuLiCommanderMiniMap::FHeadingUpTransform MakeMiniMapTransform(
@@ -246,7 +323,14 @@ void AGuLiCommanderHUD::DrawHUD()
 	{
 		if (CommanderController->GetCommanderToolMode() == EGuLiCommanderToolMode::Select)
 		{
-			DrawSelectionCircle(*CommanderController);
+			if (CommanderController->GetSelectionShape() == EGuLiCommanderSelectionShape::Radius)
+			{
+				DrawSelectionCircle(*CommanderController);
+			}
+			else
+			{
+				DrawSelectionRectangle(*CommanderController);
+			}
 		}
 		DrawActiveCommandLine(*CommanderController);
 	}
@@ -287,17 +371,19 @@ bool AGuLiCommanderHUD::IsScreenPositionOverCommanderUI(
 	const FVector2D ViewportSize(
 		static_cast<float>(ViewportWidth),
 		static_cast<float>(ViewportHeight));
-	const float DockScale = FMath::Min(1.0f, ViewportSize.X / 1120.0f);
-	const FVector2D DockSize(1120.0f * DockScale, 204.0f * DockScale);
+	const float DPIScale = FMath::Max(0.01f, GetDefault<UUserInterfaceSettings>()->GetDPIScaleBasedOnSize(
+		FIntPoint(ViewportWidth, ViewportHeight)));
+	const float DockScale = FMath::Min(DPIScale, static_cast<float>(ViewportSize.X) * (7.0f / 12.0f) / 1120.0f);
+	const FVector2D DockSize(1120.0f * DockScale, 260.0f * DockScale);
 	const FBox2D TopPanel(
-		FVector2D((ViewportSize.X - 420.0f) * 0.5f, 18.0f),
-		FVector2D((ViewportSize.X + 420.0f) * 0.5f, 82.0f));
+		FVector2D((ViewportSize.X - 420.0f * DPIScale) * 0.5f, 18.0f * DPIScale),
+		FVector2D((ViewportSize.X + 420.0f * DPIScale) * 0.5f, 82.0f * DPIScale));
 	const FBox2D TacticalMapPanel(
-		FVector2D(24.0f, FMath::Max(0.0f, ViewportSize.Y - 300.0f)),
-		FVector2D(300.0f, FMath::Max(276.0f, ViewportSize.Y - 24.0f)));
+		FVector2D(24.0f * DPIScale, FMath::Max(0.0, ViewportSize.Y - 300.0f * DPIScale)),
+		FVector2D(300.0f * DPIScale, FMath::Max(276.0 * DPIScale, ViewportSize.Y - 24.0f * DPIScale)));
 	const FBox2D DockPanel(
-		FVector2D((ViewportSize.X - DockSize.X) * 0.5f, ViewportSize.Y - DockSize.Y),
-		FVector2D((ViewportSize.X + DockSize.X) * 0.5f, ViewportSize.Y));
+		FVector2D((ViewportSize.X - DockSize.X) * 0.5f, ViewportSize.Y - 24.0f * DPIScale - DockSize.Y),
+		FVector2D((ViewportSize.X + DockSize.X) * 0.5f, ViewportSize.Y - 24.0f * DPIScale));
 	return TopPanel.IsInsideOrOn(ScreenPosition)
 		|| TacticalMapPanel.IsInsideOrOn(ScreenPosition)
 		|| DockPanel.IsInsideOrOn(ScreenPosition);
@@ -345,47 +431,31 @@ AGuLiCommanderPresentationActor* AGuLiCommanderHUD::FindPresentationActor() cons
 
 bool AGuLiCommanderHUD::EnsureMiniMapTerrainCache()
 {
-	if (bMiniMapTerrainCacheInitialized)
+	UWorld* World = GetWorld();
+	const UGuLiCommanderLandscapeQuerySubsystem* LandscapeQuery = World
+		? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
+		: nullptr;
+	const uint32 LandscapeRevision = LandscapeQuery ? LandscapeQuery->GetCacheRevision() : 0u;
+	if (bMiniMapTerrainCacheInitialized && MiniMapLandscapeRevision == LandscapeRevision)
 	{
 		return !MiniMapTerrainHeights.IsEmpty();
 	}
 
 	bMiniMapTerrainCacheInitialized = true;
+	MiniMapLandscapeRevision = LandscapeRevision;
 	MiniMapWorldBounds = FBox2D(ForceInit);
 	MiniMapTerrainHeights.Reset();
 	MiniMapTerrainValidity.Reset();
-	UWorld* World = GetWorld();
 	if (!World)
 	{
-		MiniMapWorldBounds = GuLiCommanderHUD::GetFallbackWorldBounds();
+		MiniMapWorldBounds = GuLiCommanderHUD::GetWorldBounds(nullptr);
+		bMiniMapTerrainCacheInitialized = false;
 		return false;
 	}
 
-	TArray<ALandscapeProxy*> LandscapeProxies;
-	TArray<FBox2D> LandscapeBounds;
-	for (TActorIterator<ALandscapeProxy> It(World); It; ++It)
+	if (!LandscapeQuery || !LandscapeQuery->TryGetBounds(MiniMapWorldBounds))
 	{
-		const FBox Bounds = It->GetComponentsBoundingBox(true);
-		if (!Bounds.IsValid)
-		{
-			continue;
-		}
-		const FBox2D Bounds2D(
-			FVector2D(Bounds.Min.X, Bounds.Min.Y),
-			FVector2D(Bounds.Max.X, Bounds.Max.Y));
-		if (Bounds2D.GetSize().GetMin() <= 1.0f)
-		{
-			continue;
-		}
-		LandscapeProxies.Add(*It);
-		LandscapeBounds.Add(Bounds2D);
-		MiniMapWorldBounds += Bounds2D.Min;
-		MiniMapWorldBounds += Bounds2D.Max;
-	}
-
-	if (!MiniMapWorldBounds.bIsValid || LandscapeProxies.IsEmpty())
-	{
-		MiniMapWorldBounds = GuLiCommanderHUD::GetFallbackWorldBounds();
+		MiniMapWorldBounds = GuLiCommanderHUD::GetWorldBounds(World);
 		return false;
 	}
 
@@ -411,29 +481,18 @@ bool AGuLiCommanderHUD::EnsureMiniMapTerrainCache()
 				MiniMapWorldBounds.Min.Y + WorldSize.Y * NormalizedY);
 			const int32 SampleIndex = Row * Resolution + Column;
 
-			for (int32 ProxyIndex = 0; ProxyIndex < LandscapeProxies.Num(); ++ProxyIndex)
+			float Height = 0.0f;
+			if (LandscapeQuery->TryGetLandscapeHeight(SampleXY, Height))
 			{
-				if (!LandscapeBounds[ProxyIndex].IsInsideOrOn(SampleXY))
-				{
-					continue;
-				}
-				const TOptional<float> Height = LandscapeProxies[ProxyIndex]->GetHeightAtLocation(
-					FVector(SampleXY.X, SampleXY.Y, 0.0f));
-				if (!Height.IsSet() || !FMath::IsFinite(Height.GetValue()))
-				{
-					continue;
-				}
-
-				MiniMapTerrainHeights[SampleIndex] = Height.GetValue();
+				MiniMapTerrainHeights[SampleIndex] = Height;
 				MiniMapTerrainValidity[SampleIndex] = 1u;
 				MiniMapTerrainMinimumHeight = FMath::Min(
 					MiniMapTerrainMinimumHeight,
-					Height.GetValue());
+					Height);
 				MiniMapTerrainMaximumHeight = FMath::Max(
 					MiniMapTerrainMaximumHeight,
-					Height.GetValue());
+					Height);
 				++ValidSampleCount;
-				break;
 			}
 		}
 	}
@@ -444,6 +503,7 @@ bool AGuLiCommanderHUD::EnsureMiniMapTerrainCache()
 		MiniMapTerrainValidity.Reset();
 		MiniMapTerrainMinimumHeight = 0.0f;
 		MiniMapTerrainMaximumHeight = 1.0f;
+		bMiniMapTerrainCacheInitialized = false;
 		return false;
 	}
 	return true;
@@ -465,7 +525,7 @@ bool AGuLiCommanderHUD::TryMiniMapScreenToWorld(
 	}
 	const FBox2D WorldBounds = MiniMapWorldBounds.bIsValid
 		? MiniMapWorldBounds
-		: GuLiCommanderHUD::GetFallbackWorldBounds();
+		: GuLiCommanderHUD::GetWorldBounds(GetWorld());
 	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = GuLiCommanderHUD::MakeMiniMapTransform(
 			WorldBounds,
 			ScreenBounds,
@@ -667,7 +727,7 @@ void AGuLiCommanderHUD::DrawMiniMapCameraFrame(
 	}
 	const FBox2D WorldBounds = MiniMapWorldBounds.bIsValid
 		? MiniMapWorldBounds
-		: GuLiCommanderHUD::GetFallbackWorldBounds();
+		: GuLiCommanderHUD::GetWorldBounds(GetWorld());
 	const FBox2D ScreenBounds(
 		FVector2D(MapX, MapY),
 		FVector2D(MapX + MapSize, MapY + MapSize));
@@ -889,7 +949,7 @@ void AGuLiCommanderHUD::DrawMiniMap(
 	DrawMiniMapTerrain(MapX, MapY, MapSize, CameraYawDegrees);
 	const FBox2D WorldBounds = MiniMapWorldBounds.bIsValid
 		? MiniMapWorldBounds
-		: GuLiCommanderHUD::GetFallbackWorldBounds();
+		: GuLiCommanderHUD::GetWorldBounds(GetWorld());
 	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = GuLiCommanderHUD::MakeMiniMapTransform(
 			WorldBounds,
 			ScreenBounds,
@@ -1062,6 +1122,13 @@ void AGuLiCommanderHUD::DrawSelectionPresetButtons(
 void AGuLiCommanderHUD::DrawSelectionCircle(
 	const AGuLiCommanderPlayerController& Controller)
 {
+	float CursorX = 0.0f;
+	float CursorY = 0.0f;
+	if (!Controller.GetMousePosition(CursorX, CursorY)
+		|| IsScreenPositionOverCommanderUI(FVector2D(CursorX, CursorY)))
+	{
+		return;
+	}
 	FVector GroundLocation;
 	if (!Controller.GetCursorGroundLocation(GroundLocation))
 	{
@@ -1112,16 +1179,112 @@ void AGuLiCommanderHUD::DrawSelectionCircle(
 			FLinearColor(0.12f, 0.9f, 1.0f, 0.76f),
 			2.0f);
 	}
+	DrawText(FString::Printf(TEXT("范围 %dm  [+] 调整  [7] 框选"), FMath::RoundToInt(Radius / 100.0f)),
+		FLinearColor(0.65f, 0.94f, 1.0f, 0.9f),
+		FMath::Clamp(CursorX + 20.0f, 8.0f, FMath::Max(8.0f, Canvas->ClipX - 240.0f)),
+		FMath::Clamp(CursorY + 24.0f, 8.0f, FMath::Max(8.0f, Canvas->ClipY - 28.0f)),
+		GEngine ? GEngine->GetSmallFont() : nullptr);
+}
+
+void AGuLiCommanderHUD::DrawSelectionRectangle(const AGuLiCommanderPlayerController& Controller)
+{
+	FVector2D Start;
+	FVector2D End;
+	if (!Controller.GetSelectionDragRectangle(Start, End))
+	{
+		return;
+	}
+	const FVector2D Minimum(FMath::Min(Start.X, End.X), FMath::Min(Start.Y, End.Y));
+	const FVector2D Maximum(FMath::Max(Start.X, End.X), FMath::Max(Start.Y, End.Y));
+	const FLinearColor Outline(0.094f, 0.843f, 1.0f, 0.95f);
+	DrawRect(FLinearColor(0.05f, 0.75f, 1.0f, 0.075f), Minimum.X, Minimum.Y,
+		Maximum.X - Minimum.X, Maximum.Y - Minimum.Y);
+	DrawLine(Minimum.X, Minimum.Y, Maximum.X, Minimum.Y, Outline, 1.5f);
+	DrawLine(Maximum.X, Minimum.Y, Maximum.X, Maximum.Y, Outline, 1.5f);
+	DrawLine(Maximum.X, Maximum.Y, Minimum.X, Maximum.Y, Outline, 1.5f);
+	DrawLine(Minimum.X, Maximum.Y, Minimum.X, Minimum.Y, Outline, 1.5f);
 }
 
 void AGuLiCommanderHUD::DrawActiveCommandLine(
 	const AGuLiCommanderPlayerController& Controller)
 {
+	// Authoritative accepted routes are one static 1px line per still-selected moving Soldier.
+	// The endpoints already carry the real commit location and the actual freely assigned slot.
+	if (const UGuLiCommanderNetSyncComponent* NetSync = Controller.GetCommanderNetSyncComponent();
+		NetSync && NetSync->IsSoldierStreamReady())
+	{
+		const AGuLiSoldierStateReplicator* SoldierStates = FindSoldierStateReplicator();
+		TMap<FGuLiSoldierId, const FGuLiSoldierStateItem*> StatesBySoldier;
+		if (SoldierStates)
+		{
+			StatesBySoldier.Reserve(SoldierStates->GetItems().Num());
+			for (const FGuLiSoldierStateItem& SoldierState : SoldierStates->GetItems())
+			{
+				if (SoldierState.SoldierId.IsValid())
+				{
+					StatesBySoldier.Add(SoldierState.SoldierId, &SoldierState);
+				}
+			}
+		}
+		TSet<FGuLiSoldierId> SelectedSoldiers;
+		SelectedSoldiers.Reserve(
+			NetSync->GetSelectionState().Cohorts.Num()
+			* static_cast<int32>(GULI_CONTROL_COHORT_TARGET_SIZE));
+		for (const FGuLiControlCohortDescriptor& Cohort : NetSync->GetSelectionState().Cohorts)
+		{
+			for (const FGuLiSoldierId SoldierId : Cohort.MemberIds)
+			{
+				SelectedSoldiers.Add(SoldierId);
+			}
+		}
+		const FLinearColor StaticRouteColor(0.08f, 0.94f, 0.20f, 0.92f);
+		for (const FGuLiMoveEndpointItem& Endpoint : NetSync->GetMoveEndpoints().Items)
+		{
+			const FGuLiSoldierStateItem* const* SoldierState = StatesBySoldier.Find(Endpoint.SoldierId);
+			if (!GuLiCommanderHUD::ShouldDrawMoveEndpoint(
+					Endpoint,
+					SelectedSoldiers.Contains(Endpoint.SoldierId),
+					SoldierState ? *SoldierState : nullptr))
+			{
+				continue;
+			}
+			FVector2D StartScreen;
+			FVector2D EndScreen;
+			if (!Controller.ProjectWorldLocationToScreen(
+					FVector(Endpoint.CommandStart), StartScreen, false)
+				|| !Controller.ProjectWorldLocationToScreen(
+					FVector(Endpoint.FinalDestination), EndScreen, false))
+			{
+				continue;
+			}
+			const FBox2D ScreenBounds(
+				FVector2D::ZeroVector,
+				FVector2D(Canvas->ClipX, Canvas->ClipY));
+			if (!GuLiCommanderHUD::ClipScreenLineToBounds(
+					ScreenBounds, StartScreen, EndScreen)
+				|| FVector2D::Distance(StartScreen, EndScreen) < 2.0f)
+			{
+				continue;
+			}
+			DrawLine(
+				StartScreen.X,
+				StartScreen.Y,
+				EndScreen.X,
+				EndScreen.Y,
+				StaticRouteColor,
+				1.0f);
+		}
+	}
+
 	FVector Start;
 	FVector End;
 	float Alpha = 0.0f;
 	EGuLiCommandLineState State = EGuLiCommandLineState::None;
 	if (!Controller.GetActiveCommandLine(Start, End, Alpha, State))
+	{
+		return;
+	}
+	if (State == EGuLiCommandLineState::Accepted)
 	{
 		return;
 	}
@@ -1147,12 +1310,6 @@ void AGuLiCommanderHUD::DrawActiveCommandLine(
 		StateLabel = TEXT("PENDING");
 		FlowSpeed = 1.15f;
 		break;
-	case EGuLiCommandLineState::Accepted:
-		LineColor = FLinearColor(0.04f, 0.92f, 0.72f, 0.8f * Alpha);
-		FlowColor = FLinearColor(0.55f, 1.0f, 0.94f, Alpha);
-		StateLabel = TEXT("ACCEPTED");
-		FlowSpeed = 0.86f;
-		break;
 	case EGuLiCommandLineState::Rejected:
 		LineColor = FLinearColor(1.0f, 0.08f, 0.035f, 0.86f * Alpha);
 		FlowColor = FLinearColor(1.0f, 0.5f, 0.18f, Alpha);
@@ -1171,32 +1328,18 @@ void AGuLiCommanderHUD::DrawActiveCommandLine(
 	}
 	const FVector2D Direction = LineDelta / LineLength;
 	const FVector2D Perpendicular(-Direction.Y, Direction.X);
-	if (State == EGuLiCommandLineState::Accepted)
+	constexpr int32 DashCount = 24;
+	for (int32 DashIndex = 0; DashIndex < DashCount; DashIndex += 2)
 	{
-		DrawLine(
-			StartScreen.X,
-			StartScreen.Y,
-			EndScreen.X,
-			EndScreen.Y,
-			FLinearColor(LineColor.R, LineColor.G, LineColor.B, LineColor.A * 0.32f),
-			7.0f);
-		DrawLine(StartScreen.X, StartScreen.Y, EndScreen.X, EndScreen.Y, LineColor, 2.5f);
-	}
-	else
-	{
-		constexpr int32 DashCount = 24;
-		for (int32 DashIndex = 0; DashIndex < DashCount; DashIndex += 2)
-		{
-			const FVector2D DashStart = FMath::Lerp(
-				StartScreen,
-				EndScreen,
-				static_cast<float>(DashIndex) / static_cast<float>(DashCount));
-			const FVector2D DashEnd = FMath::Lerp(
-				StartScreen,
-				EndScreen,
-				static_cast<float>(DashIndex + 1) / static_cast<float>(DashCount));
-			DrawLine(DashStart.X, DashStart.Y, DashEnd.X, DashEnd.Y, LineColor, 3.0f);
-		}
+		const FVector2D DashStart = FMath::Lerp(
+			StartScreen,
+			EndScreen,
+			static_cast<float>(DashIndex) / static_cast<float>(DashCount));
+		const FVector2D DashEnd = FMath::Lerp(
+			StartScreen,
+			EndScreen,
+			static_cast<float>(DashIndex + 1) / static_cast<float>(DashCount));
+		DrawLine(DashStart.X, DashStart.Y, DashEnd.X, DashEnd.Y, LineColor, 3.0f);
 	}
 
 	const int32 FlowMarkerCount = FMath::Clamp(FMath::RoundToInt(LineLength / 90.0f), 6, 18);

@@ -43,6 +43,7 @@ struct FRun : TSharedFromThis<FRun>
 	FString Output;
 	ERadius OldRadius = ERadius::Small;
 	EMode OldMode = EMode::Select;
+	EGuLiCommanderSelectionShape OldShape = EGuLiCommanderSelectionShape::Box;
 	uint32 User = 0, SelectionRevision = 0;
 	int32 Step = 0, CheckCount = 0;
 	bool bPassed = true;
@@ -131,6 +132,7 @@ struct FRun : TSharedFromThis<FRun>
 		{
 			PC->SetSelectionRadiusPreset(OldRadius);
 			PC->ActivateSelectionTool();
+			if (PC->GetSelectionShape() != OldShape) PC->ToggleSelectionShape();
 			if (OldMode == EMode::Move) PC->ArmMoveTool();
 		}
 		const auto PreviousFocus = OldFocus.Pin();
@@ -174,7 +176,7 @@ struct FRun : TSharedFromThis<FRun>
 		case 17: Key(EKeys::LeftShift, false); break;
 		case 18: Click(TEXT("BTN_Cmd_Select")); break;
 		case 19: Check(TEXT("return to select by click"), ERadius::Small); Key(EKeys::Add, true); break;
-		case 20: Check(TEXT("Add after select click"), ERadius::Medium); Key(EKeys::Add, false); break;
+		case 20: Check(TEXT("box selection ignores radius Add"), ERadius::Small); Key(EKeys::Add, false); break;
 		default: Finish(); return;
 		}
 		if (!bPassed) Finish(TEXT("Observed input result differed from the expected state"));
@@ -209,6 +211,8 @@ void Start(const TArray<FString>& Args)
 	FRun& Run = *ActiveRun;
 	Run.World = World; Run.PC = PC; Run.HUD = HUD; Run.Output = Output; Run.User = User;
 	Run.OldFocus = App.GetUserFocusedWidget(User); Run.OldRadius = PC->GetSelectionRadiusPreset(); Run.OldMode = PC->GetCommanderToolMode();
+	Run.OldShape = PC->GetSelectionShape();
+	if (PC->GetSelectionShape() != EGuLiCommanderSelectionShape::Box) PC->ToggleSelectionShape();
 	Run.SelectionRevision = PC->GetCommanderNetSyncComponent()->GetSelectionState().SelectionRevision;
 	Run.Report->SetStringField(TEXT("scope"), TEXT("Actual viewport Slate button paths, pointer down/up, focused key down/up and normal PlayerInput ticks. No OS injection; direct widget paths bypass coordinate hit testing and platform mouse preprocessors."));
 	Run.Report->SetStringField(TEXT("world"), World->GetPathName()); Run.Report->SetStringField(TEXT("hud"), HUD->GetPathName());

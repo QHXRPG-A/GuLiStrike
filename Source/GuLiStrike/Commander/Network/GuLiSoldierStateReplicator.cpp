@@ -61,6 +61,7 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(
 			FGuLiSoldierStateItem& NewItem = ReplicatedSoldiers.Items.AddDefaulted_GetRef();
 			NewItem.SoldierId = SanitizedState.SoldierId;
 			NewItem.Team = SanitizedState.Team;
+			NewItem.UnitTypeId = SanitizedState.UnitTypeId;
 			NewItem.LifeState = SanitizedState.LifeState;
 			NewItem.Health = SanitizedState.Health;
 			NewItem.MaxHealth = SanitizedState.MaxHealth;
@@ -74,6 +75,7 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(
 
 		FGuLiSoldierStateItem& ExistingItem = ReplicatedSoldiers.Items[ExistingIndex];
 		if (ExistingItem.Team == SanitizedState.Team
+			&& ExistingItem.UnitTypeId == SanitizedState.UnitTypeId
 			&& ExistingItem.LifeState == SanitizedState.LifeState
 			&& ExistingItem.Health == SanitizedState.Health
 			&& ExistingItem.MaxHealth == SanitizedState.MaxHealth
@@ -84,6 +86,7 @@ int32 AGuLiSoldierStateReplicator::ApplyAuthoritySnapshot(
 		}
 
 		ExistingItem.Team = SanitizedState.Team;
+		ExistingItem.UnitTypeId = SanitizedState.UnitTypeId;
 		ExistingItem.LifeState = SanitizedState.LifeState;
 		ExistingItem.Health = SanitizedState.Health;
 		ExistingItem.MaxHealth = SanitizedState.MaxHealth;

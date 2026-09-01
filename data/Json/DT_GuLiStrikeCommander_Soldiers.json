@@ -2,12 +2,19 @@
   {
     "Name": "DefaultSoldier",
     "Id": 1,
-    "Note": "Commander 500-person static Soldier baseline",
+    "Note": "扫射调试兵种A；数值非平衡定案",
     "MovementSpeedCmPerSecond": 3600.0,
-    "MaxHealth": 100,
+    "MaxHealth": 100.0,
     "ModelAsset": "/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd",
-    "AttackPower": 0.0,
-    "Defense": 0.0,
-    "AttackRangeCentimeters": 0.0
+    "Defense": 0.0
+  },
+  {
+    "Name": "TestSoldierB",
+    "Id": 2,
+    "Note": "扫射调试兵种B；浮点生命和多兵种验证",
+    "MovementSpeedCmPerSecond": 3600.0,
+    "MaxHealth": 300.5,
+    "ModelAsset": "/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd",
+    "Defense": 0.0
   }
 ]

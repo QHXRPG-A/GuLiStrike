@@ -19,22 +19,19 @@ namespace GuLiCommanderSoldierResolverTests
 	{
 		FGuLiSoldierDefinition Fallback;
 		Fallback.MovementSpeedCmPerSecond = 3600.0f;
-		Fallback.MaxHealth = 100u;
+		Fallback.MaxHealth = 100.0f;
 		Fallback.Model = Model;
-		Fallback.AttackPower = 11.0f;
 		Fallback.Defense = 12.0f;
-		Fallback.AttackRangeCentimeters = 1300.0f;
 		return Fallback;
 	}
 
 	bool EqualDefinition(const FGuLiSoldierDefinition& A, const FGuLiSoldierDefinition& B)
 	{
-		return A.MovementSpeedCmPerSecond == B.MovementSpeedCmPerSecond
+		return A.UnitTypeId == B.UnitTypeId
+			&& A.MovementSpeedCmPerSecond == B.MovementSpeedCmPerSecond
 			&& A.MaxHealth == B.MaxHealth
 			&& A.Model == B.Model
-			&& A.AttackPower == B.AttackPower
-			&& A.Defense == B.Defense
-			&& A.AttackRangeCentimeters == B.AttackRangeCentimeters;
+			&& A.Defense == B.Defense;
 	}
 }
 
@@ -52,23 +49,21 @@ bool FGuLiCommanderSoldierValidRowTest::RunTest(const FString& Parameters)
 		GuLiCommanderSoldierResolverTests::MakeTestFallback(FallbackMesh.Get());
 
 	FGuLiStrikeCommanderSoldiersRow Row;
+	Row.Id = 2;
 	Row.MovementSpeedCmPerSecond = 3600.0f;
-	Row.MaxHealth = 255;
+	Row.MaxHealth = 300.5f;
 	Row.ModelAsset = TSoftObjectPtr<UObject>(RowMesh.Get());
-	Row.AttackPower = 25.0f;
 	Row.Defense = 8.0f;
-	Row.AttackRangeCentimeters = 7500.0f;
 
 	bool bEntireDefinitionFromDataTable = false;
 	const FGuLiSoldierDefinition Resolved =
 		FGuLiCommanderSoldierResolver::ResolveRow(&Row, Fallback, bEntireDefinitionFromDataTable);
 	TestTrue(TEXT("source is DataTable"), bEntireDefinitionFromDataTable);
 	TestEqual(TEXT("movement speed"), Resolved.MovementSpeedCmPerSecond, 3600.0f);
-	TestEqual(TEXT("uint8 maximum health accepted"), Resolved.MaxHealth, static_cast<uint8>(255u));
+	TestEqual(TEXT("Fractional maximum health above the old uint8 ceiling is preserved"), Resolved.MaxHealth, 300.5f);
+	TestEqual(TEXT("Stable unit identity comes from the row id"), Resolved.UnitTypeId, static_cast<uint16>(2u));
 	TestTrue(TEXT("UStaticMesh model accepted"), Resolved.Model == RowMesh.Get());
-	TestEqual(TEXT("attack power"), Resolved.AttackPower, 25.0f);
 	TestEqual(TEXT("defense"), Resolved.Defense, 8.0f);
-	TestEqual(TEXT("attack range"), Resolved.AttackRangeCentimeters, 7500.0f);
 	return true;
 }
 
@@ -87,11 +82,9 @@ bool FGuLiCommanderSoldierInvalidValuesFallbackTest::RunTest(const FString& Para
 
 	FGuLiStrikeCommanderSoldiersRow Row;
 	Row.MovementSpeedCmPerSecond = -1.0f;
-	Row.MaxHealth = 256;
+	Row.MaxHealth = std::numeric_limits<float>::quiet_NaN();
 	Row.ModelAsset = TSoftObjectPtr<UObject>(WrongModel.Get());
-	Row.AttackPower = -1.0f;
 	Row.Defense = std::numeric_limits<float>::infinity();
-	Row.AttackRangeCentimeters = std::numeric_limits<float>::quiet_NaN();
 
 	bool bEntireDefinitionFromDataTable = true;
 	const FGuLiSoldierDefinition Resolved =
@@ -151,7 +144,7 @@ bool FGuLiCommanderSoldierDefaultBaselineTest::RunTest(const FString& Parameters
 	(void)Parameters;
 	const FGuLiSoldierDefinition Fallback = FGuLiCommanderSoldierResolver::MakeFallbackDefinition();
 	TestEqual(TEXT("fallback speed is the 36 m/s baseline"), Fallback.MovementSpeedCmPerSecond, 3600.0f);
-	TestEqual(TEXT("fallback health"), Fallback.MaxHealth, static_cast<uint8>(100u));
+	TestEqual(TEXT("fallback health"), Fallback.MaxHealth, 100.0f);
 	TestTrue(TEXT("fallback model is a UStaticMesh"), IsValid(Fallback.Model));
 	if (IsValid(Fallback.Model))
 	{
@@ -160,9 +153,7 @@ bool FGuLiCommanderSoldierDefaultBaselineTest::RunTest(const FString& Parameters
 			Fallback.Model->GetPathName(),
 			FString(TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd")));
 	}
-	TestEqual(TEXT("fallback attack"), Fallback.AttackPower, 0.0f);
 	TestEqual(TEXT("fallback defense"), Fallback.Defense, 0.0f);
-	TestEqual(TEXT("fallback attack range"), Fallback.AttackRangeCentimeters, 0.0f);
 	return true;
 }
 
@@ -194,7 +185,7 @@ bool FGuLiCommanderSoldierImportedBaselineTest::RunTest(const FString& Parameter
 
 	TestTrue(TEXT("DefaultSoldier resolves entirely from the imported row"), bEntireDefinitionFromDataTable);
 	TestEqual(TEXT("imported movement speed"), Resolved.MovementSpeedCmPerSecond, 3600.0f);
-	TestEqual(TEXT("imported maximum health"), Resolved.MaxHealth, static_cast<uint8>(100u));
+	TestEqual(TEXT("imported maximum health"), Resolved.MaxHealth, 100.0f);
 	TestNotNull(TEXT("imported model resolves to a UStaticMesh"), Resolved.Model.Get());
 	if (IsValid(Resolved.Model))
 	{
@@ -203,9 +194,47 @@ bool FGuLiCommanderSoldierImportedBaselineTest::RunTest(const FString& Parameter
 			Resolved.Model->GetPathName(),
 			FString(CrowdMeshPath));
 	}
-	TestEqual(TEXT("imported attack power"), Resolved.AttackPower, 0.0f);
 	TestEqual(TEXT("imported defense"), Resolved.Defense, 0.0f);
-	TestEqual(TEXT("imported attack range"), Resolved.AttackRangeCentimeters, 0.0f);
+	const FGuLiSoldierDefinition SecondType = FGuLiCommanderSoldierResolver::Resolve(
+		DataTable, TEXT("TestSoldierB"), Resolved, bEntireDefinitionFromDataTable);
+	TestTrue(TEXT("Second type resolves without fallback"), bEntireDefinitionFromDataTable);
+	TestEqual(TEXT("Second type has its own stable identity"), SecondType.UnitTypeId, static_cast<uint16>(2u));
+	TestEqual(TEXT("Imported fractional health survives above 255"), SecondType.MaxHealth, 300.5f);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiCommanderSoldierHealthBoundaryTest,
+	"GuLiStrike.Commander.Data.SoldierResolver.FloatHealthBoundaries",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiCommanderSoldierHealthBoundaryTest::RunTest(const FString& Parameters)
+{
+	(void)Parameters;
+	TStrongObjectPtr<UStaticMesh> Model(NewObject<UStaticMesh>());
+	const FGuLiSoldierDefinition Fallback = GuLiCommanderSoldierResolverTests::MakeTestFallback(Model.Get());
+	FGuLiStrikeCommanderSoldiersRow Row;
+	Row.Id = 2;
+	Row.MovementSpeedCmPerSecond = 3600.0f;
+	Row.ModelAsset = TSoftObjectPtr<UObject>(Model.Get());
+	for (const float Candidate : {0.5f, 300.5f, 1000000000.0f})
+	{
+		Row.MaxHealth = Candidate;
+		bool bFromTable = false;
+		const FGuLiSoldierDefinition Result = FGuLiCommanderSoldierResolver::ResolveRow(&Row, Fallback, bFromTable);
+		TestTrue(TEXT("Finite positive health within the safety bound is accepted"), bFromTable);
+		TestEqual(TEXT("Valid float health is never rounded"), Result.MaxHealth, Candidate);
+	}
+	for (const float Candidate : {0.0f, -1.0f, 1000000064.0f,
+		std::numeric_limits<float>::infinity(), std::numeric_limits<float>::quiet_NaN()})
+	{
+		Row.MaxHealth = Candidate;
+		bool bFromTable = true;
+		const FGuLiSoldierDefinition Result = FGuLiCommanderSoldierResolver::ResolveRow(&Row, Fallback, bFromTable);
+		TestFalse(TEXT("Invalid health marks partial fallback"), bFromTable);
+		TestEqual(TEXT("Only invalid health falls back"), Result.MaxHealth, Fallback.MaxHealth);
+		TestEqual(TEXT("A valid second unit id survives health fallback"), Result.UnitTypeId, static_cast<uint16>(2u));
+	}
 	return true;
 }
 

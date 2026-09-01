@@ -14,6 +14,10 @@ inline constexpr uint32 GULI_CONTROL_COHORT_TARGET_SIZE = 25u;
 /** 拥有者选择状态最多 400 个控制组；协议上限不等于当前生成数量。 */
 inline constexpr uint32 GULI_MAX_CONTROL_COHORTS = 400u;
 
+/** Alt 同兵种扩选本次最多选入 1000 人；不限制 Shift 累计选择。 */
+inline constexpr uint32 GULI_MAX_SAME_TYPE_SELECTION = 1000u;
+inline constexpr uint16 GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID = 1u;
+
 /** 每块最多 32 个姿态样本，用于控制载荷；实际网络包还包含 UE/传输层开销。 */
 inline constexpr uint32 GULI_MAX_POSE_SAMPLES_PER_CHUNK = 32u;
 
@@ -39,11 +43,21 @@ enum class EGuLiSelectionRadiusPreset : uint8
 };
 
 UENUM(BlueprintType)
+enum class EGuLiSelectionKind : uint8
+{
+	Radius = 0,
+	Point,
+	Box,
+	SameType
+};
+
+UENUM(BlueprintType)
 enum class EGuLiSelectionModifier : uint8
 {
 	Replace = 0,
 	Toggle,
-	Clear
+	Clear,
+	Add
 };
 
 // Accepted/PartiallyAccepted 只代表接令结果，不代表单位已到目标；其他枚举给出具体拒绝原因。
@@ -165,11 +179,15 @@ namespace GuLiCommanderProtocol
 	GULISTRIKE_API float DequantizeDecimetersToCentimeters(int16 Decimeters);
 }
 
-/** 客户端选兵意图：仅描述区域/操作，不允许客户端直接指定 SoldierId 或 CohortId。 */
+/** 客户端选兵意图。SeedSoldierId 仅是带射线校验的点选目标提示；最终成员由服务器产生。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiSelectionRequest
 {
 	GENERATED_BODY()
+
+	// 默认 Radius 保持已有原生 QA 调用的区域意图；玩家默认工具形状另由 Controller 管理。
+	UPROPERTY(EditAnywhere, Category = "Commander|Network")
+	EGuLiSelectionKind Kind = EGuLiSelectionKind::Radius;
 
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
 	FVector_NetQuantize Center = FVector::ZeroVector;
@@ -179,6 +197,32 @@ struct GULISTRIKE_API FGuLiSelectionRequest
 
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
 	EGuLiSelectionModifier Modifier = EGuLiSelectionModifier::Replace;
+
+	UPROPERTY(EditAnywhere, Category = "Commander|Network")
+	FGuLiSoldierId SeedSoldierId;
+
+	UPROPERTY(EditAnywhere, Category = "Commander|Network")
+	FVector_NetQuantize RayOrigin = FVector::ZeroVector;
+
+	UPROPERTY(EditAnywhere, Category = "Commander|Network")
+	FVector_NetQuantizeNormal RayDirection = FVector::ForwardVector;
+
+	// 点选屏幕容差对应的视锥半角；服务器另加有界的位置表现误差，不允许无限扩大。
+	UPROPERTY(EditAnywhere, Category = "Commander|Network")
+	float PickHalfAngleRadians = 0.012f;
+
+	// 从同一 RayOrigin 反投影，按屏幕左上、右上、右下、左下顺序排列。
+	UPROPERTY(EditAnywhere, Category = "Commander|Network")
+	FVector_NetQuantizeNormal BoxTopLeftRay = FVector::ZeroVector;
+
+	UPROPERTY(EditAnywhere, Category = "Commander|Network")
+	FVector_NetQuantizeNormal BoxTopRightRay = FVector::ZeroVector;
+
+	UPROPERTY(EditAnywhere, Category = "Commander|Network")
+	FVector_NetQuantizeNormal BoxBottomRightRay = FVector::ZeroVector;
+
+	UPROPERTY(EditAnywhere, Category = "Commander|Network")
+	FVector_NetQuantizeNormal BoxBottomLeftRay = FVector::ZeroVector;
 
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
 	uint32 ClientRequestId = 0u;
@@ -276,6 +320,24 @@ struct GULISTRIKE_API FGuLiCohortCommandAck
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	EGuLiCommandAckResult Result = EGuLiCommandAckResult::InvalidRequest;
+
+	/** Frozen MemberIds count used to interpret the two masks below; only the low 25 bits may be set. */
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	uint8 MemberCount = 0u;
+
+	/** Bit N means the Nth frozen member was alive, owned, and eligible for this move attempt. */
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	uint32 EligibleMemberMask = 0u;
+
+	/** Bit N means the Nth frozen member was committed to BatchOrderId; always a subset of EligibleMemberMask. */
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	uint32 AcceptedMemberMask = 0u;
+
+	uint32 GetValidMemberMask() const;
+	bool IsMemberEligible(uint8 MemberIndex) const;
+	bool IsMemberAccepted(uint8 MemberIndex) const;
+	uint8 GetAcceptedMemberCount() const;
+	void Sanitize();
 };
 
 /** 服务器对一次意图的业务回执；数据本身不是 RPC，由 NetSync 的 Client RPC 运送。
@@ -325,13 +387,16 @@ struct GULISTRIKE_API FGuLiSoldierStateItem : public FFastArraySerializerItem
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	uint16 UnitTypeId = GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID;
+
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	EGuLiSoldierLifeState LifeState = EGuLiSoldierLifeState::Alive;
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
-	uint8 Health = 100u;
+	float Health = 100.0f;
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
-	uint8 MaxHealth = 100u;
+	float MaxHealth = 100.0f;
 
 	// 单兵离散状态版本，与整份名册的 SnapshotRevision、选择版本互相独立。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
@@ -369,6 +434,70 @@ struct GULISTRIKE_API FGuLiSoldierStateFastArray : public FFastArraySerializer
 template <>
 struct TStructOpsTypeTraits<FGuLiSoldierStateFastArray>
 	: public TStructOpsTypeTraitsBase2<FGuLiSoldierStateFastArray>
+{
+	enum { WithNetDeltaSerializer = true };
+};
+
+/** OwnerOnly authoritative move endpoint for one currently executing soldier. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiMoveEndpointItem : public FFastArraySerializerItem
+{
+	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	FGuLiSoldierId SoldierId;
+
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	uint32 ActiveOrderId = 0u;
+
+	/** Authority location captured when this order was committed. */
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	FVector_NetQuantize CommandStart = FVector::ZeroVector;
+
+	/** Actual free destination assigned by authority, not the original click location. */
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	FVector_NetQuantize FinalDestination = FVector::ZeroVector;
+
+	/** Per-soldier non-zero serial, advanced whenever either endpoint or order changes. */
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	uint32 Revision = 0u;
+
+	bool IsValid() const;
+	void Sanitize();
+};
+
+/** Incremental OwnerOnly endpoint set; the owning component controls replication scope and authority writes. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiMoveEndpointFastArray : public FFastArraySerializer
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	TArray<FGuLiMoveEndpointItem> Items;
+
+	bool NetDeltaSerialize(FNetDeltaSerializeInfo& DeltaParams)
+	{
+		return FFastArraySerializer::FastArrayDeltaSerialize<
+			FGuLiMoveEndpointItem,
+			FGuLiMoveEndpointFastArray>(Items, DeltaParams, *this);
+	}
+
+	void Sanitize();
+	const FGuLiMoveEndpointItem* Find(FGuLiSoldierId SoldierId) const;
+	FGuLiMoveEndpointItem* FindMutable(FGuLiSoldierId SoldierId);
+	bool Upsert(
+		FGuLiSoldierId SoldierId,
+		uint32 ActiveOrderId,
+		const FVector& CommandStart,
+		const FVector& FinalDestination);
+	bool Remove(FGuLiSoldierId SoldierId);
+	int32 ReplaceWith(TConstArrayView<FGuLiMoveEndpointItem> Endpoints);
+	bool ResetEndpoints();
+};
+
+template <>
+struct TStructOpsTypeTraits<FGuLiMoveEndpointFastArray>
+	: public TStructOpsTypeTraitsBase2<FGuLiMoveEndpointFastArray>
 {
 	enum { WithNetDeltaSerializer = true };
 };

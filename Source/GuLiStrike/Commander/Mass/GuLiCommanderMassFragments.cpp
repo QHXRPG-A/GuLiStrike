@@ -4,5 +4,5 @@
 
 bool FGuLiMassHealthFragment::IsAlive() const
 {
-	return !bDead && Health > 0u;
+	return !bDead && FMath::IsFinite(Health) && Health > 0.0f;
 }

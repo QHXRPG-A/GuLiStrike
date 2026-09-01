@@ -5,6 +5,8 @@
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
 #include "Misc/AutomationTest.h"
 
+#include <limits>
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FGuLiCommanderHealthBarVisibilityPolicyTest,
 	"GuLiStrike.Commander.UI.HealthBar.VisibilityPolicy",
@@ -39,6 +41,11 @@ bool FGuLiCommanderHealthBarVisibilityPolicyTest::RunTest(const FString& Paramet
 		TEXT("A Soldier beyond the maximum distance is hidden"),
 		FRenderer::TestOnly_ShouldDisplayHealthBar(
 			true, 55u, 100u, false, MaximumDistance + 1.0f, MaximumDistance));
+	TestTrue(TEXT("Fractional damage on a sub-unit maximum still displays a health bar"),
+		FRenderer::TestOnly_ShouldDisplayHealthBar(true, 0.25f, 0.5f, false, 1000.0f, MaximumDistance));
+	TestFalse(TEXT("Invalid float health cannot produce a visible bar"),
+		FRenderer::TestOnly_ShouldDisplayHealthBar(true,
+			std::numeric_limits<float>::quiet_NaN(), 300.5f, true, 1000.0f, MaximumDistance));
 
 	return true;
 }
@@ -70,6 +77,12 @@ bool FGuLiCommanderHealthBarSizingPolicyTest::RunTest(const FString& Parameters)
 	TestTrue(
 		TEXT("A zero maximum is handled safely"),
 		FMath::IsNearlyZero(FRenderer::TestOnly_CalculateHealthFraction(0u, 0u)));
+	TestEqual(TEXT("Float health above the old byte ceiling displays the correct ratio"),
+		FRenderer::TestOnly_CalculateHealthFraction(150.25f, 300.5f), 0.5f);
+	TestEqual(TEXT("Maximum health below one is not coerced to one"),
+		FRenderer::TestOnly_CalculateHealthFraction(0.25f, 0.5f), 0.5f);
+	TestEqual(TEXT("A non-finite maximum cannot contaminate material custom data"),
+		FRenderer::TestOnly_CalculateHealthFraction(50.0f, std::numeric_limits<float>::infinity()), 0.0f);
 
 	const FVector2D SizeAtOneKilometer = FRenderer::TestOnly_CalculateWorldSizeCentimeters(
 		1000.0f,

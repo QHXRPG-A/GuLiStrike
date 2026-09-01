@@ -26,6 +26,12 @@
 #include "Misc/ConfigCacheIni.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "ProfilingDebugging/CsvProfiler.h"
+#if !UE_BUILD_SHIPPING
+#include "HAL/FileManager.h"
+#include "Misc/DateTime.h"
+#include "Misc/FileHelper.h"
+#include "Misc/Paths.h"
+#endif
 
 CSV_DEFINE_CATEGORY(GuLiCommanderPresentation, true);
 
@@ -414,6 +420,13 @@ void AGuLiCommanderPresentationActor::ApplyPresentationPerformanceSettings()
 
 void AGuLiCommanderPresentationActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+#if !UE_BUILD_SHIPPING
+	if (bPredictionTraceActive)
+	{
+		FString Output;
+		StopPredictionTrace(Output);
+	}
+#endif
 	DestroyClientMirrorEntities();
 	Super::EndPlay(EndPlayReason);
 }
@@ -422,6 +435,14 @@ void AGuLiCommanderPresentationActor::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	RebuildLocalInstances(DeltaSeconds);
+#if !UE_BUILD_SHIPPING
+	if (bPredictionTraceActive && GetWorld()
+		&& (GetWorld()->GetRealTimeSeconds() >= PredictionTraceEndTime || PredictionTraceRows.Num() >= 20000))
+	{
+		FString Output;
+		StopPredictionTrace(Output);
+	}
+#endif
 }
 
 bool AGuLiCommanderPresentationActor::TryGetPresentedSoldierTransform(
@@ -481,8 +502,9 @@ void AGuLiCommanderPresentationActor::BeginPredictedMove(
 			continue;
 		}
 
-		for (const FGuLiSoldierId SoldierId : Cohort.MemberIds)
+		for (int32 MemberIndex = 0; MemberIndex < Cohort.MemberIds.Num(); ++MemberIndex)
 		{
+			const FGuLiSoldierId SoldierId = Cohort.MemberIds[MemberIndex];
 			if (!SoldierId.IsValid() || AddedSoldiers.Contains(SoldierId))
 			{
 				continue;
@@ -504,9 +526,34 @@ void AGuLiCommanderPresentationActor::BeginPredictedMove(
 				continue;
 			}
 
+#if !UE_BUILD_SHIPPING
+			if (bPredictionTraceActive)
+			{
+				if (!PredictionTraceSoldier.IsValid()) PredictionTraceSoldier = SoldierId;
+				if (PredictionTraceSoldier == SoldierId)
+				{
+					if (PredictedMoves.Contains(SoldierId)) AppendPredictionTrace(EGuLiPredictionTraceEvent::ReplacedPrediction);
+					PredictionTraceCommandId = ClientCommandId;
+					PredictionTraceOrderId = 0;
+					PredictionTraceDirection = ToTarget.GetSafeNormal2D();
+					PredictionTraceTarget = Target;
+					if (PredictionTraceCommands.Num() >= 256) PredictionTraceCommands.RemoveAt(0);
+					FGuLiPredictionTraceCommand& TraceCommand = PredictionTraceCommands.AddDefaulted_GetRef();
+					TraceCommand.CommandId = ClientCommandId;
+					TraceCommand.CohortId = Cohort.CohortId;
+					TraceCommand.FrozenMemberIndex = static_cast<uint8>(MemberIndex);
+					TraceCommand.Direction = PredictionTraceDirection;
+					TraceCommand.Target = Target;
+					PredictionTraceOrderSampleTimes.Reset();
+					bPredictionTraceHandoffRecorded = false;
+					AppendPredictionTrace(EGuLiPredictionTraceEvent::Input);
+				}
+			}
+#endif
 			FGuLiCommanderPredictedMove& Prediction = PredictedMoves.FindOrAdd(SoldierId);
 			Prediction = FGuLiCommanderPredictedMove{};
 			Prediction.CohortId = Cohort.CohortId;
+			Prediction.FrozenMemberIndex = static_cast<uint8>(MemberIndex);
 			Prediction.ClientCommandId = ClientCommandId;
 			Prediction.StartTimeSeconds = Now;
 			Prediction.Direction = FVector(ToTarget.X, ToTarget.Y, 0.0).GetSafeNormal();
@@ -526,6 +573,10 @@ void AGuLiCommanderPresentationActor::ResolvePredictedMove(const FGuLiCommandAck
 	}
 
 	const double Now = GetWorld()->GetTimeSeconds();
+#if !UE_BUILD_SHIPPING
+	// Observation must outlive both prediction expiry and replacement by a newer move.
+	TracePredictionAck(Ack);
+#endif
 	for (TPair<FGuLiSoldierId, FGuLiCommanderPredictedMove>& Pair : PredictedMoves)
 	{
 		FGuLiCommanderPredictedMove& Prediction = Pair.Value;
@@ -545,7 +596,10 @@ void AGuLiCommanderPresentationActor::ResolvePredictedMove(const FGuLiCommandAck
 					return Candidate.CohortId == Prediction.CohortId;
 				}))
 			{
-				bAccepted = IsAckResultAccepted(CohortResult->Result) && Ack.BatchOrderId != 0u;
+				bAccepted = Ack.BatchOrderId != 0u
+					&& (CohortResult->MemberCount > 0u
+						? CohortResult->IsMemberAccepted(Prediction.FrozenMemberIndex)
+						: IsAckResultAccepted(CohortResult->Result));
 			}
 		}
 
@@ -560,6 +614,203 @@ void AGuLiCommanderPresentationActor::ResolvePredictedMove(const FGuLiCommandAck
 		}
 	}
 }
+
+#if !UE_BUILD_SHIPPING
+void AGuLiCommanderPresentationActor::TracePredictionAck(const FGuLiCommandAck& Ack)
+{
+	if (!bPredictionTraceActive || !GetWorld() || PredictionTraceRows.Num() >= 20000
+		|| Ack.CommandKind != EGuLiCommandKind::Move || Ack.ClientCommandId == 0u) return;
+	FGuLiPredictionTraceCommand* Command = PredictionTraceCommands.FindByPredicate(
+		[&Ack](const FGuLiPredictionTraceCommand& Candidate) { return Candidate.CommandId == Ack.ClientCommandId; });
+	if (!Command || Command->bAckRecorded) return;
+	bool bAccepted = Ack.Result == EGuLiCommandAckResult::Accepted && Ack.BatchOrderId != 0u;
+	if (!Ack.CohortResults.IsEmpty())
+	{
+		const FGuLiCohortCommandAck* Cohort = Ack.CohortResults.FindByPredicate(
+			[Command](const FGuLiCohortCommandAck& Candidate) { return Candidate.CohortId == Command->CohortId; });
+		bAccepted = Cohort && Ack.BatchOrderId != 0u
+			&& (Cohort->MemberCount > 0u
+				? Cohort->IsMemberAccepted(Command->FrozenMemberIndex)
+				: IsAckResultAccepted(Cohort->Result));
+	}
+	Command->bAckRecorded = true;
+	if (PredictionTraceCommandId == Ack.ClientCommandId) PredictionTraceOrderId = Ack.BatchOrderId;
+	AppendPredictionTrace(bAccepted ? EGuLiPredictionTraceEvent::AckAccepted : EGuLiPredictionTraceEvent::AckRejected);
+	FGuLiPredictionTraceRow& Row = PredictionTraceRows.Last();
+	Row.CommandId = Ack.ClientCommandId;
+	Row.OrderId = Ack.BatchOrderId;
+	Row.Direction = Command->Direction;
+	Row.Target = Command->Target;
+	const FGuLiCommanderPredictedMove* Prediction = PredictedMoves.Find(PredictionTraceSoldier);
+	Row.bHasPrediction = Prediction && Prediction->ClientCommandId == Ack.ClientCommandId;
+	Row.bResolving = Row.bHasPrediction && Prediction->bResolving;
+}
+
+bool AGuLiCommanderPresentationActor::StartPredictionTrace(
+	const bool bDisableDisplacement, const uint32 SoldierId, const float DurationSeconds)
+{
+	if (bPredictionTraceActive || !GetWorld() || GetNetMode() == NM_DedicatedServer
+		|| !FindLocalController() || !FMath::IsFinite(DurationSeconds)
+		|| DurationSeconds < 1.0f || DurationSeconds > 120.0f)
+	{
+		return false;
+	}
+	UGuLiCommanderNetSyncComponent* AckSource = FindLocalController()->FindComponentByClass<UGuLiCommanderNetSyncComponent>();
+	if (!AckSource) return false;
+	PredictionTraceRows.Reset();
+	PredictionTraceRows.Reserve(4096);
+	PredictionTraceCommands.Reset();
+	PredictionTraceCommands.Reserve(256);
+	PredictionTraceOrderSampleTimes.Reset();
+	PredictionTraceSoldier.Value = SoldierId;
+	PredictionTraceCommandId = 0;
+	PredictionTraceOrderId = 0;
+	PredictionTraceDirection = FVector::ZeroVector;
+	PredictionTraceTarget = FVector::ZeroVector;
+	PredictionTraceRequestedOffset = FVector::ZeroVector;
+	PredictionTraceRenderServerTime = 0.0;
+	bPredictionTraceHasPreviousFrame = false;
+	bPredictionTraceHandoffRecorded = false;
+	bPredictionTraceDisableDisplacement = bDisableDisplacement;
+	PredictionTraceEndTime = GetWorld()->GetRealTimeSeconds() + DurationSeconds;
+	bPredictionTraceActive = true;
+	// Observe every delivered move ACK before the controller's latest-command UI filter.
+	// Existing per-command trace dedup also covers the later ResolvePredictedMove call.
+	PredictionTraceAckSource = AckSource;
+	PredictionTraceAckHandle = AckSource->OnCommandAckChanged.AddUObject(this, &AGuLiCommanderPresentationActor::TracePredictionAck);
+	AppendPredictionTrace(EGuLiPredictionTraceEvent::Start);
+	UE_LOG(LogGuLiStrike, Display, TEXT("PredictionTrace started: mode=%s soldier=%u duration=%.1fs. Local move dispatch calls BeginPredictedMove; mouse_input is a separate controller hook. No move RPC is injected."),
+		bDisableDisplacement ? TEXT("no_offset") : TEXT("baseline"), SoldierId, DurationSeconds);
+	return true;
+}
+
+void AGuLiCommanderPresentationActor::TraceCommanderMoveInput(
+	const uint32 ClientCommandId, const FVector& Target)
+{
+	if (!bPredictionTraceActive || !GetWorld() || PredictionTraceRows.Num() >= 20000) return;
+	AppendPredictionTrace(EGuLiPredictionTraceEvent::MouseInput);
+	FGuLiPredictionTraceRow& Row = PredictionTraceRows.Last();
+	Row.CommandId = ClientCommandId;
+	Row.Target = Target;
+}
+
+void AGuLiCommanderPresentationActor::AppendPredictionTrace(
+	const EGuLiPredictionTraceEvent Event, const FGuLiCommanderBufferedSoldierPose* Sample)
+{
+	if (!bPredictionTraceActive || PredictionTraceRows.Num() >= 20000 || !GetWorld()) return;
+	FGuLiPredictionTraceRow& Row = PredictionTraceRows.AddDefaulted_GetRef();
+	Row.Event = Event;
+	Row.LocalSeconds = GetWorld()->GetTimeSeconds();
+	Row.LocalFrame = GFrameCounter;
+	Row.RenderServerSeconds = PredictionTraceRenderServerTime;
+	Row.SoldierId = PredictionTraceSoldier.Value;
+	Row.CommandId = PredictionTraceCommandId;
+	Row.OrderId = PredictionTraceOrderId;
+	Row.Direction = PredictionTraceDirection;
+	Row.Target = PredictionTraceTarget;
+	Row.RequestedOffset = PredictionTraceRequestedOffset;
+	if (const FGuLiCommanderPresentedSoldier* Soldier = PresentedSoldiers.Find(PredictionTraceSoldier))
+	{
+		Row.Authoritative = Soldier->AuthoritativeTransform.GetLocation();
+		Row.Presented = Soldier->PresentedTransform.GetLocation();
+		Row.Offset = Row.Presented - Row.Authoritative;
+	}
+	if (const FGuLiCommanderPredictedMove* Prediction = PredictedMoves.Find(PredictionTraceSoldier))
+	{
+		Row.bHasPrediction = true;
+		Row.bResolving = Prediction->bResolving;
+	}
+	if (Sample)
+	{
+		Row.SampleServerSeconds = Sample->ServerTimeSeconds;
+		Row.SampleFrame = Sample->FrameSequence;
+		Row.OrderId = Sample->ActiveOrderId;
+		Row.SampleLocation = Sample->Location;
+		Row.SampleVelocity = Sample->Velocity;
+	}
+}
+
+void AGuLiCommanderPresentationActor::CapturePredictionTraceFrame(
+	const FGuLiSoldierId SoldierId, const double RenderServerSeconds)
+{
+	if (!bPredictionTraceActive || SoldierId != PredictionTraceSoldier) return;
+	PredictionTraceRenderServerTime = RenderServerSeconds;
+	if (!bPredictionTraceHandoffRecorded && PredictionTraceOrderId != 0)
+	{
+		if (const double* SampleTime = PredictionTraceOrderSampleTimes.Find(PredictionTraceOrderId))
+		{
+			if (RenderServerSeconds >= *SampleTime)
+			{
+				bPredictionTraceHandoffRecorded = true;
+				AppendPredictionTrace(EGuLiPredictionTraceEvent::RenderHandoff);
+				if (!PredictionTraceRows.IsEmpty()) PredictionTraceRows.Last().SampleServerSeconds = *SampleTime;
+			}
+		}
+	}
+	if (PredictionTraceRows.Num() >= 20000) return;
+	AppendPredictionTrace(EGuLiPredictionTraceEvent::Frame);
+	FGuLiPredictionTraceRow& Row = PredictionTraceRows.Last();
+	const double Delta = Row.LocalSeconds - PredictionTracePreviousTime;
+	if (bPredictionTraceHasPreviousFrame && Delta > UE_DOUBLE_SMALL_NUMBER && !Row.Direction.IsNearlyZero())
+	{
+		Row.bHasSpeed = true;
+		Row.SignedPresentedSpeed = FVector::DotProduct(Row.Presented - PredictionTracePreviousPresented, Row.Direction) / Delta;
+		Row.SignedAuthoritativeSpeed = FVector::DotProduct(Row.Authoritative - PredictionTracePreviousAuthoritative, Row.Direction) / Delta;
+	}
+	PredictionTracePreviousTime = Row.LocalSeconds;
+	PredictionTracePreviousPresented = Row.Presented;
+	PredictionTracePreviousAuthoritative = Row.Authoritative;
+	bPredictionTraceHasPreviousFrame = true;
+}
+
+bool AGuLiCommanderPresentationActor::StopPredictionTrace(FString& OutCsvPath)
+{
+	if (!bPredictionTraceActive) return false;
+	AppendPredictionTrace(EGuLiPredictionTraceEvent::Stop);
+	// Always restore the temporary override, including when exporting fails.
+	bPredictionTraceActive = false;
+	if (UGuLiCommanderNetSyncComponent* AckSource = PredictionTraceAckSource.Get())
+	{
+		AckSource->OnCommandAckChanged.Remove(PredictionTraceAckHandle);
+	}
+	PredictionTraceAckHandle.Reset();
+	PredictionTraceAckSource.Reset();
+	const bool bDisabledDisplacement = bPredictionTraceDisableDisplacement;
+	bPredictionTraceDisableDisplacement = false;
+	const TCHAR* EventNames[] = {TEXT("start"), TEXT("input"), TEXT("mouse_input"), TEXT("replaced_prediction"),
+		TEXT("ack_accepted"), TEXT("ack_rejected"), TEXT("sample_arrival"), TEXT("render_handoff"),
+		TEXT("resolve"), TEXT("frame"), TEXT("hard_snap"), TEXT("network_reset"), TEXT("stop")};
+	FString Csv(TEXT("event,local_seconds,local_frame,soldier_id,command_id,order_id,render_server_seconds,sample_server_seconds,sample_frame,displacement_disabled,net_mode,has_prediction,resolving,has_speed,signed_presented_cm_s,signed_authoritative_cm_s,authoritative_x,authoritative_y,authoritative_z,presented_x,presented_y,presented_z,offset_x,offset_y,offset_z,requested_offset_x,requested_offset_y,requested_offset_z,sample_x,sample_y,sample_z,sample_velocity_x,sample_velocity_y,sample_velocity_z,direction_x,direction_y,direction_z,target_x,target_y,target_z\n"));
+	Csv.Reserve(PredictionTraceRows.Num() * 512);
+	for (const FGuLiPredictionTraceRow& Row : PredictionTraceRows)
+	{
+		Csv += FString::Printf(TEXT("%s,%.6f,%llu,%u,%u,%u,%.6f,%.6f,%u,%d,%d,%d,%d,%d,%.3f,%.3f"),
+			EventNames[static_cast<uint8>(Row.Event)], Row.LocalSeconds, static_cast<unsigned long long>(Row.LocalFrame),
+			Row.SoldierId, Row.CommandId, Row.OrderId, Row.RenderServerSeconds, Row.SampleServerSeconds,
+			Row.SampleFrame, bDisabledDisplacement, static_cast<int32>(GetNetMode()), Row.bHasPrediction, Row.bResolving,
+			Row.bHasSpeed, Row.SignedPresentedSpeed, Row.SignedAuthoritativeSpeed);
+		for (const FVector& V : {Row.Authoritative, Row.Presented, Row.Offset, Row.RequestedOffset,
+			Row.SampleLocation, Row.SampleVelocity, Row.Direction, Row.Target})
+		{
+			Csv += FString::Printf(TEXT(",%.3f,%.3f,%.3f"), V.X, V.Y, V.Z);
+		}
+		Csv += TEXT("\n");
+	}
+	const FString Directory = FPaths::ConvertRelativePathToFull(FPaths::ProjectDir()
+		/ TEXT("outputs/commander-selection-20260831/diagnostics"));
+	const FString Filename = FString::Printf(TEXT("prediction-%s-%s-%llu.csv"),
+		bDisabledDisplacement ? TEXT("no_offset") : TEXT("baseline"),
+		*FDateTime::Now().ToString(TEXT("%Y%m%d-%H%M%S")), static_cast<unsigned long long>(GFrameCounter));
+	OutCsvPath = Directory / Filename;
+	const bool bSaved = IFileManager::Get().MakeDirectory(*Directory, true)
+		&& FFileHelper::SaveStringToFile(Csv, *OutCsvPath, FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
+	UE_LOG(LogGuLiStrike, Display, TEXT("PredictionTrace stopped: rows=%d saved=%d override_restored=1 csv=%s"),
+		PredictionTraceRows.Num(), bSaved, *OutCsvPath);
+	PredictionTraceRows.Reset();
+	PredictionTraceCommands.Reset();
+	return bSaved;
+}
+#endif
 
 void AGuLiCommanderPresentationActor::ResetSoldierPresentationDiagnostics(
 	const FGuLiSoldierId SoldierId)
@@ -954,6 +1205,17 @@ void AGuLiCommanderPresentationActor::InsertPoseSample(
 	const FGuLiCommanderBufferedSoldierPose& Sample,
 	const double LocalNowSeconds)
 {
+#if !UE_BUILD_SHIPPING
+	if (bPredictionTraceActive && SoldierId == PredictionTraceSoldier)
+	{
+		AppendPredictionTrace(EGuLiPredictionTraceEvent::SampleArrival, &Sample);
+		if (Sample.ActiveOrderId != 0 && PredictionTraceOrderSampleTimes.Num() < 64
+			&& !PredictionTraceOrderSampleTimes.Contains(Sample.ActiveOrderId))
+		{
+			PredictionTraceOrderSampleTimes.Add(Sample.ActiveOrderId, Sample.ServerTimeSeconds);
+		}
+	}
+#endif
 	FGuLiCommanderPresentedSoldier& Soldier = PresentedSoldiers.FindOrAdd(SoldierId);
 	const int32 ExistingBeforeCorrection = Soldier.Samples.IndexOfByPredicate(
 		[&Sample](const FGuLiCommanderBufferedSoldierPose& Existing)
@@ -995,6 +1257,12 @@ void AGuLiCommanderPresentationActor::InsertPoseSample(
 			Sample.Location) > FMath::Square(HardSnapDistanceCentimeters);
 	if ((Sample.bTeleport && bAdvancesLatest) || bCorrectionTooLarge)
 	{
+#if !UE_BUILD_SHIPPING
+		if (bPredictionTraceActive && SoldierId == PredictionTraceSoldier)
+		{
+			AppendPredictionTrace(EGuLiPredictionTraceEvent::HardSnap, &Sample);
+		}
+#endif
 		if (Sample.bTeleport && bAdvancesLatest)
 		{
 			++Soldier.TeleportSnapCount;
@@ -1211,7 +1479,17 @@ void AGuLiCommanderPresentationActor::ApplyPrediction(
 		}
 	}
 
-	InOutTransform.AddToTranslation(AppliedOffset);
+#if !UE_BUILD_SHIPPING
+	if (bPredictionTraceActive && SoldierId == PredictionTraceSoldier)
+	{
+		PredictionTraceRequestedOffset = AppliedOffset;
+	}
+	// Diagnostic A/B only. The default branch and all prediction timing remain unchanged.
+	if (!bPredictionTraceActive || !bPredictionTraceDisableDisplacement)
+#endif
+	{
+		InOutTransform.AddToTranslation(AppliedOffset);
+	}
 	InOutTransform.SetRotation(FRotator(
 		0.0f,
 		FRotator::ClampAxis(BaseYaw + AppliedYawOffsetDegrees),
@@ -1226,6 +1504,13 @@ void AGuLiCommanderPresentationActor::BeginPredictionResolution(
 	{
 		return;
 	}
+#if !UE_BUILD_SHIPPING
+	if (bPredictionTraceActive && Prediction.ClientCommandId == PredictionTraceCommandId)
+	{
+		const FGuLiCommanderPredictedMove* TracedPrediction = PredictedMoves.Find(PredictionTraceSoldier);
+		if (TracedPrediction == &Prediction) AppendPredictionTrace(EGuLiPredictionTraceEvent::Resolve);
+	}
+#endif
 	Prediction.bResolving = true;
 	Prediction.ResolveStartTimeSeconds = LocalNowSeconds;
 	Prediction.ResolveStartOffset = Prediction.LastAppliedOffset;
@@ -1379,6 +1664,14 @@ void AGuLiCommanderPresentationActor::DestroyClientMirrorEntities()
 // 同步代次变化时丢弃旧样本、预测和时钟，防止把新战局数据接到旧时间线上。
 void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 {
+#if !UE_BUILD_SHIPPING
+	if (bPredictionTraceActive)
+	{
+		AppendPredictionTrace(EGuLiPredictionTraceEvent::NetworkReset);
+		FString Output;
+		StopPredictionTrace(Output);
+	}
+#endif
 	PredictedMoves.Reset();
 	WreckExpireTimes.Reset();
 	for (TPair<FGuLiSoldierId, FGuLiCommanderPresentedSoldier>& Pair : PresentedSoldiers)
@@ -1635,9 +1928,21 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			Soldier.AuthoritativeTransform = AuthoritativeTransform;
 			Soldier.bHasAuthoritativeTransform = true;
 			FTransform PresentedTransform = AuthoritativeTransform;
+#if !UE_BUILD_SHIPPING
+			if (bPredictionTraceActive && ReliableState.SoldierId == PredictionTraceSoldier)
+			{
+				PredictionTraceRequestedOffset = FVector::ZeroVector;
+			}
+#endif
 			ApplyPrediction(ReliableState.SoldierId, LocalNowSeconds, PresentedTransform);
 			Soldier.PresentedTransform = PresentedTransform;
 			Soldier.bHasPresentedTransform = true;
+#if !UE_BUILD_SHIPPING
+			if (bPredictionTraceActive && ReliableState.SoldierId == PredictionTraceSoldier)
+			{
+				CapturePredictionTraceFrame(ReliableState.SoldierId, RenderServerTimeSeconds);
+			}
+#endif
 		}
 
 		if (!Soldier.bHasPresentedTransform)

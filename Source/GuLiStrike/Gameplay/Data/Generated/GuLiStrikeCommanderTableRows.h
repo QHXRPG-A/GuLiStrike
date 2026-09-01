@@ -31,24 +31,92 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	float MovementSpeedCmPerSecond = 0.0f;
 
-	/** MaxHealth (int, Necessary) */
+	/** MaxHealth (float, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
-	int32 MaxHealth = 0;
+	float MaxHealth = 0.0f;
 
 	/** ModelAsset (softobject, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	TSoftObjectPtr<UObject> ModelAsset;
 
-	/** AttackPower (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
-	float AttackPower = 0.0f;
-
 	/** Defense (float, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	float Defense = 0.0f;
 
-	/** AttackRangeCentimeters (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
-	float AttackRangeCentimeters = 0.0f;
+};
+
+/** DataTable DT_GuLiStrikeCommander_Skills 的行结构（源: GuLiStrikeCommander.xlsx 的 Skills sheet）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeCommanderSkillsRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	FString Note;
+
+	/** SkillId (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	FString SkillId;
+
+	/** DisplayName (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	FString DisplayName;
+
+	/** ExecutorId (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	FString ExecutorId;
+
+	/** Tags (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	FString Tags;
+
+};
+
+/** DataTable DT_GuLiStrikeCommander_UnitSkills 的行结构（源: GuLiStrikeCommander.xlsx 的 UnitSkills sheet）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeCommanderUnitSkillsRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	FString Note;
+
+	/** UnitTypeId (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	int32 UnitTypeId = 0;
+
+	/** SlotId (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	FString SlotId;
+
+	/** SkillId (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	FString SkillId;
+
+	/** bDefault (bool, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	bool bDefault = false;
+
+	/** Damage (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	float Damage = 0.0f;
+
+	/** AttackRatePerSecond (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	float AttackRatePerSecond = 0.0f;
+
+	/** RangeCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	float RangeCentimeters = 0.0f;
 
 };

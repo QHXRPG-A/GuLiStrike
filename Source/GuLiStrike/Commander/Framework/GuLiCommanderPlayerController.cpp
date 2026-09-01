@@ -7,6 +7,11 @@
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 #include "Commander/Presentation/GuLiCommanderHUD.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Commander/Network/GuLiSoldierStateReplicator.h"
+#include "Commander/UI/GuLiCommanderCursorWidget.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
+#include "Engine/GameViewportClient.h"
+#include "UnrealClient.h"
 #include "Components/PrimitiveComponent.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -78,6 +83,23 @@ bool GuLiCommanderToolPolicy::AllowsWorldIntent(const bool bCursorOverCommanderU
 	return !bCursorOverCommanderUI;
 }
 
+GuLiCommanderToolPolicy::FMoveAckRoutingDecision GuLiCommanderToolPolicy::ResolveMoveAckRouting(
+	const EGuLiCommandKind CommandKind,
+	const uint32 AckCommandId,
+	const uint32 LatestIntentCommandId,
+	const uint32 DispatchedCommandId,
+	const uint32 LastVisualizedCommandId)
+{
+	FMoveAckRoutingDecision Decision;
+	Decision.bResolvePrediction = CommandKind == EGuLiCommandKind::Move && AckCommandId != 0u;
+	Decision.bUpdateCommandLine = Decision.bResolvePrediction
+		&& AckCommandId == LatestIntentCommandId
+		&& AckCommandId != LastVisualizedCommandId;
+	Decision.bClearDispatchedCommand = Decision.bResolvePrediction
+		&& AckCommandId == DispatchedCommandId;
+	return Decision;
+}
+
 AGuLiCommanderPlayerController::AGuLiCommanderPlayerController(const FObjectInitializer& ObjectInitializer)
 	: Super(ObjectInitializer.SetDefaultSubobjectClass<UGuLiCommanderNetSyncComponent>(PlayerNetSyncComponentName))
 {
@@ -94,8 +116,32 @@ AGuLiCommanderPlayerController::AGuLiCommanderPlayerController(const FObjectInit
 void AGuLiCommanderPlayerController::BeginPlay()
 {
 	Super::BeginPlay();
-
+	if (NetSyncComponent)
+	{
+		MoveReadyHandle = NetSyncComponent->OnMoveReadyToSend.AddUObject(this, &ThisClass::HandleMoveReadyToSend);
+		CommandAckChangedHandle = NetSyncComponent->OnCommandAckChanged.AddUObject(
+			this,
+			&ThisClass::HandleCommandAckChanged);
+	}
 	UpdateCommanderInputMode();
+}
+
+void AGuLiCommanderPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	CancelSelectionDrag();
+	RestoreCommanderCursor();
+	if (NetSyncComponent)
+	{
+		NetSyncComponent->OnMoveReadyToSend.Remove(MoveReadyHandle);
+		NetSyncComponent->OnCommandAckChanged.Remove(CommandAckChangedHandle);
+	}
+	Super::EndPlay(EndPlayReason);
+}
+
+void AGuLiCommanderPlayerController::FlushPressedKeys()
+{
+	CancelSelectionDrag();
+	Super::FlushPressedKeys();
 }
 
 void AGuLiCommanderPlayerController::SetupInputComponent()
@@ -107,6 +153,7 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 	}
 
 	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Released, this, &ThisClass::HandlePrimaryReleased).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleCancelInput).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::One, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleArmMoveToolInput).bConsumeInput = false;
@@ -124,18 +171,53 @@ void AGuLiCommanderPlayerController::PlayerTick(const float DeltaTime)
 	UpdateCommanderInputMode();
 	if (!IsCommanderViewActive())
 	{
+		CancelSelectionDrag();
 		bHasCursorGroundLocation = false;
 		return;
+	}
+	if (bSelectionMouseDown)
+	{
+		float X = 0.0f, Y = 0.0f;
+		if (!GetMousePosition(X, Y)) CancelSelectionDrag();
+		else
+		{
+			SelectionDragEnd = FVector2D(X, Y);
+			const float Scale = UWidgetLayoutLibrary::GetViewportScale(this);
+			bSelectionDragExceededThreshold |= FVector2D::Distance(SelectionDragStart, SelectionDragEnd) >= 6.0f * Scale;
+		}
 	}
 	bHasCursorGroundLocation = TraceGroundUnderCursor(CachedCursorGroundLocation);
 	if (GuLiCommanderToolPolicy::ResolveModeForSelectionAvailability(
 		CommanderToolMode,
-		HasConfirmedSelection()) != CommanderToolMode)
+		HasConfirmedSelection() || (NetSyncComponent && NetSyncComponent->HasUnresolvedSelectionIntent())) != CommanderToolMode)
 	{
 		ActivateSelectionTool();
 	}
 	UpdateCameraInput(DeltaTime);
 	UpdateAcceptedCommandVisual();
+}
+
+void AGuLiCommanderPlayerController::ToggleSelectionShape()
+{
+	CancelSelectionDrag();
+	ActivateSelectionTool();
+	SelectionShape = SelectionShape == EGuLiCommanderSelectionShape::Box
+		? EGuLiCommanderSelectionShape::Radius : EGuLiCommanderSelectionShape::Box;
+	OnSelectionShapeChanged.Broadcast(SelectionShape);
+}
+
+bool AGuLiCommanderPlayerController::GetSelectionDragRectangle(FVector2D& OutStart, FVector2D& OutEnd) const
+{
+	OutStart = SelectionDragStart;
+	OutEnd = SelectionDragEnd;
+	return bSelectionMouseDown && bSelectionDragExceededThreshold && !bSelectionAltOnPress
+		&& SelectionShape == EGuLiCommanderSelectionShape::Box;
+}
+
+void AGuLiCommanderPlayerController::CancelSelectionDrag()
+{
+	bSelectionMouseDown = false;
+	bSelectionDragExceededThreshold = false;
 }
 
 bool AGuLiCommanderPlayerController::CanIssueCommanderOrders() const
@@ -160,10 +242,11 @@ void AGuLiCommanderPlayerController::ActivateSelectionTool()
 
 bool AGuLiCommanderPlayerController::ArmMoveTool()
 {
+	CancelSelectionDrag();
 	if (!GuLiCommanderToolPolicy::CanArmMove(
 		CanIssueCommanderOrders(),
 		NetSyncComponent != nullptr,
-		HasConfirmedSelection()))
+		HasConfirmedSelection() || (NetSyncComponent && NetSyncComponent->HasUnresolvedSelectionIntent())))
 	{
 		return false;
 	}
@@ -178,6 +261,7 @@ bool AGuLiCommanderPlayerController::ArmMoveTool()
 
 void AGuLiCommanderPlayerController::StepSelectionRadiusUp()
 {
+	if (SelectionShape != EGuLiCommanderSelectionShape::Radius) return;
 	SetSelectionRadiusPreset(GuLiCommanderToolPolicy::ResolveRadiusStep(
 		CommanderToolMode,
 		SelectionRadiusPreset));
@@ -217,7 +301,16 @@ bool AGuLiCommanderPlayerController::GetActiveCommandLine(
 {
 	const UWorld* World = GetWorld();
 	if (!World || CommandLineState == EGuLiCommandLineState::None
-		|| CommandLineExpireTime <= World->GetTimeSeconds())
+		|| (CommandLineState != EGuLiCommandLineState::Pending
+			&& CommandLineExpireTime <= World->GetTimeSeconds()))
+	{
+		OutAlpha = 0.0f;
+		OutState = EGuLiCommandLineState::None;
+		return false;
+	}
+	if (CommandLineState == EGuLiCommandLineState::Pending
+		&& (!NetSyncComponent || !NetSyncComponent->IsSoldierStreamReady()
+			|| !NetSyncComponent->IsMoveCommandPending(LatestMoveIntentCommandId)))
 	{
 		OutAlpha = 0.0f;
 		OutState = EGuLiCommandLineState::None;
@@ -227,6 +320,11 @@ bool AGuLiCommanderPlayerController::GetActiveCommandLine(
 	OutStart = CommandLineStart;
 	OutEnd = CommandLineEnd;
 	OutState = CommandLineState;
+	if (CommandLineState == EGuLiCommandLineState::Pending)
+	{
+		OutAlpha = 1.0f;
+		return true;
+	}
 	const float FadeDuration = FMath::Max(CommandLineFadeDurationSeconds, UE_SMALL_NUMBER);
 	OutAlpha = FMath::Clamp(
 		static_cast<float>((CommandLineExpireTime - World->GetTimeSeconds()) / FadeDuration),
@@ -254,7 +352,37 @@ void AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor()
 		return;
 	}
 
-	TryIssueSelectionAtCursor();
+	if (!CanIssueCommanderOrders() || IsCursorOverCommanderUI()) return;
+	float X = 0.0f, Y = 0.0f;
+	if (!GetMousePosition(X, Y)) return;
+	bSelectionMouseDown = true;
+	bSelectionDragExceededThreshold = false;
+	bSelectionAddOnPress = IsInputKeyDown(EKeys::LeftShift) || IsInputKeyDown(EKeys::RightShift);
+	bSelectionAltOnPress = IsInputKeyDown(EKeys::LeftAlt) || IsInputKeyDown(EKeys::RightAlt);
+	SelectionDragStart = SelectionDragEnd = FVector2D(X, Y);
+}
+
+void AGuLiCommanderPlayerController::HandlePrimaryReleased()
+{
+	if (!bSelectionMouseDown) return;
+	float X = 0.0f, Y = 0.0f;
+	if (!IsCommanderViewActive() || !GetMousePosition(X, Y) || IsCursorOverCommanderUI())
+	{
+		CancelSelectionDrag();
+		return;
+	}
+	SelectionDragEnd = FVector2D(X, Y);
+	bSelectionDragExceededThreshold |= FVector2D::Distance(SelectionDragStart, SelectionDragEnd)
+		>= 6.0f * UWidgetLayoutLibrary::GetViewportScale(this);
+	const bool bDrag = bSelectionDragExceededThreshold;
+	CancelSelectionDrag();
+	if (bSelectionAltOnPress)
+	{
+		if (!bDrag) TryIssuePointSelection(true, bSelectionAddOnPress);
+	}
+	else if (SelectionShape == EGuLiCommanderSelectionShape::Radius) TryIssueSelectionAtCursor();
+	else if (bDrag) TryIssueBoxSelection(SelectionDragStart, SelectionDragEnd, bSelectionAddOnPress);
+	else TryIssuePointSelection(false, bSelectionAddOnPress);
 }
 
 void AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor()
@@ -264,6 +392,7 @@ void AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor()
 		return;
 	}
 
+	CancelSelectionDrag();
 	const bool bMoveSubmitted = TryIssueMoveAtCursor();
 	if (GuLiCommanderToolPolicy::ResolveModeAfterMoveAttempt(
 		CommanderToolMode,
@@ -280,7 +409,7 @@ void AGuLiCommanderPlayerController::HandleActivateSelectionToolInput()
 	{
 		return;
 	}
-	ActivateSelectionTool();
+	ToggleSelectionShape();
 }
 
 void AGuLiCommanderPlayerController::HandleStepSelectionRadiusInput()
@@ -306,6 +435,11 @@ void AGuLiCommanderPlayerController::HandleCancelInput()
 {
 	if (!IsCommanderViewActive())
 	{
+		return;
+	}
+	if (bSelectionMouseDown)
+	{
+		CancelSelectionDrag();
 		return;
 	}
 
@@ -341,16 +475,113 @@ bool AGuLiCommanderPlayerController::TryIssueSelectionAtCursor()
 	FGuLiSelectionRequest Request;
 	Request.Center = GroundLocation;
 	Request.RadiusPreset = SelectionRadiusPreset;
-	Request.Modifier = IsInputKeyDown(EKeys::LeftShift) || IsInputKeyDown(EKeys::RightShift)
-		? EGuLiSelectionModifier::Toggle
+	Request.Modifier = bSelectionAddOnPress
+		? EGuLiSelectionModifier::Add
 		: EGuLiSelectionModifier::Replace;
-	Request.ClientRequestId = AllocateSelectionRequestId();
-	Request.KnownSelectionRevision = NetSyncComponent->GetSelectionState().SelectionRevision;
-	NetSyncComponent->SubmitSelectionRequest(Request);
+	SubmitSelectionIntent(Request);
 	return true;
 }
 
-// 先展示 Pending 与短时预测，再发移动意图；成功返回只表示本地提交路径完成。
+void AGuLiCommanderPlayerController::SubmitSelectionIntent(FGuLiSelectionRequest Request)
+{
+	if (!CanIssueCommanderOrders() || !NetSyncComponent) return;
+	Request.ClientRequestId = AllocateSelectionRequestId();
+	Request.KnownSelectionRevision = NetSyncComponent->GetSelectionState().SelectionRevision;
+	NetSyncComponent->SubmitSelectionRequest(Request);
+}
+
+bool AGuLiCommanderPlayerController::BuildPointSelectionRequest(FGuLiSelectionRequest& Request) const
+{
+	FVector Origin, Direction;
+	float MouseX = 0.0f, MouseY = 0.0f;
+	if (!GetMousePosition(MouseX, MouseY) || !DeprojectMousePositionToWorld(Origin, Direction)) return false;
+	Request.RayOrigin = Origin;
+	Request.RayDirection = Direction.GetSafeNormal();
+	const float PixelTolerance = 6.0f * UWidgetLayoutLibrary::GetViewportScale(this);
+	FVector OtherOrigin, OtherDirection;
+	if (DeprojectScreenPositionToWorld(MouseX + PixelTolerance, MouseY, OtherOrigin, OtherDirection))
+	{
+		Request.PickHalfAngleRadians = FMath::Clamp(static_cast<float>(FMath::Acos(FMath::Clamp(
+			FVector::DotProduct(Direction.GetSafeNormal(), OtherDirection.GetSafeNormal()), -1.0, 1.0))), 0.0001f, 0.05f);
+	}
+	const AGuLiBattlePlayerState* State = GetPlayerState<AGuLiBattlePlayerState>();
+	if (!State || !GetWorld()) return false;
+	AGuLiCommanderPresentationActor* Presentation = nullptr;
+	AGuLiSoldierStateReplicator* Roster = nullptr;
+	for (TActorIterator<AGuLiCommanderPresentationActor> It(GetWorld()); It; ++It) { Presentation = *It; break; }
+	for (TActorIterator<AGuLiSoldierStateReplicator> It(GetWorld()); It; ++It) { Roster = *It; break; }
+	if (!Presentation || !Roster) return false;
+	double BestScore = TNumericLimits<double>::Max();
+	for (const FGuLiSoldierStateItem& Soldier : Roster->GetItems())
+	{
+		if (!Soldier.IsAlive() || Soldier.Team != State->GetTeam()) continue;
+		FTransform Transform;
+		if (!Presentation->TryGetPresentedSoldierTransform(Soldier.SoldierId, Transform)) continue;
+		const FVector Foot = Transform.GetLocation();
+		FVector2D Bottom, Top, Edge;
+		if (!ProjectWorldLocationToScreen(Foot, Bottom)
+			|| !ProjectWorldLocationToScreen(Foot + FVector(0, 0, 1000), Top)
+			|| !ProjectWorldLocationToScreen(Foot + GetControlRotation().RotateVector(FVector(0, 750, 0)), Edge)) continue;
+		const FVector2D Mouse(MouseX, MouseY);
+		const FVector2D Segment = Top - Bottom;
+		const double Alpha = Segment.SizeSquared() > UE_SMALL_NUMBER
+			? FMath::Clamp(FVector2D::DotProduct(Mouse - Bottom, Segment) / Segment.SizeSquared(), 0.0, 1.0) : 0.0;
+		const double Distance = FVector2D::Distance(Mouse, Bottom + Segment * Alpha);
+		const double Radius = FMath::Max(static_cast<double>(PixelTolerance), FVector2D::Distance(Edge, Bottom));
+		const double Depth = FVector::DotProduct(Foot - Origin, Direction);
+		if (Depth < 0.0 || Distance > Radius) continue;
+		const double Score = Distance + Depth * 0.000001;
+		if (Score < BestScore)
+		{
+			BestScore = Score;
+			Request.SeedSoldierId = Soldier.SoldierId;
+		}
+	}
+	return Request.SeedSoldierId.IsValid();
+}
+
+bool AGuLiCommanderPlayerController::TryIssuePointSelection(const bool bSameType, const bool bAdd)
+{
+	if (!CanIssueCommanderOrders()) return false;
+	FGuLiSelectionRequest Request;
+	if (!BuildPointSelectionRequest(Request))
+	{
+		if (!bSameType && !bAdd) ClearSelection();
+		return false;
+	}
+	Request.Kind = bSameType ? EGuLiSelectionKind::SameType : EGuLiSelectionKind::Point;
+	Request.Modifier = bAdd ? EGuLiSelectionModifier::Add : EGuLiSelectionModifier::Replace;
+	SubmitSelectionIntent(Request);
+	return true;
+}
+
+bool AGuLiCommanderPlayerController::TryIssueBoxSelection(const FVector2D& Start, const FVector2D& End, const bool bAdd)
+{
+	if (!CanIssueCommanderOrders()) return false;
+	const FVector2D Min(FMath::Min(Start.X, End.X), FMath::Min(Start.Y, End.Y));
+	const FVector2D Max(FMath::Max(Start.X, End.X), FMath::Max(Start.Y, End.Y));
+	if (Max.X - Min.X < 1.0 || Max.Y - Min.Y < 1.0) return false;
+	FGuLiSelectionRequest Request;
+	Request.Kind = EGuLiSelectionKind::Box;
+	Request.Modifier = bAdd ? EGuLiSelectionModifier::Add : EGuLiSelectionModifier::Replace;
+	FVector Origin, Ray;
+	if (!DeprojectScreenPositionToWorld(Min.X, Min.Y, Origin, Ray)) return false;
+	// All four rays must share the camera origin, not the four distinct near-plane points.
+	FVector CameraLocation; FRotator CameraRotation;
+	GetPlayerViewPoint(CameraLocation, CameraRotation);
+	Request.RayOrigin = CameraLocation;
+	Request.BoxTopLeftRay = Ray.GetSafeNormal();
+	if (!DeprojectScreenPositionToWorld(Max.X, Min.Y, Origin, Ray)) return false;
+	Request.BoxTopRightRay = Ray.GetSafeNormal();
+	if (!DeprojectScreenPositionToWorld(Max.X, Max.Y, Origin, Ray)) return false;
+	Request.BoxBottomRightRay = Ray.GetSafeNormal();
+	if (!DeprojectScreenPositionToWorld(Min.X, Max.Y, Origin, Ray)) return false;
+	Request.BoxBottomLeftRay = Ray.GetSafeNormal();
+	SubmitSelectionIntent(Request);
+	return true;
+}
+
+// 先展示 Pending，再发移动意图；成功返回只表示本地提交路径完成。
 bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 {
 	if (!GuLiCommanderToolPolicy::AllowsWorldIntent(IsCursorOverCommanderUI()))
@@ -358,7 +589,8 @@ bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 		return false;
 	}
 
-	if (!CanIssueCommanderOrders() || !NetSyncComponent || !HasConfirmedSelection())
+	if (!CanIssueCommanderOrders() || !NetSyncComponent
+		|| (!HasConfirmedSelection() && !NetSyncComponent->HasUnresolvedSelectionIntent()))
 	{
 		return false;
 	}
@@ -373,7 +605,14 @@ bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 	Request.Target = GroundLocation;
 	Request.SelectionRevision = NetSyncComponent->GetSelectionState().SelectionRevision;
 	Request.ClientCommandId = AllocateMoveCommandId();
-	PendingMoveCommandId = Request.ClientCommandId;
+#if !UE_BUILD_SHIPPING
+	for (TActorIterator<AGuLiCommanderPresentationActor> It(GetWorld()); It; ++It)
+	{
+		It->TraceCommanderMoveInput(Request.ClientCommandId, GroundLocation);
+		break;
+	}
+#endif
+	LatestMoveIntentCommandId = Request.ClientCommandId;
 	PendingMoveTarget = GroundLocation;
 	CommandLineStart = FindConfirmedSelectionCenter();
 	CommandLineEnd = GroundLocation;
@@ -382,16 +621,26 @@ bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 	CommandLineExpireTime = GetWorld()
 		? GetWorld()->GetTimeSeconds() + static_cast<double>(CommandLineFadeDurationSeconds)
 		: 0.0;
-	for (TActorIterator<AGuLiCommanderPresentationActor> It(GetWorld()); It; ++It)
-	{
-		It->BeginPredictedMove(
-			NetSyncComponent->GetSelectionState(),
-			GroundLocation,
-			Request.ClientCommandId);
-		break;
-	}
 	NetSyncComponent->SubmitMoveRequest(Request);
 	return true;
+}
+
+void AGuLiCommanderPlayerController::HandleMoveReadyToSend(
+	const FGuLiMoveRequest& Request, const FGuLiCommanderSelectionState& Selection)
+{
+	if (!IsCommanderViewActive() || !GetWorld()) return;
+	(void)Selection;
+	PendingMoveCommandId = Request.ClientCommandId;
+	if (LatestMoveIntentCommandId == 0u)
+	{
+		LatestMoveIntentCommandId = Request.ClientCommandId;
+	}
+	PendingMoveTarget = Request.Target;
+	CommandLineStart = FindConfirmedSelectionCenter();
+	CommandLineEnd = Request.Target;
+	// 自由落位会在服务器分帧规划，客户端无法提前知道单兵是否接受及其最终槽。
+	// 位移预表现会先把单位推向点击点，再在权威姿态到达时撤销偏移，造成每次发令都明显拉回。
+	// 因此这里只保留命令反馈，单位位置始终由权威姿态流插值驱动。
 }
 
 // 清空同样是一条选兵请求，必须经过服务器版本/权限判定，不能只清客户端副本。
@@ -625,6 +874,13 @@ void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 	bEnableMouseOverEvents = bShouldEnable;
 	if (bShouldEnable)
 	{
+		if (UGameViewportClient* Viewport = GetWorld() ? GetWorld()->GetGameViewport() : nullptr)
+		{
+			PreviousSoftwareCursor = Viewport->GetSoftwareCursorWidget(EMouseCursor::Default);
+			CommanderCursorWidget = CreateWidget<UGuLiCommanderCursorWidget>(this, UGuLiCommanderCursorWidget::StaticClass());
+			Viewport->SetSoftwareCursorWidget(EMouseCursor::Default, CommanderCursorWidget.Get());
+			bCommanderCursorRegistered = true;
+		}
 		FInputModeGameAndUI InputMode;
 		InputMode.SetHideCursorDuringCapture(false);
 		InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
@@ -632,11 +888,29 @@ void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 	}
 	else
 	{
+		CancelSelectionDrag();
+		RestoreCommanderCursor();
 		SetInputMode(FInputModeGameOnly());
 		CommandLineState = EGuLiCommandLineState::None;
 		PendingMoveCommandId = 0u;
+		LatestMoveIntentCommandId = 0u;
+		ImmediatelyHandledMoveAckIds.Reset();
 		ActivateSelectionTool();
 	}
+}
+
+void AGuLiCommanderPlayerController::RestoreCommanderCursor()
+{
+	if (bCommanderCursorRegistered)
+	{
+		if (UGameViewportClient* Viewport = GetWorld() ? GetWorld()->GetGameViewport() : nullptr)
+		{
+			Viewport->SetSoftwareCursorWidget(EMouseCursor::Default, PreviousSoftwareCursor);
+		}
+	}
+	bCommanderCursorRegistered = false;
+	CommanderCursorWidget = nullptr;
+	PreviousSoftwareCursor.Reset();
 }
 void AGuLiCommanderPlayerController::UpdateCameraInput(const float DeltaTime)
 {
@@ -657,11 +931,26 @@ void AGuLiCommanderPlayerController::UpdateCameraInput(const float DeltaTime)
 	GetViewportSize(ViewportX, ViewportY);
 	float MouseX = 0.0f;
 	float MouseY = 0.0f;
-	if (ViewportX > 0 && ViewportY > 0 && GetMousePosition(MouseX, MouseY))
+	UGameViewportClient* GameViewport = GetWorld() ? GetWorld()->GetGameViewport() : nullptr;
+	const bool bViewportFocused = GameViewport && GameViewport->Viewport
+		&& GameViewport->Viewport->HasFocus();
+	if (bViewportFocused
+		&& ViewportX > 0 && ViewportY > 0
+		&& GetMousePosition(MouseX, MouseY)
+		&& MouseX >= 0.0f && MouseX < static_cast<float>(ViewportX)
+		&& MouseY >= 0.0f && MouseY < static_cast<float>(ViewportY))
 	{
-		constexpr float EdgePixels = 8.0f;
-		MovementInput.Y += MouseX <= EdgePixels ? -1.0f : (MouseX >= ViewportX - EdgePixels ? 1.0f : 0.0f);
-		MovementInput.X += MouseY <= EdgePixels ? 1.0f : (MouseY >= ViewportY - EdgePixels ? -1.0f : 0.0f);
+		const float DPIScale = FMath::Max(0.01f, UWidgetLayoutLibrary::GetViewportScale(this));
+		const float EdgePixels = 16.0f * DPIScale;
+		const auto SmoothEdgeStrength = [EdgePixels](const float DistanceToEdge)
+		{
+			const float Alpha = FMath::Clamp((EdgePixels - DistanceToEdge) / EdgePixels, 0.0f, 1.0f);
+			return Alpha * Alpha * (3.0f - 2.0f * Alpha);
+		};
+		MovementInput.Y -= SmoothEdgeStrength(MouseX);
+		MovementInput.Y += SmoothEdgeStrength(static_cast<float>(ViewportX) - MouseX);
+		MovementInput.X += SmoothEdgeStrength(MouseY);
+		MovementInput.X -= SmoothEdgeStrength(static_cast<float>(ViewportY) - MouseY);
 	}
 
 	CameraPawn->AddPlanarMovement(MovementInput.GetClampedToMaxSize(1.0f) * DeltaTime);
@@ -678,31 +967,70 @@ void AGuLiCommanderPlayerController::UpdateAcceptedCommandVisual()
 	}
 
 	TArray<FGuLiCommandAck> PendingAcks;
-	// 逐条消费回执，避免同帧只读最近值丢失反馈；只呈现当前 PendingMoveCommandId 的结果。
+	// The delegate resolves normal ACKs synchronously before NetSync may dispatch the next move.
+	// Keep this FIFO fallback for ACKs received before delegate binding, and drain every entry.
 	NetSyncComponent->ConsumePendingCommandAcks(PendingAcks);
 	for (const FGuLiCommandAck& Ack : PendingAcks)
 	{
-		if (Ack.CommandKind != EGuLiCommandKind::Move
-			|| Ack.ClientCommandId == 0u
-			|| Ack.ClientCommandId != PendingMoveCommandId
-			|| Ack.ClientCommandId == LastVisualizedMoveCommandId)
+		if (Ack.CommandKind != EGuLiCommandKind::Move || Ack.ClientCommandId == 0u)
 		{
 			continue;
 		}
-
-		for (TActorIterator<AGuLiCommanderPresentationActor> It(GetWorld()); It; ++It)
+		if (ImmediatelyHandledMoveAckIds.Remove(Ack.ClientCommandId) > 0)
 		{
-			It->ResolvePredictedMove(Ack);
-			break;
+			continue;
 		}
-		const bool bAccepted = Ack.IsAccepted() && Ack.BatchOrderId != 0u;
-		CommandLineState = bAccepted
-			? EGuLiCommandLineState::Accepted
-			: EGuLiCommandLineState::Rejected;
-		CommandLineFadeDurationSeconds = bAccepted ? 2.5f : 0.85f;
-		CommandLineExpireTime = GetWorld()->GetTimeSeconds()
-			+ static_cast<double>(CommandLineFadeDurationSeconds);
-		LastVisualizedMoveCommandId = Ack.ClientCommandId;
+		ProcessMoveCommandAck(Ack);
+	}
+	// Any synchronously handled ACK evicted by the bounded FIFO must not leave an unbounded ID set.
+	ImmediatelyHandledMoveAckIds.Reset();
+}
+
+void AGuLiCommanderPlayerController::HandleCommandAckChanged(const FGuLiCommandAck& Ack)
+{
+	if (ProcessMoveCommandAck(Ack))
+	{
+		ImmediatelyHandledMoveAckIds.Add(Ack.ClientCommandId);
+	}
+}
+
+bool AGuLiCommanderPlayerController::ProcessMoveCommandAck(const FGuLiCommandAck& Ack)
+{
+	if (!GetWorld())
+	{
+		return false;
+	}
+	const GuLiCommanderToolPolicy::FMoveAckRoutingDecision Decision =
+		GuLiCommanderToolPolicy::ResolveMoveAckRouting(
+			Ack.CommandKind,
+			Ack.ClientCommandId,
+			LatestMoveIntentCommandId,
+			PendingMoveCommandId,
+			LastVisualizedMoveCommandId);
+	if (!Decision.bResolvePrediction)
+	{
+		return false;
+	}
+
+	// bResolvePrediction is the existing move-ACK routing predicate. Positional prediction is
+	// intentionally disabled, so ACK handling only updates command feedback and queue state here.
+	if (Decision.bClearDispatchedCommand)
+	{
 		PendingMoveCommandId = 0u;
 	}
+	if (!Decision.bUpdateCommandLine)
+	{
+		return true;
+	}
+
+	const bool bAccepted = Ack.IsAccepted() && Ack.BatchOrderId != 0u;
+	CommandLineState = bAccepted
+		? EGuLiCommandLineState::Accepted
+		: EGuLiCommandLineState::Rejected;
+	CommandLineFadeDurationSeconds = bAccepted ? 2.5f : 0.85f;
+	CommandLineExpireTime = GetWorld()->GetTimeSeconds()
+		+ static_cast<double>(CommandLineFadeDurationSeconds);
+	LastVisualizedMoveCommandId = Ack.ClientCommandId;
+	LatestMoveIntentCommandId = 0u;
+	return true;
 }
