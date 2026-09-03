@@ -1,0 +1,105 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "77BB0C99490C9DC4C3EA5DA3BFED4D4D",
+			"instanceName": "DESKTOP-6D3B0FC-42336",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-14.00.03",
+	"succeeded": 0,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.098006099462509155,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"77BB0C99490C9DC4C3EA5DA3BFED4D4D"
+			],
+			"duration": 0.098006099462509155,
+			"dateTime": "2026.09.02-14.00.03",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(336): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-14.00.03"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogAbilitySystem: Processing InitializeRuntimeObjectLibrary.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-14.00.03"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The old Ship EndPlay releases its applied ability set' to be null.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipRespawnIntegrationTests.cpp",
+					"lineNumber": 167,
+					"timestamp": "2026.09.02-14.00.03"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The old Ship EndPlay clears its applied stable-id loadout' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipRespawnIntegrationTests.cpp",
+					"lineNumber": 169,
+					"timestamp": "2026.09.02-14.00.03"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The old Ship EndPlay clears its temporary missile cooldown' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipRespawnIntegrationTests.cpp",
+					"lineNumber": 171,
+					"timestamp": "2026.09.02-14.00.03"
+				}
+			],
+			"warnings": 0,
+			"errors": 3,
+			"artifacts": []
+		}
+	]
+}

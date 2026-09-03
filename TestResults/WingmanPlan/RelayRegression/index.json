@@ -1,0 +1,299 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "694DEE3744B4D692A9FA1FA9DAAB3E4E",
+			"instanceName": "DESKTOP-6D3B0FC-46400",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-13.44.45",
+	"succeeded": 18,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.15389548242092133,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "NoOwnerThenReconnect",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.NoOwnerThenReconnect",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0080753974616527557,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PersistentDisconnectTakeover",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.PersistentDisconnectTakeover",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0078281015157699585,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldHookRevokeAndDestroyLifetime",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.WorldHookRevokeAndDestroyLifetime",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0085633993148803711,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingThenAcceptOrTimeout",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.CarrierSource.PendingThenAcceptOrTimeout",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0079042986035346985,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AdditionalValidatorBeforeSequenceCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.FireIntent.AdditionalValidatorBeforeSequenceCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0082824006676673889,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AssemblyDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AssemblyDeadline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0078873969614505768,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicAllOrNothing",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AtomicAllOrNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0083863995969295502,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StrictContractGates",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.StrictContractGates",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0083616971969604492,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TrailGrantPending",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.TrailGrantPending",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0081842020153999329,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RetainedBootstrapAndRevocation",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.PublicTransport.RetainedBootstrapAndRevocation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0085970982909202576,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ZeroAuthorityMotion",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.SyntheticCandidate.ZeroAuthorityMotion",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0082564987242221832,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrozenAbilityBaseline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Takeover.FrozenAbilityBaseline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0082403011620044708,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MonotonicBounded",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.TokenBucket.MonotonicBounded",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0081159994006156921,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MotionEnvelopeBeforeAcceptedCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.MotionEnvelopeBeforeAcceptedCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0082059986889362335,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingHealthAbilityAndModeGate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.PendingHealthAbilityAndModeGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0080672986805438995,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldGateFailClosedBeforeCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.WorldGateFailClosedBeforeCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0084494985640048981,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldStaticDynamicAndNavigation",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.WorldStaticDynamicAndNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.014425899833440781,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AbilityConfigAndSixScopeGate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AbilityConfigAndSixScopeGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"694DEE3744B4D692A9FA1FA9DAAB3E4E"
+			],
+			"duration": 0.0080636031925678253,
+			"dateTime": "2026.09.02-13.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

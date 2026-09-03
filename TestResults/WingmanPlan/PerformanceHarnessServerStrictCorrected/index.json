@@ -1,0 +1,69 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "1393ABA34EA67F36AF714C8DCE3BA392",
+			"instanceName": "DESKTOP-6D3B0FC-45624",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-13.42.49",
+	"succeeded": 1,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.2203046977519989,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "ServerValidator",
+			"fullTestPath": "GuLiStrike.Wingman.Performance.H4000.ServerValidator",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1393ABA34EA67F36AF714C8DCE3BA392"
+			],
+			"duration": 0.2203046977519989,
+			"dateTime": "2026.09.02-13.42.49",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "GULI_PERF_METRICS {\"schema\":\"guli.wingman.performance.v1\",\"run\":\"H4000-ServerValidator\",\"scope\":\"strict_flight_grant_atomic_relay_validate_store_payload_copy_only\",\"formal_gate\":false,\"wingman_count\":4000,\"candidate_count\":6400,\"accepted_candidate_count\":6400,\"accepted_store_count\":6400,\"relay_count\":160,\"relayed_sample_count\":32000,\"cruise_hz\":5,\"cruise_captures_per_group\":4,\"combat_hz\":10,\"combat_captures_per_group\":4,\"sample_count\":50,\"candidates_per_service_step\":128,\"quantile_method\":\"nearest-rank\",\"step_p50_ms\":3.349204,\"step_p95_ms\":3.626801,\"step_max_ms\":3.661398,\"setup_ms\":48.670698,\"total_measured_ms\":169.152200,\"throughput_candidates_per_second\":37835.748,\"throughput_samples_per_second\":189178.739,\"queue_max_depth\":6400,\"queue_capacity\":6400,\"queue_oldest_age_ms\":168.502301,\"queue_final_depth\":0,\"drop_count\":0,\"approx_replay_payload_bytes\":11878400,\"process_resident_delta_bytes_approx\":8900608,\"server_wingman_motion_step_count\":0}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-13.42.49"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "This replays protocol Candidates through Validate/Store/payload-copy only; it is not a 4000-unit server simulation.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-13.42.49"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

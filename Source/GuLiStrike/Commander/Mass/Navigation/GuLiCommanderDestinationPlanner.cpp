@@ -473,6 +473,31 @@ namespace GuLiCommanderDestinationPlanner
 		return true;
 	}
 
+	int32 FindProjectionPrefixEnd(
+		const TConstArrayView<FFreeDestinationCandidate> Candidates,
+		const int32 MinimumCandidateCount)
+	{
+		if (Candidates.IsEmpty() || MinimumCandidateCount <= 0)
+		{
+			return 0;
+		}
+
+		int32 PrefixEnd = FMath::Min(MinimumCandidateCount, Candidates.Num());
+		if (PrefixEnd >= Candidates.Num())
+		{
+			return Candidates.Num();
+		}
+
+		const double BoundaryDistanceSquared =
+			Candidates[PrefixEnd - 1].DistanceSquaredFromAnchor;
+		while (PrefixEnd < Candidates.Num()
+			&& Candidates[PrefixEnd].DistanceSquaredFromAnchor == BoundaryDistanceSquared)
+		{
+			++PrefixEnd;
+		}
+		return PrefixEnd;
+	}
+
 	bool BuildSoftCohortAnchors(
 		const FRequest& Request,
 		const float AnchorPitchCentimeters,

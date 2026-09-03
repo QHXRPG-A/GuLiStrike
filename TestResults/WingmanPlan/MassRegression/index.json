@@ -1,0 +1,102 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "63E46B0D46BE03CE7A914BB63CC45366",
+			"instanceName": "DESKTOP-6D3B0FC-37724",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-13.46.57",
+	"succeeded": 3,
+	"succeededWithWarnings": 1,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.037167403846979141,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BasicWeaponIndependentAcceptedState",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.BasicWeaponIndependentAcceptedState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"63E46B0D46BE03CE7A914BB63CC45366"
+			],
+			"duration": 0.012122903019189835,
+			"dateTime": "2026.09.02-13.46.57",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClientOnlyProcessorExecutionDomain",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.ClientOnlyProcessorExecutionDomain",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"63E46B0D46BE03CE7A914BB63CC45366"
+			],
+			"duration": 0.0082986988127231598,
+			"dateTime": "2026.09.02-13.46.57",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FlightNavigationAsyncStateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.FlightNavigationAsyncStateLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"63E46B0D46BE03CE7A914BB63CC45366"
+			],
+			"duration": 0.0085297003388404846,
+			"dateTime": "2026.09.02-13.46.57",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OwnerGroupCandidateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.OwnerGroupCandidateLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"63E46B0D46BE03CE7A914BB63CC45366"
+			],
+			"duration": 0.0082161016762256622,
+			"dateTime": "2026.09.02-13.46.57",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: Wingman group 13572468-2468-1357-1122-334455667788 entered controlled C++ fallback: authored StateTree is missing or failed to load.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-13.46.57"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

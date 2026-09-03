@@ -1,0 +1,156 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "D596EDA04E424A7F615416920239E662",
+			"instanceName": "DESKTOP-6D3B0FC-39556",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-14.07.02",
+	"succeeded": 5,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.14054819941520691,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AbilitySetContract",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.AbilitySetContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D596EDA04E424A7F615416920239E662"
+			],
+			"duration": 0.0079294033348560333,
+			"dateTime": "2026.09.02-14.07.02",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ASCGrantProjectionAndInputLifecycle",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.ASCGrantProjectionAndInputLifecycle",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"D596EDA04E424A7F615416920239E662"
+			],
+			"duration": 0.10011409968137741,
+			"dateTime": "2026.09.02-14.07.02",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(336): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-14.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogAbilitySystem: Processing InitializeRuntimeObjectLibrary.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-14.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'An ASC never initialized by authority cannot use the EndPlay teardown capability' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipAbilityTests.cpp",
+					"lineNumber": 263,
+					"timestamp": "2026.09.02-14.07.02"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroupConfigHashAndInvalidation",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.GroupConfigHashAndInvalidation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D596EDA04E424A7F615416920239E662"
+			],
+			"duration": 0.0080365017056465149,
+			"dateTime": "2026.09.02-14.07.02",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PawnOwnedASCIntegration",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.PawnOwnedASCIntegration",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D596EDA04E424A7F615416920239E662"
+			],
+			"duration": 0.0079589001834392548,
+			"dateTime": "2026.09.02-14.07.02",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D596EDA04E424A7F615416920239E662"
+			],
+			"duration": 0.0087024010717868805,
+			"dateTime": "2026.09.02-14.07.02",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalHistoryIsBoundedAndVersioned",
+			"fullTestPath": "GuLiStrike.Ship.Movement.CanonicalHistoryIsBoundedAndVersioned",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D596EDA04E424A7F615416920239E662"
+			],
+			"duration": 0.0078068971633911133,
+			"dateTime": "2026.09.02-14.07.02",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

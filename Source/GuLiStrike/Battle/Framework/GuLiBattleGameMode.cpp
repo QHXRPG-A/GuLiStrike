@@ -6,6 +6,8 @@
 #include "Battle/Framework/GuLiBattlePlayerController.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Battle/Network/GuLiPlayerNetSyncComponent.h"
+#include "Battle/Network/Relay/GuLiWingmanRelayComponent.h"
+#include "Battle/Relay/GuLiWingmanRelayAuthorityRegistry.h"
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
 #include "GuLiStrike.h"
@@ -52,6 +54,7 @@ void AGuLiBattleGameMode::GenericPlayerInitialization(AController* Controller)
 		{
 			NetSync->EnsureServerConnectionBootstrap();
 		}
+		TryAssignWaitingWingmanGroups();
 	}
 }
 
@@ -303,6 +306,11 @@ void AGuLiBattleGameMode::Logout(AController* Exiting)
 		{
 			ExitingPlayers.Add(TWeakObjectPtr<APlayerController>(PlayerController));
 			CancelPlayerRespawn(*PlayerController);
+			if (const AGuLiBattlePlayerState* PlayerState =
+				PlayerController->GetPlayerState<AGuLiBattlePlayerState>())
+			{
+				HandleWingmanOwnerDisconnected(*PlayerController, *PlayerState);
+			}
 		}
 		if (const AGuLiBattlePlayerState* PlayerState = Exiting->GetPlayerState<AGuLiBattlePlayerState>())
 		{
@@ -313,6 +321,184 @@ void AGuLiBattleGameMode::Logout(AController* Exiting)
 		}
 	}
 	Super::Logout(Exiting);
+}
+
+void AGuLiBattleGameMode::HandleWingmanOwnerDisconnected(
+	APlayerController& ExitingController,
+	const AGuLiBattlePlayerState& ExitingPlayerState)
+{
+	AGuLiBattleGameState* BattleState = GetGameState<AGuLiBattleGameState>();
+	FGuLiWingmanRelayAuthorityRegistry* Registry = BattleState
+		? BattleState->GetWingmanRelayAuthorityRegistry() : nullptr;
+	const FGuid ExitingGuid = ExitingPlayerState.GetPlayerGuid();
+	if (!Registry || !ExitingGuid.IsValid()
+		|| ExitingPlayerState.GetTeam() == EGuLiTeam::Unassigned)
+	{
+		return;
+	}
+
+	struct FCandidate
+	{
+		FGuid PlayerGuid;
+		TWeakObjectPtr<UGuLiWingmanRelayComponent> Transport;
+		bool bNonAir = false;
+	};
+	TArray<FCandidate> AllCandidates;
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		APlayerController* Controller = It->Get();
+		const AGuLiBattlePlayerState* PlayerState = Controller && Controller != &ExitingController
+			? Controller->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
+		UGuLiWingmanRelayComponent* Transport = Controller
+			? Controller->FindComponentByClass<UGuLiWingmanRelayComponent>() : nullptr;
+		if (!PlayerState || !Transport || !Transport->CanServerAttachPersistentGroup()
+			|| PlayerState->GetTeam() != ExitingPlayerState.GetTeam()
+			|| !PlayerState->GetPlayerGuid().IsValid()
+			|| PlayerState->GetBattleRole() == EGuLiCommanderRole::Observer
+			|| PlayerState->GetBattleRole() == EGuLiCommanderRole::Unassigned)
+		{
+			continue;
+		}
+		FCandidate& Candidate = AllCandidates.AddDefaulted_GetRef();
+		Candidate.PlayerGuid = PlayerState->GetPlayerGuid();
+		Candidate.Transport = Transport;
+		// A Commander/Ground client has no Ship ASC, which exercises the intended projection-only backup path.
+		Candidate.bNonAir = PlayerState->GetBattleRole() != EGuLiCommanderRole::Air;
+	}
+	AllCandidates.Sort([](const FCandidate& Lhs, const FCandidate& Rhs)
+	{
+		if (Lhs.bNonAir != Rhs.bNonAir)
+		{
+			return Lhs.bNonAir;
+		}
+		if (Lhs.PlayerGuid.A != Rhs.PlayerGuid.A) return Lhs.PlayerGuid.A < Rhs.PlayerGuid.A;
+		if (Lhs.PlayerGuid.B != Rhs.PlayerGuid.B) return Lhs.PlayerGuid.B < Rhs.PlayerGuid.B;
+		if (Lhs.PlayerGuid.C != Rhs.PlayerGuid.C) return Lhs.PlayerGuid.C < Rhs.PlayerGuid.C;
+		return Lhs.PlayerGuid.D < Rhs.PlayerGuid.D;
+	});
+
+	TArray<FGuid> CandidateGuids;
+	TMap<FGuid, TWeakObjectPtr<UGuLiWingmanRelayComponent>> TransportsByGuid;
+	const bool bHasProjectionOnlyHost = AllCandidates.ContainsByPredicate(
+		[](const FCandidate& Candidate) { return Candidate.bNonAir; });
+	for (const FCandidate& Candidate : AllCandidates)
+	{
+		if (bHasProjectionOnlyHost && !Candidate.bNonAir)
+		{
+			continue;
+		}
+		CandidateGuids.Add(Candidate.PlayerGuid);
+		TransportsByGuid.Add(Candidate.PlayerGuid, Candidate.Transport);
+	}
+
+	const TArray<FGuLiWingmanOwnerLossAssignment> Assignments =
+		Registry->HandleOwnerDisconnected(
+			ExitingGuid,
+			CandidateGuids,
+			GetWorld()->GetTimeSeconds());
+	UGuLiWingmanRelayComponent* ExitingTransport =
+		ExitingController.FindComponentByClass<UGuLiWingmanRelayComponent>();
+	for (const FGuLiWingmanOwnerLossAssignment& Assignment : Assignments)
+	{
+		// Reliable public removal closes combat/presentation while the new owner applies the frozen cut.
+		BattleState->ServerRevokeWingmanGroup(Assignment.Group);
+		if (ExitingTransport)
+		{
+			ExitingTransport->ServerDetachPersistentGroup(Assignment.Group);
+		}
+		if (Assignment.Disposition == EGuLiWingmanOwnerLossDisposition::OfferStarted)
+		{
+			UGuLiWingmanRelayComponent* NewTransport =
+				TransportsByGuid.FindRef(Assignment.NewOwnerPlayerGuid).Get();
+			if (!NewTransport || !NewTransport->ServerDeliverLeaseOffer(Assignment.Group))
+			{
+				UE_LOG(LogGuLiStrike, Error,
+					TEXT("Wingman Relay offer delivery failed: Group=%s Owner=%s"),
+					*Assignment.Group.ShipInstanceId.ToString(),
+					*Assignment.NewOwnerPlayerGuid.ToString());
+			}
+		}
+	}
+}
+
+void AGuLiBattleGameMode::TryAssignWaitingWingmanGroups()
+{
+	AGuLiBattleGameState* BattleState = GetGameState<AGuLiBattleGameState>();
+	FGuLiWingmanRelayAuthorityRegistry* Registry = BattleState
+		? BattleState->GetWingmanRelayAuthorityRegistry() : nullptr;
+	if (!Registry || Registry->GetAwaitingOwnerGroups().IsEmpty())
+	{
+		return;
+	}
+
+	struct FCandidate
+	{
+		FGuid PlayerGuid;
+		TWeakObjectPtr<UGuLiWingmanRelayComponent> Transport;
+		EGuLiTeam Team = EGuLiTeam::Unassigned;
+	};
+	TArray<FCandidate> Candidates;
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		APlayerController* Controller = It->Get();
+		const AGuLiBattlePlayerState* PlayerState = Controller
+			? Controller->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
+		UGuLiWingmanRelayComponent* Transport = Controller
+			? Controller->FindComponentByClass<UGuLiWingmanRelayComponent>() : nullptr;
+		if (!PlayerState || !Transport || !Transport->CanServerAttachPersistentGroup()
+			|| !PlayerState->GetPlayerGuid().IsValid()
+			|| PlayerState->GetTeam() == EGuLiTeam::Unassigned
+			|| PlayerState->GetBattleRole() == EGuLiCommanderRole::Air
+			|| PlayerState->GetBattleRole() == EGuLiCommanderRole::Observer
+			|| PlayerState->GetBattleRole() == EGuLiCommanderRole::Unassigned)
+		{
+			continue;
+		}
+		FCandidate& Candidate = Candidates.AddDefaulted_GetRef();
+		Candidate.PlayerGuid = PlayerState->GetPlayerGuid();
+		Candidate.Transport = Transport;
+		Candidate.Team = PlayerState->GetTeam();
+	}
+	Candidates.Sort([](const FCandidate& Lhs, const FCandidate& Rhs)
+	{
+		if (Lhs.PlayerGuid.A != Rhs.PlayerGuid.A) return Lhs.PlayerGuid.A < Rhs.PlayerGuid.A;
+		if (Lhs.PlayerGuid.B != Rhs.PlayerGuid.B) return Lhs.PlayerGuid.B < Rhs.PlayerGuid.B;
+		if (Lhs.PlayerGuid.C != Rhs.PlayerGuid.C) return Lhs.PlayerGuid.C < Rhs.PlayerGuid.C;
+		return Lhs.PlayerGuid.D < Rhs.PlayerGuid.D;
+	});
+	TMap<FGuid, TWeakObjectPtr<UGuLiWingmanRelayComponent>> TransportsByGuid;
+	for (const FCandidate& Candidate : Candidates)
+	{
+		TransportsByGuid.Add(Candidate.PlayerGuid, Candidate.Transport);
+	}
+
+	TSet<FGuid> ConsumedOwners;
+	for (const FGuLiWingmanGroupHandle& Group : Registry->GetAwaitingOwnerGroups())
+	{
+		const uint8 OwnerCohort = Registry->GetGroupOwnerCohort(Group);
+		TArray<FGuid> CandidateGuids;
+		for (const FCandidate& Candidate : Candidates)
+		{
+			if (static_cast<uint8>(Candidate.Team) == OwnerCohort
+				&& !ConsumedOwners.Contains(Candidate.PlayerGuid))
+			{
+				CandidateGuids.Add(Candidate.PlayerGuid);
+			}
+		}
+		FGuLiWingmanOwnerLossAssignment Assignment;
+		if (!Registry->AssignAwaitingGroup(
+			Group, CandidateGuids, GetWorld()->GetTimeSeconds(), Assignment))
+		{
+			continue;
+		}
+		ConsumedOwners.Add(Assignment.NewOwnerPlayerGuid);
+		UGuLiWingmanRelayComponent* Transport =
+			TransportsByGuid.FindRef(Assignment.NewOwnerPlayerGuid).Get();
+		if (Transport)
+		{
+			Transport->ServerDeliverLeaseOffer(Assignment.Group);
+		}
+	}
 }
 
 void AGuLiBattleGameMode::StopPendingRespawns()

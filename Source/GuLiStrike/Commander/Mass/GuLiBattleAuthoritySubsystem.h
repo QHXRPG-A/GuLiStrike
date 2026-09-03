@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Battle/Contracts/GuLiWingmanProtocolTypes.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "Commander/Mass/GuLiSoldierCombat.h"
@@ -158,6 +159,11 @@ struct FGuLiMovePlanningDebug
 	int32 TheoreticalCandidates = 0;
 	int32 ProjectedCandidates = 0;
 	int32 LegalCandidates = 0;
+	int32 DesiredLegalSlots = 0;
+	int32 InitialProjectionLimit = 0;
+	int32 FinalProjectionLimit = 0;
+	int32 ProjectionExpansionCount = 0;
+	int32 PlanningWorldFrames = 0;
 	int32 CandidateProjectionQueries = 0;
 	int32 PathQueries = 0;
 	int32 RouteSplitCount = 0;
@@ -166,6 +172,7 @@ struct FGuLiMovePlanningDebug
 	int32 FailedMembers = 0;
 	float MaximumSearchRadiusCentimeters = 0.0f;
 	double PlanningMilliseconds = 0.0;
+	bool bEscalatedToFullCandidatePool = false;
 	TArray<FGuLiSoldierId> FailedSoldierIds;
 	TArray<FGuLiMoveCohortPlanningDebug> Cohorts;
 	uint64 FailureCounts[static_cast<uint8>(EGuLiMovePlanFailureStage::Count)] = {};
@@ -273,6 +280,8 @@ public:
 	 * 此处不计算攻防公式；死亡时清除指令和速度，保留实体用于残骸窗口及后续状态同步。
 	 */
 	bool ApplyDamage(FGuLiSoldierId SoldierId, float Amount);
+	/** Stable Damage Ledger identity for a Soldier in the current match. */
+	FGuLiTargetHandle MakeSoldierTargetHandle(FGuLiSoldierId SoldierId) const;
 
 	/** Read-only server diagnostics; a valid ID can describe a dead Soldier. */
 	bool TryGetSoldierCombatDebug(FGuLiSoldierId SoldierId, FGuLiSoldierCombatDebug& OutDebug) const;
@@ -359,6 +368,9 @@ private:
 	void TickAuthority(float FixedDeltaSeconds);
 	void CommitCombatProfiles();
 	void TickSoldierCombat();
+	void RegisterCombatLedgerTargets();
+	bool RegisterCombatLedgerTarget(FGuLiSoldierId SoldierId);
+	void UnregisterCombatLedgerTargets();
 
 	/** 每世界帧按预算采样可走性、提交纯数据后台构建，并核对版本后接收流场结果。 */
 	void TickLocalFlowFields();
@@ -442,5 +454,6 @@ private:
 	/** 独占本 World 的运行时状态；Initialize 分配、Deinitialize 释放，Mass 子系统只被弱引用。 */
 	TUniquePtr<FGuLiBattleAuthorityState, FGuLiBattleAuthorityStateDeleter> AuthorityState;
 	bool bSoldierSimulationEnabled = false;
+	TArray<FGuLiTargetHandle> RegisteredCombatLedgerTargets;
 	FGuLiAuthorityPerformanceCounters PerformanceCounters;
 };

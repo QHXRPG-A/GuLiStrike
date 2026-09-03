@@ -1,0 +1,74 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "C11E5D684BB8688494DADDBC10EF3940",
+			"instanceName": "DESKTOP-6D3B0FC-1552",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-13.35.37",
+	"succeeded": 3,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.024704504758119583,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AssemblyDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AssemblyDeadline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"C11E5D684BB8688494DADDBC10EF3940"
+			],
+			"duration": 0.0081139020621776581,
+			"dateTime": "2026.09.02-13.35.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicAllOrNothing",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AtomicAllOrNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"C11E5D684BB8688494DADDBC10EF3940"
+			],
+			"duration": 0.0082368999719619751,
+			"dateTime": "2026.09.02-13.35.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TrailGrantPending",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.TrailGrantPending",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"C11E5D684BB8688494DADDBC10EF3940"
+			],
+			"duration": 0.00835370272397995,
+			"dateTime": "2026.09.02-13.35.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

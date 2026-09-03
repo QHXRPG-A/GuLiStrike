@@ -1,0 +1,328 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "66E623E24B16EA0823A3EEAE4EC76966",
+			"instanceName": "DESKTOP-6D3B0FC-41456",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-10.23.55",
+	"succeeded": 14,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.19261229038238525,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "ClientOnlyProcessorExecutionDomain",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.ClientOnlyProcessorExecutionDomain",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0080508999526500702,
+			"dateTime": "2026.09.02-10.23.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OwnerGroupCandidateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.OwnerGroupCandidateLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0084924027323722839,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AbilityRevisionGate",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.AbilityRevisionGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0079765990376472473,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GoldenBytes",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.GoldenBytes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0082892999053001404,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "CandidateV7=0E044030201080706050C0B0A09001F0E0D006120822CA1036161A8877665544332211010000004030201080706050C0B0A09001F0E0D006120102046400000038FFFFFF2C0100009411000000000000E7FFFFFF6400000028230000D4FEFFFF01",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-10.23.55"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "FireIntentV7=0E044030201080706050C0B0A09001F0E0D0061208264030201080706050C0B0A09001F0E0D00612010204041222CA02010000000200000003000000040000000A0C1F000000536869702E4162696C6974792E576561706F6E2E42617369632E4175746F000C16E80300000000000000000000",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-10.23.55"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SixScopeBootstrap",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.SixScopeBootstrap",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0083170011639595032,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExtrapolationFadeHide",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.ExtrapolationFadeHide",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.076687604188919067,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A sample extrapolates during the fresh 0.5 second window' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Presentation\\Tests\\GuLiWingmanPresentationPolicyTests.cpp",
+					"lineNumber": 88,
+					"timestamp": "2026.09.02-10.23.55"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Velocity drives bounded extrapolation' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Presentation\\Tests\\GuLiWingmanPresentationPolicyTests.cpp",
+					"lineNumber": 89,
+					"timestamp": "2026.09.02-10.23.55"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Fading pose is frozen at the 0.5 second bound' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Presentation\\Tests\\GuLiWingmanPresentationPolicyTests.cpp",
+					"lineNumber": 97,
+					"timestamp": "2026.09.02-10.23.55"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Presentation hides after 0.5 + 0.15 seconds' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Presentation\\Tests\\GuLiWingmanPresentationPolicyTests.cpp",
+					"lineNumber": 105,
+					"timestamp": "2026.09.02-10.23.55"
+				}
+			],
+			"warnings": 0,
+			"errors": 4,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Interpolation",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.Interpolation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0087102986872196198,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SequenceAndBoundedHistory",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.SequenceAndBoundedHistory",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0082444995641708374,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StableSlotAndDedicatedServerGate",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.StableSlotAndDedicatedServerGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0082459002733230591,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingThenAcceptOrTimeout",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.CarrierSource.PendingThenAcceptOrTimeout",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0078735984861850739,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AdditionalValidatorBeforeSequenceCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.FireIntent.AdditionalValidatorBeforeSequenceCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0083120018243789673,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ZeroAuthorityMotion",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.SyntheticCandidate.ZeroAuthorityMotion",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0083009973168373108,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrozenAbilityBaseline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Takeover.FrozenAbilityBaseline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0080242007970809937,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MonotonicBounded",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.TokenBucket.MonotonicBounded",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.0082750022411346436,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AbilityConfigAndSixScopeGate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AbilityConfigAndSixScopeGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"66E623E24B16EA0823A3EEAE4EC76966"
+			],
+			"duration": 0.00881199911236763,
+			"dateTime": "2026.09.02-10.23.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

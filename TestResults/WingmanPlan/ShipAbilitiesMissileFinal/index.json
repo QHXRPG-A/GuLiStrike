@@ -1,0 +1,89 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "49BEDABD4C0A0F9C0972259E70CBEE3E",
+			"instanceName": "DESKTOP-6D3B0FC-32972",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-12.43.40",
+	"succeeded": 4,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.03716740757226944,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AbilitySetContract",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.AbilitySetContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"49BEDABD4C0A0F9C0972259E70CBEE3E"
+			],
+			"duration": 0.008111901581287384,
+			"dateTime": "2026.09.02-12.43.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ASCGrantProjectionAndInputLifecycle",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.ASCGrantProjectionAndInputLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"49BEDABD4C0A0F9C0972259E70CBEE3E"
+			],
+			"duration": 0.012742303311824799,
+			"dateTime": "2026.09.02-12.43.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroupConfigHashAndInvalidation",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.GroupConfigHashAndInvalidation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"49BEDABD4C0A0F9C0972259E70CBEE3E"
+			],
+			"duration": 0.0081808008253574371,
+			"dateTime": "2026.09.02-12.43.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PawnOwnedASCIntegration",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.PawnOwnedASCIntegration",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"49BEDABD4C0A0F9C0972259E70CBEE3E"
+			],
+			"duration": 0.0081324018537998199,
+			"dateTime": "2026.09.02-12.43.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

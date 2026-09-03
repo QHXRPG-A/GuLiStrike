@@ -1,0 +1,89 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "9CFDA58944B47BA694B7A1A0EB8A19E8",
+			"instanceName": "DESKTOP-6D3B0FC-42484",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-10.52.53",
+	"succeeded": 4,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.025923099368810654,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "ExtrapolationFadeHide",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.ExtrapolationFadeHide",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"9CFDA58944B47BA694B7A1A0EB8A19E8"
+			],
+			"duration": 0.0015696994960308075,
+			"dateTime": "2026.09.02-10.52.53",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Interpolation",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.Interpolation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"9CFDA58944B47BA694B7A1A0EB8A19E8"
+			],
+			"duration": 0.0079992972314357758,
+			"dateTime": "2026.09.02-10.52.53",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SequenceAndBoundedHistory",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.SequenceAndBoundedHistory",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"9CFDA58944B47BA694B7A1A0EB8A19E8"
+			],
+			"duration": 0.0083364024758338928,
+			"dateTime": "2026.09.02-10.52.53",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StableSlotAndDedicatedServerGate",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.StableSlotAndDedicatedServerGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"9CFDA58944B47BA694B7A1A0EB8A19E8"
+			],
+			"duration": 0.0080177001655101776,
+			"dateTime": "2026.09.02-10.52.53",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

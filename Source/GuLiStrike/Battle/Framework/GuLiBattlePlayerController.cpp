@@ -4,6 +4,7 @@
 
 #include "Battle/Framework/GuLiBattleGameMode.h"
 #include "Battle/Network/GuLiPlayerNetSyncComponent.h"
+#include "Battle/Network/Relay/GuLiWingmanRelayComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
 
@@ -14,6 +15,7 @@ AGuLiBattlePlayerController::AGuLiBattlePlayerController(const FObjectInitialize
 {
 	// 只有一个默认网络子对象。Ground/Air 不需要士兵名册也能完成这里的公共握手。
 	PlayerNetSyncComponent = CreateDefaultSubobject<UGuLiPlayerNetSyncComponent>(PlayerNetSyncComponentName);
+	WingmanRelayComponent = CreateDefaultSubobject<UGuLiWingmanRelayComponent>(TEXT("WingmanRelay"));
 }
 
 void AGuLiBattlePlayerController::PawnPendingDestroy(APawn* InPawn)

@@ -1,0 +1,314 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "F7967CD84CFB4490617D5E9F10F9D581",
+			"instanceName": "DESKTOP-6D3B0FC-47380",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-15.14.12",
+	"succeeded": 19,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.15689550340175629,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "NoOwnerThenReconnect",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.NoOwnerThenReconnect",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0076880007982254028,
+			"dateTime": "2026.09.02-15.14.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PersistentDisconnectTakeover",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.PersistentDisconnectTakeover",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0084151029586791992,
+			"dateTime": "2026.09.02-15.14.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldHookRevokeAndDestroyLifetime",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.WorldHookRevokeAndDestroyLifetime",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0076081007719039917,
+			"dateTime": "2026.09.02-15.14.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingThenAcceptOrTimeout",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.CarrierSource.PendingThenAcceptOrTimeout",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0081360004842281342,
+			"dateTime": "2026.09.02-15.14.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AdditionalValidatorBeforeSequenceCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.FireIntent.AdditionalValidatorBeforeSequenceCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0084153003990650177,
+			"dateTime": "2026.09.02-15.14.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AssemblyDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AssemblyDeadline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.008425101637840271,
+			"dateTime": "2026.09.02-15.14.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicAllOrNothing",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AtomicAllOrNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0078997984528541565,
+			"dateTime": "2026.09.02-15.14.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicResumeAndTakeover",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AtomicResumeAndTakeover",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0080595016479492188,
+			"dateTime": "2026.09.02-15.14.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StrictContractGates",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.StrictContractGates",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0084675997495651245,
+			"dateTime": "2026.09.02-15.14.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TrailGrantPending",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.TrailGrantPending",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0084724016487598419,
+			"dateTime": "2026.09.02-15.14.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RetainedBootstrapAndRevocation",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.PublicTransport.RetainedBootstrapAndRevocation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0087065994739532471,
+			"dateTime": "2026.09.02-15.14.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ZeroAuthorityMotion",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.SyntheticCandidate.ZeroAuthorityMotion",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0078755021095275879,
+			"dateTime": "2026.09.02-15.14.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrozenAbilityBaseline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Takeover.FrozenAbilityBaseline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.008264198899269104,
+			"dateTime": "2026.09.02-15.14.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MonotonicBounded",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.TokenBucket.MonotonicBounded",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0080791004002094269,
+			"dateTime": "2026.09.02-15.14.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MotionEnvelopeBeforeAcceptedCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.MotionEnvelopeBeforeAcceptedCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0086282975971698761,
+			"dateTime": "2026.09.02-15.14.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingHealthAbilityAndModeGate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.PendingHealthAbilityAndModeGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.007758699357509613,
+			"dateTime": "2026.09.02-15.14.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldGateFailClosedBeforeCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.WorldGateFailClosedBeforeCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0084225013852119446,
+			"dateTime": "2026.09.02-15.14.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldStaticDynamicAndNavigation",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.WorldStaticDynamicAndNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0091459006071090698,
+			"dateTime": "2026.09.02-15.14.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AbilityConfigAndSixScopeGate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AbilityConfigAndSixScopeGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F7967CD84CFB4490617D5E9F10F9D581"
+			],
+			"duration": 0.0084278024733066559,
+			"dateTime": "2026.09.02-15.14.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

@@ -1,0 +1,57 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "1D6DB0DC43989F5E02C1EF9C30A28191",
+			"instanceName": "DESKTOP-6D3B0FC-2692",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-18.01.11",
+	"succeeded": 0,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.064793199300765991,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "SubsystemAuthoritySegmentResolvesFromStart",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.SubsystemAuthoritySegmentResolvesFromStart",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"1D6DB0DC43989F5E02C1EF9C30A28191"
+			],
+			"duration": 0.064793199300765991,
+			"dateTime": "2026.09.02-18.01.11",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A segment contained by the start-selected graph is valid (status=2, current bounds=IsValid=true, Min=(X=0.000 Y=0.000 Z=0.000), Max=(X=0.000 Y=0.000 Z=0.000))' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Source\\GuLiFlightNavigationRuntime\\Private\\Tests\\GuLiFlightNavigationSubsystemTests.cpp",
+					"lineNumber": 164,
+					"timestamp": "2026.09.02-18.01.11"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

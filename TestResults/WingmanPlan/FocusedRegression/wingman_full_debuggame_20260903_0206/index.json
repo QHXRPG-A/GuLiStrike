@@ -1,0 +1,3244 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "614589144E2E49D0A80FAF91D685BD01",
+			"instanceName": "DESKTOP-6D3B0FC-9856",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-18.05.28",
+	"succeeded": 60,
+	"succeededWithWarnings": 3,
+	"failed": 4,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 1.8130497932434082,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "FlightNavBoundaryBlocksIntegration",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.FlightNavBoundaryBlocksIntegration",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.042367000132799149,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: Wingman group 00004000-0000-4001-0000-400200004003 entered controlled C++ fallback: authored StateTree is missing or failed to load.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OwnerOnlyDiagnosticsAndSoleIntegrationWriter",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.OwnerOnlyDiagnosticsAndSoleIntegrationWriter",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.091549500823020935,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: Wingman group 00003000-0000-3001-0000-300200003003 entered controlled C++ fallback: authored StateTree is missing or failed to load.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Empty transient World gives every member one safe primary probe' to be 25, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanAvoidanceRecoveryTests.cpp",
+					"lineNumber": 547,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Only the explicitly run Integration processor advances Transform' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanAvoidanceRecoveryTests.cpp",
+					"lineNumber": 568,
+					"timestamp": "2026.09.02-18.05.26"
+				}
+			],
+			"warnings": 1,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SpatialHashEquivalentAndGroupScoped",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.SpatialHashEquivalentAndGroupScoped",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0083707980811595917,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaticDynamicHeadingSelection",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.StaticDynamicHeadingSelection",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0094077996909618378,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ThreeSecondSafePointRecovery",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.ThreeSecondSafePointRecovery",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0083296000957489014,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClientSpatialHashStableThreeDimensionalCut",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.BasicWeapon.ClientSpatialHashStableThreeDimensionalCut",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0081568993628025055,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CommanderUsesAuthoritativePoseReaderOnly",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.BasicWeapon.CommanderUsesAuthoritativePoseReaderOnly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0082504004240036011,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FiveHertzStaggeredCadence",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.BasicWeapon.FiveHertzStaggeredCadence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0080859996378421783,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TargetSelectionStableFilters",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.BasicWeapon.TargetSelectionStableFilters",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0082783997058868408,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ValidationCooldownAndLedgerIdempotency",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.BasicWeapon.ValidationCooldownAndLedgerIdempotency",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0095276013016700745,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AuthorityReplenishesStableSlotAfter15Seconds",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.Lifecycle.AuthorityReplenishesStableSlotAfter15Seconds",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0082413963973522186,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CameraAimQuantization",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.Missile.CameraAimQuantization",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.010239802300930023,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StableFlightSharedCooldownAndNoActors",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.Missile.StableFlightSharedCooldownAndNoActors",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0093582011759281158,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The source group can become Stale after launch' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Combat\\Tests\\GuLiWingmanCombatCoordinatorTests.cpp",
+					"lineNumber": 456,
+					"timestamp": "2026.09.02-18.05.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ActiveRosterCutPreservesFlightState",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.ActiveRosterCutPreservesFlightState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0087908022105693817,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExactCadenceAndInitialDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.ExactCadenceAndInitialDeadline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0072650983929634094,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FreshnessHeartbeatAndPendingOffer",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.FreshnessHeartbeatAndPendingOffer",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0082568973302841187,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GracefulTransferAckThenAtomicBatch",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.GracefulTransferAckThenAtomicBatch",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0081127993762493134,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RegistryRotationAndNoOwner",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.RegistryRotationAndNoOwner",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.01033569872379303,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ResumeRevisionAndDeferredReplenish",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.ResumeRevisionAndDeferredReplenish",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0081337988376617432,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TakeoverRevisionReplacesOldDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.TakeoverRevisionReplacesOldDeadline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.008903801441192627,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BasicWeaponIndependentAcceptedState",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.BasicWeaponIndependentAcceptedState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0088126994669437408,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClientOnlyProcessorExecutionDomain",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.ClientOnlyProcessorExecutionDomain",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0082646012306213379,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FlightNavigationAsyncStateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.FlightNavigationAsyncStateLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.01028059795498848,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InitialFormationNavigationValidatesAllSlots",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.InitialFormationNavigationValidatesAllSlots",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0087887980043888092,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Production creation accepts a complete 25-slot formation inside FlightNav' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanInitialFormationNavigationTests.cpp",
+					"lineNumber": 258,
+					"timestamp": "2026.09.02-18.05.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OwnerGroupCandidateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.OwnerGroupCandidateLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0092088989913463593,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: Wingman group 13572468-2468-1357-1122-334455667788 entered controlled C++ fallback: authored StateTree is missing or failed to load.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AbilityRevisionGate",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.AbilityRevisionGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0082005001604557037,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DefaultGroupTransportSentinel",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.DefaultGroupTransportSentinel",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0086908005177974701,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GoldenBytes",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.GoldenBytes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0066283009946346283,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SixScopeBootstrap",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.SixScopeBootstrap",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0082020014524459839,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClientPublishFlightModeConstraint",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ClientPublishFlightModeConstraint",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0079060979187488556,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClientUploadSequenceBoundary",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ClientUploadSequenceBoundary",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.008089698851108551,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DeterministicWeakNetworkRecovery",
+			"fullTestPath": "GuLiStrike.Wingman.NetworkAcceptance.DeterministicWeakNetworkRecovery",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0081588029861450195,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "metrics={\"formal_gate\":false,\"transport\":\"deterministic_in_memory\",\"configured_rtt_ms\":500,\"original_packets\":20,\"lost_original_packets\":1,\"loss_percent\":5,\"duplicates\":2,\"reordered_deliveries\":7,\"accepted_packets\":5,\"non_accepted_packets\":16,\"mean_simulated_rtt_ms\":509.000}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "formal_gate=false; deterministic in-memory weak-network harness only; not socket/multiprocess evidence; source Dedicated Server remains blocked by engine distribution",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ListenHostWireDtoParity",
+			"fullTestPath": "GuLiStrike.Wingman.NetworkAcceptance.ListenHostWireDtoParity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0066532008349895477,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "formal_gate=false; scope=deterministic_in_memory_wire_contract; not_socket_or_multiprocess_evidence=true; source_dedicated_server_blocked=true",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemotePresentationExtrapolateFadeHide",
+			"fullTestPath": "GuLiStrike.Wingman.NetworkAcceptance.RemotePresentationExtrapolateFadeHide",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0079318992793560028,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "formal_gate=false; presentation policy regression; no rendered/socket evidence",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InMemoryZeroCounters",
+			"fullTestPath": "GuLiStrike.Wingman.Performance.DedicatedExecutionDomain.InMemoryZeroCounters",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0073730982840061188,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "GULI_PERF_METRICS {\"schema\":\"guli.wingman.execution-domain.v1\",\"run\":\"Dedicated-InMemory-ZeroCounters\",\"formal_dedicated_process_gate\":false,\"server_wingman_state_tree_tick_count\":0,\"server_wingman_astar_request_count\":0,\"server_wingman_path_request_count\":0,\"server_wingman_steering_step_count\":0,\"server_wingman_flight_integration_step_count\":0,\"server_generated_runtime_transform_count\":0,\"server_wingman_motion_step_count\":0}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "These are static/in-memory dispatch counters; a source-engine Dedicated executable run remains a separate hard gate.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaticGates",
+			"fullTestPath": "GuLiStrike.Wingman.Performance.DedicatedExecutionDomain.StaticGates",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0083190985023975372,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "GULI_PERF_METRICS {\"schema\":\"guli.wingman.execution-domain.v1\",\"run\":\"Dedicated-Static-Gates\",\"formal_dedicated_process_gate\":false,\"server_wingman_state_tree_domain_count\":0,\"server_wingman_astar_domain_count\":0,\"server_wingman_mode_processor_domain_count\":0,\"server_wingman_guidance_processor_domain_count\":0,\"server_wingman_steering_processor_domain_count\":0,\"server_wingman_integration_processor_domain_count\":0,\"server_generated_transform_writer_domain_count\":0}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "QuickSmoke",
+			"fullTestPath": "GuLiStrike.Wingman.Performance.FormalScale100.QuickSmoke",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.059969700872898102,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "GULI_PERF_METRICS {\"schema\":\"guli.wingman.performance.v1\",\"run\":\"S9-100-QuickSmoke-Owner\",\"scope\":\"owner_mass_mode_guidance_avoidance_integration_no_render_no_authored_nav\",\"formal_gate\":false,\"fixed_hz\":30,\"entity_count\":100,\"sample_count\":30,\"quantile_method\":\"nearest-rank\",\"step_p50_ms\":1.522899,\"step_p95_ms\":1.626000,\"step_max_ms\":1.634199,\"setup_ms\":0.736400,\"total_measured_ms\":45.849603,\"throughput_entities_per_second\":65431.319,\"queue_max_depth\":30,\"queue_capacity\":30,\"queue_oldest_age_ms\":44.334501,\"queue_final_depth\":0,\"drop_count\":0,\"approx_entity_payload_bytes\":74100,\"process_resident_delta_bytes_approx\":8192,\"presentation_actor_count\":0,\"transform_advanced\":false}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "GULI_PERF_METRICS {\"schema\":\"guli.wingman.performance.v1\",\"run\":\"S9-100-QuickSmoke-Server\",\"scope\":\"strict_flight_grant_atomic_relay_validate_store_payload_copy_only\",\"formal_gate\":false,\"wingman_count\":100,\"candidate_count\":160,\"accepted_candidate_count\":160,\"accepted_store_count\":160,\"relay_count\":4,\"relayed_sample_count\":800,\"cruise_hz\":5,\"cruise_captures_per_group\":4,\"combat_hz\":10,\"combat_captures_per_group\":4,\"sample_count\":40,\"candidates_per_service_step\":4,\"quantile_method\":\"nearest-rank\",\"step_p50_ms\":0.099000,\"step_p95_ms\":0.107501,\"step_max_ms\":0.116002,\"setup_ms\":1.199502,\"total_measured_ms\":4.037000,\"throughput_candidates_per_second\":39633.389,\"throughput_samples_per_second\":198166.944,\"queue_max_depth\":160,\"queue_capacity\":160,\"queue_oldest_age_ms\":3.987201,\"queue_final_depth\":0,\"drop_count\":0,\"approx_replay_payload_bytes\":296960,\"process_resident_delta_bytes_approx\":0,\"server_wingman_motion_step_count\":0}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "QuickSmoke explicitly excludes 10-minute duration, real networking, 500 Commander control comparison, bandwidth, and Network Insights.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OwnerSimulation",
+			"fullTestPath": "GuLiStrike.Wingman.Performance.H4000.OwnerSimulation",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.88231086730957031,
+			"dateTime": "2026.09.02-18.05.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0001-51A7-00009E370000 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0002-51A7-00019E370001 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0003-51A7-00029E370002 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0004-51A7-00039E370003 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0005-51A7-00049E370004 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0006-51A7-00059E370005 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0007-51A7-00069E370006 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0008-51A7-00079E370007 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0009-51A7-00089E370008 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-000A-51A7-00099E370009 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-000B-51A7-000A9E37000A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-000C-51A7-000B9E37000B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-000D-51A7-000C9E37000C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-000E-51A7-000D9E37000D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-000F-51A7-000E9E37000E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0010-51A7-000F9E37000F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0011-51A7-00109E370010 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0012-51A7-00119E370011 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0013-51A7-00129E370012 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0014-51A7-00139E370013 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0015-51A7-00149E370014 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0016-51A7-00159E370015 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0017-51A7-00169E370016 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0018-51A7-00179E370017 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0019-51A7-00189E370018 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-001A-51A7-00199E370019 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-001B-51A7-001A9E37001A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-001C-51A7-001B9E37001B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-001D-51A7-001C9E37001C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-001E-51A7-001D9E37001D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-001F-51A7-001E9E37001E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0020-51A7-001F9E37001F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0021-51A7-00209E370020 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0022-51A7-00219E370021 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0023-51A7-00229E370022 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0024-51A7-00239E370023 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0025-51A7-00249E370024 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0026-51A7-00259E370025 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0027-51A7-00269E370026 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0028-51A7-00279E370027 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0029-51A7-00289E370028 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-002A-51A7-00299E370029 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-002B-51A7-002A9E37002A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-002C-51A7-002B9E37002B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-002D-51A7-002C9E37002C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-002E-51A7-002D9E37002D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-002F-51A7-002E9E37002E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0030-51A7-002F9E37002F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0031-51A7-00309E370030 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0032-51A7-00319E370031 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0033-51A7-00329E370032 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0034-51A7-00339E370033 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0035-51A7-00349E370034 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0036-51A7-00359E370035 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0037-51A7-00369E370036 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0038-51A7-00379E370037 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0039-51A7-00389E370038 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-003A-51A7-00399E370039 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-003B-51A7-003A9E37003A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-003C-51A7-003B9E37003B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-003D-51A7-003C9E37003C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-003E-51A7-003D9E37003D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-003F-51A7-003E9E37003E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0040-51A7-003F9E37003F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0041-51A7-00409E370040 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0042-51A7-00419E370041 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0043-51A7-00429E370042 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0044-51A7-00439E370043 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0045-51A7-00449E370044 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0046-51A7-00459E370045 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0047-51A7-00469E370046 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0048-51A7-00479E370047 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0049-51A7-00489E370048 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-004A-51A7-00499E370049 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-004B-51A7-004A9E37004A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-004C-51A7-004B9E37004B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-004D-51A7-004C9E37004C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-004E-51A7-004D9E37004D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-004F-51A7-004E9E37004E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0050-51A7-004F9E37004F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0051-51A7-00509E370050 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0052-51A7-00519E370051 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0053-51A7-00529E370052 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0054-51A7-00539E370053 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0055-51A7-00549E370054 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0056-51A7-00559E370055 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0057-51A7-00569E370056 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0058-51A7-00579E370057 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0059-51A7-00589E370058 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-005A-51A7-00599E370059 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-005B-51A7-005A9E37005A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-005C-51A7-005B9E37005B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-005D-51A7-005C9E37005C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-005E-51A7-005D9E37005D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-005F-51A7-005E9E37005E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0060-51A7-005F9E37005F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0061-51A7-00609E370060 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0062-51A7-00619E370061 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0063-51A7-00629E370062 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0064-51A7-00639E370063 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0065-51A7-00649E370064 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0066-51A7-00659E370065 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0067-51A7-00669E370066 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0068-51A7-00679E370067 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0069-51A7-00689E370068 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-006A-51A7-00699E370069 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-006B-51A7-006A9E37006A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-006C-51A7-006B9E37006B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-006D-51A7-006C9E37006C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-006E-51A7-006D9E37006D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-006F-51A7-006E9E37006E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0070-51A7-006F9E37006F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0071-51A7-00709E370070 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0072-51A7-00719E370071 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0073-51A7-00729E370072 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0074-51A7-00739E370073 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0075-51A7-00749E370074 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0076-51A7-00759E370075 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0077-51A7-00769E370076 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0078-51A7-00779E370077 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0079-51A7-00789E370078 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-007A-51A7-00799E370079 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-007B-51A7-007A9E37007A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-007C-51A7-007B9E37007B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-007D-51A7-007C9E37007C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-007E-51A7-007D9E37007D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-007F-51A7-007E9E37007E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0080-51A7-007F9E37007F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0081-51A7-00809E370080 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0082-51A7-00819E370081 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0083-51A7-00829E370082 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0084-51A7-00839E370083 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0085-51A7-00849E370084 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0086-51A7-00859E370085 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0087-51A7-00869E370086 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0088-51A7-00879E370087 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0089-51A7-00889E370088 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-008A-51A7-00899E370089 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-008B-51A7-008A9E37008A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-008C-51A7-008B9E37008B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-008D-51A7-008C9E37008C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-008E-51A7-008D9E37008D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-008F-51A7-008E9E37008E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0090-51A7-008F9E37008F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0091-51A7-00909E370090 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0092-51A7-00919E370091 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0093-51A7-00929E370092 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0094-51A7-00939E370093 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0095-51A7-00949E370094 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0096-51A7-00959E370095 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0097-51A7-00969E370096 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0098-51A7-00979E370097 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-0099-51A7-00989E370098 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-009A-51A7-00999E370099 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-009B-51A7-009A9E37009A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-009C-51A7-009B9E37009B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-009D-51A7-009C9E37009C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-009E-51A7-009D9E37009D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-009F-51A7-009E9E37009E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 0A110001-0000-00A0-51A7-009F9E37009F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.26"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'H4000 executes the real fixed-wing Transform writer' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanPerformanceHarnessTests.cpp",
+					"lineNumber": 835,
+					"timestamp": "2026.09.02-18.05.27"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "GULI_PERF_METRICS {\"schema\":\"guli.wingman.performance.v1\",\"run\":\"H4000-OwnerSimulation\",\"scope\":\"owner_mass_mode_guidance_avoidance_integration_no_render_no_authored_nav\",\"formal_gate\":false,\"fixed_hz\":30,\"entity_count\":4000,\"sample_count\":12,\"quantile_method\":\"nearest-rank\",\"step_p50_ms\":59.383903,\"step_p95_ms\":67.099601,\"step_max_ms\":67.099601,\"setup_ms\":18.721197,\"total_measured_ms\":725.469399,\"throughput_entities_per_second\":66164.059,\"queue_max_depth\":12,\"queue_capacity\":12,\"queue_oldest_age_ms\":663.043000,\"queue_final_depth\":0,\"drop_count\":0,\"approx_entity_payload_bytes\":2964000,\"process_resident_delta_bytes_approx\":3317760,\"presentation_actor_count\":0,\"transform_advanced\":false}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.27"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "This Automation run is a repeatable short no-render harness, not the formal 10-minute network gate.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.27"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ServerValidator",
+			"fullTestPath": "GuLiStrike.Wingman.Performance.H4000.ServerValidator",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.21124300360679626,
+			"dateTime": "2026.09.02-18.05.27",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "GULI_PERF_METRICS {\"schema\":\"guli.wingman.performance.v1\",\"run\":\"H4000-ServerValidator\",\"scope\":\"strict_flight_grant_atomic_relay_validate_store_payload_copy_only\",\"formal_gate\":false,\"wingman_count\":4000,\"candidate_count\":6400,\"accepted_candidate_count\":6400,\"accepted_store_count\":6400,\"relay_count\":160,\"relayed_sample_count\":32000,\"cruise_hz\":5,\"cruise_captures_per_group\":4,\"combat_hz\":10,\"combat_captures_per_group\":4,\"sample_count\":50,\"candidates_per_service_step\":128,\"quantile_method\":\"nearest-rank\",\"step_p50_ms\":3.220201,\"step_p95_ms\":3.359701,\"step_max_ms\":3.437798,\"setup_ms\":48.088901,\"total_measured_ms\":161.295600,\"throughput_candidates_per_second\":39678.702,\"throughput_samples_per_second\":198393.508,\"queue_max_depth\":6400,\"queue_capacity\":6400,\"queue_oldest_age_ms\":160.975400,\"queue_final_depth\":0,\"drop_count\":0,\"approx_replay_payload_bytes\":11878400,\"process_resident_delta_bytes_approx\":10477568,\"server_wingman_motion_step_count\":0}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.28"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "This replays protocol Candidates through Validate/Store/payload-copy only; it is not a 4000-unit server simulation.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.28"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExtrapolationFadeHide",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.ExtrapolationFadeHide",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0076813995838165283,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Interpolation",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.Interpolation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0083268992602825165,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SequenceAndBoundedHistory",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.SequenceAndBoundedHistory",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0082768984138965607,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StableSlotAndDedicatedServerGate",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.StableSlotAndDedicatedServerGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0096388012170791626,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FailClosedCampaignValidation",
+			"fullTestPath": "GuLiStrike.Wingman.QA.AcceptanceCatalogV2.FailClosedCampaignValidation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0080196000635623932,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShapeAndHash",
+			"fullTestPath": "GuLiStrike.Wingman.QA.AcceptanceCatalogV2.ShapeAndHash",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0083523988723754883,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NoOwnerThenReconnect",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.NoOwnerThenReconnect",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0084370002150535583,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PersistentDisconnectTakeover",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.PersistentDisconnectTakeover",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0091145001351833344,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldHookRevokeAndDestroyLifetime",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.WorldHookRevokeAndDestroyLifetime",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0097538977861404419,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingThenAcceptOrTimeout",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.CarrierSource.PendingThenAcceptOrTimeout",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0082430019974708557,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AdditionalValidatorBeforeSequenceCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.FireIntent.AdditionalValidatorBeforeSequenceCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0080619007349014282,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AssemblyDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AssemblyDeadline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.008118998259305954,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicAllOrNothing",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AtomicAllOrNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0080869011580944061,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicResumeAndTakeover",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AtomicResumeAndTakeover",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0083081014454364777,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StrictContractGates",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.StrictContractGates",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0066758021712303162,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TrailGrantPending",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.TrailGrantPending",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0082435980439186096,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RetainedBootstrapAndRevocation",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.PublicTransport.RetainedBootstrapAndRevocation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0087879002094268799,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ZeroAuthorityMotion",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.SyntheticCandidate.ZeroAuthorityMotion",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0081997998058795929,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrozenAbilityBaseline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Takeover.FrozenAbilityBaseline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0099387019872665405,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MonotonicBounded",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.TokenBucket.MonotonicBounded",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0082863010466098785,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MotionEnvelopeBeforeAcceptedCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.MotionEnvelopeBeforeAcceptedCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.008304402232170105,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingHealthAbilityAndModeGate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.PendingHealthAbilityAndModeGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0084085986018180847,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldGateFailClosedBeforeCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.WorldGateFailClosedBeforeCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0085556022822856903,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldStaticDynamicAndNavigation",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.WorldStaticDynamicAndNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.010017398744821548,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AbilityConfigAndSixScopeGate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AbilityConfigAndSixScopeGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0085054002702236176,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AuthoredAssetContract",
+			"fullTestPath": "GuLiStrike.Wingman.StateTree.AuthoredAssetContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0082993023097515106,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NormalSteeringIsNotEmergency",
+			"fullTestPath": "GuLiStrike.Wingman.StateTree.NormalSteeringIsNotEmergency",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0086390003561973572,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: Wingman group 00002A00-0000-2A01-0000-2A0200002A03 entered controlled C++ fallback: authored StateTree is missing or failed to load.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-18.05.28"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OwnerRuntime",
+			"fullTestPath": "GuLiStrike.Wingman.StateTree.OwnerRuntime",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"614589144E2E49D0A80FAF91D685BD01"
+			],
+			"duration": 0.0087728016078472137,
+			"dateTime": "2026.09.02-18.05.28",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

@@ -1,0 +1,69 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "5D9901B442CD9A54766F2B976BD1CD9B",
+			"instanceName": "DESKTOP-6D3B0FC-43856",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-14.05.27",
+	"succeeded": 0,
+	"succeededWithWarnings": 1,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.025596801191568375,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"5D9901B442CD9A54766F2B976BD1CD9B"
+			],
+			"duration": 0.025596801191568375,
+			"dateTime": "2026.09.02-14.05.27",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGuLiStrike: [SHIP_GAS_TEARDOWN_DIAG] Ship EndPlay entered Reason=0 ASC=1",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-14.05.27"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: [SHIP_GAS_TEARDOWN_DIAG] Clear enter OwnerAuthority=1 CachedAuthority=1 Specs=3 AppliedSet=1 Cooldown=1 Reservation=1",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-14.05.27"
+				}
+			],
+			"warnings": 2,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

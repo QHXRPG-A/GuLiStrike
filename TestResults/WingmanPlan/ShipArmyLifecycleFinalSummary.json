@@ -1,0 +1,32 @@
+{
+  "generatedAt": "2026-09-02T22:11:55+08:00",
+  "build": {
+    "target": "GuLiStrikeEditor Win64 DebugGame",
+    "result": "Succeeded",
+    "unrealVersion": "5.7",
+    "notes": "UHT, GuLiShipAbilitySystemComponent, Ship ability tests, and editor module linked successfully."
+  },
+  "shipAutomation": {
+    "report": "TestResults/WingmanPlan/ShipLifecycleFinalVerified2/index.json",
+    "prefix": "GuLiStrike.Ship",
+    "succeeded": 6,
+    "succeededWithWarnings": 0,
+    "failed": 0,
+    "notRun": 0
+  },
+  "armyAutomation": {
+    "report": "TestResults/WingmanPlan/ArmyLifecycleFinalVerified/index.json",
+    "prefix": "GuLiStrike.Skills.Lifecycle",
+    "succeeded": 3,
+    "succeededWithWarnings": 0,
+    "failed": 0,
+    "notRun": 0
+  },
+  "verifiedContracts": [
+    "Real BP_GuLiStrikeShip spawn, possess, destroy, and respawn executes EndPlay in an initialized test World.",
+    "Old Ship ASC clears active instances, granted specs, applied ability set, stable-id loadout, cooldown tag, timer, and reservation, and publishes a non-usable tombstone.",
+    "Replacement Ship owns a distinct ASC and identity/generations, retains only the three stable AbilityIds, starts without cooldown, and reactivates formation/basic passives.",
+    "A simulated client-proxy ASC cannot use the authority-only teardown path.",
+    "PlayerState Army ASC pawn/commander/match replacement behavior remains unchanged."
+  ]
+}

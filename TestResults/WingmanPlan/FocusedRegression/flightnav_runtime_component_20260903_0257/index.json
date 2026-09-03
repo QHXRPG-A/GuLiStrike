@@ -1,0 +1,119 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "0F7F99A347087054C3BA1EAE7693648F",
+			"instanceName": "DESKTOP-6D3B0FC-35360",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-18.57.17",
+	"succeeded": 6,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.050179798156023026,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AuthoritySegmentTopologyWithoutAStar",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.AuthoritySegmentTopologyWithoutAStar",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0F7F99A347087054C3BA1EAE7693648F"
+			],
+			"duration": 0.0080057978630065918,
+			"dateTime": "2026.09.02-18.57.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AuthoritySegmentTraversesAdaptiveLeafChain",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.AuthoritySegmentTraversesAdaptiveLeafChain",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0F7F99A347087054C3BA1EAE7693648F"
+			],
+			"duration": 0.0082594007253646851,
+			"dateTime": "2026.09.02-18.57.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MetadataFieldsAffectChecksum",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.MetadataFieldsAffectChecksum",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0F7F99A347087054C3BA1EAE7693648F"
+			],
+			"duration": 0.0083401016891002655,
+			"dateTime": "2026.09.02-18.57.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PathAndChecksum",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.PathAndChecksum",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0F7F99A347087054C3BA1EAE7693648F"
+			],
+			"duration": 0.0082295984029769897,
+			"dateTime": "2026.09.02-18.57.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SubsystemAuthoritySegmentResolvesFromStart",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.SubsystemAuthoritySegmentResolvesFromStart",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0F7F99A347087054C3BA1EAE7693648F"
+			],
+			"duration": 0.0085939988493919373,
+			"dateTime": "2026.09.02-18.57.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VolumeIsNeverPhysicalWorldGeometry",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.VolumeIsNeverPhysicalWorldGeometry",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0F7F99A347087054C3BA1EAE7693648F"
+			],
+			"duration": 0.0087509006261825562,
+			"dateTime": "2026.09.02-18.57.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

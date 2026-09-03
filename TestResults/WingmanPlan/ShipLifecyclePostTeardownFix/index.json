@@ -1,0 +1,156 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "A04C26C84D200A59CFFB91ABED2DAD6A",
+			"instanceName": "DESKTOP-6D3B0FC-32968",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-13.57.06",
+	"succeeded": 5,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.15819589793682098,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AbilitySetContract",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.AbilitySetContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A04C26C84D200A59CFFB91ABED2DAD6A"
+			],
+			"duration": 0.0082510001957416534,
+			"dateTime": "2026.09.02-13.57.06",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ASCGrantProjectionAndInputLifecycle",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.ASCGrantProjectionAndInputLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A04C26C84D200A59CFFB91ABED2DAD6A"
+			],
+			"duration": 0.025656498968601227,
+			"dateTime": "2026.09.02-13.57.06",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroupConfigHashAndInvalidation",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.GroupConfigHashAndInvalidation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A04C26C84D200A59CFFB91ABED2DAD6A"
+			],
+			"duration": 0.0081785991787910461,
+			"dateTime": "2026.09.02-13.57.06",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PawnOwnedASCIntegration",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.PawnOwnedASCIntegration",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A04C26C84D200A59CFFB91ABED2DAD6A"
+			],
+			"duration": 0.0082018002867698669,
+			"dateTime": "2026.09.02-13.57.06",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"A04C26C84D200A59CFFB91ABED2DAD6A"
+			],
+			"duration": 0.099577300250530243,
+			"dateTime": "2026.09.02-13.57.06",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The old Ship EndPlay releases its applied ability set' to be null.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipRespawnIntegrationTests.cpp",
+					"lineNumber": 167,
+					"timestamp": "2026.09.02-13.57.06"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The old Ship EndPlay clears its applied stable-id loadout' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipRespawnIntegrationTests.cpp",
+					"lineNumber": 169,
+					"timestamp": "2026.09.02-13.57.06"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The old Ship EndPlay clears its temporary missile cooldown' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipRespawnIntegrationTests.cpp",
+					"lineNumber": 171,
+					"timestamp": "2026.09.02-13.57.06"
+				}
+			],
+			"warnings": 0,
+			"errors": 3,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalHistoryIsBoundedAndVersioned",
+			"fullTestPath": "GuLiStrike.Ship.Movement.CanonicalHistoryIsBoundedAndVersioned",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A04C26C84D200A59CFFB91ABED2DAD6A"
+			],
+			"duration": 0.0083306990563869476,
+			"dateTime": "2026.09.02-13.57.06",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

@@ -1,0 +1,228 @@
+{
+  "schema": "guli.listen-smoke-result.v1",
+  "run_id": "20260903-031439-normal",
+  "scope": "real_two_process_listen_socket_smoke",
+  "profile": "Normal",
+  "map": "/Game/Maps/LVL_ShipTest",
+  "port": 7797,
+  "started_utc": "2026-09-02T19:14:40.6701025Z",
+  "finished_utc": "2026-09-02T19:15:37.3350031Z",
+  "passed": true,
+  "run_error": null,
+  "process": {
+    "server_pid": 3264,
+    "client_pid": 46268,
+    "server_exit_code": 0,
+    "client_exit_code": 0,
+    "server_cleanup": {
+      "pid": 3264,
+      "close_requested": false,
+      "forced": false
+    },
+    "client_cleanup": {
+      "pid": 46268,
+      "close_requested": false,
+      "forced": false
+    },
+    "normal_exit": true
+  },
+  "evidence": {
+    "listen_socket_observed_before_client_launch": true,
+    "os_udp_socket_pair": {
+      "protocol": "UDP",
+      "server_pid": 3264,
+      "client_pid": 46268,
+      "server_local_address": "0.0.0.0",
+      "server_local_port": 7797,
+      "client_local_address": "0.0.0.0",
+      "client_local_port": 56917,
+      "note": "UDP has no OS-level established peer state; both PID-owned endpoints are paired with UE NetConnection-open telemetry."
+    },
+    "packet_simulation_profile_observed_in_both_logs": true,
+    "server_socket_connected": true,
+    "client_socket_connected": true,
+    "server_net_driver_endpoint_reported": true,
+    "client_server_remote_endpoint_reported": true,
+    "server_six_scope_bootstrap_ready": true,
+    "client_six_scope_bootstrap_ready": true,
+    "strict_per_flight_acceptance_ready": true,
+    "all_listen_and_remote_relay_groups_strict_ready": true,
+    "all_relay_groups_active_atomic_and_frames_growing_for_three_samples": true,
+    "listen_host_atomic_build_submitted": true,
+    "remote_client_atomic_build_submitted": true,
+    "listen_host_atomic_result_accepted": true,
+    "remote_client_atomic_result_accepted": true,
+    "atomic_build_failures_observed": false,
+    "invalid_transfer_baseline_serialization_observed": false,
+    "server_wingman_movement_write_count_zero": true,
+    "client_owner_mass_25_ready": true,
+    "server_role_ready": true,
+    "client_role_ready": true,
+    "server_sample_count": 54,
+    "client_sample_count": 40
+  },
+  "diagnostic_observations": {
+    "listen_server": {
+      "atomic_build_attempt_max": 1.0,
+      "atomic_build_submitted_max": 1.0,
+      "atomic_result_count_max": 1.0,
+      "atomic_result_dispositions_observed": [
+        0
+      ],
+      "atomic_reject_reasons_observed": [
+        0
+      ],
+      "atomic_flight_mode_masks_observed": [
+        0,
+        1
+      ],
+      "owner_eligible_tick_count_max": 1493.0,
+      "owner_inactive_gate_count_max": 0.0,
+      "owner_missing_runtime_gate_count_max": 0.0,
+      "normal_build_attempt_count_max": 1242.0,
+      "normal_build_failure_count_max": 3.0,
+      "normal_build_last_failed_flight_indices_observed": [
+        4
+      ],
+      "normal_submitted_count_max": 1239.0,
+      "normal_result_count_max": 1239.0,
+      "normal_accepted_count_max": 1236.0,
+      "normal_result_dispositions_observed": [
+        0,
+        2
+      ],
+      "normal_reject_reasons_observed": [
+        0,
+        22
+      ],
+      "normal_flight_mode_masks_observed": [
+        0,
+        1
+      ],
+      "client_simulation_tick_max": 1494.0,
+      "next_frame_sequence_max_by_flight": [
+        250,
+        250,
+        250,
+        250,
+        249
+      ],
+      "accepted_sequence_max_by_flight": [
+        249,
+        248,
+        248,
+        248,
+        248
+      ],
+      "owner_gate_lifecycles_observed": [
+        -1,
+        1,
+        2
+      ],
+      "owner_gate_local_pawn_observed": true,
+      "owner_gate_simulation_subsystem_observed": true,
+      "owner_gate_carrier_source_valid_observed": true,
+      "owner_gate_upload_grant_observed": true,
+      "owner_gate_owned_group_observed": true,
+      "ability_config_acknowledged_group_count_max": 2.0,
+      "bootstrap_acknowledged_group_count_max": 2.0,
+      "outstanding_bootstrap_group_count_max": 2.0,
+      "atomic_required_group_count_max": 2.0,
+      "atomic_committed_group_count_max": 2.0,
+      "active_relay_group_count_max": 2.0,
+      "strict_accepted_batch_count_max": 128.0,
+      "strict_growing_relay_group_count_max": 2.0,
+      "minimum_accepted_frame_across_strict_groups_max": 248.0,
+      "world_validator_invocation_count_max": 2107.0,
+      "world_validator_context_reject_count_max": 0.0,
+      "world_validator_invalid_radius_reject_count_max": 0.0,
+      "world_validator_missing_flight_nav_reject_count_max": 0.0,
+      "world_validator_static_collision_reject_count_max": 0.0,
+      "world_validator_tagged_dynamic_reject_count_max": 0.0,
+      "world_validator_flight_nav_segment_reject_count_max": 0.0,
+      "world_validator_accepted_count_max": 2107.0,
+      "world_validator_flight_nav_statuses_observed": [
+        -1
+      ],
+      "world_validator_static_hit_actors_observed": [],
+      "world_validator_static_hit_components_observed": []
+    },
+    "remote_client": {
+      "atomic_build_attempt_max": 1.0,
+      "atomic_build_submitted_max": 1.0,
+      "atomic_result_count_max": 1.0,
+      "atomic_result_dispositions_observed": [
+        0
+      ],
+      "atomic_reject_reasons_observed": [
+        0
+      ],
+      "atomic_flight_mode_masks_observed": [
+        0,
+        1
+      ],
+      "owner_eligible_tick_count_max": 1045.0,
+      "owner_inactive_gate_count_max": 4.0,
+      "owner_missing_runtime_gate_count_max": 0.0,
+      "normal_build_attempt_count_max": 867.0,
+      "normal_build_failure_count_max": 0.0,
+      "normal_build_last_failed_flight_indices_observed": [],
+      "normal_submitted_count_max": 867.0,
+      "normal_result_count_max": 863.0,
+      "normal_accepted_count_max": 859.0,
+      "normal_result_dispositions_observed": [
+        0
+      ],
+      "normal_reject_reasons_observed": [
+        0
+      ],
+      "normal_flight_mode_masks_observed": [
+        0,
+        1
+      ],
+      "client_simulation_tick_max": 1046.0,
+      "next_frame_sequence_max_by_flight": [
+        176,
+        176,
+        175,
+        175,
+        175
+      ],
+      "accepted_sequence_max_by_flight": [
+        174,
+        174,
+        172,
+        173,
+        173
+      ],
+      "owner_gate_lifecycles_observed": [
+        -1,
+        2
+      ],
+      "owner_gate_local_pawn_observed": true,
+      "owner_gate_simulation_subsystem_observed": true,
+      "owner_gate_carrier_source_valid_observed": true,
+      "owner_gate_upload_grant_observed": true,
+      "owner_gate_owned_group_observed": true,
+      "atomic_build_precondition_failure_count_max": 0.0,
+      "atomic_build_missing_simulation_failure_count_max": 0.0,
+      "atomic_build_flight_candidate_failure_count_max": 0.0,
+      "atomic_build_empty_failure_count_max": 0.0,
+      "atomic_build_fragment_failure_count_max": 0.0
+    }
+  },
+  "artifacts": {
+    "run_root": "D:\\UE5.7\\test1\\TestResults\\WingmanPlan\\ListenMultiprocessSmoke\\runs\\20260903-031439-normal",
+    "manifest": "D:\\UE5.7\\test1\\TestResults\\WingmanPlan\\ListenMultiprocessSmoke\\runs\\20260903-031439-normal\\run_manifest.json",
+    "server_log": "D:\\UE5.7\\test1\\TestResults\\WingmanPlan\\ListenMultiprocessSmoke\\runs\\20260903-031439-normal\\server.log",
+    "client_log": "D:\\UE5.7\\test1\\TestResults\\WingmanPlan\\ListenMultiprocessSmoke\\runs\\20260903-031439-normal\\client.log",
+    "server_jsonl": "D:\\UE5.7\\test1\\TestResults\\WingmanPlan\\ListenMultiprocessSmoke\\runs\\20260903-031439-normal\\server.samples.jsonl",
+    "client_jsonl": "D:\\UE5.7\\test1\\TestResults\\WingmanPlan\\ListenMultiprocessSmoke\\runs\\20260903-031439-normal\\client.samples.jsonl"
+  },
+  "excluded_claims": [
+    "Launcher build cannot provide the required source-engine Dedicated Server process gate.",
+    "This short smoke is not the formal 10-minute 100-unit or split-4000 performance gate.",
+    "Listen-host owner Mass work shares the server process; zero movement here refers only to Relay authority movement writes.",
+    "The Weak profile is packet emulation evidence, not Network Insights bandwidth certification."
+  ]
+}

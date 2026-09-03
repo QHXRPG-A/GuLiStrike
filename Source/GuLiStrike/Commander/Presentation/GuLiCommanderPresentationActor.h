@@ -182,6 +182,14 @@ public:
 	// 本地只读查询；有效时写 OutTransform 并返回 true，供 HUD/诊断使用，不开放权威写入。
 	bool TryGetPresentedSoldierTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
 
+	/**
+	 * Returns the accepted-pose timeline result before local command prediction is applied.
+	 * Combat target acquisition must use this API, never PresentedTransform.
+	 */
+	bool TryGetAuthoritativeSoldierTransform(
+		FGuLiSoldierId SoldierId,
+		FTransform& OutTransform) const;
+
 	/** Starts a bounded visual prediction immediately before the caller sends the move RPC. */
 	// 本地发送前调用；Selection 必须来自已确认选择，只对已存在且存活的士兵添加有限偏移。
 	void BeginPredictedMove(

@@ -12,6 +12,7 @@ AGuLiBattlePlayerState::AGuLiBattlePlayerState()
 	ArmyAbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ArmyAbilitySystem"));
 	ArmyAbilitySystem->SetIsReplicated(true);
 	ArmyAbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
+	ShipAbilityLoadoutState = FGuLiShipAbilityLoadoutState::MakeNativeV1();
 }
 
 void AGuLiBattlePlayerState::BeginPlay()
@@ -56,6 +57,36 @@ bool AGuLiBattlePlayerState::ExecuteArmySkillCommand(const FGuLiArmySkillCommand
 	return Payload->bExecuted && Payload->bSucceeded;
 }
 
+bool AGuLiBattlePlayerState::SetServerShipAbilityLoadoutState(
+	const FGuLiShipAbilityLoadoutState& NewLoadout,
+	FString& OutError)
+{
+	OutError.Reset();
+	if (!HasAuthority())
+	{
+		OutError = TEXT("Ship ability loadout may only be changed by the authoritative PlayerState.");
+		return false;
+	}
+
+	FGuLiShipAbilityLoadoutState NormalizedLoadout = NewLoadout;
+	NormalizedLoadout.Normalize();
+	if (!NormalizedLoadout.IsWellFormed(&OutError))
+	{
+		return false;
+	}
+	if (ShipAbilityLoadoutState.HasSameSelection(NormalizedLoadout))
+	{
+		return false;
+	}
+
+	NormalizedLoadout.Revision = ShipAbilityLoadoutState.Revision == MAX_uint32
+		? 1u
+		: ShipAbilityLoadoutState.Revision + 1u;
+	ShipAbilityLoadoutState = MoveTemp(NormalizedLoadout);
+	ForceNetUpdate();
+	return true;
+}
+
 // 身份、分配结果与就绪位走属性复制；C++ 服务器 setter 另行广播本地通知。
 void AGuLiBattlePlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
@@ -67,6 +98,7 @@ void AGuLiBattlePlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 	DOREPLIFETIME(AGuLiBattlePlayerState, SlotIndex);
 	DOREPLIFETIME(AGuLiBattlePlayerState, bBattleReady);
 	DOREPLIFETIME(AGuLiBattlePlayerState, bSyncReady);
+	DOREPLIFETIME(AGuLiBattlePlayerState, ShipAbilityLoadoutState);
 }
 
 void AGuLiBattlePlayerState::CopyProperties(APlayerState* PlayerState)
@@ -82,6 +114,7 @@ void AGuLiBattlePlayerState::CopyProperties(APlayerState* PlayerState)
 		// 身份跨通用/指挥官派生类迁移，公共与士兵流握手都必须重新完成。
 		NewPlayerState->bBattleReady = false;
 		NewPlayerState->bSyncReady = false;
+		NewPlayerState->ShipAbilityLoadoutState = ShipAbilityLoadoutState;
 	}
 }
 
@@ -99,6 +132,10 @@ void AGuLiBattlePlayerState::OverrideWith(APlayerState* PlayerState)
 			Team = IncomingPlayerState->Team;
 			CommanderRole = IncomingPlayerState->CommanderRole;
 			SlotIndex = IncomingPlayerState->SlotIndex;
+		}
+		if (IncomingPlayerState->ShipAbilityLoadoutState.IsWellFormed())
+		{
+			ShipAbilityLoadoutState = IncomingPlayerState->ShipAbilityLoadoutState;
 		}
 	}
 	bBattleReady = false;

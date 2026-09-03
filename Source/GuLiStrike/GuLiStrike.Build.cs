@@ -27,6 +27,7 @@ public class GuLiStrike : ModuleRules
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
+			"GuLiFlightNavigationRuntime",
 			// Commander 网络合同使用 FastArray 与自定义 NetSerialize。
 			"NetCore",
 			// Non-shipping skill network QA writes structured JSON evidence.
@@ -64,7 +65,9 @@ public class GuLiStrike : ModuleRules
 				"SlateCore",
 				"ImageCore",
 				"RenderCore",
-				"StaticMeshEditor"
+				"StaticMeshEditor",
+				"StateTreeEditorModule",
+				"PropertyBindingUtils"
 			});
 		}
 

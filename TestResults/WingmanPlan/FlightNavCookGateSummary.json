@@ -1,0 +1,74 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-02T13:06:18+08:00",
+  "scope": "GuLiFlightNavigation deterministic cook fail-closed gate",
+  "implementation": {
+    "runtimeOrCookRebuildAllowed": false,
+    "requiredWorldPackages": [
+      "/Game/Maps/LVL_CommanderMassPrototype",
+      "/Game/Maps/LVL_Main",
+      "/Game/Maps/LVL_ShipTest"
+    ],
+    "failureCategories": [
+      "Configuration",
+      "MissingWorld",
+      "MissingVolume",
+      "MissingData",
+      "SchemaMismatch",
+      "ChecksumMismatch",
+      "InvalidData",
+      "StaleSourceWorld",
+      "StaleSourceVolume",
+      "StaleBounds",
+      "StaleSettings",
+      "StaleGeometry"
+    ]
+  },
+  "builds": {
+    "GuLiStrikeEditor_Win64_DebugGame": "passed",
+    "GuLiStrike_Win64_Development": "passed"
+  },
+  "automation": {
+    "status": "passed",
+    "succeeded": 10,
+    "failed": 0,
+    "warnings": 0,
+    "report": "TestResults/WingmanPlan/FlightNavCookGateAutomation/index.json"
+  },
+  "assetDeployment": {
+    "status": "passed",
+    "mapsCommittedAndSaved": 3,
+    "report": "TestResults/WingmanPlan/AssetDeployment/asset_deployment.json",
+    "audit": "TestResults/WingmanPlan/AssetAudit/asset_audit.json"
+  },
+  "preCookCommandlet": {
+    "status": "passed",
+    "exitCode": 0,
+    "validatedMaps": 3,
+    "failures": 0,
+    "log": "TestResults/WingmanPlan/FlightNavCookGateCommandlet/commandlet.log",
+    "evidenceLines": [994, 1003, 1010, 1011]
+  },
+  "windowsCook": {
+    "flightNavigationGate": "passed",
+    "packagesProcessed": 759,
+    "packagesRemaining": 0,
+    "allThreeCookedMapsPresent": true,
+    "allThreeCookedFlightNavDataAssetsPresent": true,
+    "assetValidationSeconds": 17.458756,
+    "flightNavigationErrors": 0,
+    "overallProcess": "failed_out_of_scope",
+    "exitCode": 1,
+    "externalErrors": 2,
+    "externalBlocker": "/Game/Assets/Environments/Scifi_Skies/Materials/Main_Materials/M_Flowmap_Additive references NeverCook /Engine/EditorMaterials/TargetIcon",
+    "log": "TestResults/WingmanPlan/FlightNavCookGateCook/cook.log",
+    "evidenceLines": {
+      "validatorsRegistered": [962, 963, 1131, 1132],
+      "targetWorldsValidated": [1225, 1232, 1308],
+      "bakedDataValidated": [1621, 1622, 1623],
+      "allPackagesProcessed": 1954,
+      "validationTiming": 2167,
+      "externalBlocker": [2249, 2253, 2271]
+    }
+  }
+}

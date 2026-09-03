@@ -1,0 +1,59 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "55B719E649628D43F6E7A98E7B2CB3FE",
+			"instanceName": "DESKTOP-6D3B0FC-14520",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-17.38.55",
+	"succeeded": 2,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.016385205090045929,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AuthoritySegmentTopologyWithoutAStar",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.AuthoritySegmentTopologyWithoutAStar",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"55B719E649628D43F6E7A98E7B2CB3FE"
+			],
+			"duration": 0.0080597028136253357,
+			"dateTime": "2026.09.02-17.38.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AuthoritySegmentTraversesAdaptiveLeafChain",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.AuthoritySegmentTraversesAdaptiveLeafChain",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"55B719E649628D43F6E7A98E7B2CB3FE"
+			],
+			"duration": 0.0083255022764205933,
+			"dateTime": "2026.09.02-17.38.55",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

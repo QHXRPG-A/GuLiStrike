@@ -4,6 +4,9 @@
 
 #include "CoreMinimal.h"
 #include "Battle/Network/GuLiBattleTypes.h"
+#include "Battle/Combat/GuLiMissileVisualSubsystem.h"
+#include "Battle/Relay/GuLiWingmanRelayAuthorityRegistry.h"
+#include "Battle/Relay/GuLiWingmanRelayTypes.h"
 #include "GameFramework/GameState.h"
 #include "GuLiBattleGameState.generated.h"
 
@@ -40,6 +43,39 @@ struct FGuLiCommanderRoleSlotState
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGuLiCommanderRoleSlotsChangedSignature);
 
 /**
+ * Retained public entry for one live Wingman group. The Bundle is one complete,
+ * validated six-scope cut; high-frequency Accepted batches are deliberately not
+ * stored here so a pose update cannot turn into reliable Bootstrap churn.
+ */
+USTRUCT(BlueprintType)
+struct GULISTRIKE_API FGuLiWingmanPublicBootstrapState
+{
+	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|PublicRelay")
+	FGuLiWingmanGroupHandle Group;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|PublicRelay")
+	FGuLiWingmanBootstrapBundle Bootstrap;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|PublicRelay")
+	EGuLiWingmanGroupLifecycle Lifecycle = EGuLiWingmanGroupLifecycle::Unavailable;
+
+	/** Monotonic per-GameState publication revision; useful for diagnostics only. */
+	UPROPERTY(VisibleAnywhere, Category = "Wingman|PublicRelay")
+	uint32 PublicationRevision = 0u;
+
+	bool IsWellFormed() const
+	{
+		return Group.IsValid() && Bootstrap.IsWellFormed()
+			&& Bootstrap.Commit.Group == Group
+			&& Lifecycle != EGuLiWingmanGroupLifecycle::Unavailable
+			&& Lifecycle != EGuLiWingmanGroupLifecycle::Revoked
+			&& PublicationRevision != 0u;
+	}
+};
+
+/**
  * 双端可见的战局元数据与 5v5 席位目录：仅服务器修改，客户端读取复制副本。
  * 与 PlayerController 上的 OwnerOnly 选择状态不同，这里向相关客户端公开战局信息。
  */
@@ -50,6 +86,9 @@ class GULISTRIKE_API AGuLiBattleGameState : public AGameState
 
 public:
 	AGuLiBattleGameState();
+	virtual ~AGuLiBattleGameState() override;
+	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
 
@@ -99,12 +138,37 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Commander|Lobby")
 	TArray<FGuLiCommanderRoleSlotState> GetRoleSlots() const { return RoleSlots; }
 
+	/**
+	 * Authority-only. Reliably publishes and retains a six-scope Bootstrap for
+	 * existing clients and LateJoin. Identical cuts are suppressed.
+	 */
+	bool ServerPublishWingmanBootstrap(
+		const FGuLiWingmanBootstrapBundle& Bootstrap,
+		EGuLiWingmanGroupLifecycle Lifecycle);
+
+	/** Authority-only reliable tombstone event plus removal from the retained live set. */
+	void ServerRevokeWingmanGroup(const FGuLiWingmanGroupHandle& Group);
+
+	/** Authority-only unreliable public pose stream. This state is never accepted back by authority. */
+	void ServerPublishWingmanAcceptedBatch(const FGuLiWingmanAcceptedBatch& AcceptedBatch);
+
+	const TArray<FGuLiWingmanPublicBootstrapState>& GetPublicWingmanBootstraps() const
+	{
+		return PublicWingmanBootstraps;
+	}
+
+	/** Server-only durable owner of all Wingman Relay cores in this battle world. */
+	FGuLiWingmanRelayAuthorityRegistry* GetWingmanRelayAuthorityRegistry();
+	const FGuLiWingmanRelayAuthorityRegistry* GetWingmanRelayAuthorityRegistry() const;
+
 	// 本进程通知；名字中的 Multicast 指多订阅者委托，不是 NetMulticast RPC。
 	UPROPERTY(BlueprintAssignable, Category = "Commander|Lobby")
 	FGuLiCommanderRoleSlotsChangedSignature OnRoleSlotsChanged;
 
 private:
 	void InitializeDefaultRoleSlots();
+	/** Sole production scheduler for group-level lease watchdog work. */
+	void RunWingmanLeaseMaintenance();
 	bool TryClaimRoleSlot(
 		uint8 SlotIndex,
 		const FGuid& PlayerGuid,
@@ -116,12 +180,51 @@ private:
 	UFUNCTION()
 	void OnRep_RoleSlots();
 
+	UFUNCTION()
+	void OnRep_MatchEpoch();
+
+	UFUNCTION()
+	void OnRep_PublicWingmanBootstraps();
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastReceiveWingmanBootstrap(const FGuLiWingmanPublicBootstrapState& PublicState);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastRevokeWingmanGroup(const FGuLiWingmanGroupHandle& Group);
+
+	UFUNCTION(NetMulticast, Unreliable)
+	void MulticastReceiveWingmanAcceptedBatch(const FGuLiWingmanAcceptedBatch& AcceptedBatch);
+
+	/** Reliable launch, unreliable correction, reliable terminal visual-only bridge. */
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastReceiveMissileLaunch(const FGuLiMissileVisualLaunchDTO& Event);
+
+	UFUNCTION(NetMulticast, Unreliable)
+	void MulticastReceiveMissileCorrection(const FGuLiMissileVisualCorrectionDTO& Event);
+
+	UFUNCTION(NetMulticast, Reliable)
+	void MulticastReceiveMissileTerminal(const FGuLiMissileVisualTerminalDTO& Event);
+
+	void HandleLogicalMissileLaunch(const FGuLiLogicalMissileState& Missile);
+	void HandleLogicalMissileCorrection(const FGuLiLogicalMissileState& Missile);
+	void HandleLogicalMissileTerminal(const FGuLiLogicalMissileTerminalEvent& Event);
+	void ApplyMissileVisualLaunch(const FGuLiMissileVisualLaunchDTO& Event);
+	void ApplyMissileVisualCorrection(const FGuLiMissileVisualCorrectionDTO& Event);
+	void ApplyMissileVisualTerminal(const FGuLiMissileVisualTerminalDTO& Event);
+
+	void ApplyRetainedWingmanBootstraps();
+	void HandlePublicWingmanBootstrap(const FGuLiWingmanPublicBootstrapState& PublicState);
+	void HandlePublicWingmanRevocation(const FGuLiWingmanGroupHandle& Group);
+	void HandlePublicWingmanAcceptedBatch(const FGuLiWingmanAcceptedBatch& AcceptedBatch);
+	FGuid GetLocalWingmanViewerPlayerGuid() const;
+	bool IsLocalWingmanLeaseOwner(const FGuLiWingmanBootstrapBundle& Bootstrap) const;
+
 	// 协议兼容版本；下列字段由 GetLifetimeReplicatedProps 注册，无 OwnerOnly 限制。
 	UPROPERTY(Replicated)
 	uint16 ProtocolVersion = GULI_BATTLE_PROTOCOL_VERSION;
 
 	// 当前战局的非零隔离标识；与每连接的 SyncGeneration、每帧 FrameSequence 不同。
-	UPROPERTY(Replicated)
+	UPROPERTY(ReplicatedUsing = OnRep_MatchEpoch)
 	uint32 MatchEpoch = 0;
 
 	UPROPERTY(Replicated, BlueprintReadOnly, Category = "Commander|Match", meta = (AllowPrivateAccess = "true"))
@@ -129,4 +232,17 @@ private:
 
 	UPROPERTY(ReplicatedUsing = OnRep_RoleSlots)
 	TArray<FGuLiCommanderRoleSlotState> RoleSlots;
+
+	/** Reliable retained state: written only by authority, consumed read-only by clients. */
+	UPROPERTY(ReplicatedUsing = OnRep_PublicWingmanBootstraps)
+	TArray<FGuLiWingmanPublicBootstrapState> PublicWingmanBootstraps;
+
+	uint32 NextWingmanPublicationRevision = 1u;
+	/** Caps the public unreliable pose stream at 10 accepted batches/second/group. */
+	TMap<FGuLiWingmanGroupHandle, double> LastPublicWingmanAcceptedPublishTimes;
+	TMap<FGuLiWingmanGroupHandle, FGuLiWingmanBootstrapBundle> ClientWingmanBootstrapCache;
+	TSet<FGuLiWingmanGroupHandle> AppliedPublicWingmanGroups;
+	TUniquePtr<FGuLiWingmanRelayAuthorityRegistry> WingmanRelayAuthorityRegistry;
+	FTimerHandle WingmanLeaseMaintenanceTimer;
+	TWeakObjectPtr<UGuLiLogicalMissileSubsystem> BoundLogicalMissiles;
 };

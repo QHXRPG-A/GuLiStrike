@@ -351,7 +351,7 @@ NavMesh生成代次变化也不再在回调里同步查询全部活动单位。�
 
 2026-09-01已按当前源码核对自由候选、分帧规划、单兵部分接受、协议v6、终点FastArray和NavMesh分帧修复。`GuLiStrikeEditor Win64 Development`与`GuLiStrike Win64 Development`构建成功；全量99项均Success，网络19/19、导航24/24。默认地图无头运行加载原生Commander GameMode、生成500兵，并让一次20人命令20/20 Accepted、移动3870cm后完成销毁，最终PASS。
 
-无头冒烟不是完整交互和性能验收。25/250/500兵交互PIE、Standalone双客户端、500条静态绿线绘制成本、500活动单位NavMesh动态重建峰值和Dedicated Server仍未验证；Launcher引擎不支持Server Target。完整证据和遗留见[本轮受限验证归档](../../../Archive/20260901-移动命令自由扩散与静态寻路线实现与验证.md)。
+无头冒烟不是完整交互和性能验收。25/250/500兵交互PIE、Standalone双客户端、500条静态绿线绘制成本、500活动单位NavMesh动态重建峰值和Dedicated Server仍未验证；Launcher引擎不支持Server Target。完整证据和遗留见[本轮受限验证归档](../../../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md)。
 
 [公共战局框架正式归档](../../../Archive/20260831-公共战局框架与三类角色接入.md)记录此前冷编译成功、50/50 现有测试通过，以及重连、原生切图、复活和混合战局验证。NetworkGate 最终 ACK P95=138.1ms 达标，但未标记硬跳变 1 次，原因尚未确定；这些整体测试不能替代每个 Mass 算法的专项验证。
 

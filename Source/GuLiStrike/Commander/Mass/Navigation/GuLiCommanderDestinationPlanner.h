@@ -113,6 +113,15 @@ namespace GuLiCommanderDestinationPlanner
 		const FHexCandidateRequest& Request,
 		TArray<FFreeDestinationCandidate>& OutCandidates);
 
+	/**
+	 * Returns an exclusive center-first prefix end containing at least
+	 * MinimumCandidateCount candidates without splitting an equal-distance shell.
+	 * Candidates must use the deterministic ordering produced by BuildHexCandidates.
+	 */
+	GULISTRIKE_API int32 FindProjectionPrefixEnd(
+		TConstArrayView<FFreeDestinationCandidate> Candidates,
+		int32 MinimumCandidateCount);
+
 	/** A routing-locality hint. It is never a required final destination. */
 	struct GULISTRIKE_API FSoftCohortAnchor
 	{

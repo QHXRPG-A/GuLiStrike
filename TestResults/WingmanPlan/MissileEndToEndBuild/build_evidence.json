@@ -1,0 +1,44 @@
+{
+  "captured_at": "2026-09-02T20:44:25+08:00",
+  "project": "D:/UE5.7/test1/GuLiStrike.uproject",
+  "engine": "C:/Program Files/Epic Games/UE_5.7",
+  "builds": [
+    {
+      "target": "GuLiStrikeEditor",
+      "platform": "Win64",
+      "configuration": "DebugGame",
+      "result": "Succeeded",
+      "uht_warnings_as_errors": true
+    },
+    {
+      "target": "GuLiStrike",
+      "platform": "Win64",
+      "configuration": "Development",
+      "result": "Succeeded",
+      "uht_warnings_as_errors": true
+    }
+  ],
+  "automation": [
+    {
+      "filter": "GuLiStrike.Combat.Missile",
+      "succeeded": 6,
+      "warnings": 0,
+      "failed": 0,
+      "report": "../MissileEndToEndFinal/index.json"
+    },
+    {
+      "filter": "GuLiStrike.Wingman.Combat.Missile",
+      "succeeded": 2,
+      "warnings": 0,
+      "failed": 0,
+      "report": "../MissileCoordinatorFinal/index.json"
+    },
+    {
+      "filter": "GuLiStrike.Ship.Abilities",
+      "succeeded": 4,
+      "warnings": 0,
+      "failed": 0,
+      "report": "../ShipAbilitiesMissileFinal/index.json"
+    }
+  ]
+}

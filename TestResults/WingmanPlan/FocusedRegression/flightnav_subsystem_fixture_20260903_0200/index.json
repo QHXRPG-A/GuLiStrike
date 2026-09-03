@@ -1,0 +1,57 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "69A6560A450211DD21AD9EB76D200A4D",
+			"instanceName": "DESKTOP-6D3B0FC-14424",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-17.59.38",
+	"succeeded": 0,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.04693329706788063,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "SubsystemAuthoritySegmentResolvesFromStart",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.SubsystemAuthoritySegmentResolvesFromStart",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"69A6560A450211DD21AD9EB76D200A4D"
+			],
+			"duration": 0.04693329706788063,
+			"dateTime": "2026.09.02-17.59.38",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "A segment contained by the start-selected graph is valid: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Source\\GuLiFlightNavigationRuntime\\Private\\Tests\\GuLiFlightNavigationSubsystemTests.cpp",
+					"lineNumber": 161,
+					"timestamp": "2026.09.02-17.59.38"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

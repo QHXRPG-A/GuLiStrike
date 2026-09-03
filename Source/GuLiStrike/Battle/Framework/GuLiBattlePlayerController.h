@@ -7,6 +7,7 @@
 #include "GuLiBattlePlayerController.generated.h"
 
 class UGuLiPlayerNetSyncComponent;
+class UGuLiWingmanRelayComponent;
 
 /** 公共玩家连接：服务器与拥有客户端各有实例；不绑定指挥、飞行或载具输入。 */
 UCLASS()
@@ -24,6 +25,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Battle|Network")
 	UGuLiPlayerNetSyncComponent* GetPlayerNetSyncComponent() const { return PlayerNetSyncComponent; }
 
+	UFUNCTION(BlueprintPure, Category = "Battle|Wingman")
+	UGuLiWingmanRelayComponent* GetWingmanRelayComponent() const { return WingmanRelayComponent; }
+
 	// 保留历史子对象名以兼容 Commander 蓝图；派生构造函数可替换为专业网络组件的子类。
 	static const FName PlayerNetSyncComponentName;
 
@@ -36,4 +40,8 @@ private:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Battle|Network", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UGuLiPlayerNetSyncComponent> PlayerNetSyncComponent;
+
+	/** Player-owned RPC transport; pure server state never performs Wingman movement. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Battle|Wingman", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UGuLiWingmanRelayComponent> WingmanRelayComponent;
 };

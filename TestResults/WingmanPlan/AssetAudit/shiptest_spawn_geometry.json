@@ -1,0 +1,2640 @@
+{
+  "actors": [
+    {
+      "bounds_extent": [
+        140.0,
+        80.0,
+        92.0
+      ],
+      "bounds_origin": [
+        100.0,
+        0.0,
+        0.0
+      ],
+      "class": "PlayerStart",
+      "components": [
+        {
+          "class": "CapsuleComponent",
+          "collision_enabled_error": "CapsuleComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'CapsuleComponent'",
+          "collision_object_type_error": "CapsuleComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'CapsuleComponent'",
+          "mobility": "<ComponentMobility.STATIC: 0>",
+          "name": "CollisionCapsule"
+        },
+        {
+          "class": "BillboardComponent",
+          "collision_enabled_error": "BillboardComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'BillboardComponent'",
+          "collision_object_type_error": "BillboardComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'BillboardComponent'",
+          "mobility": "<ComponentMobility.MOVABLE: 2>",
+          "name": "Sprite"
+        },
+        {
+          "class": "BillboardComponent",
+          "collision_enabled_error": "BillboardComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'BillboardComponent'",
+          "collision_object_type_error": "BillboardComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'BillboardComponent'",
+          "mobility": "<ComponentMobility.MOVABLE: 2>",
+          "name": "Sprite2"
+        },
+        {
+          "class": "ArrowComponent",
+          "collision_enabled_error": "ArrowComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'ArrowComponent'",
+          "collision_object_type_error": "ArrowComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'ArrowComponent'",
+          "mobility": "<ComponentMobility.MOVABLE: 2>",
+          "name": "Arrow"
+        }
+      ],
+      "distance_to_observed_points": [
+        0.0,
+        1520.0
+      ],
+      "is_player_start": true,
+      "label": "PS_ShipSpawn",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "PlayerStart_0"
+    },
+    {
+      "bounds_extent": [
+        140.0,
+        80.0,
+        92.0
+      ],
+      "bounds_origin": [
+        20100.0,
+        20000.0,
+        0.0
+      ],
+      "class": "PlayerStart",
+      "components": [
+        {
+          "class": "CapsuleComponent",
+          "collision_enabled_error": "CapsuleComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'CapsuleComponent'",
+          "collision_object_type_error": "CapsuleComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'CapsuleComponent'",
+          "mobility": "<ComponentMobility.STATIC: 0>",
+          "name": "CollisionCapsule"
+        },
+        {
+          "class": "BillboardComponent",
+          "collision_enabled_error": "BillboardComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'BillboardComponent'",
+          "collision_object_type_error": "BillboardComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'BillboardComponent'",
+          "mobility": "<ComponentMobility.MOVABLE: 2>",
+          "name": "Sprite"
+        },
+        {
+          "class": "BillboardComponent",
+          "collision_enabled_error": "BillboardComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'BillboardComponent'",
+          "collision_object_type_error": "BillboardComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'BillboardComponent'",
+          "mobility": "<ComponentMobility.MOVABLE: 2>",
+          "name": "Sprite2"
+        },
+        {
+          "class": "ArrowComponent",
+          "collision_enabled_error": "ArrowComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'ArrowComponent'",
+          "collision_object_type_error": "ArrowComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'ArrowComponent'",
+          "mobility": "<ComponentMobility.MOVABLE: 2>",
+          "name": "Arrow"
+        }
+      ],
+      "distance_to_observed_points": [
+        28199.43261840564,
+        29351.524662272655
+      ],
+      "is_player_start": true,
+      "label": "PS_ShipSpawn_Remote",
+      "location": [
+        20000.0,
+        20000.0,
+        0.0
+      ],
+      "name": "PlayerStart_1"
+    },
+    {
+      "bounds_extent": [
+        125000.0,
+        125000.0,
+        40000.0
+      ],
+      "bounds_origin": [
+        7642.5,
+        7127.5,
+        0.0
+      ],
+      "class": "GuLiFlightNavigationVolume",
+      "components": [
+        {
+          "class": "BrushComponent",
+          "collision_enabled_error": "BrushComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'BrushComponent'",
+          "collision_object_type_error": "BrushComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'BrushComponent'",
+          "mobility": "<ComponentMobility.STATIC: 0>",
+          "name": "BrushComponent0"
+        }
+      ],
+      "distance_to_observed_points": [
+        0.0,
+        0.0
+      ],
+      "is_player_start": false,
+      "label": "FlightNav_LVL_ShipTest",
+      "location": [
+        7642.5,
+        7127.5,
+        0.0
+      ],
+      "name": "GuLiFlightNavigationVolume_0"
+    },
+    {
+      "bounds_extent": [
+        1.0,
+        1.0,
+        2500.5
+      ],
+      "bounds_origin": [
+        0.0,
+        0.0,
+        2499.5
+      ],
+      "class": "SkyLight",
+      "components": [
+        {
+          "class": "BillboardComponent",
+          "collision_enabled_error": "BillboardComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'BillboardComponent'",
+          "collision_object_type_error": "BillboardComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'BillboardComponent'",
+          "mobility": "<ComponentMobility.MOVABLE: 2>",
+          "name": "Sprite"
+        },
+        {
+          "class": "BillboardComponent",
+          "collision_enabled_error": "BillboardComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'BillboardComponent'",
+          "collision_object_type_error": "BillboardComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'BillboardComponent'",
+          "mobility": "<ComponentMobility.MOVABLE: 2>",
+          "name": "BillboardComponent_0"
+        }
+      ],
+      "distance_to_observed_points": [
+        0.0,
+        1599.0
+      ],
+      "is_player_start": false,
+      "label": "Light_Sky",
+      "location": [
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "name": "SkyLight_0"
+    },
+    {
+      "bounds_extent": [
+        400.6908264158833,
+        281.7664105611035,
+        394.01686947907183
+      ],
+      "bounds_origin": [
+        259.80762113533154,
+        0.0,
+        4850.0
+      ],
+      "class": "DirectionalLight",
+      "components": [
+        {
+          "class": "ArrowComponent",
+          "collision_enabled_error": "ArrowComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'ArrowComponent'",
+          "collision_object_type_error": "ArrowComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'ArrowComponent'",
+          "mobility": "<ComponentMobility.MOVABLE: 2>",
+          "name": "ArrowComponent0"
+        },
+        {
+          "class": "BillboardComponent",
+          "collision_enabled_error": "BillboardComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'BillboardComponent'",
+          "collision_object_type_error": "BillboardComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'BillboardComponent'",
+          "mobility": "<ComponentMobility.MOVABLE: 2>",
+          "name": "BillboardComponent_0"
+        }
+      ],
+      "distance_to_observed_points": [
+        4455.983130520928,
+        4646.883413193411
+      ],
+      "is_player_start": false,
+      "label": "Light_Sun",
+      "location": [
+        0.0,
+        0.0,
+        5000.0
+      ],
+      "name": "DirectionalLight_0"
+    },
+    {
+      "bounds_extent": [
+        50.0,
+        50.0,
+        50.0
+      ],
+      "bounds_origin": [
+        18385.0,
+        -2480.0,
+        200.0
+      ],
+      "class": "StaticMeshActor",
+      "components": [
+        {
+          "class": "StaticMeshComponent",
+          "collision_enabled_error": "StaticMeshComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'StaticMeshComponent'",
+          "collision_object_type_error": "StaticMeshComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'StaticMeshComponent'",
+          "mobility": "<ComponentMobility.STATIC: 0>",
+          "name": "StaticMeshComponent0"
+        }
+      ],
+      "distance_to_observed_points": [
+        18495.935364290177,
+        18354.389801897527
+      ],
+      "is_player_start": false,
+      "label": "REF_Cube_0",
+      "location": [
+        18385.0,
+        -2480.0,
+        200.0
+      ],
+      "name": "StaticMeshActor_0"
+    },
+    {
+      "bounds_extent": [
+        50.0,
+        50.0,
+        50.0
+      ],
+      "bounds_origin": [
+        12985.0,
+        4000.0,
+        2000.0
+      ],
+      "class": "StaticMeshActor",
+      "components": [
+        {
+          "class": "StaticMeshComponent",
+          "collision_enabled_error": "StaticMeshComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'StaticMeshComponent'",
+          "collision_object_type_error": "StaticMeshComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'StaticMeshComponent'",
+          "mobility": "<ComponentMobility.STATIC: 0>",
+          "name": "StaticMeshComponent0"
+        }
+      ],
+      "distance_to_observed_points": [
+        13664.524323956543,
+        14209.828464833769
+      ],
+      "is_player_start": false,
+      "label": "REF_Cube_1",
+      "location": [
+        12985.0,
+        4000.0,
+        2000.0
+      ],
+      "name": "StaticMeshActor_1"
+    },
+    {
+      "bounds_extent": [
+        50.0,
+        50.0,
+        50.0
+      ],
+      "bounds_origin": [
+        4000.0,
+        -4000.0,
+        -2000.0
+      ],
+      "class": "StaticMeshActor",
+      "components": [
+        {
+          "class": "StaticMeshComponent",
+          "collision_enabled_error": "StaticMeshComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'StaticMeshComponent'",
+          "collision_object_type_error": "StaticMeshComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'StaticMeshComponent'",
+          "mobility": "<ComponentMobility.STATIC: 0>",
+          "name": "StaticMeshComponent0"
+        }
+      ],
+      "distance_to_observed_points": [
+        5916.713614837209,
+        4992.744736114595
+      ],
+      "is_player_start": false,
+      "label": "REF_Cube_2",
+      "location": [
+        4000.0,
+        -4000.0,
+        -2000.0
+      ],
+      "name": "StaticMeshActor_2"
+    },
+    {
+      "bounds_extent": [
+        50.0,
+        50.0,
+        50.0
+      ],
+      "bounds_origin": [
+        0.0,
+        -6000.0,
+        0.0
+      ],
+      "class": "StaticMeshActor",
+      "components": [
+        {
+          "class": "StaticMeshComponent",
+          "collision_enabled_error": "StaticMeshComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'StaticMeshComponent'",
+          "collision_object_type_error": "StaticMeshComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'StaticMeshComponent'",
+          "mobility": "<ComponentMobility.STATIC: 0>",
+          "name": "StaticMeshComponent0"
+        }
+      ],
+      "distance_to_observed_points": [
+        5950.0,
+        4350.0
+      ],
+      "is_player_start": false,
+      "label": "REF_Cube_4",
+      "location": [
+        0.0,
+        -6000.0,
+        0.0
+      ],
+      "name": "StaticMeshActor_4"
+    },
+    {
+      "bounds_extent": [
+        120.0,
+        80.0,
+        80.0
+      ],
+      "bounds_origin": [
+        120.0,
+        0.0,
+        0.0
+      ],
+      "class": "SkyAtmosphere",
+      "components": [
+        {
+          "class": "BillboardComponent",
+          "collision_enabled_error": "BillboardComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'BillboardComponent'",
+          "collision_object_type_error": "BillboardComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'BillboardComponent'",
+          "mobility": "<ComponentMobility.MOVABLE: 2>",
+          "name": "Sprite"
+        },
+        {
+          "class": "ArrowComponent",
+          "collision_enabled_error": "ArrowComponent: Failed to find property 'collision_enabled' for attribute 'collision_enabled' on 'ArrowComponent'",
+          "collision_object_type_error": "ArrowComponent: Failed to find property 'collision_object_type' for attribute 'collision_object_type' on 'ArrowComponent'",
+          "mobility": "<ComponentMobility.MOVABLE: 2>",
+          "name": "ArrowComponent"
+        }
+      ],
+      "distance_to_observed_points": [
+        0.0,
+        1520.0
+      ],
+      "is_player_start": false,
+      "label": "SkyAtmo",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "name": "SkyAtmosphere_0"
+    }
+  ],
+  "formation_candidate_centers": [
+    {
+      "all_formation_endpoints_valid": true,
+      "center": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "failed_endpoint_indices": [],
+      "probes": [
+        {
+          "end_cell": 93,
+          "error": "",
+          "raw": "(93, 93, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 130,
+          "error": "",
+          "raw": "(93, 130, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(93, 164, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(93, 164, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 157,
+          "error": "",
+          "raw": "(93, 157, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 157,
+          "error": "",
+          "raw": "(93, 157, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 156,
+          "error": "",
+          "raw": "(93, 156, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 136,
+          "error": "",
+          "raw": "(93, 136, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 85,
+          "error": "",
+          "raw": "(93, 85, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 102,
+          "error": "",
+          "raw": "(93, 102, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 84,
+          "error": "",
+          "raw": "(93, 84, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 84,
+          "error": "",
+          "raw": "(93, 84, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 127,
+          "error": "",
+          "raw": "(93, 127, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 128,
+          "error": "",
+          "raw": "(93, 128, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 53,
+          "error": "",
+          "raw": "(93, 53, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(93, 82, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(93, 82, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 81,
+          "error": "",
+          "raw": "(93, 81, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 81,
+          "error": "",
+          "raw": "(93, 81, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(93, 58, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 6,
+          "error": "",
+          "raw": "(93, 6, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 6,
+          "error": "",
+          "raw": "(93, 6, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 5,
+          "error": "",
+          "raw": "(93, 5, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 5,
+          "error": "",
+          "raw": "(93, 5, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 30,
+          "error": "",
+          "raw": "(93, 30, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 53,
+          "error": "",
+          "raw": "(93, 53, 0, Text(\"\"))",
+          "start_cell": 93,
+          "status": 0,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "all_formation_endpoints_valid": false,
+      "center": [
+        0.0,
+        -1600.0,
+        0.0
+      ],
+      "failed_endpoint_indices": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25
+      ],
+      "probes": [
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        },
+        {
+          "end_cell": -1,
+          "error": "",
+          "raw": "None",
+          "start_cell": -1,
+          "status": -1,
+          "valid": false
+        }
+      ]
+    },
+    {
+      "all_formation_endpoints_valid": true,
+      "center": [
+        0.0,
+        16000.0,
+        0.0
+      ],
+      "failed_endpoint_indices": [],
+      "probes": [
+        {
+          "end_cell": 141,
+          "error": "",
+          "raw": "(141, 141, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(141, 164, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(141, 164, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(141, 164, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 159,
+          "error": "",
+          "raw": "(141, 159, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 159,
+          "error": "",
+          "raw": "(141, 159, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 156,
+          "error": "",
+          "raw": "(141, 156, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 136,
+          "error": "",
+          "raw": "(141, 136, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 85,
+          "error": "",
+          "raw": "(141, 85, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 104,
+          "error": "",
+          "raw": "(141, 104, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 103,
+          "error": "",
+          "raw": "(141, 103, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 103,
+          "error": "",
+          "raw": "(141, 103, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 127,
+          "error": "",
+          "raw": "(141, 127, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 130,
+          "error": "",
+          "raw": "(141, 130, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(141, 82, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(141, 82, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(141, 82, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 81,
+          "error": "",
+          "raw": "(141, 81, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 81,
+          "error": "",
+          "raw": "(141, 81, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(141, 58, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(141, 58, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 6,
+          "error": "",
+          "raw": "(141, 6, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 5,
+          "error": "",
+          "raw": "(141, 5, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 5,
+          "error": "",
+          "raw": "(141, 5, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 30,
+          "error": "",
+          "raw": "(141, 30, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 53,
+          "error": "",
+          "raw": "(141, 53, 0, Text(\"\"))",
+          "start_cell": 141,
+          "status": 0,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "all_formation_endpoints_valid": true,
+      "center": [
+        0.0,
+        24000.0,
+        0.0
+      ],
+      "failed_endpoint_indices": [],
+      "probes": [
+        {
+          "end_cell": 147,
+          "error": "",
+          "raw": "(147, 147, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(147, 164, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(147, 164, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(147, 164, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 159,
+          "error": "",
+          "raw": "(147, 159, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 159,
+          "error": "",
+          "raw": "(147, 159, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 156,
+          "error": "",
+          "raw": "(147, 156, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 136,
+          "error": "",
+          "raw": "(147, 136, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 136,
+          "error": "",
+          "raw": "(147, 136, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 104,
+          "error": "",
+          "raw": "(147, 104, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 103,
+          "error": "",
+          "raw": "(147, 103, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 103,
+          "error": "",
+          "raw": "(147, 103, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 127,
+          "error": "",
+          "raw": "(147, 127, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 130,
+          "error": "",
+          "raw": "(147, 130, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(147, 82, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(147, 82, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(147, 82, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 81,
+          "error": "",
+          "raw": "(147, 81, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 81,
+          "error": "",
+          "raw": "(147, 81, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(147, 58, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(147, 58, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 6,
+          "error": "",
+          "raw": "(147, 6, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 7,
+          "error": "",
+          "raw": "(147, 7, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 5,
+          "error": "",
+          "raw": "(147, 5, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 33,
+          "error": "",
+          "raw": "(147, 33, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 53,
+          "error": "",
+          "raw": "(147, 53, 0, Text(\"\"))",
+          "start_cell": 147,
+          "status": 0,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "all_formation_endpoints_valid": true,
+      "center": [
+        16000.0,
+        0.0,
+        0.0
+      ],
+      "failed_endpoint_indices": [],
+      "probes": [
+        {
+          "end_cell": 117,
+          "error": "",
+          "raw": "(117, 117, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 131,
+          "error": "",
+          "raw": "(117, 131, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(117, 164, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(117, 164, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(117, 164, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 157,
+          "error": "",
+          "raw": "(117, 157, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 156,
+          "error": "",
+          "raw": "(117, 156, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 154,
+          "error": "",
+          "raw": "(117, 154, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 104,
+          "error": "",
+          "raw": "(117, 104, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 102,
+          "error": "",
+          "raw": "(117, 102, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 84,
+          "error": "",
+          "raw": "(117, 84, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 110,
+          "error": "",
+          "raw": "(117, 110, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 128,
+          "error": "",
+          "raw": "(117, 128, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 128,
+          "error": "",
+          "raw": "(117, 128, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 53,
+          "error": "",
+          "raw": "(117, 53, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(117, 82, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(117, 82, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(117, 82, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 81,
+          "error": "",
+          "raw": "(117, 81, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(117, 58, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 6,
+          "error": "",
+          "raw": "(117, 6, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 6,
+          "error": "",
+          "raw": "(117, 6, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 5,
+          "error": "",
+          "raw": "(117, 5, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 30,
+          "error": "",
+          "raw": "(117, 30, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 30,
+          "error": "",
+          "raw": "(117, 30, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 53,
+          "error": "",
+          "raw": "(117, 53, 0, Text(\"\"))",
+          "start_cell": 117,
+          "status": 0,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "all_formation_endpoints_valid": true,
+      "center": [
+        -16000.0,
+        0.0,
+        0.0
+      ],
+      "failed_endpoint_indices": [],
+      "probes": [
+        {
+          "end_cell": 91,
+          "error": "",
+          "raw": "(91, 91, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 130,
+          "error": "",
+          "raw": "(91, 130, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(91, 164, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(91, 164, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 157,
+          "error": "",
+          "raw": "(91, 157, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 156,
+          "error": "",
+          "raw": "(91, 156, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 136,
+          "error": "",
+          "raw": "(91, 136, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 136,
+          "error": "",
+          "raw": "(91, 136, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 85,
+          "error": "",
+          "raw": "(91, 85, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 85,
+          "error": "",
+          "raw": "(91, 85, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 84,
+          "error": "",
+          "raw": "(91, 84, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 84,
+          "error": "",
+          "raw": "(91, 84, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 127,
+          "error": "",
+          "raw": "(91, 127, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 127,
+          "error": "",
+          "raw": "(91, 127, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 53,
+          "error": "",
+          "raw": "(91, 53, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(91, 82, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(91, 82, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 81,
+          "error": "",
+          "raw": "(91, 81, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 80,
+          "error": "",
+          "raw": "(91, 80, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(91, 58, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 6,
+          "error": "",
+          "raw": "(91, 6, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 6,
+          "error": "",
+          "raw": "(91, 6, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 4,
+          "error": "",
+          "raw": "(91, 4, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 5,
+          "error": "",
+          "raw": "(91, 5, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 30,
+          "error": "",
+          "raw": "(91, 30, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 33,
+          "error": "",
+          "raw": "(91, 33, 0, Text(\"\"))",
+          "start_cell": 91,
+          "status": 0,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "all_formation_endpoints_valid": true,
+      "center": [
+        20000.0,
+        20000.0,
+        0.0
+      ],
+      "failed_endpoint_indices": [],
+      "probes": [
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(164, 164, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(164, 164, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(164, 164, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(164, 164, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(164, 164, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 159,
+          "error": "",
+          "raw": "(164, 159, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 156,
+          "error": "",
+          "raw": "(164, 156, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 154,
+          "error": "",
+          "raw": "(164, 154, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 104,
+          "error": "",
+          "raw": "(164, 104, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 104,
+          "error": "",
+          "raw": "(164, 104, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 103,
+          "error": "",
+          "raw": "(164, 103, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 127,
+          "error": "",
+          "raw": "(164, 127, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 128,
+          "error": "",
+          "raw": "(164, 128, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 131,
+          "error": "",
+          "raw": "(164, 131, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(164, 82, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(164, 82, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(164, 82, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(164, 82, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 81,
+          "error": "",
+          "raw": "(164, 81, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(164, 58, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(164, 58, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 6,
+          "error": "",
+          "raw": "(164, 6, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 5,
+          "error": "",
+          "raw": "(164, 5, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 30,
+          "error": "",
+          "raw": "(164, 30, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 30,
+          "error": "",
+          "raw": "(164, 30, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 53,
+          "error": "",
+          "raw": "(164, 53, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "all_formation_endpoints_valid": true,
+      "center": [
+        20000.0,
+        18400.0,
+        0.0
+      ],
+      "failed_endpoint_indices": [],
+      "probes": [
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(164, 164, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(164, 164, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(164, 164, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(164, 164, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(164, 164, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 159,
+          "error": "",
+          "raw": "(164, 159, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 156,
+          "error": "",
+          "raw": "(164, 156, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 154,
+          "error": "",
+          "raw": "(164, 154, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 104,
+          "error": "",
+          "raw": "(164, 104, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 104,
+          "error": "",
+          "raw": "(164, 104, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 103,
+          "error": "",
+          "raw": "(164, 103, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 127,
+          "error": "",
+          "raw": "(164, 127, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 128,
+          "error": "",
+          "raw": "(164, 128, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 131,
+          "error": "",
+          "raw": "(164, 131, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(164, 82, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(164, 82, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(164, 82, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(164, 82, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 81,
+          "error": "",
+          "raw": "(164, 81, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(164, 58, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(164, 58, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 6,
+          "error": "",
+          "raw": "(164, 6, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 5,
+          "error": "",
+          "raw": "(164, 5, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 30,
+          "error": "",
+          "raw": "(164, 30, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 30,
+          "error": "",
+          "raw": "(164, 30, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 53,
+          "error": "",
+          "raw": "(164, 53, 0, Text(\"\"))",
+          "start_cell": 164,
+          "status": 0,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "all_formation_endpoints_valid": true,
+      "center": [
+        -20000.0,
+        20000.0,
+        0.0
+      ],
+      "failed_endpoint_indices": [],
+      "probes": [
+        {
+          "end_cell": 138,
+          "error": "",
+          "raw": "(138, 138, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(138, 164, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(138, 164, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(138, 164, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 159,
+          "error": "",
+          "raw": "(138, 159, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 159,
+          "error": "",
+          "raw": "(138, 159, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 136,
+          "error": "",
+          "raw": "(138, 136, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 136,
+          "error": "",
+          "raw": "(138, 136, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 85,
+          "error": "",
+          "raw": "(138, 85, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 85,
+          "error": "",
+          "raw": "(138, 85, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 102,
+          "error": "",
+          "raw": "(138, 102, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 103,
+          "error": "",
+          "raw": "(138, 103, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 127,
+          "error": "",
+          "raw": "(138, 127, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 129,
+          "error": "",
+          "raw": "(138, 129, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(138, 82, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(138, 82, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(138, 82, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 81,
+          "error": "",
+          "raw": "(138, 81, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 80,
+          "error": "",
+          "raw": "(138, 80, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(138, 58, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(138, 58, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 6,
+          "error": "",
+          "raw": "(138, 6, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 4,
+          "error": "",
+          "raw": "(138, 4, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 5,
+          "error": "",
+          "raw": "(138, 5, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 30,
+          "error": "",
+          "raw": "(138, 30, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 33,
+          "error": "",
+          "raw": "(138, 33, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        }
+      ]
+    },
+    {
+      "all_formation_endpoints_valid": true,
+      "center": [
+        -20000.0,
+        18400.0,
+        0.0
+      ],
+      "failed_endpoint_indices": [],
+      "probes": [
+        {
+          "end_cell": 138,
+          "error": "",
+          "raw": "(138, 138, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(138, 164, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(138, 164, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 164,
+          "error": "",
+          "raw": "(138, 164, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 159,
+          "error": "",
+          "raw": "(138, 159, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 159,
+          "error": "",
+          "raw": "(138, 159, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 136,
+          "error": "",
+          "raw": "(138, 136, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 136,
+          "error": "",
+          "raw": "(138, 136, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 85,
+          "error": "",
+          "raw": "(138, 85, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 85,
+          "error": "",
+          "raw": "(138, 85, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 102,
+          "error": "",
+          "raw": "(138, 102, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 103,
+          "error": "",
+          "raw": "(138, 103, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 127,
+          "error": "",
+          "raw": "(138, 127, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 129,
+          "error": "",
+          "raw": "(138, 129, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(138, 82, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(138, 82, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 82,
+          "error": "",
+          "raw": "(138, 82, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 81,
+          "error": "",
+          "raw": "(138, 81, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 80,
+          "error": "",
+          "raw": "(138, 80, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(138, 58, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 58,
+          "error": "",
+          "raw": "(138, 58, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 6,
+          "error": "",
+          "raw": "(138, 6, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 4,
+          "error": "",
+          "raw": "(138, 4, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 5,
+          "error": "",
+          "raw": "(138, 5, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 30,
+          "error": "",
+          "raw": "(138, 30, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        },
+        {
+          "end_cell": 33,
+          "error": "",
+          "raw": "(138, 33, 0, Text(\"\"))",
+          "start_cell": 138,
+          "status": 0,
+          "valid": true
+        }
+      ]
+    }
+  ],
+  "map": "/Game/Maps/LVL_ShipTest",
+  "points": [
+    [
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      -1600.0,
+      0.0
+    ]
+  ],
+  "schema": "guli.shiptest-spawn-geometry.v1"
+}

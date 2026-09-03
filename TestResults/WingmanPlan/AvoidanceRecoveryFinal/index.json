@@ -1,0 +1,102 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "A8CB8EEF4CBCB5B73164F6837DF7DA03",
+			"instanceName": "DESKTOP-6D3B0FC-42564",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-15.30.24",
+	"succeeded": 3,
+	"succeededWithWarnings": 1,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.03574729710817337,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "OwnerOnlyDiagnosticsAndSoleIntegrationWriter",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.OwnerOnlyDiagnosticsAndSoleIntegrationWriter",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A8CB8EEF4CBCB5B73164F6837DF7DA03"
+			],
+			"duration": 0.010577399283647537,
+			"dateTime": "2026.09.02-15.30.24",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: Wingman group 00003000-0000-3001-0000-300200003003 entered controlled C++ fallback: authored StateTree is missing or failed to load.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-15.30.24"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SpatialHashEquivalentAndGroupScoped",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.SpatialHashEquivalentAndGroupScoped",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A8CB8EEF4CBCB5B73164F6837DF7DA03"
+			],
+			"duration": 0.0085755996406078339,
+			"dateTime": "2026.09.02-15.30.24",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaticDynamicHeadingSelection",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.StaticDynamicHeadingSelection",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A8CB8EEF4CBCB5B73164F6837DF7DA03"
+			],
+			"duration": 0.0081177987158298492,
+			"dateTime": "2026.09.02-15.30.24",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ThreeSecondSafePointRecovery",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.ThreeSecondSafePointRecovery",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A8CB8EEF4CBCB5B73164F6837DF7DA03"
+			],
+			"duration": 0.00847649946808815,
+			"dateTime": "2026.09.02-15.30.24",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

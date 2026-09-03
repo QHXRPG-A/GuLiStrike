@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Battle/Network/GuLiBattleTypes.h"
+#include "Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h"
 #include "GameFramework/PlayerState.h"
 #include "AbilitySystemInterface.h"
 #include "GuLiBattlePlayerState.generated.h"
@@ -25,6 +26,10 @@ public:
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	/** Server-local GM/gameplay entry through a real ServerOnly GameplayAbility; no client RPC. */
 	bool ExecuteArmySkillCommand(const FGuLiArmySkillCommand& Command, FString& OutError);
+
+	/** Session-only stable Ship ability selection; spec handles/effects/cooldowns never live here. */
+	const FGuLiShipAbilityLoadoutState& GetShipAbilityLoadoutState() const { return ShipAbilityLoadoutState; }
+	bool SetServerShipAbilityLoadoutState(const FGuLiShipAbilityLoadoutState& NewLoadout, FString& OutError);
 	static constexpr uint8 InvalidSlotIndex = MAX_uint8;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -122,4 +127,8 @@ private:
 	/** 保留字段名兼容旧复制/反射查找，仅表示士兵流就绪。 */
 	UPROPERTY(ReplicatedUsing = OnRep_SyncReady)
 	bool bSyncReady = false;
+
+	/** Persisted across Ship Pawn replacement, but not across a new PlayerState/session. */
+	UPROPERTY(Replicated)
+	FGuLiShipAbilityLoadoutState ShipAbilityLoadoutState;
 };

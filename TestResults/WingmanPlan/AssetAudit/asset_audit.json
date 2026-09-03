@@ -1,0 +1,376 @@
+{
+  "editor_state": {
+    "dirty_packages": [],
+    "editor_world": "/Temp/Untitled_0.Untitled",
+    "pie_or_sie_active": false
+  },
+  "engine_version": "5.7.4-51494982+++UE5+Release-5.7",
+  "maps": [
+    {
+      "assets": [
+        {
+          "asset_name": "LVL_CommanderMassPrototype",
+          "class": "World",
+          "package_name": "/Game/Maps/LVL_CommanderMassPrototype",
+          "package_path": "/Game/Maps"
+        }
+      ],
+      "exists": true,
+      "package_name": "/Game/Maps/LVL_CommanderMassPrototype"
+    },
+    {
+      "assets": [
+        {
+          "asset_name": "LVL_Main",
+          "class": "World",
+          "package_name": "/Game/Maps/LVL_Main",
+          "package_path": "/Game/Maps"
+        }
+      ],
+      "exists": true,
+      "package_name": "/Game/Maps/LVL_Main"
+    },
+    {
+      "assets": [
+        {
+          "asset_name": "LVL_ShipTest",
+          "class": "World",
+          "package_name": "/Game/Maps/LVL_ShipTest",
+          "package_path": "/Game/Maps"
+        }
+      ],
+      "exists": true,
+      "package_name": "/Game/Maps/LVL_ShipTest"
+    }
+  ],
+  "mesh_candidates": [
+    {
+      "asset_name": "cockpit",
+      "class": "MaterialInstanceConstant",
+      "load_ok": true,
+      "package_name": "/Game/Assets/Arma/fly-01/cockpit",
+      "package_path": "/Game/Assets/Arma/fly-01"
+    },
+    {
+      "asset_name": "empty_black",
+      "class": "MaterialInstanceConstant",
+      "load_ok": true,
+      "package_name": "/Game/Assets/Arma/fly-01/empty_black",
+      "package_path": "/Game/Assets/Arma/fly-01"
+    },
+    {
+      "asset_name": "engines",
+      "class": "MaterialInstanceConstant",
+      "load_ok": true,
+      "package_name": "/Game/Assets/Arma/fly-01/engines",
+      "package_path": "/Game/Assets/Arma/fly-01"
+    },
+    {
+      "asset_name": "intakes",
+      "class": "MaterialInstanceConstant",
+      "load_ok": true,
+      "package_name": "/Game/Assets/Arma/fly-01/intakes",
+      "package_path": "/Game/Assets/Arma/fly-01"
+    },
+    {
+      "asset_name": "lasers",
+      "class": "MaterialInstanceConstant",
+      "load_ok": true,
+      "package_name": "/Game/Assets/Arma/fly-01/lasers",
+      "package_path": "/Game/Assets/Arma/fly-01"
+    },
+    {
+      "asset_name": "mainbody_mat",
+      "class": "MaterialInstanceConstant",
+      "load_ok": true,
+      "package_name": "/Game/Assets/Arma/fly-01/mainbody_mat",
+      "package_path": "/Game/Assets/Arma/fly-01"
+    },
+    {
+      "asset_name": "nose_mat",
+      "class": "MaterialInstanceConstant",
+      "load_ok": true,
+      "package_name": "/Game/Assets/Arma/fly-01/nose_mat",
+      "package_path": "/Game/Assets/Arma/fly-01"
+    },
+    {
+      "asset_name": "rocket",
+      "class": "MaterialInstanceConstant",
+      "load_ok": true,
+      "package_name": "/Game/Assets/Arma/fly-01/rocket",
+      "package_path": "/Game/Assets/Arma/fly-01"
+    },
+    {
+      "asset_name": "space_mouse_fbx",
+      "class": "StaticMesh",
+      "collision_trace_flag": "<CollisionTraceFlag.CTF_USE_DEFAULT: 0>",
+      "has_body_setup": true,
+      "load_ok": true,
+      "local_bounds": {
+        "dimensions": {
+          "x": 2553.6336669921875,
+          "y": 1725.6919555664062,
+          "z": 678.7514486312866
+        },
+        "dominant_axis": "X",
+        "max": {
+          "x": 1389.6090087890625,
+          "y": 862.845947265625,
+          "z": 681.1976318359375
+        },
+        "min": {
+          "x": -1164.024658203125,
+          "y": -862.8460083007812,
+          "z": 2.446183204650879
+        }
+      },
+      "lod_count": -1,
+      "material_slots": 9,
+      "materials": [
+        {
+          "asset": "/Game/Assets/Arma/fly-01/mainbody_mat.mainbody_mat",
+          "imported_slot_name": "mainbody_mat",
+          "slot_name": "mainbody_mat"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/cockpit.cockpit",
+          "imported_slot_name": "cockpit",
+          "slot_name": "cockpit"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/engines.engines",
+          "imported_slot_name": "engines",
+          "slot_name": "engines"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/rocket.rocket",
+          "imported_slot_name": "rocket",
+          "slot_name": "rocket"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/lasers.lasers",
+          "imported_slot_name": "lasers",
+          "slot_name": "lasers"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/intakes.intakes",
+          "imported_slot_name": "intakes",
+          "slot_name": "intakes"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/empty_black.empty_black",
+          "imported_slot_name": "empty_black",
+          "slot_name": "empty_black"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/nose_mat.nose_mat",
+          "imported_slot_name": "nose_mat",
+          "slot_name": "nose_mat"
+        },
+        {
+          "asset": null,
+          "imported_slot_name": "stripes",
+          "slot_name": "stripes"
+        }
+      ],
+      "mesh_kind": "StaticMesh",
+      "missing_material_slots": 1,
+      "package_name": "/Game/Assets/Arma/fly-01/space_mouse_fbx",
+      "package_path": "/Game/Assets/Arma/fly-01",
+      "simple_collision_count": -1
+    },
+    {
+      "asset_name": "stripes",
+      "class": "MaterialInstanceConstant",
+      "load_ok": true,
+      "package_name": "/Game/Assets/Arma/fly-01/stripes",
+      "package_path": "/Game/Assets/Arma/fly-01"
+    },
+    {
+      "asset_name": "SM_Wingman_Mass",
+      "class": "StaticMesh",
+      "collision_trace_flag": "<CollisionTraceFlag.CTF_USE_DEFAULT: 0>",
+      "has_body_setup": true,
+      "load_ok": true,
+      "local_bounds": {
+        "dimensions": {
+          "x": 2680.4818115234375,
+          "y": 1735.29443359375,
+          "z": 687.568359375
+        },
+        "dominant_axis": "X",
+        "max": {
+          "x": 1516.4570922851562,
+          "y": 867.6471862792969,
+          "z": 681.1976318359375
+        },
+        "min": {
+          "x": -1164.0247192382812,
+          "y": -867.6472473144531,
+          "z": -6.3707275390625
+        }
+      },
+      "lod_count": -1,
+      "material_slots": 9,
+      "materials": [
+        {
+          "asset": "/Game/Assets/Arma/fly-01/mainbody_mat.mainbody_mat",
+          "imported_slot_name": "mainbody_mat",
+          "slot_name": "mainbody_mat"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/cockpit.cockpit",
+          "imported_slot_name": "cockpit",
+          "slot_name": "cockpit"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/engines.engines",
+          "imported_slot_name": "engines",
+          "slot_name": "engines"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/rocket.rocket",
+          "imported_slot_name": "rocket",
+          "slot_name": "rocket"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/lasers.lasers",
+          "imported_slot_name": "lasers",
+          "slot_name": "lasers"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/intakes.intakes",
+          "imported_slot_name": "intakes",
+          "slot_name": "intakes"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/empty_black.empty_black",
+          "imported_slot_name": "empty_black",
+          "slot_name": "empty_black"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/nose_mat.nose_mat",
+          "imported_slot_name": "nose_mat",
+          "slot_name": "nose_mat"
+        },
+        {
+          "asset": "/Game/Assets/Arma/fly-01/stripes.stripes",
+          "imported_slot_name": "stripes",
+          "slot_name": "stripes"
+        }
+      ],
+      "mesh_kind": "StaticMesh",
+      "missing_material_slots": 0,
+      "package_name": "/Game/GuLiStrike/Wingman/SM_Wingman_Mass",
+      "package_path": "/Game/GuLiStrike/Wingman",
+      "simple_collision_count": -1
+    },
+    {
+      "asset_name": "ST_WingmanGroupBehavior",
+      "class": "StateTree",
+      "load_ok": true,
+      "package_name": "/Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior",
+      "package_path": "/Game/GuLiStrike/Wingman"
+    }
+  ],
+  "project_dir": "D:/UE5.7/test1/",
+  "schema": 1,
+  "search_paths": {
+    "/Game/Assets/Arma/fly-01": [
+      {
+        "asset_name": "cockpit",
+        "class": "MaterialInstanceConstant",
+        "package_name": "/Game/Assets/Arma/fly-01/cockpit",
+        "package_path": "/Game/Assets/Arma/fly-01"
+      },
+      {
+        "asset_name": "empty_black",
+        "class": "MaterialInstanceConstant",
+        "package_name": "/Game/Assets/Arma/fly-01/empty_black",
+        "package_path": "/Game/Assets/Arma/fly-01"
+      },
+      {
+        "asset_name": "engines",
+        "class": "MaterialInstanceConstant",
+        "package_name": "/Game/Assets/Arma/fly-01/engines",
+        "package_path": "/Game/Assets/Arma/fly-01"
+      },
+      {
+        "asset_name": "intakes",
+        "class": "MaterialInstanceConstant",
+        "package_name": "/Game/Assets/Arma/fly-01/intakes",
+        "package_path": "/Game/Assets/Arma/fly-01"
+      },
+      {
+        "asset_name": "lasers",
+        "class": "MaterialInstanceConstant",
+        "package_name": "/Game/Assets/Arma/fly-01/lasers",
+        "package_path": "/Game/Assets/Arma/fly-01"
+      },
+      {
+        "asset_name": "mainbody_mat",
+        "class": "MaterialInstanceConstant",
+        "package_name": "/Game/Assets/Arma/fly-01/mainbody_mat",
+        "package_path": "/Game/Assets/Arma/fly-01"
+      },
+      {
+        "asset_name": "nose_mat",
+        "class": "MaterialInstanceConstant",
+        "package_name": "/Game/Assets/Arma/fly-01/nose_mat",
+        "package_path": "/Game/Assets/Arma/fly-01"
+      },
+      {
+        "asset_name": "rocket",
+        "class": "MaterialInstanceConstant",
+        "package_name": "/Game/Assets/Arma/fly-01/rocket",
+        "package_path": "/Game/Assets/Arma/fly-01"
+      },
+      {
+        "asset_name": "space_mouse_fbx",
+        "class": "StaticMesh",
+        "package_name": "/Game/Assets/Arma/fly-01/space_mouse_fbx",
+        "package_path": "/Game/Assets/Arma/fly-01"
+      },
+      {
+        "asset_name": "stripes",
+        "class": "MaterialInstanceConstant",
+        "package_name": "/Game/Assets/Arma/fly-01/stripes",
+        "package_path": "/Game/Assets/Arma/fly-01"
+      }
+    ],
+    "/Game/GuLiStrike/Navigation/Baked": [
+      {
+        "asset_name": "DA_FlightNav_LVL_CommanderMassPrototype",
+        "class": "GuLiFlightNavigationData",
+        "package_name": "/Game/GuLiStrike/Navigation/Baked/LVL_CommanderMassPrototype/DA_FlightNav_LVL_CommanderMassPrototype",
+        "package_path": "/Game/GuLiStrike/Navigation/Baked/LVL_CommanderMassPrototype"
+      },
+      {
+        "asset_name": "DA_FlightNav_LVL_Main",
+        "class": "GuLiFlightNavigationData",
+        "package_name": "/Game/GuLiStrike/Navigation/Baked/LVL_Main/DA_FlightNav_LVL_Main",
+        "package_path": "/Game/GuLiStrike/Navigation/Baked/LVL_Main"
+      },
+      {
+        "asset_name": "DA_FlightNav_LVL_ShipTest",
+        "class": "GuLiFlightNavigationData",
+        "package_name": "/Game/GuLiStrike/Navigation/Baked/LVL_ShipTest/DA_FlightNav_LVL_ShipTest",
+        "package_path": "/Game/GuLiStrike/Navigation/Baked/LVL_ShipTest"
+      }
+    ],
+    "/Game/GuLiStrike/Wingman": [
+      {
+        "asset_name": "SM_Wingman_Mass",
+        "class": "StaticMesh",
+        "package_name": "/Game/GuLiStrike/Wingman/SM_Wingman_Mass",
+        "package_path": "/Game/GuLiStrike/Wingman"
+      },
+      {
+        "asset_name": "ST_WingmanGroupBehavior",
+        "class": "StateTree",
+        "package_name": "/Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior",
+        "package_path": "/Game/GuLiStrike/Wingman"
+      }
+    ]
+  }
+}

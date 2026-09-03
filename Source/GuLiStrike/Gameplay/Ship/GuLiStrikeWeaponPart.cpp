@@ -7,7 +7,7 @@
 
 void UGuLiStrikeWeaponPart::Fire_Implementation(AActor* Instigator)
 {
-	const AGuLiStrikeShip* Ship = Cast<AGuLiStrikeShip>(Instigator);
+	AGuLiStrikeShip* Ship = Cast<AGuLiStrikeShip>(Instigator);
 	// native 父实现也独立守门：只有服务器当前 Air Pawn 的已装武器能够产生真实弹丸。
 	if (!Ship || !Ship->CanExecuteServerWeapon(this) || !ProjectileClass || !GetWorld())
 	{
@@ -29,10 +29,18 @@ void UGuLiStrikeWeaponPart::Fire_Implementation(AActor* Instigator)
 	if (!Ship->GetServerPartTransform(this, MuzzleTransform)) { return; }
 	MuzzleTransform.SetLocation(MuzzleTransform.TransformPosition(MuzzleOffset));
 
-	FActorSpawnParameters SpawnParameters;
-	SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-	SpawnParameters.Owner = Instigator;
-	SpawnParameters.Instigator = Cast<APawn>(Instigator);
-
-	GetWorld()->SpawnActor<AGuLiStrikeProjectile>(ProjectileClass, MuzzleTransform, SpawnParameters);
+	// Deferred spawning guarantees the immutable ledger identity is present before
+	// collision/movement components activate, including for a muzzle already touching a target.
+	if (AGuLiStrikeProjectile* Projectile = GetWorld()->SpawnActorDeferred<AGuLiStrikeProjectile>(
+		ProjectileClass,
+		MuzzleTransform,
+		Ship,
+		Ship,
+		ESpawnActorCollisionHandlingMethod::AlwaysSpawn))
+	{
+		// 不迁移到 GA：沿用现有 WeaponPart -> replicated Actor projectile 链，
+		// 只附加稳定 Source TargetHandle、一次性事件 ID 与 Damage Ledger 数值。
+		Projectile->ConfigureServerDamageLedger(*Ship, Damage);
+		Projectile->FinishSpawning(MuzzleTransform);
+	}
 }

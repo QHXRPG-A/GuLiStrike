@@ -1,0 +1,81 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "A89ED60D4C403468FDCF2EAB3682D8A3",
+			"instanceName": "DESKTOP-6D3B0FC-17016",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-13.44.01",
+	"succeeded": 1,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.042457401752471924,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "QuickSmoke",
+			"fullTestPath": "GuLiStrike.Wingman.Performance.FormalScale100.QuickSmoke",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A89ED60D4C403468FDCF2EAB3682D8A3"
+			],
+			"duration": 0.042457401752471924,
+			"dateTime": "2026.09.02-13.44.00",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "GULI_PERF_METRICS {\"schema\":\"guli.wingman.performance.v1\",\"run\":\"S9-100-QuickSmoke-Owner\",\"scope\":\"owner_mass_mode_guidance_avoidance_integration_no_render_no_authored_nav\",\"formal_gate\":false,\"fixed_hz\":30,\"entity_count\":100,\"sample_count\":30,\"quantile_method\":\"nearest-rank\",\"step_p50_ms\":0.271600,\"step_p95_ms\":0.308499,\"step_max_ms\":0.339400,\"setup_ms\":6.419100,\"total_measured_ms\":8.331597,\"throughput_entities_per_second\":360075.032,\"queue_max_depth\":30,\"queue_capacity\":30,\"queue_oldest_age_ms\":8.064702,\"queue_final_depth\":0,\"drop_count\":0,\"approx_entity_payload_bytes\":64500,\"process_resident_delta_bytes_approx\":1167360,\"presentation_actor_count\":0,\"transform_advanced\":true}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-13.44.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "GULI_PERF_METRICS {\"schema\":\"guli.wingman.performance.v1\",\"run\":\"S9-100-QuickSmoke-Server\",\"scope\":\"strict_flight_grant_atomic_relay_validate_store_payload_copy_only\",\"formal_gate\":false,\"wingman_count\":100,\"candidate_count\":160,\"accepted_candidate_count\":160,\"accepted_store_count\":160,\"relay_count\":4,\"relayed_sample_count\":800,\"cruise_hz\":5,\"cruise_captures_per_group\":4,\"combat_hz\":10,\"combat_captures_per_group\":4,\"sample_count\":40,\"candidates_per_service_step\":4,\"quantile_method\":\"nearest-rank\",\"step_p50_ms\":0.102498,\"step_p95_ms\":0.114199,\"step_max_ms\":0.177700,\"setup_ms\":1.370098,\"total_measured_ms\":4.224300,\"throughput_candidates_per_second\":37876.094,\"throughput_samples_per_second\":189380.472,\"queue_max_depth\":160,\"queue_capacity\":160,\"queue_oldest_age_ms\":4.170798,\"queue_final_depth\":0,\"drop_count\":0,\"approx_replay_payload_bytes\":296960,\"process_resident_delta_bytes_approx\":167936,\"server_wingman_motion_step_count\":0}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-13.44.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "QuickSmoke explicitly excludes 10-minute duration, real networking, 500 Commander control comparison, bandwidth, and Network Insights.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-13.44.01"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

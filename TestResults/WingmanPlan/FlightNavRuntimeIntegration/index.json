@@ -1,0 +1,134 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "141A14F843B805C87CA7C39CF56ECADB",
+			"instanceName": "DESKTOP-6D3B0FC-39300",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-11.48.37",
+	"succeeded": 7,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.077055290341377258,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AgentRadiusFringeSourceStaleness",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.AgentRadiusFringeSourceStaleness",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"141A14F843B805C87CA7C39CF56ECADB"
+			],
+			"duration": 0.023911099880933762,
+			"dateTime": "2026.09.02-11.48.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DeterministicBakeAndPath",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.DeterministicBakeAndPath",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"141A14F843B805C87CA7C39CF56ECADB"
+			],
+			"duration": 0.0096274018287658691,
+			"dateTime": "2026.09.02-11.48.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DisconnectedComponents",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.DisconnectedComponents",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"141A14F843B805C87CA7C39CF56ECADB"
+			],
+			"duration": 0.0097769983112812042,
+			"dateTime": "2026.09.02-11.48.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SettingsHashCoversBakeContract",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.SettingsHashCoversBakeContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"141A14F843B805C87CA7C39CF56ECADB"
+			],
+			"duration": 0.0083441995084285736,
+			"dateTime": "2026.09.02-11.48.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VolumeSourceStaleness",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.VolumeSourceStaleness",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"141A14F843B805C87CA7C39CF56ECADB"
+			],
+			"duration": 0.0086902976036071777,
+			"dateTime": "2026.09.02-11.48.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MetadataFieldsAffectChecksum",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.MetadataFieldsAffectChecksum",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"141A14F843B805C87CA7C39CF56ECADB"
+			],
+			"duration": 0.0081991031765937805,
+			"dateTime": "2026.09.02-11.48.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PathAndChecksum",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.PathAndChecksum",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"141A14F843B805C87CA7C39CF56ECADB"
+			],
+			"duration": 0.0085061974823474884,
+			"dateTime": "2026.09.02-11.48.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

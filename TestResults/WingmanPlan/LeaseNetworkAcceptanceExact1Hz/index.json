@@ -1,0 +1,125 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "00FC220C489B20AD2ACB3B97DA10DA4B",
+			"instanceName": "DESKTOP-6D3B0FC-2720",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-15.35.03",
+	"succeeded": 3,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.020446199923753738,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "DeterministicWeakNetworkRecovery",
+			"fullTestPath": "GuLiStrike.Wingman.NetworkAcceptance.DeterministicWeakNetworkRecovery",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"00FC220C489B20AD2ACB3B97DA10DA4B"
+			],
+			"duration": 0.0038800016045570374,
+			"dateTime": "2026.09.02-15.35.03",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "metrics={\"formal_gate\":false,\"transport\":\"deterministic_in_memory\",\"configured_rtt_ms\":500,\"original_packets\":20,\"lost_original_packets\":1,\"loss_percent\":5,\"duplicates\":2,\"reordered_deliveries\":7,\"accepted_packets\":5,\"non_accepted_packets\":16,\"mean_simulated_rtt_ms\":509.000}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-15.35.03"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "formal_gate=false; deterministic in-memory weak-network harness only; not socket/multiprocess evidence; source Dedicated Server remains blocked by engine distribution",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-15.35.03"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ListenHostWireDtoParity",
+			"fullTestPath": "GuLiStrike.Wingman.NetworkAcceptance.ListenHostWireDtoParity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"00FC220C489B20AD2ACB3B97DA10DA4B"
+			],
+			"duration": 0.0078295990824699402,
+			"dateTime": "2026.09.02-15.35.03",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "formal_gate=false; scope=deterministic_in_memory_wire_contract; not_socket_or_multiprocess_evidence=true; source_dedicated_server_blocked=true",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-15.35.03"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemotePresentationExtrapolateFadeHide",
+			"fullTestPath": "GuLiStrike.Wingman.NetworkAcceptance.RemotePresentationExtrapolateFadeHide",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"00FC220C489B20AD2ACB3B97DA10DA4B"
+			],
+			"duration": 0.0087365992367267609,
+			"dateTime": "2026.09.02-15.35.03",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "formal_gate=false; presentation policy regression; no rendered/socket evidence",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-15.35.03"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

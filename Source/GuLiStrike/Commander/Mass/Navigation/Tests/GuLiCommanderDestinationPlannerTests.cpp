@@ -216,6 +216,175 @@ bool FGuLiDestinationPlannerHexCandidateOrderingTest::RunTest(const FString& Par
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiDestinationPlannerProjectionPrefixTest,
+	"GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.ProjectionPrefix",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiDestinationPlannerProjectionPrefixTest::RunTest(const FString& Parameters)
+{
+	(void)Parameters;
+	using namespace GuLiCommanderDestinationPlanner;
+	TArray<FFreeDestinationCandidate> Candidates;
+	if (!TestTrue(TEXT("hex candidate build succeeds"),
+		BuildHexCandidates(FHexCandidateRequest(), Candidates)))
+	{
+		return false;
+	}
+
+	TestEqual(TEXT("zero requested candidates produces an empty prefix"),
+		FindProjectionPrefixEnd(Candidates, 0), 0);
+	TestEqual(TEXT("negative requested candidates produces an empty prefix"),
+		FindProjectionPrefixEnd(Candidates, -10), 0);
+	TestEqual(TEXT("an empty candidate view produces an empty prefix"),
+		FindProjectionPrefixEnd(TConstArrayView<FFreeDestinationCandidate>(), 10), 0);
+	TestEqual(TEXT("the center is a complete one-candidate shell"),
+		FindProjectionPrefixEnd(Candidates, 1), 1);
+	TestEqual(TEXT("requesting the first neighbor completes the seven-candidate shell"),
+		FindProjectionPrefixEnd(Candidates, 2), 7);
+	TestEqual(TEXT("requesting beyond the first ring completes the next distance shell"),
+		FindProjectionPrefixEnd(Candidates, 8), 13);
+	TestEqual(TEXT("request beyond the pool clamps to the complete pool"),
+		FindProjectionPrefixEnd(Candidates, Candidates.Num() + 100), Candidates.Num());
+
+	int32 PreviousPrefixEnd = 0;
+	for (int32 MinimumCandidateCount = 1; MinimumCandidateCount <= 320;
+		++MinimumCandidateCount)
+	{
+		const int32 PrefixEnd = FindProjectionPrefixEnd(Candidates, MinimumCandidateCount);
+		if (!TestTrue(TEXT("prefix contains the requested number of candidates"),
+			PrefixEnd >= MinimumCandidateCount))
+		{
+			return false;
+		}
+		if (!TestTrue(TEXT("prefix limits increase monotonically"),
+			PrefixEnd >= PreviousPrefixEnd))
+		{
+			return false;
+		}
+		if (PrefixEnd < Candidates.Num()
+			&& !TestTrue(TEXT("prefix ends between complete distance shells"),
+				Candidates[PrefixEnd - 1].DistanceSquaredFromAnchor
+					< Candidates[PrefixEnd].DistanceSquaredFromAnchor))
+		{
+			return false;
+		}
+		if (!TestEqual(TEXT("prefix is the smallest complete shell containing the request"),
+			Candidates[PrefixEnd - 1].DistanceSquaredFromAnchor,
+			Candidates[MinimumCandidateCount - 1].DistanceSquaredFromAnchor))
+		{
+			return false;
+		}
+		PreviousPrefixEnd = PrefixEnd;
+	}
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiDestinationPlannerProjectionPrefixAssignmentEquivalenceTest,
+	"GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.ProjectionPrefixAssignmentEquivalence",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiDestinationPlannerProjectionPrefixAssignmentEquivalenceTest::RunTest(
+	const FString& Parameters)
+{
+	(void)Parameters;
+	using namespace GuLiCommanderDestinationPlanner;
+	using namespace GuLiCommanderDestinationPlannerTests;
+	for (const int32 SoldierCount : { 1, 25, 50, 250, 500 })
+	{
+		const FRequest Request = MakeRequest(SoldierCount);
+		FHexCandidateRequest CandidateRequest;
+		CandidateRequest.TargetAnchor = Request.TargetAnchor;
+		TArray<FFreeDestinationCandidate> Candidates;
+		if (!TestTrue(TEXT("hex candidates build"),
+			BuildHexCandidates(CandidateRequest, Candidates)))
+		{
+			return false;
+		}
+
+		const int32 ReserveSlotCount = FMath::Clamp(
+			FMath::CeilToInt(static_cast<float>(SoldierCount) * 0.25f), 8, 32);
+		const int32 DesiredLegalSlotCount = SoldierCount + ReserveSlotCount;
+		TArray<FFreeDestinationSlot> FullLegalSlots;
+		int32 DesiredLegalCandidateCount = INDEX_NONE;
+		for (const FFreeDestinationCandidate& Candidate : Candidates)
+		{
+			// A stable sparse mask models projection/reservation rejection without
+			// introducing any world or NavMesh dependency into the pure test.
+			if (Candidate.CandidateIndex % 7 == 3)
+			{
+				continue;
+			}
+			FullLegalSlots.Add(MakeFreeSlot(Candidate));
+			if (FullLegalSlots.Num() == DesiredLegalSlotCount)
+			{
+				DesiredLegalCandidateCount = Candidate.CandidateIndex + 1;
+			}
+		}
+		if (!TestTrue(TEXT("sparse pool contains the desired legal-slot reserve"),
+			DesiredLegalCandidateCount > 0))
+		{
+			return false;
+		}
+
+		const int32 PrefixEnd = FindProjectionPrefixEnd(
+			Candidates, DesiredLegalCandidateCount);
+		TArray<FFreeDestinationSlot> PrefixLegalSlots;
+		for (const FFreeDestinationSlot& Slot : FullLegalSlots)
+		{
+			if (Slot.CandidateIndex >= PrefixEnd)
+			{
+				break;
+			}
+			PrefixLegalSlots.Add(Slot);
+		}
+		Algo::Reverse(PrefixLegalSlots);
+
+		FFreeAssignmentPlan PrefixPlan;
+		FFreeAssignmentPlan FullPlan;
+		if (!TestTrue(TEXT("prefix assignment succeeds"), AssignFreeDestinations(
+				Request, PrefixLegalSlots, DefaultSoftAnchorPitchCentimeters, PrefixPlan))
+			|| !TestTrue(TEXT("complete-pool assignment succeeds"), AssignFreeDestinations(
+				Request, FullLegalSlots, DefaultSoftAnchorPitchCentimeters, FullPlan)))
+		{
+			return false;
+		}
+		if (!TestTrue(TEXT("prefix assignment is complete"), PrefixPlan.IsComplete())
+			|| !TestTrue(TEXT("complete-pool assignment is complete"), FullPlan.IsComplete()))
+		{
+			return false;
+		}
+
+		const TMap<uint32, TPair<int32, FVector>> PrefixAssignments =
+			MakeFreeAssignmentMap(PrefixPlan);
+		const TMap<uint32, TPair<int32, FVector>> FullAssignments =
+			MakeFreeAssignmentMap(FullPlan);
+		if (!TestEqual(TEXT("prefix and complete pool assign the same member count"),
+			PrefixAssignments.Num(), FullAssignments.Num()))
+		{
+			return false;
+		}
+		for (const TPair<uint32, TPair<int32, FVector>>& Assignment : PrefixAssignments)
+		{
+			const TPair<int32, FVector>* FullAssignment =
+				FullAssignments.Find(Assignment.Key);
+			if (!TestNotNull(TEXT("member exists in complete-pool assignment"), FullAssignment))
+			{
+				return false;
+			}
+			if (!TestEqual(TEXT("member keeps the same candidate"),
+				Assignment.Value.Key, FullAssignment->Key)
+				|| !TestTrue(TEXT("member keeps the same world destination"),
+					Assignment.Value.Value.Equals(FullAssignment->Value, 0.001)))
+			{
+				return false;
+			}
+		}
+	}
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FGuLiDestinationPlannerFreeAssignmentInvariantTest,
 	"GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.FreeAssignmentInvariant",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)

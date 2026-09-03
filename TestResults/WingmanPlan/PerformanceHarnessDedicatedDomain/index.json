@@ -1,0 +1,97 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "6D7F946842806D31995B749EB2C14844",
+			"instanceName": "DESKTOP-6D3B0FC-48792",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-13.43.23",
+	"succeeded": 2,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.016125403344631195,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "InMemoryZeroCounters",
+			"fullTestPath": "GuLiStrike.Wingman.Performance.DedicatedExecutionDomain.InMemoryZeroCounters",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"6D7F946842806D31995B749EB2C14844"
+			],
+			"duration": 0.0080389007925987244,
+			"dateTime": "2026.09.02-13.43.23",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "GULI_PERF_METRICS {\"schema\":\"guli.wingman.execution-domain.v1\",\"run\":\"Dedicated-InMemory-ZeroCounters\",\"formal_dedicated_process_gate\":false,\"server_wingman_state_tree_tick_count\":0,\"server_wingman_astar_request_count\":0,\"server_wingman_path_request_count\":0,\"server_wingman_steering_step_count\":0,\"server_wingman_flight_integration_step_count\":0,\"server_generated_runtime_transform_count\":0,\"server_wingman_motion_step_count\":0}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-13.43.23"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "These are static/in-memory dispatch counters; a source-engine Dedicated executable run remains a separate hard gate.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-13.43.23"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaticGates",
+			"fullTestPath": "GuLiStrike.Wingman.Performance.DedicatedExecutionDomain.StaticGates",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"6D7F946842806D31995B749EB2C14844"
+			],
+			"duration": 0.0080865025520324707,
+			"dateTime": "2026.09.02-13.43.23",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "GULI_PERF_METRICS {\"schema\":\"guli.wingman.execution-domain.v1\",\"run\":\"Dedicated-Static-Gates\",\"formal_dedicated_process_gate\":false,\"server_wingman_state_tree_domain_count\":0,\"server_wingman_astar_domain_count\":0,\"server_wingman_mode_processor_domain_count\":0,\"server_wingman_guidance_processor_domain_count\":0,\"server_wingman_steering_processor_domain_count\":0,\"server_wingman_integration_processor_domain_count\":0,\"server_generated_transform_writer_domain_count\":0}",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.02-13.43.23"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

@@ -13,6 +13,15 @@
 
 namespace GuLiShipMovement
 {
+	// CarrierSourceRef is consumed across actor channels and may legally remain pending for
+	// 0.25 seconds.  Recording once per uncapped authority render frame can otherwise evict a
+	// 256-entry history in less than that window under NullRHI or very high refresh rates.
+	// 60 Hz remains finer than the 30 Hz Wingman simulation and lets the 256-entry ring
+	// cover more than four seconds. That span safely contains the two-second Candidate
+	// capture window, its 0.25-second cross-channel pending allowance, and a near-revoke
+	// Resume lookup without making history growth depend on render rate.
+	constexpr double CanonicalMoveSampleIntervalSeconds = 1.0 / 60.0;
+
 	uint32 NextRevision(const uint32 Current)
 	{
 		const uint32 Next = Current + 1u;
@@ -30,6 +39,79 @@ namespace GuLiShipMovement
 			&& Lhs.bBoost == Rhs.bBoost && Lhs.bSimulationEnabled == Rhs.bSimulationEnabled
 			&& Lhs.ConfigRevision == Rhs.ConfigRevision && Lhs.BarrierGeneration == Rhs.BarrierGeneration;
 	}
+}
+
+bool FGuLiShipCanonicalMoveState::IsValid() const
+{
+	return CanonicalEpoch != 0u && MoveRevision != 0u && MovementConfigRevision != 0u
+		&& BarrierGeneration != 0u && FMath::IsFinite(ServerWorldTimeSeconds)
+		&& ServerWorldTimeSeconds >= 0.0 && !Transform.ContainsNaN() && !Velocity.ContainsNaN();
+}
+
+void FGuLiShipCanonicalMoveHistory::Reset(const uint32 NewEpoch, const int32 InMaxEntries)
+{
+	CanonicalEpoch = NewEpoch == 0u ? 1u : NewEpoch;
+	LatestRevision = 0u;
+	MaxEntries = FMath::Max(1, InMaxEntries);
+	States.Reset(MaxEntries);
+}
+
+const FGuLiShipCanonicalMoveState& FGuLiShipCanonicalMoveHistory::Append(
+	const double ServerWorldTimeSeconds, const FTransform& Transform, const FVector& Velocity,
+	const uint32 MovementConfigRevision, const uint32 BarrierGeneration)
+{
+	if (CanonicalEpoch == 0u)
+	{
+		Reset(1u, MaxEntries);
+	}
+	if (LatestRevision == MAX_uint32)
+	{
+		Reset(GuLiShipMovement::NextRevision(CanonicalEpoch), MaxEntries);
+	}
+
+	LatestRevision = GuLiShipMovement::NextRevision(LatestRevision);
+	FGuLiShipCanonicalMoveState& State = States.AddDefaulted_GetRef();
+	State.CanonicalEpoch = CanonicalEpoch;
+	State.MoveRevision = LatestRevision;
+	State.MovementConfigRevision = MovementConfigRevision;
+	State.BarrierGeneration = BarrierGeneration;
+	State.ServerWorldTimeSeconds = ServerWorldTimeSeconds;
+	State.Transform = Transform;
+	State.Velocity = Velocity;
+
+	const int32 Overflow = States.Num() - MaxEntries;
+	if (Overflow > 0)
+	{
+		States.RemoveAt(0, Overflow, EAllowShrinking::No);
+	}
+	return States.Last();
+}
+
+EGuLiShipCanonicalMoveLookupResult FGuLiShipCanonicalMoveHistory::Lookup(
+	const uint32 Epoch, const uint32 Revision, FGuLiShipCanonicalMoveState& OutState) const
+{
+	OutState = FGuLiShipCanonicalMoveState();
+	if (CanonicalEpoch == 0u || LatestRevision == 0u || States.IsEmpty() || Epoch == 0u || Revision == 0u)
+	{
+		return EGuLiShipCanonicalMoveLookupResult::Unavailable;
+	}
+	if (Epoch != CanonicalEpoch)
+	{
+		return EGuLiShipCanonicalMoveLookupResult::EpochMismatch;
+	}
+	if (static_cast<int32>(Revision - LatestRevision) > 0)
+	{
+		return EGuLiShipCanonicalMoveLookupResult::Pending;
+	}
+	for (int32 Index = States.Num() - 1; Index >= 0; --Index)
+	{
+		if (States[Index].MoveRevision == Revision)
+		{
+			OutState = States[Index];
+			return EGuLiShipCanonicalMoveLookupResult::Found;
+		}
+	}
+	return EGuLiShipCanonicalMoveLookupResult::Expired;
 }
 
 bool FGuLiShipMovementConfig::IsValid() const
@@ -280,6 +362,11 @@ void UGuLiShipMovementComponent::BeginPlay()
 	Super::BeginPlay();
 	SetMovementMode(MOVE_Flying);
 	RefreshMovementSynchronization();
+	if (GetOwner() && GetOwner()->HasAuthority())
+	{
+		ResetCanonicalMoveHistory();
+		RecordCanonicalMoveAfterAuthoritySimulation();
+	}
 }
 
 void UGuLiShipMovementComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -293,6 +380,76 @@ bool UGuLiShipMovementComponent::HasLocalFlightController() const
 {
 	return !bEndingPlay && CharacterOwner && CharacterOwner->IsLocallyControlled()
 		&& CharacterOwner->GetController() && CharacterOwner->GetController()->GetPawn() == CharacterOwner;
+}
+
+uint32 UGuLiShipMovementComponent::GetCanonicalEpoch() const
+{
+	return GetOwner() && GetOwner()->HasAuthority() ? CanonicalMoveHistory.GetEpoch() : 0u;
+}
+
+uint32 UGuLiShipMovementComponent::GetCanonicalMoveRevision() const
+{
+	return GetOwner() && GetOwner()->HasAuthority() ? CanonicalMoveHistory.GetLatestRevision() : 0u;
+}
+
+EGuLiShipCanonicalMoveLookupResult UGuLiShipMovementComponent::LookupCanonicalMove(
+	const uint32 CanonicalEpoch, const uint32 MoveRevision, FGuLiShipCanonicalMoveState& OutState) const
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		OutState = FGuLiShipCanonicalMoveState();
+		return EGuLiShipCanonicalMoveLookupResult::Unavailable;
+	}
+	return CanonicalMoveHistory.Lookup(CanonicalEpoch, MoveRevision, OutState);
+}
+
+bool UGuLiShipMovementComponent::GetLatestCanonicalMove(FGuLiShipCanonicalMoveState& OutState) const
+{
+	OutState = FGuLiShipCanonicalMoveState();
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		return false;
+	}
+	const FGuLiShipCanonicalMoveState* Latest = CanonicalMoveHistory.GetLatest();
+	if (!Latest)
+	{
+		return false;
+	}
+	OutState = *Latest;
+	return OutState.IsValid();
+}
+
+void UGuLiShipMovementComponent::ResetCanonicalMoveHistory()
+{
+	CanonicalMoveHistory.Reset(GuLiShipMovement::NextRevision(CanonicalMoveHistory.GetEpoch()));
+}
+
+void UGuLiShipMovementComponent::RecordCanonicalMoveAfterAuthoritySimulation()
+{
+	if (!GetOwner() || !GetOwner()->HasAuthority() || !CharacterOwner || !GetWorld()
+		|| MovementSyncState.ConfigRevision == 0u || MovementSyncState.BarrierGeneration == 0u)
+	{
+		return;
+	}
+	const FTransform Transform = CharacterOwner->GetActorTransform();
+	if (Transform.ContainsNaN() || Velocity.ContainsNaN())
+	{
+		return;
+	}
+	const double ServerWorldTimeSeconds = static_cast<double>(GetWorld()->GetTimeSeconds());
+	const FGuLiShipCanonicalMoveState* Latest = CanonicalMoveHistory.GetLatest();
+	const bool bConfigurationBoundary = Latest
+		&& (Latest->MovementConfigRevision != MovementSyncState.ConfigRevision
+			|| Latest->BarrierGeneration != MovementSyncState.BarrierGeneration);
+	if (Latest && !bConfigurationBoundary
+		&& ServerWorldTimeSeconds >= Latest->ServerWorldTimeSeconds
+		&& ServerWorldTimeSeconds - Latest->ServerWorldTimeSeconds
+			+ UE_DOUBLE_SMALL_NUMBER < GuLiShipMovement::CanonicalMoveSampleIntervalSeconds)
+	{
+		return;
+	}
+	CanonicalMoveHistory.Append(ServerWorldTimeSeconds, Transform, Velocity,
+		MovementSyncState.ConfigRevision, MovementSyncState.BarrierGeneration);
 }
 
 void UGuLiShipMovementComponent::AddThrustInput(const FVector& LocalDirection)
@@ -440,6 +597,7 @@ bool UGuLiShipMovementComponent::CommitServerMovementConfig(const FGuLiShipMovem
 	FGuLiConnectionBootstrapState Identity;
 	BuildCurrentConnectionIdentity(Identity);
 	BeginServerMovementBarrier(Identity);
+	RecordCanonicalMoveAfterAuthoritySimulation();
 	RefreshServerMovementSynchronization();
 	return true;
 }
@@ -725,6 +883,7 @@ void UGuLiShipMovementComponent::PerformMovement(const float DeltaTime)
 	{
 		// 原 Ship 在 CMC 位移之后的 Actor Tick 转向；现在放进同一次 SavedMove，仍只积分一次。
 		IntegrateFlightRotation(DeltaTime, WorldThrustIntent);
+		RecordCanonicalMoveAfterAuthoritySimulation();
 	}
 }
 
@@ -789,6 +948,8 @@ void UGuLiShipMovementComponent::ResetPredictionData_Server()
 	BuildCurrentConnectionIdentity(Identity);
 	BeginServerMovementBarrier(Identity);
 	ServerPredictionBarrierFloor = MovementSyncState.BarrierGeneration;
+	ResetCanonicalMoveHistory();
+	RecordCanonicalMoveAfterAuthoritySimulation();
 }
 
 bool UGuLiShipMovementComponent::ClientUpdatePositionAfterServerUpdate()

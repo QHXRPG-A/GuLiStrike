@@ -1,0 +1,74 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "77C05A02484F2AA2869739A8EE2F54BF",
+			"instanceName": "DESKTOP-6D3B0FC-45688",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-14.10.42",
+	"succeeded": 3,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.031812701374292374,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "CommanderReplacementAndStaleHost",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.CommanderReplacementAndStaleHost",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"77C05A02484F2AA2869739A8EE2F54BF"
+			],
+			"duration": 0.013397198170423508,
+			"dateTime": "2026.09.02-14.10.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NewMatchEpochClearsLedger",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.NewMatchEpochClearsLedger",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"77C05A02484F2AA2869739A8EE2F54BF"
+			],
+			"duration": 0.0089945010840892792,
+			"dateTime": "2026.09.02-14.10.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PawnReplacementAndASCRebinding",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.PawnReplacementAndASCRebinding",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"77C05A02484F2AA2869739A8EE2F54BF"
+			],
+			"duration": 0.0094210021197795868,
+			"dateTime": "2026.09.02-14.10.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

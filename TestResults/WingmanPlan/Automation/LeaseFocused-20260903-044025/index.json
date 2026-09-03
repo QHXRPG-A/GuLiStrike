@@ -1,0 +1,162 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "E558D1A749B2D42E070C31A5E0C39624",
+			"instanceName": "DESKTOP-6D3B0FC-47840",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-20.40.42",
+	"succeeded": 7,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.15303941071033478,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "ActiveRosterCutPreservesFlightState",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.ActiveRosterCutPreservesFlightState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E558D1A749B2D42E070C31A5E0C39624"
+			],
+			"duration": 0.0082336999475955963,
+			"dateTime": "2026.09.02-20.40.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExactCadenceAndInitialDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.ExactCadenceAndInitialDeadline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E558D1A749B2D42E070C31A5E0C39624"
+			],
+			"duration": 0.0084572024643421173,
+			"dateTime": "2026.09.02-20.40.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FreshnessHeartbeatAndPendingOffer",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.FreshnessHeartbeatAndPendingOffer",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E558D1A749B2D42E070C31A5E0C39624"
+			],
+			"duration": 0.008168097585439682,
+			"dateTime": "2026.09.02-20.40.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GracefulTransferAckThenAtomicBatch",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.GracefulTransferAckThenAtomicBatch",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E558D1A749B2D42E070C31A5E0C39624"
+			],
+			"duration": 0.0080578997731208801,
+			"dateTime": "2026.09.02-20.40.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RegistryRotationAndNoOwner",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.RegistryRotationAndNoOwner",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E558D1A749B2D42E070C31A5E0C39624"
+			],
+			"duration": 0.0081727020442485809,
+			"dateTime": "2026.09.02-20.40.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReplenishedFlightFreshnessGrace",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.ReplenishedFlightFreshnessGrace",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"E558D1A749B2D42E070C31A5E0C39624"
+			],
+			"duration": 0.095859304070472717,
+			"dateTime": "2026.09.02-20.40.42",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The all-dead roster freezes one reliable Active Cut' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanLeaseTransactionTests.cpp",
+					"lineNumber": 801,
+					"timestamp": "2026.09.02-20.40.42"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ResumeRevisionAndDeferredReplenish",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.ResumeRevisionAndDeferredReplenish",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E558D1A749B2D42E070C31A5E0C39624"
+			],
+			"duration": 0.0081210993230342865,
+			"dateTime": "2026.09.02-20.40.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TakeoverRevisionReplacesOldDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.TakeoverRevisionReplacesOldDeadline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E558D1A749B2D42E070C31A5E0C39624"
+			],
+			"duration": 0.0079693980515003204,
+			"dateTime": "2026.09.02-20.40.42",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

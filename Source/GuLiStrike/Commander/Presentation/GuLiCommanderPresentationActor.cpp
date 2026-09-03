@@ -459,6 +459,21 @@ bool AGuLiCommanderPresentationActor::TryGetPresentedSoldierTransform(
 	return true;
 }
 
+bool AGuLiCommanderPresentationActor::TryGetAuthoritativeSoldierTransform(
+	const FGuLiSoldierId SoldierId,
+	FTransform& OutTransform) const
+{
+	const FGuLiCommanderPresentedSoldier* Soldier = PresentedSoldiers.Find(SoldierId);
+	if (!SoldierId.IsValid() || !Soldier || !Soldier->bHasAuthoritativeTransform
+		|| Soldier->AuthoritativeTransform.ContainsNaN())
+	{
+		return false;
+	}
+
+	OutTransform = Soldier->AuthoritativeTransform;
+	return true;
+}
+
 // 预测距离由已发布速度、持续时间和上限计算；不在客户端执行权威导航或写 Authority。
 void AGuLiCommanderPresentationActor::BeginPredictedMove(
 	const FGuLiCommanderSelectionState& Selection,

@@ -1,0 +1,93 @@
+{
+  "engine_version": "5.7.4-51494982+++UE5+Release-5.7",
+  "mapping_api": [
+    "default_key_mappings",
+    "map_key",
+    "mapping_profile_overrides",
+    "mappings",
+    "unmap_all",
+    "unmap_all_keys_from_action",
+    "unmap_key"
+  ],
+  "mapping_context": "/Game/GuLiStrike/Input/IMC_Ship.IMC_Ship",
+  "mapping_source": "default_key_mappings",
+  "mappings": [
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_StrafeLeft.IA_Ship_StrafeLeft",
+      "key": "A"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_Descend.IA_Ship_Descend",
+      "key": "C"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_StrafeRight.IA_Ship_StrafeRight",
+      "key": "D"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_RollRight.IA_Ship_RollRight",
+      "key": "E"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_Fire.IA_Ship_Fire",
+      "key": "LeftMouseButton"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_Boost.IA_Ship_Boost",
+      "key": "LeftShift"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_Look.IA_Ship_Look",
+      "key": "Mouse2D"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_Zoom.IA_Ship_Zoom",
+      "key": "MouseWheelAxis"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_RollLeft.IA_Ship_RollLeft",
+      "key": "Q"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_CycleEngines.IA_Ship_CycleEngines",
+      "key": "R"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_WingmanMissile.IA_Ship_WingmanMissile",
+      "key": "RightMouseButton"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_Backward.IA_Ship_Backward",
+      "key": "S"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_Ascend.IA_Ship_Ascend",
+      "key": "SpaceBar"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_CycleWeapons.IA_Ship_CycleWeapons",
+      "key": "T"
+    },
+    {
+      "action": "/Game/GuLiStrike/Input/Actions/IA_Ship_Forward.IA_Ship_Forward",
+      "key": "W"
+    }
+  ],
+  "missile_action": {
+    "exists": true,
+    "modifiers": [],
+    "object_path": "/Game/GuLiStrike/Input/Actions/IA_Ship_WingmanMissile.IA_Ship_WingmanMissile",
+    "triggers": [],
+    "value_type": "<InputActionValueType.BOOLEAN: 0>"
+  },
+  "schema": 1,
+  "ship_blueprint_class": "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip.BP_GuLiStrikeShip_C",
+  "ship_cdo_input_properties": {
+    "boost_action": "/Game/GuLiStrike/Input/Actions/IA_Ship_Boost.IA_Ship_Boost",
+    "cycle_engines_action": "/Game/GuLiStrike/Input/Actions/IA_Ship_CycleEngines.IA_Ship_CycleEngines",
+    "cycle_weapons_action": "/Game/GuLiStrike/Input/Actions/IA_Ship_CycleWeapons.IA_Ship_CycleWeapons",
+    "fire_action": "/Game/GuLiStrike/Input/Actions/IA_Ship_Fire.IA_Ship_Fire",
+    "ship_mapping_context": "/Game/GuLiStrike/Input/IMC_Ship.IMC_Ship",
+    "wingman_missile_action": "/Game/GuLiStrike/Input/Actions/IA_Ship_WingmanMissile.IA_Ship_WingmanMissile"
+  }
+}

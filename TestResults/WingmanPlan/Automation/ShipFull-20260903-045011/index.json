@@ -1,0 +1,119 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "B09C3AA54F2369FB8309028A1EC4B0A6",
+			"instanceName": "DESKTOP-6D3B0FC-42736",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-20.50.27",
+	"succeeded": 6,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.060362998396158218,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AbilitySetContract",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.AbilitySetContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B09C3AA54F2369FB8309028A1EC4B0A6"
+			],
+			"duration": 0.0080319009721279144,
+			"dateTime": "2026.09.02-20.50.27",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ASCGrantProjectionAndInputLifecycle",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.ASCGrantProjectionAndInputLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B09C3AA54F2369FB8309028A1EC4B0A6"
+			],
+			"duration": 0.01090109720826149,
+			"dateTime": "2026.09.02-20.50.27",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroupConfigHashAndInvalidation",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.GroupConfigHashAndInvalidation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B09C3AA54F2369FB8309028A1EC4B0A6"
+			],
+			"duration": 0.0082409009337425232,
+			"dateTime": "2026.09.02-20.50.27",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PawnOwnedASCIntegration",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.PawnOwnedASCIntegration",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B09C3AA54F2369FB8309028A1EC4B0A6"
+			],
+			"duration": 0.0081049986183643341,
+			"dateTime": "2026.09.02-20.50.27",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B09C3AA54F2369FB8309028A1EC4B0A6"
+			],
+			"duration": 0.016945000737905502,
+			"dateTime": "2026.09.02-20.50.27",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalHistoryIsBoundedAndVersioned",
+			"fullTestPath": "GuLiStrike.Ship.Movement.CanonicalHistoryIsBoundedAndVersioned",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B09C3AA54F2369FB8309028A1EC4B0A6"
+			],
+			"duration": 0.0081390999257564545,
+			"dateTime": "2026.09.02-20.50.27",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

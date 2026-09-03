@@ -18,6 +18,72 @@ struct FGuLiShipNetworkMoveData;
 struct FGuLiShipMoveResponseData;
 class FGuLiShipSavedMove;
 
+/** CarrierSourceRef 对服务器重演位姿的查询结果；Pending 仅表示跨通道数据尚未到达。 */
+UENUM(BlueprintType)
+enum class EGuLiShipCanonicalMoveLookupResult : uint8
+{
+	Found,
+	Pending,
+	Expired,
+	EpochMismatch,
+	Unavailable
+};
+
+/**
+ * 服务器在一次合法 CMC 重演完成后记录的飞船状态。
+ * Epoch/Revision 只在该 Ship 实例的权威历史内有意义，不作为跨重生稳定身份。
+ */
+USTRUCT(BlueprintType)
+struct FGuLiShipCanonicalMoveState
+{
+	GENERATED_BODY()
+
+	UPROPERTY()
+	uint32 CanonicalEpoch = 0u;
+
+	UPROPERTY()
+	uint32 MoveRevision = 0u;
+
+	UPROPERTY()
+	uint32 MovementConfigRevision = 0u;
+
+	UPROPERTY()
+	uint32 BarrierGeneration = 0u;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Ship|Movement|Canonical")
+	double ServerWorldTimeSeconds = 0.0;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Ship|Movement|Canonical")
+	FTransform Transform = FTransform::Identity;
+
+	UPROPERTY(BlueprintReadOnly, Category = "Ship|Movement|Canonical")
+	FVector Velocity = FVector::ZeroVector;
+
+	bool IsValid() const;
+};
+
+/** 有界、仅权威端写入的 canonical move 环；独立类型便于协议和自动化测试复用。 */
+class GULISTRIKE_API FGuLiShipCanonicalMoveHistory
+{
+public:
+	void Reset(uint32 NewEpoch, int32 InMaxEntries = 256);
+	const FGuLiShipCanonicalMoveState& Append(double ServerWorldTimeSeconds, const FTransform& Transform,
+		const FVector& Velocity, uint32 MovementConfigRevision, uint32 BarrierGeneration);
+	EGuLiShipCanonicalMoveLookupResult Lookup(uint32 Epoch, uint32 Revision,
+		FGuLiShipCanonicalMoveState& OutState) const;
+
+	uint32 GetEpoch() const { return CanonicalEpoch; }
+	uint32 GetLatestRevision() const { return LatestRevision; }
+	int32 Num() const { return States.Num(); }
+	const FGuLiShipCanonicalMoveState* GetLatest() const { return States.IsEmpty() ? nullptr : &States.Last(); }
+
+private:
+	TArray<FGuLiShipCanonicalMoveState> States;
+	uint32 CanonicalEpoch = 0u;
+	uint32 LatestRevision = 0u;
+	int32 MaxEntries = 256;
+};
+
 /** Ship 已聚合完装配/GM 修饰的完整飞行配置；客户端不能提交或改写这些参数。 */
 USTRUCT(BlueprintType)
 struct FGuLiShipMovementConfig
@@ -153,6 +219,19 @@ public:
 
 	uint32 GetAppliedLoadoutRevision() const { return AppliedLoadoutRevision; }
 
+	/** 当前服务器 canonical history 代次；客户端始终返回 0。 */
+	uint32 GetCanonicalEpoch() const;
+
+	/** 最近一次服务器重演完成后的 revision；客户端始终返回 0。 */
+	uint32 GetCanonicalMoveRevision() const;
+
+	/** 按 CarrierSourceRef 精确查询权威历史；调用者据 Pending 实施最长 0.25 秒等待。 */
+	EGuLiShipCanonicalMoveLookupResult LookupCanonicalMove(uint32 CanonicalEpoch, uint32 MoveRevision,
+		FGuLiShipCanonicalMoveState& OutState) const;
+
+	/** 取得当前最新状态；仅权威端且至少完成一次记录时成功。 */
+	bool GetLatestCanonicalMove(FGuLiShipCanonicalMoveState& OutState) const;
+
 	UFUNCTION(BlueprintPure, Category = "Ship|Movement")
 	float GetYawVelocity() const { return YawVelocity; }
 
@@ -216,6 +295,8 @@ private:
 	bool CanSimulateCurrentMove() const;
 	void SampleLocalFlightInput();
 	bool HasLocalFlightController() const;
+	void ResetCanonicalMoveHistory();
+	void RecordCanonicalMoveAfterAuthoritySimulation();
 
 	// 相关客户端都需要移动参数；拥有者使用身份/ACK 屏障，模拟代理仅消费服务器位姿与配置。
 	UPROPERTY(ReplicatedUsing = OnRep_MovementSyncState)
@@ -229,6 +310,7 @@ private:
 	TWeakObjectPtr<AGuLiBattlePlayerState> ObservedPlayerState;
 	TWeakObjectPtr<UGuLiPlayerNetSyncComponent> ObservedConnectionComponent;
 	FGuLiNetworkRequestWindow ConfigurationAckWindow;
+	FGuLiShipCanonicalMoveHistory CanonicalMoveHistory;
 
 	uint32 AppliedLoadoutRevision = 0u;
 	uint32 AppliedConfigRevision = 0u;

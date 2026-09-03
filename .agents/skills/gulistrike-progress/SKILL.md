@@ -1,6 +1,6 @@
 ---
 name: gulistrike-progress
-description: GuLiStrike (UE5.7, D:\UE_5.7\test1) development documentation and archiving system. Use whenever working on the GuLiStrike project and the user mentions requirements, new ideas, gameplay/UI/tech proposals (需求/点子/想法), technical design or task lists (开发文档/技术方案/任务清单), session summaries or change records (归档/总结/变更记录), or gameplay module documentation (玩法记录/战斗/循环/技能/刷怪) — also trigger for any file operation under D:\UE_5.7\test1\Progress. English triggers: requirement doc, dev doc, spec, task breakdown, archive, changelog, gameplay record.
+description: 'GuLiStrike (UE5.7, D:\UE5.7\test1) development documentation and archiving system. Use whenever working on the GuLiStrike project and the user mentions requirements, new ideas, gameplay/UI/tech proposals (需求/点子/想法), technical design or task lists (开发文档/技术方案/任务清单), session summaries or change records (归档/总结/变更记录), or gameplay module documentation (玩法记录/战斗/循环/技能/刷怪) — also trigger for any file operation under D:\UE5.7\test1\Progress. English triggers: requirement doc, dev doc, spec, task breakdown, archive, changelog, gameplay record.'
 ---
 
 # GuLiStrike Progress — 开发归档体系
@@ -13,7 +13,7 @@ description: GuLiStrike (UE5.7, D:\UE_5.7\test1) development documentation and a
 |---|---|---|---|
 | `RequirementDocument/` | 游戏开发新点子：gameplay、UI、技术架构 | `YYYYMMDD-名称.md` | 定稿后只读 |
 | `DevelopmentDocumentation/` | 技术手册：选型、拟用技术、任务清单（spec） | 与对应需求文档**同文件名** | 随实施勾选更新 |
-| `Archive/` | 每次开发的变更记录：细节与结果 | `YYYYMMDD-解决了什么事.md` | **只增不改** |
+| `Archive/` | 每次开发的变更记录：细节与结果 | `YYYYMMDD-解决了什么事.md` | 默认只增不改；允许合并，合并后删除被替代的旧归档 |
 | `Gameplay/` | 游戏玩法总册，按模块组织 | `模块名.md`（循环、战斗、技能、刷怪、拾取…） | 活文档，原地演进 |
 
 - 日期一律取**当天**（紧凑格式，如 `20260816`），名称用中文短词（`20260816-冲刺手感优化.md`）。
@@ -38,9 +38,9 @@ description: GuLiStrike (UE5.7, D:\UE_5.7\test1) development documentation and a
 ### C. 会话归档（每次开发收尾时）
 
 1. 收集本次事实：改了哪些文件（准确路径）、解决了什么、如何验证（PIE/编译/测试证据）、遗留问题。
-2. 写入 `Archive/YYYYMMDD-解决了什么事.md`（模板 C）。**不修改任何旧归档文件**。
-3. 同步更新两处：`Progress/README.md` 归档索引表**顶部**加一行（倒序）；若玩法行为有变，走工作流 D。
-4. 涉及代码/资产的具体细节写全（类名、函数、资产路径、参数、资产计数基线）——归档的价值在于半年后还能据此复现。参考现有归档 `20260816-资产整合-Marketplace资产包统一归档至Assets.md` 的粒度。
+2. 默认写入新的 `Archive/YYYYMMDD-解决了什么事.md`（模板 C），不修改旧归档。用户明确要求合并时，创建覆盖全部原始事实与引用的新合并归档；确认新归档完整、相关引用已迁移后，删除被替代的旧归档。
+3. 同步更新两处：`Progress/README.md` 归档索引表**顶部**加一行（倒序）；发生归档合并时，同时移除被删除旧归档的索引行并搜索、修正所有旧路径引用；若玩法行为有变，走工作流 D。
+4. 涉及代码/资产的具体细节写全（类名、函数、资产路径、参数、资产计数基线）——归档的价值在于半年后还能据此复现。合并归档必须保留被替代旧归档中的复现信息与验证结论，不能只保留摘要。参考现有归档 `20260816-资产整合-Marketplace资产包统一归档至Assets.md` 的粒度。
 
 ### D. 玩法记录（玩法行为变更时）
 
@@ -60,7 +60,7 @@ description: GuLiStrike (UE5.7, D:\UE_5.7\test1) development documentation and a
 
 ## 铁律
 
-- 归档只增不改；玩法文档只改不增（原地演进）；索引每次归档后更新。
+- 归档默认只增不改；用户明确要求合并时，允许新增合并归档，并在内容完整性与引用迁移确认后删除被替代旧归档。玩法文档只改不增（原地演进）；索引每次归档或合并后更新。
 - 没有验证证据的结论写"未验证"，不写"完成"。
 - 模板字段可增不可减；不确定的信息标注来源或"假设"。
 

@@ -11,6 +11,7 @@
 AGuLiStrikeProjectile::AGuLiStrikeProjectile()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.TickGroup = TG_PostPhysics;
 	bReplicates = true;
 	SetReplicateMovement(true);
 	// 当前公里级战场和最远 1.6km 飞船相机超出默认相关距离；弹丸仍按距离相关，不永久常显。
@@ -48,6 +49,17 @@ AGuLiStrikeProjectile::AGuLiStrikeProjectile()
 	ProjectileMovement->OnProjectileStop.AddDynamic(this, &AGuLiStrikeProjectile::OnProjectileStop);
 }
 
+bool AGuLiStrikeProjectile::ConfigureServerDamageLedger(
+	const AActor& SourceActor, const float Damage)
+{
+	if (!HasAuthority() || DamageLedgerContext.IsWellFormed())
+	{
+		return false;
+	}
+	return GuLiShipProjectileLedger::BuildServerLaunchContext(
+		SourceActor, Damage, DamageLedgerContext);
+}
+
 void AGuLiStrikeProjectile::BeginPlay()
 {
 	if (HasAuthority())
@@ -67,11 +79,50 @@ void AGuLiStrikeProjectile::BeginPlay()
 		SetLifeSpan(0.0f);
 	}
 	Super::BeginPlay();
+	if (HasAuthority())
+	{
+		PreviousServerSweepLocation = GetActorLocation();
+		bHasPreviousServerSweepLocation = !PreviousServerSweepLocation.ContainsNaN();
+	}
 	if (!HasAuthority())
 	{
 		// Super 会注册组件 Tick；在注册及蓝图 BeginPlay 完成后再次关闭，保证只有服务器积分。
 		ProjectileMovement->Deactivate();
 		ProjectileMovement->SetComponentTickEnabled(false);
+	}
+}
+
+void AGuLiStrikeProjectile::Tick(const float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	if (!HasAuthority() || !DamageLedgerContext.IsWellFormed() || !GetWorld()
+		|| IsActorBeingDestroyed())
+	{
+		return;
+	}
+
+	const FVector CurrentLocation = GetActorLocation();
+	if (!bHasPreviousServerSweepLocation || CurrentLocation.ContainsNaN())
+	{
+		PreviousServerSweepLocation = CurrentLocation;
+		bHasPreviousServerSweepLocation = !CurrentLocation.ContainsNaN();
+		return;
+	}
+
+	const float ProjectileRadius = CollisionSphere
+		? CollisionSphere->GetScaledSphereRadius() : 0.0f;
+	const FGuLiShipProjectileLedgerImpact LedgerImpact =
+		GuLiShipProjectileLedger::CommitServerWingmanSweepImpact(
+			*GetWorld(),
+			DamageLedgerContext,
+			PreviousServerSweepLocation,
+			CurrentLocation,
+			ProjectileRadius);
+	PreviousServerSweepLocation = CurrentLocation;
+	if (LedgerImpact.HasResolvedTarget())
+	{
+		SetActorLocation(LedgerImpact.HitLocation, false, nullptr, ETeleportType::TeleportPhysics);
+		Destroy();
 	}
 }
 
@@ -81,7 +132,23 @@ void AGuLiStrikeProjectile::NotifyHit(class UPrimitiveComponent* MyComp, AActor*
 	// 放在 Super 前守门，避免客户端 ReceiveHit 蓝图也触发真实效果。
 	Super::NotifyHit(MyComp, Other, OtherComp, bSelfMoved, HitLocation, HitNormal, NormalImpulse, Hit);
 
-	// 沿用旧行为：仅旧 NPC 收到 ProjectileImpact；本轮没有新增 Mass/飞船伤害或护盾。
+	// Ship 自身的既有 Actor 弹丸只在服务器把命中接到统一 TargetHandle/Ledger。
+	// 同一弹丸永远复用 DamageEventId，因此引擎重复命中回调不会重复扣血。
+	if (Other && DamageLedgerContext.IsWellFormed() && GetWorld())
+	{
+		const FGuLiShipProjectileLedgerImpact LedgerImpact =
+			GuLiShipProjectileLedger::CommitServerImpact(
+				*GetWorld(), DamageLedgerContext, *Other, HitLocation);
+		if (LedgerImpact.HasResolvedTarget())
+		{
+			// 命中已注册战斗目标后，无论伤害被接纳（敌方）还是规则拒绝
+			//（友军/死亡/旧 Epoch），这枚物理弹都不能继续反弹命中别处。
+			Destroy();
+			return;
+		}
+	}
+
+	// 沿用旧行为：尚未接入统一目标目录的旧 NPC 仍收到 ProjectileImpact。
 	if (AGuLiStrikeNPC* NPC = Cast<AGuLiStrikeNPC>(Other))
 	{
 		// tell the NPC it's been hit

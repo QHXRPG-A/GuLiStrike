@@ -1,0 +1,144 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "F9AE2FE642A286ADEB41D28398353232",
+			"instanceName": "DESKTOP-6D3B0FC-48140",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-17.56.59",
+	"succeeded": 5,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.090088203549385071,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AuthoritySegmentTopologyWithoutAStar",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.AuthoritySegmentTopologyWithoutAStar",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F9AE2FE642A286ADEB41D28398353232"
+			],
+			"duration": 0.0081636011600494385,
+			"dateTime": "2026.09.02-17.56.59",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AuthoritySegmentTraversesAdaptiveLeafChain",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.AuthoritySegmentTraversesAdaptiveLeafChain",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F9AE2FE642A286ADEB41D28398353232"
+			],
+			"duration": 0.0082221999764442444,
+			"dateTime": "2026.09.02-17.56.59",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MetadataFieldsAffectChecksum",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.MetadataFieldsAffectChecksum",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F9AE2FE642A286ADEB41D28398353232"
+			],
+			"duration": 0.0083094015717506409,
+			"dateTime": "2026.09.02-17.56.59",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PathAndChecksum",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.PathAndChecksum",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F9AE2FE642A286ADEB41D28398353232"
+			],
+			"duration": 0.0082424990832805634,
+			"dateTime": "2026.09.02-17.56.59",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SubsystemAuthoritySegmentResolvesFromStart",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.SubsystemAuthoritySegmentResolvesFromStart",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"F9AE2FE642A286ADEB41D28398353232"
+			],
+			"duration": 0.048606898635625839,
+			"dateTime": "2026.09.02-17.56.59",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "A segment contained by the start-selected graph is valid: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Source\\GuLiFlightNavigationRuntime\\Private\\Tests\\GuLiFlightNavigationSubsystemTests.cpp",
+					"lineNumber": 159,
+					"timestamp": "2026.09.02-17.56.59"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'EndOnlyNavigationVolume contains its navigation center' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Source\\GuLiFlightNavigationRuntime\\Private\\Tests\\GuLiFlightNavigationSubsystemTests.cpp",
+					"lineNumber": 120,
+					"timestamp": "2026.09.02-17.56.59"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VolumeIsNeverPhysicalWorldGeometry",
+			"fullTestPath": "GuLi.FlightNavigation.Runtime.VolumeIsNeverPhysicalWorldGeometry",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"F9AE2FE642A286ADEB41D28398353232"
+			],
+			"duration": 0.008543599396944046,
+			"dateTime": "2026.09.02-17.56.59",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

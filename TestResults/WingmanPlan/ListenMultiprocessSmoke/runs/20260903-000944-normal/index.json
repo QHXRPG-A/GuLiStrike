@@ -1,0 +1,79 @@
+{
+  "schema": "guli.listen-smoke-result.v1",
+  "run_id": "20260903-000944-normal",
+  "scope": "real_two_process_listen_socket_smoke",
+  "profile": "Normal",
+  "map": "/Game/Maps/LVL_ShipTest",
+  "port": 7791,
+  "started_utc": "2026-09-02T16:09:44.7143939Z",
+  "passed": false,
+  "first_failed_gate": "world_static_candidate_sweep_clear",
+  "failure_detail": {
+    "reject_reason": "InvalidIdentity",
+    "world_validator_invocation_count": 87,
+    "world_validator_static_collision_reject_count": 87,
+    "world_validator_last_static_hit_actor": "GuLiFlightNavigationVolume_0",
+    "world_validator_last_static_hit_component": "BrushComponent0",
+    "world_validator_context_reject_count": 0,
+    "world_validator_invalid_radius_reject_count": 0,
+    "world_validator_missing_flight_nav_reject_count": 0,
+    "world_validator_tagged_dynamic_reject_count": 0,
+    "world_validator_flight_nav_segment_reject_count": 0,
+    "world_validator_accepted_count": 0
+  },
+  "process": {
+    "server_pid": 48408,
+    "client_pid": 12156,
+    "request_exit_zero_observed_in_both_logs": true,
+    "both_pid_owned_processes_exited": true,
+    "forced_cleanup_observed": false
+  },
+  "evidence": {
+    "listen_socket_observed_before_client_launch": true,
+    "os_udp_socket_pair": {
+      "protocol": "UDP",
+      "server_pid": 48408,
+      "client_pid": 12156,
+      "server_local_address": "0.0.0.0",
+      "server_local_port": 7791,
+      "client_local_address": "0.0.0.0",
+      "client_local_port": 60525
+    },
+    "server_usock_open": true,
+    "client_usock_open": true,
+    "server_net_driver_endpoint_reported": true,
+    "client_server_remote_endpoint_reported": true,
+    "packet_simulation_profile_observed_in_both_logs": true,
+    "server_six_scope_bootstrap_ready": true,
+    "client_six_scope_bootstrap_ready": true,
+    "strict_per_flight_acceptance_ready": false,
+    "all_listen_and_remote_relay_groups_strict_ready": false,
+    "relay_group_count_max": 2,
+    "active_relay_group_count_max": 0,
+    "atomic_committed_group_count_max": 0,
+    "strict_accepted_batch_count_max": 0,
+    "listen_host_atomic_build_submitted_count_max": 1,
+    "remote_client_atomic_build_submitted_count_max": 1656,
+    "listen_host_atomic_result_reject_reasons": [2],
+    "remote_client_atomic_result_reject_reasons": [2, 5],
+    "invalid_transfer_baseline_serialization_observed": false,
+    "server_wingman_movement_write_count_max": 0,
+    "remote_owner_mass_entity_count_max": 25,
+    "server_sample_count": 64,
+    "client_sample_count": 45
+  },
+  "runner_note": "The original summary pass encountered a phase=start record without extended telemetry. This index was reconstructed from the immutable manifest and JSONL after fixing the summary filter; gameplay processes were not rerun.",
+  "artifacts": {
+    "run_root": "D:/UE5.7/test1/TestResults/WingmanPlan/ListenMultiprocessSmoke/runs/20260903-000944-normal",
+    "manifest": "D:/UE5.7/test1/TestResults/WingmanPlan/ListenMultiprocessSmoke/runs/20260903-000944-normal/run_manifest.json",
+    "server_log": "D:/UE5.7/test1/TestResults/WingmanPlan/ListenMultiprocessSmoke/runs/20260903-000944-normal/server.log",
+    "client_log": "D:/UE5.7/test1/TestResults/WingmanPlan/ListenMultiprocessSmoke/runs/20260903-000944-normal/client.log",
+    "server_jsonl": "D:/UE5.7/test1/TestResults/WingmanPlan/ListenMultiprocessSmoke/runs/20260903-000944-normal/server.samples.jsonl",
+    "client_jsonl": "D:/UE5.7/test1/TestResults/WingmanPlan/ListenMultiprocessSmoke/runs/20260903-000944-normal/client.samples.jsonl"
+  },
+  "excluded_claims": [
+    "Weak and Reorder profiles were not run because Normal failed.",
+    "Launcher build cannot provide the required source-engine Dedicated Server process gate.",
+    "This short smoke is not the formal 10-minute 100-unit or split-4000 performance gate."
+  ]
+}

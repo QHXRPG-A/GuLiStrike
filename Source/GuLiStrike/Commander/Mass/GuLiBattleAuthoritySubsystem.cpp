@@ -5,6 +5,7 @@
 #include "Algo/MinElement.h"
 #include "Avoidance/MassAvoidanceFragments.h"
 #include "Async/Async.h"
+#include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
@@ -73,6 +74,9 @@ namespace GuLiCommanderMassPrivate
 	constexpr float FreeDestinationMaximumRadiusCentimeters = 45000.0f;
 	constexpr int32 MoveCandidateProjectionBudgetPerFrame = 64;
 	constexpr int32 MovePathQueryBudgetPerFrame = 4;
+	constexpr float MoveCandidateReserveFraction = 0.25f;
+	constexpr int32 MoveCandidateMinimumReserveSlots = 8;
+	constexpr int32 MoveCandidateMaximumReserveSlots = 32;
 	constexpr int32 MoveCommitConnectionRetryLimit = 2;
 	// Spawn centers are authored in XY with Z=0 while the terrain is far from world zero.
 	// Keep the strict XY correction, but search the full map-height range vertically.
@@ -269,9 +273,13 @@ namespace GuLiCommanderMassPrivate
 		uint32 AuthorityEpoch = 0u;
 		int32 NextStartValidationIndex = 0;
 		int32 NextCandidateProjectionIndex = 0;
+		int32 DesiredLegalSlotCount = 0;
+		int32 CandidateProjectionLimit = 0;
+		int32 ProjectionExpansionCount = 0;
 		double PlanningStartedAt = 0.0;
 		bool bSelectionChanged = false;
 		bool bRequireOwningController = false;
+		bool bEscalatedToFullCandidatePool = false;
 	};
 
 	enum class ENavigationRepairMemberStage : uint8
@@ -347,6 +355,108 @@ namespace GuLiCommanderMassPrivate
 		const AController* Controller = Job.OwningController.Get();
 		return Controller
 			&& Controller->GetPlayerState<AGuLiBattlePlayerState>() == &PlayerState;
+	}
+
+	int32 CountMovePlannerMembers(
+		const GuLiCommanderDestinationPlanner::FRequest& PlannerRequest)
+	{
+		int32 MemberCount = 0;
+		for (const GuLiCommanderDestinationPlanner::FCohortInput& Cohort
+			: PlannerRequest.Cohorts)
+		{
+			MemberCount += Cohort.Members.Num();
+		}
+		return MemberCount;
+	}
+
+	void InitializeMoveCandidateProjectionWindow(FMovePlanningJob& Job)
+	{
+		const int32 RequestedMemberCount = CountMovePlannerMembers(Job.PlannerRequest);
+		const int32 ReserveSlotCount = FMath::Clamp(
+			FMath::CeilToInt(static_cast<float>(RequestedMemberCount)
+				* MoveCandidateReserveFraction),
+			MoveCandidateMinimumReserveSlots,
+			MoveCandidateMaximumReserveSlots);
+		Job.DesiredLegalSlotCount = FMath::Min(
+			Job.HexCandidates.Num(),
+			RequestedMemberCount + ReserveSlotCount);
+		Job.CandidateProjectionLimit =
+			GuLiCommanderDestinationPlanner::FindProjectionPrefixEnd(
+				Job.HexCandidates,
+				Job.DesiredLegalSlotCount);
+		Job.ProjectionExpansionCount = 0;
+		Job.bEscalatedToFullCandidatePool = false;
+		Job.Debug.DesiredLegalSlots = Job.DesiredLegalSlotCount;
+		Job.Debug.InitialProjectionLimit = Job.CandidateProjectionLimit;
+		Job.Debug.FinalProjectionLimit = Job.CandidateProjectionLimit;
+		Job.Debug.ProjectionExpansionCount = 0;
+		Job.Debug.bEscalatedToFullCandidatePool = false;
+	}
+
+	bool ExpandMoveCandidateProjectionWindow(
+		FMovePlanningJob& Job,
+		const bool bUseCompletePool)
+	{
+		const int32 CandidateCount = Job.HexCandidates.Num();
+		if (Job.CandidateProjectionLimit >= CandidateCount)
+		{
+			return false;
+		}
+
+		const int32 MinimumCandidateCount = bUseCompletePool
+			? CandidateCount
+			: FMath::Min(
+				CandidateCount,
+				Job.CandidateProjectionLimit + FMath::Max(
+					MoveCandidateProjectionBudgetPerFrame,
+					FMath::Max(1, Job.DesiredLegalSlotCount - Job.LegalSlots.Num())));
+		const int32 ExpandedLimit =
+			GuLiCommanderDestinationPlanner::FindProjectionPrefixEnd(
+				Job.HexCandidates,
+				MinimumCandidateCount);
+		if (ExpandedLimit <= Job.CandidateProjectionLimit)
+		{
+			return false;
+		}
+
+		Job.CandidateProjectionLimit = ExpandedLimit;
+		++Job.ProjectionExpansionCount;
+		Job.bEscalatedToFullCandidatePool |= ExpandedLimit >= CandidateCount;
+		Job.Debug.FinalProjectionLimit = ExpandedLimit;
+		Job.Debug.ProjectionExpansionCount = Job.ProjectionExpansionCount;
+		Job.Debug.bEscalatedToFullCandidatePool = Job.bEscalatedToFullCandidatePool;
+		return true;
+	}
+
+	bool RestartMovePlanningWithCompleteCandidatePool(FMovePlanningJob& Job)
+	{
+		if (Job.bEscalatedToFullCandidatePool
+			|| Job.NextCandidateProjectionIndex >= Job.HexCandidates.Num()
+			|| !ExpandMoveCandidateProjectionWindow(Job, true))
+		{
+			return false;
+		}
+
+		Job.CandidateOwnerMemberPlanIndex.Reset();
+		// The entire uncommitted assignment transaction is rebuilt below. Clear
+		// pair-local rejection history so Hungarian can reproduce the stable first
+		// assignment; the now-complete legal pool supplies the subsequent fallback.
+		Job.RejectedCandidatePairs.Reset();
+		Job.RouteTasks.Reset();
+		Job.PreparedFormations.Reset();
+		for (FMoveMemberPlan& Member : Job.Members)
+		{
+			Member.bHasDestination = false;
+			Member.bAccepted = false;
+			Member.LastCandidateIndex = INDEX_NONE;
+			Member.CommitConnectionRetryCount = 0;
+			if (Member.bStartValid)
+			{
+				Member.FailureStage = EGuLiMovePlanFailureStage::None;
+			}
+		}
+		Job.Stage = EMovePlanningStage::ProjectCandidates;
+		return true;
 	}
 
 	uint64 MakeMoveCandidatePairKey(const FGuLiSoldierId SoldierId, const int32 CandidateIndex)
@@ -1663,6 +1773,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 		}
 	}
 	AuthorityState->bPopulationSpawned = true;
+	RegisterCombatLedgerTargets();
 	UE_LOG(
 		LogGuLiCommanderMass,
 		Display,
@@ -1680,6 +1791,7 @@ void UGuLiBattleAuthoritySubsystem::DestroyAuthorityPopulation()
 		return;
 	}
 
+	UnregisterCombatLedgerTargets();
 	if (UWorld* World = GetWorld(); World && World->HasBegunPlay())
 	{
 		if (UMassEntitySubsystem* MassSubsystem = AuthorityState->MassEntitySubsystem.Get())
@@ -1734,6 +1846,7 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 	int32& RemainingProjectionBudget,
 	int32& RemainingPathBudget)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_MovePlanning);
 	using namespace GuLiCommanderMassPrivate;
 	using namespace GuLiCommanderDestinationPlanner;
 	if (!AuthorityState || !AuthorityState->bPopulationSpawned)
@@ -1831,8 +1944,17 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 		Job.PreparedFormations.Reset();
 		Job.NextStartValidationIndex = 0;
 		Job.NextCandidateProjectionIndex = 0;
+		Job.DesiredLegalSlotCount = 0;
+		Job.CandidateProjectionLimit = 0;
+		Job.ProjectionExpansionCount = 0;
+		Job.bEscalatedToFullCandidatePool = false;
 		Job.Debug.ProjectedCandidates = 0;
 		Job.Debug.LegalCandidates = 0;
+		Job.Debug.DesiredLegalSlots = 0;
+		Job.Debug.InitialProjectionLimit = 0;
+		Job.Debug.FinalProjectionLimit = 0;
+		Job.Debug.ProjectionExpansionCount = 0;
+		Job.Debug.bEscalatedToFullCandidatePool = false;
 		Job.Stage = EMovePlanningStage::ValidateStarts;
 	};
 
@@ -1864,6 +1986,7 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 			Job.Stage = EMovePlanningStage::Completed;
 			continue;
 		}
+		++Job.Debug.PlanningWorldFrames;
 		if (Job.NavigationGeneration != AuthorityState->NavigationGeneration)
 		{
 			Job.NavigationGeneration = AuthorityState->NavigationGeneration;
@@ -1943,87 +2066,109 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 						Job.PlannerRequest.Cohorts.Add(MoveTemp(CohortInput));
 					}
 				}
-				Job.Stage = Job.PlannerRequest.Cohorts.IsEmpty()
-					? EMovePlanningStage::ReadyToCommit
-					: EMovePlanningStage::ProjectCandidates;
+				if (Job.PlannerRequest.Cohorts.IsEmpty())
+				{
+					Job.Stage = EMovePlanningStage::ReadyToCommit;
+				}
+				else
+				{
+					InitializeMoveCandidateProjectionWindow(Job);
+					Job.Stage = EMovePlanningStage::ProjectCandidates;
+				}
 			}
-			continue;
 		}
 
 		if (Job.Stage == EMovePlanningStage::ProjectCandidates)
 		{
-			while (RemainingProjectionBudget > 0
-				&& Job.NextCandidateProjectionIndex < Job.HexCandidates.Num())
+			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_MovePlanning_ProjectCandidates);
+			while (Job.Stage == EMovePlanningStage::ProjectCandidates)
 			{
-				const FFreeDestinationCandidate& Candidate =
-					Job.HexCandidates[Job.NextCandidateProjectionIndex++];
-				--RemainingProjectionBudget;
-				++AuthorityState->MoveCandidateProjectionQueries;
-				++Job.Debug.CandidateProjectionQueries;
-				++Job.Debug.ProjectedCandidates;
-				FVector Seed = Candidate.WorldCandidate;
-				float LandscapeHeight = 0.0f;
-				if (!LandscapeQuery
-					|| !LandscapeQuery->TryGetLandscapeHeight(FVector2D(Seed.X, Seed.Y), LandscapeHeight))
+				while (RemainingProjectionBudget > 0
+					&& Job.NextCandidateProjectionIndex < Job.CandidateProjectionLimit)
 				{
-					++Job.Debug.FailureCounts[
-						static_cast<uint8>(EGuLiMovePlanFailureStage::CandidateProjection)];
-					continue;
-				}
-				Seed.Z = LandscapeHeight;
-				FNavLocation Projected;
-				if (!ProjectPointToCommanderNavigation(
-						*NavigationSystem,
-						*NavigationData,
-						Seed,
-						FVector(
-							DestinationMaximumProjectionCorrectionCentimeters,
-							DestinationMaximumProjectionCorrectionCentimeters,
-							5000.0f),
-						Projected)
-					|| FVector::DistSquared2D(Seed, Projected.Location)
-						> FMath::Square(DestinationMaximumProjectionCorrectionCentimeters)
-					|| FVector::DistSquared2D(FVector(Job.Request.Target), Projected.Location)
-						> FMath::Square(FreeDestinationMaximumRadiusCentimeters))
-				{
-					++Job.Debug.FailureCounts[
-						static_cast<uint8>(EGuLiMovePlanFailureStage::CandidateProjection)];
-					continue;
+					const FFreeDestinationCandidate& Candidate =
+						Job.HexCandidates[Job.NextCandidateProjectionIndex++];
+					--RemainingProjectionBudget;
+					++AuthorityState->MoveCandidateProjectionQueries;
+					++Job.Debug.CandidateProjectionQueries;
+					++Job.Debug.ProjectedCandidates;
+					FVector Seed = Candidate.WorldCandidate;
+					float LandscapeHeight = 0.0f;
+					if (!LandscapeQuery
+						|| !LandscapeQuery->TryGetLandscapeHeight(
+							FVector2D(Seed.X, Seed.Y), LandscapeHeight))
+					{
+						++Job.Debug.FailureCounts[
+							static_cast<uint8>(EGuLiMovePlanFailureStage::CandidateProjection)];
+						continue;
+					}
+					Seed.Z = LandscapeHeight;
+					FNavLocation Projected;
+					if (!ProjectPointToCommanderNavigation(
+							*NavigationSystem,
+							*NavigationData,
+							Seed,
+							FVector(
+								DestinationMaximumProjectionCorrectionCentimeters,
+								DestinationMaximumProjectionCorrectionCentimeters,
+								5000.0f),
+							Projected)
+						|| FVector::DistSquared2D(Seed, Projected.Location)
+							> FMath::Square(DestinationMaximumProjectionCorrectionCentimeters)
+						|| FVector::DistSquared2D(FVector(Job.Request.Target), Projected.Location)
+							> FMath::Square(FreeDestinationMaximumRadiusCentimeters))
+					{
+						++Job.Debug.FailureCounts[
+							static_cast<uint8>(EGuLiMovePlanFailureStage::CandidateProjection)];
+						continue;
+					}
+
+					if (IsMoveCandidateBlockedByHardReservation(Job, Projected.Location))
+					{
+						++Job.Debug.ReservationConflictCount;
+						++Job.Debug.FailureCounts[
+							static_cast<uint8>(EGuLiMovePlanFailureStage::FriendlyReservation)];
+						continue;
+					}
+					if (IsMoveCandidateTooCloseToLegalSlot(Job, Projected.Location))
+					{
+						++Job.Debug.FailureCounts[
+							static_cast<uint8>(EGuLiMovePlanFailureStage::Separation)];
+						continue;
+					}
+					FFreeDestinationSlot& Slot = Job.LegalSlots.AddDefaulted_GetRef();
+					Slot.CandidateIndex = Candidate.CandidateIndex;
+					Slot.AxialQ = Candidate.AxialQ;
+					Slot.AxialR = Candidate.AxialR;
+					Slot.OriginalWorldCandidate = Seed;
+					Slot.WorldDestination = Projected.Location;
+					Job.ProjectedNavByCandidateIndex.Add(Candidate.CandidateIndex, Projected);
+					Job.LegalSlotBuckets.FindOrAdd(
+						MakeMoveDestinationBucket(Projected.Location)).Add(Job.LegalSlots.Num() - 1);
 				}
 
-				if (IsMoveCandidateBlockedByHardReservation(Job, Projected.Location))
+				Job.Debug.LegalCandidates = Job.LegalSlots.Num();
+				if (Job.NextCandidateProjectionIndex < Job.CandidateProjectionLimit)
 				{
-					++Job.Debug.ReservationConflictCount;
-					++Job.Debug.FailureCounts[
-						static_cast<uint8>(EGuLiMovePlanFailureStage::FriendlyReservation)];
-					continue;
+					break;
 				}
-				if (IsMoveCandidateTooCloseToLegalSlot(Job, Projected.Location))
+				if (Job.LegalSlots.Num() >= Job.DesiredLegalSlotCount
+					|| Job.NextCandidateProjectionIndex >= Job.HexCandidates.Num()
+					|| !ExpandMoveCandidateProjectionWindow(Job, false))
 				{
-					++Job.Debug.FailureCounts[
-						static_cast<uint8>(EGuLiMovePlanFailureStage::Separation)];
-					continue;
+					Job.Stage = EMovePlanningStage::AssignDestinations;
+					break;
 				}
-				FFreeDestinationSlot& Slot = Job.LegalSlots.AddDefaulted_GetRef();
-				Slot.CandidateIndex = Candidate.CandidateIndex;
-				Slot.AxialQ = Candidate.AxialQ;
-				Slot.AxialR = Candidate.AxialR;
-				Slot.OriginalWorldCandidate = Seed;
-				Slot.WorldDestination = Projected.Location;
-				Job.ProjectedNavByCandidateIndex.Add(Candidate.CandidateIndex, Projected);
-				Job.LegalSlotBuckets.FindOrAdd(
-					MakeMoveDestinationBucket(Projected.Location)).Add(Job.LegalSlots.Num() - 1);
+				if (RemainingProjectionBudget <= 0)
+				{
+					break;
+				}
 			}
-			Job.Debug.LegalCandidates = Job.LegalSlots.Num();
-			if (Job.NextCandidateProjectionIndex >= Job.HexCandidates.Num())
-			{
-				Job.Stage = EMovePlanningStage::AssignDestinations;
-			}
-			continue;
 		}
 
 		if (Job.Stage == EMovePlanningStage::AssignDestinations)
 		{
+			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_MovePlanning_AssignDestinations);
 			FFreeAssignmentPlan Assignment;
 			if (!AssignFreeDestinations(
 					Job.PlannerRequest,
@@ -2086,11 +2231,11 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 				}
 			}
 			Job.Stage = EMovePlanningStage::Route;
-			continue;
 		}
 
 		if (Job.Stage == EMovePlanningStage::Route)
 		{
+			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommander_MovePlanning_Route);
 			while (RemainingPathBudget > 0 && !Job.RouteTasks.IsEmpty())
 			{
 				FMoveRouteTask Task = MoveTemp(Job.RouteTasks[0]);
@@ -2256,6 +2401,13 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 							Job.ProjectedNavByCandidateIndex.FindChecked(Fallback->CandidateIndex));
 						Job.RouteTasks.Add(MoveTemp(Task));
 					}
+					else if (RestartMovePlanningWithCompleteCandidatePool(Job))
+					{
+						// The first local window was sufficient for assignment but not routing.
+						// Preserve projected slots, finish the hard-cap pool, then re-run the
+						// uncommitted transaction once with the existing deterministic order.
+						break;
+					}
 					else
 					{
 						Member.FailureStage = EGuLiMovePlanFailureStage::CandidatesExhausted;
@@ -2302,11 +2454,10 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 				}
 				Job.PreparedFormations.Add(MoveTemp(Formation));
 			}
-			if (Job.RouteTasks.IsEmpty())
+			if (Job.Stage == EMovePlanningStage::Route && Job.RouteTasks.IsEmpty())
 			{
 				Job.Stage = EMovePlanningStage::ReconcileReservations;
 			}
-			continue;
 		}
 
 		if (Job.Stage == EMovePlanningStage::ReconcileReservations)
@@ -2344,6 +2495,7 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 			}
 			bool bQueuedRepair = false;
 			bool bRestoredReservationSetChanged = false;
+			bool bRestartedWithCompleteCandidatePool = false;
 			for (int32 MemberPlanIndex = 0; MemberPlanIndex < Job.Members.Num(); ++MemberPlanIndex)
 			{
 				FMoveMemberPlan& Member = Job.Members[MemberPlanIndex];
@@ -2384,6 +2536,11 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 					});
 				if (!Fallback)
 				{
+					if (RestartMovePlanningWithCompleteCandidatePool(Job))
+					{
+						bRestartedWithCompleteCandidatePool = true;
+						break;
+					}
 					Member.FailureStage = EGuLiMovePlanFailureStage::RestoredReservation;
 					RestoredReservations.AddUnique(Member.OldReservation);
 					bRestoredReservationSetChanged = true;
@@ -2399,6 +2556,10 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 				Retry.MemberPlanIndices.Add(MemberPlanIndex);
 				Job.RouteTasks.Add(MoveTemp(Retry));
 				bQueuedRepair = true;
+			}
+			if (bRestartedWithCompleteCandidatePool)
+			{
+				continue;
 			}
 			Job.PreparedFormations.RemoveAll([](const FOrderFormationRuntime& Formation)
 			{
@@ -2486,6 +2647,17 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyMovePlans()
 			Job.PreparedFormations.Reset();
 			Job.NextStartValidationIndex = 0;
 			Job.NextCandidateProjectionIndex = 0;
+			Job.DesiredLegalSlotCount = 0;
+			Job.CandidateProjectionLimit = 0;
+			Job.ProjectionExpansionCount = 0;
+			Job.bEscalatedToFullCandidatePool = false;
+			Job.Debug.ProjectedCandidates = 0;
+			Job.Debug.LegalCandidates = 0;
+			Job.Debug.DesiredLegalSlots = 0;
+			Job.Debug.InitialProjectionLimit = 0;
+			Job.Debug.FinalProjectionLimit = 0;
+			Job.Debug.ProjectionExpansionCount = 0;
+			Job.Debug.bEscalatedToFullCandidatePool = false;
 			for (FMoveMemberPlan& Member : Job.Members)
 			{
 				Member.bStartValid = false;
@@ -2875,12 +3047,18 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyMovePlans()
 		UE_LOG(
 			LogGuLiCommanderMass,
 			Display,
-			TEXT("Move plan command=%u batch=%u target=%s candidates=%d/%d accepted=%d failed=%d projections=%d paths=%d splits=%d reservationConflicts=%d planningMs=%.3f."),
+			TEXT("Move plan command=%u batch=%u target=%s candidates=%d/%d desiredLegal=%d prefix=%d->%d expansions=%d fullPool=%s frames=%d accepted=%d failed=%d projections=%d paths=%d splits=%d reservationConflicts=%d planningMs=%.3f."),
 			Job.Request.ClientCommandId,
 			BatchOrderId,
 			*FVector(Job.Request.Target).ToCompactString(),
 			Job.Debug.LegalCandidates,
 			Job.Debug.TheoreticalCandidates,
+			Job.Debug.DesiredLegalSlots,
+			Job.Debug.InitialProjectionLimit,
+			Job.Debug.FinalProjectionLimit,
+			Job.Debug.ProjectionExpansionCount,
+			Job.Debug.bEscalatedToFullCandidatePool ? TEXT("true") : TEXT("false"),
+			Job.Debug.PlanningWorldFrames,
 			AcceptedMembers,
 			Job.Debug.FailedMembers,
 			Job.Debug.CandidateProjectionQueries,
@@ -5346,6 +5524,109 @@ bool UGuLiBattleAuthoritySubsystem::ApplyDamage(const FGuLiSoldierId SoldierId, 
 	return true;
 }
 
+FGuLiTargetHandle UGuLiBattleAuthoritySubsystem::MakeSoldierTargetHandle(
+	const FGuLiSoldierId SoldierId) const
+{
+	const AGuLiBattleGameState* BattleState = GetWorld()
+		? GetWorld()->GetGameState<AGuLiBattleGameState>() : nullptr;
+	const uint32 MatchEpoch = BattleState ? BattleState->GetMatchEpoch() : 0u;
+	return SoldierId.IsValid()
+		? GuLiCombatTargets::MakeCommanderSoldierTargetHandle(MatchEpoch, SoldierId.Value)
+		: FGuLiTargetHandle{};
+}
+
+void UGuLiBattleAuthoritySubsystem::RegisterCombatLedgerTargets()
+{
+	UnregisterCombatLedgerTargets();
+	if (!IsAuthorityWorld() || !AuthorityState)
+	{
+		return;
+	}
+	if (AGuLiBattleGameState* BattleState = GetWorld()
+		? GetWorld()->GetGameState<AGuLiBattleGameState>() : nullptr)
+	{
+		BattleState->InitializeServerMatchState();
+	}
+	RegisteredCombatLedgerTargets.Reserve(AuthorityState->Soldiers.Num());
+	for (const GuLiCommanderMassPrivate::FSoldierRuntime& Soldier : AuthorityState->Soldiers)
+	{
+		RegisterCombatLedgerTarget(Soldier.SoldierId);
+	}
+}
+
+bool UGuLiBattleAuthoritySubsystem::RegisterCombatLedgerTarget(
+	const FGuLiSoldierId SoldierId)
+{
+	UGuLiDamageLedgerSubsystem* Ledger = GetWorld()
+		? GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>() : nullptr;
+	const FGuLiTargetHandle Handle = MakeSoldierTargetHandle(SoldierId);
+	if (!Ledger || !Handle.IsValid())
+	{
+		return false;
+	}
+
+	TWeakObjectPtr<UGuLiBattleAuthoritySubsystem> WeakThis(this);
+	FGuLiCombatTargetAdapter Adapter;
+	Adapter.LifetimeOwner = this;
+	Adapter.ReadSnapshot = [WeakThis, SoldierId, Handle](FGuLiCombatTargetSnapshot& OutSnapshot)
+	{
+		const UGuLiBattleAuthoritySubsystem* Authority = WeakThis.Get();
+		FGuLiSoldierCombatDebug Debug;
+		if (!Authority || !Authority->TryGetSoldierCombatDebug(SoldierId, Debug))
+		{
+			return false;
+		}
+		OutSnapshot = FGuLiCombatTargetSnapshot{};
+		OutSnapshot.Handle = Handle;
+		OutSnapshot.Team = Debug.Team;
+		OutSnapshot.Location = Debug.Location;
+		OutSnapshot.CollisionRadius = Authority->MemberAgentRadiusCentimeters;
+		OutSnapshot.Health = Debug.Health;
+		OutSnapshot.bAlive = Debug.Health > 0.0f;
+		return !OutSnapshot.Location.ContainsNaN();
+	};
+	Adapter.ApplyDamage = [WeakThis, SoldierId](
+		const FGuLiDamageRequest& Request,
+		FGuLiDamageCommitResult& OutResult)
+	{
+		UGuLiBattleAuthoritySubsystem* Authority = WeakThis.Get();
+		FGuLiSoldierCombatDebug Before;
+		if (!Authority || !Authority->TryGetSoldierCombatDebug(SoldierId, Before)
+			|| Before.Health <= 0.0f || !Authority->ApplyDamage(SoldierId, Request.Damage))
+		{
+			return false;
+		}
+		FGuLiSoldierCombatDebug After;
+		if (!Authority->TryGetSoldierCombatDebug(SoldierId, After))
+		{
+			return false;
+		}
+		OutResult.AppliedDamage = FMath::Max(0.0f, Before.Health - After.Health);
+		OutResult.RemainingHealth = FMath::Max(0.0f, After.Health);
+		OutResult.bKilled = Before.Health > 0.0f && After.Health <= 0.0f;
+		return OutResult.AppliedDamage > 0.0f;
+	};
+	if (!Ledger->RegisterTarget(Handle, MoveTemp(Adapter)))
+	{
+		return false;
+	}
+	RegisteredCombatLedgerTargets.AddUnique(Handle);
+	return true;
+}
+
+void UGuLiBattleAuthoritySubsystem::UnregisterCombatLedgerTargets()
+{
+	if (UGuLiDamageLedgerSubsystem* Ledger = GetWorld()
+		? GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>() : nullptr)
+	{
+		for (const FGuLiTargetHandle& Handle : RegisteredCombatLedgerTargets)
+		{
+			Ledger->UnregisterTarget(Handle, this);
+		}
+	}
+	RegisteredCombatLedgerTargets.Reset();
+}
+
 // 构造可靠复制使用的离散状态：生命、阵营、指令等；连续位置走下面独立的姿态通道。
 void UGuLiBattleAuthoritySubsystem::BuildSoldierStateSnapshot(
 	TArray<FGuLiSoldierStateItem>& OutStates) const
@@ -5873,6 +6154,7 @@ bool UGuLiBattleAuthoritySubsystem::SpawnDebugSoldier(const EGuLiTeam Team, cons
 	Stats.Defense = Soldier.Defense;
 	EntityManager.GetFragmentDataChecked<FGuLiMassSlotTargetFragment>(Soldier.Entity).WorldTarget = Soldier.Location;
 	OutId = Soldier.SoldierId;
+	RegisterCombatLedgerTarget(OutId);
 	return true;
 #endif
 }

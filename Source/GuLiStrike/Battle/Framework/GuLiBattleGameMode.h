@@ -61,6 +61,10 @@ private:
 	bool HasCurrentRoleSlot(const AGuLiBattlePlayerState& PlayerState) const;
 	bool CanSpawnPlayer(APlayerController& PlayerController) const;
 	void StopPendingRespawns();
+	void HandleWingmanOwnerDisconnected(
+		APlayerController& ExitingController,
+		const AGuLiBattlePlayerState& ExitingPlayerState);
+	void TryAssignWaitingWingmanGroups();
 
 	// 仅服务器的延时工作；弱指针不延长玩家连接寿命，退出/结束/切图时清理。
 	TMap<TWeakObjectPtr<APlayerController>, FTimerHandle> PendingRespawns;

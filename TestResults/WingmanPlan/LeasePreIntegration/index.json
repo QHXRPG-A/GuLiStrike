@@ -1,0 +1,534 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "EE2F9BDF46E40759A01CEB82FF5B923A",
+			"instanceName": "DESKTOP-6D3B0FC-38796",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-14.27.38",
+	"succeeded": 15,
+	"succeededWithWarnings": 0,
+	"failed": 4,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.24490402638912201,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "NoOwnerThenReconnect",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.NoOwnerThenReconnect",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.093896597623825073,
+			"dateTime": "2026.09.02-14.27.37",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Later connection owns a new epoch: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "C:\\Program Files\\Epic Games\\UE_5.7\\Engine\\Source\\Runtime\\Core\\Public\\Misc\\AutomationTest.h",
+					"lineNumber": 2199,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Waiting marker clears only after takeover starts' to be 0, but it was 1.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 277,
+					"timestamp": "2026.09.02-14.27.38"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PersistentDisconnectTakeover",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.PersistentDisconnectTakeover",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0080484971404075623,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Takeover starts without destroying the core: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 169,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Old lease epoch is permanently invalidated' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 182,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Backup owns the new lease: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "C:\\Program Files\\Epic Games\\UE_5.7\\Engine\\Source\\Runtime\\Core\\Public\\Misc\\AutomationTest.h",
+					"lineNumber": 2199,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Takeover remains hidden until the frozen cut is ACKed: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 183,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'New transport receives a complete takeover Bootstrap' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 189,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Takeover Bootstrap carries a frozen baseline' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 191,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Frozen ability revision is exact: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 191,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Frozen ability hash is exact' to be 6065619327423431723, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 196,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Frozen Accepted hash is exact' to be 5558979605539197941, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 199,
+					"timestamp": "2026.09.02-14.27.38"
+				}
+			],
+			"warnings": 0,
+			"errors": 9,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldHookRevokeAndDestroyLifetime",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.WorldHookRevokeAndDestroyLifetime",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0084254033863544464,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingThenAcceptOrTimeout",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.CarrierSource.PendingThenAcceptOrTimeout",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0084572024643421173,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AdditionalValidatorBeforeSequenceCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.FireIntent.AdditionalValidatorBeforeSequenceCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.008317798376083374,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AssemblyDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AssemblyDeadline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0085912011563777924,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicAllOrNothing",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AtomicAllOrNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0086334012448787689,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicResumeAndTakeover",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AtomicResumeAndTakeover",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0082237012684345245,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Takeover atomically rebases all Flights: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 300,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Takeover becomes Active only after atomic batch and both ACKs' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 309,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Authority begins resume' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 310,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Resume requires the typed atomic envelope: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 312,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Resume atomically rebases all Flights: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 315,
+					"timestamp": "2026.09.02-14.27.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Ability config ACK' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 196,
+					"timestamp": "2026.09.02-14.27.38"
+				}
+			],
+			"warnings": 0,
+			"errors": 6,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StrictContractGates",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.StrictContractGates",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.008376099169254303,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TrailGrantPending",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.TrailGrantPending",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0079258978366851807,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RetainedBootstrapAndRevocation",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.PublicTransport.RetainedBootstrapAndRevocation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0092690996825695038,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ZeroAuthorityMotion",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.SyntheticCandidate.ZeroAuthorityMotion",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0082120001316070557,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrozenAbilityBaseline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Takeover.FrozenAbilityBaseline",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0081016011536121368,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The new lease is active after the exact commit' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 656,
+					"timestamp": "2026.09.02-14.27.38"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MonotonicBounded",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.TokenBucket.MonotonicBounded",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.008471902459859848,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MotionEnvelopeBeforeAcceptedCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.MotionEnvelopeBeforeAcceptedCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0083843022584915161,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingHealthAbilityAndModeGate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.PendingHealthAbilityAndModeGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0080609992146492004,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldGateFailClosedBeforeCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.WorldGateFailClosedBeforeCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0081654973328113556,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldStaticDynamicAndNavigation",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.WorldStaticDynamicAndNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0093297027051448822,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AbilityConfigAndSixScopeGate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AbilityConfigAndSixScopeGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"EE2F9BDF46E40759A01CEB82FF5B923A"
+			],
+			"duration": 0.0080130994319915771,
+			"dateTime": "2026.09.02-14.27.38",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

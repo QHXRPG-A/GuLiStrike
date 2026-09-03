@@ -1,0 +1,15 @@
+{
+  "schema": "guli.build-evidence.v1",
+  "observed_local_date": "2026-09-03",
+  "target": "GuLiStrikeEditor",
+  "platform": "Win64",
+  "configuration": "DebugGame",
+  "command": "Build.bat GuLiStrikeEditor Win64 DebugGame D:\\UE5.7\\test1\\GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE",
+  "exit_code": 0,
+  "result": "Succeeded",
+  "completed_actions": 60,
+  "total_actions": 60,
+  "unreal_build_accelerator_seconds": 15.72,
+  "total_execution_seconds": 16.41,
+  "note": "Recorded from the final post-hardening UnrealBuildTool console result; this is an Editor build and does not claim a source-engine Dedicated Server build."
+}

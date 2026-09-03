@@ -1,0 +1,87 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "B43CD6CB407B5BB430796F9C07ABAA21",
+			"instanceName": "DESKTOP-6D3B0FC-36992",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.02-15.24.33",
+	"succeeded": 2,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.10524219274520874,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AbilityRevisionGate",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.AbilityRevisionGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B43CD6CB407B5BB430796F9C07ABAA21"
+			],
+			"duration": 0.0078849978744983673,
+			"dateTime": "2026.09.02-15.24.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GoldenBytes",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.GoldenBytes",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"B43CD6CB407B5BB430796F9C07ABAA21"
+			],
+			"duration": 0.08910660445690155,
+			"dateTime": "2026.09.02-15.24.33",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'FireIntent protocol-v7 golden bytes stay frozen' to be \"0E044030201080706050C0B0A09001F0E0D0061208264030201080706050C0B0A09001F0E0D00612010204041222CA02010000000200000003000000040000000A0C1F000000536869702E4162696C6974792E576561706F6E2E42617369632E4175746F000C16E80300000000000000000000\", but it was \"0E044030201080706050C0B0A09001F0E0D0061208264030201080706050C0B0A09001F0E0D00612010204041222CACE02010000000200000003000000040000000A0C1F000000536869702E4162696C6974792E576561706F6E2E42617369632E4175746F000C16E8030000000000000000000001\".",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "C:\\Program Files\\Epic Games\\UE_5.7\\Engine\\Source\\Runtime\\Core\\Public\\Misc\\AutomationTest.h",
+					"lineNumber": 2021,
+					"timestamp": "2026.09.02-15.24.33"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SixScopeBootstrap",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.SixScopeBootstrap",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B43CD6CB407B5BB430796F9C07ABAA21"
+			],
+			"duration": 0.0082505978643894196,
+			"dateTime": "2026.09.02-15.24.33",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

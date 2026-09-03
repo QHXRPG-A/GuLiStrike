@@ -1,0 +1,62 @@
+{
+  "agent_radius": 1500.0,
+  "map": "/Game/Maps/LVL_ShipTest",
+  "saved_packages": [
+    "/Game/Maps/LVL_ShipTest"
+  ],
+  "schema": "guli.shiptest-safe-player-starts.v1",
+  "settle_offset": [
+    0.0,
+    -1600.0,
+    0.0
+  ],
+  "spawns": [
+    {
+      "actor_path": "/Game/Maps/LVL_ShipTest.LVL_ShipTest:PersistentLevel.PlayerStart_0",
+      "after": [
+        -20000.0,
+        20000.0,
+        0.0
+      ],
+      "all_formation_endpoints_valid": true,
+      "authored_probe_count": 26,
+      "before": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "label": "PS_ShipSpawn",
+      "managed_tag": "GuLi.ShipTest.PrimarySpawn.v1",
+      "settled_location": [
+        -20000.0,
+        18400.0,
+        0.0
+      ],
+      "settled_probe_count": 26
+    },
+    {
+      "actor_path": "/Game/Maps/LVL_ShipTest.LVL_ShipTest:PersistentLevel.PlayerStart_1",
+      "after": [
+        20000.0,
+        20000.0,
+        0.0
+      ],
+      "all_formation_endpoints_valid": true,
+      "authored_probe_count": 26,
+      "before": [
+        20000.0,
+        20000.0,
+        0.0
+      ],
+      "label": "PS_ShipSpawn_Remote",
+      "managed_tag": "GuLi.ShipTest.MultiplayerSpawn.v1",
+      "settled_location": [
+        20000.0,
+        18400.0,
+        0.0
+      ],
+      "settled_probe_count": 26
+    }
+  ],
+  "success": true
+}
