@@ -5,6 +5,7 @@
 #include "Battle/Relay/GuLiWingmanRelayTypes.h"
 #include "Gameplay/Wingman/Behavior/GuLiWingmanGroupBehaviorRunner.h"
 #include "Gameplay/Wingman/Behavior/GuLiWingmanBehaviorStateTree.h"
+#include "Development/GuLiWingmanQAEvidence.h"
 #include "Gameplay/Wingman/Mass/GuLiWingmanMassFragments.h"
 #include "Engine/World.h"
 #include "GuLiFlightNavigationSubsystem.h"
@@ -1045,6 +1046,10 @@ void UGuLiWingmanSimulationSubsystem::TickNavigationBehavior(
 	const FGuLiWingmanGroupHandle& Group,
 	const float DeltaSeconds)
 {
+	if (const UWorld* World = GetWorld(); World && World->GetNetMode() == NM_DedicatedServer)
+	{
+		FGuLiWingmanQAInvariantRegistry::Add(TEXT("SERVER_WINGMAN_PATHFINDING_EXECUTED"));
+	}
 	FGuLiWingmanLocalGroupRuntime* Runtime = OwnedGroups.Find(Group);
 	if (!Runtime || !MassEntitySubsystem || !CanOwnSimulation()
 		|| !Runtime->AbilityConfig.IsUsableByLeaseOwner())

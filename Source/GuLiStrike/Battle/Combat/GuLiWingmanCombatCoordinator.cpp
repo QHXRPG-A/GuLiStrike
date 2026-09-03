@@ -47,7 +47,7 @@ namespace
 		return FMath::IsFinite(Value) && Value >= 0.0;
 	}
 
-	bool IsStableTargetLess(const FGuLiTargetHandle& Lhs, const FGuLiTargetHandle& Rhs)
+	bool IsStableWingmanTargetLess(const FGuLiTargetHandle& Lhs, const FGuLiTargetHandle& Rhs)
 	{
 		if (Lhs.Kind != Rhs.Kind)
 		{
@@ -583,7 +583,7 @@ EGuLiWingmanRejectReason FGuLiWingmanCombatCoordinator::SelectMissileTarget(
 			DistanceSquared, BestDistanceSquared, 1.0);
 		if (!OutTarget.Handle.IsValid()
 			|| (DistanceSquared < BestDistanceSquared && !bDistanceTie)
-			|| (bDistanceTie && IsStableTargetLess(Candidate.Handle, OutTarget.Handle)))
+			|| (bDistanceTie && IsStableWingmanTargetLess(Candidate.Handle, OutTarget.Handle)))
 		{
 			OutTarget = Candidate;
 			BestDistanceSquared = DistanceSquared;

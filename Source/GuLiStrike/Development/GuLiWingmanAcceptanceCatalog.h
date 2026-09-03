@@ -50,6 +50,10 @@ public:
 	static FString GetCatalogHashSha256();
 
 	static const FGuLiWingmanAcceptanceRoleDefinition* FindRole(FName RoleId);
+	/** Validates one role independently; campaign orchestration adds exact-set/uniqueness checks. */
+	static bool ValidateRun(
+		const FGuLiWingmanAcceptanceRunEvidence& Run,
+		TArray<FString>& OutErrors);
 	static bool ValidateCampaign(
 		TConstArrayView<FGuLiWingmanAcceptanceRunEvidence> Runs,
 		TArray<FString>& OutErrors);

@@ -302,14 +302,100 @@ const FGuLiWingmanAcceptanceRoleDefinition* FGuLiWingmanAcceptanceCatalogV2::Fin
 	});
 }
 
+bool FGuLiWingmanAcceptanceCatalogV2::ValidateRun(
+	const FGuLiWingmanAcceptanceRunEvidence& Run,
+	TArray<FString>& OutErrors)
+{
+	OutErrors.Reset();
+	const FGuLiWingmanAcceptanceRoleDefinition* Role = FindRole(Run.RoleId);
+	if (!Role)
+	{
+		OutErrors.Add(FString::Printf(TEXT("Unknown suite_run_role: %s"), *Run.RoleId.ToString()));
+		return false;
+	}
+
+	const TArray<FName>& CommonGates = GetCommonRequiredGateIds();
+	const TArray<FName>& Invariants = GetInvariantKeys();
+	const FString ExpectedHash = GetCatalogHashSha256();
+	if (Run.RunId.IsEmpty())
+	{
+		OutErrors.Add(FString::Printf(TEXT("Role %s has no run_id."), *Run.RoleId.ToString()));
+	}
+	if (Run.CatalogVersion != Version || !Run.CatalogHash.Equals(ExpectedHash, ESearchCase::IgnoreCase))
+	{
+		OutErrors.Add(FString::Printf(TEXT("Catalog version/hash mismatch for role %s."),
+			*Run.RoleId.ToString()));
+	}
+	if (Run.EvidencePath.IsEmpty() || !Run.bRunCompleted || !Run.bRunPassed)
+	{
+		OutErrors.Add(FString::Printf(TEXT("Role %s has incomplete or failed evidence."),
+			*Run.RoleId.ToString()));
+	}
+
+	TSet<FName> AllowedGates;
+	for (const FName Gate : CommonGates)
+	{
+		AllowedGates.Add(Gate);
+	}
+	for (const FName Gate : Role->RequiredGateIds)
+	{
+		AllowedGates.Add(Gate);
+	}
+	for (const TPair<FName, int64>& Gate : Run.GateSampleCounts)
+	{
+		if (!AllowedGates.Contains(Gate.Key)
+			|| GuLiWingmanAcceptanceCatalog::ContainsForbiddenLegacyGateToken(Gate.Key))
+		{
+			OutErrors.Add(FString::Printf(TEXT("Role %s contains unknown/legacy gate %s."),
+				*Run.RoleId.ToString(),
+				*Gate.Key.ToString()));
+		}
+	}
+	for (const FName RequiredGate : AllowedGates)
+	{
+		const int64* SampleCount = Run.GateSampleCounts.Find(RequiredGate);
+		if (!SampleCount || *SampleCount <= 0)
+		{
+			OutErrors.Add(FString::Printf(TEXT("Role %s has no samples for required gate %s."),
+				*Run.RoleId.ToString(),
+				*RequiredGate.ToString()));
+		}
+	}
+
+	for (const TPair<FName, int64>& Invariant : Run.InvariantCounts)
+	{
+		if (!Invariants.Contains(Invariant.Key))
+		{
+			OutErrors.Add(FString::Printf(TEXT("Role %s contains unknown invariant %s."),
+				*Run.RoleId.ToString(),
+				*Invariant.Key.ToString()));
+		}
+		else if (Invariant.Value != 0)
+		{
+			OutErrors.Add(FString::Printf(TEXT("Role %s invariant %s is non-zero (%lld)."),
+				*Run.RoleId.ToString(),
+				*Invariant.Key.ToString(),
+				Invariant.Value));
+		}
+	}
+	for (const FName RequiredInvariant : Invariants)
+	{
+		if (!Run.InvariantCounts.Contains(RequiredInvariant))
+		{
+			OutErrors.Add(FString::Printf(TEXT("Role %s is missing invariant %s."),
+				*Run.RoleId.ToString(),
+				*RequiredInvariant.ToString()));
+		}
+	}
+	return OutErrors.IsEmpty();
+}
+
 bool FGuLiWingmanAcceptanceCatalogV2::ValidateCampaign(
 	const TConstArrayView<FGuLiWingmanAcceptanceRunEvidence> Runs,
 	TArray<FString>& OutErrors)
 {
 	OutErrors.Reset();
 	const TArray<FGuLiWingmanAcceptanceRoleDefinition>& Roles = GetRoles();
-	const TArray<FName>& CommonGates = GetCommonRequiredGateIds();
-	const TArray<FName>& Invariants = GetInvariantKeys();
 	const FString ExpectedHash = GetCatalogHashSha256();
 	if (Roles.Num() != ExpectedRoleCount || ExpectedHash.Len() != 64)
 	{
@@ -338,12 +424,6 @@ bool FGuLiWingmanAcceptanceCatalogV2::ValidateCampaign(
 	TSet<FString> SeenRunIds;
 	for (const FGuLiWingmanAcceptanceRunEvidence& Run : Runs)
 	{
-		const FGuLiWingmanAcceptanceRoleDefinition* Role = FindRole(Run.RoleId);
-		if (!Role)
-		{
-			OutErrors.Add(FString::Printf(TEXT("Unknown suite_run_role: %s"), *Run.RoleId.ToString()));
-			continue;
-		}
 		if (SeenRoles.Contains(Run.RoleId))
 		{
 			OutErrors.Add(FString::Printf(TEXT("Duplicate suite_run_role: %s"), *Run.RoleId.ToString()));
@@ -355,72 +435,9 @@ bool FGuLiWingmanAcceptanceCatalogV2::ValidateCampaign(
 				*Run.RoleId.ToString()));
 		}
 		SeenRunIds.Add(Run.RunId);
-		if (Run.CatalogVersion != Version || !Run.CatalogHash.Equals(ExpectedHash, ESearchCase::IgnoreCase))
-		{
-			OutErrors.Add(FString::Printf(TEXT("Catalog version/hash mismatch for role %s."),
-				*Run.RoleId.ToString()));
-		}
-		if (Run.EvidencePath.IsEmpty() || !Run.bRunCompleted || !Run.bRunPassed)
-		{
-			OutErrors.Add(FString::Printf(TEXT("Role %s has incomplete or failed evidence."),
-				*Run.RoleId.ToString()));
-		}
-
-		TSet<FName> AllowedGates;
-		for (const FName Gate : CommonGates)
-		{
-			AllowedGates.Add(Gate);
-		}
-		for (const FName Gate : Role->RequiredGateIds)
-		{
-			AllowedGates.Add(Gate);
-		}
-		for (const TPair<FName, int64>& Gate : Run.GateSampleCounts)
-		{
-			if (!AllowedGates.Contains(Gate.Key)
-				|| GuLiWingmanAcceptanceCatalog::ContainsForbiddenLegacyGateToken(Gate.Key))
-			{
-				OutErrors.Add(FString::Printf(TEXT("Role %s contains unknown/legacy gate %s."),
-					*Run.RoleId.ToString(),
-					*Gate.Key.ToString()));
-			}
-		}
-		for (const FName RequiredGate : AllowedGates)
-		{
-			const int64* SampleCount = Run.GateSampleCounts.Find(RequiredGate);
-			if (!SampleCount || *SampleCount <= 0)
-			{
-				OutErrors.Add(FString::Printf(TEXT("Role %s has no samples for required gate %s."),
-					*Run.RoleId.ToString(),
-					*RequiredGate.ToString()));
-			}
-		}
-
-		for (const TPair<FName, int64>& Invariant : Run.InvariantCounts)
-		{
-			if (!Invariants.Contains(Invariant.Key))
-			{
-				OutErrors.Add(FString::Printf(TEXT("Role %s contains unknown invariant %s."),
-					*Run.RoleId.ToString(),
-					*Invariant.Key.ToString()));
-			}
-			else if (Invariant.Value != 0)
-			{
-				OutErrors.Add(FString::Printf(TEXT("Role %s invariant %s is non-zero (%lld)."),
-					*Run.RoleId.ToString(),
-					*Invariant.Key.ToString(),
-					Invariant.Value));
-			}
-		}
-		for (const FName RequiredInvariant : Invariants)
-		{
-			if (!Run.InvariantCounts.Contains(RequiredInvariant))
-			{
-				OutErrors.Add(FString::Printf(TEXT("Role %s is missing invariant %s."),
-					*Run.RoleId.ToString(),
-					*RequiredInvariant.ToString()));
-			}
-		}
+		TArray<FString> RunErrors;
+		ValidateRun(Run, RunErrors);
+		OutErrors.Append(MoveTemp(RunErrors));
 	}
 
 	for (const FName ExpectedRole : ExpectedRoleIds)

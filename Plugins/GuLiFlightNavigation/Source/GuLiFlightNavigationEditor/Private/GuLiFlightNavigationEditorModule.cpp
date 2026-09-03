@@ -44,7 +44,7 @@ private:
 				// UAT treats Error records as a cook failure even when callers omit
 				// -RunAssetValidation. The Data/World validators remain the primary
 				// package-rejection path when validation flags are enabled.
-				UE_LOG(LogGuLiFlightNavigation, Error, TEXT("%s"), *Issue.ToLogString());
+				UE_LOG(LogGuLiFlightNav, Error, TEXT("%s"), *Issue.ToLogString());
 			}
 		}
 	}

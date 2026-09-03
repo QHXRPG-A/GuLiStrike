@@ -27,6 +27,14 @@ namespace GuLiWingmanPerformanceHarness
 {
 	constexpr float FixedStepSeconds = 1.0f / 30.0f;
 	constexpr int32 GroupSize = static_cast<int32>(GULI_WINGMAN_GROUP_SIZE);
+	constexpr double H4000OwnerP95BudgetMilliseconds = 1000.0 / 30.0;
+	constexpr double H4000OwnerThroughputFloor = 4000.0 * 30.0;
+	constexpr double H4000ServerP95BudgetMilliseconds = 2.5;
+	constexpr double H4000ServerMaximumBudgetMilliseconds = 8.0;
+	constexpr double H4000ServerThroughputFloor = 4000.0 * 10.0;
+	constexpr int32 H4000OwnerWarmupSteps = 30;
+	constexpr int32 H4000OwnerMeasuredSteps = 300;
+	constexpr int32 H4000ServerMinimumServiceSamples = 50;
 
 	struct FScopedFlightNavSegmentValidator
 	{
@@ -353,12 +361,19 @@ namespace GuLiWingmanPerformanceHarness
 		return true;
 	}
 
-	FString OwnerResultJson(const TCHAR* RunName, const FOwnerRunResult& Result, const bool bFormalGate)
+	FString OwnerResultJson(
+		const TCHAR* RunName,
+		const FOwnerRunResult& Result,
+		const bool bFormalGate,
+		const double P95BudgetMilliseconds,
+		const double ThroughputFloor)
 	{
 		return FString::Printf(
-			TEXT("{\"schema\":\"guli.wingman.performance.v1\",\"run\":\"%s\",\"scope\":\"owner_mass_mode_guidance_avoidance_integration_no_render_no_authored_nav\",\"formal_gate\":%s,\"fixed_hz\":30,\"entity_count\":%d,\"sample_count\":%d,\"quantile_method\":\"nearest-rank\",\"step_p50_ms\":%.6f,\"step_p95_ms\":%.6f,\"step_max_ms\":%.6f,\"setup_ms\":%.6f,\"total_measured_ms\":%.6f,\"throughput_entities_per_second\":%.3f,\"queue_max_depth\":%d,\"queue_capacity\":%d,\"queue_oldest_age_ms\":%.6f,\"queue_final_depth\":%d,\"drop_count\":%d,\"approx_entity_payload_bytes\":%llu,\"process_resident_delta_bytes_approx\":%lld,\"presentation_actor_count\":%d,\"transform_advanced\":%s}"),
+			TEXT("{\"schema\":\"guli.wingman.performance.v1\",\"run\":\"%s\",\"scope\":\"owner_mass_mode_guidance_avoidance_integration_no_render_no_authored_nav\",\"formal_gate\":%s,\"p95_budget_ms\":%.6f,\"throughput_floor_entity_steps_per_second\":%.3f,\"fixed_hz\":30,\"entity_count\":%d,\"sample_count\":%d,\"quantile_method\":\"nearest-rank\",\"step_p50_ms\":%.6f,\"step_p95_ms\":%.6f,\"step_max_ms\":%.6f,\"setup_ms\":%.6f,\"total_measured_ms\":%.6f,\"throughput_entities_per_second\":%.3f,\"queue_max_depth\":%d,\"queue_capacity\":%d,\"queue_oldest_age_ms\":%.6f,\"queue_final_depth\":%d,\"drop_count\":%d,\"approx_entity_payload_bytes\":%llu,\"process_resident_delta_bytes_approx\":%lld,\"presentation_actor_count\":%d,\"transform_advanced\":%s}"),
 			RunName,
 			bFormalGate ? TEXT("true") : TEXT("false"),
+			P95BudgetMilliseconds,
+			ThroughputFloor,
 			Result.EntityCount,
 			Result.SampleCount,
 			Result.StepTime.P50Milliseconds,
@@ -787,12 +802,20 @@ namespace GuLiWingmanPerformanceHarness
 		return true;
 	}
 
-	FString ServerResultJson(const TCHAR* RunName, const FServerRunResult& Result, const bool bFormalGate)
+	FString ServerResultJson(
+		const TCHAR* RunName,
+		const FServerRunResult& Result,
+		const bool bFormalGate,
+		const double P95BudgetMilliseconds,
+		const double ThroughputFloor)
 	{
 		return FString::Printf(
-			TEXT("{\"schema\":\"guli.wingman.performance.v1\",\"run\":\"%s\",\"scope\":\"strict_flight_grant_atomic_relay_validate_store_payload_copy_only\",\"formal_gate\":%s,\"wingman_count\":%d,\"candidate_count\":%d,\"accepted_candidate_count\":%d,\"accepted_store_count\":%d,\"relay_count\":%d,\"relayed_sample_count\":%d,\"cruise_hz\":5,\"cruise_captures_per_group\":%d,\"combat_hz\":10,\"combat_captures_per_group\":%d,\"sample_count\":%d,\"candidates_per_service_step\":%d,\"quantile_method\":\"nearest-rank\",\"step_p50_ms\":%.6f,\"step_p95_ms\":%.6f,\"step_max_ms\":%.6f,\"setup_ms\":%.6f,\"total_measured_ms\":%.6f,\"throughput_candidates_per_second\":%.3f,\"throughput_samples_per_second\":%.3f,\"queue_max_depth\":%d,\"queue_capacity\":%d,\"queue_oldest_age_ms\":%.6f,\"queue_final_depth\":%d,\"drop_count\":%d,\"approx_replay_payload_bytes\":%llu,\"process_resident_delta_bytes_approx\":%lld,\"server_wingman_motion_step_count\":%llu}"),
+			TEXT("{\"schema\":\"guli.wingman.performance.v1\",\"run\":\"%s\",\"scope\":\"strict_flight_grant_atomic_relay_validate_store_payload_copy_only\",\"formal_gate\":%s,\"p95_budget_ms\":%.6f,\"max_budget_ms\":%.6f,\"throughput_floor_candidates_per_second\":%.3f,\"wingman_count\":%d,\"candidate_count\":%d,\"accepted_candidate_count\":%d,\"accepted_store_count\":%d,\"relay_count\":%d,\"relayed_sample_count\":%d,\"cruise_hz\":5,\"cruise_captures_per_group\":%d,\"combat_hz\":10,\"combat_captures_per_group\":%d,\"sample_count\":%d,\"candidates_per_service_step\":%d,\"quantile_method\":\"nearest-rank\",\"step_p50_ms\":%.6f,\"step_p95_ms\":%.6f,\"step_max_ms\":%.6f,\"setup_ms\":%.6f,\"total_measured_ms\":%.6f,\"throughput_candidates_per_second\":%.3f,\"throughput_samples_per_second\":%.3f,\"queue_max_depth\":%d,\"queue_capacity\":%d,\"queue_oldest_age_ms\":%.6f,\"queue_final_depth\":%d,\"drop_count\":%d,\"approx_replay_payload_bytes\":%llu,\"process_resident_delta_bytes_approx\":%lld,\"server_wingman_motion_step_count\":%llu}"),
 			RunName,
 			bFormalGate ? TEXT("true") : TEXT("false"),
+			P95BudgetMilliseconds,
+			H4000ServerMaximumBudgetMilliseconds,
+			ThroughputFloor,
 			Result.WingmanCount,
 			Result.CandidateCount,
 			Result.AcceptedCandidateCount,
@@ -841,21 +864,28 @@ bool FGuLiWingmanH4000OwnerSimulationHarnessTest::RunTest(const FString& Paramet
 	using namespace GuLiWingmanPerformanceHarness;
 	(void)Parameters;
 	FOwnerRunResult Result;
-	if (!RunOwnerHarness(*this, 160, 2, 12, Result))
+	if (!RunOwnerHarness(
+		*this, 160, H4000OwnerWarmupSteps, H4000OwnerMeasuredSteps, Result))
 	{
 		return false;
 	}
 	TestEqual(TEXT("H4000 creates exactly 4000 owner Mass entities"), Result.EntityCount, 4000);
 	TestEqual(TEXT("H4000 creates no presentation actors"), Result.PresentationActorCount, 0);
-	TestEqual(TEXT("H4000 measures every queued fixed step"), Result.SampleCount, 12);
+	TestEqual(TEXT("H4000 measures every queued fixed step"),
+		Result.SampleCount, H4000OwnerMeasuredSteps);
 	TestEqual(TEXT("H4000 owner queue drains completely"), Result.FinalQueueDepth, 0);
 	TestEqual(TEXT("H4000 owner harness drops no step"), Result.DropCount, 0);
 	TestTrue(TEXT("H4000 executes the real fixed-wing Transform writer"), Result.bTransformAdvanced);
 	TestTrue(TEXT("H4000 owner timing distribution is finite and ordered"), IsFiniteDistribution(Result.StepTime));
-	TestTrue(TEXT("H4000 owner throughput is positive and finite"),
-		FMath::IsFinite(Result.ThroughputEntitiesPerSecond) && Result.ThroughputEntitiesPerSecond > 0.0);
-	AddInfo(TEXT("GULI_PERF_METRICS ") + OwnerResultJson(TEXT("H4000-OwnerSimulation"), Result, false));
-	AddInfo(TEXT("This Automation run is a repeatable short no-render harness, not the formal 10-minute network gate."));
+	TestTrue(TEXT("H4000 owner P95 stays within one 30 Hz fixed-step budget"),
+		Result.StepTime.P95Milliseconds <= H4000OwnerP95BudgetMilliseconds);
+	TestTrue(TEXT("H4000 owner throughput sustains 4000 entities at 30 Hz"),
+		FMath::IsFinite(Result.ThroughputEntitiesPerSecond)
+			&& Result.ThroughputEntitiesPerSecond >= H4000OwnerThroughputFloor);
+	AddInfo(TEXT("GULI_PERF_METRICS ") + OwnerResultJson(
+		TEXT("H4000-OwnerSimulation"), Result, true,
+		H4000OwnerP95BudgetMilliseconds, H4000OwnerThroughputFloor));
+	AddInfo(TEXT("Formal split-scale owner gate; this is not a complete 4000-Wingman network match."));
 	return true;
 }
 
@@ -884,9 +914,18 @@ bool FGuLiWingmanH4000ServerValidatorHarnessTest::RunTest(const FString& Paramet
 		Result.ServerMovementWriteCount, static_cast<uint64>(0u));
 	TestTrue(TEXT("H4000 server timing distribution is finite and ordered"),
 		IsFiniteDistribution(Result.ServiceStepTime));
-	TestTrue(TEXT("H4000 server throughput is positive and finite"),
-		FMath::IsFinite(Result.ThroughputSamplesPerSecond) && Result.ThroughputSamplesPerSecond > 0.0);
-	AddInfo(TEXT("GULI_PERF_METRICS ") + ServerResultJson(TEXT("H4000-ServerValidator"), Result, false));
+	TestTrue(TEXT("H4000 server records enough nearest-rank service samples"),
+		Result.ServiceStepCount >= H4000ServerMinimumServiceSamples);
+	TestTrue(TEXT("H4000 server Validate/Store/Relay P95 stays within budget"),
+		Result.ServiceStepTime.P95Milliseconds <= H4000ServerP95BudgetMilliseconds);
+	TestTrue(TEXT("H4000 server Validate/Store/Relay maximum stays within budget"),
+		Result.ServiceStepTime.MaximumMilliseconds <= H4000ServerMaximumBudgetMilliseconds);
+	TestTrue(TEXT("H4000 server throughput sustains the 10 Hz combat capture ceiling"),
+		FMath::IsFinite(Result.ThroughputCandidatesPerSecond)
+			&& Result.ThroughputCandidatesPerSecond >= H4000ServerThroughputFloor);
+	AddInfo(TEXT("GULI_PERF_METRICS ") + ServerResultJson(
+		TEXT("H4000-ServerValidator"), Result, true,
+		H4000ServerP95BudgetMilliseconds, H4000ServerThroughputFloor));
 	AddInfo(TEXT("This replays protocol Candidates through Validate/Store/payload-copy only; it is not a 4000-unit server simulation."));
 	return true;
 }
@@ -915,8 +954,10 @@ bool FGuLiWingmanFormalScale100QuickSmokeTest::RunTest(const FString& Parameters
 		Server.ServerMovementWriteCount, static_cast<uint64>(0u));
 	TestTrue(TEXT("Quick smoke owner timings are finite"), IsFiniteDistribution(Owner.StepTime));
 	TestTrue(TEXT("Quick smoke server timings are finite"), IsFiniteDistribution(Server.ServiceStepTime));
-	AddInfo(TEXT("GULI_PERF_METRICS ") + OwnerResultJson(TEXT("S9-100-QuickSmoke-Owner"), Owner, false));
-	AddInfo(TEXT("GULI_PERF_METRICS ") + ServerResultJson(TEXT("S9-100-QuickSmoke-Server"), Server, false));
+	AddInfo(TEXT("GULI_PERF_METRICS ") + OwnerResultJson(
+		TEXT("S9-100-QuickSmoke-Owner"), Owner, false, 0.0, 0.0));
+	AddInfo(TEXT("GULI_PERF_METRICS ") + ServerResultJson(
+		TEXT("S9-100-QuickSmoke-Server"), Server, false, 0.0, 0.0));
 	AddInfo(TEXT("QuickSmoke explicitly excludes 10-minute duration, real networking, 500 Commander control comparison, bandwidth, and Network Insights."));
 	return true;
 }
@@ -1066,6 +1107,291 @@ bool FGuLiWingmanDedicatedExecutionDomainInMemoryCountersTest::RunTest(const FSt
 		Counters.GeneratedTransforms,
 		Counters.RelayMovementWrites));
 	AddInfo(TEXT("These are static/in-memory dispatch counters; a source-engine Dedicated executable run remains a separate hard gate."));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiWingmanPresentationMultiFlightTimelineTest,
+	"GuLiStrike.Wingman.Presentation.MultiFlightTimelines",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ClientContext
+		| EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanPresentationMultiFlightTimelineTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanPerformanceHarness;
+	(void)Parameters;
+	FTransientGameWorldFixture Fixture;
+	if (!Fixture.Initialize(*this))
+	{
+		return false;
+	}
+
+	AGuLiWingmanPresentationActor* Presentation =
+		Fixture.World->SpawnActor<AGuLiWingmanPresentationActor>();
+	if (!TestNotNull(TEXT("Multi-Flight presentation fixture actor exists"), Presentation))
+	{
+		return false;
+	}
+
+	FRelayRuntime OwnerRuntime;
+	const FGuLiWingmanGroupHandle OwnerGroup = MakeGroup(0, 0x0a440010u);
+	FGuLiWingmanBootstrapBundle OwnerBootstrap;
+	if (!TestTrue(TEXT("Owner strict Relay initializes"),
+		InitializeRelayCore(OwnerRuntime, OwnerGroup, 0, true))
+		|| !TestTrue(TEXT("Owner Bootstrap builds"),
+			OwnerRuntime.Relay->BuildBootstrap(OwnerBootstrap))
+		|| !TestTrue(TEXT("Public Bootstrap can arrive first as a remote Cut"),
+			Presentation->ApplyBootstrap(OwnerBootstrap, false, 0.0))
+		|| !TestTrue(TEXT("The targeted copy promotes the same Cut to Owner"),
+			Presentation->ApplyBootstrap(OwnerBootstrap, true, 0.0)))
+	{
+		return false;
+	}
+	for (uint8 FlightIndex = 0u; FlightIndex < GULI_WINGMAN_FLIGHT_COUNT; ++FlightIndex)
+	{
+		const FGuLiWingmanCandidateBatch Candidate = MakeStrictFlightCandidate(
+			OwnerRuntime,
+			FlightIndex,
+			1u,
+			1u,
+			0u,
+			100u,
+			0.05,
+			EGuLiWingmanUploadRateClass::Cruise5Hz,
+			OwnerRuntime.Relay->GetUploadRateGrant().GrantRevision);
+		if (!TestTrue(
+			*FString::Printf(TEXT("Owner Flight %u accepts its independent sequence 1"), FlightIndex),
+			Presentation->ApplyOwnerFrame(Candidate, 0.05)))
+		{
+			return false;
+		}
+	}
+
+	FRelayRuntime RemoteRuntime;
+	const FGuLiWingmanGroupHandle RemoteGroup = MakeGroup(1, 0x0a440010u);
+	if (!TestTrue(TEXT("Remote strict Relay reaches Active with five Accepted Flights"),
+		ActivateStrictRelay(RemoteRuntime, RemoteGroup, 1)))
+	{
+		return false;
+	}
+	FGuLiWingmanBootstrapBundle RetainedBootstrap;
+	if (!TestTrue(TEXT("Active Relay returns its exact acknowledged Bootstrap"),
+		RemoteRuntime.Relay->BuildBootstrap(RetainedBootstrap))
+		|| !TestEqual(TEXT("The acknowledged Cut remains unchanged after activation"),
+			RetainedBootstrap.AcceptedSnapshot.Num(),
+			0))
+	{
+		return false;
+	}
+	if (!TestTrue(TEXT("Remote presentation applies the retained six-scope Cut"),
+		Presentation->ApplyBootstrap(RetainedBootstrap, false, 0.10)))
+	{
+		return false;
+	}
+	const TArray<FGuLiWingmanAcceptedBatch>& AcceptedFlights =
+		RemoteRuntime.Relay->GetAcceptedHistory();
+	if (!TestEqual(TEXT("Atomic activation committed all five Flight snapshots"),
+		AcceptedFlights.Num(), static_cast<int32>(GULI_WINGMAN_FLIGHT_COUNT)))
+	{
+		return false;
+	}
+	for (const FGuLiWingmanAcceptedBatch& Accepted : AcceptedFlights)
+	{
+		if (!TestEqual(TEXT("Atomic Flight snapshots retain the same server timestamp"),
+			Accepted.ServerAcceptedTimeSeconds, 0.05)
+			|| !TestTrue(
+				*FString::Printf(TEXT("Remote Flight %u applies its independent timeline"),
+					Accepted.FlightIndex),
+				Presentation->ApplyAcceptedSnapshot(Accepted, 0.10)))
+		{
+			return false;
+		}
+	}
+	TArray<FGuLiWingmanAcceptedTargetPose> Poses;
+	Presentation->GetFreshAcceptedTargetPoses(0.05, 1.0, Poses);
+	TestEqual(TEXT("All 25 Accepted poses are available after the five-Flight commit"),
+		Poses.Num(), static_cast<int32>(GULI_WINGMAN_GROUP_SIZE));
+	TestTrue(TEXT("The complete retained Cut is visible to observer QA"),
+		Presentation->HasAppliedBootstrap(
+			RemoteGroup, RetainedBootstrap.Commit.CutId));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiWingmanPresentationAppliesDeathCutWithRetainedPoseHistoryTest,
+	"GuLiStrike.Wingman.Presentation.AppliesDeathCutWithRetainedPoseHistory",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ClientContext
+		| EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanPresentationAppliesDeathCutWithRetainedPoseHistoryTest::RunTest(
+	const FString& Parameters)
+{
+	using namespace GuLiWingmanPerformanceHarness;
+	(void)Parameters;
+	FTransientGameWorldFixture Fixture;
+	if (!Fixture.Initialize(*this))
+	{
+		return false;
+	}
+
+	FRelayRuntime Runtime;
+	const FGuLiWingmanGroupHandle Group = MakeGroup(0, 0x0a440002u);
+	if (!TestTrue(TEXT("Death-Cut presentation fixture relay initializes"),
+		InitializeRelayCore(Runtime, Group, 0, false)))
+	{
+		return false;
+	}
+	FGuLiWingmanBootstrapBundle Bootstrap;
+	if (!TestTrue(TEXT("Death-Cut fixture builds its initial six-scope Bootstrap"),
+		Runtime.Relay->BuildBootstrap(Bootstrap)))
+	{
+		return false;
+	}
+
+	AGuLiWingmanPresentationActor* Presentation =
+		Fixture.World->SpawnActor<AGuLiWingmanPresentationActor>();
+	if (!TestNotNull(TEXT("Death-Cut presentation fixture actor exists"), Presentation)
+		|| !TestTrue(TEXT("Presentation accepts the initial production Bootstrap"),
+			Presentation->ApplyBootstrap(Bootstrap, false, 0.0))
+		|| !TestTrue(TEXT("Death-Cut fixture activates the Relay"),
+			AcknowledgeRelayBootstrap(Runtime, Bootstrap, 0.01)))
+	{
+		return false;
+	}
+
+	const FGuLiWingmanSubmissionResult Accepted = Runtime.Relay->SubmitCandidate(
+		Runtime.Owner, MakeLegacyReplayCandidate(Runtime, 1u, 100u), 0.1,
+		ReplayCarrier(0.1), PermitReplayWorld());
+	if (!TestEqual(TEXT("The pre-death production Candidate is Accepted"),
+		Accepted.Disposition, EGuLiWingmanSubmissionDisposition::Accepted)
+		|| !TestTrue(TEXT("The pre-death pose enters presentation"),
+			Presentation->ApplyAcceptedSnapshot(Accepted.AcceptedBatch, 0.1)))
+	{
+		return false;
+	}
+	const FGuLiWingmanHandle DeadWingman = Accepted.AcceptedBatch.Samples[0].Wingman;
+	FTransform PreDeathTransform;
+	if (!TestTrue(TEXT("The selected Wingman has a pre-death presented pose"),
+		Presentation->TryGetPresentedTransform(DeadWingman, PreDeathTransform))
+		|| !TestTrue(TEXT("The production Relay marks the Wingman dead"),
+			Runtime.Relay->MarkWingmanDead(DeadWingman)))
+	{
+		return false;
+	}
+
+	FGuLiWingmanBootstrapBundle DeathBootstrap;
+	if (!TestTrue(TEXT("The production Relay emits an Active roster/death Cut"),
+		Runtime.Relay->RefreshActiveRosterCut(0.2, DeathBootstrap))
+		|| !TestTrue(TEXT("The death Cut retains the authoritative Accepted high-water"),
+			DeathBootstrap.AcceptedSnapshot.ContainsByPredicate(
+				[&DeadWingman](const FGuLiWingmanAcceptedBatch& Batch)
+				{
+					return Batch.FindSample(DeadWingman) != nullptr;
+				}))
+		|| !TestTrue(TEXT("Presentation atomically applies a death Cut with retained history"),
+			Presentation->ApplyBootstrap(DeathBootstrap, false, 0.2))
+		|| !TestTrue(TEXT("Observer QA sees the exact death Cut as applied"),
+			Presentation->HasAppliedBootstrap(Group, DeathBootstrap.Commit.CutId)))
+	{
+		return false;
+	}
+
+	FTransform DeadTransform;
+	TestFalse(TEXT("The retained pre-death pose cannot resurrect the dead Wingman"),
+		Presentation->TryGetPresentedTransform(DeadWingman, DeadTransform));
+	TestFalse(TEXT("The dead Wingman remains non-interactable after the Cut"),
+		Presentation->IsWingmanInteractable(DeadWingman));
+	TArray<FGuLiWingmanAcceptedTargetPose> TargetPoses;
+	Presentation->GetFreshAcceptedTargetPoses(0.2, 1.0, TargetPoses);
+	TestFalse(TEXT("Target acquisition excludes the dead member from retained history"),
+		TargetPoses.ContainsByPredicate([&DeadWingman](const FGuLiWingmanAcceptedTargetPose& Pose)
+		{
+			return Pose.Wingman == DeadWingman;
+		}));
+	TestEqual(TEXT("All other retained Accepted poses survive the atomic death Cut"),
+		TargetPoses.Num(), GULI_WINGMAN_GROUP_SIZE - 1);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiWingmanPresentationRejectsPostDeathAcceptedPoseTest,
+	"GuLiStrike.Wingman.Presentation.RejectsPostDeathAcceptedPose",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ClientContext
+		| EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanPresentationRejectsPostDeathAcceptedPoseTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanPerformanceHarness;
+	(void)Parameters;
+	FTransientGameWorldFixture Fixture;
+	if (!Fixture.Initialize(*this))
+	{
+		return false;
+	}
+
+	FRelayRuntime Runtime;
+	const FGuLiWingmanGroupHandle Group = MakeGroup(0, 0x0a440001u);
+	if (!TestTrue(TEXT("Presentation fixture relay initializes"),
+		InitializeRelayCore(Runtime, Group, 0, false)))
+	{
+		return false;
+	}
+	FGuLiWingmanBootstrapBundle Bootstrap;
+	if (!TestTrue(TEXT("Presentation fixture builds its six-scope Bootstrap"),
+		Runtime.Relay->BuildBootstrap(Bootstrap)))
+	{
+		return false;
+	}
+
+	AGuLiWingmanPresentationActor* Presentation =
+		Fixture.World->SpawnActor<AGuLiWingmanPresentationActor>();
+	if (!TestNotNull(TEXT("Presentation fixture actor exists"), Presentation)
+		|| !TestTrue(TEXT("Remote presentation accepts the production Bootstrap"),
+			Presentation->ApplyBootstrap(Bootstrap, false, 0.0))
+		|| !TestTrue(TEXT("Presentation fixture activates the Relay"),
+			AcknowledgeRelayBootstrap(Runtime, Bootstrap, 0.01)))
+	{
+		return false;
+	}
+
+	const FGuLiCarrierSourceResolver Carrier = ReplayCarrier(0.1);
+	const FGuLiCandidateWorldValidator WorldValidator = PermitReplayWorld();
+	const FGuLiWingmanSubmissionResult First = Runtime.Relay->SubmitCandidate(
+		Runtime.Owner, MakeLegacyReplayCandidate(Runtime, 1u, 100u), 0.1,
+		Carrier, WorldValidator);
+	if (!TestEqual(TEXT("The first production Candidate is Accepted"), First.Disposition,
+		EGuLiWingmanSubmissionDisposition::Accepted)
+		|| !TestTrue(TEXT("The first Accepted pose enters presentation"),
+			Presentation->ApplyAcceptedSnapshot(First.AcceptedBatch, 0.1)))
+	{
+		return false;
+	}
+	const FGuLiWingmanHandle DeadWingman = First.AcceptedBatch.Samples[0].Wingman;
+	TestTrue(TEXT("Reliable death state hides the Wingman"),
+		Presentation->SetWingmanAlive(DeadWingman, false));
+
+	const FGuLiWingmanSubmissionResult Late = Runtime.Relay->SubmitCandidate(
+		Runtime.Owner, MakeLegacyReplayCandidate(Runtime, 2u, 101u), 0.2,
+		ReplayCarrier(0.2), WorldValidator);
+	if (!TestEqual(TEXT("The old in-flight Candidate remains a valid server Accepted payload"),
+		Late.Disposition, EGuLiWingmanSubmissionDisposition::Accepted))
+	{
+		return false;
+	}
+	TestFalse(TEXT("A late Accepted batch containing the dead entity is discarded"),
+		Presentation->ApplyAcceptedSnapshot(Late.AcceptedBatch, 0.2));
+	FTransform PresentedTransform;
+	TestFalse(TEXT("The dead entity cannot regain a presented transform"),
+		Presentation->TryGetPresentedTransform(DeadWingman, PresentedTransform));
+	TestFalse(TEXT("The dead entity remains non-interactable"),
+		Presentation->IsWingmanInteractable(DeadWingman));
+	TArray<FGuLiWingmanAcceptedTargetPose> TargetPoses;
+	Presentation->GetFreshAcceptedTargetPoses(0.2, 1.0, TargetPoses);
+	TestFalse(TEXT("Target acquisition receives no post-death pose"),
+		TargetPoses.ContainsByPredicate([&DeadWingman](const FGuLiWingmanAcceptedTargetPose& Pose)
+		{
+			return Pose.Wingman == DeadWingman;
+		}));
 	return true;
 }
 

@@ -3,6 +3,7 @@
 #include "Gameplay/Wingman/Mass/GuLiWingmanMassProcessors.h"
 
 #include "Gameplay/Wingman/Mass/GuLiWingmanMassFragments.h"
+#include "Development/GuLiWingmanQAEvidence.h"
 #include "CollisionQueryParams.h"
 #include "CollisionShape.h"
 #include "Components/PrimitiveComponent.h"
@@ -743,6 +744,11 @@ void UGuLiWingmanFormationGuidanceProcessor::ConfigureQueries(const TSharedRef<F
 void UGuLiWingmanFormationGuidanceProcessor::Execute(
 	FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
+	if (const UWorld* World = EntityManager.GetWorld();
+		World && World->GetNetMode() == NM_DedicatedServer)
+	{
+		FGuLiWingmanQAInvariantRegistry::Add(TEXT("SERVER_WINGMAN_STEERING_EXECUTED"));
+	}
 	const float DeltaSeconds = FMath::Max(0.0f, Context.GetDeltaTimeSeconds());
 	EntityQuery.ForEachEntityChunk(Context, [DeltaSeconds](FMassExecutionContext& ChunkContext)
 	{
@@ -841,6 +847,11 @@ void UGuLiWingmanAvoidanceProcessor::ConfigureQueries(const TSharedRef<FMassEnti
 
 void UGuLiWingmanAvoidanceProcessor::Execute(FMassEntityManager& EntityManager, FMassExecutionContext& Context)
 {
+	if (const UWorld* World = EntityManager.GetWorld();
+		World && World->GetNetMode() == NM_DedicatedServer)
+	{
+		FGuLiWingmanQAInvariantRegistry::Add(TEXT("SERVER_WINGMAN_STEERING_EXECUTED"));
+	}
 	struct FSample
 	{
 		FGuLiWingmanHandle Handle;
@@ -1155,6 +1166,12 @@ void UGuLiWingmanFlightIntegrationProcessor::Execute(
 {
 	const float FrameDeltaSeconds = FMath::Max(0.0f, Context.GetDeltaTimeSeconds());
 	UWorld* World = EntityManager.GetWorld();
+	if (World && World->GetNetMode() == NM_DedicatedServer)
+	{
+		FGuLiWingmanQAInvariantRegistry::Add(TEXT("SERVER_MOTION_SIM_EXECUTED"));
+		FGuLiWingmanQAInvariantRegistry::Add(TEXT("SERVER_WINGMAN_INTEGRATION_EXECUTED"));
+		FGuLiWingmanQAInvariantRegistry::Add(TEXT("SERVER_GENERATED_RUNTIME_TRANSFORM"));
+	}
 	FCollisionObjectQueryParams ObstacleObjectTypes;
 	ObstacleObjectTypes.AddObjectTypesToQuery(ECC_WorldStatic);
 	ObstacleObjectTypes.AddObjectTypesToQuery(ECC_WorldDynamic);

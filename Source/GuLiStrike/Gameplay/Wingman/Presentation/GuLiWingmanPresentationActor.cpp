@@ -10,6 +10,7 @@
 #include "Gameplay/Wingman/Mass/GuLiWingmanMassFragments.h"
 #include "MassCommonFragments.h"
 #include "MassCommandBuffer.h"
+#include "MassCommands.h"
 #include "MassEntityManager.h"
 #include "MassEntitySubsystem.h"
 
@@ -28,6 +29,56 @@ namespace
 			&& Config.ShipGeneration == Group.ShipGeneration
 			&& Config.GroupGeneration == Group.GroupGeneration;
 	}
+
+	uint32 GetSourceSequence(
+		const FGuLiWingmanPresentationGroupRuntime& Runtime,
+		const uint8 FlightIndex)
+	{
+		return FlightIndex < GULI_WINGMAN_FLIGHT_COUNT
+			? Runtime.LastSourceSequenceByFlight[FlightIndex]
+			: Runtime.LastSourceSequence;
+	}
+
+	double GetSourceTimeSeconds(
+		const FGuLiWingmanPresentationGroupRuntime& Runtime,
+		const uint8 FlightIndex)
+	{
+		return FlightIndex < GULI_WINGMAN_FLIGHT_COUNT
+			? Runtime.LastSourceTimeSecondsByFlight[FlightIndex]
+			: Runtime.LastSourceTimeSeconds;
+	}
+
+	void ResetSourceTimeline(FGuLiWingmanPresentationGroupRuntime& Runtime)
+	{
+		for (uint32& Sequence : Runtime.LastSourceSequenceByFlight)
+		{
+			Sequence = 0u;
+		}
+		for (double& TimeSeconds : Runtime.LastSourceTimeSecondsByFlight)
+		{
+			TimeSeconds = 0.0;
+		}
+		Runtime.LastSourceSequence = 0u;
+		Runtime.LastSourceTimeSeconds = 0.0;
+	}
+
+	void RecordSourceTimeline(
+		FGuLiWingmanPresentationGroupRuntime& Runtime,
+		const uint8 FlightIndex,
+		const uint32 Sequence,
+		const double TimeSeconds)
+	{
+		if (FlightIndex < GULI_WINGMAN_FLIGHT_COUNT)
+		{
+			Runtime.LastSourceSequenceByFlight[FlightIndex] = Sequence;
+			Runtime.LastSourceTimeSecondsByFlight[FlightIndex] = TimeSeconds;
+		}
+		if (Runtime.LastSourceSequence == 0u || TimeSeconds >= Runtime.LastSourceTimeSeconds)
+		{
+			Runtime.LastSourceSequence = Sequence;
+			Runtime.LastSourceTimeSeconds = TimeSeconds;
+		}
+	}
 }
 
 AGuLiWingmanPresentationActor::AGuLiWingmanPresentationActor()
@@ -39,6 +90,8 @@ AGuLiWingmanPresentationActor::AGuLiWingmanPresentationActor()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 	PrimaryActorTick.TickInterval = 0.0f;
+	PrimaryActorTick.TickGroup = TG_PostUpdateWork;
+	PrimaryActorTick.bRunOnAnyThread = false;
 
 	// A scene root is harmless on authority. Render components are deliberately
 	// created later, after the World NetMode is known.
@@ -232,9 +285,23 @@ bool AGuLiWingmanPresentationActor::ApplyBootstrap(
 		}
 		if (Bundle.Commit.CutId == Existing->LastBootstrapCutId)
 		{
-			return Existing->Role == PresentationRole
-				&& Existing->AbilityConfig.SnapshotRevision == Bundle.AbilityConfig.SnapshotRevision
+			const bool bSameConfig = Existing->AbilityConfig.SnapshotRevision
+					== Bundle.AbilityConfig.SnapshotRevision
 				&& Existing->AbilityConfig.SnapshotHash == Bundle.AbilityConfig.SnapshotHash;
+			if (!bSameConfig)
+			{
+				return false;
+			}
+			if (Existing->Role == PresentationRole)
+			{
+				return true;
+			}
+			// A public GameState multicast can beat the targeted owner Bootstrap across
+			// actor channels. The immutable Cut may therefore promote Remote -> Owner;
+			// owner demotion requires a newer authority-map Cut.
+			return Existing->Role == EGuLiWingmanPresentationRole::Remote
+				&& PresentationRole == EGuLiWingmanPresentationRole::Owner
+				&& SetGroupRole(Bundle.Commit.Group, PresentationRole);
 		}
 	}
 
@@ -342,7 +409,25 @@ bool AGuLiWingmanPresentationActor::BuildRuntimeFromBootstrap(
 	});
 	for (const FGuLiWingmanAcceptedBatch& AcceptedBatch : SortedAccepted)
 	{
-		if (!AppendAcceptedBatch(Runtime, AcceptedBatch))
+		// A reliable roster/death Cut can legitimately retain the last Accepted
+		// high-water batch for a Flight. Do not let a historical pose for a member
+		// that is dead in this newer Cut invalidate the whole atomic presentation
+		// state. The live Accepted multicast path remains strict and still rejects
+		// any post-death batch rather than silently filtering it.
+		FGuLiWingmanAcceptedBatch SafeAcceptedBatch = AcceptedBatch;
+		SafeAcceptedBatch.Samples.RemoveAll([&Runtime](const FGuLiWingmanCandidateSample& Sample)
+		{
+			const int32 Slot = GuLiWingmanPresentationPolicy::GetStableMemberSlot(Sample.Wingman);
+			return !Runtime.Tracks.IsValidIndex(Slot)
+				|| Runtime.Tracks[Slot].Handle != Sample.Wingman
+				|| !Runtime.Tracks[Slot].bAlive;
+		});
+		if (SafeAcceptedBatch.Samples.IsEmpty())
+		{
+			continue;
+		}
+		SafeAcceptedBatch.RefreshHash();
+		if (!AppendAcceptedBatch(Runtime, SafeAcceptedBatch))
 		{
 			return false;
 		}
@@ -363,27 +448,40 @@ bool AGuLiWingmanPresentationActor::ValidateAcceptedBatch(
 	const FGuLiWingmanPresentationGroupRuntime& Runtime,
 	const FGuLiWingmanAcceptedBatch& AcceptedBatch) const
 {
+	const uint32 LastFlightSequence = GetSourceSequence(Runtime, AcceptedBatch.FlightIndex);
+	const double LastFlightTimeSeconds = GetSourceTimeSeconds(Runtime, AcceptedBatch.FlightIndex);
 	if (!AcceptedBatch.IsWellFormed() || AcceptedBatch.Group != Runtime.Group
 		|| AcceptedBatch.AbilitySetRevision != Runtime.AbilityConfig.AbilitySetRevision
 		|| AcceptedBatch.FormationCommandRevision != Runtime.AbilityConfig.FormationCommandRevision
 		|| AcceptedBatch.FormationDefinitionChecksum != Runtime.AbilityConfig.FormationDefinitionChecksum
 		|| !GuLiWingmanPresentationPolicy::IsNewerSequence(
 			AcceptedBatch.StateRef.AcceptedSequence,
-			Runtime.LastSourceSequence)
-		|| (Runtime.LastSourceSequence != 0u
-			&& AcceptedBatch.ServerAcceptedTimeSeconds <= Runtime.LastSourceTimeSeconds))
+			LastFlightSequence)
+		|| (LastFlightSequence != 0u
+			&& AcceptedBatch.ServerAcceptedTimeSeconds <= LastFlightTimeSeconds))
 	{
 		return false;
 	}
 	for (const FGuLiWingmanCandidateSample& Sample : AcceptedBatch.Samples)
 	{
 		const int32 Slot = GuLiWingmanPresentationPolicy::GetStableMemberSlot(Sample.Wingman);
-		if (!Runtime.Tracks.IsValidIndex(Slot) || Runtime.Tracks[Slot].Handle != Sample.Wingman)
+		if (!Runtime.Tracks.IsValidIndex(Slot) || Runtime.Tracks[Slot].Handle != Sample.Wingman
+			|| !Runtime.Tracks[Slot].bAlive)
 		{
 			return false;
 		}
 	}
 	return true;
+}
+
+bool AGuLiWingmanPresentationActor::HasAppliedBootstrap(
+	const FGuLiWingmanGroupHandle& Group,
+	const uint64 CutId) const
+{
+	const FGuLiWingmanPresentationGroupRuntime* Runtime = Groups.Find(Group);
+	return Runtime && Group.IsValid() && CutId != 0u
+		&& Runtime->LastBootstrapCutId == CutId
+		&& Runtime->Tracks.Num() == GULI_WINGMAN_GROUP_SIZE;
 }
 
 bool AGuLiWingmanPresentationActor::AppendAcceptedBatch(
@@ -408,8 +506,11 @@ bool AGuLiWingmanPresentationActor::AppendAcceptedBatch(
 			return false;
 		}
 	}
-	Runtime.LastSourceSequence = AcceptedBatch.StateRef.AcceptedSequence;
-	Runtime.LastSourceTimeSeconds = AcceptedBatch.ServerAcceptedTimeSeconds;
+	RecordSourceTimeline(
+		Runtime,
+		AcceptedBatch.FlightIndex,
+		AcceptedBatch.StateRef.AcceptedSequence,
+		AcceptedBatch.ServerAcceptedTimeSeconds);
 	return true;
 }
 
@@ -449,6 +550,7 @@ bool AGuLiWingmanPresentationActor::ValidateCandidate(
 	const FGuLiWingmanPresentationGroupRuntime& Runtime,
 	const FGuLiWingmanCandidateBatch& Candidate) const
 {
+	const uint32 LastFlightSequence = GetSourceSequence(Runtime, Candidate.FlightIndex);
 	if (!Candidate.IsWellFormed() || Candidate.Group != Runtime.Group
 		|| Candidate.AbilitySetRevision != Runtime.AbilityConfig.AbilitySetRevision
 		|| Candidate.FormationCommandRevision != Runtime.AbilityConfig.FormationCommandRevision
@@ -456,7 +558,7 @@ bool AGuLiWingmanPresentationActor::ValidateCandidate(
 		|| (!Runtime.bUsingServerTimeline
 			&& !GuLiWingmanPresentationPolicy::IsNewerSequence(
 				Candidate.CandidateSequence,
-				Runtime.LastSourceSequence)))
+				LastFlightSequence)))
 	{
 		return false;
 	}
@@ -493,8 +595,7 @@ bool AGuLiWingmanPresentationActor::ApplyOwnerFrame(
 			Track.bInteractable = false;
 			Track.Opacity = 0.0f;
 		}
-		StagedRuntime.LastSourceSequence = 0u;
-		StagedRuntime.LastSourceTimeSeconds = 0.0;
+		ResetSourceTimeline(StagedRuntime);
 		StagedRuntime.bHasClock = false;
 		StagedRuntime.bUsingServerTimeline = false;
 	}
@@ -512,8 +613,11 @@ bool AGuLiWingmanPresentationActor::ApplyOwnerFrame(
 			return false;
 		}
 	}
-	StagedRuntime.LastSourceSequence = Candidate.CandidateSequence;
-	StagedRuntime.LastSourceTimeSeconds = LocalTimeSeconds;
+	RecordSourceTimeline(
+		StagedRuntime,
+		Candidate.FlightIndex,
+		Candidate.CandidateSequence,
+		LocalTimeSeconds);
 	*Runtime = MoveTemp(StagedRuntime);
 	TickGroup(*Runtime, LocalTimeSeconds);
 	return true;
@@ -568,8 +672,7 @@ bool AGuLiWingmanPresentationActor::SetGroupRole(
 	ReleaseInstanceBlock(Runtime->Role, Runtime->InstanceBaseIndex);
 	Runtime->Role = NewRole;
 	Runtime->InstanceBaseIndex = NewBaseIndex;
-	Runtime->LastSourceSequence = 0u;
-	Runtime->LastSourceTimeSeconds = 0.0;
+	ResetSourceTimeline(*Runtime);
 	Runtime->ClockServerSeconds = 0.0;
 	Runtime->ClockLocalReceiptSeconds = 0.0;
 	Runtime->bHasClock = false;
@@ -956,14 +1059,9 @@ void AGuLiWingmanPresentationActor::DestroyRemoteMirrors(
 	}
 	if (!Entities.IsEmpty())
 	{
-		if (EntityManager.IsProcessing())
-		{
-			EntityManager.Defer().DestroyEntities(MoveTemp(Entities));
-		}
-		else
-		{
-			EntityManager.BatchDestroyEntities(Entities);
-		}
+		// Network callbacks and actor ticks can overlap parallel Mass processors.
+		// The default command buffer is flushed at the next safe Mass boundary.
+		EntityManager.Defer().DestroyEntities(MoveTemp(Entities));
 	}
 }
 
@@ -996,10 +1094,6 @@ void AGuLiWingmanPresentationActor::FlushRemoteMirrorUpdate(
 		return;
 	}
 	FMassEntityManager& EntityManager = MassEntitySubsystem->GetMutableEntityManager();
-	if (EntityManager.IsProcessing())
-	{
-		return;
-	}
 	if (!EnsureRemoteMassArchetype())
 	{
 		return;
@@ -1012,18 +1106,49 @@ void AGuLiWingmanPresentationActor::FlushRemoteMirrorUpdate(
 			Track.bRemoteMirrorUpdatePending = false;
 			return;
 		}
-		Track.RemoteMirrorEntity = EntityManager.CreateEntity(RemoteMassArchetype);
-		if (!EntityManager.IsEntityValid(Track.RemoteMirrorEntity))
+		const FMassEntityHandle ReservedEntity = EntityManager.ReserveEntity();
+		if (!EntityManager.IsEntityValid(ReservedEntity))
 		{
-			Track.RemoteMirrorEntity = FMassEntityHandle();
 			return;
 		}
-		EntityManager.GetFragmentDataChecked<FGuLiWingmanIdentityFragment>(
-			Track.RemoteMirrorEntity).Handle = Track.Handle;
+		Track.RemoteMirrorEntity = ReservedEntity;
+		const FMassArchetypeHandle Archetype = RemoteMassArchetype;
+		const FGuLiWingmanHandle Wingman = Track.Handle;
+		const FTransform InitialTransform = Track.PendingRemoteMirrorTransform;
+		EntityManager.Defer().PushCommand<FMassDeferredCreateCommand>(
+			[ReservedEntity, Archetype, Wingman, InitialTransform](FMassEntityManager& Manager)
+			{
+				if (!Manager.IsEntityReserved(ReservedEntity) || !Archetype.IsValid())
+				{
+					return;
+				}
+				Manager.BuildEntity(ReservedEntity, Archetype);
+				Manager.GetFragmentDataChecked<FGuLiWingmanIdentityFragment>(
+					ReservedEntity).Handle = Wingman;
+				Manager.GetFragmentDataChecked<FTransformFragment>(
+					ReservedEntity).SetTransform(InitialTransform);
+			});
+		Track.bRemoteMirrorUpdatePending = false;
+		return;
 	}
-	// Remote archetype contains no guidance, avoidance, dynamics or weapon state.
-	// Presentation is therefore its only Transform writer.
-	EntityManager.GetFragmentDataChecked<FTransformFragment>(
-		Track.RemoteMirrorEntity).SetTransform(Track.PendingRemoteMirrorTransform);
+	if (!EntityManager.IsEntityActive(Track.RemoteMirrorEntity))
+	{
+		// A reserved entity is waiting for the deferred create boundary. Preserve the
+		// newest pending transform; a later presentation tick will enqueue its update.
+		return;
+	}
+	const FMassEntityHandle Entity = Track.RemoteMirrorEntity;
+	const FTransform PendingTransform = Track.PendingRemoteMirrorTransform;
+	EntityManager.Defer().PushCommand<FMassDeferredSetCommand>(
+		[Entity, PendingTransform](FMassEntityManager& Manager)
+		{
+			if (Manager.IsEntityActive(Entity))
+			{
+				// The remote archetype has no simulation fragments. Presentation is its
+				// only Transform writer, at a Mass-safe command-buffer boundary.
+				Manager.GetFragmentDataChecked<FTransformFragment>(Entity)
+					.SetTransform(PendingTransform);
+			}
+		});
 	Track.bRemoteMirrorUpdatePending = false;
 }

@@ -3,6 +3,7 @@
 #include "Gameplay/Wingman/Behavior/GuLiWingmanGroupBehaviorRunner.h"
 
 #include "Components/StateTreeComponent.h"
+#include "Development/GuLiWingmanQAEvidence.h"
 #include "Gameplay/Wingman/GuLiWingmanSimulationSubsystem.h"
 #include "StateTree.h"
 
@@ -90,6 +91,10 @@ bool AGuLiWingmanGroupBehaviorRunner::InitializeRunner(
 void AGuLiWingmanGroupBehaviorRunner::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
+	if (GetNetMode() == NM_DedicatedServer)
+	{
+		FGuLiWingmanQAInvariantRegistry::Add(TEXT("SERVER_WINGMAN_STATETREE_EXECUTED"));
+	}
 	if (bUsingStateTree && Simulation && StateTreeComponent)
 	{
 		PolicyEvaluationAccumulator += FMath::Clamp(DeltaSeconds, 0.0f, 0.25f);

@@ -118,6 +118,26 @@ TArray<FGuLiWingmanGroupHandle> FGuLiWingmanRelayAuthorityRegistry::GetAwaitingO
 	return Result;
 }
 
+TArray<FGuLiWingmanGroupHandle>
+FGuLiWingmanRelayAuthorityRegistry::GetRecoverableLeaseLossGroups() const
+{
+	TArray<FGuLiWingmanGroupHandle> Result;
+	for (const TPair<FGuLiWingmanGroupHandle, FGroupEntry>& Pair : Groups)
+	{
+		const FGroupEntry& Entry = Pair.Value;
+		if (Entry.Relay && !Entry.bAwaitingConnectedOwner
+			&& Entry.Relay->IsActiveLeaseRevoked()
+			&& Entry.Relay->GetLeaseState().Lifecycle == EGuLiWingmanGroupLifecycle::Unavailable
+			&& Entry.Relay->GetActiveLeaseTransaction().State
+				== EGuLiWingmanActiveLeaseTransactionState::NoOwner)
+		{
+			Result.Add(Pair.Key);
+		}
+	}
+	Result.Sort(&FGuLiWingmanRelayAuthorityRegistry::GroupLess);
+	return Result;
+}
+
 TArray<FGuLiWingmanOwnerLossAssignment> FGuLiWingmanRelayAuthorityRegistry::HandleOwnerDisconnected(
 	const FGuid& DisconnectedPlayerGuid,
 	const TArray<FGuid>& ConnectedCandidatePlayerGuids,
@@ -157,6 +177,43 @@ TArray<FGuLiWingmanOwnerLossAssignment> FGuLiWingmanRelayAuthorityRegistry::Hand
 		}
 	}
 	return Assignments;
+}
+
+bool FGuLiWingmanRelayAuthorityRegistry::BeginLeaseLossRecovery(
+	const FGuLiWingmanGroupHandle& Group,
+	const TArray<FGuid>& ConnectedCandidatePlayerGuids,
+	const double NowSeconds,
+	FGuLiWingmanOwnerLossAssignment& OutAssignment)
+{
+	OutAssignment = FGuLiWingmanOwnerLossAssignment{};
+	FGroupEntry* Entry = Groups.Find(Group);
+	if (!Entry || !Entry->Relay || Entry->bAwaitingConnectedOwner
+		|| !Entry->Relay->IsActiveLeaseRevoked()
+		|| Entry->Relay->GetLeaseState().Lifecycle != EGuLiWingmanGroupLifecycle::Unavailable
+		|| Entry->Relay->GetActiveLeaseTransaction().State
+			!= EGuLiWingmanActiveLeaseTransactionState::NoOwner
+		|| !FMath::IsFinite(NowSeconds) || NowSeconds < 0.0)
+	{
+		return false;
+	}
+
+	Entry->EligibleBackupCandidates = ConnectedCandidatePlayerGuids;
+	Entry->EligibleBackupCandidates.Remove(Entry->Relay->GetLeaseState().OwnerPlayerGuid);
+	NormalizeCandidates(Entry->EligibleBackupCandidates);
+	Entry->AttemptedBackupCandidates.Reset();
+	Entry->bAwaitingConnectedOwner = true;
+	if (!StartNextOffer(
+		Group,
+		*Entry,
+		Entry->Relay->GetLeaseState().BackupPlayerGuid,
+		NowSeconds,
+		OutAssignment))
+	{
+		// Keep the retained group in AwaitingConnectedOwner/NoOwner. A later
+		// PostLogin can feed it through AssignAwaitingGroup without destroying state.
+		return false;
+	}
+	return true;
 }
 
 TArray<FGuLiWingmanOwnerLossAssignment> FGuLiWingmanRelayAuthorityRegistry::AssignAwaitingGroups(

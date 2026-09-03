@@ -46,6 +46,10 @@ struct FGuLiWingmanPresentationGroupRuntime
 	TArray<FGuLiWingmanPresentationTrack> Tracks;
 	EGuLiWingmanPresentationRole Role = EGuLiWingmanPresentationRole::Remote;
 	uint64 LastBootstrapCutId = 0u;
+	/** Strict production sequences and timestamps are monotonic per Flight, not per group. */
+	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> LastSourceSequenceByFlight{};
+	TStaticArray<double, GULI_WINGMAN_FLIGHT_COUNT> LastSourceTimeSecondsByFlight{};
+	/** Aggregate clock anchor and legacy whole-group compatibility high-water marks. */
 	uint32 LastSourceSequence = 0u;
 	double LastSourceTimeSeconds = 0.0;
 	double ClockServerSeconds = 0.0;
@@ -144,6 +148,11 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Wingman|Presentation")
 	bool IsWingmanInteractable(const FGuLiWingmanHandle& Wingman) const;
+
+	/** Read-only proof that a complete retained six-scope Cut reached presentation. */
+	bool HasAppliedBootstrap(
+		const FGuLiWingmanGroupHandle& Group,
+		uint64 CutId) const;
 
 	/**
 	 * Enumerates fresh exact Accepted samples for remote groups. It deliberately

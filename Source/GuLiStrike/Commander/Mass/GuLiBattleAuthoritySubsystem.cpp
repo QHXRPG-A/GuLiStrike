@@ -15,6 +15,7 @@
 #include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
 #include "Commander/Mass/Navigation/GuLiLocalFlowField.h"
 #include "Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.h"
+#include "Development/GuLiWingmanQAEvidence.h"
 #include "Engine/World.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
@@ -1334,6 +1335,7 @@ struct FGuLiBattleAuthorityState
 	uint32 CommittedCombatRevision = 0;
 	TMap<FObjectKey, GuLiCommanderMassPrivate::FRequestGate> RequestGates;
 	double FixedStepAccumulator = 0.0;
+	uint64 DroppedFixedStepCount = 0u;
 	double SimulationSeconds = 0.0;
 	uint32 ServerSimTick = 0u;
 	uint32 NextSoldierId = 1u;
@@ -1449,9 +1451,20 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 	TickMovePlanning(RemainingProjectionBudget, RemainingPathBudget);
 
 	// 负 DeltaTime 按 0 处理；每次消耗 1/30 秒，累计上限把本帧模拟工作限制在最多 4 步。
-	AuthorityState->FixedStepAccumulator = FMath::Min(
-		AuthorityState->FixedStepAccumulator + static_cast<double>(FMath::Max(0.0f, DeltaTime)),
-		static_cast<double>(GuLiCommanderMassPrivate::MaxAccumulatedSeconds));
+	const double UnclampedAccumulator = AuthorityState->FixedStepAccumulator
+		+ static_cast<double>(FMath::Max(0.0f, DeltaTime));
+	const double MaximumAccumulator =
+		static_cast<double>(GuLiCommanderMassPrivate::MaxAccumulatedSeconds);
+	if (UnclampedAccumulator > MaximumAccumulator)
+	{
+		const uint64 DroppedSteps = static_cast<uint64>(FMath::Max<int64>(1,
+			FMath::CeilToInt64((UnclampedAccumulator - MaximumAccumulator)
+				/ GuLiCommanderMassPrivate::FixedStepSeconds)));
+		AuthorityState->DroppedFixedStepCount += DroppedSteps;
+		FGuLiWingmanQAInvariantRegistry::Add(TEXT("COMMANDER_FIXED_STEP_DROP"),
+			static_cast<int64>(DroppedSteps));
+	}
+	AuthorityState->FixedStepAccumulator = FMath::Min(UnclampedAccumulator, MaximumAccumulator);
 	while (AuthorityState->FixedStepAccumulator >= GuLiCommanderMassPrivate::FixedStepSeconds)
 	{
 		TickAuthority(GuLiCommanderMassPrivate::FixedStepSeconds);
@@ -5882,6 +5895,11 @@ int32 UGuLiBattleAuthoritySubsystem::GetAuthoritativeMemberCount() const
 uint32 UGuLiBattleAuthoritySubsystem::GetServerSimTick() const
 {
 	return AuthorityState ? AuthorityState->ServerSimTick : 0u;
+}
+
+uint64 UGuLiBattleAuthoritySubsystem::GetDroppedFixedStepCount() const
+{
+	return AuthorityState ? AuthorityState->DroppedFixedStepCount : 0u;
 }
 
 bool UGuLiBattleAuthoritySubsystem::HasSpawnedAuthorityPopulation() const

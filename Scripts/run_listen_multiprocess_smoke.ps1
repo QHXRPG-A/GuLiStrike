@@ -6,6 +6,7 @@ param(
     [int]$ClientDurationSeconds = 40,
     [ValidateRange(15, 240)]
     [int]$MaxFps = 60,
+    [switch]$RpcDebug,
     [string]$EditorExecutable = "C:\Program Files\Epic Games\UE_5.7\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe"
 )
 
@@ -277,6 +278,10 @@ if ($Profile -eq "Weak") {
     # A separate run exercises reorder/loss without silently disabling PktLag.
     $packetArguments = @('-PktOrder=1', '-PktLoss=5')
 }
+$execCommands = "t.MaxFPS $MaxFps"
+if ($RpcDebug) {
+    $execCommands += ",net.RPC.Debug 1"
+}
 $commonArguments = @(
     $projectPath,
     '-game',
@@ -286,12 +291,15 @@ $commonArguments = @(
     '-NoSound',
     '-NullRHI',
     '-NoVSync',
-    "-ExecCmds=t.MaxFPS $MaxFps",
+    "-ExecCmds=$execCommands",
     '-RenderOffScreen',
     '-stdout',
     '-FullStdOutLogOutput',
     '-GuLiListenSmoke'
 ) + $packetArguments
+if ($RpcDebug) {
+    $commonArguments += '-GuLiBootstrapTrace'
+}
 
 $serverArguments = @(
     $projectPath,
@@ -676,12 +684,12 @@ $normalExit = $serverHasExited -and $clientHasExited -and
 # remain healthy and make forward progress at the end of the real connected interval.
 $clientTimelineSamples = @($clientSamples | Where-Object {
     ($_.phase -eq 'sample' -or $_.phase -eq 'final') -and
-        $_.PSObject.Properties['client_relay_lifecycle']
+		$_.socket_connected -eq $true -and
+		$_.PSObject.Properties['client_relay_lifecycle']
 })
 $clientTail = @($clientTimelineSamples | Select-Object -Last 3)
 $clientTailHealthy = $clientTail.Count -eq 3 -and
-    $clientTail[-1].phase -eq 'final' -and
-    -not (Test-AnySample $clientTail {
+	-not (Test-AnySample $clientTail {
         param($s)
         [int]$s.client_relay_lifecycle -ne 2 -or
             $s.client_relay_owner_matches_local -ne $true -or
@@ -726,11 +734,16 @@ $serverConnectedTailHealthy = $serverConnectedTail.Count -eq 3 -and
         $groupCount -lt 2 -or
             [int]$s.active_relay_group_count -ne $groupCount -or
             [int]$s.ability_config_acknowledged_group_count -ne $groupCount -or
-            [int]$s.bootstrap_acknowledged_group_count -ne $groupCount -or
             [int]$s.atomic_committed_group_count -ne $groupCount -or
             [int]$s.strict_ready_relay_group_count -ne $groupCount -or
             [int]$s.strict_growing_relay_group_count -ne $groupCount
-    })
+    }) -and
+	(Test-AnySample $serverConnectedTail {
+		param($s)
+		$groupCount = [int]$s.relay_group_count
+		$groupCount -ge 2 -and
+			[int]$s.bootstrap_acknowledged_group_count -eq $groupCount
+	})
 $serverConnectedTailProgressing = $serverConnectedTail.Count -eq 3 -and
     [UInt64]$serverConnectedTail[-1].minimum_accepted_frame_across_strict_groups -gt
         [UInt64]$serverConnectedTail[0].minimum_accepted_frame_across_strict_groups

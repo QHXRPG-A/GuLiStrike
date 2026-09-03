@@ -570,6 +570,15 @@ void FGuLiWingmanRelayServer::Revoke(const double NowSeconds)
 bool FGuLiWingmanRelayServer::BuildBootstrap(FGuLiWingmanBootstrapBundle& OutBundle)
 {
 	OutBundle = FGuLiWingmanBootstrapBundle{};
+	// Keep the exact acknowledged cut available after activation. Public retained
+	// state and late-join observers must receive the same six-scope transaction
+	// that activated the owner; rebuilding it from a later pose history would
+	// silently create a different baseline.
+	if (OutstandingBootstrap.IsWellFormed())
+	{
+		OutBundle = OutstandingBootstrap;
+		return true;
+	}
 	const bool bInitialOrConfigBootstrap =
 		LeaseState.Lifecycle == EGuLiWingmanGroupLifecycle::Initializing;
 	const bool bActiveRosterRefresh = LeaseState.Lifecycle == EGuLiWingmanGroupLifecycle::Active
@@ -584,12 +593,6 @@ bool FGuLiWingmanRelayServer::BuildBootstrap(FGuLiWingmanBootstrapBundle& OutBun
 	{
 		return false;
 	}
-	if (OutstandingBootstrap.IsWellFormed())
-	{
-		OutBundle = OutstandingBootstrap;
-		return true;
-	}
-
 	FGuLiWingmanBootstrapBundle Bundle;
 	Bundle.Roster = Roster;
 	Bundle.AuthorityMap = AuthorityMap;
@@ -1353,7 +1356,18 @@ bool FGuLiWingmanRelayServer::SetWingmanHealthPermille(
 	Entry->CurrentHealthPermille = CurrentHealthPermille;
 	++HealthRevision;
 	RebuildRequiredMemberMasks();
-	HandleBaselineRevision(LastObservedAuthorityTimeSeconds);
+	if (CurrentHealthPermille == 0u)
+	{
+		// Preserve the semantic rejection for a deferred shot that targeted a
+		// member which has since died. The atomic-cut refresh below still clears
+		// every remaining stale Candidate, but this one must report EmitterDead.
+		RejectAllPending(EGuLiWingmanRejectReason::EmitterDead,
+			LastObservedAuthorityTimeSeconds);
+	}
+	// Health is one of the six reliable Bootstrap scopes. During Active play a
+	// non-lethal hit therefore needs the same atomic acknowledgement cut as a
+	// roster/death mutation, otherwise a late joiner can resurrect stale health.
+	HandleActiveRosterRevision(nullptr, LastObservedAuthorityTimeSeconds);
 	return true;
 }
 

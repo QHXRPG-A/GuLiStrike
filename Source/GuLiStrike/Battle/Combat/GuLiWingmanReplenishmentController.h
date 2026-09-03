@@ -38,6 +38,12 @@ public:
 
 	int32 GetTrackedDeadSlotCount() const { return DeadSlots.Num(); }
 	int32 GetQueuedDueSlotCount() const;
+	/** Read-only diagnostics for the exact authoritative timer attached to a dead identity. */
+	bool TryGetSchedule(
+		const FGuLiWingmanHandle& Wingman,
+		uint64& OutScheduleId,
+		double& OutReplenishAtSeconds,
+		bool& bOutDue) const;
 
 private:
 	struct FDeadSlotState

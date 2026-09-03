@@ -115,6 +115,11 @@ public:
 	const FGuLiWingmanRelayReplicatedState& GetRelayState() const { return ReplicatedState; }
 
 	const FGuLiWingmanBootstrapBundle& GetLastClientBootstrap() const { return LastClientBootstrap; }
+	/**
+	 * Client-side owner proof. The targeted Bootstrap is authoritative while the
+	 * owning PlayerState GUID is still waiting for replication.
+	 */
+	bool IsLocalLeaseOwner(const FGuLiWingmanGroupHandle& Group) const;
 	FGuLiWingmanRelayServer* GetServerRelay() { return ServerRelay; }
 	const FGuLiWingmanRelayServer* GetServerRelay() const { return ServerRelay; }
 	/** Read-only counters populated only by an explicit Non-Shipping Listen smoke. */
@@ -285,6 +290,7 @@ private:
 	bool HasClientLineOfSight(
 		const FVector& SourceLocation,
 		const FGuLiWingmanTargetObservation& Target) const;
+	void ObserveAuthoritativeServerTime(double ServerTimeSeconds);
 	double GetEstimatedServerTimeSeconds() const;
 	void DestroyClientOwnedGroup();
 	void RefreshReplicatedState();
@@ -320,6 +326,13 @@ private:
 	uint64 LastAcknowledgedCutId = 0u;
 	double ClientCandidateAccumulator = 0.0;
 	double ClientHeartbeatAccumulator = 0.0;
+	double NextClientActiveRosterAckRetryTimeSeconds = 0.0;
+	// A validated Lease transition or Candidate response supplies an authoritative
+	// server-time sample before AGameStateBase's periodic clock replication converges.
+	double ClientServerTimeAnchorSeconds = 0.0;
+	double ClientServerTimeAnchorLocalWorldSeconds = 0.0;
+	double LastObservedAuthoritativeServerTimeSeconds = -1.0;
+	bool bHasClientServerTimeAnchor = false;
 	uint32 LastRequestedResumeLeaseEpoch = 0u;
 	uint32 NextClientCandidateSequence = 1u;
 	uint32 ClientSimulationTick = 1u;

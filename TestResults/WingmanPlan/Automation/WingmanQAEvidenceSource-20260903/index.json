@@ -1,0 +1,89 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "52AC59A24E24695C27271192CA3A94DD",
+			"instanceName": "DESKTOP-6D3B0FC-33708",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.03-04.27.58",
+	"succeeded": 4,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.042237795889377594,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "FailClosedCampaignValidation",
+			"fullTestPath": "GuLiStrike.Wingman.QA.AcceptanceCatalogV2.FailClosedCampaignValidation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"52AC59A24E24695C27271192CA3A94DD"
+			],
+			"duration": 0.007680799812078476,
+			"dateTime": "2026.09.03-04.27.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ShapeAndHash",
+			"fullTestPath": "GuLiStrike.Wingman.QA.AcceptanceCatalogV2.ShapeAndHash",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"52AC59A24E24695C27271192CA3A94DD"
+			],
+			"duration": 0.0086634978652000427,
+			"dateTime": "2026.09.03-04.27.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SchemaAllowlist",
+			"fullTestPath": "GuLiStrike.Wingman.QA.Evidence.SchemaAllowlist",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"52AC59A24E24695C27271192CA3A94DD"
+			],
+			"duration": 0.0081024989485740662,
+			"dateTime": "2026.09.03-04.27.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WriterArtifactsAndFailClosedVerdict",
+			"fullTestPath": "GuLiStrike.Wingman.QA.Evidence.WriterArtifactsAndFailClosedVerdict",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"52AC59A24E24695C27271192CA3A94DD"
+			],
+			"duration": 0.017790999263525009,
+			"dateTime": "2026.09.03-04.27.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

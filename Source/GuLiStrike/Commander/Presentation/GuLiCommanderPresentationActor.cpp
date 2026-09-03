@@ -20,6 +20,8 @@
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "MassCommonFragments.h"
+#include "MassCommandBuffer.h"
+#include "MassCommands.h"
 #include "MassEntityManager.h"
 #include "MassEntitySubsystem.h"
 #include "Materials/MaterialInterface.h"
@@ -213,6 +215,8 @@ AGuLiCommanderPresentationActor::AGuLiCommanderPresentationActor()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 	PrimaryActorTick.TickInterval = 0.0f;
+	PrimaryActorTick.TickGroup = TG_PostUpdateWork;
+	PrimaryActorTick.bRunOnAnyThread = false;
 
 	SceneRoot = CreateDefaultSubobject<USceneComponent>(TEXT("SceneRoot"));
 	SetRootComponent(SceneRoot);
@@ -1592,21 +1596,42 @@ void AGuLiCommanderPresentationActor::EnsureClientMirrorEntity(
 		ClientMirrorEntities.Remove(ReliableState.SoldierId);
 	}
 
-	const FMassEntityHandle Entity = EntityManager.CreateEntity(ClientMirrorArchetype);
-	if (!EntityManager.IsEntityValid(Entity))
+	const FMassEntityHandle ReservedEntity = EntityManager.ReserveEntity();
+	if (!EntityManager.IsEntityValid(ReservedEntity))
 	{
 		return;
 	}
 
-	FGuLiMassIdentityFragment& Identity = EntityManager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(Entity);
-	Identity.SoldierId = ReliableState.SoldierId;
-	Identity.Team = ReliableState.Team;
-	FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Entity);
-	Health.Health = ReliableState.Health;
-	Health.bDead = !ReliableState.IsAlive();
-	Health.WreckSecondsRemaining = 0.0f;
-	EntityManager.GetFragmentDataChecked<FTransformFragment>(Entity).SetTransform(FTransform::Identity);
-	ClientMirrorEntities.Add(ReliableState.SoldierId, Entity);
+	const FGuLiSoldierId SoldierId = ReliableState.SoldierId;
+	const EGuLiTeam Team = ReliableState.Team;
+	const float HealthValue = ReliableState.Health;
+	const bool bDead = !ReliableState.IsAlive();
+	const FMassArchetypeHandle Archetype = ClientMirrorArchetype;
+	ClientMirrorEntities.Add(SoldierId, ReservedEntity);
+	// Replication callbacks and presentation ticks can overlap parallel Mass phases.
+	// Reserve synchronously so the map has a stable handle, then build and initialize it
+	// through the default command buffer at the next Mass-safe boundary.
+	EntityManager.Defer().PushCommand<FMassDeferredCreateCommand>(
+		[ReservedEntity, Archetype, SoldierId, Team, HealthValue, bDead](
+			FMassEntityManager& Manager)
+		{
+			if (!Manager.IsEntityReserved(ReservedEntity) || !Archetype.IsValid())
+			{
+				return;
+			}
+			Manager.BuildEntity(ReservedEntity, Archetype);
+			FGuLiMassIdentityFragment& Identity =
+				Manager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(ReservedEntity);
+			Identity.SoldierId = SoldierId;
+			Identity.Team = Team;
+			FGuLiMassHealthFragment& Health =
+				Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(ReservedEntity);
+			Health.Health = HealthValue;
+			Health.bDead = bDead;
+			Health.WreckSecondsRemaining = 0.0f;
+			Manager.GetFragmentDataChecked<FTransformFragment>(ReservedEntity)
+				.SetTransform(FTransform::Identity);
+		});
 }
 
 void AGuLiCommanderPresentationActor::UpdateClientMirrorEntity(
@@ -1627,28 +1652,57 @@ void AGuLiCommanderPresentationActor::UpdateClientMirrorEntity(
 		ClientMirrorEntities.Remove(ReliableState.SoldierId);
 		return;
 	}
+	if (!EntityManager.IsEntityActive(*Entity))
+	{
+		// The reserved handle is waiting for the deferred create boundary. The next
+		// presentation tick will enqueue the newest state after it becomes active.
+		return;
+	}
 
-	FGuLiMassIdentityFragment& Identity = EntityManager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(*Entity);
-	Identity.SoldierId = ReliableState.SoldierId;
-	Identity.Team = ReliableState.Team;
-	FGuLiMassHealthFragment& Health = EntityManager.GetFragmentDataChecked<FGuLiMassHealthFragment>(*Entity);
-	Health.Health = ReliableState.Health;
-	Health.bDead = !ReliableState.IsAlive();
-	Health.WreckSecondsRemaining = 0.0f;
-	if (Health.bDead && GetWorld())
+	float WreckSecondsRemaining = 0.0f;
+	const bool bDead = !ReliableState.IsAlive();
+	if (bDead && GetWorld())
 	{
 		if (const double* ExpireTime = WreckExpireTimes.Find(ReliableState.SoldierId))
 		{
-			Health.WreckSecondsRemaining = static_cast<float>(FMath::Max(
+			WreckSecondsRemaining = static_cast<float>(FMath::Max(
 				0.0,
 				*ExpireTime - static_cast<double>(GetWorld()->GetTimeSeconds())));
 		}
 	}
-	if (PresentedTransform)
-	{
-		// No client Mass processor owns this fragment; presentation is its sole writer.
-		EntityManager.GetFragmentDataChecked<FTransformFragment>(*Entity).SetTransform(*PresentedTransform);
-	}
+	const FMassEntityHandle TargetEntity = *Entity;
+	const FGuLiSoldierId SoldierId = ReliableState.SoldierId;
+	const EGuLiTeam Team = ReliableState.Team;
+	const float HealthValue = ReliableState.Health;
+	const bool bHasPresentedTransform = PresentedTransform != nullptr;
+	const FTransform PendingTransform = PresentedTransform
+		? *PresentedTransform
+		: FTransform::Identity;
+	EntityManager.Defer().PushCommand<FMassDeferredSetCommand>(
+		[TargetEntity, SoldierId, Team, HealthValue, bDead, WreckSecondsRemaining,
+			bHasPresentedTransform, PendingTransform](FMassEntityManager& Manager)
+		{
+			if (!Manager.IsEntityActive(TargetEntity))
+			{
+				return;
+			}
+			FGuLiMassIdentityFragment& Identity =
+				Manager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(TargetEntity);
+			Identity.SoldierId = SoldierId;
+			Identity.Team = Team;
+			FGuLiMassHealthFragment& Health =
+				Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(TargetEntity);
+			Health.Health = HealthValue;
+			Health.bDead = bDead;
+			Health.WreckSecondsRemaining = WreckSecondsRemaining;
+			if (bHasPresentedTransform)
+			{
+				// Client mirrors have no simulation fragments; presentation is their sole
+				// Transform writer, committed at a Mass-safe command-buffer boundary.
+				Manager.GetFragmentDataChecked<FTransformFragment>(TargetEntity)
+					.SetTransform(PendingTransform);
+			}
+		});
 }
 
 void AGuLiCommanderPresentationActor::DestroyClientMirrorEntities()
@@ -1667,7 +1721,7 @@ void AGuLiCommanderPresentationActor::DestroyClientMirrorEntities()
 		}
 		if (!ValidEntities.IsEmpty())
 		{
-			EntityManager.BatchDestroyEntities(ValidEntities);
+			EntityManager.Defer().DestroyEntities(MoveTemp(ValidEntities));
 		}
 	}
 

@@ -341,6 +341,12 @@ bool UGuLiFlightNavigationEditorLibrary::BakeVolume(
 		OutError = FText::FromString(FinalValidationError);
 		return false;
 	}
+	if (!TemporaryData->RebuildSerializedPayload(FinalValidationError)
+		|| !TemporaryData->ValidateSerializedPayload(FinalValidationError))
+	{
+		OutError = FText::FromString(FinalValidationError);
+		return false;
+	}
 
 	const FScopedTransaction Transaction(LOCTEXT("BakeTransaction", "Bake Flight Navigation"));
 	Volume->Modify();
@@ -351,6 +357,11 @@ bool UGuLiFlightNavigationEditorLibrary::BakeVolume(
 	Volume->NavigationData->Cells = MoveTemp(TemporaryData->Cells);
 	Volume->NavigationData->Portals = MoveTemp(TemporaryData->Portals);
 	Volume->NavigationData->Links = MoveTemp(TemporaryData->Links);
+	if (!Volume->NavigationData->RebuildSerializedPayload(FinalValidationError))
+	{
+		OutError = FText::FromString(FinalValidationError);
+		return false;
+	}
 	Volume->NavigationData->MarkPackageDirty();
 	Volume->MarkPackageDirty();
 	return true;

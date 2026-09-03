@@ -350,6 +350,8 @@ public:
 
 	/** 当前权威固定模拟步序号，供网络捕获调度与时序标记使用。 */
 	uint32 GetServerSimTick() const;
+	/** 因世界帧积压超过四步上限而丢弃的固定步数；正式 S1 必须为零。 */
+	uint64 GetDroppedFixedStepCount() const;
 
 	/** 是否已经成功生成并提交完整的 500 人权威部队。 */
 	bool HasSpawnedAuthorityPopulation() const;

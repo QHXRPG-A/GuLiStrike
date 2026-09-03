@@ -160,6 +160,31 @@ int32 FGuLiWingmanReplenishmentController::GetQueuedDueSlotCount() const
 	return Count;
 }
 
+bool FGuLiWingmanReplenishmentController::TryGetSchedule(
+	const FGuLiWingmanHandle& Wingman,
+	uint64& OutScheduleId,
+	double& OutReplenishAtSeconds,
+	bool& bOutDue) const
+{
+	OutScheduleId = 0u;
+	OutReplenishAtSeconds = 0.0;
+	bOutDue = false;
+	if (!Wingman.IsValid())
+	{
+		return false;
+	}
+	const FDeadSlotState* State = DeadSlots.Find(MakeStableSlotIndex(Wingman));
+	if (!State || State->Wingman != Wingman || State->ScheduleId == 0u
+		|| !FMath::IsFinite(State->ReplenishAtSeconds) || State->ReplenishAtSeconds <= 0.0)
+	{
+		return false;
+	}
+	OutScheduleId = State->ScheduleId;
+	OutReplenishAtSeconds = State->ReplenishAtSeconds;
+	bOutDue = State->bDue;
+	return true;
+}
+
 uint8 FGuLiWingmanReplenishmentController::MakeStableSlotIndex(const FGuLiWingmanHandle& Wingman)
 {
 	return static_cast<uint8>(

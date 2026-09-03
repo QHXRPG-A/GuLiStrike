@@ -400,9 +400,9 @@ bool FGuLiFlightNavigationMetadataChecksumTest::RunTest(const FString& Parameter
 {
 	UGuLiFlightNavigationData* Data = MakeTwoCellNavigationData();
 	TestEqual(
-		TEXT("Synthetic data uses the current format-v2 contract"),
+		TEXT("Synthetic data uses the current format-v3 contract"),
 		Data->Metadata.FormatVersion,
-		static_cast<uint32>(2u));
+		static_cast<uint32>(3u));
 
 	const uint64 OriginalChecksum = Data->ComputeContentChecksum();
 	const uint64 OriginalGeometrySignature = Data->Metadata.GeometrySignature;
@@ -422,11 +422,50 @@ bool FGuLiFlightNavigationMetadataChecksumTest::RunTest(const FString& Parameter
 	Data->Metadata.SettingsHash = 0;
 	Data->Metadata.ContentChecksum = Data->ComputeContentChecksum();
 	FString ValidationError;
-	TestFalse(TEXT("Format v2 rejects data without a settings hash"), Data->ValidateData(ValidationError));
+	TestFalse(TEXT("Format v3 rejects data without a settings hash"), Data->ValidateData(ValidationError));
 	TestTrue(
 		TEXT("The missing-metadata failure identifies the signature/hash contract"),
 		ValidationError.Contains(TEXT("signature"), ESearchCase::IgnoreCase)
 			|| ValidationError.Contains(TEXT("settings hash"), ESearchCase::IgnoreCase));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiFlightNavigationBulkDataPayloadTest,
+	"GuLi.FlightNavigation.Runtime.VersionedBulkDataPayload",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiFlightNavigationBulkDataPayloadTest::RunTest(const FString& Parameters)
+{
+	UGuLiFlightNavigationData* Data = MakeTwoCellNavigationData();
+	FString Error;
+	TestEqual(TEXT("Synthetic graph begins without serialized BulkData"),
+		Data->GetSerializedPayloadSize(), static_cast<int64>(0));
+	TestTrue(TEXT("A valid graph builds its explicit BulkData payload"),
+		Data->RebuildSerializedPayload(Error));
+	TestTrue(TEXT("The explicit BulkData payload contains bytes"),
+		Data->GetSerializedPayloadSize() > 0);
+	TestTrue(TEXT("The explicit BulkData payload decodes and matches the graph checksum"),
+		Data->ValidateSerializedPayload(Error));
+
+	Data->Cells[0].Clearance += 1.0f;
+	Data->Metadata.ContentChecksum = Data->ComputeContentChecksum();
+	TestFalse(TEXT("A graph mutation cannot reuse a stale BulkData payload"),
+		Data->ValidateSerializedPayload(Error));
+	TestTrue(TEXT("Rebuilding synchronizes BulkData after a valid graph mutation"),
+		Data->RebuildSerializedPayload(Error));
+	TestTrue(TEXT("Rebuilt BulkData validates"), Data->ValidateSerializedPayload(Error));
+
+	Data->Metadata.FormatVersion = 2;
+	Data->Metadata.ContentChecksum = Data->ComputeContentChecksum();
+	TestFalse(TEXT("Legacy format-v2 data fails closed and requires a re-bake"),
+		Data->RebuildSerializedPayload(Error));
+	TestTrue(TEXT("Legacy rejection identifies the unsupported data format"),
+		Error.Contains(TEXT("Unsupported"), ESearchCase::IgnoreCase));
+
+	Data->ResetBakedData();
+	TestEqual(TEXT("Clearing baked data also removes its BulkData payload"),
+		Data->GetSerializedPayloadSize(), static_cast<int64>(0));
 	return true;
 }
 

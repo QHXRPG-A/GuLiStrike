@@ -404,6 +404,12 @@ public:
 	UGuLiCombatHealthComponent* GetCombatHealthComponent() const { return CombatHealth; }
 
 	const FGuLiGroupAbilityConfigSnapshot& GetGroupAbilityConfig() const { return GroupAbilityConfig; }
+	/** Read-only authority diagnostics; never advances or releases a replenishment timer. */
+	bool TryGetWingmanReplenishmentSchedule(
+		const FGuLiWingmanHandle& Wingman,
+		uint64& OutScheduleId,
+		double& OutReplenishAtSeconds,
+		bool& bOutDue) const;
 
 	/** Cosmetic, local prediction only. The target is never sent back to authority. */
 	UPROPERTY(BlueprintAssignable, Category="Ship|Wingman|Missile")
@@ -682,7 +688,7 @@ private:
 	TArray<FGuLiTargetHandle> RegisteredWingmanCombatTargets;
 	TMap<FGuid, FGuLiWingmanMissileSalvoResult> WingmanMissileRequestResults;
 	TArray<FGuid> WingmanMissileRequestOrder;
-	bool bWingmanReplenishmentBootstrapPending = false;
+	bool bWingmanActiveRosterCutPublishPending = false;
 	double LastServerLoadoutIntentTime = -1.0;
 	double NextLoadoutRetryTime = 0.0;
 

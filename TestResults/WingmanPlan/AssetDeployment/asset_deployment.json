@@ -1,13 +1,292 @@
 {
   "committed_maps": [
+    "/Game/Maps/LVL_CommanderMassPrototype",
+    "/Game/Maps/LVL_Main",
     "/Game/Maps/LVL_ShipTest"
   ],
   "derived_mesh": {
     "reason": "GULI_FLIGHTNAV_SKIP_DERIVED_MESH=1",
     "skipped": true
   },
-  "engine_version": "5.7.4-51494982+++UE5+Release-5.7",
+  "engine_version": "5.7.4-0+UE5",
   "maps": [
+    {
+      "bake_settings": {
+        "agent_radius": 1500.0,
+        "face_coordinate_tolerance": 0.1,
+        "maximum_cells": 100000,
+        "maximum_depth": 6,
+        "maximum_nodes": 200000,
+        "minimum_cell_size": 8000.0,
+        "minimum_portal_span": 25.0,
+        "trace_complex": false
+      },
+      "bounds_audit": {
+        "formation_navigation_contract": {
+          "agent_radius": 1500.0,
+          "outer_ring_radius": 90000.0,
+          "recovery_margin": 10000.0,
+          "required_horizontal_clearance_from_gameplay_bounds": 101500.0,
+          "required_vertical_clearance_from_gameplay_bounds": 26500.0,
+          "satisfied": true,
+          "vertical_offset": 15000.0
+        },
+        "included_actor_count": 5,
+        "included_actor_sample": [
+          "CommanderPlayerStart_Red",
+          "Cylinder",
+          "Cylinder2",
+          "Cylinder3",
+          "Landscape"
+        ],
+        "raw_center": [
+          0.0,
+          0.0,
+          8432.6171875
+        ],
+        "raw_extent": [
+          408000.0,
+          408000.0,
+          15817.3828125
+        ],
+        "skipped_actor_count": 8,
+        "skipped_actor_sample": [
+          {
+            "actor": "DirectionalLight",
+            "reason": "DirectionalLight"
+          },
+          {
+            "actor": "ExponentialHeightFog",
+            "reason": "ExponentialHeightFog"
+          },
+          {
+            "actor": "PostProcessVolume",
+            "reason": "PostProcessVolume"
+          },
+          {
+            "actor": "SkyLight",
+            "reason": "SkyLight"
+          },
+          {
+            "actor": "SkyAtmosphere_Commander",
+            "reason": "SkyAtmosphere"
+          },
+          {
+            "actor": "NavMeshBounds_CommanderPlayableLandscape",
+            "reason": "NavMeshBoundsVolume"
+          },
+          {
+            "actor": "RecastNavMesh-Default",
+            "reason": "RecastNavMesh"
+          },
+          {
+            "actor": "RecastNavMesh-CommanderSoldier",
+            "reason": "RecastNavMesh"
+          }
+        ],
+        "volume_center": [
+          0.0,
+          0.0,
+          8432.6171875
+        ],
+        "volume_extent": [
+          509500.0,
+          509500.0,
+          42317.3828125
+        ]
+      },
+      "data_asset": "/Game/GuLiStrike/Navigation/Baked/LVL_CommanderMassPrototype/DA_FlightNav_LVL_CommanderMassPrototype",
+      "data_created": false,
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "navigation_data": {
+        "cell_count": 11012,
+        "content_checksum": 18181076715685459277,
+        "definition_revision": 7,
+        "format_version": 3,
+        "geometry_signature": 8843002165918547978,
+        "link_count": 64742,
+        "node_count": 29905,
+        "object_path": "/Game/GuLiStrike/Navigation/Baked/LVL_CommanderMassPrototype/DA_FlightNav_LVL_CommanderMassPrototype.DA_FlightNav_LVL_CommanderMassPrototype",
+        "portal_count": 32371,
+        "settings_hash": 10760655798156380268,
+        "source_volume_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+        "source_world_package": "/Game/Maps/LVL_CommanderMassPrototype"
+      },
+      "saved_packages": [
+        "/Game/GuLiStrike/Navigation/Baked/LVL_CommanderMassPrototype/DA_FlightNav_LVL_CommanderMassPrototype",
+        "/Game/Maps/LVL_CommanderMassPrototype"
+      ],
+      "valid": true,
+      "volume_bounds": {
+        "center": [
+          0.0,
+          0.0,
+          8432.6171875
+        ],
+        "extent": [
+          509500.0,
+          509500.0,
+          42317.3828125
+        ],
+        "scale": [
+          5095.0,
+          5095.0,
+          423.173828125
+        ]
+      },
+      "volume_created": false,
+      "volume_label": "FlightNav_LVL_CommanderMassPrototype"
+    },
+    {
+      "bake_settings": {
+        "agent_radius": 1500.0,
+        "face_coordinate_tolerance": 0.1,
+        "maximum_cells": 100000,
+        "maximum_depth": 6,
+        "maximum_nodes": 200000,
+        "minimum_cell_size": 8000.0,
+        "minimum_portal_span": 25.0,
+        "trace_complex": false
+      },
+      "bounds_audit": {
+        "formation_navigation_contract": {
+          "agent_radius": 1500.0,
+          "outer_ring_radius": 90000.0,
+          "recovery_margin": 10000.0,
+          "required_horizontal_clearance_from_gameplay_bounds": 101500.0,
+          "required_vertical_clearance_from_gameplay_bounds": 26500.0,
+          "satisfied": true,
+          "vertical_offset": 15000.0
+        },
+        "included_actor_count": 205,
+        "included_actor_sample": [
+          "Landscape",
+          "Pickup_1",
+          "Pickup_2",
+          "Pickup_3",
+          "Pickup_4",
+          "PlayerStart",
+          "SM_Dreadnought_Hull",
+          "SM_Dreadnought_Hull2",
+          "SM_Maelstrom_Hull",
+          "SM_Maelstrom_Hull2",
+          "Spawner_NE",
+          "Spawner_NW",
+          "Spawner_SE",
+          "Spawner_SW",
+          "WM02_Avatar",
+          "WM02_Avatar2",
+          "cannon_war_machine",
+          "cannon_war_machine10",
+          "cannon_war_machine100",
+          "cannon_war_machine101",
+          "cannon_war_machine102",
+          "cannon_war_machine103",
+          "cannon_war_machine104",
+          "cannon_war_machine105",
+          "cannon_war_machine106",
+          "cannon_war_machine107",
+          "cannon_war_machine108",
+          "cannon_war_machine109",
+          "cannon_war_machine11",
+          "cannon_war_machine110",
+          "cannon_war_machine111",
+          "cannon_war_machine112"
+        ],
+        "raw_center": [
+          0.0,
+          0.0,
+          13817.959832898436
+        ],
+        "raw_extent": [
+          408000.0,
+          408000.0,
+          21202.725457898436
+        ],
+        "skipped_actor_count": 7,
+        "skipped_actor_sample": [
+          {
+            "actor": "SM_Skybox_Mesh",
+            "reason": "oversized decorative bounds"
+          },
+          {
+            "actor": "DirectionalLight",
+            "reason": "DirectionalLight"
+          },
+          {
+            "actor": "ExponentialHeightFog",
+            "reason": "ExponentialHeightFog"
+          },
+          {
+            "actor": "Plane",
+            "reason": "oversized decorative bounds"
+          },
+          {
+            "actor": "PostProcessVolume",
+            "reason": "PostProcessVolume"
+          },
+          {
+            "actor": "SkyLight",
+            "reason": "SkyLight"
+          },
+          {
+            "actor": "SM_Skybox_Mesh2",
+            "reason": "oversized decorative bounds"
+          }
+        ],
+        "volume_center": [
+          0.0,
+          0.0,
+          13817.959832898436
+        ],
+        "volume_extent": [
+          509500.0,
+          509500.0,
+          47702.725457898436
+        ]
+      },
+      "data_asset": "/Game/GuLiStrike/Navigation/Baked/LVL_Main/DA_FlightNav_LVL_Main",
+      "data_created": false,
+      "map": "/Game/Maps/LVL_Main",
+      "navigation_data": {
+        "cell_count": 8909,
+        "content_checksum": 17192508299949234225,
+        "definition_revision": 6,
+        "format_version": 3,
+        "geometry_signature": 15982043188707533072,
+        "link_count": 52614,
+        "node_count": 26081,
+        "object_path": "/Game/GuLiStrike/Navigation/Baked/LVL_Main/DA_FlightNav_LVL_Main.DA_FlightNav_LVL_Main",
+        "portal_count": 26307,
+        "settings_hash": 10760655798156380268,
+        "source_volume_path": "/Game/Maps/LVL_Main.LVL_Main:PersistentLevel.GuLiFlightNavigationVolume_0",
+        "source_world_package": "/Game/Maps/LVL_Main"
+      },
+      "saved_packages": [
+        "/Game/GuLiStrike/Navigation/Baked/LVL_Main/DA_FlightNav_LVL_Main",
+        "/Game/Maps/LVL_Main"
+      ],
+      "valid": true,
+      "volume_bounds": {
+        "center": [
+          0.0,
+          0.0,
+          13817.959832898436
+        ],
+        "extent": [
+          509500.0,
+          509500.0,
+          47702.72545789844
+        ],
+        "scale": [
+          5095.0,
+          5095.0,
+          477.0272545789844
+        ]
+      },
+      "volume_created": false,
+      "volume_label": "FlightNav_LVL_Main"
+    },
     {
       "bake_settings": {
         "agent_radius": 1500.0,
@@ -40,12 +319,12 @@
           "REF_Cube_4"
         ],
         "raw_center": [
-          7642.5,
+          100.0,
           7127.5,
           0.0
         ],
         "raw_extent": [
-          12597.5,
+          20140.0,
           13177.5,
           2050.0
         ],
@@ -65,7 +344,7 @@
           }
         ],
         "volume_center": [
-          7642.5,
+          100.0,
           7127.5,
           0.0
         ],
@@ -79,15 +358,15 @@
       "data_created": false,
       "map": "/Game/Maps/LVL_ShipTest",
       "navigation_data": {
-        "cell_count": 165,
-        "content_checksum": 1095561021261653554,
-        "definition_revision": 6,
-        "format_version": 2,
-        "geometry_signature": 9317122454406342204,
-        "link_count": 1072,
-        "node_count": 201,
+        "cell_count": 179,
+        "content_checksum": 2199577225400788723,
+        "definition_revision": 7,
+        "format_version": 3,
+        "geometry_signature": 9412110620348517842,
+        "link_count": 1174,
+        "node_count": 217,
         "object_path": "/Game/GuLiStrike/Navigation/Baked/LVL_ShipTest/DA_FlightNav_LVL_ShipTest.DA_FlightNav_LVL_ShipTest",
-        "portal_count": 536,
+        "portal_count": 587,
         "settings_hash": 10760655798156380268,
         "source_volume_path": "/Game/Maps/LVL_ShipTest.LVL_ShipTest:PersistentLevel.GuLiFlightNavigationVolume_0",
         "source_world_package": "/Game/Maps/LVL_ShipTest"
@@ -99,7 +378,7 @@
       "valid": true,
       "volume_bounds": {
         "center": [
-          7642.5,
+          100.0,
           7127.5,
           0.0
         ],
@@ -118,7 +397,7 @@
       "volume_label": "FlightNav_LVL_ShipTest"
     }
   ],
-  "original_map": "/Game/Maps/LVL_ShipTest",
+  "original_map": "/Temp/Untitled_0",
   "owner_marker": "GuLi.WingmanFlightNav.Deployment.v1",
   "preflight": {
     "dirty_packages": [],
@@ -126,12 +405,14 @@
   },
   "project_dir": "D:/UE5.7/test1/",
   "restore": {
-    "map": "/Game/Maps/LVL_ShipTest",
-    "success": true
+    "reason": "Original editor world was not a saved /Game package: /Temp/Untitled_0",
+    "success": false
   },
   "schema": 1,
   "success": true,
   "target_maps": [
+    "/Game/Maps/LVL_CommanderMassPrototype",
+    "/Game/Maps/LVL_Main",
     "/Game/Maps/LVL_ShipTest"
   ]
 }

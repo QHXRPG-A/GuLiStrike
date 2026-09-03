@@ -1205,7 +1205,7 @@ void UGuLiWingmanRelayComponent::TickComponent(
 	const APlayerController* LocalController = Cast<APlayerController>(GetOwner());
 	if (LocalController && LocalController->IsLocalController()
 		&& ReplicatedState.Lease.Group.IsValid()
-		&& ReplicatedState.Lease.OwnerPlayerGuid == GetOwningPlayerGuid()
+		&& IsLocalLeaseOwner(ReplicatedState.Lease.Group)
 		&& ReplicatedState.Lease.Lifecycle != EGuLiWingmanGroupLifecycle::Revoked)
 	{
 		ClientHeartbeatAccumulator += FMath::Max(0.0f, DeltaTime);
@@ -1493,7 +1493,7 @@ void UGuLiWingmanRelayComponent::SubmitFireIntent(const FGuLiWingmanFireIntent& 
 void UGuLiWingmanRelayComponent::RequestResume()
 {
 	if (!ReplicatedState.Lease.Group.IsValid()
-		|| ReplicatedState.Lease.OwnerPlayerGuid != GetOwningPlayerGuid()
+		|| !IsLocalLeaseOwner(ReplicatedState.Lease.Group)
 		|| (ReplicatedState.Lease.Lifecycle != EGuLiWingmanGroupLifecycle::Stale
 			&& ReplicatedState.Lease.Lifecycle != EGuLiWingmanGroupLifecycle::Unavailable))
 	{
@@ -1619,6 +1619,22 @@ void UGuLiWingmanRelayComponent::ServerSubmitAtomicCandidateFragment_Implementat
 			return Lhs.FlightIndex < Rhs.FlightIndex;
 		});
 		RefreshReplicatedState();
+		if (AGuLiBattleGameState* BattleGameState =
+			GetWorld() ? GetWorld()->GetGameState<AGuLiBattleGameState>() : nullptr)
+		{
+			// The accepted all-Flight batch is the activation point. Publish the exact
+			// frozen six-scope cut again with its now-Active lifecycle, followed by the
+			// verbatim accepted Flights, so existing observers and late joiners never
+			// retain an Initializing/old-owner projection after activation or takeover.
+			FGuLiWingmanBootstrapBundle ActiveBootstrap;
+			if (ServerRelay->GetLeaseState().Lifecycle == EGuLiWingmanGroupLifecycle::Active
+				&& ServerRelay->BuildBootstrap(ActiveBootstrap))
+			{
+				BattleGameState->ServerPublishWingmanBootstrap(
+					ActiveBootstrap, EGuLiWingmanGroupLifecycle::Active);
+			}
+			BattleGameState->ServerPublishWingmanAcceptedAtomicBatch(AcceptedFlights);
+		}
 	}
 	ClientReceiveAtomicBatchResult(Result, AcceptedFlights);
 }
@@ -1746,6 +1762,19 @@ void UGuLiWingmanRelayComponent::ClientReceiveBootstrap_Implementation(
 		&& PreviousLeaseEpoch == IncomingLeaseEpoch;
 	const bool bDuplicateCutId = bSameGroup
 		&& LastClientBootstrap.Commit.CutId == Bootstrap.Commit.CutId;
+#if !UE_BUILD_SHIPPING
+	if (FParse::Param(FCommandLine::Get(), TEXT("GuLiBootstrapTrace")))
+	{
+		UE_LOG(LogTemp, Display,
+			TEXT("[GULI_BOOTSTRAP_TRACE] receive cut=%llu previous=%llu same_group=%d duplicate=%d active_refresh=%d requires_atomic=%d"),
+			Bootstrap.Commit.CutId,
+			LastClientBootstrap.Commit.CutId,
+			bSameGroup ? 1 : 0,
+			bDuplicateCutId ? 1 : 0,
+			Bootstrap.bActiveRosterRefresh ? 1 : 0,
+			Bootstrap.bRequiresAtomicCandidateBatch ? 1 : 0);
+	}
+#endif
 	if (bDuplicateCutId && !BootstrapRetryContractMatches(LastClientBootstrap, Bootstrap))
 	{
 		// A Cut id is immutable, including fields outside the six hashed scopes. Never let
@@ -1756,6 +1785,21 @@ void UGuLiWingmanRelayComponent::ClientReceiveBootstrap_Implementation(
 	{
 		const uint32 LeaseEpoch = Bootstrap.AuthorityMap.IsEmpty()
 			? 0u : Bootstrap.AuthorityMap[0].LeaseEpoch;
+		const double LocalNowSeconds = GetWorld()
+			? static_cast<double>(GetWorld()->GetTimeSeconds()) : 0.0;
+		if (bDuplicateCutId)
+		{
+			// The server keeps the exact reliable Cut outstanding until it accepts the
+			// acknowledgement. Retry at the acknowledgement bucket's 4 Hz refill rate,
+			// but never re-apply or rebroadcast an immutable Cut every render frame.
+			if (LocalNowSeconds + UE_DOUBLE_SMALL_NUMBER
+				>= NextClientActiveRosterAckRetryTimeSeconds)
+			{
+				ServerAcknowledgeBootstrap(Bootstrap.Commit);
+				NextClientActiveRosterAckRetryTimeSeconds = LocalNowSeconds + 0.25;
+			}
+			return;
+		}
 		APlayerController* Controller = Cast<APlayerController>(GetOwner());
 		UGuLiWingmanSimulationSubsystem* Simulation = GetWorld()
 			? GetWorld()->GetSubsystem<UGuLiWingmanSimulationSubsystem>() : nullptr;
@@ -1804,13 +1848,12 @@ void UGuLiWingmanRelayComponent::ClientReceiveBootstrap_Implementation(
 			Presentation->ApplyBootstrap(Bootstrap, true, GetWorld()->GetTimeSeconds());
 		}
 		ApplyClientUploadRateGrant(Bootstrap.UploadRateGrant);
-		FGuLiGroupAbilityConfigAck AbilityAck;
-		AbilityAck.Group = Bootstrap.Commit.Group;
-		AbilityAck.LeaseEpoch = LeaseEpoch;
-		AbilityAck.SnapshotRevision = Bootstrap.AbilityConfig.SnapshotRevision;
-		AbilityAck.SnapshotHash = Bootstrap.AbilityConfig.SnapshotHash;
-		ServerAcknowledgeAbilityConfig(AbilityAck);
+		// Active roster/health/death refreshes do not change AbilityConfig and the
+		// group could not be Active unless that immutable snapshot was already
+		// acknowledged. Spending the shared token on a redundant Ability ACK can
+		// starve the required six-scope Bootstrap ACK indefinitely.
 		ServerAcknowledgeBootstrap(Bootstrap.Commit);
+		NextClientActiveRosterAckRetryTimeSeconds = LocalNowSeconds + 0.25;
 		LastAcknowledgedGroup = Bootstrap.Commit.Group;
 		LastAcknowledgedLeaseEpoch = LeaseEpoch;
 		LastAcknowledgedCutId = Bootstrap.Commit.CutId;
@@ -1832,8 +1875,7 @@ void UGuLiWingmanRelayComponent::ClientReceiveBootstrap_Implementation(
 	if (AGuLiWingmanPresentationActor* Presentation = GetWorld()
 		? AGuLiWingmanPresentationActor::FindOrSpawn(GetWorld()) : nullptr)
 	{
-		const bool bLocallyOwned = !Bootstrap.AuthorityMap.IsEmpty()
-			&& Bootstrap.AuthorityMap[0].LeaseOwnerPlayerGuid == GetOwningPlayerGuid();
+		const bool bLocallyOwned = IsLocalLeaseOwner(Bootstrap.Commit.Group);
 		Presentation->ApplyBootstrap(Bootstrap, bLocallyOwned, GetWorld()->GetTimeSeconds());
 	}
 	const bool bAlreadyAcknowledged = LastAcknowledgedGroup == Bootstrap.Commit.Group
@@ -1909,6 +1951,16 @@ void UGuLiWingmanRelayComponent::ClientReceiveAtomicBatchResult_Implementation(
 			? static_cast<double>(GetWorld()->GetTimeSeconds()) + 0.25 : 0.0;
 		return;
 	}
+	// The reliable atomic result is an authoritative lifecycle observation. A remote
+	// owner must not wait for a later owner-only property replication before starting
+	// ordinary per-Flight uploads: the one-second freshness gate can otherwise make a
+	// successfully activated group Stale before its first normal Candidate is sent.
+	if (Acceptance.AvailabilityAfter == EGuLiWingmanGroupLifecycle::Active
+		&& Acceptance.Group == ReplicatedState.Lease.Group
+		&& Acceptance.LeaseEpoch == ReplicatedState.Lease.LeaseEpoch)
+	{
+		ReplicatedState.Lease.Lifecycle = EGuLiWingmanGroupLifecycle::Active;
+	}
 	bClientAtomicBaselineAccepted = true;
 	NextClientAtomicBaselineRetryTimeSeconds = 0.0;
 	for (const FGuLiWingmanAcceptedBatch& Accepted : AcceptedFlights)
@@ -1934,6 +1986,7 @@ void UGuLiWingmanRelayComponent::ClientReceiveFireIntentResult_Implementation(
 
 void UGuLiWingmanRelayComponent::OnRep_RelayState()
 {
+	ObserveAuthoritativeServerTime(ReplicatedState.Lease.LifecycleChangedTimeSeconds);
 	TryCommitClientBootstrap();
 	if (ReplicatedState.Lease.Lifecycle == EGuLiWingmanGroupLifecycle::Active)
 	{
@@ -1941,7 +1994,7 @@ void UGuLiWingmanRelayComponent::OnRep_RelayState()
 	}
 	else if ((ReplicatedState.Lease.Lifecycle == EGuLiWingmanGroupLifecycle::Stale
 			|| ReplicatedState.Lease.Lifecycle == EGuLiWingmanGroupLifecycle::Unavailable)
-		&& ReplicatedState.Lease.OwnerPlayerGuid == GetOwningPlayerGuid()
+		&& IsLocalLeaseOwner(ReplicatedState.Lease.Group)
 		&& LastRequestedResumeLeaseEpoch != ReplicatedState.Lease.LeaseEpoch)
 	{
 		RequestResume();
@@ -1963,6 +2016,42 @@ FGuid UGuLiWingmanRelayComponent::GetOwningPlayerGuid() const
 	const AGuLiBattlePlayerState* PlayerState = Controller
 		? Controller->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
 	return PlayerState ? PlayerState->GetPlayerGuid() : FGuid{};
+}
+
+bool UGuLiWingmanRelayComponent::IsLocalLeaseOwner(
+	const FGuLiWingmanGroupHandle& Group) const
+{
+	const APlayerController* Controller = Cast<APlayerController>(GetOwner());
+	if (!Controller || !Controller->IsLocalController() || !Group.IsValid())
+	{
+		return false;
+	}
+	const FGuid PlayerGuid = GetOwningPlayerGuid();
+	if (PlayerGuid.IsValid() && ReplicatedState.Lease.Group == Group
+		&& ReplicatedState.Lease.OwnerPlayerGuid == PlayerGuid)
+	{
+		return true;
+	}
+	if (LastClientBootstrap.Commit.Group != Group
+		|| LastClientBootstrap.AuthorityMap.IsEmpty())
+	{
+		return false;
+	}
+	const FGuLiWingmanAuthorityEntry& BootstrapAuthority =
+		LastClientBootstrap.AuthorityMap[0];
+	if (!BootstrapAuthority.LeaseOwnerPlayerGuid.IsValid()
+		|| BootstrapAuthority.LeaseEpoch == 0u)
+	{
+		return false;
+	}
+	// ClientReceiveBootstrap is a targeted Client RPC on this controller. If a newer
+	// replicated lease is already present, it must still match the targeted Cut so a
+	// former owner cannot keep producing after transfer.
+	return !ReplicatedState.Lease.Group.IsValid()
+		|| (ReplicatedState.Lease.Group == Group
+			&& ReplicatedState.Lease.OwnerPlayerGuid
+				== BootstrapAuthority.LeaseOwnerPlayerGuid
+			&& ReplicatedState.Lease.LeaseEpoch == BootstrapAuthority.LeaseEpoch);
 }
 
 double UGuLiWingmanRelayComponent::GetAuthorityTimeSeconds() const
@@ -2582,22 +2671,11 @@ void UGuLiWingmanRelayComponent::TickOwnerClientSimulation(const float DeltaTime
 	}
 	UGuLiWingmanSimulationSubsystem* Simulation =
 		GetWorld()->GetSubsystem<UGuLiWingmanSimulationSubsystem>();
-	const FGuid OwningPlayerGuid = GetOwningPlayerGuid();
 	auto ResolveClientOwnedGroup = [this]()
 	{
 		return (bClientBootstrapPending || bClientBootstrapLocallyApplied)
 			&& LastClientBootstrap.Commit.Group.IsValid()
 			? LastClientBootstrap.Commit.Group : ReplicatedState.Lease.Group;
-	};
-	auto IsCurrentOwnerContext = [this, OwningPlayerGuid](
-		const FGuLiWingmanGroupHandle& Group)
-	{
-		const bool bReplicatedOwner = ReplicatedState.Lease.Group == Group
-			&& ReplicatedState.Lease.OwnerPlayerGuid == OwningPlayerGuid;
-		const bool bBootstrapOwner = LastClientBootstrap.Commit.Group == Group
-			&& !LastClientBootstrap.AuthorityMap.IsEmpty()
-			&& LastClientBootstrap.AuthorityMap[0].LeaseOwnerPlayerGuid == OwningPlayerGuid;
-		return bReplicatedOwner || bBootstrapOwner;
 	};
 
 	// Existing retained groups advance before an atomic retry is built, so the retry's
@@ -2608,7 +2686,7 @@ void UGuLiWingmanRelayComponent::TickOwnerClientSimulation(const float DeltaTime
 		ReplicatedState.Lease.Lifecycle == EGuLiWingmanGroupLifecycle::Active
 		|| IsRetainedOwnerPrivateLifecycle(ReplicatedState.Lease.Lifecycle);
 	if (Simulation && GroupBeforeBootstrap.IsValid() && bClockLifecycleBeforeBootstrap
-		&& IsCurrentOwnerContext(GroupBeforeBootstrap)
+		&& IsLocalLeaseOwner(GroupBeforeBootstrap)
 		&& Simulation->HasOwnedGroup(GroupBeforeBootstrap))
 	{
 		AdvanceClientSimulationClock(DeltaTime);
@@ -2622,7 +2700,7 @@ void UGuLiWingmanRelayComponent::TickOwnerClientSimulation(const float DeltaTime
 	const bool bPrivateRetainedLifecycle =
 		IsRetainedOwnerPrivateLifecycle(ReplicatedState.Lease.Lifecycle);
 	if ((!bActive && !bPrivateRetainedLifecycle) || !ReplicatedState.MatchEpoch
-		|| !Group.IsValid() || !IsCurrentOwnerContext(Group))
+		|| !Group.IsValid() || !IsLocalLeaseOwner(Group))
 	{
 		if (bListenSmokeDiagnostics)
 		{
@@ -3076,8 +3154,44 @@ bool UGuLiWingmanRelayComponent::HasClientLineOfSight(
 	return Target.CollisionActor.IsValid() && Hit.GetActor() == Target.CollisionActor.Get();
 }
 
+void UGuLiWingmanRelayComponent::ObserveAuthoritativeServerTime(
+	const double ServerTimeSeconds)
+{
+	UWorld* World = GetWorld();
+	if (!World || !FMath::IsFinite(ServerTimeSeconds) || ServerTimeSeconds < 0.0)
+	{
+		return;
+	}
+	if (bHasClientServerTimeAnchor
+		&& ServerTimeSeconds + UE_DOUBLE_SMALL_NUMBER
+			< LastObservedAuthoritativeServerTimeSeconds)
+	{
+		return;
+	}
+	const double LocalWorldSeconds = static_cast<double>(World->GetTimeSeconds());
+	// Result RPCs can arrive out of order, so reject an older authoritative sample.
+	// Do allow a newer sample to correct the locally projected clock backwards: a
+	// slightly faster client clock must not accumulate permanent future skew and turn
+	// every later Candidate into CaptureTimeInvalid.
+	LastObservedAuthoritativeServerTimeSeconds = ServerTimeSeconds;
+	ClientServerTimeAnchorSeconds = ServerTimeSeconds;
+	ClientServerTimeAnchorLocalWorldSeconds = LocalWorldSeconds;
+	bHasClientServerTimeAnchor = true;
+}
+
 double UGuLiWingmanRelayComponent::GetEstimatedServerTimeSeconds() const
 {
+	if (GetOwner() && GetOwner()->HasAuthority())
+	{
+		return GetAuthorityTimeSeconds();
+	}
+	if (bHasClientServerTimeAnchor && GetWorld())
+	{
+		return ClientServerTimeAnchorSeconds + FMath::Max(
+			0.0,
+			static_cast<double>(GetWorld()->GetTimeSeconds())
+				- ClientServerTimeAnchorLocalWorldSeconds);
+	}
 	const AGuLiBattleGameState* BattleGameState = GetWorld()
 		? GetWorld()->GetGameState<AGuLiBattleGameState>() : nullptr;
 	return BattleGameState
@@ -3098,6 +3212,7 @@ void UGuLiWingmanRelayComponent::DestroyClientOwnedGroup()
 	NextClientAtomicBaselineRetryTimeSeconds = 0.0;
 	ClientHeartbeatAccumulator = 0.0;
 	ClientCandidateAccumulator = 0.0;
+	NextClientActiveRosterAckRetryTimeSeconds = 0.0;
 	LastRequestedResumeLeaseEpoch = 0u;
 	NextClientFlightUploadCursor = 0u;
 	bClientBootstrapPending = false;
@@ -3218,6 +3333,7 @@ bool UGuLiWingmanRelayComponent::ConsumeValidatedCandidateResultWire(
 	{
 		return false;
 	}
+	ObserveAuthoritativeServerTime(WireCopy.Acceptance.AcceptedServerTimeSeconds);
 	if (bBroadcastResult)
 	{
 		OnCandidateResult.Broadcast(

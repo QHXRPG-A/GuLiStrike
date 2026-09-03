@@ -46,6 +46,8 @@
 #include "EngineUtils.h"
 #include "Engine/DataTable.h"
 #include "Net/UnrealNetwork.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 #include "UObject/ConstructorHelpers.h"
 
 namespace GuLiStrikeShipPrivate
@@ -1668,6 +1670,14 @@ void AGuLiStrikeShip::RefreshServerCombatRegistration()
 
 void AGuLiStrikeShip::RefreshWingmanRelayBinding()
 {
+#if !UE_BUILD_SHIPPING
+	// Formal S9-Control keeps the real Air pawns and Commander workload while removing only
+	// the Wingman feature under test. The switch is command-line-only and cannot affect Shipping.
+	if (FParse::Param(FCommandLine::Get(), TEXT("GuLiWingmanQADisableWingmen")))
+	{
+		return;
+	}
+#endif
 	if (!HasAuthority() || !GetWorld() || !GroupAbilityConfig.IsUsableByLeaseOwner())
 	{
 		return;
@@ -1798,7 +1808,7 @@ bool AGuLiStrikeShip::EnsureWingmanCombatCoordinator()
 	if (bRelayCoreChanged)
 	{
 		WingmanReplenishmentController.Reset();
-		bWingmanReplenishmentBootstrapPending = false;
+		bWingmanActiveRosterCutPublishPending = false;
 	}
 	RelayComponent->SetServerFireIntentValidator(
 		WingmanCombatCoordinator->MakeBasicFireIntentValidator());
@@ -1938,21 +1948,31 @@ void AGuLiStrikeShip::MaintainWingmanCombatLifecycle()
 		}
 		RegisterWingmanCombatTargets();
 	}
-	if (!Replenished.IsEmpty())
-	{
-		bWingmanReplenishmentBootstrapPending = true;
-	}
+	// MarkWingmanDead and ReplenishWingman both create a reliable Active roster cut.
+	// Publish either mutation; otherwise an owner keeps submitting the previous roster
+	// revision until the lease watchdog correctly makes the group unavailable.
+	bWingmanActiveRosterCutPublishPending |= RelayCore->IsActiveRosterCutPending();
 
-	// ReplenishWingman changes four reliable lifecycle scopes. Publish an Active roster cut:
-	// this preserves every accepted pose/sequence/freshness clock and only gates the replacement
-	// identity until the owner acknowledges the exact six-scope revision.
-	if (bWingmanReplenishmentBootstrapPending
+	// A death or replenishment changes reliable lifecycle scopes. This Active roster cut
+	// preserves accepted pose/sequence/freshness clocks and gates only the changed identity
+	// until the owner acknowledges the exact six-scope revision.
+	if (bWingmanActiveRosterCutPublishPending
 		&& RelayCore->GetLeaseState().Lifecycle == EGuLiWingmanGroupLifecycle::Active
 		&& !RelayCore->IsTransferInProgress()
 		&& RelayComponent->ServerRefreshActiveRosterCut())
 	{
-		bWingmanReplenishmentBootstrapPending = false;
+		bWingmanActiveRosterCutPublishPending = false;
 	}
+}
+
+bool AGuLiStrikeShip::TryGetWingmanReplenishmentSchedule(
+	const FGuLiWingmanHandle& Wingman,
+	uint64& OutScheduleId,
+	double& OutReplenishAtSeconds,
+	bool& bOutDue) const
+{
+	return HasAuthority() && WingmanReplenishmentController.TryGetSchedule(
+		Wingman, OutScheduleId, OutReplenishAtSeconds, bOutDue);
 }
 
 void AGuLiStrikeShip::RevokeWingmanGroupAuthority()
@@ -2373,7 +2393,7 @@ void AGuLiStrikeShip::HandleShipDeath()
 	UnregisterWingmanCombatTargets();
 	WingmanCombatCoordinator.Reset();
 	WingmanReplenishmentController.Reset();
-	bWingmanReplenishmentBootstrapPending = false;
+	bWingmanActiveRosterCutPublishPending = false;
 	BoundCombatRelayCore = nullptr;
 	BoundCombatAbilitySnapshotRevision = 0u;
 	if (UGuLiShipMovementComponent* Movement = GetShipMovement())
@@ -2418,7 +2438,7 @@ void AGuLiStrikeShip::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	UnregisterWingmanCombatTargets();
 	WingmanCombatCoordinator.Reset();
 	WingmanReplenishmentController.Reset();
-	bWingmanReplenishmentBootstrapPending = false;
+	bWingmanActiveRosterCutPublishPending = false;
 	BoundCombatRelayCore = nullptr;
 	BoundCombatAbilitySnapshotRevision = 0u;
 	if (CombatHealth) { CombatHealth->OnDeath.RemoveDynamic(this, &AGuLiStrikeShip::HandleShipDeath); }

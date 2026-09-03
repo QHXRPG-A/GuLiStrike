@@ -299,4 +299,66 @@ bool FGuLiWingmanRelayNoOwnerRetentionTest::RunTest(const FString& Parameters)
 		Relay->GetServerWingmanMovementWriteCount(), static_cast<uint64>(0u));
 	return true;
 }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanRelaySilentOwnerRecoveryTest,
+	"GuLiStrike.Wingman.Relay.AuthorityRegistry.SilentOwnerEntersBackupRotation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanRelaySilentOwnerRecoveryTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanAuthorityRegistryTests;
+	(void)Parameters;
+	FGuLiWingmanRelayAuthorityRegistry Registry;
+	const FGuLiWingmanGroupHandle Group = MakeGroup(3u);
+	const FGuid Owner(301u, 302u, 303u, 304u);
+	const FGuid Backup(401u, 402u, 403u, 404u);
+	FGuLiWingmanRelayServer* Relay = Registry.CreateGroup(
+		99u, Group, Owner, Backup, MakeConfig(Group), 0.0);
+	if (!TestNotNull(TEXT("Silent-owner fixture creates a retained group"), Relay)
+		|| !Activate(*this, *Relay, Owner))
+	{
+		return false;
+	}
+	const FGuLiWingmanSubmissionResult First = Relay->SubmitCandidate(
+		Owner, MakeCandidate(*Relay), 0.1, FoundCarrier(), PermitWorld());
+	if (!TestEqual(TEXT("Silent-owner fixture starts from an accepted pose"),
+		First.Disposition, EGuLiWingmanSubmissionDisposition::Accepted))
+	{
+		return false;
+	}
+	const uint64 AcceptedHashBefore = GuLiWingmanRelayHash::AcceptedSnapshot(
+		Relay->GetAcceptedHistory());
+	Registry.RunLeaseMaintenance(1.0);
+	Registry.RunLeaseMaintenance(2.0);
+	TestEqual(TEXT("Candidate silence becomes Stale at the 1 Hz boundary"),
+		Relay->GetLeaseState().Lifecycle, EGuLiWingmanGroupLifecycle::Stale);
+	Registry.RunLeaseMaintenance(3.0);
+	TestEqual(TEXT("Candidate silence becomes Unavailable at the next boundary"),
+		Relay->GetLeaseState().Lifecycle, EGuLiWingmanGroupLifecycle::Unavailable);
+	Registry.RunLeaseMaintenance(4.0);
+	TestTrue(TEXT("Watchdog revocation retains a recoverable NoOwner group"),
+		Relay->IsActiveLeaseRevoked()
+			&& Relay->GetActiveLeaseTransaction().State
+				== EGuLiWingmanActiveLeaseTransactionState::NoOwner);
+	TestEqual(TEXT("The registry exposes exactly one unseeded lease-loss recovery"),
+		Registry.GetRecoverableLeaseLossGroups().Num(), 1);
+
+	FGuLiWingmanOwnerLossAssignment Offer;
+	TestTrue(TEXT("A connected backup enters the normal reliable Offer rotation"),
+		Registry.BeginLeaseLossRecovery(Group, {Backup}, 4.01, Offer));
+	TestEqual(TEXT("Lease-loss recovery starts with an Offer, not an implicit commit"),
+		Offer.Disposition, EGuLiWingmanOwnerLossDisposition::OfferStarted);
+	TestEqual(TEXT("Offer preview preserves the old epoch until Ready"),
+		Relay->GetLeaseState().OwnerPlayerGuid, Owner);
+	TestEqual(TEXT("The accepted static snapshot survives the recovery preview"),
+		GuLiWingmanRelayHash::AcceptedSnapshot(Relay->GetAcceptedHistory()),
+		AcceptedHashBefore);
+	TestTrue(TEXT("The group is now part of the normal awaiting-owner directory"),
+		Registry.GetAwaitingOwnerGroups().Contains(Group));
+	TestTrue(TEXT("A seeded recovery is no longer reported as unhandled"),
+		Registry.GetRecoverableLeaseLossGroups().IsEmpty());
+	TestEqual(TEXT("Recovery orchestration writes no server Wingman movement"),
+		Relay->GetServerWingmanMovementWriteCount(), static_cast<uint64>(0u));
+	return true;
+}
 #endif

@@ -58,6 +58,12 @@ public:
 	/** Stable list, sorted by group identity, used by disconnect/reconnect orchestration. */
 	TArray<FGuLiWingmanGroupHandle> FindGroupsOwnedBy(const FGuid& OwnerPlayerGuid) const;
 	TArray<FGuLiWingmanGroupHandle> GetAwaitingOwnerGroups() const;
+	/**
+	 * Groups whose still-connected owner went silent through the lease watchdog.
+	 * They retain all six authoritative scopes but have not yet entered the
+	 * connected-backup rotation used by socket-loss recovery.
+	 */
+	TArray<FGuLiWingmanGroupHandle> GetRecoverableLeaseLossGroups() const;
 
 	/**
 	 * Invalidates every lease owned by DisconnectedPlayerGuid without deleting its authoritative state.
@@ -67,6 +73,12 @@ public:
 		const FGuid& DisconnectedPlayerGuid,
 		const TArray<FGuid>& ConnectedCandidatePlayerGuids,
 		double NowSeconds);
+	/** Starts the same Offer/Ready rotation after watchdog revocation, without pretending a socket closed. */
+	bool BeginLeaseLossRecovery(
+		const FGuLiWingmanGroupHandle& Group,
+		const TArray<FGuid>& ConnectedCandidatePlayerGuids,
+		double NowSeconds,
+		FGuLiWingmanOwnerLossAssignment& OutAssignment);
 
 	/** Assigns retained no-owner groups after a later connection becomes eligible. */
 	TArray<FGuLiWingmanOwnerLossAssignment> AssignAwaitingGroups(

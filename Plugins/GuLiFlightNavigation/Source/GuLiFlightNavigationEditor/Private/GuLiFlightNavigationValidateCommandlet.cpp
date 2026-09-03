@@ -20,7 +20,7 @@ int32 UGuLiFlightNavigationValidateCommandlet::Main(const FString& Params)
 	if (Settings->RequiredWorldPackages.IsEmpty())
 	{
 		UE_LOG(
-			LogGuLiFlightNavigation,
+			LogGuLiFlightNav,
 			Error,
 			TEXT("[FLIGHTNAV_COOK_GATE][Configuration] No RequiredWorldPackages are configured."));
 		return 1;
@@ -34,7 +34,7 @@ int32 UGuLiFlightNavigationValidateCommandlet::Main(const FString& Params)
 			|| !FPackageName::DoesPackageExist(PackageName))
 		{
 			UE_LOG(
-				LogGuLiFlightNavigation,
+				LogGuLiFlightNav,
 				Error,
 				TEXT("[FLIGHTNAV_COOK_GATE][MissingWorld] Required map package '%s' does not exist."),
 				*PackageName);
@@ -46,7 +46,7 @@ int32 UGuLiFlightNavigationValidateCommandlet::Main(const FString& Params)
 		if (!IsValid(World))
 		{
 			UE_LOG(
-				LogGuLiFlightNavigation,
+				LogGuLiFlightNav,
 				Error,
 				TEXT("[FLIGHTNAV_COOK_GATE][MissingWorld] Failed to load required map '%s'."),
 				*PackageName);
@@ -62,21 +62,21 @@ int32 UGuLiFlightNavigationValidateCommandlet::Main(const FString& Params)
 		{
 			for (const FGuLiFlightNavigationCookIssue& Issue : Issues)
 			{
-				UE_LOG(LogGuLiFlightNavigation, Error, TEXT("%s"), *Issue.ToLogString());
+				UE_LOG(LogGuLiFlightNav, Error, TEXT("%s"), *Issue.ToLogString());
 			}
 			FailureCount += Issues.Num();
 			continue;
 		}
 
 		UE_LOG(
-			LogGuLiFlightNavigation,
+			LogGuLiFlightNav,
 			Display,
 			TEXT("[FLIGHTNAV_COOK_GATE][Valid] %s"),
 			*PackageName);
 	}
 
 	UE_LOG(
-		LogGuLiFlightNavigation,
+		LogGuLiFlightNav,
 		Display,
 		TEXT("Flight Navigation pre-cook validation completed: %d map(s), %d failure(s)."),
 		Settings->RequiredWorldPackages.Num(),

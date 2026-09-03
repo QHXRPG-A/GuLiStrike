@@ -83,8 +83,45 @@ void AGuLiBattleGameState::RunWingmanLeaseMaintenance()
 	{
 		return;
 	}
-	const TArray<FGuLiWingmanOwnerLossAssignment> NewOffers =
-		WingmanRelayAuthorityRegistry->RunLeaseMaintenance(GetWorld()->GetTimeSeconds());
+	const double NowSeconds = GetWorld()->GetTimeSeconds();
+	TArray<FGuLiWingmanOwnerLossAssignment> NewOffers =
+		WingmanRelayAuthorityRegistry->RunLeaseMaintenance(NowSeconds);
+
+	// A silent-but-connected owner reaches the same retained NoOwner state as a
+	// socket loss, but Logout never runs to seed the backup directory. Promote
+	// each newly revoked group into the normal Offer/Ready rotation using only
+	// currently connected, same-cohort transports that do not already own a
+	// persistent group. No movement or authoritative pose is generated here.
+	for (const FGuLiWingmanGroupHandle& Group
+		: WingmanRelayAuthorityRegistry->GetRecoverableLeaseLossGroups())
+	{
+		const uint8 OwnerCohort = WingmanRelayAuthorityRegistry->GetGroupOwnerCohort(Group);
+		TArray<FGuid> ConnectedCandidates;
+		for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+		{
+			APlayerController* Controller = It->Get();
+			const AGuLiBattlePlayerState* PlayerState = Controller
+				? Controller->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
+			UGuLiWingmanRelayComponent* Transport = Controller
+				? Controller->FindComponentByClass<UGuLiWingmanRelayComponent>() : nullptr;
+			if (!PlayerState || !Transport || !Transport->CanServerAttachPersistentGroup()
+				|| !PlayerState->GetPlayerGuid().IsValid()
+				|| static_cast<uint8>(PlayerState->GetTeam()) != OwnerCohort
+				|| PlayerState->GetBattleRole() == EGuLiCommanderRole::Observer
+				|| PlayerState->GetBattleRole() == EGuLiCommanderRole::Unassigned)
+			{
+				continue;
+			}
+			ConnectedCandidates.AddUnique(PlayerState->GetPlayerGuid());
+		}
+
+		FGuLiWingmanOwnerLossAssignment Assignment;
+		if (WingmanRelayAuthorityRegistry->BeginLeaseLossRecovery(
+			Group, ConnectedCandidates, NowSeconds, Assignment))
+		{
+			NewOffers.Add(Assignment);
+		}
+	}
 	for (const FGuLiWingmanOwnerLossAssignment& Assignment : NewOffers)
 	{
 		if (Assignment.Disposition != EGuLiWingmanOwnerLossDisposition::OfferStarted)
@@ -456,6 +493,44 @@ void AGuLiBattleGameState::ServerPublishWingmanAcceptedBatch(
 	MulticastReceiveWingmanAcceptedBatch(AcceptedBatch);
 }
 
+void AGuLiBattleGameState::ServerPublishWingmanAcceptedAtomicBatch(
+	const TArray<FGuLiWingmanAcceptedBatch>& AcceptedFlights)
+{
+	if (!HasAuthority() || AcceptedFlights.IsEmpty())
+	{
+		return;
+	}
+	const FGuLiWingmanGroupHandle Group = AcceptedFlights[0].Group;
+	const bool bHasPublicGroup = Group.IsValid()
+		&& PublicWingmanBootstraps.ContainsByPredicate(
+			[&Group](const FGuLiWingmanPublicBootstrapState& Entry)
+			{
+				return Entry.Group == Group && Entry.IsWellFormed();
+			});
+	uint8 SeenFlightMask = 0u;
+	for (const FGuLiWingmanAcceptedBatch& Accepted : AcceptedFlights)
+	{
+		if (!bHasPublicGroup || !Accepted.IsWellFormed() || Accepted.Group != Group
+			|| Accepted.FlightIndex >= GULI_WINGMAN_FLIGHT_COUNT
+			|| (SeenFlightMask & (1u << Accepted.FlightIndex)) != 0u)
+		{
+			return;
+		}
+		SeenFlightMask |= static_cast<uint8>(1u << Accepted.FlightIndex);
+	}
+	const uint8 AllFlightsMask = static_cast<uint8>((1u << GULI_WINGMAN_FLIGHT_COUNT) - 1u);
+	if (SeenFlightMask != AllFlightsMask)
+	{
+		return;
+	}
+	const double NowSeconds = GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0;
+	LastPublicWingmanAcceptedPublishTimes.Add(Group, NowSeconds);
+	for (const FGuLiWingmanAcceptedBatch& Accepted : AcceptedFlights)
+	{
+		MulticastReceiveWingmanAcceptedBatch(Accepted);
+	}
+}
+
 void AGuLiBattleGameState::OnRep_PublicWingmanBootstraps()
 {
 	ApplyRetainedWingmanBootstraps();
@@ -720,7 +795,25 @@ bool AGuLiBattleGameState::IsLocalWingmanLeaseOwner(
 	const FGuLiWingmanBootstrapBundle& Bootstrap) const
 {
 	const FGuid LocalPlayerGuid = GetLocalWingmanViewerPlayerGuid();
-	return LocalPlayerGuid.IsValid() && !Bootstrap.AuthorityMap.IsEmpty()
-		&& Bootstrap.AuthorityMap[0].LeaseOwnerPlayerGuid == LocalPlayerGuid;
+	if (LocalPlayerGuid.IsValid() && !Bootstrap.AuthorityMap.IsEmpty()
+		&& Bootstrap.AuthorityMap[0].LeaseOwnerPlayerGuid == LocalPlayerGuid)
+	{
+		return true;
+	}
+	if (!GetWorld())
+	{
+		return false;
+	}
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		const APlayerController* Controller = It->Get();
+		const UGuLiWingmanRelayComponent* Relay = Controller && Controller->IsLocalController()
+			? Controller->FindComponentByClass<UGuLiWingmanRelayComponent>() : nullptr;
+		if (Relay && Relay->IsLocalLeaseOwner(Bootstrap.Commit.Group))
+		{
+			return true;
+		}
+	}
+	return false;
 }
 

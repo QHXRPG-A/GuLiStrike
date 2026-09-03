@@ -101,9 +101,21 @@ bool FGuLiWingmanReplenishmentLifecycleTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Death changes the combat target directory"), bRosterChanged);
 	TestEqual(TEXT("Exactly one dead stable slot is timed"), Controller.GetTrackedDeadSlotCount(), 1);
 	TestTrue(TEXT("A member is not replenished before 15 seconds"), Replenished.IsEmpty());
+	uint64 ScheduleId = 0u;
+	double ReplenishAtSeconds = 0.0;
+	bool bScheduleDue = true;
+	TestTrue(TEXT("The production timer exposes the exact dead-identity schedule"),
+		Controller.TryGetSchedule(Previous, ScheduleId, ReplenishAtSeconds, bScheduleDue));
+	TestTrue(TEXT("The schedule identity is non-zero"), ScheduleId != 0u);
+	TestEqual(TEXT("The schedule is exactly 15 seconds after first death observation"),
+		ReplenishAtSeconds, 17.0);
+	TestFalse(TEXT("The schedule is not due before its deadline"), bScheduleDue);
 
 	Controller.Advance(Relay, 16.999, Replenished, bRosterChanged);
 	TestTrue(TEXT("The full delay is enforced"), Replenished.IsEmpty());
+	TestTrue(TEXT("The same schedule remains queryable before its deadline"),
+		Controller.TryGetSchedule(Previous, ScheduleId, ReplenishAtSeconds, bScheduleDue));
+	TestFalse(TEXT("The timer remains not due at 14.999 seconds"), bScheduleDue);
 	Controller.Advance(Relay, 17.0, Replenished, bRosterChanged);
 	if (!TestEqual(TEXT("The due slot replenishes exactly once"), Replenished.Num(), 1))
 	{

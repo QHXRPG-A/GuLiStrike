@@ -1,0 +1,59 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "A603B154430FE7C6DE4D1BB0C93765A6",
+			"instanceName": "DESKTOP-6D3B0FC-51356",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.03-05.12.46",
+	"succeeded": 2,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.040937196463346481,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "SchemaAllowlist",
+			"fullTestPath": "GuLiStrike.Wingman.QA.Evidence.SchemaAllowlist",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A603B154430FE7C6DE4D1BB0C93765A6"
+			],
+			"duration": 0.008232899010181427,
+			"dateTime": "2026.09.03-05.12.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WriterArtifactsAndFailClosedVerdict",
+			"fullTestPath": "GuLiStrike.Wingman.QA.Evidence.WriterArtifactsAndFailClosedVerdict",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A603B154430FE7C6DE4D1BB0C93765A6"
+			],
+			"duration": 0.032704297453165054,
+			"dateTime": "2026.09.03-05.12.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

@@ -71,6 +71,15 @@ void AGuLiBattleGameMode::AssignPlayerRole(APlayerController& PlayerController)
 	// 登录可以早于 BeginPlay；初始化幂等，不能因每次登录重建战局标识。
 	BattleState->InitializeServerMatchState();
 	PlayerState->EnsureServerPlayerGuid();
+	// AGameModeBase::InitNewPlayer has already applied ?SpectatorOnly=1 before
+	// PostLogin reaches GenericPlayerInitialization. Preserve that authoritative
+	// login decision: an explicit observer must not briefly claim a gameplay slot,
+	// spawn a Pawn, receive a Wingman lease, or enter the backup-owner directory.
+	if (MustSpectate(&PlayerController))
+	{
+		MovePlayerToObserver(PlayerController, TEXT("Spectator-only login requested"));
+		return;
+	}
 	uint8 SlotIndex = AGuLiBattlePlayerState::InvalidSlotIndex;
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
 	EGuLiCommanderRole AssignedRole = EGuLiCommanderRole::Observer;

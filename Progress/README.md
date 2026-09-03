@@ -10,10 +10,14 @@
 |---|---|---|
 | [RequirementDocument](./RequirementDocument/) | 需求点子（gameplay/UI/技术架构） | `YYYYMMDD-名称.md` |
 | [DevelopmentDocumentation](./DevelopmentDocumentation/) | 技术方案与任务清单，与需求文档同名配对 | 同需求文档 |
-| [Archive](./Archive/) | 每次开发的变更归档（只增不改） | `YYYYMMDD-解决了什么事.md` |
+| [Archive](./Archive/) | 每次开发的变更归档；允许合并，合并完成后删除被替代的旧归档 | `YYYYMMDD-解决了什么事.md` |
 | [Gameplay](./Gameplay/) | 玩法模块总册（活文档） | `模块名.md` |
 
 **流程**：点子 → 需求文档（A）→ 技术文档+任务清单（B）→ 实施（勾选任务）→ 归档（C）→ 玩法册更新（D）→ 本索引刷新。
+
+**Archive 合并契约**：允许把多份相关归档合并为一份完整归档。合并时必须先保留全部可复现事实与验证结论、迁移 README/需求/开发/玩法等文档中的旧路径引用并核对新链接；确认新归档完整后，必须删除已被完全取代的旧归档及其索引行。未被完整覆盖的归档不得删除。
+
+**测试范围契约**：新增或扩充任何测试前，必须先说明其与当前需求的直接对应关系、拟增加内容和涉及文件，并询问用户是否添加；只有获得明确许可后才能实施。许可只覆盖当次说明的范围，不得扩散到相邻模块或额外测试矩阵。直接运行当前需求既有的验收测试不属于新增测试。
 
 ## 文档索引
 
@@ -68,7 +72,7 @@
 
 | 日期 | 事项 |
 |---|---|
-| 2026-09-03 | **[飞船 GAS、僚机体系与三维导航阶段归档：Ship/Army 双 ASC 隔离、25 架/5 Flight 客户端 Mass、协议 v7 六 Scope Relay、FlightNav 三图烘焙、自动武器/导弹与 Damage Ledger；DebugGame 60/60、Wingman 72、Ship 6、Combat 12、FlightNavigation 14 及 Listen Normal/Weak/Reorder 通过；源码 Dedicated、完整 Cook、10 分钟/22 角色/Network Insights 硬 Gate 未完成](./Archive/20260903-飞船GAS僚机体系与三维导航阶段实现.md)** |
+| 2026-09-03 | **[飞船 GAS、僚机体系与三维导航实现与既有验收总归档：Ship/Army 双 ASC、25 架/5 Flight 客户端 Mass、协议 v7 Relay、FlightNav BulkData、武器/导弹/Damage/Death/15 秒补充；源码 UE 5.7.4、完整 Server Cook、20 个 Dedicated 角色、2 个拆分 H4000 角色及 S9 双 10 分钟通过；Reward 经济规则待配置，未追加的性能数值阈值不声明通过](./Archive/20260903-飞船GAS僚机体系与三维导航实现与既有验收总归档.md)** |
 | 2026-09-03 | **[Ship UI v1 Figma 玩家实机成品稿：完成 Commander/Ship 共享视觉系统、1920×1080 五区玩家视图、三画幅与七状态；全画布普通文案中文化，83 Components/14 Sets/483 Instances 结构审计通过；UE Gate 2/3 未实施](./Archive/20260903-ShipUIv1-Figma玩家实机稿.md)** |
 | 2026-09-01 | **[指挥官选兵移动导航与小兵 GAS 扫射总归档（0831～0901，按用户指令合并同窗口十二份归档）：精确选兵/指针/快捷提示栏、单面中空脚环与兵种汇总卡、小兵扫射与 GAS 技能桥接（协议 v5、float 生命）、真实 Landscape 相机与编队导航、移动射击、六角自由落点与静态绿线（协议 v6）、按需前缀投射首动修复（20 兵 2263→31 投射、1 世界帧）；49/61/79/99/101 项自动化与专服双客户端通过，万人性能、交互 PIE 矩阵与双客户端待验证](./Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md)** |
 | 2026-08-31 | [基地建造玩法探索草案落档：五项已确认方向、四类候选建筑、工程施工与据点攻防建议；仅文档，未开发或试玩](./Archive/20260831-基地建造玩法探索草案落档.md) |

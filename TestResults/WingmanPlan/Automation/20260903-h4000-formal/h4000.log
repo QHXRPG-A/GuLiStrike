@@ -1,0 +1,1394 @@
+﻿Log file open, 09/03/26 17:47:07
+LogWindows: Failed to load 'aqProf.dll' (GetLastError=126)
+LogWindows: File 'aqProf.dll' does not exist
+LogProfilingDebugging: Loading WinPixEventRuntime.dll for PIX profiling (from ../../../Engine/Binaries/ThirdParty/Windows/WinPixEventRuntime/x64).
+LogWindows: Failed to load 'VtuneApi.dll' (GetLastError=126)
+LogWindows: File 'VtuneApi.dll' does not exist
+LogWindows: Failed to load 'VtuneApi32e.dll' (GetLastError=126)
+LogWindows: File 'VtuneApi32e.dll' does not exist
+LogWindows: Enabling Tpause support
+LogWindows: Custom abort handler registered for crash reporting.
+LogInit: Display: Running engine for game: GuLiStrike
+LogCore: UTS: Unreal Trace Server launched successfully
+LogTrace: Initializing trace...
+LogCore: Display: Requested channels: 'cpu,gpu,frame,log,bookmark,screenshot,region'
+LogCore: No trace connection. Tracing to in-memory cache.
+LogTrace: Display: Control listening on port 1985
+LogTrace: Finished trace initialization.
+LogCsvProfiler: Display: Metadata set : platform="Windows"
+LogCsvProfiler: Display: Metadata set : config="Development"
+LogCsvProfiler: Display: Metadata set : buildversion="UE5-CL-0"
+LogCsvProfiler: Display: Metadata set : engineversion="5.7.4-0+UE5"
+LogCsvProfiler: Display: Metadata set : enginereleaseversion="5.7.4"
+LogCsvProfiler: Display: Metadata set : os="Windows 11 (25H2) [10.0.26200.9168] "
+LogCsvProfiler: Display: Metadata set : cpu="GenuineIntel|Intel(R) Core(TM) i9-14900KF"
+LogCsvProfiler: Display: Metadata set : pgoenabled="0"
+LogCsvProfiler: Display: Metadata set : pgoprofilingenabled="0"
+LogCsvProfiler: Display: Metadata set : ltoenabled="0"
+LogCsvProfiler: Display: Metadata set : asan="0"
+LogCsvProfiler: Display: Metadata set : mergedmodules="0"
+LogCsvProfiler: Display: Metadata set : commandline="" D:\UE5.7\test1\GuLiStrike.uproject -unattended -NullRHI -NoSound -NoSplash -nop4 -stdout -FullStdOutLogOutput -ExecCmds="Automation RunTests GuLiStrike.Wingman.Performance.H4000" -TestExit="Automation Test Queue Empty" -abslog=D:\UE5.7\test1\TestResults\WingmanPlan\Automation\20260903-h4000-formal\h4000.log""
+LogCsvProfiler: Display: Metadata set : loginid="0781115f42f406fa2c101691d7cea477"
+LogCsvProfiler: Display: Metadata set : llm="0"
+LogStats: Stats thread started at 0.186278
+LogCsvProfiler: Display: Metadata set : systemresolution.resx="1280"
+LogCsvProfiler: Display: Metadata set : systemresolution.resy="720"
+LogICUInternationalization: ICU TimeZone Detection - Raw Offset: +8:00, Platform Override: ''
+LogInit: Session CrashGUID >====================================================
+         Session CrashGUID >   UECC-Windows-C06888184FE69AE095E2C2BE5040D2A4
+         Session CrashGUID >====================================================
+LogConfig: No local boot hotfix file found at: [../../../../UE5.7/test1/Saved/PersistentDownloadDir/HotfixForNextBoot.txt]
+LogAudio: Display: Audio Device Manager not initializing due to all audio being disabled. If this is not intentional, please check command line arguments for "-nosound".
+LogPluginManager: Looking for build plugins target receipt
+LogConfig: Display: Loading IOS ini files took 0.04 seconds
+LogConfig: Display: Loading VulkanPC ini files took 0.04 seconds
+LogConfig: Display: Loading Android ini files took 0.04 seconds
+LogConfig: Display: Loading Mac ini files took 0.04 seconds
+LogPluginManager: Found matching target receipt: ../../../../UE5.7/test1/Binaries/Win64/GuLiStrikeEditor.target
+LogPluginManager: Looking for enabled plugins target receipt
+LogConfig: Display: Loading Windows ini files took 0.05 seconds
+LogConfig: Display: Loading Unix ini files took 0.05 seconds
+LogConfig: Display: Loading TVOS ini files took 0.05 seconds
+LogConfig: Display: Loading VisionOS ini files took 0.05 seconds
+LogConfig: Display: Loading Linux ini files took 0.05 seconds
+LogConfig: Display: Loading LinuxArm64 ini files took 0.05 seconds
+LogAssetRegistry: Display: Asset registry cache read as 84.0 MiB from ../../../../UE5.7/test1/Intermediate/CachedAssetRegistry_0.bin.
+LogPluginManager: Found matching target receipt: ../../../../UE5.7/test1/Binaries/Win64/GuLiStrikeEditor.target
+LogPluginManager: Mounting Engine plugin AudioInsights
+LogPluginManager: Mounting Engine plugin BaseMaterial
+LogPluginManager: Mounting Engine plugin Bridge
+LogPluginManager: Mounting Engine plugin ChaosCloth
+LogPluginManager: Mounting Engine plugin ChaosInsights
+LogPluginManager: Mounting Engine plugin ChaosVD
+LogPluginManager: Mounting Engine plugin CmdLinkServer
+LogPluginManager: Mounting Engine plugin EnhancedInput
+LogPluginManager: Mounting Engine plugin Fab
+LogPluginManager: Mounting Engine plugin IoStoreInsights
+LogPluginManager: Mounting Engine plugin MassInsights
+LogPluginManager: Mounting Engine plugin MeshPainting
+LogPluginManager: Mounting Engine plugin RenderGraphInsights
+LogPluginManager: Mounting Engine plugin TraceUtilities
+LogPluginManager: Mounting Engine plugin UbaController
+LogPluginManager: Mounting Engine plugin WorldMetrics
+LogPluginManager: Mounting Engine plugin XGEController
+LogPluginManager: Mounting Engine plugin AISupport
+LogPluginManager: Mounting Engine plugin EnvironmentQueryEditor
+LogPluginManager: Mounting Engine plugin MassAI
+LogPluginManager: Mounting Engine plugin MassCrowd
+LogPluginManager: Mounting Engine plugin CameraShakePreviewer
+LogPluginManager: Mounting Engine plugin GameplayCameras
+LogPluginManager: Mounting Engine plugin EngineCameras
+LogPluginManager: Mounting Engine plugin CompositeCore
+LogPluginManager: Mounting Engine plugin AssetManagerEditor
+LogPluginManager: Mounting Engine plugin BlueprintHeaderView
+LogPluginManager: Mounting Engine plugin ChangelistReview
+LogPluginManager: Mounting Engine plugin ColorGrading
+LogPluginManager: Mounting Engine plugin CryptoKeys
+LogPluginManager: Mounting Engine plugin CurveEditorTools
+LogPluginManager: Mounting Engine plugin DataValidation
+LogPluginManager: Mounting Engine plugin EditorDebugTools
+LogPluginManager: Mounting Engine plugin EngineAssetDefinitions
+LogPluginManager: Mounting Engine plugin EditorScriptingUtilities
+LogPluginManager: Mounting Engine plugin FacialAnimation
+LogPluginManager: Mounting Engine plugin GameplayTagsEditor
+LogPluginManager: Mounting Engine plugin GeometryMode
+LogPluginManager: Mounting Engine plugin MacGraphicsSwitching
+LogPluginManager: Mounting Engine plugin MaterialAnalyzer
+LogPluginManager: Mounting Engine plugin MobileLauncherProfileWizard
+LogPluginManager: Mounting Engine plugin MeshLODToolset
+LogPluginManager: Mounting Engine plugin ModelingToolsEditorMode
+LogPluginManager: Mounting Engine plugin PluginBrowser
+LogPluginManager: Mounting Engine plugin ProxyLODPlugin
+LogPluginManager: Mounting Engine plugin SequencerAnimTools
+LogPluginManager: Mounting Engine plugin SpeedTreeImporter
+LogPluginManager: Mounting Engine plugin StylusInput
+LogPluginManager: Mounting Engine plugin UMGWidgetPreview
+LogPluginManager: Mounting Engine plugin UVEditor
+LogPluginManager: Mounting Engine plugin WorldPartitionHLODUtilities
+LogPluginManager: Mounting Engine plugin AdvancedRenamer
+LogPluginManager: Mounting Engine plugin AutomationUtils
+LogPluginManager: Mounting Engine plugin BackChannel
+LogPluginManager: Mounting Engine plugin ChaosCaching
+LogPluginManager: Mounting Engine plugin ChaosEditor
+LogPluginManager: Mounting Engine plugin ChaosNiagara
+LogPluginManager: Mounting Engine plugin ChaosUserDataPT
+LogPluginManager: Mounting Engine plugin ChaosSolverPlugin
+LogPluginManager: Mounting Engine plugin CharacterAI
+LogPluginManager: Mounting Engine plugin Dataflow
+LogPluginManager: Mounting Engine plugin EditorDataStorage
+LogPluginManager: Mounting Engine plugin EditorDataStorageFeatures
+LogPluginManager: Mounting Engine plugin EditorPerformance
+LogPluginManager: Mounting Engine plugin EditorTelemetry
+LogPluginManager: Mounting Engine plugin Fracture
+LogPluginManager: Mounting Engine plugin TargetingSystem
+LogPluginManager: Mounting Engine plugin GeometryCollectionPlugin
+LogPluginManager: Mounting Engine plugin GeometryDataflow
+LogPluginManager: Mounting Engine plugin FullBodyIK
+LogPluginManager: Mounting Engine plugin GeometryFlow
+LogPluginManager: Mounting Engine plugin GlobalConfigurationData
+LogPluginManager: Mounting Engine plugin LevelSequenceNavigatorBridge
+LogPluginManager: Mounting Engine plugin LowLevelNetTrace
+LogPluginManager: Mounting Engine plugin MeshModelingToolsetExp
+LogPluginManager: Mounting Engine plugin LocalizableMessage
+LogPluginManager: Mounting Engine plugin NFORDenoise
+LogPluginManager: Mounting Engine plugin PlanarCut
+LogPluginManager: Mounting Engine plugin PlatformCrypto
+LogPluginManager: Mounting Engine plugin PythonScriptPlugin
+LogPluginManager: Mounting Engine plugin RuntimeTelemetry
+LogPluginManager: Mounting Engine plugin SequenceNavigator
+LogPluginManager: Mounting Engine plugin SkeletalReduction
+LogPluginManager: Mounting Engine plugin ToolPresets
+LogPluginManager: Mounting Engine plugin NNEDenoiser
+LogPluginManager: Mounting Engine plugin LauncherChunkInstaller
+LogPluginManager: Mounting Engine plugin ActorLayerUtilities
+LogPluginManager: Mounting Engine plugin NNERuntimeORT
+LogPluginManager: Mounting Engine plugin AndroidFileServer
+LogPluginManager: Mounting Engine plugin AndroidMoviePlayer
+LogPluginManager: Mounting Engine plugin AndroidPermission
+LogPluginManager: Mounting Engine plugin AppleImageUtils
+LogPluginManager: Mounting Engine plugin AndroidDeviceProfileSelector
+LogPluginManager: Mounting Engine plugin ArchVisCharacter
+LogPluginManager: Mounting Engine plugin MetaHumanSDK
+LogPluginManager: Mounting Engine plugin AssetTags
+LogPluginManager: Mounting Engine plugin AppleMoviePlayer
+LogPluginManager: Mounting Engine plugin AudioCapture
+LogPluginManager: Mounting Engine plugin AudioWidgets
+LogPluginManager: Mounting Engine plugin ComputeFramework
+LogPluginManager: Mounting Engine plugin ChunkDownloader
+LogPluginManager: Mounting Engine plugin CableComponent
+LogPluginManager: Mounting Engine plugin DataRegistry
+LogPluginManager: Mounting Engine plugin ExampleDeviceProfileSelector
+LogPluginManager: Mounting Engine plugin CustomMeshComponent
+LogPluginManager: Mounting Engine plugin GameplayAbilities
+LogPluginManager: Mounting Engine plugin GameplayStateTree
+LogPluginManager: Mounting Engine plugin GeometryCache
+LogPluginManager: Mounting Engine plugin GeometryProcessing
+LogPluginManager: Mounting Engine plugin GoogleCloudMessaging
+LogPluginManager: Mounting Engine plugin GooglePAD
+LogPluginManager: Mounting Engine plugin AudioSynesthesia
+LogPluginManager: Mounting Engine plugin HairStrands
+LogPluginManager: Mounting Engine plugin LinuxDeviceProfileSelector
+LogPluginManager: Mounting Engine plugin LocationServicesBPLibrary
+LogPluginManager: Mounting Engine plugin MassGameplay
+LogPluginManager: Mounting Engine plugin MeshModelingToolset
+LogPluginManager: Mounting Engine plugin Metasound
+LogPluginManager: Mounting Engine plugin IOSDeviceProfileSelector
+LogPluginManager: Mounting Engine plugin MobilePatchingUtils
+LogPluginManager: Mounting Engine plugin ModelViewViewModel
+LogPluginManager: Mounting Engine plugin MsQuic
+LogPluginManager: Mounting Engine plugin InputDebugging
+LogPluginManager: Mounting Engine plugin NavCorridor
+LogPluginManager: Mounting Engine plugin ProceduralMeshComponent
+LogPluginManager: Mounting Engine plugin PropertyAccessEditor
+LogPluginManager: Mounting Engine plugin PropertyBindingUtils
+LogPluginManager: Mounting Engine plugin ResonanceAudio
+LogPluginManager: Mounting Engine plugin RigVM
+LogPluginManager: Mounting Engine plugin SmartObjects
+LogPluginManager: Mounting Engine plugin SoundFields
+LogPluginManager: Mounting Engine plugin StateTree
+LogPluginManager: Mounting Engine plugin SignificanceManager
+LogPluginManager: Mounting Engine plugin Synthesis
+LogPluginManager: Mounting Engine plugin WaveTable
+LogPluginManager: Mounting Engine plugin WebMMoviePlayer
+LogPluginManager: Mounting Engine plugin WindowsDeviceProfileSelector
+LogPluginManager: Mounting Engine plugin WindowsMoviePlayer
+LogPluginManager: Mounting Engine plugin WorldConditions
+LogPluginManager: Mounting Engine plugin ZoneGraph
+LogPluginManager: Mounting Engine plugin ZoneGraphAnnotations
+LogPluginManager: Mounting Engine plugin Paper2D
+LogPluginManager: Mounting Engine plugin ControlRig
+LogPluginManager: Mounting Engine plugin ControlRigModules
+LogPluginManager: Mounting Engine plugin ACLPlugin
+LogPluginManager: Mounting Engine plugin ControlRigSpline
+LogPluginManager: Mounting Engine plugin DeformerGraph
+LogPluginManager: Mounting Engine plugin AnimationData
+LogPluginManager: Mounting Engine plugin AnimationModifierLibrary
+LogPluginManager: Mounting Engine plugin BlendSpaceMotionAnalysis
+LogPluginManager: Mounting Engine plugin GameplayInsights
+LogPluginManager: Mounting Engine plugin EaseCurveTool
+LogPluginManager: Mounting Engine plugin InterchangeTests
+LogPluginManager: Mounting Engine plugin IKRig
+LogPluginManager: Mounting Engine plugin SkeletalMeshModelingTools
+LogPluginManager: Mounting Engine plugin AnimationSharing
+LogPluginManager: Mounting Engine plugin RigLogic
+LogPluginManager: Mounting Engine plugin OodleNetwork
+LogPluginManager: Mounting Engine plugin TweeningUtils
+LogPluginManager: Mounting Engine plugin KDevelopSourceCodeAccess
+LogPluginManager: Mounting Engine plugin GPUReshape
+LogPluginManager: Mounting Engine plugin CodeLiteSourceCodeAccess
+LogPluginManager: Mounting Engine plugin CLionSourceCodeAccess
+LogPluginManager: Mounting Engine plugin NamingTokens
+LogPluginManager: Mounting Engine plugin NullSourceCodeAccess
+LogPluginManager: Mounting Engine plugin PerforceSourceControl
+LogPluginManager: Mounting Engine plugin DumpGPUServices
+LogPluginManager: Mounting Engine plugin PlasticSourceControl
+LogPluginManager: Mounting Engine plugin N10XSourceCodeAccess
+LogPluginManager: Mounting Engine plugin RenderDocPlugin
+LogPluginManager: Mounting Engine plugin RiderSourceCodeAccess
+LogPluginManager: Mounting Engine plugin GitSourceControl
+LogPluginManager: Mounting Engine plugin VisualStudioCodeSourceCodeAccess
+LogPluginManager: Mounting Engine plugin TextureFormatOodle
+LogPluginManager: Mounting Engine plugin PixWinPlugin
+LogPluginManager: Mounting Engine plugin ProjectLauncher
+LogPluginManager: Mounting Engine plugin XCodeSourceCodeAccess
+LogPluginManager: Mounting Engine plugin PropertyAccessNode
+LogPluginManager: Mounting Engine plugin SubversionSourceControl
+LogPluginManager: Mounting Engine plugin UObjectPlugin
+LogPluginManager: Mounting Engine plugin VisualStudioSourceCodeAccess
+LogPluginManager: Mounting Engine plugin VariantManager
+LogPluginManager: Mounting Engine plugin PluginUtils
+LogPluginManager: Mounting Engine plugin VariantManagerContent
+LogPluginManager: Mounting Engine plugin DatasmithContent
+LogPluginManager: Mounting Engine plugin GLTFExporter
+LogPluginManager: Mounting Engine plugin NiagaraSimCaching
+LogPluginManager: Mounting Engine plugin Cascade
+LogPluginManager: Mounting Engine plugin Niagara
+LogPluginManager: Mounting Engine plugin InterchangeEditor
+LogPluginManager: Mounting Engine plugin AndroidMedia
+LogPluginManager: Mounting Engine plugin AvfMedia
+LogPluginManager: Mounting Engine plugin NiagaraPreviewContent
+LogPluginManager: Mounting Engine plugin InterchangeAssets
+LogPluginManager: Mounting Engine plugin Interchange
+LogPluginManager: Mounting Engine plugin AlembicImporter
+LogPluginManager: Mounting Engine plugin MediaPlate
+LogPluginManager: Mounting Engine plugin MediaPlayerEditor
+LogPluginManager: Mounting Engine plugin ImgMedia
+LogPluginManager: Mounting Engine plugin MediaCompositing
+LogPluginManager: Mounting Engine plugin UdpMessaging
+LogPluginManager: Mounting Engine plugin LevelSequenceEditor
+LogPluginManager: Mounting Engine plugin WmfMedia
+LogPluginManager: Mounting Engine plugin ActorSequence
+LogPluginManager: Mounting Engine plugin SequencerScripting
+LogPluginManager: Mounting Engine plugin TcpMessaging
+LogPluginManager: Mounting Engine plugin SequenceValidator
+LogPluginManager: Mounting Engine plugin OnlineBase
+LogPluginManager: Mounting Engine plugin TemplateSequence
+LogPluginManager: Mounting Engine plugin EOSShared
+LogPluginManager: Mounting Engine plugin OnlineSubsystem
+LogPluginManager: Mounting Engine plugin OnlineServices
+LogPluginManager: Mounting Engine plugin OnlineSubsystemNull
+LogPluginManager: Mounting Engine plugin OnlineSubsystemUtils
+LogPluginManager: Mounting Engine plugin WebMMedia
+LogPluginManager: Mounting Engine plugin Takes
+LogPluginManager: Mounting Engine plugin ContentBrowserAssetDataSource
+LogPluginManager: Mounting Engine plugin ContentBrowserClassDataSource
+LogPluginManager: Mounting Engine plugin ContentBrowserFileDataSource
+LogPluginManager: Mounting Engine plugin PortableObjectFileDataSource
+LogPluginManager: Mounting Engine plugin BaseCharacterFXEditor
+LogPluginManager: Mounting Engine plugin ObjectMixer
+LogPluginManager: Mounting Engine plugin LightMixer
+LogPluginManager: Mounting Engine plugin XInputDevice
+LogPluginManager: Mounting Engine plugin OnlineSubsystemIOS
+LogPluginManager: Mounting Engine plugin OnlineSubsystemGooglePlay
+LogPluginManager: Mounting Project plugin GuLiFlightNavigation
+LogPluginManager: Mounting Project plugin Tripo3DUEBridge
+LogPluginManager: Mounting Project plugin VibeUE
+LogPluginManager: Mounting Project plugin UnrealMCP
+LogPluginManager: Mounting Project plugin UnrealMCPython
+SourceControl: Revision control is disabled
+SourceControl: Revision control is disabled
+SourceControl: Revision control is disabled
+LogConfig: Applying CVar settings from Section [/Script/CompositeCore.CompositeCorePluginSettings] File [Engine]
+LogStudioTelemetry: Started StudioTelemetry Session
+LogNFORDenoise: NFORDenoise function starting up
+LogStudioTelemetry: Started StudioTelemetry Session
+LogConfig: Applying CVar settings from Section [/Script/RenderDocPlugin.RenderDocPluginSettings] File [Engine]
+RenderDocPlugin: Display: RenderDoc plugin will not be loaded. Use '-AttachRenderDoc' on the cmd line or enable 'renderdoc.AutoAttach' in the plugin settings.
+LogWindows: Failed to load 'WinPixGpuCapturer.dll' (GetLastError=126)
+LogWindows: File 'WinPixGpuCapturer.dll' does not exist
+PixWinPlugin: PIX capture plugin failed to initialize! Check that the process is launched from PIX.
+LogEOSShared: Loaded "D:/UnrealEngine-5.7/Engine/Binaries/Win64/EOSSDK-Win64-Shipping.dll"
+LogEOSShared: FEOSSDKManager::Initialize Initializing EOSSDK Version:1.19.0.3-49960398
+LogInit: Using libcurl 8.12.1
+LogInit:  - built for Windows
+LogInit:  - supports SSL with OpenSSL/1.1.1t
+LogInit:  - supports HTTP deflate (compression) using libz 1.3
+LogInit:  - other features:
+LogInit:      CURL_VERSION_SSL
+LogInit:      CURL_VERSION_LIBZ
+LogInit:      CURL_VERSION_IPV6
+LogInit:      CURL_VERSION_ASYNCHDNS
+LogInit:      CURL_VERSION_LARGEFILE
+LogInit:      CURL_VERSION_TLSAUTH_SRP
+LogInit:      CURL_VERSION_HTTP2
+LogInit:  CurlRequestOptions (configurable via config and command line):
+LogInit:  - bVerifyPeer = true  - Libcurl will verify peer certificate
+LogInit:  - bUseHttpProxy = true  - Libcurl will use HTTP proxy
+LogInit:  - HttpProxyAddress = '127.0.0.1:7897'
+LogInit:  - CVarHttpCurlReuseConnectionEnabled = true  - Libcurl will reuse connections
+LogInit:  - MaxHostConnections = 16  - Libcurl will limit the number of connections to a host
+LogInit:  - LocalHostAddr = Default
+LogInit:  - BufferSize = 65536
+LogInit: CreateHttpThread using FCurlMultiPollEventLoopHttpThread
+LogInit: Creating http thread with maximum 256 concurrent requests
+LogInit: WinSock: version 1.1 (2.2), MaxSocks=32767, MaxUdp=65467
+LogOnline: OSS: Created online subsystem instance for: NULL
+LogOnline: OSS: TryLoadSubsystemAndSetDefault: Loaded subsystem for type [NULL]
+LogInit: ExecutableName: UnrealEditor-Cmd.exe
+LogInit: Build: UE5-CL-0
+LogInit: Platform=WindowsEditor
+LogInit: MachineId=0781115f42f406fa2c101691d7cea477
+LogInit: DeviceId=
+LogInit: Engine Version: 5.7.4-0+UE5
+LogInit: Compatible Engine Version: 5.7.0-0+UE5
+LogInit: Net CL: 0
+LogInit: OS: Windows 11 (25H2) [10.0.26200.9168] (), CPU: Intel(R) Core(TM) i9-14900KF, GPU: GameViewer Virtual Display Adapter
+LogInit: CPU Model ID: 6b71, microcode revision: 12b
+LogInit: Compiled (64-bit): Sep  3 2026 11:18:06
+LogInit: Architecture: x64
+LogInit: Compiled with Visual C++: 19.44.35215.00
+LogInit: Build Configuration: Development
+LogInit: Branch Name: UE5
+LogInit: Command Line: -unattended -NullRHI -NoSound -NoSplash -nop4 -stdout -FullStdOutLogOutput -ExecCmds="Automation RunTests GuLiStrike.Wingman.Performance.H4000" -TestExit="Automation Test Queue Empty" -abslog=D:\UE5.7\test1\TestResults\WingmanPlan\Automation\20260903-h4000-formal\h4000.log
+LogInit: Base Directory: D:/UnrealEngine-5.7/Engine/Binaries/Win64/
+LogInit: Allocator: Mimalloc
+LogInit: Installed Engine Build: 0
+LogInit: This binary is optimized with LTO: no, PGO: no, instrumented for PGO data collection: no
+LogDevObjectVersion: Number of dev versions registered: 36
+LogDevObjectVersion:   Dev-Blueprints (B0D832E4-1F89-4F0D-ACCF-7EB736FD4AA2): 10
+LogDevObjectVersion:   Dev-Build (E1C64328-A22C-4D53-A36C-8E866417BD8C): 0
+LogDevObjectVersion:   Dev-Core (375EC13C-06E4-48FB-B500-84F0262A717E): 4
+LogDevObjectVersion:   Dev-Editor (E4B068ED-F494-42E9-A231-DA0B2E46BB41): 40
+LogDevObjectVersion:   Dev-Framework (CFFC743F-43B0-4480-9391-14DF171D2073): 37
+LogDevObjectVersion:   Dev-Mobile (B02B49B5-BB20-44E9-A304-32B752E40360): 3
+LogDevObjectVersion:   Dev-Networking (A4E4105C-59A1-49B5-A7C5-40C4547EDFEE): 0
+LogDevObjectVersion:   Dev-Online (39C831C9-5AE6-47DC-9A44-9C173E1C8E7C): 0
+LogDevObjectVersion:   Dev-Physics (78F01B33-EBEA-4F98-B9B4-84EACCB95AA2): 20
+LogDevObjectVersion:   Dev-Platform (6631380F-2D4D-43E0-8009-CF276956A95A): 0
+LogDevObjectVersion:   Dev-Rendering (12F88B9F-8875-4AFC-A67C-D90C383ABD29): 49
+LogDevObjectVersion:   Dev-Sequencer (7B5AE74C-D270-4C10-A958-57980B212A5A): 13
+LogDevObjectVersion:   Dev-VR (D7296918-1DD6-4BDD-9DE2-64A83CC13884): 3
+LogDevObjectVersion:   Dev-LoadTimes (C2A15278-BFE7-4AFE-6C17-90FF531DF755): 1
+LogDevObjectVersion:   Private-Geometry (6EACA3D4-40EC-4CC1-B786-8BED09428FC5): 3
+LogDevObjectVersion:   Dev-AnimPhys (29E575DD-E0A3-4627-9D10-D276232CDCEA): 17
+LogDevObjectVersion:   Dev-Anim (AF43A65D-7FD3-4947-9873-3E8ED9C1BB05): 15
+LogDevObjectVersion:   Dev-ReflectionCapture (6B266CEC-1EC7-4B8F-A30B-E4D90942FC07): 1
+LogDevObjectVersion:   Dev-Automation (0DF73D61-A23F-47EA-B727-89E90C41499A): 1
+LogDevObjectVersion:   FortniteMain (601D1886-AC64-4F84-AA16-D3DE0DEAC7D6): 225
+LogDevObjectVersion:   FortniteValkyrie (8DBC2C5B-54A7-43E0-A768-FCBB7DA29060): 8
+LogDevObjectVersion:   FortniteSeason (5B4C06B7-2463-4AF8-805B-BF70CDF5D0DD): 15
+LogDevObjectVersion:   FortniteRelease (E7086368-6B23-4C58-8439-1B7016265E91): 17
+LogDevObjectVersion:   Dev-Enterprise (9DFFBCD6-494F-0158-E221-12823C92A888): 11
+LogDevObjectVersion:   Dev-Niagara (F2AED0AC-9AFE-416F-8664-AA7FFA26D6FC): 1
+LogDevObjectVersion:   Dev-Destruction (174F1F0B-B4C6-45A5-B13F-2EE8D0FB917D): 10
+LogDevObjectVersion:   Dev-Physics-Ext (35F94A83-E258-406C-A318-09F59610247C): 41
+LogDevObjectVersion:   Dev-PhysicsMaterial-Chaos (B68FC16E-8B1B-42E2-B453-215C058844FE): 1
+LogDevObjectVersion:   Dev-CineCamera (B2E18506-4273-CFC2-A54E-F4BB758BBA07): 1
+LogDevObjectVersion:   Dev-VirtualProduction (64F58936-FD1B-42BA-BA96-7289D5D0FA4E): 1
+LogDevObjectVersion:   UE5-Main (697DD581-E64F-41AB-AA4A-51ECBEB7B628): 121
+LogDevObjectVersion:   UE5-Release (D89B5E42-24BD-4D46-8412-ACA8DF641779): 61
+LogDevObjectVersion:   UE5-SpecialProject (59DA5D52-1232-4948-B878-597870B8E98B): 9
+LogDevObjectVersion:   Dev-MediaFramework (6F0ED827-A609-4895-9C91-998D90180EA4): 2
+LogDevObjectVersion:   Dev-NaniteResearch (30D58BE3-95EA-4282-A6E3-B159D8EBB06A): 1
+LogDevObjectVersion:   Dev-ComputeFramework (6304A3E7-0059-4F59-8CFC-21BD7721FD4E): 0
+LogInit: Presizing for max 25165824 objects, including 0 objects not considered by GC.
+LogInit: Object subsystem initialized
+LogConfig: Set CVar [[con.DebugEarlyDefault:1]]
+LogConfig: CVar [[con.DebugLateDefault:1]] deferred - dummy variable created
+LogConfig: CVar [[con.DebugLateCheat:1]] deferred - dummy variable created
+LogConfig: CVar [[LogNamedEventFilters:Frame *]] deferred - dummy variable created
+LogConfig: Set CVar [[r.setres:1280x720]]
+LogConfig: CVar [[framepro.ScopeMinTimeMicroseconds:10]] deferred - dummy variable created
+LogConfig: Set CVar [[fx.NiagaraAllowRuntimeScalabilityChanges:1]]
+LogConfig: CVar [[QualityLevelMapping:high]] deferred - dummy variable created
+LogConfig: CVar [[r.Occlusion.SingleRHIThreadStall:1]] deferred - dummy variable created
+LogConfig: Set CVar [[r.Nanite.Streaming.ReservedResources:1]]
+LogConfig: CVar [[D3D12.Bindless.ResourceDescriptorHeapSize:32768]] deferred - dummy variable created
+LogConfig: CVar [[D3D12.Bindless.SamplerDescriptorHeapSize:2048]] deferred - dummy variable created
+LogConfig: Set CVar [[r.PSOPrecache.GlobalShaders:1]]
+LogConfig: Set CVar [[r.VRS.EnableSoftware:1]]
+LogConfig: Set CVar [[r.VRS.ContrastAdaptiveShading:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.VSync:0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.RendererSettings] File [Engine]
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VisualizeCalibrationColorMaterialPath:/Engine/EngineMaterials/PPM_DefaultCalibrationColor.PPM_DefaultCalibrationColor]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VisualizeCalibrationGrayscaleMaterialPath:/Engine/EngineMaterials/PPM_DefaultCalibrationGrayscale.PPM_DefaultCalibrationGrayscale]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.GPUCrashDebugging:0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[MaxSkinBones:(Default=65536,PerPlatform=(("Mobile", 256)))]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.Shaders.RemoveUnusedInterpolators:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.Shadow.DetectVertexShaderLayerAtRuntime:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.Substrate.RoughDiffuse:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.Substrate.SheenQuality:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.Substrate.ShadingQuality:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.Substrate.TileCoord8bits:0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.Substrate.Glints:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.Substrate.ClosuresPerPixel:4]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.Refraction.Blur:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.ReflectionMethod:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.GenerateMeshDistanceFields:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.DynamicGlobalIlluminationMethod:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.Shadow.Virtual.Enable:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.DefaultFeature.AutoExposure.ExtendDefaultLuminanceRange:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.AllowStaticLighting:0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.SkinCache.CompileShaders:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.RayTracing:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.RayTracing.RayTracingProxies.ProjectEnabled:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.Substrate:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.Substrate.ProjectGBufferFormat:0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.DefaultFeature.LocalExposure.HighlightContrastScale:0.8]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[r.DefaultFeature.LocalExposure.ShadowContrastScale:0.8]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.RendererOverrideSettings] File [Engine]
+[2026.09.03-09.47.08:054][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.StreamingSettings] File [Engine]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.MinBulkDataSizeForAsyncLoading:131072]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.AsyncLoadingThreadEnabled:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.EventDrivenLoaderEnabled:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.WarnIfTimeLimitExceeded:0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.TimeLimitExceededMultiplier:1.5]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.TimeLimitExceededMinTime:0.005]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.UseBackgroundLevelStreaming:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.PriorityAsyncLoadingExtraTime:15.0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.LevelStreamingActorsUpdateTimeLimit:5.0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.PriorityLevelStreamingActorsUpdateExtraTime:5.0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.LevelStreamingComponentsRegistrationGranularity:10]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.UnregisterComponentsTimeLimit:1.0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.LevelStreamingComponentsUnregistrationGranularity:5]]
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[s.MaxPackageSummarySize:16384]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[s.FlushStreamingOnExit:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[FixedBootOrder:/Script/Engine/Default__SoundBase]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[FixedBootOrder:/Script/Engine/Default__MaterialInterface]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[FixedBootOrder:/Script/Engine/Default__DeviceProfileManager]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.GarbageCollectionSettings] File [Engine]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.MaxObjectsNotConsideredByGC:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.FlushStreamingOnGC:0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.NumRetriesBeforeForcingGC:10]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.AllowParallelGC:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.TimeBetweenPurgingPendingKillObjects:61.1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.MaxObjectsInEditor:25165824]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.IncrementalBeginDestroyEnabled:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.CreateGCClusters:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.MinGCClusterSize:5]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.AssetClustreringEnabled:0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.ActorClusteringEnabled:0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.VerifyUObjectsAreNotFGCObjects:0]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Set CVar [[gc.GarbageEliminationEnabled:1]]
+[2026.09.03-09.47.08:054][  0]LogConfig: Applying CVar settings from Section [/Script/Engine.NetworkSettings] File [Engine]
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[NetworkEmulationProfiles:(ProfileName="Average",ToolTip="Simulates average internet conditions")]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[NetworkEmulationProfiles:(ProfileName="Bad",ToolTip="Simulates laggy internet conditions")]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[NetworkEmulationProfiles:(ProfileName="BufferBloat",ToolTip="Simulates a connection affected by buffer bloat (in and out)")]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: Applying CVar settings from Section [/Script/UnrealEd.CookerSettings] File [Engine]
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[DefaultASTCQualityBySpeed:2]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[DefaultASTCQualityBySize:3]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[DefaultASTCQualityBySizeHQ:4]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:WidgetBlueprint]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:GroupActor]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:MetaData]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:ObjectRedirector]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:NavMeshRenderingComponent]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:ReflectionCaptureComponent]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:TextRenderComponent]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:Font]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:InterpCurveEdSetup]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:MaterialExpression]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:NiagaraEmitter]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:NiagaraScript]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:ParticleEmitter]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:ParticleLODLevel]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:ParticleModule]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:SubUVAnimation]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:SoundNode]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:GameplayEffectUIData]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedServer:AmbientSound]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedClient:WidgetBlueprint]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedClient:GroupActor]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedClient:MetaData]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedClient:ObjectRedirector]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[ClassesExcludedOnDedicatedClient:InterpCurveEdSetup]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.AllowStaticLighting]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.MaterialEditor.LWCTruncateMode]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.VelocityOutputPass]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.SelectiveBasePassOutputs]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.DBuffer]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.Mobile.DBuffer]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.Shaders.Symbols]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.Shaders.GenerateSymbols]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.Shaders.WriteSymbols]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.Shaders.AllowUniqueSymbols]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.Shaders.ExtraData]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.Shaders.Optimize]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.CompileShadersForDevelopment]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.MobileHDR]] deferred - dummy variable created
+[2026.09.03-09.47.08:054][  0]LogConfig: CVar [[VersionedIntRValues:r.UsePreExposure]] deferred - dummy variable created
+[2026.09.03-09.47.08:056][  0]LogCsvProfiler: Display: Metadata set : systemresolution.resx="1920"
+[2026.09.03-09.47.08:056][  0]LogCsvProfiler: Display: Metadata set : systemresolution.resy="1080"
+[2026.09.03-09.47.08:057][  0]LogConfig: Applying CVar settings from Section [ViewDistanceQuality@3] File [Scalability]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.SkeletalMeshLODBias:0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.ViewDistanceScale:1.0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Applying CVar settings from Section [AntiAliasingQuality@3] File [Scalability]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.FXAA.Quality:4]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.TemporalAA.Quality:2]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.TSR.History.R11G11B10:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.TSR.History.ScreenPercentage:200]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.TSR.History.UpdateQuality:3]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.TSR.ShadingRejection.Flickering:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.TSR.RejectionAntiAliasingQuality:2]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.TSR.ReprojectionField:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.TSR.Resurrection:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Applying CVar settings from Section [ShadowQuality@3] File [Scalability]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.LightFunctionQuality:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.ShadowQuality:5]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.CSM.MaxCascades:10]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.MaxResolution:2048]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.MaxCSMResolution:2048]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.RadiusThreshold:0.01]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.DistanceScale:1.0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.CSM.TransitionScale:1.0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.PreShadowResolutionFactor:1.0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.DistanceFieldShadowing:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.VolumetricFog:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.VolumetricFog.GridPixelSize:8]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.VolumetricFog.GridSizeZ:128]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.VolumetricFog.HistoryMissSupersampleCount:4]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.LightMaxDrawDistanceScale:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.CapsuleShadows:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.Virtual.MaxPhysicalPages:4096]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.Virtual.ResolutionLodBiasDirectional:-1.5]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving:-1.5]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.Virtual.ResolutionLodBiasLocal:0.0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.Virtual.ResolutionLodBiasLocalMoving:1.0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.Virtual.SMRT.RayCountDirectional:8]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.Virtual.SMRT.SamplesPerRayDirectional:4]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.Virtual.SMRT.RayCountLocal:8]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.Virtual.SMRT.SamplesPerRayLocal:4]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Shadow.Virtual.MarkCoarsePagesLocal:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Applying CVar settings from Section [GlobalIlluminationQuality@3] File [Scalability]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.DistanceFieldAO:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.SkylightIntensityMultiplier:1.0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.AOQuality:2]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.DiffuseIndirect.Allow:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.LumenScene.DirectLighting.MaxLightsPerTile:8]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.LumenScene.DirectLighting.UpdateFactor:32]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.LumenScene.Radiosity.UpdateFactor:64]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.LumenScene.Radiosity.ProbeSpacing:4]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.LumenScene.Radiosity.HemisphereProbeResolution:4]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.TraceMeshSDFs.Allow:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution:32]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.RadianceCache.NumProbesToTraceBudget:100]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.DownsampleFactor:16]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.NumAdaptiveProbes:8]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.TracingOctahedronResolution:8]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.IrradianceFormat:0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.StochasticInterpolation:0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.FullResolutionJitterWidth:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.TwoSidedFoliageBackfaceDiffuse:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.ScreenTraces.HZBTraversal.FullResDepth:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.ShortRangeAO.BentNormal:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.ShortRangeAO.HorizonSearch.HZB:0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.ShortRangeAO.HorizonSearch.ForegroundSampleRejectPower:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyVolume.GridPixelSize:32]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyVolume.TraceFromVolume:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyVolume.TracingOctahedronResolution:3]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyVolume.RadianceCache.ProbeResolution:8]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyVolume.RadianceCache.NumProbesToTraceBudget:70]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.RayTracing.Scene.BuildMode:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Applying CVar settings from Section [ReflectionQuality@3] File [Scalability]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.SSR.Quality:3]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.SSR.HalfResSceneColor:0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.Reflections.Allow:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.Reflections.DownsampleFactor:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.Reflections.MaxRoughnessToTraceForFoliage:0.4]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.ScreenProbeGather.MaxRoughnessToEvaluateRoughSpecularForFoliage:0.8]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.Reflections.ScreenSpaceReconstruction.NumSamples:5]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.Reflections.ScreenSpaceReconstruction.MinWeight:0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyReflections.FrontLayer.Allow:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Lumen.TranslucencyReflections.FrontLayer.Enable:0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Applying CVar settings from Section [PostProcessQuality@3] File [Scalability]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.MotionBlurQuality:4]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.MotionBlur.HalfResGather:0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.AmbientOcclusionMipLevelFactor:0.4]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.AmbientOcclusionMaxQuality:100]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.AmbientOcclusionLevels:-1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.AmbientOcclusionRadiusScale:1.0]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.DepthOfFieldQuality:2]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.RenderTargetPoolMin:400]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.LensFlareQuality:2]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.SceneColorFringeQuality:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.EyeAdaptationQuality:2]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.BloomQuality:5]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Bloom.ScreenPercentage:50.000]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.FastBlurThreshold:100]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Upscale.Quality:3]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.LightShaftQuality:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Filter.SizeScale:1]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.Tonemapper.Quality:5]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.DOF.Gather.ResolutionDivisor:2         ; lower gathering resolution]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.DOF.Gather.AccumulatorQuality:1        ; higher gathering accumulator quality]]
+[2026.09.03-09.47.08:057][  0]LogConfig: Set CVar [[r.DOF.Gather.PostfilterMethod:1          ; Median3x3 postfilering method]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DOF.Gather.EnableBokehSettings:0       ; no bokeh simulation when gathering]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DOF.Gather.RingCount:4                 ; medium number of samples when gathering]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DOF.Scatter.ForegroundCompositing:1    ; additive foreground scattering]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DOF.Scatter.BackgroundCompositing:2    ; additive background scattering]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DOF.Scatter.EnableBokehSettings:1      ; bokeh simulation when scattering]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DOF.Scatter.MaxSpriteRatio:0.1         ; only a maximum of 10% of scattered bokeh]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DOF.Recombine.Quality:1                ; cheap slight out of focus]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DOF.Recombine.EnableBokehSettings:0    ; no bokeh simulation on slight out of focus]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DOF.TemporalAAQuality:1                ; more stable temporal accumulation]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DOF.Kernel.MaxForegroundRadius:0.025]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DOF.Kernel.MaxBackgroundRadius:0.025]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Applying CVar settings from Section [TextureQuality@3] File [Scalability]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.Streaming.MipBias:0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.Streaming.AmortizeCPUToGPUCopy:0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.Streaming.MaxNumTexturesToStreamPerFrame:0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.Streaming.Boost:1]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.MaxAnisotropy:8]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.VT.MaxAnisotropy:8]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.Streaming.LimitPoolSizeToVRAM:0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.Streaming.PoolSize:1000]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.Streaming.MaxEffectiveScreenSize:0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Applying CVar settings from Section [EffectsQuality@3] File [Scalability]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.TranslucencyLightingVolume.Dim:64]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.RefractionQuality:2]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SceneColorFormat:4]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DetailMode:3]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.TranslucencyLightingVolume.Blur:1]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.MaterialQualityLevel:1 ; High quality]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SSS.Scale:1]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SSS.SampleSet:2]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SSS.Quality:1]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SSS.HalfRes:0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SSGI.Quality:3]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.EmitterSpawnRateScale:1.0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.ParticleLightQuality:2]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.FastApplyOnOpaque:1 ; Always have FastSkyLUT 1 in this case to avoid wrong sky]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.SampleCountMaxPerSlice:4]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SkyAtmosphere.AerialPerspectiveLUT.DepthResolution:16.0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SkyAtmosphere.FastSkyLUT:1]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SkyAtmosphere.FastSkyLUT.SampleCountMin:4.0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SkyAtmosphere.FastSkyLUT.SampleCountMax:128.0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SkyAtmosphere.SampleCountMin:4.0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SkyAtmosphere.SampleCountMax:128.0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SkyAtmosphere.TransmittanceLUT.UseSmallFormat:0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SkyAtmosphere.TransmittanceLUT.SampleCount:10.0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.SkyAtmosphere.MultiScatteringLUT.SampleCount:15.0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[fx.Niagara.QualityLevel:3]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.Refraction.OffsetQuality:1]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.HeterogeneousVolumes.DownsampleFactor:2]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.HeterogeneousVolumes.MaxStepCount:256]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.HeterogeneousVolumes.Shadows.Resolution:512]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.HeterogeneousVolumes.Shadows.Precision:0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.HeterogeneousVolumes.UseExistenceMask:0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Applying CVar settings from Section [FoliageQuality@3] File [Scalability]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[foliage.DensityScale:1.0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[grass.DensityScale:1.0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Applying CVar settings from Section [ShadingQuality@3] File [Scalability]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.HairStrands.SkyLighting.IntegrationType:2]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.HairStrands.SkyAO.SampleCount:4]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.HairStrands.Visibility.MSAA.SamplePerPixel:4]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.AnisotropicMaterials:1]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Applying CVar settings from Section [LandscapeQuality@3] File [Scalability]
+[2026.09.03-09.47.08:058][  0]LogInit: Selected Device Profile: [WindowsEditor]
+[2026.09.03-09.47.08:058][  0]LogHAL: Display: Platform has ~ 32 GB [34163732480 / 34359738368 / 32], which maps to Largest [LargestMinGB=32, LargerMinGB=12, DefaultMinGB=8, SmallerMinGB=6, SmallestMinGB=0)
+[2026.09.03-09.47.08:058][  0]LogDeviceProfileManager: Going up to parent DeviceProfile [Windows]
+[2026.09.03-09.47.08:058][  0]LogDeviceProfileManager: Going up to parent DeviceProfile []
+[2026.09.03-09.47.08:058][  0]LogDeviceProfileManager: Pushing Device Profile CVar: [[UI.SlateSDFText.RasterizationMode:Bitmap -> Msdf]]
+[2026.09.03-09.47.08:058][  0]LogDeviceProfileManager: Pushing Device Profile CVar: [[UI.SlateSDFText.ResolutionLevel:2 -> 2]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Applying CVar settings from Section [Startup] File [../../../Engine/Config/ConsoleVariables.ini]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[r.DumpShaderDebugInfo:2]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[p.chaos.AllowCreatePhysxBodies:1]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[fx.SkipVectorVMBackendOptimizations:1]]
+[2026.09.03-09.47.08:058][  0]LogConfig: Applying CVar settings from Section [Startup_Windows] File [../../../Engine/Config/ConsoleVariables.ini]
+[2026.09.03-09.47.08:058][  0]LogConfig: Applying CVar settings from Section [ConsoleVariables] File [Engine]
+[2026.09.03-09.47.08:058][  0]LogConfig: Set CVar [[WindowsApplication.UseWorkerThreadForRawInput:0]]
+[2026.09.03-09.47.08:058][  0]LogConfig: CVar [[r.CEFGPUAcceleration:1]] deferred - dummy variable created
+[2026.09.03-09.47.08:058][  0]LogConfig: Applying CVar settings from Section [ConsoleVariables] File [D:/UE5.7/test1/Saved/Config/WindowsEditor/Editor.ini]
+[2026.09.03-09.47.08:058][  0]LogInit: Computer: DESKTOP-6D3B0FC
+[2026.09.03-09.47.08:058][  0]LogInit: User: a
+[2026.09.03-09.47.08:058][  0]LogInit: CPU Page size=4096, Cores=24
+[2026.09.03-09.47.08:058][  0]LogInit: High frequency timer resolution =10.000000 MHz
+[2026.09.03-09.47.08:058][  0]LogInit: Handheld Device: 0
+[2026.09.03-09.47.08:058][  0]LogMemory: Process is running as part of a Windows Job with separate resource limits
+[2026.09.03-09.47.08:058][  0]LogMemory: Memory total: Physical=31.8GB (32GB approx) Virtual=75.8GB
+[2026.09.03-09.47.08:058][  0]LogMemory: Platform Memory Stats for WindowsEditor
+[2026.09.03-09.47.08:058][  0]LogMemory: Process Physical Memory: 692.22 MB used, 692.22 MB peak
+[2026.09.03-09.47.08:058][  0]LogMemory: Process Virtual Memory: 744.90 MB used, 744.90 MB peak
+[2026.09.03-09.47.08:058][  0]LogMemory: Physical Memory: 13793.93 MB used,  18787.15 MB free, 32581.07 MB total
+[2026.09.03-09.47.08:058][  0]LogMemory: Virtual Memory: 26801.82 MB used,  50835.25 MB free, 77637.08 MB total
+[2026.09.03-09.47.08:058][  0]LogCsvProfiler: Display: Metadata set : extradevelopmentmemorymb="0"
+[2026.09.03-09.47.08:060][  0]LogWindows: WindowsPlatformFeatures enabled
+[2026.09.03-09.47.08:062][  0]LogSpline: Registered spline type: TypeId=0x54E3AD22, Impl=MultiSpline, Value=Vector
+[2026.09.03-09.47.08:062][  0]LogChaosDD: Chaos Debug Draw Startup
+[2026.09.03-09.47.08:062][  0]LogInit: Physics initialised using underlying interface: Chaos
+[2026.09.03-09.47.08:063][  0]LogInit: Using OS detected language (zh-CN).
+[2026.09.03-09.47.08:063][  0]LogInit: Using OS detected locale (zh-CN).
+[2026.09.03-09.47.08:066][  0]LogTextLocalizationManager: No specific localization for 'zh-CN' exists, so 'zh-Hans' will be used for the language.
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Content/Localization/Editor/zh/Editor.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Content/Localization/Keywords/zh/Keywords.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Content/Localization/Category/zh/Category.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Content/Localization/ToolTips/zh/ToolTips.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Content/Localization/PropertyNames/zh/PropertyNames.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Content/Localization/Engine/zh/Engine.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Plugins/MetaHuman/MetaHumanSDK/Content/Localization/MetaHumanSDK/zh/MetaHumanSDK.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Plugins/MetaHuman/MetaHumanSDK/Content/Localization/MetaHumanSDK_Properties/zh/MetaHumanSDK_Properties.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Plugins/MetaHuman/MetaHumanSDK/Content/Localization/MetaHumanSDK_Tooltips/zh/MetaHumanSDK_Tooltips.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Plugins/Online/OnlineSubsystem/Content/Localization/OnlineSubsystem/zh/OnlineSubsystem.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Plugins/Online/OnlineSubsystemUtils/Content/Localization/OnlineSubsystemUtils/zh/OnlineSubsystemUtils.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Plugins/Online/IOS/OnlineSubsystemIOS/Content/Localization/OnlineSubsystemIOS/zh/OnlineSubsystemIOS.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../Engine/Plugins/Online/Android/OnlineSubsystemGooglePlay/Content/Localization/OnlineSubsystemGooglePlay/zh/OnlineSubsystemGooglePlay.locres' could not be opened for reading!
+[2026.09.03-09.47.08:291][  0]LogTextLocalizationResource: LocRes '../../../../UE5.7/test1/Plugins/Tripo3DUEBridge-UE5.7-Win64/Content/Localization/Tripo3DUEBridge/zh/Tripo3DUEBridge.locres' could not be opened for reading!
+[2026.09.03-09.47.08:363][  0]LogWindowsTextInputMethodSystem: Available input methods:
+[2026.09.03-09.47.08:363][  0]LogWindowsTextInputMethodSystem:   - 简体中文(中国大陆) - 微软拼音 (TSF IME).
+[2026.09.03-09.47.08:363][  0]LogWindowsTextInputMethodSystem:   - 简体中文(中国大陆) - 触控输入更正 (TSF IME).
+[2026.09.03-09.47.08:363][  0]LogWindowsTextInputMethodSystem: Activated input method: 简体中文(中国大陆) - 微软拼音 (TSF IME).
+[2026.09.03-09.47.08:366][  0]LogWindowsTouchpad: Display: CacheForceMaxTouchpadSensitivityMode SetMaxTouchpadSensitivity
+[2026.09.03-09.47.08:368][  0]LogObj: Display: Attempting to load config data for Default__SlateThemeManager before the Class has been constructed/registered/linked (likely during module loading or early startup). This will result in the load silently failing and should be fixed.
+[2026.09.03-09.47.08:370][  0]LogSlate: New Slate User Created. Platform User Id 0, User Index 0, Is Virtual User: 0
+[2026.09.03-09.47.08:370][  0]LogSlate: Slate User Registered.  User Index 0, Is Virtual User: 0
+[2026.09.03-09.47.08:446][  0]LogVRS: Current RHI does not support Variable Rate Shading
+[2026.09.03-09.47.08:447][  0]LogCsvProfiler: Display: Metadata set : verbatimrhiname="Null"
+[2026.09.03-09.47.08:447][  0]LogCsvProfiler: Display: Metadata set : rhiname="Null"
+[2026.09.03-09.47.08:447][  0]LogCsvProfiler: Display: Metadata set : rhifeaturelevel="SM6"
+[2026.09.03-09.47.08:447][  0]LogCsvProfiler: Display: Metadata set : shaderplatform="PCD3D_SM6"
+[2026.09.03-09.47.08:447][  0]LogInit: Initializing FReadOnlyCVARCache
+[2026.09.03-09.47.08:452][  0]LogTextureFormatASTC: Display: ASTCEnc version 5.0.1 library loaded
+[2026.09.03-09.47.08:452][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatASTC
+[2026.09.03-09.47.08:452][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatDXT
+[2026.09.03-09.47.08:452][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatETC2
+[2026.09.03-09.47.08:452][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatIntelISPCTexComp
+[2026.09.03-09.47.08:452][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatUncompressed
+[2026.09.03-09.47.08:452][  0]LogTextureFormatOodle: Display: Oodle Texture TFO init; latest sdk version = 2.9.14
+[2026.09.03-09.47.08:452][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.14.dll
+[2026.09.03-09.47.08:452][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.5.dll
+[2026.09.03-09.47.08:452][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatOodle
+[2026.09.03-09.47.08:475][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android'
+[2026.09.03-09.47.08:475][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ASTC'
+[2026.09.03-09.47.08:475][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_DXT'
+[2026.09.03-09.47.08:475][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ETC2'
+[2026.09.03-09.47.08:475][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_OpenXR'
+[2026.09.03-09.47.08:475][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'AndroidClient'
+[2026.09.03-09.47.08:475][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ASTCClient'
+[2026.09.03-09.47.08:475][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_DXTClient'
+[2026.09.03-09.47.08:475][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ETC2Client'
+[2026.09.03-09.47.08:475][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_OpenXRClient'
+[2026.09.03-09.47.08:475][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_Multi'
+[2026.09.03-09.47.08:475][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_MultiClient'
+[2026.09.03-09.47.08:483][  0]LogTargetPlatformManager: Failed to load module 'IOSTargetPlatform' for platform IOS (Reason=FileNotFound, AutoSDKPath='').
+[2026.09.03-09.47.08:492][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Linux'
+[2026.09.03-09.47.08:492][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxEditor'
+[2026.09.03-09.47.08:492][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxServer'
+[2026.09.03-09.47.08:492][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxClient'
+[2026.09.03-09.47.08:501][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxArm64'
+[2026.09.03-09.47.08:501][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxArm64Server'
+[2026.09.03-09.47.08:501][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxArm64Client'
+[2026.09.03-09.47.08:510][  0]LogTargetPlatformManager: Failed to load module 'MacTargetPlatform' for platform Mac (Reason=FileNotFound, AutoSDKPath='').
+[2026.09.03-09.47.08:511][  0]LogTargetPlatformManager: Failed to load module 'TVOSTargetPlatform' for platform TVOS (Reason=FileNotFound, AutoSDKPath='').
+[2026.09.03-09.47.08:520][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Windows'
+[2026.09.03-09.47.08:520][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsEditor'
+[2026.09.03-09.47.08:520][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsServer'
+[2026.09.03-09.47.08:520][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsClient'
+[2026.09.03-09.47.08:520][  0]LogTargetPlatformManager: Display: Building Assets For WindowsEditor
+[2026.09.03-09.47.08:524][  0]LogAudioDebug: Display: Lib vorbis DLL was dynamically loaded.
+[2026.09.03-09.47.08:551][  0]LogRendererCore: Ray tracing is disabled. Reason: not supported by current RHI.
+[2026.09.03-09.47.08:554][  0]LogDerivedDataCache: Display: Memory: Max Cache Size: -1 MB
+[2026.09.03-09.47.08:554][  0]LogDerivedDataCache: FDerivedDataBackendGraph: Pak pak cache file ../../../../UE5.7/test1/DerivedDataCache/DDC.ddp not found, will not use a pak cache.
+[2026.09.03-09.47.08:554][  0]LogDerivedDataCache: Unable to find inner node Pak for hierarchy Root.
+[2026.09.03-09.47.08:554][  0]LogDerivedDataCache: FDerivedDataBackendGraph: EnginePak pak cache file ../../../Engine/DerivedDataCache/DDC.ddp not found, will not use a pak cache.
+[2026.09.03-09.47.08:554][  0]LogDerivedDataCache: Unable to find inner node EnginePak for hierarchy Root.
+[2026.09.03-09.47.08:554][  0]LogZenServiceInstance: Found Zen config default=C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Data
+[2026.09.03-09.47.08:554][  0]LogZenServiceInstance: Display: Launching zen utility 'D:/UnrealEngine-5.7/Engine/Binaries/Win64/zen.exe service status'.
+[2026.09.03-09.47.09:465][  0]LogZenServiceInstance: Display: Launching zen utility 'D:/UnrealEngine-5.7/Engine/Binaries/Win64/zen.exe service status'.
+[2026.09.03-09.47.10:275][  0]LogZenServiceInstance: Display: Read zen version cache file from 'D:/UnrealEngine-5.7/Engine/Saved/Zen/zen.version', version: '5.7.6-202510061608-windows-x64-release-9a1ebb9'
+[2026.09.03-09.47.10:275][  0]LogZenServiceInstance: InTree version at 'D:/UnrealEngine-5.7/Engine/Binaries/Win64/zenserver.exe' is '5.7.6-202510061608-windows-x64-release-9a1ebb9'
+[2026.09.03-09.47.10:275][  0]LogZenServiceInstance: Display: Read zen version cache file from 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install/zen.version', version: '5.7.6-202510061608-windows-x64-release-9a1ebb9'
+[2026.09.03-09.47.10:275][  0]LogZenServiceInstance: Installed version at 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install/zenserver.exe' is '5.7.6-202510061608-windows-x64-release-9a1ebb9'
+[2026.09.03-09.47.10:275][  0]LogZenServiceInstance: Display: Installed service at 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install/zenserver.exe' is up to date
+[2026.09.03-09.47.10:275][  0]LogZenServiceInstance: No current process using the data dir found, launching a new instance
+[2026.09.03-09.47.10:275][  0]LogZenServiceInstance: Display: Launching executable 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install/zenserver.exe', working dir 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install', data dir 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Data', args '--port 8558 --data-dir C:\Users\a\AppData\Local\UnrealEngine\Common\Zen\Data --http asio --gc-cache-duration-seconds 1209600 --gc-interval-seconds 21600 --gc-low-diskspace-threshold 2147483648 --cache-bucket-limit-overwrites --quiet --http-forceloopback --owner-pid 7600  --child-id Zen_7600_Startup'
+[2026.09.03-09.47.10:364][  0]LogZenServiceInstance: Display: Unreal Zen Storage Server HTTP service at http://[::1]:8558 status: OK!.
+[2026.09.03-09.47.10:364][  0]LogZenServiceInstance: Local ZenServer AutoLaunch initialization completed in 0.090 seconds
+[2026.09.03-09.47.10:365][  0]LogDerivedDataCache: Display: ZenLocal: Using ZenServer HTTP service at [::1] with namespace ue.ddc status: OK!.
+[2026.09.03-09.47.10:374][  0]LogDerivedDataCache: ../../../Engine/DerivedDataCache: Speed tests took 0.01 seconds.
+[2026.09.03-09.47.10:374][  0]LogDerivedDataCache: Display: ../../../Engine/DerivedDataCache: Performance: Latency=0.01ms. RandomReadSpeed=2293.26MBs, RandomWriteSpeed=128.29MBs. Assigned SpeedClass 'Local'
+[2026.09.03-09.47.10:375][  0]LogDerivedDataCache: Local: Using data cache path ../../../Engine/DerivedDataCache: DeleteOnly
+[2026.09.03-09.47.10:375][  0]LogDerivedDataCache: ZenShared: Disabled because Host is set to 'None'
+[2026.09.03-09.47.10:375][  0]LogDerivedDataCache: Unable to find inner node ZenShared for hierarchy Root.
+[2026.09.03-09.47.10:375][  0]LogDerivedDataCache: Shared: Disabled because no path is configured.
+[2026.09.03-09.47.10:375][  0]LogDerivedDataCache: Unable to find inner node Shared for hierarchy Root.
+[2026.09.03-09.47.10:375][  0]LogDerivedDataCache: Cloud: Disabled because Host is set to 'None'
+[2026.09.03-09.47.10:375][  0]LogDerivedDataCache: Unable to find inner node Cloud for hierarchy Root.
+[2026.09.03-09.47.10:375][  0]LogShaderCompilers: Guid format shader working directory is 19 characters bigger than the processId version (../../../../UE5.7/test1/Intermediate/Shaders/WorkingDirectory/7600/).
+[2026.09.03-09.47.10:375][  0]LogShaderCompilers: Cleaned the shader compiler working directory 'C:/Users/a/AppData/Local/Temp/UnrealShaderWorkingDir/CF7CFF49442C7FAE63DA5B851D8E5EEC/'.
+[2026.09.03-09.47.10:375][  0]LogXGEController: Cannot use XGE Controller as Incredibuild is not installed on this machine.
+[2026.09.03-09.47.10:376][  0]LogUbaHorde: Display: UBA/Horde Configuration [Uba.Provider.Horde]: Not Enabled
+[2026.09.03-09.47.10:376][  0]LogShaderCompilers: Display: No distributed shader compiler controller found
+[2026.09.03-09.47.10:376][  0]LogShaderCompilers: Display: Using 16 local workers for shader compilation
+[2026.09.03-09.47.10:383][  0]LogShaderCompilers: Display: Compiling shader autogen file: ../../../../UE5.7/test1/Intermediate/ShaderAutogen/PCD3D_SM6/AutogenShaderHeaders.ush
+[2026.09.03-09.47.10:383][  0]LogShaderCompilers: Display: Autogen file is unchanged, skipping write.
+[2026.09.03-09.47.10:654][  0]LogSlate: Using FreeType 2.10.0
+[2026.09.03-09.47.10:654][  0]LogSlate: SlateFontServices - WITH_FREETYPE: 1, WITH_HARFBUZZ: 1
+[2026.09.03-09.47.10:658][  0]LogAssetRegistry: FAssetRegistry took 0.0024 seconds to start up
+[2026.09.03-09.47.10:660][  0]LogEditorDomain: Display: EditorDomain is Disabled
+[2026.09.03-09.47.10:729][  0]LogAssetRegistry: Display: AssetDataGatherer spent 0.000s loading caches ../../../../UE5.7/test1/Intermediate/CachedAssetRegistry_*.bin.
+[2026.09.03-09.47.10:842][  0]LogDeviceProfileManager: Display: Deviceprofile LinuxArm64Editor not found.
+[2026.09.03-09.47.10:843][  0]LogDeviceProfileManager: Display: Deviceprofile LinuxArm64 not found.
+[2026.09.03-09.47.10:869][  0]LogDeviceProfileManager: Active device profile: [000001D1CBE72580][000001D1BBE70000 82] WindowsEditor
+[2026.09.03-09.47.10:869][  0]LogCsvProfiler: Display: Metadata set : deviceprofile="WindowsEditor"
+[2026.09.03-09.47.10:871][  0]LogStreaming: Display: FlushAsyncLoading(1): 1 QueuedPackages, 0 AsyncPackages
+[2026.09.03-09.47.10:880][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.03-09.47.10:880][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness because of a recursive sync load
+[2026.09.03-09.47.10:880][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.03-09.47.10:880][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.03-09.47.10:880][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec because of a recursive sync load
+[2026.09.03-09.47.10:880][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.03-09.47.10:882][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/WorldGridMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.03-09.47.10:883][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/WorldGridMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.03-09.47.10:884][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.03-09.47.10:884][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultPostProcessMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.03-09.47.10:885][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultLightFunctionMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultPostProcessMaterial because of a recursive sync load
+[2026.09.03-09.47.10:886][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultPostProcessMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.03-09.47.10:886][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultDeferredDecalMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultLightFunctionMaterial because of a recursive sync load
+[2026.09.03-09.47.10:886][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.03-09.47.10:886][  0]LogStreaming: Display: Package /Engine/EngineMaterials/WorldGridMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultDeferredDecalMaterial because of a recursive sync load
+[2026.09.03-09.47.10:886][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/WorldGridMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.03-09.47.10:887][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/EngineMaterials/WorldGridMaterial because of a recursive sync load
+[2026.09.03-09.47.10:887][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/WorldGridMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.03-09.47.10:887][  0]LogTextureEncodingSettings: Display: Texture Encode Speed: FinalIfAvailable (editor).
+[2026.09.03-09.47.10:887][  0]LogTextureEncodingSettings: Display: Oodle Texture Encode Speed settings: Fast: RDO Off Lambda=0, Effort=Normal Final: RDO Off Lambda=0, Effort=Normal
+[2026.09.03-09.47.10:887][  0]LogTextureEncodingSettings: Display: Shared linear texture encoding: Disabled
+[2026.09.03-09.47.10:898][  0]LogMeshReduction: Display: Using QuadricMeshReduction for automatic static mesh reduction
+[2026.09.03-09.47.10:898][  0]LogMeshReduction: Display: Using SkeletalMeshReduction for automatic skeletal mesh reduction
+[2026.09.03-09.47.10:898][  0]LogMeshReduction: Display: Using ProxyLODMeshReduction for automatic mesh merging
+[2026.09.03-09.47.10:898][  0]LogMeshReduction: Display: No distributed automatic mesh merging module available
+[2026.09.03-09.47.10:898][  0]LogMeshMerging: No distributed automatic mesh merging module available
+[2026.09.03-09.47.11:052][  0]LogConfig: Applying CVar settings from Section [/Script/CQTest.CQTestSettings] File [Engine]
+[2026.09.03-09.47.11:073][  0]LogShaderCompilers: Display: Compiling shader autogen file: ../../../../UE5.7/test1/Intermediate/ShaderAutogen/PCD3D_SM5/AutogenShaderHeaders.ush
+[2026.09.03-09.47.11:073][  0]LogShaderCompilers: Display: Autogen file is unchanged, skipping write.
+[2026.09.03-09.47.11:073][  0]LogVirtualization: Display: VirtualizationSystem name found in ini file: None
+[2026.09.03-09.47.11:073][  0]LogVirtualization: Display: FNullVirtualizationSystem mounted, virtualization will be disabled
+[2026.09.03-09.47.11:086][  0]LogSlate: Border
+[2026.09.03-09.47.11:086][  0]LogSlate: BreadcrumbButton
+[2026.09.03-09.47.11:086][  0]LogSlate: Brushes.Title
+[2026.09.03-09.47.11:086][  0]LogSlate: ColorPicker.ColorThemes
+[2026.09.03-09.47.11:086][  0]LogSlate: Default
+[2026.09.03-09.47.11:086][  0]LogSlate: Icons.Save
+[2026.09.03-09.47.11:086][  0]LogSlate: Icons.Toolbar.Settings
+[2026.09.03-09.47.11:086][  0]LogSlate: ListView
+[2026.09.03-09.47.11:086][  0]LogSlate: SoftwareCursor_CardinalCross
+[2026.09.03-09.47.11:086][  0]LogSlate: SoftwareCursor_Grab
+[2026.09.03-09.47.11:086][  0]LogSlate: TableView.DarkRow
+[2026.09.03-09.47.11:086][  0]LogSlate: TableView.Row
+[2026.09.03-09.47.11:086][  0]LogSlate: TreeView
+[2026.09.03-09.47.11:110][  0]LogWorldPartition: Display: FWorldPartitionClassDescRegistry::Initialize started...
+[2026.09.03-09.47.11:112][  0]LogWorldPartition: Display: FWorldPartitionClassDescRegistry::Initialize took 1.666 ms
+[2026.09.03-09.47.11:136][  0]LogStats: UGameplayTagsManager::InitializeManager -  0.000 s
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT: No NPU adapter found with attributes (!GRAPHICS && (GENERIC_ML || CORE_COMPUTE)) (Windows 11 Version 24H2 or newer)!
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT: Available graphics and compute adapters:
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT: 0: NVIDIA GeForce RTX 4090 (Compute, Graphics)
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT: 1: Microsoft Basic Render Driver (Compute, Graphics)
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT: No NPU adapter found!
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT: MakeRuntimeORTDml:
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT:   DirectML:  yes
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT:   RHI D3D12: no
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT:   D3D12:     yes
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT:   NPU:       no
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT: Interface availability:
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT:   GPU: yes
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT:   RDG: no
+[2026.09.03-09.47.11:460][  0]LogNNERuntimeORT:   NPU: no
+[2026.09.03-09.47.11:612][  0]LogNNERuntimeORT: No NPU adapter found with attributes (!GRAPHICS && (GENERIC_ML || CORE_COMPUTE)) (Windows 11 Version 24H2 or newer)!
+[2026.09.03-09.47.11:612][  0]LogNNERuntimeORT: Available graphics and compute adapters:
+[2026.09.03-09.47.11:612][  0]LogNNERuntimeORT: 0: NVIDIA GeForce RTX 4090 (Compute, Graphics)
+[2026.09.03-09.47.11:612][  0]LogNNERuntimeORT: 1: Microsoft Basic Render Driver (Compute, Graphics)
+[2026.09.03-09.47.11:612][  0]LogNNERuntimeORT: No NPU adapter found!
+[2026.09.03-09.47.11:681][  0]LogMetaSound: Display: MetaSound Page Target Initialized to 'Default'
+[2026.09.03-09.47.11:681][  0]LogAudio: Display: Registering Engine Module Parameter Interfaces...
+[2026.09.03-09.47.11:683][  0]LogMetaSound: MetaSound Engine Initialized
+[2026.09.03-09.47.11:764][  0]LogNiagaraDebuggerClient: Niagara Debugger Client Initialized | Session: 9B4CAB0AB3DD4A988000000000000A00 | Instance: DA086A0F46C8A016D91ECC8F80094822 (DESKTOP-6D3B0FC-7600).
+[2026.09.03-09.47.11:908][  0]LogUdpMessaging: Display: Work queue size set to 1024.
+[2026.09.03-09.47.11:909][  0]LogUdpMessaging: Initializing bridge on interface 0.0.0.0:0 to multicast group 230.0.0.1:6666.
+[2026.09.03-09.47.11:909][  0]LogUdpMessaging: Display: Unicast socket bound to '0.0.0.0:49792'.
+[2026.09.03-09.47.11:912][  0]LogUdpMessaging: Display: Added local interface '192.168.1.4' to multicast group '230.0.0.1:6666'
+[2026.09.03-09.47.11:912][  0]LogUdpMessaging: Display: Added local interface '127.0.0.1' to multicast group '230.0.0.1:6666'
+[2026.09.03-09.47.11:914][  0]LogUdpMessaging: Display: Using asynchronous task graph for message deserialization.
+[2026.09.03-09.47.11:918][  0]LogTcpMessaging: Initializing TcpMessaging bridge
+[2026.09.03-09.47.12:084][  0]LogChaosVDEditor: [FChaosVDExtensionsManager::RegisterExtension] Registering CVD Extension [FChaosVDGenericDebugDrawExtension] ...
+[2026.09.03-09.47.12:084][  0]LogChaosVDEditor: [FChaosVDExtensionsManager::RegisterExtension] Registering CVD Extension [FChaosVDAccelerationStructuresExtension] ...
+[2026.09.03-09.47.12:090][  0]LogTimingProfiler: Initialize
+[2026.09.03-09.47.12:090][  0]LogTimingProfiler: OnSessionChanged
+[2026.09.03-09.47.12:090][  0]LoadingProfiler: Initialize
+[2026.09.03-09.47.12:090][  0]LoadingProfiler: OnSessionChanged
+[2026.09.03-09.47.12:090][  0]LogNetworkingProfiler: Initialize
+[2026.09.03-09.47.12:090][  0]LogNetworkingProfiler: OnSessionChanged
+[2026.09.03-09.47.12:090][  0]LogMemoryProfiler: Initialize
+[2026.09.03-09.47.12:090][  0]LogMemoryProfiler: OnSessionChanged
+[2026.09.03-09.47.12:259][  0]LogConfig: Applying CVar settings from Section [/Script/NNEDenoiser.NNEDenoiserSettings] File [Engine]
+[2026.09.03-09.47.12:262][  0]LogAndroidPermission: UAndroidPermissionCallbackProxy::GetInstance
+[2026.09.03-09.47.12:275][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2026.09.03-09.47.12:275][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2026.09.03-09.47.12:358][  0]SourceControl: 版本控制已禁用
+[2026.09.03-09.47.12:364][  0]SourceControl: 版本控制已禁用
+[2026.09.03-09.47.12:409][  0]LogCollectionManager: Loaded 0 collections in 0.001366 seconds
+[2026.09.03-09.47.12:411][  0]LogFileCache: Scanning file cache for directory 'D:/UE5.7/test1/Saved/Collections/' took 0.00s
+[2026.09.03-09.47.12:413][  0]LogFileCache: Scanning file cache for directory 'D:/UE5.7/test1/Content/Developers/a/Collections/' took 0.00s
+[2026.09.03-09.47.12:416][  0]LogFileCache: Scanning file cache for directory 'D:/UE5.7/test1/Content/Collections/' took 0.00s
+[2026.09.03-09.47.12:447][  0]LogTemp: Tripo Bridge module starting up
+[2026.09.03-09.47.12:447][  0]LogTemp: Tripo Bridge style registered successfully
+[2026.09.03-09.47.12:447][  0]LogTemp: Tripo Bridge module started successfully
+[2026.09.03-09.47.12:471][  0]LogTemp: Display: VibeUE Module has started
+[2026.09.03-09.47.12:471][  0]LogVibeUEPaths: Cleared VibeUE screenshots directory: ../../../../UE5.7/test1/Saved/VibeUE/Screenshots
+[2026.09.03-09.47.12:471][  0]LogToolRegistry: Initializing Tool Registry...
+[2026.09.03-09.47.12:471][  0]LogToolRegistry: === LOADING DISABLED TOOLS ===
+[2026.09.03-09.47.12:471][  0]LogToolRegistry: Config path: ../../../../UE5.7/test1/Saved/Config/VibeUE.ini
+[2026.09.03-09.47.12:471][  0]LogToolRegistry: No disabled tools found in config - first run or all tools enabled
+[2026.09.03-09.47.12:471][  0]LogToolRegistry: === END LOADING DISABLED TOOLS ===
+[2026.09.03-09.47.12:471][  0]LogToolRegistry: Processing 14 pending tool registrations...
+[2026.09.03-09.47.12:471][  0]LogToolRegistry: Registered tool: manage_asset (Category: Assets, InternalOnly: No)
+[2026.09.03-09.47.12:471][  0]LogToolRegistry: Registered tool: deep_research (Category: Research, InternalOnly: No)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Registered tool: manage_editor_chat (Category: Testing, InternalOnly: No)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Registered tool: editor_control (Category: Editor, InternalOnly: No)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Registered tool: attach_image (Category: Chat, InternalOnly: Yes)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Registered tool: read_logs (Category: Logs, InternalOnly: No)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Registered tool: memory (Category: Memory, InternalOnly: Yes)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Registered tool: execute_python_code (Category: Python, InternalOnly: No)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Registered tool: discover_python_module (Category: Python, InternalOnly: No)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Registered tool: discover_python_class (Category: Python, InternalOnly: No)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Registered tool: discover_python_function (Category: Python, InternalOnly: No)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Registered tool: list_python_subsystems (Category: Python, InternalOnly: No)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Registered tool: vibeue-skills-manager (Category: Skills, InternalOnly: No)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Registered tool: terrain_data (Category: Terrain, InternalOnly: No)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry: Tool Registry initialized with 14 tools (14 enabled, 0 disabled)
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: manage_asset (Category: Assets) - 12 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: deep_research (Category: Research) - 5 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: manage_editor_chat (Category: Testing) - 11 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: editor_control (Category: Editor) - 6 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: attach_image (Category: Chat) - 1 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: read_logs (Category: Logs) - 11 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: memory (Category: Memory) - 10 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: execute_python_code (Category: Python) - 1 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: discover_python_module (Category: Python) - 6 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: discover_python_class (Category: Python) - 5 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: discover_python_function (Category: Python) - 1 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: list_python_subsystems (Category: Python) - 0 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: vibeue-skills-manager (Category: Skills) - 4 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogToolRegistry:   Tool: terrain_data (Category: Terrain) - 19 params [ENABLED]
+[2026.09.03-09.47.12:472][  0]LogTemp: AI Chat tab spawner registered
+[2026.09.03-09.47.12:472][  0]LogTemp: AI Chat commands initialized with panel drawer support
+[2026.09.03-09.47.12:472][  0]LogMCPServer: MCP Server initialized - Enabled: Yes, Port: 8088, API Key: (none)
+[2026.09.03-09.47.12:472][  0]LogMCPServer: Warning: VibeUE API key not configured - MCP tools will require a valid key. Get one free at https://www.vibeue.com/login
+[2026.09.03-09.47.12:472][  0]LogMCPServer: Error: SECURITY WARNING: VibeUE MCP server is starting with NO API key set. Any local process on this machine can connect and execute tools without authentication -- including file access, asset changes, and arbitrary Python code execution inside Unreal Engine. Set an API key in Project Settings -> Plugins -> VibeUE -> API Key to restrict access.
+[2026.09.03-09.47.12:472][  0]LogMCPServer: Starting MCP Server on port 8088...
+[2026.09.03-09.47.12:474][  0]LogMCPServer: MCP Server thread started
+[2026.09.03-09.47.12:474][  0]LogMCPServer: MCP Server started at http://127.0.0.1:8088/mcp
+[2026.09.03-09.47.12:475][  0]LogMCPServer: Exported 11 tools to C:\Users\a\AppData\Roaming/VibeUE/tools-manifest.json
+[2026.09.03-09.47.12:477][  0]LogTemp: Display: Epic Unreal MCP Module has started
+[2026.09.03-09.47.12:489][  0]LogEOSSDK: LogEOS: [Boot] EOSSDK Version 1.19.0.3-49960398 booting at 2026-09-03T09:47:12.489Z using C
+[2026.09.03-09.47.12:489][  0]LogEOSSDK: LogEOS: [Boot] EOSSDK Platform Configuration win64-dynamic-x86_64
+[2026.09.03-09.47.12:489][  0]LogEOSSDK: LogEOS: [Boot] EOSSDK Platform Properties [OS=Windows/10.0.26100.8972.64bit, ClientId=xyza7891REBVsEqSJRRNXmlS7EQHM459, ProductId=86f32f1151354e7cb39c12f8ab2c22a3, SandboxId=a01927f7421a4d4995673fe30ef46945, DeploymentId=a652a72ea1664dcab3a467891eea5f30, ProductName=GuLiStrike, ProductVersion=UE5-CL-0, IsServer=false, Flags=DisableOverlay]
+[2026.09.03-09.47.12:489][  0]LogEOSSDK: LogEOSAnalytics: Start Session (User: ...)
+[2026.09.03-09.47.12:490][  0]LogEOSSDK: LogEOSOverlay: Overlay will not load, because it was explicitly disabled when creating the platform
+[2026.09.03-09.47.12:493][  0]LogEOSSDK: LogEOSAntiCheat: [AntiCheatClient] Anti-cheat client not available. Verify that the game was started using the anti-cheat bootstrapper if you intend to use it.
+[2026.09.03-09.47.12:493][  0]LogEOSSDK: LogEOS: SetApplicationStatus - OldStatus: EOS_AS_Foreground, NewStatus: EOS_AS_Foreground, Current Time: 0001.01.01-00.00.00
+[2026.09.03-09.47.12:493][  0]LogEOSSDK: LogEOS: SetNetworkStatus - OldStatus: EOS_NS_Online, NewStatus: EOS_NS_Online
+[2026.09.03-09.47.12:493][  0]LogEOSSDK: LogEOS: Updating Platform SDK Config, Time: 0.000064
+[2026.09.03-09.47.12:501][  0]LogWindows: Failed to load 'Wintab32.dll' (GetLastError=126)
+[2026.09.03-09.47.12:501][  0]LogWindows: File 'Wintab32.dll' does not exist
+[2026.09.03-09.47.12:501][  0]LogStylusInput: Wintab driver is not available; Wintab interface will be not be initialized.
+[2026.09.03-09.47.12:534][  0]LogUObjectArray: 52560 objects as part of root set at end of initial load.
+[2026.09.03-09.47.12:534][  0]LogUObjectArray: CloseDisregardForGC: 0/0 objects in disregard for GC pool
+[2026.09.03-09.47.12:669][  0]LogAutomationTest: Error: Condition failed
+[2026.09.03-09.47.12:669][  0]LogAutomationTest: Error: Condition failed
+[2026.09.03-09.47.12:670][  0]LogEngine: Initializing Engine...
+[2026.09.03-09.47.12:686][  0]LogTedsSettings: UTedsSettingsEditorSubsystem::Initialize
+[2026.09.03-09.47.12:686][  0]LogTemp: Display: EpicUnrealMCPBridge: Initializing
+[2026.09.03-09.47.12:686][  0]LogTemp: Display: EpicUnrealMCPBridge: Server started on 127.0.0.1:55557
+[2026.09.03-09.47.12:686][  0]LogTemp: Display: MCPServerRunnable: Created server runnable
+[2026.09.03-09.47.12:689][  0]LogTemp: Display: MCPServerRunnable: Server thread starting...
+[2026.09.03-09.47.12:721][  0]LogChaosDD: Creating Chaos Debug Draw Scene for world Untitled
+[2026.09.03-09.47.12:725][  0]LogNiagara: UAV Float16 is not supported, compressed GPU emitters will be disabled.
+[2026.09.03-09.47.12:732][  0]LogNetVersion: Set ProjectVersion to 1.0.0.0. Version Checksum will be recalculated on next use.
+[2026.09.03-09.47.12:732][  0]LogInit: Texture streaming: Disabled
+[2026.09.03-09.47.12:737][  0]LogAnalytics: Display: [UEEditor.UnrealEngine.Release] AnalyticsET::StartSession ( APIServer = https://datarouter.ol.epicgames.com/datarouter/api/v1/public/data. AppVersion = 5.7.4-0+UE5 )
+[2026.09.03-09.47.12:747][  0]LogCsvProfiler: Display: Metadata set : largeworldcoordinates="1"
+[2026.09.03-09.47.12:749][  0]LogInit: Undo buffer set to 256 MB
+[2026.09.03-09.47.12:749][  0]LogInit: Transaction tracking system initialized
+[2026.09.03-09.47.12:829][  0]LogSourceControl: Display: Uncontrolled Changelist persistency file loaded ../../../../UE5.7/test1/Saved/SourceControl/UncontrolledChangelists.json
+[2026.09.03-09.47.12:871][  0]LocalizationService: 本地化服务已禁用
+[2026.09.03-09.47.12:926][  0]LogContentValidation: Adding native validator /Script/DataValidation.DirtyFilesChangelistValidator
+[2026.09.03-09.47.12:926][  0]LogContentValidation: Adding native validator /Script/DataValidation.EditorValidator_Localization
+[2026.09.03-09.47.12:926][  0]LogContentValidation: Adding native validator /Script/DataValidation.EditorValidator_Material
+[2026.09.03-09.47.12:926][  0]LogContentValidation: Adding native validator /Script/DataValidation.PackageFileValidator
+[2026.09.03-09.47.12:926][  0]LogContentValidation: Adding native validator /Script/DataValidation.WorldPartitionChangelistValidator
+[2026.09.03-09.47.12:926][  0]LogContentValidation: Adding native validator /Script/InputBlueprintNodes.EnhancedInputUserWidgetValidator
+[2026.09.03-09.47.12:926][  0]LogContentValidation: Adding native validator /Script/GuLiFlightNavigationEditor.GuLiFlightNavigationDataValidator
+[2026.09.03-09.47.12:926][  0]LogContentValidation: Adding native validator /Script/GuLiFlightNavigationEditor.GuLiFlightNavigationWorldValidator
+[2026.09.03-09.47.12:927][  0]LogTemp: AI Chat panel drawer registered in status bar
+[2026.09.03-09.47.12:932][  0]LogNNEDenoiser: Ray Tracing is not enabled, therefore NNEDenoiser is not registered!
+[2026.09.03-09.47.12:937][  0]LogPython: Python enabled via CVar 'Engine.Python.IsEnabledByDefault'
+[2026.09.03-09.47.12:937][  0]LogPython: Using Python 3.11.8
+[2026.09.03-09.47.12:954][  0]LogPython: Display: No pip-enabled plugins with python dependencies found, skipping
+[2026.09.03-09.47.13:234][  0]LogLevelSequenceEditor: LevelSequenceEditor subsystem initialized.
+[2026.09.03-09.47.13:246][  0]LogMCPython: TCP server started at 127.0.0.1:12029.
+[2026.09.03-09.47.13:259][  0]LogEditorDataStorage: Initializing
+[2026.09.03-09.47.13:269][  0]LogEditorDataStorage: Initialized
+[2026.09.03-09.47.13:272][  0]LogCore: Display: InsightsEditor module auto-connecting to local trace server...
+[2026.09.03-09.47.13:274][  0]LogGameplayAbilityAudit: Selected GameplayAbilityAuditRow as the best Gameplay Ability Audit Functionality
+[2026.09.03-09.47.13:333][  0]LogInit: Display: Engine is initialized. Leaving FEngineLoop::Init()
+[2026.09.03-09.47.13:336][  0]SourceControl: 版本控制已禁用
+[2026.09.03-09.47.13:336][  0]LogUnrealEdMisc: Loading editor; pre map load, took 5.821
+[2026.09.03-09.47.13:336][  0]Cmd: MAP LOAD FILE="../../../../UE5.7/test1/Content/Maps/LVL_CommanderMassPrototype.umap" TEMPLATE=0 SHOWPROGRESS=1 FEATURELEVEL=4
+[2026.09.03-09.47.13:337][  0]LogWorld: UWorld::CleanupWorld for Untitled, bSessionEnded=true, bCleanupResources=true
+[2026.09.03-09.47.13:338][  0]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.09.03-09.47.13:355][  0]LogUObjectHash: Compacting FUObjectHashTables data took   0.70ms
+[2026.09.03-09.47.13:768][  0]LogDeviceProfileManager: Going up to parent DeviceProfile []
+[2026.09.03-09.47.13:775][  0]LogDeviceProfileManager: Going up to parent DeviceProfile []
+[2026.09.03-09.47.13:778][  0]LogDeviceProfileManager: Going up to parent DeviceProfile []
+[2026.09.03-09.47.13:782][  0]LogDeviceProfileManager: Going up to parent DeviceProfile [AppleTV]
+[2026.09.03-09.47.13:782][  0]LogDeviceProfileManager: Going up to parent DeviceProfile [IOS_Mid]
+[2026.09.03-09.47.13:782][  0]LogDeviceProfileManager: Going up to parent DeviceProfile [IOS]
+[2026.09.03-09.47.13:782][  0]LogDeviceProfileManager: Going up to parent DeviceProfile []
+[2026.09.03-09.47.13:787][  0]LogDeviceProfileManager: Display: Deviceprofile None not found.
+[2026.09.03-09.47.13:837][  0]LogChaosDD: Creating Chaos Debug Draw Scene for world LVL_CommanderMassPrototype
+[2026.09.03-09.47.15:043][  0]LogEditorServer: Finished looking for orphan Actors (0.000 secs)
+[2026.09.03-09.47.17:584][  0]LogUObjectHash: Compacting FUObjectHashTables data took   0.56ms
+[2026.09.03-09.47.17:586][  0]Cmd: MAP CHECKDEP NOCLEARLOG
+[2026.09.03-09.47.17:586][  0]MapCheck: 地图检测完成：0个错误、0个警告、完成用时0.063毫秒。
+[2026.09.03-09.47.17:606][  0]LogUnrealEdMisc: Total Editor Startup Time, took 10.091
+[2026.09.03-09.47.17:635][  0]LogWebBrowser: Loaded CEF3 version 128.4.13.3057 from D:/UnrealEngine-5.7/Engine/Binaries/ThirdParty/CEF3/Win64/128.4.13+ge76af7e+chromium-128.0.6613.138
+[2026.09.03-09.47.17:636][  0]Message dialog closed, result: Ok, title: 消息, text: 创建网页浏览器窗口失败
+[2026.09.03-09.47.17:636][  0]LogPlacementMode: Display: The Asset Registry is not yet fully loaded so some placeable classes might be missing.
+[2026.09.03-09.47.17:714][  0]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.09.03-09.47.17:763][  0]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.09.03-09.47.17:814][  0]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.09.03-09.47.17:865][  0]LogSlate: Updating window title bar state: overlay mode, drag disabled, window buttons hidden, title bar hidden
+[2026.09.03-09.47.17:870][  0]LogSlate: Took 0.000166 seconds to synchronously load lazily loaded font '../../../Engine/Content/Slate/Fonts/DroidSansMono.ttf' (77K)
+[2026.09.03-09.47.17:887][  0]LogSlate: Took 0.001633 seconds to synchronously load lazily loaded font '../../../Engine/Content/Slate/Fonts/DroidSansFallback.ttf' (3848K)
+[2026.09.03-09.47.17:986][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:987][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/StarterContent.upack', mount point: 'root:/'
+[2026.09.03-09.47.17:987][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:987][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/TP_BlankBP.upack', mount point: 'root:/'
+[2026.09.03-09.47.17:987][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:987][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/TP_FirstPerson.upack', mount point: 'root:/'
+[2026.09.03-09.47.17:987][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:987][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/TP_FirstPersonBP.upack', mount point: 'root:/'
+[2026.09.03-09.47.17:987][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:988][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/TP_Puzzle.upack', mount point: 'root:/'
+[2026.09.03-09.47.17:988][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:988][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/TP_PuzzleBP.upack', mount point: 'root:/'
+[2026.09.03-09.47.17:988][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:988][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/TP_ThirdPerson.upack', mount point: 'root:/'
+[2026.09.03-09.47.17:988][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:988][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/TP_ThirdPersonBP.upack', mount point: 'root:/'
+[2026.09.03-09.47.17:988][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:989][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/TP_TopDown.upack', mount point: 'root:/'
+[2026.09.03-09.47.17:989][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:989][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/TP_TopDownBP.upack', mount point: 'root:/'
+[2026.09.03-09.47.17:989][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:989][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/TP_VehicleAdv.upack', mount point: 'root:/'
+[2026.09.03-09.47.17:989][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:989][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/TP_VehicleAdvBP.upack', mount point: 'root:/'
+[2026.09.03-09.47.17:990][  0]LogPakFile: Initializing PakPlatformFile
+[2026.09.03-09.47.17:990][  0]LogPakFile: Display: Mounted Pak file 'D:/UnrealEngine-5.7/FeaturePacks/TP_VirtualRealityBP.upack', mount point: 'root:/'
+[2026.09.03-09.47.18:115][  0]LogToolMenus: Warning: Menu section not found: 'Compile' for insert: 'EditorPerf'
+[2026.09.03-09.47.18:117][  0]LogStall: Startup...
+[2026.09.03-09.47.18:120][  0]LogStall: Startup complete.
+[2026.09.03-09.47.18:121][  0]LogLoad: (Engine Initialization) Total time: 10.61 seconds
+[2026.09.03-09.47.18:426][  0]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Credits_EVE-Kaneda_NepsterCZ时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_0不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_0 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_0'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_1不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_1 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_1'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_2不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_2 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_2'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_3不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_3 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_3'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge_window时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_4不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_4 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_4'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge_window时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_5不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_5 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_5'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge_window时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_6不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_6 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_6'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge_window时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_7不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_7 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_7'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_engineering_pod时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_10不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_10 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_10'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_engineering_pod时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_8不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_8 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_8'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_engineering_pod时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_9不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_9 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_9'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_bay时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_11不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_11 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_11'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_bay时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_12不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_12 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_12'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_bay时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_13不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_13 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_13'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_structure时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_14不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_14 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_14'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_structure时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_15不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_15 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_15'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_structure时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_16不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_16 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_16'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_bottom时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_17不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_17 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_17'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_bottom时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_18不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_18 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_18'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:427][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_bottom时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_19不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_19 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_19'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:428][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_top时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_20不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_20 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_20'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:428][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_top时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_21不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_21 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_21'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:428][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_top时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_22不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_22 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_22'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:428][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_signal_lights时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_23不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_23 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_23'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:428][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_signal_lights时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_24不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_24 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_24'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:428][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_signal_lights时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_25不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_25 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_25'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:428][  0]LoadErrors: Warning: 尝试加载包/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_signal_lights时，依赖包/Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_26不可用。其他解释信息如下：
+FPackageName: Skipped package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_26 has a valid, mounted, mount point but does not exist either on disk or in iostore. The uncooked file would be expected on disk at 'D:/UE5.7/test1/Content/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_26'. Perhaps it has been deleted or was not synced?
+
+[2026.09.03-09.47.18:429][  0]LogPython: Display: 正在运行启动脚本D:/UnrealEngine-5.7/Engine/Plugins/Animation/IKRig/Content/Python/init_unreal.py…… started...
+[2026.09.03-09.47.18:443][  0]LogPython: Display: 正在运行启动脚本D:/UnrealEngine-5.7/Engine/Plugins/Animation/IKRig/Content/Python/init_unreal.py…… took 14.204 ms
+[2026.09.03-09.47.18:443][  0]LogPython: Display: 正在运行启动脚本D:/UnrealEngine-5.7/Engine/Plugins/Animation/ControlRig/Content/Python/init_unreal.py…… started...
+[2026.09.03-09.47.18:451][  0]LogPython: registering <class 'ControlRigWorkflows.workflow_deformation_rig_preset.provider'>
+
+[2026.09.03-09.47.18:456][  0]LogPython: Display: 正在运行启动脚本D:/UnrealEngine-5.7/Engine/Plugins/Animation/ControlRig/Content/Python/init_unreal.py…… took 12.774 ms (total: 26.979 ms)
+[2026.09.03-09.47.18:456][  0]Cmd: Automation RunTests GuLiStrike.Wingman.Performance.H4000
+[2026.09.03-09.47.18:456][  0]Automation: RunTests='GuLiStrike.Wingman.Performance.H4000' Queued.
+[2026.09.03-09.47.18:646][  1]LogAssetRegistry: AssetRegistryGather time 0.1343s: AssetDataDiscovery 0.0107s, AssetDataGather 0.0524s, StoreResults 0.0713s. Wall time 7.9890s.
+	NumCachedDirectories 2099. NumUncachedDirectories 24. NumCachedFiles 13143. NumUncachedFiles 0.
+	BackgroundTickInterruptions 3.
+[2026.09.03-09.47.18:663][  1]LogAssetRegistry: Display: Starting OnFilesLoaded.Broadcast
+[2026.09.03-09.47.18:672][  1]LogPlacementMode: Display: The Asset Registry is done with its initial scan, the list of placeable classes has been updated.
+[2026.09.03-09.47.18:680][  1]LogCollectionManager: Fixed up redirectors for 0 collections in 0.000000 seconds (updated 0 objects)
+[2026.09.03-09.47.18:680][  1]LogAssetRegistry: Display: Completed OnFilesLoaded.Broadcast: -0.686s
+[2026.09.03-09.47.18:681][  1]LogSourceControl: Uncontrolled asset discovery started...
+[2026.09.03-09.47.18:719][  1]LogEngineAutomationLatentCommand: FWaitForInteractiveFrameRate: FApp::CanEverRender() == false. Passing wait immediately.
+[2026.09.03-09.47.18:719][  2]LogAutomationCommandLine: Display: Ready to start automation
+[2026.09.03-09.47.18:886][ 18]LogSourceControl: Uncontrolled asset discovery finished in 0.204772 seconds (Found 13119 uncontrolled assets)
+[2026.09.03-09.47.19:158][ 49]LogEOSSDK: LogEOS: SDK Config Platform Update Request Successful, Time: 6.661685
+[2026.09.03-09.47.19:159][ 49]LogEOSSDK: LogEOSAnalytics: EOS SDK Analytics disabled for route [1].
+[2026.09.03-09.47.19:160][ 49]LogEOSSDK: LogEOS: Updating Product SDK Config, Time: 6.664264
+[2026.09.03-09.47.19:222][ 57]LogAssetRegistry: Display: Asset registry cache written as 84.0 MiB to ../../../../UE5.7/test1/Intermediate/CachedAssetRegistry_*.bin
+[2026.09.03-09.47.19:416][ 80]LogEOSSDK: LogEOSAnalytics: Start Session (User: ...)
+[2026.09.03-09.47.19:683][112]LogEOSSDK: LogEOS: SDK Config Product Update Request Successful, Time: 7.180448
+[2026.09.03-09.47.19:685][112]LogEOSSDK: LogEOS: SDK Config Data - Watermark: 1400761102
+[2026.09.03-09.47.19:685][112]LogEOSSDK: LogEOS: ScheduleNextSDKConfigDataUpdate - Time: 7.180448, Update Interval: 341.313507
+[2026.09.03-09.47.23:733][598]LogAutomationWorker: Received FindWorkersMessage from 0807EA324D246876D67CDF99EB32DEFF
+[2026.09.03-09.47.23:733][598]LogAutomationController: Received FindWorkersResponseMessage from AB73123D4756823923BD83B53B9B009B
+[2026.09.03-09.47.23:733][598]LogAutomationController: Requesting test list from AB73123D4756823923BD83B53B9B009B
+[2026.09.03-09.47.23:742][599]LogAutomationWorker: Received RequestTestsMessage from 0807EA324D246876D67CDF99EB32DEFF
+[2026.09.03-09.47.23:776][599]LogAutomationWorker: Set 5109 tests to 0807EA324D246876D67CDF99EB32DEFF
+[2026.09.03-09.47.23:776][600]LogAutomationController: Received RequestTestsReplyCompleteMessage from AB73123D4756823923BD83B53B9B009B
+[2026.09.03-09.47.23:780][600]LogAutomationController: 5109 tests available on AB73123D4756823923BD83B53B9B009B
+[2026.09.03-09.47.23:803][600]LogAutomationCommandLine: Display: Found 2 automation tests based on 'GuLiStrike.Wingman.Performance.H4000'
+[2026.09.03-09.47.23:804][600]LogAutomationCommandLine: Display: 	GuLiStrike.Wingman.Performance.H4000.OwnerSimulation
+[2026.09.03-09.47.23:804][600]LogAutomationCommandLine: Display: 	GuLiStrike.Wingman.Performance.H4000.ServerValidator
+[2026.09.03-09.47.23:804][600]LogAutomationController: Sending StopTests to AB73123D4756823923BD83B53B9B009B
+[2026.09.03-09.47.23:806][600]LogAutomationController: Sending StartTestSession to AB73123D4756823923BD83B53B9B009B
+[2026.09.03-09.47.23:806][600]LogAutomationController: Display: Clearing ../../../../UE5.7/test1/Saved/Automation/Logs/ and ../../../../UE5.7/test1/Saved/Automation/Tmp/
+[2026.09.03-09.47.23:806][600]AutomationTestingLog: -----Test Run 3----
+[2026.09.03-09.47.23:809][600]LogAutomationController: Sending RunTest OwnerSimulation to AB73123D4756823923BD83B53B9B009B
+[2026.09.03-09.47.23:809][600]LogAutomationController: Display: Test Started. Name={OwnerSimulation} Path={GuLiStrike.Wingman.Performance.H4000.OwnerSimulation}
+[2026.09.03-09.47.23:809][600]LogAutomationWorker: Received StopTests from 0807EA324D246876D67CDF99EB32DEFF
+[2026.09.03-09.47.23:809][600]LogAutomationWorker: Received StartTestSession from 0807EA324D246876D67CDF99EB32DEFF
+[2026.09.03-09.47.23:809][600]LogAutomationWorker: Received RunTests OwnerSimulation from 0807EA324D246876D67CDF99EB32DEFF
+[2026.09.03-09.47.23:809][600]LogChaosDD: Creating Chaos Debug Draw Scene for world Untitled
+[2026.09.03-09.47.23:810][600]LogStreaming: Display: FlushAsyncLoading(334): 1 QueuedPackages, 0 AsyncPackages
+[2026.09.03-09.47.23:819][600]LogStateTreeEditor: Compile StateTree 'StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior' succeeded.
+[2026.09.03-09.47.23:819][600]LogTemp: Display: Wingman group 0A110001-0000-0001-51A7-00009E370000 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:819][600]LogTemp: Display: Wingman group 0A110001-0000-0002-51A7-00019E370001 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:819][600]LogTemp: Display: Wingman group 0A110001-0000-0003-51A7-00029E370002 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:819][600]LogTemp: Display: Wingman group 0A110001-0000-0004-51A7-00039E370003 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:819][600]LogTemp: Display: Wingman group 0A110001-0000-0005-51A7-00049E370004 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:819][600]LogTemp: Display: Wingman group 0A110001-0000-0006-51A7-00059E370005 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:820][600]LogTemp: Display: Wingman group 0A110001-0000-0007-51A7-00069E370006 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:820][600]LogTemp: Display: Wingman group 0A110001-0000-0008-51A7-00079E370007 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:820][600]LogTemp: Display: Wingman group 0A110001-0000-0009-51A7-00089E370008 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:820][600]LogTemp: Display: Wingman group 0A110001-0000-000A-51A7-00099E370009 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:820][600]LogTemp: Display: Wingman group 0A110001-0000-000B-51A7-000A9E37000A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:820][600]LogTemp: Display: Wingman group 0A110001-0000-000C-51A7-000B9E37000B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:820][600]LogTemp: Display: Wingman group 0A110001-0000-000D-51A7-000C9E37000C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:820][600]LogTemp: Display: Wingman group 0A110001-0000-000E-51A7-000D9E37000D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:820][600]LogTemp: Display: Wingman group 0A110001-0000-000F-51A7-000E9E37000E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:820][600]LogTemp: Display: Wingman group 0A110001-0000-0010-51A7-000F9E37000F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:821][600]LogTemp: Display: Wingman group 0A110001-0000-0011-51A7-00109E370010 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:821][600]LogTemp: Display: Wingman group 0A110001-0000-0012-51A7-00119E370011 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:821][600]LogTemp: Display: Wingman group 0A110001-0000-0013-51A7-00129E370012 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:821][600]LogTemp: Display: Wingman group 0A110001-0000-0014-51A7-00139E370013 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:821][600]LogTemp: Display: Wingman group 0A110001-0000-0015-51A7-00149E370014 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:821][600]LogTemp: Display: Wingman group 0A110001-0000-0016-51A7-00159E370015 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:821][600]LogTemp: Display: Wingman group 0A110001-0000-0017-51A7-00169E370016 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:821][600]LogTemp: Display: Wingman group 0A110001-0000-0018-51A7-00179E370017 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:821][600]LogTemp: Display: Wingman group 0A110001-0000-0019-51A7-00189E370018 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:821][600]LogTemp: Display: Wingman group 0A110001-0000-001A-51A7-00199E370019 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:822][600]LogTemp: Display: Wingman group 0A110001-0000-001B-51A7-001A9E37001A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:822][600]LogTemp: Display: Wingman group 0A110001-0000-001C-51A7-001B9E37001B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:822][600]LogTemp: Display: Wingman group 0A110001-0000-001D-51A7-001C9E37001C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:822][600]LogTemp: Display: Wingman group 0A110001-0000-001E-51A7-001D9E37001D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:822][600]LogTemp: Display: Wingman group 0A110001-0000-001F-51A7-001E9E37001E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:822][600]LogTemp: Display: Wingman group 0A110001-0000-0020-51A7-001F9E37001F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:822][600]LogTemp: Display: Wingman group 0A110001-0000-0021-51A7-00209E370020 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:822][600]LogTemp: Display: Wingman group 0A110001-0000-0022-51A7-00219E370021 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:822][600]LogTemp: Display: Wingman group 0A110001-0000-0023-51A7-00229E370022 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-0024-51A7-00239E370023 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-0025-51A7-00249E370024 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-0026-51A7-00259E370025 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-0027-51A7-00269E370026 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-0028-51A7-00279E370027 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-0029-51A7-00289E370028 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-002A-51A7-00299E370029 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-002B-51A7-002A9E37002A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-002C-51A7-002B9E37002B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-002D-51A7-002C9E37002C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-002E-51A7-002D9E37002D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-002F-51A7-002E9E37002E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:823][600]LogTemp: Display: Wingman group 0A110001-0000-0030-51A7-002F9E37002F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-0031-51A7-00309E370030 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-0032-51A7-00319E370031 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-0033-51A7-00329E370032 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-0034-51A7-00339E370033 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-0035-51A7-00349E370034 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-0036-51A7-00359E370035 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-0037-51A7-00369E370036 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-0038-51A7-00379E370037 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-0039-51A7-00389E370038 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-003A-51A7-00399E370039 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-003B-51A7-003A9E37003A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-003C-51A7-003B9E37003B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:824][600]LogTemp: Display: Wingman group 0A110001-0000-003D-51A7-003C9E37003C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-003E-51A7-003D9E37003D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-003F-51A7-003E9E37003E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-0040-51A7-003F9E37003F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-0041-51A7-00409E370040 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-0042-51A7-00419E370041 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-0043-51A7-00429E370042 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-0044-51A7-00439E370043 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-0045-51A7-00449E370044 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-0046-51A7-00459E370045 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-0047-51A7-00469E370046 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-0048-51A7-00479E370047 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-0049-51A7-00489E370048 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:825][600]LogTemp: Display: Wingman group 0A110001-0000-004A-51A7-00499E370049 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:826][600]LogTemp: Display: Wingman group 0A110001-0000-004B-51A7-004A9E37004A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:826][600]LogTemp: Display: Wingman group 0A110001-0000-004C-51A7-004B9E37004B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:826][600]LogTemp: Display: Wingman group 0A110001-0000-004D-51A7-004C9E37004C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:826][600]LogTemp: Display: Wingman group 0A110001-0000-004E-51A7-004D9E37004D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:826][600]LogTemp: Display: Wingman group 0A110001-0000-004F-51A7-004E9E37004E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:826][600]LogTemp: Display: Wingman group 0A110001-0000-0050-51A7-004F9E37004F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:826][600]LogTemp: Display: Wingman group 0A110001-0000-0051-51A7-00509E370050 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:826][600]LogTemp: Display: Wingman group 0A110001-0000-0052-51A7-00519E370051 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:826][600]LogTemp: Display: Wingman group 0A110001-0000-0053-51A7-00529E370052 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:826][600]LogTemp: Display: Wingman group 0A110001-0000-0054-51A7-00539E370053 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:826][600]LogTemp: Display: Wingman group 0A110001-0000-0055-51A7-00549E370054 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:827][600]LogTemp: Display: Wingman group 0A110001-0000-0056-51A7-00559E370055 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:827][600]LogTemp: Display: Wingman group 0A110001-0000-0057-51A7-00569E370056 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:827][600]LogTemp: Display: Wingman group 0A110001-0000-0058-51A7-00579E370057 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:827][600]LogTemp: Display: Wingman group 0A110001-0000-0059-51A7-00589E370058 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:827][600]LogTemp: Display: Wingman group 0A110001-0000-005A-51A7-00599E370059 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:827][600]LogTemp: Display: Wingman group 0A110001-0000-005B-51A7-005A9E37005A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:827][600]LogTemp: Display: Wingman group 0A110001-0000-005C-51A7-005B9E37005B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:827][600]LogTemp: Display: Wingman group 0A110001-0000-005D-51A7-005C9E37005C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:827][600]LogTemp: Display: Wingman group 0A110001-0000-005E-51A7-005D9E37005D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:827][600]LogTemp: Display: Wingman group 0A110001-0000-005F-51A7-005E9E37005E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:827][600]LogTemp: Display: Wingman group 0A110001-0000-0060-51A7-005F9E37005F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:828][600]LogTemp: Display: Wingman group 0A110001-0000-0061-51A7-00609E370060 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:828][600]LogTemp: Display: Wingman group 0A110001-0000-0062-51A7-00619E370061 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:828][600]LogTemp: Display: Wingman group 0A110001-0000-0063-51A7-00629E370062 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:828][600]LogTemp: Display: Wingman group 0A110001-0000-0064-51A7-00639E370063 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:828][600]LogTemp: Display: Wingman group 0A110001-0000-0065-51A7-00649E370064 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:828][600]LogTemp: Display: Wingman group 0A110001-0000-0066-51A7-00659E370065 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:828][600]LogTemp: Display: Wingman group 0A110001-0000-0067-51A7-00669E370066 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:828][600]LogTemp: Display: Wingman group 0A110001-0000-0068-51A7-00679E370067 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:828][600]LogTemp: Display: Wingman group 0A110001-0000-0069-51A7-00689E370068 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:828][600]LogTemp: Display: Wingman group 0A110001-0000-006A-51A7-00699E370069 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:829][600]LogTemp: Display: Wingman group 0A110001-0000-006B-51A7-006A9E37006A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:829][600]LogTemp: Display: Wingman group 0A110001-0000-006C-51A7-006B9E37006B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:829][600]LogTemp: Display: Wingman group 0A110001-0000-006D-51A7-006C9E37006C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:829][600]LogTemp: Display: Wingman group 0A110001-0000-006E-51A7-006D9E37006D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:829][600]LogTemp: Display: Wingman group 0A110001-0000-006F-51A7-006E9E37006E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:829][600]LogTemp: Display: Wingman group 0A110001-0000-0070-51A7-006F9E37006F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-0071-51A7-00709E370070 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-0072-51A7-00719E370071 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-0073-51A7-00729E370072 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-0074-51A7-00739E370073 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-0075-51A7-00749E370074 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-0076-51A7-00759E370075 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-0077-51A7-00769E370076 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-0078-51A7-00779E370077 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-0079-51A7-00789E370078 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-007A-51A7-00799E370079 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-007B-51A7-007A9E37007A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-007C-51A7-007B9E37007B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-007D-51A7-007C9E37007C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-007E-51A7-007D9E37007D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-007F-51A7-007E9E37007E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:830][600]LogTemp: Display: Wingman group 0A110001-0000-0080-51A7-007F9E37007F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-0081-51A7-00809E370080 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-0082-51A7-00819E370081 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-0083-51A7-00829E370082 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-0084-51A7-00839E370083 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-0085-51A7-00849E370084 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-0086-51A7-00859E370085 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-0087-51A7-00869E370086 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-0088-51A7-00879E370087 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-0089-51A7-00889E370088 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-008A-51A7-00899E370089 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-008B-51A7-008A9E37008A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-008C-51A7-008B9E37008B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-008D-51A7-008C9E37008C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:831][600]LogTemp: Display: Wingman group 0A110001-0000-008E-51A7-008D9E37008D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-008F-51A7-008E9E37008E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-0090-51A7-008F9E37008F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-0091-51A7-00909E370090 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-0092-51A7-00919E370091 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-0093-51A7-00929E370092 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-0094-51A7-00939E370093 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-0095-51A7-00949E370094 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-0096-51A7-00959E370095 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-0097-51A7-00969E370096 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-0098-51A7-00979E370097 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-0099-51A7-00989E370098 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-009A-51A7-00999E370099 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:832][600]LogTemp: Display: Wingman group 0A110001-0000-009B-51A7-009A9E37009A is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:833][600]LogTemp: Display: Wingman group 0A110001-0000-009C-51A7-009B9E37009B is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:833][600]LogTemp: Display: Wingman group 0A110001-0000-009D-51A7-009C9E37009C is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:833][600]LogTemp: Display: Wingman group 0A110001-0000-009E-51A7-009D9E37009D is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:833][600]LogTemp: Display: Wingman group 0A110001-0000-009F-51A7-009E9E37009E is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.23:833][600]LogTemp: Display: Wingman group 0A110001-0000-00A0-51A7-009F9E37009F is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.
+[2026.09.03-09.47.27:379][600]LogWorld: UWorld::CleanupWorld for Untitled, bSessionEnded=true, bCleanupResources=true
+[2026.09.03-09.47.27:379][600]LogSlate: InvalidateAllWidgets triggered.  All widgets were invalidated
+[2026.09.03-09.47.27:390][600]LogAutomationController: Ignoring very large delta of 3.58 seconds in calls to FAutomationControllerManager::Tick() and not penalizing unresponsive tests
+[2026.09.03-09.47.27:393][601]LogAutomationController: Display: Test Completed. Result={成功} Name={OwnerSimulation} Path={GuLiStrike.Wingman.Performance.H4000.OwnerSimulation}
+[2026.09.03-09.47.27:393][601]LogAutomationController: BeginEvents: GuLiStrike.Wingman.Performance.H4000.OwnerSimulation
+[2026.09.03-09.47.27:393][601]LogAutomationController: GULI_PERF_METRICS {"schema":"guli.wingman.performance.v1","run":"H4000-OwnerSimulation","scope":"owner_mass_mode_guidance_avoidance_integration_no_render_no_authored_nav","formal_gate":true,"p95_budget_ms":33.333333,"throughput_floor_entity_steps_per_second":120000.000,"fixed_hz":30,"entity_count":4000,"sample_count":300,"quantile_method":"nearest-rank","step_p50_ms":10.614300,"step_p95_ms":11.947200,"step_max_ms":13.490300,"setup_ms":18.008702,"total_measured_ms":3198.263500,"throughput_entities_per_second":375203.607,"queue_max_depth":300,"queue_capacity":300,"queue_oldest_age_ms":3188.224897,"queue_final_depth":0,"drop_count":0,"approx_entity_payload_bytes":2964000,"process_resident_delta_bytes_approx":2322432,"presentation_actor_count":0,"transform_advanced":true}
+[2026.09.03-09.47.27:393][601]LogAutomationController: Formal split-scale owner gate; this is not a complete 4000-Wingman network match.
+[2026.09.03-09.47.27:393][601]LogAutomationController: EndEvents: GuLiStrike.Wingman.Performance.H4000.OwnerSimulation
+[2026.09.03-09.47.27:394][601]LogAutomationController: Sending RunTest ServerValidator to AB73123D4756823923BD83B53B9B009B
+[2026.09.03-09.47.27:394][602]LogAutomationController: Display: Test Started. Name={ServerValidator} Path={GuLiStrike.Wingman.Performance.H4000.ServerValidator}
+[2026.09.03-09.47.27:400][602]LogAutomationWorker: Received RunTests ServerValidator from 0807EA324D246876D67CDF99EB32DEFF
+[2026.09.03-09.47.27:497][604]LogAutomationController: Display: Test Completed. Result={成功} Name={ServerValidator} Path={GuLiStrike.Wingman.Performance.H4000.ServerValidator}
+[2026.09.03-09.47.27:498][604]LogAutomationController: BeginEvents: GuLiStrike.Wingman.Performance.H4000.ServerValidator
+[2026.09.03-09.47.27:498][604]LogAutomationController: GULI_PERF_METRICS {"schema":"guli.wingman.performance.v1","run":"H4000-ServerValidator","scope":"strict_flight_grant_atomic_relay_validate_store_payload_copy_only","formal_gate":true,"p95_budget_ms":2.500000,"max_budget_ms":8.000000,"throughput_floor_candidates_per_second":40000.000,"wingman_count":4000,"candidate_count":6400,"accepted_candidate_count":6400,"accepted_store_count":6400,"relay_count":160,"relayed_sample_count":32000,"cruise_hz":5,"cruise_captures_per_group":4,"combat_hz":10,"combat_captures_per_group":4,"sample_count":50,"candidates_per_service_step":128,"quantile_method":"nearest-rank","step_p50_ms":1.347800,"step_p95_ms":1.487700,"step_max_ms":1.687700,"setup_ms":20.288700,"total_measured_ms":68.157400,"throughput_candidates_per_second":93900.295,"throughput_samples_per_second":469501.477,"queue_max_depth":6400,"queue_capacity":6400,"queue_oldest_age_ms":68.474900,"queue_final_depth":0,"drop_count":0,"approx_replay_payload_bytes":11878400,"process_resident_delta_bytes_approx":9453568,"server_wingman_motion_step_count":0}
+[2026.09.03-09.47.27:498][604]LogAutomationController: This replays protocol Candidates through Validate/Store/payload-copy only; it is not a 4000-unit server simulation.
+[2026.09.03-09.47.27:498][604]LogAutomationController: EndEvents: GuLiStrike.Wingman.Performance.H4000.ServerValidator
+[2026.09.03-09.47.27:499][604]LogAutomationController: Sending StopTestSession to AB73123D4756823923BD83B53B9B009B
+[2026.09.03-09.47.27:499][604]LogAutomationCommandLine: Display: ...Automation Test Queue Empty 2 tests performed.
+[2026.09.03-09.47.27:499][605]LogExit: Display: **** TestExit: Automation Test Queue Empty ****
+[2026.09.03-09.47.27:499][605]LogWindows: FPlatformMisc::RequestExit(1, FEngineLoop::Tick.GScopedTestExit)
+[2026.09.03-09.47.27:499][605]LogWindows: FPlatformMisc::RequestExitWithStatus(1, 0, FEngineLoop::Tick.GScopedTestExit)
+[2026.09.03-09.47.27:499][605]LogCore: Engine exit requested (reason: Win RequestExit)

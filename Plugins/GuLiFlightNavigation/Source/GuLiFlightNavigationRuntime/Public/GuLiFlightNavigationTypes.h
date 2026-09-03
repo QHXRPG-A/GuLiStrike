@@ -5,7 +5,7 @@
 
 namespace GuLiFlightNavigation
 {
-	inline constexpr uint32 CurrentDataFormatVersion = 2;
+	inline constexpr uint32 CurrentDataFormatVersion = 3;
 	inline constexpr int32 InvalidCell = INDEX_NONE;
 	inline constexpr int32 InvalidPortal = INDEX_NONE;
 }

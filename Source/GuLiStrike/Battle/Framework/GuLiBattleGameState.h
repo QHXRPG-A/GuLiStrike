@@ -151,6 +151,12 @@ public:
 
 	/** Authority-only unreliable public pose stream. This state is never accepted back by authority. */
 	void ServerPublishWingmanAcceptedBatch(const FGuLiWingmanAcceptedBatch& AcceptedBatch);
+	/**
+	 * Authority-only activation exception: publishes one complete all-Flight atomic
+	 * result without dropping four Flights behind the ordinary 10 Hz group limiter.
+	 */
+	void ServerPublishWingmanAcceptedAtomicBatch(
+		const TArray<FGuLiWingmanAcceptedBatch>& AcceptedFlights);
 
 	const TArray<FGuLiWingmanPublicBootstrapState>& GetPublicWingmanBootstraps() const
 	{
