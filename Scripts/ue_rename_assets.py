@@ -2,7 +2,7 @@
 
 GameMode renamed LAST (it is the active global default).
 Each step: rename_assets -> ue_save_all_dirty -> verify new file exists on disk.
-Report: D:/UE_5.7/test1/Saved/rename_assets_report.json
+Report: D:/UE5.7/test1/Saved/rename_assets_report.json
 """
 import unreal, json, os, traceback
 
@@ -29,7 +29,7 @@ RENAMES = [
     ("/Game/GuLiStrike/Blueprints/BP_TwinStickGameMode", "/Game/GuLiStrike/Blueprints", "BP_GuLiStrikeGameMode"),
 ]
 
-CONTENT = "D:/UE_5.7/test1/Content"
+CONTENT = "D:/UE5.7/test1/Content"
 try:
     at = unreal.AssetToolsHelpers.get_asset_tools()
     for old_pkg, new_dir, new_name in RENAMES:
@@ -57,6 +57,6 @@ try:
 except Exception:
     out["fatal"] = traceback.format_exc()
 
-with open(r"D:\UE_5.7\test1\Saved\rename_assets_report.json", "w") as f:
+with open(r"D:\UE5.7\test1\Saved\rename_assets_report.json", "w") as f:
     f.write(json.dumps(out, indent=1))
 print("REPORT_WRITTEN")

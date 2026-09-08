@@ -204,7 +204,7 @@ namespace
 
 bool FGuLiWingmanRosterEntry::IsWellFormed(const FGuLiWingmanGroupHandle& ExpectedGroup) const
 {
-	return Wingman.IsValid() && Wingman.Flight.Group == ExpectedGroup;
+	return Wingman.IsValid() && Wingman.Flight.Group == ExpectedGroup && !WingmanTypeId.IsNone();
 }
 
 bool FGuLiWingmanAuthorityEntry::IsWellFormed(const FGuLiWingmanGroupHandle& ExpectedGroup) const
@@ -441,6 +441,10 @@ bool FGuLiGroupAbilityConfigAck::IsWellFormed() const
 
 bool FGuLiWingmanBootstrapBundle::IsWellFormed() const
 {
+    if ((AttackStateHash != 0 && AttackStateHash != AttackState.ComputeStableHash())
+        || (AttackStateHash == 0 && (AttackState.Revision != 0 || !AttackState.Checkpoints.IsEmpty()))
+        || AttackState.Checkpoints.Num() > GULI_WINGMAN_GROUP_SIZE * GULI_MAX_WINGMAN_WEAPON_CHANNELS) return false;
+
 	if (!Commit.IsWellFormed() || !AbilityConfig.IsWellFormed()
 		|| Commit.Group.ShipInstanceId != AbilityConfig.ShipInstanceId
 		|| Commit.Group.ShipGeneration != AbilityConfig.ShipGeneration
@@ -739,6 +743,7 @@ namespace GuLiWingmanRelayHash
 		for (const FGuLiWingmanRosterEntry& Entry : Entries)
 		{
 			AddWingman(Hash, Entry.Wingman);
+			GuLiShipAbilityHash::AddString(Hash, Entry.WingmanTypeId.ToString());
 			GuLiShipAbilityHash::AddBool(Hash, Entry.bDead);
 		}
 		return GuLiShipAbilityHash::Finish(Hash);

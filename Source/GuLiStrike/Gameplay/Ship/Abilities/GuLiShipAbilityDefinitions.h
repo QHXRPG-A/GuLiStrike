@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "Engine/DataTable.h"
+#include "Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h"
 #include "GuLiShipAbilityDefinitions.generated.h"
 
 /** Immutable group guidance authored for a formation ability. */
@@ -16,13 +18,23 @@ public:
 	UGuLiWingmanFormationDefinition();
 
 	UPROPERTY(EditAnywhere, Category = "Formation", meta = (ClampMin = "1"))
-	uint32 Revision = 1u;
+	uint32 Revision = 2u;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation", meta = (ClampMin = "1", ClampMax = "25"))
 	uint8 ExpectedWingmanCount = 25u;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation", meta = (ClampMin = "1", ClampMax = "25"))
 	uint8 FlightCount = 5u;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation")
+	EGuLiWingmanFormationModel Model = EGuLiWingmanFormationModel::DoubleRingLegacy;
+
+	UPROPERTY(EditAnywhere, Category = "Formation", meta = (ClampMin = "1"))
+	uint32 GuidanceAlgorithmVersion = 1u;
+
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation|SwarmOrbit",
+		meta = (EditCondition = "Model == EGuLiWingmanFormationModel::SwarmOrbit", EditConditionHides))
+	FGuLiWingmanSwarmOrbitTuning SwarmOrbit;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation|DoubleRing", meta = (ClampMin = "1", ClampMax = "25"))
 	uint8 InnerRingSlots = 13u;
@@ -85,14 +97,11 @@ public:
 	float RecoveryDistanceCentimeters = 250000.0f;
 
 	bool IsWellFormed(FString* OutError = nullptr) const;
+	bool BuildRuntimeConfig(
+		uint32 FormationSeed,
+		FGuLiWingmanFormationRuntimeConfig& OutRuntime,
+		FString* OutError = nullptr) const;
 	uint64 ComputeStableChecksum() const;
-};
-
-UENUM(BlueprintType)
-enum class EGuLiWingmanWeaponKind : uint8
-{
-	BasicAutomatic = 0,
-	Missile
 };
 
 /**
@@ -106,6 +115,16 @@ class GULISTRIKE_API UGuLiWingmanWeaponDefinition : public UDataAsset
 
 public:
 	UGuLiWingmanWeaponDefinition();
+
+	/** Production attack definitions resolve this generated Ship source-table row on authority. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon|Attack")
+	FDataTableRowHandle AttackProfileRow;
+	/** Explicit native fallback for transient fixtures; an authored row is never silently bypassed. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon|Attack")
+	FGuLiWingmanAttackProfile Attack;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon|Attack")
+	TSoftObjectPtr<class UGuLiProjectileEffectDefinition> AttackProjectile;
+	bool BuildRuntimeConfig(FGuLiWingmanWeaponRuntimeConfig& OutRuntime, FString* OutError = nullptr) const;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon", meta = (ClampMin = "1"))
 	uint32 Revision = 1u;

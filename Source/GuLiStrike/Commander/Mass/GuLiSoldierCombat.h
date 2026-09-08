@@ -39,12 +39,19 @@ struct GULISTRIKE_API FGuLiCombatDamageEvent
 	FGuLiSoldierId TargetId;
 	FName SkillId = NAME_None;
 	float Damage = 0.0f;
+	uint16 SourceUnitTypeId = 0;
+	FName SourceSlotId;
+	uint32 ProfileRevision = 0u;
+	/** Execution result routed outside Mass; legacy custom damage executors retain the direct default. */
+	FName ExecutorId = TEXT("DirectSingleTarget");
+	uint64 ShotOrdinal = 0;
 };
 
 /** Extend with another executor or hit behavior without adding skill switches to Mass. */
 class GULISTRIKE_API FGuLiCombatExecutorRegistry
 {
 public:
+	/** Source carries the channel profile; Target is an entity view and may have no weapon profile. */
 	using FExecutor = TFunction<void(const FGuLiCombatSample&, const FGuLiCombatSample&,
 		TArray<FGuLiCombatDamageEvent>&)>;
 	FGuLiCombatExecutorRegistry();
@@ -69,6 +76,7 @@ struct GULISTRIKE_API FGuLiSoldierCombatDebug
 	FGuLiSoldierId SoldierId;
 	EGuLiTeam Team = EGuLiTeam::Unassigned;
 	uint16 UnitTypeId = 0;
+	FName SlotId = TEXT("BasicAttack");
 	FName SkillId = NAME_None;
 	FName ExecutorId = NAME_None;
 	FGuLiSoldierId TargetId;
@@ -113,6 +121,11 @@ namespace GuLiSoldierCombat
 		const TMap<uint32, int32>& IndexById, const TMap<FIntPoint, TArray<int32>>& Grid,
 		uint32 SimTick, double SimulationSeconds, const FGuLiCombatExecutorRegistry& Executors,
 		TArray<FGuLiCombatDamageEvent>& OutEvents);
+	/** Attack channels are separate from the unique entity samples used by the target grid. */
+	GULISTRIKE_API FGuLiCombatStepMetrics CollectChannelAttacks(TConstArrayView<FGuLiCombatSample> Channels,
+		TConstArrayView<FGuLiCombatSample> Targets, const TMap<uint32, int32>& IndexById,
+		const TMap<FIntPoint, TArray<int32>>& Grid, uint32 SimTick, double SimulationSeconds,
+		const FGuLiCombatExecutorRegistry& Executors, TArray<FGuLiCombatDamageEvent>& OutEvents);
 	/** No World, actors, rendering, network or navigation. Measures grid + the production attack loop. */
 	GULISTRIKE_API bool RunBenchmark(int32 PopulationCount, int32 Steps, FGuLiCombatBenchmarkResult& OutResult);
 }

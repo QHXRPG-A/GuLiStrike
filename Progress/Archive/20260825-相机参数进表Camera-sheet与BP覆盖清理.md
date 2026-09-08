@@ -1,3 +1,29 @@
+---
+schema: guli-progress/v1
+id: ARC-20260825-001
+work_id: ''
+kind: archive
+role: root
+title: 2026-08-25 解决了：相机/避障参数进表（新增 Camera sheet）+ 蓝图覆盖值清理
+areas:
+- ship
+- network
+- data-pipeline
+- assets
+status: recorded
+verification: partial
+created: '2026-08-25'
+updated: '2026-08-25'
+summary: ApplyCameraRow() 语义与 ApplyTuningRow() 一致：无表/无预设/无行 → 保持类默认 + Warning；表值覆盖后把 SpringArm-TargetArmLength 同步为 CameraDefaultArmLength（随后
+  DesiredArmLength 从臂长起步的初始化自然吃到表值）
+next_action: ''
+relations:
+  work_items:
+  - WORK-20260821-001
+  - WORK-20260820-001
+status_note: ''
+---
+
 # 2026-08-25 解决了：相机/避障参数进表（新增 Camera sheet）+ 蓝图覆盖值清理
 
 - 对应开发文档：[数据管线：Excel 配置飞船数值](../DevelopmentDocumentation/20260821-数据管线Excel配置.md)（增补节）、[DIY 飞船](../DevelopmentDocumentation/20260820-DIY飞船.md)

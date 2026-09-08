@@ -5,6 +5,15 @@
       "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV1": {
         "grants": [
           {
+            "ability_class": "/Script/GuLiStrike.GuLiShipSwarmOrbitFormationAbility",
+            "ability_id": "Ship.Ability.Formation.SwarmOrbit",
+            "ability_level": 1,
+            "formation_definition": "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_SwarmOrbit.DA_WingmanFormation_SwarmOrbit",
+            "input_tag": "",
+            "slot": "Formation",
+            "weapon_definition": ""
+          },
+          {
             "ability_class": "/Script/GuLiStrike.GuLiShipDoubleRingFormationAbility",
             "ability_id": "Ship.Ability.Formation.DoubleRing",
             "ability_level": 1,
@@ -34,18 +43,18 @@
         ],
         "object_class": "/Script/GuLiStrike.GuLiShipAbilitySet",
         "object_path": "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV1.DA_ShipAbilitySet_WingmanV1",
-        "revision": 1,
+        "revision": 2,
         "stable_loadout_checksum": {
-          "decimal": 1018840387511014669,
-          "hex": "0x0E23A5EF346A550D"
+          "decimal": 6989748874991109314,
+          "hex": "0x610093918B0804C2"
         }
       },
       "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_DoubleRing": {
         "object_class": "/Script/GuLiStrike.GuLiWingmanFormationDefinition",
         "object_path": "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_DoubleRing.DA_WingmanFormation_DoubleRing",
         "stable_checksum": {
-          "decimal": 2297036205357562222,
-          "hex": "0x1FE0B642308C796E"
+          "decimal": 961249172103170343,
+          "hex": "0x0D570B0773D90927"
         },
         "values": {
           "agent_radius_centimeters": 1500.0,
@@ -54,6 +63,7 @@
           "cruise_flight_speed_centimeters_per_second": 4500.0,
           "expected_wingman_count": 25,
           "flight_count": 5,
+          "guidance_algorithm_version": 1,
           "inner_angular_speed_radians_per_second": 0.07999999821186066,
           "inner_ring_height_centimeters": 15000.0,
           "inner_ring_radius_centimeters": 60000.0,
@@ -63,12 +73,60 @@
           "maximum_deceleration_centimeters_per_second_squared": 800.0,
           "maximum_turn_rate_degrees_per_second": 20.0,
           "minimum_flight_speed_centimeters_per_second": 3000.0,
+          "model": "DoubleRingLegacy",
           "obstacle_look_ahead_centimeters": 5000.0,
           "outer_angular_speed_radians_per_second": 0.05999999865889549,
           "outer_ring_height_centimeters": -15000.0,
           "outer_ring_radius_centimeters": 90000.0,
           "outer_ring_slots": 12,
           "recovery_distance_centimeters": 250000.0,
+          "revision": 2,
+          "separation_radius_centimeters": 3000.0
+        }
+      },
+      "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_SwarmOrbit": {
+        "object_class": "/Script/GuLiStrike.GuLiWingmanFormationDefinition",
+        "object_path": "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_SwarmOrbit.DA_WingmanFormation_SwarmOrbit",
+        "stable_checksum": {
+          "decimal": 7175454098290433093,
+          "hex": "0x6394557C36B8DC45"
+        },
+        "swarm_orbit": {
+          "alignment_weight": 0.07999999821186066,
+          "axis_precession_amount": 0.2800000011920929,
+          "axis_precession_radians_per_second": 0.029999999329447746,
+          "boundary_return_speed_centimeters_per_second": 2800.0,
+          "catch_up_style_weight": 0.20000000298023224,
+          "curl_strength_centimeters_per_second": 1400.0,
+          "hull_exclusion_radius_centimeters": 14000.0,
+          "inner_soft_radius_centimeters": 24000.0,
+          "noise_spatial_scale_centimeters": 22000.0,
+          "noise_temporal_scale_seconds": 6.0,
+          "outer_soft_radius_centimeters": 52000.0,
+          "preferred_radius_return_speed_centimeters_per_second": 450.0,
+          "recovery_style_weight": 0.05000000074505806,
+          "response_time_seconds": 1.25,
+          "swirl_speed_max_centimeters_per_second": 5200.0,
+          "swirl_speed_min_centimeters_per_second": 3600.0,
+          "vertical_half_extent_centimeters": 14000.0,
+          "vertical_return_speed_centimeters_per_second": 1400.0
+        },
+        "values": {
+          "agent_radius_centimeters": 1500.0,
+          "catch_up_distance_centimeters": 60000.0,
+          "catch_up_flight_speed_centimeters_per_second": 7500.0,
+          "cruise_flight_speed_centimeters_per_second": 4500.0,
+          "expected_wingman_count": 25,
+          "flight_count": 5,
+          "guidance_algorithm_version": 1,
+          "maximum_acceleration_centimeters_per_second_squared": 1000.0,
+          "maximum_bank_degrees": 45.0,
+          "maximum_deceleration_centimeters_per_second_squared": 800.0,
+          "maximum_turn_rate_degrees_per_second": 20.0,
+          "minimum_flight_speed_centimeters_per_second": 3000.0,
+          "model": "SwarmOrbit",
+          "obstacle_look_ahead_centimeters": 5000.0,
+          "recovery_distance_centimeters": 90000.0,
           "revision": 1,
           "separation_radius_centimeters": 3000.0
         }
@@ -121,6 +179,7 @@
     "metadata_owner": {
       "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV1": "GuLi.ShipAbilityAssets.v1",
       "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_DoubleRing": "GuLi.ShipAbilityAssets.v1",
+      "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_SwarmOrbit": "GuLi.ShipAbilityAssets.v1",
       "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_BasicAuto": "GuLi.ShipAbilityAssets.v1",
       "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MissileSalvo": "GuLi.ShipAbilityAssets.v1"
     },
@@ -131,6 +190,9 @@
       "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_DoubleRing": [
         "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV1"
       ],
+      "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_SwarmOrbit": [
+        "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV1"
+      ],
       "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_BasicAuto": [
         "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV1"
       ],
@@ -139,40 +201,44 @@
       ]
     }
   },
-  "contract_fingerprint": "3d55dc032bf560a487f24422b426a2a257db2dcd5f4970ca15e6ee2d0152407e",
+  "contract_fingerprint": "a82415455a367d992da8104913e4a6a3f07038cbb0429052ec930264f833aeed",
   "dirty_packages": [],
-  "editor_process_id": 27864,
-  "engine_version": "5.7.4-51494982+++UE5+Release-5.7",
+  "editor_process_id": 4976,
+  "engine_version": "5.7.4-0+UE5",
   "expected_stable_checksums": {
-    "ability_set_loadout_v1": {
-      "decimal": 1018840387511014669,
-      "hex": "0x0E23A5EF346A550D"
+    "ability_set_loadout_v2": {
+      "decimal": 6989748874991109314,
+      "hex": "0x610093918B0804C2"
     },
     "basic": {
       "decimal": 3693785981362773575,
       "hex": "0x3342F6C78F721E47"
     },
     "formation": {
-      "decimal": 2297036205357562222,
-      "hex": "0x1FE0B642308C796E"
+      "decimal": 961249172103170343,
+      "hex": "0x0D570B0773D90927"
     },
     "missile": {
       "decimal": 2346791551061734444,
       "hex": "0x20917A7B5AEC342C"
+    },
+    "swarm_formation": {
+      "decimal": 7175454098290433093,
+      "hex": "0x6394557C36B8DC45"
     }
   },
-  "fields_match_native_v1": true,
+  "fields_match_native_v2": true,
   "hard_reference_chain_valid": true,
   "metadata_matches": true,
   "package_dirty": false,
   "restart_evidence": {
-    "current_editor_process_id": 27864,
+    "current_editor_process_id": 4976,
     "different_editor_process": true,
-    "previous_editor_process_id": 21600,
+    "previous_editor_process_id": 18420,
     "same_contract_fingerprint": true
   },
   "restart_verified": true,
   "schema": 1,
-  "stable_checksums_match_native_v1": true,
+  "stable_checksums_match_native_v2": true,
   "success": true
 }

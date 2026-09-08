@@ -209,4 +209,108 @@ bool FGuLiSkillDirtyTransactionTest::RunTest(const FString& Parameters)
 		FGuLiSkillResolver::ResolveSelected(EGuLiTeam::Red, Definitions, Configs, {ValidFirstUnitChange, InvalidRate}, {}, {{1, FName(TEXT("BasicAttack"))}}, Profiles, Error));
 	return true;
 }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWeaponSlotEquipmentIsolationTest,
+	"GuLiStrike.Skills.Resolver.WeaponSlotEquipmentIsolation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWeaponSlotEquipmentIsolationTest::RunTest(const FString& Parameters)
+{
+	(void)Parameters;
+	using namespace GuLiSkillTests;
+	TArray<FGuLiSkillDefinition> Definitions;
+	TArray<FGuLiUnitSkillConfig> Configs;
+	MakeCatalog(Definitions, Configs);
+
+	// Reuse the same registered behaviors in a second WM01 slot. This is an in-memory
+	// catalog only; production data and assets are not changed by the test.
+	const TArray<FGuLiUnitSkillConfig> OriginalConfigs = Configs;
+	for (const FGuLiUnitSkillConfig& Config : OriginalConfigs)
+	{
+		if (Config.UnitTypeId != 2u) continue;
+		FGuLiUnitSkillConfig Secondary = Config;
+		Secondary.SlotId = TEXT("SecondaryWeapon");
+		Secondary.bInitiallyUnlocked = false;
+		Configs.Add(MoveTemp(Secondary));
+	}
+
+	FGuLiSkillSource Reward;
+	Reward.SourceInstanceId = FGuid(0, 0, 0, 50);
+	Reward.DebugLabel = TEXT("UnlockWM01Secondary");
+	auto& Unlock = Reward.Unlocks.AddDefaulted_GetRef();
+	Unlock.Target.UnitTypeIds = {2};
+	Unlock.Target.SlotId = TEXT("SecondaryWeapon");
+	auto& WeaponOnlyModifier = Reward.Modifiers.AddDefaulted_GetRef();
+	WeaponOnlyModifier.Target.UnitTypeIds = {2};
+	WeaponOnlyModifier.Target.SlotId = TEXT("SecondaryWeapon");
+	WeaponOnlyModifier.Target.RequiredSkillId = TEXT("StrafeTest");
+	WeaponOnlyModifier.Attribute = EGuLiSkillAttribute::Damage;
+	WeaponOnlyModifier.Operation = EGuLiSkillModifierOperation::AddFlat;
+	WeaponOnlyModifier.Magnitude = 5.0f;
+
+	TArray<FGuLiSkillLoadoutSelection> Loadout;
+	Loadout.Add({1u, TEXT("BasicAttack"), TEXT("StrafeTest")});
+	Loadout.Add({2u, TEXT("SecondaryWeapon"), TEXT("StrafeTest")});
+	TArray<FGuLiResolvedSkillProfile> Profiles;
+	FString Error;
+	if (!TestTrue(TEXT("A reward can unlock and equip WM01's second slot"),
+		FGuLiSkillResolver::Resolve(EGuLiTeam::Red, Definitions, Configs, {Reward}, {}, Profiles, Error, &Loadout)))
+	{
+		AddError(Error);
+		return false;
+	}
+	const auto FindProfile = [&Profiles](const uint16 UnitTypeId, const FName SlotId)
+	{
+		return Profiles.FindByPredicate([&](const FGuLiResolvedSkillProfile& Profile)
+			{ return Profile.UnitTypeId == UnitTypeId && Profile.SlotId == SlotId; });
+	};
+	const FGuLiResolvedSkillProfile* SoldierA = FindProfile(1u, TEXT("BasicAttack"));
+	const FGuLiResolvedSkillProfile* WM01Secondary = FindProfile(2u, TEXT("SecondaryWeapon"));
+	if (!TestNotNull(TEXT("Soldier A's selected binding resolves"), SoldierA)
+		|| !TestNotNull(TEXT("WM01's secondary binding resolves"), WM01Secondary)) return false;
+	TestTrue(TEXT("The unlocked WM01 slot is equipped"), WM01Secondary->bUnlocked && WM01Secondary->bEquipped);
+	TestEqual(TEXT("The weapon-limited reward modifies only its exact binding"), WM01Secondary->Damage, 605.0f);
+	TestEqual(TEXT("Sharing one SkillId across bindings does not modify Soldier A"), SoldierA->Damage, 300.0f);
+
+	if (!TestTrue(TEXT("Removing the reward recomputes the retained equipment choice"),
+		FGuLiSkillResolver::Resolve(EGuLiTeam::Red, Definitions, Configs, {}, {}, Profiles, Error, &Loadout))) return false;
+	WM01Secondary = FindProfile(2u, TEXT("SecondaryWeapon"));
+	TestTrue(TEXT("Removing the unlock locks and disables only WM01's second slot"),
+		WM01Secondary && !WM01Secondary->bUnlocked && !WM01Secondary->bEquipped);
+	SoldierA = FindProfile(1u, TEXT("BasicAttack"));
+	TestTrue(TEXT("The other unit binding remains equipped"), SoldierA && SoldierA->bEquipped);
+
+	Loadout[1].SkillId = NAME_None;
+	if (!TestTrue(TEXT("An unlocked slot may be intentionally unequipped"),
+		FGuLiSkillResolver::Resolve(EGuLiTeam::Red, Definitions, Configs, {Reward}, {}, Profiles, Error, &Loadout))) return false;
+	WM01Secondary = FindProfile(2u, TEXT("SecondaryWeapon"));
+	TestTrue(TEXT("Unequipping preserves the unlocked stable slot"),
+		WM01Secondary && WM01Secondary->bUnlocked && !WM01Secondary->bEquipped);
+
+	const TArray<FGuLiResolvedSkillProfile> PriorProfiles = Profiles;
+	Loadout.Add({2u, TEXT("SecondaryWeapon"), TEXT("OtherTest")});
+	TestFalse(TEXT("Duplicate equipment for one binding is rejected"),
+		FGuLiSkillResolver::Resolve(EGuLiTeam::Red, Definitions, Configs, {Reward}, {}, Profiles, Error, &Loadout));
+	TestEqual(TEXT("Rejected equipment preserves the caller's prior snapshot"), Profiles.Num(), PriorProfiles.Num());
+	Loadout.Pop();
+	Loadout[1].SkillId = TEXT("NotCompatible");
+	TestFalse(TEXT("A candidate absent from the unit/slot catalog is rejected"),
+		FGuLiSkillResolver::Resolve(EGuLiTeam::Red, Definitions, Configs, {Reward}, {}, Profiles, Error, &Loadout));
+
+	TArray<FGuLiUnitSkillConfig> TooManySlots;
+	for (int32 SlotIndex = 0; SlotIndex < 33; ++SlotIndex)
+	{
+		FGuLiUnitSkillConfig& Config = TooManySlots.AddDefaulted_GetRef();
+		Config.UnitTypeId = 2u;
+		Config.SlotId = FName(*FString::Printf(TEXT("Slot%02d"), SlotIndex));
+		Config.SkillId = TEXT("Strafe");
+		Config.bDefault = true;
+		Config.Damage = 1.0f;
+		Config.AttackRatePerSecond = 1.0f;
+		Config.RangeCentimeters = 1000.0f;
+	}
+	TestFalse(TEXT("A unit type cannot exceed the runtime channel safety bound"),
+		FGuLiSkillResolver::ValidateCatalog(Definitions, TooManySlots, Error));
+	return true;
+}
 #endif

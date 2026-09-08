@@ -10,6 +10,7 @@
 #include "Gameplay/Wingman/Behavior/GuLiWingmanBehaviorStateTree.h"
 #include "Gameplay/Wingman/Behavior/GuLiWingmanGroupBehaviorRunner.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySet.h"
+#include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
 #include "Gameplay/Wingman/Mass/GuLiWingmanMassProcessors.h"
 #include "Components/StateTreeComponentSchema.h"
 #include "MassProcessingTypes.h"
@@ -129,6 +130,57 @@ namespace GuLiWingmanMassSimulationTests
 		return Test.TestTrue(TEXT("Config is a complete usable protocol-v7 projection"),
 			OutConfig.ProtocolVersion == GULI_WINGMAN_PROTOCOL_VERSION
 			&& OutConfig.IsUsableByLeaseOwner());
+	}
+
+	FGuLiGroupAbilityConfigSnapshot BuildValidV9AbilityConfig(
+		const FGuLiWingmanGroupHandle& Group)
+	{
+		FGuLiGroupAbilityConfigSnapshot Config;
+		Config.ShipInstanceId = Group.ShipInstanceId;
+		Config.MatchEpoch = 7u;
+		Config.Team = EGuLiTeam::Red;
+		Config.OwnerPlayerGuid = FGuid(0x11112222u, 0x33334444u, 0x55556666u, 0x77778888u);
+		Config.WingmanTypeId = TEXT("TestWingman");
+		Config.ShipGeneration = Group.ShipGeneration;
+		Config.GroupGeneration = Group.GroupGeneration;
+		Config.AbilitySetRevision = 1u;
+		Config.LoadoutRevision = 1u;
+		Config.SnapshotRevision = 1u;
+		Config.bGroupAbilitiesValid = true;
+		Config.FormationAbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
+		Config.FormationDefinitionRevision = 1u;
+		Config.FormationDefinitionChecksum = 0x1111222233334444ull;
+		Config.FormationCommandRevision = 1u;
+		Config.EffectiveClientSimTick = 30u;
+
+		FGuLiWingmanWeaponChannelConfig& Primary = Config.WeaponChannels.AddDefaulted_GetRef();
+		Primary.Binding = FGuLiWeaponBindingKey::Wingman(
+			Config.MatchEpoch, Config.Team, Config.OwnerPlayerGuid, Config.WingmanTypeId, TEXT("PrimaryWeapon"));
+		Primary.SkillId = TEXT("Test.Primary.Auto");
+		Primary.AbilityId = TAG_GuLi_ShipAbility_Weapon_Basic_Auto;
+		Primary.Kind = EGuLiWingmanWeaponKind::BasicAutomatic;
+		Primary.bEnabled = true;
+		Primary.ProfileRevision = 1u;
+		Primary.DefinitionRevision = 1u;
+		Primary.DefinitionChecksum = 0x2222333344445555ull;
+		Primary.Runtime.CooldownSeconds = 2.0f;
+
+		const FGuLiWingmanWeaponChannelConfig PrimaryCopy = Primary;
+		FGuLiWingmanWeaponChannelConfig& Secondary = Config.WeaponChannels.AddDefaulted_GetRef();
+		Secondary = PrimaryCopy;
+		Secondary.Binding.SlotId = TEXT("SecondaryWeapon");
+		Secondary.SkillId = TEXT("Test.Secondary.Auto");
+		Secondary.AbilityId = TAG_GuLi_ShipWingman_Weapon_Basic;
+		Secondary.ProfileRevision = 2u;
+		Secondary.DefinitionRevision = 2u;
+		Secondary.DefinitionChecksum = 0x3333444455556666ull;
+
+		Config.BasicWeaponAbilityId = Config.WeaponChannels[0].AbilityId;
+		Config.BasicWeaponDefinitionRevision = Config.WeaponChannels[0].DefinitionRevision;
+		Config.BasicWeaponDefinitionChecksum = Config.WeaponChannels[0].DefinitionChecksum;
+		Config.BasicWeaponRuntime = Config.WeaponChannels[0].Runtime;
+		Config.RefreshHash();
+		return Config;
 	}
 
 	void VerifyClientOnlyProcessor(
@@ -646,6 +698,214 @@ bool FGuLiWingmanBasicWeaponIntentStateTest::RunTest(const FString& Parameters)
 			Target, FVector(1000000.0, 0.0, 0.0), 20.0, 0.5, 35u, true, OldSourceIntent));
 
 	TestTrue(TEXT("Cleanup 25-emitter test group"), Simulation->DestroyOwnedGroup(Group));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiWingmanWeaponOnlyConfigPreservesFormationTest,
+	"GuLiStrike.Wingman.Simulation.WeaponOnlyConfigPreservesFormation",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ClientContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanWeaponOnlyConfigPreservesFormationTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanMassSimulationTests;
+	FTransientGameWorldFixture Fixture;
+	if (!Fixture.Initialize(*this))
+	{
+		return false;
+	}
+	UGuLiWingmanSimulationSubsystem* Simulation =
+		Fixture.World->GetSubsystem<UGuLiWingmanSimulationSubsystem>();
+	if (!TestNotNull(TEXT("Standalone owner simulation exists"), Simulation))
+	{
+		return false;
+	}
+	Simulation->SetNavigationRequirementBypassForTests(true);
+	Simulation->SetGroupBehaviorStateTreeForTests(nullptr);
+
+	const FGuLiWingmanGroupHandle Group = MakeGroup();
+	FGuLiGroupAbilityConfigSnapshot Config = BuildValidV9AbilityConfig(Group);
+	if (!TestTrue(TEXT("Protocol-v9 two-channel fixture is valid"), Config.IsUsableByLeaseOwner()))
+	{
+		return false;
+	}
+	FGuLiCarrierSourceRef CarrierSource;
+	CarrierSource.CanonicalEpoch = 4u;
+	CarrierSource.MoveRevision = 12u;
+	if (!TestTrue(TEXT("Create one complete owner group"),
+		Simulation->CreateOrResetOwnedGroup(
+			Group, Config, FTransform::Identity, FVector::ZeroVector, CarrierSource)))
+	{
+		return false;
+	}
+
+	FGuLiWingmanCandidateBatch InitialCandidate;
+	if (!TestTrue(TEXT("Capture the initial member and formation pose cut"),
+		Simulation->BuildCandidate(Group, Config.MatchEpoch, 5u, 1u, 31u, InitialCandidate)))
+	{
+		return false;
+	}
+	const FGuLiWingmanHandle OriginalEmitter = InitialCandidate.Samples[0].Wingman;
+	const FIntVector OriginalPosition = InitialCandidate.Samples[0].PositionCentimeters;
+	const FGuLiWingmanAcceptedBatch InitialAccepted = MakeAcceptedBatch(InitialCandidate, 0.0);
+	if (!TestTrue(TEXT("Initial accepted cut authorizes weapon state"),
+		Simulation->ApplyAcceptedBatch(InitialAccepted)))
+	{
+		return false;
+	}
+
+	const TArray<FVector> NavigationPath = {
+		FVector(0.0, 0.0, 0.0), FVector(25000.0, 5000.0, 10000.0), FVector(50000.0, 0.0, 15000.0)};
+	if (!TestTrue(TEXT("Seed one pending navigation path"),
+		Simulation->PrimeFlightNavigationStateForTests(Group, 0u, NavigationPath, true)))
+	{
+		return false;
+	}
+	FGuLiWingmanNavigationDiagnostics NavigationBefore;
+	if (!TestTrue(TEXT("Read navigation state before the weapon-only commit"),
+		Simulation->GetNavigationDiagnostics(Group, NavigationBefore)))
+	{
+		return false;
+	}
+
+	const FGuLiTargetHandle Target = MakeTarget();
+	const FVector TargetLocation(1000000.0, 0.0, 0.0);
+	FGuLiWingmanFireIntent PrimaryIntent;
+	FGuLiWingmanFireIntent SecondaryIntent;
+	TestTrue(TEXT("Primary slot may fire at its own initial cadence"),
+		Simulation->TryBuildWeaponFireIntent(Group, OriginalEmitter, Config.MatchEpoch, 5u,
+			Config.WeaponChannels[0], Target, TargetLocation, 0.0, 32u, true, PrimaryIntent));
+	TestTrue(TEXT("Secondary slot on the same member is independently ready"),
+		Simulation->TryBuildWeaponFireIntent(Group, OriginalEmitter, Config.MatchEpoch, 5u,
+			Config.WeaponChannels[1], Target, TargetLocation, 0.0, 33u, true, SecondaryIntent));
+	TestEqual(TEXT("One emitter sequence advances across both slots"),
+		SecondaryIntent.DomainFireSequence, PrimaryIntent.DomainFireSequence + 1u);
+
+	FGuLiGroupAbilityConfigSnapshot WeaponOnly = Config;
+	++WeaponOnly.LoadoutRevision;
+	++WeaponOnly.SnapshotRevision;
+	++WeaponOnly.WeaponChannels[0].ProfileRevision;
+	WeaponOnly.WeaponChannels[0].Runtime.CooldownSeconds = 4.0f;
+	FGuLiWingmanWeaponChannelConfig Tertiary = WeaponOnly.WeaponChannels[0];
+	Tertiary.Binding.SlotId = TEXT("TertiaryWeapon");
+	Tertiary.SkillId = TEXT("Test.Tertiary.Auto");
+	Tertiary.AbilityId = TAG_GuLi_ShipAbility_Reticle_Omni;
+	Tertiary.ProfileRevision = 3u;
+	Tertiary.DefinitionRevision = 3u;
+	Tertiary.DefinitionChecksum = 0x4444555566667777ull;
+	Tertiary.Runtime.CooldownSeconds = 3.0f;
+	WeaponOnly.WeaponChannels.Add(Tertiary);
+	WeaponOnly.BasicWeaponRuntime = WeaponOnly.WeaponChannels[0].Runtime;
+	WeaponOnly.RefreshHash();
+	if (!TestTrue(TEXT("Weapon-only channel add and cooldown change commit"),
+		Simulation->ApplyCommittedAbilityConfig(Group, WeaponOnly)))
+	{
+		return false;
+	}
+
+	FGuLiWingmanNavigationDiagnostics NavigationAfter;
+	TestTrue(TEXT("Navigation diagnostics remain available after weapon-only commit"),
+		Simulation->GetNavigationDiagnostics(Group, NavigationAfter));
+	TestEqual(TEXT("Weapon-only commit preserves the active path"),
+		NavigationAfter.ActiveFlightPaths, NavigationBefore.ActiveFlightPaths);
+	TestEqual(TEXT("Weapon-only commit preserves the pending request"),
+		NavigationAfter.PendingFlightRequests, NavigationBefore.PendingFlightRequests);
+	TestEqual(TEXT("Weapon-only commit cancels no navigation request"),
+		NavigationAfter.PendingRequestsCancelled, NavigationBefore.PendingRequestsCancelled);
+	FGuLiWingmanCandidateBatch AfterWeaponOnlyCandidate;
+	TestTrue(TEXT("Weapon-only commit preserves candidate production and accepted pose"),
+		Simulation->BuildCandidate(Group, Config.MatchEpoch, 5u, 2u, 34u, AfterWeaponOnlyCandidate));
+	TestTrue(TEXT("Weapon-only commit preserves stable member identity"),
+		AfterWeaponOnlyCandidate.Samples[0].Wingman == OriginalEmitter);
+	TestEqual(TEXT("Weapon-only commit never teleports the member"),
+		AfterWeaponOnlyCandidate.Samples[0].PositionCentimeters, OriginalPosition);
+
+	FGuLiWingmanFireIntent Intent;
+	TestFalse(TEXT("Changed primary cadence migrates its remaining interval proportionally"),
+		Simulation->TryBuildWeaponFireIntent(Group, OriginalEmitter, Config.MatchEpoch, 5u,
+			WeaponOnly.WeaponChannels[0], Target, TargetLocation, 2.0, 35u, true, Intent));
+	TestTrue(TEXT("Unchanged sibling slot keeps its original cadence"),
+		Simulation->TryBuildWeaponFireIntent(Group, OriginalEmitter, Config.MatchEpoch, 5u,
+			WeaponOnly.WeaponChannels[1], Target, TargetLocation, 2.0, 36u, true, Intent));
+	TestEqual(TEXT("Only successful slot requests advance the emitter sequence"),
+		Intent.DomainFireSequence, 3u);
+	TestFalse(TEXT("Newly added slot receives one complete initial interval"),
+		Simulation->TryBuildWeaponFireIntent(Group, OriginalEmitter, Config.MatchEpoch, 5u,
+			WeaponOnly.WeaponChannels[2], Target, TargetLocation, 2.99, 37u, true, Intent));
+	TestTrue(TEXT("Newly added slot becomes ready after its complete interval"),
+		Simulation->TryBuildWeaponFireIntent(Group, OriginalEmitter, Config.MatchEpoch, 5u,
+			WeaponOnly.WeaponChannels[2], Target, TargetLocation, 3.0, 38u, true, Intent));
+	TestEqual(TEXT("New slot shares the same emitter sequence domain"), Intent.DomainFireSequence, 4u);
+	TestTrue(TEXT("Migrated primary slot becomes ready at the proportional due time"),
+		Simulation->TryBuildWeaponFireIntent(Group, OriginalEmitter, Config.MatchEpoch, 5u,
+			WeaponOnly.WeaponChannels[0], Target, TargetLocation, 4.0, 39u, true, Intent));
+	TestEqual(TEXT("Primary slot success advances after sibling traffic"), Intent.DomainFireSequence, 5u);
+
+	FGuLiGroupAbilityConfigSnapshot Replacement = WeaponOnly;
+	++Replacement.LoadoutRevision;
+	++Replacement.SnapshotRevision;
+	Replacement.WeaponChannels[1].SkillId = TEXT("Test.Secondary.Replacement");
+	++Replacement.WeaponChannels[1].ProfileRevision;
+	++Replacement.WeaponChannels[1].DefinitionRevision;
+	Replacement.WeaponChannels[1].DefinitionChecksum ^= 0x55u;
+	Replacement.WeaponChannels[1].Runtime.CooldownSeconds = 5.0f;
+	Replacement.RefreshHash();
+	if (!TestTrue(TEXT("A slot replacement commits without disturbing siblings"),
+		Simulation->ApplyCommittedAbilityConfig(Group, Replacement)))
+	{
+		return false;
+	}
+	TestFalse(TEXT("Replacement slot receives a complete first interval"),
+		Simulation->TryBuildWeaponFireIntent(Group, OriginalEmitter, Config.MatchEpoch, 5u,
+			Replacement.WeaponChannels[1], Target, TargetLocation, 4.0, 40u, true, Intent));
+	TestTrue(TEXT("Replacement slot becomes ready at its own due time"),
+		Simulation->TryBuildWeaponFireIntent(Group, OriginalEmitter, Config.MatchEpoch, 5u,
+			Replacement.WeaponChannels[1], Target, TargetLocation, 5.0, 41u, true, Intent));
+	TestFalse(TEXT("Replacement never shortens the primary sibling cooldown"),
+		Simulation->TryBuildWeaponFireIntent(Group, OriginalEmitter, Config.MatchEpoch, 5u,
+			Replacement.WeaponChannels[0], Target, TargetLocation, 5.0, 42u, true, Intent));
+
+	TArray<FGuLiWingmanRosterEntry> Roster;
+	Roster.Reserve(InitialCandidate.Samples.Num());
+	for (const FGuLiWingmanCandidateSample& Sample : InitialCandidate.Samples)
+	{
+		FGuLiWingmanRosterEntry& Entry = Roster.AddDefaulted_GetRef();
+		Entry.Wingman = Sample.Wingman;
+		Entry.WingmanTypeId = Replacement.WingmanTypeId;
+	}
+	FGuLiWingmanHandle ReplacementEmitter = OriginalEmitter;
+	++ReplacementEmitter.EntityGeneration;
+	Roster[0].Wingman = ReplacementEmitter;
+	if (!TestTrue(TEXT("Roster cut installs a new entity generation in the stable slot"),
+		Simulation->ApplyRosterCut(Group, Roster)))
+	{
+		return false;
+	}
+	FGuLiWingmanCandidateBatch ReplenishedCandidate;
+	if (!TestTrue(TEXT("Replenished generation inherits pose but builds a fresh candidate"),
+		Simulation->BuildCandidate(Group, Config.MatchEpoch, 5u, 3u, 43u, ReplenishedCandidate)))
+	{
+		return false;
+	}
+	TestTrue(TEXT("Stable slot now exposes only the new generation"),
+		ReplenishedCandidate.Samples[0].Wingman == ReplacementEmitter);
+	TestEqual(TEXT("Replenishment preserves the stable-slot pose"),
+		ReplenishedCandidate.Samples[0].PositionCentimeters, OriginalPosition);
+	const FGuLiWingmanAcceptedBatch ReplenishedAccepted = MakeAcceptedBatch(ReplenishedCandidate, 0.0);
+	TestTrue(TEXT("New generation receives its own accepted source"),
+		Simulation->ApplyAcceptedBatch(ReplenishedAccepted));
+	TestFalse(TEXT("Old generation cannot reuse the replacement's slot state"),
+		Simulation->TryBuildWeaponFireIntent(Group, OriginalEmitter, Config.MatchEpoch, 5u,
+			Replacement.WeaponChannels[2], Target, TargetLocation, 10.0, 44u, true, Intent));
+	TestFalse(TEXT("New generation cannot fire before its complete tertiary interval"),
+		Simulation->TryBuildWeaponFireIntent(Group, ReplacementEmitter, Config.MatchEpoch, 5u,
+			Replacement.WeaponChannels[2], Target, TargetLocation, 2.99, 45u, true, Intent));
+	TestTrue(TEXT("New generation owns a fresh tertiary cooldown and sequence domain"),
+		Simulation->TryBuildWeaponFireIntent(Group, ReplacementEmitter, Config.MatchEpoch, 5u,
+			Replacement.WeaponChannels[2], Target, TargetLocation, 3.0, 46u, true, Intent));
+	TestEqual(TEXT("Replenished generation starts DomainFireSequence at one"), Intent.DomainFireSequence, 1u);
+
+	TestTrue(TEXT("Cleanup weapon-only simulation fixture"), Simulation->DestroyOwnedGroup(Group));
 	return true;
 }
 

@@ -107,6 +107,23 @@ bool FGuLiCommanderHealthBarSizingPolicyTest::RunTest(const FString& Parameters)
 		FRenderer::TestOnly_CalculateWorldSizeCentimeters(
 			1000.0f, 90.0f, 0, 1080).IsNearlyZero());
 
+	const FBoxSphereBounds SoldierABounds(
+		FVector(0.0f, 0.0f, 50.0f),
+		FVector(40.0f, 40.0f, 50.0f),
+		80.0f);
+	const FBoxSphereBounds WM01Bounds(
+		FVector(0.0f, 0.0f, 100.0f),
+		FVector(120.0f, 120.0f, 150.0f),
+		230.0f);
+	TestEqual(
+		TEXT("Soldier A health bar uses its own mesh top plus padding"),
+		FRenderer::TestOnly_CalculateSoldierHeightOffset(SoldierABounds),
+		120.0f);
+	TestEqual(
+		TEXT("WM01 health bar uses its distinct mesh top plus padding"),
+		FRenderer::TestOnly_CalculateSoldierHeightOffset(WM01Bounds),
+		270.0f);
+
 	return true;
 }
 

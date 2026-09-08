@@ -10,7 +10,9 @@
 #include "GameFramework/Actor.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySet.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
+#include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
 #include "Misc/AutomationTest.h"
+#include "UObject/UObjectGlobals.h"
 
 namespace GuLiWingmanCombatCoordinatorTests
 {
@@ -92,7 +94,7 @@ namespace GuLiWingmanCombatCoordinatorTests
 			return AddHealth(Test, *Actor, Handle, Team) ? Actor : nullptr;
 		}
 
-		bool Initialize(FAutomationTestBase& Test)
+		bool Initialize(FAutomationTestBase& Test, const bool bMultiChannel = false)
 		{
 			if (!Test.TestNotNull(TEXT("Engine exists for Wingman combat test"), GEngine))
 			{
@@ -133,6 +135,10 @@ namespace GuLiWingmanCombatCoordinatorTests
 			ASC->InitializeShipActorInfo(Ship);
 			FGuLiShipAbilityProjectionContext Projection;
 			Projection.ShipInstanceId = ShipTarget.AuthorityId;
+			Projection.MatchEpoch = 17u;
+			Projection.Team = EGuLiTeam::Red;
+			Projection.OwnerPlayerGuid = OwnerGuid;
+			Projection.WingmanTypeId = GuLiGetDefaultWingmanTypeId();
 			Projection.ShipGeneration = ShipTarget.Generation;
 			Projection.GroupGeneration = 1u;
 			Projection.FormationCommandRevision = 1u;
@@ -142,10 +148,77 @@ namespace GuLiWingmanCombatCoordinatorTests
 				return false;
 			}
 			AbilitySet = UGuLiShipAbilitySet::CreateNativeV1Transient(ASC);
+			FGuLiShipAbilityLoadoutState AppliedLoadout = FGuLiShipAbilityLoadoutState::MakeNativeV1();
+			if (bMultiChannel && AbilitySet)
+			{
+				const FGuLiShipAbilityGrant* NativeBasic =
+					AbilitySet->FindGrant(TAG_GuLi_ShipAbility_Weapon_Basic_Auto);
+				const FGuLiShipAbilityGrant* NativeMissile =
+					AbilitySet->FindGrant(TAG_GuLi_ShipAbility_Weapon_Missile_Salvo);
+				if (!Test.TestNotNull(TEXT("Native basic catalog entry exists"), NativeBasic)
+					|| !Test.TestNotNull(TEXT("Native missile catalog entry exists"), NativeMissile))
+				{
+					return false;
+				}
+				const FGuLiShipAbilityGrant NativeBasicCopy = *NativeBasic;
+				const FGuLiShipAbilityGrant NativeMissileCopy = *NativeMissile;
+
+				UGuLiWingmanWeaponDefinition* SecondaryBasicDefinition =
+					DuplicateObject<UGuLiWingmanWeaponDefinition>(NativeBasicCopy.WeaponDefinition.Get(), AbilitySet);
+				UGuLiWingmanWeaponDefinition* SecondaryMissileDefinition =
+					DuplicateObject<UGuLiWingmanWeaponDefinition>(NativeMissileCopy.WeaponDefinition.Get(), AbilitySet);
+				UGuLiWingmanWeaponDefinition* IndependentMissileDefinition =
+					DuplicateObject<UGuLiWingmanWeaponDefinition>(NativeMissileCopy.WeaponDefinition.Get(), AbilitySet);
+				if (!Test.TestNotNull(TEXT("Secondary automatic definition duplicates"), SecondaryBasicDefinition)
+					|| !Test.TestNotNull(TEXT("Shared-group missile definition duplicates"), SecondaryMissileDefinition)
+					|| !Test.TestNotNull(TEXT("Independent missile definition duplicates"), IndependentMissileDefinition))
+				{
+					return false;
+				}
+				SecondaryBasicDefinition->Revision = 2u;
+				SecondaryBasicDefinition->Damage = 20.0f;
+				SecondaryBasicDefinition->CooldownSeconds = 3.0f;
+				SecondaryMissileDefinition->Revision = 2u;
+				SecondaryMissileDefinition->Damage = 120.0f;
+				IndependentMissileDefinition->Revision = 3u;
+				IndependentMissileDefinition->Damage = 140.0f;
+
+				FGuLiShipAbilityGrant SecondaryBasic = NativeBasicCopy;
+				SecondaryBasic.AbilityId = TAG_GuLi_ShipWingman_Weapon_Basic;
+				SecondaryBasic.WeaponSlotId = TEXT("SecondaryWeapon");
+				SecondaryBasic.SkillId = TEXT("Test.Secondary.Auto");
+				SecondaryBasic.ProfileRevision = 2u;
+				SecondaryBasic.WeaponDefinition = SecondaryBasicDefinition;
+				AbilitySet->Grants.Add(SecondaryBasic);
+
+				FGuLiShipAbilityGrant SecondaryMissile = NativeMissileCopy;
+				SecondaryMissile.AbilityId = TAG_GuLi_ShipWingman_Weapon_Missile;
+				SecondaryMissile.WeaponSlotId = TEXT("SecondaryMissile");
+				SecondaryMissile.SkillId = TEXT("Test.Secondary.Missile");
+				SecondaryMissile.ProfileRevision = 2u;
+				SecondaryMissile.CooldownGroupId = NativeMissileCopy.GetEffectiveCooldownGroupId();
+				SecondaryMissile.WeaponDefinition = SecondaryMissileDefinition;
+				AbilitySet->Grants.Add(SecondaryMissile);
+
+				FGuLiShipAbilityGrant IndependentMissile = NativeMissileCopy;
+				IndependentMissile.AbilityId = TAG_GuLi_ShipAbility_Reticle_Omni;
+				IndependentMissile.WeaponSlotId = TEXT("IndependentMissile");
+				IndependentMissile.SkillId = TEXT("Test.Independent.Missile");
+				IndependentMissile.ProfileRevision = 3u;
+				IndependentMissile.CooldownGroupId = TEXT("IndependentTestSalvo");
+				IndependentMissile.WeaponDefinition = IndependentMissileDefinition;
+				AbilitySet->Grants.Add(IndependentMissile);
+
+				AppliedLoadout.AbilityIds.Add(SecondaryBasic.AbilityId);
+				AppliedLoadout.AbilityIds.Add(SecondaryMissile.AbilityId);
+				AppliedLoadout.AbilityIds.Add(IndependentMissile.AbilityId);
+				AppliedLoadout.Revision = 2u;
+				AppliedLoadout.Normalize();
+			}
 			FString Error;
 			if (!Test.TestNotNull(TEXT("Native Wingman ability definitions exist"), AbilitySet)
-				|| !Test.TestTrue(TEXT("Ship grants all three Wingman abilities"),
-					ASC->ServerApplyAbilitySet(AbilitySet, FGuLiShipAbilityLoadoutState::MakeNativeV1(), Error)))
+				|| !Test.TestTrue(TEXT("Ship grants the selected Wingman abilities"),
+					ASC->ServerApplyAbilitySet(AbilitySet, AppliedLoadout, Error)))
 			{
 				Test.AddError(Error);
 				return false;
@@ -154,7 +227,7 @@ namespace GuLiWingmanCombatCoordinatorTests
 			// represent an older acknowledged loadout.
 			ASC->ServerClearShipAbilities();
 			if (!Test.TestTrue(TEXT("A replacement Ship grant produces a prior nonzero revision"),
-				ASC->ServerApplyAbilitySet(AbilitySet, FGuLiShipAbilityLoadoutState::MakeNativeV1(), Error))
+				ASC->ServerApplyAbilitySet(AbilitySet, AppliedLoadout, Error))
 				|| !Test.TestTrue(TEXT("Ship publishes a complete ability config"),
 					ASC->BuildGroupAbilityConfigSnapshot(Config)))
 			{
@@ -251,17 +324,41 @@ namespace GuLiWingmanCombatCoordinatorTests
 
 		FGuLiWingmanFireIntent BasicIntent(const FGuLiTargetHandle& Target, const uint32 Sequence = 1u) const
 		{
+			const FGuLiWingmanWeaponChannelConfig* Channel =
+				Config.FindFirstWeaponChannel(EGuLiWingmanWeaponKind::BasicAutomatic);
+			return Channel ? WeaponIntent(*Channel, Accepted.Samples[0].Wingman, Target, Sequence)
+				: FGuLiWingmanFireIntent{};
+		}
+
+		const FGuLiWingmanWeaponChannelConfig* ChannelBySlot(const FName SlotId) const
+		{
+			return Config.WeaponChannels.FindByPredicate([SlotId](const FGuLiWingmanWeaponChannelConfig& Channel)
+			{
+				return Channel.Binding.SlotId == SlotId;
+			});
+		}
+
+		FGuLiWingmanFireIntent WeaponIntent(
+			const FGuLiWingmanWeaponChannelConfig& Channel,
+			const FGuLiWingmanHandle& Emitter,
+			const FGuLiTargetHandle& Target,
+			const uint32 Sequence) const
+		{
 			FGuLiWingmanFireIntent Intent;
 			Intent.MatchEpoch = 17u;
 			Intent.Group = Relay.GetLeaseState().Group;
 			Intent.LeaseEpoch = Relay.GetLeaseState().LeaseEpoch;
 			Intent.DomainFireSequence = Sequence;
-			Intent.Emitter = Accepted.Samples[0].Wingman;
+			Intent.Emitter = Emitter;
+			Intent.Binding = Channel.Binding;
 			Intent.SourceAcceptedState = Accepted.StateRef;
 			Intent.ClientFireTick = Accepted.StateRef.ClientSimTick + 1u;
 			Intent.Target = Target;
-			Intent.WeaponAbilityId = Config.BasicWeaponAbilityId;
-			Intent.WeaponDefinitionRevision = Config.BasicWeaponDefinitionRevision;
+			Intent.WeaponAbilityId = Channel.AbilityId;
+			Intent.SkillId = Channel.SkillId;
+			Intent.LoadoutRevision = Config.LoadoutRevision;
+			Intent.ProfileRevision = Channel.ProfileRevision;
+			Intent.WeaponDefinitionRevision = Channel.DefinitionRevision;
 			Intent.AbilitySetRevision = Config.AbilitySetRevision;
 			Intent.AimDirectionMilli = FIntVector(1000, 0, 0);
 			Intent.bClientPredictedLineOfSight = true;
@@ -272,11 +369,26 @@ namespace GuLiWingmanCombatCoordinatorTests
 			const uint32 Id,
 			const FVector& AimForward = FVector::ForwardVector) const
 		{
+			const FGuLiWingmanWeaponChannelConfig* Channel =
+				Config.FindFirstWeaponChannel(EGuLiWingmanWeaponKind::Missile);
+			return Channel ? MissileRequestForChannel(*Channel, Id, AimForward)
+				: FGuLiWingmanMissileSalvoRequest{};
+		}
+
+		FGuLiWingmanMissileSalvoRequest MissileRequestForChannel(
+			const FGuLiWingmanWeaponChannelConfig& Channel,
+			const uint32 Id,
+			const FVector& AimForward = FVector::ForwardVector) const
+		{
 			FGuLiWingmanMissileSalvoRequest Request;
 			Request.ActivationId = FGuid(0u, 0u, 100u, Id);
-			Request.MissileAbilityId = Config.MissileAbilityId;
+			Request.Binding = Channel.Binding;
+			Request.SkillId = Channel.SkillId;
+			Request.MissileAbilityId = Channel.AbilityId;
 			Request.AbilitySetRevision = Config.AbilitySetRevision;
-			Request.MissileDefinitionRevision = Config.MissileDefinitionRevision;
+			Request.LoadoutRevision = Config.LoadoutRevision;
+			Request.ProfileRevision = Channel.ProfileRevision;
+			Request.MissileDefinitionRevision = Channel.DefinitionRevision;
 			GuLiWingmanMissileAim::Quantize(AimForward, Request.AimDirectionMilli);
 			return Request;
 		}
@@ -487,6 +599,173 @@ bool FGuLiWingmanMissileAimQuantizationTest::RunTest(const FString& Parameters)
 		GuLiWingmanMissileAim::Decode(FIntVector::ZeroValue, Decoded));
 	TestFalse(TEXT("An out-of-domain aim cannot authorize a missile request"),
 		GuLiWingmanMissileAim::Decode(FIntVector(1001, 1001, 1001), Decoded));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanMultiChannelCooldownAndProvenanceTest,
+	"GuLiStrike.Wingman.Combat.MultiChannelCooldownAndProvenance",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanMultiChannelCooldownAndProvenanceTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanCombatCoordinatorTests;
+	FFixture Fixture;
+	if (!Fixture.Initialize(*this, true))
+	{
+		return false;
+	}
+
+	const FGuLiWingmanWeaponChannelConfig* PrimaryBasic = Fixture.ChannelBySlot(TEXT("BasicWeapon"));
+	const FGuLiWingmanWeaponChannelConfig* SecondaryBasic = Fixture.ChannelBySlot(TEXT("SecondaryWeapon"));
+	const FGuLiWingmanWeaponChannelConfig* PrimaryMissile = Fixture.ChannelBySlot(TEXT("Missile"));
+	const FGuLiWingmanWeaponChannelConfig* SecondaryMissile = Fixture.ChannelBySlot(TEXT("SecondaryMissile"));
+	const FGuLiWingmanWeaponChannelConfig* IndependentMissile = Fixture.ChannelBySlot(TEXT("IndependentMissile"));
+	if (!TestNotNull(TEXT("Primary automatic channel exists"), PrimaryBasic)
+		|| !TestNotNull(TEXT("Secondary automatic channel exists"), SecondaryBasic)
+		|| !TestNotNull(TEXT("Primary missile channel exists"), PrimaryMissile)
+		|| !TestNotNull(TEXT("Shared-group missile channel exists"), SecondaryMissile)
+		|| !TestNotNull(TEXT("Independent missile channel exists"), IndependentMissile))
+	{
+		return false;
+	}
+	TestTrue(TEXT("Two active channels explicitly share one cooldown group"),
+		PrimaryMissile->CooldownGroupId == SecondaryMissile->CooldownGroupId);
+	TestTrue(TEXT("Independent active channel has a distinct cooldown group"),
+		PrimaryMissile->CooldownGroupId != IndependentMissile->CooldownGroupId);
+
+	UGuLiCombatHealthComponent* EnemyHealth =
+		Fixture.Enemy->FindComponentByClass<UGuLiCombatHealthComponent>();
+	if (!TestNotNull(TEXT("Enemy health component remains registered"), EnemyHealth)
+		|| !TestTrue(TEXT("Direct-damage provenance fixture resets enemy health"),
+			EnemyHealth->InitializeServerHealth(30.0f, false)))
+	{
+		return false;
+	}
+	const FGuLiWingmanHandle Emitter = Fixture.Accepted.Samples[0].Wingman;
+	const FGuLiWingmanBasicFireResult First = Fixture.Coordinator.SubmitBasicFireIntent(
+		Fixture.OwnerGuid,
+		Fixture.WeaponIntent(*PrimaryBasic, Emitter, Fixture.EnemyTarget, 1u), 0.12);
+	TestTrue(TEXT("Primary automatic slot commits"), First.WasCommitted());
+	TestEqual(TEXT("Primary slot uses only its committed runtime damage"),
+		First.DamageResult.AppliedDamage, PrimaryBasic->Runtime.Damage);
+
+	const FGuLiWingmanBasicFireResult Second = Fixture.Coordinator.SubmitBasicFireIntent(
+		Fixture.OwnerGuid,
+		Fixture.WeaponIntent(*SecondaryBasic, Emitter, Fixture.EnemyTarget, 2u), 0.12);
+	TestTrue(TEXT("Same member may commit a different automatic slot at the same time"),
+		Second.WasCommitted());
+	TestEqual(TEXT("Secondary slot uses only its committed profile damage"),
+		Second.DamageResult.AppliedDamage, SecondaryBasic->Runtime.Damage);
+	TestTrue(TEXT("Secondary slot produces the lethal event"), Second.DamageResult.bKilled);
+
+	const FGuLiWingmanBasicFireResult PrimaryCooldown = Fixture.Coordinator.SubmitBasicFireIntent(
+		Fixture.OwnerGuid,
+		Fixture.WeaponIntent(*PrimaryBasic, Emitter, Fixture.FarEnemyTarget, 3u), 0.13);
+	TestTrue(TEXT("Only the reused primary slot observes its own cooldown"),
+		PrimaryCooldown.RelayResult.RejectReason == EGuLiWingmanRejectReason::CooldownActive);
+
+	FGuLiDeathCommitRecord Death;
+	if (!TestTrue(TEXT("Lethal direct damage records one authoritative death provenance row"),
+		Fixture.Ledger->TryGetDeathRecord(Second.DamageResult.DeathEventId, Death)))
+	{
+		return false;
+	}
+	TestTrue(TEXT("Death provenance carries the exact weapon binding"),
+		Death.WeaponBinding == SecondaryBasic->Binding);
+	TestEqual(TEXT("Death provenance carries the exact SkillId"), Death.SkillId, SecondaryBasic->SkillId);
+	TestEqual(TEXT("Death provenance carries the committed LoadoutRevision"),
+		Death.LoadoutRevision, Fixture.Config.LoadoutRevision);
+	TestEqual(TEXT("Death provenance carries the committed ProfileRevision"),
+		Death.ProfileRevision, SecondaryBasic->ProfileRevision);
+	TestEqual(TEXT("Direct damage roots the death in its stable shot"), Death.RootEventId, Second.ShotId);
+
+	TArray<FGuLiLogicalMissileState> LaunchedStates;
+	const FDelegateHandle LaunchHandle = Fixture.Missiles->OnLaunch.AddLambda(
+		[&LaunchedStates](const FGuLiLogicalMissileState& State)
+		{
+			LaunchedStates.Add(State);
+		});
+	const FGuLiWingmanMissileSalvoRequest PrimaryRequest =
+		Fixture.MissileRequestForChannel(*PrimaryMissile, 100u);
+	const FGuLiWingmanMissileSalvoResult PrimarySalvo =
+		Fixture.Coordinator.ActivateMissileSalvo(PrimaryRequest, 0.12);
+	TestTrue(TEXT("Primary active channel launches one legal Flight"), PrimarySalvo.WasLaunched());
+	TestEqual(TEXT("Primary active channel launches at most and exactly one full Flight here"),
+		PrimarySalvo.LaunchedCount, static_cast<int32>(GULI_WINGMAN_MEMBERS_PER_FLIGHT));
+
+	const FGuLiWingmanMissileSalvoResult SharedGroupBlocked = Fixture.Coordinator.ActivateMissileSalvo(
+		Fixture.MissileRequestForChannel(*SecondaryMissile, 101u), 0.13);
+	TestTrue(TEXT("A second active channel in the same cooldown group is blocked"),
+		SharedGroupBlocked.RejectReason == EGuLiWingmanRejectReason::CooldownActive);
+
+	const FGuLiWingmanMissileSalvoRequest IndependentRequest =
+		Fixture.MissileRequestForChannel(*IndependentMissile, 102u);
+	const FGuLiWingmanMissileSalvoResult IndependentSalvo =
+		Fixture.Coordinator.ActivateMissileSalvo(IndependentRequest, 0.13);
+	TestTrue(TEXT("A different active cooldown group launches independently"),
+		IndependentSalvo.WasLaunched());
+	TestTrue(TEXT("Legacy default missile cooldown remains active without blocking another group"),
+		Fixture.ASC->IsMissileCooldownActive());
+
+	const FGuLiLogicalMissileState* IndependentLaunch = LaunchedStates.FindByPredicate(
+		[IndependentMissile](const FGuLiLogicalMissileState& State)
+		{
+			return State.WeaponBinding == IndependentMissile->Binding;
+		});
+	if (TestNotNull(TEXT("Logical missile launch exposes the independent channel snapshot"), IndependentLaunch))
+	{
+		TestEqual(TEXT("Logical missile keeps its activation root"),
+			IndependentLaunch->RootEventId, IndependentRequest.ActivationId);
+		TestTrue(TEXT("Logical missile keeps the exact binding"),
+			IndependentLaunch->WeaponBinding == IndependentMissile->Binding);
+		TestEqual(TEXT("Logical missile keeps SkillId"),
+			IndependentLaunch->SkillId, IndependentMissile->SkillId);
+		TestEqual(TEXT("Logical missile keeps LoadoutRevision"),
+			IndependentLaunch->LoadoutRevision, Fixture.Config.LoadoutRevision);
+		TestEqual(TEXT("Logical missile keeps ProfileRevision"),
+			IndependentLaunch->ProfileRevision, IndependentMissile->ProfileRevision);
+		TestEqual(TEXT("Logical missile freezes committed damage"),
+			IndependentLaunch->Damage, IndependentMissile->Runtime.Damage);
+	}
+	Fixture.Missiles->OnLaunch.Remove(LaunchHandle);
+
+	const FGuLiWingmanHandle OldGeneration = Fixture.Accepted.Samples[10].Wingman;
+	const uint32 NewGeneration = OldGeneration.EntityGeneration + 1u;
+	TestTrue(TEXT("Server marks one stable-slot generation dead"),
+		Fixture.Relay.MarkWingmanDead(OldGeneration));
+	TestTrue(TEXT("Server replenishes that stable slot with a new generation"),
+		Fixture.Relay.ReplenishWingman(
+			OldGeneration.Flight.FlightIndex, OldGeneration.MemberIndex, NewGeneration));
+	TestEqual(TEXT("Roster synchronization removes only the old generation state"),
+		Fixture.Coordinator.SynchronizeRosterState(), 1);
+
+	FGuLiWingmanHandle NewEmitter = OldGeneration;
+	NewEmitter.EntityGeneration = NewGeneration;
+	FGuLiWingmanAcceptedBatch ReplenishedSource = Fixture.Accepted;
+	FGuLiWingmanCandidateSample* ReplacedSample = ReplenishedSource.Samples.FindByPredicate(
+		[&OldGeneration](const FGuLiWingmanCandidateSample& Sample)
+		{
+			return Sample.Wingman == OldGeneration;
+		});
+	if (!TestNotNull(TEXT("Accepted fixture contains the replenished stable slot"), ReplacedSample))
+	{
+		return false;
+	}
+	ReplacedSample->Wingman = NewEmitter;
+	ReplenishedSource.ServerAcceptedTimeSeconds = 0.15;
+	ReplenishedSource.RefreshHash();
+	FGuLiWingmanFireIntent ReplenishedIntent = Fixture.WeaponIntent(
+		*PrimaryBasic, NewEmitter, Fixture.FarEnemyTarget, 1u);
+	TestTrue(TEXT("New generation is denied before its full server-side first interval"),
+		Fixture.Coordinator.ValidateBasicFireIntent(ReplenishedIntent, ReplenishedSource, 0.16)
+			== EGuLiWingmanRejectReason::CooldownActive);
+
+	FGuLiWingmanAcceptedBatch DueSource = ReplenishedSource;
+	DueSource.ServerAcceptedTimeSeconds = 2.15;
+	DueSource.RefreshHash();
+	TestTrue(TEXT("New generation becomes eligible after the full server-side first interval"),
+		Fixture.Coordinator.ValidateBasicFireIntent(ReplenishedIntent, DueSource, 2.16)
+			== EGuLiWingmanRejectReason::None);
 	return true;
 }
 #endif

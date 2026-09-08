@@ -2,6 +2,7 @@
 
 #include "Commander/Mass/GuLiSoldierCombat.h"
 #include "HAL/PlatformTime.h"
+#include "Misc/Crc.h"
 
 namespace
 {
@@ -25,11 +26,15 @@ namespace
 
 FGuLiCombatExecutorRegistry::FGuLiCombatExecutorRegistry()
 {
-	RegisterExecutor(TEXT("DirectSingleTarget"), [](const FGuLiCombatSample& Source,
+	FExecutor EmitAttack = [](const FGuLiCombatSample& Source,
 		const FGuLiCombatSample& Target, TArray<FGuLiCombatDamageEvent>& Events)
 	{
-		Events.Add({Source.SoldierId, Target.SoldierId, Source.Profile->SkillId, Source.Profile->Damage});
-	});
+		Events.Add({Source.SoldierId, Target.SoldierId, Source.Profile->SkillId, Source.Profile->Damage,
+			Source.Profile->UnitTypeId, Source.Profile->SlotId, Source.Profile->Revision,
+			Source.Profile->ExecutorId, Source.Attack ? Source.Attack->ShotsFired + 1 : 0});
+	};
+	RegisterExecutor(TEXT("DirectSingleTarget"), EmitAttack);
+	RegisterExecutor(TEXT("LaunchProjectile"), MoveTemp(EmitAttack));
 }
 
 bool FGuLiCombatExecutorRegistry::RegisterExecutor(const FName Id, FExecutor Executor)
@@ -73,7 +78,7 @@ FIntPoint GuLiSoldierCombat::MakeSpatialCell(const FVector& Location)
 
 bool GuLiSoldierCombat::IsProfileUsable(const FGuLiResolvedSkillProfile& Profile)
 {
-	return !Profile.SkillId.IsNone() && !Profile.ExecutorId.IsNone()
+	return Profile.bUnlocked && Profile.bEquipped && !Profile.SkillId.IsNone() && !Profile.ExecutorId.IsNone()
 		&& FMath::IsFinite(Profile.Damage) && Profile.Damage > 0.0f
 		&& FMath::IsFinite(Profile.AttackRatePerSecond) && Profile.AttackRatePerSecond > 0.0f && Profile.AttackRatePerSecond <= 30.0f
 		&& FMath::IsFinite(Profile.RangeCentimeters) && Profile.RangeCentimeters > 0.0f
@@ -83,10 +88,12 @@ bool GuLiSoldierCombat::IsProfileUsable(const FGuLiResolvedSkillProfile& Profile
 void GuLiSoldierCombat::ReplaceProfile(const FGuLiResolvedSkillProfile& Previous,
 	const FGuLiResolvedSkillProfile& Next, const double SimulationSeconds, FGuLiSoldierAttackState& State)
 {
-	if (Previous.SkillId != Next.SkillId || Previous.ExecutorId != Next.ExecutorId)
+	if (Previous.SkillId != Next.SkillId || Previous.ExecutorId != Next.ExecutorId
+		|| (!Previous.bEquipped && Next.bEquipped))
 	{
 		State.TargetId = FGuLiSoldierId();
-		State.NextFireSeconds = SimulationSeconds + (Next.AttackRatePerSecond > 0.0f ? 1.0 / Next.AttackRatePerSecond : 0.0);
+		State.NextFireSeconds = FMath::Max(State.NextFireSeconds,
+			SimulationSeconds + (Next.AttackRatePerSecond > 0.0f ? 1.0 / Next.AttackRatePerSecond : 0.0));
 		State.PausedCooldownFraction = 1.0;
 		State.bRatePaused = Next.AttackRatePerSecond <= 0.0f;
 	}
@@ -117,9 +124,17 @@ FGuLiCombatStepMetrics GuLiSoldierCombat::CollectAttacks(const TConstArrayView<F
 	const uint32 SimTick, const double SimulationSeconds, const FGuLiCombatExecutorRegistry& Executors,
 	TArray<FGuLiCombatDamageEvent>& OutEvents)
 {
+	return CollectChannelAttacks(Samples, Samples, IndexById, Grid, SimTick, SimulationSeconds, Executors, OutEvents);
+}
+
+FGuLiCombatStepMetrics GuLiSoldierCombat::CollectChannelAttacks(const TConstArrayView<FGuLiCombatSample> Channels,
+	const TConstArrayView<FGuLiCombatSample> Samples, const TMap<uint32, int32>& IndexById,
+	const TMap<FIntPoint, TArray<int32>>& Grid, const uint32 SimTick, const double SimulationSeconds,
+	const FGuLiCombatExecutorRegistry& Executors, TArray<FGuLiCombatDamageEvent>& OutEvents)
+{
 	OutEvents.Reset();
 	FGuLiCombatStepMetrics Metrics;
-	for (const FGuLiCombatSample& Source : Samples)
+	for (const FGuLiCombatSample& Source : Channels)
 	{
 		if (!Source.Attack) continue;
 		FGuLiSoldierAttackState& State = *Source.Attack;
@@ -133,7 +148,9 @@ FGuLiCombatStepMetrics GuLiSoldierCombat::CollectAttacks(const TConstArrayView<F
 		if (!Target)
 		{
 			State.TargetId = {};
-			if (Source.SoldierId.Value % AcquisitionPeriodTicks == SimTick % AcquisitionPeriodTicks)
+			const uint32 SlotOffset = Source.Profile->SlotId == FName(TEXT("BasicAttack")) ? 0u
+				: FCrc::StrCrc32(*Source.Profile->SlotId.ToString());
+			if ((Source.SoldierId.Value + SlotOffset) % AcquisitionPeriodTicks == SimTick % AcquisitionPeriodTicks)
 			{
 				++Metrics.TargetQueries;
 				const double Range = Source.Profile->RangeCentimeters;

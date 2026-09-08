@@ -1,0 +1,1112 @@
+'use client';
+
+import {
+  type ColumnDef,
+  type SortingState,
+  flexRender,
+  getCoreRowModel,
+  getFilteredRowModel,
+  getSortedRowModel,
+  useReactTable,
+} from '@tanstack/react-table';
+import {
+  AlertTriangle,
+  Archive,
+  Boxes,
+  CheckCircle2,
+  ChevronRight,
+  CircleDashed,
+  ClipboardCheck,
+  Clock3,
+  FileQuestion,
+  FolderKanban,
+  Gamepad2,
+  Inbox,
+  LayoutDashboard,
+  ListChecks,
+  LoaderCircle,
+  RefreshCw,
+  Search,
+  ShieldAlert,
+  Wrench,
+  XCircle,
+} from 'lucide-react';
+import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import ReactMarkdown from 'react-markdown';
+import remarkGfm from 'remark-gfm';
+
+import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from '@/components/ui/card';
+import { Input } from '@/components/ui/input';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet';
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import type {
+  BacklogItem,
+  Diagnostic,
+  ProgressDocument,
+  ProgressDocumentDetail,
+  SearchResult,
+  Snapshot,
+  WorkflowStage,
+  WorkItem,
+} from '@/lib/progress-types';
+import { cn } from '@/lib/utils';
+
+type ViewKey =
+  | 'overview'
+  | 'search'
+  | 'requirements'
+  | 'development'
+  | 'archive'
+  | 'gameplay'
+  | 'backlog'
+  | 'quality';
+
+const NAVIGATION: Array<{
+  key: ViewKey;
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+}> = [
+  { key: 'overview', label: '战情总览', icon: LayoutDashboard },
+  { key: 'search', label: '全文搜索', icon: Search },
+  { key: 'requirements', label: '需求', icon: FileQuestion },
+  { key: 'development', label: '开发', icon: Wrench },
+  { key: 'archive', label: '归档时间线', icon: Archive },
+  { key: 'gameplay', label: '玩法模块', icon: Gamepad2 },
+  { key: 'backlog', label: '月度 Backlog', icon: Inbox },
+  { key: 'quality', label: '文档质量', icon: ShieldAlert },
+];
+
+const WORKFLOW: Array<{
+  key: WorkflowStage;
+  label: string;
+  hint: string;
+  icon: React.ComponentType<{ className?: string }>;
+}> = [
+  { key: 'draft', label: '草案', hint: '等待确认', icon: CircleDashed },
+  { key: 'planned', label: '规划', hint: '方案与排期', icon: FolderKanban },
+  { key: 'in_progress', label: '实施', hint: '正在推进', icon: Wrench },
+  { key: 'verification', label: '验收', hint: '等待证据', icon: ClipboardCheck },
+  { key: 'done', label: '完成', hint: '已闭环', icon: CheckCircle2 },
+];
+
+const KIND_LABELS: Record<string, string> = {
+  requirement: '需求',
+  development: '开发',
+  archive: '归档',
+  gameplay: '玩法',
+  backlog: 'Backlog',
+  reference: '参考',
+};
+
+const STATUS_LABELS: Record<string, string> = {
+  draft: '草案',
+  approved: '已确认',
+  superseded: '已取代',
+  cancelled: '已取消',
+  planned: '规划中',
+  in_progress: '实施中',
+  verification: '待验收',
+  done: '完成',
+  abandoned: '已放弃',
+  recorded: '已记录',
+  current: '当前',
+  reference: '参考',
+  not_run: '未运行',
+  partial: '部分通过',
+  passed: '通过',
+  failed: '失败',
+  not_applicable: '不适用',
+  inbox: '收件箱',
+  promoted: '已提升',
+  discarded: '已舍弃',
+};
+
+function stageClass(stage: WorkflowStage): string {
+  if (stage === 'in_progress') return 'border-cyan-400/35 bg-cyan-400/8 text-cyan-200';
+  if (stage === 'verification') return 'border-amber-400/35 bg-amber-400/8 text-amber-200';
+  if (stage === 'done') return 'border-emerald-400/25 bg-emerald-400/7 text-emerald-200';
+  return 'border-slate-600/70 bg-slate-800/55 text-slate-300';
+}
+
+function statusClass(status: string): string {
+  if (status === 'failed') return 'border-red-400/35 bg-red-400/10 text-red-200';
+  if (status === 'verification' || status === 'partial')
+    return 'border-amber-400/35 bg-amber-400/10 text-amber-200';
+  if (status === 'in_progress') return 'border-cyan-400/35 bg-cyan-400/10 text-cyan-200';
+  if (status === 'passed' || status === 'done' || status === 'approved')
+    return 'border-emerald-400/25 bg-emerald-400/8 text-emerald-200';
+  return 'border-slate-600 bg-slate-800/70 text-slate-300';
+}
+
+function StatusBadge({ value }: { value: string }) {
+  return (
+    <Badge variant="outline" className={cn('font-mono tracking-wide', statusClass(value))}>
+      {STATUS_LABELS[value] ?? value}
+    </Badge>
+  );
+}
+
+function formatBytes(bytes: number): string {
+  if (bytes < 1024) return `${bytes} B`;
+  return `${(bytes / 1024).toFixed(1)} KB`;
+}
+
+function readableDate(value: string): string {
+  return value ? value.slice(0, 10) : '—';
+}
+
+function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
+  return (
+    <div className="mb-5 flex flex-col gap-1.5">
+      <p className="console-label">{eyebrow}</p>
+      <h2 className="text-xl font-semibold tracking-tight text-slate-50 sm:text-2xl">{title}</h2>
+      <p className="max-w-3xl text-sm leading-6 text-slate-400">{description}</p>
+    </div>
+  );
+}
+
+function EmptyState({ label }: { label: string }) {
+  return (
+    <div className="flex min-h-44 flex-col items-center justify-center gap-3 rounded-lg border border-dashed border-slate-700 bg-slate-900/35 text-center">
+      <Boxes className="size-6 text-slate-600" />
+      <p className="text-sm text-slate-500">{label}</p>
+    </div>
+  );
+}
+
+function WorkflowRail({ snapshot }: { snapshot: Snapshot }) {
+  return (
+    <div className="workflow-rail">
+      {WORKFLOW.map((stage, index) => {
+        const Icon = stage.icon;
+        const count = snapshot.stats.by_stage[stage.key] ?? 0;
+        return (
+          <React.Fragment key={stage.key}>
+            <div className={cn('workflow-node', stageClass(stage.key))}>
+              <div className="flex items-start justify-between gap-3">
+                <Icon className="size-4" />
+                <span className="font-mono text-2xl font-semibold leading-none">{count}</span>
+              </div>
+              <div>
+                <p className="font-medium text-slate-100">{stage.label}</p>
+                <p className="mt-0.5 text-[11px] text-slate-500">{stage.hint}</p>
+              </div>
+            </div>
+            {index < WORKFLOW.length - 1 && <ChevronRight className="workflow-arrow" />}
+          </React.Fragment>
+        );
+      })}
+    </div>
+  );
+}
+
+function TaskMeter({ done, total }: { done: number; total: number }) {
+  const value = total ? Math.round((done / total) * 100) : 0;
+  return (
+    <div>
+      <div className="mb-2 flex items-end justify-between gap-4">
+        <div>
+          <p className="text-3xl font-semibold tracking-tight text-slate-50">{value}%</p>
+          <p className="mt-1 text-xs text-slate-500">已完成 {done} / {total} 项</p>
+        </div>
+        <ListChecks className="size-6 text-cyan-300" />
+      </div>
+      <div className="h-2 overflow-hidden rounded-full bg-slate-800">
+        <div className="h-full rounded-full bg-cyan-400 transition-[width]" style={{ width: `${value}%` }} />
+      </div>
+    </div>
+  );
+}
+
+function WorkList({
+  items,
+  documents,
+  openDocument,
+  empty,
+}: {
+  items: WorkItem[];
+  documents: Map<string, ProgressDocument>;
+  openDocument: (id: string) => void;
+  empty: string;
+}) {
+  if (!items.length) return <EmptyState label={empty} />;
+  return (
+    <div className="divide-y divide-slate-800/90">
+      {items.map((item) => {
+        const target = item.development_id ?? item.requirement_id;
+        return (
+          <button
+            key={item.id}
+            type="button"
+            onClick={() => target && documents.has(target) && openDocument(target)}
+            className="group flex w-full items-start gap-3 px-1 py-3 text-left transition-colors hover:bg-slate-800/30"
+          >
+            <span className={cn('mt-1.5 size-2 shrink-0 rounded-full', item.stage === 'verification' ? 'bg-amber-400' : 'bg-cyan-400')} />
+            <span className="min-w-0 flex-1">
+              <span className="line-clamp-1 text-sm font-medium text-slate-200 group-hover:text-cyan-200">{item.title}</span>
+              <span className="mt-1 line-clamp-1 text-xs text-slate-500">{item.next_action || item.summary}</span>
+            </span>
+            <span className="shrink-0 font-mono text-[10px] text-slate-600">{readableDate(item.updated)}</span>
+          </button>
+        );
+      })}
+    </div>
+  );
+}
+
+function Overview({ snapshot, openDocument }: { snapshot: Snapshot; openDocument: (id: string) => void }) {
+  const documents = useMemo(() => new Map(snapshot.documents.map((document) => [document.id, document])), [snapshot.documents]);
+  const rootDevelopment = snapshot.documents.filter(
+    (document) => document.kind === 'development' && document.role === 'root',
+  );
+  const tasks = rootDevelopment.reduce(
+    (accumulator, document) => ({
+      done: accumulator.done + document.tasks_done,
+      total: accumulator.total + document.tasks_total,
+    }),
+    { done: 0, total: 0 },
+  );
+  const signalText = (item: WorkItem) => {
+    const target = documents.get(item.development_id ?? item.requirement_id ?? '');
+    return `${item.next_action} ${target?.status_note ?? ''}`;
+  };
+  const blocked = snapshot.work_items
+    .filter((item) => /(阻塞|失败|未通过|blocked)/i.test(signalText(item)) || item.verification === 'failed')
+    .slice(0, 5);
+  const pending = snapshot.work_items
+    .filter((item) => item.stage === 'draft' || /(待确认|待用户|确认后)/.test(signalText(item)))
+    .slice(0, 5);
+  const active = snapshot.work_items.filter((item) => item.stage !== 'done');
+
+  return (
+    <div>
+      <SectionHeading
+        eyebrow="LIVE OPERATIONS"
+        title="项目战情总览"
+        description="状态直接来自 Markdown 元数据；索引、页面与 AI 目录共享同一份事实源。"
+      />
+      <WorkflowRail snapshot={snapshot} />
+
+      <div className="mt-5 grid gap-4 xl:grid-cols-[0.9fr_1.6fr]">
+        <Card className="control-card">
+          <CardHeader>
+            <CardDescription className="console-label">DELIVERY LOAD</CardDescription>
+            <CardTitle className="text-slate-100">开发任务完成率</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-6">
+            <TaskMeter done={tasks.done} total={tasks.total} />
+            <div className="grid grid-cols-3 gap-2 border-t border-slate-800 pt-4">
+              <Metric label="活跃工作" value={active.length} />
+              <Metric label="待验收" value={snapshot.stats.by_stage.verification ?? 0} tone="amber" />
+              <Metric label="文档总数" value={snapshot.stats.documents} />
+            </div>
+          </CardContent>
+        </Card>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <SignalCard
+            label="当前阻塞"
+            icon={XCircle}
+            tone="error"
+            count={blocked.length}
+          >
+            <WorkList items={blocked} documents={documents} openDocument={openDocument} empty="未识别到明确阻塞" />
+          </SignalCard>
+          <SignalCard label="待确认" icon={Clock3} tone="amber" count={pending.length}>
+            <WorkList items={pending} documents={documents} openDocument={openDocument} empty="暂无待确认项" />
+          </SignalCard>
+          <SignalCard label="最近更新" icon={RefreshCw} tone="cyan" count={Math.min(5, snapshot.work_items.length)}>
+            <WorkList
+              items={snapshot.work_items.slice(0, 5)}
+              documents={documents}
+              openDocument={openDocument}
+              empty="暂无工作项"
+            />
+          </SignalCard>
+        </div>
+      </div>
+
+      <div className="mt-5 grid gap-4 lg:grid-cols-[1.45fr_0.55fr]">
+        <Card className="control-card">
+          <CardHeader>
+            <CardDescription className="console-label">ACTIVE QUEUE</CardDescription>
+            <CardTitle className="text-slate-100">当前推进队列</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <WorkQueue items={active.slice(0, 14)} documents={documents} openDocument={openDocument} />
+          </CardContent>
+        </Card>
+        <Card className="control-card">
+          <CardHeader>
+            <CardDescription className="console-label">SYSTEM HEALTH</CardDescription>
+            <CardTitle className="text-slate-100">文档健康</CardTitle>
+          </CardHeader>
+          <CardContent className="space-y-3">
+            <HealthRow label="结构错误" value={snapshot.stats.errors} error={snapshot.stats.errors > 0} />
+            <HealthRow label="维护提示" value={snapshot.stats.warnings} />
+            <HealthRow label="工作项" value={snapshot.stats.work_items} />
+            <HealthRow label="Backlog" value={snapshot.backlog.length} />
+            <p className="border-t border-slate-800 pt-3 font-mono text-[10px] leading-5 text-slate-600">
+              REV {snapshot.revision}<br />
+              {snapshot.generated_at.replace('T', ' ')}
+            </p>
+          </CardContent>
+        </Card>
+      </div>
+    </div>
+  );
+}
+
+function Metric({ label, value, tone = 'cyan' }: { label: string; value: number; tone?: 'cyan' | 'amber' }) {
+  return (
+    <div>
+      <p className={cn('font-mono text-xl', tone === 'amber' ? 'text-amber-300' : 'text-cyan-300')}>{value}</p>
+      <p className="mt-0.5 text-[11px] text-slate-500">{label}</p>
+    </div>
+  );
+}
+
+function SignalCard({
+  label,
+  icon: Icon,
+  tone,
+  count,
+  children,
+}: {
+  label: string;
+  icon: React.ComponentType<{ className?: string }>;
+  tone: 'cyan' | 'amber' | 'error';
+  count: number;
+  children: React.ReactNode;
+}) {
+  const colors = {
+    cyan: 'text-cyan-300 border-cyan-400/20',
+    amber: 'text-amber-300 border-amber-400/20',
+    error: 'text-red-300 border-red-400/20',
+  };
+  return (
+    <Card className="control-card min-w-0">
+      <CardHeader className="border-b border-slate-800 pb-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className={cn('flex items-center gap-2', colors[tone])}>
+            <Icon className="size-4" />
+            <CardTitle className="text-sm text-slate-200">{label}</CardTitle>
+          </div>
+          <span className="font-mono text-lg text-slate-400">{count}</span>
+        </div>
+      </CardHeader>
+      <CardContent className="min-h-44 pt-0">{children}</CardContent>
+    </Card>
+  );
+}
+
+function HealthRow({ label, value, error = false }: { label: string; value: number; error?: boolean }) {
+  return (
+    <div className="flex items-center justify-between border-b border-slate-800/80 pb-3">
+      <span className="text-sm text-slate-400">{label}</span>
+      <span className={cn('font-mono text-base', error ? 'text-red-300' : 'text-slate-200')}>{value}</span>
+    </div>
+  );
+}
+
+function WorkQueue({
+  items,
+  documents,
+  openDocument,
+}: {
+  items: WorkItem[];
+  documents: Map<string, ProgressDocument>;
+  openDocument: (id: string) => void;
+}) {
+  if (!items.length) return <EmptyState label="当前没有活跃工作" />;
+  return (
+    <div className="overflow-hidden rounded-lg border border-slate-800">
+      <Table>
+        <TableHeader>
+          <TableRow className="border-slate-800 bg-slate-950/65 hover:bg-slate-950/65">
+            <TableHead>工作项</TableHead>
+            <TableHead>阶段</TableHead>
+            <TableHead>任务</TableHead>
+            <TableHead>更新</TableHead>
+          </TableRow>
+        </TableHeader>
+        <TableBody>
+          {items.map((item) => {
+            const target = item.development_id ?? item.requirement_id;
+            return (
+              <TableRow key={item.id} className="border-slate-800/80 hover:bg-slate-800/45">
+                <TableCell className="max-w-[520px] whitespace-normal">
+                  <button
+                    type="button"
+                    onClick={() => target && documents.has(target) && openDocument(target)}
+                    className="text-left"
+                  >
+                    <span className="line-clamp-1 font-medium text-slate-200 hover:text-cyan-200">{item.title}</span>
+                    <span className="mt-1 block line-clamp-1 text-xs text-slate-500">{item.next_action || item.summary}</span>
+                  </button>
+                </TableCell>
+                <TableCell><Badge variant="outline" className={stageClass(item.stage)}>{WORKFLOW.find((stage) => stage.key === item.stage)?.label}</Badge></TableCell>
+                <TableCell className="font-mono text-xs text-slate-400">
+                  {item.tasks_total ? `${item.tasks_done}/${item.tasks_total}` : '—'}
+                </TableCell>
+                <TableCell className="font-mono text-xs text-slate-500">{readableDate(item.updated)}</TableCell>
+              </TableRow>
+            );
+          })}
+        </TableBody>
+      </Table>
+    </div>
+  );
+}
+
+function DocumentTable({
+  documents,
+  openDocument,
+  placeholder,
+}: {
+  documents: ProgressDocument[];
+  openDocument: (id: string) => void;
+  placeholder: string;
+}) {
+  const [sorting, setSorting] = useState<SortingState>([{ id: 'updated', desc: true }]);
+  const [filter, setFilter] = useState('');
+  const columns = useMemo<ColumnDef<ProgressDocument>[]>(
+    () => [
+      {
+        accessorKey: 'title',
+        header: '文档',
+        cell: ({ row }) => (
+          <button type="button" onClick={() => openDocument(row.original.id)} className="max-w-xl text-left">
+            <span className="line-clamp-1 font-medium text-slate-200 hover:text-cyan-200">{row.original.title}</span>
+            <span className="mt-1 block font-mono text-[10px] text-slate-600">{row.original.id}</span>
+          </button>
+        ),
+      },
+      {
+        accessorKey: 'role',
+        header: '层级',
+        cell: ({ row }) => <span className="text-xs text-slate-500">{row.original.role === 'root' ? '总览' : '子页'}</span>,
+      },
+      {
+        accessorKey: 'status',
+        header: '状态',
+        cell: ({ row }) => <StatusBadge value={row.original.status} />,
+      },
+      {
+        id: 'areas',
+        accessorFn: (row) => row.areas.join(' '),
+        header: '模块',
+        cell: ({ row }) => (
+          <div className="flex max-w-[240px] flex-wrap gap-1">
+            {row.original.areas.slice(0, 3).map((area) => (
+              <span key={area} className="area-chip">{area}</span>
+            ))}
+          </div>
+        ),
+      },
+      {
+        accessorKey: 'task_progress',
+        header: '任务',
+        cell: ({ row }) => (
+          <span className="font-mono text-xs text-slate-400">
+            {row.original.tasks_total ? `${row.original.tasks_done}/${row.original.tasks_total}` : '—'}
+          </span>
+        ),
+      },
+      {
+        accessorKey: 'bytes',
+        header: '大小',
+        cell: ({ row }) => <span className="font-mono text-xs text-slate-500">{formatBytes(row.original.bytes)}</span>,
+      },
+      {
+        accessorKey: 'updated',
+        header: '更新',
+        cell: ({ row }) => <span className="font-mono text-xs text-slate-500">{readableDate(row.original.updated)}</span>,
+      },
+    ],
+    [openDocument],
+  );
+  const table = useReactTable({
+    data: documents,
+    columns,
+    state: { sorting, globalFilter: filter },
+    onSortingChange: setSorting,
+    onGlobalFilterChange: setFilter,
+    getCoreRowModel: getCoreRowModel(),
+    getFilteredRowModel: getFilteredRowModel(),
+    getSortedRowModel: getSortedRowModel(),
+  });
+
+  return (
+    <div>
+      <div className="mb-3 flex items-center justify-between gap-3">
+        <div className="relative w-full max-w-sm">
+          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-600" />
+          <Input
+            value={filter}
+            onChange={(event) => setFilter(event.target.value)}
+            placeholder={placeholder}
+            className="border-slate-700 bg-slate-950/60 pl-9 text-slate-200 placeholder:text-slate-600"
+          />
+        </div>
+        <span className="shrink-0 font-mono text-xs text-slate-600">{table.getFilteredRowModel().rows.length} DOCS</span>
+      </div>
+      <div className="overflow-hidden rounded-lg border border-slate-800 bg-slate-900/45">
+        <Table>
+          <TableHeader>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <TableRow key={headerGroup.id} className="border-slate-800 bg-slate-950/70 hover:bg-slate-950/70">
+                {headerGroup.headers.map((header) => (
+                  <TableHead key={header.id}>
+                    {header.isPlaceholder ? null : (
+                      <button
+                        type="button"
+                        onClick={header.column.getToggleSortingHandler()}
+                        className="text-xs uppercase tracking-wider text-slate-500 hover:text-slate-300"
+                      >
+                        {flexRender(header.column.columnDef.header, header.getContext())}
+                        {{ asc: ' ↑', desc: ' ↓' }[header.column.getIsSorted() as string] ?? ''}
+                      </button>
+                    )}
+                  </TableHead>
+                ))}
+              </TableRow>
+            ))}
+          </TableHeader>
+          <TableBody>
+            {table.getRowModel().rows.length ? (
+              table.getRowModel().rows.map((row) => (
+                <TableRow key={row.id} className="border-slate-800/80 hover:bg-slate-800/45">
+                  {row.getVisibleCells().map((cell) => (
+                    <TableCell key={cell.id}>{flexRender(cell.column.columnDef.cell, cell.getContext())}</TableCell>
+                  ))}
+                </TableRow>
+              ))
+            ) : (
+              <TableRow className="border-0 hover:bg-transparent">
+                <TableCell colSpan={columns.length} className="h-36 text-center text-slate-600">没有匹配文档</TableCell>
+              </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+    </div>
+  );
+}
+
+function SearchView({ openDocument }: { openDocument: (id: string) => void }) {
+  const [query, setQuery] = useState('');
+  const [kind, setKind] = useState('');
+  const [results, setResults] = useState<SearchResult[]>([]);
+  const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const controller = new AbortController();
+    if (!query.trim()) {
+      return () => controller.abort();
+    }
+    const timeout = window.setTimeout(async () => {
+      setLoading(true);
+      try {
+        const params = new URLSearchParams({ q: query, limit: '80' });
+        if (kind) params.set('kind', kind);
+        const response = await fetch(`/api/search?${params}`, { signal: controller.signal });
+        if (!response.ok) throw new Error(`搜索失败：HTTP ${response.status}`);
+        const payload = (await response.json()) as { results: SearchResult[] };
+        setResults(payload.results);
+      } catch (error) {
+        if ((error as Error).name !== 'AbortError') setResults([]);
+      } finally {
+        if (!controller.signal.aborted) setLoading(false);
+      }
+    }, 220);
+    return () => {
+      window.clearTimeout(timeout);
+      controller.abort();
+    };
+  }, [query, kind]);
+
+  return (
+    <div>
+      <SectionHeading
+        eyebrow="FULL TEXT RETRIEVAL"
+        title="全文搜索"
+        description="搜索标题、摘要、状态说明、下一步和 Markdown 正文；结果始终只读。"
+      />
+      <div className="search-console">
+        <Search className="size-5 text-cyan-300" />
+        <Input
+          value={query}
+          onChange={(event) => setQuery(event.target.value)}
+          placeholder="输入功能、类名、验证结论或归档事实……"
+          className="h-12 flex-1 border-0 bg-transparent px-0 text-base text-slate-100 shadow-none focus-visible:ring-0"
+        />
+        <select value={kind} onChange={(event) => setKind(event.target.value)} className="filter-select">
+          <option value="">全部类型</option>
+          {Object.entries(KIND_LABELS).map(([value, label]) => <option key={value} value={value}>{label}</option>)}
+        </select>
+        {loading && query.trim() && <LoaderCircle className="size-4 animate-spin text-slate-500" />}
+      </div>
+      {!query.trim() ? (
+        <EmptyState label="输入关键词开始检索 120 篇核心文档及嵌套参考资料" />
+      ) : results.length ? (
+        <div className="mt-4 grid gap-3 lg:grid-cols-2">
+          {results.map((result) => (
+            <button key={result.id} type="button" onClick={() => openDocument(result.id)} className="search-result">
+              <div className="flex items-center justify-between gap-3">
+                <div className="flex items-center gap-2">
+                  <Badge variant="outline" className="border-slate-700 text-slate-400">{KIND_LABELS[result.kind] ?? result.kind}</Badge>
+                  <StatusBadge value={result.status} />
+                </div>
+                <span className="font-mono text-[10px] text-slate-600">{readableDate(result.updated)}</span>
+              </div>
+              <h3 className="mt-3 line-clamp-1 text-left font-medium text-slate-100">{result.title}</h3>
+              <p className="mt-2 line-clamp-3 text-left text-sm leading-6 text-slate-500">{result.excerpt || result.summary}</p>
+              <p className="mt-3 truncate text-left font-mono text-[10px] text-cyan-500/70">{result.path}</p>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <div className="mt-4"><EmptyState label={loading ? '正在检索……' : '没有匹配结果'} /></div>
+      )}
+    </div>
+  );
+}
+
+function ArchiveTimeline({ documents, openDocument }: { documents: ProgressDocument[]; openDocument: (id: string) => void }) {
+  const archives = documents
+    .filter((document) => document.kind === 'archive' && document.role === 'root')
+    .sort((left, right) => right.created.localeCompare(left.created) || right.updated.localeCompare(left.updated));
+  return (
+    <div>
+      <SectionHeading
+        eyebrow="IMMUTABLE RECORDS"
+        title="归档时间线"
+        description="增量事实按时间倒序排列；勘误和里程碑通过关系链接历史，不覆盖原记录。"
+      />
+      <div className="relative ml-2 border-l border-slate-800 pl-6">
+        {archives.map((document) => (
+          <button key={document.id} type="button" onClick={() => openDocument(document.id)} className="timeline-entry group">
+            <span className="timeline-dot" />
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-mono text-xs text-cyan-400/80">{document.created}</span>
+              <StatusBadge value={document.status} />
+            </div>
+            <h3 className="mt-2 text-left font-medium text-slate-200 group-hover:text-cyan-200">{document.title}</h3>
+            <p className="mt-1 line-clamp-2 text-left text-sm leading-6 text-slate-500">{document.summary}</p>
+          </button>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function BacklogView({ items }: { items: BacklogItem[] }) {
+  return (
+    <div>
+      <SectionHeading
+        eyebrow="IDEA INBOX"
+        title="月度 Backlog"
+        description="未确认点子先停在这里；提升为正式需求后仍保留原条目和追溯关系。"
+      />
+      {items.length ? (
+        <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
+          {items.map((item) => (
+            <Card key={item.id} className="control-card">
+              <CardHeader>
+                <div className="flex items-center justify-between gap-3">
+                  <span className="font-mono text-xs text-cyan-400">{item.id}</span>
+                  <StatusBadge value={item.status} />
+                </div>
+                <CardTitle className="pt-2 text-slate-100">{item.title}</CardTitle>
+              </CardHeader>
+              <CardContent className="space-y-3 text-sm text-slate-400">
+                <p><span className="text-slate-600">价值 / </span>{item.value || '—'}</p>
+                <p><span className="text-slate-600">待确认 / </span>{item.question || '—'}</p>
+                <div className="flex flex-wrap gap-1">{item.areas.map((area) => <span key={area} className="area-chip">{area}</span>)}</div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
+      ) : (
+        <EmptyState label="本月暂无正式编号的 Backlog 条目" />
+      )}
+    </div>
+  );
+}
+
+function DiagnosticList({ title, items, error }: { title: string; items: Diagnostic[]; error: boolean }) {
+  return (
+    <Card className="control-card">
+      <CardHeader className="border-b border-slate-800">
+        <div className="flex items-center justify-between gap-3">
+          <CardTitle className="text-slate-100">{title}</CardTitle>
+          <span className={cn('font-mono text-xl', error ? 'text-red-300' : 'text-amber-300')}>{items.length}</span>
+        </div>
+      </CardHeader>
+      <CardContent className="divide-y divide-slate-800/80">
+        {items.length ? items.map((item, index) => (
+          <div key={`${item.path}-${item.code}-${index}`} className="py-3">
+            <div className="flex flex-wrap items-center gap-2">
+              {error ? <XCircle className="size-4 text-red-300" /> : <AlertTriangle className="size-4 text-amber-300" />}
+              <code className="text-xs text-slate-300">{item.code}</code>
+            </div>
+            <p className="mt-2 text-sm text-slate-400">{item.message}</p>
+            <p className="mt-1 break-all font-mono text-[10px] text-slate-600">{item.path}</p>
+          </div>
+        )) : <div className="py-10 text-center text-sm text-slate-600">无</div>}
+      </CardContent>
+    </Card>
+  );
+}
+
+function QualityView({ snapshot }: { snapshot: Snapshot }) {
+  return (
+    <div>
+      <SectionHeading
+        eyebrow="DOCUMENT GATE"
+        title="文档质量"
+        description="错误会阻断维护流程；尺寸和任务数量属于拆分提示，不等同于验证失败。"
+      />
+      <div className="grid gap-4 lg:grid-cols-2">
+        <DiagnosticList title="结构错误" items={snapshot.diagnostics.errors} error />
+        <DiagnosticList title="维护提示" items={snapshot.diagnostics.warnings} error={false} />
+      </div>
+    </div>
+  );
+}
+
+function resolveMarkdownDocument(sourcePath: string, href: string, documentsByPath: Map<string, ProgressDocument>): ProgressDocument | undefined {
+  if (!href || /^(?:https?:|mailto:|#)/i.test(href)) return undefined;
+  const rawPath = decodeURIComponent(href.split('#', 1)[0]);
+  const parts = sourcePath.split('/');
+  parts.pop();
+  for (const part of rawPath.replace(/\\/g, '/').split('/')) {
+    if (!part || part === '.') continue;
+    if (part === '..') parts.pop();
+    else parts.push(part);
+  }
+  return documentsByPath.get(parts.join('/'));
+}
+
+function DocumentDrawer({
+  documentId,
+  documents,
+  onClose,
+  openDocument,
+}: {
+  documentId: string | null;
+  documents: ProgressDocument[];
+  onClose: () => void;
+  openDocument: (id: string) => void;
+}) {
+  const [detail, setDetail] = useState<ProgressDocumentDetail | null>(null);
+  const [loadError, setLoadError] = useState<{ id: string; message: string } | null>(null);
+  const documentsById = useMemo(() => new Map(documents.map((document) => [document.id, document])), [documents]);
+  const documentsByPath = useMemo(() => new Map(documents.map((document) => [document.path, document])), [documents]);
+
+  useEffect(() => {
+    if (!documentId) return;
+    const controller = new AbortController();
+    fetch(`/api/documents/${encodeURIComponent(documentId)}`, { signal: controller.signal })
+      .then((response) => {
+        if (!response.ok) throw new Error(`读取失败：HTTP ${response.status}`);
+        return response.json() as Promise<ProgressDocumentDetail>;
+      })
+      .then((value) => {
+        setDetail(value);
+        setLoadError(null);
+      })
+      .catch((reason: Error) => {
+        if (reason.name !== 'AbortError') setLoadError({ id: documentId, message: reason.message });
+      });
+    return () => controller.abort();
+  }, [documentId]);
+
+  const relationRows = detail
+    ? Object.entries(detail.relations).flatMap(([label, value]) => {
+        const values = Array.isArray(value) ? value : value === null || value === false ? [] : [String(value)];
+        return values.map((item) => ({ label, value: item, target: documentsById.get(item) }));
+      })
+    : [];
+
+  return (
+    <Sheet open={Boolean(documentId)} onOpenChange={(open) => !open && onClose()}>
+      <SheetContent
+        className="data-[side=right]:w-[min(94vw,1152px)] data-[side=right]:sm:max-w-[1152px] border-slate-800 bg-[#08111f] p-0"
+        showCloseButton
+      >
+        {!detail || detail.id !== documentId ? (
+          loadError?.id === documentId ? (
+            <div className="flex h-full flex-col items-center justify-center gap-3 text-red-200"><XCircle className="size-7" /><p>{loadError.message}</p></div>
+          ) : (
+          <div className="flex h-full items-center justify-center"><LoaderCircle className="size-6 animate-spin text-cyan-300" /></div>
+          )
+        ) : detail ? (
+          <>
+            <SheetHeader className="border-b border-slate-800 bg-slate-950/45 px-6 py-5 pr-14">
+              <div className="mb-2 flex flex-wrap items-center gap-2">
+                <Badge variant="outline" className="border-slate-700 text-slate-400">{KIND_LABELS[detail.kind] ?? detail.kind}</Badge>
+                <StatusBadge value={detail.status} />
+                <StatusBadge value={detail.verification} />
+                {detail.role === 'detail' && <Badge variant="outline" className="border-cyan-500/25 text-cyan-300">子页</Badge>}
+              </div>
+              <SheetTitle className="text-xl leading-7 text-slate-50">{detail.title}</SheetTitle>
+              <SheetDescription className="font-mono text-[10px] text-slate-600">{detail.id} · {detail.path}</SheetDescription>
+            </SheetHeader>
+            <ScrollArea className="min-h-0 flex-1">
+              <div className="px-6 py-6 sm:px-8">
+                <div className="grid gap-3 sm:grid-cols-2">
+                  <InfoBlock label="摘要" value={detail.summary} />
+                  <InfoBlock label="下一步" value={detail.next_action || '—'} tone="cyan" />
+                  <InfoBlock label="状态说明" value={detail.status_note || '—'} />
+                  <InfoBlock label="范围" value={detail.areas.join(' / ') || '—'} />
+                </div>
+                {relationRows.length > 0 && (
+                  <div className="mt-5 border-y border-slate-800 py-4">
+                    <p className="console-label mb-3">RELATIONS</p>
+                    <div className="flex flex-wrap gap-2">
+                      {relationRows.map((relation, index) => (
+                        <button
+                          key={`${relation.label}-${relation.value}-${index}`}
+                          type="button"
+                          disabled={!relation.target}
+                          onClick={() => relation.target && openDocument(relation.target.id)}
+                          className="relation-chip disabled:cursor-default"
+                        >
+                          <span className="text-slate-600">{relation.label}</span>
+                          <span>{relation.target?.title ?? relation.value}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                {detail.headings.length > 1 && (
+                  <details className="mt-5 rounded-lg border border-slate-800 bg-slate-950/35 p-4">
+                    <summary className="cursor-pointer text-sm font-medium text-slate-300">目录 · {detail.headings.length} 节</summary>
+                    <ol className="mt-3 space-y-1.5 text-xs text-slate-500">
+                      {detail.headings.slice(1).map((heading, index) => (
+                        <li key={`${heading.title}-${index}`} style={{ paddingLeft: `${Math.max(0, heading.level - 2) * 12}px` }}>{heading.title}</li>
+                      ))}
+                    </ol>
+                  </details>
+                )}
+                <article className="markdown-body mt-7">
+                  <ReactMarkdown
+                    remarkPlugins={[remarkGfm]}
+                    skipHtml
+                    components={{
+                      a: ({ href = '', children }) => {
+                        const target = resolveMarkdownDocument(detail.path, href, documentsByPath);
+                        if (target) {
+                          return <button type="button" className="markdown-link" onClick={() => openDocument(target.id)}>{children}</button>;
+                        }
+                        return <a href={href} target={/^https?:/i.test(href) ? '_blank' : undefined} rel="noreferrer">{children}</a>;
+                      },
+                    }}
+                  >
+                    {detail.body}
+                  </ReactMarkdown>
+                </article>
+              </div>
+            </ScrollArea>
+          </>
+        ) : null}
+      </SheetContent>
+    </Sheet>
+  );
+}
+
+function InfoBlock({ label, value, tone }: { label: string; value: string; tone?: 'cyan' }) {
+  return (
+    <div className="rounded-lg border border-slate-800 bg-slate-950/35 p-3">
+      <p className="console-label">{label}</p>
+      <p className={cn('mt-2 text-sm leading-6', tone === 'cyan' ? 'text-cyan-200' : 'text-slate-400')}>{value}</p>
+    </div>
+  );
+}
+
+function ViewContent({ view, snapshot, openDocument }: { view: ViewKey; snapshot: Snapshot; openDocument: (id: string) => void }) {
+  if (view === 'overview') return <Overview snapshot={snapshot} openDocument={openDocument} />;
+  if (view === 'search') return <SearchView openDocument={openDocument} />;
+  if (view === 'archive') return <ArchiveTimeline documents={snapshot.documents} openDocument={openDocument} />;
+  if (view === 'backlog') return <BacklogView items={snapshot.backlog} />;
+  if (view === 'quality') return <QualityView snapshot={snapshot} />;
+
+  const config = {
+    requirements: {
+      kind: 'requirement',
+      eyebrow: 'PRODUCT CONTRACTS',
+      title: '需求文档',
+      description: '已确认边界与草案状态以 front matter 为准；work_id 是需求和开发的权威关系。',
+      placeholder: '筛选需求、模块或 ID……',
+    },
+    development: {
+      kind: 'development',
+      eyebrow: 'IMPLEMENTATION PLANS',
+      title: '开发文档',
+      description: '技术方案、任务勾选和验证状态集中查看；长文档子页保留同一 work_id。',
+      placeholder: '筛选开发方案、模块或 ID……',
+    },
+    gameplay: {
+      kind: 'gameplay',
+      eyebrow: 'GAMEPLAY SOURCEBOOK',
+      title: '玩法模块',
+      description: '玩法总册记录当前规则与验证边界，历史事实通过归档追溯。',
+      placeholder: '筛选玩法模块……',
+    },
+  }[view];
+  const documents = snapshot.documents.filter((document) => document.kind === config.kind);
+  return (
+    <div>
+      <SectionHeading eyebrow={config.eyebrow} title={config.title} description={config.description} />
+      <DocumentTable documents={documents} openDocument={openDocument} placeholder={config.placeholder} />
+    </div>
+  );
+}
+
+export function ProgressDashboard() {
+  const [view, setView] = useState<ViewKey>('overview');
+  const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
+  const [selectedDocument, setSelectedDocument] = useState<string | null>(null);
+  const [error, setError] = useState('');
+  const [refreshing, setRefreshing] = useState(false);
+
+  const loadSnapshot = useCallback(async (quiet = false) => {
+    if (!quiet) setRefreshing(true);
+    try {
+      const response = await fetch('/api/snapshot', { cache: 'no-store' });
+      if (!response.ok) throw new Error(`快照读取失败：HTTP ${response.status}`);
+      setSnapshot((await response.json()) as Snapshot);
+      setError('');
+    } catch (reason) {
+      setError((reason as Error).message);
+    } finally {
+      if (!quiet) setRefreshing(false);
+    }
+  }, []);
+
+  useEffect(() => {
+    const initial = window.setTimeout(() => void loadSnapshot(), 0);
+    const timer = window.setInterval(() => void loadSnapshot(true), 15_000);
+    return () => {
+      window.clearTimeout(initial);
+      window.clearInterval(timer);
+    };
+  }, [loadSnapshot]);
+
+  const openDocument = useCallback((id: string) => setSelectedDocument(id), []);
+
+  return (
+    <div className="min-h-screen bg-[#060d18] text-slate-200">
+      <header className="sticky top-0 z-40 border-b border-slate-800/90 bg-[#07101d]/95 backdrop-blur">
+        <div className="mx-auto flex h-16 max-w-[1800px] items-center gap-4 px-4 sm:px-6">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="flex size-9 items-center justify-center rounded-md border border-cyan-400/30 bg-cyan-400/8 font-mono text-xs font-bold text-cyan-300">G//S</div>
+            <div className="min-w-0">
+              <p className="truncate text-sm font-semibold tracking-wide text-slate-100">PROGRESS CONTROL</p>
+              <p className="truncate font-mono text-[9px] tracking-[0.18em] text-slate-600">LOCAL · READ ONLY · 127.0.0.1</p>
+            </div>
+          </div>
+          <div className="ml-auto flex items-center gap-2">
+            {snapshot && (
+              <div className="hidden items-center gap-2 border-r border-slate-800 pr-4 text-xs text-slate-500 sm:flex">
+                <span className={cn('size-2 rounded-full', snapshot.stats.errors ? 'bg-red-400' : 'bg-emerald-400')} />
+                {snapshot.stats.errors ? `${snapshot.stats.errors} 个错误` : '结构正常'}
+              </div>
+            )}
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={() => void loadSnapshot()}
+              aria-label="刷新快照"
+              className="text-slate-500 hover:bg-slate-800 hover:text-cyan-200"
+            >
+              <RefreshCw className={cn('size-4', refreshing && 'animate-spin')} />
+            </Button>
+          </div>
+        </div>
+      </header>
+
+      <div className="mx-auto grid max-w-[1800px] grid-cols-1 lg:grid-cols-[220px_minmax(0,1fr)]">
+        <aside className="border-b border-slate-800 bg-[#08111f] lg:sticky lg:top-16 lg:h-[calc(100vh-4rem)] lg:border-b-0 lg:border-r">
+          <nav className="flex gap-1 overflow-x-auto p-3 lg:flex-col lg:p-4" aria-label="进度视图">
+            {NAVIGATION.map((item) => {
+              const Icon = item.icon;
+              const active = view === item.key;
+              return (
+                <button
+                  key={item.key}
+                  type="button"
+                  onClick={() => setView(item.key)}
+                  className={cn('nav-item', active && 'nav-item-active')}
+                >
+                  <Icon className="size-4 shrink-0" />
+                  <span className="whitespace-nowrap">{item.label}</span>
+                  {active && <span className="ml-auto hidden font-mono text-[9px] text-cyan-500 lg:block">ACTIVE</span>}
+                </button>
+              );
+            })}
+          </nav>
+          {snapshot && (
+            <div className="mx-4 mt-2 hidden border-t border-slate-800 pt-4 lg:block">
+              <p className="console-label mb-3">SOURCE STATUS</p>
+              <div className="space-y-2 font-mono text-[10px] text-slate-600">
+                <p className="flex justify-between"><span>DOCUMENTS</span><span className="text-slate-400">{snapshot.stats.documents}</span></p>
+                <p className="flex justify-between"><span>WORK ITEMS</span><span className="text-slate-400">{snapshot.stats.work_items}</span></p>
+                <p className="flex justify-between"><span>WARNINGS</span><span className="text-amber-400">{snapshot.stats.warnings}</span></p>
+              </div>
+            </div>
+          )}
+        </aside>
+
+        <main className="min-w-0 px-4 py-6 sm:px-6 lg:px-8 lg:py-8">
+          {error && (
+            <div className="mb-5 flex items-center gap-3 rounded-lg border border-red-400/30 bg-red-400/8 px-4 py-3 text-sm text-red-200">
+              <XCircle className="size-4 shrink-0" />{error}
+            </div>
+          )}
+          {!snapshot ? (
+            <div className="flex min-h-[60vh] flex-col items-center justify-center gap-3 text-slate-500">
+              <LoaderCircle className="size-6 animate-spin text-cyan-300" />
+              <p className="font-mono text-xs tracking-widest">LOADING SOURCE OF TRUTH</p>
+            </div>
+          ) : (
+            <ViewContent view={view} snapshot={snapshot} openDocument={openDocument} />
+          )}
+        </main>
+      </div>
+
+      {snapshot && (
+        <DocumentDrawer
+          documentId={selectedDocument}
+          documents={snapshot.documents}
+          onClose={() => setSelectedDocument(null)}
+          openDocument={openDocument}
+        />
+      )}
+    </div>
+  );
+}

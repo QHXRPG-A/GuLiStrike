@@ -1,0 +1,30 @@
+{
+  "schema": "guli.ship-speed-validation.v1",
+  "tuning_preset": "Dreadnought",
+  "source_excel": "D:/UE5.7/test1/data/Excel/GuLiStrikeShip.xlsx",
+  "generated_json": "D:/UE5.7/test1/Data/Json/DT_GuLiStrikeShip_Tuning.json",
+  "deployed_data_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeShip_Tuning",
+  "excel_base_max_speed_centimeters_per_second": 5400.0,
+  "generated_json_base_max_speed_centimeters_per_second": 5400.0,
+  "previous_base_max_speed_centimeters_per_second": 1800.0,
+  "current_base_max_speed_centimeters_per_second": 5400.0,
+  "base_speed_multiplier": 3.0,
+  "speed_multiplier_min": 0.5,
+  "previous_empty_hull_effective_max_speed_centimeters_per_second": 900.0,
+  "current_empty_hull_effective_max_speed_centimeters_per_second": 2700.0,
+  "effective_speed_multiplier": 3.0,
+  "base_acceleration_centimeters_per_second_squared": 600.0,
+  "empty_hull_effective_acceleration_centimeters_per_second_squared": 300.0,
+  "default_preset_base_max_speed_centimeters_per_second": 1800.0,
+  "checks": {
+    "source_and_generated_values_match": true,
+    "dreadnought_base_is_5400": true,
+    "effective_empty_hull_speed_is_2700": true,
+    "exact_three_times": true,
+    "data_table_imported": true,
+    "data_table_row_check": true,
+    "import_errors_empty": true,
+    "ship_asset_saved": true
+  },
+  "success": true
+}

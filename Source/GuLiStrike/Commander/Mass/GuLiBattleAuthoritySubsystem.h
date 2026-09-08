@@ -93,6 +93,17 @@ struct FGuLiNavigationStats
 	int32 Blocked = 0;
 	uint64 SurfaceMoveCalls = 0u;
 	uint64 SurfaceMoveFailures = 0u;
+	uint64 MovementUpdateCalls = 0u;
+	uint64 ForcedMovementUpdateCalls = 0u;
+	uint64 ManualAvoidanceRefreshes = 0u;
+	uint64 ManualAvoidanceCandidatePairs = 0u;
+	uint64 ManualAvoidanceOverlapPairs = 0u;
+	int32 MaximumManualAvoidanceBucketOccupancy = 0;
+	uint64 PredictiveAvoidanceSolves = 0u;
+	uint64 ForcedPredictiveAvoidanceSolves = 0u;
+	uint64 PredictiveAvoidanceCandidates = 0u;
+	uint64 PredictiveAvoidanceColliderEvaluations = 0u;
+	int32 MaximumPredictiveAvoidanceBucketOccupancy = 0;
 	uint64 PathQueries = 0u;
 	uint64 PersonalPathQueries = 0u;
 	double LastDestinationPlanningMilliseconds = 0.0;
@@ -285,6 +296,7 @@ public:
 
 	/** Read-only server diagnostics; a valid ID can describe a dead Soldier. */
 	bool TryGetSoldierCombatDebug(FGuLiSoldierId SoldierId, FGuLiSoldierCombatDebug& OutDebug) const;
+	bool TryGetSoldierWeaponDebug(FGuLiSoldierId SoldierId, FName SlotId, FGuLiSoldierCombatDebug& OutDebug) const;
 	/** Read-only server navigation diagnostics; terminal failure data remains available after ActiveOrderId clears. */
 	bool TryGetSoldierNavigationDebug(FGuLiSoldierId SoldierId, FGuLiSoldierNavigationDebug& OutDebug) const;
 	/** Returns a fresh state census plus cumulative surface/path-query counters. */
@@ -341,6 +353,9 @@ public:
 	 * 返回 true 仅表示找到记录，不能据此判断士兵仍存活或残骸仍可见。
 	 */
 	bool TryGetSoldierTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
+
+	/** Reuses the caller-owned array and captures finite locations of living authoritative Soldiers. */
+	void BuildLivingSoldierLocationSnapshot(TArray<FVector>& OutLocations) const;
 
 	/** 当前保留的临时移动编队数量；同一 BatchOrderId 可包含多个编队。 */
 	int32 GetActiveOrderFormationCount() const;

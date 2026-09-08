@@ -2,7 +2,7 @@ import json
 
 import unreal
 
-OUT = "D:/UE_5.7/test1/Data/tmp_dt_struct_check.json"
+OUT = "D:/UE5.7/test1/Data/tmp_dt_struct_check.json"
 result = {}
 for name in ("DT_GuLiStrikeShip_Parts", "DT_GuLiStrikeShip_Tuning"):
     dt = unreal.load_object(None, f"/Game/GuLiStrike/Data/{name}.{name}")

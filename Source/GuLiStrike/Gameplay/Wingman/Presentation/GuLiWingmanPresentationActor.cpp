@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Wingman/Presentation/GuLiWingmanPresentationActor.h"
+#include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 
 #include "Components/InstancedStaticMeshComponent.h"
 #include "Components/SceneComponent.h"
@@ -16,6 +17,9 @@
 
 namespace
 {
+	/** The current presentation mesh's visible nose is authored toward local -X. */
+	const FQuat WingmanMeshFacingCorrection = FRotator(0.0, 180.0, 0.0).Quaternion();
+
 	FTransform MakeHiddenTransform()
 	{
 		return FTransform(FQuat::Identity, FVector::ZeroVector, FVector::ZeroVector);
@@ -110,10 +114,23 @@ void AGuLiWingmanPresentationActor::BeginPlay()
 		return;
 	}
 	EnsureRemoteMassArchetype();
+    if (auto* Effects = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())
+        Effects->RegisterPoseResolver(EGuLiTargetKind::Wingman, this, [this](const FGuLiTargetHandle& Target, FTransform& Pose, int32& Type)
+        {
+            Type = 0;
+            for (const auto& Pair : Groups)
+                for (const auto& Track : Pair.Value.Tracks)
+                    if (GuLiCombatTargets::MakeWingmanTargetHandle(Track.Handle) == Target)
+                        return TryGetPresentedTransform(Track.Handle, Pose);
+            return false;
+        });
 }
 
 void AGuLiWingmanPresentationActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+    if (GetWorld())
+        if (auto* Effects = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())
+            Effects->UnregisterPoseResolver(EGuLiTargetKind::Wingman, this);
 	ResetAllGroups();
 	RemoteMassArchetype = FMassArchetypeHandle();
 	MassEntitySubsystem = nullptr;
@@ -677,12 +694,25 @@ bool AGuLiWingmanPresentationActor::SetGroupRole(
 	Runtime->ClockLocalReceiptSeconds = 0.0;
 	Runtime->bHasClock = false;
 	Runtime->bUsingServerTimeline = NewRole == EGuLiWingmanPresentationRole::Remote;
-	for (FGuLiWingmanPresentationTrack& Track : Runtime->Tracks)
+	for (int32 Slot = 0; Slot < Runtime->Tracks.Num(); ++Slot)
 	{
+		FGuLiWingmanPresentationTrack& Track = Runtime->Tracks[Slot];
 		Track.Samples.Reset();
-		Track.bHasPresentedTransform = false;
 		Track.bInteractable = false;
-		Track.Opacity = 0.0f;
+		if (Track.bAlive && Track.bHasPresentedTransform)
+		{
+			Track.Opacity = 1.0f;
+			UpdateInstance(
+				Runtime->Role,
+				Runtime->InstanceBaseIndex + Slot,
+				Track.PresentedTransform,
+				Track.Opacity);
+		}
+		else
+		{
+			Track.bHasPresentedTransform = false;
+			Track.Opacity = 0.0f;
+		}
 	}
 	return true;
 }
@@ -939,6 +969,8 @@ bool AGuLiWingmanPresentationActor::UpdateInstance(
 
 	const float SafeOpacity = FMath::Clamp(Opacity, 0.0f, 1.0f);
 	FTransform DesiredTransform = Transform;
+	DesiredTransform.SetRotation(
+		(Transform.GetRotation() * WingmanMeshFacingCorrection).GetNormalized());
 	if (SafeOpacity <= 0.0f)
 	{
 		DesiredTransform.SetScale3D(FVector::ZeroVector);
@@ -1002,12 +1034,26 @@ void AGuLiWingmanPresentationActor::TickGroup(
 	{
 		FGuLiWingmanPresentationTrack& Track = Runtime.Tracks[Slot];
 		FGuLiWingmanPresentationEvaluation Evaluation;
-		if (bCanEvaluate && Track.bAlive)
+		if (Track.bAlive)
 		{
-			Evaluation = GuLiWingmanPresentationPolicy::Evaluate(
-				Track.Samples,
-				RenderTimeSeconds,
-				EvaluationNowSeconds);
+			if (Track.Samples.IsEmpty() && Track.bHasPresentedTransform)
+			{
+				// Role transfer clears the old source timeline, but roster identity and
+				// life do not change. Hold the last accepted visual pose until the first
+				// sample on the replacement timeline arrives.
+				Evaluation.Transform = Track.PresentedTransform;
+				Evaluation.Opacity = 1.0f;
+				Evaluation.bVisible = true;
+				Evaluation.bInteractable = false;
+			}
+			else if (bCanEvaluate)
+			{
+				Evaluation = GuLiWingmanPresentationPolicy::Evaluate(
+					Track.Samples,
+					RenderTimeSeconds,
+					EvaluationNowSeconds,
+					GuLiWingmanPresentationPolicy::EStalePolicy::RetainLastPose);
+			}
 		}
 		Track.Opacity = Evaluation.Opacity;
 		Track.bInteractable = Evaluation.bInteractable;

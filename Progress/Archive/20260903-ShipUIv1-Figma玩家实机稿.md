@@ -1,3 +1,28 @@
+---
+schema: guli-progress/v1
+id: ARC-20260903-001
+work_id: ''
+kind: archive
+role: root
+title: 2026-09-03 解决了：Ship UI v1 Figma 玩家实机成品稿
+areas:
+- commander
+- ship
+- ui
+- network
+- assets
+status: recorded
+verification: passed
+created: '2026-09-03'
+updated: '2026-09-03'
+summary: 2026-09-03 解决了：Ship UI v1 Figma 玩家实机成品稿
+next_action: ''
+relations:
+  work_items:
+  - WORK-20260902-002
+status_note: ''
+---
+
 # 2026-09-03 解决了：Ship UI v1 Figma 玩家实机成品稿
 
 - 对应开发文档：[指挥官与飞船共享 HUD 及 Ship UI v1](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship%20UI%20v1.md)

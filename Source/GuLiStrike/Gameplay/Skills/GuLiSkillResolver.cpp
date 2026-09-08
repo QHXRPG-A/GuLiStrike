@@ -49,6 +49,7 @@ bool FGuLiSkillResolver::ValidateCatalog(const TArray<FGuLiSkillDefinition>& Def
 	}
 	TSet<FString> UniqueConfigs;
 	TMap<FString, int32> DefaultCounts;
+	TMap<uint16, TSet<FName>> SlotsByUnit;
 	for (const auto& Row : Configs)
 	{
 		const FString SlotKey = Key(Row.UnitTypeId, Row.SlotId);
@@ -57,6 +58,9 @@ bool FGuLiSkillResolver::ValidateCatalog(const TArray<FGuLiSkillDefinition>& Def
 			|| !ValidAttribute(Row.Damage, 0) || !ValidAttribute(Row.AttackRatePerSecond, 1) || !ValidAttribute(Row.RangeCentimeters, 2))
 		{ OutError = FString::Printf(TEXT("Invalid/duplicate UnitSkills row %s (finite nonnegative; damage<=1e9, rate<=30, range<=1e6)."), *ConfigKey); return false; }
 		UniqueConfigs.Add(ConfigKey);
+		SlotsByUnit.FindOrAdd(Row.UnitTypeId).Add(Row.SlotId);
+		if (SlotsByUnit.FindChecked(Row.UnitTypeId).Num() > 32)
+		{ OutError = TEXT("A unit type exceeds the 32-channel runtime safety limit."); return false; }
 		DefaultCounts.FindOrAdd(SlotKey) += Row.bDefault ? 1 : 0;
 	}
 	for (const auto& Entry : DefaultCounts)
@@ -68,12 +72,13 @@ bool FGuLiSkillResolver::ValidateCatalog(const TArray<FGuLiSkillDefinition>& Def
 
 bool FGuLiSkillResolver::Resolve(EGuLiTeam Team, const TArray<FGuLiSkillDefinition>& Definitions,
 	const TArray<FGuLiUnitSkillConfig>& Configs, const TArray<FGuLiSkillSource>& Sources,
-	const TArray<FGuLiSkillNumericOverride>& Overrides, TArray<FGuLiResolvedSkillProfile>& OutProfiles, FString& OutError)
+	const TArray<FGuLiSkillNumericOverride>& Overrides, TArray<FGuLiResolvedSkillProfile>& OutProfiles, FString& OutError,
+	const TArray<FGuLiSkillLoadoutSelection>* Loadout)
 {
 	TArray<FGuLiSkillSlotKey> AllSlots;
 	for (const auto& Config : Configs)
 		if (Config.bDefault) AllSlots.AddUnique({Config.UnitTypeId, Config.SlotId});
-	return ResolveSelected(Team, Definitions, Configs, Sources, Overrides, AllSlots, OutProfiles, OutError);
+	return ResolveSelected(Team, Definitions, Configs, Sources, Overrides, AllSlots, OutProfiles, OutError, Loadout);
 }
 
 void FGuLiSkillResolver::GatherAffectedSlots(const TArray<FGuLiUnitSkillConfig>& Configs,
@@ -85,7 +90,9 @@ void FGuLiSkillResolver::GatherAffectedSlots(const TArray<FGuLiUnitSkillConfig>&
 		const bool bTargeted = Source.Modifiers.ContainsByPredicate([&](const auto& Modifier)
 			{ return Modifier.Target.MatchesUnitSlot(Config.UnitTypeId, Config.SlotId); })
 			|| Source.Replacements.ContainsByPredicate([&](const auto& Replacement)
-			{ return Replacement.Target.MatchesUnitSlot(Config.UnitTypeId, Config.SlotId); });
+			{ return Replacement.Target.MatchesUnitSlot(Config.UnitTypeId, Config.SlotId); })
+			|| Source.Unlocks.ContainsByPredicate([&](const auto& Unlock)
+			{ return Unlock.Target.MatchesUnitSlot(Config.UnitTypeId, Config.SlotId); });
 		if (bTargeted) InOutSlots.AddUnique({Config.UnitTypeId, Config.SlotId});
 	}
 }
@@ -93,11 +100,22 @@ void FGuLiSkillResolver::GatherAffectedSlots(const TArray<FGuLiUnitSkillConfig>&
 bool FGuLiSkillResolver::ResolveSelected(EGuLiTeam Team, const TArray<FGuLiSkillDefinition>& Definitions,
 	const TArray<FGuLiUnitSkillConfig>& Configs, const TArray<FGuLiSkillSource>& Sources,
 	const TArray<FGuLiSkillNumericOverride>& Overrides, const TArray<FGuLiSkillSlotKey>& SelectedSlots,
-	TArray<FGuLiResolvedSkillProfile>& OutProfiles, FString& OutError)
+	TArray<FGuLiResolvedSkillProfile>& OutProfiles, FString& OutError,
+	const TArray<FGuLiSkillLoadoutSelection>* Loadout)
 {
 	using namespace GuLiSkillResolverPrivate;
 	if (Team != EGuLiTeam::Red && Team != EGuLiTeam::Blue) { OutError = TEXT("A real team is required."); return false; }
 	if (!ValidateCatalog(Definitions, Configs, OutError)) return false;
+	TSet<FString> EquipmentKeys;
+	if (Loadout) for (const auto& Selection : *Loadout)
+	{
+		const FString SelectionKey = Key(Selection.UnitTypeId, Selection.SlotId);
+		if (EquipmentKeys.Contains(SelectionKey) || !Configs.ContainsByPredicate([&](const auto& Row)
+			{ return Row.UnitTypeId == Selection.UnitTypeId && Row.SlotId == Selection.SlotId
+				&& (Selection.SkillId.IsNone() ? Row.bDefault : Row.SkillId == Selection.SkillId); }))
+		{ OutError = TEXT("Equipment has a duplicate/unknown slot or incompatible weapon."); return false; }
+		EquipmentKeys.Add(SelectionKey);
+	}
 	for (const auto& Slot : SelectedSlots)
 	{
 		if (!Configs.ContainsByPredicate([&](const auto& Config) { return Config.bDefault && Config.UnitTypeId == Slot.UnitTypeId && Config.SlotId == Slot.SlotId; }))
@@ -109,6 +127,12 @@ bool FGuLiSkillResolver::ResolveSelected(EGuLiTeam Team, const TArray<FGuLiSkill
 		if (!Source.SourceInstanceId.IsValid() || SourceIds.Contains(Source.SourceInstanceId))
 		{ OutError = TEXT("Source instance IDs must be valid and unique."); return false; }
 		SourceIds.Add(Source.SourceInstanceId);
+		for (const auto& Unlock : Source.Unlocks)
+		{
+			if (!ValidTarget(Unlock.Target, Definitions, Configs, OutError)) return false;
+			if (!Unlock.Target.RequiredSkillId.IsNone() || !Unlock.Target.RequiredTags.IsEmpty())
+			{ OutError = TEXT("Slot unlocks must not depend on the currently equipped skill."); return false; }
+		}
 		for (const auto& Modifier : Source.Modifiers)
 		{
 			if (!ValidTarget(Modifier.Target, Definitions, Configs, OutError)) return false;
@@ -156,11 +180,17 @@ bool FGuLiSkillResolver::ResolveSelected(EGuLiTeam Team, const TArray<FGuLiSkill
 	{
 		if (!Default.bDefault || !SelectedSlots.Contains(FGuLiSkillSlotKey{Default.UnitTypeId, Default.SlotId})) continue;
 		FName SelectedSkill = Default.SkillId;
+		const auto* Selection = Loadout ? Loadout->FindByPredicate([&](const auto& Row)
+			{ return Row.UnitTypeId == Default.UnitTypeId && Row.SlotId == Default.SlotId; }) : nullptr;
+		if (Selection && !Selection->SkillId.IsNone()) SelectedSkill = Selection->SkillId;
+		bool bUnlocked = Default.bInitiallyUnlocked;
 		int32 HighestPriority = MIN_int32;
 		bool bHasReplacement = false;
 		TMap<int32, FName> ReplacementByPriority;
 		for (const auto* Source : OrderedSources)
 		{
+			bUnlocked |= Source->Unlocks.ContainsByPredicate([&](const auto& Unlock)
+				{ return Unlock.Target.MatchesUnitSlot(Default.UnitTypeId, Default.SlotId); });
 			for (const auto& Replacement : Source->Replacements)
 			{
 				if (!Replacement.Target.MatchesUnitSlot(Default.UnitTypeId, Default.SlotId)) continue;
@@ -217,6 +247,8 @@ bool FGuLiSkillResolver::ResolveSelected(EGuLiTeam Team, const TArray<FGuLiSkill
 		auto& Profile = Result.AddDefaulted_GetRef();
 		Profile.Team = Team; Profile.UnitTypeId = Default.UnitTypeId; Profile.SlotId = Default.SlotId;
 		Profile.SkillId = SelectedSkill; Profile.ExecutorId = Definition->ExecutorId; Profile.Tags = Definition->Tags;
+		Profile.bUnlocked = bUnlocked;
+		Profile.bEquipped = bUnlocked && (!Selection || !Selection->SkillId.IsNone());
 		Profile.Damage = static_cast<float>(Values[0]); Profile.AttackRatePerSecond = static_cast<float>(Values[1]); Profile.RangeCentimeters = static_cast<float>(Values[2]);
 	}
 	Result.Sort([](const auto& A, const auto& B) { return A.UnitTypeId != B.UnitTypeId ? A.UnitTypeId < B.UnitTypeId : A.SlotId.LexicalLess(B.SlotId); });

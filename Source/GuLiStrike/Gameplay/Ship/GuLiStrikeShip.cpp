@@ -1,10 +1,13 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GuLiStrikeShip.h"
+#include "Gameplay/Data/Generated/GuLiStrikeShipTableRows.h"
 #include "GuLiShipMovementComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySet.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
+#include "Gameplay/Ship/Aiming/GuLiShipAimComponent.h"
+#include "Gameplay/Ship/UI/GuLiShipWorldHUDComponent.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Battle/Combat/GuLiLogicalMissileSubsystem.h"
 #include "Battle/Combat/GuLiWingmanCombatCoordinator.h"
@@ -72,6 +75,8 @@ AGuLiStrikeShip::AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer)
 
 	ShipAbilitySystem = CreateDefaultSubobject<UGuLiShipAbilitySystemComponent>(TEXT("ShipAbilitySystem"));
 	CombatHealth = CreateDefaultSubobject<UGuLiCombatHealthComponent>(TEXT("CombatHealth"));
+	ShipAim = CreateDefaultSubobject<UGuLiShipAimComponent>(TEXT("ShipAim"));
+	ShipWorldHUD = CreateDefaultSubobject<UGuLiShipWorldHUDComponent>(TEXT("ShipWorldHUD"));
 
 	// Keep the active Wingman ability usable even when an existing Ship Blueprint has not yet
 	// overridden the newly introduced property. The action is project-owned and mapped to RMB
@@ -141,6 +146,7 @@ void AGuLiStrikeShip::GetLifetimeReplicatedProps(
 	DOREPLIFETIME(AGuLiStrikeShip, GMRuntimeState);
 	DOREPLIFETIME(AGuLiStrikeShip, LoadoutState);
 	DOREPLIFETIME(AGuLiStrikeShip, GroupAbilityConfig);
+	DOREPLIFETIME(AGuLiStrikeShip, WingmanAttackTarget);
 }
 
 UAbilitySystemComponent* AGuLiStrikeShip::GetAbilitySystemComponent() const
@@ -240,6 +246,14 @@ void AGuLiStrikeShip::BeginPlay()
 		ApplyReplicatedLoadout();
 	}
 	UpdateShipInputContext();
+	if (ShipAim)
+	{
+		ShipAim->HandleOwnerControllerChanged();
+	}
+	if (ShipWorldHUD)
+	{
+		ShipWorldHUD->HandleOwnerControllerChanged();
+	}
 }
 
 void AGuLiStrikeShip::NotifyControllerChanged()
@@ -258,6 +272,14 @@ void AGuLiStrikeShip::NotifyControllerChanged()
 	}
 	bServerFiring = false;
 	UpdateShipInputContext();
+	if (ShipAim)
+	{
+		ShipAim->HandleOwnerControllerChanged();
+	}
+	if (ShipWorldHUD)
+	{
+		ShipWorldHUD->HandleOwnerControllerChanged();
+	}
 }
 
 void AGuLiStrikeShip::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
@@ -372,6 +394,10 @@ void AGuLiStrikeShip::Look(const FInputActionValue& Value)
 	if (!IsLocallyControlled()) { return; }
 	// 取输入向量
 	const FVector2D InputVector = Value.Get<FVector2D>();
+	if (ShipAim && ShipAim->ConsumeLookInput(InputVector))
+	{
+		return;
+	}
 
 	if (!SpringArm)
 	{
@@ -408,6 +434,19 @@ void AGuLiStrikeShip::Tick(float DeltaTime)
 	RefreshServerCombatRegistration();
 	RefreshWingmanRelayBinding();
 	MaintainWingmanCombatLifecycle();
+	if (HasAuthority() && WingmanCombatCoordinator && GetWorld())
+	{
+		FGuLiWingmanTargetingTuning Targeting;
+		if (const auto* Row = WingmanTargetingRow.GetRow<FGuLiStrikeShipWingmanTargetingRow>(TEXT("WingmanTargeting")))
+		{
+			Targeting.AcquireRadiusCentimeters = Row->AcquireRadiusCentimeters;
+			Targeting.ReleaseRadiusCentimeters = Row->ReleaseRadiusCentimeters;
+			Targeting.GuardRejoinFraction = Row->GuardRejoinFraction;
+			Targeting.ScanIntervalSeconds = Row->ScanIntervalSeconds;
+		}
+		WingmanCombatCoordinator->TickAttackTargeting(GetWorld()->GetTimeSeconds(), Targeting);
+		WingmanAttackTarget = WingmanCombatCoordinator->GetAttackTarget();
+	}
 	RefreshLocalOwnedWingmanGroup();
 	UpdateShipInputContext();
 	if (IsLocallyControlled())
@@ -553,7 +592,12 @@ void AGuLiStrikeShip::WingmanMissilePressed(const FInputActionValue& Value)
 {
 	if (CanUseShipControls() && ShipAbilitySystem)
 	{
-		ShipAbilitySystem->AbilityInputTagPressed(TAG_GuLi_Input_Ship_Wingman_Missile);
+		const FGuLiWingmanWeaponChannelConfig* Channel =
+			GroupAbilityConfig.FindFirstWeaponChannel(EGuLiWingmanWeaponKind::Missile);
+		if (Channel && ShipAbilitySystem->AbilityWeaponBindingPressed(Channel->Binding))
+		{
+			ActiveMissileInputBinding = Channel->Binding;
+		}
 	}
 }
 
@@ -561,7 +605,8 @@ void AGuLiStrikeShip::WingmanMissileReleased(const FInputActionValue& Value)
 {
 	if (ShipAbilitySystem)
 	{
-		ShipAbilitySystem->AbilityInputTagReleased(TAG_GuLi_Input_Ship_Wingman_Missile);
+		ShipAbilitySystem->AbilityWeaponBindingReleased(ActiveMissileInputBinding);
+		ActiveMissileInputBinding = FGuLiWeaponBindingKey{};
 	}
 }
 
@@ -1472,8 +1517,8 @@ void AGuLiStrikeShip::InitializeShipAbilitySystem()
 	{
 		ShipAbilitySystem->OnProjectionChanged().AddUObject(
 			this, &AGuLiStrikeShip::HandleGroupAbilityProjectionChanged);
-		ShipAbilitySystem->OnTriggeredAbilityAuthorized().AddUObject(
-			this, &AGuLiStrikeShip::HandleTriggeredShipAbility);
+		ShipAbilitySystem->OnWeaponAbilityAuthorized().AddUObject(
+			this, &AGuLiStrikeShip::HandleTriggeredShipWeaponAbility);
 		if (CombatHealth)
 		{
 			CombatHealth->OnDeath.AddDynamic(this, &AGuLiStrikeShip::HandleShipDeath);
@@ -1509,25 +1554,49 @@ void AGuLiStrikeShip::InitializeShipAbilitySystem()
 					*GetClass()->GetPathName());
 				return;
 			}
-			RuntimeShipAbilitySet = UGuLiShipAbilitySet::CreateNativeV1Transient(this);
+			RuntimeShipAbilitySet = UGuLiShipAbilitySet::CreateNativeV3Transient(this);
 		}
 	}
 
 	FGuLiShipAbilityProjectionContext Context;
 	Context.ShipInstanceId = ShipInstanceId;
+	if (AGuLiBattlePlayerState* BattlePlayerState = GetPlayerState<AGuLiBattlePlayerState>())
+	{
+		BattlePlayerState->EnsureServerPlayerGuid();
+		Context.Team = BattlePlayerState->GetTeam();
+		Context.OwnerPlayerGuid = BattlePlayerState->GetPlayerGuid();
+	}
+	if (const AGuLiBattleGameState* BattleGameState = GetWorld()
+		? GetWorld()->GetGameState<AGuLiBattleGameState>() : nullptr)
+	{
+		Context.MatchEpoch = BattleGameState->GetMatchEpoch();
+	}
+	Context.WingmanTypeId = RuntimeShipAbilitySet
+		? RuntimeShipAbilitySet->WingmanTypeId : GuLiGetDefaultWingmanTypeId();
 	Context.ShipGeneration = ShipGeneration;
 	Context.GroupGeneration = GroupGeneration;
 	Context.FormationCommandRevision = 1u;
 	Context.EffectiveClientSimTick = 1u;
 	ShipAbilitySystem->SetProjectionContext(Context);
 
-	FGuLiShipAbilityLoadoutState Loadout = FGuLiShipAbilityLoadoutState::MakeNativeV1();
+	FGuLiShipAbilityLoadoutState Loadout = FGuLiShipAbilityLoadoutState::MakeNativeV3();
 	if (const AGuLiBattlePlayerState* BattlePlayerState = GetPlayerState<AGuLiBattlePlayerState>())
 	{
 		if (BattlePlayerState->GetShipAbilityLoadoutState().IsWellFormed())
 		{
 			Loadout = BattlePlayerState->GetShipAbilityLoadoutState();
 		}
+	}
+	if (Loadout.Contains(TAG_GuLi_ShipAbility_Formation_SwarmOrbit)
+		&& !RuntimeShipAbilitySet->FindGrant(TAG_GuLi_ShipAbility_Formation_SwarmOrbit))
+	{
+		// One restart may load the new native default before the authored v1 catalog
+		// has been migrated. Keep the session playable, surface the mismatch, and
+		// use the unchanged legacy contract until the v2 deployment script runs.
+		UE_LOG(LogGuLiStrike, Warning,
+			TEXT("ShipAbilitySet %s has not been migrated to SwarmOrbit; temporarily using the v1 DoubleRing loadout."),
+			*GetPathNameSafe(RuntimeShipAbilitySet));
+		Loadout = FGuLiShipAbilityLoadoutState::MakeNativeV1();
 	}
 
 	FString AbilityError;
@@ -1764,10 +1833,19 @@ bool AGuLiStrikeShip::EnsureWingmanCombatCoordinator()
 		return false;
 	}
 	if (WingmanCombatCoordinator && WingmanCombatCoordinator->IsReady()
-		&& BoundCombatRelayCore == RelayCore
-		&& BoundCombatAbilitySnapshotRevision == GroupAbilityConfig.SnapshotRevision)
+		&& BoundCombatRelayCore == RelayCore)
 	{
-		return true;
+		const FGuLiGroupAbilityConfigSnapshot& CommittedConfig = RelayCore->GetAbilityConfig();
+		if (BoundCombatAbilitySnapshotRevision != CommittedConfig.SnapshotRevision)
+		{
+			if (!WingmanCombatCoordinator->ApplyCommittedAbilityConfig(
+				CommittedConfig, static_cast<double>(GetWorld()->GetTimeSeconds())))
+			{
+				return false;
+			}
+			BoundCombatAbilitySnapshotRevision = CommittedConfig.SnapshotRevision;
+		}
+		return CommittedConfig.SnapshotHash == GroupAbilityConfig.SnapshotHash;
 	}
 
 	const bool bRelayCoreChanged = BoundCombatRelayCore != RelayCore;
@@ -1803,6 +1881,11 @@ bool AGuLiStrikeShip::EnsureWingmanCombatCoordinator()
 		return false;
 	}
 
+	RelayCore->OnValidatedAttackBatch = [WeakThis = TWeakObjectPtr<AGuLiStrikeShip>(this)](const auto& Candidate, double Now)
+	{
+		if (auto* Ship = WeakThis.Get(); Ship && Ship->WingmanCombatCoordinator)
+			Ship->WingmanCombatCoordinator->CommitValidatedAttackBatch(Candidate, Now);
+	};
 	BoundCombatRelayCore = RelayCore;
 	BoundCombatAbilitySnapshotRevision = GroupAbilityConfig.SnapshotRevision;
 	if (bRelayCoreChanged)
@@ -2062,11 +2145,16 @@ bool AGuLiStrikeShip::BuildLocalWingmanMissileAim(
 bool AGuLiStrikeShip::SelectLocalPredictedWingmanTarget(
 	const FVector& AimOrigin,
 	const FVector& AimForward,
+	const FGuLiWeaponBindingKey& WeaponBinding,
 	FGuLiTargetHandle& OutTarget) const
 {
 	OutTarget = FGuLiTargetHandle{};
+	const FGuLiWingmanWeaponChannelConfig* WeaponChannel =
+		GroupAbilityConfig.FindWeaponChannel(WeaponBinding);
 	if (!GetWorld() || !CombatHealth || !GroupAbilityConfig.IsUsableByLeaseOwner()
-		|| !GroupAbilityConfig.MissileRuntime.IsWellFormed())
+		|| !WeaponChannel || !WeaponChannel->bEnabled
+		|| WeaponChannel->Kind != EGuLiWingmanWeaponKind::Missile
+		|| !WeaponChannel->Runtime.IsWellFormed())
 	{
 		return false;
 	}
@@ -2184,7 +2272,7 @@ bool AGuLiStrikeShip::SelectLocalPredictedWingmanTarget(
 		AimOrigin,
 		AimForward,
 		CombatHealth->GetCombatTeam(),
-		GroupAbilityConfig.MissileRuntime,
+		WeaponChannel->Runtime,
 		Observations,
 		[this, &AimOrigin](const FGuLiWingmanTargetObservation& Target)
 		{
@@ -2217,14 +2305,20 @@ void AGuLiStrikeShip::HandleServerWingmanFireIntentAccepted(
 	}
 }
 
-void AGuLiStrikeShip::HandleTriggeredShipAbility(
+void AGuLiStrikeShip::HandleTriggeredShipWeaponAbility(
 	const FGameplayAbilitySpecHandle LocalSpecHandle,
-	const FGameplayTag StableAbilityId,
+	const FGuLiWeaponBindingKey WeaponBinding,
+	const FName SkillId,
+	const FGameplayTag CatalogAbilityId,
 	const uint32 AbilitySetRevision,
 	const bool bLocallyPredicted)
 {
 	(void)LocalSpecHandle;
-	if (StableAbilityId != TAG_GuLi_ShipAbility_Weapon_Missile_Salvo)
+	const FGuLiWingmanWeaponChannelConfig* Channel =
+		GroupAbilityConfig.FindWeaponChannel(WeaponBinding);
+	if (!Channel || !Channel->bEnabled
+		|| Channel->Kind != EGuLiWingmanWeaponKind::Missile
+		|| Channel->SkillId != SkillId || Channel->AbilityId != CatalogAbilityId)
 	{
 		return;
 	}
@@ -2247,37 +2341,48 @@ void AGuLiStrikeShip::HandleTriggeredShipAbility(
 	const FGuid RequestId = FGuid::NewGuid();
 	FGuLiTargetHandle PredictedTarget;
 	const bool bPredictedLocked = SelectLocalPredictedWingmanTarget(
-		AimOrigin, AimForward, PredictedTarget);
+		AimOrigin, AimForward, WeaponBinding, PredictedTarget);
 	OnWingmanMissileLockPredicted.Broadcast(
 		RequestId, bPredictedLocked, PredictedTarget, AimOrigin, AimForward);
 
-	const uint32 DefinitionRevision = GroupAbilityConfig.MissileDefinitionRevision;
+	const uint32 DefinitionRevision = Channel->DefinitionRevision;
 	if (HasAuthority())
 	{
 		ExecuteServerWingmanMissileSalvo(
-			RequestId, AimDirectionMilli, AbilitySetRevision, DefinitionRevision);
+			RequestId, AimDirectionMilli, WeaponBinding, SkillId, AbilitySetRevision,
+			GroupAbilityConfig.LoadoutRevision, Channel->ProfileRevision, DefinitionRevision);
 	}
 	else
 	{
 		ServerRequestWingmanMissileSalvo(
-			RequestId, AimDirectionMilli, AbilitySetRevision, DefinitionRevision);
+			RequestId, AimDirectionMilli, WeaponBinding, SkillId, AbilitySetRevision,
+			GroupAbilityConfig.LoadoutRevision, Channel->ProfileRevision, DefinitionRevision);
 	}
 }
 
 void AGuLiStrikeShip::ServerRequestWingmanMissileSalvo_Implementation(
 	const FGuid RequestId,
 	const FIntVector AimDirectionMilli,
+	const FGuLiWeaponBindingKey WeaponBinding,
+	const FName SkillId,
 	const uint32 AbilitySetRevision,
+	const uint32 LoadoutRevision,
+	const uint32 ProfileRevision,
 	const uint32 MissileDefinitionRevision)
 {
 	ExecuteServerWingmanMissileSalvo(
-		RequestId, AimDirectionMilli, AbilitySetRevision, MissileDefinitionRevision);
+		RequestId, AimDirectionMilli, WeaponBinding, SkillId, AbilitySetRevision,
+		LoadoutRevision, ProfileRevision, MissileDefinitionRevision);
 }
 
 void AGuLiStrikeShip::ExecuteServerWingmanMissileSalvo(
 	const FGuid& RequestId,
 	const FIntVector& AimDirectionMilli,
+	const FGuLiWeaponBindingKey& WeaponBinding,
+	const FName SkillId,
 	const uint32 AbilitySetRevision,
+	const uint32 LoadoutRevision,
+	const uint32 ProfileRevision,
 	const uint32 MissileDefinitionRevision)
 {
 	FGuLiWingmanMissileSalvoResult Result;
@@ -2300,8 +2405,16 @@ void AGuLiStrikeShip::ExecuteServerWingmanMissileSalvo(
 	}
 	FGuLiWingmanMissileSalvoRequest Request;
 	Request.ActivationId = RequestId;
-	Request.MissileAbilityId = TAG_GuLi_ShipAbility_Weapon_Missile_Salvo;
+	Request.Binding = WeaponBinding;
+	Request.SkillId = SkillId;
+	if (const FGuLiWingmanWeaponChannelConfig* Channel =
+		GroupAbilityConfig.FindWeaponChannel(WeaponBinding))
+	{
+		Request.MissileAbilityId = Channel->AbilityId;
+	}
 	Request.AbilitySetRevision = AbilitySetRevision;
+	Request.LoadoutRevision = LoadoutRevision;
+	Request.ProfileRevision = ProfileRevision;
 	Request.MissileDefinitionRevision = MissileDefinitionRevision;
 	Request.AimDirectionMilli = AimDirectionMilli;
 	Result = WingmanCombatCoordinator->ActivateMissileSalvo(
@@ -2379,6 +2492,11 @@ void AGuLiStrikeShip::HandleShipDeath()
 	WingmanMissileRequestOrder.Reset();
 	bServerFiring = false;
 	bLocalFireHeld = false;
+	ActiveMissileInputBinding = FGuLiWeaponBindingKey{};
+	if (ShipAim)
+	{
+		ShipAim->ResetForOwnerUnavailable();
+	}
 	if (ShipAbilitySystem)
 	{
 		ShipAbilitySystem->SetActiveAbilityInputEnabled(false);
@@ -2407,10 +2525,19 @@ void AGuLiStrikeShip::UnPossessed()
 {
 	bServerFiring = false;
 	bLocalFireHeld = false;
+	ActiveMissileInputBinding = FGuLiWeaponBindingKey{};
 	if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }
 	if (ShipAbilitySystem) { ShipAbilitySystem->SetActiveAbilityInputEnabled(false); }
 	RemoveShipInputContext();
 	Super::UnPossessed();
+	if (ShipAim)
+	{
+		ShipAim->HandleOwnerControllerChanged();
+	}
+	if (ShipWorldHUD)
+	{
+		ShipWorldHUD->HandleOwnerControllerChanged();
+	}
 }
 
 void AGuLiStrikeShip::EndPlay(const EEndPlayReason::Type EndPlayReason)
@@ -2418,13 +2545,14 @@ void AGuLiStrikeShip::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	bEndingShipPlay = true;
 	bServerFiring = false;
 	bLocalFireHeld = false;
+	ActiveMissileInputBinding = FGuLiWeaponBindingKey{};
 	if (UGuLiShipMovementComponent* Movement = GetShipMovement()) { Movement->ClearFlightInput(); }
 	if (ShipAbilitySystem)
 	{
 		ShipAbilitySystem->SetActiveAbilityInputEnabled(false);
 		ShipAbilitySystem->ServerClearShipAbilities();
 		ShipAbilitySystem->OnProjectionChanged().RemoveAll(this);
-		ShipAbilitySystem->OnTriggeredAbilityAuthorized().RemoveAll(this);
+		ShipAbilitySystem->OnWeaponAbilityAuthorized().RemoveAll(this);
 	}
 	if (HasAuthority())
 	{
@@ -2444,4 +2572,19 @@ void AGuLiStrikeShip::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	if (CombatHealth) { CombatHealth->OnDeath.RemoveDynamic(this, &AGuLiStrikeShip::HandleShipDeath); }
 	RemoveShipInputContext();
 	Super::EndPlay(EndPlayReason);
+}
+
+void AGuLiStrikeShip::SetWingmanAttackTarget(const FGuLiTargetHandle& Target)
+{
+	ServerSetWingmanAttackTarget(Target);
+}
+void AGuLiStrikeShip::ClearWingmanAttackTarget()
+{
+	ServerSetWingmanAttackTarget({});
+}
+void AGuLiStrikeShip::ServerSetWingmanAttackTarget_Implementation(const FGuLiTargetHandle& Target)
+{
+	if (!CanAcceptServerIntent() || !EnsureWingmanCombatCoordinator()) return;
+	if (Target.IsValid()) WingmanCombatCoordinator->SetSpecifiedAttackTarget(Target);
+	else WingmanCombatCoordinator->ClearSpecifiedAttackTarget();
 }

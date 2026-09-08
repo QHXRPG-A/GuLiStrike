@@ -1,9 +1,32 @@
+---
+schema: guli-progress/v1
+id: DEV-20260826-002
+work_id: WORK-20260826-002
+kind: development
+role: root
+title: WM01 程序化六足行走动画 — Blender 到 UE 完整管线教程
+areas:
+- commander
+- network
+- assets
+- learning
+status: abandoned
+verification: partial
+created: '2026-08-26'
+updated: '2026-09-05'
+summary: 原理：三角步态（tripod gait）——六条腿分两组（奇数 01/03/05 与偶数 02/04/06），相位差半周期：一组抬起前摆时另一组贴地后蹬。用脚本按正弦函数驱动每条腿的髋/大腿/小腿/踝骨骼旋转并批量 K 帧，比手
+  K 快且参数可随时调
+next_action: ''
+relations:
+  requirement: null
+  standalone: true
+status_note: 已回退（教程内容保留作管线参考）
+---
+
 # WM01 程序化六足行走动画 — Blender 到 UE 完整管线教程
 
-> ⚠️ **2026-08-26 回退说明**：应用户要求，本教程产出的动画资产（wm01_walkcycle 四件套、DEMO Actor、Blender Action）已全部删除，用户改为自己在 UE 内制作动画。**管线知识与踩坑记录仍然有效**（尤其"坑清单"与编辑器动画不 tick 的原因分析），保留作参考。资源现状见 [回退归档](../Archive/20260826-动画资产回退-用户改为UE内自制.md)。
+> ⚠️ **2026-08-26 回退说明**：应用户要求，本教程产出的动画资产（wm01_walkcycle 四件套、DEMO Actor、Blender Action）已全部删除，用户改为自己在 UE 内制作动画。**管线知识与踩坑记录仍然有效**（尤其"坑清单"与编辑器动画不 tick 的原因分析），保留作参考。原回退归档已在历史清理中移除，本段保留资源现状说明。
 
-- 日期：2026-08-26
-- 状态：已回退（教程内容保留作管线参考）
 - 适用：带骨骼网格的机甲（本例 WM-01，99 骨骼）；同样流程适用于任何骨架
 
 ## 成果
@@ -57,7 +80,7 @@ for f in range(1, FRAMES + 2):                # 49 帧 = 第 1 帧复制品 → 
 
 bpy.ops.object.mode_set(mode='OBJECT')
 act.use_fake_user = True                        # 防止保存时被清
-bpy.ops.wm.save_as_mainfile(filepath=r"D:/UE_5.7/test1/Saved/MCPExports/mach_1_final.blend")
+bpy.ops.wm.save_as_mainfile(filepath=r"D:/UE5.7/test1/Saved/MCPExports/mach_1_final.blend")
 ```
 
 骨骼映射说明（WM-01 腿链）：`xxe`=髋(连骨盆，绕 Z 摆动)、`xxd`/`xxc`=大腿/小腿(抬腿时绕 X 弯曲)、`xxa`=踝(补偿)。`_lever` 液压杆骨骼不 K（跟随父骨骼自然联动）。
@@ -78,8 +101,8 @@ bpy.ops.wm.save_as_mainfile(filepath=r"D:/UE_5.7/test1/Saved/MCPExports/mach_1_f
 
 ```bash
 "D:/steam/steamapps/common/Blender/blender.exe" --background \
-  "D:/UE_5.7/test1/Saved/MCPExports/mach_1_final.blend" \
-  --python "D:/UE_5.7/test1/Saved/MCPExports/export_walkcycle.py"
+  "D:/UE5.7/test1/Saved/MCPExports/mach_1_final.blend" \
+  --python "D:/UE5.7/test1/Saved/MCPExports/export_walkcycle.py"
 ```
 
 export_walkcycle.py 要点：选骨架+蒙皮网格 → `bpy.ops.export_scene.gltf(filepath=..., export_format='GLB', use_selection=True, export_skins=True, export_animations=True)` → 结果写 JSON 报告（后台模式看不到 stdout 时用于确认）。
@@ -91,7 +114,7 @@ export_walkcycle.py 要点：选骨架+蒙皮网格 → `bpy.ops.export_scene.gl
 用 MCP 的**延迟导入通道**（`asset.import_gltf`，调度到编辑器 tick 执行；`asset.import_fbx` 有 Interchange 重入崩溃风险，勿用）：
 
 ```
-import_gltf(file_path="D:/UE_5.7/test1/Saved/MCPExports/wm01_walkcycle.glb",
+import_gltf(file_path="D:/UE5.7/test1/Saved/MCPExports/wm01_walkcycle.glb",
             destination_path="/Game/Assets/WarMachines/CombatAvatarWM-01")
 ```
 

@@ -102,6 +102,10 @@ namespace GuLiShipAbilityTests
 	{
 		FGuLiShipAbilityProjectionContext Context;
 		Context.ShipInstanceId = FGuid(1, 2, 3, 4);
+		Context.MatchEpoch = 17u;
+		Context.Team = EGuLiTeam::Red;
+		Context.OwnerPlayerGuid = FGuid(5, 6, 7, 8);
+		Context.WingmanTypeId = GuLiGetDefaultWingmanTypeId();
 		Context.ShipGeneration = 11u;
 		Context.GroupGeneration = 7u;
 		Context.FormationCommandRevision = 1u;
@@ -371,6 +375,181 @@ bool FGuLiShipASCGrantProjectionTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Invalidation payload is structurally valid"), Tombstone.IsWellFormed());
 	TestFalse(TEXT("Invalidation payload cannot activate the old group"), Tombstone.IsUsableByLeaseOwner());
 	TestTrue(TEXT("Death teardown advances SnapshotRevision"), Tombstone.SnapshotRevision > Snapshot.SnapshotRevision);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiWingmanWeaponBindingProjectionTest,
+	"GuLiStrike.Ship.Abilities.WingmanWeaponBindingProjection",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ClientContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanWeaponBindingProjectionTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiShipAbilityTests;
+	FShipASCFixture Fixture;
+	if (!Fixture.Initialize(*this)
+		|| !TestTrue(TEXT("The authoritative projection context is accepted"),
+			Fixture.ASC->SetProjectionContext(ProjectionContext())))
+	{
+		return false;
+	}
+
+	FString Error;
+	FGuLiShipAbilityLoadoutState FormationOnly;
+	FormationOnly.AbilityIds.Add(TAG_GuLi_ShipAbility_Formation_DoubleRing);
+	FormationOnly.Revision = 1u;
+	if (!TestTrue(TEXT("A formation-only loadout is a legal committed configuration"),
+		Fixture.ASC->ServerApplyAbilitySet(Fixture.AbilitySet, FormationOnly, Error)))
+	{
+		AddError(Error);
+		return false;
+	}
+	FGuLiGroupAbilityConfigSnapshot FormationOnlySnapshot;
+	TestTrue(TEXT("Formation-only projection builds"),
+		Fixture.ASC->BuildGroupAbilityConfigSnapshot(FormationOnlySnapshot));
+	TestTrue(TEXT("Formation-only projection is lease-owner usable"),
+		FormationOnlySnapshot.IsUsableByLeaseOwner());
+	TestEqual(TEXT("Formation-only projection contains zero weapon channels"),
+		FormationOnlySnapshot.WeaponChannels.Num(), 0);
+
+	const FGuLiShipAbilityGrant* NativeBasic =
+		Fixture.AbilitySet->FindGrant(TAG_GuLi_ShipAbility_Weapon_Basic_Auto);
+	const FGuLiShipAbilityGrant* NativeMissile =
+		Fixture.AbilitySet->FindGrant(TAG_GuLi_ShipAbility_Weapon_Missile_Salvo);
+	if (!TestNotNull(TEXT("Native basic grant exists"), NativeBasic)
+		|| !TestNotNull(TEXT("Native missile grant exists"), NativeMissile))
+	{
+		return false;
+	}
+	const FGuLiShipAbilityGrant NativeBasicCopy = *NativeBasic;
+	const FGuLiShipAbilityGrant NativeMissileCopy = *NativeMissile;
+
+	FGuLiShipAbilityGrant SecondaryBasic = NativeBasicCopy;
+	SecondaryBasic.AbilityId = TAG_GuLi_ShipWingman_Weapon_Basic;
+	SecondaryBasic.WeaponSlotId = TEXT("SecondaryWeapon");
+	SecondaryBasic.SkillId = TEXT("Test.Secondary.Auto");
+	SecondaryBasic.ProfileRevision = 2u;
+	Fixture.AbilitySet->Grants.Add(SecondaryBasic);
+
+	FGuLiShipAbilityGrant SecondaryMissile = NativeMissileCopy;
+	SecondaryMissile.AbilityId = TAG_GuLi_ShipWingman_Weapon_Missile;
+	SecondaryMissile.WeaponSlotId = TEXT("SecondaryMissile");
+	SecondaryMissile.SkillId = TEXT("Test.Secondary.Missile");
+	SecondaryMissile.ProfileRevision = 2u;
+	SecondaryMissile.CooldownGroupId = TEXT("TestSecondaryMissile");
+	Fixture.AbilitySet->Grants.Add(SecondaryMissile);
+
+	FGuLiShipAbilityLoadoutState MultiWeaponLoadout = FGuLiShipAbilityLoadoutState::MakeNativeV1();
+	MultiWeaponLoadout.AbilityIds.Add(SecondaryBasic.AbilityId);
+	MultiWeaponLoadout.AbilityIds.Add(SecondaryMissile.AbilityId);
+	MultiWeaponLoadout.Revision = 2u;
+	MultiWeaponLoadout.Normalize();
+	Error.Reset();
+	if (!TestTrue(TEXT("One formation and four weapon entries apply as one loadout"),
+		Fixture.ASC->ServerApplyAbilitySet(Fixture.AbilitySet, MultiWeaponLoadout, Error)))
+	{
+		AddError(Error);
+		return false;
+	}
+
+	FGuLiGroupAbilityConfigSnapshot Snapshot;
+	if (!TestTrue(TEXT("Multi-channel projection builds"),
+		Fixture.ASC->BuildGroupAbilityConfigSnapshot(Snapshot)))
+	{
+		return false;
+	}
+	TestTrue(TEXT("Multi-channel projection is structurally valid"), Snapshot.IsUsableByLeaseOwner());
+	TestEqual(TEXT("Every selected weapon becomes exactly one channel"), Snapshot.WeaponChannels.Num(), 4);
+	TestEqual(TEXT("Projection carries the complete loadout revision"),
+		Snapshot.LoadoutRevision, Fixture.ASC->GetWeaponLoadoutRevision());
+
+	const FGuLiWeaponBindingKey PrimaryBasicBinding = FGuLiWeaponBindingKey::Wingman(
+		Snapshot.MatchEpoch, Snapshot.Team, Snapshot.OwnerPlayerGuid, Snapshot.WingmanTypeId, TEXT("BasicWeapon"));
+	const FGuLiWeaponBindingKey SecondaryBasicBinding = FGuLiWeaponBindingKey::Wingman(
+		Snapshot.MatchEpoch, Snapshot.Team, Snapshot.OwnerPlayerGuid, Snapshot.WingmanTypeId, TEXT("SecondaryWeapon"));
+	const FGuLiWeaponBindingKey PrimaryMissileBinding = FGuLiWeaponBindingKey::Wingman(
+		Snapshot.MatchEpoch, Snapshot.Team, Snapshot.OwnerPlayerGuid, Snapshot.WingmanTypeId, TEXT("Missile"));
+	const FGuLiWeaponBindingKey SecondaryMissileBinding = FGuLiWeaponBindingKey::Wingman(
+		Snapshot.MatchEpoch, Snapshot.Team, Snapshot.OwnerPlayerGuid, Snapshot.WingmanTypeId, TEXT("SecondaryMissile"));
+
+	const FGuLiShipAbilityGrant* ProjectedPrimaryBasic = Fixture.ASC->FindConfiguredGrant(PrimaryBasicBinding);
+	const FGuLiShipAbilityGrant* ProjectedSecondaryBasic = Fixture.ASC->FindConfiguredGrant(SecondaryBasicBinding);
+	const FGuLiShipAbilityGrant* ProjectedPrimaryMissile = Fixture.ASC->FindConfiguredGrant(PrimaryMissileBinding);
+	const FGuLiShipAbilityGrant* ProjectedSecondaryMissile = Fixture.ASC->FindConfiguredGrant(SecondaryMissileBinding);
+	if (!TestNotNull(TEXT("Primary automatic binding resolves"), ProjectedPrimaryBasic)
+		|| !TestNotNull(TEXT("Secondary automatic binding resolves"), ProjectedSecondaryBasic)
+		|| !TestNotNull(TEXT("Primary missile binding resolves"), ProjectedPrimaryMissile)
+		|| !TestNotNull(TEXT("Secondary missile binding resolves"), ProjectedSecondaryMissile))
+	{
+		return false;
+	}
+	TestTrue(TEXT("Two automatic channels may reuse the same GA class"),
+		ProjectedPrimaryBasic->AbilityClass == ProjectedSecondaryBasic->AbilityClass);
+	TestTrue(TEXT("Two missile channels may reuse the same GA class"),
+		ProjectedPrimaryMissile->AbilityClass == ProjectedSecondaryMissile->AbilityClass);
+	TestTrue(TEXT("Reused GA classes retain distinct stable catalog identities"),
+		ProjectedPrimaryBasic->AbilityId != ProjectedSecondaryBasic->AbilityId
+		&& ProjectedPrimaryMissile->AbilityId != ProjectedSecondaryMissile->AbilityId);
+
+	int32 BindingAuthorizations = 0;
+	FGuLiWeaponBindingKey AuthorizedBinding;
+	Fixture.ASC->OnWeaponAbilityAuthorized().AddLambda(
+		[&BindingAuthorizations, &AuthorizedBinding](FGameplayAbilitySpecHandle,
+			FGuLiWeaponBindingKey Binding, FName, FGameplayTag, uint32, bool)
+		{
+			++BindingAuthorizations;
+			AuthorizedBinding = Binding;
+		});
+	Fixture.ASC->AbilityInputTagPressed(TAG_GuLi_Input_Ship_Wingman_Missile);
+	TestEqual(TEXT("A shared InputTag never implicitly fans out to multiple weapon channels"),
+		BindingAuthorizations, 0);
+	TestTrue(TEXT("Binding-exact input activates only the requested missile channel"),
+		Fixture.ASC->AbilityWeaponBindingPressed(PrimaryMissileBinding));
+	TestEqual(TEXT("Binding-exact input emits one authorization"), BindingAuthorizations, 1);
+	TestTrue(TEXT("Authorization carries the exact requested binding"),
+		AuthorizedBinding == PrimaryMissileBinding);
+	TestTrue(TEXT("Binding-exact release resolves the same channel"),
+		Fixture.ASC->AbilityWeaponBindingReleased(PrimaryMissileBinding));
+
+	FGuLiShipAbilityGrant* MutableSecondaryBasic = Fixture.AbilitySet->Grants.FindByPredicate(
+		[](const FGuLiShipAbilityGrant& Grant)
+		{
+			return Grant.AbilityId == TAG_GuLi_ShipWingman_Weapon_Basic;
+		});
+	if (!TestNotNull(TEXT("Secondary automatic catalog entry remains addressable"), MutableSecondaryBasic))
+	{
+		return false;
+	}
+	const FName OriginalSecondarySlot = MutableSecondaryBasic->WeaponSlotId;
+	MutableSecondaryBasic->WeaponSlotId = TEXT("BasicWeapon");
+	TArray<FGuLiShipAbilityGrant> Resolved;
+	Error.Reset();
+	TestFalse(TEXT("A loadout cannot select two weapons for the same binding slot"),
+		Fixture.AbilitySet->ResolveLoadout(MultiWeaponLoadout, Resolved, &Error));
+	MutableSecondaryBasic->WeaponSlotId = OriginalSecondarySlot;
+
+	FGuLiGroupAbilityConfigSnapshot TooManyChannels = Snapshot;
+	for (int32 Index = TooManyChannels.WeaponChannels.Num(); Index < GULI_MAX_WINGMAN_WEAPON_CHANNELS + 1; ++Index)
+	{
+		FGuLiWingmanWeaponChannelConfig Extra = TooManyChannels.WeaponChannels[0];
+		Extra.Binding.SlotId = FName(*FString::Printf(TEXT("OverflowSlot%d"), Index));
+		TooManyChannels.WeaponChannels.Add(Extra);
+	}
+	TooManyChannels.RefreshHash();
+	TestFalse(TEXT("A projection with more than eight weapon channels is rejected"),
+		TooManyChannels.IsWellFormed());
+
+	FGuLiGroupAbilityConfigSnapshot ExcessiveAutomaticRate = Snapshot;
+	for (FGuLiWingmanWeaponChannelConfig& Channel : ExcessiveAutomaticRate.WeaponChannels)
+	{
+		if (Channel.Kind == EGuLiWingmanWeaponKind::BasicAutomatic)
+		{
+			Channel.Runtime.CooldownSeconds = 0.5f;
+		}
+	}
+	ExcessiveAutomaticRate.RefreshHash();
+	TestFalse(TEXT("The projected 40-intent-per-second automatic-fire budget is enforced"),
+		ExcessiveAutomaticRate.IsWellFormed());
 	return true;
 }
 

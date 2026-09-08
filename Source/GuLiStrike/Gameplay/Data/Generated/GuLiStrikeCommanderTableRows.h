@@ -75,6 +75,10 @@ struct FGuLiStrikeCommanderSkillsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	FString Tags;
 
+	/** EffectConfigId (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	FString EffectConfigId;
+
 };
 
 /** DataTable DT_GuLiStrikeCommander_UnitSkills 的行结构（源: GuLiStrikeCommander.xlsx 的 UnitSkills sheet）。 */
@@ -118,5 +122,93 @@ struct FGuLiStrikeCommanderUnitSkillsRow : public FTableRowBase
 	/** RangeCentimeters (float, Necessary) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
 	float RangeCentimeters = 0.0f;
+
+};
+
+/** DataTable DT_GuLiStrikeCommander_SpellFields 的行结构（源: GuLiStrikeCommander.xlsx 的 SpellFields sheet）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeCommanderSpellFieldsRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
+	FString Note;
+
+	/** Damage (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
+	float Damage = 0.0f;
+
+	/** RadiusCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
+	float RadiusCentimeters = 0.0f;
+
+	/** Timing (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
+	FString Timing;
+
+	/** DelaySeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
+	float DelaySeconds = 0.0f;
+
+	/** DurationSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
+	float DurationSeconds = 0.0f;
+
+	/** PulseIntervalSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
+	float PulseIntervalSeconds = 0.0f;
+
+	/** DissipationSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
+	float DissipationSeconds = 0.0f;
+
+};
+
+/** DataTable DT_GuLiStrikeCommander_WeaponMounts 的行结构（源: GuLiStrikeCommander.xlsx 的 WeaponMounts sheet）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeCommanderWeaponMountsRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WeaponMounts")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WeaponMounts")
+	FString Note;
+
+	/** UnitTypeId (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WeaponMounts")
+	int32 UnitTypeId = 0;
+
+	/** SlotId (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WeaponMounts")
+	FString SlotId;
+
+	/** PointRole (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WeaponMounts")
+	FString PointRole;
+
+	/** PointIndex (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WeaponMounts")
+	int32 PointIndex = 0;
+
+	/** SocketName (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WeaponMounts")
+	FString SocketName;
+
+	/** OffsetX/OffsetY/OffsetZ (float) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WeaponMounts")
+	FVector Offset = FVector::ZeroVector;
+
+	/** bCalibrated (bool, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WeaponMounts")
+	bool bCalibrated = false;
 
 };

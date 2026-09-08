@@ -27,6 +27,12 @@ struct GULISTRIKE_API FGuLiWingmanPresentationEvaluation
 
 namespace GuLiWingmanPresentationPolicy
 {
+	enum class EStalePolicy : uint8
+	{
+		FadeThenHide = 0,
+		RetainLastPose
+	};
+
 	inline constexpr int32 MaximumBufferedPoseSamples = 4;
 	inline constexpr double MaximumExtrapolationSeconds = 0.5;
 	inline constexpr double StaleFadeSeconds = 0.15;
@@ -53,7 +59,8 @@ namespace GuLiWingmanPresentationPolicy
 	GULISTRIKE_API FGuLiWingmanPresentationEvaluation Evaluate(
 		TConstArrayView<FGuLiWingmanPresentationPose> Samples,
 		double RenderTimeSeconds,
-		double ServerNowSeconds);
+		double ServerNowSeconds,
+		EStalePolicy StalePolicy = EStalePolicy::FadeThenHide);
 
 	/** Deterministic 0..24 member slot; INDEX_NONE for malformed identities. */
 	GULISTRIKE_API int32 GetStableMemberSlot(const FGuLiWingmanHandle& Wingman);

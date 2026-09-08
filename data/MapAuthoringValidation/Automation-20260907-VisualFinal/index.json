@@ -1,0 +1,130 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "B207D9DD49B7207FF8AAA9BF9EEA72F0",
+			"instanceName": "DESKTOP-6D3B0FC-81488",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.06-16.46.26",
+	"succeeded": 5,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.37566837668418884,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AtomicPatch",
+			"fullTestPath": "GuLi.MapAuthoring.AtomicPatch",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B207D9DD49B7207FF8AAA9BF9EEA72F0"
+			],
+			"duration": 0.0081904008984565735,
+			"dateTime": "2026.09.06-16.46.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EditorIdentityUndoSaveReload",
+			"fullTestPath": "GuLi.MapAuthoring.EditorIdentityUndoSaveReload",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B207D9DD49B7207FF8AAA9BF9EEA72F0"
+			],
+			"duration": 0.33772549033164978,
+			"dateTime": "2026.09.06-16.46.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "Isolated lifecycle map retained: /Game/GuLiStrike/Editor/MapAuthoring/Validation/Auto_F3D4E6A24EE2325D7B4C879847B208BF/Layout",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.46.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExportDeterminismAndAtomicity",
+			"fullTestPath": "GuLi.MapAuthoring.ExportDeterminismAndAtomicity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B207D9DD49B7207FF8AAA9BF9EEA72F0"
+			],
+			"duration": 0.013095300644636154,
+			"dateTime": "2026.09.06-16.46.26",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "Export evidence retained at D:/UE5.7/test1/Data/MapAuthoringValidation/2e1c9c84-4e56-c29b-dd95-63acc545b034",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.46.26"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FieldsMigration",
+			"fullTestPath": "GuLi.MapAuthoring.FieldsMigration",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B207D9DD49B7207FF8AAA9BF9EEA72F0"
+			],
+			"duration": 0.0085463002324104309,
+			"dateTime": "2026.09.06-16.46.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GeometryAndTransforms",
+			"fullTestPath": "GuLi.MapAuthoring.GeometryAndTransforms",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"B207D9DD49B7207FF8AAA9BF9EEA72F0"
+			],
+			"duration": 0.0081108994781970978,
+			"dateTime": "2026.09.06-16.46.26",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

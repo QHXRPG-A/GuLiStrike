@@ -66,6 +66,10 @@ struct GULISTRIKE_API FGuLiWingmanRosterEntry
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|Roster")
 	FGuLiWingmanHandle Wingman;
 
+	/** Explicit type mapping; stable-slot/member indices are not type identities. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|Roster")
+	FName WingmanTypeId = TEXT("DefaultWingman");
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|Roster")
 	bool bDead = false;
 
@@ -348,6 +352,10 @@ struct GULISTRIKE_API FGuLiWingmanBootstrapBundle
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|Bootstrap")
 	FGuLiGroupAbilityConfigSnapshot AbilityConfig;
+
+	UPROPERTY()
+	FGuLiWingmanAttackAuthorityState AttackState;
+	UPROPERTY() uint64 AttackStateHash = 0;
 
 	/** Non-zero selects the strict per-Flight Candidate contract. */
 	UPROPERTY(VisibleAnywhere, Category = "Wingman|Bootstrap")

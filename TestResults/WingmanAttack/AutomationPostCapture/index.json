@@ -1,0 +1,243 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "5468F7AC4539C8D3D8BB54A20F1B937E",
+			"instanceName": "DESKTOP-6D3B0FC-3308",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.07-09.23.02",
+	"succeeded": 6,
+	"succeededWithWarnings": 1,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.058915399014949799,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BoundedCapturedFireWire",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.BoundedCapturedFireWire",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"5468F7AC4539C8D3D8BB54A20F1B937E"
+			],
+			"duration": 0.0082107000052928925,
+			"dateTime": "2026.09.07-09.23.02",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FixedGroundAOEAndAttribution",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.FixedGroundAOEAndAttribution",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"5468F7AC4539C8D3D8BB54A20F1B937E"
+			],
+			"duration": 0.0091895982623100281,
+			"dateTime": "2026.09.07-09.23.02",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogLinker: [AssetLog] D:\\UE5.7\\test1\\Content\\GuLiStrike\\Data\\DT_GuLiStrikeCommander_Soldiers.uasset: Asset has been saved with empty engine version. The asset will be loaded but may be incompatible.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.07-09.23.02"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogLinker: [AssetLog] D:\\UE5.7\\test1\\Content\\Commander\\Units\\SM_WM01_Crowd.uasset: Asset has been saved with empty engine version. The asset will be loaded but may be incompatible.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.07-09.23.02"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogLinker: [AssetLog] D:\\UE5.7\\test1\\Content\\Commander\\Units\\M_WM01_Crowd.uasset: Asset has been saved with empty engine version. The asset will be loaded but may be incompatible.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.07-09.23.02"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogLinker: [AssetLog] D:\\UE5.7\\test1\\Content\\Commander\\Units\\T_WM01_Crowd_BaseColor.uasset: Asset has been saved with empty engine version. The asset will be loaded but may be incompatible.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.07-09.23.02"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogLinker: [AssetLog] D:\\UE5.7\\test1\\Content\\Commander\\Units\\T_WM01_Crowd_Normal.uasset: Asset has been saved with empty engine version. The asset will be loaded but may be incompatible.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.07-09.23.02"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogLinker: [AssetLog] D:\\UE5.7\\test1\\Content\\Commander\\Units\\T_WM01_Crowd_ORM.uasset: Asset has been saved with empty engine version. The asset will be loaded but may be incompatible.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.07-09.23.02"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogLinker: [AssetLog] D:\\UE5.7\\test1\\Content\\GuLiStrike\\Data\\DT_GuLiStrikeCommander_SpellFields.uasset: Asset has been saved with empty engine version. The asset will be loaded but may be incompatible.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.07-09.23.02"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogLinker: [AssetLog] D:\\UE5.7\\test1\\Content\\GuLiStrike\\Data\\DT_GuLiStrikeCommander_Skills.uasset: Asset has been saved with empty engine version. The asset will be loaded but may be incompatible.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.07-09.23.02"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogLinker: [AssetLog] D:\\UE5.7\\test1\\Content\\GuLiStrike\\Data\\DT_GuLiStrikeCommander_UnitSkills.uasset: Asset has been saved with empty engine version. The asset will be loaded but may be incompatible.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.07-09.23.02"
+				}
+			],
+			"warnings": 9,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroundPathAndCadence",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.GroundPathAndCadence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"5468F7AC4539C8D3D8BB54A20F1B937E"
+			],
+			"duration": 0.0079563967883586884,
+			"dateTime": "2026.09.07-09.23.02",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GunLedgerAndMuzzleCue",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.GunLedgerAndMuzzleCue",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"5468F7AC4539C8D3D8BB54A20F1B937E"
+			],
+			"duration": 0.0088714025914669037,
+			"dateTime": "2026.09.07-09.23.02",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ServerGunGeometryLosAndCooldown",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.ServerGunGeometryLosAndCooldown",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"5468F7AC4539C8D3D8BB54A20F1B937E"
+			],
+			"duration": 0.0082435011863708496,
+			"dateTime": "2026.09.07-09.23.02",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TargetHysteresisAndGuardRejoin",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.TargetHysteresisAndGuardRejoin",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"5468F7AC4539C8D3D8BB54A20F1B937E"
+			],
+			"duration": 0.00812549889087677,
+			"dateTime": "2026.09.07-09.23.02",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ThreeDimensionalDogfightStateMachine",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.ThreeDimensionalDogfightStateMachine",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"5468F7AC4539C8D3D8BB54A20F1B937E"
+			],
+			"duration": 0.0083183012902736664,
+			"dateTime": "2026.09.07-09.23.02",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

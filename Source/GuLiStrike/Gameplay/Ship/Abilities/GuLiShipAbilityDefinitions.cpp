@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityDefinitions.h"
+#include "Gameplay/Data/Generated/GuLiStrikeShipTableRows.h"
 
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h"
 
@@ -42,22 +43,44 @@ bool UGuLiWingmanFormationDefinition::IsWellFormed(FString* OutError) const
 	{
 		return Fail(OutError, TEXT("Formation FlightCount must be in [1, ExpectedWingmanCount]."));
 	}
-	if (static_cast<uint32>(InnerRingSlots) + static_cast<uint32>(OuterRingSlots) != ExpectedWingmanCount)
+	if (ExpectedWingmanCount != 25u || FlightCount != 5u)
 	{
-		return Fail(OutError, TEXT("Double-ring slot counts must equal ExpectedWingmanCount."));
+		return Fail(OutError, TEXT("The current Wingman protocol requires exactly 25 members in five Flights."));
 	}
-	if (!IsFinitePositive(InnerRingRadiusCentimeters)
-		|| !IsFinitePositive(OuterRingRadiusCentimeters)
-		|| OuterRingRadiusCentimeters <= InnerRingRadiusCentimeters)
+	if (GuidanceAlgorithmVersion == 0u)
 	{
-		return Fail(OutError, TEXT("Double-ring radii must be finite, positive, and outer must exceed inner."));
+		return Fail(OutError, TEXT("Formation GuidanceAlgorithmVersion must be nonzero."));
 	}
-	if (!FMath::IsFinite(InnerRingHeightCentimeters)
-		|| !FMath::IsFinite(OuterRingHeightCentimeters)
-		|| !IsFinitePositive(InnerAngularSpeedRadiansPerSecond)
-		|| !IsFinitePositive(OuterAngularSpeedRadiansPerSecond))
+	if (Model == EGuLiWingmanFormationModel::DoubleRingLegacy)
 	{
-		return Fail(OutError, TEXT("Double-ring heights must be finite and angular speeds must be positive."));
+		if (static_cast<uint32>(InnerRingSlots) + static_cast<uint32>(OuterRingSlots) != ExpectedWingmanCount)
+		{
+			return Fail(OutError, TEXT("Double-ring slot counts must equal ExpectedWingmanCount."));
+		}
+		if (!IsFinitePositive(InnerRingRadiusCentimeters)
+			|| !IsFinitePositive(OuterRingRadiusCentimeters)
+			|| OuterRingRadiusCentimeters <= InnerRingRadiusCentimeters)
+		{
+			return Fail(OutError, TEXT("Double-ring radii must be finite, positive, and outer must exceed inner."));
+		}
+		if (!FMath::IsFinite(InnerRingHeightCentimeters)
+			|| !FMath::IsFinite(OuterRingHeightCentimeters)
+			|| !IsFinitePositive(InnerAngularSpeedRadiansPerSecond)
+			|| !IsFinitePositive(OuterAngularSpeedRadiansPerSecond))
+		{
+			return Fail(OutError, TEXT("Double-ring heights must be finite and angular speeds must be positive."));
+		}
+	}
+	else if (Model == EGuLiWingmanFormationModel::SwarmOrbit)
+	{
+		if (!SwarmOrbit.IsWellFormed())
+		{
+			return Fail(OutError, TEXT("SwarmOrbit tuning is outside its finite, ordered domain."));
+		}
+	}
+	else
+	{
+		return Fail(OutError, TEXT("Formation model is unknown."));
 	}
 	if (!IsFinitePositive(MinimumFlightSpeedCentimetersPerSecond)
 		|| !IsFinitePositive(CruiseFlightSpeedCentimetersPerSecond)
@@ -87,6 +110,59 @@ bool UGuLiWingmanFormationDefinition::IsWellFormed(FString* OutError) const
 	{
 		return Fail(OutError, TEXT("Recovery distance must exceed the positive catch-up distance."));
 	}
+	if (Model == EGuLiWingmanFormationModel::SwarmOrbit
+		&& CatchUpDistanceCentimeters <= SwarmOrbit.OuterSoftRadiusCentimeters)
+	{
+		return Fail(OutError, TEXT("SwarmOrbit catch-up distance must exceed its outer soft radius."));
+	}
+	return true;
+}
+
+bool UGuLiWingmanFormationDefinition::BuildRuntimeConfig(
+	const uint32 FormationSeed,
+	FGuLiWingmanFormationRuntimeConfig& OutRuntime,
+	FString* OutError) const
+{
+	OutRuntime = FGuLiWingmanFormationRuntimeConfig();
+	if (FormationSeed == 0u)
+	{
+		return Fail(OutError, TEXT("FormationSeed must be nonzero."));
+	}
+	if (!IsWellFormed(OutError))
+	{
+		return false;
+	}
+
+	OutRuntime.Model = Model;
+	OutRuntime.GuidanceAlgorithmVersion = GuidanceAlgorithmVersion;
+	OutRuntime.FormationSeed = FormationSeed;
+	OutRuntime.SwarmOrbit = SwarmOrbit;
+	OutRuntime.InnerRingSlots = InnerRingSlots;
+	OutRuntime.OuterRingSlots = OuterRingSlots;
+	OutRuntime.InnerRingRadiusCentimeters = InnerRingRadiusCentimeters;
+	OutRuntime.OuterRingRadiusCentimeters = OuterRingRadiusCentimeters;
+	OutRuntime.InnerRingHeightCentimeters = InnerRingHeightCentimeters;
+	OutRuntime.OuterRingHeightCentimeters = OuterRingHeightCentimeters;
+	OutRuntime.InnerAngularSpeedRadiansPerSecond = InnerAngularSpeedRadiansPerSecond;
+	OutRuntime.OuterAngularSpeedRadiansPerSecond = OuterAngularSpeedRadiansPerSecond;
+	OutRuntime.MinimumSpeedCentimetersPerSecond = MinimumFlightSpeedCentimetersPerSecond;
+	OutRuntime.CruiseSpeedCentimetersPerSecond = CruiseFlightSpeedCentimetersPerSecond;
+	OutRuntime.CatchUpSpeedCentimetersPerSecond = CatchUpFlightSpeedCentimetersPerSecond;
+	OutRuntime.MaximumAccelerationCentimetersPerSecondSquared =
+		MaximumAccelerationCentimetersPerSecondSquared;
+	OutRuntime.MaximumDecelerationCentimetersPerSecondSquared =
+		MaximumDecelerationCentimetersPerSecondSquared;
+	OutRuntime.MaximumTurnRateDegreesPerSecond = MaximumTurnRateDegreesPerSecond;
+	OutRuntime.MaximumBankDegrees = MaximumBankDegrees;
+	OutRuntime.AgentRadiusCentimeters = AgentRadiusCentimeters;
+	OutRuntime.SeparationRadiusCentimeters = SeparationRadiusCentimeters;
+	OutRuntime.ObstacleLookAheadCentimeters = ObstacleLookAheadCentimeters;
+	OutRuntime.CatchUpDistanceCentimeters = CatchUpDistanceCentimeters;
+	OutRuntime.RecoveryDistanceCentimeters = RecoveryDistanceCentimeters;
+	if (!OutRuntime.IsWellFormed())
+	{
+		return Fail(OutError, TEXT("Formation definition produced an invalid runtime projection."));
+	}
 	return true;
 }
 
@@ -98,18 +174,27 @@ uint64 UGuLiWingmanFormationDefinition::ComputeStableChecksum() const
 	}
 
 	uint64 Hash = GuLiShipAbilityHash::OffsetBasis;
-	GuLiShipAbilityHash::AddString(Hash, TEXT("GuLi.WingmanFormation.DoubleRing.v1"));
+	GuLiShipAbilityHash::AddString(Hash, TEXT("GuLi.WingmanFormation.v2"));
 	GuLiShipAbilityHash::AddUInt32(Hash, Revision);
 	GuLiShipAbilityHash::AddUInt32(Hash, ExpectedWingmanCount);
 	GuLiShipAbilityHash::AddUInt32(Hash, FlightCount);
-	GuLiShipAbilityHash::AddUInt32(Hash, InnerRingSlots);
-	GuLiShipAbilityHash::AddUInt32(Hash, OuterRingSlots);
-	GuLiShipAbilityHash::AddFloat(Hash, InnerRingRadiusCentimeters);
-	GuLiShipAbilityHash::AddFloat(Hash, OuterRingRadiusCentimeters);
-	GuLiShipAbilityHash::AddFloat(Hash, InnerRingHeightCentimeters);
-	GuLiShipAbilityHash::AddFloat(Hash, OuterRingHeightCentimeters);
-	GuLiShipAbilityHash::AddFloat(Hash, InnerAngularSpeedRadiansPerSecond);
-	GuLiShipAbilityHash::AddFloat(Hash, OuterAngularSpeedRadiansPerSecond);
+	GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Model));
+	GuLiShipAbilityHash::AddUInt32(Hash, GuidanceAlgorithmVersion);
+	if (Model == EGuLiWingmanFormationModel::DoubleRingLegacy)
+	{
+		GuLiShipAbilityHash::AddUInt32(Hash, InnerRingSlots);
+		GuLiShipAbilityHash::AddUInt32(Hash, OuterRingSlots);
+		GuLiShipAbilityHash::AddFloat(Hash, InnerRingRadiusCentimeters);
+		GuLiShipAbilityHash::AddFloat(Hash, OuterRingRadiusCentimeters);
+		GuLiShipAbilityHash::AddFloat(Hash, InnerRingHeightCentimeters);
+		GuLiShipAbilityHash::AddFloat(Hash, OuterRingHeightCentimeters);
+		GuLiShipAbilityHash::AddFloat(Hash, InnerAngularSpeedRadiansPerSecond);
+		GuLiShipAbilityHash::AddFloat(Hash, OuterAngularSpeedRadiansPerSecond);
+	}
+	else
+	{
+		SwarmOrbit.AddToStableHash(Hash);
+	}
 	GuLiShipAbilityHash::AddFloat(Hash, MinimumFlightSpeedCentimetersPerSecond);
 	GuLiShipAbilityHash::AddFloat(Hash, CruiseFlightSpeedCentimetersPerSecond);
 	GuLiShipAbilityHash::AddFloat(Hash, CatchUpFlightSpeedCentimetersPerSecond);
@@ -127,11 +212,53 @@ uint64 UGuLiWingmanFormationDefinition::ComputeStableChecksum() const
 
 UGuLiWingmanWeaponDefinition::UGuLiWingmanWeaponDefinition() = default;
 
+bool UGuLiWingmanWeaponDefinition::BuildRuntimeConfig(FGuLiWingmanWeaponRuntimeConfig& Out, FString* OutError) const
+{
+	Out = {};
+	Out.Damage = Damage; Out.RangeCentimeters = RangeCentimeters; Out.CooldownSeconds = CooldownSeconds;
+	Out.TargetConeHalfAngleDegrees = TargetConeHalfAngleDegrees; Out.bRequiresLineOfSight = bRequiresLineOfSight;
+	Out.ProjectileSpeedCentimetersPerSecond = ProjectileSpeedCentimetersPerSecond;
+	Out.ProjectileLifetimeSeconds = ProjectileLifetimeSeconds; Out.SweepRadiusCentimeters = SweepRadiusCentimeters;
+	Out.MaximumHomingTurnRateDegreesPerSecond = MaximumHomingTurnRateDegreesPerSecond; Out.Attack = Attack;
+	if (!AttackProfileRow.IsNull())
+	{
+		const auto* Row = AttackProfileRow.GetRow<FGuLiStrikeShipWingmanWeaponsRow>(TEXT("Wingman attack profile"));
+		if (!Row) return Fail(OutError, TEXT("Wingman weapon requires its authored Ship table row."));
+		if (Row->AttackPattern == TEXT("AirDogfight")) Out.Attack.Pattern = EGuLiWingmanAttackPattern::AirDogfight;
+		else if (Row->AttackPattern == TEXT("GroundDive")) Out.Attack.Pattern = EGuLiWingmanAttackPattern::GroundDive;
+		else return Fail(OutError, TEXT("Unknown Wingman attack pattern in source table."));
+		Out.Attack.ExecutorId = FName(*Row->ExecutorId); Out.Attack.FlightSpeed = Row->FlightSpeedCentimetersPerSecond;
+		Out.Attack.DiveSeconds = Row->DiveSeconds; Out.Attack.MissileCount = Row->MissileCount;
+		Out.Attack.StripLength = Row->StripLengthCentimeters; Out.Attack.PullUpHeight = Row->PullUpHeightCentimeters;
+		Out.Attack.ExplosionRadius = Row->ExplosionRadiusCentimeters;
+		Out.Attack.BreakawayDistance = Row->BreakawayDistanceCentimeters;
+		Out.Attack.RetreatMinimumDistance = Row->RetreatMinimumDistanceCentimeters;
+		Out.Attack.RetreatLongitudinalMinFraction = Row->RetreatLongitudinalMinFraction;
+		Out.Attack.RetreatLongitudinalMaxFraction = Row->RetreatLongitudinalMaxFraction;
+		Out.Attack.RetreatLateralRadius = Row->RetreatLateralRadiusCentimeters;
+		Out.Attack.RetreatVerticalRadius = Row->RetreatVerticalRadiusCentimeters;
+		Out.Attack.ManeuverArrivalRadius = Row->ManeuverArrivalRadiusCentimeters;
+		Out.Attack.TurnYawMinDegrees = Row->TurnYawMinDegrees;
+		Out.Attack.TurnYawMaxDegrees = Row->TurnYawMaxDegrees;
+		Out.Attack.TurnPitchMaxDegrees = Row->TurnPitchMaxDegrees; Out.Attack.Muzzle = Row->Muzzle;
+		Out.Damage = Row->Damage; Out.CooldownSeconds = Row->CooldownSeconds; Out.RangeCentimeters = Row->RangeCentimeters;
+		Out.TargetConeHalfAngleDegrees = Row->FireConeHalfAngleDegrees;
+		Out.ProjectileSpeedCentimetersPerSecond = Row->ProjectileSpeedCentimetersPerSecond;
+		Out.ProjectileLifetimeSeconds = Row->ProjectileLifetimeSeconds; Out.SweepRadiusCentimeters = Row->SweepRadiusCentimeters;
+	}
+	return Out.IsWellFormed() || Fail(OutError, TEXT("Wingman attack row contains invalid values or exceeds the bounded fire batch."));
+}
+
 bool UGuLiWingmanWeaponDefinition::IsWellFormed(FString* OutError) const
 {
 	if (Revision == 0u)
 	{
 		return Fail(OutError, TEXT("Weapon definition revision must be nonzero."));
+	}
+	if (!AttackProfileRow.IsNull() || Attack.Pattern != EGuLiWingmanAttackPattern::Legacy)
+	{
+		FGuLiWingmanWeaponRuntimeConfig Runtime;
+		return Kind == EGuLiWingmanWeaponKind::BasicAutomatic && BuildRuntimeConfig(Runtime, OutError);
 	}
 	if (!IsFiniteNonNegative(Damage)
 		|| !IsFinitePositive(RangeCentimeters)
@@ -182,5 +309,9 @@ uint64 UGuLiWingmanWeaponDefinition::ComputeStableChecksum() const
 	GuLiShipAbilityHash::AddFloat(Hash, TargetConeHalfAngleDegrees);
 	GuLiShipAbilityHash::AddBool(Hash, bRequiresLineOfSight);
 	GuLiShipAbilityHash::AddFloat(Hash, MaximumHomingTurnRateDegreesPerSecond);
+	FGuLiWingmanWeaponRuntimeConfig Resolved;
+	if (!BuildRuntimeConfig(Resolved)) return 0u;
+	Resolved.AddToStableHash(Hash);
+	GuLiShipAbilityHash::AddString(Hash, AttackProjectile.ToSoftObjectPath().ToString());
 	return GuLiShipAbilityHash::Finish(Hash);
 }

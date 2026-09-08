@@ -33,6 +33,9 @@ Content/Characters/Mannequins/
 # Marketplace / asset packs (not versioned, huge binary trees)
 Content/Assets/
 Content/MafiaBarnPack/
+Content/Fab/Missile_Turret/
+Content/Fab/Stylized_Turrets_-_Tower_Defense/
+Content/NEONCTRL_FuturisticClea_UIKit/
 # Five locally baked FourFRobot derivatives; public redistribution not verified
 Content/Commander/Units/*FourFRobot_Crowd*.uasset
 
@@ -40,6 +43,9 @@ Content/Commander/Units/*FourFRobot_Crowd*.uasset
 Content/Maps/LVL_Main.umap
 # Commander prototype map (521MB; local level, same policy as LVL_Main)
 Content/Maps/LVL_CommanderMassPrototype.umap
+# Map-authoring generated sessions and its 521MB acceptance clone stay local.
+Content/GuLiStrike/Editor/MapAuthoring/Validation/Auto_*/
+Content/GuLiStrike/Editor/MapAuthoring/Validation/LVL_MapAuthoringAcceptance.umap
 Content/Scifi_Skies/Textures/Skies/T_scifiskies_bg_03.uasset
 Content/Scifi_Skies/Textures/Terrain/T_Grass_Color_02.uasset
 Content/Scifi_Skies/Textures/Terrain/T_Grass_normal.uasset
@@ -47,6 +53,9 @@ Content/Scifi_Skies/Textures/Terrain/T_Rock_Base_Color.uasset
 Content/Scifi_Skies/Textures/Terrain/T_Rock_Base_Normal.uasset
 Content/Scifi_Skies/Textures/Terrain/T_Rock_High_Color.uasset
 Content/Assets/Environments/KiteDemo/
+
+# External concept/reference images are local inputs; generated project assets are versioned.
+ArtSource/**/References/
 
 # Any future oversized binary
 *.uexp
@@ -66,6 +75,7 @@ Data/Json/*.csv
 
 # xlsx 备份侧车文件（xlsx CLI --backup 临时产物，勿提交）
 *.xlsx.bak-*
+*.blend1
 # Excel creates these lock files while a workbook is open
 ~$*.xlsx
 
@@ -87,6 +97,11 @@ htmlcov/
 *.tmp
 *.temp
 *.dmp
+*.lnk
+
+# Live editor control scratch files and local command notes
+Progress/Commander*.json
+相关指令.txt
 
 # ===== 外部引入的 skill / MCP / 第三方工具目录（本地使用，不入库）=====
 .agents/tmp/

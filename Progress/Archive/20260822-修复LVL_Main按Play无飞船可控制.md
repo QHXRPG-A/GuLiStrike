@@ -1,3 +1,25 @@
+---
+schema: guli-progress/v1
+id: ARC-20260822-001
+work_id: ''
+kind: archive
+role: root
+title: 2026-08-22 解决了：LVL_Main 按 Play 不生成可控飞船
+areas:
+- ship
+- vfx
+- assets
+status: recorded
+verification: not_run
+created: '2026-08-22'
+updated: '2026-08-22'
+summary: 诊断（先定位链条断点，再动手）
+next_action: ''
+relations:
+  work_items: []
+status_note: ''
+---
+
 # 2026-08-22 解决了：LVL_Main 按 Play 不生成可控飞船
 
 - 对应开发文档：无（独立修复，诊断+关卡配置）

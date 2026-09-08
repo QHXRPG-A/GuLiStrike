@@ -1,0 +1,14 @@
+{
+  "FileVersion": 3,
+  "Version": 1,
+  "VersionName": "0.1.0",
+  "FriendlyName": "GuLi Map Authoring",
+  "Description": "Editor-only configurable map markers, named regions and deterministic layout exports.",
+  "Category": "GuLi",
+  "CanContainContent": true,
+  "EnabledByDefault": false,
+  "Modules": [
+    { "Name": "GuLiMapAuthoringCore", "Type": "Editor", "LoadingPhase": "Default" },
+    { "Name": "GuLiMapAuthoringEditor", "Type": "Editor", "LoadingPhase": "Default" }
+  ]
+}

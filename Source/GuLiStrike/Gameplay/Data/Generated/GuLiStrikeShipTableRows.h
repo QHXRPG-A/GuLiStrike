@@ -196,3 +196,159 @@ struct FGuLiStrikeShipCameraRow : public FTableRowBase
 	float CameraPitchMax = 0.0f;
 
 };
+
+/** DataTable DT_GuLiStrikeShip_WingmanTargeting 的行结构（源: GuLiStrikeShip.xlsx 的 WingmanTargeting sheet）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeShipWingmanTargetingRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanTargeting")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanTargeting")
+	FString Note;
+
+	/** AcquireRadiusCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanTargeting")
+	float AcquireRadiusCentimeters = 0.0f;
+
+	/** ReleaseRadiusCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanTargeting")
+	float ReleaseRadiusCentimeters = 0.0f;
+
+	/** GuardRejoinFraction (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanTargeting")
+	float GuardRejoinFraction = 0.0f;
+
+	/** ScanIntervalSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanTargeting")
+	float ScanIntervalSeconds = 0.0f;
+
+};
+
+/** DataTable DT_GuLiStrikeShip_WingmanWeapons 的行结构（源: GuLiStrikeShip.xlsx 的 WingmanWeapons sheet）。 */
+USTRUCT(BlueprintType)
+struct FGuLiStrikeShipWingmanWeaponsRow : public FTableRowBase
+{
+	GENERATED_BODY()
+
+	/** id (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	int32 Id = 0;
+
+	/** Note (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	FString Note;
+
+	/** SkillId (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	FString SkillId;
+
+	/** AttackPattern (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	FString AttackPattern;
+
+	/** ExecutorId (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	FString ExecutorId;
+
+	/** Damage (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float Damage = 0.0f;
+
+	/** CooldownSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float CooldownSeconds = 0.0f;
+
+	/** RangeCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float RangeCentimeters = 0.0f;
+
+	/** FireConeHalfAngleDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float FireConeHalfAngleDegrees = 0.0f;
+
+	/** FlightSpeedCentimetersPerSecond (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float FlightSpeedCentimetersPerSecond = 0.0f;
+
+	/** DiveSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float DiveSeconds = 0.0f;
+
+	/** MissileCount (int, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	int32 MissileCount = 0;
+
+	/** StripLengthCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float StripLengthCentimeters = 0.0f;
+
+	/** PullUpHeightCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float PullUpHeightCentimeters = 0.0f;
+
+	/** ExplosionRadiusCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float ExplosionRadiusCentimeters = 0.0f;
+
+	/** BreakawayDistanceCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float BreakawayDistanceCentimeters = 0.0f;
+
+	/** RetreatMinimumDistanceCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float RetreatMinimumDistanceCentimeters = 0.0f;
+
+	/** RetreatLongitudinalMinFraction (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float RetreatLongitudinalMinFraction = 0.0f;
+
+	/** RetreatLongitudinalMaxFraction (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float RetreatLongitudinalMaxFraction = 0.0f;
+
+	/** RetreatLateralRadiusCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float RetreatLateralRadiusCentimeters = 0.0f;
+
+	/** RetreatVerticalRadiusCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float RetreatVerticalRadiusCentimeters = 0.0f;
+
+	/** ManeuverArrivalRadiusCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float ManeuverArrivalRadiusCentimeters = 0.0f;
+
+	/** TurnYawMinDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float TurnYawMinDegrees = 0.0f;
+
+	/** TurnYawMaxDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float TurnYawMaxDegrees = 0.0f;
+
+	/** TurnPitchMaxDegrees (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float TurnPitchMaxDegrees = 0.0f;
+
+	/** ProjectileSpeedCentimetersPerSecond (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float ProjectileSpeedCentimetersPerSecond = 0.0f;
+
+	/** ProjectileLifetimeSeconds (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float ProjectileLifetimeSeconds = 0.0f;
+
+	/** SweepRadiusCentimeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	float SweepRadiusCentimeters = 0.0f;
+
+	/** MuzzleX/MuzzleY/MuzzleZ (float) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="WingmanWeapons")
+	FVector Muzzle = FVector::ZeroVector;
+
+};

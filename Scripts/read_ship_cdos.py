@@ -8,7 +8,7 @@ import traceback
 
 import unreal
 
-OUT_PATH = "D:/UE_5.7/test1/Data/tmp_cdo_read.json"
+OUT_PATH = "D:/UE5.7/test1/Data/tmp_cdo_read.json"
 
 out = {"errors": []}
 

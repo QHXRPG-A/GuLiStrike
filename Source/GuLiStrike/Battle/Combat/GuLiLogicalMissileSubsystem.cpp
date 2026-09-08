@@ -16,7 +16,10 @@ namespace
 
 bool FGuLiLogicalMissileLaunchRequest::IsWellFormed() const
 {
-	return MatchEpoch != 0u && MissileId.IsValid() && ShotId.IsValid()
+	return MatchEpoch != 0u && MissileId.IsValid() && ShotId.IsValid() && RootEventId.IsValid()
+		&& WeaponBinding.IsWellFormed() && WeaponBinding.Domain == EGuLiWeaponDomain::Wingman
+		&& WeaponBinding.MatchEpoch == MatchEpoch && !SkillId.IsNone()
+		&& LoadoutRevision != 0u && ProfileRevision != 0u
 		&& Source.IsValid() && Emitter.IsValid() && Target.IsValid()
 		&& !LaunchPosition.ContainsNaN() && !LaunchDirection.ContainsNaN()
 		&& !LaunchDirection.IsNearlyZero() && FMath::IsFinite(SpeedCentimetersPerSecond)
@@ -122,6 +125,11 @@ void UGuLiLogicalMissileSubsystem::CreateMissileUnchecked(
 	Missile.MatchEpoch = Request.MatchEpoch;
 	Missile.MissileId = Request.MissileId;
 	Missile.ShotId = Request.ShotId;
+	Missile.RootEventId = Request.RootEventId;
+	Missile.WeaponBinding = Request.WeaponBinding;
+	Missile.SkillId = Request.SkillId;
+	Missile.LoadoutRevision = Request.LoadoutRevision;
+	Missile.ProfileRevision = Request.ProfileRevision;
 	Missile.Source = Request.Source;
 	Missile.Emitter = Request.Emitter;
 	Missile.Target = Request.Target;
@@ -149,10 +157,19 @@ bool UGuLiLogicalMissileSubsystem::CanLaunchFlightSalvo(
 	const FGuLiTargetHandle ExpectedTarget = Requests[0].Target;
 	const FGuLiTargetHandle ExpectedSource = Requests[0].Source;
 	const uint32 ExpectedEpoch = Requests[0].MatchEpoch;
+	const FGuid ExpectedRootEventId = Requests[0].RootEventId;
+	const FGuLiWeaponBindingKey ExpectedBinding = Requests[0].WeaponBinding;
+	const FName ExpectedSkillId = Requests[0].SkillId;
+	const uint32 ExpectedLoadoutRevision = Requests[0].LoadoutRevision;
+	const uint32 ExpectedProfileRevision = Requests[0].ProfileRevision;
 	for (const FGuLiLogicalMissileLaunchRequest& Request : Requests)
 	{
 		if (!ValidateLaunchRequest(Request) || Request.Emitter.Flight != ExpectedFlight
 			|| Request.Target != ExpectedTarget || Request.Source != ExpectedSource
+			|| Request.RootEventId != ExpectedRootEventId || !(Request.WeaponBinding == ExpectedBinding)
+			|| Request.SkillId != ExpectedSkillId
+			|| Request.LoadoutRevision != ExpectedLoadoutRevision
+			|| Request.ProfileRevision != ExpectedProfileRevision
 			|| Request.MatchEpoch != ExpectedEpoch
 			|| MissileIds.Contains(Request.MissileId) || ActiveMissileIds.Contains(Request.MissileId)
 			|| Emitters.Contains(Request.Emitter))
@@ -221,6 +238,10 @@ bool UGuLiLogicalMissileSubsystem::StepMissile(
 	OutTerminal = FGuLiLogicalMissileTerminalEvent();
 	OutTerminal.MatchEpoch = Missile.MatchEpoch;
 	OutTerminal.MissileId = Missile.MissileId;
+	OutTerminal.RootEventId = Missile.RootEventId;
+	OutTerminal.WeaponBinding = Missile.WeaponBinding;
+	OutTerminal.SkillId = Missile.SkillId;
+	OutTerminal.ProfileRevision = Missile.ProfileRevision;
 	OutTerminal.Location = Missile.Position;
 	Missile.SimulationSequence = Missile.SimulationSequence == MAX_uint32
 		? 1u : Missile.SimulationSequence + 1u;
@@ -292,6 +313,11 @@ bool UGuLiLogicalMissileSubsystem::StepMissile(
 		Damage.ShotId = Missile.ShotId;
 		Damage.Source = Missile.Source;
 		Damage.Emitter = Missile.Emitter;
+		Damage.WeaponBinding = Missile.WeaponBinding;
+		Damage.SkillId = Missile.SkillId;
+		Damage.LoadoutRevision = Missile.LoadoutRevision;
+		Damage.ProfileRevision = Missile.ProfileRevision;
+		Damage.RootEventId = Missile.RootEventId;
 		Damage.Target = Missile.Target;
 		Damage.Damage = Missile.Damage;
 		Damage.HitLocation = Missile.Position;

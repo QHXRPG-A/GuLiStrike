@@ -23,6 +23,16 @@ DECLARE_MULTICAST_DELEGATE_FourParams(
 	uint32 /* AbilitySetRevision */,
 	bool /* bLocallyPredicted */);
 
+/** Binding-exact authorization used by weapon commands; safe when GA classes are reused. */
+DECLARE_MULTICAST_DELEGATE_SixParams(
+	FGuLiShipWeaponAbilityAuthorized,
+	FGameplayAbilitySpecHandle /* LocalSpecHandle */,
+	FGuLiWeaponBindingKey /* Binding */,
+	FName /* SkillId */,
+	FGameplayTag /* CatalogAbilityId */,
+	uint32 /* AbilitySetRevision */,
+	bool /* bLocallyPredicted */);
+
 /** Pawn-owned ASC for a Ship; no AttributeSet and no numeric GameplayEffects. */
 UCLASS(ClassGroup = (Abilities), meta = (BlueprintSpawnableComponent))
 class GULISTRIKE_API UGuLiShipAbilitySystemComponent final : public UAbilitySystemComponent
@@ -53,6 +63,9 @@ public:
 
 	void AbilityInputTagPressed(FGameplayTag InputTag);
 	void AbilityInputTagReleased(FGameplayTag InputTag);
+	/** Activates/releases exactly one configured binding; never fans out by shared GA class/tag. */
+	bool AbilityWeaponBindingPressed(const FGuLiWeaponBindingKey& Binding);
+	bool AbilityWeaponBindingReleased(const FGuLiWeaponBindingKey& Binding);
 
 	/** Context changes are projection changes; exact repeats are no-ops. */
 	bool SetProjectionContext(const FGuLiShipAbilityProjectionContext& NewContext);
@@ -65,6 +78,7 @@ public:
 	bool ObserveReplicatedGroupAbilityConfig(const FGuLiGroupAbilityConfigSnapshot& Snapshot);
 
 	uint32 GetAbilitySetRevision() const { return AbilitySetRevision; }
+	uint32 GetWeaponLoadoutRevision() const { return WeaponLoadoutRevision; }
 	uint32 GetProjectionSnapshotRevision() const { return ProjectionSnapshotRevision; }
 	uint32 GetObservedAbilitySetRevision() const { return ObservedAbilitySetRevision; }
 	uint32 GetObservedSnapshotRevision() const { return ObservedSnapshotRevision; }
@@ -75,6 +89,9 @@ public:
 	bool IsAbilityConfigurationCurrent(FGameplayTag AbilityId, uint32 ExpectedAbilitySetRevision) const;
 	const FGuLiShipAbilityGrant* FindConfiguredGrant(FGameplayTag AbilityId) const;
 	const FGuLiShipAbilityGrant* FindConfiguredGrant(EGuLiShipAbilitySlot Slot) const;
+	const FGuLiShipAbilityGrant* FindConfiguredGrant(const FGuLiWeaponBindingKey& Binding) const;
+	bool IsWeaponConfigurationCurrent(const FGuLiWeaponBindingKey& Binding,
+		FName SkillId, uint32 ExpectedLoadoutRevision, uint32 ExpectedProfileRevision) const;
 	const UGuLiWingmanFormationDefinition* GetActiveFormationDefinition() const;
 	const UGuLiWingmanWeaponDefinition* GetBasicWeaponDefinition() const;
 	const UGuLiWingmanWeaponDefinition* GetMissileDefinition() const;
@@ -88,9 +105,14 @@ public:
 	bool ServerTryReserveMissileCooldown(float DurationSeconds, const FGuid& ReservationId);
 	bool ServerRollbackMissileCooldown(const FGuid& ReservationId);
 	bool IsMissileCooldownActive() const;
+	bool ServerTryReserveWeaponCooldown(
+		FName CooldownGroupId, float DurationSeconds, const FGuid& ReservationId);
+	bool ServerRollbackWeaponCooldown(FName CooldownGroupId, const FGuid& ReservationId);
+	bool IsWeaponCooldownActive(FName CooldownGroupId) const;
 
 	FGuLiShipAbilityProjectionChanged& OnProjectionChanged() { return ProjectionChangedDelegate; }
 	FGuLiShipTriggeredAbilityAuthorized& OnTriggeredAbilityAuthorized() { return TriggeredAbilityDelegate; }
+	FGuLiShipWeaponAbilityAuthorized& OnWeaponAbilityAuthorized() { return WeaponAbilityDelegate; }
 
 	// Called only by UGuLiShipGameplayAbility instances owned by this ASC.
 	bool CanActivateConfiguredAbility(
@@ -114,6 +136,11 @@ private:
 	void MarkProjectionChanged();
 	void BeginProjectionMutation();
 	void EndProjectionMutation();
+	FGuLiWeaponBindingKey BuildWeaponBinding(const FGuLiShipAbilityGrant& Grant) const;
+	void RebuildWeaponBindingIndex();
+	FGameplayAbilitySpecHandle FindSpecHandleForBinding(const FGuLiWeaponBindingKey& Binding) const;
+	const FGuLiWingmanWeaponChannelConfig* FindObservedChannelForHandle(
+		FGameplayAbilitySpecHandle Handle) const;
 	static uint32 AdvanceRevision(uint32 Revision);
 
 	UPROPERTY(Transient)
@@ -124,14 +151,17 @@ private:
 
 	TMap<FGameplayTag, FGameplayAbilitySpecHandle> HandlesByAbilityId;
 	TMap<FGameplayAbilitySpecHandle, FGuLiShipAbilityGrant> GrantsByHandle;
-	TMap<EGuLiShipAbilitySlot, FGameplayAbilitySpecHandle> PersistentActiveHandles;
+	TMap<FGuLiWeaponBindingKey, FGameplayAbilitySpecHandle> HandlesByWeaponBinding;
+	TSet<FGameplayAbilitySpecHandle> PersistentActiveHandles;
 
 	FGuLiShipAbilityProjectionContext ProjectionContext;
 	uint64 AppliedLoadoutChecksum = 0u;
 	uint32 AbilitySetRevision = 0u;
+	uint32 WeaponLoadoutRevision = 0u;
 	uint32 ProjectionSnapshotRevision = 0u;
 	uint32 ObservedAbilitySetRevision = 0u;
 	uint32 ObservedSnapshotRevision = 0u;
+	FGuLiGroupAbilityConfigSnapshot ObservedGroupAbilityConfig;
 	uint32 ProjectionMutationDepth = 0u;
 	bool bProjectionMutationDirty = false;
 	bool bActiveAbilityInputEnabled = true;
@@ -142,9 +172,14 @@ private:
 	 */
 	UPROPERTY(Transient)
 	bool bInitializedOnAuthority = false;
-	FTimerHandle MissileCooldownTimerHandle;
-	FGuid MissileCooldownReservationId;
+	struct FWeaponCooldownState
+	{
+		FTimerHandle TimerHandle;
+		FGuid ReservationId;
+	};
+	TMap<FName, FWeaponCooldownState> WeaponCooldownsByGroup;
 
 	FGuLiShipAbilityProjectionChanged ProjectionChangedDelegate;
 	FGuLiShipTriggeredAbilityAuthorized TriggeredAbilityDelegate;
+	FGuLiShipWeaponAbilityAuthorized WeaponAbilityDelegate;
 };

@@ -84,7 +84,7 @@ struct GULISTRIKE_API FGuLiMassSlotTargetFragment : public FMassFragment
 	FVector WorldTarget = FVector::ZeroVector;
 };
 
-/** Latest Epic Mass avoidance acceleration captured once per world frame for 30 Hz authority use. */
+/** Latest project-owned predictive avoidance acceleration for staggered 10 Hz authority use. */
 USTRUCT()
 struct GULISTRIKE_API FGuLiMassAvoidanceOutputFragment : public FMassFragment
 {
@@ -92,6 +92,44 @@ struct GULISTRIKE_API FGuLiMassAvoidanceOutputFragment : public FMassFragment
 
 	UPROPERTY(Transient)
 	FVector Value = FVector::ZeroVector;
+};
+
+/**
+ * Per-participant scheduling and diagnostics for Commander predictive avoidance.
+ * Counters are cumulative for the lifetime of the Mass entity and are read only by GM diagnostics.
+ */
+USTRUCT()
+struct GULISTRIKE_API FGuLiMassAvoidanceStateFragment : public FMassFragment
+{
+	GENERATED_BODY()
+
+	UPROPERTY(Transient)
+	uint32 LastProcessedOrderRevision = 0u;
+
+	UPROPERTY(Transient)
+	uint64 LastSolveSequence = 0u;
+
+	UPROPERTY(Transient)
+	uint64 SolveCount = 0u;
+
+	UPROPERTY(Transient)
+	uint64 ForcedSolveCount = 0u;
+
+	UPROPERTY(Transient)
+	uint64 CandidateCount = 0u;
+
+	UPROPERTY(Transient)
+	uint64 ColliderEvaluationCount = 0u;
+
+	UPROPERTY(Transient)
+	int32 MaximumObservedBucketOccupancy = 0;
+};
+
+/** Opt-in marker for server-side entities represented in the Commander predictive-avoidance grid. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiMassAvoidanceParticipantTag : public FMassTag
+{
+	GENERATED_BODY()
 };
 
 /** Snapshot-driven client mirror. It intentionally carries no movement or avoidance tag. */

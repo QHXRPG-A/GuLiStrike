@@ -231,6 +231,7 @@ void UGuLiCombatHealthComponent::BroadcastHealthState(const bool bWasDead)
 
 void UGuLiDamageLedgerSubsystem::Deinitialize()
 {
+	RetainedEffectSources.Reset();
 	TargetAdapters.Reset();
 	ResultsByEvent.Reset();
 	EventOrder.Reset();
@@ -265,6 +266,7 @@ bool UGuLiDamageLedgerSubsystem::BeginServerEpoch(const uint32 NewMatchEpoch)
 		return true;
 	}
 	MatchEpoch = NewMatchEpoch;
+	RetainedEffectSources.Reset();
 	ResultsByEvent.Reset();
 	EventOrder.Reset();
 	DeathRecordsByEvent.Reset();
@@ -489,6 +491,52 @@ void UGuLiDamageLedgerSubsystem::GetTargetSnapshots(
 
 FGuLiDamageCommitResult UGuLiDamageLedgerSubsystem::CommitDamage(const FGuLiDamageRequest& Request)
 {
+	return CommitDamageInternal(Request, nullptr);
+}
+
+FGuid UGuLiDamageLedgerSubsystem::AcquireEffectSource(const FGuLiTargetHandle& Source)
+{
+	FGuLiCombatTargetSnapshot Snapshot;
+	if (!IsAuthorityWorld() || MatchEpoch == 0 || !TryGetTargetSnapshot(Source, Snapshot) || !Snapshot.bAlive) return {};
+	const FGuid Id = FGuid::NewGuid();
+	RetainedEffectSources.Add(Id, {Source, Snapshot.Team, MatchEpoch, 1});
+	return Id;
+}
+
+bool UGuLiDamageLedgerSubsystem::RetainEffectSource(const FGuid& LeaseId)
+{
+	FRetainedEffectSource* Source = RetainedEffectSources.Find(LeaseId);
+	if (!IsAuthorityWorld() || !Source || Source->Epoch != MatchEpoch) return false;
+	++Source->References;
+	return true;
+}
+
+void UGuLiDamageLedgerSubsystem::ReleaseEffectSource(const FGuid& LeaseId)
+{
+	if (FRetainedEffectSource* Source = RetainedEffectSources.Find(LeaseId); IsAuthorityWorld() && Source)
+	{
+		if (--Source->References <= 0) RetainedEffectSources.Remove(LeaseId);
+	}
+}
+
+FGuLiDamageCommitResult UGuLiDamageLedgerSubsystem::CommitEffectDamage(const FGuLiDamageRequest& Request, const FGuid& LeaseId)
+{
+	const FRetainedEffectSource* Source = RetainedEffectSources.Find(LeaseId);
+	if (!IsAuthorityWorld() || !Source || Source->Epoch != MatchEpoch || Request.MatchEpoch != Source->Epoch
+		|| Source->Source != Request.Source)
+	{
+		FGuLiDamageCommitResult Result;
+		Result.Status = IsAuthorityWorld() ? EGuLiDamageCommitStatus::RejectedMissingTarget : EGuLiDamageCommitStatus::RejectedNotAuthority;
+		return Result;
+	}
+	// Copy before any adapter callback can release a lease or change the map.
+	const EGuLiTeam FrozenTeam = Source->Team;
+	return CommitDamageInternal(Request, &FrozenTeam);
+}
+
+FGuLiDamageCommitResult UGuLiDamageLedgerSubsystem::CommitDamageInternal(
+	const FGuLiDamageRequest& Request, const EGuLiTeam* FrozenSourceTeam)
+{
 	if (!IsAuthorityWorld())
 	{
 		FGuLiDamageCommitResult Result;
@@ -528,7 +576,7 @@ FGuLiDamageCommitResult UGuLiDamageLedgerSubsystem::CommitDamage(const FGuLiDama
 
 	FGuLiCombatTargetSnapshot SourceSnapshot;
 	FGuLiCombatTargetSnapshot TargetSnapshot;
-	if (!TryGetTargetSnapshot(Request.Source, SourceSnapshot)
+	if ((!FrozenSourceTeam && !TryGetTargetSnapshot(Request.Source, SourceSnapshot))
 		|| !TryGetTargetSnapshot(Request.Target, TargetSnapshot))
 	{
 		Result.Status = EGuLiDamageCommitStatus::RejectedMissingTarget;
@@ -541,7 +589,8 @@ FGuLiDamageCommitResult UGuLiDamageLedgerSubsystem::CommitDamage(const FGuLiDama
 		RememberResult(Request.DamageEventId, Result);
 		return Result;
 	}
-	if (SourceSnapshot.Team != EGuLiTeam::Unassigned && SourceSnapshot.Team == TargetSnapshot.Team)
+	const EGuLiTeam SourceTeam = FrozenSourceTeam ? *FrozenSourceTeam : SourceSnapshot.Team;
+	if (SourceTeam != EGuLiTeam::Unassigned && SourceTeam == TargetSnapshot.Team)
 	{
 		Result.Status = EGuLiDamageCommitStatus::RejectedFriendlyFire;
 		RememberResult(Request.DamageEventId, Result);
@@ -648,6 +697,11 @@ void UGuLiDamageLedgerSubsystem::CommitLethalEvents(
 	Death.ShotId = Request.ShotId;
 	Death.Source = Request.Source;
 	Death.Emitter = Request.Emitter;
+	Death.WeaponBinding = Request.WeaponBinding;
+	Death.SkillId = Request.SkillId;
+	Death.LoadoutRevision = Request.LoadoutRevision;
+	Death.ProfileRevision = Request.ProfileRevision;
+	Death.RootEventId = Request.RootEventId;
 	Death.Target = Request.Target;
 	Death.CommitOrdinal = ++DeathCommitCount;
 	RememberDeathRecord(Death);

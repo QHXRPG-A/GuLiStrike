@@ -1,0 +1,170 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "90BA4E064FADAFE6546EB9B78D3E1C5F",
+			"instanceName": "DESKTOP-6D3B0FC-27788",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.08-02.27.20",
+	"succeeded": 3,
+	"succeededWithWarnings": 0,
+	"failed": 3,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.10990670323371887,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "FiniteTurnActualStepPhysicalGate",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.FiniteTurnActualStepPhysicalGate",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"90BA4E064FADAFE6546EB9B78D3E1C5F"
+			],
+			"duration": 0.067942701280117035,
+			"dateTime": "2026.09.08-02.27.20",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(334): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.08-02.27.20"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Create owner group for final physical-step gate' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanAvoidanceRecoveryTests.cpp",
+					"lineNumber": 668,
+					"timestamp": "2026.09.08-02.27.20"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FlightNavBoundaryBlocksIntegration",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.FlightNavBoundaryBlocksIntegration",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"90BA4E064FADAFE6546EB9B78D3E1C5F"
+			],
+			"duration": 0.0086059011518955231,
+			"dateTime": "2026.09.08-02.27.20",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Create owner group beside synthetic FlightNav boundary' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanAvoidanceRecoveryTests.cpp",
+					"lineNumber": 777,
+					"timestamp": "2026.09.08-02.27.20"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OwnerOnlyDiagnosticsAndSoleIntegrationWriter",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.OwnerOnlyDiagnosticsAndSoleIntegrationWriter",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"90BA4E064FADAFE6546EB9B78D3E1C5F"
+			],
+			"duration": 0.0083393976092338562,
+			"dateTime": "2026.09.08-02.27.20",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Create 25-member owner group' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanAvoidanceRecoveryTests.cpp",
+					"lineNumber": 528,
+					"timestamp": "2026.09.08-02.27.20"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SpatialHashEquivalentAndGroupScoped",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.SpatialHashEquivalentAndGroupScoped",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"90BA4E064FADAFE6546EB9B78D3E1C5F"
+			],
+			"duration": 0.0084045007824897766,
+			"dateTime": "2026.09.08-02.27.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaticDynamicHeadingSelection",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.StaticDynamicHeadingSelection",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"90BA4E064FADAFE6546EB9B78D3E1C5F"
+			],
+			"duration": 0.0082689002156257629,
+			"dateTime": "2026.09.08-02.27.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ThreeSecondSafePointRecovery",
+			"fullTestPath": "GuLiStrike.Wingman.Avoidance.ThreeSecondSafePointRecovery",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"90BA4E064FADAFE6546EB9B78D3E1C5F"
+			],
+			"duration": 0.0083452984690666199,
+			"dateTime": "2026.09.08-02.27.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

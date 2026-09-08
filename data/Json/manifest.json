@@ -18,6 +18,18 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeCommanderUnitSkillsRow",
       "row_key_column": "name"
     },
+    "DT_GuLiStrikeCommander_SpellFields": {
+      "excel": "GuLiStrikeCommander.xlsx",
+      "sheet": "SpellFields",
+      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderSpellFieldsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeCommander_WeaponMounts": {
+      "excel": "GuLiStrikeCommander.xlsx",
+      "sheet": "WeaponMounts",
+      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderWeaponMountsRow",
+      "row_key_column": "name"
+    },
     "DT_GuLiStrikeShip_Parts": {
       "excel": "GuLiStrikeShip.xlsx",
       "sheet": "Parts",
@@ -34,6 +46,18 @@
       "excel": "GuLiStrikeShip.xlsx",
       "sheet": "Camera",
       "struct": "/Script/GuLiStrike.GuLiStrikeShipCameraRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeShip_WingmanTargeting": {
+      "excel": "GuLiStrikeShip.xlsx",
+      "sheet": "WingmanTargeting",
+      "struct": "/Script/GuLiStrike.GuLiStrikeShipWingmanTargetingRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeShip_WingmanWeapons": {
+      "excel": "GuLiStrikeShip.xlsx",
+      "sheet": "WingmanWeapons",
+      "struct": "/Script/GuLiStrike.GuLiStrikeShipWingmanWeaponsRow",
       "row_key_column": "name"
     }
   }

@@ -1,0 +1,198 @@
+{
+  "asset": "GS_OutpostMonument_v01",
+  "status": "Imported into UE; placeholder replaced and editor visual inspection complete",
+  "blender_version": "5.2.1 LTS",
+  "dimensions_metres": [
+    71.03086471557617,
+    66.19805145263672,
+    300.0
+  ],
+  "bounds_min_metres": [
+    -35.6213264465332,
+    -35.62488555908203,
+    0.0
+  ],
+  "bounds_max_metres": [
+    35.40953826904297,
+    30.573165893554688,
+    300.0
+  ],
+  "source_objects": 21,
+  "source_vertices": 3212,
+  "height_assumption": "300 m selected for user-confirmed megastructure direction",
+  "texture_tile_metres": 4.0,
+  "ue_catalog_changed": true,
+  "source_scene": "GS_OutpostMonument_v01",
+  "source_script": "Scripts/Blender/build_outpost_monument.py",
+  "export": {
+    "vertices": 13552,
+    "triangles": 27020,
+    "non_manifold_edges": 0,
+    "zero_area_faces": 0,
+    "uv_channels": [
+      "UV0_Concrete4m",
+      "UV1_Lightmap"
+    ],
+    "material_slots": 1,
+    "object_scale": [
+      1.0,
+      1.0,
+      1.0
+    ],
+    "object_location": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "export_dimensions_metres": [
+      71.03086853027344,
+      66.19805145263672,
+      300.0
+    ],
+    "fbx_bytes": 3672764,
+    "glb_bytes": 12100836
+  },
+  "exports": [
+    "ArtSource\\Buildings\\OutpostMonument\\Exports\\SM_OutpostMonument_v01.fbx",
+    "ArtSource\\Buildings\\OutpostMonument\\Exports\\SM_OutpostMonument_v01.glb"
+  ],
+  "file_inspection": {
+    "glb_scene_count": 1,
+    "glb_mesh_count": 1,
+    "glb_node_names": [
+      "SM_OutpostMonument_v01"
+    ],
+    "glb_image_count": 3,
+    "fbx_roundtrip_mesh_count": 1,
+    "fbx_roundtrip": [
+      {
+        "name": "SM_OutpostMonument_v01.001",
+        "dimensions_metres": [
+          71.03086853027344,
+          66.19805145263672,
+          300.0
+        ],
+        "origin": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "uv_channels": [
+          "UV0_Concrete4m",
+          "UV1_Lightmap"
+        ]
+      }
+    ]
+  },
+  "ue_import": {
+    "success": true,
+    "mesh": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+    "material": "/Game/GuLiStrike/Buildings/Materials/M_OutpostConcrete.M_OutpostConcrete",
+    "old_dimensions_cm": [
+      2000.0,
+      2000.0,
+      2000.0
+    ],
+    "dimensions_cm": [
+      7103.08642578125,
+      6619.80517578125,
+      30000.0
+    ],
+    "origin_cm": [
+      -10.58935546875,
+      252.5859375,
+      15000.0
+    ],
+    "catalog_rows": [
+      {
+        "type": "<GuLiBuildingType.MISSILE_TURRET: 1>",
+        "mesh": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/StaticMeshes/missile_turret.missile_turret",
+        "extent": [
+          1259.7311096191406,
+          1364.3741455078125,
+          1760.3831176757812
+        ],
+        "visual_offset": [
+          0.0,
+          -24.289810180664062,
+          0.0
+        ]
+      },
+      {
+        "type": "<GuLiBuildingType.SENTRY_TURRET: 2>",
+        "mesh": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+        "extent": [
+          967.896240234375,
+          1933.39013671875,
+          837.5944519042969
+        ],
+        "visual_offset": [
+          0.0,
+          0.0,
+          3.9781494140625
+        ]
+      },
+      {
+        "type": "<GuLiBuildingType.OUTPOST: 3>",
+        "mesh": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+        "extent": [
+          3551.543212890625,
+          3309.902587890625,
+          15000.0
+        ],
+        "visual_offset": [
+          10.58935546875,
+          -252.5859375,
+          0.0
+        ]
+      }
+    ],
+    "textures": {
+      "base": "/Game/GuLiStrike/Buildings/Textures/Outpost/T_OutpostConcrete_BaseColor.T_OutpostConcrete_BaseColor",
+      "roughness": "/Game/GuLiStrike/Buildings/Textures/Outpost/T_OutpostConcrete_Roughness.T_OutpostConcrete_Roughness",
+      "normal": "/Game/GuLiStrike/Buildings/Textures/Outpost/T_OutpostConcrete_NormalDX.T_OutpostConcrete_NormalDX"
+    },
+    "original_placeholder_backup": "/Game/GuLiStrike/Buildings/Legacy/SM_OutpostCube20m_PreMonument",
+    "imported_source_mesh": "/Game/GuLiStrike/Buildings/Meshes/Source/SM_OutpostMonument_v01",
+    "asset_path_preserved": true,
+    "nanite": false,
+    "lightmap_uv_channel": 1,
+    "distance_field_resolution_scale": 1.0,
+    "distance_field_saved": true,
+    "editor_final_readback": {
+      "temporary_actors_removed": [
+        true,
+        true
+      ],
+      "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "remaining_review_actors": [],
+      "dirty_maps": [],
+      "dirty_assets": [],
+      "legacy_dimensions_cm": [
+        2000.0,
+        2000.0,
+        2000.0
+      ],
+      "dimensions_cm": [
+        7103.08642578125,
+        6619.80517578125,
+        30000.0
+      ],
+      "triangles": 27020,
+      "uv_channels": 2,
+      "distance_field_resolution_scale": 1.0,
+      "interchange_enabled": 1
+    },
+    "triangles": 27020,
+    "render_vertices": 24890,
+    "material_slots": 1,
+    "sections": 1,
+    "uv_channels": 2,
+    "full_precision_uvs": true,
+    "runtime_pie_revalidated": false,
+    "visual_evidence": [
+      "outputs/outpost-monument-20260905/ue_monument_front.png",
+      "outputs/outpost-monument-20260905/ue_monument_in_level.png"
+    ]
+  }
+}

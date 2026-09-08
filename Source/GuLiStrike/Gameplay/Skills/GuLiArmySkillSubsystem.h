@@ -7,6 +7,7 @@
 
 class AGuLiBattlePlayerState;
 class AGuLiArmySkillReplicationActor;
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiArmyWeaponLoadoutCommitted, uint32);
 
 /** Per-world/team source ledger. Survives commander replacement, never a new World. */
 UCLASS()
@@ -23,6 +24,12 @@ public:
 	const FGuLiResolvedSkillProfile* FindResolvedSkill(EGuLiTeam Team, uint16 UnitTypeId,
 		FName SlotId = FName(TEXT("BasicAttack"))) const;
 	const TArray<FGuLiResolvedSkillProfile>& GetResolvedSkills() const;
+	TSharedPtr<const TArray<FGuLiResolvedSkillProfile>> GetSharedUnitProfiles(EGuLiTeam Team, uint16 UnitTypeId) const;
+	uint32 GetLoadoutRevision() const { return IsCurrentMatchSnapshot() ? LoadoutRevision : 0u; }
+	bool HasPendingChanges() const { return bPendingChanges; }
+	FGuLiArmyWeaponLoadoutCommitted& OnWeaponLoadoutCommitted() { return WeaponLoadoutCommitted; }
+	bool EquipWeapon(const AGuLiBattlePlayerState& Commander, uint16 UnitTypeId, FName SlotId,
+		FName SkillId, uint32 ExpectedRevision, FString& OutError);
 	/** Authority-only details, returned by value so callers cannot mutate the ledger. Includes accepted pending changes. */
 	TArray<FGuLiSkillSource> GetSources(EGuLiTeam Team) const;
 	bool UpsertSource(const AGuLiBattlePlayerState& Commander, const FGuLiSkillSource& Source, FString& OutError);
@@ -34,7 +41,8 @@ public:
 	FString ExplainResolvedSkill(EGuLiTeam Team, uint16 UnitTypeId, FName SlotId = FName(TEXT("BasicAttack"))) const;
 	int32 GetLastResolvedKeyCount() const { return LastResolvedKeyCount; }
 	/** Client copy only. Server accepts no profile or team values from remote callers. */
-	void ReceiveReplicatedProfiles(uint32 MatchEpoch, const TArray<FGuLiResolvedSkillProfile>& Profiles);
+	void ReceiveReplicatedProfiles(uint32 MatchEpoch, const TArray<FGuLiResolvedSkillProfile>& Profiles,
+		uint32 InLoadoutRevision = 0u);
 	bool IsExecutorRegistered(FName ExecutorId) const { return RegisteredExecutors.Contains(ExecutorId); }
 	bool RegisterExecutor(FName ExecutorId);
 	bool RegisterEffectHook(FName HookId, FGuLiSkillEffectHook Hook);
@@ -44,7 +52,8 @@ private:
 	bool ValidateCommander(const AGuLiBattlePlayerState& Commander, FString& OutError) const;
 	bool StageTeam(EGuLiTeam Team, const TArray<FGuLiSkillSource>& Sources,
 		const TArray<FGuLiSkillNumericOverride>& Overrides, FString& OutError,
-		const TArray<FGuLiSkillSlotKey>* AffectedSlots = nullptr);
+		const TArray<FGuLiSkillSlotKey>* AffectedSlots = nullptr,
+		const TArray<FGuLiSkillLoadoutSelection>* Loadout = nullptr);
 	void RebuildLookup();
 	void SynchronizeMatchEpoch();
 	bool IsCurrentMatchSnapshot() const;
@@ -55,15 +64,20 @@ private:
 	UPROPERTY(Transient) TArray<FGuLiUnitSkillConfig> Configs;
 	TMap<EGuLiTeam, TArray<FGuLiSkillSource>> TeamSources;
 	TMap<EGuLiTeam, TArray<FGuLiSkillNumericOverride>> TeamOverrides;
+	TMap<EGuLiTeam, TArray<FGuLiSkillLoadoutSelection>> TeamLoadouts;
 	TMap<EGuLiTeam, FString> LastRejectedChanges;
 	TMap<uint64, TArray<int32>> ProfileLookup;
+	TMap<uint32, TSharedPtr<const TArray<FGuLiResolvedSkillProfile>>> SharedUnitProfiles;
 	TSet<FName> RegisteredExecutors;
 	TMap<FName, FGuLiSkillEffectHook> EffectHooks;
 	TWeakObjectPtr<AGuLiArmySkillReplicationActor> ReplicationActor;
 	uint32 NextRevision = 1;
+	uint32 LoadoutRevision = 0u;
 	uint32 CachedMatchEpoch = 0;
 	uint32 CommittedMatchEpoch = 0;
 	uint32 LastPublishedEpoch = 0;
 	bool bPendingChanges = false;
+	bool bEquipmentAwaitingCommit = false;
+	FGuLiArmyWeaponLoadoutCommitted WeaponLoadoutCommitted;
 	int32 LastResolvedKeyCount = 0;
 };

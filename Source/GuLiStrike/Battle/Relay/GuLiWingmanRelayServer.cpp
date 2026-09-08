@@ -4,6 +4,9 @@
 
 namespace
 {
+	constexpr double ConstraintHoldPositionToleranceCentimeters = 2.0;
+	constexpr double ConstraintHoldSpeedToleranceCentimetersPerSecond = 2.0;
+
 	static_assert(static_cast<uint8>(EGuLiWingmanFlightMode::Orbit) == 0u
 		&& static_cast<uint8>(EGuLiWingmanFlightMode::Follow) == 1u
 		&& static_cast<uint8>(EGuLiWingmanFlightMode::CatchUp) == 2u
@@ -192,6 +195,7 @@ bool FGuLiWingmanRelayServer::InitializeGroup(
 			const FGuLiWingmanHandle Handle = MakeWingmanHandle(Group, FlightIndex, MemberIndex, 1u);
 			FGuLiWingmanRosterEntry& RosterEntry = Roster.AddDefaulted_GetRef();
 			RosterEntry.Wingman = Handle;
+			RosterEntry.WingmanTypeId = InitialAbilityConfig.WingmanTypeId;
 			FGuLiWingmanAuthorityEntry& AuthorityEntry = AuthorityMap.AddDefaulted_GetRef();
 			AuthorityEntry.Wingman = Handle;
 			AuthorityEntry.LeaseOwnerPlayerGuid = InitialOwnerPlayerGuid;
@@ -469,15 +473,29 @@ bool FGuLiWingmanRelayServer::EnterNoOwner(const double NowSeconds)
 
 bool FGuLiWingmanRelayServer::BeginResume(const double NowSeconds)
 {
-	if (!LeaseState.IsWellFormed() || bActiveLeaseRevoked || bTransferInProgress
+	const bool bNoCompetingLeaseTransaction =
+		ActiveLeaseTransaction.State == EGuLiWingmanActiveLeaseTransactionState::NoOwner
+		|| ActiveLeaseTransaction.State == EGuLiWingmanActiveLeaseTransactionState::None;
+	const bool bReclaimingWatchdogRevocation = bActiveLeaseRevoked
+		&& LeaseState.Lifecycle == EGuLiWingmanGroupLifecycle::Unavailable
+		&& bNoCompetingLeaseTransaction
+		&& !PendingLeaseOffer.IsPending();
+	if (!LeaseState.IsWellFormed()
+		|| (bActiveLeaseRevoked && !bReclaimingWatchdogRevocation)
+		|| bTransferInProgress
 		|| (LeaseState.Lifecycle != EGuLiWingmanGroupLifecycle::Stale
 			&& LeaseState.Lifecycle != EGuLiWingmanGroupLifecycle::Unavailable)
 		|| !FMath::IsFinite(NowSeconds) || NowSeconds < 0.0
-		|| GetMaximumRequiredFlightFreshnessAge(NowSeconds) >= Tuning.UnavailableToRevokeSeconds)
+		|| (!bReclaimingWatchdogRevocation
+			&& GetMaximumRequiredFlightFreshnessAge(NowSeconds) >= Tuning.UnavailableToRevokeSeconds))
 	{
 		return false;
 	}
 	LastObservedAuthorityTimeSeconds = FMath::Max(LastObservedAuthorityTimeSeconds, NowSeconds);
+	// Runtime watchdog revocation keeps every authoritative scope and the last
+	// accepted per-Flight baseline. Reclaiming it is therefore a Resume, not a
+	// terminal group resurrection; explicit Lifecycle::Revoked remains final.
+	bActiveLeaseRevoked = false;
 	bTransferInProgress = true;
 	bActiveRosterCutPending = false;
 	UnacknowledgedRosterMembers.Reset();
@@ -555,6 +573,10 @@ void FGuLiWingmanRelayServer::Revoke(const double NowSeconds)
 	ActiveLeaseTransaction = FGuLiWingmanActiveLeaseTransaction{};
 	FGuLiGroupAbilityConfigSnapshot Tombstone;
 	Tombstone.ShipInstanceId = LeaseState.Group.ShipInstanceId;
+	Tombstone.MatchEpoch = MatchEpoch;
+	Tombstone.Team = AbilityConfig.Team;
+	Tombstone.OwnerPlayerGuid = AbilityConfig.OwnerPlayerGuid;
+	Tombstone.WingmanTypeId = AbilityConfig.WingmanTypeId;
 	Tombstone.ShipGeneration = LeaseState.Group.ShipGeneration;
 	Tombstone.GroupGeneration = LeaseState.Group.GroupGeneration;
 	Tombstone.SnapshotRevision = AbilityConfig.SnapshotRevision + 1u;
@@ -626,6 +648,8 @@ bool FGuLiWingmanRelayServer::BuildBootstrap(FGuLiWingmanBootstrapBundle& OutBun
 		}
 	}
 	Bundle.AbilityConfig = AbilityConfig;
+	Bundle.AttackState = AttackState;
+	Bundle.AttackStateHash = AttackState.ComputeStableHash();
 	Bundle.ConnectionGeneration = ConnectionGeneration;
 	Bundle.RosterRevision = RosterRevision;
 	Bundle.ValidationRevisions = ValidationRevisions;
@@ -674,6 +698,7 @@ bool FGuLiWingmanRelayServer::BuildBootstrap(FGuLiWingmanBootstrapBundle& OutBun
 			GuLiShipAbilityHash::AddUInt32(BaselineHash, Scope.Revision);
 			GuLiShipAbilityHash::AddUInt64(BaselineHash, Scope.Hash);
 		}
+		GuLiShipAbilityHash::AddUInt64(BaselineHash, Bundle.AttackStateHash);
 		Bundle.AtomicBaselineHash = GuLiShipAbilityHash::Finish(BaselineHash);
 	}
 
@@ -715,9 +740,7 @@ bool FGuLiWingmanRelayServer::AcknowledgeAbilityConfig(
 				? ActiveLeaseTransaction.BaselineAckDeadlineSeconds
 				: ActiveLeaseTransaction.CandidateDeadlineSeconds)
 			&& IsTransactionEntryBeforeDeadline(NowSeconds, ActiveLeaseTransaction.OverallDeadlineSeconds)
-		: (!ActiveLeaseTransaction.IsResume()
-			|| (!bActiveLeaseRevoked
-				&& GetMaximumRequiredFlightFreshnessAge(NowSeconds) < Tuning.UnavailableToRevokeSeconds));
+		: (!ActiveLeaseTransaction.IsResume() || !bActiveLeaseRevoked);
 	if (!FMath::IsFinite(NowSeconds) || !IsCurrentOwner(SenderPlayerGuid)
 		|| (!bBootstrapContext && !bTransactionContext && !bActiveRosterContext) || !bDeadlineOpen
 		|| !Ack.IsWellFormed() || Ack.Group != LeaseState.Group || Ack.LeaseEpoch != LeaseState.LeaseEpoch
@@ -750,9 +773,7 @@ bool FGuLiWingmanRelayServer::AcknowledgeBootstrap(
 	const bool bDeadlineOpen = ActiveLeaseTransaction.IsTransfer()
 		? IsTransactionEntryBeforeDeadline(NowSeconds, ActiveLeaseTransaction.BaselineAckDeadlineSeconds)
 			&& IsTransactionEntryBeforeDeadline(NowSeconds, ActiveLeaseTransaction.OverallDeadlineSeconds)
-		: (!ActiveLeaseTransaction.IsResume()
-			|| (!bActiveLeaseRevoked
-				&& GetMaximumRequiredFlightFreshnessAge(NowSeconds) < Tuning.UnavailableToRevokeSeconds));
+		: (!ActiveLeaseTransaction.IsResume() || !bActiveLeaseRevoked);
 	if (!FMath::IsFinite(NowSeconds) || !IsCurrentOwner(SenderPlayerGuid)
 		|| (!bBootstrapContext && !bTransactionContext && !bActiveRosterContext) || !bDeadlineOpen
 		|| !AppliedCommit.IsWellFormed() || !CommitMatchesOutstanding(AppliedCommit)
@@ -1482,6 +1503,19 @@ bool FGuLiWingmanRelayServer::ConsumeFlightUploadRate(
 		: EGuLiWingmanUploadRateClass::Cruise5Hz;
 	const double MinimumInterval = Effective == EGuLiWingmanUploadRateClass::HighRate10Hz ? 0.1 : 0.2;
 	double& LastReceive = LastCandidateReceiveTimeByFlight[Candidate.FlightIndex];
+	if (AbilityConfig.WeaponChannels.ContainsByPredicate([](const auto& Channel)
+		{ return Channel.bEnabled && Channel.Runtime.Attack.Pattern != EGuLiWingmanAttackPattern::Legacy; }))
+	{
+		// Packet arrival jitter must not discard missiles from a legal 5 Hz producer.
+		// Keep the same average budget and permit at most one extra packet of credit.
+		double& Credit = AttackFlightUploadCredit[Candidate.FlightIndex];
+		Credit = LastReceive <= -DBL_MAX / 2.0 ? 2.0
+			: FMath::Min(2.0, Credit + FMath::Max(0.0, NowSeconds - LastReceive) / MinimumInterval);
+		LastReceive = NowSeconds;
+		if (Credit + UE_DOUBLE_SMALL_NUMBER < 1.0) return false;
+		Credit -= 1.0;
+		return true;
+	}
 	if (LastReceive > -DBL_MAX / 2.0
 		&& NowSeconds - LastReceive + Tuning.UploadIntervalToleranceSeconds < MinimumInterval)
 	{
@@ -1578,6 +1612,7 @@ uint64 FGuLiWingmanRelayServer::ComputeOutstandingAtomicBaselineHash() const
 		GuLiShipAbilityHash::AddUInt32(Hash, Scope.Revision);
 		GuLiShipAbilityHash::AddUInt64(Hash, Scope.Hash);
 	}
+	GuLiShipAbilityHash::AddUInt64(Hash, OutstandingBootstrap.AttackStateHash);
 	return GuLiShipAbilityHash::Finish(Hash);
 }
 
@@ -1790,8 +1825,8 @@ EGuLiWingmanRejectReason FGuLiWingmanRelayServer::ValidateCandidateSpatialEnvelo
 			const FVector Position(Sample.PositionCentimeters);
 			const FVector Velocity(Sample.VelocityCentimetersPerSecond);
 			const double Speed = Velocity.Size();
-			if (FVector::DistSquared(Position, CarrierLocation)
-				> FMath::Square(Tuning.MaximumCarrierDistanceCentimeters))
+			const double CarrierDistance = FVector::Distance(Position, CarrierLocation);
+			if (CarrierDistance > Tuning.MaximumCarrierDistanceCentimeters)
 			{
 				return EGuLiWingmanRejectReason::InvalidIdentity;
 			}
@@ -1842,8 +1877,13 @@ EGuLiWingmanRejectReason FGuLiWingmanRelayServer::ValidateCandidateSpatialEnvelo
 					const double DirectionDot = FMath::Clamp(FVector::DotProduct(
 						Velocity / Speed, PreviousVelocity / PreviousSpeed), -1.0, 1.0);
 					const double TurnDegrees = FMath::RadiansToDegrees(FMath::Acos(DirectionDot));
+					// Each integer velocity component has <=0.5cm/s rounding error. Near
+					// zero speed that is a measurable angle; it is not an extra turn allowance.
+					const double QuantizedAngleError = FMath::RadiansToDegrees(
+						FMath::Asin(FMath::Min(1.0, FMath::Sqrt(3.0)*0.5/Speed))
+						+ FMath::Asin(FMath::Min(1.0, FMath::Sqrt(3.0)*0.5/PreviousSpeed)));
 					if (TurnDegrees > MaximumTurnRateDegrees * ClientDeltaSeconds
-						+ Tuning.TurnEnvelopeSlackDegrees)
+						+ Tuning.TurnEnvelopeSlackDegrees + QuantizedAngleError)
 					{
 						return bEndpoint ? EGuLiWingmanRejectReason::InvalidIdentity
 							: EGuLiWingmanRejectReason::TrailInvalid;
@@ -1856,8 +1896,21 @@ EGuLiWingmanRejectReason FGuLiWingmanRelayServer::ValidateCandidateSpatialEnvelo
 					+ PreviousVelocity * ClientDeltaSeconds;
 				const double PermittedIntegrationError = Tuning.PositionEnvelopeSlackCentimeters
 					+ 0.5 * MaximumVectorAcceleration * FMath::Square(ClientDeltaSeconds);
-				if (FVector::DistSquared(Position, ConstantVelocityPrediction)
-					> FMath::Square(PermittedIntegrationError))
+				const double IntegrationError = FVector::Distance(
+					Position, ConstantVelocityPrediction);
+				// Integration may have to hold the last valid position while a Recover
+				// sample brakes at a FlightNav or collision boundary. Accept only that
+				// narrow constraint case here: mode must be Recover, translation must be
+				// effectively zero, and speed must not increase beyond quantization noise.
+				// Speed, acceleration, turn and world-segment validation above/below remain
+				// authoritative, so this cannot authorize a teleport or blocked movement.
+				const bool bConstraintBrakingHold =
+					Sample.FlightMode == static_cast<uint8>(EGuLiWingmanFlightMode::Recover)
+					&& FVector::Distance(Position, PreviousPosition)
+						<= ConstraintHoldPositionToleranceCentimeters
+					&& Speed <= PreviousSpeed
+						+ ConstraintHoldSpeedToleranceCentimetersPerSecond;
+				if (!bConstraintBrakingHold && IntegrationError > PermittedIntegrationError)
 				{
 					return bEndpoint ? EGuLiWingmanRejectReason::InvalidIdentity
 						: EGuLiWingmanRejectReason::TrailInvalid;
@@ -2065,6 +2118,8 @@ FGuLiWingmanSubmissionResult FGuLiWingmanRelayServer::AcceptResolvedCandidate(
 		return MakeCandidateRejected(Candidate, RejectReason, NowSeconds);
 	}
 	CommitValidatedCandidate(Candidate, Validated, NowSeconds);
+    if (OnValidatedAttackBatch && LeaseState.Lifecycle == EGuLiWingmanGroupLifecycle::Active
+        && !Candidate.AttackFireRecords.IsEmpty()) OnValidatedAttackBatch(Candidate, NowSeconds);
 	FGuLiWingmanSubmissionResult Result = FGuLiWingmanSubmissionResult::Accepted(Validated.Accepted);
 	Result.Sequence = Candidate.CandidateSequence;
 	Result.Acceptance.LeaseEpoch = Candidate.LeaseEpoch;
@@ -2341,8 +2396,7 @@ bool FGuLiWingmanRelayServer::IsAtomicEntryAllowed(
 	{
 		return !bActiveLeaseRevoked
 			&& (LeaseState.Lifecycle == EGuLiWingmanGroupLifecycle::Stale
-				|| LeaseState.Lifecycle == EGuLiWingmanGroupLifecycle::Unavailable)
-			&& GetMaximumRequiredFlightFreshnessAge(NowSeconds) < Tuning.UnavailableToRevokeSeconds;
+				|| LeaseState.Lifecycle == EGuLiWingmanGroupLifecycle::Unavailable);
 	}
 	return LeaseState.Lifecycle == EGuLiWingmanGroupLifecycle::Unavailable
 		&& IsTransactionEntryBeforeDeadline(NowSeconds, ActiveLeaseTransaction.CandidateDeadlineSeconds)

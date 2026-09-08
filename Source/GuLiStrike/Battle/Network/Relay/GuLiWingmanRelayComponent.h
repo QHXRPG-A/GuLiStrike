@@ -18,6 +18,9 @@ struct GULISTRIKE_API FGuLiWingmanRelayReplicatedState
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|Relay")
 	FGuLiGroupAbilityConfigSnapshot AbilityConfig;
 
+	UPROPERTY()
+	FGuLiWingmanAttackAuthorityState AttackState;
+
 	/** Latest server-replayed carrier state identity; clients use it when producing a Candidate. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|Relay")
 	FGuLiCarrierSourceRef LatestCarrierSource;
@@ -107,7 +110,11 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Wingman|Relay")
 	void SubmitFireIntent(const FGuLiWingmanFireIntent& Intent);
 
-	/** Requests same-Lease recovery from the last accepted per-Flight baseline. */
+	/**
+	 * Requests same-owner recovery from the last accepted per-Flight baseline.
+	 * Unavailable owners retry at a bounded cadence so watchdog revocation is
+	 * recoverable when no backup takeover has won the lease.
+	 */
 	UFUNCTION(BlueprintCallable, Category = "Wingman|Relay")
 	void RequestResume();
 
@@ -218,6 +225,10 @@ private:
 	UFUNCTION(Server, Unreliable)
 	void ServerSubmitCandidate(const FGuLiWingmanCandidateBatch& Candidate);
 
+	/** Finite fire-bearing batches retain the ordinary trajectory/rate/authority gates. */
+	UFUNCTION(Server, Reliable)
+	void ServerSubmitAttackCandidate(const FGuLiWingmanCandidateBatch& Candidate);
+
 	UFUNCTION(Server, Reliable)
 	void ServerSubmitFireIntent(const FGuLiWingmanFireIntent& Intent);
 
@@ -255,6 +266,9 @@ private:
 	void ClientReceiveCandidateResult(const FGuLiWingmanCandidateResultWire& Result);
 
 	UFUNCTION(Client, Reliable)
+	void ClientReceiveAttackCandidateResult(const FGuLiWingmanCandidateResultWire& Result);
+
+	UFUNCTION(Client, Reliable)
 	void ClientReceiveAtomicBatchResult(const FGuLiWingmanAtomicBatchAcceptance& Acceptance,
 		const TArray<FGuLiWingmanAcceptedBatch>& AcceptedFlights);
 
@@ -282,7 +296,9 @@ private:
 	bool ApplyAcceptedBatchToLocalOwner(const FGuLiWingmanAcceptedBatch& AcceptedBatch);
 	void TickOwnerClientSimulation(float DeltaTime);
 	uint32 AdvanceClientSimulationClock(float DeltaTime);
-	void CapturePrivateOwnerTrajectory(UGuLiWingmanSimulationSubsystem& Simulation);
+	void CaptureOwnerTrajectory(
+		UGuLiWingmanSimulationSubsystem& Simulation,
+		uint32 CaptureIntervalTicks);
 	void TickOwnerBasicWeapon(double NowSeconds);
 	void GatherBasicWeaponTargets(
 		double EstimatedServerNowSeconds,
@@ -325,6 +341,11 @@ private:
 	uint32 LastAcknowledgedLeaseEpoch = 0u;
 	uint64 LastAcknowledgedCutId = 0u;
 	double ClientCandidateAccumulator = 0.0;
+	FGuLiWingmanGroupHandle CaptureClockGroup;
+	uint32 LastCompletedMassTick = 0;
+	uint32 LastOwnerUploadSimulationTick = 0u;
+	/** Server-only bounded routing for deferred fire-batch results. */
+	TMap<uint32, double> ReliableAttackCandidateSequences;
 	double ClientHeartbeatAccumulator = 0.0;
 	double NextClientActiveRosterAckRetryTimeSeconds = 0.0;
 	// A validated Lease transition or Candidate response supplies an authoritative
@@ -334,6 +355,7 @@ private:
 	double LastObservedAuthoritativeServerTimeSeconds = -1.0;
 	bool bHasClientServerTimeAnchor = false;
 	uint32 LastRequestedResumeLeaseEpoch = 0u;
+	double NextClientResumeRequestTimeSeconds = 0.0;
 	uint32 NextClientCandidateSequence = 1u;
 	uint32 ClientSimulationTick = 1u;
 	/** Persistent fair scheduler for ordinary per-Flight uploads. */
@@ -344,7 +366,7 @@ private:
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> NextClientFrameSequenceByFlight{};
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> ClientAcceptedSequenceByFlight{};
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> LastSubmittedClientTickByFlight{};
-	/** Owner-private 5 Hz rolling history; only a four-sample selection ever reaches the wire. */
+	/** Owner-private rolling history; only a four-sample selection ever reaches the wire. */
 	TStaticArray<TArray<FGuLiWingmanCandidateTrailSample>, GULI_WINGMAN_FLIGHT_COUNT>
 		RetainedTrajectoryByFlight{};
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> LastRetainedTrajectoryTickByFlight{};

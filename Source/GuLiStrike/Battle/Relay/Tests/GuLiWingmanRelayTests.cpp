@@ -22,9 +22,14 @@ namespace GuLiWingmanRelayTests
 	{
 		FGuLiGroupAbilityConfigSnapshot Config;
 		Config.ShipInstanceId = Group.ShipInstanceId;
+		Config.MatchEpoch = 11u;
+		Config.Team = EGuLiTeam::Red;
+		Config.OwnerPlayerGuid = FGuid(1u, 2u, 3u, 4u);
+		Config.WingmanTypeId = TEXT("TestWingman");
 		Config.ShipGeneration = Group.ShipGeneration;
 		Config.GroupGeneration = Group.GroupGeneration;
 		Config.AbilitySetRevision = 7u;
+		Config.LoadoutRevision = 9u;
 		Config.SnapshotRevision = SnapshotRevision;
 		Config.bGroupAbilitiesValid = true;
 		Config.FormationAbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
@@ -38,6 +43,40 @@ namespace GuLiWingmanRelayTests
 		Config.MissileDefinitionChecksum = 0x3333444455556666ull;
 		Config.FormationCommandRevision = 9u;
 		Config.EffectiveClientSimTick = 100u;
+
+		FGuLiWingmanWeaponChannelConfig& Basic = Config.WeaponChannels.AddDefaulted_GetRef();
+		Basic.Binding = FGuLiWeaponBindingKey::Wingman(
+			Config.MatchEpoch, Config.Team, Config.OwnerPlayerGuid, Config.WingmanTypeId, TEXT("BasicWeapon"));
+		Basic.SkillId = TEXT("Test.Basic.Auto");
+		Basic.AbilityId = Config.BasicWeaponAbilityId;
+		Basic.Kind = EGuLiWingmanWeaponKind::BasicAutomatic;
+		Basic.bEnabled = true;
+		Basic.ProfileRevision = 4u;
+		Basic.DefinitionRevision = Config.BasicWeaponDefinitionRevision;
+		Basic.DefinitionChecksum = Config.BasicWeaponDefinitionChecksum;
+		Basic.Runtime.CooldownSeconds = 2.0f;
+		Config.BasicWeaponRuntime = Basic.Runtime;
+
+		FGuLiWingmanWeaponChannelConfig& Missile = Config.WeaponChannels.AddDefaulted_GetRef();
+		Missile.Binding = FGuLiWeaponBindingKey::Wingman(
+			Config.MatchEpoch, Config.Team, Config.OwnerPlayerGuid, Config.WingmanTypeId, TEXT("Missile"));
+		Missile.SkillId = TEXT("Test.Missile.Salvo");
+		Missile.AbilityId = Config.MissileAbilityId;
+		Missile.Kind = EGuLiWingmanWeaponKind::Missile;
+		Missile.CooldownGroupId = TEXT("WingmanMissileSalvo");
+		Missile.bEnabled = true;
+		Missile.ProfileRevision = 5u;
+		Missile.DefinitionRevision = Config.MissileDefinitionRevision;
+		Missile.DefinitionChecksum = Config.MissileDefinitionChecksum;
+		Missile.Runtime.Damage = 100.0f;
+		Missile.Runtime.RangeCentimeters = 250000.0f;
+		Missile.Runtime.CooldownSeconds = 8.0f;
+		Missile.Runtime.ProjectileSpeedCentimetersPerSecond = 45000.0f;
+		Missile.Runtime.ProjectileLifetimeSeconds = 8.0f;
+		Missile.Runtime.SweepRadiusCentimeters = 150.0f;
+		Missile.Runtime.TargetConeHalfAngleDegrees = 8.0f;
+		Missile.Runtime.MaximumHomingTurnRateDegreesPerSecond = 45.0f;
+		Config.MissileRuntime = Missile.Runtime;
 		Config.RefreshHash();
 		return Config;
 	}
@@ -716,6 +755,163 @@ bool FGuLiWingmanRelayFireValidatorInjectionTest::RunTest(const FString& Paramet
 	const FGuLiWingmanSubmissionResult Duplicate = Relay.SubmitFireIntent(Owner, Intent, 0.17);
 	TestTrue(TEXT("A committed DomainFireSequence is idempotently rejected"),
 		Duplicate.RejectReason == EGuLiWingmanRejectReason::Duplicate);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanWeaponChannelBootstrapRecoveryTest,
+	"GuLiStrike.Wingman.Relay.WeaponChannelBootstrapRecovery",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanWeaponChannelBootstrapRecoveryTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanRelayTests;
+	FGuLiWingmanRelayServer Relay;
+	FGuid Owner;
+	FGuid Backup;
+	if (!InitializeRelay(*this, Relay, Owner, Backup))
+	{
+		return false;
+	}
+	const FGuLiGroupAbilityConfigSnapshot InitialConfig = Relay.GetAbilityConfig();
+	if (!TestTrue(TEXT("Initial protocol-v9 weapon projection is usable"),
+		InitialConfig.IsUsableByLeaseOwner())
+		|| !TestEqual(TEXT("Initial projection carries its complete channel array"),
+			InitialConfig.WeaponChannels.Num(), 2))
+	{
+		return false;
+	}
+
+	FGuLiGroupAbilityConfigSnapshot ChannelChanged = InitialConfig;
+	++ChannelChanged.WeaponChannels[1].ProfileRevision;
+	ChannelChanged.RefreshHash();
+	TestTrue(TEXT("A valid channel payload mutation remains structurally valid"), ChannelChanged.IsWellFormed());
+	TestTrue(TEXT("Every weapon-channel field participates in the snapshot hash"),
+		ChannelChanged.SnapshotHash != InitialConfig.SnapshotHash);
+
+	FGuLiGroupAbilityConfigSnapshot LoadoutChanged = InitialConfig;
+	++LoadoutChanged.LoadoutRevision;
+	LoadoutChanged.RefreshHash();
+	TestTrue(TEXT("LoadoutRevision participates in the snapshot hash"),
+		LoadoutChanged.IsWellFormed() && LoadoutChanged.SnapshotHash != InitialConfig.SnapshotHash);
+
+	FGuLiGroupAbilityConfigSnapshot OwnerChanged = InitialConfig;
+	OwnerChanged.OwnerPlayerGuid = FGuid(9u, 10u, 11u, 12u);
+	for (FGuLiWingmanWeaponChannelConfig& Channel : OwnerChanged.WeaponChannels)
+	{
+		Channel.Binding.OwnerPlayerGuid = OwnerChanged.OwnerPlayerGuid;
+	}
+	OwnerChanged.RefreshHash();
+	TestTrue(TEXT("Stable growth owner context participates in the snapshot hash"),
+		OwnerChanged.IsWellFormed() && OwnerChanged.SnapshotHash != InitialConfig.SnapshotHash);
+
+	FGuLiGroupAbilityConfigSnapshot TypeChanged = InitialConfig;
+	TypeChanged.WingmanTypeId = TEXT("AlternateWingman");
+	for (FGuLiWingmanWeaponChannelConfig& Channel : TypeChanged.WeaponChannels)
+	{
+		Channel.Binding.SubjectId = TypeChanged.WingmanTypeId;
+	}
+	TypeChanged.RefreshHash();
+	TestTrue(TEXT("Wingman type context participates in the snapshot hash"),
+		TypeChanged.IsWellFormed() && TypeChanged.SnapshotHash != InitialConfig.SnapshotHash);
+
+	FGuLiGroupAbilityConfigSnapshot OldProtocol = InitialConfig;
+	OldProtocol.ProtocolVersion = GULI_WINGMAN_PROTOCOL_VERSION - 1u;
+	++OldProtocol.SnapshotRevision;
+	OldProtocol.RefreshHash();
+	TestFalse(TEXT("A prior protocol snapshot cannot masquerade as current"), OldProtocol.IsWellFormed());
+	TestFalse(TEXT("Relay refuses to publish a prior protocol as a newer current snapshot"),
+		Relay.PublishAbilityConfig(OldProtocol, 0.005));
+
+	FGuLiWingmanBootstrapBundle InitialBootstrap;
+	if (!TestTrue(TEXT("Reliable bootstrap is built from the current complete projection"),
+		Relay.BuildBootstrap(InitialBootstrap)))
+	{
+		return false;
+	}
+	const FGuLiWingmanBootstrapScopeState* AbilityScope =
+		InitialBootstrap.Commit.FindScope(EGuLiWingmanBootstrapScope::GroupAbilityConfig);
+	if (!TestNotNull(TEXT("Bootstrap contains the GroupAbilityConfig scope"), AbilityScope))
+	{
+		return false;
+	}
+	TestEqual(TEXT("Bootstrap ability scope freezes SnapshotRevision"),
+		AbilityScope->Revision, InitialConfig.SnapshotRevision);
+	TestEqual(TEXT("Bootstrap ability scope freezes the full projection hash"),
+		AbilityScope->Hash, InitialConfig.SnapshotHash);
+	TestEqual(TEXT("Bootstrap preserves LoadoutRevision"),
+		InitialBootstrap.AbilityConfig.LoadoutRevision, InitialConfig.LoadoutRevision);
+	TestEqual(TEXT("Bootstrap preserves stable growth owner"),
+		InitialBootstrap.AbilityConfig.OwnerPlayerGuid, InitialConfig.OwnerPlayerGuid);
+	TestEqual(TEXT("Bootstrap preserves WingmanTypeId"),
+		InitialBootstrap.AbilityConfig.WingmanTypeId, InitialConfig.WingmanTypeId);
+	TestEqual(TEXT("Bootstrap preserves every channel"),
+		InitialBootstrap.AbilityConfig.WeaponChannels.Num(), InitialConfig.WeaponChannels.Num());
+	for (int32 Index = 0; Index < InitialConfig.WeaponChannels.Num(); ++Index)
+	{
+		const FGuLiWingmanWeaponChannelConfig& Source = InitialConfig.WeaponChannels[Index];
+		const FGuLiWingmanWeaponChannelConfig& Copy = InitialBootstrap.AbilityConfig.WeaponChannels[Index];
+		TestTrue(TEXT("Bootstrap channel preserves Binding"), Copy.Binding == Source.Binding);
+		TestEqual(TEXT("Bootstrap channel preserves SkillId"), Copy.SkillId, Source.SkillId);
+		TestTrue(TEXT("Bootstrap channel preserves AbilityId"), Copy.AbilityId == Source.AbilityId);
+		TestEqual(TEXT("Bootstrap channel preserves ProfileRevision"), Copy.ProfileRevision, Source.ProfileRevision);
+	}
+	if (!ActivateRelay(*this, Relay, Owner))
+	{
+		return false;
+	}
+
+	TestTrue(TEXT("Configured backup becomes the recovery lease owner"),
+		Relay.BeginTakeover(Backup, Owner, 0.2));
+	FGuLiWingmanBootstrapBundle TakeoverBootstrap;
+	if (!TestTrue(TEXT("Backup takeover builds a frozen reliable cut"),
+		Relay.BuildBootstrap(TakeoverBootstrap)))
+	{
+		return false;
+	}
+	TestTrue(TEXT("Takeover cut includes its transfer baseline"),
+		TakeoverBootstrap.bHasTransferBaseline && TakeoverBootstrap.TransferBaseline.IsWellFormed());
+	TestEqual(TEXT("Takeover keeps the exact full ability projection hash"),
+		TakeoverBootstrap.AbilityConfig.SnapshotHash, InitialConfig.SnapshotHash);
+	TestEqual(TEXT("Transfer baseline freezes that same ability hash"),
+		TakeoverBootstrap.TransferBaseline.AbilityConfigHash, InitialConfig.SnapshotHash);
+	TestEqual(TEXT("Lease takeover does not rewrite the stable growth owner"),
+		TakeoverBootstrap.AbilityConfig.OwnerPlayerGuid, Owner);
+	TestEqual(TEXT("Lease takeover preserves the complete channel array"),
+		TakeoverBootstrap.AbilityConfig.WeaponChannels.Num(), InitialConfig.WeaponChannels.Num());
+
+	FGuLiGroupAbilityConfigAck TakeoverAck;
+	TakeoverAck.Group = Relay.GetLeaseState().Group;
+	TakeoverAck.LeaseEpoch = Relay.GetLeaseState().LeaseEpoch;
+	TakeoverAck.SnapshotRevision = InitialConfig.SnapshotRevision;
+	TakeoverAck.SnapshotHash = InitialConfig.SnapshotHash;
+	TestTrue(TEXT("Backup acknowledges the exact retained weapon projection"),
+		Relay.AcknowledgeAbilityConfig(Backup, TakeoverAck, 0.21));
+	FGuLiWingmanBootstrapCommit OldCommit = TakeoverBootstrap.Commit;
+	OldCommit.ProtocolVersion = GULI_WINGMAN_PROTOCOL_VERSION - 1u;
+	TestFalse(TEXT("An old reliable-cut protocol cannot complete recovery"),
+		Relay.AcknowledgeBootstrap(
+			Backup, OldCommit, &TakeoverBootstrap.TransferBaseline, 0.215));
+	TestTrue(TEXT("The exact current cut advances recovery to its takeover-batch gate"),
+		Relay.AcknowledgeBootstrap(
+			Backup, TakeoverBootstrap.Commit, &TakeoverBootstrap.TransferBaseline, 0.22));
+	TestTrue(TEXT("Recovery keeps the group unavailable until its required takeover batch"),
+		Relay.GetLeaseState().Lifecycle == EGuLiWingmanGroupLifecycle::Unavailable
+		&& Relay.GetActiveLeaseTransaction().State
+			== EGuLiWingmanActiveLeaseTransactionState::AwaitingTakeoverBatch);
+
+	Relay.Revoke(0.3);
+	const FGuLiGroupAbilityConfigSnapshot& Tombstone = Relay.GetAbilityConfig();
+	TestTrue(TEXT("Revocation publishes one structurally valid tombstone"), Tombstone.IsWellFormed());
+	TestFalse(TEXT("Tombstone cannot authorize the old group"), Tombstone.IsUsableByLeaseOwner());
+	TestEqual(TEXT("Tombstone preserves match ownership context"), Tombstone.OwnerPlayerGuid, Owner);
+	TestEqual(TEXT("Tombstone preserves WingmanTypeId context"),
+		Tombstone.WingmanTypeId, InitialConfig.WingmanTypeId);
+	TestEqual(TEXT("Tombstone clears LoadoutRevision"), Tombstone.LoadoutRevision, 0u);
+	TestEqual(TEXT("Tombstone clears the complete channel array"), Tombstone.WeaponChannels.Num(), 0);
+	TestTrue(TEXT("Tombstone advances beyond and cannot equal the old current snapshot"),
+		Tombstone.SnapshotRevision > InitialConfig.SnapshotRevision
+		&& !Tombstone.HasSameVersion(InitialConfig));
+	TestFalse(TEXT("A revoked group cannot rebuild a usable bootstrap"), Relay.BuildBootstrap(InitialBootstrap));
 	return true;
 }
 #endif

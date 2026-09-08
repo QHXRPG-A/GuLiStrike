@@ -146,11 +146,11 @@ bool FGuLiStrafeProfileChangeTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("zero-rate pause preserves cooldown progress when resumed"), F.States[0].NextFireSeconds, 10.125);
 	F.Profiles[0] = Next;
 	Next.SkillId = TEXT("OtherBasicAttack");
-	GuLiSoldierCombat::ReplaceProfile(F.Profiles[0], Next, 1.3, F.States[0]);
-	TestEqual(TEXT("skill replacement starts a complete new cooldown"), F.States[0].NextFireSeconds, 1.55);
+	GuLiSoldierCombat::ReplaceProfile(F.Profiles[0], Next, 10.3, F.States[0]);
+	TestEqual(TEXT("skill replacement starts a complete new cooldown without rewinding the test clock"), F.States[0].NextFireSeconds, 10.55);
 	TestFalse(TEXT("skill replacement clears old target"), F.States[0].TargetId.IsValid());
 	F.Profiles[0] = Next; F.Profiles[0].AttackRatePerSecond = 0;
-	F.Tick(13, 2.0);
+	F.Tick(331, 11.0);
 	TestEqual(TEXT("zero rate stops firing"), F.States[0].StopReason, EGuLiCombatStopReason::Disabled);
 	return true;
 }
@@ -187,6 +187,146 @@ bool FGuLiCombatBenchmarkHarnessTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("all acquisition buckets are exercised"), Result.TargetQueries >= 500);
 	TestTrue(TEXT("attacks execute in benchmark"), Result.Shots >= 500);
 	TestTrue(TEXT("timing distribution is well formed"), Result.MaximumMilliseconds >= Result.P95Milliseconds);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiMultiWeaponChannelTest,
+	"GuLiStrike.Commander.Combat.MultiWeaponChannelsAndCooldownMigration",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiMultiWeaponChannelTest::RunTest(const FString& Parameters)
+{
+	(void)Parameters;
+	FGuLiResolvedSkillProfile Basic;
+	Basic.UnitTypeId = 2u;
+	Basic.SlotId = TEXT("BasicAttack");
+	Basic.SkillId = TEXT("Strafe");
+	Basic.ExecutorId = TEXT("DirectSingleTarget");
+	Basic.Damage = 7.5f;
+	Basic.AttackRatePerSecond = 4.0f;
+	Basic.RangeCentimeters = 15000.0f;
+	Basic.Revision = 11u;
+	FGuLiResolvedSkillProfile Secondary = Basic;
+	Secondary.SlotId = TEXT("SecondaryWeapon");
+	Secondary.SkillId = TEXT("StrafeTest");
+	Secondary.Damage = 3.0f;
+	Secondary.AttackRatePerSecond = 2.0f;
+	Secondary.Revision = 12u;
+
+	FGuLiSoldierAttackState BasicState;
+	FGuLiSoldierAttackState SecondaryState;
+	BasicState.TargetId = FGuLiSoldierId(2u);
+	SecondaryState.TargetId = FGuLiSoldierId(2u);
+	TArray<FGuLiCombatSample> Targets;
+	Targets.Add({FGuLiSoldierId(1u), EGuLiTeam::Red, FVector::ZeroVector, true, false, nullptr, nullptr});
+	Targets.Add({FGuLiSoldierId(2u), EGuLiTeam::Blue, FVector(1000.0, 0.0, 0.0), true, false, nullptr, nullptr});
+	TArray<FGuLiCombatSample> Channels;
+	Channels.Add({FGuLiSoldierId(1u), EGuLiTeam::Red, FVector::ZeroVector, true, false, &Basic, &BasicState});
+	Channels.Add({FGuLiSoldierId(1u), EGuLiTeam::Red, FVector::ZeroVector, true, false, &Secondary, &SecondaryState});
+	TMap<uint32, int32> Indices = {{1u, 0}, {2u, 1}};
+	TMap<FIntPoint, TArray<int32>> Grid;
+	GuLiSoldierCombat::BuildSpatialGrid(Targets, Grid);
+	int32 GridEntryCount = 0;
+	for (const auto& Pair : Grid) GridEntryCount += Pair.Value.Num();
+	TestEqual(TEXT("The target grid stores each soldier once, not once per weapon"), GridEntryCount, 2);
+
+	FGuLiCombatExecutorRegistry Executors;
+	TArray<FGuLiCombatDamageEvent> Events;
+	auto Metrics = GuLiSoldierCombat::CollectChannelAttacks(Channels, Targets, Indices, Grid,
+		1u, 0.0, Executors, Events);
+	TestEqual(TEXT("Both equipped channels fire independently"), Metrics.Shots, 2);
+	TestEqual(TEXT("Both channel attacks are emitted"), Events.Num(), 2);
+	TestTrue(TEXT("Damage events preserve both source slots and revisions"),
+		Events.ContainsByPredicate([](const FGuLiCombatDamageEvent& Event)
+			{ return Event.SourceUnitTypeId == 2u && Event.SourceSlotId == FName(TEXT("BasicAttack")) && Event.ProfileRevision == 11u; })
+		&& Events.ContainsByPredicate([](const FGuLiCombatDamageEvent& Event)
+			{ return Event.SourceUnitTypeId == 2u && Event.SourceSlotId == FName(TEXT("SecondaryWeapon")) && Event.ProfileRevision == 12u; }));
+
+	FGuLiResolvedSkillProfile Replacement = Secondary;
+	Replacement.SkillId = TEXT("OtherTest");
+	Replacement.AttackRatePerSecond = 4.0f;
+	Replacement.Revision = 13u;
+	GuLiSoldierCombat::ReplaceProfile(Secondary, Replacement, 0.1, SecondaryState);
+	TestFalse(TEXT("Replacing one slot clears only that slot's target"), SecondaryState.TargetId.IsValid());
+	TestEqual(TEXT("Replacement cannot shorten the old slot cooldown"), SecondaryState.NextFireSeconds, 0.5);
+	TestEqual(TEXT("The other slot keeps its target"), BasicState.TargetId.Value, 2u);
+	TestEqual(TEXT("The other slot keeps its cooldown"), BasicState.NextFireSeconds, 0.25);
+	Channels[1].Profile = &Replacement;
+	SecondaryState.TargetId = FGuLiSoldierId(2u);
+	Metrics = GuLiSoldierCombat::CollectChannelAttacks(Channels, Targets, Indices, Grid,
+		8u, 0.25, Executors, Events);
+	TestEqual(TEXT("The unchanged slot fires while the replacement remains on cooldown"), Metrics.Shots, 1);
+	TestTrue(TEXT("Only BasicAttack fired at its original boundary"),
+		Events.Num() == 1 && Events[0].SourceSlotId == FName(TEXT("BasicAttack")));
+
+	FGuLiResolvedSkillProfile Unequipped = Replacement;
+	Unequipped.bEquipped = false;
+	GuLiSoldierCombat::ReplaceProfile(Replacement, Unequipped, 0.3, SecondaryState);
+	Channels[1].Profile = &Unequipped;
+	GuLiSoldierCombat::CollectChannelAttacks(Channels, Targets, Indices, Grid,
+		9u, 0.3, Executors, Events);
+	TestEqual(TEXT("An unequipped slot emits no damage"), Events.Num(), 0);
+	TestEqual(TEXT("An unequipped slot reports disabled"), SecondaryState.StopReason, EGuLiCombatStopReason::Disabled);
+	TestFalse(TEXT("An unequipped slot releases its target"), SecondaryState.TargetId.IsValid());
+
+	FGuLiResolvedSkillProfile Reequipped = Replacement;
+	GuLiSoldierCombat::ReplaceProfile(Unequipped, Reequipped, 0.4, SecondaryState);
+	TestEqual(TEXT("Re-equipping waits a full interval and cannot refresh fire"), SecondaryState.NextFireSeconds, 0.65);
+	TestEqual(TEXT("Re-equipping the second slot does not alter BasicAttack"), BasicState.NextFireSeconds, 0.5);
+	Channels[1].Profile = &Reequipped;
+	BasicState.TargetId = FGuLiSoldierId(2u);
+	SecondaryState.TargetId = FGuLiSoldierId(2u);
+	Metrics = GuLiSoldierCombat::CollectChannelAttacks(Channels, Targets, Indices, Grid,
+		16u, 0.5, Executors, Events);
+	TestEqual(TEXT("BasicAttack still fires on its independent cadence"), Metrics.Shots, 1);
+	TestTrue(TEXT("The re-equipped slot is still cooling down"),
+		Events.Num() == 1 && Events[0].SourceSlotId == FName(TEXT("BasicAttack")));
+	BasicState.TargetId = FGuLiSoldierId(2u);
+	SecondaryState.TargetId = FGuLiSoldierId(2u);
+	Metrics = GuLiSoldierCombat::CollectChannelAttacks(Channels, Targets, Indices, Grid,
+		20u, 0.65, Executors, Events);
+	TestEqual(TEXT("The re-equipped channel fires at its migrated boundary"), Metrics.Shots, 1);
+	TestTrue(TEXT("Only SecondaryWeapon fires at that boundary"),
+		Events.Num() == 1 && Events[0].SourceSlotId == FName(TEXT("SecondaryWeapon")));
+	return true;
+}
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiCommanderMachineGunMissileCadenceTest,
+	"GuLiStrike.Commander.Combat.MachineGunAndMissileIndependentCadence",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuLiCommanderMachineGunMissileCadenceTest::RunTest(const FString& Parameters)
+{
+	FGuLiResolvedSkillProfile Gun;
+	Gun.UnitTypeId = 2; Gun.SlotId = TEXT("BasicAttack"); Gun.SkillId = TEXT("Strafe");
+	Gun.ExecutorId = TEXT("DirectSingleTarget"); Gun.Damage = 7.5f;
+	Gun.AttackRatePerSecond = 4; Gun.RangeCentimeters = 15000; Gun.Revision = 1;
+	FGuLiResolvedSkillProfile Missile = Gun;
+	Missile.SlotId = TEXT("MissileLauncher"); Missile.SkillId = TEXT("WM01_HomingMissile");
+	Missile.ExecutorId = TEXT("LaunchProjectile"); Missile.Damage = 30; Missile.AttackRatePerSecond = 1.0f / 3.0f;
+	FGuLiSoldierAttackState GunState, MissileState;
+	GunState.TargetId = MissileState.TargetId = FGuLiSoldierId(2);
+	TArray<FGuLiCombatSample> Targets = {
+		{FGuLiSoldierId(1), EGuLiTeam::Red, FVector::ZeroVector, true, false, nullptr, nullptr},
+		{FGuLiSoldierId(2), EGuLiTeam::Blue, FVector(1000, 0, 0), true, false, nullptr, nullptr}};
+	TArray<FGuLiCombatSample> Channels = {
+		{FGuLiSoldierId(1), EGuLiTeam::Red, FVector::ZeroVector, true, false, &Gun, &GunState},
+		{FGuLiSoldierId(1), EGuLiTeam::Red, FVector::ZeroVector, true, false, &Missile, &MissileState}};
+	TMap<uint32, int32> Indices = {{1, 0}, {2, 1}};
+	TMap<FIntPoint, TArray<int32>> Grid; GuLiSoldierCombat::BuildSpatialGrid(Targets, Grid);
+	FGuLiCombatExecutorRegistry Registry;
+	TArray<FGuLiCombatDamageEvent> Events;
+	GuLiSoldierCombat::CollectChannelAttacks(Channels, Targets, Indices, Grid, 1, 0, Registry, Events);
+	TestEqual(TEXT("gun and missile both fire on the first accepted step"), Events.Num(), 2);
+	TestTrue(TEXT("launch request retains independent execution identity and slot"), Events.ContainsByPredicate([](const auto& Event)
+		{ return Event.ExecutorId == FName(TEXT("LaunchProjectile")) && Event.SourceSlotId == FName(TEXT("MissileLauncher")) && Event.Damage == 30; }));
+	TestTrue(TEXT("missile cooldown is three seconds"), FMath::IsNearlyEqual(MissileState.NextFireSeconds, 3.0, .0001));
+	TestEqual(TEXT("existing machinegun quarter-second cadence is unchanged"), GunState.NextFireSeconds, .25);
+	GuLiSoldierCombat::CollectChannelAttacks(Channels, Targets, Indices, Grid, 9, .25, Registry, Events);
+	TestTrue(TEXT("machinegun fires without releasing missile cooldown"), Events.Num() == 1 && Events[0].ExecutorId == FName(TEXT("DirectSingleTarget")));
+	TestEqual(TEXT("only one missile launched before its independent boundary"), MissileState.ShotsFired, static_cast<uint64>(1));
+	GuLiSoldierCombat::CollectChannelAttacks(Channels, Targets, Indices, Grid, 91, 3.0001, Registry, Events);
+	TestEqual(TEXT("both slots can fire together again"), Events.Num(), 2);
+	TestEqual(TEXT("second missile has a new shot ordinal"), MissileState.ShotsFired, static_cast<uint64>(2));
+	TestEqual(TEXT("machinegun damage remains 7.5"), Gun.Damage, 7.5f);
 	return true;
 }
 #endif

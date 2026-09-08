@@ -13,6 +13,8 @@ struct GULISTRIKE_API FGuLiSkillDefinition
 	UPROPERTY() FName SkillId;
 	UPROPERTY() FString DisplayName;
 	UPROPERTY() FName ExecutorId;
+	/** Optional SpellFields row supplying the single authored base damage and field timing/range. */
+	UPROPERTY() FName EffectConfigId;
 	UPROPERTY() FGameplayTagContainer Tags;
 };
 
@@ -27,6 +29,8 @@ struct GULISTRIKE_API FGuLiUnitSkillConfig
 	UPROPERTY() float Damage = 0.0f;
 	UPROPERTY() float AttackRatePerSecond = 0.0f;
 	UPROPERTY() float RangeCentimeters = 0.0f;
+	/** Authored availability; rewards may unlock this stable slot during the match. */
+	UPROPERTY() bool bInitiallyUnlocked = true;
 };
 
 /** Final authority configuration; per-soldier target/cooldown/health never live here. */
@@ -44,6 +48,8 @@ struct GULISTRIKE_API FGuLiResolvedSkillProfile
 	UPROPERTY() float AttackRatePerSecond = 0.0f;
 	UPROPERTY() float RangeCentimeters = 0.0f;
 	UPROPERTY() uint32 Revision = 0;
+	UPROPERTY() bool bUnlocked = true;
+	UPROPERTY() bool bEquipped = true;
 	bool HasSameConfiguration(const FGuLiResolvedSkillProfile& Other) const;
 };
 
@@ -86,6 +92,23 @@ struct GULISTRIKE_API FGuLiSkillSlotReplacement
 	UPROPERTY() int32 Priority = 0;
 };
 
+USTRUCT()
+struct GULISTRIKE_API FGuLiSkillSlotUnlock
+{
+	GENERATED_BODY()
+	UPROPERTY() FGuLiSkillTargetSelector Target;
+};
+
+/** Explicit equipment choice. Empty SkillId means an intentionally unequipped slot. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiSkillLoadoutSelection
+{
+	GENERATED_BODY()
+	UPROPERTY() uint16 UnitTypeId = 1;
+	UPROPERTY() FName SlotId = TEXT("BasicAttack");
+	UPROPERTY() FName SkillId;
+};
+
 /** Opaque neutral source; no technology/card product concepts in the skill bridge. */
 USTRUCT()
 struct GULISTRIKE_API FGuLiSkillSource
@@ -95,6 +118,7 @@ struct GULISTRIKE_API FGuLiSkillSource
 	UPROPERTY() FString DebugLabel;
 	UPROPERTY() TArray<FGuLiSkillModifier> Modifiers;
 	UPROPERTY() TArray<FGuLiSkillSlotReplacement> Replacements;
+	UPROPERTY() TArray<FGuLiSkillSlotUnlock> Unlocks;
 };
 
 USTRUCT()

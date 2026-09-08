@@ -1,8 +1,29 @@
-# 指挥官与飞船共享 HUD 及 Ship UI v1
+---
+schema: guli-progress/v1
+id: REQ-20260902-002
+work_id: WORK-20260902-002
+kind: requirement
+role: root
+title: 指挥官与飞船共享 HUD 及 Ship UI v1
+areas:
+- commander
+- ship
+- ui
+- network
+- assets
+status: approved
+verification: not_applicable
+created: '2026-09-02'
+updated: '2026-09-02'
+summary: 项目已经有一套可运行的 Commander HUD，但飞船驾驶尚缺少独立 HUD。用户提供 D:\UE5.7\UI\Ship UI 作为内部视觉分析参考，并确认 Ship UI v1 与 Commander UI 使用同一套视觉语言；同时，本轮要把现有
+  Commander UI 迁移到共享视觉基元，但不能改变既有功能行为
+next_action: ''
+relations:
+  development: DEV-20260902-002
+status_note: 已确认
+---
 
-- 类型：UI / 技术架构
-- 日期：2026-09-02
-- 状态：已确认
+# 指挥官与飞船共享 HUD 及 Ship UI v1
 
 ## 背景
 

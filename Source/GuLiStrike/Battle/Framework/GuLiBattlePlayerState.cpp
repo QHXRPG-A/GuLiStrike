@@ -6,19 +6,161 @@
 #include "AbilitySystemComponent.h"
 #include "Gameplay/Skills/GuLiArmySkillAbility.h"
 #include "Gameplay/Skills/GuLiSkillTags.h"
+#include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
+#include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
+#include "Battle/Framework/GuLiBattleGameState.h"
+#include "Engine/World.h"
 
 AGuLiBattlePlayerState::AGuLiBattlePlayerState()
 {
 	ArmyAbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ArmyAbilitySystem"));
 	ArmyAbilitySystem->SetIsReplicated(true);
 	ArmyAbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
-	ShipAbilityLoadoutState = FGuLiShipAbilityLoadoutState::MakeNativeV1();
+	ShipAbilityLoadoutState = FGuLiShipAbilityLoadoutState::MakeNativeV3();
 }
 
 void AGuLiBattlePlayerState::BeginPlay()
 {
 	Super::BeginPlay();
 	InitializeArmyAbilitySystem();
+	if (HasAuthority())
+		if (auto* Skills = GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>())
+			Skills->OnWeaponLoadoutCommitted().AddUObject(this, &ThisClass::HandleArmyWeaponLoadoutCommitted);
+}
+
+void AGuLiBattlePlayerState::EndPlay(const EEndPlayReason::Type EndPlayReason)
+{
+	if (GetWorld())
+		if (auto* Skills = GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>())
+			Skills->OnWeaponLoadoutCommitted().RemoveAll(this);
+	WeaponRequests.Reset(); WeaponRequestOrder.Reset();
+	Super::EndPlay(EndPlayReason);
+}
+
+TArray<FGuLiWeaponChannelView> AGuLiBattlePlayerState::GetWeaponChannels(const EGuLiWeaponDomain Domain) const
+{
+	TArray<FGuLiWeaponChannelView> Views;
+	const UWorld* World = GetWorld();
+	const auto* State = World ? World->GetGameState<AGuLiBattleGameState>() : nullptr;
+	const auto* Skills = World ? World->GetSubsystem<UGuLiArmySkillSubsystem>() : nullptr;
+	const auto* Data = World ? World->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr;
+	if (Domain != EGuLiWeaponDomain::Army || !State || !Skills || !Data || !IsCommander()) return Views;
+	for (const auto& Profile : Skills->GetResolvedSkills())
+	{
+		if (Profile.Team != Team) continue;
+		auto& View = Views.AddDefaulted_GetRef();
+		View.Binding = FGuLiWeaponBindingKey::Army(State->GetMatchEpoch(), Team, Profile.UnitTypeId, Profile.SlotId);
+		View.SkillId = Profile.SkillId;
+		View.bUnlocked = Profile.bUnlocked; View.bEquipped = Profile.bEquipped;
+		View.Damage = Profile.Damage; View.AttackRatePerSecond = Profile.AttackRatePerSecond;
+		View.RangeCentimeters = Profile.RangeCentimeters;
+		View.LoadoutRevision = Skills->GetLoadoutRevision(); View.ProfileRevision = Profile.Revision;
+		if (const auto* Definition = Data->GetSkillDefinitions().FindByPredicate(
+			[&](const auto& Entry) { return Entry.SkillId == Profile.SkillId; })) View.DisplayName = Definition->DisplayName;
+		for (const auto& Config : Data->GetUnitSkillConfigs())
+			if (Config.UnitTypeId == Profile.UnitTypeId && Config.SlotId == Profile.SlotId)
+				View.CompatibleSkillIds.AddUnique(Config.SkillId);
+		View.CompatibleSkillIds.Sort([](const FName A, const FName B) { return A.LexicalLess(B); });
+	}
+	return Views;
+}
+
+void AGuLiBattlePlayerState::ServerRequestEquipWeapon_Implementation(const FGuid RequestId,
+	const FGuLiWeaponBindingKey Binding, const FName SkillId, const int64 ExpectedLoadoutRevision)
+{
+	ClientReceiveWeaponChangeResult(ProcessEquipWeaponRequest(RequestId, Binding, SkillId, ExpectedLoadoutRevision));
+}
+
+FGuLiWeaponChangeResult AGuLiBattlePlayerState::ProcessEquipWeaponRequest(const FGuid RequestId,
+	const FGuLiWeaponBindingKey& Binding, const FName SkillId, const int64 ExpectedLoadoutRevision)
+{
+	FGuLiWeaponChangeResult Result;
+	Result.RequestId = RequestId; Result.Binding = Binding; Result.RequestedSkillId = SkillId;
+	UWorld* World = GetWorld();
+	const auto* State = World ? World->GetGameState<AGuLiBattleGameState>() : nullptr;
+	auto* Skills = World ? World->GetSubsystem<UGuLiArmySkillSubsystem>() : nullptr;
+	if (State && WeaponRequestEpoch != State->GetMatchEpoch())
+	{
+		WeaponRequestEpoch = State->GetMatchEpoch();
+		WeaponRequests.Reset(); WeaponRequestOrder.Reset(); NextWeaponRequestSeconds = 0.0;
+	}
+	if (const auto* Prior = WeaponRequests.Find(RequestId))
+	{
+		if (Prior->Result.Binding == Binding && Prior->Result.RequestedSkillId == SkillId
+			&& Prior->ExpectedRevision == ExpectedLoadoutRevision)
+			return Prior->Result;
+		else
+			Result.Message = TEXT("RequestId has already been used for a different equipment request.");
+		return Result;
+	}
+	const FString TypeText = Binding.SubjectId.ToString();
+	const int64 UnitTypeId = TypeText.IsNumeric() && TypeText.Len() <= 5 ? FCString::Atoi64(*TypeText) : 0;
+	if (!RequestId.IsValid() || !Binding.IsWellFormed() || !State || !Skills
+		|| Binding.MatchEpoch != State->GetMatchEpoch() || Binding.Team != Team
+		|| Binding.Domain != EGuLiWeaponDomain::Army || UnitTypeId < 1 || UnitTypeId > MAX_uint16
+		|| Binding.SubjectId != FName(*FString::FromInt(static_cast<int32>(UnitTypeId)))
+		|| ExpectedLoadoutRevision < 1 || ExpectedLoadoutRevision > MAX_uint32)
+		Result.Message = TEXT("Invalid, stale, foreign, or not-yet-supported equipment binding.");
+	else if (World->GetTimeSeconds() < NextWeaponRequestSeconds)
+		Result.Message = TEXT("Equipment requests are rate limited; retry after the current commit.");
+	else
+	{
+		NextWeaponRequestSeconds = World->GetTimeSeconds() + 0.05;
+		if (Skills->EquipWeapon(*this, static_cast<uint16>(UnitTypeId), Binding.SlotId, SkillId,
+			static_cast<uint32>(ExpectedLoadoutRevision), Result.Message))
+		{
+			Result.Status = EGuLiWeaponChangeStatus::AwaitingCommit;
+			Result.Message = TEXT("Accepted; awaiting the authority simulation step.");
+		}
+	}
+	Result.LoadoutRevision = Skills ? Skills->GetLoadoutRevision() : 0;
+	if (RequestId.IsValid())
+	{
+		while (WeaponRequestOrder.Num() >= 128)
+		{
+			const int32 EvictIndex = WeaponRequestOrder.IndexOfByPredicate([&](const FGuid Id)
+				{ return WeaponRequests.FindChecked(Id).Result.Status != EGuLiWeaponChangeStatus::AwaitingCommit; });
+			if (EvictIndex == INDEX_NONE) break;
+			WeaponRequests.Remove(WeaponRequestOrder[EvictIndex]);
+			WeaponRequestOrder.RemoveAt(EvictIndex, 1, EAllowShrinking::No);
+		}
+		if (WeaponRequestOrder.Num() < 128)
+		{
+			FWeaponRequestRecord Record; Record.ExpectedRevision = ExpectedLoadoutRevision; Record.Result = Result;
+			WeaponRequests.Add(RequestId, MoveTemp(Record)); WeaponRequestOrder.Add(RequestId);
+		}
+	}
+	return Result;
+}
+
+void AGuLiBattlePlayerState::HandleArmyWeaponLoadoutCommitted(const uint32 Revision)
+{
+	const auto* State = GetWorld() ? GetWorld()->GetGameState<AGuLiBattleGameState>() : nullptr;
+	const auto* Skills = GetWorld() ? GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>() : nullptr;
+	if (!HasAuthority() || !State || !Skills) return;
+	TArray<FGuLiWeaponChangeResult> Replies;
+	for (auto& Pair : WeaponRequests)
+	{
+		auto& Result = Pair.Value.Result;
+		if (Result.Status != EGuLiWeaponChangeStatus::AwaitingCommit) continue;
+		const auto* Profile = Skills->FindResolvedSkill(Result.Binding.Team,
+			static_cast<uint16>(FCString::Atoi(*Result.Binding.SubjectId.ToString())), Result.Binding.SlotId);
+		const bool bApplied = Result.Binding.MatchEpoch == State->GetMatchEpoch() && Profile
+			&& Profile->bUnlocked && (Result.RequestedSkillId.IsNone() ? !Profile->bEquipped
+				: Profile->bEquipped && Profile->SkillId == Result.RequestedSkillId);
+		Result.Status = bApplied ? EGuLiWeaponChangeStatus::Committed : EGuLiWeaponChangeStatus::Rejected;
+		Result.LoadoutRevision = Revision;
+		Result.Message = bApplied ? TEXT("Equipment committed.") : TEXT("Equipment invalidated before commit.");
+		Replies.Add(Result);
+	}
+	// Notify after walking the cache: a local Blueprint callback may issue another request.
+	for (const auto& Reply : Replies) ClientReceiveWeaponChangeResult(Reply);
+}
+
+void AGuLiBattlePlayerState::ClientReceiveWeaponChangeResult_Implementation(const FGuLiWeaponChangeResult& Result)
+{
+	LastWeaponChangeResult = Result;
+	OnWeaponChangeResult.Broadcast(Result);
 }
 
 UAbilitySystemComponent* AGuLiBattlePlayerState::GetAbilitySystemComponent() const

@@ -18,10 +18,12 @@ class UInputMappingContext;
 class UDataTable;
 class UAbilitySystemComponent;
 class UGuLiCombatHealthComponent;
+class UGuLiShipAimComponent;
 class UGuLiShipAbilitySet;
 class UGuLiShipAbilitySystemComponent;
 class UGuLiWingmanWeaponDefinition;
 class UGuLiShipMovementComponent;
+class UGuLiShipWorldHUDComponent;
 class UGuLiWingmanRelayComponent;
 class UEnhancedInputLocalPlayerSubsystem;
 class UGuLiStrikeShipPartComponent;
@@ -153,6 +155,14 @@ class AGuLiStrikeShip : public ACharacter, public IAbilitySystemInterface
 	/** Custom authoritative Ship health; numeric health intentionally stays outside GAS. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UGuLiCombatHealthComponent* CombatHealth;
+
+	/** Local-only GAS reticle ownership, virtual cursor and aim-camera bridge. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UGuLiShipAimComponent* ShipAim;
+
+	/** Local-only world-space HUD presenter; creates no visible nodes for remote Ships or servers. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UGuLiShipWorldHUDComponent* ShipWorldHUD;
 
 protected:
 
@@ -403,6 +413,16 @@ public:
 	UFUNCTION(BlueprintPure, Category="Ship|Combat")
 	UGuLiCombatHealthComponent* GetCombatHealthComponent() const { return CombatHealth; }
 
+	/** The authored hull mesh whose bounds and sockets define the visible Ship body. */
+	UFUNCTION(BlueprintPure, Category="Ship|Components")
+	UStaticMeshComponent* GetHullMeshComponent() const { return HullMesh; }
+
+	UFUNCTION(BlueprintPure, Category="Ship|Aiming")
+	UGuLiShipAimComponent* GetShipAimComponent() const { return ShipAim; }
+
+	UFUNCTION(BlueprintPure, Category="Ship|UI")
+	UGuLiShipWorldHUDComponent* GetShipWorldHUDComponent() const { return ShipWorldHUD; }
+
 	const FGuLiGroupAbilityConfigSnapshot& GetGroupAbilityConfig() const { return GroupAbilityConfig; }
 	/** Read-only authority diagnostics; never advances or releases a replenishment timer. */
 	bool TryGetWingmanReplenishmentSchedule(
@@ -423,6 +443,19 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+
+	UFUNCTION(BlueprintCallable, Category="Ship|Wingman|Target")
+	void SetWingmanAttackTarget(const FGuLiTargetHandle& Target);
+	UFUNCTION(BlueprintCallable, Category="Ship|Wingman|Target")
+	void ClearWingmanAttackTarget();
+	UFUNCTION(BlueprintPure, Category="Ship|Wingman|Target")
+	FGuLiWingmanAttackTarget GetWingmanAttackTarget() const { return WingmanAttackTarget; }
+	UPROPERTY(EditDefaultsOnly, Category="Ship|Wingman|Target")
+	FDataTableRowHandle WingmanTargetingRow;
+	UPROPERTY(Replicated)
+	FGuLiWingmanAttackTarget WingmanAttackTarget;
+	UFUNCTION(Server, Reliable)
+	void ServerSetWingmanAttackTarget(const FGuLiTargetHandle& Target);
 
 protected:
 
@@ -606,7 +639,11 @@ private:
 	void ServerRequestWingmanMissileSalvo(
 		FGuid RequestId,
 		FIntVector AimDirectionMilli,
+		FGuLiWeaponBindingKey WeaponBinding,
+		FName SkillId,
 		uint32 AbilitySetRevision,
+		uint32 LoadoutRevision,
+		uint32 ProfileRevision,
 		uint32 MissileDefinitionRevision);
 
 	UFUNCTION(Client, Reliable)
@@ -645,11 +682,16 @@ private:
 	bool SelectLocalPredictedWingmanTarget(
 		const FVector& AimOrigin,
 		const FVector& AimForward,
+		const FGuLiWeaponBindingKey& WeaponBinding,
 		FGuLiTargetHandle& OutTarget) const;
 	void ExecuteServerWingmanMissileSalvo(
 		const FGuid& RequestId,
 		const FIntVector& AimDirectionMilli,
+		const FGuLiWeaponBindingKey& WeaponBinding,
+		FName SkillId,
 		uint32 AbilitySetRevision,
+		uint32 LoadoutRevision,
+		uint32 ProfileRevision,
 		uint32 MissileDefinitionRevision);
 	void BroadcastWingmanMissileResult(
 		const FGuid& RequestId,
@@ -659,9 +701,11 @@ private:
 		const FGuLiWingmanMissileSalvoResult& Result);
 	void HandleServerWingmanFireIntentAccepted(const FGuLiWingmanFireIntent& Intent);
 	void HandleGroupAbilityProjectionChanged();
-	void HandleTriggeredShipAbility(
+	void HandleTriggeredShipWeaponAbility(
 		FGameplayAbilitySpecHandle LocalSpecHandle,
-		FGameplayTag StableAbilityId,
+		FGuLiWeaponBindingKey WeaponBinding,
+		FName SkillId,
+		FGameplayTag CatalogAbilityId,
 		uint32 AbilitySetRevision,
 		bool bLocallyPredicted);
 
@@ -677,6 +721,7 @@ private:
 	FGuid ShipInstanceId;
 	uint32 ShipGeneration = 0u;
 	uint32 GroupGeneration = 0u;
+	FGuLiWeaponBindingKey ActiveMissileInputBinding;
 	UPROPERTY(Transient)
 	TObjectPtr<UGuLiShipAbilitySet> RuntimeShipAbilitySet;
 	TWeakObjectPtr<UGuLiWingmanRelayComponent> BoundWingmanRelay;

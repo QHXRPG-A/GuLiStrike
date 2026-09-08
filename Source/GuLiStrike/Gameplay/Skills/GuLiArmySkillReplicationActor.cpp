@@ -17,10 +17,12 @@ void AGuLiArmySkillReplicationActor::GetLifetimeReplicatedProps(TArray<FLifetime
 	DOREPLIFETIME(AGuLiArmySkillReplicationActor, State);
 }
 
-void AGuLiArmySkillReplicationActor::Publish(uint32 MatchEpoch, const TArray<FGuLiResolvedSkillProfile>& Profiles)
+void AGuLiArmySkillReplicationActor::Publish(uint32 MatchEpoch, const TArray<FGuLiResolvedSkillProfile>& Profiles,
+	const uint32 LoadoutRevision)
 {
 	if (!HasAuthority()) return;
 	State.MatchEpoch = MatchEpoch;
+	State.LoadoutRevision = LoadoutRevision;
 	State.Profiles = Profiles;
 	ForceNetUpdate();
 }
@@ -29,6 +31,6 @@ void AGuLiArmySkillReplicationActor::OnRep_State()
 {
 	if (auto* Subsystem = GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>())
 	{
-		Subsystem->ReceiveReplicatedProfiles(State.MatchEpoch, State.Profiles);
+		Subsystem->ReceiveReplicatedProfiles(State.MatchEpoch, State.Profiles, State.LoadoutRevision);
 	}
 }

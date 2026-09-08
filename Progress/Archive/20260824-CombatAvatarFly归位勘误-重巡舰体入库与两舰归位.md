@@ -1,3 +1,27 @@
+---
+schema: guli-progress/v1
+id: ARC-20260824-001
+work_id: ''
+kind: archive
+role: root
+title: 2026-08-24 解决了：CombatAvatarFly 归位勘误——重巡舰体从 Blender 入库，无畏舰/重巡分驻 01/02 文件夹
+areas:
+- commander
+- ship
+- data-pipeline
+- assets
+status: recorded
+verification: not_run
+created: '2026-08-24'
+updated: '2026-09-05'
+summary: 2026-08-24 解决了：CombatAvatarFly 归位勘误——重巡舰体从 Blender 入库，无畏舰/重巡分驻 01/02 文件夹
+next_action: ''
+relations:
+  work_items:
+  - WORK-20260820-001
+status_note: ''
+---
+
 # 2026-08-24 解决了：CombatAvatarFly 归位勘误——重巡舰体从 Blender 入库，无畏舰/重巡分驻 01/02 文件夹
 
 - 对应开发文档：无（资产整理 + 配置勘误，附属于 [DIY 飞船](../DevelopmentDocumentation/20260820-DIY飞船.md)）
@@ -9,8 +33,8 @@
 | 文件/资产 | 变更 |
 |---|---|
 | `/Game/Assets/Arma/CombatAvatarFly-01\|02/` 下的 fly 资产（16 个） | **全部回退**至 `/Game/Assets/Arma/fly-01/`（平铺）与 `fly-02/sci_fi_surveillance_drone/{Materials,StaticMeshes,Textures}/` |
-| `D:\UE_5.7\Blenders\ShipComponent.blend` 中 `scifi_heavy_cruiser_maelstrom.001` | 按流水线三件套处理（取消隐藏→轴心归 ORIGIN_CENTER_OF_MASS→移世界原点），导出 FBX 后恢复隐藏，**.blend 已保存** |
-| `D:\UE_5.7\Blenders\exports\SM_Maelstrom_Hull.fbx`（新） | 483KB / 12226 三角形 |
+| `D:\UE5.7\Blenders\ShipComponent.blend` 中 `scifi_heavy_cruiser_maelstrom.001` | 按流水线三件套处理（取消隐藏→轴心归 ORIGIN_CENTER_OF_MASS→移世界原点），导出 FBX 后恢复隐藏，**.blend 已保存** |
+| `D:\UE5.7\Blenders\exports\SM_Maelstrom_Hull.fbx`（新） | 483KB / 12226 三角形 |
 | `/Game/Assets/Arma/CombatAvatarFly-02/StaticMeshes/SM_Maelstrom_Hull`（新导入） | legacy FbxFactory 纯导入（不带材质贴图）；尺寸 37127×75133×20772 = Blender ×100 轴向不变；绑原包材质 ScifiHeavyCruiserMaelstromGrey；碰撞 CTF_USE_COMPLEX_AS_SIMPLE（对齐 Dreadnought 舰体配置） |
 | `/Game/Assets/Arma/CombatAvatarFly-01/` | **无畏舰全套迁入**：SM_Dreadnought_Hull（自 ShipComponent）+ 原始整船网格 + 2 材质 + 7 贴图，按 {StaticMeshes, Materials, Textures} 分层 |
 | `/Game/Assets/Arma/CombatAvatarFly-02/` | **重巡全套迁入**：SM_Maelstrom_Hull（新）+ 原始整船网格（自 Ships 包）+ 2 材质 + 8 贴图 |

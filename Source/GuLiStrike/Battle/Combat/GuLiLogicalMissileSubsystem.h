@@ -35,6 +35,21 @@ struct GULISTRIKE_API FGuLiLogicalMissileLaunchRequest
 	FGuid ShotId;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
+	FGuid RootEventId;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
+	FGuLiWeaponBindingKey WeaponBinding;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
+	FName SkillId;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat|Missile")
+	uint32 LoadoutRevision = 0u;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat|Missile")
+	uint32 ProfileRevision = 0u;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
 	FGuLiTargetHandle Source;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
@@ -82,6 +97,21 @@ struct GULISTRIKE_API FGuLiLogicalMissileState
 	FGuid ShotId;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
+	FGuid RootEventId;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
+	FGuLiWeaponBindingKey WeaponBinding;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
+	FName SkillId;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat|Missile")
+	uint32 LoadoutRevision = 0u;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat|Missile")
+	uint32 ProfileRevision = 0u;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
 	FGuLiTargetHandle Source;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
@@ -119,6 +149,18 @@ struct GULISTRIKE_API FGuLiLogicalMissileTerminalEvent
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
 	FGuid MissileId;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
+	FGuid RootEventId;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
+	FGuLiWeaponBindingKey WeaponBinding;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
+	FName SkillId;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat|Missile")
+	uint32 ProfileRevision = 0u;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile")
 	EGuLiLogicalMissileTerminalReason Reason = EGuLiLogicalMissileTerminalReason::Invalid;

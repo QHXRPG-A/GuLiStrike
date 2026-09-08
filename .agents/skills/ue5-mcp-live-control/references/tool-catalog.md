@@ -1,6 +1,6 @@
 # unrealMCP Tool Catalog
 
-Server: `unrealMCP` (UnrealMCP_Advanced v1.5.0, local stdio server at `D:\UE_5.7\unreal-engine-mcp\Python\unreal_mcp_server_advanced.py`, talks to the UnrealMCP editor plugin over TCP `127.0.0.1:55557`).
+Server: `unrealMCP` (UnrealMCP_Advanced v1.5.0, local stdio server at `D:\UE5.7\test1\unreal-engine-mcp\Python\unreal_mcp_server_advanced.py`, talks to the UnrealMCP editor plugin over TCP `127.0.0.1:55557`).
 
 All tools are called as `mcp__unrealMCP__<name>`. Responses are JSON with a `status` field.
 

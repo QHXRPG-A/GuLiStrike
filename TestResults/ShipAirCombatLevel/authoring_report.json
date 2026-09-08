@@ -1,0 +1,90 @@
+{
+  "combat_center": {
+    "label": "AirCombat_Center",
+    "location": [
+      50000.0,
+      82500.0,
+      15000.0
+    ],
+    "path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.TargetPoint_0"
+  },
+  "created": false,
+  "dirty_maps": [],
+  "flight_navigation": {
+    "inherited_navigation_data": "/Game/GuLiStrike/Navigation/Baked/LVL_ShipWingmanAirCombatPrototype/DA_FlightNav_LVL_ShipWingmanAirCombatPrototype.DA_FlightNav_LVL_ShipWingmanAirCombatPrototype",
+    "label": "FlightNav_LVL_ShipWingmanAirCombatPrototype",
+    "path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+    "tags": [
+      "GuLiFlightNavigation.Managed.v1",
+      "GuLiFlightNavigation.Map.LVL_ShipWingmanAirCombatPrototype"
+    ]
+  },
+  "game_mode": "/Script/GuLiStrike.GuLiShipTestGameMode",
+  "loaded_world": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+  "maximum_enemy_army_distance_centimeters": 132098.44813622907,
+  "maximum_start_separation_centimeters": 28284.2712474619,
+  "original_editor_map": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype",
+  "player_starts": [
+    {
+      "label": "AirCombat_PlayerStart_01",
+      "location": [
+        10000.0,
+        102500.0,
+        15000.0
+      ],
+      "path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.PlayerStart_0",
+      "rotation": [
+        0.0,
+        -26.56505203247071,
+        0.0
+      ]
+    },
+    {
+      "label": "AirCombat_PlayerStart_02",
+      "location": [
+        30000.0,
+        102500.0,
+        15000.0
+      ],
+      "path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.PlayerStart_4",
+      "rotation": [
+        0.0,
+        -45.0,
+        0.0
+      ]
+    },
+    {
+      "label": "AirCombat_PlayerStart_03",
+      "location": [
+        10000.0,
+        122500.0,
+        15000.0
+      ],
+      "path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.PlayerStart_5",
+      "rotation": [
+        0.0,
+        -45.0,
+        0.0
+      ]
+    },
+    {
+      "label": "AirCombat_PlayerStart_04",
+      "location": [
+        30000.0,
+        122500.0,
+        15000.0
+      ],
+      "path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.PlayerStart_6",
+      "rotation": [
+        0.0,
+        -63.43494796752928,
+        0.0
+      ]
+    }
+  ],
+  "saved": true,
+  "schema": "guli.ship-wingman-air-combat-level.v1",
+  "source_map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "success": true,
+  "target_map": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype"
+}

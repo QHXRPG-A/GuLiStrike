@@ -6,10 +6,16 @@ description: Route UE5.6/UE5.7 questions to the most precise skill using module 
 # Quick Start
 - Extract explicit module names from user prompt first.
 - If module is found, route by exact module mapping before keyword heuristics.
+- Route exact `Niagara`, `NiagaraCore`, `NiagaraShader`, and `NiagaraEditor` module matches to `ue5-vfx-production` before consulting the generated CSV.
 - If module is not found, use aliases and layer context.
 
 # Workflow
 - Parse prompt for module candidates (for example `RenderCore`, `AIModule`, `AssetRegistry`).
+- Apply exact VFX module overrides:
+  - `Niagara` -> `ue5-vfx-production`
+  - `NiagaraCore` -> `ue5-vfx-production`
+  - `NiagaraShader` -> `ue5-vfx-production`
+  - `NiagaraEditor` -> `ue5-vfx-production`
 - Lookup module in `ue5-module-routing-table-final.csv`.
 - If multiple hits, prioritize:
   1. exact module name match
@@ -28,6 +34,7 @@ description: Route UE5.6/UE5.7 questions to the most precise skill using module 
 - Keep one primary target skill unless user explicitly asks cross-module analysis.
 - If module maps to `ue5-architecture`, answer module-boundary/design first.
 - Prefer dedicated MCP tools before `execute_script`.
+- Keep `RenderCore`, `Renderer`, ordinary materials, lighting, and scene-building requests on their existing routes; the Niagara override is exact and must not broaden into all rendering work.
 
 # Failure Handling
 - If no module is recognized, fallback to closest capability skill and state reason.

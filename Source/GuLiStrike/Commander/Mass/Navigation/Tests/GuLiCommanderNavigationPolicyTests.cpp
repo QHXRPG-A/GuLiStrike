@@ -791,6 +791,166 @@ namespace GuLiCommanderNavigationPolicyTests
 			ShouldBlockPersonalPathRecovery(2, 2.0f));
 		return true;
 	}
+
+	IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+		FCommanderMovementUpdateCadenceTest,
+		"GuLiStrike.Commander.Mass.Navigation.MovementUpdateCadence",
+		EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+	bool FCommanderMovementUpdateCadenceTest::RunTest(const FString& Parameters)
+	{
+		(void)Parameters;
+		TArray<int32> UpdatesBySoldier;
+		UpdatesBySoldier.Init(0, 501);
+		TArray<int32> SoldiersByPhase;
+		SoldiersByPhase.Init(0, 3);
+		for (uint32 SoldierId = 1u; SoldierId <= 500u; ++SoldierId)
+		{
+			++SoldiersByPhase[ResolveMovementUpdatePhase(SoldierId)];
+		}
+		TestEqual(TEXT("Phase 0 contains 166 Soldiers"), SoldiersByPhase[0], 166);
+		TestEqual(TEXT("Phase 1 contains 167 Soldiers"), SoldiersByPhase[1], 167);
+		TestEqual(TEXT("Phase 2 contains 167 Soldiers"), SoldiersByPhase[2], 167);
+		for (uint32 SimTick = 0u; SimTick < 30u; ++SimTick)
+		{
+			int32 UpdatesThisStep = 0;
+			for (uint32 SoldierId = 1u; SoldierId <= 500u; ++SoldierId)
+			{
+				if (ShouldRunMovementUpdate(SimTick, SoldierId, false))
+				{
+					++UpdatesBySoldier[SoldierId];
+					++UpdatesThisStep;
+				}
+			}
+			TestTrue(
+				TEXT("Each steady-state step contains only one balanced third of 500 Soldiers"),
+				UpdatesThisStep == 166 || UpdatesThisStep == 167);
+		}
+		for (uint32 SoldierId = 1u; SoldierId <= 500u; ++SoldierId)
+		{
+			TestEqual(
+				TEXT("Every Soldier receives exactly ten updates over thirty authority ticks"),
+				UpdatesBySoldier[SoldierId],
+				10);
+		}
+
+		TestFalse(
+			TEXT("Soldier 1 normally waits for phase 1 at tick 0"),
+			ShouldRunMovementUpdate(0u, 1u, false));
+		TestTrue(
+			TEXT("A newly committed order bypasses the phase gate for its first update"),
+			ShouldRunMovementUpdate(0u, 1u, true));
+		TestFalse(
+			TEXT("An invalid Soldier id is never scheduled"),
+			ShouldRunMovementUpdate(0u, 0u, true));
+		TestFalse(
+			TEXT("After an immediate update Soldier 2 waits for its stable phase"),
+			ShouldRunMovementUpdate(1u, 2u, false));
+		TestTrue(
+			TEXT("Soldier 2 resumes on its stable phase"),
+			ShouldRunMovementUpdate(2u, 2u, false));
+		TestTrue(
+			TEXT("Soldier 2 keeps the same phase on later cycles"),
+			ShouldRunMovementUpdate(5u, 2u, false));
+
+		const float FixedDeltaSeconds = 1.0f / 30.0f;
+		const float FirstUpdateDelta = ResolveMovementUpdateDeltaSeconds(
+			10.0 + static_cast<double>(FixedDeltaSeconds),
+			10.0,
+			FixedDeltaSeconds);
+		TestTrue(
+			TEXT("The immediate first update preserves one 30 Hz step"),
+			FMath::IsNearlyEqual(FirstUpdateDelta, FixedDeltaSeconds, KINDA_SMALL_NUMBER));
+		const float SteadyUpdateDelta = ResolveMovementUpdateDeltaSeconds(
+			10.1,
+			10.0,
+			FixedDeltaSeconds);
+		TestTrue(
+			TEXT("The steady movement update integrates the full 100 ms interval"),
+			FMath::IsNearlyEqual(SteadyUpdateDelta, 0.1f, KINDA_SMALL_NUMBER));
+		TestTrue(
+			TEXT("A delayed update is clamped to 100 ms instead of jumping"),
+			FMath::IsNearlyEqual(
+				ResolveMovementUpdateDeltaSeconds(12.0, 10.0, FixedDeltaSeconds),
+				0.1f,
+				KINDA_SMALL_NUMBER));
+		TestTrue(
+			TEXT("The current fastest Soldier can still advance 360 cm per steady update"),
+			FMath::IsNearlyEqual(3600.0f * SteadyUpdateDelta, 360.0f, KINDA_SMALL_NUMBER));
+		return true;
+	}
+
+	IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+		FCommanderManualAvoidanceGridTest,
+		"GuLiStrike.Commander.Mass.Navigation.ManualAvoidanceGrid",
+		EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+	bool FCommanderManualAvoidanceGridTest::RunTest(const FString& Parameters)
+	{
+		(void)Parameters;
+		constexpr float CellSizeCentimeters = 1500.0f;
+		TArray<FManualAvoidanceAgent> Agents;
+		Agents.SetNum(3);
+		Agents[0] = {1u, FVector(1499.0, 10.0, 0.0), true, true};
+		Agents[1] = {2u, FVector(1501.0, 10.0, 0.0), true, true};
+		Agents[2] = {3u, FVector(4500.0, 10.0, 0.0), true, true};
+		FManualAvoidanceSpatialGrid SpatialGrid;
+		TArray<FVector> AvoidanceVelocities;
+		const FManualAvoidanceMetrics BoundaryMetrics = BuildManualAvoidanceVelocities(
+			Agents,
+			CellSizeCentimeters,
+			CellSizeCentimeters,
+			144.0f,
+			3600.0f,
+			0.25f,
+			SpatialGrid,
+			AvoidanceVelocities);
+		TestEqual(TEXT("The cross-boundary pair is visited exactly once"),
+			BoundaryMetrics.CandidatePairs, 1ull);
+		TestEqual(TEXT("The cross-boundary pair overlaps"),
+			BoundaryMetrics.OverlapPairs, 1ull);
+		TestEqual(TEXT("Each synthetic cell contains one Soldier"),
+			BoundaryMetrics.MaximumBucketOccupancy, 1);
+		TestTrue(TEXT("The lower-id Soldier separates toward negative X"),
+			AvoidanceVelocities[0].X < 0.0f);
+		TestTrue(TEXT("The other Soldier receives the opposite force"),
+			AvoidanceVelocities[1].X > 0.0f);
+		TestTrue(TEXT("Pair forces remain symmetric"),
+			(AvoidanceVelocities[0] + AvoidanceVelocities[1]).IsNearlyZero());
+		TestTrue(TEXT("A distant Soldier receives no separation"),
+			AvoidanceVelocities[2].IsNearlyZero());
+
+		TArray<FManualAvoidanceAgent> FormationAgents;
+		FormationAgents.Reserve(500);
+		for (int32 Row = 0; Row < 20; ++Row)
+		{
+			for (int32 Column = 0; Column < 25; ++Column)
+			{
+				FManualAvoidanceAgent& Agent = FormationAgents.AddDefaulted_GetRef();
+				Agent.StableSoldierId = static_cast<uint32>(FormationAgents.Num());
+				Agent.Location = FVector(Column * 1800.0, Row * 1800.0, 0.0);
+				Agent.bParticipates = true;
+				Agent.bReceivesAvoidance = true;
+			}
+		}
+		const FManualAvoidanceMetrics FormationMetrics = BuildManualAvoidanceVelocities(
+			FormationAgents,
+			CellSizeCentimeters,
+			CellSizeCentimeters,
+			144.0f,
+			3600.0f,
+			0.25f,
+			SpatialGrid,
+			AvoidanceVelocities);
+		TestEqual(TEXT("A standard 1800 cm formation has no manual overlap"),
+			FormationMetrics.OverlapPairs, 0ull);
+		TestEqual(TEXT("The 1500 cm grid keeps standard formation buckets sparse"),
+			FormationMetrics.MaximumBucketOccupancy, 1);
+		TestTrue(
+			TEXT("The 500-Soldier formation checks local candidates instead of all 124750 pairs"),
+			FormationMetrics.CandidatePairs < 4000u);
+		return true;
+	}
 }
 
 #endif // WITH_DEV_AUTOMATION_TESTS

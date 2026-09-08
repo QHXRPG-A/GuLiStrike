@@ -1,0 +1,168 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "DFF3BE8848DA26A1397D36BC51D2906A",
+			"instanceName": "DESKTOP-6D3B0FC-24336",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.08-02.27.31",
+	"succeeded": 1,
+	"succeededWithWarnings": 0,
+	"failed": 4,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.10397739708423615,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BasicWeaponIndependentAcceptedState",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.BasicWeaponIndependentAcceptedState",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"DFF3BE8848DA26A1397D36BC51D2906A"
+			],
+			"duration": 0.070208102464675903,
+			"dateTime": "2026.09.08-02.27.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(334): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.08-02.27.31"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Config is a complete usable protocol-v7 projection' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanMassSimulationTests.cpp",
+					"lineNumber": 130,
+					"timestamp": "2026.09.08-02.27.31"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClientOnlyProcessorExecutionDomain",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.ClientOnlyProcessorExecutionDomain",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"DFF3BE8848DA26A1397D36BC51D2906A"
+			],
+			"duration": 0.0079097002744674683,
+			"dateTime": "2026.09.08-02.27.31",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FlightNavigationAsyncStateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.FlightNavigationAsyncStateLifecycle",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"DFF3BE8848DA26A1397D36BC51D2906A"
+			],
+			"duration": 0.0088231004774570465,
+			"dateTime": "2026.09.08-02.27.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Config is a complete usable protocol-v7 projection' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanMassSimulationTests.cpp",
+					"lineNumber": 130,
+					"timestamp": "2026.09.08-02.27.31"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InitialFormationNavigationValidatesAllSlots",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.InitialFormationNavigationValidatesAllSlots",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"DFF3BE8848DA26A1397D36BC51D2906A"
+			],
+			"duration": 0.0085184983909130096,
+			"dateTime": "2026.09.08-02.27.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Initial-formation config is a usable protocol-v7 projection' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanInitialFormationNavigationTests.cpp",
+					"lineNumber": 140,
+					"timestamp": "2026.09.08-02.27.31"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OwnerGroupCandidateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.OwnerGroupCandidateLifecycle",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"DFF3BE8848DA26A1397D36BC51D2906A"
+			],
+			"duration": 0.0085179992020130157,
+			"dateTime": "2026.09.08-02.27.31",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Config is a complete usable protocol-v7 projection' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanMassSimulationTests.cpp",
+					"lineNumber": 130,
+					"timestamp": "2026.09.08-02.27.31"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

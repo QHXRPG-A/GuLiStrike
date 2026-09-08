@@ -64,10 +64,10 @@ struct GULISTRIKE_API FGuLiWingmanRelayTuning
 	double HeartbeatIntervalSeconds = 1.0;
 	double CandidateBucketCapacity = 60.0;
 	double CandidateTokensPerSecond = 55.0;
-	double FireBucketCapacity = 80.0;
-	double FireTokensPerSecond = 40.0;
+	double FireBucketCapacity = 100.0;
+	double FireTokensPerSecond = 50.0;
 	double MaximumFireSourceAgeSeconds = 0.35;
-	double MaximumCarrierDistanceCentimeters = 250000.0;
+	double MaximumCarrierDistanceCentimeters = GULI_WINGMAN_MAXIMUM_CARRIER_DISTANCE_CENTIMETERS;
 	double MaximumWingmanSpeedCentimetersPerSecond = 12000.0;
 	/** Quantization allowance around the ability-authorized endpoint speed. */
 	double SpeedEnvelopeSlackCentimetersPerSecond = 10.0;
@@ -206,6 +206,11 @@ public:
 	bool BeginTakeover(const FGuid& NewOwnerPlayerGuid, const FGuid& NewBackupPlayerGuid, double NowSeconds);
 	/** Invalidates a disconnected owner's epoch while retaining all six authoritative scopes. */
 	bool SuspendForOwnerLoss(const FGuid& NoOwnerSentinelGuid, double NowSeconds);
+	/**
+	 * Starts an atomic same-owner recovery. A watchdog-revoked active lease may
+	 * reclaim its retained state only while no backup Offer or committed transfer
+	 * transaction is pending.
+	 */
 	bool BeginResume(double NowSeconds);
 	/** Builds the reliable ACK barrier requested by an Active roster mutation. */
 	bool RefreshActiveRosterCut(double NowSeconds, FGuLiWingmanBootstrapBundle& OutBundle);
@@ -245,6 +250,9 @@ public:
 	bool MarkWingmanDead(const FGuLiWingmanHandle& Wingman);
 	bool SetWingmanHealthPermille(const FGuLiWingmanHandle& Wingman, uint16 CurrentHealthPermille);
 	bool ReplenishWingman(uint8 FlightIndex, uint8 MemberIndex, uint32 NewEntityGeneration);
+
+    FGuLiWingmanAttackAuthorityState AttackState;
+    TFunction<void(const FGuLiWingmanCandidateBatch&, double)> OnValidatedAttackBatch;
 
 	const FGuLiWingmanLeaseState& GetLeaseState() const { return LeaseState; }
 	uint32 GetMatchEpoch() const { return MatchEpoch; }
@@ -400,6 +408,7 @@ private:
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> LastAcceptedFrameByFlight{};
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> LastAcceptedTickByFlight{};
 	TStaticArray<double, GULI_WINGMAN_FLIGHT_COUNT> LastCandidateReceiveTimeByFlight{};
+	TStaticArray<double, GULI_WINGMAN_FLIGHT_COUNT> AttackFlightUploadCredit{};
 	TStaticArray<double, GULI_WINGMAN_FLIGHT_COUNT> LastValidCandidateTimeByFlight{};
 	/**
 	 * Authority-only lease grace for a Flight that transitions from no living members to

@@ -8,6 +8,7 @@ struct FGuLiArmySkillReplicatedState
 {
 	GENERATED_BODY()
 	UPROPERTY() uint32 MatchEpoch = 0;
+	UPROPERTY() uint32 LoadoutRevision = 0;
 	UPROPERTY() TArray<FGuLiResolvedSkillProfile> Profiles;
 };
 
@@ -19,7 +20,7 @@ class GULISTRIKE_API AGuLiArmySkillReplicationActor final : public AActor
 public:
 	AGuLiArmySkillReplicationActor();
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
-	void Publish(uint32 MatchEpoch, const TArray<FGuLiResolvedSkillProfile>& Profiles);
+	void Publish(uint32 MatchEpoch, const TArray<FGuLiResolvedSkillProfile>& Profiles, uint32 LoadoutRevision = 0u);
 private:
 	UPROPERTY(ReplicatedUsing = OnRep_State) FGuLiArmySkillReplicatedState State;
 	UFUNCTION() void OnRep_State();

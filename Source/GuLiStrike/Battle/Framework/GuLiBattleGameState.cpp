@@ -4,12 +4,14 @@
 
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Battle/Combat/GuLiLogicalMissileSubsystem.h"
+#include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Battle/Combat/GuLiMissileVisualSubsystem.h"
 #include "Battle/Network/Relay/GuLiWingmanRelayComponent.h"
 #include "Battle/Relay/GuLiWingmanRelayAuthorityRegistry.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
 #include "Gameplay/Wingman/Presentation/GuLiWingmanPresentationActor.h"
+#include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 #include "Net/UnrealNetwork.h"
 #include "TimerManager.h"
 
@@ -26,6 +28,7 @@ AGuLiBattleGameState::AGuLiBattleGameState()
 	: WingmanRelayAuthorityRegistry(MakeUnique<FGuLiWingmanRelayAuthorityRegistry>())
 {
 	InitializeDefaultRoleSlots();
+	CreateDefaultSubobject<UGuLiCombatEffectReplicationComponent>(TEXT("CombatEffectReplication"));
 }
 
 AGuLiBattleGameState::~AGuLiBattleGameState() = default;
@@ -185,6 +188,12 @@ void AGuLiBattleGameState::InitializeServerMatchState()
 	{
 		MatchEpoch = FMath::Max(1u, static_cast<uint32>(FPlatformTime::Cycles64()));
 		OnRep_MatchEpoch();
+	}
+	// All public combat domains share this epoch, including a Commander-only match.
+	// Do not rely on a Wingman/Ship projectile being launched to initialize the ledger.
+	if (GetWorld())
+	{
+		if (auto* Ledger = GetWorld()->GetSubsystem<UGuLiDamageLedgerSubsystem>()) Ledger->BeginServerEpoch(MatchEpoch);
 	}
 
 	if (RoleSlots.Num() != GuLiBattleRoleSlots::SlotCount)
@@ -582,6 +591,10 @@ void AGuLiBattleGameState::HandleLogicalMissileLaunch(
 	FGuLiMissileVisualLaunchDTO Event;
 	Event.MatchEpoch = Missile.MatchEpoch;
 	Event.MissileId = Missile.MissileId;
+	Event.RootEventId = Missile.RootEventId;
+	Event.WeaponBinding = Missile.WeaponBinding;
+	Event.SkillId = Missile.SkillId;
+	Event.ProfileRevision = Missile.ProfileRevision;
 	Event.Emitter = Missile.Emitter;
 	Event.Target = Missile.Target;
 	Event.Position = Missile.Position;
@@ -625,6 +638,10 @@ void AGuLiBattleGameState::HandleLogicalMissileTerminal(
 	FGuLiMissileVisualTerminalDTO Event;
 	Event.MatchEpoch = Terminal.MatchEpoch;
 	Event.MissileId = Terminal.MissileId;
+	Event.RootEventId = Terminal.RootEventId;
+	Event.WeaponBinding = Terminal.WeaponBinding;
+	Event.SkillId = Terminal.SkillId;
+	Event.ProfileRevision = Terminal.ProfileRevision;
 	Event.SimulationSequence = Terminal.SimulationSequence;
 	Event.Reason = Terminal.Reason;
 	Event.Location = Terminal.Location;

@@ -238,6 +238,10 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Ship|Movement")
 	float GetCurrentBankRoll() const { return CurrentBankRoll; }
 
+	/** True only while a locally sampled, simulation-ready move is applying Boost. */
+	UFUNCTION(BlueprintPure, Category = "Ship|Movement")
+	bool IsBoostActive() const { return ActiveInput.bSimulationEnabled && ActiveInput.bBoost; }
+
 	const FGuLiShipMovementConfig& GetEffectiveMovementConfig() const { return EffectiveConfig; }
 
 	virtual FNetworkPredictionData_Client* GetPredictionData_Client() const override;

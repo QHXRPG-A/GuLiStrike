@@ -110,6 +110,22 @@ struct FGuLiCommanderPredictedMove
 	bool bResolving = false;
 };
 
+/** Stable local render handle; unit and ring indices intentionally have separate lifetimes. */
+struct FGuLiCommanderSoldierInstanceHandle
+{
+	uint16 RequestedUnitTypeId = 0u;
+	uint16 BatchUnitTypeId = 0u;
+	int32 UnitInstanceIndex = INDEX_NONE;
+	int32 RingInstanceIndex = INDEX_NONE;
+};
+
+/** Non-UObject state owned by one UnitTypeId ISM batch. */
+struct FGuLiCommanderUnitInstanceBatchState
+{
+	TArray<FTransform> CachedTransforms;
+	TArray<int32> FreeInstanceIndices;
+};
+
 #if !UE_BUILD_SHIPPING
 /** Opt-in, bounded single-soldier capture. No strings or file writes on the sampled frame. */
 enum class EGuLiPredictionTraceEvent : uint8
@@ -174,6 +190,13 @@ public:
 
 	UFUNCTION(BlueprintPure, Category = "Commander|Presentation")
 	UInstancedStaticMeshComponent* GetUnitInstances() const { return UnitInstances; }
+
+	/** Exact UnitTypeId lookup. Unknown types return null; runtime fallback is internal and logged once. */
+	UInstancedStaticMeshComponent* FindUnitInstances(uint16 UnitTypeId) const;
+
+	/** Returns all type batches in ascending UnitTypeId order for diagnostics and shared settings. */
+	void GetUnitInstanceComponents(
+		TArray<UInstancedStaticMeshComponent*>& OutComponents) const;
 
 	UFUNCTION(BlueprintPure, Category = "Commander|Presentation")
 	UInstancedStaticMeshComponent* GetRingInstances() const { return RingInstances; }
@@ -262,8 +285,18 @@ public:
 #endif
 
 private:
+#if WITH_DEV_AUTOMATION_TESTS
+	friend class FGuLiCommanderUnitTypeBatchRoutingTest;
+#endif
+
 	void InitializePresentationPerformanceSettings();
 	void ApplyPresentationPerformanceSettings();
+	void InitializeUnitInstanceBatches();
+	void ConfigureUnitInstanceComponent(UInstancedStaticMeshComponent& Component) const;
+	void SetUnitInstanceBatchesVisibility(bool bVisible);
+	uint16 ResolveUnitBatchTypeId(uint16 RequestedUnitTypeId);
+	int32 AcquireUnitInstanceSlot(uint16 BatchUnitTypeId);
+	void ReleaseUnitInstanceSlot(uint16 BatchUnitTypeId, int32 InstanceIndex);
 	void ResolveSoftAssets();
 	AGuLiSoldierStateReplicator* FindStateReplicator();
 	APlayerController* FindLocalController();
@@ -331,6 +364,10 @@ private:
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Presentation")
 	TObjectPtr<UInstancedStaticMeshComponent> UnitInstances;
+
+	/** Components are owned by this Actor; ID1 aliases UnitInstances for compatibility. */
+	UPROPERTY(Transient)
+	TMap<uint16, TObjectPtr<UInstancedStaticMeshComponent>> UnitInstancesByType;
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Presentation")
 	TObjectPtr<UInstancedStaticMeshComponent> RingInstances;
@@ -401,11 +438,12 @@ private:
 	FMassArchetypeHandle ClientMirrorArchetype;
 	// SoldierId 到本地实体句柄的映射；两端 FMassEntityHandle 不相同，不能当网络身份发送。
 	TMap<FGuLiSoldierId, FMassEntityHandle> ClientMirrorEntities;
-	TMap<FGuLiSoldierId, int32> SoldierInstanceIndices;
+	TMap<FGuLiSoldierId, FGuLiCommanderSoldierInstanceHandle> SoldierInstanceHandles;
+	TMap<uint16, FGuLiCommanderUnitInstanceBatchState> UnitInstanceBatchStates;
+	TSet<uint16> LoggedMissingUnitBatchTypes;
 	TMap<FGuLiSoldierId, FGuLiCommanderPresentedSoldier> PresentedSoldiers;
 	TMap<FGuLiSoldierId, FGuLiCommanderPredictedMove> PredictedMoves;
 	TMap<FGuLiSoldierId, double> WreckExpireTimes;
-	TArray<FTransform> CachedUnitTransforms;
 	TArray<FTransform> CachedRingTransforms;
 	TArray<FLinearColor> CachedRingColors;
 	double LatestMeasuredServerNowSeconds = 0.0;
@@ -418,10 +456,12 @@ private:
 	uint32 LastObservedSyncGeneration = 0u;
 	uint32 LastObservedConnectionGeneration = 0u;
 	uint32 LastObservedMatchEpoch = 0u;
+	uint16 DefaultUnitTypeId = 1u;
 	bool bObservedSoldierStreamReady = false;
 	bool bNetworkPresentationHidden = false;
 	bool bServerClockInitialized = false;
 	bool bLatestClockRoundTripFromConnectionStats = false;
 	bool bLoggedInstancePoolFailure = false;
 	bool bLoggedInvalidPerformanceConfig = false;
+	bool bUnitBatchCapacityReserved = false;
 };

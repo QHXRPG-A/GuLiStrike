@@ -5,17 +5,17 @@ description: >
   当任务涉及 .xlsx 文件——查看/修改数据表、GuLiStrike 数据管线的 Excel 源表、CSV↔Excel 转换、
   批量写单元格、公式、样式（加粗/背景色/边框/对齐）、合并单元格、列宽行高、增删行列——时使用本技能。
   Use whenever an .xlsx file must be created, read, or edited; prefer this CLI over ad-hoc Python/openpyxl scripts.
-  二进制: D:\UE_5.7\excelize-cli\bin\xlsx.exe（已在用户 PATH）。
+  二进制: D:\UE5.7\excelize-cli\bin\xlsx.exe（已在用户 PATH）。
 ---
 
 # excelize-cli（xlsx 命令行工具）
 
 `xlsx` 是用 Go 编写、直接链接本地 excelize 源码的单文件 CLI，无 Python 依赖、逐单元格操作精确、输出可机器解析（TSV/CSV/JSON）。
 
-- 二进制：`D:\UE_5.7\excelize-cli\bin\xlsx.exe`（已加入用户 PATH；当前会话若未生效，用全路径）
-- CLI 源码：`D:\UE_5.7\excelize-cli\main.go`（单文件，所有命令在此）
-- excelize 库源码：`D:\UE_5.7\excelize`（go.mod 用 `replace` 指向它，跟踪 master）
-- Go 工具链：`D:\UE_5.7\go\bin`（同样在用户 PATH）
+- 二进制：`D:\UE5.7\excelize-cli\bin\xlsx.exe`（已加入用户 PATH；当前会话若未生效，用全路径）
+- CLI 源码：`D:\UE5.7\excelize-cli\main.go`（单文件，所有命令在此）
+- excelize 库源码：`D:\UE5.7\excelize`（go.mod 用 `replace` 指向它，跟踪 master）
+- Go 工具链：`D:\UE5.7\go\bin`（同样在用户 PATH）
 
 ## 命令速查
 
@@ -104,8 +104,8 @@ xlsx import-csv items.csv -o Items.xlsx --sheet Data
 ## 维护（改代码后重建）
 
 ```bash
-export PATH="/d/UE_5.7/go/bin:$PATH"
-cd /d/UE_5.7/excelize-cli && go build -o bin/xlsx.exe .
+export PATH="/d/UE5.7/go/bin:$PATH"
+cd /d/UE5.7/excelize-cli && go build -o bin/xlsx.exe .
 ```
 
-excelize 源码更新（`git -c http.proxy=http://127.0.0.1:7897 pull` 于 D:\UE_5.7\excelize）后同样重建即可。改了 excelize API 签名导致编译失败时，先在 `D:\UE_5.7\excelize` 里 grep 确认新签名再改 main.go。
+excelize 源码更新（`git -c http.proxy=http://127.0.0.1:7897 pull` 于 D:\UE5.7\excelize）后同样重建即可。改了 excelize API 签名导致编译失败时，先在 `D:\UE5.7\excelize` 里 grep 确认新签名再改 main.go。

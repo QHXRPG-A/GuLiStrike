@@ -9,9 +9,10 @@ description: UE5.6/UE5.7 automatic assistant entry for beginners. Use when users
 - Route to `ue5-module-router` when module-level precision is needed.
 
 # Workflow
-- Detect request type: Blueprint, C++, UI, save/load, networking, world interaction, debugging, performance, packaging.
+- Detect request type: VFX/Niagara, Blueprint, C++, UI, save/load, networking, world interaction, debugging, performance, packaging.
 - If module names appear, delegate routing to `ue5-module-router`.
 - If module names do not appear, route by intent:
+  - Niagara/特效, particles/粒子, sparks/火花, explosions/爆炸, trails/拖尾/尾焰, beams/光束, projectile visuals/弹道表现, or skill presentation/技能表现 -> `ue5-vfx-production`
   - Blueprint -> `ue5-blueprint-workflow`
   - C++ gameplay -> `ue5-cpp-gameplay`
   - UI/UMG/Slate -> `ue5-ui-umg-slate`
@@ -29,6 +30,9 @@ description: UE5.6/UE5.7 automatic assistant entry for beginners. Use when users
   - `route_reason`
 
 # Natural Language To Skill And Tools
+- VFX/Niagara requests:
+  - target skill: `ue5-vfx-production`
+  - recommended tools: VibeUE Niagara/material/screenshot services, with `Scripts/ue_exec.py` as the project bridge fallback; generic UnrealMCP only for actor, Blueprint, or material-assignment work
 - Blueprint requests:
   - target skill: `ue5-blueprint-workflow`
   - recommended tools: `blueprint_feature_build`, `blueprint_modify`, `blueprint_query`
@@ -59,6 +63,8 @@ description: UE5.6/UE5.7 automatic assistant entry for beginners. Use when users
 - Prefer deterministic routing with explicit reason.
 - Keep fallback behavior explicit when confidence is low.
 - Prefer dedicated MCP tools before `execute_script`.
+- Route animated or transient effect work such as Niagara/特效, particles/粒子, sparks/火花, explosions/爆炸, trails/拖尾/尾焰, beams/光束, afterimages/残影, heatwaves/热波, refraction/distortion/折射/扭曲, dissolves/溶解, and VFX optimization to `ue5-vfx-production`.
+- Do not route ordinary surface-material edits, lighting-only work, or general scene building to `ue5-vfx-production` unless the request explicitly involves a visual effect.
 
 # Failure Handling
 - If intent is ambiguous, return top 2 route candidates and ask one short clarification.

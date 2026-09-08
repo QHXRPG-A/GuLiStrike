@@ -1,3 +1,27 @@
+---
+schema: guli-progress/v1
+id: ARC-20260827-002
+work_id: ''
+kind: archive
+role: root
+title: 爆炸特效统一归拢至 /Game/Assets/VFX/Explosions
+areas:
+- ship
+- ui
+- data-pipeline
+- vfx
+- assets
+status: recorded
+verification: partial
+created: '2026-08-27'
+updated: '2026-08-27'
+summary: 日期：2026-08-27 执行方式：UnrealMCPython 实时通道 + 独立编辑器进程 -ExecutePythonScript
+next_action: ''
+relations:
+  work_items: []
+status_note: ''
+---
+
 # 爆炸特效统一归拢至 /Game/Assets/VFX/Explosions
 
 日期：2026-08-27　执行方式：UnrealMCPython 实时通道 + 独立编辑器进程 `-ExecutePythonScript`

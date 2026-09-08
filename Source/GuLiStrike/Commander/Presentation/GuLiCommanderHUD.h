@@ -13,6 +13,8 @@ class AGuLiCommanderHealthBarRenderer;
 class AGuLiCommanderPresentationActor;
 class AGuLiSoldierStateReplicator;
 class UGuLiCommanderHUDWidget;
+class UGuLiBuildingPlacementComponent;
+enum class EGuLiBuildingFeedbackTone : uint8;
 
 namespace GuLiCommanderHUD
 {
@@ -76,6 +78,10 @@ private:
 	void DrawSelectionCircle(const AGuLiCommanderPlayerController& Controller);
 	void DrawSelectionRectangle(const AGuLiCommanderPlayerController& Controller);
 	void DrawActiveCommandLine(const AGuLiCommanderPlayerController& Controller);
+	void BindBuildingFeedback();
+	void UnbindBuildingFeedback();
+	void HandleBuildingFeedback(const FText& Message, EGuLiBuildingFeedbackTone Tone);
+	void DrawBuildingFeedback();
 
 	mutable TWeakObjectPtr<AGuLiSoldierStateReplicator> CachedSoldierStateReplicator;
 	mutable TWeakObjectPtr<AGuLiCommanderPresentationActor> CachedPresentationActor;
@@ -95,4 +101,10 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<AGuLiCommanderHealthBarRenderer> HealthBarRenderer;
+
+	TWeakObjectPtr<UGuLiBuildingPlacementComponent> BuildingPlacementComponent;
+	FDelegateHandle BuildingFeedbackHandle;
+	FText BuildingFeedbackMessage;
+	double BuildingFeedbackExpireTime = 0.0;
+	EGuLiBuildingFeedbackTone BuildingFeedbackTone;
 };

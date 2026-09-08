@@ -1,0 +1,362 @@
+{
+  "authorized_attack_automation": {
+    "path": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\AutomationStoppedRecoveryFinal_Attack_20260908\\index.json",
+    "succeeded": 7,
+    "succeeded_with_warnings": 0,
+    "failed": 0,
+    "not_run": 0,
+    "tests": [
+      {
+        "path": "GuLiStrike.Wingman.Attack.BoundedCapturedFireWire",
+        "state": "Success",
+        "errors": []
+      },
+      {
+        "path": "GuLiStrike.Wingman.Attack.FixedGroundAOEAndAttribution",
+        "state": "Success",
+        "errors": []
+      },
+      {
+        "path": "GuLiStrike.Wingman.Attack.GroundPathAndCadence",
+        "state": "Success",
+        "errors": []
+      },
+      {
+        "path": "GuLiStrike.Wingman.Attack.GunLedgerAndMuzzleCue",
+        "state": "Success",
+        "errors": []
+      },
+      {
+        "path": "GuLiStrike.Wingman.Attack.ServerGunGeometryLosAndCooldown",
+        "state": "Success",
+        "errors": []
+      },
+      {
+        "path": "GuLiStrike.Wingman.Attack.TargetHysteresisAndGuardRejoin",
+        "state": "Success",
+        "errors": []
+      },
+      {
+        "path": "GuLiStrike.Wingman.Attack.ThreeDimensionalDogfightStateMachine",
+        "state": "Success",
+        "errors": []
+      }
+    ]
+  },
+  "generated_at": "2026-09-08T12:23:41.230145+08:00",
+  "headless_long_run": {
+    "boundary_recovery": {
+      "atomic_candidate_reject_marker_count": 0,
+      "first_hold": "[2026.09.08-02.29.34:131][720]LogTemp: Warning: [GULI_WINGMAN_INTEGRATION_REJECT] flight=4 member=4 flight_nav=0 physical_clear=1 world_static=0 world_dynamic=0 location=V(X=63701.48, Y=52099.91, Z=3102.10) proposed=V(X=63675.49, Y=52083.56, Z=3121.32) previous_velocity=V(X=-798.81, Y=-502.35, Z=590.81) proposed_velocity=V(X=-779.67, Y=-490.32, Z=576.66)",
+      "last_hold": "[2026.09.08-02.29.35:596][947]LogTemp: Warning: [GULI_WINGMAN_INTEGRATION_REJECT] flight=4 member=4 flight_nav=0 physical_clear=1 world_static=0 world_dynamic=0 location=V(X=63687.61, Y=52091.18, Z=3112.36) proposed=V(X=63687.13, Y=52090.88, Z=3112.72) previous_velocity=V(X=-33.48, Y=-21.06, Z=24.76) proposed_velocity=V(X=-14.35, Y=-9.02, Z=10.61)",
+      "local_integration_gate_hold_count": 40,
+      "normal_candidate_reject_marker_count": 0,
+      "server_spatial_envelope_reject_count": 0
+    },
+    "checks": {
+      "all_normal_candidates_accepted": true,
+      "all_world_segments_accepted": true,
+      "final_sample": true,
+      "late_fire_present": true,
+      "no_fire_batch_reject": true,
+      "no_server_motion_writes": true,
+      "no_spatial_envelope_reject": true,
+      "relay_active": true,
+      "relay_not_revoked": true
+    },
+    "duration_seconds": 180.003,
+    "final": {
+      "active_relay_group_count": 1,
+      "atomic_committed_group_count": 1,
+      "client_last_normal_reject_reason": 0,
+      "client_normal_accepted_count": 4416,
+      "client_normal_result_count": 4416,
+      "client_normal_submitted_count": 4416,
+      "client_relay_lifecycle": 2,
+      "client_simulation_tick": 5305,
+      "revoked_relay_group_count": 0,
+      "server_wingman_movement_write_count": 0,
+      "world_validator_accepted_count": 4421,
+      "world_validator_flight_nav_segment_reject_count": 0,
+      "world_validator_invocation_count": 4421
+    },
+    "fire": {
+      "batch_reject_count": 0,
+      "first": "[2026.09.08-02.28.21:455][621]LogTemp: Display: [WINGMAN_FIRE_SENT] sequence=412 flight=1 member=0 run=489 shot=0",
+      "last": "[2026.09.08-02.30.34:234][697]LogTemp: Display: [WINGMAN_FIRE_SENT] sequence=3731 flight=0 member=0 run=4428 shot=9",
+      "omitted_count": 0,
+      "sent_count": 352
+    },
+    "log": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\long_relay_fix_stdout.log",
+    "success": true
+  },
+  "live_pie": {
+    "checks": {
+      "atomic_committed": true,
+      "background_cpu_throttle_disabled": true,
+      "blue_ground_target_acquired": true,
+      "damage_committed": true,
+      "no_server_motion_writes": true,
+      "projectiles_launched": true,
+      "relay_active": true,
+      "relay_not_revoked": true,
+      "report_success": true
+    },
+    "combat_effects": {
+      "active_effect_count": 0,
+      "candidate_checks": 3262,
+      "damage_commits": 118,
+      "fields_created": 424,
+      "projectiles_launched": 424,
+      "pulses": 424,
+      "shots_published": 0
+    },
+    "lease_watchdog_log": "[2026.09.08-02.39.04:224][970]LogGuLiWingmanRelay: Display: LeaseWatchdog group=23DC9EE54B8F5E7AB58C26BF3FE80F92:1:2 executions=360 last=360.008764 next=361.000000 heartbeat=360.008764 events=256 transfer=0 revoked=0",
+    "owner_wingmen": 25,
+    "pie_left_running": true,
+    "relay_stats_log": "[2026.09.08-02.39.04:224][970]LogGuLiWingmanRelay: Display: RelayStats group=23DC9EE54B8F5E7AB58C26BF3FE80F92:1:2 lifecycle=2 owner=77C5F751410B084239C479BCD76D607D lease_epoch=1 roster_revision=1 atomic_required=1 atomic_committed=1 history=64 movement_writes=0",
+    "ship_team": "<GuLiTeam.RED: 1>",
+    "success": true,
+    "target": {
+      "authority_enemy_gate_required": true,
+      "ground": true,
+      "kind": "<GuLiTargetKind.COMMANDER_SOLDIER: 2>",
+      "location": [
+        79778.85431344634,
+        50086.36359153755,
+        -7306.250429159991
+      ],
+      "opposing_team_from_red_ship": "Blue",
+      "radius": 750.0,
+      "specified": false
+    },
+    "wingman_stats_log": "[2026.09.08-02.39.04:224][970]LogGuLiWingman: Display: WingmanStats net_mode=Standalone groups=1 owner_mass=25 commander=500 commander_tick=10810 dropped_steps=17 qa_active=0 debug_draw=0 motion=(alive=25 orbit=3 follow=15 catchup=2 recover=5 stale=0 radius=45435.3/63616.2/94554.5 speed=3508.9 first=V(X=57647.88, Y=48136.67, Z=11570.16))",
+    "world": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+    "current_target_ground": false,
+    "current_game_time": 389.3000203035772,
+    "editor_pid": 12816
+  },
+  "relay_motion_envelope_automation": {
+    "path": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\AutomationStoppedRecoveryFinal_RelayEnvelope_20260908\\index.json",
+    "succeeded": 1,
+    "succeeded_with_warnings": 0,
+    "failed": 0,
+    "not_run": 0,
+    "tests": [
+      {
+        "path": "GuLiStrike.Wingman.Relay.Validator.MotionEnvelopeBeforeAcceptedCommit",
+        "state": "Success",
+        "errors": []
+      }
+    ]
+  },
+  "schema": "guli.ship-wingman-stoppage-recovery.v3",
+  "scope": "Ship wingmen continuously move through formation, active air dogfight, and ground dive while Relay remains authoritative and active.",
+  "source_build": {
+    "all_runtime_module_build_ids_match": true,
+    "build_id": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+    "engine": "D:\\UnrealEngine-5.7",
+    "log": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\source_build_stopped_recovery_final.log",
+    "module_build_ids": {
+      "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor.modules": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Binaries\\Win64\\UnrealEditor.modules": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "D:\\UE5.7\\test1\\Plugins\\GuLiMapAuthoring\\Binaries\\Win64\\UnrealEditor.modules": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "D:\\UE5.7\\test1\\Plugins\\Tripo3DUEBridge-UE5.7-Win64\\Binaries\\Win64\\UnrealEditor.modules": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "D:\\UE5.7\\test1\\Plugins\\UnrealMCP\\Binaries\\Win64\\UnrealEditor.modules": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "D:\\UE5.7\\test1\\Plugins\\UnrealMCPython\\Binaries\\Win64\\UnrealEditor.modules": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "D:\\UE5.7\\test1\\Plugins\\VibeUE\\Binaries\\Win64\\UnrealEditor.modules": "9872a344-2108-49e2-b40c-34c4e2c3ccfe"
+    },
+    "success": true,
+    "target": "GuLiStrikeEditor Win64 Development"
+  },
+  "success": true,
+  "supplemental_existing_regressions": {
+    "assessment": "These tests fail while creating stale protocol-v7 owner-group fixtures, before reaching the constraint-hold assertions. They are outside the two authorized attack test files and were not modified.",
+    "avoidance": {
+      "failed": 3,
+      "not_run": 0,
+      "path": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\AutomationConstraintHold_Avoidance_20260908\\report\\index.json",
+      "succeeded": 3,
+      "succeeded_with_warnings": 0,
+      "tests": [
+        {
+          "errors": [
+            {
+              "file": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanAvoidanceRecoveryTests.cpp",
+              "line": 668,
+              "message": "Expected 'Create owner group for final physical-step gate' to be true."
+            }
+          ],
+          "path": "GuLiStrike.Wingman.Avoidance.FiniteTurnActualStepPhysicalGate",
+          "state": "Fail"
+        },
+        {
+          "errors": [
+            {
+              "file": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanAvoidanceRecoveryTests.cpp",
+              "line": 777,
+              "message": "Expected 'Create owner group beside synthetic FlightNav boundary' to be true."
+            }
+          ],
+          "path": "GuLiStrike.Wingman.Avoidance.FlightNavBoundaryBlocksIntegration",
+          "state": "Fail"
+        },
+        {
+          "errors": [
+            {
+              "file": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanAvoidanceRecoveryTests.cpp",
+              "line": 528,
+              "message": "Expected 'Create 25-member owner group' to be true."
+            }
+          ],
+          "path": "GuLiStrike.Wingman.Avoidance.OwnerOnlyDiagnosticsAndSoleIntegrationWriter",
+          "state": "Fail"
+        },
+        {
+          "errors": [],
+          "path": "GuLiStrike.Wingman.Avoidance.SpatialHashEquivalentAndGroupScoped",
+          "state": "Success"
+        },
+        {
+          "errors": [],
+          "path": "GuLiStrike.Wingman.Avoidance.StaticDynamicHeadingSelection",
+          "state": "Success"
+        },
+        {
+          "errors": [],
+          "path": "GuLiStrike.Wingman.Avoidance.ThreeSecondSafePointRecovery",
+          "state": "Success"
+        }
+      ]
+    },
+    "full_wingman_run": {
+      "crash": "FGuLiWingmanRelayRegistryWorldHookLifetimeTest::RunTest at GuLiWingmanRelayAuthorityRegistryTests.cpp:232",
+      "log": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\AutomationWingmanConstraintHold_20260908\\automation.log",
+      "process_exit_code": 3
+    },
+    "mass": {
+      "failed": 4,
+      "not_run": 0,
+      "path": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\AutomationConstraintHold_Mass_20260908\\report\\index.json",
+      "succeeded": 1,
+      "succeeded_with_warnings": 0,
+      "tests": [
+        {
+          "errors": [
+            {
+              "file": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanMassSimulationTests.cpp",
+              "line": 130,
+              "message": "Expected 'Config is a complete usable protocol-v7 projection' to be true."
+            }
+          ],
+          "path": "GuLiStrike.Wingman.Mass.BasicWeaponIndependentAcceptedState",
+          "state": "Fail"
+        },
+        {
+          "errors": [],
+          "path": "GuLiStrike.Wingman.Mass.ClientOnlyProcessorExecutionDomain",
+          "state": "Success"
+        },
+        {
+          "errors": [
+            {
+              "file": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanMassSimulationTests.cpp",
+              "line": 130,
+              "message": "Expected 'Config is a complete usable protocol-v7 projection' to be true."
+            }
+          ],
+          "path": "GuLiStrike.Wingman.Mass.FlightNavigationAsyncStateLifecycle",
+          "state": "Fail"
+        },
+        {
+          "errors": [
+            {
+              "file": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanInitialFormationNavigationTests.cpp",
+              "line": 140,
+              "message": "Expected 'Initial-formation config is a usable protocol-v7 projection' to be true."
+            }
+          ],
+          "path": "GuLiStrike.Wingman.Mass.InitialFormationNavigationValidatesAllSlots",
+          "state": "Fail"
+        },
+        {
+          "errors": [
+            {
+              "file": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanMassSimulationTests.cpp",
+              "line": 130,
+              "message": "Expected 'Config is a complete usable protocol-v7 projection' to be true."
+            }
+          ],
+          "path": "GuLiStrike.Wingman.Mass.OwnerGroupCandidateLifecycle",
+          "state": "Fail"
+        }
+      ]
+    },
+    "success": false
+  },
+  "active_attack_stoppage": {
+    "dogfight": {
+      "path": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\active_dogfight_stoppage_analysis.json",
+      "sample_count": 690,
+      "elapsed_game_seconds": 250.63334640488029,
+      "member_count": 25,
+      "all_intervals_moving": true,
+      "maximum_stationary_seconds": 0.0,
+      "stationary_over_10_seconds": []
+    },
+    "ground": {
+      "path": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\active_ground_stoppage_analysis.json",
+      "sample_count": 300,
+      "elapsed_game_seconds": 85.83333780989051,
+      "member_count": 25,
+      "all_intervals_moving": true,
+      "maximum_stationary_seconds": 0.0,
+      "stationary_over_10_seconds": []
+    },
+    "log_reject_counts": {
+      "integration_reject": 0,
+      "spatial_reject": 0,
+      "speed_delta": 0,
+      "carrier_distance": 0,
+      "nonzero_dropped_steps": 0,
+      "relay_revocation": 0
+    },
+    "success": true,
+    "long_live_air_sample": {
+      "game_time": 2342.03345547989,
+      "target_ground": false,
+      "missiles": 445,
+      "gun_shots": 9312,
+      "damage_commits": 9476,
+      "relay_lifecycle": 2,
+      "normal_reject": 0,
+      "atomic_reject": 0,
+      "server_motion_writes": 0,
+      "accepted_candidate_sequence": 58550,
+      "plane_count": 25,
+      "phase_counts": {
+        "8": 5,
+        "7": 13,
+        "6": 7
+      }
+    },
+    "post_final_build_live_sample": {
+      "game_time": 389.3000203035772,
+      "target_ground": false,
+      "missiles": 88,
+      "gun_shots": 1817,
+      "damage_commits": 1891,
+      "relay_lifecycle": 2,
+      "normal_reject": 0,
+      "atomic_reject": 0,
+      "server_motion_writes": 0,
+      "accepted_candidate_sequence": 9732,
+      "plane_count": 25,
+      "phase_counts": {
+        "7": 13,
+        "8": 4,
+        "6": 8
+      }
+    }
+  }
+}

@@ -58,6 +58,8 @@ public:
 		float HorizontalFieldOfViewDegrees,
 		int32 ViewportWidth,
 		int32 ViewportHeight);
+	static float TestOnly_CalculateSoldierHeightOffset(
+		const FBoxSphereBounds& Bounds);
 #endif
 
 private:
@@ -71,7 +73,7 @@ private:
 	void HandleSoldierStatesChanged(uint32 SnapshotRevision);
 	void RebuildSelectedSoldiers(const FGuLiCommanderSelectionState& Selection);
 	void EnsureStableInstancePool(const AGuLiSoldierStateReplicator& Replicator);
-	void RefreshSoldierHeightOffset();
+	float ResolveSoldierHeightOffset(uint16 UnitTypeId);
 	void RebuildLocalInstances();
 	void HideAllInstances();
 
@@ -88,6 +90,7 @@ private:
 		float HorizontalFieldOfViewDegrees,
 		int32 ViewportWidth,
 		int32 ViewportHeight);
+	static float CalculateSoldierHeightOffset(const FBoxSphereBounds& Bounds);
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|UI|HealthBar")
 	TObjectPtr<USceneComponent> SceneRoot;
@@ -105,7 +108,8 @@ private:
 	TWeakObjectPtr<UGuLiCommanderNetSyncComponent> BoundNetSync;
 	TWeakObjectPtr<AGuLiSoldierStateReplicator> StateReplicator;
 	TWeakObjectPtr<AGuLiCommanderPresentationActor> PresentationActor;
-	TWeakObjectPtr<UStaticMesh> CachedSoldierMesh;
+	TMap<uint16, TWeakObjectPtr<UStaticMesh>> CachedSoldierMeshes;
+	TMap<uint16, float> SoldierHeightOffsetsCentimeters;
 	FDelegateHandle SelectionChangedHandle;
 	FDelegateHandle SoldierStatesChangedHandle;
 	TMap<FGuLiSoldierId, int32> SoldierInstanceIndices;
@@ -114,7 +118,6 @@ private:
 	TArray<float> CachedHealthFractions;
 	TArray<float> CachedSelectedValues;
 	TArray<float> CachedVisibleValues;
-	float SoldierHeightOffsetCentimeters = 220.0f;
 	int32 VisibleInstanceCount = 0;
 	double LastUpdateMilliseconds = 0.0;
 	bool bLoggedMissingPlane = false;

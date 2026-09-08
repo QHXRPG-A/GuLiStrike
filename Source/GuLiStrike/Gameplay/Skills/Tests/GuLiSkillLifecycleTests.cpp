@@ -166,6 +166,172 @@ bool FGuLiSkillPawnLifecycleTest::RunTest(const FString& Parameters)
 	return true;
 }
 
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiSkillWM01OwnershipModelTest,
+	"GuLiStrike.Skills.Lifecycle.WM01UsesProfilesNotExtraAbilities",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiSkillWM01OwnershipModelTest::RunTest(const FString& Parameters)
+{
+	(void)Parameters;
+	using namespace GuLiSkillLifecycleTests;
+	FWorldFixture Fixture;
+	if (!Fixture.Initialize(*this)) return false;
+	APlayerController* Controller = nullptr;
+	AGuLiBattlePlayerState* Commander = Fixture.SpawnCommander(*this, Controller);
+	if (!Commander) return false;
+	if (!Commander->HasActorBegunPlay())
+	{
+		Commander->DispatchBeginPlay();
+	}
+
+	const FGuLiResolvedSkillProfile* SoldierA =
+		Fixture.Bridge->FindResolvedSkill(EGuLiTeam::Red, 1u, TEXT("BasicAttack"));
+	const FGuLiResolvedSkillProfile* WM01 =
+		Fixture.Bridge->FindResolvedSkill(EGuLiTeam::Red, 2u, TEXT("BasicAttack"));
+	if (!TestNotNull(TEXT("Soldier A resolves one active BasicAttack profile"), SoldierA)
+		|| !TestNotNull(TEXT("WM01 resolves one active BasicAttack profile"), WM01))
+	{
+		return false;
+	}
+	TestEqual(TEXT("WM01 reuses the Strafe behavior definition"),
+		WM01->SkillId, FName(TEXT("Strafe")));
+	TestEqual(TEXT("WM01 integration damage remains 7.5"), WM01->Damage, 7.5f);
+	TestEqual(TEXT("WM01 integration cadence remains four shots per second"),
+		WM01->AttackRatePerSecond, 4.0f);
+	TestEqual(TEXT("WM01 integration range remains 150 metres"),
+		WM01->RangeCentimeters, 15000.0f);
+
+	int32 RedBasicAttackProfiles = 0;
+	for (const FGuLiResolvedSkillProfile& Profile : Fixture.Bridge->GetResolvedSkills())
+	{
+		if (Profile.Team == EGuLiTeam::Red
+			&& Profile.SlotId == FName(TEXT("BasicAttack")))
+		{
+			++RedBasicAttackProfiles;
+		}
+	}
+	TestEqual(TEXT("Two Soldier types produce two active Red-team BasicAttack profiles"),
+		RedBasicAttackProfiles, 2);
+
+	UAbilitySystemComponent* AbilitySystem = Commander->GetAbilitySystemComponent();
+	if (!TestNotNull(TEXT("The Commander owns its army ASC"), AbilitySystem)) return false;
+	int32 ArmyAbilityCount = 0;
+	for (const FGameplayAbilitySpec& Spec : AbilitySystem->GetActivatableAbilities())
+	{
+		if (Spec.Ability && Spec.Ability->IsA<UGuLiArmySkillAbility>())
+		{
+			++ArmyAbilityCount;
+		}
+	}
+	TestEqual(TEXT("Adding WM01 profiles does not grant a second ArmySkill GA"),
+		ArmyAbilityCount, 1);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWeaponEquipmentTransactionTest,
+	"GuLiStrike.Skills.Lifecycle.WeaponEquipmentTransaction",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWeaponEquipmentTransactionTest::RunTest(const FString& Parameters)
+{
+	(void)Parameters;
+	using namespace GuLiSkillLifecycleTests;
+	FWorldFixture Fixture;
+	if (!Fixture.Initialize(*this)) return false;
+	APlayerController* Controller = nullptr;
+	AGuLiBattlePlayerState* Commander = Fixture.SpawnCommander(*this, Controller);
+	if (!Commander) return false;
+	if (!Commander->HasActorBegunPlay()) Commander->DispatchBeginPlay();
+
+	TArray<FGuLiWeaponChannelView> Views = Commander->GetWeaponChannels(EGuLiWeaponDomain::Army);
+	const auto FindBasicAttack = [&Views]()
+	{
+		return Views.FindByPredicate([](const FGuLiWeaponChannelView& View)
+			{ return View.Binding.SubjectId == FName(TEXT("1")) && View.Binding.SlotId == FName(TEXT("BasicAttack")); });
+	};
+	const FGuLiWeaponChannelView* InitialView = FindBasicAttack();
+	if (!TestNotNull(TEXT("The Commander receives its committed Army weapon view"), InitialView)) return false;
+	const FGuLiWeaponBindingKey Binding = InitialView->Binding;
+	const FName OriginalSkill = InitialView->SkillId;
+	const int64 InitialRevision = InitialView->LoadoutRevision;
+	TestTrue(TEXT("The initial binding is valid and equipped"),
+		Binding.IsWellFormed() && InitialView->bUnlocked && InitialView->bEquipped);
+
+	const FGuid UnequipRequest(0, 0, 0, 100);
+	FGuLiWeaponChangeResult Result = Commander->ProcessEquipWeaponRequest(
+		UnequipRequest, Binding, NAME_None, InitialRevision);
+	TestEqual(TEXT("A valid request waits for the fixed-step commit"),
+		Result.Status, EGuLiWeaponChangeStatus::AwaitingCommit);
+	TestEqual(TEXT("The request reports the still-committed version while pending"),
+		Result.LoadoutRevision, InitialRevision);
+
+	Result = Commander->ProcessEquipWeaponRequest(UnequipRequest, Binding, NAME_None, InitialRevision);
+	TestEqual(TEXT("An identical request ID replays the cached pending result"),
+		Result.Status, EGuLiWeaponChangeStatus::AwaitingCommit);
+	Result = Commander->ProcessEquipWeaponRequest(UnequipRequest, Binding, OriginalSkill, InitialRevision);
+	TestEqual(TEXT("The same request ID cannot be reused for different equipment"),
+		Result.Status, EGuLiWeaponChangeStatus::Rejected);
+
+	Fixture.Bridge->CommitPendingChanges();
+	const AGuLiBattlePlayerState::FWeaponRequestRecord* CommittedRequest =
+		Commander->WeaponRequests.Find(UnequipRequest);
+	if (!TestNotNull(TEXT("The accepted request remains in the bounded result cache"), CommittedRequest)) return false;
+	Result = CommittedRequest->Result;
+	TestEqual(TEXT("The original accepted request receives its committed result"),
+		Result.Status, EGuLiWeaponChangeStatus::Committed);
+	TestTrue(TEXT("A changed equipment snapshot advances the complete loadout version"),
+		Result.LoadoutRevision > InitialRevision);
+	Views = Commander->GetWeaponChannels(EGuLiWeaponDomain::Army);
+	const FGuLiWeaponChannelView* UnequippedView = FindBasicAttack();
+	if (!TestNotNull(TEXT("The unequipped stable slot remains visible"), UnequippedView)) return false;
+	TestTrue(TEXT("The committed view distinguishes unlocked from equipped"),
+		UnequippedView->bUnlocked && !UnequippedView->bEquipped);
+	TestEqual(TEXT("The committed view and result expose the same loadout version"),
+		UnequippedView->LoadoutRevision, Result.LoadoutRevision);
+
+	FString Error;
+	TestFalse(TEXT("An old version cannot overwrite the newer equipment snapshot"),
+		Fixture.Bridge->EquipWeapon(*Commander, 1u, TEXT("BasicAttack"), OriginalSkill,
+			static_cast<uint32>(InitialRevision), Error));
+	TestTrue(TEXT("The stale rejection is diagnosable"), Error.Contains(TEXT("stale")));
+	const uint32 BeforeReequipRevision = Fixture.Bridge->GetLoadoutRevision();
+	if (!TestTrue(TEXT("The current Commander may re-equip a compatible weapon"),
+		Fixture.Bridge->EquipWeapon(*Commander, 1u, TEXT("BasicAttack"), OriginalSkill,
+			BeforeReequipRevision, Error)))
+	{
+		AddError(Error);
+		return false;
+	}
+	const FGuLiResolvedSkillProfile* PendingProfile = Fixture.Bridge->FindResolvedSkill(EGuLiTeam::Red, 1u);
+	TestTrue(TEXT("The previous view remains committed until the authority step"),
+		PendingProfile && !PendingProfile->bEquipped);
+	Fixture.Bridge->CommitPendingChanges();
+	const FGuLiResolvedSkillProfile* Reequipped = Fixture.Bridge->FindResolvedSkill(EGuLiTeam::Red, 1u);
+	TestTrue(TEXT("The compatible weapon is equipped after commit"), Reequipped && Reequipped->bEquipped);
+	TestTrue(TEXT("Re-equipping advances the loadout version again"),
+		Fixture.Bridge->GetLoadoutRevision() > BeforeReequipRevision);
+
+	APlayerController* ObserverController = Fixture.World->SpawnActor<APlayerController>();
+	if (!TestNotNull(TEXT("An authority controller exists for the unassigned PlayerState"), ObserverController)) return false;
+	FActorSpawnParameters ObserverParameters;
+	ObserverParameters.Owner = ObserverController;
+	ObserverParameters.ObjectFlags |= RF_Transient;
+	AGuLiBattlePlayerState* Observer = Fixture.World->SpawnActor<AGuLiBattlePlayerState>(ObserverParameters);
+	if (!TestNotNull(TEXT("An unassigned PlayerState exists for the authority check"), Observer)) return false;
+	ObserverController->SetPlayerState(Observer);
+	const FGuLiWeaponChangeResult ObserverResult = Observer->ProcessEquipWeaponRequest(
+		FGuid(0, 0, 0, 101), Binding, NAME_None, Fixture.Bridge->GetLoadoutRevision());
+	TestEqual(TEXT("A PlayerState that does not own the team binding is rejected"),
+		ObserverResult.Status, EGuLiWeaponChangeStatus::Rejected);
+	FGuLiWeaponBindingKey ForeignEpoch = Binding;
+	++ForeignEpoch.MatchEpoch;
+	const FGuLiWeaponChangeResult ForeignEpochResult = Commander->ProcessEquipWeaponRequest(
+		FGuid(0, 0, 0, 102), ForeignEpoch, NAME_None, Fixture.Bridge->GetLoadoutRevision());
+	TestEqual(TEXT("A binding from another match epoch is rejected"),
+		ForeignEpochResult.Status, EGuLiWeaponChangeStatus::Rejected);
+	return true;
+}
+
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiSkillCommanderLifecycleTest,
 	"GuLiStrike.Skills.Lifecycle.CommanderReplacementAndStaleHost", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 
@@ -231,6 +397,19 @@ bool FGuLiSkillMatchLifecycleTest::RunTest(const FString& Parameters)
 	if (!Execute(*this, *Commander, Override, TEXT("The old match also has a final GM override"))) return false;
 	Fixture.Bridge->CommitPendingChanges();
 	Fixture.DamageEquals(*this, TEXT("The old match's override is committed"), 3.0f);
+	FString EquipmentError;
+	if (!TestTrue(TEXT("The old match can hold an explicit unequipped slot"),
+		Fixture.Bridge->EquipWeapon(*Commander, 1u, TEXT("BasicAttack"), NAME_None,
+			Fixture.Bridge->GetLoadoutRevision(), EquipmentError)))
+	{
+		AddError(EquipmentError);
+		return false;
+	}
+	Fixture.Bridge->CommitPendingChanges();
+	const FGuLiResolvedSkillProfile* UnequippedProfile =
+		Fixture.Bridge->FindResolvedSkill(EGuLiTeam::Red, 1u, TEXT("BasicAttack"));
+	TestTrue(TEXT("The old match commits its explicit unequipped choice"),
+		UnequippedProfile && !UnequippedProfile->bEquipped);
 	if (!Execute(*this, *Commander, SourceCommand(2), TEXT("The old match can also have an uncommitted source"))) return false;
 
 	// Publicly install a newly initialized BattleGameState. No private epoch field or ledger is mutated.
@@ -253,6 +432,10 @@ bool FGuLiSkillMatchLifecycleTest::RunTest(const FString& Parameters)
 		Commander->ExecuteArmySkillCommand(SourceCommand(3), Error));
 	Fixture.Bridge->CommitPendingChanges();
 	Fixture.DamageEquals(*this, TEXT("A new match clears committed and pending sources plus GM overrides"), 1.0f);
+	const FGuLiResolvedSkillProfile* NewMatchProfile =
+		Fixture.Bridge->FindResolvedSkill(EGuLiTeam::Red, 1u, TEXT("BasicAttack"));
+	TestTrue(TEXT("A new match also clears the old explicit equipment choice"),
+		NewMatchProfile && NewMatchProfile->bEquipped);
 	TestFalse(TEXT("The old match's source detail is absent"),
 		Fixture.Bridge->ExplainResolvedSkill(EGuLiTeam::Red, 1).Contains(TEXT("LifecycleSource")));
 	if (!Fixture.ClaimReadySeat(*this, *Commander)) return false;

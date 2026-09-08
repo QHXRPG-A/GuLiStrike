@@ -2,7 +2,7 @@ import json
 
 import unreal
 
-OUT = "D:/UE_5.7/test1/Data/tmp_pie_check.json"
+OUT = "D:/UE5.7/test1/Data/tmp_pie_check.json"
 result = {"errors": []}
 try:
     sub = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem)

@@ -1,0 +1,41 @@
+{
+  "schema": "guli.wingman-targeted-automation.v1",
+  "runs": [
+    {
+      "name": "Attack",
+      "report": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\AutomationConstraintHold_Attack_20260908\\report\\index.json",
+      "succeeded": 7,
+      "succeeded_with_warnings": 0,
+      "failed": 0,
+      "not_run": 0,
+      "success": true
+    },
+    {
+      "name": "Avoidance",
+      "report": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\AutomationConstraintHold_Avoidance_20260908\\report\\index.json",
+      "succeeded": 3,
+      "succeeded_with_warnings": 0,
+      "failed": 3,
+      "not_run": 0,
+      "success": false
+    },
+    {
+      "name": "Mass",
+      "report": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\AutomationConstraintHold_Mass_20260908\\report\\index.json",
+      "succeeded": 1,
+      "succeeded_with_warnings": 0,
+      "failed": 4,
+      "not_run": 0,
+      "success": false
+    },
+    {
+      "name": "RelayMotionEnvelope",
+      "report": "D:\\UE5.7\\test1\\TestResults\\ShipAirCombatLevel\\AutomationConstraintHold_RelayMotionEnvelope_20260908\\report\\index.json",
+      "succeeded": 1,
+      "succeeded_with_warnings": 0,
+      "failed": 0,
+      "not_run": 0,
+      "success": true
+    }
+  ]
+}

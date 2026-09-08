@@ -1,0 +1,149 @@
+{
+  "result": "pass",
+  "source": {
+    "timeline_directory": "TestResults/WingmanAttack/DogfightTimelineFinal",
+    "sample_count": 24,
+    "client_count": 2,
+    "wingman_count": 50,
+    "wingman_observation_count": 1200,
+    "sampled_client_time_span_seconds": 77.495
+  },
+  "state_machine": {
+    "required_phase_sequence": [
+      "AirApproachFire",
+      "AirBreakawayTurn",
+      "AirRetreat",
+      "AirReturnTurn"
+    ],
+    "wingmen_visiting_all_four_phases": 50,
+    "wingmen_with_advanced_entry_serial": 50,
+    "observed_breakaway_entries_per_wingman": {
+      "minimum": 2,
+      "median": 3.0,
+      "maximum": 5
+    },
+    "sampled_return_to_approach_completions_per_wingman": {
+      "minimum": 0,
+      "median": 2.0,
+      "maximum": 4
+    }
+  },
+  "deterministic_random_turns": {
+    "unique_turn_entry_count": 318,
+    "yaw_degrees": {
+      "minimum_absolute": 40.002,
+      "maximum_absolute": 89.9121,
+      "allowed_absolute_range": [
+        40.0,
+        90.0
+      ]
+    },
+    "pitch_degrees": {
+      "minimum": -29.1489,
+      "maximum": 29.9533,
+      "allowed_range": [
+        -30.0,
+        30.0
+      ]
+    },
+    "direction_counts": {
+      "left": 177,
+      "right": 141,
+      "climb": 176,
+      "dive": 142,
+      "level": 0
+    }
+  },
+  "retreat_region": {
+    "observation_count": 971,
+    "longitudinal_centimeters": {
+      "minimum": 45000.0,
+      "maximum": 53985.551,
+      "required_for_observed_900m_corridor": [
+        45000.0,
+        54000.0
+      ]
+    },
+    "lateral_absolute_max_centimeters": 14355.63,
+    "vertical_absolute_max_centimeters": 9905.69,
+    "ellipse_normalized_max": 0.995652,
+    "region_violation_count": 0,
+    "freeze_violation_count": 0,
+    "frozen_breakaway_retreat_span_count": 188,
+    "maximum_within_breakaway_and_retreat_point_drift_centimeters": 0.0
+  },
+  "not_fixed_radius_orbit": {
+    "target_distance_span_centimeters_per_wingman": {
+      "minimum": 25017.463,
+      "median": 38663.088,
+      "maximum": 52128.19
+    },
+    "wingmen_with_span_over_150m": 50
+  },
+  "focused_automation": {
+    "source": "TestResults/WingmanAttack/AutomationSourceEngineFinal/index.json",
+    "engine": "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor-Cmd.exe",
+    "engine_version": "5.7.4-0+UE5",
+    "succeeded": 7,
+    "succeeded_with_warnings": 0,
+    "failed": 0,
+    "not_run": 0,
+    "test_count": 7
+  },
+  "notes": [
+    "The source-engine focused run completed all seven tests without test warnings or failures.",
+    "The sampled state timeline is coarse; exact state adjacency, 2x physical turn radius, 10-second timeout, deterministic reproduction, short-corridor extension, target hysteresis, guard rejoin, and server gun gates are asserted by focused automation."
+  ],
+  "dedicated_server_two_client_validation": {
+    "latest_capture_sample": {
+      "source": "TestResults/WingmanAttack/pie-sample.json",
+      "server_motion_writes": [
+        0,
+        0
+      ],
+      "normal_rejects": [
+        0,
+        0
+      ],
+      "atomic_rejects": [
+        0,
+        0
+      ],
+      "client_plane_counts": [
+        25,
+        25
+      ]
+    },
+    "timeline_end": {
+      "source": "TestResults/WingmanAttack/DogfightTimelineFinal/sample-23.json",
+      "gun_shots": 1093,
+      "damage_submissions": 1093,
+      "normal_rejects": [
+        0,
+        0
+      ],
+      "atomic_rejects": [
+        0,
+        0
+      ],
+      "client_plane_counts": [
+        25,
+        25
+      ]
+    }
+  },
+  "builds": {
+    "editor": {
+      "target": "GuLiStrikeEditor Win64 Development",
+      "result": "Succeeded",
+      "engine": "D:/UnrealEngine-5.7",
+      "source": "TestResults/WingmanAttack/build-editor-source-engine-final.log"
+    },
+    "game": {
+      "target": "GuLiStrike Win64 Development",
+      "result": "Succeeded",
+      "engine": "D:/UnrealEngine-5.7",
+      "source": "TestResults/WingmanAttack/build-game-source-engine-final.log"
+    }
+  }
+}

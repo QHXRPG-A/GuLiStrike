@@ -143,6 +143,88 @@ namespace GuLiWingmanProtocolTests
 		Intent.bClientPredictedLineOfSight = true;
 		return Intent;
 	}
+
+	FGuLiGroupAbilityConfigSnapshot MakeV9Config(const FGuLiWingmanGroupHandle& Group)
+	{
+		FGuLiGroupAbilityConfigSnapshot Config;
+		Config.ShipInstanceId = Group.ShipInstanceId;
+		Config.MatchEpoch = 2u;
+		Config.Team = EGuLiTeam::Red;
+		Config.OwnerPlayerGuid = FGuid(0x11111111u, 0x22222222u, 0x33333333u, 0x44444444u);
+		Config.WingmanTypeId = TEXT("TestWingman");
+		Config.ShipGeneration = Group.ShipGeneration;
+		Config.GroupGeneration = Group.GroupGeneration;
+		Config.AbilitySetRevision = 11u;
+		Config.LoadoutRevision = 12u;
+		Config.SnapshotRevision = 13u;
+		Config.bGroupAbilitiesValid = true;
+		Config.FormationAbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
+		Config.FormationDefinitionRevision = 5u;
+		Config.FormationDefinitionChecksum = 0x1122334455667788ull;
+		Config.FormationCommandRevision = 13u;
+		Config.EffectiveClientSimTick = 101u;
+
+		FGuLiWingmanWeaponChannelConfig& Primary = Config.WeaponChannels.AddDefaulted_GetRef();
+		Primary.Binding = FGuLiWeaponBindingKey::Wingman(
+			Config.MatchEpoch, Config.Team, Config.OwnerPlayerGuid, Config.WingmanTypeId, TEXT("PrimaryWeapon"));
+		Primary.SkillId = TEXT("Test.Primary.Auto");
+		Primary.AbilityId = TAG_GuLi_ShipAbility_Weapon_Basic_Auto;
+		Primary.Kind = EGuLiWingmanWeaponKind::BasicAutomatic;
+		Primary.bEnabled = true;
+		Primary.ProfileRevision = 9u;
+		Primary.DefinitionRevision = 6u;
+		Primary.DefinitionChecksum = 0x2233445566778899ull;
+
+		const FGuLiWingmanWeaponChannelConfig PrimaryCopy = Primary;
+		FGuLiWingmanWeaponChannelConfig& Secondary = Config.WeaponChannels.AddDefaulted_GetRef();
+		Secondary = PrimaryCopy;
+		Secondary.Binding.SlotId = TEXT("SecondaryWeapon");
+		Secondary.SkillId = TEXT("Test.Secondary.Auto");
+		Secondary.AbilityId = TAG_GuLi_ShipWingman_Weapon_Basic;
+		Secondary.ProfileRevision = 10u;
+		Secondary.DefinitionRevision = 7u;
+		Secondary.DefinitionChecksum = 0x33445566778899aaull;
+
+		Config.BasicWeaponAbilityId = Config.WeaponChannels[0].AbilityId;
+		Config.BasicWeaponDefinitionRevision = Config.WeaponChannels[0].DefinitionRevision;
+		Config.BasicWeaponDefinitionChecksum = Config.WeaponChannels[0].DefinitionChecksum;
+		Config.BasicWeaponRuntime = Config.WeaponChannels[0].Runtime;
+		Config.RefreshHash();
+		return Config;
+	}
+
+	FGuLiWingmanFireIntent MakeV9FireIntent(
+		const FGuLiWingmanGroupHandle& Group,
+		const FGuLiGroupAbilityConfigSnapshot& Config,
+		const FGuLiWingmanWeaponChannelConfig& Channel,
+		const uint32 Sequence)
+	{
+		FGuLiWingmanFireIntent Intent;
+		Intent.MatchEpoch = Config.MatchEpoch;
+		Intent.Group = Group;
+		Intent.LeaseEpoch = 4u;
+		Intent.DomainFireSequence = Sequence;
+		Intent.Emitter = MakeWingman(Group, 1u, 2u);
+		Intent.Binding = Channel.Binding;
+		Intent.SourceAcceptedState.MatchEpoch = Config.MatchEpoch;
+		Intent.SourceAcceptedState.GroupGeneration = Group.GroupGeneration;
+		Intent.SourceAcceptedState.AcceptedSequence = 17u;
+		Intent.SourceAcceptedState.ClientSimTick = 101u;
+		Intent.ClientFireTick = 103u;
+		Intent.Target.Kind = EGuLiTargetKind::CommanderSoldier;
+		Intent.Target.AuthorityId = FGuid(1u, 2u, 3u, 4u);
+		Intent.Target.Generation = 5u;
+		Intent.Target.LocalId = 6u;
+		Intent.WeaponAbilityId = Channel.AbilityId;
+		Intent.SkillId = Channel.SkillId;
+		Intent.LoadoutRevision = Config.LoadoutRevision;
+		Intent.ProfileRevision = Channel.ProfileRevision;
+		Intent.WeaponDefinitionRevision = Channel.DefinitionRevision;
+		Intent.AbilitySetRevision = Config.AbilitySetRevision;
+		Intent.AimDirectionMilli = FIntVector(1000, 0, 0);
+		Intent.bClientPredictedLineOfSight = true;
+		return Intent;
+	}
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanProtocolV7GoldenBytesTest,
@@ -284,6 +366,87 @@ bool FGuLiWingmanSixScopeBootstrapTest::RunTest(const FString& Parameters)
 		State.ChunkCount = 1u;
 	}
 	TestFalse(TEXT("A duplicate scope cannot substitute for GroupAbilityConfig"), Commit.IsWellFormed());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanMultiWeaponChannelWireTest,
+	"GuLiStrike.Wingman.Protocol.MultiWeaponChannelWire",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanMultiWeaponChannelWireTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanProtocolTests;
+	const FGuLiWingmanGroupHandle Group = MakeGroup();
+	const FGuLiGroupAbilityConfigSnapshot Config = MakeV9Config(Group);
+	if (!TestTrue(TEXT("Protocol-v9 multi-channel config is valid"), Config.IsWellFormed())
+		|| !TestEqual(TEXT("Fixture carries two independent bindings"), Config.WeaponChannels.Num(), 2))
+	{
+		return false;
+	}
+
+	const FGuLiWingmanWeaponChannelConfig& Primary = Config.WeaponChannels[0];
+	const FGuLiWingmanWeaponChannelConfig& Secondary = Config.WeaponChannels[1];
+	const FGuLiWingmanFireIntent PrimaryIntent = MakeV9FireIntent(Group, Config, Primary, 19u);
+	FGuLiWingmanFireIntent WireCopy;
+	TArray<uint8> WireBytes;
+	if (!TestTrue(TEXT("Protocol-v9 FireIntent round-trip succeeds"),
+		RoundTrip(PrimaryIntent, WireCopy, WireBytes)))
+	{
+		return false;
+	}
+	TArray<uint8> WireBytesAgain;
+	TestTrue(TEXT("Protocol-v9 FireIntent serializes deterministically"),
+		Serialize(PrimaryIntent, WireBytesAgain) && WireBytes == WireBytesAgain);
+	TestTrue(TEXT("Wire preserves the complete weapon binding"), WireCopy.Binding == Primary.Binding);
+	TestEqual(TEXT("Wire preserves SkillId"), WireCopy.SkillId, Primary.SkillId);
+	TestEqual(TEXT("Wire preserves LoadoutRevision"), WireCopy.LoadoutRevision, Config.LoadoutRevision);
+	TestEqual(TEXT("Wire preserves ProfileRevision"), WireCopy.ProfileRevision, Primary.ProfileRevision);
+	TestTrue(TEXT("A current binding-exact FireIntent passes protocol validation"),
+		GuLiWingmanProtocol::ValidateFireIntentAbilityConfig(WireCopy, &Config)
+			== EGuLiWingmanRejectReason::None);
+
+	FGuLiWingmanFireIntent Rejected = PrimaryIntent;
+	Rejected.ProtocolVersion = GULI_WINGMAN_PROTOCOL_VERSION - 1u;
+	TestTrue(TEXT("An old wire protocol is rejected before current payload validation"),
+		GuLiWingmanProtocol::ValidateFireIntentAbilityConfig(Rejected, &Config)
+			== EGuLiWingmanRejectReason::ProtocolMismatch);
+
+	Rejected = PrimaryIntent;
+	--Rejected.LoadoutRevision;
+	TestTrue(TEXT("An old loadout revision is rejected precisely"),
+		GuLiWingmanProtocol::ValidateFireIntentAbilityConfig(Rejected, &Config)
+			== EGuLiWingmanRejectReason::StaleLoadoutRevision);
+
+	Rejected = PrimaryIntent;
+	Rejected.Binding.SlotId = TEXT("UnknownWeapon");
+	TestTrue(TEXT("An unknown binding cannot alias a configured AbilityId"),
+		GuLiWingmanProtocol::ValidateFireIntentAbilityConfig(Rejected, &Config)
+			== EGuLiWingmanRejectReason::UnknownWeaponChannel);
+
+	Rejected = PrimaryIntent;
+	Rejected.SkillId = TEXT("Test.Wrong.Skill");
+	TestTrue(TEXT("A binding with the wrong skill identity is rejected precisely"),
+		GuLiWingmanProtocol::ValidateFireIntentAbilityConfig(Rejected, &Config)
+			== EGuLiWingmanRejectReason::WeaponSkillMismatch);
+
+	Rejected = PrimaryIntent;
+	++Rejected.ProfileRevision;
+	TestTrue(TEXT("A stale or speculative profile revision is rejected precisely"),
+		GuLiWingmanProtocol::ValidateFireIntentAbilityConfig(Rejected, &Config)
+			== EGuLiWingmanRejectReason::StaleProfileRevision);
+
+	const FGuLiWingmanFireIntent SecondaryIntent = MakeV9FireIntent(Group, Config, Secondary, 20u);
+	FGuLiWingmanFireIntent SecondaryWireCopy;
+	TArray<uint8> SecondaryBytes;
+	TestTrue(TEXT("A second slot for the same member round-trips independently"),
+		RoundTrip(SecondaryIntent, SecondaryWireCopy, SecondaryBytes));
+	TestTrue(TEXT("The same member uses one monotonic DomainFireSequence across weapon slots"),
+		SecondaryWireCopy.Emitter == WireCopy.Emitter
+		&& SecondaryWireCopy.Binding != WireCopy.Binding
+		&& SecondaryWireCopy.DomainFireSequence == WireCopy.DomainFireSequence + 1u);
+	TestTrue(TEXT("The second configured slot also passes exact protocol validation"),
+		GuLiWingmanProtocol::ValidateFireIntentAbilityConfig(SecondaryWireCopy, &Config)
+			== EGuLiWingmanRejectReason::None);
 	return true;
 }
 #endif

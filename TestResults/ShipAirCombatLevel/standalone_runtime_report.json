@@ -1,0 +1,20 @@
+{
+  "schema": "guli.ship-air-combat-standalone-runtime.v1",
+  "source_engine_executable": "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.exe",
+  "map": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype",
+  "log": "D:/UE5.7/test1/Saved/Logs/GuLiStrike.log",
+  "checks": {
+    "target_map_loaded": true,
+    "ship_test_game_mode": true,
+    "world_brought_up_for_play": true,
+    "bootstrap_received": true,
+    "wingman_state_tree_started": true,
+    "clean_benchmark_exit": true,
+    "fatal_error_absent": true
+  },
+  "startup_observation": {
+    "transient_wingman_combat_warning_count": 1,
+    "interpretation": "A single frame-zero initialization warning; per-tick retry continued, the 25-member group entered its authored StateTree on the next frame, and the warning did not recur."
+  },
+  "success": true
+}

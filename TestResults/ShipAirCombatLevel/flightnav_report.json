@@ -1,0 +1,159 @@
+{
+  "committed_maps": [
+    "/Game/Maps/LVL_ShipWingmanAirCombatPrototype"
+  ],
+  "derived_mesh": {
+    "reason": "GULI_FLIGHTNAV_SKIP_DERIVED_MESH=1",
+    "skipped": true
+  },
+  "engine_version": "5.7.4-0+UE5",
+  "maps": [
+    {
+      "bake_settings": {
+        "agent_radius": 1500.0,
+        "face_coordinate_tolerance": 0.1,
+        "maximum_cells": 100000,
+        "maximum_depth": 6,
+        "maximum_nodes": 200000,
+        "minimum_cell_size": 8000.0,
+        "minimum_portal_span": 25.0,
+        "trace_complex": false
+      },
+      "bounds_audit": {
+        "formation_navigation_contract": {
+          "agent_radius": 1500.0,
+          "outer_ring_radius": 90000.0,
+          "recovery_margin": 10000.0,
+          "required_horizontal_clearance_from_gameplay_bounds": 101500.0,
+          "required_vertical_clearance_from_gameplay_bounds": 26500.0,
+          "satisfied": true,
+          "vertical_offset": 15000.0
+        },
+        "included_actor_count": 9,
+        "included_actor_sample": [
+          "AirCombat_Center",
+          "AirCombat_PlayerStart_01",
+          "AirCombat_PlayerStart_02",
+          "AirCombat_PlayerStart_03",
+          "AirCombat_PlayerStart_04",
+          "Cylinder",
+          "Cylinder2",
+          "Cylinder3",
+          "Landscape"
+        ],
+        "raw_center": [
+          0.0,
+          0.0,
+          8432.6171875
+        ],
+        "raw_extent": [
+          408000.0,
+          408000.0,
+          15817.3828125
+        ],
+        "skipped_actor_count": 8,
+        "skipped_actor_sample": [
+          {
+            "actor": "DirectionalLight",
+            "reason": "DirectionalLight"
+          },
+          {
+            "actor": "ExponentialHeightFog",
+            "reason": "ExponentialHeightFog"
+          },
+          {
+            "actor": "PostProcessVolume",
+            "reason": "PostProcessVolume"
+          },
+          {
+            "actor": "SkyLight",
+            "reason": "SkyLight"
+          },
+          {
+            "actor": "SkyAtmosphere_Commander",
+            "reason": "SkyAtmosphere"
+          },
+          {
+            "actor": "NavMeshBounds_CommanderPlayableLandscape",
+            "reason": "NavMeshBoundsVolume"
+          },
+          {
+            "actor": "RecastNavMesh-Default",
+            "reason": "RecastNavMesh"
+          },
+          {
+            "actor": "RecastNavMesh-CommanderSoldier",
+            "reason": "RecastNavMesh"
+          }
+        ],
+        "volume_center": [
+          0.0,
+          0.0,
+          8432.6171875
+        ],
+        "volume_extent": [
+          509500.0,
+          509500.0,
+          42317.3828125
+        ]
+      },
+      "data_asset": "/Game/GuLiStrike/Navigation/Baked/LVL_ShipWingmanAirCombatPrototype/DA_FlightNav_LVL_ShipWingmanAirCombatPrototype",
+      "data_created": true,
+      "map": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype",
+      "navigation_data": {
+        "cell_count": 11010,
+        "content_checksum": 3546574615166679536,
+        "definition_revision": 1,
+        "format_version": 3,
+        "geometry_signature": 5999250682553820050,
+        "link_count": 64730,
+        "node_count": 29905,
+        "object_path": "/Game/GuLiStrike/Navigation/Baked/LVL_ShipWingmanAirCombatPrototype/DA_FlightNav_LVL_ShipWingmanAirCombatPrototype.DA_FlightNav_LVL_ShipWingmanAirCombatPrototype",
+        "portal_count": 32365,
+        "settings_hash": 10760655798156380268,
+        "source_volume_path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+        "source_world_package": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype"
+      },
+      "saved_packages": [
+        "/Game/GuLiStrike/Navigation/Baked/LVL_ShipWingmanAirCombatPrototype/DA_FlightNav_LVL_ShipWingmanAirCombatPrototype",
+        "/Game/Maps/LVL_ShipWingmanAirCombatPrototype"
+      ],
+      "valid": true,
+      "volume_bounds": {
+        "center": [
+          0.0,
+          0.0,
+          8432.6171875
+        ],
+        "extent": [
+          509500.0,
+          509500.0,
+          42317.3828125
+        ],
+        "scale": [
+          5095.0,
+          5095.0,
+          423.173828125
+        ]
+      },
+      "volume_created": false,
+      "volume_label": "FlightNav_LVL_ShipWingmanAirCombatPrototype"
+    }
+  ],
+  "original_map": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype",
+  "owner_marker": "GuLi.WingmanFlightNav.Deployment.v1",
+  "preflight": {
+    "dirty_packages": [],
+    "success": true
+  },
+  "project_dir": "D:/UE5.7/test1/",
+  "restore": {
+    "map": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype",
+    "success": true
+  },
+  "schema": 1,
+  "success": true,
+  "target_maps": [
+    "/Game/Maps/LVL_ShipWingmanAirCombatPrototype"
+  ]
+}

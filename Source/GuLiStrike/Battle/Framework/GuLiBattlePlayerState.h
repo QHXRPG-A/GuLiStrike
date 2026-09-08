@@ -7,12 +7,14 @@
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h"
 #include "GameFramework/PlayerState.h"
 #include "AbilitySystemInterface.h"
+#include "Gameplay/Skills/GuLiWeaponChannelTypes.h"
 #include "GuLiBattlePlayerState.generated.h"
 
 class UAbilitySystemComponent;
 struct FGuLiArmySkillCommand;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGuLiCommanderPlayerStateChangedSignature);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGuLiWeaponChangeResultSignature, const FGuLiWeaponChangeResult&, Result);
 
 /** 通用玩家身份与角色复制；公共战局就绪、士兵流就绪分别维护，不互相替代。 */
 UCLASS()
@@ -23,9 +25,24 @@ class GULISTRIKE_API AGuLiBattlePlayerState : public APlayerState, public IAbili
 public:
 	AGuLiBattlePlayerState();
 	virtual void BeginPlay() override;
+	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 	/** Server-local GM/gameplay entry through a real ServerOnly GameplayAbility; no client RPC. */
 	bool ExecuteArmySkillCommand(const FGuLiArmySkillCommand& Command, FString& OutError);
+
+	/** Committed, read-only equipment view; locked/empty slots remain visible for progression. */
+	UFUNCTION(BlueprintPure, Category="Battle|Weapons")
+	TArray<FGuLiWeaponChannelView> GetWeaponChannels(EGuLiWeaponDomain Domain) const;
+
+	/** Empty SkillId unequips the selected slot. RequestId must be reused when retrying. */
+	UFUNCTION(Server, Reliable, BlueprintCallable, Category="Battle|Weapons")
+	void ServerRequestEquipWeapon(FGuid RequestId, FGuLiWeaponBindingKey Binding, FName SkillId, int64 ExpectedLoadoutRevision);
+
+	UPROPERTY(BlueprintAssignable, Category="Battle|Weapons")
+	FGuLiWeaponChangeResultSignature OnWeaponChangeResult;
+
+	UFUNCTION(BlueprintPure, Category="Battle|Weapons")
+	FGuLiWeaponChangeResult GetLastWeaponChangeResult() const { return LastWeaponChangeResult; }
 
 	/** Session-only stable Ship ability selection; spec handles/effects/cooldowns never live here. */
 	const FGuLiShipAbilityLoadoutState& GetShipAbilityLoadoutState() const { return ShipAbilityLoadoutState; }
@@ -92,6 +109,26 @@ public:
 	FGuLiCommanderPlayerStateChangedSignature OnCommanderPlayerStateChanged;
 
 private:
+	UFUNCTION(Client, Reliable)
+	void ClientReceiveWeaponChangeResult(const FGuLiWeaponChangeResult& Result);
+	/** Shared server handler for the RPC; returns the immediate result before any fixed-step commit. */
+	FGuLiWeaponChangeResult ProcessEquipWeaponRequest(FGuid RequestId, const FGuLiWeaponBindingKey& Binding,
+		FName SkillId, int64 ExpectedLoadoutRevision);
+	void HandleArmyWeaponLoadoutCommitted(uint32 Revision);
+#if WITH_DEV_AUTOMATION_TESTS
+	friend class FGuLiWeaponEquipmentTransactionTest;
+#endif
+	struct FWeaponRequestRecord
+	{
+		int64 ExpectedRevision = 0;
+		FGuLiWeaponChangeResult Result;
+	};
+	TMap<FGuid, FWeaponRequestRecord> WeaponRequests;
+	TArray<FGuid> WeaponRequestOrder;
+	uint32 WeaponRequestEpoch = 0u;
+	double NextWeaponRequestSeconds = 0.0;
+	FGuLiWeaponChangeResult LastWeaponChangeResult;
+
 	UPROPERTY(VisibleAnywhere, Category = "Battle|Abilities")
 	TObjectPtr<UAbilitySystemComponent> ArmyAbilitySystem;
 	bool bArmySkillAbilityGranted = false;

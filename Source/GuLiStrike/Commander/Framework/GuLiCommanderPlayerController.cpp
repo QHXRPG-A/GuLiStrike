@@ -9,6 +9,7 @@
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/UI/GuLiCommanderCursorWidget.h"
+#include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Engine/GameViewportClient.h"
 #include "UnrealClient.h"
@@ -111,6 +112,8 @@ AGuLiCommanderPlayerController::AGuLiCommanderPlayerController(const FObjectInit
 
 	// 替换公共默认子对象的具体类型；旧属性继续指向同一个对象，不再额外创建组件。
 	NetSyncComponent = CastChecked<UGuLiCommanderNetSyncComponent>(GetPlayerNetSyncComponent());
+	BuildingPlacementComponent = CreateDefaultSubobject<UGuLiBuildingPlacementComponent>(
+		TEXT("BuildingPlacement"));
 }
 
 void AGuLiCommanderPlayerController::BeginPlay()
@@ -157,6 +160,9 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 	InputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleCancelInput).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::One, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleArmMoveToolInput).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::Two, IE_Pressed, this, &ThisClass::HandleSelectBuildingTwoInput).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::Three, IE_Pressed, this, &ThisClass::HandleSelectBuildingThreeInput).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::B, IE_Pressed, this, &ThisClass::HandleToggleBuildModeInput).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::Seven, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleActivateSelectionToolInput).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::Add, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleStepSelectionRadiusInput).bConsumeInput = false;
 	InputComponent->BindKey(FInputChord(EKeys::Equals, true, false, false, false), IE_Pressed, this, &AGuLiCommanderPlayerController::HandleStepSelectionRadiusInput).bConsumeInput = false;
@@ -169,6 +175,10 @@ void AGuLiCommanderPlayerController::PlayerTick(const float DeltaTime)
 	Super::PlayerTick(DeltaTime);
 
 	UpdateCommanderInputMode();
+	if (BuildingPlacementComponent)
+	{
+		BuildingPlacementComponent->UpdatePlacementPreview(IsCursorOverCommanderUI());
+	}
 	if (!IsCommanderViewActive())
 	{
 		CancelSelectionDrag();
@@ -335,6 +345,12 @@ bool AGuLiCommanderPlayerController::GetActiveCommandLine(
 
 void AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor()
 {
+	if (BuildingPlacementComponent
+		&& BuildingPlacementComponent->HandlePrimaryAction(IsCursorOverCommanderUI()))
+	{
+		CancelSelectionDrag();
+		return;
+	}
 	if (!IsCommanderViewActive())
 	{
 		return;
@@ -387,6 +403,11 @@ void AGuLiCommanderPlayerController::HandlePrimaryReleased()
 
 void AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor()
 {
+	if (BuildingPlacementComponent && BuildingPlacementComponent->HandleCancelAction())
+	{
+		CancelSelectionDrag();
+		return;
+	}
 	if (!IsCommanderViewActive())
 	{
 		return;
@@ -423,6 +444,10 @@ void AGuLiCommanderPlayerController::HandleStepSelectionRadiusInput()
 
 void AGuLiCommanderPlayerController::HandleArmMoveToolInput()
 {
+	if (BuildingPlacementComponent && BuildingPlacementComponent->HandleNumberKey(1))
+	{
+		return;
+	}
 	if (!IsCommanderViewActive())
 	{
 		return;
@@ -431,8 +456,38 @@ void AGuLiCommanderPlayerController::HandleArmMoveToolInput()
 	ArmMoveTool();
 }
 
+void AGuLiCommanderPlayerController::HandleToggleBuildModeInput()
+{
+	CancelSelectionDrag();
+	if (BuildingPlacementComponent)
+	{
+		BuildingPlacementComponent->ToggleBuildMode();
+	}
+}
+
+void AGuLiCommanderPlayerController::HandleSelectBuildingTwoInput()
+{
+	if (BuildingPlacementComponent)
+	{
+		BuildingPlacementComponent->HandleNumberKey(2);
+	}
+}
+
+void AGuLiCommanderPlayerController::HandleSelectBuildingThreeInput()
+{
+	if (BuildingPlacementComponent)
+	{
+		BuildingPlacementComponent->HandleNumberKey(3);
+	}
+}
+
 void AGuLiCommanderPlayerController::HandleCancelInput()
 {
+	if (BuildingPlacementComponent && BuildingPlacementComponent->HandleCancelAction())
+	{
+		CancelSelectionDrag();
+		return;
+	}
 	if (!IsCommanderViewActive())
 	{
 		return;

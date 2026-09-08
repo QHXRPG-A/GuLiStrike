@@ -120,11 +120,58 @@ bool FGuLiWingmanCombatContext::IsWellFormed() const
 		&& FMath::IsFinite(MaximumAcceptedAgeSeconds) && MaximumAcceptedAgeSeconds > 0.0;
 }
 
+bool FGuLiWingmanTargetingTuning::IsWellFormed() const
+{
+	return FMath::IsFinite(AcquireRadiusCentimeters) && AcquireRadiusCentimeters > 0
+		&& FMath::IsFinite(ReleaseRadiusCentimeters) && ReleaseRadiusCentimeters >= AcquireRadiusCentimeters
+		&& FMath::IsFinite(GuardRejoinFraction) && GuardRejoinFraction > 0 && GuardRejoinFraction <= 1
+		&& FMath::IsFinite(ScanIntervalSeconds) && ScanIntervalSeconds > 0
+		&& FMath::IsFinite(MaximumPoseAgeSeconds) && MaximumPoseAgeSeconds > 0;
+}
+
+bool GuLiWingmanTargeting::IsWithinAcquireRange(double DistanceCentimeters,
+	const FGuLiWingmanTargetingTuning& Tuning)
+{
+	return Tuning.IsWellFormed() && FMath::IsFinite(DistanceCentimeters) && DistanceCentimeters >= 0
+		&& DistanceCentimeters <= Tuning.AcquireRadiusCentimeters;
+}
+
+bool GuLiWingmanTargeting::IsWithinReleaseRange(double DistanceCentimeters,
+	const FGuLiWingmanTargetingTuning& Tuning)
+{
+	return Tuning.IsWellFormed() && FMath::IsFinite(DistanceCentimeters) && DistanceCentimeters >= 0
+		&& DistanceCentimeters <= Tuning.ReleaseRadiusCentimeters;
+}
+
+bool GuLiWingmanTargeting::IsGuardRejoinComplete(
+	TConstArrayView<FGuLiWingmanGuardPoseObservation> Observations, const FVector& ShipLocation,
+	float CatchUpDistanceCentimeters, float RecoveryDistanceCentimeters, float RequiredFraction)
+{
+	if (Observations.IsEmpty() || ShipLocation.ContainsNaN() || !FMath::IsFinite(CatchUpDistanceCentimeters)
+		|| !FMath::IsFinite(RecoveryDistanceCentimeters) || !FMath::IsFinite(RequiredFraction)
+		|| CatchUpDistanceCentimeters <= 0 || RecoveryDistanceCentimeters < CatchUpDistanceCentimeters
+		|| RequiredFraction <= 0 || RequiredFraction > 1) return false;
+	int32 Alive = 0, InsideCatchUp = 0;
+	for (const FGuLiWingmanGuardPoseObservation& Observation : Observations)
+	{
+		if (!Observation.bAlive) continue;
+		++Alive;
+		if (!Observation.bHasFreshAcceptedPose || Observation.Position.ContainsNaN()) return false;
+		const double Distance = FVector::Distance(ShipLocation, Observation.Position);
+		if (Distance > RecoveryDistanceCentimeters) return false;
+		if (Distance <= CatchUpDistanceCentimeters) ++InsideCatchUp;
+	}
+	return Alive > 0 && InsideCatchUp >= FMath::CeilToInt(Alive * RequiredFraction);
+}
+
 bool FGuLiWingmanMissileSalvoRequest::IsWellFormed() const
 {
 	FVector DecodedAim;
-	return ActivationId.IsValid() && MissileAbilityId.IsValid()
-		&& AbilitySetRevision != 0u && MissileDefinitionRevision != 0u
+	return ActivationId.IsValid() && Binding.IsWellFormed()
+		&& Binding.Domain == EGuLiWeaponDomain::Wingman
+		&& !SkillId.IsNone() && MissileAbilityId.IsValid()
+		&& AbilitySetRevision != 0u && LoadoutRevision != 0u
+		&& ProfileRevision != 0u && MissileDefinitionRevision != 0u
 		&& GuLiWingmanMissileAim::Decode(AimDirectionMilli, DecodedAim);
 }
 
@@ -158,13 +205,39 @@ bool FGuLiWingmanCombatCoordinator::Initialize(
 		Reset();
 		return false;
 	}
+	LastWeaponConfig = Context.Relay->GetAbilityConfig();
+	// Preserve the existing initial-spawn readiness while explicitly registering
+	// every generation. SynchronizeRosterState can then distinguish a replenished
+	// handle from an original member that simply has not fired yet.
+	for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
+	{
+		if (Entry.bDead)
+		{
+			continue;
+		}
+		TMap<FName, double>& EmitterCooldowns =
+			NextFireTimeByEmitterAndSlot.FindOrAdd(Entry.Wingman);
+		for (const FGuLiWingmanWeaponChannelConfig& Channel : LastWeaponConfig.WeaponChannels)
+		{
+			if (Channel.bEnabled && Channel.Kind == EGuLiWingmanWeaponKind::BasicAutomatic)
+			{
+				EmitterCooldowns.FindOrAdd(Channel.Binding.SlotId, 0.0);
+			}
+		}
+	}
 	return true;
 }
 
 void FGuLiWingmanCombatCoordinator::Reset()
 {
 	Context = FGuLiWingmanCombatContext{};
-	BasicNextFireTimeByEmitter.Reset();
+	SpecifiedAttackTarget = {};
+	AttackTargetHistory.Reset();
+	NextAttackTargetScan = 0.0;
+	TargetingTuning = FGuLiWingmanTargetingTuning{};
+	bAutoTargetingLockedForGuard = false;
+	LastWeaponConfig = FGuLiGroupAbilityConfigSnapshot{};
+	NextFireTimeByEmitterAndSlot.Reset();
 	MissileResultsByActivation.Reset();
 	MissileActivationOrder.Reset();
 }
@@ -174,6 +247,58 @@ bool FGuLiWingmanCombatCoordinator::IsReady() const
 	return Context.IsWellFormed()
 		&& Context.DamageLedger->GetMatchEpoch() == Context.MatchEpoch
 		&& IsShipSourceAlive();
+}
+
+bool FGuLiWingmanCombatCoordinator::ApplyCommittedAbilityConfig(
+	const FGuLiGroupAbilityConfigSnapshot& NewConfig,
+	const double NowSeconds)
+{
+	if (!IsReady() || !NewConfig.IsUsableByLeaseOwner() || !IsFiniteTime(NowSeconds)
+		|| !SameGroup(Context.Relay->GetLeaseState().Group, NewConfig)
+		|| Context.Relay->GetAbilityConfig().SnapshotHash != NewConfig.SnapshotHash)
+	{
+		return false;
+	}
+	if (LastWeaponConfig.HasSameVersion(NewConfig))
+	{
+		return true;
+	}
+	for (const FGuLiWingmanWeaponChannelConfig& Channel : NewConfig.WeaponChannels)
+	{
+		if (!Channel.bEnabled || Channel.Kind != EGuLiWingmanWeaponKind::BasicAutomatic)
+		{
+			continue;
+		}
+		const FGuLiWingmanWeaponChannelConfig* Previous =
+			LastWeaponConfig.FindWeaponChannel(Channel.Binding);
+		if (!Previous || !Previous->bEnabled || Previous->SkillId != Channel.SkillId)
+		{
+			for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
+			{
+				if (Entry.bDead) continue;
+				TMap<FName, double>& EmitterCooldowns =
+					NextFireTimeByEmitterAndSlot.FindOrAdd(Entry.Wingman);
+				double& Next = EmitterCooldowns.FindOrAdd(Channel.Binding.SlotId);
+				Next = FMath::Max(Next, NowSeconds + Channel.Runtime.CooldownSeconds);
+			}
+		}
+		else if (!FMath::IsNearlyEqual(
+			Previous->Runtime.CooldownSeconds, Channel.Runtime.CooldownSeconds))
+		{
+			for (TPair<FGuLiWingmanHandle, TMap<FName, double>>& EmitterPair :
+				NextFireTimeByEmitterAndSlot)
+			{
+				if (double* ExistingNext = EmitterPair.Value.Find(Channel.Binding.SlotId))
+				{
+					const double RemainingRatio = FMath::Clamp(
+						(*ExistingNext - NowSeconds) / Previous->Runtime.CooldownSeconds, 0.0, 1.0);
+					*ExistingNext = NowSeconds + RemainingRatio * Channel.Runtime.CooldownSeconds;
+				}
+			}
+		}
+	}
+	LastWeaponConfig = NewConfig;
+	return true;
 }
 
 FGuLiFireIntentServerValidator FGuLiWingmanCombatCoordinator::MakeBasicFireIntentValidator()
@@ -222,9 +347,14 @@ EGuLiWingmanRejectReason FGuLiWingmanCombatCoordinator::ValidateBasicFireIntent(
 	{
 		return EGuLiWingmanRejectReason::FriendlyTarget;
 	}
-	const UGuLiWingmanWeaponDefinition* Definition = Context.ShipASC->GetBasicWeaponDefinition();
+	const FGuLiWingmanWeaponChannelConfig* Channel =
+		Context.Relay->GetAbilityConfig().FindWeaponChannel(Intent.Binding);
+	if (!Channel)
+	{
+		return EGuLiWingmanRejectReason::UnknownWeaponChannel;
+	}
 	const FVector EmitterPosition = SamplePosition(*EmitterSample);
-	if (!IsInsideRange(EmitterPosition, Target, Definition->RangeCentimeters))
+	if (!IsInsideRange(EmitterPosition, Target, Channel->Runtime.RangeCentimeters))
 	{
 		return EGuLiWingmanRejectReason::OutOfRange;
 	}
@@ -232,17 +362,19 @@ EGuLiWingmanRejectReason FGuLiWingmanCombatCoordinator::ValidateBasicFireIntent(
 		static_cast<double>(Intent.AimDirectionMilli.X),
 		static_cast<double>(Intent.AimDirectionMilli.Y),
 		static_cast<double>(Intent.AimDirectionMilli.Z));
-	if (!IsInsideAimCone(EmitterPosition, IntentAim, Target, Definition->TargetConeHalfAngleDegrees))
+	if (!IsInsideAimCone(EmitterPosition, IntentAim, Target, Channel->Runtime.TargetConeHalfAngleDegrees))
 	{
 		return EGuLiWingmanRejectReason::InvalidTarget;
 	}
-	if (Definition->bRequiresLineOfSight && !HasLineOfSight(EmitterPosition, Target))
+	if (Channel->Runtime.bRequiresLineOfSight && !HasLineOfSight(EmitterPosition, Target))
 	{
 		return EGuLiWingmanRejectReason::NoLineOfSight;
 	}
-	if (const double* NextFireTime = BasicNextFireTimeByEmitter.Find(Intent.Emitter))
+	if (const TMap<FName, double>* EmitterCooldowns =
+		NextFireTimeByEmitterAndSlot.Find(Intent.Emitter))
 	{
-		if (NowSeconds + UE_DOUBLE_SMALL_NUMBER < *NextFireTime)
+		if (const double* NextFireTime = EmitterCooldowns->Find(Intent.Binding.SlotId);
+			NextFireTime && NowSeconds + UE_DOUBLE_SMALL_NUMBER < *NextFireTime)
 		{
 			return EGuLiWingmanRejectReason::CooldownActive;
 		}
@@ -288,8 +420,9 @@ FGuLiWingmanBasicFireResult FGuLiWingmanCombatCoordinator::CommitAcceptedBasicFi
 	}
 	const FGuLiWingmanAcceptedBatch* SourceBatch = Context.Relay->FindAcceptedBatch(Intent.SourceAcceptedState);
 	const FGuLiWingmanCandidateSample* SourceSample = SourceBatch ? SourceBatch->FindSample(Intent.Emitter) : nullptr;
-	const UGuLiWingmanWeaponDefinition* Definition = Context.ShipASC->GetBasicWeaponDefinition();
-	if (!SourceBatch || !SourceSample || !Definition)
+	const FGuLiWingmanWeaponChannelConfig* Channel =
+		Context.Relay->GetAbilityConfig().FindWeaponChannel(Intent.Binding);
+	if (!SourceBatch || !SourceSample || !Channel || !Channel->bEnabled)
 	{
 		Result.RelayResult = FGuLiWingmanSubmissionResult::Rejected(
 			EGuLiWingmanRejectReason::StaleSourceState, Intent.DomainFireSequence);
@@ -312,13 +445,20 @@ FGuLiWingmanBasicFireResult FGuLiWingmanCombatCoordinator::CommitAcceptedBasicFi
 	Damage.Source = Context.ShipSource;
 	Damage.Emitter = Intent.Emitter;
 	Damage.Target = Intent.Target;
-	Damage.Damage = Definition->Damage;
+	Damage.WeaponBinding = Channel->Binding;
+	Damage.SkillId = Channel->SkillId;
+	Damage.LoadoutRevision = Intent.LoadoutRevision;
+	Damage.ProfileRevision = Channel->ProfileRevision;
+	Damage.RootEventId = Result.ShotId;
+	Damage.Damage = Channel->Runtime.Damage;
 	Damage.HitLocation = Target.Location;
 	Result.DamageResult = Context.DamageLedger->CommitDamage(Damage);
 	if (Result.DamageResult.Status == EGuLiDamageCommitStatus::Committed)
 	{
-		double& NextFireTime = BasicNextFireTimeByEmitter.FindOrAdd(Intent.Emitter);
-		NextFireTime = FMath::Max(NextFireTime, NowSeconds + Definition->CooldownSeconds);
+		TMap<FName, double>& EmitterCooldowns =
+			NextFireTimeByEmitterAndSlot.FindOrAdd(Intent.Emitter);
+		double& NextFireTime = EmitterCooldowns.FindOrAdd(Intent.Binding.SlotId);
+		NextFireTime = FMath::Max(NextFireTime, NowSeconds + Channel->Runtime.CooldownSeconds);
 	}
 	return Result;
 }
@@ -356,7 +496,14 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 	{
 		return Finish(Result);
 	}
-	if (Context.ShipASC->IsMissileCooldownActive())
+	const FGuLiWingmanWeaponChannelConfig* Channel =
+		Context.Relay->GetAbilityConfig().FindWeaponChannel(Request.Binding);
+	if (!Channel)
+	{
+		Result.RejectReason = EGuLiWingmanRejectReason::WeaponDefinitionMismatch;
+		return Finish(Result);
+	}
+	if (Context.ShipASC->IsWeaponCooldownActive(Channel->CooldownGroupId))
 	{
 		Result.RejectReason = EGuLiWingmanRejectReason::CooldownActive;
 		return Finish(Result);
@@ -370,11 +517,9 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 		Result.RejectReason = EGuLiWingmanRejectReason::InvalidTarget;
 		return Finish(Result);
 	}
-	const UGuLiWingmanWeaponDefinition* Definition = Context.ShipASC->GetMissileDefinition();
 	FGuLiCombatTargetSnapshot Target;
-	Result.RejectReason = Definition
-		? SelectMissileTarget(ShipSource.Location, AimForward, *Definition, Target)
-		: EGuLiWingmanRejectReason::WeaponDefinitionMismatch;
+	Result.RejectReason = SelectMissileTarget(
+		ShipSource.Location, AimForward, Channel->Runtime, Target);
 	if (Result.RejectReason != EGuLiWingmanRejectReason::None)
 	{
 		return Finish(Result);
@@ -414,12 +559,12 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 			}
 			bFoundLivingEmitter = true;
 			const FVector LaunchPosition = SamplePosition(*Sample);
-			if (!IsInsideRange(LaunchPosition, Target, Definition->RangeCentimeters))
+			if (!IsInsideRange(LaunchPosition, Target, Channel->Runtime.RangeCentimeters))
 			{
 				continue;
 			}
 			bFoundInRangeEmitter = true;
-			if (Definition->bRequiresLineOfSight && !HasLineOfSight(LaunchPosition, Target))
+			if (Channel->Runtime.bRequiresLineOfSight && !HasLineOfSight(LaunchPosition, Target))
 			{
 				continue;
 			}
@@ -428,16 +573,21 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 			Launch.MatchEpoch = Context.MatchEpoch;
 			Launch.MissileId = MakeStableMissileId(Request.ActivationId, RosterEntry->Wingman, 0x4d49534cu);
 			Launch.ShotId = MakeStableMissileId(Request.ActivationId, RosterEntry->Wingman, 0x53484f54u);
+			Launch.RootEventId = Request.ActivationId;
+			Launch.WeaponBinding = Request.Binding;
+			Launch.SkillId = Request.SkillId;
+			Launch.LoadoutRevision = Request.LoadoutRevision;
+			Launch.ProfileRevision = Request.ProfileRevision;
 			Launch.Source = Context.ShipSource;
 			Launch.Emitter = RosterEntry->Wingman;
 			Launch.Target = Target.Handle;
 			Launch.LaunchPosition = LaunchPosition;
 			Launch.LaunchDirection = (Target.Location - LaunchPosition).GetSafeNormal();
-			Launch.SpeedCentimetersPerSecond = Definition->ProjectileSpeedCentimetersPerSecond;
-			Launch.TurnRateDegreesPerSecond = Definition->MaximumHomingTurnRateDegreesPerSecond;
-			Launch.SweepRadiusCentimeters = Definition->SweepRadiusCentimeters;
-			Launch.MaximumLifetimeSeconds = Definition->ProjectileLifetimeSeconds;
-			Launch.Damage = Definition->Damage;
+			Launch.SpeedCentimetersPerSecond = Channel->Runtime.ProjectileSpeedCentimetersPerSecond;
+			Launch.TurnRateDegreesPerSecond = Channel->Runtime.MaximumHomingTurnRateDegreesPerSecond;
+			Launch.SweepRadiusCentimeters = Channel->Runtime.SweepRadiusCentimeters;
+			Launch.MaximumLifetimeSeconds = Channel->Runtime.ProjectileLifetimeSeconds;
+			Launch.Damage = Channel->Runtime.Damage;
 		}
 		if (!Launches.IsEmpty())
 		{
@@ -463,8 +613,8 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 		Result.RejectReason = EGuLiWingmanRejectReason::InvalidTarget;
 		return Finish(Result);
 	}
-	if (!Context.ShipASC->ServerTryReserveMissileCooldown(
-		Definition->CooldownSeconds, Request.ActivationId))
+	if (!Context.ShipASC->ServerTryReserveWeaponCooldown(
+		Channel->CooldownGroupId, Channel->Runtime.CooldownSeconds, Request.ActivationId))
 	{
 		Result.RejectReason = EGuLiWingmanRejectReason::CooldownActive;
 		return Finish(Result);
@@ -474,7 +624,8 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 	if (!Context.LogicalMissiles->LaunchFlightSalvo(Launches, LaunchedCount)
 		|| LaunchedCount != Launches.Num())
 	{
-		Context.ShipASC->ServerRollbackMissileCooldown(Request.ActivationId);
+		Context.ShipASC->ServerRollbackWeaponCooldown(
+			Channel->CooldownGroupId, Request.ActivationId);
 		Result.RejectReason = EGuLiWingmanRejectReason::InvalidTarget;
 		return Finish(Result);
 	}
@@ -486,15 +637,37 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 
 int32 FGuLiWingmanCombatCoordinator::SynchronizeRosterState()
 {
-	const int32 Before = BasicNextFireTimeByEmitter.Num();
-	for (auto Iterator = BasicNextFireTimeByEmitter.CreateIterator(); Iterator; ++Iterator)
+	int32 RemovedCount = 0;
+	for (auto Iterator = NextFireTimeByEmitterAndSlot.CreateIterator(); Iterator; ++Iterator)
 	{
 		if (!IsRosterMemberAlive(Iterator.Key()))
 		{
 			Iterator.RemoveCurrent();
+			++RemovedCount;
 		}
 	}
-	return Before - BasicNextFireTimeByEmitter.Num();
+	const double NowSeconds = GetServerTimeSeconds();
+	if (IsFiniteTime(NowSeconds))
+	{
+		for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
+		{
+			if (Entry.bDead || NextFireTimeByEmitterAndSlot.Contains(Entry.Wingman))
+			{
+				continue;
+			}
+			TMap<FName, double>& EmitterCooldowns =
+				NextFireTimeByEmitterAndSlot.Add(Entry.Wingman);
+			for (const FGuLiWingmanWeaponChannelConfig& Channel : LastWeaponConfig.WeaponChannels)
+			{
+				if (Channel.bEnabled && Channel.Kind == EGuLiWingmanWeaponKind::BasicAutomatic)
+				{
+					EmitterCooldowns.Add(
+						Channel.Binding.SlotId, NowSeconds + Channel.Runtime.CooldownSeconds);
+				}
+			}
+		}
+	}
+	return RemovedCount;
 }
 
 bool FGuLiWingmanCombatCoordinator::ResolveTarget(
@@ -524,7 +697,7 @@ void FGuLiWingmanCombatCoordinator::GetTargetCatalog(
 EGuLiWingmanRejectReason FGuLiWingmanCombatCoordinator::SelectMissileTarget(
 	const FVector& AuthorityOrigin,
 	const FVector& AimForward,
-	const UGuLiWingmanWeaponDefinition& Definition,
+	const FGuLiWingmanWeaponRuntimeConfig& Runtime,
 	FGuLiCombatTargetSnapshot& OutTarget) const
 {
 	OutTarget = FGuLiCombatTargetSnapshot{};
@@ -537,7 +710,7 @@ EGuLiWingmanRejectReason FGuLiWingmanCombatCoordinator::SelectMissileTarget(
 	TArray<FGuLiCombatTargetSnapshot> Targets;
 	GetTargetCatalog(Targets);
 	const double MinimumDot = FMath::Cos(FMath::DegreesToRadians(
-		FMath::Clamp(static_cast<double>(Definition.TargetConeHalfAngleDegrees), 0.0, 180.0)));
+		FMath::Clamp(static_cast<double>(Runtime.TargetConeHalfAngleDegrees), 0.0, 180.0)));
 	double BestDistanceSquared = TNumericLimits<double>::Max();
 	bool bFriendlyInReticle = false;
 	bool bEnemyInReticleOutOfRange = false;
@@ -562,7 +735,7 @@ EGuLiWingmanRejectReason FGuLiWingmanCombatCoordinator::SelectMissileTarget(
 		{
 			continue;
 		}
-		const bool bInsideRange = IsInsideRange(AuthorityOrigin, Candidate, Definition.RangeCentimeters);
+		const bool bInsideRange = IsInsideRange(AuthorityOrigin, Candidate, Runtime.RangeCentimeters);
 		if (!IsEnemyTarget(Candidate))
 		{
 			bFriendlyInReticle |= bInsideRange;
@@ -573,7 +746,7 @@ EGuLiWingmanRejectReason FGuLiWingmanCombatCoordinator::SelectMissileTarget(
 			bEnemyInReticleOutOfRange = true;
 			continue;
 		}
-		if (Definition.bRequiresLineOfSight && !HasLineOfSight(AuthorityOrigin, Candidate))
+		if (Runtime.bRequiresLineOfSight && !HasLineOfSight(AuthorityOrigin, Candidate))
 		{
 			bEnemyInReticleBlocked = true;
 			continue;
@@ -686,20 +859,41 @@ EGuLiWingmanRejectReason FGuLiWingmanCombatCoordinator::ValidateCurrentBasicDefi
 	{
 		return EGuLiWingmanRejectReason::StaleAbilitySetRevision;
 	}
-	if (Intent.WeaponAbilityId != Config.BasicWeaponAbilityId)
+	if (Intent.LoadoutRevision != Config.LoadoutRevision)
+	{
+		return EGuLiWingmanRejectReason::StaleLoadoutRevision;
+	}
+	const FGuLiWingmanWeaponChannelConfig* Channel = Config.FindWeaponChannel(Intent.Binding);
+	if (!Channel || !Channel->bEnabled || Channel->Kind != EGuLiWingmanWeaponKind::BasicAutomatic
+		|| Channel->Runtime.Attack.Pattern != EGuLiWingmanAttackPattern::Legacy)
+	{
+		return EGuLiWingmanRejectReason::UnknownWeaponChannel;
+	}
+	if (Intent.WeaponAbilityId != Channel->AbilityId)
 	{
 		return EGuLiWingmanRejectReason::UnknownWeaponAbility;
 	}
-	if (Intent.WeaponDefinitionRevision != Config.BasicWeaponDefinitionRevision)
+	if (Intent.SkillId != Channel->SkillId)
+	{
+		return EGuLiWingmanRejectReason::WeaponSkillMismatch;
+	}
+	if (Intent.ProfileRevision != Channel->ProfileRevision)
+	{
+		return EGuLiWingmanRejectReason::StaleProfileRevision;
+	}
+	if (Intent.WeaponDefinitionRevision != Channel->DefinitionRevision)
 	{
 		return EGuLiWingmanRejectReason::WeaponDefinitionMismatch;
 	}
 	UGuLiShipAbilitySystemComponent* ASC = Context.ShipASC.Get();
-	const UGuLiWingmanWeaponDefinition* Definition = ASC ? ASC->GetBasicWeaponDefinition() : nullptr;
+	const FGuLiShipAbilityGrant* Grant = ASC ? ASC->FindConfiguredGrant(Intent.Binding) : nullptr;
 	return ASC && ASC->IsAbilityConfigurationCurrent(Intent.WeaponAbilityId, Intent.AbilitySetRevision)
-		&& Definition && Definition->Kind == EGuLiWingmanWeaponKind::BasicAutomatic
-		&& Definition->Revision == Config.BasicWeaponDefinitionRevision
-		&& Definition->ComputeStableChecksum() == Config.BasicWeaponDefinitionChecksum
+		&& ASC->IsWeaponConfigurationCurrent(Intent.Binding, Intent.SkillId,
+			Intent.LoadoutRevision, Intent.ProfileRevision)
+		&& Grant && Grant->WeaponDefinition
+		&& Grant->WeaponDefinition->Kind == EGuLiWingmanWeaponKind::BasicAutomatic
+		&& Grant->GetDefinitionRevision() == Channel->DefinitionRevision
+		&& Grant->GetDefinitionChecksum() == Channel->DefinitionChecksum
 		? EGuLiWingmanRejectReason::None : EGuLiWingmanRejectReason::WeaponDefinitionMismatch;
 }
 
@@ -715,20 +909,40 @@ EGuLiWingmanRejectReason FGuLiWingmanCombatCoordinator::ValidateCurrentMissileDe
 	{
 		return EGuLiWingmanRejectReason::StaleAbilitySetRevision;
 	}
-	if (Request.MissileAbilityId != Config.MissileAbilityId)
+	if (Request.LoadoutRevision != Config.LoadoutRevision)
+	{
+		return EGuLiWingmanRejectReason::StaleLoadoutRevision;
+	}
+	const FGuLiWingmanWeaponChannelConfig* Channel = Config.FindWeaponChannel(Request.Binding);
+	if (!Channel || !Channel->bEnabled || Channel->Kind != EGuLiWingmanWeaponKind::Missile)
+	{
+		return EGuLiWingmanRejectReason::UnknownWeaponChannel;
+	}
+	if (Request.MissileAbilityId != Channel->AbilityId)
 	{
 		return EGuLiWingmanRejectReason::UnknownWeaponAbility;
 	}
-	if (Request.MissileDefinitionRevision != Config.MissileDefinitionRevision)
+	if (Request.SkillId != Channel->SkillId)
+	{
+		return EGuLiWingmanRejectReason::WeaponSkillMismatch;
+	}
+	if (Request.ProfileRevision != Channel->ProfileRevision)
+	{
+		return EGuLiWingmanRejectReason::StaleProfileRevision;
+	}
+	if (Request.MissileDefinitionRevision != Channel->DefinitionRevision)
 	{
 		return EGuLiWingmanRejectReason::WeaponDefinitionMismatch;
 	}
 	UGuLiShipAbilitySystemComponent* ASC = Context.ShipASC.Get();
-	const UGuLiWingmanWeaponDefinition* Definition = ASC ? ASC->GetMissileDefinition() : nullptr;
+	const FGuLiShipAbilityGrant* Grant = ASC ? ASC->FindConfiguredGrant(Request.Binding) : nullptr;
 	return ASC && ASC->IsAbilityConfigurationCurrent(Request.MissileAbilityId, Request.AbilitySetRevision)
-		&& Definition && Definition->Kind == EGuLiWingmanWeaponKind::Missile
-		&& Definition->Revision == Config.MissileDefinitionRevision
-		&& Definition->ComputeStableChecksum() == Config.MissileDefinitionChecksum
+		&& ASC->IsWeaponConfigurationCurrent(Request.Binding, Request.SkillId,
+			Request.LoadoutRevision, Request.ProfileRevision)
+		&& Grant && Grant->WeaponDefinition
+		&& Grant->WeaponDefinition->Kind == EGuLiWingmanWeaponKind::Missile
+		&& Grant->GetDefinitionRevision() == Channel->DefinitionRevision
+		&& Grant->GetDefinitionChecksum() == Channel->DefinitionChecksum
 		? EGuLiWingmanRejectReason::None : EGuLiWingmanRejectReason::WeaponDefinitionMismatch;
 }
 
@@ -776,11 +990,14 @@ FGuid FGuLiWingmanCombatCoordinator::MakeStableShotId(
 	const uint32 GroupHash = GetTypeHash(Intent.Group);
 	const uint32 EmitterHash = GetTypeHash(Intent.Emitter);
 	const uint32 TargetHash = GetTypeHash(Intent.Target);
+	const uint32 BindingHash = GetTypeHash(Intent.Binding);
+	const uint32 SkillHash = GetTypeHash(Intent.SkillId);
 	return FGuid(
-		HashCombine(GroupHash, Salt),
+		HashCombine(HashCombine(GroupHash, BindingHash), Salt),
 		HashCombine(EmitterHash, Intent.DomainFireSequence),
-		HashCombine(TargetHash, Intent.MatchEpoch),
-		HashCombine(HashCombine(Intent.AbilitySetRevision, Intent.WeaponDefinitionRevision), Salt ^ 0x9e3779b9u));
+		HashCombine(HashCombine(TargetHash, SkillHash), Intent.MatchEpoch),
+		HashCombine(HashCombine(Intent.LoadoutRevision, Intent.ProfileRevision),
+			HashCombine(Intent.WeaponDefinitionRevision, Salt ^ 0x9e3779b9u)));
 }
 
 FGuid FGuLiWingmanCombatCoordinator::MakeStableMissileId(

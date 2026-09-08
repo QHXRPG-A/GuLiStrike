@@ -1,3 +1,26 @@
+---
+schema: guli-progress/v1
+id: ARC-20260828-001
+work_id: ''
+kind: archive
+role: root
+title: 2026-08-28 解决了：Commander 的 Order 中文术语统一
+areas:
+- commander
+- network
+- assets
+- learning
+status: recorded
+verification: not_run
+created: '2026-08-28'
+updated: '2026-08-28'
+summary: 2026-08-28 解决了：Commander 的 Order 中文术语统一
+next_action: ''
+relations:
+  work_items: []
+status_note: ''
+---
+
 # 2026-08-28 解决了：Commander 的 Order 中文术语统一
 
 - 对应开发文档：`20260827-Mass双端同步架构草案.md`、`Mass精读笔记/` 与 `Gameplay/指挥官.md`

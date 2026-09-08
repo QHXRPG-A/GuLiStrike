@@ -41,6 +41,30 @@ bool GuLiIsPersistentShipAbilitySlot(const EGuLiShipAbilitySlot Slot)
 	return Slot == EGuLiShipAbilitySlot::Formation || Slot == EGuLiShipAbilitySlot::BasicWeapon;
 }
 
+FName GuLiGetDefaultWingmanTypeId()
+{
+	static const FName Name(TEXT("DefaultWingman"));
+	return Name;
+}
+
+FName GuLiGetDefaultWeaponSlotId(const EGuLiShipAbilitySlot Slot)
+{
+	switch (Slot)
+	{
+	case EGuLiShipAbilitySlot::BasicWeapon:
+		return FName(TEXT("BasicWeapon"));
+	case EGuLiShipAbilitySlot::Missile:
+		return FName(TEXT("Missile"));
+	default:
+		return NAME_None;
+	}
+}
+
+FName GuLiGetDefaultWeaponSkillId(const FGameplayTag AbilityId)
+{
+	return AbilityId.IsValid() ? AbilityId.GetTagName() : NAME_None;
+}
+
 void FGuLiShipAbilityLoadoutState::Normalize()
 {
 	AbilityIds.RemoveAll([](const FGameplayTag Tag)
@@ -123,21 +147,95 @@ FGuLiShipAbilityLoadoutState FGuLiShipAbilityLoadoutState::MakeNativeV1()
 	return Result;
 }
 
+FGuLiShipAbilityLoadoutState FGuLiShipAbilityLoadoutState::MakeNativeV3()
+{
+	FGuLiShipAbilityLoadoutState Result;
+	Result.Revision = 3u;
+	Result.AbilityIds = { TAG_GuLi_ShipAbility_Formation_SwarmOrbit,
+		TAG_GuLi_ShipAbility_Weapon_Wingman_MachineGun, TAG_GuLi_ShipAbility_Weapon_Wingman_GroundMissile };
+	Result.Normalize();
+	return Result;
+}
+
+FGuLiShipAbilityLoadoutState FGuLiShipAbilityLoadoutState::MakeNativeV2()
+{
+	FGuLiShipAbilityLoadoutState Result;
+	Result.Revision = 2u;
+	Result.AbilityIds = {
+		TAG_GuLi_ShipAbility_Formation_SwarmOrbit,
+		TAG_GuLi_ShipAbility_Weapon_Basic_Auto,
+		TAG_GuLi_ShipAbility_Weapon_Missile_Salvo
+	};
+	Result.Normalize();
+	return Result;
+}
+
+bool FGuLiWingmanSwarmOrbitTuning::IsWellFormed() const
+{
+	const auto PositiveFinite = [](const float Value)
+	{
+		return FMath::IsFinite(Value) && Value > 0.0f;
+	};
+	const auto UnitFinite = [](const float Value)
+	{
+		return FMath::IsFinite(Value) && Value >= 0.0f && Value <= 1.0f;
+	};
+	return PositiveFinite(InnerSoftRadiusCentimeters)
+		&& PositiveFinite(OuterSoftRadiusCentimeters)
+		&& OuterSoftRadiusCentimeters > InnerSoftRadiusCentimeters
+		&& PositiveFinite(VerticalHalfExtentCentimeters)
+		&& PositiveFinite(HullExclusionRadiusCentimeters)
+		&& HullExclusionRadiusCentimeters < InnerSoftRadiusCentimeters
+		&& PositiveFinite(SwirlSpeedMinCentimetersPerSecond)
+		&& PositiveFinite(SwirlSpeedMaxCentimetersPerSecond)
+		&& SwirlSpeedMaxCentimetersPerSecond >= SwirlSpeedMinCentimetersPerSecond
+		&& FMath::IsFinite(CurlStrengthCentimetersPerSecond)
+		&& CurlStrengthCentimetersPerSecond >= 0.0f
+		&& PositiveFinite(NoiseSpatialScaleCentimeters)
+		&& PositiveFinite(NoiseTemporalScaleSeconds)
+		&& UnitFinite(AxisPrecessionAmount)
+		&& FMath::IsFinite(AxisPrecessionRadiansPerSecond)
+		&& AxisPrecessionRadiansPerSecond >= 0.0f
+		&& PositiveFinite(BoundaryReturnSpeedCentimetersPerSecond)
+		&& FMath::IsFinite(PreferredRadiusReturnSpeedCentimetersPerSecond)
+		&& PreferredRadiusReturnSpeedCentimetersPerSecond >= 0.0f
+		&& PositiveFinite(VerticalReturnSpeedCentimetersPerSecond)
+		&& UnitFinite(AlignmentWeight)
+		&& UnitFinite(CatchUpStyleWeight)
+		&& UnitFinite(RecoveryStyleWeight)
+		&& RecoveryStyleWeight <= CatchUpStyleWeight
+		&& PositiveFinite(ResponseTimeSeconds);
+}
+
+void FGuLiWingmanSwarmOrbitTuning::AddToStableHash(uint64& Hash) const
+{
+	GuLiShipAbilityHash::AddFloat(Hash, InnerSoftRadiusCentimeters);
+	GuLiShipAbilityHash::AddFloat(Hash, OuterSoftRadiusCentimeters);
+	GuLiShipAbilityHash::AddFloat(Hash, VerticalHalfExtentCentimeters);
+	GuLiShipAbilityHash::AddFloat(Hash, HullExclusionRadiusCentimeters);
+	GuLiShipAbilityHash::AddFloat(Hash, SwirlSpeedMinCentimetersPerSecond);
+	GuLiShipAbilityHash::AddFloat(Hash, SwirlSpeedMaxCentimetersPerSecond);
+	GuLiShipAbilityHash::AddFloat(Hash, CurlStrengthCentimetersPerSecond);
+	GuLiShipAbilityHash::AddFloat(Hash, NoiseSpatialScaleCentimeters);
+	GuLiShipAbilityHash::AddFloat(Hash, NoiseTemporalScaleSeconds);
+	GuLiShipAbilityHash::AddFloat(Hash, AxisPrecessionAmount);
+	GuLiShipAbilityHash::AddFloat(Hash, AxisPrecessionRadiansPerSecond);
+	GuLiShipAbilityHash::AddFloat(Hash, BoundaryReturnSpeedCentimetersPerSecond);
+	GuLiShipAbilityHash::AddFloat(Hash, PreferredRadiusReturnSpeedCentimetersPerSecond);
+	GuLiShipAbilityHash::AddFloat(Hash, VerticalReturnSpeedCentimetersPerSecond);
+	GuLiShipAbilityHash::AddFloat(Hash, AlignmentWeight);
+	GuLiShipAbilityHash::AddFloat(Hash, CatchUpStyleWeight);
+	GuLiShipAbilityHash::AddFloat(Hash, RecoveryStyleWeight);
+	GuLiShipAbilityHash::AddFloat(Hash, ResponseTimeSeconds);
+}
+
 bool FGuLiWingmanFormationRuntimeConfig::IsWellFormed() const
 {
 	const auto PositiveFinite = [](const float Value)
 	{
 		return FMath::IsFinite(Value) && Value > 0.0f;
 	};
-	return InnerRingSlots > 0u && OuterRingSlots > 0u
-		&& static_cast<uint32>(InnerRingSlots) + static_cast<uint32>(OuterRingSlots) == 25u
-		&& PositiveFinite(InnerRingRadiusCentimeters)
-		&& PositiveFinite(OuterRingRadiusCentimeters)
-		&& OuterRingRadiusCentimeters > InnerRingRadiusCentimeters
-		&& FMath::IsFinite(InnerRingHeightCentimeters)
-		&& FMath::IsFinite(OuterRingHeightCentimeters)
-		&& PositiveFinite(InnerAngularSpeedRadiansPerSecond)
-		&& PositiveFinite(OuterAngularSpeedRadiansPerSecond)
+	const bool bCommonValid = GuidanceAlgorithmVersion != 0u && FormationSeed != 0u
 		&& PositiveFinite(MinimumSpeedCentimetersPerSecond)
 		&& PositiveFinite(CruiseSpeedCentimetersPerSecond)
 		&& PositiveFinite(CatchUpSpeedCentimetersPerSecond)
@@ -155,18 +253,52 @@ bool FGuLiWingmanFormationRuntimeConfig::IsWellFormed() const
 		&& PositiveFinite(CatchUpDistanceCentimeters)
 		&& PositiveFinite(RecoveryDistanceCentimeters)
 		&& RecoveryDistanceCentimeters > CatchUpDistanceCentimeters;
+	if (!bCommonValid)
+	{
+		return false;
+	}
+
+	switch (Model)
+	{
+	case EGuLiWingmanFormationModel::DoubleRingLegacy:
+		return InnerRingSlots > 0u && OuterRingSlots > 0u
+			&& static_cast<uint32>(InnerRingSlots) + static_cast<uint32>(OuterRingSlots) == 25u
+			&& PositiveFinite(InnerRingRadiusCentimeters)
+			&& PositiveFinite(OuterRingRadiusCentimeters)
+			&& OuterRingRadiusCentimeters > InnerRingRadiusCentimeters
+			&& FMath::IsFinite(InnerRingHeightCentimeters)
+			&& FMath::IsFinite(OuterRingHeightCentimeters)
+			&& PositiveFinite(InnerAngularSpeedRadiansPerSecond)
+			&& PositiveFinite(OuterAngularSpeedRadiansPerSecond);
+	case EGuLiWingmanFormationModel::SwarmOrbit:
+		return SwarmOrbit.IsWellFormed()
+			&& CatchUpDistanceCentimeters > SwarmOrbit.OuterSoftRadiusCentimeters
+			&& RecoveryDistanceCentimeters > SwarmOrbit.OuterSoftRadiusCentimeters;
+	default:
+		return false;
+	}
 }
 
 void FGuLiWingmanFormationRuntimeConfig::AddToStableHash(uint64& Hash) const
 {
-	GuLiShipAbilityHash::AddUInt32(Hash, InnerRingSlots);
-	GuLiShipAbilityHash::AddUInt32(Hash, OuterRingSlots);
-	GuLiShipAbilityHash::AddFloat(Hash, InnerRingRadiusCentimeters);
-	GuLiShipAbilityHash::AddFloat(Hash, OuterRingRadiusCentimeters);
-	GuLiShipAbilityHash::AddFloat(Hash, InnerRingHeightCentimeters);
-	GuLiShipAbilityHash::AddFloat(Hash, OuterRingHeightCentimeters);
-	GuLiShipAbilityHash::AddFloat(Hash, InnerAngularSpeedRadiansPerSecond);
-	GuLiShipAbilityHash::AddFloat(Hash, OuterAngularSpeedRadiansPerSecond);
+	GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Model));
+	GuLiShipAbilityHash::AddUInt32(Hash, GuidanceAlgorithmVersion);
+	GuLiShipAbilityHash::AddUInt32(Hash, FormationSeed);
+	if (Model == EGuLiWingmanFormationModel::DoubleRingLegacy)
+	{
+		GuLiShipAbilityHash::AddUInt32(Hash, InnerRingSlots);
+		GuLiShipAbilityHash::AddUInt32(Hash, OuterRingSlots);
+		GuLiShipAbilityHash::AddFloat(Hash, InnerRingRadiusCentimeters);
+		GuLiShipAbilityHash::AddFloat(Hash, OuterRingRadiusCentimeters);
+		GuLiShipAbilityHash::AddFloat(Hash, InnerRingHeightCentimeters);
+		GuLiShipAbilityHash::AddFloat(Hash, OuterRingHeightCentimeters);
+		GuLiShipAbilityHash::AddFloat(Hash, InnerAngularSpeedRadiansPerSecond);
+		GuLiShipAbilityHash::AddFloat(Hash, OuterAngularSpeedRadiansPerSecond);
+	}
+	else
+	{
+		SwarmOrbit.AddToStableHash(Hash);
+	}
 	GuLiShipAbilityHash::AddFloat(Hash, MinimumSpeedCentimetersPerSecond);
 	GuLiShipAbilityHash::AddFloat(Hash, CruiseSpeedCentimetersPerSecond);
 	GuLiShipAbilityHash::AddFloat(Hash, CatchUpSpeedCentimetersPerSecond);
@@ -183,18 +315,73 @@ void FGuLiWingmanFormationRuntimeConfig::AddToStableHash(uint64& Hash) const
 
 bool FGuLiWingmanWeaponRuntimeConfig::IsWellFormed() const
 {
-	return FMath::IsFinite(RangeCentimeters) && RangeCentimeters > 0.0f
+	return Attack.IsWellFormed() && FMath::IsFinite(Damage) && Damage > 0.0f
+		&& FMath::IsFinite(RangeCentimeters) && RangeCentimeters > 0.0f
 		&& FMath::IsFinite(CooldownSeconds) && CooldownSeconds > 0.0f
 		&& FMath::IsFinite(TargetConeHalfAngleDegrees)
-		&& TargetConeHalfAngleDegrees > 0.0f && TargetConeHalfAngleDegrees <= 180.0f;
+		&& TargetConeHalfAngleDegrees > 0.0f && TargetConeHalfAngleDegrees <= 180.0f
+		&& FMath::IsFinite(ProjectileSpeedCentimetersPerSecond)
+		&& ProjectileSpeedCentimetersPerSecond > 0.0f
+		&& FMath::IsFinite(ProjectileLifetimeSeconds)
+		&& ProjectileLifetimeSeconds >= 0.01f && ProjectileLifetimeSeconds <= 120.0f
+		&& FMath::IsFinite(SweepRadiusCentimeters) && SweepRadiusCentimeters >= 0.0f
+		&& FMath::IsFinite(MaximumHomingTurnRateDegreesPerSecond)
+		&& MaximumHomingTurnRateDegreesPerSecond >= 0.0f
+		&& MaximumHomingTurnRateDegreesPerSecond <= 180.0f;
 }
 
 void FGuLiWingmanWeaponRuntimeConfig::AddToStableHash(uint64& Hash) const
 {
+	Attack.AddToStableHash(Hash);
+	GuLiShipAbilityHash::AddFloat(Hash, Damage);
 	GuLiShipAbilityHash::AddFloat(Hash, RangeCentimeters);
 	GuLiShipAbilityHash::AddFloat(Hash, CooldownSeconds);
 	GuLiShipAbilityHash::AddFloat(Hash, TargetConeHalfAngleDegrees);
 	GuLiShipAbilityHash::AddBool(Hash, bRequiresLineOfSight);
+	GuLiShipAbilityHash::AddFloat(Hash, ProjectileSpeedCentimetersPerSecond);
+	GuLiShipAbilityHash::AddFloat(Hash, ProjectileLifetimeSeconds);
+	GuLiShipAbilityHash::AddFloat(Hash, SweepRadiusCentimeters);
+	GuLiShipAbilityHash::AddFloat(Hash, MaximumHomingTurnRateDegreesPerSecond);
+}
+
+bool FGuLiWingmanWeaponChannelConfig::IsWellFormed() const
+{
+	if (!Binding.IsWellFormed() || Binding.Domain != EGuLiWeaponDomain::Wingman)
+	{
+		return false;
+	}
+	if (!bEnabled)
+	{
+		return SkillId.IsNone() && !AbilityId.IsValid()
+			&& ProfileRevision == 0u && DefinitionRevision == 0u
+			&& DefinitionChecksum == 0u;
+	}
+	return !SkillId.IsNone() && AbilityId.IsValid()
+		&& ProfileRevision != 0u && DefinitionRevision != 0u
+		&& DefinitionChecksum != 0u && Runtime.IsWellFormed()
+		&& (Kind != EGuLiWingmanWeaponKind::Missile || !CooldownGroupId.IsNone());
+}
+
+void FGuLiWingmanWeaponChannelConfig::AddToStableHash(uint64& Hash) const
+{
+	GuLiShipAbilityHash::AddUInt32(Hash, Binding.MatchEpoch);
+	GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Binding.Team));
+	GuLiShipAbilityHash::AddUInt32(Hash, Binding.OwnerPlayerGuid.A);
+	GuLiShipAbilityHash::AddUInt32(Hash, Binding.OwnerPlayerGuid.B);
+	GuLiShipAbilityHash::AddUInt32(Hash, Binding.OwnerPlayerGuid.C);
+	GuLiShipAbilityHash::AddUInt32(Hash, Binding.OwnerPlayerGuid.D);
+	GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Binding.Domain));
+	GuLiShipAbilityHash::AddString(Hash, Binding.SubjectId.ToString());
+	GuLiShipAbilityHash::AddString(Hash, Binding.SlotId.ToString());
+	GuLiShipAbilityHash::AddString(Hash, SkillId.ToString());
+	GuLiShipAbilityHash::AddTag(Hash, AbilityId);
+	GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Kind));
+	GuLiShipAbilityHash::AddString(Hash, CooldownGroupId.ToString());
+	GuLiShipAbilityHash::AddBool(Hash, bEnabled);
+	GuLiShipAbilityHash::AddUInt32(Hash, ProfileRevision);
+	GuLiShipAbilityHash::AddUInt32(Hash, DefinitionRevision);
+	GuLiShipAbilityHash::AddUInt64(Hash, DefinitionChecksum);
+	Runtime.AddToStableHash(Hash);
 }
 
 uint64 FGuLiGroupAbilityConfigSnapshot::ComputeStableHash() const
@@ -205,14 +392,27 @@ uint64 FGuLiGroupAbilityConfigSnapshot::ComputeStableHash() const
 	GuLiShipAbilityHash::AddUInt32(Hash, ShipInstanceId.B);
 	GuLiShipAbilityHash::AddUInt32(Hash, ShipInstanceId.C);
 	GuLiShipAbilityHash::AddUInt32(Hash, ShipInstanceId.D);
+	GuLiShipAbilityHash::AddUInt32(Hash, MatchEpoch);
+	GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Team));
+	GuLiShipAbilityHash::AddUInt32(Hash, OwnerPlayerGuid.A);
+	GuLiShipAbilityHash::AddUInt32(Hash, OwnerPlayerGuid.B);
+	GuLiShipAbilityHash::AddUInt32(Hash, OwnerPlayerGuid.C);
+	GuLiShipAbilityHash::AddUInt32(Hash, OwnerPlayerGuid.D);
+	GuLiShipAbilityHash::AddString(Hash, WingmanTypeId.ToString());
 	GuLiShipAbilityHash::AddUInt32(Hash, ShipGeneration);
 	GuLiShipAbilityHash::AddUInt32(Hash, GroupGeneration);
 	GuLiShipAbilityHash::AddUInt32(Hash, AbilitySetRevision);
+	GuLiShipAbilityHash::AddUInt32(Hash, LoadoutRevision);
 	GuLiShipAbilityHash::AddUInt32(Hash, SnapshotRevision);
 	GuLiShipAbilityHash::AddBool(Hash, bGroupAbilitiesValid);
 	GuLiShipAbilityHash::AddTag(Hash, FormationAbilityId);
 	GuLiShipAbilityHash::AddTag(Hash, BasicWeaponAbilityId);
 	GuLiShipAbilityHash::AddTag(Hash, MissileAbilityId);
+	GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(WeaponChannels.Num()));
+	for (const FGuLiWingmanWeaponChannelConfig& Channel : WeaponChannels)
+	{
+		Channel.AddToStableHash(Hash);
+	}
 	GuLiShipAbilityHash::AddUInt32(Hash, FormationDefinitionRevision);
 	GuLiShipAbilityHash::AddUInt64(Hash, FormationDefinitionChecksum);
 	GuLiShipAbilityHash::AddUInt32(Hash, BasicWeaponDefinitionRevision);
@@ -234,13 +434,37 @@ void FGuLiGroupAbilityConfigSnapshot::RefreshHash()
 
 bool FGuLiGroupAbilityConfigSnapshot::HasRequiredV1Abilities() const
 {
-	return FormationAbilityId.IsValid() && BasicWeaponAbilityId.IsValid() && MissileAbilityId.IsValid();
+	// Kept as a source-compatible name for existing protocol gates. Protocol v9
+	// requires a formation; a legal loadout may intentionally contain no weapons.
+	return FormationAbilityId.IsValid();
+}
+
+const FGuLiWingmanWeaponChannelConfig* FGuLiGroupAbilityConfigSnapshot::FindWeaponChannel(
+	const FGuLiWeaponBindingKey& Binding) const
+{
+	return WeaponChannels.FindByPredicate([&Binding](const FGuLiWingmanWeaponChannelConfig& Channel)
+	{
+		return Channel.Binding == Binding;
+	});
+}
+
+const FGuLiWingmanWeaponChannelConfig* FGuLiGroupAbilityConfigSnapshot::FindFirstWeaponChannel(
+	const EGuLiWingmanWeaponKind Kind) const
+{
+	return WeaponChannels.FindByPredicate([Kind](const FGuLiWingmanWeaponChannelConfig& Channel)
+	{
+		return Channel.bEnabled && Channel.Kind == Kind;
+	});
 }
 
 bool FGuLiGroupAbilityConfigSnapshot::IsWellFormed() const
 {
 	const bool bBaseFieldsValid = ProtocolVersion == GULI_WINGMAN_PROTOCOL_VERSION
 		&& ShipInstanceId.IsValid()
+		&& MatchEpoch != 0u
+		&& (Team == EGuLiTeam::Red || Team == EGuLiTeam::Blue)
+		&& OwnerPlayerGuid.IsValid()
+		&& !WingmanTypeId.IsNone()
 		&& ShipGeneration != 0u
 		&& GroupGeneration != 0u
 		&& SnapshotRevision != 0u
@@ -253,22 +477,58 @@ bool FGuLiGroupAbilityConfigSnapshot::IsWellFormed() const
 
 	if (bGroupAbilitiesValid)
 	{
-		return AbilitySetRevision != 0u
-			&& HasRequiredV1Abilities()
-			&& FormationDefinitionRevision != 0u
-			&& FormationDefinitionChecksum != 0u
-			&& BasicWeaponDefinitionRevision != 0u
-			&& BasicWeaponDefinitionChecksum != 0u
-			&& MissileDefinitionRevision != 0u
-			&& MissileDefinitionChecksum != 0u
-			&& FormationRuntime.IsWellFormed()
-			&& BasicWeaponRuntime.IsWellFormed()
-			&& MissileRuntime.IsWellFormed();
+		if (AbilitySetRevision == 0u || LoadoutRevision == 0u
+			|| !HasRequiredV1Abilities()
+			|| FormationDefinitionRevision == 0u
+			|| FormationDefinitionChecksum == 0u
+			|| !FormationRuntime.IsWellFormed()
+			|| WeaponChannels.Num() > GULI_MAX_WINGMAN_WEAPON_CHANNELS)
+		{
+			return false;
+		}
+		TSet<FGuLiWeaponBindingKey> SeenBindings;
+		double AutomaticFireRatePerSecond = 0.0;
+		int32 AttackRecordsPerFlight = 0;
+		for (const FGuLiWingmanWeaponChannelConfig& Channel : WeaponChannels)
+		{
+			if (!Channel.IsWellFormed()
+				|| Channel.Binding.MatchEpoch != MatchEpoch
+				|| Channel.Binding.Team != Team
+				|| Channel.Binding.OwnerPlayerGuid != OwnerPlayerGuid
+				|| Channel.Binding.SubjectId != WingmanTypeId
+				|| SeenBindings.Contains(Channel.Binding))
+			{
+				return false;
+			}
+			SeenBindings.Add(Channel.Binding);
+			if (Channel.bEnabled && Channel.Kind == EGuLiWingmanWeaponKind::BasicAutomatic)
+			{
+				if (Channel.Runtime.Attack.Pattern == EGuLiWingmanAttackPattern::Legacy)
+					AutomaticFireRatePerSecond += 25.0 / static_cast<double>(Channel.Runtime.CooldownSeconds);
+				else
+				{
+					if (Channel.Runtime.Attack.FlightSpeed < FormationRuntime.MinimumSpeedCentimetersPerSecond
+						|| Channel.Runtime.Attack.FlightSpeed > FormationRuntime.CatchUpSpeedCentimetersPerSecond) return false;
+                    if (Channel.Runtime.Attack.Pattern == EGuLiWingmanAttackPattern::GroundDive)
+                    {
+                        FGuLiWingmanGroundRunPath Path;
+                        if (!GuLiWingmanAttack::BuildGroundPath(FVector::ZeroVector, FVector::ForwardVector,
+                            Channel.Runtime.Attack, FormationRuntime.MaximumTurnRateDegreesPerSecond, Path)) return false;
+                    }
+					AttackRecordsPerFlight += Channel.Runtime.Attack.Pattern == EGuLiWingmanAttackPattern::GroundDive
+						? Channel.Runtime.Attack.MaximumShotsPerFlightBatch()
+						: 5 * (1 + FMath::FloorToInt(0.2 / Channel.Runtime.CooldownSeconds + 1.e-6));
+				}
+			}
+		}
+		return AttackRecordsPerFlight <= GuLiWingmanAttack::MaximumFireRecordsPerFlight && AutomaticFireRatePerSecond
+			<= GULI_WINGMAN_AUTOMATIC_FIRE_BUDGET_PER_SECOND + UE_DOUBLE_SMALL_NUMBER;
 	}
 
 	// An invalidation is explicit and unambiguous; stale IDs/checksums may not
 	// remain consumable after the group has ended.
-	return !FormationAbilityId.IsValid()
+	return LoadoutRevision == 0u && WeaponChannels.IsEmpty()
+		&& !FormationAbilityId.IsValid()
 		&& !BasicWeaponAbilityId.IsValid()
 		&& !MissileAbilityId.IsValid()
 		&& FormationDefinitionRevision == 0u
@@ -285,6 +545,7 @@ bool FGuLiGroupAbilityConfigSnapshot::HasSameVersion(const FGuLiGroupAbilityConf
 		&& ShipGeneration == Other.ShipGeneration
 		&& GroupGeneration == Other.GroupGeneration
 		&& AbilitySetRevision == Other.AbilitySetRevision
+		&& LoadoutRevision == Other.LoadoutRevision
 		&& SnapshotRevision == Other.SnapshotRevision
 		&& FormationCommandRevision == Other.FormationCommandRevision
 		&& SnapshotHash == Other.SnapshotHash;

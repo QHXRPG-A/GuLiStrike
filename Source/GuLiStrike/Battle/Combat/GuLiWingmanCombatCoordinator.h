@@ -8,7 +8,6 @@
 
 class UGuLiLogicalMissileSubsystem;
 class UGuLiShipAbilitySystemComponent;
-class UGuLiWingmanWeaponDefinition;
 
 using FGuLiWingmanTargetResolver = TFunction<bool(
 	const FGuLiTargetHandle& Handle, FGuLiCombatTargetSnapshot& OutSnapshot)>;
@@ -16,6 +15,42 @@ using FGuLiWingmanTargetCatalogResolver = TFunction<void(
 	TArray<FGuLiCombatTargetSnapshot>& OutSnapshots)>;
 using FGuLiWingmanLineOfSightResolver = TFunction<bool(
 	const FVector& SourceLocation, const FGuLiCombatTargetSnapshot& Target)>;
+
+struct GULISTRIKE_API FGuLiWingmanTargetingTuning
+{
+	float AcquireRadiusCentimeters = 150000.0f;
+	float ReleaseRadiusCentimeters = 180000.0f;
+	float GuardRejoinFraction = 0.8f;
+	float ScanIntervalSeconds = 0.2f;
+	float MaximumPoseAgeSeconds = 1.0f;
+	bool IsWellFormed() const;
+};
+
+struct GULISTRIKE_API FGuLiWingmanGuardPoseObservation
+{
+	FVector Position = FVector::ZeroVector;
+	bool bAlive = true;
+	bool bHasFreshAcceptedPose = false;
+};
+
+namespace GuLiWingmanTargeting
+{
+	GULISTRIKE_API bool IsWithinAcquireRange(double DistanceCentimeters,
+		const FGuLiWingmanTargetingTuning& Tuning);
+	GULISTRIKE_API bool IsWithinReleaseRange(double DistanceCentimeters,
+		const FGuLiWingmanTargetingTuning& Tuning);
+	GULISTRIKE_API bool IsGuardRejoinComplete(TConstArrayView<FGuLiWingmanGuardPoseObservation> Observations,
+		const FVector& ShipLocation, float CatchUpDistanceCentimeters,
+		float RecoveryDistanceCentimeters, float RequiredFraction);
+}
+
+namespace GuLiWingmanAttackAuthority
+{
+	/** The complete server geometry/LOS/cooldown gate for one queued approach gun shot. */
+	GULISTRIKE_API bool IsGunShotEligible(const FVector& SourceLocation, const FVector& SourceForward,
+		const FGuLiCombatTargetSnapshot& LiveTarget, float RangeCentimeters, float ConeHalfAngleDegrees,
+		bool bHasLineOfSight, double CaptureTimeSeconds, double NextFireTimeSeconds);
+}
 
 /** Canonical wire representation for the free-look camera aim. */
 namespace GuLiWingmanMissileAim
@@ -59,8 +94,12 @@ struct GULISTRIKE_API FGuLiWingmanBasicFireResult
 struct GULISTRIKE_API FGuLiWingmanMissileSalvoRequest
 {
 	FGuid ActivationId;
+	FGuLiWeaponBindingKey Binding;
+	FName SkillId;
 	FGameplayTag MissileAbilityId;
 	uint32 AbilitySetRevision = 0u;
+	uint32 LoadoutRevision = 0u;
+	uint32 ProfileRevision = 0u;
 	uint32 MissileDefinitionRevision = 0u;
 	/** Client camera forward, normalized then rounded to 1/1000 before the RPC. */
 	FIntVector AimDirectionMilli = FIntVector::ZeroValue;
@@ -93,6 +132,9 @@ public:
 	bool Initialize(const FGuLiWingmanCombatContext& InContext, FString* OutError = nullptr);
 	void Reset();
 	bool IsReady() const;
+	/** Migrates per-member/per-slot cadence without resetting formation or sibling channels. */
+	bool ApplyCommittedAbilityConfig(
+		const FGuLiGroupAbilityConfigSnapshot& NewConfig, double NowSeconds);
 
 	/** Inject this into FGuLiWingmanRelayServer::SubmitFireIntent. */
 	FGuLiFireIntentServerValidator MakeBasicFireIntentValidator();
@@ -113,6 +155,11 @@ public:
 
 	/** Removes per-emitter cooldown state for dead/replaced handles without disturbing surviving members. */
 	int32 SynchronizeRosterState();
+	void TickAttackTargeting(double NowSeconds, const FGuLiWingmanTargetingTuning& Tuning);
+	bool SetSpecifiedAttackTarget(const FGuLiTargetHandle& Target);
+	void ClearSpecifiedAttackTarget();
+	FGuLiWingmanAttackTarget GetAttackTarget() const;
+	int32 CommitValidatedAttackBatch(const FGuLiWingmanCandidateBatch& Candidate, double NowSeconds);
 
 	int32 GetRememberedMissileActivationCount() const { return MissileResultsByActivation.Num(); }
 
@@ -122,7 +169,7 @@ private:
 	EGuLiWingmanRejectReason SelectMissileTarget(
 		const FVector& AuthorityOrigin,
 		const FVector& AimForward,
-		const UGuLiWingmanWeaponDefinition& Definition,
+		const FGuLiWingmanWeaponRuntimeConfig& Runtime,
 		FGuLiCombatTargetSnapshot& OutTarget) const;
 	bool IsShipSourceAlive() const;
 	bool HasLineOfSight(const FVector& SourceLocation, const FGuLiCombatTargetSnapshot& Target) const;
@@ -142,7 +189,13 @@ private:
 	static FGuid MakeStableMissileId(const FGuid& ActivationId, const FGuLiWingmanHandle& Emitter, uint32 Salt);
 
 	FGuLiWingmanCombatContext Context;
-	TMap<FGuLiWingmanHandle, double> BasicNextFireTimeByEmitter;
+	FGuLiTargetHandle SpecifiedAttackTarget;
+	TArray<FGuLiWingmanAttackTarget> AttackTargetHistory;
+	double NextAttackTargetScan = 0.0;
+	FGuLiWingmanTargetingTuning TargetingTuning;
+	bool bAutoTargetingLockedForGuard = false;
+	FGuLiGroupAbilityConfigSnapshot LastWeaponConfig;
+	TMap<FGuLiWingmanHandle, TMap<FName, double>> NextFireTimeByEmitterAndSlot;
 	TMap<FGuid, FGuLiWingmanMissileSalvoResult> MissileResultsByActivation;
 	TArray<FGuid> MissileActivationOrder;
 	int32 MaximumRememberedMissileActivations = 256;

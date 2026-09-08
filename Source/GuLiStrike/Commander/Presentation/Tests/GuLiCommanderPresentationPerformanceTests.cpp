@@ -6,6 +6,8 @@
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "Components/InstancedStaticMeshComponent.h"
+#include "Commander/Network/GuLiSoldierStateReplicator.h"
+#include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "HAL/IConsoleManager.h"
 #include "Misc/AutomationTest.h"
@@ -296,6 +298,116 @@ bool FGuLiCommanderPresentationConsoleWorldIsolationTest::RunTest(const FString&
 
 	FirstWorld->DestroyWorld(false);
 	SecondWorld->DestroyWorld(false);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiCommanderUnitTypeBatchRoutingTest,
+	"GuLiStrike.Commander.Presentation.UnitTypeBatchRouting",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiCommanderUnitTypeBatchRoutingTest::RunTest(const FString& Parameters)
+{
+	(void)Parameters;
+	if (!TestNotNull(TEXT("An engine exists for the UnitType batch fixture"), GEngine))
+	{
+		return false;
+	}
+
+	UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
+	if (!TestNotNull(TEXT("An isolated UnitType batch World exists"), World))
+	{
+		return false;
+	}
+	GEngine->CreateNewWorldContext(EWorldType::Game).SetCurrentWorld(World);
+	World->InitializeActorsForPlay(FURL());
+	AGuLiCommanderPresentationActor* Presentation =
+		World->SpawnActor<AGuLiCommanderPresentationActor>();
+	AGuLiSoldierStateReplicator* Replicator =
+		World->SpawnActor<AGuLiSoldierStateReplicator>();
+	if (!TestNotNull(TEXT("The presentation actor exists"), Presentation)
+		|| !TestNotNull(TEXT("The roster replicator exists"), Replicator))
+	{
+		World->DestroyWorld(false);
+		GEngine->DestroyWorldContext(World);
+		return false;
+	}
+	if (!Presentation->HasActorBegunPlay())
+	{
+		Presentation->DispatchBeginPlay();
+	}
+
+	UInstancedStaticMeshComponent* UnitTypeOne = Presentation->FindUnitInstances(1u);
+	UInstancedStaticMeshComponent* UnitTypeTwo = Presentation->FindUnitInstances(2u);
+	TestNotNull(TEXT("UnitTypeId 1 owns an exact ISM batch"), UnitTypeOne);
+	TestNotNull(TEXT("UnitTypeId 2 owns an exact ISM batch"), UnitTypeTwo);
+	TestTrue(TEXT("Different UnitTypeIds never share the same ISM component"),
+		UnitTypeOne && UnitTypeTwo && UnitTypeOne != UnitTypeTwo);
+	TArray<UInstancedStaticMeshComponent*> Components;
+	Presentation->GetUnitInstanceComponents(Components);
+	TestEqual(TEXT("The two-row Soldier catalog creates two unit batches"), Components.Num(), 2);
+
+	FGuLiSoldierStateItem SoldierOne;
+	SoldierOne.SoldierId = FGuLiSoldierId(1u);
+	SoldierOne.Team = EGuLiTeam::Red;
+	SoldierOne.UnitTypeId = 1u;
+	FGuLiSoldierStateItem SoldierTwo;
+	SoldierTwo.SoldierId = FGuLiSoldierId(2u);
+	SoldierTwo.Team = EGuLiTeam::Blue;
+	SoldierTwo.UnitTypeId = 2u;
+	TArray<FGuLiSoldierStateItem> Snapshot = {SoldierOne, SoldierTwo};
+	Replicator->ApplyAuthoritySnapshot(Snapshot, 1u);
+	Presentation->EnsureStableInstancePool(*Replicator);
+	TestEqual(TEXT("UnitTypeId 1 receives one stable slot"),
+		UnitTypeOne ? UnitTypeOne->GetInstanceCount() : 0, 1);
+	TestEqual(TEXT("UnitTypeId 2 receives one stable slot"),
+		UnitTypeTwo ? UnitTypeTwo->GetInstanceCount() : 0, 1);
+	TestEqual(TEXT("Both Soldiers retain independent shared-ring slots"),
+		Presentation->GetRingInstances()->GetInstanceCount(), 2);
+
+	const FGuLiCommanderSoldierInstanceHandle* OriginalHandle =
+		Presentation->SoldierInstanceHandles.Find(SoldierOne.SoldierId);
+	const int32 OriginalRingIndex = OriginalHandle
+		? OriginalHandle->RingInstanceIndex
+		: INDEX_NONE;
+	Snapshot[0].UnitTypeId = 2u;
+	Replicator->ApplyAuthoritySnapshot(Snapshot, 1u);
+	Presentation->EnsureStableInstancePool(*Replicator);
+	const FGuLiCommanderSoldierInstanceHandle* RetypedHandle =
+		Presentation->SoldierInstanceHandles.Find(SoldierOne.SoldierId);
+	TestTrue(TEXT("A type-only update migrates Soldier one to UnitTypeId 2"),
+		RetypedHandle && RetypedHandle->BatchUnitTypeId == 2u);
+	TestEqual(TEXT("Retyping preserves the Soldier's shared-ring slot"),
+		RetypedHandle ? RetypedHandle->RingInstanceIndex : INDEX_NONE,
+		OriginalRingIndex);
+	TestEqual(TEXT("The destination batch expands once"),
+		UnitTypeTwo ? UnitTypeTwo->GetInstanceCount() : 0, 2);
+	TestEqual(TEXT("The old UnitTypeId 1 slot is retained for stable reuse"),
+		UnitTypeOne ? UnitTypeOne->GetInstanceCount() : 0, 1);
+
+	AddExpectedMessagePlain(
+		TEXT("has no ISM batch for UnitTypeId 999"),
+		ELogVerbosity::Warning,
+		EAutomationExpectedMessageFlags::Contains,
+		1);
+	Snapshot[0].UnitTypeId = 999u;
+	Replicator->ApplyAuthoritySnapshot(Snapshot, 1u);
+	Presentation->EnsureStableInstancePool(*Replicator);
+	Presentation->EnsureStableInstancePool(*Replicator);
+	const FGuLiCommanderSoldierInstanceHandle* FallbackHandle =
+		Presentation->SoldierInstanceHandles.Find(SoldierOne.SoldierId);
+	TestTrue(TEXT("An unknown type routes to the default UnitTypeId 1 batch"),
+		FallbackHandle && FallbackHandle->RequestedUnitTypeId == 999u
+			&& FallbackHandle->BatchUnitTypeId == 1u);
+	TestEqual(TEXT("Fallback reuses the released default slot"),
+		FallbackHandle ? FallbackHandle->UnitInstanceIndex : INDEX_NONE,
+		0);
+	TestEqual(TEXT("Fallback still preserves the ring slot"),
+		FallbackHandle ? FallbackHandle->RingInstanceIndex : INDEX_NONE,
+		OriginalRingIndex);
+
+	World->DestroyWorld(false);
+	GEngine->DestroyWorldContext(World);
 	return true;
 }
 

@@ -17,7 +17,9 @@ out_dir = root / 'outputs/skill-bridge'
 out_dir.mkdir(parents=True, exist_ok=True)
 namespace['PROGRESS'] = str(out_dir / 'import_progress.log')
 manifest = json.loads((root / 'data/Json/manifest.json').read_text(encoding='utf-8'))
-tables = ['DT_GuLiStrikeCommander_Soldiers', 'DT_GuLiStrikeCommander_Skills', 'DT_GuLiStrikeCommander_UnitSkills']
+tables = ['DT_GuLiStrikeCommander_Soldiers', 'DT_GuLiStrikeCommander_Skills',
+          'DT_GuLiStrikeCommander_UnitSkills', 'DT_GuLiStrikeCommander_SpellFields',
+          'DT_GuLiStrikeCommander_WeaponMounts']
 report = {'tables': [namespace['import_table'](name, manifest['tables'][name]) for name in tables]}
 report['passed'] = all(entry.get('imported') for entry in report['tables'])
 (out_dir / 'import_report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')

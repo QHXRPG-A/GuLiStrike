@@ -6,6 +6,22 @@
 #include "Gameplay/Ship/Abilities/GuLiShipGameplayAbility.h"
 #include "GuLiShipAbilities.generated.h"
 
+UCLASS()
+class GULISTRIKE_API UGuLiShipWingmanMachineGunAbility final : public UGuLiShipGameplayAbility
+{
+	GENERATED_BODY()
+public:
+	UGuLiShipWingmanMachineGunAbility();
+};
+
+UCLASS()
+class GULISTRIKE_API UGuLiShipWingmanGroundMissileAbility final : public UGuLiShipGameplayAbility
+{
+	GENERATED_BODY()
+public:
+	UGuLiShipWingmanGroundMissileAbility();
+};
+
 /** Default server-activated, persistent double-ring formation authorization. */
 UCLASS()
 class GULISTRIKE_API UGuLiShipDoubleRingFormationAbility final : public UGuLiShipGameplayAbility
@@ -14,6 +30,16 @@ class GULISTRIKE_API UGuLiShipDoubleRingFormationAbility final : public UGuLiShi
 
 public:
 	UGuLiShipDoubleRingFormationAbility();
+};
+
+/** Default server-activated authorization for deterministic, un-slotted swarm escort flight. */
+UCLASS()
+class GULISTRIKE_API UGuLiShipSwarmOrbitFormationAbility final : public UGuLiShipGameplayAbility
+{
+	GENERATED_BODY()
+
+public:
+	UGuLiShipSwarmOrbitFormationAbility();
 };
 
 /** Persistent group-wide basic weapon authorization; each Mass entity owns cadence/sequence. */

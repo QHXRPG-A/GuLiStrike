@@ -56,6 +56,7 @@ public class GuLiStrike : ModuleRules
 		{
 			PrivateDependencyModuleNames.AddRange(new string[] {
 				"AssetRegistry",
+				"NiagaraEditor",
 				"MaterialUtilities",
 				"MeshMergeUtilities",
 				"UnrealEd",

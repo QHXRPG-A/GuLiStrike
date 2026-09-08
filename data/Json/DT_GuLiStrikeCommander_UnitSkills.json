@@ -12,9 +12,9 @@
     "RangeCentimeters": 10000.0
   },
   {
-    "Name": "SoldierB_Strafe",
+    "Name": "WM01_Strafe",
     "Id": 2,
-    "Note": "B默认普攻",
+    "Note": "WM01 默认普攻",
     "UnitTypeId": 2,
     "SlotId": "BasicAttack",
     "SkillId": "Strafe",
@@ -36,9 +36,9 @@
     "RangeCentimeters": 12000.0
   },
   {
-    "Name": "SoldierB_Test",
+    "Name": "WM01_Test",
     "Id": 4,
-    "Note": "B替换验证",
+    "Note": "WM01 替换验证",
     "UnitTypeId": 2,
     "SlotId": "BasicAttack",
     "SkillId": "StrafeTest",
@@ -46,5 +46,17 @@
     "Damage": 15.0,
     "AttackRatePerSecond": 2.0,
     "RangeCentimeters": 18000.0
+  },
+  {
+    "Name": "WM01_MissileLauncher",
+    "Id": 5,
+    "Note": "默认解锁；3秒/枚，伤害由SpellFields表提供，150米射程；调试初值非最终平衡",
+    "UnitTypeId": 2,
+    "SlotId": "MissileLauncher",
+    "SkillId": "WM01_HomingMissile",
+    "bDefault": true,
+    "Damage": 0.0,
+    "AttackRatePerSecond": 0.3333333333333333,
+    "RangeCentimeters": 15000.0
   }
 ]

@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Abilities/GameplayAbility.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h"
+#include "Gameplay/Ship/Aiming/GuLiShipReticleTypes.h"
 #include "GuLiShipGameplayAbility.generated.h"
 
 /**
@@ -22,6 +23,10 @@ public:
 	FGameplayTag GetStableAbilityId() const { return StableAbilityId; }
 	EGuLiShipAbilitySlot GetShipAbilitySlot() const { return AbilitySlot; }
 	EGuLiShipAbilityActivationPolicy GetShipActivationPolicy() const { return ActivationPolicy; }
+
+	/** Screen-space parameters used only when AssetTags contains Ship.Ability.Reticle.Bounded. */
+	UFUNCTION(BlueprintPure, Category = "Ship|Abilities|Reticle")
+	FGuLiShipReticleConfig GetReticleConfig() const { return ReticleConfig; }
 
 	virtual bool CanActivateAbility(
 		const FGameplayAbilitySpecHandle Handle,
@@ -57,6 +62,9 @@ protected:
 
 	UPROPERTY(VisibleDefaultsOnly, BlueprintReadOnly, Category = "Ship|Abilities")
 	EGuLiShipAbilityActivationPolicy ActivationPolicy = EGuLiShipAbilityActivationPolicy::WhileGranted;
+
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category = "Ship|Abilities|Reticle")
+	FGuLiShipReticleConfig ReticleConfig;
 
 private:
 	bool bPersistentProjectionPublished = false;

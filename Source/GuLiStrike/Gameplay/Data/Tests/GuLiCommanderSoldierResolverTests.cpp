@@ -169,6 +169,8 @@ bool FGuLiCommanderSoldierImportedBaselineTest::RunTest(const FString& Parameter
 		TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Soldiers.DT_GuLiStrikeCommander_Soldiers");
 	constexpr TCHAR CrowdMeshPath[] =
 		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd");
+	constexpr TCHAR WM01CrowdMeshPath[] =
+		TEXT("/Game/Commander/Units/SM_WM01_Crowd.SM_WM01_Crowd");
 
 	const UDataTable* DataTable = LoadObject<UDataTable>(nullptr, TablePath);
 	if (!TestNotNull(TEXT("imported Soldier DataTable is available"), DataTable))
@@ -196,10 +198,18 @@ bool FGuLiCommanderSoldierImportedBaselineTest::RunTest(const FString& Parameter
 	}
 	TestEqual(TEXT("imported defense"), Resolved.Defense, 0.0f);
 	const FGuLiSoldierDefinition SecondType = FGuLiCommanderSoldierResolver::Resolve(
-		DataTable, TEXT("TestSoldierB"), Resolved, bEntireDefinitionFromDataTable);
-	TestTrue(TEXT("Second type resolves without fallback"), bEntireDefinitionFromDataTable);
-	TestEqual(TEXT("Second type has its own stable identity"), SecondType.UnitTypeId, static_cast<uint16>(2u));
-	TestEqual(TEXT("Imported fractional health survives above 255"), SecondType.MaxHealth, 300.5f);
+		DataTable, TEXT("WM01"), Resolved, bEntireDefinitionFromDataTable);
+	TestTrue(TEXT("WM01 resolves without fallback"), bEntireDefinitionFromDataTable);
+	TestEqual(TEXT("WM01 has its own stable identity"), SecondType.UnitTypeId, static_cast<uint16>(2u));
+	TestEqual(TEXT("WM01 fractional health survives above 255"), SecondType.MaxHealth, 300.5f);
+	TestNotNull(TEXT("WM01 model resolves to a UStaticMesh"), SecondType.Model.Get());
+	if (IsValid(SecondType.Model))
+	{
+		TestEqual(
+			TEXT("WM01 resolves to its dedicated Crowd mesh"),
+			SecondType.Model->GetPathName(),
+			FString(WM01CrowdMeshPath));
+	}
 	return true;
 }
 

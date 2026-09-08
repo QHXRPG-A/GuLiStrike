@@ -20,6 +20,18 @@ struct GULISTRIKE_API FGuLiMissileVisualLaunchDTO
 	FGuid MissileId;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
+	FGuid RootEventId;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
+	FGuLiWeaponBindingKey WeaponBinding;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
+	FName SkillId;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat|Missile|Visual")
+	uint32 ProfileRevision = 0u;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
 	FGuLiWingmanHandle Emitter;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
@@ -76,6 +88,18 @@ struct GULISTRIKE_API FGuLiMissileVisualTerminalDTO
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
 	FGuid MissileId;
 
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
+	FGuid RootEventId;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
+	FGuLiWeaponBindingKey WeaponBinding;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
+	FName SkillId;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat|Missile|Visual")
+	uint32 ProfileRevision = 0u;
+
 	UPROPERTY(VisibleAnywhere, Category = "Combat|Missile|Visual")
 	uint32 SimulationSequence = 0u;
 
@@ -101,6 +125,18 @@ struct GULISTRIKE_API FGuLiMissileVisualState
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
 	FGuid MissileId;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
+	FGuid RootEventId;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
+	FGuLiWeaponBindingKey WeaponBinding;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
+	FName SkillId;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat|Missile|Visual")
+	uint32 ProfileRevision = 0u;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile|Visual")
 	FGuLiWingmanHandle Emitter;

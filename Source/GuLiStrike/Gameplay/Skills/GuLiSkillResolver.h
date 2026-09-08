@@ -9,7 +9,8 @@ public:
 	static bool Resolve(EGuLiTeam Team, const TArray<FGuLiSkillDefinition>& Definitions,
 		const TArray<FGuLiUnitSkillConfig>& Configs, const TArray<FGuLiSkillSource>& Sources,
 		const TArray<FGuLiSkillNumericOverride>& Overrides,
-		TArray<FGuLiResolvedSkillProfile>& OutProfiles, FString& OutError);
+		TArray<FGuLiResolvedSkillProfile>& OutProfiles, FString& OutError,
+		const TArray<FGuLiSkillLoadoutSelection>* Loadout = nullptr);
 	static bool ValidateCatalog(const TArray<FGuLiSkillDefinition>& Definitions,
 		const TArray<FGuLiUnitSkillConfig>& Configs, FString& OutError);
 	/** Validates the full candidate input, computes only SelectedSlots; output is only these slots.
@@ -18,7 +19,8 @@ public:
 	static bool ResolveSelected(EGuLiTeam Team, const TArray<FGuLiSkillDefinition>& Definitions,
 		const TArray<FGuLiUnitSkillConfig>& Configs, const TArray<FGuLiSkillSource>& Sources,
 		const TArray<FGuLiSkillNumericOverride>& Overrides, const TArray<FGuLiSkillSlotKey>& SelectedSlots,
-		TArray<FGuLiResolvedSkillProfile>& OutProfiles, FString& OutError);
+		TArray<FGuLiResolvedSkillProfile>& OutProfiles, FString& OutError,
+		const TArray<FGuLiSkillLoadoutSelection>* Loadout = nullptr);
 	/** Adds source targets without final-skill filtering: replacements may change that filter. */
 	static void GatherAffectedSlots(const TArray<FGuLiUnitSkillConfig>& Configs,
 		const FGuLiSkillSource& Source, TArray<FGuLiSkillSlotKey>& InOutSlots);

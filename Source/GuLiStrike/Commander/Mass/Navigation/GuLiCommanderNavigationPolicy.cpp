@@ -7,6 +7,194 @@
 
 namespace GuLiCommanderNavigationPolicy
 {
+	uint32 ResolveMovementUpdatePhase(
+		const uint32 StableSoldierId,
+		const uint32 UpdateIntervalTicks)
+	{
+		return StableSoldierId != 0u && UpdateIntervalTicks != 0u
+			? StableSoldierId % UpdateIntervalTicks
+			: 0u;
+	}
+
+	bool ShouldRunMovementUpdate(
+		const uint32 ServerSimTick,
+		const uint32 StableSoldierId,
+		const bool bForceUpdate,
+		const uint32 UpdateIntervalTicks)
+	{
+		return StableSoldierId != 0u
+			&& UpdateIntervalTicks != 0u
+			&& (bForceUpdate
+				|| ServerSimTick % UpdateIntervalTicks
+					== ResolveMovementUpdatePhase(StableSoldierId, UpdateIntervalTicks));
+	}
+
+	float ResolveMovementUpdateDeltaSeconds(
+		const double CurrentSimulationSeconds,
+		const double LastMovementUpdateSimulationSeconds,
+		const float MinimumDeltaSeconds,
+		const float MaximumDeltaSeconds)
+	{
+		if (!FMath::IsFinite(CurrentSimulationSeconds)
+			|| !FMath::IsFinite(LastMovementUpdateSimulationSeconds)
+			|| !FMath::IsFinite(MinimumDeltaSeconds)
+			|| !FMath::IsFinite(MaximumDeltaSeconds)
+			|| MinimumDeltaSeconds <= 0.0f
+			|| MaximumDeltaSeconds < MinimumDeltaSeconds)
+		{
+			return 0.0f;
+		}
+
+		const double ElapsedSeconds = CurrentSimulationSeconds
+			- LastMovementUpdateSimulationSeconds;
+		if (!FMath::IsFinite(ElapsedSeconds) || ElapsedSeconds <= 0.0)
+		{
+			return MinimumDeltaSeconds;
+		}
+		return FMath::Clamp(
+			static_cast<float>(ElapsedSeconds),
+			MinimumDeltaSeconds,
+			MaximumDeltaSeconds);
+	}
+
+	FIntPoint MakeAvoidanceSpatialCell(
+		const FVector& Location,
+		const float CellSizeCentimeters)
+	{
+		if (Location.ContainsNaN()
+			|| !FMath::IsFinite(CellSizeCentimeters)
+			|| CellSizeCentimeters <= 0.0f)
+		{
+			return FIntPoint::ZeroValue;
+		}
+		return FIntPoint(
+			FMath::FloorToInt(Location.X / CellSizeCentimeters),
+			FMath::FloorToInt(Location.Y / CellSizeCentimeters));
+	}
+
+	FManualAvoidanceMetrics BuildManualAvoidanceVelocities(
+		const TConstArrayView<FManualAvoidanceAgent> Agents,
+		const float CellSizeCentimeters,
+		const float MinimumDistanceCentimeters,
+		const float MaximumHeightDifferenceCentimeters,
+		const float MovementSpeedCentimetersPerSecond,
+		const float AvoidanceStrength,
+		FManualAvoidanceSpatialGrid& InOutSpatialGrid,
+		TArray<FVector>& OutAvoidanceVelocities)
+	{
+		FManualAvoidanceMetrics Metrics;
+		InOutSpatialGrid.Reset();
+		OutAvoidanceVelocities.Init(FVector::ZeroVector, Agents.Num());
+		if (!FMath::IsFinite(CellSizeCentimeters)
+			|| !FMath::IsFinite(MinimumDistanceCentimeters)
+			|| !FMath::IsFinite(MaximumHeightDifferenceCentimeters)
+			|| !FMath::IsFinite(MovementSpeedCentimetersPerSecond)
+			|| !FMath::IsFinite(AvoidanceStrength)
+			|| MinimumDistanceCentimeters <= 0.0f
+			|| CellSizeCentimeters < MinimumDistanceCentimeters
+			|| MaximumHeightDifferenceCentimeters <= 0.0f
+			|| MovementSpeedCentimetersPerSecond < 0.0f
+			|| AvoidanceStrength < 0.0f)
+		{
+			return Metrics;
+		}
+
+		for (int32 AgentIndex = 0; AgentIndex < Agents.Num(); ++AgentIndex)
+		{
+			const FManualAvoidanceAgent& Agent = Agents[AgentIndex];
+			if (!Agent.bParticipates || Agent.StableSoldierId == 0u
+				|| Agent.Location.ContainsNaN())
+			{
+				continue;
+			}
+			FManualAvoidanceBucket& Bucket = InOutSpatialGrid.FindOrAdd(
+				MakeAvoidanceSpatialCell(Agent.Location, CellSizeCentimeters));
+			Bucket.Add(AgentIndex);
+			Metrics.MaximumBucketOccupancy = FMath::Max(
+				Metrics.MaximumBucketOccupancy,
+				Bucket.Num());
+		}
+
+		const float MinimumDistanceSquared = FMath::Square(MinimumDistanceCentimeters);
+		for (int32 AgentIndex = 0; AgentIndex < Agents.Num(); ++AgentIndex)
+		{
+			const FManualAvoidanceAgent& Agent = Agents[AgentIndex];
+			if (!Agent.bParticipates || Agent.StableSoldierId == 0u
+				|| Agent.Location.ContainsNaN())
+			{
+				continue;
+			}
+
+			const FIntPoint Cell = MakeAvoidanceSpatialCell(
+				Agent.Location,
+				CellSizeCentimeters);
+			for (int32 CellX = Cell.X - 1; CellX <= Cell.X + 1; ++CellX)
+			{
+				for (int32 CellY = Cell.Y - 1; CellY <= Cell.Y + 1; ++CellY)
+				{
+					const FManualAvoidanceBucket* NeighborIndices = InOutSpatialGrid.Find(
+						FIntPoint(CellX, CellY));
+					if (!NeighborIndices)
+					{
+						continue;
+					}
+
+					for (const int32 NeighborIndex : *NeighborIndices)
+					{
+						if (NeighborIndex <= AgentIndex || !Agents.IsValidIndex(NeighborIndex))
+						{
+							continue;
+						}
+						const FManualAvoidanceAgent& Neighbor = Agents[NeighborIndex];
+						if (!Neighbor.bParticipates || Neighbor.StableSoldierId == 0u
+							|| (!Agent.bReceivesAvoidance && !Neighbor.bReceivesAvoidance))
+						{
+							continue;
+						}
+
+						++Metrics.CandidatePairs;
+						if (FMath::Abs(Agent.Location.Z - Neighbor.Location.Z)
+							>= MaximumHeightDifferenceCentimeters)
+						{
+							continue;
+						}
+
+						FVector Separation = Agent.Location - Neighbor.Location;
+						Separation.Z = 0.0f;
+						const float DistanceSquared = Separation.SizeSquared2D();
+						if (DistanceSquared >= MinimumDistanceSquared)
+						{
+							continue;
+						}
+
+						++Metrics.OverlapPairs;
+						const float Distance = FMath::Sqrt(FMath::Max(1.0f, DistanceSquared));
+						const FVector NormalFromNeighbor = DistanceSquared > 1.0f
+							? Separation / Distance
+							: FVector(
+								Agent.StableSoldierId < Neighbor.StableSoldierId ? -1.0f : 1.0f,
+								0.0f,
+								0.0f);
+						const FVector SeparationVelocity = NormalFromNeighbor
+							* ((MinimumDistanceCentimeters - Distance)
+								/ MinimumDistanceCentimeters)
+							* MovementSpeedCentimetersPerSecond
+							* AvoidanceStrength;
+						if (Agent.bReceivesAvoidance)
+						{
+							OutAvoidanceVelocities[AgentIndex] += SeparationVelocity;
+						}
+						if (Neighbor.bReceivesAvoidance)
+						{
+							OutAvoidanceVelocities[NeighborIndex] -= SeparationVelocity;
+						}
+					}
+				}
+			}
+		}
+		return Metrics;
+	}
+
 	FName GetRequiredAgentName()
 	{
 		static const FName RequiredAgentName(TEXT("CommanderSoldier"));

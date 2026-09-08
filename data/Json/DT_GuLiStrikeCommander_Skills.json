@@ -2,7 +2,7 @@
   {
     "Name": "Strafe",
     "Id": 1,
-    "Note": "单体直接伤害；不接视觉表现",
+    "Note": "机枪即时单体伤害与枪火表现",
     "SkillId": "Strafe",
     "DisplayName": "扫射",
     "ExecutorId": "DirectSingleTarget",
@@ -16,5 +16,15 @@
     "DisplayName": "扫射测试变体",
     "ExecutorId": "DirectSingleTarget",
     "Tags": "Skill.Attack.Basic;Skill.Usage.Common;Weapon.Test"
+  },
+  {
+    "Name": "WM01_HomingMissile",
+    "Id": 3,
+    "Note": "独立自动导弹；爆炸由独立法术场结算；调试初值",
+    "SkillId": "WM01_HomingMissile",
+    "DisplayName": "WM01导弹",
+    "ExecutorId": "LaunchProjectile",
+    "Tags": "Skill.Attack.Basic;Skill.Usage.Common;Weapon.Missile",
+    "EffectConfigId": "WM01_MissileExplosion"
   }
 ]

@@ -850,8 +850,8 @@ void UGuLiWingmanQASubsystem::EmitSample(const bool bFinalSample)
 		NetworkIncomingBytesPerSecondSum += IncomingBytesPerSecond;
 		NetworkOutgoingBytesPerSecondSum += OutgoingBytesPerSecond;
 	}
-	const bool bProtocolV7 = GULI_WINGMAN_PROTOCOL_VERSION == 7u
-		&& (!BattleState || BattleState->GetProtocolVersion() == 7u);
+	const bool bProtocolVersionsMatch = GULI_WINGMAN_PROTOCOL_VERSION == 8u
+		&& (!BattleState || BattleState->GetProtocolVersion() == GULI_BATTLE_PROTOCOL_VERSION);
 	const bool bExpectedGroupCount = GroupCount > 0
 		&& (!bServer || ExpectedClientEndpoints <= 0
 			|| GroupCount == FMath::Min(ExpectedClientEndpoints, 4));
@@ -866,9 +866,9 @@ void UGuLiWingmanQASubsystem::EmitSample(const bool bFinalSample)
 		PreviousMinimumAcceptedFrame = MinimumAcceptedFrame;
 	}
 	const bool bRoleReady = bServer
-		? (bProtocolV7 && bAllActive && bAllBootstrap && bAllAtomic && bAllStrict
+		? (bProtocolVersionsMatch && bAllActive && bAllBootstrap && bAllAtomic && bAllStrict
 			&& ServerMovementWrites == 0u)
-		: (bProtocolV7 && (OwnerMassCount >= GULI_WINGMAN_GROUP_SIZE
+		: (bProtocolVersionsMatch && (OwnerMassCount >= GULI_WINGMAN_GROUP_SIZE
 			|| bObserverAtomicNow));
 
 	TMap<FName, FString> CommonFields;
@@ -1038,9 +1038,11 @@ void UGuLiWingmanQASubsystem::EmitSample(const bool bFinalSample)
 	}
 
 	FString GateError;
-	if (bProtocolV7)
+	if (bProtocolVersionsMatch)
 	{
+		// PROTOCOL_V7 is a frozen acceptance-schema key, not the current wire value.
 		EvidenceWriter.RecordGate(TEXT("PROTOCOL_V7"), true, 1, GateError);
+		EvidenceWriter.RecordGate(TEXT("WINGMAN_PROTOCOL_V8"), true, 1, GateError);
 	}
 	if (bServer && ServerMovementWrites == 0u)
 	{
@@ -1823,15 +1825,29 @@ void UGuLiWingmanQASubsystem::LogStats() const
 		? World->GetSubsystem<UGuLiWingmanSimulationSubsystem>() : nullptr;
 	const UGuLiBattleAuthoritySubsystem* Commander = World
 		? World->GetSubsystem<UGuLiBattleAuthoritySubsystem>() : nullptr;
+	FGuLiWingmanMotionDiagnostics Motion;
+	if (Simulation)
+	{
+		Simulation->GetMotionDiagnostics(Motion);
+	}
 	UE_LOG(LogGuLiWingman, Display,
-		TEXT("WingmanStats net_mode=%s groups=%d owner_mass=%d commander=%d commander_tick=%u dropped_steps=%llu qa_active=%d debug_draw=%d"),
+		TEXT("WingmanStats net_mode=%s groups=%d owner_mass=%d commander=%d commander_tick=%u "
+			"dropped_steps=%llu qa_active=%d debug_draw=%d motion=(alive=%d orbit=%d follow=%d "
+			"catchup=%d recover=%d stale=%d radius=%.1f/%.1f/%.1f speed=%.1f first=%s)"),
 		World ? GuLiWingmanQA::NetModeName(World->GetNetMode()) : TEXT("None"),
 		State ? State->GetPublicWingmanBootstraps().Num() : 0,
 		Simulation ? Simulation->GetTotalOwnedEntityCount() : 0,
 		Commander ? Commander->GetAuthoritativeMemberCount() : 0,
 		Commander ? Commander->GetServerSimTick() : 0u,
 		Commander ? Commander->GetDroppedFixedStepCount() : 0u,
-		EvidenceWriter.IsActive() ? 1 : 0, GetDebugDrawMode());
+		EvidenceWriter.IsActive() ? 1 : 0, GetDebugDrawMode(),
+		Motion.AliveEntities, Motion.OrbitEntities, Motion.FollowEntities,
+		Motion.CatchUpEntities, Motion.RecoverEntities, Motion.StaleEntities,
+		Motion.MinimumCarrierDistanceCentimeters,
+		Motion.MeanCarrierDistanceCentimeters,
+		Motion.MaximumCarrierDistanceCentimeters,
+		Motion.MeanSpeedCentimetersPerSecond,
+		*Motion.FirstAliveLocation.ToCompactString());
 }
 
 void UGuLiWingmanQASubsystem::LogUnit(const FString& RequestedWingmanId) const

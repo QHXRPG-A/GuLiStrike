@@ -23,6 +23,8 @@ namespace GuLiCommanderNavigationPolicy
 	inline constexpr float MinimumNavigationProgressCentimeters = 30.0f;
 	inline constexpr int32 RequiredTransitExpansionSuccessSteps = 15;
 	inline constexpr double MinimumTransitRearrangementIntervalSeconds = 0.5;
+	inline constexpr uint32 MovementUpdateIntervalTicks = 3u;
+	inline constexpr float MaximumMovementUpdateDeltaSeconds = 0.1f;
 
 	/** Frozen terminal coordinate frame derived from the last usable NavMesh path segment. */
 	struct GULISTRIKE_API FFinalPathFrame
@@ -70,8 +72,66 @@ namespace GuLiCommanderNavigationPolicy
 		double LastRearrangementTimeSeconds = -1.0;
 	};
 
+	/** Immutable input for one deterministic manual-separation solve. */
+	struct GULISTRIKE_API FManualAvoidanceAgent
+	{
+		uint32 StableSoldierId = 0u;
+		FVector Location = FVector::ZeroVector;
+		bool bParticipates = false;
+		bool bReceivesAvoidance = false;
+	};
+
+	/** Work counters produced by one manual-separation refresh. */
+	struct GULISTRIKE_API FManualAvoidanceMetrics
+	{
+		uint64 CandidatePairs = 0u;
+		uint64 OverlapPairs = 0u;
+		int32 MaximumBucketOccupancy = 0;
+	};
+
+	using FManualAvoidanceBucket = TArray<int32, TInlineAllocator<4>>;
+	using FManualAvoidanceSpatialGrid = TMap<FIntPoint, FManualAvoidanceBucket>;
+
 	/** The only SupportedAgent name legal for Commander movement. */
 	GULISTRIKE_API FName GetRequiredAgentName();
+
+	/** Stable per-Soldier phase used to spread 10 Hz work across a 30 Hz authority loop. */
+	GULISTRIKE_API uint32 ResolveMovementUpdatePhase(
+		uint32 StableSoldierId,
+		uint32 UpdateIntervalTicks = MovementUpdateIntervalTicks);
+
+	/** A forced first update bypasses the phase gate; invalid IDs and intervals are rejected. */
+	GULISTRIKE_API bool ShouldRunMovementUpdate(
+		uint32 ServerSimTick,
+		uint32 StableSoldierId,
+		bool bForceUpdate,
+		uint32 UpdateIntervalTicks = MovementUpdateIntervalTicks);
+
+	/** Clamps elapsed simulation time so a resumed Soldier cannot perform a large catch-up jump. */
+	GULISTRIKE_API float ResolveMovementUpdateDeltaSeconds(
+		double CurrentSimulationSeconds,
+		double LastMovementUpdateSimulationSeconds,
+		float MinimumDeltaSeconds,
+		float MaximumDeltaSeconds = MaximumMovementUpdateDeltaSeconds);
+
+	/** Cell coordinate for the dedicated short-range manual-avoidance grid. */
+	GULISTRIKE_API FIntPoint MakeAvoidanceSpatialCell(
+		const FVector& Location,
+		float CellSizeCentimeters);
+
+	/**
+	 * Rebuilds the caller-owned grid and evaluates every local unordered pair once.
+	 * CellSize must be at least MinimumDistance so the fixed 3x3 search cannot miss a pair.
+	 */
+	GULISTRIKE_API FManualAvoidanceMetrics BuildManualAvoidanceVelocities(
+		TConstArrayView<FManualAvoidanceAgent> Agents,
+		float CellSizeCentimeters,
+		float MinimumDistanceCentimeters,
+		float MaximumHeightDifferenceCentimeters,
+		float MovementSpeedCentimetersPerSecond,
+		float AvoidanceStrength,
+		FManualAvoidanceSpatialGrid& InOutSpatialGrid,
+		TArray<FVector>& OutAvoidanceVelocities);
 
 	/**
 	 * Finds the exact Commander SupportedAgent config. A Default-only list returns

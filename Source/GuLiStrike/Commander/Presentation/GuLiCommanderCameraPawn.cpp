@@ -26,8 +26,17 @@ namespace GuLiCommanderCamera
 	constexpr float CameraHeightAboveGround = 500.0f;
 	constexpr float BoundaryPadding = 5000.0f;
 	constexpr float BoomSampleSpacing = 10000.0f;
-	constexpr float MaximumRiseSpeed = 30000.0f;
-	constexpr float MaximumDescentSpeed = 15000.0f;
+	constexpr float CruiseHeightBuffer = 1000.0f;
+	constexpr float CruiseHeightDeadZone = 300.0f;
+	constexpr float CruiseRiseHalfLife = 0.20f;
+	constexpr float MaximumCruiseRiseSpeed = 30000.0f;
+	constexpr float ReanchorHalfLife = 0.35f;
+	constexpr float MaximumReanchorDescentSpeed = 15000.0f;
+	constexpr float ReanchorCompletionTolerance = 50.0f;
+	constexpr float MinimumReanchorDuration = 0.75f;
+	constexpr float EmergencyLiftTolerance = 1.0f;
+	constexpr float HeightLookAheadSeconds = 0.75f;
+	constexpr int32 HeightLookAheadSamples = 3;
 	constexpr float MaximumSubstepSeconds = 1.0f / 60.0f;
 	constexpr int32 MaximumSubsteps = 8;
 	constexpr int32 BinarySearchIterations = 8;
@@ -40,6 +49,24 @@ namespace GuLiCommanderCamera
 	float InterpolateYaw(const float From, const float To, const float Alpha)
 	{
 		return FRotator::NormalizeAxis(From + FRotator::NormalizeAxis(To - From) * Alpha);
+	}
+
+	float InterpolateWithHalfLife(
+		const float Current,
+		const float Target,
+		const float DeltaSeconds,
+		const float HalfLife,
+		const float MaximumSpeed)
+	{
+		if (DeltaSeconds <= UE_SMALL_NUMBER || HalfLife <= UE_SMALL_NUMBER)
+		{
+			return Current;
+		}
+
+		const float Alpha = 1.0f - FMath::Pow(0.5f, DeltaSeconds / HalfLife);
+		const float InterpolatedDelta = (Target - Current) * Alpha;
+		const float MaximumDelta = FMath::Max(0.0f, MaximumSpeed) * DeltaSeconds;
+		return Current + FMath::Clamp(InterpolatedDelta, -MaximumDelta, MaximumDelta);
 	}
 }
 
@@ -84,16 +111,28 @@ void AGuLiCommanderCameraPawn::Tick(const float DeltaSeconds)
 
 	if (FMath::Abs(PendingZoomInput) > KINDA_SMALL_NUMBER)
 	{
-		DesiredArmLength = FMath::Clamp(
+		const float RequestedDesiredArmLength = FMath::Clamp(
 			DesiredArmLength * FMath::Pow(GuLiCommanderCamera::ZoomStepMultiplier, PendingZoomInput),
 			GuLiCommanderCamera::MinimumArmLength,
 			GuLiCommanderCamera::MaximumArmLength);
+		if (!FMath::IsNearlyEqual(RequestedDesiredArmLength, DesiredArmLength))
+		{
+			DesiredArmLength = RequestedDesiredArmLength;
+			bHeightReanchorActive = true;
+			HeightReanchorRemainingSeconds = GuLiCommanderCamera::MinimumReanchorDuration;
+		}
 	}
 
 	const float SafeDeltaSeconds = FMath::Max(0.0f, DeltaSeconds);
 	const float SimulatedSeconds = FMath::Min(
 		SafeDeltaSeconds,
 		GuLiCommanderCamera::MaximumSubstepSeconds * static_cast<float>(GuLiCommanderCamera::MaximumSubsteps));
+#if !UE_BUILD_SHIPPING
+	LastRequestedPlanarDistance = 0.0f;
+	LastAppliedPlanarDistance = 0.0f;
+	LastEmergencyLiftAmount = 0.0f;
+	bEmergencyLiftThisFrame = false;
+#endif
 	if (SimulatedSeconds > UE_SMALL_NUMBER)
 	{
 		const int32 SubstepCount = FMath::Clamp(
@@ -143,12 +182,23 @@ void AGuLiCommanderCameraPawn::InitializeSolver()
 		FVector2D(Pivot.X, Pivot.Y), Rotation.Yaw, EffectiveArmLength, RequiredPivotZ);
 	if (bTerrainValid)
 	{
-		Pivot.Z = RequiredPivotZ;
+		Pivot.Z = RequiredPivotZ + GuLiCommanderCamera::CruiseHeightBuffer;
 	}
+	HeldCruisePivotZ = Pivot.Z;
+	HeightReanchorRemainingSeconds = 0.0f;
+	bHeightReanchorActive = false;
 	SetActorLocationAndRotation(Pivot, Rotation, false, nullptr, ETeleportType::TeleportPhysics);
 	SpringArm->TargetArmLength = EffectiveArmLength;
 	bSolverInitialized = true;
 #if !UE_BUILD_SHIPPING
+	LastRequestedPlanarDistance = 0.0f;
+	LastAppliedPlanarDistance = 0.0f;
+	LastHardRequiredPivotZ = bTerrainValid ? RequiredPivotZ : Pivot.Z;
+	LastCruiseTargetPivotZ = Pivot.Z;
+	LastEmergencyLiftAmount = 0.0f;
+	bLastRequestedPoseValid = bTerrainValid;
+	bEmergencyLiftActive = false;
+	bEmergencyLiftThisFrame = false;
 	if (bCameraDebugEnabled)
 	{
 		RefreshDebugSnapshot(bFootprintClamped, bTerrainValid);
@@ -190,11 +240,11 @@ void AGuLiCommanderCameraPawn::SimulateCameraStep(
 		CandidateArmLength,
 		CandidateRequiredZ);
 
-	const float MaximumAllowedZ = CurrentPivot.Z + GuLiCommanderCamera::MaximumRiseSpeed * StepSeconds;
+	const bool bRequestedPoseValid = bCandidateValid;
 	float ChosenYaw = RequestedYaw;
-	if (!bCandidateValid || CandidateRequiredZ > MaximumAllowedZ)
+	if (!bCandidateValid)
 	{
-		// Shorten the whole pan/turn/zoom transition when its terrain rise cannot be paid this step.
+		// Invalid Landscape coverage still fails closed. Valid rising terrain never scales planar input.
 		float LowerAlpha = 0.0f;
 		float UpperAlpha = 1.0f;
 		FVector BestPivot = CurrentPivot;
@@ -205,8 +255,7 @@ void AGuLiCommanderCameraPawn::SimulateCameraStep(
 			FVector2D(CurrentPivot.X, CurrentPivot.Y),
 			CurrentYaw,
 			CurrentArmLength,
-			BestRequiredZ)
-			&& BestRequiredZ <= MaximumAllowedZ;
+			BestRequiredZ);
 
 		for (int32 SearchIndex = 0; SearchIndex < GuLiCommanderCamera::BinarySearchIterations; ++SearchIndex)
 		{
@@ -219,8 +268,7 @@ void AGuLiCommanderCameraPawn::SimulateCameraStep(
 			const bool bTestValid = ConstrainStateToLandscape(
 				TestPivot, TestYaw, TestArmLength, TestArmLength, bTestClamped)
 				&& CalculateRequiredPivotHeight(
-					FVector2D(TestPivot.X, TestPivot.Y), TestYaw, TestArmLength, TestRequiredZ)
-				&& TestRequiredZ <= MaximumAllowedZ;
+					FVector2D(TestPivot.X, TestPivot.Y), TestYaw, TestArmLength, TestRequiredZ);
 			if (bTestValid)
 			{
 				LowerAlpha = Alpha;
@@ -260,17 +308,101 @@ void AGuLiCommanderCameraPawn::SimulateCameraStep(
 
 	if (bCandidateValid)
 	{
-		CandidatePivot.Z = CandidateRequiredZ >= CurrentPivot.Z
-			? FMath::Min(CandidateRequiredZ, MaximumAllowedZ)
-			: FMath::Max(
-				CandidateRequiredZ,
-				CurrentPivot.Z - GuLiCommanderCamera::MaximumDescentSpeed * StepSeconds);
+		const FVector2D RequestedPlanarDelta(
+			RequestedPivot.X - CurrentPivot.X,
+			RequestedPivot.Y - CurrentPivot.Y);
+		const FVector2D AppliedPlanarDelta(
+			CandidatePivot.X - CurrentPivot.X,
+			CandidatePivot.Y - CurrentPivot.Y);
+		const FVector2D AppliedPlanarVelocity = StepSeconds > UE_SMALL_NUMBER
+			? AppliedPlanarDelta / StepSeconds
+			: FVector2D::ZeroVector;
+		const float PredictedRequiredZ = CalculatePredictedRequiredPivotHeight(
+			CandidatePivot,
+			ChosenYaw,
+			CandidateArmLength,
+			AppliedPlanarVelocity,
+			CandidateRequiredZ);
+		const float CruiseTargetZ = PredictedRequiredZ + GuLiCommanderCamera::CruiseHeightBuffer;
+
+		float ProposedHeldZ = HeldCruisePivotZ;
+		if (bHeightReanchorActive)
+		{
+			HeightReanchorRemainingSeconds = FMath::Max(
+				0.0f,
+				HeightReanchorRemainingSeconds - StepSeconds);
+			if (CruiseTargetZ > ProposedHeldZ)
+			{
+				ProposedHeldZ = GuLiCommanderCamera::InterpolateWithHalfLife(
+					ProposedHeldZ,
+					CruiseTargetZ,
+					StepSeconds,
+					GuLiCommanderCamera::CruiseRiseHalfLife,
+					GuLiCommanderCamera::MaximumCruiseRiseSpeed);
+			}
+			else
+			{
+				ProposedHeldZ = GuLiCommanderCamera::InterpolateWithHalfLife(
+					ProposedHeldZ,
+					CruiseTargetZ,
+					StepSeconds,
+					GuLiCommanderCamera::ReanchorHalfLife,
+					GuLiCommanderCamera::MaximumReanchorDescentSpeed);
+			}
+		}
+		else if (CruiseTargetZ > ProposedHeldZ + GuLiCommanderCamera::CruiseHeightDeadZone)
+		{
+			ProposedHeldZ = GuLiCommanderCamera::InterpolateWithHalfLife(
+				ProposedHeldZ,
+				CruiseTargetZ,
+				StepSeconds,
+				GuLiCommanderCamera::CruiseRiseHalfLife,
+				GuLiCommanderCamera::MaximumCruiseRiseSpeed);
+		}
+
+		const float EmergencyLiftAmount = FMath::Max(0.0f, CandidateRequiredZ - ProposedHeldZ);
+		const bool bEmergencyLift = EmergencyLiftAmount > GuLiCommanderCamera::EmergencyLiftTolerance;
+		HeldCruisePivotZ = FMath::Max(ProposedHeldZ, CandidateRequiredZ);
+		if (bHeightReanchorActive
+			&& HeightReanchorRemainingSeconds <= UE_SMALL_NUMBER
+			&& FMath::Abs(HeldCruisePivotZ - CruiseTargetZ)
+				<= GuLiCommanderCamera::ReanchorCompletionTolerance)
+		{
+			HeldCruisePivotZ = FMath::Max(CruiseTargetZ, CandidateRequiredZ);
+			HeightReanchorRemainingSeconds = 0.0f;
+			bHeightReanchorActive = false;
+		}
+		CandidatePivot.Z = HeldCruisePivotZ;
+
+#if !UE_BUILD_SHIPPING
+		LastRequestedPlanarDistance += RequestedPlanarDelta.Size();
+		LastAppliedPlanarDistance += AppliedPlanarDelta.Size();
+		LastHardRequiredPivotZ = CandidateRequiredZ;
+		LastCruiseTargetPivotZ = CruiseTargetZ;
+		LastEmergencyLiftAmount += EmergencyLiftAmount;
+		bLastRequestedPoseValid = bRequestedPoseValid;
+		bEmergencyLiftThisFrame |= bEmergencyLift;
+		if (bEmergencyLift && !bEmergencyLiftActive)
+		{
+			++EmergencyLiftCount;
+		}
+		bEmergencyLiftActive = bEmergencyLift;
+#endif
 	}
 	else
 	{
 		CandidatePivot = CurrentPivot;
 		ChosenYaw = CurrentYaw;
 		CandidateArmLength = CurrentArmLength;
+#if !UE_BUILD_SHIPPING
+		LastRequestedPlanarDistance += FVector2D(
+			RequestedPivot.X - CurrentPivot.X,
+			RequestedPivot.Y - CurrentPivot.Y).Size();
+		LastHardRequiredPivotZ = CurrentPivot.Z;
+		LastCruiseTargetPivotZ = HeldCruisePivotZ;
+		bLastRequestedPoseValid = false;
+		bEmergencyLiftActive = false;
+#endif
 	}
 
 	SetActorLocationAndRotation(
@@ -407,6 +539,50 @@ bool AGuLiCommanderCameraPawn::CalculateRequiredPivotHeight(
 	return FMath::IsFinite(OutRequiredPivotZ);
 }
 
+float AGuLiCommanderCameraPawn::CalculatePredictedRequiredPivotHeight(
+	const FVector& PivotLocation,
+	const float YawDegrees,
+	const float ArmLength,
+	const FVector2D& PlanarVelocity,
+	const float HardRequiredPivotZ) const
+{
+	float PredictedRequiredPivotZ = HardRequiredPivotZ;
+	if (PlanarVelocity.IsNearlyZero() || !FMath::IsFinite(HardRequiredPivotZ))
+	{
+		return PredictedRequiredPivotZ;
+	}
+
+	for (int32 SampleIndex = 1; SampleIndex <= GuLiCommanderCamera::HeightLookAheadSamples; ++SampleIndex)
+	{
+		const float Alpha = static_cast<float>(SampleIndex)
+			/ static_cast<float>(GuLiCommanderCamera::HeightLookAheadSamples);
+		const float LookAheadSeconds = GuLiCommanderCamera::HeightLookAheadSeconds * Alpha;
+		FVector ForecastPivot = PivotLocation;
+		ForecastPivot.X += PlanarVelocity.X * LookAheadSeconds;
+		ForecastPivot.Y += PlanarVelocity.Y * LookAheadSeconds;
+		float ForecastArmLength = ArmLength;
+		bool bForecastClamped = false;
+		if (!ConstrainStateToLandscape(
+			ForecastPivot,
+			YawDegrees,
+			ArmLength,
+			ForecastArmLength,
+			bForecastClamped))
+		{
+			continue;
+		}
+
+		float ForecastGroundZ = 0.0f;
+		if (FindLandscapeHeight(ForecastPivot, ForecastGroundZ))
+		{
+			PredictedRequiredPivotZ = FMath::Max(
+				PredictedRequiredPivotZ,
+				ForecastGroundZ + GuLiCommanderCamera::PivotHeightAboveGround);
+		}
+	}
+	return PredictedRequiredPivotZ;
+}
+
 bool AGuLiCommanderCameraPawn::CalculateFootprintOffsets(
 	const float YawDegrees,
 	const float ArmLength,
@@ -522,13 +698,24 @@ void AGuLiCommanderCameraPawn::JumpToWorldLocation(FVector WorldLocation)
 	{
 		return;
 	}
-	WorldLocation.Z = RequiredPivotZ;
+	WorldLocation.Z = RequiredPivotZ + GuLiCommanderCamera::CruiseHeightBuffer;
 	PendingPlanarMovement = FVector2D::ZeroVector;
 	PendingYawInput = 0.0f;
 	PendingZoomInput = 0.0f;
+	HeldCruisePivotZ = WorldLocation.Z;
+	HeightReanchorRemainingSeconds = 0.0f;
+	bHeightReanchorActive = false;
 	SpringArm->TargetArmLength = EffectiveArmLength;
 	SetActorLocation(WorldLocation, false, nullptr, ETeleportType::TeleportPhysics);
 #if !UE_BUILD_SHIPPING
+	LastRequestedPlanarDistance = 0.0f;
+	LastAppliedPlanarDistance = 0.0f;
+	LastHardRequiredPivotZ = RequiredPivotZ;
+	LastCruiseTargetPivotZ = WorldLocation.Z;
+	LastEmergencyLiftAmount = 0.0f;
+	bLastRequestedPoseValid = true;
+	bEmergencyLiftActive = false;
+	bEmergencyLiftThisFrame = false;
 	if (bCameraDebugEnabled)
 	{
 		RefreshDebugSnapshot(bFootprintClamped, true);
@@ -557,8 +744,21 @@ void AGuLiCommanderCameraPawn::RefreshDebugSnapshot(
 	DebugSnapshot.PivotLocation = GetActorLocation();
 	DebugSnapshot.DesiredArmLength = DesiredArmLength;
 	DebugSnapshot.EffectiveArmLength = SpringArm ? SpringArm->TargetArmLength : 0.0f;
+	DebugSnapshot.RequestedPlanarDistance = LastRequestedPlanarDistance;
+	DebugSnapshot.AppliedPlanarDistance = LastAppliedPlanarDistance;
+	DebugSnapshot.AppliedPlanarRatio = LastRequestedPlanarDistance > UE_SMALL_NUMBER
+		? LastAppliedPlanarDistance / LastRequestedPlanarDistance
+		: 1.0f;
+	DebugSnapshot.HardRequiredPivotZ = LastHardRequiredPivotZ;
+	DebugSnapshot.CruiseTargetPivotZ = LastCruiseTargetPivotZ;
+	DebugSnapshot.HeldCruisePivotZ = HeldCruisePivotZ;
+	DebugSnapshot.EmergencyLiftAmount = LastEmergencyLiftAmount;
+	DebugSnapshot.EmergencyLiftCount = EmergencyLiftCount;
 	DebugSnapshot.bFootprintClamped = bFootprintClamped;
 	DebugSnapshot.bTerrainValid = bTerrainValid;
+	DebugSnapshot.bRequestedPoseValid = bLastRequestedPoseValid;
+	DebugSnapshot.bHeightReanchoring = bHeightReanchorActive;
+	DebugSnapshot.bEmergencyLift = bEmergencyLiftThisFrame;
 	const UWorld* World = GetWorld();
 	const UGuLiCommanderLandscapeQuerySubsystem* LandscapeQuery = World
 		? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
@@ -611,17 +811,30 @@ void AGuLiCommanderCameraPawn::RefreshDebugSnapshot(
 void AGuLiCommanderCameraPawn::DrawCameraDebug() const
 {
 	const FString Text = FString::Printf(
-		TEXT("CommanderCamera valid=%d terrain=%d clamped=%d\n")
+		TEXT("CommanderCamera valid=%d terrain=%d request=%d clamped=%d\n")
 		TEXT("bounds=[%.0f %.0f]-[%.0f %.0f]\n")
+		TEXT("move applied/requested=%.1f/%.1f ratio=%.3f\n")
+		TEXT("height hard=%.0f cruise=%.0f held=%.0f reanchor=%d emergency=%d lift=%.0f count=%u\n")
 		TEXT("pivot=(%.0f %.0f %.0f) ground=%.0f clear=%.0f\n")
 		TEXT("camera=(%.0f %.0f %.0f) boomMin=%.0f cameraClear=%.0f arm=%.0f/%.0f"),
 		DebugSnapshot.bLandscapeValid ? 1 : 0,
 		DebugSnapshot.bTerrainValid ? 1 : 0,
+		DebugSnapshot.bRequestedPoseValid ? 1 : 0,
 		DebugSnapshot.bFootprintClamped ? 1 : 0,
 		DebugSnapshot.LandscapeBounds.Min.X,
 		DebugSnapshot.LandscapeBounds.Min.Y,
 		DebugSnapshot.LandscapeBounds.Max.X,
 		DebugSnapshot.LandscapeBounds.Max.Y,
+		DebugSnapshot.AppliedPlanarDistance,
+		DebugSnapshot.RequestedPlanarDistance,
+		DebugSnapshot.AppliedPlanarRatio,
+		DebugSnapshot.HardRequiredPivotZ,
+		DebugSnapshot.CruiseTargetPivotZ,
+		DebugSnapshot.HeldCruisePivotZ,
+		DebugSnapshot.bHeightReanchoring ? 1 : 0,
+		DebugSnapshot.bEmergencyLift ? 1 : 0,
+		DebugSnapshot.EmergencyLiftAmount,
+		DebugSnapshot.EmergencyLiftCount,
 		DebugSnapshot.PivotLocation.X,
 		DebugSnapshot.PivotLocation.Y,
 		DebugSnapshot.PivotLocation.Z,

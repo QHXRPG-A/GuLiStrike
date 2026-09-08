@@ -1,4 +1,4 @@
-"""Audit the authored Ship Ability v1 contract through public editor APIs.
+"""Audit the authored Ship Ability v2 contract through public editor APIs.
 
 Run twice with an editor restart between runs to turn ``restart_verified`` true:
     python Scripts/ue_exec.py Scripts/audit_ship_ability_assets.py
@@ -24,6 +24,10 @@ FORMATION = (
     "/Game/GuLiStrike/Ship/Abilities/Formations/"
     "DA_WingmanFormation_DoubleRing"
 )
+SWARM_FORMATION = (
+    "/Game/GuLiStrike/Ship/Abilities/Formations/"
+    "DA_WingmanFormation_SwarmOrbit"
+)
 BASIC = (
     "/Game/GuLiStrike/Ship/Abilities/Weapons/"
     "DA_WingmanWeapon_BasicAuto"
@@ -32,7 +36,7 @@ MISSILE = (
     "/Game/GuLiStrike/Ship/Abilities/Weapons/"
     "DA_WingmanWeapon_MissileSalvo"
 )
-ALL_ASSETS = (FORMATION, BASIC, MISSILE, ABILITY_SET)
+ALL_ASSETS = (FORMATION, SWARM_FORMATION, BASIC, MISSILE, ABILITY_SET)
 
 PROJECT_DIR = unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())
 REPORT_PATH = os.path.join(
@@ -48,9 +52,11 @@ ALWAYS_COOK_LINE = (
 )
 
 FORMATION_VALUES = {
-    "revision": 1,
+    "revision": 2,
     "expected_wingman_count": 25,
     "flight_count": 5,
+    "model": "DoubleRingLegacy",
+    "guidance_algorithm_version": 1,
     "inner_ring_slots": 13,
     "outer_ring_slots": 12,
     "inner_ring_radius_centimeters": 60000.0,
@@ -72,10 +78,46 @@ FORMATION_VALUES = {
     "catch_up_distance_centimeters": 120000.0,
     "recovery_distance_centimeters": 250000.0,
 }
-FORMATION_HASH_ORDER = (
-    "revision",
-    "expected_wingman_count",
-    "flight_count",
+SWARM_FORMATION_VALUES = {
+    "revision": 1,
+    "expected_wingman_count": 25,
+    "flight_count": 5,
+    "model": "SwarmOrbit",
+    "guidance_algorithm_version": 1,
+    "minimum_flight_speed_centimeters_per_second": 3000.0,
+    "cruise_flight_speed_centimeters_per_second": 4500.0,
+    "catch_up_flight_speed_centimeters_per_second": 7500.0,
+    "maximum_turn_rate_degrees_per_second": 20.0,
+    "maximum_acceleration_centimeters_per_second_squared": 1000.0,
+    "maximum_deceleration_centimeters_per_second_squared": 800.0,
+    "maximum_bank_degrees": 45.0,
+    "agent_radius_centimeters": 1500.0,
+    "separation_radius_centimeters": 3000.0,
+    "obstacle_look_ahead_centimeters": 5000.0,
+    "catch_up_distance_centimeters": 60000.0,
+    "recovery_distance_centimeters": 90000.0,
+}
+SWARM_TUNING_VALUES = {
+    "inner_soft_radius_centimeters": 24000.0,
+    "outer_soft_radius_centimeters": 52000.0,
+    "vertical_half_extent_centimeters": 14000.0,
+    "hull_exclusion_radius_centimeters": 14000.0,
+    "swirl_speed_min_centimeters_per_second": 3600.0,
+    "swirl_speed_max_centimeters_per_second": 5200.0,
+    "curl_strength_centimeters_per_second": 1400.0,
+    "noise_spatial_scale_centimeters": 22000.0,
+    "noise_temporal_scale_seconds": 6.0,
+    "axis_precession_amount": 0.28,
+    "axis_precession_radians_per_second": 0.03,
+    "boundary_return_speed_centimeters_per_second": 2800.0,
+    "preferred_radius_return_speed_centimeters_per_second": 450.0,
+    "vertical_return_speed_centimeters_per_second": 1400.0,
+    "alignment_weight": 0.08,
+    "catch_up_style_weight": 0.20,
+    "recovery_style_weight": 0.05,
+    "response_time_seconds": 1.25,
+}
+LEGACY_MODEL_HASH_ORDER = (
     "inner_ring_slots",
     "outer_ring_slots",
     "inner_ring_radius_centimeters",
@@ -84,6 +126,8 @@ FORMATION_HASH_ORDER = (
     "outer_ring_height_centimeters",
     "inner_angular_speed_radians_per_second",
     "outer_angular_speed_radians_per_second",
+)
+FORMATION_COMMON_HASH_ORDER = (
     "minimum_flight_speed_centimeters_per_second",
     "cruise_flight_speed_centimeters_per_second",
     "catch_up_flight_speed_centimeters_per_second",
@@ -97,6 +141,7 @@ FORMATION_HASH_ORDER = (
     "catch_up_distance_centimeters",
     "recovery_distance_centimeters",
 )
+SWARM_TUNING_HASH_ORDER = tuple(SWARM_TUNING_VALUES)
 
 BASIC_VALUES = {
     "revision": 1,
@@ -167,12 +212,29 @@ def _slot_name(value: Any) -> str:
     return mapping.get(value, str(value))
 
 
-def _read_formation(asset: Any) -> dict[str, Any]:
+def _read_formation(asset: Any, expected_values: dict[str, Any]) -> dict[str, Any]:
     result: dict[str, Any] = {}
-    for name, expected in FORMATION_VALUES.items():
+    for name, expected in expected_values.items():
         value = asset.get_editor_property(name)
-        result[name] = float(value) if isinstance(expected, float) else int(value)
+        if name == "model":
+            result[name] = (
+                "SwarmOrbit"
+                if value == unreal.GuLiWingmanFormationModel.SWARM_ORBIT
+                else "DoubleRingLegacy"
+                if value == unreal.GuLiWingmanFormationModel.DOUBLE_RING_LEGACY
+                else str(value)
+            )
+        else:
+            result[name] = float(value) if isinstance(expected, float) else int(value)
     return result
+
+
+def _read_swarm_tuning(asset: Any) -> dict[str, float]:
+    tuning = asset.get_editor_property("swarm_orbit")
+    return {
+        name: float(tuning.get_editor_property(name))
+        for name in SWARM_TUNING_VALUES
+    }
 
 
 def _read_weapon(asset: Any) -> dict[str, Any]:
@@ -214,6 +276,15 @@ def _grant_record(grant: Any) -> dict[str, Any]:
 
 def _expected_grants() -> list[dict[str, Any]]:
     return [
+        {
+            "ability_id": "Ship.Ability.Formation.SwarmOrbit",
+            "slot": "Formation",
+            "ability_class": "/Script/GuLiStrike.GuLiShipSwarmOrbitFormationAbility",
+            "ability_level": 1,
+            "input_tag": "",
+            "formation_definition": _asset_object_path(SWARM_FORMATION),
+            "weapon_definition": "",
+        },
         {
             "ability_id": "Ship.Ability.Formation.DoubleRing",
             "slot": "Formation",
@@ -280,15 +351,36 @@ def _finish(value: int) -> int:
     return value if value != 0 else 1
 
 
-def _formation_checksum(values: dict[str, Any]) -> int:
-    value = _hash_string(FNV_OFFSET, "GuLi.WingmanFormation.DoubleRing.v1")
-    for name in FORMATION_HASH_ORDER:
+def _hash_numeric_fields(
+    value: int, values: dict[str, Any], names: tuple[str, ...]
+) -> int:
+    for name in names:
         item = values[name]
         value = (
             _hash_float(value, item)
-            if isinstance(FORMATION_VALUES[name], float)
+            if isinstance(item, float)
             else _hash_u32(value, item)
         )
+    return value
+
+
+def _formation_checksum(
+    values: dict[str, Any], swarm_tuning: dict[str, float] | None = None
+) -> int:
+    value = _hash_string(FNV_OFFSET, "GuLi.WingmanFormation.v2")
+    value = _hash_u32(value, values["revision"])
+    value = _hash_u32(value, values["expected_wingman_count"])
+    value = _hash_u32(value, values["flight_count"])
+    is_swarm = values["model"] == "SwarmOrbit"
+    value = _hash_u32(value, 1 if is_swarm else 0)
+    value = _hash_u32(value, values["guidance_algorithm_version"])
+    if is_swarm:
+        if swarm_tuning is None:
+            raise AuditError("SwarmOrbit checksum requires its nested tuning payload")
+        value = _hash_numeric_fields(value, swarm_tuning, SWARM_TUNING_HASH_ORDER)
+    else:
+        value = _hash_numeric_fields(value, values, LEGACY_MODEL_HASH_ORDER)
+    value = _hash_numeric_fields(value, values, FORMATION_COMMON_HASH_ORDER)
     return _finish(value)
 
 
@@ -314,17 +406,24 @@ def _set_checksum(
 ) -> int:
     value = _hash_string(FNV_OFFSET, "GuLi.ShipAbilitySet.v1")
     value = _hash_u32(value, revision)
-    value = _hash_u32(value, 1)  # FGuLiShipAbilityLoadoutState::MakeNativeV1
+    value = _hash_u32(value, 2)  # FGuLiShipAbilityLoadoutState::MakeNativeV2
     slot_values = {"Formation": 1, "BasicWeapon": 2, "Missile": 3}
-    for grant in grants:
+    selected_ids = (
+        "Ship.Ability.Formation.SwarmOrbit",
+        "Ship.Ability.Weapon.Basic.Auto",
+        "Ship.Ability.Weapon.Missile.Salvo",
+    )
+    grants_by_id = {grant["ability_id"]: grant for grant in grants}
+    for ability_id in selected_ids:
+        grant = grants_by_id[ability_id]
         value = _hash_string(value, grant["ability_id"])
         value = _hash_u32(value, slot_values[grant["slot"]])
         value = _hash_string(value, grant["ability_class"])
         value = _hash_u32(value, grant["ability_level"])
         value = _hash_string(value, grant["input_tag"])
         if grant["slot"] == "Formation":
-            definition_revision = FORMATION_VALUES["revision"]
-            definition_checksum = definition_checksums["formation"]
+            definition_revision = SWARM_FORMATION_VALUES["revision"]
+            definition_checksum = definition_checksums["swarm_formation"]
         elif grant["slot"] == "BasicWeapon":
             definition_revision = BASIC_VALUES["revision"]
             definition_checksum = definition_checksums["basic"]
@@ -404,6 +503,9 @@ def main() -> dict[str, Any]:
         formation = _load_exact(
             FORMATION, "/Script/GuLiStrike.GuLiWingmanFormationDefinition"
         )
+        swarm_formation = _load_exact(
+            SWARM_FORMATION, "/Script/GuLiStrike.GuLiWingmanFormationDefinition"
+        )
         basic = _load_exact(
             BASIC, "/Script/GuLiStrike.GuLiWingmanWeaponDefinition"
         )
@@ -414,7 +516,11 @@ def main() -> dict[str, Any]:
             ABILITY_SET, "/Script/GuLiStrike.GuLiShipAbilitySet"
         )
 
-        formation_values = _read_formation(formation)
+        formation_values = _read_formation(formation, FORMATION_VALUES)
+        swarm_formation_values = _read_formation(
+            swarm_formation, SWARM_FORMATION_VALUES
+        )
+        swarm_tuning_values = _read_swarm_tuning(swarm_formation)
         basic_values = _read_weapon(basic)
         missile_values = _read_weapon(missile)
         grants = [
@@ -425,19 +531,25 @@ def main() -> dict[str, Any]:
 
         actual_checksums = {
             "formation": _formation_checksum(formation_values),
+            "swarm_formation": _formation_checksum(
+                swarm_formation_values, swarm_tuning_values
+            ),
             "basic": _weapon_checksum(basic_values),
             "missile": _weapon_checksum(missile_values),
         }
-        actual_checksums["ability_set_loadout_v1"] = _set_checksum(
+        actual_checksums["ability_set_loadout_v2"] = _set_checksum(
             set_revision, grants, actual_checksums
         )
         expected_checksums = {
             "formation": _formation_checksum(FORMATION_VALUES),
+            "swarm_formation": _formation_checksum(
+                SWARM_FORMATION_VALUES, SWARM_TUNING_VALUES
+            ),
             "basic": _weapon_checksum(BASIC_VALUES),
             "missile": _weapon_checksum(MISSILE_VALUES),
         }
-        expected_checksums["ability_set_loadout_v1"] = _set_checksum(
-            1, _expected_grants(), expected_checksums
+        expected_checksums["ability_set_loadout_v2"] = _set_checksum(
+            2, _expected_grants(), expected_checksums
         )
 
         blueprint_class = unreal.EditorAssetLibrary.load_blueprint_class(
@@ -468,6 +580,7 @@ def main() -> dict[str, Any]:
             )
             for path, asset in (
                 (FORMATION, formation),
+                (SWARM_FORMATION, swarm_formation),
                 (BASIC, basic),
                 (MISSILE, missile),
                 (ABILITY_SET, ability_set),
@@ -475,6 +588,7 @@ def main() -> dict[str, Any]:
         }
         referencers = {
             FORMATION: _referencers(FORMATION),
+            SWARM_FORMATION: _referencers(SWARM_FORMATION),
             BASIC: _referencers(BASIC),
             MISSILE: _referencers(MISSILE),
             ABILITY_SET: _referencers(ABILITY_SET),
@@ -491,6 +605,15 @@ def main() -> dict[str, Any]:
                     "values": formation_values,
                     "stable_checksum": _checksum_record(
                         actual_checksums["formation"]
+                    ),
+                },
+                SWARM_FORMATION: {
+                    "object_path": _object_path(swarm_formation),
+                    "object_class": _object_path(swarm_formation.get_class()),
+                    "values": swarm_formation_values,
+                    "swarm_orbit": swarm_tuning_values,
+                    "stable_checksum": _checksum_record(
+                        actual_checksums["swarm_formation"]
                     ),
                 },
                 BASIC: {
@@ -513,7 +636,7 @@ def main() -> dict[str, Any]:
                     "revision": set_revision,
                     "grants": grants,
                     "stable_loadout_checksum": _checksum_record(
-                        actual_checksums["ability_set_loadout_v1"]
+                        actual_checksums["ability_set_loadout_v2"]
                     ),
                 },
             },
@@ -530,9 +653,11 @@ def main() -> dict[str, Any]:
 
         fields_match = (
             _equal_values(formation_values, FORMATION_VALUES)
+            and _equal_values(swarm_formation_values, SWARM_FORMATION_VALUES)
+            and _equal_values(swarm_tuning_values, SWARM_TUNING_VALUES)
             and _equal_values(basic_values, BASIC_VALUES)
             and _equal_values(missile_values, MISSILE_VALUES)
-            and set_revision == 1
+            and set_revision == 2
             and grants == _expected_grants()
         )
         checksums_match = actual_checksums == expected_checksums
@@ -540,6 +665,7 @@ def main() -> dict[str, Any]:
         hard_reference_chain = (
             cdo_reference == _asset_object_path(ABILITY_SET)
             and ABILITY_SET in referencers[FORMATION]
+            and ABILITY_SET in referencers[SWARM_FORMATION]
             and ABILITY_SET in referencers[BASIC]
             and ABILITY_SET in referencers[MISSILE]
             and SHIP_BLUEPRINT in referencers[ABILITY_SET]
@@ -571,8 +697,8 @@ def main() -> dict[str, Any]:
                     for name, value in expected_checksums.items()
                 },
                 "contract_fingerprint": fingerprint,
-                "fields_match_native_v1": fields_match,
-                "stable_checksums_match_native_v1": checksums_match,
+                "fields_match_native_v2": fields_match,
+                "stable_checksums_match_native_v2": checksums_match,
                 "metadata_matches": metadata_matches,
                 "hard_reference_chain_valid": hard_reference_chain,
                 "package_dirty": bool(dirty_packages),

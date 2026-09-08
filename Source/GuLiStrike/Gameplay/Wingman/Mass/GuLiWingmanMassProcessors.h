@@ -19,6 +19,7 @@ namespace GuLiWingmanAvoidance
 	{
 		FGuLiWingmanHandle Handle;
 		FVector Position = FVector::ZeroVector;
+		FVector Velocity = FVector::ZeroVector;
 		float SeparationRadiusCentimeters = 0.0f;
 		float MaximumAccelerationCentimetersPerSecondSquared = 0.0f;
 		bool bAlive = false;
@@ -28,6 +29,7 @@ namespace GuLiWingmanAvoidance
 	{
 		FGuLiWingmanHandle Handle;
 		FVector Acceleration = FVector::ZeroVector;
+		FVector AverageNeighborVelocity = FVector::ZeroVector;
 		FIntVector Cell = FIntVector::ZeroValue;
 		float CellSizeCentimeters = 0.0f;
 		uint16 NeighborTests = 0u;
@@ -64,13 +66,16 @@ namespace GuLiWingmanAvoidance
 	/**
 	 * Tests feasible forward/yaw/pitch headings in a fixed order, then scores
 	 * deviation and clearance deterministically. Only a sweep-safe direction is returned.
+	 * A positive CandidateTurnHorizonSeconds constrains the fan to headings that
+	 * Integration can physically reach within that horizon.
 	 */
 	GULISTRIKE_API FHeadingSelection SelectSafeHeading(
 		const FVector& CurrentDirection,
 		const FVector& DesiredDirection,
 		float CurrentSpeedCentimetersPerSecond,
 		const FGuLiWingmanFormationRuntimeConfig& Tuning,
-		TFunctionRef<FHeadingProbeResult(const FVector&, float)> Probe);
+		TFunctionRef<FHeadingProbeResult(const FVector&, float)> Probe,
+		float CandidateTurnHorizonSeconds = 0.0f);
 
 	struct GULISTRIKE_API FRecoveryClockState
 	{

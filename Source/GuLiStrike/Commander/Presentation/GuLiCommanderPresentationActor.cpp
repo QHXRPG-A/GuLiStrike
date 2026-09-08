@@ -10,6 +10,7 @@
 #include "Commander/Framework/GuLiCommanderGameState.h"
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
+#include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/Tuning/GuLiRuntimeTuningTypes.h"
 #include "Components/InstancedStaticMeshComponent.h"
@@ -270,6 +271,7 @@ void AGuLiCommanderPresentationActor::BeginPlay()
 	InitializePresentationPerformanceSettings();
 	if (const UGuLiCommanderDataSubsystem* DataSubsystem = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
 	{
+		DefaultUnitTypeId = DataSubsystem->GetDefaultSoldierDefinition().UnitTypeId;
 		if (UStaticMesh* SoldierModel = DataSubsystem->GetDefaultSoldierDefinition().Model)
 		{
 			UnitMeshAsset = TSoftObjectPtr<UStaticMesh>(SoldierModel);
@@ -277,12 +279,236 @@ void AGuLiCommanderPresentationActor::BeginPlay()
 	}
 
 	ResolveSoftAssets();
-	UnitInstances->PreAllocateInstancesMemory(GuLiCommanderPresentation::MaximumPresentedSoldiers);
+	InitializeUnitInstanceBatches();
 	RingInstances->PreAllocateInstancesMemory(GuLiCommanderPresentation::MaximumPresentedSoldiers);
 	EnsureClientMirrorArchetype();
 	FindStateReplicator();
 	FindLocalController();
 	RebuildLocalInstances(0.0f);
+	if (auto* Effects = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())
+	{
+		TWeakObjectPtr<AGuLiCommanderPresentationActor> WeakThis(this);
+		Effects->RegisterPoseResolver(EGuLiTargetKind::CommanderSoldier, this,
+			[WeakThis](const FGuLiTargetHandle& Target, FTransform& Pose, int32& UnitTypeId)
+			{
+				const auto* Self = WeakThis.Get();
+				if (!Self) return false;
+				const FGuLiSoldierId Id(Target.LocalId);
+				const auto* Handle = Self->SoldierInstanceHandles.Find(Id);
+				if (!Handle || !Self->TryGetPresentedSoldierTransform(Id, Pose)) return false;
+				UnitTypeId = Handle->RequestedUnitTypeId;
+				return true;
+			});
+	}
+}
+
+UInstancedStaticMeshComponent* AGuLiCommanderPresentationActor::FindUnitInstances(
+	const uint16 UnitTypeId) const
+{
+	const TObjectPtr<UInstancedStaticMeshComponent>* Component =
+		UnitInstancesByType.Find(UnitTypeId);
+	return Component ? Component->Get() : nullptr;
+}
+
+void AGuLiCommanderPresentationActor::GetUnitInstanceComponents(
+	TArray<UInstancedStaticMeshComponent*>& OutComponents) const
+{
+	OutComponents.Reset(UnitInstancesByType.Num());
+	TArray<uint16> UnitTypeIds;
+	UnitInstancesByType.GetKeys(UnitTypeIds);
+	UnitTypeIds.Sort();
+	for (const uint16 UnitTypeId : UnitTypeIds)
+	{
+		if (UInstancedStaticMeshComponent* Component = FindUnitInstances(UnitTypeId))
+		{
+			OutComponents.Add(Component);
+		}
+	}
+}
+
+void AGuLiCommanderPresentationActor::ConfigureUnitInstanceComponent(
+	UInstancedStaticMeshComponent& Component) const
+{
+	Component.SetMobility(EComponentMobility::Movable);
+	Component.SetCollisionEnabled(ECollisionEnabled::NoCollision);
+	Component.SetCanEverAffectNavigation(false);
+	Component.SetIsReplicated(false);
+	const FGuLiCommanderPresentationPerformanceSettings Effective =
+		PerformanceSettingsRegistry.GetEffectiveSettings();
+	Component.SetCullDistances(
+		Effective.UnitCullDistanceCentimeters,
+		Effective.UnitCullDistanceCentimeters);
+	Component.SetCastShadow(Effective.bUnitCastShadow);
+	Component.SetAffectDistanceFieldLighting(Effective.bUnitAffectDistanceFieldLighting);
+	Component.SetAffectDynamicIndirectLighting(Effective.bUnitAffectDynamicIndirectLighting);
+	Component.SetVisibleInRayTracing(Effective.bUnitVisibleInRayTracing);
+}
+
+void AGuLiCommanderPresentationActor::InitializeUnitInstanceBatches()
+{
+	UnitInstancesByType.Reset();
+	UnitInstanceBatchStates.Reset();
+	LoggedMissingUnitBatchTypes.Reset();
+	bUnitBatchCapacityReserved = false;
+	if (!UnitInstances)
+	{
+		return;
+	}
+
+	ConfigureUnitInstanceComponent(*UnitInstances);
+	UnitInstancesByType.Add(DefaultUnitTypeId, UnitInstances);
+	UnitInstanceBatchStates.FindOrAdd(DefaultUnitTypeId);
+
+	const UGuLiCommanderDataSubsystem* DataSubsystem = GetWorld()
+		? GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>()
+		: nullptr;
+	if (!DataSubsystem)
+	{
+		return;
+	}
+
+	TArray<FGuLiSoldierDefinition> Definitions = DataSubsystem->GetSoldierDefinitions();
+	Definitions.Sort([](const FGuLiSoldierDefinition& Lhs, const FGuLiSoldierDefinition& Rhs)
+	{
+		return Lhs.UnitTypeId < Rhs.UnitTypeId;
+	});
+	for (const FGuLiSoldierDefinition& Definition : Definitions)
+	{
+		if (Definition.UnitTypeId == 0u)
+		{
+			continue;
+		}
+
+		UInstancedStaticMeshComponent* Component = nullptr;
+		if (Definition.UnitTypeId == DefaultUnitTypeId)
+		{
+			Component = UnitInstances;
+		}
+		else
+		{
+			const FName ComponentName(*FString::Printf(
+				TEXT("UnitInstances_Type_%u"),
+				Definition.UnitTypeId));
+			Component = NewObject<UInstancedStaticMeshComponent>(
+				this,
+				ComponentName,
+				RF_Transient);
+			if (!Component)
+			{
+				UE_LOG(
+					LogGuLiStrike,
+					Error,
+					TEXT("Commander presentation could not create UnitTypeId %u ISM batch."),
+					Definition.UnitTypeId);
+				continue;
+			}
+			Component->SetupAttachment(SceneRoot);
+			ConfigureUnitInstanceComponent(*Component);
+			AddInstanceComponent(Component);
+			Component->RegisterComponentWithWorld(GetWorld());
+		}
+
+		if (Definition.Model)
+		{
+			Component->SetStaticMesh(Definition.Model);
+			Component->EmptyOverrideMaterials();
+		}
+		else if (UnitInstances->GetStaticMesh())
+		{
+			Component->SetStaticMesh(UnitInstances->GetStaticMesh());
+		}
+		UnitInstancesByType.Add(Definition.UnitTypeId, Component);
+		UnitInstanceBatchStates.FindOrAdd(Definition.UnitTypeId);
+	}
+	ApplyPresentationPerformanceSettings();
+}
+
+void AGuLiCommanderPresentationActor::SetUnitInstanceBatchesVisibility(const bool bVisible)
+{
+	TArray<UInstancedStaticMeshComponent*> Components;
+	GetUnitInstanceComponents(Components);
+	for (UInstancedStaticMeshComponent* Component : Components)
+	{
+		Component->SetVisibility(bVisible);
+	}
+}
+
+uint16 AGuLiCommanderPresentationActor::ResolveUnitBatchTypeId(
+	const uint16 RequestedUnitTypeId)
+{
+	if (UnitInstancesByType.Contains(RequestedUnitTypeId))
+	{
+		return RequestedUnitTypeId;
+	}
+	if (!LoggedMissingUnitBatchTypes.Contains(RequestedUnitTypeId))
+	{
+		LoggedMissingUnitBatchTypes.Add(RequestedUnitTypeId);
+		UE_LOG(
+			LogGuLiStrike,
+			Warning,
+			TEXT("Commander presentation has no ISM batch for UnitTypeId %u; using default UnitTypeId %u."),
+			RequestedUnitTypeId,
+			DefaultUnitTypeId);
+	}
+	return UnitInstancesByType.Contains(DefaultUnitTypeId)
+		? DefaultUnitTypeId
+		: 0u;
+}
+
+int32 AGuLiCommanderPresentationActor::AcquireUnitInstanceSlot(
+	const uint16 BatchUnitTypeId)
+{
+	UInstancedStaticMeshComponent* Component = FindUnitInstances(BatchUnitTypeId);
+	FGuLiCommanderUnitInstanceBatchState* BatchState =
+		UnitInstanceBatchStates.Find(BatchUnitTypeId);
+	if (!Component || !BatchState)
+	{
+		return INDEX_NONE;
+	}
+
+	const FTransform HiddenTransform = GuLiCommanderPresentation::MakeHiddenTransform();
+	while (!BatchState->FreeInstanceIndices.IsEmpty())
+	{
+		const int32 ReusedIndex = BatchState->FreeInstanceIndices.Pop(EAllowShrinking::No);
+		if (BatchState->CachedTransforms.IsValidIndex(ReusedIndex)
+			&& Component->GetInstanceCount() > ReusedIndex)
+		{
+			BatchState->CachedTransforms[ReusedIndex] = HiddenTransform;
+			return ReusedIndex;
+		}
+	}
+
+	const int32 ExpectedIndex = BatchState->CachedTransforms.Num();
+	const int32 InstanceIndex = Component->AddInstance(HiddenTransform, true);
+	if (InstanceIndex == INDEX_NONE || InstanceIndex != ExpectedIndex)
+	{
+		if (InstanceIndex != INDEX_NONE && InstanceIndex == Component->GetInstanceCount() - 1)
+		{
+			Component->RemoveInstance(InstanceIndex);
+		}
+		return INDEX_NONE;
+	}
+	BatchState->CachedTransforms.Add(HiddenTransform);
+	return InstanceIndex;
+}
+
+void AGuLiCommanderPresentationActor::ReleaseUnitInstanceSlot(
+	const uint16 BatchUnitTypeId,
+	const int32 InstanceIndex)
+{
+	UInstancedStaticMeshComponent* Component = FindUnitInstances(BatchUnitTypeId);
+	FGuLiCommanderUnitInstanceBatchState* BatchState =
+		UnitInstanceBatchStates.Find(BatchUnitTypeId);
+	if (!Component || !BatchState
+		|| !BatchState->CachedTransforms.IsValidIndex(InstanceIndex))
+	{
+		return;
+	}
+	const FTransform HiddenTransform = GuLiCommanderPresentation::MakeHiddenTransform();
+	Component->UpdateInstanceTransform(InstanceIndex, HiddenTransform, true, false, false);
+	BatchState->CachedTransforms[InstanceIndex] = HiddenTransform;
+	BatchState->FreeInstanceIndices.AddUnique(InstanceIndex);
+	Component->MarkRenderStateDirty();
 }
 
 TArray<FGuLiCommanderPresentationSettingView>
@@ -403,15 +629,24 @@ void AGuLiCommanderPresentationActor::ApplyPresentationPerformanceSettings()
 	}
 
 	const FGuLiCommanderPresentationPerformanceSettings Effective = PerformanceSettingsRegistry.GetEffectiveSettings();
-	UnitInstances->SetCullDistances(
-		Effective.UnitCullDistanceCentimeters,
-		Effective.UnitCullDistanceCentimeters);
-	UnitInstances->SetCastShadow(Effective.bUnitCastShadow);
-	UnitInstances->SetAffectDistanceFieldLighting(
-		Effective.bUnitAffectDistanceFieldLighting);
-	UnitInstances->SetAffectDynamicIndirectLighting(
-		Effective.bUnitAffectDynamicIndirectLighting);
-	UnitInstances->SetVisibleInRayTracing(Effective.bUnitVisibleInRayTracing);
+	TArray<UInstancedStaticMeshComponent*> UnitComponents;
+	GetUnitInstanceComponents(UnitComponents);
+	if (UnitComponents.IsEmpty())
+	{
+		UnitComponents.Add(UnitInstances);
+	}
+	for (UInstancedStaticMeshComponent* Component : UnitComponents)
+	{
+		Component->SetCullDistances(
+			Effective.UnitCullDistanceCentimeters,
+			Effective.UnitCullDistanceCentimeters);
+		Component->SetCastShadow(Effective.bUnitCastShadow);
+		Component->SetAffectDistanceFieldLighting(
+			Effective.bUnitAffectDistanceFieldLighting);
+		Component->SetAffectDynamicIndirectLighting(
+			Effective.bUnitAffectDynamicIndirectLighting);
+		Component->SetVisibleInRayTracing(Effective.bUnitVisibleInRayTracing);
+	}
 
 	RingInstances->SetCullDistances(
 		Effective.RingCullDistanceCentimeters,
@@ -424,6 +659,8 @@ void AGuLiCommanderPresentationActor::ApplyPresentationPerformanceSettings()
 
 void AGuLiCommanderPresentationActor::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	if (GetWorld()) if (auto* Effects = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())
+		Effects->UnregisterPoseResolver(EGuLiTargetKind::CommanderSoldier, this);
 #if !UE_BUILD_SHIPPING
 	if (bPredictionTraceActive)
 	{
@@ -1803,10 +2040,7 @@ bool AGuLiCommanderPresentationActor::UpdateNetworkPresentationSource(
 		// 同一 SoldierId 可在新战局复用；新姿态未到时也不能继续旧样本、预测或 Mass 镜像。
 		ResetNetworkPresentationState();
 		DestroyClientMirrorEntities();
-		if (UnitInstances)
-		{
-			UnitInstances->SetVisibility(false);
-		}
+		SetUnitInstanceBatchesVisibility(false);
 		if (RingInstances)
 		{
 			RingInstances->SetVisibility(false);
@@ -1826,32 +2060,87 @@ bool AGuLiCommanderPresentationActor::UpdateNetworkPresentationSource(
 void AGuLiCommanderPresentationActor::EnsureStableInstancePool(
 	const AGuLiSoldierStateReplicator& Replicator)
 {
-	if (!UnitInstances || !RingInstances)
+	if (UnitInstancesByType.IsEmpty() || !RingInstances)
 	{
 		return;
 	}
 
-	TArray<FGuLiSoldierId> NewSoldierIds;
+	if (!bUnitBatchCapacityReserved)
+	{
+		TMap<uint16, int32> CountsByBatch;
+		for (const FGuLiSoldierStateItem& State : Replicator.GetItems())
+		{
+			int32& Count = CountsByBatch.FindOrAdd(
+				ResolveUnitBatchTypeId(State.UnitTypeId));
+			++Count;
+		}
+		for (const TPair<uint16, int32>& Pair : CountsByBatch)
+		{
+			if (UInstancedStaticMeshComponent* Component = FindUnitInstances(Pair.Key))
+			{
+				Component->PreAllocateInstancesMemory(Pair.Value);
+			}
+		}
+		bUnitBatchCapacityReserved = true;
+	}
+
+	TArray<const FGuLiSoldierStateItem*> NewSoldierStates;
 	for (const FGuLiSoldierStateItem& State : Replicator.GetItems())
 	{
 		EnsureClientMirrorEntity(State);
-		if (State.SoldierId.IsValid() && !SoldierInstanceIndices.Contains(State.SoldierId))
-		{
-			NewSoldierIds.Add(State.SoldierId);
-		}
-	}
-	NewSoldierIds.Sort([](const FGuLiSoldierId& Lhs, const FGuLiSoldierId& Rhs)
-	{
-		return Lhs.Value < Rhs.Value;
-	});
-
-	for (const FGuLiSoldierId SoldierId : NewSoldierIds)
-	{
-		if (SoldierInstanceIndices.Contains(SoldierId))
+		if (!State.SoldierId.IsValid())
 		{
 			continue;
 		}
-		if (SoldierInstanceIndices.Num() >= GuLiCommanderPresentation::MaximumPresentedSoldiers)
+
+		if (FGuLiCommanderSoldierInstanceHandle* Existing =
+			SoldierInstanceHandles.Find(State.SoldierId))
+		{
+			const uint16 NewBatchUnitTypeId = ResolveUnitBatchTypeId(State.UnitTypeId);
+			if (Existing->RequestedUnitTypeId != State.UnitTypeId
+				|| Existing->BatchUnitTypeId != NewBatchUnitTypeId)
+			{
+				if (NewBatchUnitTypeId != 0u
+					&& NewBatchUnitTypeId != Existing->BatchUnitTypeId)
+				{
+					const int32 NewUnitIndex = AcquireUnitInstanceSlot(NewBatchUnitTypeId);
+					if (NewUnitIndex == INDEX_NONE)
+					{
+						if (!bLoggedInstancePoolFailure)
+						{
+							UE_LOG(LogGuLiStrike, Error, TEXT("Commander presentation failed to migrate an ISM instance between UnitTypeId batches."));
+							bLoggedInstancePoolFailure = true;
+						}
+						continue;
+					}
+					ReleaseUnitInstanceSlot(
+						Existing->BatchUnitTypeId,
+						Existing->UnitInstanceIndex);
+					Existing->BatchUnitTypeId = NewBatchUnitTypeId;
+					Existing->UnitInstanceIndex = NewUnitIndex;
+				}
+				Existing->RequestedUnitTypeId = State.UnitTypeId;
+			}
+		}
+		else
+		{
+			NewSoldierStates.Add(&State);
+		}
+	}
+	NewSoldierStates.Sort([](
+		const FGuLiSoldierStateItem& Lhs,
+		const FGuLiSoldierStateItem& Rhs)
+	{
+		return Lhs.SoldierId.Value < Rhs.SoldierId.Value;
+	});
+
+	for (const FGuLiSoldierStateItem* State : NewSoldierStates)
+	{
+		if (!State || SoldierInstanceHandles.Contains(State->SoldierId))
+		{
+			continue;
+		}
+		if (SoldierInstanceHandles.Num() >= GuLiCommanderPresentation::MaximumPresentedSoldiers)
 		{
 			if (!bLoggedInstancePoolFailure)
 			{
@@ -1862,15 +2151,16 @@ void AGuLiCommanderPresentationActor::EnsureStableInstancePool(
 		}
 
 		const FTransform HiddenTransform = GuLiCommanderPresentation::MakeHiddenTransform();
-		const int32 UnitIndex = UnitInstances->AddInstance(HiddenTransform, true);
+		const uint16 BatchUnitTypeId = ResolveUnitBatchTypeId(State->UnitTypeId);
+		const int32 UnitIndex = AcquireUnitInstanceSlot(BatchUnitTypeId);
 		const int32 RingIndex = RingInstances->AddInstance(HiddenTransform, true);
-		const int32 ExpectedIndex = CachedUnitTransforms.Num();
+		const int32 ExpectedRingIndex = CachedRingTransforms.Num();
 		if (UnitIndex == INDEX_NONE || RingIndex == INDEX_NONE
-			|| UnitIndex != RingIndex || UnitIndex != ExpectedIndex)
+			|| RingIndex != ExpectedRingIndex)
 		{
-			if (UnitIndex != INDEX_NONE && UnitIndex == UnitInstances->GetInstanceCount() - 1)
+			if (UnitIndex != INDEX_NONE)
 			{
-				UnitInstances->RemoveInstance(UnitIndex);
+				ReleaseUnitInstanceSlot(BatchUnitTypeId, UnitIndex);
 			}
 			if (RingIndex != INDEX_NONE && RingIndex == RingInstances->GetInstanceCount() - 1)
 			{
@@ -1884,8 +2174,12 @@ void AGuLiCommanderPresentationActor::EnsureStableInstancePool(
 			break;
 		}
 
-		SoldierInstanceIndices.Add(SoldierId, UnitIndex);
-		CachedUnitTransforms.Add(HiddenTransform);
+		FGuLiCommanderSoldierInstanceHandle& Handle =
+			SoldierInstanceHandles.Add(State->SoldierId);
+		Handle.RequestedUnitTypeId = State->UnitTypeId;
+		Handle.BatchUnitTypeId = BatchUnitTypeId;
+		Handle.UnitInstanceIndex = UnitIndex;
+		Handle.RingInstanceIndex = RingIndex;
 		CachedRingTransforms.Add(HiddenTransform);
 		CachedRingColors.Add(GuLiCommanderPresentation::UnassignedColor);
 	}
@@ -1898,7 +2192,8 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 
 	AGuLiSoldierStateReplicator* Replicator = FindStateReplicator();
 	// 先检查失效边沿，Replicator/Controller 暂时消失时也要立即隐藏旧表现。
-	if (!UpdateNetworkPresentationSource(Replicator) || !UnitInstances || !RingInstances || !GetWorld())
+	if (!UpdateNetworkPresentationSource(Replicator)
+		|| UnitInstancesByType.IsEmpty() || !RingInstances || !GetWorld())
 	{
 		return;
 	}
@@ -1939,13 +2234,19 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		}
 	}
 
-	TArray<FTransform> DesiredUnitTransforms = CachedUnitTransforms;
+	TMap<uint16, TArray<FTransform>> DesiredUnitTransformsByType;
+	for (const TPair<uint16, FGuLiCommanderUnitInstanceBatchState>& Pair :
+		UnitInstanceBatchStates)
+	{
+		TArray<FTransform>& DesiredTransforms =
+			DesiredUnitTransformsByType.Add(Pair.Key, Pair.Value.CachedTransforms);
+		for (FTransform& Transform : DesiredTransforms)
+		{
+			Transform.SetScale3D(FVector::ZeroVector);
+		}
+	}
 	TArray<FTransform> DesiredRingTransforms = CachedRingTransforms;
 	TArray<FLinearColor> DesiredRingColors = CachedRingColors;
-	for (FTransform& Transform : DesiredUnitTransforms)
-	{
-		Transform.SetScale3D(FVector::ZeroVector);
-	}
 	for (FTransform& Transform : DesiredRingTransforms)
 	{
 		Transform.SetScale3D(FVector::ZeroVector);
@@ -1953,10 +2254,15 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 
 	for (const FGuLiSoldierStateItem& ReliableState : Replicator->GetItems())
 	{
-		const int32* InstanceIndex = SoldierInstanceIndices.Find(ReliableState.SoldierId);
-		if (!InstanceIndex || !DesiredUnitTransforms.IsValidIndex(*InstanceIndex)
-			|| !DesiredRingTransforms.IsValidIndex(*InstanceIndex)
-			|| !DesiredRingColors.IsValidIndex(*InstanceIndex))
+		const FGuLiCommanderSoldierInstanceHandle* InstanceHandle =
+			SoldierInstanceHandles.Find(ReliableState.SoldierId);
+		TArray<FTransform>* DesiredUnitTransforms = InstanceHandle
+			? DesiredUnitTransformsByType.Find(InstanceHandle->BatchUnitTypeId)
+			: nullptr;
+		if (!InstanceHandle || !DesiredUnitTransforms
+			|| !DesiredUnitTransforms->IsValidIndex(InstanceHandle->UnitInstanceIndex)
+			|| !DesiredRingTransforms.IsValidIndex(InstanceHandle->RingInstanceIndex)
+			|| !DesiredRingColors.IsValidIndex(InstanceHandle->RingInstanceIndex))
 		{
 			continue;
 		}
@@ -2023,18 +2329,20 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 
 		FTransform HiddenUnitTransform = Soldier.PresentedTransform;
 		HiddenUnitTransform.SetScale3D(FVector::ZeroVector);
-		DesiredUnitTransforms[*InstanceIndex] = HiddenUnitTransform;
+		(*DesiredUnitTransforms)[InstanceHandle->UnitInstanceIndex] = HiddenUnitTransform;
 		FTransform HiddenRingTransform = BuildRingTransform(Soldier.PresentedTransform);
 		HiddenRingTransform.SetScale3D(FVector::ZeroVector);
-		DesiredRingTransforms[*InstanceIndex] = HiddenRingTransform;
+		DesiredRingTransforms[InstanceHandle->RingInstanceIndex] = HiddenRingTransform;
 
 		if (bAlive)
 		{
 			FTransform UnitTransform = Soldier.PresentedTransform;
 			UnitTransform.SetScale3D(FVector::OneVector);
-			DesiredUnitTransforms[*InstanceIndex] = UnitTransform;
-			DesiredRingTransforms[*InstanceIndex] = BuildRingTransform(Soldier.PresentedTransform);
-			DesiredRingColors[*InstanceIndex] = SelectedSoldiers.Contains(ReliableState.SoldierId)
+			(*DesiredUnitTransforms)[InstanceHandle->UnitInstanceIndex] = UnitTransform;
+			DesiredRingTransforms[InstanceHandle->RingInstanceIndex] =
+				BuildRingTransform(Soldier.PresentedTransform);
+			DesiredRingColors[InstanceHandle->RingInstanceIndex] =
+				SelectedSoldiers.Contains(ReliableState.SoldierId)
 				? GuLiCommanderPresentation::SelectedColor
 				: GuLiCommanderPresentation::GetTeamColor(ReliableState.Team);
 		}
@@ -2042,8 +2350,10 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		{
 			if (*ExpireTime > LocalNowSeconds)
 			{
-				DesiredRingTransforms[*InstanceIndex] = BuildRingTransform(Soldier.PresentedTransform);
-				DesiredRingColors[*InstanceIndex] = GuLiCommanderPresentation::WreckColor;
+				DesiredRingTransforms[InstanceHandle->RingInstanceIndex] =
+					BuildRingTransform(Soldier.PresentedTransform);
+				DesiredRingColors[InstanceHandle->RingInstanceIndex] =
+					GuLiCommanderPresentation::WreckColor;
 			}
 		}
 	}
@@ -2065,9 +2375,6 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		}
 	}
 
-	const bool bUnitTransformsChanged = !GuLiCommanderPresentation::AreTransformsEqual(
-		CachedUnitTransforms,
-		DesiredUnitTransforms);
 	const bool bRingTransformsChanged = !GuLiCommanderPresentation::AreTransformsEqual(
 		CachedRingTransforms,
 		DesiredRingTransforms);
@@ -2075,16 +2382,28 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		CachedRingColors,
 		DesiredRingColors);
 
-	if (bUnitTransformsChanged && !DesiredUnitTransforms.IsEmpty()
-		&& UnitInstances->BatchUpdateInstancesTransforms(
+	for (TPair<uint16, TArray<FTransform>>& Pair : DesiredUnitTransformsByType)
+	{
+		UInstancedStaticMeshComponent* Component = FindUnitInstances(Pair.Key);
+		FGuLiCommanderUnitInstanceBatchState* BatchState =
+			UnitInstanceBatchStates.Find(Pair.Key);
+		if (!Component || !BatchState || Pair.Value.IsEmpty()
+			|| GuLiCommanderPresentation::AreTransformsEqual(
+				BatchState->CachedTransforms,
+				Pair.Value))
+		{
+			continue;
+		}
+		if (Component->BatchUpdateInstancesTransforms(
 			0,
-			DesiredUnitTransforms,
+			Pair.Value,
 			true,
 			false,
 			false))
-	{
-		CachedUnitTransforms = DesiredUnitTransforms;
-		UnitInstances->MarkRenderStateDirty();
+		{
+			BatchState->CachedTransforms = MoveTemp(Pair.Value);
+			Component->MarkRenderStateDirty();
+		}
 	}
 	if (bRingTransformsChanged && !DesiredRingTransforms.IsEmpty()
 		&& RingInstances->BatchUpdateInstancesTransforms(
@@ -2123,7 +2442,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	if (bNetworkPresentationHidden)
 	{
 		// 先用当前同步源更新/隐藏各槽位，再恢复可见，避免短暂显示前一代次的变换。
-		UnitInstances->SetVisibility(true);
+		SetUnitInstanceBatchesVisibility(true);
 		RingInstances->SetVisibility(true);
 		bNetworkPresentationHidden = false;
 	}

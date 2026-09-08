@@ -127,7 +127,6 @@ void AGuLiCommanderHealthBarRenderer::Tick(const float DeltaSeconds)
 	if (const AGuLiSoldierStateReplicator* Replicator = StateReplicator.Get())
 	{
 		EnsureStableInstancePool(*Replicator);
-		RefreshSoldierHeightOffset();
 		RebuildLocalInstances();
 	}
 	else
@@ -299,13 +298,12 @@ void AGuLiCommanderHealthBarRenderer::BindPresentationActor(
 		RemoveTickPrerequisiteActor(Previous);
 	}
 	PresentationActor = InPresentationActor;
-	CachedSoldierMesh.Reset();
-	SoldierHeightOffsetCentimeters = GuLiCommanderHealthBars::FallbackSoldierHeightCentimeters;
+	CachedSoldierMeshes.Reset();
+	SoldierHeightOffsetsCentimeters.Reset();
 
 	if (InPresentationActor)
 	{
 		AddTickPrerequisiteActor(InPresentationActor);
-		RefreshSoldierHeightOffset();
 	}
 }
 
@@ -408,28 +406,33 @@ void AGuLiCommanderHealthBarRenderer::EnsureStableInstancePool(
 	}
 }
 
-void AGuLiCommanderHealthBarRenderer::RefreshSoldierHeightOffset()
+float AGuLiCommanderHealthBarRenderer::ResolveSoldierHeightOffset(
+	const uint16 UnitTypeId)
 {
 	const AGuLiCommanderPresentationActor* Presentation = PresentationActor.Get();
 	const UInstancedStaticMeshComponent* UnitInstances = Presentation
-		? Presentation->GetUnitInstances()
+		? Presentation->FindUnitInstances(UnitTypeId)
 		: nullptr;
-	UStaticMesh* SoldierMesh = UnitInstances ? UnitInstances->GetStaticMesh() : nullptr;
-	if (CachedSoldierMesh.Get() == SoldierMesh)
+	if (!UnitInstances && Presentation)
 	{
-		return;
+		UnitInstances = Presentation->GetUnitInstances();
+	}
+	UStaticMesh* SoldierMesh = UnitInstances ? UnitInstances->GetStaticMesh() : nullptr;
+	const TWeakObjectPtr<UStaticMesh>* CachedMesh = CachedSoldierMeshes.Find(UnitTypeId);
+	const float* CachedHeight = SoldierHeightOffsetsCentimeters.Find(UnitTypeId);
+	if (CachedMesh && CachedMesh->Get() == SoldierMesh && CachedHeight)
+	{
+		return *CachedHeight;
 	}
 
-	CachedSoldierMesh = SoldierMesh;
-	SoldierHeightOffsetCentimeters = GuLiCommanderHealthBars::FallbackSoldierHeightCentimeters;
+	CachedSoldierMeshes.Add(UnitTypeId, SoldierMesh);
+	float HeightOffset = GuLiCommanderHealthBars::FallbackSoldierHeightCentimeters;
 	if (SoldierMesh)
 	{
-		const FBoxSphereBounds Bounds = SoldierMesh->GetBounds();
-		SoldierHeightOffsetCentimeters = FMath::Max(
-			GuLiCommanderHealthBars::HeightPaddingCentimeters,
-			Bounds.Origin.Z + Bounds.BoxExtent.Z
-				+ GuLiCommanderHealthBars::HeightPaddingCentimeters);
+		HeightOffset = CalculateSoldierHeightOffset(SoldierMesh->GetBounds());
 	}
+	SoldierHeightOffsetsCentimeters.Add(UnitTypeId, HeightOffset);
+	return HeightOffset;
 }
 
 void AGuLiCommanderHealthBarRenderer::RebuildLocalInstances()
@@ -511,7 +514,7 @@ void AGuLiCommanderHealthBarRenderer::RebuildLocalInstances()
 		}
 
 		FVector BarLocation = SoldierTransform.GetLocation();
-		BarLocation.Z += SoldierHeightOffsetCentimeters
+		BarLocation.Z += ResolveSoldierHeightOffset(State.UnitTypeId)
 			* FMath::Abs(SoldierTransform.GetScale3D().Z);
 		const float CameraDistanceCentimeters = FVector::Distance(CameraLocation, BarLocation);
 		const float FocusDistanceCentimeters = FVector::Dist2D(CameraFocusLocation, BarLocation);
@@ -716,6 +719,19 @@ FVector2D AGuLiCommanderHealthBarRenderer::CalculateWorldSizeCentimeters(
 		GuLiCommanderHealthBars::DesiredHeightPixels * CentimetersPerPixel);
 }
 
+float AGuLiCommanderHealthBarRenderer::CalculateSoldierHeightOffset(
+	const FBoxSphereBounds& Bounds)
+{
+	const float MeshTop = static_cast<float>(Bounds.Origin.Z + Bounds.BoxExtent.Z);
+	if (!FMath::IsFinite(MeshTop))
+	{
+		return GuLiCommanderHealthBars::FallbackSoldierHeightCentimeters;
+	}
+	return FMath::Max(
+		GuLiCommanderHealthBars::HeightPaddingCentimeters,
+		MeshTop + GuLiCommanderHealthBars::HeightPaddingCentimeters);
+}
+
 #if WITH_DEV_AUTOMATION_TESTS
 bool AGuLiCommanderHealthBarRenderer::TestOnly_ShouldDisplayHealthBar(
 	const bool bAlive,
@@ -752,5 +768,11 @@ FVector2D AGuLiCommanderHealthBarRenderer::TestOnly_CalculateWorldSizeCentimeter
 		HorizontalFieldOfViewDegrees,
 		ViewportWidth,
 		ViewportHeight);
+}
+
+float AGuLiCommanderHealthBarRenderer::TestOnly_CalculateSoldierHeightOffset(
+	const FBoxSphereBounds& Bounds)
+{
+	return CalculateSoldierHeightOffset(Bounds);
 }
 #endif

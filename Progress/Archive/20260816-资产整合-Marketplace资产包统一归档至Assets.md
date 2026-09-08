@@ -1,3 +1,24 @@
+---
+schema: guli-progress/v1
+id: ARC-20260816-001
+work_id: ''
+kind: archive
+role: root
+title: 2026-08-16 解决了：Marketplace 资产包统一整合至 Content/Assets
+areas:
+- vfx
+- assets
+status: recorded
+verification: passed
+created: '2026-08-16'
+updated: '2026-08-16'
+summary: 8 个资产包、共 4,482 个资产全部迁入 /Game/Assets/，迁移后逐包资产计数与迁移前注册表基线精确一致，加载抽查（BP / 材质 / 动画 / ParagonSample 地图）全部通过，无缺失引用告警
+next_action: ''
+relations:
+  work_items: []
+status_note: ''
+---
+
 # 2026-08-16 解决了：Marketplace 资产包统一整合至 Content/Assets
 
 - 对应开发文档：无（资产目录整理，非功能开发）

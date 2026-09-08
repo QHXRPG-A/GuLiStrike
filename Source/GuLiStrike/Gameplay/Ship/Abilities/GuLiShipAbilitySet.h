@@ -23,6 +23,21 @@ struct GULISTRIKE_API FGuLiShipAbilityGrant
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities")
 	EGuLiShipAbilitySlot Slot = EGuLiShipAbilitySlot::None;
 
+	/** Stable equipment binding within WingmanTypeId; independent from GAS slot/category. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
+	FName WeaponSlotId;
+
+	/** Stable player-facing weapon identity. Empty derives from AbilityId for legacy assets. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
+	FName SkillId;
+
+	UPROPERTY(EditAnywhere, Category = "Ship|Abilities|Weapon", meta = (ClampMin = "1"))
+	uint32 ProfileRevision = 1u;
+
+	/** Shared active cooldown identity; empty automatic channels remain per-member/per-slot. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
+	FName CooldownGroupId;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities")
 	TSubclassOf<UGuLiShipGameplayAbility> AbilityClass;
 
@@ -40,17 +55,24 @@ struct GULISTRIKE_API FGuLiShipAbilityGrant
 	TObjectPtr<UGuLiWingmanWeaponDefinition> WeaponDefinition;
 
 	bool IsWellFormed(FString* OutError = nullptr) const;
+	FName GetEffectiveWeaponSlotId() const;
+	FName GetEffectiveSkillId() const;
+	FName GetEffectiveCooldownGroupId() const;
 	uint32 GetDefinitionRevision() const;
 	uint64 GetDefinitionChecksum() const;
 };
 
-/** Data-driven grant catalog. A PlayerState loadout selects exactly one entry per v1 slot. */
+/** Data-driven grant catalog. A loadout selects one formation and up to eight unique weapon bindings. */
 UCLASS(BlueprintType, Const)
 class GULISTRIKE_API UGuLiShipAbilitySet : public UDataAsset
 {
 	GENERATED_BODY()
 
 public:
+	/** Type identity used by roster and every weapon BindingKey; not a Pawn/asset path. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities")
+	FName WingmanTypeId = TEXT("DefaultWingman");
+
 	UPROPERTY(EditAnywhere, Category = "Ship|Abilities", meta = (ClampMin = "1"))
 	uint32 Revision = 1u;
 
@@ -67,4 +89,8 @@ public:
 
 	/** Native transient fallback for tests/bootstrap; production may point Ship defaults at an authored asset. */
 	static UGuLiShipAbilitySet* CreateNativeV1Transient(UObject* Outer);
+
+	/** Native v2 catalog: SwarmOrbit is selectable while DoubleRing remains a rollback entry. */
+	static UGuLiShipAbilitySet* CreateNativeV2Transient(UObject* Outer);
+	static UGuLiShipAbilitySet* CreateNativeV3Transient(UObject* Outer);
 };

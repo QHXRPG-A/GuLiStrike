@@ -15,6 +15,9 @@ struct GULISTRIKE_API FGuLiWingmanIdentityFragment : public FMassFragment
 
 	UPROPERTY(Transient)
 	FGuLiWingmanHandle Handle;
+
+	UPROPERTY(Transient)
+	FName WingmanTypeId = TEXT("DefaultWingman");
 };
 
 /** Current reliable ability projection version consumed by this entity. */
@@ -25,6 +28,9 @@ struct GULISTRIKE_API FGuLiWingmanAbilityFragment : public FMassFragment
 
 	UPROPERTY(Transient)
 	uint32 AbilitySetRevision = 0u;
+
+	UPROPERTY(Transient)
+	uint32 LoadoutRevision = 0u;
 
 	UPROPERTY(Transient)
 	uint32 FormationCommandRevision = 0u;
@@ -69,10 +75,10 @@ struct GULISTRIKE_API FGuLiWingmanFormationSlotFragment : public FMassFragment
 	GENERATED_BODY()
 
 	UPROPERTY(Transient)
-	float RadiusCentimeters = 60000.0f;
+	float RadiusCentimeters = 30000.0f;
 
 	UPROPERTY(Transient)
-	float HeightCentimeters = 15000.0f;
+	float HeightCentimeters = 7500.0f;
 
 	UPROPERTY(Transient)
 	float PhaseRadians = 0.0f;
@@ -82,6 +88,41 @@ struct GULISTRIKE_API FGuLiWingmanFormationSlotFragment : public FMassFragment
 
 	UPROPERTY(Transient)
 	bool bClockwise = true;
+};
+
+/** Stable per-member state for the v1 deterministic SwarmOrbit flow field. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiWingmanSwarmAgentFragment : public FMassFragment
+{
+	GENERATED_BODY()
+
+	UPROPERTY(Transient)
+	uint32 FlightSeed = 1u;
+
+	UPROPERTY(Transient)
+	uint32 AgentSeed = 1u;
+
+	/** Simulation time is an integer protocol tick; wall-clock time is never sampled. */
+	UPROPERTY(Transient)
+	uint32 FlowSimulationTick = 1u;
+
+	UPROPERTY(Transient)
+	float FlowStepAccumulator = 0.0f;
+
+	UPROPERTY(Transient)
+	float PreferredRadiusBaseCentimeters = 36000.0f;
+
+	UPROPERTY(Transient)
+	float PreferredVerticalBiasCentimeters = 0.0f;
+
+	UPROPERTY(Transient)
+	FVector BaseOrbitAxis = FVector::UpVector;
+
+	UPROPERTY(Transient)
+	FVector NoiseDomainOffset = FVector::ZeroVector;
+
+	UPROPERTY(Transient)
+	float SwirlSign = 1.0f;
 };
 
 /** Guidance target. This fragment cannot directly change the entity Transform. */
@@ -96,8 +137,19 @@ struct GULISTRIKE_API FGuLiWingmanGuidanceFragment : public FMassFragment
 	UPROPERTY(Transient)
 	FVector DesiredForward = FVector::ForwardVector;
 
+	/** Canonical SwarmOrbit output consumed directly by safety and integration. */
+	UPROPERTY(Transient)
+	FVector PreferredVelocity = FVector::ZeroVector;
+
 	UPROPERTY(Transient)
 	float DesiredSpeedCentimetersPerSecond = 4500.0f;
+
+	UPROPERTY(Transient)
+	bool bUsesVelocityField = false;
+
+	/** Attack steering keeps physical separation, but does not align with the flock. */
+	UPROPERTY(Transient)
+	bool bAttackGuidance = false;
 };
 
 /**
@@ -158,9 +210,22 @@ struct GULISTRIKE_API FGuLiWingmanAvoidanceFragment : public FMassFragment
 	UPROPERTY(Transient)
 	FVector SafeDirection = FVector::ForwardVector;
 
+	/** Sweep-safe heading reachable within Integration's next fixed step. */
+	UPROPERTY(Transient)
+	FVector NextStepSafeDirection = FVector::ForwardVector;
+
 	/** Last FlightNav waypoint (or current baked-nav point) validated from the current position. */
 	UPROPERTY(Transient)
 	FVector LastVerifiedSafePoint = FVector::ZeroVector;
+
+	/**
+	 * Stable heading captured when the current finite-turn path first becomes
+	 * non-executable. A stopped fixed-wing member may rotate toward this heading
+	 * without translating; the normal next-step FlightNav gate still decides when
+	 * translation may resume.
+	 */
+	UPROPERTY(Transient)
+	FVector RecoveryEscapeDirection = FVector::ForwardVector;
 
 	/** 3D uniform-grid cell occupied during the last avoidance evaluation. */
 	UPROPERTY(Transient)
@@ -181,6 +246,13 @@ struct GULISTRIKE_API FGuLiWingmanAvoidanceFragment : public FMassFragment
 	/** Bounded cadence for revalidating the cached FlightNav recovery point. */
 	UPROPERTY(Transient)
 	float RecoveryPointValidationAccumulator = 0.0f;
+
+	/**
+	 * Maximum speed that can still decelerate before the currently measured
+	 * FlightNav/physical boundary. Zero is a valid emergency-stop limit.
+	 */
+	UPROPERTY(Transient)
+	float NavigationSpeedLimitCentimetersPerSecond = 0.0f;
 
 	UPROPERTY(Transient)
 	uint32 VerifiedWaypointRequestSerial = 0u;
@@ -203,8 +275,19 @@ struct GULISTRIKE_API FGuLiWingmanAvoidanceFragment : public FMassFragment
 	UPROPERTY(Transient)
 	bool bHasSafeDirection = false;
 
+	/** True only when NextStepSafeDirection obeys the next fixed-step turn limit. */
+	UPROPERTY(Transient)
+	bool bHasNextStepSafeDirection = false;
+
+	/** True when Integration must obey NavigationSpeedLimitCentimetersPerSecond. */
+	UPROPERTY(Transient)
+	bool bHasNavigationSpeedLimit = false;
+
 	UPROPERTY(Transient)
 	bool bHasVerifiedSafePoint = false;
+
+	UPROPERTY(Transient)
+	bool bHasRecoveryEscapeDirection = false;
 
 	UPROPERTY(Transient)
 	bool bRecoveryPointCurrentlyValid = false;
@@ -237,6 +320,8 @@ struct GULISTRIKE_API FGuLiWingmanFlightDynamicsFragment : public FMassFragment
 
 	UPROPERTY(Transient)
 	float FixedStepAccumulator = 0.0f;
+	// Pose capture reads the Mass clock after integration, independent of actor tick cadence.
+	uint32 CaptureSimulationTick = 1;
 
 	UPROPERTY(Transient)
 	float ModeEvaluationAccumulator = 0.0f;
@@ -248,6 +333,34 @@ struct GULISTRIKE_API FGuLiWingmanFlightDynamicsFragment : public FMassFragment
 	bool bAlive = true;
 };
 
+/** Attack guidance has no authority to change the Transform or bypass avoidance. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiWingmanAttackFragment : public FMassFragment
+{
+	GENERATED_BODY()
+	EGuLiWingmanAttackPhase Phase = EGuLiWingmanAttackPhase::Idle;
+	FGuLiWingmanGroundRunPath Path;
+	FGuLiWingmanAirTurnPlan AirTurn;
+	FVector RetreatPoint = FVector::ZeroVector;
+	FVector RetreatOrigin = FVector::ZeroVector;
+	FGuLiWingmanAttackTarget Target;
+	FName SlotId;
+	FName SkillId;
+	uint64 DefinitionChecksum = 0;
+	uint32 EntityGeneration = 0;
+	uint32 ProfileRevision = 0;
+	uint32 LeaseEpoch = 0;
+	uint32 RunId = 0;
+	uint32 AirStateEntrySerial = 0;
+	int32 NextShotIndex = 0;
+	double StartTime = 0;
+	double RetryAfter = 0;
+	uint8 LastCancelReason = 0;
+	bool bAirTurnUsingDirectGuidance = false;
+	FVector PreferredVelocity = FVector::ZeroVector;
+	bool bGuiding = false;
+};
+
 /** Independent basic-weapon state. A shot is not a GA activation. */
 USTRUCT()
 struct GULISTRIKE_API FGuLiWingmanWeaponStateFragment : public FMassFragment
@@ -256,6 +369,43 @@ struct GULISTRIKE_API FGuLiWingmanWeaponStateFragment : public FMassFragment
 
 	UPROPERTY(Transient)
 	double NextBasicFireSeconds = 0.0;
+
+	/** Same member, independent binding-slot cadence; fixed layout keeps this a valid Mass fragment. */
+	TStaticArray<FName, GULI_MAX_WINGMAN_WEAPON_CHANNELS> WeaponSlotIds{};
+	TStaticArray<double, GULI_MAX_WINGMAN_WEAPON_CHANNELS> NextFireSecondsByWeaponSlot{};
+
+	double GetNextFireSeconds(FName SlotId) const
+	{
+		for (int32 Index = 0; Index < GULI_MAX_WINGMAN_WEAPON_CHANNELS; ++Index)
+		{
+			if (WeaponSlotIds[Index] == SlotId) return NextFireSecondsByWeaponSlot[Index];
+		}
+		return 0.0;
+	}
+
+	double* FindNextFireSeconds(FName SlotId)
+	{
+		for (int32 Index = 0; Index < GULI_MAX_WINGMAN_WEAPON_CHANNELS; ++Index)
+		{
+			if (WeaponSlotIds[Index] == SlotId) return &NextFireSecondsByWeaponSlot[Index];
+		}
+		return nullptr;
+	}
+
+	bool SetNextFireSeconds(FName SlotId, double Value)
+	{
+		if (SlotId.IsNone() || !FMath::IsFinite(Value)) return false;
+		for (int32 Index = 0; Index < GULI_MAX_WINGMAN_WEAPON_CHANNELS; ++Index)
+		{
+			if (WeaponSlotIds[Index] == SlotId || WeaponSlotIds[Index].IsNone())
+			{
+				WeaponSlotIds[Index] = SlotId;
+				NextFireSecondsByWeaponSlot[Index] = Value;
+				return true;
+			}
+		}
+		return false;
+	}
 
 	UPROPERTY(Transient)
 	uint32 DomainFireSequence = 0u;

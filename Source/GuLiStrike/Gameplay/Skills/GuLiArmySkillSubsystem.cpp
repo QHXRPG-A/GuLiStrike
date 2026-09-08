@@ -22,6 +22,7 @@ void UGuLiArmySkillSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	Definitions = Data->GetSkillDefinitions();
 	Configs = Data->GetUnitSkillConfigs();
 	RegisteredExecutors.Add(TEXT("DirectSingleTarget"));
+	RegisteredExecutors.Add(TEXT("LaunchProjectile"));
 	if (GetWorld()->GetNetMode() != NM_Client)
 	{
 		FString Error;
@@ -43,6 +44,8 @@ void UGuLiArmySkillSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 void UGuLiArmySkillSubsystem::Deinitialize()
 {
 	TeamSources.Reset(); TeamOverrides.Reset(); LastRejectedChanges.Reset(); CommittedProfiles.Reset(); PendingProfiles.Reset();
+	TeamLoadouts.Reset(); SharedUnitProfiles.Reset();
+	WeaponLoadoutCommitted.Clear();
 	ProfileLookup.Reset(); EffectHooks.Reset(); RegisteredExecutors.Reset(); ReplicationActor.Reset();
 	Super::Deinitialize();
 }
@@ -57,6 +60,8 @@ void UGuLiArmySkillSubsystem::SynchronizeMatchEpoch()
 	if (bNewMatch)
 	{
 		TeamSources.Reset(); TeamOverrides.Reset(); LastRejectedChanges.Reset(); PendingProfiles.Reset();
+		TeamLoadouts.Reset();
+		bEquipmentAwaitingCommit = false;
 		// Do not copy the previous match's profiles into either team's staged reset.
 		bPendingChanges = true;
 		FString Error;
@@ -75,11 +80,27 @@ uint64 UGuLiArmySkillSubsystem::ProfileKey(EGuLiTeam Team, uint16 UnitTypeId, FN
 void UGuLiArmySkillSubsystem::RebuildLookup()
 {
 	ProfileLookup.Reset();
+	SharedUnitProfiles.Reset();
+	TMap<uint32, TArray<FGuLiResolvedSkillProfile>> UnitProfiles;
 	for (int32 Index = 0; Index < CommittedProfiles.Num(); ++Index)
 	{
 		const auto& Profile = CommittedProfiles[Index];
 		ProfileLookup.FindOrAdd(ProfileKey(Profile.Team, Profile.UnitTypeId, Profile.SlotId)).Add(Index);
+		UnitProfiles.FindOrAdd((static_cast<uint32>(Profile.Team) << 16) | Profile.UnitTypeId).Add(Profile);
 	}
+	for (auto& Pair : UnitProfiles)
+	{
+		Pair.Value.Sort([](const auto& A, const auto& B) { return A.SlotId.LexicalLess(B.SlotId); });
+		SharedUnitProfiles.Add(Pair.Key, MakeShared<const TArray<FGuLiResolvedSkillProfile>>(MoveTemp(Pair.Value)));
+	}
+}
+
+TSharedPtr<const TArray<FGuLiResolvedSkillProfile>> UGuLiArmySkillSubsystem::GetSharedUnitProfiles(
+	const EGuLiTeam Team, const uint16 UnitTypeId) const
+{
+	if (!IsCurrentMatchSnapshot()) return nullptr;
+	const auto* Profiles = SharedUnitProfiles.Find((static_cast<uint32>(Team) << 16) | UnitTypeId);
+	return Profiles ? *Profiles : nullptr;
 }
 
 const FGuLiResolvedSkillProfile* UGuLiArmySkillSubsystem::FindResolvedSkill(EGuLiTeam Team, uint16 UnitTypeId, FName SlotId) const
@@ -119,6 +140,8 @@ TArray<FGuLiSkillSource> UGuLiArmySkillSubsystem::GetSources(EGuLiTeam Team) con
 
 bool UGuLiArmySkillSubsystem::ValidateCommander(const AGuLiBattlePlayerState& Commander, FString& OutError) const
 {
+	if (bEquipmentAwaitingCommit)
+	{ OutError = TEXT("A weapon equipment transaction is awaiting its fixed-step commit."); return false; }
 	const auto* State = GetWorld() ? GetWorld()->GetGameState<AGuLiBattleGameState>() : nullptr;
 	const auto* Controller = Cast<APlayerController>(Commander.GetOwner());
 	if (!State || State->GetMatchEpoch() == 0 || !Commander.HasAuthority() || Commander.GetWorld() != GetWorld()
@@ -136,12 +159,13 @@ bool UGuLiArmySkillSubsystem::ValidateCommander(const AGuLiBattlePlayerState& Co
 
 bool UGuLiArmySkillSubsystem::StageTeam(EGuLiTeam Team, const TArray<FGuLiSkillSource>& Sources,
 	const TArray<FGuLiSkillNumericOverride>& Overrides, FString& OutError,
-	const TArray<FGuLiSkillSlotKey>* AffectedSlots)
+	const TArray<FGuLiSkillSlotKey>* AffectedSlots, const TArray<FGuLiSkillLoadoutSelection>* Loadout)
 {
 	TArray<FGuLiResolvedSkillProfile> Profiles;
+	if (!Loadout) Loadout = TeamLoadouts.Find(Team);
 	const bool bResolved = AffectedSlots
-		? FGuLiSkillResolver::ResolveSelected(Team, Definitions, Configs, Sources, Overrides, *AffectedSlots, Profiles, OutError)
-		: FGuLiSkillResolver::Resolve(Team, Definitions, Configs, Sources, Overrides, Profiles, OutError);
+		? FGuLiSkillResolver::ResolveSelected(Team, Definitions, Configs, Sources, Overrides, *AffectedSlots, Profiles, OutError, Loadout)
+		: FGuLiSkillResolver::Resolve(Team, Definitions, Configs, Sources, Overrides, Profiles, OutError, Loadout);
 	if (!bResolved) { LastRejectedChanges.Add(Team, OutError); return false; }
 	for (const auto& Source : Sources)
 		for (const auto& Replacement : Source.Replacements)
@@ -173,6 +197,33 @@ bool UGuLiArmySkillSubsystem::StageTeam(EGuLiTeam Team, const TArray<FGuLiSkillS
 		bPendingChanges = true;
 	}
 	TeamSources.Add(Team, MoveTemp(SourceCopy)); TeamOverrides.Add(Team, MoveTemp(OverrideCopy));
+	return true;
+}
+
+bool UGuLiArmySkillSubsystem::EquipWeapon(const AGuLiBattlePlayerState& Commander, const uint16 UnitTypeId,
+	const FName SlotId, const FName SkillId, const uint32 ExpectedRevision, FString& OutError)
+{
+	if (!ValidateCommander(Commander, OutError)) return false;
+	SynchronizeMatchEpoch();
+	if (bPendingChanges || ExpectedRevision == 0u || ExpectedRevision != LoadoutRevision)
+	{ OutError = TEXT("Equipment version is stale or another configuration is awaiting its fixed-step commit."); return false; }
+	auto Candidate = TeamLoadouts.FindRef(Commander.GetTeam());
+	auto* Selection = Candidate.FindByPredicate([&](const auto& Entry)
+		{ return Entry.UnitTypeId == UnitTypeId && Entry.SlotId == SlotId; });
+	if (!Selection) Selection = &Candidate.AddDefaulted_GetRef();
+	Selection->UnitTypeId = UnitTypeId; Selection->SlotId = SlotId; Selection->SkillId = SkillId;
+	const TArray<FGuLiSkillSlotKey> Slots = {{UnitTypeId, SlotId}};
+	TArray<FGuLiResolvedSkillProfile> Preview;
+	if (!FGuLiSkillResolver::ResolveSelected(Commander.GetTeam(), Definitions, Configs,
+		TeamSources.FindOrAdd(Commander.GetTeam()), TeamOverrides.FindOrAdd(Commander.GetTeam()),
+		Slots, Preview, OutError, &Candidate)) return false;
+	if (Preview.Num() != 1 || !Preview[0].bUnlocked
+		|| (!SkillId.IsNone() && Preview[0].SkillId != SkillId))
+	{ OutError = TEXT("Slot is locked or a forced replacement prevents this equipment choice."); return false; }
+	if (!StageTeam(Commander.GetTeam(), TeamSources.FindOrAdd(Commander.GetTeam()),
+		TeamOverrides.FindOrAdd(Commander.GetTeam()), OutError, &Slots, &Candidate)) return false;
+	TeamLoadouts.Add(Commander.GetTeam(), MoveTemp(Candidate));
+	bEquipmentAwaitingCommit = true;
 	return true;
 }
 
@@ -281,21 +332,27 @@ void UGuLiArmySkillSubsystem::CommitPendingChanges()
 		RebuildLookup();
 	}
 	else PendingProfiles.Reset();
+	if (bConfigurationChanged || CommittedMatchEpoch != CachedMatchEpoch)
+		LoadoutRevision = LoadoutRevision == MAX_uint32 ? 1u : LoadoutRevision + 1u;
 	CommittedMatchEpoch = CachedMatchEpoch;
 	bPendingChanges = false;
+	bEquipmentAwaitingCommit = false;
 	if (ReplicationActor.IsValid() && (bConfigurationChanged || LastPublishedEpoch != CachedMatchEpoch))
 	{
-		ReplicationActor->Publish(CachedMatchEpoch, CommittedProfiles);
+		ReplicationActor->Publish(CachedMatchEpoch, CommittedProfiles, LoadoutRevision);
 		LastPublishedEpoch = CachedMatchEpoch;
 	}
+	WeaponLoadoutCommitted.Broadcast(LoadoutRevision);
 }
 
-void UGuLiArmySkillSubsystem::ReceiveReplicatedProfiles(uint32 MatchEpoch, const TArray<FGuLiResolvedSkillProfile>& Profiles)
+void UGuLiArmySkillSubsystem::ReceiveReplicatedProfiles(uint32 MatchEpoch, const TArray<FGuLiResolvedSkillProfile>& Profiles,
+	const uint32 InLoadoutRevision)
 {
 	if (!GetWorld() || GetWorld()->GetNetMode() != NM_Client) return;
 	CachedMatchEpoch = MatchEpoch;
 	CommittedMatchEpoch = MatchEpoch;
 	CommittedProfiles = Profiles;
+	LoadoutRevision = InLoadoutRevision != 0u ? InLoadoutRevision : LoadoutRevision + 1u;
 	RebuildLookup();
 }
 

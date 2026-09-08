@@ -5,9 +5,11 @@
 #if WITH_EDITOR
 
 #include "AssetRegistry/AssetRegistryModule.h"
+#include "Components/PoseableMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Editor.h"
 #include "Engine/Engine.h"
+#include "Engine/SkeletalMesh.h"
 #include "Engine/StaticMesh.h"
 #include "Engine/Texture2D.h"
 #include "FileHelpers.h"
@@ -20,6 +22,8 @@
 #include "Materials/MaterialInstanceConstant.h"
 #include "MeshMerge/MeshMergingSettings.h"
 #include "MeshMergeModule.h"
+#include "MeshUtilities.h"
+#include "Misc/PackageName.h"
 #include "Modules/ModuleManager.h"
 #include "PhysicsEngine/BodySetup.h"
 #include "RenderingThread.h"
@@ -33,31 +37,62 @@ namespace GuLiCommanderCrowdAssetCommands
 {
 	constexpr TCHAR SourceStaticMeshPath[] =
 		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot.SM_CommanderFourFRobot");
-	constexpr TCHAR CrowdMeshPackagePath[] =
-		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd");
-	constexpr TCHAR CrowdMeshObjectPath[] =
-		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd");
-	constexpr TCHAR CrowdMaterialPackagePath[] =
-		TEXT("/Game/Commander/Units/M_CommanderFourFRobot_Crowd");
-	constexpr TCHAR CrowdMaterialObjectPath[] =
-		TEXT("/Game/Commander/Units/M_CommanderFourFRobot_Crowd.M_CommanderFourFRobot_Crowd");
-	constexpr TCHAR CrowdBaseColorPackagePath[] =
-		TEXT("/Game/Commander/Units/T_CommanderFourFRobot_Crowd_BaseColor");
-	constexpr TCHAR CrowdBaseColorObjectPath[] =
-		TEXT("/Game/Commander/Units/T_CommanderFourFRobot_Crowd_BaseColor.T_CommanderFourFRobot_Crowd_BaseColor");
-	constexpr TCHAR CrowdNormalPackagePath[] =
-		TEXT("/Game/Commander/Units/T_CommanderFourFRobot_Crowd_Normal");
-	constexpr TCHAR CrowdNormalObjectPath[] =
-		TEXT("/Game/Commander/Units/T_CommanderFourFRobot_Crowd_Normal.T_CommanderFourFRobot_Crowd_Normal");
-	constexpr TCHAR CrowdOrmPackagePath[] =
-		TEXT("/Game/Commander/Units/T_CommanderFourFRobot_Crowd_ORM");
-	constexpr TCHAR CrowdOrmObjectPath[] =
-		TEXT("/Game/Commander/Units/T_CommanderFourFRobot_Crowd_ORM.T_CommanderFourFRobot_Crowd_ORM");
+	constexpr TCHAR WM01SourceSkeletalMeshPath[] =
+		TEXT("/Game/Assets/WarMachines/CombatAvatarWM-01/WM01_Avatar/SkeletalMeshes/WM01_Avatar.WM01_Avatar");
+
+	struct FCrowdAssetBuildSpec
+	{
+		const TCHAR* Label;
+		const TCHAR* MergeBasePackagePath;
+		const TCHAR* MeshPackagePath;
+		const TCHAR* MeshObjectPath;
+		const TCHAR* MaterialPackagePath;
+		const TCHAR* MaterialObjectPath;
+		const TCHAR* BaseColorPackagePath;
+		const TCHAR* BaseColorObjectPath;
+		const TCHAR* NormalPackagePath;
+		const TCHAR* NormalObjectPath;
+		const TCHAR* OrmPackagePath;
+		const TCHAR* OrmObjectPath;
+	};
+
+	const FCrowdAssetBuildSpec FourFRobotSpec = {
+		TEXT("FourFRobot"),
+		TEXT("/Game/Commander/Units/CommanderFourFRobot_Crowd"),
+		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd"),
+		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd"),
+		TEXT("/Game/Commander/Units/M_CommanderFourFRobot_Crowd"),
+		TEXT("/Game/Commander/Units/M_CommanderFourFRobot_Crowd.M_CommanderFourFRobot_Crowd"),
+		TEXT("/Game/Commander/Units/T_CommanderFourFRobot_Crowd_BaseColor"),
+		TEXT("/Game/Commander/Units/T_CommanderFourFRobot_Crowd_BaseColor.T_CommanderFourFRobot_Crowd_BaseColor"),
+		TEXT("/Game/Commander/Units/T_CommanderFourFRobot_Crowd_Normal"),
+		TEXT("/Game/Commander/Units/T_CommanderFourFRobot_Crowd_Normal.T_CommanderFourFRobot_Crowd_Normal"),
+		TEXT("/Game/Commander/Units/T_CommanderFourFRobot_Crowd_ORM"),
+		TEXT("/Game/Commander/Units/T_CommanderFourFRobot_Crowd_ORM.T_CommanderFourFRobot_Crowd_ORM")};
+
+	const FCrowdAssetBuildSpec WM01Spec = {
+		TEXT("WM01"),
+		TEXT("/Game/Commander/Units/WM01_Crowd"),
+		TEXT("/Game/Commander/Units/SM_WM01_Crowd"),
+		TEXT("/Game/Commander/Units/SM_WM01_Crowd.SM_WM01_Crowd"),
+		TEXT("/Game/Commander/Units/M_WM01_Crowd"),
+		TEXT("/Game/Commander/Units/M_WM01_Crowd.M_WM01_Crowd"),
+		TEXT("/Game/Commander/Units/T_WM01_Crowd_BaseColor"),
+		TEXT("/Game/Commander/Units/T_WM01_Crowd_BaseColor.T_WM01_Crowd_BaseColor"),
+		TEXT("/Game/Commander/Units/T_WM01_Crowd_Normal"),
+		TEXT("/Game/Commander/Units/T_WM01_Crowd_Normal.T_WM01_Crowd_Normal"),
+		TEXT("/Game/Commander/Units/T_WM01_Crowd_ORM"),
+		TEXT("/Game/Commander/Units/T_WM01_Crowd_ORM.T_WM01_Crowd_ORM")};
 
 	constexpr int32 AtlasSize = 2048;
 	constexpr int32 LodTriangleBudgets[] = {20000, 6000, 1500};
 	constexpr int32 LodTriangleTargets[] = {19000, 5700, 1400};
 	constexpr float LodScreenSizes[] = {1.0f, 0.056f, 0.028f};
+	constexpr float WM01BattlePoseHipRadians = 0.30f;
+	const TCHAR* const WM01BattlePosePositiveHipBones[] = {
+		TEXT("Leg_01e"), TEXT("Leg_03e"), TEXT("Leg_05e")};
+	const TCHAR* const WM01BattlePoseNegativeHipBones[] = {
+		TEXT("Leg_02e"), TEXT("Leg_04e"), TEXT("Leg_06e")};
 	bool bCrowdBuildQueuedOrRunning = false;
 
 	struct FBakedTextureSources
@@ -73,13 +108,13 @@ namespace GuLiCommanderCrowdAssetCommands
 		float AmbientOcclusionConstant = 1.0f;
 	};
 
-	bool IsOutputAssetPresent()
+	bool IsOutputAssetPresent(const FCrowdAssetBuildSpec& Spec)
 	{
-		return LoadObject<UObject>(nullptr, CrowdMeshObjectPath)
-			|| LoadObject<UObject>(nullptr, CrowdMaterialObjectPath)
-			|| LoadObject<UObject>(nullptr, CrowdBaseColorObjectPath)
-			|| LoadObject<UObject>(nullptr, CrowdNormalObjectPath)
-			|| LoadObject<UObject>(nullptr, CrowdOrmObjectPath);
+		return LoadObject<UObject>(nullptr, Spec.MeshObjectPath)
+			|| LoadObject<UObject>(nullptr, Spec.MaterialObjectPath)
+			|| LoadObject<UObject>(nullptr, Spec.BaseColorObjectPath)
+			|| LoadObject<UObject>(nullptr, Spec.NormalObjectPath)
+			|| LoadObject<UObject>(nullptr, Spec.OrmObjectPath);
 	}
 
 	bool ReadTexturePixels(UTexture2D* Texture, TArray<FColor>& OutPixels, FString& OutError)
@@ -282,14 +317,17 @@ namespace GuLiCommanderCrowdAssetCommands
 	UMaterial* CreateCrowdMaterial(
 		UTexture2D* BaseColorTexture,
 		UTexture2D* NormalTexture,
-		UTexture2D* OrmTexture)
+		UTexture2D* OrmTexture,
+		const FCrowdAssetBuildSpec& Spec)
 	{
-		UPackage* Package = CreatePackage(CrowdMaterialPackagePath);
+		UPackage* Package = CreatePackage(Spec.MaterialPackagePath);
 		Package->FullyLoad();
 		Package->Modify();
+		const FString MaterialName = FPackageName::GetLongPackageAssetName(
+			Spec.MaterialPackagePath);
 		UMaterial* Material = NewObject<UMaterial>(
 			Package,
-			TEXT("M_CommanderFourFRobot_Crowd"),
+			*MaterialName,
 			RF_Public | RF_Standalone);
 		Material->BlendMode = BLEND_Opaque;
 		Material->TwoSided = false;
@@ -453,16 +491,20 @@ namespace GuLiCommanderCrowdAssetCommands
 		StaticMesh->MarkPackageDirty();
 	}
 
-	bool ValidateCrowdAssetContract(FString& OutError)
+	bool ValidateCrowdAssetContract(
+		const FCrowdAssetBuildSpec& Spec,
+		FString& OutError)
 	{
-		UStaticMesh* StaticMesh = LoadObject<UStaticMesh>(nullptr, CrowdMeshObjectPath);
-		UMaterial* Material = LoadObject<UMaterial>(nullptr, CrowdMaterialObjectPath);
-		UTexture2D* BaseColor = LoadObject<UTexture2D>(nullptr, CrowdBaseColorObjectPath);
-		UTexture2D* Normal = LoadObject<UTexture2D>(nullptr, CrowdNormalObjectPath);
-		UTexture2D* Orm = LoadObject<UTexture2D>(nullptr, CrowdOrmObjectPath);
+		UStaticMesh* StaticMesh = LoadObject<UStaticMesh>(nullptr, Spec.MeshObjectPath);
+		UMaterial* Material = LoadObject<UMaterial>(nullptr, Spec.MaterialObjectPath);
+		UTexture2D* BaseColor = LoadObject<UTexture2D>(nullptr, Spec.BaseColorObjectPath);
+		UTexture2D* Normal = LoadObject<UTexture2D>(nullptr, Spec.NormalObjectPath);
+		UTexture2D* Orm = LoadObject<UTexture2D>(nullptr, Spec.OrmObjectPath);
 		if (!StaticMesh || !Material || !BaseColor || !Normal || !Orm)
 		{
-			OutError = TEXT("One or more Commander Crowd assets are missing.");
+			OutError = FString::Printf(
+				TEXT("One or more %s Commander Crowd assets are missing."),
+				Spec.Label);
 			return false;
 		}
 
@@ -573,26 +615,18 @@ namespace GuLiCommanderCrowdAssetCommands
 		return true;
 	}
 
-	void BuildFourFRobotCrowdNow(UWorld* World)
+	void BuildCrowdFromStaticMeshNow(
+		UWorld* World,
+		UStaticMesh* SourceStaticMesh,
+		const FCrowdAssetBuildSpec& Spec)
 	{
-		if (!World || !World->IsEditorWorld())
-		{
-			UE_LOG(LogGuLiStrike, Error, TEXT("Commander Crowd build requires an editor world."));
-			return;
-		}
-		if (IsOutputAssetPresent())
+		if (!World || !World->IsEditorWorld() || !SourceStaticMesh)
 		{
 			UE_LOG(
 				LogGuLiStrike,
 				Error,
-				TEXT("Commander Crowd output already exists; refusing to overwrite any generated asset."));
-			return;
-		}
-
-		UStaticMesh* SourceStaticMesh = LoadObject<UStaticMesh>(nullptr, SourceStaticMeshPath);
-		if (!SourceStaticMesh)
-		{
-			UE_LOG(LogGuLiStrike, Error, TEXT("Could not load source proxy %s."), SourceStaticMeshPath);
+				TEXT("%s Crowd build received an invalid editor world or source mesh."),
+				Spec.Label);
 			return;
 		}
 
@@ -678,7 +712,7 @@ namespace GuLiCommanderCrowdAssetCommands
 			MergeSettings,
 			GEngine ? GEngine->DefaultFlattenMaterial : nullptr,
 			GetTransientPackage(),
-			TEXT("/Game/Commander/Units/CommanderFourFRobot_Crowd"),
+			Spec.MergeBasePackagePath,
 			GeneratedAssets,
 			MergedLocation,
 			1.0f,
@@ -715,13 +749,15 @@ namespace GuLiCommanderCrowdAssetCommands
 			return;
 		}
 
-		UPackage* MeshPackage = CreatePackage(CrowdMeshPackagePath);
+		UPackage* MeshPackage = CreatePackage(Spec.MeshPackagePath);
 		MeshPackage->FullyLoad();
 		MeshPackage->Modify();
+		const FString MeshName = FPackageName::GetLongPackageAssetName(
+			Spec.MeshPackagePath);
 		UStaticMesh* CrowdMesh = DuplicateObject<UStaticMesh>(
 			TransientMergedMesh,
 			MeshPackage,
-			TEXT("SM_CommanderFourFRobot_Crowd"));
+			*MeshName);
 		CrowdMesh->SetFlags(RF_Public | RF_Standalone);
 		CrowdMesh->ClearFlags(RF_Transient);
 		if (!GenerateContractLods(CrowdMesh, Error))
@@ -732,7 +768,7 @@ namespace GuLiCommanderCrowdAssetCommands
 
 		UTexture2D* BaseColorTexture = FMaterialUtilities::CreateTexture(
 			nullptr,
-			CrowdBaseColorPackagePath,
+			Spec.BaseColorPackagePath,
 			FIntPoint(AtlasSize, AtlasSize),
 			BaseColorSamples,
 			TC_Default,
@@ -741,7 +777,7 @@ namespace GuLiCommanderCrowdAssetCommands
 			true);
 		UTexture2D* NormalTexture = FMaterialUtilities::CreateTexture(
 			nullptr,
-			CrowdNormalPackagePath,
+			Spec.NormalPackagePath,
 			FIntPoint(AtlasSize, AtlasSize),
 			NormalSamples,
 			TC_Normalmap,
@@ -750,7 +786,7 @@ namespace GuLiCommanderCrowdAssetCommands
 			false);
 		UTexture2D* OrmTexture = FMaterialUtilities::CreateTexture(
 			nullptr,
-			CrowdOrmPackagePath,
+			Spec.OrmPackagePath,
 			FIntPoint(AtlasSize, AtlasSize),
 			OrmSamples,
 			TC_Masks,
@@ -766,7 +802,8 @@ namespace GuLiCommanderCrowdAssetCommands
 		UMaterial* CrowdMaterial = CreateCrowdMaterial(
 			BaseColorTexture,
 			NormalTexture,
-			OrmTexture);
+			OrmTexture,
+			Spec);
 		ApplyStaticMeshPerformanceContract(CrowdMesh, CrowdMaterial);
 
 		FAssetRegistryModule::AssetCreated(BaseColorTexture);
@@ -779,7 +816,7 @@ namespace GuLiCommanderCrowdAssetCommands
 		OrmTexture->MarkPackageDirty();
 		CrowdMaterial->MarkPackageDirty();
 		CrowdMesh->MarkPackageDirty();
-		if (!ValidateCrowdAssetContract(Error))
+		if (!ValidateCrowdAssetContract(Spec, Error))
 		{
 			UE_LOG(LogGuLiStrike, Error, TEXT("Unsaved Crowd asset contract failed: %s"), *Error);
 			return;
@@ -797,7 +834,7 @@ namespace GuLiCommanderCrowdAssetCommands
 			return;
 		}
 
-		if (!ValidateCrowdAssetContract(Error))
+		if (!ValidateCrowdAssetContract(Spec, Error))
 		{
 			UE_LOG(LogGuLiStrike, Error, TEXT("Saved Crowd asset contract failed: %s"), *Error);
 			return;
@@ -807,17 +844,240 @@ namespace GuLiCommanderCrowdAssetCommands
 			LogGuLiStrike,
 			Display,
 			TEXT("Built Commander Crowd asset: %s (tris %d/%d/%d, one material, three 2K textures)."),
-			CrowdMeshObjectPath,
+			Spec.MeshObjectPath,
 			GetTriangleCount(CrowdMesh, 0),
 			GetTriangleCount(CrowdMesh, 1),
 			GetTriangleCount(CrowdMesh, 2));
 	}
 
-	void QueueBuildFourFRobotCrowd(const TArray<FString>& Args, UWorld* World)
+	bool CanBuildCrowd(UWorld* World, const FCrowdAssetBuildSpec& Spec)
+	{
+		if (!World || !World->IsEditorWorld())
+		{
+			UE_LOG(LogGuLiStrike, Error, TEXT("Commander Crowd build requires an editor world."));
+			return false;
+		}
+		if (IsOutputAssetPresent(Spec))
+		{
+			UE_LOG(
+				LogGuLiStrike,
+				Error,
+				TEXT("%s Commander Crowd output already exists; refusing to overwrite generated assets."),
+				Spec.Label);
+			return false;
+		}
+		return true;
+	}
+
+	void BuildFourFRobotCrowdNow(UWorld* World)
+	{
+		if (!CanBuildCrowd(World, FourFRobotSpec))
+		{
+			return;
+		}
+		UStaticMesh* SourceStaticMesh = LoadObject<UStaticMesh>(nullptr, SourceStaticMeshPath);
+		if (!SourceStaticMesh)
+		{
+			UE_LOG(LogGuLiStrike, Error, TEXT("Could not load source proxy %s."), SourceStaticMeshPath);
+			return;
+		}
+		BuildCrowdFromStaticMeshNow(World, SourceStaticMesh, FourFRobotSpec);
+	}
+
+	bool ApplyWM01HipRotations(
+		const FReferenceSkeleton& ReferenceSkeleton,
+		const TCHAR* const* BoneNames,
+		const int32 BoneNameCount,
+		const float RotationRadians,
+		TArray<FTransform>& InOutLocalTransforms,
+		FString& OutError)
+	{
+		for (int32 BoneNameIndex = 0; BoneNameIndex < BoneNameCount; ++BoneNameIndex)
+		{
+			const FName BoneName(BoneNames[BoneNameIndex]);
+			const int32 BoneIndex = ReferenceSkeleton.FindBoneIndex(BoneName);
+			if (!InOutLocalTransforms.IsValidIndex(BoneIndex))
+			{
+				OutError = FString::Printf(
+					TEXT("Required WM01 battle-pose hip bone %s is missing."),
+					*BoneName.ToString());
+				return false;
+			}
+
+			FTransform& LocalTransform = InOutLocalTransforms[BoneIndex];
+			if (LocalTransform.ContainsNaN())
+			{
+				OutError = FString::Printf(
+					TEXT("Reference transform for WM01 hip bone %s contains non-finite values."),
+					*BoneName.ToString());
+				return false;
+			}
+
+			LocalTransform.NormalizeRotation();
+			LocalTransform.ConcatenateRotation(FQuat(FVector::UpVector, RotationRadians));
+			LocalTransform.NormalizeRotation();
+			if (LocalTransform.ContainsNaN() || !LocalTransform.IsRotationNormalized())
+			{
+				OutError = FString::Printf(
+					TEXT("Computed WM01 battle-pose transform for hip bone %s is invalid."),
+					*BoneName.ToString());
+				return false;
+			}
+		}
+		return true;
+	}
+
+	bool BuildWM01FixedBattlePose(
+		const USkeletalMesh* SourceMesh,
+		TArray<FTransform>& OutLocalTransforms,
+		FString& OutError)
+	{
+		if (!IsValid(SourceMesh) || SourceMesh->GetLODNum() <= 0)
+		{
+			OutError = TEXT("WM01 source SkeletalMesh is invalid or has no renderable LOD.");
+			return false;
+		}
+
+		const FReferenceSkeleton& ReferenceSkeleton = SourceMesh->GetRefSkeleton();
+		const TArray<FTransform>& ReferencePose = ReferenceSkeleton.GetRefBonePose();
+		if (ReferencePose.IsEmpty() || ReferencePose.Num() != ReferenceSkeleton.GetNum())
+		{
+			OutError = TEXT("WM01 source SkeletalMesh has an invalid reference pose.");
+			return false;
+		}
+
+		OutLocalTransforms = ReferencePose;
+		if (!ApplyWM01HipRotations(
+				ReferenceSkeleton,
+				WM01BattlePosePositiveHipBones,
+				UE_ARRAY_COUNT(WM01BattlePosePositiveHipBones),
+				WM01BattlePoseHipRadians,
+				OutLocalTransforms,
+				OutError))
+		{
+			return false;
+		}
+		return ApplyWM01HipRotations(
+			ReferenceSkeleton,
+			WM01BattlePoseNegativeHipBones,
+			UE_ARRAY_COUNT(WM01BattlePoseNegativeHipBones),
+			-WM01BattlePoseHipRadians,
+			OutLocalTransforms,
+			OutError);
+	}
+
+	bool ApplyWM01FixedBattlePose(
+		UPoseableMeshComponent* MeshComponent,
+		const TArray<FTransform>& LocalTransforms,
+		FString& OutError)
+	{
+		if (!IsValid(MeshComponent)
+			|| MeshComponent->BoneSpaceTransforms.Num() != LocalTransforms.Num())
+		{
+			OutError = TEXT("WM01 PoseableMesh did not initialize the validated reference-pose transforms.");
+			return false;
+		}
+
+		MeshComponent->BoneSpaceTransforms = LocalTransforms;
+		MeshComponent->RefreshBoneTransforms();
+		MeshComponent->UpdateComponentToWorld();
+		MeshComponent->MarkRenderDynamicDataDirty();
+		MeshComponent->MarkRenderStateDirty();
+		FlushRenderingCommands();
+		return true;
+	}
+
+	void BuildWM01CrowdNow(UWorld* World)
+	{
+		if (!CanBuildCrowd(World, WM01Spec))
+		{
+			return;
+		}
+		USkeletalMesh* SourceMesh = LoadObject<USkeletalMesh>(nullptr, WM01SourceSkeletalMeshPath);
+		if (!SourceMesh)
+		{
+			UE_LOG(LogGuLiStrike, Error, TEXT("Could not load WM01 source mesh %s."), WM01SourceSkeletalMeshPath);
+			return;
+		}
+
+		TArray<FTransform> FixedBattlePose;
+		FString PoseError;
+		if (!BuildWM01FixedBattlePose(SourceMesh, FixedBattlePose, PoseError))
+		{
+			UE_LOG(LogGuLiStrike, Error, TEXT("WM01 Crowd source validation failed: %s"), *PoseError);
+			return;
+		}
+
+		FActorSpawnParameters SpawnParameters;
+		SpawnParameters.Name = TEXT("GuLiWM01CrowdPoseSource");
+		SpawnParameters.ObjectFlags = RF_Transient;
+		SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+		AActor* TemporaryActor = World->SpawnActor<AActor>(
+			AActor::StaticClass(),
+			FTransform::Identity,
+			SpawnParameters);
+		if (!TemporaryActor)
+		{
+			UE_LOG(LogGuLiStrike, Error, TEXT("Could not create the temporary WM01 pose actor."));
+			return;
+		}
+
+		UPoseableMeshComponent* MeshComponent = NewObject<UPoseableMeshComponent>(
+			TemporaryActor,
+			TEXT("WM01PoseSourceMesh"),
+			RF_Transient);
+		TemporaryActor->SetRootComponent(MeshComponent);
+		TemporaryActor->AddInstanceComponent(MeshComponent);
+		MeshComponent->SetSkinnedAssetAndUpdate(SourceMesh, true);
+		MeshComponent->SetVisibility(true);
+		MeshComponent->SetHiddenInGame(false);
+		MeshComponent->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+		MeshComponent->RegisterComponentWithWorld(World);
+		if (!ApplyWM01FixedBattlePose(MeshComponent, FixedBattlePose, PoseError))
+		{
+			TemporaryActor->Destroy();
+			UE_LOG(LogGuLiStrike, Error, TEXT("WM01 Crowd pose setup failed: %s"), *PoseError);
+			return;
+		}
+
+		TArray<UMeshComponent*> MeshComponents;
+		MeshComponents.Add(MeshComponent);
+		IMeshUtilities& MeshUtilities =
+			FModuleManager::LoadModuleChecked<IMeshUtilities>(TEXT("MeshUtilities"));
+		const FString TemporaryPackagePath = FString::Printf(
+			TEXT("/Temp/GuLiStrike/SM_WM01_CrowdPose_%s"),
+			*FGuid::NewGuid().ToString(EGuidFormats::Digits));
+		UStaticMesh* PosedStaticMesh = MeshUtilities.ConvertMeshesToStaticMesh(
+			MeshComponents,
+			MeshComponent->GetComponentTransform(),
+			TemporaryPackagePath);
+		TemporaryActor->Destroy();
+		if (!PosedStaticMesh)
+		{
+			UE_LOG(LogGuLiStrike, Error, TEXT("MeshUtilities failed to freeze the WM01 fixed battle pose."));
+			return;
+		}
+		FStaticMeshCompilingManager::Get().FinishCompilation({PosedStaticMesh});
+		UE_LOG(
+			LogGuLiStrike,
+			Display,
+			TEXT("WM01 Crowd pose source: reference pose with Leg_01e/03e/05e Z +%.2f rad and Leg_02e/04e/06e Z -%.2f rad; Mainbody remains neutral."),
+			WM01BattlePoseHipRadians,
+			WM01BattlePoseHipRadians);
+		BuildCrowdFromStaticMeshNow(World, PosedStaticMesh, WM01Spec);
+	}
+
+	using FCrowdBuildFunction = void (*)(UWorld*);
+
+	void QueueCrowdBuild(
+		const TArray<FString>& Args,
+		UWorld* World,
+		const TCHAR* Usage,
+		FCrowdBuildFunction BuildFunction)
 	{
 		if (Args.Num() != 0)
 		{
-			UE_LOG(LogGuLiStrike, Error, TEXT("Usage: gs.Commander.BuildFourFRobotCrowd"));
+			UE_LOG(LogGuLiStrike, Error, TEXT("Usage: %s"), Usage);
 			return;
 		}
 		if (!World || !World->IsEditorWorld())
@@ -845,12 +1105,12 @@ namespace GuLiCommanderCrowdAssetCommands
 		const TWeakObjectPtr<UWorld> WeakWorld(World);
 		GEditor->GetTimerManager()->SetTimerForNextTick(
 			FTimerDelegate::CreateLambda(
-				[WeakWorld]()
+				[WeakWorld, BuildFunction]()
 				{
 					if (UWorld* DeferredWorld = WeakWorld.Get();
 						DeferredWorld && DeferredWorld->IsEditorWorld())
 					{
-						BuildFourFRobotCrowdNow(DeferredWorld);
+						BuildFunction(DeferredWorld);
 					}
 					else
 					{
@@ -864,6 +1124,24 @@ namespace GuLiCommanderCrowdAssetCommands
 		UE_LOG(LogGuLiStrike, Display, TEXT("Commander Crowd build queued for the next editor tick."));
 	}
 
+	void QueueBuildFourFRobotCrowd(const TArray<FString>& Args, UWorld* World)
+	{
+		QueueCrowdBuild(
+			Args,
+			World,
+			TEXT("gs.Commander.BuildFourFRobotCrowd"),
+			&BuildFourFRobotCrowdNow);
+	}
+
+	void QueueBuildWM01Crowd(const TArray<FString>& Args, UWorld* World)
+	{
+		QueueCrowdBuild(
+			Args,
+			World,
+			TEXT("gs.Commander.BuildWM01Crowd"),
+			&BuildWM01CrowdNow);
+	}
+
 	void ValidateFourFRobotCrowd(const TArray<FString>& Args, UWorld* World)
 	{
 		(void)World;
@@ -874,12 +1152,30 @@ namespace GuLiCommanderCrowdAssetCommands
 		}
 
 		FString Error;
-		if (!ValidateCrowdAssetContract(Error))
+		if (!ValidateCrowdAssetContract(FourFRobotSpec, Error))
 		{
 			UE_LOG(LogGuLiStrike, Error, TEXT("Commander Crowd validation failed: %s"), *Error);
 			return;
 		}
 		UE_LOG(LogGuLiStrike, Display, TEXT("Commander Crowd asset contract passed."));
+	}
+
+	void ValidateWM01Crowd(const TArray<FString>& Args, UWorld* World)
+	{
+		(void)World;
+		if (Args.Num() != 0)
+		{
+			UE_LOG(LogGuLiStrike, Error, TEXT("Usage: gs.Commander.ValidateWM01Crowd"));
+			return;
+		}
+
+		FString Error;
+		if (!ValidateCrowdAssetContract(WM01Spec, Error))
+		{
+			UE_LOG(LogGuLiStrike, Error, TEXT("WM01 Commander Crowd validation failed: %s"), *Error);
+			return;
+		}
+		UE_LOG(LogGuLiStrike, Display, TEXT("WM01 Commander Crowd asset contract passed."));
 	}
 
 	FAutoConsoleCommandWithWorldAndArgs BuildFourFRobotCrowdCommand(
@@ -891,6 +1187,16 @@ namespace GuLiCommanderCrowdAssetCommands
 		TEXT("gs.Commander.ValidateFourFRobotCrowd"),
 		TEXT("Validates the Commander FourFRobot Crowd mesh, material, textures, and LOD contract."),
 		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&ValidateFourFRobotCrowd));
+
+	FAutoConsoleCommandWithWorldAndArgs BuildWM01CrowdCommand(
+		TEXT("gs.Commander.BuildWM01Crowd"),
+		TEXT("Freezes WM01 in a deterministic fixed battle pose and builds its lightweight Crowd asset set."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&QueueBuildWM01Crowd));
+
+	FAutoConsoleCommandWithWorldAndArgs ValidateWM01CrowdCommand(
+		TEXT("gs.Commander.ValidateWM01Crowd"),
+		TEXT("Validates the WM01 Crowd mesh, material, textures, and LOD contract."),
+		FConsoleCommandWithWorldAndArgsDelegate::CreateStatic(&ValidateWM01Crowd));
 }
 
 #endif // WITH_EDITOR

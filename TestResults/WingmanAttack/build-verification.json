@@ -1,0 +1,87 @@
+{
+  "verified_at": "2026-09-07T23:47:45.0317719+08:00",
+  "engine": "D:\\UnrealEngine-5.7",
+  "engine_version": "5.7.4-0+UE5",
+  "project_engine_association": "{CD3BD5BF-4DAC-F6BF-194B-18AD041E3961}",
+  "targets": {
+    "GuLiStrikeEditor Win64 Development": {
+      "exit_code": 0,
+      "log": "build-editor-source-engine-final.log"
+    },
+    "GuLiStrike Win64 Development": {
+      "exit_code": 0,
+      "log": "build-game-source-engine-final.log"
+    }
+  },
+  "engine_build_id": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+  "modules": {
+    "Binaries\\Win64\\UnrealEditor.modules": {
+      "build_id": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "matches_engine": true,
+      "modules": [
+        "GuLiStrike"
+      ]
+    },
+    "Plugins\\GuLiFlightNavigation\\Binaries\\Win64\\UnrealEditor.modules": {
+      "build_id": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "matches_engine": true,
+      "modules": [
+        "GuLiFlightNavigationEditor",
+        "GuLiFlightNavigationRuntime"
+      ]
+    },
+    "Plugins\\UnrealMCP\\Binaries\\Win64\\UnrealEditor.modules": {
+      "build_id": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "matches_engine": true,
+      "modules": [
+        "UnrealMCP"
+      ]
+    },
+    "Plugins\\GuLiMapAuthoring\\Binaries\\Win64\\UnrealEditor.modules": {
+      "build_id": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "matches_engine": true,
+      "modules": [
+        "GuLiMapAuthoringCore",
+        "GuLiMapAuthoringEditor"
+      ]
+    },
+    "Plugins\\Tripo3DUEBridge-UE5.7-Win64\\Binaries\\Win64\\UnrealEditor.modules": {
+      "build_id": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "matches_engine": true,
+      "modules": [
+        "Tripo3DUEBridge"
+      ]
+    },
+    "Plugins\\UnrealMCPython\\Binaries\\Win64\\UnrealEditor.modules": {
+      "build_id": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "matches_engine": true,
+      "modules": [
+        "UnrealMCPython"
+      ]
+    },
+    "Plugins\\VibeUE\\Binaries\\Win64\\UnrealEditor.modules": {
+      "build_id": "9872a344-2108-49e2-b40c-34c4e2c3ccfe",
+      "matches_engine": true,
+      "modules": [
+        "VibeUE"
+      ]
+    }
+  },
+  "mismatch_count": 0,
+  "focused_automation": {
+    "executable": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor-Cmd.exe",
+    "engine_log_version": "5.7.4-0+UE5",
+    "report": "AutomationSourceEngineFinal/index.json",
+    "log": "automation-source-engine-final.log",
+    "exit_code": 0,
+    "succeeded": 7,
+    "failed": 0,
+    "not_run": 0
+  },
+  "full_wingman_regression": {
+    "log": "wingman-regression-source-engine-final.log",
+    "exit_code": 3,
+    "completed": false,
+    "boundary": "Legacy protocol-v7 fixtures fail current v11 validation; a pre-existing registry test then dereferences a null fixture and crashes before report export."
+  }
+}

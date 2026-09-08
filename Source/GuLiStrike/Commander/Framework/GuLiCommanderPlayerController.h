@@ -8,6 +8,7 @@
 #include "GuLiCommanderPlayerController.generated.h"
 
 class UGuLiCommanderNetSyncComponent;
+class UGuLiBuildingPlacementComponent;
 class AGuLiCommanderCameraPawn;
 class UGuLiCommanderCursorWidget;
 class SWidget;
@@ -110,6 +111,12 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Commander|Network")
 	UGuLiCommanderNetSyncComponent* GetCommanderNetSyncComponent() const { return NetSyncComponent; }
 
+	UFUNCTION(BlueprintPure, Category = "Building")
+	UGuLiBuildingPlacementComponent* GetBuildingPlacementComponent() const
+	{
+		return BuildingPlacementComponent;
+	}
+
 	void ActivateSelectionTool();
 	void ToggleSelectionShape();
 	EGuLiCommanderSelectionShape GetSelectionShape() const { return SelectionShape; }
@@ -153,6 +160,9 @@ private:
 	void HandleActivateSelectionToolInput();
 	void HandleStepSelectionRadiusInput();
 	void HandleArmMoveToolInput();
+	void HandleToggleBuildModeInput();
+	void HandleSelectBuildingTwoInput();
+	void HandleSelectBuildingThreeInput();
 	void HandleCancelInput();
 	// 本地把光标落点封装成选兵意图；返回 true 仅表示已提交，不代表服务器接受。
 	bool TryIssueSelectionAtCursor();
@@ -175,6 +185,10 @@ private:
 	// 默认子对象借用此 PlayerController 的 Owning Connection；指针不是额外的通信连接。
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Network", meta = (AllowPrivateAccess = "true"))
 	TObjectPtr<UGuLiCommanderNetSyncComponent> NetSyncComponent;
+
+	/** Shared by Commander and Ground because this PlayerController class owns every battle role. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Building", meta = (AllowPrivateAccess = "true"))
+	TObjectPtr<UGuLiBuildingPlacementComponent> BuildingPlacementComponent;
 
 	EGuLiCommanderToolMode CommanderToolMode = GuLiCommanderToolPolicy::DefaultToolMode;
 	EGuLiCommanderSelectionShape SelectionShape = EGuLiCommanderSelectionShape::Box;

@@ -22,9 +22,20 @@ struct FGuLiCommanderCameraDebugSnapshot
 	float CameraClearance = 0.0f;
 	float DesiredArmLength = 0.0f;
 	float EffectiveArmLength = 0.0f;
+	float RequestedPlanarDistance = 0.0f;
+	float AppliedPlanarDistance = 0.0f;
+	float AppliedPlanarRatio = 1.0f;
+	float HardRequiredPivotZ = 0.0f;
+	float CruiseTargetPivotZ = 0.0f;
+	float HeldCruisePivotZ = 0.0f;
+	float EmergencyLiftAmount = 0.0f;
+	uint32 EmergencyLiftCount = 0u;
 	bool bLandscapeValid = false;
 	bool bFootprintClamped = false;
 	bool bTerrainValid = false;
+	bool bRequestedPoseValid = false;
+	bool bHeightReanchoring = false;
+	bool bEmergencyLift = false;
 };
 
 /** Lightweight perspective RTS camera used by the commander prototype. */
@@ -82,6 +93,12 @@ private:
 		float ArmLength,
 		float& OutRequiredPivotZ,
 		float* OutPivotGroundZ = nullptr) const;
+	float CalculatePredictedRequiredPivotHeight(
+		const FVector& PivotLocation,
+		float YawDegrees,
+		float ArmLength,
+		const FVector2D& PlanarVelocity,
+		float HardRequiredPivotZ) const;
 	bool CalculateFootprintOffsets(
 		float YawDegrees,
 		float ArmLength,
@@ -105,9 +122,21 @@ private:
 	float PendingYawInput = 0.0f;
 	float PendingZoomInput = 0.0f;
 	float DesiredArmLength = 80000.0f;
+	float HeldCruisePivotZ = 0.0f;
+	float HeightReanchorRemainingSeconds = 0.0f;
+	bool bHeightReanchorActive = false;
 	bool bSolverInitialized = false;
 #if !UE_BUILD_SHIPPING
 	bool bCameraDebugEnabled = false;
+	float LastRequestedPlanarDistance = 0.0f;
+	float LastAppliedPlanarDistance = 0.0f;
+	float LastHardRequiredPivotZ = 0.0f;
+	float LastCruiseTargetPivotZ = 0.0f;
+	float LastEmergencyLiftAmount = 0.0f;
+	uint32 EmergencyLiftCount = 0u;
+	bool bLastRequestedPoseValid = false;
+	bool bEmergencyLiftActive = false;
+	bool bEmergencyLiftThisFrame = false;
 	FGuLiCommanderCameraDebugSnapshot DebugSnapshot;
 #endif
 };

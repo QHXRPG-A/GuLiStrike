@@ -100,7 +100,8 @@ bool GuLiWingmanPresentationPolicy::AppendPose(
 FGuLiWingmanPresentationEvaluation GuLiWingmanPresentationPolicy::Evaluate(
 	const TConstArrayView<FGuLiWingmanPresentationPose> Samples,
 	const double RenderTimeSeconds,
-	const double ServerNowSeconds)
+	const double ServerNowSeconds,
+	const EStalePolicy StalePolicy)
 {
 	FGuLiWingmanPresentationEvaluation Hidden;
 	if (Samples.IsEmpty() || !FMath::IsFinite(RenderTimeSeconds)
@@ -112,16 +113,20 @@ FGuLiWingmanPresentationEvaluation GuLiWingmanPresentationPolicy::Evaluate(
 	const FGuLiWingmanPresentationPose& Latest = Samples.Last();
 	const double FreshnessAgeSeconds = FMath::Max(0.0, ServerNowSeconds - Latest.SourceTimeSeconds);
 	const double HideAtSeconds = MaximumExtrapolationSeconds + StaleFadeSeconds;
-	if (FreshnessAgeSeconds + UE_DOUBLE_SMALL_NUMBER >= HideAtSeconds)
+	if (StalePolicy == EStalePolicy::FadeThenHide
+		&& FreshnessAgeSeconds + UE_DOUBLE_SMALL_NUMBER >= HideAtSeconds)
 	{
 		return Hidden;
 	}
 
-	const bool bInFade = FreshnessAgeSeconds > MaximumExtrapolationSeconds;
+	const bool bRetainingStalePose = StalePolicy == EStalePolicy::RetainLastPose
+		&& FreshnessAgeSeconds > MaximumExtrapolationSeconds;
+	const bool bInFade = StalePolicy == EStalePolicy::FadeThenHide
+		&& FreshnessAgeSeconds > MaximumExtrapolationSeconds;
 	const float Opacity = bInFade
 		? static_cast<float>(1.0 - (FreshnessAgeSeconds - MaximumExtrapolationSeconds) / StaleFadeSeconds)
 		: 1.0f;
-	const bool bInteractable = !bInFade;
+	const bool bInteractable = !bInFade && !bRetainingStalePose;
 	const double EvaluationTimeSeconds = FMath::Min(
 		RenderTimeSeconds,
 		Latest.SourceTimeSeconds + MaximumExtrapolationSeconds);
@@ -175,7 +180,8 @@ FGuLiWingmanPresentationEvaluation GuLiWingmanPresentationPolicy::Evaluate(
 		MakeTransform(Latest.Location + Latest.Velocity * ExtrapolationSeconds, Latest.Rotation),
 		Opacity,
 		bInteractable,
-		!bInFade && ExtrapolationSeconds > UE_DOUBLE_SMALL_NUMBER);
+		!bInFade && !bRetainingStalePose
+			&& ExtrapolationSeconds > UE_DOUBLE_SMALL_NUMBER);
 }
 
 int32 GuLiWingmanPresentationPolicy::GetStableMemberSlot(const FGuLiWingmanHandle& Wingman)

@@ -1,0 +1,96 @@
+[
+  {
+    "Name": "FourFRobot_AimTarget",
+    "Id": 1,
+    "Note": "FourFRobot 被攻击时的视觉瞄准点；来自 FX_AimTarget",
+    "UnitTypeId": 1,
+    "PointRole": "AimTarget",
+    "PointIndex": 0,
+    "SocketName": "FX_AimTarget",
+    "Offset": {
+      "X": 0.0,
+      "Y": 0.0,
+      "Z": 650.0
+    },
+    "bCalibrated": true
+  },
+  {
+    "Name": "FourFRobot_BasicAttack_Muzzle_0",
+    "Id": 2,
+    "Note": "FourFRobot 机枪枪口；来自 FX_Muzzle_Basic_01",
+    "UnitTypeId": 1,
+    "SlotId": "BasicAttack",
+    "PointRole": "Muzzle",
+    "PointIndex": 0,
+    "SocketName": "FX_Muzzle_Basic_01",
+    "Offset": {
+      "X": -480.0,
+      "Y": 5.0,
+      "Z": 935.0
+    },
+    "bCalibrated": true
+  },
+  {
+    "Name": "WM01_AimTarget",
+    "Id": 3,
+    "Note": "WM01 被攻击时的视觉瞄准点；来自 FX_AimTarget",
+    "UnitTypeId": 2,
+    "PointRole": "AimTarget",
+    "PointIndex": 0,
+    "SocketName": "FX_AimTarget",
+    "Offset": {
+      "X": 0.0,
+      "Y": 495.0,
+      "Z": 1600.0
+    },
+    "bCalibrated": true
+  },
+  {
+    "Name": "WM01_BasicAttack_Muzzle_0",
+    "Id": 4,
+    "Note": "WM01 前机枪枪口；来自 FX_Muzzle_Basic_01",
+    "UnitTypeId": 2,
+    "SlotId": "BasicAttack",
+    "PointRole": "Muzzle",
+    "PointIndex": 0,
+    "SocketName": "FX_Muzzle_Basic_01",
+    "Offset": {
+      "X": 1490.0,
+      "Y": 466.0,
+      "Z": 1810.0
+    },
+    "bCalibrated": true
+  },
+  {
+    "Name": "WM01_MissileLauncher_Muzzle_0",
+    "Id": 5,
+    "Note": "WM01 导弹发射口 1；来自 FX_Missile_01",
+    "UnitTypeId": 2,
+    "SlotId": "MissileLauncher",
+    "PointRole": "Muzzle",
+    "PointIndex": 0,
+    "SocketName": "FX_Missile_01",
+    "Offset": {
+      "X": -260.0,
+      "Y": 1257.0,
+      "Z": 2440.0
+    },
+    "bCalibrated": true
+  },
+  {
+    "Name": "WM01_MissileLauncher_Muzzle_1",
+    "Id": 6,
+    "Note": "WM01 导弹发射口 2；来自 FX_Missile_02",
+    "UnitTypeId": 2,
+    "SlotId": "MissileLauncher",
+    "PointRole": "Muzzle",
+    "PointIndex": 1,
+    "SocketName": "FX_Missile_02",
+    "Offset": {
+      "X": -260.0,
+      "Y": -326.0,
+      "Z": 2440.0
+    },
+    "bCalibrated": true
+  }
+]

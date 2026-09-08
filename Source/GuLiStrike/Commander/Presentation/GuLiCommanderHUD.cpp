@@ -12,6 +12,7 @@
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
+#include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Blueprint/UserWidget.h"
 #include "UObject/ConstructorHelpers.h"
@@ -229,11 +230,13 @@ AGuLiCommanderHUD::AGuLiCommanderHUD()
 void AGuLiCommanderHUD::BeginPlay()
 {
 	Super::BeginPlay();
+	BindBuildingFeedback();
 	RefreshCommanderRole();
 }
 
 void AGuLiCommanderHUD::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	UnbindBuildingFeedback();
 	DestroyRuntimeHUD();
 	Super::EndPlay(EndPlayReason);
 }
@@ -334,6 +337,96 @@ void AGuLiCommanderHUD::DrawHUD()
 		}
 		DrawActiveCommandLine(*CommanderController);
 	}
+	DrawBuildingFeedback();
+}
+
+void AGuLiCommanderHUD::BindBuildingFeedback()
+{
+	UnbindBuildingFeedback();
+	const AGuLiCommanderPlayerController* CommanderController =
+		Cast<AGuLiCommanderPlayerController>(PlayerOwner);
+	UGuLiBuildingPlacementComponent* Placement = CommanderController
+		? CommanderController->GetBuildingPlacementComponent()
+		: nullptr;
+	if (!Placement)
+	{
+		return;
+	}
+	BuildingPlacementComponent = Placement;
+	BuildingFeedbackHandle = Placement->OnBuildingFeedback.AddUObject(
+		this,
+		&ThisClass::HandleBuildingFeedback);
+}
+
+void AGuLiCommanderHUD::UnbindBuildingFeedback()
+{
+	if (UGuLiBuildingPlacementComponent* Placement = BuildingPlacementComponent.Get())
+	{
+		Placement->OnBuildingFeedback.Remove(BuildingFeedbackHandle);
+	}
+	BuildingPlacementComponent.Reset();
+	BuildingFeedbackHandle.Reset();
+	BuildingFeedbackMessage = FText::GetEmpty();
+	BuildingFeedbackExpireTime = 0.0;
+}
+
+void AGuLiCommanderHUD::HandleBuildingFeedback(
+	const FText& Message,
+	const EGuLiBuildingFeedbackTone Tone)
+{
+	BuildingFeedbackMessage = Message;
+	BuildingFeedbackTone = Tone;
+	BuildingFeedbackExpireTime = GetWorld() ? GetWorld()->GetRealTimeSeconds() + 2.0 : 0.0;
+}
+
+void AGuLiCommanderHUD::DrawBuildingFeedback()
+{
+	if (!Canvas || BuildingFeedbackMessage.IsEmpty() || !GetWorld()
+		|| GetWorld()->GetRealTimeSeconds() >= BuildingFeedbackExpireTime)
+	{
+		return;
+	}
+
+	FLinearColor TextColor(0.78f, 0.88f, 1.0f, 1.0f);
+	if (BuildingFeedbackTone == EGuLiBuildingFeedbackTone::Success)
+	{
+		TextColor = FLinearColor(0.12f, 1.0f, 0.24f, 1.0f);
+	}
+	else if (BuildingFeedbackTone == EGuLiBuildingFeedbackTone::Error)
+	{
+		TextColor = FLinearColor(1.0f, 0.18f, 0.12f, 1.0f);
+	}
+
+	UFont* Font = GEngine ? GEngine->GetMediumFont() : nullptr;
+	if (!Font)
+	{
+		return;
+	}
+	const FString Text = BuildingFeedbackMessage.ToString();
+	float TextWidth = 0.0f;
+	float TextHeight = 0.0f;
+	Canvas->StrLen(Font, Text, TextWidth, TextHeight);
+	const float PaddingX = 18.0f;
+	const float PaddingY = 10.0f;
+	const float PanelWidth = FMath::Min(TextWidth + PaddingX * 2.0f, Canvas->SizeX - 32.0f);
+	const float PanelHeight = TextHeight + PaddingY * 2.0f;
+	const float PanelX = FMath::Clamp(
+		(Canvas->SizeX - PanelWidth) * 0.5f,
+		16.0f,
+		FMath::Max(16.0f, Canvas->SizeX - PanelWidth - 16.0f));
+	const float PanelY = FMath::Clamp(
+		Canvas->SizeY * 0.68f,
+		16.0f,
+		FMath::Max(16.0f, Canvas->SizeY - PanelHeight - 16.0f));
+	DrawRect(FLinearColor(0.005f, 0.008f, 0.012f, 0.78f), PanelX, PanelY, PanelWidth, PanelHeight);
+	DrawText(
+		Text,
+		TextColor,
+		PanelX + FMath::Max(PaddingX, (PanelWidth - TextWidth) * 0.5f),
+		PanelY + PaddingY,
+		Font,
+		1.0f,
+		false);
 }
 
 void AGuLiCommanderHUD::NotifyHitBoxClick(const FName BoxName)

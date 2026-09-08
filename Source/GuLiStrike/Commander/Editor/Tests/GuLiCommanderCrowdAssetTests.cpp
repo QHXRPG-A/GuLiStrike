@@ -228,6 +228,104 @@ namespace GuLiCommanderCrowdAssetTests
 		TestEqual(TEXT("ORM mask compression"), Orm->CompressionSettings, TC_Masks);
 		return true;
 	}
+
+	IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+		FGuLiCommanderWM01CrowdAssetContractTest,
+		"GuLiStrike.Commander.Presentation.CrowdAsset.WM01Contract",
+		EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+	bool FGuLiCommanderWM01CrowdAssetContractTest::RunTest(const FString& Parameters)
+	{
+		(void)Parameters;
+		constexpr TCHAR WM01MeshPath[] =
+			TEXT("/Game/Commander/Units/SM_WM01_Crowd.SM_WM01_Crowd");
+		constexpr TCHAR WM01MaterialPath[] =
+			TEXT("/Game/Commander/Units/M_WM01_Crowd.M_WM01_Crowd");
+		constexpr TCHAR WM01BaseColorPath[] =
+			TEXT("/Game/Commander/Units/T_WM01_Crowd_BaseColor.T_WM01_Crowd_BaseColor");
+		constexpr TCHAR WM01NormalPath[] =
+			TEXT("/Game/Commander/Units/T_WM01_Crowd_Normal.T_WM01_Crowd_Normal");
+		constexpr TCHAR WM01OrmPath[] =
+			TEXT("/Game/Commander/Units/T_WM01_Crowd_ORM.T_WM01_Crowd_ORM");
+
+		UStaticMesh* WM01Mesh = LoadObject<UStaticMesh>(nullptr, WM01MeshPath);
+		UMaterial* WM01Material = LoadObject<UMaterial>(nullptr, WM01MaterialPath);
+		UTexture2D* WM01BaseColor = LoadObject<UTexture2D>(nullptr, WM01BaseColorPath);
+		UTexture2D* WM01Normal = LoadObject<UTexture2D>(nullptr, WM01NormalPath);
+		UTexture2D* WM01Orm = LoadObject<UTexture2D>(nullptr, WM01OrmPath);
+		if (!TestNotNull(TEXT("WM01 Crowd mesh exists"), WM01Mesh)
+			|| !TestNotNull(TEXT("WM01 Crowd material exists"), WM01Material)
+			|| !TestNotNull(TEXT("WM01 Crowd BaseColor exists"), WM01BaseColor)
+			|| !TestNotNull(TEXT("WM01 Crowd Normal exists"), WM01Normal)
+			|| !TestNotNull(TEXT("WM01 Crowd ORM exists"), WM01Orm))
+		{
+			AddError(TEXT("Run gs.Commander.BuildWM01Crowd before this focused contract test."));
+			return false;
+		}
+
+		FStaticMeshCompilingManager::Get().FinishCompilation({WM01Mesh});
+		TestEqual(TEXT("WM01 has exactly three source LODs"),
+			WM01Mesh->GetNumSourceModels(), 3);
+		TestEqual(TEXT("WM01 has one material slot"),
+			WM01Mesh->GetStaticMaterials().Num(), 1);
+		TestTrue(TEXT("WM01 mesh uses its baked material"),
+			WM01Mesh->GetStaticMaterials().Num() == 1
+				&& WM01Mesh->GetStaticMaterials()[0].MaterialInterface == WM01Material);
+		TestFalse(TEXT("WM01 Nanite is disabled"), WM01Mesh->GetNaniteSettings().bEnabled);
+		TestFalse(TEXT("WM01 ray tracing support is disabled"), WM01Mesh->bSupportRayTracing);
+		TestFalse(TEXT("WM01 distance fields are disabled"), WM01Mesh->bGenerateMeshDistanceField);
+		TestFalse(TEXT("WM01 CPU access is disabled"), WM01Mesh->bAllowCPUAccess);
+		TestFalse(TEXT("WM01 navigation data is disabled"), WM01Mesh->bHasNavigationData);
+
+		const int32 TriangleBudgets[] = {20000, 6000, 1500};
+		const FStaticMeshRenderData* RenderData = WM01Mesh->GetRenderData();
+		if (!TestNotNull(TEXT("WM01 has render data"), RenderData)) return false;
+		for (int32 LodIndex = 0; LodIndex < UE_ARRAY_COUNT(TriangleBudgets); ++LodIndex)
+		{
+			if (!TestTrue(FString::Printf(TEXT("WM01 LOD%d exists"), LodIndex),
+				RenderData->LODResources.IsValidIndex(LodIndex)))
+			{
+				continue;
+			}
+			const FStaticMeshLODResources& Lod = RenderData->LODResources[LodIndex];
+			TestEqual(FString::Printf(TEXT("WM01 LOD%d has one section"), LodIndex),
+				Lod.Sections.Num(), 1);
+			TestTrue(FString::Printf(TEXT("WM01 LOD%d has triangles"), LodIndex),
+				Lod.GetNumTriangles() > 0);
+			TestTrue(FString::Printf(TEXT("WM01 LOD%d meets its budget"), LodIndex),
+				static_cast<int32>(Lod.GetNumTriangles()) <= TriangleBudgets[LodIndex]);
+			const FMeshSectionInfo Section = WM01Mesh->GetSectionInfoMap().Get(LodIndex, 0);
+			TestFalse(FString::Printf(TEXT("WM01 LOD%d collision is disabled"), LodIndex),
+				Section.bEnableCollision);
+			TestFalse(FString::Printf(TEXT("WM01 LOD%d ray tracing is disabled"), LodIndex),
+				Section.bVisibleInRayTracing);
+			TestTrue(FString::Printf(TEXT("WM01 LOD%d has zero distance-field scale"), LodIndex),
+				FMath::IsNearlyZero(
+					WM01Mesh->GetSourceModel(LodIndex).BuildSettings.DistanceFieldResolutionScale));
+		}
+		TestTrue(TEXT("WM01 LOD1 ScreenSize is 0.056"),
+			FMath::IsNearlyEqual(WM01Mesh->GetSourceModel(1).ScreenSize.Default, 0.056f));
+		TestTrue(TEXT("WM01 LOD2 ScreenSize is 0.028"),
+			FMath::IsNearlyEqual(WM01Mesh->GetSourceModel(2).ScreenSize.Default, 0.028f));
+
+		TestEqual(TEXT("WM01 material is opaque"), WM01Material->BlendMode, BLEND_Opaque);
+		TestFalse(TEXT("WM01 material is one-sided"), WM01Material->TwoSided);
+		TestTrue(TEXT("WM01 material supports ISM"), WM01Material->bUsedWithInstancedStaticMeshes);
+		TestFalse(TEXT("WM01 material has no WPO"),
+			WM01Material->GetEditorOnlyData()->WorldPositionOffset.IsConnected());
+		TestEqual(TEXT("WM01 BaseColor width"), WM01BaseColor->Source.GetSizeX(), int64{2048});
+		TestEqual(TEXT("WM01 BaseColor height"), WM01BaseColor->Source.GetSizeY(), int64{2048});
+		TestEqual(TEXT("WM01 Normal width"), WM01Normal->Source.GetSizeX(), int64{2048});
+		TestEqual(TEXT("WM01 Normal height"), WM01Normal->Source.GetSizeY(), int64{2048});
+		TestEqual(TEXT("WM01 ORM width"), WM01Orm->Source.GetSizeX(), int64{2048});
+		TestEqual(TEXT("WM01 ORM height"), WM01Orm->Source.GetSizeY(), int64{2048});
+		TestTrue(TEXT("WM01 BaseColor is sRGB"), WM01BaseColor->SRGB);
+		TestFalse(TEXT("WM01 Normal is linear"), WM01Normal->SRGB);
+		TestFalse(TEXT("WM01 ORM is linear"), WM01Orm->SRGB);
+		TestEqual(TEXT("WM01 Normal compression"), WM01Normal->CompressionSettings, TC_Normalmap);
+		TestEqual(TEXT("WM01 ORM compression"), WM01Orm->CompressionSettings, TC_Masks);
+		return true;
+	}
 }
 
 #endif // WITH_DEV_AUTOMATION_TESTS && WITH_EDITOR

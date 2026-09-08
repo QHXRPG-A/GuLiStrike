@@ -50,6 +50,22 @@ struct GULISTRIKE_API FGuLiDamageRequest
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Damage")
 	FGuLiWingmanHandle Emitter;
 
+	/** Optional weapon provenance. Wingman channel attacks always populate all fields. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Damage")
+	FGuLiWeaponBindingKey WeaponBinding;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Damage")
+	FName SkillId;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat|Damage")
+	uint32 LoadoutRevision = 0u;
+
+	UPROPERTY(VisibleAnywhere, Category = "Combat|Damage")
+	uint32 ProfileRevision = 0u;
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Damage")
+	FGuid RootEventId;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Damage")
 	FGuLiTargetHandle Target;
 
@@ -155,6 +171,16 @@ struct GULISTRIKE_API FGuLiDeathCommitRecord
 	FGuLiTargetHandle Source;
 
 	FGuLiWingmanHandle Emitter;
+
+	FGuLiWeaponBindingKey WeaponBinding;
+
+	FName SkillId;
+
+	uint32 LoadoutRevision = 0u;
+
+	uint32 ProfileRevision = 0u;
+
+	FGuid RootEventId;
 
 	FGuLiTargetHandle Target;
 
@@ -330,6 +356,12 @@ public:
 	void GetTargetSnapshots(TArray<FGuLiCombatTargetSnapshot>& OutSnapshots);
 	FGuLiDamageCommitResult CommitDamage(const FGuLiDamageRequest& Request);
 
+	/** Authority-only cast provenance. A lease is not a target and survives its source Actor's destruction. */
+	FGuid AcquireEffectSource(const FGuLiTargetHandle& Source);
+	bool RetainEffectSource(const FGuid& LeaseId);
+	void ReleaseEffectSource(const FGuid& LeaseId);
+	FGuLiDamageCommitResult CommitEffectDamage(const FGuLiDamageRequest& Request, const FGuid& LeaseId);
+
 	/** Authority-only optional integration point. Empty callbacks restore fail-closed Policy/SinkUnavailable results. */
 	bool SetRewardPipeline(FGuLiRewardPolicy InPolicy, FGuLiRewardSink InSink);
 	void ClearRewardPipeline();
@@ -349,6 +381,15 @@ public:
 	int32 GetRememberedRewardEventCount() const { return RewardRecordsByEvent.Num(); }
 
 private:
+	struct FRetainedEffectSource
+	{
+		FGuLiTargetHandle Source;
+		EGuLiTeam Team = EGuLiTeam::Unassigned;
+		uint32 Epoch = 0;
+		int32 References = 1;
+	};
+	FGuLiDamageCommitResult CommitDamageInternal(const FGuLiDamageRequest& Request, const EGuLiTeam* FrozenSourceTeam);
+	TMap<FGuid, FRetainedEffectSource> RetainedEffectSources;
 	bool IsAuthorityWorld() const;
 	void RememberResult(const FGuid& EventId, const FGuLiDamageCommitResult& Result);
 	void RememberDeathRecord(const FGuLiDeathCommitRecord& Record);

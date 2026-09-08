@@ -1,10 +1,10 @@
-"""Create the authored Ship Ability v1 assets and wire the production Ship CDO.
+"""Create/upgrade the authored Ship Ability v2 assets and wire the production Ship CDO.
 
 Run with PIE stopped in a clean editor:
     python Scripts/ue_exec.py Scripts/deploy_ship_ability_assets.py
 
 The deployment is deliberately conservative. Existing assets are accepted only
-when their complete contract already matches v1; a wrong class/value/reference
+when their complete contract matches the known v1 migration source or v2 target; a wrong class/value/reference
 or any unsaved package causes a failure before the script overwrites anything.
 """
 
@@ -27,6 +27,10 @@ FORMATION = (
     "/Game/GuLiStrike/Ship/Abilities/Formations/"
     "DA_WingmanFormation_DoubleRing"
 )
+SWARM_FORMATION = (
+    "/Game/GuLiStrike/Ship/Abilities/Formations/"
+    "DA_WingmanFormation_SwarmOrbit"
+)
 BASIC = (
     "/Game/GuLiStrike/Ship/Abilities/Weapons/"
     "DA_WingmanWeapon_BasicAuto"
@@ -35,7 +39,7 @@ MISSILE = (
     "/Game/GuLiStrike/Ship/Abilities/Weapons/"
     "DA_WingmanWeapon_MissileSalvo"
 )
-ALL_ASSETS = (FORMATION, BASIC, MISSILE, ABILITY_SET)
+ALL_ASSETS = (FORMATION, SWARM_FORMATION, BASIC, MISSILE, ABILITY_SET)
 
 PROJECT_DIR = unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())
 REPORT_PATH = os.path.join(
@@ -47,9 +51,11 @@ REPORT_PATH = os.path.join(
 )
 
 FORMATION_VALUES = {
-    "revision": 1,
+    "revision": 2,
     "expected_wingman_count": 25,
     "flight_count": 5,
+    "model": unreal.GuLiWingmanFormationModel.DOUBLE_RING_LEGACY,
+    "guidance_algorithm_version": 1,
     "inner_ring_slots": 13,
     "outer_ring_slots": 12,
     "inner_ring_radius_centimeters": 60000.0,
@@ -70,6 +76,74 @@ FORMATION_VALUES = {
     "obstacle_look_ahead_centimeters": 5000.0,
     "catch_up_distance_centimeters": 120000.0,
     "recovery_distance_centimeters": 250000.0,
+}
+
+SWARM_FORMATION_VALUES = {
+    "revision": 1,
+    "expected_wingman_count": 25,
+    "flight_count": 5,
+    "model": unreal.GuLiWingmanFormationModel.SWARM_ORBIT,
+    "guidance_algorithm_version": 1,
+    "minimum_flight_speed_centimeters_per_second": 3000.0,
+    "cruise_flight_speed_centimeters_per_second": 4500.0,
+    "catch_up_flight_speed_centimeters_per_second": 7500.0,
+    "maximum_turn_rate_degrees_per_second": 20.0,
+    "maximum_acceleration_centimeters_per_second_squared": 1000.0,
+    "maximum_deceleration_centimeters_per_second_squared": 800.0,
+    "maximum_bank_degrees": 45.0,
+    "agent_radius_centimeters": 1500.0,
+    "separation_radius_centimeters": 3000.0,
+    "obstacle_look_ahead_centimeters": 5000.0,
+    "catch_up_distance_centimeters": 60000.0,
+    "recovery_distance_centimeters": 90000.0,
+}
+
+# When the v1/legacy class defaults are restored, an already-created Swarm asset
+# that had values equal to the former CDO can inherit these legacy distances.
+# Accept only that exact drift shape, then serialize the intended Swarm override.
+SWARM_FORMATION_DEFAULT_DRIFT_VALUES = {
+    **SWARM_FORMATION_VALUES,
+    "catch_up_distance_centimeters": 120000.0,
+    "recovery_distance_centimeters": 250000.0,
+}
+
+SWARM_TUNING_VALUES = {
+    "inner_soft_radius_centimeters": 24000.0,
+    "outer_soft_radius_centimeters": 52000.0,
+    "vertical_half_extent_centimeters": 14000.0,
+    "hull_exclusion_radius_centimeters": 14000.0,
+    "swirl_speed_min_centimeters_per_second": 3600.0,
+    "swirl_speed_max_centimeters_per_second": 5200.0,
+    "curl_strength_centimeters_per_second": 1400.0,
+    "noise_spatial_scale_centimeters": 22000.0,
+    "noise_temporal_scale_seconds": 6.0,
+    "axis_precession_amount": 0.28,
+    "axis_precession_radians_per_second": 0.03,
+    "boundary_return_speed_centimeters_per_second": 2800.0,
+    "preferred_radius_return_speed_centimeters_per_second": 450.0,
+    "vertical_return_speed_centimeters_per_second": 1400.0,
+    "alignment_weight": 0.08,
+    "catch_up_style_weight": 0.20,
+    "recovery_style_weight": 0.05,
+    "response_time_seconds": 1.25,
+}
+
+LEGACY_FORMATION_VALUES = {
+    **FORMATION_VALUES,
+    "revision": 1,
+}
+
+# Exact short-lived v2 values written by the first SwarmOrbit deployment in this
+# branch. They are recognized only as a migration source so the rollback skill
+# returns to the frozen v1 geometry; arbitrary authored edits still fail closed.
+INTERIM_V2_FORMATION_VALUES = {
+    **FORMATION_VALUES,
+    "inner_ring_radius_centimeters": 30000.0,
+    "outer_ring_radius_centimeters": 45000.0,
+    "inner_ring_height_centimeters": 7500.0,
+    "outer_ring_height_centimeters": -7500.0,
+    "catch_up_distance_centimeters": 60000.0,
+    "recovery_distance_centimeters": 90000.0,
 }
 
 BASIC_VALUES = {
@@ -165,7 +239,15 @@ def _read_values(asset: Any, expected: dict[str, Any]) -> dict[str, Any]:
     result: dict[str, Any] = {}
     for name, expected_value in expected.items():
         value = asset.get_editor_property(name)
-        if isinstance(expected_value, float):
+        if name == "model":
+            result[name] = (
+                "SwarmOrbit"
+                if value == unreal.GuLiWingmanFormationModel.SWARM_ORBIT
+                else "DoubleRingLegacy"
+                if value == unreal.GuLiWingmanFormationModel.DOUBLE_RING_LEGACY
+                else str(value)
+            )
+        elif isinstance(expected_value, float):
             result[name] = float(value)
         elif isinstance(expected_value, bool):
             result[name] = bool(value)
@@ -194,6 +276,44 @@ def _require_values(asset: Any, expected: dict[str, Any], label: str) -> None:
         )
 
 
+def _matches_values(asset: Any, expected: dict[str, Any]) -> bool:
+    return all(
+        _values_match(asset.get_editor_property(name), expected_value)
+        for name, expected_value in expected.items()
+    )
+
+
+def _read_swarm_tuning(asset: Any) -> dict[str, float]:
+    tuning = asset.get_editor_property("swarm_orbit")
+    return {
+        name: float(tuning.get_editor_property(name))
+        for name in SWARM_TUNING_VALUES
+    }
+
+
+def _require_swarm_tuning(asset: Any) -> None:
+    tuning = asset.get_editor_property("swarm_orbit")
+    mismatches = {
+        name: {
+            "actual": str(tuning.get_editor_property(name)),
+            "expected": str(expected),
+        }
+        for name, expected in SWARM_TUNING_VALUES.items()
+        if not _values_match(tuning.get_editor_property(name), expected)
+    }
+    if mismatches:
+        raise DeploymentError(
+            "Refusing to overwrite existing SwarmOrbit tuning with wrong values: "
+            + repr(mismatches)
+        )
+
+
+def _set_swarm_values(asset: Any) -> None:
+    asset.set_editor_properties(SWARM_FORMATION_VALUES)
+    tuning = unreal.GuLiWingmanSwarmOrbitTuning(**SWARM_TUNING_VALUES)
+    asset.set_editor_property("swarm_orbit", tuning)
+
+
 def _grant_record(grant: Any) -> dict[str, Any]:
     return {
         "ability_id": _tag_name(grant.get_editor_property("ability_id")),
@@ -212,6 +332,15 @@ def _grant_record(grant: Any) -> dict[str, Any]:
 
 def _expected_grants() -> list[dict[str, Any]]:
     return [
+        {
+            "ability_id": "Ship.Ability.Formation.SwarmOrbit",
+            "slot": "Formation",
+            "ability_class": "/Script/GuLiStrike.GuLiShipSwarmOrbitFormationAbility",
+            "ability_level": 1,
+            "input_tag": "",
+            "formation_definition": _asset_object_path(SWARM_FORMATION),
+            "weapon_definition": "",
+        },
         {
             "ability_id": "Ship.Ability.Formation.DoubleRing",
             "slot": "Formation",
@@ -240,6 +369,10 @@ def _expected_grants() -> list[dict[str, Any]]:
             "weapon_definition": _asset_object_path(MISSILE),
         },
     ]
+
+
+def _expected_v1_grants() -> list[dict[str, Any]]:
+    return _expected_grants()[1:]
 
 
 def _create_data_asset(path: str, data_class: Any) -> Any:
@@ -272,8 +405,19 @@ def _load_existing(path: str, expected_class: Any) -> Any | None:
     return asset
 
 
-def _make_grants(formation: Any, basic: Any, missile: Any) -> list[Any]:
+def _make_grants(
+    formation: Any, swarm_formation: Any, basic: Any, missile: Any
+) -> list[Any]:
     return [
+        unreal.GuLiShipAbilityGrant(
+            ability_id=_tag("Ship.Ability.Formation.SwarmOrbit"),
+            slot=unreal.GuLiShipAbilitySlot.FORMATION,
+            ability_class=unreal.GuLiShipSwarmOrbitFormationAbility.static_class(),
+            ability_level=1,
+            input_tag=unreal.GameplayTag(),
+            formation_definition=swarm_formation,
+            weapon_definition=None,
+        ),
         unreal.GuLiShipAbilityGrant(
             ability_id=_tag("Ship.Ability.Formation.DoubleRing"),
             slot=unreal.GuLiShipAbilitySlot.FORMATION,
@@ -327,40 +471,78 @@ def main() -> dict[str, Any]:
         _require_clean("preflight")
 
         formation = _load_existing(FORMATION, unreal.GuLiWingmanFormationDefinition)
+        swarm_formation = _load_existing(
+            SWARM_FORMATION, unreal.GuLiWingmanFormationDefinition
+        )
         basic = _load_existing(BASIC, unreal.GuLiWingmanWeaponDefinition)
         missile = _load_existing(MISSILE, unreal.GuLiWingmanWeaponDefinition)
         ability_set = _load_existing(ABILITY_SET, unreal.GuLiShipAbilitySet)
 
         # Validate every existing object before the first mutation. An authored
         # object is never silently adopted or normalized over a saved user edit.
+        upgrade_legacy_formation = False
         if formation is not None:
-            _require_values(formation, FORMATION_VALUES, "formation definition")
+            if (
+                _matches_values(formation, LEGACY_FORMATION_VALUES)
+                or _matches_values(formation, INTERIM_V2_FORMATION_VALUES)
+            ):
+                upgrade_legacy_formation = True
+            else:
+                _require_values(formation, FORMATION_VALUES, "formation definition")
+        upgrade_swarm_defaults = False
+        if swarm_formation is not None:
+            if _matches_values(
+                swarm_formation, SWARM_FORMATION_DEFAULT_DRIFT_VALUES
+            ):
+                upgrade_swarm_defaults = True
+            else:
+                _require_values(
+                    swarm_formation,
+                    SWARM_FORMATION_VALUES,
+                    "SwarmOrbit formation definition",
+                )
+            _require_swarm_tuning(swarm_formation)
         if basic is not None:
             _require_values(basic, BASIC_VALUES, "basic weapon definition")
         if missile is not None:
             _require_values(missile, MISSILE_VALUES, "missile definition")
+        upgrade_v1_ability_set = False
         if ability_set is not None:
             existing_grants = [
                 _grant_record(grant)
                 for grant in list(ability_set.get_editor_property("grants"))
             ]
-            if int(ability_set.get_editor_property("revision")) != 1:
+            existing_revision = int(ability_set.get_editor_property("revision"))
+            if existing_revision == 1 and existing_grants == _expected_v1_grants():
+                upgrade_v1_ability_set = True
+            elif existing_revision != 2 or existing_grants != _expected_grants():
                 raise DeploymentError(
-                    "Refusing to overwrite existing ability set with wrong revision"
-                )
-            if existing_grants != _expected_grants():
-                raise DeploymentError(
-                    "Refusing to overwrite existing ability set with wrong grants: "
+                    "Refusing to overwrite unknown ability-set revision/grants: "
                     + repr(existing_grants)
                 )
 
         created: list[str] = []
+        updated: list[str] = []
         if formation is None:
             formation = _create_data_asset(
                 FORMATION, unreal.GuLiWingmanFormationDefinition
             )
             formation.set_editor_properties(FORMATION_VALUES)
             created.append(FORMATION)
+        elif upgrade_legacy_formation:
+            formation.modify()
+            formation.set_editor_properties(FORMATION_VALUES)
+            updated.append(FORMATION)
+        if swarm_formation is None:
+            swarm_formation = _create_data_asset(
+                SWARM_FORMATION, unreal.GuLiWingmanFormationDefinition
+            )
+            _set_swarm_values(swarm_formation)
+            created.append(SWARM_FORMATION)
+        elif upgrade_swarm_defaults:
+            swarm_formation.modify()
+            _set_swarm_values(swarm_formation)
+            updated.append(SWARM_FORMATION)
         if basic is None:
             basic = _create_data_asset(BASIC, unreal.GuLiWingmanWeaponDefinition)
             basic.set_editor_properties(BASIC_VALUES)
@@ -373,24 +555,43 @@ def main() -> dict[str, Any]:
             ability_set = _create_data_asset(ABILITY_SET, unreal.GuLiShipAbilitySet)
             ability_set.set_editor_properties(
                 {
-                    "revision": 1,
-                    "grants": _make_grants(formation, basic, missile),
+                    "revision": 2,
+                    "grants": _make_grants(
+                        formation, swarm_formation, basic, missile
+                    ),
                 }
             )
             created.append(ABILITY_SET)
+        elif upgrade_v1_ability_set:
+            ability_set.modify()
+            ability_set.set_editor_properties(
+                {
+                    "revision": 2,
+                    "grants": _make_grants(
+                        formation, swarm_formation, basic, missile
+                    ),
+                }
+            )
+            updated.append(ABILITY_SET)
 
         # Re-read the complete contract after creation as a transaction guard.
         _require_values(formation, FORMATION_VALUES, "formation definition")
+        _require_values(
+            swarm_formation,
+            SWARM_FORMATION_VALUES,
+            "SwarmOrbit formation definition",
+        )
+        _require_swarm_tuning(swarm_formation)
         _require_values(basic, BASIC_VALUES, "basic weapon definition")
         _require_values(missile, MISSILE_VALUES, "missile definition")
         grants = [
             _grant_record(grant)
             for grant in list(ability_set.get_editor_property("grants"))
         ]
-        if int(ability_set.get_editor_property("revision")) != 1:
-            raise DeploymentError("Created ability set revision is not v1")
+        if int(ability_set.get_editor_property("revision")) != 2:
+            raise DeploymentError("Created ability set revision is not v2")
         if grants != _expected_grants():
-            raise DeploymentError(f"Created ability grants differ from v1: {grants}")
+            raise DeploymentError(f"Created ability grants differ from v2: {grants}")
 
         blueprint = unreal.load_asset(SHIP_BLUEPRINT)
         blueprint_class = unreal.EditorAssetLibrary.load_blueprint_class(SHIP_BLUEPRINT)
@@ -461,6 +662,13 @@ def main() -> dict[str, Any]:
                 "class": _object_path(formation.get_class()),
                 "values": _read_values(formation, FORMATION_VALUES),
             },
+            SWARM_FORMATION: {
+                "class": _object_path(swarm_formation.get_class()),
+                "values": _read_values(
+                    swarm_formation, SWARM_FORMATION_VALUES
+                ),
+                "swarm_orbit": _read_swarm_tuning(swarm_formation),
+            },
             BASIC: {
                 "class": _object_path(basic.get_class()),
                 "values": _read_values(basic, BASIC_VALUES),
@@ -479,7 +687,10 @@ def main() -> dict[str, Any]:
             {
                 "success": True,
                 "created_assets": created,
-                "idempotent_assets": sorted(set(ALL_ASSETS) - set(created)),
+                "updated_assets": updated,
+                "idempotent_assets": sorted(
+                    set(ALL_ASSETS) - set(created) - set(updated)
+                ),
                 "blueprint_changed": blueprint_changed,
                 "blueprint_cdo_reference": _object_path(
                     cdo.get_editor_property("ship_ability_set")

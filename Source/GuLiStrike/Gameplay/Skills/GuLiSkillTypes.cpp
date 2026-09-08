@@ -5,7 +5,8 @@ bool FGuLiResolvedSkillProfile::HasSameConfiguration(const FGuLiResolvedSkillPro
 	return Team == Other.Team && UnitTypeId == Other.UnitTypeId && SlotId == Other.SlotId
 		&& SkillId == Other.SkillId && ExecutorId == Other.ExecutorId && Tags == Other.Tags
 		&& Damage == Other.Damage && AttackRatePerSecond == Other.AttackRatePerSecond
-		&& RangeCentimeters == Other.RangeCentimeters;
+		&& RangeCentimeters == Other.RangeCentimeters
+		&& bUnlocked == Other.bUnlocked && bEquipped == Other.bEquipped;
 }
 
 bool FGuLiSkillTargetSelector::MatchesUnitSlot(uint16 UnitTypeId, FName InSlotId) const

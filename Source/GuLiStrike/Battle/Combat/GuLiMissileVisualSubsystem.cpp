@@ -14,7 +14,10 @@ namespace
 
 bool FGuLiMissileVisualLaunchDTO::IsWellFormed() const
 {
-	return MatchEpoch != 0u && MissileId.IsValid() && Emitter.IsValid() && Target.IsValid()
+	return MatchEpoch != 0u && MissileId.IsValid() && RootEventId.IsValid()
+		&& WeaponBinding.IsWellFormed() && WeaponBinding.MatchEpoch == MatchEpoch
+		&& !SkillId.IsNone() && ProfileRevision != 0u
+		&& Emitter.IsValid() && Target.IsValid()
 		&& !Position.ContainsNaN() && !Velocity.ContainsNaN() && !Velocity.IsNearlyZero()
 		&& IsFiniteTime(ServerWorldTimeSeconds);
 }
@@ -28,7 +31,9 @@ bool FGuLiMissileVisualCorrectionDTO::IsWellFormed() const
 
 bool FGuLiMissileVisualTerminalDTO::IsWellFormed() const
 {
-	return MatchEpoch != 0u && MissileId.IsValid() && SimulationSequence != 0u
+	return MatchEpoch != 0u && MissileId.IsValid() && RootEventId.IsValid()
+		&& WeaponBinding.IsWellFormed() && WeaponBinding.MatchEpoch == MatchEpoch
+		&& !SkillId.IsNone() && ProfileRevision != 0u && SimulationSequence != 0u
 		&& !Location.ContainsNaN() && IsFiniteTime(ServerWorldTimeSeconds);
 }
 
@@ -76,6 +81,10 @@ bool UGuLiMissileVisualSubsystem::ApplyLaunch(const FGuLiMissileVisualLaunchDTO&
 	FGuLiMissileVisualState& State = ActiveVisuals.Add(Event.MissileId);
 	State.MatchEpoch = Event.MatchEpoch;
 	State.MissileId = Event.MissileId;
+	State.RootEventId = Event.RootEventId;
+	State.WeaponBinding = Event.WeaponBinding;
+	State.SkillId = Event.SkillId;
+	State.ProfileRevision = Event.ProfileRevision;
 	State.Emitter = Event.Emitter;
 	State.Target = Event.Target;
 	State.Position = Event.Position;
@@ -148,4 +157,3 @@ void UGuLiMissileVisualSubsystem::RememberTerminal(
 	}
 	TerminalOrder.RemoveAt(0, Overflow, EAllowShrinking::No);
 }
-

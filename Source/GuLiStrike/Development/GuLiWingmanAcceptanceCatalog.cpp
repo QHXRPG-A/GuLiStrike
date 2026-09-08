@@ -45,6 +45,9 @@ const TArray<FName>& FGuLiWingmanAcceptanceCatalogV2::GetCommonRequiredGateIds()
 		TEXT("MANIFEST_VALID"),
 		TEXT("EVENT_SCHEMA_VALID"),
 		TEXT("EVIDENCE_COMPLETE"),
+		// Stable evidence schema key retained so archived v7 and live v8 runs can
+		// still be compared by the same catalog. The live QA writer also emits the
+		// explicit WINGMAN_PROTOCOL_V8 fact for new reports.
 		TEXT("PROTOCOL_V7"),
 		TEXT("SERVER_WINGMAN_MOTION_ZERO"),
 		TEXT("INVARIANTS_ZERO")

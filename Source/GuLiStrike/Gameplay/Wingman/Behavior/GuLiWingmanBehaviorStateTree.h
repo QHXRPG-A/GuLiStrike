@@ -12,7 +12,7 @@
  * Group-level policy states authored in ST_WingmanGroupBehavior.
  *
  * These are deliberately not wire values. The StateTree translates the policy
- * into the existing protocol-v7 per-entity flight modes without extending the
+ * into the existing protocol-v8 per-entity flight modes without extending the
  * Candidate contract.
  */
 UENUM(BlueprintType)
@@ -112,4 +112,3 @@ struct GULISTRIKE_API FGuLiWingmanBehaviorPolicyTask : public FStateTreeTaskComm
 };
 
 GULISTRIKE_API FName GuLiWingmanBehaviorPolicyName(EGuLiWingmanBehaviorPolicy Policy);
-

@@ -2,7 +2,7 @@
 
 Maps old subfolders -> new subfolders. MI_Colorway from /Game/TopDown -> /Game/GuLiStrike/Materials.
 Leaves redirectors at old paths (fixup comes next).
-Writes report to D:/UE_5.7/test1/Saved/move_report.json
+Writes report to D:/UE5.7/test1/Saved/move_report.json
 """
 import unreal, json, traceback
 
@@ -82,6 +82,6 @@ try:
 except Exception:
     out["fatal"] = traceback.format_exc()
 
-with open(r"D:\UE_5.7\test1\Saved\move_report.json", "w") as f:
+with open(r"D:\UE5.7\test1\Saved\move_report.json", "w") as f:
     f.write(json.dumps(out, indent=1))
 print("REPORT_WRITTEN")

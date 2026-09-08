@@ -3,6 +3,7 @@
 #include "Gameplay/Wingman/Mass/GuLiWingmanMassProcessors.h"
 
 #include "Gameplay/Wingman/Mass/GuLiWingmanMassFragments.h"
+#include "Gameplay/Wingman/Mass/GuLiWingmanSwarmFlow.h"
 #include "Development/GuLiWingmanQAEvidence.h"
 #include "CollisionQueryParams.h"
 #include "CollisionShape.h"
@@ -105,6 +106,66 @@ namespace
 		return Navigation
 			&& Navigation->ValidateAuthoritativeSegment(Start, End, AgentRadius)
 				== EGuLiFlightNavSegmentStatus::Valid;
+	}
+
+	float MeasureClientFlightNavClearance(
+		const UWorld* World,
+		const FVector& Start,
+		const FVector& Direction,
+		const float Distance,
+		const float AgentRadius,
+		bool& bOutCompleteSegmentValid)
+	{
+		bOutCompleteSegmentValid = false;
+		if (!World || Start.ContainsNaN() || Direction.ContainsNaN()
+			|| !FMath::IsFinite(Distance) || Distance <= UE_SMALL_NUMBER
+			|| !FMath::IsFinite(AgentRadius) || AgentRadius < 0.0f)
+		{
+			return 0.0f;
+		}
+
+		const FVector UnitDirection = Direction.GetSafeNormal();
+		if (UnitDirection.IsNearlyZero())
+		{
+			return 0.0f;
+		}
+
+		const FVector End = Start + UnitDirection * Distance;
+		bOutCompleteSegmentValid = ValidateClientFlightNavSegment(
+			World, Start, End, AgentRadius);
+		if (bOutCompleteSegmentValid)
+		{
+			return Distance;
+		}
+
+		// FlightNav's authoritative segment predicate is prefix-monotonic for a
+		// fixed ray: once that ray crosses a Volume/cell/portal boundary, extending
+		// it cannot repair the already-invalid prefix. A short fixed-count bisection
+		// therefore supplies the missing distance signal without route-searching.
+		// Heading selection uses this signal to begin a finite-rate turn while there
+		// is still room, instead of treating every out-of-nav ray as equally clear.
+		if (!ValidateClientFlightNavSegment(World, Start, Start, AgentRadius))
+		{
+			return 0.0f;
+		}
+
+		float ValidDistance = 0.0f;
+		float InvalidDistance = Distance;
+		constexpr int32 ClearanceRefinementIterations = 7;
+		for (int32 Iteration = 0; Iteration < ClearanceRefinementIterations; ++Iteration)
+		{
+			const float CandidateDistance = (ValidDistance + InvalidDistance) * 0.5f;
+			const FVector CandidateEnd = Start + UnitDirection * CandidateDistance;
+			if (ValidateClientFlightNavSegment(World, Start, CandidateEnd, AgentRadius))
+			{
+				ValidDistance = CandidateDistance;
+			}
+			else
+			{
+				InvalidDistance = CandidateDistance;
+			}
+		}
+		return ValidDistance;
 	}
 
 	void AddLocallyControlledPawnsToIgnoredActors(
@@ -286,6 +347,25 @@ namespace
 		}
 		Headings.Add(Normalized);
 	}
+
+	float CalculateKinematicLookAheadDistance(
+		const float CurrentSpeedCentimetersPerSecond,
+		const FGuLiWingmanFormationRuntimeConfig& Tuning)
+	{
+		const float Speed = FMath::Max(
+			FMath::Abs(CurrentSpeedCentimetersPerSecond),
+			FMath::Max(1.0f, Tuning.MinimumSpeedCentimetersPerSecond));
+		const float MaximumDeceleration = FMath::Max(
+			1.0f, Tuning.MaximumDecelerationCentimetersPerSecondSquared);
+		const float BrakingDistance = Speed * Speed / (2.0f * MaximumDeceleration);
+		const float ControlReserve = FMath::Max(
+			Tuning.AgentRadiusCentimeters,
+			Speed * 0.25f);
+		return FMath::Max3(
+			Tuning.ObstacleLookAheadCentimeters,
+			Tuning.AgentRadiusCentimeters * 2.0f,
+			BrakingDistance + ControlReserve);
+	}
 }
 
 #if WITH_DEV_AUTOMATION_TESTS
@@ -390,6 +470,7 @@ void GuLiWingmanAvoidance::ComputeSpatialHashSeparation(
 		uint32 NeighborTests = 0u;
 		uint32 ContributingNeighbors = 0u;
 		FVector Acceleration = FVector::ZeroVector;
+		FVector NeighborVelocitySum = FVector::ZeroVector;
 		TArray<FIntVector, TInlineAllocator<27>> VisitedCells;
 		// Fixed X/Y/Z loop ordering plus stable bucket insertion makes accumulation deterministic.
 		for (int32 OffsetX = -1; OffsetX <= 1; ++OffsetX)
@@ -440,6 +521,7 @@ void GuLiWingmanAvoidance::ComputeSpatialHashSeparation(
 							Delta /= Distance;
 						}
 						++ContributingNeighbors;
+						NeighborVelocitySum += Right.Velocity;
 						Acceleration += Delta * Left.MaximumAccelerationCentimetersPerSecondSquared
 							* static_cast<float>(1.0 - Distance / Left.SeparationRadiusCentimeters);
 					}
@@ -448,6 +530,9 @@ void GuLiWingmanAvoidance::ComputeSpatialHashSeparation(
 		}
 		Result.Acceleration = Acceleration.GetClampedToMaxSize(
 			FMath::Max(0.0f, Left.MaximumAccelerationCentimetersPerSecondSquared));
+		Result.AverageNeighborVelocity = ContributingNeighbors > 0u
+			? NeighborVelocitySum / static_cast<float>(ContributingNeighbors)
+			: FVector::ZeroVector;
 		Result.NeighborTests = static_cast<uint16>(FMath::Min<uint32>(NeighborTests, MAX_uint16));
 		Result.ContributingNeighbors = static_cast<uint16>(
 			FMath::Min<uint32>(ContributingNeighbors, MAX_uint16));
@@ -459,7 +544,8 @@ GuLiWingmanAvoidance::FHeadingSelection GuLiWingmanAvoidance::SelectSafeHeading(
 	const FVector& DesiredDirection,
 	const float CurrentSpeedCentimetersPerSecond,
 	const FGuLiWingmanFormationRuntimeConfig& Tuning,
-	TFunctionRef<FHeadingProbeResult(const FVector&, float)> Probe)
+	TFunctionRef<FHeadingProbeResult(const FVector&, float)> Probe,
+	const float CandidateTurnHorizonSeconds)
 {
 	FHeadingSelection Result;
 	const FVector Current = CurrentDirection.IsNearlyZero()
@@ -469,17 +555,24 @@ GuLiWingmanAvoidance::FHeadingSelection GuLiWingmanAvoidance::SelectSafeHeading(
 	const float Speed = FMath::Max(
 		FMath::Abs(CurrentSpeedCentimetersPerSecond),
 		FMath::Max(1.0f, Tuning.MinimumSpeedCentimetersPerSecond));
-	const float ConfiguredLookAhead = FMath::Max(
-		Tuning.ObstacleLookAheadCentimeters,
-		Tuning.AgentRadiusCentimeters * 2.0f);
-	const float PredictionSeconds = FMath::Clamp(ConfiguredLookAhead / Speed, 0.5f, 2.0f);
-	const float LookAheadDistance = FMath::Max(ConfiguredLookAhead, Speed * PredictionSeconds);
+	const float LookAheadDistance = CalculateKinematicLookAheadDistance(
+		CurrentSpeedCentimetersPerSecond, Tuning);
+	const float PredictionSeconds = FMath::Clamp(LookAheadDistance / Speed, 0.5f, 4.0f);
 	const float ImmediateSafeDistance = FMath::Min(
 		LookAheadDistance,
 		FMath::Max(Tuning.AgentRadiusCentimeters * 1.5f,
 			Tuning.MinimumSpeedCentimetersPerSecond * 0.25f));
+	// Runtime Integration supplies its fixed-step horizon so every sampled heading
+	// is physically reachable by the very next Transform mutation. The default
+	// retains the wider look-ahead fan for UObject-free callers and diagnostics.
+	const bool bUseExplicitTurnHorizon = FMath::IsFinite(CandidateTurnHorizonSeconds)
+		&& CandidateTurnHorizonSeconds > 0.0f;
+	const float TurnHorizonSeconds = bUseExplicitTurnHorizon
+		? CandidateTurnHorizonSeconds : PredictionSeconds;
+	const float MinimumCandidateTurnDegrees = bUseExplicitTurnHorizon ? 0.0f : 10.0f;
 	const float MaximumTurnRadians = FMath::DegreesToRadians(FMath::Clamp(
-		Tuning.MaximumTurnRateDegreesPerSecond * PredictionSeconds, 10.0f, 65.0f));
+		Tuning.MaximumTurnRateDegreesPerSecond * TurnHorizonSeconds,
+		MinimumCandidateTurnDegrees, 65.0f));
 	const float MaximumPitchRadians = FMath::Min(MaximumTurnRadians, FMath::DegreesToRadians(35.0f));
 	const FVector FeasibleDesired = GuLiWingmanMass::TurnDirectionToward(
 		Current, Desired, MaximumTurnRadians);
@@ -561,7 +654,9 @@ GuLiWingmanAvoidance::FHeadingSelection GuLiWingmanAvoidance::SelectSafeHeading(
 		{
 			BestImmediateScore = Score;
 			BestImmediateDirection = Candidate;
-			BestImmediateClearance = ImmediateProbe.ClearanceCentimeters;
+			// Preserve the long-probe clearance for braking. ImmediateProbe only
+			// establishes that the next short movement horizon is executable.
+			BestImmediateClearance = ProbeResult.ClearanceCentimeters;
 		}
 	}
 
@@ -730,10 +825,13 @@ UGuLiWingmanFormationGuidanceProcessor::UGuLiWingmanFormationGuidanceProcessor()
 
 void UGuLiWingmanFormationGuidanceProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
+	EntityQuery.AddRequirement<FGuLiWingmanAttackFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FGuLiWingmanCarrierFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FGuLiWingmanAbilityFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FGuLiWingmanFormationSlotFragment>(EMassFragmentAccess::ReadWrite);
+	EntityQuery.AddRequirement<FGuLiWingmanSwarmAgentFragment>(EMassFragmentAccess::ReadWrite);
+	EntityQuery.AddRequirement<FGuLiWingmanIdentityFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FGuLiWingmanTuningFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FGuLiWingmanFlightDynamicsFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FGuLiWingmanNavigationGuidanceFragment>(EMassFragmentAccess::ReadOnly);
@@ -752,12 +850,17 @@ void UGuLiWingmanFormationGuidanceProcessor::Execute(
 	const float DeltaSeconds = FMath::Max(0.0f, Context.GetDeltaTimeSeconds());
 	EntityQuery.ForEachEntityChunk(Context, [DeltaSeconds](FMassExecutionContext& ChunkContext)
 	{
+		const auto Attacks = ChunkContext.GetFragmentView<FGuLiWingmanAttackFragment>();
 		const TConstArrayView<FTransformFragment> Transforms = ChunkContext.GetFragmentView<FTransformFragment>();
 		const TConstArrayView<FGuLiWingmanCarrierFragment> Carriers = ChunkContext.GetFragmentView<FGuLiWingmanCarrierFragment>();
 		const TConstArrayView<FGuLiWingmanAbilityFragment> Abilities =
 			ChunkContext.GetFragmentView<FGuLiWingmanAbilityFragment>();
 		const TArrayView<FGuLiWingmanFormationSlotFragment> Slots =
 			ChunkContext.GetMutableFragmentView<FGuLiWingmanFormationSlotFragment>();
+		const TArrayView<FGuLiWingmanSwarmAgentFragment> SwarmAgents =
+			ChunkContext.GetMutableFragmentView<FGuLiWingmanSwarmAgentFragment>();
+		const TConstArrayView<FGuLiWingmanIdentityFragment> Identities =
+			ChunkContext.GetFragmentView<FGuLiWingmanIdentityFragment>();
 		const TConstArrayView<FGuLiWingmanTuningFragment> Tunings =
 			ChunkContext.GetFragmentView<FGuLiWingmanTuningFragment>();
 		const TConstArrayView<FGuLiWingmanFlightDynamicsFragment> Dynamics =
@@ -768,20 +871,7 @@ void UGuLiWingmanFormationGuidanceProcessor::Execute(
 			ChunkContext.GetMutableFragmentView<FGuLiWingmanGuidanceFragment>();
 		for (FMassExecutionContext::FEntityIterator It = ChunkContext.CreateEntityIterator(); It; ++It)
 		{
-			FGuLiWingmanFormationSlotFragment& Slot = Slots[It];
-			const float DirectionSign = Slot.bClockwise ? -1.0f : 1.0f;
-			Slot.PhaseRadians = FMath::Fmod(
-				Slot.PhaseRadians + DirectionSign * Slot.AngularSpeedRadiansPerSecond * DeltaSeconds + UE_TWO_PI,
-				UE_TWO_PI);
-			const float CosPhase = FMath::Cos(Slot.PhaseRadians);
-			const float SinPhase = FMath::Sin(Slot.PhaseRadians);
-			const FVector LocalOffset(Slot.RadiusCentimeters * CosPhase,
-				Slot.RadiusCentimeters * SinPhase, Slot.HeightCentimeters);
-			const FVector LocalTangent = DirectionSign * FVector(-SinPhase, CosPhase, 0.0f);
-			const FTransform& Carrier = Carriers[It].Transform;
-			FGuLiWingmanGuidanceFragment& Output = Guidance[It];
-			const FVector FormationPosition = Carrier.TransformPositionNoScale(LocalOffset);
-			Output.DesiredPosition = FormationPosition;
+			const FGuLiWingmanFormationRuntimeConfig& Formation = Tunings[It].Formation;
 			const FGuLiWingmanNavigationGuidanceFragment& Navigation = NavigationGuidance[It];
 			const bool bUseNavigationPath =
 				(Dynamics[It].Mode == EGuLiWingmanFlightMode::CatchUp
@@ -791,6 +881,89 @@ void UGuLiWingmanFormationGuidanceProcessor::Execute(
 				&& !Navigation.PathGoal.ContainsNaN()
 				&& Navigation.AbilitySetRevision == Abilities[It].AbilitySetRevision
 				&& Navigation.FormationCommandRevision == Abilities[It].FormationCommandRevision;
+			FGuLiWingmanGuidanceFragment& Output = Guidance[It];
+			Output.bAttackGuidance = false;
+            if (Attacks[It].bGuiding && Dynamics[It].bAlive && Dynamics[It].Mode != EGuLiWingmanFlightMode::Stale
+                && Dynamics[It].Mode != EGuLiWingmanFlightMode::Recover)
+            {
+                Output.bUsesVelocityField = true; Output.PreferredVelocity = Attacks[It].PreferredVelocity;
+				Output.bAttackGuidance = true;
+                Output.DesiredForward = Output.PreferredVelocity.GetSafeNormal();
+                Output.DesiredSpeedCentimetersPerSecond = Output.PreferredVelocity.Size();
+                Output.DesiredPosition = Transforms[It].GetTransform().GetLocation() + Output.PreferredVelocity;
+                continue;
+            }
+			if (Formation.Model == EGuLiWingmanFormationModel::SwarmOrbit)
+			{
+				FGuLiWingmanSwarmAgentFragment& Agent = SwarmAgents[It];
+				if (Dynamics[It].Mode != EGuLiWingmanFlightMode::Stale)
+				{
+					GuLiWingmanSwarmFlow::AdvanceSimulationClock(DeltaSeconds, Agent);
+				}
+				const FVector Position = Transforms[It].GetTransform().GetLocation();
+				FVector PreferredVelocity = GuLiWingmanSwarmFlow::BuildPreferredVelocity(
+					Position,
+					Dynamics[It].Velocity,
+					Carriers[It].Transform.GetLocation(),
+					Carriers[It].Velocity,
+					Agent,
+					Formation,
+					Dynamics[It].Mode);
+				if (Dynamics[It].Mode == EGuLiWingmanFlightMode::CatchUp
+					|| Dynamics[It].Mode == EGuLiWingmanFlightMode::Recover)
+				{
+					const FVector RecoveryAnchor = bUseNavigationPath
+						? Navigation.Waypoint
+						: Carriers[It].Transform.GetLocation()
+							+ GuLiWingmanSwarmFlow::BuildFlightRecoveryOffset(
+								Formation, Identities[It].Handle.Flight.FlightIndex);
+					const FVector RecoveryDirection = (RecoveryAnchor - Position).GetSafeNormal();
+					if (!RecoveryDirection.IsNearlyZero())
+					{
+						const FVector RecoveryVelocity = RecoveryDirection
+							* Formation.CatchUpSpeedCentimetersPerSecond;
+						const float RecoveryWeight = Dynamics[It].Mode == EGuLiWingmanFlightMode::Recover
+							? 0.95f : 0.80f;
+						PreferredVelocity = FMath::Lerp(
+							PreferredVelocity, RecoveryVelocity, RecoveryWeight);
+					}
+				}
+				Output.bUsesVelocityField = true;
+				Output.PreferredVelocity = PreferredVelocity;
+				Output.DesiredForward = PreferredVelocity.GetSafeNormal();
+				if (Output.DesiredForward.IsNearlyZero())
+				{
+					Output.DesiredForward = Dynamics[It].Velocity.IsNearlyZero()
+						? FVector::ForwardVector : Dynamics[It].Velocity.GetSafeNormal();
+				}
+				Output.DesiredSpeedCentimetersPerSecond = Dynamics[It].Mode == EGuLiWingmanFlightMode::Stale
+					? 0.0f
+					: FMath::Clamp(
+						static_cast<float>(PreferredVelocity.Size()),
+						Formation.MinimumSpeedCentimetersPerSecond,
+						Formation.CatchUpSpeedCentimetersPerSecond);
+				Output.DesiredPosition = Position + Output.DesiredForward
+					* Output.DesiredSpeedCentimetersPerSecond
+					* Formation.SwarmOrbit.ResponseTimeSeconds;
+				continue;
+			}
+
+			FGuLiWingmanFormationSlotFragment& Slot = Slots[It];
+			const float DirectionSign = Slot.bClockwise ? -1.0f : 1.0f;
+			Slot.PhaseRadians = FMath::Fmod(
+				Slot.PhaseRadians + DirectionSign * Slot.AngularSpeedRadiansPerSecond * DeltaSeconds + UE_TWO_PI,
+				UE_TWO_PI);
+			const float CosPhase = FMath::Cos(Slot.PhaseRadians);
+			const float SinPhase = FMath::Sin(Slot.PhaseRadians);
+			const FVector WorldOffset(Slot.RadiusCentimeters * CosPhase,
+				Slot.RadiusCentimeters * SinPhase, Slot.HeightCentimeters);
+			const FVector WorldTangent = DirectionSign * FVector(-SinPhase, CosPhase, 0.0f);
+			const FTransform& Carrier = Carriers[It].Transform;
+			Output.bUsesVelocityField = false;
+			// The carrier is a moving positional anchor, not the formation's rotation
+			// frame. Q/E can therefore rotate the ship without sweeping the slots.
+			const FVector FormationPosition = Carrier.GetLocation() + WorldOffset;
+			Output.DesiredPosition = FormationPosition;
 			if (bUseNavigationPath)
 			{
 				// Preserve each member's formation-relative offset around the shared
@@ -798,13 +971,13 @@ void UGuLiWingmanFormationGuidanceProcessor::Execute(
 				Output.DesiredPosition = Navigation.Waypoint + (FormationPosition - Navigation.PathGoal);
 			}
 			const FVector ToSlot = Output.DesiredPosition - Transforms[It].GetTransform().GetLocation();
-			const FVector Tangent = Carrier.TransformVectorNoScale(LocalTangent).GetSafeNormal();
+			const FVector Tangent = WorldTangent.GetSafeNormal();
 			const float SlotWeight = bUseNavigationPath ? 0.95f
 				: (Dynamics[It].Mode == EGuLiWingmanFlightMode::Orbit ? 0.35f : 0.8f);
 			Output.DesiredForward = (Tangent * (1.0f - SlotWeight) + ToSlot.GetSafeNormal() * SlotWeight).GetSafeNormal();
 			if (Output.DesiredForward.IsNearlyZero())
 			{
-				Output.DesiredForward = Tangent.IsNearlyZero() ? Carrier.GetRotation().GetForwardVector() : Tangent;
+				Output.DesiredForward = Tangent.IsNearlyZero() ? FVector::ForwardVector : Tangent;
 			}
 			switch (Dynamics[It].Mode)
 			{
@@ -819,6 +992,8 @@ void UGuLiWingmanFormationGuidanceProcessor::Execute(
 				Output.DesiredSpeedCentimetersPerSecond = Tunings[It].Formation.CruiseSpeedCentimetersPerSecond;
 				break;
 			}
+			Output.PreferredVelocity = Output.DesiredForward
+				* Output.DesiredSpeedCentimetersPerSecond;
 		}
 	});
 }
@@ -856,6 +1031,7 @@ void UGuLiWingmanAvoidanceProcessor::Execute(FMassEntityManager& EntityManager, 
 	{
 		FGuLiWingmanHandle Handle;
 		FVector Position = FVector::ZeroVector;
+		FVector Forward = FVector::ForwardVector;
 		FVector Velocity = FVector::ZeroVector;
 		FGuLiWingmanGuidanceFragment Guidance;
 		FGuLiWingmanNavigationGuidanceFragment Navigation;
@@ -881,7 +1057,9 @@ void UGuLiWingmanAvoidanceProcessor::Execute(FMassEntityManager& EntityManager, 
 		{
 			FSample& Sample = Samples.AddDefaulted_GetRef();
 			Sample.Handle = Identities[It].Handle;
-			Sample.Position = Transforms[It].GetTransform().GetLocation();
+			const FTransform& EntityTransform = Transforms[It].GetTransform();
+			Sample.Position = EntityTransform.GetLocation();
+			Sample.Forward = EntityTransform.GetRotation().GetForwardVector();
 			Sample.Velocity = Dynamics[It].Velocity;
 			Sample.Guidance = Guidance[It];
 			Sample.Navigation = Navigation[It];
@@ -898,6 +1076,7 @@ void UGuLiWingmanAvoidanceProcessor::Execute(FMassEntityManager& EntityManager, 
 		GuLiWingmanAvoidance::FSpatialSample& Spatial = SpatialSamples.AddDefaulted_GetRef();
 		Spatial.Handle = Sample.Handle;
 		Spatial.Position = Sample.Position;
+		Spatial.Velocity = Sample.Velocity;
 		Spatial.SeparationRadiusCentimeters = Sample.Tuning.SeparationRadiusCentimeters;
 		Spatial.MaximumAccelerationCentimetersPerSecondSquared =
 			Sample.Tuning.MaximumAccelerationCentimetersPerSecondSquared;
@@ -931,6 +1110,9 @@ void UGuLiWingmanAvoidanceProcessor::Execute(FMassEntityManager& EntityManager, 
 		FGuLiWingmanAvoidanceFragment State = Sample.PreviousAvoidance;
 		State.Acceleration = FVector::ZeroVector;
 		State.bHasSafeDirection = false;
+		State.bHasNextStepSafeDirection = false;
+		State.NavigationSpeedLimitCentimetersPerSecond = 0.0f;
+		State.bHasNavigationSpeedLimit = false;
 		State.bDetectedWorldStatic = false;
 		State.bDetectedWorldDynamic = false;
 		State.bDetectedFlightNavBoundary = false;
@@ -956,6 +1138,7 @@ void UGuLiWingmanAvoidanceProcessor::Execute(FMassEntityManager& EntityManager, 
 			State.ConsecutiveBlockedSeconds = 0.0f;
 			State.ConsecutiveClearSeconds = 0.0f;
 			State.bControlledRecovery = false;
+			State.bHasRecoveryEscapeDirection = false;
 			FAvoidanceOutput Output;
 			Output.State = MoveTemp(State);
 			Outputs.Add(Sample.Handle, MoveTemp(Output));
@@ -1011,12 +1194,10 @@ void UGuLiWingmanAvoidanceProcessor::Execute(FMassEntityManager& EntityManager, 
 				ConsiderVerifiedPoint(State.LastVerifiedSafePoint,
 					State.VerifiedWaypointRequestSerial, State.VerifiedWaypointPathPointIndex);
 			}
-			// A containing baked cell is the final bounded holding anchor when a Flight
-			// has not yet received its replacement waypoint. No path search is performed.
-			if (!bFoundVerifiedPoint)
-			{
-				ConsiderVerifiedPoint(Sample.Position, 0u, 0u);
-			}
+			// Do not turn the held boundary position into a recovery anchor. It has zero
+			// direction and previously made a blocked member steer back toward its live
+			// attack guidance forever. When no older point/waypoint remains reachable,
+			// the frozen escape heading below is the bounded fallback.
 			State.bHasVerifiedSafePoint = bFoundVerifiedPoint;
 			State.bRecoveryPointCurrentlyValid = bFoundVerifiedPoint;
 			if (bFoundVerifiedPoint)
@@ -1027,22 +1208,52 @@ void UGuLiWingmanAvoidanceProcessor::Execute(FMassEntityManager& EntityManager, 
 			}
 		}
 
+		// At zero speed the actual Mass attitude is the only direction from which a
+		// finite-rate turn can continue. Guidance.DesiredForward is a destination;
+		// substituting it here makes the next-step probe disagree with Integration
+		// and can permanently strand an already stopped boundary recovery.
 		const FVector CurrentDirection = Sample.Velocity.IsNearlyZero()
-			? Sample.Guidance.DesiredForward.GetSafeNormal()
+			? Sample.Forward.GetSafeNormal()
 			: Sample.Velocity.GetSafeNormal();
 		const FVector ToGuidance = Sample.Guidance.DesiredPosition - Sample.Position;
-		FVector DesiredDirection = (Sample.Guidance.DesiredForward.GetSafeNormal() * 0.4f
-			+ ToGuidance.GetSafeNormal() * 0.6f).GetSafeNormal();
+		FVector DesiredDirection = Sample.Guidance.bUsesVelocityField
+			? Sample.Guidance.PreferredVelocity.GetSafeNormal()
+			: (Sample.Guidance.DesiredForward.GetSafeNormal() * 0.4f
+				+ ToGuidance.GetSafeNormal() * 0.6f).GetSafeNormal();
 		if (DesiredDirection.IsNearlyZero())
 		{
 			DesiredDirection = CurrentDirection.IsNearlyZero() ? FVector::ForwardVector : CurrentDirection;
 		}
-		if (Spatial && !Spatial->Acceleration.IsNearlyZero())
+		if (Spatial)
 		{
 			const float DesiredSpeed = FMath::Max(
 				Sample.Tuning.MinimumSpeedCentimetersPerSecond,
 				Sample.Guidance.DesiredSpeedCentimetersPerSecond);
-			DesiredDirection = (DesiredDirection * DesiredSpeed + Spatial->Acceleration).GetSafeNormal();
+			FVector DesiredVelocity = Sample.Guidance.bUsesVelocityField
+				? Sample.Guidance.PreferredVelocity
+				: DesiredDirection * DesiredSpeed;
+			bool bAdjustedVelocity = false;
+			if (Sample.Guidance.bUsesVelocityField
+				&& !Sample.Guidance.bAttackGuidance
+				&& !Spatial->AverageNeighborVelocity.IsNearlyZero())
+			{
+				DesiredVelocity = FMath::Lerp(
+					DesiredVelocity,
+					Spatial->AverageNeighborVelocity,
+					Sample.Tuning.SwarmOrbit.AlignmentWeight);
+				bAdjustedVelocity = true;
+			}
+			if (!Spatial->Acceleration.IsNearlyZero())
+			{
+				DesiredVelocity += Spatial->Acceleration
+					* (Sample.Guidance.bUsesVelocityField
+						? Sample.Tuning.SwarmOrbit.ResponseTimeSeconds : 1.0f);
+				bAdjustedVelocity = true;
+			}
+			if (bAdjustedVelocity)
+			{
+				DesiredDirection = DesiredVelocity.GetSafeNormal();
+			}
 		}
 
 		const auto ProbeWorld = [&](const FVector& Direction, const float Distance)
@@ -1056,70 +1267,199 @@ void UGuLiWingmanAvoidanceProcessor::Execute(FMassEntityManager& EntityManager, 
 					Sample.Tuning.AgentRadiusCentimeters,
 					ObstacleObjectTypes,
 					ObstacleQueryParams);
-			ProbeResult.bFlightNavSegmentValid = ValidateClientFlightNavSegment(
-				World, Sample.Position, End, Sample.Tuning.AgentRadiusCentimeters);
+			bool bCompleteFlightNavSegmentValid = false;
+			const float FlightNavClearance = MeasureClientFlightNavClearance(
+				World,
+				Sample.Position,
+				Direction,
+				Distance,
+				Sample.Tuning.AgentRadiusCentimeters,
+				bCompleteFlightNavSegmentValid);
+			ProbeResult.bFlightNavSegmentValid = bCompleteFlightNavSegmentValid;
+			ProbeResult.ClearanceCentimeters = FMath::Min(
+				ProbeResult.ClearanceCentimeters, FlightNavClearance);
 			return ProbeResult;
 		};
 
 		const float CurrentSpeed = static_cast<float>(Sample.Velocity.Size());
+		const float KinematicLookAheadDistance = CalculateKinematicLookAheadDistance(
+			CurrentSpeed, Sample.Tuning);
+		const GuLiWingmanAvoidance::FHeadingProbeResult CurrentCourseProbe =
+			ProbeWorld(CurrentDirection, KinematicLookAheadDistance);
+		const bool bCurrentCourseFullyClear = CurrentCourseProbe.bFlightNavSegmentValid
+			&& CurrentCourseProbe.ClearanceCentimeters + 0.5f >= KinematicLookAheadDistance;
+		State.bDetectedFlightNavBoundary |= !CurrentCourseProbe.bFlightNavSegmentValid;
+		State.bDetectedWorldStatic |= CurrentCourseProbe.bWorldStatic;
+		State.bDetectedWorldDynamic |= CurrentCourseProbe.bWorldDynamic;
+		// Preserve a point with a complete braking horizon while ordinary flight is
+		// healthy. If the member later stops exactly on a cell/obstacle boundary,
+		// this remains a real interior recovery anchor instead of degrading to the
+		// held boundary position.
+		if (bCurrentCourseFullyClear
+			&& !Sample.Navigation.bHasPath
+			&& !State.bControlledRecovery
+			&& State.ConsecutiveBlockedSeconds <= 0.0f)
+		{
+			State.LastVerifiedSafePoint = Sample.Position;
+			State.bHasVerifiedSafePoint = true;
+			State.bRecoveryPointCurrentlyValid = true;
+			State.VerifiedWaypointRequestSerial = 0u;
+			State.VerifiedWaypointPathPointIndex = 0u;
+		}
+		const float NextStepDistance = FMath::Max(
+			CurrentSpeed, Sample.Tuning.MinimumSpeedCentimetersPerSecond)
+			* GuLiWingmanMass::FixedStepSeconds;
+		const auto ProbeNextStepNavigation = [&](const FVector& Direction, const float RequestedDistance)
+		{
+			GuLiWingmanAvoidance::FHeadingProbeResult ProbeResult;
+			// The strategic sweep above already owns physical look-ahead. This second
+			// pass asks one narrower question: which turn-rate-reachable heading keeps
+			// the exact next Integration segment inside baked FlightNav?
+			ProbeResult.ClearanceCentimeters = RequestedDistance;
+			const FVector End = Sample.Position
+				+ Direction.GetSafeNormal() * NextStepDistance;
+			ProbeResult.bFlightNavSegmentValid = ValidateClientFlightNavSegment(
+				World, Sample.Position, End, Sample.Tuning.AgentRadiusCentimeters);
+			return ProbeResult;
+		};
 		const GuLiWingmanAvoidance::FHeadingSelection NormalSelection =
 			GuLiWingmanAvoidance::SelectSafeHeading(
 				CurrentDirection, DesiredDirection, CurrentSpeed, Sample.Tuning, ProbeWorld);
+		const FVector NextStepDesiredDirection = NormalSelection.bImmediateStepSafe
+			? NormalSelection.Direction : DesiredDirection;
+		const GuLiWingmanAvoidance::FHeadingSelection NextStepNormalSelection =
+			GuLiWingmanAvoidance::SelectSafeHeading(
+				CurrentDirection, NextStepDesiredDirection, CurrentSpeed, Sample.Tuning,
+				ProbeNextStepNavigation,
+				GuLiWingmanMass::FixedStepSeconds);
 		AccumulateHeadingThreats(State, NormalSelection);
+		AccumulateHeadingThreats(State, NextStepNormalSelection);
 		GuLiWingmanAvoidance::FRecoveryClockState RecoveryClock;
 		RecoveryClock.ConsecutiveBlockedSeconds = State.ConsecutiveBlockedSeconds;
 		RecoveryClock.ConsecutiveClearSeconds = State.ConsecutiveClearSeconds;
 		RecoveryClock.bControlledRecovery = State.bControlledRecovery;
+		// A strategically clear heading is not executable while every finite-turn
+		// next step still leaves FlightNav. Treat that state as blocked so a stopped
+		// fixed-wing member may turn in place toward the verified wider heading.
+		const bool bNormalPathExecutable = NormalSelection.bFullLookAheadSafe
+			&& NextStepNormalSelection.bImmediateStepSafe;
+		if (!bNormalPathExecutable && !State.bHasRecoveryEscapeDirection)
+		{
+			// The opposite of the entry course points back into the segment from which
+			// this member arrived. Freeze it for the complete recovery episode so live
+			// attack/formation guidance cannot make a stopped aircraft chase a moving
+			// direction while it is trying to turn away from the boundary.
+			State.RecoveryEscapeDirection = -CurrentDirection.GetSafeNormal();
+			State.bHasRecoveryEscapeDirection =
+				!State.RecoveryEscapeDirection.IsNearlyZero();
+		}
 		GuLiWingmanAvoidance::AdvanceRecoveryClock(
 			RecoveryClock,
 			DeltaSeconds,
-			NormalSelection.bFullLookAheadSafe,
-			Sample.Navigation.bHasPath && State.bRecoveryPointCurrentlyValid);
+			bNormalPathExecutable,
+			(Sample.Navigation.bHasPath && State.bRecoveryPointCurrentlyValid)
+				|| bNormalPathExecutable);
 		State.ConsecutiveBlockedSeconds = RecoveryClock.ConsecutiveBlockedSeconds;
 		State.ConsecutiveClearSeconds = RecoveryClock.ConsecutiveClearSeconds;
 		State.bControlledRecovery = RecoveryClock.bControlledRecovery;
+		if (bNormalPathExecutable && !State.bControlledRecovery)
+		{
+			State.bHasRecoveryEscapeDirection = false;
+		}
 
 		GuLiWingmanAvoidance::FHeadingSelection AppliedSelection = NormalSelection;
+		GuLiWingmanAvoidance::FHeadingSelection AppliedNextStepSelection = NextStepNormalSelection;
 		if (State.bControlledRecovery)
 		{
 			const FVector RecoveryPoint = State.bHasVerifiedSafePoint
 				? State.LastVerifiedSafePoint : Sample.Position;
-			const FVector RecoveryDesired = GuLiWingmanAvoidance::BuildRecoveryOrbitDirection(
-				Sample.Position,
-				CurrentDirection,
-				RecoveryPoint,
-				FMath::Max(Sample.Tuning.AgentRadiusCentimeters * 4.0f,
-					Sample.Tuning.SeparationRadiusCentimeters));
+			const FVector ToRecoveryPoint = RecoveryPoint - Sample.Position;
+			FVector RecoveryDesired = State.bHasRecoveryEscapeDirection
+				? State.RecoveryEscapeDirection.GetSafeNormal()
+				: DesiredDirection;
+			if (!State.bHasRecoveryEscapeDirection && !ToRecoveryPoint.IsNearlyZero())
+			{
+				// A validated point is a stable destination. The integration turn-rate
+				// limit supplies the curved fixed-wing motion; changing the destination
+				// every frame can otherwise recreate an orbit around the recovery point.
+				RecoveryDesired = ToRecoveryPoint.GetSafeNormal();
+			}
+			else if (!State.bHasRecoveryEscapeDirection
+				&& NormalSelection.bImmediateStepSafe)
+			{
+				// The fallback anchor can equal the held position. In that degenerate
+				// case use the verified long-probe heading instead of orbiting oneself.
+				RecoveryDesired = NormalSelection.Direction;
+			}
 			const GuLiWingmanAvoidance::FHeadingSelection RecoverySelection =
 				GuLiWingmanAvoidance::SelectSafeHeading(
 					CurrentDirection, RecoveryDesired, CurrentSpeed, Sample.Tuning, ProbeWorld);
+			const FVector NextStepRecoveryDesired = RecoverySelection.bImmediateStepSafe
+				? RecoverySelection.Direction : RecoveryDesired;
+			const GuLiWingmanAvoidance::FHeadingSelection NextStepRecoverySelection =
+				GuLiWingmanAvoidance::SelectSafeHeading(
+					CurrentDirection, NextStepRecoveryDesired, CurrentSpeed, Sample.Tuning,
+					ProbeNextStepNavigation,
+					GuLiWingmanMass::FixedStepSeconds);
 			AccumulateHeadingThreats(State, RecoverySelection);
+			AccumulateHeadingThreats(State, NextStepRecoverySelection);
 			State.HeadingProbeCount = static_cast<uint16>(FMath::Min<uint32>(
-				static_cast<uint32>(NormalSelection.ProbeCount) + RecoverySelection.ProbeCount,
+				static_cast<uint32>(NormalSelection.ProbeCount)
+					+ NextStepNormalSelection.ProbeCount
+					+ RecoverySelection.ProbeCount
+					+ NextStepRecoverySelection.ProbeCount,
 				MAX_uint16));
 			if (RecoverySelection.bImmediateStepSafe)
 			{
 				AppliedSelection = RecoverySelection;
 			}
+			if (NextStepRecoverySelection.bImmediateStepSafe)
+			{
+				AppliedNextStepSelection = NextStepRecoverySelection;
+			}
 		}
 		else
 		{
-			State.HeadingProbeCount = NormalSelection.ProbeCount;
+			State.HeadingProbeCount = static_cast<uint16>(FMath::Min<uint32>(
+				static_cast<uint32>(NormalSelection.ProbeCount)
+					+ NextStepNormalSelection.ProbeCount,
+				MAX_uint16));
 		}
 
 		if (AppliedSelection.bImmediateStepSafe)
 		{
 			State.SafeDirection = AppliedSelection.Direction.GetSafeNormal();
 			State.bHasSafeDirection = !State.SafeDirection.IsNearlyZero();
-			if (State.bHasSafeDirection)
-			{
-				const float SteeringSpeed = State.bControlledRecovery
-					? Sample.Tuning.MinimumSpeedCentimetersPerSecond
-					: FMath::Max(Sample.Tuning.MinimumSpeedCentimetersPerSecond, CurrentSpeed);
-				State.Acceleration = (State.SafeDirection * SteeringSpeed - Sample.Velocity)
-					.GetClampedToMaxSize(
-						Sample.Tuning.MaximumAccelerationCentimetersPerSecondSquared);
-			}
+		}
+		if (AppliedNextStepSelection.bImmediateStepSafe)
+		{
+			State.NextStepSafeDirection = AppliedNextStepSelection.Direction.GetSafeNormal();
+			State.bHasNextStepSafeDirection = !State.NextStepSafeDirection.IsNearlyZero();
+		}
+
+		if (!bCurrentCourseFullyClear || !State.bHasNextStepSafeDirection)
+		{
+			const float BrakingReserve = FMath::Max(
+				Sample.Tuning.AgentRadiusCentimeters,
+				FMath::Max(CurrentSpeed, Sample.Tuning.MinimumSpeedCentimetersPerSecond)
+					* GuLiWingmanMass::FixedStepSeconds * 2.0f);
+			const float UsableClearance = State.bHasNextStepSafeDirection
+				? FMath::Max(0.0f, CurrentCourseProbe.ClearanceCentimeters - BrakingReserve)
+				: 0.0f;
+			const float MaximumDeceleration = FMath::Max(
+				1.0f, Sample.Tuning.MaximumDecelerationCentimetersPerSecondSquared);
+			State.NavigationSpeedLimitCentimetersPerSecond = FMath::Sqrt(
+				2.0f * MaximumDeceleration * UsableClearance);
+			State.bHasNavigationSpeedLimit = true;
+		}
+		if (State.bHasNextStepSafeDirection)
+		{
+			const float SteeringSpeed = State.bControlledRecovery
+				? Sample.Tuning.MinimumSpeedCentimetersPerSecond
+				: FMath::Max(Sample.Tuning.MinimumSpeedCentimetersPerSecond, CurrentSpeed);
+			State.Acceleration = (State.NextStepSafeDirection * SteeringSpeed - Sample.Velocity)
+				.GetClampedToMaxSize(
+					Sample.Tuning.MaximumAccelerationCentimetersPerSecondSquared);
 		}
 		FAvoidanceOutput Output;
 		Output.State = MoveTemp(State);
@@ -1154,6 +1494,7 @@ UGuLiWingmanFlightIntegrationProcessor::UGuLiWingmanFlightIntegrationProcessor()
 void UGuLiWingmanFlightIntegrationProcessor::ConfigureQueries(const TSharedRef<FMassEntityManager>& EntityManager)
 {
 	EntityQuery.AddRequirement<FTransformFragment>(EMassFragmentAccess::ReadWrite);
+	EntityQuery.AddRequirement<FGuLiWingmanCarrierFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FGuLiWingmanGuidanceFragment>(EMassFragmentAccess::ReadOnly);
 	EntityQuery.AddRequirement<FGuLiWingmanAvoidanceFragment>(EMassFragmentAccess::ReadWrite);
 	EntityQuery.AddRequirement<FGuLiWingmanTuningFragment>(EMassFragmentAccess::ReadOnly);
@@ -1181,6 +1522,8 @@ void UGuLiWingmanFlightIntegrationProcessor::Execute(
 		[FrameDeltaSeconds, World, ObstacleObjectTypes, ObstacleQueryParams](FMassExecutionContext& ChunkContext)
 	{
 		const TArrayView<FTransformFragment> Transforms = ChunkContext.GetMutableFragmentView<FTransformFragment>();
+		const TConstArrayView<FGuLiWingmanCarrierFragment> Carriers =
+			ChunkContext.GetFragmentView<FGuLiWingmanCarrierFragment>();
 		const TConstArrayView<FGuLiWingmanGuidanceFragment> Guidance = ChunkContext.GetFragmentView<FGuLiWingmanGuidanceFragment>();
 		const TArrayView<FGuLiWingmanAvoidanceFragment> Avoidance =
 			ChunkContext.GetMutableFragmentView<FGuLiWingmanAvoidanceFragment>();
@@ -1197,45 +1540,92 @@ void UGuLiWingmanFlightIntegrationProcessor::Execute(
 			while (Dynamic.FixedStepAccumulator >= GuLiWingmanMass::FixedStepSeconds)
 			{
 				Dynamic.FixedStepAccumulator -= GuLiWingmanMass::FixedStepSeconds;
-				if (!Dynamic.bAlive || Dynamic.Mode == EGuLiWingmanFlightMode::Stale
-					|| Guidance[It].DesiredSpeedCentimetersPerSecond <= 0.0f)
+				if (++Dynamic.CaptureSimulationTick == 0) ++Dynamic.CaptureSimulationTick;
+				if (!Dynamic.bAlive || Dynamic.Mode == EGuLiWingmanFlightMode::Stale)
 				{
 					continue;
 				}
 				const FVector Location = Transform.GetLocation();
 				const FVector ToTarget = Guidance[It].DesiredPosition - Location;
-				FVector DesiredDirection = (Guidance[It].DesiredForward * 0.4f
-					+ ToTarget.GetSafeNormal() * 0.6f).GetSafeNormal();
+				FVector DesiredDirection = Guidance[It].bUsesVelocityField
+					? Guidance[It].PreferredVelocity.GetSafeNormal()
+					: (Guidance[It].DesiredForward * 0.4f
+						+ ToTarget.GetSafeNormal() * 0.6f).GetSafeNormal();
 				if (DesiredDirection.IsNearlyZero()) DesiredDirection = Transform.GetRotation().GetForwardVector();
 				const FGuLiWingmanFormationRuntimeConfig& Tuning = Tunings[It].Formation;
 				const FVector CurrentDirection = Dynamic.Velocity.IsNearlyZero()
 					? Transform.GetRotation().GetForwardVector() : Dynamic.Velocity.GetSafeNormal();
-				if (Avoidance[It].bHasSafeDirection)
+				const float CurrentSpeed = static_cast<float>(Dynamic.Velocity.Size());
+				const bool bNavigationRequiresStationaryTurn =
+					Avoidance[It].bHasNavigationSpeedLimit
+					&& Avoidance[It].NavigationSpeedLimitCentimetersPerSecond
+						<= UE_KINDA_SMALL_NUMBER;
+				const bool bTurnInPlaceForRecovery = CurrentSpeed <= UE_KINDA_SMALL_NUMBER
+					&& (Dynamic.Mode == EGuLiWingmanFlightMode::Recover
+						|| Avoidance[It].bControlledRecovery
+						|| Avoidance[It].ConsecutiveBlockedSeconds > 0.0f
+						|| bNavigationRequiresStationaryTurn);
+				const bool bGuidanceRequestsStop =
+					Guidance[It].DesiredSpeedCentimetersPerSecond <= 0.0f;
+				if (bGuidanceRequestsStop && !bTurnInPlaceForRecovery)
 				{
-					// The obstacle processor only publishes a direction after its full or
-					// immediate-step sphere sweep succeeds. Integration owns the turn.
-					DesiredDirection = Avoidance[It].SafeDirection.GetSafeNormal();
+					continue;
 				}
-				else if (Avoidance[It].ConsecutiveBlockedSeconds > 0.0f
-					|| Avoidance[It].bControlledRecovery)
+				if (Avoidance[It].bHasNextStepSafeDirection)
 				{
-					// No sampled heading was safe even for the bounded immediate step.
-					// Do not inject an unverified new heading; retain fixed-wing attitude
-					// while decelerating to (never below) the configured minimum speed.
+					// This direction was swept and constrained to the same fixed-step turn
+					// horizon consumed below. Integration remains the sole Transform writer.
+					DesiredDirection = Avoidance[It].NextStepSafeDirection.GetSafeNormal();
+				}
+				else if (bTurnInPlaceForRecovery)
+				{
+					// A stopped sphere can rotate without crossing the navigation or
+					// collision boundary. Aim at the wider verified heading when one exists,
+					// otherwise turn toward recovery guidance. Translation remains zero until
+					// the next-step probe, now based on the real attitude, becomes valid.
+					if (Avoidance[It].bHasRecoveryEscapeDirection)
+					{
+						DesiredDirection = Avoidance[It].RecoveryEscapeDirection.GetSafeNormal();
+					}
+					else if (Avoidance[It].bHasSafeDirection)
+					{
+						DesiredDirection = Avoidance[It].SafeDirection.GetSafeNormal();
+					}
+				}
+				else
+				{
+					// No physically reachable heading was safe for the next fixed step.
+					// Retain attitude and let the shorter exact gate below fail closed if
+					// even the true movement segment is blocked.
 					DesiredDirection = CurrentDirection;
 				}
 				const float MaximumTurnRadians = FMath::DegreesToRadians(Tuning.MaximumTurnRateDegreesPerSecond)
 					* GuLiWingmanMass::FixedStepSeconds;
-				const FVector NewDirection = GuLiWingmanMass::TurnDirectionToward(
-					CurrentDirection, DesiredDirection, MaximumTurnRadians);
-				const float CurrentSpeed = FMath::Max(
-					static_cast<float>(Dynamic.Velocity.Size()), Tuning.MinimumSpeedCentimetersPerSecond);
-				const float RequestedSpeed = (Avoidance[It].bControlledRecovery
+				// Translation is already zero and therefore cannot cross FlightNav. Snap
+				// directly to the frozen escape course so a boundary recovery does not
+				// spend many seconds visibly parked while obeying an aircraft turn radius.
+				// Every subsequent displacement is still checked by the exact segment gate.
+				const bool bSnapToRecoveryEscape = bTurnInPlaceForRecovery
+					&& Avoidance[It].bHasRecoveryEscapeDirection;
+				const FVector NewDirection = bSnapToRecoveryEscape
+					? DesiredDirection.GetSafeNormal()
+					: GuLiWingmanMass::TurnDirectionToward(
+						CurrentDirection, DesiredDirection, MaximumTurnRadians);
+				const float RequestedSpeed = bGuidanceRequestsStop
+					? 0.0f
+					: (Avoidance[It].bControlledRecovery
 					|| Avoidance[It].ConsecutiveBlockedSeconds > 0.0f)
 					? Tuning.MinimumSpeedCentimetersPerSecond
 					: Guidance[It].DesiredSpeedCentimetersPerSecond;
-				const float TargetSpeed = FMath::Clamp(RequestedSpeed,
-					Tuning.MinimumSpeedCentimetersPerSecond, Tuning.CatchUpSpeedCentimetersPerSecond);
+				const float NavigationLimitedSpeed = Avoidance[It].bHasNavigationSpeedLimit
+					? FMath::Min(RequestedSpeed,
+						Avoidance[It].NavigationSpeedLimitCentimetersPerSecond)
+					: RequestedSpeed;
+				const float MinimumTargetSpeed = bGuidanceRequestsStop
+					|| Avoidance[It].bHasNavigationSpeedLimit
+					? 0.0f : Tuning.MinimumSpeedCentimetersPerSecond;
+				const float TargetSpeed = FMath::Clamp(NavigationLimitedSpeed,
+					MinimumTargetSpeed, Tuning.CatchUpSpeedCentimetersPerSecond);
 				const float MaximumSpeedDelta = (TargetSpeed >= CurrentSpeed
 					? Tuning.MaximumAccelerationCentimetersPerSecondSquared
 					: Tuning.MaximumDecelerationCentimetersPerSecondSquared)
@@ -1243,7 +1633,7 @@ void UGuLiWingmanFlightIntegrationProcessor::Execute(
 				const float NewSpeed = FMath::Clamp(FMath::FInterpConstantTo(
 					CurrentSpeed, TargetSpeed, GuLiWingmanMass::FixedStepSeconds,
 					MaximumSpeedDelta / GuLiWingmanMass::FixedStepSeconds),
-					Tuning.MinimumSpeedCentimetersPerSecond, Tuning.CatchUpSpeedCentimetersPerSecond);
+					0.0f, Tuning.CatchUpSpeedCentimetersPerSecond);
 				Dynamic.Velocity = NewDirection * NewSpeed;
 				const FVector ProposedLocation = Location
 					+ Dynamic.Velocity * GuLiWingmanMass::FixedStepSeconds;
@@ -1259,31 +1649,70 @@ void UGuLiWingmanFlightIntegrationProcessor::Execute(
 						ObstacleQueryParams);
 				const bool bFlightNavSegmentValid = ValidateClientFlightNavSegment(
 					World, Location, ProposedLocation, Tuning.AgentRadiusCentimeters);
+				const FVector CarrierLocation = Carriers[It].Transform.GetLocation();
+				const double CurrentCarrierDistance = FVector::Distance(Location, CarrierLocation);
+				const double ProposedCarrierDistance = FVector::Distance(ProposedLocation, CarrierLocation);
+				constexpr double OwnerCarrierGuardCentimeters =
+					GULI_WINGMAN_MAXIMUM_CARRIER_DISTANCE_CENTIMETERS
+					- GULI_WINGMAN_OWNER_CARRIER_DISTANCE_RESERVE_CENTIMETERS;
+				const bool bCarrierSegmentValid = !CarrierLocation.ContainsNaN()
+					&& (ProposedCarrierDistance <= OwnerCarrierGuardCentimeters
+						|| ProposedCarrierDistance + 0.5 < CurrentCarrierDistance);
 				const bool bPhysicalSegmentClear =
 					PhysicalProbe.ClearanceCentimeters + 0.5f >= StepDistance;
 				// Final fail-closed gate validates the exact finite-turn segment directly
 				// in front of the sole 30 Hz owner Transform mutation. Avoidance may
 				// publish a sweep-safe target heading, but Integration can only turn
 				// toward it by the configured rate and therefore travels a different arc.
-				if (!bFlightNavSegmentValid || !bPhysicalSegmentClear)
+				if (!bFlightNavSegmentValid || !bPhysicalSegmentClear || !bCarrierSegmentValid)
 				{
 					FGuLiWingmanAvoidanceFragment& FailedAvoidance = Avoidance[It];
 					FailedAvoidance.bDetectedWorldStatic |= PhysicalProbe.bWorldStatic;
 					FailedAvoidance.bDetectedWorldDynamic |= PhysicalProbe.bWorldDynamic;
-					FailedAvoidance.bDetectedFlightNavBoundary |= !bFlightNavSegmentValid;
+					FailedAvoidance.bDetectedFlightNavBoundary |=
+						!bFlightNavSegmentValid || !bCarrierSegmentValid;
 					FailedAvoidance.bHasSafeDirection = false;
+					FailedAvoidance.bHasNextStepSafeDirection = false;
 					FailedAvoidance.Acceleration = FVector::ZeroVector;
 					FailedAvoidance.ConsecutiveBlockedSeconds = FMath::Max(
 						FailedAvoidance.ConsecutiveBlockedSeconds,
 						GuLiWingmanMass::FixedStepSeconds);
+					// This exact rejected course is stronger evidence than an earlier
+					// look-ahead prediction. Its reverse follows the just-travelled local
+					// corridor, so freeze that direction before braking to zero.
+					FailedAvoidance.RecoveryEscapeDirection =
+						-CurrentDirection.GetSafeNormal();
+					FailedAvoidance.bHasRecoveryEscapeDirection =
+						!FailedAvoidance.RecoveryEscapeDirection.IsNearlyZero();
 					FailedAvoidance.ConsecutiveClearSeconds = 0.0f;
 					Dynamic.Mode = EGuLiWingmanFlightMode::Recover;
-					Dynamic.Velocity = CurrentDirection.GetSafeNormal()
-						* Tuning.MinimumSpeedCentimetersPerSecond;
+					// The position is held at the last valid point, so carrying the previous
+					// non-zero velocity would make the accepted trail disagree with its own
+					// motion. Brake along the current heading within the configured physical
+					// limit. Once stopped, the next fixed step may snap the attitude to the
+					// frozen escape direction; the zero-translation frame cannot cross the
+					// boundary, and the following displacement still passes the exact gate.
+					const float EmergencySpeed = FMath::Max(0.0f,
+						CurrentSpeed
+						- Tuning.MaximumDecelerationCentimetersPerSecondSquared
+							* GuLiWingmanMass::FixedStepSeconds);
+					Dynamic.Velocity = CurrentDirection * EmergencySpeed;
+					if (EmergencySpeed <= UE_KINDA_SMALL_NUMBER)
+					{
+						FRotator RecoveryRotation = NewDirection.Rotation();
+						RecoveryRotation.Roll = 0.0f;
+						Transform.SetRotation(RecoveryRotation.Quaternion());
+						bTransformChanged = true;
+					}
 					Dynamic.BankDegrees = FMath::FInterpTo(
 						Dynamic.BankDegrees, 0.0f, GuLiWingmanMass::FixedStepSeconds, 4.0f);
-					Dynamic.FixedStepAccumulator = 0.0f;
-					break;
+					// Consume every fixed step scheduled for this frame even while holding at
+					// the boundary. Candidate frames carry one shared Flight tick, so dropping
+					// this member's remaining steps would desynchronise its physical state from
+					// that tick and make a later catch-up brake look like an impossible speed
+					// delta to the authority. The accumulator already decreases at the top of
+					// the loop; continuing is bounded by the normal four-step frame cap.
+					continue;
 				}
 				Transform.AddToTranslation(Dynamic.Velocity * GuLiWingmanMass::FixedStepSeconds);
 				bTransformChanged = true;
@@ -1299,6 +1728,16 @@ void UGuLiWingmanFlightIntegrationProcessor::Execute(
 					FRotator Rotation = Dynamic.Velocity.Rotation();
 					Rotation.Roll = Dynamic.BankDegrees;
 					Transform.SetRotation(Rotation.Quaternion());
+				}
+				else if (bTurnInPlaceForRecovery)
+				{
+					Dynamic.BankDegrees = FMath::FInterpTo(
+						Dynamic.BankDegrees, 0.0f,
+						GuLiWingmanMass::FixedStepSeconds, 4.0f);
+					FRotator RecoveryRotation = NewDirection.Rotation();
+					RecoveryRotation.Roll = Dynamic.BankDegrees;
+					Transform.SetRotation(RecoveryRotation.Quaternion());
+					bTransformChanged = true;
 				}
 			}
 			if (bTransformChanged)

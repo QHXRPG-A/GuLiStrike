@@ -52,6 +52,7 @@ DEFAULT_TARGET_MAPS = (
     "/Game/Maps/LVL_CommanderMassPrototype",
     "/Game/Maps/LVL_Main",
     "/Game/Maps/LVL_ShipTest",
+    "/Game/Maps/LVL_ShipWingmanAirCombatPrototype",
 )
 _requested_maps = tuple(
     value.strip()
@@ -67,12 +68,15 @@ TARGET_MAPS = _requested_maps or DEFAULT_TARGET_MAPS
 SKIP_DERIVED_MESH = os.environ.get("GULI_FLIGHTNAV_SKIP_DERIVED_MESH", "") == "1"
 
 PROJECT_DIR = unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())
-REPORT_PATH = os.path.join(
-    PROJECT_DIR,
-    "TestResults",
-    "WingmanPlan",
-    "AssetDeployment",
-    "asset_deployment.json",
+REPORT_PATH = os.environ.get(
+    "GULI_FLIGHTNAV_REPORT_PATH",
+    os.path.join(
+        PROJECT_DIR,
+        "TestResults",
+        "WingmanPlan",
+        "AssetDeployment",
+        "asset_deployment.json",
+    ),
 )
 
 # Centimetres. Every finite gameplay actor used to derive the map bounds may be

@@ -1,0 +1,562 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "4A0461324312C524050F8383BF2CA12F",
+			"instanceName": "DESKTOP-6D3B0FC-77564",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.06-16.08.54",
+	"succeeded": 4,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 6.942474365234375,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AtomicPatch",
+			"fullTestPath": "GuLi.MapAuthoring.AtomicPatch",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4A0461324312C524050F8383BF2CA12F"
+			],
+			"duration": 0.0081356018781661987,
+			"dateTime": "2026.09.06-16.08.47",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EditorIdentityUndoSaveReload",
+			"fullTestPath": "GuLi.MapAuthoring.EditorIdentityUndoSaveReload",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"4A0461324312C524050F8383BF2CA12F"
+			],
+			"duration": 6.8966531753540039,
+			"dateTime": "2026.09.06-16.08.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogActor: SetActorLabel failed: Actor名称不能为空",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(334): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "Isolated lifecycle map retained: /Game/GuLiStrike/Editor/MapAuthoring/Validation/Auto_14B202584D0CC32D44ED06910102BF1F/Layout",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogContentValidation: Starting to validate 2 assets (0 associated objects such as actors)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogOutputDevice: \n\nScript Stack (0 frames) :\n",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: === Handled ensure: ===",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: ",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: Ensure condition failed: NewResult != EDataValidationResult::NotValidated  [File:D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorBase.cpp] [Line: 64] ",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: Validator /Script/GuLiFlightNavigationEditor.GuLiFlightNavigationWorldValidator did not return a validation result from native validation path for asset /Game/GuLiStrike/Editor/MapAuthoring/Validation/Auto_14B202584D0CC32D44ED06910102BF1F/Layout.Layout",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: Stack: ",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x000001eac36e5ca5 UnrealEditor-DataValidation.dll!`UEditorValidatorBase::ValidateLoadedAsset'::`11'::<lambda_4>::operator()() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorBase.cpp:64]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x000001eac36c0e4b UnrealEditor-DataValidation.dll!UEditorValidatorBase::ValidateLoadedAsset() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorBase.cpp:66]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x000001eac36773b2 UnrealEditor-DataValidation.dll!`UEditorValidatorSubsystem::ValidateObjectInternal'::`5'::<lambda_1>::operator()() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:448]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x000001eac3693197 UnrealEditor-DataValidation.dll!UEditorValidatorSubsystem::ForEachEnabledValidator() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:343]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x000001eac36c4a58 UnrealEditor-DataValidation.dll!UEditorValidatorSubsystem::ValidateObjectInternal() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:458]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x000001eac36bc9bb UnrealEditor-DataValidation.dll!UEditorValidatorSubsystem::ValidateAssetsInternal() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:694]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x000001eac36be49d UnrealEditor-DataValidation.dll!UEditorValidatorSubsystem::ValidateAssetsWithSettings() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:477]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x000001eac36c4dc1 UnrealEditor-DataValidation.dll!UEditorValidatorSubsystem::ValidateOnSave() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:885]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x000001eac36ba711 UnrealEditor-DataValidation.dll!UEditorValidatorSubsystem::ValidateAllSavedPackages() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:948]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x000001eac36900c0 UnrealEditor-DataValidation.dll!TBaseUObjectMethodDelegateInstance<0,UEditorValidatorSubsystem,void __cdecl(void),FNotThreadSafeNotCheckedDelegateUserPolicy>::Execute() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Core\\Public\\Delegates\\DelegateInstancesImpl.h:697]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ffca2903437 UnrealEditor-Engine.dll!FTimerUnifiedDelegate::Execute() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Engine\\Private\\TimerManager.cpp:355]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ffca292fa33 UnrealEditor-Engine.dll!FTimerManager::Tick() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Engine\\Private\\TimerManager.cpp:1087]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ffc9ec34888 UnrealEditor-UnrealEd.dll!UEditorEngine::Tick() [D:\\UnrealEngine-5.7\\Engine\\Source\\Editor\\UnrealEd\\Private\\EditorEngine.cpp:1777]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ffc9f788b46 UnrealEditor-UnrealEd.dll!UUnrealEdEngine::Tick() [D:\\UnrealEngine-5.7\\Engine\\Source\\Editor\\UnrealEd\\Private\\UnrealEdEngine.cpp:537]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ff65f8f4da6 UnrealEditor-Cmd.exe!FEngineLoop::Tick() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\LaunchEngineLoop.cpp:5828]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ff65f910bfe UnrealEditor-Cmd.exe!GuardedMain() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\Launch.cpp:190]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ff65f910d0a UnrealEditor-Cmd.exe!GuardedMainWrapper() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\Windows\\LaunchWindows.cpp:123]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ff65f914590 UnrealEditor-Cmd.exe!LaunchWindowsStartup() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\Windows\\LaunchWindows.cpp:277]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ff65f925bd4 UnrealEditor-Cmd.exe!WinMain() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\Windows\\LaunchWindows.cpp:334]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ff65f9282e6 UnrealEditor-Cmd.exe!__scrt_common_main_seh() [D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl:288]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ffd78ffccb7 KERNEL32.DLL!UnknownFunction []",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ffd7984ad6c ntdll.dll!UnknownFunction []",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: ",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.48"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogUdpMessaging: FUdpMessageProcessor::UpdateKnownNodes: Removing Node D4C686454928880A34E39C9F2593496F (192.168.1.4:64092)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.54"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogUdpMessaging: FUdpMessageProcessor::UpdateKnownNodes: Removing Node 6A1588A346E5CE8378CEBB94FF2D8A13 (192.168.1.4:53586)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "AssetCheck: /Game/GuLiStrike/Editor/MapAuthoring/Validation/Auto_14B202584D0CC32D44ED06910102BF1F/Layout 验证资产\n\nScript Stack (0 frames) :\n时出现警告",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "AssetCheck: /Game/GuLiStrike/Editor/MapAuthoring/Validation/Auto_14B202584D0CC32D44ED06910102BF1F/Layout 验证资产=== Handled ensure: ===\r\n\r\nEnsure condition failed: NewResult != EDataValidationResult::NotValidated  [File:D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorBase.cpp] [Line: 64] \r\nValidator /Script/GuLiFlightNavigationEditor.GuLiFlightNavigationWorldValidator did not return a validation result from native validation path for asset /Game/GuLiStrike/Editor/MapAuthoring/Validation/Auto_14B202584D0CC32D44ED06910102BF1F/Layout.Layout\r\nStack: \r\n[Callstack] 0x000001eac36e5ca5 UnrealEditor-DataValidation.dll!`UEditorValidatorBase::ValidateLoadedAsset'::`11'::<lambda_4>::operator()() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorBase.cpp:64]\r\n[Callstack] 0x000001eac36c0e4b UnrealEditor-DataValidation.dll!UEditorValidatorBase::ValidateLoadedAsset() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorBase.cpp:66]\r\n[Callstack] 0x000001eac36773b2 UnrealEditor-DataValidation.dll!`UEditorValidatorSubsystem::ValidateObjectInternal'::`5'::<lambda_1>::operator()() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:448]\r\n[Callstack] 0x000001eac3693197 UnrealEditor-DataValidation.dll!UEditorValidatorSubsystem::ForEachEnabledValidator() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:343]\r\n[Callstack] 0x000001eac36c4a58 UnrealEditor-DataValidation.dll!UEditorValidatorSubsystem::ValidateObjectInternal() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:458]\r\n[Callstack] 0x000001eac36bc9bb UnrealEditor-DataValidation.dll!UEditorValidatorSubsystem::ValidateAssetsInternal() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:694]\r\n[Callstack] 0x000001eac36be49d UnrealEditor-DataValidation.dll!UEditorValidatorSubsystem::ValidateAssetsWithSettings() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:477]\r\n[Callstack] 0x000001eac36c4dc1 UnrealEditor-DataValidation.dll!UEditorValidatorSubsystem::ValidateOnSave() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:885]\r\n[Callstack] 0x000001eac36ba711 UnrealEditor-DataValidation.dll!UEditorValidatorSubsystem::ValidateAllSavedPackages() [D:\\UnrealEngine-5.7\\Engine\\Plugins\\Editor\\DataValidation\\Source\\DataValidation\\Private\\EditorValidatorSubsystem.cpp:948]\r\n[Callstack] 0x000001eac36900c0 UnrealEditor-DataValidation.dll!TBaseUObjectMethodDelegateInstance<0,UEditorValidatorSubsystem,void __cdecl(void),FNotThreadSafeNotCheckedDelegateUserPolicy>::Execute() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Core\\Public\\Delegates\\DelegateInstancesImpl.h:697]\r\n[Callstack] 0x00007ffca2903437 UnrealEditor-Engine.dll!FTimerUnifiedDelegate::Execute() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Engine\\Private\\TimerManager.cpp:355]\r\n[Callstack] 0x00007ffca292fa33 UnrealEditor-Engine.dll!FTimerManager::Tick() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Engine\\Private\\TimerManager.cpp:1087]\r\n[Callstack] 0x00007ffc9ec34888 UnrealEditor-UnrealEd.dll!UEditorEngine::Tick() [D:\\UnrealEngine-5.7\\Engine\\Source\\Editor\\UnrealEd\\Private\\EditorEngine.cpp:1777]\r\n[Callstack] 0x00007ffc9f788b46 UnrealEditor-UnrealEd.dll!UUnrealEdEngine::Tick() [D:\\UnrealEngine-5.7\\Engine\\Source\\Editor\\UnrealEd\\Private\\UnrealEdEngine.cpp:537]\r\n[Callstack] 0x00007ff65f8f4da6 UnrealEditor-Cmd.exe!FEngineLoop::Tick() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\LaunchEngineLoop.cpp:5828]\r\n[Callstack] 0x00007ff65f910bfe UnrealEditor-Cmd.exe!GuardedMain() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\Launch.cpp:190]\r\n[Callstack] 0x00007ff65f910d0a UnrealEditor-Cmd.exe!GuardedMainWrapper() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\Windows\\LaunchWindows.cpp:123]\r\n[Callstack] 0x00007ff65f914590 UnrealEditor-Cmd.exe!LaunchWindowsStartup() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\Windows\\LaunchWindows.cpp:277]\r\n[Callstack] 0x00007ff65f925bd4 UnrealEditor-Cmd.exe!WinMain() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\Windows\\LaunchWindows.cpp:334]\r\n[Callstack] 0x00007ff65f9282e6 UnrealEditor-Cmd.exe!__scrt_common_main_seh() [D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl:288]\r\n[Callstack] 0x00007ffd78ffccb7 KERNEL32.DLL!UnknownFunction []\r\n[Callstack] 0x00007ffd7984ad6c ntdll.dll!UnknownFunction []\r\n时出现啊错误",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.54"
+				}
+			],
+			"warnings": 2,
+			"errors": 30,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExportDeterminismAndAtomicity",
+			"fullTestPath": "GuLi.MapAuthoring.ExportDeterminismAndAtomicity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4A0461324312C524050F8383BF2CA12F"
+			],
+			"duration": 0.02255060151219368,
+			"dateTime": "2026.09.06-16.08.54",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "Export evidence retained at D:/UE5.7/test1/Data/MapAuthoringValidation/77b63330-481c-5c0a-64b4-f696e22016a4",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.06-16.08.54"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FieldsMigration",
+			"fullTestPath": "GuLi.MapAuthoring.FieldsMigration",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4A0461324312C524050F8383BF2CA12F"
+			],
+			"duration": 0.0071679987013339996,
+			"dateTime": "2026.09.06-16.08.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GeometryAndTransforms",
+			"fullTestPath": "GuLi.MapAuthoring.GeometryAndTransforms",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4A0461324312C524050F8383BF2CA12F"
+			],
+			"duration": 0.0079668983817100525,
+			"dateTime": "2026.09.06-16.08.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}
