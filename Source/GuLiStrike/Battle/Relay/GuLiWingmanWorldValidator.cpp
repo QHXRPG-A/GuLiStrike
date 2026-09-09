@@ -27,6 +27,16 @@ namespace
 			|| (Actor && Actor->ActorHasTag(DynamicObstacleTag));
 	}
 
+	const FHitResult* FindAuthoritativeStaticHit(const TArray<FHitResult>& Hits)
+	{
+		return Hits.FindByPredicate([](const FHitResult& Hit)
+		{
+			const UPrimitiveComponent* Component = Hit.GetComponent();
+			return Component && (Hit.bBlockingHit || Hit.bStartPenetrating)
+				&& Component->Mobility == EComponentMobility::Static;
+		});
+	}
+
 	bool SweepObjectType(
 		UWorld& World,
 		const FVector& Start,
@@ -166,16 +176,21 @@ static FGuLiCandidateWorldValidator MakeValidatorInternal(
 				WeakCarrier.Get(),
 				Hits))
 			{
-				if (bListenSmokeDiagnostics)
+				// Historical Candidate segments cannot be validated against the current
+				// transform of a movable component. A Ship hull may still use the
+				// WorldStatic object channel, but it is not immutable world geometry.
+				// Moving hazards must opt into the explicit dynamic-obstacle contract.
+				const FHitResult* StaticHit = FindAuthoritativeStaticHit(Hits);
+				if (StaticHit && bListenSmokeDiagnostics)
 				{
 					++ListenSmokeDiagnostics.StaticCollisionRejectCount;
-					if (!Hits.IsEmpty())
-					{
-						ListenSmokeDiagnostics.LastStaticHitActor = GetNameSafe(Hits[0].GetActor());
-						ListenSmokeDiagnostics.LastStaticHitComponent = GetNameSafe(Hits[0].GetComponent());
-					}
+					ListenSmokeDiagnostics.LastStaticHitActor = GetNameSafe(StaticHit->GetActor());
+					ListenSmokeDiagnostics.LastStaticHitComponent = GetNameSafe(StaticHit->GetComponent());
 				}
-				return EGuLiWingmanRejectReason::InvalidIdentity;
+				if (StaticHit)
+				{
+					return EGuLiWingmanRejectReason::InvalidIdentity;
+				}
 			}
 
 			if (SweepObjectType(

@@ -1,34 +1,35 @@
 #include "Gameplay/Wingman/GuLiWingmanSimulationSubsystem.h"
-#include "Gameplay/Wingman/Mass/GuLiWingmanMassFragments.h"
-#include "MassCommonFragments.h"
-#include "MassEntitySubsystem.h"
-#include "MassEntityManager.h"
+#include "Gameplay/Wingman/GuLiWingmanPawn.h"
+#include "Gameplay/Wingman/GuLiWingmanRuntimeTypes.h"
 #include "Engine/World.h"
 #include "Gameplay/Wingman/Combat/GuLiWingmanAttackNavigation.h"
+#include "Battle/Combat/GuLiWingmanCombatCoordinator.h"
+#include "GuLiFlightNavigationQuery.h"
 
 void UGuLiWingmanSimulationSubsystem::TickAttackRuns(const FGuLiWingmanGroupHandle& Group,
 	const FGuLiWingmanAttackAuthorityState& State, uint32 LeaseEpoch, uint32 ClientTick, double Now, bool bActive)
 {
 	auto* Runtime = OwnedGroups.Find(Group);
-	if (!Runtime || !MassEntitySubsystem || !CanOwnSimulation() || !FMath::IsFinite(Now)) return;
+	if (!Runtime || !CanOwnSimulation() || !FMath::IsFinite(Now)) return;
 	if (bActive && Runtime->LastAttackTick == ClientTick) return;
 	Runtime->LastAttackTick = ClientTick;
-	FMassEntityManager& Manager = MassEntitySubsystem->GetMutableEntityManager();
 	const auto& Config = Runtime->AbilityConfig;
-	for (FMassEntityHandle Entity : Runtime->Entities)
+	for (const TWeakObjectPtr<AGuLiWingmanPawn>& Entry : Runtime->Pawns)
 	{
-		if (!Manager.IsEntityValid(Entity)) continue;
-		auto& Attack = Manager.GetFragmentDataChecked<FGuLiWingmanAttackFragment>(Entity);
-		auto& Weapon = Manager.GetFragmentDataChecked<FGuLiWingmanWeaponStateFragment>(Entity);
-		const auto& Identity = Manager.GetFragmentDataChecked<FGuLiWingmanIdentityFragment>(Entity);
-		const auto& SwarmAgent = Manager.GetFragmentDataChecked<FGuLiWingmanSwarmAgentFragment>(Entity);
-		const auto& Carrier = Manager.GetFragmentDataChecked<FGuLiWingmanCarrierFragment>(Entity);
-		const auto& Dynamics = Manager.GetFragmentDataChecked<FGuLiWingmanFlightDynamicsFragment>(Entity);
-		const auto& Avoidance = Manager.GetFragmentDataChecked<FGuLiWingmanAvoidanceFragment>(Entity);
-		const FTransform& Transform = Manager.GetFragmentDataChecked<FTransformFragment>(Entity).GetTransform();
+		AGuLiWingmanPawn* Pawn = Entry.Get();
+		if (!Pawn) continue;
+		FGuLiWingmanRuntimeState& PawnState = Pawn->GetMutableRuntimeState();
+		auto& Attack = PawnState.Attack;
+		auto& Weapon = PawnState.Weapon;
+		const auto& Identity = PawnState.Identity;
+		const auto& SwarmAgent = PawnState.SwarmAgent;
+		const auto& Carrier = PawnState.Carrier;
+		const auto& Dynamics = PawnState.Dynamics;
+		const auto& Avoidance = PawnState.Avoidance;
+		const FTransform Transform = Pawn->GetActorTransform();
 		if (Attack.EntityGeneration != Identity.Handle.EntityGeneration)
 		{
-			Attack = FGuLiWingmanAttackFragment{};
+			Attack = FGuLiWingmanAttackRunState{};
 			Attack.EntityGeneration = Identity.Handle.EntityGeneration;
 			Runtime->PendingAttackShots.RemoveAll([&](const auto& P) { return P.Key == Identity.Handle.Flight.FlightIndex && P.Value.MemberIndex == Identity.Handle.MemberIndex; });
 		}
@@ -43,27 +44,52 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuns(const FGuLiWingmanGroupHand
 			Attack.bAirTurnUsingDirectGuidance = false; Attack.PreferredVelocity = FVector::ZeroVector;
 			Runtime->PendingAttackShots.RemoveAll([&](const auto& P) { return P.Key == Identity.Handle.Flight.FlightIndex && P.Value.MemberIndex == Identity.Handle.MemberIndex; });
 		};
-		if (!bActive || !Dynamics.bAlive || !Config.IsUsableByLeaseOwner()
-			|| Avoidance.bControlledRecovery || Avoidance.ConsecutiveBlockedSeconds > 0.1f)
+		const bool bExecutingGround =
+			GuLiWingmanAttack::IsFrozenGroundExecutionPhase(Attack.Phase);
+		const bool bPreparingGround =
+			GuLiWingmanAttack::IsGroundPreparationPhase(Attack.Phase);
+		if (!bActive || !Runtime->bCombatAuthorizationValid
+			|| !Dynamics.bAlive || !Config.IsUsableByLeaseOwner()
+			// Dive/PullUp/Climb already follow a complete FlightNav + terrain checked
+			// path. Abandoning that path after the aircraft has descended is what left
+			// later sorties parked near the ground. The integration gate still stops an
+			// actually invalid next step.
+			|| (!bExecutingGround
+				&& (Avoidance.bControlledRecovery || Avoidance.ConsecutiveBlockedSeconds > 0.1f)))
 		{ Cancel(); continue; }
-		const bool bExecutingGround = Attack.Phase == EGuLiWingmanAttackPhase::Dive
-			|| Attack.Phase == EGuLiWingmanAttackPhase::PullUp || Attack.Phase == EGuLiWingmanAttackPhase::Climb;
+		const FGuLiWingmanAttackTarget* DesiredTarget =
+			GuLiWingmanTargeting::ResolveTargetForEmitter(State, Identity.Handle);
 		const auto* Channel = Config.WeaponChannels.FindByPredicate([&](const auto& C) {
 			return C.bEnabled && (bExecutingGround ? C.Binding.SlotId == Attack.SlotId
-				: C.Runtime.Attack.Pattern == (State.Target.bGround ? EGuLiWingmanAttackPattern::GroundDive : EGuLiWingmanAttackPattern::AirDogfight)); });
+				: DesiredTarget && C.Runtime.Attack.Pattern == (DesiredTarget->bGround
+					? EGuLiWingmanAttackPattern::GroundDive
+					: EGuLiWingmanAttackPattern::AirDogfight)); });
 		if (!Channel || (Attack.bGuiding && (Attack.LeaseEpoch != LeaseEpoch
 			|| (Attack.SlotId == Channel->Binding.SlotId && (Attack.ProfileRevision != Channel->ProfileRevision
 				|| Attack.SkillId != Channel->SkillId || Attack.DefinitionChecksum != Channel->DefinitionChecksum)))))
 		{ Cancel(); continue; }
-		if (!bExecutingGround && (!State.Target.IsValid() || Now - State.Target.ServerTime > 1.0)) { Cancel(); continue; }
+		if (!bExecutingGround && (!DesiredTarget || !DesiredTarget->IsValid()
+			|| Now < DesiredTarget->ServerTime || Now - DesiredTarget->ServerTime > 1.0))
+		{ Cancel(); continue; }
 		const auto& Profile = Channel->Runtime.Attack;
 		const FVector Position = Transform.GetLocation(), Forward = Transform.GetUnitAxis(EAxis::X);
-		if (!bExecutingGround && (Attack.Target.Target != State.Target.Target || Attack.SlotId != Channel->Binding.SlotId))
+		const bool bTargetRelationChanged = !bExecutingGround
+			&& (Attack.Target.Target != DesiredTarget->Target
+				|| Attack.Target.Revision != DesiredTarget->Revision
+				|| Attack.SlotId != Channel->Binding.SlotId);
+		if (bTargetRelationChanged)
 		{
 			Attack.Phase = EGuLiWingmanAttackPhase::Idle; Attack.bGuiding = false;
 			Attack.AirTurn = {}; Attack.RetreatPoint = FVector::ZeroVector; Attack.RetreatOrigin = FVector::ZeroVector;
 		}
-		if (!bExecutingGround) Attack.Target = State.Target;
+		// Ground preparation freezes one server-published bombing point. Continuing
+		// to overwrite it every 200 ms made a moving Soldier invalidate the entry
+		// just as the aircraft finished lining up. A changed assignment revision still
+		// cancels and starts a fresh run; ordinary position refreshes do not.
+		if (!bExecutingGround && (!bPreparingGround || bTargetRelationChanged))
+		{
+			Attack.Target = *DesiredTarget;
+		}
 		Attack.SlotId = Channel->Binding.SlotId; Attack.ProfileRevision = Channel->ProfileRevision; Attack.LeaseEpoch = LeaseEpoch;
 		Attack.SkillId = Channel->SkillId; Attack.DefinitionChecksum = Channel->DefinitionChecksum;
 		const auto QueueShot = [&](int32 Index)
@@ -202,20 +228,67 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuns(const FGuLiWingmanGroupHand
 		if (Attack.Phase == EGuLiWingmanAttackPhase::Idle)
 		{
 			if (Now < FMath::Max(Attack.RetryAfter, Weapon.GetNextFireSeconds(Attack.SlotId))) continue;
-			if (!GuLiWingmanAttack::BuildGroundPath(Attack.Target.Location, Attack.Target.Location - Position,
-				Profile, Config.FormationRuntime.MaximumTurnRateDegreesPerSecond, Attack.Path)
-				|| !GuLiWingmanAttack::GroundRunClearsTerrain(GetWorld(), Attack.Path, Config.FormationRuntime.AgentRadiusCentimeters)) { Cancel(); continue; }
-			Attack.Phase = EGuLiWingmanAttackPhase::Ingress; Attack.StartTime = Now;
+			bool bFoundClearApproach = false;
+			Attack.GroundPathFailureMask = 0;
+			Attack.GroundNavigationFailureMask = 0;
+			for (int32 CandidateIndex = 0;
+				CandidateIndex < GuLiWingmanAttack::MaximumGroundApproachCandidates; ++CandidateIndex)
+			{
+				const FVector Approach = GuLiWingmanAttack::BuildGroundApproachCandidate(
+					Attack.Target.Location - Position, SwarmAgent.AgentSeed, CandidateIndex);
+				FGuLiWingmanGroundRunPath CandidatePath;
+				GuLiWingmanAttack::EGroundPathRejectReason RejectReason =
+					GuLiWingmanAttack::EGroundPathRejectReason::InvalidInput;
+				EGuLiFlightNavSegmentStatus NavigationStatus = EGuLiFlightNavSegmentStatus::Valid;
+				const bool bBuiltPath = GuLiWingmanAttack::BuildGroundPath(Attack.Target.Location, Approach, Profile,
+					Config.FormationRuntime.MaximumTurnRateDegreesPerSecond, CandidatePath);
+				const FVector CandidateSetup = bBuiltPath
+					? GuLiWingmanAttack::GroundRunSetupPoint(CandidatePath)
+					: FVector::ZeroVector;
+				const bool bIngressAlreadyReached = bBuiltPath
+					&& FVector::Distance(Position, CandidateSetup)
+						<= Config.FormationRuntime.AgentRadiusCentimeters;
+				const bool bClearPath = bBuiltPath
+					&& GuLiWingmanAttack::GroundRunClearsTerrain(GetWorld(), CandidatePath,
+						Config.FormationRuntime.AgentRadiusCentimeters, &RejectReason, &NavigationStatus)
+					&& (bIngressAlreadyReached
+						|| GuLiWingmanAttack::AirSegmentClearsWorld(GetWorld(), Position,
+							CandidateSetup, Config.FormationRuntime.AgentRadiusCentimeters));
+				if (!bClearPath)
+				{
+					const uint8 ReasonBit = 1u << static_cast<uint8>(RejectReason);
+					Attack.GroundPathFailureMask |= ReasonBit;
+					if (RejectReason == GuLiWingmanAttack::EGroundPathRejectReason::Navigation)
+						Attack.GroundNavigationFailureMask |= 1u << static_cast<uint8>(NavigationStatus);
+					continue;
+				}
+				Attack.Path = CandidatePath;
+				bFoundClearApproach = true;
+				break;
+			}
+			if (!bFoundClearApproach)
+			{
+				Attack.LastCancelReason = 8;
+				Cancel(8);
+				continue;
+			}
+			Attack.Phase = EGuLiWingmanAttackPhase::Ingress;
+			Attack.StartTime = Now;
+			Attack.PhaseStartTime = Now;
+			Attack.LastCancelReason = 0;
 		}
 		Attack.bGuiding = true;
 		const FVector DiveDirection = Attack.Path.DirectionAt(0);
-		const FVector Setup = Attack.Path.Entry - DiveDirection * Profile.FlightSpeed * 6.0f;
+		const FVector Setup = GuLiWingmanAttack::GroundRunSetupPoint(Attack.Path);
 		if (Attack.Phase == EGuLiWingmanAttackPhase::Ingress)
 		{
 			Attack.PreferredVelocity = (Setup - Position).GetSafeNormal() * Profile.FlightSpeed;
 			if (FVector::Distance(Position, Setup) < Profile.FlightSpeed * 2.0f)
+			{
 				Attack.Phase = EGuLiWingmanAttackPhase::Lineup;
-			if (Now - Attack.StartTime > 45.0) Cancel();
+				Attack.PhaseStartTime = Now;
+			}
+			if (Now - Attack.StartTime > GuLiWingmanAttack::MaximumGroundIngressSeconds) Cancel();
 			continue;
 		}
 		if (Attack.Phase == EGuLiWingmanAttackPhase::Lineup)
@@ -227,15 +300,15 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuns(const FGuLiWingmanGroupHand
 				&& FVector::DotProduct(Forward, DiveDirection) > FMath::Cos(FMath::DegreesToRadians(6.0f))
 				&& FMath::Abs(Dynamics.Velocity.Size() - Profile.FlightSpeed) < Profile.FlightSpeed * 0.05f)
 			{
-				Attack.Phase = EGuLiWingmanAttackPhase::Dive; Attack.StartTime = Now; Attack.RunId = ClientTick;
-				Attack.NextShotIndex = 1; Attack.Target = State.Target;
-				// Re-freeze the target only at the actual dive start. A changed target requires a fresh legal entry.
-				if (FVector::Distance(Attack.Path.Target, Attack.Target.Location) > 500.0f) { Cancel(); continue; }
-				if (!GuLiWingmanAttack::BuildGroundPath(Attack.Target.Location, Attack.Path.Direction, Profile,
-					Config.FormationRuntime.MaximumTurnRateDegreesPerSecond, Attack.Path)) { Cancel(); continue; }
+				Attack.Phase = EGuLiWingmanAttackPhase::Dive;
+				Attack.StartTime = Now;
+				Attack.PhaseStartTime = Now;
+				Attack.RunId = ClientTick;
+				Attack.NextShotIndex = 1;
 				QueueShot(0); Weapon.SetNextFireSeconds(Attack.SlotId, Now + Channel->Runtime.CooldownSeconds);
 			}
-			else if (Along > 600.0f || Now - Attack.StartTime > 45.0) Cancel();
+			else if (Along > 600.0f
+				|| Now - Attack.PhaseStartTime > GuLiWingmanAttack::MaximumGroundLineupSeconds) Cancel();
 			continue;
 		}
 		const float Age = float(Now - Attack.StartTime);
@@ -255,7 +328,13 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuns(const FGuLiWingmanGroupHand
 		}
 		if (Age > Profile.DiveSeconds) Attack.Phase = EGuLiWingmanAttackPhase::PullUp;
 		if (Age > Profile.DiveSeconds + Attack.Path.TurnSeconds) Attack.Phase = EGuLiWingmanAttackPhase::Climb;
-		if (Age >= Attack.Path.TotalSeconds()) { Attack.Phase = EGuLiWingmanAttackPhase::Idle; Attack.bGuiding = false; }
+		if (Age >= Attack.Path.TotalSeconds())
+		{
+			Attack.Phase = EGuLiWingmanAttackPhase::Idle;
+			Attack.bGuiding = false;
+			Attack.LastCancelReason = 0;
+			++Attack.CompletedGroundRuns;
+		}
 	}
 	if (!bActive) Runtime->PendingAttackShots.Reset();
 }
@@ -283,29 +362,73 @@ void UGuLiWingmanSimulationSubsystem::AppendAttackFireRecords(FGuLiWingmanCandid
 void UGuLiWingmanSimulationSubsystem::GetAttackDiagnostics(TArray<FGuLiWingmanAttackDiagnostic>& Out) const
 {
 	Out.Reset();
-	if (!MassEntitySubsystem || OwnedGroups.IsEmpty()) return;
-	const auto& Manager = MassEntitySubsystem->GetEntityManager();
+	if (OwnedGroups.IsEmpty()) return;
 	for (const auto& Pair : OwnedGroups)
 	{
-		for (const auto Entity : Pair.Value.Entities)
+		for (const TWeakObjectPtr<AGuLiWingmanPawn>& Entry : Pair.Value.Pawns)
 		{
-			if (!Manager.IsEntityValid(Entity)) continue;
-			const auto& Attack = Manager.GetFragmentDataChecked<FGuLiWingmanAttackFragment>(Entity);
-			const auto& Transform = Manager.GetFragmentDataChecked<FTransformFragment>(Entity).GetTransform();
+			const AGuLiWingmanPawn* Pawn = Entry.Get();
+			if (!Pawn) continue;
+			const FGuLiWingmanRuntimeState& State = Pawn->GetRuntimeState();
+			const auto& Attack = State.Attack;
+			const FTransform Transform = Pawn->GetActorTransform();
 			auto& D = Out.AddDefaulted_GetRef();
-			D.Wingman = Manager.GetFragmentDataChecked<FGuLiWingmanIdentityFragment>(Entity).Handle;
+			D.Wingman = State.Identity.Handle;
+			D.Target = Attack.Target;
+			D.SlotId = Attack.SlotId;
 			D.Phase = uint8(Attack.Phase);
+			const auto& Dynamics = State.Dynamics;
+			const auto& Avoidance = State.Avoidance;
+			D.FlightMode = uint8(Dynamics.Mode);
+			D.ConsecutiveBlockedSeconds = Avoidance.ConsecutiveBlockedSeconds;
+			D.bControlledRecovery = Avoidance.bControlledRecovery;
+			D.GroundPathFailureMask = Attack.GroundPathFailureMask;
+			D.GroundNavigationFailureMask = Attack.GroundNavigationFailureMask;
 			D.Position = Transform.GetLocation();
 			D.Forward = Transform.GetUnitAxis(EAxis::X);
 			D.Entry = Attack.Path.Entry; D.PreferredVelocity = Attack.PreferredVelocity; D.RunId = Attack.RunId;
+			D.CompletedGroundRuns = Attack.CompletedGroundRuns;
 			D.RetreatPoint = Attack.RetreatPoint; D.TurnControlPoint = Attack.AirTurn.ControlPoint;
 			D.TurnYawDegrees = Attack.AirTurn.SignedYawDegrees; D.TurnPitchDegrees = Attack.AirTurn.PitchDegrees;
 			D.StateEntrySerial = Attack.AirStateEntrySerial;
-			D.NextShot = Attack.NextShotIndex; D.StartTime = Attack.StartTime; D.bGuiding = Attack.bGuiding;
+			D.NextShot = Attack.NextShotIndex; D.StartTime = Attack.StartTime;
+			D.PhaseStartTime = Attack.PhaseStartTime; D.bGuiding = Attack.bGuiding;
 			D.CancelReason = Attack.LastCancelReason;
 		}
 	}
 }
+
+#if WITH_DEV_AUTOMATION_TESTS
+bool UGuLiWingmanSimulationSubsystem::PrimeGroundDiveForTests(
+	const FGuLiWingmanGroupHandle& Group,
+	const FGuLiWingmanHandle& Wingman,
+	const double StartTime)
+{
+	FGuLiWingmanLocalGroupRuntime* Runtime = OwnedGroups.Find(Group);
+	if (!Runtime || !FMath::IsFinite(StartTime))
+	{
+		return false;
+	}
+	AGuLiWingmanPawn* Pawn = FindOwnedPawn(*Runtime, Wingman);
+	if (!Pawn)
+	{
+		return false;
+	}
+	FGuLiWingmanAttackRunState& Attack = Pawn->GetMutableRuntimeState().Attack;
+	if ((Attack.Phase != EGuLiWingmanAttackPhase::Ingress
+			&& Attack.Phase != EGuLiWingmanAttackPhase::Lineup)
+		|| !Attack.Target.IsValid() || !Attack.Target.bGround
+		|| Attack.Path.TotalSeconds() <= 0.0f)
+	{
+		return false;
+	}
+	Attack.Phase = EGuLiWingmanAttackPhase::Dive;
+	Attack.StartTime = StartTime;
+	Attack.NextShotIndex = FMath::Max(Attack.NextShotIndex, 1);
+	Attack.bGuiding = true;
+	return true;
+}
+#endif
 
 void UGuLiWingmanSimulationSubsystem::GetPendingAttackCaptureTicks(const FGuLiWingmanGroupHandle& Group,
 	uint8 FlightIndex, TArray<uint32>& Out) const
@@ -319,13 +442,13 @@ void UGuLiWingmanSimulationSubsystem::GetPendingAttackCaptureTicks(const FGuLiWi
 bool UGuLiWingmanSimulationSubsystem::GetCompletedSimulationTick(const FGuLiWingmanGroupHandle& Group, uint32& OutTick) const
 {
 	const auto* Runtime=OwnedGroups.Find(Group);
-	if(!Runtime || Runtime->Entities.IsEmpty() || !MassEntitySubsystem) return false;
-	const auto& Manager=MassEntitySubsystem->GetEntityManager();
+	if(!Runtime || Runtime->Pawns.IsEmpty()) return false;
 	OutTick = 0;
-	// A replenished member starts with a fresh fragment clock. The oldest surviving
+	// A replenished member starts with a fresh component clock. The oldest surviving
 	// group members retain the shared integration timeline; member zero is not a clock owner.
-	for (const auto Entity : Runtime->Entities)
-		if (Manager.IsEntityValid(Entity))
-			OutTick = FMath::Max(OutTick, Manager.GetFragmentDataChecked<FGuLiWingmanFlightDynamicsFragment>(Entity).CaptureSimulationTick);
+	for (const TWeakObjectPtr<AGuLiWingmanPawn>& Entry : Runtime->Pawns)
+		if (const AGuLiWingmanPawn* Pawn = Entry.Get())
+			OutTick = FMath::Max(OutTick,
+				Pawn->GetRuntimeState().Dynamics.CaptureSimulationTick);
 	return OutTick != 0;
 }

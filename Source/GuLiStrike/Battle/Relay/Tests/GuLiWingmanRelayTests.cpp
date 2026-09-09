@@ -110,6 +110,75 @@ namespace GuLiWingmanRelayTests
 		return Candidate;
 	}
 
+	FGuLiWingmanCandidateBatch MakeStrictSlowFlightCandidate(
+		const FGuLiWingmanRelayServer& Relay,
+		const uint8 FlightIndex,
+		const uint32 CandidateSequence,
+		const uint32 FrameSequence,
+		const uint32 BaseAcceptedSequence,
+		const uint32 ClientSimTick,
+		const double CaptureServerTime)
+	{
+		const FGuLiGroupAbilityConfigSnapshot& Config = Relay.GetAbilityConfig();
+		FGuLiWingmanCandidateBatch Candidate;
+		Candidate.MatchEpoch = Relay.GetMatchEpoch();
+		Candidate.ConnectionGeneration = Relay.GetConnectionGeneration();
+		Candidate.Group = Relay.GetLeaseState().Group;
+		Candidate.LeaseEpoch = Relay.GetLeaseState().LeaseEpoch;
+		Candidate.RosterRevision = Relay.GetRosterRevision();
+		Candidate.FlightIndex = FlightIndex;
+		Candidate.RequestedRateClass = EGuLiWingmanUploadRateClass::Cruise5Hz;
+		Candidate.ObservedGrantRevision = Relay.GetUploadRateGrant().GrantRevision;
+		Candidate.CandidateSequence = CandidateSequence;
+		Candidate.FrameSequence = FrameSequence;
+		Candidate.BaseAcceptedSequence = BaseAcceptedSequence;
+		Candidate.ClientSimTick = ClientSimTick;
+		Candidate.CaptureEstimatedServerTimeSeconds = CaptureServerTime;
+		Candidate.NavSchemaRevision = Relay.GetValidationRevisions().NavSchemaRevision;
+		Candidate.NavDataChecksum = Relay.GetValidationRevisions().NavDataChecksum;
+		Candidate.TuningRevision = Relay.GetValidationRevisions().TuningRevision;
+		Candidate.ObstacleRevision = Relay.GetValidationRevisions().ObstacleRevision;
+		Candidate.CarrierSource.CanonicalEpoch = 8u;
+		Candidate.CarrierSource.MoveRevision = CandidateSequence + 20u;
+		Candidate.AbilitySetRevision = Config.AbilitySetRevision;
+		Candidate.FormationCommandRevision = Config.FormationCommandRevision;
+		Candidate.FormationDefinitionChecksum = Config.FormationDefinitionChecksum;
+		for (const FGuLiWingmanRosterEntry& Entry : Relay.GetRoster())
+		{
+			if (Entry.bDead || Entry.Wingman.Flight.FlightIndex != FlightIndex)
+			{
+				continue;
+			}
+			Candidate.RequiredMemberMask |= static_cast<uint8>(1u << Entry.Wingman.MemberIndex);
+			FGuLiWingmanCandidateSample& Sample = Candidate.Samples.AddDefaulted_GetRef();
+			Sample.Wingman = Entry.Wingman;
+			Sample.PositionCentimeters = FIntVector(
+				50000, static_cast<int32>(Entry.Wingman.MemberIndex) * 4000, 10000);
+			Sample.VelocityCentimetersPerSecond = FIntVector::ZeroValue;
+			Sample.RotationCentiDegrees = FIntVector::ZeroValue;
+			Sample.FlightMode = static_cast<uint8>(EGuLiWingmanFlightMode::Orbit);
+		}
+		return Candidate;
+	}
+
+	FGuLiWingmanEmergencyRebaseRequest MakeRebaseRequest(
+		const FGuLiWingmanRelayServer& Relay,
+		const FGuLiWingmanHandle& Wingman,
+		const uint32 RequestSequence,
+		const uint32 BaselineAcceptedSequence)
+	{
+		FGuLiWingmanEmergencyRebaseRequest Request;
+		Request.MatchEpoch = Relay.GetMatchEpoch();
+		Request.ConnectionGeneration = Relay.GetConnectionGeneration();
+		Request.Wingman = Wingman;
+		Request.LeaseEpoch = Relay.GetLeaseState().LeaseEpoch;
+		Request.RosterRevision = Relay.GetRosterRevision();
+		Request.RequestSequence = RequestSequence;
+		Request.BaselineAcceptedSequence = BaselineAcceptedSequence;
+		Request.Reason = EGuLiWingmanEmergencyRebaseReason::PhysicalObstacleDeadlock;
+		return Request;
+	}
+
 	FGuLiWingmanCandidateBatch MakeKinematicCandidate(
 		const FGuLiWingmanRelayServer& Relay,
 		const FGuLiWingmanAcceptedBatch& Previous,
@@ -225,9 +294,18 @@ namespace GuLiWingmanRelayTests
 		Intent.Target.AuthorityId = FGuid(20u, 21u, 22u, 23u);
 		Intent.Target.Generation = 1u;
 		Intent.Target.LocalId = 7u;
-		Intent.WeaponAbilityId = Relay.GetAbilityConfig().BasicWeaponAbilityId;
-		Intent.WeaponDefinitionRevision = Relay.GetAbilityConfig().BasicWeaponDefinitionRevision;
-		Intent.AbilitySetRevision = Relay.GetAbilityConfig().AbilitySetRevision;
+		Intent.TargetAssignmentRevision = 1u;
+		const FGuLiGroupAbilityConfigSnapshot& Config = Relay.GetAbilityConfig();
+		const FGuLiWingmanWeaponChannelConfig* Channel =
+			Config.FindFirstWeaponChannel(EGuLiWingmanWeaponKind::BasicAutomatic);
+		if (!Channel) return FGuLiWingmanFireIntent{};
+		Intent.Binding = Channel->Binding;
+		Intent.WeaponAbilityId = Channel->AbilityId;
+		Intent.SkillId = Channel->SkillId;
+		Intent.LoadoutRevision = Config.LoadoutRevision;
+		Intent.ProfileRevision = Channel->ProfileRevision;
+		Intent.WeaponDefinitionRevision = Channel->DefinitionRevision;
+		Intent.AbilitySetRevision = Config.AbilitySetRevision;
 		Intent.AimDirectionMilli = FIntVector(1000, 0, 0);
 		Intent.bClientPredictedLineOfSight = true;
 		return Intent;
@@ -274,7 +352,7 @@ bool FGuLiWingmanRelayZeroAuthorityMotionTest::RunTest(const FString& Parameters
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanRelayCarrierPendingTest,
-	"GuLiStrike.Wingman.Relay.CarrierSource.PendingThenAcceptOrTimeout",
+	"GuLiStrike.Wingman.Relay.CarrierSource.MetadataDoesNotBlockPoseRelay",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 
 bool FGuLiWingmanRelayCarrierPendingTest::RunTest(const FString& Parameters)
@@ -288,53 +366,48 @@ bool FGuLiWingmanRelayCarrierPendingTest::RunTest(const FString& Parameters)
 		return false;
 	}
 
-	const FGuLiCarrierSourceResolver PendingCarrier = [](const FGuLiCarrierSourceRef&, FGuLiRelayCarrierState&)
+	int32 CarrierResolverCalls = 0;
+	const FGuLiCarrierSourceResolver PendingCarrier = [&CarrierResolverCalls](
+		const FGuLiCarrierSourceRef&, FGuLiRelayCarrierState&)
 	{
+		++CarrierResolverCalls;
 		return EGuLiRelayCarrierLookupResult::Pending;
 	};
-	FGuLiWingmanSubmissionResult Result = Relay.SubmitCandidate(
-		Owner, MakeCandidate(Relay, 1u, 100u), 0.1, PendingCarrier, PermitWorld());
-	TestTrue(TEXT("A future CMC revision is queued instead of rejected"),
-		Result.Disposition == EGuLiWingmanSubmissionDisposition::Pending);
-	TestEqual(TEXT("A pending cross-channel reference does not reserve the sequence"),
-		Relay.GetLastAcceptedCandidateSequence(), 0u);
+	int32 WorldValidatorCalls = 0;
+	const FGuLiCandidateWorldValidator RejectWorld = [&WorldValidatorCalls](
+		const FGuLiWingmanCandidateWorldValidationContext&)
+	{
+		++WorldValidatorCalls;
+		return EGuLiWingmanRejectReason::InvalidIdentity;
+	};
 
-	Relay.AdvanceTime(0.2, FoundCarrier());
+	const FGuLiWingmanSubmissionResult First = Relay.SubmitCandidate(
+		Owner, MakeCandidate(Relay, 1u, 100u), 0.1, PendingCarrier, RejectWorld);
+	TestEqual(TEXT("Unresolved carrier metadata cannot delay a client-authored pose"),
+		First.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
+	TestEqual(TEXT("Pose relay never invokes the carrier resolver"), CarrierResolverCalls, 0);
+	TestEqual(TEXT("Pose relay never invokes the World validator"), WorldValidatorCalls, 0);
+	TestEqual(TEXT("The accepted pose advances immediately"),
+		Relay.GetLastAcceptedCandidateSequence(), 1u);
+
+	Relay.AdvanceTime(0.5, PendingCarrier);
 	TArray<FGuLiWingmanSubmissionResult> Deferred;
 	Relay.DrainDeferredCandidateResults(Deferred);
-	TestEqual(TEXT("The history-advance event resolves one pending Candidate"), Deferred.Num(), 1);
-	TestTrue(TEXT("Resolution before 0.25 seconds accepts the exact Candidate"),
-		Deferred.Num() == 1 && Deferred[0].Disposition == EGuLiWingmanSubmissionDisposition::Accepted);
-	TestEqual(TEXT("Only successful resolution advances the sequence"), Relay.GetLastAcceptedCandidateSequence(), 1u);
+	TestTrue(TEXT("Pose relay creates no deferred carrier work"), Deferred.IsEmpty());
 
-	Result = Relay.SubmitCandidate(
-		Owner, MakeCandidate(Relay, 2u, 103u), 0.21, PendingCarrier, PermitWorld());
-	TestTrue(TEXT("A second unresolved source enters Pending"),
-		Result.Disposition == EGuLiWingmanSubmissionDisposition::Pending);
-	Relay.AdvanceTime(0.47, PendingCarrier);
-	Deferred.Reset();
-	Relay.DrainDeferredCandidateResults(Deferred);
-	TestTrue(TEXT("A source missing for more than 0.25 seconds is rejected explicitly"),
-		Deferred.Num() == 1 && Deferred[0].RejectReason == EGuLiWingmanRejectReason::CarrierMovePendingTimeout);
-	TestEqual(TEXT("Timed-out Candidate still cannot advance the sequence"), Relay.GetLastAcceptedCandidateSequence(), 1u);
-
-	Result = Relay.SubmitCandidate(
-		Owner, MakeCandidate(Relay, 2u, 106u), 0.48, PendingCarrier, PermitWorld());
-	TestTrue(TEXT("An exact-deadline fixture enters Pending"),
-		Result.Disposition == EGuLiWingmanSubmissionDisposition::Pending);
-	Relay.AdvanceTime(0.73, FoundCarrier());
-	Deferred.Reset();
-	Relay.DrainDeferredCandidateResults(Deferred);
-	TestTrue(TEXT("Deadline wins even when the Carrier resolver reports Found at exactly 0.25 seconds"),
-		Deferred.Num() == 1
-			&& Deferred[0].RejectReason == EGuLiWingmanRejectReason::CarrierMovePendingTimeout);
-	TestEqual(TEXT("Exact-deadline rejection cannot advance Candidate state"),
-		Relay.GetLastAcceptedCandidateSequence(), 1u);
+	FGuLiWingmanCandidateBatch SecondCandidate = MakeCandidate(Relay, 2u, 103u);
+	SecondCandidate.CarrierSource.CanonicalEpoch = 99u;
+	SecondCandidate.CarrierSource.MoveRevision = 999u;
+	const FGuLiWingmanSubmissionResult Second = Relay.SubmitCandidate(
+		Owner, SecondCandidate, 0.51, PendingCarrier, RejectWorld);
+	TestEqual(TEXT("A changed but well-formed carrier reference is relayed as metadata"),
+		Second.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
+	TestEqual(TEXT("Both snapshots are stored without a movement-authority callback"),
+		Relay.GetAcceptedHistory().Num(), 2);
 	return true;
 }
-
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanRelayWorldValidatorCommitGateTest,
-	"GuLiStrike.Wingman.Relay.Validator.WorldGateFailClosedBeforeCommit",
+	"GuLiStrike.Wingman.Relay.Validator.PoseRelayBypassesWorldValidation",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 
 bool FGuLiWingmanRelayWorldValidatorCommitGateTest::RunTest(const FString& Parameters)
@@ -348,55 +421,49 @@ bool FGuLiWingmanRelayWorldValidatorCommitGateTest::RunTest(const FString& Param
 		return false;
 	}
 
-	const FGuLiWingmanCandidateBatch Candidate = MakeCandidate(Relay);
-	FGuLiWingmanSubmissionResult Result = Relay.SubmitCandidate(
-		Owner, Candidate, 0.1, FoundCarrier());
-	TestTrue(TEXT("A production Candidate without an installed World validator fails closed"),
-		Result.Disposition == EGuLiWingmanSubmissionDisposition::Rejected
-			&& Result.RejectReason == EGuLiWingmanRejectReason::InvalidIdentity);
-	TestEqual(TEXT("Missing validator does not append history"), Relay.GetAcceptedHistory().Num(), 0);
-	TestEqual(TEXT("Missing validator does not reserve CandidateSequence"),
-		Relay.GetLastAcceptedCandidateSequence(), 0u);
+	const FGuLiWingmanSubmissionResult WithoutValidator = Relay.SubmitCandidate(
+		Owner, MakeCandidate(Relay, 1u, 100u), 0.1, FoundCarrier());
+	TestEqual(TEXT("Pose relay does not require a server World validator"),
+		WithoutValidator.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
 
 	int32 CallbackCount = 0;
 	const FGuLiCandidateWorldValidator RejectWorld = [&CallbackCount](
-		const FGuLiWingmanCandidateWorldValidationContext& Context)
+		const FGuLiWingmanCandidateWorldValidationContext&)
 	{
 		++CallbackCount;
-		return Context.IsWellFormed()
-			? EGuLiWingmanRejectReason::InvalidIdentity
-			: EGuLiWingmanRejectReason::CarrierMoveExpired;
+		return EGuLiWingmanRejectReason::InvalidIdentity;
 	};
-	Result = Relay.SubmitCandidate(Owner, Candidate, 0.11, FoundCarrier(), RejectWorld);
-	TestEqual(TEXT("The World callback executes after motion validation"), CallbackCount, 1);
-	TestTrue(TEXT("A World rejection is returned verbatim"),
-		Result.Disposition == EGuLiWingmanSubmissionDisposition::Rejected
-			&& Result.RejectReason == EGuLiWingmanRejectReason::InvalidIdentity);
-	TestEqual(TEXT("World rejection still does not append history"), Relay.GetAcceptedHistory().Num(), 0);
-	TestEqual(TEXT("World rejection still does not reserve CandidateSequence"),
-		Relay.GetLastAcceptedCandidateSequence(), 0u);
+	const FGuLiWingmanCandidateBatch ClientAuthored = MakeCandidate(Relay, 2u, 103u);
+	const FGuLiWingmanSubmissionResult WithRejectingValidator = Relay.SubmitCandidate(
+		Owner, ClientAuthored, 0.2, FoundCarrier(), RejectWorld);
+	TestEqual(TEXT("A server World callback cannot veto client-authored presentation motion"),
+		WithRejectingValidator.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
+	TestEqual(TEXT("The World callback is not invoked for pose relay"), CallbackCount, 0);
+	TestEqual(TEXT("The server stores both complete client snapshots"),
+		Relay.GetAcceptedHistory().Num(), 2);
+	TestEqual(TEXT("The relayed position remains byte-semantic equivalent"),
+		WithRejectingValidator.AcceptedBatch.Samples[0].PositionCentimeters,
+		ClientAuthored.Samples[0].PositionCentimeters);
 
-	Result = Relay.SubmitCandidate(Owner, Candidate, 0.12, FoundCarrier(), PermitWorld());
-	TestTrue(TEXT("The same unreserved sequence can commit after every gate passes"),
-		Result.Disposition == EGuLiWingmanSubmissionDisposition::Accepted);
-	TestEqual(TEXT("Only the permitted Candidate commits"), Relay.GetAcceptedHistory().Num(), 1);
+	FGuLiWingmanCandidateBatch WrongGeneration = MakeCandidate(Relay, 3u, 106u);
+	++WrongGeneration.Samples[0].Wingman.EntityGeneration;
+	const FGuLiWingmanSubmissionResult IdentityRejected = Relay.SubmitCandidate(
+		Owner, WrongGeneration, 0.3, FoundCarrier(), RejectWorld);
+	TestEqual(TEXT("A non-roster member generation is still rejected"),
+		IdentityRejected.RejectReason, EGuLiWingmanRejectReason::EmitterDead);
+	TestEqual(TEXT("Identity rejection cannot append a remote snapshot"),
+		Relay.GetAcceptedHistory().Num(), 2);
 	TestEqual(TEXT("Authority movement writer remains absent"),
 		Relay.GetServerWingmanMovementWriteCount(), static_cast<uint64>(0u));
 	return true;
 }
-
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanRelayPendingStateGateTest,
-	"GuLiStrike.Wingman.Relay.Validator.PendingHealthAbilityAndModeGate",
+	"GuLiStrike.Wingman.Relay.Validator.StructuralIdentityAndClientMode",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 
 bool FGuLiWingmanRelayPendingStateGateTest::RunTest(const FString& Parameters)
 {
 	using namespace GuLiWingmanRelayTests;
-	const FGuLiCarrierSourceResolver PendingCarrier = [](
-		const FGuLiCarrierSourceRef&, FGuLiRelayCarrierState&)
-	{
-		return EGuLiRelayCarrierLookupResult::Pending;
-	};
 
 	FGuLiWingmanRelayServer HealthRelay;
 	FGuid HealthOwner;
@@ -406,20 +473,26 @@ bool FGuLiWingmanRelayPendingStateGateTest::RunTest(const FString& Parameters)
 	{
 		return false;
 	}
-	const FGuLiWingmanCandidateBatch HealthCandidate = MakeCandidate(HealthRelay);
-	TestEqual(TEXT("Health fixture enters Pending"),
+	const FGuLiWingmanCandidateBatch HealthBaseline = MakeCandidate(HealthRelay, 1u, 100u);
+	TestEqual(TEXT("A live roster pose is relayed immediately"),
 		HealthRelay.SubmitCandidate(
-			HealthOwner, HealthCandidate, 0.1, PendingCarrier, PermitWorld()).Disposition,
-		EGuLiWingmanSubmissionDisposition::Pending);
-	TestTrue(TEXT("Reliable health can reach zero before deferred resolution"),
-		HealthRelay.SetWingmanHealthPermille(HealthCandidate.Samples[0].Wingman, 0u));
-	HealthRelay.AdvanceTime(0.2, FoundCarrier());
-	TArray<FGuLiWingmanSubmissionResult> Deferred;
-	HealthRelay.DrainDeferredCandidateResults(Deferred);
-	TestTrue(TEXT("Health=0 invalidates a Pending Candidate before its resolver can accept it"),
-		Deferred.Num() == 1 && Deferred[0].RejectReason == EGuLiWingmanRejectReason::EmitterDead);
-	TestEqual(TEXT("Health invalidation does not reserve CandidateSequence"),
-		HealthRelay.GetLastAcceptedCandidateSequence(), 0u);
+			HealthOwner, HealthBaseline, 0.1, FoundCarrier(), PermitWorld()).Disposition,
+		EGuLiWingmanSubmissionDisposition::Accepted);
+	TestTrue(TEXT("Reliable health can remove one member"),
+		HealthRelay.SetWingmanHealthPermille(HealthBaseline.Samples[0].Wingman, 0u));
+	const FGuLiWingmanSubmissionResult DeadMember = HealthRelay.SubmitCandidate(
+		HealthOwner, MakeCandidate(HealthRelay, 2u, 103u), 0.2,
+		FoundCarrier(), PermitWorld());
+	TestEqual(TEXT("A reliable death Cut cannot discard live sibling poses"),
+		DeadMember.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
+	TestEqual(TEXT("The exact server-confirmed dead identity is filtered"),
+		DeadMember.AcceptedBatch.Samples.Num(), GULI_WINGMAN_GROUP_SIZE - 1);
+	TestFalse(TEXT("The dead identity is never republished"),
+		DeadMember.AcceptedBatch.Samples.ContainsByPredicate(
+			[&HealthBaseline](const FGuLiWingmanCandidateSample& Sample)
+			{
+				return Sample.Wingman == HealthBaseline.Samples[0].Wingman;
+			}));
 
 	FGuLiWingmanRelayServer AbilityRelay;
 	FGuid AbilityOwner;
@@ -429,24 +502,12 @@ bool FGuLiWingmanRelayPendingStateGateTest::RunTest(const FString& Parameters)
 	{
 		return false;
 	}
-	TestEqual(TEXT("Ability fixture enters Pending"),
-		AbilityRelay.SubmitCandidate(
-			AbilityOwner, MakeCandidate(AbilityRelay), 0.1, PendingCarrier, PermitWorld()).Disposition,
-		EGuLiWingmanSubmissionDisposition::Pending);
-	FGuLiGroupAbilityConfigSnapshot NewConfig = MakeAbilityConfig(
-		AbilityRelay.GetLeaseState().Group,
-		AbilityRelay.GetAbilityConfig().SnapshotRevision + 1u);
-	++NewConfig.AbilitySetRevision;
-	NewConfig.RefreshHash();
-	TestTrue(TEXT("A newer reliable ability projection publishes"),
-		AbilityRelay.PublishAbilityConfig(NewConfig, 0.15));
-	Deferred.Reset();
-	AbilityRelay.DrainDeferredCandidateResults(Deferred);
-	TestTrue(TEXT("Ability publication rejects the old Pending Candidate"),
-		Deferred.Num() == 1
-			&& Deferred[0].RejectReason == EGuLiWingmanRejectReason::MissingAbilityConfig);
-	TestEqual(TEXT("Ability invalidation does not reserve CandidateSequence"),
-		AbilityRelay.GetLastAcceptedCandidateSequence(), 0u);
+	FGuLiWingmanCandidateBatch OldProjection = MakeCandidate(AbilityRelay, 1u, 100u);
+	--OldProjection.AbilitySetRevision;
+	const FGuLiWingmanSubmissionResult AbilityResult = AbilityRelay.SubmitCandidate(
+		AbilityOwner, OldProjection, 0.1, FoundCarrier(), PermitWorld());
+	TestEqual(TEXT("A stale ability projection cannot interrupt position relay"),
+		AbilityResult.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
 
 	FGuLiWingmanRelayServer ModeRelay;
 	FGuid ModeOwner;
@@ -463,36 +524,28 @@ bool FGuLiWingmanRelayPendingStateGateTest::RunTest(const FString& Parameters)
 	}
 	const FGuLiWingmanSubmissionResult InitialAccepted = ModeRelay.SubmitCandidate(
 		ModeOwner, Initial, 0.1, FoundCarrier(), PermitWorld());
-	if (!TestEqual(TEXT("Flight-mode fixture establishes an Orbit baseline"),
+	if (!TestEqual(TEXT("The client publishes its Orbit baseline"),
 		InitialAccepted.Disposition, EGuLiWingmanSubmissionDisposition::Accepted))
 	{
 		return false;
 	}
-	FGuLiWingmanCandidateBatch IllegalMode = MakeKinematicCandidate(
-		ModeRelay,
-		InitialAccepted.AcceptedBatch,
-		2u,
-		106u,
-		FVector(900.0, 0.0, 0.0),
-		FVector(4500.0, 0.0, 0.0));
-	for (FGuLiWingmanCandidateSample& Sample : IllegalMode.Samples)
+	FGuLiWingmanCandidateBatch Recovery = MakeKinematicCandidate(
+		ModeRelay, InitialAccepted.AcceptedBatch, 2u, 106u,
+		FVector(20000.0, 0.0, 5000.0), FVector::ZeroVector);
+	for (FGuLiWingmanCandidateSample& Sample : Recovery.Samples)
 	{
 		Sample.FlightMode = static_cast<uint8>(EGuLiWingmanFlightMode::Recover);
 	}
-	const FGuLiWingmanSubmissionResult ModeRejected = ModeRelay.SubmitCandidate(
-		ModeOwner, IllegalMode, 0.2, FoundCarrier(), PermitWorld());
-	TestTrue(TEXT("Orbit cannot jump directly to Recover between Candidate packets"),
-		ModeRejected.Disposition == EGuLiWingmanSubmissionDisposition::Rejected
-			&& ModeRejected.RejectReason == EGuLiWingmanRejectReason::InvalidIdentity);
-	TestEqual(TEXT("Illegal mode transition does not reserve CandidateSequence"),
-		ModeRelay.GetLastAcceptedCandidateSequence(), 1u);
-	TestEqual(TEXT("All rejection paths preserve server zero-movement"),
+	const FGuLiWingmanSubmissionResult RecoveryAccepted = ModeRelay.SubmitCandidate(
+		ModeOwner, Recovery, 0.2, FoundCarrier(), PermitWorld());
+	TestEqual(TEXT("The server relays a client-selected recovery mode and reposition"),
+		RecoveryAccepted.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
+	TestEqual(TEXT("All branches preserve server zero-movement"),
 		ModeRelay.GetServerWingmanMovementWriteCount(), static_cast<uint64>(0u));
 	return true;
 }
-
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanRelayMotionEnvelopeTest,
-	"GuLiStrike.Wingman.Relay.Validator.MotionEnvelopeBeforeAcceptedCommit",
+	"GuLiStrike.Wingman.Relay.Validator.ClientAuthoredPoseRelay",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 
 bool FGuLiWingmanRelayMotionEnvelopeTest::RunTest(const FString& Parameters)
@@ -507,100 +560,86 @@ bool FGuLiWingmanRelayMotionEnvelopeTest::RunTest(const FString& Parameters)
 	}
 
 	FGuLiWingmanCandidateBatch Initial = MakeCandidate(Relay, 1u, 100u);
-	for (FGuLiWingmanCandidateSample& Sample : Initial.Samples)
-	{
-		Sample.VelocityCentimetersPerSecond = FIntVector(4500, 0, 0);
-		Sample.RotationCentiDegrees = FIntVector::ZeroValue;
-	}
 	const FGuLiWingmanSubmissionResult InitialResult = Relay.SubmitCandidate(
 		Owner, Initial, 0.1, FoundCarrier(), PermitWorld());
-	if (!TestTrue(TEXT("A valid initial sample establishes the trusted kinematic baseline"),
-		InitialResult.Disposition == EGuLiWingmanSubmissionDisposition::Accepted))
+	if (!TestEqual(TEXT("A complete client pose establishes the relay baseline"),
+		InitialResult.Disposition, EGuLiWingmanSubmissionDisposition::Accepted))
 	{
 		return false;
 	}
 
-	const auto TestRejectedWithoutCommit = [this, &Relay, &Owner](
-		const TCHAR* Description,
-		const FGuLiWingmanCandidateBatch& Candidate,
-		const double NowSeconds,
-		const EGuLiWingmanRejectReason ExpectedReason)
+	int32 CarrierResolverCalls = 0;
+	const FGuLiCarrierSourceResolver RejectCarrier = [&CarrierResolverCalls](
+		const FGuLiCarrierSourceRef&, FGuLiRelayCarrierState&)
 	{
-		const int32 HistoryBefore = Relay.GetAcceptedHistory().Num();
-		const uint32 SequenceBefore = Relay.GetLastAcceptedCandidateSequence();
-		const FGuLiWingmanSubmissionResult Result = Relay.SubmitCandidate(
-			Owner, Candidate, NowSeconds, FoundCarrier(), PermitWorld());
-		TestTrue(Description, Result.Disposition == EGuLiWingmanSubmissionDisposition::Rejected
-			&& Result.RejectReason == ExpectedReason);
-		TestEqual(TEXT("A rejected motion packet cannot append accepted history"),
-			Relay.GetAcceptedHistory().Num(), HistoryBefore);
-		TestEqual(TEXT("A rejected motion packet cannot reserve CandidateSequence"),
-			Relay.GetLastAcceptedCandidateSequence(), SequenceBefore);
+		++CarrierResolverCalls;
+		return EGuLiRelayCarrierLookupResult::Expired;
+	};
+	int32 WorldValidatorCalls = 0;
+	const FGuLiCandidateWorldValidator RejectWorld = [&WorldValidatorCalls](
+		const FGuLiWingmanCandidateWorldValidationContext&)
+	{
+		++WorldValidatorCalls;
+		return EGuLiWingmanRejectReason::InvalidIdentity;
 	};
 
-	FGuLiWingmanCandidateBatch OldAbility = MakeKinematicCandidate(
-		Relay, InitialResult.AcceptedBatch, 2u, 106u, FVector(900.0, 0.0, 0.0), FVector(4500.0, 0.0, 0.0));
-	--OldAbility.AbilitySetRevision;
-	TestRejectedWithoutCommit(TEXT("An old ability projection is rejected before motion state"),
-		OldAbility, 0.11, EGuLiWingmanRejectReason::StaleAbilitySetRevision);
+	FGuLiWingmanCandidateBatch ClientRecovery = MakeKinematicCandidate(
+		Relay, InitialResult.AcceptedBatch, 2u, 100u,
+		FVector(20000.0, -30000.0, 15000.0), FVector(8000.0, 4000.0, -1000.0));
+	for (FGuLiWingmanCandidateSample& Sample : ClientRecovery.Samples)
+	{
+		Sample.FlightMode = static_cast<uint8>(EGuLiWingmanFlightMode::Recover);
+	}
+	const FGuLiWingmanSubmissionResult RecoveryResult = Relay.SubmitCandidate(
+		Owner, ClientRecovery, 0.11, RejectCarrier, RejectWorld);
+	if (!TestEqual(TEXT("Client recovery may reposition and rotate without server kinematic approval"),
+		RecoveryResult.Disposition, EGuLiWingmanSubmissionDisposition::Accepted))
+	{
+		return false;
+	}
+	TestEqual(TEXT("Carrier resolver is outside normal pose acceptance"), CarrierResolverCalls, 0);
+	TestEqual(TEXT("World validator is outside normal pose acceptance"), WorldValidatorCalls, 0);
+	TestEqual(TEXT("Recovery position is relayed exactly"),
+		RecoveryResult.AcceptedBatch.Samples[0].PositionCentimeters,
+		ClientRecovery.Samples[0].PositionCentimeters);
+	TestEqual(TEXT("Recovery velocity is relayed exactly"),
+		RecoveryResult.AcceptedBatch.Samples[0].VelocityCentimetersPerSecond,
+		ClientRecovery.Samples[0].VelocityCentimetersPerSecond);
+	TestEqual(TEXT("Recovery rotation is relayed exactly"),
+		RecoveryResult.AcceptedBatch.Samples[0].RotationCentiDegrees,
+		ClientRecovery.Samples[0].RotationCentiDegrees);
 
-	const FGuLiWingmanCandidateBatch OutOfOrder = MakeKinematicCandidate(
-		Relay, InitialResult.AcceptedBatch, 2u, 100u, FVector::ZeroVector, FVector(4500.0, 0.0, 0.0));
-	TestRejectedWithoutCommit(TEXT("A non-advancing client simulation tick is rejected"),
-		OutOfOrder, 0.12, EGuLiWingmanRejectReason::StaleSourceState);
-
-	const FGuLiWingmanCandidateBatch ExcessiveTickLead = MakeKinematicCandidate(
-		Relay, InitialResult.AcceptedBatch, 2u, 1000u, FVector(135000.0, 0.0, 0.0), FVector(4500.0, 0.0, 0.0));
-	TestRejectedWithoutCommit(TEXT("A forged large client tick delta cannot widen the position envelope"),
-		ExcessiveTickLead, 0.13, EGuLiWingmanRejectReason::StaleSourceState);
-
-	const FGuLiWingmanCandidateBatch ExcessiveSpeed = MakeKinematicCandidate(
-		Relay, InitialResult.AcceptedBatch, 2u, 106u, FVector(900.0, 0.0, 0.0), FVector(8000.0, 0.0, 0.0));
-	TestRejectedWithoutCommit(TEXT("Speed above the projected CatchUpSpeed is rejected"),
-		ExcessiveSpeed, 0.14, EGuLiWingmanRejectReason::InvalidIdentity);
-
-	const FGuLiWingmanCandidateBatch ExcessiveAcceleration = MakeKinematicCandidate(
-		Relay, InitialResult.AcceptedBatch, 2u, 106u, FVector(950.0, 0.0, 0.0), FVector(5000.0, 0.0, 0.0));
-	TestRejectedWithoutCommit(TEXT("Endpoint speed cannot exceed the projected acceleration envelope"),
-		ExcessiveAcceleration, 0.15, EGuLiWingmanRejectReason::InvalidIdentity);
-
-	const FVector ThirtyDegreeVelocity = FVector(4500.0, 0.0, 0.0).RotateAngleAxis(30.0, FVector::UpVector);
-	const FGuLiWingmanCandidateBatch ExcessiveTurn = MakeKinematicCandidate(
-		Relay, InitialResult.AcceptedBatch, 2u, 106u, FVector(840.0, 225.0, 0.0), ThirtyDegreeVelocity);
-	TestRejectedWithoutCommit(TEXT("Endpoint direction cannot exceed the projected turn-rate envelope"),
-		ExcessiveTurn, 0.16, EGuLiWingmanRejectReason::InvalidIdentity);
-
-	const FGuLiWingmanCandidateBatch Teleport = MakeKinematicCandidate(
-		Relay, InitialResult.AcceptedBatch, 2u, 106u, FVector(20000.0, 0.0, 0.0), FVector(4500.0, 0.0, 0.0));
-	TestRejectedWithoutCommit(TEXT("A position teleport is rejected even when endpoint velocity is legal"),
-		Teleport, 0.17, EGuLiWingmanRejectReason::InvalidIdentity);
-
-	constexpr double LegalTurnDegrees = 4.0;
-	const FVector LegalVelocity = FVector(4700.0, 0.0, 0.0).RotateAngleAxis(
-		LegalTurnDegrees, FVector::UpVector);
-	const FVector LegalDisplacement = (FVector(4500.0, 0.0, 0.0) + LegalVelocity) * 0.1;
-	const FGuLiWingmanCandidateBatch LegalCatchUp = MakeKinematicCandidate(
-		Relay, InitialResult.AcceptedBatch, 2u, 106u, LegalDisplacement, LegalVelocity);
-	const FGuLiWingmanSubmissionResult LegalResult = Relay.SubmitCandidate(
-		Owner, LegalCatchUp, 0.2, FoundCarrier(), PermitWorld());
-	TestTrue(TEXT("A pursuit step at the exact acceleration and turn limits remains accepted"),
-		LegalResult.Disposition == EGuLiWingmanSubmissionDisposition::Accepted);
-	TestEqual(TEXT("The first reusable sequence commits only for the legal pursuit packet"),
-		Relay.GetLastAcceptedCandidateSequence(), 2u);
-	TestEqual(TEXT("Only the initial and legal pursuit batches enter accepted history"),
+	const FGuLiWingmanSubmissionResult Replay = Relay.SubmitCandidate(
+		Owner, ClientRecovery, 0.12, RejectCarrier, RejectWorld);
+	TestEqual(TEXT("An already relayed CandidateSequence is still rejected as duplicate"),
+		Replay.RejectReason, EGuLiWingmanRejectReason::Duplicate);
+	TestEqual(TEXT("Duplicate rejection preserves the two accepted snapshots"),
 		Relay.GetAcceptedHistory().Num(), 2);
 
-	const FGuLiWingmanCandidateBatch SameTimeBurst = MakeKinematicCandidate(
-		Relay, LegalResult.AcceptedBatch, 3u, 112u, LegalVelocity * 0.2, LegalVelocity);
-	TestRejectedWithoutCommit(TEXT("Repeated same-time packets cannot accumulate client clock lead"),
-		SameTimeBurst, 0.2, EGuLiWingmanRejectReason::StaleSourceState);
-	TestEqual(TEXT("The clock-lead rejection leaves the last accepted sequence unchanged"),
-		Relay.GetLastAcceptedCandidateSequence(), 2u);
-	TestEqual(TEXT("Server validation still never writes a Wingman movement transform"),
+	const FGuLiWingmanSubmissionResult WrongOwner = Relay.SubmitCandidate(
+		Backup, MakeCandidate(Relay, 3u, 103u), 0.13, RejectCarrier, RejectWorld);
+	TestEqual(TEXT("A non-owner cannot publish poses for this lease"),
+		WrongOwner.RejectReason, EGuLiWingmanRejectReason::WrongLease);
+
+	FGuLiWingmanCandidateBatch WrongGeneration = MakeCandidate(Relay, 3u, 103u);
+	++WrongGeneration.Samples[0].Wingman.EntityGeneration;
+	const FGuLiWingmanSubmissionResult IdentityRejected = Relay.SubmitCandidate(
+		Owner, WrongGeneration, 0.14, RejectCarrier, RejectWorld);
+	TestEqual(TEXT("A forged member generation is rejected"),
+		IdentityRejected.RejectReason, EGuLiWingmanRejectReason::EmitterDead);
+
+	FGuLiWingmanCandidateBatch InvalidDto = MakeCandidate(Relay, 3u, 103u);
+	InvalidDto.Samples[0].VelocityCentimetersPerSecond.X = 200001;
+	const FGuLiWingmanSubmissionResult DtoRejected = Relay.SubmitCandidate(
+		Owner, InvalidDto, 0.15, RejectCarrier, RejectWorld);
+	TestEqual(TEXT("An out-of-domain serialized velocity remains structurally invalid"),
+		DtoRejected.RejectReason, EGuLiWingmanRejectReason::InvalidIdentity);
+	TestEqual(TEXT("Structural rejects keep the last good remote pose"),
+		Relay.GetAcceptedHistory().Num(), 2);
+	TestEqual(TEXT("Server pose relay never writes a Wingman Transform"),
 		Relay.GetServerWingmanMovementWriteCount(), static_cast<uint64>(0u));
 	return true;
 }
-
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanRelayAbilityAndBootstrapGateTest,
 	"GuLiStrike.Wingman.Relay.AbilityConfigAndSixScopeGate",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
@@ -644,10 +683,10 @@ bool FGuLiWingmanRelayAbilityAndBootstrapGateTest::RunTest(const FString& Parame
 	StaleCandidate.AbilitySetRevision--;
 	const FGuLiWingmanSubmissionResult Result = Relay.SubmitCandidate(
 		Owner, StaleCandidate, 0.1, FoundCarrier(), PermitWorld());
-	TestTrue(TEXT("An old ability revision is rejected before accepted-sequence reservation"),
-		Result.RejectReason == EGuLiWingmanRejectReason::StaleAbilitySetRevision);
-	TestEqual(TEXT("Rejected ability versions never advance Candidate state"),
-		Relay.GetLastAcceptedCandidateSequence(), 0u);
+	TestEqual(TEXT("An old ability projection does not interrupt presentation pose relay"),
+		Result.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
+	TestEqual(TEXT("The stale projection still advances only the pose sequence"),
+		Relay.GetLastAcceptedCandidateSequence(), 1u);
 	return true;
 }
 
@@ -669,6 +708,22 @@ bool FGuLiWingmanRelayTakeoverFreezeTest::RunTest(const FString& Parameters)
 		Relay.SubmitCandidate(
 			Owner, MakeCandidate(Relay), 0.1, FoundCarrier(), PermitWorld()).Disposition
 			== EGuLiWingmanSubmissionDisposition::Accepted);
+	Relay.AttackState.Revision = 3u;
+	FGuLiWingmanAutoTargetAssignment& AutomaticTarget =
+		Relay.AttackState.AutomaticTargets.AddDefaulted_GetRef();
+	AutomaticTarget.Emitter = Relay.GetRoster()[0].Wingman;
+	AutomaticTarget.Target.Target.Kind = EGuLiTargetKind::Ship;
+	AutomaticTarget.Target.Target.AuthorityId = FGuid(21u, 22u, 23u, 24u);
+	AutomaticTarget.Target.Target.Generation = 1u;
+	AutomaticTarget.Target.Target.LocalId = 9u;
+	AutomaticTarget.Target.Location = FVector(50000.0, 1000.0, 2000.0);
+	AutomaticTarget.Target.Radius = 1500.0f;
+	AutomaticTarget.Target.Revision = 4u;
+	AutomaticTarget.Target.ServerTime = 0.1;
+	TestTrue(TEXT("The live per-member automatic target state is valid before handoff"),
+		Relay.AttackState.IsWellFormed(Relay.GetLeaseState().Group));
+	const uint64 AutomaticTargetHash = Relay.AttackState.ComputeStableHash();
+	const FGuLiWingmanAutoTargetAssignment ExpectedAutomaticTarget = AutomaticTarget;
 
 	const FGuid NewOwner(9u, 10u, 11u, 12u);
 	TestTrue(TEXT("Takeover enters a new lease generation"), Relay.BeginTakeover(NewOwner, Owner, 0.2));
@@ -676,6 +731,12 @@ bool FGuLiWingmanRelayTakeoverFreezeTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Takeover emits a frozen baseline"), Relay.BuildBootstrap(TakeoverBootstrap));
 	TestTrue(TEXT("The baseline freezes both ability and accepted hashes"),
 		TakeoverBootstrap.bHasTransferBaseline && TakeoverBootstrap.TransferBaseline.IsWellFormed());
+	TestTrue(TEXT("Takeover preserves the exact per-member automatic target table"),
+		TakeoverBootstrap.AttackStateHash == AutomaticTargetHash
+		&& TakeoverBootstrap.AttackState.AutomaticTargets.Num() == 1
+		&& TakeoverBootstrap.AttackState.AutomaticTargets[0].Emitter == ExpectedAutomaticTarget.Emitter
+		&& TakeoverBootstrap.AttackState.AutomaticTargets[0].Target.Target
+			== ExpectedAutomaticTarget.Target.Target);
 
 	FGuLiGroupAbilityConfigSnapshot NewConfig = MakeAbilityConfig(Relay.GetLeaseState().Group, 4u);
 	NewConfig.AbilitySetRevision++;
@@ -912,6 +973,200 @@ bool FGuLiWingmanWeaponChannelBootstrapRecoveryTest::RunTest(const FString& Para
 		Tombstone.SnapshotRevision > InitialConfig.SnapshotRevision
 		&& !Tombstone.HasSameVersion(InitialConfig));
 	TestFalse(TEXT("A revoked group cannot rebuild a usable bootstrap"), Relay.BuildBootstrap(InitialBootstrap));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanEmergencyRebaseAuthorityTest,
+	"GuLiStrike.Wingman.Relay.EmergencyRebase.Authority",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanEmergencyRebaseAuthorityTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanRelayTests;
+	FGuLiWingmanRelayServer Relay;
+	FGuid Owner;
+	FGuid Backup;
+	if (!InitializeRelay(*this, Relay, Owner, Backup))
+	{
+		return false;
+	}
+	FGuLiWingmanRelayValidationRevisions Revisions;
+	Revisions.NavSchemaRevision = 1u;
+	Revisions.NavDataChecksum = 0x12345678u;
+	Revisions.TuningRevision = 1u;
+	Revisions.ObstacleRevision = 1u;
+	if (!TestTrue(TEXT("The fixture enables the v13 strict Flight contract"),
+		Relay.ConfigureStrictFlightContract(3u, Revisions, 0.03)))
+	{
+		return false;
+	}
+	FGuLiWingmanBootstrapBundle Bootstrap;
+	if (!TestTrue(TEXT("The strict v13 bootstrap builds"), Relay.BuildBootstrap(Bootstrap)))
+	{
+		return false;
+	}
+	FGuLiGroupAbilityConfigAck AbilityAck;
+	AbilityAck.Group = Relay.GetLeaseState().Group;
+	AbilityAck.LeaseEpoch = Relay.GetLeaseState().LeaseEpoch;
+	AbilityAck.SnapshotRevision = Relay.GetAbilityConfig().SnapshotRevision;
+	AbilityAck.SnapshotHash = Relay.GetAbilityConfig().SnapshotHash;
+	TestTrue(TEXT("The strict ability projection is acknowledged"),
+		Relay.AcknowledgeAbilityConfig(Owner, AbilityAck, 0.04));
+	TestTrue(TEXT("The strict six-scope cut is acknowledged"),
+		Relay.AcknowledgeBootstrap(Owner, Bootstrap.Commit, nullptr, 0.05));
+
+	TArray<FGuLiWingmanCandidateBatch> SlowFlights;
+	for (uint8 FlightIndex = 0u; FlightIndex < GULI_WINGMAN_FLIGHT_COUNT; ++FlightIndex)
+	{
+		SlowFlights.Add(MakeStrictSlowFlightCandidate(
+			Relay, FlightIndex, FlightIndex + 1u, 1u, 0u, 100u, 0.1));
+		TestTrue(TEXT("Each strict slow Flight candidate is well formed"),
+			SlowFlights.Last().IsWellFormed());
+	}
+	FGuLiWingmanAtomicCandidateBatchFragment Fragment;
+	Fragment.Header.BatchId = 1u;
+	Fragment.Header.BatchKind = Bootstrap.AtomicBatchKind;
+	Fragment.Header.Group = Relay.GetLeaseState().Group;
+	Fragment.Header.ConnectionGeneration = Relay.GetConnectionGeneration();
+	Fragment.Header.LeaseEpoch = Relay.GetLeaseState().LeaseEpoch;
+	Fragment.Header.FrozenRosterRevision = Relay.GetRosterRevision();
+	Fragment.Header.FrozenRequiredFlightMask = Bootstrap.RequiredFlightMask;
+	Fragment.Header.FrozenRequiredMemberMaskHash = Bootstrap.RequiredMemberMaskHash;
+	Fragment.Header.BaselineRevision = Bootstrap.AtomicBaselineRevision;
+	Fragment.Header.BaselineHash = Bootstrap.AtomicBaselineHash;
+	Fragment.Header.IncludedFlightMask = Bootstrap.RequiredFlightMask;
+	Fragment.Header.ClientBatchStartTick = 100u;
+	Fragment.Header.FragmentCount = 1u;
+	Fragment.Header.BatchPayloadHash = GuLiWingmanRelayHash::CandidatePayloads(SlowFlights);
+	Fragment.FragmentIndex = 0u;
+	Fragment.Flights = SlowFlights;
+	for (const FGuLiWingmanCandidateBatch& Flight : SlowFlights)
+	{
+		FGuLiWingmanAtomicCandidateBatchFragment OneFlight;
+		OneFlight.Flights.Add(Flight);
+		Fragment.Header.BatchPayloadBytes += OneFlight.EstimatePayloadBytes();
+	}
+	const FGuLiWingmanAtomicBatchAcceptance AtomicAccepted =
+		Relay.SubmitAtomicCandidateFragment(
+			Owner, Fragment, 0.1, FoundCarrier(), PermitWorld());
+	if (!TestEqual(TEXT("The slow all-Flight baseline activates atomically"),
+		AtomicAccepted.Disposition, EGuLiWingmanSubmissionDisposition::Accepted))
+	{
+		return false;
+	}
+	const FGuLiWingmanAcceptedBatch* InitialFlight = Relay.GetAcceptedHistory().FindByPredicate(
+		[](const FGuLiWingmanAcceptedBatch& Batch)
+		{
+			return Batch.FlightIndex == 0u;
+		});
+	if (!TestNotNull(TEXT("The Accepted Store contains Flight zero"), InitialFlight))
+	{
+		return false;
+	}
+	const FGuLiWingmanCandidateBatch& SlowCandidate = SlowFlights[0];
+	const FGuLiWingmanHandle FirstMember = SlowCandidate.Samples[0].Wingman;
+	const FGuLiWingmanHandle SecondMember = SlowCandidate.Samples[1].Wingman;
+	const uint32 SiblingFlightBaseline = Relay.GetAcceptedSequenceForFlight(1u);
+	FGuLiWingmanAcceptedBatch AcceptedCut;
+
+	FGuLiWingmanEmergencyRebaseRequest WrongLease = MakeRebaseRequest(
+		Relay, FirstMember, 1u, InitialFlight->StateRef.AcceptedSequence);
+	const FGuLiWingmanEmergencyRebaseResponse WrongLeaseResult = Relay.SubmitEmergencyRebase(
+		Backup, WrongLease, 1.7, FoundCarrier(), PermitWorld(), AcceptedCut);
+	TestEqual(TEXT("A non-owner cannot request a member rebase"), WrongLeaseResult.Result,
+		EGuLiWingmanEmergencyRebaseResult::WrongLease);
+
+	FGuLiWingmanEmergencyRebaseRequest Stale = MakeRebaseRequest(
+		Relay, FirstMember, 2u, InitialFlight->StateRef.AcceptedSequence + 1u);
+	const FGuLiWingmanEmergencyRebaseResponse StaleResult = Relay.SubmitEmergencyRebase(
+		Owner, Stale, 1.7, FoundCarrier(), PermitWorld(), AcceptedCut);
+	TestEqual(TEXT("A stale Accepted baseline cannot relocate a member"), StaleResult.Result,
+		EGuLiWingmanEmergencyRebaseResult::StaleBaseline);
+
+	FGuLiWingmanAutoTargetAssignment& Assignment =
+		Relay.AttackState.AutomaticTargets.AddDefaulted_GetRef();
+	Assignment.Emitter = FirstMember;
+	Assignment.Target.Target.Kind = EGuLiTargetKind::CommanderSoldier;
+	Assignment.Target.Target.AuthorityId = FGuid(10u, 11u, 12u, 13u);
+	Assignment.Target.Target.Generation = 1u;
+	Assignment.Target.Target.LocalId = 1u;
+	Assignment.Target.Location = FVector(100000.0, 0.0, 0.0);
+	Assignment.Target.Radius = 100.0f;
+	Assignment.Target.Revision = 1u;
+	Assignment.Target.ServerTime = 1.6;
+	FGuLiWingmanAttackCheckpoint& Checkpoint = Relay.AttackState.Checkpoints.AddDefaulted_GetRef();
+	Checkpoint.Emitter = FirstMember;
+	Checkpoint.SlotId = TEXT("BasicWeapon");
+	Checkpoint.SkillId = TEXT("Test.Basic.Auto");
+	Checkpoint.DefinitionChecksum = 1u;
+	Checkpoint.FrozenTargetHandle = Assignment.Target.Target;
+	Checkpoint.ProfileRevision = 1u;
+	Checkpoint.RunId = 1u;
+	Checkpoint.LeaseEpoch = Relay.GetLeaseState().LeaseEpoch;
+	Checkpoint.LastShotIndex = 0;
+	Checkpoint.StartTime = 1.0;
+	Checkpoint.NextFireTime = 2.0;
+	Checkpoint.FrozenTarget = Assignment.Target.Location;
+	Checkpoint.ApproachDirection = FVector::ForwardVector;
+
+	bool bInvalidationCallback = false;
+	Relay.OnEmergencyRebaseAccepted = [&bInvalidationCallback, &FirstMember](
+		const FGuLiWingmanHandle& Emitter)
+	{
+		bInvalidationCallback = Emitter == FirstMember;
+	};
+	FGuLiWingmanEmergencyRebaseRequest Valid = MakeRebaseRequest(
+		Relay, FirstMember, 3u, InitialFlight->StateRef.AcceptedSequence);
+	const FGuLiWingmanEmergencyRebaseResponse Accepted = Relay.SubmitEmergencyRebase(
+		Owner, Valid, 1.7, FoundCarrier(), PermitWorld(), AcceptedCut);
+	TestEqual(TEXT("A member with sufficient low-speed history is rebased"), Accepted.Result,
+		EGuLiWingmanEmergencyRebaseResult::Accepted);
+	TestTrue(TEXT("The response and complete Flight Cut are well formed"),
+		Accepted.IsWellFormed() && AcceptedCut.IsWellFormed());
+	TestEqual(TEXT("Only the affected member is marked in the Flight Cut"),
+		AcceptedCut.RebasedMemberMask, static_cast<uint8>(1u << FirstMember.MemberIndex));
+	TestEqual(TEXT("Only the affected Flight Accepted sequence advances"),
+		Relay.GetAcceptedSequenceForFlight(0u), Accepted.AcceptedSequence);
+	TestEqual(TEXT("Sibling Flights keep their baseline"),
+		Relay.GetAcceptedSequenceForFlight(1u), SiblingFlightBaseline);
+	TestTrue(TEXT("The server chooses a new member position"),
+		Accepted.ServerPosition != FVector(SlowCandidate.Samples[0].PositionCentimeters));
+	TestTrue(TEXT("Attack authorization cleanup callback is emitted"), bInvalidationCallback);
+	TestFalse(TEXT("The rebased member automatic assignment is cleared"),
+		Relay.AttackState.AutomaticTargets.ContainsByPredicate(
+			[&FirstMember](const FGuLiWingmanAutoTargetAssignment& Entry)
+			{
+				return Entry.Emitter == FirstMember;
+			}));
+	TestFalse(TEXT("The rebased member frozen run is cleared"),
+		Relay.AttackState.Checkpoints.ContainsByPredicate(
+			[&FirstMember](const FGuLiWingmanAttackCheckpoint& Entry)
+			{
+				return Entry.Emitter == FirstMember;
+			}));
+
+	FGuLiWingmanEmergencyRebaseRequest RateLimited = MakeRebaseRequest(
+		Relay, FirstMember, 4u, Accepted.AcceptedSequence);
+	const FGuLiWingmanEmergencyRebaseResponse RateLimitedResult = Relay.SubmitEmergencyRebase(
+		Owner, RateLimited, 1.8, FoundCarrier(), PermitWorld(), AcceptedCut);
+	TestEqual(TEXT("A member rebase is limited to once per five seconds"),
+		RateLimitedResult.Result, EGuLiWingmanEmergencyRebaseResult::RateLimited);
+	TestTrue(TEXT("The rate-limited response exposes the retry boundary"),
+		RateLimitedResult.RetryAfterServerTimeSeconds >= 6.7);
+
+	const FGuLiCandidateWorldValidator RejectEveryPoint =
+		[](const FGuLiWingmanCandidateWorldValidationContext&)
+		{
+			return EGuLiWingmanRejectReason::InvalidIdentity;
+		};
+	FGuLiWingmanEmergencyRebaseRequest NoSafePoint = MakeRebaseRequest(
+		Relay, SecondMember, 1u, Accepted.AcceptedSequence);
+	const FGuLiWingmanEmergencyRebaseResponse NoSafeResult = Relay.SubmitEmergencyRebase(
+		Owner, NoSafePoint, 1.8, FoundCarrier(), RejectEveryPoint, AcceptedCut);
+	TestEqual(TEXT("Authority fails closed when no generated point passes World/FlightNav"),
+		NoSafeResult.Result, EGuLiWingmanEmergencyRebaseResult::NoSafePoint);
+	TestTrue(TEXT("No-safe-point retry is bounded to one second"),
+		FMath::IsNearlyEqual(NoSafeResult.RetryAfterServerTimeSeconds, 2.8));
 	return true;
 }
 #endif

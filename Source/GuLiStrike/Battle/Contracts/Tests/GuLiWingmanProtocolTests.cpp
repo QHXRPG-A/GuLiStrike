@@ -55,9 +55,14 @@ namespace GuLiWingmanProtocolTests
 	{
 		FGuLiGroupAbilityConfigSnapshot Config;
 		Config.ShipInstanceId = Group.ShipInstanceId;
+		Config.MatchEpoch = 2u;
+		Config.Team = EGuLiTeam::Red;
+		Config.OwnerPlayerGuid = FGuid(9u, 8u, 7u, 6u);
+		Config.WingmanTypeId = TEXT("TestWingman");
 		Config.ShipGeneration = Group.ShipGeneration;
 		Config.GroupGeneration = Group.GroupGeneration;
 		Config.AbilitySetRevision = 11u;
+		Config.LoadoutRevision = 12u;
 		Config.SnapshotRevision = 1u;
 		Config.bGroupAbilitiesValid = true;
 		Config.FormationAbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
@@ -71,6 +76,17 @@ namespace GuLiWingmanProtocolTests
 		Config.MissileDefinitionChecksum = 0x33445566778899aaull;
 		Config.FormationCommandRevision = 13u;
 		Config.EffectiveClientSimTick = 101u;
+		FGuLiWingmanWeaponChannelConfig& Basic = Config.WeaponChannels.AddDefaulted_GetRef();
+		Basic.Binding = FGuLiWeaponBindingKey::Wingman(
+			Config.MatchEpoch, Config.Team, Config.OwnerPlayerGuid, Config.WingmanTypeId, TEXT("BasicWeapon"));
+		Basic.SkillId = TEXT("Test.Basic.Auto");
+		Basic.AbilityId = Config.BasicWeaponAbilityId;
+		Basic.Kind = EGuLiWingmanWeaponKind::BasicAutomatic;
+		Basic.bEnabled = true;
+		Basic.ProfileRevision = 9u;
+		Basic.DefinitionRevision = Config.BasicWeaponDefinitionRevision;
+		Basic.DefinitionChecksum = Config.BasicWeaponDefinitionChecksum;
+		Config.BasicWeaponRuntime = Basic.Runtime;
 		Config.RefreshHash();
 		return Config;
 	}
@@ -136,7 +152,13 @@ namespace GuLiWingmanProtocolTests
 		Intent.Target.AuthorityId = FGuid(1u, 2u, 3u, 4u);
 		Intent.Target.Generation = 5u;
 		Intent.Target.LocalId = 6u;
+		Intent.TargetAssignmentRevision = 7u;
+		Intent.Binding = FGuLiWeaponBindingKey::Wingman(
+			2u, EGuLiTeam::Red, FGuid(9u, 8u, 7u, 6u), TEXT("TestWingman"), TEXT("BasicWeapon"));
 		Intent.WeaponAbilityId = TAG_GuLi_ShipAbility_Weapon_Basic_Auto;
+		Intent.SkillId = TEXT("Test.Basic.Auto");
+		Intent.LoadoutRevision = 12u;
+		Intent.ProfileRevision = 9u;
 		Intent.WeaponDefinitionRevision = 6u;
 		Intent.AbilitySetRevision = 11u;
 		Intent.AimDirectionMilli = FIntVector(1000, 0, 0);
@@ -215,6 +237,7 @@ namespace GuLiWingmanProtocolTests
 		Intent.Target.AuthorityId = FGuid(1u, 2u, 3u, 4u);
 		Intent.Target.Generation = 5u;
 		Intent.Target.LocalId = 6u;
+		Intent.TargetAssignmentRevision = 7u;
 		Intent.WeaponAbilityId = Channel.AbilityId;
 		Intent.SkillId = Channel.SkillId;
 		Intent.LoadoutRevision = Config.LoadoutRevision;
@@ -262,6 +285,9 @@ bool FGuLiWingmanProtocolV7GoldenBytesTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("FireIntent client fixed-step survives the wire"),
 		IntentCopy.ClientFireTick,
 		Intent.ClientFireTick);
+	TestEqual(TEXT("FireIntent assignment revision survives the wire"),
+		IntentCopy.TargetAssignmentRevision,
+		Intent.TargetAssignmentRevision);
 	TestEqual(TEXT("FireIntent client LOS prediction survives the wire"),
 		IntentCopy.bClientPredictedLineOfSight,
 		Intent.bClientPredictedLineOfSight);
@@ -269,11 +295,173 @@ bool FGuLiWingmanProtocolV7GoldenBytesTest::RunTest(const FString& Parameters)
 	const FString CandidateHex = BytesToHex(CandidateBytes.GetData(), CandidateBytes.Num());
 	const FString FireIntentHex = BytesToHex(FireBytes.GetData(), FireBytes.Num());
 	const FString ExpectedCandidateHex = TEXT(
-		"0E040E4030201080706050C0B0A09001F0E0D00612080601040112222E0ACA0000000000D05E40041122334455667788080C1036161A8877665544332211010000004030201080706050C0B0A09001F0E0D006120102046400000038FFFFFF2C0100009411000000000000E7FFFFFF6400000028230000D4FEFFFF0101000000BE3333333333C35E401034010000004030201080706050C0B0A09001F0E0D006120102045A00000042FFFFFF220100008A1100000A000000ECFFFFFF6400000028230000D4FEFFFF01");
+		"1A040E4030201080706050C0B0A09001F0E0D00612080601040112222E0ACA0000000000D05E40041122334455667788080C1036161A8877665544332211010000004030201080706050C0B0A09001F0E0D006120102046400000038FFFFFF2C0100009411000000000000E7FFFFFF6400000028230000D4FEFFFF0101000000BE3333333333C35E401034010000004030201080706050C0B0A09001F0E0D006120102045A00000042FFFFFF220100008A1100000A000000ECFFFFFF6400000028230000D4FEFFFF0100000000");
 	const FString ExpectedFireIntentHex = TEXT(
-		"0E044030201080706050C0B0A09001F0E0D0061208264030201080706050C0B0A09001F0E0D00612010204041222CACE02010000000200000003000000040000000A0C1F000000536869702E4162696C6974792E576561706F6E2E42617369632E4175746F000C16E8030000000000000000000001");
+		"1A044030201080706050C0B0A09001F0E0D0061208264030201080706050C0B0A09001F0E0D00612010204040109000000080000000700000006000000010C0000005465737457696E676D616E000C0000004261736963576561706F6E00041222CACE02010000000200000003000000040000000A0C0E1F000000536869702E4162696C6974792E576561706F6E2E42617369632E4175746F0010000000546573742E42617369632E4175746F0018120C16E8030000000000000000000001");
 	TestEqual(TEXT("Candidate protocol-v7 golden bytes stay frozen"), CandidateHex, ExpectedCandidateHex);
 	TestEqual(TEXT("FireIntent protocol-v7 golden bytes stay frozen"), FireIntentHex, ExpectedFireIntentHex);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanAttackStateV13WireTest,
+	"GuLiStrike.Wingman.Network.ProtocolV7.AttackStateV13WireAndBounds",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanAttackStateV13WireTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanProtocolTests;
+	const FGuLiWingmanGroupHandle Group = MakeGroup();
+	FGuLiWingmanAttackAuthorityState State;
+	State.Revision = 9u;
+	for (int32 Index = 0; Index < 2; ++Index)
+	{
+		FGuLiWingmanAutoTargetAssignment& Assignment = State.AutomaticTargets.AddDefaulted_GetRef();
+		Assignment.Emitter = MakeWingman(Group, 0u, static_cast<uint8>(Index));
+		Assignment.Target.Target.Kind = Index == 0
+			? EGuLiTargetKind::Ship : EGuLiTargetKind::CommanderSoldier;
+		Assignment.Target.Target.AuthorityId = FGuid(50u, 60u, 70u, static_cast<uint32>(Index + 1));
+		Assignment.Target.Target.Generation = 2u;
+		Assignment.Target.Target.LocalId = static_cast<uint32>(Index + 1);
+		Assignment.Target.Location = FVector(1000.0 * Index, 2000.0, 3000.0);
+		Assignment.Target.Radius = 125.0f;
+		Assignment.Target.bGround = Index != 0;
+		Assignment.Target.Revision = static_cast<uint32>(20 + Index);
+		Assignment.Target.ServerTime = 123.5;
+	}
+	TestTrue(TEXT("A sorted two-member automatic state is valid"), State.IsWellFormed(Group));
+	FGuLiWingmanAttackAuthorityState WireCopy;
+	TArray<uint8> Bytes;
+	TestTrue(TEXT("Protocol-v13 AttackState round-trip succeeds"), RoundTrip(State, WireCopy, Bytes));
+	TestEqual(TEXT("AttackState automatic table survives the wire"), WireCopy.AutomaticTargets.Num(), 2);
+	TestTrue(TEXT("AttackState member and target identities survive the wire"),
+		WireCopy.AutomaticTargets[0].Emitter == State.AutomaticTargets[0].Emitter
+		&& WireCopy.AutomaticTargets[1].Target.Target == State.AutomaticTargets[1].Target.Target);
+	TestEqual(TEXT("AttackState stable hash survives the wire"),
+		WireCopy.ComputeStableHash(), State.ComputeStableHash());
+
+	FGuLiWingmanAttackAuthorityState AtLimit;
+	AtLimit.Revision = 1u;
+	for (int32 Index = 0; Index < GULI_WINGMAN_GROUP_SIZE; ++Index)
+	{
+		FGuLiWingmanAutoTargetAssignment Assignment = State.AutomaticTargets[0];
+		Assignment.Emitter = MakeWingman(Group,
+			static_cast<uint8>(Index / GULI_WINGMAN_MEMBERS_PER_FLIGHT),
+			static_cast<uint8>(Index % GULI_WINGMAN_MEMBERS_PER_FLIGHT));
+		Assignment.Target.Target.AuthorityId.D = static_cast<uint32>(Index + 1);
+		Assignment.Target.Target.LocalId = static_cast<uint32>(Index + 1);
+		AtLimit.AutomaticTargets.Add(MoveTemp(Assignment));
+	}
+	TestTrue(TEXT("Exactly 25 automatic assignments are valid"), AtLimit.IsWellFormed(Group));
+	FGuLiWingmanAttackAuthorityState AtLimitCopy;
+	TArray<uint8> AtLimitBytes;
+	TestTrue(TEXT("Exactly 25 automatic assignments survive the bounded wire"),
+		RoundTrip(AtLimit, AtLimitCopy, AtLimitBytes));
+	const FGuLiWingmanAutoTargetAssignment OverflowAssignment = AtLimit.AutomaticTargets.Last();
+	AtLimit.AutomaticTargets.Add(OverflowAssignment);
+	TestFalse(TEXT("A 26th automatic assignment is rejected"), AtLimit.IsWellFormed(Group));
+	TestFalse(TEXT("A 26th automatic assignment is rejected by the wire serializer"),
+		Serialize(AtLimit, AtLimitBytes));
+
+	FGuLiWingmanAttackAuthorityState Duplicate = State;
+	Duplicate.AutomaticTargets[1].Emitter = Duplicate.AutomaticTargets[0].Emitter;
+	TestFalse(TEXT("Duplicate automatic member identity is rejected"), Duplicate.IsWellFormed(Group));
+	FGuLiWingmanAttackAuthorityState CrossGroup = State;
+	++CrossGroup.AutomaticTargets[1].Emitter.Flight.Group.GroupGeneration;
+	TestFalse(TEXT("Automatic entries from another group are rejected"), CrossGroup.IsWellFormed(Group));
+	FGuLiWingmanAttackAuthorityState WrongClassification = State;
+	WrongClassification.AutomaticTargets[0].Target.bGround = true;
+	TestFalse(TEXT("An air target cannot claim the ground execution channel"),
+		WrongClassification.IsWellFormed(Group));
+	FGuLiWingmanAttackAuthorityState MixedMode = State;
+	MixedMode.Target = State.AutomaticTargets[0].Target;
+	MixedMode.Target.bSpecified = true;
+	TestFalse(TEXT("Manual and automatic target modes cannot coexist"), MixedMode.IsWellFormed(Group));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanEmergencyRebaseV13WireTest,
+	"GuLiStrike.Wingman.Network.ProtocolV7.EmergencyRebaseV13Wire",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanEmergencyRebaseV13WireTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanProtocolTests;
+	const FGuLiWingmanGroupHandle Group = MakeGroup();
+	FGuLiWingmanEmergencyRebaseRequest Request;
+	Request.MatchEpoch = 2u;
+	Request.ConnectionGeneration = 7u;
+	Request.Wingman = MakeWingman(Group, 3u, 4u);
+	Request.LeaseEpoch = 5u;
+	Request.RosterRevision = 9u;
+	Request.RequestSequence = 11u;
+	Request.BaselineAcceptedSequence = 13u;
+	Request.Reason = EGuLiWingmanEmergencyRebaseReason::PhysicalObstacleDeadlock;
+	FGuLiWingmanEmergencyRebaseRequest RequestCopy;
+	TArray<uint8> RequestBytes;
+	TestTrue(TEXT("The v13 emergency request round-trips"),
+		RoundTrip(Request, RequestCopy, RequestBytes));
+	TestTrue(TEXT("The request keeps the exact member generation"),
+		RequestCopy.Wingman == Request.Wingman);
+	TestEqual(TEXT("The request keeps its Accepted baseline"),
+		RequestCopy.BaselineAcceptedSequence, Request.BaselineAcceptedSequence);
+	TestEqual(TEXT("The request keeps its diagnostic reason"),
+		RequestCopy.Reason, Request.Reason);
+
+	FGuLiWingmanEmergencyRebaseResponse Response;
+	Response.Wingman = Request.Wingman;
+	Response.LeaseEpoch = Request.LeaseEpoch;
+	Response.RequestSequence = Request.RequestSequence;
+	Response.Result = EGuLiWingmanEmergencyRebaseResult::Accepted;
+	Response.AcceptedSequence = 14u;
+	Response.ServerPosition = FVector(12345.0, -6789.0, 4321.0);
+	FGuLiWingmanEmergencyRebaseResponse ResponseCopy;
+	TArray<uint8> ResponseBytes;
+	TestTrue(TEXT("The accepted v13 emergency response round-trips"),
+		RoundTrip(Response, ResponseCopy, ResponseBytes));
+	TestEqual(TEXT("The response keeps the authority Accepted sequence"),
+		ResponseCopy.AcceptedSequence, Response.AcceptedSequence);
+	TestEqual(TEXT("The response keeps the authority-selected location"),
+		ResponseCopy.ServerPosition, Response.ServerPosition);
+
+	FGuLiWingmanEmergencyRebaseResponse Rejected = Response;
+	Rejected.Result = EGuLiWingmanEmergencyRebaseResult::NoSafePoint;
+	Rejected.AcceptedSequence = 0u;
+	Rejected.ServerPosition = FVector::ZeroVector;
+	Rejected.RetryAfterServerTimeSeconds = 44.5;
+	TestTrue(TEXT("A typed no-safe-point response is well formed"), Rejected.IsWellFormed());
+	FGuLiWingmanEmergencyRebaseResponse RejectedCopy;
+	TArray<uint8> RejectedBytes;
+	TestTrue(TEXT("The rejected v13 emergency response round-trips"),
+		RoundTrip(Rejected, RejectedCopy, RejectedBytes));
+	TestEqual(TEXT("The retry boundary survives the wire"),
+		RejectedCopy.RetryAfterServerTimeSeconds, Rejected.RetryAfterServerTimeSeconds);
+
+	FGuLiWingmanEmergencyRebaseRequest OldProtocol = Request;
+	OldProtocol.ProtocolVersion = GULI_WINGMAN_PROTOCOL_VERSION - 1u;
+	TestFalse(TEXT("A v12 emergency request cannot enter a v13 session"),
+		Serialize(OldProtocol, RequestBytes));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanWirePositionQuantizationTest,
+	"GuLiStrike.Wingman.Protocol.WirePositionQuantization",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanWirePositionQuantizationTest::RunTest(const FString& Parameters)
+{
+	const FVector Source(10.49, -20.49, 30.51);
+	const FIntVector Quantized = GuLiWingmanProtocol::QuantizePositionCentimeters(Source);
+	TestEqual(TEXT("Wire position rounds X to the nearest centimeter"), Quantized.X, 10);
+	TestEqual(TEXT("Wire position rounds negative Y to the nearest centimeter"), Quantized.Y, -20);
+	TestEqual(TEXT("Wire position rounds Z to the nearest centimeter"), Quantized.Z, 31);
+	TestEqual(TEXT("Expanded wire position is the exact segment endpoint used by authority"),
+		GuLiWingmanProtocol::ExpandPositionCentimeters(Quantized), FVector(10.0, -20.0, 31.0));
+
+	const double BeyondInt32 = static_cast<double>(MAX_int32) + 4096.0;
+	const FIntVector Clamped = GuLiWingmanProtocol::QuantizePositionCentimeters(
+		FVector(BeyondInt32, -BeyondInt32, 0.0));
+	TestEqual(TEXT("Positive wire position overflow clamps closed"), Clamped.X, MAX_int32);
+	TestEqual(TEXT("Negative wire position overflow clamps closed"), Clamped.Y, MIN_int32);
 	return true;
 }
 

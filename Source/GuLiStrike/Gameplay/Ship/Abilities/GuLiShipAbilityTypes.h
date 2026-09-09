@@ -8,7 +8,7 @@
 #include "Gameplay/Wingman/Combat/GuLiWingmanAttackProfile.h"
 #include "GuLiShipAbilityTypes.generated.h"
 
-inline constexpr uint32 GULI_WINGMAN_PROTOCOL_VERSION = 11u;
+inline constexpr uint32 GULI_WINGMAN_PROTOCOL_VERSION = 13u;
 inline constexpr int32 GULI_MAX_WINGMAN_WEAPON_CHANNELS = 8;
 inline constexpr double GULI_WINGMAN_AUTOMATIC_FIRE_BUDGET_PER_SECOND = 50.0;
 

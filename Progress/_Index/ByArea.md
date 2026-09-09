@@ -2,6 +2,14 @@
 
 > 自动生成，请勿手改。运行 `progress_docs.py build` 刷新。
 
+## ai
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构](../RequirementDocument/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | requirement | approved | 2026-09-09 |
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | development | done | 2026-09-09 |
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | archive | recorded | 2026-09-09 |
+
 ## assets
 
 | 文档 | 类型 | 状态 | 更新 |
@@ -110,6 +118,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构](../RequirementDocument/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | requirement | approved | 2026-09-09 |
+| [Ship 僚机空地统一匈牙利自动选敌](../RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md) | requirement | approved | 2026-09-09 |
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | development | done | 2026-09-09 |
+| [Ship 僚机空地统一匈牙利自动选敌 — 技术方案](../DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md) | development | done | 2026-09-09 |
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | archive | recorded | 2026-09-09 |
+| [Ship 僚机全员参战与索敌范围显示](../Archive/20260909-Ship僚机全员参战与索敌范围显示.md) | archive | recorded | 2026-09-09 |
+| [2026-09-08 完成了 Ship 僚机空地统一匈牙利自动选敌](../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md) | archive | recorded | 2026-09-09 |
 | [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | approved | 2026-09-07 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-07 |
 | [指挥官双机甲骨骼与武器挂点 — 技术方案](../DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md) | development | verification | 2026-09-07 |
@@ -160,7 +175,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-08 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-09 |
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | development | done | 2026-09-08 |
 | [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-07 |
 | [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | approved | 2026-09-07 |
@@ -388,7 +403,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-08 |
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构](../RequirementDocument/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | requirement | approved | 2026-09-09 |
+| [Ship 僚机空地统一匈牙利自动选敌](../RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md) | requirement | approved | 2026-09-09 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-09 |
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | development | done | 2026-09-09 |
+| [Ship 僚机空地统一匈牙利自动选敌 — 技术方案](../DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md) | development | done | 2026-09-09 |
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | archive | recorded | 2026-09-09 |
+| [2026-09-08 完成了 Ship 僚机空地统一匈牙利自动选敌](../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md) | archive | recorded | 2026-09-09 |
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | development | done | 2026-09-08 |
 | [2026-09-08 修复了 Ship 僚机在 FlightNav 边界停住不动](../Archive/20260908-Ship僚机FlightNav边界停滞恢复.md) | archive | recorded | 2026-09-08 |
 | [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-07 |
@@ -506,15 +527,22 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [2026-09 点子 Backlog](../Backlog/2026-09.md) | backlog | current | 2026-09-09 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-07 |
-| [2026-09 点子 Backlog](../Backlog/2026-09.md) | backlog | current | 2026-09-07 |
 
 ## ship
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构](../RequirementDocument/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | requirement | approved | 2026-09-09 |
+| [Ship 僚机空地统一匈牙利自动选敌](../RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md) | requirement | approved | 2026-09-09 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-09 |
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | development | done | 2026-09-09 |
+| [Ship 僚机空地统一匈牙利自动选敌 — 技术方案](../DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md) | development | done | 2026-09-09 |
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | archive | recorded | 2026-09-09 |
+| [Ship 僚机全员参战与索敌范围显示](../Archive/20260909-Ship僚机全员参战与索敌范围显示.md) | archive | recorded | 2026-09-09 |
+| [2026-09-08 完成了 Ship 僚机空地统一匈牙利自动选敌](../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md) | archive | recorded | 2026-09-09 |
 | [Ship 空中部队原型关卡与三倍航速](../RequirementDocument/20260908-Ship空中部队原型关卡与三倍航速.md) | requirement | approved | 2026-09-08 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-08 |
 | [Ship 空中部队原型关卡与三倍航速 — 技术方案与验证](../DevelopmentDocumentation/20260908-Ship空中部队原型关卡与三倍航速.md) | development | done | 2026-09-08 |
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | development | done | 2026-09-08 |
 | [2026-09-08 修复了 Ship 僚机在 FlightNav 边界停住不动](../Archive/20260908-Ship僚机FlightNav边界停滞恢复.md) | archive | recorded | 2026-09-08 |
@@ -593,7 +621,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-08 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-09 |
 | [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-07 |
 | [指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属](../RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md) | requirement | draft | 2026-09-07 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-07 |
@@ -669,8 +697,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构](../RequirementDocument/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | requirement | approved | 2026-09-09 |
+| [Ship 僚机空地统一匈牙利自动选敌](../RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md) | requirement | approved | 2026-09-09 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-09 |
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | development | done | 2026-09-09 |
+| [Ship 僚机空地统一匈牙利自动选敌 — 技术方案](../DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md) | development | done | 2026-09-09 |
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | archive | recorded | 2026-09-09 |
+| [Ship 僚机全员参战与索敌范围显示](../Archive/20260909-Ship僚机全员参战与索敌范围显示.md) | archive | recorded | 2026-09-09 |
+| [2026-09-08 完成了 Ship 僚机空地统一匈牙利自动选敌](../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md) | archive | recorded | 2026-09-09 |
 | [Ship 空中部队原型关卡与三倍航速](../RequirementDocument/20260908-Ship空中部队原型关卡与三倍航速.md) | requirement | approved | 2026-09-08 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-08 |
 | [Ship 空中部队原型关卡与三倍航速 — 技术方案与验证](../DevelopmentDocumentation/20260908-Ship空中部队原型关卡与三倍航速.md) | development | done | 2026-09-08 |
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | development | done | 2026-09-08 |
 | [2026-09-08 修复了 Ship 僚机在 FlightNav 边界停住不动](../Archive/20260908-Ship僚机FlightNav边界停滞恢复.md) | archive | recorded | 2026-09-08 |

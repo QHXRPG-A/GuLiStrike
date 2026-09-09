@@ -42,6 +42,10 @@ namespace GuLiWingmanTargeting
 	GULISTRIKE_API bool IsGuardRejoinComplete(TConstArrayView<FGuLiWingmanGuardPoseObservation> Observations,
 		const FVector& ShipLocation, float CatchUpDistanceCentimeters,
 		float RecoveryDistanceCentimeters, float RequiredFraction);
+	/** Manual target wins; otherwise returns the exact member's automatic assignment. */
+	GULISTRIKE_API const FGuLiWingmanAttackTarget* ResolveTargetForEmitter(
+		const FGuLiWingmanAttackAuthorityState& State,
+		const FGuLiWingmanHandle& Emitter);
 }
 
 namespace GuLiWingmanAttackAuthority
@@ -160,6 +164,8 @@ public:
 	void ClearSpecifiedAttackTarget();
 	FGuLiWingmanAttackTarget GetAttackTarget() const;
 	int32 CommitValidatedAttackBatch(const FGuLiWingmanCandidateBatch& Candidate, double NowSeconds);
+	/** Clears every late-fire authorization owned by a member that was authority-rebased. */
+	void InvalidateMemberAfterEmergencyRebase(const FGuLiWingmanHandle& Emitter);
 
 	int32 GetRememberedMissileActivationCount() const { return MissileResultsByActivation.Num(); }
 
@@ -187,10 +193,41 @@ private:
 		const FGuLiWingmanMissileSalvoResult& Result);
 	static FGuid MakeStableShotId(const FGuLiWingmanFireIntent& Intent, uint32 Salt);
 	static FGuid MakeStableMissileId(const FGuid& ActivationId, const FGuLiWingmanHandle& Emitter, uint32 Salt);
+	void RecordAttackAuthorizationSnapshot();
+	bool WasTargetAuthorized(const FGuLiWingmanHandle& Emitter,
+		const FGuLiTargetHandle& Target, uint32 AssignmentRevision) const;
+	bool WasTargetAuthorized(const FGuLiWingmanHandle& Emitter,
+		const FGuLiWingmanAttackTarget& Target) const;
+
+	struct FAutomaticTargetVersionState
+	{
+		FGuLiTargetHandle Target;
+		uint32 Revision = 0u;
+	};
+
+	struct FAttackAuthorization
+	{
+		FGuLiWingmanHandle Emitter;
+		FGuLiWingmanAttackTarget Target;
+	};
+
+	struct FAttackAuthorizationSnapshot
+	{
+		TArray<FAttackAuthorization> Entries;
+	};
+
+	struct FGroundCorridorCacheEntry
+	{
+		FVector TargetLocation = FVector::ZeroVector;
+		double ValidUntilSeconds = 0.0;
+		bool bClear = false;
+	};
 
 	FGuLiWingmanCombatContext Context;
 	FGuLiTargetHandle SpecifiedAttackTarget;
-	TArray<FGuLiWingmanAttackTarget> AttackTargetHistory;
+	TMap<FGuLiWingmanHandle, FAutomaticTargetVersionState> AutomaticTargetVersions;
+	TMap<FGuLiTargetHandle, FGroundCorridorCacheEntry> GroundCorridorCache;
+	TArray<FAttackAuthorizationSnapshot> AttackTargetHistory;
 	double NextAttackTargetScan = 0.0;
 	FGuLiWingmanTargetingTuning TargetingTuning;
 	bool bAutoTargetingLockedForGuard = false;

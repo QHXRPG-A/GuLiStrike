@@ -7,16 +7,15 @@
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Battle/Network/GuLiPlayerNetSyncComponent.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
+#include "Battle/Combat/GuLiWingmanCombatCoordinator.h"
 #include "Battle/Relay/GuLiWingmanRelayAuthorityRegistry.h"
-#include "Commander/Network/GuLiSoldierStateReplicator.h"
-#include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "CollisionQueryParams.h"
 #include "Engine/World.h"
-#include "EngineUtils.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
 #include "Gameplay/Ship/GuLiShipMovementComponent.h"
 #include "Gameplay/Wingman/Combat/GuLiWingmanTargetAcquisition.h"
+#include "Gameplay/Wingman/Combat/GuLiWingmanAttackNavigation.h"
 #include "Gameplay/Wingman/GuLiWingmanSimulationSubsystem.h"
 #include "Gameplay/Wingman/Presentation/GuLiWingmanPresentationActor.h"
 #include "Misc/CommandLine.h"
@@ -1125,7 +1124,7 @@ UGuLiWingmanRelayComponent::UGuLiWingmanRelayComponent()
 	SetIsReplicatedByDefault(true);
 	PrimaryComponentTick.bCanEverTick = true;
 	PrimaryComponentTick.bStartWithTickEnabled = true;
-	// Keep the producer clock aligned with the client-only Mass fixed step. Upload capture then
+	// Keep the producer clock aligned with the client-only Pawn fixed step. Upload capture then
 	// naturally lands on every sixth (5 Hz) or third (10 Hz) 30 Hz simulation tick.
 	PrimaryComponentTick.TickInterval = 0.0f;
 	PrimaryComponentTick.TickGroup = TG_PostPhysics;
@@ -1620,9 +1619,97 @@ void UGuLiWingmanRelayComponent::ServerSubmitAttackCandidate_Implementation(cons
 	ServerSubmitCandidate_Implementation(Candidate);
 }
 
+void UGuLiWingmanRelayComponent::ServerRequestEmergencyRebase_Implementation(
+	const FGuLiWingmanEmergencyRebaseRequest& Request)
+{
+	FGuLiWingmanEmergencyRebaseResponse Response;
+	Response.Wingman = Request.Wingman;
+	Response.LeaseEpoch = Request.LeaseEpoch;
+	Response.RequestSequence = Request.RequestSequence;
+	Response.Result = EGuLiWingmanEmergencyRebaseResult::WrongLease;
+	Response.RetryAfterServerTimeSeconds = FMath::Max(0.0, GetAuthorityTimeSeconds());
+	FGuLiWingmanAcceptedBatch AcceptedBatch;
+	if (ServerRelay)
+	{
+		const FGuLiCarrierSourceResolver Resolver = [this](
+			const FGuLiCarrierSourceRef& Source, FGuLiRelayCarrierState& OutState)
+		{
+			return ResolveCarrierSource(Source, OutState);
+		};
+		const FGuLiWingmanRelayAuthorityRegistry* Registry = GetAuthorityRegistry();
+		const FGuLiCandidateWorldValidator* WorldValidator = Registry
+			? Registry->FindCandidateWorldValidator(BoundServerGroup) : nullptr;
+		Response = ServerRelay->SubmitEmergencyRebase(
+			GetOwningPlayerGuid(), Request, GetAuthorityTimeSeconds(), Resolver,
+			WorldValidator ? *WorldValidator : FGuLiCandidateWorldValidator{}, AcceptedBatch);
+	}
+	const bool bAccepted = Response.Result == EGuLiWingmanEmergencyRebaseResult::Accepted
+		&& AcceptedBatch.IsWellFormed();
+	if (bAccepted)
+	{
+		RefreshReplicatedState();
+		if (AGuLiBattleGameState* BattleGameState =
+			GetWorld() ? GetWorld()->GetGameState<AGuLiBattleGameState>() : nullptr)
+		{
+			BattleGameState->ServerPublishWingmanAcceptedBatch(AcceptedBatch);
+		}
+	}
+	ClientReceiveEmergencyRebase(Response, AcceptedBatch, bAccepted);
+}
+
 void UGuLiWingmanRelayComponent::ClientReceiveAttackCandidateResult_Implementation(const FGuLiWingmanCandidateResultWire& Result)
 {
 	ClientReceiveCandidateResult_Implementation(Result);
+}
+
+void UGuLiWingmanRelayComponent::ClientReceiveEmergencyRebase_Implementation(
+	const FGuLiWingmanEmergencyRebaseResponse& Response,
+	const FGuLiWingmanAcceptedBatch& AcceptedBatch,
+	const bool bHasAcceptedBatch)
+{
+	if (!Response.IsWellFormed() || !GetWorld()
+		|| Response.Wingman.Flight.Group != ReplicatedState.Lease.Group
+		|| Response.LeaseEpoch != ReplicatedState.Lease.LeaseEpoch)
+	{
+		return;
+	}
+#if !UE_BUILD_SHIPPING
+	const bool bListenSmoke = FParse::Param(FCommandLine::Get(), TEXT("GuLiListenSmoke"));
+	if (bListenSmoke)
+	{
+		++ListenSmokeEmergencyRebaseResultCount;
+	}
+#endif
+	UGuLiWingmanSimulationSubsystem* Simulation =
+		GetWorld()->GetSubsystem<UGuLiWingmanSimulationSubsystem>();
+	if (!Simulation)
+	{
+		return;
+	}
+	if (Response.Result == EGuLiWingmanEmergencyRebaseResult::Accepted)
+	{
+		if (!bHasAcceptedBatch || !AcceptedBatch.IsWellFormed()
+			|| AcceptedBatch.StateRef.AcceptedSequence != Response.AcceptedSequence
+			|| AcceptedBatch.FlightIndex != Response.Wingman.Flight.FlightIndex
+			|| (AcceptedBatch.RebasedMemberMask
+				& static_cast<uint8>(1u << Response.Wingman.MemberIndex)) == 0u)
+		{
+			return;
+		}
+		ObserveAuthoritativeServerTime(AcceptedBatch.ServerAcceptedTimeSeconds);
+		RetainedTrajectoryByFlight[AcceptedBatch.FlightIndex].Reset();
+		LastRetainedTrajectoryTickByFlight[AcceptedBatch.FlightIndex] = 0u;
+		const bool bApplied = ApplyAcceptedBatchToLocalOwner(AcceptedBatch);
+#if !UE_BUILD_SHIPPING
+		if (bListenSmoke)
+		{
+			++ListenSmokeEmergencyRebaseAcceptedCount;
+			ListenSmokeEmergencyRebaseAppliedCount += bApplied ? 1u : 0u;
+		}
+#endif
+		return;
+	}
+	Simulation->ApplyEmergencyRebaseResponse(Response, nullptr);
 }
 
 void UGuLiWingmanRelayComponent::ServerSubmitAtomicCandidateFragment_Implementation(
@@ -1989,6 +2076,16 @@ void UGuLiWingmanRelayComponent::ClientReceiveCandidateResult_Implementation(
 		{
 			++ListenSmokeNormalAcceptedCount;
 		}
+		else if (Result.Acceptance.Disposition == EGuLiWingmanSubmissionDisposition::Rejected)
+		{
+			++ListenSmokeNormalRejectedCount;
+			if (Result.Acceptance.FlightIndex < GULI_WINGMAN_FLIGHT_COUNT)
+			{
+				++ListenSmokeNormalRejectedCountByFlight[Result.Acceptance.FlightIndex];
+				ListenSmokeLastNormalRejectReasonByFlight[Result.Acceptance.FlightIndex] =
+					Result.Acceptance.RejectReason;
+			}
+		}
 	}
 #endif
 	ConsumeValidatedCandidateResultWire(Result, true);
@@ -2004,6 +2101,14 @@ void UGuLiWingmanRelayComponent::ClientReceiveAtomicBatchResult_Implementation(
 		++ListenSmokeAtomicResultCount;
 		ListenSmokeLastAtomicResultDisposition = Acceptance.Disposition;
 		ListenSmokeLastAtomicResultRejectReason = Acceptance.RejectReason;
+		if (Acceptance.Disposition == EGuLiWingmanSubmissionDisposition::Accepted)
+		{
+			++ListenSmokeAtomicAcceptedCount;
+		}
+		else if (Acceptance.Disposition == EGuLiWingmanSubmissionDisposition::Rejected)
+		{
+			++ListenSmokeAtomicRejectedCount;
+		}
 	}
 #endif
 	OnAtomicBatchResult.Broadcast(Acceptance);
@@ -2249,7 +2354,8 @@ bool UGuLiWingmanRelayComponent::TryCommitClientBootstrap()
 			LastClientBootstrap.AbilityConfig,
 			Pawn->GetActorTransform(),
 			CarrierVelocity,
-			ReplicatedState.LatestCarrierSource))
+			ReplicatedState.LatestCarrierSource,
+			Pawn))
 		{
 			return false;
 		}
@@ -2261,6 +2367,7 @@ bool UGuLiWingmanRelayComponent::TryCommitClientBootstrap()
 			ClientAcceptedSequenceByFlight[FlightIndex] = 0u;
 			NextClientFrameSequenceByFlight[FlightIndex] = 1u;
 			LastSubmittedClientTickByFlight[FlightIndex] = 0u;
+			LastSubmittedServerTimeByFlight[FlightIndex] = 0.0;
 			if (!bRetainingTransferTrajectory)
 			{
 				RetainedTrajectoryByFlight[FlightIndex].Reset();
@@ -2295,9 +2402,10 @@ bool UGuLiWingmanRelayComponent::TryCommitClientBootstrap()
 			bRetainingSameGroup);
 		NextClientCandidateSequence = ReplicatedState.LastAcceptedCandidateSequence == MAX_uint32
 			? 1u : ReplicatedState.LastAcceptedCandidateSequence + 1u;
+		NextClientEmergencyRebaseSequence = 1u;
 		bClientBootstrapLocallyApplied = true;
 	}
-	// Keep the Mass carrier reference aligned with the newest replicated canonical move
+	// Keep the Pawn carrier reference aligned with the newest replicated canonical move
 	// before every atomic retry;
 	// otherwise a delayed remote Bootstrap can remain pinned to a revision that has already
 	// fallen out of the server's bounded movement history and can never become Active.
@@ -2305,7 +2413,8 @@ bool UGuLiWingmanRelayComponent::TryCommitClientBootstrap()
 		LastClientBootstrap.Commit.Group,
 		Pawn->GetActorTransform(),
 		Pawn->GetVelocity(),
-		ReplicatedState.LatestCarrierSource))
+		ReplicatedState.LatestCarrierSource,
+		Pawn))
 	{
 		return false;
 	}
@@ -2657,14 +2766,30 @@ uint32 UGuLiWingmanRelayComponent::AdvanceClientSimulationClock(const float Delt
 	if (const auto* Simulation=GetWorld() ? GetWorld()->GetSubsystem<UGuLiWingmanSimulationSubsystem>() : nullptr;
 		Simulation && Simulation->GetCompletedSimulationTick(Group,CompletedTick))
 	{
-		if(CaptureClockGroup != Group || LastCompletedMassTick==0)
-		{ CaptureClockGroup=Group; LastCompletedMassTick=CompletedTick; return 0; }
-		const uint32 Elapsed=ElapsedNonZeroSequenceTicks(LastCompletedMassTick,CompletedTick);
-		LastCompletedMassTick=CompletedTick;
+		if(CaptureClockGroup != Group || LastCompletedPawnTick==0)
+		{
+			CaptureClockGroup=Group;
+			LastCompletedPawnTick=CompletedTick;
+			// Pawn clocks and the Relay producer clock share the same 30 Hz epoch.
+			// The first observation may already follow one or more completed fixed
+			// steps (Bootstrap is committed earlier in this component tick). Account
+			// for those steps instead of silently anchoring past them; otherwise the
+			// next Candidate labels two integrations as one protocol tick.
+			if (IsStrictlyNewerNonZeroSequence(CompletedTick, ClientSimulationTick))
+			{
+				const uint32 Elapsed = ElapsedNonZeroSequenceTicks(
+					ClientSimulationTick, CompletedTick);
+				ClientSimulationTick = CompletedTick;
+				return Elapsed;
+			}
+			return 0;
+		}
+		const uint32 Elapsed=ElapsedNonZeroSequenceTicks(LastCompletedPawnTick,CompletedTick);
+		LastCompletedPawnTick=CompletedTick;
 		if(Elapsed>0) ClientSimulationTick=AdvanceNonZeroSequence(ClientSimulationTick,Elapsed);
 		return Elapsed;
 	}
-	// The owner Mass integrator caps one frame to four 30 Hz steps. The protocol
+	// The owner Pawn integrator caps one frame to four 30 Hz steps. The protocol
 	// clock must drop the same hitch remainder; otherwise a Candidate claims more
 	// elapsed simulation time than its transforms actually integrated and the
 	// authority correctly rejects the resulting constant-velocity envelope.
@@ -2775,20 +2900,7 @@ void UGuLiWingmanRelayComponent::TickOwnerClientSimulation(const float DeltaTime
 			? LastClientBootstrap.Commit.Group : ReplicatedState.Lease.Group;
 	};
 
-	// Existing retained groups advance before an atomic retry is built, so the retry's
-	// endpoint tick/capture/carrier describe the Mass state visible on this producer tick.
-	bool bAdvancedClientClock = false;
-	const FGuLiWingmanGroupHandle GroupBeforeBootstrap = ResolveClientOwnedGroup();
-	const bool bClockLifecycleBeforeBootstrap =
-		ReplicatedState.Lease.Lifecycle == EGuLiWingmanGroupLifecycle::Active
-		|| IsRetainedOwnerPrivateLifecycle(ReplicatedState.Lease.Lifecycle);
-	if (Simulation && GroupBeforeBootstrap.IsValid() && bClockLifecycleBeforeBootstrap
-		&& IsLocalLeaseOwner(GroupBeforeBootstrap)
-		&& Simulation->HasOwnedGroup(GroupBeforeBootstrap))
-	{
-		AdvanceClientSimulationClock(DeltaTime);
-		bAdvancedClientClock = true;
-	}
+	// Bootstrap/lease state is committed before the explicit Pawn simulation step.
 	TryCommitClientBootstrap();
 
 	const FGuLiWingmanGroupHandle Group = ResolveClientOwnedGroup();
@@ -2814,19 +2926,34 @@ void UGuLiWingmanRelayComponent::TickOwnerClientSimulation(const float DeltaTime
 		}
 		return;
 	}
-	if (!bAdvancedClientClock)
-	{
-		AdvanceClientSimulationClock(DeltaTime);
-	}
 	const FGuLiGroupAbilityConfigSnapshot& AbilityConfig = bActive
 		? ReplicatedState.AbilityConfig : LastClientBootstrap.AbilityConfig;
 	Simulation->ApplyCommittedAbilityConfig(Group, AbilityConfig);
-	if (!ReplicatedState.LatestCarrierSource.IsValid()
-		|| !Simulation->UpdateOwnedGroupCarrier(
-		Group,
-		Pawn->GetActorTransform(),
-		Pawn->GetVelocity(),
-		ReplicatedState.LatestCarrierSource))
+	// A Ship prediction barrier starts a new canonical-move epoch and deliberately
+	// discards the server's earlier move history. Never attach those now-unresolvable
+	// carrier references to a later Wingman Candidate; start a fresh local trail at
+	// the first source in the new epoch. This is the same discontinuity boundary used
+	// by the Ship movement protocol, not a position correction for any Wingman.
+	if (ReplicatedState.LatestCarrierSource.IsValid()
+		&& (RetainedTrajectoryCarrierGroup != Group
+			|| RetainedTrajectoryCarrierEpoch
+				!= ReplicatedState.LatestCarrierSource.CanonicalEpoch))
+	{
+		for (uint8 FlightIndex = 0u; FlightIndex < GULI_WINGMAN_FLIGHT_COUNT; ++FlightIndex)
+		{
+			RetainedTrajectoryByFlight[FlightIndex].Reset();
+			LastRetainedTrajectoryTickByFlight[FlightIndex] = 0u;
+		}
+		RetainedTrajectoryCarrierGroup = Group;
+		RetainedTrajectoryCarrierEpoch =
+			ReplicatedState.LatestCarrierSource.CanonicalEpoch;
+	}
+	if (!Simulation->UpdateOwnedGroupCarrier(
+			Group,
+			Pawn->GetActorTransform(),
+			Pawn->GetVelocity(),
+			ReplicatedState.LatestCarrierSource,
+			Pawn))
 	{
 		if (bListenSmokeDiagnostics)
 		{
@@ -2836,6 +2963,18 @@ void UGuLiWingmanRelayComponent::TickOwnerClientSimulation(const float DeltaTime
 	}
     Simulation->TickAttackRuns(Group, ReplicatedState.AttackState,
         ReplicatedState.Lease.LeaseEpoch, ClientSimulationTick, GetEstimatedServerTimeSeconds(), bActive && !bClientBootstrapPending);
+	if (!Simulation->AdvanceOwnedGroup(Group, DeltaTime))
+	{
+		if (bListenSmokeDiagnostics)
+		{
+			++ListenSmokeOwnerMissingRuntimeGateCount;
+		}
+		return;
+	}
+	AdvanceClientSimulationClock(DeltaTime);
+	// Normal flight recovery is fully local. The v13 emergency-rebase RPC remains
+	// decodable for an in-flight compatibility packet, but the owner simulation
+	// never waits for or automatically requests a server movement decision.
 	if (!bActive)
 	{
 		CaptureOwnerTrajectory(*Simulation, PrivateTrajectoryCaptureIntervalTicks);
@@ -2860,12 +2999,16 @@ void UGuLiWingmanRelayComponent::TickOwnerClientSimulation(const float DeltaTime
 		? EGuLiWingmanUploadRateClass::HighRate10Hz
 		: EGuLiWingmanUploadRateClass::Cruise5Hz;
 	const uint32 CaptureIntervalTicks = bHighRate ? 3u : 6u;
-	// Five large Unreliable RPCs issued on one actor channel tick are not a five-Flight
-	// delivery contract: remote channels may retain only the leading bunches while the
-	// listen-host fast path hides that loss.  Stagger due Flights fairly across producer
-	// ticks.  Six 30 Hz ticks contain five Cruise sends; three ticks contain up to six
-	// HighRate sends, so these caps preserve the negotiated per-Flight rates.
-	const uint8 MaximumUploadsThisTick = bHighRate ? 2u : 1u;
+	// Keep staggering at normal frame rates, but scale the per-frame budget when PIE
+	// drops below 20 Hz. A fixed one-Flight cap made the five-Flight refresh cycle
+	// exceed the one-second lease freshness deadline, eventually revoking the whole
+	// group even though the owner was still simulating and submitting valid poses.
+	const uint8 FreshnessUploadsThisTick = static_cast<uint8>(FMath::Clamp(
+		FMath::CeilToInt(FMath::Clamp(DeltaTime, 0.0f, 0.5f) * 10.0f),
+		1,
+		static_cast<int32>(GULI_WINGMAN_FLIGHT_COUNT)));
+	const uint8 MaximumUploadsThisTick = FMath::Max<uint8>(
+		bHighRate ? 2u : 1u, FreshnessUploadsThisTick);
 	const uint8 StartingFlightIndex = static_cast<uint8>(
 		NextClientFlightUploadCursor % GULI_WINGMAN_FLIGHT_COUNT);
 	uint8 SuccessfulUploadsThisTick = 0u;
@@ -2876,8 +3019,15 @@ void UGuLiWingmanRelayComponent::TickOwnerClientSimulation(const float DeltaTime
 	{
 		const uint8 FlightIndex = static_cast<uint8>(
 			(StartingFlightIndex + Offset) % GULI_WINGMAN_FLIGHT_COUNT);
-		if (ElapsedNonZeroSequenceTicks(
-			LastSubmittedClientTickByFlight[FlightIndex], ClientSimulationTick) < CaptureIntervalTicks)
+		const uint32 ElapsedTicks = ElapsedNonZeroSequenceTicks(
+			LastSubmittedClientTickByFlight[FlightIndex], ClientSimulationTick);
+		const double WallAgeSeconds = LastSubmittedServerTimeByFlight[FlightIndex] > 0.0
+			? EstimatedServerTime - LastSubmittedServerTimeByFlight[FlightIndex]
+			: DBL_MAX;
+		const bool bFreshnessDue = FMath::IsFinite(WallAgeSeconds)
+			&& WallAgeSeconds >= 0.4;
+		if (ElapsedTicks == 0u
+			|| (ElapsedTicks < CaptureIntervalTicks && !bFreshnessDue))
 		{
 			continue;
 		}
@@ -2968,6 +3118,7 @@ void UGuLiWingmanRelayComponent::TickOwnerClientSimulation(const float DeltaTime
 		NextClientFlightUploadCursor = static_cast<uint8>(
 			(FlightIndex + 1u) % GULI_WINGMAN_FLIGHT_COUNT);
 		LastSubmittedClientTickByFlight[FlightIndex] = ClientSimulationTick;
+		LastSubmittedServerTimeByFlight[FlightIndex] = EstimatedServerTime;
 		NextClientFrameSequenceByFlight[FlightIndex] =
 			NextClientFrameSequenceByFlight[FlightIndex] == MAX_uint32
 			? 1u : NextClientFrameSequenceByFlight[FlightIndex] + 1u;
@@ -2978,6 +3129,65 @@ void UGuLiWingmanRelayComponent::TickOwnerClientSimulation(const float DeltaTime
 	TickOwnerBasicWeapon(GetWorld()->GetTimeSeconds());
 }
 
+void UGuLiWingmanRelayComponent::DrainAndSubmitEmergencyRebaseRequests(
+	UGuLiWingmanSimulationSubsystem& Simulation,
+	const FGuLiWingmanGroupHandle& Group)
+{
+	TArray<FGuLiWingmanLocalRebaseRequest> LocalRequests;
+	Simulation.DrainEmergencyRebaseRequests(Group, LocalRequests);
+	for (const FGuLiWingmanLocalRebaseRequest& Local : LocalRequests)
+	{
+		const uint8 FlightIndex = Local.Wingman.Flight.FlightIndex;
+		const uint32 RequestSequence = NextClientEmergencyRebaseSequence;
+		NextClientEmergencyRebaseSequence = AdvanceNonZeroSequence(
+			NextClientEmergencyRebaseSequence, 1u);
+		if (FlightIndex >= GULI_WINGMAN_FLIGHT_COUNT
+			|| ClientAcceptedSequenceByFlight[FlightIndex] == 0u)
+		{
+			FGuLiWingmanEmergencyRebaseResponse LocalRejection;
+			LocalRejection.Wingman = Local.Wingman;
+			LocalRejection.LeaseEpoch = ReplicatedState.Lease.LeaseEpoch;
+			LocalRejection.RequestSequence = RequestSequence;
+			LocalRejection.Result = EGuLiWingmanEmergencyRebaseResult::StaleBaseline;
+			LocalRejection.RetryAfterServerTimeSeconds =
+				GetEstimatedServerTimeSeconds() + 1.0;
+			Simulation.ApplyEmergencyRebaseResponse(LocalRejection, nullptr);
+			continue;
+		}
+		FGuLiWingmanEmergencyRebaseRequest Request;
+		Request.MatchEpoch = ReplicatedState.MatchEpoch;
+		Request.ConnectionGeneration = ReplicatedState.ConnectionGeneration;
+		Request.Wingman = Local.Wingman;
+		Request.LeaseEpoch = ReplicatedState.Lease.LeaseEpoch;
+		Request.RosterRevision = ReplicatedState.RosterRevision;
+		Request.RequestSequence = RequestSequence;
+		Request.BaselineAcceptedSequence =
+			ClientAcceptedSequenceByFlight[FlightIndex];
+		Request.Reason = Local.Reason;
+		if (Request.IsWellFormed())
+		{
+#if !UE_BUILD_SHIPPING
+			if (FParse::Param(FCommandLine::Get(), TEXT("GuLiListenSmoke")))
+			{
+				++ListenSmokeEmergencyRebaseRequestCount;
+			}
+#endif
+			ServerRequestEmergencyRebase(Request);
+		}
+		else
+		{
+			FGuLiWingmanEmergencyRebaseResponse LocalRejection;
+			LocalRejection.Wingman = Local.Wingman;
+			LocalRejection.LeaseEpoch = ReplicatedState.Lease.LeaseEpoch;
+			LocalRejection.RequestSequence = RequestSequence;
+			LocalRejection.Result = EGuLiWingmanEmergencyRebaseResult::InvalidRequest;
+			LocalRejection.RetryAfterServerTimeSeconds =
+				GetEstimatedServerTimeSeconds() + 1.0;
+			Simulation.ApplyEmergencyRebaseResponse(LocalRejection, nullptr);
+		}
+	}
+}
+
 void UGuLiWingmanRelayComponent::TickOwnerBasicWeapon(const double NowSeconds)
 {
 	if (!GetWorld() || !FMath::IsFinite(NowSeconds) || NowSeconds < 0.0
@@ -2986,7 +3196,6 @@ void UGuLiWingmanRelayComponent::TickOwnerBasicWeapon(const double NowSeconds)
 		return;
 	}
 	TArray<const FGuLiWingmanWeaponChannelConfig*> AutomaticChannels;
-	double MaximumRangeCentimeters = 0.0;
 	for (const FGuLiWingmanWeaponChannelConfig& Channel :
 		ReplicatedState.AbilityConfig.WeaponChannels)
 	{
@@ -2994,8 +3203,6 @@ void UGuLiWingmanRelayComponent::TickOwnerBasicWeapon(const double NowSeconds)
             && Channel.Runtime.Attack.Pattern == EGuLiWingmanAttackPattern::Legacy)
 		{
 			AutomaticChannels.Add(&Channel);
-			MaximumRangeCentimeters = FMath::Max(
-				MaximumRangeCentimeters, static_cast<double>(Channel.Runtime.RangeCentimeters));
 		}
 	}
 	if (AutomaticChannels.IsEmpty())
@@ -3027,33 +3234,12 @@ void UGuLiWingmanRelayComponent::TickOwnerBasicWeapon(const double NowSeconds)
 		return;
 	}
 
-	const APlayerController* Controller = Cast<APlayerController>(GetOwner());
-	const AGuLiBattlePlayerState* PlayerState = Controller
-		? Controller->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
-	const EGuLiTeam EmitterTeam = PlayerState ? PlayerState->GetTeam() : EGuLiTeam::Unassigned;
 	UGuLiWingmanSimulationSubsystem* Simulation =
 		GetWorld()->GetSubsystem<UGuLiWingmanSimulationSubsystem>();
-	if (!Simulation || EmitterTeam == EGuLiTeam::Unassigned)
+	if (!Simulation)
 	{
 		return;
 	}
-
-	TArray<FGuLiWingmanTargetObservation> Targets;
-	GatherBasicWeaponTargets(EstimatedServerNowSeconds, Targets);
-	if (Targets.IsEmpty())
-	{
-		return;
-	}
-	FGuLiWingmanTargetSpatialHash TargetSpatialHash;
-	const double TargetCellSizeCentimeters = FMath::Clamp(
-		MaximumRangeCentimeters,
-		100.0,
-		100000.0);
-	if (!TargetSpatialHash.Build(Targets, TargetCellSizeCentimeters))
-	{
-		return;
-	}
-	TArray<FGuLiWingmanTargetObservation> NearbyTargets;
 
 	for (const int32 GroupMemberIndex : DueEmitterIndices)
 	{
@@ -3087,6 +3273,16 @@ void UGuLiWingmanRelayComponent::TickOwnerBasicWeapon(const double NowSeconds)
 		{
 			continue;
 		}
+		const FGuLiWingmanAttackTarget* AssignedTarget =
+			GuLiWingmanTargeting::ResolveTargetForEmitter(
+				ReplicatedState.AttackState, EmitterSample->Wingman);
+		if (!AssignedTarget || !AssignedTarget->IsValid()
+			|| EstimatedServerNowSeconds + 0.05 < AssignedTarget->ServerTime
+			|| EstimatedServerNowSeconds - AssignedTarget->ServerTime
+				> FGuLiWingmanTargetAcquisition::MaximumAcceptedPoseAgeSeconds)
+		{
+			continue;
+		}
 		const FVector EmitterLocation(
 			static_cast<double>(EmitterSample->PositionCentimeters.X),
 			static_cast<double>(EmitterSample->PositionCentimeters.Y),
@@ -3097,26 +3293,16 @@ void UGuLiWingmanRelayComponent::TickOwnerBasicWeapon(const double NowSeconds)
 			static_cast<double>(EmitterSample->RotationCentiDegrees.Z) * 0.01);
 		for (const FGuLiWingmanWeaponChannelConfig* Channel : AutomaticChannels)
 		{
-			if (!Channel || !TargetSpatialHash.QuerySphere(
-				EmitterLocation,
-				static_cast<double>(Channel->Runtime.RangeCentimeters),
-				NearbyTargets)
-				|| NearbyTargets.IsEmpty())
+			if (!Channel || !GuLiWingmanAttack::IsInsideForwardArc(
+				EmitterLocation, EmitterRotation.Vector(), AssignedTarget->Location,
+				AssignedTarget->Radius, Channel->Runtime.RangeCentimeters,
+				Channel->Runtime.TargetConeHalfAngleDegrees))
 			{
 				continue;
 			}
-			FGuLiWingmanTargetObservation SelectedTarget;
-			if (!FGuLiWingmanTargetAcquisition::SelectBestTarget(
-				EmitterLocation,
-				EmitterRotation.Vector(),
-				EmitterTeam,
-				Channel->Runtime,
-				NearbyTargets,
-				[this, &EmitterLocation](const FGuLiWingmanTargetObservation& Target)
-				{
-					return HasClientLineOfSight(EmitterLocation, Target);
-				},
-				SelectedTarget))
+			const bool bHasLineOfSight = !Channel->Runtime.bRequiresLineOfSight
+				|| HasClientLineOfSight(EmitterLocation, *AssignedTarget);
+			if (!bHasLineOfSight)
 			{
 				continue;
 			}
@@ -3128,11 +3314,10 @@ void UGuLiWingmanRelayComponent::TickOwnerBasicWeapon(const double NowSeconds)
 				ReplicatedState.MatchEpoch,
 				ReplicatedState.Lease.LeaseEpoch,
 				*Channel,
-				SelectedTarget.Target,
-				SelectedTarget.Location,
+				*AssignedTarget,
 				NowSeconds,
 				ClientSimulationTick,
-				true,
+				bHasLineOfSight,
 				Intent))
 			{
 				SubmitFireIntent(Intent);
@@ -3141,129 +3326,9 @@ void UGuLiWingmanRelayComponent::TickOwnerBasicWeapon(const double NowSeconds)
 	}
 }
 
-void UGuLiWingmanRelayComponent::GatherBasicWeaponTargets(
-	const double EstimatedServerNowSeconds,
-	TArray<FGuLiWingmanTargetObservation>& OutTargets) const
-{
-	OutTargets.Reset();
-	UWorld* World = GetWorld();
-	if (!World)
-	{
-		return;
-	}
-
-	TSet<FGuLiTargetHandle> AddedTargets;
-	for (TActorIterator<AActor> It(World); It; ++It)
-	{
-		AActor* Actor = *It;
-		const UGuLiCombatHealthComponent* Health = Actor
-			? Actor->FindComponentByClass<UGuLiCombatHealthComponent>() : nullptr;
-		if (!Health || !Health->GetIsReplicated() || !Health->IsAlive()
-			|| Health->GetCombatTeam() == EGuLiTeam::Unassigned
-			|| Health->GetTargetHandle().Kind != EGuLiTargetKind::Ship
-			|| !Health->GetTargetHandle().IsValid()
-			|| AddedTargets.Contains(Health->GetTargetHandle()))
-		{
-			continue;
-		}
-		FGuLiWingmanTargetObservation& Observation = OutTargets.AddDefaulted_GetRef();
-		Observation.Target = Health->GetTargetHandle();
-		Observation.Team = Health->GetCombatTeam();
-		Observation.Location = Actor->GetActorLocation();
-		Observation.CollisionActor = Actor;
-		Observation.Source = EGuLiWingmanTargetObservationSource::ReplicatedShip;
-		Observation.bAlive = true;
-		Observation.bFromAcceptedOrReliableState = !Observation.Location.ContainsNaN();
-		if (Observation.bFromAcceptedOrReliableState)
-		{
-			AddedTargets.Add(Observation.Target);
-		}
-		else
-		{
-			OutTargets.Pop(EAllowShrinking::No);
-		}
-	}
-
-	const AGuLiSoldierStateReplicator* SoldierStates = nullptr;
-	const AGuLiCommanderPresentationActor* CommanderPresentation = nullptr;
-	for (TActorIterator<AGuLiSoldierStateReplicator> It(World); It; ++It)
-	{
-		if (It->GetSnapshotMatchEpoch() == ReplicatedState.MatchEpoch)
-		{
-			SoldierStates = *It;
-			break;
-		}
-	}
-	for (TActorIterator<AGuLiCommanderPresentationActor> It(World); It; ++It)
-	{
-		CommanderPresentation = *It;
-		break;
-	}
-	if (SoldierStates && CommanderPresentation)
-	{
-		FGuLiWingmanTargetAcquisition::AppendCommanderObservations(
-			SoldierStates->GetItems(),
-			SoldierStates->GetSnapshotMatchEpoch(),
-			ReplicatedState.MatchEpoch,
-			[CommanderPresentation](const FGuLiSoldierId SoldierId, FTransform& OutTransform)
-			{
-				return CommanderPresentation->TryGetAuthoritativeSoldierTransform(
-					SoldierId,
-					OutTransform);
-			},
-			OutTargets);
-	}
-
-	const AGuLiBattleGameState* BattleGameState = World->GetGameState<AGuLiBattleGameState>();
-	AGuLiWingmanPresentationActor* WingmanPresentation = nullptr;
-	for (TActorIterator<AGuLiWingmanPresentationActor> It(World); It; ++It)
-	{
-		WingmanPresentation = *It;
-		break;
-	}
-	if (!BattleGameState || !WingmanPresentation)
-	{
-		return;
-	}
-	const TArray<FGuLiCommanderRoleSlotState> RoleSlots = BattleGameState->GetRoleSlots();
-	auto ResolveTeam = [&RoleSlots](const FGuid& PlayerGuid)
-	{
-		for (const FGuLiCommanderRoleSlotState& Slot : RoleSlots)
-		{
-			if (Slot.bOccupied && Slot.PlayerGuid == PlayerGuid)
-			{
-				return Slot.Team;
-			}
-		}
-		return EGuLiTeam::Unassigned;
-	};
-	TArray<FGuLiWingmanAcceptedTargetPose> AcceptedWingmen;
-	WingmanPresentation->GetFreshAcceptedTargetPoses(
-		EstimatedServerNowSeconds,
-		FGuLiWingmanTargetAcquisition::MaximumAcceptedPoseAgeSeconds,
-		AcceptedWingmen);
-	for (const FGuLiWingmanAcceptedTargetPose& Pose : AcceptedWingmen)
-	{
-		const FGuLiTargetHandle Target = GuLiCombatTargets::MakeWingmanTargetHandle(Pose.Wingman);
-		const EGuLiTeam Team = ResolveTeam(Pose.LeaseOwnerPlayerGuid);
-		if (!Target.IsValid() || Team == EGuLiTeam::Unassigned || AddedTargets.Contains(Target))
-		{
-			continue;
-		}
-		FGuLiWingmanTargetObservation& Observation = OutTargets.AddDefaulted_GetRef();
-		Observation.Target = Target;
-		Observation.Team = Team;
-		Observation.Location = Pose.Transform.GetLocation();
-		Observation.Source = EGuLiWingmanTargetObservationSource::WingmanAcceptedPose;
-		Observation.bAlive = true;
-		Observation.bFromAcceptedOrReliableState = true;
-		AddedTargets.Add(Target);
-	}
-}
-
 bool UGuLiWingmanRelayComponent::HasClientLineOfSight(
 	const FVector& SourceLocation,
-	const FGuLiWingmanTargetObservation& Target) const
+	const FGuLiWingmanAttackTarget& Target) const
 {
 	UWorld* World = GetWorld();
 	if (!World || SourceLocation.ContainsNaN() || Target.Location.ContainsNaN())
@@ -3283,7 +3348,16 @@ bool UGuLiWingmanRelayComponent::HasClientLineOfSight(
 	{
 		return true;
 	}
-	return Target.CollisionActor.IsValid() && Hit.GetActor() == Target.CollisionActor.Get();
+	if (const AActor* HitActor = Hit.GetActor())
+	{
+		if (const UGuLiCombatHealthComponent* Health =
+			HitActor->FindComponentByClass<UGuLiCombatHealthComponent>())
+		{
+			return Health->GetTargetHandle() == Target.Target;
+		}
+	}
+	return FVector::Distance(Hit.ImpactPoint, Target.Location)
+		<= FMath::Max(100.0f, Target.Radius);
 }
 
 void UGuLiWingmanRelayComponent::ObserveAuthoritativeServerTime(
@@ -3345,12 +3419,15 @@ void UGuLiWingmanRelayComponent::DestroyClientOwnedGroup()
 	ClientHeartbeatAccumulator = 0.0;
 	ClientCandidateAccumulator = 0.0;
 	CaptureClockGroup = {};
-	LastCompletedMassTick = 0u;
+	LastCompletedPawnTick = 0u;
 	LastOwnerUploadSimulationTick = 0u;
 	NextClientActiveRosterAckRetryTimeSeconds = 0.0;
 	LastRequestedResumeLeaseEpoch = 0u;
 	NextClientResumeRequestTimeSeconds = 0.0;
+	NextClientEmergencyRebaseSequence = 1u;
 	NextClientFlightUploadCursor = 0u;
+	RetainedTrajectoryCarrierGroup = FGuLiWingmanGroupHandle{};
+	RetainedTrajectoryCarrierEpoch = 0u;
 	bClientBootstrapPending = false;
 	LastAcknowledgedGroup = FGuLiWingmanGroupHandle{};
 	LastAcknowledgedLeaseEpoch = 0u;
@@ -3361,6 +3438,7 @@ void UGuLiWingmanRelayComponent::DestroyClientOwnedGroup()
 		NextClientFrameSequenceByFlight[FlightIndex] = 0u;
 		ClientAcceptedSequenceByFlight[FlightIndex] = 0u;
 		LastSubmittedClientTickByFlight[FlightIndex] = 0u;
+		LastSubmittedServerTimeByFlight[FlightIndex] = 0.0;
 		RetainedTrajectoryByFlight[FlightIndex].Reset();
 		LastRetainedTrajectoryTickByFlight[FlightIndex] = 0u;
 	}
@@ -3494,7 +3572,7 @@ bool UGuLiWingmanRelayComponent::ConsumeValidatedCandidateResultWire(
 	// subsequent requests carry the old BaseAcceptedSequence and the authority replies
 	// with a typed Pending/Rejected result that echoes the exact current Flight baseline.
 	// Advance only that logical high-water mark after validating the full current
-	// Group/Lease/Roster/Match context. The missing pose is never fabricated: Mass weapon
+	// Group/Lease/Roster/Match context. The missing pose is never fabricated: Pawn weapon
 	// SourceRefs and the cached Accepted batch advance only when a complete Accepted DTO arrives.
 	const uint8 FlightIndex = WireCopy.Acceptance.FlightIndex;
 	if (FlightIndex < GULI_WINGMAN_FLIGHT_COUNT)

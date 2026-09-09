@@ -1,20 +1,21 @@
 {
 	"success": true,
-	"asset_path": "/Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior",
+	"asset_path": "/Game/GuLiStrike/Wingman/ST_WingmanMemberBehavior.ST_WingmanMemberBehavior",
 	"asset_class": "StateTree",
-	"compiled_editor_data_hash": 2701118262,
+	"compiled_editor_data_hash": 3297903743,
 	"ready_to_run": true,
 	"package_dirty": false,
-	"policy_task_count": 5,
-	"policy_condition_count": 5,
-	"root_event_transition_count": 5,
+	"behavior_task_count": 6,
+	"behavior_condition_count": 6,
+	"root_event_transition_count": 6,
 	"validation_error": "",
 	"states": [
+		"AirAttack",
 		"Dead",
 		"EmergencyAvoid",
 		"EscortOrbit",
-		"JoiningEscort",
-		"OwnerUnavailable"
+		"GroundAttack",
+		"Rejoin"
 	],
 	"execution_contract":
 	{

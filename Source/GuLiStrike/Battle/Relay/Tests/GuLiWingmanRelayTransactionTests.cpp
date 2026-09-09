@@ -21,9 +21,14 @@ namespace GuLiWingmanRelayTransactionTests
 	{
 		FGuLiGroupAbilityConfigSnapshot Config;
 		Config.ShipInstanceId = Group.ShipInstanceId;
+		Config.MatchEpoch = 17u;
+		Config.Team = EGuLiTeam::Red;
+		Config.OwnerPlayerGuid = FGuid(1u, 2u, 3u, 4u);
+		Config.WingmanTypeId = TEXT("RelayTransactionTestWingman");
 		Config.ShipGeneration = Group.ShipGeneration;
 		Config.GroupGeneration = Group.GroupGeneration;
 		Config.AbilitySetRevision = 4u;
+		Config.LoadoutRevision = 4u;
 		Config.SnapshotRevision = 5u;
 		Config.bGroupAbilitiesValid = true;
 		Config.FormationAbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
@@ -400,7 +405,7 @@ bool FGuLiWingmanAtomicTransferKindsTransactionTest::RunTest(const FString& Para
 		Fixture.Relay.GetLeaseState().Lifecycle == EGuLiWingmanGroupLifecycle::Active);
 
 	Fixture.Relay.AdvanceTime(1.61, FoundCarrier());
-	TestEqual(TEXT("1 Hz watchdog makes the silent owner Stale"),
+	TestEqual(TEXT("Connection watchdog makes the silent owner Stale after missing traffic"),
 		Fixture.Relay.GetLeaseState().Lifecycle, EGuLiWingmanGroupLifecycle::Stale);
 	TestTrue(TEXT("Authority begins resume"), Fixture.Relay.BeginResume(1.65));
 	TestTrue(TEXT("Resume freezes a fresh six-scope baseline"),
@@ -432,7 +437,7 @@ bool FGuLiWingmanStrictContractGateTransactionTest::RunTest(const FString& Param
 	FFixture Fixture;
 	if (!Fixture.Initialize(*this, 4u)) return false;
 	const TArray<FGuLiWingmanCandidateBatch> Flights = Fixture.MakeAllFlights();
-	if (!TestEqual(TEXT("Atomic baseline commits before strict gate checks"),
+	if (!TestEqual(TEXT("Atomic baseline commits before pose relay checks"),
 		Fixture.Relay.SubmitAtomicCandidateFragment(
 			Fixture.Owner, Fixture.MakeFragment(Flights, Flights, 0u, 1u), 0.1,
 			FoundCarrier(), PermitWorld()).Disposition,
@@ -440,10 +445,12 @@ bool FGuLiWingmanStrictContractGateTransactionTest::RunTest(const FString& Param
 		|| !Fixture.AckAndActivate(*this)) return false;
 
 	auto SubmitRejected = [&Fixture](FGuLiWingmanCandidateBatch Candidate,
-		const EGuLiWingmanRejectReason ExpectedReason)
+		const double NowSeconds, const EGuLiWingmanRejectReason ExpectedReason)
 	{
+		const uint32 BaselineBefore = Fixture.Relay.GetAcceptedSequenceForFlight(
+			Candidate.FlightIndex);
 		const FGuLiWingmanSubmissionResult Result = Fixture.Relay.SubmitCandidate(
-			Fixture.Owner, Candidate, 0.3, FoundCarrier(), PermitWorld());
+			Fixture.Owner, Candidate, NowSeconds, FoundCarrier(), PermitWorld());
 		FGuLiWingmanCandidateResultWire WireResult;
 		WireResult.CandidateSequence = Result.Sequence;
 		WireResult.Acceptance = Result.Acceptance;
@@ -451,54 +458,90 @@ bool FGuLiWingmanStrictContractGateTransactionTest::RunTest(const FString& Param
 		return Result.RejectReason == ExpectedReason
 			&& Result.Acceptance.Disposition == EGuLiWingmanSubmissionDisposition::Rejected
 			&& Result.Acceptance.RejectReason == ExpectedReason
-			&& Result.Acceptance.AcceptedSnapshotSequence == 1u
-			&& Result.Acceptance.RebaseBaseline.AcceptedSequence == 1u
+			&& Result.Acceptance.AcceptedSnapshotSequence == BaselineBefore
+			&& Result.Acceptance.RebaseBaseline.AcceptedSequence == BaselineBefore
 			&& Result.Acceptance.ValidatedPayloadHash == 0u
 			&& Result.Acceptance.IsWellFormed()
 			&& GuLiWingmanRelayWire::MakeValidatedCandidateResultCopy(WireResult, WireCopy)
 			&& WireCopy.Acceptance.RejectReason == ExpectedReason
-			&& WireCopy.Acceptance.RebaseBaseline.AcceptedSequence == 1u;
+			&& WireCopy.Acceptance.RebaseBaseline.AcceptedSequence == BaselineBefore;
 	};
 	const FGuLiWingmanCandidateBatch Current = Fixture.MakeFlight(0u, 6u, 2u, 1u, 106u, 0.3);
 	FGuLiWingmanCandidateBatch WrongConnection = Current;
 	++WrongConnection.ConnectionGeneration;
-	TestTrue(TEXT("Old connection generation is rejected with a typed rebase baseline"),
-		SubmitRejected(WrongConnection, EGuLiWingmanRejectReason::WrongConnectionGeneration));
-	FGuLiWingmanCandidateBatch WrongRoster = Current;
-	++WrongRoster.RosterRevision;
-	TestTrue(TEXT("Old roster revision is rejected before reserving state"),
-		SubmitRejected(WrongRoster, EGuLiWingmanRejectReason::StaleRosterRevision));
-	FGuLiWingmanCandidateBatch WrongNavigation = Current;
-	++WrongNavigation.ObstacleRevision;
-	TestTrue(TEXT("Mismatched navigation revisions are rejected"),
-		SubmitRejected(WrongNavigation, EGuLiWingmanRejectReason::NavigationRevisionMismatch));
-	FGuLiWingmanCandidateBatch WrongBaseline = Current;
-	++WrongBaseline.BaseAcceptedSequence;
-	TestTrue(TEXT("A stale Accepted baseline cannot advance the Flight"),
-		SubmitRejected(WrongBaseline, EGuLiWingmanRejectReason::StaleAcceptedBaseline));
+	TestTrue(TEXT("A different connection cannot publish poses for this lease"),
+		SubmitRejected(WrongConnection, 0.3,
+			EGuLiWingmanRejectReason::WrongConnectionGeneration));
 	FGuLiWingmanCandidateBatch WrongLease = Current;
 	++WrongLease.LeaseEpoch;
-	TestTrue(TEXT("Old lease epoch is rejected"),
-		SubmitRejected(WrongLease, EGuLiWingmanRejectReason::WrongLease));
-	FGuLiWingmanCandidateBatch WrongAbility = Current;
-	--WrongAbility.AbilitySetRevision;
-	TestTrue(TEXT("Old ability revision is rejected"),
-		SubmitRejected(WrongAbility, EGuLiWingmanRejectReason::StaleAbilitySetRevision));
-	FGuLiWingmanCandidateBatch PartialFlight = Current;
+	TestTrue(TEXT("A different lease cannot publish poses for this group"),
+		SubmitRejected(WrongLease, 0.3, EGuLiWingmanRejectReason::WrongLease));
+	FGuLiWingmanCandidateBatch StaleFrame = Current;
+	StaleFrame.FrameSequence = 1u;
+	TestTrue(TEXT("A replayed Flight frame cannot overwrite a newer remote pose"),
+		SubmitRejected(StaleFrame, 0.3, EGuLiWingmanRejectReason::StaleFrameSequence));
+
+	FGuLiWingmanCandidateBatch DifferentRosterRevision = Current;
+	++DifferentRosterRevision.RosterRevision;
+	DifferentRosterRevision.BaseAcceptedSequence += 99u;
+	const FGuLiWingmanSubmissionResult RosterResult = Fixture.Relay.SubmitCandidate(
+		Fixture.Owner, DifferentRosterRevision, 0.3, FoundCarrier(), PermitWorld());
+	TestEqual(TEXT("Roster and last-acknowledged baseline skew do not stop a live-identity pose"),
+		RosterResult.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
+	TestEqual(TEXT("The client-authored roster metadata is relayed verbatim"),
+		RosterResult.AcceptedBatch.RosterRevision, DifferentRosterRevision.RosterRevision);
+	TestEqual(TEXT("The client baseline remains diagnostic metadata on normal pose relay"),
+		RosterResult.AcceptedBatch.BaseAcceptedSequence,
+		DifferentRosterRevision.BaseAcceptedSequence);
+
+	FGuLiWingmanCandidateBatch DifferentNavigation = Fixture.MakeFlight(
+		0u, 7u, 3u, 2u, 112u, 0.5);
+	++DifferentNavigation.ObstacleRevision;
+	const FGuLiWingmanSubmissionResult NavigationResult = Fixture.Relay.SubmitCandidate(
+		Fixture.Owner, DifferentNavigation, 0.51, FoundCarrier(), PermitWorld());
+	TestEqual(TEXT("Client FlightNav revision skew cannot stop client-authored motion"),
+		NavigationResult.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
+	TestEqual(TEXT("Navigation metadata remains available to diagnostics"),
+		NavigationResult.AcceptedBatch.ValidationRevisions.ObstacleRevision,
+		DifferentNavigation.ObstacleRevision);
+
+	FGuLiWingmanCandidateBatch DifferentAbility = Fixture.MakeFlight(
+		0u, 8u, 4u, 3u, 118u, 0.7);
+	--DifferentAbility.AbilitySetRevision;
+	const FGuLiWingmanSubmissionResult AbilityResult = Fixture.Relay.SubmitCandidate(
+		Fixture.Owner, DifferentAbility, 0.72, FoundCarrier(), PermitWorld());
+	TestEqual(TEXT("Reliable ability projection skew cannot interrupt pose relay"),
+		AbilityResult.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
+	TestEqual(TEXT("Ability metadata remains attached to the accepted pose"),
+		AbilityResult.AcceptedBatch.AbilitySetRevision, DifferentAbility.AbilitySetRevision);
+
+	FGuLiWingmanCandidateBatch PartialFlight = Fixture.MakeFlight(
+		0u, 9u, 5u, 4u, 124u, 0.9);
 	PartialFlight.Samples.Pop(EAllowShrinking::No);
 	PartialFlight.RequiredMemberMask &= static_cast<uint8>(~(1u << 4u));
-	TestTrue(TEXT("Partial live Flight membership is rejected"),
-		SubmitRejected(PartialFlight, EGuLiWingmanRejectReason::WrongFlightCoverage));
+	const FGuLiWingmanSubmissionResult PartialResult = Fixture.Relay.SubmitCandidate(
+		Fixture.Owner, PartialFlight, 0.93, FoundCarrier(), PermitWorld());
+	TestEqual(TEXT("A normal packet may relay any non-empty set of live Flight members"),
+		PartialResult.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
+	TestEqual(TEXT("Partial relay publishes exactly the supplied live members"),
+		PartialResult.AcceptedBatch.Samples.Num(), PartialFlight.Samples.Num());
 
-	TestEqual(TEXT("Rejected strict contracts do not advance the Flight sequence"),
-		Fixture.Relay.GetAcceptedSequenceForFlight(0u), 1u);
-	TestEqual(TEXT("Rejected strict contracts do not append Accepted snapshots"),
-		Fixture.Relay.GetAcceptedHistory().Num(), GULI_WINGMAN_FLIGHT_COUNT);
+	FGuLiWingmanCandidateBatch ForgedGeneration = Fixture.MakeFlight(
+		0u, 10u, 6u, 5u, 130u, 1.1);
+	++ForgedGeneration.Samples[0].Wingman.EntityGeneration;
+	TestTrue(TEXT("Full member identity still rejects a removed or forged generation"),
+		SubmitRejected(ForgedGeneration, 1.14, EGuLiWingmanRejectReason::EmitterDead));
+	TestEqual(TEXT("Four metadata-tolerant poses advance the Flight sequence"),
+		Fixture.Relay.GetAcceptedSequenceForFlight(0u), 5u);
+	TestEqual(TEXT("Structural rejections never append remote presentation snapshots"),
+		Fixture.Relay.GetAcceptedHistory().Num(), GULI_WINGMAN_FLIGHT_COUNT + 4);
+	TestEqual(TEXT("Pose relay performs no server Wingman movement"),
+		Fixture.Relay.GetServerWingmanMovementWriteCount(), 0ull);
 	return true;
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanTrailAndGrantTransactionTest,
-	"GuLiStrike.Wingman.Relay.ProtocolTransactions.TrailGrantPending",
+	"GuLiStrike.Wingman.Relay.ProtocolTransactions.TrailGrantAndMetadataRelay",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 
 bool FGuLiWingmanTrailAndGrantTransactionTest::RunTest(const FString& Parameters)
@@ -515,19 +558,22 @@ bool FGuLiWingmanTrailAndGrantTransactionTest::RunTest(const FString& Parameters
 
 	FGuLiWingmanCandidateBatch NoGrant = Fixture.MakeFlight(0u, 6u, 2u, 1u, 106u, 0.3);
 	NoGrant.RequestedRateClass = EGuLiWingmanUploadRateClass::HighRate10Hz;
+	NoGrant.ObservedGrantRevision += 99u;
 	const FGuLiWingmanSubmissionResult NoGrantResult = Fixture.Relay.SubmitCandidate(
 		Fixture.Owner, NoGrant, 0.3, FoundCarrier(), PermitWorld());
-	TestEqual(TEXT("Requested high rate cannot self-authorize"), NoGrantResult.RejectReason,
-		EGuLiWingmanRejectReason::UploadGrantMismatch);
+	TestEqual(TEXT("Upload grant skew is diagnostic metadata for normal pose relay"),
+		NoGrantResult.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
 
 	FGuLiWingmanUploadRateGrant Grant;
 	TestTrue(TEXT("Authority combat evidence issues reliable high-rate Grant"),
 		Fixture.Relay.IssueHighRateGrant(106u,
 			EGuLiWingmanUploadRateGrantReason::ServerObservedCombat, 0.3, Grant));
-	FGuLiWingmanCandidateBatch WithTrail = NoGrant;
+	FGuLiWingmanCandidateBatch WithTrail = Fixture.MakeFlight(
+		0u, 7u, 3u, 2u, 109u, 0.31);
+	WithTrail.RequestedRateClass = EGuLiWingmanUploadRateClass::HighRate10Hz;
 	WithTrail.ObservedGrantRevision = Grant.GrantRevision;
 	FGuLiWingmanCandidateTrailSample& Trail = WithTrail.TrailSamples.AddDefaulted_GetRef();
-	Trail.ClientSimTick = 103u;
+	Trail.ClientSimTick = 107u;
 	Trail.CaptureEstimatedServerTimeSeconds = 0.2;
 	Trail.CarrierSource = WithTrail.CarrierSource;
 	Trail.Samples = Flights[0].Samples;
@@ -548,11 +594,11 @@ bool FGuLiWingmanTrailAndGrantTransactionTest::RunTest(const FString& Parameters
 			? EGuLiWingmanRejectReason::None : EGuLiWingmanRejectReason::InvalidIdentity;
 	};
 	const FGuLiWingmanSubmissionResult TrailResult = Fixture.Relay.SubmitCandidate(
-		Fixture.Owner, WithTrail, 0.3, FoundCarrier(), CountWorldSegments);
-	TestEqual(TEXT("Granted Trail Candidate commits"), TrailResult.Disposition,
+		Fixture.Owner, WithTrail, 0.31, FoundCarrier(), CountWorldSegments);
+	TestEqual(TEXT("Trail Candidate commits independently of upload grant state"), TrailResult.Disposition,
 		EGuLiWingmanSubmissionDisposition::Accepted);
-	TestEqual(TEXT("Five members across two explicit segments reach the World gate"),
-		ValidatedWorldSegments, 10);
+	TestEqual(TEXT("Client trail history does not invoke a server World movement gate"),
+		ValidatedWorldSegments, 0);
 	FGuLiWingmanCandidateResultWire AcceptedWire;
 	AcceptedWire.CandidateSequence = TrailResult.Sequence;
 	AcceptedWire.Acceptance = TrailResult.Acceptance;
@@ -569,33 +615,39 @@ bool FGuLiWingmanTrailAndGrantTransactionTest::RunTest(const FString& Parameters
 	TestFalse(TEXT("A payload/acceptance hash mismatch never reaches the local apply path"),
 		GuLiWingmanRelayWire::MakeValidatedCandidateResultCopy(TamperedWire, AcceptedWireCopy));
 
-	FGuLiWingmanCandidateBatch Burst = Fixture.MakeFlight(0u, 7u, 3u, 2u, 109u, 0.35);
+	FGuLiWingmanCandidateBatch Burst = Fixture.MakeFlight(0u, 8u, 4u, 1u, 112u, 0.311);
 	Burst.RequestedRateClass = EGuLiWingmanUploadRateClass::HighRate10Hz;
-	Burst.ObservedGrantRevision = Grant.GrantRevision;
+	Burst.ObservedGrantRevision = Grant.GrantRevision + 100u;
 	const FGuLiWingmanSubmissionResult BurstResult = Fixture.Relay.SubmitCandidate(
-		Fixture.Owner, Burst, 0.35, FoundCarrier(), PermitWorld());
-	TestEqual(TEXT("Even a granted client cannot exceed 10Hz"), BurstResult.RejectReason,
-		EGuLiWingmanRejectReason::RateLimited);
+		Fixture.Owner, Burst, 0.311, FoundCarrier(), PermitWorld());
+	TestEqual(TEXT("A newer normal pose is latest-wins even when packets arrive in a burst"),
+		BurstResult.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
 
-	FGuLiWingmanCandidateBatch Pending = Fixture.MakeFlight(1u, 8u, 2u, 1u, 106u, 0.5);
-	Pending.ObservedGrantRevision = Grant.GrantRevision;
-	const FGuLiCarrierSourceResolver PendingCarrier = [](const FGuLiCarrierSourceRef&, FGuLiRelayCarrierState&)
+	FGuLiWingmanCandidateBatch CarrierMetadata = Fixture.MakeFlight(
+		1u, 9u, 2u, 1u, 106u, 0.5);
+	CarrierMetadata.ObservedGrantRevision = Grant.GrantRevision;
+	int32 CarrierResolverCalls = 0;
+	const FGuLiCarrierSourceResolver PendingCarrier = [&CarrierResolverCalls](
+		const FGuLiCarrierSourceRef&, FGuLiRelayCarrierState&)
 	{
+		++CarrierResolverCalls;
 		return EGuLiRelayCarrierLookupResult::Pending;
 	};
-	TestEqual(TEXT("One unresolved Flight endpoint becomes pending"),
-		Fixture.Relay.SubmitCandidate(Fixture.Owner, Pending, 0.5, PendingCarrier, PermitWorld()).Disposition,
-		EGuLiWingmanSubmissionDisposition::Pending);
-	FGuLiWingmanCandidateBatch Replacement = Fixture.MakeFlight(1u, 9u, 3u, 1u, 112u, 0.7);
+	TestEqual(TEXT("Unresolved carrier history is metadata and cannot stop pose relay"),
+		Fixture.Relay.SubmitCandidate(
+			Fixture.Owner, CarrierMetadata, 0.5, PendingCarrier, PermitWorld()).Disposition,
+		EGuLiWingmanSubmissionDisposition::Accepted);
+	TestEqual(TEXT("Normal pose relay does not call the carrier resolver"),
+		CarrierResolverCalls, 0);
+	FGuLiWingmanCandidateBatch Replacement = Fixture.MakeFlight(
+		1u, 10u, 3u, 2u, 112u, 0.7);
 	Replacement.ObservedGrantRevision = Grant.GrantRevision;
-	TestEqual(TEXT("Newer same-Flight packet evicts pending and can commit"),
+	TestEqual(TEXT("A newer same-Flight packet advances from the relayed baseline"),
 		Fixture.Relay.SubmitCandidate(Fixture.Owner, Replacement, 0.7, FoundCarrier(), PermitWorld()).Disposition,
 		EGuLiWingmanSubmissionDisposition::Accepted);
 	TArray<FGuLiWingmanSubmissionResult> Deferred;
 	Fixture.Relay.DrainDeferredCandidateResults(Deferred);
-	TestTrue(TEXT("Evicted pending packet receives a rejection"), Deferred.Num() == 1
-		&& Deferred[0].Sequence == Pending.CandidateSequence
-		&& Deferred[0].Disposition == EGuLiWingmanSubmissionDisposition::Rejected);
+	TestTrue(TEXT("Pose metadata creates no deferred server movement work"), Deferred.IsEmpty());
 	return true;
 }
 

@@ -5,14 +5,10 @@
 #include "CoreMinimal.h"
 #include "Battle/Relay/GuLiWingmanRelayTypes.h"
 #include "GameFramework/Actor.h"
-#include "MassArchetypeTypes.h"
-#include "MassEntityHandle.h"
-#include "MassEntityTypes.h"
 #include "Gameplay/Wingman/Presentation/GuLiWingmanPresentationPolicy.h"
 #include "GuLiWingmanPresentationActor.generated.h"
 
-class UInstancedStaticMeshComponent;
-class UMassEntitySubsystem;
+class AGuLiWingmanPawn;
 class USceneComponent;
 class UStaticMesh;
 
@@ -28,14 +24,12 @@ struct FGuLiWingmanPresentationTrack
 	FGuLiWingmanHandle Handle;
 	TArray<FGuLiWingmanPresentationPose> Samples;
 	FTransform PresentedTransform = FTransform::Identity;
-	FTransform PendingRemoteMirrorTransform = FTransform::Identity;
-	FMassEntityHandle RemoteMirrorEntity;
+	TWeakObjectPtr<AGuLiWingmanPawn> PresentedPawn;
 	float Opacity = 0.0f;
+	uint32 LastRebasedSequence = 0u;
 	bool bAlive = true;
 	bool bHasPresentedTransform = false;
 	bool bInteractable = false;
-	bool bRemoteMirrorUpdatePending = false;
-	bool bPendingRemoteMirrorInteractable = false;
 };
 
 struct FGuLiWingmanPresentationGroupRuntime
@@ -46,20 +40,16 @@ struct FGuLiWingmanPresentationGroupRuntime
 	TArray<FGuLiWingmanPresentationTrack> Tracks;
 	EGuLiWingmanPresentationRole Role = EGuLiWingmanPresentationRole::Remote;
 	uint64 LastBootstrapCutId = 0u;
-	/** Strict production sequences and timestamps are monotonic per Flight, not per group. */
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> LastSourceSequenceByFlight{};
 	TStaticArray<double, GULI_WINGMAN_FLIGHT_COUNT> LastSourceTimeSecondsByFlight{};
-	/** Aggregate clock anchor and legacy whole-group compatibility high-water marks. */
 	uint32 LastSourceSequence = 0u;
 	double LastSourceTimeSeconds = 0.0;
 	double ClockServerSeconds = 0.0;
 	double ClockLocalReceiptSeconds = 0.0;
-	int32 InstanceBaseIndex = INDEX_NONE;
 	bool bHasClock = false;
 	bool bUsingServerTimeline = true;
 };
 
-/** Exact last server-Accepted pose for client-side target selection; never extrapolated. */
 struct GULISTRIKE_API FGuLiWingmanAcceptedTargetPose
 {
 	FGuLiWingmanHandle Wingman;
@@ -69,188 +59,106 @@ struct GULISTRIKE_API FGuLiWingmanAcceptedTargetPose
 	uint32 AcceptedSequence = 0u;
 };
 
-struct FGuLiWingmanInstancePool
-{
-	TArray<int32> FreeBlockBaseIndices;
-	TArray<FTransform> CachedTransforms;
-	TArray<float> CachedOpacities;
-};
-
 /**
- * Client-only Wingman renderer. Owner poses and accepted remote poses use
- * separate ISM pools; only remote poses create presentation-only Mass mirrors.
- * No value in this actor is replicated or accepted back by authority.
+ * Client-only logical snapshot manager and remote Wingman Actor pool.
+ * Owner tracks point at the Pawns simulated by UGuLiWingmanSimulationSubsystem;
+ * remote tracks receive at most 175 lightweight interpolation-only Pawns.
  */
-UCLASS(Transient, NotPlaceable, Config = Game)
+UCLASS(Transient, NotPlaceable, Config=Game)
 class GULISTRIKE_API AGuLiWingmanPresentationActor final : public AActor
 {
 	GENERATED_BODY()
 
 public:
 	AGuLiWingmanPresentationActor();
-
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Tick(float DeltaSeconds) override;
 
-	/** Finds the per-World actor or creates it locally. Returns null on Dedicated Server. */
 	static AGuLiWingmanPresentationActor* FindOrSpawn(UWorld* World);
 
-	/**
-	 * Six-scope bootstrap is the only group creation gate. Validation and local
-	 * staging complete before the prior generation is replaced.
-	 */
-	UFUNCTION(BlueprintCallable, Category = "Wingman|Presentation")
-	bool ApplyBootstrap(
-		const FGuLiWingmanBootstrapBundle& Bundle,
-		bool bLocallyOwned,
-		double LocalReceiptTimeSeconds);
-
-	/** Local Lease Owner frame; it never enters the remote accepted timeline. */
-	UFUNCTION(BlueprintCallable, Category = "Wingman|Presentation")
-	bool ApplyOwnerFrame(
-		const FGuLiWingmanCandidateBatch& Candidate,
+	UFUNCTION(BlueprintCallable, Category="Wingman|Presentation")
+	bool ApplyBootstrap(const FGuLiWingmanBootstrapBundle& Bundle,
+		bool bLocallyOwned, double LocalReceiptTimeSeconds);
+	UFUNCTION(BlueprintCallable, Category="Wingman|Presentation")
+	bool ApplyOwnerFrame(const FGuLiWingmanCandidateBatch& Candidate,
 		double LocalTimeSeconds);
-
-	/** Narrow Relay OnRep entry point for one accepted snapshot. */
-	UFUNCTION(BlueprintCallable, Category = "Wingman|Presentation")
-	bool ApplyAcceptedSnapshot(
-		const FGuLiWingmanAcceptedBatch& AcceptedBatch,
+	UFUNCTION(BlueprintCallable, Category="Wingman|Presentation")
+	bool ApplyAcceptedSnapshot(const FGuLiWingmanAcceptedBatch& AcceptedBatch,
 		double LocalReceiptTimeSeconds);
-
-	/** Optional clock observation from the connection clock-sync path. */
-	bool ObserveServerClock(
-		const FGuLiWingmanGroupHandle& Group,
-		double EstimatedServerNowSeconds,
-		double LocalReceiptTimeSeconds);
-
-	/** Role changes clear the old source timeline; the next frame must rebase it. */
-	UFUNCTION(BlueprintCallable, Category = "Wingman|Presentation")
-	bool SetGroupRole(
-		const FGuLiWingmanGroupHandle& Group,
+	bool ObserveServerClock(const FGuLiWingmanGroupHandle& Group,
+		double EstimatedServerNowSeconds, double LocalReceiptTimeSeconds);
+	UFUNCTION(BlueprintCallable, Category="Wingman|Presentation")
+	bool SetGroupRole(const FGuLiWingmanGroupHandle& Group,
 		EGuLiWingmanPresentationRole NewRole);
-
-	/** Reliable roster/death OnRep hook. */
-	UFUNCTION(BlueprintCallable, Category = "Wingman|Presentation")
+	UFUNCTION(BlueprintCallable, Category="Wingman|Presentation")
 	bool SetWingmanAlive(const FGuLiWingmanHandle& Wingman, bool bAlive);
-
-	UFUNCTION(BlueprintCallable, Category = "Wingman|Presentation")
+	UFUNCTION(BlueprintCallable, Category="Wingman|Presentation")
 	bool RemoveGroup(const FGuLiWingmanGroupHandle& Group);
-
-	UFUNCTION(BlueprintCallable, Category = "Wingman|Presentation")
+	UFUNCTION(BlueprintCallable, Category="Wingman|Presentation")
 	void ResetAllGroups();
 
-	/** Read-only client query for HUD/picking; false while fading or hidden. */
-	UFUNCTION(BlueprintPure, Category = "Wingman|Presentation")
-	bool TryGetPresentedTransform(
-		const FGuLiWingmanHandle& Wingman,
+	UFUNCTION(BlueprintPure, Category="Wingman|Presentation")
+	bool TryGetPresentedTransform(const FGuLiWingmanHandle& Wingman,
 		FTransform& OutTransform) const;
-
-	UFUNCTION(BlueprintPure, Category = "Wingman|Presentation")
+	UFUNCTION(BlueprintPure, Category="Wingman|Presentation")
 	bool IsWingmanInteractable(const FGuLiWingmanHandle& Wingman) const;
+	UFUNCTION(BlueprintPure, Category="Wingman|Presentation")
+	AGuLiWingmanPawn* FindPresentedPawn(const FGuLiWingmanHandle& Wingman) const;
+	UFUNCTION(BlueprintPure, Category="Wingman|Presentation")
+	int32 GetActiveActorCount() const;
+	UFUNCTION(BlueprintPure, Category="Wingman|Presentation")
+	int32 GetActiveRemoteActorCount() const;
 
-	/** Read-only proof that a complete retained six-scope Cut reached presentation. */
-	bool HasAppliedBootstrap(
-		const FGuLiWingmanGroupHandle& Group,
-		uint64 CutId) const;
-
-	/**
-	 * Enumerates fresh exact Accepted samples for remote groups. It deliberately
-	 * ignores PresentedTransform, interpolation and extrapolation.
-	 */
-	void GetFreshAcceptedTargetPoses(
-		double EstimatedServerNowSeconds,
+	bool HasAppliedBootstrap(const FGuLiWingmanGroupHandle& Group, uint64 CutId) const;
+	void GetFreshAcceptedTargetPoses(double EstimatedServerNowSeconds,
 		double MaximumAcceptedAgeSeconds,
 		TArray<FGuLiWingmanAcceptedTargetPose>& OutPoses) const;
-
-	/** Runtime override; otherwise the client loads DefaultPresentationMesh lazily. */
-	UFUNCTION(BlueprintCallable, Category = "Wingman|Presentation")
+	UFUNCTION(BlueprintCallable, Category="Wingman|Presentation")
 	void ConfigurePresentationMeshes(UStaticMesh* InOwnerMesh, UStaticMesh* InRemoteMesh);
-
-	UFUNCTION(BlueprintPure, Category = "Wingman|Presentation")
-	UInstancedStaticMeshComponent* GetOwnerInstances() const { return OwnerInstances; }
-
-	UFUNCTION(BlueprintPure, Category = "Wingman|Presentation")
-	UInstancedStaticMeshComponent* GetRemoteInstances() const { return RemoteInstances; }
 
 private:
 	bool EnsureClientResources();
-	void ConfigureInstanceComponent(UInstancedStaticMeshComponent& Component, UStaticMesh* Mesh) const;
-	bool EnsureRemoteMassArchetype();
-
-	bool BuildRuntimeFromBootstrap(
-		const FGuLiWingmanBootstrapBundle& Bundle,
+	bool BuildRuntimeFromBootstrap(const FGuLiWingmanBootstrapBundle& Bundle,
 		EGuLiWingmanPresentationRole PresentationRole,
 		double LocalReceiptTimeSeconds,
 		FGuLiWingmanPresentationGroupRuntime& OutRuntime) const;
-	bool ValidateAcceptedBatch(
-		const FGuLiWingmanPresentationGroupRuntime& Runtime,
+	bool ValidateAcceptedBatch(const FGuLiWingmanPresentationGroupRuntime& Runtime,
 		const FGuLiWingmanAcceptedBatch& AcceptedBatch) const;
-	bool AppendAcceptedBatch(
-		FGuLiWingmanPresentationGroupRuntime& Runtime,
+	bool AppendAcceptedBatch(FGuLiWingmanPresentationGroupRuntime& Runtime,
 		const FGuLiWingmanAcceptedBatch& AcceptedBatch) const;
-	bool ValidateCandidate(
-		const FGuLiWingmanPresentationGroupRuntime& Runtime,
+	bool ValidateCandidate(const FGuLiWingmanPresentationGroupRuntime& Runtime,
 		const FGuLiWingmanCandidateBatch& Candidate) const;
-
-	int32 AllocateInstanceBlock(EGuLiWingmanPresentationRole PresentationRole);
-	void ReleaseInstanceBlock(EGuLiWingmanPresentationRole PresentationRole, int32 BaseIndex);
-	FGuLiWingmanInstancePool& GetInstancePool(EGuLiWingmanPresentationRole PresentationRole);
-	const FGuLiWingmanInstancePool& GetInstancePool(EGuLiWingmanPresentationRole PresentationRole) const;
-	UInstancedStaticMeshComponent* GetInstanceComponent(EGuLiWingmanPresentationRole PresentationRole) const;
-	bool UpdateInstance(
-		EGuLiWingmanPresentationRole PresentationRole,
-		int32 InstanceIndex,
-		const FTransform& Transform,
-		float Opacity);
-
-	void TickGroup(FGuLiWingmanPresentationGroupRuntime& Runtime, double LocalNowSeconds);
-	void DestroyRemoteMirrors(FGuLiWingmanPresentationGroupRuntime& Runtime);
-	void UpdateRemoteMirror(
-		FGuLiWingmanPresentationTrack& Track,
-		const FTransform& Transform,
-		bool bInteractable);
-	void FlushRemoteMirrorUpdate(FGuLiWingmanPresentationTrack& Track);
+	void TickGroup(FGuLiWingmanPresentationGroupRuntime& Runtime,
+		double LocalNowSeconds);
+	void RefreshActorAllocation();
+	AGuLiWingmanPawn* AcquireRemotePawn(const FGuLiWingmanHandle& Handle);
+	void ReleaseRemotePawn(FGuLiWingmanPresentationTrack& Track);
+	FVector GetLocalViewLocation() const;
 	FGuLiWingmanPresentationTrack* FindTrack(const FGuLiWingmanHandle& Wingman);
 	const FGuLiWingmanPresentationTrack* FindTrack(const FGuLiWingmanHandle& Wingman) const;
 
-	UPROPERTY(VisibleAnywhere, Category = "Wingman|Presentation")
+	UPROPERTY(VisibleAnywhere, Category="Wingman|Presentation")
 	TObjectPtr<USceneComponent> SceneRoot;
-
-	/** Created dynamically only in non-Dedicated game Worlds. */
-	UPROPERTY(Transient, VisibleAnywhere, Category = "Wingman|Presentation")
-	TObjectPtr<UInstancedStaticMeshComponent> OwnerInstances;
-
-	/** Created dynamically only in non-Dedicated game Worlds. */
-	UPROPERTY(Transient, VisibleAnywhere, Category = "Wingman|Presentation")
-	TObjectPtr<UInstancedStaticMeshComponent> RemoteInstances;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Wingman|Presentation")
+	UPROPERTY(EditDefaultsOnly, Category="Wingman|Presentation")
 	TObjectPtr<UStaticMesh> OwnerMesh;
-
-	UPROPERTY(EditDefaultsOnly, Category = "Wingman|Presentation")
+	UPROPERTY(EditDefaultsOnly, Category="Wingman|Presentation")
 	TObjectPtr<UStaticMesh> RemoteMesh;
-
-	/** Client-only soft reference. Dedicated Server never resolves this asset. */
-	UPROPERTY(Config, EditDefaultsOnly, Category = "Wingman|Presentation")
+	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation")
 	TSoftObjectPtr<UStaticMesh> DefaultPresentationMesh;
-
-	UPROPERTY(Config, EditDefaultsOnly, Category = "Wingman|Presentation", meta = (ClampMin = "0.0", ClampMax = "0.5"))
+	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation",
+		meta=(ClampMin="0.0", ClampMax="0.5"))
 	float InterpolationBackTimeSeconds = 0.1f;
-
-	UPROPERTY(Config, EditDefaultsOnly, Category = "Wingman|Presentation", meta = (ClampMin = "1"))
+	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation", meta=(ClampMin="1"))
 	int32 MaximumPresentedGroups = 128;
-
-	UPROPERTY(Config, EditDefaultsOnly, Category = "Wingman|Presentation", meta = (ClampMin = "0", Units = "cm"))
+	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation", meta=(ClampMin="1"))
+	int32 MaximumActiveWingmanActors = 200;
+	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation", meta=(ClampMin="0"))
+	int32 MaximumRemoteWingmanActors = 175;
+	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation",
+		meta=(ClampMin="0", Units="cm"))
 	int32 CullDistanceCentimeters = 300000;
 
-	UPROPERTY(Transient)
-	TObjectPtr<UMassEntitySubsystem> MassEntitySubsystem;
-
-	FMassArchetypeHandle RemoteMassArchetype;
 	TMap<FGuLiWingmanGroupHandle, FGuLiWingmanPresentationGroupRuntime> Groups;
-	FGuLiWingmanInstancePool OwnerPool;
-	FGuLiWingmanInstancePool RemotePool;
-	bool bOwnerRenderStateDirty = false;
-	bool bRemoteRenderStateDirty = false;
+	TArray<TWeakObjectPtr<AGuLiWingmanPawn>> RemotePawnPool;
 };

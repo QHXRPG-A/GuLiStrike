@@ -254,7 +254,7 @@ const TSet<FName>& FGuLiWingmanQASchema::GetFieldNames()
 		"commander_fixed_step_ms queue_depth queue_capacity oldest_item_age_ms memory_private_bytes bytes stream_tag "
 		"measurement_direction endpoint_id log_stream elapsed_seconds role_ready ship_count wingman_count "
 		"commander_count relay_group_count active_relay_group_count well_formed_bootstrap_count "
-		"atomic_committed_count strict_flight_group_count minimum_accepted_frame owner_mass_entity_count trace_path artifact_path "
+		"atomic_committed_count strict_flight_group_count minimum_accepted_frame owner_pawn_count trace_path artifact_path "
 		"message sample_index process_role completed scenario_passed observer_no_private_authority "
 		"observer_public_cuts_applied observer_first_cut_id observer_first_bootstrap_elapsed_seconds "
 		"observer_player candidate_accept_count fire_accept_count cut_id health_permille group "

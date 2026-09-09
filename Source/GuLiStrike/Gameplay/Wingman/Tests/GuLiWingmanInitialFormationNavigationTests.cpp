@@ -88,10 +88,12 @@ namespace GuLiWingmanInitialFormationNavigationTests
 			return false;
 		}
 
+		const FGuLiShipAbilityLoadoutState Loadout =
+			FGuLiShipAbilityLoadoutState::MakeNativeV1();
 		TArray<FGuLiShipAbilityGrant> Grants;
 		FString Error;
 		if (!AbilitySet->ResolveLoadout(
-			FGuLiShipAbilityLoadoutState::MakeNativeV1(), Grants, &Error))
+			Loadout, Grants, &Error))
 		{
 			Test.AddError(FString::Printf(TEXT("Native v1 loadout did not resolve: %s"), *Error));
 			return false;
@@ -99,9 +101,14 @@ namespace GuLiWingmanInitialFormationNavigationTests
 
 		OutConfig = FGuLiGroupAbilityConfigSnapshot();
 		OutConfig.ShipInstanceId = Group.ShipInstanceId;
+		OutConfig.MatchEpoch = 7u;
+		OutConfig.Team = EGuLiTeam::Red;
+		OutConfig.OwnerPlayerGuid = FGuid(11u, 12u, 13u, 14u);
+		OutConfig.WingmanTypeId = AbilitySet->WingmanTypeId;
 		OutConfig.ShipGeneration = Group.ShipGeneration;
 		OutConfig.GroupGeneration = Group.GroupGeneration;
 		OutConfig.AbilitySetRevision = AbilitySet->Revision;
+		OutConfig.LoadoutRevision = Loadout.Revision;
 		OutConfig.SnapshotRevision = 1u;
 		OutConfig.bGroupAbilitiesValid = true;
 		for (const FGuLiShipAbilityGrant& Grant : Grants)
@@ -112,16 +119,56 @@ namespace GuLiWingmanInitialFormationNavigationTests
 				OutConfig.FormationAbilityId = Grant.AbilityId;
 				OutConfig.FormationDefinitionRevision = Grant.GetDefinitionRevision();
 				OutConfig.FormationDefinitionChecksum = Grant.GetDefinitionChecksum();
+				if (!Grant.FormationDefinition
+					|| !Grant.FormationDefinition->BuildRuntimeConfig(
+						1u, OutConfig.FormationRuntime, &Error))
+				{
+					Test.AddError(Error);
+					return false;
+				}
 				break;
 			case EGuLiShipAbilitySlot::BasicWeapon:
-				OutConfig.BasicWeaponAbilityId = Grant.AbilityId;
-				OutConfig.BasicWeaponDefinitionRevision = Grant.GetDefinitionRevision();
-				OutConfig.BasicWeaponDefinitionChecksum = Grant.GetDefinitionChecksum();
-				break;
 			case EGuLiShipAbilitySlot::Missile:
-				OutConfig.MissileAbilityId = Grant.AbilityId;
-				OutConfig.MissileDefinitionRevision = Grant.GetDefinitionRevision();
-				OutConfig.MissileDefinitionChecksum = Grant.GetDefinitionChecksum();
+				if (!Grant.WeaponDefinition)
+				{
+					Test.AddError(TEXT("Native v1 weapon grant has no definition"));
+					return false;
+				}
+				{
+					FGuLiWingmanWeaponChannelConfig& Channel =
+						OutConfig.WeaponChannels.AddDefaulted_GetRef();
+					Channel.Binding = FGuLiWeaponBindingKey::Wingman(
+						OutConfig.MatchEpoch, OutConfig.Team,
+						OutConfig.OwnerPlayerGuid, OutConfig.WingmanTypeId,
+						Grant.GetEffectiveWeaponSlotId());
+					Channel.SkillId = Grant.GetEffectiveSkillId();
+					Channel.AbilityId = Grant.AbilityId;
+					Channel.Kind = Grant.WeaponDefinition->Kind;
+					Channel.CooldownGroupId = Grant.GetEffectiveCooldownGroupId();
+					Channel.bEnabled = true;
+					Channel.ProfileRevision = Grant.ProfileRevision;
+					Channel.DefinitionRevision = Grant.GetDefinitionRevision();
+					Channel.DefinitionChecksum = Grant.GetDefinitionChecksum();
+					if (!Grant.WeaponDefinition->BuildRuntimeConfig(Channel.Runtime, &Error))
+					{
+						Test.AddError(Error);
+						return false;
+					}
+					if (Grant.Slot == EGuLiShipAbilitySlot::BasicWeapon)
+					{
+						OutConfig.BasicWeaponAbilityId = Grant.AbilityId;
+						OutConfig.BasicWeaponDefinitionRevision = Grant.GetDefinitionRevision();
+						OutConfig.BasicWeaponDefinitionChecksum = Grant.GetDefinitionChecksum();
+						OutConfig.BasicWeaponRuntime = Channel.Runtime;
+					}
+					else
+					{
+						OutConfig.MissileAbilityId = Grant.AbilityId;
+						OutConfig.MissileDefinitionRevision = Grant.GetDefinitionRevision();
+						OutConfig.MissileDefinitionChecksum = Grant.GetDefinitionChecksum();
+						OutConfig.MissileRuntime = Channel.Runtime;
+					}
+				}
 				break;
 			default:
 				break;
@@ -130,7 +177,9 @@ namespace GuLiWingmanInitialFormationNavigationTests
 
 		OutConfig.FormationCommandRevision = 1u;
 		OutConfig.EffectiveClientSimTick = 30u;
-		OutConfig.FormationRuntime.InnerRingRadiusCentimeters = 200.0f;
+		// Thirteen inner-ring members need at least the configured 150 cm
+		// separation chord, which is stricter than collision-sphere diameter.
+		OutConfig.FormationRuntime.InnerRingRadiusCentimeters = 350.0f;
 		OutConfig.FormationRuntime.OuterRingRadiusCentimeters = 400.0f;
 		OutConfig.FormationRuntime.InnerRingHeightCentimeters = 100.0f;
 		OutConfig.FormationRuntime.OuterRingHeightCentimeters = -100.0f;
@@ -138,7 +187,7 @@ namespace GuLiWingmanInitialFormationNavigationTests
 		OutConfig.FormationRuntime.SeparationRadiusCentimeters = AgentRadiusCentimeters * 3.0f;
 		OutConfig.RefreshHash();
 		return Test.TestTrue(
-			TEXT("Initial-formation config is a usable protocol-v7 projection"),
+			TEXT("Initial-formation config is a usable protocol-v13 projection"),
 			OutConfig.IsUsableByLeaseOwner());
 	}
 
@@ -228,7 +277,7 @@ namespace GuLiWingmanInitialFormationNavigationTests
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FGuLiWingmanInitialFormationNavigationAllSlotsTest,
-	"GuLiStrike.Wingman.Mass.InitialFormationNavigationValidatesAllSlots",
+	"GuLiStrike.Wingman.Pawn.InitialFormationNavigationValidatesAllSlots",
 	EAutomationTestFlags::EditorContext
 		| EAutomationTestFlags::ClientContext
 		| EAutomationTestFlags::EngineFilter)
@@ -252,7 +301,7 @@ bool FGuLiWingmanInitialFormationNavigationAllSlotsTest::RunTest(const FString& 
 	{
 		return false;
 	}
-	Simulation->SetGroupBehaviorStateTreeForTests(nullptr);
+	Simulation->SetMemberBehaviorStateTreeForTests(nullptr);
 	if (!RegisterSingleCellNavigation(*this, *Fixture.World, *Navigation))
 	{
 		return false;
@@ -280,8 +329,8 @@ bool FGuLiWingmanInitialFormationNavigationAllSlotsTest::RunTest(const FString& 
 		return false;
 	}
 	TestEqual(
-		TEXT("Accepted formation creates exactly 25 owner entities"),
-		Simulation->GetOwnedEntityCount(ValidGroup),
+		TEXT("Accepted formation creates exactly 25 owner Pawns"),
+		Simulation->GetOwnedPawnCount(ValidGroup),
 		static_cast<int32>(GULI_WINGMAN_GROUP_SIZE));
 
 	const FGuLiWingmanGroupHandle RejectedGroup = MakeGroup(2u);
@@ -318,7 +367,7 @@ bool FGuLiWingmanInitialFormationNavigationAllSlotsTest::RunTest(const FString& 
 			AgentRadiusCentimeters),
 		EGuLiFlightNavSegmentStatus::EndpointOutsideNavigation);
 
-	const int32 EntityCountBeforeRejectedCreate = Simulation->GetTotalOwnedEntityCount();
+	const int32 PawnCountBeforeRejectedCreate = Simulation->GetTotalOwnedPawnCount();
 	TestFalse(
 		TEXT("Production creation rejects a group when any of its 25 initial slots is outside FlightNav"),
 		Simulation->CreateOrResetOwnedGroup(
@@ -328,20 +377,20 @@ bool FGuLiWingmanInitialFormationNavigationAllSlotsTest::RunTest(const FString& 
 			FVector::ZeroVector,
 			CarrierSource));
 	TestEqual(
-		TEXT("Rejected group creates zero owner entities"),
-		Simulation->GetOwnedEntityCount(RejectedGroup),
+		TEXT("Rejected group creates zero owner Pawns"),
+		Simulation->GetOwnedPawnCount(RejectedGroup),
 		0);
 	TestEqual(
 		TEXT("Rejected creation adds zero entities to the existing valid group"),
-		Simulation->GetTotalOwnedEntityCount(),
-		EntityCountBeforeRejectedCreate);
+		Simulation->GetTotalOwnedPawnCount(),
+		PawnCountBeforeRejectedCreate);
 	TestEqual(
 		TEXT("The previously accepted 25-member group remains intact"),
-		Simulation->GetOwnedEntityCount(ValidGroup),
+		Simulation->GetOwnedPawnCount(ValidGroup),
 		static_cast<int32>(GULI_WINGMAN_GROUP_SIZE));
 
 	TestTrue(TEXT("Accepted group cleanup succeeds"), Simulation->DestroyOwnedGroup(ValidGroup));
-	TestEqual(TEXT("Test cleanup removes all owner entities"), Simulation->GetTotalOwnedEntityCount(), 0);
+	TestEqual(TEXT("Test cleanup removes all owner Pawns"), Simulation->GetTotalOwnedPawnCount(), 0);
 	return true;
 }
 

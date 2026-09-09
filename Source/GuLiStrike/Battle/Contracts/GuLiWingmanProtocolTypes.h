@@ -20,6 +20,33 @@ inline constexpr double GULI_WINGMAN_MAXIMUM_CARRIER_DISTANCE_CENTIMETERS = 2500
 /** Keeps quantization and carrier motion away from the authoritative hard edge. */
 inline constexpr double GULI_WINGMAN_OWNER_CARRIER_DISTANCE_RESERVE_CENTIMETERS = 10000.0;
 
+namespace GuLiWingmanProtocol
+{
+	/** Canonical position representation used by Candidate samples on the wire. */
+	FORCEINLINE FIntVector QuantizePositionCentimeters(const FVector& Position)
+	{
+		const auto QuantizeCoordinate = [](const double Value)
+		{
+			return static_cast<int32>(FMath::Clamp(
+				FMath::RoundToDouble(Value),
+				static_cast<double>(MIN_int32),
+				static_cast<double>(MAX_int32)));
+		};
+		return FIntVector(
+			QuantizeCoordinate(Position.X),
+			QuantizeCoordinate(Position.Y),
+			QuantizeCoordinate(Position.Z));
+	}
+
+	FORCEINLINE FVector ExpandPositionCentimeters(const FIntVector& Position)
+	{
+		return FVector(
+			static_cast<double>(Position.X),
+			static_cast<double>(Position.Y),
+			static_cast<double>(Position.Z));
+	}
+}
+
 /** Server-owned upload rate. RequestedRateClass in a Candidate is never an authority grant. */
 UENUM(BlueprintType)
 enum class EGuLiWingmanUploadRateClass : uint8
@@ -57,6 +84,30 @@ enum class EGuLiWingmanFlightMode : uint8
 	CatchUp,
 	Recover,
 	Stale
+};
+
+/** Diagnostic reason supplied with a v13 emergency rebase request. */
+UENUM(BlueprintType)
+enum class EGuLiWingmanEmergencyRebaseReason : uint8
+{
+	MovementDeadlock = 0,
+	NavigationDeadlock,
+	PhysicalObstacleDeadlock,
+	CarrierBoundaryDeadlock
+};
+
+/** Typed v13 response. The server never accepts a client-proposed position. */
+UENUM(BlueprintType)
+enum class EGuLiWingmanEmergencyRebaseResult : uint8
+{
+	Accepted = 0,
+	InvalidRequest,
+	WrongLease,
+	MemberUnavailable,
+	StaleBaseline,
+	InsufficientLowSpeedHistory,
+	RateLimited,
+	NoSafePoint
 };
 
 /** Stable identity for one Ship-owned wingman group. */
@@ -346,6 +397,73 @@ struct GULISTRIKE_API FGuLiWingmanAttackTarget
 template<> struct TStructOpsTypeTraits<FGuLiWingmanAttackTarget> : TStructOpsTypeTraitsBase2<FGuLiWingmanAttackTarget>
 { enum { WithNetSerializer = true }; };
 
+/** One reliable authority-selected automatic target for an exact member generation. */
+USTRUCT()
+struct GULISTRIKE_API FGuLiWingmanAutoTargetAssignment
+{
+	GENERATED_BODY()
+	UPROPERTY() FGuLiWingmanHandle Emitter;
+	UPROPERTY() FGuLiWingmanAttackTarget Target;
+	bool IsWellFormed(const FGuLiWingmanGroupHandle& ExpectedGroup) const;
+	bool NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess);
+};
+
+template<> struct TStructOpsTypeTraits<FGuLiWingmanAutoTargetAssignment>
+	: TStructOpsTypeTraitsBase2<FGuLiWingmanAutoTargetAssignment>
+{ enum { WithNetSerializer = true }; };
+
+/**
+ * Client diagnostic request for one stuck member. Identity, lease and Accepted
+ * baseline are the complete authority context; no destination is client-authored.
+ */
+USTRUCT(BlueprintType)
+struct GULISTRIKE_API FGuLiWingmanEmergencyRebaseRequest
+{
+	GENERATED_BODY()
+
+	UPROPERTY() uint32 ProtocolVersion = GULI_WINGMAN_PROTOCOL_VERSION;
+	UPROPERTY() uint32 MatchEpoch = 0u;
+	UPROPERTY() uint32 ConnectionGeneration = 0u;
+	UPROPERTY() FGuLiWingmanHandle Wingman;
+	UPROPERTY() uint32 LeaseEpoch = 0u;
+	UPROPERTY() uint32 RosterRevision = 0u;
+	UPROPERTY() uint32 RequestSequence = 0u;
+	UPROPERTY() uint32 BaselineAcceptedSequence = 0u;
+	UPROPERTY() EGuLiWingmanEmergencyRebaseReason Reason =
+		EGuLiWingmanEmergencyRebaseReason::MovementDeadlock;
+
+	bool IsWellFormed() const;
+	bool NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess);
+};
+
+template<> struct TStructOpsTypeTraits<FGuLiWingmanEmergencyRebaseRequest>
+	: TStructOpsTypeTraitsBase2<FGuLiWingmanEmergencyRebaseRequest>
+{ enum { WithNetSerializer = true }; };
+
+/** Reliable result paired to one emergency request. */
+USTRUCT(BlueprintType)
+struct GULISTRIKE_API FGuLiWingmanEmergencyRebaseResponse
+{
+	GENERATED_BODY()
+
+	UPROPERTY() uint32 ProtocolVersion = GULI_WINGMAN_PROTOCOL_VERSION;
+	UPROPERTY() FGuLiWingmanHandle Wingman;
+	UPROPERTY() uint32 LeaseEpoch = 0u;
+	UPROPERTY() uint32 RequestSequence = 0u;
+	UPROPERTY() EGuLiWingmanEmergencyRebaseResult Result =
+		EGuLiWingmanEmergencyRebaseResult::InvalidRequest;
+	UPROPERTY() uint32 AcceptedSequence = 0u;
+	UPROPERTY() FVector ServerPosition = FVector::ZeroVector;
+	UPROPERTY() double RetryAfterServerTimeSeconds = 0.0;
+
+	bool IsWellFormed() const;
+	bool NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess);
+};
+
+template<> struct TStructOpsTypeTraits<FGuLiWingmanEmergencyRebaseResponse>
+	: TStructOpsTypeTraitsBase2<FGuLiWingmanEmergencyRebaseResponse>
+{ enum { WithNetSerializer = true }; };
+
 /** Per-emitter authority checkpoint, including cooldown across owner handoff. */
 USTRUCT()
 struct GULISTRIKE_API FGuLiWingmanAttackCheckpoint
@@ -374,11 +492,19 @@ USTRUCT()
 struct GULISTRIKE_API FGuLiWingmanAttackAuthorityState
 {
 	GENERATED_BODY()
+	/** Shared target is populated only by the explicit manual-target branch. */
 	UPROPERTY() FGuLiWingmanAttackTarget Target;
+	UPROPERTY() TArray<FGuLiWingmanAutoTargetAssignment> AutomaticTargets;
 	UPROPERTY() TArray<FGuLiWingmanAttackCheckpoint> Checkpoints;
 	UPROPERTY() uint32 Revision = 0;
+	bool IsWellFormed(const FGuLiWingmanGroupHandle& ExpectedGroup) const;
+	bool NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess);
 	uint64 ComputeStableHash() const;
 };
+
+template<> struct TStructOpsTypeTraits<FGuLiWingmanAttackAuthorityState>
+	: TStructOpsTypeTraitsBase2<FGuLiWingmanAttackAuthorityState>
+{ enum { WithNetSerializer = true }; };
 
 /** Bounded fire record referencing an explicit validated pose tick in this same Flight batch. */
 USTRUCT()
@@ -657,6 +783,10 @@ struct GULISTRIKE_API FGuLiWingmanFireIntent
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|Combat")
 	FGuLiTargetHandle Target;
+
+	/** Authority assignment relation that permitted this exact emitter/target pair. */
+	UPROPERTY(VisibleAnywhere, Category = "Wingman|Combat")
+	uint32 TargetAssignmentRevision = 0u;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|Combat")
 	FGameplayTag WeaponAbilityId;

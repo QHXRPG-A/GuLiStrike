@@ -65,9 +65,14 @@ namespace GuLiWingmanQARoleProbePrivate
 	{
 		FGuLiGroupAbilityConfigSnapshot Config;
 		Config.ShipInstanceId = Group.ShipInstanceId;
+		Config.MatchEpoch = MatchEpoch;
+		Config.Team = EGuLiTeam::Red;
+		Config.OwnerPlayerGuid = FGuid(1u, 2u, 3u, 4u);
+		Config.WingmanTypeId = TEXT("QARoleProbeWingman");
 		Config.ShipGeneration = Group.ShipGeneration;
 		Config.GroupGeneration = Group.GroupGeneration;
 		Config.AbilitySetRevision = 4u;
+		Config.LoadoutRevision = 4u;
 		Config.SnapshotRevision = 5u;
 		Config.bGroupAbilitiesValid = true;
 		Config.FormationAbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
@@ -81,6 +86,20 @@ namespace GuLiWingmanQARoleProbePrivate
 		Config.MissileDefinitionChecksum = 0x3333444455556666ull;
 		Config.FormationCommandRevision = 9u;
 		Config.EffectiveClientSimTick = 100u;
+		FGuLiWingmanWeaponChannelConfig& Basic =
+			Config.WeaponChannels.AddDefaulted_GetRef();
+		Basic.Binding = FGuLiWeaponBindingKey::Wingman(
+			Config.MatchEpoch, Config.Team, Config.OwnerPlayerGuid,
+			Config.WingmanTypeId, TEXT("BasicWeapon"));
+		Basic.SkillId = TEXT("QA.RoleProbe.Basic.Auto");
+		Basic.AbilityId = Config.BasicWeaponAbilityId;
+		Basic.Kind = EGuLiWingmanWeaponKind::BasicAutomatic;
+		Basic.bEnabled = true;
+		Basic.ProfileRevision = 1u;
+		Basic.DefinitionRevision = Config.BasicWeaponDefinitionRevision;
+		Basic.DefinitionChecksum = Config.BasicWeaponDefinitionChecksum;
+		Basic.Runtime.CooldownSeconds = 2.0f;
+		Config.BasicWeaponRuntime = Basic.Runtime;
 		Config.RefreshHash();
 		return Config;
 	}
@@ -336,9 +355,18 @@ namespace GuLiWingmanQARoleProbePrivate
 		Intent.SourceAcceptedState = Source->StateRef;
 		Intent.ClientFireTick = Source->StateRef.ClientSimTick + 1u;
 		Intent.Target = Target;
-		Intent.WeaponAbilityId = Relay.GetAbilityConfig().BasicWeaponAbilityId;
-		Intent.WeaponDefinitionRevision = Relay.GetAbilityConfig().BasicWeaponDefinitionRevision;
-		Intent.AbilitySetRevision = Relay.GetAbilityConfig().AbilitySetRevision;
+		Intent.TargetAssignmentRevision = 1u;
+		const FGuLiGroupAbilityConfigSnapshot& Config = Relay.GetAbilityConfig();
+		const FGuLiWingmanWeaponChannelConfig* Channel =
+			Config.FindFirstWeaponChannel(EGuLiWingmanWeaponKind::BasicAutomatic);
+		if (!Channel) return FGuLiWingmanFireIntent{};
+		Intent.Binding = Channel->Binding;
+		Intent.WeaponAbilityId = Channel->AbilityId;
+		Intent.SkillId = Channel->SkillId;
+		Intent.LoadoutRevision = Config.LoadoutRevision;
+		Intent.ProfileRevision = Channel->ProfileRevision;
+		Intent.WeaponDefinitionRevision = Channel->DefinitionRevision;
+		Intent.AbilitySetRevision = Config.AbilitySetRevision;
 		Intent.AimDirectionMilli = FIntVector(1000, 0, 0);
 		Intent.bClientPredictedLineOfSight = true;
 		return Intent;
@@ -911,7 +939,7 @@ bool GuLiWingmanQARoleProbes::Supports(const FName RoleId)
 bool GuLiWingmanQARoleProbes::RequiresClientExecutionDomain(const FName RoleId)
 {
 	// These probes intentionally exercise the production Presentation actor. A
-	// Dedicated executable must never create its Mass/ISM rendering resources,
+	// Dedicated executable must never create its Wingman Pawn rendering resources,
 	// so the formal endpoint router runs them inside a real connected client.
 	return RoleId == TEXT("S6-DeathBeforePose")
 		|| RoleId == TEXT("S6-RespawnBeforeOldPose");

@@ -39,6 +39,15 @@ namespace GuLiWingmanAttackPIE
 	FDelegateHandle EndHandle;
 	FTSTicker::FDelegateHandle TargetHandle;
 	FDelegateHandle WorldHandle;
+	const FGuLiWingmanAttackTarget* FindRepresentativeTarget(
+		const FGuLiWingmanAttackAuthorityState& State)
+	{
+		if (State.Target.IsValid() && State.Target.bSpecified)
+		{
+			return &State.Target;
+		}
+		return State.AutomaticTargets.IsEmpty() ? nullptr : &State.AutomaticTargets[0].Target;
+	}
 	void Target(const TArray<FString>& Args);
 	void Start()
 	{
@@ -143,8 +152,11 @@ namespace GuLiWingmanAttackPIE
 				{
 					const auto& S=Relay->GetRelayState(); W->WriteObjectStart(); W->WriteValue(TEXT("owner"),PC->GetName());
 					W->WriteValue(TEXT("lifecycle"),int32(S.Lease.Lifecycle)); W->WriteValue(TEXT("config_valid"),S.AbilityConfig.IsUsableByLeaseOwner());
-					W->WriteValue(TEXT("accepted"),int64(S.LastAcceptedCandidateSequence)); W->WriteValue(TEXT("target"),S.AttackState.Target.Target.LocalId);
-					W->WriteValue(TEXT("target_location"),S.AttackState.Target.Location.ToString());
+					const FGuLiWingmanAttackTarget* RepresentativeTarget = FindRepresentativeTarget(S.AttackState);
+					W->WriteValue(TEXT("accepted"),int64(S.LastAcceptedCandidateSequence));
+					W->WriteValue(TEXT("automatic_target_count"), S.AttackState.AutomaticTargets.Num());
+					W->WriteValue(TEXT("target"), RepresentativeTarget ? RepresentativeTarget->Target.LocalId : 0u);
+					W->WriteValue(TEXT("target_location"), RepresentativeTarget ? RepresentativeTarget->Location.ToString() : FVector::ZeroVector.ToString());
 					W->WriteValue(TEXT("ship_location"),PC->GetPawn()?PC->GetPawn()->GetActorLocation().ToString():FVector::ZeroVector.ToString());
 					W->WriteValue(TEXT("normal_reject"),int32(Relay->GetListenSmokeLastNormalResultRejectReason()));
 					W->WriteValue(TEXT("atomic_reject"),int32(Relay->GetListenSmokeLastAtomicResultRejectReason()));
@@ -152,7 +164,19 @@ namespace GuLiWingmanAttackPIE
 					const auto& B=Relay->GetLastClientBootstrap();
 					W->WriteValue(TEXT("bootstrap_valid"),B.IsWellFormed());
 					W->WriteValue(TEXT("attack_hash_valid"),B.AttackStateHash==B.AttackState.ComputeStableHash());
-					W->WriteValue(TEXT("ground"),S.AttackState.Target.bGround); W->WriteArrayStart(TEXT("checkpoints"));
+					W->WriteValue(TEXT("ground"), RepresentativeTarget && RepresentativeTarget->bGround);
+					W->WriteArrayStart(TEXT("automatic_targets"));
+					for (const FGuLiWingmanAutoTargetAssignment& Assignment : S.AttackState.AutomaticTargets)
+					{
+						W->WriteObjectStart();
+						W->WriteValue(TEXT("member"), Assignment.Emitter.GetGroupMemberIndex());
+						W->WriteValue(TEXT("target"), Assignment.Target.Target.LocalId);
+						W->WriteValue(TEXT("revision"), int64(Assignment.Target.Revision));
+						W->WriteValue(TEXT("location"), Assignment.Target.Location.ToString());
+						W->WriteObjectEnd();
+					}
+					W->WriteArrayEnd();
+					W->WriteArrayStart(TEXT("checkpoints"));
 					for(const auto& P:S.AttackState.Checkpoints) { W->WriteObjectStart(); W->WriteValue(TEXT("member"),P.Emitter.GetGroupMemberIndex()); W->WriteValue(TEXT("shot"),P.LastShotIndex); W->WriteValue(TEXT("run"),P.RunId); W->WriteObjectEnd(); }
 					W->WriteArrayEnd(); W->WriteObjectEnd();
 				}
@@ -163,13 +187,26 @@ namespace GuLiWingmanAttackPIE
 				for(const auto& D:Entries)
 				{
 					W->WriteObjectStart(); W->WriteValue(TEXT("member"),D.Wingman.GetGroupMemberIndex()); W->WriteValue(TEXT("phase"),D.Phase);
+					W->WriteValue(TEXT("flight_mode"), D.FlightMode);
+					W->WriteValue(TEXT("target"), D.Target.Target.LocalId);
+					W->WriteValue(TEXT("target_location"), D.Target.Location.ToString());
+					W->WriteValue(TEXT("target_ground"), D.Target.bGround);
+					W->WriteValue(TEXT("slot"), D.SlotId.ToString());
 					W->WriteValue(TEXT("position"),D.Position.ToString()); W->WriteValue(TEXT("forward"),D.Forward.ToString()); W->WriteValue(TEXT("entry"),D.Entry.ToString());
 					W->WriteValue(TEXT("retreat_point"),D.RetreatPoint.ToString()); W->WriteValue(TEXT("turn_control_point"),D.TurnControlPoint.ToString());
 					W->WriteValue(TEXT("turn_yaw_degrees"),D.TurnYawDegrees); W->WriteValue(TEXT("turn_pitch_degrees"),D.TurnPitchDegrees);
 					W->WriteValue(TEXT("state_entry_serial"),int64(D.StateEntrySerial));
 					W->WriteValue(TEXT("desired"),D.PreferredVelocity.ToString()); W->WriteValue(TEXT("guiding"),D.bGuiding); W->WriteValue(TEXT("next_shot"),D.NextShot);
 					W->WriteValue(TEXT("cancel_reason"),D.CancelReason);
-					W->WriteValue(TEXT("run"),D.RunId); W->WriteValue(TEXT("start"),D.StartTime); W->WriteObjectEnd();
+					W->WriteValue(TEXT("ground_path_failure_mask"), D.GroundPathFailureMask);
+					W->WriteValue(TEXT("ground_navigation_failure_mask"), D.GroundNavigationFailureMask);
+					W->WriteValue(TEXT("run"),D.RunId);
+					W->WriteValue(TEXT("completed_ground_runs"), int64(D.CompletedGroundRuns));
+					W->WriteValue(TEXT("start"),D.StartTime);
+					W->WriteValue(TEXT("phase_start"),D.PhaseStartTime);
+					W->WriteValue(TEXT("blocked_seconds"),D.ConsecutiveBlockedSeconds);
+					W->WriteValue(TEXT("controlled_recovery"),D.bControlledRecovery);
+					W->WriteObjectEnd();
 				}
 			}
 			W->WriteArrayEnd(); W->WriteObjectEnd();
@@ -190,8 +227,11 @@ namespace GuLiWingmanAttackPIE
 			if (!W || W->WorldType != EWorldType::PIE || W->GetNetMode() != NM_Client || C.PIEInstance != FCString::Atoi(*Args[0])) continue;
 			auto* PC = W->GetFirstPlayerController();
 			auto* Relay = PC ? PC->FindComponentByClass<UGuLiWingmanRelayComponent>() : nullptr;
-			if (!Relay || !Relay->GetRelayState().AttackState.Target.IsValid()) continue;
-			const auto& Target = Relay->GetRelayState().AttackState.Target;
+			if (!Relay) continue;
+			const FGuLiWingmanAttackTarget* ResolvedTarget =
+				FindRepresentativeTarget(Relay->GetRelayState().AttackState);
+			if (!ResolvedTarget) continue;
+			const FGuLiWingmanAttackTarget& Target = *ResolvedTarget;
 			const FVector ShipLocation = PC->GetPawn() ? PC->GetPawn()->GetActorLocation() : Target.Location;
 			const FVector CombatCenter = FMath::Lerp(Target.Location, ShipLocation, 0.45f);
 			FVector Look = Target.bGround ? Target.Location + FVector(6000, 0, 7000) : CombatCenter;

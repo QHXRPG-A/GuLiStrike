@@ -231,6 +231,17 @@ public:
 	FGuLiWingmanSubmissionResult SubmitFireIntent(const FGuid& SenderPlayerGuid,
 		const FGuLiWingmanFireIntent& Intent, double NowSeconds,
 		const FGuLiFireIntentServerValidator& AdditionalValidator = FGuLiFireIntentServerValidator{});
+	/**
+	 * Validates one stuck member against the current lease and Accepted Store, then
+	 * chooses an authority-owned safe point. The client never supplies a destination.
+	 */
+	FGuLiWingmanEmergencyRebaseResponse SubmitEmergencyRebase(
+		const FGuid& SenderPlayerGuid,
+		const FGuLiWingmanEmergencyRebaseRequest& Request,
+		double NowSeconds,
+		const FGuLiCarrierSourceResolver& CarrierResolver,
+		const FGuLiCandidateWorldValidator& WorldValidator,
+		FGuLiWingmanAcceptedBatch& OutAcceptedBatch);
 	FGuLiWingmanAtomicBatchAcceptance SubmitAtomicCandidateFragment(
 		const FGuid& SenderPlayerGuid,
 		const FGuLiWingmanAtomicCandidateBatchFragment& Fragment,
@@ -253,6 +264,7 @@ public:
 
     FGuLiWingmanAttackAuthorityState AttackState;
     TFunction<void(const FGuLiWingmanCandidateBatch&, double)> OnValidatedAttackBatch;
+	TFunction<void(const FGuLiWingmanHandle&)> OnEmergencyRebaseAccepted;
 
 	const FGuLiWingmanLeaseState& GetLeaseState() const { return LeaseState; }
 	uint32 GetMatchEpoch() const { return MatchEpoch; }
@@ -279,6 +291,7 @@ public:
 		double* OutAcceptedTimeSeconds = nullptr) const;
 	uint32 GetLastAcceptedCandidateSequence() const { return LastAcceptedCandidateSequence; }
 	uint64 GetServerWingmanMovementWriteCount() const { return ServerWingmanMovementWriteCount; }
+	uint64 GetEmergencyRebaseAcceptedCount() const { return EmergencyRebaseAcceptedCount; }
 	bool IsTransferInProgress() const { return bTransferInProgress; }
 	bool IsAbilityConfigAcknowledged() const { return bAbilityConfigAcknowledged; }
 	bool IsBootstrapAcknowledged() const { return bBootstrapAcknowledged; }
@@ -316,6 +329,7 @@ private:
 		FGuLiWingmanCandidateSample Sample;
 		uint32 ClientSimTick = 0u;
 		double ServerAcceptedTimeSeconds = 0.0;
+		double LowSpeedStartTimeSeconds = -1.0;
 	};
 
 	struct FValidatedCandidate
@@ -355,7 +369,7 @@ private:
 	void CommitLeaseOffer(double NowSeconds);
 	void RecordLeaseEvent(EGuLiWingmanLeaseEventType Type, double DeadlineSeconds,
 		double DetectedTimeSeconds);
-	double GetMaximumRequiredFlightFreshnessAge(double NowSeconds) const;
+	double GetConnectionSilenceAge(double NowSeconds) const;
 	bool IsTransactionEntryBeforeDeadline(double NowSeconds, double DeadlineSeconds) const;
 	bool IsAtomicEntryAllowed(EGuLiWingmanAtomicBatchKind Kind, double NowSeconds) const;
 	void RebuildRequiredMemberMasks();
@@ -388,6 +402,8 @@ private:
 	TArray<FGuLiWingmanAcceptedBatch> AcceptedHistory;
 	TMap<FGuLiWingmanHandle, FLastAcceptedSample> LastAcceptedSamples;
 	TMap<FGuLiWingmanHandle, uint32> LastFireSequences;
+	TMap<FGuLiWingmanHandle, uint32> LastEmergencyRebaseRequestSequences;
+	TMap<FGuLiWingmanHandle, double> LastEmergencyRebaseAcceptedTimes;
 	TArray<FPendingCandidate> PendingCandidates;
 	TArray<FGuLiWingmanSubmissionResult> DeferredCandidateResults;
 	TArray<FGuLiWingmanAtomicBatchAcceptance> DeferredAtomicBatchResults;
@@ -430,6 +446,7 @@ private:
 	uint64 LeaseMaintenanceExecutionCount = 0u;
 	uint32 NextLeaseOfferRevision = 0u;
 	uint64 ServerWingmanMovementWriteCount = 0u;
+	uint64 EmergencyRebaseAcceptedCount = 0u;
 	FGuLiWingmanPendingLeaseOffer PendingLeaseOffer;
 	FGuLiWingmanActiveLeaseTransaction ActiveLeaseTransaction;
 	TArray<FGuLiWingmanLeaseEvent> LeaseEvents;

@@ -3,7 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Gameplay/Wingman/Mass/GuLiWingmanMassFragments.h"
+#include "Gameplay/Wingman/GuLiWingmanRuntimeTypes.h"
 
 /** UObject-free deterministic flow helpers shared by spawn, Guidance and Flight recovery. */
 namespace GuLiWingmanSwarmFlow
@@ -14,16 +14,16 @@ namespace GuLiWingmanSwarmFlow
 		const FGuLiWingmanFormationRuntimeConfig& Formation,
 		const FGuLiWingmanHandle& Handle,
 		uint32 InitialSimulationTick,
-		FGuLiWingmanSwarmAgentFragment& OutAgent);
+		FGuLiWingmanSwarmAgentState& OutAgent);
 
 	GULISTRIKE_API void AdvanceSimulationClock(
 		float FrameDeltaSeconds,
-		FGuLiWingmanSwarmAgentFragment& InOutAgent);
+		FGuLiWingmanSwarmAgentState& InOutAgent);
 
 	GULISTRIKE_API FVector BuildInitialOffset(
 		const FGuLiWingmanFormationRuntimeConfig& Formation,
 		const FGuLiWingmanHandle& Handle,
-		const FGuLiWingmanSwarmAgentFragment& Agent,
+		const FGuLiWingmanSwarmAgentState& Agent,
 		uint32 CandidateIndex = 0u);
 
 	/** Stable Flight-level A* goal offset; this never follows a rotating member slot. */
@@ -36,7 +36,7 @@ namespace GuLiWingmanSwarmFlow
 		const FVector& Velocity,
 		const FVector& CarrierPosition,
 		const FVector& CarrierVelocity,
-		const FGuLiWingmanSwarmAgentFragment& Agent,
+		const FGuLiWingmanSwarmAgentState& Agent,
 		const FGuLiWingmanFormationRuntimeConfig& Formation,
 		EGuLiWingmanFlightMode Mode);
 }

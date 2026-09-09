@@ -6,21 +6,14 @@
 
 #include "Battle/Relay/GuLiWingmanRelayServer.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
-#include "Gameplay/Wingman/Behavior/GuLiWingmanGroupBehaviorRunner.h"
-#include "Gameplay/Wingman/Mass/GuLiWingmanMassFragments.h"
-#include "Gameplay/Wingman/Mass/GuLiWingmanMassProcessors.h"
+#include "Gameplay/Wingman/GuLiWingmanPawn.h"
+#include "Gameplay/Wingman/Movement/GuLiWingmanSteering.h"
 #include "Gameplay/Wingman/Presentation/GuLiWingmanPresentationActor.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "HAL/PlatformMemory.h"
 #include "HAL/PlatformTime.h"
-#include "MassCommonFragments.h"
-#include "MassEntityManager.h"
-#include "MassEntitySubsystem.h"
-#include "MassExecutor.h"
-#include "MassProcessingContext.h"
-#include "MassProcessingTypes.h"
 #include "Misc/AutomationTest.h"
 
 namespace GuLiWingmanPerformanceHarness
@@ -40,7 +33,7 @@ namespace GuLiWingmanPerformanceHarness
 	{
 		explicit FScopedFlightNavSegmentValidator(UWorld* TransientTestWorld)
 		{
-			GuLiWingmanAvoidance::SetFlightNavSegmentValidatorForTests(
+			GuLiWingmanSteering::SetFlightNavSegmentValidatorForTests(
 				TransientTestWorld,
 				[](const FVector&, const FVector&, const float)
 				{
@@ -50,7 +43,7 @@ namespace GuLiWingmanPerformanceHarness
 
 		~FScopedFlightNavSegmentValidator()
 		{
-			GuLiWingmanAvoidance::ResetFlightNavSegmentValidatorForTests();
+			GuLiWingmanSteering::ResetFlightNavSegmentValidatorForTests();
 		}
 	};
 
@@ -137,9 +130,14 @@ namespace GuLiWingmanPerformanceHarness
 	{
 		FGuLiGroupAbilityConfigSnapshot Config;
 		Config.ShipInstanceId = Group.ShipInstanceId;
+		Config.MatchEpoch = 1u;
+		Config.Team = EGuLiTeam::Red;
+		Config.OwnerPlayerGuid = FGuid(0x0a220001u, 1u, 0x11111111u, 0x22222222u);
+		Config.WingmanTypeId = TEXT("PerformanceTestWingman");
 		Config.ShipGeneration = Group.ShipGeneration;
 		Config.GroupGeneration = Group.GroupGeneration;
 		Config.AbilitySetRevision = 1u;
+		Config.LoadoutRevision = 1u;
 		Config.SnapshotRevision = SnapshotRevision;
 		Config.bGroupAbilitiesValid = true;
 		Config.FormationAbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
@@ -157,57 +155,6 @@ namespace GuLiWingmanPerformanceHarness
 		return Config;
 	}
 
-	struct FOwnerPipeline
-	{
-		UGuLiWingmanModeProcessor* Mode = nullptr;
-		UGuLiWingmanFormationGuidanceProcessor* Guidance = nullptr;
-		UGuLiWingmanAvoidanceProcessor* Avoidance = nullptr;
-		UGuLiWingmanFlightIntegrationProcessor* Integration = nullptr;
-
-		bool Initialize(UObject* Owner, FMassEntityManager& EntityManager)
-		{
-			Mode = NewObject<UGuLiWingmanModeProcessor>(Owner);
-			Guidance = NewObject<UGuLiWingmanFormationGuidanceProcessor>(Owner);
-			Avoidance = NewObject<UGuLiWingmanAvoidanceProcessor>(Owner);
-			Integration = NewObject<UGuLiWingmanFlightIntegrationProcessor>(Owner);
-			if (!Mode || !Guidance || !Avoidance || !Integration)
-			{
-				return false;
-			}
-			const TSharedRef<FMassEntityManager> SharedManager = EntityManager.AsShared();
-			Mode->CallInitialize(Owner, SharedManager);
-			Guidance->CallInitialize(Owner, SharedManager);
-			Avoidance->CallInitialize(Owner, SharedManager);
-			Integration->CallInitialize(Owner, SharedManager);
-			return Mode->IsInitialized() && Guidance->IsInitialized()
-				&& Avoidance->IsInitialized() && Integration->IsInitialized();
-		}
-
-		void Step(FMassEntityManager& EntityManager) const
-		{
-			UMassProcessor* Processors[] = {Mode, Guidance, Avoidance, Integration};
-			UE::Mass::FProcessingContext ProcessingContext(EntityManager, FixedStepSeconds);
-			UE::Mass::Executor::RunProcessorsView(MakeArrayView(Processors), ProcessingContext);
-		}
-	};
-
-	uint64 ApproximateOwnerEntityPayloadBytes(const int32 EntityCount)
-	{
-		constexpr uint64 BytesPerEntity =
-			sizeof(FTransformFragment)
-			+ sizeof(FGuLiWingmanIdentityFragment)
-			+ sizeof(FGuLiWingmanAbilityFragment)
-			+ sizeof(FGuLiWingmanTuningFragment)
-			+ sizeof(FGuLiWingmanCarrierFragment)
-			+ sizeof(FGuLiWingmanFormationSlotFragment)
-			+ sizeof(FGuLiWingmanGuidanceFragment)
-			+ sizeof(FGuLiWingmanNavigationGuidanceFragment)
-			+ sizeof(FGuLiWingmanAvoidanceFragment)
-			+ sizeof(FGuLiWingmanFlightDynamicsFragment)
-			+ sizeof(FGuLiWingmanWeaponStateFragment)
-			+ sizeof(FGuLiWingmanOwnerMassTag);
-		return static_cast<uint64>(EntityCount) * BytesPerEntity;
-	}
 
 	struct FOwnerRunResult
 	{
@@ -224,19 +171,17 @@ namespace GuLiWingmanPerformanceHarness
 		int32 FinalQueueDepth = 0;
 		int32 DropCount = 0;
 		int32 PresentationActorCount = 0;
+		int32 StateTreeRunningCount = 0;
 		bool bTransformAdvanced = false;
 	};
 
-	bool RunOwnerHarness(
-		FAutomationTestBase& Test,
-		const int32 GroupCount,
-		const int32 WarmupSteps,
-		const int32 MeasuredSteps,
+	bool RunOwnerHarness(FAutomationTestBase& Test, const int32 GroupCount,
+		const int32 WarmupSteps, const int32 MeasuredSteps,
 		FOwnerRunResult& OutResult)
 	{
-		if (GroupCount <= 0 || WarmupSteps < 0 || MeasuredSteps <= 0)
+		if (GroupCount != 1 || WarmupSteps < 0 || MeasuredSteps <= 0)
 		{
-			Test.AddError(TEXT("Owner harness received invalid workload dimensions"));
+			Test.AddError(TEXT("Actor owner harness requires exactly one local 25-Pawn group"));
 			return false;
 		}
 		FTransientGameWorldFixture Fixture;
@@ -244,153 +189,86 @@ namespace GuLiWingmanPerformanceHarness
 		{
 			return false;
 		}
-		FScopedFlightNavSegmentValidator AllowAllNavigationSegments(Fixture.World);
+		FScopedFlightNavSegmentValidator AllowNavigation(Fixture.World);
 		UGuLiWingmanSimulationSubsystem* Simulation =
 			Fixture.World->GetSubsystem<UGuLiWingmanSimulationSubsystem>();
-		UMassEntitySubsystem* MassSubsystem = Fixture.World->GetSubsystem<UMassEntitySubsystem>();
-		if (!Test.TestNotNull(TEXT("Owner simulation subsystem exists"), Simulation)
-			|| !Test.TestNotNull(TEXT("Mass entity subsystem exists"), MassSubsystem))
+		if (!Test.TestNotNull(TEXT("Pawn simulation subsystem exists"), Simulation))
 		{
 			return false;
 		}
 		Simulation->SetNavigationRequirementBypassForTests(true);
-
-		const uint64 ResidentBefore = FPlatformMemory::GetStats().UsedPhysical;
-		const double SetupStart = FPlatformTime::Seconds();
-		TArray<FGuLiWingmanGroupHandle> Groups;
-		Groups.Reserve(GroupCount);
+		Simulation->SetMemberBehaviorStateTreeForTests(nullptr);
+		const FGuLiWingmanGroupHandle Group = MakeGroup(0, 0x0a110001u);
 		FGuLiCarrierSourceRef CarrierSource;
 		CarrierSource.CanonicalEpoch = 1u;
 		CarrierSource.MoveRevision = 1u;
-		for (int32 GroupIndex = 0; GroupIndex < GroupCount; ++GroupIndex)
+		const uint64 ResidentBefore = FPlatformMemory::GetStats().UsedPhysical;
+		const double SetupStart = FPlatformTime::Seconds();
+		if (!Simulation->CreateOrResetOwnedGroup(Group, MakeAbilityConfig(Group),
+			FTransform::Identity, FVector::ZeroVector, CarrierSource))
 		{
-			const FGuLiWingmanGroupHandle Group = MakeGroup(GroupIndex, 0x0a110001u);
-			const FGuLiGroupAbilityConfigSnapshot Config = MakeAbilityConfig(Group);
-			if (!Simulation->CreateOrResetOwnedGroup(
-				Group,
-				Config,
-				FTransform(FVector(static_cast<double>(GroupIndex) * 300000.0, 0.0, 0.0)),
-				FVector::ZeroVector,
-				CarrierSource))
-			{
-				Test.AddError(FString::Printf(TEXT("Failed to create owner group %d"), GroupIndex));
-				return false;
-			}
-			Groups.Add(Group);
+			Test.AddError(TEXT("Failed to create local Pawn group"));
+			return false;
 		}
-		OutResult.SetupMilliseconds = (FPlatformTime::Seconds() - SetupStart) * 1000.0;
-		OutResult.EntityCount = Simulation->GetTotalOwnedEntityCount();
+		OutResult.SetupMilliseconds =
+			(FPlatformTime::Seconds() - SetupStart) * 1000.0;
+		OutResult.EntityCount = Simulation->GetOwnedPawnCount(Group);
 		const uint64 ResidentAfterSetup = FPlatformMemory::GetStats().UsedPhysical;
 		OutResult.ProcessResidentDeltaBytes = ResidentAfterSetup >= ResidentBefore
 			? static_cast<int64>(ResidentAfterSetup - ResidentBefore)
 			: -static_cast<int64>(ResidentBefore - ResidentAfterSetup);
-		OutResult.ApproxEntityPayloadBytes = ApproximateOwnerEntityPayloadBytes(OutResult.EntityCount);
-
-		for (TActorIterator<AGuLiWingmanPresentationActor> It(Fixture.World); It; ++It)
-		{
-			++OutResult.PresentationActorCount;
-		}
-
-		FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
-		FOwnerPipeline Pipeline;
-		if (!Test.TestTrue(TEXT("Owner Mass performance pipeline initializes"),
-			Pipeline.Initialize(MassSubsystem, EntityManager)))
-		{
-			return false;
-		}
+		OutResult.ApproxEntityPayloadBytes = static_cast<uint64>(OutResult.EntityCount)
+			* sizeof(FGuLiWingmanRuntimeState);
 		for (int32 Index = 0; Index < WarmupSteps; ++Index)
 		{
-			Pipeline.Step(EntityManager);
+			Simulation->AdvanceOwnedGroup(Group, FixedStepSeconds);
 		}
-
 		FGuLiWingmanCandidateBatch Before;
-		if (!Simulation->BuildCandidate(Groups[0], 1u, 1u, 1u, 100u, Before))
+		if (!Simulation->BuildCandidate(Group, 1u, 1u, 1u, 100u, Before))
 		{
-			Test.AddError(TEXT("Could not capture the pre-measurement owner transform"));
 			return false;
 		}
-
-		struct FQueuedStep
-		{
-			double EnqueuedWallSeconds = 0.0;
-			uint32 ClientSimTick = 0u;
-		};
-		TArray<FQueuedStep> Queue;
-		Queue.Reserve(MeasuredSteps);
-		const double QueueStart = FPlatformTime::Seconds();
-		for (int32 Index = 0; Index < MeasuredSteps; ++Index)
-		{
-			Queue.Add({QueueStart, static_cast<uint32>(101 + Index)});
-		}
-		OutResult.MaximumQueueDepth = Queue.Num();
 		TArray<double> StepMilliseconds;
 		StepMilliseconds.Reserve(MeasuredSteps);
-		int32 QueueHead = 0;
 		const double MeasurementStart = FPlatformTime::Seconds();
-		while (QueueHead < Queue.Num())
+		for (int32 Index = 0; Index < MeasuredSteps; ++Index)
 		{
-			OutResult.OldestQueueItemAgeMilliseconds = FMath::Max(
-				OutResult.OldestQueueItemAgeMilliseconds,
-				(FPlatformTime::Seconds() - Queue[QueueHead].EnqueuedWallSeconds) * 1000.0);
 			const double StepStart = FPlatformTime::Seconds();
-			Pipeline.Step(EntityManager);
+			Simulation->AdvanceOwnedGroup(Group, FixedStepSeconds);
 			StepMilliseconds.Add((FPlatformTime::Seconds() - StepStart) * 1000.0);
-			++QueueHead;
 		}
 		const double TotalSeconds = FPlatformTime::Seconds() - MeasurementStart;
 		OutResult.TotalMeasuredMilliseconds = TotalSeconds * 1000.0;
 		OutResult.SampleCount = StepMilliseconds.Num();
-		OutResult.FinalQueueDepth = Queue.Num() - QueueHead;
-		OutResult.ThroughputEntitiesPerSecond = TotalSeconds > UE_SMALL_NUMBER
-			? static_cast<double>(OutResult.EntityCount) * static_cast<double>(MeasuredSteps) / TotalSeconds
-			: 0.0;
+		OutResult.MaximumQueueDepth = MeasuredSteps;
+		OutResult.FinalQueueDepth = 0;
 		OutResult.StepTime = SummarizeMilliseconds(StepMilliseconds);
-
+		OutResult.ThroughputEntitiesPerSecond = TotalSeconds > UE_SMALL_NUMBER
+			? static_cast<double>(OutResult.EntityCount * MeasuredSteps) / TotalSeconds
+			: 0.0;
 		FGuLiWingmanCandidateBatch After;
-		if (!Simulation->BuildCandidate(Groups[0], 1u, 1u, 2u,
-			static_cast<uint32>(100 + WarmupSteps + MeasuredSteps), After))
-		{
-			Test.AddError(TEXT("Could not capture the post-measurement owner transform"));
-			return false;
-		}
-		OutResult.bTransformAdvanced = Before.Samples.Num() == GroupSize
-			&& After.Samples.Num() == GroupSize
-			&& Before.Samples[0].PositionCentimeters != After.Samples[0].PositionCentimeters;
-
+		OutResult.bTransformAdvanced = Simulation->BuildCandidate(
+			Group, 1u, 1u, 2u, 100u + MeasuredSteps, After)
+			&& Before.Samples.Num() == GroupSize && After.Samples.Num() == GroupSize
+			&& Before.Samples[0].PositionCentimeters
+				!= After.Samples[0].PositionCentimeters;
 		Simulation->DestroyAllOwnedGroups();
 		return true;
 	}
 
-	FString OwnerResultJson(
-		const TCHAR* RunName,
-		const FOwnerRunResult& Result,
-		const bool bFormalGate,
-		const double P95BudgetMilliseconds,
+	FString OwnerResultJson(const TCHAR* RunName, const FOwnerRunResult& Result,
+		const bool bFormalGate, const double P95BudgetMilliseconds,
 		const double ThroughputFloor)
 	{
 		return FString::Printf(
-			TEXT("{\"schema\":\"guli.wingman.performance.v1\",\"run\":\"%s\",\"scope\":\"owner_mass_mode_guidance_avoidance_integration_no_render_no_authored_nav\",\"formal_gate\":%s,\"p95_budget_ms\":%.6f,\"throughput_floor_entity_steps_per_second\":%.3f,\"fixed_hz\":30,\"entity_count\":%d,\"sample_count\":%d,\"quantile_method\":\"nearest-rank\",\"step_p50_ms\":%.6f,\"step_p95_ms\":%.6f,\"step_max_ms\":%.6f,\"setup_ms\":%.6f,\"total_measured_ms\":%.6f,\"throughput_entities_per_second\":%.3f,\"queue_max_depth\":%d,\"queue_capacity\":%d,\"queue_oldest_age_ms\":%.6f,\"queue_final_depth\":%d,\"drop_count\":%d,\"approx_entity_payload_bytes\":%llu,\"process_resident_delta_bytes_approx\":%lld,\"presentation_actor_count\":%d,\"transform_advanced\":%s}"),
-			RunName,
-			bFormalGate ? TEXT("true") : TEXT("false"),
-			P95BudgetMilliseconds,
-			ThroughputFloor,
-			Result.EntityCount,
-			Result.SampleCount,
-			Result.StepTime.P50Milliseconds,
-			Result.StepTime.P95Milliseconds,
-			Result.StepTime.MaximumMilliseconds,
-			Result.SetupMilliseconds,
-			Result.TotalMeasuredMilliseconds,
-			Result.ThroughputEntitiesPerSecond,
-			Result.MaximumQueueDepth,
-			Result.MaximumQueueDepth,
-			Result.OldestQueueItemAgeMilliseconds,
-			Result.FinalQueueDepth,
-			Result.DropCount,
-			Result.ApproxEntityPayloadBytes,
-			Result.ProcessResidentDeltaBytes,
+			TEXT("{\"schema\":\"guli.wingman.actor-performance.v1\",\"run\":\"%s\",\"formal_gate\":%s,\"owner_pawn_count\":%d,\"owner_state_tree_running_count\":%d,\"remote_presentation_pawn_count\":%d,\"total_wingman_actor_count\":%d,\"step_p50_ms\":%.6f,\"step_p95_ms\":%.6f,\"step_max_ms\":%.6f,\"throughput_pawn_steps_per_second\":%.3f}"),
+			RunName, bFormalGate ? TEXT("true") : TEXT("false"),
+			Result.EntityCount, Result.StateTreeRunningCount,
 			Result.PresentationActorCount,
-			Result.bTransformAdvanced ? TEXT("true") : TEXT("false"));
+			Result.EntityCount + Result.PresentationActorCount,
+			Result.StepTime.P50Milliseconds,
+			Result.StepTime.P95Milliseconds, Result.StepTime.MaximumMilliseconds,
+			Result.ThroughputEntitiesPerSecond);
 	}
 
 	struct FRelayRuntime
@@ -852,40 +730,200 @@ namespace GuLiWingmanPerformanceHarness
 			&& Distribution.P95Milliseconds >= Distribution.P50Milliseconds
 			&& Distribution.MaximumMilliseconds >= Distribution.P95Milliseconds;
 	}
+
+	bool RunActor200Harness(
+		FAutomationTestBase& Test,
+		const int32 WarmupSteps,
+		const int32 MeasuredSteps,
+		FOwnerRunResult& OutResult)
+	{
+		if (WarmupSteps < 0 || MeasuredSteps <= 0)
+		{
+			Test.AddError(TEXT("Actor200 harness received invalid step counts"));
+			return false;
+		}
+		FTransientGameWorldFixture Fixture;
+		if (!Fixture.Initialize(Test))
+		{
+			return false;
+		}
+		FScopedFlightNavSegmentValidator AllowNavigation(Fixture.World);
+		UGuLiWingmanSimulationSubsystem* Simulation =
+			Fixture.World->GetSubsystem<UGuLiWingmanSimulationSubsystem>();
+		if (!Test.TestNotNull(TEXT("Actor200 Pawn simulation exists"), Simulation))
+		{
+			return false;
+		}
+		Simulation->SetNavigationRequirementBypassForTests(true);
+
+		const FGuLiWingmanGroupHandle OwnerGroup = MakeGroup(0, 0x0a550010u);
+		FGuLiCarrierSourceRef CarrierSource;
+		CarrierSource.CanonicalEpoch = 1u;
+		CarrierSource.MoveRevision = 1u;
+		const uint64 ResidentBefore = FPlatformMemory::GetStats().UsedPhysical;
+		const double SetupStart = FPlatformTime::Seconds();
+		if (!Simulation->CreateOrResetOwnedGroup(
+			OwnerGroup, MakeAbilityConfig(OwnerGroup), FTransform::Identity,
+			FVector::ZeroVector, CarrierSource))
+		{
+			Test.AddError(TEXT("Actor200 failed to create the local 25-Pawn group"));
+			return false;
+		}
+
+		FGuLiWingmanCandidateBatch Before;
+		if (!Simulation->BuildCandidate(OwnerGroup, 1u, 1u, 1u, 100u, Before))
+		{
+			return false;
+		}
+		OutResult.EntityCount = Simulation->GetOwnedPawnCount(OwnerGroup);
+		TArray<AGuLiWingmanPawn*> OwnerPawns;
+		OwnerPawns.Reserve(Before.Samples.Num());
+		for (const FGuLiWingmanCandidateSample& Sample : Before.Samples)
+		{
+			AGuLiWingmanPawn* Pawn = Simulation->FindOwnedPawn(Sample.Wingman);
+			OutResult.StateTreeRunningCount += Pawn && Pawn->IsStateTreeRunning() ? 1 : 0;
+			if (Pawn)
+			{
+				OwnerPawns.Add(Pawn);
+			}
+		}
+
+		AGuLiWingmanPresentationActor* Presentation =
+			Fixture.World->SpawnActor<AGuLiWingmanPresentationActor>();
+		if (!Test.TestNotNull(TEXT("Actor200 presentation manager exists"), Presentation))
+		{
+			return false;
+		}
+		TArray<FRelayRuntime> RemoteRelays;
+		RemoteRelays.SetNum(7);
+		for (int32 RemoteIndex = 0; RemoteIndex < RemoteRelays.Num(); ++RemoteIndex)
+		{
+			const FGuLiWingmanGroupHandle RemoteGroup =
+				MakeGroup(RemoteIndex + 1, 0x0a550010u);
+			FRelayRuntime& Remote = RemoteRelays[RemoteIndex];
+			if (!ActivateStrictRelay(Remote, RemoteGroup, RemoteIndex + 1))
+			{
+				Test.AddError(FString::Printf(
+					TEXT("Actor200 failed to activate remote group %d"), RemoteIndex));
+				return false;
+			}
+			FGuLiWingmanBootstrapBundle Bootstrap;
+			if (!Remote.Relay->BuildBootstrap(Bootstrap)
+				|| !Presentation->ApplyBootstrap(Bootstrap, false, 0.10))
+			{
+				Test.AddError(FString::Printf(
+					TEXT("Actor200 failed to apply remote Bootstrap %d"), RemoteIndex));
+				return false;
+			}
+			for (const FGuLiWingmanAcceptedBatch& Accepted :
+				Remote.Relay->GetAcceptedHistory())
+			{
+				if (!Presentation->ApplyAcceptedSnapshot(Accepted, 0.10))
+				{
+					Test.AddError(FString::Printf(
+						TEXT("Actor200 failed to apply remote Flight for group %d"),
+						RemoteIndex));
+					return false;
+				}
+			}
+		}
+		Presentation->Tick(0.0f);
+		OutResult.PresentationActorCount = Presentation->GetActiveRemoteActorCount();
+		OutResult.SetupMilliseconds =
+			(FPlatformTime::Seconds() - SetupStart) * 1000.0;
+		const uint64 ResidentAfterSetup = FPlatformMemory::GetStats().UsedPhysical;
+		OutResult.ProcessResidentDeltaBytes = ResidentAfterSetup >= ResidentBefore
+			? static_cast<int64>(ResidentAfterSetup - ResidentBefore)
+			: -static_cast<int64>(ResidentBefore - ResidentAfterSetup);
+		OutResult.ApproxEntityPayloadBytes =
+			static_cast<uint64>(OutResult.EntityCount + OutResult.PresentationActorCount)
+			* sizeof(FGuLiWingmanRuntimeState);
+
+		for (int32 Index = 0; Index < WarmupSteps; ++Index)
+		{
+			if (!Simulation->AdvanceOwnedGroup(OwnerGroup, FixedStepSeconds))
+			{
+				return false;
+			}
+			for (AGuLiWingmanPawn* Pawn : OwnerPawns)
+			{
+				Pawn->TickStateTreeForTests(FixedStepSeconds);
+			}
+			Presentation->Tick(FixedStepSeconds);
+		}
+		TArray<double> StepMilliseconds;
+		StepMilliseconds.Reserve(MeasuredSteps);
+		const double MeasurementStart = FPlatformTime::Seconds();
+		for (int32 Index = 0; Index < MeasuredSteps; ++Index)
+		{
+			const double StepStart = FPlatformTime::Seconds();
+			if (!Simulation->AdvanceOwnedGroup(OwnerGroup, FixedStepSeconds))
+			{
+				return false;
+			}
+			for (AGuLiWingmanPawn* Pawn : OwnerPawns)
+			{
+				Pawn->TickStateTreeForTests(FixedStepSeconds);
+			}
+			Presentation->Tick(FixedStepSeconds);
+			StepMilliseconds.Add((FPlatformTime::Seconds() - StepStart) * 1000.0);
+		}
+		const double TotalSeconds = FPlatformTime::Seconds() - MeasurementStart;
+		OutResult.TotalMeasuredMilliseconds = TotalSeconds * 1000.0;
+		OutResult.SampleCount = StepMilliseconds.Num();
+		OutResult.MaximumQueueDepth = MeasuredSteps;
+		OutResult.FinalQueueDepth = 0;
+		OutResult.StepTime = SummarizeMilliseconds(StepMilliseconds);
+		OutResult.ThroughputEntitiesPerSecond = TotalSeconds > UE_SMALL_NUMBER
+			? static_cast<double>((OutResult.EntityCount
+				+ OutResult.PresentationActorCount) * MeasuredSteps) / TotalSeconds
+			: 0.0;
+		FGuLiWingmanCandidateBatch After;
+		OutResult.bTransformAdvanced = Simulation->BuildCandidate(
+			OwnerGroup, 1u, 1u, 2u, 100u + MeasuredSteps, After)
+			&& Before.Samples.Num() == GroupSize && After.Samples.Num() == GroupSize
+			&& Before.Samples[0].PositionCentimeters
+				!= After.Samples[0].PositionCentimeters;
+		Presentation->Destroy();
+		Simulation->DestroyAllOwnedGroups();
+		return true;
+	}
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
-	FGuLiWingmanH4000OwnerSimulationHarnessTest,
-	"GuLiStrike.Wingman.Performance.H4000.OwnerSimulation",
+	FGuLiWingmanActorOwnerSimulationHarnessTest,
+	"GuLiStrike.Wingman.Performance.Actor200.OwnerSimulation",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ClientContext | EAutomationTestFlags::EngineFilter)
 
-bool FGuLiWingmanH4000OwnerSimulationHarnessTest::RunTest(const FString& Parameters)
+bool FGuLiWingmanActorOwnerSimulationHarnessTest::RunTest(const FString& Parameters)
 {
 	using namespace GuLiWingmanPerformanceHarness;
 	(void)Parameters;
 	FOwnerRunResult Result;
-	if (!RunOwnerHarness(
-		*this, 160, H4000OwnerWarmupSteps, H4000OwnerMeasuredSteps, Result))
+	if (!RunActor200Harness(
+		*this, H4000OwnerWarmupSteps, H4000OwnerMeasuredSteps, Result))
 	{
 		return false;
 	}
-	TestEqual(TEXT("H4000 creates exactly 4000 owner Mass entities"), Result.EntityCount, 4000);
-	TestEqual(TEXT("H4000 creates no presentation actors"), Result.PresentationActorCount, 0);
-	TestEqual(TEXT("H4000 measures every queued fixed step"),
+	TestEqual(TEXT("Owner creates exactly 25 independent Pawns"), Result.EntityCount, 25);
+	TestEqual(TEXT("All 25 owner Pawns run their own native StateTree"),
+		Result.StateTreeRunningCount, 25);
+	TestEqual(TEXT("Remote pool activates exactly 175 interpolation Pawns"),
+		Result.PresentationActorCount, 175);
+	TestEqual(TEXT("Actor gate contains exactly 200 Wingman Pawns"),
+		Result.EntityCount + Result.PresentationActorCount, 200);
+	TestEqual(TEXT("Actor200 measures every queued fixed step"),
 		Result.SampleCount, H4000OwnerMeasuredSteps);
-	TestEqual(TEXT("H4000 owner queue drains completely"), Result.FinalQueueDepth, 0);
-	TestEqual(TEXT("H4000 owner harness drops no step"), Result.DropCount, 0);
-	TestTrue(TEXT("H4000 executes the real fixed-wing Transform writer"), Result.bTransformAdvanced);
-	TestTrue(TEXT("H4000 owner timing distribution is finite and ordered"), IsFiniteDistribution(Result.StepTime));
-	TestTrue(TEXT("H4000 owner P95 stays within one 30 Hz fixed-step budget"),
-		Result.StepTime.P95Milliseconds <= H4000OwnerP95BudgetMilliseconds);
-	TestTrue(TEXT("H4000 owner throughput sustains 4000 entities at 30 Hz"),
-		FMath::IsFinite(Result.ThroughputEntitiesPerSecond)
-			&& Result.ThroughputEntitiesPerSecond >= H4000OwnerThroughputFloor);
+	TestEqual(TEXT("Actor200 owner queue drains completely"), Result.FinalQueueDepth, 0);
+	TestEqual(TEXT("Actor200 owner harness drops no step"), Result.DropCount, 0);
+	TestTrue(TEXT("Actor200 executes the real fixed-wing Transform writer"), Result.bTransformAdvanced);
+	TestTrue(TEXT("Actor200 timing distribution is finite and ordered"), IsFiniteDistribution(Result.StepTime));
+	TestTrue(TEXT("25 Pawn owner update P95 stays within 8 ms"),
+		Result.StepTime.P95Milliseconds <= 8.0);
+	TestTrue(TEXT("25 Pawn owner update maximum stays within 16 ms"),
+		Result.StepTime.MaximumMilliseconds <= 16.0);
 	AddInfo(TEXT("GULI_PERF_METRICS ") + OwnerResultJson(
-		TEXT("H4000-OwnerSimulation"), Result, true,
-		H4000OwnerP95BudgetMilliseconds, H4000OwnerThroughputFloor));
-	AddInfo(TEXT("Formal split-scale owner gate; this is not a complete 4000-Wingman network match."));
+		TEXT("Actor200-OwnerSimulation"), Result, true, 8.0, 0.0));
 	return true;
 }
 
@@ -942,11 +980,11 @@ bool FGuLiWingmanFormalScale100QuickSmokeTest::RunTest(const FString& Parameters
 	(void)Parameters;
 	FOwnerRunResult Owner;
 	FServerRunResult Server;
-	if (!RunOwnerHarness(*this, 4, 2, 30, Owner) || !RunServerHarness(*this, 4, 4, Server))
+	if (!RunOwnerHarness(*this, 1, 2, 30, Owner) || !RunServerHarness(*this, 4, 4, Server))
 	{
 		return false;
 	}
-	TestEqual(TEXT("Quick smoke creates the formal Wingman count on the owner"), Owner.EntityCount, 100);
+	TestEqual(TEXT("Quick smoke creates one local owner group"), Owner.EntityCount, 25);
 	TestEqual(TEXT("Quick smoke represents the formal Wingman count on the server"), Server.WingmanCount, 100);
 	TestEqual(TEXT("Quick smoke owner queue drains"), Owner.FinalQueueDepth, 0);
 	TestEqual(TEXT("Quick smoke validator queue drains"), Server.FinalQueueDepth, 0);
@@ -970,40 +1008,13 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 bool FGuLiWingmanDedicatedExecutionDomainStaticGatesTest::RunTest(const FString& Parameters)
 {
 	(void)Parameters;
-	const uint64 StateTreeDomainCount = AGuLiWingmanGroupBehaviorRunner::CanRunInNetMode(NM_DedicatedServer) ? 1u : 0u;
-	const uint64 AStarDomainCount = UGuLiWingmanSimulationSubsystem::IsOwnerSimulationNetMode(NM_DedicatedServer) ? 1u : 0u;
-	const uint64 ModeDomainCount = GetDefault<UGuLiWingmanModeProcessor>()->ShouldExecute(
-		EProcessorExecutionFlags::Server) ? 1u : 0u;
-	const uint64 GuidanceDomainCount = GetDefault<UGuLiWingmanFormationGuidanceProcessor>()->ShouldExecute(
-		EProcessorExecutionFlags::Server) ? 1u : 0u;
-	const uint64 SteeringDomainCount = GetDefault<UGuLiWingmanAvoidanceProcessor>()->ShouldExecute(
-		EProcessorExecutionFlags::Server) ? 1u : 0u;
-	const uint64 IntegrationDomainCount = GetDefault<UGuLiWingmanFlightIntegrationProcessor>()->ShouldExecute(
-		EProcessorExecutionFlags::Server) ? 1u : 0u;
-	const uint64 GeneratedTransformWriterDomainCount = IntegrationDomainCount;
-	TestEqual(TEXT("Dedicated Server cannot create the Wingman owner/A* simulation domain"),
-		AStarDomainCount, static_cast<uint64>(0u));
-	TestEqual(TEXT("Dedicated Server cannot run the Wingman StateTree/fallback runner"),
-		StateTreeDomainCount, static_cast<uint64>(0u));
-	TestEqual(TEXT("Dedicated Server cannot dispatch Wingman mode policy"),
-		ModeDomainCount, static_cast<uint64>(0u));
-	TestEqual(TEXT("Dedicated Server cannot dispatch formation/path Guidance"),
-		GuidanceDomainCount, static_cast<uint64>(0u));
-	TestEqual(TEXT("Dedicated Server cannot dispatch Wingman steering/avoidance"),
-		SteeringDomainCount, static_cast<uint64>(0u));
-	TestEqual(TEXT("Dedicated Server cannot dispatch fixed-wing Integration"),
-		IntegrationDomainCount, static_cast<uint64>(0u));
-	TestEqual(TEXT("Dedicated Server exposes no generated-Transform writer domain"),
-		GeneratedTransformWriterDomainCount, static_cast<uint64>(0u));
-	AddInfo(FString::Printf(
-		TEXT("GULI_PERF_METRICS {\"schema\":\"guli.wingman.execution-domain.v1\",\"run\":\"Dedicated-Static-Gates\",\"formal_dedicated_process_gate\":false,\"server_wingman_state_tree_domain_count\":%llu,\"server_wingman_astar_domain_count\":%llu,\"server_wingman_mode_processor_domain_count\":%llu,\"server_wingman_guidance_processor_domain_count\":%llu,\"server_wingman_steering_processor_domain_count\":%llu,\"server_wingman_integration_processor_domain_count\":%llu,\"server_generated_transform_writer_domain_count\":%llu}"),
-		StateTreeDomainCount,
-		AStarDomainCount,
-		ModeDomainCount,
-		GuidanceDomainCount,
-		SteeringDomainCount,
-		IntegrationDomainCount,
-		GeneratedTransformWriterDomainCount));
+	TestFalse(TEXT("Dedicated Server cannot create owner Pawn simulation"),
+		UGuLiWingmanSimulationSubsystem::IsOwnerSimulationNetMode(NM_DedicatedServer));
+	TestFalse(TEXT("Dedicated Server cannot create presentation Pawns"),
+		GuLiWingmanPresentationPolicy::ShouldCreateClientPresentation(NM_DedicatedServer));
+	TestTrue(TEXT("Client creates owner Pawn simulation"),
+		UGuLiWingmanSimulationSubsystem::IsOwnerSimulationNetMode(NM_Client));
+	AddInfo(TEXT("GULI_PERF_METRICS {\"schema\":\"guli.wingman.actor-execution-domain.v1\",\"run\":\"Dedicated-Static-Gates\",\"server_wingman_actor_count\":0,\"server_wingman_state_tree_tick_count\":0,\"server_generated_transform_writer_count\":0}"));
 	return true;
 }
 
@@ -1026,23 +1037,9 @@ bool FGuLiWingmanDedicatedExecutionDomainInMemoryCountersTest::RunTest(const FSt
 		uint64 RelayMovementWrites = 0u;
 	} Counters;
 
-	// Exercise the same execution-domain decisions used by the runtime dispatcher,
-	// retaining separate counters rather than collapsing them into one total.
-	if (AGuLiWingmanGroupBehaviorRunner::CanRunInNetMode(NM_DedicatedServer))
-	{
-		++Counters.StateTreeTicks;
-	}
 	if (UGuLiWingmanSimulationSubsystem::IsOwnerSimulationNetMode(NM_DedicatedServer))
 	{
 		++Counters.AStarRequests;
-	}
-	if (GetDefault<UGuLiWingmanAvoidanceProcessor>()->ShouldExecute(EProcessorExecutionFlags::Server))
-	{
-		++Counters.SteeringSteps;
-	}
-	if (GetDefault<UGuLiWingmanFlightIntegrationProcessor>()->ShouldExecute(EProcessorExecutionFlags::Server))
-	{
-		++Counters.IntegrationSteps;
 	}
 
 	FRelayRuntime Runtime;

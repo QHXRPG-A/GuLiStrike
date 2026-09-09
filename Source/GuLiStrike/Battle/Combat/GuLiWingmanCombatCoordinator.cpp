@@ -143,6 +143,27 @@ bool GuLiWingmanTargeting::IsWithinReleaseRange(double DistanceCentimeters,
 		&& DistanceCentimeters <= Tuning.ReleaseRadiusCentimeters;
 }
 
+const FGuLiWingmanAttackTarget* GuLiWingmanTargeting::ResolveTargetForEmitter(
+	const FGuLiWingmanAttackAuthorityState& State,
+	const FGuLiWingmanHandle& Emitter)
+{
+	if (!Emitter.IsValid())
+	{
+		return nullptr;
+	}
+	if (State.Target.IsValid() && State.Target.bSpecified)
+	{
+		return &State.Target;
+	}
+	const FGuLiWingmanAutoTargetAssignment* Assignment =
+		State.AutomaticTargets.FindByPredicate([&Emitter](const FGuLiWingmanAutoTargetAssignment& Entry)
+		{
+			return Entry.Emitter == Emitter;
+		});
+	return Assignment && Assignment->Target.IsValid() && !Assignment->Target.bSpecified
+		? &Assignment->Target : nullptr;
+}
+
 bool GuLiWingmanTargeting::IsGuardRejoinComplete(
 	TConstArrayView<FGuLiWingmanGuardPoseObservation> Observations, const FVector& ShipLocation,
 	float CatchUpDistanceCentimeters, float RecoveryDistanceCentimeters, float RequiredFraction)
@@ -225,6 +246,13 @@ bool FGuLiWingmanCombatCoordinator::Initialize(
 			}
 		}
 	}
+	for (const FGuLiWingmanAutoTargetAssignment& Assignment : Context.Relay->AttackState.AutomaticTargets)
+	{
+		FAutomaticTargetVersionState& Version = AutomaticTargetVersions.FindOrAdd(Assignment.Emitter);
+		Version.Target = Assignment.Target.Target;
+		Version.Revision = Assignment.Target.Revision;
+	}
+	RecordAttackAuthorizationSnapshot();
 	return true;
 }
 
@@ -232,6 +260,8 @@ void FGuLiWingmanCombatCoordinator::Reset()
 {
 	Context = FGuLiWingmanCombatContext{};
 	SpecifiedAttackTarget = {};
+	AutomaticTargetVersions.Reset();
+	GroundCorridorCache.Reset();
 	AttackTargetHistory.Reset();
 	NextAttackTargetScan = 0.0;
 	TargetingTuning = FGuLiWingmanTargetingTuning{};
@@ -346,6 +376,11 @@ EGuLiWingmanRejectReason FGuLiWingmanCombatCoordinator::ValidateBasicFireIntent(
 	if (!IsEnemyTarget(Target))
 	{
 		return EGuLiWingmanRejectReason::FriendlyTarget;
+	}
+	if (!WasTargetAuthorized(
+		Intent.Emitter, Intent.Target, Intent.TargetAssignmentRevision))
+	{
+		return EGuLiWingmanRejectReason::InvalidTarget;
 	}
 	const FGuLiWingmanWeaponChannelConfig* Channel =
 		Context.Relay->GetAbilityConfig().FindWeaponChannel(Intent.Binding);
@@ -644,6 +679,35 @@ int32 FGuLiWingmanCombatCoordinator::SynchronizeRosterState()
 		{
 			Iterator.RemoveCurrent();
 			++RemovedCount;
+		}
+	}
+	for (auto Iterator = AutomaticTargetVersions.CreateIterator(); Iterator; ++Iterator)
+	{
+		if (!IsRosterMemberAlive(Iterator.Key()))
+		{
+			Iterator.RemoveCurrent();
+			++RemovedCount;
+		}
+	}
+	if (Context.Relay)
+	{
+		FGuLiWingmanAttackAuthorityState& AttackState = Context.Relay->AttackState;
+		const int32 RemovedAssignments = AttackState.AutomaticTargets.RemoveAll(
+			[this](const FGuLiWingmanAutoTargetAssignment& Assignment)
+			{
+				return !IsRosterMemberAlive(Assignment.Emitter);
+			});
+		const int32 RemovedCheckpoints = AttackState.Checkpoints.RemoveAll(
+			[this](const FGuLiWingmanAttackCheckpoint& Checkpoint)
+			{
+				return !IsRosterMemberAlive(Checkpoint.Emitter);
+			});
+		if (RemovedAssignments > 0 || RemovedCheckpoints > 0)
+		{
+			++RemovedCount;
+			++AttackState.Revision;
+			if (AttackState.Revision == 0u) ++AttackState.Revision;
+			RecordAttackAuthorizationSnapshot();
 		}
 	}
 	const double NowSeconds = GetServerTimeSeconds();
@@ -997,7 +1061,8 @@ FGuid FGuLiWingmanCombatCoordinator::MakeStableShotId(
 		HashCombine(EmitterHash, Intent.DomainFireSequence),
 		HashCombine(HashCombine(TargetHash, SkillHash), Intent.MatchEpoch),
 		HashCombine(HashCombine(Intent.LoadoutRevision, Intent.ProfileRevision),
-			HashCombine(Intent.WeaponDefinitionRevision, Salt ^ 0x9e3779b9u)));
+			HashCombine(Intent.WeaponDefinitionRevision,
+				HashCombine(Intent.TargetAssignmentRevision, Salt ^ 0x9e3779b9u))));
 }
 
 FGuid FGuLiWingmanCombatCoordinator::MakeStableMissileId(

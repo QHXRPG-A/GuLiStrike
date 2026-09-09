@@ -719,7 +719,7 @@ void UGuLiWingmanQASubsystem::EmitSample(const bool bFinalSample)
 	const int32 CommanderCount = Commander ? Commander->GetAuthoritativeMemberCount() : 0;
 	const uint32 CommanderSteps = Commander ? Commander->GetServerSimTick() : 0u;
 	const uint64 CommanderDropped = Commander ? Commander->GetDroppedFixedStepCount() : 0u;
-	const int32 OwnerMassCount = Simulation ? Simulation->GetTotalOwnedEntityCount() : 0;
+	const int32 OwnerPawnCount = Simulation ? Simulation->GetTotalOwnedPawnCount() : 0;
 	const APlayerController* LocalPlayerController = World->GetFirstPlayerController();
 	const AGuLiBattlePlayerState* LocalPlayerState = LocalPlayerController
 		? LocalPlayerController->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
@@ -728,7 +728,7 @@ void UGuLiWingmanQASubsystem::EmitSample(const bool bFinalSample)
 	const bool bLocalObserver = !bServer && LocalPlayerState
 		&& LocalPlayerState->GetBattleRole() == EGuLiCommanderRole::Observer
 		&& LocalPlayerState->IsOnlyASpectator() && LocalPlayerController->GetPawn() == nullptr;
-	const bool bObserverHasNoPrivateAuthority = bLocalObserver && OwnerMassCount == 0
+	const bool bObserverHasNoPrivateAuthority = bLocalObserver && OwnerPawnCount == 0
 		&& (!LocalRelay || (!LocalRelay->GetRelayState().Lease.Group.IsValid()
 			&& !LocalRelay->GetLastClientBootstrap().Commit.Group.IsValid()));
 	const AGuLiWingmanPresentationActor* Presentation = nullptr;
@@ -850,7 +850,7 @@ void UGuLiWingmanQASubsystem::EmitSample(const bool bFinalSample)
 		NetworkIncomingBytesPerSecondSum += IncomingBytesPerSecond;
 		NetworkOutgoingBytesPerSecondSum += OutgoingBytesPerSecond;
 	}
-	const bool bProtocolVersionsMatch = GULI_WINGMAN_PROTOCOL_VERSION == 8u
+	const bool bProtocolVersionsMatch = GULI_WINGMAN_PROTOCOL_VERSION == 13u
 		&& (!BattleState || BattleState->GetProtocolVersion() == GULI_BATTLE_PROTOCOL_VERSION);
 	const bool bExpectedGroupCount = GroupCount > 0
 		&& (!bServer || ExpectedClientEndpoints <= 0
@@ -868,7 +868,7 @@ void UGuLiWingmanQASubsystem::EmitSample(const bool bFinalSample)
 	const bool bRoleReady = bServer
 		? (bProtocolVersionsMatch && bAllActive && bAllBootstrap && bAllAtomic && bAllStrict
 			&& ServerMovementWrites == 0u)
-		: (bProtocolVersionsMatch && (OwnerMassCount >= GULI_WINGMAN_GROUP_SIZE
+		: (bProtocolVersionsMatch && (OwnerPawnCount >= GULI_WINGMAN_GROUP_SIZE
 			|| bObserverAtomicNow));
 
 	TMap<FName, FString> CommonFields;
@@ -887,7 +887,7 @@ void UGuLiWingmanQASubsystem::EmitSample(const bool bFinalSample)
 	CommonFields.Add(TEXT("strict_flight_group_count"), FString::FromInt(StrictFlightGroupCount));
 	CommonFields.Add(TEXT("minimum_accepted_frame"), FString::FromInt(
 		static_cast<int32>(MinimumAcceptedFrame)));
-	CommonFields.Add(TEXT("owner_mass_entity_count"), FString::FromInt(OwnerMassCount));
+	CommonFields.Add(TEXT("owner_pawn_count"), FString::FromInt(OwnerPawnCount));
 	CommonFields.Add(TEXT("server_wingman_motion_step_count"),
 		GuLiWingmanQA::UnsignedNumber(ServerMovementWrites));
 	CommonFields.Add(TEXT("sample_count"), FString::FromInt(
@@ -1042,7 +1042,7 @@ void UGuLiWingmanQASubsystem::EmitSample(const bool bFinalSample)
 	{
 		// PROTOCOL_V7 is a frozen acceptance-schema key, not the current wire value.
 		EvidenceWriter.RecordGate(TEXT("PROTOCOL_V7"), true, 1, GateError);
-		EvidenceWriter.RecordGate(TEXT("WINGMAN_PROTOCOL_V8"), true, 1, GateError);
+		EvidenceWriter.RecordGate(TEXT("WINGMAN_PROTOCOL_V13"), true, 1, GateError);
 	}
 	if (bServer && ServerMovementWrites == 0u)
 	{
@@ -1831,12 +1831,12 @@ void UGuLiWingmanQASubsystem::LogStats() const
 		Simulation->GetMotionDiagnostics(Motion);
 	}
 	UE_LOG(LogGuLiWingman, Display,
-		TEXT("WingmanStats net_mode=%s groups=%d owner_mass=%d commander=%d commander_tick=%u "
+		TEXT("WingmanStats net_mode=%s groups=%d owner_pawns=%d commander=%d commander_tick=%u "
 			"dropped_steps=%llu qa_active=%d debug_draw=%d motion=(alive=%d orbit=%d follow=%d "
 			"catchup=%d recover=%d stale=%d radius=%.1f/%.1f/%.1f speed=%.1f first=%s)"),
 		World ? GuLiWingmanQA::NetModeName(World->GetNetMode()) : TEXT("None"),
 		State ? State->GetPublicWingmanBootstraps().Num() : 0,
-		Simulation ? Simulation->GetTotalOwnedEntityCount() : 0,
+		Simulation ? Simulation->GetTotalOwnedPawnCount() : 0,
 		Commander ? Commander->GetAuthoritativeMemberCount() : 0,
 		Commander ? Commander->GetServerSimTick() : 0u,
 		Commander ? Commander->GetDroppedFixedStepCount() : 0u,

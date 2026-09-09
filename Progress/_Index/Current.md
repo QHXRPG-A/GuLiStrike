@@ -44,6 +44,8 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | ai, combat, network, ship, wingman | 8/8 (100%) | 后续另立空战射界循环工作项，使持续目标场景的25个成员均完成至少两轮有效开火。 | 2026-09-09 |
+| [Ship 僚机空地统一匈牙利自动选敌 — 技术方案](../DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md) | combat, network, ship, wingman | 8/8 (100%) | — | 2026-09-09 |
 | [Ship 空中部队原型关卡与三倍航速 — 技术方案与验证](../DevelopmentDocumentation/20260908-Ship空中部队原型关卡与三倍航速.md) | data-pipeline, level, navigation, ship, wingman | 13/13 (100%) | — | 2026-09-08 |
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | combat, commander, network, ship, wingman | — | — | 2026-09-08 |
 | [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | commander, network, ship, ui, wingman | 11/11 (100%) | — | 2026-09-07 |

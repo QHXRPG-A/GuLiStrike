@@ -17,13 +17,20 @@ namespace GuLiWingmanAuthorityRegistryTests
 		return Group;
 	}
 
-	FGuLiGroupAbilityConfigSnapshot MakeConfig(const FGuLiWingmanGroupHandle& Group)
+	FGuLiGroupAbilityConfigSnapshot MakeConfig(
+		const FGuLiWingmanGroupHandle& Group,
+		const uint32 MatchEpoch)
 	{
 		FGuLiGroupAbilityConfigSnapshot Config;
 		Config.ShipInstanceId = Group.ShipInstanceId;
+		Config.MatchEpoch = MatchEpoch;
+		Config.Team = EGuLiTeam::Red;
+		Config.OwnerPlayerGuid = FGuid(1u, 2u, 3u, 4u);
+		Config.WingmanTypeId = TEXT("AuthorityRegistryTestWingman");
 		Config.ShipGeneration = Group.ShipGeneration;
 		Config.GroupGeneration = Group.GroupGeneration;
 		Config.AbilitySetRevision = 4u;
+		Config.LoadoutRevision = 4u;
 		Config.SnapshotRevision = 5u;
 		Config.bGroupAbilitiesValid = true;
 		Config.FormationAbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
@@ -124,7 +131,7 @@ bool FGuLiWingmanRelayPersistentDisconnectTakeoverTest::RunTest(const FString& P
 	const FGuid PreferredBackup(20u, 21u, 22u, 23u);
 	const FGuid OtherBackup(30u, 31u, 32u, 33u);
 	FGuLiWingmanRelayServer* Relay = Registry.CreateGroup(
-		77u, Group, Owner, PreferredBackup, MakeConfig(Group), 0.0);
+		77u, Group, Owner, PreferredBackup, MakeConfig(Group, 77u), 0.0);
 	if (!TestNotNull(TEXT("GameState-lifetime registry creates one core"), Relay)
 		|| !Activate(*this, *Relay, Owner))
 	{
@@ -171,7 +178,7 @@ bool FGuLiWingmanRelayPersistentDisconnectTakeoverTest::RunTest(const FString& P
 	TestTrue(TEXT("Registry preserves the exact core allocation"), Registry.FindGroup(Group) == Relay);
 	TestNotNull(TEXT("Controller EndPlay/takeover does not clear the Ship World validator"),
 		Registry.FindCandidateWorldValidator(Group));
-	TestEqual(TEXT("The pre-disconnect packet ran the durable validator"), WorldValidationCount, 1);
+	TestEqual(TEXT("Pose relay leaves the durable World validator unused"), WorldValidationCount, 0);
 	TestEqual(TEXT("Roster survives transport destruction"), Relay->GetRoster().Num(), RosterCountBefore);
 	TestEqual(TEXT("Accepted history survives transport destruction"),
 		Relay->GetAcceptedHistory().Last().StableHash, AcceptedHashBefore);
@@ -221,7 +228,7 @@ bool FGuLiWingmanRelayRegistryWorldHookLifetimeTest::RunTest(const FString& Para
 	const FGuid Owner(41u, 42u, 43u, 44u);
 	const FGuLiWingmanGroupHandle RevokedGroup = MakeGroup(31u);
 	TestNotNull(TEXT("Revoke fixture creates a group"), Registry.CreateGroup(
-		12u, RevokedGroup, Owner, FGuid{}, MakeConfig(RevokedGroup), 0.0));
+		12u, RevokedGroup, Owner, FGuid{}, MakeConfig(RevokedGroup, 12u), 0.0));
 	TestTrue(TEXT("Revoke fixture stores a World hook"),
 		Registry.SetCandidateWorldValidator(RevokedGroup, PermitWorld()));
 	TestNotNull(TEXT("Stored hook is discoverable"),
@@ -235,7 +242,7 @@ bool FGuLiWingmanRelayRegistryWorldHookLifetimeTest::RunTest(const FString& Para
 
 	const FGuLiWingmanGroupHandle DestroyedGroup = MakeGroup(32u);
 	TestNotNull(TEXT("Destroy fixture creates a group"), Registry.CreateGroup(
-		13u, DestroyedGroup, Owner, FGuid{}, MakeConfig(DestroyedGroup), 0.2));
+		13u, DestroyedGroup, Owner, FGuid{}, MakeConfig(DestroyedGroup, 13u), 0.2));
 	TestTrue(TEXT("Destroy fixture stores a World hook"),
 		Registry.SetCandidateWorldValidator(DestroyedGroup, PermitWorld()));
 	TestTrue(TEXT("Final group destruction revokes then erases the entry"),
@@ -258,7 +265,7 @@ bool FGuLiWingmanRelayNoOwnerRetentionTest::RunTest(const FString& Parameters)
 	const FGuLiWingmanGroupHandle Group = MakeGroup(2u);
 	const FGuid Owner(101u, 102u, 103u, 104u);
 	FGuLiWingmanRelayServer* Relay = Registry.CreateGroup(
-		88u, Group, Owner, FGuid{}, MakeConfig(Group), 0.0);
+		88u, Group, Owner, FGuid{}, MakeConfig(Group, 88u), 0.0);
 	if (!TestNotNull(TEXT("Registry creates no-backup fixture"), Relay)
 		|| !Activate(*this, *Relay, Owner))
 	{
@@ -313,7 +320,7 @@ bool FGuLiWingmanRelaySilentOwnerRecoveryTest::RunTest(const FString& Parameters
 	const FGuid Owner(301u, 302u, 303u, 304u);
 	const FGuid Backup(401u, 402u, 403u, 404u);
 	FGuLiWingmanRelayServer* Relay = Registry.CreateGroup(
-		99u, Group, Owner, Backup, MakeConfig(Group), 0.0);
+		99u, Group, Owner, Backup, MakeConfig(Group, 99u), 0.0);
 	if (!TestNotNull(TEXT("Silent-owner fixture creates a retained group"), Relay)
 		|| !Activate(*this, *Relay, Owner))
 	{
@@ -330,10 +337,10 @@ bool FGuLiWingmanRelaySilentOwnerRecoveryTest::RunTest(const FString& Parameters
 		Relay->GetAcceptedHistory());
 	Registry.RunLeaseMaintenance(1.0);
 	Registry.RunLeaseMaintenance(2.0);
-	TestEqual(TEXT("Candidate silence becomes Stale at the 1 Hz boundary"),
+	TestEqual(TEXT("Connection silence becomes Stale without inspecting movement quality"),
 		Relay->GetLeaseState().Lifecycle, EGuLiWingmanGroupLifecycle::Stale);
 	Registry.RunLeaseMaintenance(3.0);
-	TestEqual(TEXT("Candidate silence becomes Unavailable at the next boundary"),
+	TestEqual(TEXT("Connection silence becomes Unavailable at the next boundary"),
 		Relay->GetLeaseState().Lifecycle, EGuLiWingmanGroupLifecycle::Unavailable);
 	Registry.RunLeaseMaintenance(4.0);
 	TestTrue(TEXT("Watchdog revocation retains a recoverable NoOwner group"),

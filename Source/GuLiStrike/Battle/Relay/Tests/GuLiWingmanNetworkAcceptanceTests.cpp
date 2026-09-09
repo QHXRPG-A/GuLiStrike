@@ -28,9 +28,14 @@ namespace GuLiWingmanNetworkAcceptanceTests
 	{
 		FGuLiGroupAbilityConfigSnapshot Config;
 		Config.ShipInstanceId = Group.ShipInstanceId;
+		Config.MatchEpoch = 59u;
+		Config.Team = EGuLiTeam::Red;
+		Config.OwnerPlayerGuid = FGuid(101u, 102u, 103u, 104u);
+		Config.WingmanTypeId = TEXT("NetworkAcceptanceTestWingman");
 		Config.ShipGeneration = Group.ShipGeneration;
 		Config.GroupGeneration = Group.GroupGeneration;
 		Config.AbilitySetRevision = 17u;
+		Config.LoadoutRevision = 17u;
 		Config.SnapshotRevision = 19u;
 		Config.bGroupAbilitiesValid = true;
 		Config.FormationAbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
@@ -843,15 +848,15 @@ bool FGuLiWingmanDeterministicWeakNetworkAcceptanceTest::RunTest(const FString& 
 	TestTrue(TEXT("Jitter creates observable packet reordering"), ReorderedDeliveries > 0);
 	TestTrue(TEXT("Weak-network stream still accepts live Flight progress"), AcceptedPackets > 0);
 	TestTrue(TEXT("Loss/reorder/duplicates exercise non-accepting outcomes"), NonAcceptedPackets > 0);
-	TestTrue(TEXT("Accepted Trail candidates validate every explicit world segment"),
-		ValidatedWorldSegments >= GULI_WINGMAN_MEMBERS_PER_FLIGHT * 2);
+	TestEqual(TEXT("Normal pose relay never runs server World movement validation"),
+		ValidatedWorldSegments, 0);
 	const double MeanRttMilliseconds = Packets.IsEmpty()
 		? 0.0 : (RttSumSeconds / static_cast<double>(Packets.Num())) * 1000.0;
 	TestTrue(TEXT("Configured deterministic RTT remains approximately 500 ms"),
 		MeanRttMilliseconds >= 400.0 && MeanRttMilliseconds <= 650.0);
 
-	// Cross-channel carrier history arrives too late. Deadline-first processing must reject at 0.25 s
-	// without touching the last Accepted store or freshness timestamp.
+	// Carrier-history delivery is independent from normal pose relay. A current
+	// owner packet commits immediately and never enters deferred server movement work.
 	FGuLiWingmanCandidateBatch PendingSource = Fixture.MakeFlight(
 		0u, 401u, 8u, Fixture.Relay.GetAcceptedSequenceForFlight(0u), 124u, 1.30, true);
 	PendingSource.RequestedRateClass = EGuLiWingmanUploadRateClass::HighRate10Hz;
@@ -859,36 +864,44 @@ bool FGuLiWingmanDeterministicWeakNetworkAcceptanceTest::RunTest(const FString& 
 	FGuLiWingmanCandidateBatch PendingWire;
 	TestTrue(TEXT("Pending cross-channel Candidate uses NetSerialize"),
 		RoundTripCandidate(PendingSource, PendingWire));
-	const FGuLiCarrierSourceResolver CarrierPending = [](
+	int32 CarrierResolverCalls = 0;
+	const FGuLiCarrierSourceResolver CarrierPending = [&CarrierResolverCalls](
 		const FGuLiCarrierSourceRef&, FGuLiRelayCarrierState&)
 	{
+		++CarrierResolverCalls;
 		return EGuLiRelayCarrierLookupResult::Pending;
 	};
 	const FRelayMutationSnapshot BeforePending = FRelayMutationSnapshot::Capture(Fixture.Relay);
 	const FGuLiWingmanSubmissionResult PendingResult = Fixture.Relay.SubmitCandidate(
 		Fixture.Owner, PendingWire, 1.35, CarrierPending, PermitWorld());
-	TestEqual(TEXT("Missing carrier channel produces Pending"), PendingResult.Disposition,
-		EGuLiWingmanSubmissionDisposition::Pending);
-	TestNonAcceptedIsNonMutating(*this, TEXT("Pending changes no accepted state"),
-		BeforePending, Fixture.Relay);
-	// Transport cadence only expires cross-channel/assembler state. Lease freshness is
-	// evaluated exclusively by the fixed 1 Hz authority maintenance entry point.
+	TestEqual(TEXT("Missing carrier history cannot delay client-authored pose relay"),
+		PendingResult.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
+	TestEqual(TEXT("Normal pose relay never calls the carrier resolver"),
+		CarrierResolverCalls, 0);
+	TestEqual(TEXT("The accepted pose appends exactly one remote presentation cut"),
+		Fixture.Relay.GetAcceptedHistory().Num(), BeforePending.AcceptedHistoryCount + 1);
+	const FRelayMutationSnapshot AfterAcceptedPose = FRelayMutationSnapshot::Capture(Fixture.Relay);
+	// Transport cadence has no normal-pose pending queue to expire.
 	Fixture.Relay.AdvancePacketDeadlines(1.60, FoundCarrier());
 	TArray<FGuLiWingmanSubmissionResult> Deferred;
 	Fixture.Relay.DrainDeferredCandidateResults(Deferred);
-	TestTrue(TEXT("Exactly-at-deadline late carrier is rejected before resolution"),
-		Deferred.Num() == 1
-		&& Deferred[0].RejectReason == EGuLiWingmanRejectReason::CarrierMovePendingTimeout);
-	TestNonAcceptedIsNonMutating(*this, TEXT("Timed-out Pending changes no accepted state"),
-		BeforePending, Fixture.Relay);
-	TestTrue(TEXT("The exact 2 second watchdog boundary runs"),
-		Fixture.Relay.RunLeaseMaintenance(2.0));
-	TestEqual(TEXT("Expired Flight freshness moves the group to Stale"),
+	TestTrue(TEXT("Normal pose relay creates no deferred carrier timeout"), Deferred.IsEmpty());
+	TestNonAcceptedIsNonMutating(*this, TEXT("Packet-deadline maintenance leaves the accepted pose intact"),
+		AfterAcceptedPose, Fixture.Relay);
+	TArray<uint32> SequenceBeforeRecovery;
+	SequenceBeforeRecovery.SetNumZeroed(GULI_WINGMAN_FLIGHT_COUNT);
+	for (uint8 FlightIndex = 0u; FlightIndex < GULI_WINGMAN_FLIGHT_COUNT; ++FlightIndex)
+	{
+		SequenceBeforeRecovery[FlightIndex] = Fixture.Relay.GetAcceptedSequenceForFlight(FlightIndex);
+	}
+	TestTrue(TEXT("The connection-silence watchdog runs after one second without traffic"),
+		Fixture.Relay.RunLeaseMaintenance(2.4));
+	TestEqual(TEXT("Missing connection traffic, rather than Flight movement, makes the group Stale"),
 		Fixture.Relay.GetLeaseState().Lifecycle, EGuLiWingmanGroupLifecycle::Stale);
 
 	// Resume supplies a late-join client one new six-scope cut and requires one atomic all-Flight
 	// Candidate before the group can become Active again.
-	TestTrue(TEXT("Stale owner can begin Resume"), Fixture.Relay.BeginResume(2.05));
+	TestTrue(TEXT("Stale owner can begin Resume"), Fixture.Relay.BeginResume(2.45));
 	FGuLiWingmanBootstrapBundle ResumeCut;
 	TestTrue(TEXT("Resume builds a late-join six-scope Bootstrap"),
 		Fixture.Relay.BuildBootstrap(ResumeCut));
@@ -901,13 +914,13 @@ bool FGuLiWingmanDeterministicWeakNetworkAcceptanceTest::RunTest(const FString& 
 		ResumeCut.bHasTransferBaseline && ResumeCut.TransferBaseline.IsWellFormed());
 	// Resume is ACK-first. Neither a valid nor invalid atomic fragment may enter the
 	// assembler until the exact reliable six-scope cut has been acknowledged.
-	if (!Fixture.AcknowledgeCut(*this, Fixture.Owner, ResumeCut, 2.06))
+	if (!Fixture.AcknowledgeCut(*this, Fixture.Owner, ResumeCut, 2.46))
 	{
 		return false;
 	}
 
 	TArray<FGuLiWingmanCandidateBatch> InvalidResumeFlights =
-		Fixture.MakeAllFlights(500u, 3u, 136u, 2.08);
+		Fixture.MakeAllFlights(500u, 9u, 136u, 2.48);
 	--InvalidResumeFlights.Last().AbilitySetRevision;
 	const FGuLiWingmanAtomicCandidateBatchFragment InvalidResumeSource =
 		Fixture.MakeAtomicFragments(ResumeCut, InvalidResumeFlights, 501u, false)[0];
@@ -917,14 +930,14 @@ bool FGuLiWingmanDeterministicWeakNetworkAcceptanceTest::RunTest(const FString& 
 	const FRelayMutationSnapshot BeforeInvalidResume = FRelayMutationSnapshot::Capture(Fixture.Relay);
 	const FGuLiWingmanAtomicBatchAcceptance InvalidResume =
 		Fixture.Relay.SubmitAtomicCandidateFragment(
-			Fixture.Owner, InvalidResumeWire, 2.12, FoundCarrier(), PermitWorld());
+			Fixture.Owner, InvalidResumeWire, 2.52, FoundCarrier(), PermitWorld());
 	TestEqual(TEXT("One stale ability Flight rejects the whole Resume"),
 		InvalidResume.RejectReason, EGuLiWingmanRejectReason::StaleAbilitySetRevision);
 	TestNonAcceptedIsNonMutating(*this, TEXT("Rejected Resume commits no Flight or accepted time"),
 		BeforeInvalidResume, Fixture.Relay);
 
 	const TArray<FGuLiWingmanCandidateBatch> ResumeFlights =
-		Fixture.MakeAllFlights(510u, 3u, 136u, 2.08);
+		Fixture.MakeAllFlights(510u, 9u, 136u, 2.48);
 	const TArray<FGuLiWingmanAtomicCandidateBatchFragment> ResumeSources =
 		Fixture.MakeAtomicFragments(ResumeCut, ResumeFlights, 511u, true);
 	FGuLiWingmanAtomicCandidateBatchFragment ResumeFirst;
@@ -936,20 +949,20 @@ bool FGuLiWingmanDeterministicWeakNetworkAcceptanceTest::RunTest(const FString& 
 	const FRelayMutationSnapshot BeforeResumePartial = FRelayMutationSnapshot::Capture(Fixture.Relay);
 	const FGuLiWingmanAtomicBatchAcceptance ResumePartial =
 		Fixture.Relay.SubmitAtomicCandidateFragment(
-			Fixture.Owner, ResumeSecond, 2.13, FoundCarrier(), PermitWorld());
+			Fixture.Owner, ResumeSecond, 2.53, FoundCarrier(), PermitWorld());
 	TestEqual(TEXT("Out-of-order Resume fragment remains partial"), ResumePartial.Disposition,
 		EGuLiWingmanSubmissionDisposition::Pending);
 	TestNonAcceptedIsNonMutating(*this, TEXT("Partial Resume advances nothing"),
 		BeforeResumePartial, Fixture.Relay);
 	const FGuLiWingmanAtomicBatchAcceptance ResumeComplete =
 		Fixture.Relay.SubmitAtomicCandidateFragment(
-			Fixture.Owner, ResumeFirst, 2.25, FoundCarrier(), PermitWorld());
+			Fixture.Owner, ResumeFirst, 2.65, FoundCarrier(), PermitWorld());
 	TestEqual(TEXT("Complete Resume atomically restores all Flights"), ResumeComplete.Disposition,
 		EGuLiWingmanSubmissionDisposition::Accepted);
 	TestEqual(TEXT("Resume returns the whole group to Active"),
 		Fixture.Relay.GetLeaseState().Lifecycle, EGuLiWingmanGroupLifecycle::Active);
 	TestTrue(TEXT("First 1 Hz maintenance after Resume stays Active"),
-		Fixture.Relay.RunLeaseMaintenance(3.0));
+		Fixture.Relay.RunLeaseMaintenance(3.4));
 	TestEqual(TEXT("Fresh all-Flight Resume survives its first watchdog"),
 		Fixture.Relay.GetLeaseState().Lifecycle, EGuLiWingmanGroupLifecycle::Active);
 
@@ -957,20 +970,20 @@ bool FGuLiWingmanDeterministicWeakNetworkAcceptanceTest::RunTest(const FString& 
 	// is rejected before assembly and cannot advance any store/sequence/freshness state.
 	FGuLiWingmanPendingLeaseOffer Offer;
 	TestTrue(TEXT("Authority sends Backup a non-committing Lease Offer"),
-		Fixture.Relay.BeginLeaseOffer(Fixture.Backup, Fixture.Third, 3.05, Offer));
+		Fixture.Relay.BeginLeaseOffer(Fixture.Backup, Fixture.Third, 3.45, Offer));
 	TestEqual(TEXT("Offer preview keeps the old owner Active"),
 		Fixture.Relay.GetLeaseState().OwnerPlayerGuid, Fixture.Owner);
 	TestTrue(TEXT("Exact Ready commits the new Lease"),
-		Fixture.Relay.AcknowledgeLeaseOfferReady(Fixture.Backup, Offer.OfferRevision, 3.10));
+		Fixture.Relay.AcknowledgeLeaseOfferReady(Fixture.Backup, Offer.OfferRevision, 3.50));
 	FGuLiWingmanBootstrapBundle TakeoverCut;
 	TestTrue(TEXT("Takeover builds a new frozen six-scope cut"),
 		Fixture.Relay.BuildBootstrap(TakeoverCut));
-	if (!Fixture.AcknowledgeCut(*this, Fixture.Backup, TakeoverCut, 3.11))
+	if (!Fixture.AcknowledgeCut(*this, Fixture.Backup, TakeoverCut, 3.51))
 	{
 		return false;
 	}
 	const TArray<FGuLiWingmanCandidateBatch> TakeoverFlights =
-		Fixture.MakeAllFlights(600u, 1u, 154u, 3.12);
+		Fixture.MakeAllFlights(600u, 10u, 154u, 3.52);
 	const TArray<FGuLiWingmanAtomicCandidateBatchFragment> TakeoverSources =
 		Fixture.MakeAtomicFragments(TakeoverCut, TakeoverFlights, 601u, true);
 	FGuLiWingmanAtomicCandidateBatchFragment TakeoverFirst;
@@ -982,7 +995,7 @@ bool FGuLiWingmanDeterministicWeakNetworkAcceptanceTest::RunTest(const FString& 
 	const FRelayMutationSnapshot BeforeOldOwner = FRelayMutationSnapshot::Capture(Fixture.Relay);
 	const FGuLiWingmanAtomicBatchAcceptance OldOwnerAttempt =
 		Fixture.Relay.SubmitAtomicCandidateFragment(
-			Fixture.Owner, TakeoverFirst, 3.13, FoundCarrier(), PermitWorld());
+			Fixture.Owner, TakeoverFirst, 3.53, FoundCarrier(), PermitWorld());
 	TestEqual(TEXT("Old owner cannot seed the Takeover assembler"), OldOwnerAttempt.Disposition,
 		EGuLiWingmanSubmissionDisposition::Rejected);
 	TestNonAcceptedIsNonMutating(*this, TEXT("Old-owner Takeover request advances nothing"),
@@ -991,24 +1004,23 @@ bool FGuLiWingmanDeterministicWeakNetworkAcceptanceTest::RunTest(const FString& 
 	const FRelayMutationSnapshot BeforeTakeoverPartial = FRelayMutationSnapshot::Capture(Fixture.Relay);
 	const FGuLiWingmanAtomicBatchAcceptance TakeoverPartial =
 		Fixture.Relay.SubmitAtomicCandidateFragment(
-			Fixture.Backup, TakeoverSecond, 3.14, FoundCarrier(), PermitWorld());
+			Fixture.Backup, TakeoverSecond, 3.54, FoundCarrier(), PermitWorld());
 	TestEqual(TEXT("Reordered Takeover is pending until all Flights arrive"),
 		TakeoverPartial.Disposition, EGuLiWingmanSubmissionDisposition::Pending);
 	TestNonAcceptedIsNonMutating(*this, TEXT("Partial Takeover advances nothing"),
 		BeforeTakeoverPartial, Fixture.Relay);
 	const FGuLiWingmanAtomicBatchAcceptance TakeoverComplete =
 		Fixture.Relay.SubmitAtomicCandidateFragment(
-			Fixture.Backup, TakeoverFirst, 3.25, FoundCarrier(), PermitWorld());
+			Fixture.Backup, TakeoverFirst, 3.65, FoundCarrier(), PermitWorld());
 	TestEqual(TEXT("Takeover atomically commits all five Flights"), TakeoverComplete.Disposition,
 		EGuLiWingmanSubmissionDisposition::Accepted);
 	TestEqual(TEXT("Takeover returns the group to Active under the backup"),
 		Fixture.Relay.GetLeaseState().Lifecycle, EGuLiWingmanGroupLifecycle::Active);
-	TestEqual(TEXT("All Flights advance together through Bootstrap, normal, Resume and Takeover"),
-		Fixture.Relay.GetAcceptedSequenceForFlight(0u), 4u);
-	for (uint8 FlightIndex = 1u; FlightIndex < GULI_WINGMAN_FLIGHT_COUNT; ++FlightIndex)
+	for (uint8 FlightIndex = 0u; FlightIndex < GULI_WINGMAN_FLIGHT_COUNT; ++FlightIndex)
 	{
-		TestEqual(TEXT("Every Flight shares the recovered atomic sequence"),
-			Fixture.Relay.GetAcceptedSequenceForFlight(FlightIndex), 4u);
+		TestEqual(TEXT("Resume and Takeover each advance the Flight exactly once"),
+			Fixture.Relay.GetAcceptedSequenceForFlight(FlightIndex),
+			SequenceBeforeRecovery[FlightIndex] + 2u);
 	}
 	TestEqual(TEXT("Authority performs zero Wingman movement writes"),
 		Fixture.Relay.GetServerWingmanMovementWriteCount(), 0ull);

@@ -68,6 +68,8 @@ namespace GuLiWingmanWorldValidatorTests
 			Actor->SetRootComponent(Box);
 			Actor->AddInstanceComponent(Box);
 			Box->SetBoxExtent(FVector(20.0));
+			Box->SetMobility(ObjectType == ECC_WorldStatic
+				? EComponentMobility::Static : EComponentMobility::Movable);
 			Box->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 			Box->SetCollisionObjectType(ObjectType);
 			Box->SetCollisionResponseToAllChannels(ECR_Block);
@@ -91,9 +93,14 @@ namespace GuLiWingmanWorldValidatorTests
 	{
 		FGuLiGroupAbilityConfigSnapshot Config;
 		Config.ShipInstanceId = Group.ShipInstanceId;
+		Config.MatchEpoch = 1u;
+		Config.Team = EGuLiTeam::Red;
+		Config.OwnerPlayerGuid = FGuid(1u, 2u, 3u, 4u);
+		Config.WingmanTypeId = TEXT("WorldValidatorTestWingman");
 		Config.ShipGeneration = Group.ShipGeneration;
 		Config.GroupGeneration = Group.GroupGeneration;
 		Config.AbilitySetRevision = 1u;
+		Config.LoadoutRevision = 1u;
 		Config.SnapshotRevision = 1u;
 		Config.bGroupAbilitiesValid = true;
 		Config.FormationAbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
@@ -195,6 +202,17 @@ bool FGuLiWingmanWorldStaticDynamicNavigationTest::RunTest(const FString& Parame
 	TestEqual(TEXT("An ECC_WorldStatic sphere sweep blocks the Candidate"),
 		Validator(ContextFixture.Context), EGuLiWingmanRejectReason::InvalidIdentity);
 	StaticObstacle->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+
+	UBoxComponent* MovableStaticChannelObstacle = WorldFixture.SpawnBox(
+		*this, ECC_WorldStatic, FVector::ZeroVector);
+	if (!MovableStaticChannelObstacle)
+	{
+		return false;
+	}
+	MovableStaticChannelObstacle->SetMobility(EComponentMobility::Movable);
+	TestEqual(TEXT("A movable hull on the WorldStatic channel is not treated as historical static geometry"),
+		Validator(ContextFixture.Context), EGuLiWingmanRejectReason::None);
+	MovableStaticChannelObstacle->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 
 	UBoxComponent* DynamicObstacle = WorldFixture.SpawnBox(
 		*this, ECC_WorldDynamic, FVector::ZeroVector);

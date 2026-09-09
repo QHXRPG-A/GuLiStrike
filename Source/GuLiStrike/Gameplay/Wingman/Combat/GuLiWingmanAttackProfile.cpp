@@ -60,16 +60,43 @@ bool GuLiWingmanAttack::BuildGroundPath(const FVector& GroundTarget, const FVect
 	if (Direction.IsNearlyZero()) return false;
 	const float Radius = Profile.FlightSpeed / FMath::DegreesToRadians(TurnDegreesPerSecond);
 	const float DropInTurn = Radius * (1.0f - UE_INV_SQRT_2);
-	if (Profile.PullUpHeight - DropInTurn < MinimumGroundHeight) return false;
+	// PullUpHeight is the guaranteed clearance at the bottom of the finite-radius arc,
+	// so lift both turn anchors by the amount the arc descends between them.
+	const float TurnAnchorHeight = Profile.PullUpHeight + DropInTurn;
 	const float Leg = Profile.FlightSpeed * Profile.DiveSeconds * UE_INV_SQRT_2;
 	OutPath.Target = Target; OutPath.Direction = Direction;
-	OutPath.Entry = Target - Direction * Leg + FVector::UpVector * (Profile.PullUpHeight + Leg);
-	OutPath.PullUp = Target + FVector::UpVector * Profile.PullUpHeight;
+	OutPath.Entry = Target - Direction * Leg + FVector::UpVector * (TurnAnchorHeight + Leg);
+	OutPath.PullUp = Target + FVector::UpVector * TurnAnchorHeight;
 	OutPath.Exit = Target + Direction * (2.0f * Radius * UE_INV_SQRT_2 + Leg)
-		+ FVector::UpVector * (Profile.PullUpHeight + Leg);
+		+ FVector::UpVector * (TurnAnchorHeight + Leg);
 	OutPath.TurnRadius = Radius; OutPath.TurnSeconds = 90.0f / TurnDegreesPerSecond;
 	OutPath.DiveSeconds = Profile.DiveSeconds; OutPath.Speed = Profile.FlightSpeed;
 	return OutPath.IsValid();
+}
+
+FVector GuLiWingmanAttack::BuildGroundApproachCandidate(const FVector& DirectApproach,
+	uint32 StableAgentSeed, int32 CandidateIndex)
+{
+	static constexpr int32 SignedSteps[8] = {0, 1, -1, 2, -2, 3, -3, 4};
+	if (DirectApproach.ContainsNaN() || CandidateIndex < 0 || CandidateIndex >= MaximumGroundApproachCandidates)
+		return FVector::ZeroVector;
+	const bool bWorldStableFallback = CandidateIndex >= UE_ARRAY_COUNT(SignedSteps);
+	const FVector Direct = bWorldStableFallback
+		? FVector::ForwardVector.RotateAngleAxis(22.5f, FVector::UpVector)
+		: DirectApproach.GetSafeNormal2D();
+	if (Direct.IsNearlyZero()) return FVector::ZeroVector;
+	const int32 LocalIndex = bWorldStableFallback
+		? CandidateIndex - UE_ARRAY_COUNT(SignedSteps) : CandidateIndex;
+	int32 Step = SignedSteps[LocalIndex];
+	if ((StableAgentSeed & 1u) != 0u) Step = -Step;
+	return Direct.RotateAngleAxis(45.0f * Step, FVector::UpVector).GetSafeNormal2D();
+}
+
+FVector GuLiWingmanAttack::GroundRunSetupPoint(const FGuLiWingmanGroundRunPath& Path)
+{
+	if (!Path.IsValid()) return FVector::ZeroVector;
+	return Path.Entry - Path.DirectionAt(0.0f)
+		* (Path.Speed * GroundIngressLeadSeconds);
 }
 
 bool FGuLiWingmanGroundRunPath::IsValid() const

@@ -29,6 +29,71 @@ namespace
 		GuLiShipAbilityHash::AddUInt64(Hash, Bits);
 	}
 
+	bool IsStableGuidLess(const FGuid& Lhs, const FGuid& Rhs)
+	{
+		if (Lhs.A != Rhs.A) return Lhs.A < Rhs.A;
+		if (Lhs.B != Rhs.B) return Lhs.B < Rhs.B;
+		if (Lhs.C != Rhs.C) return Lhs.C < Rhs.C;
+		return Lhs.D < Rhs.D;
+	}
+
+	bool IsStableWingmanLess(const FGuLiWingmanHandle& Lhs, const FGuLiWingmanHandle& Rhs)
+	{
+		if (Lhs.Flight.Group.ShipInstanceId != Rhs.Flight.Group.ShipInstanceId)
+		{
+			return IsStableGuidLess(
+				Lhs.Flight.Group.ShipInstanceId,
+				Rhs.Flight.Group.ShipInstanceId);
+		}
+		if (Lhs.Flight.Group.ShipGeneration != Rhs.Flight.Group.ShipGeneration)
+		{
+			return Lhs.Flight.Group.ShipGeneration < Rhs.Flight.Group.ShipGeneration;
+		}
+		if (Lhs.Flight.Group.GroupGeneration != Rhs.Flight.Group.GroupGeneration)
+		{
+			return Lhs.Flight.Group.GroupGeneration < Rhs.Flight.Group.GroupGeneration;
+		}
+		if (Lhs.Flight.FlightIndex != Rhs.Flight.FlightIndex)
+		{
+			return Lhs.Flight.FlightIndex < Rhs.Flight.FlightIndex;
+		}
+		if (Lhs.MemberIndex != Rhs.MemberIndex)
+		{
+			return Lhs.MemberIndex < Rhs.MemberIndex;
+		}
+		return Lhs.EntityGeneration < Rhs.EntityGeneration;
+	}
+
+	void AddAttackTarget(uint64& Hash, const FGuLiWingmanAttackTarget& Target)
+	{
+		AddGuid(Hash, Target.Target.AuthorityId);
+		GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Target.Target.Kind));
+		GuLiShipAbilityHash::AddUInt32(Hash, Target.Target.Generation);
+		GuLiShipAbilityHash::AddUInt32(Hash, Target.Target.LocalId);
+		GuLiShipAbilityHash::AddUInt32(Hash, Target.Revision);
+		GuLiShipAbilityHash::AddUInt32(Hash, Target.bGround);
+		GuLiShipAbilityHash::AddUInt32(Hash, Target.bSpecified);
+		GuLiShipAbilityHash::AddFloat(Hash, Target.Radius);
+		for (const double Value : {Target.Location.X, Target.Location.Y, Target.Location.Z, Target.ServerTime})
+		{
+			AddDouble(Hash, Value);
+		}
+	}
+
+	bool HasMatchingAttackClassification(const FGuLiWingmanAttackTarget& Target)
+	{
+		switch (Target.Target.Kind)
+		{
+		case EGuLiTargetKind::CommanderSoldier:
+			return Target.bGround;
+		case EGuLiTargetKind::Ship:
+		case EGuLiTargetKind::Wingman:
+			return !Target.bGround;
+		default:
+			return false;
+		}
+	}
+
 	void AddCandidateSample(uint64& Hash, const FGuLiWingmanCandidateSample& Sample)
 	{
 		AddGroup(Hash, Sample.Wingman.Flight.Group);
@@ -603,7 +668,8 @@ bool FGuLiWingmanFireIntent::IsWellFormed() const
 		&& ClientFireTick != 0u
 		&& SourceAcceptedState.MatchEpoch == MatchEpoch
 		&& SourceAcceptedState.GroupGeneration == Group.GroupGeneration
-		&& Target.IsValid() && WeaponAbilityId.IsValid() && !SkillId.IsNone()
+		&& Target.IsValid() && TargetAssignmentRevision != 0u
+		&& WeaponAbilityId.IsValid() && !SkillId.IsNone()
 		&& LoadoutRevision != 0u && ProfileRevision != 0u
 		&& WeaponDefinitionRevision != 0u && AbilitySetRevision != 0u && AimAbsMax <= 1000
 		&& AimLengthSquared >= 250000.0 && AimLengthSquared <= 2250000.0;
@@ -638,6 +704,7 @@ bool FGuLiWingmanFireIntent::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 	Ar.SerializeIntPacked(ClientFireTick);
 	Target.NetSerialize(Ar, Map, bFieldSuccess);
 	bAllFieldsSucceeded &= bFieldSuccess;
+	Ar.SerializeIntPacked(TargetAssignmentRevision);
 	bAllFieldsSucceeded &= SerializeTag(Ar, WeaponAbilityId);
 	Ar << SkillId;
 	Ar.SerializeIntPacked(LoadoutRevision);
@@ -780,29 +847,152 @@ EGuLiWingmanRejectReason GuLiWingmanProtocol::ValidateFireIntentAbilityConfig(
 
 uint64 FGuLiWingmanAttackAuthorityState::ComputeStableHash() const
 {
-    uint64 Hash = GuLiShipAbilityHash::OffsetBasis;
-    GuLiShipAbilityHash::AddUInt32(Hash, Revision);
-    GuLiShipAbilityHash::AddString(Hash, Target.Target.AuthorityId.ToString());
-    GuLiShipAbilityHash::AddUInt32(Hash, uint32(Target.Target.Kind));
-    GuLiShipAbilityHash::AddUInt32(Hash, Target.Target.Generation); GuLiShipAbilityHash::AddUInt32(Hash, Target.Target.LocalId);
-    GuLiShipAbilityHash::AddUInt32(Hash, Target.Revision); GuLiShipAbilityHash::AddUInt32(Hash, Target.bGround);
-    GuLiShipAbilityHash::AddUInt32(Hash, Target.bSpecified); GuLiShipAbilityHash::AddFloat(Hash, Target.Radius);
-    for (double V : {Target.Location.X,Target.Location.Y,Target.Location.Z,Target.ServerTime}) AddDouble(Hash,V);
-    GuLiShipAbilityHash::AddUInt32(Hash, Checkpoints.Num());
-    for (const auto& C : Checkpoints)
-    {
-        AddGroup(Hash,C.Emitter.Flight.Group);
-        for (uint32 V : {uint32(C.Emitter.Flight.FlightIndex),uint32(C.Emitter.MemberIndex),C.Emitter.EntityGeneration,
-            C.ProfileRevision,C.RunId,C.LeaseEpoch,uint32(C.LastShotIndex)}) GuLiShipAbilityHash::AddUInt32(Hash,V);
-        GuLiShipAbilityHash::AddString(Hash,C.SlotId.ToString());
-		GuLiShipAbilityHash::AddString(Hash,C.SkillId.ToString());
-		GuLiShipAbilityHash::AddUInt64(Hash,C.DefinitionChecksum);
-		GuLiShipAbilityHash::AddString(Hash,C.FrozenTargetHandle.AuthorityId.ToString());
-		for (uint32 V : {uint32(C.FrozenTargetHandle.Kind),C.FrozenTargetHandle.Generation,C.FrozenTargetHandle.LocalId}) GuLiShipAbilityHash::AddUInt32(Hash,V);
-        for (double V : {C.StartTime,C.NextFireTime,C.FrozenTarget.X,C.FrozenTarget.Y,C.FrozenTarget.Z,
-            C.ApproachDirection.X,C.ApproachDirection.Y,C.ApproachDirection.Z}) AddDouble(Hash,V);
-    }
-    return GuLiShipAbilityHash::Finish(Hash);
+	uint64 Hash = GuLiShipAbilityHash::OffsetBasis;
+	GuLiShipAbilityHash::AddUInt32(Hash, Revision);
+	AddAttackTarget(Hash, Target);
+	GuLiShipAbilityHash::AddUInt32(Hash, AutomaticTargets.Num());
+	for (const FGuLiWingmanAutoTargetAssignment& Assignment : AutomaticTargets)
+	{
+		AddGroup(Hash, Assignment.Emitter.Flight.Group);
+		GuLiShipAbilityHash::AddUInt32(Hash, Assignment.Emitter.Flight.FlightIndex);
+		GuLiShipAbilityHash::AddUInt32(Hash, Assignment.Emitter.MemberIndex);
+		GuLiShipAbilityHash::AddUInt32(Hash, Assignment.Emitter.EntityGeneration);
+		AddAttackTarget(Hash, Assignment.Target);
+	}
+	GuLiShipAbilityHash::AddUInt32(Hash, Checkpoints.Num());
+	for (const FGuLiWingmanAttackCheckpoint& Checkpoint : Checkpoints)
+	{
+		AddGroup(Hash, Checkpoint.Emitter.Flight.Group);
+		for (const uint32 Value : {
+			static_cast<uint32>(Checkpoint.Emitter.Flight.FlightIndex),
+			static_cast<uint32>(Checkpoint.Emitter.MemberIndex),
+			Checkpoint.Emitter.EntityGeneration,
+			Checkpoint.ProfileRevision,
+			Checkpoint.RunId,
+			Checkpoint.LeaseEpoch,
+			static_cast<uint32>(Checkpoint.LastShotIndex)})
+		{
+			GuLiShipAbilityHash::AddUInt32(Hash, Value);
+		}
+		GuLiShipAbilityHash::AddString(Hash, Checkpoint.SlotId.ToString());
+		GuLiShipAbilityHash::AddString(Hash, Checkpoint.SkillId.ToString());
+		GuLiShipAbilityHash::AddUInt64(Hash, Checkpoint.DefinitionChecksum);
+		AddGuid(Hash, Checkpoint.FrozenTargetHandle.AuthorityId);
+		for (const uint32 Value : {
+			static_cast<uint32>(Checkpoint.FrozenTargetHandle.Kind),
+			Checkpoint.FrozenTargetHandle.Generation,
+			Checkpoint.FrozenTargetHandle.LocalId})
+		{
+			GuLiShipAbilityHash::AddUInt32(Hash, Value);
+		}
+		for (const double Value : {
+			Checkpoint.StartTime,
+			Checkpoint.NextFireTime,
+			Checkpoint.FrozenTarget.X,
+			Checkpoint.FrozenTarget.Y,
+			Checkpoint.FrozenTarget.Z,
+			Checkpoint.ApproachDirection.X,
+			Checkpoint.ApproachDirection.Y,
+			Checkpoint.ApproachDirection.Z})
+		{
+			AddDouble(Hash, Value);
+		}
+	}
+	return GuLiShipAbilityHash::Finish(Hash);
+}
+
+bool FGuLiWingmanAttackAuthorityState::IsWellFormed(
+	const FGuLiWingmanGroupHandle& ExpectedGroup) const
+{
+	if (!ExpectedGroup.IsValid() || AutomaticTargets.Num() > GULI_WINGMAN_GROUP_SIZE
+		|| Target.Location.ContainsNaN() || !FMath::IsFinite(Target.ServerTime)
+		|| Target.ServerTime < 0.0 || !FMath::IsFinite(Target.Radius) || Target.Radius < 0.0f
+		|| (Target.Target.IsValid() && (!Target.IsValid() || !Target.bSpecified
+			|| !HasMatchingAttackClassification(Target)))
+		|| (!Target.Target.IsValid() && Target.bSpecified)
+		|| (Target.Target.IsValid() && !AutomaticTargets.IsEmpty()))
+	{
+		return false;
+	}
+	for (int32 Index = 0; Index < AutomaticTargets.Num(); ++Index)
+	{
+		const FGuLiWingmanAutoTargetAssignment& Assignment = AutomaticTargets[Index];
+		if (!Assignment.IsWellFormed(ExpectedGroup)
+			|| (Index > 0 && !IsStableWingmanLess(
+				AutomaticTargets[Index - 1].Emitter,
+				Assignment.Emitter)))
+		{
+			return false;
+		}
+	}
+	return true;
+}
+
+bool FGuLiWingmanAttackAuthorityState::NetSerialize(
+	FArchive& Ar,
+	UPackageMap* Map,
+	bool& bOutSuccess)
+{
+	bool bFieldSuccess = false;
+	Target.NetSerialize(Ar, Map, bFieldSuccess);
+	bool bAllFieldsSucceeded = bFieldSuccess;
+
+	uint32 AutomaticTargetCount = Ar.IsSaving()
+		? static_cast<uint32>(AutomaticTargets.Num()) : 0u;
+	Ar.SerializeIntPacked(AutomaticTargetCount);
+	if (AutomaticTargetCount > GULI_WINGMAN_GROUP_SIZE)
+	{
+		Ar.SetError();
+		bOutSuccess = false;
+		return true;
+	}
+	if (Ar.IsLoading()) AutomaticTargets.SetNum(static_cast<int32>(AutomaticTargetCount));
+	for (FGuLiWingmanAutoTargetAssignment& Assignment : AutomaticTargets)
+	{
+		Assignment.NetSerialize(Ar, Map, bFieldSuccess);
+		bAllFieldsSucceeded &= bFieldSuccess;
+	}
+	if (!AutomaticTargets.IsEmpty())
+	{
+		const FGuLiWingmanGroupHandle& AutomaticGroup =
+			AutomaticTargets[0].Emitter.Flight.Group;
+		for (const FGuLiWingmanAutoTargetAssignment& Assignment : AutomaticTargets)
+		{
+			bAllFieldsSucceeded &= Assignment.IsWellFormed(AutomaticGroup);
+		}
+	}
+
+	constexpr uint32 MaximumCheckpointCount =
+		GULI_WINGMAN_GROUP_SIZE * GULI_MAX_WINGMAN_WEAPON_CHANNELS;
+	uint32 CheckpointCount = Ar.IsSaving()
+		? static_cast<uint32>(Checkpoints.Num()) : 0u;
+	Ar.SerializeIntPacked(CheckpointCount);
+	if (CheckpointCount > MaximumCheckpointCount)
+	{
+		Ar.SetError();
+		bOutSuccess = false;
+		return true;
+	}
+	if (Ar.IsLoading()) Checkpoints.SetNum(static_cast<int32>(CheckpointCount));
+	for (FGuLiWingmanAttackCheckpoint& Checkpoint : Checkpoints)
+	{
+		Checkpoint.NetSerialize(Ar, Map, bFieldSuccess);
+		bAllFieldsSucceeded &= bFieldSuccess;
+	}
+	Ar.SerializeIntPacked(Revision);
+
+	const bool bManualModeValid = Target.Target.IsValid()
+		? Target.IsValid() && Target.bSpecified && AutomaticTargets.IsEmpty()
+			&& HasMatchingAttackClassification(Target)
+		: !Target.bSpecified;
+	for (int32 Index = 1; Index < AutomaticTargets.Num(); ++Index)
+	{
+		bAllFieldsSucceeded &= IsStableWingmanLess(
+			AutomaticTargets[Index - 1].Emitter,
+			AutomaticTargets[Index].Emitter);
+	}
+	bOutSuccess = bAllFieldsSucceeded && bManualModeValid && !Ar.IsError();
+	return true;
 }
 
 bool FGuLiWingmanAttackTarget::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
@@ -815,6 +1005,110 @@ bool FGuLiWingmanAttackTarget::NetSerialize(FArchive& Ar, UPackageMap* Map, bool
     Ar.SerializeIntPacked(Revision);
     bOutSuccess = Valid && !Ar.IsError() && !Location.ContainsNaN() && FMath::IsFinite(Radius) && FMath::IsFinite(ServerTime);
     return true;
+}
+
+bool FGuLiWingmanAutoTargetAssignment::IsWellFormed(
+	const FGuLiWingmanGroupHandle& ExpectedGroup) const
+{
+	return ExpectedGroup.IsValid() && Emitter.IsValid() && Emitter.Flight.Group == ExpectedGroup
+		&& Target.IsValid() && !Target.bSpecified
+		&& HasMatchingAttackClassification(Target)
+		&& FMath::IsFinite(Target.ServerTime) && Target.ServerTime >= 0.0
+		&& FMath::IsFinite(Target.Radius) && Target.Radius >= 0.0f;
+}
+
+bool FGuLiWingmanAutoTargetAssignment::NetSerialize(
+	FArchive& Ar,
+	UPackageMap* Map,
+	bool& bOutSuccess)
+{
+	bool bEmitterSuccess = false;
+	bool bTargetSuccess = false;
+	Emitter.NetSerialize(Ar, Map, bEmitterSuccess);
+	Target.NetSerialize(Ar, Map, bTargetSuccess);
+	bOutSuccess = bEmitterSuccess && bTargetSuccess && !Ar.IsError()
+		&& IsWellFormed(Emitter.Flight.Group);
+	return true;
+}
+
+bool FGuLiWingmanEmergencyRebaseRequest::IsWellFormed() const
+{
+	return ProtocolVersion == GULI_WINGMAN_PROTOCOL_VERSION
+		&& MatchEpoch != 0u
+		&& ConnectionGeneration != 0u
+		&& Wingman.IsValid()
+		&& LeaseEpoch != 0u
+		&& RosterRevision != 0u
+		&& RequestSequence != 0u
+		&& BaselineAcceptedSequence != 0u
+		&& static_cast<uint8>(Reason)
+			<= static_cast<uint8>(EGuLiWingmanEmergencyRebaseReason::CarrierBoundaryDeadlock);
+}
+
+bool FGuLiWingmanEmergencyRebaseRequest::NetSerialize(
+	FArchive& Ar,
+	UPackageMap* Map,
+	bool& bOutSuccess)
+{
+	Ar.SerializeIntPacked(ProtocolVersion);
+	Ar.SerializeIntPacked(MatchEpoch);
+	Ar.SerializeIntPacked(ConnectionGeneration);
+	bool bWingmanSuccess = false;
+	Wingman.NetSerialize(Ar, Map, bWingmanSuccess);
+	Ar.SerializeIntPacked(LeaseEpoch);
+	Ar.SerializeIntPacked(RosterRevision);
+	Ar.SerializeIntPacked(RequestSequence);
+	Ar.SerializeIntPacked(BaselineAcceptedSequence);
+	uint8 ReasonValue = static_cast<uint8>(Reason);
+	Ar.SerializeBits(&ReasonValue, 2u);
+	if (Ar.IsLoading())
+	{
+		Reason = static_cast<EGuLiWingmanEmergencyRebaseReason>(ReasonValue);
+	}
+	bOutSuccess = bWingmanSuccess && !Ar.IsError() && IsWellFormed();
+	return true;
+}
+
+bool FGuLiWingmanEmergencyRebaseResponse::IsWellFormed() const
+{
+	if (ProtocolVersion != GULI_WINGMAN_PROTOCOL_VERSION
+		|| !Wingman.IsValid()
+		|| LeaseEpoch == 0u
+		|| RequestSequence == 0u
+		|| static_cast<uint8>(Result)
+			> static_cast<uint8>(EGuLiWingmanEmergencyRebaseResult::NoSafePoint)
+		|| ServerPosition.ContainsNaN()
+		|| !FMath::IsFinite(RetryAfterServerTimeSeconds)
+		|| RetryAfterServerTimeSeconds < 0.0)
+	{
+		return false;
+	}
+	return Result == EGuLiWingmanEmergencyRebaseResult::Accepted
+		? AcceptedSequence != 0u
+		: AcceptedSequence == 0u;
+}
+
+bool FGuLiWingmanEmergencyRebaseResponse::NetSerialize(
+	FArchive& Ar,
+	UPackageMap* Map,
+	bool& bOutSuccess)
+{
+	Ar.SerializeIntPacked(ProtocolVersion);
+	bool bWingmanSuccess = false;
+	Wingman.NetSerialize(Ar, Map, bWingmanSuccess);
+	Ar.SerializeIntPacked(LeaseEpoch);
+	Ar.SerializeIntPacked(RequestSequence);
+	uint8 ResultValue = static_cast<uint8>(Result);
+	Ar.SerializeBits(&ResultValue, 3u);
+	if (Ar.IsLoading())
+	{
+		Result = static_cast<EGuLiWingmanEmergencyRebaseResult>(ResultValue);
+	}
+	Ar.SerializeIntPacked(AcceptedSequence);
+	Ar << ServerPosition;
+	Ar << RetryAfterServerTimeSeconds;
+	bOutSuccess = bWingmanSuccess && !Ar.IsError() && IsWellFormed();
+	return true;
 }
 
 bool FGuLiWingmanAttackCheckpoint::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)

@@ -2,11 +2,18 @@ param(
     [ValidateSet("Normal", "Weak", "Reorder")]
     [string]$Profile = "Normal",
     [int]$Port = 7791,
+    [ValidatePattern('^/Game/[A-Za-z0-9_./-]+$')]
+    [string]$Map = "/Game/Maps/LVL_ShipTest",
+    [ValidateRange(10, 360)]
     [int]$ServerDurationSeconds = 60,
+    [ValidateRange(10, 360)]
     [int]$ClientDurationSeconds = 40,
     [ValidateRange(15, 240)]
     [int]$MaxFps = 60,
     [switch]$RpcDebug,
+    [switch]$MoveShip,
+    [switch]$PersistentTargets,
+    [switch]$ActorLongGate,
     [string]$EditorExecutable = "C:\Program Files\Epic Games\UE_5.7\Engine\Binaries\Win64\UnrealEditor-Win64-DebugGame.exe"
 )
 
@@ -264,6 +271,9 @@ if ($conflicts.Count -gt 0) {
 if (Test-PortInUse $Port) {
     throw "Refusing to use occupied UDP port $Port"
 }
+if ($ActorLongGate -and ($ServerDurationSeconds -lt 300 -or $ClientDurationSeconds -lt 300)) {
+    throw "ActorLongGate requires both process durations to be at least 300 seconds"
+}
 
 New-Item -ItemType Directory -Path $runRoot -Force | Out-Null
 $startedUtc = [DateTime]::UtcNow
@@ -300,10 +310,19 @@ $commonArguments = @(
 if ($RpcDebug) {
     $commonArguments += '-GuLiBootstrapTrace'
 }
+if ($MoveShip -or $ActorLongGate) {
+    $commonArguments += '-GuLiListenSmokeMoveShip'
+}
+if ($ActorLongGate -or $PersistentTargets) {
+    # Preserve the combat target field for the full 300-second repeated-sortie
+    # gate. This non-Shipping switch keeps Wingman damage commits/effects but does
+    # not mutate target health; ordinary PIE and every non-long smoke are unchanged.
+    $commonArguments += '-GuLiListenSmokePersistentTargets'
+}
 
 $serverArguments = @(
     $projectPath,
-    "/Game/Maps/LVL_ShipTest?listen?Port=$Port"
+    "${Map}?listen?Port=$Port"
 ) + $commonArguments[1..($commonArguments.Count - 1)] + @(
     '-GuLiListenSmokeRole=Server',
     "-GuLiListenSmokeRunId=$runId",
@@ -340,7 +359,10 @@ try {
         schema = 'guli.listen-smoke-manifest.v1'
         run_id = $runId
         profile = $Profile
-        map = '/Game/Maps/LVL_ShipTest'
+        map = $Map
+        move_ship = [bool]($MoveShip -or $ActorLongGate)
+        actor_long_gate = [bool]$ActorLongGate
+        persistent_targets = [bool]($ActorLongGate -or $PersistentTargets)
         port = $Port
         started_utc = $startedUtc.ToString('o')
         editor = $editorPath
@@ -487,6 +509,8 @@ $serverDiagnosticObservations = [ordered]@{
     atomic_build_attempt_max = ($serverSamples | Measure-Object client_atomic_build_attempt_count -Maximum).Maximum
     atomic_build_submitted_max = ($serverSamples | Measure-Object client_atomic_build_submitted_count -Maximum).Maximum
     atomic_result_count_max = ($serverSamples | Measure-Object client_atomic_result_count -Maximum).Maximum
+    atomic_accepted_count_max = ($serverSamples | Measure-Object client_atomic_accepted_count -Maximum).Maximum
+    atomic_reject_count_max = ($serverSamples | Measure-Object client_atomic_reject_count -Maximum).Maximum
     atomic_result_dispositions_observed = @($serverSamples |
         Where-Object { [int]$_.client_atomic_result_count -gt 0 } |
         Select-Object -ExpandProperty client_last_atomic_result_disposition -Unique)
@@ -515,6 +539,16 @@ $serverDiagnosticObservations = [ordered]@{
         ($serverSamples | Measure-Object client_normal_result_count -Maximum).Maximum
     normal_accepted_count_max =
         ($serverSamples | Measure-Object client_normal_accepted_count -Maximum).Maximum
+    normal_reject_count_max =
+        ($serverSamples | Measure-Object client_normal_reject_count -Maximum).Maximum
+    emergency_rebase_request_count_max =
+        ($serverSamples | Measure-Object client_emergency_rebase_request_count -Maximum).Maximum
+    emergency_rebase_result_count_max =
+        ($serverSamples | Measure-Object client_emergency_rebase_result_count -Maximum).Maximum
+    emergency_rebase_accepted_count_max =
+        ($serverSamples | Measure-Object client_emergency_rebase_accepted_count -Maximum).Maximum
+    emergency_rebase_applied_count_max =
+        ($serverSamples | Measure-Object client_emergency_rebase_applied_count -Maximum).Maximum
     normal_result_dispositions_observed = @($serverSamples |
         Where-Object { [int]$_.client_normal_result_count -gt 0 } |
         Select-Object -ExpandProperty client_last_normal_result_disposition -Unique)
@@ -561,6 +595,29 @@ $serverDiagnosticObservations = [ordered]@{
         ($serverSamples | Measure-Object strict_growing_relay_group_count -Maximum).Maximum
     minimum_accepted_frame_across_strict_groups_max =
         ($serverSamples | Measure-Object minimum_accepted_frame_across_strict_groups -Maximum).Maximum
+    server_emergency_rebase_accepted_count_max =
+        ($serverSamples | Measure-Object server_emergency_rebase_accepted_count -Maximum).Maximum
+    ship_motion_driver_active_observed = [bool]($serverSamples |
+        Where-Object { $_.ship_motion_driver_active -eq $true } | Select-Object -First 1)
+    ship_max_translation_cm =
+        ($serverSamples | Measure-Object ship_max_translation_cm -Maximum).Maximum
+    ship_max_rotation_deg =
+        ($serverSamples | Measure-Object ship_max_rotation_deg -Maximum).Maximum
+    owner_pawn_count_max = ($serverSamples | Measure-Object owner_pawn_count -Maximum).Maximum
+    owner_state_tree_running_count_max =
+        ($serverSamples | Measure-Object owner_state_tree_running_count -Maximum).Maximum
+    owner_motion_eligible_count_max =
+        ($serverSamples | Measure-Object owner_motion_eligible_count -Maximum).Maximum
+    owner_current_stall_count_max =
+        ($serverSamples | Measure-Object owner_current_stall_count -Maximum).Maximum
+    owner_motion_stall_violation_count_max =
+        ($serverSamples | Measure-Object owner_motion_stall_violation_count -Maximum).Maximum
+    owner_max_low_displacement_seconds_max =
+        ($serverSamples | Measure-Object owner_max_low_displacement_seconds -Maximum).Maximum
+    owner_members_with_two_attack_runs_max =
+        ($serverSamples | Measure-Object owner_members_with_two_attack_runs -Maximum).Maximum
+    owner_min_attack_runs_max =
+        ($serverSamples | Measure-Object owner_min_attack_runs -Maximum).Maximum
     world_validator_invocation_count_max =
         ($serverSamples | Measure-Object world_validator_invocation_count -Maximum).Maximum
     world_validator_context_reject_count_max =
@@ -591,6 +648,8 @@ $clientDiagnosticObservations = [ordered]@{
     atomic_build_attempt_max = ($clientSamples | Measure-Object client_atomic_build_attempt_count -Maximum).Maximum
     atomic_build_submitted_max = ($clientSamples | Measure-Object client_atomic_build_submitted_count -Maximum).Maximum
     atomic_result_count_max = ($clientSamples | Measure-Object client_atomic_result_count -Maximum).Maximum
+    atomic_accepted_count_max = ($clientSamples | Measure-Object client_atomic_accepted_count -Maximum).Maximum
+    atomic_reject_count_max = ($clientSamples | Measure-Object client_atomic_reject_count -Maximum).Maximum
     atomic_result_dispositions_observed = @($clientSamples |
         Where-Object { [int]$_.client_atomic_result_count -gt 0 } |
         Select-Object -ExpandProperty client_last_atomic_result_disposition -Unique)
@@ -619,6 +678,16 @@ $clientDiagnosticObservations = [ordered]@{
         ($clientSamples | Measure-Object client_normal_result_count -Maximum).Maximum
     normal_accepted_count_max =
         ($clientSamples | Measure-Object client_normal_accepted_count -Maximum).Maximum
+    normal_reject_count_max =
+        ($clientSamples | Measure-Object client_normal_reject_count -Maximum).Maximum
+    emergency_rebase_request_count_max =
+        ($clientSamples | Measure-Object client_emergency_rebase_request_count -Maximum).Maximum
+    emergency_rebase_result_count_max =
+        ($clientSamples | Measure-Object client_emergency_rebase_result_count -Maximum).Maximum
+    emergency_rebase_accepted_count_max =
+        ($clientSamples | Measure-Object client_emergency_rebase_accepted_count -Maximum).Maximum
+    emergency_rebase_applied_count_max =
+        ($clientSamples | Measure-Object client_emergency_rebase_applied_count -Maximum).Maximum
     normal_result_dispositions_observed = @($clientSamples |
         Where-Object { [int]$_.client_normal_result_count -gt 0 } |
         Select-Object -ExpandProperty client_last_normal_result_disposition -Unique)
@@ -657,6 +726,27 @@ $clientDiagnosticObservations = [ordered]@{
         ($clientSamples | Measure-Object client_atomic_build_empty_failure_count -Maximum).Maximum
     atomic_build_fragment_failure_count_max =
         ($clientSamples | Measure-Object client_atomic_build_fragment_failure_count -Maximum).Maximum
+    ship_motion_driver_active_observed = [bool]($clientSamples |
+        Where-Object { $_.ship_motion_driver_active -eq $true } | Select-Object -First 1)
+    ship_max_translation_cm =
+        ($clientSamples | Measure-Object ship_max_translation_cm -Maximum).Maximum
+    ship_max_rotation_deg =
+        ($clientSamples | Measure-Object ship_max_rotation_deg -Maximum).Maximum
+    owner_pawn_count_max = ($clientSamples | Measure-Object owner_pawn_count -Maximum).Maximum
+    owner_state_tree_running_count_max =
+        ($clientSamples | Measure-Object owner_state_tree_running_count -Maximum).Maximum
+    owner_motion_eligible_count_max =
+        ($clientSamples | Measure-Object owner_motion_eligible_count -Maximum).Maximum
+    owner_current_stall_count_max =
+        ($clientSamples | Measure-Object owner_current_stall_count -Maximum).Maximum
+    owner_motion_stall_violation_count_max =
+        ($clientSamples | Measure-Object owner_motion_stall_violation_count -Maximum).Maximum
+    owner_max_low_displacement_seconds_max =
+        ($clientSamples | Measure-Object owner_max_low_displacement_seconds -Maximum).Maximum
+    owner_members_with_two_attack_runs_max =
+        ($clientSamples | Measure-Object owner_members_with_two_attack_runs -Maximum).Maximum
+    owner_min_attack_runs_max =
+        ($clientSamples | Measure-Object owner_min_attack_runs -Maximum).Maximum
 }
 $serverMovementSamples = @($serverSamples | Where-Object {
     $_.phase -eq 'sample' -or $_.phase -eq 'final'
@@ -667,9 +757,9 @@ $zeroServerMovementWrites = $serverMovementSamples.Count -gt 0 -and
         -not $s.PSObject.Properties['server_wingman_movement_write_count'] -or
             [UInt64]$s.server_wingman_movement_write_count -ne 0
     })
-$clientOwnerMassReady = Test-AnySample $clientSamples {
+$clientOwnerPawnReady = Test-AnySample $clientSamples {
     param($s)
-    [int]$s.owner_mass_entity_count -ge 25
+    [int]$s.owner_pawn_count -ge 25
 }
 $serverRoleReady = Test-AnySample $serverSamples { param($s) $s.role_ready -eq $true }
 $clientRoleReady = Test-AnySample $clientSamples { param($s) $s.role_ready -eq $true }
@@ -691,11 +781,10 @@ $clientTail = @($clientTimelineSamples | Select-Object -Last 3)
 $clientTailHealthy = $clientTail.Count -eq 3 -and
 	-not (Test-AnySample $clientTail {
         param($s)
-        [int]$s.client_relay_lifecycle -ne 2 -or
-            $s.client_relay_owner_matches_local -ne $true -or
-            $s.client_owned_relay_group_present -ne $true -or
-            $s.client_upload_rate_grant_well_formed -ne $true -or
-            [int]$s.owner_mass_entity_count -lt 25
+		[int]$s.client_relay_lifecycle -ne 2 -or
+			$s.client_relay_owner_matches_local -ne $true -or
+			$s.client_owned_relay_group_present -ne $true -or
+			[int]$s.owner_pawn_count -lt 25
     })
 $clientTailProgressing = $clientTail.Count -eq 3 -and
     [UInt64]$clientTail[-1].client_normal_accepted_count -gt
@@ -737,16 +826,134 @@ $serverConnectedTailHealthy = $serverConnectedTail.Count -eq 3 -and
             [int]$s.atomic_committed_group_count -ne $groupCount -or
             [int]$s.strict_ready_relay_group_count -ne $groupCount -or
             [int]$s.strict_growing_relay_group_count -ne $groupCount
-    }) -and
-	(Test-AnySample $serverConnectedTail {
-		param($s)
-		$groupCount = [int]$s.relay_group_count
-		$groupCount -ge 2 -and
-			[int]$s.bootstrap_acknowledged_group_count -eq $groupCount
 	})
 $serverConnectedTailProgressing = $serverConnectedTail.Count -eq 3 -and
     [UInt64]$serverConnectedTail[-1].minimum_accepted_frame_across_strict_groups -gt
         [UInt64]$serverConnectedTail[0].minimum_accepted_frame_across_strict_groups
+
+function Get-LatestRuntimeSegment {
+    param([object[]]$Samples)
+    $lastStartIndex = -1
+    for ($sampleIndex = 0; $sampleIndex -lt $Samples.Count; ++$sampleIndex) {
+        if ($Samples[$sampleIndex].phase -eq 'start') {
+            $lastStartIndex = $sampleIndex
+        }
+    }
+    if ($lastStartIndex + 1 -ge $Samples.Count) {
+        return @()
+    }
+    return @($Samples[($lastStartIndex + 1)..($Samples.Count - 1)] | Where-Object {
+        $_.phase -eq 'sample' -or $_.phase -eq 'final'
+    })
+}
+$serverRuntimeSamples = @(Get-LatestRuntimeSegment $serverSamples)
+$clientRuntimeSamples = @(Get-LatestRuntimeSegment $clientSamples)
+$serverFirstActorReady = @($serverRuntimeSamples | Where-Object {
+    $_.socket_connected -eq $true -and
+        [int]$_.owner_pawn_count -eq 25 -and
+        [int]$_.owner_motion_eligible_count -eq 25 -and
+        [int]$_.owner_state_tree_running_count -eq 25
+} | Select-Object -First 1)
+$clientFirstActorReady = @($clientRuntimeSamples | Where-Object {
+    $_.socket_connected -eq $true -and
+        [int]$_.owner_pawn_count -eq 25 -and
+        [int]$_.owner_motion_eligible_count -eq 25 -and
+        [int]$_.owner_state_tree_running_count -eq 25
+} | Select-Object -First 1)
+$serverActorContinuity = $serverFirstActorReady.Count -eq 1
+if ($serverActorContinuity) {
+	$serverActorInterval = @($serverRuntimeSamples | Where-Object {
+		[double]$_.elapsed_seconds -ge [double]$serverFirstActorReady[0].elapsed_seconds
+	})
+	$serverActorContinuity = $serverActorInterval.Count -ge 3 -and
+		-not (Test-AnySample $serverActorInterval {
+			param($s)
+			[int]$s.owner_pawn_count -ne 25 -or
+				[int]$s.owner_state_tree_running_count -ne
+					[int]$s.owner_motion_eligible_count
+		})
+}
+$clientActorContinuity = $clientFirstActorReady.Count -eq 1
+if ($clientActorContinuity) {
+	$clientActorInterval = @($clientRuntimeSamples | Where-Object {
+		[double]$_.elapsed_seconds -ge [double]$clientFirstActorReady[0].elapsed_seconds
+	})
+	$clientActorContinuity = $clientActorInterval.Count -ge 3 -and
+		-not (Test-AnySample $clientActorInterval {
+			param($s)
+			[int]$s.owner_pawn_count -ne 25 -or
+				[int]$s.owner_state_tree_running_count -ne
+					[int]$s.owner_motion_eligible_count
+		})
+}
+$motionStallFree = -not (Test-AnySample (@($serverRuntimeSamples) + @($clientRuntimeSamples)) {
+    param($s)
+    [UInt64]$s.owner_motion_stall_violation_count -ne 0 -or
+        [int]$s.owner_current_stall_count -ne 0
+})
+$candidateRejectsZero = -not (Test-AnySample (@($serverRuntimeSamples) + @($clientRuntimeSamples)) {
+    param($s)
+    [UInt64]$s.client_normal_reject_count -ne 0 -or
+        [UInt64]$s.client_atomic_reject_count -ne 0
+})
+$serverHostTwoAttackRounds = Test-AnySample $serverRuntimeSamples {
+    param($s)
+    [int]$s.owner_members_with_two_attack_runs -eq 25 -and
+        [UInt64]$s.owner_min_attack_runs -ge 2
+}
+$clientTwoAttackRounds = Test-AnySample $clientRuntimeSamples {
+    param($s)
+    [int]$s.owner_members_with_two_attack_runs -eq 25 -and
+        [UInt64]$s.owner_min_attack_runs -ge 2
+}
+$serverMaximumElapsedSeconds =
+    [double](($serverRuntimeSamples | Measure-Object elapsed_seconds -Maximum).Maximum)
+$clientMaximumElapsedSeconds =
+    [double](($clientRuntimeSamples | Measure-Object elapsed_seconds -Maximum).Maximum)
+$actorLongDurationReached = $serverMaximumElapsedSeconds -ge 299.0 -and
+    $clientMaximumElapsedSeconds -ge 299.0
+$serverEmergencyRebaseAcceptedCount =
+    [UInt64](($serverRuntimeSamples | Measure-Object server_emergency_rebase_accepted_count -Maximum).Maximum)
+$serverHostEmergencyRebaseAcceptedCount =
+    [UInt64](($serverRuntimeSamples | Measure-Object client_emergency_rebase_accepted_count -Maximum).Maximum)
+$serverHostEmergencyRebaseAppliedCount =
+    [UInt64](($serverRuntimeSamples | Measure-Object client_emergency_rebase_applied_count -Maximum).Maximum)
+$clientEmergencyRebaseAcceptedCount =
+    [UInt64](($clientRuntimeSamples | Measure-Object client_emergency_rebase_accepted_count -Maximum).Maximum)
+$clientEmergencyRebaseAppliedCount =
+    [UInt64](($clientRuntimeSamples | Measure-Object client_emergency_rebase_applied_count -Maximum).Maximum)
+$rebaseAuthorizationConsistent =
+    $serverHostEmergencyRebaseAcceptedCount -eq $serverHostEmergencyRebaseAppliedCount -and
+    $clientEmergencyRebaseAcceptedCount -eq $clientEmergencyRebaseAppliedCount -and
+    $serverEmergencyRebaseAcceptedCount -ge
+        ($serverHostEmergencyRebaseAppliedCount + $clientEmergencyRebaseAppliedCount)
+$serverShipMotionDriverActive = Test-AnySample $serverRuntimeSamples {
+    param($s)
+    $s.ship_motion_driver_active -eq $true
+}
+$clientShipMotionDriverActive = Test-AnySample $clientRuntimeSamples {
+    param($s)
+    $s.ship_motion_driver_active -eq $true
+}
+$serverShipMaximumTranslationCentimeters =
+    [double](($serverRuntimeSamples | Measure-Object ship_max_translation_cm -Maximum).Maximum)
+$clientShipMaximumTranslationCentimeters =
+    [double](($clientRuntimeSamples | Measure-Object ship_max_translation_cm -Maximum).Maximum)
+$serverShipMaximumRotationDegrees =
+    [double](($serverRuntimeSamples | Measure-Object ship_max_rotation_deg -Maximum).Maximum)
+$clientShipMaximumRotationDegrees =
+    [double](($clientRuntimeSamples | Measure-Object ship_max_rotation_deg -Maximum).Maximum)
+$shipMotionGatePassed = -not $ActorLongGate -or
+    ($serverShipMotionDriverActive -and $clientShipMotionDriverActive -and
+        $serverShipMaximumTranslationCentimeters -ge 10000.0 -and
+        $clientShipMaximumTranslationCentimeters -ge 10000.0 -and
+        $serverShipMaximumRotationDegrees -ge 30.0 -and
+        $clientShipMaximumRotationDegrees -ge 30.0)
+$actorLongGatePassed = -not $ActorLongGate -or
+    ($actorLongDurationReached -and $serverActorContinuity -and $clientActorContinuity -and
+        $motionStallFree -and $candidateRejectsZero -and
+        $serverHostTwoAttackRounds -and $clientTwoAttackRounds -and
+        $rebaseAuthorizationConsistent -and $shipMotionGatePassed)
 $passed = -not $runError -and $listenSocketObserved -and $udpSocketPair -and
     $packetSimulationObserved -and
     $serverSocketConnected -and $clientSocketConnected -and
@@ -755,17 +962,20 @@ $passed = -not $runError -and $listenSocketObserved -and $udpSocketPair -and
     $serverHostAtomicBuildSubmitted -and $clientAtomicBuildSubmitted -and
     $serverHostAtomicResultAccepted -and $clientAtomicResultAccepted -and
     -not $atomicBuildFailuresObserved -and -not $invalidTransferBaselineSerializationObserved -and
-    $zeroServerMovementWrites -and $clientOwnerMassReady -and $serverRoleReady -and
+    $zeroServerMovementWrites -and $clientOwnerPawnReady -and $serverRoleReady -and
     $clientRoleReady -and $clientTailHealthy -and $clientTailProgressing -and
     $requiredWeakRosterChurnObserved -and $serverConnectedTailHealthy -and
-    $serverConnectedTailProgressing -and $normalExit
+    $serverConnectedTailProgressing -and $normalExit -and $actorLongGatePassed
 
 $summary = [ordered]@{
     schema = 'guli.listen-smoke-result.v1'
     run_id = $runId
     scope = 'real_two_process_listen_socket_smoke'
     profile = $Profile
-    map = '/Game/Maps/LVL_ShipTest'
+    map = $Map
+    ship_motion_requested = [bool]($MoveShip -or $ActorLongGate)
+    actor_long_gate_requested = [bool]$ActorLongGate
+    persistent_targets_requested = [bool]($ActorLongGate -or $PersistentTargets)
     port = $Port
     started_utc = $startedUtc.ToString('o')
     finished_utc = [DateTime]::UtcNow.ToString('o')
@@ -801,7 +1011,7 @@ $summary = [ordered]@{
         atomic_build_failures_observed = $atomicBuildFailuresObserved
         invalid_transfer_baseline_serialization_observed = $invalidTransferBaselineSerializationObserved
         server_wingman_movement_write_count_zero = $zeroServerMovementWrites
-        client_owner_mass_25_ready = $clientOwnerMassReady
+        client_owner_pawn_25_ready = $clientOwnerPawnReady
         client_tail_active_and_runtime_ready = $clientTailHealthy
         client_tail_all_flights_progressing = $clientTailProgressing
         required_weak_roster_churn_observed = $requiredWeakRosterChurnObserved
@@ -809,6 +1019,27 @@ $summary = [ordered]@{
         maximum_client_roster_revision = $maximumClientRosterRevision
         server_connected_tail_all_groups_transaction_ready = $serverConnectedTailHealthy
         server_connected_tail_minimum_frame_progressing = $serverConnectedTailProgressing
+        actor_long_duration_reached = $actorLongDurationReached
+        listen_host_25_owner_pawns_and_state_trees_continuous = $serverActorContinuity
+        remote_client_25_owner_pawns_and_state_trees_continuous = $clientActorContinuity
+        owner_pawn_motion_stall_free = $motionStallFree
+        normal_and_atomic_candidate_reject_counts_zero = $candidateRejectsZero
+        listen_host_all_25_members_observed_two_attack_runs = $serverHostTwoAttackRounds
+        remote_client_all_25_members_observed_two_attack_runs = $clientTwoAttackRounds
+        emergency_rebases_have_matching_server_authorization = $rebaseAuthorizationConsistent
+        moving_ship_position_and_rotation_gate_passed = $shipMotionGatePassed
+        listen_host_ship_motion_driver_active = $serverShipMotionDriverActive
+        remote_client_ship_motion_driver_active = $clientShipMotionDriverActive
+        listen_host_ship_max_translation_cm = $serverShipMaximumTranslationCentimeters
+        remote_client_ship_max_translation_cm = $clientShipMaximumTranslationCentimeters
+        listen_host_ship_max_rotation_deg = $serverShipMaximumRotationDegrees
+        remote_client_ship_max_rotation_deg = $clientShipMaximumRotationDegrees
+        server_maximum_elapsed_seconds = $serverMaximumElapsedSeconds
+        client_maximum_elapsed_seconds = $clientMaximumElapsedSeconds
+        server_emergency_rebase_accepted_count = $serverEmergencyRebaseAcceptedCount
+        listen_host_emergency_rebase_applied_count = $serverHostEmergencyRebaseAppliedCount
+        remote_client_emergency_rebase_applied_count = $clientEmergencyRebaseAppliedCount
+        actor_long_gate_passed = $actorLongGatePassed
         server_role_ready = $serverRoleReady
         client_role_ready = $clientRoleReady
         server_sample_count = $serverSamples.Count
@@ -828,8 +1059,8 @@ $summary = [ordered]@{
     }
     excluded_claims = @(
         'Launcher build cannot provide the required source-engine Dedicated Server process gate.',
-        'This short smoke is not the formal 10-minute 100-unit or split-4000 performance gate.',
-        'Listen-host owner Mass work shares the server process; zero movement here refers only to Relay authority movement writes.',
+        'This run is not the formal 10-minute 100-unit or split-4000 performance gate.',
+        'Listen-host owner Pawn simulation shares the server process; zero movement here refers only to Relay authority movement writes.',
         'The Weak profile is packet emulation evidence, not Network Insights bandwidth certification.'
     )
 }

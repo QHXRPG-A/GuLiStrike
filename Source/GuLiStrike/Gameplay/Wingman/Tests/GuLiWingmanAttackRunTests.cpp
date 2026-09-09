@@ -13,19 +13,49 @@ bool FGuLiWingmanGroundRunTest::RunTest(const FString&)
 	FGuLiWingmanAttackProfile Profile; Profile.Pattern = EGuLiWingmanAttackPattern::GroundDive; Profile.ExecutorId = TEXT("WingmanGroundMissile");
 	FGuLiWingmanGroundRunPath Path;
 	TestTrue(TEXT("Default path is physically feasible"), GuLiWingmanAttack::BuildGroundPath(FVector(100,200,300), FVector(1,0,0), Profile, 20, Path));
-	TestTrue(TEXT("Entry is at 147.73m above target ground"), FMath::IsNearlyEqual(Path.Entry.Z - 300, 14772.97, 0.1));
+	const float ExpectedTurnDrop = Path.TurnRadius * (1.0f - UE_INV_SQRT_2);
+	const float ExpectedLeg = Profile.FlightSpeed * Profile.DiveSeconds * UE_INV_SQRT_2;
+	TestTrue(TEXT("Entry includes enough turn lift to preserve the authored minimum clearance"),
+		FMath::IsNearlyEqual(Path.Entry.Z - 300, Profile.PullUpHeight + ExpectedTurnDrop + ExpectedLeg, 0.1));
 	TestTrue(TEXT("Dive lasts exactly 1.5s and reaches pull-up anchor"), Path.PositionAt(1.5).Equals(Path.PullUp, 0.01));
 	TestTrue(TEXT("Both straight legs have 45 degree pitch"), FMath::IsNearlyEqual(Path.DirectionAt(0).Z, -UE_INV_SQRT_2, 0.0001)
 		&& FMath::IsNearlyEqual(Path.DirectionAt(Path.TotalSeconds()).Z, UE_INV_SQRT_2, 0.0001));
 	double Lowest = DBL_MAX;
 	for (int32 I = 0; I <= 600; ++I) Lowest = FMath::Min(Lowest, Path.PositionAt(Path.TotalSeconds() * I / 600.0f).Z - 300);
-	TestTrue(TEXT("Finite-radius turn stays above 50m and below 100m"), Lowest > 5000 && Lowest < 10000);
+	TestTrue(TEXT("Finite-radius turn bottoms out at the authored 100m clearance"),
+		FMath::IsNearlyEqual(Lowest, Profile.PullUpHeight, 0.1));
 	TestTrue(TEXT("Path exits at the declared final point"), Path.PositionAt(Path.TotalSeconds()).Equals(Path.Exit, 0.01));
 	TestEqual(TEXT("Last of ten shots occurs at dive end"), GuLiWingmanAttack::ShotTime(9,10,1.5f),1.5f);
 	TestEqual(TEXT("Single missile emits at dive start"), GuLiWingmanAttack::ShotTime(0,1,1.5f),0.0f);
 	TestTrue(TEXT("Strip starts on target"), GuLiWingmanAttack::StripPoint(Path,12000,0,10).Equals(Path.Target));
 	TestTrue(TEXT("Strip ends 120m along own approach"), GuLiWingmanAttack::StripPoint(Path,12000,9,10).Equals(Path.Target + FVector(12000,0,0)));
 	TestEqual(TEXT("Five planes have at most ten shots in a 200ms batch"),Profile.MaximumShotsPerFlightBatch(),10);
+	TArray<FVector> ApproachCandidates;
+	for (int32 CandidateIndex = 0; CandidateIndex < GuLiWingmanAttack::MaximumGroundApproachCandidates; ++CandidateIndex)
+	{
+		const FVector Candidate = GuLiWingmanAttack::BuildGroundApproachCandidate(
+			FVector::ForwardVector, 0u, CandidateIndex);
+		TestTrue(TEXT("Every bounded ground approach is normalized"), Candidate.IsNormalized());
+		TestFalse(TEXT("Every bounded ground approach is unique"), ApproachCandidates.ContainsByPredicate(
+			[&](const FVector& Existing) { return Existing.Equals(Candidate, 0.001); }));
+		ApproachCandidates.Add(Candidate);
+	}
+	TestTrue(TEXT("First ground approach remains the direct route"), ApproachCandidates[0].Equals(FVector::ForwardVector));
+	TestTrue(TEXT("Stable seed mirrors the first alternative"),
+		GuLiWingmanAttack::BuildGroundApproachCandidate(FVector::ForwardVector, 0u, 1).Y > 0.0
+		&& GuLiWingmanAttack::BuildGroundApproachCandidate(FVector::ForwardVector, 1u, 1).Y < 0.0);
+	TestEqual(TEXT("Eight relative plus eight world-stable approaches are available"),
+		ApproachCandidates.Num(), 16);
+	TestTrue(TEXT("World-stable fallbacks fill the 22.5 degree gaps"),
+		FMath::IsNearlyEqual(FMath::RadiansToDegrees(FMath::Atan2(
+			ApproachCandidates[8].Y, ApproachCandidates[8].X)), 22.5f, 0.01f));
+	TestTrue(TEXT("Setup point supplies the complete six-second lead-in"),
+		GuLiWingmanAttack::GroundRunSetupPoint(Path).Equals(
+			Path.Entry - Path.DirectionAt(0.0f)
+				* (Path.Speed * GuLiWingmanAttack::GroundIngressLeadSeconds), 0.01));
+	TestTrue(TEXT("Out-of-range ground approach index fails closed"),
+		GuLiWingmanAttack::BuildGroundApproachCandidate(FVector::ForwardVector, 0u,
+			GuLiWingmanAttack::MaximumGroundApproachCandidates).IsNearlyZero());
 	FGuLiWingmanGroundRunPath Oblique;
 	GuLiWingmanAttack::BuildGroundPath(FVector(150, 250, 350), FVector(1, 2, 0), Profile, 20, Oblique);
 	const FGuLiWingmanGroundRunPath BeforeFreeze = Oblique;
@@ -33,7 +63,13 @@ bool FGuLiWingmanGroundRunTest::RunTest(const FString&)
 		GuLiWingmanAttack::BuildGroundPath(Oblique.Target, Oblique.Direction, Profile, 20, Oblique)
 		&& Oblique.Entry.Equals(BeforeFreeze.Entry, 0.001) && Oblique.Direction.Equals(BeforeFreeze.Direction, 0.001));
 	Profile.PullUpHeight=5000;
-	TestFalse(TEXT("A turn starting at 50m would penetrate minimum clearance"),GuLiWingmanAttack::BuildGroundPath(FVector::ZeroVector,FVector::ForwardVector,Profile,20,Path));
+	TestTrue(TEXT("Minimum 50m clearance raises the turn anchors instead of penetrating terrain"),
+		GuLiWingmanAttack::BuildGroundPath(FVector::ZeroVector,FVector::ForwardVector,Profile,20,Path));
+	Lowest = DBL_MAX;
+	for (int32 I = 0; I <= 600; ++I)
+		Lowest = FMath::Min(Lowest, Path.PositionAt(Path.TotalSeconds() * I / 600.0f).Z);
+	TestTrue(TEXT("Minimum authored clearance is preserved across the complete turn"),
+		FMath::IsNearlyEqual(Lowest, GuLiWingmanAttack::MinimumGroundHeight, 0.1));
 	Profile.PullUpHeight=10000; Profile.MissileCount=64;
 	TestFalse(TEXT("A source row exceeding bounded packet capacity is rejected"),Profile.IsWellFormed());
 	auto* SourceTable = LoadObject<UDataTable>(nullptr, TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeShip_WingmanWeapons.DT_GuLiStrikeShip_WingmanWeapons"));

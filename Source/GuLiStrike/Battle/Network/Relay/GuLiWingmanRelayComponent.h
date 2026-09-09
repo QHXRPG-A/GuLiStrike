@@ -58,7 +58,6 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGuLiWingmanAtomicBatchResultSignatu
 	const FGuLiWingmanAtomicBatchAcceptance&, Acceptance);
 class FGuLiWingmanRelayAuthorityRegistry;
 class UGuLiWingmanSimulationSubsystem;
-struct FGuLiWingmanTargetObservation;
 
 /**
  * PlayerController-owned RPC transport for a GameState-lifetime FGuLiWingmanRelayServer. Destroying this
@@ -157,6 +156,8 @@ public:
 	}
 	uint32 GetListenSmokeAtomicBuildSubmittedCount() const { return ListenSmokeAtomicBuildSubmittedCount; }
 	uint32 GetListenSmokeAtomicResultCount() const { return ListenSmokeAtomicResultCount; }
+	uint32 GetListenSmokeAtomicAcceptedCount() const { return ListenSmokeAtomicAcceptedCount; }
+	uint32 GetListenSmokeAtomicRejectedCount() const { return ListenSmokeAtomicRejectedCount; }
 	EGuLiWingmanSubmissionDisposition GetListenSmokeLastAtomicResultDisposition() const
 	{
 		return ListenSmokeLastAtomicResultDisposition;
@@ -180,6 +181,35 @@ public:
 	uint32 GetListenSmokeNormalSubmittedCount() const { return ListenSmokeNormalSubmittedCount; }
 	uint32 GetListenSmokeNormalResultCount() const { return ListenSmokeNormalResultCount; }
 	uint32 GetListenSmokeNormalAcceptedCount() const { return ListenSmokeNormalAcceptedCount; }
+	uint32 GetListenSmokeNormalRejectedCount() const { return ListenSmokeNormalRejectedCount; }
+	uint32 GetListenSmokeNormalRejectedCount(const uint8 FlightIndex) const
+	{
+		return FlightIndex < GULI_WINGMAN_FLIGHT_COUNT
+			? ListenSmokeNormalRejectedCountByFlight[FlightIndex] : 0u;
+	}
+	EGuLiWingmanRejectReason GetListenSmokeLastNormalRejectReason(
+		const uint8 FlightIndex) const
+	{
+		return FlightIndex < GULI_WINGMAN_FLIGHT_COUNT
+			? ListenSmokeLastNormalRejectReasonByFlight[FlightIndex]
+			: EGuLiWingmanRejectReason::None;
+	}
+	uint32 GetListenSmokeEmergencyRebaseRequestCount() const
+	{
+		return ListenSmokeEmergencyRebaseRequestCount;
+	}
+	uint32 GetListenSmokeEmergencyRebaseResultCount() const
+	{
+		return ListenSmokeEmergencyRebaseResultCount;
+	}
+	uint32 GetListenSmokeEmergencyRebaseAcceptedCount() const
+	{
+		return ListenSmokeEmergencyRebaseAcceptedCount;
+	}
+	uint32 GetListenSmokeEmergencyRebaseAppliedCount() const
+	{
+		return ListenSmokeEmergencyRebaseAppliedCount;
+	}
 	uint8 GetListenSmokeLastNormalFlightModeMask() const { return ListenSmokeLastNormalFlightModeMask; }
 	uint8 GetListenSmokeLastAtomicFlightModeMask() const { return ListenSmokeLastAtomicFlightModeMask; }
 	EGuLiWingmanSubmissionDisposition GetListenSmokeLastNormalResultDisposition() const
@@ -191,6 +221,7 @@ public:
 		return ListenSmokeLastNormalResultRejectReason;
 	}
 	uint32 GetListenSmokeClientSimulationTick() const { return ClientSimulationTick; }
+	bool IsListenSmokeClientBootstrapPending() const { return bClientBootstrapPending; }
 	uint32 GetListenSmokeNextFrameSequence(const uint8 FlightIndex) const
 	{
 		return FlightIndex < GULI_WINGMAN_FLIGHT_COUNT
@@ -231,6 +262,9 @@ private:
 
 	UFUNCTION(Server, Reliable)
 	void ServerSubmitFireIntent(const FGuLiWingmanFireIntent& Intent);
+
+	UFUNCTION(Server, Reliable)
+	void ServerRequestEmergencyRebase(const FGuLiWingmanEmergencyRebaseRequest& Request);
 
 	UFUNCTION(Server, Reliable)
 	void ServerSubmitAtomicCandidateFragment(const FGuLiWingmanAtomicCandidateBatchFragment& Fragment);
@@ -275,6 +309,10 @@ private:
 	UFUNCTION(Client, Reliable)
 	void ClientReceiveUploadRateGrant(const FGuLiWingmanUploadRateGrant& Grant);
 
+	UFUNCTION(Client, Reliable)
+	void ClientReceiveEmergencyRebase(const FGuLiWingmanEmergencyRebaseResponse& Response,
+		const FGuLiWingmanAcceptedBatch& AcceptedBatch, bool bHasAcceptedBatch);
+
 	UFUNCTION(Client, Unreliable)
 	void ClientReceiveFireIntentResult(uint32 Sequence, EGuLiWingmanSubmissionDisposition Disposition,
 		EGuLiWingmanRejectReason RejectReason);
@@ -295,17 +333,16 @@ private:
 		const FGuLiWingmanTransferBaseline* TransferBaseline);
 	bool ApplyAcceptedBatchToLocalOwner(const FGuLiWingmanAcceptedBatch& AcceptedBatch);
 	void TickOwnerClientSimulation(float DeltaTime);
+	void DrainAndSubmitEmergencyRebaseRequests(UGuLiWingmanSimulationSubsystem& Simulation,
+		const FGuLiWingmanGroupHandle& Group);
 	uint32 AdvanceClientSimulationClock(float DeltaTime);
 	void CaptureOwnerTrajectory(
 		UGuLiWingmanSimulationSubsystem& Simulation,
 		uint32 CaptureIntervalTicks);
 	void TickOwnerBasicWeapon(double NowSeconds);
-	void GatherBasicWeaponTargets(
-		double EstimatedServerNowSeconds,
-		TArray<FGuLiWingmanTargetObservation>& OutTargets) const;
 	bool HasClientLineOfSight(
 		const FVector& SourceLocation,
-		const FGuLiWingmanTargetObservation& Target) const;
+		const FGuLiWingmanAttackTarget& Target) const;
 	void ObserveAuthoritativeServerTime(double ServerTimeSeconds);
 	double GetEstimatedServerTimeSeconds() const;
 	void DestroyClientOwnedGroup();
@@ -342,7 +379,7 @@ private:
 	uint64 LastAcknowledgedCutId = 0u;
 	double ClientCandidateAccumulator = 0.0;
 	FGuLiWingmanGroupHandle CaptureClockGroup;
-	uint32 LastCompletedMassTick = 0;
+	uint32 LastCompletedPawnTick = 0;
 	uint32 LastOwnerUploadSimulationTick = 0u;
 	/** Server-only bounded routing for deferred fire-batch results. */
 	TMap<uint32, double> ReliableAttackCandidateSequences;
@@ -357,6 +394,7 @@ private:
 	uint32 LastRequestedResumeLeaseEpoch = 0u;
 	double NextClientResumeRequestTimeSeconds = 0.0;
 	uint32 NextClientCandidateSequence = 1u;
+	uint32 NextClientEmergencyRebaseSequence = 1u;
 	uint32 ClientSimulationTick = 1u;
 	/** Persistent fair scheduler for ordinary per-Flight uploads. */
 	uint8 NextClientFlightUploadCursor = 0u;
@@ -366,10 +404,14 @@ private:
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> NextClientFrameSequenceByFlight{};
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> ClientAcceptedSequenceByFlight{};
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> LastSubmittedClientTickByFlight{};
+	/** Wall/server-time freshness guard used when low PIE frame rate drops fixed simulation steps. */
+	TStaticArray<double, GULI_WINGMAN_FLIGHT_COUNT> LastSubmittedServerTimeByFlight{};
 	/** Owner-private rolling history; only a four-sample selection ever reaches the wire. */
 	TStaticArray<TArray<FGuLiWingmanCandidateTrailSample>, GULI_WINGMAN_FLIGHT_COUNT>
 		RetainedTrajectoryByFlight{};
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> LastRetainedTrajectoryTickByFlight{};
+	FGuLiWingmanGroupHandle RetainedTrajectoryCarrierGroup;
+	uint32 RetainedTrajectoryCarrierEpoch = 0u;
 	FGuLiWingmanUploadRateGrant ClientUploadRateGrant;
 	uint64 NextClientAtomicBatchId = 1u;
 	TArray<double> NextBasicTargetScanSeconds;
@@ -382,6 +424,8 @@ private:
 	uint32 ListenSmokeAtomicBuildFragmentFailureCount = 0u;
 	uint32 ListenSmokeAtomicBuildSubmittedCount = 0u;
 	uint32 ListenSmokeAtomicResultCount = 0u;
+	uint32 ListenSmokeAtomicAcceptedCount = 0u;
+	uint32 ListenSmokeAtomicRejectedCount = 0u;
 	EGuLiWingmanSubmissionDisposition ListenSmokeLastAtomicResultDisposition =
 		EGuLiWingmanSubmissionDisposition::Rejected;
 	EGuLiWingmanRejectReason ListenSmokeLastAtomicResultRejectReason = EGuLiWingmanRejectReason::None;
@@ -394,6 +438,15 @@ private:
 	uint32 ListenSmokeNormalSubmittedCount = 0u;
 	uint32 ListenSmokeNormalResultCount = 0u;
 	uint32 ListenSmokeNormalAcceptedCount = 0u;
+	uint32 ListenSmokeNormalRejectedCount = 0u;
+	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT>
+		ListenSmokeNormalRejectedCountByFlight{};
+	TStaticArray<EGuLiWingmanRejectReason, GULI_WINGMAN_FLIGHT_COUNT>
+		ListenSmokeLastNormalRejectReasonByFlight{};
+	uint32 ListenSmokeEmergencyRebaseRequestCount = 0u;
+	uint32 ListenSmokeEmergencyRebaseResultCount = 0u;
+	uint32 ListenSmokeEmergencyRebaseAcceptedCount = 0u;
+	uint32 ListenSmokeEmergencyRebaseAppliedCount = 0u;
 	uint8 ListenSmokeLastNormalFlightModeMask = 0u;
 	uint8 ListenSmokeLastAtomicFlightModeMask = 0u;
 	EGuLiWingmanSubmissionDisposition ListenSmokeLastNormalResultDisposition =

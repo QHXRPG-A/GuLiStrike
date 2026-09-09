@@ -22,9 +22,14 @@ namespace GuLiWingmanLifecycleTests
 	{
 		FGuLiGroupAbilityConfigSnapshot Config;
 		Config.ShipInstanceId = Group.ShipInstanceId;
+		Config.MatchEpoch = 5u;
+		Config.Team = EGuLiTeam::Red;
+		Config.OwnerPlayerGuid = FGuid(1u, 2u, 3u, 4u);
+		Config.WingmanTypeId = TEXT("LifecycleTestWingman");
 		Config.ShipGeneration = Group.ShipGeneration;
 		Config.GroupGeneration = Group.GroupGeneration;
 		Config.AbilitySetRevision = 2u;
+		Config.LoadoutRevision = 2u;
 		Config.SnapshotRevision = 4u;
 		Config.bGroupAbilitiesValid = true;
 		Config.FormationAbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;

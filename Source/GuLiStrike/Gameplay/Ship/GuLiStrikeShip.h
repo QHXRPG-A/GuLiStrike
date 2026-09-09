@@ -24,6 +24,7 @@ class UGuLiShipAbilitySystemComponent;
 class UGuLiWingmanWeaponDefinition;
 class UGuLiShipMovementComponent;
 class UGuLiShipWorldHUDComponent;
+class UGuLiShipTargetingRangeComponent;
 class UGuLiWingmanRelayComponent;
 class UEnhancedInputLocalPlayerSubsystem;
 class UGuLiStrikeShipPartComponent;
@@ -163,6 +164,10 @@ class AGuLiStrikeShip : public ACharacter, public IAbilitySystemInterface
 	/** Local-only world-space HUD presenter; creates no visible nodes for remote Ships or servers. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UGuLiShipWorldHUDComponent* ShipWorldHUD;
+
+	/** Local-only wire sphere showing the automatic wingman acquisition radius. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
+	UGuLiShipTargetingRangeComponent* WingmanTargetingRange;
 
 protected:
 
@@ -452,6 +457,8 @@ public:
 	FGuLiWingmanAttackTarget GetWingmanAttackTarget() const { return WingmanAttackTarget; }
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Wingman|Target")
 	FDataTableRowHandle WingmanTargetingRow;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Ship|Wingman|Target")
+	bool bShowWingmanTargetingRange = true;
 	UPROPERTY(Replicated)
 	FGuLiWingmanAttackTarget WingmanAttackTarget;
 	UFUNCTION(Server, Reliable)

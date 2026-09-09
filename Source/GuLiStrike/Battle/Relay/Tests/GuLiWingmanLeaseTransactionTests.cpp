@@ -22,9 +22,14 @@ namespace GuLiWingmanLeaseTransactionTests
 	{
 		FGuLiGroupAbilityConfigSnapshot Config;
 		Config.ShipInstanceId = Group.ShipInstanceId;
+		Config.MatchEpoch = 77u;
+		Config.Team = EGuLiTeam::Red;
+		Config.OwnerPlayerGuid = FGuid(1u, 2u, 3u, 4u);
+		Config.WingmanTypeId = TEXT("LeaseTestWingman");
 		Config.ShipGeneration = Group.ShipGeneration;
 		Config.GroupGeneration = Group.GroupGeneration;
 		Config.AbilitySetRevision = 4u;
+		Config.LoadoutRevision = 4u;
 		Config.SnapshotRevision = 5u;
 		Config.bGroupAbilitiesValid = true;
 		Config.FormationAbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
@@ -38,6 +43,20 @@ namespace GuLiWingmanLeaseTransactionTests
 		Config.MissileDefinitionChecksum = 0x3333444455556666ull;
 		Config.FormationCommandRevision = 9u;
 		Config.EffectiveClientSimTick = 100u;
+		FGuLiWingmanWeaponChannelConfig& Basic =
+			Config.WeaponChannels.AddDefaulted_GetRef();
+		Basic.Binding = FGuLiWeaponBindingKey::Wingman(
+			Config.MatchEpoch, Config.Team, Config.OwnerPlayerGuid,
+			Config.WingmanTypeId, TEXT("BasicWeapon"));
+		Basic.SkillId = TEXT("LeaseTest.Basic.Auto");
+		Basic.AbilityId = Config.BasicWeaponAbilityId;
+		Basic.Kind = EGuLiWingmanWeaponKind::BasicAutomatic;
+		Basic.bEnabled = true;
+		Basic.ProfileRevision = 1u;
+		Basic.DefinitionRevision = Config.BasicWeaponDefinitionRevision;
+		Basic.DefinitionChecksum = Config.BasicWeaponDefinitionChecksum;
+		Basic.Runtime.CooldownSeconds = 2.0f;
+		Config.BasicWeaponRuntime = Basic.Runtime;
 		Config.RefreshHash();
 		return Config;
 	}
@@ -688,16 +707,16 @@ bool FGuLiWingmanActiveRosterCutTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Roster mutation preserves Accepted snapshot hash"),
 		GuLiWingmanRelayHash::AcceptedSnapshot(Fixture.Relay.GetAcceptedHistory()), AcceptedHashBefore);
 
-	TestEqual(TEXT("Old roster Candidate is rejected immediately"),
+	TestEqual(TEXT("A removed member generation can never overwrite its replacement"),
 		Fixture.Relay.SubmitCandidate(
 			Fixture.Owner, OldRosterCandidate, 0.2, FoundCarrier(), PermitWorld()).RejectReason,
-		EGuLiWingmanRejectReason::StaleRosterRevision);
+		EGuLiWingmanRejectReason::EmitterDead);
 	const FGuLiWingmanCandidateBatch NewRosterCandidate =
 		Fixture.MakeFlight(0u, 21u, 2u, 106u, 0.2);
-	TestEqual(TEXT("New roster Candidate cannot pass before the reliable cut ACK"),
+	TestEqual(TEXT("A live replacement pose relays while its reliable combat cut is pending"),
 		Fixture.Relay.SubmitCandidate(
-			Fixture.Owner, NewRosterCandidate, 0.2, FoundCarrier(), PermitWorld()).RejectReason,
-		EGuLiWingmanRejectReason::StaleRosterRevision);
+			Fixture.Owner, NewRosterCandidate, 0.2, FoundCarrier(), PermitWorld()).Disposition,
+		EGuLiWingmanSubmissionDisposition::Accepted);
 
 	FGuLiWingmanFireIntent PrematureFire;
 	PrematureFire.MatchEpoch = Fixture.Relay.GetMatchEpoch();
@@ -711,10 +730,18 @@ bool FGuLiWingmanActiveRosterCutTest::RunTest(const FString& Parameters)
 	PrematureFire.Target.AuthorityId = FGuid(40u, 41u, 42u, 43u);
 	PrematureFire.Target.Generation = 1u;
 	PrematureFire.Target.LocalId = 1u;
-	PrematureFire.WeaponAbilityId = Fixture.Relay.GetAbilityConfig().BasicWeaponAbilityId;
-	PrematureFire.WeaponDefinitionRevision =
-		Fixture.Relay.GetAbilityConfig().BasicWeaponDefinitionRevision;
-	PrematureFire.AbilitySetRevision = Fixture.Relay.GetAbilityConfig().AbilitySetRevision;
+	PrematureFire.TargetAssignmentRevision = 1u;
+	const FGuLiGroupAbilityConfigSnapshot& PrematureConfig = Fixture.Relay.GetAbilityConfig();
+	const FGuLiWingmanWeaponChannelConfig* PrematureChannel =
+		PrematureConfig.FindFirstWeaponChannel(EGuLiWingmanWeaponKind::BasicAutomatic);
+	if (!TestNotNull(TEXT("Replacement fire fixture has an automatic channel"), PrematureChannel)) return false;
+	PrematureFire.Binding = PrematureChannel->Binding;
+	PrematureFire.WeaponAbilityId = PrematureChannel->AbilityId;
+	PrematureFire.SkillId = PrematureChannel->SkillId;
+	PrematureFire.LoadoutRevision = PrematureConfig.LoadoutRevision;
+	PrematureFire.ProfileRevision = PrematureChannel->ProfileRevision;
+	PrematureFire.WeaponDefinitionRevision = PrematureChannel->DefinitionRevision;
+	PrematureFire.AbilitySetRevision = PrematureConfig.AbilitySetRevision;
 	PrematureFire.AimDirectionMilli = FIntVector(1000, 0, 0);
 	PrematureFire.bClientPredictedLineOfSight = true;
 	TestEqual(TEXT("Replacement identity cannot fire before roster ACK"),
@@ -738,12 +765,14 @@ bool FGuLiWingmanActiveRosterCutTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("ACK releases the Active roster barrier"),
 		Fixture.Relay.IsActiveRosterCutPending());
 
+	const FGuLiWingmanCandidateBatch PostAckCandidate =
+		Fixture.MakeFlight(0u, 22u, 3u, 112u, 0.23);
 	const FGuLiWingmanSubmissionResult Accepted = Fixture.Relay.SubmitCandidate(
-		Fixture.Owner, NewRosterCandidate, 0.23, FoundCarrier(), PermitWorld());
+		Fixture.Owner, PostAckCandidate, 0.23, FoundCarrier(), PermitWorld());
 	TestEqual(TEXT("Affected Flight resumes through one ordinary Candidate"),
 		Accepted.Disposition, EGuLiWingmanSubmissionDisposition::Accepted);
 	TestEqual(TEXT("Only affected Flight sequence advances"),
-		Fixture.Relay.GetAcceptedSequenceForFlight(0u), FlightZeroSequence + 1u);
+		Fixture.Relay.GetAcceptedSequenceForFlight(0u), FlightZeroSequence + 2u);
 	TestEqual(TEXT("Unrelated Flight sequence is unchanged"),
 		Fixture.Relay.GetAcceptedSequenceForFlight(1u), FlightOneSequence);
 	TestEqual(TEXT("Unrelated Flight freshness is unchanged"),
@@ -891,8 +920,8 @@ bool FGuLiWingmanReplenishedFlightFreshnessGraceTest::RunTest(const FString& Par
 		Fixture.Relay.GetLeaseState().Lifecycle, EGuLiWingmanGroupLifecycle::Active);
 	TestTrue(TEXT("The next one-second watchdog boundary executes"),
 		Fixture.Relay.RunLeaseMaintenance(16.1));
-	TestEqual(TEXT("Later replacements cannot slide the bounded freshness grace"),
-		Fixture.Relay.GetLeaseState().Lifecycle, EGuLiWingmanGroupLifecycle::Stale);
+	TestEqual(TEXT("Per-Flight pose age cannot stale a group while connection traffic is live"),
+		Fixture.Relay.GetLeaseState().Lifecycle, EGuLiWingmanGroupLifecycle::Active);
 	TestEqual(TEXT("Freshness grace writes no server movement"),
 		Fixture.Relay.GetServerWingmanMovementWriteCount(), 0ull);
 	return true;

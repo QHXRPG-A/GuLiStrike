@@ -89,6 +89,7 @@ namespace
 		Ar << Batch.FormationDefinitionChecksum;
 		Ar << Batch.ServerAcceptedTimeSeconds;
 		Ar << Batch.StableHash;
+		Ar << Batch.RebasedMemberMask;
 
 		uint32 SampleCount = Ar.IsSaving() ? static_cast<uint32>(Batch.Samples.Num()) : 0u;
 		if (Ar.IsSaving() && SampleCount > GULI_WINGMAN_GROUP_SIZE)
@@ -242,6 +243,7 @@ uint64 FGuLiWingmanAcceptedBatch::ComputeStableHash() const
 	GuLiShipAbilityHash::AddUInt32(Hash, AbilitySetRevision);
 	GuLiShipAbilityHash::AddUInt32(Hash, FormationCommandRevision);
 	GuLiShipAbilityHash::AddUInt64(Hash, FormationDefinitionChecksum);
+	GuLiShipAbilityHash::AddUInt32(Hash, RebasedMemberMask);
 	GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Samples.Num()));
 	for (const FGuLiWingmanCandidateSample& Sample : Samples)
 	{
@@ -294,6 +296,31 @@ bool FGuLiWingmanAcceptedBatch::IsWellFormed() const
 				return false;
 			}
 		}
+		if ((RebasedMemberMask & ~static_cast<uint8>((1u << GULI_WINGMAN_MEMBERS_PER_FLIGHT) - 1u)) != 0u
+			|| (RebasedMemberMask != 0u
+				&& (RebasedMemberMask & static_cast<uint8>(RebasedMemberMask - 1u)) != 0u))
+		{
+			return false;
+		}
+		if (RebasedMemberMask != 0u)
+		{
+			uint8 RebasedMember = 0u;
+			while ((RebasedMemberMask & (1u << RebasedMember)) == 0u)
+			{
+				++RebasedMember;
+			}
+			if (!Samples.ContainsByPredicate([RebasedMember](const FGuLiWingmanCandidateSample& Sample)
+			{
+				return Sample.Wingman.MemberIndex == RebasedMember;
+			}))
+			{
+				return false;
+			}
+		}
+	}
+	else if (RebasedMemberMask != 0u)
+	{
+		return false;
 	}
 	return true;
 }
@@ -442,7 +469,10 @@ bool FGuLiGroupAbilityConfigAck::IsWellFormed() const
 bool FGuLiWingmanBootstrapBundle::IsWellFormed() const
 {
     if ((AttackStateHash != 0 && AttackStateHash != AttackState.ComputeStableHash())
-        || (AttackStateHash == 0 && (AttackState.Revision != 0 || !AttackState.Checkpoints.IsEmpty()))
+        || (AttackStateHash == 0 && (AttackState.Revision != 0
+			|| AttackState.Target.Target.IsValid()
+			|| !AttackState.AutomaticTargets.IsEmpty()
+			|| !AttackState.Checkpoints.IsEmpty()))
         || AttackState.Checkpoints.Num() > GULI_WINGMAN_GROUP_SIZE * GULI_MAX_WINGMAN_WEAPON_CHANNELS) return false;
 
 	if (!Commit.IsWellFormed() || !AbilityConfig.IsWellFormed()
@@ -451,6 +481,10 @@ bool FGuLiWingmanBootstrapBundle::IsWellFormed() const
 		|| Commit.Group.GroupGeneration != AbilityConfig.GroupGeneration
 		|| Roster.Num() != GULI_WINGMAN_GROUP_SIZE || AuthorityMap.Num() != GULI_WINGMAN_GROUP_SIZE
 		|| Health.Num() != GULI_WINGMAN_GROUP_SIZE || !HasUniqueWingmen(Commit.Group, Roster))
+	{
+		return false;
+	}
+	if (!AttackState.IsWellFormed(Commit.Group))
 	{
 		return false;
 	}

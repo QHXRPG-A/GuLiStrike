@@ -4,7 +4,7 @@
 
 #if WITH_EDITOR
 
-#include "Gameplay/Wingman/Behavior/GuLiWingmanBehaviorStateTree.h"
+#include "Gameplay/Wingman/Behavior/GuLiWingmanMemberBehavior.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Components/StateTreeComponentSchema.h"
 #include "Dom/JsonObject.h"
@@ -27,27 +27,28 @@
 
 namespace GuLiWingmanStateTreeAssetCommands
 {
-	constexpr TCHAR PackagePath[] = TEXT("/Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior");
+	constexpr TCHAR PackagePath[] = TEXT("/Game/GuLiStrike/Wingman/ST_WingmanMemberBehavior");
 	constexpr TCHAR ObjectPath[] =
-		TEXT("/Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior");
-	constexpr TCHAR AssetName[] = TEXT("ST_WingmanGroupBehavior");
+		TEXT("/Game/GuLiStrike/Wingman/ST_WingmanMemberBehavior.ST_WingmanMemberBehavior");
+	constexpr TCHAR AssetName[] = TEXT("ST_WingmanMemberBehavior");
 	constexpr TCHAR RootStateName[] = TEXT("WingmanBehavior");
-	constexpr float PolicyTickSeconds = 0.2f;
+	constexpr float BehaviorTickSeconds = 0.2f;
 	constexpr TCHAR AuditRelativePath[] =
 		TEXT("TestResults/WingmanPlan/WingmanStateTreeAsset/state_tree_asset_audit.json");
 
-	struct FPolicyDescription
+	struct FBehaviorDescription
 	{
-		EGuLiWingmanBehaviorPolicy Policy;
+		EGuLiWingmanMemberBehavior Behavior;
 		const TCHAR* Description;
 	};
 
-	constexpr FPolicyDescription Policies[] = {
-		{EGuLiWingmanBehaviorPolicy::Dead, TEXT("No live members; policy cannot move or damage entities.")},
-		{EGuLiWingmanBehaviorPolicy::OwnerUnavailable, TEXT("Lease owner/config/carrier source is unavailable; suppress Candidate output.")},
-		{EGuLiWingmanBehaviorPolicy::EmergencyAvoid, TEXT("Avoidance is active; request recovery Guidance through flight mode only.")},
-		{EGuLiWingmanBehaviorPolicy::JoiningEscort, TEXT("One or more members must catch up to the carrier formation.")},
-		{EGuLiWingmanBehaviorPolicy::EscortOrbit, TEXT("Stable double-ring escort/orbit behavior.")}
+	constexpr FBehaviorDescription Behaviors[] = {
+		{EGuLiWingmanMemberBehavior::Dead, TEXT("This member is dead; no movement or attack request is produced.")},
+		{EGuLiWingmanMemberBehavior::EmergencyAvoid, TEXT("Avoidance is active; request local recovery guidance without waiting for authority.")},
+		{EGuLiWingmanMemberBehavior::GroundAttack, TEXT("Execute this member's frozen ground-attack movement request.")},
+		{EGuLiWingmanMemberBehavior::AirAttack, TEXT("Execute this member's current air-combat movement request.")},
+		{EGuLiWingmanMemberBehavior::Rejoin, TEXT("This member follows its Flight-level path back to formation.")},
+		{EGuLiWingmanMemberBehavior::EscortOrbit, TEXT("Stable double-ring escort/orbit behavior.")}
 	};
 
 	bool ValidateEditorContract(const UStateTree* StateTree, FString& OutError)
@@ -67,10 +68,10 @@ namespace GuLiWingmanStateTreeAssetCommands
 		}
 		const UStateTreeState* Root = EditorData->SubTrees[0];
 		if (Root->Name != RootStateName
-			|| Root->Children.Num() != static_cast<int32>(UE_ARRAY_COUNT(Policies))
-			|| Root->Transitions.Num() != static_cast<int32>(UE_ARRAY_COUNT(Policies)))
+			|| Root->Children.Num() != static_cast<int32>(UE_ARRAY_COUNT(Behaviors))
+			|| Root->Transitions.Num() != static_cast<int32>(UE_ARRAY_COUNT(Behaviors)))
 		{
-			OutError = TEXT("root, five policy children, or five policy event transitions are missing");
+			OutError = TEXT("root behavior children or event transitions do not match the live behavior contract");
 			return false;
 		}
 
@@ -80,21 +81,21 @@ namespace GuLiWingmanStateTreeAssetCommands
 			if (!State || State->EnterConditions.Num() != 1 || State->Tasks.Num() != 1
 				|| State->Transitions.Num() != 1
 				|| State->EnterConditions[0].Node.GetScriptStruct()
-					!= FGuLiWingmanBehaviorPolicyCondition::StaticStruct()
+					!= FGuLiWingmanMemberBehaviorCondition::StaticStruct()
 				|| State->Tasks[0].Node.GetScriptStruct()
-					!= FGuLiWingmanBehaviorPolicyTask::StaticStruct())
+					!= FGuLiWingmanMemberBehaviorTask::StaticStruct())
 			{
-				OutError = TEXT("each policy state must have exactly one policy condition, task, and recovery transition");
+				OutError = TEXT("each behavior state must have exactly one behavior condition, task, and recovery transition");
 				return false;
 			}
 			FoundStates.Add(State->Name);
 		}
-		for (const FPolicyDescription& Policy : Policies)
+		for (const FBehaviorDescription& Behavior : Behaviors)
 		{
-			if (!FoundStates.Contains(GuLiWingmanBehaviorPolicyName(Policy.Policy)))
+			if (!FoundStates.Contains(GuLiWingmanMemberBehaviorName(Behavior.Behavior)))
 			{
-				OutError = FString::Printf(TEXT("missing policy state %s"),
-					*GuLiWingmanBehaviorPolicyName(Policy.Policy).ToString());
+				OutError = FString::Printf(TEXT("missing behavior state %s"),
+					*GuLiWingmanMemberBehaviorName(Behavior.Behavior).ToString());
 				return false;
 			}
 		}
@@ -123,12 +124,12 @@ namespace GuLiWingmanStateTreeAssetCommands
 					for (const FStateTreeEditorNode& Task : State->Tasks)
 					{
 						TaskCount += Task.Node.GetScriptStruct()
-							== FGuLiWingmanBehaviorPolicyTask::StaticStruct() ? 1 : 0;
+							== FGuLiWingmanMemberBehaviorTask::StaticStruct() ? 1 : 0;
 					}
 					for (const FStateTreeEditorNode& Condition : State->EnterConditions)
 					{
 						ConditionCount += Condition.Node.GetScriptStruct()
-							== FGuLiWingmanBehaviorPolicyCondition::StaticStruct() ? 1 : 0;
+							== FGuLiWingmanMemberBehaviorCondition::StaticStruct() ? 1 : 0;
 					}
 				}
 			}
@@ -144,8 +145,8 @@ namespace GuLiWingmanStateTreeAssetCommands
 		Report->SetBoolField(TEXT("ready_to_run"), StateTree && StateTree->IsReadyToRun());
 		Report->SetBoolField(TEXT("package_dirty"),
 			StateTree && StateTree->GetOutermost()->IsDirty());
-		Report->SetNumberField(TEXT("policy_task_count"), TaskCount);
-		Report->SetNumberField(TEXT("policy_condition_count"), ConditionCount);
+		Report->SetNumberField(TEXT("behavior_task_count"), TaskCount);
+		Report->SetNumberField(TEXT("behavior_condition_count"), ConditionCount);
 		Report->SetNumberField(TEXT("root_event_transition_count"), EventTransitionCount);
 		Report->SetStringField(TEXT("validation_error"), ValidationError);
 		TArray<TSharedPtr<FJsonValue>> JsonStates;
@@ -159,11 +160,10 @@ namespace GuLiWingmanStateTreeAssetCommands
 		Execution->SetBoolField(TEXT("dedicated_server_runs"), false);
 		Execution->SetBoolField(TEXT("remote_mirror_runs"), false);
 		Execution->SetBoolField(TEXT("task_writes_transform"),
-			FGuLiWingmanBehaviorPolicyTask::WritesMassTransform());
+			FGuLiWingmanMemberBehaviorTask::WritesTransform());
 		Execution->SetBoolField(TEXT("task_writes_velocity"),
-			FGuLiWingmanBehaviorPolicyTask::WritesFlightVelocity());
-		Execution->SetBoolField(TEXT("task_writes_health_or_damage"),
-			FGuLiWingmanBehaviorPolicyTask::WritesHealthOrDamage());
+			FGuLiWingmanMemberBehaviorTask::WritesVelocity());
+		Execution->SetBoolField(TEXT("task_writes_health_or_damage"), false);
 		Report->SetObjectField(TEXT("execution_contract"), Execution);
 
 		FString Json;
@@ -211,33 +211,33 @@ namespace GuLiWingmanStateTreeAssetCommands
 			EditorData, UStateTreeEditorSchema::StaticClass(), TEXT("WingmanEditorSchema"), RF_Transactional);
 
 		UStateTreeState& Root = EditorData->AddSubTree(RootStateName);
-		Root.Description = TEXT("Client/listen-owner-only group policy. Tasks never integrate transforms or apply damage.");
+		Root.Description = TEXT("Client/listen-owner-only member behavior. Tasks never integrate transforms or apply damage.");
 		Root.SelectionBehavior = EStateTreeStateSelectionBehavior::TrySelectChildrenInOrder;
 		Root.bHasCustomTickRate = true;
-		Root.CustomTickRate = PolicyTickSeconds;
+		Root.CustomTickRate = BehaviorTickSeconds;
 
-		TMap<EGuLiWingmanBehaviorPolicy, UStateTreeState*> States;
-		for (const FPolicyDescription& Policy : Policies)
+		TMap<EGuLiWingmanMemberBehavior, UStateTreeState*> States;
+		for (const FBehaviorDescription& Behavior : Behaviors)
 		{
-			UStateTreeState& State = Root.AddChildState(GuLiWingmanBehaviorPolicyName(Policy.Policy));
-			State.Description = Policy.Description;
+			UStateTreeState& State = Root.AddChildState(GuLiWingmanMemberBehaviorName(Behavior.Behavior));
+			State.Description = Behavior.Description;
 			State.SelectionBehavior = EStateTreeStateSelectionBehavior::TryEnterState;
-			State.Tag = GuLiWingmanBehaviorTags::GetSignalTag(Policy.Policy);
-			State.AddEnterCondition<FGuLiWingmanBehaviorPolicyCondition>(Policy.Policy);
-			State.AddTask<FGuLiWingmanBehaviorPolicyTask>(Policy.Policy);
+			State.Tag = GuLiWingmanMemberBehaviorTags::GetSignalTag(Behavior.Behavior);
+			State.AddEnterCondition<FGuLiWingmanMemberBehaviorCondition>(Behavior.Behavior);
+			State.AddTask<FGuLiWingmanMemberBehaviorTask>(Behavior.Behavior);
 			State.AddTransition(EStateTreeTransitionTrigger::OnStateSucceeded,
 				EStateTreeTransitionType::GotoState, &Root);
-			States.Add(Policy.Policy, &State);
+			States.Add(Behavior.Behavior, &State);
 		}
 
-		// Runner sends only on policy changes. Root transitions keep the signal
-		// contract explicit while target enter conditions revalidate current Mass input.
-		for (const FPolicyDescription& Policy : Policies)
+		// Runner sends only on behavior changes. Root transitions keep the signal
+		// contract explicit while target enter conditions revalidate current Pawn input.
+		for (const FBehaviorDescription& Behavior : Behaviors)
 		{
 			Root.AddTransition(EStateTreeTransitionTrigger::OnEvent,
-				GuLiWingmanBehaviorTags::GetSignalTag(Policy.Policy),
+				GuLiWingmanMemberBehaviorTags::GetSignalTag(Behavior.Behavior),
 				EStateTreeTransitionType::GotoState,
-				States.FindChecked(Policy.Policy));
+				States.FindChecked(Behavior.Behavior));
 		}
 
 		UStateTreeEditingSubsystem::ValidateStateTree(StateTree);
@@ -245,7 +245,7 @@ namespace GuLiWingmanStateTreeAssetCommands
 		if (!UStateTreeEditingSubsystem::CompileStateTree(StateTree, CompileLog))
 		{
 			CompileLog.DumpToLog(LogGuLiStrike);
-			OutError = TEXT("StateTree compiler rejected the authored policy graph");
+			OutError = TEXT("StateTree compiler rejected the authored behavior graph");
 			return false;
 		}
 		return ValidateEditorContract(StateTree, OutError);
@@ -320,13 +320,13 @@ namespace GuLiWingmanStateTreeAssetCommands
 			return;
 		}
 		UE_LOG(LogGuLiStrike, Display,
-			TEXT("Built authored Wingman StateTree %s with five conditioned, event-driven policy states."),
-			ObjectPath);
+			TEXT("Built authored Wingman StateTree %s with %d conditioned, event-driven behavior states."),
+			ObjectPath, static_cast<int32>(UE_ARRAY_COUNT(Behaviors)));
 	}
 
 	FAutoConsoleCommand BuildCommand(
 		TEXT("gs.Wingman.BuildStateTree"),
-		TEXT("Build/validate /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior."),
+		TEXT("Build/validate /Game/GuLiStrike/Wingman/ST_WingmanMemberBehavior."),
 		FConsoleCommandDelegate::CreateStatic(&BuildStateTree));
 }
 

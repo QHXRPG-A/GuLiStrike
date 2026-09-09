@@ -149,6 +149,10 @@ struct GULISTRIKE_API FGuLiWingmanAcceptedBatch
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|Accepted")
 	TArray<FGuLiWingmanCandidateSample> Samples;
 
+	/** v13: at most one member in this complete Flight Cut was authority-rebased. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|Accepted")
+	uint8 RebasedMemberMask = 0u;
+
 	UPROPERTY(VisibleAnywhere, Category = "Wingman|Accepted")
 	uint32 AbilitySetRevision = 0u;
 

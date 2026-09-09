@@ -4,6 +4,7 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Battle/Combat/GuLiLogicalMissileSubsystem.h"
+#include "Components/BoxComponent.h"
 #include "Components/SceneComponent.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
@@ -46,6 +47,7 @@ namespace GuLiWingmanCombatCoordinatorTests
 		FGuLiTargetHandle FriendlyTarget;
 		FGuid OwnerGuid = FGuid(1u, 2u, 3u, 4u);
 		bool bLineOfSight = true;
+		double ServerNow = 0.15;
 		bool bWorldContextRegistered = false;
 
 		~FFixture()
@@ -317,9 +319,14 @@ namespace GuLiWingmanCombatCoordinatorTests
 			{
 				return bLineOfSight;
 			};
-			CombatContext.ServerTimeProvider = [] { return 0.15; };
-			return Test.TestTrue(TEXT("Ship-owned combat coordinator initializes"),
-				Coordinator.Initialize(CombatContext, &Error));
+			CombatContext.ServerTimeProvider = [this] { return ServerNow; };
+			if (!Test.TestTrue(TEXT("Ship-owned combat coordinator initializes"),
+				Coordinator.Initialize(CombatContext, &Error)))
+			{
+				return false;
+			}
+			return Test.TestTrue(TEXT("Shared manual target authorizes the initial attack fixture"),
+				Coordinator.SetSpecifiedAttackTarget(EnemyTarget));
 		}
 
 		FGuLiWingmanFireIntent BasicIntent(const FGuLiTargetHandle& Target, const uint32 Sequence = 1u) const
@@ -354,6 +361,19 @@ namespace GuLiWingmanCombatCoordinatorTests
 			Intent.SourceAcceptedState = Accepted.StateRef;
 			Intent.ClientFireTick = Accepted.StateRef.ClientSimTick + 1u;
 			Intent.Target = Target;
+			if (Relay.AttackState.Target.Target == Target && Relay.AttackState.Target.bSpecified)
+			{
+				Intent.TargetAssignmentRevision = Relay.AttackState.Target.Revision;
+			}
+			else if (const FGuLiWingmanAutoTargetAssignment* Assignment =
+				Relay.AttackState.AutomaticTargets.FindByPredicate(
+					[&](const FGuLiWingmanAutoTargetAssignment& Candidate)
+					{
+						return Candidate.Emitter == Emitter && Candidate.Target.Target == Target;
+					}))
+			{
+				Intent.TargetAssignmentRevision = Assignment->Target.Revision;
+			}
 			Intent.WeaponAbilityId = Channel.AbilityId;
 			Intent.SkillId = Channel.SkillId;
 			Intent.LoadoutRevision = Config.LoadoutRevision;
@@ -469,6 +489,248 @@ bool FGuLiWingmanBasicWeaponCoordinatorTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("The first emitter can die after its shot"), Fixture.Relay.MarkWingmanDead(Valid.Emitter));
 	TestEqual(TEXT("Roster synchronization removes only dead/replaced emitter cooldown state"),
 		Fixture.Coordinator.SynchronizeRosterState(), 1);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanUnifiedAutomaticTargetingTest,
+	"GuLiStrike.Wingman.Attack.UnifiedAutomaticTargetingAndAuthorization",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanUnifiedAutomaticTargetingTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanCombatCoordinatorTests;
+	FFixture Fixture;
+	if (!Fixture.Initialize(*this)) return false;
+
+	AActor* Floor = Fixture.World->SpawnActor<AActor>();
+	if (!TestNotNull(TEXT("Ground projection floor exists"), Floor)) return false;
+	UBoxComponent* FloorBox = NewObject<UBoxComponent>(Floor);
+	Floor->SetRootComponent(FloorBox);
+	Floor->AddInstanceComponent(FloorBox);
+	FloorBox->SetBoxExtent(FVector(300000.0, 300000.0, 100.0));
+	FloorBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
+	FloorBox->SetCollisionObjectType(ECC_WorldStatic);
+	FloorBox->SetCollisionResponseToAllChannels(ECR_Block);
+	FloorBox->RegisterComponent();
+	Floor->SetActorLocation(FVector(0.0, 0.0, -200.0));
+
+	const FGuLiTargetHandle GroundTarget =
+		GuLiCombatTargets::MakeCommanderSoldierTargetHandle(17u, 900u);
+	AActor* GroundActor = Fixture.SpawnTargetActor(
+		*this, GroundTarget, EGuLiTeam::Blue, FVector(60000.0, 10000.0, 0.0));
+	if (!TestNotNull(TEXT("Ground enemy exists"), GroundActor)) return false;
+	UGuLiCombatHealthComponent* GroundHealth =
+		GroundActor->FindComponentByClass<UGuLiCombatHealthComponent>();
+	if (!TestNotNull(TEXT("Ground enemy health exists"), GroundHealth)) return false;
+
+	FGuLiWingmanTargetingTuning Tuning;
+	Fixture.Coordinator.ClearSpecifiedAttackTarget();
+	Fixture.Coordinator.TickAttackTargeting(0.2, Tuning);
+	const FGuLiWingmanAttackAuthorityState FirstState = Fixture.Relay.AttackState;
+	TestFalse(TEXT("Automatic mode leaves the shared manual target empty"), FirstState.Target.IsValid());
+	TestEqual(TEXT("All 25 fresh living members receive an automatic target"),
+		FirstState.AutomaticTargets.Num(), GULI_WINGMAN_GROUP_SIZE);
+	TestTrue(TEXT("The published automatic table is valid and stable-sorted"),
+		FirstState.IsWellFormed(Fixture.Relay.GetLeaseState().Group));
+	TMap<FGuLiTargetHandle, int32> CountsByTarget;
+	TSet<FGuLiWingmanHandle> Emitters;
+	for (const FGuLiWingmanAutoTargetAssignment& Assignment : FirstState.AutomaticTargets)
+	{
+		++CountsByTarget.FindOrAdd(Assignment.Target.Target);
+		Emitters.Add(Assignment.Emitter);
+		TestTrue(TEXT("Every automatic relation has a nonzero member version"),
+			Assignment.Target.Revision != 0u);
+	}
+	TestEqual(TEXT("Every living member occurs exactly once"), Emitters.Num(), GULI_WINGMAN_GROUP_SIZE);
+	TestEqual(TEXT("Both air targets and the ground target receive coverage"), CountsByTarget.Num(), 3);
+	TestTrue(TEXT("Ground assignment carries the bombing discriminator"),
+		FirstState.AutomaticTargets.ContainsByPredicate([&GroundTarget](const auto& Assignment)
+		{
+			return Assignment.Target.Target == GroundTarget && Assignment.Target.bGround;
+		}));
+	TestTrue(TEXT("Air assignment carries the dogfight discriminator"),
+		FirstState.AutomaticTargets.ContainsByPredicate([](const auto& Assignment)
+		{
+			return Assignment.Target.Target.Kind == EGuLiTargetKind::Ship && !Assignment.Target.bGround;
+		}));
+
+	Fixture.Coordinator.TickAttackTargeting(0.41, Tuning);
+	const FGuLiWingmanAttackAuthorityState StableState = Fixture.Relay.AttackState;
+	for (const FGuLiWingmanAutoTargetAssignment& Previous : FirstState.AutomaticTargets)
+	{
+		const FGuLiWingmanAutoTargetAssignment* Current = StableState.AutomaticTargets.FindByPredicate(
+			[&Previous](const auto& Assignment) { return Assignment.Emitter == Previous.Emitter; });
+		TestTrue(TEXT("A static scan preserves member-to-target relationships and versions"),
+			Current && Current->Target.Target == Previous.Target.Target
+			&& Current->Target.Revision == Previous.Target.Revision);
+	}
+
+	const FGuLiWingmanAutoTargetAssignment* AirAssignment =
+		StableState.AutomaticTargets.FindByPredicate([&Fixture](const auto& Assignment)
+		{
+			return !Assignment.Target.bGround
+				&& Assignment.Target.Target != Fixture.EnemyTarget;
+		});
+	const FGuLiWingmanWeaponChannelConfig* LegacyChannel =
+		Fixture.Config.WeaponChannels.FindByPredicate([](const auto& Channel)
+		{
+			return Channel.bEnabled
+				&& Channel.Runtime.Attack.Pattern == EGuLiWingmanAttackPattern::Legacy;
+		});
+	if (!TestNotNull(TEXT("An automatic air assignment exists"), AirAssignment)
+		|| !TestNotNull(TEXT("The Legacy automatic channel exists"), LegacyChannel))
+	{
+		return false;
+	}
+	const FGuLiWingmanFireIntent Authorized = Fixture.WeaponIntent(
+		*LegacyChannel, AirAssignment->Emitter, AirAssignment->Target.Target, 100u);
+	TestTrue(TEXT("The exact member, target and assignment version are authorized"),
+		Fixture.Coordinator.ValidateBasicFireIntent(Authorized, Fixture.Accepted, 0.42)
+			== EGuLiWingmanRejectReason::None);
+	FGuLiWingmanFireIntent WrongVersion = Authorized;
+	++WrongVersion.TargetAssignmentRevision;
+	TestTrue(TEXT("A wrong assignment version is rejected as InvalidTarget"),
+		Fixture.Coordinator.ValidateBasicFireIntent(WrongVersion, Fixture.Accepted, 0.42)
+			== EGuLiWingmanRejectReason::InvalidTarget);
+	const FGuLiWingmanAutoTargetAssignment* DifferentAssignment =
+		StableState.AutomaticTargets.FindByPredicate([AirAssignment](const auto& Assignment)
+		{
+			return Assignment.Emitter != AirAssignment->Emitter
+				&& Assignment.Target.Target != AirAssignment->Target.Target;
+		});
+	if (TestNotNull(TEXT("A differently assigned member exists"), DifferentAssignment))
+	{
+		FGuLiWingmanFireIntent WrongMember = Authorized;
+		WrongMember.Emitter = DifferentAssignment->Emitter;
+		TestTrue(TEXT("A target/version cannot be borrowed by a different member"),
+			Fixture.Coordinator.ValidateBasicFireIntent(WrongMember, Fixture.Accepted, 0.42)
+				== EGuLiWingmanRejectReason::InvalidTarget);
+	}
+
+	Fixture.ServerNow = 0.43;
+	TestTrue(TEXT("A valid manual target clears the externally visible automatic table"),
+		Fixture.Coordinator.SetSpecifiedAttackTarget(GroundTarget));
+	TestTrue(TEXT("Manual target is shared and ground-classified"),
+		Fixture.Relay.AttackState.AutomaticTargets.IsEmpty()
+		&& Fixture.Relay.AttackState.Target.Target == GroundTarget
+		&& Fixture.Relay.AttackState.Target.bGround
+		&& GuLiWingmanTargeting::ResolveTargetForEmitter(
+			Fixture.Relay.AttackState, Fixture.Accepted.Samples[0].Wingman)
+			== &Fixture.Relay.AttackState.Target);
+	TestTrue(TEXT("A prior valid automatic relation remains legal when its packet arrives late"),
+		Fixture.Coordinator.ValidateBasicFireIntent(Authorized, Fixture.Accepted, 0.44)
+			== EGuLiWingmanRejectReason::None);
+
+	Fixture.Coordinator.ClearSpecifiedAttackTarget();
+	Fixture.Coordinator.TickAttackTargeting(0.45, Tuning);
+	TestEqual(TEXT("Cancelling manual targeting resumes automatic allocation"),
+		Fixture.Relay.AttackState.AutomaticTargets.Num(), GULI_WINGMAN_GROUP_SIZE);
+
+	const FGuLiTargetHandle NewAirTarget = MakeShipTarget(22u);
+	AActor* NewAir = Fixture.SpawnTargetActor(
+		*this, NewAirTarget, EGuLiTeam::Blue, FVector(25000.0, -10000.0, 5000.0));
+	if (!TestNotNull(TEXT("New air enemy exists"), NewAir)) return false;
+	Fixture.Coordinator.TickAttackTargeting(0.66, Tuning);
+	TestTrue(TEXT("A newly entered target receives coverage on the next scan"),
+		Fixture.Relay.AttackState.AutomaticTargets.ContainsByPredicate(
+			[&NewAirTarget](const auto& Assignment)
+			{
+				return Assignment.Target.Target == NewAirTarget;
+			}));
+
+	FGuLiDamageRequest KillGround;
+	KillGround.MatchEpoch = 17u;
+	KillGround.DamageEventId = FGuid(80u, 81u, 82u, 83u);
+	KillGround.ShotId = FGuid(84u, 85u, 86u, 87u);
+	KillGround.Source = Fixture.ShipTarget;
+	KillGround.Target = GroundTarget;
+	KillGround.Damage = 2000.0f;
+	KillGround.HitLocation = GroundActor->GetActorLocation();
+	FGuLiDamageCommitResult GroundDeath;
+	TestTrue(TEXT("Ground target can die between scans"),
+		GroundHealth->ApplyServerDamage(KillGround, GroundDeath) && GroundDeath.bKilled);
+	Fixture.Coordinator.TickAttackTargeting(0.87, Tuning);
+	TestFalse(TEXT("Only the dead target is removed from automatic assignments"),
+		Fixture.Relay.AttackState.AutomaticTargets.ContainsByPredicate(
+			[&GroundTarget](const auto& Assignment)
+			{
+				return Assignment.Target.Target == GroundTarget;
+			}));
+	TestEqual(TEXT("Other legal targets immediately absorb the released members"),
+		Fixture.Relay.AttackState.AutomaticTargets.Num(), GULI_WINGMAN_GROUP_SIZE);
+
+	Fixture.FarEnemy->SetActorLocation(FVector(180001.0, 0.0, 0.0));
+	Fixture.Coordinator.TickAttackTargeting(1.08, Tuning);
+	TestFalse(TEXT("One over-release target is removed without clearing the whole table"),
+		Fixture.Relay.AttackState.AutomaticTargets.ContainsByPredicate(
+			[&Fixture](const auto& Assignment)
+			{
+				return Assignment.Target.Target == Fixture.FarEnemyTarget;
+			}));
+	TestEqual(TEXT("Mixed target loss does not create the all-target guard lock"),
+		Fixture.Relay.AttackState.AutomaticTargets.Num(), GULI_WINGMAN_GROUP_SIZE);
+
+	const FGuLiWingmanHandle OldGeneration =
+		Fixture.Relay.AttackState.AutomaticTargets.Last().Emitter;
+	FGuLiWingmanAttackCheckpoint& OldGenerationCheckpoint =
+		Fixture.Relay.AttackState.Checkpoints.AddDefaulted_GetRef();
+	OldGenerationCheckpoint.Emitter = OldGeneration;
+	OldGenerationCheckpoint.SlotId = TEXT("GroundWeapon");
+	OldGenerationCheckpoint.SkillId = TEXT("Test.Frozen.Ground");
+	OldGenerationCheckpoint.DefinitionChecksum = 1u;
+	OldGenerationCheckpoint.FrozenTargetHandle = Fixture.EnemyTarget;
+	OldGenerationCheckpoint.ProfileRevision = 1u;
+	OldGenerationCheckpoint.RunId = 1u;
+	OldGenerationCheckpoint.LeaseEpoch = Fixture.Relay.GetLeaseState().LeaseEpoch;
+	TestTrue(TEXT("An automatically assigned member can die"),
+		Fixture.Relay.MarkWingmanDead(OldGeneration));
+	TestTrue(TEXT("Roster synchronization removes the old generation automatic state"),
+		Fixture.Coordinator.SynchronizeRosterState() > 0);
+	TestFalse(TEXT("No old generation assignment survives roster synchronization"),
+		Fixture.Relay.AttackState.AutomaticTargets.ContainsByPredicate(
+			[&OldGeneration](const auto& Assignment)
+			{
+				return Assignment.Emitter == OldGeneration;
+			}));
+	TestFalse(TEXT("No old generation attack checkpoint survives roster synchronization"),
+		Fixture.Relay.AttackState.Checkpoints.ContainsByPredicate(
+			[&OldGeneration](const FGuLiWingmanAttackCheckpoint& Checkpoint)
+			{
+				return Checkpoint.Emitter == OldGeneration;
+			}));
+	TestTrue(TEXT("The stable slot replenishes with a new identity"),
+		Fixture.Relay.ReplenishWingman(
+			OldGeneration.Flight.FlightIndex,
+			OldGeneration.MemberIndex,
+			OldGeneration.EntityGeneration + 1u));
+	Fixture.Coordinator.SynchronizeRosterState();
+	const FGuLiWingmanRosterEntry* Replacement = Fixture.Relay.GetRoster().FindByPredicate(
+		[&OldGeneration](const FGuLiWingmanRosterEntry& Entry)
+		{
+			return Entry.Wingman.Flight == OldGeneration.Flight
+				&& Entry.Wingman.MemberIndex == OldGeneration.MemberIndex;
+		});
+	if (!TestNotNull(TEXT("The replenished roster identity exists"), Replacement)) return false;
+	Fixture.Coordinator.ClearSpecifiedAttackTarget();
+	Fixture.Coordinator.TickAttackTargeting(1.09, Tuning);
+	TestEqual(TEXT("The 24 members with fresh poses remain assigned"),
+		Fixture.Relay.AttackState.AutomaticTargets.Num(), GULI_WINGMAN_GROUP_SIZE - 1);
+	TestFalse(TEXT("A replenished member waits for its own accepted pose before assignment"),
+		Fixture.Relay.AttackState.AutomaticTargets.ContainsByPredicate(
+			[Replacement](const auto& Assignment)
+			{
+				return Assignment.Emitter == Replacement->Wingman;
+			}));
+
+	Fixture.Enemy->SetActorLocation(FVector(180001.0, 0.0, 0.0));
+	NewAir->SetActorLocation(FVector(180001.0, 10000.0, 0.0));
+	Fixture.Coordinator.TickAttackTargeting(1.30, Tuning);
+	TestTrue(TEXT("Losing every prior automatic target only by release range clears the table"),
+		Fixture.Relay.AttackState.AutomaticTargets.IsEmpty());
+	Fixture.Enemy->SetActorLocation(FVector(50000.0, 0.0, 0.0));
+	Fixture.Coordinator.TickAttackTargeting(1.51, Tuning);
+	TestTrue(TEXT("The existing group rejoin gate blocks immediate reacquisition"),
+		Fixture.Relay.AttackState.AutomaticTargets.IsEmpty());
 	return true;
 }
 
@@ -658,6 +920,8 @@ bool FGuLiWingmanMultiChannelCooldownAndProvenanceTest::RunTest(const FString& P
 		Second.DamageResult.AppliedDamage, SecondaryBasic->Runtime.Damage);
 	TestTrue(TEXT("Secondary slot produces the lethal event"), Second.DamageResult.bKilled);
 
+	TestTrue(TEXT("Manual targeting moves the shared authorization to the surviving enemy"),
+		Fixture.Coordinator.SetSpecifiedAttackTarget(Fixture.FarEnemyTarget));
 	const FGuLiWingmanBasicFireResult PrimaryCooldown = Fixture.Coordinator.SubmitBasicFireIntent(
 		Fixture.OwnerGuid,
 		Fixture.WeaponIntent(*PrimaryBasic, Emitter, Fixture.FarEnemyTarget, 3u), 0.13);
@@ -738,6 +1002,8 @@ bool FGuLiWingmanMultiChannelCooldownAndProvenanceTest::RunTest(const FString& P
 			OldGeneration.Flight.FlightIndex, OldGeneration.MemberIndex, NewGeneration));
 	TestEqual(TEXT("Roster synchronization removes only the old generation state"),
 		Fixture.Coordinator.SynchronizeRosterState(), 1);
+	TestTrue(TEXT("The current manual target expands to the replenished identity"),
+		Fixture.Coordinator.SetSpecifiedAttackTarget(Fixture.FarEnemyTarget));
 
 	FGuLiWingmanHandle NewEmitter = OldGeneration;
 	NewEmitter.EntityGeneration = NewGeneration;

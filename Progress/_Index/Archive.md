@@ -4,6 +4,9 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-09-09 | [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | wingman, ship, combat, network, ai | partial | 完成僚机客户端Pawn、逐架UE StateTree、Actor表现池和客户端姿态转发边界；持续飞行、对地、性能、协议与构建通过，空战每成员两轮开火留作后续问题。 |
+| 2026-09-09 | [Ship 僚机全员参战与索敌范围显示](../Archive/20260909-Ship僚机全员参战与索敌范围显示.md) | wingman, ship, combat | passed | 修正逐成员目标已分配但部分僚机无法建立对地攻击轮的问题；25/25成员已在同图PIE进入攻击轮，本地Ship新增实际获取半径的青色三维线框。 |
+| 2026-09-08 | [2026-09-08 完成了 Ship 僚机空地统一匈牙利自动选敌](../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md) | wingman, ship, combat, network | passed | 每艘Ship现以服务器多轮匈牙利算法统一分配空地目标，逐成员执行与v12开火授权已接通；27项定向自动化、300秒PIE长测、源码版Editor/Game构建和BuildId门禁通过。 |
 | 2026-09-08 | [2026-09-08 修复了 Ship 僚机在 FlightNav 边界停住不动](../Archive/20260908-Ship僚机FlightNav边界停滞恢复.md) | wingman, ship, navigation, network | passed | 僚机在最后合法点刹停后可瞬时对准冻结逃逸方向；源码版构建、攻击与Relay专项、主动对空250.63秒和对地85.83秒逐架采样均通过，最长停滞0秒。 |
 | 2026-09-08 | [2026-09-08 完成了 Ship 空中部队原型关卡与三倍航速](../Archive/20260908-Ship空中部队原型关卡与三倍航速.md) | ship, wingman, level, navigation, data-pipeline | partial | 新建可由玩家驾驶带25架僚机飞船的独立空战原型地图，完成地图专属 FlightNav 与 Cook 配置，并把 Dreadnought 空装配有效最大航速从900提高到2700cm/s。 |
 | 2026-09-07 | [2026-09-07 勘误：Ship僚机最终构建恢复源码版 UE5.7 门禁](../Archive/20260907-Ship僚机源码版构建门禁勘误.md) | wingman, ship, build, network | partial | 更正先前误用 Launcher UE5.7 的最终构建证据；已用 D:\UnrealEngine-5.7 重编 Editor/Game 目标、统一全部项目插件 BuildId，并由源码版命令程序通过7项攻击专项。 |

@@ -1,0 +1,43 @@
+{
+  "schema": "guli.work-live-pie.v1",
+  "work_id": "WORK-20260908-002",
+  "map": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype",
+  "configuration": "GuLiStrikeEditor Win64 Development",
+  "command_flags": [
+    "-GuLiListenSmoke",
+    "-GuLiListenSmokeSeconds=300"
+  ],
+  "active_sample_count": 294,
+  "first_active_elapsed_seconds": 3.089,
+  "final_snapshot": {
+    "phase": "final",
+    "elapsed_seconds": 300.003,
+    "final_sample": true,
+    "active_relay_group_count": 1,
+    "client_relay_lifecycle": 2,
+    "owner_mass_entity_count": 25,
+    "flight_accepted_sequences": [
+      1462,
+      1462,
+      1461,
+      1461,
+      1455
+    ],
+    "client_normal_result_count": 7297,
+    "client_normal_accepted_count": 7291,
+    "client_last_normal_result_disposition": 0,
+    "client_last_normal_reject_reason": 0,
+    "client_last_atomic_reject_reason": 0,
+    "world_validator_flight_nav_segment_reject_count": 0,
+    "world_validator_last_flight_nav_status": -1
+  },
+  "run_invariants": {
+    "minimum_active_relay_group_count": 1.0,
+    "client_relay_lifecycles": [
+      2
+    ],
+    "maximum_flight_nav_segment_reject_count": 0.0,
+    "maximum_normal_reject_reason": 0.0,
+    "maximum_atomic_reject_reason": 0.0
+  }
+}

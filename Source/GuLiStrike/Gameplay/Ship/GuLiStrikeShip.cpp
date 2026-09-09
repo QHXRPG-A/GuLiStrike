@@ -8,6 +8,7 @@
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
 #include "Gameplay/Ship/Aiming/GuLiShipAimComponent.h"
 #include "Gameplay/Ship/UI/GuLiShipWorldHUDComponent.h"
+#include "Gameplay/Ship/GuLiShipTargetingRangeComponent.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Battle/Combat/GuLiLogicalMissileSubsystem.h"
 #include "Battle/Combat/GuLiWingmanCombatCoordinator.h"
@@ -77,6 +78,8 @@ AGuLiStrikeShip::AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer)
 	CombatHealth = CreateDefaultSubobject<UGuLiCombatHealthComponent>(TEXT("CombatHealth"));
 	ShipAim = CreateDefaultSubobject<UGuLiShipAimComponent>(TEXT("ShipAim"));
 	ShipWorldHUD = CreateDefaultSubobject<UGuLiShipWorldHUDComponent>(TEXT("ShipWorldHUD"));
+	WingmanTargetingRange = CreateDefaultSubobject<UGuLiShipTargetingRangeComponent>(TEXT("WingmanTargetingRange"));
+	WingmanTargetingRange->SetupAttachment(GetRootComponent());
 
 	// Keep the active Wingman ability usable even when an existing Ship Blueprint has not yet
 	// overridden the newly introduced property. The action is project-owned and mapped to RMB
@@ -434,16 +437,21 @@ void AGuLiStrikeShip::Tick(float DeltaTime)
 	RefreshServerCombatRegistration();
 	RefreshWingmanRelayBinding();
 	MaintainWingmanCombatLifecycle();
+	FGuLiWingmanTargetingTuning Targeting;
+	if (const auto* Row = WingmanTargetingRow.GetRow<FGuLiStrikeShipWingmanTargetingRow>(TEXT("WingmanTargeting")))
+	{
+		Targeting.AcquireRadiusCentimeters = Row->AcquireRadiusCentimeters;
+		Targeting.ReleaseRadiusCentimeters = Row->ReleaseRadiusCentimeters;
+		Targeting.GuardRejoinFraction = Row->GuardRejoinFraction;
+		Targeting.ScanIntervalSeconds = Row->ScanIntervalSeconds;
+	}
+	if (WingmanTargetingRange)
+	{
+		WingmanTargetingRange->SetTargetingRadius(Targeting.AcquireRadiusCentimeters);
+		WingmanTargetingRange->SetVisibility(bShowWingmanTargetingRange && IsLocallyControlled());
+	}
 	if (HasAuthority() && WingmanCombatCoordinator && GetWorld())
 	{
-		FGuLiWingmanTargetingTuning Targeting;
-		if (const auto* Row = WingmanTargetingRow.GetRow<FGuLiStrikeShipWingmanTargetingRow>(TEXT("WingmanTargeting")))
-		{
-			Targeting.AcquireRadiusCentimeters = Row->AcquireRadiusCentimeters;
-			Targeting.ReleaseRadiusCentimeters = Row->ReleaseRadiusCentimeters;
-			Targeting.GuardRejoinFraction = Row->GuardRejoinFraction;
-			Targeting.ScanIntervalSeconds = Row->ScanIntervalSeconds;
-		}
 		WingmanCombatCoordinator->TickAttackTargeting(GetWorld()->GetTimeSeconds(), Targeting);
 		WingmanAttackTarget = WingmanCombatCoordinator->GetAttackTarget();
 	}
@@ -1697,12 +1705,12 @@ void AGuLiStrikeShip::RefreshLocalOwnedWingmanGroup()
 	{
 		Simulation->ApplyCommittedAbilityConfig(Group, GroupAbilityConfig);
 		Simulation->UpdateOwnedGroupCarrier(
-			Group, CanonicalMove.Transform, CanonicalMove.Velocity, Source);
+			Group, CanonicalMove.Transform, CanonicalMove.Velocity, Source, this);
 	}
 	else
 	{
 		Simulation->CreateOrResetOwnedGroup(
-			Group, GroupAbilityConfig, CanonicalMove.Transform, CanonicalMove.Velocity, Source);
+			Group, GroupAbilityConfig, CanonicalMove.Transform, CanonicalMove.Velocity, Source, this);
 	}
 
 }
@@ -1885,6 +1893,14 @@ bool AGuLiStrikeShip::EnsureWingmanCombatCoordinator()
 	{
 		if (auto* Ship = WeakThis.Get(); Ship && Ship->WingmanCombatCoordinator)
 			Ship->WingmanCombatCoordinator->CommitValidatedAttackBatch(Candidate, Now);
+	};
+	RelayCore->OnEmergencyRebaseAccepted =
+		[WeakThis = TWeakObjectPtr<AGuLiStrikeShip>(this)](const FGuLiWingmanHandle& Emitter)
+	{
+		if (auto* Ship = WeakThis.Get(); Ship && Ship->WingmanCombatCoordinator)
+		{
+			Ship->WingmanCombatCoordinator->InvalidateMemberAfterEmergencyRebase(Emitter);
+		}
 	};
 	BoundCombatRelayCore = RelayCore;
 	BoundCombatAbilitySnapshotRevision = GroupAbilityConfig.SnapshotRevision;

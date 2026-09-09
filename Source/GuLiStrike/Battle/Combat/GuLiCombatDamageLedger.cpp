@@ -5,6 +5,8 @@
 #include "Components/PrimitiveComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
+#include "Misc/CommandLine.h"
+#include "Misc/Parse.h"
 #include "Net/UnrealNetwork.h"
 
 namespace
@@ -596,6 +598,22 @@ FGuLiDamageCommitResult UGuLiDamageLedgerSubsystem::CommitDamageInternal(
 		RememberResult(Request.DamageEventId, Result);
 		return Result;
 	}
+
+#if !UE_BUILD_SHIPPING
+	// The 300-second Actor continuity gate needs a genuinely persistent target
+	// field so it can prove repeated attack runs instead of merely proving which
+	// side destroys the finite test roster first. Keep all authorization,
+	// deduplication, effects and commit accounting, but leave health untouched for
+	// Wingman-emitted damage only when the explicit unattended test flag is set.
+	if (Request.Emitter.IsValid()
+		&& FParse::Param(FCommandLine::Get(), TEXT("GuLiListenSmokePersistentTargets")))
+	{
+		Result.Status = EGuLiDamageCommitStatus::Committed;
+		Result.CommitOrdinal = ++CommitCount;
+		RememberResult(Request.DamageEventId, Result);
+		return Result;
+	}
+#endif
 
 	FGuLiCombatTargetAdapter* Adapter = TargetAdapters.Find(Request.Target);
 	if (!Adapter || !Adapter->IsBound() || !Adapter->ApplyDamage(Request, Result))

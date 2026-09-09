@@ -1,6 +1,6 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
-#include "Gameplay/Wingman/Mass/GuLiWingmanSwarmFlow.h"
+#include "Gameplay/Wingman/Movement/GuLiWingmanSwarmFlow.h"
 
 namespace
 {
@@ -117,7 +117,7 @@ namespace
 	}
 
 	FVector BuildOrbitAxis(
-		const FGuLiWingmanSwarmAgentFragment& Agent,
+		const FGuLiWingmanSwarmAgentState& Agent,
 		const FGuLiWingmanSwarmOrbitTuning& Tuning,
 		const float TimeSeconds)
 	{
@@ -135,7 +135,7 @@ void GuLiWingmanSwarmFlow::InitializeAgent(
 	const FGuLiWingmanFormationRuntimeConfig& Formation,
 	const FGuLiWingmanHandle& Handle,
 	const uint32 InitialSimulationTick,
-	FGuLiWingmanSwarmAgentFragment& OutAgent)
+	FGuLiWingmanSwarmAgentState& OutAgent)
 {
 	const uint32 StableSlot = static_cast<uint32>(Handle.Flight.FlightIndex)
 		* GULI_WINGMAN_MEMBERS_PER_FLIGHT + static_cast<uint32>(Handle.MemberIndex);
@@ -170,7 +170,7 @@ void GuLiWingmanSwarmFlow::InitializeAgent(
 
 void GuLiWingmanSwarmFlow::AdvanceSimulationClock(
 	const float FrameDeltaSeconds,
-	FGuLiWingmanSwarmAgentFragment& InOutAgent)
+	FGuLiWingmanSwarmAgentState& InOutAgent)
 {
 	InOutAgent.FlowStepAccumulator = FMath::Min(
 		InOutAgent.FlowStepAccumulator + FMath::Clamp(FrameDeltaSeconds, 0.0f, 0.25f),
@@ -189,7 +189,7 @@ void GuLiWingmanSwarmFlow::AdvanceSimulationClock(
 FVector GuLiWingmanSwarmFlow::BuildInitialOffset(
 	const FGuLiWingmanFormationRuntimeConfig& Formation,
 	const FGuLiWingmanHandle& Handle,
-	const FGuLiWingmanSwarmAgentFragment& Agent,
+	const FGuLiWingmanSwarmAgentState& Agent,
 	const uint32 CandidateIndex)
 {
 	constexpr float GoldenAngle = 2.39996323f;
@@ -249,7 +249,7 @@ FVector GuLiWingmanSwarmFlow::BuildPreferredVelocity(
 	const FVector& Velocity,
 	const FVector& CarrierPosition,
 	const FVector& CarrierVelocity,
-	const FGuLiWingmanSwarmAgentFragment& Agent,
+	const FGuLiWingmanSwarmAgentState& Agent,
 	const FGuLiWingmanFormationRuntimeConfig& Formation,
 	const EGuLiWingmanFlightMode Mode)
 {

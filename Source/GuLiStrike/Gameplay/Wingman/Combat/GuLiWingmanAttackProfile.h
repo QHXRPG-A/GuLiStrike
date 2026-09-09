@@ -24,6 +24,7 @@ struct GULISTRIKE_API FGuLiWingmanAttackProfile
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float DiveSeconds = 1.5f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) int32 MissileCount = 10;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float StripLength = 12000.0f;
+	/** Minimum vertical clearance above the assigned ground point across the pull-up arc. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float PullUpHeight = 10000.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float ExplosionRadius = 800.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float BreakawayDistance = 30000.0f;
@@ -82,12 +83,33 @@ namespace GuLiWingmanAttack
 	inline constexpr int32 MaximumFireRecordsPerFlight = 16;
 	inline constexpr float MinimumGroundHeight = 5000.0f;
 	inline constexpr float MaximumPullUpHeight = 10000.0f;
+	/** Six seconds of straight, fully validated lead-in precede the authored dive entry. */
+	inline constexpr float GroundIngressLeadSeconds = 6.0f;
+	/** Eight member-relative directions followed by eight world-stable fallbacks. */
+	inline constexpr int32 MaximumGroundApproachCandidates = 16;
+	inline constexpr double MaximumGroundIngressSeconds = 45.0;
+	inline constexpr double MaximumGroundLineupSeconds = 15.0;
 	inline constexpr int32 MaximumAirManeuverCandidates = 8;
 	inline constexpr float AirTurnTimeoutSeconds = 10.0f;
 	inline constexpr uint32 BreakawayTurnSalt = 0x42524b41u;
 	inline constexpr uint32 ReturnTurnSalt = 0x5254524eu;
 	GULISTRIKE_API bool BuildGroundPath(const FVector& GroundTarget, const FVector& ApproachDirection,
 		const FGuLiWingmanAttackProfile& Profile, float TurnDegreesPerSecond, FGuLiWingmanGroundRunPath& OutPath);
+	/** Direct approach followed by mirrored 45-degree alternatives. The stable seed splits crowded members left/right. */
+	GULISTRIKE_API FVector BuildGroundApproachCandidate(const FVector& DirectApproach,
+		uint32 StableAgentSeed, int32 CandidateIndex);
+	GULISTRIKE_API FVector GroundRunSetupPoint(const FGuLiWingmanGroundRunPath& Path);
+	inline bool IsGroundPreparationPhase(const EGuLiWingmanAttackPhase Phase)
+	{
+		return Phase == EGuLiWingmanAttackPhase::Ingress
+			|| Phase == EGuLiWingmanAttackPhase::Lineup;
+	}
+	inline bool IsFrozenGroundExecutionPhase(const EGuLiWingmanAttackPhase Phase)
+	{
+		return Phase == EGuLiWingmanAttackPhase::Dive
+			|| Phase == EGuLiWingmanAttackPhase::PullUp
+			|| Phase == EGuLiWingmanAttackPhase::Climb;
+	}
 	GULISTRIKE_API float ShotTime(int32 Index, int32 Count, float Duration);
 	GULISTRIKE_API FVector StripPoint(const FGuLiWingmanGroundRunPath& Path, float Length, int32 Index, int32 Count);
 	GULISTRIKE_API bool IsInsideForwardArc(const FVector& Source, const FVector& Forward,
