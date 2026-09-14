@@ -1,8 +1,8 @@
-"""Build and audit the static world-space Ship HUD assets.
+"""Build and audit the three generated Ship information-panel assets.
 
 Run only after compiling the native GuLiStrike Editor target.  The script is
-idempotent: it reconstructs the same five WidgetBlueprint trees and updates the
-project copy of Widget3DPassThrough in place.  It never edits WBP_ShipHUD and
+idempotent: revision 2 refreshes Status, Flight and Combat only. Reticle,
+AimBounds and the project copy of Widget3DPassThrough remain untouched. It never edits WBP_ShipHUD and
 adds no Blueprint graph logic, animation, binding, input, or focusable control.
 """
 
@@ -20,14 +20,22 @@ MATERIAL_PATH = MATERIAL_FOLDER + "/M_UI_ShipWorld_NoDepth"
 MATERIAL_SOURCE = "/Engine/EngineMaterials/Widget3DPassThrough"
 OUTPUT = Path("D:/UE5.7/test1/outputs/review/ship-world-hud")
 KIT = "/Game/NEONCTRL_FuturisticClea_UIKit"
+STYLE_METADATA_TAG = "GuLi.ShipWorldHUD.StyleRevision"
+STYLE_REVISION = 2
+STYLE_WIDGETS = (
+    "WBP_ShipWorldStatus",
+    "WBP_ShipWorldFlight",
+    "WBP_ShipWorldCombat",
+)
 
-WHITE = (0.929, 0.973, 1.0, 1.0)
-CYAN = (0.07, 0.84, 1.0, 1.0)
-CYAN_DIM = (0.07, 0.84, 1.0, 0.45)
-MUTED = (0.46, 0.64, 0.72, 1.0)
-GOLD = (1.0, 0.74, 0.12, 1.0)
-PANEL = (0.015, 0.055, 0.085, 0.72)
+WHITE = (1.0, 1.0, 1.0, 1.0)
+CYAN = (0.12, 0.95, 1.0, 1.0)
+CYAN_DIM = (0.12, 0.95, 1.0, 0.55)
+MUTED = (0.72, 0.84, 0.90, 1.0)
+GOLD = (1.0, 0.82, 0.25, 1.0)
+PANEL = (0.03, 0.10, 0.15, 0.88)
 PANEL_BOUNDED = (0.01, 0.04, 0.07, 0.28)
+OUTLINE = (0.0, 0.0, 0.0, 0.9)
 
 TEXTURES = {
     "background": KIT + "/PNG/Commom/T_Background",
@@ -189,12 +197,23 @@ def text(bp, name, parent, x, y, width, height, value, size=12, color=WHITE,
     widget.set_text(value)
     widget.set_editor_property("justification", justification)
     widget.set_auto_wrap_text(False)
-    checked(HELPER.umg_set_text_style(bp, name, size, *color, 0))
+    apply_text_style(bp, name, size, color)
+    return widget
+
+
+def apply_text_style(bp, name, size, color):
+    widget = find(bp, name)
+    if not widget:
+        raise RuntimeError("Missing generated TextBlock " + name)
+    checked(HELPER.umg_set_text_style(bp, name, size, *color, 1))
     font = widget.get_editor_property("font")
     font.set_editor_property("typeface_font_name", "Bold" if size >= 14 else "Regular")
     font.set_editor_property("letter_spacing", 0)
+    outline = font.get_editor_property("outline_settings")
+    outline.set_editor_property("outline_size", 1)
+    outline.set_editor_property("outline_color", unreal.LinearColor(*OUTLINE))
+    font.set_editor_property("outline_settings", outline)
     widget.set_font(font)
-    return widget
 
 
 def progress(bp, name, parent, x, y, width, height):
@@ -222,9 +241,9 @@ def build_status(bp, textures):
     image(bp, textures, "I_StatusIcon", "RootCanvas", "icon_compass",
           14, 18, 26, 26, CYAN, 3)
     text(bp, "TXT_Readiness", "RootCanvas", 48, 14, 162, 22,
-         "SHIP / SYNC", 13, WHITE)
+         "SHIP / SYNC", 14, WHITE)
     text(bp, "TXT_Hull", "RootCanvas", 220, 14, 180, 22,
-         "HULL -- / --", 12, GOLD, justification=unreal.TextJustify.RIGHT)
+         "HULL -- / --", 14, GOLD, justification=unreal.TextJustify.RIGHT)
     progress(bp, "PB_Hull", "RootCanvas", 48, 43, 352, 10)
     image(bp, textures, "I_StatusBottomRail", "RootCanvas", "highlight",
           48, 57, 352, 5, CYAN_DIM, 2)
@@ -235,15 +254,15 @@ def build_flight(bp, textures):
     image(bp, textures, "I_FlightIcon", "RootCanvas", "icon_energy",
           14, 17, 24, 24, CYAN, 3)
     text(bp, "TXT_FlightTitle", "RootCanvas", 47, 15, 210, 22,
-         "FLIGHT TELEMETRY", 12, MUTED)
+         "FLIGHT TELEMETRY", 14, MUTED)
     image(bp, textures, "I_FlightDivider", "RootCanvas", "vector_h",
           16, 44, 248, 6, CYAN_DIM, 2)
     text(bp, "TXT_CurrentSpeed", "RootCanvas", 16, 54, 248, 28,
-         "SPEED -- m/s", 18, CYAN)
+         "SPEED -- m/s", 20, CYAN)
     text(bp, "TXT_MaxSpeed", "RootCanvas", 16, 84, 248, 20,
-         "MAX -- m/s", 11, WHITE)
+         "MAX -- m/s", 13, MUTED)
     text(bp, "TXT_BoostState", "RootCanvas", 16, 111, 248, 20,
-         "BOOST / STANDBY", 11, GOLD)
+         "BOOST / STANDBY", 13, GOLD)
 
 
 def build_combat(bp, textures):
@@ -251,19 +270,19 @@ def build_combat(bp, textures):
     image(bp, textures, "I_CombatIcon", "RootCanvas", "icon_target",
           14, 17, 24, 24, CYAN, 3)
     text(bp, "TXT_CombatTitle", "RootCanvas", 47, 15, 230, 22,
-         "WEAPON STATUS", 12, MUTED)
+         "WEAPON STATUS", 14, MUTED)
     image(bp, textures, "I_CombatDivider", "RootCanvas", "vector_h",
           16, 44, 268, 6, CYAN_DIM, 2)
     image(bp, textures, "I_BasicIcon", "RootCanvas", "icon_target",
           18, 60, 24, 24, CYAN, 3)
     text(bp, "TXT_BasicWeaponState", "RootCanvas", 52, 61, 226, 22,
-         "BASIC / UNAVAILABLE", 12, WHITE)
+         "BASIC / UNAVAILABLE", 14, WHITE)
     image(bp, textures, "I_CombatMidRail", "RootCanvas", "highlight",
           18, 94, 264, 5, CYAN_DIM, 2)
     image(bp, textures, "I_MissileIcon", "RootCanvas", "icon_missile",
           18, 111, 24, 24, GOLD, 3)
     text(bp, "TXT_MissileState", "RootCanvas", 52, 112, 226, 22,
-         "MISSILE / UNAVAILABLE", 12, GOLD)
+         "MISSILE / UNAVAILABLE", 14, GOLD)
     image(bp, textures, "I_CombatBottomRail", "RootCanvas", "vector_h",
           18, 146, 264, 6, CYAN_DIM, 2)
 
@@ -333,29 +352,45 @@ BUILDERS = {
 }
 
 
-def ensure_material():
-    unreal.EditorAssetLibrary.make_directory(MATERIAL_FOLDER)
+TEXT_STYLES = {
+    "WBP_ShipWorldStatus": {
+        "TXT_Readiness": (14, WHITE),
+        "TXT_Hull": (14, GOLD),
+    },
+    "WBP_ShipWorldFlight": {
+        "TXT_FlightTitle": (14, MUTED),
+        "TXT_CurrentSpeed": (20, CYAN),
+        "TXT_MaxSpeed": (13, MUTED),
+        "TXT_BoostState": (13, GOLD),
+    },
+    "WBP_ShipWorldCombat": {
+        "TXT_CombatTitle": (14, MUTED),
+        "TXT_BasicWeaponState": (14, WHITE),
+        "TXT_MissileState": (14, GOLD),
+    },
+}
+
+
+def apply_information_panel_style(bp, name):
+    prefix = {
+        "WBP_ShipWorldStatus": "I_Status",
+        "WBP_ShipWorldFlight": "I_Flight",
+        "WBP_ShipWorldCombat": "I_Combat",
+    }[name]
+    background = find(bp, prefix + "_Background")
+    if not background:
+        raise RuntimeError("Missing generated panel background for " + name)
+    background.set_color_and_opacity(unreal.LinearColor(*PANEL))
+    for text_name, (font_size, color) in TEXT_STYLES[name].items():
+        apply_text_style(bp, text_name, font_size, color)
+
+
+def validate_material():
     material = unreal.load_asset(MATERIAL_PATH)
-    created = False
     if not material:
-        if not unreal.EditorAssetLibrary.duplicate_asset(MATERIAL_SOURCE, MATERIAL_PATH):
-            raise RuntimeError("Could not duplicate " + MATERIAL_SOURCE)
-        material = unreal.load_asset(MATERIAL_PATH)
-        created = True
+        raise RuntimeError("World HUD material is missing: " + MATERIAL_PATH)
     if not isinstance(material, unreal.Material):
         raise RuntimeError("World HUD material is not a Material: " + MATERIAL_PATH)
-    material.set_editor_property("disable_depth_test", True)
-    # The runtime component continuously turns the widget front face toward the
-    # camera.  A one-sided material is sufficient and avoids a second shader
-    # permutation being unavailable on the first PIE after asset generation.
-    material.set_editor_property("two_sided", False)
-    material.set_editor_property(
-        "translucency_pass",
-        unreal.MaterialTranslucencyPass.MTP_AFTER_MOTION_BLUR,
-    )
-    unreal.MaterialEditingLibrary.recompile_material(material)
-    if not unreal.EditorAssetLibrary.save_loaded_asset(material, only_if_is_dirty=False):
-        raise RuntimeError("Could not save " + MATERIAL_PATH)
     if not material.get_editor_property("disable_depth_test"):
         raise RuntimeError("World HUD material did not retain Disable Depth Test")
     if material.get_editor_property("two_sided"):
@@ -363,7 +398,7 @@ def ensure_material():
     if (material.get_editor_property("translucency_pass")
             != unreal.MaterialTranslucencyPass.MTP_AFTER_MOTION_BLUR):
         raise RuntimeError("World HUD material did not retain After Motion Blur")
-    return material, created
+    return material
 
 
 def tree_signature(tree):
@@ -401,16 +436,33 @@ def ensure_widget(name, spec, textures):
     if created:
         BUILDERS[name](bp, textures)
 
+    current_revision = str(
+        unreal.EditorAssetLibrary.get_metadata_tag(bp, STYLE_METADATA_TAG) or ""
+    ).strip()
+    if current_revision not in ("", "1", str(STYLE_REVISION)):
+        raise RuntimeError(
+            f"Refusing to overwrite unknown {STYLE_METADATA_TAG}={current_revision} on {path}"
+        )
+    changed = created or current_revision != str(STYLE_REVISION)
+
     graph = checked(HELPER.get_blueprint_graph_info(bp, "EventGraph"))
-    for node in graph["nodes"]:
-        checked(HELPER.remove_blueprint_node(bp, "EventGraph", node["node_name"]))
-    compile_result = checked(HELPER.compile_blueprint(bp))
+    if changed:
+        apply_information_panel_style(bp, name)
+        for node in graph["nodes"]:
+            checked(HELPER.remove_blueprint_node(bp, "EventGraph", node["node_name"]))
+        unreal.EditorAssetLibrary.set_metadata_tag(
+            bp, STYLE_METADATA_TAG, str(STYLE_REVISION)
+        )
+        compile_result = checked(HELPER.compile_blueprint(bp))
+    else:
+        compile_result = {"success": True, "skipped": True}
 
     generated = bp.generated_class()
     if not generated:
         raise RuntimeError(path + " has the wrong native parent")
     default_widget = unreal.get_default_object(generated)
-    default_widget.set_editor_property("is_focusable", False)
+    if changed:
+        default_widget.set_editor_property("is_focusable", False)
 
     tree = checked(HELPER.umg_get_widget_info(bp))
     graph = checked(HELPER.get_blueprint_graph_info(bp, "EventGraph"))
@@ -437,11 +489,13 @@ def ensure_widget(name, spec, textures):
     signature = tree_signature(tree)
     if signature != spec["signature"]:
         raise RuntimeError("Unexpected generated tree signature for " + path)
-    if not unreal.EditorAssetLibrary.save_loaded_asset(bp, only_if_is_dirty=False):
+    if changed and not unreal.EditorAssetLibrary.save_loaded_asset(bp, only_if_is_dirty=False):
         raise RuntimeError("Could not save " + path)
     return bp, {
         "path": path,
         "created": created,
+        "changed": changed,
+        "style_revision": int(STYLE_REVISION),
         "native_parent": spec["parent"],
         "draw_size": spec["size"],
         "compile": compile_result,
@@ -458,12 +512,22 @@ def ensure_widget(name, spec, textures):
     }
 
 
+targets = {WIDGET_FOLDER + "/" + name for name in STYLE_WIDGETS}
+dirty_targets = sorted(
+    str(package.get_name())
+    for package in unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages()
+    if str(package.get_name()) in targets
+)
+if dirty_targets:
+    raise RuntimeError("Unsaved edits in Ship HUD style targets: " + repr(dirty_targets))
+
 unreal.EditorAssetLibrary.make_directory(WIDGET_FOLDER)
 textures = load_textures()
-material, material_created = ensure_material()
+material = validate_material()
 reports = []
 assets = []
-for widget_name, widget_spec in SPECS.items():
+for widget_name in STYLE_WIDGETS:
+    widget_spec = SPECS[widget_name]
     asset, report = ensure_widget(widget_name, widget_spec, textures)
     assets.append(asset)
     reports.append(report)
@@ -474,13 +538,18 @@ report = {
     "old_ship_hud_touched": False,
     "material": {
         "path": MATERIAL_PATH,
-        "created": material_created,
+        "touched": False,
         "disable_depth_test": bool(material.get_editor_property("disable_depth_test")),
         "two_sided": bool(material.get_editor_property("two_sided")),
         "translucency_pass": str(material.get_editor_property("translucency_pass")),
     },
     "widgets": reports,
-    "saved_assets": [MATERIAL_PATH] + [row["path"] for row in reports],
+    "untouched_assets": [
+        MATERIAL_PATH,
+        WIDGET_FOLDER + "/WBP_ShipWorldReticle",
+        WIDGET_FOLDER + "/WBP_ShipWorldAimBounds",
+    ],
+    "saved_assets": [row["path"] for row in reports if row["changed"]],
 }
 (OUTPUT / "build-report.json").write_text(
     json.dumps(report, ensure_ascii=False, indent=2), encoding="utf-8")

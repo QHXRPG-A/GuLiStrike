@@ -1,0 +1,144 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Translucent",
+		"shading_model": "MSM_Unlit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionMultiply_0000016A8FE23E80",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -20,
+			"pos_y": 223,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A8FE22300",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -6,
+			"pos_y": 392,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSample_0000016A9D655500",
+			"class": "TextureSample",
+			"class_full": "MaterialExpressionTextureSample",
+			"pos_x": -296,
+			"pos_y": 355,
+			"properties":
+			{
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "None",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionParticleColor_0000016AA37B6BA0",
+			"class": "ParticleColor",
+			"class_full": "MaterialExpressionParticleColor",
+			"pos_x": -320,
+			"pos_y": 32,
+			"properties":
+			{
+			},
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionParticleColor_0000016AA37B6BA0",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016A8FE23E80",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016A9D655500",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016A8FE23E80",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionParticleColor_0000016AA37B6BA0",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMultiply_0000016A8FE22300",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016A9D655500",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMultiply_0000016A8FE22300",
+			"target_input": "B"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "EmissiveColor",
+			"expression_id": "MaterialExpressionMultiply_0000016A8FE23E80",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "Opacity",
+			"expression_id": "MaterialExpressionMultiply_0000016A8FE22300",
+			"output_index": 0,
+			"output_name": ""
+		}
+	]
+}

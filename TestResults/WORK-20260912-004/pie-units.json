@@ -1,0 +1,73 @@
+{
+  "rosters": [
+    {
+      "world": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+      "count": 48,
+      "alive": 36,
+      "groups": {
+        "<GuLiTeam.RED: 1>|1": 12,
+        "<GuLiTeam.RED: 1>|2": 12,
+        "<GuLiTeam.BLUE: 2>|1": 12,
+        "<GuLiTeam.BLUE: 2>|2": 12
+      }
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_1_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+      "count": 48,
+      "alive": 36,
+      "groups": {
+        "<GuLiTeam.RED: 1>|1": 12,
+        "<GuLiTeam.RED: 1>|2": 12,
+        "<GuLiTeam.BLUE: 2>|1": 12,
+        "<GuLiTeam.BLUE: 2>|2": 12
+      }
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_2_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+      "count": 48,
+      "alive": 36,
+      "groups": {
+        "<GuLiTeam.RED: 1>|1": 12,
+        "<GuLiTeam.RED: 1>|2": 12,
+        "<GuLiTeam.BLUE: 2>|1": 12,
+        "<GuLiTeam.BLUE: 2>|2": 12
+      }
+    }
+  ],
+  "presentations": [
+    {
+      "world": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+      "meshes": []
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_1_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+      "meshes": [
+        {
+          "mesh": "/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd",
+          "instances": 24,
+          "nonzero_scale": 12
+        },
+        {
+          "mesh": "/Game/Commander/Units/SM_WM01_Crowd.SM_WM01_Crowd",
+          "instances": 24,
+          "nonzero_scale": 24
+        }
+      ]
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_2_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+      "meshes": [
+        {
+          "mesh": "/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd",
+          "instances": 24,
+          "nonzero_scale": 12
+        },
+        {
+          "mesh": "/Game/Commander/Units/SM_WM01_Crowd.SM_WM01_Crowd",
+          "instances": 24,
+          "nonzero_scale": 24
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "context": "Source UE5.7 dedicated + two rendering clients in one editor. Final size: 30m length, 1m core. CPU timings only.",
+  "samples": 43,
+  "active_range": [
+    5,
+    73
+  ],
+  "pool_step": {
+    "p50_ms": 0.1516006886959076,
+    "p95_ms": 0.21529942750930786,
+    "max_ms": 0.252600759267807
+  },
+  "presentation_tick": {
+    "p50_ms": 0.10385000496171415,
+    "p95_ms": 0.13320001016836613,
+    "max_ms": 0.1846999948611483
+  },
+  "terminal_reasons": {
+    "<GuLiCombatEffectEndReason.IMPACT: 1>": 4,
+    "<GuLiCombatEffectEndReason.EXPIRED: 3>": 3
+  },
+  "last": {
+    "active": 72,
+    "peak_active": 326,
+    "capacity": 1024,
+    "expansions": 0,
+    "launched": 1796,
+    "recycled": 1724,
+    "hits": 405,
+    "blocked": 195,
+    "candidate_checks": 79916,
+    "last_step_milliseconds": 0.21160021424293518
+  }
+}

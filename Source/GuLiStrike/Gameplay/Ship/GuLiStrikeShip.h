@@ -376,7 +376,7 @@ protected:
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 10))
 	float CameraCollisionProbeRadius = 250.0f;
 
-	/** 避障拉回时的臂长下限（厘米），防止贴死轨道球心 */
+	/** 避障拉回时的软臂长下限（厘米）；障碍更近时优先保证不穿透 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
 	float CameraCollisionMinArm = 500.0f;
 
@@ -429,6 +429,7 @@ public:
 	UGuLiShipWorldHUDComponent* GetShipWorldHUDComponent() const { return ShipWorldHUD; }
 
 	const FGuLiGroupAbilityConfigSnapshot& GetGroupAbilityConfig() const { return GroupAbilityConfig; }
+	UGuLiWingmanRelayComponent* GetWingmanRelay() const { return BoundWingmanRelay.Get(); }
 	/** Read-only authority diagnostics; never advances or releases a replenishment timer. */
 	bool TryGetWingmanReplenishmentSchedule(
 		const FGuLiWingmanHandle& Wingman,
@@ -759,6 +760,6 @@ private:
 	/** 从 CameraDataTable 按 TuningPreset 查行并覆盖相机/避障数值（含默认臂长） */
 	bool ApplyCameraRow();
 
-	/** 相机避障：端点门控 + 两段式由外向内扫掠，把实际臂长结算进 SpringArm（唯一写者，Tick 调用） */
+	/** 相机避障：舰体端点推出 + 到候选机位的连续地形/舰船扫掠（唯一写者，Tick 调用） */
 	void ResolveCameraArmCollision();
 };

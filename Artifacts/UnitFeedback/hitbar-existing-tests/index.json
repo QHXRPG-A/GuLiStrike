@@ -1,0 +1,104 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "4F641DCB43FE2BFC451F3F9C48A1B4AD",
+			"instanceName": "DESKTOP-6D3B0FC-31196",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.13-07.15.51",
+	"succeeded": 5,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.071987099945545197,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "EpochResetAndOptionalPipeline",
+			"fullTestPath": "GuLiStrike.Combat.DamageLedger.DeathReward.EpochResetAndOptionalPipeline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4F641DCB43FE2BFC451F3F9C48A1B4AD"
+			],
+			"duration": 0.02706729993224144,
+			"dateTime": "2026.09.13-07.15.51",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "IdempotentPolicyUnavailable",
+			"fullTestPath": "GuLiStrike.Combat.DamageLedger.DeathReward.IdempotentPolicyUnavailable",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4F641DCB43FE2BFC451F3F9C48A1B4AD"
+			],
+			"duration": 0.013122200965881348,
+			"dateTime": "2026.09.13-07.15.51",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "IdempotentCommit",
+			"fullTestPath": "GuLiStrike.Combat.DamageLedger.IdempotentCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4F641DCB43FE2BFC451F3F9C48A1B4AD"
+			],
+			"duration": 0.015050299465656281,
+			"dateTime": "2026.09.13-07.15.51",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SizingPolicy",
+			"fullTestPath": "GuLiStrike.Commander.UI.HealthBar.SizingPolicy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4F641DCB43FE2BFC451F3F9C48A1B4AD"
+			],
+			"duration": 0.0086322985589504242,
+			"dateTime": "2026.09.13-07.15.51",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VisibilityPolicy",
+			"fullTestPath": "GuLiStrike.Commander.UI.HealthBar.VisibilityPolicy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4F641DCB43FE2BFC451F3F9C48A1B4AD"
+			],
+			"duration": 0.0081150010228157043,
+			"dateTime": "2026.09.13-07.15.51",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

@@ -1,0 +1,111 @@
+{
+  "root": "/Game/Assets/VFX/Explosions",
+  "asset_count": 513,
+  "external_referencers": {
+    "/Game/Assets/VFX/Explosions/M_TowerBase_Blast_Mesh": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Death_Start",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_HeroImpact",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_MinionImpact"
+    ],
+    "/Game/Assets/VFX/Explosions/M_FX_Fireblast_SubUV_02": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Destroyed_Ruin",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Dmg_02"
+    ],
+    "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_ParticleColor_Inst2": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Core/P_Core_Destroyed_Aniticpation"
+    ],
+    "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_ParticleColor_Core_Inst": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Core/P_Core_Destroyed_Aniticpation"
+    ],
+    "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_Inst_3": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Chunk_Hit"
+    ],
+    "/Game/Assets/VFX/Explosions/M_Explosion_Smoke_Spears_TB_Inst": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Core/P_Core_Destroyed_Aniticpation",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Chunk_Hit"
+    ],
+    "/Game/Assets/VFX/Explosions/M_Explosion_RockChunks_Rand": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Dmg_01",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Dmg_02"
+    ],
+    "/Game/Assets/VFX/Explosions/M_Explosion_RockChunks": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Chunk_Hit",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Death_Start",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_HeroImpact",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_HeroImpact_Proj",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_MinionImpact"
+    ],
+    "/Game/Assets/VFX/Explosions/M_Core_Fireball_SubUV_01": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Core/P_Core_Aftermath_Smoke_Smolder_L",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Core/P_Core_Aftermath_Smoke_Smolder_M",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Core/P_Core_Aftermath_Smoke_Smolder_S",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Core/P_Core_Aftermath_Smoke_Smolder_XL",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Core/P_Core_Destroyed_Linger_v2",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Core/P_Core_Destroyed_Linger_v3_Nodebris"
+    ],
+    "/Game/Assets/VFX/Explosions/fastFireball": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Core/P_Core_AoE_ImpactFX"
+    ],
+    "/Game/Assets/VFX/Explosions/Explosion_Test_v1": [
+      "/Game/Assets/Props/ParagonProps/FX/Materials/Smoke/M_Core_Depth_Smoke_SubUV_8X8",
+      "/Game/Assets/Props/ParagonProps/FX/Materials/Smoke/M_Core_Aftermath_Smoke"
+    ],
+    "/Game/Assets/VFX/Explosions/Explosion_Test_v1_Depth": [
+      "/Game/Assets/Props/ParagonProps/FX/Materials/Smoke/M_Core_Depth_Smoke_SubUV_8X8",
+      "/Game/Assets/Props/ParagonProps/FX/Materials/Smoke/M_Core_Aftermath_Smoke"
+    ],
+    "/Game/Assets/VFX/Explosions/Explosion_Test_v1_Normal": [
+      "/Game/Assets/Props/ParagonProps/FX/Materials/Smoke/M_Core_Aftermath_Smoke"
+    ],
+    "/Game/Assets/VFX/Explosions/NS_TopDownAction_Destruction": [
+      "/Game/GuLiStrike/Blueprints/AI/BP_GuLiStrikeNPCDestruction"
+    ],
+    "/Game/Assets/VFX/Explosions/SM_ExploSpline_02": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Core/P_STCore_Proj_HitCharacter",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Beam_CharacterImpact"
+    ],
+    "/Game/Assets/VFX/Explosions/SM_Tower_Base_BlastOut": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Death_Start",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_HeroImpact",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_MinionImpact"
+    ],
+    "/Game/Assets/VFX/Explosions/T_FireBall": [
+      "/Game/Assets/Props/ParagonProps/Ground/Materials/M_Waterfloor",
+      "/Game/Assets/Props/ParagonProps/Ground/Materials/M_Waterfloor_Inst",
+      "/Game/Assets/Props/ParagonProps/FX/Materials/MuzzleFlashes/TwinBlast/M_TwinBlast_Muzzle"
+    ],
+    "/Game/Assets/VFX/Explosions/T_FireBall_07C_ResdiualSmokey": [
+      "/Game/Assets/Props/ParagonProps/FX/Materials/Smoke/DirectionalLit/M_Directional_Lit_DepthSmoke_Swirling_ParticleColor_Inst",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Core/P_STCore_Proj_HitCharacter",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Beam_CharacterImpact"
+    ],
+    "/Game/Assets/VFX/Explosions/T_FireBall_07C_ResdiualSmoke_Depth": [
+      "/Game/Assets/Props/ParagonProps/FX/Materials/Smoke/DirectionalLit/M_Directional_Lit_DepthSmoke_Swirling_ParticleColor_Inst"
+    ],
+    "/Game/Assets/VFX/Explosions/T_FireBall_07D_Depth": [
+      "/Game/Assets/Props/ParagonProps/FX/Materials/Smoke/DirectionalLit/M_ResidualMuzzleSmoke_Master"
+    ],
+    "/Game/Assets/VFX/Explosions/T_FireBall_07D_E": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Chunk_Hit",
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Destroyed_Ruin"
+    ],
+    "/Game/Assets/VFX/Explosions/T_FireBall_07D_N": [
+      "/Game/Assets/Props/ParagonProps/FX/Materials/Smoke/DirectionalLit/M_ResidualMuzzleSmoke_Master"
+    ],
+    "/Game/Assets/VFX/Explosions/T_FireBall_Fluid_11_E": [
+      "/Game/Assets/Props/ParagonProps/FX/Materials/Smoke/DirectionalLit/M_Directional_Lit_DepthSmoke_Master_ParticleColor"
+    ],
+    "/Game/Assets/VFX/Explosions/T_FireBall_Fluid_11_Radius": [
+      "/Game/Assets/Props/ParagonProps/FX/Materials/Smoke/DirectionalLit/M_Directional_Lit_DepthSmoke_Master_ParticleColor"
+    ],
+    "/Game/Assets/VFX/Explosions/T_FireblastPacked_v2": [
+      "/Game/Assets/Props/ParagonProps/FX/Particles/Turret/P_SentryTurret_Dmg_02"
+    ],
+    "/Game/Assets/VFX/Explosions/GroundFire01/BP/BP_GroundFIre_01": [
+      "/Game/GroundFire01/BP/BP_GroundFIre_01"
+    ]
+  },
+  "open_tabs": [],
+  "delete_directory_doc": "X.delete_directory(directory_path) -> bool\r\nDelete the packages inside a directory. If the directory is then empty, delete the directory.\nThis is a Force Delete. It doesn't check if the assets have references in other Levels or by Actors.\nIt will close all the asset editors and may clear the Transaction buffer (Undo History).\nWill try to mark the file as deleted. Assets will be loaded before being deleted.\nThe search is always recursive. It will try to delete the sub folders.\r\n\r\nArgs:\r\n    directory_path (str): Directory that will be mark for delete and deleted.\r\n\r\nReturns:\r\n    bool: True if the operation succeeds.",
+  "close_doc": "x.close_all_editors_for_asset(asset) -> int32\r\nClose all active editors for the supplied asset and return the number of asset editors that were closed\r\n\r\nArgs:\r\n    asset (Object): \r\n\r\nReturns:\r\n    int32:"
+}

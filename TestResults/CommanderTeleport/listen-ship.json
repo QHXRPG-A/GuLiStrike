@@ -1,0 +1,3589 @@
+{
+  "mode": 2,
+  "vehicle": "ship",
+  "passed": true,
+  "checks": {
+    "local_player_rpc_sent": true,
+    "server_collected": true,
+    "late_join_reconstructs_field": true,
+    "clients_show_blue_vehicle": true,
+    "clients_show_phased_mass": true,
+    "camera_follows_while_blue": true,
+    "all_living_owned_wingmen_blue": true,
+    "visible_remote_wingmen_blue": true,
+    "wingman_health_loadout_preserved": true,
+    "landing_finished": true,
+    "no_server_pullback": true,
+    "displaced": true,
+    "original_pawn_alive": true,
+    "camera_keeps_original_target": true,
+    "normal_appearance_restored": true,
+    "all_clients_at_destination": true,
+    "all_wingmen_migrated": true,
+    "wingman_actions_resumed": true,
+    "visible_wingmen_restored": true
+  },
+  "stages": [
+    {
+      "label": "before",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                1832.0
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 14,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -233610.29128118977,
+              "y": 151907.2168024443,
+              "z": -505.7508083432913
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 13,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -241905.14076279476,
+              "y": 126783.91459472477,
+              "z": -13.96788939833641
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 12,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -245369.3865538314,
+              "y": 127258.14243506268,
+              "z": 10971.952001344413
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 11,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -234240.99314307794,
+              "y": 172789.0870220624,
+              "z": 9630.533727288246
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 10,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -221832.68697751686,
+              "y": 124204.16651801392,
+              "z": 24758.544988311827
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 9,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -179466.88472414017,
+              "y": 126221.71496248245,
+              "z": -2498.352180480957
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 8,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -215791.97026729584,
+              "y": 164165.9215245247,
+              "z": 25675.953389644623
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 7,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -188629.24750614166,
+              "y": 113637.47853040695,
+              "z": 10453.006534576416
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 6,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -231256.30671310425,
+              "y": 168190.27777194977,
+              "z": 28081.86198234558
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 5,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -160644.10808706284,
+              "y": 122724.2187628746,
+              "z": -2833.9923992156982
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 20,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -195097.95064143836,
+              "y": 97500.92770451307,
+              "z": 5958.601677879691
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 21,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -182512.0293134898,
+              "y": 87693.8144788593,
+              "z": 3956.39838193357
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 22,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -192912.22605343163,
+              "y": 101935.59659639001,
+              "z": 10328.472211748362
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 23,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -183259.9112455994,
+              "y": 72009.57662931085,
+              "z": 620.7704800367355
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 24,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -162277.8325137347,
+              "y": 164386.11529830098,
+              "z": -519.0901899188757
+            }
+          ],
+          "group_state": {
+            "player_slot": 3,
+            "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+            "living": 25,
+            "health_hash": "4590888895141568771",
+            "config_hash": "608650020661782574",
+            "movement_writes": 0,
+            "locked": false
+          }
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -38580.53,
+                115110.72,
+                1832.0
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                1832.0
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "BP_CombatAvatarFly01_C_0"
+            }
+          ],
+          "group_pawns": [
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 0,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -173926.1911341889,
+              "y": 119592.17925388471,
+              "z": -3122.5013033016503
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 1,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -160592.1261860534,
+              "y": 122219.73895756228,
+              "z": 9556.534718714625
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 2,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -220780.5336489937,
+              "y": 107859.15311500437,
+              "z": 4750.161182299422
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 3,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -178812.66393509615,
+              "y": 171135.58730287306,
+              "z": 5316.1720268892595
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 4,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -171782.03187678452,
+              "y": 139658.1039879032,
+              "z": 23552.46346301915
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 5,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -159469.3940946442,
+              "y": 122650.71313647804,
+              "z": -2789.2328899632266
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 6,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -230167.8590131636,
+              "y": 167880.05165106617,
+              "z": 27935.186572512765
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 7,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -187358.2367658952,
+              "y": 113650.29451116236,
+              "z": 10380.076829987644
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 8,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -214890.19246741585,
+              "y": 163840.8259643368,
+              "z": 26488.747115839484
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 9,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -178253.8728726048,
+              "y": 126126.2302962702,
+              "z": -2461.310435817825
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 10,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -220718.63037741312,
+              "y": 124148.53965141952,
+              "z": 24619.478673682283
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 11,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -233807.8278506577,
+              "y": 172126.25010694037,
+              "z": 9587.930377330878
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 12,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -244281.45329830982,
+              "y": 127194.14953233383,
+              "z": 10923.62533665311
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 13,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -240734.14689374223,
+              "y": 126717.11336112276,
+              "z": -3.615908707499571
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 14,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -232587.2964326942,
+              "y": 151272.49947098078,
+              "z": -484.6586753814068
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 15,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -198137.44590033428,
+              "y": 157929.2252378825,
+              "z": 12795.068865390465
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 16,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -180450.30255435666,
+              "y": 120731.40776463822,
+              "z": 7961.190166235469
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 17,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -231542.9417083095,
+              "y": 150099.5556602017,
+              "z": 6495.5756313182565
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 18,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -206681.86502279015,
+              "y": 89958.09909255485,
+              "z": 10691.779944646545
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 19,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -237585.986326651,
+              "y": 114244.01979167038,
+              "z": 17110.239061008957
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 20,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -193827.4660047651,
+              "y": 97643.95289996635,
+              "z": 5924.972241946182
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 21,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -181255.6022569213,
+              "y": 87932.84019294383,
+              "z": 3937.8028318270444
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 22,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -191640.49994203003,
+              "y": 102044.4811349412,
+              "z": 10258.139444949631
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 23,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -182033.94534031747,
+              "y": 72375.17458565322,
+              "z": 630.7766836935967
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 24,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -161089.79459472667,
+              "y": 163912.76546089092,
+              "z": -496.09802758775834
+            }
+          ],
+          "group_state": null
+        }
+      ]
+    },
+    {
+      "label": "phased",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 32,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                1832.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 25,
+          "cameras": [],
+          "group_pawns": [
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 24,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -120229,
+              "y": 147617,
+              "z": 281
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 23,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -139867,
+              "y": 84937,
+              "z": 984
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 22,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -147866,
+              "y": 105781,
+              "z": 7848
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 21,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -138037,
+              "y": 96165,
+              "z": 3300
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 20,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -150118,
+              "y": 102562,
+              "z": 4773
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 14,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -190565,
+              "y": 142724,
+              "z": 32
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 13,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -197807,
+              "y": 124252,
+              "z": 386
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 12,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -201568,
+              "y": 124685,
+              "z": 9036
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 11,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -196644,
+              "y": 159583,
+              "z": 8032
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 10,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -178170,
+              "y": 122037,
+              "z": 19296
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 4,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -128571,
+              "y": 131695,
+              "z": 16506
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 3,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -137495,
+              "y": 154643,
+              "z": 4286
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 2,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -176339,
+              "y": 109628,
+              "z": 4038
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 1,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -116249,
+              "y": 119782,
+              "z": 6839
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 0,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -129717,
+              "y": 118128,
+              "z": -1504
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 5,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -123597,
+              "y": 120546,
+              "z": -1436
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 6,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -195824,
+              "y": 158421,
+              "z": 23256
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 7,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -151419,
+              "y": 114003,
+              "z": 8315
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 8,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -180653,
+              "y": 154267,
+              "z": 23075
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 9,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -142382,
+              "y": 123297,
+              "z": -1359
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 19,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -194784,
+              "y": 114510,
+              "z": 13867
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 18,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -164274,
+              "y": 96151,
+              "z": 8615
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 17,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -188753,
+              "y": 142341,
+              "z": 5461
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 16,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -137025,
+              "y": 119011,
+              "z": 6085
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 15,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -156623,
+              "y": 146789,
+              "z": 9943
+            }
+          ],
+          "group_state": {
+            "player_slot": 3,
+            "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+            "living": 25,
+            "health_hash": "4590888895141568771",
+            "config_hash": "608650020661782574",
+            "movement_writes": 0,
+            "locked": true
+          }
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 32,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                1832.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 32,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                1832.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 25,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "BP_CombatAvatarFly01_C_0"
+            }
+          ],
+          "group_pawns": [
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 0,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -125721.6207581894,
+              "y": 118001.76689728619,
+              "z": -1356.9689657468773
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 1,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -112257.5481629472,
+              "y": 119668.50352254265,
+              "z": 6659.859150504098
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 2,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -172342.83065643595,
+              "y": 109786.97422599864,
+              "z": 3974.3707217640185
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 3,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -133781.63523831934,
+              "y": 153158.9924442116,
+              "z": 4193.519119338562
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 4,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -124686.5227186512,
+              "y": 130980.89706543216,
+              "z": 15874.152230154747
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 5,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -111425.07323532921,
+              "y": 121566.25046283023,
+              "z": -1207.7848025569328
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 6,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -183874.97523818014,
+              "y": 155129.49674223948,
+              "z": 21627.922990633255
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 7,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -138940.4136626622,
+              "y": 114125.56997316076,
+              "z": 7598.2133289935355
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 8,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -168725.1955690144,
+              "y": 150979.9703412958,
+              "z": 21292.00397916916
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 9,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -129926.68688115453,
+              "y": 122314.8455771012,
+              "z": -975.8185882688131
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 10,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -172718.84627800327,
+              "y": 121766.75561409873,
+              "z": 18614.17799757738
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 11,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -191353.34258712485,
+              "y": 158094.48570360287,
+              "z": 7824.409448340823
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 12,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -196082.45598884198,
+              "y": 124362.80873300022,
+              "z": 8793.312947143322
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 13,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -192315.87300249425,
+              "y": 123937.23847491744,
+              "z": 436.036644898443
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 14,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -185154.392649229,
+              "y": 141741.09781581775,
+              "z": 95.81922409064937
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 15,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -151804.94120276414,
+              "y": 145495.48768763006,
+              "z": 9611.587677617736
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 16,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -132033.4121232275,
+              "y": 118813.1946827942,
+              "z": 5869.438529098859
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 17,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -183834.59673402397,
+              "y": 141448.85703602532,
+              "z": 5342.545498542367
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 18,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -159336.9262731274,
+              "y": 96896.06139192246,
+              "z": 8348.224880961929
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 19,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -189799.09706298535,
+              "y": 114529.36184632085,
+              "z": 13483.07215778988
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 20,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -145648.07777210412,
+              "y": 103064.59402243419,
+              "z": 4654.757808595638
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 21,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -133617.28869321095,
+              "y": 97007.36256747067,
+              "z": 3234.688446694918
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 22,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -143388.79207645316,
+              "y": 106163.57322999352,
+              "z": 7601.823626676992
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 23,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -135554.15381063227,
+              "y": 86221.75341022128,
+              "z": 1019.9804488610981
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 24,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -116149.15900283503,
+              "y": 145786.36070524048,
+              "z": 359.7478177448793
+            }
+          ],
+          "group_state": null
+        }
+      ]
+    },
+    {
+      "label": "late_join",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 32,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                1832.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 50,
+          "blue_wingmen": 25,
+          "cameras": [],
+          "group_pawns": [
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 24,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -120229,
+              "y": 147617,
+              "z": 281
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 23,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -139867,
+              "y": 84937,
+              "z": 984
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 22,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -147866,
+              "y": 105781,
+              "z": 7848
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 21,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -138037,
+              "y": 96165,
+              "z": 3300
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 20,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -150118,
+              "y": 102562,
+              "z": 4773
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 14,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -190565,
+              "y": 142724,
+              "z": 32
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 13,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -197807,
+              "y": 124252,
+              "z": 386
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 12,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -201568,
+              "y": 124685,
+              "z": 9036
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 11,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -196644,
+              "y": 159583,
+              "z": 8032
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 10,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -178170,
+              "y": 122037,
+              "z": 19296
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 4,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -128571,
+              "y": 131695,
+              "z": 16506
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 3,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -137495,
+              "y": 154643,
+              "z": 4286
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 2,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -176339,
+              "y": 109628,
+              "z": 4038
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 1,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -116249,
+              "y": 119782,
+              "z": 6839
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 0,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -129717,
+              "y": 118128,
+              "z": -1504
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 5,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -123597,
+              "y": 120546,
+              "z": -1436
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 6,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -195824,
+              "y": 158421,
+              "z": 23256
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 7,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -151419,
+              "y": 114003,
+              "z": 8315
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 8,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -180653,
+              "y": 154267,
+              "z": 23075
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 9,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -142382,
+              "y": 123297,
+              "z": -1359
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 19,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -194784,
+              "y": 114510,
+              "z": 13867
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 18,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -164274,
+              "y": 96151,
+              "z": 8615
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 17,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -188753,
+              "y": 142341,
+              "z": 5461
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 16,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -137025,
+              "y": 119011,
+              "z": 6085
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 15,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -156623,
+              "y": 146789,
+              "z": 9943
+            }
+          ],
+          "group_state": {
+            "player_slot": 3,
+            "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+            "living": 25,
+            "health_hash": "4590888895141568771",
+            "config_hash": "608650020661782574",
+            "movement_writes": 0,
+            "locked": true
+          }
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 32,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                1832.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 32,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                1832.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 45,
+          "blue_wingmen": 25,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "BP_CombatAvatarFly01_C_0"
+            }
+          ],
+          "group_pawns": [
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 0,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -125721.6207581894,
+              "y": 118001.76689728619,
+              "z": -1356.9689657468773
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 1,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -112257.5481629472,
+              "y": 119668.50352254265,
+              "z": 6659.859150504098
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 2,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -172342.83065643595,
+              "y": 109786.97422599864,
+              "z": 3974.3707217640185
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 3,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -133781.63523831934,
+              "y": 153158.9924442116,
+              "z": 4193.519119338562
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 4,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -124686.5227186512,
+              "y": 130980.89706543216,
+              "z": 15874.152230154747
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 5,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -111425.07323532921,
+              "y": 121566.25046283023,
+              "z": -1207.7848025569328
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 6,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -183874.97523818014,
+              "y": 155129.49674223948,
+              "z": 21627.922990633255
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 7,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -138940.4136626622,
+              "y": 114125.56997316076,
+              "z": 7598.2133289935355
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 8,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -168725.1955690144,
+              "y": 150979.9703412958,
+              "z": 21292.00397916916
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 9,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -129926.68688115453,
+              "y": 122314.8455771012,
+              "z": -975.8185882688131
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 10,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -172718.84627800327,
+              "y": 121766.75561409873,
+              "z": 18614.17799757738
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 11,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -191353.34258712485,
+              "y": 158094.48570360287,
+              "z": 7824.409448340823
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 12,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -196082.45598884198,
+              "y": 124362.80873300022,
+              "z": 8793.312947143322
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 13,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -192315.87300249425,
+              "y": 123937.23847491744,
+              "z": 436.036644898443
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 14,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -185154.392649229,
+              "y": 141741.09781581775,
+              "z": 95.81922409064937
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 15,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -151804.94120276414,
+              "y": 145495.48768763006,
+              "z": 9611.587677617736
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 16,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -132033.4121232275,
+              "y": 118813.1946827942,
+              "z": 5869.438529098859
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 17,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -183834.59673402397,
+              "y": 141448.85703602532,
+              "z": 5342.545498542367
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 18,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -159336.9262731274,
+              "y": 96896.06139192246,
+              "z": 8348.224880961929
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 19,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -189799.09706298535,
+              "y": 114529.36184632085,
+              "z": 13483.07215778988
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 20,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -145648.07777210412,
+              "y": 103064.59402243419,
+              "z": 4654.757808595638
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 21,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -133617.28869321095,
+              "y": 97007.36256747067,
+              "z": 3234.688446694918
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 22,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -143388.79207645316,
+              "y": 106163.57322999352,
+              "z": 7601.823626676992
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 23,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -135554.15381063227,
+              "y": 86221.75341022128,
+              "z": 1019.9804488610981
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 24,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -116149.15900283503,
+              "y": 145786.36070524048,
+              "z": 359.7478177448793
+            }
+          ],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_3_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 32,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_1",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                1832.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 50,
+          "blue_wingmen": 25,
+          "cameras": [],
+          "group_pawns": [
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 0,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -129717,
+              "y": 118128,
+              "z": -1504
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 1,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -116249,
+              "y": 119782,
+              "z": 6839
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 2,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -176339,
+              "y": 109628,
+              "z": 4038
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 3,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -137495,
+              "y": 154643,
+              "z": 4286
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 4,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -128571,
+              "y": 131695,
+              "z": 16506
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 5,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -123597,
+              "y": 120546,
+              "z": -1436
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 6,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -195824,
+              "y": 158421,
+              "z": 23256
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 7,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -151419,
+              "y": 114003,
+              "z": 8315
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 8,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -180653,
+              "y": 154267,
+              "z": 23075
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 9,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -142382,
+              "y": 123297,
+              "z": -1359
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 10,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -178170,
+              "y": 122037,
+              "z": 19296
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 11,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -196644,
+              "y": 159583,
+              "z": 8032
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 12,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -201568,
+              "y": 124685,
+              "z": 9036
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 13,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -197807,
+              "y": 124252,
+              "z": 386
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 14,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -190565,
+              "y": 142724,
+              "z": 32
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 15,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -156623,
+              "y": 146789,
+              "z": 9943
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 16,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -137025,
+              "y": 119011,
+              "z": 6085
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 17,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -188753,
+              "y": 142341,
+              "z": 5461
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 18,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -164274,
+              "y": 96151,
+              "z": 8615
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 19,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -194784,
+              "y": 114510,
+              "z": 13867
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 20,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -150118,
+              "y": 102562,
+              "z": 4773
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 21,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -138037,
+              "y": 96165,
+              "z": 3300
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 22,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -147866,
+              "y": 105781,
+              "z": 7848
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 23,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -139867,
+              "y": 84937,
+              "z": 984
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 24,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -120229,
+              "y": 147617,
+              "z": 281
+            }
+          ],
+          "group_state": null
+        }
+      ]
+    },
+    {
+      "label": "landed",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -54580.530138925125,
+                107110.71525542845,
+                1826.1402000485796
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 50,
+          "blue_wingmen": 25,
+          "cameras": [],
+          "group_pawns": [
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 24,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -31517,
+              "y": 142677,
+              "z": -1170
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 23,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -44971,
+              "y": 68008,
+              "z": 843
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 22,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -27046,
+              "y": 137763,
+              "z": -2236
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 21,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -12134,
+              "y": 109313,
+              "z": 8213
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 20,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -79933,
+              "y": 84993,
+              "z": -3292
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 14,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -62950,
+              "y": 67877,
+              "z": -10774
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 13,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -82676,
+              "y": 130305,
+              "z": -3140
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 12,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -82078,
+              "y": 91797,
+              "z": 3853
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 11,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -46225,
+              "y": 149986,
+              "z": 9471
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 10,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -37868,
+              "y": 77620,
+              "z": 2062
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 4,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -94740,
+              "y": 97754,
+              "z": -1050
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 3,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -37713,
+              "y": 132259,
+              "z": 1176
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 2,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -46797,
+              "y": 79319,
+              "z": 183
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 1,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -83714,
+              "y": 135953,
+              "z": 6247
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 0,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -8047,
+              "y": 113748,
+              "z": 8403
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 5,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -60697,
+              "y": 156050,
+              "z": 4630
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 6,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -57407,
+              "y": 135508,
+              "z": 8597
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 7,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -74239,
+              "y": 82601,
+              "z": -23
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 8,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -24018,
+              "y": 115868,
+              "z": 3161
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 9,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -96905,
+              "y": 126372,
+              "z": 3013
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 19,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -53254,
+              "y": 143302,
+              "z": 7301
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 18,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -67057,
+              "y": 131003,
+              "z": -10561
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 17,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -88438,
+              "y": 103379,
+              "z": -3879
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 16,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -15627,
+              "y": 131048,
+              "z": 6246
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 15,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -55841,
+              "y": 67183,
+              "z": 7753
+            }
+          ],
+          "group_state": {
+            "player_slot": 3,
+            "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+            "living": 25,
+            "health_hash": "4590888895141568771",
+            "config_hash": "608650020661782574",
+            "movement_writes": 25,
+            "locked": true
+          }
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -54580.530138925125,
+                107110.71525542845,
+                1826.1402000485796
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -54580.530138925125,
+                107110.71525542845,
+                1826.1402000485796
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 45,
+          "blue_wingmen": 25,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "BP_CombatAvatarFly01_C_0"
+            }
+          ],
+          "group_pawns": [
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 0,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -125721.6207581894,
+              "y": 118001.76689728619,
+              "z": -1356.9689657468773
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 1,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -112257.5481629472,
+              "y": 119668.50352254265,
+              "z": 6659.859150504098
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 2,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -172342.83065643595,
+              "y": 109786.97422599864,
+              "z": 3974.3707217640185
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 3,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -133781.63523831934,
+              "y": 153158.9924442116,
+              "z": 4193.519119338562
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 4,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -124686.5227186512,
+              "y": 130980.89706543216,
+              "z": 15874.152230154747
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 5,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -111425.07323532921,
+              "y": 121566.25046283023,
+              "z": -1207.7848025569328
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 6,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -183874.97523818014,
+              "y": 155129.49674223948,
+              "z": 21627.922990633255
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 7,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -138940.4136626622,
+              "y": 114125.56997316076,
+              "z": 7598.2133289935355
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 8,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -168725.1955690144,
+              "y": 150979.9703412958,
+              "z": 21292.00397916916
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 9,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -129926.68688115453,
+              "y": 122314.8455771012,
+              "z": -975.8185882688131
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 10,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -172718.84627800327,
+              "y": 121766.75561409873,
+              "z": 18614.17799757738
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 11,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -191353.34258712485,
+              "y": 158094.48570360287,
+              "z": 7824.409448340823
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 12,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -196082.45598884198,
+              "y": 124362.80873300022,
+              "z": 8793.312947143322
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 13,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -192315.87300249425,
+              "y": 123937.23847491744,
+              "z": 436.036644898443
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 14,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -185154.392649229,
+              "y": 141741.09781581775,
+              "z": 95.81922409064937
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 15,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -151804.94120276414,
+              "y": 145495.48768763006,
+              "z": 9611.587677617736
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 16,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -132033.4121232275,
+              "y": 118813.1946827942,
+              "z": 5869.438529098859
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 17,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -183834.59673402397,
+              "y": 141448.85703602532,
+              "z": 5342.545498542367
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 18,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -159336.9262731274,
+              "y": 96896.06139192246,
+              "z": 8348.224880961929
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 19,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -189799.09706298535,
+              "y": 114529.36184632085,
+              "z": 13483.07215778988
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 20,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -145648.07777210412,
+              "y": 103064.59402243419,
+              "z": 4654.757808595638
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 21,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -133617.28869321095,
+              "y": 97007.36256747067,
+              "z": 3234.688446694918
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 22,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -143388.79207645316,
+              "y": 106163.57322999352,
+              "z": 7601.823626676992
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 23,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -135554.15381063227,
+              "y": 86221.75341022128,
+              "z": 1019.9804488610981
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 24,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": true,
+              "x": -116149.15900283503,
+              "y": 145786.36070524048,
+              "z": 359.7478177448793
+            }
+          ],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_3_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_1",
+              "location": [
+                -54580.530138925125,
+                107110.71525542845,
+                1826.1402000485796
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 50,
+          "blue_wingmen": 25,
+          "cameras": [],
+          "group_pawns": [
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 0,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -8047,
+              "y": 113748,
+              "z": 8403
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 1,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -83714,
+              "y": 135953,
+              "z": 6247
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 2,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -46797,
+              "y": 79319,
+              "z": 183
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 3,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -37713,
+              "y": 132259,
+              "z": 1176
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 4,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -94740,
+              "y": 97754,
+              "z": -1050
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 5,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -60697,
+              "y": 156050,
+              "z": 4630
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 6,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -57407,
+              "y": 135508,
+              "z": 8597
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 7,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -74239,
+              "y": 82601,
+              "z": -23
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 8,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -24018,
+              "y": 115868,
+              "z": 3161
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 9,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -96905,
+              "y": 126372,
+              "z": 3013
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 10,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -37868,
+              "y": 77620,
+              "z": 2062
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 11,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -46225,
+              "y": 149986,
+              "z": 9471
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 12,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -82078,
+              "y": 91797,
+              "z": 3853
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 13,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -82676,
+              "y": 130305,
+              "z": -3140
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 14,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -62950,
+              "y": 67877,
+              "z": -10774
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 15,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -55841,
+              "y": 67183,
+              "z": 7753
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 16,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -15627,
+              "y": 131048,
+              "z": 6246
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 17,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -88438,
+              "y": 103379,
+              "z": -3879
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 18,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -67057,
+              "y": 131003,
+              "z": -10561
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 19,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -53254,
+              "y": 143302,
+              "z": 7301
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 20,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -79933,
+              "y": 84993,
+              "z": -3292
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 21,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -12134,
+              "y": 109313,
+              "z": 8213
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 22,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -27046,
+              "y": 137763,
+              "z": -2236
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 23,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -44971,
+              "y": 68008,
+              "z": 843
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 24,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -31517,
+              "y": 142677,
+              "z": -1170
+            }
+          ],
+          "group_state": null
+        }
+      ]
+    },
+    {
+      "label": "stable",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -54580.530138925125,
+                107110.71525542845,
+                1826.1402000485796
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 50,
+          "blue_wingmen": 5,
+          "cameras": [],
+          "group_pawns": [
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 10,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -36851.23134803772,
+              "y": 78065.61779403687,
+              "z": 2081.3828735351562
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 11,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -45550.43667793274,
+              "y": 149358.83984088898,
+              "z": 8895.74490737915
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 12,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -81277.1939086914,
+              "y": 91062.90059185028,
+              "z": 3868.6015462875366
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 13,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -81876.60480308533,
+              "y": 129578.20175743103,
+              "z": -3027.6475019454956
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 14,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -61949.779207229614,
+              "y": 67385.42345237732,
+              "z": -10801.2318983078
+            }
+          ],
+          "group_state": {
+            "player_slot": 3,
+            "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+            "living": 25,
+            "health_hash": "4590888895141568771",
+            "config_hash": "608650020661782574",
+            "movement_writes": 25,
+            "locked": false
+          }
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -54580.53,
+                107110.72,
+                1826.14
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -54580.530138925125,
+                107110.71525542845,
+                1826.1402000485796
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 45,
+          "blue_wingmen": 0,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "BP_CombatAvatarFly01_C_0"
+            }
+          ],
+          "group_pawns": [
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 0,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -7037.259386560128,
+              "y": 114699.92439396537,
+              "z": 8342.56029429479
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 1,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -82782.9925094192,
+              "y": 134949.9661246768,
+              "z": 6009.38523333967
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 2,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -45513.01969685428,
+              "y": 79962.92046637101,
+              "z": 290.80255999073717
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 3,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -36610.10921658381,
+              "y": 132428.35879366798,
+              "z": 345.38417811182615
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 4,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -93977.89932590631,
+              "y": 96607.49482530361,
+              "z": -1234.4929579569587
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 5,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -59750.53656251773,
+              "y": 155710.10627442977,
+              "z": 5588.171010210389
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 6,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -56523.96486137808,
+              "y": 134677.74600862077,
+              "z": 9275.408158919678
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 7,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -73128.94998866678,
+              "y": 81724.39374324803,
+              "z": 83.64429405360887
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 8,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -22830.455891822978,
+              "y": 116566.78159967998,
+              "z": 2985.6366496935366
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 9,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -96017.21200592446,
+              "y": 125347.97790363625,
+              "z": 3317.203670373174
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 10,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -36551.74801895367,
+              "y": 78201.01214955667,
+              "z": 2086.417756713276
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 11,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -45479.612796765476,
+              "y": 149149.01782946818,
+              "z": 8650.52964122881
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 12,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -81160.08101629379,
+              "y": 90755.2850434689,
+              "z": 3893.552395474733
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 13,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -81760.76074192394,
+              "y": 129272.46688863398,
+              "z": -2980.2445725754565
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 14,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -61651.26727036964,
+              "y": 67248.11235282871,
+              "z": -10814.931310851707
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 15,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -55113.362528895996,
+              "y": 66044.33953470094,
+              "z": 8074.411401484844
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 16,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -14690.909438427354,
+              "y": 130160.16440547432,
+              "z": 5714.79658120819
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 17,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -87301.85574594993,
+              "y": 104158.00728810583,
+              "z": -3701.1335480665994
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 18,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -65970.38974455191,
+              "y": 131890.12589947096,
+              "z": -10862.79282394351
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 19,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -51883.1572953952,
+              "y": 143281.2517791434,
+              "z": 6850.178280776302
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 20,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -78816.26738324185,
+              "y": 84317.29459147013,
+              "z": -2778.013693132093
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 21,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -11358.200977638022,
+              "y": 110427.12778332349,
+              "z": 7919.350782239173
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 22,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -26099.082686582984,
+              "y": 138697.19112948963,
+              "z": -2672.6096696396976
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 23,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -43595.680845940915,
+              "y": 68448.04840385294,
+              "z": 816.0469740946338
+            },
+            {
+              "ship": "2E56E97C439EDC5CFA85BC9DC9587474",
+              "slot": 24,
+              "generation": 1,
+              "alive": true,
+              "visible": true,
+              "phased": false,
+              "x": -30225.470660235555,
+              "y": 142638.75239822187,
+              "z": -1777.2487869180434
+            }
+          ],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_3_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_1",
+              "location": [
+                -54580.530138925125,
+                107110.71525542845,
+                1826.1402000485796
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 50,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "source": [
+    -38580.530138925125,
+    115110.71525542845,
+    1832.0
+  ],
+  "server_status": "选择落点 9.4 秒 · 32 个单位",
+  "sender_status": "选择落点 9.4 秒 · 32 个单位"
+}

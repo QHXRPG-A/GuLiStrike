@@ -1,6 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
+#include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
+#include "Gameplay/CombatEffects/GuLiUnitFeedbackComponent.h"
+#include "Gameplay/Ship/GuLiStrikeShip.h"
 
 #include "Components/PrimitiveComponent.h"
 #include "Engine/World.h"
@@ -107,6 +110,15 @@ void UGuLiCombatHealthComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProp
 void UGuLiCombatHealthComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	if (GetOwner() && GetNetMode() != NM_DedicatedServer && !GetOwner()->FindComponentByClass<UGuLiUnitFeedbackComponent>())
+	{
+		auto* Feedback = NewObject<UGuLiUnitFeedbackComponent>(GetOwner());
+		// Health is already replicated. Each render client owns this observer locally.
+		Feedback->SetIsReplicated(false);
+		Feedback->bPlayDestructionEffect = !GetOwner()->IsA<AGuLiStrikeShip>();
+		GetOwner()->AddInstanceComponent(Feedback);
+		Feedback->RegisterComponent();
+	}
 	if (GetOwner() && GetOwner()->HasAuthority())
 	{
 		if (!HealthState.IsWellFormed())
@@ -168,6 +180,13 @@ bool UGuLiCombatHealthComponent::ApplyServerDamage(
 	OutResult = FGuLiDamageCommitResult();
 	if (!GetOwner() || !GetOwner()->HasAuthority() || !Request.IsWellFormed()
 		|| Request.Target != TargetHandle || !HealthState.IsWellFormed() || HealthState.bDead)
+	{
+		OutResult.Status = HealthState.bDead
+			? EGuLiDamageCommitStatus::RejectedTargetDead
+			: EGuLiDamageCommitStatus::RejectedByAdapter;
+		return false;
+	}
+	if (UGuLiExternalUnitControlComponent::IsActorPhased(GetOwner()))
 	{
 		OutResult.Status = HealthState.bDead
 			? EGuLiDamageCommitStatus::RejectedTargetDead
@@ -403,7 +422,7 @@ bool UGuLiDamageLedgerSubsystem::RegisterHealthComponent(UGuLiCombatHealthCompon
 	{
 		const UGuLiCombatHealthComponent* Health = WeakHealth.Get();
 		const AActor* Owner = Health ? Health->GetOwner() : nullptr;
-		if (!Health || !Owner || Health->GetTargetHandle() != Handle)
+		if (!Health || !Owner || Health->GetTargetHandle() != Handle || UGuLiExternalUnitControlComponent::IsActorPhased(Owner))
 		{
 			return false;
 		}

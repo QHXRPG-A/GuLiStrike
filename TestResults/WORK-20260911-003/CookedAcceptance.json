@@ -1,0 +1,28 @@
+{
+  "schema": "guli.resource-world.cooked-acceptance.v1",
+  "success": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "authority_mode": "standalone",
+  "render_mode": "NullRHI",
+  "seconds_to_acceptance": 12.64,
+  "initialized": {
+    "territories": 25,
+    "clusters": 240,
+    "nodes": 6240,
+    "hism_components": 24,
+    "factories": 2,
+    "miners": 2
+  },
+  "navigation_ready": true,
+  "mass_authoritative_members": 500,
+  "missing_runtime_assets": false,
+  "resource_errors": false,
+  "assertions_or_fatals": false,
+  "cook": {
+    "candidate_packages": 908,
+    "iostore_packages": 835,
+    "uat_exit_code": 0,
+    "archive": "CookedBuildAcceptedFinal"
+  },
+  "log": "CookedStartupFinalAccepted.log"
+}

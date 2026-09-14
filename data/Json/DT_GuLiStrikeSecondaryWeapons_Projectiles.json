@@ -1,0 +1,20 @@
+[
+  {
+    "Name": "WM01_Missile",
+    "Id": 1,
+    "Note": "WM01追踪导弹；数值在发射时从本表冻结；厘米/秒、厘米、秒、度/秒",
+    "ProjectileAsset": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile",
+    "SpeedCentimetersPerSecond": 6000.0,
+    "LiftSeconds": 0.25,
+    "MinimumLiftHeightCentimeters": 600.0,
+    "MaximumLiftHeightCentimeters": 1000.0,
+    "LateralOffsetCentimeters": 200.0,
+    "ConvergenceDistanceCentimeters": 1600.0,
+    "TurnRateDegreesPerSecond": 240.0,
+    "SweepRadiusCentimeters": 30.0,
+    "MaximumLifetimeSeconds": 8.0,
+    "UnitTypeId": 2,
+    "SlotId": "MissileLauncher",
+    "SkillId": "WM01_HomingMissile"
+  }
+]

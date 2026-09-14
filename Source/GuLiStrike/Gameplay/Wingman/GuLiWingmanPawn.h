@@ -10,6 +10,10 @@
 #include "GuLiWingmanPawn.generated.h"
 
 class UGuLiWingmanFlightMovementComponent;
+class UGuLiTeamOutlineComponent;
+class UNiagaraComponent;
+class UNiagaraSystem;
+class USceneComponent;
 class USphereComponent;
 class UStateTree;
 class UStateTreeComponent;
@@ -50,6 +54,7 @@ public:
 	void ApplyRemotePresentation(const FTransform& Transform, float Opacity,
 		bool bInteractable, bool bAuthorityRebase);
 	void ApplyAuthorityRebase(const FTransform& Transform, const FVector& InitialVelocity);
+	void SetPhaseAppearance(bool bPhased);
 	void MarkRebaseRejected(bool bNoSafePoint, double RetryAfterServerTimeSeconds);
 	void QueueStaleRebaseRetry(double EstimatedServerTimeSeconds);
 	void RequestEmergencyRebase(EGuLiWingmanEmergencyRebaseReason Reason);
@@ -57,7 +62,14 @@ public:
 	void CancelFrozenAttackForRecovery();
 	void SetAlive(bool bAlive);
 	void ConfigureMesh(UStaticMesh* Mesh);
+	/** Applies a render-only world transform below the authoritative Pawn root. */
+	void ApplyOwnerPresentationTransform(const FTransform& Transform);
+	/** Model/nozzle space for local effects, never a collision or attack-authority input. */
+	FTransform GetPresentationTransform() const;
+	/** Called after movement by the existing owner/remote presentation update. */
+	void UpdateFlightTrail(float Opacity = 1.0f, bool bResetTrail = false);
 
+	UFUNCTION(BlueprintPure, Category="Wingman")
 	const FGuLiWingmanHandle& GetWingmanHandle() const { return Runtime.Identity.Handle; }
 	EGuLiWingmanPawnMode GetPawnMode() const { return PawnMode; }
 	bool IsOwnerSimulationPawn() const { return PawnMode == EGuLiWingmanPawnMode::OwnerSimulation; }
@@ -67,6 +79,7 @@ public:
 	FGuLiWingmanRuntimeState& GetMutableRuntimeState() { return Runtime; }
 	const FGuLiWingmanRuntimeState& GetRuntimeState() const { return Runtime; }
 	UGuLiWingmanFlightMovementComponent* GetFlightMovement() const { return FlightMovement; }
+	UGuLiTeamOutlineComponent* GetTeamOutline() const { return TeamOutline; }
 
 #if WITH_DEV_AUTOMATION_TESTS
 	/** Drives the native component in transient Worlds that do not run a World tick. */
@@ -75,12 +88,41 @@ public:
 
 private:
 	void StopStateTree(const TCHAR* Reason);
+	void StopFlightTrail();
+
+	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Flight VFX")
+	TSoftObjectPtr<UNiagaraSystem> FlightTrailSystem;
+
+	/** Mesh-local nozzle position; this mesh faces -X, so its tail is +X. */
+	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Flight VFX")
+	FVector FlightTrailOffset = FVector(1258.0f, 0.0f, 300.0f);
+
+	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Flight VFX", meta=(ClampMin="0"))
+	float FlightTrailCullDistance = 180000.0f;
+
+	/** Reused with the Pawn pool; never replicated or allocated on a dedicated server. */
+	UPROPERTY(Transient)
+	TObjectPtr<UNiagaraComponent> FlightTrail;
+
+	FVector LastFlightTrailLocation = FVector::ZeroVector;
+	bool bHasFlightTrailLocation = false;
+	bool bPreviousRemoteRebase = false;
+	bool bHasRemoteVisualPose = false;
+	double RemoteVisualTimeSeconds = 0.0;
+	bool bFlightTrailRunning = false;
+	bool bFlightTrailLoadFailed = false;
 
 	UPROPERTY(VisibleAnywhere, Category="Wingman")
 	TObjectPtr<USphereComponent> CollisionRoot;
 
+	UPROPERTY(VisibleAnywhere, Category="Wingman|Presentation")
+	TObjectPtr<USceneComponent> PresentationRoot;
+
 	UPROPERTY(VisibleAnywhere, Category="Wingman")
 	TObjectPtr<UStaticMeshComponent> VisualMesh;
+
+	UPROPERTY(VisibleAnywhere, Category="Wingman|Presentation")
+	TObjectPtr<UGuLiTeamOutlineComponent> TeamOutline;
 
 	UPROPERTY(VisibleAnywhere, Category="Wingman")
 	TObjectPtr<UGuLiWingmanFlightMovementComponent> FlightMovement;

@@ -18,7 +18,7 @@ class FGuLiMapAuthoringEditorModule : public IModuleInterface
         MapHandle=FEditorDelegates::MapChange.AddLambda([](uint32){GuLiMapEditor::EndInteraction();});
         PIEHandle=FEditorDelegates::PreBeginPIE.AddLambda([](bool){GuLiMapEditor::EndInteraction();});
         FGlobalTabmanager::Get()->RegisterNomadTabSpawner(TEXT("GuLiMapAuthoring"),FOnSpawnTab::CreateLambda([](const FSpawnTabArgs&)
-        { return SNew(SDockTab).TabRole(ETabRole::NomadTab)[SNew(SGuLiMapPanel)]; })).SetDisplayName(FText::FromString(TEXT("地图标注")));
+        { return SNew(SDockTab).TabRole(ETabRole::NomadTab)[SNew(SGuLiMapPanel)]; })).SetDisplayName(FText::FromString(TEXT("地图标注与资源涂绘")));
         UToolMenus::RegisterStartupCallback(FSimpleMulticastDelegate::FDelegate::CreateRaw(this,&FGuLiMapAuthoringEditorModule::RegisterMenus));
     }
     void RegisterMenus()
@@ -29,7 +29,7 @@ class FGuLiMapAuthoringEditorModule : public IModuleInterface
         Section.AddSubMenu(TEXT("GuLiMapTools"),FText::FromString(TEXT("GuLi")),FText::FromString(TEXT("GuLi 编辑器工具")),
             FNewToolMenuDelegate::CreateLambda([](UToolMenu* Menu)
             {
-                Menu->AddSection(TEXT("Authoring")).AddMenuEntry(TEXT("GuLiMapAuthoring"),FText::FromString(TEXT("地图标注")),FText::FromString(TEXT("配置地图点位、区域与导出数据")),FSlateIcon(),
+                Menu->AddSection(TEXT("Authoring")).AddMenuEntry(TEXT("GuLiMapAuthoring"),FText::FromString(TEXT("地图标注与资源涂绘")),FText::FromString(TEXT("配置地图点位、区域、矿物密度与确定性导出")),FSlateIcon(),
                     FUIAction(FExecuteAction::CreateLambda([]{FGlobalTabmanager::Get()->TryInvokeTab(FName(TEXT("GuLiMapAuthoring")));})));
             }));
     }

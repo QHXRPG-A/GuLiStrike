@@ -35,6 +35,14 @@ public:
 	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ship Part|Weapon")
 	FVector MuzzleOffset = FVector(100.0f, 0.0f, 0.0f);
 
+	/** 可选的视觉网格炮口 Socket；空时保留旧 MuzzleOffset 行为。 */
+	UPROPERTY(EditDefaultsOnly, BlueprintReadOnly, Category="Ship Part|Weapon")
+	FName MuzzleSocketName;
+
+	/** 炮口相对于部件安装根；不读取可能带网络平滑偏移的世界姿态。 */
+	UFUNCTION(BlueprintPure, Category="Ship Part|Weapon")
+	bool GetMuzzleTransformRelativeToPart(FTransform& OutTransform) const;
+
 	/** 上一次射击的世界时间（部件自己执行射速冷却） */
 	float LastFireTime = -TNumericLimits<float>::Max();
 

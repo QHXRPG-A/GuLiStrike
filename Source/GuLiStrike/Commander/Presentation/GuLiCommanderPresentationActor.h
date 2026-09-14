@@ -33,6 +33,7 @@ struct FGuLiCommanderBufferedSoldierPose
 	FVector RelativeLocation = FVector::ZeroVector;
 	float FacingYawDegrees = 0.0f;
 	uint32 ActiveOrderId = 0u;
+	EGuLiSoldierPoseState State = EGuLiSoldierPoseState::Idle;
 	uint16 ChunkIndex = 0u;
 	uint8 SampleIndex = 0u;
 	bool bTeleport = false;
@@ -43,11 +44,18 @@ struct FGuLiCommanderBufferedSoldierPose
 struct FGuLiCommanderPresentedSoldier
 {
 	TArray<FGuLiCommanderBufferedSoldierPose> Samples;
+	uint32 DisplacementFrameFloor = 0;
 	FTransform AuthoritativeTransform = FTransform::Identity;
 	FTransform PresentedTransform = FTransform::Identity;
 	EGuLiSoldierLifeState LastLifeState = EGuLiSoldierLifeState::Alive;
+	float LastObservedHealth = 0.0f;
+	float HitFlashStartTime = -1000.0f;
 	double LastPoseReceiptLocalTimeSeconds = 0.0;
 	double MaximumPoseReceiptGapSeconds = 0.0;
+	double PreviousAdaptivePoseReceiptLocalTimeSeconds = 0.0;
+	double SmoothedPoseReceiptIntervalSeconds = 0.0;
+	double SmoothedPoseReceiptJitterSeconds = 0.0;
+	EGuLiSoldierPoseState LastReceivedPoseState = EGuLiSoldierPoseState::Idle;
 	FVector LastUntaggedHardSnapDelta = FVector::ZeroVector;
 	FVector LastHardSnapPriorSampleDelta = FVector::ZeroVector;
 	FVector LastHardSnapSampleVelocity = FVector::ZeroVector;
@@ -66,6 +74,7 @@ struct FGuLiCommanderPresentedSoldier
 	bool bHasAuthoritativeTransform = false;
 	bool bHasPresentedTransform = false;
 	bool bLifeStateInitialized = false;
+	bool bAdaptiveReceiptStateInitialized = false;
 };
 
 /** Non-authoritative diagnostics used by the development network acceptance gate. */
@@ -204,6 +213,8 @@ public:
 	/** Returns the current interpolated/predicted visual transform without exposing authority writes. */
 	// 本地只读查询；有效时写 OutTransform 并返回 true，供 HUD/诊断使用，不开放权威写入。
 	bool TryGetPresentedSoldierTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
+	/** Same timestamp used by the hit-white overlay; no independent health-delta detector in the HUD. */
+	float GetSoldierHitStartTime(FGuLiSoldierId SoldierId) const;
 
 	/**
 	 * Returns the accepted-pose timeline result before local command prediction is applied.
@@ -292,6 +303,10 @@ private:
 	void InitializePresentationPerformanceSettings();
 	void ApplyPresentationPerformanceSettings();
 	void InitializeUnitInstanceBatches();
+	void UpdatePhasedInstances(const TMap<uint16,TArray<FTransform>>& Desired);
+	void UpdateWreckInstances(const TMap<uint16,TArray<FTransform>>& Desired);
+	void UpdateHitFlashInstances(const TMap<uint16,TArray<FTransform>>& Transforms,
+		const TMap<uint16,TArray<float>>& StartTimes);
 	void ConfigureUnitInstanceComponent(UInstancedStaticMeshComponent& Component) const;
 	void SetUnitInstanceBatchesVisibility(bool bVisible);
 	uint16 ResolveUnitBatchTypeId(uint16 RequestedUnitTypeId);
@@ -368,6 +383,11 @@ private:
 	/** Components are owned by this Actor; ID1 aliases UnitInstances for compatibility. */
 	UPROPERTY(Transient)
 	TMap<uint16, TObjectPtr<UInstancedStaticMeshComponent>> UnitInstancesByType;
+	UPROPERTY(Transient) TMap<uint16,TObjectPtr<UInstancedStaticMeshComponent>> PhasedInstancesByType;
+	UPROPERTY(Transient) TMap<uint16,TObjectPtr<UInstancedStaticMeshComponent>> HitFlashInstancesByType;
+	UPROPERTY(Transient) TMap<uint16,TObjectPtr<UInstancedStaticMeshComponent>> WreckInstancesByType;
+	TMap<uint16,TArray<FTransform>> CachedWreckTransforms;
+	TMap<uint16,TArray<FTransform>> CachedPhasedTransforms;
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Presentation")
 	TObjectPtr<UInstancedStaticMeshComponent> RingInstances;
@@ -384,9 +404,12 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Commander|Presentation")
 	TSoftObjectPtr<UMaterialInterface> RingMaterialAsset;
 
-	// 默认渲染时间回退 0.1 秒以便插值；Config 可覆盖，不是网络发送延迟。
+	// 基线大于 10 Hz 的一个采样周期；每名士兵再按自己的实际收包间隔自适应增加。
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Smoothing", meta = (ClampMin = "0.0"))
-	float InterpolationBackTimeSeconds = 0.1f;
+	float InterpolationBackTimeSeconds = 0.12f;
+
+	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Smoothing", meta = (ClampMin = "0.0"))
+	float MaximumAdaptiveInterpolationBackTimeSeconds = 0.35f;
 
 	// 缺少新样本时最多外推的时间，超过后停在有界估计位置，避免持续漂移。
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Smoothing", meta = (ClampMin = "0.0"))

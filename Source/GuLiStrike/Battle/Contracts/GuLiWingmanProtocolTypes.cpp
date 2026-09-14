@@ -29,7 +29,7 @@ namespace
 		GuLiShipAbilityHash::AddUInt64(Hash, Bits);
 	}
 
-	bool IsStableGuidLess(const FGuid& Lhs, const FGuid& Rhs)
+	bool IsStableProtocolGuidLess(const FGuid& Lhs, const FGuid& Rhs)
 	{
 		if (Lhs.A != Rhs.A) return Lhs.A < Rhs.A;
 		if (Lhs.B != Rhs.B) return Lhs.B < Rhs.B;
@@ -41,7 +41,7 @@ namespace
 	{
 		if (Lhs.Flight.Group.ShipInstanceId != Rhs.Flight.Group.ShipInstanceId)
 		{
-			return IsStableGuidLess(
+			return IsStableProtocolGuidLess(
 				Lhs.Flight.Group.ShipInstanceId,
 				Rhs.Flight.Group.ShipInstanceId);
 		}
@@ -85,6 +85,7 @@ namespace
 		switch (Target.Target.Kind)
 		{
 		case EGuLiTargetKind::CommanderSoldier:
+		case EGuLiTargetKind::GroundActor:
 			return Target.bGround;
 		case EGuLiTargetKind::Ship:
 		case EGuLiTargetKind::Wingman:
@@ -219,7 +220,7 @@ bool FGuLiTargetHandle::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutS
 	Ar << KindValue;
 	if (Ar.IsLoading())
 	{
-		Kind = KindValue <= static_cast<uint8>(EGuLiTargetKind::Wingman)
+		Kind = KindValue <= static_cast<uint8>(EGuLiTargetKind::GroundActor)
 			? static_cast<EGuLiTargetKind>(KindValue)
 			: EGuLiTargetKind::None;
 	}

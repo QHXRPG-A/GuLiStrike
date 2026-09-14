@@ -4,8 +4,43 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-09-14 | [僚机直线激光炮弹池与最终数值](../Archive/20260914-僚机直线激光炮弹池与最终数值.md) | combat, wingman, vfx | partial | 僚机对空机枪接入30Hz数据槽位炮弹池，最终800米每秒、长30米、内芯宽0.5米；源码双目标与实机通过，既有检查19/22通过。 |
+| 2026-09-14 | [法术场统一入口与武器ID引用](../Archive/20260914-法术场统一入口与武器ID引用.md) | combat, commander, wingman, data | passed | 将两条武器爆炸配置归回SpellFields，次级武器通过数字法术场ID引用；保持原数值，完成源码编译、导入回读和3项既有自动化。 |
+| 2026-09-14 | [次级单位武器独立Excel重构](../Archive/20260914-次级单位武器独立Excel重构.md) | combat, commander, wingman, data | partial | 次级单位武器统一迁入SecondaryWeapons工作簿；源引擎Editor/Game构建及7表原生回读通过，现有回归20/24通过，4项失败保留。 |
+| 2026-09-14 | [飞船组件文档资源引用与覆盖盘点](../Archive/20260914-飞船组件文档资源引用与覆盖盘点.md) | ship, assets | passed | 外部组件方案文档14处模型资源引用改为现有组件蓝图，盘点14个蓝图中有11个被引用，另3个尚未写入方案。 |
+| 2026-09-14 | [单位铁锈残骸与僚机物理坠落](../Archive/20260914-单位铁锈残骸与僚机物理坠落.md) | combat, vfx, commander, wingman | partial | 单位死亡显示铁锈报废外观；僚机复制原速度进行Chaos坠落，Landscape碰撞当帧销毁。源码双目标与现有5项回归通过。 |
+| 2026-09-14 | [冲击波外径上限与重复缩放修正](../Archive/20260914-冲击波外径上限与重复缩放修正.md) | combat, vfx, wingman | partial | 单位销毁冲击波最大外径限制为主体峰值2.5倍，消除Aerial与Big_17折射网格重复应用Owner.Scale；主体与伤害不变。 |
+| 2026-09-13 | [僚机空爆随机二选一与销毁特效五倍](../Archive/20260913-僚机空爆随机二选一与销毁特效五倍.md) | combat, vfx, wingman | partial | 僚机销毁改为Aerial 3/4随机二选一并保留冲击波；共享模型比例与整体5倍规则不变，源码双目标和现有5项回归通过。 |
+| 2026-09-13 | [Soldiers统一单位与全局法术场及矿车调度](../Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | data, resources, combat, commander, ship, vfx, network | partial | 矿车纳入Soldiers，共用独立法术场Excel，新增节点分配Manager；三倍速度、并行进厂上传、瞬时转向及原始五倍激光完成。 |
+| 2026-09-13 | [激光采矿与矿车进出厂及受击接入](../Archive/20260913-激光采矿与矿车进出厂及受击接入.md) | resources, economy, combat, vfx, network | partial | 保留原车网格的18米矿车接入双54米绿色激光与真实扣矿，完成整车进厂一秒上传、后侧掉头、正向出厂和命令延后；组合通用真实HP及受击反馈。 |
+| 2026-09-13 | [单位受击血条与模型尺寸爆炸缩放](../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md) | combat, vfx, ui, commander, wingman, ship | partial | 共链受击血条显示3秒后渐隐，摧毁爆炸以最小兵种观感为基准按实际模型尺寸缩放；僚机Big_17主体5倍、冲击波保留3.1倍，随机朝向与3秒回池不变。 |
+| 2026-09-13 | [僚机Big17爆炸范围缩放修正](../Archive/20260913-僚机Big17爆炸范围缩放修正.md) | wingman, combat, vfx | passed | 将僚机Big_17爆炸从1倍修正为3.1倍，使主火球约80米直径匹配40米AOE半径；双客户端PIE已验证缩放、随机Yaw和3秒回池。 |
+| 2026-09-13 | [僚机对地轰炸Big17爆炸特效](../Archive/20260913-僚机对地轰炸Big17爆炸特效.md) | wingman, combat, vfx, network | passed | 僚机对地轰炸命中改用指定Big_17的项目副本；每次按复制效果种子随机Yaw，并以3秒为表现硬清理上限，Commander引用保持不变。 |
+| 2026-09-13 | [单位受击白光与摧毁爆炸](../Archive/20260913-单位受击白光与摧毁爆炸.md) | combat, vfx, commander, wingman, ship, resources | partial | 实现0.5秒白色发光衰减及NPC随机爆炸和冲击波；单位透明度不变，源码构建和PIE表现入口观察完成。 |
+| 2026-09-12 | [ShipComponent部件蓝图与占位清理](../Archive/20260912-ShipComponent部件蓝图与占位清理.md) | ship, assets | passed | 14个正式部件蓝图替换旧占位目录，82个Socket完整保留；冷启动配置校验、源码Editor构建及既有2项部件验收通过。 |
+| 2026-09-12 | [空战测试关卡远端地面单位](../Archive/20260912-空战测试关卡远端地面单位.md) | ship, commander, level | passed | 空战原型关卡远端新增4个持久地面部署点，普通PIE自动生成红蓝各24个真实Mass单位，源码构建与双客户端检查通过。 |
+| 2026-09-12 | [通用敌方描边与普通PIE僚机同步修复](../Archive/20260912-通用敌方描边与普通PIE僚机同步修复.md) | wingman, ship, presentation, network | partial | 敌方Ship与僚机使用通用红色轮廓；修复普通PIE姿态断流、模型时钟和全灭残留，两次独立开局90秒/60秒采样无异常模型速度帧。 |
+| 2026-09-12 | [Client1僚机冻结与可靠快照风暴修复](../Archive/20260912-Client1僚机冻结与可靠快照风暴修复.md) | wingman, networking, presentation, combat | partial | 非致死伤害不再触发整组可靠Bootstrap，真实成员切片保留未变Remote的Pawn与插值历史；Client1从24/24远端全停恢复为25/25持续移动。 |
+| 2026-09-12 | [僚机视觉插值与远端稳定显示](../Archive/20260912-僚机视觉插值与远端稳定显示.md) | wingman, networking, presentation | partial | 僚机逻辑根仍以30Hz确定推进，Owner模型改为逐渲染帧插值；Remote回看改为0.2秒且陈旧姿态保持可见，双客户端样本25/25全程可见。 |
+| 2026-09-12 | [矿车 Dock、队伍私有代理与 500 人姿态流修复](../Archive/20260912-矿车Dock私有代理与500人姿态流修复.md) | economy, commander, navigation, network | passed | 矿车改为停靠工厂障碍外 DockPoint，队伍私有状态改由 OwnerOnly PlayerState 聚合代理复制，客户端矿厂表现已恢复；500 人姿态流完成稳定相位、降频和自适应插值，弱网下实测 56920/59818 B/s（平均/P95）。 |
+| 2026-09-11 | [资源经济、动态障碍与 Commander 适配层解耦](../Archive/20260911-资源经济障碍与Commander适配层解耦.md) | architecture, economy, commander, navigation | passed | 将团队经济账本、动态障碍发布和 Commander 资源交互从资源世界拆成三个通用边界，既有玩法与测试用例保持不变，范围自动化、双客户端 PIE 及三类 Target 均通过。 |
+| 2026-09-11 | [红蓝矿棋盘与自动采矿闭环](../Archive/20260911-红蓝矿棋盘与自动采矿闭环.md) | economy, map, commander, navigation, network | passed | 5×5 Territory、240 个固定矿簇、服务器权威采运加工、三秒人工接管、建筑蓝矿事务和整簇动态导航恢复已落地；专项 6/6、相关回归 60/60、双客户端 PIE 与 Cooked 启动通过。 |
+| 2026-09-11 | [Ship 僚机对空攻击盘旋冷却改造](../Archive/20260911-Ship僚机对空攻击盘旋冷却改造.md) | wingman, ship, combat, network | passed | 对空旧随机往返缠斗已替换为攻击—返舰盘旋冷却循环；v14持续命中链以单次开始记录驱动，专项12/12、双客户端PIE、数据部署和Editor/Game构建通过。 |
+| 2026-09-11 | [飞船骨骼部件接入与Socket保留](../Archive/20260911-飞船骨骼部件接入与Socket保留.md) | ship, assets, combat | passed | 现有装配系统支持静态和骨骼部件，4个旧部件蓝图配置保留；75个Socket重载核对一致，Editor/Game源码构建及2项定向验收通过。 |
+| 2026-09-11 | [指挥官传送配置归并与范围扩展](../Archive/20260911-指挥官传送配置归并与范围扩展.md) | commander, data, vfx | partial | 传送配置并入SpellFields，四档扩大为40/100/200/500米，光柱升至500米并增加柔边渐变；Editor/Game源码构建通过。 |
+| 2026-09-11 | [指挥官双点传送技能实施与验收](../Archive/20260911-指挥官双点传送技能验收.md) | commander, ship, wingman, combat, network, ui, vfx | passed | 法术场统一管理Mass、Actor和僚机名单，蓝色半透保留原单位与镜头；记录构建、边界、联机和视觉证据。 |
+| 2026-09-10 | [双矿单位矿模型 UE 导入交付](../Archive/20260910-双矿单位矿模型UE导入交付.md) | economy, art | passed | 向源码版UE5.7导入并保存24个蓝红单位矿静态网格和4个材质，尺寸、枢轴、面数、顶点色、材质槽与凸包碰撞核对通过，已观察引擎内蓝红显示。 |
+| 2026-09-10 | [地图资源密度涂绘与确定性导出](../Archive/20260910-地图资源密度涂绘与确定性导出.md) | map-authoring, resource, outpost, data-pipeline | partial | GuLiMapAuthoring 0.2.0 已加入红蓝矿稀疏密度笔刷、Territory 归属统计、原子编辑接口和三份确定性导出；源码版构建、BuildId 核对及 10/10 自动化通过。 |
+| 2026-09-10 | [双矿单位矿模型与 Blender 审核交付](../Archive/20260910-双矿单位矿模型与Blender审核交付.md) | economy, art | passed | 交付蓝红各四家族三状态共24个可编辑单位矿模型、原生制作脚本、12张正式预览与双矿静态拼装，技术核验通过，等待用户美术审核。 |
+| 2026-09-10 | [游戏内 GM 分页浮层面板](../Archive/20260910-游戏内GM分页浮层面板.md) | ui, commander, combat, network | partial | 已交付非 Shipping F10/Esc 右侧 GM 分页浮层、类型化权限模型和角色输入恢复；Editor/Game Development、BuildId 与 33 项自动化通过，人工 PIE 待补。 |
+| 2026-09-10 | [僚机飞行双尾焰与拖尾接入](../Archive/20260910-僚机飞行双尾焰与拖尾接入.md) | wingman, ship, vfx | partial | 完成双发动机蓝白尾焰和空间拖尾，Niagara与材质编译通过，Standalone PIE 25架僚机挂接并激活，源码版Editor与Game构建通过，用户确认符合预期。 |
+| 2026-09-10 | [Ship僚机取消固定6秒轰炸进场](../Archive/20260910-Ship僚机取消固定6秒轰炸进场.md) | ship, wingman, combat, navigation | passed | 定位并修复双倍攻击速度下固定6秒进场点越过FlightNav顶部、导致所有地面轰炸被拒绝的问题；删除固定航段后源码构建、Attack 12/12、完整Wingman 96/96及同图PIE复验通过。 |
+| 2026-09-10 | [Ship僚机战斗表现、HUD与相机调整实施](../Archive/20260910-Ship僚机战斗表现HUD与相机调整.md) | ship, wingman, combat, ui, vfx | partial | 完成Ship屏幕状态HUD、信息面板可读性、Dreadnought与僚机调速及僚机机动性增强、僚机模型/导弹/爆炸表现和摄像机全走廊防穿地形；源码构建及定向验证通过，交互式多分辨率/联机性能矩阵待补。 |
+| 2026-09-09 | [Ship僚机俯冲轰炸门槛简化](../Archive/20260909-Ship僚机俯冲轰炸门槛简化.md) | wingman, ship, combat, network | passed | 取消对地轰炸进入/维持Dive的精确姿态和航线门槛；源码构建与11项自动化通过，Standalone PIE 24秒采样导弹366增至567且Lineup持续为0。 |
+| 2026-09-09 | [资源加工厂 UE 正式资源接入与验收](../Archive/20260909-资源加工厂UE正式资源接入与验收.md) | building, art | passed | 完成门物理资产、正式控制蓝图和演示地图；真实 PIE 验证反向、重复调用、完成事件及通行，交付 UE 截图和视频。 |
 | 2026-09-09 | [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | wingman, ship, combat, network, ai | partial | 完成僚机客户端Pawn、逐架UE StateTree、Actor表现池和客户端姿态转发边界；持续飞行、对地、性能、协议与构建通过，空战每成员两轮开火留作后续问题。 |
 | 2026-09-09 | [Ship 僚机全员参战与索敌范围显示](../Archive/20260909-Ship僚机全员参战与索敌范围显示.md) | wingman, ship, combat | passed | 修正逐成员目标已分配但部分僚机无法建立对地攻击轮的问题；25/25成员已在同图PIE进入攻击轮，本地Ship新增实际获取半径的青色三维线框。 |
+| 2026-09-09 | [资源加工厂 Blender 模型与门动画阶段交付](../Archive/20260909-资源加工厂Blender模型与门动画阶段交付.md) | building, art | partial | 完成并打开 Blender 资源加工厂与门开合预览；基础 UE 导入后按用户要求暂停其余 UE 工作。 |
 | 2026-09-08 | [2026-09-08 完成了 Ship 僚机空地统一匈牙利自动选敌](../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md) | wingman, ship, combat, network | passed | 每艘Ship现以服务器多轮匈牙利算法统一分配空地目标，逐成员执行与v12开火授权已接通；27项定向自动化、300秒PIE长测、源码版Editor/Game构建和BuildId门禁通过。 |
 | 2026-09-08 | [2026-09-08 修复了 Ship 僚机在 FlightNav 边界停住不动](../Archive/20260908-Ship僚机FlightNav边界停滞恢复.md) | wingman, ship, navigation, network | passed | 僚机在最后合法点刹停后可瞬时对准冻结逃逸方向；源码版构建、攻击与Relay专项、主动对空250.63秒和对地85.83秒逐架采样均通过，最长停滞0秒。 |
 | 2026-09-08 | [2026-09-08 完成了 Ship 空中部队原型关卡与三倍航速](../Archive/20260908-Ship空中部队原型关卡与三倍航速.md) | ship, wingman, level, navigation, data-pipeline | partial | 新建可由玩家驾驶带25架僚机飞船的独立空战原型地图，完成地图专属 FlightNav 与 Cook 配置，并把 Dreadnought 空装配有效最大航速从900提高到2700cm/s。 |

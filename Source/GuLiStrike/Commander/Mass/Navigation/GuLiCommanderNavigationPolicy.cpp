@@ -115,7 +115,6 @@ namespace GuLiCommanderNavigationPolicy
 				Bucket.Num());
 		}
 
-		const float MinimumDistanceSquared = FMath::Square(MinimumDistanceCentimeters);
 		for (int32 AgentIndex = 0; AgentIndex < Agents.Num(); ++AgentIndex)
 		{
 			const FManualAvoidanceAgent& Agent = Agents[AgentIndex];
@@ -159,10 +158,15 @@ namespace GuLiCommanderNavigationPolicy
 							continue;
 						}
 
+						const float PairMinimumDistance = FMath::Max(
+							MinimumDistanceCentimeters,
+							FMath::Max(0.0f, Agent.RadiusCentimeters)
+								+ FMath::Max(0.0f, Neighbor.RadiusCentimeters));
+						const float PairMinimumDistanceSquared = FMath::Square(PairMinimumDistance);
 						FVector Separation = Agent.Location - Neighbor.Location;
 						Separation.Z = 0.0f;
 						const float DistanceSquared = Separation.SizeSquared2D();
-						if (DistanceSquared >= MinimumDistanceSquared)
+						if (DistanceSquared >= PairMinimumDistanceSquared)
 						{
 							continue;
 						}
@@ -176,8 +180,8 @@ namespace GuLiCommanderNavigationPolicy
 								0.0f,
 								0.0f);
 						const FVector SeparationVelocity = NormalFromNeighbor
-							* ((MinimumDistanceCentimeters - Distance)
-								/ MinimumDistanceCentimeters)
+							* ((PairMinimumDistance - Distance)
+								/ PairMinimumDistance)
 							* MovementSpeedCentimetersPerSecond
 							* AvoidanceStrength;
 						if (Agent.bReceivesAvoidance)

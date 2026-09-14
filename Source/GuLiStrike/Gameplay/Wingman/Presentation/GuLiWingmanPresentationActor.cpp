@@ -6,15 +6,33 @@
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
-#include "GameFramework/PlayerController.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
 #include "Gameplay/Wingman/GuLiWingmanSimulationSubsystem.h"
+#include "Gameplay/Ship/GuLiStrikeShip.h"
+#include "Battle/Combat/GuLiCombatDamageLedger.h"
+#include "Gameplay/Presentation/GuLiTeamOutlineComponent.h"
+#include "Gameplay/Wingman/Movement/GuLiWingmanSteering.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GuLiWingmanPresentationActor)
 
 namespace
 {
+	EGuLiTeam ResolveGroupTeam(UWorld* World, const FGuLiWingmanGroupHandle& Group)
+	{
+		for (TActorIterator<AGuLiStrikeShip> It(World); It; ++It)
+		{
+			const FGuLiGroupAbilityConfigSnapshot& Config = It->GetGroupAbilityConfig();
+			if (Config.ShipInstanceId == Group.ShipInstanceId
+				&& Config.ShipGeneration == Group.ShipGeneration)
+			{
+				return It->GetCombatHealthComponent()->GetCombatTeam();
+			}
+		}
+		return EGuLiTeam::Unassigned;
+	}
+
 	bool MatchesConfigGroup(
 		const FGuLiGroupAbilityConfigSnapshot& Config,
 		const FGuLiWingmanGroupHandle& Group)
@@ -75,35 +93,6 @@ namespace
 		}
 	}
 
-	bool HandleLess(const FGuLiWingmanHandle& A, const FGuLiWingmanHandle& B)
-	{
-		if (A.Flight.Group.ShipInstanceId != B.Flight.Group.ShipInstanceId)
-		{
-			const FGuid& L = A.Flight.Group.ShipInstanceId;
-			const FGuid& R = B.Flight.Group.ShipInstanceId;
-			if (L.A != R.A) return L.A < R.A;
-			if (L.B != R.B) return L.B < R.B;
-			if (L.C != R.C) return L.C < R.C;
-			return L.D < R.D;
-		}
-		if (A.Flight.Group.ShipGeneration != B.Flight.Group.ShipGeneration)
-		{
-			return A.Flight.Group.ShipGeneration < B.Flight.Group.ShipGeneration;
-		}
-		if (A.Flight.Group.GroupGeneration != B.Flight.Group.GroupGeneration)
-		{
-			return A.Flight.Group.GroupGeneration < B.Flight.Group.GroupGeneration;
-		}
-		if (A.Flight.FlightIndex != B.Flight.FlightIndex)
-		{
-			return A.Flight.FlightIndex < B.Flight.FlightIndex;
-		}
-		if (A.MemberIndex != B.MemberIndex)
-		{
-			return A.MemberIndex < B.MemberIndex;
-		}
-		return A.EntityGeneration < B.EntityGeneration;
-	}
 }
 
 AGuLiWingmanPresentationActor::AGuLiWingmanPresentationActor()
@@ -269,14 +258,111 @@ bool AGuLiWingmanPresentationActor::ApplyBootstrap(
 	{
 		return false;
 	}
-	if (!Groups.Contains(Bundle.Commit.Group)
-		&& Groups.Num() >= FMath::Max(1, MaximumPresentedGroups))
-	{
-		return false;
-	}
 	if (FGuLiWingmanPresentationGroupRuntime* Existing =
 		Groups.Find(Bundle.Commit.Group))
 	{
+		// Reliable membership changes recover a lost cosmetic death cue, but initial snapshots never replay deaths.
+		if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>())
+		{
+			for (int32 Slot = 0; Slot < Existing->Tracks.Num() && Slot < Staged.Tracks.Num(); ++Slot)
+			{
+				const auto& Before = Existing->Tracks[Slot];
+				const auto& After = Staged.Tracks[Slot];
+				if (Before.bAlive && Before.bHasPresentedTransform
+					&& ((!After.bAlive && Before.Handle == After.Handle)
+						|| (Bundle.bActiveRosterRefresh && Before.Handle != After.Handle)))
+					Feedback->ApplyWingmanFeedback(Before.Handle, Before.PresentedTransform.GetLocation(), true);
+			}
+		}
+		if (Existing->Role == Staged.Role)
+		{
+			Staged.PlaybackTimeByFlight = Existing->PlaybackTimeByFlight;
+			Staged.PlaybackLocalTimeByFlight = Existing->PlaybackLocalTimeByFlight;
+			Staged.PlaybackStartedByFlight = Existing->PlaybackStartedByFlight;
+			for (int32 Slot = 0; Slot < Staged.Tracks.Num(); ++Slot)
+			{
+				FGuLiWingmanPresentationTrack& ExistingTrack = Existing->Tracks[Slot];
+				FGuLiWingmanPresentationTrack& StagedTrack = Staged.Tracks[Slot];
+				if (!ExistingTrack.bAlive || !StagedTrack.bAlive
+					|| ExistingTrack.Handle != StagedTrack.Handle)
+				{
+					continue;
+				}
+
+				const bool bNewDisplacement = StagedTrack.LastRebasedSequence != 0u
+					&& !ExistingTrack.Samples.IsEmpty()
+					&& GuLiWingmanPresentationPolicy::IsNewerSequence(
+						StagedTrack.LastRebasedSequence, ExistingTrack.Samples.Last().Sequence);
+				if (!bNewDisplacement)
+				{
+					// A roster cut updates membership, not the trajectory of surviving
+					// members. Keep the interval currently being rendered and merge new
+					// snapshot poses instead of replacing it with a newer first sample.
+					TArray<FGuLiWingmanPresentationPose> SnapshotSamples = MoveTemp(StagedTrack.Samples);
+					StagedTrack.Samples = MoveTemp(ExistingTrack.Samples);
+					StagedTrack.LastRebasedSequence = ExistingTrack.LastRebasedSequence;
+					for (const FGuLiWingmanPresentationPose& Pose : SnapshotSamples)
+					{
+						if (StagedTrack.Samples.IsEmpty()
+							|| GuLiWingmanPresentationPolicy::IsNewerSequence(
+								Pose.Sequence, StagedTrack.Samples.Last().Sequence))
+						{
+							GuLiWingmanPresentationPolicy::AppendPose(StagedTrack.Samples, Pose, 32);
+						}
+					}
+				}
+				else
+				{
+					Staged.PlaybackStartedByFlight[StagedTrack.Handle.Flight.FlightIndex] = false;
+				}
+				StagedTrack.PresentedTransform = ExistingTrack.PresentedTransform;
+				StagedTrack.PresentedPawn = ExistingTrack.PresentedPawn;
+				StagedTrack.Opacity = ExistingTrack.Opacity;
+				StagedTrack.bHasPresentedTransform = ExistingTrack.bHasPresentedTransform;
+				StagedTrack.bInteractable = ExistingTrack.bInteractable;
+				ExistingTrack.PresentedPawn.Reset();
+			}
+
+			for (uint8 FlightIndex = 0; FlightIndex < GULI_WINGMAN_FLIGHT_COUNT;
+				++FlightIndex)
+			{
+				if (Existing->LastSourceTimeSecondsByFlight[FlightIndex]
+					>= Staged.LastSourceTimeSecondsByFlight[FlightIndex])
+				{
+					Staged.PoseReceiptTimeByFlight[FlightIndex] =
+						Existing->PoseReceiptTimeByFlight[FlightIndex];
+					Staged.LastSourceTimeSecondsByFlight[FlightIndex] =
+						Existing->LastSourceTimeSecondsByFlight[FlightIndex];
+					Staged.LastSourceSequenceByFlight[FlightIndex] =
+						Existing->LastSourceSequenceByFlight[FlightIndex];
+				}
+			}
+			if (Existing->LastSourceTimeSeconds >= Staged.LastSourceTimeSeconds)
+			{
+				Staged.LastSourceTimeSeconds = Existing->LastSourceTimeSeconds;
+				Staged.LastSourceSequence = Existing->LastSourceSequence;
+			}
+
+			const double ExistingServerNow = Existing->bHasClock
+				? Existing->ClockServerSeconds + FMath::Max(
+					0.0, LocalReceiptTimeSeconds - Existing->ClockLocalReceiptSeconds)
+				: 0.0;
+			const double StagedServerNow = Staged.bHasClock
+				? Staged.ClockServerSeconds + FMath::Max(
+					0.0, LocalReceiptTimeSeconds - Staged.ClockLocalReceiptSeconds)
+				: 0.0;
+			if (Existing->bHasClock || Staged.bHasClock)
+			{
+				Staged.ClockServerSeconds = FMath::Max(
+					ExistingServerNow, StagedServerNow);
+				Staged.ClockLocalReceiptSeconds = LocalReceiptTimeSeconds;
+				Staged.bHasClock = true;
+			}
+			Staged.bUsingServerTimeline = Existing->bUsingServerTimeline
+				|| Staged.bUsingServerTimeline;
+			Staged.bPhased = Existing->bPhased;
+			Staged.bExternalActionsLocked = Existing->bExternalActionsLocked;
+		}
 		for (FGuLiWingmanPresentationTrack& Track : Existing->Tracks)
 		{
 			ReleaseRemotePawn(Track);
@@ -363,19 +449,15 @@ bool AGuLiWingmanPresentationActor::BuildRuntimeFromBootstrap(
 		{
 			continue;
 		}
-		if (Batch.RebasedMemberMask != 0u
-			&& !Batch.Samples.ContainsByPredicate([&Batch](const FGuLiWingmanCandidateSample& Sample)
-			{
-				return (Batch.RebasedMemberMask & (1u << Sample.Wingman.MemberIndex)) != 0u;
-			}))
-		{
-			Batch.RebasedMemberMask = 0u;
-		}
+		uint8 LivingMask = 0;
+		for (const auto& Sample : Batch.Samples) { LivingMask |= uint8(1u << Sample.Wingman.MemberIndex); }
+		Batch.RebasedMemberMask &= LivingMask;
 		Batch.RefreshHash();
 		if (!AppendAcceptedBatch(Runtime, Batch))
 		{
 			return false;
 		}
+		Runtime.PoseReceiptTimeByFlight[Batch.FlightIndex] = LocalReceiptTimeSeconds;
 	}
 	if (Runtime.LastSourceSequence != 0u)
 	{
@@ -437,16 +519,20 @@ bool AGuLiWingmanPresentationActor::AppendAcceptedBatch(
 			& (1u << Sample.Wingman.MemberIndex)) != 0u;
 		if (bRebased)
 		{
-			// A server Cut authorizes the discontinuity. Clearing the four-frame
-			// cache makes the remote actor snap to that exact safe point.
+			// Explicit gameplay displacement starts a new trajectory.
 			Track.Samples.Reset();
 			Track.LastRebasedSequence = AcceptedBatch.StateRef.AcceptedSequence;
 		}
 		FGuLiWingmanPresentationPose Pose;
 		if (!GuLiWingmanPresentationPolicy::BuildPose(
-			Sample, AcceptedBatch.ServerAcceptedTimeSeconds,
-			AcceptedBatch.StateRef.AcceptedSequence, Pose)
-			|| !GuLiWingmanPresentationPolicy::AppendPose(Track.Samples, Pose))
+			Sample, static_cast<double>(AcceptedBatch.StateRef.ClientSimTick)
+				* GuLiWingmanSteering::FixedStepSeconds,
+			AcceptedBatch.StateRef.AcceptedSequence, Pose))
+		{
+			return false;
+		}
+		Pose.ServerAcceptedTimeSeconds = AcceptedBatch.ServerAcceptedTimeSeconds;
+		if (!GuLiWingmanPresentationPolicy::AppendPose(Track.Samples, Pose, 32))
 		{
 			return false;
 		}
@@ -482,6 +568,11 @@ bool AGuLiWingmanPresentationActor::ApplyAcceptedSnapshot(
 	Staged.ClockLocalReceiptSeconds = LocalReceiptTimeSeconds;
 	Staged.bHasClock = true;
 	Staged.bUsingServerTimeline = true;
+	Staged.PoseReceiptTimeByFlight[AcceptedBatch.FlightIndex] = LocalReceiptTimeSeconds;
+	if (AcceptedBatch.RebasedMemberMask != 0u)
+	{
+		Staged.PlaybackStartedByFlight[AcceptedBatch.FlightIndex] = false;
+	}
 	*Runtime = MoveTemp(Staged);
 	TickGroup(*Runtime, LocalReceiptTimeSeconds);
 	RefreshActorAllocation();
@@ -609,6 +700,7 @@ bool AGuLiWingmanPresentationActor::SetGroupRole(
 		Track.Opacity = 0.0f;
 	}
 	Runtime->Role = NewRole;
+	Runtime->PlaybackStartedByFlight = {};
 	ResetSourceTimeline(*Runtime);
 	Runtime->ClockServerSeconds = 0.0;
 	Runtime->ClockLocalReceiptSeconds = 0.0;
@@ -627,6 +719,9 @@ bool AGuLiWingmanPresentationActor::SetWingmanAlive(
 	{
 		return false;
 	}
+	if (Track->bAlive && !bAlive && Track->bHasPresentedTransform)
+		if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>())
+			Feedback->ApplyWingmanFeedback(Wingman, Track->PresentedTransform.GetLocation(), true);
 	Track->bAlive = bAlive;
 	if (!bAlive)
 	{
@@ -688,7 +783,7 @@ bool AGuLiWingmanPresentationActor::TryGetPresentedTransform(
 	}
 	if (const AGuLiWingmanPawn* Pawn = Track->PresentedPawn.Get())
 	{
-		OutTransform = Pawn->GetActorTransform();
+		OutTransform = Pawn->GetPresentationTransform();
 		return !OutTransform.ContainsNaN();
 	}
 	OutTransform = Track->PresentedTransform;
@@ -707,7 +802,42 @@ AGuLiWingmanPawn* AGuLiWingmanPresentationActor::FindPresentedPawn(
 	const FGuLiWingmanHandle& Wingman) const
 {
 	const FGuLiWingmanPresentationTrack* Track = FindTrack(Wingman);
-	return Track ? Track->PresentedPawn.Get() : nullptr;
+	AGuLiWingmanPawn* Pawn = Track ? Track->PresentedPawn.Get() : nullptr;
+	return Pawn && Pawn->GetWingmanHandle() == Wingman ? Pawn : nullptr;
+}
+
+bool AGuLiWingmanPresentationActor::TryGetDestructionMotion(const FGuLiWingmanHandle& Wingman,
+	FTransform& OutPose, FVector& OutVelocity) const
+{
+	const FGuLiWingmanPresentationTrack* Track = FindTrack(Wingman);
+	if (!Track || !Track->bHasPresentedTransform) return false;
+	OutPose = Track->PresentedTransform;
+	OutVelocity = FVector::ZeroVector;
+	if (const AGuLiWingmanPawn* Pawn = FindPresentedPawn(Wingman))
+	{
+		OutPose = Pawn->GetPresentationTransform();
+		if (Pawn->IsOwnerSimulationPawn())
+		{
+			OutVelocity = Pawn->GetRuntimeState().Dynamics.Velocity;
+			return !OutPose.ContainsNaN() && !OutVelocity.ContainsNaN();
+		}
+	}
+	if (!Track->Samples.IsEmpty())
+	{
+		OutVelocity = Track->Samples.Last().Velocity;
+		const auto* Group = Groups.Find(Wingman.Flight.Group);
+		const double Time = Group ? Group->PlaybackTimeByFlight[Wingman.Flight.FlightIndex] : Track->Samples.Last().SourceTimeSeconds;
+		for (int32 Index = 1; Index < Track->Samples.Num(); ++Index)
+		{
+			const auto& A = Track->Samples[Index - 1];
+			const auto& B = Track->Samples[Index];
+			if (Time > B.SourceTimeSeconds) continue;
+			const double Alpha = FMath::Clamp((Time - A.SourceTimeSeconds) / FMath::Max(static_cast<double>(UE_SMALL_NUMBER), B.SourceTimeSeconds - A.SourceTimeSeconds), 0.0, 1.0);
+			OutVelocity = FMath::Lerp(A.Velocity, B.Velocity, Alpha);
+			break;
+		}
+	}
+	return !OutPose.ContainsNaN() && !OutVelocity.ContainsNaN();
 }
 
 int32 AGuLiWingmanPresentationActor::GetActiveActorCount() const
@@ -737,6 +867,21 @@ int32 AGuLiWingmanPresentationActor::GetActiveRemoteActorCount() const
 		}
 	}
 	return Count;
+}
+
+bool AGuLiWingmanPresentationActor::GetPresentationTiming(
+	const FGuLiWingmanHandle& Wingman, double& OldestSample, double& LatestSample,
+	double& Playback, int32& SampleCount, int64& BootstrapCut) const
+{
+	const FGuLiWingmanPresentationTrack* Track = FindTrack(Wingman);
+	if (!Track || Track->Samples.IsEmpty()) return false;
+	const FGuLiWingmanPresentationGroupRuntime& Runtime = Groups.FindChecked(Wingman.Flight.Group);
+	OldestSample = Track->Samples[0].SourceTimeSeconds;
+	LatestSample = Track->Samples.Last().SourceTimeSeconds;
+	Playback = Runtime.PlaybackTimeByFlight[Wingman.Flight.FlightIndex];
+	SampleCount = Track->Samples.Num();
+	BootstrapCut = static_cast<int64>(Runtime.LastBootstrapCutId);
+	return true;
 }
 
 void AGuLiWingmanPresentationActor::GetFreshAcceptedTargetPoses(
@@ -770,7 +915,7 @@ void AGuLiWingmanPresentationActor::GetFreshAcceptedTargetPoses(
 			}
 			const FGuLiWingmanPresentationPose& AcceptedPose = Track.Samples.Last();
 			const double AgeSeconds =
-				EstimatedServerNowSeconds - AcceptedPose.SourceTimeSeconds;
+				EstimatedServerNowSeconds - AcceptedPose.ServerAcceptedTimeSeconds;
 			if (!FMath::IsFinite(AgeSeconds) || AgeSeconds < -0.05
 				|| AgeSeconds > MaximumAcceptedAgeSeconds
 				|| AcceptedPose.Location.ContainsNaN()
@@ -784,7 +929,7 @@ void AGuLiWingmanPresentationActor::GetFreshAcceptedTargetPoses(
 			TargetPose.LeaseOwnerPlayerGuid = Runtime.LeaseOwnerPlayerGuid;
 			TargetPose.Transform = FTransform(
 				AcceptedPose.Rotation, AcceptedPose.Location);
-			TargetPose.ServerAcceptedTimeSeconds = AcceptedPose.SourceTimeSeconds;
+			TargetPose.ServerAcceptedTimeSeconds = AcceptedPose.ServerAcceptedTimeSeconds;
 			TargetPose.AcceptedSequence = AcceptedPose.Sequence;
 		}
 	}
@@ -817,12 +962,18 @@ void AGuLiWingmanPresentationActor::ConfigurePresentationMeshes(
 	}
 }
 
+void AGuLiWingmanPresentationActor::SetGroupExternalControlState(const FGuLiWingmanGroupHandle& Group, bool bPhased, bool bLocked)
+{
+	if (auto* Runtime = Groups.Find(Group)) { Runtime->bPhased = bPhased; Runtime->bExternalActionsLocked = bLocked; }
+}
+
 void AGuLiWingmanPresentationActor::TickGroup(
 	FGuLiWingmanPresentationGroupRuntime& Runtime,
 	const double LocalNowSeconds)
 {
 	if (Runtime.Role == EGuLiWingmanPresentationRole::Owner)
 	{
+		const EGuLiTeam Team = ResolveGroupTeam(GetWorld(), Runtime.Group);
 		UGuLiWingmanSimulationSubsystem* Simulation = GetWorld()
 			? GetWorld()->GetSubsystem<UGuLiWingmanSimulationSubsystem>() : nullptr;
 		for (FGuLiWingmanPresentationTrack& Track : Runtime.Tracks)
@@ -840,28 +991,58 @@ void AGuLiWingmanPresentationActor::TickGroup(
 			Track.Opacity = bVisible ? 1.0f : 0.0f;
 			if (bVisible)
 			{
+				Pawn->GetTeamOutline()->SetOutlineTeam(Team);
 				Track.PresentedTransform = Pawn->GetActorTransform();
 			}
 		}
 		return;
 	}
 
-	const bool bCanEvaluate = Runtime.bHasClock;
-	const double EvaluationNowSeconds = bCanEvaluate
-		? Runtime.ClockServerSeconds
-			+ FMath::Max(0.0, LocalNowSeconds - Runtime.ClockLocalReceiptSeconds)
-		: 0.0;
-	const double RenderTimeSeconds = EvaluationNowSeconds
-		- static_cast<double>(FMath::Clamp(InterpolationBackTimeSeconds, 0.0f,
-			static_cast<float>(GuLiWingmanPresentationPolicy::MaximumExtrapolationSeconds)));
+	// Public packets may arrive together. Their receipt times do not describe flight
+	// motion: preserve the producer's 30 Hz spacing and advance a continuous cursor.
+	TStaticArray<double, GULI_WINGMAN_FLIGHT_COUNT> SourceNowByFlight{};
+	for (uint8 Flight = 0; Flight < GULI_WINGMAN_FLIGHT_COUNT; ++Flight)
+	{
+		const FGuLiWingmanPresentationTrack* ClockTrack = Runtime.Tracks.FindByPredicate(
+			[Flight](const FGuLiWingmanPresentationTrack& Track)
+			{
+				return Track.bAlive && Track.Handle.Flight.FlightIndex == Flight && !Track.Samples.IsEmpty();
+			});
+		if (!ClockTrack) continue;
+		const double SourceNow = ClockTrack->Samples.Last().SourceTimeSeconds
+			+ LocalNowSeconds - Runtime.PoseReceiptTimeByFlight[Flight];
+		SourceNowByFlight[Flight] = SourceNow;
+		const double TargetPlayback = SourceNow - InterpolationBackTimeSeconds;
+		double& Playback = Runtime.PlaybackTimeByFlight[Flight];
+		if (!Runtime.PlaybackStartedByFlight[Flight])
+		{
+			Playback = TargetPlayback;
+			Runtime.PlaybackStartedByFlight[Flight] = true;
+		}
+		else
+		{
+			const double Delta = LocalNowSeconds - Runtime.PlaybackLocalTimeByFlight[Flight];
+			Playback += Delta;
+			// Small clock-rate adjustments absorb jitter without jumping the playhead.
+			Playback += FMath::Clamp(TargetPlayback - Playback, -0.1 * Delta, 0.1 * Delta);
+		}
+		Runtime.PlaybackLocalTimeByFlight[Flight] = LocalNowSeconds;
+	}
 	for (FGuLiWingmanPresentationTrack& Track : Runtime.Tracks)
 	{
 		FGuLiWingmanPresentationEvaluation Evaluation;
-		if (Track.bAlive && bCanEvaluate)
+		if (Track.bAlive && Runtime.bExternalActionsLocked && !Track.Samples.IsEmpty())
 		{
+			const auto& Pose = Track.Samples.Last();
+			Evaluation.Transform = FTransform(Pose.Rotation,Pose.Location);
+			Evaluation.Opacity = 1; Evaluation.bVisible = true; Evaluation.bInteractable = !Runtime.bPhased;
+		}
+		else if (Track.bAlive && !Track.Samples.IsEmpty())
+		{
+			const uint8 Flight = Track.Handle.Flight.FlightIndex;
 			Evaluation = GuLiWingmanPresentationPolicy::Evaluate(
-				Track.Samples, RenderTimeSeconds, EvaluationNowSeconds,
-				GuLiWingmanPresentationPolicy::EStalePolicy::FadeThenHide);
+				Track.Samples, Runtime.PlaybackTimeByFlight[Flight], SourceNowByFlight[Flight],
+				GuLiWingmanPresentationPolicy::EStalePolicy::RetainLastPose);
 		}
 		Track.Opacity = Evaluation.Opacity;
 		Track.bInteractable = Evaluation.bInteractable;
@@ -875,59 +1056,6 @@ void AGuLiWingmanPresentationActor::TickGroup(
 
 void AGuLiWingmanPresentationActor::RefreshActorAllocation()
 {
-	struct FCandidate
-	{
-		FGuLiWingmanPresentationTrack* Track = nullptr;
-		float DistanceSquared = 0.0f;
-	};
-	TArray<FCandidate> Candidates;
-	const FVector ViewLocation = GetLocalViewLocation();
-	const float CullDistanceSquared = FMath::Square(
-		static_cast<float>(FMath::Max(0, CullDistanceCentimeters)));
-	int32 OwnerActorCount = 0;
-	for (TPair<FGuLiWingmanGroupHandle,
-		FGuLiWingmanPresentationGroupRuntime>& Pair : Groups)
-	{
-		if (Pair.Value.Role == EGuLiWingmanPresentationRole::Owner)
-		{
-			for (FGuLiWingmanPresentationTrack& Track : Pair.Value.Tracks)
-			{
-				OwnerActorCount += Track.PresentedPawn.IsValid() ? 1 : 0;
-			}
-			continue;
-		}
-		for (FGuLiWingmanPresentationTrack& Track : Pair.Value.Tracks)
-		{
-			if (!Track.bAlive || !Track.bHasPresentedTransform || Track.Opacity <= 0.0f)
-			{
-				continue;
-			}
-			const float DistanceSquared = static_cast<float>(FVector::DistSquared(
-				Track.PresentedTransform.GetLocation(), ViewLocation));
-			if (CullDistanceSquared > 0.0f && DistanceSquared > CullDistanceSquared)
-			{
-				continue;
-			}
-			Candidates.Add({ &Track, DistanceSquared });
-		}
-	}
-	Candidates.Sort([](const FCandidate& A, const FCandidate& B)
-	{
-		if (!FMath::IsNearlyEqual(A.DistanceSquared, B.DistanceSquared))
-		{
-			return A.DistanceSquared < B.DistanceSquared;
-		}
-		return HandleLess(A.Track->Handle, B.Track->Handle);
-	});
-	const int32 ActorBudget = FMath::Max(0,
-		FMath::Max(1, MaximumActiveWingmanActors) - OwnerActorCount);
-	const int32 RemoteBudget = FMath::Min(
-		FMath::Max(0, MaximumRemoteWingmanActors), ActorBudget);
-	TSet<FGuLiWingmanHandle> Selected;
-	for (int32 Index = 0; Index < Candidates.Num() && Index < RemoteBudget; ++Index)
-	{
-		Selected.Add(Candidates[Index].Track->Handle);
-	}
 	for (TPair<FGuLiWingmanGroupHandle,
 		FGuLiWingmanPresentationGroupRuntime>& Pair : Groups)
 	{
@@ -935,9 +1063,10 @@ void AGuLiWingmanPresentationActor::RefreshActorAllocation()
 		{
 			continue;
 		}
+		const EGuLiTeam Team = ResolveGroupTeam(GetWorld(), Pair.Key);
 		for (FGuLiWingmanPresentationTrack& Track : Pair.Value.Tracks)
 		{
-			if (!Selected.Contains(Track.Handle))
+			if (!Track.bAlive || !Track.bHasPresentedTransform || Track.Opacity <= 0.0f)
 			{
 				ReleaseRemotePawn(Track);
 				continue;
@@ -948,14 +1077,13 @@ void AGuLiWingmanPresentationActor::RefreshActorAllocation()
 				Pawn = AcquireRemotePawn(Track.Handle);
 				Track.PresentedPawn = Pawn;
 			}
-			if (Pawn)
-			{
-				const bool bRebased = !Track.Samples.IsEmpty()
-					&& Track.LastRebasedSequence != 0u
-					&& Track.Samples.Last().Sequence == Track.LastRebasedSequence;
-				Pawn->ApplyRemotePresentation(Track.PresentedTransform,
-					Track.Opacity, Track.bInteractable, bRebased);
-			}
+			const bool bRebased = !Track.Samples.IsEmpty()
+				&& Track.LastRebasedSequence != 0u
+				&& Track.Samples.Last().Sequence == Track.LastRebasedSequence;
+			Pawn->GetTeamOutline()->SetOutlineTeam(Team);
+			Pawn->ApplyRemotePresentation(Track.PresentedTransform,
+				Track.Opacity, Track.bInteractable, bRebased);
+			Pawn->SetPhaseAppearance(Pair.Value.bPhased);
 		}
 	}
 }
@@ -1008,19 +1136,6 @@ void AGuLiWingmanPresentationActor::ReleaseRemotePawn(
 	RemotePawnPool.AddUnique(Pawn);
 }
 
-FVector AGuLiWingmanPresentationActor::GetLocalViewLocation() const
-{
-	FVector Location = GetActorLocation();
-	FRotator Rotation = FRotator::ZeroRotator;
-	if (const UWorld* World = GetWorld())
-	{
-		if (APlayerController* PlayerController = World->GetFirstPlayerController())
-		{
-			PlayerController->GetPlayerViewPoint(Location, Rotation);
-		}
-	}
-	return Location;
-}
 
 FGuLiWingmanPresentationTrack* AGuLiWingmanPresentationActor::FindTrack(
 	const FGuLiWingmanHandle& Wingman)

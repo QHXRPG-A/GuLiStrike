@@ -8,6 +8,11 @@
 			"Name": "GuLiStrike",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "GuLiStrikeEditor",
+			"Type": "Editor",
+			"LoadingPhase": "Default"
 		}
 	],
 	"Plugins": [
@@ -33,6 +38,10 @@
 		},
 		{
 			"Name": "PropertyBindingUtils",
+			"Enabled": true
+		},
+		{
+			"Name": "StructUtils",
 			"Enabled": true
 		},
 		{

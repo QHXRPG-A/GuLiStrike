@@ -104,16 +104,56 @@ struct GULIMAPAUTHORINGCORE_API FGuLiMapMarkerRecord
 };
 
 USTRUCT(BlueprintType)
+struct GULIMAPAUTHORINGCORE_API FGuLiMapDensityTile
+{
+    GENERATED_BODY()
+    UPROPERTY(VisibleAnywhere, Category="Density") FIntPoint TileCoord = FIntPoint::ZeroValue;
+    // Row-major 32 x 32 uint8 values. Empty/zero-only tiles are never persisted.
+    UPROPERTY(VisibleAnywhere, Category="Density") TArray<uint8> Values;
+};
+
+USTRUCT(BlueprintType)
+struct GULIMAPAUTHORINGCORE_API FGuLiMapDensityLayer
+{
+    GENERATED_BODY()
+    UPROPERTY(VisibleAnywhere, Category="Identity") FGuid LayerId;
+    UPROPERTY(EditAnywhere, Category="Identity") FName LayerKey;
+    UPROPERTY(EditAnywhere, Category="Identity") FString DisplayName;
+    UPROPERTY(EditAnywhere, Category="Preview") FLinearColor Color = FLinearColor::White;
+    UPROPERTY(VisibleAnywhere, Category="Density") TArray<FGuLiMapDensityTile> Tiles;
+};
+
+USTRUCT(BlueprintType)
+struct GULIMAPAUTHORINGCORE_API FGuLiMapDensityMapRecord
+{
+    GENERATED_BODY()
+    UPROPERTY(VisibleAnywhere, Category="Identity") FGuid DensityMapId;
+    UPROPERTY(VisibleAnywhere, Category="Identity") int32 DataVersion = 1;
+    UPROPERTY(EditAnywhere, Category="Grid", meta=(Units="cm", ClampMin="1")) double CellSizeCm = 2500.0;
+    UPROPERTY(EditAnywhere, Category="Territory") FName TerritoryTypeId = TEXT("Outpost");
+    UPROPERTY(EditAnywhere, Category="Territory") FName TerritoryRegionKey = TEXT("Territory");
+    UPROPERTY(EditAnywhere, Category="Layers", meta=(TitleProperty="LayerKey")) TArray<FGuLiMapDensityLayer> Layers;
+};
+
+UENUM(BlueprintType)
+enum class EGuLiMapIssueSeverity : uint8
+{
+    Error,
+    Warning
+};
+
+USTRUCT(BlueprintType)
 struct GULIMAPAUTHORINGCORE_API FGuLiMapIssue
 {
     GENERATED_BODY()
+    UPROPERTY(BlueprintReadOnly, Category="Issue") EGuLiMapIssueSeverity Severity = EGuLiMapIssueSeverity::Error;
     UPROPERTY(BlueprintReadOnly, Category="Issue") FGuid MarkerId;
     UPROPERTY(BlueprintReadOnly, Category="Issue") FGuid RegionId;
     UPROPERTY(BlueprintReadOnly, Category="Issue") FString Field;
     UPROPERTY(BlueprintReadOnly, Category="Issue") FString Message;
     FGuLiMapIssue() = default;
-    FGuLiMapIssue(const FString& InMessage, FGuid InMarker = {}, FGuid InRegion = {}, const FString& InField = {})
-        : MarkerId(InMarker), RegionId(InRegion), Field(InField), Message(InMessage) {}
+    FGuLiMapIssue(const FString& InMessage, FGuid InMarker = {}, FGuid InRegion = {}, const FString& InField = {}, EGuLiMapIssueSeverity InSeverity = EGuLiMapIssueSeverity::Error)
+        : Severity(InSeverity), MarkerId(InMarker), RegionId(InRegion), Field(InField), Message(InMessage) {}
 };
 
 USTRUCT(BlueprintType)
@@ -137,4 +177,5 @@ struct GULIMAPAUTHORINGCORE_API FGuLiMapSnapshot
 {
     FString MapPackage;
     TArray<FGuLiMapSnapshotEntry> Markers;
+    TOptional<FGuLiMapDensityMapRecord> DensityMap;
 };

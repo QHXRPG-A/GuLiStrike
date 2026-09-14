@@ -8,6 +8,7 @@
 #include "GameFramework/PlayerState.h"
 #include "AbilitySystemInterface.h"
 #include "Gameplay/Skills/GuLiWeaponChannelTypes.h"
+#include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "GuLiBattlePlayerState.generated.h"
 
 class UAbilitySystemComponent;
@@ -15,6 +16,11 @@ struct FGuLiArmySkillCommand;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGuLiCommanderPlayerStateChangedSignature);
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(FGuLiWeaponChangeResultSignature, const FGuLiWeaponChangeResult&, Result);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_OneParam(
+	FGuLiResourceInventoryChangedSignature,
+	const FGuLiResourceAmounts&,
+	Inventory);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGuLiResourcePrivateStateChangedSignature);
 
 /** 通用玩家身份与角色复制；公共战局就绪、士兵流就绪分别维护，不互相替代。 */
 UCLASS()
@@ -104,6 +110,30 @@ public:
 		return CommanderRole == EGuLiCommanderRole::Commander && Team != EGuLiTeam::Unassigned;
 	}
 
+	/** Owner-only view of this player's team inventory. Other teams never receive it. */
+	UFUNCTION(BlueprintPure, Category = "Resources|Economy")
+	FGuLiResourceAmounts GetResourceInventory() const { return ResourcePrivateState.Inventory; }
+
+	/** Full connection-owned team view; never copied to another session or an opposing client. */
+	const FGuLiTeamResourcePrivateState& GetResourcePrivateState() const
+	{
+		return ResourcePrivateState;
+	}
+	const FGuLiMiningVehiclePrivateState* FindMiningVehiclePrivateState(
+		FGuLiControllableActorId StableActorId) const
+	{
+		return ResourcePrivateState.FindMiningVehicle(StableActorId);
+	}
+
+	/** Server-local mirror entry used by the Commander resource adapter. */
+	bool SetServerResourcePrivateState(FGuLiTeamResourcePrivateState NewState);
+
+	UPROPERTY(BlueprintAssignable, Category = "Resources|Economy")
+	FGuLiResourceInventoryChangedSignature OnResourceInventoryChanged;
+
+	UPROPERTY(BlueprintAssignable, Category = "Resources|Economy")
+	FGuLiResourcePrivateStateChangedSignature OnResourcePrivateStateChanged;
+
 	// 本地 UI/逻辑通知，由服务器 setter 或客户端 RepNotify 触发，委托本身不跨网。
 	UPROPERTY(BlueprintAssignable, Category = "Commander|Player")
 	FGuLiCommanderPlayerStateChangedSignature OnCommanderPlayerStateChanged;
@@ -145,6 +175,9 @@ private:
 	UFUNCTION()
 	void OnRep_SyncReady();
 
+	UFUNCTION()
+	void OnRep_ResourcePrivateState(FGuLiTeamResourcePrivateState PreviousState);
+
 	UPROPERTY(ReplicatedUsing = OnRep_Assignment)
 	FGuid PlayerGuid;
 
@@ -168,4 +201,8 @@ private:
 	/** Persisted across Ship Pawn replacement, but not across a new PlayerState/session. */
 	UPROPERTY(Replicated)
 	FGuLiShipAbilityLoadoutState ShipAbilityLoadoutState;
+
+	/** Session state only; intentionally omitted from CopyProperties/OverrideWith. */
+	UPROPERTY(ReplicatedUsing = OnRep_ResourcePrivateState)
+	FGuLiTeamResourcePrivateState ResourcePrivateState;
 };

@@ -1,0 +1,682 @@
+[
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_A",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x000001697E880DE0) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_A\", system_name: \"NS_Explosion_A\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_B",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x000001697E884380) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_B\", system_name: \"NS_Explosion_B\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_C",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x000001697E884320) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_C\", system_name: \"NS_Explosion_C\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_D",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x000001697E888160) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_D\", system_name: \"NS_Explosion_D\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_E",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x00000169886C7B00) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_E\", system_name: \"NS_Explosion_E\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_F",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x0000016D4C7CCE80) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_F\", system_name: \"NS_Explosion_F\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_G",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x0000016D4C7C7B60) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_G\", system_name: \"NS_Explosion_G\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_H",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x0000016D4C7AB0A0) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_H\", system_name: \"NS_Explosion_H\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_I",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x00000169878E33C0) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_I\", system_name: \"NS_Explosion_I\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_J",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x00000169878EC900) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_J\", system_name: \"NS_Explosion_J\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_K",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x00000169809A48C0) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_K\", system_name: \"NS_Explosion_K\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_L",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x00000169809AAE00) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_L\", system_name: \"NS_Explosion_L\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_M",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x0000016D98563000) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_M\", system_name: \"NS_Explosion_M\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_N",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x0000016980B02CA0) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_N\", system_name: \"NS_Explosion_N\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_O",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x0000016D5618FA40) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_O\", system_name: \"NS_Explosion_O\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_P",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x0000016DA0427140) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_P\", system_name: \"NS_Explosion_P\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_Q",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x0000016DA042A0E0) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_Q\", system_name: \"NS_Explosion_Q\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_R",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x0000016D104A8100) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_R\", system_name: \"NS_Explosion_R\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_S",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x0000016D104AE640) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_S\", system_name: \"NS_Explosion_S\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  },
+  {
+    "path": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_T",
+    "summary": "<Struct 'NiagaraSystemSummary' (0x0000016D104ADDA0) {system_path: \"/Game/RealisticExplosionPackD/Particles/NS_Explosion_T\", system_name: \"NS_Explosion_T\", emitter_count: 7, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"SingleLoopingParticle\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+    "emitters": [
+      {
+        "name": "Debri001",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "smoke_b",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_10\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Debris",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_1\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "SingleLoopingParticle",
+        "renderers": "[{renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Trail",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Shockwave",
+        "renderers": "[{renderer_name: \"NiagaraMeshRendererProperties_2\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}]"
+      },
+      {
+        "name": "Explosion001",
+        "renderers": "[{renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}]"
+      }
+    ]
+  }
+]

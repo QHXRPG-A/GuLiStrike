@@ -315,8 +315,16 @@ void FGuLiWingmanFormationRuntimeConfig::AddToStableHash(uint64& Hash) const
 
 bool FGuLiWingmanWeaponRuntimeConfig::IsWellFormed() const
 {
-	return Attack.IsWellFormed() && FMath::IsFinite(Damage) && Damage > 0.0f
-		&& FMath::IsFinite(RangeCentimeters) && RangeCentimeters > 0.0f
+	if (!Attack.IsWellFormed() || !FMath::IsFinite(Damage) || Damage <= 0.0f
+		|| !FMath::IsFinite(CooldownSeconds))
+	{
+		return false;
+	}
+	if (Attack.Pattern == EGuLiWingmanAttackPattern::AirBurstOrbit)
+	{
+		return CooldownSeconds >= GuLiWingmanAttack::MinimumAirShotIntervalSeconds;
+	}
+	return FMath::IsFinite(RangeCentimeters) && RangeCentimeters > 0.0f
 		&& FMath::IsFinite(CooldownSeconds) && CooldownSeconds > 0.0f
 		&& FMath::IsFinite(TargetConeHalfAngleDegrees)
 		&& TargetConeHalfAngleDegrees > 0.0f && TargetConeHalfAngleDegrees <= 180.0f
@@ -332,6 +340,7 @@ bool FGuLiWingmanWeaponRuntimeConfig::IsWellFormed() const
 
 void FGuLiWingmanWeaponRuntimeConfig::AddToStableHash(uint64& Hash) const
 {
+	GuLiShipAbilityHash::AddString(Hash, EffectConfigId.ToString());
 	Attack.AddToStableHash(Hash);
 	GuLiShipAbilityHash::AddFloat(Hash, Damage);
 	GuLiShipAbilityHash::AddFloat(Hash, RangeCentimeters);
@@ -517,7 +526,7 @@ bool FGuLiGroupAbilityConfigSnapshot::IsWellFormed() const
                     }
 					AttackRecordsPerFlight += Channel.Runtime.Attack.Pattern == EGuLiWingmanAttackPattern::GroundDive
 						? Channel.Runtime.Attack.MaximumShotsPerFlightBatch()
-						: 5 * (1 + FMath::FloorToInt(0.2 / Channel.Runtime.CooldownSeconds + 1.e-6));
+						: 5;
 				}
 			}
 		}

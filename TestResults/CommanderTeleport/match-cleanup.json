@@ -1,0 +1,22 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "name": "match_end",
+      "checks": {
+        "source_accepted": true,
+        "mass_collected": true,
+        "all_original_mass_restored": true,
+        "returned_near_source": true,
+        "field_cleaned_up": true
+      },
+      "passed": true,
+      "collected": 1
+    }
+  ],
+  "errors": [],
+  "world_teardown": {
+    "active_game_world_absent": true,
+    "remaining_fields": 0
+  }
+}

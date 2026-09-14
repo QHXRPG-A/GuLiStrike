@@ -221,7 +221,8 @@ enum class EGuLiTargetKind : uint8
 	None = 0,
 	Ship,
 	CommanderSoldier,
-	Wingman
+	Wingman,
+	GroundActor
 };
 
 /** Stable, adapter-resolved target identity. It never serializes an Actor/UObject pointer. */

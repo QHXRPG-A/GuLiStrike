@@ -1,0 +1,36 @@
+{
+  "passed": true,
+  "field_ids": {
+    "WM01_MissileExplosion": 1,
+    "WingmanGroundMissile": 2,
+    "Teleport_L1": 1001,
+    "Teleport_L2": 1002,
+    "Teleport_L3": 1003,
+    "Teleport_L4": 1004
+  },
+  "fields": 6,
+  "moved_fields": [
+    "WM01_MissileExplosion",
+    "WingmanGroundMissile"
+  ],
+  "reference_values": {
+    "Skills": [
+      "",
+      "",
+      1
+    ],
+    "WingmanWeapons": [
+      "",
+      2,
+      "",
+      ""
+    ]
+  },
+  "unchanged_sheets": [
+    "UnitSkills",
+    "WeaponMounts",
+    "WingmanTargeting",
+    "Projectiles"
+  ],
+  "field_values_preserved": true
+}

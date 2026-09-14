@@ -1,0 +1,167 @@
+{
+  "success": true,
+  "commandlet": false,
+  "errors": [],
+  "checks": {
+    "commander_visual_scale_is_one": true,
+    "wingman_visual_scale_is_two": true,
+    "flight_system_is_shared": true,
+    "impact_field_is_shared": true,
+    "shared_reference_radius_is_800": true,
+    "wingman_ground_radius_is_4000": true,
+    "derived_explosion_scale_is_five": true,
+    "runtime_user_radius_is_4000": true,
+    "activation_variants_keep_unit_authoring_scale": true,
+    "both_attack_flight_speeds_are_9000": true,
+    "ground_targeting_contract_unchanged": true,
+    "machine_aoe_radius_unchanged": true,
+    "wingman_fx_directory_is_cooked": true,
+    "niagara_systems_compile": true,
+    "flight_contains_body_exhaust_and_trail_emitters": true
+  },
+  "projectiles": {
+    "commander": {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile",
+      "visual_scale": 1.0
+    },
+    "wingman": {
+      "path": "/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundMissile.DA_WingmanGroundMissile",
+      "visual_scale": 2.0
+    },
+    "shared_flight_system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight.NS_WM01_MissileFlight",
+    "shared_impact_field": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_MissileExplosion.DA_WM01_MissileExplosion"
+  },
+  "explosion": {
+    "reference_radius": 800.0,
+    "frozen_radius": 4000.0,
+    "field_scale": 5.0,
+    "user_radius": 4000.0,
+    "dissipation_seconds": 3.0,
+    "activation_variants": [
+      {
+        "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_Explosion_7",
+        "authoring_scale": 1.0,
+        "runtime_component_scale": 5.0,
+        "maximum_lifetime": 3.0
+      },
+      {
+        "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_Explosion_8",
+        "authoring_scale": 1.0,
+        "runtime_component_scale": 5.0,
+        "maximum_lifetime": 3.0
+      },
+      {
+        "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_Explosion_9",
+        "authoring_scale": 1.0,
+        "runtime_component_scale": 5.0,
+        "maximum_lifetime": 3.0
+      }
+    ]
+  },
+  "weapon_rows": {
+    "machine_gun": {
+      "Name": "WingmanMachineGun",
+      "Id": 1,
+      "Note": "100m外开始5秒持续射击；50m内停止；返舰盘旋冷却3秒",
+      "SkillId": "Wingman.MachineGun",
+      "AttackPattern": "AirBurstOrbit",
+      "ExecutorId": "WingmanMachineGun",
+      "Damage": 10,
+      "CooldownSeconds": 0.2,
+      "RangeCentimeters": 150000,
+      "FireConeHalfAngleDegrees": 20,
+      "FlightSpeedCentimetersPerSecond": 9000,
+      "DiveSeconds": 1.5,
+      "MissileCount": 10,
+      "StripLengthCentimeters": 12000,
+      "PullUpHeightCentimeters": 10000,
+      "ExplosionRadiusCentimeters": 800,
+      "AirFireStartDistanceCentimeters": 10000,
+      "AirFireStopDistanceCentimeters": 5000,
+      "AirBurstDurationSeconds": 5,
+      "AirOrbitCooldownSeconds": 3,
+      "ProjectileSpeedCentimetersPerSecond": 120000,
+      "ProjectileLifetimeSeconds": 1.5,
+      "SweepRadiusCentimeters": 45,
+      "Muzzle": "(X=1200.000000,Y=0.000000,Z=0.000000)"
+    },
+    "ground_missile": {
+      "Name": "WingmanGroundMissile",
+      "Id": 2,
+      "Note": "每架每轮10枚/1.5秒；固定条带；纯AOE；调试初值",
+      "SkillId": "Wingman.GroundMissile",
+      "AttackPattern": "GroundDive",
+      "ExecutorId": "WingmanGroundMissile",
+      "Damage": 30,
+      "CooldownSeconds": 8,
+      "RangeCentimeters": 150000,
+      "FireConeHalfAngleDegrees": 20,
+      "FlightSpeedCentimetersPerSecond": 9000,
+      "DiveSeconds": 1.5,
+      "MissileCount": 10,
+      "StripLengthCentimeters": 12000,
+      "PullUpHeightCentimeters": 10000,
+      "ExplosionRadiusCentimeters": 4000,
+      "AirFireStartDistanceCentimeters": 10000,
+      "AirFireStopDistanceCentimeters": 5000,
+      "AirBurstDurationSeconds": 5,
+      "AirOrbitCooldownSeconds": 3,
+      "ProjectileSpeedCentimetersPerSecond": 6000,
+      "ProjectileLifetimeSeconds": 8,
+      "SweepRadiusCentimeters": 30,
+      "Muzzle": "(X=1200.000000,Y=0.000000,Z=0.000000)"
+    }
+  },
+  "niagara": [
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_Explosion_7",
+      "success": true,
+      "errors": [],
+      "warnings": [],
+      "emitters": [
+        "spark",
+        "impact",
+        "main",
+        "smoke_shockwave",
+        "smoke_after"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_Explosion_8",
+      "success": true,
+      "errors": [],
+      "warnings": [],
+      "emitters": [
+        "spark",
+        "impact",
+        "main",
+        "smoke_shockwave",
+        "smoke_after"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_Explosion_9",
+      "success": true,
+      "errors": [],
+      "warnings": [],
+      "emitters": [
+        "spark",
+        "impact",
+        "main",
+        "smoke_after"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight",
+      "success": true,
+      "errors": [],
+      "warnings": [],
+      "emitters": [
+        "Core",
+        "Exhaust",
+        "Trail"
+      ]
+    }
+  ],
+  "dirty_packages_after_readback": []
+}

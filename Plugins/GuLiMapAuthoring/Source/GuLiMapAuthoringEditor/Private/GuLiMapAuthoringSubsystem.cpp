@@ -1,6 +1,7 @@
 #include "GuLiMapAuthoringSubsystem.h"
 #include "GuLiMapAuthoring.h"
 #include "GuLiMapAuthoringSettings.h"
+#include "GuLiMapDensityMap.h"
 #include "GuLiMapMarker.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Dom/JsonObject.h"
@@ -31,6 +32,13 @@ TArray<AGuLiMapMarker*> UGuLiMapAuthoringSubsystem::LoadedMarkers() const
     TArray<AGuLiMapMarker*> Out;
     if (UWorld* W=EditorWorld()) for (TActorIterator<AGuLiMapMarker> It(W);It;++It) if (IsValid(*It)) Out.Add(*It);
     Out.Sort([](const auto& A,const auto& B){return A.Record.MarkerKey.LexicalLess(B.Record.MarkerKey);});
+    return Out;
+}
+TArray<AGuLiMapDensityMap*> UGuLiMapAuthoringSubsystem::LoadedDensityMaps() const
+{
+    TArray<AGuLiMapDensityMap*> Out;
+    if (UWorld* W=EditorWorld()) for (TActorIterator<AGuLiMapDensityMap> It(W);It;++It) if (IsValid(*It)) Out.Add(*It);
+    Out.Sort([](const auto& A,const auto& B){return GuLiMap::Guid(A.Record.DensityMapId)<GuLiMap::Guid(B.Record.DensityMapId);});
     return Out;
 }
 TArray<UGuLiMapTypeDefinition*> UGuLiMapAuthoringSubsystem::ListTypes()
@@ -68,6 +76,11 @@ FGuLiMapResult UGuLiMapAuthoringSubsystem::EnsurePresets()
         {
             FGuLiMapRegionRecord Area; Area.RegionId=FGuid::NewGuid(); Area.RegionKey=ID==TEXT("Resource")?TEXT("ResourceArea"):TEXT("Capture");
             Area.Geometry=FInstancedStruct::Make<FGuLiMapCylinder>(); Type->DefaultRegions.Add(Area);
+            if (ID==TEXT("Outpost"))
+            {
+                FGuLiMapRegionRecord Territory; Territory.RegionId=FGuid::NewGuid(); Territory.RegionKey=TEXT("Territory"); Territory.DisplayName=TEXT("据点辖区");
+                Territory.Geometry=FInstancedStruct::Make<FGuLiMapPolygonPrism>(); Type->DefaultRegions.Add(MoveTemp(Territory));
+            }
         }
         if (ID==TEXT("Resource"))
         {
@@ -84,12 +97,42 @@ FGuLiMapResult UGuLiMapAuthoringSubsystem::EnsurePresets()
         }
         if (ID==TEXT("Generic")) Type->DisplayName=TEXT("通用标记");
     }
-    Result.bSuccess=Result.Issues.IsEmpty(); return Result;
+    Result.bSuccess=!GuLiMap::HasErrors(Result.Issues); return Result;
+}
+FGuLiMapResult UGuLiMapAuthoringSubsystem::EnsureDensityMap(const double CellSizeCm)
+{
+    FGuLiMapResult Result; UWorld* W=EditorWorld();
+    if (!W) { Result.Issues.Emplace(TEXT("No editable world / PIE active.")); return Result; }
+    if (!FMath::IsFinite(CellSizeCm)||CellSizeCm<=0.0) { Result.Issues.Emplace(TEXT("CellSizeCm must be finite and positive.")); return Result; }
+    TArray<AGuLiMapDensityMap*> Maps=LoadedDensityMaps();
+    if (Maps.Num()>1) { Result.Issues.Emplace(TEXT("More than one AGuLiMapDensityMap exists; keep exactly one in the persistent level.")); return Result; }
+    if (Maps.Num()==1)
+    {
+        AGuLiMapDensityMap* Actor=Maps[0]; FGuLiMapDensityMapRecord Candidate=Actor->Record;
+        const bool bPresetChanged=GuLiMap::EnsureDensityPresets(Candidate);
+        bool bCellSizeChanged=false;
+        if (!FMath::IsNearlyEqual(Candidate.CellSizeCm,CellSizeCm))
+        {
+            if (!GuLiMap::IsDensityMapEmpty(Candidate)) { Result.Issues.Emplace(TEXT("Density data already exists. Clear all layers explicitly before changing CellSizeCm.")); return Result; }
+            Candidate.CellSizeCm=CellSizeCm; bCellSizeChanged=true;
+        }
+        if (bPresetChanged||bCellSizeChanged)
+        {
+            const FScopedTransaction Tx(NSLOCTEXT("GuLiMap","EnsureDensity","创建或补齐资源密度图")); Actor->Modify(); Actor->Record=MoveTemp(Candidate); Actor->RefreshVisuals(bCellSizeChanged);
+        }
+        Result.bSuccess=true; return Result;
+    }
+    const FScopedTransaction Tx(NSLOCTEXT("GuLiMap","CreateDensity","创建资源密度图"));
+    W->PersistentLevel->Modify(); FActorSpawnParameters P; P.OverrideLevel=W->PersistentLevel; P.ObjectFlags=RF_Transactional;
+    AGuLiMapDensityMap* Actor=W->SpawnActor<AGuLiMapDensityMap>(FVector::ZeroVector,FRotator::ZeroRotator,P);
+    if (!Actor) { Result.Issues.Emplace(TEXT("Could not create AGuLiMapDensityMap.")); return Result; }
+    Actor->Modify(); Actor->Record.CellSizeCm=CellSizeCm; GuLiMap::EnsureDensityPresets(Actor->Record); Actor->SetActorLabel(TEXT("GuLi Map Density")); Actor->SetFolderPath(TEXT("GuLi/MapAuthoring")); Actor->RefreshVisuals(true);
+    Result.bSuccess=true; return Result;
 }
 AGuLiMapMarker* UGuLiMapAuthoringSubsystem::CreateMarker(UGuLiMapTypeDefinition* Type,FVector Location)
 {
     UWorld* W=EditorWorld(); if (!W || !Type || Location.ContainsNaN()) return nullptr;
-    TArray<FGuLiMapIssue> Issues; GuLiMap::ValidateType(*Type,Issues); if (!Issues.IsEmpty()) return nullptr;
+    TArray<FGuLiMapIssue> Issues; GuLiMap::ValidateType(*Type,Issues); if (GuLiMap::HasErrors(Issues)) return nullptr;
     const FScopedTransaction Tx(NSLOCTEXT("GuLiMap","Create","创建地图标记"));
     W->PersistentLevel->Modify();
     FActorSpawnParameters P; P.OverrideLevel=W->PersistentLevel; P.ObjectFlags=RF_Transactional;
@@ -105,16 +148,16 @@ bool UGuLiMapAuthoringSubsystem::CollectSnapshot(FGuLiMapSnapshot& Out,TArray<FG
     auto Dirty=[&](UPackage* P){if (RequireSaved&&P&&P->IsDirty()) Issues.Emplace(TEXT("Save package before export: ")+P->GetName());};
     if (RequireSaved && (Out.MapPackage.StartsWith(TEXT("/Temp/")) || !FPackageName::DoesPackageExist(Out.MapPackage))) Issues.Emplace(TEXT("Save the current map before export."));
     Dirty(W->GetOutermost()); for (UPackage* P:W->GetOutermost()->GetExternalPackages()) Dirty(P);
-    if (!Issues.IsEmpty()) return false;
+    if (GuLiMap::HasErrors(Issues)) return false;
     // Hold references for the whole collection; unloaded markers are loaded without loading landscape/art.
-    TArray<FWorldPartitionReference> References; TSet<FGuid> DescriptorIds;
+    TArray<FWorldPartitionReference> References; TSet<FGuid> MarkerDescriptorIds,DensityDescriptorIds;
     if (UWorldPartition* WP=W->GetWorldPartition())
     {
         WP->ForEachActorDescContainerInstance([&](UActorDescContainerInstance* Container)
         {
             for (UActorDescContainerInstance::TIterator<AGuLiMapMarker> It(Container);It;++It)
             {
-                auto* Desc=*It; DescriptorIds.Add(Desc->GetGuid());
+                auto* Desc=*It; MarkerDescriptorIds.Add(Desc->GetGuid());
                 References.Emplace(Desc);
                 auto* A=Cast<AGuLiMapMarker>(Desc->GetActor());
                 if (!A) Issues.Emplace(TEXT("Incomplete World Partition snapshot: could not load descriptor ")+GuLiMap::Guid(Desc->GetGuid()));
@@ -123,22 +166,46 @@ bool UGuLiMapAuthoringSubsystem::CollectSnapshot(FGuLiMapSnapshot& Out,TArray<FG
                 if (Desc->GetIsSpatiallyLoaded() || !Desc->GetDataLayers().IsEmpty()) Issues.Emplace(TEXT("Marker must be non-spatial and outside Data Layers: ")+GuLiMap::Guid(Desc->GetGuid()));
             }
         },true);
+        WP->ForEachActorDescContainerInstance([&](UActorDescContainerInstance* Container)
+        {
+            for (UActorDescContainerInstance::TIterator<AGuLiMapDensityMap> It(Container);It;++It)
+            {
+                auto* Desc=*It; DensityDescriptorIds.Add(Desc->GetGuid()); References.Emplace(Desc);
+                auto* A=Cast<AGuLiMapDensityMap>(Desc->GetActor());
+                if (!A) Issues.Emplace(TEXT("Incomplete World Partition density snapshot: could not load descriptor ")+GuLiMap::Guid(Desc->GetGuid()));
+                else if (A->GetWorld()!=W||A->GetLevel()!=W->PersistentLevel||Container!=WP->GetActorDescContainerInstance()) Issues.Emplace(TEXT("Density map in a nested container/Level Instance is unsupported."));
+                if (Desc->GetIsSpatiallyLoaded()||!Desc->GetDataLayers().IsEmpty()) Issues.Emplace(TEXT("Density map must be non-spatial and outside Data Layers: ")+GuLiMap::Guid(Desc->GetGuid()));
+            }
+        },true);
     }
     TSet<FGuid> LoadedActorIds;
     for (auto* A:LoadedMarkers())
     {
         if (A->GetLevel()!=W->PersistentLevel || A->GetAttachParentActor()) Issues.Emplace(TEXT("Marker must be unattached in the persistent level."),A->Record.MarkerId);
+        if (A->GetIsSpatiallyLoaded()||!A->GetDataLayerInstances().IsEmpty()) Issues.Emplace(TEXT("Marker must be non-spatial and outside Data Layers."),A->Record.MarkerId);
         LoadedActorIds.Add(A->GetActorGuid()); Dirty(A->GetPackage());
-        if (RequireSaved&&W->GetWorldPartition()&&!DescriptorIds.Contains(A->GetActorGuid()))
+        if (RequireSaved&&W->GetWorldPartition()&&!MarkerDescriptorIds.Contains(A->GetActorGuid()))
             Issues.Emplace(TEXT("Saved World Partition marker has no Actor Descriptor; completeness cannot be guaranteed."),A->Record.MarkerId);
         if (auto* T=A->Record.Type.LoadSynchronous()) Dirty(T->GetOutermost());
         Out.Markers.Add({A->Record,A->GetActorTransform()});
     }
-    for (const FGuid& ID:DescriptorIds) if (!LoadedActorIds.Contains(ID)) Issues.Emplace(TEXT("Incomplete marker collection: missing ActorGuid ")+GuLiMap::Guid(ID));
+    for (const FGuid& ID:MarkerDescriptorIds) if (!LoadedActorIds.Contains(ID)) Issues.Emplace(TEXT("Incomplete marker collection: missing ActorGuid ")+GuLiMap::Guid(ID));
+    TArray<AGuLiMapDensityMap*> DensityMaps=LoadedDensityMaps();
+    if (DensityMaps.Num()>1) Issues.Emplace(TEXT("More than one AGuLiMapDensityMap exists in the current world."));
+    for (AGuLiMapDensityMap* A:DensityMaps)
+    {
+        if (A->GetLevel()!=W->PersistentLevel||A->GetAttachParentActor()) Issues.Emplace(TEXT("Density map must be unattached in the persistent level."));
+        if (A->GetIsSpatiallyLoaded()||!A->GetDataLayerInstances().IsEmpty()) Issues.Emplace(TEXT("Density map must be non-spatial and outside Data Layers."));
+        if (!A->GetActorTransform().Equals(FTransform::Identity)) Issues.Emplace(TEXT("Density map Actor transform must remain identity."));
+        LoadedActorIds.Add(A->GetActorGuid()); Dirty(A->GetPackage());
+        if (RequireSaved&&W->GetWorldPartition()&&!DensityDescriptorIds.Contains(A->GetActorGuid())) Issues.Emplace(TEXT("Saved World Partition density map has no Actor Descriptor; completeness cannot be guaranteed."));
+        if (!Out.DensityMap.IsSet()) Out.DensityMap=A->Record;
+    }
+    for (const FGuid& ID:DensityDescriptorIds) if (!LoadedActorIds.Contains(ID)) Issues.Emplace(TEXT("Incomplete density-map collection: missing ActorGuid ")+GuLiMap::Guid(ID));
     // Duplicate IDs are a type-catalog error, even if only one of the colliding assets is used.
     TSet<FName> TypeIds;
     for (auto* Type:ListTypes()) { if (TypeIds.Contains(Type->TypeId)) Issues.Emplace(TEXT("Duplicate configured TypeId: ")+Type->TypeId.ToString()); TypeIds.Add(Type->TypeId); }
-    return Issues.IsEmpty();
+    return !GuLiMap::HasErrors(Issues);
 }
 FGuLiMapResult UGuLiMapAuthoringSubsystem::GetSnapshot()
 {
@@ -146,11 +213,19 @@ FGuLiMapResult UGuLiMapAuthoringSubsystem::GetSnapshot()
     if (CollectSnapshot(Snapshot,R.Issues,false) && GuLiMap::BuildFiles(Snapshot,Files,R.Issues)) { R.bSuccess=true; R.Json=Files[TEXT("layout.json")]; }
     return R;
 }
+FGuLiMapResult UGuLiMapAuthoringSubsystem::GetDensitySnapshot()
+{
+    FGuLiMapResult R; FGuLiMapSnapshot Snapshot; TMap<FString,FString> Files;
+    if (!CollectSnapshot(Snapshot,R.Issues,false)) return R;
+    if (!Snapshot.DensityMap.IsSet()) { R.Issues.Emplace(TEXT("No AGuLiMapDensityMap exists in the current map.")); return R; }
+    if (GuLiMap::BuildFiles(Snapshot,Files,R.Issues)) { R.bSuccess=true; R.Json=Files.FindRef(TEXT("density_layers.json")); }
+    return R;
+}
 FGuLiMapResult UGuLiMapAuthoringSubsystem::ValidateMap()
 {
     FGuLiMapResult R; FGuLiMapSnapshot Snapshot;
     if (CollectSnapshot(Snapshot,R.Issues,false)) GuLiMap::Validate(Snapshot,R.Issues);
-    R.bSuccess=R.Issues.IsEmpty(); return R;
+    R.bSuccess=!GuLiMap::HasErrors(R.Issues); return R;
 }
 FGuLiMapResult UGuLiMapAuthoringSubsystem::ExportMap()
 {
@@ -168,6 +243,7 @@ bool UGuLiMapAuthoringSubsystem::SaveAuthoringPackages()
     if (W->GetOutermost()->GetName().StartsWith(TEXT("/Temp/")) && !FEditorFileUtils::SaveCurrentLevel()) return false;
     TArray<UPackage*> Packages={W->GetOutermost()}; Packages.Append(W->GetOutermost()->GetExternalPackages());
     for (auto* A:LoadedMarkers()) { Packages.AddUnique(A->GetPackage()); if (auto* T=A->Record.Type.LoadSynchronous()) Packages.AddUnique(T->GetOutermost()); }
+    for (auto* A:LoadedDensityMaps()) Packages.AddUnique(A->GetPackage());
     for (auto* T:ListTypes()) Packages.AddUnique(T->GetOutermost());
     if (FApp::IsUnattended()) return UEditorLoadingAndSavingUtils::SavePackages(Packages,true);
     return FEditorFileUtils::PromptForCheckoutAndSave(Packages,true,false)==FEditorFileUtils::PR_Success;
@@ -261,8 +337,46 @@ bool UGuLiMapAuthoringSubsystem::ParsePatch(const FString& Json,const FGuLiMapMa
         }
     }
     FGuLiMapSnapshot Check; Check.Markers.Add({R,X}); TArray<FGuLiMapIssue> Issues; GuLiMap::Validate(Check,Issues);
-    if (!Issues.IsEmpty()) { Error=Issues[0].Message; return false; }
+    if (GuLiMap::HasErrors(Issues)) { Error=Issues.FindByPredicate([](const FGuLiMapIssue& Issue){return Issue.Severity==EGuLiMapIssueSeverity::Error;})->Message; return false; }
     Out=MoveTemp(R); OutTransform=X; return true;
+}
+bool UGuLiMapAuthoringSubsystem::ParseDensityPatch(const FString& Json,const FGuLiMapDensityMapRecord& Original,FGuLiMapDensityMapRecord& Out,FString& Error)
+{
+    TSharedPtr<FJsonObject> Root;
+    if (!FJsonSerializer::Deserialize(TJsonReaderFactory<>::Create(Json),Root)||!Root) { Error=TEXT("Malformed JSON object."); return false; }
+    if (!GuLiMap::CheckKeys(*Root,{TEXT("schema_version"),TEXT("layer_key"),TEXT("cells")},Error)) return false;
+    double Version=0;
+    if (!Root->HasTypedField<EJson::Number>(TEXT("schema_version"))||!Root->TryGetNumberField(TEXT("schema_version"),Version)||Version!=1.0) { Error=TEXT("schema_version must be number 1."); return false; }
+    FString LayerKey;
+    if (!Root->HasTypedField<EJson::String>(TEXT("layer_key"))||!Root->TryGetStringField(TEXT("layer_key"),LayerKey)||!GuLiMap::IsKey(LayerKey)) { Error=TEXT("layer_key must be a valid ASCII identifier."); return false; }
+    const FName LayerName(*LayerKey);
+    if (!Original.Layers.ContainsByPredicate([&](const FGuLiMapDensityLayer& Layer){return Layer.LayerKey==LayerName;})) { Error=TEXT("Unknown density layer: ")+LayerKey; return false; }
+    const TArray<TSharedPtr<FJsonValue>>* Cells=nullptr;
+    if (!Root->TryGetArrayField(TEXT("cells"),Cells)) { Error=TEXT("cells must be an array."); return false; }
+    struct FPatchCell { FIntPoint Cell; uint8 Density; };
+    TArray<FPatchCell> Parsed; TSet<FIntPoint> Seen;
+    auto Integer=[&](const FJsonObject& Object,const FString& Key,const double Minimum,const double Maximum,int64& Value)
+    {
+        double Number=0;
+        if (!Object.HasTypedField<EJson::Number>(Key)||!Object.TryGetNumberField(Key,Number)||!FMath::IsFinite(Number)||FMath::TruncToDouble(Number)!=Number||Number<Minimum||Number>Maximum)
+        { Error=Key+TEXT(" must be an in-range integer."); return false; }
+        Value=static_cast<int64>(Number); return true;
+    };
+    for (const TSharedPtr<FJsonValue>& Value:*Cells)
+    {
+        const TSharedPtr<FJsonObject>* Object=nullptr;
+        if (!Value||!Value->TryGetObject(Object)||!Object||!GuLiMap::CheckKeys(**Object,{TEXT("cell_x"),TEXT("cell_y"),TEXT("density_u8")},Error))
+        { if (Error.IsEmpty()) Error=TEXT("Each density cell must be an object."); return false; }
+        int64 X=0,Y=0,Density=0;
+        if (!Integer(**Object,TEXT("cell_x"),MIN_int32,MAX_int32,X)||!Integer(**Object,TEXT("cell_y"),MIN_int32,MAX_int32,Y)||!Integer(**Object,TEXT("density_u8"),0,255,Density)) return false;
+        const FIntPoint Cell(static_cast<int32>(X),static_cast<int32>(Y));
+        if (Seen.Contains(Cell)) { Error=TEXT("Duplicate density cell in patch."); return false; }
+        Seen.Add(Cell); Parsed.Add({Cell,static_cast<uint8>(Density)});
+    }
+    FGuLiMapDensityMapRecord Candidate=Original;
+    FGuLiMapDensityLayer* Layer=Candidate.Layers.FindByPredicate([&](const FGuLiMapDensityLayer& Item){return Item.LayerKey==LayerName;});
+    for (const FPatchCell& Cell:Parsed) GuLiMap::SetDensityCell(*Layer,Cell.Cell,Cell.Density);
+    GuLiMap::NormalizeDensityMap(Candidate); Out=MoveTemp(Candidate); return true;
 }
 FGuLiMapResult UGuLiMapAuthoringSubsystem::UpdateMarker(const FString& MarkerId,const FString& PatchJson)
 {
@@ -275,10 +389,24 @@ FGuLiMapResult UGuLiMapAuthoringSubsystem::UpdateMarker(const FString& MarkerId,
     FGuLiMapSnapshot Snapshot;
     if (!CollectSnapshot(Snapshot,Result.Issues,false)) return Result;
     for (auto& E:Snapshot.Markers) if (E.Record.MarkerId==ID) E={Record,Transform};
-    GuLiMap::Validate(Snapshot,Result.Issues); if (!Result.Issues.IsEmpty()) return Result;
+    GuLiMap::Validate(Snapshot,Result.Issues); if (GuLiMap::HasErrors(Result.Issues)) return Result;
     const FScopedTransaction Tx(NSLOCTEXT("GuLiMap","Update","修改地图标记")); Actor->Modify();
     Actor->Record=MoveTemp(Record); Actor->SetActorTransform(Transform);
     FPropertyChangedEvent Changed(FindFProperty<FProperty>(AGuLiMapMarker::StaticClass(),GET_MEMBER_NAME_CHECKED(AGuLiMapMarker,Record)),EPropertyChangeType::ValueSet);
     Actor->PostEditChangeProperty(Changed);
     Result.bSuccess=true; return Result;
+}
+FGuLiMapResult UGuLiMapAuthoringSubsystem::UpdateDensityCells(const FString& PatchJson)
+{
+    FGuLiMapResult Result; TArray<AGuLiMapDensityMap*> Maps=LoadedDensityMaps();
+    if (Maps.Num()!=1) { Result.Issues.Emplace(Maps.IsEmpty()?TEXT("No AGuLiMapDensityMap exists in the current editable world."):TEXT("Density map identity is ambiguous; keep exactly one actor.")); return Result; }
+    AGuLiMapDensityMap* Actor=Maps[0]; FGuLiMapDensityMapRecord Candidate; FString Error;
+    if (!ParseDensityPatch(PatchJson,Actor->Record,Candidate,Error)) { Result.Issues.Emplace(Error); return Result; }
+    FGuLiMapSnapshot Snapshot;
+    if (!CollectSnapshot(Snapshot,Result.Issues,false)) return Result;
+    Snapshot.DensityMap=Candidate; GuLiMap::Validate(Snapshot,Result.Issues);
+    if (GuLiMap::HasErrors(Result.Issues)) return Result;
+    const FScopedTransaction Tx(NSLOCTEXT("GuLiMap","UpdateDensityCells","批量修改资源密度格")); Actor->Modify(); Actor->Record=MoveTemp(Candidate);
+    FPropertyChangedEvent Changed(FindFProperty<FProperty>(AGuLiMapDensityMap::StaticClass(),GET_MEMBER_NAME_CHECKED(AGuLiMapDensityMap,Record)),EPropertyChangeType::ValueSet);
+    Actor->PostEditChangeProperty(Changed); Result.bSuccess=true; return Result;
 }

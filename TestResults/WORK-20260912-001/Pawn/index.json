@@ -1,0 +1,182 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "9D4BFA4F488A38BF36210C9C7F76670C",
+			"instanceName": "DESKTOP-6D3B0FC-40772",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.11-23.36.16",
+	"succeeded": 3,
+	"succeededWithWarnings": 2,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.28948009014129639,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BasicWeaponIndependentAcceptedState",
+			"fullTestPath": "GuLiStrike.Wingman.Pawn.BasicWeaponIndependentAcceptedState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"9D4BFA4F488A38BF36210C9C7F76670C"
+			],
+			"duration": 0.11570850014686584,
+			"dateTime": "2026.09.11-23.36.15",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FlightNavigationAsyncStateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Pawn.FlightNavigationAsyncStateLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"9D4BFA4F488A38BF36210C9C7F76670C"
+			],
+			"duration": 0.0087734013795852661,
+			"dateTime": "2026.09.11-23.36.15",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InitialFormationNavigationValidatesAllSlots",
+			"fullTestPath": "GuLiStrike.Wingman.Pawn.InitialFormationNavigationValidatesAllSlots",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"9D4BFA4F488A38BF36210C9C7F76670C"
+			],
+			"duration": 0.010015502572059631,
+			"dateTime": "2026.09.11-23.36.15",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: [GULI_WINGMAN_INITIAL_NAV_GATE] Ship=1650CAFE20260903ABC00002DEF00002 ShipGen=3 GroupGen=12 FailedMember=13 Status=EndpointOutsideNavigation(2) Position=V(X=960.00, Z=-100.00)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.11-23.36.15"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LocalContinuityAndNoPeerCollision",
+			"fullTestPath": "GuLiStrike.Wingman.Pawn.LocalContinuityAndNoPeerCollision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"9D4BFA4F488A38BF36210C9C7F76670C"
+			],
+			"duration": 0.0093954019248485565,
+			"dateTime": "2026.09.11-23.36.15",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OwnerGroupCandidateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Pawn.OwnerGroupCandidateLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"9D4BFA4F488A38BF36210C9C7F76670C"
+			],
+			"duration": 0.0098856985569000244,
+			"dateTime": "2026.09.11-23.36.15",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: [GULI_WINGMAN_INITIAL_NAV_GATE] Ship=13572468246813571122334455667788 ShipGen=3 GroupGen=9 FailedMember=0 Status=InvalidData(1) Position=V(X=61000.00, Z=16000.00)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.11-23.36.15"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PerMemberAirGroundAttackExecution",
+			"fullTestPath": "GuLiStrike.Wingman.Pawn.PerMemberAirGroundAttackExecution",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"9D4BFA4F488A38BF36210C9C7F76670C"
+			],
+			"duration": 0.13570159673690796,
+			"dateTime": "2026.09.11-23.36.15",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Ground member uses the manual target's air attack channel: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanPawnSimulationTests.cpp",
+					"lineNumber": 1110,
+					"timestamp": "2026.09.11-23.36.16"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Air member keeps the manual target's air attack channel: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanPawnSimulationTests.cpp",
+					"lineNumber": 1112,
+					"timestamp": "2026.09.11-23.36.16"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Ground member steers toward the shared manual target' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanPawnSimulationTests.cpp",
+					"lineNumber": 1117,
+					"timestamp": "2026.09.11-23.36.16"
+				}
+			],
+			"warnings": 0,
+			"errors": 3,
+			"artifacts": []
+		}
+	]
+}

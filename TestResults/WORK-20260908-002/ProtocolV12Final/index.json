@@ -1,0 +1,104 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "D29913B94C8F3D0C683AFB903556E398",
+			"instanceName": "DESKTOP-6D3B0FC-3556",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.08-15.39.36",
+	"succeeded": 5,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.034292306751012802,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AbilityRevisionGate",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.AbilityRevisionGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D29913B94C8F3D0C683AFB903556E398"
+			],
+			"duration": 0.0015364028513431549,
+			"dateTime": "2026.09.08-15.39.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AttackStateV12WireAndBounds",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.AttackStateV12WireAndBounds",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D29913B94C8F3D0C683AFB903556E398"
+			],
+			"duration": 0.0085039995610713959,
+			"dateTime": "2026.09.08-15.39.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DefaultGroupTransportSentinel",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.DefaultGroupTransportSentinel",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D29913B94C8F3D0C683AFB903556E398"
+			],
+			"duration": 0.0079283006489276886,
+			"dateTime": "2026.09.08-15.39.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GoldenBytes",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.GoldenBytes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D29913B94C8F3D0C683AFB903556E398"
+			],
+			"duration": 0.0083455033600330353,
+			"dateTime": "2026.09.08-15.39.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SixScopeBootstrap",
+			"fullTestPath": "GuLiStrike.Wingman.Network.ProtocolV7.SixScopeBootstrap",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"D29913B94C8F3D0C683AFB903556E398"
+			],
+			"duration": 0.0079781003296375275,
+			"dateTime": "2026.09.08-15.39.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

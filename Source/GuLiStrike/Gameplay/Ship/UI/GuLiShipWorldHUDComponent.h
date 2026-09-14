@@ -24,7 +24,7 @@ class UUserWidget;
 class UWidgetComponent;
 
 /**
- * Local-only presenter for five world-space Ship HUD nodes.
+ * Local-only presenter for one owning-player screen widget and four world-space Ship HUD nodes.
  * Gameplay state remains owned by the Ship, movement, health and ASC components.
  */
 UCLASS(ClassGroup = (GuLiStrike), meta = (BlueprintSpawnableComponent))
@@ -35,7 +35,7 @@ class GULISTRIKE_API UGuLiShipWorldHUDComponent final : public UActorComponent
 public:
 	UGuLiShipWorldHUDComponent();
 
-	/** Re-evaluates local ownership and creates/destroys transient WidgetComponents. */
+	/** Re-evaluates local ownership and creates/destroys the screen HUD and world-space nodes. */
 	void HandleOwnerControllerChanged();
 
 protected:
@@ -58,6 +58,7 @@ private:
 	void HandleAimModeChanged(EGuLiShipReticleMode NewMode);
 	void RefreshDataIfDue(bool bForce);
 	void RefreshData();
+	bool UpdateStatusViewportLayout();
 	bool UpdateNodeTransforms();
 	bool ProjectHullBounds(
 		APlayerController& Controller,
@@ -75,6 +76,8 @@ private:
 		const FRotator& CameraRotation,
 		float CentimetersPerPixel) const;
 	void SetNodeVisible(UWidgetComponent* Node, bool bVisible) const;
+	void SetStatusVisible(bool bVisible) const;
+	void HideWorldNodes() const;
 	void HideAllNodes() const;
 	bool ShouldPresent() const;
 
@@ -106,7 +109,7 @@ private:
 	float DataRefreshIntervalSeconds = 0.1f;
 
 	UPROPERTY(Transient)
-	TObjectPtr<UWidgetComponent> StatusNode;
+	TObjectPtr<UGuLiShipWorldStatusWidget> StatusWidget;
 
 	UPROPERTY(Transient)
 	TObjectPtr<UWidgetComponent> FlightNode;

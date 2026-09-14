@@ -21,6 +21,8 @@
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/GameState.h"
+#include "Gameplay/Resources/GuLiResourceMapDefinition.h"
+#include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "TimerManager.h"
 
 namespace GuLiCommanderHUDWidget
@@ -308,6 +310,8 @@ void UGuLiCommanderHUDWidget::BindRuntimeSources()
 		PlayerState->OnCommanderPlayerStateChanged.AddUniqueDynamic(
 			this,
 			&ThisClass::HandlePlayerStateChanged);
+		PlayerState->OnResourcePrivateStateChanged.AddUniqueDynamic(
+			this, &ThisClass::HandleResourcePrivateStateChanged);
 	}
 
 	if (AGuLiSoldierStateReplicator* Replicator = SoldierStateReplicator.Get())
@@ -338,6 +342,8 @@ void UGuLiCommanderHUDWidget::UnbindRuntimeSources()
 		PlayerState->OnCommanderPlayerStateChanged.RemoveDynamic(
 			this,
 			&ThisClass::HandlePlayerStateChanged);
+		PlayerState->OnResourcePrivateStateChanged.RemoveDynamic(
+			this, &ThisClass::HandleResourcePrivateStateChanged);
 	}
 	if (AGuLiSoldierStateReplicator* Replicator = SoldierStateReplicator.Get())
 	{
@@ -393,7 +399,7 @@ void UGuLiCommanderHUDWidget::RefreshSelection(
 {
 	CachedSelection = Selection;
 	CachedSelectionMatchEpoch = GetCurrentMatchEpoch();
-	if (Selection.Cohorts.IsEmpty())
+	if (Selection.Cohorts.IsEmpty() && Selection.ActorIds.IsEmpty())
 	{
 		CachedCommandAck = FGuLiCommandAck();
 	}
@@ -451,6 +457,11 @@ void UGuLiCommanderHUDWidget::HandlePlayerStateChanged()
 	RefreshPlayerState();
 }
 
+void UGuLiCommanderHUDWidget::HandleResourcePrivateStateChanged()
+{
+	RefreshPlayerState();
+}
+
 void UGuLiCommanderHUDWidget::RefreshElapsedTime()
 {
 	int32 ElapsedSeconds = 0;
@@ -467,6 +478,7 @@ void UGuLiCommanderHUDWidget::RefreshElapsedTime()
 			TEXT("%02d:%02d"),
 			ElapsedSeconds / 60,
 			ElapsedSeconds % 60)));
+	RefreshUnitTypeCard();
 }
 
 void UGuLiCommanderHUDWidget::RefreshCoreAndRoster()
@@ -530,6 +542,12 @@ void UGuLiCommanderHUDWidget::RefreshCoreAndRoster()
 	SetImageFraction(
 		TEXT("I_RosterFill"),
 		bRosterReady && Initial > 0 ? static_cast<float>(Alive) / static_cast<float>(Initial) : 0.0f);
+	if (PlayerState)
+	{
+		const FGuLiResourceAmounts Inventory = PlayerState->GetResourceInventory();
+		SetText(TEXT("TXT_Energy"), FText::FromString(FString::Printf(
+			TEXT("蓝矿 %d   红矿 %d"), Inventory.Blue, Inventory.Red)));
+	}
 }
 
 uint32 UGuLiCommanderHUDWidget::GetCurrentMatchEpoch() const
@@ -546,6 +564,54 @@ uint32 UGuLiCommanderHUDWidget::GetCurrentMatchEpoch() const
 
 void UGuLiCommanderHUDWidget::RefreshUnitTypeCard()
 {
+	if (!CachedSelection.ActorIds.IsEmpty())
+	{
+		const AGuLiBattlePlayerState* PlayerState = CommanderPlayerState.Get();
+		const FGuLiMiningVehiclePrivateState* SelectedVehicleState = nullptr;
+		if (PlayerState)
+		{
+			for (const FGuLiControllableActorId ActorId : CachedSelection.ActorIds)
+			{
+				SelectedVehicleState = PlayerState->FindMiningVehiclePrivateState(ActorId);
+				if (SelectedVehicleState) break;
+			}
+		}
+		if (UWidget* Card = FindRuntimeWidget(TEXT("C_UnitTypeCard")))
+			Card->SetVisibility(SelectedVehicleState
+				? ESlateVisibility::HitTestInvisible
+				: ESlateVisibility::Collapsed);
+		if (!SelectedVehicleState) return;
+		const FGuLiResourceAmounts Cargo = SelectedVehicleState->Cargo;
+		const UGuLiResourceWorldSubsystem* Resources = GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
+		const int32 Capacity = Resources && Resources->GetEconomyConfig()
+			? Resources->GetEconomyConfig()->CargoCapacity : 10;
+		FString Status;
+		switch (SelectedVehicleState->ControlMode)
+		{
+		case EGuLiMiningControlMode::Auto: Status = TEXT("系统自动调度"); break;
+		case EGuLiMiningControlMode::PlayerOrder: Status = TEXT("执行玩家指令"); break;
+		case EGuLiMiningControlMode::Grace:
+		{
+			const AGameStateBase* GameState = GetWorld()->GetGameState();
+			const float ServerTime = GameState
+				? GameState->GetServerWorldTimeSeconds()
+				: GetWorld()->GetTimeSeconds();
+			Status = FString::Printf(TEXT("%.1fs 后恢复自动"),
+				FMath::Max(0.0f, SelectedVehicleState->GraceEndServerTime - ServerTime));
+			break;
+		}
+		default: Status = TEXT("--"); break;
+		}
+		SetText(TEXT("TXT_UnitTypeName"), FText::FromString(TEXT("采矿车")));
+		SetText(TEXT("TXT_UnitTypeCount"), FText::FromString(FString::Printf(
+			TEXT("%d 辆"), CachedSelection.ActorIds.Num())));
+		SetText(TEXT("TXT_UnitTypeHealth"), FText::FromString(FString::Printf(
+			TEXT("货仓 %d/%d  蓝%d 红%d"), Cargo.Blue + Cargo.Red, Capacity, Cargo.Blue, Cargo.Red)));
+		SetText(TEXT("TXT_UnitTypeStatus"), FText::FromString(Status));
+		SetImageFraction(TEXT("I_UnitTypeHealthFill"), Capacity > 0
+			? static_cast<float>(Cargo.Blue + Cargo.Red) / Capacity : 0.0f);
+		return;
+	}
 	const uint32 MatchEpoch = GetCurrentMatchEpoch();
 	if (MatchEpoch != 0u && CachedSelectionMatchEpoch != 0u
 		&& CachedSelectionMatchEpoch != MatchEpoch)
@@ -599,7 +665,7 @@ void UGuLiCommanderHUDWidget::RefreshCommandControls()
 		|| Controller->GetCommanderToolMode() == EGuLiCommanderToolMode::Select;
 	const bool bCanMove = Controller
 		&& Controller->CanIssueCommanderOrders()
-		&& !CachedSelection.Cohorts.IsEmpty();
+		&& (!CachedSelection.Cohorts.IsEmpty() || !CachedSelection.ActorIds.IsEmpty());
 
 	for (int32 SlotIndex = 1; SlotIndex <= 5; ++SlotIndex)
 	{

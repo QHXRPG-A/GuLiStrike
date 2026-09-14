@@ -25,8 +25,15 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool WireGunfireReader(UNiagaraSystem* System, UNiagaraDataChannelAsset* Channel,
 		UNiagaraScript* EmitterSpawnScript, UNiagaraScript* EmitterUpdateScript, UNiagaraScript* ParticleSpawnScript, FString& Error);
-	/** VibeUE appends custom-HLSL pins after the '+' pin; UE5.7 requires the '+' pin last. */
+	/** Fixes VibeUE dynamic pin order for CommanderWeapons and WingmanFlight only. Does not save. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool FinalizeScratchPins(UNiagaraSystem* System);
+	/** Bind project-owned laser particle slots to User arrays. Editor-only; does not save. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool WireLaserPoolReader(UNiagaraSystem* System, UNiagaraScript* ParticleUpdateScript, bool bMuzzle, FString& Error);
+	/** Project explosion refraction meshes already multiply Engine.Owner.Scale. Prevent LocalSpace applying it twice.
+	 * Editor-only, idempotent, no saving; refuses unrelated assets and only changes the refr_mesh emitter. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static bool NormalizeExplosionRefractionSpace(UNiagaraSystem* System, FString& Error);
 #endif
 };

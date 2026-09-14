@@ -1,0 +1,288 @@
+{
+  "asset": "ResourceProcessingFactory",
+  "version": 1,
+  "source_scene": "GS_RPF_Authoring",
+  "body": {
+    "triangles": 99600,
+    "vertices": 54614,
+    "materials": [
+      "M_RPF_Armor",
+      "M_RPF_Interior",
+      "M_RPF_Details"
+    ],
+    "dimensions_m": [
+      48.0,
+      60.0,
+      22.00400161743164
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "door": {
+    "triangles": 10612,
+    "vertices": 6432,
+    "materials": [
+      "M_RPF_Armor",
+      "M_RPF_Details",
+      "M_RPF_Interior"
+    ],
+    "dimensions_m": [
+      2.3350000381469727,
+      35.75,
+      14.326117515563965
+    ],
+    "scale": [
+      1.0,
+      1.0,
+      1.0
+    ]
+  },
+  "closed_footprint_m": {
+    "width": 60,
+    "depth": 48,
+    "height": 22
+  },
+  "door_hinge_blender_m": [
+    11.5,
+    0,
+    15.15
+  ],
+  "doorway_clearance_m": [
+    36,
+    14
+  ],
+  "fps": 30,
+  "animation_seconds": 3,
+  "actions": [
+    "Door_Open",
+    "Door_Close"
+  ],
+  "collision_hulls": 9,
+  "front_blender": "+X",
+  "ue_import_verified": true,
+  "blender_delivery": {
+    "loaded_in_current_blender": true,
+    "preview_action": "Door_Preview_Cycle",
+    "preview_frames": [
+      1,
+      271
+    ],
+    "preview_seconds": 9,
+    "editable_body_objects": 806,
+    "editable_door_objects": 170,
+    "action_angle_samples_degrees": {
+      "Door_Open": [
+        0,
+        -45,
+        -90
+      ],
+      "Door_Close": [
+        -90,
+        -45,
+        0
+      ]
+    }
+  },
+  "ue_basic_import": {
+    "success": true,
+    "body": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SM_RPF_Body.SM_RPF_Body",
+    "body_dimensions_cm": [
+      4800.00048828125,
+      6000.00048828125,
+      2200.400146484375
+    ],
+    "door": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door.SK_RPF_Door",
+    "door_lods": 3,
+    "skeleton": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door_Skeleton.SK_RPF_Door_Skeleton",
+    "animations": {
+      "Door_Open": {
+        "path": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Animations/A_RPF_Door_Open.A_RPF_Door_Open",
+        "seconds": 3.0
+      },
+      "Door_Close": {
+        "path": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Animations/A_RPF_Door_Close.A_RPF_Door_Close",
+        "seconds": 3.0
+      }
+    },
+    "body_collision_count": 9,
+    "materials": {
+      "Armor": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Armor.M_RPF_Armor",
+      "Interior": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Interior.M_RPF_Interior",
+      "Details": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Details.M_RPF_Details"
+    },
+    "engine": "5.7.4-0+UE5"
+  },
+  "ue_full_delivery_verified": true,
+  "pending": [],
+  "status": "Blender and UE production asset delivered; onsite acceptance passed",
+  "ue_delivery": {
+    "blueprint": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory",
+    "map": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Demo/LVL_RPF_Showcase",
+    "door_alpha_access": "Private DoorAlpha storage, public pure GetDoorAlpha()",
+    "door_hinge_ue_cm": [
+      1150,
+      0,
+      1515
+    ],
+    "component_scale": [
+      1,
+      1,
+      1
+    ],
+    "imported_rig_bone_scale": 100,
+    "physics": {
+      "path": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door_PhysicsAsset.SK_RPF_Door_PhysicsAsset",
+      "bone": "door_hinge",
+      "kinematic": true,
+      "box_cm": [
+        150,
+        3575,
+        1390
+      ],
+      "center_cm": [
+        1180,
+        0,
+        820
+      ],
+      "bone_scale": 100.0
+    },
+    "readback": {
+      "body_dimensions_cm": [
+        4800.00048828125,
+        6000.00048828125,
+        2200.400146484375
+      ],
+      "nanite_enabled": true,
+      "door_lods": 3,
+      "physics": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door_PhysicsAsset.SK_RPF_Door_PhysicsAsset",
+      "body_collision_hulls": 9,
+      "blueprints": {
+        "/Blueprints/BP_ResourceProcessingFactory": {
+          "success": true,
+          "errors": [],
+          "warnings": []
+        },
+        "/Demo/BP_RPF_ShowcaseController": {
+          "success": true,
+          "errors": [],
+          "warnings": []
+        }
+      },
+      "animations": {
+        "Door_Open": 3.0,
+        "Door_Close": 3.0
+      }
+    },
+    "reload": {
+      "reopened": true,
+      "map": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Demo/LVL_RPF_Showcase.LVL_RPF_Showcase",
+      "factories": [
+        {
+          "label": "RPF_CLOSED",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "door_position": 0.0,
+          "alpha": 0.0,
+          "physics": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door_PhysicsAsset.SK_RPF_Door_PhysicsAsset",
+          "shadow_lights": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "label": "RPF_ANIMATED",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "door_position": 0.0,
+          "alpha": 0.0,
+          "physics": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door_PhysicsAsset.SK_RPF_Door_PhysicsAsset",
+          "shadow_lights": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        },
+        {
+          "label": "RPF_OPEN",
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "door_position": 0.0,
+          "alpha": 0.0,
+          "physics": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Meshes/SK_RPF_Door_PhysicsAsset.SK_RPF_Door_PhysicsAsset",
+          "shadow_lights": [
+            true,
+            true,
+            true,
+            true,
+            true,
+            true
+          ]
+        }
+      ],
+      "blueprint_compile": {
+        "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory": {
+          "success": true,
+          "errors": [],
+          "warnings": []
+        },
+        "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Demo/BP_RPF_ShowcaseController": {
+          "success": true,
+          "errors": [],
+          "warnings": []
+        }
+      },
+      "nanite": true,
+      "door_lods": 3,
+      "render_async_compute": 0,
+      "materials_reloaded_from_disk": true,
+      "material_reload_error": "",
+      "material_usage": {
+        "Armor": {
+          "nanite": true,
+          "skeletal": true
+        },
+        "Interior": {
+          "nanite": true,
+          "skeletal": true
+        },
+        "Details": {
+          "nanite": true,
+          "skeletal": true
+        }
+      }
+    },
+    "runtime_evidence": "D:\\UE5.7\\test1\\outputs\\resource-processing-factory-20260909\\ue_runtime_observation.json",
+    "video": "D:\\UE5.7\\test1\\outputs\\resource-processing-factory-20260909\\RPF_UE_Door_Preview.mp4",
+    "render_startup_override": "-ini:Engine:[SystemSettings]:r.D3D12.AllowAsyncCompute=0"
+  },
+  "fbx_export": {
+    "front_blender": "+X",
+    "axis_forward": "-Y",
+    "axis_up": "Z",
+    "apply_unit_scale": true,
+    "apply_scale_options": "FBX_SCALE_UNITS",
+    "global_scale": 1,
+    "add_leaf_bones": false,
+    "one_action_per_file": true,
+    "bake_anim_simplify_factor": 0
+  }
+}

@@ -6,6 +6,7 @@
 #include "GuLiStrike.h"
 #include "Engine/DataTable.h"
 #include "Engine/StaticMesh.h"
+#include "GameFramework/Actor.h"
 
 namespace GuLiCommanderSoldierResolverPrivate
 {
@@ -195,6 +196,22 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 		TEXT("Defense"),
 		bOutEntireDefinitionFromDataTable);
 
+	Resolved.ActorClass = Row->ActorClass.LoadSynchronous();
+	Resolved.PresentationClass = Row->PresentationClass.LoadSynchronous();
+	if (!FMath::IsFinite(Row->PresentationScale) || Row->PresentationScale <= 0.0f)
+	{
+		bOutEntireDefinitionFromDataTable = false;
+		return Resolved;
+	}
+	Resolved.PresentationScale = Row->PresentationScale;
+	if (!Row->ActorClass.IsNull())
+	{
+		Resolved.Model = nullptr;
+		bOutEntireDefinitionFromDataTable &= Resolved.ActorClass
+			&& Resolved.ActorClass->IsChildOf(AActor::StaticClass())
+			&& Resolved.PresentationClass && Resolved.PresentationClass->IsChildOf(AActor::StaticClass());
+		return Resolved;
+	}
 	UObject* LoadedModel = Row->ModelAsset.LoadSynchronous();
 	if (UStaticMesh* StaticMesh = Cast<UStaticMesh>(LoadedModel))
 	{

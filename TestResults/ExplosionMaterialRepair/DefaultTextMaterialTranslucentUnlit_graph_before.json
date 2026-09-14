@@ -1,0 +1,99 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Translucent",
+		"shading_model": "MSM_DefaultLit",
+		"two_sided": true
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionVertexColor_0000016C0E61A720",
+			"class": "VertexColor",
+			"class_full": "MaterialExpressionVertexColor",
+			"pos_x": -385,
+			"pos_y": 8,
+			"properties":
+			{
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0",
+				"Output_1",
+				"Output_2",
+				"Output_3",
+				"Output_4"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A3C6B3A80",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": -540,
+			"pos_y": 322,
+			"properties":
+			{
+				"ConstA": "-90.000000",
+				"ConstB": "90.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionFontSampleParameter_0000016A4AE2E880",
+			"class": "FontSampleParameter",
+			"class_full": "MaterialExpressionFontSampleParameter",
+			"pos_x": -877,
+			"pos_y": 252,
+			"properties":
+			{
+				"SortPriority": "32",
+				"Font": "/Script/Engine.Font'/Engine/EngineFonts/RobotoDistanceField.RobotoDistanceField'",
+				"FontTexturePage": "0"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0",
+				"Output_1",
+				"Output_2",
+				"Output_3",
+				"Output_4"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionFontSampleParameter_0000016A4AE2E880",
+			"source_output_index": 1,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A3C6B3A80",
+			"target_input": "Alpha"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "EmissiveColor",
+			"expression_id": "MaterialExpressionVertexColor_0000016C0E61A720",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "Opacity",
+			"expression_id": "MaterialExpressionLinearInterpolate_0000016A3C6B3A80",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "OpacityMask",
+			"expression_id": "MaterialExpressionLinearInterpolate_0000016A3C6B3A80",
+			"output_index": 0,
+			"output_name": ""
+		}
+	]
+}

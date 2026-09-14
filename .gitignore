@@ -36,6 +36,18 @@ Content/MafiaBarnPack/
 Content/Fab/Missile_Turret/
 Content/Fab/Stylized_Turrets_-_Tower_Defense/
 Content/NEONCTRL_FuturisticClea_UIKit/
+# Additional imported marketplace source packs follow the same local-only policy.
+Content/AllExplosions/
+Content/Arc_Beam_VFX/
+Content/BulletTraceVFX/
+Content/CardGameAssets/
+Content/MC_Vehicle_Constructor/
+Content/RealisticExplosionPackD/
+Assets/Meshes/SM_Card*.fbx
+Assets/Source/Card*.fbx
+Assets/Source/Cards*.psd
+Assets/Textures/T_Card*.png
+Assets/Textures/T_Frame_Background*.png
 # Five locally baked FourFRobot derivatives; public redistribution not verified
 Content/Commander/Units/*FourFRobot_Crowd*.uasset
 
@@ -45,6 +57,9 @@ Content/Maps/LVL_Main.umap
 Content/Maps/LVL_CommanderMassPrototype.umap
 # Map-authoring generated sessions and its 521MB acceptance clone stay local.
 Content/GuLiStrike/Editor/MapAuthoring/Validation/Auto_*/
+Content/GuLiStrike/Editor/MapAuthoring/Validation/DensityAuto_*/
+Content/__ExternalActors__/GuLiStrike/Editor/MapAuthoring/Validation/*Auto_*/
+Content/__ExternalObjects__/GuLiStrike/Editor/MapAuthoring/Validation/*Auto_*/
 Content/GuLiStrike/Editor/MapAuthoring/Validation/LVL_MapAuthoringAcceptance.umap
 Content/Scifi_Skies/Textures/Skies/T_scifiskies_bg_03.uasset
 Content/Scifi_Skies/Textures/Terrain/T_Grass_Color_02.uasset
@@ -98,6 +113,12 @@ htmlcov/
 *.temp
 *.dmp
 *.lnk
+# Packaged acceptance builds and binary inspection backups are reproducible local outputs.
+TestResults/**/CookedBuild*/
+TestResults/**/*.uasset
+TestResults/**/*.umap
+Artifacts/**/*.uasset
+Artifacts/**/*-inspection.t3d
 
 # Live editor control scratch files and local command notes
 Progress/Commander*.json

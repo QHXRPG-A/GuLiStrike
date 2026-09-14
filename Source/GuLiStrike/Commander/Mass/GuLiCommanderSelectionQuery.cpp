@@ -91,6 +91,12 @@ namespace GuLiCommanderSelectionQuery
 		const FCandidate* Seed = nullptr;
 		if (Request.Kind == EGuLiSelectionKind::Point || Request.Kind == EGuLiSelectionKind::SameType)
 		{
+			// Stable Actors are resolved by the resource subsystem. Mass contributes no hit for
+			// this point request, but the unified selection transaction remains valid.
+			if (Request.SeedActorId.IsValid())
+			{
+				return true;
+			}
 			for (const FCandidate& Candidate : Population)
 			{
 				if (Candidate.SoldierId == Request.SeedSoldierId)

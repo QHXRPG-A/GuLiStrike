@@ -1,0 +1,36 @@
+{
+  "context": "Source UE5.7 dedicated + 2 rendering clients in one editor, 30m long / 4m core before final 1m tuning; CPU timings only",
+  "samples": 83,
+  "pool_active_range": [
+    17,
+    59
+  ],
+  "pool_step": {
+    "p50_ms": 0.14650076627731323,
+    "p95_ms": 0.21949782967567444,
+    "max_ms": 0.26639923453330994
+  },
+  "presentation_tick": {
+    "p50_ms": 0.09840000711847097,
+    "p95_ms": 0.1221999991685152,
+    "max_ms": 0.27779999072663486
+  },
+  "component_count_range": [
+    1,
+    1
+  ],
+  "pool": {
+    "capacity": 1024,
+    "active": 27,
+    "peak_active": 155,
+    "launched": 2375,
+    "recycled": 2348,
+    "expansions": 0,
+    "hits": 449,
+    "blocked": 192,
+    "candidate_checks": 102219,
+    "last_step_milliseconds": 0.10570138692855835
+  },
+  "muzzle_visible": true,
+  "particle_slots_unique": true
+}

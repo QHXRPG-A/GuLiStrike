@@ -1,0 +1,305 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "961A213C4D7DB0032CBE819B2C4776E1",
+			"instanceName": "DESKTOP-6D3B0FC-3828",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.09-21.15.11",
+	"succeeded": 8,
+	"succeededWithWarnings": 0,
+	"failed": 3,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.21579810976982117,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AbilitySetContract",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.AbilitySetContract",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"961A213C4D7DB0032CBE819B2C4776E1"
+			],
+			"duration": 0.12240460515022278,
+			"dateTime": "2026.09.09-21.15.10",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Missing formation rejection names a required slot' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipAbilityTests.cpp",
+					"lineNumber": 162,
+					"timestamp": "2026.09.09-21.15.10"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ASCGrantProjectionAndInputLifecycle",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.ASCGrantProjectionAndInputLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"961A213C4D7DB0032CBE819B2C4776E1"
+			],
+			"duration": 0.014976698905229568,
+			"dateTime": "2026.09.09-21.15.10",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroupConfigHashAndInvalidation",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.GroupConfigHashAndInvalidation",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"961A213C4D7DB0032CBE819B2C4776E1"
+			],
+			"duration": 0.0081255994737148285,
+			"dateTime": "2026.09.09-21.15.11",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Complete v7 group config validates its deterministic hash' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipAbilityTests.cpp",
+					"lineNumber": 206,
+					"timestamp": "2026.09.09-21.15.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Complete v7 group config is usable by a Lease Owner' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipAbilityTests.cpp",
+					"lineNumber": 208,
+					"timestamp": "2026.09.09-21.15.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Refreshed mutation is structurally valid' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipAbilityTests.cpp",
+					"lineNumber": 216,
+					"timestamp": "2026.09.09-21.15.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A valid tuning change can be published with a new hash' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipAbilityTests.cpp",
+					"lineNumber": 222,
+					"timestamp": "2026.09.09-21.15.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'An explicit field-cleared invalidation tombstone is structurally valid' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipAbilityTests.cpp",
+					"lineNumber": 235,
+					"timestamp": "2026.09.09-21.15.11"
+				}
+			],
+			"warnings": 0,
+			"errors": 5,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PawnOwnedASCIntegration",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.PawnOwnedASCIntegration",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"961A213C4D7DB0032CBE819B2C4776E1"
+			],
+			"duration": 0.0077486000955104828,
+			"dateTime": "2026.09.09-21.15.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WingmanWeaponBindingProjection",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.WingmanWeaponBindingProjection",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"961A213C4D7DB0032CBE819B2C4776E1"
+			],
+			"duration": 0.008574802428483963,
+			"dateTime": "2026.09.09-21.15.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"961A213C4D7DB0032CBE819B2C4776E1"
+			],
+			"duration": 0.013138700276613235,
+			"dateTime": "2026.09.09-21.15.11",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The first Ship projects an active three-ability group config' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipRespawnIntegrationTests.cpp",
+					"lineNumber": 152,
+					"timestamp": "2026.09.09-21.15.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The replacement Ship has a distinct stable instance identity' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipRespawnIntegrationTests.cpp",
+					"lineNumber": 198,
+					"timestamp": "2026.09.09-21.15.11"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The replacement Ship allocates new Ship and group generations' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Ship\\Abilities\\Tests\\GuLiShipRespawnIntegrationTests.cpp",
+					"lineNumber": 202,
+					"timestamp": "2026.09.09-21.15.11"
+				}
+			],
+			"warnings": 0,
+			"errors": 3,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalHistoryIsBoundedAndVersioned",
+			"fullTestPath": "GuLiStrike.Ship.Movement.CanonicalHistoryIsBoundedAndVersioned",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"961A213C4D7DB0032CBE819B2C4776E1"
+			],
+			"duration": 0.0083460994064807892,
+			"dateTime": "2026.09.09-21.15.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CameraAlignment",
+			"fullTestPath": "GuLiStrike.Ship.WorldHUD.CameraAlignment",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"961A213C4D7DB0032CBE819B2C4776E1"
+			],
+			"duration": 0.0080917999148368835,
+			"dateTime": "2026.09.09-21.15.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LatestAbilityOwnershipAndCleanup",
+			"fullTestPath": "GuLiStrike.Ship.WorldHUD.LatestAbilityOwnershipAndCleanup",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"961A213C4D7DB0032CBE819B2C4776E1"
+			],
+			"duration": 0.0082009024918079376,
+			"dateTime": "2026.09.09-21.15.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReticleClampAndConstantPixels",
+			"fullTestPath": "GuLiStrike.Ship.WorldHUD.ReticleClampAndConstantPixels",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"961A213C4D7DB0032CBE819B2C4776E1"
+			],
+			"duration": 0.0080525986850261688,
+			"dateTime": "2026.09.09-21.15.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReticleTagsAndConfig",
+			"fullTestPath": "GuLiStrike.Ship.WorldHUD.ReticleTagsAndConfig",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"961A213C4D7DB0032CBE819B2C4776E1"
+			],
+			"duration": 0.0081376992166042328,
+			"dateTime": "2026.09.09-21.15.11",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

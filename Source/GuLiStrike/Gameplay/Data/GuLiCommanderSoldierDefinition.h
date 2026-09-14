@@ -6,6 +6,7 @@
 #include "GuLiCommanderSoldierDefinition.generated.h"
 
 class UStaticMesh;
+class AActor;
 
 /**
  * Validated runtime values for one Commander Soldier type.
@@ -33,4 +34,14 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
 	float Defense = 0.0f;
+
+	/** Empty for Mass models; otherwise the table selects the controllable Actor implementation. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Units")
+	TSubclassOf<AActor> ActorClass;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Units")
+	TSubclassOf<AActor> PresentationClass;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Units")
+	float PresentationScale = 1.0f;
+
+	bool UsesMass() const { return !ActorClass; }
 };

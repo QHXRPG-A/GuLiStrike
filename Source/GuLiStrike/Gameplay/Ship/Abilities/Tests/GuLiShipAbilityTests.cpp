@@ -305,8 +305,18 @@ bool FGuLiShipASCGrantProjectionTest::RunTest(const FString& Parameters)
 		Snapshot.AbilitySetRevision, Fixture.ASC->GetAbilitySetRevision());
 	TestEqual(TEXT("Projected snapshot revision matches ASC"),
 		Snapshot.SnapshotRevision, Fixture.ASC->GetProjectionSnapshotRevision());
-	TestEqual(TEXT("Formation DataAsset projects the required 20 degree turn limit"),
-		Snapshot.FormationRuntime.MaximumTurnRateDegreesPerSecond, 20.0f);
+	TestEqual(TEXT("Formation turn rate is quadrupled for the doubled flight speed"),
+		Snapshot.FormationRuntime.MaximumTurnRateDegreesPerSecond, 80.0f);
+	TestEqual(TEXT("Formation minimum speed is doubled"),
+		Snapshot.FormationRuntime.MinimumSpeedCentimetersPerSecond, 6000.0f);
+	TestEqual(TEXT("Formation cruise speed is doubled"),
+		Snapshot.FormationRuntime.CruiseSpeedCentimetersPerSecond, 9000.0f);
+	TestEqual(TEXT("Formation catch-up speed is doubled"),
+		Snapshot.FormationRuntime.CatchUpSpeedCentimetersPerSecond, 15000.0f);
+	TestEqual(TEXT("Formation acceleration is quadrupled to preserve acceleration distance"),
+		Snapshot.FormationRuntime.MaximumAccelerationCentimetersPerSecondSquared, 4000.0f);
+	TestEqual(TEXT("Formation deceleration is quadrupled to preserve braking distance"),
+		Snapshot.FormationRuntime.MaximumDecelerationCentimetersPerSecondSquared, 3200.0f);
 	TestEqual(TEXT("Basic weapon DataAsset projects the 1500m range"),
 		Snapshot.BasicWeaponRuntime.RangeCentimeters, 150000.0f);
 	TestEqual(TEXT("Basic weapon DataAsset projects independent two-second cadence"),

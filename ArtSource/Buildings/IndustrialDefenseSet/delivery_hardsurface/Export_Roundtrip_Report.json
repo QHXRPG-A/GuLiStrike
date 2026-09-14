@@ -1,0 +1,207 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "file": "RedOreRefinery\\SM_RedOreRefinery.fbx",
+      "mesh_objects": 1,
+      "dimensions_m": [
+        11.931000709533691,
+        10.022500991821289,
+        5.599999904632568
+      ],
+      "max_dimension_error_m": 9.5367431640625e-07,
+      "triangles": 19180,
+      "uv_missing": 0,
+      "armature_count": 0,
+      "bone_names": [],
+      "passed": true
+    },
+    {
+      "file": "RedOreRefinery\\SM_RedOreRefinery.glb",
+      "mesh_objects": 1,
+      "dimensions_m": [
+        11.930999755859375,
+        10.022500038146973,
+        5.599999904632568
+      ],
+      "max_dimension_error_m": 0.0,
+      "triangles": 19180,
+      "uv_missing": 0,
+      "armature_count": 0,
+      "bone_names": [],
+      "gltf_scene_count": 1,
+      "gltf_animation_count": 0,
+      "passed": true
+    },
+    {
+      "file": "ShieldGenerator\\SM_ShieldGenerator.fbx",
+      "mesh_objects": 1,
+      "dimensions_m": [
+        3.050870180130005,
+        3.452880620956421,
+        5.0
+      ],
+      "max_dimension_error_m": 2.384185791015625e-07,
+      "triangles": 7492,
+      "uv_missing": 0,
+      "armature_count": 0,
+      "bone_names": [],
+      "passed": true
+    },
+    {
+      "file": "ShieldGenerator\\SM_ShieldGenerator.glb",
+      "mesh_objects": 1,
+      "dimensions_m": [
+        3.050869941711426,
+        3.452880382537842,
+        5.0
+      ],
+      "max_dimension_error_m": 0.0,
+      "triangles": 7492,
+      "uv_missing": 0,
+      "armature_count": 0,
+      "bone_names": [],
+      "gltf_scene_count": 1,
+      "gltf_animation_count": 0,
+      "passed": true
+    },
+    {
+      "file": "HeavyDefenseCannon\\SK_HeavyDefenseCannon.fbx",
+      "mesh_objects": 3,
+      "dimensions_m": [
+        7.945000171661377,
+        5.889955997467041,
+        4.210000038146973
+      ],
+      "max_dimension_error_m": 4.76837158203125e-07,
+      "triangles": 9872,
+      "uv_missing": 0,
+      "armature_count": 1,
+      "bone_names": [
+        "root",
+        "base_yaw",
+        "barrel_pitch"
+      ],
+      "invalid_rigid_weights": 0,
+      "bone_parents": {
+        "root": null,
+        "base_yaw": "root",
+        "barrel_pitch": "base_yaw"
+      },
+      "passed": true
+    },
+    {
+      "file": "HeavyDefenseCannon\\SK_HeavyDefenseCannon.glb",
+      "mesh_objects": 3,
+      "dimensions_m": [
+        7.944999694824219,
+        5.889955043792725,
+        4.2099995613098145
+      ],
+      "max_dimension_error_m": 4.76837158203125e-07,
+      "triangles": 9872,
+      "uv_missing": 0,
+      "armature_count": 1,
+      "bone_names": [
+        "root",
+        "base_yaw",
+        "barrel_pitch"
+      ],
+      "gltf_scene_count": 1,
+      "gltf_animation_count": 0,
+      "invalid_rigid_weights": 0,
+      "bone_parents": {
+        "root": null,
+        "base_yaw": "root",
+        "barrel_pitch": "base_yaw"
+      },
+      "passed": true
+    },
+    {
+      "file": "HeavyDefenseCannon\\SK_HeavyDefenseCannon_AimDemo.fbx",
+      "actions": [
+        "Armature|HeavyDefenseCannon"
+      ],
+      "frame_range": [
+        2.0,
+        182.0
+      ],
+      "samples": [
+        {
+          "frame": 31,
+          "fixed_base_displacement_m": 0.0,
+          "barrel_max_displacement_m": 7.5860980691622695
+        },
+        {
+          "frame": 61,
+          "fixed_base_displacement_m": 0.0,
+          "barrel_max_displacement_m": 10.248792716778365
+        },
+        {
+          "frame": 92,
+          "fixed_base_displacement_m": 0.0,
+          "barrel_max_displacement_m": 7.842753069621635
+        },
+        {
+          "frame": 121,
+          "fixed_base_displacement_m": 0.0,
+          "barrel_max_displacement_m": 0.04603383518879832
+        },
+        {
+          "frame": 151,
+          "fixed_base_displacement_m": 0.0,
+          "barrel_max_displacement_m": 0.9752505062769611
+        },
+        {
+          "frame": 182,
+          "fixed_base_displacement_m": 0.0,
+          "barrel_max_displacement_m": 1.066240299940009e-06
+        }
+      ],
+      "passed": true
+    },
+    {
+      "file": "HeavyDefenseCannon\\SK_HeavyDefenseCannon_AimDemo.glb",
+      "actions": [
+        "A_HeavyDefenseCannon_AimDemo"
+      ],
+      "frame_range": [
+        0.8000000715255737,
+        144.8000030517578
+      ],
+      "samples": [
+        {
+          "frame": 24,
+          "fixed_base_displacement_m": 0.0,
+          "barrel_max_displacement_m": 7.5830985039902306
+        },
+        {
+          "frame": 49,
+          "fixed_base_displacement_m": 0.0,
+          "barrel_max_displacement_m": 10.243205702950982
+        },
+        {
+          "frame": 73,
+          "fixed_base_displacement_m": 0.0,
+          "barrel_max_displacement_m": 7.782194784939414
+        },
+        {
+          "frame": 96,
+          "fixed_base_displacement_m": 0.0,
+          "barrel_max_displacement_m": 0.04742010998819184
+        },
+        {
+          "frame": 121,
+          "fixed_base_displacement_m": 0.0,
+          "barrel_max_displacement_m": 0.9769602912997682
+        },
+        {
+          "frame": 145,
+          "fixed_base_displacement_m": 0.0,
+          "barrel_max_displacement_m": 0.004182981377398698
+        }
+      ],
+      "passed": true
+    }
+  ]
+}

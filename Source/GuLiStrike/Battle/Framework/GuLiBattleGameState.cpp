@@ -2,6 +2,7 @@
 
 #include "Battle/Framework/GuLiBattleGameState.h"
 
+#include "Battle/Framework/GuLiBattlePlayerController.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Battle/Combat/GuLiLogicalMissileSubsystem.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
@@ -18,6 +19,7 @@
 namespace GuLiBattleRoleSlots
 {
 	constexpr uint8 SlotCount = 10;
+	constexpr float WingmanPublicPosePublishIntervalSeconds = 0.1f;
 
 	// 默认顺序先分配红蓝指挥官，再交替阵营填充每方两个 Ground、两个 Air 席位。
 	// 测试预设可调整角色优先级；同角色的阵营选择仍沿用这个顺序。
@@ -39,12 +41,12 @@ void AGuLiBattleGameState::BeginPlay()
 	if (HasAuthority() && GetWorld())
 	{
 		GetWorldTimerManager().SetTimer(
-			WingmanLeaseMaintenanceTimer,
+			WingmanPublicPosePublishTimer,
 			this,
-			&AGuLiBattleGameState::RunWingmanLeaseMaintenance,
-			1.0f,
+			&AGuLiBattleGameState::FlushPublicWingmanAcceptedBatches,
+			GuLiBattleRoleSlots::WingmanPublicPosePublishIntervalSeconds,
 			true,
-			1.0f);
+			GuLiBattleRoleSlots::WingmanPublicPosePublishIntervalSeconds);
 		if (UGuLiLogicalMissileSubsystem* Missiles =
 			GetWorld()->GetSubsystem<UGuLiLogicalMissileSubsystem>())
 		{
@@ -68,8 +70,9 @@ void AGuLiBattleGameState::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	if (GetWorld())
 	{
-		GetWorldTimerManager().ClearTimer(WingmanLeaseMaintenanceTimer);
+		GetWorldTimerManager().ClearTimer(WingmanPublicPosePublishTimer);
 	}
+	LatestPublicWingmanAcceptedBatches.Reset();
 	if (UGuLiLogicalMissileSubsystem* Missiles = BoundLogicalMissiles.Get())
 	{
 		Missiles->OnLaunch.RemoveAll(this);
@@ -78,76 +81,6 @@ void AGuLiBattleGameState::EndPlay(const EEndPlayReason::Type EndPlayReason)
 	}
 	BoundLogicalMissiles.Reset();
 	Super::EndPlay(EndPlayReason);
-}
-
-void AGuLiBattleGameState::RunWingmanLeaseMaintenance()
-{
-	if (!HasAuthority() || !GetWorld() || !WingmanRelayAuthorityRegistry)
-	{
-		return;
-	}
-	const double NowSeconds = GetWorld()->GetTimeSeconds();
-	TArray<FGuLiWingmanOwnerLossAssignment> NewOffers =
-		WingmanRelayAuthorityRegistry->RunLeaseMaintenance(NowSeconds);
-
-	// A silent-but-connected owner reaches the same retained NoOwner state as a
-	// socket loss, but Logout never runs to seed the backup directory. Promote
-	// each newly revoked group into the normal Offer/Ready rotation using only
-	// currently connected, same-cohort transports that do not already own a
-	// persistent group. No movement or authoritative pose is generated here.
-	for (const FGuLiWingmanGroupHandle& Group
-		: WingmanRelayAuthorityRegistry->GetRecoverableLeaseLossGroups())
-	{
-		const uint8 OwnerCohort = WingmanRelayAuthorityRegistry->GetGroupOwnerCohort(Group);
-		TArray<FGuid> ConnectedCandidates;
-		for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-		{
-			APlayerController* Controller = It->Get();
-			const AGuLiBattlePlayerState* PlayerState = Controller
-				? Controller->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
-			UGuLiWingmanRelayComponent* Transport = Controller
-				? Controller->FindComponentByClass<UGuLiWingmanRelayComponent>() : nullptr;
-			if (!PlayerState || !Transport || !Transport->CanServerAttachPersistentGroup()
-				|| !PlayerState->GetPlayerGuid().IsValid()
-				|| static_cast<uint8>(PlayerState->GetTeam()) != OwnerCohort
-				|| PlayerState->GetBattleRole() == EGuLiCommanderRole::Observer
-				|| PlayerState->GetBattleRole() == EGuLiCommanderRole::Unassigned)
-			{
-				continue;
-			}
-			ConnectedCandidates.AddUnique(PlayerState->GetPlayerGuid());
-		}
-
-		FGuLiWingmanOwnerLossAssignment Assignment;
-		if (WingmanRelayAuthorityRegistry->BeginLeaseLossRecovery(
-			Group, ConnectedCandidates, NowSeconds, Assignment))
-		{
-			NewOffers.Add(Assignment);
-		}
-	}
-	for (const FGuLiWingmanOwnerLossAssignment& Assignment : NewOffers)
-	{
-		if (Assignment.Disposition != EGuLiWingmanOwnerLossDisposition::OfferStarted)
-		{
-			continue;
-		}
-		for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
-		{
-			APlayerController* Controller = It->Get();
-			const AGuLiBattlePlayerState* PlayerState = Controller
-				? Controller->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
-			if (!PlayerState || PlayerState->GetPlayerGuid() != Assignment.NewOwnerPlayerGuid)
-			{
-				continue;
-			}
-			if (UGuLiWingmanRelayComponent* Transport =
-				Controller->FindComponentByClass<UGuLiWingmanRelayComponent>())
-			{
-				Transport->ServerDeliverLeaseOffer(Assignment.Group);
-			}
-			break;
-		}
-	}
 }
 
 FGuLiWingmanRelayAuthorityRegistry* AGuLiBattleGameState::GetWingmanRelayAuthorityRegistry()
@@ -469,9 +402,26 @@ void AGuLiBattleGameState::ServerRevokeWingmanGroup(const FGuLiWingmanGroupHandl
 	{
 		return Entry.Group == Group;
 	});
-	LastPublicWingmanAcceptedPublishTimes.Remove(Group);
+	LatestPublicWingmanAcceptedBatches.RemoveAll(
+		[&Group](const FGuLiWingmanAcceptedBatch& Entry)
+		{
+			return Entry.Group == Group;
+		});
 	ForceNetUpdate();
 	MulticastRevokeWingmanGroup(Group);
+}
+
+void AGuLiBattleGameState::ServerPublishWingmanExternalControl(const FGuLiWingmanGroupHandle& Group,
+	bool bPhased, bool bLocked, const TArray<FGuLiWingmanAcceptedBatch>& Baselines)
+{
+	if (!HasAuthority()) { return; }
+	auto* State = PublicWingmanBootstraps.FindByPredicate([&](const auto& Entry) { return Entry.Group == Group; });
+	if (!State) { return; }
+	State->bPhased = bPhased; State->bExternalActionsLocked = bLocked;
+	State->ExternalDisplacementBaselines = Baselines;
+	State->PublicationRevision = NextWingmanPublicationRevision++;
+	if (!NextWingmanPublicationRevision) { ++NextWingmanPublicationRevision; }
+	ForceNetUpdate(); MulticastReceiveWingmanBootstrap(*State);
 }
 
 void AGuLiBattleGameState::ServerPublishWingmanAcceptedBatch(
@@ -486,20 +436,22 @@ void AGuLiBattleGameState::ServerPublishWingmanAcceptedBatch(
 	{
 		return;
 	}
-	// Owner candidates are produced at 10 Hz. Retain that hard public-stream
-	// ceiling even if deferred validation results arrive in a short burst.
-	constexpr double MinimumAcceptedPublishIntervalSeconds = 0.1;
-	const double NowSeconds = GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0;
-	if (const double* LastTime = LastPublicWingmanAcceptedPublishTimes.Find(AcceptedBatch.Group))
-	{
-		if (NowSeconds < *LastTime
-			|| NowSeconds - *LastTime < MinimumAcceptedPublishIntervalSeconds)
+	// Relay validation has already accepted the authoritative endpoint. Coalesce each
+	// Flight to one latest value for the next 10 Hz public frame.
+	const int32 ExistingIndex = LatestPublicWingmanAcceptedBatches.IndexOfByPredicate(
+		[&AcceptedBatch](const FGuLiWingmanAcceptedBatch& Entry)
 		{
-			return;
-		}
+			return Entry.Group == AcceptedBatch.Group
+				&& Entry.FlightIndex == AcceptedBatch.FlightIndex;
+		});
+	if (ExistingIndex == INDEX_NONE)
+	{
+		LatestPublicWingmanAcceptedBatches.Add(AcceptedBatch);
 	}
-	LastPublicWingmanAcceptedPublishTimes.Add(AcceptedBatch.Group, NowSeconds);
-	MulticastReceiveWingmanAcceptedBatch(AcceptedBatch);
+	else
+	{
+		LatestPublicWingmanAcceptedBatches[ExistingIndex] = AcceptedBatch;
+	}
 }
 
 void AGuLiBattleGameState::ServerPublishWingmanAcceptedAtomicBatch(
@@ -532,11 +484,34 @@ void AGuLiBattleGameState::ServerPublishWingmanAcceptedAtomicBatch(
 	{
 		return;
 	}
-	const double NowSeconds = GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0;
-	LastPublicWingmanAcceptedPublishTimes.Add(Group, NowSeconds);
 	for (const FGuLiWingmanAcceptedBatch& Accepted : AcceptedFlights)
 	{
-		MulticastReceiveWingmanAcceptedBatch(Accepted);
+		ServerPublishWingmanAcceptedBatch(Accepted);
+	}
+}
+
+void AGuLiBattleGameState::FlushPublicWingmanAcceptedBatches()
+{
+	if (!HasAuthority())
+	{
+		return;
+	}
+	// Retain the latest endpoints until replaced and publish one compact 10 Hz
+	// frame per viewer, ordered with the reliable lifecycle cuts.
+	const TArray<FGuLiWingmanAcceptedBatch>& Published = LatestPublicWingmanAcceptedBatches;
+	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+	{
+		AGuLiBattlePlayerController* Controller = CastChecked<AGuLiBattlePlayerController>(It->Get());
+		Controller->GetWingmanRelayComponent()->SendPublicWingmanAcceptedBatches(Published);
+	}
+}
+
+void AGuLiBattleGameState::ReceivePublicWingmanAcceptedBatches(
+	const TArray<FGuLiWingmanAcceptedBatch>& AcceptedBatches)
+{
+	for (const FGuLiWingmanAcceptedBatch& AcceptedBatch : AcceptedBatches)
+	{
+		HandlePublicWingmanAcceptedBatch(AcceptedBatch);
 	}
 }
 
@@ -555,12 +530,6 @@ void AGuLiBattleGameState::MulticastRevokeWingmanGroup_Implementation(
 	const FGuLiWingmanGroupHandle& Group)
 {
 	HandlePublicWingmanRevocation(Group);
-}
-
-void AGuLiBattleGameState::MulticastReceiveWingmanAcceptedBatch_Implementation(
-	const FGuLiWingmanAcceptedBatch& AcceptedBatch)
-{
-	HandlePublicWingmanAcceptedBatch(AcceptedBatch);
 }
 
 void AGuLiBattleGameState::MulticastReceiveMissileLaunch_Implementation(
@@ -746,6 +715,9 @@ void AGuLiBattleGameState::HandlePublicWingmanBootstrap(
 			GetWorld()->GetTimeSeconds()))
 		{
 			AppliedPublicWingmanGroups.Add(PublicState.Group);
+			Presentation->SetGroupExternalControlState(PublicState.Group,PublicState.bPhased,PublicState.bExternalActionsLocked);
+			for (const auto& Batch : PublicState.ExternalDisplacementBaselines)
+			{ Presentation->ApplyAcceptedSnapshot(Batch,GetWorld()->GetTimeSeconds()); }
 		}
 	}
 }

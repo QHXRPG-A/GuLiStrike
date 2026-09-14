@@ -20,6 +20,7 @@ public:
 
 	/** Position of the arrow tip in the source PNG, normalized to [0,1]. */
 	void SetHotSpotFromNormalized(FVector2D InHotSpot);
+	void SetTeleportMode(bool bEnabled) { bTeleportMode = bEnabled; InvalidateLayoutAndVolatility(); }
 
 protected:
 	virtual TSharedRef<SWidget> RebuildWidget() override;
@@ -29,6 +30,7 @@ protected:
 		int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const override;
 
 private:
+	bool bTeleportMode = false;
 	UPROPERTY(EditDefaultsOnly, Category = "Commander|Cursor")
 	TSoftObjectPtr<UTexture2D> CursorTexture;
 

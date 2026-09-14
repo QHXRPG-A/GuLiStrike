@@ -31,7 +31,7 @@ import {
   Wrench,
   XCircle,
 } from 'lucide-react';
-import React, { useCallback, useEffect, useMemo, useState } from 'react';
+import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import ReactMarkdown from 'react-markdown';
 import remarkGfm from 'remark-gfm';
 
@@ -81,7 +81,9 @@ type ViewKey =
   | 'archive'
   | 'gameplay'
   | 'backlog'
-  | 'quality';
+  | 'quality'
+  | 'stage'
+  | 'tasks';
 
 const NAVIGATION: Array<{
   key: ViewKey;
@@ -196,7 +198,13 @@ function EmptyState({ label }: { label: string }) {
   );
 }
 
-function WorkflowRail({ snapshot }: { snapshot: Snapshot }) {
+function WorkflowRail({
+  snapshot,
+  onSelectStage,
+}: {
+  snapshot: Snapshot;
+  onSelectStage: (stage: WorkflowStage) => void;
+}) {
   return (
     <div className="workflow-rail">
       {WORKFLOW.map((stage, index) => {
@@ -204,7 +212,13 @@ function WorkflowRail({ snapshot }: { snapshot: Snapshot }) {
         const count = snapshot.stats.by_stage[stage.key] ?? 0;
         return (
           <React.Fragment key={stage.key}>
-            <div className={cn('workflow-node', stageClass(stage.key))}>
+            <button
+              type="button"
+              onClick={() => onSelectStage(stage.key)}
+              aria-label={`查看${stage.label}阶段工作项（${count} 个）`}
+              title={`查看${stage.label}阶段的 ${count} 个工作项`}
+              className={cn('workflow-node workflow-node-clickable', stageClass(stage.key))}
+            >
               <div className="flex items-start justify-between gap-3">
                 <Icon className="size-4" />
                 <span className="font-mono text-2xl font-semibold leading-none">{count}</span>
@@ -213,7 +227,7 @@ function WorkflowRail({ snapshot }: { snapshot: Snapshot }) {
                 <p className="font-medium text-slate-100">{stage.label}</p>
                 <p className="mt-0.5 text-[11px] text-slate-500">{stage.hint}</p>
               </div>
-            </div>
+            </button>
             {index < WORKFLOW.length - 1 && <ChevronRight className="workflow-arrow" />}
           </React.Fragment>
         );
@@ -222,7 +236,15 @@ function WorkflowRail({ snapshot }: { snapshot: Snapshot }) {
   );
 }
 
-function TaskMeter({ done, total }: { done: number; total: number }) {
+function TaskMeter({
+  done,
+  total,
+  onOpenDetails,
+}: {
+  done: number;
+  total: number;
+  onOpenDetails: () => void;
+}) {
   const value = total ? Math.round((done / total) * 100) : 0;
   return (
     <div>
@@ -231,7 +253,15 @@ function TaskMeter({ done, total }: { done: number; total: number }) {
           <p className="text-3xl font-semibold tracking-tight text-slate-50">{value}%</p>
           <p className="mt-1 text-xs text-slate-500">已完成 {done} / {total} 项</p>
         </div>
-        <ListChecks className="size-6 text-cyan-300" />
+        <button
+          type="button"
+          onClick={onOpenDetails}
+          aria-label="查看任务明细"
+          title="查看任务明细"
+          className="task-meter-toggle"
+        >
+          <ListChecks className="size-6 text-cyan-300" />
+        </button>
       </div>
       <div className="h-2 overflow-hidden rounded-full bg-slate-800">
         <div className="h-full rounded-full bg-cyan-400 transition-[width]" style={{ width: `${value}%` }} />
@@ -248,7 +278,7 @@ function WorkList({
 }: {
   items: WorkItem[];
   documents: Map<string, ProgressDocument>;
-  openDocument: (id: string) => void;
+  openDocument: (id: string, anchor?: string) => void;
   empty: string;
 }) {
   if (!items.length) return <EmptyState label={empty} />;
@@ -276,7 +306,17 @@ function WorkList({
   );
 }
 
-function Overview({ snapshot, openDocument }: { snapshot: Snapshot; openDocument: (id: string) => void }) {
+function Overview({
+  snapshot,
+  openDocument,
+  onSelectStage,
+  onOpenTasks,
+}: {
+  snapshot: Snapshot;
+  openDocument: (id: string, anchor?: string) => void;
+  onSelectStage: (stage: WorkflowStage) => void;
+  onOpenTasks: () => void;
+}) {
   const documents = useMemo(() => new Map(snapshot.documents.map((document) => [document.id, document])), [snapshot.documents]);
   const rootDevelopment = snapshot.documents.filter(
     (document) => document.kind === 'development' && document.role === 'root',
@@ -307,7 +347,7 @@ function Overview({ snapshot, openDocument }: { snapshot: Snapshot; openDocument
         title="项目战情总览"
         description="状态直接来自 Markdown 元数据；索引、页面与 AI 目录共享同一份事实源。"
       />
-      <WorkflowRail snapshot={snapshot} />
+      <WorkflowRail snapshot={snapshot} onSelectStage={onSelectStage} />
 
       <div className="mt-5 grid gap-4 xl:grid-cols-[0.9fr_1.6fr]">
         <Card className="control-card">
@@ -316,7 +356,7 @@ function Overview({ snapshot, openDocument }: { snapshot: Snapshot; openDocument
             <CardTitle className="text-slate-100">开发任务完成率</CardTitle>
           </CardHeader>
           <CardContent className="space-y-6">
-            <TaskMeter done={tasks.done} total={tasks.total} />
+            <TaskMeter done={tasks.done} total={tasks.total} onOpenDetails={onOpenTasks} />
             <div className="grid grid-cols-3 gap-2 border-t border-slate-800 pt-4">
               <Metric label="活跃工作" value={active.length} />
               <Metric label="待验收" value={snapshot.stats.by_stage.verification ?? 0} tone="amber" />
@@ -435,12 +475,14 @@ function WorkQueue({
   items,
   documents,
   openDocument,
+  empty = '当前没有活跃工作',
 }: {
   items: WorkItem[];
   documents: Map<string, ProgressDocument>;
-  openDocument: (id: string) => void;
+  openDocument: (id: string, anchor?: string) => void;
+  empty?: string;
 }) {
-  if (!items.length) return <EmptyState label="当前没有活跃工作" />;
+  if (!items.length) return <EmptyState label={empty} />;
   return (
     <div className="overflow-hidden rounded-lg border border-slate-800">
       <Table>
@@ -481,13 +523,122 @@ function WorkQueue({
   );
 }
 
+function StageView({
+  stage,
+  snapshot,
+  openDocument,
+}: {
+  stage: WorkflowStage;
+  snapshot: Snapshot;
+  openDocument: (id: string, anchor?: string) => void;
+}) {
+  const documents = useMemo(() => new Map(snapshot.documents.map((document) => [document.id, document])), [snapshot.documents]);
+  const config = WORKFLOW.find((item) => item.key === stage);
+  const items = snapshot.work_items.filter((item) => item.stage === stage);
+  return (
+    <div>
+      <SectionHeading
+        eyebrow="STAGE FOCUS"
+        title={`${config?.label ?? stage} · ${items.length} 个工作项`}
+        description={`${config?.hint ?? ''}。点击条目打开关联文档；数据与总览流水线卡片共享同一份快照。`}
+      />
+      <WorkQueue
+        items={items}
+        documents={documents}
+        openDocument={openDocument}
+        empty={`没有处于「${config?.label ?? stage}」阶段的工作项`}
+      />
+    </div>
+  );
+}
+
+function TasksView({ snapshot, openDocument }: { snapshot: Snapshot; openDocument: (id: string, anchor?: string) => void }) {
+  const documents = snapshot.documents.filter(
+    (document) => document.kind === 'development' && document.role === 'root',
+  );
+  const tasks = documents.reduce(
+    (accumulator, document) => ({
+      done: accumulator.done + document.tasks_done,
+      total: accumulator.total + document.tasks_total,
+    }),
+    { done: 0, total: 0 },
+  );
+  const rows = [...documents].sort((left, right) => {
+    const leftHas = left.tasks_total > 0 ? 1 : 0;
+    const rightHas = right.tasks_total > 0 ? 1 : 0;
+    if (leftHas !== rightHas) return rightHas - leftHas;
+    if (leftHas) return (left.task_progress ?? 0) - (right.task_progress ?? 0);
+    return right.updated.localeCompare(left.updated);
+  });
+  return (
+    <div>
+      <SectionHeading
+        eyebrow="TASK BREAKDOWN"
+        title="任务明细"
+        description={`根开发文档共 ${documents.length} 篇，任务完成 ${tasks.done} / ${tasks.total} 项；按完成率升序排列，点击标题打开文档。`}
+      />
+      {rows.length ? (
+        <div className="overflow-hidden rounded-lg border border-slate-800 bg-slate-900/45">
+          <Table>
+            <TableHeader>
+              <TableRow className="border-slate-800 bg-slate-950/70 hover:bg-slate-950/70">
+                <TableHead>文档</TableHead>
+                <TableHead>状态</TableHead>
+                <TableHead>任务</TableHead>
+                <TableHead>进度</TableHead>
+                <TableHead>更新</TableHead>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {rows.map((document) => {
+                const percent = document.tasks_total
+                  ? Math.round((document.tasks_done / document.tasks_total) * 100)
+                  : null;
+                return (
+                  <TableRow key={document.id} className="border-slate-800/80 hover:bg-slate-800/45">
+                    <TableCell className="max-w-[520px] whitespace-normal">
+                      <button type="button" onClick={() => openDocument(document.id)} className="text-left">
+                        <span className="line-clamp-1 font-medium text-slate-200 hover:text-cyan-200">{document.title}</span>
+                        <span className="mt-1 block font-mono text-[10px] text-slate-600">{document.id}</span>
+                      </button>
+                    </TableCell>
+                    <TableCell><StatusBadge value={document.status} /></TableCell>
+                    <TableCell className="font-mono text-xs text-slate-400">
+                      {document.tasks_total ? `${document.tasks_done}/${document.tasks_total}` : '—'}
+                    </TableCell>
+                    <TableCell>
+                      {percent === null ? (
+                        <span className="font-mono text-xs text-slate-600">—</span>
+                      ) : (
+                        <div className="flex items-center gap-2">
+                          <div className="h-1.5 w-24 overflow-hidden rounded-full bg-slate-800">
+                            <div className="h-full rounded-full bg-cyan-400" style={{ width: `${percent}%` }} />
+                          </div>
+                          <span className="font-mono text-[10px] text-slate-500">{percent}%</span>
+                        </div>
+                      )}
+                    </TableCell>
+                    <TableCell className="font-mono text-xs text-slate-500">{readableDate(document.updated)}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </div>
+      ) : (
+        <EmptyState label="没有根开发文档" />
+      )}
+    </div>
+  );
+}
+
 function DocumentTable({
   documents,
   openDocument,
   placeholder,
 }: {
   documents: ProgressDocument[];
-  openDocument: (id: string) => void;
+  openDocument: (id: string, anchor?: string) => void;
   placeholder: string;
 }) {
   const [sorting, setSorting] = useState<SortingState>([{ id: 'updated', desc: true }]);
@@ -616,7 +767,7 @@ function DocumentTable({
   );
 }
 
-function SearchView({ openDocument }: { openDocument: (id: string) => void }) {
+function SearchView({ openDocument }: { openDocument: (id: string, anchor?: string) => void }) {
   const [query, setQuery] = useState('');
   const [kind, setKind] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
@@ -695,7 +846,7 @@ function SearchView({ openDocument }: { openDocument: (id: string) => void }) {
   );
 }
 
-function ArchiveTimeline({ documents, openDocument }: { documents: ProgressDocument[]; openDocument: (id: string) => void }) {
+function ArchiveTimeline({ documents, openDocument }: { documents: ProgressDocument[]; openDocument: (id: string, anchor?: string) => void }) {
   const archives = documents
     .filter((document) => document.kind === 'archive' && document.role === 'root')
     .sort((left, right) => right.created.localeCompare(left.created) || right.updated.localeCompare(left.updated));
@@ -723,32 +874,74 @@ function ArchiveTimeline({ documents, openDocument }: { documents: ProgressDocum
   );
 }
 
-function BacklogView({ items }: { items: BacklogItem[] }) {
+function BacklogView({
+  items,
+  documents,
+  openDocument,
+}: {
+  items: BacklogItem[];
+  documents: ProgressDocument[];
+  openDocument: (id: string, anchor?: string) => void;
+}) {
+  const documentsById = useMemo(() => new Map(documents.map((document) => [document.id, document])), [documents]);
+  const documentsByPath = useMemo(() => new Map(documents.map((document) => [document.path, document])), [documents]);
+  const resolveTarget = (item: BacklogItem): { id: string; anchor?: string } | null => {
+    const requirementMatch = /REQ-[A-Za-z0-9-]+/.exec(item.requirement);
+    if (requirementMatch && documentsById.has(requirementMatch[0])) return { id: requirementMatch[0] };
+    const source = documentsByPath.get(item.path);
+    if (source) return { id: source.id, anchor: item.id };
+    return null;
+  };
+  const openItem = (item: BacklogItem) => {
+    const target = resolveTarget(item);
+    if (target) openDocument(target.id, target.anchor);
+  };
   return (
     <div>
       <SectionHeading
         eyebrow="IDEA INBOX"
         title="月度 Backlog"
-        description="未确认点子先停在这里；提升为正式需求后仍保留原条目和追溯关系。"
+        description="未确认点子先停在这里；提升为正式需求后仍保留原条目和追溯关系。点击卡片打开正式需求或原始条目。"
       />
       {items.length ? (
         <div className="grid gap-3 md:grid-cols-2 xl:grid-cols-3">
-          {items.map((item) => (
-            <Card key={item.id} className="control-card">
-              <CardHeader>
-                <div className="flex items-center justify-between gap-3">
-                  <span className="font-mono text-xs text-cyan-400">{item.id}</span>
-                  <StatusBadge value={item.status} />
-                </div>
-                <CardTitle className="pt-2 text-slate-100">{item.title}</CardTitle>
-              </CardHeader>
-              <CardContent className="space-y-3 text-sm text-slate-400">
-                <p><span className="text-slate-600">价值 / </span>{item.value || '—'}</p>
-                <p><span className="text-slate-600">待确认 / </span>{item.question || '—'}</p>
-                <div className="flex flex-wrap gap-1">{item.areas.map((area) => <span key={area} className="area-chip">{area}</span>)}</div>
-              </CardContent>
-            </Card>
-          ))}
+          {items.map((item) => {
+            const target = resolveTarget(item);
+            const interactive = Boolean(target);
+            return (
+              <Card
+                key={item.id}
+                className={cn('control-card', interactive && 'backlog-card')}
+                role={interactive ? 'button' : undefined}
+                tabIndex={interactive ? 0 : undefined}
+                aria-label={interactive ? `打开 ${item.id} ${item.title}` : undefined}
+                onClick={interactive ? () => openItem(item) : undefined}
+                onKeyDown={
+                  interactive
+                    ? (event: React.KeyboardEvent<HTMLDivElement>) => {
+                        if (event.key === 'Enter' || event.key === ' ') {
+                          event.preventDefault();
+                          openItem(item);
+                        }
+                      }
+                    : undefined
+                }
+              >
+                <CardHeader>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="font-mono text-xs text-cyan-400">{item.id}</span>
+                    <StatusBadge value={item.status} />
+                  </div>
+                  <CardTitle className="pt-2 text-slate-100 group-hover/card:text-cyan-200">{item.title}</CardTitle>
+                </CardHeader>
+                <CardContent className="space-y-3 text-sm text-slate-400">
+                  <p><span className="text-slate-600">价值 / </span>{item.value || '—'}</p>
+                  <p><span className="text-slate-600">待确认 / </span>{item.question || '—'}</p>
+                  <div className="flex flex-wrap gap-1">{item.areas.map((area) => <span key={area} className="area-chip">{area}</span>)}</div>
+                </CardContent>
+              </Card>
+            );
+          })}
         </div>
       ) : (
         <EmptyState label="本月暂无正式编号的 Backlog 条目" />
@@ -813,17 +1006,20 @@ function resolveMarkdownDocument(sourcePath: string, href: string, documentsByPa
 
 function DocumentDrawer({
   documentId,
+  anchor,
   documents,
   onClose,
   openDocument,
 }: {
   documentId: string | null;
+  anchor: string | null;
   documents: ProgressDocument[];
   onClose: () => void;
-  openDocument: (id: string) => void;
+  openDocument: (id: string, anchor?: string) => void;
 }) {
   const [detail, setDetail] = useState<ProgressDocumentDetail | null>(null);
   const [loadError, setLoadError] = useState<{ id: string; message: string } | null>(null);
+  const bodyRef = useRef<HTMLDivElement | null>(null);
   const documentsById = useMemo(() => new Map(documents.map((document) => [document.id, document])), [documents]);
   const documentsByPath = useMemo(() => new Map(documents.map((document) => [document.path, document])), [documents]);
 
@@ -844,6 +1040,22 @@ function DocumentDrawer({
       });
     return () => controller.abort();
   }, [documentId]);
+
+  useEffect(() => {
+    if (!detail || detail.id !== documentId || !anchor) return;
+    const container = bodyRef.current;
+    if (!container) return;
+    const headings = Array.from(container.querySelectorAll('h1, h2, h3, h4'));
+    const target = headings.find((heading) => (heading.textContent ?? '').includes(anchor));
+    if (!target) return;
+    target.scrollIntoView({ block: 'start' });
+    target.classList.add('drawer-anchor-target');
+    const timeout = window.setTimeout(() => target.classList.remove('drawer-anchor-target'), 2400);
+    return () => {
+      window.clearTimeout(timeout);
+      target.classList.remove('drawer-anchor-target');
+    };
+  }, [detail, documentId, anchor]);
 
   const relationRows = detail
     ? Object.entries(detail.relations).flatMap(([label, value]) => {
@@ -877,7 +1089,7 @@ function DocumentDrawer({
               <SheetDescription className="font-mono text-[10px] text-slate-600">{detail.id} · {detail.path}</SheetDescription>
             </SheetHeader>
             <ScrollArea className="min-h-0 flex-1">
-              <div className="px-6 py-6 sm:px-8">
+              <div ref={bodyRef} className="px-6 py-6 sm:px-8">
                 <div className="grid gap-3 sm:grid-cols-2">
                   <InfoBlock label="摘要" value={detail.summary} />
                   <InfoBlock label="下一步" value={detail.next_action || '—'} tone="cyan" />
@@ -948,11 +1160,36 @@ function InfoBlock({ label, value, tone }: { label: string; value: string; tone?
   );
 }
 
-function ViewContent({ view, snapshot, openDocument }: { view: ViewKey; snapshot: Snapshot; openDocument: (id: string) => void }) {
-  if (view === 'overview') return <Overview snapshot={snapshot} openDocument={openDocument} />;
+function ViewContent({
+  view,
+  snapshot,
+  openDocument,
+  stageFilter,
+  onSelectStage,
+  onOpenTasks,
+}: {
+  view: ViewKey;
+  snapshot: Snapshot;
+  openDocument: (id: string, anchor?: string) => void;
+  stageFilter: WorkflowStage;
+  onSelectStage: (stage: WorkflowStage) => void;
+  onOpenTasks: () => void;
+}) {
+  if (view === 'overview')
+    return (
+      <Overview
+        snapshot={snapshot}
+        openDocument={openDocument}
+        onSelectStage={onSelectStage}
+        onOpenTasks={onOpenTasks}
+      />
+    );
+  if (view === 'stage') return <StageView stage={stageFilter} snapshot={snapshot} openDocument={openDocument} />;
+  if (view === 'tasks') return <TasksView snapshot={snapshot} openDocument={openDocument} />;
   if (view === 'search') return <SearchView openDocument={openDocument} />;
   if (view === 'archive') return <ArchiveTimeline documents={snapshot.documents} openDocument={openDocument} />;
-  if (view === 'backlog') return <BacklogView items={snapshot.backlog} />;
+  if (view === 'backlog')
+    return <BacklogView items={snapshot.backlog} documents={snapshot.documents} openDocument={openDocument} />;
   if (view === 'quality') return <QualityView snapshot={snapshot} />;
 
   const config = {
@@ -989,8 +1226,10 @@ function ViewContent({ view, snapshot, openDocument }: { view: ViewKey; snapshot
 
 export function ProgressDashboard() {
   const [view, setView] = useState<ViewKey>('overview');
+  const [stageFilter, setStageFilter] = useState<WorkflowStage>('in_progress');
   const [snapshot, setSnapshot] = useState<Snapshot | null>(null);
   const [selectedDocument, setSelectedDocument] = useState<string | null>(null);
+  const [selectedAnchor, setSelectedAnchor] = useState<string | null>(null);
   const [error, setError] = useState('');
   const [refreshing, setRefreshing] = useState(false);
 
@@ -1017,7 +1256,15 @@ export function ProgressDashboard() {
     };
   }, [loadSnapshot]);
 
-  const openDocument = useCallback((id: string) => setSelectedDocument(id), []);
+  const openDocument = useCallback((id: string, anchor?: string) => {
+    setSelectedDocument(id);
+    setSelectedAnchor(anchor ?? null);
+  }, []);
+  const openStage = useCallback((stage: WorkflowStage) => {
+    setStageFilter(stage);
+    setView('stage');
+  }, []);
+  const openTasks = useCallback(() => setView('tasks'), []);
 
   return (
     <div className="min-h-screen bg-[#060d18] text-slate-200">
@@ -1055,7 +1302,9 @@ export function ProgressDashboard() {
           <nav className="flex gap-1 overflow-x-auto p-3 lg:flex-col lg:p-4" aria-label="进度视图">
             {NAVIGATION.map((item) => {
               const Icon = item.icon;
-              const active = view === item.key;
+              const active =
+                view === item.key ||
+                (item.key === 'overview' && (view === 'stage' || view === 'tasks'));
               return (
                 <button
                   key={item.key}
@@ -1094,7 +1343,14 @@ export function ProgressDashboard() {
               <p className="font-mono text-xs tracking-widest">LOADING SOURCE OF TRUTH</p>
             </div>
           ) : (
-            <ViewContent view={view} snapshot={snapshot} openDocument={openDocument} />
+            <ViewContent
+              view={view}
+              snapshot={snapshot}
+              openDocument={openDocument}
+              stageFilter={stageFilter}
+              onSelectStage={openStage}
+              onOpenTasks={openTasks}
+            />
           )}
         </main>
       </div>
@@ -1102,8 +1358,12 @@ export function ProgressDashboard() {
       {snapshot && (
         <DocumentDrawer
           documentId={selectedDocument}
+          anchor={selectedAnchor}
           documents={snapshot.documents}
-          onClose={() => setSelectedDocument(null)}
+          onClose={() => {
+            setSelectedDocument(null);
+            setSelectedAnchor(null);
+          }}
           openDocument={openDocument}
         />
       )}

@@ -5,6 +5,13 @@
 #include "GuLiStrikeProjectile.h"
 #include "Engine/World.h"
 
+bool UGuLiStrikeWeaponPart::GetMuzzleTransformRelativeToPart(FTransform& OutTransform) const
+{
+	if (!MuzzleSocketName.IsNone()) { return GetVisualSocketTransform(MuzzleSocketName, OutTransform); }
+	OutTransform = FTransform(MuzzleOffset);
+	return true;
+}
+
 void UGuLiStrikeWeaponPart::Fire_Implementation(AActor* Instigator)
 {
 	AGuLiStrikeShip* Ship = Cast<AGuLiStrikeShip>(Instigator);
@@ -22,12 +29,12 @@ void UGuLiStrikeWeaponPart::Fire_Implementation(AActor* Instigator)
 		return;
 	}
 
-	LastFireTime = Now;
-
 	// 炮口以服务器装配及胶囊权威姿态为准，不能读取带 Listen Server 视觉平滑偏移的世界变换。
-	FTransform MuzzleTransform;
-	if (!Ship->GetServerPartTransform(this, MuzzleTransform)) { return; }
-	MuzzleTransform.SetLocation(MuzzleTransform.TransformPosition(MuzzleOffset));
+	FTransform PartTransform;
+	FTransform LocalMuzzle;
+	if (!Ship->GetServerPartTransform(this, PartTransform) || !GetMuzzleTransformRelativeToPart(LocalMuzzle)) { return; }
+	const FTransform MuzzleTransform = LocalMuzzle * PartTransform;
+	LastFireTime = Now;
 
 	// Deferred spawning guarantees the immutable ledger identity is present before
 	// collision/movement components activate, including for a muzzle already touching a target.

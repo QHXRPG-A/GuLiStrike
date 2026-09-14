@@ -1,0 +1,393 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "095A47034DE09A8D00EC9C814A4D6E88",
+			"instanceName": "DESKTOP-6D3B0FC-49236",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.12-04.56.22",
+	"succeeded": 20,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.45947840809822083,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "Distribution",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.TargetAssignment.Distribution",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0080868005752563477,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LegalityAndDeterminism",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.TargetAssignment.LegalityAndDeterminism",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.008534502238035202,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SwitchPenaltyAndFailure",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.TargetAssignment.SwitchPenaltyAndFailure",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0078568011522293091,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AirBurstOrbitStateMachine",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.AirBurstOrbitStateMachine",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0078394003212451935,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BoundedCapturedFireWire",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.BoundedCapturedFireWire",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0084076002240180969,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FixedGroundAOEAndAttribution",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.FixedGroundAOEAndAttribution",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.016948100179433823,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroundPathAndCadence",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.GroundPathAndCadence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0075524002313613892,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NativeV3SpeedRadiusAndProjectile",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.NativeV3SpeedRadiusAndProjectile",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0079871006309986115,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemoteModelCorrectionIsVisualOnly",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.RemoteModelCorrectionIsVisualOnly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0083594024181365967,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReusableTeamOutline",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.ReusableTeamOutline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0088403001427650452,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ServerAirBurstStartBoundary",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.ServerAirBurstStartBoundary",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0082935020327568054,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SustainedGunLedgerAndState",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.SustainedGunLedgerAndState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.00914040207862854,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TargetHysteresisAndGuardRejoin",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.TargetHysteresisAndGuardRejoin",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0075752995908260345,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnifiedAutomaticTargetingAndAuthorization",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.UnifiedAutomaticTargetingAndAuthorization",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.13899299502372742,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogAbilitySystem: Processing InitializeRuntimeObjectLibrary.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.12-04.56.21"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'One over-release target is removed without clearing the whole table' to be false.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Combat\\Tests\\GuLiWingmanCombatCoordinatorTests.cpp",
+					"lineNumber": 670,
+					"timestamp": "2026.09.12-04.56.21"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Losing every prior automatic target only by release range clears the table' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Combat\\Tests\\GuLiWingmanCombatCoordinatorTests.cpp",
+					"lineNumber": 730,
+					"timestamp": "2026.09.12-04.56.21"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The existing group rejoin gate blocks immediate reacquisition' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Combat\\Tests\\GuLiWingmanCombatCoordinatorTests.cpp",
+					"lineNumber": 734,
+					"timestamp": "2026.09.12-04.56.21"
+				}
+			],
+			"warnings": 0,
+			"errors": 3,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AppliesDeathCutWithRetainedPoseHistory",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.AppliesDeathCutWithRetainedPoseHistory",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.14400368928909302,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExtrapolationFadeHide",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.ExtrapolationFadeHide",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0081561990082263947,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Interpolation",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.Interpolation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0079400986433029175,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MultiFlightTimelines",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.MultiFlightTimelines",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.014520499855279922,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RejectsPostDeathAcceptedPose",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.RejectsPostDeathAcceptedPose",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.013650301843881607,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SequenceAndBoundedHistory",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.SequenceAndBoundedHistory",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0083777010440826416,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StableSlotAndDedicatedServerGate",
+			"fullTestPath": "GuLiStrike.Wingman.Presentation.StableSlotAndDedicatedServerGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"095A47034DE09A8D00EC9C814A4D6E88"
+			],
+			"duration": 0.0084153003990650177,
+			"dateTime": "2026.09.12-04.56.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

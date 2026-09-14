@@ -10,10 +10,39 @@
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | development | done | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | archive | recorded | 2026-09-09 |
 
+## architecture
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [资源经济、动态障碍与 Commander 适配层解耦](../Archive/20260911-资源经济障碍与Commander适配层解耦.md) | archive | recorded | 2026-09-11 |
+
+## art
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [双矿单位矿模型 UE 导入](../RequirementDocument/20260910-双矿单位矿模型UE导入.md) | requirement | approved | 2026-09-10 |
+| [双矿单位矿模型与 Blender 审核](../RequirementDocument/20260910-双矿单位矿模型与Blender审核.md) | requirement | approved | 2026-09-10 |
+| [双矿单位矿模型 UE 导入](../DevelopmentDocumentation/20260910-双矿单位矿模型UE导入.md) | development | done | 2026-09-10 |
+| [双矿单位矿模型与 Blender 审核](../DevelopmentDocumentation/20260910-双矿单位矿模型与Blender审核.md) | development | done | 2026-09-10 |
+| [双矿单位矿模型 UE 导入交付](../Archive/20260910-双矿单位矿模型UE导入交付.md) | archive | recorded | 2026-09-10 |
+| [双矿单位矿模型与 Blender 审核交付](../Archive/20260910-双矿单位矿模型与Blender审核交付.md) | archive | recorded | 2026-09-10 |
+| [资源加工厂正式模型与门动画](../RequirementDocument/20260909-资源加工厂正式模型与门动画.md) | requirement | approved | 2026-09-09 |
+| [资源加工厂正式模型与门动画 — 实施记录](../DevelopmentDocumentation/20260909-资源加工厂正式模型与门动画.md) | development | done | 2026-09-09 |
+| [资源加工厂 UE 正式资源接入与验收](../Archive/20260909-资源加工厂UE正式资源接入与验收.md) | archive | recorded | 2026-09-09 |
+| [资源加工厂 Blender 模型与门动画阶段交付](../Archive/20260909-资源加工厂Blender模型与门动画阶段交付.md) | archive | recorded | 2026-09-09 |
+
 ## assets
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [飞船组件文档资源引用与覆盖盘点](../Archive/20260914-飞船组件文档资源引用与覆盖盘点.md) | archive | recorded | 2026-09-14 |
+| [ShipComponent正式部件蓝图](../RequirementDocument/20260912-ShipComponent正式部件蓝图.md) | requirement | approved | 2026-09-12 |
+| [ShipComponent正式部件蓝图 — 制作与迁移](../DevelopmentDocumentation/20260912-ShipComponent正式部件蓝图.md) | development | done | 2026-09-12 |
+| [ShipComponent部件蓝图与占位清理](../Archive/20260912-ShipComponent部件蓝图与占位清理.md) | archive | recorded | 2026-09-12 |
+| [飞船骨骼部件与Socket保留](../RequirementDocument/20260911-飞船骨骼部件与Socket保留.md) | requirement | approved | 2026-09-11 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-11 |
+| [飞船骨骼部件与Socket保留 — 技术方案](../DevelopmentDocumentation/20260911-飞船骨骼部件与Socket保留.md) | development | done | 2026-09-11 |
+| [飞船骨骼部件接入与Socket保留](../Archive/20260911-飞船骨骼部件接入与Socket保留.md) | archive | recorded | 2026-09-11 |
 | [指挥官双机甲骨骼与武器挂点 — 技术方案](../DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md) | development | verification | 2026-09-07 |
 | [地图战略点标注与数据导出工具 — 技术方案](../DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md) | development | in_progress | 2026-09-07 |
 | [2026-09-07 解决了：地图标记删除后视口绘制空指针崩溃](../Archive/20260907-地图标记删除崩溃空指针修复.md) | archive | recorded | 2026-09-07 |
@@ -27,7 +56,6 @@
 | [2026-09-06 解决了：为两兵种添加可供用户精调的 Socket](../Archive/20260906-双机甲可调Socket创建.md) | archive | recorded | 2026-09-06 |
 | [据点混凝土巨构模型](../RequirementDocument/20260905-据点混凝土巨构模型.md) | requirement | draft | 2026-09-05 |
 | [据点巨构导入与占位替换](../RequirementDocument/20260905-据点巨构导入与占位替换.md) | requirement | approved | 2026-09-05 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-05 |
 | [据点混凝土巨构模型 — 技术方案](../DevelopmentDocumentation/20260905-据点混凝土巨构模型.md) | development | done | 2026-09-05 |
 | [据点巨构导入与占位替换 — 技术方案](../DevelopmentDocumentation/20260905-据点巨构导入与占位替换.md) | development | done | 2026-09-05 |
 | [WM01 程序化六足行走动画 — Blender 到 UE 完整管线教程](../DevelopmentDocumentation/20260826-WM01程序化六足行走动画-Blender到UE管线教程.md) | development | abandoned | 2026-09-05 |
@@ -95,12 +123,18 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-11 |
+| [资源加工厂正式模型与门动画](../RequirementDocument/20260909-资源加工厂正式模型与门动画.md) | requirement | approved | 2026-09-09 |
+| [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | requirement | approved | 2026-09-09 |
+| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-09 |
+| [资源加工厂正式模型与门动画 — 实施记录](../DevelopmentDocumentation/20260909-资源加工厂正式模型与门动画.md) | development | done | 2026-09-09 |
+| [资源加工厂 UE 正式资源接入与验收](../Archive/20260909-资源加工厂UE正式资源接入与验收.md) | archive | recorded | 2026-09-09 |
+| [资源加工厂 Blender 模型与门动画阶段交付](../Archive/20260909-资源加工厂Blender模型与门动画阶段交付.md) | archive | recorded | 2026-09-09 |
 | [地图战略点标注与数据导出工具 — 技术方案](../DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md) | development | in_progress | 2026-09-07 |
 | [地图战略点标注与数据导出工具](../RequirementDocument/20260906-地图战略点标注与数据导出工具.md) | requirement | approved | 2026-09-06 |
 | [2026-09-06 解决了：指挥官独立武器表现与服务器法术场运行层](../Archive/20260906-指挥官武器特效与独立法术场.md) | archive | recorded | 2026-09-06 |
 | [据点混凝土巨构模型](../RequirementDocument/20260905-据点混凝土巨构模型.md) | requirement | draft | 2026-09-05 |
 | [据点巨构导入与占位替换](../RequirementDocument/20260905-据点巨构导入与占位替换.md) | requirement | approved | 2026-09-05 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-05 |
 | [据点混凝土巨构模型 — 技术方案](../DevelopmentDocumentation/20260905-据点混凝土巨构模型.md) | development | done | 2026-09-05 |
 | [据点巨构导入与占位替换 — 技术方案](../DevelopmentDocumentation/20260905-据点巨构导入与占位替换.md) | development | done | 2026-09-05 |
 | [2026-09-05 解决了：将据点巨构参考落为可编辑的 Blender 首版模型](../Archive/20260905-据点混凝土巨构模型首版.md) | archive | recorded | 2026-09-05 |
@@ -112,21 +146,63 @@
 | [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | in_progress | 2026-09-01 |
 | [基地建造玩法探索草案 v0.1](../RequirementDocument/20260831-基地建造玩法探索.md) | requirement | draft | 2026-08-31 |
 | [2026-08-31 解决了：将基地建造玩法探索草案保存到项目并建立索引](../Archive/20260831-基地建造玩法探索草案落档.md) | archive | recorded | 2026-08-31 |
-| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-08-26 |
 
 ## combat
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [僚机短激光与炮弹池](../RequirementDocument/20260914-僚机短激光与炮弹池.md) | requirement | approved | 2026-09-14 |
+| [次级单位武器独立Excel维护](../RequirementDocument/20260914-次级单位武器独立Excel维护.md) | requirement | approved | 2026-09-14 |
+| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
+| [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | development | done | 2026-09-14 |
+| [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | development | verification | 2026-09-14 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
+| [僚机直线激光炮弹池与最终数值](../Archive/20260914-僚机直线激光炮弹池与最终数值.md) | archive | recorded | 2026-09-14 |
+| [法术场统一入口与武器ID引用](../Archive/20260914-法术场统一入口与武器ID引用.md) | archive | recorded | 2026-09-14 |
+| [次级单位武器独立Excel重构](../Archive/20260914-次级单位武器独立Excel重构.md) | archive | recorded | 2026-09-14 |
+| [单位铁锈残骸与僚机物理坠落](../Archive/20260914-单位铁锈残骸与僚机物理坠落.md) | archive | recorded | 2026-09-14 |
+| [冲击波外径上限与重复缩放修正](../Archive/20260914-冲击波外径上限与重复缩放修正.md) | archive | recorded | 2026-09-14 |
+| [Soldiers统一单位与全局法术场及矿车调度](../RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | requirement | approved | 2026-09-13 |
+| [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | development | done | 2026-09-13 |
+| [僚机空爆随机二选一与销毁特效五倍](../Archive/20260913-僚机空爆随机二选一与销毁特效五倍.md) | archive | recorded | 2026-09-13 |
+| [Soldiers统一单位与全局法术场及矿车调度](../Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | archive | recorded | 2026-09-13 |
+| [激光采矿与矿车进出厂及受击接入](../Archive/20260913-激光采矿与矿车进出厂及受击接入.md) | archive | recorded | 2026-09-13 |
+| [单位受击血条与模型尺寸爆炸缩放](../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md) | archive | recorded | 2026-09-13 |
+| [僚机Big17爆炸范围缩放修正](../Archive/20260913-僚机Big17爆炸范围缩放修正.md) | archive | recorded | 2026-09-13 |
+| [僚机对地轰炸Big17爆炸特效](../Archive/20260913-僚机对地轰炸Big17爆炸特效.md) | archive | superseded | 2026-09-13 |
+| [单位受击白光与摧毁爆炸](../Archive/20260913-单位受击白光与摧毁爆炸.md) | archive | recorded | 2026-09-13 |
+| [Client1僚机冻结与可靠快照风暴修复](../Archive/20260912-Client1僚机冻结与可靠快照风暴修复.md) | archive | recorded | 2026-09-12 |
+| [Ship 僚机对空攻击—盘旋冷却循环](../RequirementDocument/20260911-Ship僚机对空攻击盘旋冷却循环.md) | requirement | approved | 2026-09-11 |
+| [飞船骨骼部件与Socket保留](../RequirementDocument/20260911-飞船骨骼部件与Socket保留.md) | requirement | approved | 2026-09-11 |
+| [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-11 |
+| [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | superseded | 2026-09-11 |
+| [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-11 |
+| [Ship 僚机对空攻击—盘旋冷却循环 — 技术方案](../DevelopmentDocumentation/20260911-Ship僚机对空攻击盘旋冷却循环.md) | development | done | 2026-09-11 |
+| [飞船骨骼部件与Socket保留 — 技术方案](../DevelopmentDocumentation/20260911-飞船骨骼部件与Socket保留.md) | development | done | 2026-09-11 |
+| [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | development | done | 2026-09-11 |
+| [Ship 僚机对空攻击盘旋冷却改造](../Archive/20260911-Ship僚机对空攻击盘旋冷却改造.md) | archive | recorded | 2026-09-11 |
+| [飞船骨骼部件接入与Socket保留](../Archive/20260911-飞船骨骼部件接入与Socket保留.md) | archive | recorded | 2026-09-11 |
+| [指挥官双点传送技能实施与验收](../Archive/20260911-指挥官双点传送技能验收.md) | archive | recorded | 2026-09-11 |
+| [游戏内 GM 分页浮层面板](../RequirementDocument/20260910-游戏内GM分页浮层面板.md) | requirement | approved | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整](../RequirementDocument/20260910-Ship僚机战斗表现HUD与相机调整.md) | requirement | approved | 2026-09-10 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-10 |
+| [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | development | in_progress | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | verification | 2026-09-10 |
+| [游戏内 GM 分页浮层面板](../Archive/20260910-游戏内GM分页浮层面板.md) | archive | recorded | 2026-09-10 |
+| [Ship僚机取消固定6秒轰炸进场](../Archive/20260910-Ship僚机取消固定6秒轰炸进场.md) | archive | recorded | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整实施](../Archive/20260910-Ship僚机战斗表现HUD与相机调整.md) | archive | recorded | 2026-09-10 |
+| [首版 Demo 3v3、Ship 战略机动与高频选牌](../RequirementDocument/20260909-Demo3v3与Ship战略机动及高频选牌.md) | requirement | approved | 2026-09-09 |
+| [Ship僚机俯冲轰炸门槛简化](../RequirementDocument/20260909-Ship僚机俯冲轰炸门槛简化.md) | requirement | approved | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构](../RequirementDocument/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | requirement | approved | 2026-09-09 |
+| [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | requirement | approved | 2026-09-09 |
 | [Ship 僚机空地统一匈牙利自动选敌](../RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md) | requirement | approved | 2026-09-09 |
+| [Ship僚机俯冲轰炸门槛简化 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机俯冲轰炸门槛简化.md) | development | done | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | development | done | 2026-09-09 |
 | [Ship 僚机空地统一匈牙利自动选敌 — 技术方案](../DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md) | development | done | 2026-09-09 |
+| [Ship僚机俯冲轰炸门槛简化](../Archive/20260909-Ship僚机俯冲轰炸门槛简化.md) | archive | recorded | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | archive | recorded | 2026-09-09 |
 | [Ship 僚机全员参战与索敌范围显示](../Archive/20260909-Ship僚机全员参战与索敌范围显示.md) | archive | recorded | 2026-09-09 |
 | [2026-09-08 完成了 Ship 僚机空地统一匈牙利自动选敌](../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md) | archive | recorded | 2026-09-09 |
-| [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | approved | 2026-09-07 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-07 |
 | [指挥官双机甲骨骼与武器挂点 — 技术方案](../DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md) | development | verification | 2026-09-07 |
 | [僚机体系、空中三维导航与客户端校验转发 — 技术方案](../DevelopmentDocumentation/20260902-僚机体系与空中三维导航.md) | development | done | 2026-09-07 |
 | [2026-09-07 解决了：WM01 副本参考骨架不同步和物理包围盒放大约百倍](../Archive/20260907-WM01骨架同步与物理包围盒修复.md) | archive | recorded | 2026-09-07 |
@@ -175,13 +251,47 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-09 |
+| [次级单位武器独立Excel维护](../RequirementDocument/20260914-次级单位武器独立Excel维护.md) | requirement | approved | 2026-09-14 |
+| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-14 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-14 |
+| [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | development | verification | 2026-09-14 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
+| [法术场统一入口与武器ID引用](../Archive/20260914-法术场统一入口与武器ID引用.md) | archive | recorded | 2026-09-14 |
+| [次级单位武器独立Excel重构](../Archive/20260914-次级单位武器独立Excel重构.md) | archive | recorded | 2026-09-14 |
+| [单位铁锈残骸与僚机物理坠落](../Archive/20260914-单位铁锈残骸与僚机物理坠落.md) | archive | recorded | 2026-09-14 |
+| [Soldiers统一单位与全局法术场及矿车调度](../RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | requirement | approved | 2026-09-13 |
+| [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-13 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-13 |
+| [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | development | done | 2026-09-13 |
+| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
+| [Soldiers统一单位与全局法术场及矿车调度](../Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | archive | recorded | 2026-09-13 |
+| [单位受击血条与模型尺寸爆炸缩放](../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md) | archive | recorded | 2026-09-13 |
+| [单位受击白光与摧毁爆炸](../Archive/20260913-单位受击白光与摧毁爆炸.md) | archive | recorded | 2026-09-13 |
+| [空战测试关卡远端地面单位](../RequirementDocument/20260912-空战测试关卡远端地面单位.md) | requirement | approved | 2026-09-12 |
+| [空战测试关卡远端地面单位 — 实施](../DevelopmentDocumentation/20260912-空战测试关卡远端地面单位.md) | development | done | 2026-09-12 |
+| [红蓝矿棋盘与自动采矿闭环 — 技术方案](../DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md) | development | done | 2026-09-12 |
+| [空战测试关卡远端地面单位](../Archive/20260912-空战测试关卡远端地面单位.md) | archive | recorded | 2026-09-12 |
+| [矿车 Dock、队伍私有代理与 500 人姿态流修复](../Archive/20260912-矿车Dock私有代理与500人姿态流修复.md) | archive | recorded | 2026-09-12 |
+| [红蓝矿棋盘与自动采矿闭环](../RequirementDocument/20260911-红蓝矿棋盘与自动采矿闭环.md) | requirement | approved | 2026-09-11 |
+| [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-11 |
+| [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | superseded | 2026-09-11 |
+| [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-11 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-11 |
+| [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | development | done | 2026-09-11 |
+| [资源经济、动态障碍与 Commander 适配层解耦](../Archive/20260911-资源经济障碍与Commander适配层解耦.md) | archive | recorded | 2026-09-11 |
+| [红蓝矿棋盘与自动采矿闭环](../Archive/20260911-红蓝矿棋盘与自动采矿闭环.md) | archive | recorded | 2026-09-11 |
+| [指挥官传送配置归并与范围扩展](../Archive/20260911-指挥官传送配置归并与范围扩展.md) | archive | recorded | 2026-09-11 |
+| [指挥官双点传送技能实施与验收](../Archive/20260911-指挥官双点传送技能验收.md) | archive | recorded | 2026-09-11 |
+| [游戏内 GM 分页浮层面板](../RequirementDocument/20260910-游戏内GM分页浮层面板.md) | requirement | approved | 2026-09-10 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-10 |
+| [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | development | in_progress | 2026-09-10 |
+| [游戏内 GM 分页浮层面板](../Archive/20260910-游戏内GM分页浮层面板.md) | archive | recorded | 2026-09-10 |
+| [首版 Demo 3v3、Ship 战略机动与高频选牌](../RequirementDocument/20260909-Demo3v3与Ship战略机动及高频选牌.md) | requirement | approved | 2026-09-09 |
+| [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | requirement | approved | 2026-09-09 |
+| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-09 |
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | development | done | 2026-09-08 |
-| [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-07 |
-| [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | approved | 2026-09-07 |
 | [指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属](../RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md) | requirement | draft | 2026-09-07 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-07 |
-| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-07 |
 | [指挥官双机甲骨骼与武器挂点 — 技术方案](../DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md) | development | verification | 2026-09-07 |
 | [僚机体系、空中三维导航与客户端校验转发 — 技术方案](../DevelopmentDocumentation/20260902-僚机体系与空中三维导航.md) | development | done | 2026-09-07 |
 | [2026-09-07 解决了：地图标记删除后视口绘制空指针崩溃](../Archive/20260907-地图标记删除崩溃空指针修复.md) | archive | recorded | 2026-09-07 |
@@ -191,7 +301,6 @@
 | [非 Mass 大规模弹道与特效架构](../RequirementDocument/20260906-非Mass大规模弹道与特效架构.md) | requirement | draft | 2026-09-06 |
 | [指挥官双机甲骨骼与武器挂点](../RequirementDocument/20260906-指挥官双机甲骨骼与武器挂点.md) | requirement | approved | 2026-09-06 |
 | [地图战略点标注与数据导出工具](../RequirementDocument/20260906-地图战略点标注与数据导出工具.md) | requirement | approved | 2026-09-06 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-06 |
 | [非 Mass 大规模弹道与特效架构 — 技术方案](../DevelopmentDocumentation/20260906-非Mass大规模弹道与特效架构.md) | development | planned | 2026-09-06 |
 | [指挥官武器特效与独立法术场 — 技术方案](../DevelopmentDocumentation/20260905-指挥官武器特效与独立法术场.md) | development | done | 2026-09-06 |
 | [2026-09-06 解决了：指挥官独立武器表现与服务器法术场运行层](../Archive/20260906-指挥官武器特效与独立法术场.md) | archive | recorded | 2026-09-06 |
@@ -201,7 +310,6 @@
 | [据点混凝土巨构模型](../RequirementDocument/20260905-据点混凝土巨构模型.md) | requirement | draft | 2026-09-05 |
 | [指挥官武器特效与独立法术场](../RequirementDocument/20260905-指挥官武器特效与独立法术场.md) | requirement | approved | 2026-09-05 |
 | [僚机无规则护航盘旋技能重构 — 需求文档](../RequirementDocument/20260904-僚机无规则护航盘旋技能重构.md) | requirement | approved | 2026-09-05 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-05 |
 | [指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属 — 技术方案](../DevelopmentDocumentation/20260905-指挥官兵种技能与Roguelike升级归属.md) | development | in_progress | 2026-09-05 |
 | [指挥官 WM01 第二兵种与多 ISM 表现 — 技术方案](../DevelopmentDocumentation/20260904-指挥官WM01第二兵种与多ISM表现.md) | development | verification | 2026-09-05 |
 | [僚机无规则护航盘旋技能重构 — 开发文档](../DevelopmentDocumentation/20260904-僚机无规则护航盘旋技能重构.md) | development | verification | 2026-09-05 |
@@ -281,21 +389,36 @@
 | [2026-08-28 归档：指挥官 3C、Soldier 数据化与运行时 GM 调参](../Archive/20260828-指挥官3C与运行时GM调参.md) | archive | recorded | 2026-08-28 |
 | [2026-08-28 解决了：Commander 的 Order 中文术语统一](../Archive/20260828-Commander指令术语统一.md) | archive | recorded | 2026-08-28 |
 | [2026-08-27 总归档：Mass 动态 25 人控制组与双端平滑同步](../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md) | archive | recorded | 2026-08-28 |
-| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-08-26 |
 | [LVL_Main 陨石坑地形](../TerrainGeneration/README.md) | reference | reference | 2026-08-26 |
 | [2026-08-24 第一批飞船组件拆分入库（总归档）](../Archive/20260824-第一批飞船组件拆分入库-总归档.md) | archive | recorded | 2026-08-24 |
 | [2026-08-22 解决了：数据管线 v2 —— Excel 三行元数据驱动，自动生成 C++ 行结构](../Archive/20260822-数据管线v2-Excel元数据驱动自动生成行结构.md) | archive | recorded | 2026-08-22 |
+
+## data
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [次级单位武器独立Excel维护](../RequirementDocument/20260914-次级单位武器独立Excel维护.md) | requirement | approved | 2026-09-14 |
+| [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | development | verification | 2026-09-14 |
+| [法术场统一入口与武器ID引用](../Archive/20260914-法术场统一入口与武器ID引用.md) | archive | recorded | 2026-09-14 |
+| [次级单位武器独立Excel重构](../Archive/20260914-次级单位武器独立Excel重构.md) | archive | recorded | 2026-09-14 |
+| [Soldiers统一单位与全局法术场及矿车调度](../RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | requirement | approved | 2026-09-13 |
+| [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | development | done | 2026-09-13 |
+| [Soldiers统一单位与全局法术场及矿车调度](../Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | archive | recorded | 2026-09-13 |
+| [指挥官传送配置归并与范围扩展](../Archive/20260911-指挥官传送配置归并与范围扩展.md) | archive | recorded | 2026-09-11 |
 
 ## data-pipeline
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
+| [地图资源密度涂绘与导出](../RequirementDocument/20260910-地图资源密度涂绘与导出.md) | requirement | approved | 2026-09-10 |
+| [地图资源密度涂绘与导出 — 技术方案与实施记录](../DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md) | development | verification | 2026-09-10 |
+| [地图资源密度涂绘与确定性导出](../Archive/20260910-地图资源密度涂绘与确定性导出.md) | archive | recorded | 2026-09-10 |
 | [Ship 空中部队原型关卡与三倍航速](../RequirementDocument/20260908-Ship空中部队原型关卡与三倍航速.md) | requirement | approved | 2026-09-08 |
 | [Ship 空中部队原型关卡与三倍航速 — 技术方案与验证](../DevelopmentDocumentation/20260908-Ship空中部队原型关卡与三倍航速.md) | development | done | 2026-09-08 |
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | development | done | 2026-09-08 |
 | [2026-09-08 完成了 Ship 空中部队原型关卡与三倍航速](../Archive/20260908-Ship空中部队原型关卡与三倍航速.md) | archive | recorded | 2026-09-08 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-07 |
-| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-07 |
 | [指挥官双机甲骨骼与武器挂点 — 技术方案](../DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md) | development | verification | 2026-09-07 |
 | [地图战略点标注与数据导出工具 — 技术方案](../DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md) | development | in_progress | 2026-09-07 |
 | [2026-09-07 解决了：地图标记删除后视口绘制空指针崩溃](../Archive/20260907-地图标记删除崩溃空指针修复.md) | archive | recorded | 2026-09-07 |
@@ -339,6 +462,26 @@
 | [2026-08-21~22 解决了：Excel→JSON→DataTable 数据管线（MVP → 通用化 → 校验配置化）](../Archive/20260822-数据管线开发总归档-0821至0822.md) | archive | recorded | 2026-08-22 |
 | [2026-08-22 解决了：数据管线 v2 —— Excel 三行元数据驱动，自动生成 C++ 行结构](../Archive/20260822-数据管线v2-Excel元数据驱动自动生成行结构.md) | archive | recorded | 2026-08-22 |
 
+## economy
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-13 |
+| [激光采矿与矿车进出厂及受击接入](../Archive/20260913-激光采矿与矿车进出厂及受击接入.md) | archive | recorded | 2026-09-13 |
+| [红蓝矿棋盘与自动采矿闭环 — 技术方案](../DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md) | development | done | 2026-09-12 |
+| [矿车 Dock、队伍私有代理与 500 人姿态流修复](../Archive/20260912-矿车Dock私有代理与500人姿态流修复.md) | archive | recorded | 2026-09-12 |
+| [红蓝矿棋盘与自动采矿闭环](../RequirementDocument/20260911-红蓝矿棋盘与自动采矿闭环.md) | requirement | approved | 2026-09-11 |
+| [资源经济、动态障碍与 Commander 适配层解耦](../Archive/20260911-资源经济障碍与Commander适配层解耦.md) | archive | recorded | 2026-09-11 |
+| [红蓝矿棋盘与自动采矿闭环](../Archive/20260911-红蓝矿棋盘与自动采矿闭环.md) | archive | recorded | 2026-09-11 |
+| [双矿单位矿模型 UE 导入](../RequirementDocument/20260910-双矿单位矿模型UE导入.md) | requirement | approved | 2026-09-10 |
+| [双矿单位矿模型与 Blender 审核](../RequirementDocument/20260910-双矿单位矿模型与Blender审核.md) | requirement | approved | 2026-09-10 |
+| [双矿单位矿模型 UE 导入](../DevelopmentDocumentation/20260910-双矿单位矿模型UE导入.md) | development | done | 2026-09-10 |
+| [双矿单位矿模型与 Blender 审核](../DevelopmentDocumentation/20260910-双矿单位矿模型与Blender审核.md) | development | done | 2026-09-10 |
+| [双矿单位矿模型 UE 导入交付](../Archive/20260910-双矿单位矿模型UE导入交付.md) | archive | recorded | 2026-09-10 |
+| [双矿单位矿模型与 Blender 审核交付](../Archive/20260910-双矿单位矿模型与Blender审核交付.md) | archive | recorded | 2026-09-10 |
+| [首版 Demo 3v3、Ship 战略机动与高频选牌](../RequirementDocument/20260909-Demo3v3与Ship战略机动及高频选牌.md) | requirement | approved | 2026-09-09 |
+| [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | requirement | approved | 2026-09-09 |
+
 ## learning
 
 | 文档 | 类型 | 状态 | 更新 |
@@ -376,24 +519,53 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [空战测试关卡远端地面单位](../RequirementDocument/20260912-空战测试关卡远端地面单位.md) | requirement | approved | 2026-09-12 |
+| [空战测试关卡远端地面单位 — 实施](../DevelopmentDocumentation/20260912-空战测试关卡远端地面单位.md) | development | done | 2026-09-12 |
+| [空战测试关卡远端地面单位](../Archive/20260912-空战测试关卡远端地面单位.md) | archive | recorded | 2026-09-12 |
 | [Ship 空中部队原型关卡与三倍航速](../RequirementDocument/20260908-Ship空中部队原型关卡与三倍航速.md) | requirement | approved | 2026-09-08 |
 | [Ship 空中部队原型关卡与三倍航速 — 技术方案与验证](../DevelopmentDocumentation/20260908-Ship空中部队原型关卡与三倍航速.md) | development | done | 2026-09-08 |
 | [2026-09-08 完成了 Ship 空中部队原型关卡与三倍航速](../Archive/20260908-Ship空中部队原型关卡与三倍航速.md) | archive | recorded | 2026-09-08 |
+
+## map
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-13 |
+| [红蓝矿棋盘与自动采矿闭环 — 技术方案](../DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md) | development | done | 2026-09-12 |
+| [红蓝矿棋盘与自动采矿闭环](../RequirementDocument/20260911-红蓝矿棋盘与自动采矿闭环.md) | requirement | approved | 2026-09-11 |
+| [红蓝矿棋盘与自动采矿闭环](../Archive/20260911-红蓝矿棋盘与自动采矿闭环.md) | archive | recorded | 2026-09-11 |
 
 ## map-authoring
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [地图资源密度涂绘与导出](../RequirementDocument/20260910-地图资源密度涂绘与导出.md) | requirement | approved | 2026-09-10 |
+| [地图资源密度涂绘与导出 — 技术方案与实施记录](../DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md) | development | verification | 2026-09-10 |
+| [地图资源密度涂绘与确定性导出](../Archive/20260910-地图资源密度涂绘与确定性导出.md) | archive | recorded | 2026-09-10 |
 | [地图战略点标注与数据导出工具 — 技术方案](../DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md) | development | in_progress | 2026-09-07 |
 | [2026-09-07 解决了：地图标记删除后视口绘制空指针崩溃](../Archive/20260907-地图标记删除崩溃空指针修复.md) | archive | recorded | 2026-09-07 |
 | [2026-09-07 解决了：地图标注项目插件首版实现与验证](../Archive/20260907-地图标注插件首版实现与验证.md) | archive | recorded | 2026-09-07 |
 | [2026-09-07 解决了：地图标注插件维护 Skill 建立](../Archive/20260907-地图标注插件维护Skill.md) | archive | recorded | 2026-09-07 |
 | [地图战略点标注与数据导出工具](../RequirementDocument/20260906-地图战略点标注与数据导出工具.md) | requirement | approved | 2026-09-06 |
 
+## movement
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [僚机玩法门精简](../RequirementDocument/20260912-僚机玩法门精简.md) | requirement | approved | 2026-09-12 |
+| [僚机玩法门精简 — 技术方案](../DevelopmentDocumentation/20260912-僚机玩法门精简.md) | development | done | 2026-09-12 |
+
 ## navigation
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-13 |
+| [红蓝矿棋盘与自动采矿闭环 — 技术方案](../DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md) | development | done | 2026-09-12 |
+| [矿车 Dock、队伍私有代理与 500 人姿态流修复](../Archive/20260912-矿车Dock私有代理与500人姿态流修复.md) | archive | recorded | 2026-09-12 |
+| [红蓝矿棋盘与自动采矿闭环](../RequirementDocument/20260911-红蓝矿棋盘与自动采矿闭环.md) | requirement | approved | 2026-09-11 |
+| [资源经济、动态障碍与 Commander 适配层解耦](../Archive/20260911-资源经济障碍与Commander适配层解耦.md) | archive | recorded | 2026-09-11 |
+| [红蓝矿棋盘与自动采矿闭环](../Archive/20260911-红蓝矿棋盘与自动采矿闭环.md) | archive | recorded | 2026-09-11 |
+| [Ship僚机取消固定6秒轰炸进场](../Archive/20260910-Ship僚机取消固定6秒轰炸进场.md) | archive | recorded | 2026-09-10 |
 | [Ship 空中部队原型关卡与三倍航速](../RequirementDocument/20260908-Ship空中部队原型关卡与三倍航速.md) | requirement | approved | 2026-09-08 |
 | [Ship 空中部队原型关卡与三倍航速 — 技术方案与验证](../DevelopmentDocumentation/20260908-Ship空中部队原型关卡与三倍航速.md) | development | done | 2026-09-08 |
 | [2026-09-08 修复了 Ship 僚机在 FlightNav 边界停住不动](../Archive/20260908-Ship僚机FlightNav边界停滞恢复.md) | archive | recorded | 2026-09-08 |
@@ -403,21 +575,48 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-14 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-14 |
+| [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-13 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-13 |
+| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
+| [Soldiers统一单位与全局法术场及矿车调度](../Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | archive | recorded | 2026-09-13 |
+| [激光采矿与矿车进出厂及受击接入](../Archive/20260913-激光采矿与矿车进出厂及受击接入.md) | archive | recorded | 2026-09-13 |
+| [僚机对地轰炸Big17爆炸特效](../Archive/20260913-僚机对地轰炸Big17爆炸特效.md) | archive | superseded | 2026-09-13 |
+| [通用敌方描边与普通PIE僚机跳变修复](../RequirementDocument/20260912-通用敌方描边与普通PIE僚机跳变修复.md) | requirement | approved | 2026-09-12 |
+| [通用敌方描边与普通PIE僚机跳变修复 — 技术方案](../DevelopmentDocumentation/20260912-通用敌方描边与普通PIE僚机跳变修复.md) | development | done | 2026-09-12 |
+| [红蓝矿棋盘与自动采矿闭环 — 技术方案](../DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md) | development | done | 2026-09-12 |
+| [通用敌方描边与普通PIE僚机同步修复](../Archive/20260912-通用敌方描边与普通PIE僚机同步修复.md) | archive | recorded | 2026-09-12 |
+| [矿车 Dock、队伍私有代理与 500 人姿态流修复](../Archive/20260912-矿车Dock私有代理与500人姿态流修复.md) | archive | recorded | 2026-09-12 |
+| [红蓝矿棋盘与自动采矿闭环](../RequirementDocument/20260911-红蓝矿棋盘与自动采矿闭环.md) | requirement | approved | 2026-09-11 |
+| [Ship 僚机对空攻击—盘旋冷却循环](../RequirementDocument/20260911-Ship僚机对空攻击盘旋冷却循环.md) | requirement | approved | 2026-09-11 |
+| [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-11 |
+| [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | superseded | 2026-09-11 |
+| [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-11 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-11 |
+| [Ship 僚机对空攻击—盘旋冷却循环 — 技术方案](../DevelopmentDocumentation/20260911-Ship僚机对空攻击盘旋冷却循环.md) | development | done | 2026-09-11 |
+| [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | development | done | 2026-09-11 |
+| [红蓝矿棋盘与自动采矿闭环](../Archive/20260911-红蓝矿棋盘与自动采矿闭环.md) | archive | recorded | 2026-09-11 |
+| [Ship 僚机对空攻击盘旋冷却改造](../Archive/20260911-Ship僚机对空攻击盘旋冷却改造.md) | archive | recorded | 2026-09-11 |
+| [指挥官双点传送技能实施与验收](../Archive/20260911-指挥官双点传送技能验收.md) | archive | recorded | 2026-09-11 |
+| [游戏内 GM 分页浮层面板](../RequirementDocument/20260910-游戏内GM分页浮层面板.md) | requirement | approved | 2026-09-10 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-10 |
+| [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | development | in_progress | 2026-09-10 |
+| [游戏内 GM 分页浮层面板](../Archive/20260910-游戏内GM分页浮层面板.md) | archive | recorded | 2026-09-10 |
+| [Ship僚机俯冲轰炸门槛简化](../RequirementDocument/20260909-Ship僚机俯冲轰炸门槛简化.md) | requirement | approved | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构](../RequirementDocument/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | requirement | approved | 2026-09-09 |
 | [Ship 僚机空地统一匈牙利自动选敌](../RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md) | requirement | approved | 2026-09-09 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-09 |
+| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-09 |
+| [Ship僚机俯冲轰炸门槛简化 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机俯冲轰炸门槛简化.md) | development | done | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | development | done | 2026-09-09 |
 | [Ship 僚机空地统一匈牙利自动选敌 — 技术方案](../DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md) | development | done | 2026-09-09 |
+| [Ship僚机俯冲轰炸门槛简化](../Archive/20260909-Ship僚机俯冲轰炸门槛简化.md) | archive | recorded | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | archive | recorded | 2026-09-09 |
 | [2026-09-08 完成了 Ship 僚机空地统一匈牙利自动选敌](../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md) | archive | recorded | 2026-09-09 |
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | development | done | 2026-09-08 |
 | [2026-09-08 修复了 Ship 僚机在 FlightNav 边界停住不动](../Archive/20260908-Ship僚机FlightNav边界停滞恢复.md) | archive | recorded | 2026-09-08 |
-| [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-07 |
-| [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | approved | 2026-09-07 |
 | [指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属](../RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md) | requirement | draft | 2026-09-07 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-07 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-07 |
-| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-07 |
 | [指挥官双机甲骨骼与武器挂点 — 技术方案](../DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md) | development | verification | 2026-09-07 |
 | [僚机体系、空中三维导航与客户端校验转发 — 技术方案](../DevelopmentDocumentation/20260902-僚机体系与空中三维导航.md) | development | done | 2026-09-07 |
 | [2026-09-07 勘误：Ship僚机最终构建恢复源码版 UE5.7 门禁](../Archive/20260907-Ship僚机源码版构建门禁勘误.md) | archive | recorded | 2026-09-07 |
@@ -428,14 +627,12 @@
 | [2026-09-07 解决了：Ship 僚机以三维往返缠斗替换目标点盘旋](../Archive/20260907-Ship僚机三维往返缠斗与随机转向.md) | archive | superseded | 2026-09-07 |
 | [非 Mass 大规模弹道与特效架构](../RequirementDocument/20260906-非Mass大规模弹道与特效架构.md) | requirement | draft | 2026-09-06 |
 | [指挥官双机甲骨骼与武器挂点](../RequirementDocument/20260906-指挥官双机甲骨骼与武器挂点.md) | requirement | approved | 2026-09-06 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-06 |
 | [非 Mass 大规模弹道与特效架构 — 技术方案](../DevelopmentDocumentation/20260906-非Mass大规模弹道与特效架构.md) | development | planned | 2026-09-06 |
 | [指挥官武器特效与独立法术场 — 技术方案](../DevelopmentDocumentation/20260905-指挥官武器特效与独立法术场.md) | development | done | 2026-09-06 |
 | [2026-09-06 解决了：指挥官独立武器表现与服务器法术场运行层](../Archive/20260906-指挥官武器特效与独立法术场.md) | archive | recorded | 2026-09-06 |
 | [2026-09-06 阶段记录：双机甲骨骼副本与绑定问题核查](../Archive/20260906-双机甲骨骼副本与绑定问题核查.md) | archive | recorded | 2026-09-06 |
 | [指挥官武器特效与独立法术场](../RequirementDocument/20260905-指挥官武器特效与独立法术场.md) | requirement | approved | 2026-09-05 |
 | [僚机无规则护航盘旋技能重构 — 需求文档](../RequirementDocument/20260904-僚机无规则护航盘旋技能重构.md) | requirement | approved | 2026-09-05 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-05 |
 | [据点巨构导入与占位替换 — 技术方案](../DevelopmentDocumentation/20260905-据点巨构导入与占位替换.md) | development | done | 2026-09-05 |
 | [指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属 — 技术方案](../DevelopmentDocumentation/20260905-指挥官兵种技能与Roguelike升级归属.md) | development | in_progress | 2026-09-05 |
 | [指挥官 WM01 第二兵种与多 ISM 表现 — 技术方案](../DevelopmentDocumentation/20260904-指挥官WM01第二兵种与多ISM表现.md) | development | verification | 2026-09-05 |
@@ -518,27 +715,125 @@
 | [飞船与场景模型尺寸归一](../RequirementDocument/20260827-飞船与场景模型尺寸归一.md) | requirement | approved | 2026-08-27 |
 | [飞船与场景模型尺寸归一 — 技术方案](../DevelopmentDocumentation/20260827-飞船与场景模型尺寸归一.md) | development | done | 2026-08-27 |
 | [2026-08-27 解决了：飞船与场景模型尺寸归一](../Archive/20260827-飞船与场景模型尺寸归一.md) | archive | recorded | 2026-08-27 |
-| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-08-26 |
 | [2026-08-25 解决了：相机/避障参数进表（新增 Camera sheet）+ 蓝图覆盖值清理](../Archive/20260825-相机参数进表Camera-sheet与BP覆盖清理.md) | archive | recorded | 2026-08-25 |
 | [2026-08-20 ~ 08-21 解决了：DIY 飞船两天开发总归档（MVP → 手感调校 → 架构演进）](../Archive/20260821-DIY飞船开发总归档-0820至0821.md) | archive | recorded | 2026-08-21 |
 | [DIY 飞船（模块化装配 + 飞行中热切换）](../RequirementDocument/20260820-DIY飞船.md) | requirement | approved | 2026-08-20 |
+
+## networking
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [僚机玩法门精简](../RequirementDocument/20260912-僚机玩法门精简.md) | requirement | approved | 2026-09-12 |
+| [僚机视觉插值与远端缓冲](../RequirementDocument/20260912-僚机视觉插值与远端缓冲.md) | requirement | approved | 2026-09-12 |
+| [僚机玩法门精简 — 技术方案](../DevelopmentDocumentation/20260912-僚机玩法门精简.md) | development | done | 2026-09-12 |
+| [僚机视觉插值与远端缓冲 — 技术方案](../DevelopmentDocumentation/20260912-僚机视觉插值与远端缓冲.md) | development | done | 2026-09-12 |
+| [Client1僚机冻结与可靠快照风暴修复](../Archive/20260912-Client1僚机冻结与可靠快照风暴修复.md) | archive | recorded | 2026-09-12 |
+| [僚机视觉插值与远端稳定显示](../Archive/20260912-僚机视觉插值与远端稳定显示.md) | archive | recorded | 2026-09-12 |
+
+## outpost
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [地图资源密度涂绘与导出](../RequirementDocument/20260910-地图资源密度涂绘与导出.md) | requirement | approved | 2026-09-10 |
+| [地图资源密度涂绘与导出 — 技术方案与实施记录](../DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md) | development | verification | 2026-09-10 |
+| [地图资源密度涂绘与确定性导出](../Archive/20260910-地图资源密度涂绘与确定性导出.md) | archive | recorded | 2026-09-10 |
+
+## presentation
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [通用敌方描边与普通PIE僚机跳变修复](../RequirementDocument/20260912-通用敌方描边与普通PIE僚机跳变修复.md) | requirement | approved | 2026-09-12 |
+| [僚机玩法门精简](../RequirementDocument/20260912-僚机玩法门精简.md) | requirement | approved | 2026-09-12 |
+| [僚机视觉插值与远端缓冲](../RequirementDocument/20260912-僚机视觉插值与远端缓冲.md) | requirement | approved | 2026-09-12 |
+| [通用敌方描边与普通PIE僚机跳变修复 — 技术方案](../DevelopmentDocumentation/20260912-通用敌方描边与普通PIE僚机跳变修复.md) | development | done | 2026-09-12 |
+| [僚机玩法门精简 — 技术方案](../DevelopmentDocumentation/20260912-僚机玩法门精简.md) | development | done | 2026-09-12 |
+| [僚机视觉插值与远端缓冲 — 技术方案](../DevelopmentDocumentation/20260912-僚机视觉插值与远端缓冲.md) | development | done | 2026-09-12 |
+| [通用敌方描边与普通PIE僚机同步修复](../Archive/20260912-通用敌方描边与普通PIE僚机同步修复.md) | archive | recorded | 2026-09-12 |
+| [Client1僚机冻结与可靠快照风暴修复](../Archive/20260912-Client1僚机冻结与可靠快照风暴修复.md) | archive | recorded | 2026-09-12 |
+| [僚机视觉插值与远端稳定显示](../Archive/20260912-僚机视觉插值与远端稳定显示.md) | archive | recorded | 2026-09-12 |
 
 ## project
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [2026-09 点子 Backlog](../Backlog/2026-09.md) | backlog | current | 2026-09-09 |
+| [2026-09 点子 Backlog](../Backlog/2026-09.md) | backlog | current | 2026-09-10 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-07 |
+
+## resource
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [地图资源密度涂绘与导出](../RequirementDocument/20260910-地图资源密度涂绘与导出.md) | requirement | approved | 2026-09-10 |
+| [地图资源密度涂绘与导出 — 技术方案与实施记录](../DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md) | development | verification | 2026-09-10 |
+| [地图资源密度涂绘与确定性导出](../Archive/20260910-地图资源密度涂绘与确定性导出.md) | archive | recorded | 2026-09-10 |
+
+## resources
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
+| [Soldiers统一单位与全局法术场及矿车调度](../RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | requirement | approved | 2026-09-13 |
+| [激光采矿与矿车进出厂](../RequirementDocument/20260913-激光采矿与矿车进出厂.md) | requirement | approved | 2026-09-13 |
+| [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | development | done | 2026-09-13 |
+| [激光采矿与矿车进出厂](../DevelopmentDocumentation/20260913-激光采矿与矿车进出厂.md) | development | done | 2026-09-13 |
+| [Soldiers统一单位与全局法术场及矿车调度](../Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | archive | recorded | 2026-09-13 |
+| [激光采矿与矿车进出厂及受击接入](../Archive/20260913-激光采矿与矿车进出厂及受击接入.md) | archive | recorded | 2026-09-13 |
+| [单位受击白光与摧毁爆炸](../Archive/20260913-单位受击白光与摧毁爆炸.md) | archive | recorded | 2026-09-13 |
 
 ## ship
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-14 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-14 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
+| [飞船组件文档资源引用与覆盖盘点](../Archive/20260914-飞船组件文档资源引用与覆盖盘点.md) | archive | recorded | 2026-09-14 |
+| [Soldiers统一单位与全局法术场及矿车调度](../RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | requirement | approved | 2026-09-13 |
+| [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-13 |
+| [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | development | done | 2026-09-13 |
+| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
+| [Soldiers统一单位与全局法术场及矿车调度](../Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | archive | recorded | 2026-09-13 |
+| [单位受击血条与模型尺寸爆炸缩放](../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md) | archive | recorded | 2026-09-13 |
+| [单位受击白光与摧毁爆炸](../Archive/20260913-单位受击白光与摧毁爆炸.md) | archive | recorded | 2026-09-13 |
+| [ShipComponent正式部件蓝图](../RequirementDocument/20260912-ShipComponent正式部件蓝图.md) | requirement | approved | 2026-09-12 |
+| [空战测试关卡远端地面单位](../RequirementDocument/20260912-空战测试关卡远端地面单位.md) | requirement | approved | 2026-09-12 |
+| [通用敌方描边与普通PIE僚机跳变修复](../RequirementDocument/20260912-通用敌方描边与普通PIE僚机跳变修复.md) | requirement | approved | 2026-09-12 |
+| [ShipComponent正式部件蓝图 — 制作与迁移](../DevelopmentDocumentation/20260912-ShipComponent正式部件蓝图.md) | development | done | 2026-09-12 |
+| [空战测试关卡远端地面单位 — 实施](../DevelopmentDocumentation/20260912-空战测试关卡远端地面单位.md) | development | done | 2026-09-12 |
+| [通用敌方描边与普通PIE僚机跳变修复 — 技术方案](../DevelopmentDocumentation/20260912-通用敌方描边与普通PIE僚机跳变修复.md) | development | done | 2026-09-12 |
+| [ShipComponent部件蓝图与占位清理](../Archive/20260912-ShipComponent部件蓝图与占位清理.md) | archive | recorded | 2026-09-12 |
+| [空战测试关卡远端地面单位](../Archive/20260912-空战测试关卡远端地面单位.md) | archive | recorded | 2026-09-12 |
+| [通用敌方描边与普通PIE僚机同步修复](../Archive/20260912-通用敌方描边与普通PIE僚机同步修复.md) | archive | recorded | 2026-09-12 |
+| [Ship 僚机对空攻击—盘旋冷却循环](../RequirementDocument/20260911-Ship僚机对空攻击盘旋冷却循环.md) | requirement | approved | 2026-09-11 |
+| [飞船骨骼部件与Socket保留](../RequirementDocument/20260911-飞船骨骼部件与Socket保留.md) | requirement | approved | 2026-09-11 |
+| [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-11 |
+| [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | superseded | 2026-09-11 |
+| [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-11 |
+| [Ship 僚机对空攻击—盘旋冷却循环 — 技术方案](../DevelopmentDocumentation/20260911-Ship僚机对空攻击盘旋冷却循环.md) | development | done | 2026-09-11 |
+| [飞船骨骼部件与Socket保留 — 技术方案](../DevelopmentDocumentation/20260911-飞船骨骼部件与Socket保留.md) | development | done | 2026-09-11 |
+| [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | development | done | 2026-09-11 |
+| [Ship 僚机对空攻击盘旋冷却改造](../Archive/20260911-Ship僚机对空攻击盘旋冷却改造.md) | archive | recorded | 2026-09-11 |
+| [飞船骨骼部件接入与Socket保留](../Archive/20260911-飞船骨骼部件接入与Socket保留.md) | archive | recorded | 2026-09-11 |
+| [指挥官双点传送技能实施与验收](../Archive/20260911-指挥官双点传送技能验收.md) | archive | recorded | 2026-09-11 |
+| [僚机飞行尾焰与拖尾](../RequirementDocument/20260910-僚机飞行尾焰与拖尾.md) | requirement | approved | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整](../RequirementDocument/20260910-Ship僚机战斗表现HUD与相机调整.md) | requirement | approved | 2026-09-10 |
+| [僚机飞行尾焰与拖尾 — 实施记录](../DevelopmentDocumentation/20260910-僚机飞行尾焰与拖尾.md) | development | done | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | verification | 2026-09-10 |
+| [僚机飞行双尾焰与拖尾接入](../Archive/20260910-僚机飞行双尾焰与拖尾接入.md) | archive | recorded | 2026-09-10 |
+| [Ship僚机取消固定6秒轰炸进场](../Archive/20260910-Ship僚机取消固定6秒轰炸进场.md) | archive | recorded | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整实施](../Archive/20260910-Ship僚机战斗表现HUD与相机调整.md) | archive | recorded | 2026-09-10 |
+| [首版 Demo 3v3、Ship 战略机动与高频选牌](../RequirementDocument/20260909-Demo3v3与Ship战略机动及高频选牌.md) | requirement | approved | 2026-09-09 |
+| [Ship僚机俯冲轰炸门槛简化](../RequirementDocument/20260909-Ship僚机俯冲轰炸门槛简化.md) | requirement | approved | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构](../RequirementDocument/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | requirement | approved | 2026-09-09 |
+| [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | requirement | approved | 2026-09-09 |
 | [Ship 僚机空地统一匈牙利自动选敌](../RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md) | requirement | approved | 2026-09-09 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-09 |
+| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-09 |
+| [Ship僚机俯冲轰炸门槛简化 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机俯冲轰炸门槛简化.md) | development | done | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | development | done | 2026-09-09 |
 | [Ship 僚机空地统一匈牙利自动选敌 — 技术方案](../DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md) | development | done | 2026-09-09 |
+| [Ship僚机俯冲轰炸门槛简化](../Archive/20260909-Ship僚机俯冲轰炸门槛简化.md) | archive | recorded | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | archive | recorded | 2026-09-09 |
 | [Ship 僚机全员参战与索敌范围显示](../Archive/20260909-Ship僚机全员参战与索敌范围显示.md) | archive | recorded | 2026-09-09 |
 | [2026-09-08 完成了 Ship 僚机空地统一匈牙利自动选敌](../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md) | archive | recorded | 2026-09-09 |
@@ -547,15 +842,11 @@
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | development | done | 2026-09-08 |
 | [2026-09-08 修复了 Ship 僚机在 FlightNav 边界停住不动](../Archive/20260908-Ship僚机FlightNav边界停滞恢复.md) | archive | recorded | 2026-09-08 |
 | [2026-09-08 完成了 Ship 空中部队原型关卡与三倍航速](../Archive/20260908-Ship空中部队原型关卡与三倍航速.md) | archive | recorded | 2026-09-08 |
-| [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-07 |
-| [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | approved | 2026-09-07 |
 | [指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属](../RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md) | requirement | draft | 2026-09-07 |
-| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-07 |
 | [僚机体系、空中三维导航与客户端校验转发 — 技术方案](../DevelopmentDocumentation/20260902-僚机体系与空中三维导航.md) | development | done | 2026-09-07 |
 | [2026-09-07 勘误：Ship僚机最终构建恢复源码版 UE5.7 门禁](../Archive/20260907-Ship僚机源码版构建门禁勘误.md) | archive | recorded | 2026-09-07 |
 | [2026-09-07 解决了：Ship僚机按目标执行俯冲轰炸或前向机枪盘旋](../Archive/20260907-Ship僚机俯冲轰炸与对空机枪落地.md) | archive | recorded | 2026-09-07 |
 | [2026-09-07 解决了：Ship 僚机以三维往返缠斗替换目标点盘旋](../Archive/20260907-Ship僚机三维往返缠斗与随机转向.md) | archive | superseded | 2026-09-07 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-06 |
 | [2026-09-06 解决了：指挥官独立武器表现与服务器法术场运行层](../Archive/20260906-指挥官武器特效与独立法术场.md) | archive | recorded | 2026-09-06 |
 | [指挥官武器特效与独立法术场](../RequirementDocument/20260905-指挥官武器特效与独立法术场.md) | requirement | approved | 2026-09-05 |
 | [僚机无规则护航盘旋技能重构 — 需求文档](../RequirementDocument/20260904-僚机无规则护航盘旋技能重构.md) | requirement | approved | 2026-09-05 |
@@ -603,7 +894,6 @@
 | [飞船与场景模型尺寸归一 — 技术方案](../DevelopmentDocumentation/20260827-飞船与场景模型尺寸归一.md) | development | done | 2026-08-27 |
 | [2026-08-27 解决了：飞船与场景模型尺寸归一](../Archive/20260827-飞船与场景模型尺寸归一.md) | archive | recorded | 2026-08-27 |
 | [爆炸特效统一归拢至 /Game/Assets/VFX/Explosions](../Archive/20260827-爆炸特效统一归拢至AssetsVFXExplosions.md) | archive | recorded | 2026-08-27 |
-| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-08-26 |
 | [数据管线：Excel 配置飞船数值 — 技术方案](../DevelopmentDocumentation/20260821-数据管线Excel配置.md) | development | in_progress | 2026-08-25 |
 | [2026-08-24~25 总归档：飞船 3C 与相机避障体系（滚轮缩放 / 舰体避障六轮演进 / 命中过滤）](../Archive/20260825-飞船3C与相机避障总归档-0824至0825.md) | archive | recorded | 2026-08-25 |
 | [2026-08-25 解决了：相机避障逻辑提取为 ResolveCameraArmCollision()，Tick 去散落逻辑](../Archive/20260825-相机避障函数化-Tick去散落逻辑.md) | archive | recorded | 2026-08-25 |
@@ -621,15 +911,27 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-09 |
-| [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-07 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-14 |
+| [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-13 |
+| [单位受击血条与模型尺寸爆炸缩放](../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md) | archive | recorded | 2026-09-13 |
+| [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-11 |
+| [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-11 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-11 |
+| [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | development | done | 2026-09-11 |
+| [指挥官双点传送技能实施与验收](../Archive/20260911-指挥官双点传送技能验收.md) | archive | recorded | 2026-09-11 |
+| [游戏内 GM 分页浮层面板](../RequirementDocument/20260910-游戏内GM分页浮层面板.md) | requirement | approved | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整](../RequirementDocument/20260910-Ship僚机战斗表现HUD与相机调整.md) | requirement | approved | 2026-09-10 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-10 |
+| [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | development | in_progress | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | verification | 2026-09-10 |
+| [游戏内 GM 分页浮层面板](../Archive/20260910-游戏内GM分页浮层面板.md) | archive | recorded | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整实施](../Archive/20260910-Ship僚机战斗表现HUD与相机调整.md) | archive | recorded | 2026-09-10 |
+| [首版 Demo 3v3、Ship 战略机动与高频选牌](../RequirementDocument/20260909-Demo3v3与Ship战略机动及高频选牌.md) | requirement | approved | 2026-09-09 |
 | [指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属](../RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md) | requirement | draft | 2026-09-07 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-07 |
 | [地图战略点标注与数据导出工具 — 技术方案](../DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md) | development | in_progress | 2026-09-07 |
 | [2026-09-07 解决了：地图标注插件维护 Skill 建立](../Archive/20260907-地图标注插件维护Skill.md) | archive | recorded | 2026-09-07 |
 | [2026-09-07 解决了：Ship僚机按目标执行俯冲轰炸或前向机枪盘旋](../Archive/20260907-Ship僚机俯冲轰炸与对空机枪落地.md) | archive | recorded | 2026-09-07 |
 | [双机甲尺度修复与 Control Rig 草稿](../Archive/20260906-双机甲尺度修复与ControlRig草稿.md) | archive | recorded | 2026-09-06 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-05 |
 | [指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属 — 技术方案](../DevelopmentDocumentation/20260905-指挥官兵种技能与Roguelike升级归属.md) | development | in_progress | 2026-09-05 |
 | [指挥官 WM01 第二兵种与多 ISM 表现 — 技术方案](../DevelopmentDocumentation/20260904-指挥官WM01第二兵种与多ISM表现.md) | development | verification | 2026-09-05 |
 | [2026-09-05 解决了：300m 混凝土巨构导入 UE 并替换据点占位资源](../Archive/20260905-据点巨构替换占位资源.md) | archive | recorded | 2026-09-05 |
@@ -679,10 +981,36 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-07 |
+| [僚机短激光与炮弹池](../RequirementDocument/20260914-僚机短激光与炮弹池.md) | requirement | approved | 2026-09-14 |
+| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-14 |
+| [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | development | done | 2026-09-14 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
+| [僚机直线激光炮弹池与最终数值](../Archive/20260914-僚机直线激光炮弹池与最终数值.md) | archive | recorded | 2026-09-14 |
+| [单位铁锈残骸与僚机物理坠落](../Archive/20260914-单位铁锈残骸与僚机物理坠落.md) | archive | recorded | 2026-09-14 |
+| [冲击波外径上限与重复缩放修正](../Archive/20260914-冲击波外径上限与重复缩放修正.md) | archive | recorded | 2026-09-14 |
+| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
+| [僚机空爆随机二选一与销毁特效五倍](../Archive/20260913-僚机空爆随机二选一与销毁特效五倍.md) | archive | recorded | 2026-09-13 |
+| [Soldiers统一单位与全局法术场及矿车调度](../Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | archive | recorded | 2026-09-13 |
+| [激光采矿与矿车进出厂及受击接入](../Archive/20260913-激光采矿与矿车进出厂及受击接入.md) | archive | recorded | 2026-09-13 |
+| [单位受击血条与模型尺寸爆炸缩放](../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md) | archive | recorded | 2026-09-13 |
+| [僚机Big17爆炸范围缩放修正](../Archive/20260913-僚机Big17爆炸范围缩放修正.md) | archive | recorded | 2026-09-13 |
+| [僚机对地轰炸Big17爆炸特效](../Archive/20260913-僚机对地轰炸Big17爆炸特效.md) | archive | superseded | 2026-09-13 |
+| [单位受击白光与摧毁爆炸](../Archive/20260913-单位受击白光与摧毁爆炸.md) | archive | recorded | 2026-09-13 |
+| [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-11 |
+| [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-11 |
+| [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | development | done | 2026-09-11 |
+| [指挥官传送配置归并与范围扩展](../Archive/20260911-指挥官传送配置归并与范围扩展.md) | archive | recorded | 2026-09-11 |
+| [指挥官双点传送技能实施与验收](../Archive/20260911-指挥官双点传送技能验收.md) | archive | recorded | 2026-09-11 |
+| [僚机飞行尾焰与拖尾](../RequirementDocument/20260910-僚机飞行尾焰与拖尾.md) | requirement | approved | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整](../RequirementDocument/20260910-Ship僚机战斗表现HUD与相机调整.md) | requirement | approved | 2026-09-10 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-10 |
+| [僚机飞行尾焰与拖尾 — 实施记录](../DevelopmentDocumentation/20260910-僚机飞行尾焰与拖尾.md) | development | done | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | verification | 2026-09-10 |
+| [僚机飞行双尾焰与拖尾接入](../Archive/20260910-僚机飞行双尾焰与拖尾接入.md) | archive | recorded | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整实施](../Archive/20260910-Ship僚机战斗表现HUD与相机调整.md) | archive | recorded | 2026-09-10 |
 | [非 Mass 大规模弹道与特效架构](../RequirementDocument/20260906-非Mass大规模弹道与特效架构.md) | requirement | draft | 2026-09-06 |
 | [指挥官双机甲骨骼与武器挂点](../RequirementDocument/20260906-指挥官双机甲骨骼与武器挂点.md) | requirement | approved | 2026-09-06 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-06 |
 | [非 Mass 大规模弹道与特效架构 — 技术方案](../DevelopmentDocumentation/20260906-非Mass大规模弹道与特效架构.md) | development | planned | 2026-09-06 |
 | [指挥官武器特效与独立法术场 — 技术方案](../DevelopmentDocumentation/20260905-指挥官武器特效与独立法术场.md) | development | done | 2026-09-06 |
 | [2026-09-06 解决了：为两兵种添加可供用户精调的 Socket](../Archive/20260906-双机甲可调Socket创建.md) | archive | recorded | 2026-09-06 |
@@ -697,11 +1025,58 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [僚机短激光与炮弹池](../RequirementDocument/20260914-僚机短激光与炮弹池.md) | requirement | approved | 2026-09-14 |
+| [次级单位武器独立Excel维护](../RequirementDocument/20260914-次级单位武器独立Excel维护.md) | requirement | approved | 2026-09-14 |
+| [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
+| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-14 |
+| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-14 |
+| [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | development | done | 2026-09-14 |
+| [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | development | verification | 2026-09-14 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
+| [僚机直线激光炮弹池与最终数值](../Archive/20260914-僚机直线激光炮弹池与最终数值.md) | archive | recorded | 2026-09-14 |
+| [法术场统一入口与武器ID引用](../Archive/20260914-法术场统一入口与武器ID引用.md) | archive | recorded | 2026-09-14 |
+| [次级单位武器独立Excel重构](../Archive/20260914-次级单位武器独立Excel重构.md) | archive | recorded | 2026-09-14 |
+| [单位铁锈残骸与僚机物理坠落](../Archive/20260914-单位铁锈残骸与僚机物理坠落.md) | archive | recorded | 2026-09-14 |
+| [冲击波外径上限与重复缩放修正](../Archive/20260914-冲击波外径上限与重复缩放修正.md) | archive | recorded | 2026-09-14 |
+| [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-13 |
+| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
+| [僚机空爆随机二选一与销毁特效五倍](../Archive/20260913-僚机空爆随机二选一与销毁特效五倍.md) | archive | recorded | 2026-09-13 |
+| [单位受击血条与模型尺寸爆炸缩放](../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md) | archive | recorded | 2026-09-13 |
+| [僚机Big17爆炸范围缩放修正](../Archive/20260913-僚机Big17爆炸范围缩放修正.md) | archive | recorded | 2026-09-13 |
+| [僚机对地轰炸Big17爆炸特效](../Archive/20260913-僚机对地轰炸Big17爆炸特效.md) | archive | superseded | 2026-09-13 |
+| [单位受击白光与摧毁爆炸](../Archive/20260913-单位受击白光与摧毁爆炸.md) | archive | recorded | 2026-09-13 |
+| [通用敌方描边与普通PIE僚机跳变修复](../RequirementDocument/20260912-通用敌方描边与普通PIE僚机跳变修复.md) | requirement | approved | 2026-09-12 |
+| [僚机玩法门精简](../RequirementDocument/20260912-僚机玩法门精简.md) | requirement | approved | 2026-09-12 |
+| [僚机视觉插值与远端缓冲](../RequirementDocument/20260912-僚机视觉插值与远端缓冲.md) | requirement | approved | 2026-09-12 |
+| [通用敌方描边与普通PIE僚机跳变修复 — 技术方案](../DevelopmentDocumentation/20260912-通用敌方描边与普通PIE僚机跳变修复.md) | development | done | 2026-09-12 |
+| [僚机玩法门精简 — 技术方案](../DevelopmentDocumentation/20260912-僚机玩法门精简.md) | development | done | 2026-09-12 |
+| [僚机视觉插值与远端缓冲 — 技术方案](../DevelopmentDocumentation/20260912-僚机视觉插值与远端缓冲.md) | development | done | 2026-09-12 |
+| [通用敌方描边与普通PIE僚机同步修复](../Archive/20260912-通用敌方描边与普通PIE僚机同步修复.md) | archive | recorded | 2026-09-12 |
+| [Client1僚机冻结与可靠快照风暴修复](../Archive/20260912-Client1僚机冻结与可靠快照风暴修复.md) | archive | recorded | 2026-09-12 |
+| [僚机视觉插值与远端稳定显示](../Archive/20260912-僚机视觉插值与远端稳定显示.md) | archive | recorded | 2026-09-12 |
+| [Ship 僚机对空攻击—盘旋冷却循环](../RequirementDocument/20260911-Ship僚机对空攻击盘旋冷却循环.md) | requirement | approved | 2026-09-11 |
+| [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-11 |
+| [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | superseded | 2026-09-11 |
+| [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-11 |
+| [Ship 僚机对空攻击—盘旋冷却循环 — 技术方案](../DevelopmentDocumentation/20260911-Ship僚机对空攻击盘旋冷却循环.md) | development | done | 2026-09-11 |
+| [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | development | done | 2026-09-11 |
+| [Ship 僚机对空攻击盘旋冷却改造](../Archive/20260911-Ship僚机对空攻击盘旋冷却改造.md) | archive | recorded | 2026-09-11 |
+| [指挥官双点传送技能实施与验收](../Archive/20260911-指挥官双点传送技能验收.md) | archive | recorded | 2026-09-11 |
+| [僚机飞行尾焰与拖尾](../RequirementDocument/20260910-僚机飞行尾焰与拖尾.md) | requirement | approved | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整](../RequirementDocument/20260910-Ship僚机战斗表现HUD与相机调整.md) | requirement | approved | 2026-09-10 |
+| [僚机飞行尾焰与拖尾 — 实施记录](../DevelopmentDocumentation/20260910-僚机飞行尾焰与拖尾.md) | development | done | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | development | verification | 2026-09-10 |
+| [僚机飞行双尾焰与拖尾接入](../Archive/20260910-僚机飞行双尾焰与拖尾接入.md) | archive | recorded | 2026-09-10 |
+| [Ship僚机取消固定6秒轰炸进场](../Archive/20260910-Ship僚机取消固定6秒轰炸进场.md) | archive | recorded | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整实施](../Archive/20260910-Ship僚机战斗表现HUD与相机调整.md) | archive | recorded | 2026-09-10 |
+| [Ship僚机俯冲轰炸门槛简化](../RequirementDocument/20260909-Ship僚机俯冲轰炸门槛简化.md) | requirement | approved | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构](../RequirementDocument/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | requirement | approved | 2026-09-09 |
 | [Ship 僚机空地统一匈牙利自动选敌](../RequirementDocument/20260908-Ship僚机空地统一匈牙利自动选敌.md) | requirement | approved | 2026-09-09 |
-| [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-09 |
+| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-09 |
+| [Ship僚机俯冲轰炸门槛简化 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机俯冲轰炸门槛简化.md) | development | done | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | development | done | 2026-09-09 |
 | [Ship 僚机空地统一匈牙利自动选敌 — 技术方案](../DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md) | development | done | 2026-09-09 |
+| [Ship僚机俯冲轰炸门槛简化](../Archive/20260909-Ship僚机俯冲轰炸门槛简化.md) | archive | recorded | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | archive | recorded | 2026-09-09 |
 | [Ship 僚机全员参战与索敌范围显示](../Archive/20260909-Ship僚机全员参战与索敌范围显示.md) | archive | recorded | 2026-09-09 |
 | [2026-09-08 完成了 Ship 僚机空地统一匈牙利自动选敌](../Archive/20260908-Ship僚机空地统一匈牙利自动选敌.md) | archive | recorded | 2026-09-09 |
@@ -710,16 +1085,12 @@
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | development | done | 2026-09-08 |
 | [2026-09-08 修复了 Ship 僚机在 FlightNav 边界停住不动](../Archive/20260908-Ship僚机FlightNav边界停滞恢复.md) | archive | recorded | 2026-09-08 |
 | [2026-09-08 完成了 Ship 空中部队原型关卡与三倍航速](../Archive/20260908-Ship空中部队原型关卡与三倍航速.md) | archive | recorded | 2026-09-08 |
-| [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-07 |
-| [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | approved | 2026-09-07 |
 | [指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属](../RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md) | requirement | draft | 2026-09-07 |
-| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-07 |
 | [僚机体系、空中三维导航与客户端校验转发 — 技术方案](../DevelopmentDocumentation/20260902-僚机体系与空中三维导航.md) | development | done | 2026-09-07 |
 | [2026-09-07 勘误：Ship僚机最终构建恢复源码版 UE5.7 门禁](../Archive/20260907-Ship僚机源码版构建门禁勘误.md) | archive | recorded | 2026-09-07 |
 | [2026-09-07 解决了：Ship僚机按目标执行俯冲轰炸或前向机枪盘旋](../Archive/20260907-Ship僚机俯冲轰炸与对空机枪落地.md) | archive | recorded | 2026-09-07 |
 | [2026-09-07 解决了：Ship 僚机以三维往返缠斗替换目标点盘旋](../Archive/20260907-Ship僚机三维往返缠斗与随机转向.md) | archive | superseded | 2026-09-07 |
 | [非 Mass 大规模弹道与特效架构](../RequirementDocument/20260906-非Mass大规模弹道与特效架构.md) | requirement | draft | 2026-09-06 |
-| [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-06 |
 | [指挥官武器特效与独立法术场 — 技术方案](../DevelopmentDocumentation/20260905-指挥官武器特效与独立法术场.md) | development | done | 2026-09-06 |
 | [2026-09-06 解决了：指挥官独立武器表现与服务器法术场运行层](../Archive/20260906-指挥官武器特效与独立法术场.md) | archive | recorded | 2026-09-06 |
 | [指挥官武器特效与独立法术场](../RequirementDocument/20260905-指挥官武器特效与独立法术场.md) | requirement | approved | 2026-09-05 |
@@ -736,4 +1107,3 @@
 | [2026-09-03 解决了：飞船 GAS、僚机体系与三维导航实现与既有验收（总归档）](../Archive/20260903-飞船GAS僚机体系与三维导航实现与既有验收总归档.md) | archive | recorded | 2026-09-03 |
 | [飞船 GAS 与僚机技能归属 — 需求补充](../RequirementDocument/20260902-飞船GAS与僚机技能归属.md) | requirement | approved | 2026-09-02 |
 | [僚机体系、空中三维导航与客户端校验转发](../RequirementDocument/20260902-僚机体系与空中三维导航.md) | requirement | approved | 2026-09-02 |
-| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-08-26 |

@@ -1,0 +1,938 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Translucent",
+		"shading_model": "MSM_DefaultLit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionMultiply_0000016A776B3700",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -259,
+			"pos_y": -147,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016A776B7080",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": 208,
+			"pos_y": -16,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Assets/Props/ParagonProps/FX/Materials/Functions/FX_EmissiveModulate.FX_EmissiveModulate'"
+			},
+			"function_path": "/Game/Assets/Props/ParagonProps/FX/Materials/Functions/FX_EmissiveModulate.FX_EmissiveModulate",
+			"inputs": [
+				"In (V3)"
+			],
+			"outputs": [
+				"Result"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A776B0F00",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -272,
+			"pos_y": 208,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016A776B3FC0",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": 128,
+			"pos_y": 576,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Assets/Props/ParagonProps/FX/Materials/Functions/MF_ParticleRandomSize.MF_ParticleRandomSize'"
+			},
+			"function_path": "/Game/Assets/Props/ParagonProps/FX/Materials/Functions/MF_ParticleRandomSize.MF_ParticleRandomSize",
+			"inputs": [
+				"MaxRandomSize (S)"
+			],
+			"outputs": [
+				"Pipe into World Position Offset"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A6661AB00",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": -176,
+			"pos_y": 64,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionParticleSubUV_0000016A60769380",
+			"class": "ParticleSubUV",
+			"class_full": "MaterialExpressionParticleSubUV",
+			"pos_x": -1216,
+			"pos_y": -304,
+			"properties":
+			{
+				"bBlend": "True",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/Props/ParagonProps/FX/Textures/Debris/T_Concrete_ChunkSubUV_N_TGA.T_Concrete_ChunkSubUV_N_TGA'",
+				"SamplerType": "SAMPLERTYPE_Normal",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionDotProduct_0000016A776B6F40",
+			"class": "DotProduct",
+			"class_full": "MaterialExpressionDotProduct",
+			"pos_x": -1040,
+			"pos_y": -464,
+			"properties":
+			{
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionClamp_0000016A6661B880",
+			"class": "Clamp",
+			"class_full": "MaterialExpressionClamp",
+			"pos_x": -688,
+			"pos_y": -464,
+			"properties":
+			{
+				"ClampMode": "CMODE_Clamp",
+				"MinDefault": "0.000000",
+				"MaxDefault": "1.000000"
+			},
+			"inputs": [
+				"Input",
+				"Min",
+				"Max"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionPower_0000016A776B30C0",
+			"class": "Power",
+			"class_full": "MaterialExpressionPower",
+			"pos_x": -832,
+			"pos_y": -384,
+			"properties":
+			{
+				"ConstExponent": "4.000000"
+			},
+			"inputs": [
+				"Base",
+				"Exponent"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A776B5F00",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -928,
+			"pos_y": -336,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016A776B0780",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -1056,
+			"pos_y": -320,
+			"properties":
+			{
+				"DefaultValue": "0.500000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "ScaleShadow",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionCollectionParameter_0000016A776B8980",
+			"class": "CollectionParameter",
+			"class_full": "MaterialExpressionCollectionParameter",
+			"pos_x": -1408,
+			"pos_y": -464,
+			"properties":
+			{
+				"Collection": "/Script/Engine.MaterialParameterCollection'/Game/Assets/Props/ParagonProps/FX/Materials/Param_Collections/GlobalArtCollection.GlobalArtCollection'",
+				"SortPriority": "32"
+			},
+			"collection_path": "/Game/Assets/Props/ParagonProps/FX/Materials/Param_Collections/GlobalArtCollection.GlobalArtCollection",
+			"collection_parameter_name": "SunDirection",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionComponentMask_0000016CF8751300",
+			"class": "ComponentMask",
+			"class_full": "MaterialExpressionComponentMask",
+			"pos_x": -1200,
+			"pos_y": -464,
+			"properties":
+			{
+				"R": "True",
+				"G": "True",
+				"B": "True",
+				"A": "False"
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A776BF780",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -304,
+			"pos_y": 64,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A6661A680",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": -400,
+			"pos_y": 624,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000016A6661AE00",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -656,
+			"pos_y": 640,
+			"properties":
+			{
+				"DefaultValue": "(R=250.000000,G=95.537468,B=15.039876,A=0.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "FlameHot",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000016A6661A800",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -656,
+			"pos_y": 448,
+			"properties":
+			{
+				"DefaultValue": "(R=0.175000,G=0.012250,B=0.012250,A=0.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "FlameCool",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionParticleColor_0000016A657A4FA0",
+			"class": "ParticleColor",
+			"class_full": "MaterialExpressionParticleColor",
+			"pos_x": -480,
+			"pos_y": 48,
+			"properties":
+			{
+			},
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionAdd_0000016A776B7A80",
+			"class": "Add",
+			"class_full": "MaterialExpressionAdd",
+			"pos_x": -896,
+			"pos_y": -464,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016A776BD200",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": -1728,
+			"pos_y": -32,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Assets/Props/ParagonProps/FX/Materials/Functions/MF_RandomSubUV_GPUSprites.MF_RandomSubUV_GPUSprites'"
+			},
+			"function_path": "/Game/Assets/Props/ParagonProps/FX/Materials/Functions/MF_RandomSubUV_GPUSprites.MF_RandomSubUV_GPUSprites",
+			"inputs": [
+				"Rows (S)",
+				"Columns (S)",
+				"Particle Random Value (S)"
+			],
+			"outputs": [
+				"Result"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant_0000016A657A5A20",
+			"class": "Constant",
+			"class_full": "MaterialExpressionConstant",
+			"pos_x": -1856,
+			"pos_y": -32,
+			"properties":
+			{
+				"R": "4.000000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016A776B8AC0",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -48,
+			"pos_y": 576,
+			"properties":
+			{
+				"DefaultValue": "2.500000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "RandomSizeMax",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSample_0000016A60762A80",
+			"class": "TextureSample",
+			"class_full": "MaterialExpressionTextureSample",
+			"pos_x": -1055,
+			"pos_y": 76,
+			"properties":
+			{
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/Props/ParagonProps/FX/Textures/Debris/T_Concrete_ChunkSubUV_D.T_Concrete_ChunkSubUV_D'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSample_0000016A6076C800",
+			"class": "TextureSample",
+			"class_full": "MaterialExpressionTextureSample",
+			"pos_x": -1322,
+			"pos_y": 66,
+			"properties":
+			{
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/Props/ParagonProps/FX/Textures/Debris/T_Concrete_ChunkSubUV_N_TGA.T_Concrete_ChunkSubUV_N_TGA'",
+				"SamplerType": "SAMPLERTYPE_Normal",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A776BCBC0",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -672,
+			"pos_y": -32,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000016A6661A980",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -992,
+			"pos_y": -128,
+			"properties":
+			{
+				"DefaultValue": "(R=0.640000,G=0.608101,B=0.582757,A=0.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "BaseColor",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A6661B280",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": 64,
+			"pos_y": 64,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016A776BDFC0",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": -64,
+			"pos_y": 224,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Assets/Props/ParagonProps/FX/Materials/Functions/mf_ColorExponentialGradient.mf_ColorExponentialGradient'"
+			},
+			"function_path": "/Game/Assets/Props/ParagonProps/FX/Materials/Functions/mf_ColorExponentialGradient.mf_ColorExponentialGradient",
+			"inputs": [
+				"Color (V3)",
+				"Value (S)",
+				"Power (S)"
+			],
+			"outputs": [
+				"Result"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant_0000016A657AD660",
+			"class": "Constant",
+			"class_full": "MaterialExpressionConstant",
+			"pos_x": -144,
+			"pos_y": 304,
+			"properties":
+			{
+				"R": "4.000000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016A776B9240",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -96,
+			"pos_y": 384,
+			"properties":
+			{
+				"DefaultValue": "0.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "UseParticleColor",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionClamp_0000016A6661B880",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A776B3700",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A776BCBC0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A776B3700",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionLinearInterpolate_0000016A6661B280",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016A776B7080",
+			"target_input": "In (V3)"
+		},
+		{
+			"source_id": "MaterialExpressionParticleColor_0000016A657A4FA0",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMultiply_0000016A776B0F00",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016A60762A80",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMultiply_0000016A776B0F00",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016A776B8AC0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016A776B3FC0",
+			"target_input": "MaxRandomSize (S)"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A776BF780",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A6661AB00",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionParticleColor_0000016A657A4FA0",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A6661AB00",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016A776BD200",
+			"source_output_index": 0,
+			"source_output_name": "Result",
+			"target_id": "MaterialExpressionParticleSubUV_0000016A60769380",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionComponentMask_0000016CF8751300",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionDotProduct_0000016A776B6F40",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016A6076C800",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionDotProduct_0000016A776B6F40",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionAdd_0000016A776B7A80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionClamp_0000016A6661B880",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionDotProduct_0000016A776B6F40",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionPower_0000016A776B30C0",
+			"target_input": "Base"
+		},
+		{
+			"source_id": "MaterialExpressionDotProduct_0000016A776B6F40",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A776B5F00",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016A776B0780",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A776B5F00",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionCollectionParameter_0000016A776B8980",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionComponentMask_0000016CF8751300",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionParticleColor_0000016A657A4FA0",
+			"source_output_index": 1,
+			"source_output_name": "R",
+			"target_id": "MaterialExpressionMultiply_0000016A776BF780",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionLinearInterpolate_0000016A6661A680",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A776BF780",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000016A6661A800",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A6661A680",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000016A6661AE00",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A6661A680",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016A60762A80",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A6661A680",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionDotProduct_0000016A776B6F40",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionAdd_0000016A776B7A80",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016A776B0780",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionAdd_0000016A776B7A80",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionConstant_0000016A657A5A20",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016A776BD200",
+			"target_input": "Rows (S)"
+		},
+		{
+			"source_id": "MaterialExpressionConstant_0000016A657A5A20",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016A776BD200",
+			"target_input": "Columns (S)"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016A776BD200",
+			"source_output_index": 0,
+			"source_output_name": "Result",
+			"target_id": "MaterialExpressionTextureSample_0000016A60762A80",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016A776BD200",
+			"source_output_index": 0,
+			"source_output_name": "Result",
+			"target_id": "MaterialExpressionTextureSample_0000016A6076C800",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000016A6661A980",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016A776BCBC0",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016A60762A80",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016A776BCBC0",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionLinearInterpolate_0000016A6661AB00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A6661B280",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016A776BDFC0",
+			"source_output_index": 0,
+			"source_output_name": "Result",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A6661B280",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016A776B9240",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A6661B280",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionParticleColor_0000016A657A4FA0",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016A776BDFC0",
+			"target_input": "Color (V3)"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016A60762A80",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016A776BDFC0",
+			"target_input": "Value (S)"
+		},
+		{
+			"source_id": "MaterialExpressionConstant_0000016A657AD660",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016A776BDFC0",
+			"target_input": "Power (S)"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "BaseColor",
+			"expression_id": "MaterialExpressionMultiply_0000016A776B3700",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "EmissiveColor",
+			"expression_id": "MaterialExpressionMaterialFunctionCall_0000016A776B7080",
+			"output_index": 0,
+			"output_name": "Result"
+		},
+		{
+			"property": "Opacity",
+			"expression_id": "MaterialExpressionMultiply_0000016A776B0F00",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "WorldPositionOffset",
+			"expression_id": "MaterialExpressionMaterialFunctionCall_0000016A776B3FC0",
+			"output_index": 0,
+			"output_name": "Pipe into World Position Offset"
+		}
+	]
+}

@@ -1,45 +1,79 @@
 {
   "success": true,
-  "commandlet": true,
-  "level_actor_count": 0,
-  "saved": [
-    "/Game/GuLiStrike/Data/DT_GuLiStrikeShip_WingmanTargeting",
-    "/Game/GuLiStrike/Data/DT_GuLiStrikeShip_WingmanWeapons",
-    "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV3",
-    "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_GroundMissile",
-    "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MachineGun",
-    "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01",
-    "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip"
-  ],
+  "commandlet": false,
+  "level_actor_count": 25,
+  "saved": [],
   "tables": {
+    "tuning": [
+      {
+        "Name": "Default",
+        "Id": 1,
+        "Note": "",
+        "HullMass": 100,
+        "BaseMaxSpeed": 1800,
+        "BaseAcceleration": 600,
+        "NominalThrustRatio": 6,
+        "SpeedMultiplierMin": 0.5,
+        "SpeedMultiplierMax": 2,
+        "BoostThrustMultiplier": 2,
+        "MousePitchScale": 1,
+        "MouseYawScale": 1,
+        "YawRate": 40,
+        "YawResponseSpeed": 3,
+        "YawStopDamping": 1,
+        "MaxBankAngle": 5,
+        "BankInterpSpeed": 4,
+        "OrientTurnSpeed": 2.5,
+        "OrientToMovement": false,
+        "OrientMinForwardDot": 0.3,
+        "HullMeshOffset": "(X=0.000000,Y=0.000000,Z=700.000000)"
+      },
+      {
+        "Name": "Dreadnought",
+        "Id": 2,
+        "Note": "无畏舰 CombatAvatarFly-01 裸舰体；HullMeshOffset 为居中补偿(艏向+X)",
+        "HullMass": 100,
+        "BaseMaxSpeed": 16200,
+        "BaseAcceleration": 2400,
+        "NominalThrustRatio": 6,
+        "SpeedMultiplierMin": 0.5,
+        "SpeedMultiplierMax": 2,
+        "BoostThrustMultiplier": 2,
+        "MousePitchScale": 1,
+        "MouseYawScale": 1,
+        "YawRate": 13.3333,
+        "YawResponseSpeed": 3,
+        "YawStopDamping": 1,
+        "MaxBankAngle": 5,
+        "BankInterpSpeed": 4,
+        "OrientTurnSpeed": 2.5,
+        "OrientToMovement": false,
+        "OrientMinForwardDot": 0.3,
+        "HullMeshOffset": "(X=-7081.000000,Y=0.000000,Z=-464.500000)"
+      }
+    ],
     "weapons": [
       {
         "Name": "WingmanMachineGun",
         "Id": 1,
-        "Note": "三维往返缠斗；仅接近段机头射界满足时开火",
+        "Note": "100m外开始5秒持续射击；50m内停止；返舰盘旋冷却3秒",
         "SkillId": "Wingman.MachineGun",
-        "AttackPattern": "AirDogfight",
+        "AttackPattern": "AirBurstOrbit",
         "ExecutorId": "WingmanMachineGun",
         "Damage": 10,
-        "CooldownSeconds": 0.5,
+        "CooldownSeconds": 0.2,
         "RangeCentimeters": 150000,
         "FireConeHalfAngleDegrees": 20,
-        "FlightSpeedCentimetersPerSecond": 4500,
+        "FlightSpeedCentimetersPerSecond": 9000,
         "DiveSeconds": 1.5,
         "MissileCount": 10,
         "StripLengthCentimeters": 12000,
         "PullUpHeightCentimeters": 10000,
         "ExplosionRadiusCentimeters": 800,
-        "BreakawayDistanceCentimeters": 30000,
-        "RetreatMinimumDistanceCentimeters": 45000,
-        "RetreatLongitudinalMinFraction": 0.35,
-        "RetreatLongitudinalMaxFraction": 0.6,
-        "RetreatLateralRadiusCentimeters": 15000,
-        "RetreatVerticalRadiusCentimeters": 10000,
-        "ManeuverArrivalRadiusCentimeters": 7500,
-        "TurnYawMinDegrees": 40,
-        "TurnYawMaxDegrees": 90,
-        "TurnPitchMaxDegrees": 30,
+        "AirFireStartDistanceCentimeters": 10000,
+        "AirFireStopDistanceCentimeters": 5000,
+        "AirBurstDurationSeconds": 5,
+        "AirOrbitCooldownSeconds": 3,
         "ProjectileSpeedCentimetersPerSecond": 120000,
         "ProjectileLifetimeSeconds": 1.5,
         "SweepRadiusCentimeters": 45,
@@ -56,22 +90,16 @@
         "CooldownSeconds": 8,
         "RangeCentimeters": 150000,
         "FireConeHalfAngleDegrees": 20,
-        "FlightSpeedCentimetersPerSecond": 4500,
+        "FlightSpeedCentimetersPerSecond": 9000,
         "DiveSeconds": 1.5,
         "MissileCount": 10,
         "StripLengthCentimeters": 12000,
         "PullUpHeightCentimeters": 10000,
-        "ExplosionRadiusCentimeters": 800,
-        "BreakawayDistanceCentimeters": 30000,
-        "RetreatMinimumDistanceCentimeters": 45000,
-        "RetreatLongitudinalMinFraction": 0.35,
-        "RetreatLongitudinalMaxFraction": 0.6,
-        "RetreatLateralRadiusCentimeters": 15000,
-        "RetreatVerticalRadiusCentimeters": 10000,
-        "ManeuverArrivalRadiusCentimeters": 7500,
-        "TurnYawMinDegrees": 40,
-        "TurnYawMaxDegrees": 90,
-        "TurnPitchMaxDegrees": 30,
+        "ExplosionRadiusCentimeters": 4000,
+        "AirFireStartDistanceCentimeters": 10000,
+        "AirFireStopDistanceCentimeters": 5000,
+        "AirBurstDurationSeconds": 5,
+        "AirOrbitCooldownSeconds": 3,
         "ProjectileSpeedCentimetersPerSecond": 6000,
         "ProjectileLifetimeSeconds": 8,
         "SweepRadiusCentimeters": 30,
@@ -90,9 +118,107 @@
       }
     ]
   },
-  "reused_projectile": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile",
-  "reused_impact_field": "<Object '/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_MissileExplosion.DA_WM01_MissileExplosion' (0x00000204C5997620) Class 'GuLiSpellFieldDefinition'>",
-  "wingman_mesh_bounds": "<Struct 'Box' (0x0000020563C743C0) {min: {x: -1164.024719, y: -867.647247, z: -6.370728}, max: {x: 1516.457092, y: 867.647186, z: 681.197632}, is_valid: True}>",
+  "table_imported": {
+    "tuning": false,
+    "weapons": false,
+    "targeting": false
+  },
+  "source_niagara": {
+    "success": true,
+    "errors": [],
+    "warnings": [],
+    "emitters": [
+      "refr_sprite",
+      "refr_mesh",
+      "main",
+      "spark",
+      "impact",
+      "spark_l",
+      "smoke_shockwave",
+      "smoke_after",
+      "parts",
+      "spark001",
+      "spark002"
+    ]
+  },
+  "wingman_niagara": {
+    "success": true,
+    "errors": [],
+    "warnings": [],
+    "emitters": [
+      "refr_sprite",
+      "refr_mesh",
+      "main",
+      "spark",
+      "impact",
+      "spark_l",
+      "smoke_shockwave",
+      "smoke_after",
+      "parts",
+      "spark001",
+      "spark002"
+    ]
+  },
+  "explosion_layers": {
+    "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanGroundExplosion_Big_17": {
+      "success": true,
+      "errors": [],
+      "warnings": [],
+      "emitters": [
+        "refr_sprite",
+        "refr_mesh",
+        "main",
+        "spark",
+        "impact",
+        "spark_l",
+        "smoke_shockwave",
+        "smoke_after",
+        "parts",
+        "spark001",
+        "spark002"
+      ],
+      "enabled_emitters": [
+        "impact",
+        "main",
+        "parts",
+        "smoke_after",
+        "spark",
+        "spark001",
+        "spark002",
+        "spark_l"
+      ]
+    },
+    "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanGroundShockwave_Big_17": {
+      "success": true,
+      "errors": [],
+      "warnings": [],
+      "emitters": [
+        "refr_sprite",
+        "refr_mesh",
+        "main",
+        "spark",
+        "impact",
+        "spark_l",
+        "smoke_shockwave",
+        "smoke_after",
+        "parts",
+        "spark001",
+        "spark002"
+      ],
+      "enabled_emitters": [
+        "refr_mesh",
+        "smoke_shockwave"
+      ]
+    }
+  },
+  "commander_projectile": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile",
+  "commander_impact_field": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_MissileExplosion.DA_WM01_MissileExplosion",
+  "wingman_mesh_bounds": "<Struct 'Box' (0x000002128B7BFC80) {min: {x: -1164.024719, y: -867.647247, z: -6.370728}, max: {x: 1516.457092, y: 867.647186, z: 681.197632}, is_valid: True}>",
+  "revisions": {
+    "machine_gun": 3,
+    "ground_missile": 2,
+    "ability_set": 4
+  },
   "grant_tags": [
     "Ship.Ability.Formation.SwarmOrbit",
     "Ship.Ability.Formation.DoubleRing",
@@ -100,5 +226,36 @@
     "Ship.Ability.Weapon.Missile.Salvo",
     "Ship.Ability.Weapon.Wingman.MachineGun",
     "Ship.Ability.Weapon.Wingman.GroundMissile"
-  ]
+  ],
+  "projectiles": {
+    "commander": {
+      "path": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile",
+      "visual_scale": 1.0
+    },
+    "wingman": {
+      "path": "/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundMissile.DA_WingmanGroundMissile",
+      "visual_scale": 2.0,
+      "flight_system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight.NS_WM01_MissileFlight",
+      "impact_field": "/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundExplosion.DA_WingmanGroundExplosion"
+    }
+  },
+  "impact": {
+    "path": "/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundExplosion.DA_WingmanGroundExplosion",
+    "reference_radius": 4000.0,
+    "dissipation_seconds": 3.0,
+    "variants": [
+      {
+        "system": "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanGroundExplosion_Big_17.NS_WingmanGroundExplosion_Big_17",
+        "scale": 5.0,
+        "random_yaw": true,
+        "maximum_lifetime": 3.0,
+        "additional_layers": [
+          {
+            "system": "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanGroundShockwave_Big_17.NS_WingmanGroundShockwave_Big_17",
+            "scale": 3.0999999046325684
+          }
+        ]
+      }
+    ]
+  }
 }

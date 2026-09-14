@@ -34,6 +34,7 @@ public:
 
 namespace GuLiMap
 {
+    inline constexpr int32 DensityTileSize = 32;
     GULIMAPAUTHORINGCORE_API bool RegisterGeometry(TSharedRef<IGuLiMapGeometryHandler> Handler);
     GULIMAPAUTHORINGCORE_API void UnregisterGeometry(FName ShapeType);
     GULIMAPAUTHORINGCORE_API TSharedPtr<IGuLiMapGeometryHandler> FindGeometry(FName ShapeType);
@@ -57,6 +58,18 @@ namespace GuLiMap
     // False leaves Bag completely untouched. ExplicitReset never converts incompatible values.
     GULIMAPAUTHORINGCORE_API bool MigrateFields(FInstancedPropertyBag& Bag, const FInstancedPropertyBag& Defaults, bool ExplicitReset, FString& Error);
     GULIMAPAUTHORINGCORE_API void ValidateType(const UGuLiMapTypeDefinition& Type, TArray<FGuLiMapIssue>& Issues);
+    GULIMAPAUTHORINGCORE_API bool HasErrors(const TArray<FGuLiMapIssue>& Issues);
+    GULIMAPAUTHORINGCORE_API int32 WorldToDensityCell(double WorldCoordinate, double CellSizeCm);
+    GULIMAPAUTHORINGCORE_API uint8 GetDensityCell(const FGuLiMapDensityLayer& Layer, FIntPoint Cell);
+    GULIMAPAUTHORINGCORE_API bool SetDensityCell(FGuLiMapDensityLayer& Layer, FIntPoint Cell, uint8 Value);
+    GULIMAPAUTHORINGCORE_API bool IsDensityMapEmpty(const FGuLiMapDensityMapRecord& DensityMap);
+    GULIMAPAUTHORINGCORE_API void NormalizeDensityMap(FGuLiMapDensityMapRecord& DensityMap);
+    GULIMAPAUTHORINGCORE_API bool EnsureDensityPresets(FGuLiMapDensityMapRecord& DensityMap);
+    // Applies one deterministic stroke. Samples are resampled by fixed world distance and
+    // every cell receives the maximum coverage of this stroke exactly once.
+    GULIMAPAUTHORINGCORE_API bool ApplyDensityBrush(FGuLiMapDensityMapRecord& DensityMap, FName LayerKey, const TArray<FVector2D>& WorldSamples, double RadiusCm, double Strength01, double Falloff01, bool bErase, FString& Error);
+    GULIMAPAUTHORINGCORE_API void ValidateDensity(const FGuLiMapSnapshot& Snapshot, TArray<FGuLiMapIssue>& Issues);
+    GULIMAPAUTHORINGCORE_API bool BuildDensityFiles(const FGuLiMapSnapshot& Snapshot, TMap<FString,FString>& Files, TArray<FGuLiMapIssue>& Issues);
     GULIMAPAUTHORINGCORE_API void Validate(const FGuLiMapSnapshot& Snapshot, TArray<FGuLiMapIssue>& Issues);
     GULIMAPAUTHORINGCORE_API bool BuildFiles(const FGuLiMapSnapshot& Snapshot, TMap<FString,FString>& Files, TArray<FGuLiMapIssue>& Issues);
     GULIMAPAUTHORINGCORE_API bool Publish(const FString& Directory, const TMap<FString,FString>& Files, FString& Error);

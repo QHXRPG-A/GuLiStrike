@@ -1,8 +1,10 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
+#include "Gameplay/Teleport/GuLiTeleportInputComponent.h"
 
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
+#include "Commander/Framework/GuLiCommanderResourceAdapter.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 #include "Commander/Presentation/GuLiCommanderHUD.h"
@@ -112,6 +114,7 @@ AGuLiCommanderPlayerController::AGuLiCommanderPlayerController(const FObjectInit
 
 	// 替换公共默认子对象的具体类型；旧属性继续指向同一个对象，不再额外创建组件。
 	NetSyncComponent = CastChecked<UGuLiCommanderNetSyncComponent>(GetPlayerNetSyncComponent());
+	TeleportInput = CreateDefaultSubobject<UGuLiTeleportInputComponent>(TEXT("CommanderTeleportInput"));
 	BuildingPlacementComponent = CreateDefaultSubobject<UGuLiBuildingPlacementComponent>(
 		TEXT("BuildingPlacement"));
 }
@@ -156,6 +159,7 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 	}
 
 	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::T, IE_Pressed, TeleportInput.Get(), &UGuLiTeleportInputComponent::ActivateAiming).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Released, this, &ThisClass::HandlePrimaryReleased).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleCancelInput).bConsumeInput = false;
@@ -241,6 +245,7 @@ bool AGuLiCommanderPlayerController::CanIssueCommanderOrders() const
 
 void AGuLiCommanderPlayerController::ActivateSelectionTool()
 {
+	if (TeleportInput && TeleportInput->IsAiming()) { TeleportInput->CancelTeleport(); }
 	if (CommanderToolMode == EGuLiCommanderToolMode::Select)
 	{
 		return;
@@ -252,6 +257,7 @@ void AGuLiCommanderPlayerController::ActivateSelectionTool()
 
 bool AGuLiCommanderPlayerController::ArmMoveTool()
 {
+	if (TeleportInput && TeleportInput->IsAiming()) { TeleportInput->CancelTeleport(); }
 	CancelSelectionDrag();
 	if (!GuLiCommanderToolPolicy::CanArmMove(
 		CanIssueCommanderOrders(),
@@ -345,6 +351,7 @@ bool AGuLiCommanderPlayerController::GetActiveCommandLine(
 
 void AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor()
 {
+	if (TeleportInput && TeleportInput->HandlePrimaryAction()) { CancelSelectionDrag(); return; }
 	if (BuildingPlacementComponent
 		&& BuildingPlacementComponent->HandlePrimaryAction(IsCursorOverCommanderUI()))
 	{
@@ -403,6 +410,7 @@ void AGuLiCommanderPlayerController::HandlePrimaryReleased()
 
 void AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor()
 {
+	if (TeleportInput && TeleportInput->IsAiming()) { TeleportInput->CancelTeleport(); return; }
 	if (BuildingPlacementComponent && BuildingPlacementComponent->HandleCancelAction())
 	{
 		CancelSelectionDrag();
@@ -458,6 +466,7 @@ void AGuLiCommanderPlayerController::HandleArmMoveToolInput()
 
 void AGuLiCommanderPlayerController::HandleToggleBuildModeInput()
 {
+	if (TeleportInput && TeleportInput->IsAiming()) { TeleportInput->CancelTeleport(); }
 	CancelSelectionDrag();
 	if (BuildingPlacementComponent)
 	{
@@ -483,6 +492,7 @@ void AGuLiCommanderPlayerController::HandleSelectBuildingThreeInput()
 
 void AGuLiCommanderPlayerController::HandleCancelInput()
 {
+	if (TeleportInput && TeleportInput->IsAiming()) { TeleportInput->CancelTeleport(); return; }
 	if (BuildingPlacementComponent && BuildingPlacementComponent->HandleCancelAction())
 	{
 		CancelSelectionDrag();
@@ -561,6 +571,12 @@ bool AGuLiCommanderPlayerController::BuildPointSelectionRequest(FGuLiSelectionRe
 	}
 	const AGuLiBattlePlayerState* State = GetPlayerState<AGuLiBattlePlayerState>();
 	if (!State || !GetWorld()) return false;
+	const UGuLiCommanderResourceAdapter* ResourceAdapter =
+		GetWorld()->GetSubsystem<UGuLiCommanderResourceAdapter>();
+	check(ResourceAdapter);
+	Request.SeedActorId = ResourceAdapter->FindControllableActorAlongRay(
+		State->GetTeam(), Origin, Direction, Request.PickHalfAngleRadians);
+	if (Request.SeedActorId.IsValid()) return true;
 	AGuLiCommanderPresentationActor* Presentation = nullptr;
 	AGuLiSoldierStateReplicator* Roster = nullptr;
 	for (TActorIterator<AGuLiCommanderPresentationActor> It(GetWorld()); It; ++It) { Presentation = *It; break; }
@@ -660,6 +676,31 @@ bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 	Request.Target = GroundLocation;
 	Request.SelectionRevision = NetSyncComponent->GetSelectionState().SelectionRevision;
 	Request.ClientCommandId = AllocateMoveCommandId();
+	const UGuLiCommanderResourceAdapter* ResourceAdapter =
+		GetWorld()->GetSubsystem<UGuLiCommanderResourceAdapter>();
+	check(ResourceAdapter);
+	FVector RayOrigin;
+	FVector RayDirection;
+	if (DeprojectMousePositionToWorld(RayOrigin, RayDirection))
+	{
+		uint16 ClusterId = 0u;
+		FVector ClusterCenter = FVector::ZeroVector;
+		if (ResourceAdapter->FindClusterAlongRay(
+			RayOrigin, RayDirection, ClusterId, ClusterCenter))
+		{
+			if (NetSyncComponent->GetSelectionState().ActorIds.IsEmpty()) return false;
+			Request.MiningOrderType = EGuLiMiningOrderType::MineCluster;
+			Request.TargetClusterId = ClusterId;
+			Request.Target = ClusterCenter;
+		}
+		else if (const AGuLiBattlePlayerState* State = GetPlayerState<AGuLiBattlePlayerState>();
+			State && ResourceAdapter->IsFactoryAlongRay(
+				State->GetTeam(), RayOrigin, RayDirection))
+		{
+			if (NetSyncComponent->GetSelectionState().ActorIds.IsEmpty()) return false;
+			Request.MiningOrderType = EGuLiMiningOrderType::ReturnToFactory;
+		}
+	}
 #if !UE_BUILD_SHIPPING
 	for (TActorIterator<AGuLiCommanderPresentationActor> It(GetWorld()); It; ++It)
 	{
@@ -717,6 +758,7 @@ void AGuLiCommanderPlayerController::ClearSelection()
 
 bool AGuLiCommanderPlayerController::IsCursorOverCommanderUI() const
 {
+	if (TeleportInput && TeleportInput->IsHUDHovered()) { return true; }
 	float MouseX = 0.0f;
 	float MouseY = 0.0f;
 	const AGuLiCommanderHUD* CommanderHUD = Cast<AGuLiCommanderHUD>(GetHUD());
@@ -739,7 +781,7 @@ bool AGuLiCommanderPlayerController::HasConfirmedSelection() const
 			return true;
 		}
 	}
-	return false;
+	return !NetSyncComponent->GetSelectionState().ActorIds.IsEmpty();
 }
 
 void AGuLiCommanderPlayerController::ZoomCameraIn()
@@ -851,17 +893,25 @@ FVector AGuLiCommanderPlayerController::FindConfirmedSelectionCenter() const
 		return PendingMoveTarget;
 	}
 
-	const TArray<FGuLiControlCohortDescriptor>& Cohorts = NetSyncComponent->GetSelectionState().Cohorts;
-	if (Cohorts.IsEmpty())
+	const FGuLiCommanderSelectionState& Selection = NetSyncComponent->GetSelectionState();
+	FVector Center = FVector::ZeroVector;
+	int32 FoundCount = 0;
+	if (GetWorld())
 	{
-		return PendingMoveTarget;
+		const UGuLiCommanderResourceAdapter* ResourceAdapter =
+			GetWorld()->GetSubsystem<UGuLiCommanderResourceAdapter>();
+		check(ResourceAdapter);
+		FVector ActorCenter;
+		if (ResourceAdapter->GetControllableActorCenter(Selection.ActorIds, ActorCenter))
+		{
+			Center += ActorCenter * Selection.ActorIds.Num();
+			FoundCount += Selection.ActorIds.Num();
+		}
 	}
 
 	for (TActorIterator<AGuLiCommanderPresentationActor> It(GetWorld()); It; ++It)
 	{
-		FVector Center = FVector::ZeroVector;
-		int32 FoundCount = 0;
-		for (const FGuLiControlCohortDescriptor& Cohort : Cohorts)
+		for (const FGuLiControlCohortDescriptor& Cohort : Selection.Cohorts)
 		{
 			for (const FGuLiSoldierId SoldierId : Cohort.MemberIds)
 			{
@@ -873,10 +923,10 @@ FVector AGuLiCommanderPlayerController::FindConfirmedSelectionCenter() const
 				}
 			}
 		}
-		return FoundCount > 0 ? Center / static_cast<float>(FoundCount) : PendingMoveTarget;
+		break;
 	}
 
-	return PendingMoveTarget;
+	return FoundCount > 0 ? Center / static_cast<float>(FoundCount) : PendingMoveTarget;
 }
 
 // 选兵序号与移动序号分别增长并跳过 0；因此相同数字必须结合 CommandKind 区分。
@@ -903,7 +953,13 @@ uint32 AGuLiCommanderPlayerController::AllocateMoveCommandId()
 bool AGuLiCommanderPlayerController::IsCommanderViewActive() const
 {
 	const AGuLiBattlePlayerState* BattlePlayerState = GetPlayerState<AGuLiBattlePlayerState>();
-	return IsLocalController() && BattlePlayerState && BattlePlayerState->IsCommander();
+	if (!IsLocalController() || !BattlePlayerState || !BattlePlayerState->IsCommander())
+	{
+		return false;
+	}
+	const UGuLiCommanderResourceAdapter* ResourceAdapter = GetWorld()
+		? GetWorld()->GetSubsystem<UGuLiCommanderResourceAdapter>() : nullptr;
+	return ResourceAdapter && ResourceAdapter->IsCommandRuntimeReady();
 }
 
 void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
@@ -912,6 +968,13 @@ void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 	{
 		return;
 	}
+#if !UE_BUILD_SHIPPING
+	// The GM surface owns focus and UIOnly while open. Role polling must not steal it back.
+	if (IsGMPanelOpen())
+	{
+		return;
+	}
+#endif
 	const bool bShouldEnable = IsCommanderViewActive();
 	if (bCommanderInputModeInitialized && bCommanderInputActive == bShouldEnable)
 	{
@@ -953,6 +1016,16 @@ void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 		ActivateSelectionTool();
 	}
 }
+
+#if !UE_BUILD_SHIPPING
+void AGuLiCommanderPlayerController::RestoreGameplayInputAfterGMPanel()
+{
+	// Rebuild from the role that is current at close time, including a role change made while the panel was open.
+	RestoreCommanderCursor();
+	bCommanderInputModeInitialized = false;
+	UpdateCommanderInputMode();
+}
+#endif
 
 void AGuLiCommanderPlayerController::RestoreCommanderCursor()
 {

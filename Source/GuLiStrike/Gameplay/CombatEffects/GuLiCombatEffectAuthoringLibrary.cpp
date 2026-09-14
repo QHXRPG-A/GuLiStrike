@@ -2,12 +2,14 @@
 
 #if WITH_EDITOR
 #include "NiagaraSystem.h"
+#include "NiagaraEmitter.h"
 #include "Engine/StaticMesh.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "NiagaraScript.h"
 #include "NiagaraScriptSource.h"
 #include "NiagaraGraph.h"
 #include "NiagaraDataInterface.h"
+#include "NiagaraDataInterfaceArrayFloat.h"
 #include "NiagaraDataChannel.h"
 #include "NiagaraDataChannel_Global.h"
 #include "NiagaraNodeInput.h"
@@ -205,7 +207,11 @@ bool UGuLiCombatEffectAuthoringLibrary::WireGunfireReader(UNiagaraSystem* System
 
 bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* System)
 {
-	if (!InScope(System)) return false;
+	if (!InScope(System) && (!System || !System->GetOutermost()->GetName().StartsWith(
+		TEXT("/Game/GuLiStrike/FX/WingmanFlight/"))))
+	{
+		if (!System || System->GetOutermost()->GetName() != TEXT("/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool")) return false;
+	}
 	ForEachObjectWithOuter(System, [](UObject* Object)
 	{
 		auto* Node = Cast<UNiagaraNodeFunctionCall>(Object);
@@ -218,5 +224,77 @@ bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* Syst
 		Node->GetGraph()->NotifyGraphChanged();
 	}, true);
 	return true;
+}
+
+bool UGuLiCombatEffectAuthoringLibrary::WireLaserPoolReader(UNiagaraSystem* System,
+	UNiagaraScript* ParticleUpdateScript, const bool bMuzzle, FString& Error)
+{
+	const FString Path = TEXT("/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool");
+	if (!System || System->GetOutermost()->GetName() != Path || !ParticleUpdateScript
+		|| ParticleUpdateScript->GetOutermost() != System->GetOutermost())
+	{ Error = TEXT("Laser reader is outside its task-owned system"); return false; }
+	FModuleGraph Module;
+	if (!Module.Initialize(ParticleUpdateScript)) { Error = TEXT("Laser scratch graph is invalid"); return false; }
+	struct FBinding { UClass* Class; FName User; FName Attribute; };
+	const TArray<FBinding> Bindings = {
+		{UNiagaraDataInterfaceArrayPosition::StaticClass(), bMuzzle ? TEXT("User.MuzzlePositions") : TEXT("User.LaserPositions"), TEXT("Particles.Position")},
+		{UNiagaraDataInterfaceArrayFloat3::StaticClass(), TEXT("User.LaserDirections"), TEXT("Particles.SpriteAlignment")},
+		{UNiagaraDataInterfaceArrayFloat2::StaticClass(), bMuzzle ? TEXT("User.MuzzleSizes") : TEXT("User.LaserSizes"), TEXT("Particles.SpriteSize")},
+		{UNiagaraDataInterfaceArrayColor::StaticClass(), bMuzzle ? TEXT("User.MuzzleColors") : TEXT("User.LaserColors"), TEXT("Particles.Color")}
+	};
+	System->Modify();
+	for (const FBinding& Binding : Bindings)
+	{
+		const FNiagaraTypeDefinition DIType(Binding.Class);
+		const FNiagaraVariable Variable(DIType, Binding.User);
+		auto& Parameters = System->GetExposedParameters();
+		if (!Parameters.FindParameterOffset(Variable))
+		{
+			Parameters.AddParameter(Variable);
+			Parameters.SetDataInterface(NewObject<UNiagaraDataInterface>(System, Binding.Class, NAME_None, RF_Transactional), Variable);
+		}
+		TArray<FNiagaraFunctionSignature> Signatures;
+		Binding.Class->GetDefaultObject<UNiagaraDataInterface>()->GetFunctionSignatures(Signatures);
+		const auto* Signature = Signatures.FindByPredicate([](const auto& S) { return S.Name == TEXT("Get"); });
+		if (!Signature || Signature->Outputs.Num() != 1) { Error = TEXT("Array Get signature is unavailable"); return false; }
+		auto* Node = NewObject<UNiagaraNodeFunctionCall>(Module.Graph, NAME_None, RF_Transactional);
+		Node->Signature = *Signature; Module.Graph->AddNode(Node, false, false);
+		Node->CreateNewGuid(); Node->PostPlacedNewNode(); Node->AllocateDefaultPins();
+		Module.Link(Read(Module.Get, DIType, Binding.User), Node->FindPin(TEXT("Array interface"), EGPD_Input));
+		Module.Link(Read(Module.Get, FNiagaraTypeDefinition::GetIntDef(), TEXT("Particles.LaserSlot")), Node->FindPin(TEXT("Index"), EGPD_Input));
+		Module.Link(Node->FindPin(TEXT("Value"), EGPD_Output), Write(Module.Set, Signature->Outputs[0].GetType(), Binding.Attribute));
+	}
+	Module.Graph->NotifyGraphChanged(); ParticleUpdateScript->MarkPackageDirty(); System->MarkPackageDirty();
+	FinalizeScratchPins(System);
+	if (!Module.bValid) { Error = TEXT("Laser array graph connection failed"); return false; }
+	return true;
+}
+
+bool UGuLiCombatEffectAuthoringLibrary::NormalizeExplosionRefractionSpace(UNiagaraSystem* System, FString& Error)
+{
+	Error.Reset();
+	const FString Package = System ? System->GetOutermost()->GetName() : FString();
+	if (!Package.StartsWith(TEXT("/Game/GuLiStrike/FX/UnitFeedback/NS_WingmanDestruction_Aerial_"))
+		&& Package != TEXT("/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanGroundShockwave_Big_17"))
+	{ Error = TEXT("Only the project aerial/ground explosion refraction copies are supported"); return false; }
+	for (const FNiagaraEmitterHandle& Handle : System->GetEmitterHandles())
+	{
+		if (Handle.GetName() != TEXT("refr_mesh")) continue;
+		FVersionedNiagaraEmitterData* Data = Handle.GetEmitterData();
+		UNiagaraEmitter* Emitter = Handle.GetInstance().Emitter.Get();
+		if (!Data || !Emitter) { Error = TEXT("Missing versioned refraction emitter"); return false; }
+		if (!Data->bLocalSpace) return true;
+		System->Modify();
+		Emitter->Modify();
+		// Initialize Particle supplies the simulation-space owner position. In world space it
+		// therefore stays at the explosion origin, while its authored owner scale is applied once.
+		Data->bLocalSpace = false;
+		FPropertyChangedEvent Changed(FindFProperty<FBoolProperty>(FVersionedNiagaraEmitterData::StaticStruct(), TEXT("bLocalSpace")));
+		Emitter->PostEditChangeVersionedProperty(Changed, Handle.GetInstance().Version);
+		System->MarkPackageDirty();
+		return true;
+	}
+	Error = TEXT("The required refr_mesh emitter was not found");
+	return false;
 }
 #endif

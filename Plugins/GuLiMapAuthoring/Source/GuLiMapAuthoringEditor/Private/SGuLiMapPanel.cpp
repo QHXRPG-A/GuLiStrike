@@ -2,6 +2,7 @@
 #include "GuLiMapAuthoring.h"
 #include "GuLiMapAuthoringSettings.h"
 #include "GuLiMapAuthoringSubsystem.h"
+#include "GuLiMapDensityMap.h"
 #include "GuLiMapMarker.h"
 #include "GuLiMapViewport.h"
 #include "AssetRegistry/AssetRegistryModule.h"
@@ -10,6 +11,7 @@
 #include "IDetailsView.h"
 #include "PropertyEditorModule.h"
 #include "ScopedTransaction.h"
+#include "Misc/MessageDialog.h"
 #include "Widgets/Input/SButton.h"
 #include "Widgets/Input/SCheckBox.h"
 #include "Widgets/Input/SComboBox.h"
@@ -19,11 +21,28 @@
 #include "Widgets/Layout/SBorder.h"
 #include "Widgets/Layout/SBox.h"
 #include "Widgets/Layout/SSplitter.h"
+#include "Widgets/Layout/SSeparator.h"
 #include "Widgets/Layout/SWrapBox.h"
 #include "Widgets/Views/SListView.h"
 #include "Widgets/Text/STextBlock.h"
 
 UGuLiMapAuthoringSubsystem* SGuLiMapPanel::Service() const { return GEditor?GEditor->GetEditorSubsystem<UGuLiMapAuthoringSubsystem>():nullptr; }
+AGuLiMapDensityMap* SGuLiMapPanel::DensityMap() const
+{
+    if (UGuLiMapAuthoringSubsystem* S=Service()) { const TArray<AGuLiMapDensityMap*> Maps=S->LoadedDensityMaps(); return Maps.Num()==1?Maps[0]:nullptr; }
+    return nullptr;
+}
+void SGuLiMapPanel::UpdateDensityBrush()
+{
+    FGuLiMapDensityBrushSettings Brush; Brush.LayerKey=DensityLayer; Brush.RadiusCm=BrushRadiusCm; Brush.Strength01=BrushStrength01; Brush.Falloff01=BrushFalloff01; Brush.bErase=EraseDensity;
+    GuLiMapEditor::UpdateDensityBrush(Brush);
+}
+void SGuLiMapPanel::NotifyDensityChanged(AGuLiMapDensityMap* Actor,const bool InvalidateSurface)
+{
+    if (!Actor) return; GuLiMap::NormalizeDensityMap(Actor->Record); Actor->RefreshVisuals(InvalidateSurface);
+    FPropertyChangedEvent Changed(FindFProperty<FProperty>(AGuLiMapDensityMap::StaticClass(),GET_MEMBER_NAME_CHECKED(AGuLiMapDensityMap,Record)),EPropertyChangeType::ValueSet);
+    FCoreUObjectDelegates::OnObjectPropertyChanged.Broadcast(Actor,Changed);
+}
 void SGuLiMapPanel::Construct(const FArguments& Args)
 {
     auto& PropertyModule=FModuleManager::LoadModuleChecked<FPropertyEditorModule>(TEXT("PropertyEditor"));
@@ -39,6 +58,12 @@ void SGuLiMapPanel::Construct(const FArguments& Args)
             SNew(SVerticalBox)
             +SVerticalBox::Slot().AutoHeight().Padding(0,0,0,5)
             [ SNew(STextBlock).Text_Lambda([this]{return FText::FromString(Service()&&Service()->EditorWorld()?Service()->EditorWorld()->GetOutermost()->GetName():TEXT("PIE/SIE 中不可编辑"));}) ]
+            +SVerticalBox::Slot().AutoHeight().Padding(0,0,0,5)
+            [
+                SNew(SHorizontalBox)
+                +SHorizontalBox::Slot().FillWidth(1)[Button(TEXT("标记"),TEXT("markerview"))]
+                +SHorizontalBox::Slot().FillWidth(1).Padding(4,0,0,0)[Button(TEXT("资源涂绘"),TEXT("paintview"))]
+            ]
             +SVerticalBox::Slot().AutoHeight()
             [
                 SNew(SWrapBox).UseAllottedSize(true).InnerSlotPadding(FVector2D(4,4))
@@ -48,9 +73,55 @@ void SGuLiMapPanel::Construct(const FArguments& Args)
                 +SWrapBox::Slot()[Button(TEXT("刷新"),TEXT("refresh"))]
                 +SWrapBox::Slot()[Button(TEXT("生成三个预设"),TEXT("presets"))]
             ]
+            +SVerticalBox::Slot().AutoHeight().Padding(0,6)
+            [
+                SNew(SVerticalBox).Visibility_Lambda([this]{return PaintView?EVisibility::Visible:EVisibility::Collapsed;})
+                +SVerticalBox::Slot().AutoHeight()
+                [SNew(STextBlock).Text(FText::FromString(TEXT("全图独立密度棋盘；红蓝图层可重叠。数值是相对生成权重，不代表矿量或储量。"))).AutoWrapText(true)]
+                +SVerticalBox::Slot().AutoHeight().Padding(0,5)
+                [
+                    SNew(SWrapBox).UseAllottedSize(true).InnerSlotPadding(FVector2D(4,4))
+                    +SWrapBox::Slot()[Button(TEXT("创建/补齐密度图"),TEXT("ensuredensity"))]
+                    +SWrapBox::Slot()[Button(TEXT("选择蓝矿"),TEXT("blue"))]
+                    +SWrapBox::Slot()[Button(TEXT("选择红矿"),TEXT("red"))]
+                    +SWrapBox::Slot()[SNew(SCheckBox).IsChecked_Lambda([this]{return BlueVisible?ECheckBoxState::Checked:ECheckBoxState::Unchecked;}).OnCheckStateChanged_Lambda([this](ECheckBoxState State){BlueVisible=State==ECheckBoxState::Checked;if(auto* A=DensityMap())A->SetLayerVisible(TEXT("BlueOre"),BlueVisible);})[SNew(STextBlock).Text(FText::FromString(TEXT("显示蓝矿")))]]
+                    +SWrapBox::Slot()[SNew(SCheckBox).IsChecked_Lambda([this]{return RedVisible?ECheckBoxState::Checked:ECheckBoxState::Unchecked;}).OnCheckStateChanged_Lambda([this](ECheckBoxState State){RedVisible=State==ECheckBoxState::Checked;if(auto* A=DensityMap())A->SetLayerVisible(TEXT("RedOre"),RedVisible);})[SNew(STextBlock).Text(FText::FromString(TEXT("显示红矿")))]]
+                ]
+                +SVerticalBox::Slot().AutoHeight().Padding(0,2)
+                [SNew(STextBlock).Text_Lambda([this]{return FText::FromString(FString::Printf(TEXT("当前图层：%s · %s"),*DensityLayer.ToString(),EraseDensity?TEXT("擦除"):TEXT("加深")));})]
+                +SVerticalBox::Slot().AutoHeight().Padding(0,3)
+                [
+                    SNew(SWrapBox).UseAllottedSize(true).InnerSlotPadding(FVector2D(4,4))
+                    +SWrapBox::Slot()[Button(TEXT("加深"),TEXT("adddensity"))]
+                    +SWrapBox::Slot()[Button(TEXT("擦除"),TEXT("erasedensity"))]
+                    +SWrapBox::Slot()[Button(TEXT("进入涂绘"),TEXT("paintdensity"))]
+                    +SWrapBox::Slot()[Button(TEXT("退出涂绘"),TEXT("stop"))]
+                    +SWrapBox::Slot()[Button(TEXT("清空当前层"),TEXT("clearlayer"))]
+                ]
+                +SVerticalBox::Slot().AutoHeight().Padding(0,3)
+                [
+                    SNew(SWrapBox).UseAllottedSize(true).InnerSlotPadding(FVector2D(4,4))
+                    +SWrapBox::Slot()[SNew(STextBlock).Text(FText::FromString(TEXT("半径 m")))]
+                    +SWrapBox::Slot()[SNew(SBox).WidthOverride(100)[SNew(SNumericEntryBox<double>).MinValue(1.0).MaxValue(2000.0).Value_Lambda([this]{return TOptional<double>(BrushRadiusCm/100.0);}).OnValueChanged_Lambda([this](double V){BrushRadiusCm=FMath::Clamp(V,1.0,2000.0)*100.0;UpdateDensityBrush();})]]
+                    +SWrapBox::Slot()[SNew(STextBlock).Text(FText::FromString(TEXT("强度 %")))]
+                    +SWrapBox::Slot()[SNew(SBox).WidthOverride(90)[SNew(SNumericEntryBox<double>).MinValue(0.0).MaxValue(100.0).Value_Lambda([this]{return TOptional<double>(BrushStrength01*100.0);}).OnValueChanged_Lambda([this](double V){BrushStrength01=FMath::Clamp(V,0.0,100.0)/100.0;UpdateDensityBrush();})]]
+                    +SWrapBox::Slot()[SNew(STextBlock).Text(FText::FromString(TEXT("软边 %")))]
+                    +SWrapBox::Slot()[SNew(SBox).WidthOverride(90)[SNew(SNumericEntryBox<double>).MinValue(0.0).MaxValue(100.0).Value_Lambda([this]{return TOptional<double>(BrushFalloff01*100.0);}).OnValueChanged_Lambda([this](double V){BrushFalloff01=FMath::Clamp(V,0.0,100.0)/100.0;UpdateDensityBrush();})]]
+                ]
+                +SVerticalBox::Slot().AutoHeight().Padding(0,3)
+                [
+                    SNew(SHorizontalBox)
+                    +SHorizontalBox::Slot().AutoWidth().VAlign(VAlign_Center)[SNew(STextBlock).Text(FText::FromString(TEXT("格尺寸 m")))]
+                    +SHorizontalBox::Slot().AutoWidth().Padding(5,0)[SNew(SBox).WidthOverride(100)[SNew(SNumericEntryBox<double>).MinValue(1.0).MaxValue(1000.0).Value_Lambda([this]{return TOptional<double>(DensityCellSizeCm/100.0);}).OnValueChanged_Lambda([this](double V){DensityCellSizeCm=FMath::Clamp(V,1.0,1000.0)*100.0;})]]
+                    +SHorizontalBox::Slot().AutoWidth()[Button(TEXT("应用格尺寸"),TEXT("applycellsize"))]
+                    +SHorizontalBox::Slot().FillWidth(1).Padding(8,0)[SNew(STextBlock).Text(FText::FromString(TEXT("已有数据时会要求确认清空全部；不做隐式重采样。"))).AutoWrapText(true)]
+                ]
+                +SVerticalBox::Slot().AutoHeight().Padding(0,4)[SNew(SSeparator)]
+                +SVerticalBox::Slot().AutoHeight()[SNew(STextBlock).Text(FText::FromString(TEXT("LMB 涂绘；Alt 保留相机；Esc 先取消当前笔画，再按一次退出。"))).AutoWrapText(true)]
+            ]
             +SVerticalBox::Slot().AutoHeight().Padding(0,5)
             [
-                SNew(SHorizontalBox)
+                SNew(SHorizontalBox).Visibility_Lambda([this]{return PaintView?EVisibility::Collapsed:EVisibility::Visible;})
                 +SHorizontalBox::Slot().FillWidth(1)
                 [
                     SAssignNew(TypeCombo,SComboBox<TWeakObjectPtr<UGuLiMapTypeDefinition>>).OptionsSource(&Types)
@@ -62,7 +133,7 @@ void SGuLiMapPanel::Construct(const FArguments& Args)
             ]
             +SVerticalBox::Slot().AutoHeight()
             [
-                SNew(SWrapBox).UseAllottedSize(true).InnerSlotPadding(FVector2D(4,4))
+                SNew(SWrapBox).Visibility_Lambda([this]{return PaintView?EVisibility::Collapsed:EVisibility::Visible;}).UseAllottedSize(true).InnerSlotPadding(FVector2D(4,4))
                 +SWrapBox::Slot()[Button(TEXT("视口放置"),TEXT("place"))]
                 +SWrapBox::Slot()[Button(TEXT("退出放置"),TEXT("stop"))]
                 +SWrapBox::Slot()[Button(TEXT("世界原点"),TEXT("origin"))]
@@ -75,20 +146,20 @@ void SGuLiMapPanel::Construct(const FArguments& Args)
             ]
             +SVerticalBox::Slot().AutoHeight().Padding(0,5)
             [
-                SNew(SHorizontalBox)
+                SNew(SHorizontalBox).Visibility_Lambda([this]{return PaintView?EVisibility::Collapsed:EVisibility::Visible;})
                 +SHorizontalBox::Slot().FillWidth(1)[SNew(SEditableTextBox).HintText(FText::FromString(TEXT("新增 TypeId，例如 SupplyPoint"))).OnTextChanged_Lambda([this](const FText& T){NewTypeId=T.ToString();})]
                 +SHorizontalBox::Slot().AutoWidth().Padding(4,0)[Button(TEXT("创建类型"),TEXT("newtype"))]
             ]
             +SVerticalBox::Slot().AutoHeight()
             [
-                SNew(SHorizontalBox)
+                SNew(SHorizontalBox).Visibility_Lambda([this]{return PaintView?EVisibility::Collapsed:EVisibility::Visible;})
                 +SHorizontalBox::Slot().FillWidth(1)[SNew(SSearchBox).HintText(FText::FromString(TEXT("搜索业务键、名称、类型"))).OnTextChanged_Lambda([this](const FText& T){Search=T.ToString(); QueueRefresh();})]
                 +SHorizontalBox::Slot().AutoWidth()[SNew(SCheckBox).OnCheckStateChanged_Lambda([this](ECheckBoxState S){OnlyType=S==ECheckBoxState::Checked; QueueRefresh();})[SNew(STextBlock).Text(FText::FromString(TEXT("当前类型")))]]
                 +SHorizontalBox::Slot().AutoWidth()[SNew(SCheckBox).OnCheckStateChanged_Lambda([this](ECheckBoxState S){OnlyEnabled=S==ECheckBoxState::Checked; QueueRefresh();})[SNew(STextBlock).Text(FText::FromString(TEXT("仅启用")))]]
             ]
             +SVerticalBox::Slot().FillHeight(1).Padding(0,5)
             [
-                SNew(SSplitter)
+                SNew(SSplitter).Visibility_Lambda([this]{return PaintView?EVisibility::Collapsed:EVisibility::Visible;})
                 +SSplitter::Slot().Value(0.35f)
                 [
                     SNew(SVerticalBox)
@@ -136,9 +207,9 @@ void SGuLiMapPanel::Construct(const FArguments& Args)
             [
                 SAssignNew(IssueList,SListView<TSharedPtr<FGuLiMapIssue>>).ListItemsSource(&Issues)
                 .OnGenerateRow_Lambda([](TSharedPtr<FGuLiMapIssue> I,const TSharedRef<STableViewBase>& Owner)
-                {return SNew(STableRow<TSharedPtr<FGuLiMapIssue>>,Owner)[SNew(STextBlock).Text(FText::FromString(I->Field+TEXT(" ")+I->Message)).ColorAndOpacity(FLinearColor(1,0.35f,0.15f)).AutoWrapText(true)];})
+                {const bool Warning=I->Severity==EGuLiMapIssueSeverity::Warning; return SNew(STableRow<TSharedPtr<FGuLiMapIssue>>,Owner)[SNew(STextBlock).Text(FText::FromString((Warning?TEXT("[警告] "):TEXT("[错误] "))+I->Field+TEXT(" ")+I->Message)).ColorAndOpacity(Warning?FLinearColor(1.0f,0.75f,0.15f):FLinearColor(1,0.35f,0.15f)).AutoWrapText(true)];})
                 .OnSelectionChanged_Lambda([this](TSharedPtr<FGuLiMapIssue> Issue,ESelectInfo::Type)
-                { if (Issue&&Service()) for (auto* A:Service()->LoadedMarkers()) if (A->Record.MarkerId==Issue->MarkerId) {GEditor->SelectNone(false,true); GEditor->SelectActor(A,true,true); GEditor->MoveViewportCamerasToActor(*A,false);} })
+                { if (Issue&&Service()) { bool Found=false; for (auto* A:Service()->LoadedMarkers()) if (A->Record.MarkerId==Issue->MarkerId) {Found=true;GEditor->SelectNone(false,true);GEditor->SelectActor(A,true,true);GEditor->MoveViewportCamerasToActor(*A,false);} if(!Found&&DensityMap()){GEditor->SelectNone(false,true);GEditor->SelectActor(DensityMap(),true,true);} } })
             ]
         ]
     ];
@@ -179,11 +250,13 @@ void SGuLiMapPanel::Refresh()
     for (const auto& Item:Items) if (Item->Actor.IsValid()&&Item->Actor->IsSelected()) List->SetItemSelection(Item,true);
     TArray<UObject*> Selected; for (FSelectionIterator It(*GEditor->GetSelectedActors());It;++It) if (auto* A=Cast<AGuLiMapMarker>(*It)) Selected.Add(A);
     if (!EditingType) Details->SetObjects(Selected);
+    if (PaintView&&!GuLiMapEditor::IsDensityPainting()) if (AGuLiMapDensityMap* Actor=DensityMap()) DensityCellSizeCm=Actor->Record.CellSizeCm;
 }
 void SGuLiMapPanel::SelectionChanged(UObject*) { if (!Syncing) { EditingType=false; Details->SetObject(nullptr); QueueRefresh(); } }
 void SGuLiMapPanel::PropertyChanged(UObject* O,FPropertyChangedEvent&)
 {
     if (O&&O->IsA<AGuLiMapMarker>()) QueueRefresh();
+    if (O&&O->IsA<AGuLiMapDensityMap>()) QueueRefresh();
     if (O&&O->IsA<UGuLiMapTypeDefinition>())
     {
         if (Service()) for (auto* A:Service()->LoadedMarkers()) if (A->Record.Type.Get()==O) A->RefreshVisuals();
@@ -203,12 +276,49 @@ void SGuLiMapPanel::Focus(FItem Item) { if (Item&&Item->Actor.IsValid()) GEditor
 void SGuLiMapPanel::ShowResult(const FGuLiMapResult& R)
 {
     Issues.Reset(); for (const auto& I:R.Issues) Issues.Add(MakeShared<FGuLiMapIssue>(I));
-    IssueList->RequestListRefresh(); Status=R.bSuccess?TEXT("成功"):TEXT("操作未完成，请处理下面的问题。");
+    IssueList->RequestListRefresh(); int32 WarningCount=0; for(const FGuLiMapIssue& I:R.Issues) if(I.Severity==EGuLiMapIssueSeverity::Warning) ++WarningCount;
+    Status=R.bSuccess?(WarningCount>0?FString::Printf(TEXT("成功（%d 条警告）"),WarningCount):TEXT("成功")):TEXT("操作未完成，请处理下面的问题。");
     if (!R.Files.IsEmpty()) Status+=TEXT("：")+FPaths::GetPath(R.Files[0]);
 }
 FReply SGuLiMapPanel::Run(const FString& Action)
 {
     auto* S=Service(); if (!S) return FReply::Handled();
+    if (Action==TEXT("markerview")) { GuLiMapEditor::EndInteraction(); PaintView=false; EditingType=false; Status=TEXT("标记编辑页"); QueueRefresh(); }
+    if (Action==TEXT("paintview")) { GuLiMapEditor::EndInteraction(); PaintView=true; EditingType=false; Details->SetObject(nullptr); if(auto* A=DensityMap())DensityCellSizeCm=A->Record.CellSizeCm; Status=TEXT("资源涂绘页：先创建/补齐密度图，再进入涂绘。"); QueueRefresh(); }
+    if (Action==TEXT("ensuredensity")) { ShowResult(S->EnsureDensityMap(DensityCellSizeCm)); QueueRefresh(); }
+    if (Action==TEXT("blue")||Action==TEXT("red")) { DensityLayer=Action==TEXT("blue")?TEXT("BlueOre"):TEXT("RedOre"); UpdateDensityBrush(); Status=TEXT("当前密度图层：")+DensityLayer.ToString(); }
+    if (Action==TEXT("adddensity")||Action==TEXT("erasedensity")) { EraseDensity=Action==TEXT("erasedensity"); UpdateDensityBrush(); Status=EraseDensity?TEXT("笔刷：擦除"):TEXT("笔刷：加深"); }
+    if (Action==TEXT("paintdensity"))
+    {
+        if (!DensityMap()) ShowResult(S->EnsureDensityMap(DensityCellSizeCm));
+        if (AGuLiMapDensityMap* Actor=DensityMap())
+        {
+            FGuLiMapDensityBrushSettings Brush; Brush.LayerKey=DensityLayer; Brush.RadiusCm=BrushRadiusCm; Brush.Strength01=BrushStrength01; Brush.Falloff01=BrushFalloff01; Brush.bErase=EraseDensity;
+            GuLiMapEditor::BeginDensityPaint(Actor,Brush); Status=TEXT("涂绘中：LMB 绘制；Alt 相机；Esc 取消当前笔画/退出。");
+        }
+    }
+    if (Action==TEXT("clearlayer"))
+    {
+        AGuLiMapDensityMap* Actor=DensityMap(); if (!Actor) {Status=TEXT("当前地图没有密度图。"); return FReply::Handled();}
+        if (FMessageDialog::Open(EAppMsgType::YesNo,FText::FromString(TEXT("确定清空当前资源密度图层？可使用 Undo 恢复。")))==EAppReturnType::Yes)
+        {
+            GuLiMapEditor::EndInteraction(); const FScopedTransaction Tx(NSLOCTEXT("GuLiMap","ClearDensityLayer","清空资源密度图层")); Actor->Modify();
+            if (FGuLiMapDensityLayer* Layer=Actor->Record.Layers.FindByPredicate([this](const FGuLiMapDensityLayer& Item){return Item.LayerKey==DensityLayer;})) Layer->Tiles.Reset();
+            NotifyDensityChanged(Actor); Status=TEXT("已清空当前图层，可 Undo。");
+        }
+    }
+    if (Action==TEXT("applycellsize"))
+    {
+        AGuLiMapDensityMap* Actor=DensityMap();
+        if (!Actor) {ShowResult(S->EnsureDensityMap(DensityCellSizeCm)); QueueRefresh();}
+        else if (FMath::IsNearlyEqual(Actor->Record.CellSizeCm,DensityCellSizeCm)) Status=TEXT("格尺寸未变化。");
+        else if (GuLiMap::IsDensityMapEmpty(Actor->Record)) {ShowResult(S->EnsureDensityMap(DensityCellSizeCm)); QueueRefresh();}
+        else if (FMessageDialog::Open(EAppMsgType::YesNo,FText::FromString(TEXT("已有密度数据。确定清空全部图层并修改格尺寸？可使用 Undo 恢复；不会重采样。")))==EAppReturnType::Yes)
+        {
+            GuLiMapEditor::EndInteraction(); const FScopedTransaction Tx(NSLOCTEXT("GuLiMap","ClearDensityResize","清空全部资源密度并修改格尺寸")); Actor->Modify();
+            for (FGuLiMapDensityLayer& Layer:Actor->Record.Layers) Layer.Tiles.Reset(); Actor->Record.CellSizeCm=DensityCellSizeCm; NotifyDensityChanged(Actor,true); Status=TEXT("已清空全部密度并修改格尺寸，可 Undo。");
+        }
+    }
     if (Action==TEXT("validate")) ShowResult(S->ValidateMap());
     if (Action==TEXT("save")) Status=S->SaveAuthoringPackages()?TEXT("已保存"):TEXT("保存取消或失败，未导出。");
     if (Action==TEXT("export")) { if (S->SaveAuthoringPackages()) ShowResult(S->ExportMap()); else Status=TEXT("保存取消或失败，未导出。"); }
@@ -221,7 +331,7 @@ FReply SGuLiMapPanel::Run(const FString& Action)
         if (T) {SelectedType=T; EditingType=true; Refresh(); Details->SetObject(T);}
     }
     if (Action==TEXT("place")&&SelectedType.IsValid()) { GuLiMapEditor::BeginPlacement(SelectedType.Get()); Status=TEXT("左键放置；Alt 保留相机；Esc 退出。无表面时使用工作平面。"); }
-    if (Action==TEXT("stop")) {GuLiMapEditor::EndInteraction(); Status=TEXT("已退出放置/控制柄编辑。");}
+    if (Action==TEXT("stop")) {GuLiMapEditor::EndInteraction(); Status=TEXT("已退出放置、区域控制柄或资源涂绘。");}
     if ((Action==TEXT("origin")||Action==TEXT("selectedorigin"))&&SelectedType.IsValid())
     {
         FVector P=FVector::ZeroVector;

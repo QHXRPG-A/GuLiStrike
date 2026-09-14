@@ -18,21 +18,13 @@ class GULISTRIKE_API UGuLiCommanderDataSettings final : public UObject
 public:
 	UGuLiCommanderDataSettings();
 
-	/** Imported DataTable generated from GuLiStrikeCommander.xlsx / Soldiers. */
-	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")
-	TSoftObjectPtr<UDataTable> SoldierDataTable;
-
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")
 	TSoftObjectPtr<UDataTable> SkillDataTable;
 
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")
 	TSoftObjectPtr<UDataTable> UnitSkillDataTable;
 
-	/** Imported DataTable generated from GuLiStrikeCommander.xlsx / SpellFields. */
-	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")
-	TSoftObjectPtr<UDataTable> SpellFieldDataTable;
-
-	/** Imported DataTable generated from GuLiStrikeCommander.xlsx / WeaponMounts. */
+	/** Stable DataTable identity; authored in GuLiStrikeSecondaryWeapons.xlsx / WeaponMounts. */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")
 	TSoftObjectPtr<UDataTable> WeaponMountDataTable;
 
@@ -43,7 +35,4 @@ public:
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Weapons", meta=(ClampMin="1", ClampMax="32"))
 	int32 MaximumWeaponSlotsPerUnit = 8;
 
-	/** Default archetype for legacy consumers; additional unit types use their own rows. */
-	UPROPERTY(Config, EditAnywhere, Category = "Commander|Data")
-	FName DefaultSoldierRowName = TEXT("DefaultSoldier");
 };

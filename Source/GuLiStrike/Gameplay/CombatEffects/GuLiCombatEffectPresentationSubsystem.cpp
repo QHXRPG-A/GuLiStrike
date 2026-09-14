@@ -47,6 +47,7 @@ void UGuLiCombatEffectPresentationSubsystem::ResetVisuals()
 {
 	TArray<FGuid> Ids; Visuals.GenerateKeyArray(Ids);
 	for (const FGuid& Id : Ids) RemoveVisual(Id, true);
+	ResetLaserPool();
 	if (Gunfire) { Gunfire->DeactivateImmediate(); Gunfire->ReleaseToPool(); Gunfire = nullptr; }
 	for (const auto& Item : Retiring) if (IsValid(Item.Component)) { Item.Component->DeactivateImmediate(); Item.Component->ReleaseToPool(); }
 	Retiring.Reset(); PendingShots.Reset(); ActiveMuzzles.Reset(); SeenShots.Reset(); ShotOrder.Reset(); Tombstones.Reset(); TombstoneOrder.Reset();
@@ -163,11 +164,12 @@ bool UGuLiCombatEffectPresentationSubsystem::IsVisibleLocation(FVector Location)
 		<= FMath::Square(static_cast<double>(Catalog->MaximumVisualDistance));
 }
 
-UNiagaraComponent* UGuLiCombatEffectPresentationSubsystem::SpawnPooled(UNiagaraSystem* System, FVector Location, float Scale, float Radius)
+UNiagaraComponent* UGuLiCombatEffectPresentationSubsystem::SpawnPooled(
+	UNiagaraSystem* System, FVector Location, float Scale, float Radius, FRotator Rotation)
 {
 	if (!System || CVarGuLiCombatEffectVisuals.GetValueOnGameThread() == 0) return nullptr;
 	UNiagaraComponent* Component = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), System, Location,
-		FRotator::ZeroRotator, FVector(Scale), false, false, ENCPoolMethod::ManualRelease, false);
+		Rotation, FVector(Scale), false, false, ENCPoolMethod::ManualRelease, false);
 	if (Component)
 	{
 		Component->SetCastShadow(false);
@@ -189,6 +191,7 @@ void UGuLiCombatEffectPresentationSubsystem::RemoveVisual(const FGuid& Id, bool 
 {
 	FGuLiLocalCombatEffect Visual;
 	if (!Visuals.RemoveAndCopyValue(Id, Visual)) return;
+	if (Visual.LaserSlot != INDEX_NONE) FreeLaserSlot(Visual.LaserSlot);
 	float Tail = 0.5f;
 	if (UGuLiProjectileEffectDefinition* Definition = Visual.State.ProjectileDefinition.Get()) Tail = Definition->TrailFadeSeconds;
 	Retire(Visual.Flight, bImmediate ? 0 : Tail);
@@ -216,7 +219,13 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 	if (Existing && !GuLiCombatEffects::IsNewerState(State, Existing->State)) { ++Counters.RejectedStates; return; }
 	if (State.Phase == EGuLiCombatEffectPhase::Finished)
 	{
-		RemoveVisual(State.EffectId, State.EndReason == EGuLiCombatEffectEndReason::EpochEnded);
+		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile && Existing)
+		{
+			Existing->State.Location = State.Location; Existing->State.Phase = State.Phase;
+			Existing->State.EndReason = State.EndReason; Existing->State.SampleTime = State.SampleTime;
+			Existing->LaserFadeUntil = GetWorld()->GetTimeSeconds() + 0.04f;
+		}
+		else RemoveVisual(State.EffectId, State.EndReason == EGuLiCombatEffectEndReason::EpochEnded);
 		Tombstones.Add(State.EffectId, State.Sequence); TombstoneOrder.Add(State.EffectId);
 		if (TombstoneOrder.Num() > 8192)
 		{
@@ -225,17 +234,85 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 		}
 		return;
 	}
-	// Never resurrect an expired projectile or replay an expired burst after a long network stall.
-	if (State.Kind == EGuLiCombatEffectKind::Projectile && ServerTime() > State.EndTime + 0.25f) return;
+	// Never resurrect an expired projectile/burst or replay one after a long network stall.
+	if ((State.Kind == EGuLiCombatEffectKind::Projectile
+		|| State.Kind == EGuLiCombatEffectKind::LinearProjectile
+		|| State.Kind == EGuLiCombatEffectKind::SustainedHitscan)
+		&& ServerTime() > State.EndTime + 0.25f) return;
 	GetCatalog();
 	if (!Existing)
 	{
 		FGuLiLocalCombatEffect Visual; Visual.State = State; Visual.RenderLocation = State.Location;
+		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile)
+		{
+			Visual.LaserSlot = AllocateLaserSlot();
+			if (!bFromSnapshot && ServerTime() - State.StartTime < 0.35f)
+				Visual.LaserMuzzleUntil = GetWorld()->GetTimeSeconds() + (Catalog ? Catalog->LaserMuzzleSeconds : 0.05f);
+		}
+		if (bFromSnapshot && State.Kind == EGuLiCombatEffectKind::SustainedHitscan)
+		{
+			const double Elapsed = FMath::Clamp(
+				static_cast<double>(ServerTime() - State.StartTime), 0.0,
+				static_cast<double>(State.EndTime - State.StartTime));
+			Visual.NextGunShotOrdinal = FMath::Max(0,
+				FMath::FloorToInt(Elapsed * State.FireRateHz + 1.e-6) + 1);
+		}
 		Visual.bSuppressOldBurst = bFromSnapshot && State.Kind == EGuLiCombatEffectKind::SpellField
 			&& State.Phase != EGuLiCombatEffectPhase::Waiting;
 		Visuals.Add(State.EffectId, MoveTemp(Visual));
 	}
 	else Existing->State = State;
+}
+
+void UGuLiCombatEffectPresentationSubsystem::QueueSustainedGunfire(const float Now, const bool bEnabled)
+{
+	for (auto& Pair : Visuals)
+	{
+		FGuLiLocalCombatEffect& Visual = Pair.Value;
+		const FGuLiCombatEffectState& State = Visual.State;
+		if (State.Kind != EGuLiCombatEffectKind::SustainedHitscan
+			|| Now < State.StartTime || Now >= State.EndTime || State.FireRateHz <= 0.0f)
+		{
+			continue;
+		}
+		const int32 LatestOrdinal = FMath::FloorToInt(
+			static_cast<double>(Now - State.StartTime) * State.FireRateHz + 1.e-6);
+		if (LatestOrdinal < Visual.NextGunShotOrdinal) continue;
+		// A stalled or late-joining client jumps directly to the latest scheduled shot.
+		// Historical tracers are deliberately never replayed.
+		Visual.NextGunShotOrdinal = LatestOrdinal + 1;
+		// Wingman bolts now arrive as actual pooled launch records; never also draw a full hitscan segment.
+		if (State.Source.Kind == EGuLiTargetKind::Wingman) continue;
+		if (!bEnabled || PendingShots.Num() >= 2048) continue;
+		FGuLiCombatShotCue Cue;
+		Cue.MatchEpoch = State.MatchEpoch;
+		Cue.ShotId = GuLiCombatEffects::DamageId(State.EffectId, LatestOrdinal, State.Target);
+		Cue.Source = State.Source;
+		Cue.Target = State.Target;
+		Cue.SlotId = State.SlotId;
+		Cue.MuzzleOffset = State.MuzzleOffset;
+		Cue.KeepAliveSeconds = FMath::Clamp(0.75f / State.FireRateHz, 0.01f, 0.15f);
+		Cue.Start = State.Location;
+		Cue.End = State.LastTargetLocation;
+		Cue.ServerTime = Now;
+		if (SeenShots.Contains(Cue.ShotId)) continue;
+		SeenShots.Add(Cue.ShotId);
+		ShotOrder.Add(Cue.ShotId);
+		PendingShots.Add(Cue);
+		const FActiveMuzzleKey Key{Cue.Source, Cue.SlotId, 0};
+		FActiveMuzzleVisual& Muzzle = ActiveMuzzles.FindOrAdd(Key);
+		Muzzle.Cue = Cue;
+		const FVector Direction = (FVector(Cue.End) - FVector(Cue.Start)).GetSafeNormal();
+		if (!Direction.IsNearlyZero()) Muzzle.LastDirection = Direction;
+		Muzzle.ExpireServerTime = FMath::Max(Muzzle.ExpireServerTime, Now + Cue.KeepAliveSeconds);
+		++Counters.SynthesizedGunShots;
+	}
+	if (ShotOrder.Num() > 8192)
+	{
+		const int32 RemoveCount = ShotOrder.Num() - 4096;
+		for (int32 Index = 0; Index < RemoveCount; ++Index) SeenShots.Remove(ShotOrder[Index]);
+		ShotOrder.RemoveAt(0, RemoveCount, EAllowShrinking::No);
+	}
 }
 
 void UGuLiCombatEffectPresentationSubsystem::ApplyCorrection(const FGuLiCombatEffectCorrection& Correction)
@@ -465,8 +542,22 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateField(FGuLiLocalCombatEffect&
 			const auto& Variant = Definition->ActivationVariants[Visual.State.VariantIndex];
 			if (Now - Visual.State.ActivationTime < 0.5f)
 			{
-				if (UNiagaraComponent* Burst = SpawnPooled(Variant.System.LoadSynchronous(), Position, Variant.Scale * FieldScale, Visual.State.Radius))
+				FRotator Rotation = FRotator::ZeroRotator;
+				if (Variant.bRandomYaw)
+				{
+					FRandomStream Random(Visual.State.RandomSeed ^ 0x57494e47);
+					Rotation.Yaw = Random.FRandRange(-180.0f, 180.0f);
+				}
+				if (UNiagaraComponent* Burst = SpawnPooled(Variant.System.LoadSynchronous(), Position,
+					Variant.Scale * FieldScale, Visual.State.Radius, Rotation))
 				{ Retire(Burst, Variant.MaximumLifetime, false); ++Counters.BurstsPlayed; }
+				for (const FGuLiEffectVisualLayer& Layer : Variant.AdditionalLayers)
+				{
+					if (!FMath::IsFinite(Layer.Scale) || Layer.Scale <= 0.0f) continue;
+					if (UNiagaraComponent* Burst = SpawnPooled(Layer.System.LoadSynchronous(), Position,
+						Layer.Scale * FieldScale, Visual.State.Radius, Rotation))
+					{ Retire(Burst, Variant.MaximumLifetime, false); ++Counters.BurstsPlayed; }
+				}
 			}
 		}
 	}
@@ -484,12 +575,18 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 	const double Started = FPlatformTime::Seconds();
 	const float Now = ServerTime();
 	const bool bEnabled = CVarGuLiCombatEffectVisuals.GetValueOnGameThread() != 0;
-	GetCatalog(); FlushGunfire();
+	GetCatalog(); QueueSustainedGunfire(Now, bEnabled); FlushGunfire();
 	if (!bEnabled && Gunfire) { Retire(Gunfire, 0); Gunfire = nullptr; }
 	TArray<FGuid> Expired;
 	for (auto& Pair : Visuals)
 	{
 		auto& Visual = Pair.Value;
+		if (Visual.State.Kind == EGuLiCombatEffectKind::LinearProjectile)
+		{
+			if ((Visual.State.Phase == EGuLiCombatEffectPhase::Finished && GetWorld()->GetTimeSeconds() >= Visual.LaserFadeUntil)
+				|| (Visual.State.Phase != EGuLiCombatEffectPhase::Finished && Now >= Visual.State.EndTime)) Expired.Add(Pair.Key);
+			continue;
+		}
 		if (!bEnabled)
 		{
 			Retire(Visual.Flight, 0); Visual.Flight = nullptr;
@@ -502,6 +599,11 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 		{
 			UpdateField(Visual, Now);
 			if (Now > Visual.State.EndTime + 30.0f) Expired.Add(Pair.Key);
+			continue;
+		}
+		if (Visual.State.Kind == EGuLiCombatEffectKind::SustainedHitscan)
+		{
+			if (Now > Visual.State.EndTime + 0.25f) Expired.Add(Pair.Key);
 			continue;
 		}
 		if (Now > Visual.State.EndTime + 0.25f) { Expired.Add(Pair.Key); continue; }
@@ -528,6 +630,7 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 		else if (Visual.Flight) { Retire(Visual.Flight, Definition->TrailFadeSeconds); Visual.Flight = nullptr; }
 	}
 	for (const FGuid& Id : Expired) RemoveVisual(Id, false);
+	UpdateLaserPool(Now, bEnabled);
 	const float LocalNow = GetWorld()->GetTimeSeconds();
 	for (int32 Index = Retiring.Num() - 1; Index >= 0; --Index)
 	{
@@ -545,6 +648,7 @@ FGuLiCombatEffectVisualCounters UGuLiCombatEffectPresentationSubsystem::GetCount
 {
 	FGuLiCombatEffectVisualCounters Result = Counters;
 	Result.ComponentCount = IsValid(Gunfire) ? 1 : 0;
+	for (const auto& Block : LaserBlocks) Result.ComponentCount += IsValid(Block.Component) ? 1 : 0;
 	for (const auto& Pair : Visuals) Result.ComponentCount += (IsValid(Pair.Value.Flight) ? 1 : 0) + (IsValid(Pair.Value.Waiting) ? 1 : 0) + (IsValid(Pair.Value.ActiveLoop) ? 1 : 0);
 	for (const auto& Item : Retiring) Result.ComponentCount += IsValid(Item.Component) ? 1 : 0;
 	return Result;

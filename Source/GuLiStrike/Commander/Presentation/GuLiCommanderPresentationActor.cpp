@@ -11,6 +11,7 @@
 #include "Commander/Mass/GuLiCommanderMassFragments.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/Tuning/GuLiRuntimeTuningTypes.h"
 #include "Components/InstancedStaticMeshComponent.h"
@@ -156,6 +157,21 @@ namespace GuLiCommanderPresentation
 			- static_cast<double>(FMath::Max(0.0f, BackTimeSeconds));
 	}
 
+	float CalculateAdaptiveInterpolationBackTime(
+		const float BaselineSeconds,
+		const float MaximumSeconds,
+		const double SmoothedReceiptIntervalSeconds,
+		const double SmoothedReceiptJitterSeconds)
+	{
+		constexpr double SchedulingMarginSeconds = 0.02;
+		const double MeasuredRequirement = SmoothedReceiptIntervalSeconds
+			+ FMath::Max(SchedulingMarginSeconds, SmoothedReceiptJitterSeconds * 2.0);
+		return static_cast<float>(FMath::Clamp(
+			FMath::Max(static_cast<double>(BaselineSeconds), MeasuredRequirement),
+			static_cast<double>(BaselineSeconds),
+			static_cast<double>(MaximumSeconds)));
+	}
+
 	double ExtrapolateMeasuredServerNow(
 		const double MeasuredServerNowAtReceiptSeconds,
 		const double SecondsSinceReceipt)
@@ -268,6 +284,8 @@ void AGuLiCommanderPresentationActor::BeginPlay()
 		SetActorTickEnabled(false);
 		return;
 	}
+	check(InterpolationBackTimeSeconds > 1.0f / static_cast<float>(GULI_POSE_CAPTURE_RATE_HZ));
+	check(MaximumAdaptiveInterpolationBackTimeSeconds >= InterpolationBackTimeSeconds);
 	InitializePresentationPerformanceSettings();
 	if (const UGuLiCommanderDataSubsystem* DataSubsystem = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
 	{
@@ -684,6 +702,12 @@ void AGuLiCommanderPresentationActor::Tick(const float DeltaSeconds)
 		StopPredictionTrace(Output);
 	}
 #endif
+}
+
+float AGuLiCommanderPresentationActor::GetSoldierHitStartTime(const FGuLiSoldierId SoldierId) const
+{
+	const auto* Soldier = PresentedSoldiers.Find(SoldierId);
+	return Soldier ? Soldier->HitFlashStartTime : -1000.0f;
 }
 
 bool AGuLiCommanderPresentationActor::TryGetPresentedSoldierTransform(
@@ -1347,6 +1371,11 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 			Pair.Value.bHasPresentedTransform = false;
 			Pair.Value.LastPoseReceiptLocalTimeSeconds = 0.0;
 			Pair.Value.MaximumPoseReceiptGapSeconds = 0.0;
+			Pair.Value.PreviousAdaptivePoseReceiptLocalTimeSeconds = 0.0;
+			Pair.Value.SmoothedPoseReceiptIntervalSeconds = 0.0;
+			Pair.Value.SmoothedPoseReceiptJitterSeconds = 0.0;
+			Pair.Value.LastReceivedPoseState = EGuLiSoldierPoseState::Idle;
+			Pair.Value.bAdaptiveReceiptStateInitialized = false;
 			Pair.Value.LastUntaggedHardSnapDelta = FVector::ZeroVector;
 			Pair.Value.LastHardSnapPriorSampleDelta = FVector::ZeroVector;
 			Pair.Value.LastHardSnapSampleVelocity = FVector::ZeroVector;
@@ -1448,6 +1477,7 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 		Sample.Velocity = CompressedPose.GetVelocityCentimetersPerSecond();
 		Sample.FacingYawDegrees = GuLiCommanderProtocol::DequantizeYawDegrees(CompressedPose.FacingYaw);
 		Sample.ActiveOrderId = CompressedPose.ActiveOrderId;
+		Sample.State = CompressedPose.State;
 		Sample.ChunkIndex = Chunk.ChunkIndex;
 		Sample.SampleIndex = static_cast<uint8>(SampleIndex);
 		Sample.bTeleport = CompressedPose.IsTeleport();
@@ -1473,6 +1503,7 @@ void AGuLiCommanderPresentationActor::InsertPoseSample(
 	}
 #endif
 	FGuLiCommanderPresentedSoldier& Soldier = PresentedSoldiers.FindOrAdd(SoldierId);
+	if (Soldier.DisplacementFrameFloor != 0 && int32(Sample.FrameSequence - Soldier.DisplacementFrameFloor) < 0) return;
 	const int32 ExistingBeforeCorrection = Soldier.Samples.IndexOfByPredicate(
 		[&Sample](const FGuLiCommanderBufferedSoldierPose& Existing)
 		{
@@ -1485,6 +1516,40 @@ void AGuLiCommanderPresentationActor::InsertPoseSample(
 			Soldier.Samples.Last().FrameSequence);
 	if (bAdvancesLatest)
 	{
+		const double ReceiptIntervalSeconds = Soldier.PreviousAdaptivePoseReceiptLocalTimeSeconds > 0.0
+			? LocalNowSeconds - Soldier.PreviousAdaptivePoseReceiptLocalTimeSeconds
+			: 0.0;
+		const bool bPoseStateChanged = Soldier.bAdaptiveReceiptStateInitialized
+			&& Soldier.LastReceivedPoseState != Sample.State;
+		if (!Soldier.bAdaptiveReceiptStateInitialized || bPoseStateChanged)
+		{
+			Soldier.SmoothedPoseReceiptIntervalSeconds = 0.0;
+			Soldier.SmoothedPoseReceiptJitterSeconds = 0.0;
+		}
+		else if (ReceiptIntervalSeconds > 0.0)
+		{
+			constexpr double ReceiptSmoothingAlpha = 0.2;
+			if (Soldier.SmoothedPoseReceiptIntervalSeconds <= 0.0)
+			{
+				Soldier.SmoothedPoseReceiptIntervalSeconds = ReceiptIntervalSeconds;
+			}
+			else
+			{
+				const double DeviationSeconds = FMath::Abs(
+					ReceiptIntervalSeconds - Soldier.SmoothedPoseReceiptIntervalSeconds);
+				Soldier.SmoothedPoseReceiptIntervalSeconds = FMath::Lerp(
+					Soldier.SmoothedPoseReceiptIntervalSeconds,
+					ReceiptIntervalSeconds,
+					ReceiptSmoothingAlpha);
+				Soldier.SmoothedPoseReceiptJitterSeconds = FMath::Lerp(
+					Soldier.SmoothedPoseReceiptJitterSeconds,
+					DeviationSeconds,
+					ReceiptSmoothingAlpha);
+			}
+		}
+		Soldier.PreviousAdaptivePoseReceiptLocalTimeSeconds = LocalNowSeconds;
+		Soldier.LastReceivedPoseState = Sample.State;
+		Soldier.bAdaptiveReceiptStateInitialized = true;
 		if (Soldier.LastPoseReceiptLocalTimeSeconds > 0.0)
 		{
 			Soldier.MaximumPoseReceiptGapSeconds = FMath::Max(
@@ -1843,13 +1908,14 @@ void AGuLiCommanderPresentationActor::EnsureClientMirrorEntity(
 	const EGuLiTeam Team = ReliableState.Team;
 	const float HealthValue = ReliableState.Health;
 	const bool bDead = !ReliableState.IsAlive();
+	const bool bPhased = ReliableState.bPhased;
 	const FMassArchetypeHandle Archetype = ClientMirrorArchetype;
 	ClientMirrorEntities.Add(SoldierId, ReservedEntity);
 	// Replication callbacks and presentation ticks can overlap parallel Mass phases.
 	// Reserve synchronously so the map has a stable handle, then build and initialize it
 	// through the default command buffer at the next Mass-safe boundary.
 	EntityManager.Defer().PushCommand<FMassDeferredCreateCommand>(
-		[ReservedEntity, Archetype, SoldierId, Team, HealthValue, bDead](
+		[ReservedEntity, Archetype, SoldierId, Team, HealthValue, bDead, bPhased](
 			FMassEntityManager& Manager)
 		{
 			if (!Manager.IsEntityReserved(ReservedEntity) || !Archetype.IsValid())
@@ -1865,6 +1931,7 @@ void AGuLiCommanderPresentationActor::EnsureClientMirrorEntity(
 				Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(ReservedEntity);
 			Health.Health = HealthValue;
 			Health.bDead = bDead;
+			Health.bPhased = bPhased;
 			Health.WreckSecondsRemaining = 0.0f;
 			Manager.GetFragmentDataChecked<FTransformFragment>(ReservedEntity)
 				.SetTransform(FTransform::Identity);
@@ -1898,6 +1965,7 @@ void AGuLiCommanderPresentationActor::UpdateClientMirrorEntity(
 
 	float WreckSecondsRemaining = 0.0f;
 	const bool bDead = !ReliableState.IsAlive();
+	const bool bPhased = ReliableState.bPhased;
 	if (bDead && GetWorld())
 	{
 		if (const double* ExpireTime = WreckExpireTimes.Find(ReliableState.SoldierId))
@@ -1916,7 +1984,7 @@ void AGuLiCommanderPresentationActor::UpdateClientMirrorEntity(
 		? *PresentedTransform
 		: FTransform::Identity;
 	EntityManager.Defer().PushCommand<FMassDeferredSetCommand>(
-		[TargetEntity, SoldierId, Team, HealthValue, bDead, WreckSecondsRemaining,
+		[TargetEntity, SoldierId, Team, HealthValue, bDead, bPhased, WreckSecondsRemaining,
 			bHasPresentedTransform, PendingTransform](FMassEntityManager& Manager)
 		{
 			if (!Manager.IsEntityActive(TargetEntity))
@@ -1931,6 +1999,7 @@ void AGuLiCommanderPresentationActor::UpdateClientMirrorEntity(
 				Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(TargetEntity);
 			Health.Health = HealthValue;
 			Health.bDead = bDead;
+			Health.bPhased = bPhased;
 			Health.WreckSecondsRemaining = WreckSecondsRemaining;
 			if (bHasPresentedTransform)
 			{
@@ -1970,6 +2039,9 @@ void AGuLiCommanderPresentationActor::DestroyClientMirrorEntities()
 // 同步代次变化时丢弃旧样本、预测和时钟，防止把新战局数据接到旧时间线上。
 void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 {
+	UpdatePhasedInstances({});
+	UpdateHitFlashInstances({}, {});
+	UpdateWreckInstances({});
 #if !UE_BUILD_SHIPPING
 	if (bPredictionTraceActive)
 	{
@@ -1983,11 +2055,18 @@ void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
 	for (TPair<FGuLiSoldierId, FGuLiCommanderPresentedSoldier>& Pair : PresentedSoldiers)
 	{
 		Pair.Value.Samples.Reset();
+		Pair.Value.DisplacementFrameFloor = 0;
 		Pair.Value.bHasAuthoritativeTransform = false;
 		Pair.Value.bHasPresentedTransform = false;
 		Pair.Value.bLifeStateInitialized = false;
+		Pair.Value.HitFlashStartTime = -1000.0f;
 		Pair.Value.LastPoseReceiptLocalTimeSeconds = 0.0;
 		Pair.Value.MaximumPoseReceiptGapSeconds = 0.0;
+		Pair.Value.PreviousAdaptivePoseReceiptLocalTimeSeconds = 0.0;
+		Pair.Value.SmoothedPoseReceiptIntervalSeconds = 0.0;
+		Pair.Value.SmoothedPoseReceiptJitterSeconds = 0.0;
+		Pair.Value.LastReceivedPoseState = EGuLiSoldierPoseState::Idle;
+		Pair.Value.bAdaptiveReceiptStateInitialized = false;
 		Pair.Value.LastUntaggedHardSnapDelta = FVector::ZeroVector;
 		Pair.Value.LastHardSnapPriorSampleDelta = FVector::ZeroVector;
 		Pair.Value.LastHardSnapSampleVelocity = FVector::ZeroVector;
@@ -2211,11 +2290,6 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			ExtrapolatedMeasuredServerNowSeconds,
 			DeltaSeconds);
 	}
-	// 先估计服务器当前时间，再减插值回退时间；不可在旧样本时间上重复叠加网络延迟。
-	const double RenderServerTimeSeconds = GuLiCommanderPresentation::CalculateRenderServerTime(
-		EstimatedServerTimeSeconds,
-		InterpolationBackTimeSeconds);
-
 	TSet<FGuLiSoldierId> SelectedSoldiers;
 	if (APlayerController* Controller = FindLocalController())
 	{
@@ -2235,6 +2309,11 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	}
 
 	TMap<uint16, TArray<FTransform>> DesiredUnitTransformsByType;
+	TMap<uint16,TArray<FTransform>> DesiredPhasedTransforms;
+	TMap<uint16,TArray<FTransform>> DesiredWreckTransforms;
+	TMap<uint16,TArray<FTransform>> DesiredHitTransforms;
+	TMap<uint16,TArray<float>> DesiredHitStartTimes;
+	auto* UnitFeedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>();
 	for (const TPair<uint16, FGuLiCommanderUnitInstanceBatchState>& Pair :
 		UnitInstanceBatchStates)
 	{
@@ -2268,7 +2347,38 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		}
 
 		FGuLiCommanderPresentedSoldier& Soldier = PresentedSoldiers.FindOrAdd(ReliableState.SoldierId);
+		if (ReliableState.DisplacementFrameFloor != 0 && ReliableState.DisplacementFrameFloor != Soldier.DisplacementFrameFloor)
+		{
+			Soldier.DisplacementFrameFloor = ReliableState.DisplacementFrameFloor;
+			Soldier.Samples.RemoveAll([&](const auto& Sample) { return int32(Sample.FrameSequence - Soldier.DisplacementFrameFloor) < 0; });
+			PredictedMoves.Remove(ReliableState.SoldierId);
+			if (Soldier.Samples.IsEmpty())
+			{
+				FGuLiCommanderBufferedSoldierPose Baseline;
+				Baseline.FrameSequence = ReliableState.DisplacementFrameFloor - 1;
+				Baseline.ServerTimeSeconds = ReliableState.DisplacementSimulationTime;
+				Baseline.Location = ReliableState.DisplacementLocation;
+				Baseline.FacingYawDegrees = ReliableState.DisplacementYaw;
+				Baseline.bTeleport = true;
+				Soldier.Samples.Add(Baseline);
+				Soldier.PresentedTransform = FTransform(FRotator(0,Baseline.FacingYawDegrees,0), Baseline.Location);
+				Soldier.AuthoritativeTransform = Soldier.PresentedTransform;
+				Soldier.bHasPresentedTransform = Soldier.bHasAuthoritativeTransform = true;
+			}
+		}
+		if (ReliableState.bPhased)
+		{
+			PredictedMoves.Remove(ReliableState.SoldierId);
+		}
 		const bool bAlive = ReliableState.IsAlive();
+		const bool bJustDestroyed = Soldier.bLifeStateInitialized
+			&& Soldier.LastLifeState == EGuLiSoldierLifeState::Alive && !bAlive;
+		if (Soldier.bLifeStateInitialized && ReliableState.Health < Soldier.LastObservedHealth)
+		{
+			Soldier.HitFlashStartTime = static_cast<float>(LocalNowSeconds);
+			if (UnitFeedback) UnitFeedback->EnsureHealthBarRenderers();
+		}
+		Soldier.LastObservedHealth = ReliableState.Health;
 		if (!Soldier.bLifeStateInitialized)
 		{
 			Soldier.bLifeStateInitialized = true;
@@ -2294,6 +2404,15 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		}
 
 		FTransform AuthoritativeTransform;
+		const float AdaptiveInterpolationBackTimeSeconds =
+			GuLiCommanderPresentation::CalculateAdaptiveInterpolationBackTime(
+				InterpolationBackTimeSeconds,
+				MaximumAdaptiveInterpolationBackTimeSeconds,
+				Soldier.SmoothedPoseReceiptIntervalSeconds,
+				Soldier.SmoothedPoseReceiptJitterSeconds);
+		const double RenderServerTimeSeconds = GuLiCommanderPresentation::CalculateRenderServerTime(
+			EstimatedServerTimeSeconds,
+			AdaptiveInterpolationBackTimeSeconds);
 		if (bServerClockInitialized
 			&& EvaluateAuthoritativeTransform(
 				Soldier,
@@ -2326,6 +2445,16 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			continue;
 		}
 		UpdateClientMirrorEntity(ReliableState, &Soldier.PresentedTransform);
+		if (bJustDestroyed && UnitFeedback)
+		{
+			const auto* Batch = FindUnitInstances(InstanceHandle->BatchUnitTypeId);
+			const UStaticMesh* Mesh = Batch ? Batch->GetStaticMesh() : nullptr;
+			const FBox Bounds = Mesh ? Mesh->GetBoundingBox() : FBox(ForceInit);
+			// These ISM units render at unit scale. Measure the model, not a collision radius or the whole ISM batch.
+			UnitFeedback->PlayDestruction(Bounds.IsValid
+				? Soldier.PresentedTransform.TransformPosition(Bounds.GetCenter()) : Soldier.PresentedTransform.GetLocation(),
+				Bounds.IsValid ? static_cast<float>(Bounds.GetExtent().GetMax()) : 0.0f);
+		}
 
 		FTransform HiddenUnitTransform = Soldier.PresentedTransform;
 		HiddenUnitTransform.SetScale3D(FVector::ZeroVector);
@@ -2338,7 +2467,18 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		{
 			FTransform UnitTransform = Soldier.PresentedTransform;
 			UnitTransform.SetScale3D(FVector::OneVector);
+			if (ReliableState.bPhased)
+			{
+				DesiredPhasedTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(UnitTransform);
+				continue;
+			}
 			(*DesiredUnitTransforms)[InstanceHandle->UnitInstanceIndex] = UnitTransform;
+			if (UnitFeedback && LocalNowSeconds - Soldier.HitFlashStartTime < UGuLiUnitFeedbackSubsystem::HitDuration
+				&& UnitFeedback->IsWithinCullDistance(UnitTransform.GetLocation()))
+			{
+				DesiredHitTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(UnitTransform);
+				DesiredHitStartTimes.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Soldier.HitFlashStartTime);
+			}
 			DesiredRingTransforms[InstanceHandle->RingInstanceIndex] =
 				BuildRingTransform(Soldier.PresentedTransform);
 			DesiredRingColors[InstanceHandle->RingInstanceIndex] =
@@ -2350,6 +2490,12 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		{
 			if (*ExpireTime > LocalNowSeconds)
 			{
+				if (UnitFeedback && UnitFeedback->IsWithinCullDistance(Soldier.PresentedTransform.GetLocation()))
+				{
+					FTransform WreckTransform = Soldier.PresentedTransform;
+					WreckTransform.SetScale3D(FVector::OneVector);
+					DesiredWreckTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(WreckTransform);
+				}
 				DesiredRingTransforms[InstanceHandle->RingInstanceIndex] =
 					BuildRingTransform(Soldier.PresentedTransform);
 				DesiredRingColors[InstanceHandle->RingInstanceIndex] =
@@ -2358,6 +2504,9 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		}
 	}
 
+	UpdatePhasedInstances(DesiredPhasedTransforms);
+	UpdateHitFlashInstances(DesiredHitTransforms, DesiredHitStartTimes);
+	UpdateWreckInstances(DesiredWreckTransforms);
 	for (auto It = WreckExpireTimes.CreateIterator(); It; ++It)
 	{
 		if (It.Value() <= LocalNowSeconds)
@@ -2463,4 +2612,121 @@ bool AGuLiCommanderPresentationActor::IsAckResultAccepted(const EGuLiCommandAckR
 {
 	return Result == EGuLiCommandAckResult::Accepted
 		|| Result == EGuLiCommandAckResult::PartiallyAccepted;
+}
+
+void AGuLiCommanderPresentationActor::UpdatePhasedInstances(const TMap<uint16,TArray<FTransform>>& Desired)
+{
+ if (GetNetMode() == NM_DedicatedServer) return;
+ for (auto& Pair : PhasedInstancesByType)
+ {
+  if (!Desired.Contains(Pair.Key) && Pair.Value->GetInstanceCount())
+  { Pair.Value->ClearInstances(); CachedPhasedTransforms.Remove(Pair.Key); }
+ }
+ for (const auto& Pair : Desired)
+ {
+  auto& Component = PhasedInstancesByType.FindOrAdd(Pair.Key);
+  if (!Component)
+  {
+   const auto* Original = FindUnitInstances(Pair.Key); if (!Original) continue;
+   Component = NewObject<UInstancedStaticMeshComponent>(this);
+   Component->SetupAttachment(GetRootComponent()); Component->SetMobility(EComponentMobility::Movable);
+   Component->SetCollisionEnabled(ECollisionEnabled::NoCollision); Component->SetCanEverAffectNavigation(false);
+   Component->SetCastShadow(false); Component->SetStaticMesh(Original->GetStaticMesh());
+   auto* Material = LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody"));
+   for (int32 Slot=0; Slot<Component->GetNumMaterials(); ++Slot) Component->SetMaterial(Slot,Material);
+   Component->RegisterComponent();
+  }
+  auto& Cached = CachedPhasedTransforms.FindOrAdd(Pair.Key);
+  if (GuLiCommanderPresentation::AreTransformsEqual(Cached,Pair.Value)) continue;
+  if (Component->GetInstanceCount() != Pair.Value.Num())
+  { Component->ClearInstances(); Component->AddInstances(Pair.Value,false,true,false); }
+  else Component->BatchUpdateInstancesTransforms(0,Pair.Value,true,true,true);
+  Cached = Pair.Value;
+ }
+}
+
+void AGuLiCommanderPresentationActor::UpdateWreckInstances(const TMap<uint16,TArray<FTransform>>& Desired)
+{
+	if (GetNetMode() == NM_DedicatedServer) return;
+	for (auto& Pair : WreckInstancesByType)
+	{
+		if (Pair.Value && !Desired.Contains(Pair.Key) && Pair.Value->GetInstanceCount())
+		{
+			Pair.Value->ClearInstances();
+			CachedWreckTransforms.Remove(Pair.Key);
+		}
+	}
+	auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>();
+	UMaterialInterface* Material = Feedback ? Feedback->GetWreckMaterial() : nullptr;
+	if (!Material) return;
+	for (const auto& Pair : Desired)
+	{
+		auto& Component = WreckInstancesByType.FindOrAdd(Pair.Key);
+		if (!Component)
+		{
+			const auto* Original = FindUnitInstances(Pair.Key);
+			if (!Original || !Original->GetStaticMesh()) continue;
+			Component = NewObject<UInstancedStaticMeshComponent>(this, *FString::Printf(TEXT("WreckUnits_%u"), Pair.Key));
+			Component->SetupAttachment(GetRootComponent());
+			ConfigureUnitInstanceComponent(*Component);
+			Component->SetRenderCustomDepth(false);
+			Component->SetCollisionEnabled(ECollisionEnabled::NoCollision);
+			Component->SetStaticMesh(Original->GetStaticMesh());
+			for (int32 Slot = 0; Slot < Component->GetNumMaterials(); ++Slot) Component->SetMaterial(Slot, Material);
+			AddInstanceComponent(Component);
+			Component->RegisterComponent();
+		}
+		auto& Cached = CachedWreckTransforms.FindOrAdd(Pair.Key);
+		if (GuLiCommanderPresentation::AreTransformsEqual(Cached, Pair.Value)) continue;
+		if (Component->GetInstanceCount() != Pair.Value.Num())
+		{
+			Component->ClearInstances();
+			Component->AddInstances(Pair.Value, false, true, false);
+		}
+		else Component->BatchUpdateInstancesTransforms(0, Pair.Value, true, true, true);
+		Cached = Pair.Value;
+	}
+}
+
+void AGuLiCommanderPresentationActor::UpdateHitFlashInstances(
+	const TMap<uint16,TArray<FTransform>>& Transforms, const TMap<uint16,TArray<float>>& StartTimes)
+{
+	if (GetNetMode() == NM_DedicatedServer) return;
+	for (auto& Pair : HitFlashInstancesByType)
+		if (!Transforms.Contains(Pair.Key) && Pair.Value->GetInstanceCount()) Pair.Value->ClearInstances();
+	auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>();
+	UMaterialInterface* Material = Feedback ? Feedback->GetInstancedHitMaterial() : nullptr;
+	if (!Material) return;
+	for (const auto& Pair : Transforms)
+	{
+		const TArray<float>* Times = StartTimes.Find(Pair.Key);
+		if (!Times || Times->Num() != Pair.Value.Num()) continue;
+		auto& Component = HitFlashInstancesByType.FindOrAdd(Pair.Key);
+		if (!Component)
+		{
+			const auto* Original = FindUnitInstances(Pair.Key);
+			if (!Original || !Original->GetStaticMesh()) continue;
+			Component = NewObject<UInstancedStaticMeshComponent>(this);
+			Component->SetupAttachment(GetRootComponent());
+			ConfigureUnitInstanceComponent(*Component);
+			Component->SetCastShadow(false);
+			Component->SetAffectDistanceFieldLighting(false);
+			Component->SetAffectDynamicIndirectLighting(false);
+			Component->SetVisibleInRayTracing(false);
+			Component->SetStaticMesh(Original->GetStaticMesh());
+			Component->NumCustomDataFloats = 1;
+			for (int32 Slot = 0; Slot < Component->GetNumMaterials(); ++Slot) Component->SetMaterial(Slot, Material);
+			AddInstanceComponent(Component);
+			Component->RegisterComponent();
+		}
+		// Only currently flashing soldiers are drawn in this extra pass, grouped by model.
+		if (Component->GetInstanceCount() != Pair.Value.Num())
+		{
+			Component->ClearInstances();
+			Component->AddInstances(Pair.Value, false, true, false);
+		}
+		else Component->BatchUpdateInstancesTransforms(0, Pair.Value, true, false, true);
+		for (int32 Index = 0; Index < Times->Num(); ++Index) Component->SetCustomDataValue(Index, 0, (*Times)[Index], false);
+		Component->MarkRenderStateDirty();
+	}
 }

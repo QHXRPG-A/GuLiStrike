@@ -1,12 +1,19 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
+#include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
+#include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
+#include "Gameplay/Presentation/GuLiTeamOutlineComponent.h"
+#include "Materials/MaterialInterface.h"
 
+#include "Components/SceneComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StateTreeComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Development/GuLiWingmanQAEvidence.h"
 #include "Gameplay/Wingman/Movement/GuLiWingmanFlightMovementComponent.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystem.h"
 #include "StateTree.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(GuLiWingmanPawn)
@@ -33,12 +40,19 @@ AGuLiWingmanPawn::AGuLiWingmanPawn()
 	CollisionRoot->SetCollisionResponseToChannel(ECC_Pawn, ECR_Ignore);
 	SetRootComponent(CollisionRoot);
 
+	PresentationRoot = CreateDefaultSubobject<USceneComponent>(TEXT("WingmanPresentation"));
+	PresentationRoot->SetupAttachment(CollisionRoot);
+
 	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WingmanMesh"));
-	VisualMesh->SetupAttachment(CollisionRoot);
+	VisualMesh->SetupAttachment(PresentationRoot);
+	// The authored aircraft points down local -X. Correct only its presentation layer so
+	// actor +X, collision, simulation velocity and replicated snapshots keep their contract.
+	VisualMesh->SetRelativeRotation(FRotator(0.0f, 180.0f, 0.0f));
 	VisualMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	VisualMesh->SetGenerateOverlapEvents(false);
 	VisualMesh->SetCanEverAffectNavigation(false);
 	VisualMesh->CastShadow = true;
+	TeamOutline = CreateDefaultSubobject<UGuLiTeamOutlineComponent>(TEXT("TeamOutline"));
 
 	FlightMovement = CreateDefaultSubobject<UGuLiWingmanFlightMovementComponent>(TEXT("FlightMovement"));
 	FlightMovement->SetUpdatedComponent(CollisionRoot);
@@ -60,6 +74,7 @@ void AGuLiWingmanPawn::BeginPlay()
 void AGuLiWingmanPawn::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	StopStateTree(TEXT("Wingman Pawn ending"));
+	StopFlightTrail();
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -96,6 +111,7 @@ bool AGuLiWingmanPawn::InitializeOwnerSimulation(
 	SetActorHiddenInGame(false);
 	SetActorEnableCollision(true);
 	FlightMovement->InitializeForOwner(*this);
+	UpdateFlightTrail(1.0f, true);
 
 	if (BehaviorStateTree && BehaviorStateTree->IsReadyToRun() && StateTreeComponent)
 	{
@@ -132,6 +148,7 @@ bool AGuLiWingmanPawn::InitializeRemotePresentation(
 		return false;
 	}
 	StopStateTree(TEXT("Entering remote presentation"));
+	StopFlightTrail();
 	Runtime = FGuLiWingmanRuntimeState{};
 	Runtime.Identity.Handle = Handle;
 	Runtime.Dynamics.bAlive = true;
@@ -139,6 +156,8 @@ bool AGuLiWingmanPawn::InitializeRemotePresentation(
 	bOwnerSimulationActive = false;
 	bPresentationInteractable = false;
 	bEmergencyRebasePending = false;
+	bHasRemoteVisualPose = false;
+	PresentationRoot->SetRelativeTransform(FTransform::Identity);
 	ConfigureMesh(Mesh);
 	CollisionRoot->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetActorEnableCollision(false);
@@ -149,12 +168,17 @@ bool AGuLiWingmanPawn::InitializeRemotePresentation(
 
 void AGuLiWingmanPawn::ResetForPool()
 {
+	if (GetWorld()) if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>()) Feedback->ClearActorFlash(this);
+	TeamOutline->SetOutlineTeam(EGuLiTeam::Unassigned);
 	StopStateTree(TEXT("Returned to Wingman presentation pool"));
+	StopFlightTrail();
 	Runtime = FGuLiWingmanRuntimeState{};
 	PawnMode = EGuLiWingmanPawnMode::RemotePresentation;
 	bOwnerSimulationActive = false;
 	bPresentationInteractable = false;
 	bEmergencyRebasePending = false;
+	bHasRemoteVisualPose = false;
+	PresentationRoot->SetRelativeTransform(FTransform::Identity);
 	CollisionRoot->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	SetActorEnableCollision(false);
 	SetActorTickEnabled(false);
@@ -265,11 +289,45 @@ void AGuLiWingmanPawn::ApplyRemotePresentation(
 	{
 		return;
 	}
+	FTransform VisualTransform = Transform;
+	const double VisualNow = GetWorld()->GetTimeSeconds();
+	if (bHasRemoteVisualPose && !(bAuthorityRebase && !bPreviousRemoteRebase))
+	{
+		// A newly arrived endpoint can correct an extrapolated path. Blend that
+		// correction on the model only; never write it into the accepted pose.
+		constexpr float VisualBlendSeconds = 0.1f;
+		// Several accepted Flights may refresh allocation in one frame. Consume
+		// elapsed world time once, not the full frame delta once per packet.
+		const float Alpha = 1.0f - FMath::Exp(
+			-static_cast<float>(VisualNow - RemoteVisualTimeSeconds) / VisualBlendSeconds);
+		VisualTransform.Blend(PresentationRoot->GetComponentTransform(), Transform, Alpha);
+	}
 	SetActorTransform(Transform, false, nullptr, ETeleportType::TeleportPhysics);
+	PresentationRoot->SetWorldTransform(VisualTransform);
+	bHasRemoteVisualPose = true;
+	RemoteVisualTimeSeconds = VisualNow;
 	bPresentationInteractable = bInteractable;
 	const float SafeOpacity = FMath::Clamp(Opacity, 0.0f, 1.0f);
 	VisualMesh->SetScalarParameterValueOnMaterials(TEXT("WingmanOpacity"), SafeOpacity);
 	SetActorHiddenInGame(SafeOpacity <= 0.0f);
+	UpdateFlightTrail(SafeOpacity, bAuthorityRebase && !bPreviousRemoteRebase);
+	bPreviousRemoteRebase = bAuthorityRebase;
+}
+
+void AGuLiWingmanPawn::SetPhaseAppearance(bool bPhased)
+{
+	auto* Control = FindComponentByClass<UGuLiExternalUnitControlComponent>();
+	if (!Control && bPhased)
+	{
+		Control = NewObject<UGuLiExternalUnitControlComponent>(this);
+		Control->SetIsReplicated(false); AddInstanceComponent(Control); Control->RegisterComponent();
+	}
+	if (Control)
+	{
+		auto* Material = bPhased ? LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody")) : nullptr;
+		Control->ApplyLocalPhaseAppearance(bPhased,Material);
+	}
+	if (bPhased) { bPresentationInteractable = false; UpdateFlightTrail(0.f,true); }
 }
 
 void AGuLiWingmanPawn::ApplyAuthorityRebase(
@@ -289,6 +347,7 @@ void AGuLiWingmanPawn::ApplyAuthorityRebase(
 	CollisionRoot->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	SetActorEnableCollision(true);
 	SetActorHiddenInGame(false);
+	UpdateFlightTrail(1.0f, true);
 }
 
 void AGuLiWingmanPawn::MarkRebaseRejected(
@@ -373,14 +432,104 @@ void AGuLiWingmanPawn::SetAlive(const bool bAlive)
 	CollisionRoot->SetCollisionEnabled(bAlive && IsOwnerSimulationPawn()
 		? ECollisionEnabled::QueryOnly : ECollisionEnabled::NoCollision);
 	SetActorHiddenInGame(!bAlive);
+	if (!bAlive)
+	{
+		StopFlightTrail();
+	}
 }
 
 void AGuLiWingmanPawn::ConfigureMesh(UStaticMesh* Mesh)
 {
 	if (VisualMesh && Mesh)
 	{
+		bFlightTrailLoadFailed = false;
 		VisualMesh->SetStaticMesh(Mesh);
 	}
+}
+
+void AGuLiWingmanPawn::ApplyOwnerPresentationTransform(const FTransform& Transform)
+{
+	check(IsOwnerSimulationPawn());
+	PresentationRoot->SetWorldTransform(
+		Transform, false, nullptr, ETeleportType::None);
+}
+
+FTransform AGuLiWingmanPawn::GetPresentationTransform() const
+{
+	return PresentationRoot->GetComponentTransform();
+}
+
+void AGuLiWingmanPawn::UpdateFlightTrail(const float Opacity, const bool bResetTrail)
+{
+	const float SafeOpacity = FMath::IsFinite(Opacity) ? FMath::Clamp(Opacity, 0.0f, 1.0f) : 0.0f;
+	if (GetNetMode() == NM_DedicatedServer || !GetWorld() || !GetWorld()->IsGameWorld()
+		|| !Runtime.Dynamics.bAlive || IsHidden() || SafeOpacity <= 0.0f
+		|| !VisualMesh || !VisualMesh->GetStaticMesh() || FlightTrailSystem.IsNull() || bFlightTrailLoadFailed)
+	{
+		StopFlightTrail();
+		return;
+	}
+
+	if (!FlightTrail)
+	{
+		UNiagaraSystem* System = FlightTrailSystem.LoadSynchronous();
+		if (!System)
+		{
+			bFlightTrailLoadFailed = true;
+			return;
+		}
+		FlightTrail = NewObject<UNiagaraComponent>(this, TEXT("WingmanFlightTrail"));
+		FlightTrail->SetAutoActivate(false);
+		FlightTrail->SetAutoDestroy(false);
+		FlightTrail->SetAsset(System);
+		FlightTrail->SetupAttachment(VisualMesh);
+		FlightTrail->SetRelativeLocation(FlightTrailOffset);
+		FlightTrail->SetRelativeRotation(FRotator(0.0f, 180.0f, 0.0f));
+		FlightTrail->SetCanEverAffectNavigation(false);
+		FlightTrail->SetCastShadow(false);
+		FlightTrail->SetCullDistance(FlightTrailCullDistance);
+		FlightTrail->RegisterComponent();
+	}
+
+	const FVector Location = PresentationRoot->GetComponentLocation();
+	const bool bTeleported = bHasFlightTrailLocation
+		&& FVector::DistSquared(Location, LastFlightTrailLocation) > FMath::Square(10000.0f);
+	float Speed = Runtime.Dynamics.Velocity.Size();
+	if (!IsOwnerSimulationPawn() && bHasFlightTrailLocation && !bTeleported && !bResetTrail)
+	{
+		Speed = FVector::Distance(Location, LastFlightTrailLocation)
+			/ FMath::Max(GetWorld()->GetDeltaSeconds(), UE_SMALL_NUMBER);
+	}
+	if (bResetTrail || bTeleported)
+	{
+		FlightTrail->DeactivateImmediate();
+		bFlightTrailRunning = false;
+	}
+	FlightTrail->SetVariableFloat(TEXT("User.Opacity"), SafeOpacity);
+	FlightTrail->SetVariableFloat(TEXT("User.Throttle"), FMath::GetMappedRangeValueClamped(
+		FVector2D(0.0f, 18000.0f), FVector2D(0.65f, 1.3f), Speed));
+	FlightTrail->SetVariableVec3(TEXT("User.Forward"), PresentationRoot->GetForwardVector());
+	FlightTrail->SetVariableVec3(TEXT("User.Right"), PresentationRoot->GetRightVector());
+	// Niagara owns distance-cull resume. Do not reactivate a culled system every frame.
+	if (!bFlightTrailRunning)
+	{
+		FlightTrail->Activate(true);
+		bFlightTrailRunning = true;
+	}
+	LastFlightTrailLocation = Location;
+	bHasFlightTrailLocation = true;
+}
+
+void AGuLiWingmanPawn::StopFlightTrail()
+{
+	if (FlightTrail && bFlightTrailRunning)
+	{
+		// Pooling, death and rebases must never connect the old path to a new aircraft.
+		FlightTrail->DeactivateImmediate();
+	}
+	bFlightTrailRunning = false;
+	bHasFlightTrailLocation = false;
+	bPreviousRemoteRebase = false;
 }
 
 void AGuLiWingmanPawn::StopStateTree(const TCHAR* Reason)

@@ -3,6 +3,8 @@
 #include "Gameplay/Ship/UI/GuLiShipWorldHUDComponent.h"
 
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
+#include "Blueprint/UserWidget.h"
+#include "Blueprint/WidgetLayoutLibrary.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/WidgetComponent.h"
@@ -96,7 +98,11 @@ void UGuLiShipWorldHUDComponent::TickComponent(
 		return;
 	}
 
-	UpdateNodeTransforms();
+	SetStatusVisible(UpdateStatusViewportLayout());
+	if (!UpdateNodeTransforms())
+	{
+		HideWorldNodes();
+	}
 	RefreshDataIfDue(false);
 }
 
@@ -116,13 +122,17 @@ void UGuLiShipWorldHUDComponent::HandleOwnerControllerChanged()
 		DestroyRuntimeWidgets();
 		return;
 	}
+	if (LocalController.IsValid() && LocalController.Get() != Controller)
+	{
+		DestroyRuntimeWidgets();
+	}
 
 	LocalController = Controller;
 	HullMesh = Ship->GetHullMeshComponent();
 	BindAimComponent(Ship->GetShipAimComponent());
 	CreateRuntimeWidgets();
 	SetComponentTickEnabled(
-		StatusNode || FlightNode || CombatNode || ReticleNode || AimBoundsNode);
+		StatusWidget || FlightNode || CombatNode || ReticleNode || AimBoundsNode);
 	RefreshDataIfDue(true);
 }
 
@@ -187,7 +197,12 @@ UWidgetComponent* UGuLiShipWorldHUDComponent::CreateWidgetNode(
 
 void UGuLiShipWorldHUDComponent::CreateRuntimeWidgets()
 {
-	if (StatusNode || FlightNode || CombatNode || ReticleNode || AimBoundsNode)
+	if (StatusWidget || FlightNode || CombatNode || ReticleNode || AimBoundsNode)
+	{
+		return;
+	}
+	APlayerController* Controller = LocalController.Get();
+	if (!Controller)
 	{
 		return;
 	}
@@ -205,8 +220,21 @@ void UGuLiShipWorldHUDComponent::CreateRuntimeWidgets()
 		bLoggedMissingAssets = true;
 	}
 
-	StatusNode = CreateWidgetNode(
-		TEXT("ShipWorldHUD_Status"), StatusClass, GuLiShipWorldHUD::StatusDrawSize, 1);
+	if (StatusClass)
+	{
+		StatusWidget = CreateWidget<UGuLiShipWorldStatusWidget>(Controller, StatusClass);
+		if (StatusWidget)
+		{
+			StatusWidget->SetIsFocusable(false);
+			StatusWidget->SetVisibility(ESlateVisibility::HitTestInvisible);
+			StatusWidget->SetDesiredSizeInViewport(GuLiShipWorldHUD::StatusDrawSize);
+			StatusWidget->SetAlignmentInViewport(FVector2D(0.5, 0.0));
+			if (!StatusWidget->AddToPlayerScreen(20))
+			{
+				StatusWidget = nullptr;
+			}
+		}
+	}
 	FlightNode = CreateWidgetNode(
 		TEXT("ShipWorldHUD_Flight"), FlightClass, GuLiShipWorldHUD::FlightDrawSize, 1);
 	CombatNode = CreateWidgetNode(
@@ -239,7 +267,12 @@ void UGuLiShipWorldHUDComponent::DestroyRuntimeWidgets()
 			Node = nullptr;
 		}
 	};
-	DestroyNode(StatusNode);
+	if (StatusWidget)
+	{
+		StatusWidget->SetVisibility(ESlateVisibility::Collapsed);
+		StatusWidget->RemoveFromParent();
+		StatusWidget = nullptr;
+	}
 	DestroyNode(FlightNode);
 	DestroyNode(CombatNode);
 	DestroyNode(ReticleNode);
@@ -311,14 +344,9 @@ void UGuLiShipWorldHUDComponent::RefreshData()
 	if (!bHasStatusSnapshot || bCachedReady != bReady || bCachedAlive != bAlive
 		|| CachedHealth != Health || CachedMaximumHealth != MaximumHealth)
 	{
-		if (StatusNode)
+		if (StatusWidget)
 		{
-			if (UGuLiShipWorldStatusWidget* Widget =
-				Cast<UGuLiShipWorldStatusWidget>(StatusNode->GetUserWidgetObject()))
-			{
-				Widget->SetStatus(bReady, bAlive, HealthState.Health, HealthState.MaxHealth);
-				StatusNode->RequestRenderUpdate();
-			}
+			StatusWidget->SetStatus(bReady, bAlive, HealthState.Health, HealthState.MaxHealth);
 		}
 		bCachedReady = bReady;
 		bCachedAlive = bAlive;
@@ -377,6 +405,38 @@ void UGuLiShipWorldHUDComponent::RefreshData()
 	}
 }
 
+bool UGuLiShipWorldHUDComponent::UpdateStatusViewportLayout()
+{
+	UGuLiShipWorldStatusWidget* Widget = StatusWidget;
+	APlayerController* Controller = LocalController.Get();
+	ULocalPlayer* Player = Controller ? Controller->GetLocalPlayer() : nullptr;
+	if (!Widget || !Controller || !Player)
+	{
+		return false;
+	}
+
+	const FVector2D VisibleViewportPixels =
+		GuLiShipReticle::ResolveVisibleViewportSize(*Controller);
+	const FVector2D PlayerViewportPixels(
+		VisibleViewportPixels.X * FMath::Clamp(Player->Size.X, 0.0, 1.0),
+		VisibleViewportPixels.Y * FMath::Clamp(Player->Size.Y, 0.0, 1.0));
+	const float ViewportScale = UWidgetLayoutLibrary::GetViewportScale(Controller);
+	if (PlayerViewportPixels.X <= 0.0 || PlayerViewportPixels.Y <= 0.0
+		|| !FMath::IsFinite(ViewportScale) || ViewportScale <= UE_SMALL_NUMBER)
+	{
+		return false;
+	}
+
+	// AddToPlayerScreen constrains this canvas to the owning local player's split-screen layer.
+	// SetPositionInViewport receives logical Slate units here, so DPI removal must stay disabled.
+	const FVector2D LogicalViewportSize = PlayerViewportPixels / ViewportScale;
+	Widget->SetDesiredSizeInViewport(GuLiShipWorldHUD::StatusDrawSize);
+	Widget->SetAlignmentInViewport(FVector2D(0.5, 0.0));
+	Widget->SetPositionInViewport(
+		FVector2D(LogicalViewportSize.X * 0.5, ViewportSafeMarginPixels), false);
+	return true;
+}
+
 bool UGuLiShipWorldHUDComponent::UpdateNodeTransforms()
 {
 	APlayerController* Controller = LocalController.Get();
@@ -407,16 +467,7 @@ bool UGuLiShipWorldHUDComponent::UpdateNodeTransforms()
 	if (!ProjectHullBounds(
 		*Controller, CameraLocation, CameraForward, HullMinimum, HullMaximum, PlaneOrigin))
 	{
-		const FVector HullCenter = HullMesh.IsValid()
-			? HullMesh->Bounds.Origin
-			: OwnerShip.IsValid()
-				? OwnerShip->GetActorLocation()
-				: CameraLocation + CameraForward * 1000.0;
-		const double FallbackDistance =
-			FMath::Max(1000.0, FVector::Distance(CameraLocation, HullCenter));
-		PlaneOrigin = CameraLocation + CameraForward * FallbackDistance;
-		HullMinimum = VisibleViewportSize * 0.5;
-		HullMaximum = HullMinimum;
+		return false;
 	}
 
 	const float PlaneDistance = FVector::DotProduct(PlaneOrigin - CameraLocation, CameraForward);
@@ -431,9 +482,6 @@ bool UGuLiShipWorldHUDComponent::UpdateNodeTransforms()
 	}
 
 	const FVector2D HullCenter = (HullMinimum + HullMaximum) * 0.5;
-	const FVector2D StatusPosition = GuLiShipWorldHUD::ClampNodeCenter(
-		FVector2D(HullCenter.X, HullMinimum.Y - HullPanelGapPixels - GuLiShipWorldHUD::StatusDrawSize.Y * 0.5),
-		GuLiShipWorldHUD::StatusDrawSize, VisibleViewportSize, ViewportSafeMarginPixels);
 	const FVector2D FlightPosition = GuLiShipWorldHUD::ClampNodeCenter(
 		FVector2D(HullMinimum.X - HullPanelGapPixels - GuLiShipWorldHUD::FlightDrawSize.X * 0.5, HullCenter.Y),
 		GuLiShipWorldHUD::FlightDrawSize, VisibleViewportSize, ViewportSafeMarginPixels);
@@ -442,11 +490,6 @@ bool UGuLiShipWorldHUDComponent::UpdateNodeTransforms()
 		GuLiShipWorldHUD::CombatDrawSize, VisibleViewportSize, ViewportSafeMarginPixels);
 
 	bool bValid = true;
-	if (StatusNode)
-	{
-		bValid &= SetNodeTransform(*StatusNode, *Controller, StatusPosition, PlaneOrigin,
-			CameraForward, CameraRotation, CentimetersPerPixel);
-	}
 	if (FlightNode)
 	{
 		bValid &= SetNodeTransform(*FlightNode, *Controller, FlightPosition, PlaneOrigin,
@@ -462,7 +505,6 @@ bool UGuLiShipWorldHUDComponent::UpdateNodeTransforms()
 		return false;
 	}
 
-	SetNodeVisible(StatusNode, StatusNode != nullptr);
 	SetNodeVisible(FlightNode, FlightNode != nullptr);
 	SetNodeVisible(CombatNode, CombatNode != nullptr);
 
@@ -674,13 +716,27 @@ void UGuLiShipWorldHUDComponent::SetNodeVisible(UWidgetComponent* Node, const bo
 	}
 }
 
-void UGuLiShipWorldHUDComponent::HideAllNodes() const
+void UGuLiShipWorldHUDComponent::SetStatusVisible(const bool bVisible) const
 {
-	SetNodeVisible(StatusNode, false);
+	if (StatusWidget)
+	{
+		StatusWidget->SetVisibility(
+			bVisible ? ESlateVisibility::HitTestInvisible : ESlateVisibility::Collapsed);
+	}
+}
+
+void UGuLiShipWorldHUDComponent::HideWorldNodes() const
+{
 	SetNodeVisible(FlightNode, false);
 	SetNodeVisible(CombatNode, false);
 	SetNodeVisible(ReticleNode, false);
 	SetNodeVisible(AimBoundsNode, false);
+}
+
+void UGuLiShipWorldHUDComponent::HideAllNodes() const
+{
+	SetStatusVisible(false);
+	HideWorldNodes();
 }
 
 bool UGuLiShipWorldHUDComponent::ShouldPresent() const

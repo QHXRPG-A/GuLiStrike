@@ -4,20 +4,13 @@
 bool FGuLiWingmanAttackProfile::IsWellFormed() const
 {
 	if (Pattern == EGuLiWingmanAttackPattern::Legacy) return true;
-	if (Pattern != EGuLiWingmanAttackPattern::AirDogfight && Pattern != EGuLiWingmanAttackPattern::GroundDive) return false;
+	if (Pattern != EGuLiWingmanAttackPattern::AirBurstOrbit && Pattern != EGuLiWingmanAttackPattern::GroundDive) return false;
 	if (ExecutorId.IsNone() || !FMath::IsFinite(FlightSpeed) || FlightSpeed <= 0 || Muzzle.ContainsNaN()) return false;
-	if (Pattern == EGuLiWingmanAttackPattern::AirDogfight)
-		return FMath::IsFinite(BreakawayDistance) && BreakawayDistance > 0
-			&& FMath::IsFinite(RetreatMinimumDistance) && RetreatMinimumDistance > 0
-			&& FMath::IsFinite(RetreatLongitudinalMinFraction) && FMath::IsFinite(RetreatLongitudinalMaxFraction)
-			&& RetreatLongitudinalMinFraction >= 0 && RetreatLongitudinalMaxFraction >= RetreatLongitudinalMinFraction
-			&& RetreatLongitudinalMaxFraction <= 1.0f
-			&& FMath::IsFinite(RetreatLateralRadius) && RetreatLateralRadius > 0
-			&& FMath::IsFinite(RetreatVerticalRadius) && RetreatVerticalRadius > 0
-			&& FMath::IsFinite(ManeuverArrivalRadius) && ManeuverArrivalRadius > 0
-			&& FMath::IsFinite(TurnYawMinDegrees) && FMath::IsFinite(TurnYawMaxDegrees)
-			&& TurnYawMinDegrees > 0 && TurnYawMaxDegrees >= TurnYawMinDegrees && TurnYawMaxDegrees < 180.0f
-			&& FMath::IsFinite(TurnPitchMaxDegrees) && TurnPitchMaxDegrees >= 0 && TurnPitchMaxDegrees < 90.0f;
+	if (Pattern == EGuLiWingmanAttackPattern::AirBurstOrbit)
+		return FMath::IsFinite(AirFireStartDistance) && FMath::IsFinite(AirFireStopDistance)
+			&& AirFireStartDistance > AirFireStopDistance && AirFireStopDistance > 0.0f
+			&& FMath::IsFinite(AirBurstDurationSeconds) && AirBurstDurationSeconds > 0.0f
+			&& FMath::IsFinite(AirOrbitCooldownSeconds) && AirOrbitCooldownSeconds > 0.0f;
 	return FMath::IsFinite(DiveSeconds) && DiveSeconds > 0 && MissileCount >= 1 && MissileCount <= 64
 		&& FMath::IsFinite(StripLength) && StripLength >= 0 && FMath::IsFinite(PullUpHeight)
 		&& PullUpHeight >= GuLiWingmanAttack::MinimumGroundHeight && PullUpHeight <= GuLiWingmanAttack::MaximumPullUpHeight
@@ -37,9 +30,7 @@ void FGuLiWingmanAttackProfile::AddToStableHash(uint64& Hash) const
 	GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Pattern));
 	GuLiShipAbilityHash::AddString(Hash, ExecutorId.ToString());
 	for (float Value : {FlightSpeed, DiveSeconds, StripLength, PullUpHeight, ExplosionRadius,
-		BreakawayDistance, RetreatMinimumDistance, RetreatLongitudinalMinFraction,
-		RetreatLongitudinalMaxFraction, RetreatLateralRadius, RetreatVerticalRadius,
-		ManeuverArrivalRadius, TurnYawMinDegrees, TurnYawMaxDegrees, TurnPitchMaxDegrees})
+		AirFireStartDistance, AirFireStopDistance, AirBurstDurationSeconds, AirOrbitCooldownSeconds})
 		GuLiShipAbilityHash::AddFloat(Hash, Value);
 	GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(MissileCount));
 	GuLiShipAbilityHash::AddFloat(Hash, static_cast<float>(Muzzle.X));
@@ -95,8 +86,7 @@ FVector GuLiWingmanAttack::BuildGroundApproachCandidate(const FVector& DirectApp
 FVector GuLiWingmanAttack::GroundRunSetupPoint(const FGuLiWingmanGroundRunPath& Path)
 {
 	if (!Path.IsValid()) return FVector::ZeroVector;
-	return Path.Entry - Path.DirectionAt(0.0f)
-		* (Path.Speed * GroundIngressLeadSeconds);
+	return Path.Entry;
 }
 
 bool FGuLiWingmanGroundRunPath::IsValid() const
@@ -145,118 +135,53 @@ bool GuLiWingmanAttack::IsInsideForwardArc(const FVector& Source, const FVector&
 		&& FVector::DotProduct(Forward.GetSafeNormal(), Delta.GetSafeNormal()) >= FMath::Cos(FMath::DegreesToRadians(HalfAngleDegrees));
 }
 
-bool FGuLiWingmanAirTurnPlan::IsValid() const
+EGuLiWingmanAttackPhase GuLiWingmanAttack::SelectAirEntryPhase(
+	const float TargetDistance, const FGuLiWingmanAttackProfile& Profile)
 {
-	return !Origin.ContainsNaN() && !Destination.ContainsNaN() && !ControlPoint.ContainsNaN()
-		&& !Origin.Equals(Destination) && !Origin.Equals(ControlPoint)
-		&& FMath::IsFinite(SignedYawDegrees) && FMath::IsFinite(PitchDegrees);
-}
-
-namespace
-{
-	uint32 MixAirBits(uint32 Value)
+	if (!Profile.IsWellFormed() || Profile.Pattern != EGuLiWingmanAttackPattern::AirBurstOrbit
+		|| !FMath::IsFinite(TargetDistance) || TargetDistance < 0.0f)
 	{
-		Value ^= Value >> 16; Value *= 0x7feb352du;
-		Value ^= Value >> 15; Value *= 0x846ca68bu;
-		return Value ^ (Value >> 16);
+		return EGuLiWingmanAttackPhase::Idle;
 	}
+	return TargetDistance < Profile.AirFireStartDistance
+		? EGuLiWingmanAttackPhase::AirSeparate
+		: EGuLiWingmanAttackPhase::AirApproachFire;
+}
 
-	float AirUnit(uint32 Seed)
+bool GuLiWingmanAttack::ShouldEndAirBurst(
+	const float TargetDistance, const double ElapsedSeconds, const FGuLiWingmanAttackProfile& Profile)
+{
+	return Profile.IsWellFormed() && Profile.Pattern == EGuLiWingmanAttackPattern::AirBurstOrbit
+		&& FMath::IsFinite(TargetDistance) && FMath::IsFinite(ElapsedSeconds)
+		&& (TargetDistance < Profile.AirFireStopDistance
+			|| ElapsedSeconds >= Profile.AirBurstDurationSeconds);
+}
+
+bool GuLiWingmanAttack::ShouldBeginAirOrbitCooldown(
+	const float CarrierDistance, const float OuterSoftRadius)
+{
+	return FMath::IsFinite(CarrierDistance) && CarrierDistance >= 0.0f
+		&& FMath::IsFinite(OuterSoftRadius) && OuterSoftRadius > 0.0f
+		&& CarrierDistance <= OuterSoftRadius;
+}
+
+bool GuLiWingmanAttack::IsAirOrbitCooldownComplete(
+	const double ElapsedSeconds, const FGuLiWingmanAttackProfile& Profile)
+{
+	return Profile.IsWellFormed() && Profile.Pattern == EGuLiWingmanAttackPattern::AirBurstOrbit
+		&& FMath::IsFinite(ElapsedSeconds)
+		&& ElapsedSeconds >= Profile.AirOrbitCooldownSeconds;
+}
+
+int32 GuLiWingmanAttack::AirBurstShotsDue(
+	const float ShotIntervalSeconds, const float DurationSeconds, const double ElapsedSeconds)
+{
+	if (!FMath::IsFinite(ShotIntervalSeconds) || !FMath::IsFinite(DurationSeconds)
+		|| !FMath::IsFinite(ElapsedSeconds) || ShotIntervalSeconds < MinimumAirShotIntervalSeconds
+		|| DurationSeconds <= 0.0f || ElapsedSeconds < 0.0)
 	{
-		return static_cast<float>((MixAirBits(Seed) >> 8) * (1.0 / 16777216.0));
+		return 0;
 	}
-}
-
-uint32 GuLiWingmanAttack::MakeAirManeuverSeed(uint32 AgentSeed, uint32 TargetRevision,
-	uint32 EntrySerial, uint32 ClientTick, uint32 PhaseSalt, uint32 CandidateIndex)
-{
-	uint32 Seed = MixAirBits(AgentSeed ^ 0x9e3779b9u);
-	for (const uint32 Value : {TargetRevision, EntrySerial, ClientTick, PhaseSalt, CandidateIndex})
-		Seed = MixAirBits(Seed ^ MixAirBits(Value + 0x9e3779b9u));
-	return Seed ? Seed : 1u;
-}
-
-FVector GuLiWingmanAttack::BuildRetreatCandidate(const FVector& Position, const FVector& Target,
-	const FVector& Ship, float BreakawayBoundary, const FGuLiWingmanAttackProfile& Profile, uint32 Seed)
-{
-	if (Position.ContainsNaN() || Target.ContainsNaN() || Ship.ContainsNaN() || !Profile.IsWellFormed()
-		|| Profile.Pattern != EGuLiWingmanAttackPattern::AirDogfight || !FMath::IsFinite(BreakawayBoundary))
-		return FVector::ZeroVector;
-	const FVector Corridor = (Ship - Target).GetSafeNormal(UE_SMALL_NUMBER,
-		(Position - Target).GetSafeNormal(UE_SMALL_NUMBER, FVector::ForwardVector));
-	FVector Right = FVector::CrossProduct(FVector::UpVector, Corridor).GetSafeNormal();
-	if (Right.IsNearlyZero()) Right = FVector::RightVector;
-	const FVector Up = FVector::CrossProduct(Corridor, Right).GetSafeNormal(UE_SMALL_NUMBER, FVector::UpVector);
-	const float Fraction = FMath::Lerp(Profile.RetreatLongitudinalMinFraction,
-		Profile.RetreatLongitudinalMaxFraction, AirUnit(Seed ^ 0xa511e9b3u));
-	const float CorridorLength = FVector::Distance(Target, Ship);
-	const float MinimumLongitudinal = FMath::Max(Profile.RetreatMinimumDistance,
-		FMath::Max(0.0f, BreakawayBoundary) + Profile.ManeuverArrivalRadius);
-	const float Longitudinal = FMath::Max(CorridorLength * Fraction, MinimumLongitudinal);
-	const float DiskRadius = FMath::Sqrt(AirUnit(Seed ^ 0x63d83595u));
-	const float Angle = 2.0f * UE_PI * AirUnit(Seed ^ 0xc2b2ae35u);
-	return Target + Corridor * Longitudinal
-		+ Right * (FMath::Cos(Angle) * DiskRadius * Profile.RetreatLateralRadius)
-		+ Up * (FMath::Sin(Angle) * DiskRadius * Profile.RetreatVerticalRadius);
-}
-
-bool GuLiWingmanAttack::BuildAirTurnPlan(const FVector& Position, const FVector& Destination,
-	float FlightSpeed, float TurnDegreesPerSecond, const FGuLiWingmanAttackProfile& Profile,
-	uint32 Seed, FGuLiWingmanAirTurnPlan& OutPlan)
-{
-	OutPlan = {};
-	if (Position.ContainsNaN() || Destination.ContainsNaN() || !Profile.IsWellFormed()
-		|| Profile.Pattern != EGuLiWingmanAttackPattern::AirDogfight || !FMath::IsFinite(FlightSpeed)
-		|| FlightSpeed <= 0 || !FMath::IsFinite(TurnDegreesPerSecond) || TurnDegreesPerSecond <= 0) return false;
-	const FVector Direct = (Destination - Position).GetSafeNormal();
-	if (Direct.IsNearlyZero()) return false;
-	const float YawMagnitude = FMath::Lerp(Profile.TurnYawMinDegrees, Profile.TurnYawMaxDegrees,
-		AirUnit(Seed ^ 0x27d4eb2fu));
-	const float SignedYaw = (AirUnit(Seed ^ 0x165667b1u) < 0.5f ? -1.0f : 1.0f) * YawMagnitude;
-	const float Pitch = FMath::Lerp(-Profile.TurnPitchMaxDegrees, Profile.TurnPitchMaxDegrees,
-		AirUnit(Seed ^ 0xd3a2646cu));
-	const FVector Yawed = Direct.RotateAngleAxis(SignedYaw, FVector::UpVector).GetSafeNormal();
-	FVector PitchAxis = FVector::CrossProduct(FVector::UpVector, Yawed).GetSafeNormal();
-	if (PitchAxis.IsNearlyZero()) PitchAxis = FVector::RightVector;
-	const FVector TurnDirection = Yawed.RotateAngleAxis(Pitch, PitchAxis).GetSafeNormal();
-	const float PhysicalRadius = FlightSpeed / FMath::DegreesToRadians(TurnDegreesPerSecond);
-	OutPlan.Origin = Position; OutPlan.Destination = Destination;
-	OutPlan.ControlPoint = Position + TurnDirection * (2.0f * PhysicalRadius);
-	OutPlan.SignedYawDegrees = SignedYaw; OutPlan.PitchDegrees = Pitch;
-	return OutPlan.IsValid();
-}
-
-bool GuLiWingmanAttack::HasReachedOrPassed(const FVector& Position, const FVector& Origin,
-	const FVector& Destination, float ArrivalRadius)
-{
-	if (Position.ContainsNaN() || Origin.ContainsNaN() || Destination.ContainsNaN()
-		|| !FMath::IsFinite(ArrivalRadius) || ArrivalRadius < 0) return false;
-	if (FVector::DistSquared(Position, Destination) <= FMath::Square(static_cast<double>(ArrivalRadius))) return true;
-	const FVector Direction = (Destination - Origin).GetSafeNormal();
-	return !Direction.IsNearlyZero() && FVector::DotProduct(Position - Destination, Direction) >= 0.0;
-}
-
-EGuLiWingmanAttackPhase GuLiWingmanAttack::NextAirDogfightPhase(EGuLiWingmanAttackPhase Phase)
-{
-	switch (Phase)
-	{
-	case EGuLiWingmanAttackPhase::AirApproachFire: return EGuLiWingmanAttackPhase::AirBreakawayTurn;
-	case EGuLiWingmanAttackPhase::AirBreakawayTurn: return EGuLiWingmanAttackPhase::AirRetreat;
-	case EGuLiWingmanAttackPhase::AirRetreat: return EGuLiWingmanAttackPhase::AirReturnTurn;
-	case EGuLiWingmanAttackPhase::AirReturnTurn: return EGuLiWingmanAttackPhase::AirApproachFire;
-	default: return EGuLiWingmanAttackPhase::Idle;
-	}
-}
-
-bool GuLiWingmanAttack::CanQueueAirGun(EGuLiWingmanAttackPhase Phase)
-{
-	return Phase == EGuLiWingmanAttackPhase::AirApproachFire;
-}
-
-bool GuLiWingmanAttack::ShouldFinishAirTurn(const FVector& Position, const FGuLiWingmanAirTurnPlan& Plan,
-	float ArrivalRadius, double ElapsedSeconds)
-{
-	return Plan.IsValid() && FMath::IsFinite(ElapsedSeconds) && ElapsedSeconds >= 0
-		&& (ElapsedSeconds >= AirTurnTimeoutSeconds
-			|| HasReachedOrPassed(Position, Plan.Origin, Plan.ControlPoint, ArrivalRadius));
+	const int32 Total = FMath::CeilToInt(DurationSeconds / ShotIntervalSeconds - 1.e-6f);
+	return FMath::Clamp(FMath::FloorToInt((ElapsedSeconds + 1.e-6) / ShotIntervalSeconds) + 1, 0, Total);
 }

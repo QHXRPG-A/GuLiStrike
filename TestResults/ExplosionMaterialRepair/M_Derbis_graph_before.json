@@ -1,0 +1,82 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Opaque",
+		"shading_model": "MSM_DefaultLit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionParticleColor_0000016A78613800",
+			"class": "ParticleColor",
+			"class_full": "MaterialExpressionParticleColor",
+			"pos_x": -416,
+			"pos_y": -64,
+			"properties":
+			{
+			},
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionDynamicParameter_0000016CF528AB00",
+			"class": "DynamicParameter",
+			"class_full": "MaterialExpressionDynamicParameter",
+			"pos_x": -432,
+			"pos_y": 256,
+			"properties":
+			{
+				"ParamNames": "(\"AO\",\"Roughness\",\"Metallic\",\"Param4\")",
+				"DefaultValue": "(R=1.000000,G=1.000000,B=1.000000,A=1.000000)",
+				"ParameterIndex": "0"
+			},
+			"inputs": [],
+			"outputs": [
+				"AO",
+				"Roughness",
+				"Metallic",
+				"Param4"
+			]
+		}
+	],
+	"connections": [],
+	"output_connections": [
+		{
+			"property": "BaseColor",
+			"expression_id": "MaterialExpressionParticleColor_0000016A78613800",
+			"output_index": 0,
+			"output_name": "RGB"
+		},
+		{
+			"property": "Metallic",
+			"expression_id": "MaterialExpressionDynamicParameter_0000016CF528AB00",
+			"output_index": 2,
+			"output_name": "Metallic"
+		},
+		{
+			"property": "Roughness",
+			"expression_id": "MaterialExpressionDynamicParameter_0000016CF528AB00",
+			"output_index": 1,
+			"output_name": "Roughness"
+		},
+		{
+			"property": "Opacity",
+			"expression_id": "MaterialExpressionParticleColor_0000016A78613800",
+			"output_index": 4,
+			"output_name": "A"
+		},
+		{
+			"property": "AmbientOcclusion",
+			"expression_id": "MaterialExpressionDynamicParameter_0000016CF528AB00",
+			"output_index": 0,
+			"output_name": "AO"
+		}
+	]
+}

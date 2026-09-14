@@ -1,0 +1,524 @@
+{
+  "mode": 2,
+  "vehicle": "wm",
+  "passed": true,
+  "checks": {
+    "server_collected": true,
+    "late_join_reconstructs_field": true,
+    "clients_show_blue_vehicle": true,
+    "clients_show_phased_mass": true,
+    "camera_follows_while_blue": true,
+    "landing_finished": true,
+    "no_server_pullback": true,
+    "displaced": true,
+    "original_pawn_alive": true,
+    "camera_keeps_original_target": true,
+    "normal_appearance_restored": true,
+    "all_clients_at_destination": true
+  },
+  "stages": [
+    {
+      "label": "before",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                -7089.751495105726
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": []
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -38580.53,
+                115110.72,
+                -7089.75
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": []
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                -7089.751797313372
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "GuLiWarMachinePlaceholderPawn_0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "phased",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 7,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                -7089.751495105726
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": []
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 7,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                -7089.751495105726
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": []
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 7,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                -7089.751495105726
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "GuLiWarMachinePlaceholderPawn_0"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "label": "late_join",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 7,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                -7089.751495105726
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": []
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 7,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                -7089.751495105726
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": []
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 7,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                -7089.751495105726
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "GuLiWarMachinePlaceholderPawn_0"
+            }
+          ]
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_3_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 6,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 7,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -38580.530138925125,
+                115110.71525542845,
+                -7089.751495105726
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": []
+        }
+      ]
+    },
+    {
+      "label": "landed",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -29792.995593026688,
+                115326.54447906127,
+                -7101.600027202902
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": []
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -29793.0,
+                115326.54000000001,
+                -7101.6
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": []
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -29792.995593026688,
+                115326.54447906127,
+                -7101.600027202902
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "GuLiWarMachinePlaceholderPawn_0"
+            }
+          ]
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_3_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -29793.0,
+                115326.54000000001,
+                -7101.6
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": []
+        }
+      ]
+    },
+    {
+      "label": "stable",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -29792.995593026688,
+                115326.54447906127,
+                -7101.600027202902
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": []
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -29793.0,
+                115326.54000000001,
+                -7101.6
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": []
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -29792.995593026688,
+                115326.54447906127,
+                -7101.600027202902
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "GuLiWarMachinePlaceholderPawn_0"
+            }
+          ]
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_3_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "GuLiWarMachinePlaceholderPawn_0",
+              "location": [
+                -29793.0,
+                115326.54000000001,
+                -7101.6
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 25,
+          "blue_wingmen": 0,
+          "cameras": []
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "source": [
+    -38580.530138925125,
+    115110.71525542845,
+    -6968.0
+  ],
+  "server_status": "选择落点 9.4 秒 · 7 个单位",
+  "sender_status": "选择落点 9.4 秒 · 7 个单位"
+}

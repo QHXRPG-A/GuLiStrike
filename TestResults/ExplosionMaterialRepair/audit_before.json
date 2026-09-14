@@ -1,0 +1,5435 @@
+{
+  "materials": [
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Distortion_2",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 11,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Distortion_2",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Distortion_2",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSample) Texture Sample> Missing input texture"
+        ],
+        "expression_count": 32,
+        "function_call_count": 1,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Smoke_Wisp_2",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 5,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Smoke_Wisp_2",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Smoke_Wisp_2",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture"
+        ],
+        "expression_count": 5,
+        "function_call_count": 0,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Smoke_1",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 5,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Smoke_1",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Smoke_1",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSample) Texture Sample> Missing input texture"
+        ],
+        "expression_count": 5,
+        "function_call_count": 0,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Impact_3",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 4,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Impact_3",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Impact_3",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSample) Texture Sample> Missing input texture"
+        ],
+        "expression_count": 4,
+        "function_call_count": 0,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Smoke_2",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 9,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Smoke_2",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Smoke_2",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSample) Texture Sample> Missing input texture",
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture"
+        ],
+        "expression_count": 9,
+        "function_call_count": 0,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 2,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/DefaultTextMaterialTranslucentUnlit",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 3,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "DefaultTextMaterialTranslucentUnlit",
+        "material_path": "/Game/Assets/VFX/Explosions/DefaultTextMaterialTranslucentUnlit",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 3,
+        "function_call_count": 0,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [
+          "/Engine/EngineFonts/RobotoDistanceField.RobotoDistanceField:RobotoDistanceField_PageA"
+        ],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 0,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/fastFireball",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 20,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "fastFireball",
+        "material_path": "/Game/Assets/VFX/Explosions/fastFireball",
+        "parameters": [
+          {
+            "current_value": "500.000",
+            "default_value": "500.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Temperature Offset",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "4500.000",
+            "default_value": "4500.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "TemperatureK",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "3.000",
+            "default_value": "3.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BloomMult",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUv Texture",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 1,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 20,
+        "function_call_count": 0,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 3,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Basic_Shape",
+      "info": {
+        "blend_mode": "BLEND_Opaque",
+        "expression_count": 2,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Basic_Shape",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Basic_Shape",
+        "parameters": [
+          {
+            "current_value": "0.641",
+            "default_value": "0.641",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Roughness",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=0.135,G=0.135,B=0.135,A=1.000)",
+            "default_value": "(R=0.135,G=0.135,B=0.135,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color",
+            "parameter_type": "Vector"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 2,
+        "function_call_count": 0,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 1,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 0,
+        "vector_parameter_count": 1
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Circle116a",
+      "info": {
+        "blend_mode": "BLEND_Additive",
+        "expression_count": 20,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Circle116a",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Circle116a",
+        "parameters": [
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=2.000,G=2.000,B=0.000,A=0.000)",
+            "default_value": "(R=2.000,G=2.000,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Tiling",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Particle texture",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 1,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 30,
+        "function_call_count": 1,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 3,
+        "vector_parameter_count": 2
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_CircleRainbow11a",
+      "info": {
+        "blend_mode": "BLEND_Additive",
+        "expression_count": 14,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_CircleRainbow11a",
+        "material_path": "/Game/Assets/VFX/Explosions/M_CircleRainbow11a",
+        "parameters": [
+          {
+            "current_value": "50.000",
+            "default_value": "50.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Depth",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "1 Alpha",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "3.000",
+            "default_value": "3.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emission",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Rotation angle 0-1",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Particle texture",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 1,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 31,
+        "function_call_count": 1,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 4,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Concrete",
+      "info": {
+        "blend_mode": "BLEND_Opaque",
+        "expression_count": 8,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Concrete",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Concrete",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSample) Texture Sample> Missing input texture",
+          "(Node TextureSample) Texture Sample> Missing input texture",
+          "(Node TextureSample) Texture Sample> Missing input texture",
+          "(Node TextureSample) Texture Sample> Missing input texture"
+        ],
+        "expression_count": 8,
+        "function_call_count": 0,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 4,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_CoreExplosion_Flame",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 42,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_CoreExplosion_Flame",
+        "material_path": "/Game/Assets/VFX/Explosions/M_CoreExplosion_Flame",
+        "parameters": [
+          {
+            "current_value": "350.000",
+            "default_value": "350.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Fade Distance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.100",
+            "default_value": "0.100",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "WarpStr",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=0.500,G=0.483,B=0.474,A=0.000)",
+            "default_value": "(R=0.500,G=0.483,B=0.474,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BaseColor",
+            "parameter_type": "Vector"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture",
+          "(Node TextureSample) Texture Sample> Missing input texture",
+          "(Node TextureSample) Texture Sample> Missing input texture"
+        ],
+        "expression_count": 50,
+        "function_call_count": 2,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 2,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 6,
+        "vector_parameter_count": 1
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_CoreShockwave_Explosion",
+      "info": {
+        "blend_mode": "BLEND_Additive",
+        "expression_count": 54,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_CoreShockwave_Explosion",
+        "material_path": "/Game/Assets/VFX/Explosions/M_CoreShockwave_Explosion",
+        "parameters": [
+          {
+            "current_value": "0.150",
+            "default_value": "0.150",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "p",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "5000.000",
+            "default_value": "5000.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "DepthFade",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "4.235",
+            "default_value": "4.235",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "fresnelexp",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "fresnelbase",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=25.000,G=7.652,B=4.776,A=0.000)",
+            "default_value": "(R=25.000,G=7.652,B=4.776,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "c1",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.000,G=0.800,B=2.000,A=0.000)",
+            "default_value": "(R=0.000,G=0.800,B=2.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "c2",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=35.000,G=10.500,B=10.500,A=0.000)",
+            "default_value": "(R=35.000,G=10.500,B=10.500,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "c3",
+            "parameter_type": "Vector"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 0,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 144,
+        "function_call_count": 8,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Noise/T_Water_Screen_Noise_Soft2.T_Water_Screen_Noise_Soft2",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Masks/T_NoisyBeam_M.T_NoisyBeam_M",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Masks/T_SmokeTrailCoord1_Mask.T_SmokeTrailCoord1_Mask",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Noise/T_Inky_Smoke_Tile.T_Inky_Smoke_Tile"
+        ],
+        "scalar_parameter_count": 4,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 5,
+        "vector_parameter_count": 3
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Core_Explosion_GlowFlare_Inwards",
+      "info": {
+        "blend_mode": "BLEND_Additive",
+        "expression_count": 39,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Core_Explosion_GlowFlare_Inwards",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Core_Explosion_GlowFlare_Inwards",
+        "parameters": [
+          {
+            "current_value": "2.500",
+            "default_value": "2.500",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "AngleFade",
+            "parameter_type": "Scalar"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 0,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 77,
+        "function_call_count": 4,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Gradients/Color/T_Muriel_Prism_03.T_Muriel_Prism_03",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Energy/Plasma/T_Turbulence_Seamless.T_Turbulence_Seamless",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Noise/T_Wind_Blur.T_Wind_Blur",
+          "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.Good64x64TilingNoiseHighFreq"
+        ],
+        "scalar_parameter_count": 1,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 5,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Core_Fireball_SubUV_01",
+      "info": {
+        "blend_mode": "BLEND_Additive",
+        "expression_count": 22,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Core_Fireball_SubUV_01",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Core_Fireball_SubUV_01",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 46,
+        "function_call_count": 2,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Fire/T_fx_fire_fireball_subUV_01.T_fx_fire_fireball_subUV_01"
+        ],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 3,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Core_PreExplosion_Glow",
+      "info": {
+        "blend_mode": "BLEND_Additive",
+        "expression_count": 11,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Core_PreExplosion_Glow",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Core_PreExplosion_Glow",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 11,
+        "function_call_count": 0,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 0,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Core_PreExplosion_GlowFlare",
+      "info": {
+        "blend_mode": "BLEND_Additive",
+        "expression_count": 39,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Core_PreExplosion_GlowFlare",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Core_PreExplosion_GlowFlare",
+        "parameters": [
+          {
+            "current_value": "2.500",
+            "default_value": "2.500",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "AngleFade",
+            "parameter_type": "Scalar"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 0,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 77,
+        "function_call_count": 4,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Gradients/Color/T_Muriel_Prism_03.T_Muriel_Prism_03",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Energy/Plasma/T_Turbulence_Seamless.T_Turbulence_Seamless",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Noise/T_Wind_Blur.T_Wind_Blur",
+          "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.Good64x64TilingNoiseHighFreq"
+        ],
+        "scalar_parameter_count": 1,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 5,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DemoWall",
+      "info": {
+        "blend_mode": "BLEND_Opaque",
+        "expression_count": 3,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_DemoWall",
+        "material_path": "/Game/Assets/VFX/Explosions/M_DemoWall",
+        "parameters": [
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Metallic",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Roughness",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color",
+            "parameter_type": "Vector"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 3,
+        "function_call_count": 0,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 2,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 0,
+        "vector_parameter_count": 1
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Derbis",
+      "info": {
+        "blend_mode": "BLEND_Opaque",
+        "expression_count": 2,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Derbis",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Derbis",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 2,
+        "function_call_count": 0,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 0,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DirectionalLit_Emissive_Explo_Master",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 36,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_DirectionalLit_Emissive_Explo_Master",
+        "material_path": "/Game/Assets/VFX/Explosions/M_DirectionalLit_Emissive_Explo_Master",
+        "parameters": [
+          {
+            "current_value": "512.000",
+            "default_value": "512.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "CameraFadeDistance_Far",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "32.000",
+            "default_value": "32.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "CameraFadeDistance_Near",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "150.000",
+            "default_value": "150.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "DepthFadeDistance_Far",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "22.000",
+            "default_value": "22.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "DepthFadeDistance_Near",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=0.050,G=0.050,B=0.050,A=0.000)",
+            "default_value": "(R=0.050,G=0.050,B=0.050,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "FireBallColor_Cool",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=0.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "FireBallColor_Hot",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BaseColor",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=3.000,A=0.000)",
+            "default_value": "(R=1.000,G=1.000,B=3.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleNormalEdge",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=0.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleNormalCore",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "/Engine/EngineResources/DefaultTexture.DefaultTexture",
+            "default_value": "/Engine/EngineResources/DefaultTexture.DefaultTexture",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "HeightMaskParticle_SubUV",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "/Engine/EngineResources/DefaultTexture.DefaultTexture",
+            "default_value": "/Engine/EngineResources/DefaultTexture.DefaultTexture",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emissive_AlphaParticle_SubUV",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "/Engine/EngineResources/DefaultTexture.DefaultTexture",
+            "default_value": "/Engine/EngineResources/DefaultTexture.DefaultTexture",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Radial_Mask_Particle_SubUV",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "/Engine/EngineMaterials/DefaultNormal.DefaultNormal",
+            "default_value": "/Engine/EngineMaterials/DefaultNormal.DefaultNormal",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "NormalParticle_SubUV",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 4,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 45,
+        "function_call_count": 2,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [
+          "/Engine/EngineMaterials/DefaultNormal.DefaultNormal",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Masks/T_FireBall_LerpMask.T_FireBall_LerpMask",
+          "/Engine/EngineResources/DefaultTexture.DefaultTexture"
+        ],
+        "scalar_parameter_count": 4,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 5,
+        "vector_parameter_count": 5
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Dirt_1",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 9,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Dirt_1",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Dirt_1",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSample) Texture Sample> Missing input texture"
+        ],
+        "expression_count": 26,
+        "function_call_count": 1,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Dirt_2",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 4,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Dirt_2",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Dirt_2",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture"
+        ],
+        "expression_count": 4,
+        "function_call_count": 0,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Distortion",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 41,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Distortion",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Distortion",
+        "parameters": [
+          {
+            "current_value": "1.200",
+            "default_value": "1.200",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "RefractionStr",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=0.146,G=0.146,B=0.146,A=0.000)",
+            "default_value": "(R=0.146,G=0.146,B=0.146,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "MediumColor",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=20.000,G=2.500,B=0.900,A=1.000)",
+            "default_value": "(R=20.000,G=2.500,B=0.900,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "HotColor",
+            "parameter_type": "Vector"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSample) Texture Sample> Missing input texture",
+          "(Node TextureSample) Texture Sample> Missing input texture",
+          "(Node TextureSample) Texture Sample> Missing input texture"
+        ],
+        "expression_count": 70,
+        "function_call_count": 2,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 1,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 5,
+        "vector_parameter_count": 2
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Distortion_1",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 19,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Distortion_1",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Distortion_1",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSample) Texture Sample> Missing input texture",
+          "(Node TextureSample) Texture Sample> Missing input texture",
+          "(Node TextureSample) Texture Sample> Missing input texture"
+        ],
+        "expression_count": 19,
+        "function_call_count": 0,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 3,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_EmberExpl_1",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 33,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_EmberExpl_1",
+        "material_path": "/Game/Assets/VFX/Explosions/M_EmberExpl_1",
+        "parameters": [
+          {
+            "current_value": "50.000",
+            "default_value": "50.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Depth power",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.000",
+            "default_value": "1.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Final emission",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.001",
+            "default_value": "0.001",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "MotionAmount",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "TestAlpha",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=0.000,A=0.000)",
+            "default_value": "(R=1.000,G=1.000,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Tiling",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=0.000,A=1.000)",
+            "default_value": "(R=1.000,G=1.000,B=0.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Glow color",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.314,G=0.427,B=0.001,A=4.000)",
+            "default_value": "(R=0.314,G=0.427,B=0.001,A=4.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Noise speed XY Noise power Z Glow power W",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=8.000,G=8.000,B=0.000,A=1.000)",
+            "default_value": "(R=8.000,G=8.000,B=0.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Rows and Columns",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Noise",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Motion Vector",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Main Texture",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 3,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureObjectParameter) Param Tex Object> Requires valid texture"
+        ],
+        "expression_count": 141,
+        "function_call_count": 2,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 4,
+        "success": true,
+        "texture_object_parameter_count": 2,
+        "texture_sample_count": 9,
+        "vector_parameter_count": 5
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_EndNuke_Directional_Lit_Master",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 65,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_EndNuke_Directional_Lit_Master",
+        "material_path": "/Game/Assets/VFX/Explosions/M_EndNuke_Directional_Lit_Master",
+        "parameters": [
+          {
+            "current_value": "200.000",
+            "default_value": "200.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "0_Distance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "10.000",
+            "default_value": "10.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "1_Distance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "2.500",
+            "default_value": "2.500",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "NoisePower",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.000",
+            "default_value": "1.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleMacro",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.000",
+            "default_value": "1.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleMacroWarp",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=0.400,G=0.400,B=0.400,A=0.000)",
+            "default_value": "(R=0.400,G=0.400,B=0.400,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BaseColor",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.500,A=0.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.500,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleNormal",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.270,G=0.078,B=0.005,A=0.000)",
+            "default_value": "(R=0.270,G=0.078,B=0.005,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color0",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=0.770,B=0.530,A=0.000)",
+            "default_value": "(R=1.000,G=0.770,B=0.530,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color1",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUV_Normal",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUV_Depth",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUV_Emissive",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Noise/T_WispyNoise_8X8.T_WispyNoise_8X8",
+            "default_value": "/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Noise/T_WispyNoise_8X8.T_WispyNoise_8X8",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "NoiseSubUV",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 4,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 105,
+        "function_call_count": 3,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 5,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 11,
+        "vector_parameter_count": 4
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_EndNuke_Scale",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 44,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_EndNuke_Scale",
+        "material_path": "/Game/Assets/VFX/Explosions/M_EndNuke_Scale",
+        "parameters": [
+          {
+            "current_value": "240.000",
+            "default_value": "240.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "0_Distance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "120.000",
+            "default_value": "120.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "1_Distance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.025",
+            "default_value": "0.025",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "UVDistortNoiseNrml",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=0.400,G=0.400,B=0.400,A=0.000)",
+            "default_value": "(R=0.400,G=0.400,B=0.400,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BaseColor",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=0.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BaseColorDetail0",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.600,G=0.600,B=0.600,A=0.000)",
+            "default_value": "(R=0.600,G=0.600,B=0.600,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BaseColorDetail1",
+            "parameter_type": "Vector"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture",
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture",
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture"
+        ],
+        "expression_count": 75,
+        "function_call_count": 3,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 3,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 6,
+        "vector_parameter_count": 3
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_1",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 12,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Explosion_1",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Explosion_1",
+        "parameters": [
+          {
+            "current_value": "(R=0.349,G=0.045,B=0.000,A=1.000)",
+            "default_value": "(R=0.349,G=0.045,B=0.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ColorEmmision",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Texture",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 1,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 33,
+        "function_call_count": 1,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 1
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Gas_1",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 9,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Explosion_Gas_1",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Explosion_Gas_1",
+        "parameters": [
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Texture",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 1,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 30,
+        "function_call_count": 1,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_RockChunks",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 21,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Explosion_RockChunks",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Explosion_RockChunks",
+        "parameters": [
+          {
+            "current_value": "0.650",
+            "default_value": "0.650",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleShadow",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=250.000,G=95.537,B=15.040,A=0.000)",
+            "default_value": "(R=250.000,G=95.537,B=15.040,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "FlameHot",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.175,G=0.012,B=0.012,A=0.000)",
+            "default_value": "(R=0.175,G=0.012,B=0.012,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "FlameCool",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BaseColorTint",
+            "parameter_type": "Vector"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 54,
+        "function_call_count": 3,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Debris/T_Concrete_ChunkSubUV_D.T_Concrete_ChunkSubUV_D",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Debris/T_Concrete_ChunkSubUV_N_TGA.T_Concrete_ChunkSubUV_N_TGA"
+        ],
+        "scalar_parameter_count": 1,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 2,
+        "vector_parameter_count": 3
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_RockChunks_Rand",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 30,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Explosion_RockChunks_Rand",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Explosion_RockChunks_Rand",
+        "parameters": [
+          {
+            "current_value": "0.500",
+            "default_value": "0.500",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleShadow",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "2.500",
+            "default_value": "2.500",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "RandomSizeMax",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "UseParticleColor",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=250.000,G=95.537,B=15.040,A=0.000)",
+            "default_value": "(R=250.000,G=95.537,B=15.040,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "FlameHot",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.175,G=0.012,B=0.012,A=0.000)",
+            "default_value": "(R=0.175,G=0.012,B=0.012,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "FlameCool",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.640,G=0.608,B=0.583,A=0.000)",
+            "default_value": "(R=0.640,G=0.608,B=0.583,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BaseColor",
+            "parameter_type": "Vector"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 112,
+        "function_call_count": 8,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Debris/T_Concrete_ChunkSubUV_D.T_Concrete_ChunkSubUV_D",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Debris/T_Concrete_ChunkSubUV_N_TGA.T_Concrete_ChunkSubUV_N_TGA"
+        ],
+        "scalar_parameter_count": 3,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 3,
+        "vector_parameter_count": 3
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Sand",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 8,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Explosion_Sand",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Explosion_Sand",
+        "parameters": [
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Texture",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 1,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 29,
+        "function_call_count": 1,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Smoke_Spears",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 28,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Explosion_Smoke_Spears",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Explosion_Smoke_Spears",
+        "parameters": [
+          {
+            "current_value": "140.000",
+            "default_value": "140.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "FaeDistance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "800.000",
+            "default_value": "800.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "CamDistanceFace",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=12.973,G=1.992,B=40.000,A=1.000)",
+            "default_value": "(R=12.973,G=1.992,B=40.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "DepthBasedEmissiveColor",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=40.000,G=0.000,B=0.000,A=1.000)",
+            "default_value": "(R=40.000,G=0.000,B=0.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "CloudColor0",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=100.000,G=20.881,B=0.000,A=1.000)",
+            "default_value": "(R=100.000,G=20.881,B=0.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "CloudColor1",
+            "parameter_type": "Vector"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 37,
+        "function_call_count": 2,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Smoke/T_FluidSmoke_04_Depth.T_FluidSmoke_04_Depth",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Smoke/T_TilingClouds_01.T_TilingClouds_01",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Smoke/T_FluidSmoke_04.T_FluidSmoke_04"
+        ],
+        "scalar_parameter_count": 2,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 4,
+        "vector_parameter_count": 3
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Tower_Directional",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 17,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Explosion_Tower_Directional",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Explosion_Tower_Directional",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture",
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture"
+        ],
+        "expression_count": 39,
+        "function_call_count": 1,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 2,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Tower_Impact_Cine",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 16,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Explosion_Tower_Impact_Cine",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Explosion_Tower_Impact_Cine",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture",
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture"
+        ],
+        "expression_count": 71,
+        "function_call_count": 2,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 6,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Tower_Radial",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 16,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Explosion_Tower_Radial",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Explosion_Tower_Radial",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSample) Texture Sample> Missing input texture",
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture",
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture",
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture"
+        ],
+        "expression_count": 38,
+        "function_call_count": 1,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 4,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fire",
+      "info": {
+        "blend_mode": "BLEND_Additive",
+        "expression_count": 23,
+        "is_material_instance": false,
+        "material_domain": "MD_Volume",
+        "material_name": "M_Fire",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Fire",
+        "parameters": [
+          {
+            "current_value": "1500.000",
+            "default_value": "1500.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BlackBody Temperature",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Adjust Curves",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Temperature Min",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "4.000",
+            "default_value": "4.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Temperature Max",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.000",
+            "default_value": "1.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Brightness",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.000",
+            "default_value": "1.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Use BlackBody",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.000",
+            "default_value": "1.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Density",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=1.000,G=0.192,B=0.000,A=1.000)",
+            "default_value": "(R=1.000,G=0.192,B=0.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Fire Color",
+            "parameter_type": "Vector"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node SparseVolumeTextureSampleParameter) Sparse Volume Texture Sample Param > Missing input texture",
+          "(Node If) Failed to compile AGreaterThanB input."
+        ],
+        "expression_count": 39,
+        "function_call_count": 2,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 7,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 0,
+        "vector_parameter_count": 1
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_Master_2",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 50,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Fireball_Directional_Lit_Master_2",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_Master_2",
+        "parameters": [
+          {
+            "current_value": "200.000",
+            "default_value": "200.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "0_Distance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "10.000",
+            "default_value": "10.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "1_Distance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "2.500",
+            "default_value": "2.500",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "NoisePower",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.200",
+            "default_value": "1.200",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleMacro",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "200.000",
+            "default_value": "200.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Camera Fade Distance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=128.000,G=52.561,B=11.288,A=0.000)",
+            "default_value": "(R=128.000,G=52.561,B=11.288,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "HDR_Tint",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.400,G=0.400,B=0.400,A=0.000)",
+            "default_value": "(R=0.400,G=0.400,B=0.400,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BaseColor",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.500,A=0.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.500,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleNormal",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.270,G=0.078,B=0.005,A=0.000)",
+            "default_value": "(R=0.270,G=0.078,B=0.005,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color0",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=0.770,B=0.530,A=0.000)",
+            "default_value": "(R=1.000,G=0.770,B=0.530,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color1",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUV_Normal",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUV_Depth",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUV_Emissive",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Noise/T_WispyNoise_8X8.T_WispyNoise_8X8",
+            "default_value": "/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Noise/T_WispyNoise_8X8.T_WispyNoise_8X8",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "NoiseSubUV",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 4,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 97,
+        "function_call_count": 4,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 5,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 8,
+        "vector_parameter_count": 5
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_NoNoise_Master",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 37,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Fireball_Directional_Lit_NoNoise_Master",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_NoNoise_Master",
+        "parameters": [
+          {
+            "current_value": "200.000",
+            "default_value": "200.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "0_Distance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "10.000",
+            "default_value": "10.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "1_Distance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.200",
+            "default_value": "1.200",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleMacro",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=0.400,G=0.400,B=0.400,A=0.000)",
+            "default_value": "(R=0.400,G=0.400,B=0.400,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BaseColor",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.500,A=0.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.500,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleNormal",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.270,G=0.078,B=0.005,A=0.000)",
+            "default_value": "(R=0.270,G=0.078,B=0.005,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color0",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=0.770,B=0.530,A=0.000)",
+            "default_value": "(R=1.000,G=0.770,B=0.530,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color1",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUV_Normal",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUV_Depth",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUV_Emissive",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 3,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 75,
+        "function_call_count": 2,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 3,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 6,
+        "vector_parameter_count": 4
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_ParticleColor",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 33,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Fireball_Directional_Lit_ParticleColor",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_ParticleColor",
+        "parameters": [
+          {
+            "current_value": "200.000",
+            "default_value": "200.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "0_Distance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "10.000",
+            "default_value": "10.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "1_Distance",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.200",
+            "default_value": "1.200",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleMacro",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=0.400,G=0.400,B=0.400,A=0.000)",
+            "default_value": "(R=0.400,G=0.400,B=0.400,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "BaseColor",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.500,A=0.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.500,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "ScaleNormal",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUV_Normal",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUV_Depth",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "SubUV_Emissive",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Noise/T_WispyNoise_8X8.T_WispyNoise_8X8",
+            "default_value": "/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Noise/T_WispyNoise_8X8.T_WispyNoise_8X8",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "NoiseSubUV",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 4,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameterSubUV) Parameter SubUV> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 80,
+        "function_call_count": 4,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 3,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 5,
+        "vector_parameter_count": 2
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_UnLit_Master",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 11,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Fireball_Directional_UnLit_Master",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_UnLit_Master",
+        "parameters": [
+          {
+            "current_value": "100.000",
+            "default_value": "100.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "FadeDist",
+            "parameter_type": "Scalar"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture",
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture"
+        ],
+        "expression_count": 35,
+        "function_call_count": 2,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 1,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 2,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_FX_Fireblast_SubUV_02",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 23,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_FX_Fireblast_SubUV_02",
+        "material_path": "/Game/Assets/VFX/Explosions/M_FX_Fireblast_SubUV_02",
+        "parameters": [
+          {
+            "current_value": "500.000",
+            "default_value": "500.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "CamDistFade",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "3.000",
+            "default_value": "3.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "CamDistFadePow",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "100.000",
+            "default_value": "100.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "FadeDist",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=2.000,G=0.325,B=0.000,A=1.000)",
+            "default_value": "(R=2.000,G=0.325,B=0.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Bright_Color",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.215,G=0.025,B=0.000,A=1.000)",
+            "default_value": "(R=0.215,G=0.025,B=0.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Dark_Color",
+            "parameter_type": "Vector"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture",
+          "(Node ParticleSubUV) Missing ParticleSubUV input texture"
+        ],
+        "expression_count": 70,
+        "function_call_count": 5,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 3,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 2,
+        "vector_parameter_count": 2
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Glow_3",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 14,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_Glow_3",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Glow_3",
+        "parameters": [
+          {
+            "current_value": "1.000",
+            "default_value": "1.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emissive",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "None",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 1,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 14,
+        "function_call_count": 0,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 1,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Light_Flicker",
+      "info": {
+        "blend_mode": "BLEND_Opaque",
+        "expression_count": 6,
+        "is_material_instance": false,
+        "material_domain": "MD_LightFunction",
+        "material_name": "M_Light_Flicker",
+        "material_path": "/Game/Assets/VFX/Explosions/M_Light_Flicker",
+        "parameters": [
+          {
+            "current_value": "0.900",
+            "default_value": "0.900",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Speed",
+            "parameter_type": "Scalar"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 0,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 6,
+        "function_call_count": 0,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 1,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 0,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_NuclearCloud",
+      "info": {
+        "blend_mode": "BLEND_Masked",
+        "expression_count": 55,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_NuclearCloud",
+        "material_path": "/Game/Assets/VFX/Explosions/M_NuclearCloud",
+        "parameters": [
+          {
+            "current_value": "20.000",
+            "default_value": "20.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emission",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "30.000",
+            "default_value": "30.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Fire emission",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=0.000,G=0.150,B=0.000,A=0.000)",
+            "default_value": "(R=0.000,G=0.150,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "MainTex Speed RG Noise Speed BA",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=3.000,G=1.000,B=0.000,A=0.000)",
+            "default_value": "(R=3.000,G=1.000,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "MainTex Scale and Offset",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=2.000,G=1.000,B=0.000,A=0.000)",
+            "default_value": "(R=2.000,G=1.000,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Opacity Scale and Offset",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=0.000,A=0.000)",
+            "default_value": "(R=1.000,G=1.000,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Noise Scale and Offset",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.000,G=0.000,B=0.000,A=0.000)",
+            "default_value": "(R=0.000,G=0.000,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Opacity Speed RG",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.005,G=0.003,B=0.002,A=1.000)",
+            "default_value": "(R=0.005,G=0.003,B=0.002,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Down Color",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.021,G=0.019,B=0.017,A=1.000)",
+            "default_value": "(R=0.021,G=0.019,B=0.017,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Up Color",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Main Texture",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Opacity",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Noise",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 3,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 85,
+        "function_call_count": 3,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 2,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 3,
+        "vector_parameter_count": 8
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_NuclearCloud1sn",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 84,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_NuclearCloud1sn",
+        "material_path": "/Game/Assets/VFX/Explosions/M_NuclearCloud1sn",
+        "parameters": [
+          {
+            "current_value": "100.000",
+            "default_value": "100.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Depth",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "200.000",
+            "default_value": "200.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emission",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "3.000",
+            "default_value": "3.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emission power",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "2.000",
+            "default_value": "2.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Mask multiplayer",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "2.000",
+            "default_value": "2.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Side opacity mult",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "300.000",
+            "default_value": "300.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Position offset",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.216",
+            "default_value": "0.216",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Add/mult",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.050",
+            "default_value": "0.050",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Opacity tex add",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "5.000",
+            "default_value": "5.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Fresnel exponent",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "2.000",
+            "default_value": "2.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Fresnel power",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=0.000,A=0.000)",
+            "default_value": "(R=1.000,G=1.000,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Mask Scale and Offset",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.020,G=0.100,B=0.000,A=0.100)",
+            "default_value": "(R=0.020,G=0.100,B=0.000,A=0.100)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "MainTex Speed RG Opacity Speed BA",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=3.000,G=2.000,B=0.000,A=0.000)",
+            "default_value": "(R=3.000,G=2.000,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "MainTex Scale and Offset",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=2.000,G=2.000,B=0.000,A=0.000)",
+            "default_value": "(R=2.000,G=2.000,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Opacity Scale and Offset",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=4.000,G=2.000,B=0.000,A=0.000)",
+            "default_value": "(R=4.000,G=2.000,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Noise Scale and Offset",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=-0.010,G=0.060,B=0.000,A=0.000)",
+            "default_value": "(R=-0.010,G=0.060,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Noise Speed RG",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Main Texture",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Mask",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Opacity",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Noise",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 4,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 136,
+        "function_call_count": 5,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 10,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 4,
+        "vector_parameter_count": 7
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_NuclearFlash1",
+      "info": {
+        "blend_mode": "BLEND_Additive",
+        "expression_count": 14,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_NuclearFlash1",
+        "material_path": "/Game/Assets/VFX/Explosions/M_NuclearFlash1",
+        "parameters": [
+          {
+            "current_value": "7000.000",
+            "default_value": "7000.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Depth",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "1 Alpha",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "20.000",
+            "default_value": "20.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emission",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Rotation angle 0-1",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Particle texture",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 1,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 31,
+        "function_call_count": 1,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 4,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_SS1b",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 14,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_SS1b",
+        "material_path": "/Game/Assets/VFX/Explosions/M_SS1b",
+        "parameters": [
+          {
+            "current_value": "30.000",
+            "default_value": "30.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Depth",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.000",
+            "default_value": "1.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "1 Alpha",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "2.000",
+            "default_value": "2.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emission",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "HUE",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Particle texture",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 1,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 23,
+        "function_call_count": 1,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 4,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 1,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_TemplatePyro_Advanced",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 90,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_TemplatePyro_Advanced",
+        "material_path": "/Game/Assets/VFX/Explosions/M_TemplatePyro_Advanced",
+        "parameters": [
+          {
+            "current_value": "0.100",
+            "default_value": "0.100",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Animation Speed",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.042",
+            "default_value": "0.042",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Motion Vector Scale",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "8.000",
+            "default_value": "8.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "FB Columns",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "8.000",
+            "default_value": "8.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "FB Rows",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Normal Flatness",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "2.200",
+            "default_value": "2.200",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Final Color Curve",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Animation Phase",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "5.000",
+            "default_value": "5.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emissive Scatter Intensity End",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "2.000",
+            "default_value": "2.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emissive Scatter Intensity Start",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.050",
+            "default_value": "0.050",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Ambient Scatter Intensity End",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.000",
+            "default_value": "1.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Ambient Scatter Curve",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Ambient Scatter Offset",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.050",
+            "default_value": "0.050",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Ambient Scatter Intensity Start",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.100",
+            "default_value": "0.100",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Directional Scatter Intensity",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.000",
+            "default_value": "1.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Directional Scatter Curve",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.002",
+            "default_value": "0.002",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Directional Scatter Offset",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "2.200",
+            "default_value": "2.200",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emissive Scatter Curve",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Depth Range",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "5.000",
+            "default_value": "5.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Depth Curve",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.500",
+            "default_value": "1.500",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Alpha Curve",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.000",
+            "default_value": "1.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Final Color Intensity",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Depth Offset",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=0.000,G=-46.000,B=0.000,A=1.000)",
+            "default_value": "(R=0.000,G=-46.000,B=0.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Directional Light Rotation",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.400,G=0.677,B=1.000,A=1.000)",
+            "default_value": "(R=0.400,G=0.677,B=1.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Ambient Scatter",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=0.833,B=0.750,A=1.000)",
+            "default_value": "(R=1.000,G=0.833,B=0.750,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Directional Scatter",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=-1.000,B=0.000,A=1.000)",
+            "default_value": "(R=1.000,G=-1.000,B=0.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Light Tangent-Space Direction",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=0.000,G=0.000,B=5000.000,A=1.000)",
+            "default_value": "(R=0.000,G=0.000,B=5000.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Light World Position",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "/Engine/Functions/Engine_MaterialFunctions02/PivotPainter2/Black_1x1_EXR_Texture.Black_1x1_EXR_Texture",
+            "default_value": "/Engine/Functions/Engine_MaterialFunctions02/PivotPainter2/Black_1x1_EXR_Texture.Black_1x1_EXR_Texture",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "MDC1 Texture",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "/Engine/Functions/Engine_MaterialFunctions02/PivotPainter2/Black_1x1_EXR_Texture.Black_1x1_EXR_Texture",
+            "default_value": "/Engine/Functions/Engine_MaterialFunctions02/PivotPainter2/Black_1x1_EXR_Texture.Black_1x1_EXR_Texture",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "MDC2 Texture",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "/Engine/Functions/Engine_MaterialFunctions02/PivotPainter2/Black_1x1_EXR_Texture.Black_1x1_EXR_Texture",
+            "default_value": "/Engine/Functions/Engine_MaterialFunctions02/PivotPainter2/Black_1x1_EXR_Texture.Black_1x1_EXR_Texture",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Motion Vector / Normal Texture",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "/Engine/Functions/Engine_MaterialFunctions02/PivotPainter2/Black_1x1_EXR_Texture.Black_1x1_EXR_Texture",
+            "default_value": "/Engine/Functions/Engine_MaterialFunctions02/PivotPainter2/Black_1x1_EXR_Texture.Black_1x1_EXR_Texture",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Final Color Texture",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "/Engine/Functions/Engine_MaterialFunctions02/PivotPainter2/Black_1x1_EXR_Texture.Black_1x1_EXR_Texture",
+            "default_value": "/Engine/Functions/Engine_MaterialFunctions02/PivotPainter2/Black_1x1_EXR_Texture.Black_1x1_EXR_Texture",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emissive Color / Depth Texture",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 5,
+        "two_sided": false
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Function MF_EvaluateMDC) Missing Material Function"
+        ],
+        "expression_count": 394,
+        "function_call_count": 27,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 22,
+        "success": true,
+        "texture_object_parameter_count": 5,
+        "texture_sample_count": 19,
+        "vector_parameter_count": 5
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_TowerBase_Blast_Mesh",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 69,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_TowerBase_Blast_Mesh",
+        "material_path": "/Game/Assets/VFX/Explosions/M_TowerBase_Blast_Mesh",
+        "parameters": [
+          {
+            "current_value": "1.250",
+            "default_value": "1.250",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "FadeAngle",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "25.000",
+            "default_value": "25.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "DepthFadeDist",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "2.000",
+            "default_value": "2.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "PanSpeed",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "300.000",
+            "default_value": "300.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "OpacityMaskRadius",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "280.000",
+            "default_value": "280.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "OpacityMaskOffset",
+            "parameter_type": "Scalar"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_Unlit",
+        "texture_sample_count": 0,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 109,
+        "function_call_count": 5,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Masks/shinningfloor_teal.shinningfloor_teal",
+          "/Game/Assets/Props/ParagonProps/FX/Textures/Debris/T_Rock_Debris_Pan.T_Rock_Debris_Pan",
+          "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.Good64x64TilingNoiseHighFreq"
+        ],
+        "scalar_parameter_count": 5,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 6,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_TwoSides1",
+      "info": {
+        "blend_mode": "BLEND_Masked",
+        "expression_count": 31,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "M_TwoSides1",
+        "material_path": "/Game/Assets/VFX/Explosions/M_TwoSides1",
+        "parameters": [
+          {
+            "current_value": "2.000",
+            "default_value": "2.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Fresnel",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "15.000",
+            "default_value": "15.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Emission",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "1.000",
+            "default_value": "1.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Use fresnel",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=1.000,G=3.000,B=0.000,A=0.000)",
+            "default_value": "(R=1.000,G=3.000,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Noise Scale and Offset",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Back Faces Color",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Front Faces Color",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Fresnel Color",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "(R=1.000,G=0.500,B=0.000,A=0.000)",
+            "default_value": "(R=1.000,G=0.500,B=0.000,A=0.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Noise Speed XY",
+            "parameter_type": "Vector"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Mask",
+            "parameter_type": "Texture"
+          },
+          {
+            "current_value": "",
+            "default_value": "",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Noise",
+            "parameter_type": "Texture"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 2,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D",
+          "(Node TextureSampleParameter2D) Param2D> Found NULL, requires Texture2D"
+        ],
+        "expression_count": 41,
+        "function_call_count": 1,
+        "is_compiled_ok": false,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 3,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 2,
+        "vector_parameter_count": 5
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_DefaultTextMaterialTranslucentUnlit",
+      "info": {
+        "blend_mode": "BLEND_Translucent",
+        "expression_count": 3,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "RealisticExplosionPackD_DefaultTextMaterialTranslucentUnlit",
+        "material_path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_DefaultTextMaterialTranslucentUnlit",
+        "parameters": [],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 3,
+        "function_call_count": 0,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [
+          "/Engine/EngineFonts/RobotoDistanceField.RobotoDistanceField:RobotoDistanceField_PageA"
+        ],
+        "scalar_parameter_count": 0,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 0,
+        "vector_parameter_count": 0
+      }
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall",
+      "info": {
+        "blend_mode": "BLEND_Opaque",
+        "expression_count": 3,
+        "is_material_instance": false,
+        "material_domain": "MD_Surface",
+        "material_name": "RealisticExplosionPackD_M_DemoWall",
+        "material_path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall",
+        "parameters": [
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Metallic",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "0.000",
+            "default_value": "0.000",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Roughness",
+            "parameter_type": "Scalar"
+          },
+          {
+            "current_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "default_value": "(R=1.000,G=1.000,B=1.000,A=1.000)",
+            "group": "",
+            "is_overridden": false,
+            "parameter_name": "Color",
+            "parameter_type": "Vector"
+          }
+        ],
+        "parent_material": "",
+        "shading_model": "MSM_DefaultLit",
+        "texture_sample_count": 0,
+        "two_sided": true
+      },
+      "diagnostics": {
+        "compile_errors": [],
+        "expression_count": 3,
+        "function_call_count": 0,
+        "is_compiled_ok": true,
+        "referenced_texture_paths": [],
+        "scalar_parameter_count": 2,
+        "success": true,
+        "texture_object_parameter_count": 0,
+        "texture_sample_count": 0,
+        "vector_parameter_count": 1
+      }
+    }
+  ],
+  "instances": [
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Glow_3",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "None"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_23",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_22",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Fire_1",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Aerial_3",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_18",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_17",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Small_1",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Circle18a",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Particle texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Crater42b",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Particle texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_EmberExpl_12",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Main Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_14",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_15",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_16",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_19",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_20",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_21",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_24",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_A",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Aerial_1",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Aerial_2",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Aerial_4",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_B",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_C",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_D",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_E",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_F",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Flack_1",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Flack_2",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Flack_3",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Flack_4",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_G",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Gas_10",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Gas_11",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Gas_12",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Gas_9",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_H",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_I",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_J",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_K",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_L",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_M",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_N",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_O",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_P",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Q",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_R",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_S",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_T",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Fire",
+      "parent": null,
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Fireball_Directional_Lit_ParticleColor_Dark",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "SubUV_Depth"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "SubUV_Emissive"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "SubUV_Normal"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_FlashGroundA",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Particle texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_NuclearSmoke",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Noise"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_NuclearStand",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Noise"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Point12b",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Particle texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_ShockWave1sn",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Main Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Mask"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Smoke",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive Color / Depth Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Final Color Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC1 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "MDC2 Texture"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Motion Vector / Normal Texture"
+          },
+          "parameter_value": "/Engine/EngineResources/Black.Black"
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Smoke24b",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Particle texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Snow4b",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Particle texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_SS2b",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Particle texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Trail82b",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Particle texture"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_TwoSides12b",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Mask"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Noise"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DemoWall_Inst",
+      "parent": "/Game/Assets/VFX/Explosions/M_DemoWall.M_DemoWall",
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DemoWall_Inst2",
+      "parent": "/Game/Assets/VFX/Explosions/M_DemoWall.M_DemoWall",
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DemoWall_Inst_3",
+      "parent": "/Game/Assets/VFX/Explosions/M_DemoWall_Inst.M_DemoWall_Inst",
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DemoWall_Inst_BaseFloor_Inst",
+      "parent": null,
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DemoWall_Inst_NamePlate",
+      "parent": "/Game/Assets/VFX/Explosions/M_DemoWall_Inst_3.M_DemoWall_Inst_3",
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DirectionalLit_Emissive_Towers_Explo_Radial_Inst",
+      "parent": "/Game/Assets/VFX/Explosions/M_DirectionalLit_Emissive_Explo_Master.M_DirectionalLit_Emissive_Explo_Master",
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Emissive_AlphaParticle_SubUV"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "HeightMaskParticle_SubUV"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "NormalParticle_SubUV"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "Radial_Mask_Particle_SubUV"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_EndNuke_Directional_Lit_Master_Inst",
+      "parent": "/Game/Assets/VFX/Explosions/M_EndNuke_Directional_Lit_Master.M_EndNuke_Directional_Lit_Master",
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Smoke_Spears_TB_Inst",
+      "parent": "/Game/Assets/VFX/Explosions/M_Explosion_Smoke_Spears.M_Explosion_Smoke_Spears",
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_Inst3",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "SubUV_Depth"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "SubUV_Emissive"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "SubUV_Normal"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_Inst5",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "SubUV_Normal"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_Inst_3",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "SubUV_Normal"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_ParticleColor_Core_Inst",
+      "parent": null,
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "SubUV_Depth"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "SubUV_Emissive"
+          },
+          "parameter_value": null
+        },
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "SubUV_Normal"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_ParticleColor_Inst2",
+      "parent": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_ParticleColor.M_Fireball_Directional_Lit_ParticleColor",
+      "texture_parameter_values": [
+        {
+          "parameter_info": {
+            "association": "<MaterialParameterAssociation.GLOBAL_PARAMETER: 2>",
+            "index": -1,
+            "name": "SubUV_Normal"
+          },
+          "parameter_value": null
+        }
+      ],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall_Inst",
+      "parent": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall.RealisticExplosionPackD_M_DemoWall",
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall_Inst2",
+      "parent": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall.RealisticExplosionPackD_M_DemoWall",
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall_Inst_3",
+      "parent": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall_Inst.RealisticExplosionPackD_M_DemoWall_Inst",
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall_Inst_BaseFloor_Inst",
+      "parent": null,
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall_Inst_NamePlate",
+      "parent": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall_Inst_3.RealisticExplosionPackD_M_DemoWall_Inst_3",
+      "texture_parameter_values": [],
+      "base_property_overrides": {}
+    }
+  ],
+  "saved_assets": []
+}

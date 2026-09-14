@@ -19,6 +19,7 @@
 #include "Gameplay/Building/GuLiBuildingCatalog.h"
 #include "Gameplay/Building/GuLiBuildingPlacementPreview.h"
 #include "Gameplay/Building/GuLiPlacedBuilding.h"
+#include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
 
 #if WITH_EDITOR
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
@@ -833,6 +834,32 @@ FGuLiBuildingPlacementResult UGuLiBuildingPlacementComponent::ProcessServerReque
 			? PlayerController->GetPlayerState<AGuLiBattlePlayerState>()
 			: nullptr;
 		UWorld* World = GetWorld();
+		check(World);
+		UGuLiTeamEconomySubsystem* EconomySubsystem =
+			World->GetSubsystem<UGuLiTeamEconomySubsystem>();
+		check(EconomySubsystem);
+		IGuLiTeamEconomy& Economy = *EconomySubsystem;
+		FGuLiEconomyReservation EconomyReservation;
+		const bool bUseEconomy = Economy.IsMatchActive();
+		if (bUseEconomy && !Economy.AreTransactionsOpen())
+		{
+			Result.RejectReason = EGuLiBuildingPlacementRejectReason::NotReady;
+		}
+		else if (bUseEconomy && (!PlayerState || !Economy.Reserve(
+			PlayerState->GetTeam(),
+			PlayerState->GetPlayerGuid(),
+			Request.ClientRequestId,
+			GuLiBuildingPlacementPolicy::GetEconomyCost(Request.Type),
+			EconomyReservation)))
+		{
+			Result.RejectReason = EGuLiBuildingPlacementRejectReason::InsufficientResources;
+		}
+		if (Result.RejectReason != EGuLiBuildingPlacementRejectReason::None)
+		{
+			LastServerResult = Result;
+			if (bSendResult) SendPlacementResult(Result);
+			return Result;
+		}
 		AGuLiPlacedBuilding* Building = World && PlayerController && PlayerState && Definition
 			? World->SpawnActorDeferred<AGuLiPlacedBuilding>(
 				AGuLiPlacedBuilding::StaticClass(),
@@ -852,10 +879,12 @@ FGuLiBuildingPlacementResult UGuLiBuildingPlacementComponent::ProcessServerReque
 				Building->Destroy();
 			}
 			Result.RejectReason = EGuLiBuildingPlacementRejectReason::SpawnFailed;
+			if (bUseEconomy) Economy.Refund(EconomyReservation);
 		}
 		else
 		{
 			Building->FinishSpawning(SpawnTransform);
+			if (bUseEconomy) Economy.Commit(EconomyReservation);
 		}
 	}
 

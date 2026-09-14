@@ -8,7 +8,7 @@ GuLiMapAuthoringEditor (Editor)
        -> Core / CoreUObject / Engine
 ```
 
-Core 的 Private 依赖为 `Json`、`GeometryCore`。Editor Public 依赖 Core/Engine/EditorSubsystem，Private 依赖 UnrealEd、Slate、PropertyEditor、StructUtilsEditor、AssetRegistry/AssetTools、RenderCore/RHI 等。两个模块都在 Default phase 加载，插件 `CanContainContent=true`，版本基线 `0.1.0`。
+Core 的 Private 依赖为 `Json`、`GeometryCore`。Editor Public 依赖 Core/Engine/EditorSubsystem，Private 依赖 UnrealEd、Slate、PropertyEditor、StructUtilsEditor、AssetRegistry/AssetTools、RenderCore/RHI、Landscape 等。两个模块都在 Default phase 加载，插件 `CanContainContent=true`，当前版本 `0.2.0`。
 
 插件不依赖 `Source/GuLiStrike`。本期没有 Runtime 模块，游戏代码不应引用 Marker 或类型资产。
 
@@ -18,8 +18,10 @@ Core 的 Private 依赖为 `Json`、`GeometryCore`。Editor Public 依赖 Core/E
 - `AGuLiMapMarker`：Editor-only Actor，持有 `FGuLiMapMarkerRecord`，根组件为 `UGuLiMapVisualizationComponent`。构造时关闭 Tick、碰撞、空间加载；不进 PIE。
 - `FGuLiMapMarkerRecord`：MarkerId、MarkerKey、类型软引用、显示名、Enabled、Tags、Note、Parameters、Regions。
 - `FGuLiMapRegionRecord`：RegionId/RegionKey、显示名、Enabled、相对 Translation/Rotation、`FInstancedStruct Geometry`。
-- `FGuLiMapSnapshotEntry`：纯值拷贝的 Record + Actor 世界变换；快照边界不携带 Actor 指针。
-- `FGuLiMapResult`：Blueprint/Python 返回值，含 Success、Issues、Json、Files。
+- `AGuLiMapDensityMap`：每图唯一的 Editor-only Actor，固定 Identity Transform；持有全图独立密度记录，根组件以代码 SceneProxy 批量显示热图。
+- `FGuLiMapDensityMapRecord`：CellSize、Territory 匹配键和通用 Layers；每层用稳定 LayerId/LayerKey 和稀疏 `32×32` uint8 Tiles。
+- `FGuLiMapSnapshotEntry`：纯值拷贝的 Record + Actor 世界变换；`FGuLiMapSnapshot` 另含可选密度记录，快照边界不携带 Actor 指针。
+- `FGuLiMapResult`：Blueprint/Python 返回值，含 Success、Issues、Json、Files；Issue 显式区分 Error/Warning。
 
 Actor 世界 Transform 与 Region 相对 Transform 分层组合：`Region.GetTransform() * ActorTransform`。Scale 永远为 1。
 
@@ -32,14 +34,17 @@ Actor 世界 Transform 与 Region 相对 Transform 分层组合：`Region.GetTra
 | `Source/GuLiMapAuthoringCore/Private/GuLiMapFields.cpp` | 字段类型白名单、JSON 值转换、GUID 迁移、类型规则校验 |
 | `Source/GuLiMapAuthoringCore/Private/GuLiMapGeometry.cpp` | 四形状验证、JSON、网格构建、GeometryCore 凹多边形三角化 |
 | `Source/GuLiMapAuthoringCore/Private/GuLiMapAuthoring.cpp` | 注册表、全图验证、canonical JSON/CSV、确定性排序、原子目录发布 |
+| `Source/GuLiMapAuthoringCore/Private/GuLiMapDensity.cpp` | 稀疏瓦片、确定性笔刷、Territory 归属/汇总、密度 JSON/CSV |
 | `Source/GuLiMapAuthoringEditor/Public/GuLiMapAuthoringSubsystem.h` | 面板/Python 共用的公开 Editor Subsystem API |
 | `Source/GuLiMapAuthoringEditor/Private/GuLiMapAuthoringSubsystem.cpp` | 当前世界、AssetRegistry 类型目录、Marker 创建、WP 快照、保存、补丁事务 |
 | `Source/GuLiMapAuthoringEditor/Public/GuLiMapMarker.h` 与 Private cpp | Marker 生命周期、身份复制规则、字段同步、Undo 后刷新 |
+| `Source/GuLiMapAuthoringEditor/Public/GuLiMapDensityMap.h` 与 Private cpp | 密度单例 Actor、Landscape/Visibility 高度缓存、热力 SceneProxy |
 | `Source/GuLiMapAuthoringEditor/Private/SGuLiMapPanel.*` | Slate 面板、Details、筛选、选择同步、操作入口、委托清理 |
-| `Source/GuLiMapAuthoringEditor/Private/GuLiMapViewport.*` | 放置 EdMode、ComponentVisualizer、形状控制柄和拖动事务 |
+| `Source/GuLiMapAuthoringEditor/Private/GuLiMapViewport.*` | 放置/密度 EdMode、ComponentVisualizer、形状控制柄和事务 |
 | `Source/GuLiMapAuthoringEditor/Private/GuLiMapVisualization.cpp` | Editor-only PrimitiveSceneProxy，常驻轮廓和半透明填充 |
 | `Source/GuLiMapAuthoringEditor/Private/GuLiMapAuthoringEditorModule.cpp` | 菜单、NomadTab、视口注册、换图/PIE 生命周期 |
-| `Source/GuLiMapAuthoringEditor/Private/Tests/GuLiMapAuthoringTests.cpp` | 当前唯一授权的插件测试文件 |
+| `Source/GuLiMapAuthoringEditor/Private/Tests/GuLiMapAuthoringTests.cpp` | 标记/字段/几何/基础导出测试 |
+| `Source/GuLiMapAuthoringEditor/Private/Tests/GuLiMapDensityPaintTests.cpp` | 已授权密度格、笔刷、Territory、Patch、导出与 WP 生命周期测试 |
 
 所有路径均相对 `Plugins/GuLiMapAuthoring/`。
 
@@ -48,7 +53,7 @@ Actor 世界 Transform 与 Region 相对 Transform 分层组合：`Region.GetTra
 Core `StartupModule` 注册内置几何，Shutdown 清空 exporter/validator/geometry 注册表。Editor 等 `OnPostEngineInit` 后：
 
 1. 注册四种几何编辑器和 `UGuLiMapVisualizationComponent` 的可视化器。
-2. 注册放置 EdMode。
+2. 注册放置 EdMode 和密度涂绘 EdMode。
 3. 注册 `GuLiMapAuthoring` NomadTab 和“工具 → GuLi”菜单。
 4. 在换图与 `PreBeginPIE` 调用 `EndInteraction`。
 
@@ -79,16 +84,18 @@ Panel 用 `AddSP` 绑定 Selection、PropertyChanged、MapChange 和 AssetRegist
 
 任何失败都在事务和真实 Actor 写入前返回。扩展 patch 格式时仍须保留这个顺序，并提升 schema_version 处理非兼容变化。
 
+`UpdateDensityCells` 使用同一原子模式：严格解析 v1 根键和格对象，在完整密度记录副本中 exact-set，验证候选整图，只在没有 Error 时开启一个事务写回。Warning 可随成功结果返回；未知键/图层、重复格、非整数坐标或范围外密度不产生部分修改。
+
 ## 快照与 World Partition
 
 `CollectSnapshot` 拒绝 PIE/SIE，记录当前地图包路径。正式导出时还检查临时/不存在包、地图/外部包/类型包 dirty。
 
-WP 路径通过所有 ActorDescContainer 清点 `AGuLiMapMarker` 描述符，以 `FWorldPartitionReference` 在收集期间持有并加载 Actor，然后核对：
+WP 路径通过所有 ActorDescContainer 分别清点 `AGuLiMapMarker` 和 `AGuLiMapDensityMap` 描述符，以 `FWorldPartitionReference` 在收集期间持有并加载 Actor，然后核对：
 
 - 描述符和实际 ActorGuid 集合完整对应。
 - Actor 属于当前 World、PersistentLevel 和主容器，不在 Level Instance/嵌套容器。
-- Marker 非空间加载且 DataLayers 为空。
-- 已保存 Marker 必须存在 Actor Descriptor。
+- Marker/密度 Actor 非空间加载且 DataLayers 为空。
+- 已保存 Marker/密度 Actor 必须存在各自 Actor Descriptor；密度 Actor 还必须每图唯一、Transform=Identity。
 
 无法取得完整集合时添加 Issue 并失败，不能退化为 `LoadedMarkers()` 的可见子集。
 
@@ -99,6 +106,8 @@ WP 路径通过所有 ActorDescContainer 清点 `AGuLiMapMarker` 描述符，以
 SceneProxy 负责全部 Marker 的常驻轮廓/填充；`FComponentVisualizer` 只为所选组件绘制控制柄。DebugMeshMaterial 的真实 MaterialRelevance 决定填充 pass；编辑器辅助显示受 Game view 门控。
 
 Visualizer 在拖动开始时保存完整 Record 并创建事务，所有 delta 作用在局部几何/区域 Transform。停止时验证，失败恢复完整 Record 并 Cancel；`EndEditing`、换图、关面板、PIE 和 Esc 都必须清理未提交事务。
+
+密度 SceneProxy 在游戏线程把稀疏格复制为按颜色/透明度分桶的网格；Landscape 高度和 Visibility 回退只在游戏线程查询并缓存格角，渲染线程不访问 Actor。密度 EdMode 从整笔前值重算固定间距路径，每格只用最大覆盖。LMB 松开提交一次事务；Esc、失焦、换图、关面板、PIE、Actor 删除/GC 会恢复前值并释放事务和弱引用。
 
 ## 扩展方式
 
@@ -121,4 +130,3 @@ Visualizer 在拖动开始时保存完整 Record 并创建事务，所有 delta 
 用唯一名称 `RegisterValidator/UnregisterValidator` 增加针对 SnapshotEntry 的规则。实现 `IGuLiMapExportProvider::Generate` 后用 `RegisterExporter/UnregisterExporter` 生成附加文件。
 
 默认全图验证与六个标准文件永远执行。附加导出文件名必须是安全的单层文件名，不得包含 `..` 或覆盖标准文件；所有注册必须在模块卸载前注销。
-

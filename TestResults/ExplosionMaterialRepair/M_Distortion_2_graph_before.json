@@ -1,0 +1,328 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Translucent",
+		"shading_model": "MSM_DefaultLit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionTextureSample_0000016B21F9A000",
+			"class": "TextureSample",
+			"class_full": "MaterialExpressionTextureSample",
+			"pos_x": -656,
+			"pos_y": 96,
+			"properties":
+			{
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "None",
+				"SamplerType": "SAMPLERTYPE_Normal",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant_0000016AA37B7460",
+			"class": "Constant",
+			"class_full": "MaterialExpressionConstant",
+			"pos_x": -240,
+			"pos_y": 16,
+			"properties":
+			{
+				"R": "0.000000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionDynamicParameter_0000016A82EDAE00",
+			"class": "DynamicParameter",
+			"class_full": "MaterialExpressionDynamicParameter",
+			"pos_x": -1168,
+			"pos_y": 416,
+			"properties":
+			{
+				"ParamNames": "(\"Refraction\",\"Tilling\",\"Param3\",\"Param4\")",
+				"DefaultValue": "(R=1.000000,G=1.000000,B=1.000000,A=1.000000)",
+				"ParameterIndex": "0"
+			},
+			"inputs": [],
+			"outputs": [
+				"Refraction",
+				"Tilling",
+				"Param3",
+				"Param4"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016A9166D200",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": -768,
+			"pos_y": 304,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Engine/Functions/Engine_MaterialFunctions01/Gradient/SphereGradient-2D.SphereGradient-2D'"
+			},
+			"function_path": "/Engine/Functions/Engine_MaterialFunctions01/Gradient/SphereGradient-2D.SphereGradient-2D",
+			"inputs": [
+				"UVs (V2)",
+				"CenterPosition (V2)",
+				"Radius (S)"
+			],
+			"outputs": [
+				"Result 0-1",
+				"Result Diameter",
+				"Result Radius"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant3Vector_0000016AA37B7EE0",
+			"class": "Constant3Vector",
+			"class_full": "MaterialExpressionConstant3Vector",
+			"pos_x": -656,
+			"pos_y": -64,
+			"properties":
+			{
+				"Constant": "(R=0.000000,G=0.000000,B=1.000000,A=0.000000)"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0",
+				"Output_1",
+				"Output_2",
+				"Output_3"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A9CEDE580",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": -176,
+			"pos_y": 160,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A9CEDF480",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": -208,
+			"pos_y": 384,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureCoordinate_0000016AA37B7FC0",
+			"class": "TextureCoordinate",
+			"class_full": "MaterialExpressionTextureCoordinate",
+			"pos_x": -1138,
+			"pos_y": 152,
+			"properties":
+			{
+				"CoordinateIndex": "0",
+				"UTiling": "1.000000",
+				"VTiling": "1.000000",
+				"UnMirrorU": "False",
+				"UnMirrorV": "False"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A9166CF80",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -889,
+			"pos_y": 169,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionParticleColor_0000016AA37B80A0",
+			"class": "ParticleColor",
+			"class_full": "MaterialExpressionParticleColor",
+			"pos_x": -640,
+			"pos_y": -256,
+			"properties":
+			{
+			},
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A9166CD00",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -336,
+			"pos_y": 272,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A9166CF80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionTextureSample_0000016B21F9A000",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionConstant3Vector_0000016AA37B7EE0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A9CEDE580",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016B21F9A000",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A9CEDE580",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A9166CD00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A9CEDE580",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionDynamicParameter_0000016A82EDAE00",
+			"source_output_index": 0,
+			"source_output_name": "Refraction",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A9CEDF480",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016A9166D200",
+			"source_output_index": 0,
+			"source_output_name": "Result 0-1",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A9CEDF480",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionTextureCoordinate_0000016AA37B7FC0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A9166CF80",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionDynamicParameter_0000016A82EDAE00",
+			"source_output_index": 1,
+			"source_output_name": "Tilling",
+			"target_id": "MaterialExpressionMultiply_0000016A9166CF80",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016A9166D200",
+			"source_output_index": 0,
+			"source_output_name": "Result 0-1",
+			"target_id": "MaterialExpressionMultiply_0000016A9166CD00",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionParticleColor_0000016AA37B80A0",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMultiply_0000016A9166CD00",
+			"target_input": "B"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "Opacity",
+			"expression_id": "MaterialExpressionConstant_0000016AA37B7460",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "Normal",
+			"expression_id": "MaterialExpressionLinearInterpolate_0000016A9CEDE580",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "Refraction",
+			"expression_id": "MaterialExpressionLinearInterpolate_0000016A9CEDF480",
+			"output_index": 0,
+			"output_name": ""
+		}
+	]
+}

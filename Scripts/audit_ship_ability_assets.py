@@ -20,6 +20,7 @@ import unreal
 OWNER = "GuLi.ShipAbilityAssets.v1"
 SHIP_BLUEPRINT = "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip"
 ABILITY_SET = "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV1"
+ACTIVE_V3_ABILITY_SET = "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV3"
 FORMATION = (
     "/Game/GuLiStrike/Ship/Abilities/Formations/"
     "DA_WingmanFormation_DoubleRing"
@@ -52,7 +53,7 @@ ALWAYS_COOK_LINE = (
 )
 
 FORMATION_VALUES = {
-    "revision": 2,
+    "revision": 4,
     "expected_wingman_count": 25,
     "flight_count": 5,
     "model": "DoubleRingLegacy",
@@ -63,14 +64,14 @@ FORMATION_VALUES = {
     "outer_ring_radius_centimeters": 90000.0,
     "inner_ring_height_centimeters": 15000.0,
     "outer_ring_height_centimeters": -15000.0,
-    "inner_angular_speed_radians_per_second": 0.08,
-    "outer_angular_speed_radians_per_second": 0.06,
-    "minimum_flight_speed_centimeters_per_second": 3000.0,
-    "cruise_flight_speed_centimeters_per_second": 4500.0,
-    "catch_up_flight_speed_centimeters_per_second": 7500.0,
-    "maximum_turn_rate_degrees_per_second": 20.0,
-    "maximum_acceleration_centimeters_per_second_squared": 1000.0,
-    "maximum_deceleration_centimeters_per_second_squared": 800.0,
+    "inner_angular_speed_radians_per_second": 0.16,
+    "outer_angular_speed_radians_per_second": 0.12,
+    "minimum_flight_speed_centimeters_per_second": 6000.0,
+    "cruise_flight_speed_centimeters_per_second": 9000.0,
+    "catch_up_flight_speed_centimeters_per_second": 15000.0,
+    "maximum_turn_rate_degrees_per_second": 80.0,
+    "maximum_acceleration_centimeters_per_second_squared": 4000.0,
+    "maximum_deceleration_centimeters_per_second_squared": 3200.0,
     "maximum_bank_degrees": 45.0,
     "agent_radius_centimeters": 1500.0,
     "separation_radius_centimeters": 3000.0,
@@ -79,17 +80,17 @@ FORMATION_VALUES = {
     "recovery_distance_centimeters": 250000.0,
 }
 SWARM_FORMATION_VALUES = {
-    "revision": 1,
+    "revision": 3,
     "expected_wingman_count": 25,
     "flight_count": 5,
     "model": "SwarmOrbit",
     "guidance_algorithm_version": 1,
-    "minimum_flight_speed_centimeters_per_second": 3000.0,
-    "cruise_flight_speed_centimeters_per_second": 4500.0,
-    "catch_up_flight_speed_centimeters_per_second": 7500.0,
-    "maximum_turn_rate_degrees_per_second": 20.0,
-    "maximum_acceleration_centimeters_per_second_squared": 1000.0,
-    "maximum_deceleration_centimeters_per_second_squared": 800.0,
+    "minimum_flight_speed_centimeters_per_second": 6000.0,
+    "cruise_flight_speed_centimeters_per_second": 9000.0,
+    "catch_up_flight_speed_centimeters_per_second": 15000.0,
+    "maximum_turn_rate_degrees_per_second": 80.0,
+    "maximum_acceleration_centimeters_per_second_squared": 4000.0,
+    "maximum_deceleration_centimeters_per_second_squared": 3200.0,
     "maximum_bank_degrees": 45.0,
     "agent_radius_centimeters": 1500.0,
     "separation_radius_centimeters": 3000.0,
@@ -102,16 +103,16 @@ SWARM_TUNING_VALUES = {
     "outer_soft_radius_centimeters": 52000.0,
     "vertical_half_extent_centimeters": 14000.0,
     "hull_exclusion_radius_centimeters": 14000.0,
-    "swirl_speed_min_centimeters_per_second": 3600.0,
-    "swirl_speed_max_centimeters_per_second": 5200.0,
-    "curl_strength_centimeters_per_second": 1400.0,
+    "swirl_speed_min_centimeters_per_second": 7200.0,
+    "swirl_speed_max_centimeters_per_second": 10400.0,
+    "curl_strength_centimeters_per_second": 2800.0,
     "noise_spatial_scale_centimeters": 22000.0,
     "noise_temporal_scale_seconds": 6.0,
     "axis_precession_amount": 0.28,
     "axis_precession_radians_per_second": 0.03,
-    "boundary_return_speed_centimeters_per_second": 2800.0,
-    "preferred_radius_return_speed_centimeters_per_second": 450.0,
-    "vertical_return_speed_centimeters_per_second": 1400.0,
+    "boundary_return_speed_centimeters_per_second": 5600.0,
+    "preferred_radius_return_speed_centimeters_per_second": 900.0,
+    "vertical_return_speed_centimeters_per_second": 2800.0,
     "alignment_weight": 0.08,
     "catch_up_style_weight": 0.20,
     "recovery_style_weight": 0.05,
@@ -592,6 +593,7 @@ def main() -> dict[str, Any]:
             BASIC: _referencers(BASIC),
             MISSILE: _referencers(MISSILE),
             ABILITY_SET: _referencers(ABILITY_SET),
+            ACTIVE_V3_ABILITY_SET: _referencers(ACTIVE_V3_ABILITY_SET),
         }
         with open(CONFIG_PATH, encoding="utf-8-sig") as stream:
             config_text = stream.read()
@@ -662,13 +664,27 @@ def main() -> dict[str, Any]:
         )
         checksums_match = actual_checksums == expected_checksums
         metadata_matches = all(value == OWNER for value in metadata.values())
+        cdo_uses_legacy_v2 = cdo_reference == _asset_object_path(ABILITY_SET)
+        cdo_uses_active_v3 = cdo_reference == _asset_object_path(
+            ACTIVE_V3_ABILITY_SET
+        )
         hard_reference_chain = (
-            cdo_reference == _asset_object_path(ABILITY_SET)
+            (cdo_uses_legacy_v2 or cdo_uses_active_v3)
             and ABILITY_SET in referencers[FORMATION]
             and ABILITY_SET in referencers[SWARM_FORMATION]
             and ABILITY_SET in referencers[BASIC]
             and ABILITY_SET in referencers[MISSILE]
-            and SHIP_BLUEPRINT in referencers[ABILITY_SET]
+            and (
+                (cdo_uses_legacy_v2 and SHIP_BLUEPRINT in referencers[ABILITY_SET])
+                or (
+                    cdo_uses_active_v3
+                    and ACTIVE_V3_ABILITY_SET in referencers[FORMATION]
+                    and ACTIVE_V3_ABILITY_SET in referencers[SWARM_FORMATION]
+                    and ACTIVE_V3_ABILITY_SET in referencers[BASIC]
+                    and ACTIVE_V3_ABILITY_SET in referencers[MISSILE]
+                    and SHIP_BLUEPRINT in referencers[ACTIVE_V3_ABILITY_SET]
+                )
+            )
         )
         core_success = (
             fields_match
@@ -730,3 +746,4 @@ def main() -> dict[str, Any]:
 
 
 RESULT = main()
+unreal.MCPythonHelper.submit_result(json.dumps(RESULT, ensure_ascii=False))

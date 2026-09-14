@@ -1,0 +1,146 @@
+{
+  "passed": true,
+  "cases": [
+    {
+      "name": "tier_1",
+      "checks": {
+        "source_accepted": true,
+        "mass_collected": true,
+        "vehicle_eligibility": true,
+        "all_original_mass_restored": true,
+        "returned_near_source": true,
+        "field_cleaned_up": true
+      },
+      "passed": true,
+      "requested_clearance": 9000,
+      "collected": 1,
+      "actual_clearance": 9000.0
+    },
+    {
+      "name": "tier_2",
+      "checks": {
+        "source_accepted": true,
+        "mass_collected": true,
+        "vehicle_eligibility": true,
+        "all_original_mass_restored": true,
+        "returned_near_source": true,
+        "field_cleaned_up": true
+      },
+      "passed": true,
+      "requested_clearance": 9000,
+      "collected": 3,
+      "actual_clearance": 9000.0
+    },
+    {
+      "name": "tier_3",
+      "checks": {
+        "source_accepted": true,
+        "mass_collected": true,
+        "vehicle_eligibility": true,
+        "all_original_mass_restored": true,
+        "returned_near_source": true,
+        "field_cleaned_up": true
+      },
+      "passed": true,
+      "requested_clearance": 9000,
+      "collected": 4,
+      "actual_clearance": 9000.0
+    },
+    {
+      "name": "height_exact",
+      "checks": {
+        "source_accepted": true,
+        "mass_collected": true,
+        "vehicle_eligibility": true,
+        "all_original_mass_restored": true,
+        "returned_near_source": true,
+        "field_cleaned_up": true
+      },
+      "passed": true,
+      "requested_clearance": 10000,
+      "collected": 31,
+      "actual_clearance": 10000.0
+    },
+    {
+      "name": "height_above",
+      "checks": {
+        "source_accepted": true,
+        "mass_collected": true,
+        "vehicle_eligibility": true,
+        "all_original_mass_restored": true,
+        "returned_near_source": true,
+        "field_cleaned_up": true
+      },
+      "passed": true,
+      "requested_clearance": 10000.1,
+      "collected": 6,
+      "actual_clearance": 10000.1
+    },
+    {
+      "name": "freeze_duplicate",
+      "checks": {
+        "source_accepted": true,
+        "duplicate_keeps_cast": true,
+        "configuration_frozen": true,
+        "mass_collected": true,
+        "all_original_mass_restored": true,
+        "returned_near_source": true,
+        "field_cleaned_up": true
+      },
+      "passed": true,
+      "collected": 1
+    },
+    {
+      "name": "empty",
+      "checks": {
+        "source_accepted": true,
+        "empty_ends": true,
+        "all_original_mass_restored": true,
+        "returned_near_source": true,
+        "field_cleaned_up": true
+      },
+      "passed": true,
+      "collected": 0
+    },
+    {
+      "name": "participant_destroy",
+      "checks": {
+        "source_accepted": true,
+        "mass_collected": true,
+        "vehicle_collected_before_destroy": true,
+        "all_original_mass_restored": true,
+        "returned_near_source": true,
+        "field_cleaned_up": true
+      },
+      "passed": true,
+      "requested_clearance": 9000,
+      "collected": 31
+    },
+    {
+      "name": "role_loss",
+      "checks": {
+        "source_accepted": true,
+        "mass_collected": true,
+        "role_revoked": true,
+        "all_original_mass_restored": true,
+        "returned_near_source": true,
+        "field_cleaned_up": true
+      },
+      "passed": true,
+      "collected": 1
+    },
+    {
+      "name": "disconnect",
+      "checks": {
+        "source_accepted": true,
+        "mass_collected": true,
+        "all_original_mass_restored": true,
+        "returned_near_source": true,
+        "field_cleaned_up": true
+      },
+      "passed": true,
+      "collected": 1
+    }
+  ],
+  "errors": []
+}

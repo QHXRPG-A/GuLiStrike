@@ -1,0 +1,145 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "425653A14657D3EE72D064B014C6F58A",
+			"instanceName": "DESKTOP-6D3B0FC-37040",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.09-06.54.27",
+	"succeeded": 4,
+	"succeededWithWarnings": 2,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.086534798145294189,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BasicWeaponIndependentAcceptedState",
+			"fullTestPath": "GuLiStrike.Wingman.Pawn.BasicWeaponIndependentAcceptedState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"425653A14657D3EE72D064B014C6F58A"
+			],
+			"duration": 0.036300897598266602,
+			"dateTime": "2026.09.09-06.54.27",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FlightNavigationAsyncStateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Pawn.FlightNavigationAsyncStateLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"425653A14657D3EE72D064B014C6F58A"
+			],
+			"duration": 0.008711598813533783,
+			"dateTime": "2026.09.09-06.54.27",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InitialFormationNavigationValidatesAllSlots",
+			"fullTestPath": "GuLiStrike.Wingman.Pawn.InitialFormationNavigationValidatesAllSlots",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"425653A14657D3EE72D064B014C6F58A"
+			],
+			"duration": 0.0086123980581760406,
+			"dateTime": "2026.09.09-06.54.27",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: [GULI_WINGMAN_INITIAL_NAV_GATE] Ship=1650CAFE20260903ABC00002DEF00002 ShipGen=3 GroupGen=12 FailedMember=13 Status=EndpointOutsideNavigation(2) Position=V(X=960.00, Z=-100.00)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.09-06.54.27"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LocalContinuityAndNoPeerCollision",
+			"fullTestPath": "GuLiStrike.Wingman.Pawn.LocalContinuityAndNoPeerCollision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"425653A14657D3EE72D064B014C6F58A"
+			],
+			"duration": 0.013346198946237564,
+			"dateTime": "2026.09.09-06.54.27",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OwnerGroupCandidateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Pawn.OwnerGroupCandidateLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"425653A14657D3EE72D064B014C6F58A"
+			],
+			"duration": 0.0089563988149166107,
+			"dateTime": "2026.09.09-06.54.27",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: [GULI_WINGMAN_INITIAL_NAV_GATE] Ship=13572468246813571122334455667788 ShipGen=3 GroupGen=9 FailedMember=0 Status=InvalidData(1) Position=V(X=61000.00, Z=16000.00)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.09-06.54.27"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PerMemberAirGroundAttackExecution",
+			"fullTestPath": "GuLiStrike.Wingman.Pawn.PerMemberAirGroundAttackExecution",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"425653A14657D3EE72D064B014C6F58A"
+			],
+			"duration": 0.010607302188873291,
+			"dateTime": "2026.09.09-06.54.27",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

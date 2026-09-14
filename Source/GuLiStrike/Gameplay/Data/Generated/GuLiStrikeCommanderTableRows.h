@@ -1,5 +1,5 @@
 // ====================================================================
-// 自动生成自 Data/Excel/GuLiStrikeCommander.xlsx —— 禁止手改。
+// 自动生成自 Data/Excel/: GuLiStrikeCommander.xlsx, GuLiStrikeSecondaryWeapons.xlsx —— 禁止手改。
 // 由 Tools/DataPipeline/export_data_from_excel.py 生成。
 // 表结构变更（加列/新表）后重跑导出并重编译 GuLiStrike 模块。
 // 约定: name 列是 DataTable 行名（不生成属性）；id -> Id；
@@ -13,7 +13,7 @@
 #include "Engine/DataTable.h"
 #include "GuLiStrikeCommanderTableRows.generated.h"
 
-/** DataTable DT_GuLiStrikeCommander_Soldiers 的行结构（源: GuLiStrikeCommander.xlsx 的 Soldiers sheet）。 */
+/** DataTable DT_GuLiStrikeCommander_Soldiers 的行结构（源: GuLiStrikeCommander.xlsx / Soldiers）。 */
 USTRUCT(BlueprintType)
 struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 {
@@ -35,7 +35,7 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	float MaxHealth = 0.0f;
 
-	/** ModelAsset (softobject, Necessary) */
+	/** ModelAsset (softobject, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	TSoftObjectPtr<UObject> ModelAsset;
 
@@ -43,9 +43,21 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	float Defense = 0.0f;
 
+	/** ActorClass (softclass, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	TSoftClassPtr<UObject> ActorClass;
+
+	/** PresentationClass (softclass, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	TSoftClassPtr<UObject> PresentationClass;
+
+	/** PresentationScale (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	float PresentationScale = 0.0f;
+
 };
 
-/** DataTable DT_GuLiStrikeCommander_Skills 的行结构（源: GuLiStrikeCommander.xlsx 的 Skills sheet）。 */
+/** DataTable DT_GuLiStrikeCommander_Skills 的行结构（源: GuLiStrikeSecondaryWeapons.xlsx / Skills）。 */
 USTRUCT(BlueprintType)
 struct FGuLiStrikeCommanderSkillsRow : public FTableRowBase
 {
@@ -75,13 +87,13 @@ struct FGuLiStrikeCommanderSkillsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	FString Tags;
 
-	/** EffectConfigId (str, Optional) */
+	/** 产生的法术场 (Fields.id) -> EffectConfigId (Fields.name；导出时解析) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	FString EffectConfigId;
 
 };
 
-/** DataTable DT_GuLiStrikeCommander_UnitSkills 的行结构（源: GuLiStrikeCommander.xlsx 的 UnitSkills sheet）。 */
+/** DataTable DT_GuLiStrikeCommander_UnitSkills 的行结构（源: GuLiStrikeSecondaryWeapons.xlsx / UnitSkills）。 */
 USTRUCT(BlueprintType)
 struct FGuLiStrikeCommanderUnitSkillsRow : public FTableRowBase
 {
@@ -125,51 +137,7 @@ struct FGuLiStrikeCommanderUnitSkillsRow : public FTableRowBase
 
 };
 
-/** DataTable DT_GuLiStrikeCommander_SpellFields 的行结构（源: GuLiStrikeCommander.xlsx 的 SpellFields sheet）。 */
-USTRUCT(BlueprintType)
-struct FGuLiStrikeCommanderSpellFieldsRow : public FTableRowBase
-{
-	GENERATED_BODY()
-
-	/** id (int, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
-	int32 Id = 0;
-
-	/** Note (str, Optional) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
-	FString Note;
-
-	/** Damage (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
-	float Damage = 0.0f;
-
-	/** RadiusCentimeters (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
-	float RadiusCentimeters = 0.0f;
-
-	/** Timing (str, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
-	FString Timing;
-
-	/** DelaySeconds (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
-	float DelaySeconds = 0.0f;
-
-	/** DurationSeconds (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
-	float DurationSeconds = 0.0f;
-
-	/** PulseIntervalSeconds (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
-	float PulseIntervalSeconds = 0.0f;
-
-	/** DissipationSeconds (float, Necessary) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="SpellFields")
-	float DissipationSeconds = 0.0f;
-
-};
-
-/** DataTable DT_GuLiStrikeCommander_WeaponMounts 的行结构（源: GuLiStrikeCommander.xlsx 的 WeaponMounts sheet）。 */
+/** DataTable DT_GuLiStrikeCommander_WeaponMounts 的行结构（源: GuLiStrikeSecondaryWeapons.xlsx / WeaponMounts）。 */
 USTRUCT(BlueprintType)
 struct FGuLiStrikeCommanderWeaponMountsRow : public FTableRowBase
 {

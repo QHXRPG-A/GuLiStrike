@@ -43,13 +43,13 @@ struct GULISTRIKE_API FGuLiWeaponMountConfig
 };
 
 UENUM(BlueprintType)
-enum class EGuLiCombatEffectKind : uint8 { Projectile, SpellField };
+enum class EGuLiCombatEffectKind : uint8 { Projectile, SpellField, SustainedHitscan, LinearProjectile };
 
 UENUM(BlueprintType)
 enum class EGuLiCombatEffectPhase : uint8 { Waiting, Active, Dissipating, Finished };
 
 UENUM(BlueprintType)
-enum class EGuLiCombatEffectEndReason : uint8 { None, Impact, Completed, Expired, Cancelled, EpochEnded };
+enum class EGuLiCombatEffectEndReason : uint8 { None, Impact, Completed, Expired, Cancelled, EpochEnded, Blocked };
 
 /** A cast's authority-resolved provenance. No Mass entity, particle or Actor pointer crosses this boundary. */
 USTRUCT(BlueprintType)
@@ -61,6 +61,8 @@ struct GULISTRIKE_API FGuLiCombatEffectContext
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat Effect") FGuLiTargetHandle Target;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat Effect") FGuLiWeaponBindingKey WeaponBinding;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat Effect") FName SkillId;
+	/** Identifies a field whose damage was resolved by the caller on authority before modifiers. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat Effect") FName EffectConfigId;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat Effect", meta=(ClampMin="0.0")) float Damage = 30.0f;
 	/** Optional server-side correlation IDs; missing IDs are allocated by the runtime. Not a client RPC. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Combat Effect") FGuid ShotId;
@@ -97,6 +99,8 @@ struct GULISTRIKE_API FGuLiCombatEffectState
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") EGuLiCombatEffectPhase Phase = EGuLiCombatEffectPhase::Active;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") EGuLiCombatEffectEndReason EndReason = EGuLiCombatEffectEndReason::None;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FGuLiTargetHandle Source;
+	/** Frozen faction, allowing flying bolts to retain their color after the source is destroyed. */
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") EGuLiTeam SourceTeam = EGuLiTeam::Unassigned;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FGuLiTargetHandle Target;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiProjectileEffectDefinition> ProjectileDefinition;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiSpellFieldDefinition> FieldDefinition;
@@ -106,6 +110,10 @@ struct GULISTRIKE_API FGuLiCombatEffectState
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize LastTargetLocation = FVector::ZeroVector;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantizeNormal LaunchDirection = FVector::ForwardVector;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FGuLiProjectileMotionSettings Motion;
+	/** Stable weapon identity and emitter-local muzzle used to synthesize a sustained stream on every client. */
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FName SlotId;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector MuzzleOffset = FVector::ZeroVector;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effect", meta=(Units="Hz")) float FireRateHz = 0.0f;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") bool bFixedPoint = false;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") int32 RandomSeed = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") int32 VariantIndex = 0;
@@ -177,6 +185,7 @@ struct GULISTRIKE_API FGuLiCombatAttackRequest
 	UGuLiProjectileEffectDefinition* Projectile = nullptr;
 	FGuLiSpellFieldConfig FrozenField;
 	FGuLiProjectileMotionSettings Motion;
+	float MaximumTravelDistance = 150000.0f;
 };
 
 USTRUCT(BlueprintType)
@@ -188,6 +197,8 @@ struct GULISTRIKE_API FGuLiCombatEffectCounters
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") int64 Pulses = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") int64 DamageCommits = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") int64 ShotsPublished = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") int64 GunBurstsStarted = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") int64 LogicalGunShots = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") int64 CandidateChecks = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") double LastStepMilliseconds = 0.0;
 };

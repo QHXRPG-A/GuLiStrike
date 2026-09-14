@@ -1,0 +1,81 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "CAB365E042A13BCB376529A50AF187FD",
+			"instanceName": "DESKTOP-6D3B0FC-47488",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.08-14.59.49",
+	"succeeded": 0,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.11871559917926788,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "PerMemberAirGroundAttackExecution",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.PerMemberAirGroundAttackExecution",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"CAB365E042A13BCB376529A50AF187FD"
+			],
+			"duration": 0.11871559917926788,
+			"dateTime": "2026.09.08-14.59.49",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(337): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.08-14.59.49"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: [GULI_WINGMAN_INITIAL_NAV_GATE] Ship=13572468246813571122334455667788 ShipGen=3 GroupGen=9 Navigation=Present FailedMember=16 Status=Valid(0) Position=V(X=20903.87, Y=21289.15, Z=-1457.83) Carrier=V(0) AgentRadius=1500.0 Model=1 SwarmBand=(24000.0..52000.0 Z=14000.0 Hull=14000.0) Inner=(Slots=13 Radius=60000.0 Height=15000.0) Outer=(Slots=12 Radius=90000.0 Height=-15000.0) Diagnostics={Point=V(X=20903.87, Y=21289.15, Z=-1457.83) RegisteredVolumes=0}",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.08-14.59.49"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Per-member attack fixture creates 25 entities' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanMassSimulationTests.cpp",
+					"lineNumber": 782,
+					"timestamp": "2026.09.08-14.59.49"
+				}
+			],
+			"warnings": 1,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

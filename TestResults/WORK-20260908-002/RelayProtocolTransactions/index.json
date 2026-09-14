@@ -1,0 +1,197 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "E049F1124FAC17A748E039BB1E336CC8",
+			"instanceName": "DESKTOP-6D3B0FC-34892",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.08-15.12.49",
+	"succeeded": 0,
+	"succeededWithWarnings": 0,
+	"failed": 6,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.10948958992958069,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AssemblyDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AssemblyDeadline",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"E049F1124FAC17A748E039BB1E336CC8"
+			],
+			"duration": 0.067665696144104004,
+			"dateTime": "2026.09.08-15.12.49",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Strict relay initializes' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 84,
+					"timestamp": "2026.09.08-15.12.49"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicAllOrNothing",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AtomicAllOrNothing",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"E049F1124FAC17A748E039BB1E336CC8"
+			],
+			"duration": 0.0084898993372917175,
+			"dateTime": "2026.09.08-15.12.49",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Strict relay initializes' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 84,
+					"timestamp": "2026.09.08-15.12.49"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicResumeAndTakeover",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AtomicResumeAndTakeover",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"E049F1124FAC17A748E039BB1E336CC8"
+			],
+			"duration": 0.0083963982760906219,
+			"dateTime": "2026.09.08-15.12.49",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Strict relay initializes' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 84,
+					"timestamp": "2026.09.08-15.12.49"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReliableAcksBeforeAtomicCandidate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.ReliableAcksBeforeAtomicCandidate",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"E049F1124FAC17A748E039BB1E336CC8"
+			],
+			"duration": 0.0082089006900787354,
+			"dateTime": "2026.09.08-15.12.49",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Strict relay initializes' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 84,
+					"timestamp": "2026.09.08-15.12.49"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StrictContractGates",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.StrictContractGates",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"E049F1124FAC17A748E039BB1E336CC8"
+			],
+			"duration": 0.0084648989140987396,
+			"dateTime": "2026.09.08-15.12.49",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Strict relay initializes' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 84,
+					"timestamp": "2026.09.08-15.12.49"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TrailGrantPending",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.TrailGrantPending",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"E049F1124FAC17A748E039BB1E336CC8"
+			],
+			"duration": 0.0082638002932071686,
+			"dateTime": "2026.09.08-15.12.49",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Strict relay initializes' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 84,
+					"timestamp": "2026.09.08-15.12.49"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

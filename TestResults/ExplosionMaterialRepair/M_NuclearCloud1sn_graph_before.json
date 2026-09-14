@@ -1,0 +1,2516 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Translucent",
+		"shading_model": "MSM_DefaultLit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FE5280",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 576,
+			"pos_y": 192,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FEB540",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 1024,
+			"pos_y": 576,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FE5500",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 718,
+			"pos_y": -45,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionDepthFade_0000016AC7FE67C0",
+			"class": "DepthFade",
+			"class_full": "MaterialExpressionDepthFade",
+			"pos_x": 736,
+			"pos_y": 448,
+			"properties":
+			{
+				"OpacityDefault": "1.000000",
+				"FadeDistanceDefault": "100.000000"
+			},
+			"inputs": [
+				"Opacity",
+				"FadeDistance"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_00000169E6712400",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -672,
+			"pos_y": 336,
+			"properties":
+			{
+				"DefaultValue": "(R=1.000000,G=1.000000,B=1.000000,A=1.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "11"
+			},
+			"is_parameter": true,
+			"parameter_name": "Color",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionParticleColor_0000016CF460EFC0",
+			"class": "ParticleColor",
+			"class_full": "MaterialExpressionParticleColor",
+			"pos_x": -656,
+			"pos_y": 528,
+			"properties":
+			{
+			},
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FE7300",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 160,
+			"pos_y": 240,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FEDC00",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 272,
+			"pos_y": 320,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FE8FC0",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 272,
+			"pos_y": 448,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionPanner_00000169E6717200",
+			"class": "Panner",
+			"class_full": "MaterialExpressionPanner",
+			"pos_x": -1040,
+			"pos_y": 16,
+			"properties":
+			{
+				"SpeedX": "0.000000",
+				"SpeedY": "-1.500000",
+				"ConstCoordinate": "0",
+				"bFractionalPart": "False"
+			},
+			"inputs": [
+				"Coordinate",
+				"Time",
+				"Speed"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE26C0",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": -1184,
+			"pos_y": 688,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Assets/VFX/Explosions/MF_Scale_n_Offset.MF_Scale_n_Offset'"
+			},
+			"function_path": "/Game/Assets/VFX/Explosions/MF_Scale_n_Offset.MF_Scale_n_Offset",
+			"inputs": [
+				"R (S)",
+				"G (S)",
+				"B (S)",
+				"A (S)"
+			],
+			"outputs": [
+				"UV"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_00000169E6716D80",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -1424,
+			"pos_y": 672,
+			"properties":
+			{
+				"DefaultValue": "(R=1.000000,G=1.000000,B=0.000000,A=0.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Mask Scale and Offset",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameter2D_0000016A99734100",
+			"class": "TextureSampleParameter2D",
+			"class_full": "MaterialExpressionTextureSampleParameter2D",
+			"pos_x": -864,
+			"pos_y": -48,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "None",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "Main Texture",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameter2D_0000016A99737800",
+			"class": "TextureSampleParameter2D",
+			"class_full": "MaterialExpressionTextureSampleParameter2D",
+			"pos_x": -976,
+			"pos_y": 672,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "None",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "Mask",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016AC7FECF80",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": 576,
+			"pos_y": 544,
+			"properties":
+			{
+				"DefaultValue": "100.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Depth",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016AC7FEB040",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": 288,
+			"pos_y": 176,
+			"properties":
+			{
+				"DefaultValue": "200.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Emission",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_00000169E6715D00",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -2544,
+			"pos_y": 32,
+			"properties":
+			{
+				"DefaultValue": "(R=0.020000,G=0.100000,B=0.000000,A=0.100000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "MainTex Speed RG Opacity Speed BA",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionAppendVector_0000016AC7FE4380",
+			"class": "AppendVector",
+			"class_full": "MaterialExpressionAppendVector",
+			"pos_x": -1232,
+			"pos_y": 80,
+			"properties":
+			{
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionAppendVector_0000016AC7FE5000",
+			"class": "AppendVector",
+			"class_full": "MaterialExpressionAppendVector",
+			"pos_x": -2208,
+			"pos_y": 176,
+			"properties":
+			{
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameter2D_0000016A99735780",
+			"class": "TextureSampleParameter2D",
+			"class_full": "MaterialExpressionTextureSampleParameter2D",
+			"pos_x": -1920,
+			"pos_y": 288,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "None",
+				"SamplerType": "SAMPLERTYPE_LinearColor",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "Opacity",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionPower_0000016AC7FEFC80",
+			"class": "Power",
+			"class_full": "MaterialExpressionPower",
+			"pos_x": -64,
+			"pos_y": 64,
+			"properties":
+			{
+				"ConstExponent": "2.000000"
+			},
+			"inputs": [
+				"Base",
+				"Exponent"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016AC7FE62C0",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -544,
+			"pos_y": 96,
+			"properties":
+			{
+				"DefaultValue": "3.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Emission power",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE1CC0",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": -1296,
+			"pos_y": -64,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Assets/VFX/Explosions/MF_Scale_n_Offset.MF_Scale_n_Offset'"
+			},
+			"function_path": "/Game/Assets/VFX/Explosions/MF_Scale_n_Offset.MF_Scale_n_Offset",
+			"inputs": [
+				"R (S)",
+				"G (S)",
+				"B (S)",
+				"A (S)"
+			],
+			"outputs": [
+				"UV"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_00000169E6717080",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -1520,
+			"pos_y": -112,
+			"properties":
+			{
+				"DefaultValue": "(R=3.000000,G=2.000000,B=0.000000,A=0.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "MainTex Scale and Offset",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionPanner_00000169E6717F80",
+			"class": "Panner",
+			"class_full": "MaterialExpressionPanner",
+			"pos_x": -2064,
+			"pos_y": 304,
+			"properties":
+			{
+				"SpeedX": "0.000000",
+				"SpeedY": "-1.500000",
+				"ConstCoordinate": "0",
+				"bFractionalPart": "False"
+			},
+			"inputs": [
+				"Coordinate",
+				"Time",
+				"Speed"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_00000169E6715A00",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -2496,
+			"pos_y": 256,
+			"properties":
+			{
+				"DefaultValue": "(R=2.000000,G=2.000000,B=0.000000,A=0.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Opacity Scale and Offset",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE2300",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": -2288,
+			"pos_y": 304,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Assets/VFX/Explosions/MF_Scale_n_Offset.MF_Scale_n_Offset'"
+			},
+			"function_path": "/Game/Assets/VFX/Explosions/MF_Scale_n_Offset.MF_Scale_n_Offset",
+			"inputs": [
+				"R (S)",
+				"G (S)",
+				"B (S)",
+				"A (S)"
+			],
+			"outputs": [
+				"UV"
+			]
+		},
+		{
+			"id": "MaterialExpressionDynamicParameter_0000016BDDD80C00",
+			"class": "DynamicParameter",
+			"class_full": "MaterialExpressionDynamicParameter",
+			"pos_x": -1408,
+			"pos_y": 496,
+			"properties":
+			{
+				"ParamNames": "(\"Mask power\",\"Desaturation\",\"Param3\",\"Param4\")",
+				"DefaultValue": "(R=0.000000,G=0.000000,B=1.000000,A=1.000000)",
+				"ParameterIndex": "0"
+			},
+			"inputs": [],
+			"outputs": [
+				"Mask power",
+				"Desaturation",
+				"Param3",
+				"Param4"
+			]
+		},
+		{
+			"id": "MaterialExpressionPower_0000016AC7FE3340",
+			"class": "Power",
+			"class_full": "MaterialExpressionPower",
+			"pos_x": -1156,
+			"pos_y": 378,
+			"properties":
+			{
+				"ConstExponent": "2.000000"
+			},
+			"inputs": [
+				"Base",
+				"Exponent"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016AC7FEA640",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -1152,
+			"pos_y": 480,
+			"properties":
+			{
+				"DefaultValue": "2.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Mask multiplayer",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FE6680",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -976,
+			"pos_y": 384,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionSaturate_0000016BDDD84500",
+			"class": "Saturate",
+			"class_full": "MaterialExpressionSaturate",
+			"pos_x": -864,
+			"pos_y": 384,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FEB2C0",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -656,
+			"pos_y": 736,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FEB400",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 448,
+			"pos_y": 464,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureCoordinate_0000016CF4608F80",
+			"class": "TextureCoordinate",
+			"class_full": "MaterialExpressionTextureCoordinate",
+			"pos_x": -1200,
+			"pos_y": 1088,
+			"properties":
+			{
+				"CoordinateIndex": "0",
+				"UTiling": "1.000000",
+				"VTiling": "1.000000",
+				"UnMirrorU": "False",
+				"UnMirrorV": "False"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionComponentMask_0000016BDDD80800",
+			"class": "ComponentMask",
+			"class_full": "MaterialExpressionComponentMask",
+			"pos_x": -1056,
+			"pos_y": 1088,
+			"properties":
+			{
+				"R": "False",
+				"G": "True",
+				"B": "False",
+				"A": "False"
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionPower_0000016AC7FED980",
+			"class": "Power",
+			"class_full": "MaterialExpressionPower",
+			"pos_x": -704,
+			"pos_y": 1088,
+			"properties":
+			{
+				"ConstExponent": "4.000000"
+			},
+			"inputs": [
+				"Base",
+				"Exponent"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FED200",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -560,
+			"pos_y": 1088,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "3.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionOneMinus_0000016BDDD86300",
+			"class": "OneMinus",
+			"class_full": "MaterialExpressionOneMinus",
+			"pos_x": -928,
+			"pos_y": 1088,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionSaturate_0000016BDDD84400",
+			"class": "Saturate",
+			"class_full": "MaterialExpressionSaturate",
+			"pos_x": -384,
+			"pos_y": 1088,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionFresnel_00000169E6718100",
+			"class": "Fresnel",
+			"class_full": "MaterialExpressionFresnel",
+			"pos_x": -896,
+			"pos_y": 1344,
+			"properties":
+			{
+				"Exponent": "5.000000",
+				"BaseReflectFraction": "0.000000"
+			},
+			"inputs": [
+				"ExponentIn",
+				"BaseReflectFractionIn",
+				"Normal"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionOneMinus_0000016BDDD81500",
+			"class": "OneMinus",
+			"class_full": "MaterialExpressionOneMinus",
+			"pos_x": -592,
+			"pos_y": 1344,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FE1B80",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -208,
+			"pos_y": 1344,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "5.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionSaturate_0000016AC7FEF8C0",
+			"class": "Saturate",
+			"class_full": "MaterialExpressionSaturate",
+			"pos_x": 368,
+			"pos_y": 1280,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FEAF00",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 224,
+			"pos_y": 1248,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionPower_0000016AC7FEBB80",
+			"class": "Power",
+			"class_full": "MaterialExpressionPower",
+			"pos_x": -448,
+			"pos_y": 1344,
+			"properties":
+			{
+				"ConstExponent": "2.000000"
+			},
+			"inputs": [
+				"Base",
+				"Exponent"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameter2D_0000016A99734380",
+			"class": "TextureSampleParameter2D",
+			"class_full": "MaterialExpressionTextureSampleParameter2D",
+			"pos_x": -1072,
+			"pos_y": -384,
+			"properties":
+			{
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "None",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "Noise",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016AC7FE7440",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -464,
+			"pos_y": 1456,
+			"properties":
+			{
+				"DefaultValue": "2.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Side opacity mult",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionStaticSwitchParameter_00000169E6718580",
+			"class": "StaticSwitchParameter",
+			"class_full": "MaterialExpressionStaticSwitchParameter",
+			"pos_x": -256,
+			"pos_y": 1072,
+			"properties":
+			{
+				"DefaultValue": "False",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Up opacity",
+			"group": "None",
+			"inputs": [
+				"True",
+				"False"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant_0000016CF4604280",
+			"class": "Constant",
+			"class_full": "MaterialExpressionConstant",
+			"pos_x": -352,
+			"pos_y": 1168,
+			"properties":
+			{
+				"R": "1.000000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionStaticSwitchParameter_00000169E6710480",
+			"class": "StaticSwitchParameter",
+			"class_full": "MaterialExpressionStaticSwitchParameter",
+			"pos_x": -1360,
+			"pos_y": 288,
+			"properties":
+			{
+				"DefaultValue": "True",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Use opacity tex",
+			"group": "None",
+			"inputs": [
+				"True",
+				"False"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant_0000016CF46024C0",
+			"class": "Constant",
+			"class_full": "MaterialExpressionConstant",
+			"pos_x": -1440,
+			"pos_y": 400,
+			"properties":
+			{
+				"R": "1.000000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FEEEC0",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -432,
+			"pos_y": -64,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionStaticSwitchParameter_00000169E6717B00",
+			"class": "StaticSwitchParameter",
+			"class_full": "MaterialExpressionStaticSwitchParameter",
+			"pos_x": -848,
+			"pos_y": -272,
+			"properties":
+			{
+				"DefaultValue": "True",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Use noise  tex",
+			"group": "None",
+			"inputs": [
+				"True",
+				"False"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant_0000016CF4605B00",
+			"class": "Constant",
+			"class_full": "MaterialExpressionConstant",
+			"pos_x": -928,
+			"pos_y": -160,
+			"properties":
+			{
+				"R": "1.000000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8480",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": -1584,
+			"pos_y": -544,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Assets/VFX/Explosions/MF_Scale_n_Offset.MF_Scale_n_Offset'"
+			},
+			"function_path": "/Game/Assets/VFX/Explosions/MF_Scale_n_Offset.MF_Scale_n_Offset",
+			"inputs": [
+				"R (S)",
+				"G (S)",
+				"B (S)",
+				"A (S)"
+			],
+			"outputs": [
+				"UV"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_00000169E6717E00",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -1808,
+			"pos_y": -592,
+			"properties":
+			{
+				"DefaultValue": "(R=4.000000,G=2.000000,B=0.000000,A=0.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Noise Scale and Offset",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionPanner_00000169E6716C00",
+			"class": "Panner",
+			"class_full": "MaterialExpressionPanner",
+			"pos_x": -1328,
+			"pos_y": -448,
+			"properties":
+			{
+				"SpeedX": "0.000000",
+				"SpeedY": "-1.500000",
+				"ConstCoordinate": "0",
+				"bFractionalPart": "False"
+			},
+			"inputs": [
+				"Coordinate",
+				"Time",
+				"Speed"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionAppendVector_0000016AC7FE2580",
+			"class": "AppendVector",
+			"class_full": "MaterialExpressionAppendVector",
+			"pos_x": -1504,
+			"pos_y": -400,
+			"properties":
+			{
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_00000169E6718E80",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -1792,
+			"pos_y": -400,
+			"properties":
+			{
+				"DefaultValue": "(R=-0.010000,G=0.060000,B=0.000000,A=0.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Noise Speed RG",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionVertexNormalWS_0000016CF46080A0",
+			"class": "VertexNormalWS",
+			"class_full": "MaterialExpressionVertexNormalWS",
+			"pos_x": 512,
+			"pos_y": -144,
+			"properties":
+			{
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FE3FC0",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 510,
+			"pos_y": -45,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "20.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016AC7FEDFC0",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": 240,
+			"pos_y": 48,
+			"properties":
+			{
+				"DefaultValue": "300.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Position offset",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8E80",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": 192,
+			"pos_y": -128,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Engine/Functions/Engine_MaterialFunctions03/Math/RemapValueRange.RemapValueRange'"
+			},
+			"function_path": "/Engine/Functions/Engine_MaterialFunctions03/Math/RemapValueRange.RemapValueRange",
+			"inputs": [
+				"Input (S)",
+				"Input Low (S)",
+				"Input High (S)",
+				"Target Low (S)",
+				"Target High (S)"
+			],
+			"outputs": [
+				"Result"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant_0000016CF4605CC0",
+			"class": "Constant",
+			"class_full": "MaterialExpressionConstant",
+			"pos_x": 64,
+			"pos_y": -144,
+			"properties":
+			{
+				"R": "0.000000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant_0000016CF4605E80",
+			"class": "Constant",
+			"class_full": "MaterialExpressionConstant",
+			"pos_x": 64,
+			"pos_y": -80,
+			"properties":
+			{
+				"R": "1.000000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant_0000016CF4603D40",
+			"class": "Constant",
+			"class_full": "MaterialExpressionConstant",
+			"pos_x": 64,
+			"pos_y": 48,
+			"properties":
+			{
+				"R": "0.300000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant_0000016CF4603C60",
+			"class": "Constant",
+			"class_full": "MaterialExpressionConstant",
+			"pos_x": 64,
+			"pos_y": -16,
+			"properties":
+			{
+				"R": "-0.700000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionOneMinus_0000016BDDD86400",
+			"class": "OneMinus",
+			"class_full": "MaterialExpressionOneMinus",
+			"pos_x": -14,
+			"pos_y": -196,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FEF140",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 448,
+			"pos_y": 336,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FE6F40",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -848,
+			"pos_y": 1088,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "2.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionSaturate_0000016AC7FE0640",
+			"class": "Saturate",
+			"class_full": "MaterialExpressionSaturate",
+			"pos_x": 48,
+			"pos_y": 160,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionDesaturation_0000016AC7FE1400",
+			"class": "Desaturation",
+			"class_full": "MaterialExpressionDesaturation",
+			"pos_x": -624,
+			"pos_y": 0,
+			"properties":
+			{
+				"LuminanceFactors": "(R=0.212639,G=0.715169,B=0.072192,A=1.000000)"
+			},
+			"inputs": [
+				"Input",
+				"Fraction"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionDynamicParameter_0000016BDDD86100",
+			"class": "DynamicParameter",
+			"class_full": "MaterialExpressionDynamicParameter",
+			"pos_x": -848,
+			"pos_y": 160,
+			"properties":
+			{
+				"ParamNames": "(\"Mask power\",\"Desaturation\",\"Param3\",\"Param4\")",
+				"DefaultValue": "(R=0.000000,G=0.000000,B=1.000000,A=1.000000)",
+				"ParameterIndex": "0"
+			},
+			"inputs": [],
+			"outputs": [
+				"Mask power",
+				"Desaturation",
+				"Param3",
+				"Param4"
+			]
+		},
+		{
+			"id": "MaterialExpressionStaticSwitchParameter_00000169E6711380",
+			"class": "StaticSwitchParameter",
+			"class_full": "MaterialExpressionStaticSwitchParameter",
+			"pos_x": -256,
+			"pos_y": -352,
+			"properties":
+			{
+				"DefaultValue": "True",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Noise mult false/add true",
+			"group": "None",
+			"inputs": [
+				"True",
+				"False"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionAdd_0000016AC7FE7940",
+			"class": "Add",
+			"class_full": "MaterialExpressionAdd",
+			"pos_x": -432,
+			"pos_y": -160,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_00000169E6710D80",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": -240,
+			"pos_y": -128,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016AC7FEC300",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -400,
+			"pos_y": 32,
+			"properties":
+			{
+				"DefaultValue": "0.216000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "1.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Add/mult",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionAdd_0000016AC7FE3C00",
+			"class": "Add",
+			"class_full": "MaterialExpressionAdd",
+			"pos_x": -1600,
+			"pos_y": 304,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionSaturate_0000016AC7FE9880",
+			"class": "Saturate",
+			"class_full": "MaterialExpressionSaturate",
+			"pos_x": -1488,
+			"pos_y": 304,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016AC7FE0F00",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -1840,
+			"pos_y": 512,
+			"properties":
+			{
+				"DefaultValue": "0.050000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Opacity tex add",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionStaticSwitchParameter_00000169E6718880",
+			"class": "StaticSwitchParameter",
+			"class_full": "MaterialExpressionStaticSwitchParameter",
+			"pos_x": -48,
+			"pos_y": 1312,
+			"properties":
+			{
+				"DefaultValue": "True",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Side opacity",
+			"group": "None",
+			"inputs": [
+				"True",
+				"False"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016AC7FEA140",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -1104,
+			"pos_y": 1328,
+			"properties":
+			{
+				"DefaultValue": "5.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Fresnel exponent",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016AC7FEC6C0",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -640,
+			"pos_y": 1520,
+			"properties":
+			{
+				"DefaultValue": "2.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Fresnel power",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016AC7FEB040",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE5280",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FEF140",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE5280",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionDepthFade_0000016AC7FE67C0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEB540",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionSaturate_0000016AC7FEF8C0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEB540",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionVertexNormalWS_0000016CF46080A0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE5500",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FE3FC0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE5500",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FEB400",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionDepthFade_0000016AC7FE67C0",
+			"target_input": "Opacity"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016AC7FECF80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionDepthFade_0000016AC7FE67C0",
+			"target_input": "FadeDistance"
+		},
+		{
+			"source_id": "MaterialExpressionSaturate_0000016AC7FE0640",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE7300",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6712400",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE7300",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FE7300",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEDC00",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionParticleColor_0000016CF460EFC0",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEDC00",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6712400",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE8FC0",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionParticleColor_0000016CF460EFC0",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE8FC0",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE1CC0",
+			"source_output_index": 0,
+			"source_output_name": "UV",
+			"target_id": "MaterialExpressionPanner_00000169E6717200",
+			"target_input": "Coordinate"
+		},
+		{
+			"source_id": "MaterialExpressionAppendVector_0000016AC7FE4380",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionPanner_00000169E6717200",
+			"target_input": "Speed"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6716D80",
+			"source_output_index": 1,
+			"source_output_name": "R",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE26C0",
+			"target_input": "R (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6716D80",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE26C0",
+			"target_input": "G (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6716D80",
+			"source_output_index": 3,
+			"source_output_name": "B",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE26C0",
+			"target_input": "B (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6716D80",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE26C0",
+			"target_input": "A (S)"
+		},
+		{
+			"source_id": "MaterialExpressionPanner_00000169E6717200",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionTextureSampleParameter2D_0000016A99734100",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE26C0",
+			"source_output_index": 0,
+			"source_output_name": "UV",
+			"target_id": "MaterialExpressionTextureSampleParameter2D_0000016A99737800",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6715D00",
+			"source_output_index": 1,
+			"source_output_name": "R",
+			"target_id": "MaterialExpressionAppendVector_0000016AC7FE4380",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6715D00",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionAppendVector_0000016AC7FE4380",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6715D00",
+			"source_output_index": 3,
+			"source_output_name": "B",
+			"target_id": "MaterialExpressionAppendVector_0000016AC7FE5000",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6715D00",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionAppendVector_0000016AC7FE5000",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionPanner_00000169E6717F80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionTextureSampleParameter2D_0000016A99735780",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionLinearInterpolate_00000169E6710D80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionPower_0000016AC7FEFC80",
+			"target_input": "Base"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016AC7FE62C0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionPower_0000016AC7FEFC80",
+			"target_input": "Exponent"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6717080",
+			"source_output_index": 1,
+			"source_output_name": "R",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE1CC0",
+			"target_input": "R (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6717080",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE1CC0",
+			"target_input": "G (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6717080",
+			"source_output_index": 3,
+			"source_output_name": "B",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE1CC0",
+			"target_input": "B (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6717080",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE1CC0",
+			"target_input": "A (S)"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE2300",
+			"source_output_index": 0,
+			"source_output_name": "UV",
+			"target_id": "MaterialExpressionPanner_00000169E6717F80",
+			"target_input": "Coordinate"
+		},
+		{
+			"source_id": "MaterialExpressionAppendVector_0000016AC7FE5000",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionPanner_00000169E6717F80",
+			"target_input": "Speed"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6715A00",
+			"source_output_index": 1,
+			"source_output_name": "R",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE2300",
+			"target_input": "R (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6715A00",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE2300",
+			"target_input": "G (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6715A00",
+			"source_output_index": 3,
+			"source_output_name": "B",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE2300",
+			"target_input": "B (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6715A00",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE2300",
+			"target_input": "A (S)"
+		},
+		{
+			"source_id": "MaterialExpressionStaticSwitchParameter_00000169E6710480",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionPower_0000016AC7FE3340",
+			"target_input": "Base"
+		},
+		{
+			"source_id": "MaterialExpressionDynamicParameter_0000016BDDD80C00",
+			"source_output_index": 0,
+			"source_output_name": "Mask power",
+			"target_id": "MaterialExpressionPower_0000016AC7FE3340",
+			"target_input": "Exponent"
+		},
+		{
+			"source_id": "MaterialExpressionPower_0000016AC7FE3340",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE6680",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016AC7FEA640",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE6680",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FE6680",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionSaturate_0000016BDDD84500",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionSaturate_0000016BDDD84500",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEB2C0",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameter2D_0000016A99737800",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEB2C0",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FE8FC0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEB400",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FEB2C0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEB400",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionTextureCoordinate_0000016CF4608F80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionComponentMask_0000016BDDD80800",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FE6F40",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionPower_0000016AC7FED980",
+			"target_input": "Base"
+		},
+		{
+			"source_id": "MaterialExpressionPower_0000016AC7FED980",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FED200",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionComponentMask_0000016BDDD80800",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionOneMinus_0000016BDDD86300",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FED200",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionSaturate_0000016BDDD84400",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016AC7FEA140",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionFresnel_00000169E6718100",
+			"target_input": "ExponentIn"
+		},
+		{
+			"source_id": "MaterialExpressionFresnel_00000169E6718100",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionOneMinus_0000016BDDD81500",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionPower_0000016AC7FEBB80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE1B80",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016AC7FE7440",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE1B80",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FEAF00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionSaturate_0000016AC7FEF8C0",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionStaticSwitchParameter_00000169E6718580",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEAF00",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionStaticSwitchParameter_00000169E6718880",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEAF00",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionOneMinus_0000016BDDD81500",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionPower_0000016AC7FEBB80",
+			"target_input": "Base"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016AC7FEC6C0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionPower_0000016AC7FEBB80",
+			"target_input": "Exponent"
+		},
+		{
+			"source_id": "MaterialExpressionPanner_00000169E6716C00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionTextureSampleParameter2D_0000016A99734380",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionSaturate_0000016BDDD84400",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionStaticSwitchParameter_00000169E6718580",
+			"target_input": "True"
+		},
+		{
+			"source_id": "MaterialExpressionConstant_0000016CF4604280",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionStaticSwitchParameter_00000169E6718580",
+			"target_input": "False"
+		},
+		{
+			"source_id": "MaterialExpressionSaturate_0000016AC7FE9880",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionStaticSwitchParameter_00000169E6710480",
+			"target_input": "True"
+		},
+		{
+			"source_id": "MaterialExpressionConstant_0000016CF46024C0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionStaticSwitchParameter_00000169E6710480",
+			"target_input": "False"
+		},
+		{
+			"source_id": "MaterialExpressionStaticSwitchParameter_00000169E6717B00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEEEC0",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionDesaturation_0000016AC7FE1400",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEEEC0",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameter2D_0000016A99734380",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionStaticSwitchParameter_00000169E6717B00",
+			"target_input": "True"
+		},
+		{
+			"source_id": "MaterialExpressionConstant_0000016CF4605B00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionStaticSwitchParameter_00000169E6717B00",
+			"target_input": "False"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6717E00",
+			"source_output_index": 1,
+			"source_output_name": "R",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8480",
+			"target_input": "R (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6717E00",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8480",
+			"target_input": "G (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6717E00",
+			"source_output_index": 3,
+			"source_output_name": "B",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8480",
+			"target_input": "B (S)"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6717E00",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8480",
+			"target_input": "A (S)"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8480",
+			"source_output_index": 0,
+			"source_output_name": "UV",
+			"target_id": "MaterialExpressionPanner_00000169E6716C00",
+			"target_input": "Coordinate"
+		},
+		{
+			"source_id": "MaterialExpressionAppendVector_0000016AC7FE2580",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionPanner_00000169E6716C00",
+			"target_input": "Speed"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6718E80",
+			"source_output_index": 1,
+			"source_output_name": "R",
+			"target_id": "MaterialExpressionAppendVector_0000016AC7FE2580",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_00000169E6718E80",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionAppendVector_0000016AC7FE2580",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8E80",
+			"source_output_index": 0,
+			"source_output_name": "Result",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE3FC0",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016AC7FEDFC0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE3FC0",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionOneMinus_0000016BDDD86400",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8E80",
+			"target_input": "Input (S)"
+		},
+		{
+			"source_id": "MaterialExpressionConstant_0000016CF4605CC0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8E80",
+			"target_input": "Input Low (S)"
+		},
+		{
+			"source_id": "MaterialExpressionConstant_0000016CF4605E80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8E80",
+			"target_input": "Input High (S)"
+		},
+		{
+			"source_id": "MaterialExpressionConstant_0000016CF4603C60",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8E80",
+			"target_input": "Target Low (S)"
+		},
+		{
+			"source_id": "MaterialExpressionConstant_0000016CF4603D40",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016AC7FE8E80",
+			"target_input": "Target High (S)"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameter2D_0000016A99734380",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionOneMinus_0000016BDDD86400",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FEDC00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEF140",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionSaturate_0000016BDDD84500",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEF140",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionOneMinus_0000016BDDD86300",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FE6F40",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionPower_0000016AC7FEFC80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionSaturate_0000016AC7FE0640",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameter2D_0000016A99734100",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionDesaturation_0000016AC7FE1400",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionDynamicParameter_0000016BDDD86100",
+			"source_output_index": 1,
+			"source_output_name": "Desaturation",
+			"target_id": "MaterialExpressionDesaturation_0000016AC7FE1400",
+			"target_input": "Fraction"
+		},
+		{
+			"source_id": "MaterialExpressionStaticSwitchParameter_00000169E6717B00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionAdd_0000016AC7FE7940",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionDesaturation_0000016AC7FE1400",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionAdd_0000016AC7FE7940",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionAdd_0000016AC7FE7940",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_00000169E6710D80",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FEEEC0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_00000169E6710D80",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016AC7FEC300",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_00000169E6710D80",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameter2D_0000016A99735780",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionAdd_0000016AC7FE3C00",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016AC7FE0F00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionAdd_0000016AC7FE3C00",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionAdd_0000016AC7FE3C00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionSaturate_0000016AC7FE9880",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FE1B80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionStaticSwitchParameter_00000169E6718880",
+			"target_input": "True"
+		},
+		{
+			"source_id": "MaterialExpressionConstant_0000016CF4604280",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionStaticSwitchParameter_00000169E6718880",
+			"target_input": "False"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "EmissiveColor",
+			"expression_id": "MaterialExpressionMultiply_0000016AC7FE5280",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "Opacity",
+			"expression_id": "MaterialExpressionMultiply_0000016AC7FEB540",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "WorldPositionOffset",
+			"expression_id": "MaterialExpressionMultiply_0000016AC7FE5500",
+			"output_index": 0,
+			"output_name": ""
+		}
+	]
+}

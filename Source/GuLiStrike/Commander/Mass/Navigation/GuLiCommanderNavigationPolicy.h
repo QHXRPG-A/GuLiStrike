@@ -79,6 +79,8 @@ namespace GuLiCommanderNavigationPolicy
 		FVector Location = FVector::ZeroVector;
 		bool bParticipates = false;
 		bool bReceivesAvoidance = false;
+		/** Zero keeps the legacy global minimum; static proxies use their actual footprint radius. */
+		float RadiusCentimeters = 0.0f;
 	};
 
 	/** Work counters produced by one manual-separation refresh. */

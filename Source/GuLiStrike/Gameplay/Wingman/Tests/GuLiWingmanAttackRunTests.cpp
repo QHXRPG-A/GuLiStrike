@@ -2,8 +2,11 @@
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Battle/Contracts/GuLiWingmanProtocolTypes.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySet.h"
+#include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
 #include "Gameplay/Data/Generated/GuLiStrikeShipTableRows.h"
 #include "Misc/AutomationTest.h"
+#include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
+#include "Gameplay/Data/Generated/GuLiStrikeSpellFieldsTableRows.h"
 #include "UObject/CoreNet.h"
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanGroundRunTest, "GuLiStrike.Wingman.Attack.GroundPathAndCadence",
@@ -49,10 +52,8 @@ bool FGuLiWingmanGroundRunTest::RunTest(const FString&)
 	TestTrue(TEXT("World-stable fallbacks fill the 22.5 degree gaps"),
 		FMath::IsNearlyEqual(FMath::RadiansToDegrees(FMath::Atan2(
 			ApproachCandidates[8].Y, ApproachCandidates[8].X)), 22.5f, 0.01f));
-	TestTrue(TEXT("Setup point supplies the complete six-second lead-in"),
-		GuLiWingmanAttack::GroundRunSetupPoint(Path).Equals(
-			Path.Entry - Path.DirectionAt(0.0f)
-				* (Path.Speed * GuLiWingmanAttack::GroundIngressLeadSeconds), 0.01));
+	TestTrue(TEXT("Ground ingress has no fixed speed-scaled lead-in"),
+		GuLiWingmanAttack::GroundRunSetupPoint(Path).Equals(Path.Entry, 0.01));
 	TestTrue(TEXT("Out-of-range ground approach index fails closed"),
 		GuLiWingmanAttack::BuildGroundApproachCandidate(FVector::ForwardVector, 0u,
 			GuLiWingmanAttack::MaximumGroundApproachCandidates).IsNearlyZero());
@@ -77,6 +78,13 @@ bool FGuLiWingmanGroundRunTest::RunTest(const FString&)
 	if (!TestNotNull(TEXT("Authored attack source table is deployed"), SourceRow)) return false;
 	TestEqual(TEXT("Authored default is ten missiles"), SourceRow->MissileCount, 10);
 	TestEqual(TEXT("Authored default dive is 1.5 seconds"), SourceRow->DiveSeconds, 1.5f);
+	TestEqual(TEXT("Authored ground attack flight speed is doubled"),
+		SourceRow->FlightSpeedCentimetersPerSecond, 9000.0f);
+	FGuLiSpellFieldConfig Field;
+	TestTrue(TEXT("Ship ground weapon links the global field row"),
+		UGuLiSpellFieldDataSubsystem::ResolveAuthoredConfig(FName(*SourceRow->EffectConfigId), Field));
+	TestEqual(TEXT("Global ground blast radius is 40m"), Field.Radius, 4000.0f);
+	TestEqual(TEXT("Ground damage is authored only in the global table"), SourceRow->Damage, 0.0f);
 	auto* TransientTable = NewObject<UDataTable>();
 	TransientTable->RowStruct = FGuLiStrikeShipWingmanWeaponsRow::StaticStruct();
 	auto EditedRow = *SourceRow; EditedRow.MissileCount = 6; EditedRow.DiveSeconds = 2.0f;
@@ -86,101 +94,123 @@ bool FGuLiWingmanGroundRunTest::RunTest(const FString&)
 	FGuLiWingmanWeaponRuntimeConfig Resolved;
 	TestTrue(TEXT("A changed source row resolves through the real weapon definition"), Definition->BuildRuntimeConfig(Resolved));
 	TestEqual(TEXT("Missile count comes from the changed table"), Resolved.Attack.MissileCount, 6);
+	TestEqual(TEXT("Resolved damage uses the global field"), Resolved.Damage, Field.Damage);
+	TestEqual(TEXT("Resolved radius uses the global field"), Resolved.Attack.ExplosionRadius, Field.Radius);
+	auto* Fields = GetDefault<UGuLiSpellFieldDataSettings>()->DataTable.LoadSynchronous();
+	auto* Authored = Fields->FindRow<FGuLiStrikeSpellFieldsFieldsRow>(Field.ConfigId, TEXT("Global field edit acceptance"));
+	const auto Original = *Authored;
+	Authored->Damage = 47; Authored->RadiusCentimeters = 3200;
+	FGuLiWingmanWeaponRuntimeConfig ChangedField;
+	const bool bChanged = Definition->BuildRuntimeConfig(ChangedField);
+	*Authored = Original;
+	TestTrue(TEXT("Editing the global field changes the real wingman weapon without editing Ship"), bChanged);
+	TestEqual(TEXT("Global damage edit reaches wingman"), ChangedField.Damage, 47.0f);
+	TestEqual(TEXT("Global radius edit reaches wingman"), ChangedField.Attack.ExplosionRadius, 3200.0f);
 	TestEqual(TEXT("Duration comes from the changed table"), Resolved.Attack.DiveSeconds, 2.0f);
 	TestEqual(TEXT("New cadence ends at the configured duration"), GuLiWingmanAttack::ShotTime(5, Resolved.Attack.MissileCount, Resolved.Attack.DiveSeconds), 2.0f);
 	return true;
 }
 
-IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanAirRunTest, "GuLiStrike.Wingman.Attack.ThreeDimensionalDogfightStateMachine",
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanAirRunTest, "GuLiStrike.Wingman.Attack.AirBurstOrbitStateMachine",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FGuLiWingmanAirRunTest::RunTest(const FString&)
 {
 	using namespace GuLiWingmanAttack;
 	FGuLiWingmanAttackProfile Profile;
-	Profile.Pattern = EGuLiWingmanAttackPattern::AirDogfight;
+	Profile.Pattern = EGuLiWingmanAttackPattern::AirBurstOrbit;
 	Profile.ExecutorId = TEXT("WingmanMachineGun");
-	TestTrue(TEXT("Default dogfight profile is valid"), Profile.IsWellFormed());
-
-	EGuLiWingmanAttackPhase Phase = EGuLiWingmanAttackPhase::AirApproachFire;
-	Phase = NextAirDogfightPhase(Phase);
-	TestEqual(TEXT("Approach enters breakaway turn"), Phase, EGuLiWingmanAttackPhase::AirBreakawayTurn);
-	Phase = NextAirDogfightPhase(Phase);
-	TestEqual(TEXT("Breakaway turn enters retreat"), Phase, EGuLiWingmanAttackPhase::AirRetreat);
-	Phase = NextAirDogfightPhase(Phase);
-	TestEqual(TEXT("Retreat enters return turn"), Phase, EGuLiWingmanAttackPhase::AirReturnTurn);
-	Phase = NextAirDogfightPhase(Phase);
-	TestEqual(TEXT("Return turn closes the loop through approach"), Phase, EGuLiWingmanAttackPhase::AirApproachFire);
-	TestTrue(TEXT("Machine gun can queue in approach"), CanQueueAirGun(EGuLiWingmanAttackPhase::AirApproachFire));
-	for (EGuLiWingmanAttackPhase NonFiring : {EGuLiWingmanAttackPhase::AirBreakawayTurn,
-		EGuLiWingmanAttackPhase::AirRetreat, EGuLiWingmanAttackPhase::AirReturnTurn})
-		TestFalse(TEXT("Machine gun is blocked outside approach"), CanQueueAirGun(NonFiring));
-
-	TestTrue(TEXT("Nose-on target can fire"),IsInsideForwardArc(FVector::ZeroVector,FVector::ForwardVector,FVector(1000,0,0),0,2000,20));
-	TestFalse(TEXT("Side target cannot fire"),IsInsideForwardArc(FVector::ZeroVector,FVector::ForwardVector,FVector(0,1000,0),0,2000,20));
-	TestFalse(TEXT("Rear target cannot fire"),IsInsideForwardArc(FVector::ZeroVector,FVector::ForwardVector,FVector(-1000,0,0),0,2000,20));
-
-	const FVector Position(-40000, 0, 0), Target = FVector::ZeroVector, Ship(200000, 0, 0);
-	const uint32 Seed = MakeAirManeuverSeed(17, 3, 1, 900, BreakawayTurnSalt, 0);
-	const FVector Retreat = BuildRetreatCandidate(Position, Target, Ship, 33000, Profile, Seed);
-	const double Longitudinal = Retreat.X;
-	const double Ellipse = FMath::Square(Retreat.Y / Profile.RetreatLateralRadius)
-		+ FMath::Square(Retreat.Z / Profile.RetreatVerticalRadius);
-	TestTrue(TEXT("Retreat point uses the 35-60 percent target-to-Ship interval"),
-		Longitudinal >= 70000.0 && Longitudinal <= 120000.0);
-	TestTrue(TEXT("Retreat point lies in the authored 3D elliptical cross section"), Ellipse <= 1.0001);
-	const FVector ShortCorridorRetreat = BuildRetreatCandidate(Position, Target, FVector(30000,0,0),
-		33000, Profile, Seed);
-	TestTrue(TEXT("Short corridor extends through and behind Ship to the 450m minimum"),
-		ShortCorridorRetreat.X >= Profile.RetreatMinimumDistance && ShortCorridorRetreat.X > 30000.0);
-	const FVector FrozenRetreat = Retreat;
-	const FVector RebuiltAfterMovement = BuildRetreatCandidate(Position, FVector(10000,0,0), FVector(250000,0,0),
-		33000, Profile, Seed);
-	TestTrue(TEXT("A run keeps its frozen retreat point while live endpoints move"), FrozenRetreat.Equals(Retreat));
-	TestFalse(TEXT("Resampling against moved endpoints would be a different point"), FrozenRetreat.Equals(RebuiltAfterMovement, 0.01));
-
-	FGuLiWingmanAirTurnPlan Turn, Repeat, NextRound;
-	TestTrue(TEXT("Deterministic turn plan builds"), BuildAirTurnPlan(Position, Retreat, 4500, 20, Profile, Seed, Turn));
-	TestTrue(TEXT("Same entry seed reproduces the exact control point"),
-		BuildAirTurnPlan(Position, Retreat, 4500, 20, Profile, Seed, Repeat)
-		&& Repeat.ControlPoint.Equals(Turn.ControlPoint, 0.001)
-		&& Repeat.SignedYawDegrees == Turn.SignedYawDegrees && Repeat.PitchDegrees == Turn.PitchDegrees);
-	const uint32 NextSeed = MakeAirManeuverSeed(17, 3, 2, 930, BreakawayTurnSalt, 0);
-	TestTrue(TEXT("A later state entry builds another legal turn"),
-		BuildAirTurnPlan(Position, Retreat, 4500, 20, Profile, NextSeed, NextRound));
-	TestFalse(TEXT("Different rounds do not reuse the same turn"), NextRound.ControlPoint.Equals(Turn.ControlPoint, 0.001));
-	TestTrue(TEXT("Random yaw respects authored magnitude bounds"),
-		FMath::Abs(Turn.SignedYawDegrees) >= 40.0f && FMath::Abs(Turn.SignedYawDegrees) <= 90.0f);
-	TestTrue(TEXT("Random pitch respects authored bounds"), FMath::Abs(Turn.PitchDegrees) <= 30.0f);
-	const float PhysicalTurnRadius = 4500.0f / FMath::DegreesToRadians(20.0f);
-	TestTrue(TEXT("Control point is two physical turn radii away"),
-		FMath::IsNearlyEqual(FVector::Distance(Turn.Origin, Turn.ControlPoint), 2.0f * PhysicalTurnRadius, 0.1f));
-	bool bSawLeft = false, bSawRight = false, bSawClimb = false, bSawDive = false;
-	for (uint32 Entry = 1; Entry <= 64; ++Entry)
-	{
-		FGuLiWingmanAirTurnPlan Sample;
-		const uint32 SampleSeed = MakeAirManeuverSeed(17 + Entry, 3, Entry, 900 + Entry, ReturnTurnSalt, 0);
-		if (!BuildAirTurnPlan(Position, Retreat, 4500, 20, Profile, SampleSeed, Sample)) continue;
-		bSawLeft |= Sample.SignedYawDegrees < 0; bSawRight |= Sample.SignedYawDegrees > 0;
-		bSawClimb |= Sample.PitchDegrees > 0; bSawDive |= Sample.PitchDegrees < 0;
-	}
-	TestTrue(TEXT("Deterministic entries cover left and right turns"), bSawLeft && bSawRight);
-	TestTrue(TEXT("Deterministic entries cover climbs and dives"), bSawClimb && bSawDive);
-	TestFalse(TEXT("Turn remains active before reaching its point or timeout"),
-		ShouldFinishAirTurn(Turn.Origin, Turn, Profile.ManeuverArrivalRadius, 9.99));
-	TestTrue(TEXT("Ten-second timeout switches the turn to direct guidance"),
-		ShouldFinishAirTurn(Turn.Origin, Turn, Profile.ManeuverArrivalRadius, 10.0));
-	TestTrue(TEXT("Passing a control point completes the turn"),
-		ShouldFinishAirTurn(Turn.ControlPoint + (Turn.ControlPoint - Turn.Origin).GetSafeNormal() * 100,
-			Turn, Profile.ManeuverArrivalRadius, 1.0));
+	TestEqual(TEXT("Burst-start wire semantics require protocol version fourteen"),
+		GULI_WINGMAN_PROTOCOL_VERSION, 14u);
+	TestTrue(TEXT("Default burst-orbit profile is valid"), Profile.IsWellFormed());
+	TestEqual(TEXT("Below 100m first separates"), SelectAirEntryPhase(9999.0f, Profile),
+		EGuLiWingmanAttackPhase::AirSeparate);
+	TestEqual(TEXT("Exactly 100m can start a burst"), SelectAirEntryPhase(10000.0f, Profile),
+		EGuLiWingmanAttackPhase::AirApproachFire);
+	TestFalse(TEXT("Exactly 50m keeps firing"), ShouldEndAirBurst(5000.0f, 1.0, Profile));
+	TestTrue(TEXT("Strictly below 50m stops firing"), ShouldEndAirBurst(4999.0f, 1.0, Profile));
+	TestFalse(TEXT("Burst remains active before five seconds"), ShouldEndAirBurst(8000.0f, 4.999, Profile));
+	TestTrue(TEXT("Burst ends at five seconds"), ShouldEndAirBurst(8000.0f, 5.0, Profile));
+	TestFalse(TEXT("Cooldown does not start outside the 520m orbit"),
+		ShouldBeginAirOrbitCooldown(52000.1f, 52000.0f));
+	TestTrue(TEXT("Cooldown starts on the 520m boundary"),
+		ShouldBeginAirOrbitCooldown(52000.0f, 52000.0f));
+	TestFalse(TEXT("A full three seconds is required in orbit"),
+		IsAirOrbitCooldownComplete(2.999, Profile));
+	TestTrue(TEXT("Three seconds in orbit completes cooldown"),
+		IsAirOrbitCooldownComplete(3.0, Profile));
+	TestEqual(TEXT("Five-hertz burst includes the shot at t=0"),
+		AirBurstShotsDue(0.2f, 5.0f, 0.0), 1);
+	TestEqual(TEXT("Five-hertz five-second half-open burst has 25 shots"),
+		AirBurstShotsDue(0.2f, 5.0f, 5.0), 25);
+	TestEqual(TEXT("Thirty-hertz five-second half-open burst has 150 shots"),
+		AirBurstShotsDue(MinimumAirShotIntervalSeconds, 5.0f, 5.0), 150);
+	TestEqual(TEXT("A rate above 30Hz is invalid rather than clamped"),
+		AirBurstShotsDue(0.03f, 5.0f, 5.0), 0);
+	FGuLiWingmanWeaponRuntimeConfig Runtime;
+	Runtime.Attack = Profile;
+	Runtime.Damage = 10.0f;
+	Runtime.CooldownSeconds = MinimumAirShotIntervalSeconds;
+	TestTrue(TEXT("Exactly 30Hz is a valid sustained-fire configuration"), Runtime.IsWellFormed());
+	Runtime.CooldownSeconds = 0.03f;
+	TestFalse(TEXT("A sustained-fire configuration above 30Hz is invalid"), Runtime.IsWellFormed());
 
 	auto* SourceTable = LoadObject<UDataTable>(nullptr,
 		TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeShip_WingmanWeapons.DT_GuLiStrikeShip_WingmanWeapons"));
 	const auto* SourceRow = SourceTable ? SourceTable->FindRow<FGuLiStrikeShipWingmanWeaponsRow>(
-		TEXT("WingmanMachineGun"), TEXT("Dogfight source acceptance")) : nullptr;
-	if (!TestNotNull(TEXT("Dogfight source table is deployed"), SourceRow)) return false;
-	TestEqual(TEXT("Authored attack pattern is AirDogfight"), SourceRow->AttackPattern, FString(TEXT("AirDogfight")));
-	TestEqual(TEXT("Authored breakaway distance is 300m"), SourceRow->BreakawayDistanceCentimeters, 30000.0f);
-	TestEqual(TEXT("Authored retreat minimum is 450m"), SourceRow->RetreatMinimumDistanceCentimeters, 45000.0f);
+		TEXT("WingmanMachineGun"), TEXT("Burst-orbit source acceptance")) : nullptr;
+	if (!TestNotNull(TEXT("Burst-orbit source table is deployed"), SourceRow)) return false;
+	TestEqual(TEXT("Authored attack pattern is AirBurstOrbit"), SourceRow->AttackPattern, FString(TEXT("AirBurstOrbit")));
+	TestEqual(TEXT("Authored air attack flight speed is doubled"),
+		SourceRow->FlightSpeedCentimetersPerSecond, 9000.0f);
+	TestEqual(TEXT("Authored fire start distance is 100m"), SourceRow->AirFireStartDistanceCentimeters, 10000.0f);
+	TestEqual(TEXT("Authored fire stop distance is 50m"), SourceRow->AirFireStopDistanceCentimeters, 5000.0f);
+	TestEqual(TEXT("Authored burst duration is five seconds"), SourceRow->AirBurstDurationSeconds, 5.0f);
+	TestEqual(TEXT("Authored orbit cooldown is three seconds"), SourceRow->AirOrbitCooldownSeconds, 3.0f);
+	TestEqual(TEXT("Authored machine-gun logical interval is 0.2 seconds"), SourceRow->CooldownSeconds, 0.2f);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+	FGuLiWingmanNativeV3AttackFallbackTest,
+	"GuLiStrike.Wingman.Attack.NativeV3SpeedRadiusAndProjectile",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanNativeV3AttackFallbackTest::RunTest(const FString&)
+{
+	const UGuLiShipAbilitySet* Set = UGuLiShipAbilitySet::CreateNativeV3Transient(GetTransientPackage());
+	if (!TestNotNull(TEXT("Native V3 ability set exists"), Set)) return false;
+	const UGuLiWingmanWeaponDefinition* MachineGun = nullptr;
+	const UGuLiWingmanWeaponDefinition* GroundMissile = nullptr;
+	for (const FGuLiShipAbilityGrant& Grant : Set->Grants)
+	{
+		if (Grant.AbilityId == TAG_GuLi_ShipAbility_Weapon_Wingman_MachineGun)
+		{
+			MachineGun = Grant.WeaponDefinition;
+		}
+		else if (Grant.AbilityId == TAG_GuLi_ShipAbility_Weapon_Wingman_GroundMissile)
+		{
+			GroundMissile = Grant.WeaponDefinition;
+		}
+	}
+	if (!TestNotNull(TEXT("Native V3 machine-gun definition exists"), MachineGun)
+		|| !TestNotNull(TEXT("Native V3 ground-missile definition exists"), GroundMissile))
+	{
+		return false;
+	}
+	TestEqual(TEXT("Native V3 catalog carries ability-set revision four"), Set->Revision, 4u);
+	TestEqual(TEXT("Machine-gun definition revision advances"), MachineGun->Revision, 3u);
+	TestEqual(TEXT("Ground-missile definition revision advances"), GroundMissile->Revision, 2u);
+	TestEqual(TEXT("Native machine gun uses burst-orbit"), MachineGun->Attack.Pattern,
+		EGuLiWingmanAttackPattern::AirBurstOrbit);
+	TestEqual(TEXT("Native machine-gun logical interval is 0.2 seconds"), MachineGun->CooldownSeconds, 0.2f);
+	TestEqual(TEXT("Native machine-gun burst lasts five seconds"), MachineGun->Attack.AirBurstDurationSeconds, 5.0f);
+	TestEqual(TEXT("Native machine-gun attack speed is doubled"), MachineGun->Attack.FlightSpeed, 9000.0f);
+	TestEqual(TEXT("Native ground-run attack speed is doubled"), GroundMissile->Attack.FlightSpeed, 9000.0f);
+	TestEqual(TEXT("Native ground blast radius is five times the shared field radius"),
+		GroundMissile->Attack.ExplosionRadius, 4000.0f);
+	TestEqual(TEXT("Ground attack uses the Wingman-only projectile definition"),
+		GroundMissile->AttackProjectile.ToSoftObjectPath().ToString(),
+		FString(TEXT("/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundMissile.DA_WingmanGroundMissile")));
 	return true;
 }
 

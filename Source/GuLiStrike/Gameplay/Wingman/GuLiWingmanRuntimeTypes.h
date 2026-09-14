@@ -46,7 +46,7 @@ struct GULISTRIKE_API FGuLiWingmanFormationSlotState
 	float RadiusCentimeters = 30000.0f;
 	float HeightCentimeters = 7500.0f;
 	float PhaseRadians = 0.0f;
-	float AngularSpeedRadiansPerSecond = 0.08f;
+	float AngularSpeedRadiansPerSecond = 0.16f;
 	bool bClockwise = true;
 };
 
@@ -68,7 +68,7 @@ struct GULISTRIKE_API FGuLiWingmanGuidanceState
 	FVector DesiredPosition = FVector::ZeroVector;
 	FVector DesiredForward = FVector::ForwardVector;
 	FVector PreferredVelocity = FVector::ZeroVector;
-	float DesiredSpeedCentimetersPerSecond = 4500.0f;
+	float DesiredSpeedCentimetersPerSecond = 9000.0f;
 	bool bUsesVelocityField = false;
 	bool bAttackGuidance = false;
 };
@@ -130,9 +130,6 @@ struct GULISTRIKE_API FGuLiWingmanAttackRunState
 {
 	EGuLiWingmanAttackPhase Phase = EGuLiWingmanAttackPhase::Idle;
 	FGuLiWingmanGroundRunPath Path;
-	FGuLiWingmanAirTurnPlan AirTurn;
-	FVector RetreatPoint = FVector::ZeroVector;
-	FVector RetreatOrigin = FVector::ZeroVector;
 	FGuLiWingmanAttackTarget Target;
 	FName SlotId;
 	FName SkillId;
@@ -141,7 +138,6 @@ struct GULISTRIKE_API FGuLiWingmanAttackRunState
 	uint32 ProfileRevision = 0u;
 	uint32 LeaseEpoch = 0u;
 	uint32 RunId = 0u;
-	uint32 AirStateEntrySerial = 0u;
 	uint32 CompletedGroundRuns = 0u;
 	int32 NextShotIndex = 0;
 	double StartTime = 0.0;
@@ -150,7 +146,6 @@ struct GULISTRIKE_API FGuLiWingmanAttackRunState
 	uint8 LastCancelReason = 0u;
 	uint8 GroundPathFailureMask = 0u;
 	uint8 GroundNavigationFailureMask = 0u;
-	bool bAirTurnUsingDirectGuidance = false;
 	FVector PreferredVelocity = FVector::ZeroVector;
 	bool bGuiding = false;
 };

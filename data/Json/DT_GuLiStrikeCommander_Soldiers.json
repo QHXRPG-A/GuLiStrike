@@ -6,7 +6,8 @@
     "MovementSpeedCmPerSecond": 3600.0,
     "MaxHealth": 100.0,
     "ModelAsset": "/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd",
-    "Defense": 0.0
+    "Defense": 0.0,
+    "PresentationScale": 1.0
   },
   {
     "Name": "WM01",
@@ -15,6 +16,18 @@
     "MovementSpeedCmPerSecond": 3600.0,
     "MaxHealth": 300.5,
     "ModelAsset": "/Game/Commander/Units/SM_WM01_Crowd.SM_WM01_Crowd",
-    "Defense": 0.0
+    "Defense": 0.0,
+    "PresentationScale": 1.0
+  },
+  {
+    "Name": "ElectromagneticMiner",
+    "Id": 3,
+    "Note": "指挥官可控制矿车；原车18米，4500cm/s；采矿业务由矿车Manager调度",
+    "MovementSpeedCmPerSecond": 4500.0,
+    "MaxHealth": 1000.0,
+    "Defense": 0.0,
+    "ActorClass": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
+    "PresentationClass": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+    "PresentationScale": 3.0422898572084356
   }
 ]

@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Wingman/GuLiWingmanSimulationSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 
 #include "Battle/Relay/GuLiWingmanRelayTypes.h"
 #include "Development/GuLiWingmanQAEvidence.h"
@@ -125,7 +126,7 @@ namespace
 		TArray<FVector>& OutPositions,
 		int32& OutFailedMemberIndex,
 		FVector& OutFailedPosition,
-		EGuLiFlightNavSegmentStatus& OutFailureStatus)
+		EGuLiFlightNavSegmentStatus& OutFailureStatus, TConstArrayView<int32> LivingSlots = {})
 	{
 		OutPositions.Reset();
 		OutPositions.Reserve(GULI_WINGMAN_GROUP_SIZE);
@@ -143,6 +144,7 @@ namespace
 
 		for (int32 StableSlot = 0; StableSlot < GULI_WINGMAN_GROUP_SIZE; ++StableSlot)
 		{
+			if (!LivingSlots.IsEmpty() && !LivingSlots.Contains(StableSlot)) { OutPositions.Add(FVector(MAX_flt)); continue; }
 			FGuLiWingmanHandle Handle;
 			Handle.Flight.FlightIndex = static_cast<uint8>(
 				StableSlot / GULI_WINGMAN_MEMBERS_PER_FLIGHT);
@@ -669,6 +671,10 @@ bool UGuLiWingmanSimulationSubsystem::ApplyRosterCut(
 			return false;
 		}
 		FGuLiWingmanRuntimeState& State = Pawn->GetMutableRuntimeState();
+		// Copy the old generation and its flight velocity before the reliable roster hides/reuses it.
+		if (State.Dynamics.bAlive && (RosterEntry->bDead || State.Identity.Handle != RosterEntry->Wingman))
+			if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>())
+				Feedback->ApplyWingmanFeedback(State.Identity.Handle, Pawn->GetPresentationTransform().GetLocation(), true);
 		if (State.Identity.Handle != RosterEntry->Wingman)
 		{
 			const FTransform PreservedTransform = Pawn->GetActorTransform();
@@ -770,11 +776,40 @@ void UGuLiWingmanSimulationSubsystem::DestroyAllOwnedGroups()
 	OwnedGroups.Reset();
 }
 
+bool UGuLiWingmanSimulationSubsystem::PlanExternalFormationPositions(UWorld* World, const FTransform& Carrier,
+	const FGuLiWingmanFormationRuntimeConfig& Formation, TArray<FVector>& OutPositions, TConstArrayView<int32> LivingSlots)
+{
+	int32 Failed; FVector Point; EGuLiFlightNavSegmentStatus Status;
+	return World && BuildInitialFormationPositions(World->GetSubsystem<UGuLiFlightNavigationSubsystem>(), true,
+		Carrier, Formation, OutPositions, Failed, Point, Status, LivingSlots);
+}
+
+void UGuLiWingmanSimulationSubsystem::SetGroupExternalControlState(const FGuLiWingmanGroupHandle& Group, bool bPhased, bool bLocked)
+{
+	if (auto* Runtime = OwnedGroups.Find(Group))
+	{
+		if (bLocked && !Runtime->bExternalActionsLocked)
+		{
+			CancelNavigationForRuntime(*Runtime, true);
+			Runtime->PendingAttackShots.Reset();
+		}
+		Runtime->bExternalActionsLocked = bLocked;
+		for (auto& WeakPawn : Runtime->Pawns)
+		{
+			if (auto* Pawn = WeakPawn.Get(); Pawn && Pawn->GetRuntimeState().Dynamics.bAlive)
+			{
+				Pawn->SetPhaseAppearance(bPhased);
+			}
+		}
+	}
+}
+
 bool UGuLiWingmanSimulationSubsystem::AdvanceOwnedGroup(
 	const FGuLiWingmanGroupHandle& Group,
 	const float DeltaSeconds)
 {
 	FGuLiWingmanLocalGroupRuntime* Runtime = OwnedGroups.Find(Group);
+	if (Runtime && Runtime->bExternalActionsLocked) { return true; }
 	if (!Runtime || !CanOwnSimulation()
 		|| !Runtime->AbilityConfig.IsUsableByLeaseOwner()
 		|| !FMath::IsFinite(DeltaSeconds) || DeltaSeconds < 0.0f)
@@ -808,6 +843,7 @@ bool UGuLiWingmanSimulationSubsystem::AdvanceOwnedGroup(
 		{
 			Movement->AdvanceFixedSteps(DeltaSeconds, bBypassNavigation);
 		}
+		Pawn->UpdateFlightTrail();
 	}
 	return true;
 }

@@ -1,3 +1,4 @@
+#include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
 #include "Battle/Combat/GuLiWingmanCombatCoordinator.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityDefinitions.h"
@@ -22,7 +23,7 @@ namespace
 		FGuLiCombatTargetSnapshot Snapshot;
 		FVector AttackLocation = FVector::ZeroVector;
 		bool bGround = false;
-		bool bInsideAcquireRange = false;
+		bool bCanAssignNewMember = true;
 	};
 
 	void AdvanceNonZeroRevision(uint32& Revision)
@@ -36,7 +37,7 @@ namespace
 
 	bool IsGroundTargetKind(const EGuLiTargetKind Kind)
 	{
-		return Kind == EGuLiTargetKind::CommanderSoldier;
+		return Kind == EGuLiTargetKind::CommanderSoldier || Kind == EGuLiTargetKind::GroundActor;
 	}
 
 	bool IsAirTargetKind(const EGuLiTargetKind Kind)
@@ -58,7 +59,7 @@ namespace
 			return Channel.Runtime.Attack.Pattern == EGuLiWingmanAttackPattern::Legacy
 				|| Channel.Runtime.Attack.Pattern == (bGround
 					? EGuLiWingmanAttackPattern::GroundDive
-					: EGuLiWingmanAttackPattern::AirDogfight);
+					: EGuLiWingmanAttackPattern::AirBurstOrbit);
 		});
 	}
 
@@ -96,25 +97,22 @@ namespace
 	}
 }
 
-bool GuLiWingmanAttackAuthority::IsGunShotEligible(const FVector& SourceLocation, const FVector& SourceForward,
-	const FGuLiCombatTargetSnapshot& LiveTarget, float RangeCentimeters, float ConeHalfAngleDegrees,
-	bool bHasLineOfSight, double CaptureTimeSeconds, double NextFireTimeSeconds)
+bool GuLiWingmanAttackAuthority::IsAirBurstStartEligible(const FVector& SourceLocation,
+	const FGuLiCombatTargetSnapshot& LiveTarget, const float StartDistanceCentimeters)
 {
-	return LiveTarget.Handle.IsValid() && LiveTarget.bAlive && bHasLineOfSight
-		&& FMath::IsFinite(CaptureTimeSeconds) && FMath::IsFinite(NextFireTimeSeconds)
-		&& CaptureTimeSeconds + 0.015 >= NextFireTimeSeconds
-		&& GuLiWingmanAttack::IsInsideForwardArc(SourceLocation, SourceForward, LiveTarget.Location,
-			LiveTarget.CollisionRadius, RangeCentimeters, ConeHalfAngleDegrees);
+	return LiveTarget.Handle.IsValid() && LiveTarget.bAlive
+		&& !SourceLocation.ContainsNaN() && !LiveTarget.Location.ContainsNaN()
+		&& FMath::IsFinite(StartDistanceCentimeters) && StartDistanceCentimeters > 0.0f
+		&& FVector::Distance(SourceLocation, LiveTarget.Location) >= StartDistanceCentimeters;
 }
 
 bool FGuLiWingmanCombatCoordinator::SetSpecifiedAttackTarget(const FGuLiTargetHandle& Target)
 {
-	FGuLiCombatTargetSnapshot Source, Snapshot;
-	if (!IsReady() || !ResolveTarget(Context.ShipSource, Source) || !Source.bAlive
-		|| !ResolveTarget(Target, Snapshot) || !Snapshot.bAlive || !IsEnemyTarget(Snapshot)
-		|| !GuLiWingmanTargeting::IsWithinReleaseRange(FVector::Distance(Source.Location, Snapshot.Location),
-			TargetingTuning)) return false;
-	SpecifiedAttackTarget = Target; bAutoTargetingLockedForGuard = false; NextAttackTargetScan = 0;
+	FGuLiCombatTargetSnapshot Snapshot;
+	if (!IsReady() || !ResolveTarget(Target, Snapshot)
+		|| !Snapshot.bAlive || !IsEnemyTarget(Snapshot)) return false;
+	SpecifiedAttackTarget = Target;
+	NextAttackTargetScan = 0;
 	TickAttackTargeting(GetServerTimeSeconds(), TargetingTuning);
 	return Context.Relay->AttackState.Target.Target == Target && Context.Relay->AttackState.Target.bSpecified;
 }
@@ -134,7 +132,7 @@ void FGuLiWingmanCombatCoordinator::TickAttackTargeting(double Now, const FGuLiW
 	if (!IsReady() || !Tuning.IsWellFormed() || !FMath::IsFinite(Now) || Now < 0.0) return;
 	TargetingTuning = Tuning;
 	if (Now < NextAttackTargetScan) return;
-	NextAttackTargetScan = Now + FMath::Clamp(Tuning.ScanIntervalSeconds, 0.05f, 2.0f);
+	NextAttackTargetScan = Now + Tuning.ScanIntervalSeconds;
 	auto& State = Context.Relay->AttackState;
 	const TArray<FGuLiWingmanAutoTargetAssignment> PreviousAutomaticTargets = State.AutomaticTargets;
 	for (const FGuLiWingmanAutoTargetAssignment& Previous : PreviousAutomaticTargets)
@@ -150,6 +148,14 @@ void FGuLiWingmanCombatCoordinator::TickAttackTargeting(double Now, const FGuLiW
 	const auto Publish = [&](FGuLiWingmanAttackTarget SharedManualTarget,
 		TArray<FGuLiWingmanAutoTargetAssignment> AutomaticTargets)
 	{
+		TMap<FGuLiWingmanHandle, FGuLiTargetHandle> PreviousTargets;
+		for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
+		{
+			const FGuLiWingmanAttackTarget* Previous =
+				GuLiWingmanTargeting::ResolveTargetForEmitter(State, Entry.Wingman);
+			PreviousTargets.Add(Entry.Wingman,
+				Previous && Previous->IsValid() ? Previous->Target : FGuLiTargetHandle{});
+		}
 		if (SharedManualTarget.Target.IsValid())
 		{
 			SharedManualTarget.bSpecified = true;
@@ -209,6 +215,21 @@ void FGuLiWingmanCombatCoordinator::TickAttackTargeting(double Now, const FGuLiW
 
 		State.Target = SharedManualTarget;
 		State.AutomaticTargets = MoveTemp(AutomaticTargets);
+		if (UGuLiCombatEffectRuntimeSubsystem* Effects =
+			Context.ShipASC->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
+		{
+			for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
+			{
+				const FGuLiWingmanAttackTarget* Current =
+					GuLiWingmanTargeting::ResolveTargetForEmitter(State, Entry.Wingman);
+				const FGuLiTargetHandle CurrentHandle =
+					Current && Current->IsValid() ? Current->Target : FGuLiTargetHandle{};
+				if (PreviousTargets.FindRef(Entry.Wingman) != CurrentHandle)
+				{
+					Effects->CancelWingmanGunBurst(Entry.Wingman);
+				}
+			}
+		}
 		AdvanceNonZeroRevision(State.Revision);
 		State.Checkpoints.RemoveAll([this](const FGuLiWingmanAttackCheckpoint& Entry)
 		{
@@ -229,9 +250,7 @@ void FGuLiWingmanCombatCoordinator::TickAttackTargeting(double Now, const FGuLiW
 	{
 		FGuLiCombatTargetSnapshot ManualSnapshot;
 		if (ResolveTarget(SpecifiedAttackTarget, ManualSnapshot) && ManualSnapshot.bAlive
-			&& IsEnemyTarget(ManualSnapshot)
-			&& GuLiWingmanTargeting::IsWithinReleaseRange(
-				FVector::Distance(Source.Location, ManualSnapshot.Location), Tuning))
+			&& IsEnemyTarget(ManualSnapshot))
 		{
 			FGuLiWingmanAttackTarget ManualTarget;
 			ManualTarget.Target = ManualSnapshot.Handle;
@@ -272,67 +291,13 @@ void FGuLiWingmanCombatCoordinator::TickAttackTargeting(double Now, const FGuLiW
 		}
 	}
 
-	if (bAutoTargetingLockedForGuard)
-	{
-		TArray<FGuLiWingmanGuardPoseObservation> Observations;
-		for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
-		{
-			auto& Observation = Observations.AddDefaulted_GetRef();
-			Observation.bAlive = IsRosterMemberAlive(Entry.Wingman);
-			if (!Observation.bAlive) continue;
-			FGuLiWingmanCandidateSample Sample;
-			double AcceptedTime = 0.0;
-			Observation.bHasFreshAcceptedPose = Context.Relay->TryGetLatestAcceptedSample(
-				Entry.Wingman, Sample, &AcceptedTime) && AcceptedTime <= Now
-				&& Now - AcceptedTime <= Tuning.MaximumPoseAgeSeconds;
-			if (Observation.bHasFreshAcceptedPose)
-			{
-				Observation.Position = FVector(Sample.PositionCentimeters);
-			}
-		}
-		const FGuLiWingmanFormationRuntimeConfig& Formation = Context.Relay->GetAbilityConfig().FormationRuntime;
-		bAutoTargetingLockedForGuard = !GuLiWingmanTargeting::IsGuardRejoinComplete(
-			Observations, Source.Location, Formation.CatchUpDistanceCentimeters,
-			Formation.RecoveryDistanceCentimeters, Tuning.GuardRejoinFraction);
-		if (bAutoTargetingLockedForGuard)
-		{
-			Publish(FGuLiWingmanAttackTarget{}, {});
-			return;
-		}
-	}
-
-	bool bAllPreviousTargetsLostOnlyByRange = !PreviousAutomaticTargets.IsEmpty();
-	for (const FGuLiWingmanAutoTargetAssignment& Previous : PreviousAutomaticTargets)
-	{
-		FGuLiCombatTargetSnapshot PreviousSnapshot;
-		if (!IsRosterMemberAlive(Previous.Emitter)
-			|| !ResolveTarget(Previous.Target.Target, PreviousSnapshot)
-			|| !PreviousSnapshot.bAlive || !IsEnemyTarget(PreviousSnapshot)
-			|| GuLiWingmanTargeting::IsWithinReleaseRange(
-				FVector::Distance(Source.Location, PreviousSnapshot.Location), Tuning))
-		{
-			bAllPreviousTargetsLostOnlyByRange = false;
-			break;
-		}
-	}
-	if (bAllPreviousTargetsLostOnlyByRange)
-	{
-		bAutoTargetingLockedForGuard = true;
-		Publish(FGuLiWingmanAttackTarget{}, {});
-		return;
-	}
-
 	const FGuLiGroupAbilityConfigSnapshot& Config = Context.Relay->GetAbilityConfig();
 	TArray<FAutomaticMemberInput> Members;
 	for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
 	{
 		if (!IsRosterMemberAlive(Entry.Wingman)) continue;
 		FGuLiWingmanCandidateSample Sample;
-		double AcceptedTime = 0.0;
-		if (!Context.Relay->TryGetLatestAcceptedSample(Entry.Wingman, Sample, &AcceptedTime)
-			|| AcceptedTime > Now || Now - AcceptedTime > Tuning.MaximumPoseAgeSeconds
-			|| Sample.FlightMode == uint8(EGuLiWingmanFlightMode::Recover)
-			|| Sample.FlightMode == uint8(EGuLiWingmanFlightMode::Stale))
+		if (!Context.Relay->TryGetLatestAcceptedSample(Entry.Wingman, Sample))
 		{
 			continue;
 		}
@@ -385,23 +350,24 @@ void FGuLiWingmanCombatCoordinator::TickAttackTargeting(double Now, const FGuLiW
 		{
 			continue;
 		}
-		const double ShipDistance = FVector::Distance(Source.Location, Snapshot.Location);
-		const bool bInsideAcquire = GuLiWingmanTargeting::IsWithinAcquireRange(ShipDistance, Tuning);
-		const bool bRetainedInsideRelease = PreviousAutomaticTargets.ContainsByPredicate(
-			[&Snapshot, ShipDistance, &Tuning](const FGuLiWingmanAutoTargetAssignment& Previous)
-			{
-				return Previous.Target.Target == Snapshot.Handle
-					&& GuLiWingmanTargeting::IsWithinReleaseRange(ShipDistance, Tuning);
-			});
-		if (!bInsideAcquire && !bRetainedInsideRelease) continue;
-
 		FAutomaticTargetInput Target;
 		Target.Snapshot = Snapshot;
 		Target.AttackLocation = Snapshot.Location;
 		Target.bGround = bGround;
-		Target.bInsideAcquireRange = bInsideAcquire;
 		if (bGround)
 		{
+			const double ShipDistance = FVector::Distance(Source.Location, Snapshot.Location);
+			const bool bInsideAcquire =
+				GuLiWingmanTargeting::IsWithinAcquireRange(ShipDistance, Tuning);
+			const bool bRetainedInsideRelease = PreviousAutomaticTargets.ContainsByPredicate(
+				[&Snapshot, ShipDistance, &Tuning](
+					const FGuLiWingmanAutoTargetAssignment& Previous)
+				{
+					return Previous.Target.Target == Snapshot.Handle
+						&& GuLiWingmanTargeting::IsWithinReleaseRange(ShipDistance, Tuning);
+				});
+			if (!bInsideAcquire && !bRetainedInsideRelease) continue;
+			Target.bCanAssignNewMember = bInsideAcquire;
 			FHitResult Hit;
 			FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiWingmanGroundTarget), false);
 			if (Snapshot.CollisionActor.IsValid()) Params.AddIgnoredActor(Snapshot.CollisionActor.Get());
@@ -447,7 +413,7 @@ void FGuLiWingmanCombatCoordinator::TickAttackTargeting(double Now, const FGuLiW
 	{
 		for (const FAutomaticTargetInput& Target : Targets)
 		{
-			if (!Target.bInsideAcquireRange && Member.PreviousTarget != Target.Snapshot.Handle)
+			if (!Target.bCanAssignNewMember && Member.PreviousTarget != Target.Snapshot.Handle)
 			{
 				continue;
 			}
@@ -618,6 +584,14 @@ void FGuLiWingmanCombatCoordinator::InvalidateMemberAfterEmergencyRebase(
 	{
 		return;
 	}
+	if (Context.ShipASC.IsValid())
+	{
+		if (UGuLiCombatEffectRuntimeSubsystem* Effects =
+			Context.ShipASC->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
+		{
+			Effects->CancelWingmanGunBurst(Emitter, true);
+		}
+	}
 	AutomaticTargetVersions.Remove(Emitter);
 	for (int32 SnapshotIndex = AttackTargetHistory.Num() - 1; SnapshotIndex >= 0; --SnapshotIndex)
 	{
@@ -730,39 +704,62 @@ int32 FGuLiWingmanCombatCoordinator::CommitValidatedAttackBatch(const FGuLiWingm
 			if (!Trail) continue; Samples = &Trail->Samples; CaptureTime = Trail->CaptureEstimatedServerTimeSeconds;
 		}
 		const auto* Sample = Samples->FindByPredicate([&](const auto& S) { return S.Wingman.MemberIndex == Shot.MemberIndex; });
-		if (!Sample || !IsRosterMemberAlive(Sample->Wingman) || Now - CaptureTime > 0.5 || CaptureTime > Now + 0.05
-			|| Sample->FlightMode == uint8(EGuLiWingmanFlightMode::Recover) || Sample->FlightMode == uint8(EGuLiWingmanFlightMode::Stale)) { continue; }
-		const FVector Position(Sample->PositionCentimeters);
-		const FRotator Rotation(Sample->RotationCentiDegrees.X / 100.0, Sample->RotationCentiDegrees.Y / 100.0, Sample->RotationCentiDegrees.Z / 100.0);
-		const FVector Forward = Rotation.Vector();
+		if (!Sample || !IsRosterMemberAlive(Sample->Wingman)) continue;
+		FGuLiWingmanCandidateSample AuthoritySample = *Sample;
+		if (bGround)
+		{
+			if (Now - CaptureTime > 0.5 || CaptureTime > Now + 0.05
+				|| Sample->FlightMode == uint8(EGuLiWingmanFlightMode::Recover)
+				|| Sample->FlightMode == uint8(EGuLiWingmanFlightMode::Stale))
+			{
+				continue;
+			}
+		}
+		else if (!Context.Relay->TryGetLatestAcceptedSample(Sample->Wingman, AuthoritySample))
+		{
+			continue;
+		}
+		const FVector Position(AuthoritySample.PositionCentimeters);
+		const FRotator Rotation(AuthoritySample.RotationCentiDegrees.X / 100.0,
+			AuthoritySample.RotationCentiDegrees.Y / 100.0,
+			AuthoritySample.RotationCentiDegrees.Z / 100.0);
 		auto& Checkpoints = Context.Relay->AttackState.Checkpoints;
 		auto* Previous = Checkpoints.FindByPredicate([&](const auto& C) { return C.Emitter == Sample->Wingman && C.SlotId == Shot.SlotId; });
 		FGuLiWingmanAttackCheckpoint Checkpoint = Previous ? *Previous : FGuLiWingmanAttackCheckpoint{};
-		const bool bSameRun = bGround && Previous && Checkpoint.RunId == Shot.RunId
+		const bool bSameRun = Previous && Checkpoint.RunId == Shot.RunId
 			&& Checkpoint.ProfileRevision == Shot.ProfileRevision && Checkpoint.LeaseEpoch == Candidate.LeaseEpoch
 			&& Checkpoint.SkillId == Channel->SkillId && Checkpoint.DefinitionChecksum == Channel->DefinitionChecksum;
+		if (!bGround && bSameRun) continue;
 		if (bSameRun && Shot.Target.Target != Checkpoint.FrozenTargetHandle) { continue; }
 		FGuLiWingmanGroundRunPath Path;
 		FVector Impact = Shot.Target.Location;
 		if (!bSameRun)
 		{
-			if ((bGround && CaptureTime + 0.015 < Checkpoint.NextFireTime) || (bGround && Shot.ShotIndex != 0))
+			if ((bGround && CaptureTime + 0.015 < Checkpoint.NextFireTime) || Shot.ShotIndex != 0)
 			{ continue; }
-			const bool bAuthorizedTarget = WasTargetAuthorized(Sample->Wingman, Shot.Target);
+			const FGuLiWingmanAttackTarget* CurrentTarget =
+				GuLiWingmanTargeting::ResolveTargetForEmitter(Context.Relay->AttackState, Sample->Wingman);
+			const bool bAuthorizedTarget = bGround
+				? WasTargetAuthorized(Sample->Wingman, Shot.Target)
+				: CurrentTarget && CurrentTarget->IsValid()
+					&& CurrentTarget->Target == Shot.Target.Target
+					&& CurrentTarget->Revision == Shot.Target.Revision
+					&& !CurrentTarget->bGround;
 			FGuLiCombatTargetSnapshot LiveTarget;
-			if (!bAuthorizedTarget || !ResolveTarget(Shot.Target.Target, LiveTarget) || !IsEnemyTarget(LiveTarget)) { continue; }
+			if (!bAuthorizedTarget || !ResolveTarget(Shot.Target.Target, LiveTarget)
+				|| !LiveTarget.bAlive || !IsEnemyTarget(LiveTarget)) { continue; }
 			Checkpoint.Emitter = Sample->Wingman; Checkpoint.SlotId = Shot.SlotId; Checkpoint.ProfileRevision = Shot.ProfileRevision;
 			Checkpoint.SkillId = Channel->SkillId; Checkpoint.DefinitionChecksum = Channel->DefinitionChecksum;
 			Checkpoint.FrozenTargetHandle = Shot.Target.Target;
-			Checkpoint.RunId = Shot.RunId; Checkpoint.LeaseEpoch = Candidate.LeaseEpoch; Checkpoint.StartTime = CaptureTime;
+			Checkpoint.RunId = Shot.RunId; Checkpoint.LeaseEpoch = Candidate.LeaseEpoch;
+			Checkpoint.StartTime = bGround ? CaptureTime : Now;
 			Checkpoint.LastShotIndex = -1; Checkpoint.FrozenTarget = Shot.Target.Location;
 			Checkpoint.ApproachDirection = Shot.ApproachDirection;
 			if (!bGround)
 			{
 				Impact = LiveTarget.Location;
-				if (!GuLiWingmanAttackAuthority::IsGunShotEligible(Position, Forward, LiveTarget,
-					Runtime.RangeCentimeters, Runtime.TargetConeHalfAngleDegrees, HasLineOfSight(Position, LiveTarget),
-					CaptureTime, Checkpoint.NextFireTime)) continue;
+				if (!GuLiWingmanAttackAuthority::IsAirBurstStartEligible(
+					Position, LiveTarget, Profile.AirFireStartDistance)) continue;
 			}
 		}
 		if (bGround)
@@ -774,14 +771,16 @@ int32 FGuLiWingmanCombatCoordinator::CommitValidatedAttackBatch(const FGuLiWingm
 				Config.FormationRuntime.AgentRadiusCentimeters)) { continue; }
 			const float Age = float(CaptureTime - Checkpoint.StartTime);
 			if (FMath::Abs(Age - GuLiWingmanAttack::ShotTime(Shot.ShotIndex, Profile.MissileCount, Profile.DiveSeconds)) > 0.075f) { continue; }
-			if (FVector::Dist(Position, Path.PositionAt(Age)) > 1200.0) { continue; }
-			if (FVector::DotProduct(Forward, Path.DirectionAt(Age)) < FMath::Cos(FMath::DegreesToRadians(12.0f))) { continue; }
 			Impact = GuLiWingmanAttack::StripPoint(Path, Profile.StripLength, Shot.ShotIndex, Profile.MissileCount);
 			if (FVector::Dist(Position, Impact) > Runtime.RangeCentimeters) continue;
 		}
 		FGuLiCombatAttackRequest Request;
 		Request.ExecutorId = Profile.ExecutorId; Request.SourceTransform = FTransform(Rotation, Position);
 		Request.TargetLocation = Impact; Request.MuzzleOffset = Profile.Muzzle; Request.ShotOrdinal = Shot.ShotIndex;
+		Request.Motion.Speed = Runtime.ProjectileSpeedCentimetersPerSecond;
+		Request.Motion.MaximumLifetime = Runtime.ProjectileLifetimeSeconds;
+		Request.Motion.SweepRadius = Runtime.SweepRadiusCentimeters;
+		Request.MaximumTravelDistance = Runtime.RangeCentimeters;
 		Request.Context.Source = Context.ShipSource; Request.Context.Emitter = Sample->Wingman;
 		Request.Context.Target = Shot.Target.Target; Request.Context.WeaponBinding = Channel->Binding;
 		Request.Context.SkillId = Channel->SkillId; Request.Context.ProfileRevision = Channel->ProfileRevision;
@@ -799,15 +798,22 @@ int32 FGuLiWingmanCombatCoordinator::CommitValidatedAttackBatch(const FGuLiWingm
 		{
 			const auto* Grant = Context.ShipASC->FindConfiguredGrant(Channel->Binding);
 			if (!Grant || !Grant->WeaponDefinition) continue;
-			Request.Projectile = Grant->WeaponDefinition->AttackProjectile.LoadSynchronous();
-			Request.FrozenField.ConfigId = TEXT("WingmanGroundMissile"); Request.FrozenField.Damage = Runtime.Damage;
-			Request.FrozenField.Radius = Profile.ExplosionRadius;
-			Request.Motion.Speed = Runtime.ProjectileSpeedCentimetersPerSecond; Request.Motion.MaximumLifetime = Runtime.ProjectileLifetimeSeconds;
-			Request.Motion.SweepRadius = Runtime.SweepRadiusCentimeters;
+			Request.Projectile = Grant->WeaponDefinition->ResolveAttackProjectile();
+			const auto* Field = Context.ShipASC->GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindCombatField(Runtime.EffectConfigId);
+			if (!Field) continue;
+			Request.FrozenField = *Field;
+			Request.FrozenField.Damage = Runtime.Damage;
+			Request.Context.EffectConfigId = Runtime.EffectConfigId;
 		}
-		if (!Effects->ExecuteWingmanAttack(Request)) { continue; }
+		const bool bExecuted = bGround
+			? Effects->ExecuteWingmanAttack(Request)
+			: Effects->StartWingmanGunBurst(Request, Runtime.CooldownSeconds,
+				Profile.AirBurstDurationSeconds, Profile.AirFireStopDistance,
+				Config.FormationRuntime.SwarmOrbit.OuterSoftRadiusCentimeters,
+				Profile.AirOrbitCooldownSeconds).IsValid();
+		if (!bExecuted) { continue; }
 		Checkpoint.LastShotIndex = Shot.ShotIndex;
-		if (!bSameRun) Checkpoint.NextFireTime = CaptureTime + Runtime.CooldownSeconds;
+		if (bGround && !bSameRun) Checkpoint.NextFireTime = CaptureTime + Runtime.CooldownSeconds;
 		if (Previous) *Previous = Checkpoint; else Checkpoints.Add(Checkpoint);
 		++Context.Relay->AttackState.Revision; ++Count;
 	}

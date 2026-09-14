@@ -1,0 +1,57 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "1F4326B34BDD88B448034FA5CB3C7AD5",
+			"instanceName": "DESKTOP-6D3B0FC-43608",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.10-03.57.41",
+	"succeeded": 1,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.46582061052322388,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "EditorSingletonUndoWorldPartitionSaveReload",
+			"fullTestPath": "GuLi.MapAuthoring.Density.EditorSingletonUndoWorldPartitionSaveReload",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1F4326B34BDD88B448034FA5CB3C7AD5"
+			],
+			"duration": 0.46582061052322388,
+			"dateTime": "2026.09.10-03.57.40",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "Isolated density validation map retained: /Game/GuLiStrike/Editor/MapAuthoring/Validation/DensityAuto_3E3945CB4793F15F225B4CBA1DD7CC8B/Layout",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.10-03.57.41"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

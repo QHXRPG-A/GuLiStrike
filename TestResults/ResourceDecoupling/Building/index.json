@@ -1,0 +1,111 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "9215C1064BE42187178CD291443948E1",
+			"instanceName": "DESKTOP-6D3B0FC-37400",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.11-08.04.40",
+	"succeeded": 2,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.52416539192199707,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuildingAssetTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingAssetTests",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"9215C1064BE42187178CD291443948E1"
+			],
+			"duration": 0.47822409868240356,
+			"dateTime": "2026.09.11-08.04.40",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(334): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.11-08.04.40"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Outpost Source LOD 0 has the baked BuildScale: actual=X=1.000 Y=1.000 Z=1.000 expected=X=20.000 Y=20.000 Z=20.000' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingAssetTests.cpp",
+					"lineNumber": 30,
+					"timestamp": "2026.09.11-08.04.40"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Outpost final dimensions: actual=X=7103.086 Y=6619.805 Z=30000.000 expected=X=2000.000 Y=2000.000 Z=2000.000' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingAssetTests.cpp",
+					"lineNumber": 30,
+					"timestamp": "2026.09.11-08.04.40"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BuildingPlacementPolicyTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingPlacementPolicyTests",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"9215C1064BE42187178CD291443948E1"
+			],
+			"duration": 0.008395802229642868,
+			"dateTime": "2026.09.11-08.04.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BuildingWorldTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingWorldTests",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"9215C1064BE42187178CD291443948E1"
+			],
+			"duration": 0.037545498460531235,
+			"dateTime": "2026.09.11-08.04.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

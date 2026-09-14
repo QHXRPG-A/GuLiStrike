@@ -3,7 +3,7 @@
 ## 使用前确认
 
 - 用 `D:\UnrealEngine-5.7\Engine\Binaries\Win64\UnrealEditor.exe` 打开 `D:\UE5.7\test1\GuLiStrike.uproject`。
-- 插件启用项在 `GuLiStrike.uproject`，面板入口为“工具 → GuLi → 地图标注”。新编译插件后必须重启旧 Editor。
+- 插件启用项在 `GuLiStrike.uproject`，面板入口为“工具 → GuLi → 地图标注与资源涂绘”。新编译插件后必须重启旧 Editor。
 - 工具始终编辑当前地图。正式导出前必须为地图指定包路径，并保存地图、外部 Actor 包和所用类型资产。
 - 所有空间量为 cm（100 cm = 1 m），角度为 degree；Actor 和区域 Scale 均固定为 1。
 
@@ -16,6 +16,18 @@
 5. Details 编辑 MarkerKey、DisplayName、Type、Enabled、Tags、Note、Parameters 和 Regions。业务键建议使用可读稳定名，如 `Outpost_North_01`。
 6. 一个 Marker 可有零到多个区域，例如 Capture、Build、Influence。各区域有独立 RegionKey、启用状态、相对平移/旋转和形状。
 7. 先点“校验”处理全部问题，再用“保存并导出”。取消 UE 保存/签出流程即停止导出；“保存”只保存，不生成数据。
+
+## 资源密度涂绘
+
+1. 切到“资源涂绘”，点击“创建/补齐密度图”。每张地图只允许一个 `AGuLiMapDensityMap`；按钮补齐 `BlueOre/蓝矿` 和 `RedOre/红矿`，不覆盖现有数据。
+2. 选择图层并单独控制显隐。显隐只影响 SceneProxy，不影响保存、校验或导出；红蓝可在同一格重叠。
+3. 设置加深/擦除、半径、强度、软边。默认 200m、25%、50%；LMB 绘制，Alt 操作相机，Esc 有活动笔画时恢复整笔前值，再按一次退出模式。
+4. 一次拖拽是一次事务。路径按固定世界距离重采样，每格只按该笔最大覆盖结算一次；不要改成逐鼠标事件累加。
+5. 默认 CellSize 为 2500cm。非空密度图不能直接修改；面板“应用格尺寸”只有在用户确认后才清空所有层并修改，不做隐式重采样。“清空当前层”只清选中层，均可 Undo。
+
+密度 Actor 固定 Identity Transform，位于 PersistentLevel、非空间加载且无 Data Layer/附着/碰撞/Tick，不进 PIE。格坐标是 `floor(WorldXY/CellSizeCm)`；Z 仅用于 Landscape/Visibility/工作平面的贴地预览。u8 密度是相对权重，不是矿量、储量或运行时生成数量。
+
+新建 Outpost 预设有 `Capture` 和 `Territory`；旧类型/Marker 不自动迁移。有效 Territory 是启用、水平的 `PolygonPrism`。缺失、未归属或严格重叠显示 Warning 但不阻断导出；错误形状和倾斜是 Error。精确共享边界按 MarkerKey/RegionId 稳定归属。
 
 ## 列表操作与事务
 
@@ -57,11 +69,11 @@
 Data/MapAuthoring/<地图完整包路径去掉开头斜杠>/
 ```
 
-例如 `/Game/Maps/LVL_CommanderMassPrototype` 输出到 `Data/MapAuthoring/Game/Maps/LVL_CommanderMassPrototype/`。标准文件为 `layout.json`、`markers.csv`、`regions.csv`、`vertices.csv`、`properties.csv`、`tags.csv`。
+例如 `/Game/Maps/LVL_CommanderMassPrototype` 输出到 `Data/MapAuthoring/Game/Maps/LVL_CommanderMassPrototype/`。无密度 Actor 时标准文件为 `layout.json`、`markers.csv`、`regions.csv`、`vertices.csv`、`properties.csv`、`tags.csv`；有密度 Actor 时同批增加 `density_layers.json`、`density_cells.csv`、`density_territories.csv`。
 
 导出包含整张受支持地图中的所有 Marker，包括禁用项；不受面板筛选、视口显隐或选择影响。当前批次先写 `.staging-<GUID>`，成功后整目录切换，上一批位于 `.previous`。输出目录被占用时先关闭相关表格/预览程序再重试，不要手工拼接半批文件。
 
-World Partition Marker 必须位于主容器、非空间加载且不在 Data Layer。工具用 Actor Descriptor 清点并按需加载；任何描述符无法解析或 Actor 集合不完整都应中止导出。
+World Partition Marker 与密度 Actor 必须位于主容器、非空间加载且不在 Data Layer。工具分别用 Actor Descriptor 清点并按需加载；任何描述符无法解析或 Actor 集合不完整都应中止导出。
 
 ## Python 服务
 
@@ -96,14 +108,23 @@ result = service.update_marker(marker_id, json.dumps(patch, ensure_ascii=False))
 print(result.success, [(issue.field, issue.message) for issue in result.issues])
 
 snapshot = service.get_snapshot()
+service.ensure_density_map(2500.0)
+density = service.update_density_cells(json.dumps({
+    "schema_version": 1,
+    "layer_key": "BlueOre",
+    "cells": [{"cell_x": 10, "cell_y": -3, "density_u8": 128}]
+}))
+print(density.success, service.get_density_snapshot().json)
 if snapshot.success and service.save_authoring_packages():
     exported = service.export_map()
     print(exported.success, list(exported.files))
 ```
 
-接口：`ListTypes`、`CreateType`、`EnsurePresets`、`CreateMarker`、`GetSnapshot`、`UpdateMarker`、`ValidateMap`、`ExportMap`、`SaveAuthoringPackages`、`OpenPanel`、`ClosePanel`。
+接口：`ListTypes`、`CreateType`、`EnsurePresets`、`CreateMarker`、`GetSnapshot`、`UpdateMarker`、`EnsureDensityMap`、`GetDensitySnapshot`、`UpdateDensityCells`、`ValidateMap`、`ExportMap`、`SaveAuthoringPackages`、`OpenPanel`、`ClosePanel`。
 
 补丁规则：提供 `region_id` 修改既有区域；省略时新增；删除只能使用 `{"region_id":"...","remove":true}`。区域数组是逐项补丁，不是整组替换。改变 shape 时完整提供对应 geometry。MarkerId 不可改；任一未知键/错误类型/无效区域使整个更新失败。
+
+密度补丁 v1 顶层只允许 `schema_version/layer_key/cells`，格对象只允许 `cell_x/cell_y/density_u8`。坐标必须是 int32 整数，密度是 0..255 整数，同一补丁不得重复格；零值清格。任一成员失败时真实 Actor 完全不改。
 
 从 PowerShell 管道发送中文脚本时用 `python -X utf8 Scripts/ue_exec.py -`。Guid 用 `.to_string()`，不要用 `str(guid)`。换图前释放 Python 持有的 World/Actor/地图资产引用；把批次代码放入函数局部作用域，避免持久全局变量阻止 World GC。
 
@@ -114,4 +135,5 @@ if snapshot.success and service.save_authoring_packages():
 - 新字段校验冲突：先判断是同 GUID 改名/新增，还是删除/改类型；不要直接重置用户值。
 - 区域看似小/大 100 倍：确认单位 cm；Box 填的是半尺寸。
 - CSV 不能直接导入现有 DataTable：当前产物是布局交换数据，仍需玩法 ID 和列映射。
-
+- 改格尺寸提示已有数据：这是防止隐式重采样的门禁；使用面板带确认的清空全部流程，或先清空两个图层再调用 `EnsureDensityMap(new_size)`。
+- 有黄色问题但导出成功：Warning 用于 Territory 缺失、未归属或重叠统计；红色 Error 才阻断。不要把密度汇总解释成实际矿量。

@@ -3,6 +3,7 @@
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
+#include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "Misc/AutomationTest.h"
@@ -321,7 +322,10 @@ bool FGuLiSpellFieldTableConfigTest::RunTest(const FString& Parameters)
 	if (!TestNotNull(TEXT("Commander table cache"), Data)
 		|| !TestTrue(TEXT("SpellFields table is valid"), Data->IsSpellFieldCatalogValid())
 		|| !TestTrue(TEXT("WeaponMounts table is valid"), Data->IsWeaponMountCatalogValid())) return false;
-	const FGuLiSpellFieldConfig* Field = Data->FindSpellFieldConfig(TEXT("WM01_MissileExplosion"));
+	const auto* Global = F.World->GetSubsystem<UGuLiSpellFieldDataSubsystem>();
+	const FGuLiSpellFieldConfig* Field = Global->FindCombatField(TEXT("WM01_MissileExplosion"));
+	TestTrue(TEXT("Commander reads the same global catalog"), Field == Data->FindSpellFieldConfig(TEXT("WM01_MissileExplosion")));
+	TestNotNull(TEXT("Ship bombardment lives alongside WM fields"), Global->FindCombatField(TEXT("WingmanGroundMissile")));
 	if (!TestNotNull(TEXT("WM01 table field"), Field)) return false;
 	TestEqual(TEXT("field base damage comes from SpellFields"), Field->Damage, 30.0f);
 	TestEqual(TEXT("field radius comes from SpellFields"), Field->Radius, 800.0f);
@@ -343,6 +347,16 @@ bool FGuLiSpellFieldTableConfigTest::RunTest(const FString& Parameters)
 		&& WM01Missiles->Muzzles[0].Equals(FVector(-260, 1257, 2440), 0.01)
 		&& WM01Missiles->Muzzles[1].Equals(FVector(-260, -326, 2440), 0.01)
 		&& WM01Missiles->AimOffset.Equals(FVector(0, 495, 1600), 0.01));
+	auto& Source = F.Add(EGuLiTeam::Red, FVector(-5000, 0, 0));
+	auto& Target = F.Add(EGuLiTeam::Blue, FVector::ZeroVector);
+	auto* Visual = NewObject<UGuLiSpellFieldDefinition>(F.World);
+	Visual->ConfigId = Field->ConfigId;
+	auto ResolvedContext = F.Context(Source, &Target);
+	ResolvedContext.EffectConfigId = Field->ConfigId;
+	ResolvedContext.Damage = 45.0f;
+	TestTrue(TEXT("Authority-resolved global field launches through the shared runtime"),
+		F.Runtime->CreateSpellField(Visual, ResolvedContext, FVector::ZeroVector).IsValid());
+	TestEqual(TEXT("Shared runtime preserves skill-modified damage with an explicit field id"), Target.Snapshot.Health, 55.0f);
 	return true;
 }
 

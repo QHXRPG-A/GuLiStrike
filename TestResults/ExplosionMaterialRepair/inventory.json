@@ -1,0 +1,2094 @@
+{
+  "root": "/Game/Assets/VFX/Explosions",
+  "counts": {
+    "NiagaraSystem": 47,
+    "Material": 53,
+    "MaterialInstanceConstant": 80,
+    "UserDefinedEnum": 2,
+    "MapBuildDataRegistry": 2,
+    "Blueprint": 5,
+    "CurveLinearColorAtlas": 1,
+    "World": 4,
+    "Texture2D": 197,
+    "AnimatedSparseVolumeTexture": 1,
+    "CurveLinearColor": 2,
+    "MaterialFunction": 7,
+    "ParticleSystem": 7,
+    "StaticMesh": 37,
+    "ObjectRedirector": 68
+  },
+  "assets": [
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Big_17",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Distortion_2",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Glow_3",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_23",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Smoke_Wisp_2",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Smoke_1",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Impact_3",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_22",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Fire_1",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Big_16",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Aerial_3",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Aerial_3",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Smoke_2",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_18",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Medium_12",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_17",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Small_1",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Medium_11",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/BP_DemoDisplay_Enum",
+      "class": "UserDefinedEnum"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Demo_NuclearExplosion_BuiltData",
+      "class": "MapBuildDataRegistry"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Overview_Map_Day_BuiltData",
+      "class": "MapBuildDataRegistry"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_BP_DemoDisplay_Enum",
+      "class": "UserDefinedEnum"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/BP_DemoDisplay",
+      "class": "Blueprint"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/BP_GroundFIre_01",
+      "class": "Blueprint"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/BP_Spawn_Particle",
+      "class": "Blueprint"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/CA_Remap_Fire",
+      "class": "CurveLinearColorAtlas"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/DefaultTextMaterialTranslucentUnlit",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Demo_NuclearExplosion",
+      "class": "World"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/EmberExpl12",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/EmberExpl12Motion",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Explosion_Test_v1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Explosion_Test_v1_Depth",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Explosion_Test_v1_Normal",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Explosion_Test_v1_Temperature",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Explosion_Test_Vertical_v1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/fastFireball",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/fire_30fps_vdb",
+      "class": "AnimatedSparseVolumeTexture"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Linear",
+      "class": "CurveLinearColor"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MF_DecodeMotionVector",
+      "class": "MaterialFunction"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MF_DeriveNormal",
+      "class": "MaterialFunction"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MF_EulerAnglesToDirections",
+      "class": "MaterialFunction"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MF_EvaluateMDC",
+      "class": "MaterialFunction"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MF_EvaluateMDCInternal",
+      "class": "MaterialFunction"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MF_FlipbookUVs",
+      "class": "MaterialFunction"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MF_Scale_n_Offset",
+      "class": "MaterialFunction"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Circle18a",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Crater42b",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_EmberExpl_12",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_14",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_15",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_16",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_19",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_20",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_21",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_24",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_A",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Aerial_1",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Aerial_2",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Aerial_4",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_B",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_C",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_D",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_E",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_F",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Flack_1",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Flack_2",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Flack_3",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Flack_4",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_G",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Gas_10",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Gas_11",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Gas_12",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Gas_9",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_H",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_I",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_J",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_K",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_L",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_M",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_N",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_O",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_P",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_Q",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_R",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_S",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Explosion_T",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Fire",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Fireball_Directional_Lit_ParticleColor_Dark",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_FlashGroundA",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_NuclearSmoke",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_NuclearStand",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Point12b",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_ShockWave1sn",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Smoke",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Smoke24b",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Snow4b",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_SS2b",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_Trail82b",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/MI_TwoSides12b",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Basic_Shape",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Circle116a",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_CircleRainbow11a",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Concrete",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_CoreExplosion_Flame",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_CoreShockwave_Explosion",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Core_Explosion_GlowFlare_Inwards",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Core_Fireball_SubUV_01",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Core_PreExplosion_Glow",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Core_PreExplosion_GlowFlare",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DemoWall",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DemoWall_Inst",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DemoWall_Inst2",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DemoWall_Inst_3",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DemoWall_Inst_BaseFloor_Inst",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DemoWall_Inst_NamePlate",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Derbis",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DirectionalLit_Emissive_Explo_Master",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_DirectionalLit_Emissive_Towers_Explo_Radial_Inst",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Dirt_1",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Dirt_2",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Distortion",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Distortion_1",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_EmberExpl_1",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_EndNuke_Directional_Lit_Master",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_EndNuke_Directional_Lit_Master_Inst",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_EndNuke_Scale",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_1",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Gas_1",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_RockChunks",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_RockChunks_Rand",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Sand",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Smoke_Spears",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Smoke_Spears_TB_Inst",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Tower_Directional",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Tower_Impact_Cine",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Explosion_Tower_Radial",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fire",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_Inst3",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_Inst5",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_Inst_3",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_Master_2",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_NoNoise_Master",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_ParticleColor",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_ParticleColor_Core_Inst",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_Lit_ParticleColor_Inst2",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Fireball_Directional_UnLit_Master",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_FX_Fireblast_SubUV_02",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Glow_3",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_Light_Flicker",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_NuclearCloud",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_NuclearCloud1sn",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_NuclearFlash1",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_SS1b",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_TemplatePyro_Advanced",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_TowerBase_Blast_Mesh",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/M_TwoSides1",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_A",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Aerial_1",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Aerial_2",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Aerial_4",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_B",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Big_13",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Big_14",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Big_15",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Big_18",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_C",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_D",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_E",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_F",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Flak_1",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Flak_2",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Flak_3",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Flak_4",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_G",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_H",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_I",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_J",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_K",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_L",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_M",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Medium_10",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Medium_7",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Medium_8",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Medium_9",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_N",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_O",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_P",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_Q",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_R",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_S",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Explosion_T",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Exp_Gas_10",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Exp_Gas_11",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Exp_Gas_12",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_Exp_Gas_9",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_NuclearExplosion",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_NuclearExplosionToon",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NS_TopDownAction_Destruction",
+      "class": "NiagaraSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Overview",
+      "class": "World"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Overview_Map_Day",
+      "class": "World"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Overview_Map_Explosion",
+      "class": "World"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/P_CoreDestroyed_Explosion_V2",
+      "class": "ParticleSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/P_CoreDestroyed_Explosion_V3",
+      "class": "ParticleSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/P_CoreDestroyed_PreExplosion",
+      "class": "ParticleSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/P_CoreExplode_NewScale",
+      "class": "ParticleSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/P_Core_Destroyed_MainBlast",
+      "class": "ParticleSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/P_Core_Destroyed_SecondaryBlast",
+      "class": "ParticleSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/P_SentryTurret_Explosion",
+      "class": "ParticleSystem"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_BP_DemoDisplay",
+      "class": "Blueprint"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_BP_Spawn_Particle",
+      "class": "Blueprint"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_DefaultTextMaterialTranslucentUnlit",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall",
+      "class": "Material"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall_Inst",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall_Inst2",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall_Inst_3",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall_Inst_BaseFloor_Inst",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_M_DemoWall_Inst_NamePlate",
+      "class": "MaterialInstanceConstant"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_SM_Base",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_SM_Base2",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_SM_BaseRoom",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_SM_Base_FlatWall",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD_SM_NamePlate",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/Remap_Temperature",
+      "class": "CurveLinearColor"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Base",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Base2",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_BaseRoom",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Base_FlatWall",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_CylinderFromGround",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_CylindricalCone2",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Debris_1",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Debris_10",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Debris_11",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Debris_12",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Debris_2",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Debris_3",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Debris_4",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Debris_5",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Debris_6",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Debris_7",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Debris_8",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Debris_9",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Derbis_1",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Derbis_2",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Derbis_3",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Distortion",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_ExploSpline_01",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_ExploSpline_02",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_HalfSphere3",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_NamePlate",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_NuclearCloud2",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_NuclearStand2",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Ref_Sphere",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Shockwave_CoreExplosion",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_Tower_Base_BlastOut",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/SM_WaterSphere",
+      "class": "StaticMesh"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Circle116",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Circle18",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_CircleRainbow11",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Cloud_1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Concrete_slab",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Concrete_slab_Height",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Concrete_slab_MetallicSmoothness",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Concrete_slab_Normal",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Crater42",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Dirt_1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Dirt_3",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_EmberExpl1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_EmberExpl1Motion",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_A_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_A_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_A_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_A_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_A_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_B_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_B_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_B_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_B_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_B_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_C_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_C_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_C_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_C_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_C_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_D_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_D_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_D_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_D_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_D_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_E_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_E_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_E_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_E_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_E_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_F_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_F_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_F_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_F_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_F_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_G_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_G_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_G_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_G_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_G_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_H_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_H_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_H_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_H_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_H_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_I_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_I_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_I_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_I_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_I_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_J_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_J_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_J_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_J_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_J_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_K_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_K_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_K_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_K_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_K_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_L_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_L_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_L_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_L_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_L_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_M_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_M_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_M_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_M_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_M_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_N_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_N_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_N_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_N_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_N_TF",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_O_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_O_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_O_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_O_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_O_MVN",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_P_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_P_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_P_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_P_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_P_MVN",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_Q_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_Q_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_Q_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_Q_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_Q_MVN",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_R_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_R_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_R_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_R_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_R_MVN",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_S_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_S_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_S_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_S_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_S_MVN",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_T_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_T_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_T_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_T_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explosion_T_MVN",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Explo_SubUV_boom",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_43",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_44",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_45",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_46",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_47",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_48",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_49",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_50",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_51",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_52",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_53",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_54",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_55",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_56",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_57",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_58",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_59",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_60",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_61",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_62",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_63",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_64",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_65",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_66",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Expl_7",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireBall",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireBall_07C_ResdiualSmokey",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireBall_07C_ResdiualSmoke_Depth",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireBall_07D_Depth",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireBall_07D_E",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireBall_07D_N",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireBall_07D_Top_Depth",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireBall_07D_Top_E",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireBall_07D_Top_Grad_E",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireBall_07D_Top_N",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireBall_Fluid_11_E",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireBall_Fluid_11_Radius",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireblastPacked_v2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireySmoke_01_Fire",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireySmoke_01_Fire_E",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_FireySmoke_01_N",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Fire_1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Flare_1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Gradient11",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Gradient15",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Gradient19",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Gradient4_3",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Gradient6",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Impact",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_MaskForShader",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Noise1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Noise27",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Noise34",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Noise41",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Noise50",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Noise75",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_NoiseNormal_2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_NoisyRamp",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Point12",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Poster_Tendrils_v2_Seamless",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Smoke24",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Smokeloop_1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Smoke_1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Smoke_2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Smoke_ECD",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Smoke_FC",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Smoke_MDC1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Smoke_MDC2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Smoke_Wisp",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Snow4",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Spark_2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_SS1",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_SS2",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Trail6",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/T_Trail82",
+      "class": "Texture2D"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/BP_DemoDisplay",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/BP_DemoDisplay",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/BP_DemoDisplay",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/BP_Spawn_Particle",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/BP_Spawn_Particle",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/BP_Spawn_Particle",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/M_Basic_Shape",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/M_DemoWall_Inst_BaseFloor_Inst",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Aerial_1",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Aerial_2",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Aerial_3",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Aerial_4",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Big_13",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Big_14",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Big_15",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Big_16",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Big_17",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Big_18",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Flak_1",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Flak_2",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Flak_3",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Flak_4",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Medium_10",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Medium_11",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Medium_12",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Medium_7",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Medium_8",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Explosion_Medium_9",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Exp_Gas_10",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Exp_Gas_11",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Exp_Gas_12",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/NS_Exp_Gas_9",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/AllExplosions/Overview_Map_Day_BuiltData",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/GroundFire01/BP/BP_GroundFIre_01",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/GroundFire01/BP/BP_GroundFIre_01",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/GroundFire01/BP/BP_GroundFIre_01",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/GroundFire01/Materials/MI_Fire",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NuclearExplosion/Demo_NuclearExplosion_BuiltData",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NuclearExplosion/M_Concrete",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NuclearExplosion/NS_NuclearExplosion",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/NuclearExplosion/NS_NuclearExplosionToon",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/BP_DemoDisplay",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/BP_DemoDisplay",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/BP_DemoDisplay",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/BP_Spawn_Particle",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/BP_Spawn_Particle",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/BP_Spawn_Particle",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/M_DemoWall_Inst_BaseFloor_Inst",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_A",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_B",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_C",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_D",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_E",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_F",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_G",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_H",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_I",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_J",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_K",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_L",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_M",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_N",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_O",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_P",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_Q",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_R",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_S",
+      "class": "ObjectRedirector"
+    },
+    {
+      "path": "/Game/Assets/VFX/Explosions/RealisticExplosionPackD/NS_Explosion_T",
+      "class": "ObjectRedirector"
+    }
+  ],
+  "api_docs": {
+    "MaterialNodeService": {
+      "get_material_diagnostics": "X.get_material_diagnostics(material_path) -> MaterialDiagnostics\r\nComprehensive material diagnostic \u2014 compile status, errors, and the textures the\nshader actually references. Reliable replacement for `get_used_textures`.\n\nUse this after building a material graph to verify it compiles cleanly and samples\nthe expected textures. Particularly useful for materials with `MaterialFunctionCall`\nnodes (triplanar / world-aligned), where `MaterialEditingLibrary.get_used_textures`\nsilently returns 0.\r\n\r\nArgs:\r\n    material_path (str): \r\n\r\nReturns:\r\n    MaterialDiagnostics:",
+      "export_material_graph": "X.export_material_graph(material_path) -> str\r\nExport the complete material graph as a JSON string for analysis or recreation.\nMaps to action=\"export_graph\"\n\nReturns material settings, all expressions (type, position, properties),\nall connections, and material output connections \u2014 everything needed to\nrecreate the material from scratch.\r\n\r\nArgs:\r\n    material_path (str): Full path to the material\r\n\r\nReturns:\r\n    str: JSON string of complete graph, or empty string on failure Example: json_str = unreal.MaterialNodeService.export_material_graph(\"/Game/M_Landscape\")"
+    },
+    "MaterialService": {
+      "get_material_info": "X.get_material_info(material_path) -> MaterialDetailedInfo or None\r\nGet comprehensive material information.\nMaps to action=\"get_info\"\r\n\r\nArgs:\r\n    material_path (str): Full path to the material\r\n\r\nReturns:\r\n    MaterialDetailedInfo or None: True if successful\r\n\r\n    out_info (MaterialDetailedInfo): Structure containing all material details",
+      "get_property": "X.get_property(material_path, property_name) -> str\r\nGet a material property value.\nMaps to action=\"get_property\"\r\n\r\nArgs:\r\n    material_path (str): Full path to the material\r\n    property_name (str): Name of the property\r\n\r\nReturns:\r\n    str: Property value as string",
+      "set_property": "X.set_property(material_path, property_name, property_value) -> bool\r\nSet a material property value.\nMaps to action=\"set_property\"\r\n\r\nArgs:\r\n    material_path (str): Full path to the material\r\n    property_name (str): Name of the property\r\n    property_value (str): New value as string\r\n\r\nReturns:\r\n    bool: True if successful",
+      "compile_material": "X.compile_material(material_path) -> bool\r\nCompile/rebuild a material's shaders.\nMaps to action=\"compile\"\r\n\r\nArgs:\r\n    material_path (str): Full path to the material\r\n\r\nReturns:\r\n    bool: True if successful"
+    },
+    "NiagaraService": {
+      "summarize": "X.summarize(system_path) -> NiagaraSystemSummary or None\r\nGet an AI-friendly summary of a Niagara System.\r\n\r\nArgs:\r\n    system_path (str): Full path to the system\r\n\r\nReturns:\r\n    NiagaraSystemSummary or None: True if successful Example: summary = unreal.NiagaraService.summarize(\"/Game/VFX/NS_Fire\")  # summary struct or None\r\n\r\n    out_summary (NiagaraSystemSummary): AI-friendly system summary",
+      "compile_with_results": "X.compile_with_results(system_path) -> NiagaraCompilationResult\r\nCompile a Niagara System and return detailed compilation results with errors.\nThis method waits for compilation to complete and captures all error and warning messages.\r\n\r\nArgs:\r\n    system_path (str): Full path to the system\r\n\r\nReturns:\r\n    NiagaraCompilationResult: Compilation result with success status, errors, and warnings Example: result = unreal.NiagaraService.compile_with_results(\"/Game/VFX/NS_Fire\") if not result.success: print(f\"Compilation failed with {result.error_count} errors:\") for error in result.errors: print(f\"  - {error}\")"
+    },
+    "NiagaraEmitterService": {
+      "list_renderers": "X.list_renderers(system_path, emitter_name) -> Array[NiagaraRendererInfo_Custom]\r\nList all renderers in an emitter.\r\n\r\nArgs:\r\n    system_path (str): Full path to the Niagara system\r\n    emitter_name (str): Name of the emitter\r\n\r\nReturns:\r\n    Array[NiagaraRendererInfo_Custom]: Array of renderer information Example: renderers = unreal.NiagaraEmitterService.list_renderers(\"/Game/VFX/NS_Fire\", \"Sparks\")"
+    }
+  },
+  "open_tabs": []
+}

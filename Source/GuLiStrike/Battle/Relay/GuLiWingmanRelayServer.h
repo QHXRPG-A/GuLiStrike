@@ -212,6 +212,17 @@ public:
 	 * transaction is pending.
 	 */
 	bool BeginResume(double NowSeconds);
+	/** Explicit whole-group ability discontinuity; never reachable from Candidate/EmergencyRebase RPCs. */
+	bool BeginExternalControl(double NowSeconds);
+	bool CommitExternalGroupDisplacement(const TMap<FGuLiWingmanHandle, FTransform>& Positions,
+		const FGuLiCarrierSourceRef& CarrierSource, double NowSeconds, TArray<FGuLiWingmanAcceptedBatch>& OutBaselines);
+	bool PrepareExternalGroupDisplacement(const TMap<FGuLiWingmanHandle, FTransform>& Positions,
+		const FGuLiCarrierSourceRef& CarrierSource, double NowSeconds, TArray<FGuLiWingmanAcceptedBatch>& OutBaselines) const;
+	void ReleaseExternalControl(double NowSeconds);
+	bool AcknowledgeExternalDisplacement(const FGuid& Owner, uint32 Epoch, double NowSeconds);
+	bool IsPhased() const { return bPhased; }
+	bool IsExternallyControlled() const { return bExternalActionsLocked || bExternalBaselineAwaitingAck; }
+	uint32 GetExternalDisplacementRevision() const { return ExternalDisplacementRevision; }
 	/** Builds the reliable ACK barrier requested by an Active roster mutation. */
 	bool RefreshActiveRosterCut(double NowSeconds, FGuLiWingmanBootstrapBundle& OutBundle);
 	bool RecordLeaseHeartbeat(const FGuid& SenderPlayerGuid, uint32 RequestConnectionGeneration,
@@ -393,6 +404,11 @@ private:
 	void RejectAllPending(EGuLiWingmanRejectReason Reason, double NowSeconds);
 
 	FGuLiWingmanRelayTuning Tuning;
+	bool bPhased = false;
+	bool bExternalActionsLocked = false;
+	bool bExternalBaselineAwaitingAck = false;
+	uint32 ExternalDisplacementRevision = 0;
+	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> ExternalAcceptedSequenceFloor{};
 	uint32 MatchEpoch = 0u;
 	FGuLiWingmanLeaseState LeaseState;
 	FGuLiGroupAbilityConfigSnapshot AbilityConfig;

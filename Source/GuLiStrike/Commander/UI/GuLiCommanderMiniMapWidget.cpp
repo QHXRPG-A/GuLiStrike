@@ -14,6 +14,7 @@
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Slate/SlateBrushAsset.h"
 #include "TimerManager.h"
 
@@ -38,6 +39,12 @@ namespace GuLiCommanderNativeMiniMap
 
 	FBox2D GetWorldBounds(const UWorld* World)
 	{
+		const UGuLiResourceWorldSubsystem* Resources = World
+			? World->GetSubsystem<UGuLiResourceWorldSubsystem>() : nullptr;
+		if (Resources && Resources->IsResourceWorldActive() && Resources->GetMapDefinition())
+		{
+			return Resources->GetPlayableBounds();
+		}
 		FBox2D Bounds(ForceInit);
 		const UGuLiCommanderLandscapeQuerySubsystem* Query = World
 			? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
@@ -296,7 +303,7 @@ void UGuLiCommanderMiniMapWidget::RefreshSnapshot()
 		SoldierPoints.Reserve(Replicator->GetItems().Num());
 		for (const FGuLiSoldierStateItem& Soldier : Replicator->GetItems())
 		{
-			if (!Soldier.SoldierId.IsValid() || !Soldier.IsAlive())
+			if (!Soldier.SoldierId.IsValid() || !Soldier.IsAlive() || Soldier.bPhased)
 			{
 				continue;
 			}
@@ -354,7 +361,13 @@ void UGuLiCommanderMiniMapWidget::EnsureTerrainCache()
 		return;
 	}
 
-	if (!LandscapeQuery || !LandscapeQuery->TryGetBounds(TerrainWorldBounds))
+	const UGuLiResourceWorldSubsystem* Resources =
+		World->GetSubsystem<UGuLiResourceWorldSubsystem>();
+	if (Resources && Resources->IsResourceWorldActive() && Resources->GetMapDefinition())
+	{
+		TerrainWorldBounds = Resources->GetPlayableBounds();
+	}
+	else if (!LandscapeQuery || !LandscapeQuery->TryGetBounds(TerrainWorldBounds))
 	{
 		TerrainWorldBounds = GuLiCommanderNativeMiniMap::GetWorldBounds(World);
 		return;
@@ -381,7 +394,7 @@ void UGuLiCommanderMiniMapWidget::EnsureTerrainCache()
 			const int32 SampleIndex = Row * Resolution + Column;
 
 			float Height = 0.0f;
-			if (LandscapeQuery->TryGetLandscapeHeight(SampleXY, Height))
+			if (LandscapeQuery && LandscapeQuery->TryGetLandscapeHeight(SampleXY, Height))
 			{
 				TerrainHeights[SampleIndex] = Height;
 				TerrainValidity[SampleIndex] = 1u;

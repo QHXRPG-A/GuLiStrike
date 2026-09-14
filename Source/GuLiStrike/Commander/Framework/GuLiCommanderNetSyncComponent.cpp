@@ -961,7 +961,7 @@ void UGuLiCommanderNetSyncComponent::AdvanceSelectionQueue()
 	if (const FGuLiMoveRequest* DeferredMove = MovesAwaitingSelection.Find(
 		GuLiCommanderNetwork::SelectionSnapshotMoveDependencyKey))
 	{
-		if (SelectionState.Cohorts.IsEmpty())
+		if (SelectionState.Cohorts.IsEmpty() && SelectionState.ActorIds.IsEmpty())
 		{
 			RejectDeferredMove(
 				GuLiCommanderNetwork::SelectionSnapshotMoveDependencyKey,
@@ -978,7 +978,8 @@ void UGuLiCommanderNetSyncComponent::AdvanceSelectionQueue()
 	}
 	if (const FGuLiMoveRequest* DeferredMove = MovesAwaitingSelection.Find(ResolvedSelectionRequestId))
 	{
-		if (!bResolvedSelectionAccepted || SelectionState.Cohorts.IsEmpty())
+		if (!bResolvedSelectionAccepted
+			|| (SelectionState.Cohorts.IsEmpty() && SelectionState.ActorIds.IsEmpty()))
 		{
 			RejectDeferredMove(ResolvedSelectionRequestId, EGuLiCommandAckResult::NoSelection);
 		}

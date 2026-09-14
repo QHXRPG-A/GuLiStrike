@@ -42,12 +42,18 @@ struct FGuLiWingmanPresentationGroupRuntime
 	uint64 LastBootstrapCutId = 0u;
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> LastSourceSequenceByFlight{};
 	TStaticArray<double, GULI_WINGMAN_FLIGHT_COUNT> LastSourceTimeSecondsByFlight{};
+	TStaticArray<double, GULI_WINGMAN_FLIGHT_COUNT> PoseReceiptTimeByFlight{};
+	TStaticArray<double, GULI_WINGMAN_FLIGHT_COUNT> PlaybackTimeByFlight{};
+	TStaticArray<double, GULI_WINGMAN_FLIGHT_COUNT> PlaybackLocalTimeByFlight{};
+	TStaticArray<bool, GULI_WINGMAN_FLIGHT_COUNT> PlaybackStartedByFlight{};
 	uint32 LastSourceSequence = 0u;
 	double LastSourceTimeSeconds = 0.0;
 	double ClockServerSeconds = 0.0;
 	double ClockLocalReceiptSeconds = 0.0;
 	bool bHasClock = false;
 	bool bUsingServerTimeline = true;
+	bool bPhased = false;
+	bool bExternalActionsLocked = false;
 };
 
 struct GULISTRIKE_API FGuLiWingmanAcceptedTargetPose
@@ -62,7 +68,7 @@ struct GULISTRIKE_API FGuLiWingmanAcceptedTargetPose
 /**
  * Client-only logical snapshot manager and remote Wingman Actor pool.
  * Owner tracks point at the Pawns simulated by UGuLiWingmanSimulationSubsystem;
- * remote tracks receive at most 175 lightweight interpolation-only Pawns.
+ * every living remote track receives one lightweight interpolation-only Pawn.
  */
 UCLASS(Transient, NotPlaceable, Config=Game)
 class GULISTRIKE_API AGuLiWingmanPresentationActor final : public AActor
@@ -88,6 +94,7 @@ public:
 		double LocalReceiptTimeSeconds);
 	bool ObserveServerClock(const FGuLiWingmanGroupHandle& Group,
 		double EstimatedServerNowSeconds, double LocalReceiptTimeSeconds);
+	void SetGroupExternalControlState(const FGuLiWingmanGroupHandle& Group, bool bPhased, bool bLocked);
 	UFUNCTION(BlueprintCallable, Category="Wingman|Presentation")
 	bool SetGroupRole(const FGuLiWingmanGroupHandle& Group,
 		EGuLiWingmanPresentationRole NewRole);
@@ -109,6 +116,11 @@ public:
 	int32 GetActiveActorCount() const;
 	UFUNCTION(BlueprintPure, Category="Wingman|Presentation")
 	int32 GetActiveRemoteActorCount() const;
+	/** Read-only timing for the existing live PIE sampler. */
+	UFUNCTION(BlueprintPure, Category="Wingman|Diagnostics")
+	bool GetPresentationTiming(const FGuLiWingmanHandle& Wingman,
+		double& OldestSample, double& LatestSample, double& Playback,
+		int32& SampleCount, int64& BootstrapCut) const;
 
 	bool HasAppliedBootstrap(const FGuLiWingmanGroupHandle& Group, uint64 CutId) const;
 	void GetFreshAcceptedTargetPoses(double EstimatedServerNowSeconds,
@@ -116,6 +128,10 @@ public:
 		TArray<FGuLiWingmanAcceptedTargetPose>& OutPoses) const;
 	UFUNCTION(BlueprintCallable, Category="Wingman|Presentation")
 	void ConfigurePresentationMeshes(UStaticMesh* InOwnerMesh, UStaticMesh* InRemoteMesh);
+	/** Visual-only fallback when a death cue arrives after its presented Pawn was released. */
+	UStaticMesh* GetFeedbackMesh() const { return RemoteMesh ? RemoteMesh.Get() : OwnerMesh.Get(); }
+	/** Capture before a death transition clears samples or reuses a stable Pawn slot. */
+	bool TryGetDestructionMotion(const FGuLiWingmanHandle& Wingman, FTransform& OutPose, FVector& OutVelocity) const;
 
 private:
 	bool EnsureClientResources();
@@ -134,7 +150,6 @@ private:
 	void RefreshActorAllocation();
 	AGuLiWingmanPawn* AcquireRemotePawn(const FGuLiWingmanHandle& Handle);
 	void ReleaseRemotePawn(FGuLiWingmanPresentationTrack& Track);
-	FVector GetLocalViewLocation() const;
 	FGuLiWingmanPresentationTrack* FindTrack(const FGuLiWingmanHandle& Wingman);
 	const FGuLiWingmanPresentationTrack* FindTrack(const FGuLiWingmanHandle& Wingman) const;
 
@@ -148,16 +163,7 @@ private:
 	TSoftObjectPtr<UStaticMesh> DefaultPresentationMesh;
 	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation",
 		meta=(ClampMin="0.0", ClampMax="0.5"))
-	float InterpolationBackTimeSeconds = 0.1f;
-	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation", meta=(ClampMin="1"))
-	int32 MaximumPresentedGroups = 128;
-	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation", meta=(ClampMin="1"))
-	int32 MaximumActiveWingmanActors = 200;
-	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation", meta=(ClampMin="0"))
-	int32 MaximumRemoteWingmanActors = 175;
-	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Presentation",
-		meta=(ClampMin="0", Units="cm"))
-	int32 CullDistanceCentimeters = 300000;
+	float InterpolationBackTimeSeconds = 0.2f;
 
 	TMap<FGuLiWingmanGroupHandle, FGuLiWingmanPresentationGroupRuntime> Groups;
 	TArray<TWeakObjectPtr<AGuLiWingmanPawn>> RemotePawnPool;

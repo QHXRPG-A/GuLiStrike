@@ -1,0 +1,96 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "9ECDDE2943037DADDFC5ACBF9EEC22A5",
+			"instanceName": "DESKTOP-6D3B0FC-31572",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.10-13.52.45",
+	"succeeded": 1,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.22590430080890656,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "ConfigurationAndBoundaries",
+			"fullTestPath": "GuLiStrike.Teleport.ConfigurationAndBoundaries",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"9ECDDE2943037DADDFC5ACBF9EEC22A5"
+			],
+			"duration": 0.0016783028841018677,
+			"dateTime": "2026.09.10-13.52.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PawnIdentityMaterialCameraAndRecovery",
+			"fullTestPath": "GuLiStrike.Teleport.PawnIdentityMaterialCameraAndRecovery",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"9ECDDE2943037DADDFC5ACBF9EEC22A5"
+			],
+			"duration": 0.22422599792480469,
+			"dateTime": "2026.09.10-13.52.45",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(335): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.10-13.52.45"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Camera still follows the same Pawn' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Teleport\\Tests\\GuLiTeleportTests.cpp",
+					"lineNumber": 64,
+					"timestamp": "2026.09.10-13.52.45"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Camera retains its target and look rotation' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Teleport\\Tests\\GuLiTeleportTests.cpp",
+					"lineNumber": 72,
+					"timestamp": "2026.09.10-13.52.45"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		}
+	]
+}

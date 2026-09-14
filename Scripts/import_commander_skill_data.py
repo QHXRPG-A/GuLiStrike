@@ -18,10 +18,12 @@ out_dir.mkdir(parents=True, exist_ok=True)
 namespace['PROGRESS'] = str(out_dir / 'import_progress.log')
 manifest = json.loads((root / 'data/Json/manifest.json').read_text(encoding='utf-8'))
 tables = ['DT_GuLiStrikeCommander_Soldiers', 'DT_GuLiStrikeCommander_Skills',
-          'DT_GuLiStrikeCommander_UnitSkills', 'DT_GuLiStrikeCommander_SpellFields',
-          'DT_GuLiStrikeCommander_WeaponMounts']
+          'DT_GuLiStrikeCommander_UnitSkills', 'DT_GuLiStrikeSpellFields_Fields',
+          'DT_GuLiStrikeCommander_WeaponMounts', 'DT_GuLiStrikeSecondaryWeapons_Projectiles']
 report = {'tables': [namespace['import_table'](name, manifest['tables'][name]) for name in tables]}
 report['passed'] = all(entry.get('imported') for entry in report['tables'])
+if report['passed']:
+    report['projectile_profiles'] = namespace['wire_secondary_projectile_profiles']()
 (out_dir / 'import_report.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
 print(json.dumps(report, ensure_ascii=False))
 if not report['passed']:

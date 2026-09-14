@@ -8,6 +8,7 @@
 #include "GameFramework/Actor.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityDefinitions.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
+#include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
 
 namespace
 {
@@ -258,6 +259,15 @@ bool FGuLiWingmanCombatCoordinator::Initialize(
 
 void FGuLiWingmanCombatCoordinator::Reset()
 {
+	if (Context.Relay && Context.ShipASC.IsValid())
+	{
+		if (UGuLiCombatEffectRuntimeSubsystem* Effects =
+			Context.ShipASC->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
+		{
+			for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
+				Effects->CancelWingmanGunBurst(Entry.Wingman, true);
+		}
+	}
 	Context = FGuLiWingmanCombatContext{};
 	SpecifiedAttackTarget = {};
 	AutomaticTargetVersions.Reset();
@@ -265,7 +275,6 @@ void FGuLiWingmanCombatCoordinator::Reset()
 	AttackTargetHistory.Reset();
 	NextAttackTargetScan = 0.0;
 	TargetingTuning = FGuLiWingmanTargetingTuning{};
-	bAutoTargetingLockedForGuard = false;
 	LastWeaponConfig = FGuLiGroupAbilityConfigSnapshot{};
 	NextFireTimeByEmitterAndSlot.Reset();
 	MissileResultsByActivation.Reset();
@@ -292,6 +301,12 @@ bool FGuLiWingmanCombatCoordinator::ApplyCommittedAbilityConfig(
 	if (LastWeaponConfig.HasSameVersion(NewConfig))
 	{
 		return true;
+	}
+	if (UGuLiCombatEffectRuntimeSubsystem* Effects =
+		Context.ShipASC->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
+	{
+		for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
+			Effects->CancelWingmanGunBurst(Entry.Wingman, true);
 	}
 	for (const FGuLiWingmanWeaponChannelConfig& Channel : NewConfig.WeaponChannels)
 	{
@@ -673,6 +688,14 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 int32 FGuLiWingmanCombatCoordinator::SynchronizeRosterState()
 {
 	int32 RemovedCount = 0;
+	if (UGuLiCombatEffectRuntimeSubsystem* Effects = Context.ShipASC.IsValid()
+		? Context.ShipASC->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>() : nullptr)
+	{
+		for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
+		{
+			if (Entry.bDead) Effects->CancelWingmanGunBurst(Entry.Wingman, true);
+		}
+	}
 	for (auto Iterator = NextFireTimeByEmitterAndSlot.CreateIterator(); Iterator; ++Iterator)
 	{
 		if (!IsRosterMemberAlive(Iterator.Key()))

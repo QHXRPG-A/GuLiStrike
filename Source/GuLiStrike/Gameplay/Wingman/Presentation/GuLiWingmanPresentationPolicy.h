@@ -9,6 +9,8 @@
 struct GULISTRIKE_API FGuLiWingmanPresentationPose
 {
 	double SourceTimeSeconds = 0.0;
+	/** Authority receipt time is for freshness/target queries, never trajectory spacing. */
+	double ServerAcceptedTimeSeconds = 0.0;
 	uint32 Sequence = 0u;
 	FVector Location = FVector::ZeroVector;
 	FVector Velocity = FVector::ZeroVector;
@@ -50,7 +52,8 @@ namespace GuLiWingmanPresentationPolicy
 	/** Appends a strictly newer pose and keeps a bounded history. */
 	GULISTRIKE_API bool AppendPose(
 		TArray<FGuLiWingmanPresentationPose>& InOutSamples,
-		const FGuLiWingmanPresentationPose& Pose);
+		const FGuLiWingmanPresentationPose& Pose,
+		int32 MaximumSamples = MaximumBufferedPoseSamples);
 
 	/**
 	 * Interpolates at RenderTimeSeconds while applying freshness against ServerNowSeconds.

@@ -51,6 +51,9 @@ USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiWingmanPublicBootstrapState
 {
 	GENERATED_BODY()
+	UPROPERTY() bool bPhased = false;
+	UPROPERTY() bool bExternalActionsLocked = false;
+	UPROPERTY() TArray<FGuLiWingmanAcceptedBatch> ExternalDisplacementBaselines;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|PublicRelay")
 	FGuLiWingmanGroupHandle Group;
@@ -151,12 +154,15 @@ public:
 
 	/** Authority-only unreliable public pose stream. This state is never accepted back by authority. */
 	void ServerPublishWingmanAcceptedBatch(const FGuLiWingmanAcceptedBatch& AcceptedBatch);
-	/**
-	 * Authority-only activation exception: publishes one complete all-Flight atomic
-	 * result without dropping four Flights behind the ordinary 10 Hz group limiter.
-	 */
+	void ServerPublishWingmanExternalControl(const FGuLiWingmanGroupHandle& Group, bool bPhased, bool bLocked,
+		const TArray<FGuLiWingmanAcceptedBatch>& Baselines);
+	/** Authority-only activation path for one complete all-Flight atomic result. */
 	void ServerPublishWingmanAcceptedAtomicBatch(
 		const TArray<FGuLiWingmanAcceptedBatch>& AcceptedFlights);
+
+	/** Client-side entry for the per-connection 10 Hz public pose stream. */
+	void ReceivePublicWingmanAcceptedBatches(
+		const TArray<FGuLiWingmanAcceptedBatch>& AcceptedBatches);
 
 	const TArray<FGuLiWingmanPublicBootstrapState>& GetPublicWingmanBootstraps() const
 	{
@@ -173,8 +179,6 @@ public:
 
 private:
 	void InitializeDefaultRoleSlots();
-	/** Sole production scheduler for group-level lease watchdog work. */
-	void RunWingmanLeaseMaintenance();
 	bool TryClaimRoleSlot(
 		uint8 SlotIndex,
 		const FGuid& PlayerGuid,
@@ -198,9 +202,6 @@ private:
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastRevokeWingmanGroup(const FGuLiWingmanGroupHandle& Group);
 
-	UFUNCTION(NetMulticast, Unreliable)
-	void MulticastReceiveWingmanAcceptedBatch(const FGuLiWingmanAcceptedBatch& AcceptedBatch);
-
 	/** Reliable launch, unreliable correction, reliable terminal visual-only bridge. */
 	UFUNCTION(NetMulticast, Reliable)
 	void MulticastReceiveMissileLaunch(const FGuLiMissileVisualLaunchDTO& Event);
@@ -219,6 +220,7 @@ private:
 	void ApplyMissileVisualTerminal(const FGuLiMissileVisualTerminalDTO& Event);
 
 	void ApplyRetainedWingmanBootstraps();
+	void FlushPublicWingmanAcceptedBatches();
 	void HandlePublicWingmanBootstrap(const FGuLiWingmanPublicBootstrapState& PublicState);
 	void HandlePublicWingmanRevocation(const FGuLiWingmanGroupHandle& Group);
 	void HandlePublicWingmanAcceptedBatch(const FGuLiWingmanAcceptedBatch& AcceptedBatch);
@@ -244,11 +246,10 @@ private:
 	TArray<FGuLiWingmanPublicBootstrapState> PublicWingmanBootstraps;
 
 	uint32 NextWingmanPublicationRevision = 1u;
-	/** Caps the public unreliable pose stream at 10 accepted batches/second/group. */
-	TMap<FGuLiWingmanGroupHandle, double> LastPublicWingmanAcceptedPublishTimes;
 	TMap<FGuLiWingmanGroupHandle, FGuLiWingmanBootstrapBundle> ClientWingmanBootstrapCache;
 	TSet<FGuLiWingmanGroupHandle> AppliedPublicWingmanGroups;
+	TArray<FGuLiWingmanAcceptedBatch> LatestPublicWingmanAcceptedBatches;
 	TUniquePtr<FGuLiWingmanRelayAuthorityRegistry> WingmanRelayAuthorityRegistry;
-	FTimerHandle WingmanLeaseMaintenanceTimer;
+	FTimerHandle WingmanPublicPosePublishTimer;
 	TWeakObjectPtr<UGuLiLogicalMissileSubsystem> BoundLogicalMissiles;
 };

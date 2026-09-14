@@ -1,0 +1,85 @@
+{
+  "date": "2026-09-13",
+  "scope": [
+    "shared_hit_health_bars",
+    "model_relative_destruction_scale",
+    "wingman_big17_body5_shockwave31"
+  ],
+  "build": {
+    "engine": "D:/UnrealEngine-5.7",
+    "editor": {
+      "target": "GuLiStrikeEditor Win64 Development",
+      "exit_code": 0,
+      "log": "Artifacts/UnitFeedback/hit-bars-final-editor-build.log"
+    },
+    "game": {
+      "target": "GuLiStrike Win64 Development",
+      "exit_code": 0,
+      "log": "Artifacts/UnitFeedback/hit-bars-final-game-build.log"
+    },
+    "engine_build_id": "26d441ba-b96a-4e7b-b104-c2c6cd3e663c",
+    "project_build_id": "26d441ba-b96a-4e7b-b104-c2c6cd3e663c",
+    "native_plugins_changed_this_increment": []
+  },
+  "existing_automation": {
+    "succeeded": 5,
+    "failed": 0,
+    "not_run": 0,
+    "report": "Artifacts/UnitFeedback/hitbar-final-existing-tests/index.json",
+    "new_or_modified_test_cases": false
+  },
+  "health_bars": {
+    "hold_seconds": 3,
+    "fade_seconds": 0.5,
+    "selected_remain_visible": true,
+    "actor_without_health": "neutral_grey_hit_indicator",
+    "single_hit_readback": "Artifacts/UnitFeedback/hitbar-final-readback.json",
+    "repeat_hit_readback": "Artifacts/UnitFeedback/hitbar-repeat-hit-readback.json",
+    "clients_observed": 2
+  },
+  "destruction_scale": {
+    "formula": "ReferenceExplosionScale * actual_model_max_half_extent / smallest_catalog_model_max_half_extent",
+    "approved_reference_visual_scale": 1.510524,
+    "observed_reference_size_cm": 755.2620239257812,
+    "observed_wm01_size_cm": 2880.746338,
+    "observed_wm01_user_scale": 5.761492729187012,
+    "death_readback": "Artifacts/UnitFeedback/model-size-death-readback.json",
+    "clients_observed": 2
+  },
+  "wingman_ground_explosion": {
+    "body_scale": 5,
+    "shockwave_scale": 3.1,
+    "random_yaw": true,
+    "maximum_lifetime_seconds": 3,
+    "unchanged_damage_radius_cm": 4000,
+    "enabled_body_emitters": 8,
+    "enabled_wave_emitters": 2,
+    "last_deployment_success": true,
+    "last_deployment_saved": [],
+    "runtime_readback": "Artifacts/UnitFeedback/ground-layer-runtime-readback.json",
+    "runtime_layer_sampling_clients": [
+      2
+    ],
+    "settled_cleanup": {
+      "ground_active": 0,
+      "pooled_components": 128,
+      "pool_scales": [
+        1
+      ],
+      "dirty": [],
+      "dirty_maps": []
+    }
+  },
+  "final_editor_state": {
+    "pie_running": false,
+    "editor_world": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+    "dirty_content": [],
+    "dirty_maps": []
+  },
+  "verification_not_covered": [
+    "full_packet_loss_replay",
+    "packaged_runtime",
+    "target_hardware_gpu_peak",
+    "full_split_screen_and_resolution_matrix"
+  ]
+}

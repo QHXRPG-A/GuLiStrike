@@ -1,0 +1,132 @@
+{
+  "stage": "complete",
+  "samples": [
+    {
+      "age": 0.0819002017378807,
+      "active": true,
+      "scale": [
+        14.441902160644531,
+        14.441902160644531,
+        14.441902160644531
+      ],
+      "location": [
+        62494.0829682542,
+        78817.5791015367,
+        17590.840688842283
+      ],
+      "screenshot": "TestResults/WingmanAttack/WingmanAerial_start.png"
+    },
+    {
+      "age": 0.2555304989218712,
+      "active": true,
+      "scale": [
+        14.441902160644531,
+        14.441902160644531,
+        14.441902160644531
+      ],
+      "location": [
+        62494.0829682542,
+        78817.5791015367,
+        17590.840688842283
+      ],
+      "screenshot": "TestResults/WingmanAttack/WingmanAerial_peak.png"
+    },
+    {
+      "age": 0.7580857984721661,
+      "active": true,
+      "scale": [
+        14.441902160644531,
+        14.441902160644531,
+        14.441902160644531
+      ],
+      "location": [
+        62494.0829682542,
+        78817.5791015367,
+        17590.840688842283
+      ],
+      "screenshot": "TestResults/WingmanAttack/WingmanAerial_wave.png"
+    },
+    {
+      "age": 2.0185903012752533,
+      "active": true,
+      "scale": [
+        14.441902160644531,
+        14.441902160644531,
+        14.441902160644531
+      ],
+      "location": [
+        62494.0829682542,
+        78817.5791015367,
+        17590.840688842283
+      ],
+      "screenshot": "TestResults/WingmanAttack/WingmanAerial_tail.png"
+    },
+    {
+      "age": 5.010052599012852,
+      "active": false,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "location": [
+        62494.0829682542,
+        78817.5791015367,
+        17590.840688842283
+      ],
+      "screenshot": "TestResults/WingmanAttack/WingmanAerial_late.png"
+    },
+    {
+      "age": 12.50690719857812,
+      "active": false,
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "location": [
+        62494.0829682542,
+        78817.5791015367,
+        17590.840688842283
+      ],
+      "screenshot": "TestResults/WingmanAttack/WingmanAerial_end.png"
+    }
+  ],
+  "start_world_time": 414.4654029048979,
+  "attempts": [
+    {
+      "unit": "GuLiWingmanPawn_16",
+      "before": 0,
+      "after": 1,
+      "after_duplicate": 1,
+      "assets": [
+        "NS_WingmanDestruction_Aerial_3"
+      ]
+    },
+    {
+      "unit": "GuLiWingmanPawn_6",
+      "before": 1,
+      "after": 2,
+      "after_duplicate": 2,
+      "assets": [
+        "NS_WingmanDestruction_Aerial_4"
+      ]
+    }
+  ],
+  "trigger": "existing presentation deaths with unmodified random selection; selected Aerial 4 for temporal inspection; nearby wingmen hidden",
+  "time_origin": 414.49887880310416,
+  "subject": "/Game/Maps/UEDPIE_1_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WorldSettings.NiagaraComponent_34",
+  "asset": "NS_WingmanDestruction_Aerial_4",
+  "location": [
+    62494.0829682542,
+    78817.5791015367,
+    17590.840688842283
+  ],
+  "scale": [
+    14.441902160644531,
+    14.441902160644531,
+    14.441902160644531
+  ],
+  "rotation": "<Struct 'Rotator' (0x000001EE10D5FE90) {pitch: 0.000000, yaw: -89.647708, roll: 0.000000}>",
+  "sample_index": 6
+}

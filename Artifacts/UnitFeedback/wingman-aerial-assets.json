@@ -1,0 +1,160 @@
+{
+  "systems": [
+    {
+      "source": "/Game/AllExplosions/Niagara/Aerial/NS_Explosion_Aerial_3",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_WingmanDestruction_Aerial_3",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000001F2D4725A50) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_WingmanDestruction_Aerial_3\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.004591}>",
+      "emitters": [
+        {
+          "name": "spark",
+          "enabled": true
+        },
+        {
+          "name": "impact",
+          "enabled": true
+        },
+        {
+          "name": "spark_l",
+          "enabled": true
+        },
+        {
+          "name": "refr_sprite",
+          "enabled": false
+        },
+        {
+          "name": "refr_mesh",
+          "enabled": true
+        },
+        {
+          "name": "main",
+          "enabled": true
+        },
+        {
+          "name": "smoke_shockwave",
+          "enabled": true
+        },
+        {
+          "name": "smoke_after",
+          "enabled": true
+        }
+      ],
+      "renderers": {
+        "spark": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F2A7FE8700) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ],
+        "impact": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F2A7FE2940) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>",
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F2A7FE2850) {renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 1, is_enabled: True}>"
+        ],
+        "spark_l": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F2A7FE29A0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ],
+        "refr_sprite": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F2A7FE82E0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ],
+        "refr_mesh": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F2A7FE8EE0) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}>"
+        ],
+        "main": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F2A7FE95D0) {renderer_name: \"NiagaraSpriteRendererProperties_1\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ],
+        "smoke_shockwave": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F2A7FE9A50) {renderer_name: \"NiagaraSpriteRendererProperties_1\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ],
+        "smoke_after": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F2A7FEA1A0) {renderer_name: \"NiagaraSpriteRendererProperties_1\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      "parameters": [
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001F2DF678700) {parameter_name: \"User.CameraDepthFafe\", parameter_type: \"Float\", namespace: \"User\", current_value: \"50.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001F2DF67EEE0) {parameter_name: \"User.Color\", parameter_type: \"Color\", namespace: \"User\", current_value: \"(R=1.000000,G=1.000000,B=1.000000,A=1.000000)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001F2DF677AA0) {parameter_name: \"User.Depth Fade\", parameter_type: \"Float\", namespace: \"User\", current_value: \"200.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001F2DF677C20) {parameter_name: \"User.Emissive\", parameter_type: \"NiagaraDataInterfaceCurve\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001F2DF679960) {parameter_name: \"User.LifetimeMult\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+      ],
+      "effect_type": "/Game/GuLiStrike/FX/UnitFeedback/FXT_UnitDestruction.FXT_UnitDestruction",
+      "pool_size": 16,
+      "pool_prime_size": 0,
+      "source_emitters_unchanged": true
+    },
+    {
+      "source": "/Game/AllExplosions/Niagara/Aerial/NS_Explosion_Aerial_4",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_WingmanDestruction_Aerial_4",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000001F2C1E17A30) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_WingmanDestruction_Aerial_4\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.004252}>",
+      "emitters": [
+        {
+          "name": "spark",
+          "enabled": true
+        },
+        {
+          "name": "impact",
+          "enabled": true
+        },
+        {
+          "name": "spark_l",
+          "enabled": true
+        },
+        {
+          "name": "refr_sprite",
+          "enabled": false
+        },
+        {
+          "name": "refr_mesh",
+          "enabled": true
+        },
+        {
+          "name": "main",
+          "enabled": true
+        },
+        {
+          "name": "smoke_shockwave",
+          "enabled": true
+        },
+        {
+          "name": "smoke_after",
+          "enabled": true
+        }
+      ],
+      "renderers": {
+        "spark": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F0B96AE790) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ],
+        "impact": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F0B96AADD0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>",
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F0B96A03F0) {renderer_name: \"NiagaraLightRendererProperties_0\", renderer_type: \"Light\", renderer_index: 1, is_enabled: True}>"
+        ],
+        "spark_l": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F0B96A7230) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ],
+        "refr_sprite": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F0B96A0330) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ],
+        "refr_mesh": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F0B96AF0C0) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}>"
+        ],
+        "main": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F0B96A5670) {renderer_name: \"NiagaraSpriteRendererProperties_1\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ],
+        "smoke_shockwave": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F0B96AF840) {renderer_name: \"NiagaraSpriteRendererProperties_1\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ],
+        "smoke_after": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001F0B96AFFC0) {renderer_name: \"NiagaraSpriteRendererProperties_1\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      "parameters": [
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001F2D5FE25E0) {parameter_name: \"User.CameraDepthFafe\", parameter_type: \"Float\", namespace: \"User\", current_value: \"50.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001F2D5FE4320) {parameter_name: \"User.Color\", parameter_type: \"Color\", namespace: \"User\", current_value: \"(R=1.000000,G=1.000000,B=1.000000,A=1.000000)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001F2D5FE5400) {parameter_name: \"User.Depth Fade\", parameter_type: \"Float\", namespace: \"User\", current_value: \"200.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001F2D5FE3180) {parameter_name: \"User.Emissive\", parameter_type: \"NiagaraDataInterfaceCurve\", namespace: \"User\", current_value: \"(uninitialized)\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001F2D5FED020) {parameter_name: \"User.LifetimeMult\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+      ],
+      "effect_type": "/Game/GuLiStrike/FX/UnitFeedback/FXT_UnitDestruction.FXT_UnitDestruction",
+      "pool_size": 16,
+      "pool_prime_size": 0,
+      "source_emitters_unchanged": true
+    }
+  ],
+  "saved": [],
+  "success": true
+}

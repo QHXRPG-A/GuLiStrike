@@ -43,6 +43,19 @@ bool GuLiBuildingPlacementPolicy::IsKnownBuildingType(const EGuLiBuildingType Ty
 		|| Type == EGuLiBuildingType::Outpost;
 }
 
+FGuLiResourceAmounts GuLiBuildingPlacementPolicy::GetEconomyCost(const EGuLiBuildingType Type)
+{
+	FGuLiResourceAmounts Cost;
+	switch (Type)
+	{
+	case EGuLiBuildingType::MissileTurret: Cost.Blue = 20; break;
+	case EGuLiBuildingType::SentryTurret: Cost.Blue = 10; break;
+	case EGuLiBuildingType::Outpost: Cost.Blue = 40; break;
+	default: checkNoEntry();
+	}
+	return Cost;
+}
+
 bool GuLiBuildingPlacementPolicy::IsSlopeAllowed(
 	const FVector& SurfaceNormal,
 	const float MaximumDegrees)
@@ -151,6 +164,8 @@ FText GetGuLiBuildingPlacementReasonText(const EGuLiBuildingPlacementRejectReaso
 		return NSLOCTEXT("GuLiBuilding", "RateLimited", "建造请求过快");
 	case EGuLiBuildingPlacementRejectReason::Duplicate:
 		return NSLOCTEXT("GuLiBuilding", "Duplicate", "建造请求已过期");
+	case EGuLiBuildingPlacementRejectReason::InsufficientResources:
+		return NSLOCTEXT("GuLiBuilding", "InsufficientResources", "蓝矿库存不足");
 	case EGuLiBuildingPlacementRejectReason::SpawnFailed:
 		return NSLOCTEXT("GuLiBuilding", "SpawnFailed", "建筑生成失败");
 	default:
@@ -172,4 +187,3 @@ FText GetGuLiBuildingFallbackDisplayName(const EGuLiBuildingType Type)
 		return NSLOCTEXT("GuLiBuilding", "UnknownBuilding", "未知建筑");
 	}
 }
-

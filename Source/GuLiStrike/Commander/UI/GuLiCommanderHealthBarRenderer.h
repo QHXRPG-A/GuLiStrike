@@ -8,6 +8,7 @@
 #include "GuLiCommanderHealthBarRenderer.generated.h"
 
 class AGuLiCommanderPlayerController;
+class APlayerController;
 class AGuLiCommanderPresentationActor;
 class AGuLiSoldierStateReplicator;
 class UGuLiCommanderNetSyncComponent;
@@ -35,8 +36,9 @@ public:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 	virtual void Tick(float DeltaSeconds) override;
 
-	/** Must be called by the owning local HUD. No network ownership is established. */
-	void InitializeForController(AGuLiCommanderPlayerController* InController);
+	/** One world-owned batch per local view, shared by the Commander selection HUD and all unit hit feedback. */
+	static AGuLiCommanderHealthBarRenderer* FindOrSpawn(UWorld* World, APlayerController* Controller);
+	void InitializeForController(APlayerController* InController);
 
 	/** Read-only local diagnostics for automation/performance capture. */
 	int32 GetAllocatedInstanceCount() const;
@@ -73,6 +75,8 @@ private:
 	void HandleSoldierStatesChanged(uint32 SnapshotRevision);
 	void RebuildSelectedSoldiers(const FGuLiCommanderSelectionState& Selection);
 	void EnsureStableInstancePool(const AGuLiSoldierStateReplicator& Replicator);
+	int32 AllocateInstanceSlot();
+	void RefreshActorInstancePool();
 	float ResolveSoldierHeightOffset(uint16 UnitTypeId);
 	void RebuildLocalInstances();
 	void HideAllInstances();
@@ -104,7 +108,7 @@ private:
 	UPROPERTY(EditDefaultsOnly, Category = "Commander|UI|HealthBar")
 	TSoftObjectPtr<UMaterialInterface> HealthBarMaterialAsset;
 
-	TWeakObjectPtr<AGuLiCommanderPlayerController> LocalController;
+	TWeakObjectPtr<APlayerController> LocalController;
 	TWeakObjectPtr<UGuLiCommanderNetSyncComponent> BoundNetSync;
 	TWeakObjectPtr<AGuLiSoldierStateReplicator> StateReplicator;
 	TWeakObjectPtr<AGuLiCommanderPresentationActor> PresentationActor;
@@ -113,6 +117,8 @@ private:
 	FDelegateHandle SelectionChangedHandle;
 	FDelegateHandle SoldierStatesChangedHandle;
 	TMap<FGuLiSoldierId, int32> SoldierInstanceIndices;
+	TMap<TWeakObjectPtr<AActor>, int32> ActorInstanceIndices;
+	TArray<int32> FreeActorInstanceSlots;
 	TSet<FGuLiSoldierId> SelectedSoldiers;
 	TArray<FTransform> CachedTransforms;
 	TArray<float> CachedHealthFractions;

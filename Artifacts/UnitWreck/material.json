@@ -1,0 +1,741 @@
+{
+  "path": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitWreckRust",
+  "saved": [],
+  "diagnostics": "<Struct 'MaterialDiagnostics' (0x00000237647B3980) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 24, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 7, vector_parameter_count: 4}>",
+  "graph": {
+    "material": {
+      "blend_mode": "BLEND_Opaque",
+      "shading_model": "MSM_DefaultLit",
+      "two_sided": false
+    },
+    "expressions": [
+      {
+        "id": "MaterialExpressionPreSkinnedPosition_000002370BFC2220",
+        "class": "PreSkinnedPosition",
+        "class_full": "MaterialExpressionPreSkinnedPosition",
+        "pos_x": -2080,
+        "pos_y": 690,
+        "properties": {},
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVertexInterpolator_0000023738FF0280",
+        "class": "VertexInterpolator",
+        "class_full": "MaterialExpressionVertexInterpolator",
+        "pos_x": -1820,
+        "pos_y": 690,
+        "properties": {},
+        "inputs": [
+          "VS"
+        ],
+        "outputs": [
+          "PS"
+        ]
+      },
+      {
+        "id": "MaterialExpressionMultiply_0000023738FF17C0",
+        "class": "Multiply",
+        "class_full": "MaterialExpressionMultiply",
+        "pos_x": -1560,
+        "pos_y": 690,
+        "properties": {
+          "ConstA": "0.000000",
+          "ConstB": "1.000000"
+        },
+        "inputs": [
+          "A",
+          "B"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionScalarParameter_0000023738FF1B80",
+        "class": "ScalarParameter",
+        "class_full": "MaterialExpressionScalarParameter",
+        "pos_x": -1820,
+        "pos_y": 852,
+        "properties": {
+          "DefaultValue": "0.006000",
+          "ControlType": "Numeric",
+          "SliderMin": "0.000000",
+          "SliderMax": "0.000000",
+          "Enumeration": "None",
+          "EnumerationIndex": "0",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "RustPatternScale",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionCustom_0000023738FF2A80",
+        "class": "Custom",
+        "class_full": "MaterialExpressionCustom",
+        "pos_x": -1300,
+        "pos_y": 690,
+        "properties": {
+          "Code": "\nstruct RustNoise {\n    float hash(float3 p) {\n        p = frac(p * 0.1031);\n        p += dot(p, p.yzx + 33.33);\n        return frac((p.x + p.y) * p.z);\n    }\n    float value(float3 p) {\n        float3 i = floor(p), f = frac(p);\n        f = f*f*(3.0-2.0*f);\n        return lerp(lerp(lerp(hash(i), hash(i+float3(1,0,0)), f.x),\n                         lerp(hash(i+float3(0,1,0)), hash(i+float3(1,1,0)), f.x), f.y),\n                    lerp(lerp(hash(i+float3(0,0,1)), hash(i+float3(1,0,1)), f.x),\n                         lerp(hash(i+float3(0,1,1)), hash(i+float3(1,1,1)), f.x), f.y), f.z);\n    }\n};\nRustNoise N;\nfloat broad = N.value(P * 0.65);\nfloat chips = N.value(P * 3.7 + 7.3);\nfloat grain = N.value(P * 22.0 + 19.1);\nfloat rust = smoothstep(0.25, 0.64, broad * 0.68 + chips * 0.32);\nfloat soot = smoothstep(0.45, 0.70, N.value(P * 0.28 + 31.7));\nreturn float3(rust, saturate(chips * 0.75 + grain * 0.25), soot);\n",
+          "OutputType": "CMOT_Float3",
+          "Description": "Local-space iron oxide, pits and soot; no moving world projection",
+          "Inputs": "((InputName=\"P\",Input=(Expression=\"/Script/Engine.MaterialExpressionMultiply'/Game/GuLiStrike/FX/UnitFeedback/M_UnitWreckRust.M_UnitWreckRust:MaterialExpressionMultiply_1'\")))",
+          "ShowCode": "False"
+        },
+        "hlsl_code": "\nstruct RustNoise {\n    float hash(float3 p) {\n        p = frac(p * 0.1031);\n        p += dot(p, p.yzx + 33.33);\n        return frac((p.x + p.y) * p.z);\n    }\n    float value(float3 p) {\n        float3 i = floor(p), f = frac(p);\n        f = f*f*(3.0-2.0*f);\n        return lerp(lerp(lerp(hash(i), hash(i+float3(1,0,0)), f.x),\n                         lerp(hash(i+float3(0,1,0)), hash(i+float3(1,1,0)), f.x), f.y),\n                    lerp(lerp(hash(i+float3(0,0,1)), hash(i+float3(1,0,1)), f.x),\n                         lerp(hash(i+float3(0,1,1)), hash(i+float3(1,1,1)), f.x), f.y), f.z);\n    }\n};\nRustNoise N;\nfloat broad = N.value(P * 0.65);\nfloat chips = N.value(P * 3.7 + 7.3);\nfloat grain = N.value(P * 22.0 + 19.1);\nfloat rust = smoothstep(0.25, 0.64, broad * 0.68 + chips * 0.32);\nfloat soot = smoothstep(0.45, 0.70, N.value(P * 0.28 + 31.7));\nreturn float3(rust, saturate(chips * 0.75 + grain * 0.25), soot);\n",
+        "output_type": "CMOT_Float3",
+        "custom_input_names": "P",
+        "inputs": [
+          "P"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionComponentMask_0000023712F92E00",
+        "class": "ComponentMask",
+        "class_full": "MaterialExpressionComponentMask",
+        "pos_x": -780,
+        "pos_y": 500,
+        "properties": {
+          "R": "True",
+          "G": "False",
+          "B": "False",
+          "A": "False"
+        },
+        "inputs": [
+          "Input"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionComponentMask_0000023712F92300",
+        "class": "ComponentMask",
+        "class_full": "MaterialExpressionComponentMask",
+        "pos_x": -1040,
+        "pos_y": 690,
+        "properties": {
+          "R": "False",
+          "G": "True",
+          "B": "False",
+          "A": "False"
+        },
+        "inputs": [
+          "Input"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionComponentMask_0000023712F90F00",
+        "class": "ComponentMask",
+        "class_full": "MaterialExpressionComponentMask",
+        "pos_x": -520,
+        "pos_y": 500,
+        "properties": {
+          "R": "False",
+          "G": "False",
+          "B": "True",
+          "A": "False"
+        },
+        "inputs": [
+          "Input"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_00000237677E2700",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -1040,
+        "pos_y": 338,
+        "properties": {
+          "DefaultValue": "(R=0.030000,G=0.018000,B=0.011000,A=1.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "DeepOxide",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_00000236F6FFCA80",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -1040,
+        "pos_y": 514,
+        "properties": {
+          "DefaultValue": "(R=0.095000,G=0.043000,B=0.021000,A=1.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "FlakedRust",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionLinearInterpolate_000002374FEBAF80",
+        "class": "LinearInterpolate",
+        "class_full": "MaterialExpressionLinearInterpolate",
+        "pos_x": -780,
+        "pos_y": 338,
+        "properties": {
+          "ConstA": "0.000000",
+          "ConstB": "1.000000",
+          "ConstAlpha": "0.500000"
+        },
+        "inputs": [
+          "A",
+          "B",
+          "Alpha"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_000002374FEB7080",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -780,
+        "pos_y": 162,
+        "properties": {
+          "DefaultValue": "(R=0.034000,G=0.035000,B=0.032000,A=1.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "ExposedSteel",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionLinearInterpolate_00000234E0FC9900",
+        "class": "LinearInterpolate",
+        "class_full": "MaterialExpressionLinearInterpolate",
+        "pos_x": -520,
+        "pos_y": 162,
+        "properties": {
+          "ConstA": "0.000000",
+          "ConstB": "1.000000",
+          "ConstAlpha": "0.500000"
+        },
+        "inputs": [
+          "A",
+          "B",
+          "Alpha"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_00000234E0FC9780",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -520,
+        "pos_y": 324,
+        "properties": {
+          "DefaultValue": "(R=0.008000,G=0.009000,B=0.010000,A=1.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "Charcoal",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionLinearInterpolate_00000234527FBE80",
+        "class": "LinearInterpolate",
+        "class_full": "MaterialExpressionLinearInterpolate",
+        "pos_x": -260,
+        "pos_y": 162,
+        "properties": {
+          "ConstA": "0.000000",
+          "ConstB": "1.000000",
+          "ConstAlpha": "0.500000"
+        },
+        "inputs": [
+          "A",
+          "B",
+          "Alpha"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionScalarParameter_0000023738FF6680",
+        "class": "ScalarParameter",
+        "class_full": "MaterialExpressionScalarParameter",
+        "pos_x": -520,
+        "pos_y": 986,
+        "properties": {
+          "DefaultValue": "0.750000",
+          "ControlType": "Numeric",
+          "SliderMin": "0.000000",
+          "SliderMax": "0.000000",
+          "Enumeration": "None",
+          "EnumerationIndex": "0",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "SteelRoughness",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionScalarParameter_0000023738FF3AC0",
+        "class": "ScalarParameter",
+        "class_full": "MaterialExpressionScalarParameter",
+        "pos_x": -520,
+        "pos_y": 1148,
+        "properties": {
+          "DefaultValue": "0.940000",
+          "ControlType": "Numeric",
+          "SliderMin": "0.000000",
+          "SliderMax": "0.000000",
+          "Enumeration": "None",
+          "EnumerationIndex": "0",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "RustRoughness",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionLinearInterpolate_000002374FF0FD80",
+        "class": "LinearInterpolate",
+        "class_full": "MaterialExpressionLinearInterpolate",
+        "pos_x": -260,
+        "pos_y": 486,
+        "properties": {
+          "ConstA": "0.000000",
+          "ConstB": "1.000000",
+          "ConstAlpha": "0.500000"
+        },
+        "inputs": [
+          "A",
+          "B",
+          "Alpha"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionScalarParameter_0000023738FF0B40",
+        "class": "ScalarParameter",
+        "class_full": "MaterialExpressionScalarParameter",
+        "pos_x": -780,
+        "pos_y": 662,
+        "properties": {
+          "DefaultValue": "0.800000",
+          "ControlType": "Numeric",
+          "SliderMin": "0.000000",
+          "SliderMax": "0.000000",
+          "Enumeration": "None",
+          "EnumerationIndex": "0",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "SteelMetallic",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionScalarParameter_0000023738FF4880",
+        "class": "ScalarParameter",
+        "class_full": "MaterialExpressionScalarParameter",
+        "pos_x": -780,
+        "pos_y": 824,
+        "properties": {
+          "DefaultValue": "0.020000",
+          "ControlType": "Numeric",
+          "SliderMin": "0.000000",
+          "SliderMax": "0.000000",
+          "Enumeration": "None",
+          "EnumerationIndex": "0",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "OxideMetallic",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionLinearInterpolate_000002375CEE9D80",
+        "class": "LinearInterpolate",
+        "class_full": "MaterialExpressionLinearInterpolate",
+        "pos_x": -520,
+        "pos_y": 662,
+        "properties": {
+          "ConstA": "0.000000",
+          "ConstB": "1.000000",
+          "ConstAlpha": "0.500000"
+        },
+        "inputs": [
+          "A",
+          "B",
+          "Alpha"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionScalarParameter_0000023738FF80C0",
+        "class": "ScalarParameter",
+        "class_full": "MaterialExpressionScalarParameter",
+        "pos_x": -520,
+        "pos_y": 824,
+        "properties": {
+          "DefaultValue": "0.000000",
+          "ControlType": "Numeric",
+          "SliderMin": "0.000000",
+          "SliderMax": "0.000000",
+          "Enumeration": "None",
+          "EnumerationIndex": "0",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "SootMetallic",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionLinearInterpolate_0000023734696180",
+        "class": "LinearInterpolate",
+        "class_full": "MaterialExpressionLinearInterpolate",
+        "pos_x": -260,
+        "pos_y": 324,
+        "properties": {
+          "ConstA": "0.000000",
+          "ConstB": "1.000000",
+          "ConstAlpha": "0.500000"
+        },
+        "inputs": [
+          "A",
+          "B",
+          "Alpha"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionScalarParameter_0000023738FF6540",
+        "class": "ScalarParameter",
+        "class_full": "MaterialExpressionScalarParameter",
+        "pos_x": -260,
+        "pos_y": 0,
+        "properties": {
+          "DefaultValue": "0.000000",
+          "ControlType": "Numeric",
+          "SliderMin": "0.000000",
+          "SliderMax": "0.000000",
+          "Enumeration": "None",
+          "EnumerationIndex": "0",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "WreckEmissive",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "source_id": "MaterialExpressionPreSkinnedPosition_000002370BFC2220",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionVertexInterpolator_0000023738FF0280",
+        "target_input": "VS"
+      },
+      {
+        "source_id": "MaterialExpressionVertexInterpolator_0000023738FF0280",
+        "source_output_index": 0,
+        "source_output_name": "PS",
+        "target_id": "MaterialExpressionMultiply_0000023738FF17C0",
+        "target_input": "A"
+      },
+      {
+        "source_id": "MaterialExpressionScalarParameter_0000023738FF1B80",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionMultiply_0000023738FF17C0",
+        "target_input": "B"
+      },
+      {
+        "source_id": "MaterialExpressionMultiply_0000023738FF17C0",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionCustom_0000023738FF2A80",
+        "target_input": "P"
+      },
+      {
+        "source_id": "MaterialExpressionCustom_0000023738FF2A80",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionComponentMask_0000023712F92E00",
+        "target_input": "Input"
+      },
+      {
+        "source_id": "MaterialExpressionCustom_0000023738FF2A80",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionComponentMask_0000023712F92300",
+        "target_input": "Input"
+      },
+      {
+        "source_id": "MaterialExpressionCustom_0000023738FF2A80",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionComponentMask_0000023712F90F00",
+        "target_input": "Input"
+      },
+      {
+        "source_id": "MaterialExpressionVectorParameter_00000237677E2700",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionLinearInterpolate_000002374FEBAF80",
+        "target_input": "A"
+      },
+      {
+        "source_id": "MaterialExpressionVectorParameter_00000236F6FFCA80",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionLinearInterpolate_000002374FEBAF80",
+        "target_input": "B"
+      },
+      {
+        "source_id": "MaterialExpressionComponentMask_0000023712F92300",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_000002374FEBAF80",
+        "target_input": "Alpha"
+      },
+      {
+        "source_id": "MaterialExpressionVectorParameter_000002374FEB7080",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionLinearInterpolate_00000234E0FC9900",
+        "target_input": "A"
+      },
+      {
+        "source_id": "MaterialExpressionLinearInterpolate_000002374FEBAF80",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_00000234E0FC9900",
+        "target_input": "B"
+      },
+      {
+        "source_id": "MaterialExpressionComponentMask_0000023712F92E00",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_00000234E0FC9900",
+        "target_input": "Alpha"
+      },
+      {
+        "source_id": "MaterialExpressionLinearInterpolate_00000234E0FC9900",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_00000234527FBE80",
+        "target_input": "A"
+      },
+      {
+        "source_id": "MaterialExpressionVectorParameter_00000234E0FC9780",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionLinearInterpolate_00000234527FBE80",
+        "target_input": "B"
+      },
+      {
+        "source_id": "MaterialExpressionComponentMask_0000023712F90F00",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_00000234527FBE80",
+        "target_input": "Alpha"
+      },
+      {
+        "source_id": "MaterialExpressionScalarParameter_0000023738FF6680",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_000002374FF0FD80",
+        "target_input": "A"
+      },
+      {
+        "source_id": "MaterialExpressionScalarParameter_0000023738FF3AC0",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_000002374FF0FD80",
+        "target_input": "B"
+      },
+      {
+        "source_id": "MaterialExpressionComponentMask_0000023712F92E00",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_000002374FF0FD80",
+        "target_input": "Alpha"
+      },
+      {
+        "source_id": "MaterialExpressionScalarParameter_0000023738FF0B40",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_000002375CEE9D80",
+        "target_input": "A"
+      },
+      {
+        "source_id": "MaterialExpressionScalarParameter_0000023738FF4880",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_000002375CEE9D80",
+        "target_input": "B"
+      },
+      {
+        "source_id": "MaterialExpressionComponentMask_0000023712F92E00",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_000002375CEE9D80",
+        "target_input": "Alpha"
+      },
+      {
+        "source_id": "MaterialExpressionLinearInterpolate_000002375CEE9D80",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_0000023734696180",
+        "target_input": "A"
+      },
+      {
+        "source_id": "MaterialExpressionScalarParameter_0000023738FF80C0",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_0000023734696180",
+        "target_input": "B"
+      },
+      {
+        "source_id": "MaterialExpressionComponentMask_0000023712F90F00",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionLinearInterpolate_0000023734696180",
+        "target_input": "Alpha"
+      }
+    ],
+    "output_connections": [
+      {
+        "property": "BaseColor",
+        "expression_id": "MaterialExpressionLinearInterpolate_00000234527FBE80",
+        "output_index": 0,
+        "output_name": ""
+      },
+      {
+        "property": "Metallic",
+        "expression_id": "MaterialExpressionLinearInterpolate_0000023734696180",
+        "output_index": 0,
+        "output_name": ""
+      },
+      {
+        "property": "Roughness",
+        "expression_id": "MaterialExpressionLinearInterpolate_000002374FF0FD80",
+        "output_index": 0,
+        "output_name": ""
+      },
+      {
+        "property": "EmissiveColor",
+        "expression_id": "MaterialExpressionScalarParameter_0000023738FF6540",
+        "output_index": 0,
+        "output_name": ""
+      }
+    ]
+  },
+  "description": "Opaque lit rust/steel/soot, zero emission, mesh-local pattern; shared by ISM and frozen skeletal poses."
+}

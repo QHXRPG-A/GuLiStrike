@@ -60,6 +60,7 @@ struct FGuLiWingmanLocalGroupRuntime
 	FGuLiGroupAbilityConfigSnapshot AbilityConfig;
 	/** Fire/attack authorization may lapse without suspending client flight. */
 	bool bCombatAuthorizationValid = true;
+	bool bExternalActionsLocked = false;
 	TArray<TWeakObjectPtr<AGuLiWingmanPawn>> Pawns;
 	TArray<TSharedPtr<FGuLiWingmanFlightNavigationRuntime>> FlightNavigation;
 	TWeakObjectPtr<AActor> CarrierActor;
@@ -82,13 +83,10 @@ struct FGuLiWingmanAttackDiagnostic
 	FVector Forward = FVector::ForwardVector;
 	FVector Entry = FVector::ZeroVector;
 	FVector PreferredVelocity = FVector::ZeroVector;
-	FVector RetreatPoint = FVector::ZeroVector;
-	FVector TurnControlPoint = FVector::ZeroVector;
-	float TurnYawDegrees = 0.0f;
-	float TurnPitchDegrees = 0.0f;
+	float TargetDistance = 0.0f;
+	float CarrierDistance = 0.0f;
 	uint32 RunId = 0u;
 	uint32 CompletedGroundRuns = 0u;
-	uint32 StateEntrySerial = 0u;
 	int32 NextShot = 0;
 	double StartTime = 0.0;
 	double PhaseStartTime = 0.0;
@@ -132,6 +130,11 @@ public:
 	void DestroyAllOwnedGroups();
 
 	bool AdvanceOwnedGroup(const FGuLiWingmanGroupHandle& Group, float DeltaSeconds);
+	void SetGroupExternalControlState(const FGuLiWingmanGroupHandle& Group, bool bPhased, bool bLocked);
+	/** Uses the existing escort layout and FlightNav point validation, with no source-to-target path test. */
+	static bool PlanExternalFormationPositions(UWorld* World, const FTransform& Carrier,
+		const FGuLiWingmanFormationRuntimeConfig& Formation, TArray<FVector>& OutPositions,
+		TConstArrayView<int32> LivingSlots = {});
 	AGuLiWingmanPawn* FindOwnedPawn(const FGuLiWingmanHandle& Wingman) const;
 	int32 GetOwnedPawnCount(const FGuLiWingmanGroupHandle& Group) const;
 	int32 GetTotalOwnedPawnCount() const;

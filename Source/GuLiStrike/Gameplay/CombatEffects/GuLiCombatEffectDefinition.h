@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 #include "Engine/DataAsset.h"
+#include "Engine/DataTable.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectTypes.h"
 #include "GuLiCombatEffectDefinition.generated.h"
 
@@ -9,13 +10,25 @@ class UNiagaraSystem;
 class UNiagaraDataChannelAsset;
 
 USTRUCT(BlueprintType)
+struct GULISTRIKE_API FGuLiEffectVisualLayer
+{
+	GENERATED_BODY()
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual") TSoftObjectPtr<UNiagaraSystem> System;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual", meta=(ClampMin="0.001")) float Scale = 1.0f;
+};
+
+USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiEffectVisualVariant
 {
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual") TSoftObjectPtr<UNiagaraSystem> System;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual", meta=(ClampMin="0.001")) float Scale = 1.0f;
+	/** Rotates this world-space burst around +Z from the replicated effect seed. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual") bool bRandomYaw = false;
 	/** Maximum visual lifetime, including smoke; enforces cleanup even for a broken looping template. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual", meta=(ClampMin="0.01", Units="s")) float MaximumLifetime = 3.0f;
+	/** Simultaneous layers with independent authored scales, sharing this variant's origin, yaw and lifetime. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual") TArray<FGuLiEffectVisualLayer> AdditionalLayers;
 };
 
 UCLASS(BlueprintType)
@@ -23,7 +36,7 @@ class GULISTRIKE_API UGuLiSpellFieldDefinition : public UDataAsset
 {
 	GENERATED_BODY()
 public:
-	/** Optional SpellFields DataTable row. Project gameplay assets should set this; empty keeps the inline fallback for tests/prototypes. */
+	/** Default SpellFields row for direct callers. A weapon context's authored field reference takes precedence; both empty permits the inline prototype fallback. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field") FName ConfigId;
 	/** Inline fallback timing. Table-driven fields replace this at creation. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field") EGuLiSpellFieldTiming Timing = EGuLiSpellFieldTiming::Instant;
@@ -44,12 +57,18 @@ class GULISTRIKE_API UGuLiProjectileEffectDefinition : public UDataAsset
 {
 	GENERATED_BODY()
 public:
+	/** Production motion is authored in GuLiStrikeSecondaryWeapons.xlsx / Projectiles. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") FDataTableRowHandle MotionProfileRow;
+	/** Native/test fallback used only when MotionProfileRow is empty. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") FGuLiProjectileMotionSettings Motion;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") TSoftObjectPtr<UGuLiSpellFieldDefinition> ImpactField;
 	/** Contains the missile mesh/bright core and flame/ribbon emitters; no replicated visual Actor. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") TSoftObjectPtr<UNiagaraSystem> FlightSystem;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual", meta=(ClampMin="0.001")) float VisualScale = 1.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual", meta=(ClampMin="0", Units="s")) float TrailFadeSeconds = 0.5f;
+	/** Resolves the authoritative table profile; invalid authored rows never fall back. */
+	UFUNCTION(BlueprintPure, Category="Projectile")
+	bool ResolveMotionSettings(FGuLiProjectileMotionSettings& OutMotion) const;
 	bool IsValidDefinition() const;
 };
 
@@ -75,6 +94,13 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Weapons") TArray<FGuLiWeaponEffectMount> Mounts;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") TSoftObjectPtr<UNiagaraDataChannelAsset> GunfireChannel;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") TSoftObjectPtr<UNiagaraSystem> GunfireSystem;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser") TSoftObjectPtr<UNiagaraSystem> WingmanLaserSystem;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser", meta=(ClampMin="1", Units="cm")) float LaserLength = 3000.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser", meta=(ClampMin="1", Units="cm")) float LaserCoreWidth = 50.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser", meta=(ClampMin="0")) float LaserIntensity = 24.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser") FLinearColor FriendlyLaserTint = FLinearColor(0.05f, 1.0f, 0.12f);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser") FLinearColor EnemyLaserTint = FLinearColor(1.0f, 0.025f, 0.015f);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser", meta=(ClampMin="0.01", ClampMax="0.15", Units="s")) float LaserMuzzleSeconds = 0.05f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire", meta=(ClampMin="0.01", ClampMax="0.15")) float TracerLifetime = 0.075f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire", meta=(ClampMin="1")) float TracerWidth = 22.0f;
 	/** Keeps a muzzle active between accepted machine-gun shots; it is refreshed at the live presentation pose. */
@@ -104,4 +130,6 @@ class GULISTRIKE_API UGuLiCombatEffectSettings : public UObject
 	GENERATED_BODY()
 public:
 	UPROPERTY(Config, EditAnywhere, Category="Combat Effects") TSoftObjectPtr<UGuLiCombatEffectCatalog> Catalog;
+	UPROPERTY(Config, EditAnywhere, Category="Projectile Pool", meta=(ClampMin="1")) int32 ProjectilePoolInitialCapacity = 1024;
+	UPROPERTY(Config, EditAnywhere, Category="Projectile Pool", meta=(ClampMin="1")) int32 ProjectilePoolGrowthSize = 1024;
 };

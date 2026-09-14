@@ -16,6 +16,10 @@ struct FGuLiLocalCombatEffect
 	UPROPERTY() TObjectPtr<UNiagaraComponent> Waiting;
 	UPROPERTY() TObjectPtr<UNiagaraComponent> ActiveLoop;
 	FVector RenderLocation = FVector::ZeroVector;
+	int32 NextGunShotOrdinal = 0;
+	int32 LaserSlot = INDEX_NONE;
+	float LaserMuzzleUntil = 0;
+	float LaserFadeUntil = 0;
 	bool bActivationPlayed = false;
 	bool bSuppressOldBurst = false;
 };
@@ -38,8 +42,25 @@ struct GULISTRIKE_API FGuLiCombatEffectVisualCounters
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 ReceivedStates = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 RejectedStates = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 BurstsPlayed = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 SynthesizedGunShots = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 ComponentCount = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 LaserActive = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 LaserCapacity = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 LaserVisible = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") double LastUpdateMilliseconds = 0;
+};
+
+/** A fixed block of persistent particle slots. Empty rows have zero alpha. */
+USTRUCT()
+struct FGuLiLaserRenderBlock
+{
+	GENERATED_BODY()
+	UPROPERTY() TObjectPtr<UNiagaraComponent> Component;
+	TArray<FVector> Positions, Directions, MuzzlePositions;
+	TArray<FVector2D> Sizes, MuzzleSizes;
+	TArray<FLinearColor> Colors, MuzzleColors;
+	FBox Bounds = FBox(ForceInit);
+	bool bVisible = false;
 };
 
 /** Render-client only. Game code supplies stable-handle pose resolvers without reverse Mass dependencies. */
@@ -87,10 +108,16 @@ private:
 	};
 	float ServerTime() const;
 	UGuLiCombatEffectCatalog* GetCatalog();
-	UNiagaraComponent* SpawnPooled(UNiagaraSystem* System, FVector Location, float Scale, float Radius = 0);
+	UNiagaraComponent* SpawnPooled(UNiagaraSystem* System, FVector Location, float Scale,
+		float Radius = 0, FRotator Rotation = FRotator::ZeroRotator);
 	void Retire(UNiagaraComponent* Component, float Seconds, bool bDeactivate = true);
 	void RemoveVisual(const FGuid& Id, bool bImmediate);
+	void QueueSustainedGunfire(float Now, bool bEnabled);
 	void FlushGunfire();
+	int32 AllocateLaserSlot();
+	void FreeLaserSlot(int32 Slot);
+	void UpdateLaserPool(float Now, bool bEnabled);
+	void ResetLaserPool();
 	bool ResolvePose(const FGuLiTargetHandle& Target, FTransform& Transform, int32& UnitTypeId) const;
 	bool ResolveMuzzlePosition(const FGuLiCombatShotCue& Cue, FVector& Position) const;
 	bool ResolveTargetPosition(const FGuLiCombatShotCue& Cue, FVector& Position) const;
@@ -105,6 +132,8 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UNiagaraComponent> Gunfire;
 	UPROPERTY(Transient) TMap<FGuid, FGuLiLocalCombatEffect> Visuals;
 	UPROPERTY(Transient) TArray<FGuLiRetiringCombatEffect> Retiring;
+	UPROPERTY(Transient) TArray<FGuLiLaserRenderBlock> LaserBlocks;
+	TArray<int32> FreeLaserSlots;
 	TMap<EGuLiTargetKind, FPoseProvider> PoseProviders;
 	mutable TMap<FGuLiTargetHandle, TWeakObjectPtr<AActor>> ShipPoseCache;
 	TMap<FGuid, uint32> Tombstones;

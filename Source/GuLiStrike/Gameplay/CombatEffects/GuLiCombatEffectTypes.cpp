@@ -47,16 +47,31 @@ bool FGuLiProjectileMotionSettings::IsValid() const
 bool FGuLiCombatEffectState::IsWellFormed() const
 {
 	if (MatchEpoch == 0 || !EffectId.IsValid() || Sequence == 0
-		|| Kind > EGuLiCombatEffectKind::SpellField || Phase > EGuLiCombatEffectPhase::Finished
-		|| EndReason > EGuLiCombatEffectEndReason::EpochEnded) return false;
+		|| Kind > EGuLiCombatEffectKind::LinearProjectile || Phase > EGuLiCombatEffectPhase::Finished
+		|| EndReason > EGuLiCombatEffectEndReason::Blocked) return false;
 	// A terminal wire record only identifies what to remove. It carries no cast payload.
-	if (Phase == EGuLiCombatEffectPhase::Finished) return true;
-	return Source.IsValid()
-		&& !Location.ContainsNaN() && !Velocity.ContainsNaN() && !LastTargetLocation.ContainsNaN()
-		&& !LaunchLocation.ContainsNaN() && !LaunchDirection.ContainsNaN()
-		&& FMath::IsFinite(StartTime) && FMath::IsFinite(SampleTime) && SampleTime >= StartTime
-		&& FMath::IsFinite(ActivationTime) && FMath::IsFinite(EndTime) && EndTime >= StartTime
-		&& FMath::IsFinite(Radius) && Radius >= 0 && Motion.IsValid();
+	if (Phase == EGuLiCombatEffectPhase::Finished)
+		return Kind != EGuLiCombatEffectKind::LinearProjectile || (!Location.ContainsNaN() && FMath::IsFinite(SampleTime));
+	if (!Source.IsValid()
+		|| Location.ContainsNaN() || Velocity.ContainsNaN() || LastTargetLocation.ContainsNaN()
+		|| LaunchLocation.ContainsNaN() || LaunchDirection.ContainsNaN()
+		|| !FMath::IsFinite(StartTime) || !FMath::IsFinite(SampleTime) || SampleTime < StartTime
+		|| !FMath::IsFinite(ActivationTime) || !FMath::IsFinite(EndTime) || EndTime < StartTime
+		|| !FMath::IsFinite(Radius) || Radius < 0)
+	{
+		return false;
+	}
+	if (Kind == EGuLiCombatEffectKind::Projectile) return Motion.IsValid();
+	if (Kind == EGuLiCombatEffectKind::SpellField) return true;
+	if (Kind == EGuLiCombatEffectKind::LinearProjectile)
+		return Source.Kind == EGuLiTargetKind::Wingman && !MuzzleOffset.ContainsNaN()
+			&& (SourceTeam == EGuLiTeam::Red || SourceTeam == EGuLiTeam::Blue)
+			&& FMath::IsFinite(Motion.Speed) && Motion.Speed > 0 && Motion.Speed <= 1000000
+			&& EndTime > StartTime && EndTime - StartTime <= 120.01f && !FVector(LaunchDirection).IsNearlyZero();
+	return Target.IsValid() && !SlotId.IsNone() && !MuzzleOffset.ContainsNaN()
+		&& MuzzleOffset.GetAbsMax() <= 1000000.0
+		&& FMath::IsFinite(FireRateHz) && FireRateHz > 0.0f && FireRateHz <= 30.0f
+		&& EndTime > StartTime;
 }
 
 namespace
@@ -101,9 +116,32 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 	if (Ar.IsLoading()) *this = {};
 	Ar.SerializeIntPacked(MatchEpoch); Ar << EffectId; Ar.SerializeIntPacked(Sequence);
 	uint8 KindValue=static_cast<uint8>(Kind), PhaseValue=static_cast<uint8>(Phase), ReasonValue=static_cast<uint8>(EndReason);
-	Ar.SerializeBits(&KindValue,1); Ar.SerializeBits(&PhaseValue,2); Ar.SerializeBits(&ReasonValue,3);
+	Ar.SerializeBits(&KindValue,2); Ar.SerializeBits(&PhaseValue,2); Ar.SerializeBits(&ReasonValue,3);
 	if (Ar.IsLoading()) { Kind=static_cast<EGuLiCombatEffectKind>(KindValue); Phase=static_cast<EGuLiCombatEffectPhase>(PhaseValue); EndReason=static_cast<EGuLiCombatEffectEndReason>(ReasonValue); }
 	bool bMapped=true, bVector=true;
+	if (Kind == EGuLiCombatEffectKind::LinearProjectile)
+	{
+		// Straight flight needs one launch payload and a terminal point, no transform corrections or asset paths.
+		if (Phase == EGuLiCombatEffectPhase::Finished)
+		{
+			Location.NetSerialize(Ar, Map, bVector); Ar << SampleTime;
+		}
+		else
+		{
+			SerializeEffectTarget(Ar, Source, MatchEpoch);
+			LaunchLocation.NetSerialize(Ar, Map, bVector); LaunchDirection.NetSerialize(Ar, Map, bVector);
+			FVector_NetQuantize Muzzle(MuzzleOffset); Muzzle.NetSerialize(Ar, Map, bVector);
+			Ar << Motion.Speed << StartTime << EndTime;
+			uint8 Team = static_cast<uint8>(SourceTeam); Ar.SerializeBits(&Team, 2);
+			if (Ar.IsLoading())
+			{
+				SourceTeam = static_cast<EGuLiTeam>(Team); MuzzleOffset = Muzzle;
+				Location = LaunchLocation; Velocity = FVector(LaunchDirection) * Motion.Speed;
+				SampleTime = ActivationTime = StartTime;
+			}
+		}
+		bOutSuccess = !Ar.IsError() && bVector && IsWellFormed(); return true;
+	}
 	if (Phase != EGuLiCombatEffectPhase::Finished)
 	{
 		SerializeEffectTarget(Ar,Source,MatchEpoch); SerializeEffectTarget(Ar,Target,MatchEpoch);
@@ -119,12 +157,22 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 			Ar << Motion.Speed << Motion.LiftSeconds << Motion.MinimumLiftHeight << Motion.MaximumLiftHeight
 				<< Motion.LateralOffset << Motion.ConvergenceDistance << Motion.TurnRate << Motion.SweepRadius << Motion.MaximumLifetime;
 		}
-		else
+		else if (Kind == EGuLiCombatEffectKind::SpellField)
 		{
 			bMapped &= SerializeEffectAsset(Ar,Map,FieldDefinition);
 			uint32 Variant = static_cast<uint32>(VariantIndex+1); Ar.SerializeIntPacked(Variant);
 			if (Ar.IsLoading()) { VariantIndex=static_cast<int32>(Variant)-1; LaunchLocation=Location; LastTargetLocation=Location; }
 			Ar << Radius;
+		}
+		else
+		{
+			Ar << SlotId << MuzzleOffset << FireRateHz;
+			LastTargetLocation.NetSerialize(Ar,Map,bVector);
+			if (Ar.IsLoading())
+			{
+				LaunchLocation=Location; LaunchDirection=FVector::ForwardVector;
+				Velocity=FVector::ZeroVector; Radius=0.0f;
+			}
 		}
 	}
 	bOutSuccess = !Ar.IsError() && bVector && IsWellFormed();

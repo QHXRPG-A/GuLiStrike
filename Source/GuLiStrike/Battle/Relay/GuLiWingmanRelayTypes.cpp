@@ -296,19 +296,13 @@ bool FGuLiWingmanAcceptedBatch::IsWellFormed() const
 				return false;
 			}
 		}
-		if ((RebasedMemberMask & ~static_cast<uint8>((1u << GULI_WINGMAN_MEMBERS_PER_FLIGHT) - 1u)) != 0u
-			|| (RebasedMemberMask != 0u
-				&& (RebasedMemberMask & static_cast<uint8>(RebasedMemberMask - 1u)) != 0u))
+		if ((RebasedMemberMask & ~static_cast<uint8>((1u << GULI_WINGMAN_MEMBERS_PER_FLIGHT) - 1u)) != 0u)
 		{
 			return false;
 		}
-		if (RebasedMemberMask != 0u)
+		for (uint8 RebasedMember = 0; RebasedMember < GULI_WINGMAN_MEMBERS_PER_FLIGHT; ++RebasedMember)
 		{
-			uint8 RebasedMember = 0u;
-			while ((RebasedMemberMask & (1u << RebasedMember)) == 0u)
-			{
-				++RebasedMember;
-			}
+			if ((RebasedMemberMask & (1u << RebasedMember)) == 0u) { continue; }
 			if (!Samples.ContainsByPredicate([RebasedMember](const FGuLiWingmanCandidateSample& Sample)
 			{
 				return Sample.Wingman.MemberIndex == RebasedMember;
@@ -499,7 +493,10 @@ bool FGuLiWingmanBootstrapBundle::IsWellFormed() const
 			|| UploadRateGrant.ConnectionGeneration != ConnectionGeneration
 			|| UploadRateGrant.LeaseEpoch != AuthorityMap[0].LeaseEpoch
 			|| AtomicBaselineRevision == 0u
-			|| AtomicBaselineHash == 0u || RequiredFlightMask == 0u
+			|| AtomicBaselineHash == 0u
+			// An active group may be completely dead while awaiting replenishment.
+			// Its zero-live-Flight cut must still clear the last remote model.
+			|| (RequiredFlightMask == 0u && !bActiveRosterRefresh)
 			|| RequiredMemberMaskHash != GuLiWingmanRelayHash::RequiredMemberMasks(Roster)))
 	{
 		return false;

@@ -62,6 +62,7 @@ bool GuLiWingmanPresentationPolicy::BuildPose(
 	}
 
 	OutPose.SourceTimeSeconds = SourceTimeSeconds;
+	OutPose.ServerAcceptedTimeSeconds = SourceTimeSeconds;
 	OutPose.Sequence = Sequence;
 	OutPose.Location = Location;
 	OutPose.Velocity = Velocity;
@@ -71,7 +72,8 @@ bool GuLiWingmanPresentationPolicy::BuildPose(
 
 bool GuLiWingmanPresentationPolicy::AppendPose(
 	TArray<FGuLiWingmanPresentationPose>& InOutSamples,
-	const FGuLiWingmanPresentationPose& Pose)
+	const FGuLiWingmanPresentationPose& Pose,
+	const int32 MaximumSamples)
 {
 	if (!FMath::IsFinite(Pose.SourceTimeSeconds) || Pose.SourceTimeSeconds < 0.0
 		|| Pose.Sequence == 0u || Pose.Location.ContainsNaN() || Pose.Velocity.ContainsNaN()
@@ -90,7 +92,7 @@ bool GuLiWingmanPresentationPolicy::AppendPose(
 	}
 
 	InOutSamples.Add(Pose);
-	while (InOutSamples.Num() > MaximumBufferedPoseSamples)
+	while (InOutSamples.Num() > MaximumSamples)
 	{
 		InOutSamples.RemoveAt(0, 1, EAllowShrinking::No);
 	}

@@ -21,10 +21,11 @@ class GULISTRIKE_API AGuLiWarMachinePlaceholderPawn : public ACharacter
 	GENERATED_BODY()
 
 public:
-	AGuLiWarMachinePlaceholderPawn();
+	AGuLiWarMachinePlaceholderPawn(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
 	// 拥有客户端重新占有时设置本地输入模式；不操作其他玩家视口，也不发送玩法 RPC。
 	virtual void PawnClientRestart() override;
+	virtual void Tick(float DeltaSeconds) override;
 
 	/** 本端输入资格；服务器出生/席位权限仍由 BattleGameMode 与公共握手分别维护。 */
 	UFUNCTION(BlueprintPure, Category = "WarMachine|Input")
@@ -42,10 +43,6 @@ protected:
 	virtual void SetupPlayerInputComponent(UInputComponent* IncomingInputComponent) override;
 
 private:
-	void HandleMoveForward(float AxisValue);
-	void HandleMoveBackward(float AxisValue);
-	void HandleMoveRight(float AxisValue);
-	void HandleMoveLeft(float AxisValue);
 	void HandleLookYaw(float AxisValue);
 	void HandleLookPitch(float AxisValue);
 	void ApplyMoveInput(float AxisValue, bool bForwardAxis);

@@ -109,6 +109,9 @@ private:
 	UFUNCTION()
 	void HandlePlayerStateChanged();
 
+	UFUNCTION()
+	void HandleResourcePrivateStateChanged();
+
 	void HandleToolModeChanged(EGuLiCommanderToolMode NewMode);
 	void HandleSelectionShapeChanged(EGuLiCommanderSelectionShape NewShape);
 	void HandleSelectionRadiusChanged(EGuLiSelectionRadiusPreset NewPreset);

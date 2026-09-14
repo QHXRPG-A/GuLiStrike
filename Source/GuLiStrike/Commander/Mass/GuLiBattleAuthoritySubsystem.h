@@ -8,6 +8,7 @@
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "Commander/Mass/GuLiSoldierCombat.h"
 #include "Gameplay/Tuning/GuLiRuntimeTuningTypes.h"
+#include "Commander/Mass/GuLiMassExternalControl.h"
 #include "GuLiBattleAuthoritySubsystem.generated.h"
 
 class AGuLiBattlePlayerState;
@@ -291,6 +292,13 @@ public:
 	 * 此处不计算攻防公式；死亡时清除指令和速度，保留实体用于残骸窗口及后续状态同步。
 	 */
 	bool ApplyDamage(FGuLiSoldierId SoldierId, float Amount);
+	void CollectExternalUnitsInDisc(EGuLiTeam Team, FVector Center, float Radius, TArray<FGuLiMassExternalUnit>& Out) const;
+	bool CanApplyExternalUnitState(TConstArrayView<FGuLiMassExternalUnit> Participants, FGuid Token) const;
+	bool ApplyExternalUnitState(TConstArrayView<FGuLiMassExternalUnit> Soldiers, FGuid CastId,
+		bool bPhased, bool bLocked, bool bRelocate);
+	bool IsSoldierPhased(FGuLiSoldierId Id) const;
+	bool IsSoldierExternallyLocked(FGuLiSoldierId Id) const;
+	bool ProjectExternalUnitLocation(FVector Desired, FVector& OutLocation) const;
 	/** Stable Damage Ledger identity for a Soldier in the current match. */
 	FGuLiTargetHandle MakeSoldierTargetHandle(FGuLiSoldierId SoldierId) const;
 
@@ -356,11 +364,13 @@ public:
 
 	/** Reuses the caller-owned array and captures finite locations of living authoritative Soldiers. */
 	void BuildLivingSoldierLocationSnapshot(TArray<FVector>& OutLocations) const;
+	float GetExternalUnitRadius() const { return MemberAgentRadiusCentimeters; }
 
 	/** 当前保留的临时移动编队数量；同一 BatchOrderId 可包含多个编队。 */
 	int32 GetActiveOrderFormationCount() const;
 
 	/** 权威士兵记录总数，包含死亡和残骸已隐藏的成员，不等于存活人数。 */
+	UFUNCTION(BlueprintPure, Category = "Commander|Authority")
 	int32 GetAuthoritativeMemberCount() const;
 
 	/** 当前权威固定模拟步序号，供网络捕获调度与时序标记使用。 */
@@ -368,7 +378,8 @@ public:
 	/** 因世界帧积压超过四步上限而丢弃的固定步数；正式 S1 必须为零。 */
 	uint64 GetDroppedFixedStepCount() const;
 
-	/** 是否已经成功生成并提交完整的 500 人权威部队。 */
+	/** 是否已提交完整初始部队（关卡部署点，或无部署点时的默认500人）。 */
+	UFUNCTION(BlueprintPure, Category = "Commander|Authority")
 	bool HasSpawnedAuthorityPopulation() const;
 
 private:
@@ -413,15 +424,17 @@ private:
 	/** 专用 CommanderSoldier 导航重建的委托回调：重建路径、更新版本并使旧流场失效。 */
 	UFUNCTION()
 	void HandleNavigationGenerationFinished(ANavigationData* NavigationData);
+	/** Generic obstacle registry notification; invalidates only the manual-avoidance cache. */
+	void HandleDynamicObstaclesChanged(uint32 ObstacleRevision);
 
 	// 配置声明中的初始值可被 Game 配置覆盖；移动速度还会在 Initialize 中读取运行时调参值。
 	/** 红方出生布局中心，使用世界坐标（cm）；实际士兵出生位置还需投影到专用 NavMesh。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Spawn")
-	FVector RedSpawnCenter = FVector(-10000.0, 127500.0, 0.0);
+	FVector RedSpawnCenter = FVector(0.0, 196000.0, 0.0);
 
 	/** 蓝方出生布局中心，使用世界坐标（cm）；与红方一样须满足导航就绪条件。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Spawn")
-	FVector BlueSpawnCenter = FVector(110000.0, 37500.0, 0.0);
+	FVector BlueSpawnCenter = FVector(0.0, -196000.0, 0.0);
 
 	/** 出生方阵之间的间距（cm），仅用于初始部署，不表示移动指令中的编队间距。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Formation", meta = (ClampMin = "1000.0", Units = "cm"))

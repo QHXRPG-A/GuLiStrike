@@ -1,12 +1,16 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "GuLiStrikeShip.h"
+#include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
+#include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
+#include "Gameplay/Presentation/GuLiTeamOutlineComponent.h"
 #include "Gameplay/Data/Generated/GuLiStrikeShipTableRows.h"
 #include "GuLiShipMovementComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySet.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
 #include "Gameplay/Ship/Aiming/GuLiShipAimComponent.h"
+#include "Gameplay/Ship/GuLiShipCameraCollision.h"
 #include "Gameplay/Ship/UI/GuLiShipWorldHUDComponent.h"
 #include "Gameplay/Ship/GuLiShipTargetingRangeComponent.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
@@ -23,6 +27,7 @@
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Components/PrimitiveComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GuLiStrikeShipPartComponent.h"
 #include "GuLiStrikeShipTableRows.h"
@@ -76,6 +81,8 @@ AGuLiStrikeShip::AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer)
 
 	ShipAbilitySystem = CreateDefaultSubobject<UGuLiShipAbilitySystemComponent>(TEXT("ShipAbilitySystem"));
 	CombatHealth = CreateDefaultSubobject<UGuLiCombatHealthComponent>(TEXT("CombatHealth"));
+	CreateDefaultSubobject<UGuLiTeamOutlineComponent>(TEXT("TeamOutline"));
+	CreateDefaultSubobject<UGuLiExternalUnitControlComponent>(TEXT("ExternalUnitControl"));
 	ShipAim = CreateDefaultSubobject<UGuLiShipAimComponent>(TEXT("ShipAim"));
 	ShipWorldHUD = CreateDefaultSubobject<UGuLiShipWorldHUDComponent>(TEXT("ShipWorldHUD"));
 	WingmanTargetingRange = CreateDefaultSubobject<UGuLiShipTargetingRangeComponent>(TEXT("WingmanTargetingRange"));
@@ -200,7 +207,7 @@ void AGuLiStrikeShip::BeginPlay()
 	ApplyTuningRow();
 	ApplyCameraRow();
 
-	// 滚轮期望臂长从蓝图配置的臂长起步；实际臂长由 Tick 的自身舰避障统一结算
+	// 滚轮期望臂长从蓝图配置的臂长起步；实际臂长由 Tick 的舰体/地形避障统一结算
 	DesiredArmLength = SpringArm ? SpringArm->TargetArmLength : CameraZoomMax;
 
 	// 缓存舰体包围球半径：相机避障第一段扫掠只需走到球外（短走廊），压到非舰物体再退全长
@@ -417,7 +424,7 @@ void AGuLiStrikeShip::Look(const FInputActionValue& Value)
 void AGuLiStrikeShip::ZoomCamera(const FInputActionValue& Value)
 {
 	if (!IsLocallyControlled()) { return; }
-	// 滚轮上滚（+1）= 拉近；只改期望臂长，实际臂长由 Tick 的自身舰避障统一结算
+	// 滚轮上滚（+1）= 拉近；只改期望臂长，实际臂长由 Tick 的舰体/地形避障统一结算
 	const float Notches = Value.Get<float>();
 	DesiredArmLength = FMath::Clamp(DesiredArmLength - Notches * CameraZoomStep, CameraZoomMin, CameraZoomMax);
 }
@@ -483,14 +490,9 @@ void AGuLiStrikeShip::Tick(float DeltaTime)
 
 void AGuLiStrikeShip::ResolveCameraArmCollision()
 {
-	// 只认舰船与地形，其余实体由谓词过滤。SpringArm 自带探测按引擎设计忽略
-	// Owner 且已关闭（会幽灵回缩，另案归档）。判据两级：
-	// 1) 端点门控——探针球在期望机位压不到相关几何体就直接用期望臂长（臂的路径
-	//    不需要干净，只有镜头端点需要；大探针半径下按整条路径扫掠会误推，已踩坑）；
-	// 2) 压到才推出——由外向内扫掠取相关命中面（凸包内起步的向外扫掠引擎不报命中，
-	//    方向必须由外向内）。两段式：先走舰体包围球外的短走廊（自身舰必被覆盖，
-	//    密集场景下走廊内的无关候选最少），短走廊无相关命中（压的是地形/他舰）再
-	//    退全长扫掠，语义与单段全长完全等价。
+	// SpringArm 自带探测会忽略 Owner，无法同时满足“不要钻进巨舰自身”与“不要穿过
+	// Landscape”，因此这里仍是唯一臂长写者：先把埋进自身舰体的端点向外推出，再从
+	// 轨道中心到候选机位连续球扫掠。后一步会在山体位于飞船与相机之间时主动收臂。
 	if (!SpringArm)
 	{
 		return;
@@ -511,59 +513,93 @@ void AGuLiStrikeShip::ResolveCameraArmCollision()
 	FCollisionQueryParams Params(TEXT("ShipCameraVsHull"), /*bTraceComplex=*/false, /*IgnoreActor=*/nullptr);
 	Params.bFindInitialOverlaps = false;
 
-	// 门控：期望点压到的实体里有没有舰船/地形
-	bool bBlocked = false;
+	// 端点若位于自身舰体内，必须从舰外向内扫到外表面；从内部向外扫不会稳定返回命中。
+	bool bInsideOwnHull = false;
 	TArray<FOverlapResult> Overlaps;
 	GetWorld()->OverlapMultiByObjectType(Overlaps, DesiredLocation, FQuat::Identity, ObjectQuery, ProbeShape, Params);
 	for (const FOverlapResult& Overlap : Overlaps)
 	{
-		if (IsCameraRelevantOwner(Overlap.GetActor()))
+		if (Overlap.GetActor() == this)
 		{
-			bBlocked = true;
+			bInsideOwnHull = true;
 			break;
 		}
 	}
 
-	float NewArm = DesiredArmLength;
-	if (bBlocked)
+	auto SweepFirstMatching = [this, &ObjectQuery, &ProbeShape](
+		const FVector& Start,
+		const FVector& End,
+		const bool bIgnoreOwningShip,
+		const bool bMatchOwningShip,
+		FHitResult& OutHit) -> bool
 	{
-		// 由外向内扫到期望点，取相关命中的最外侧面（保守推出：镜头在走廊内所有相关几何体外）
-		auto SweepRelevantFace = [this, &DesiredLocation, &ObjectQuery, &ProbeShape, &Params](const FVector& Start, float Length) -> float
+		FCollisionQueryParams SweepParams(TEXT("ShipCameraCorridor"), false,
+			bIgnoreOwningShip ? this : nullptr);
+		SweepParams.bFindInitialOverlaps = true;
+		// Object queries can stop at an unrelated WorldStatic/WorldDynamic blocker. Retry while
+		// explicitly ignoring each rejected actor so a Landscape behind decorations is still found.
+		for (int32 Attempt = 0; Attempt < 32; ++Attempt)
 		{
-			TArray<FHitResult> Hits;
-			GetWorld()->SweepMultiByObjectType(
-				Hits, Start, DesiredLocation, FQuat::Identity, ObjectQuery, ProbeShape, Params);
-			float Face = -1.0f;
-			for (const FHitResult& Hit : Hits)
+			FHitResult Hit;
+			if (!GetWorld()->SweepSingleByObjectType(
+				Hit, Start, End, FQuat::Identity, ObjectQuery, ProbeShape, SweepParams))
 			{
-				if (IsCameraRelevantOwner(Hit.GetActor()))
-				{
-					Face = FMath::Max(Face, Length - Hit.Distance);
-				}
+				return false;
 			}
-			return Face;
-		};
-
-		float NearestFace = -1.0f;
-
-		// 第一段：舰体包围球外沿（短走廊），期望点在球内时才有效
-		const float ShipSphereArm = HullBoundingRadius + CameraCollisionProbeRadius * 2.0f;
-		if (ShipSphereArm > DesiredArmLength)
-		{
-			NearestFace = SweepRelevantFace(OrbitPivot + ArmDirection * ShipSphereArm, ShipSphereArm - DesiredArmLength);
+			const AActor* HitOwner = Hit.GetActor();
+			const bool bMatches = bMatchOwningShip
+				? HitOwner == this
+				: IsCameraRelevantOwner(HitOwner);
+			if (bMatches)
+			{
+				OutHit = Hit;
+				return true;
+			}
+			if (HitOwner)
+			{
+				SweepParams.AddIgnoredActor(HitOwner);
+			}
+			else if (const UPrimitiveComponent* HitComponent = Hit.GetComponent())
+			{
+				SweepParams.AddIgnoredComponent(HitComponent);
+			}
+			else
+			{
+				return false;
+			}
 		}
+		return false;
+	};
 
-		// 第二段：短走廊无相关命中（压的是地形/他舰等非自身舰物体）→ 全长扫掠
-		if (NearestFace < 0.0f)
+	float NewArm = DesiredArmLength;
+	if (bInsideOwnHull)
+	{
+		const float OutsideArm = FMath::Max(CameraZoomMax, HullBoundingRadius)
+			+ CameraCollisionProbeRadius * 2.0f;
+		FHitResult HullHit;
+		if (SweepFirstMatching(
+			OrbitPivot + ArmDirection * OutsideArm,
+			DesiredLocation,
+			false,
+			true,
+			HullHit))
 		{
-			const float TraceLength = CameraZoomMax + CameraCollisionProbeRadius * 2.0f;
-			NearestFace = SweepRelevantFace(OrbitPivot + ArmDirection * TraceLength, TraceLength - DesiredArmLength);
+			NewArm = FMath::Max(NewArm, OutsideArm - HullHit.Distance);
 		}
+	}
 
-		if (NearestFace > 0.0f)
-		{
-			NewArm = FMath::Max(DesiredArmLength + NearestFace, CameraCollisionMinArm);
-		}
+	// Unlike the former endpoint-only gate, this tests the entire view corridor. The owning
+	// hull is ignored here because the orbit starts inside it; Landscapes and other Ships remain.
+	FHitResult CorridorHit;
+	if (SweepFirstMatching(
+		OrbitPivot,
+		OrbitPivot + ArmDirection * NewArm,
+		true,
+		false,
+		CorridorHit))
+	{
+		NewArm = GuLiShipCameraCollision::ConstrainArmToBlockingDistance(
+			NewArm, CorridorHit.Distance, CameraCollisionMinArm);
 	}
 
 	// 单写者纪律：实际臂长只有这一处结算
@@ -658,7 +694,7 @@ bool AGuLiStrikeShip::InstallPartLocally(TSubclassOf<UGuLiStrikeShipPartComponen
 	UGuLiStrikeShipPartComponent* Part = NewObject<UGuLiStrikeShipPartComponent>(this, PartClass);
 	if (!IsValid(Part)) { return false; }
 	Part->RegisterComponent();
-	if (!IsValid(Part) || !Part->IsRegistered())
+	if (!IsValid(Part) || !Part->IsRegistered() || !Part->IsVisualMeshReady())
 	{
 		if (IsValid(Part)) { Part->DestroyComponent(); }
 		return false;
@@ -1273,11 +1309,12 @@ bool AGuLiStrikeShip::IsShipReady() const
 
 bool AGuLiStrikeShip::CanUseShipControls() const
 {
-	return IsLocallyControlled() && IsShipReady();
+	return IsLocallyControlled() && IsShipReady() && !UGuLiExternalUnitControlComponent::AreActorActionsLocked(this);
 }
 
 bool AGuLiStrikeShip::CanAcceptServerIntent() const
 {
+	if (UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) { return false; }
 	const APlayerController* OwningPC = Cast<APlayerController>(GetController());
 	const AGuLiBattlePlayerState* BattlePS = OwningPC ? OwningPC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
 	const AGuLiBattleGameState* BattleGS = GetWorld() ? GetWorld()->GetGameState<AGuLiBattleGameState>() : nullptr;
@@ -1954,7 +1991,7 @@ void AGuLiStrikeShip::RegisterWingmanCombatTargets()
 		{
 			const AGuLiStrikeShip* Ship = WeakThis.Get();
 			const FGuLiWingmanRelayServer* Core = Ship ? Ship->BoundCombatRelayCore : nullptr;
-			if (!Ship || !Core || Core->GetLeaseState().Lifecycle != EGuLiWingmanGroupLifecycle::Active)
+			if (!Ship || !Core || Core->IsPhased() || Core->GetLeaseState().Lifecycle != EGuLiWingmanGroupLifecycle::Active)
 			{
 				return false;
 			}
@@ -1975,6 +2012,8 @@ void AGuLiStrikeShip::RegisterWingmanCombatTargets()
 				static_cast<double>(Sample.PositionCentimeters.Y),
 				static_cast<double>(Sample.PositionCentimeters.Z));
 			OutSnapshot.CollisionRadius = 1500.0f;
+			OutSnapshot.Rotation = FRotator(Sample.RotationCentiDegrees.X / 100.0,
+				Sample.RotationCentiDegrees.Y / 100.0, Sample.RotationCentiDegrees.Z / 100.0);
 			OutSnapshot.Health = static_cast<float>(Health->CurrentHealthPermille) * 0.1f;
 			OutSnapshot.bAlive = !Roster->bDead && Health->CurrentHealthPermille > 0u;
 			return !OutSnapshot.Location.ContainsNaN();
@@ -1985,7 +2024,7 @@ void AGuLiStrikeShip::RegisterWingmanCombatTargets()
 		{
 			AGuLiStrikeShip* Ship = WeakThis.Get();
 			FGuLiWingmanRelayServer* Core = Ship ? Ship->BoundCombatRelayCore : nullptr;
-			if (!Ship || !Core || !FMath::IsFinite(Request.Damage) || Request.Damage <= 0.0f)
+			if (!Ship || !Core || Core->IsPhased() || !FMath::IsFinite(Request.Damage) || Request.Damage <= 0.0f)
 			{
 				return false;
 			}
@@ -1996,6 +2035,8 @@ void AGuLiStrikeShip::RegisterWingmanCombatTargets()
 				return false;
 			}
 			const uint16 PreviousPermille = Health->CurrentHealthPermille;
+			FGuLiWingmanCandidateSample FeedbackPose;
+			const bool bHasFeedbackPose = Core->TryGetLatestAcceptedSample(Wingman, FeedbackPose);
 			const uint16 DamagePermille = static_cast<uint16>(FMath::Clamp(
 				FMath::CeilToInt(Request.Damage * 10.0f), 1, static_cast<int32>(PreviousPermille)));
 			const uint16 RemainingPermille = PreviousPermille - DamagePermille;
@@ -2009,6 +2050,11 @@ void AGuLiStrikeShip::RegisterWingmanCombatTargets()
 			OutResult.AppliedDamage = static_cast<float>(PreviousPermille - RemainingPermille) * 0.1f;
 			OutResult.RemainingHealth = static_cast<float>(RemainingPermille) * 0.1f;
 			OutResult.bKilled = RemainingPermille == 0u;
+			if (bHasFeedbackPose)
+			{
+				UGuLiCombatEffectReplicationComponent::PublishWingmanFeedback(Ship->GetWorld(), Wingman,
+					FVector(FeedbackPose.PositionCentimeters), OutResult.bKilled, RemainingPermille);
+			}
 			return true;
 		};
 		if (Ledger->RegisterTarget(TargetHandle, MoveTemp(Adapter)))
@@ -2020,6 +2066,7 @@ void AGuLiStrikeShip::RegisterWingmanCombatTargets()
 
 void AGuLiStrikeShip::MaintainWingmanCombatLifecycle()
 {
+	if (UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) { return; }
 	if (!HasAuthority() || bShipDeathHandled || !GetWorld())
 	{
 		return;

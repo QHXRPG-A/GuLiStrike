@@ -196,16 +196,22 @@ bool FGuLiSelectionRequest::IsWellFormed() const
 	{
 		return IsValidSelectionBox(*this);
 	}
-	return SeedSoldierId.IsValid() && IsUnitSelectionRay(RayDirection)
+	return SeedSoldierId.IsValid() != SeedActorId.IsValid()
+		&& IsUnitSelectionRay(RayDirection)
 		&& FMath::IsFinite(PickHalfAngleRadians)
 		&& PickHalfAngleRadians >= 0.0001f && PickHalfAngleRadians <= 0.05f;
 }
 
 bool FGuLiMoveRequest::IsWellFormed() const
 {
+	const bool bTargetKindValid = MiningOrderType == EGuLiMiningOrderType::Move
+		|| MiningOrderType == EGuLiMiningOrderType::MineCluster
+		|| MiningOrderType == EGuLiMiningOrderType::ReturnToFactory;
 	return ClientCommandId != 0u
 		&& SelectionRevision != 0u
-		&& IsFiniteVector(Target);
+		&& IsFiniteVector(Target)
+		&& bTargetKindValid
+		&& ((MiningOrderType == EGuLiMiningOrderType::MineCluster) == (TargetClusterId != 0u));
 }
 
 bool FGuLiControlCohortDescriptor::IsValid() const
@@ -333,9 +339,26 @@ void FGuLiCommanderSelectionState::Sanitize()
 	{
 		Cohorts.SetNum(static_cast<int32>(GULI_MAX_CONTROL_COHORTS), EAllowShrinking::No);
 	}
+
+	TSet<FGuLiControllableActorId> SeenActors;
+	for (int32 Index = 0; Index < ActorIds.Num();)
+	{
+		if (!ActorIds[Index].IsValid() || SeenActors.Contains(ActorIds[Index]))
+		{
+			ActorIds.RemoveAt(Index, 1, EAllowShrinking::No);
+			continue;
+		}
+		SeenActors.Add(ActorIds[Index]);
+		++Index;
+	}
+	ActorIds.Sort();
+	if (ActorIds.Num() > static_cast<int32>(GULI_MAX_CONTROLLABLE_ACTOR_SELECTION))
+	{
+		ActorIds.SetNum(static_cast<int32>(GULI_MAX_CONTROLLABLE_ACTOR_SELECTION), EAllowShrinking::No);
+	}
 }
 
-// 先组列表、后选择版本和已接受请求号；修改字段顺序/数量编码上限会改变线协议。
+// 先 Mass 组、再稳定 ActorId，最后选择版本与请求号；这是协议 v8 的固定字段顺序。
 bool FGuLiCommanderSelectionState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
 {
 	if (Ar.IsSaving())
@@ -356,6 +379,19 @@ bool FGuLiCommanderSelectionState::NetSerialize(FArchive& Ar, UPackageMap* Map, 
 		bool bCohortSuccess = true;
 		Cohort.NetSerialize(Ar, Map, bCohortSuccess);
 		bOutSuccess = bOutSuccess && bCohortSuccess;
+	}
+
+	uint32 ActorCount = Ar.IsSaving() ? static_cast<uint32>(ActorIds.Num()) : 0u;
+	Ar.SerializeInt(ActorCount, GULI_MAX_CONTROLLABLE_ACTOR_SELECTION + 1u);
+	if (Ar.IsLoading())
+	{
+		ActorIds.SetNum(static_cast<int32>(ActorCount));
+	}
+	for (FGuLiControllableActorId& ActorId : ActorIds)
+	{
+		bool bActorSuccess = true;
+		ActorId.NetSerialize(Ar, Map, bActorSuccess);
+		bOutSuccess = bOutSuccess && bActorSuccess;
 	}
 
 	Ar.SerializeIntPacked(SelectionRevision);
@@ -548,6 +584,8 @@ bool FGuLiSoldierStateItem::IsAlive() const
 // 生命是绝对浮点值；非法最大值回退为 1，非法健康值不复活单位。
 void FGuLiSoldierStateItem::Sanitize()
 {
+	if (DisplacementLocation.ContainsNaN() || !FMath::IsFinite(DisplacementSimulationTime) || !FMath::IsFinite(DisplacementYaw))
+	{ DisplacementFrameFloor = 0; DisplacementLocation = FVector::ZeroVector; DisplacementSimulationTime = 0; DisplacementYaw = 0; }
 	UnitTypeId = FMath::Max<uint16>(UnitTypeId, GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID);
 	if (!GuLiCommanderProtocol::IsPlayableTeam(Team))
 	{

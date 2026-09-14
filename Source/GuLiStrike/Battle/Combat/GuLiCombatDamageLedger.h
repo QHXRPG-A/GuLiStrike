@@ -229,6 +229,10 @@ struct GULISTRIKE_API FGuLiCombatTargetSnapshot
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Target")
 	FVector Location = FVector::ZeroVector;
 
+	/** Optional logical pose orientation; Wingman fills this from the server-accepted sample. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Target")
+	FRotator Rotation = FRotator::ZeroRotator;
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Target")
 	float CollisionRadius = 0.0f;
 

@@ -1,0 +1,440 @@
+{
+  "checks": {
+    "has_flying_wingmen": true,
+    "one_trail_per_visible_wingman": true,
+    "all_visible_trails_active": true,
+    "all_trails_use_saved_system": true,
+    "attached_to_mesh": true,
+    "client_presentation_not_replicated": true,
+    "hidden_pawns_have_no_active_trails": true
+  },
+  "pawns": [
+    {
+      "name": "WingmanPawn_0",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 103648.426657, y: 54015.035470, z: 15027.493352}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_0.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001741FFAC180) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 104141.400483, y: 52824.799506, z: 15140.979732}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_1",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 113266.459452, y: 55566.099774, z: 25365.749316}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_1.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x00000174556FF180) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 113480.934142, y: 56509.638110, z: 26223.828576}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_2",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 133255.826578, y: 47171.951023, z: 22125.055939}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_2.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x0000017775620D80) {x: 1258.000000, y: -0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 133317.864820, y: 48271.875228, z: 21447.647643}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_3",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 143163.724400, y: 44369.058334, z: 26481.125646}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_3.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x0000017775622580) {x: 1258.000000, y: -0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 142747.221031, y: 45388.963694, z: 25803.717350}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_4",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 138343.249993, y: 49331.930860, z: 17348.355103}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_4.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x0000017775623D80) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 137653.417259, y: 50190.891161, z: 16670.946807}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_5",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 120711.617553, y: 17294.680492, z: 32840.509100}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_5.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x0000017775625580) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 121225.833690, y: 16735.868038, z: 33887.349300}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_6",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 147185.584354, y: 29480.754357, z: 22552.683689}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_6.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x0000017775626D80) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 146515.634502, y: 29856.932501, z: 21512.385078}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_7",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 131569.775850, y: 8215.139103, z: 20887.307460}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_7.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x0000017775628580) {x: 1258.000000, y: -0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 131984.647518, y: 7679.613563, z: 21988.968886}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_8",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 134239.117320, y: 17108.312907, z: 28009.759427}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_8.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x0000017775629D80) {x: 1258.000000, y: -0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 134632.521892, y: 18275.049583, z: 28405.388510}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_9",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 132222.282310, y: 11456.045473, z: 15346.213047}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_9.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001777562B580) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 132585.356095, y: 10884.154369, z: 16447.885408}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_10",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 123740.621368, y: 2759.767859, z: 16558.686128}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_10.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001777562CD80) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 123841.542386, y: 2089.802918, z: 17660.287656}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_11",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 135254.252633, y: 5989.570484, z: 28919.271088}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_11.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001777562E580) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 136154.115990, y: 6883.105368, z: 29173.053184}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_12",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 110173.874660, y: 7106.375011, z: 24436.748995}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_12.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001742D7D0180) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 110458.457099, y: 7351.725827, z: 25674.238313}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_13",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 141306.251632, y: 24352.285784, z: 28655.239289}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_13.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001742D7D1980) {x: 1258.000000, y: -0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 141596.052503, y: 25595.799799, z: 28449.685524}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_14",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 117382.598025, y: 4462.695710, z: 24228.518980}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_14.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001742D7D3180) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 118270.221521, y: 4953.049861, z: 25031.165437}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_15",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 129335.243201, y: 16231.973172, z: 27934.979423}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_15.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001742D7D4980) {x: 1258.000000, y: -0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 130215.359494, y: 16042.665285, z: 28863.484583}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_16",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 147844.511646, y: 22972.107772, z: 27977.059585}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_16.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001742D7D6180) {x: 1258.000000, y: -0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 148152.398218, y: 24185.880035, z: 27653.753612}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_17",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 141660.420988, y: 37681.361158, z: 30616.987637}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_17.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001742D7D7980) {x: 1258.000000, y: -0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 141475.041324, y: 38956.045500, z: 30501.323437}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_18",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 137596.217524, y: 4716.060418, z: 28263.582599}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_18.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001742D7D9180) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 138210.641988, y: 4803.537567, z: 29398.216605}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_19",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 132026.709609, y: 10808.906444, z: 39325.175359}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_19.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001742D7DA980) {x: 1258.000000, y: -0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 133275.611423, y: 11047.600723, z: 39561.466067}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_20",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 86402.860047, y: 48488.495469, z: 5562.736047}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_20.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001742D7DC180) {x: 1258.000000, y: -0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 85750.925433, y: 47471.537867, z: 6024.626181}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_21",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 137225.610510, y: 41470.359327, z: 32178.086003}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_21.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001742D7DD980) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 137320.305064, y: 42628.501752, z: 31610.368588}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_22",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 143786.912210, y: 10485.322308, z: 34077.057730}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_22.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x000001742D7DF180) {x: 1258.000000, y: -0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 144705.055649, y: 11380.661538, z: 33909.892279}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_23",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 143653.054425, y: 14752.267696, z: 34165.177791}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_23.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x0000017437FA0D80) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 144297.022473, y: 15824.050590, z: 34495.557243}>",
+          "tick_enabled": false
+        }
+      ]
+    },
+    {
+      "name": "WingmanPawn_24",
+      "hidden": false,
+      "replicates": false,
+      "location": "<Struct 'Vector' (0x00000172833FF080) {x: 139841.568696, y: 11660.848464, z: 27097.117123}>",
+      "components": [
+        {
+          "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.WingmanPawn_24.WingmanFlightTrail",
+          "active": true,
+          "asset": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+          "parent": "WingmanMesh",
+          "relative_location": "<Struct 'Vector' (0x0000017437FA2580) {x: 1258.000000, y: 0.000000, z: 300.000000}>",
+          "world_location": "<Struct 'Vector' (0x00000172833FF080) {x: 140608.268575, y: 12411.273432, z: 27819.334309}>",
+          "tick_enabled": false
+        }
+      ]
+    }
+  ],
+  "world": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype",
+  "success": true
+}

@@ -5,7 +5,7 @@
 输入:  Data/Excel/*.xlsx（顶层；_ 开头的 sheet 跳过；_legacy/ 等子目录不扫）
 
 表格式约定（每个 sheet）:
-  第 1 行 = 列名（合法 C++ 标识符，全表唯一）
+  第 1 行 = 列名（合法 C++ 标识符；武器表另支持“产生的法术场”数字ID引用）
   第 2 行 = 类型: int | float | bool | str | softclass | softobject
   第 3 行 = 必要性: Necessary | Optional
   第 4 行起 = 数据
@@ -39,6 +39,21 @@ EXCEL_DIR = PROJECT / "Data/Excel"
 JSON_DIR = PROJECT / "Data/Json"
 GEN_HEADER_DIR = PROJECT / "Source/GuLiStrike/Gameplay/Data/Generated"
 MODULE = "GuLiStrike"
+
+# Source ownership can change without renaming serialized UE assets/USTRUCTs.
+# Values remain exclusively in Excel; these aliases preserve existing Blueprint,
+# DataTableRowHandle, C++ and packaged-content identities during the migration.
+SECONDARY_WORKBOOK = "GuLiStrikeSecondaryWeapons"
+SECONDARY_TABLE_IDENTITIES = {
+    "Skills": ("GuLiStrikeCommander", "Skills"),
+    "UnitSkills": ("GuLiStrikeCommander", "UnitSkills"),
+    "WeaponMounts": ("GuLiStrikeCommander", "WeaponMounts"),
+    "WingmanWeapons": ("GuLiStrikeShip", "WingmanWeapons"),
+    "WingmanTargeting": ("GuLiStrikeShip", "WingmanTargeting"),
+}
+SPELL_FIELD_TABLE = "DT_GuLiStrikeSpellFields_Fields"
+FIELD_REFERENCE_COLUMN = "产生的法术场"
+FIELD_REFERENCE_SHEETS = {"Skills", "WingmanWeapons"}
 
 TYPES = {"int", "float", "bool", "str", "softclass", "softobject"}
 MARKS = {"Necessary", "Optional"}
@@ -85,11 +100,17 @@ def load_schema(ws):
     ncols = len(names)
 
     for i, n in enumerate(names):
-        if not IDENT_RE.match(n):
+        if not IDENT_RE.match(n) and not (n == FIELD_REFERENCE_COLUMN and ws.title in FIELD_REFERENCE_SHEETS):
             raise SheetError(f"{cell_ref(ws.title, 1, i + 1)}: 列名 '{n}' 不是合法标识符（字母/下划线开头）")
     dup = {n for n in names if names.count(n) > 1}
     if dup:
         raise SheetError(f"列名重复: {sorted(dup)}")
+    if FIELD_REFERENCE_COLUMN in names:
+        index = names.index(FIELD_REFERENCE_COLUMN)
+        if types[index] != "int" or marks[index] != "Optional":
+            raise SheetError("产生的法术场必须为 int / Optional，填写 GuLiStrikeSpellFields.xlsx / Fields.id")
+        if "EffectConfigId" in names:
+            raise SheetError("产生的法术场替代旧 EffectConfigId 列，不能同时维护两个引用")
 
     for i in range(ncols):
         if types[i] not in TYPES:
@@ -203,6 +224,12 @@ def export_sheet(ws):
         n = col["name"]
         if n == "name":
             continue  # 行名列，不生成属性
+        if n == FIELD_REFERENCE_COLUMN:
+            # Numeric authoring IDs resolve to the existing serialized row-name
+            # property after every workbook has passed schema validation.
+            props.append({"prop": "EffectConfigId", "cpp": "FString", "default": None,
+                          "comment": "产生的法术场 (Fields.id) -> EffectConfigId (Fields.name；导出时解析)"})
+            continue
         if n in vec_axis_cols:
             p = vec_axis_cols[n]
             if p not in {x["prop"] for x in props}:
@@ -220,10 +247,11 @@ def export_sheet(ws):
 
 
 def gen_header_text(stem, sheets_props):
-    """sheets_props: [(sheet 名, props)]，按工作簿内 sheet 顺序。"""
+    """Generate one stable native header from tables with explicit provenance."""
+    sources = sorted({source["excel"] for entry in sheets_props for source in entry["sources"]})
     lines = [
         "// ====================================================================",
-        f"// 自动生成自 Data/Excel/{stem}.xlsx —— 禁止手改。",
+        f"// 自动生成自 Data/Excel/: {', '.join(sources)} —— 禁止手改。",
         "// 由 Tools/DataPipeline/export_data_from_excel.py 生成。",
         "// 表结构变更（加列/新表）后重跑导出并重编译 GuLiStrike 模块。",
         "// 约定: name 列是 DataTable 行名（不生成属性）；id -> Id；",
@@ -238,10 +266,12 @@ def gen_header_text(stem, sheets_props):
         f'#include "{stem}TableRows.generated.h"',
         "",
     ]
-    for sheet, props in sheets_props:
+    for entry in sheets_props:
+        sheet, props = entry["identity_sheet"], entry["props"]
         struct = f"F{stem}{sheet}Row"
+        provenance = "; ".join(f"{source['excel']} / {source['sheet']}" for source in entry["sources"])
         lines += [
-            f"/** DataTable DT_{stem}_{sheet} 的行结构（源: {stem}.xlsx 的 {sheet} sheet）。 */",
+            f"/** DataTable DT_{stem}_{sheet} 的行结构（源: {provenance}）。 */",
             "USTRUCT(BlueprintType)",
             f"struct {struct} : public FTableRowBase",
             "{",
@@ -267,6 +297,31 @@ def write_if_changed(path, text):
     return True
 
 
+def resolve_spell_field_references(tables):
+    """Resolve the sole authored field ID into the stable UE row-name contract."""
+    fields = tables.get(SPELL_FIELD_TABLE)
+    expected_source = {"excel": "GuLiStrikeSpellFields.xlsx", "sheet": "Fields"}
+    if not fields or fields["sources"] != [expected_source]:
+        raise SheetError("所有法术场必须统一维护在 GuLiStrikeSpellFields.xlsx / Fields")
+    by_id = {row["Id"]: row for row in fields["rows"]}
+    for table, entry in tables.items():
+        if not any(source["excel"] == f"{SECONDARY_WORKBOOK}.xlsx"
+                   and source["sheet"] in FIELD_REFERENCE_SHEETS for source in entry["sources"]):
+            continue
+        for row in entry["rows"]:
+            field_id = row.pop(FIELD_REFERENCE_COLUMN, 0)
+            if field_id == 0:
+                if row.get("ExecutorId") == "LaunchProjectile" or row.get("AttackPattern") == "GroundDive":
+                    raise SheetError(f"{table}/{row['Name']}: 此攻击必须填写“产生的法术场”引用")
+                continue
+            field = by_id.get(field_id)
+            if field_id < 0 or field is None:
+                raise SheetError(f"{table}/{row['Name']}: 产生的法术场 id={field_id} 不存在于 Fields.id")
+            if field.get("FieldType", "").lower() != "combat":
+                raise SheetError(f"{table}/{row['Name']}: 武器产生的法术场 id={field_id} 必须为 Combat")
+            row["EffectConfigId"] = field["Name"]
+
+
 def main():
     workbooks = [w for w in sorted(EXCEL_DIR.glob("*.xlsx")) if not w.name.startswith("~$")]
     if not workbooks:
@@ -274,6 +329,8 @@ def main():
         sys.exit(1)
 
     manifest = {"tables": {}}
+    tables = {}
+    consolidated = any(w.stem == SECONDARY_WORKBOOK for w in workbooks)
     failed = False
     for wb_path in workbooks:
         stem = wb_path.stem
@@ -282,38 +339,70 @@ def main():
             failed = True
             continue
         wb = openpyxl.load_workbook(wb_path, data_only=True)
-        sheets_props = []
+        if stem == SECONDARY_WORKBOOK:
+            missing = (set(SECONDARY_TABLE_IDENTITIES) | {"Projectiles"}) - set(wb.sheetnames)
+            if missing:
+                print(f"error: {wb_path.name} 缺少武器源工作表: {sorted(missing)}", file=sys.stderr)
+                failed = True
         for ws in wb.worksheets:
             if ws.title.startswith("_"):
                 print(f"note: 跳过 sheet '{ws.title}'（_ 前缀）")
                 continue
             try:
+                if stem == SECONDARY_WORKBOOK and ws.title == "WeaponFields":
+                    raise SheetError("WeaponFields 已统一迁至 GuLiStrikeSpellFields.xlsx / Fields；禁止重复维护")
+                if stem == SECONDARY_WORKBOOK and ws.title in FIELD_REFERENCE_SHEETS:
+                    if FIELD_REFERENCE_COLUMN not in [cell.value for cell in ws[1]]:
+                        raise SheetError("缺少“产生的法术场”列（int / Optional，引用 Fields.id）")
                 rows, props = export_sheet(ws)
+                if consolidated and stem != SECONDARY_WORKBOOK:
+                    retired = {(s, t) for s, t in SECONDARY_TABLE_IDENTITIES.values()
+                               if s != "GuLiStrikeSpellFields"}
+                    if (stem, ws.title) in retired:
+                        raise SheetError("此武器工作表已迁至 GuLiStrikeSecondaryWeapons.xlsx；禁止重复维护")
+                identity_stem, identity_sheet = SECONDARY_TABLE_IDENTITIES.get(ws.title, (stem, ws.title)) \
+                    if stem == SECONDARY_WORKBOOK else (stem, ws.title)
+                table = f"DT_{identity_stem}_{identity_sheet}"
+                source = {"excel": wb_path.name, "sheet": ws.title}
+                if table in tables:
+                    raise SheetError(f"重复的DataTable身份: {table}；每张表必须只有一个维护入口")
+                else:
+                    tables[table] = {"stem": identity_stem, "identity_sheet": identity_sheet,
+                                     "props": props, "rows": rows, "sources": [source]}
             except SheetError as e:
                 print(f"error: [{wb_path.name}::{ws.title}] {e}", file=sys.stderr)
                 failed = True
                 continue
-            table = f"DT_{stem}_{ws.title}"
-            json_path = JSON_DIR / f"{table}.json"
-            write_if_changed(json_path, json.dumps(rows, ensure_ascii=False, indent=2))
-            manifest["tables"][table] = {
-                "excel": wb_path.name,
-                "sheet": ws.title,
-                "struct": f"/Script/{MODULE}.{stem}{ws.title}Row",
-                "row_key_column": "name",
-            }
-            sheets_props.append((ws.title, props))
-            print(f"OK: {json_path.relative_to(PROJECT)} ({len(rows)} 行)")
-        if sheets_props:
-            header = GEN_HEADER_DIR / f"{stem}TableRows.h"
-            changed = write_if_changed(header, gen_header_text(stem, sheets_props))
-            state = "GEN" if changed else "keep"
-            hint = "（有变化，需重编译）" if changed else "（无变化）"
-            print(f"{state}: {header.relative_to(PROJECT)}{hint}")
+        wb.close()
 
+    if not failed and consolidated:
+        try:
+            resolve_spell_field_references(tables)
+        except SheetError as e:
+            print(f"error: {e}", file=sys.stderr)
+            failed = True
     if failed:
-        print("导出失败，manifest 未更新", file=sys.stderr)
+        print("导出失败，JSON、头文件和manifest均未更新", file=sys.stderr)
         sys.exit(1)
+    headers = {}
+    for table, entry in tables.items():
+        rows = entry["rows"]
+        if len(entry["sources"]) > 1:
+            rows.sort(key=lambda row: row["Id"])
+        json_path = JSON_DIR / f"{table}.json"
+        write_if_changed(json_path, json.dumps(rows, ensure_ascii=False, indent=2))
+        manifest["tables"][table] = {
+            **entry["sources"][0], "sources": entry["sources"],
+            "struct": f"/Script/{MODULE}.{entry['stem']}{entry['identity_sheet']}Row",
+            "row_key_column": "name",
+        }
+        headers.setdefault(entry["stem"], []).append(entry)
+        print(f"OK: {json_path.relative_to(PROJECT)} ({len(rows)} 行)")
+    for stem, entries in headers.items():
+        header = GEN_HEADER_DIR / f"{stem}TableRows.h"
+        changed = write_if_changed(header, gen_header_text(stem, entries))
+        print(f"{'GEN' if changed else 'keep'}: {header.relative_to(PROJECT)}"
+              + ("（有变化，需重编译）" if changed else "（无变化）"))
     write_if_changed(JSON_DIR / "manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2))
     print(f"manifest: {JSON_DIR / 'manifest.json'}（{len(manifest['tables'])} 表）")
 

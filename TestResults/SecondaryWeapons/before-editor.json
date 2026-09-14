@@ -1,0 +1,107 @@
+{
+  "projectiles": {
+    "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile": {
+      "speed": 6000.0,
+      "lift_seconds": 0.25,
+      "minimum_lift_height": 600.0,
+      "maximum_lift_height": 1000.0,
+      "lateral_offset": 200.0,
+      "convergence_distance": 1600.0,
+      "turn_rate": 240.0,
+      "sweep_radius": 30.0,
+      "maximum_lifetime": 8.0
+    },
+    "/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundMissile": {
+      "speed": 6000.0,
+      "lift_seconds": 0.25,
+      "minimum_lift_height": 600.0,
+      "maximum_lift_height": 1000.0,
+      "lateral_offset": 200.0,
+      "convergence_distance": 1600.0,
+      "turn_rate": 240.0,
+      "sweep_radius": 30.0,
+      "maximum_lifetime": 8.0
+    }
+  },
+  "pie": false,
+  "dirty_content": [
+    "/Game/Assets/Arma/CombatAvatarFly-01/StaticMeshes/SM_Dreadnought_Hull"
+  ],
+  "dirty_maps": [],
+  "wingman_weapons": {
+    "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_BasicAuto.DA_WingmanWeapon_BasicAuto": {
+      "kind": "<GuLiWingmanWeaponKind.BASIC_AUTOMATIC: 0>",
+      "damage": 10.0,
+      "cooldown_seconds": 2.0,
+      "range_centimeters": 150000.0,
+      "target_cone_half_angle_degrees": 20.0,
+      "requires_line_of_sight": true,
+      "projectile_speed_centimeters_per_second": 120000.0,
+      "projectile_lifetime_seconds": 1.5,
+      "sweep_radius_centimeters": 45.0,
+      "maximum_homing_turn_rate_degrees_per_second": 0.0
+    },
+    "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MissileSalvo.DA_WingmanWeapon_MissileSalvo": {
+      "kind": "<GuLiWingmanWeaponKind.MISSILE: 1>",
+      "damage": 100.0,
+      "cooldown_seconds": 8.0,
+      "range_centimeters": 250000.0,
+      "target_cone_half_angle_degrees": 8.0,
+      "requires_line_of_sight": true,
+      "projectile_speed_centimeters_per_second": 45000.0,
+      "projectile_lifetime_seconds": 8.0,
+      "sweep_radius_centimeters": 150.0,
+      "maximum_homing_turn_rate_degrees_per_second": 45.0
+    },
+    "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MachineGun.DA_WingmanWeapon_MachineGun": {
+      "kind": "<GuLiWingmanWeaponKind.BASIC_AUTOMATIC: 0>",
+      "damage": 10.0,
+      "cooldown_seconds": 0.20000000298023224,
+      "range_centimeters": 100000.0,
+      "target_cone_half_angle_degrees": 8.0,
+      "requires_line_of_sight": true,
+      "projectile_speed_centimeters_per_second": 120000.0,
+      "projectile_lifetime_seconds": 3.0,
+      "sweep_radius_centimeters": 50.0,
+      "maximum_homing_turn_rate_degrees_per_second": 0.0
+    },
+    "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_GroundMissile.DA_WingmanWeapon_GroundMissile": {
+      "kind": "<GuLiWingmanWeaponKind.BASIC_AUTOMATIC: 0>",
+      "damage": 10.0,
+      "cooldown_seconds": 0.20000000298023224,
+      "range_centimeters": 100000.0,
+      "target_cone_half_angle_degrees": 8.0,
+      "requires_line_of_sight": true,
+      "projectile_speed_centimeters_per_second": 120000.0,
+      "projectile_lifetime_seconds": 3.0,
+      "sweep_radius_centimeters": 50.0,
+      "maximum_homing_turn_rate_degrees_per_second": 0.0
+    }
+  },
+  "grants": [
+    {
+      "slot": "None",
+      "weapon": ""
+    },
+    {
+      "slot": "None",
+      "weapon": ""
+    },
+    {
+      "slot": "None",
+      "weapon": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_BasicAuto.DA_WingmanWeapon_BasicAuto"
+    },
+    {
+      "slot": "None",
+      "weapon": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MissileSalvo.DA_WingmanWeapon_MissileSalvo"
+    },
+    {
+      "slot": "AirWeapon",
+      "weapon": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MachineGun.DA_WingmanWeapon_MachineGun"
+    },
+    {
+      "slot": "GroundWeapon",
+      "weapon": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_GroundMissile.DA_WingmanWeapon_GroundMissile"
+    }
+  ]
+}

@@ -1,0 +1,966 @@
+{
+  "checks": {
+    "39_raw_keep_obstacle": true,
+    "all_worlds_ready_same_layout": true,
+    "factory_fifo_processed_10": true,
+    "initial_actor_counts": true,
+    "invalid_order_does_not_extend_grace": true,
+    "last_node_opens_cluster": true,
+    "listen_server_plus_remote_client": true,
+    "mass_spawns_after_resource_navigation_ready": true,
+    "mid_owner_only_factory_queue": true,
+    "new_valid_order_overrides_and_resets_grace": true,
+    "one_red_one_blue_23_neutral": true,
+    "ore_delta_reaches_both_clients": true,
+    "owner_only_inventory": true,
+    "public_territory_owners_match": true,
+    "three_seconds_returns_to_auto": true,
+    "two_client_worlds": true
+  },
+  "errors": [],
+  "exercise": {
+    "after_39": {
+      "obstacle_enabled": true,
+      "remaining": 1,
+      "successful_mines": 39,
+      "visible_nodes": 6215
+    },
+    "after_40": {
+      "enabled_obstacles": 239,
+      "mine_accepted": true,
+      "obstacle_enabled": false,
+      "remaining": 0,
+      "visible_nodes": 6214
+    },
+    "before_depletion": {
+      "obstacle_enabled": true,
+      "remaining": 40
+    },
+    "cancel_accepted": {
+      "blue": true,
+      "red": true
+    },
+    "cluster_id": 15,
+    "factory_enqueue_10": true,
+    "invalid_order": {
+      "accepted": false,
+      "grace_after": 2.5471458435058594,
+      "grace_before": 2.5471458435058594
+    },
+    "valid_override": {
+      "accepted": true,
+      "grace_after": 3.0,
+      "grace_before": 2.001068115234375
+    }
+  },
+  "expected_layout_hash": "2714f7bb7668d56638f0d7a4d752e194a9657996",
+  "failed_checks": [],
+  "final": [
+    {
+      "authority_ready": true,
+      "enabled_obstacles": 239,
+      "factories": [
+        {
+          "owner": null,
+          "queue": 0,
+          "team": "RED"
+        },
+        {
+          "owner": null,
+          "queue": 0,
+          "team": "BLUE"
+        }
+      ],
+      "factory_count": 2,
+      "fatal_error": false,
+      "initialization_error": "",
+      "layout_hash": "2714f7bb7668d56638f0d7a4d752e194a9657996",
+      "mass_authoritative_members": 500,
+      "mass_population_spawned": true,
+      "miner_count": 2,
+      "miners": [
+        {
+          "cargo": {
+            "blue": 0,
+            "red": 0
+          },
+          "grace": 0.0,
+          "location": [
+            -1402.8604331097326,
+            201399.22392998685,
+            -6073.395141912319
+          ],
+          "mode": "AUTO",
+          "owner": "GuLiMiningVehicleAIController_0",
+          "target_cluster": 23,
+          "task": "MOVING_TO_CLUSTER",
+          "team": "RED"
+        },
+        {
+          "cargo": {
+            "blue": 0,
+            "red": 0
+          },
+          "grace": 0.0,
+          "location": [
+            -1781.1317351025111,
+            -202855.08679416764,
+            -6061.022137971545
+          ],
+          "mode": "AUTO",
+          "owner": "GuLiMiningVehicleAIController_1",
+          "target_cluster": 215,
+          "task": "MOVING_TO_CLUSTER",
+          "team": "BLUE"
+        }
+      ],
+      "obstacle_count": 240,
+      "ore_fields": [
+        {
+          "component_instances": [
+            693,
+            371,
+            137,
+            718,
+            419,
+            177,
+            793,
+            418,
+            123,
+            781,
+            384,
+            160,
+            126,
+            66,
+            26,
+            136,
+            100,
+            30,
+            150,
+            78,
+            40,
+            188,
+            76,
+            24
+          ],
+          "hism_components": 24,
+          "visible_nodes": 6214
+        }
+      ],
+      "outpost_count": 25,
+      "players": [
+        {
+          "inventory": {
+            "blue": 50,
+            "red": 0
+          },
+          "local": true,
+          "name": "GuLiCommanderPlayerState_0",
+          "role": "COMMANDER",
+          "sync_ready": true,
+          "team": "RED"
+        },
+        {
+          "inventory": {
+            "blue": 40,
+            "red": 0
+          },
+          "local": false,
+          "name": "GuLiCommanderPlayerState_1",
+          "role": "COMMANDER",
+          "sync_ready": true,
+          "team": "BLUE"
+        }
+      ],
+      "resource_active": true,
+      "runtime_ready": true,
+      "server": true,
+      "territory_owners": [
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "RED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "BLUE",
+        "UNASSIGNED",
+        "UNASSIGNED"
+      ],
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "world_state_count": 1
+    },
+    {
+      "authority_ready": true,
+      "enabled_obstacles": 0,
+      "factories": [
+        {
+          "owner": null,
+          "queue": 0,
+          "team": "BLUE"
+        },
+        {
+          "owner": null,
+          "queue": 0,
+          "team": "RED"
+        }
+      ],
+      "factory_count": 2,
+      "fatal_error": false,
+      "initialization_error": "",
+      "layout_hash": "2714f7bb7668d56638f0d7a4d752e194a9657996",
+      "mass_authoritative_members": 0,
+      "mass_population_spawned": false,
+      "miner_count": 2,
+      "miners": [
+        {
+          "cargo": {
+            "blue": 0,
+            "red": 0
+          },
+          "grace": 0.0,
+          "location": [
+            -1784.611294183433,
+            -202868.52912242533,
+            -6060.693504433632
+          ],
+          "mode": "AUTO",
+          "owner": null,
+          "target_cluster": 0,
+          "task": "IDLE",
+          "team": "BLUE"
+        },
+        {
+          "cargo": {
+            "blue": 0,
+            "red": 0
+          },
+          "grace": 0.0,
+          "location": [
+            -1406.5037843671441,
+            201413.3065381992,
+            -6073.426652288437
+          ],
+          "mode": "AUTO",
+          "owner": null,
+          "target_cluster": 0,
+          "task": "IDLE",
+          "team": "RED"
+        }
+      ],
+      "obstacle_count": 0,
+      "ore_fields": [
+        {
+          "component_instances": [
+            693,
+            371,
+            137,
+            718,
+            419,
+            177,
+            793,
+            418,
+            123,
+            781,
+            384,
+            160,
+            126,
+            66,
+            26,
+            136,
+            100,
+            30,
+            150,
+            78,
+            40,
+            188,
+            76,
+            24
+          ],
+          "hism_components": 24,
+          "visible_nodes": 6214
+        }
+      ],
+      "outpost_count": 25,
+      "players": [
+        {
+          "inventory": {
+            "blue": 0,
+            "red": 0
+          },
+          "local": false,
+          "name": "GuLiCommanderPlayerState_0",
+          "role": "COMMANDER",
+          "sync_ready": true,
+          "team": "RED"
+        },
+        {
+          "inventory": {
+            "blue": 40,
+            "red": 0
+          },
+          "local": true,
+          "name": "GuLiCommanderPlayerState_1",
+          "role": "COMMANDER",
+          "sync_ready": true,
+          "team": "BLUE"
+        }
+      ],
+      "resource_active": true,
+      "runtime_ready": true,
+      "server": false,
+      "territory_owners": [
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "RED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "BLUE",
+        "UNASSIGNED",
+        "UNASSIGNED"
+      ],
+      "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "world_state_count": 1
+    }
+  ],
+  "initial": [
+    {
+      "authority_ready": true,
+      "enabled_obstacles": 240,
+      "factories": [
+        {
+          "owner": null,
+          "queue": 0,
+          "team": "RED"
+        },
+        {
+          "owner": null,
+          "queue": 0,
+          "team": "BLUE"
+        }
+      ],
+      "factory_count": 2,
+      "fatal_error": false,
+      "initialization_error": "",
+      "layout_hash": "2714f7bb7668d56638f0d7a4d752e194a9657996",
+      "mass_authoritative_members": 500,
+      "mass_population_spawned": true,
+      "miner_count": 2,
+      "miners": [
+        {
+          "cargo": {
+            "blue": 0,
+            "red": 0
+          },
+          "grace": 0.0,
+          "location": [
+            0.0,
+            195999.99750854328,
+            -6119.905739398623
+          ],
+          "mode": "AUTO",
+          "owner": "GuLiMiningVehicleAIController_0",
+          "target_cluster": 23,
+          "task": "MOVING_TO_CLUSTER",
+          "team": "RED"
+        },
+        {
+          "cargo": {
+            "blue": 0,
+            "red": 0
+          },
+          "grace": 0.0,
+          "location": [
+            0.0,
+            -195999.99750854328,
+            -6119.905739398623
+          ],
+          "mode": "AUTO",
+          "owner": "GuLiMiningVehicleAIController_1",
+          "target_cluster": 215,
+          "task": "MOVING_TO_CLUSTER",
+          "team": "BLUE"
+        }
+      ],
+      "obstacle_count": 240,
+      "ore_fields": [
+        {
+          "component_instances": [
+            696,
+            372,
+            138,
+            720,
+            420,
+            178,
+            798,
+            420,
+            124,
+            786,
+            388,
+            160,
+            126,
+            66,
+            26,
+            136,
+            100,
+            30,
+            150,
+            78,
+            40,
+            188,
+            76,
+            24
+          ],
+          "hism_components": 24,
+          "visible_nodes": 6240
+        }
+      ],
+      "outpost_count": 25,
+      "players": [
+        {
+          "inventory": {
+            "blue": 40,
+            "red": 0
+          },
+          "local": true,
+          "name": "GuLiCommanderPlayerState_0",
+          "role": "COMMANDER",
+          "sync_ready": true,
+          "team": "RED"
+        },
+        {
+          "inventory": {
+            "blue": 40,
+            "red": 0
+          },
+          "local": false,
+          "name": "GuLiCommanderPlayerState_1",
+          "role": "COMMANDER",
+          "sync_ready": false,
+          "team": "BLUE"
+        }
+      ],
+      "resource_active": true,
+      "runtime_ready": true,
+      "server": true,
+      "territory_owners": [
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "RED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "BLUE",
+        "UNASSIGNED",
+        "UNASSIGNED"
+      ],
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "world_state_count": 1
+    },
+    {
+      "authority_ready": true,
+      "enabled_obstacles": 0,
+      "factories": [
+        {
+          "owner": null,
+          "queue": 0,
+          "team": "BLUE"
+        },
+        {
+          "owner": null,
+          "queue": 0,
+          "team": "RED"
+        }
+      ],
+      "factory_count": 2,
+      "fatal_error": false,
+      "initialization_error": "",
+      "layout_hash": "2714f7bb7668d56638f0d7a4d752e194a9657996",
+      "mass_authoritative_members": 0,
+      "mass_population_spawned": false,
+      "miner_count": 2,
+      "miners": [
+        {
+          "cargo": {
+            "blue": 0,
+            "red": 0
+          },
+          "grace": 0.0,
+          "location": [
+            0.0,
+            -196000.0,
+            -6119.91
+          ],
+          "mode": "AUTO",
+          "owner": null,
+          "target_cluster": 0,
+          "task": "IDLE",
+          "team": "BLUE"
+        },
+        {
+          "cargo": {
+            "blue": 0,
+            "red": 0
+          },
+          "grace": 0.0,
+          "location": [
+            0.0,
+            196000.0,
+            -6119.91
+          ],
+          "mode": "AUTO",
+          "owner": null,
+          "target_cluster": 0,
+          "task": "IDLE",
+          "team": "RED"
+        }
+      ],
+      "obstacle_count": 0,
+      "ore_fields": [
+        {
+          "component_instances": [
+            696,
+            372,
+            138,
+            720,
+            420,
+            178,
+            798,
+            420,
+            124,
+            786,
+            388,
+            160,
+            126,
+            66,
+            26,
+            136,
+            100,
+            30,
+            150,
+            78,
+            40,
+            188,
+            76,
+            24
+          ],
+          "hism_components": 24,
+          "visible_nodes": 6240
+        }
+      ],
+      "outpost_count": 25,
+      "players": [
+        {
+          "inventory": {
+            "blue": 0,
+            "red": 0
+          },
+          "local": false,
+          "name": "GuLiCommanderPlayerState_0",
+          "role": "COMMANDER",
+          "sync_ready": true,
+          "team": "RED"
+        },
+        {
+          "inventory": {
+            "blue": 40,
+            "red": 0
+          },
+          "local": true,
+          "name": "GuLiCommanderPlayerState_1",
+          "role": "COMMANDER",
+          "sync_ready": false,
+          "team": "BLUE"
+        }
+      ],
+      "resource_active": true,
+      "runtime_ready": true,
+      "server": false,
+      "territory_owners": [
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "RED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "BLUE",
+        "UNASSIGNED",
+        "UNASSIGNED"
+      ],
+      "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "world_state_count": 1
+    }
+  ],
+  "mid": [
+    {
+      "authority_ready": true,
+      "enabled_obstacles": 239,
+      "factories": [
+        {
+          "owner": null,
+          "queue": 7,
+          "team": "RED"
+        },
+        {
+          "owner": null,
+          "queue": 0,
+          "team": "BLUE"
+        }
+      ],
+      "factory_count": 2,
+      "fatal_error": false,
+      "initialization_error": "",
+      "layout_hash": "2714f7bb7668d56638f0d7a4d752e194a9657996",
+      "mass_authoritative_members": 500,
+      "mass_population_spawned": true,
+      "miner_count": 2,
+      "miners": [
+        {
+          "cargo": {
+            "blue": 0,
+            "red": 0
+          },
+          "grace": 2.0919342041015625,
+          "location": [
+            0.0,
+            195999.99750854328,
+            -6119.905739398623
+          ],
+          "mode": "GRACE",
+          "owner": "GuLiMiningVehicleAIController_0",
+          "target_cluster": 0,
+          "task": "IDLE",
+          "team": "RED"
+        },
+        {
+          "cargo": {
+            "blue": 0,
+            "red": 0
+          },
+          "grace": 1.0930023193359375,
+          "location": [
+            0.0,
+            -195999.99750854328,
+            -6119.905739398623
+          ],
+          "mode": "GRACE",
+          "owner": "GuLiMiningVehicleAIController_1",
+          "target_cluster": 0,
+          "task": "IDLE",
+          "team": "BLUE"
+        }
+      ],
+      "obstacle_count": 240,
+      "ore_fields": [
+        {
+          "component_instances": [
+            693,
+            371,
+            137,
+            718,
+            419,
+            177,
+            793,
+            418,
+            123,
+            781,
+            384,
+            160,
+            126,
+            66,
+            26,
+            136,
+            100,
+            30,
+            150,
+            78,
+            40,
+            188,
+            76,
+            24
+          ],
+          "hism_components": 24,
+          "visible_nodes": 6214
+        }
+      ],
+      "outpost_count": 25,
+      "players": [
+        {
+          "inventory": {
+            "blue": 43,
+            "red": 0
+          },
+          "local": true,
+          "name": "GuLiCommanderPlayerState_0",
+          "role": "COMMANDER",
+          "sync_ready": true,
+          "team": "RED"
+        },
+        {
+          "inventory": {
+            "blue": 40,
+            "red": 0
+          },
+          "local": false,
+          "name": "GuLiCommanderPlayerState_1",
+          "role": "COMMANDER",
+          "sync_ready": false,
+          "team": "BLUE"
+        }
+      ],
+      "resource_active": true,
+      "runtime_ready": true,
+      "server": true,
+      "territory_owners": [
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "RED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "BLUE",
+        "UNASSIGNED",
+        "UNASSIGNED"
+      ],
+      "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "world_state_count": 1
+    },
+    {
+      "authority_ready": true,
+      "enabled_obstacles": 0,
+      "factories": [
+        {
+          "owner": null,
+          "queue": 0,
+          "team": "BLUE"
+        },
+        {
+          "owner": null,
+          "queue": 0,
+          "team": "RED"
+        }
+      ],
+      "factory_count": 2,
+      "fatal_error": false,
+      "initialization_error": "",
+      "layout_hash": "2714f7bb7668d56638f0d7a4d752e194a9657996",
+      "mass_authoritative_members": 0,
+      "mass_population_spawned": false,
+      "miner_count": 2,
+      "miners": [
+        {
+          "cargo": {
+            "blue": 0,
+            "red": 0
+          },
+          "grace": 0.0,
+          "location": [
+            0.0,
+            -196000.0,
+            -6119.91
+          ],
+          "mode": "AUTO",
+          "owner": null,
+          "target_cluster": 0,
+          "task": "IDLE",
+          "team": "BLUE"
+        },
+        {
+          "cargo": {
+            "blue": 0,
+            "red": 0
+          },
+          "grace": 0.0,
+          "location": [
+            0.0,
+            196000.0,
+            -6119.91
+          ],
+          "mode": "AUTO",
+          "owner": null,
+          "target_cluster": 0,
+          "task": "IDLE",
+          "team": "RED"
+        }
+      ],
+      "obstacle_count": 0,
+      "ore_fields": [
+        {
+          "component_instances": [
+            693,
+            371,
+            137,
+            718,
+            419,
+            177,
+            793,
+            418,
+            123,
+            781,
+            384,
+            160,
+            126,
+            66,
+            26,
+            136,
+            100,
+            30,
+            150,
+            78,
+            40,
+            188,
+            76,
+            24
+          ],
+          "hism_components": 24,
+          "visible_nodes": 6214
+        }
+      ],
+      "outpost_count": 25,
+      "players": [
+        {
+          "inventory": {
+            "blue": 0,
+            "red": 0
+          },
+          "local": false,
+          "name": "GuLiCommanderPlayerState_0",
+          "role": "COMMANDER",
+          "sync_ready": true,
+          "team": "RED"
+        },
+        {
+          "inventory": {
+            "blue": 40,
+            "red": 0
+          },
+          "local": true,
+          "name": "GuLiCommanderPlayerState_1",
+          "role": "COMMANDER",
+          "sync_ready": false,
+          "team": "BLUE"
+        }
+      ],
+      "resource_active": true,
+      "runtime_ready": true,
+      "server": false,
+      "territory_owners": [
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "RED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "UNASSIGNED",
+        "BLUE",
+        "UNASSIGNED",
+        "UNASSIGNED"
+      ],
+      "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+      "world_state_count": 1
+    }
+  ],
+  "play_settings": {
+    "PlayNetMode": "PIE_ListenServer",
+    "PlayNumberOfClients": "2",
+    "RunUnderOneProcess": "True",
+    "bLaunchSeparateServer": "False"
+  },
+  "schema": "guli.resource-world.pie-acceptance.v1",
+  "success": true
+}

@@ -3,6 +3,7 @@
 #include "Battle/Framework/GuLiBattleGameState.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
+#include "Battle/Network/Relay/GuLiWingmanRelayComponent.h"
 #include "Battle/Relay/GuLiWingmanRelayServer.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
@@ -136,6 +137,78 @@ bool FGuLiWingmanPublicRelayRetentionTest::RunTest(const FString& Parameters)
 	GameState->ServerRevokeWingmanGroup(Group);
 	TestEqual(TEXT("Revocation removes the group from the LateJoin retained set"),
 		GameState->GetPublicWingmanBootstraps().Num(), 0);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanPublicPoseBeforeGameStateTest,
+	"GuLiStrike.Wingman.Relay.PublicTransport.PoseFrameBeforeGameState",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiWingmanPublicPoseBeforeGameStateTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanPublicRelayTests;
+	// Exercise the actual RPC thunk with a valid, nonempty frame: an empty or
+	// malformed batch would not reach the original null GameState dereference.
+	struct FPublicPoseFrameParams
+	{
+		TArray<FGuLiWingmanAcceptedBatch> AcceptedBatches;
+	} Frame;
+	FGuLiWingmanAcceptedBatch& Batch = Frame.AcceptedBatches.AddDefaulted_GetRef();
+	Batch.Group = MakeGroup();
+	Batch.StateRef.MatchEpoch = 1u;
+	Batch.StateRef.GroupGeneration = Batch.Group.GroupGeneration;
+	Batch.StateRef.AcceptedSequence = 1u;
+	Batch.StateRef.ClientSimTick = 1u;
+	Batch.CarrierSource.CanonicalEpoch = 1u;
+	Batch.CarrierSource.MoveRevision = 1u;
+	Batch.ConnectionGeneration = 1u;
+	Batch.RosterRevision = 1u;
+	Batch.FlightIndex = 0u;
+	Batch.FrameSequence = 1u;
+	Batch.AbilitySetRevision = 1u;
+	Batch.FormationCommandRevision = 1u;
+	Batch.FormationDefinitionChecksum = 1u;
+	FGuLiWingmanCandidateSample& Sample = Batch.Samples.AddDefaulted_GetRef();
+	Sample.Wingman.Flight.Group = Batch.Group;
+	Sample.Wingman.Flight.FlightIndex = 0u;
+	Sample.Wingman.MemberIndex = 0u;
+	Sample.Wingman.EntityGeneration = 1u;
+	Batch.RefreshHash();
+	if (!TestTrue(TEXT("The public pose frame contains a valid batch"), Batch.IsWellFormed()))
+	{
+		return false;
+	}
+
+	UGuLiWingmanRelayComponent* DetachedRelay = NewObject<UGuLiWingmanRelayComponent>();
+	UFunction* ReceiveFrame = DetachedRelay->FindFunctionChecked(TEXT("ClientReceivePublicPoseFrame"));
+	TestNull(TEXT("The detached receiver has no World"), DetachedRelay->GetWorld());
+	DetachedRelay->ProcessEvent(ReceiveFrame, &Frame);
+
+	FWorldFixture Fixture;
+	if (!Fixture.Initialize(*this))
+	{
+		return false;
+	}
+	AActor* Owner = Fixture.World->SpawnActor<AActor>();
+	if (!TestNotNull(TEXT("The receiver owner exists"), Owner))
+	{
+		return false;
+	}
+	UGuLiWingmanRelayComponent* Relay = NewObject<UGuLiWingmanRelayComponent>(Owner);
+	TestEqual(TEXT("The receiver has the joining World"), Relay->GetWorld(), Fixture.World);
+	TestNull(TEXT("GameState has not arrived yet"), Fixture.World->GetGameState());
+	Relay->ProcessEvent(ReceiveFrame, &Frame);
+	TestNull(TEXT("An early frame does not create a substitute GameState"), Fixture.World->GetGameState());
+
+	AGuLiBattleGameState* GameState = Fixture.World->SpawnActor<AGuLiBattleGameState>();
+	if (!TestNotNull(TEXT("GameState can arrive after the early frame"), GameState))
+	{
+		return false;
+	}
+	Fixture.World->SetGameState(GameState);
+	Relay->ProcessEvent(ReceiveFrame, &Frame);
+	TestEqual(TEXT("The next frame uses the now available GameState"),
+		Fixture.World->GetGameState<AGuLiBattleGameState>(), GameState);
 	return true;
 }
 #endif

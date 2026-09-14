@@ -1,0 +1,30 @@
+{
+  "succeeded": 19,
+  "succeededWithWarnings": 0,
+  "failed": 3,
+  "notRun": 0,
+  "totalDuration": 1.2811640501022339,
+  "failed_tests": [
+    {
+      "name": "GuLiStrike.CombatEffects.NetworkOrderAndCleanup",
+      "errors": [
+        "Expected 'full-endpoint shot is under 65 bytes' to be true."
+      ]
+    },
+    {
+      "name": "GuLiStrike.Wingman.Attack.SustainedGunLedgerAndState",
+      "errors": [
+        "Expected 'Five-hertz full burst deals exactly 250 damage' to be 9750.000000, but it was 10000.000000 and outside tolerance 0.000100.",
+        "Expected 'Thirty-hertz full burst deals exactly 1500 damage' to be 8500.000000, but it was 10000.000000 and outside tolerance 0.000100."
+      ]
+    },
+    {
+      "name": "GuLiStrike.Wingman.Attack.UnifiedAutomaticTargetingAndAuthorization",
+      "errors": [
+        "Expected 'One over-release target is removed without clearing the whole table' to be false.",
+        "Expected 'Losing every prior automatic target only by release range clears the table' to be true.",
+        "Expected 'The existing group rejoin gate blocks immediate reacquisition' to be true."
+      ]
+    }
+  ]
+}

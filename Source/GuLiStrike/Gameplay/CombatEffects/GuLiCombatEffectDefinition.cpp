@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
+#include "Gameplay/Data/Generated/GuLiStrikeSecondaryWeaponsTableRows.h"
 
 bool UGuLiSpellFieldDefinition::IsValidDefinition() const
 {
@@ -11,8 +12,31 @@ bool UGuLiSpellFieldDefinition::IsValidDefinition() const
 
 bool UGuLiProjectileEffectDefinition::IsValidDefinition() const
 {
-	return Motion.IsValid() && !ImpactField.IsNull() && FMath::IsFinite(VisualScale) && VisualScale > 0
+	FGuLiProjectileMotionSettings ResolvedMotion;
+	return ResolveMotionSettings(ResolvedMotion) && !ImpactField.IsNull() && FMath::IsFinite(VisualScale) && VisualScale > 0
 		&& FMath::IsFinite(TrailFadeSeconds) && TrailFadeSeconds >= 0 && TrailFadeSeconds <= 10;
+}
+
+bool UGuLiProjectileEffectDefinition::ResolveMotionSettings(FGuLiProjectileMotionSettings& OutMotion) const
+{
+	OutMotion = {};
+	if (MotionProfileRow.IsNull())
+	{
+		OutMotion = Motion;
+		return OutMotion.IsValid();
+	}
+	const auto* Row = MotionProfileRow.GetRow<FGuLiStrikeSecondaryWeaponsProjectilesRow>(TEXT("Secondary weapon projectile"));
+	if (!Row || Row->ProjectileAsset.ToSoftObjectPath() != FSoftObjectPath(this)) return false;
+	OutMotion.Speed = Row->SpeedCentimetersPerSecond;
+	OutMotion.LiftSeconds = Row->LiftSeconds;
+	OutMotion.MinimumLiftHeight = Row->MinimumLiftHeightCentimeters;
+	OutMotion.MaximumLiftHeight = Row->MaximumLiftHeightCentimeters;
+	OutMotion.LateralOffset = Row->LateralOffsetCentimeters;
+	OutMotion.ConvergenceDistance = Row->ConvergenceDistanceCentimeters;
+	OutMotion.TurnRate = Row->TurnRateDegreesPerSecond;
+	OutMotion.SweepRadius = Row->SweepRadiusCentimeters;
+	OutMotion.MaximumLifetime = Row->MaximumLifetimeSeconds;
+	return OutMotion.IsValid();
 }
 
 const FGuLiWeaponEffectMount* UGuLiCombatEffectCatalog::FindMount(const int32 UnitTypeId, const FName SlotId) const

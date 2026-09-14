@@ -364,21 +364,35 @@ UGuLiShipAbilitySet* UGuLiShipAbilitySet::CreateNativeV3Transient(UObject* Outer
 {
 	UGuLiShipAbilitySet* Set = CreateNativeV2Transient(Outer);
 	if (!Set) return nullptr;
-	Set->Revision = 3u;
+	Set->Revision = 4u;
 	for (bool bGround : { false, true })
 	{
 		UGuLiWingmanWeaponDefinition* Weapon = NewObject<UGuLiWingmanWeaponDefinition>(Set, NAME_None, RF_Transient);
+		Weapon->Revision = bGround ? 2u : 3u;
 		Weapon->Kind = EGuLiWingmanWeaponKind::BasicAutomatic;
 		Weapon->Damage = bGround ? 30.0f : 10.0f;
-		Weapon->CooldownSeconds = bGround ? 8.0f : 0.5f;
+		Weapon->CooldownSeconds = bGround ? 8.0f : 0.2f;
 		Weapon->RangeCentimeters = 150000.0f;
-		Weapon->ProjectileSpeedCentimetersPerSecond = bGround ? 6000.0f : 120000.0f;
-		Weapon->ProjectileLifetimeSeconds = bGround ? 8.0f : 1.5f;
+		Weapon->ProjectileSpeedCentimetersPerSecond = bGround ? 6000.0f : 80000.0f;
+		Weapon->ProjectileLifetimeSeconds = bGround ? 8.0f : 1.875f;
 		Weapon->SweepRadiusCentimeters = bGround ? 30.0f : 45.0f;
 		Weapon->TargetConeHalfAngleDegrees = 20.0f;
-		Weapon->Attack.Pattern = bGround ? EGuLiWingmanAttackPattern::GroundDive : EGuLiWingmanAttackPattern::AirDogfight;
+		Weapon->Attack.Pattern = bGround ? EGuLiWingmanAttackPattern::GroundDive : EGuLiWingmanAttackPattern::AirBurstOrbit;
 		Weapon->Attack.ExecutorId = bGround ? TEXT("WingmanGroundMissile") : TEXT("WingmanMachineGun");
-		if (bGround) Weapon->AttackProjectile = FSoftObjectPath(TEXT("/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile"));
+		Weapon->Attack.FlightSpeed = 9000.0f;
+		if (!bGround)
+		{
+			Weapon->Attack.AirFireStartDistance = 10000.0f;
+			Weapon->Attack.AirFireStopDistance = 5000.0f;
+			Weapon->Attack.AirBurstDurationSeconds = 5.0f;
+			Weapon->Attack.AirOrbitCooldownSeconds = 3.0f;
+		}
+		if (bGround)
+		{
+			Weapon->Attack.ExplosionRadius = 4000.0f;
+			Weapon->AttackProjectile = FSoftObjectPath(TEXT(
+				"/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundMissile.DA_WingmanGroundMissile"));
+		}
 		FGuLiShipAbilityGrant& Grant = Set->Grants.AddDefaulted_GetRef();
 		Grant.AbilityId = bGround ? TAG_GuLi_ShipAbility_Weapon_Wingman_GroundMissile : TAG_GuLi_ShipAbility_Weapon_Wingman_MachineGun;
 		Grant.Slot = EGuLiShipAbilitySlot::BasicWeapon;
@@ -413,11 +427,11 @@ UGuLiShipAbilitySet* UGuLiShipAbilitySet::CreateNativeV2Transient(UObject* Outer
 		return nullptr;
 	}
 
-	LegacyFormation->Revision = 2u;
+	LegacyFormation->Revision = 4u;
 	LegacyFormation->Model = EGuLiWingmanFormationModel::DoubleRingLegacy;
 	LegacyFormation->GuidanceAlgorithmVersion = 1u;
 
-	SwarmFormation->Revision = 1u;
+	SwarmFormation->Revision = 3u;
 	SwarmFormation->Model = EGuLiWingmanFormationModel::SwarmOrbit;
 	SwarmFormation->GuidanceAlgorithmVersion = 1u;
 	SwarmFormation->CatchUpDistanceCentimeters = 60000.0f;

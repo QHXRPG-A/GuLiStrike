@@ -1,0 +1,232 @@
+{
+  "tables": [
+    {
+      "asset": "DT_GuLiStrikeSpellFields_Fields",
+      "source_rows": [
+        "WM01_MissileExplosion",
+        "WingmanGroundMissile",
+        "Teleport_L1",
+        "Teleport_L2",
+        "Teleport_L3",
+        "Teleport_L4"
+      ],
+      "created": false,
+      "row_names": [
+        "WM01_MissileExplosion",
+        "WingmanGroundMissile",
+        "Teleport_L1",
+        "Teleport_L2",
+        "Teleport_L3",
+        "Teleport_L4"
+      ],
+      "row_checks": {
+        "WM01_MissileExplosion": true,
+        "WingmanGroundMissile": true,
+        "Teleport_L1": true,
+        "Teleport_L2": true,
+        "Teleport_L3": true,
+        "Teleport_L4": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeCommander_Skills",
+      "source_rows": [
+        "Strafe",
+        "StrafeTest",
+        "WM01_HomingMissile"
+      ],
+      "created": false,
+      "row_names": [
+        "Strafe",
+        "StrafeTest",
+        "WM01_HomingMissile"
+      ],
+      "row_checks": {
+        "Strafe": true,
+        "StrafeTest": true,
+        "WM01_HomingMissile": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeCommander_UnitSkills",
+      "source_rows": [
+        "SoldierA_Strafe",
+        "WM01_Strafe",
+        "SoldierA_Test",
+        "WM01_Test",
+        "WM01_MissileLauncher"
+      ],
+      "created": false,
+      "row_names": [
+        "SoldierA_Strafe",
+        "WM01_Strafe",
+        "SoldierA_Test",
+        "WM01_Test",
+        "WM01_MissileLauncher"
+      ],
+      "row_checks": {
+        "SoldierA_Strafe": true,
+        "WM01_Strafe": true,
+        "SoldierA_Test": true,
+        "WM01_Test": true,
+        "WM01_MissileLauncher": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeCommander_WeaponMounts",
+      "source_rows": [
+        "FourFRobot_AimTarget",
+        "FourFRobot_BasicAttack_Muzzle_0",
+        "WM01_AimTarget",
+        "WM01_BasicAttack_Muzzle_0",
+        "WM01_MissileLauncher_Muzzle_0",
+        "WM01_MissileLauncher_Muzzle_1"
+      ],
+      "created": false,
+      "row_names": [
+        "FourFRobot_AimTarget",
+        "FourFRobot_BasicAttack_Muzzle_0",
+        "WM01_AimTarget",
+        "WM01_BasicAttack_Muzzle_0",
+        "WM01_MissileLauncher_Muzzle_0",
+        "WM01_MissileLauncher_Muzzle_1"
+      ],
+      "row_checks": {
+        "FourFRobot_AimTarget": true,
+        "FourFRobot_BasicAttack_Muzzle_0": true,
+        "WM01_AimTarget": true,
+        "WM01_BasicAttack_Muzzle_0": true,
+        "WM01_MissileLauncher_Muzzle_0": true,
+        "WM01_MissileLauncher_Muzzle_1": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeShip_WingmanWeapons",
+      "source_rows": [
+        "WingmanMachineGun",
+        "WingmanGroundMissile",
+        "WingmanBasicAuto",
+        "WingmanMissileSalvo"
+      ],
+      "created": false,
+      "row_names": [
+        "WingmanMachineGun",
+        "WingmanGroundMissile",
+        "WingmanBasicAuto",
+        "WingmanMissileSalvo"
+      ],
+      "row_checks": {
+        "WingmanMachineGun": true,
+        "WingmanGroundMissile": true,
+        "WingmanBasicAuto": true,
+        "WingmanMissileSalvo": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeShip_WingmanTargeting",
+      "source_rows": [
+        "Default"
+      ],
+      "created": false,
+      "row_names": [
+        "Default"
+      ],
+      "row_checks": {
+        "Default": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeSecondaryWeapons_Projectiles",
+      "source_rows": [
+        "WM01_Missile"
+      ],
+      "created": false,
+      "row_names": [
+        "WM01_Missile"
+      ],
+      "row_checks": {
+        "WM01_Missile": true
+      },
+      "imported": true
+    }
+  ],
+  "projectile_profiles": [
+    {
+      "asset": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.DA_WM01_Missile",
+      "row": "WM01_Missile",
+      "resolved": {
+        "speed": 6000.0,
+        "lift_seconds": 0.25,
+        "minimum_lift_height": 600.0,
+        "maximum_lift_height": 1000.0,
+        "lateral_offset": 200.0,
+        "convergence_distance": 1600.0,
+        "turn_rate": 240.0,
+        "sweep_radius": 30.0,
+        "maximum_lifetime": 8.0
+      }
+    }
+  ],
+  "errors": [],
+  "passed": true,
+  "wingman_profiles": [
+    {
+      "asset": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MachineGun.DA_WingmanWeapon_MachineGun",
+      "row": "WingmanMachineGun",
+      "resolved": {
+        "damage": 10.0,
+        "cooldown_seconds": 0.20000000298023224,
+        "range_centimeters": 150000.0,
+        "projectile_speed_centimeters_per_second": 120000.0,
+        "projectile_lifetime_seconds": 1.5,
+        "sweep_radius_centimeters": 45.0,
+        "maximum_homing_turn_rate_degrees_per_second": 0.0
+      }
+    },
+    {
+      "asset": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_GroundMissile.DA_WingmanWeapon_GroundMissile",
+      "row": "WingmanGroundMissile",
+      "resolved": {
+        "damage": 30.0,
+        "cooldown_seconds": 8.0,
+        "range_centimeters": 150000.0,
+        "projectile_speed_centimeters_per_second": 6000.0,
+        "projectile_lifetime_seconds": 8.0,
+        "sweep_radius_centimeters": 30.0,
+        "maximum_homing_turn_rate_degrees_per_second": 0.0
+      }
+    },
+    {
+      "asset": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_BasicAuto.DA_WingmanWeapon_BasicAuto",
+      "row": "WingmanBasicAuto",
+      "resolved": {
+        "damage": 10.0,
+        "cooldown_seconds": 2.0,
+        "range_centimeters": 150000.0,
+        "projectile_speed_centimeters_per_second": 120000.0,
+        "projectile_lifetime_seconds": 1.5,
+        "sweep_radius_centimeters": 45.0,
+        "maximum_homing_turn_rate_degrees_per_second": 0.0
+      }
+    },
+    {
+      "asset": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MissileSalvo.DA_WingmanWeapon_MissileSalvo",
+      "row": "WingmanMissileSalvo",
+      "resolved": {
+        "damage": 100.0,
+        "cooldown_seconds": 8.0,
+        "range_centimeters": 250000.0,
+        "projectile_speed_centimeters_per_second": 45000.0,
+        "projectile_lifetime_seconds": 8.0,
+        "sweep_radius_centimeters": 150.0,
+        "maximum_homing_turn_rate_degrees_per_second": 45.0
+      }
+    }
+  ]
+}

@@ -11,7 +11,7 @@ class AGuLiSoldierStateReplicator;
 class AGuLiCommanderPresentationActor;
 
 /** 服务器士兵世界发布器：挂在战局 GameMode 上，独占快照捕获及逐连接姿态调度；自身不是 RPC 对象。 */
-UCLASS(ClassGroup = (GuLiStrike), meta = (BlueprintSpawnableComponent))
+UCLASS(ClassGroup = (GuLiStrike), Config = Game, meta = (BlueprintSpawnableComponent))
 class UGuLiCommanderWorldReplicationComponent : public UActorComponent
 {
 	GENERATED_BODY()
@@ -33,11 +33,23 @@ private:
 	UPROPERTY(Transient)
 	TObjectPtr<AGuLiCommanderPresentationActor> PresentationActor;
 
+	/** Moving soldiers inside this planar distance retain the full 10 Hz pose rate. */
+	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Network", meta = (ClampMin = "0.0", Units = "cm"))
+	float FullRatePoseDistanceCentimeters = 160000.0f;
+
+	/** Moving soldiers beyond FullRatePoseDistance use 10 / divisor Hz. */
+	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Network", meta = (ClampMin = "1", ClampMax = "10"))
+	uint8 FarMovingPoseFrameDivisor = 2u;
+
+	/** Idle/destroyed soldiers use 10 / divisor Hz independent of distance. */
+	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Network", meta = (ClampMin = "1", ClampMax = "10"))
+	uint8 StationaryPoseFrameDivisor = 2u;
+
 	uint32 LastPublishedPoseSimTick = 0u;
 	uint32 LastPoseChunkDispatchSimTick = 0u;
 	uint32 PublishedMatchEpoch = 0u;
 	TArray<FGuLiSoldierPoseChunk> PendingPoseChunks;
-	int32 PendingPoseChunkOffset = 0;
-	int32 PendingPoseChunkStartIndex = 0;
+	uint8 PendingPoseDispatchPhase = 0u;
 	bool bOwnsSoldierSimulation = false;
+	bool bSoldierSimulationStarted = false;
 };

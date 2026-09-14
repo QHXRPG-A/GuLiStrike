@@ -1,0 +1,169 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Opaque",
+		"shading_model": "MSM_Unlit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionAdd_0000016AC7FE21C0",
+			"class": "Add",
+			"class_full": "MaterialExpressionAdd",
+			"pos_x": -192,
+			"pos_y": 160,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "0.700000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTime_0000016CF460F0A0",
+			"class": "Time",
+			"class_full": "MaterialExpressionTime",
+			"pos_x": -944,
+			"pos_y": 48,
+			"properties":
+			{
+				"bIgnorePause": "False",
+				"bOverride_Period": "False",
+				"Period": "0.000000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016AC7FEA000",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -720,
+			"pos_y": 112,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016AC7FE7080",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -1008,
+			"pos_y": 240,
+			"properties":
+			{
+				"DefaultValue": "0.900000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Speed",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionSine_0000016BDDD84A00",
+			"class": "Sine",
+			"class_full": "MaterialExpressionSine",
+			"pos_x": -528,
+			"pos_y": 128,
+			"properties":
+			{
+				"Period": "1.000000"
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionFrac_0000016BDDD84D00",
+			"class": "Frac",
+			"class_full": "MaterialExpressionFrac",
+			"pos_x": -304,
+			"pos_y": 144,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionFrac_0000016BDDD84D00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionAdd_0000016AC7FE21C0",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTime_0000016CF460F0A0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEA000",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016AC7FE7080",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016AC7FEA000",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016AC7FEA000",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionSine_0000016BDDD84A00",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionSine_0000016BDDD84A00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionFrac_0000016BDDD84D00",
+			"target_input": "Input"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "EmissiveColor",
+			"expression_id": "MaterialExpressionAdd_0000016AC7FE21C0",
+			"output_index": 0,
+			"output_name": ""
+		}
+	]
+}

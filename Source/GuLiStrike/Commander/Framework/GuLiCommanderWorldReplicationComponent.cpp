@@ -7,10 +7,66 @@
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/PlayerController.h"
+
+namespace
+{
+	static_assert(30u % GULI_POSE_CAPTURE_RATE_HZ == 0u);
+	constexpr uint8 PoseDispatchPhaseCount = 30u / GULI_POSE_CAPTURE_RATE_HZ;
+
+	uint8 GetPoseRateDivisor(
+		const FGuLiCompressedSoldierPose& Pose,
+		const FVector& WorldLocation,
+		const FVector& ViewLocation,
+		const float FullRateDistanceCentimeters,
+		const uint8 FarMovingDivisor,
+		const uint8 StationaryDivisor)
+	{
+		if (Pose.State != EGuLiSoldierPoseState::Moving)
+		{
+			return StationaryDivisor;
+		}
+		return FVector::DistSquared2D(WorldLocation, ViewLocation)
+			> FMath::Square(static_cast<double>(FullRateDistanceCentimeters))
+			? FarMovingDivisor
+			: 1u;
+	}
+
+	bool BuildConnectionPoseChunk(
+		const FGuLiSoldierPoseChunk& Source,
+		const FVector& ViewLocation,
+		const float FullRateDistanceCentimeters,
+		const uint8 FarMovingDivisor,
+		const uint8 StationaryDivisor,
+		FGuLiSoldierPoseChunk& OutChunk)
+	{
+		OutChunk = Source;
+		OutChunk.Samples.Reset(Source.Samples.Num());
+		for (const FGuLiCompressedSoldierPose& Pose : Source.Samples)
+		{
+			const FVector WorldLocation = FVector(Source.Anchor)
+				+ Pose.GetRelativeLocationCentimeters();
+			const uint8 Divisor = GetPoseRateDivisor(
+				Pose,
+				WorldLocation,
+				ViewLocation,
+				FullRateDistanceCentimeters,
+				FarMovingDivisor,
+				StationaryDivisor);
+			const bool bScheduledFrame = Source.FrameSequence % Divisor
+				== Pose.SoldierId.Value % Divisor;
+			if (Pose.IsTeleport() || bScheduledFrame)
+			{
+				OutChunk.Samples.Add(Pose);
+			}
+		}
+		return !OutChunk.Samples.IsEmpty();
+	}
+}
 
 UGuLiCommanderWorldReplicationComponent::UGuLiCommanderWorldReplicationComponent()
 {
@@ -30,17 +86,16 @@ void UGuLiCommanderWorldReplicationComponent::BeginPlay()
 		return;
 	}
 	bOwnsSoldierSimulation = true;
-	if (UGuLiBattleAuthoritySubsystem* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>())
-	{
-		Authority->SetSoldierSimulationEnabled(true);
-	}
+	check(FullRatePoseDistanceCentimeters >= 0.0f);
+	check(FarMovingPoseFrameDivisor >= 1u);
+	check(StationaryPoseFrameDivisor >= 1u);
 	EnsureSoldierStateReplicator();
 	EnsurePresentationActor();
 }
 
 void UGuLiCommanderWorldReplicationComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
-	if (bOwnsSoldierSimulation && GetWorld())
+	if (bOwnsSoldierSimulation && bSoldierSimulationStarted && GetWorld())
 	{
 		if (UGuLiBattleAuthoritySubsystem* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>())
 		{
@@ -48,6 +103,7 @@ void UGuLiCommanderWorldReplicationComponent::EndPlay(const EEndPlayReason::Type
 		}
 	}
 	bOwnsSoldierSimulation = false;
+	bSoldierSimulationStarted = false;
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -57,6 +113,20 @@ void UGuLiCommanderWorldReplicationComponent::TickComponent(
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 	if (GetOwner() && GetOwner()->HasAuthority())
 	{
+		if (!bSoldierSimulationStarted)
+		{
+			const UGuLiResourceWorldSubsystem* Resources =
+				GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
+			if (Resources && Resources->IsRuntimeReady())
+			{
+				if (UGuLiBattleAuthoritySubsystem* Authority =
+					GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>())
+				{
+					Authority->SetSoldierSimulationEnabled(true);
+					bSoldierSimulationStarted = true;
+				}
+			}
+		}
 		PublishSoldierSnapshotAndPoses();
 	}
 }
@@ -138,8 +208,7 @@ void UGuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses()
 	{
 		PublishedMatchEpoch = MatchEpoch;
 		PendingPoseChunks.Reset();
-		PendingPoseChunkOffset = 0;
-		PendingPoseChunkStartIndex = 0;
+		PendingPoseDispatchPhase = 0u;
 		LastPublishedPoseSimTick = 0u;
 	}
 
@@ -156,27 +225,15 @@ void UGuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses()
 
 		PendingPoseChunks.Reset();
 		Authority->CaptureSoldierPoseChunks(PendingPoseChunks, MatchEpoch);
-		PendingPoseChunkOffset = 0;
-		PendingPoseChunkStartIndex = PendingPoseChunks.IsEmpty()
-			? 0
-			: static_cast<int32>(
-				PendingPoseChunks[0].FrameSequence
-				% static_cast<uint32>(PendingPoseChunks.Num()));
+		PendingPoseDispatchPhase = 0u;
 	}
 
-	if (PendingPoseChunks.IsEmpty()
-		|| PendingPoseChunkOffset >= PendingPoseChunks.Num())
+	if (PendingPoseChunks.IsEmpty())
 	{
 		return;
 	}
 
-	// 把一帧的块分摊到三个模拟步；轮换起始块，避免固定尾部总是较晚发出。
-	const int32 ChunksPerDispatch = FMath::DivideAndRoundUp(
-		PendingPoseChunks.Num(),
-		static_cast<int32>(SimulationTicksPerPoseFrame));
-	const int32 DispatchChunkCount = FMath::Min(
-		ChunksPerDispatch,
-		PendingPoseChunks.Num() - PendingPoseChunkOffset);
+	// SoldierId 永久映射到一个 30 Hz 发送槽；空间重排不会改变单兵的块发送相位。
 	for (TActorIterator<APlayerController> It(GetWorld()); It; ++It)
 	{
 		if (UGuLiCommanderNetSyncComponent* NetSync = It->FindComponentByClass<UGuLiCommanderNetSyncComponent>())
@@ -190,24 +247,40 @@ void UGuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses()
 			}
 
 			NetSync->RefreshServerSelection();
-			for (int32 ChunkOffset = 0; ChunkOffset < DispatchChunkCount; ++ChunkOffset)
+			FVector ViewLocation;
+			FRotator ViewRotation;
+			It->GetPlayerViewPoint(ViewLocation, ViewRotation);
+			check(!ViewLocation.ContainsNaN());
+			for (const FGuLiSoldierPoseChunk& SourceChunk : PendingPoseChunks)
 			{
-				const int32 OrderedChunkOffset = PendingPoseChunkOffset + ChunkOffset;
-				const int32 ChunkIndex = (PendingPoseChunkStartIndex + OrderedChunkOffset) % PendingPoseChunks.Num();
-				// 这里才逐连接调用发送入口；压缩/分块已在 Authority 完成，NetSync 负责 Client RPC。
-				NetSync->SendPoseChunk(
-					PendingPoseChunks[ChunkIndex]);
+				check(!SourceChunk.Samples.IsEmpty());
+				const uint8 ChunkPhase = static_cast<uint8>(
+					SourceChunk.Samples[0].SoldierId.Value % PoseDispatchPhaseCount);
+				if (ChunkPhase != PendingPoseDispatchPhase)
+				{
+					continue;
+				}
+				FGuLiSoldierPoseChunk ConnectionChunk;
+				if (BuildConnectionPoseChunk(
+					SourceChunk,
+					ViewLocation,
+					FullRatePoseDistanceCentimeters,
+					FarMovingPoseFrameDivisor,
+					StationaryPoseFrameDivisor,
+					ConnectionChunk))
+				{
+					NetSync->SendPoseChunk(ConnectionChunk);
+				}
 			}
 		}
 	}
 
 	// 姿态是通过不可靠 RPC 发送的时效性快照，没有就绪客户端也应推进并丢弃过时帧。
 	// 否则空服可能一直保留同一帧，下一位晚加入者会先收到积压的旧姿态。
-	PendingPoseChunkOffset += DispatchChunkCount;
-	if (PendingPoseChunkOffset >= PendingPoseChunks.Num())
+	++PendingPoseDispatchPhase;
+	if (PendingPoseDispatchPhase >= PoseDispatchPhaseCount)
 	{
 		PendingPoseChunks.Reset();
-		PendingPoseChunkOffset = 0;
-		PendingPoseChunkStartIndex = 0;
+		PendingPoseDispatchPhase = 0u;
 	}
 }

@@ -31,6 +31,7 @@ struct GULISTRIKE_API FGuLiMassHealthFragment : public FMassFragment
 
 	UPROPERTY(Transient)
 	bool bDead = false;
+	UPROPERTY(Transient) bool bPhased = false;
 
 	UPROPERTY(Transient)
 	float WreckSecondsRemaining = 0.0f;

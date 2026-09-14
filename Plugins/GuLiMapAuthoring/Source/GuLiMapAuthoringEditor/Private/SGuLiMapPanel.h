@@ -6,6 +6,7 @@
 
 class IDetailsView;
 class AGuLiMapMarker;
+class AGuLiMapDensityMap;
 class UGuLiMapAuthoringSubsystem;
 template<typename T> class SListView;
 template<typename T> class SComboBox;
@@ -34,9 +35,14 @@ private:
     TArray<TSharedPtr<FName>> Shapes;
     TSharedPtr<FName> Shape;
     FString Search,NewTypeId,Status;
-    bool OnlyType=false,OnlyEnabled=false,Syncing=false,RefreshQueued=false,EditingType=false;
+    FName DensityLayer=TEXT("BlueOre");
+    double BrushRadiusCm=20000.0,BrushStrength01=0.25,BrushFalloff01=0.5,DensityCellSizeCm=2500.0;
+    bool OnlyType=false,OnlyEnabled=false,Syncing=false,RefreshQueued=false,EditingType=false,PaintView=false,EraseDensity=false,BlueVisible=true,RedVisible=true;
     FDelegateHandle SelectionHandle,PropertyHandle,MapHandle,AssetAddedHandle,AssetRemovedHandle,AssetUpdatedHandle;
     UGuLiMapAuthoringSubsystem* Service() const;
+    AGuLiMapDensityMap* DensityMap() const;
+    void UpdateDensityBrush();
+    void NotifyDensityChanged(AGuLiMapDensityMap* Actor,bool InvalidateSurface=false);
     void Refresh();
     void QueueRefresh();
     void SelectionChanged(UObject* Object);

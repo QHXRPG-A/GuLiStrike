@@ -1,0 +1,2017 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Translucent",
+		"shading_model": "MSM_DefaultLit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionMultiply_0000016A727F5500",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -96,
+			"pos_y": -304,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A00EEDB00",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": 1344,
+			"pos_y": 96,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016A727F8200",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": 146,
+			"pos_y": -69,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Game/Assets/Props/ParagonProps/FX/Materials/Functions/FX_EmissiveModulate.FX_EmissiveModulate'"
+			},
+			"function_path": "/Game/Assets/Props/ParagonProps/FX/Materials/Functions/FX_EmissiveModulate.FX_EmissiveModulate",
+			"inputs": [
+				"In (V3)"
+			],
+			"outputs": [
+				"Result"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A00EE9900",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": 496,
+			"pos_y": 160,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016A727F7D00",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": -640,
+			"pos_y": -48,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Engine/Functions/Engine_MaterialFunctions01/ImageAdjustment/DeriveHDRfromLDR.DeriveHDRfromLDR'"
+			},
+			"function_path": "/Engine/Functions/Engine_MaterialFunctions01/ImageAdjustment/DeriveHDRfromLDR.DeriveHDRfromLDR",
+			"inputs": [
+				"LDR Input (V3)",
+				"HDR Dynamic Range (S)",
+				"HDR Tint (V3)",
+				"HDR Intensity Multiplier (S)",
+				"Derive HDR Power (S)",
+				"Desaturate Luminance (S)",
+				"Derive Luminance from Linear (SB)"
+			],
+			"outputs": [
+				"RemappedRange"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A727FC800",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -96,
+			"pos_y": -192,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionDepthFade_0000016A727F6180",
+			"class": "DepthFade",
+			"class_full": "MaterialExpressionDepthFade",
+			"pos_x": -128,
+			"pos_y": 224,
+			"properties":
+			{
+				"OpacityDefault": "1.000000",
+				"FadeDistanceDefault": "0.500000"
+			},
+			"inputs": [
+				"Opacity",
+				"FadeDistance"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A00EEE100",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": -416,
+			"pos_y": 496,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameterSubUV_0000016B20781180",
+			"class": "TextureSampleParameterSubUV",
+			"class_full": "MaterialExpressionTextureSampleParameterSubUV",
+			"pos_x": -480,
+			"pos_y": -416,
+			"properties":
+			{
+				"bBlend": "True",
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "None",
+				"SamplerType": "SAMPLERTYPE_Normal",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "SubUV_Normal",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameterSubUV_0000016B2078B180",
+			"class": "TextureSampleParameterSubUV",
+			"class_full": "MaterialExpressionTextureSampleParameterSubUV",
+			"pos_x": -1824,
+			"pos_y": 320,
+			"properties":
+			{
+				"bBlend": "True",
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "None",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "SubUV_Depth",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameterSubUV_0000016B20782080",
+			"class": "TextureSampleParameterSubUV",
+			"class_full": "MaterialExpressionTextureSampleParameterSubUV",
+			"pos_x": -2048,
+			"pos_y": -480,
+			"properties":
+			{
+				"bBlend": "True",
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "None",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "SubUV_Emissive",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionParticleColor_0000016CDBE35000",
+			"class": "ParticleColor",
+			"class_full": "MaterialExpressionParticleColor",
+			"pos_x": -1280,
+			"pos_y": -144,
+			"properties":
+			{
+			},
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A727F7A80",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -1008,
+			"pos_y": -32,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionClamp_0000016A00EEDC80",
+			"class": "Clamp",
+			"class_full": "MaterialExpressionClamp",
+			"pos_x": -912,
+			"pos_y": -32,
+			"properties":
+			{
+				"ClampMode": "CMODE_Clamp",
+				"MinDefault": "0.000000",
+				"MaxDefault": "1.000000"
+			},
+			"inputs": [
+				"Input",
+				"Min",
+				"Max"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A727FD200",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -896,
+			"pos_y": 224,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016A727FA8C0",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -624,
+			"pos_y": 368,
+			"properties":
+			{
+				"DefaultValue": "200.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "0_Distance",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016A727F6E00",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -624,
+			"pos_y": 464,
+			"properties":
+			{
+				"DefaultValue": "10.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "1_Distance",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000016A00EE9300",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -480,
+			"pos_y": -592,
+			"properties":
+			{
+				"DefaultValue": "(R=0.400000,G=0.400000,B=0.400000,A=0.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "BaseColor",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000016A00EEA980",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -480,
+			"pos_y": -240,
+			"properties":
+			{
+				"DefaultValue": "(R=1.000000,G=1.000000,B=1.500000,A=0.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "ScaleNormal",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A00EEE880",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": -1440,
+			"pos_y": 256,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionDynamicParameter_0000016CDBE38F00",
+			"class": "DynamicParameter",
+			"class_full": "MaterialExpressionDynamicParameter",
+			"pos_x": -1824,
+			"pos_y": 528,
+			"properties":
+			{
+				"ParamNames": "(\"LerpFireTextures\",\"EmissiveNoisePower\",\"MacroDetailStr\",\"MacroDetailWarpStr\")",
+				"DefaultValue": "(R=0.000000,G=1.000000,B=1.000000,A=1.000000)",
+				"ParameterIndex": "0"
+			},
+			"inputs": [],
+			"outputs": [
+				"LerpFireTextures",
+				"EmissiveNoisePower",
+				"MacroDetailStr",
+				"MacroDetailWarpStr"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A727F6680",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -1664,
+			"pos_y": -48,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionPower_0000016A727FD980",
+			"class": "Power",
+			"class_full": "MaterialExpressionPower",
+			"pos_x": -1776,
+			"pos_y": 0,
+			"properties":
+			{
+				"ConstExponent": "2.000000"
+			},
+			"inputs": [
+				"Base",
+				"Exponent"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016A727FC580",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -2048,
+			"pos_y": 176,
+			"properties":
+			{
+				"DefaultValue": "2.500000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "NoisePower",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A00EEDE00",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": -800,
+			"pos_y": 640,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000016A00EE8280",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -1232,
+			"pos_y": 480,
+			"properties":
+			{
+				"DefaultValue": "(R=0.270000,G=0.078391,B=0.005180,A=0.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Color0",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionVectorParameter_0000016A00EE8B80",
+			"class": "VectorParameter",
+			"class_full": "MaterialExpressionVectorParameter",
+			"pos_x": -1232,
+			"pos_y": 656,
+			"properties":
+			{
+				"DefaultValue": "(R=1.000000,G=0.770097,B=0.530000,A=0.000000)",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"ChannelNames": "()",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "Color1",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSampleParameterSubUV_0000016B20783C00",
+			"class": "TextureSampleParameterSubUV",
+			"class_full": "MaterialExpressionTextureSampleParameterSubUV",
+			"pos_x": -2048,
+			"pos_y": -208,
+			"properties":
+			{
+				"bBlend": "True",
+				"SortPriority": "32",
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Noise/T_WispyNoise_8X8.T_WispyNoise_8X8'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"is_parameter": true,
+			"parameter_name": "NoiseSubUV",
+			"group": "None",
+			"inputs": [
+				"Coordinates",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionDynamicParameter_0000016CDBE38B00",
+			"class": "DynamicParameter",
+			"class_full": "MaterialExpressionDynamicParameter",
+			"pos_x": -2064,
+			"pos_y": 0,
+			"properties":
+			{
+				"ParamNames": "(\"LerpFireTextures\",\"EmissiveNoisePower\",\"MacroDetailStr\",\"MacroDetailWarpStr\")",
+				"DefaultValue": "(R=0.000000,G=1.000000,B=1.000000,A=1.000000)",
+				"ParameterIndex": "0"
+			},
+			"inputs": [],
+			"outputs": [
+				"LerpFireTextures",
+				"EmissiveNoisePower",
+				"MacroDetailStr",
+				"MacroDetailWarpStr"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSample_0000016B20784380",
+			"class": "TextureSample",
+			"class_full": "MaterialExpressionTextureSample",
+			"pos_x": -384,
+			"pos_y": 1072,
+			"properties":
+			{
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/Props/ParagonProps/FX/Textures/Smoke/tiling_smoke_01.tiling_smoke_01'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A727F8E80",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 224,
+			"pos_y": 224,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSample_0000016B20780500",
+			"class": "TextureSample",
+			"class_full": "MaterialExpressionTextureSample",
+			"pos_x": -384,
+			"pos_y": 1280,
+			"properties":
+			{
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Noise/T_Inky_Smoke_Tile.T_Inky_Smoke_Tile'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionDynamicParameter_0000016CDBE33E00",
+			"class": "DynamicParameter",
+			"class_full": "MaterialExpressionDynamicParameter",
+			"pos_x": -128,
+			"pos_y": 400,
+			"properties":
+			{
+				"ParamNames": "(\"LerpFireTextures\",\"EmissiveNoisePower\",\"MacroDetailStr\",\"MacroDetailWarpStr\")",
+				"DefaultValue": "(R=0.000000,G=1.000000,B=1.000000,A=1.000000)",
+				"ParameterIndex": "0"
+			},
+			"inputs": [],
+			"outputs": [
+				"LerpFireTextures",
+				"EmissiveNoisePower",
+				"MacroDetailStr",
+				"MacroDetailWarpStr"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A727F5780",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 192,
+			"pos_y": 1168,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A00EEE400",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": -224,
+			"pos_y": 1072,
+			"properties":
+			{
+				"ConstA": "-0.100000",
+				"ConstB": "0.800000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionClamp_0000016A00EEE280",
+			"class": "Clamp",
+			"class_full": "MaterialExpressionClamp",
+			"pos_x": -32,
+			"pos_y": 1072,
+			"properties":
+			{
+				"ClampMode": "CMODE_Clamp",
+				"MinDefault": "0.000000",
+				"MaxDefault": "1.000000"
+			},
+			"inputs": [
+				"Input",
+				"Min",
+				"Max"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A727FE600",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -2016,
+			"pos_y": 1296,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "4.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016A727F3200",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -2160,
+			"pos_y": 1360,
+			"properties":
+			{
+				"DefaultValue": "1.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "ScaleMacro",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionPanner_0000016A00EEB280",
+			"class": "Panner",
+			"class_full": "MaterialExpressionPanner",
+			"pos_x": -736,
+			"pos_y": 1184,
+			"properties":
+			{
+				"SpeedX": "0.000000",
+				"SpeedY": "0.000000",
+				"ConstCoordinate": "0",
+				"bFractionalPart": "True"
+			},
+			"inputs": [
+				"Coordinate",
+				"Time",
+				"Speed"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMaterialFunctionCall_0000016A727F7E40",
+			"class": "MaterialFunctionCall",
+			"class_full": "MaterialExpressionMaterialFunctionCall",
+			"pos_x": 488,
+			"pos_y": -482,
+			"properties":
+			{
+				"MaterialFunction": "/Script/Engine.MaterialFunction'/Engine/Functions/Engine_MaterialFunctions02/Utility/BlendAngleCorrectedNormals.BlendAngleCorrectedNormals'"
+			},
+			"function_path": "/Engine/Functions/Engine_MaterialFunctions02/Utility/BlendAngleCorrectedNormals.BlendAngleCorrectedNormals",
+			"inputs": [
+				"BaseNormal (V3)",
+				"AdditionalNormal (V3)"
+			],
+			"outputs": [
+				"Result"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSample_0000016B2078F280",
+			"class": "TextureSample",
+			"class_full": "MaterialExpressionTextureSample",
+			"pos_x": 96,
+			"pos_y": -560,
+			"properties":
+			{
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/Props/ParagonProps/FX/Textures/Tile/Heat/2ndInfectedMapNormal.2ndInfectedMapNormal'",
+				"SamplerType": "SAMPLERTYPE_Normal",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A727F5000",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": 350,
+			"pos_y": -521,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSample_0000016B2078CF80",
+			"class": "TextureSample",
+			"class_full": "MaterialExpressionTextureSample",
+			"pos_x": -400,
+			"pos_y": 1984,
+			"properties":
+			{
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/Props/ParagonProps/FX/Textures/Smoke/T_SoftSmoke_04.T_SoftSmoke_04'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A00EEE700",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": -240,
+			"pos_y": 1984,
+			"properties":
+			{
+				"ConstA": "-0.400000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionDesaturation_0000016A727F9740",
+			"class": "Desaturation",
+			"class_full": "MaterialExpressionDesaturation",
+			"pos_x": -1778,
+			"pos_y": -425,
+			"properties":
+			{
+				"LuminanceFactors": "(R=0.212639,G=0.715169,B=0.072192,A=1.000000)"
+			},
+			"inputs": [
+				"Input",
+				"Fraction"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSample_0000016A7FE59100",
+			"class": "TextureSample",
+			"class_full": "MaterialExpressionTextureSample",
+			"pos_x": -1648,
+			"pos_y": 1568,
+			"properties":
+			{
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/Props/ParagonProps/FX/Textures/Coords/T_Swirl_FlowMapDiffTile_Warp.T_Swirl_FlowMapDiffTile_Warp'",
+				"SamplerType": "SAMPLERTYPE_Color",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionAdd_0000016A727F85C0",
+			"class": "Add",
+			"class_full": "MaterialExpressionAdd",
+			"pos_x": -832,
+			"pos_y": 1344,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstantBiasScale_0000016CDBE33F00",
+			"class": "ConstantBiasScale",
+			"class_full": "MaterialExpressionConstantBiasScale",
+			"pos_x": -1168,
+			"pos_y": 1600,
+			"properties":
+			{
+				"Bias": "-0.500000",
+				"Scale": "2.000000"
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A727F3AC0",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -935,
+			"pos_y": 1661,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionParticleRelativeTime_0000016CDBE34100",
+			"class": "ParticleRelativeTime",
+			"class_full": "MaterialExpressionParticleRelativeTime",
+			"pos_x": -1200,
+			"pos_y": 1760,
+			"properties":
+			{
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionComponentMask_0000016CDBE3FF00",
+			"class": "ComponentMask",
+			"class_full": "MaterialExpressionComponentMask",
+			"pos_x": -1396,
+			"pos_y": 1655,
+			"properties":
+			{
+				"R": "True",
+				"G": "True",
+				"B": "False",
+				"A": "False"
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionDynamicParameter_0000016CDBE34800",
+			"class": "DynamicParameter",
+			"class_full": "MaterialExpressionDynamicParameter",
+			"pos_x": -1184,
+			"pos_y": 1872,
+			"properties":
+			{
+				"ParamNames": "(\"LerpFireTextures\",\"EmissiveNoisePower\",\"MacroDetailStr\",\"MacroDetailWarpStr\")",
+				"DefaultValue": "(R=0.000000,G=1.000000,B=1.000000,A=1.000000)",
+				"ParameterIndex": "0"
+			},
+			"inputs": [],
+			"outputs": [
+				"LerpFireTextures",
+				"EmissiveNoisePower",
+				"MacroDetailStr",
+				"MacroDetailWarpStr"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_0000016A727F3480",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -1888,
+			"pos_y": 1552,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_0000016A727FCE40",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -2096,
+			"pos_y": 1632,
+			"properties":
+			{
+				"DefaultValue": "1.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "False",
+				"PrimitiveDataIndex": "0",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "ScaleMacroWarp",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant_0000016A78611C00",
+			"class": "Constant",
+			"class_full": "MaterialExpressionConstant",
+			"pos_x": 428,
+			"pos_y": 294,
+			"properties":
+			{
+				"R": "0.000000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSample_0000016A7FE5F000",
+			"class": "TextureSample",
+			"class_full": "MaterialExpressionTextureSample",
+			"pos_x": -1024,
+			"pos_y": -848,
+			"properties":
+			{
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/Props/ParagonProps/FX/Textures/NormalShapes/T_Cone_Hard_N.T_Cone_Hard_N'",
+				"SamplerType": "SAMPLERTYPE_Normal",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionComponentMask_0000016CDBE31D00",
+			"class": "ComponentMask",
+			"class_full": "MaterialExpressionComponentMask",
+			"pos_x": -576,
+			"pos_y": -992,
+			"properties":
+			{
+				"R": "True",
+				"G": "True",
+				"B": "False",
+				"A": "False"
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionAdd_0000016A727F8FC0",
+			"class": "Add",
+			"class_full": "MaterialExpressionAdd",
+			"pos_x": -99,
+			"pos_y": -485,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureCoordinate_0000016CDBE38100",
+			"class": "TextureCoordinate",
+			"class_full": "MaterialExpressionTextureCoordinate",
+			"pos_x": -944,
+			"pos_y": -1136,
+			"properties":
+			{
+				"CoordinateIndex": "0",
+				"UTiling": "8.000000",
+				"VTiling": "8.000000",
+				"UnMirrorU": "False",
+				"UnMirrorV": "False"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureCoordinate_0000016CDBE34B00",
+			"class": "TextureCoordinate",
+			"class_full": "MaterialExpressionTextureCoordinate",
+			"pos_x": -2188,
+			"pos_y": 1285,
+			"properties":
+			{
+				"CoordinateIndex": "0",
+				"UTiling": "8.000000",
+				"VTiling": "8.000000",
+				"UnMirrorU": "False",
+				"UnMirrorV": "False"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionLinearInterpolate_0000016A00EEEE80",
+			"class": "LinearInterpolate",
+			"class_full": "MaterialExpressionLinearInterpolate",
+			"pos_x": -80,
+			"pos_y": -1040,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000",
+				"ConstAlpha": "0.500000"
+			},
+			"inputs": [
+				"A",
+				"B",
+				"Alpha"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureSample_0000016A7FE5AC80",
+			"class": "TextureSample",
+			"class_full": "MaterialExpressionTextureSample",
+			"pos_x": -365,
+			"pos_y": -931,
+			"properties":
+			{
+				"MipValueMode": "TMVM_None",
+				"SamplerSource": "SSM_FromTextureAsset",
+				"GatherMode": "TGM_None",
+				"AutomaticViewMipBias": "True",
+				"ChannelNames": "()",
+				"ConstCoordinate": "0",
+				"ConstMipValue": "-1",
+				"Texture": "/Script/Engine.Texture2D'/Game/Assets/Props/ParagonProps/FX/Textures/Masks/T_Sphere_A.T_Sphere_A'",
+				"SamplerType": "SAMPLERTYPE_Masks",
+				"IsDefaultMeshpaintTexture": "False"
+			},
+			"inputs": [
+				"Coordinates",
+				"TextureObject",
+				"Apply View MipBias"
+			],
+			"outputs": [
+				"RGB",
+				"R",
+				"G",
+				"B",
+				"A",
+				"RGBA"
+			]
+		},
+		{
+			"id": "MaterialExpressionTextureCoordinate_0000016CDBE38000",
+			"class": "TextureCoordinate",
+			"class_full": "MaterialExpressionTextureCoordinate",
+			"pos_x": -520,
+			"pos_y": -788,
+			"properties":
+			{
+				"CoordinateIndex": "0",
+				"UTiling": "8.000000",
+				"VTiling": "8.000000",
+				"UnMirrorU": "False",
+				"UnMirrorV": "False"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionFrac_0000016CDBE35600",
+			"class": "Frac",
+			"class_full": "MaterialExpressionFrac",
+			"pos_x": -635,
+			"pos_y": -1091,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstantBiasScale_0000016CDBE35900",
+			"class": "ConstantBiasScale",
+			"class_full": "MaterialExpressionConstantBiasScale",
+			"pos_x": -784,
+			"pos_y": -880,
+			"properties":
+			{
+				"Bias": "1.000000",
+				"Scale": "0.500000"
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000016A00EE9300",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016A727F5500",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameterSubUV_0000016B20781180",
+			"source_output_index": 3,
+			"source_output_name": "B",
+			"target_id": "MaterialExpressionMultiply_0000016A727F5500",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A727FC800",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEDB00",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016A727F7E40",
+			"source_output_index": 0,
+			"source_output_name": "Result",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEDB00",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionDynamicParameter_0000016CDBE33E00",
+			"source_output_index": 2,
+			"source_output_name": "MacroDetailStr",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEDB00",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionMaterialFunctionCall_0000016A727F7D00",
+			"source_output_index": 0,
+			"source_output_name": "RemappedRange",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016A727F8200",
+			"target_input": "In (V3)"
+		},
+		{
+			"source_id": "MaterialExpressionDepthFade_0000016A727F6180",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EE9900",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A727F8E80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EE9900",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionConstant_0000016A78611C00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EE9900",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionClamp_0000016A00EEDC80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016A727F7D00",
+			"target_input": "LDR Input (V3)"
+		},
+		{
+			"source_id": "MaterialExpressionLinearInterpolate_0000016A00EEDE00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016A727F7D00",
+			"target_input": "HDR Tint (V3)"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameterSubUV_0000016B20781180",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016A727FC800",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000016A00EEA980",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016A727FC800",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A727FD200",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionDepthFade_0000016A727F6180",
+			"target_input": "Opacity"
+		},
+		{
+			"source_id": "MaterialExpressionLinearInterpolate_0000016A00EEE100",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionDepthFade_0000016A727F6180",
+			"target_input": "FadeDistance"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016A727FA8C0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEE100",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016A727F6E00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEE100",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameterSubUV_0000016B2078B180",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEE100",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionParticleColor_0000016CDBE35000",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016A727F7A80",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionLinearInterpolate_0000016A00EEE880",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A727F7A80",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A727F7A80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionClamp_0000016A00EEDC80",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionParticleColor_0000016CDBE35000",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMultiply_0000016A727FD200",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameterSubUV_0000016B20782080",
+			"source_output_index": 4,
+			"source_output_name": "A",
+			"target_id": "MaterialExpressionMultiply_0000016A727FD200",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A727F6680",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEE880",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameterSubUV_0000016B2078B180",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEE880",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionDynamicParameter_0000016CDBE38F00",
+			"source_output_index": 0,
+			"source_output_name": "LerpFireTextures",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEE880",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionDesaturation_0000016A727F9740",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A727F6680",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionPower_0000016A727FD980",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A727F6680",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameterSubUV_0000016B20783C00",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionPower_0000016A727FD980",
+			"target_input": "Base"
+		},
+		{
+			"source_id": "MaterialExpressionDynamicParameter_0000016CDBE38B00",
+			"source_output_index": 1,
+			"source_output_name": "EmissiveNoisePower",
+			"target_id": "MaterialExpressionPower_0000016A727FD980",
+			"target_input": "Exponent"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000016A00EE8280",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEDE00",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000016A00EE8B80",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEDE00",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionLinearInterpolate_0000016A00EEE880",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEDE00",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionPanner_0000016A00EEB280",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionTextureSample_0000016B20784380",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionDepthFade_0000016A727F6180",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A727F8E80",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A727F5780",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A727F8E80",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionPanner_0000016A00EEB280",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionTextureSample_0000016B20780500",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionClamp_0000016A00EEE280",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A727F5780",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016B20780500",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016A727F5780",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016B20784380",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEE400",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionLinearInterpolate_0000016A00EEE400",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionClamp_0000016A00EEE280",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionTextureCoordinate_0000016CDBE34B00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A727FE600",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016A727F3200",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A727FE600",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionAdd_0000016A727F85C0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionPanner_0000016A00EEB280",
+			"target_input": "Coordinate"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A727FC800",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016A727F7E40",
+			"target_input": "BaseNormal (V3)"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A727F5000",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMaterialFunctionCall_0000016A727F7E40",
+			"target_input": "AdditionalNormal (V3)"
+		},
+		{
+			"source_id": "MaterialExpressionLinearInterpolate_0000016A00EEEE80",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionTextureSample_0000016B2078F280",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016B2078F280",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016A727F5000",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionVectorParameter_0000016A00EEA980",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionMultiply_0000016A727F5000",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016B2078CF80",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEE700",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSampleParameterSubUV_0000016B20782080",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionDesaturation_0000016A727F9740",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A727F3480",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionTextureSample_0000016A7FE59100",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A727FE600",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionAdd_0000016A727F85C0",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A727F3AC0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionAdd_0000016A727F85C0",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionComponentMask_0000016CDBE3FF00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionConstantBiasScale_0000016CDBE33F00",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionConstantBiasScale_0000016CDBE33F00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A727F3AC0",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionDynamicParameter_0000016CDBE34800",
+			"source_output_index": 3,
+			"source_output_name": "MacroDetailWarpStr",
+			"target_id": "MaterialExpressionMultiply_0000016A727F3AC0",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016A7FE59100",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionComponentMask_0000016CDBE3FF00",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_0000016A727FE600",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A727F3480",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_0000016A727FCE40",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_0000016A727F3480",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionTextureCoordinate_0000016CDBE38100",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionTextureSample_0000016A7FE5F000",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionConstantBiasScale_0000016CDBE35900",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionComponentMask_0000016CDBE31D00",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionComponentMask_0000016CDBE31D00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionAdd_0000016A727F8FC0",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionPanner_0000016A00EEB280",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionAdd_0000016A727F8FC0",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionComponentMask_0000016CDBE31D00",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEEE80",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionFrac_0000016CDBE35600",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEEE80",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016A7FE5AC80",
+			"source_output_index": 2,
+			"source_output_name": "G",
+			"target_id": "MaterialExpressionLinearInterpolate_0000016A00EEEE80",
+			"target_input": "Alpha"
+		},
+		{
+			"source_id": "MaterialExpressionTextureCoordinate_0000016CDBE38100",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionTextureSample_0000016A7FE5AC80",
+			"target_input": "Coordinates"
+		},
+		{
+			"source_id": "MaterialExpressionTextureCoordinate_0000016CDBE38100",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionFrac_0000016CDBE35600",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionTextureSample_0000016A7FE5F000",
+			"source_output_index": 0,
+			"source_output_name": "RGB",
+			"target_id": "MaterialExpressionConstantBiasScale_0000016CDBE35900",
+			"target_input": "Input"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "BaseColor",
+			"expression_id": "MaterialExpressionMultiply_0000016A727F5500",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "EmissiveColor",
+			"expression_id": "MaterialExpressionMaterialFunctionCall_0000016A727F8200",
+			"output_index": 0,
+			"output_name": "Result"
+		},
+		{
+			"property": "Opacity",
+			"expression_id": "MaterialExpressionLinearInterpolate_0000016A00EE9900",
+			"output_index": 0,
+			"output_name": ""
+		},
+		{
+			"property": "Normal",
+			"expression_id": "MaterialExpressionLinearInterpolate_0000016A00EEDB00",
+			"output_index": 0,
+			"output_name": ""
+		}
+	]
+}

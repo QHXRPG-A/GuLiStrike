@@ -1,0 +1,253 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "3C326DBF4F396600BC387380BCEBE0BF",
+			"instanceName": "DESKTOP-6D3B0FC-43400",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.08-15.11.48",
+	"succeeded": 0,
+	"succeededWithWarnings": 0,
+	"failed": 8,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.12290459871292114,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "ActiveRosterCutPreservesFlightState",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.ActiveRosterCutPreservesFlightState",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"3C326DBF4F396600BC387380BCEBE0BF"
+			],
+			"duration": 0.065263800323009491,
+			"dateTime": "2026.09.08-15.11.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Initialize strict lease fixture' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanLeaseTransactionTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.08-15.11.47"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExactCadenceAndInitialDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.ExactCadenceAndInitialDeadline",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"3C326DBF4F396600BC387380BCEBE0BF"
+			],
+			"duration": 0.0083530992269515991,
+			"dateTime": "2026.09.08-15.11.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Initialize strict lease fixture' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanLeaseTransactionTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.08-15.11.47"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FreshnessHeartbeatAndPendingOffer",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.FreshnessHeartbeatAndPendingOffer",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"3C326DBF4F396600BC387380BCEBE0BF"
+			],
+			"duration": 0.0075930990278720856,
+			"dateTime": "2026.09.08-15.11.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Initialize strict lease fixture' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanLeaseTransactionTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.08-15.11.47"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GracefulTransferAckThenAtomicBatch",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.GracefulTransferAckThenAtomicBatch",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"3C326DBF4F396600BC387380BCEBE0BF"
+			],
+			"duration": 0.0084097012877464294,
+			"dateTime": "2026.09.08-15.11.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Initialize strict lease fixture' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanLeaseTransactionTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.08-15.11.47"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RegistryRotationAndNoOwner",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.RegistryRotationAndNoOwner",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"3C326DBF4F396600BC387380BCEBE0BF"
+			],
+			"duration": 0.008492298424243927,
+			"dateTime": "2026.09.08-15.11.48",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Registry creates retained group' to be not null.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanLeaseTransactionTests.cpp",
+					"lineNumber": 605,
+					"timestamp": "2026.09.08-15.11.48"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReplenishedFlightFreshnessGrace",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.ReplenishedFlightFreshnessGrace",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"3C326DBF4F396600BC387380BCEBE0BF"
+			],
+			"duration": 0.0088727995753288269,
+			"dateTime": "2026.09.08-15.11.48",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Initialize strict lease fixture' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanLeaseTransactionTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.08-15.11.48"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ResumeRevisionAndDeferredReplenish",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.ResumeRevisionAndDeferredReplenish",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"3C326DBF4F396600BC387380BCEBE0BF"
+			],
+			"duration": 0.008063100278377533,
+			"dateTime": "2026.09.08-15.11.48",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Initialize strict lease fixture' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanLeaseTransactionTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.08-15.11.48"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TakeoverRevisionReplacesOldDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.LeaseTransactions.TakeoverRevisionReplacesOldDeadline",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"3C326DBF4F396600BC387380BCEBE0BF"
+			],
+			"duration": 0.0078567005693912506,
+			"dateTime": "2026.09.08-15.11.48",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Initialize strict lease fixture' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanLeaseTransactionTests.cpp",
+					"lineNumber": 85,
+					"timestamp": "2026.09.08-15.11.48"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

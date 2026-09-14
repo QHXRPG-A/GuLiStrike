@@ -54,8 +54,9 @@ CONFIG_WIRED_TABLES = {
     "DT_GuLiStrikeCommander_Soldiers",
     "DT_GuLiStrikeCommander_Skills",
     "DT_GuLiStrikeCommander_UnitSkills",
-    "DT_GuLiStrikeCommander_SpellFields",
+    "DT_GuLiStrikeSpellFields_Fields",
     "DT_GuLiStrikeCommander_WeaponMounts",
+    "DT_GuLiStrikeSecondaryWeapons_Projectiles",
 }
 
 
@@ -210,6 +211,117 @@ def import_table(table_name, table_cfg):
     return entry
 
 
+def wire_secondary_projectile_profiles():
+    """Bind table-authored motion and verify the native resolver before saving."""
+    name = 'DT_GuLiStrikeSecondaryWeapons_Projectiles'
+    table = unreal.load_asset(f'{DEST_PATH}/{name}')
+    if not table:
+        raise RuntimeError('Import SecondaryWeapons/Projectiles before wiring projectile assets')
+    with open(f'{PROJECT}/Data/Json/{name}.json', encoding='utf-8') as source:
+        rows = json.load(source)
+    fields = {
+        'speed': 'SpeedCentimetersPerSecond', 'lift_seconds': 'LiftSeconds',
+        'minimum_lift_height': 'MinimumLiftHeightCentimeters',
+        'maximum_lift_height': 'MaximumLiftHeightCentimeters',
+        'lateral_offset': 'LateralOffsetCentimeters', 'convergence_distance': 'ConvergenceDistanceCentimeters',
+        'turn_rate': 'TurnRateDegreesPerSecond', 'sweep_radius': 'SweepRadiusCentimeters',
+        'maximum_lifetime': 'MaximumLifetimeSeconds',
+    }
+    assets = []
+    seen = set()
+    slots = set()
+    for row in rows:
+        asset = unreal.load_asset(row['ProjectileAsset'])
+        slot = (row['UnitTypeId'], row['SlotId'])
+        if not isinstance(asset, unreal.GuLiProjectileEffectDefinition) or asset.get_path_name() in seen or slot in slots:
+            raise RuntimeError(f"Invalid or duplicate ProjectileAsset in {row['Name']}")
+        seen.add(asset.get_path_name())
+        slots.add(slot)
+        assets.append((row, asset))
+    result = []
+    catalog = unreal.load_asset('/Game/GuLiStrike/FX/CommanderWeapons/DA_CommanderCombatEffects')
+    if not catalog:
+        raise RuntimeError('Commander combat effect catalog is missing')
+    mounts = list(catalog.get_editor_property('mounts'))
+    catalog_changed = False
+    for row, asset in assets:
+        matching = [m for m in mounts if int(m.get_editor_property('unit_type_id')) == row['UnitTypeId']
+                    and str(m.get_editor_property('slot_id')) == row['SlotId']]
+        if len(matching) != 1 or str(matching[0].get_editor_property('skill_id')) != row['SkillId']:
+            raise RuntimeError(f"Projectiles/{row['Name']} has no matching weapon type/slot/skill binding")
+        mount = matching[0]
+        if mount.get_editor_property('projectile') != asset:
+            mount.set_editor_property('projectile', asset)
+            catalog_changed = True
+        handle = unreal.DataTableRowHandle(data_table=table, row_name=row['Name'])
+        previous = asset.get_editor_property('motion_profile_row')
+        changed = previous.get_editor_property('data_table') != table or str(previous.get_editor_property('row_name')) != row['Name']
+        if changed:
+            asset.modify()
+            asset.set_editor_property('motion_profile_row', handle)
+        resolved = asset.resolve_motion_settings()
+        if resolved is None or any(not math.isclose(float(resolved.get_editor_property(prop)), float(row[column]),
+                                                     rel_tol=5e-6, abs_tol=1e-3) for prop, column in fields.items()):
+            if changed:
+                asset.set_editor_property('motion_profile_row', previous)
+            raise RuntimeError(f"Native motion resolver disagrees with Projectiles/{row['Name']}")
+        if not unreal.EditorAssetLibrary.save_loaded_asset(asset, False):
+            raise RuntimeError(f'Could not save {asset.get_path_name()}')
+        result.append({'asset': asset.get_path_name(), 'row': row['Name'], 'resolved': {
+            prop: float(resolved.get_editor_property(prop)) for prop in fields}})
+    if catalog_changed:
+        catalog.modify()
+        catalog.set_editor_property('mounts', mounts)
+        if not unreal.EditorAssetLibrary.save_loaded_asset(catalog, False):
+            raise RuntimeError('Could not save Commander projectile bindings')
+    return result
+
+
+def wire_secondary_wingman_profiles():
+    name = 'DT_GuLiStrikeShip_WingmanWeapons'
+    table = unreal.load_asset(f'{DEST_PATH}/{name}')
+    with open(f'{PROJECT}/Data/Json/{name}.json', encoding='utf-8') as source:
+        rows = json.load(source)
+    result = []
+    fields = {'damage': 'Damage', 'cooldown_seconds': 'CooldownSeconds', 'range_centimeters': 'RangeCentimeters',
+              'projectile_speed_centimeters_per_second': 'ProjectileSpeedCentimetersPerSecond',
+              'projectile_lifetime_seconds': 'ProjectileLifetimeSeconds', 'sweep_radius_centimeters': 'SweepRadiusCentimeters',
+              'maximum_homing_turn_rate_degrees_per_second': 'MaximumHomingTurnRateDegreesPerSecond'}
+    with open(f'{PROJECT}/Data/Json/DT_GuLiStrikeSpellFields_Fields.json', encoding='utf-8') as source:
+        field_rows = {row['Name']: row for row in json.load(source)}
+    seen = set()
+    for row in rows:
+        asset = unreal.load_asset(row['WeaponAsset'])
+        if not isinstance(asset, unreal.GuLiWingmanWeaponDefinition) or asset.get_path_name() in seen:
+            raise RuntimeError(f"WingmanWeapons/{row['Name']} has an invalid or duplicate weapon asset")
+        seen.add(asset.get_path_name())
+        if row.get('AttackPattern') == 'GroundDive':
+            projectile = unreal.load_asset(row.get('AttackProjectile', ''))
+            field = projectile.get_editor_property('impact_field') if isinstance(projectile, unreal.GuLiProjectileEffectDefinition) else None
+            if not field or row.get('EffectConfigId') not in field_rows:
+                raise RuntimeError(f"WingmanWeapons/{row['Name']} requires impact visuals and a referenced global spell field")
+        handle = unreal.DataTableRowHandle(data_table=table, row_name=row['Name'])
+        previous = asset.get_editor_property('attack_profile_row')
+        changed = previous.get_editor_property('data_table') != table or str(previous.get_editor_property('row_name')) != row['Name']
+        if changed:
+            asset.modify()
+            asset.set_editor_property('attack_profile_row', handle)
+        resolved = asset.get_resolved_weapon_config()
+        expected = dict(row)
+        if row.get('EffectConfigId'):
+            expected['Damage'] = field_rows[row['EffectConfigId']]['Damage']
+        if resolved is None or any(not math.isclose(float(resolved.get_editor_property(prop)), float(expected.get(column, 0)),
+                                                     rel_tol=5e-6, abs_tol=1e-3) for prop, column in fields.items()):
+            if changed:
+                asset.set_editor_property('attack_profile_row', previous)
+            raise RuntimeError(f"Native weapon resolver disagrees with WingmanWeapons/{row['Name']}")
+        if not unreal.EditorAssetLibrary.save_loaded_asset(asset, False):
+            raise RuntimeError(f'Could not save {asset.get_path_name()}')
+        result.append({'asset': asset.get_path_name(), 'row': row['Name'], 'resolved': {
+            prop: float(resolved.get_editor_property(prop)) for prop in fields}})
+    return result
+
+
 report = {"tables": [], "config_wired": [], "unwired": [], "errors": []}
 try:
     manifest = json.loads(open(MANIFEST_PATH, encoding="utf-8").read())
@@ -227,6 +339,11 @@ try:
         elif prop is None:
             report["unwired"].append(f"{table_name}（WIRING 未登记，已导入但未接线）")
             mark(f"note: {table_name} not in WIRING")
+
+    if any(e.get('asset') == 'DT_GuLiStrikeSecondaryWeapons_Projectiles' and e.get('imported') for e in report['tables']):
+        report['projectile_profiles'] = wire_secondary_projectile_profiles()
+    if any(e.get('asset') == 'DT_GuLiStrikeShip_WingmanWeapons' and e.get('imported') for e in report['tables']):
+        report['wingman_profiles'] = wire_secondary_wingman_profiles()
 
     # --- 游戏侧接线：赋值到飞船蓝图 CDO（属性名来自 WIRING） ---
     if imported_dts:

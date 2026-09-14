@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Battle/Network/GuLiPlayerNetSyncComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "GuLiShipMovementComponent.generated.h"
 
 class AGuLiBattlePlayerState;
@@ -186,7 +187,7 @@ struct FGuLiShipFlightInput
  * 扩展每次 move 的转向输入/积分状态；相机、部件及武器仍由 Ship 管理。
  */
 UCLASS(ClassGroup = (GuLiStrike))
-class GULISTRIKE_API UGuLiShipMovementComponent : public UCharacterMovementComponent
+class GULISTRIKE_API UGuLiShipMovementComponent : public UCharacterMovementComponent, public IGuLiExternalDisplacementTarget
 {
 	GENERATED_BODY()
 
@@ -203,6 +204,7 @@ public:
 	void AddStrafeInput(float Value);
 	void SetBoostInput(bool bEnabled);
 	void ClearFlightInput();
+	virtual void ApplyExternalDisplacement(const FTransform& Transform) override;
 
 	// 服务器本地提交；仅完整有效配置或所需装配版本改变时创建新配置代次。
 	bool CommitServerMovementConfig(const FGuLiShipMovementConfig& Config, uint32 RequiredLoadoutRevision);

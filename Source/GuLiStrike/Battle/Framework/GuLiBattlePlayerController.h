@@ -8,6 +8,9 @@
 
 class UGuLiPlayerNetSyncComponent;
 class UGuLiWingmanRelayComponent;
+#if !UE_BUILD_SHIPPING
+class SGuLiGMPanel;
+#endif
 
 /** 公共玩家连接：服务器与拥有客户端各有实例；不绑定指挥、飞行或载具输入。 */
 UCLASS()
@@ -20,6 +23,14 @@ public:
 
 	// 引擎在 Pawn 销毁前通知其 Controller；只把服务器真实死亡交给公共 GameMode 排队复活。
 	virtual void PawnPendingDestroy(APawn* InPawn) override;
+	virtual void SetupInputComponent() override;
+
+#if !UE_BUILD_SHIPPING
+	/** Per-local-player runtime GM surface. No RPC or Blueprint entry point is exposed. */
+	void ToggleGMPanel();
+	void CloseGMPanel();
+	bool IsGMPanelOpen() const { return bGMPanelOpen; }
+#endif
 
 	// 本地访问拥有连接上的组件；真正的跨端通信声明在组件内，此 Getter 不是 RPC。
 	UFUNCTION(BlueprintPure, Category = "Battle|Network")
@@ -34,7 +45,19 @@ public:
 protected:
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
 
+#if !UE_BUILD_SHIPPING
+	/** Role-aware controllers override this to reconstruct their normal cursor and input mode. */
+	virtual void RestoreGameplayInputAfterGMPanel();
+#endif
+
 private:
+#if !UE_BUILD_SHIPPING
+	void RemoveGMPanel(bool bRestoreGameplayInput);
+
+	TSharedPtr<SGuLiGMPanel> GMPanel;
+	bool bGMPanelOpen = false;
+#endif
+
 	// 防止退出清理 Pawn 时把本连接重新排入出生队列。
 	bool bEndingPlay = false;
 

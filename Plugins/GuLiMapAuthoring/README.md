@@ -4,7 +4,7 @@ UE 5.7 项目级编辑器插件。它生产地图布局数据，不是 GameMode�
 
 项目内维护 Skill：[guli-map-authoring](../../.agents/skills/guli-map-authoring/SKILL.md)。以后询问本插件的使用、导出、故障、源码维护或扩展时可直接调用 `$guli-map-authoring`；Skill 会按任务只加载操作、架构、数据合同或维护验证参考。
 
-交付状态（2026-09-07）：源码版构建与 5/5 限定测试通过，已有真实面板/四形状填充截图和普通/WP 地图导出样例。鼠标拖拽/相机输入完整矩阵、真正未加载 WP Marker 的恢复加载仍待人工验收，详见[验证归档](../../Progress/Archive/20260907-地图标注插件首版实现与验证.md)。正在运行的旧编辑器需要保存工作并重新启动，才能载入新原生插件；使用 `D:\UnrealEngine-5.7\Engine\Binaries\Win64\UnrealEditor.exe`，不要仅凭 `.uproject` 关联判断引擎版本。
+交付状态（0.2.0，2026-09-10）：地图标记能力保持兼容，并新增红蓝矿密度涂绘、Territory 汇总和三份扩展导出。源码版构建与 `GuLi.MapAuthoring` 10/10 自动化通过；资源热图、双层混色、笔刷手感和 8km 双层压力仍待重启源码 Editor 后人工验收，详见[本次开发记录](../../Progress/DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md)。正在运行的旧编辑器需要保存工作并重新启动，才能载入新原生插件；使用 `D:\UnrealEngine-5.7\Engine\Binaries\Win64\UnrealEditor.exe`，不要仅凭 `.uproject` 关联判断引擎版本。
 
 ## 开始使用
 
@@ -16,6 +16,20 @@ UE 5.7 项目级编辑器插件。它生产地图布局数据，不是 GameMode�
 6. “校验”列出问题；点击问题定位标记。“保存并导出”先走 UE 保存流程，取消保存则不导出。
 
 Marker 保存于当前地图持久关卡的 `GuLi/MapAuthoring` 文件夹。禁止附着到其他 Actor、移动到子关卡/Level Instance、设置空间加载或流送 Data Layer。Marker 无碰撞、导航、Tick，不进入 PIE/游戏。
+
+### 红蓝矿资源涂绘
+
+1. 在面板顶部切到“资源涂绘”，点击“创建/补齐密度图”。当前地图会在 PersistentLevel 创建唯一的 `GuLi Map Density` Editor Actor，并补齐 `BlueOre/蓝矿`、`RedOre/红矿`；不会覆盖已有图层。
+2. 选择蓝矿或红矿，可分别控制两层预览显隐。两层数据彼此独立，可以在相同格上同时有值。
+3. 选择“加深”或“擦除”，设置半径、强度和软边，再点击“进入涂绘”。默认半径 200m、强度 25%、软边 50%；LMB 绘制，Alt 保留相机，Esc 先取消当前笔画，再按一次退出。
+4. 一次拖拽是一次事务。路径按固定世界距离补点，同一笔内每格只取最大覆盖，所以结果不依赖鼠标事件频率；Undo/Redo 会恢复整笔。
+5. 默认格尺寸 25m。空图可直接修改；已有数据时“应用格尺寸”会明确要求清空全部，不会隐式重采样。“清空当前层”只影响所选图层，两种清空均可 Undo。
+
+密度格按 `floor(WorldXY / CellSizeCm)` 世界对齐，负坐标也遵守向下取整。Z 不进入业务数据；热图显示会查询 Landscape 高度并缓存格角，无 Landscape 时回退 Visibility 命中或工作平面。预览由单个代码 SceneProxy 批量绘制，不创建逐格 Actor/Component。
+
+密度值 `0..255` 仅表示相对生成权重。插件不定义全图矿量、单矿储量、刷新或采矿，也不会在 PIE 生成矿物。
+
+新创建的 Outpost 预设同时具有 `Capture` 圆柱和独立 `Territory` 多边形。已有 Outpost 类型/Marker 不会自动改写；请按需要手动增加 `RegionKey=Territory` 的水平 PolygonPrism。缺少辖区或密度未归属/严格重叠会显示警告但允许导出；错误形状或倾斜 Territory 是阻断错误。共享边界上的格中心按稳定 MarkerKey/RegionId 唯一裁决。
 
 ### 范围操作
 
@@ -61,6 +75,9 @@ DefaultParameters 使用 UE Property Bag 的添加/改名控件。支持 bool、
 | vertices.csv | marker_id + region_id + vertex_index，局部 XY 与完整世界 XYZ |
 | properties.csv | Marker 字段的 GUID/键/类型/值或 XYZ；形状参数以 shape_json 逐项保留 |
 | tags.csv | marker_id + tag，一项一行 |
+| density_layers.json | 仅密度 Actor 存在时：独立 schema v1、格尺寸、通用图层、排序非零格、Territory 汇总和异常格 |
+| density_cells.csv | 仅密度 Actor 存在时：layer、格坐标、世界格中心、density_u8 与 density_01 |
+| density_territories.csv | 仅密度 Actor 存在时：territory/unassigned/overlap 的格数、权重和加权面积 |
 
 Polygon 顶点 CSV 的世界坐标是区域局部 z=0 的轮廓；上下边界通过区域 transform 和 min_z/max_z 求得。所有尺度 cm，旋转按 Pitch/Yaw/Roll degree；Scale 固定为 [1,1,1]。枚举使用稳定项名，软引用使用完整路径。
 
@@ -68,7 +85,9 @@ UTF-8 无 BOM，文件记录 LF 换行，JSON 键/CSV 列与记录顺序稳定�
 
 整批文件先写同级 `.staging-<GUID>`，成功后目录切换；上一批保留在 `.previous`。失败时不发布半套文件，替换失败会尝试恢复并返回错误。Windows 同一卷目录改名是本版发布实现的前提；不要在导出时锁定输出目录。额外导出器只能生成本批次的单层文件名，不能覆盖标准文件。
 
-正式导出要求地图有保存路径，地图、外部 Actor 和所用类型包没有未保存改动。World Partition 通过 Actor Descriptor 清点并用临时引用加载 Marker；任何缺失描述符/无法加载的标记都失败，不输出残缺布局。
+正式导出要求地图有保存路径，地图、外部 Actor 和所用类型包没有未保存改动。World Partition 通过 Actor Descriptor 分别清点并用临时引用加载 Marker 与密度单例；任何缺失描述符、无法加载的标记/密度 Actor、重复密度单例或不合规的空间加载/Data Layer 设置都失败，不输出残缺布局。
+
+没有密度 Actor 的旧地图仍严格只有原六文件，`layout.json` 继续为 schema v1 且不嵌入密度。密度 Actor 存在时，三份扩展文件和原六文件作为同一原子批次发布。据点汇总的 `density_weight_sum=Σ(density_u8/255)`，`weighted_area_m2` 是该权重乘格面积；二者都不是实际矿量。
 
 ## Python：与面板共用服务
 
@@ -108,6 +127,20 @@ print(result.success, [(i.field, i.message) for i in result.issues])
 
 snapshot = service.get_snapshot()  # 可编辑未保存地图；仍要求数据合法
 print(snapshot.json)
+
+# 创建/补齐全图密度 Actor，并原子设置格值。零值会清除格子。
+service.ensure_density_map(2500.0)
+density_patch = {
+    "schema_version": 1,
+    "layer_key": "BlueOre",
+    "cells": [
+        {"cell_x": 10, "cell_y": -3, "density_u8": 128}
+    ]
+}
+density_result = service.update_density_cells(json.dumps(density_patch))
+print(density_result.success, density_result.issues)
+print(service.get_density_snapshot().json)
+
 # 程序化 ExportMap 不会替你保存，必须明确完成保存。
 if service.save_authoring_packages():
     exported = service.export_map()
@@ -118,7 +151,7 @@ if service.save_authoring_packages():
 
 Python 的 Guid 请用 `.to_string()`，不要用 `str(guid)`（后者是包装对象描述）。跨地图加载前释放 Python 持有的 World/Actor/地图资产引用，尤其是 duplicate_asset 返回的 World；推荐把批次代码放在函数中，避免 UE 换图 GC 被持久 Python 全局变量阻止。
 
-接口：`ListTypes / CreateType / EnsurePresets / CreateMarker / GetSnapshot / UpdateMarker / ValidateMap / ExportMap / SaveAuthoringPackages / OpenPanel / ClosePanel`。验证/导出结果包含 `Success, Issues, Json, Files`，问题含 MarkerId、RegionId、Field、Message。SaveAuthoringPackages 在普通编辑器走保存/签出流程，在 unattended 进程使用 UE 的无对话框保存接口；临时地图仍需先明确另存为，绝不猜测正式地图路径。
+接口：`ListTypes / CreateType / EnsurePresets / CreateMarker / GetSnapshot / UpdateMarker / EnsureDensityMap / GetDensitySnapshot / UpdateDensityCells / ValidateMap / ExportMap / SaveAuthoringPackages / OpenPanel / ClosePanel`。验证/导出结果包含 `Success, Issues, Json, Files`，问题含 Severity（Error/Warning）、MarkerId、RegionId、Field、Message。`UpdateDensityCells` 拒绝未知键、未知图层、重复格、非整数坐标和范围外密度，整个补丁不会部分写入。SaveAuthoringPackages 在普通编辑器走保存/签出流程，在 unattended 进程使用 UE 的无对话框保存接口；临时地图仍需先明确另存为，绝不猜测正式地图路径。
 
 ## 原生扩展
 
@@ -174,7 +207,7 @@ GuLiMap::UnregisterValidator("SupplyRules");
 
 ## 验证命令
 
-仅运行已授权 `GuLi.MapAuthoring` 五项测试。生命周期测试必须在独立进程加 `-GuLiMapAuthoringTestSession`，避免切换用户当前地图；临时地图和导出证据会保留在 `Content/GuLiStrike/Editor/MapAuthoring/Validation` 和 `Data/MapAuthoringValidation`。
+仅运行已授权 `GuLi.MapAuthoring` 十项测试（原五项 + 密度五项）。生命周期测试必须在独立进程加 `-GuLiMapAuthoringTestSession`，避免切换用户当前地图；临时地图和导出证据会保留在 `Content/GuLiStrike/Editor/MapAuthoring/Validation` 和 `Data/MapAuthoringValidation`。
 
 ```powershell
 & 'D:\UnrealEngine-5.7\Engine\Build\BatchFiles\Build.bat' GuLiStrikeEditor Win64 Development '-Project=D:\UE5.7\test1\GuLiStrike.uproject' -WaitMutex -NoHotReloadFromIDE
@@ -184,6 +217,6 @@ GuLiMap::UnregisterValidator("SupplyRules");
 
 测试进程的 ini 覆盖仅隔离现有 GuLiFlightNavigationWorldValidator 的保存时 ensure，不修改项目设置，也不替代本插件的校验。请以报告中每项 State 为准：此引擎的 TestExit 可在个别测试失败时仍返回进程退出码 0。
 
-后续边界：Excel 接线、运行时加载、GameMode、事件编排、样条和多边形内孔尚未实现。
+后续边界：Excel 接线、密度运行时加载/矿藏生成、GameMode、实际矿量与采矿规则、事件编排、样条和多边形内孔尚未实现。
 
 可直接检查的隔离样例地图：`/Game/GuLiStrike/Editor/MapAuthoring/Validation/LVL_MapAuthoringAcceptance`（3 标记、5 区域、5 多边形顶点）；旁边的 `LVL_MapAuthoringPartitionAcceptance` 包含近处和 20km 外的标记。样例不是正式玩法布局。完整导出见项目 `Data/MapAuthoring/Game/GuLiStrike/Editor/MapAuthoring/Validation/`。

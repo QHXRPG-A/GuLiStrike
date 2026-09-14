@@ -33,6 +33,7 @@ public:
 
 	// 读取本端当前副本；未找到返回 nullptr，客户端读取结果不代表服务器实时状态。
 	const FGuLiSoldierStateItem* FindSoldierState(FGuLiSoldierId SoldierId) const;
+	UFUNCTION(BlueprintPure, Category="Commander|Units")
 	TArray<FGuLiSoldierStateItem> GetAllSoldierStates() const;
 
 	const TArray<FGuLiSoldierStateItem>& GetItems() const

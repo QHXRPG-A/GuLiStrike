@@ -50,10 +50,9 @@ namespace GuLiWingmanTargeting
 
 namespace GuLiWingmanAttackAuthority
 {
-	/** The complete server geometry/LOS/cooldown gate for one queued approach gun shot. */
-	GULISTRIKE_API bool IsGunShotEligible(const FVector& SourceLocation, const FVector& SourceForward,
-		const FGuLiCombatTargetSnapshot& LiveTarget, float RangeCentimeters, float ConeHalfAngleDegrees,
-		bool bHasLineOfSight, double CaptureTimeSeconds, double NextFireTimeSeconds);
+	/** Air bursts have one geometric start boundary; range, facing, LOS and flight mode are irrelevant. */
+	GULISTRIKE_API bool IsAirBurstStartEligible(const FVector& SourceLocation,
+		const FGuLiCombatTargetSnapshot& LiveTarget, float StartDistanceCentimeters);
 }
 
 /** Canonical wire representation for the free-look camera aim. */
@@ -230,7 +229,6 @@ private:
 	TArray<FAttackAuthorizationSnapshot> AttackTargetHistory;
 	double NextAttackTargetScan = 0.0;
 	FGuLiWingmanTargetingTuning TargetingTuning;
-	bool bAutoTargetingLockedForGuard = false;
 	FGuLiGroupAbilityConfigSnapshot LastWeaponConfig;
 	TMap<FGuLiWingmanHandle, TMap<FName, double>> NextFireTimeByEmitterAndSlot;
 	TMap<FGuid, FGuLiWingmanMissileSalvoResult> MissileResultsByActivation;

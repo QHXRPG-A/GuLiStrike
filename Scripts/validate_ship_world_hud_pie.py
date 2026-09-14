@@ -31,19 +31,18 @@ REQUESTED_RESOLUTION = list(
     globals().get("GULI_WORLD_HUD_REQUESTED_RESOLUTION", [0, 0])
 )
 RESET = bool(globals().get("GULI_WORLD_HUD_RESET", False))
-NODE_NAMES = (
-    "ShipWorldHUD_Status",
+WORLD_NODE_NAMES = (
     "ShipWorldHUD_Flight",
     "ShipWorldHUD_Combat",
     "ShipWorldHUD_Reticle",
     "ShipWorldHUD_AimBounds",
 )
 FIXED_DRAW_SIZES = {
-    "ShipWorldHUD_Status": (420, 72),
     "ShipWorldHUD_Flight": (280, 144),
     "ShipWorldHUD_Combat": (300, 164),
     "ShipWorldHUD_Reticle": (96, 96),
 }
+STATUS_WIDGET_CLASS_TOKEN = "/Game/Ship/UI/Widgets/World/WBP_ShipWorldStatus"
 MATERIAL = (
     "/Game/Ship/UI/Materials/"
     "M_UI_ShipWorld_NoDepth.M_UI_ShipWorld_NoDepth"
@@ -135,25 +134,45 @@ def _ship_actors(world):
     ]
 
 
+def _status_widgets(world, controller):
+    result = []
+    for widget in unreal.ObjectIterator(unreal.UserWidget):
+        try:
+            if (
+                widget.get_world() == world
+                and STATUS_WIDGET_CLASS_TOKEN in widget.get_class().get_path_name()
+                and widget.get_owning_player() == controller
+                and widget.is_in_viewport()
+            ):
+                result.append(widget)
+        except Exception:
+            continue
+    return result
+
+
 def _inspect_local_ship(world, ship):
     controller = ship.get_controller()
     components = {
         component.get_name(): component
         for component in ship.get_components_by_class(unreal.ActorComponent)
     }
-    nodes = {name: components.get(name) for name in NODE_NAMES}
+    nodes = {name: components.get(name) for name in WORLD_NODE_NAMES}
     missing = [name for name, node in nodes.items() if node is None]
+    status_widgets = _status_widgets(world, controller) if controller else []
     result = {
         "world": world.get_path_name(),
         "ship": ship.get_name(),
         "controller": controller.get_name() if controller else None,
-        "missing_nodes": missing,
+        "missing_world_nodes": missing,
+        "status_widget_count": len(status_widgets),
         "checks": {},
     }
     checks = result["checks"]
-    if missing or not controller:
-        checks["five_runtime_nodes"] = False
+    if missing or not controller or len(status_widgets) != 1:
+        checks["four_world_nodes_and_one_status_widget"] = False
         return result
+
+    status = status_widgets[0]
 
     width, height = controller.get_viewport_size()
     viewport = (float(width), float(height))
@@ -165,7 +184,7 @@ def _inspect_local_ship(world, ship):
     checks["requested_height"] = not REQUESTED_RESOLUTION[1] or abs(
         int(height) - int(REQUESTED_RESOLUTION[1])
     ) <= 8
-    checks["five_runtime_nodes"] = len(nodes) == 5
+    checks["four_world_nodes_and_one_status_widget"] = len(nodes) == 4
 
     node_rows = {}
     for name, node in nodes.items():
@@ -206,7 +225,63 @@ def _inspect_local_ship(world, ship):
             ]
     result["nodes"] = node_rows
 
-    checks["status_visible"] = node_rows["ShipWorldHUD_Status"]["visible"]
+    viewport_scale = float(unreal.WidgetLayoutLibrary.get_viewport_scale(world))
+    # ``APlayerController::GetLocalPlayer`` is not reflected by every UE Python
+    # build.  Single-player PIE still has a full-width player region, while
+    # reflected builds can additionally validate the split-screen fraction.
+    local_player = (
+        controller.get_local_player()
+        if hasattr(controller, "get_local_player")
+        else None
+    )
+    player_size = (
+        local_player.get_editor_property("size")
+        if local_player
+        else unreal.Vector2D(1, 1)
+    )
+    status_position = (
+        status.get_position_in_viewport()
+        if hasattr(status, "get_position_in_viewport")
+        else None
+    )
+    status_size = (
+        status.get_desired_size_in_viewport()
+        if hasattr(status, "get_desired_size_in_viewport")
+        else status.get_desired_size()
+    )
+    status_alignment = status.get_alignment_in_viewport()
+    expected_status_x = width * float(player_size.x) / max(viewport_scale, 0.001) * 0.5
+    result["status_widget"] = {
+        "class": status.get_class().get_path_name(),
+        "visible": "HIT_TEST_INVISIBLE" in str(status.get_visibility()).upper(),
+        "focusable": bool(status.get_editor_property("is_focusable")),
+        "position": _vector2(status_position) if status_position else None,
+        "desired_size": _vector2(status_size),
+        "alignment": _vector2(status_alignment),
+        "viewport_scale": viewport_scale,
+        "z_order_contract": 20,
+        "runtime_position_api_available": status_position is not None,
+    }
+    checks["status_visible"] = result["status_widget"]["visible"]
+    checks["status_no_input_or_focus"] = (
+        not result["status_widget"]["focusable"]
+        and "HIT_TEST_INVISIBLE" in str(status.get_visibility()).upper()
+    )
+    checks["status_size_420x72"] = _close(status_size.x, 420.0, 0.1) and _close(
+        status_size.y, 72.0, 0.1
+    )
+    checks["status_top_center_alignment"] = _close(
+        status_alignment.x, 0.5, 0.001
+    ) and _close(status_alignment.y, 0.0, 0.001)
+    if status_position is not None:
+        checks["status_top_center_24"] = _close(
+            status_position.x, expected_status_x, 1.0
+        ) and _close(status_position.y, 24.0, 0.1)
+    else:
+        result["unobserved_checks"] = [
+            "status_top_center_24: UE 5.7 Python does not expose viewport-position getter"
+        ]
+
     checks["flight_visible"] = node_rows["ShipWorldHUD_Flight"]["visible"]
     checks["combat_visible"] = node_rows["ShipWorldHUD_Combat"]["visible"]
     checks["legacy_screen_hud_absent"] = _active_legacy_hud_count(world) == 0
@@ -215,7 +290,45 @@ def _inspect_local_ship(world, ship):
     camera_manager = controller.player_camera_manager
     if hull and camera_manager and width > 0 and height > 0:
         corners, hull_world_center = _world_bounds_corners(hull)
-        projected = [controller.project_world_location_to_screen(corner) for corner in corners]
+        camera_location = camera_manager.get_camera_location()
+        camera_rotation = camera_manager.get_camera_rotation()
+        camera_forward = camera_rotation.get_forward_vector()
+        depths = [
+            (corner.x - camera_location.x) * camera_forward.x
+            + (corner.y - camera_location.y) * camera_forward.y
+            + (corner.z - camera_location.z) * camera_forward.z
+            for corner in corners
+        ]
+        projection_points = [
+            corner for corner, depth in zip(corners, depths) if depth >= 10.0
+        ]
+        for a, b in (
+            (0, 1), (0, 2), (0, 4), (1, 3), (1, 5), (2, 3),
+            (2, 6), (3, 7), (4, 5), (4, 6), (5, 7), (6, 7),
+        ):
+            if (depths[a] >= 10.0) == (depths[b] >= 10.0):
+                continue
+            depth_range = depths[b] - depths[a]
+            if abs(depth_range) <= 1.0e-8:
+                continue
+            alpha = max(0.0, min(1.0, (10.0 - depths[a]) / depth_range))
+            projection_points.append(corners[a] + (corners[b] - corners[a]) * alpha)
+        if not projection_points:
+            projection_points = [hull_world_center]
+        projected = [
+            point
+            for point in (
+                controller.project_world_location_to_screen(world_point)
+                for world_point in projection_points
+            )
+            if point is not None
+        ]
+        result["projected_hull_corner_count"] = len(projected)
+        if not projected:
+            result.setdefault("unobserved_checks", []).append(
+                "world panel placement: no hull corner projected in this offscreen PIE frame"
+            )
+            projected = [unreal.Vector2D(viewport[0] * 0.5, viewport[1] * 0.5)]
         hull_min = (
             min(point.x for point in projected),
             min(point.y for point in projected),
@@ -229,9 +342,6 @@ def _inspect_local_ship(world, ship):
             (hull_min[1] + hull_max[1]) * 0.5,
         )
         expected_centers = {
-            "ShipWorldHUD_Status": _clamp_center(
-                (hull_center[0], hull_min[1] - 28.0 - 36.0), (420.0, 72.0), viewport
-            ),
             "ShipWorldHUD_Flight": _clamp_center(
                 (hull_min[0] - 28.0 - 140.0, hull_center[1]), (280.0, 144.0), viewport
             ),
@@ -251,9 +361,6 @@ def _inspect_local_ship(world, ship):
             )
         result["projected_placements"] = placements
 
-        camera_location = camera_manager.get_camera_location()
-        camera_rotation = camera_manager.get_camera_rotation()
-        camera_forward = camera_rotation.get_forward_vector()
         delta = hull_world_center - camera_location
         plane_distance = (
             delta.x * camera_forward.x
@@ -267,10 +374,9 @@ def _inspect_local_ship(world, ship):
             "plane_distance": plane_distance,
             "fov": camera_manager.get_fov_angle(),
             "expected": expected_scale,
-            "actual": node_rows["ShipWorldHUD_Status"]["scale"][0],
+            "actual": node_rows["ShipWorldHUD_Flight"]["scale"][0],
         }
         for name in (
-            "ShipWorldHUD_Status",
             "ShipWorldHUD_Flight",
             "ShipWorldHUD_Combat",
         ):

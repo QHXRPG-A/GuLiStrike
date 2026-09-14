@@ -8,7 +8,7 @@
 #include "Gameplay/Wingman/Combat/GuLiWingmanAttackProfile.h"
 #include "GuLiShipAbilityTypes.generated.h"
 
-inline constexpr uint32 GULI_WINGMAN_PROTOCOL_VERSION = 13u;
+inline constexpr uint32 GULI_WINGMAN_PROTOCOL_VERSION = 14u;
 inline constexpr int32 GULI_MAX_WINGMAN_WEAPON_CHANNELS = 8;
 inline constexpr double GULI_WINGMAN_AUTOMATIC_FIRE_BUDGET_PER_SECOND = 50.0;
 
@@ -109,13 +109,13 @@ struct GULISTRIKE_API FGuLiWingmanSwarmOrbitTuning
 	float HullExclusionRadiusCentimeters = 14000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float SwirlSpeedMinCentimetersPerSecond = 3600.0f;
+	float SwirlSpeedMinCentimetersPerSecond = 7200.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float SwirlSpeedMaxCentimetersPerSecond = 5200.0f;
+	float SwirlSpeedMaxCentimetersPerSecond = 10400.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float CurlStrengthCentimetersPerSecond = 1400.0f;
+	float CurlStrengthCentimetersPerSecond = 2800.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
 	float NoiseSpatialScaleCentimeters = 22000.0f;
@@ -130,13 +130,13 @@ struct GULISTRIKE_API FGuLiWingmanSwarmOrbitTuning
 	float AxisPrecessionRadiansPerSecond = 0.03f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float BoundaryReturnSpeedCentimetersPerSecond = 2800.0f;
+	float BoundaryReturnSpeedCentimetersPerSecond = 5600.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float PreferredRadiusReturnSpeedCentimetersPerSecond = 450.0f;
+	float PreferredRadiusReturnSpeedCentimetersPerSecond = 900.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float VerticalReturnSpeedCentimetersPerSecond = 1400.0f;
+	float VerticalReturnSpeedCentimetersPerSecond = 2800.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
 	float AlignmentWeight = 0.08f;
@@ -258,28 +258,28 @@ struct GULISTRIKE_API FGuLiWingmanFormationRuntimeConfig
 	float OuterRingHeightCentimeters = -15000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation")
-	float InnerAngularSpeedRadiansPerSecond = 0.08f;
+	float InnerAngularSpeedRadiansPerSecond = 0.16f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation")
-	float OuterAngularSpeedRadiansPerSecond = 0.06f;
+	float OuterAngularSpeedRadiansPerSecond = 0.12f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
-	float MinimumSpeedCentimetersPerSecond = 3000.0f;
+	float MinimumSpeedCentimetersPerSecond = 6000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
-	float CruiseSpeedCentimetersPerSecond = 4500.0f;
+	float CruiseSpeedCentimetersPerSecond = 9000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
-	float CatchUpSpeedCentimetersPerSecond = 7500.0f;
+	float CatchUpSpeedCentimetersPerSecond = 15000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
-	float MaximumAccelerationCentimetersPerSecondSquared = 1000.0f;
+	float MaximumAccelerationCentimetersPerSecondSquared = 4000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
-	float MaximumDecelerationCentimetersPerSecondSquared = 800.0f;
+	float MaximumDecelerationCentimetersPerSecondSquared = 3200.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
-	float MaximumTurnRateDegreesPerSecond = 20.0f;
+	float MaximumTurnRateDegreesPerSecond = 80.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
 	float MaximumBankDegrees = 45.0f;
@@ -308,6 +308,8 @@ USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiWingmanWeaponRuntimeConfig
 {
 	GENERATED_BODY()
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
+	FName EffectConfigId;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
 	FGuLiWingmanAttackProfile Attack;

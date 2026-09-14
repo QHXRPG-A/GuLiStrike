@@ -11,6 +11,7 @@ class UGuLiCommanderNetSyncComponent;
 class UGuLiBuildingPlacementComponent;
 class AGuLiCommanderCameraPawn;
 class UGuLiCommanderCursorWidget;
+class UGuLiTeleportInputComponent;
 class SWidget;
 
 enum class EGuLiCommanderSelectionShape : uint8
@@ -143,7 +144,14 @@ public:
 	uint32 AllocateEditorQASelectionRequestId() { return AllocateSelectionRequestId(); }
 #endif
 
+protected:
+#if !UE_BUILD_SHIPPING
+	virtual void RestoreGameplayInputAfterGMPanel() override;
+#endif
+
 private:
+	friend class UGuLiTeleportInputComponent;
+	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiTeleportInputComponent> TeleportInput;
 	void HandlePrimaryActionAtCursor();
 	void HandlePrimaryReleased();
 	void CancelSelectionDrag();

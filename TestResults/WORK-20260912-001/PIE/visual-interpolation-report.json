@@ -1,0 +1,29 @@
+{
+  "workId": "WORK-20260912-001",
+  "map": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype",
+  "topology": "Dedicated Server + 2 Clients, single process PIE",
+  "renderer": "D3D SM6",
+  "sampleDurationSeconds": 8.0,
+  "remote": {
+    "actorCount": 25,
+    "visibilitySamples": 75,
+    "minimumVisible": 25,
+    "maximumVisible": 25,
+    "interpolationBackTimeSeconds": 0.2,
+    "stalePolicy": "RetainLastPose"
+  },
+  "owner": {
+    "renderFrames": 561,
+    "logicRootZeroStepFrames": 321,
+    "presentationZeroStepFrames": 0,
+    "logicRootMeanPositiveStepCentimeters": 270.02945809321585,
+    "presentationMeanPositiveStepCentimeters": 115.15598072560623,
+    "maximumRootPresentationSeparationCentimeters": 328.16039244676057
+  },
+  "preFixObservation": {
+    "remoteActorCount": 25,
+    "visibleAtSample": 15,
+    "cause": "FadeThenHide removed stale tracks from actor allocation"
+  },
+  "result": "passed"
+}

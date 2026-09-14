@@ -18,7 +18,7 @@ public:
 	UGuLiWingmanFormationDefinition();
 
 	UPROPERTY(EditAnywhere, Category = "Formation", meta = (ClampMin = "1"))
-	uint32 Revision = 2u;
+	uint32 Revision = 4u;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation", meta = (ClampMin = "1", ClampMax = "25"))
 	uint8 ExpectedWingmanCount = 25u;
@@ -55,28 +55,28 @@ public:
 	float OuterRingHeightCentimeters = -15000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation|DoubleRing", meta = (ClampMin = "0.001"))
-	float InnerAngularSpeedRadiansPerSecond = 0.08f;
+	float InnerAngularSpeedRadiansPerSecond = 0.16f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation|DoubleRing", meta = (ClampMin = "0.001"))
-	float OuterAngularSpeedRadiansPerSecond = 0.06f;
+	float OuterAngularSpeedRadiansPerSecond = 0.12f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
-	float MinimumFlightSpeedCentimetersPerSecond = 3000.0f;
+	float MinimumFlightSpeedCentimetersPerSecond = 6000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
-	float CruiseFlightSpeedCentimetersPerSecond = 4500.0f;
+	float CruiseFlightSpeedCentimetersPerSecond = 9000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
-	float CatchUpFlightSpeedCentimetersPerSecond = 7500.0f;
+	float CatchUpFlightSpeedCentimetersPerSecond = 15000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "0.1", ClampMax = "180.0"))
-	float MaximumTurnRateDegreesPerSecond = 20.0f;
+	float MaximumTurnRateDegreesPerSecond = 80.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
-	float MaximumAccelerationCentimetersPerSecondSquared = 1000.0f;
+	float MaximumAccelerationCentimetersPerSecondSquared = 4000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
-	float MaximumDecelerationCentimetersPerSecondSquared = 800.0f;
+	float MaximumDecelerationCentimetersPerSecondSquared = 3200.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "0.1", ClampMax = "90.0"))
 	float MaximumBankDegrees = 45.0f;
@@ -116,7 +116,7 @@ class GULISTRIKE_API UGuLiWingmanWeaponDefinition : public UDataAsset
 public:
 	UGuLiWingmanWeaponDefinition();
 
-	/** Production attack definitions resolve this generated Ship source-table row on authority. */
+	/** Production attacks resolve GuLiStrikeSecondaryWeapons.xlsx / WingmanWeapons on authority. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon|Attack")
 	FDataTableRowHandle AttackProfileRow;
 	/** Explicit native fallback for transient fixtures; an authored row is never silently bypassed. */
@@ -124,7 +124,11 @@ public:
 	FGuLiWingmanAttackProfile Attack;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon|Attack")
 	TSoftObjectPtr<class UGuLiProjectileEffectDefinition> AttackProjectile;
+	UGuLiProjectileEffectDefinition* ResolveAttackProjectile() const;
 	bool BuildRuntimeConfig(FGuLiWingmanWeaponRuntimeConfig& OutRuntime, FString* OutError = nullptr) const;
+	/** Read back the same resolved values used by authority and loadout checksums. */
+	UFUNCTION(BlueprintPure, Category="Weapon")
+	bool GetResolvedWeaponConfig(FGuLiWingmanWeaponRuntimeConfig& OutRuntime) const;
 
 	UPROPERTY(EditAnywhere, Category = "Weapon", meta = (ClampMin = "1"))
 	uint32 Revision = 1u;
@@ -138,7 +142,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (ClampMin = "1.0"))
 	float RangeCentimeters = 100000.0f;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (ClampMin = "0.001"))
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (ClampMin = "0.033333333"))
 	float CooldownSeconds = 0.2f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (ClampMin = "1.0"))

@@ -14,6 +14,10 @@ struct GULISTRIKE_API FGuLiWingmanRelayReplicatedState
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|Relay")
 	FGuLiWingmanLeaseState Lease;
+	UPROPERTY() bool bPhased = false;
+	UPROPERTY() bool bExternalActionsLocked = false;
+	UPROPERTY() uint32 ExternalDisplacementEpoch = 0;
+	UPROPERTY() TArray<FGuLiWingmanAcceptedBatch> ExternalDisplacementBaselines;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Wingman|Relay")
 	FGuLiGroupAbilityConfigSnapshot AbilityConfig;
@@ -91,6 +95,8 @@ public:
 	bool ServerPublishAbilityConfig(const FGuLiGroupAbilityConfigSnapshot& AbilityConfig);
 	bool ServerBeginTakeover(const FGuid& NewOwnerPlayerGuid, const FGuid& NewBackupPlayerGuid);
 	bool ServerBeginResume();
+	void PublishServerExternalControl(const TArray<FGuLiWingmanAcceptedBatch>& Baselines);
+	UFUNCTION(Server, Reliable) void ServerAcknowledgeExternalDisplacement(uint32 Epoch);
 	/** Publishes an Active roster mutation without starting a Resume transaction. */
 	bool ServerRefreshActiveRosterCut();
 	bool ServerIssueHighRateUploadGrant(uint32 EffectiveClientSimTick,
@@ -236,6 +242,9 @@ public:
 	bool SetServerCandidateWorldValidator(FGuLiCandidateWorldValidator InValidator);
 	void SetServerFireIntentValidator(FGuLiFireIntentServerValidator InValidator);
 	FGuLiServerFireIntentAcceptedSignature& OnServerFireIntentAccepted();
+	/** Authority sends one coalesced public pose frame through this owning connection. */
+	void SendPublicWingmanAcceptedBatches(
+		const TArray<FGuLiWingmanAcceptedBatch>& AcceptedBatches);
 
 	UPROPERTY(BlueprintAssignable, Category = "Wingman|Relay")
 	FGuLiWingmanBootstrapReceivedSignature OnBootstrapReceived;
@@ -255,6 +264,8 @@ public:
 private:
 	UFUNCTION(Server, Unreliable)
 	void ServerSubmitCandidate(const FGuLiWingmanCandidateBatch& Candidate);
+	UFUNCTION(Server, Unreliable)
+	void ServerSubmitPoseFrame(const TArray<FGuLiWingmanCandidateBatch>& Candidates);
 
 	/** Finite fire-bearing batches retain the ordinary trajectory/rate/authority gates. */
 	UFUNCTION(Server, Reliable)
@@ -285,10 +296,6 @@ private:
 	UFUNCTION(Server, Reliable)
 	void ServerRequestResume(const FGuLiWingmanGroupHandle& Group, uint32 LeaseEpoch);
 
-	UFUNCTION(Server, Unreliable)
-	void ServerSendLeaseHeartbeat(const FGuLiWingmanGroupHandle& Group,
-		uint32 ConnectionGeneration, uint32 LeaseEpoch);
-
 	UFUNCTION(Client, Reliable)
 	void ClientReceiveBootstrap(const FGuLiWingmanBootstrapBundle& Bootstrap);
 
@@ -298,6 +305,9 @@ private:
 
 	UFUNCTION(Client, Unreliable)
 	void ClientReceiveCandidateResult(const FGuLiWingmanCandidateResultWire& Result);
+
+	UFUNCTION(Client, Reliable)
+	void ClientReceivePublicPoseFrame(const TArray<FGuLiWingmanAcceptedBatch>& AcceptedBatches);
 
 	UFUNCTION(Client, Reliable)
 	void ClientReceiveAttackCandidateResult(const FGuLiWingmanCandidateResultWire& Result);
@@ -358,6 +368,7 @@ private:
 
 	UPROPERTY(ReplicatedUsing = OnRep_RelayState)
 	FGuLiWingmanRelayReplicatedState ReplicatedState;
+	/** Latest remote poses persist across a busy actor channel; old frames never queue. */
 
 	UPROPERTY(Transient)
 	FGuLiWingmanBootstrapBundle LastClientBootstrap;
@@ -383,7 +394,6 @@ private:
 	uint32 LastOwnerUploadSimulationTick = 0u;
 	/** Server-only bounded routing for deferred fire-batch results. */
 	TMap<uint32, double> ReliableAttackCandidateSequences;
-	double ClientHeartbeatAccumulator = 0.0;
 	double NextClientActiveRosterAckRetryTimeSeconds = 0.0;
 	// A validated Lease transition or Candidate response supplies an authoritative
 	// server-time sample before AGameStateBase's periodic clock replication converges.
@@ -396,16 +406,13 @@ private:
 	uint32 NextClientCandidateSequence = 1u;
 	uint32 NextClientEmergencyRebaseSequence = 1u;
 	uint32 ClientSimulationTick = 1u;
-	/** Persistent fair scheduler for ordinary per-Flight uploads. */
-	uint8 NextClientFlightUploadCursor = 0u;
 	FGuLiAcceptedStateRef LastAppliedAcceptedState;
+	uint32 LastAppliedExternalDisplacementEpoch = 0;
 	FGuLiWingmanAcceptedBatch LastClientAcceptedBatch;
 	TStaticArray<FGuLiWingmanAcceptedBatch, GULI_WINGMAN_FLIGHT_COUNT> LastClientAcceptedByFlight{};
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> NextClientFrameSequenceByFlight{};
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> ClientAcceptedSequenceByFlight{};
 	TStaticArray<uint32, GULI_WINGMAN_FLIGHT_COUNT> LastSubmittedClientTickByFlight{};
-	/** Wall/server-time freshness guard used when low PIE frame rate drops fixed simulation steps. */
-	TStaticArray<double, GULI_WINGMAN_FLIGHT_COUNT> LastSubmittedServerTimeByFlight{};
 	/** Owner-private rolling history; only a four-sample selection ever reaches the wire. */
 	TStaticArray<TArray<FGuLiWingmanCandidateTrailSample>, GULI_WINGMAN_FLIGHT_COUNT>
 		RetainedTrajectoryByFlight{};

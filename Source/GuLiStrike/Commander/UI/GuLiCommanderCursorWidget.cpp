@@ -40,6 +40,15 @@ int32 UGuLiCommanderCursorWidget::NativePaint(
 {
 	LayerId = Super::NativePaint(Args, AllottedGeometry, MyCullingRect,
 		OutDrawElements, LayerId, InWidgetStyle, bParentEnabled);
+	if (bTeleportMode)
+	{
+		TArray<FVector2D> Ring;
+		for (int32 I = 0; I <= 32; ++I) { const float A=I*UE_TWO_PI/32; Ring.Add(FVector2D(16+FMath::Cos(A)*11,16+FMath::Sin(A)*11)); }
+		FSlateDrawElement::MakeLines(OutDrawElements,++LayerId,AllottedGeometry.ToPaintGeometry(),Ring,ESlateDrawEffect::None,FLinearColor(0,.9f,1),true,2);
+		for (const auto& Points : { TArray<FVector2D>{{16,0},{16,9}},TArray<FVector2D>{{16,23},{16,32}},TArray<FVector2D>{{0,16},{9,16}},TArray<FVector2D>{{23,16},{32,16}} })
+		{ FSlateDrawElement::MakeLines(OutDrawElements,LayerId,AllottedGeometry.ToPaintGeometry(),Points,ESlateDrawEffect::None,FLinearColor::White,true,2); }
+		return LayerId;
+	}
 	if (CursorBrush.GetResourceObject())
 	{
 		// UE5.7 FSlateUser::DrawCursor aligns the widget CENTER with the cursor.

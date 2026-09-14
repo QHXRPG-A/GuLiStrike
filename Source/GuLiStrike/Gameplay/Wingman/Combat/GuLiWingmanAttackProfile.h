@@ -5,13 +5,13 @@
 
 /** Movement and execution are independent: a new weapon can retain the same flight pattern. */
 UENUM(BlueprintType)
-enum class EGuLiWingmanAttackPattern : uint8 { Legacy = 0, AirDogfight, GroundDive };
+enum class EGuLiWingmanAttackPattern : uint8 { Legacy = 0, AirBurstOrbit, GroundDive };
 
 /** Per-agent attack guidance state. Group policy remains in the UE StateTree. */
 enum class EGuLiWingmanAttackPhase : uint8
 {
 	Idle, Ingress, Lineup, Dive, PullUp, Climb,
-	AirApproachFire, AirBreakawayTurn, AirRetreat, AirReturnTurn
+	AirApproachFire, AirSeparate, AirReturnToOrbit, AirOrbitCooldown
 };
 
 USTRUCT(BlueprintType)
@@ -20,23 +20,17 @@ struct GULISTRIKE_API FGuLiWingmanAttackProfile
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) EGuLiWingmanAttackPattern Pattern = EGuLiWingmanAttackPattern::Legacy;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FName ExecutorId;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float FlightSpeed = 4500.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float FlightSpeed = 9000.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float DiveSeconds = 1.5f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) int32 MissileCount = 10;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float StripLength = 12000.0f;
 	/** Minimum vertical clearance above the assigned ground point across the pull-up arc. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float PullUpHeight = 10000.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float ExplosionRadius = 800.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float BreakawayDistance = 30000.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float RetreatMinimumDistance = 45000.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float RetreatLongitudinalMinFraction = 0.35f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float RetreatLongitudinalMaxFraction = 0.60f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float RetreatLateralRadius = 15000.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float RetreatVerticalRadius = 10000.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float ManeuverArrivalRadius = 7500.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float TurnYawMinDegrees = 40.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float TurnYawMaxDegrees = 90.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float TurnPitchMaxDegrees = 30.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float AirFireStartDistance = 10000.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float AirFireStopDistance = 5000.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float AirBurstDurationSeconds = 5.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float AirOrbitCooldownSeconds = 3.0f;
 	/** Local to the logical +X-forward aircraft, independently calibrated from the rendered -X mesh. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FVector Muzzle = FVector(1200.0, 0.0, 0.0);
 	bool IsWellFormed() const;
@@ -65,39 +59,22 @@ struct GULISTRIKE_API FGuLiWingmanGroundRunPath
 	float TotalSeconds() const { return 2.0f * DiveSeconds + TurnSeconds; }
 };
 
-/** Deterministic, per-entry geometry used by one fixed-wing dogfight turn. */
-USTRUCT(BlueprintType)
-struct GULISTRIKE_API FGuLiWingmanAirTurnPlan
-{
-	GENERATED_BODY()
-	UPROPERTY() FVector Origin = FVector::ZeroVector;
-	UPROPERTY() FVector Destination = FVector::ZeroVector;
-	UPROPERTY() FVector ControlPoint = FVector::ZeroVector;
-	UPROPERTY() float SignedYawDegrees = 0.0f;
-	UPROPERTY() float PitchDegrees = 0.0f;
-	bool IsValid() const;
-};
-
 namespace GuLiWingmanAttack
 {
 	inline constexpr int32 MaximumFireRecordsPerFlight = 16;
+	inline constexpr float MaximumAirFireRatePerSecond = 30.0f;
+	inline constexpr float MinimumAirShotIntervalSeconds = 1.0f / MaximumAirFireRatePerSecond;
 	inline constexpr float MinimumGroundHeight = 5000.0f;
 	inline constexpr float MaximumPullUpHeight = 10000.0f;
-	/** Six seconds of straight, fully validated lead-in precede the authored dive entry. */
-	inline constexpr float GroundIngressLeadSeconds = 6.0f;
 	/** Eight member-relative directions followed by eight world-stable fallbacks. */
 	inline constexpr int32 MaximumGroundApproachCandidates = 16;
 	inline constexpr double MaximumGroundIngressSeconds = 45.0;
-	inline constexpr double MaximumGroundLineupSeconds = 15.0;
-	inline constexpr int32 MaximumAirManeuverCandidates = 8;
-	inline constexpr float AirTurnTimeoutSeconds = 10.0f;
-	inline constexpr uint32 BreakawayTurnSalt = 0x42524b41u;
-	inline constexpr uint32 ReturnTurnSalt = 0x5254524eu;
 	GULISTRIKE_API bool BuildGroundPath(const FVector& GroundTarget, const FVector& ApproachDirection,
 		const FGuLiWingmanAttackProfile& Profile, float TurnDegreesPerSecond, FGuLiWingmanGroundRunPath& OutPath);
 	/** Direct approach followed by mirrored 45-degree alternatives. The stable seed splits crowded members left/right. */
 	GULISTRIKE_API FVector BuildGroundApproachCandidate(const FVector& DirectApproach,
 		uint32 StableAgentSeed, int32 CandidateIndex);
+	/** The authored dive entry itself; ingress from the live pose is validated dynamically. */
 	GULISTRIKE_API FVector GroundRunSetupPoint(const FGuLiWingmanGroundRunPath& Path);
 	inline bool IsGroundPreparationPhase(const EGuLiWingmanAttackPhase Phase)
 	{
@@ -114,18 +91,13 @@ namespace GuLiWingmanAttack
 	GULISTRIKE_API FVector StripPoint(const FGuLiWingmanGroundRunPath& Path, float Length, int32 Index, int32 Count);
 	GULISTRIKE_API bool IsInsideForwardArc(const FVector& Source, const FVector& Forward,
 		const FVector& Target, float TargetRadius, float Range, float HalfAngleDegrees);
-	GULISTRIKE_API uint32 MakeAirManeuverSeed(uint32 AgentSeed, uint32 TargetRevision,
-		uint32 EntrySerial, uint32 ClientTick, uint32 PhaseSalt, uint32 CandidateIndex = 0u);
-	GULISTRIKE_API FVector BuildRetreatCandidate(const FVector& Position, const FVector& Target,
-		const FVector& Ship, float BreakawayBoundary, const FGuLiWingmanAttackProfile& Profile,
-		uint32 Seed);
-	GULISTRIKE_API bool BuildAirTurnPlan(const FVector& Position, const FVector& Destination,
-		float FlightSpeed, float TurnDegreesPerSecond, const FGuLiWingmanAttackProfile& Profile,
-		uint32 Seed, FGuLiWingmanAirTurnPlan& OutPlan);
-	GULISTRIKE_API bool HasReachedOrPassed(const FVector& Position, const FVector& Origin,
-		const FVector& Destination, float ArrivalRadius);
-	GULISTRIKE_API EGuLiWingmanAttackPhase NextAirDogfightPhase(EGuLiWingmanAttackPhase Phase);
-	GULISTRIKE_API bool CanQueueAirGun(EGuLiWingmanAttackPhase Phase);
-	GULISTRIKE_API bool ShouldFinishAirTurn(const FVector& Position, const FGuLiWingmanAirTurnPlan& Plan,
-		float ArrivalRadius, double ElapsedSeconds);
+	GULISTRIKE_API EGuLiWingmanAttackPhase SelectAirEntryPhase(
+		float TargetDistance, const FGuLiWingmanAttackProfile& Profile);
+	GULISTRIKE_API bool ShouldEndAirBurst(
+		float TargetDistance, double ElapsedSeconds, const FGuLiWingmanAttackProfile& Profile);
+	GULISTRIKE_API bool ShouldBeginAirOrbitCooldown(float CarrierDistance, float OuterSoftRadius);
+	GULISTRIKE_API bool IsAirOrbitCooldownComplete(
+		double ElapsedSeconds, const FGuLiWingmanAttackProfile& Profile);
+	/** Logical shots scheduled at t=0 and then on [0, Duration). */
+	GULISTRIKE_API int32 AirBurstShotsDue(float ShotIntervalSeconds, float DurationSeconds, double ElapsedSeconds);
 }

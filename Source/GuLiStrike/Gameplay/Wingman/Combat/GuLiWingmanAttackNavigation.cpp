@@ -19,9 +19,9 @@ bool GuLiWingmanAttack::GroundRunClearsTerrain(UWorld* World, const FGuLiWingman
 	const auto* Nav = World->GetSubsystem<UGuLiFlightNavigationSubsystem>();
 	if (!Nav) return Reject(EGroundPathRejectReason::Navigation);
 	FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiWingmanAttackPath), false);
-	// Validate the complete authored corridor. Previously only Entry -> Exit was
-	// checked, so a legal dive beside a blocked cell could place its six-second
-	// setup point outside FlightNav and strand the aircraft during ingress.
+	// Validate the authored dive, pull-up and climb corridor from Entry onward.
+	// The live aircraft-to-Entry ingress is checked separately for each member;
+	// there is intentionally no fixed speed-scaled lead-in before Entry.
 	FVector Previous = GroundRunSetupPoint(Path);
 	if (Previous.IsNearlyZero()) return Reject(EGroundPathRejectReason::InvalidInput);
 	for (int32 Index = 0; Index <= 24; ++Index)

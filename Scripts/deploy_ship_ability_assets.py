@@ -23,6 +23,7 @@ OWNER = "GuLi.ShipAbilityAssets.v1"
 SHIP_BLUEPRINT = "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip"
 DERIVED_SHIP_BLUEPRINTS = {"/Game/GuLiStrike/Ship/BP_CombatAvatarFly01"}
 ABILITY_SET = "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV1"
+ACTIVE_V3_ABILITY_SET = "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV3"
 FORMATION = (
     "/Game/GuLiStrike/Ship/Abilities/Formations/"
     "DA_WingmanFormation_DoubleRing"
@@ -40,6 +41,7 @@ MISSILE = (
     "DA_WingmanWeapon_MissileSalvo"
 )
 ALL_ASSETS = (FORMATION, SWARM_FORMATION, BASIC, MISSILE, ABILITY_SET)
+MANAGED_PACKAGES = set(ALL_ASSETS) | {SHIP_BLUEPRINT} | DERIVED_SHIP_BLUEPRINTS
 
 PROJECT_DIR = unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())
 REPORT_PATH = os.path.join(
@@ -51,7 +53,7 @@ REPORT_PATH = os.path.join(
 )
 
 FORMATION_VALUES = {
-    "revision": 2,
+    "revision": 4,
     "expected_wingman_count": 25,
     "flight_count": 5,
     "model": unreal.GuLiWingmanFormationModel.DOUBLE_RING_LEGACY,
@@ -62,14 +64,14 @@ FORMATION_VALUES = {
     "outer_ring_radius_centimeters": 90000.0,
     "inner_ring_height_centimeters": 15000.0,
     "outer_ring_height_centimeters": -15000.0,
-    "inner_angular_speed_radians_per_second": 0.08,
-    "outer_angular_speed_radians_per_second": 0.06,
-    "minimum_flight_speed_centimeters_per_second": 3000.0,
-    "cruise_flight_speed_centimeters_per_second": 4500.0,
-    "catch_up_flight_speed_centimeters_per_second": 7500.0,
-    "maximum_turn_rate_degrees_per_second": 20.0,
-    "maximum_acceleration_centimeters_per_second_squared": 1000.0,
-    "maximum_deceleration_centimeters_per_second_squared": 800.0,
+    "inner_angular_speed_radians_per_second": 0.16,
+    "outer_angular_speed_radians_per_second": 0.12,
+    "minimum_flight_speed_centimeters_per_second": 6000.0,
+    "cruise_flight_speed_centimeters_per_second": 9000.0,
+    "catch_up_flight_speed_centimeters_per_second": 15000.0,
+    "maximum_turn_rate_degrees_per_second": 80.0,
+    "maximum_acceleration_centimeters_per_second_squared": 4000.0,
+    "maximum_deceleration_centimeters_per_second_squared": 3200.0,
     "maximum_bank_degrees": 45.0,
     "agent_radius_centimeters": 1500.0,
     "separation_radius_centimeters": 3000.0,
@@ -78,18 +80,39 @@ FORMATION_VALUES = {
     "recovery_distance_centimeters": 250000.0,
 }
 
+# Exact target of the preceding speed-only pass. This is an accepted one-way
+# migration source; unknown authored values still abort before the first mutation.
+PRE_MANEUVER_FORMATION_VALUES = {
+    **FORMATION_VALUES,
+    "revision": 3,
+    "maximum_turn_rate_degrees_per_second": 20.0,
+    "maximum_acceleration_centimeters_per_second_squared": 1000.0,
+    "maximum_deceleration_centimeters_per_second_squared": 800.0,
+}
+
+# Exact source predating both the speed and maneuverability passes.
+PRE_SPEED_FORMATION_VALUES = {
+    **PRE_MANEUVER_FORMATION_VALUES,
+    "revision": 2,
+    "inner_angular_speed_radians_per_second": 0.08,
+    "outer_angular_speed_radians_per_second": 0.06,
+    "minimum_flight_speed_centimeters_per_second": 3000.0,
+    "cruise_flight_speed_centimeters_per_second": 4500.0,
+    "catch_up_flight_speed_centimeters_per_second": 7500.0,
+}
+
 SWARM_FORMATION_VALUES = {
-    "revision": 1,
+    "revision": 3,
     "expected_wingman_count": 25,
     "flight_count": 5,
     "model": unreal.GuLiWingmanFormationModel.SWARM_ORBIT,
     "guidance_algorithm_version": 1,
-    "minimum_flight_speed_centimeters_per_second": 3000.0,
-    "cruise_flight_speed_centimeters_per_second": 4500.0,
-    "catch_up_flight_speed_centimeters_per_second": 7500.0,
-    "maximum_turn_rate_degrees_per_second": 20.0,
-    "maximum_acceleration_centimeters_per_second_squared": 1000.0,
-    "maximum_deceleration_centimeters_per_second_squared": 800.0,
+    "minimum_flight_speed_centimeters_per_second": 6000.0,
+    "cruise_flight_speed_centimeters_per_second": 9000.0,
+    "catch_up_flight_speed_centimeters_per_second": 15000.0,
+    "maximum_turn_rate_degrees_per_second": 80.0,
+    "maximum_acceleration_centimeters_per_second_squared": 4000.0,
+    "maximum_deceleration_centimeters_per_second_squared": 3200.0,
     "maximum_bank_degrees": 45.0,
     "agent_radius_centimeters": 1500.0,
     "separation_radius_centimeters": 3000.0,
@@ -98,13 +121,45 @@ SWARM_FORMATION_VALUES = {
     "recovery_distance_centimeters": 90000.0,
 }
 
+PRE_MANEUVER_SWARM_FORMATION_VALUES = {
+    **SWARM_FORMATION_VALUES,
+    "revision": 2,
+    "maximum_turn_rate_degrees_per_second": 20.0,
+    "maximum_acceleration_centimeters_per_second_squared": 1000.0,
+    "maximum_deceleration_centimeters_per_second_squared": 800.0,
+}
+
+PRE_SPEED_SWARM_FORMATION_VALUES = {
+    **PRE_MANEUVER_SWARM_FORMATION_VALUES,
+    "revision": 1,
+    "minimum_flight_speed_centimeters_per_second": 3000.0,
+    "cruise_flight_speed_centimeters_per_second": 4500.0,
+    "catch_up_flight_speed_centimeters_per_second": 7500.0,
+}
+
 # When the v1/legacy class defaults are restored, an already-created Swarm asset
 # that had values equal to the former CDO can inherit these legacy distances.
 # Accept only that exact drift shape, then serialize the intended Swarm override.
 SWARM_FORMATION_DEFAULT_DRIFT_VALUES = {
-    **SWARM_FORMATION_VALUES,
+    **PRE_SPEED_SWARM_FORMATION_VALUES,
     "catch_up_distance_centimeters": 120000.0,
     "recovery_distance_centimeters": 250000.0,
+}
+
+# Values equal to the preceding native CDO may have been omitted from an asset's
+# serialized delta. After rebuilding with the new CDO, accept only these exact
+# post-rebuild shapes and rewrite the intended explicit per-asset revision.
+FORMATION_MANEUVER_CDO_DRIFT_VALUES = {
+    **FORMATION_VALUES,
+    "revision": 3,
+}
+SWARM_FORMATION_MANEUVER_CDO_DRIFT_VALUES = {
+    **SWARM_FORMATION_VALUES,
+    "revision": 2,
+}
+SWARM_FORMATION_REVISION_CDO_DRIFT_VALUES = {
+    **SWARM_FORMATION_VALUES,
+    "revision": 4,
 }
 
 SWARM_TUNING_VALUES = {
@@ -112,24 +167,34 @@ SWARM_TUNING_VALUES = {
     "outer_soft_radius_centimeters": 52000.0,
     "vertical_half_extent_centimeters": 14000.0,
     "hull_exclusion_radius_centimeters": 14000.0,
-    "swirl_speed_min_centimeters_per_second": 3600.0,
-    "swirl_speed_max_centimeters_per_second": 5200.0,
-    "curl_strength_centimeters_per_second": 1400.0,
+    "swirl_speed_min_centimeters_per_second": 7200.0,
+    "swirl_speed_max_centimeters_per_second": 10400.0,
+    "curl_strength_centimeters_per_second": 2800.0,
     "noise_spatial_scale_centimeters": 22000.0,
     "noise_temporal_scale_seconds": 6.0,
     "axis_precession_amount": 0.28,
     "axis_precession_radians_per_second": 0.03,
-    "boundary_return_speed_centimeters_per_second": 2800.0,
-    "preferred_radius_return_speed_centimeters_per_second": 450.0,
-    "vertical_return_speed_centimeters_per_second": 1400.0,
+    "boundary_return_speed_centimeters_per_second": 5600.0,
+    "preferred_radius_return_speed_centimeters_per_second": 900.0,
+    "vertical_return_speed_centimeters_per_second": 2800.0,
     "alignment_weight": 0.08,
     "catch_up_style_weight": 0.20,
     "recovery_style_weight": 0.05,
     "response_time_seconds": 1.25,
 }
 
+PRE_SPEED_SWARM_TUNING_VALUES = {
+    **SWARM_TUNING_VALUES,
+    "swirl_speed_min_centimeters_per_second": 3600.0,
+    "swirl_speed_max_centimeters_per_second": 5200.0,
+    "curl_strength_centimeters_per_second": 1400.0,
+    "boundary_return_speed_centimeters_per_second": 2800.0,
+    "preferred_radius_return_speed_centimeters_per_second": 450.0,
+    "vertical_return_speed_centimeters_per_second": 1400.0,
+}
+
 LEGACY_FORMATION_VALUES = {
-    **FORMATION_VALUES,
+    **PRE_SPEED_FORMATION_VALUES,
     "revision": 1,
 }
 
@@ -137,7 +202,7 @@ LEGACY_FORMATION_VALUES = {
 # branch. They are recognized only as a migration source so the rollback skill
 # returns to the frozen v1 geometry; arbitrary authored edits still fail closed.
 INTERIM_V2_FORMATION_VALUES = {
-    **FORMATION_VALUES,
+    **PRE_SPEED_FORMATION_VALUES,
     "inner_ring_radius_centimeters": 30000.0,
     "outer_ring_radius_centimeters": 45000.0,
     "inner_ring_height_centimeters": 7500.0,
@@ -199,7 +264,11 @@ def _dirty_packages() -> list[Any]:
 
 
 def _require_clean(context: str) -> None:
-    dirty = [_package_name(package) for package in _dirty_packages()]
+    dirty = [
+        _package_name(package)
+        for package in _dirty_packages()
+        if _package_name(package) in MANAGED_PACKAGES
+    ]
     if dirty:
         raise DeploymentError(f"{context}: editor has dirty packages: {dirty}")
 
@@ -306,6 +375,14 @@ def _require_swarm_tuning(asset: Any) -> None:
             "Refusing to overwrite existing SwarmOrbit tuning with wrong values: "
             + repr(mismatches)
         )
+
+
+def _matches_swarm_tuning(asset: Any, expected: dict[str, float]) -> bool:
+    tuning = asset.get_editor_property("swarm_orbit")
+    return all(
+        _values_match(tuning.get_editor_property(name), expected_value)
+        for name, expected_value in expected.items()
+    )
 
 
 def _set_swarm_values(asset: Any) -> None:
@@ -468,6 +545,9 @@ def main() -> dict[str, Any]:
         editor = unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem)
         if editor.get_game_world() is not None:
             raise DeploymentError("PIE/SIE is active")
+        baseline_dirty_names = {
+            _package_name(package) for package in _dirty_packages()
+        }
         _require_clean("preflight")
 
         formation = _load_existing(FORMATION, unreal.GuLiWingmanFormationDefinition)
@@ -483,25 +563,73 @@ def main() -> dict[str, Any]:
         upgrade_legacy_formation = False
         if formation is not None:
             if (
+                _matches_values(formation, PRE_MANEUVER_FORMATION_VALUES)
+                or _matches_values(
+                    formation, FORMATION_MANEUVER_CDO_DRIFT_VALUES
+                )
+                or _matches_values(formation, PRE_SPEED_FORMATION_VALUES)
+                or
                 _matches_values(formation, LEGACY_FORMATION_VALUES)
                 or _matches_values(formation, INTERIM_V2_FORMATION_VALUES)
             ):
                 upgrade_legacy_formation = True
             else:
                 _require_values(formation, FORMATION_VALUES, "formation definition")
-        upgrade_swarm_defaults = False
+        upgrade_swarm_speed = False
         if swarm_formation is not None:
-            if _matches_values(
-                swarm_formation, SWARM_FORMATION_DEFAULT_DRIFT_VALUES
-            ):
-                upgrade_swarm_defaults = True
-            else:
+            b_target = (
+                _matches_values(swarm_formation, SWARM_FORMATION_VALUES)
+                and _matches_swarm_tuning(swarm_formation, SWARM_TUNING_VALUES)
+            )
+            b_known_source = (
+                (
+                    _matches_values(
+                        swarm_formation, PRE_MANEUVER_SWARM_FORMATION_VALUES
+                    )
+                    and _matches_swarm_tuning(
+                        swarm_formation, SWARM_TUNING_VALUES
+                    )
+                )
+                or (
+                    _matches_values(
+                        swarm_formation,
+                        SWARM_FORMATION_MANEUVER_CDO_DRIFT_VALUES,
+                    )
+                    and _matches_swarm_tuning(
+                        swarm_formation, SWARM_TUNING_VALUES
+                    )
+                )
+                or (
+                    (
+                        _matches_values(
+                            swarm_formation, PRE_SPEED_SWARM_FORMATION_VALUES
+                        )
+                        or _matches_values(
+                            swarm_formation, SWARM_FORMATION_DEFAULT_DRIFT_VALUES
+                        )
+                    )
+                    and _matches_swarm_tuning(
+                        swarm_formation, PRE_SPEED_SWARM_TUNING_VALUES
+                    )
+                )
+            )
+            b_known_revision_cdo_drift = (
+                _matches_values(
+                    swarm_formation, SWARM_FORMATION_REVISION_CDO_DRIFT_VALUES
+                )
+                and _matches_swarm_tuning(
+                    swarm_formation, SWARM_TUNING_VALUES
+                )
+            )
+            if b_known_source or b_known_revision_cdo_drift:
+                upgrade_swarm_speed = True
+            elif not b_target:
                 _require_values(
                     swarm_formation,
                     SWARM_FORMATION_VALUES,
                     "SwarmOrbit formation definition",
                 )
-            _require_swarm_tuning(swarm_formation)
+                _require_swarm_tuning(swarm_formation)
         if basic is not None:
             _require_values(basic, BASIC_VALUES, "basic weapon definition")
         if missile is not None:
@@ -539,7 +667,7 @@ def main() -> dict[str, Any]:
             )
             _set_swarm_values(swarm_formation)
             created.append(SWARM_FORMATION)
-        elif upgrade_swarm_defaults:
+        elif upgrade_swarm_speed:
             swarm_formation.modify()
             _set_swarm_values(swarm_formation)
             updated.append(SWARM_FORMATION)
@@ -600,12 +728,21 @@ def main() -> dict[str, Any]:
         cdo = unreal.get_default_object(blueprint_class)
         prior_reference = _object_path(cdo.get_editor_property("ship_ability_set"))
         expected_set_object_path = _asset_object_path(ABILITY_SET)
-        blueprint_changed = prior_reference != expected_set_object_path
-        if prior_reference and prior_reference != expected_set_object_path:
+        active_v3_object_path = _asset_object_path(ACTIVE_V3_ABILITY_SET)
+        blueprint_changed = prior_reference not in (
+            expected_set_object_path,
+            active_v3_object_path,
+        )
+        if prior_reference and prior_reference not in (
+            expected_set_object_path,
+            active_v3_object_path,
+        ):
             raise DeploymentError(
-                "Refusing to replace a non-v1 ShipAbilitySet on the production CDO: "
+                "Refusing to replace an unknown ShipAbilitySet on the production CDO: "
                 + prior_reference
             )
+        if not prior_reference:
+            blueprint_changed = True
         if blueprint_changed:
             blueprint.modify()
             cdo.modify()
@@ -616,10 +753,10 @@ def main() -> dict[str, Any]:
                     "Ship Blueprint CDO did not retain ShipAbilitySet"
                 )
 
-        allowed_packages = set(ALL_ASSETS) | {SHIP_BLUEPRINT} | DERIVED_SHIP_BLUEPRINTS
+        allowed_packages = MANAGED_PACKAGES
         dirty = _dirty_packages()
         dirty_names = {_package_name(package) for package in dirty}
-        unexpected = sorted(dirty_names - allowed_packages)
+        unexpected = sorted(dirty_names - baseline_dirty_names - allowed_packages)
         if unexpected:
             raise DeploymentError(
                 f"Deployment dirtied unrelated packages: {unexpected}"
@@ -636,7 +773,8 @@ def main() -> dict[str, Any]:
         packages_to_save = [
             package
             for package in dirty
-            if _package_name(package) not in DERIVED_SHIP_BLUEPRINTS
+            if _package_name(package) in allowed_packages
+            and _package_name(package) not in DERIVED_SHIP_BLUEPRINTS
         ]
         if (packages_to_save
                 and not unreal.EditorLoadingAndSavingUtils.save_packages(
@@ -688,6 +826,7 @@ def main() -> dict[str, Any]:
                 "success": True,
                 "created_assets": created,
                 "updated_assets": updated,
+                "preserved_preexisting_dirty_packages": sorted(baseline_dirty_names),
                 "idempotent_assets": sorted(
                     set(ALL_ASSETS) - set(created) - set(updated)
                 ),
@@ -718,3 +857,4 @@ def main() -> dict[str, Any]:
 
 
 RESULT = main()
+unreal.MCPythonHelper.submit_result(json.dumps(RESULT, ensure_ascii=False))

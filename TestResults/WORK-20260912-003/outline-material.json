@@ -1,0 +1,227 @@
+{
+  "material": "/Game/GuLiStrike/FX/TeamOutline/M_TeamOutline",
+  "diagnostics": "<Struct 'MaterialDiagnostics' (0x0000014787F9AA80) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 7, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 2, vector_parameter_count: 1}>",
+  "graph": {
+    "material": {
+      "blend_mode": "BLEND_Opaque",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "expressions": [
+      {
+        "id": "MaterialExpressionSceneTexture_000001438A0D4B00",
+        "class": "SceneTexture",
+        "class_full": "MaterialExpressionSceneTexture",
+        "pos_x": -700,
+        "pos_y": -200,
+        "properties": {
+          "SceneTextureId": "PPI_PostProcessInput0",
+          "bFiltered": "False"
+        },
+        "inputs": [
+          "Coordinates"
+        ],
+        "outputs": [
+          "Color",
+          "Size",
+          "InvSize"
+        ]
+      },
+      {
+        "id": "MaterialExpressionSceneTexture_000001438A0D5800",
+        "class": "SceneTexture",
+        "class_full": "MaterialExpressionSceneTexture",
+        "pos_x": -700,
+        "pos_y": 0,
+        "properties": {
+          "SceneTextureId": "PPI_CustomStencil",
+          "bFiltered": "False"
+        },
+        "inputs": [
+          "Coordinates"
+        ],
+        "outputs": [
+          "Color",
+          "Size",
+          "InvSize"
+        ]
+      },
+      {
+        "id": "MaterialExpressionSceneTexture_000001438A0D2C00",
+        "class": "SceneTexture",
+        "class_full": "MaterialExpressionSceneTexture",
+        "pos_x": -700,
+        "pos_y": 200,
+        "properties": {
+          "SceneTextureId": "PPI_CustomDepth",
+          "bFiltered": "False"
+        },
+        "inputs": [
+          "Coordinates"
+        ],
+        "outputs": [
+          "Color",
+          "Size",
+          "InvSize"
+        ]
+      },
+      {
+        "id": "MaterialExpressionScalarParameter_0000014780746900",
+        "class": "ScalarParameter",
+        "class_full": "MaterialExpressionScalarParameter",
+        "pos_x": -700,
+        "pos_y": 400,
+        "properties": {
+          "DefaultValue": "0.000000",
+          "ControlType": "Numeric",
+          "SliderMin": "0.000000",
+          "SliderMax": "0.000000",
+          "Enumeration": "None",
+          "EnumerationIndex": "0",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "LocalTeam",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionScalarParameter_000001478074AC80",
+        "class": "ScalarParameter",
+        "class_full": "MaterialExpressionScalarParameter",
+        "pos_x": -700,
+        "pos_y": 550,
+        "properties": {
+          "DefaultValue": "2.000000",
+          "ControlType": "Numeric",
+          "SliderMin": "0.000000",
+          "SliderMax": "0.000000",
+          "Enumeration": "None",
+          "EnumerationIndex": "0",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "OutlineWidthPixels",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "Output_0"
+        ]
+      },
+      {
+        "id": "MaterialExpressionVectorParameter_000001478CE31B00",
+        "class": "VectorParameter",
+        "class_full": "MaterialExpressionVectorParameter",
+        "pos_x": -700,
+        "pos_y": 700,
+        "properties": {
+          "DefaultValue": "(R=1.000000,G=0.015000,B=0.025000,A=1.000000)",
+          "bUseCustomPrimitiveData": "False",
+          "PrimitiveDataIndex": "0",
+          "ChannelNames": "()",
+          "SortPriority": "32"
+        },
+        "is_parameter": true,
+        "parameter_name": "OutlineColor",
+        "group": "None",
+        "inputs": [],
+        "outputs": [
+          "RGB",
+          "R",
+          "G",
+          "B",
+          "A",
+          "RGBA"
+        ]
+      },
+      {
+        "id": "MaterialExpressionCustom_0000014780742A80",
+        "class": "Custom",
+        "class_full": "MaterialExpressionCustom",
+        "pos_x": -200,
+        "pos_y": 0,
+        "properties": {
+          "Code": "\nfloat enemyTeam = LocalTeam == 1 ? 2 : (LocalTeam == 2 ? 1 : 0);\nfloat2 uv = GetDefaultSceneTextureUV(Parameters, 25);\nfloat2 pixel = View.BufferSizeAndInvSize.zw * Width;\nfloat centerSceneDepth = SceneTextureLookup(uv, 1, false).r;\nfloat centerEnemy = enemyTeam > 0 && abs(Stencil.r - enemyTeam) < 0.5\n    && Depth.r <= centerSceneDepth + 1.0;\nfloat edge = 0;\nconst float2 offsets[8] = {float2(1,0),float2(-1,0),float2(0,1),float2(0,-1),\n    float2(.707,.707),float2(-.707,.707),float2(.707,-.707),float2(-.707,-.707)};\n[unroll] for (int i = 0; i < 8; ++i)\n{\n    float2 p = ClampSceneTextureUV(uv + offsets[i] * pixel, 25);\n    float team = SceneTextureLookup(p, 25, false).r;\n    float targetDepth = SceneTextureLookup(p, 13, false).r;\n    float surfaceDepth = SceneTextureLookup(p, 1, false).r;\n    float visibleEnemy = enemyTeam > 0 && abs(team - enemyTeam) < 0.5\n        && targetDepth <= surfaceDepth + 1.0 && targetDepth <= centerSceneDepth + 1.0;\n    edge = max(edge, visibleEnemy);\n}\nreturn lerp(SceneColor.rgb, Tint.rgb, edge * (1-centerEnemy));\n",
+          "OutputType": "CMOT_Float3",
+          "Description": "Visible enemy outer silhouette; teams 1 and 2",
+          "Inputs": "((InputName=\"SceneColor\",Input=(Expression=\"/Script/Engine.MaterialExpressionSceneTexture'/Game/GuLiStrike/FX/TeamOutline/M_TeamOutline.M_TeamOutline:MaterialExpressionSceneTexture_0'\",Mask=1,MaskR=1,MaskG=1,MaskB=1,MaskA=1)),(InputName=\"Stencil\",Input=(Expression=\"/Script/Engine.MaterialExpressionSceneTexture'/Game/GuLiStrike/FX/TeamOutline/M_TeamOutline.M_TeamOutline:MaterialExpressionSceneTexture_1'\",Mask=1,MaskR=1,MaskG=1,MaskB=1,MaskA=1)),(InputName=\"Depth\",Input=(Expression=\"/Script/Engine.MaterialExpressionSceneTexture'/Game/GuLiStrike/FX/TeamOutline/M_TeamOutline.M_TeamOutline:MaterialExpressionSceneTexture_2'\",Mask=1,MaskR=1,MaskG=1,MaskB=1,MaskA=1)),(InputName=\"LocalTeam\",Input=(Expression=\"/Script/Engine.MaterialExpressionScalarParameter'/Game/GuLiStrike/FX/TeamOutline/M_TeamOutline.M_TeamOutline:MaterialExpressionScalarParameter_0'\")),(InputName=\"Width\",Input=(Expression=\"/Script/Engine.MaterialExpressionScalarParameter'/Game/GuLiStrike/FX/TeamOutline/M_TeamOutline.M_TeamOutline:MaterialExpressionScalarParameter_1'\")),(InputName=\"Tint\",Input=(Expression=\"/Script/Engine.MaterialExpressionVectorParameter'/Game/GuLiStrike/FX/TeamOutline/M_TeamOutline.M_TeamOutline:MaterialExpressionVectorParameter_0'\",Mask=1,MaskR=1,MaskG=1,MaskB=1)))",
+          "ShowCode": "False"
+        },
+        "hlsl_code": "\nfloat enemyTeam = LocalTeam == 1 ? 2 : (LocalTeam == 2 ? 1 : 0);\nfloat2 uv = GetDefaultSceneTextureUV(Parameters, 25);\nfloat2 pixel = View.BufferSizeAndInvSize.zw * Width;\nfloat centerSceneDepth = SceneTextureLookup(uv, 1, false).r;\nfloat centerEnemy = enemyTeam > 0 && abs(Stencil.r - enemyTeam) < 0.5\n    && Depth.r <= centerSceneDepth + 1.0;\nfloat edge = 0;\nconst float2 offsets[8] = {float2(1,0),float2(-1,0),float2(0,1),float2(0,-1),\n    float2(.707,.707),float2(-.707,.707),float2(.707,-.707),float2(-.707,-.707)};\n[unroll] for (int i = 0; i < 8; ++i)\n{\n    float2 p = ClampSceneTextureUV(uv + offsets[i] * pixel, 25);\n    float team = SceneTextureLookup(p, 25, false).r;\n    float targetDepth = SceneTextureLookup(p, 13, false).r;\n    float surfaceDepth = SceneTextureLookup(p, 1, false).r;\n    float visibleEnemy = enemyTeam > 0 && abs(team - enemyTeam) < 0.5\n        && targetDepth <= surfaceDepth + 1.0 && targetDepth <= centerSceneDepth + 1.0;\n    edge = max(edge, visibleEnemy);\n}\nreturn lerp(SceneColor.rgb, Tint.rgb, edge * (1-centerEnemy));\n",
+        "output_type": "CMOT_Float3",
+        "custom_input_names": "SceneColor,Stencil,Depth,LocalTeam,Width,Tint",
+        "inputs": [
+          "SceneColor",
+          "Stencil",
+          "Depth",
+          "LocalTeam",
+          "Width",
+          "Tint"
+        ],
+        "outputs": [
+          "Output_0"
+        ]
+      }
+    ],
+    "connections": [
+      {
+        "source_id": "MaterialExpressionSceneTexture_000001438A0D4B00",
+        "source_output_index": 0,
+        "source_output_name": "Color",
+        "target_id": "MaterialExpressionCustom_0000014780742A80",
+        "target_input": "SceneColor"
+      },
+      {
+        "source_id": "MaterialExpressionSceneTexture_000001438A0D5800",
+        "source_output_index": 0,
+        "source_output_name": "Color",
+        "target_id": "MaterialExpressionCustom_0000014780742A80",
+        "target_input": "Stencil"
+      },
+      {
+        "source_id": "MaterialExpressionSceneTexture_000001438A0D2C00",
+        "source_output_index": 0,
+        "source_output_name": "Color",
+        "target_id": "MaterialExpressionCustom_0000014780742A80",
+        "target_input": "Depth"
+      },
+      {
+        "source_id": "MaterialExpressionScalarParameter_0000014780746900",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionCustom_0000014780742A80",
+        "target_input": "LocalTeam"
+      },
+      {
+        "source_id": "MaterialExpressionScalarParameter_000001478074AC80",
+        "source_output_index": 0,
+        "source_output_name": "",
+        "target_id": "MaterialExpressionCustom_0000014780742A80",
+        "target_input": "Width"
+      },
+      {
+        "source_id": "MaterialExpressionVectorParameter_000001478CE31B00",
+        "source_output_index": 0,
+        "source_output_name": "RGB",
+        "target_id": "MaterialExpressionCustom_0000014780742A80",
+        "target_input": "Tint"
+      }
+    ],
+    "output_connections": [
+      {
+        "property": "EmissiveColor",
+        "expression_id": "MaterialExpressionCustom_0000014780742A80",
+        "output_index": 0,
+        "output_name": ""
+      }
+    ]
+  },
+  "previous_graph": ""
+}

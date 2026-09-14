@@ -5,6 +5,7 @@
 #include "CoreMinimal.h"
 #include "Battle/Network/GuLiBattleTypes.h"
 #include "Engine/NetSerialization.h"
+#include "Gameplay/Economy/GuLiEconomyTypes.h"
 #include "GuLiBuildingTypes.generated.h"
 
 class UStaticMesh;
@@ -37,6 +38,7 @@ enum class EGuLiBuildingPlacementRejectReason : uint8
 	WorldLimitReached,
 	RateLimited,
 	Duplicate,
+	InsufficientResources,
 	SpawnFailed
 };
 
@@ -128,6 +130,8 @@ namespace GuLiBuildingPlacementPolicy
 
 	GULISTRIKE_API bool IsBuildingRole(EGuLiCommanderRole Role);
 	GULISTRIKE_API bool IsKnownBuildingType(EGuLiBuildingType Type);
+	/** Building-owned price policy submitted through the generic economy contract. */
+	GULISTRIKE_API FGuLiResourceAmounts GetEconomyCost(EGuLiBuildingType Type);
 	GULISTRIKE_API bool IsSlopeAllowed(const FVector& SurfaceNormal, float MaximumDegrees = MaximumSlopeDegrees);
 	GULISTRIKE_API bool IsGroundPlacementInRange(
 		const FVector& PawnLocation,

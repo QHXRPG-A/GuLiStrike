@@ -3,6 +3,7 @@
 #include "GuLiMapAuthoring.h"
 #include "GuLiMapAuthoringSubsystem.h"
 #include "GuLiMapAuthoringSettings.h"
+#include "GuLiMapDensityMap.h"
 #include "GuLiMapMarker.h"
 #include "Algo/Reverse.h"
 #include "ComponentVisualizer.h"
@@ -16,15 +17,23 @@
 #include "Engine/World.h"
 #include "Framework/MultiBox/MultiBoxBuilder.h"
 #include "PrimitiveDrawInterface.h"
+#include "PrimitiveDrawingUtils.h"
 #include "ScopedTransaction.h"
 #include "UObject/UnrealType.h"
 
 namespace
 {
 const FEditorModeID PlacementId=TEXT("EM_GuLiMapPlacement");
+const FEditorModeID DensityPaintId=TEXT("EM_GuLiMapDensityPaint");
 TMap<FName,TSharedPtr<IGuLiMapGeometryEditor>> Editors;
 TWeakObjectPtr<UGuLiMapTypeDefinition> PlacementType;
 TSharedPtr<FComponentVisualizer> RegisteredVisualizer;
+struct FDensityPaintState
+{
+    TWeakObjectPtr<AGuLiMapDensityMap> Actor;
+    FGuLiMapDensityBrushSettings Brush;
+};
+FDensityPaintState DensityPaintState;
 constexpr int32 CenterHandle=-100;
 
 class FBuiltInGeometryEditor : public IGuLiMapGeometryEditor
@@ -223,6 +232,124 @@ public:
     }
     void Exit() override { PlacementType.Reset(); FEdMode::Exit(); }
 };
+
+class FGuLiMapDensityPaintMode : public FEdMode
+{
+    TUniquePtr<FScopedTransaction> Transaction;
+    FGuLiMapDensityMapRecord Before;
+    TArray<FVector2D> Samples;
+    FVector CursorWorld = FVector::ZeroVector;
+    bool bHasCursor = false;
+
+    bool IsAltDown(const FViewport* Viewport) const
+    {
+        return Viewport && (Viewport->KeyState(EKeys::LeftAlt) || Viewport->KeyState(EKeys::RightAlt));
+    }
+    bool FindSurface(FEditorViewportClient* Client,FVector& Out) const
+    {
+        AGuLiMapDensityMap* Actor=DensityPaintState.Actor.Get();
+        if (!Actor||!Client) return false;
+        UWorld* World=Actor->GetWorld(); if (!World) return false;
+        const FViewportCursorLocation Cursor=Client->GetCursorWorldLocationFromMousePos();
+        FHitResult Hit;
+        if (World->LineTraceSingleByChannel(Hit,Cursor.GetOrigin(),Cursor.GetOrigin()+Cursor.GetDirection()*1.e9,ECC_Visibility))
+        { Out=Hit.ImpactPoint; return true; }
+        if (FMath::Abs(Cursor.GetDirection().Z)<1.e-8) return false;
+        const double Distance=(GetDefault<UGuLiMapAuthoringSettings>()->WorkPlaneZ-Cursor.GetOrigin().Z)/Cursor.GetDirection().Z;
+        if (Distance<0.0) return false; Out=Cursor.GetOrigin()+Cursor.GetDirection()*Distance; return true;
+    }
+    void BroadcastChange(AGuLiMapDensityMap* Actor)
+    {
+        if (!Actor) return;
+        FPropertyChangedEvent Changed(FindFProperty<FProperty>(AGuLiMapDensityMap::StaticClass(),GET_MEMBER_NAME_CHECKED(AGuLiMapDensityMap,Record)),EPropertyChangeType::ValueSet);
+        FCoreUObjectDelegates::OnObjectPropertyChanged.Broadcast(Actor,Changed);
+    }
+    bool RebuildStroke()
+    {
+        AGuLiMapDensityMap* Actor=DensityPaintState.Actor.Get(); if (!Actor||!Transaction) return false;
+        FGuLiMapDensityMapRecord Candidate=Before; FString Error;
+        if (!GuLiMap::ApplyDensityBrush(Candidate,DensityPaintState.Brush.LayerKey,Samples,DensityPaintState.Brush.RadiusCm,DensityPaintState.Brush.Strength01,DensityPaintState.Brush.Falloff01,DensityPaintState.Brush.bErase,Error))
+        { UE_LOG(LogTemp,Warning,TEXT("GuLiMap density stroke rejected: %s"),*Error); return false; }
+        Actor->Record=MoveTemp(Candidate); Actor->RefreshVisuals(false); return true;
+    }
+    void FinishStroke(bool bCommit)
+    {
+        if (!Transaction) return;
+        AGuLiMapDensityMap* Actor=DensityPaintState.Actor.Get();
+        if (!Actor) bCommit=false;
+        if (Actor&&bCommit)
+        {
+            FGuLiMapSnapshot Check; Check.DensityMap=Actor->Record; TArray<FGuLiMapIssue> Issues; GuLiMap::ValidateDensity(Check,Issues);
+            bCommit=!GuLiMap::HasErrors(Issues);
+            if (!bCommit) UE_LOG(LogTemp,Warning,TEXT("GuLiMap density stroke rolled back: %s"),Issues.IsEmpty()?TEXT("validation failed"):*Issues[0].Message);
+        }
+        if (Actor)
+        {
+            if (!bCommit) Actor->Record=Before;
+            GuLiMap::NormalizeDensityMap(Actor->Record); Actor->RefreshVisuals(false); BroadcastChange(Actor);
+        }
+        if (!bCommit) Transaction->Cancel();
+        Transaction.Reset(); Samples.Reset();
+    }
+    bool UpdateCursor(FEditorViewportClient* Client,FViewport* Viewport,const bool bAppend)
+    {
+        if (IsAltDown(Viewport)) return false;
+        FVector Position; if (!FindSurface(Client,Position)) { bHasCursor=false; return false; }
+        CursorWorld=Position; bHasCursor=true;
+        if (bAppend&&Transaction)
+        {
+            const FVector2D Point(Position.X,Position.Y);
+            if (Samples.IsEmpty()||(Samples.Last()-Point).SizeSquared()>1.0) { Samples.Add(Point); RebuildStroke(); }
+        }
+        if (Viewport) Viewport->InvalidateDisplay();
+        return true;
+    }
+public:
+    bool UsesToolkits() const override { return false; }
+    bool DisallowMouseDeltaTracking() const override { return Transaction.IsValid(); }
+    bool GetCursor(EMouseCursor::Type& OutCursor) const override { OutCursor=EMouseCursor::Crosshairs; return true; }
+    bool MouseMove(FEditorViewportClient* Client,FViewport* Viewport,int32,int32) override { UpdateCursor(Client,Viewport,Transaction.IsValid()); return false; }
+    bool CapturedMouseMove(FEditorViewportClient* Client,FViewport* Viewport,int32,int32) override { return UpdateCursor(Client,Viewport,Transaction.IsValid()); }
+    bool InputKey(FEditorViewportClient* Client,FViewport* Viewport,FKey Key,EInputEvent Event) override
+    {
+        if (!DensityPaintState.Actor.IsValid()) { FinishStroke(false); return false; }
+        if (Key==EKeys::Escape&&Event==IE_Pressed)
+        {
+            if (Transaction) FinishStroke(false); else GuLiMapEditor::EndInteraction();
+            return true;
+        }
+        if (Key!=EKeys::LeftMouseButton) return FEdMode::InputKey(Client,Viewport,Key,Event);
+        if (Event==IE_Pressed)
+        {
+            if (IsAltDown(Viewport)||Transaction) return false;
+            FVector Position; if (!FindSurface(Client,Position)) return true;
+            AGuLiMapDensityMap* Actor=DensityPaintState.Actor.Get(); Before=Actor->Record; Samples={FVector2D(Position.X,Position.Y)};
+            Transaction=MakeUnique<FScopedTransaction>(NSLOCTEXT("GuLiMap","DensityStroke","涂绘资源密度")); Actor->Modify(); CursorWorld=Position; bHasCursor=true; RebuildStroke();
+            return true;
+        }
+        if (Event==IE_Released&&Transaction)
+        {
+            UpdateCursor(Client,Viewport,true); FinishStroke(true); return true;
+        }
+        return false;
+    }
+    void Render(const FSceneView* View,FViewport* Viewport,FPrimitiveDrawInterface* PDI) override
+    {
+        FEdMode::Render(View,Viewport,PDI);
+        if (!bHasCursor||!DensityPaintState.Actor.IsValid()) return;
+        const FLinearColor Color=DensityPaintState.Brush.bErase?FLinearColor(1.0f,0.15f,0.05f):FLinearColor(0.9f,0.9f,0.2f);
+        DrawCircle(PDI,CursorWorld+FVector(0,0,20),FVector::ForwardVector,FVector::RightVector,Color,DensityPaintState.Brush.RadiusCm,96,SDPG_Foreground,2.0f,0.0f,true);
+        const double Inner=DensityPaintState.Brush.RadiusCm*(1.0-DensityPaintState.Brush.Falloff01);
+        if (Inner>1.0&&Inner<DensityPaintState.Brush.RadiusCm) DrawCircle(PDI,CursorWorld+FVector(0,0,21),FVector::ForwardVector,FVector::RightVector,Color*0.7f,Inner,64,SDPG_Foreground,1.0f,0.0f,true);
+    }
+    void Tick(FEditorViewportClient* Client,float DeltaTime) override
+    {
+        FEdMode::Tick(Client,DeltaTime);
+        if (!DensityPaintState.Actor.IsValid()) { FinishStroke(false); DensityPaintState.Actor.Reset(); }
+    }
+    bool LostFocus(FEditorViewportClient* Client,FViewport* Viewport) override { FinishStroke(false); return FEdMode::LostFocus(Client,Viewport); }
+    void Exit() override { FinishStroke(false); bHasCursor=false; DensityPaintState.Actor.Reset(); FEdMode::Exit(); }
+};
 }
 namespace GuLiMapEditor
 {
@@ -235,16 +362,23 @@ void RegisterViewport()
     for (FName N:{FName(TEXT("Cylinder")),FName(TEXT("Sphere")),FName(TEXT("Box")),FName(TEXT("PolygonPrism"))}) RegisterGeometryEditor(N,MakeShared<FBuiltInGeometryEditor>());
     RegisteredVisualizer=CreateVisualizer(); GUnrealEd->RegisterComponentVisualizer(UGuLiMapVisualizationComponent::StaticClass()->GetFName(),RegisteredVisualizer); RegisteredVisualizer->OnRegister();
     FEditorModeRegistry::Get().RegisterMode<FGuLiMapPlacementMode>(PlacementId,NSLOCTEXT("GuLiMap","Mode","地图标记放置"),FSlateIcon(),false);
+    FEditorModeRegistry::Get().RegisterMode<FGuLiMapDensityPaintMode>(DensityPaintId,NSLOCTEXT("GuLiMap","DensityMode","资源密度涂绘"),FSlateIcon(),false);
 }
 void BeginPlacement(UGuLiMapTypeDefinition* Type) { EndInteraction(); PlacementType=Type; GLevelEditorModeTools().ActivateMode(PlacementId); }
+void BeginDensityPaint(AGuLiMapDensityMap* DensityMap,const FGuLiMapDensityBrushSettings& Settings)
+{
+    EndInteraction(); if (!IsValid(DensityMap)) return; DensityPaintState.Actor=DensityMap; DensityPaintState.Brush=Settings; GLevelEditorModeTools().ActivateMode(DensityPaintId);
+}
+void UpdateDensityBrush(const FGuLiMapDensityBrushSettings& Settings) { DensityPaintState.Brush=Settings; if (GEditor) GEditor->RedrawLevelEditingViewports(); }
+bool IsDensityPainting() { return DensityPaintState.Actor.IsValid()&&GLevelEditorModeTools().IsModeActive(DensityPaintId); }
 void EndInteraction()
 {
     if (RegisteredVisualizer) RegisteredVisualizer->EndEditing();
-    if (GEditor) GLevelEditorModeTools().DeactivateMode(PlacementId); PlacementType.Reset();
+    if (GEditor) { GLevelEditorModeTools().DeactivateMode(PlacementId); GLevelEditorModeTools().DeactivateMode(DensityPaintId); } PlacementType.Reset(); DensityPaintState.Actor.Reset();
 }
 void UnregisterViewport()
 {
-    EndInteraction(); FEditorModeRegistry::Get().UnregisterMode(PlacementId);
+    EndInteraction(); FEditorModeRegistry::Get().UnregisterMode(PlacementId); FEditorModeRegistry::Get().UnregisterMode(DensityPaintId);
     if (GUnrealEd) GUnrealEd->UnregisterComponentVisualizer(UGuLiMapVisualizationComponent::StaticClass()->GetFName());
     RegisteredVisualizer.Reset(); Editors.Empty();
 }

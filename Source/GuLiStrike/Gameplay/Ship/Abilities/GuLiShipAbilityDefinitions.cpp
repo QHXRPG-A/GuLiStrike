@@ -1,7 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityDefinitions.h"
+#include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
 #include "Gameplay/Data/Generated/GuLiStrikeShipTableRows.h"
+#include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
 
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h"
 
@@ -223,30 +225,48 @@ bool UGuLiWingmanWeaponDefinition::BuildRuntimeConfig(FGuLiWingmanWeaponRuntimeC
 	if (!AttackProfileRow.IsNull())
 	{
 		const auto* Row = AttackProfileRow.GetRow<FGuLiStrikeShipWingmanWeaponsRow>(TEXT("Wingman attack profile"));
-		if (!Row) return Fail(OutError, TEXT("Wingman weapon requires its authored Ship table row."));
-		if (Row->AttackPattern == TEXT("AirDogfight")) Out.Attack.Pattern = EGuLiWingmanAttackPattern::AirDogfight;
+		if (!Row) return Fail(OutError, TEXT("Wingman weapon requires its authored SecondaryWeapons/WingmanWeapons row."));
+		if (Row->AttackPattern == TEXT("Legacy")) Out.Attack.Pattern = EGuLiWingmanAttackPattern::Legacy;
+		else if (Row->AttackPattern == TEXT("AirBurstOrbit")) Out.Attack.Pattern = EGuLiWingmanAttackPattern::AirBurstOrbit;
 		else if (Row->AttackPattern == TEXT("GroundDive")) Out.Attack.Pattern = EGuLiWingmanAttackPattern::GroundDive;
 		else return Fail(OutError, TEXT("Unknown Wingman attack pattern in source table."));
 		Out.Attack.ExecutorId = FName(*Row->ExecutorId); Out.Attack.FlightSpeed = Row->FlightSpeedCentimetersPerSecond;
 		Out.Attack.DiveSeconds = Row->DiveSeconds; Out.Attack.MissileCount = Row->MissileCount;
 		Out.Attack.StripLength = Row->StripLengthCentimeters; Out.Attack.PullUpHeight = Row->PullUpHeightCentimeters;
-		Out.Attack.ExplosionRadius = Row->ExplosionRadiusCentimeters;
-		Out.Attack.BreakawayDistance = Row->BreakawayDistanceCentimeters;
-		Out.Attack.RetreatMinimumDistance = Row->RetreatMinimumDistanceCentimeters;
-		Out.Attack.RetreatLongitudinalMinFraction = Row->RetreatLongitudinalMinFraction;
-		Out.Attack.RetreatLongitudinalMaxFraction = Row->RetreatLongitudinalMaxFraction;
-		Out.Attack.RetreatLateralRadius = Row->RetreatLateralRadiusCentimeters;
-		Out.Attack.RetreatVerticalRadius = Row->RetreatVerticalRadiusCentimeters;
-		Out.Attack.ManeuverArrivalRadius = Row->ManeuverArrivalRadiusCentimeters;
-		Out.Attack.TurnYawMinDegrees = Row->TurnYawMinDegrees;
-		Out.Attack.TurnYawMaxDegrees = Row->TurnYawMaxDegrees;
-		Out.Attack.TurnPitchMaxDegrees = Row->TurnPitchMaxDegrees; Out.Attack.Muzzle = Row->Muzzle;
+		Out.EffectConfigId = FName(*Row->EffectConfigId);
+		Out.Attack.AirFireStartDistance = Row->AirFireStartDistanceCentimeters;
+		Out.Attack.AirFireStopDistance = Row->AirFireStopDistanceCentimeters;
+		Out.Attack.AirBurstDurationSeconds = Row->AirBurstDurationSeconds;
+		Out.Attack.AirOrbitCooldownSeconds = Row->AirOrbitCooldownSeconds;
+		Out.Attack.Muzzle = Row->Muzzle;
 		Out.Damage = Row->Damage; Out.CooldownSeconds = Row->CooldownSeconds; Out.RangeCentimeters = Row->RangeCentimeters;
 		Out.TargetConeHalfAngleDegrees = Row->FireConeHalfAngleDegrees;
+		Out.bRequiresLineOfSight = Row->bRequiresLineOfSight;
+		Out.MaximumHomingTurnRateDegreesPerSecond = Row->MaximumHomingTurnRateDegreesPerSecond;
 		Out.ProjectileSpeedCentimetersPerSecond = Row->ProjectileSpeedCentimetersPerSecond;
 		Out.ProjectileLifetimeSeconds = Row->ProjectileLifetimeSeconds; Out.SweepRadiusCentimeters = Row->SweepRadiusCentimeters;
 	}
+	if (!AttackProfileRow.IsNull() && Out.Attack.Pattern == EGuLiWingmanAttackPattern::GroundDive)
+	{
+		FGuLiSpellFieldConfig Field;
+		if (!UGuLiSpellFieldDataSubsystem::ResolveAuthoredConfig(Out.EffectConfigId, Field))
+			return Fail(OutError, TEXT("Ground bombardment requires a combat row in GuLiStrikeSpellFields/Fields."));
+		Out.Damage = Field.Damage;
+		Out.Attack.ExplosionRadius = Field.Radius;
+	}
 	return Out.IsWellFormed() || Fail(OutError, TEXT("Wingman attack row contains invalid values or exceeds the bounded fire batch."));
+}
+
+UGuLiProjectileEffectDefinition* UGuLiWingmanWeaponDefinition::ResolveAttackProjectile() const
+{
+	if (AttackProfileRow.IsNull()) return AttackProjectile.LoadSynchronous();
+	const auto* Row = AttackProfileRow.GetRow<FGuLiStrikeShipWingmanWeaponsRow>(TEXT("Secondary weapon projectile asset"));
+	return Row ? Cast<UGuLiProjectileEffectDefinition>(Row->AttackProjectile.LoadSynchronous()) : nullptr;
+}
+
+bool UGuLiWingmanWeaponDefinition::GetResolvedWeaponConfig(FGuLiWingmanWeaponRuntimeConfig& OutRuntime) const
+{
+	return IsWellFormed() && BuildRuntimeConfig(OutRuntime);
 }
 
 bool UGuLiWingmanWeaponDefinition::IsWellFormed(FString* OutError) const
@@ -258,7 +278,12 @@ bool UGuLiWingmanWeaponDefinition::IsWellFormed(FString* OutError) const
 	if (!AttackProfileRow.IsNull() || Attack.Pattern != EGuLiWingmanAttackPattern::Legacy)
 	{
 		FGuLiWingmanWeaponRuntimeConfig Runtime;
-		return Kind == EGuLiWingmanWeaponKind::BasicAutomatic && BuildRuntimeConfig(Runtime, OutError);
+		if (!BuildRuntimeConfig(Runtime, OutError)) return false;
+		if (Runtime.Attack.Pattern != EGuLiWingmanAttackPattern::Legacy)
+			return Kind == EGuLiWingmanWeaponKind::BasicAutomatic;
+		return Kind == EGuLiWingmanWeaponKind::Missile
+			? Runtime.MaximumHomingTurnRateDegreesPerSecond > 0.0f
+			: Runtime.MaximumHomingTurnRateDegreesPerSecond == 0.0f;
 	}
 	if (!IsFiniteNonNegative(Damage)
 		|| !IsFinitePositive(RangeCentimeters)
@@ -300,6 +325,8 @@ uint64 UGuLiWingmanWeaponDefinition::ComputeStableChecksum() const
 	GuLiShipAbilityHash::AddString(Hash, TEXT("GuLi.WingmanWeapon.v1"));
 	GuLiShipAbilityHash::AddUInt32(Hash, Revision);
 	GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Kind));
+	if (AttackProfileRow.IsNull())
+	{
 	GuLiShipAbilityHash::AddFloat(Hash, Damage);
 	GuLiShipAbilityHash::AddFloat(Hash, RangeCentimeters);
 	GuLiShipAbilityHash::AddFloat(Hash, CooldownSeconds);
@@ -309,9 +336,13 @@ uint64 UGuLiWingmanWeaponDefinition::ComputeStableChecksum() const
 	GuLiShipAbilityHash::AddFloat(Hash, TargetConeHalfAngleDegrees);
 	GuLiShipAbilityHash::AddBool(Hash, bRequiresLineOfSight);
 	GuLiShipAbilityHash::AddFloat(Hash, MaximumHomingTurnRateDegreesPerSecond);
+	}
 	FGuLiWingmanWeaponRuntimeConfig Resolved;
 	if (!BuildRuntimeConfig(Resolved)) return 0u;
 	Resolved.AddToStableHash(Hash);
-	GuLiShipAbilityHash::AddString(Hash, AttackProjectile.ToSoftObjectPath().ToString());
+	const auto* Row = AttackProfileRow.IsNull() ? nullptr
+		: AttackProfileRow.GetRow<FGuLiStrikeShipWingmanWeaponsRow>(TEXT("Secondary weapon hash"));
+	GuLiShipAbilityHash::AddString(Hash, Row ? Row->AttackProjectile.ToSoftObjectPath().ToString()
+		: AttackProjectile.ToSoftObjectPath().ToString());
 	return GuLiShipAbilityHash::Finish(Hash);
 }

@@ -1,0 +1,132 @@
+{
+  "players": [
+    {
+      "pc": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+      "team": "<GuLiTeam.RED: 1>",
+      "camera": "<Object '/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiTeamOutlineCameraManager_0' (0x000001DC0EFAA800) Class 'GuLiTeamOutlineCameraManager'>"
+    },
+    {
+      "pc": "/Game/Maps/UEDPIE_1_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+      "team": "<GuLiTeam.RED: 1>",
+      "camera": "<Object '/Game/Maps/UEDPIE_1_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiTeamOutlineCameraManager_0' (0x000001DA2CFFA800) Class 'GuLiTeamOutlineCameraManager'>"
+    },
+    {
+      "pc": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiCommanderPlayerController_1",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "camera": "<Object '/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiTeamOutlineCameraManager_1' (0x000001DC29713800) Class 'GuLiTeamOutlineCameraManager'>"
+    },
+    {
+      "pc": "/Game/Maps/UEDPIE_2_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiCommanderPlayerController_0",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "camera": "<Object '/Game/Maps/UEDPIE_2_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiTeamOutlineCameraManager_0' (0x000001DA5464A800) Class 'GuLiTeamOutlineCameraManager'>"
+    }
+  ],
+  "materials": [
+    {
+      "camera": "/Game/Maps/UEDPIE_1_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiTeamOutlineCameraManager_0",
+      "local_team": 1.0
+    },
+    {
+      "camera": "/Game/Maps/UEDPIE_2_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiTeamOutlineCameraManager_0",
+      "local_team": 2.0
+    }
+  ],
+  "ships": [
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.BP_CombatAvatarFly01_C_0",
+      "team": "<GuLiTeam.UNASSIGNED: 0>",
+      "meshes": [
+        {
+          "name": "Hull Mesh",
+          "depth": false,
+          "stencil": 0
+        },
+        {
+          "name": "CameraProxyMeshComponent_0",
+          "depth": false,
+          "stencil": 0
+        }
+      ]
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_1_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.BP_CombatAvatarFly01_C_0",
+      "team": "<GuLiTeam.RED: 1>",
+      "meshes": [
+        {
+          "name": "Hull Mesh",
+          "depth": true,
+          "stencil": 1
+        },
+        {
+          "name": "CameraProxyMeshComponent_0",
+          "depth": true,
+          "stencil": 1
+        }
+      ]
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_0_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.BP_CombatAvatarFly01_C_1",
+      "team": "<GuLiTeam.UNASSIGNED: 0>",
+      "meshes": [
+        {
+          "name": "Hull Mesh",
+          "depth": false,
+          "stencil": 0
+        },
+        {
+          "name": "CameraProxyMeshComponent_0",
+          "depth": false,
+          "stencil": 0
+        }
+      ]
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_2_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.BP_CombatAvatarFly01_C_0",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "meshes": [
+        {
+          "name": "Hull Mesh",
+          "depth": true,
+          "stencil": 2
+        },
+        {
+          "name": "CameraProxyMeshComponent_0",
+          "depth": true,
+          "stencil": 2
+        }
+      ]
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_1_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.BP_CombatAvatarFly01_C_1",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "meshes": [
+        {
+          "name": "Hull Mesh",
+          "depth": true,
+          "stencil": 2
+        },
+        {
+          "name": "CameraProxyMeshComponent_0",
+          "depth": true,
+          "stencil": 2
+        }
+      ]
+    },
+    {
+      "path": "/Game/Maps/UEDPIE_2_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.BP_CombatAvatarFly01_C_1",
+      "team": "<GuLiTeam.RED: 1>",
+      "meshes": [
+        {
+          "name": "Hull Mesh",
+          "depth": true,
+          "stencil": 1
+        },
+        {
+          "name": "CameraProxyMeshComponent_0",
+          "depth": true,
+          "stencil": 1
+        }
+      ]
+    }
+  ]
+}

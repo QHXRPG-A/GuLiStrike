@@ -36,62 +36,54 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuns(const FGuLiWingmanGroupHand
 		for (const auto& Checkpoint : State.Checkpoints)
 			if (Checkpoint.Emitter == Identity.Handle)
 				Weapon.SetNextFireSeconds(Checkpoint.SlotId, FMath::Max(Weapon.GetNextFireSeconds(Checkpoint.SlotId), Checkpoint.NextFireTime));
-		const auto Cancel = [&](uint8 Reason=1)
+		const auto Cancel = [&](uint8 Reason=1, bool bRetry=true)
 		{
 			if(Attack.bGuiding) Attack.LastCancelReason=Reason;
-			Attack.Phase = EGuLiWingmanAttackPhase::Idle; Attack.bGuiding = false; Attack.RetryAfter = Now + 1.0;
-			Attack.AirTurn = {}; Attack.RetreatPoint = FVector::ZeroVector; Attack.RetreatOrigin = FVector::ZeroVector;
-			Attack.bAirTurnUsingDirectGuidance = false; Attack.PreferredVelocity = FVector::ZeroVector;
+			Attack.Phase = EGuLiWingmanAttackPhase::Idle; Attack.bGuiding = false;
+			Attack.RetryAfter = bRetry ? Now + 1.0 : 0.0;
+			Attack.PreferredVelocity = FVector::ZeroVector;
 			Runtime->PendingAttackShots.RemoveAll([&](const auto& P) { return P.Key == Identity.Handle.Flight.FlightIndex && P.Value.MemberIndex == Identity.Handle.MemberIndex; });
 		};
 		const bool bExecutingGround =
 			GuLiWingmanAttack::IsFrozenGroundExecutionPhase(Attack.Phase);
 		const bool bPreparingGround =
 			GuLiWingmanAttack::IsGroundPreparationPhase(Attack.Phase);
+		const bool bAirPhase = Attack.Phase == EGuLiWingmanAttackPhase::AirSeparate
+			|| Attack.Phase == EGuLiWingmanAttackPhase::AirApproachFire
+			|| Attack.Phase == EGuLiWingmanAttackPhase::AirReturnToOrbit
+			|| Attack.Phase == EGuLiWingmanAttackPhase::AirOrbitCooldown;
 		if (!bActive || !Runtime->bCombatAuthorizationValid
-			|| !Dynamics.bAlive || !Config.IsUsableByLeaseOwner()
-			// Dive/PullUp/Climb already follow a complete FlightNav + terrain checked
-			// path. Abandoning that path after the aircraft has descended is what left
-			// later sorties parked near the ground. The integration gate still stops an
-			// actually invalid next step.
-			|| (!bExecutingGround
-				&& (Avoidance.bControlledRecovery || Avoidance.ConsecutiveBlockedSeconds > 0.1f)))
+			|| !Dynamics.bAlive || !Config.IsUsableByLeaseOwner())
 		{ Cancel(); continue; }
 		const FGuLiWingmanAttackTarget* DesiredTarget =
 			GuLiWingmanTargeting::ResolveTargetForEmitter(State, Identity.Handle);
 		const auto* Channel = Config.WeaponChannels.FindByPredicate([&](const auto& C) {
-			return C.bEnabled && (bExecutingGround ? C.Binding.SlotId == Attack.SlotId
-				: DesiredTarget && C.Runtime.Attack.Pattern == (DesiredTarget->bGround
+			if (!C.bEnabled) return false;
+			if (bExecutingGround) return C.Binding.SlotId == Attack.SlotId;
+			if (DesiredTarget && DesiredTarget->IsValid())
+				return C.Runtime.Attack.Pattern == (DesiredTarget->bGround
 					? EGuLiWingmanAttackPattern::GroundDive
-					: EGuLiWingmanAttackPattern::AirDogfight)); });
-		if (!Channel || (Attack.bGuiding && (Attack.LeaseEpoch != LeaseEpoch
+					: EGuLiWingmanAttackPattern::AirBurstOrbit);
+			return bAirPhase && C.Binding.SlotId == Attack.SlotId
+				&& C.Runtime.Attack.Pattern == EGuLiWingmanAttackPattern::AirBurstOrbit;
+		});
+		if (!Channel)
+		{
+			if (!DesiredTarget && Attack.Phase == EGuLiWingmanAttackPhase::Idle)
+			{
+				Attack.bGuiding = false;
+				Attack.PreferredVelocity = FVector::ZeroVector;
+				continue;
+			}
+			Cancel();
+			continue;
+		}
+		if ((Attack.Phase != EGuLiWingmanAttackPhase::Idle) && (Attack.LeaseEpoch != LeaseEpoch
 			|| (Attack.SlotId == Channel->Binding.SlotId && (Attack.ProfileRevision != Channel->ProfileRevision
-				|| Attack.SkillId != Channel->SkillId || Attack.DefinitionChecksum != Channel->DefinitionChecksum)))))
-		{ Cancel(); continue; }
-		if (!bExecutingGround && (!DesiredTarget || !DesiredTarget->IsValid()
-			|| Now < DesiredTarget->ServerTime || Now - DesiredTarget->ServerTime > 1.0))
+				|| Attack.SkillId != Channel->SkillId || Attack.DefinitionChecksum != Channel->DefinitionChecksum))))
 		{ Cancel(); continue; }
 		const auto& Profile = Channel->Runtime.Attack;
-		const FVector Position = Transform.GetLocation(), Forward = Transform.GetUnitAxis(EAxis::X);
-		const bool bTargetRelationChanged = !bExecutingGround
-			&& (Attack.Target.Target != DesiredTarget->Target
-				|| Attack.Target.Revision != DesiredTarget->Revision
-				|| Attack.SlotId != Channel->Binding.SlotId);
-		if (bTargetRelationChanged)
-		{
-			Attack.Phase = EGuLiWingmanAttackPhase::Idle; Attack.bGuiding = false;
-			Attack.AirTurn = {}; Attack.RetreatPoint = FVector::ZeroVector; Attack.RetreatOrigin = FVector::ZeroVector;
-		}
-		// Ground preparation freezes one server-published bombing point. Continuing
-		// to overwrite it every 200 ms made a moving Soldier invalidate the entry
-		// just as the aircraft finished lining up. A changed assignment revision still
-		// cancels and starts a fresh run; ordinary position refreshes do not.
-		if (!bExecutingGround && (!bPreparingGround || bTargetRelationChanged))
-		{
-			Attack.Target = *DesiredTarget;
-		}
-		Attack.SlotId = Channel->Binding.SlotId; Attack.ProfileRevision = Channel->ProfileRevision; Attack.LeaseEpoch = LeaseEpoch;
-		Attack.SkillId = Channel->SkillId; Attack.DefinitionChecksum = Channel->DefinitionChecksum;
+		const FVector Position = Transform.GetLocation();
 		const auto QueueShot = [&](int32 Index)
 		{
 			FGuLiWingmanAttackFireRecord Shot;
@@ -101,129 +93,152 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuns(const FGuLiWingmanGroupHand
 			Shot.ApproachDirection = Profile.Pattern == EGuLiWingmanAttackPattern::GroundDive ? Attack.Path.Direction : FVector::ForwardVector;
 			Runtime->PendingAttackShots.Emplace(Identity.Handle.Flight.FlightIndex, MoveTemp(Shot));
 		};
-		if (Profile.Pattern == EGuLiWingmanAttackPattern::AirDogfight)
+		if (Profile.Pattern == EGuLiWingmanAttackPattern::AirBurstOrbit)
 		{
-			const float AgentRadius = Config.FormationRuntime.AgentRadiusCentimeters;
-			const float Bounds = FMath::Max(0.0f, Attack.Target.Radius) + AgentRadius;
-			const float BreakawayBoundary = Bounds + Profile.BreakawayDistance;
-			const float Distance = FVector::Distance(Position, Attack.Target.Location);
-			const float TurnRate = Config.FormationRuntime.MaximumTurnRateDegreesPerSecond;
-			const auto EnterTurn = [&](EGuLiWingmanAttackPhase Phase, const FVector& Destination,
-				uint32 PhaseSalt, uint32 CandidateBase)->bool
+			const bool bHasTarget = DesiredTarget && DesiredTarget->IsValid() && !DesiredTarget->bGround;
+			const bool bTargetChanged = Attack.Target.Target != (bHasTarget
+				? DesiredTarget->Target : FGuLiTargetHandle{});
+			if (bHasTarget) Attack.Target = *DesiredTarget;
+			else Attack.Target = FGuLiWingmanAttackTarget{};
+			Attack.SlotId = Channel->Binding.SlotId;
+			Attack.ProfileRevision = Channel->ProfileRevision;
+			Attack.LeaseEpoch = LeaseEpoch;
+			Attack.SkillId = Channel->SkillId;
+			Attack.DefinitionChecksum = Channel->DefinitionChecksum;
+			const auto EnterReturnToOrbit = [&]()
 			{
-				if (++Attack.AirStateEntrySerial == 0u) ++Attack.AirStateEntrySerial;
-				Attack.StartTime = Now; Attack.bAirTurnUsingDirectGuidance = false;
-				for (uint32 Attempt = 0; Attempt < GuLiWingmanAttack::MaximumAirManeuverCandidates; ++Attempt)
-				{
-					const uint32 Seed = GuLiWingmanAttack::MakeAirManeuverSeed(SwarmAgent.AgentSeed,
-						Attack.Target.Revision, Attack.AirStateEntrySerial, ClientTick, PhaseSalt, CandidateBase + Attempt);
-					FGuLiWingmanAirTurnPlan Plan;
-					if (GuLiWingmanAttack::BuildAirTurnPlan(Position, Destination, Profile.FlightSpeed, TurnRate,
-						Profile, Seed, Plan)
-						&& GuLiWingmanAttack::AirSegmentClearsWorld(GetWorld(), Position, Plan.ControlPoint, AgentRadius)
-						&& GuLiWingmanAttack::AirSegmentClearsWorld(GetWorld(), Plan.ControlPoint, Destination, AgentRadius))
-					{
-						Attack.Phase = Phase; Attack.AirTurn = Plan;
-						Attack.PreferredVelocity = (Plan.ControlPoint - Position).GetSafeNormal() * Profile.FlightSpeed;
-						return true;
-					}
-				}
-				return false;
+				Runtime->PendingAttackShots.RemoveAll([&](const auto& P) {
+					return P.Key == Identity.Handle.Flight.FlightIndex
+						&& P.Value.MemberIndex == Identity.Handle.MemberIndex;
+				});
+				Attack.Phase = EGuLiWingmanAttackPhase::AirReturnToOrbit;
+				Attack.PhaseStartTime = Now;
+				Attack.bGuiding = false;
+				Attack.PreferredVelocity = FVector::ZeroVector;
 			};
-			const auto EnterBreakaway = [&]()->bool
+			const auto StartBurst = [&]()
 			{
-				// One entry serial covers all eight deterministic safety candidates. The accepted point is frozen for this run.
-				if (++Attack.AirStateEntrySerial == 0u) ++Attack.AirStateEntrySerial;
-				Attack.StartTime = Now; Attack.bAirTurnUsingDirectGuidance = false;
-				for (uint32 Attempt = 0; Attempt < GuLiWingmanAttack::MaximumAirManeuverCandidates; ++Attempt)
-				{
-					const uint32 Seed = GuLiWingmanAttack::MakeAirManeuverSeed(SwarmAgent.AgentSeed,
-						Attack.Target.Revision, Attack.AirStateEntrySerial, ClientTick,
-						GuLiWingmanAttack::BreakawayTurnSalt, Attempt);
-					const FVector Retreat = GuLiWingmanAttack::BuildRetreatCandidate(Position, Attack.Target.Location,
-						Carrier.Transform.GetLocation(), BreakawayBoundary, Profile, Seed);
-					FGuLiWingmanAirTurnPlan Plan;
-					if (!Retreat.IsNearlyZero() && GuLiWingmanAttack::BuildAirTurnPlan(Position, Retreat,
-						Profile.FlightSpeed, TurnRate, Profile, Seed ^ 0x68bc21ebu, Plan)
-						&& GuLiWingmanAttack::AirSegmentClearsWorld(GetWorld(), Position, Plan.ControlPoint, AgentRadius)
-						&& GuLiWingmanAttack::AirSegmentClearsWorld(GetWorld(), Plan.ControlPoint, Retreat, AgentRadius))
-					{
-						Attack.Phase = EGuLiWingmanAttackPhase::AirBreakawayTurn;
-						Attack.RetreatOrigin = Position; Attack.RetreatPoint = Retreat; Attack.AirTurn = Plan;
-						Attack.PreferredVelocity = (Plan.ControlPoint - Position).GetSafeNormal() * Profile.FlightSpeed;
-						return true;
-					}
-				}
-				return false;
+				Attack.Phase = EGuLiWingmanAttackPhase::AirApproachFire;
+				Attack.StartTime = Now;
+				Attack.PhaseStartTime = Now;
+				Attack.RunId = ClientTick;
+				Attack.NextShotIndex = 1;
+				Attack.bGuiding = true;
+				Attack.PreferredVelocity =
+					(Attack.Target.Location - Position).GetSafeNormal() * Profile.FlightSpeed;
+				QueueShot(0);
 			};
 
+			if (bTargetChanged && Attack.Phase == EGuLiWingmanAttackPhase::AirApproachFire)
+			{
+				EnterReturnToOrbit();
+				continue;
+			}
 			if (Attack.Phase == EGuLiWingmanAttackPhase::Idle)
 			{
-				if (Now < Attack.RetryAfter) continue;
-				Attack.Phase = EGuLiWingmanAttackPhase::AirApproachFire;
-			}
-			Attack.bGuiding = true;
-			if (Attack.Phase == EGuLiWingmanAttackPhase::AirApproachFire)
-			{
-				Attack.PreferredVelocity = (Attack.Target.Location - Position).GetSafeNormal() * Profile.FlightSpeed;
-				if (Distance <= BreakawayBoundary)
+				if (!bHasTarget) continue;
+				if (GuLiWingmanAttack::SelectAirEntryPhase(
+					FVector::Distance(Position, Attack.Target.Location), Profile)
+					== EGuLiWingmanAttackPhase::AirApproachFire)
 				{
-					if (!EnterBreakaway()) Cancel(5);
+					StartBurst();
+				}
+				else
+				{
+					Attack.Phase = EGuLiWingmanAttackPhase::AirSeparate;
+					Attack.PhaseStartTime = Now;
+				}
+			}
+			if (Attack.Phase == EGuLiWingmanAttackPhase::AirSeparate)
+			{
+				if (!bHasTarget)
+				{
+					Cancel(0, false);
 					continue;
 				}
-				if (GuLiWingmanAttack::CanQueueAirGun(Attack.Phase)
-					&& Now >= Weapon.GetNextFireSeconds(Attack.SlotId)
-					&& GuLiWingmanAttack::IsInsideForwardArc(Position, Forward, Attack.Target.Location,
-						Attack.Target.Radius, Channel->Runtime.RangeCentimeters,
-						Channel->Runtime.TargetConeHalfAngleDegrees))
+				const float Distance = FVector::Distance(Position, Attack.Target.Location);
+				if (Distance >= Profile.AirFireStartDistance) StartBurst();
+				else
 				{
-					Attack.RunId = ClientTick; QueueShot(0);
-					Weapon.SetNextFireSeconds(Attack.SlotId, Now + Channel->Runtime.CooldownSeconds);
+					Attack.bGuiding = true;
+					Attack.PreferredVelocity =
+						(Position - Attack.Target.Location).GetSafeNormal() * Profile.FlightSpeed;
 				}
 				continue;
 			}
-			if (Attack.Phase == EGuLiWingmanAttackPhase::AirBreakawayTurn)
+			if (Attack.Phase == EGuLiWingmanAttackPhase::AirApproachFire)
 			{
-				const bool bTurnFinished = GuLiWingmanAttack::ShouldFinishAirTurn(Position, Attack.AirTurn,
-					Profile.ManeuverArrivalRadius, Now - Attack.StartTime);
-				const bool bTimedOut = Now - Attack.StartTime >= GuLiWingmanAttack::AirTurnTimeoutSeconds;
-				if (bTurnFinished)
+				if (!bHasTarget || GuLiWingmanAttack::ShouldEndAirBurst(
+					FVector::Distance(Position, Attack.Target.Location), Now - Attack.StartTime, Profile))
 				{
-					Attack.bAirTurnUsingDirectGuidance = bTimedOut;
-					Attack.Phase = GuLiWingmanAttack::NextAirDogfightPhase(Attack.Phase);
-					Attack.PreferredVelocity = (Attack.RetreatPoint - Position).GetSafeNormal() * Profile.FlightSpeed;
+					EnterReturnToOrbit();
 				}
-				else Attack.PreferredVelocity = (Attack.AirTurn.ControlPoint - Position).GetSafeNormal() * Profile.FlightSpeed;
+				else
+				{
+					Attack.bGuiding = true;
+					Attack.PreferredVelocity =
+						(Attack.Target.Location - Position).GetSafeNormal() * Profile.FlightSpeed;
+				}
 				continue;
 			}
-			if (Attack.Phase == EGuLiWingmanAttackPhase::AirRetreat)
+			if (Attack.Phase == EGuLiWingmanAttackPhase::AirReturnToOrbit)
 			{
-				if (GuLiWingmanAttack::HasReachedOrPassed(Position, Attack.RetreatOrigin,
-					Attack.RetreatPoint, Profile.ManeuverArrivalRadius))
+				Attack.bGuiding = false;
+				Attack.PreferredVelocity = FVector::ZeroVector;
+				if (GuLiWingmanAttack::ShouldBeginAirOrbitCooldown(
+					FVector::Distance(Position, Carrier.Transform.GetLocation()),
+					Config.FormationRuntime.SwarmOrbit.OuterSoftRadiusCentimeters))
 				{
-					if (!EnterTurn(GuLiWingmanAttack::NextAirDogfightPhase(Attack.Phase), Attack.Target.Location,
-						GuLiWingmanAttack::ReturnTurnSalt, 0u)) Cancel(6);
+					Attack.Phase = EGuLiWingmanAttackPhase::AirOrbitCooldown;
+					Attack.PhaseStartTime = Now;
 				}
-				else Attack.PreferredVelocity = (Attack.RetreatPoint - Position).GetSafeNormal() * Profile.FlightSpeed;
 				continue;
 			}
-			if (Attack.Phase == EGuLiWingmanAttackPhase::AirReturnTurn)
+			if (Attack.Phase == EGuLiWingmanAttackPhase::AirOrbitCooldown)
 			{
-				const bool bTurnFinished = GuLiWingmanAttack::ShouldFinishAirTurn(Position, Attack.AirTurn,
-					Profile.ManeuverArrivalRadius, Now - Attack.StartTime);
-				const bool bTimedOut = Now - Attack.StartTime >= GuLiWingmanAttack::AirTurnTimeoutSeconds;
-				if (bTurnFinished)
+				Attack.bGuiding = false;
+				Attack.PreferredVelocity = FVector::ZeroVector;
+				if (GuLiWingmanAttack::IsAirOrbitCooldownComplete(
+					Now - Attack.PhaseStartTime, Profile))
 				{
-					Attack.bAirTurnUsingDirectGuidance = bTimedOut;
-					Attack.Phase = GuLiWingmanAttack::NextAirDogfightPhase(Attack.Phase);
-					Attack.PreferredVelocity = (Attack.Target.Location - Position).GetSafeNormal() * Profile.FlightSpeed;
+					if (!bHasTarget) Cancel(0, false);
+					else
+					{
+						Attack.Phase = GuLiWingmanAttack::SelectAirEntryPhase(
+							FVector::Distance(Position, Attack.Target.Location), Profile);
+						Attack.PhaseStartTime = Now;
+						if (Attack.Phase == EGuLiWingmanAttackPhase::AirApproachFire) StartBurst();
+					}
 				}
-				else Attack.PreferredVelocity = (Attack.AirTurn.ControlPoint - Position).GetSafeNormal() * Profile.FlightSpeed;
 				continue;
 			}
-			Cancel(7);
+			Cancel(7, false);
 			continue;
 		}
+		if (!bExecutingGround && (!DesiredTarget || !DesiredTarget->IsValid()
+			|| Now < DesiredTarget->ServerTime || Now - DesiredTarget->ServerTime > 1.0))
+		{ Cancel(); continue; }
+		// Ground preparation freezes one server-published bombing point. Continuing
+		// to overwrite it every 200 ms made a moving Soldier invalidate the entry
+		// just as the aircraft finished lining up. A changed assignment revision still
+		// cancels and starts a fresh run; ordinary position refreshes do not.
+		const bool bTargetRelationChanged = !bExecutingGround
+			&& (Attack.Target.Target != DesiredTarget->Target
+				|| Attack.Target.Revision != DesiredTarget->Revision
+				|| Attack.SlotId != Channel->Binding.SlotId);
+		if (bTargetRelationChanged)
+		{
+			Attack.Phase = EGuLiWingmanAttackPhase::Idle;
+			Attack.bGuiding = false;
+		}
+		if (!bExecutingGround && (!bPreparingGround || bTargetRelationChanged)) Attack.Target = *DesiredTarget;
+		Attack.SlotId = Channel->Binding.SlotId; Attack.ProfileRevision = Channel->ProfileRevision; Attack.LeaseEpoch = LeaseEpoch;
+		Attack.SkillId = Channel->SkillId; Attack.DefinitionChecksum = Channel->DefinitionChecksum;
+		// Dive/PullUp/Climb already follow a complete FlightNav + terrain checked
+		// path. Only ground preparation responds to the movement recovery state.
+		if (!bExecutingGround
+			&& (Avoidance.bControlledRecovery || Avoidance.ConsecutiveBlockedSeconds > 0.1f))
+		{ Cancel(); continue; }
 		if (Profile.Pattern != EGuLiWingmanAttackPattern::GroundDive) { Cancel(); continue; }
 		if (Attack.Phase == EGuLiWingmanAttackPhase::Idle)
 		{
@@ -293,22 +308,16 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuns(const FGuLiWingmanGroupHand
 		}
 		if (Attack.Phase == EGuLiWingmanAttackPhase::Lineup)
 		{
-			const float Along = FVector::DotProduct(Position - Attack.Path.Entry, DiveDirection);
-			const FVector Closest = Attack.Path.Entry + DiveDirection * Along;
-			Attack.PreferredVelocity = (DiveDirection * (Profile.FlightSpeed * 1.0f) + (Closest - Position)).GetSafeNormal() * Profile.FlightSpeed;
-			if (Along >= -80.0f && Along <= 600.0f && FVector::Distance(Position, Closest) < 500.0f
-				&& FVector::DotProduct(Forward, DiveDirection) > FMath::Cos(FMath::DegreesToRadians(6.0f))
-				&& FMath::Abs(Dynamics.Velocity.Size() - Profile.FlightSpeed) < Profile.FlightSpeed * 0.05f)
-			{
-				Attack.Phase = EGuLiWingmanAttackPhase::Dive;
-				Attack.StartTime = Now;
-				Attack.PhaseStartTime = Now;
-				Attack.RunId = ClientTick;
-				Attack.NextShotIndex = 1;
-				QueueShot(0); Weapon.SetNextFireSeconds(Attack.SlotId, Now + Channel->Runtime.CooldownSeconds);
-			}
-			else if (Along > 600.0f
-				|| Now - Attack.PhaseStartTime > GuLiWingmanAttack::MaximumGroundLineupSeconds) Cancel();
+			// The validated ingress already established a terrain-safe dive path. Once
+			// the aircraft reaches Lineup, start the run as soon as its weapon is ready;
+			// do not require a narrow position, heading, or speed convergence window.
+			if (Now < Weapon.GetNextFireSeconds(Attack.SlotId)) continue;
+			Attack.Phase = EGuLiWingmanAttackPhase::Dive;
+			Attack.StartTime = Now;
+			Attack.PhaseStartTime = Now;
+			Attack.RunId = ClientTick;
+			Attack.NextShotIndex = 1;
+			QueueShot(0); Weapon.SetNextFireSeconds(Attack.SlotId, Now + Channel->Runtime.CooldownSeconds);
 			continue;
 		}
 		const float Age = float(Now - Attack.StartTime);
@@ -321,8 +330,6 @@ void UGuLiWingmanSimulationSubsystem::TickAttackRuns(const FGuLiWingmanGroupHand
 			if (Age >= Due - 0.001f)
 			{
 				if (Age - Due > 0.075f) { Cancel(2); continue; }
-				if (FVector::Dist(Position, Attack.Path.PositionAt(Age)) > 1200.0) { Cancel(3); continue; }
-				if (FVector::DotProduct(Forward, DiveDirection) < FMath::Cos(FMath::DegreesToRadians(12.0f))) { Cancel(4); continue; }
 				QueueShot(Attack.NextShotIndex++);
 			}
 		}
@@ -388,9 +395,10 @@ void UGuLiWingmanSimulationSubsystem::GetAttackDiagnostics(TArray<FGuLiWingmanAt
 			D.Forward = Transform.GetUnitAxis(EAxis::X);
 			D.Entry = Attack.Path.Entry; D.PreferredVelocity = Attack.PreferredVelocity; D.RunId = Attack.RunId;
 			D.CompletedGroundRuns = Attack.CompletedGroundRuns;
-			D.RetreatPoint = Attack.RetreatPoint; D.TurnControlPoint = Attack.AirTurn.ControlPoint;
-			D.TurnYawDegrees = Attack.AirTurn.SignedYawDegrees; D.TurnPitchDegrees = Attack.AirTurn.PitchDegrees;
-			D.StateEntrySerial = Attack.AirStateEntrySerial;
+			D.TargetDistance = Attack.Target.IsValid()
+				? FVector::Distance(Transform.GetLocation(), Attack.Target.Location) : 0.0f;
+			D.CarrierDistance = FVector::Distance(
+				Transform.GetLocation(), State.Carrier.Transform.GetLocation());
 			D.NextShot = Attack.NextShotIndex; D.StartTime = Attack.StartTime;
 			D.PhaseStartTime = Attack.PhaseStartTime; D.bGuiding = Attack.bGuiding;
 			D.CancelReason = Attack.LastCancelReason;

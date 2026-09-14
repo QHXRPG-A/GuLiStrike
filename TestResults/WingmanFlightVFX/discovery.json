@@ -1,0 +1,30 @@
+{
+  "editor_world": "<Object '/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype' (0x0000017487730E00) Class 'World'>",
+  "game_world": "None",
+  "dirty_packages": [],
+  "systems": {
+    "Wingman": [],
+    "Missile": [
+      "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight.NS_WM01_MissileFlight",
+      "/Game/GuLiStrike/FX/MissileSpiralImpact/NS_MissileSpiralImpact.NS_MissileSpiralImpact"
+    ],
+    "Exhaust": [],
+    "Trail": []
+  },
+  "mesh": {
+    "bounds": "<Struct 'BoxSphereBounds' (0x0000017681F2A6C0) {origin: {x: 176.216187, y: -0.000031, z: 337.413452}, box_extent: {x: 1340.240906, y: 867.647217, z: 343.784180}, sphere_radius: 1514.982211}>"
+  },
+  "template": "<Struct 'NiagaraSystemSummary' (0x00000176A1EF1680) {system_path: \"/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight\", system_name: \"NS_WM01_MissileFlight\", emitter_count: 3, emitter_names: (\"Core\",\"Exhaust\",\"Trail\"), user_parameter_count: 1, user_parameter_names: (\"User.Velocity\"), has_gpu_emitters: False}>",
+  "api": {
+    "NiagaraEmitterService.set_emitter_property": null,
+    "NiagaraEmitterService.set_renderer_property": "X.set_renderer_property(system_path, emitter_name, renderer_index, property_name, value) -> bool\r\nSet a renderer property.\r\n\r\nArgs:\r\n    system_path (str): Full path to the Niagara system\r\n    emitter_name (str): Name of the emitter\r\n    renderer_index (int32): Index of the renderer\r\n    property_name (str): Name of the property\r\n    value (str): New value as string\r\n\r\nReturns:\r\n    bool: True if successful Example: unreal.NiagaraEmitterService.set_renderer_property(\"/Game/VFX/NS_Fire\", \"Sparks\", 0, \"Material\", \"/Game/Materials/M_Particle\")",
+    "NiagaraEmitterService.get_emitter_info": null,
+    "NiagaraEmitterService.get_module_input": "X.get_module_input(system_path, emitter_name, module_name, input_name) -> str\r\nGet a module input value.\r\n\r\nArgs:\r\n    system_path (str): Full path to the Niagara system\r\n    emitter_name (str): Name of the emitter\r\n    module_name (str): Name of the module\r\n    input_name (str): Name of the input parameter\r\n\r\nReturns:\r\n    str: Value as string (empty if not found) Example: value = unreal.NiagaraEmitterService.get_module_input(\"/Game/VFX/NS_Fire\", \"Sparks\", \"Scale Sprite Size\", \"Scale Factor\")",
+    "NiagaraEmitterService.set_module_input": "X.set_module_input(system_path, emitter_name, module_name, input_name, value) -> bool\r\nSet a module input value.\r\n\r\nArgs:\r\n    system_path (str): Full path to the Niagara system\r\n    emitter_name (str): Name of the emitter\r\n    module_name (str): Name of the module\r\n    input_name (str): Name of the input parameter\r\n    value (str): New value as string\r\n\r\nReturns:\r\n    bool: True if successful Example: unreal.NiagaraEmitterService.set_module_input(\"/Game/VFX/NS_Fire\", \"Sparks\", \"Scale Sprite Size\", \"Scale Factor\", \"(X=2,Y=2)\")",
+    "NiagaraService.summarize": "X.summarize(system_path) -> NiagaraSystemSummary or None\r\nGet an AI-friendly summary of a Niagara System.\r\n\r\nArgs:\r\n    system_path (str): Full path to the system\r\n\r\nReturns:\r\n    NiagaraSystemSummary or None: True if successful Example: summary = unreal.NiagaraService.summarize(\"/Game/VFX/NS_Fire\")  # summary struct or None\r\n\r\n    out_summary (NiagaraSystemSummary): AI-friendly system summary",
+    "NiagaraService.get_system_info": "X.get_system_info(system_path) -> NiagaraSystemInfo_Custom or None\r\nGet comprehensive Niagara System information.\r\n\r\nArgs:\r\n    system_path (str): Full path to the system\r\n\r\nReturns:\r\n    NiagaraSystemInfo_Custom or None: True if successful Example: info = unreal.NiagaraService.get_system_info(\"/Game/VFX/NS_Fire\")  # info struct or None (NOT a tuple) print(f\"Emitter count: {info.emitter_count}\")\r\n\r\n    out_info (NiagaraSystemInfo_Custom): Structure containing all system details",
+    "NiagaraService.compile_with_results": "X.compile_with_results(system_path) -> NiagaraCompilationResult\r\nCompile a Niagara System and return detailed compilation results with errors.\nThis method waits for compilation to complete and captures all error and warning messages.\r\n\r\nArgs:\r\n    system_path (str): Full path to the system\r\n\r\nReturns:\r\n    NiagaraCompilationResult: Compilation result with success status, errors, and warnings Example: result = unreal.NiagaraService.compile_with_results(\"/Game/VFX/NS_Fire\") if not result.success: print(f\"Compilation failed with {result.error_count} errors:\") for error in result.errors: print(f\"  - {error}\")",
+    "ScreenshotService.capture_editor_window": "X.capture_editor_window(file_path) -> ScreenshotResult\r\nCapture the entire Unreal Editor window to a file.\nUses Windows DWM (Desktop Window Manager) for accurate capture of DirectX content.\nWorks for all editor content including Blueprint graphs, material editors, etc.\r\n\r\nArgs:\r\n    file_path (str): Output file path (PNG format recommended)\r\n\r\nReturns:\r\n    ScreenshotResult: Screenshot result with success status and file info",
+    "ScreenshotService.capture_asset_editor": "X.capture_asset_editor(asset_path, file_path) -> ScreenshotResult\r\nOpen an asset editor for the given asset path, force its tab to the foreground, and\ncapture the editor window. One-call replacement for the\n\"close other editors -> open target -> capture_editor_window\" dance that was previously\nrequired to reliably screenshot a specific asset's editor (material graph, blueprint\ngraph, etc.).\r\n\r\nArgs:\r\n    asset_path (str): Content Browser path to the asset (e.g. \"/Game/Materials/M_Foo\")\r\n    file_path (str): Output file path. Auto-normalized to ProjectSaved/VibeUE/Screenshots/<name>.png when no extension is given.\r\n\r\nReturns:\r\n    ScreenshotResult: Screenshot result; success means the asset's editor was focused and the file written."
+  }
+}

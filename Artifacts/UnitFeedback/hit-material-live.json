@@ -1,0 +1,297 @@
+{
+	"material":
+	{
+		"blend_mode": "BLEND_Additive",
+		"shading_model": "MSM_Unlit",
+		"two_sided": false
+	},
+	"expressions": [
+		{
+			"id": "MaterialExpressionMultiply_00000216E8FFBB80",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -300,
+			"pos_y": 0,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "2.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTime_00000216E97F1880",
+			"class": "Time",
+			"class_full": "MaterialExpressionTime",
+			"pos_x": -1300,
+			"pos_y": 162,
+			"properties":
+			{
+				"bIgnorePause": "False",
+				"bOverride_Period": "False",
+				"Period": "0.000000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionSubtract_00000216E8FFC080",
+			"class": "Subtract",
+			"class_full": "MaterialExpressionSubtract",
+			"pos_x": -1040,
+			"pos_y": 162,
+			"properties":
+			{
+				"ConstA": "1.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionOneMinus_00000216D1FE6400",
+			"class": "OneMinus",
+			"class_full": "MaterialExpressionOneMinus",
+			"pos_x": -520,
+			"pos_y": 162,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionTime_00000219416F6E40",
+			"class": "Time",
+			"class_full": "MaterialExpressionTime",
+			"pos_x": -1560,
+			"pos_y": 162,
+			"properties":
+			{
+				"bIgnorePause": "False",
+				"bOverride_Period": "False",
+				"Period": "0.000000"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionScalarParameter_000002164AF96540",
+			"class": "ScalarParameter",
+			"class_full": "MaterialExpressionScalarParameter",
+			"pos_x": -1560,
+			"pos_y": 324,
+			"properties":
+			{
+				"DefaultValue": "-1000.000000",
+				"ControlType": "Numeric",
+				"SliderMin": "0.000000",
+				"SliderMax": "0.000000",
+				"Enumeration": "None",
+				"EnumerationIndex": "0",
+				"bUseCustomPrimitiveData": "True",
+				"PrimitiveDataIndex": "7",
+				"SortPriority": "32"
+			},
+			"is_parameter": true,
+			"parameter_name": "HitStartTime",
+			"group": "None",
+			"inputs": [],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionSubtract_000002164AF9E380",
+			"class": "Subtract",
+			"class_full": "MaterialExpressionSubtract",
+			"pos_x": -1300,
+			"pos_y": 162,
+			"properties":
+			{
+				"ConstA": "1.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_000002164AF9B2C0",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -1040,
+			"pos_y": 162,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "2.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionOneMinus_0000021506F5E900",
+			"class": "OneMinus",
+			"class_full": "MaterialExpressionOneMinus",
+			"pos_x": -780,
+			"pos_y": 162,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionSaturate_0000021506F5B000",
+			"class": "Saturate",
+			"class_full": "MaterialExpressionSaturate",
+			"pos_x": -520,
+			"pos_y": 162,
+			"properties":
+			{
+			},
+			"inputs": [
+				"Input"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		},
+		{
+			"id": "MaterialExpressionConstant3Vector_00000217587D1420",
+			"class": "Constant3Vector",
+			"class_full": "MaterialExpressionConstant3Vector",
+			"pos_x": -520,
+			"pos_y": 0,
+			"properties":
+			{
+				"Constant": "(R=2.000000,G=2.000000,B=2.000000,A=1.000000)"
+			},
+			"inputs": [],
+			"outputs": [
+				"Output_0",
+				"Output_1",
+				"Output_2",
+				"Output_3"
+			]
+		},
+		{
+			"id": "MaterialExpressionMultiply_000002164AF97E40",
+			"class": "Multiply",
+			"class_full": "MaterialExpressionMultiply",
+			"pos_x": -260,
+			"pos_y": 0,
+			"properties":
+			{
+				"ConstA": "0.000000",
+				"ConstB": "1.000000"
+			},
+			"inputs": [
+				"A",
+				"B"
+			],
+			"outputs": [
+				"Output_0"
+			]
+		}
+	],
+	"connections": [
+		{
+			"source_id": "MaterialExpressionTime_00000216E97F1880",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionSubtract_00000216E8FFC080",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionTime_00000219416F6E40",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionSubtract_000002164AF9E380",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionScalarParameter_000002164AF96540",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionSubtract_000002164AF9E380",
+			"target_input": "B"
+		},
+		{
+			"source_id": "MaterialExpressionSubtract_000002164AF9E380",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_000002164AF9B2C0",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionMultiply_000002164AF9B2C0",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionOneMinus_0000021506F5E900",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionOneMinus_0000021506F5E900",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionSaturate_0000021506F5B000",
+			"target_input": "Input"
+		},
+		{
+			"source_id": "MaterialExpressionConstant3Vector_00000217587D1420",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_000002164AF97E40",
+			"target_input": "A"
+		},
+		{
+			"source_id": "MaterialExpressionSaturate_0000021506F5B000",
+			"source_output_index": 0,
+			"source_output_name": "",
+			"target_id": "MaterialExpressionMultiply_000002164AF97E40",
+			"target_input": "B"
+		}
+	],
+	"output_connections": [
+		{
+			"property": "EmissiveColor",
+			"expression_id": "MaterialExpressionMultiply_000002164AF97E40",
+			"output_index": 0,
+			"output_name": ""
+		}
+	]
+}

@@ -23,7 +23,8 @@ public class GuLiStrike : ModuleRules
 			"GameplayTasks",
 			"Niagara",
 			"UMG",
-			"Slate"
+			"Slate",
+			"SlateCore"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new string[] {
@@ -63,7 +64,6 @@ public class GuLiStrike : ModuleRules
 				"MeshUtilities",
 				"MeshDescription",
 				"StaticMeshDescription",
-				"SlateCore",
 				"ImageCore",
 				"RenderCore",
 				"StaticMeshEditor",

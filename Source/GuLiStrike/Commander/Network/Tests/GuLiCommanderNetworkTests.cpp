@@ -114,7 +114,8 @@ bool FGuLiCommanderDynamicCohortContractTest::RunTest(const FString& Parameters)
 {
 	(void)Parameters;
 
-	TestEqual(TEXT("Partial-member move ACK and endpoint protocol is version 6"), GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(6u));
+	TestEqual(TEXT("Stable ActorId, unified SelectionRevision and interaction orders use protocol version 8"),
+		GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(8u));
 	TestEqual(TEXT("Control granularity remains capped at 25 soldiers"),
 		GULI_CONTROL_COHORT_TARGET_SIZE, static_cast<uint32>(25u));
 	TestEqual(TEXT("Authoritative pose contract is captured at 10 Hz"),

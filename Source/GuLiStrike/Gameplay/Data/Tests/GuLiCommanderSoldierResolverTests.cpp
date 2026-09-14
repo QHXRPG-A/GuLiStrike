@@ -6,6 +6,7 @@
 
 #include "Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h"
 #include "Engine/DataTable.h"
+#include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
 #include "Engine/StaticMesh.h"
 #include "Misc/AutomationTest.h"
 #include "UObject/StrongObjectPtr.h"
@@ -49,6 +50,7 @@ bool FGuLiCommanderSoldierValidRowTest::RunTest(const FString& Parameters)
 		GuLiCommanderSoldierResolverTests::MakeTestFallback(FallbackMesh.Get());
 
 	FGuLiStrikeCommanderSoldiersRow Row;
+	Row.PresentationScale = 1.0f;
 	Row.Id = 2;
 	Row.MovementSpeedCmPerSecond = 3600.0f;
 	Row.MaxHealth = 300.5f;
@@ -81,6 +83,7 @@ bool FGuLiCommanderSoldierInvalidValuesFallbackTest::RunTest(const FString& Para
 		GuLiCommanderSoldierResolverTests::MakeTestFallback(FallbackMesh.Get());
 
 	FGuLiStrikeCommanderSoldiersRow Row;
+	Row.PresentationScale = 1.0f;
 	Row.MovementSpeedCmPerSecond = -1.0f;
 	Row.MaxHealth = std::numeric_limits<float>::quiet_NaN();
 	Row.ModelAsset = TSoftObjectPtr<UObject>(WrongModel.Get());
@@ -203,6 +206,14 @@ bool FGuLiCommanderSoldierImportedBaselineTest::RunTest(const FString& Parameter
 	TestEqual(TEXT("WM01 has its own stable identity"), SecondType.UnitTypeId, static_cast<uint16>(2u));
 	TestEqual(TEXT("WM01 fractional health survives above 255"), SecondType.MaxHealth, 300.5f);
 	TestNotNull(TEXT("WM01 model resolves to a UStaticMesh"), SecondType.Model.Get());
+	const auto Miner = FGuLiCommanderSoldierResolver::Resolve(DataTable, TEXT("ElectromagneticMiner"), Resolved, bEntireDefinitionFromDataTable);
+	TestTrue(TEXT("Miner resolves entirely from Soldiers"), bEntireDefinitionFromDataTable);
+	TestEqual(TEXT("Miner stable Soldiers id"), Miner.UnitTypeId, uint16(3));
+	TestEqual(TEXT("Miner speed is three times the previous 1500 cm/s"), Miner.MovementSpeedCmPerSecond, 4500.0f);
+	TestEqual(TEXT("Miner health remains 1000"), Miner.MaxHealth, 1000.0f);
+	TestTrue(TEXT("Miner uses its Actor implementation"), Miner.ActorClass == AGuLiMiningVehiclePawn::StaticClass() && !Miner.UsesMass());
+	TestTrue(TEXT("Preserved presentation is uniformly scaled to 18 metres"), Miner.PresentationClass
+		&& FMath::IsNearlyEqual(Miner.PresentationScale * 591.6596f, 1800.0f, 0.01f));
 	if (IsValid(SecondType.Model))
 	{
 		TestEqual(
@@ -224,6 +235,7 @@ bool FGuLiCommanderSoldierHealthBoundaryTest::RunTest(const FString& Parameters)
 	TStrongObjectPtr<UStaticMesh> Model(NewObject<UStaticMesh>());
 	const FGuLiSoldierDefinition Fallback = GuLiCommanderSoldierResolverTests::MakeTestFallback(Model.Get());
 	FGuLiStrikeCommanderSoldiersRow Row;
+	Row.PresentationScale = 1.0f;
 	Row.Id = 2;
 	Row.MovementSpeedCmPerSecond = 3600.0f;
 	Row.ModelAsset = TSoftObjectPtr<UObject>(Model.Get());

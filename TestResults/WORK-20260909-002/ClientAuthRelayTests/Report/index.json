@@ -1,0 +1,1248 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "4E87EF204B6702B7C292D8ACF481E37C",
+			"instanceName": "DESKTOP-6D3B0FC-25612",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.09-06.32.54",
+	"succeeded": 13,
+	"succeededWithWarnings": 0,
+	"failed": 10,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.30169889330863953,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "NoOwnerThenReconnect",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.NoOwnerThenReconnect",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0085383988916873932,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PersistentDisconnectTakeover",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.PersistentDisconnectTakeover",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.11049880087375641,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The pre-disconnect packet ran the durable validator' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 182,
+					"timestamp": "2026.09.09-06.32.54"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SilentOwnerEntersBackupRotation",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.SilentOwnerEntersBackupRotation",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0082696005702018738,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Candidate silence becomes Stale at the 1 Hz boundary: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 340,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Candidate silence becomes Unavailable at the next boundary: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 343,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Watchdog revocation retains a recoverable NoOwner group' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 350,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The registry exposes exactly one unseeded lease-loss recovery' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 350,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A connected backup enters the normal reliable Offer rotation' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 354,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Lease-loss recovery starts with an Offer, not an implicit commit: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 356,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The group is now part of the normal awaiting-owner directory' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayAuthorityRegistryTests.cpp",
+					"lineNumber": 363,
+					"timestamp": "2026.09.09-06.32.54"
+				}
+			],
+			"warnings": 0,
+			"errors": 7,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldHookRevokeAndDestroyLifetime",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AuthorityRegistry.WorldHookRevokeAndDestroyLifetime",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0077487006783485413,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingThenAcceptOrTimeout",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.CarrierSource.PendingThenAcceptOrTimeout",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0091027021408081055,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A future CMC revision is queued instead of rejected' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 377,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "A pending cross-channel reference does not reserve the sequence: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 377,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The history-advance event resolves one pending Candidate' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 384,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Resolution before 0.25 seconds accepts the exact Candidate' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 386,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A second unresolved source enters Pending' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 392,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A source missing for more than 0.25 seconds is rejected explicitly' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 397,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Timed-out Candidate still cannot advance the sequence: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 397,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'An exact-deadline fixture enters Pending' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 403,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Deadline wins even when the Carrier resolver reports Found at exactly 0.25 seconds' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 409,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Exact-deadline rejection cannot advance Candidate state: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 409,
+					"timestamp": "2026.09.09-06.32.54"
+				}
+			],
+			"warnings": 0,
+			"errors": 10,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Authority",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.EmergencyRebase.Authority",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0078432001173496246,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AdditionalValidatorBeforeSequenceCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.FireIntent.AdditionalValidatorBeforeSequenceCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0084597021341323853,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AssemblyDeadline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AssemblyDeadline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0080556981265544891,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicAllOrNothing",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AtomicAllOrNothing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.008427102118730545,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicResumeAndTakeover",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.AtomicResumeAndTakeover",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0096945986151695251,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "1 Hz watchdog makes the silent owner Stale: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 408,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Authority begins resume' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 411,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Resume requires the typed atomic envelope: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 413,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Ability config ACK' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 201,
+					"timestamp": "2026.09.09-06.32.54"
+				}
+			],
+			"warnings": 0,
+			"errors": 4,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReliableAcksBeforeAtomicCandidate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.ReliableAcksBeforeAtomicCandidate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0075672008097171783,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StrictContractGates",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.StrictContractGates",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0082780979573726654,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Old roster revision is rejected before reserving state' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 476,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Mismatched navigation revisions are rejected' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 480,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A stale Accepted baseline cannot advance the Flight' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 484,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Old lease epoch is rejected' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 488,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Old ability revision is rejected' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 492,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Partial live Flight membership is rejected' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 498,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Rejected strict contracts do not advance the Flight sequence: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 498,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Rejected strict contracts do not append Accepted snapshots' to be 5, but it was 6.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 502,
+					"timestamp": "2026.09.09-06.32.54"
+				}
+			],
+			"warnings": 0,
+			"errors": 8,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TrailGrantPending",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.ProtocolTransactions.TrailGrantPending",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0081382021307945251,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Five members across two explicit segments reach the World gate' to be 10, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 561,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "One unresolved Flight endpoint becomes pending: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 591,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Newer same-Flight packet evicts pending and can commit: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 596,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Evicted pending packet receives a rejection' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTransactionTests.cpp",
+					"lineNumber": 604,
+					"timestamp": "2026.09.09-06.32.54"
+				}
+			],
+			"warnings": 0,
+			"errors": 4,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RetainedBootstrapAndRevocation",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.PublicTransport.RetainedBootstrapAndRevocation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.01115889847278595,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ZeroAuthorityMotion",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.SyntheticCandidate.ZeroAuthorityMotion",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0082515999674797058,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrozenAbilityBaseline",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Takeover.FrozenAbilityBaseline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0079955980181694031,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MonotonicBounded",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.TokenBucket.MonotonicBounded",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0081583000719547272,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MotionEnvelopeBeforeAcceptedCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.MotionEnvelopeBeforeAcceptedCommit",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.012868497520685196,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'An old ability projection is rejected before motion state' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 613,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A rejected motion packet cannot append accepted history' to be 1, but it was 2.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 615,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "A rejected motion packet cannot reserve CandidateSequence: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 615,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A non-advancing client simulation tick is rejected' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 613,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A forged large client tick delta cannot widen the position envelope' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 613,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Speed above the projected CatchUpSpeed is rejected' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 613,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Endpoint speed cannot exceed the projected acceleration envelope' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 613,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Endpoint direction cannot exceed the projected turn-rate envelope' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 613,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A position teleport is rejected even when endpoint velocity is legal' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 613,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A pursuit step at the exact acceleration and turn limits remains accepted' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 666,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Repeated same-time packets cannot accumulate client clock lead' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 613,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A rejected motion packet cannot append accepted history' to be 2, but it was 3.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 615,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "A rejected motion packet cannot reserve CandidateSequence: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 615,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "The clock-lead rejection leaves the last accepted sequence unchanged: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 675,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Normal flight cannot erase its velocity while holding position' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 613,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A recovery-stage constraint stop may travel part of an upload interval' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 695,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Recovery mode cannot turn a held pose into a teleport: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 709,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "A recovery teleport is rejected by the spatial envelope: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 711,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A rejected recovery teleport cannot append accepted history' to be 3, but it was 4.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 715,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "A rejected recovery teleport cannot reserve CandidateSequence: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 715,
+					"timestamp": "2026.09.09-06.32.54"
+				}
+			],
+			"warnings": 0,
+			"errors": 20,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingHealthAbilityAndModeGate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.PendingHealthAbilityAndModeGate",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0082189999520778656,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Health fixture enters Pending: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 488,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Health=0 invalidates a Pending Candidate before its resolver can accept it' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 499,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Health invalidation does not reserve CandidateSequence: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 499,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Ability fixture enters Pending: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 510,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Ability publication rejects the old Pending Candidate' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 526,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Ability invalidation does not reserve CandidateSequence: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 526,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Orbit cannot jump directly to Recover between Candidate packets' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 565,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Illegal mode transition does not reserve CandidateSequence: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 565,
+					"timestamp": "2026.09.09-06.32.54"
+				}
+			],
+			"warnings": 0,
+			"errors": 8,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldGateFailClosedBeforeCommit",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.WorldGateFailClosedBeforeCommit",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0087836980819702148,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A production Candidate without an installed World validator fails closed' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 435,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Missing validator does not append history' to be 0, but it was 1.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 436,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Missing validator does not reserve CandidateSequence: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 436,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The World callback executes after motion validation' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 450,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A World rejection is returned verbatim' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 453,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'World rejection still does not append history' to be 0, but it was 1.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 454,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "World rejection still does not reserve CandidateSequence: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 454,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The same unreserved sequence can commit after every gate passes' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 460,
+					"timestamp": "2026.09.09-06.32.54"
+				}
+			],
+			"warnings": 0,
+			"errors": 8,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldStaticDynamicAndNavigation",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.Validator.WorldStaticDynamicAndNavigation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0092318020761013031,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AbilityConfigAndSixScopeGate",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.AbilityConfigAndSixScopeGate",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0082186013460159302,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'An old ability revision is rejected before accepted-sequence reservation' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 767,
+					"timestamp": "2026.09.09-06.32.54"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Rejected ability versions never advance Candidate state: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Relay\\Tests\\GuLiWingmanRelayTests.cpp",
+					"lineNumber": 767,
+					"timestamp": "2026.09.09-06.32.54"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WeaponChannelBootstrapRecovery",
+			"fullTestPath": "GuLiStrike.Wingman.Relay.WeaponChannelBootstrapRecovery",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4E87EF204B6702B7C292D8ACF481E37C"
+			],
+			"duration": 0.0081909000873565674,
+			"dateTime": "2026.09.09-06.32.54",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

@@ -1,11 +1,15 @@
-"""Import the two Ship attack tables and install the V3 wingman skill catalog.
+"""Import the two Ship attack tables and install the revision-4 Wingman V3 catalog.
 
-Run in a stopped editor with Scripts/ue_exec.py. Existing formation and VFX
-definitions are referenced verbatim. Only the assets listed in the report save.
+Run in a stopped editor with Scripts/ue_exec.py. The Commander missile flight
+effect remains shared; the requested marketplace explosion is duplicated into
+the Wingman-owned FX directory before it is referenced. Only explicit targets
+listed in the report are saved.
 """
 import csv
 import io
 import json
+import copy
+import re
 from pathlib import Path
 import traceback
 import unreal
@@ -13,6 +17,15 @@ import unreal
 ROOT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
 REPORT = ROOT / 'TestResults/WingmanAttack/deployment.json'
 BASE = '/Game/GuLiStrike/Ship/Abilities'
+COMMANDER_PROJECTILE = '/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile'
+WINGMAN_PROJECTILE = '/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundMissile'
+WINGMAN_IMPACT_FIELD = '/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundExplosion'
+WINGMAN_EXPLOSION_SOURCE = '/Game/AllExplosions/Niagara/Big/NS_Explosion_Big_17'
+WINGMAN_EXPLOSION_SYSTEM = '/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanGroundExplosion_Big_17'
+WINGMAN_EXPLOSION_VISUAL_SCALE = 5.0
+WINGMAN_SHOCKWAVE_SYSTEM = '/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanGroundShockwave_Big_17'
+WINGMAN_SHOCKWAVE_VISUAL_SCALE = 3.1
+SHOCKWAVE_EMITTERS = {'refr_mesh', 'smoke_shockwave'}
 LIB = unreal.EditorAssetLibrary
 TOOLS = unreal.AssetToolsHelpers.get_asset_tools()
 
@@ -31,13 +44,268 @@ def asset(path, cls):
     factory.set_editor_property('data_asset_class', cls)
     return TOOLS.create_asset(path.rsplit('/', 1)[1], path.rsplit('/', 1)[0], cls, factory)
 
+def object_path(value):
+    if value is None:
+        return ''
+    if hasattr(value, 'get_path_name'):
+        return str(value.get_path_name())
+    return str(value)
+
+def canonical(path):
+    return path + '.' + path.rsplit('/', 1)[1]
+
+def require_close(label, actual, expected, tolerance=0.001):
+    if abs(float(actual) - float(expected)) > tolerance:
+        raise RuntimeError(f'Unknown {label}: actual={actual!r}, expected={expected!r}')
+
+def require_existing_weapon(path, ground):
+    weapon = unreal.load_asset(path)
+    if weapon is None:
+        return None
+    if not isinstance(weapon, unreal.GuLiWingmanWeaponDefinition):
+        raise RuntimeError('Unexpected asset class: ' + path)
+    revision = int(weapon.get_editor_property('revision'))
+    if revision not in ((1, 2) if ground else (1, 2, 3)):
+        raise RuntimeError(f'Unknown weapon revision at {path}: {revision}')
+    if weapon.get_editor_property('kind') != unreal.GuLiWingmanWeaponKind.BASIC_AUTOMATIC:
+        raise RuntimeError('Unknown weapon kind at ' + path)
+    handle = weapon.get_editor_property('attack_profile_row')
+    expected_row = 'WingmanGroundMissile' if ground else 'WingmanMachineGun'
+    if str(handle.get_editor_property('row_name')) != expected_row:
+        raise RuntimeError(f'Unknown attack row at {path}: {handle}')
+    projectile_path = object_path(weapon.get_editor_property('attack_projectile'))
+    known_projectiles = {''}
+    if ground:
+        known_projectiles = {canonical(COMMANDER_PROJECTILE), canonical(WINGMAN_PROJECTILE)}
+    if projectile_path not in known_projectiles:
+        raise RuntimeError(f'Unknown projectile reference at {path}: {projectile_path}')
+    if revision == 1 and ground and projectile_path != canonical(COMMANDER_PROJECTILE):
+        raise RuntimeError('Revision 1 ground weapon is not the known Commander-projectile source')
+    if revision == 2 and ground and projectile_path != canonical(WINGMAN_PROJECTILE):
+        raise RuntimeError('Revision 2 ground weapon is not the migrated Wingman projectile')
+    return weapon
+
+def require_projectile_contract(projectile, commander):
+    if not isinstance(projectile, unreal.GuLiProjectileEffectDefinition):
+        raise RuntimeError('Unexpected projectile definition class: ' + object_path(projectile))
+    expected_scale = 1.0 if commander else 2.0
+    require_close('projectile visual scale', projectile.get_editor_property('visual_scale'), expected_scale)
+
+def require_wingman_projectile_references(commander, wingman, allow_legacy_impact=False):
+    if object_path(commander.get_editor_property('flight_system')) != object_path(
+            wingman.get_editor_property('flight_system')):
+        raise RuntimeError('Wingman projectile no longer shares the Commander flight System')
+    impact = object_path(wingman.get_editor_property('impact_field'))
+    allowed = {canonical(WINGMAN_IMPACT_FIELD)}
+    if allow_legacy_impact:
+        allowed.add(object_path(commander.get_editor_property('impact_field')))
+    if impact not in allowed:
+        raise RuntimeError(f'Unknown Wingman impact field: {impact}')
+
+def variant_signature(variant):
+    return {
+        'system': object_path(variant.get_editor_property('system')),
+        'scale': float(variant.get_editor_property('scale')),
+        'random_yaw': bool(variant.get_editor_property('random_yaw')),
+        'maximum_lifetime': float(variant.get_editor_property('maximum_lifetime')),
+        'additional_layers': [
+            {'system': object_path(layer.get_editor_property('system')),
+             'scale': float(layer.get_editor_property('scale'))}
+            for layer in variant.get_editor_property('additional_layers')
+        ],
+    }
+
+def expected_variant_signature():
+    return {
+        'system': canonical(WINGMAN_EXPLOSION_SYSTEM),
+        'scale': WINGMAN_EXPLOSION_VISUAL_SCALE,
+        'random_yaw': True,
+        'maximum_lifetime': 3.0,
+        'additional_layers': [{'system': canonical(WINGMAN_SHOCKWAVE_SYSTEM),
+                               'scale': WINGMAN_SHOCKWAVE_VISUAL_SCALE}],
+    }
+
+def variant_signatures_match(actual, expected, tolerance=0.001):
+    return (
+        actual['system'] == expected['system']
+        and abs(actual['scale'] - expected['scale']) <= tolerance
+        and actual['random_yaw'] == expected['random_yaw']
+        and abs(actual['maximum_lifetime'] - expected['maximum_lifetime']) <= tolerance
+        and len(actual['additional_layers']) == len(expected['additional_layers'])
+        and all(a['system'] == e['system'] and abs(a['scale'] - e['scale']) <= tolerance
+                for a, e in zip(actual['additional_layers'], expected['additional_layers']))
+    )
+
+def require_wingman_impact_contract(field, allow_legacy_scale=False):
+    if not isinstance(field, unreal.GuLiSpellFieldDefinition):
+        raise RuntimeError('Unexpected Wingman impact-field class: ' + object_path(field))
+    require_close('Wingman impact reference radius', field.get_editor_property('radius'), 4000.0)
+    require_close('Wingman impact dissipation', field.get_editor_property('dissipation_seconds'), 3.0)
+    if field.get_editor_property('timing') != unreal.GuLiSpellFieldTiming.INSTANT:
+        raise RuntimeError('Wingman impact field is not Instant')
+    variants = list(field.get_editor_property('activation_variants'))
+    allowed = [expected_variant_signature()]
+    if allow_legacy_scale:
+        for old_scale in (1.0, 3.1):
+            legacy = expected_variant_signature()
+            legacy['scale'] = old_scale
+            legacy['additional_layers'] = []
+            allowed.append(legacy)
+    actual = variant_signature(variants[0]) if len(variants) == 1 else None
+    if actual is None or not any(variant_signatures_match(actual, item) for item in allowed):
+        raise RuntimeError('Unknown Wingman impact visual variant')
+
+def compile_niagara(path):
+    result = unreal.NiagaraService.compile_with_results(path)
+    errors = list(result.get_editor_property('errors'))
+    if not bool(result.get_editor_property('success')) or errors:
+        raise RuntimeError(f'Niagara compile failed for {path}: {errors}')
+    return {
+        'success': True,
+        'errors': errors,
+        'warnings': list(result.get_editor_property('warnings')),
+        'emitters': [
+            str(item.get_editor_property('emitter_name'))
+            for item in unreal.NiagaraService.list_emitters(path)
+        ],
+    }
+
+def partition_explosion_layers():
+    """Separate component transforms preserve both shockwave graphs exactly, including their local-space scale inputs."""
+    source_emitters = {str(x.emitter_name): bool(x.is_enabled)
+                       for x in unreal.NiagaraService.list_emitters(WINGMAN_EXPLOSION_SOURCE)}
+    if not SHOCKWAVE_EMITTERS.issubset(source_emitters):
+        raise RuntimeError('The source no longer contains the known shockwave emitters')
+    result = {}
+    for path, wave_only in ((WINGMAN_EXPLOSION_SYSTEM, False), (WINGMAN_SHOCKWAVE_SYSTEM, True)):
+        if not LIB.does_asset_exist(path) and not LIB.duplicate_asset(WINGMAN_EXPLOSION_SOURCE, path):
+            raise RuntimeError('Could not duplicate ' + path)
+        emitters = {str(x.emitter_name): bool(x.is_enabled) for x in unreal.NiagaraService.list_emitters(path)}
+        if set(emitters) != set(source_emitters):
+            raise RuntimeError('Unknown emitter layout in ' + path)
+        expected = {name: enabled and ((name in SHOCKWAVE_EMITTERS) == wave_only)
+                    for name, enabled in source_emitters.items()}
+        for name, enabled in expected.items():
+            if emitters[name] != enabled and not unreal.NiagaraService.enable_emitter(path, name, enabled):
+                raise RuntimeError('Could not set emitter state: ' + name)
+        result[path] = compile_niagara(path)
+        actual = {str(x.emitter_name): bool(x.is_enabled) for x in unreal.NiagaraService.list_emitters(path)}
+        if actual != expected:
+            raise RuntimeError('Emitter partition readback mismatch in ' + path)
+        result[path]['enabled_emitters'] = sorted(name for name, enabled in actual.items() if enabled)
+    return result
+
+def tag_name(value):
+    return str(unreal.GameplayTagLibrary.get_tag_name(value))
+
+def grant_signature(grant):
+    return {
+        'ability_id': tag_name(grant.get_editor_property('ability_id')),
+        'slot': str(grant.get_editor_property('slot')),
+        'weapon_slot_id': str(grant.get_editor_property('weapon_slot_id')),
+        'skill_id': str(grant.get_editor_property('skill_id')),
+        'ability_class': object_path(grant.get_editor_property('ability_class')),
+        'ability_level': int(grant.get_editor_property('ability_level')),
+        'input_tag': tag_name(grant.get_editor_property('input_tag')),
+        'formation_definition': object_path(grant.get_editor_property('formation_definition')),
+        'weapon_definition': object_path(grant.get_editor_property('weapon_definition')),
+        'profile_revision': int(grant.get_editor_property('profile_revision')),
+        'cooldown_group_id': str(grant.get_editor_property('cooldown_group_id')),
+    }
+
+def make_attack_grant(ground, weapon):
+    suffix = 'GroundMissile' if ground else 'MachineGun'
+    return unreal.GuLiShipAbilityGrant(
+        ability_id=tag('Ship.Ability.Weapon.Wingman.' + suffix),
+        slot=unreal.GuLiShipAbilitySlot.BASIC_WEAPON,
+        weapon_slot_id='GroundWeapon' if ground else 'AirWeapon',
+        skill_id='Wingman.' + suffix,
+        ability_class=(
+            unreal.GuLiShipWingmanGroundMissileAbility
+            if ground else unreal.GuLiShipWingmanMachineGunAbility
+        ).static_class(),
+        weapon_definition=weapon,
+    )
+
+def row_handle_signature(handle):
+    return (
+        object_path(handle.get_editor_property('data_table')),
+        str(handle.get_editor_property('row_name')),
+    )
+
+def values_match(actual, expected, tolerance=0.001):
+    if isinstance(expected, dict):
+        if isinstance(actual, dict):
+            values = [actual.get(axis, 0.0) for axis in ('X', 'Y', 'Z')]
+        else:
+            values = [float(value) for value in re.findall(
+                r'[-+]?\d+(?:\.\d+)?(?:[eE][-+]?\d+)?', str(actual))]
+        return len(values) >= 3 and all(
+            abs(float(values[index]) - float(expected[axis])) <= tolerance
+            for index, axis in enumerate(('X', 'Y', 'Z'))
+        )
+    if isinstance(expected, bool):
+        return bool(actual) == expected
+    if isinstance(expected, (int, float)):
+        try:
+            return abs(float(actual) - float(expected)) <= tolerance
+        except (TypeError, ValueError):
+            return False
+    return str(actual) == str(expected)
+
+def table_rows_match(source_rows, exported_rows):
+    source_by_name = {row['Name']: row for row in source_rows}
+    exported_by_name = {row['Name']: row for row in exported_rows}
+    if set(source_by_name) != set(exported_by_name):
+        return False
+    return all(
+        key in exported_by_name[name]
+        and values_match(exported_by_name[name][key], expected)
+        for name, source in source_by_name.items()
+        for key, expected in source.items()
+    )
+
+def legacy_rows(name, target_rows):
+    rows = copy.deepcopy(target_rows)
+    by_name = {row['Name']: row for row in rows}
+    if name == 'DT_GuLiStrikeShip_Tuning':
+        by_name['Dreadnought']['BaseMaxSpeed'] = 5400.0
+        by_name['Dreadnought']['BaseAcceleration'] = 600.0
+        by_name['Dreadnought']['YawRate'] = 40.0
+    elif name == 'DT_GuLiStrikeShip_WingmanWeapons':
+        machine = by_name['WingmanMachineGun']
+        machine['Note'] = '三维往返缠斗；仅接近段机头射界满足时开火'
+        machine['AttackPattern'] = 'AirDogfight'
+        machine['CooldownSeconds'] = 0.5
+        for row in by_name.values():
+            row['AirFireStartDistanceCentimeters'] = 0.0
+            row['AirFireStopDistanceCentimeters'] = 0.0
+            row['AirBurstDurationSeconds'] = 0.0
+            row['AirOrbitCooldownSeconds'] = 0.0
+    return rows
+
 def import_table(name):
     rows = json.loads((ROOT / ('Data/Json/' + name + '.json')).read_text(encoding='utf-8'))
     manifest = json.loads((ROOT / 'Data/Json/manifest.json').read_text(encoding='utf-8'))
     struct = unreal.find_object(None, manifest['tables'][name]['struct'])
     if not struct:
         raise RuntimeError('Generated row structure not loaded: ' + name)
-    fields = list(rows[0])
+    table_path = '/Game/GuLiStrike/Data/' + name
+    existing = unreal.load_asset(table_path)
+    if existing:
+        existing_rows = json.loads(
+            unreal.DataTableFunctionLibrary.export_data_table_to_json_string(existing))
+        if table_rows_match(rows, existing_rows):
+            return existing, existing_rows, False
+        if not table_rows_match(legacy_rows(name, rows), existing_rows):
+            raise RuntimeError('Unknown hand-edited DataTable values at ' + table_path)
+    # Preserve every generated column, including optional fields that are absent
+    # from the first row (for example the Dreadnought-only Note field).
+    fields = []
+    for row in rows:
+        for key in row:
+            if key not in fields:
+                fields.append(key)
     def cell(value):
         if isinstance(value, dict):
             return '(X=%s,Y=%s,Z=%s)' % (value['X'], value['Y'], value['Z'])
@@ -46,7 +314,7 @@ def import_table(name):
     writer = csv.writer(stream, lineterminator='\n')
     writer.writerow(fields)
     for row in rows:
-        writer.writerow([cell(row[key]) for key in fields])
+        writer.writerow([cell(row.get(key, '')) for key in fields])
     sidecar = ROOT / ('TestResults/WingmanAttack/' + name + '.csv')
     sidecar.write_text(stream.getvalue(), encoding='utf-8')
     settings = unreal.CSVImportSettings()
@@ -59,18 +327,11 @@ def import_table(name):
                            destination_name=name, automated=True, replace_existing=True, save=False).items():
         task.set_editor_property(key, value)
     TOOLS.import_asset_tasks([task])
-    table = unreal.load_asset('/Game/GuLiStrike/Data/' + name)
+    table = unreal.load_asset(table_path)
     exported = json.loads(unreal.DataTableFunctionLibrary.export_data_table_to_json_string(table))
-    by_name = {row['Name']: row for row in exported}
-    for row in rows:
-        for key, value in row.items():
-            actual = by_name[row['Name']][key]
-            if isinstance(value, (int, float)):
-                if abs(float(actual) - value) > 0.001:
-                    raise RuntimeError(f'Table readback mismatch {name}/{row["Name"]}/{key}')
-            elif isinstance(value, str) and str(actual) != value:
-                raise RuntimeError(f'Table text mismatch {name}/{key}')
-    return table, exported
+    if not table_rows_match(rows, exported):
+        raise RuntimeError('Table readback mismatch after import: ' + name)
+    return table, exported, True
 
 def main():
     command_line = unreal.SystemLibrary.get_command_line().lower()
@@ -83,61 +344,229 @@ def main():
         actors = unreal.get_editor_subsystem(unreal.EditorActorSubsystem).get_all_level_actors()
     else:
         actors = []
-    report = {'success': False, 'commandlet': b_commandlet, 'level_actor_count': len(actors), 'saved': [], 'tables': {}}
+    report = {'success': False, 'commandlet': b_commandlet, 'level_actor_count': len(actors),
+              'saved': [], 'tables': {}, 'table_imported': {}}
     dirty = list(unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages())
     touched = {BASE + '/DA_ShipAbilitySet_WingmanV3',
                BASE + '/Weapons/DA_WingmanWeapon_MachineGun', BASE + '/Weapons/DA_WingmanWeapon_GroundMissile',
+               WINGMAN_PROJECTILE, WINGMAN_IMPACT_FIELD, WINGMAN_EXPLOSION_SYSTEM, WINGMAN_SHOCKWAVE_SYSTEM,
                '/Game/GuLiStrike/Ship/BP_GuLiStrikeShip', '/Game/GuLiStrike/Ship/BP_CombatAvatarFly01',
+               '/Game/GuLiStrike/Data/DT_GuLiStrikeShip_Tuning',
                '/Game/GuLiStrike/Data/DT_GuLiStrikeShip_WingmanWeapons',
                '/Game/GuLiStrike/Data/DT_GuLiStrikeShip_WingmanTargeting'}
     conflicts = [str(p.get_name()) for p in dirty if str(p.get_name()) in touched]
     if conflicts:
         raise RuntimeError('Unsaved edits in deployment targets: ' + str(conflicts))
     old_set = unreal.load_asset(BASE + '/DA_ShipAbilitySet_WingmanV1')
-    projectile = unreal.load_asset('/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile')
-    if not old_set or not projectile:
+    commander_projectile = unreal.load_asset(COMMANDER_PROJECTILE)
+    if not old_set or not commander_projectile:
         raise RuntimeError('Existing formation catalog or WM01 missile is missing')
-    report['reused_projectile'] = projectile.get_path_name()
-    report['reused_impact_field'] = str(projectile.get_editor_property('impact_field'))
-    weapons, report['tables']['weapons'] = import_table('DT_GuLiStrikeShip_WingmanWeapons')
-    targeting, report['tables']['targeting'] = import_table('DT_GuLiStrikeShip_WingmanTargeting')
+    require_projectile_contract(commander_projectile, commander=True)
+    explosion_source = unreal.load_asset(WINGMAN_EXPLOSION_SOURCE)
+    if not explosion_source or not isinstance(explosion_source, unreal.NiagaraSystem):
+        raise RuntimeError('Requested Big_17 Niagara System is missing')
+    report['source_niagara'] = compile_niagara(WINGMAN_EXPLOSION_SOURCE)
+    wingman_explosion = unreal.load_asset(WINGMAN_EXPLOSION_SYSTEM)
+    if wingman_explosion:
+        if not isinstance(wingman_explosion, unreal.NiagaraSystem):
+            raise RuntimeError('Unexpected Wingman explosion destination class')
+        destination_compile = compile_niagara(WINGMAN_EXPLOSION_SYSTEM)
+        if destination_compile['emitters'] != report['source_niagara']['emitters']:
+            raise RuntimeError('Existing Wingman explosion is not the known Big_17 duplicate')
+    existing_impact = unreal.load_asset(WINGMAN_IMPACT_FIELD)
+    if existing_impact:
+        require_wingman_impact_contract(existing_impact, allow_legacy_scale=True)
+
+    machine_path = BASE + '/Weapons/DA_WingmanWeapon_MachineGun'
+    ground_path = BASE + '/Weapons/DA_WingmanWeapon_GroundMissile'
+    existing_machine = require_existing_weapon(machine_path, ground=False)
+    existing_ground = require_existing_weapon(ground_path, ground=True)
+    wingman_projectile = unreal.load_asset(WINGMAN_PROJECTILE)
+    if wingman_projectile:
+        require_projectile_contract(wingman_projectile, commander=False)
+        require_wingman_projectile_references(
+            commander_projectile, wingman_projectile, allow_legacy_impact=True)
+
+    catalog_path = BASE + '/DA_ShipAbilitySet_WingmanV3'
+    existing_catalog = unreal.load_asset(catalog_path)
+    if existing_catalog:
+        if not isinstance(existing_catalog, unreal.GuLiShipAbilitySet):
+            raise RuntimeError('Unexpected catalog class: ' + catalog_path)
+        if int(existing_catalog.get_editor_property('revision')) not in (3, 4):
+            raise RuntimeError('Unknown Wingman V3 catalog revision')
+        old_grants = list(old_set.get_editor_property('grants'))
+        if not existing_machine or not existing_ground:
+            raise RuntimeError('Wingman V3 catalog exists without both known weapon definitions')
+        catalog_grants = list(existing_catalog.get_editor_property('grants'))
+        expected_grants = old_grants + [
+            make_attack_grant(False, existing_machine),
+            make_attack_grant(True, existing_ground),
+        ]
+        if [grant_signature(g) for g in catalog_grants] != [
+            grant_signature(g) for g in expected_grants
+        ]:
+            raise RuntimeError('Unknown changes in Wingman V3 grants')
+
+    # Every existing object has now matched either the exact old source or target.
+    if wingman_explosion is None:
+        LIB.make_directory(WINGMAN_EXPLOSION_SYSTEM.rsplit('/', 1)[0])
+        if not LIB.duplicate_asset(WINGMAN_EXPLOSION_SOURCE, WINGMAN_EXPLOSION_SYSTEM):
+            raise RuntimeError('Could not duplicate the requested Big_17 Niagara System')
+        wingman_explosion = unreal.load_asset(WINGMAN_EXPLOSION_SYSTEM)
+    report['wingman_niagara'] = compile_niagara(WINGMAN_EXPLOSION_SYSTEM)
+    if report['wingman_niagara']['emitters'] != report['source_niagara']['emitters']:
+        raise RuntimeError('Big_17 emitter readback changed during duplication')
+    report['explosion_layers'] = partition_explosion_layers()
+
+    impact_field = asset(WINGMAN_IMPACT_FIELD, unreal.GuLiSpellFieldDefinition)
+    impact_field.set_editor_property("config_id", "WingmanGroundMissile")
+    if abs(float(impact_field.get_editor_property('radius')) - 4000.0) > 0.001:
+        impact_field.set_editor_property('radius', 4000.0)
+    if impact_field.get_editor_property('timing') != unreal.GuLiSpellFieldTiming.INSTANT:
+        impact_field.set_editor_property('timing', unreal.GuLiSpellFieldTiming.INSTANT)
+    if abs(float(impact_field.get_editor_property('dissipation_seconds')) - 3.0) > 0.001:
+        impact_field.set_editor_property('dissipation_seconds', 3.0)
+    visual = unreal.GuLiEffectVisualVariant()
+    visual.set_editor_property('system', wingman_explosion)
+    visual.set_editor_property('scale', WINGMAN_EXPLOSION_VISUAL_SCALE)
+    visual.set_editor_property('random_yaw', True)
+    visual.set_editor_property('maximum_lifetime', 3.0)
+    wave = unreal.GuLiEffectVisualLayer()
+    wave.set_editor_property('system', unreal.load_asset(WINGMAN_SHOCKWAVE_SYSTEM))
+    wave.set_editor_property('scale', WINGMAN_SHOCKWAVE_VISUAL_SCALE)
+    visual.set_editor_property('additional_layers', [wave])
+    current_variants = list(impact_field.get_editor_property('activation_variants'))
+    if len(current_variants) != 1 or not variant_signatures_match(
+            variant_signature(current_variants[0]), expected_variant_signature()):
+        impact_field.set_editor_property('activation_variants', [visual])
+
+    if wingman_projectile is None:
+        LIB.make_directory(WINGMAN_PROJECTILE.rsplit('/', 1)[0])
+        if not LIB.duplicate_asset(COMMANDER_PROJECTILE, WINGMAN_PROJECTILE):
+            raise RuntimeError('Could not create Wingman projectile from Commander WM01')
+        wingman_projectile = unreal.load_asset(WINGMAN_PROJECTILE)
+    # This point-target weapon freezes motion from SecondaryWeapons/WingmanWeapons.
+    # Do not inherit the Commander's homing-projectile profile when duplicating FX.
+    if wingman_projectile.get_editor_property('motion_profile_row').get_editor_property('data_table'):
+        wingman_projectile.set_editor_property('motion_profile_row', unreal.DataTableRowHandle())
+    if abs(float(wingman_projectile.get_editor_property('visual_scale')) - 2.0) > 0.001:
+        wingman_projectile.modify()
+        wingman_projectile.set_editor_property('visual_scale', 2.0)
+    if object_path(wingman_projectile.get_editor_property('impact_field')) != canonical(WINGMAN_IMPACT_FIELD):
+        wingman_projectile.set_editor_property('impact_field', impact_field)
+
+    report['commander_projectile'] = commander_projectile.get_path_name()
+    report['commander_impact_field'] = object_path(commander_projectile.get_editor_property('impact_field'))
+    tuning, report['tables']['tuning'], report['table_imported']['tuning'] = import_table('DT_GuLiStrikeShip_Tuning')
+    weapons, report['tables']['weapons'], report['table_imported']['weapons'] = import_table('DT_GuLiStrikeShip_WingmanWeapons')
+    targeting, report['tables']['targeting'], report['table_imported']['targeting'] = import_table('DT_GuLiStrikeShip_WingmanTargeting')
     grants = list(old_set.get_editor_property('grants'))
     for ground in (False, True):
         suffix = 'GroundMissile' if ground else 'MachineGun'
         weapon = asset(BASE + '/Weapons/DA_WingmanWeapon_' + suffix, unreal.GuLiWingmanWeaponDefinition)
-        weapon.set_editor_property('kind', unreal.GuLiWingmanWeaponKind.BASIC_AUTOMATIC)
-        weapon.set_editor_property('revision', 1)
-        weapon.set_editor_property('attack_profile_row', unreal.DataTableRowHandle(data_table=weapons, row_name='Wingman' + suffix))
-        if ground:
-            weapon.set_editor_property('attack_projectile', projectile)
-        grants.append(unreal.GuLiShipAbilityGrant(
-            ability_id=tag('Ship.Ability.Weapon.Wingman.' + suffix),
-            slot=unreal.GuLiShipAbilitySlot.BASIC_WEAPON,
-            weapon_slot_id='GroundWeapon' if ground else 'AirWeapon', skill_id='Wingman.' + suffix,
-            ability_class=(unreal.GuLiShipWingmanGroundMissileAbility if ground else unreal.GuLiShipWingmanMachineGunAbility).static_class(),
-            weapon_definition=weapon))
-    catalog = asset(BASE + '/DA_ShipAbilitySet_WingmanV3', unreal.GuLiShipAbilitySet)
-    catalog.set_editor_property('grants', grants)
-    catalog.set_editor_property('revision', 3)
-    catalog.set_editor_property('wingman_type_id', old_set.get_editor_property('wingman_type_id'))
+        if weapon.get_editor_property('kind') != unreal.GuLiWingmanWeaponKind.BASIC_AUTOMATIC:
+            weapon.set_editor_property('kind', unreal.GuLiWingmanWeaponKind.BASIC_AUTOMATIC)
+        expected_revision = 2 if ground else 3
+        if int(weapon.get_editor_property('revision')) != expected_revision:
+            weapon.set_editor_property('revision', expected_revision)
+        expected_handle = unreal.DataTableRowHandle(data_table=weapons, row_name='Wingman' + suffix)
+        if row_handle_signature(weapon.get_editor_property('attack_profile_row')) != row_handle_signature(expected_handle):
+            weapon.set_editor_property('attack_profile_row', expected_handle)
+        if ground and object_path(weapon.get_editor_property('attack_projectile')) != canonical(WINGMAN_PROJECTILE):
+            weapon.set_editor_property('attack_projectile', wingman_projectile)
+        grants.append(make_attack_grant(ground, weapon))
+    catalog = asset(catalog_path, unreal.GuLiShipAbilitySet)
+    if [grant_signature(g) for g in catalog.get_editor_property('grants')] != [
+        grant_signature(g) for g in grants
+    ]:
+        catalog.set_editor_property('grants', grants)
+    if int(catalog.get_editor_property('revision')) != 4:
+        catalog.set_editor_property('revision', 4)
+    if str(catalog.get_editor_property('wingman_type_id')) != str(old_set.get_editor_property('wingman_type_id')):
+        catalog.set_editor_property('wingman_type_id', old_set.get_editor_property('wingman_type_id'))
     for path in ('/Game/GuLiStrike/Ship/BP_GuLiStrikeShip', '/Game/GuLiStrike/Ship/BP_CombatAvatarFly01'):
         blueprint = unreal.load_asset(path)
         if not blueprint:
             raise RuntimeError('Production ship Blueprint missing: ' + path)
         cdo = unreal.get_default_object(blueprint.generated_class())
-        cdo.set_editor_property('ship_ability_set', catalog)
-        cdo.set_editor_property('wingman_targeting_row', unreal.DataTableRowHandle(data_table=targeting, row_name='Default'))
-        unreal.BlueprintEditorLibrary.compile_blueprint(blueprint)
+        current_catalog_path = object_path(cdo.get_editor_property('ship_ability_set'))
+        if current_catalog_path not in {
+            canonical(BASE + '/DA_ShipAbilitySet_WingmanV1'), canonical(catalog_path)
+        }:
+            raise RuntimeError('Unknown Ship ability-set reference at ' + path + ': ' + current_catalog_path)
+        current_targeting = cdo.get_editor_property('wingman_targeting_row')
+        expected_targeting = unreal.DataTableRowHandle(data_table=targeting, row_name='Default')
+        if row_handle_signature(current_targeting) not in {
+            ('', 'None'), row_handle_signature(expected_targeting)
+        }:
+            raise RuntimeError('Unknown Wingman targeting row at ' + path + ': ' + str(current_targeting))
+        blueprint_changed = False
+        if current_catalog_path != canonical(catalog_path):
+            cdo.set_editor_property('ship_ability_set', catalog)
+            blueprint_changed = True
+        if row_handle_signature(current_targeting) != row_handle_signature(expected_targeting):
+            cdo.set_editor_property('wingman_targeting_row', expected_targeting)
+            blueprint_changed = True
+        if blueprint_changed:
+            unreal.BlueprintEditorLibrary.compile_blueprint(blueprint)
         cdo = unreal.get_default_object(blueprint.generated_class())
         if cdo.get_editor_property('ship_ability_set') != catalog:
             raise RuntimeError('Blueprint compile lost catalog reference: ' + path)
     mesh = unreal.load_asset('/Game/GuLiStrike/Wingman/SM_Wingman_Mass')
     report['wingman_mesh_bounds'] = str(mesh.get_bounding_box()) if mesh else None
-    for path in sorted(touched):
-        if not LIB.save_asset(path, only_if_is_dirty=False):
+
+    # Read back the intentional sharing boundary before saving anything.
+    require_projectile_contract(commander_projectile, commander=True)
+    require_projectile_contract(wingman_projectile, commander=False)
+    require_wingman_projectile_references(commander_projectile, wingman_projectile)
+    require_wingman_impact_contract(impact_field)
+    machine_revision = int(unreal.load_asset(machine_path).get_editor_property('revision'))
+    ability_set_revision = int(catalog.get_editor_property('revision'))
+    if machine_revision != 3:
+        raise RuntimeError('Machine-gun definition did not retain revision 3')
+    migrated_ground = unreal.load_asset(ground_path)
+    if int(migrated_ground.get_editor_property('revision')) != 2:
+        raise RuntimeError('Ground-missile definition did not retain revision 2')
+    if ability_set_revision != 4:
+        raise RuntimeError('Wingman V3 AbilitySet did not retain revision 4')
+    if object_path(migrated_ground.get_editor_property('attack_projectile')) != canonical(WINGMAN_PROJECTILE):
+        raise RuntimeError('Ground weapon did not retain the Wingman-only projectile')
+    report['revisions'] = {
+        'machine_gun': machine_revision,
+        'ground_missile': int(migrated_ground.get_editor_property('revision')),
+        'ability_set': ability_set_revision,
+    }
+    dirty_after_readback = {
+        str(package.get_name())
+        for package in unreal.EditorLoadingAndSavingUtils.get_dirty_content_packages()
+    }
+    save_paths = sorted(path for path in touched if path in dirty_after_readback)
+    for path in save_paths:
+        if not LIB.save_asset(path, only_if_is_dirty=True):
             raise RuntimeError('Asset save failed: ' + path)
         report['saved'].append(path)
     report['grant_tags'] = [str(unreal.GameplayTagLibrary.get_tag_name(g.get_editor_property('ability_id'))) for g in grants]
+    report['projectiles'] = {
+        'commander': {
+            'path': commander_projectile.get_path_name(),
+            'visual_scale': float(commander_projectile.get_editor_property('visual_scale')),
+        },
+        'wingman': {
+            'path': wingman_projectile.get_path_name(),
+            'visual_scale': float(wingman_projectile.get_editor_property('visual_scale')),
+            'flight_system': object_path(wingman_projectile.get_editor_property('flight_system')),
+            'impact_field': object_path(wingman_projectile.get_editor_property('impact_field')),
+        },
+    }
+    report['impact'] = {
+        'path': impact_field.get_path_name(),
+        'reference_radius': float(impact_field.get_editor_property('radius')),
+        'dissipation_seconds': float(impact_field.get_editor_property('dissipation_seconds')),
+        'variants': [
+            variant_signature(item)
+            for item in impact_field.get_editor_property('activation_variants')
+        ],
+    }
     report['success'] = True
     return report
 
@@ -148,3 +577,5 @@ except Exception:
 REPORT.parent.mkdir(parents=True, exist_ok=True)
 REPORT.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
 unreal.log('Wingman attack deployment: ' + json.dumps(result, ensure_ascii=False))
+if hasattr(unreal, 'MCPythonHelper'):
+    unreal.MCPythonHelper.submit_result(json.dumps(result, ensure_ascii=False))

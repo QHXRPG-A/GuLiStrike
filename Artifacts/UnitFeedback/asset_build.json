@@ -1,0 +1,587 @@
+{
+  "source": "/Game/RealisticExplosionPackD/Particles",
+  "destination": "/Game/GuLiStrike/FX/UnitFeedback",
+  "materials": {
+    "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite": {
+      "diagnostics": "<Struct 'MaterialDiagnostics' (0x000002176C77F640) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 8, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 1, vector_parameter_count: 0}>",
+      "graph": {
+        "material": {
+          "blend_mode": "BLEND_Additive",
+          "shading_model": "MSM_Unlit",
+          "two_sided": false
+        },
+        "expressions": [
+          {
+            "id": "MaterialExpressionTime_0000021676FC4520",
+            "class": "Time",
+            "class_full": "MaterialExpressionTime",
+            "pos_x": -1560,
+            "pos_y": 162,
+            "properties": {
+              "bIgnorePause": "False",
+              "bOverride_Period": "False",
+              "Period": "0.000000"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionScalarParameter_000002164AF94B00",
+            "class": "ScalarParameter",
+            "class_full": "MaterialExpressionScalarParameter",
+            "pos_x": -1560,
+            "pos_y": 324,
+            "properties": {
+              "DefaultValue": "-1000.000000",
+              "ControlType": "Numeric",
+              "SliderMin": "0.000000",
+              "SliderMax": "0.000000",
+              "Enumeration": "None",
+              "EnumerationIndex": "0",
+              "bUseCustomPrimitiveData": "True",
+              "PrimitiveDataIndex": "7",
+              "SortPriority": "32"
+            },
+            "is_parameter": true,
+            "parameter_name": "HitStartTime",
+            "group": "None",
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionSubtract_000002164AF9A640",
+            "class": "Subtract",
+            "class_full": "MaterialExpressionSubtract",
+            "pos_x": -1300,
+            "pos_y": 162,
+            "properties": {
+              "ConstA": "1.000000",
+              "ConstB": "1.000000"
+            },
+            "inputs": [
+              "A",
+              "B"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionMultiply_000002164AF90B40",
+            "class": "Multiply",
+            "class_full": "MaterialExpressionMultiply",
+            "pos_x": -1040,
+            "pos_y": 162,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "2.000000"
+            },
+            "inputs": [
+              "A",
+              "B"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionOneMinus_000002193A75B600",
+            "class": "OneMinus",
+            "class_full": "MaterialExpressionOneMinus",
+            "pos_x": -780,
+            "pos_y": 162,
+            "properties": {},
+            "inputs": [
+              "Input"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionSaturate_000002193A75B400",
+            "class": "Saturate",
+            "class_full": "MaterialExpressionSaturate",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {},
+            "inputs": [
+              "Input"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionConstant3Vector_000002164AFFA720",
+            "class": "Constant3Vector",
+            "class_full": "MaterialExpressionConstant3Vector",
+            "pos_x": -520,
+            "pos_y": 0,
+            "properties": {
+              "Constant": "(R=2.000000,G=2.000000,B=2.000000,A=1.000000)"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0",
+              "Output_1",
+              "Output_2",
+              "Output_3"
+            ]
+          },
+          {
+            "id": "MaterialExpressionMultiply_000002164AF92BC0",
+            "class": "Multiply",
+            "class_full": "MaterialExpressionMultiply",
+            "pos_x": -260,
+            "pos_y": 0,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "1.000000"
+            },
+            "inputs": [
+              "A",
+              "B"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "source_id": "MaterialExpressionTime_0000021676FC4520",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionSubtract_000002164AF9A640",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionScalarParameter_000002164AF94B00",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionSubtract_000002164AF9A640",
+            "target_input": "B"
+          },
+          {
+            "source_id": "MaterialExpressionSubtract_000002164AF9A640",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMultiply_000002164AF90B40",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionMultiply_000002164AF90B40",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionOneMinus_000002193A75B600",
+            "target_input": "Input"
+          },
+          {
+            "source_id": "MaterialExpressionOneMinus_000002193A75B600",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionSaturate_000002193A75B400",
+            "target_input": "Input"
+          },
+          {
+            "source_id": "MaterialExpressionConstant3Vector_000002164AFFA720",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMultiply_000002164AF92BC0",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionSaturate_000002193A75B400",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMultiply_000002164AF92BC0",
+            "target_input": "B"
+          }
+        ],
+        "output_connections": [
+          {
+            "property": "EmissiveColor",
+            "expression_id": "MaterialExpressionMultiply_000002164AF92BC0",
+            "output_index": 0,
+            "output_name": ""
+          }
+        ]
+      }
+    },
+    "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite_Instanced": {
+      "diagnostics": "<Struct 'MaterialDiagnostics' (0x00000218F97FC640) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 8, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 0}>",
+      "graph": {
+        "material": {
+          "blend_mode": "BLEND_Additive",
+          "shading_model": "MSM_Unlit",
+          "two_sided": false
+        },
+        "expressions": [
+          {
+            "id": "MaterialExpressionTime_0000021670FEFDC0",
+            "class": "Time",
+            "class_full": "MaterialExpressionTime",
+            "pos_x": -1560,
+            "pos_y": 162,
+            "properties": {
+              "bIgnorePause": "False",
+              "bOverride_Period": "False",
+              "Period": "0.000000"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionPerInstanceCustomData_000002164AF9E380",
+            "class": "PerInstanceCustomData",
+            "class_full": "MaterialExpressionPerInstanceCustomData",
+            "pos_x": -1560,
+            "pos_y": 324,
+            "properties": {
+              "ConstDefaultValue": "-1000.000000",
+              "DataIndex": "0"
+            },
+            "inputs": [
+              "DefaultValue"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionSubtract_000002164AF92080",
+            "class": "Subtract",
+            "class_full": "MaterialExpressionSubtract",
+            "pos_x": -1300,
+            "pos_y": 162,
+            "properties": {
+              "ConstA": "1.000000",
+              "ConstB": "1.000000"
+            },
+            "inputs": [
+              "A",
+              "B"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionMultiply_000002164AF97940",
+            "class": "Multiply",
+            "class_full": "MaterialExpressionMultiply",
+            "pos_x": -1040,
+            "pos_y": 162,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "2.000000"
+            },
+            "inputs": [
+              "A",
+              "B"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionOneMinus_000002193A751800",
+            "class": "OneMinus",
+            "class_full": "MaterialExpressionOneMinus",
+            "pos_x": -780,
+            "pos_y": 162,
+            "properties": {},
+            "inputs": [
+              "Input"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionSaturate_000002193A75B500",
+            "class": "Saturate",
+            "class_full": "MaterialExpressionSaturate",
+            "pos_x": -520,
+            "pos_y": 162,
+            "properties": {},
+            "inputs": [
+              "Input"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          },
+          {
+            "id": "MaterialExpressionConstant3Vector_00000219677D6F20",
+            "class": "Constant3Vector",
+            "class_full": "MaterialExpressionConstant3Vector",
+            "pos_x": -520,
+            "pos_y": 0,
+            "properties": {
+              "Constant": "(R=2.000000,G=2.000000,B=2.000000,A=1.000000)"
+            },
+            "inputs": [],
+            "outputs": [
+              "Output_0",
+              "Output_1",
+              "Output_2",
+              "Output_3"
+            ]
+          },
+          {
+            "id": "MaterialExpressionMultiply_000002164AF90C80",
+            "class": "Multiply",
+            "class_full": "MaterialExpressionMultiply",
+            "pos_x": -260,
+            "pos_y": 0,
+            "properties": {
+              "ConstA": "0.000000",
+              "ConstB": "1.000000"
+            },
+            "inputs": [
+              "A",
+              "B"
+            ],
+            "outputs": [
+              "Output_0"
+            ]
+          }
+        ],
+        "connections": [
+          {
+            "source_id": "MaterialExpressionTime_0000021670FEFDC0",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionSubtract_000002164AF92080",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionPerInstanceCustomData_000002164AF9E380",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionSubtract_000002164AF92080",
+            "target_input": "B"
+          },
+          {
+            "source_id": "MaterialExpressionSubtract_000002164AF92080",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMultiply_000002164AF97940",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionMultiply_000002164AF97940",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionOneMinus_000002193A751800",
+            "target_input": "Input"
+          },
+          {
+            "source_id": "MaterialExpressionOneMinus_000002193A751800",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionSaturate_000002193A75B500",
+            "target_input": "Input"
+          },
+          {
+            "source_id": "MaterialExpressionConstant3Vector_00000219677D6F20",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMultiply_000002164AF90C80",
+            "target_input": "A"
+          },
+          {
+            "source_id": "MaterialExpressionSaturate_000002193A75B500",
+            "source_output_index": 0,
+            "source_output_name": "",
+            "target_id": "MaterialExpressionMultiply_000002164AF90C80",
+            "target_input": "B"
+          }
+        ],
+        "output_connections": [
+          {
+            "property": "EmissiveColor",
+            "expression_id": "MaterialExpressionMultiply_000002164AF90C80",
+            "output_index": 0,
+            "output_name": ""
+          }
+        ]
+      }
+    }
+  },
+  "systems": [
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_A",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_A",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000021967648DE0) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_A\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.004749}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x000002194D721A40) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_A\", system_name: \"NS_UnitDestruction_A\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_B",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_B",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x00000215B21B8E80) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_B\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.162579}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x00000215EF7C1B60) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_B\", system_name: \"NS_UnitDestruction_B\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_C",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_C",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000021767FB1130) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_C\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.004576}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x0000021770E87D40) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_C\", system_name: \"NS_UnitDestruction_C\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_D",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_D",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x00000215F0484A10) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_D\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.004782}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x00000215FE7B4B00) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_D\", system_name: \"NS_UnitDestruction_D\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_E",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_E",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x00000218E1FB28F0) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_E\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.145459}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x0000021665FBAAA0) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_E\", system_name: \"NS_UnitDestruction_E\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_F",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_F",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000002162C79EF60) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_F\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.148174}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x000002175171C4E0) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_F\", system_name: \"NS_UnitDestruction_F\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_G",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_G",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000002173FEB9BF0) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_G\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.143311}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x000002176069FA20) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_G\", system_name: \"NS_UnitDestruction_G\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_H",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_H",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000021745FF50F0) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_H\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.149075}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x00000219257CA800) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_H\", system_name: \"NS_UnitDestruction_H\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_I",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_I",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x00000216D66CB630) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_I\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.144570}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x000002176F7C43E0) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_I\", system_name: \"NS_UnitDestruction_I\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_J",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_J",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000021725F164F0) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_J\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.149021}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x00000215E3D41BC0) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_J\", system_name: \"NS_UnitDestruction_J\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_K",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_K",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000021991636420) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_K\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.144221}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x0000021991634EC0) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_K\", system_name: \"NS_UnitDestruction_K\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_L",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_L",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000002162E4FE060) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_L\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.138049}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x000002199163B040) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_L\", system_name: \"NS_UnitDestruction_L\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_M",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_M",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000021959742030) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_M\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.005126}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x00000219626BF540) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_M\", system_name: \"NS_UnitDestruction_M\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_N",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_N",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000021969EB3420) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_N\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.137603}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x0000021969EBC0C0) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_N\", system_name: \"NS_UnitDestruction_N\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_O",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_O",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000021560FEA410) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_O\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.136425}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x0000021979769480) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_O\", system_name: \"NS_UnitDestruction_O\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_P",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_P",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x00000217567D2490) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_P\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.145829}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x0000021725E18650) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_P\", system_name: \"NS_UnitDestruction_P\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_Q",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_Q",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x00000217567DF780) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_Q\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.145182}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x000002172DFFDFE0) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_Q\", system_name: \"NS_UnitDestruction_Q\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_R",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_R",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000021935F564F0) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_R\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.147175}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x0000021737ECD800) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_R\", system_name: \"NS_UnitDestruction_R\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_S",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_S",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x00000218EEFD8570) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_S\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.150415}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x0000021745E43EA0) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_S\", system_name: \"NS_UnitDestruction_S\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    },
+    {
+      "source": "/Game/RealisticExplosionPackD/Particles/NS_Explosion_T",
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_T",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000021724E2E2E0) {success: True, system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_T\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.142874}>",
+      "summary": "<Struct 'NiagaraSystemSummary' (0x0000021970F8DB00) {system_path: \"/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_T\", system_name: \"NS_UnitDestruction_T\", emitter_count: 6, emitter_names: (\"Debri001\",\"smoke_b\",\"Debris\",\"Trail\",\"Shockwave\",\"Explosion001\"), user_parameter_count: 7, user_parameter_names: (\"User.Atmospheric\",\"User.ConeAngle\",\"User.ConeAxisD\",\"User.Depth Curve\",\"User.Depth Offset\",\"User.Drag\",\"User.Scale\"), has_gpu_emitters: True}>",
+      "pool_size": 16
+    }
+  ],
+  "saved": [
+    "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite.M_UnitHitWhite",
+    "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite_Instanced.M_UnitHitWhite_Instanced",
+    "/Game/GuLiStrike/FX/UnitFeedback/FXT_UnitDestruction.FXT_UnitDestruction",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_A.NS_UnitDestruction_A",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_B.NS_UnitDestruction_B",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_C.NS_UnitDestruction_C",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_D.NS_UnitDestruction_D",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_E.NS_UnitDestruction_E",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_F.NS_UnitDestruction_F",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_G.NS_UnitDestruction_G",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_H.NS_UnitDestruction_H",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_I.NS_UnitDestruction_I",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_J.NS_UnitDestruction_J",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_K.NS_UnitDestruction_K",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_L.NS_UnitDestruction_L",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_M.NS_UnitDestruction_M",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_N.NS_UnitDestruction_N",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_O.NS_UnitDestruction_O",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_P.NS_UnitDestruction_P",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_Q.NS_UnitDestruction_Q",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_R.NS_UnitDestruction_R",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_S.NS_UnitDestruction_S",
+    "/Game/GuLiStrike/FX/UnitFeedback/NS_UnitDestruction_T.NS_UnitDestruction_T"
+  ]
+}

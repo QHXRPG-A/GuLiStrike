@@ -1,0 +1,27 @@
+{
+  "health_observer": {
+    "method": "existing health-changed delegate broadcast on live client ship",
+    "npc_explosion_enabled": false,
+    "overlays_after_health_notify": [
+      "M_UnitHitWhite",
+      "M_UnitHitWhite"
+    ],
+    "overlays_after_finish": []
+  },
+  "wingman": {
+    "method": "live remote presentation pawn and native flash entry",
+    "handle": "<Struct 'GuLiWingmanHandle' (0x000001B813649540) {flight: {group: {ship_instance_id: {}}, flight_index: 0}, member_index: 0}>",
+    "overlays_after_hit": [
+      "M_UnitHitWhite"
+    ],
+    "overlays_after_finish": [],
+    "death_accepted": true,
+    "before": 0,
+    "after": 1,
+    "repeat_accepted": true,
+    "after_repeat": 1,
+    "overlays_after_pool_release": [],
+    "active_after_finish": 0
+  },
+  "verification_boundary": "Presentation-entry observation on existing live actors. Full packet-loss combat replay and shipping GPU stress profile were not run."
+}

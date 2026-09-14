@@ -6,6 +6,7 @@
 #include "Battle/Network/GuLiBattleTypes.h"
 #include "Engine/NetSerialization.h"
 #include "Net/Serialization/FastArraySerializer.h"
+#include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "GuLiCommanderTypes.generated.h"
 
 /** 一个临时控制组最多 25 名士兵，允许不足额；不是网络 Actor 数量。 */
@@ -16,6 +17,7 @@ inline constexpr uint32 GULI_MAX_CONTROL_COHORTS = 400u;
 
 /** Alt 同兵种扩选本次最多选入 1000 人；不限制 Shift 累计选择。 */
 inline constexpr uint32 GULI_MAX_SAME_TYPE_SELECTION = 1000u;
+inline constexpr uint32 GULI_MAX_CONTROLLABLE_ACTOR_SELECTION = 64u;
 inline constexpr uint16 GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID = 1u;
 
 /** 每块最多 32 个姿态样本，用于控制载荷；实际网络包还包含 UE/传输层开销。 */
@@ -201,6 +203,10 @@ struct GULISTRIKE_API FGuLiSelectionRequest
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
 	FGuLiSoldierId SeedSoldierId;
 
+	/** Mutually exclusive with SeedSoldierId for point/same-type Actor selection. */
+	UPROPERTY(EditAnywhere, Category = "Commander|Network")
+	FGuLiControllableActorId SeedActorId;
+
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
 	FVector_NetQuantize RayOrigin = FVector::ZeroVector;
 
@@ -249,6 +255,13 @@ struct GULISTRIKE_API FGuLiMoveRequest
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
 	uint32 ClientCommandId = 0u;
 
+	/** Ground moves reach every compatible selection; cluster/factory orders route only to miners. */
+	UPROPERTY(EditAnywhere, Category = "Commander|Network")
+	EGuLiMiningOrderType MiningOrderType = EGuLiMiningOrderType::Move;
+
+	UPROPERTY(EditAnywhere, Category = "Commander|Network")
+	uint16 TargetClusterId = 0u;
+
 	bool IsWellFormed() const;
 };
 
@@ -291,6 +304,10 @@ struct GULISTRIKE_API FGuLiCommanderSelectionState
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	TArray<FGuLiControlCohortDescriptor> Cohorts;
+
+	/** Stable Actor selections share the same SelectionRevision as Mass cohorts. */
+	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	TArray<FGuLiControllableActorId> ActorIds;
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 SelectionRevision = 0u;
@@ -375,7 +392,7 @@ struct GULISTRIKE_API FGuLiCommandAck
 };
 
 /** FastArray 承载的单兵离散状态：身份、阵营、生命和命令编号；不包含连续位置。 */
-USTRUCT()
+USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiSoldierStateItem : public FFastArraySerializerItem
 {
 	GENERATED_BODY()
@@ -391,6 +408,14 @@ struct GULISTRIKE_API FGuLiSoldierStateItem : public FFastArraySerializerItem
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	EGuLiSoldierLifeState LifeState = EGuLiSoldierLifeState::Alive;
+
+	UPROPERTY() bool bPhased = false;
+	UPROPERTY() bool bExternalActionsLocked = false;
+	/** Reliable landing baseline protects against a lost teleport pose packet. */
+	UPROPERTY() uint32 DisplacementFrameFloor = 0;
+	UPROPERTY() FVector DisplacementLocation = FVector::ZeroVector;
+	UPROPERTY() float DisplacementYaw = 0;
+	UPROPERTY() double DisplacementSimulationTime = 0;
 
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	float Health = 100.0f;

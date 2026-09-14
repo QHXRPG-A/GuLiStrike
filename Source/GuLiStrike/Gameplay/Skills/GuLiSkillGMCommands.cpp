@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 // Server-console diagnostics. Mutations traverse the commander's real GAS ability.
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
+#include "Gameplay/Skills/GuLiSkillGMUtilities.h"
 
 #if !UE_BUILD_SHIPPING
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -9,7 +10,6 @@
 #include "Engine/World.h"
 #include "GameFramework/GameStateBase.h"
 #include "HAL/IConsoleManager.h"
-#include "Misc/SecureHash.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogGuLiSkillGM, Log, All);
 
@@ -41,13 +41,6 @@ bool ParseAttribute(const FString& Text, EGuLiSkillAttribute& Out)
 	if (Text.Equals(TEXT("rate"), ESearchCase::IgnoreCase)) { Out = EGuLiSkillAttribute::AttackRate; return true; }
 	if (Text.Equals(TEXT("range"), ESearchCase::IgnoreCase)) { Out = EGuLiSkillAttribute::Range; return true; }
 	return false;
-}
-
-FGuid SourceId(const EGuLiTeam Team, const FString& Label)
-{
-	FGuid Result;
-	FGuid::Parse(FMD5::HashAnsiString(*FString::Printf(TEXT("GuLiSkillGM/%d/%s"), int32(Team), *Label)), Result);
-	return Result;
 }
 
 AGuLiBattlePlayerState* Commander(UWorld* World, const EGuLiTeam Team)
@@ -155,7 +148,7 @@ void Source(const TArray<FString>& Args, UWorld* World)
 	}
 	FGuLiArmySkillCommand Command;
 	Command.Command = EGuLiArmySkillCommand::UpsertSource;
-	Command.Source.SourceInstanceId = SourceId(Team, Args[2]);
+	Command.Source.SourceInstanceId = GuLiSkillGM::MakeSourceId(Team, Args[2]);
 	Command.Source.DebugLabel = Args[2];
 	FGuLiSkillModifier& Modifier = Command.Source.Modifiers.AddDefaulted_GetRef();
 	Modifier.Target.UnitTypeIds.Add(Unit);
@@ -184,7 +177,7 @@ void Replace(const TArray<FString>& Args, UWorld* World)
 	}
 	FGuLiArmySkillCommand Command;
 	Command.Command = EGuLiArmySkillCommand::UpsertSource;
-	Command.Source.SourceInstanceId = SourceId(Team, Args[2]);
+	Command.Source.SourceInstanceId = GuLiSkillGM::MakeSourceId(Team, Args[2]);
 	Command.Source.DebugLabel = Args[2];
 	FGuLiSkillSlotReplacement& Replacement = Command.Source.Replacements.AddDefaulted_GetRef();
 	Replacement.Target.UnitTypeIds.Add(Unit);
@@ -203,7 +196,7 @@ void Remove(const TArray<FString>& Args, UWorld* World)
 	}
 	FGuLiArmySkillCommand Command;
 	Command.Command = EGuLiArmySkillCommand::RemoveSource;
-	Command.SourceInstanceId = SourceId(Team, Args[1]);
+	Command.SourceInstanceId = GuLiSkillGM::MakeSourceId(Team, Args[1]);
 	Execute(World, Team, Command);
 }
 

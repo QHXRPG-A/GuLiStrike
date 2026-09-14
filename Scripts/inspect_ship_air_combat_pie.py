@@ -23,8 +23,11 @@ EXPECTED_NAV_DATA = (
     "DA_FlightNav_LVL_ShipWingmanAirCombatPrototype."
     "DA_FlightNav_LVL_ShipWingmanAirCombatPrototype"
 )
-EXPECTED_BASE_MAX_SPEED = 5_400.0
-EXPECTED_CURRENT_MAX_SPEED = 2_700.0
+EXPECTED_BASE_MAX_SPEED = 16_200.0
+EXPECTED_BASE_ACCELERATION = 2_400.0
+EXPECTED_EFFECTIVE_ACCELERATION = 1_200.0
+EXPECTED_CURRENT_MAX_SPEED = 8_100.0
+EXPECTED_YAW_RATE = 13.333333
 EXPECTED_OWNER_WINGMEN = 25
 
 REPORT_PATH = os.path.join(
@@ -32,6 +35,12 @@ REPORT_PATH = os.path.join(
     "TestResults",
     "ShipAirCombatLevel",
     "pie_runtime_report.json",
+)
+NETWORK_SAMPLE_PATH = os.path.join(
+    unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()),
+    "TestResults",
+    "WingmanAttack",
+    "pie-sample.json",
 )
 
 
@@ -60,13 +69,14 @@ def _object_path(value: Any) -> str | None:
 
 def main() -> dict[str, Any]:
     report: dict[str, Any] = {
-        "schema": "guli.ship-wingman-air-combat-pie.v1",
+        "schema": "guli.ship-wingman-air-combat-pie.v2",
         "success": False,
         "checks": {},
         "players": [],
         "presentations": [],
         "flight_navigation": [],
         "combat_effects": {},
+        "network_sample": [],
         "editor_settings": {},
         "errors": [],
     }
@@ -111,7 +121,27 @@ def main() -> dict[str, Any]:
                 "pulses": int(counters.pulses),
                 "damage_commits": int(counters.damage_commits),
                 "shots_published": int(counters.shots_published),
+                "gun_bursts_started": int(counters.gun_bursts_started),
+                "logical_gun_shots": int(counters.logical_gun_shots),
                 "candidate_checks": int(counters.candidate_checks),
+            }
+
+        presentation = next(
+            (
+                subsystem
+                for subsystem in unreal.ObjectIterator(
+                    unreal.GuLiCombatEffectPresentationSubsystem
+                )
+                if subsystem.get_outer() == world
+            ),
+            None,
+        )
+        if presentation:
+            counters = presentation.get_counters()
+            report["combat_presentation"] = {
+                "received_states": int(counters.received_states),
+                "received_network_shots": int(counters.received_shots),
+                "synthesized_gun_shots": int(counters.synthesized_gun_shots),
             }
 
         actors = unreal.GameplayStatics.get_all_actors_of_class(world, unreal.Actor)
@@ -136,9 +166,18 @@ def main() -> dict[str, Any]:
                     "controller": str(controller.get_name()) if controller else None,
                     "tuning_preset": str(ship.get_editor_property("tuning_preset")),
                     "base_max_speed": float(ship.get_editor_property("base_max_speed")),
+                    "base_acceleration": float(
+                        ship.get_editor_property("base_acceleration")
+                    ),
+                    "yaw_rate": float(ship.get_editor_property("yaw_rate")),
                     "current_max_speed": float(ship.get_current_max_speed()),
                     "movement_max_fly_speed": float(
                         movement.get_editor_property("max_fly_speed")
+                    )
+                    if movement
+                    else None,
+                    "movement_max_acceleration": float(
+                        movement.get_editor_property("max_acceleration")
                     )
                     if movement
                     else None,
@@ -199,32 +238,65 @@ def main() -> dict[str, Any]:
                 )
 
         checks = report["checks"]
+        if os.path.isfile(NETWORK_SAMPLE_PATH):
+            with open(NETWORK_SAMPLE_PATH, "r", encoding="utf-8-sig") as stream:
+                report["network_sample"] = json.load(stream)
+        network_worlds = report["network_sample"]
+        dedicated_worlds = [row for row in network_worlds if row.get("net_mode") == 1]
+        client_worlds = [row for row in network_worlds if row.get("net_mode") == 3]
+        server_sample = dedicated_worlds[0] if len(dedicated_worlds) == 1 else {}
+        server_relays = server_sample.get("relays", [])
+        server_air_checkpoints = [
+            checkpoint
+            for relay in server_relays
+            for checkpoint in relay.get("checkpoints", [])
+            if checkpoint.get("slot") == "AirWeapon"
+        ]
         checks["target_map_loaded"] = EXPECTED_MAP_TOKEN in report["world"]
-        checks["ship_test_game_mode"] = report["game_mode"] == EXPECTED_GAME_MODE
+        checks["ship_test_or_qa_game_mode"] = report["game_mode"] in {
+            EXPECTED_GAME_MODE,
+            "/Script/GuLiStrike.GuLiWingmanQAGameMode",
+        }
         checks["player_ship_spawned"] = bool(report["players"])
         checks["all_players_air_role"] = bool(report["players"]) and all(
             "AIR" in player["role"].upper() for player in report["players"]
         )
-        checks["all_ships_ready"] = bool(report["players"]) and all(
-            player["ship_ready"] for player in report["players"]
-        )
-        checks["base_speed_5400"] = bool(report["players"]) and all(
+        checks["base_speed_16200"] = bool(report["players"]) and all(
             abs(player["base_max_speed"] - EXPECTED_BASE_MAX_SPEED) <= 0.1
             for player in report["players"]
         )
-        checks["effective_speed_2700"] = bool(report["players"]) and all(
+        checks["effective_speed_8100"] = bool(report["players"]) and all(
             abs(player["current_max_speed"] - EXPECTED_CURRENT_MAX_SPEED) <= 0.1
             and abs(player["movement_max_fly_speed"] - EXPECTED_CURRENT_MAX_SPEED)
             <= 0.1
+            for player in report["players"]
+        )
+        checks["base_acceleration_2400"] = bool(report["players"]) and all(
+            abs(player["base_acceleration"] - EXPECTED_BASE_ACCELERATION) <= 0.1
+            for player in report["players"]
+        )
+        checks["effective_acceleration_1200"] = bool(report["players"]) and all(
+            abs(
+                player["movement_max_acceleration"]
+                - EXPECTED_EFFECTIVE_ACCELERATION
+            )
+            <= 0.1
+            for player in report["players"]
+        )
+        checks["yaw_rate_13_333333"] = bool(report["players"]) and all(
+            abs(player["yaw_rate"] - EXPECTED_YAW_RATE) <= 0.001
             for player in report["players"]
         )
         checks["wingman_v3_ability_set"] = bool(report["players"]) and all(
             player["ability_set"] == EXPECTED_ABILITY_SET
             for player in report["players"]
         )
+        checks["dedicated_server_plus_two_clients"] = (
+            len(dedicated_worlds) == 1 and len(client_worlds) == 2
+        )
         checks["owner_wingmen_25"] = any(
-            row["owner_instances"] == EXPECTED_OWNER_WINGMEN
-            for row in report["presentations"]
+            len(row.get("planes", [])) == EXPECTED_OWNER_WINGMEN
+            for row in client_worlds
         )
         checks["map_specific_flight_nav"] = any(
             row["enabled"] and row["data"] == EXPECTED_NAV_DATA
@@ -233,18 +305,38 @@ def main() -> dict[str, Any]:
         checks["background_cpu_throttle_disabled"] = not report[
             "editor_settings"
         ]["background_cpu_throttle"]
-        checks["blue_ground_target_acquired"] = bool(report["players"]) and all(
-            "COMMANDER_SOLDIER" in player["wingman_target_details"]["kind"].upper()
-            and player["wingman_target_details"]["ground"]
-            and player["wingman_target_details"]["opposing_team_from_red_ship"]
-            == "Blue"
-            for player in report["players"]
+        checks["air_target_acquired"] = any(
+            not relay.get("ground", True) and relay.get("target", 0) != 0
+            for relay in server_relays
         )
-        checks["wingman_projectiles_launched"] = (
-            report["combat_effects"].get("projectiles_launched", 0) > 0
+        checks["wingman_sustained_burst_started"] = (
+            server_sample.get("gun_bursts", 0) > 0
+        )
+        checks["no_per_shot_server_packets"] = (
+            server_sample.get("network_shot_cues", -1) == 0
         )
         checks["wingman_damage_committed"] = (
-            report["combat_effects"].get("damage_commits", 0) > 0
+            server_sample.get("damage", 0) > 0
+        )
+        checks["logical_shots_advance_inside_bursts"] = (
+            server_sample.get("logical_gun_shots", 0)
+            > server_sample.get("gun_bursts", 0)
+        )
+        checks["only_burst_start_records"] = bool(server_air_checkpoints) and all(
+            checkpoint.get("shot") == 0 for checkpoint in server_air_checkpoints
+        )
+        checks["both_clients_received_effect_states"] = len(client_worlds) == 2 and all(
+            row.get("received_effect_states", 0) > 0 for row in client_worlds
+        )
+        checks["both_clients_synthesized_gunfire"] = len(client_worlds) == 2 and all(
+            row.get("synthesized_gun_shots", 0) > 0 for row in client_worlds
+        )
+        checks["no_per_shot_client_packets"] = len(client_worlds) == 2 and all(
+            row.get("received_network_shots", -1) == 0 for row in client_worlds
+        )
+        checks["air_cycle_phases_observed"] = any(
+            any(plane.get("phase") in {6, 7, 8, 9} for plane in row.get("planes", []))
+            for row in client_worlds
         )
         report["success"] = all(checks.values())
     except Exception as error:

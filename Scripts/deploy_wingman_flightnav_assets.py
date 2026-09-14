@@ -682,7 +682,16 @@ def _deploy_derived_mesh(report: dict[str, Any]) -> None:
     _set_metadata(derived, "GuLi.Deployment.Owner", OWNER_MARKER)
     _set_metadata(derived, "GuLi.Deployment.Source", SOURCE_MESH)
     _set_metadata(derived, "GuLi.Wingman.ForwardAxis", "+X")
+    _set_metadata(derived, "GuLi.Wingman.AuthoredMeshForwardAxis", "-X")
+    _set_metadata(derived, "GuLi.Wingman.VisualYawCorrectionDegrees", "180")
     _set_metadata(derived, "GuLi.Wingman.Schema", str(SCHEMA_VERSION))
+    for key, expected in {
+        "GuLi.Wingman.ForwardAxis": "+X",
+        "GuLi.Wingman.AuthoredMeshForwardAxis": "-X",
+        "GuLi.Wingman.VisualYawCorrectionDegrees": "180",
+    }.items():
+        if _get_metadata(derived, key) != expected:
+            raise DeploymentError(f"Derived mesh metadata mismatch: {key}")
     saved = _save_exact_packages([_outermost(derived)], "derived mesh")
     if source_package_name in _dirty_package_names():
         raise DeploymentError("Marketplace source mesh package became dirty")

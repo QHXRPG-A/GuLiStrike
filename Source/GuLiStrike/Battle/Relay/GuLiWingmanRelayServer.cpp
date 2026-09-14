@@ -285,10 +285,10 @@ bool FGuLiWingmanRelayServer::ConfigureStrictFlightContract(
 	UploadRateGrant.Group = LeaseState.Group;
 	UploadRateGrant.ConnectionGeneration = ConnectionGeneration;
 	UploadRateGrant.LeaseEpoch = LeaseState.LeaseEpoch;
-	UploadRateGrant.RateClass = EGuLiWingmanUploadRateClass::Cruise5Hz;
+	UploadRateGrant.RateClass = EGuLiWingmanUploadRateClass::HighRate10Hz;
 	UploadRateGrant.GrantRevision = 1u;
 	UploadRateGrant.EffectiveClientSimTick = 1u;
-	UploadRateGrant.ExpiryServerTimeSeconds = 0.0;
+	UploadRateGrant.ExpiryServerTimeSeconds = TNumericLimits<double>::Max();
 	UploadRateGrant.Reason = EGuLiWingmanUploadRateGrantReason::CruiseDefault;
 	LastObservedAuthorityTimeSeconds = FMath::Max(LastObservedAuthorityTimeSeconds, NowSeconds);
 	if (bTransferInProgress)
@@ -481,6 +481,100 @@ bool FGuLiWingmanRelayServer::EnterNoOwner(const double NowSeconds)
 	const uint32 C = LeaseState.Group.ShipInstanceId.C ^ LeaseState.Group.GroupGeneration;
 	const FGuid Sentinel(A == 0u ? 1u : A, B, C, 0x4E455221u);
 	return SuspendForOwnerLoss(Sentinel, NowSeconds);
+}
+
+bool FGuLiWingmanRelayServer::BeginExternalControl(const double NowSeconds)
+{
+	if (IsExternallyControlled() || LeaseState.Lifecycle != EGuLiWingmanGroupLifecycle::Active || bTransferInProgress) { return false; }
+	bPhased = bExternalActionsLocked = true;
+	++ExternalDisplacementRevision;
+	if (!ExternalDisplacementRevision) { ++ExternalDisplacementRevision; }
+	RejectAllPending(EGuLiWingmanRejectReason::InactiveGroup, NowSeconds);
+	AtomicCandidateAssembler.Reset();
+	// Displacement changes poses, not the lease owner or acknowledged six-scope cut.
+	return true;
+}
+
+bool FGuLiWingmanRelayServer::PrepareExternalGroupDisplacement(const TMap<FGuLiWingmanHandle, FTransform>& Positions,
+	const FGuLiCarrierSourceRef& CarrierSource, const double NowSeconds, TArray<FGuLiWingmanAcceptedBatch>& OutBaselines) const
+{
+	OutBaselines.Reset();
+	if (!bPhased || !bExternalActionsLocked || !CarrierSource.IsValid()) { return false; }
+	for (const auto& Entry : Roster)
+	{
+		if (!Entry.bDead && (!Positions.Contains(Entry.Wingman) || Positions[Entry.Wingman].ContainsNaN())) { return false; }
+	}
+	// Validate every complete Flight before changing any authoritative scope.
+	for (uint8 Flight = 0; Flight < GULI_WINGMAN_FLIGHT_COUNT; ++Flight)
+	{
+		if (!GetRequiredMemberMask(Flight)) { continue; }
+		const int32 Previous = AcceptedHistory.FindLastByPredicate([Flight](const auto& Batch) { return Batch.FlightIndex == Flight; });
+		if (Previous == INDEX_NONE) { return false; }
+		auto& Batch = OutBaselines.Add_GetRef(AcceptedHistory[Previous]);
+		Batch.StateRef.AcceptedSequence = AcceptedSequenceByFlight[Flight] + 1u;
+		if (!Batch.StateRef.AcceptedSequence) { ++Batch.StateRef.AcceptedSequence; }
+		Batch.BaseAcceptedSequence = AcceptedSequenceByFlight[Flight];
+		Batch.CarrierSource = CarrierSource;
+		Batch.ServerAcceptedTimeSeconds = Batch.CaptureEstimatedServerTimeSeconds = NowSeconds;
+		Batch.RebasedMemberMask = GetRequiredMemberMask(Flight);
+		Batch.Samples.RemoveAll([this](const auto& Sample) { return !IsRosterMemberAlive(Sample.Wingman); });
+		for (auto& Sample : Batch.Samples)
+		{
+			const FTransform& Transform = Positions[Sample.Wingman];
+			const FVector P = Transform.GetLocation(); const FRotator R = Transform.Rotator();
+			Sample.PositionCentimeters = FIntVector(FMath::RoundToInt(P.X), FMath::RoundToInt(P.Y), FMath::RoundToInt(P.Z));
+			Sample.RotationCentiDegrees = FIntVector(FMath::RoundToInt(R.Pitch * 100), FMath::RoundToInt(R.Yaw * 100), FMath::RoundToInt(R.Roll * 100));
+			Sample.VelocityCentimetersPerSecond = FIntVector::ZeroValue;
+			Sample.FlightMode = static_cast<uint8>(EGuLiWingmanFlightMode::Recover);
+		}
+		Batch.RefreshHash();
+		if (!Batch.IsWellFormed()) { OutBaselines.Reset(); return false; }
+	}
+	return true;
+}
+bool FGuLiWingmanRelayServer::CommitExternalGroupDisplacement(const TMap<FGuLiWingmanHandle, FTransform>& Positions,
+	const FGuLiCarrierSourceRef& CarrierSource, const double NowSeconds, TArray<FGuLiWingmanAcceptedBatch>& OutBaselines)
+{
+	if (!PrepareExternalGroupDisplacement(Positions,CarrierSource,NowSeconds,OutBaselines)) { return false; }
+	++ExternalDisplacementRevision;
+	if (!ExternalDisplacementRevision) { ++ExternalDisplacementRevision; }
+	AcceptedHistory = OutBaselines;
+	LastAcceptedSamples.Reset();
+	for (const auto& Batch : OutBaselines)
+	{
+		AcceptedSequenceByFlight[Batch.FlightIndex] = Batch.StateRef.AcceptedSequence;
+		ExternalAcceptedSequenceFloor[Batch.FlightIndex] = Batch.StateRef.AcceptedSequence;
+		LastValidCandidateTimeByFlight[Batch.FlightIndex] = NowSeconds;
+		for (const auto& Sample : Batch.Samples)
+		{
+			auto& Last = LastAcceptedSamples.Add(Sample.Wingman);
+			Last.Sample = Sample; Last.ClientSimTick = Batch.StateRef.ClientSimTick; Last.ServerAcceptedTimeSeconds = NowSeconds;
+			++ServerWingmanMovementWriteCount;
+		}
+	}
+	++AcceptedSnapshotRevision;
+	LastAcceptedTimeSeconds = LastHeartbeatTimeSeconds = NowSeconds;
+	bPhased = false;
+	bExternalBaselineAwaitingAck = true;
+	RejectAllPending(EGuLiWingmanRejectReason::StaleAcceptedBaseline, NowSeconds);
+	return true;
+}
+
+void FGuLiWingmanRelayServer::ReleaseExternalControl(const double NowSeconds)
+{
+	bExternalActionsLocked = bPhased = false;
+	LastAcceptedTimeSeconds = LastHeartbeatTimeSeconds = NowSeconds;
+	for (double& Time : LastValidCandidateTimeByFlight) { Time = NowSeconds; }
+	NextLeaseMaintenanceTimeSeconds = NowSeconds + Tuning.LeaseMaintenanceIntervalSeconds;
+}
+
+bool FGuLiWingmanRelayServer::AcknowledgeExternalDisplacement(const FGuid& Owner, const uint32 Epoch, const double NowSeconds)
+{
+	if (!bExternalBaselineAwaitingAck || !IsCurrentOwner(Owner) || Epoch != ExternalDisplacementRevision) { return false; }
+	bExternalBaselineAwaitingAck = false;
+	LastAcceptedTimeSeconds = LastHeartbeatTimeSeconds = NowSeconds;
+	for (double& Time : LastValidCandidateTimeByFlight) { Time = NowSeconds; }
+	return true;
 }
 
 bool FGuLiWingmanRelayServer::BeginResume(const double NowSeconds)
@@ -1496,6 +1590,7 @@ void FGuLiWingmanRelayServer::AdvanceTime(
 
 bool FGuLiWingmanRelayServer::RunLeaseMaintenance(const double NowSeconds)
 {
+	if (bExternalActionsLocked) { return false; }
 	if (!FMath::IsFinite(NowSeconds) || NowSeconds < 0.0
 		|| NowSeconds + UE_DOUBLE_SMALL_NUMBER < NextLeaseMaintenanceTimeSeconds)
 	{
@@ -1679,19 +1774,16 @@ bool FGuLiWingmanRelayServer::SetWingmanHealthPermille(
 	}
 	Entry->CurrentHealthPermille = CurrentHealthPermille;
 	++HealthRevision;
-	RebuildRequiredMemberMasks();
 	if (CurrentHealthPermille == 0u)
 	{
 		// Preserve the semantic rejection for a deferred shot that targeted a
-		// member which has since died. The atomic-cut refresh below still clears
-		// every remaining stale Candidate, but this one must report EmitterDead.
+		// member which has since died. Death changes the active membership cut;
+		// non-lethal health changes do not rebuild presentation state.
+		RebuildRequiredMemberMasks();
 		RejectAllPending(EGuLiWingmanRejectReason::EmitterDead,
 			LastObservedAuthorityTimeSeconds);
+		HandleActiveRosterRevision(nullptr, LastObservedAuthorityTimeSeconds);
 	}
-	// Health is one of the six reliable Bootstrap scopes. During Active play a
-	// non-lethal hit therefore needs the same atomic acknowledgement cut as a
-	// roster/death mutation, otherwise a late joiner can resurrect stale health.
-	HandleActiveRosterRevision(nullptr, LastObservedAuthorityTimeSeconds);
 	return true;
 }
 
@@ -1926,6 +2018,7 @@ void FGuLiWingmanRelayServer::ResetFlightTransactionState()
 	for (uint8 FlightIndex = 0u; FlightIndex < GULI_WINGMAN_FLIGHT_COUNT; ++FlightIndex)
 	{
 		AcceptedSequenceByFlight[FlightIndex] = 0u;
+		ExternalAcceptedSequenceFloor[FlightIndex] = 0u;
 		LastAcceptedFrameByFlight[FlightIndex] = 0u;
 		LastAcceptedTickByFlight[FlightIndex] = 0u;
 		LastCandidateReceiveTimeByFlight[FlightIndex] = -DBL_MAX;
@@ -1945,6 +2038,7 @@ EGuLiWingmanRejectReason FGuLiWingmanRelayServer::ValidateCommonRequest(
 	const uint32 RequestMatchEpoch,
 	const uint32 RequestLeaseEpoch) const
 {
+	if (IsExternallyControlled()) { return EGuLiWingmanRejectReason::InactiveGroup; }
 	if (!Group.IsValid() || RequestMatchEpoch == 0u)
 	{
 		return EGuLiWingmanRejectReason::InvalidIdentity;
@@ -1995,6 +2089,12 @@ EGuLiWingmanRejectReason FGuLiWingmanRelayServer::ValidateCandidateBeforeCarrier
 	}
 	if (Candidate.UsesStrictFlightContract())
 	{
+		const uint32 DisplacementFloor = ExternalAcceptedSequenceFloor[Candidate.FlightIndex];
+		if (DisplacementFloor != 0u && Candidate.BaseAcceptedSequence != DisplacementFloor
+			&& !IsStrictlyNewerSequence(Candidate.BaseAcceptedSequence, DisplacementFloor))
+		{
+			return EGuLiWingmanRejectReason::StaleAcceptedBaseline;
+		}
 		if (ConnectionGeneration == 0u || Candidate.ConnectionGeneration != ConnectionGeneration)
 		{
 			return EGuLiWingmanRejectReason::WrongConnectionGeneration;
@@ -2692,9 +2792,9 @@ void FGuLiWingmanRelayServer::CommitLeaseOffer(const double NowSeconds)
 			++UploadRateGrant.GrantRevision;
 		}
 		UploadRateGrant.LeaseEpoch = LeaseState.LeaseEpoch;
-		UploadRateGrant.RateClass = EGuLiWingmanUploadRateClass::Cruise5Hz;
+		UploadRateGrant.RateClass = EGuLiWingmanUploadRateClass::HighRate10Hz;
 		UploadRateGrant.EffectiveClientSimTick = 1u;
-		UploadRateGrant.ExpiryServerTimeSeconds = 0.0;
+		UploadRateGrant.ExpiryServerTimeSeconds = TNumericLimits<double>::Max();
 		UploadRateGrant.Reason = EGuLiWingmanUploadRateGrantReason::LeaseChanged;
 	}
 	bAbilityConfigAcknowledged = false;

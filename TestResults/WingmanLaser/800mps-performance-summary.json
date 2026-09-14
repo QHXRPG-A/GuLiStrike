@@ -1,0 +1,34 @@
+{
+  "samples": 87,
+  "initial_clients": 1,
+  "max_clients": 2,
+  "server_final": {
+    "active": 17,
+    "peak_active": 133,
+    "capacity": 1024,
+    "expansions": 0,
+    "launched": 2827,
+    "recycled": 2810,
+    "hits": 2620,
+    "blocked": 48,
+    "last_step_milliseconds": 0.13049691915512085
+  },
+  "peak_observed_active": 108,
+  "pool_cpu_ms_median": 0.1695007085800171,
+  "pool_cpu_ms_max": 0.36070123314857483,
+  "presentation_cpu_ms_median": 0.11029999586753547,
+  "presentation_cpu_ms_max": 0.4275999963283539,
+  "observed_speed_range_cmps": [
+    79998.44856762807,
+    80001.74326249567
+  ],
+  "observed_lifetime_range_s": [
+    1.875,
+    1.875
+  ],
+  "client_visible_max": {
+    "/Game/Maps/UEDPIE_1_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype": 87,
+    "/Game/Maps/UEDPIE_2_LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype": 51
+  },
+  "identity_sampling_note": "Initial observation used Python struct display strings; those include wrapper addresses and cannot establish cross-client identity. Speed, lifetime, counters and client-visible counts are unaffected."
+}

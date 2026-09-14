@@ -8,6 +8,7 @@
 #include "Battle/Network/GuLiPlayerNetSyncComponent.h"
 #include "Battle/Network/Relay/GuLiWingmanRelayComponent.h"
 #include "Battle/Relay/GuLiWingmanRelayAuthorityRegistry.h"
+#include "Commander/Framework/GuLiCommanderResourceAdapter.h"
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
 #include "GuLiStrike.h"
@@ -319,6 +320,13 @@ void AGuLiBattleGameMode::Logout(AController* Exiting)
 				PlayerController->GetPlayerState<AGuLiBattlePlayerState>())
 			{
 				HandleWingmanOwnerDisconnected(*PlayerController, *PlayerState);
+				if (PlayerState->IsCommander() && !GetWorld()->bIsTearingDown)
+				{
+					UGuLiCommanderResourceAdapter* ResourceAdapter =
+						GetWorld()->GetSubsystem<UGuLiCommanderResourceAdapter>();
+					check(ResourceAdapter);
+					ResourceAdapter->HandleCommanderDisconnected(PlayerState->GetTeam());
+				}
 			}
 		}
 		if (const AGuLiBattlePlayerState* PlayerState = Exiting->GetPlayerState<AGuLiBattlePlayerState>())

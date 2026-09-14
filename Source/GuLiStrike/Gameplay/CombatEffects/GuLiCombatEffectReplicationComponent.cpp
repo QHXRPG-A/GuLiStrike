@@ -1,6 +1,8 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
+#include "GameFramework/GameStateBase.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "Net/UnrealNetwork.h"
@@ -11,7 +13,8 @@
 bool UGuLiCombatEffectReplicationComponent::CallRemoteFunction(UFunction* Function, void* Parameters, FOutParmRec* OutParms, FFrame* Stack)
 {
 	const bool bFreshCue = Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastShots)
-		|| Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastCorrections);
+		|| Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastCorrections)
+		|| Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastWingmanFeedback);
 	UNetDriver* Driver=GetWorld() ? GetWorld()->GetNetDriver() : nullptr;
 	if (!bFreshCue || !GetOwner()->HasAuthority() || !Driver)
 		return Super::CallRemoteFunction(Function,Parameters,OutParms,Stack);
@@ -67,6 +70,7 @@ void UGuLiCombatEffectReplicationComponent::BeginPlay()
 
 void UGuLiCombatEffectReplicationComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
+	WingmanFeedbackQueue.Reset();
 	if (Runtime.IsValid()) { Runtime->OnState.RemoveAll(this); Runtime->OnShots.RemoveAll(this); Runtime->OnEpoch.RemoveAll(this); }
 	Runtime.Reset(); ReliableQueue.Reset(); Corrections.Reset(); ShotQueue.Reset(); SnapshotQueue.Reset();
 	Super::EndPlay(Reason);
@@ -82,6 +86,7 @@ void UGuLiCombatEffectReplicationComponent::HandleEpoch(uint32 NewEpoch)
 {
 	if (!GetOwner()->HasAuthority() || NewEpoch == 0 || NewEpoch == Epoch) return;
 	Epoch = NewEpoch;
+	WingmanFeedbackQueue.Reset();
 	ReliableQueue.Reset(); Corrections.Reset(); ShotQueue.Reset(); SnapshotQueue.Reset(); SnapshotCursor = 0; SnapshotAccumulator = 0;
 	OnRep_Epoch(); GetOwner()->ForceNetUpdate();
 }
@@ -101,6 +106,7 @@ void UGuLiCombatEffectReplicationComponent::HandleState(const FGuLiCombatEffectS
 		// One complete latest non-terminal record preserves that burst without
 		// transmitting its entire creation payload twice. Never coalesce the end.
 		FGuLiCombatEffectState* Pending = State.Phase != EGuLiCombatEffectPhase::Finished
+			&& State.Kind != EGuLiCombatEffectKind::LinearProjectile
 			? ReliableQueue.FindByPredicate([&](const auto& Item) { return Item.EffectId==State.EffectId && Item.Phase!=EGuLiCombatEffectPhase::Finished; }) : nullptr;
 		if (Pending) *Pending=State; else ReliableQueue.Add(State);
 		if (State.Phase == EGuLiCombatEffectPhase::Finished) Corrections.Remove(State.EffectId);
@@ -121,6 +127,12 @@ void UGuLiCombatEffectReplicationComponent::TickComponent(float DeltaTime, ELeve
 {
 	Super::TickComponent(DeltaTime, TickType, TickFunction);
 	if (!GetOwner()->HasAuthority()) return;
+	for (int32 Index = 0; Index < WingmanFeedbackQueue.Num(); Index += 16)
+	{
+		const TArray<FGuLiWingmanFeedbackCue> Batch(WingmanFeedbackQueue.GetData() + Index, FMath::Min(16, WingmanFeedbackQueue.Num() - Index));
+		MulticastWingmanFeedback(Batch);
+	}
+	WingmanFeedbackQueue.Reset();
 	// Unreliable multicast RPCs are queued until the owning actor's next net update.
 	// Request a timely actor update, but keep the payload below the connection
 	// budget too: ForceNetUpdate cannot cure bandwidth saturation.
@@ -176,6 +188,39 @@ void UGuLiCombatEffectReplicationComponent::TickComponent(float DeltaTime, ELeve
 		}
 		if (!Batch.IsEmpty()) MulticastActiveSnapshot(Batch);
 	}
+}
+
+void UGuLiCombatEffectReplicationComponent::PublishWingmanFeedback(UWorld* World,
+	const FGuLiWingmanHandle& Wingman, const FVector& Location, bool bDestroyed, uint16 HealthPermille)
+{
+	if (!World || World->GetNetMode() == NM_Client || !Wingman.IsValid() || Location.ContainsNaN() || HealthPermille > 1000) return;
+	if (auto* Visuals = World->GetSubsystem<UGuLiUnitFeedbackSubsystem>())
+		Visuals->ApplyWingmanFeedback(Wingman, Location, bDestroyed, HealthPermille / 1000.0f);
+	AGameStateBase* State = World->GetGameState();
+	auto* Replication = State ? State->FindComponentByClass<UGuLiCombatEffectReplicationComponent>() : nullptr;
+	if (!Replication) return;
+	auto* Pending = Replication->WingmanFeedbackQueue.FindByPredicate([&](const auto& Cue) { return Cue.Wingman == Wingman; });
+	if (!Pending)
+	{
+		if (Replication->WingmanFeedbackQueue.Num() >= 256) return;
+		Pending = &Replication->WingmanFeedbackQueue.AddDefaulted_GetRef();
+		Pending->Wingman = Wingman;
+	}
+	Pending->Location = Location;
+	Pending->ServerTime = World->GetTimeSeconds();
+	Pending->bDestroyed |= bDestroyed;
+	Pending->HealthPermille = Pending->bDestroyed ? 0 : HealthPermille;
+}
+
+void UGuLiCombatEffectReplicationComponent::MulticastWingmanFeedback_Implementation(const TArray<FGuLiWingmanFeedbackCue>& Cues)
+{
+	if (GetOwner()->HasAuthority()) return;
+	const AGameStateBase* State = GetWorld()->GetGameState();
+	const float Now = State ? State->GetServerWorldTimeSeconds() : GetWorld()->GetTimeSeconds();
+	if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>())
+		for (const auto& Cue : Cues)
+			if (Now - Cue.ServerTime <= 1.0f && Cue.ServerTime - Now <= 1.0f && Cue.HealthPermille <= 1000)
+				Visuals->ApplyWingmanFeedback(Cue.Wingman, FVector(Cue.Location), Cue.bDestroyed, Cue.HealthPermille / 1000.0f);
 }
 
 void UGuLiCombatEffectReplicationComponent::MulticastActiveSnapshot_Implementation(const TArray<FGuLiCombatEffectState>& States)

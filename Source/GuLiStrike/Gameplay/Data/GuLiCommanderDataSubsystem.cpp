@@ -3,7 +3,9 @@
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 
 #include "Gameplay/Data/GuLiCommanderDataSettings.h"
-#include "Gameplay/Data/GuLiCommanderSoldierResolver.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
+#include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
+#include "Subsystems/SubsystemCollection.h"
 #include "Engine/DataTable.h"
 #include "Engine/World.h"
 #include "Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h"
@@ -31,15 +33,7 @@ namespace
 		TMap<int32, FVector> Muzzles;
 	};
 
-	bool ParseSpellFieldTiming(const FString& Text, EGuLiSpellFieldTiming& OutTiming)
-	{
-		const FString Value = Text.TrimStartAndEnd();
-		if (Value.Equals(TEXT("Instant"), ESearchCase::IgnoreCase)) OutTiming = EGuLiSpellFieldTiming::Instant;
-		else if (Value.Equals(TEXT("Delayed"), ESearchCase::IgnoreCase)) OutTiming = EGuLiSpellFieldTiming::Delayed;
-		else if (Value.Equals(TEXT("Periodic"), ESearchCase::IgnoreCase)) OutTiming = EGuLiSpellFieldTiming::Periodic;
-		else return false;
-		return true;
-	}
+
 }
 
 bool UGuLiCommanderDataSubsystem::ShouldCreateSubsystem(UObject* Outer) const
@@ -51,47 +45,30 @@ bool UGuLiCommanderDataSubsystem::ShouldCreateSubsystem(UObject* Outer) const
 void UGuLiCommanderDataSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
 	Super::Initialize(Collection);
-
-	const UGuLiCommanderDataSettings* Settings = GetDefault<UGuLiCommanderDataSettings>();
-	UDataTable* SoldierTable = Settings ? Settings->SoldierDataTable.LoadSynchronous() : nullptr;
-	const FName RowName = Settings ? Settings->DefaultSoldierRowName : NAME_None;
-	const FGuLiSoldierDefinition Fallback = FGuLiCommanderSoldierResolver::MakeFallbackDefinition();
-	DefaultSoldierDefinition = FGuLiCommanderSoldierResolver::Resolve(
-		SoldierTable,
-		RowName,
-		Fallback,
-		bDefaultSoldierDefinitionFromDataTable);
-	FString SoldierCatalogError;
-	if (SoldierTable && SoldierTable->GetRowStruct() == FGuLiStrikeCommanderSoldiersRow::StaticStruct())
-	{
-		for (const FName Name : SoldierTable->GetRowNames())
-		{
-			bool bValid = false;
-			FGuLiSoldierDefinition Definition = FGuLiCommanderSoldierResolver::Resolve(SoldierTable, Name, Fallback, bValid);
-			if (bValid && !FindSoldierDefinition(Definition.UnitTypeId)) SoldierDefinitions.Add(Definition);
-			else
-			{
-				SoldierCatalogError = FString::Printf(TEXT("Soldiers row '%s' is invalid or duplicates a UnitTypeId."), *Name.ToString());
-				UE_LOG(LogGuLiStrike, Warning, TEXT("%s"), *SoldierCatalogError);
-			}
-		}
-	}
-	if (SoldierDefinitions.IsEmpty()) SoldierDefinitions.Add(DefaultSoldierDefinition);
-	SoldierDefinitions.Sort([](const auto& A, const auto& B) { return A.UnitTypeId < B.UnitTypeId; });
-	LoadSpellFieldCatalog(Settings);
+	Collection.InitializeDependency<UGuLiUnitDataSubsystem>();
+	Collection.InitializeDependency<UGuLiSpellFieldDataSubsystem>();
+	Units = GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>();
+	Fields = GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>();
+	const auto* Settings = GetDefault<UGuLiCommanderDataSettings>();
 	LoadSkillCatalog(Settings);
-	if (!SoldierCatalogError.IsEmpty())
+	if (!Units->IsCatalogValid())
 	{
-		SkillCatalogError = SoldierCatalogError;
+		SkillCatalogError = Units->GetCatalogError();
 		SkillDefinitions.Reset(); UnitSkillConfigs.Reset();
-		UE_LOG(LogGuLiStrike, Error, TEXT("Army skills disabled rather than selecting an ambiguous soldier row: %s"), *SkillCatalogError);
 	}
 	LoadWeaponMountCatalog(Settings);
 }
 
-const FGuLiSoldierDefinition* UGuLiCommanderDataSubsystem::FindSoldierDefinition(uint16 UnitTypeId) const
+const FGuLiTeleportFieldConfig* UGuLiCommanderDataSubsystem::FindTeleportFieldConfig(const int32 Level) const
 {
-	return SoldierDefinitions.FindByPredicate([UnitTypeId](const auto& Definition) { return Definition.UnitTypeId == UnitTypeId; });
+	return Fields->FindTeleportField(Level);
+}
+
+
+
+const FGuLiSoldierDefinition* UGuLiCommanderDataSubsystem::FindSoldierDefinition(const uint16 UnitTypeId) const
+{
+	return Units->FindDefinition(UnitTypeId);
 }
 
 const FGuLiSkillDefinition* UGuLiCommanderDataSubsystem::FindSkillDefinition(const FName SkillId) const
@@ -101,7 +78,7 @@ const FGuLiSkillDefinition* UGuLiCommanderDataSubsystem::FindSkillDefinition(con
 
 const FGuLiSpellFieldConfig* UGuLiCommanderDataSubsystem::FindSpellFieldConfig(const FName ConfigId) const
 {
-	return SpellFieldConfigs.FindByPredicate([ConfigId](const auto& Config) { return Config.ConfigId == ConfigId; });
+	return Fields->FindCombatField(ConfigId);
 }
 
 const FGuLiWeaponMountConfig* UGuLiCommanderDataSubsystem::FindWeaponMountConfig(
@@ -123,40 +100,7 @@ const FVector* UGuLiCommanderDataSubsystem::FindAimOffset(const uint16 UnitTypeI
 	return nullptr;
 }
 
-void UGuLiCommanderDataSubsystem::LoadSpellFieldCatalog(const UGuLiCommanderDataSettings* Settings)
-{
-	SpellFieldConfigs.Reset(); SpellFieldCatalogError.Reset();
-	UDataTable* Table = Settings ? Settings->SpellFieldDataTable.LoadSynchronous() : nullptr;
-	if (!Table || Table->GetRowStruct() != FGuLiStrikeCommanderSpellFieldsRow::StaticStruct())
-	{
-		SpellFieldCatalogError = TEXT("SpellFields DataTable missing or using an incompatible row structure.");
-	}
-	else
-	{
-		for (const FName Name : Table->GetRowNames())
-		{
-			const auto* Row = Table->FindRow<FGuLiStrikeCommanderSpellFieldsRow>(Name, TEXT("SpellFieldCatalog"), false);
-			if (!Row) continue;
-			auto& Config = SpellFieldConfigs.AddDefaulted_GetRef();
-			Config.ConfigId = Name;
-			Config.Damage = Row->Damage; Config.Radius = Row->RadiusCentimeters;
-			Config.Delay = Row->DelaySeconds; Config.Duration = Row->DurationSeconds;
-			Config.PulseInterval = Row->PulseIntervalSeconds; Config.DissipationSeconds = Row->DissipationSeconds;
-			if (!ParseSpellFieldTiming(Row->Timing, Config.Timing) || !Config.IsValid())
-			{
-				SpellFieldCatalogError = FString::Printf(TEXT("SpellFields row '%s' has invalid timing or numeric values."), *Name.ToString());
-				break;
-			}
-		}
-		if (SpellFieldConfigs.IsEmpty() && SpellFieldCatalogError.IsEmpty())
-			SpellFieldCatalogError = TEXT("SpellFields must contain at least one row.");
-	}
-	if (!SpellFieldCatalogError.IsEmpty())
-	{
-		SpellFieldConfigs.Reset();
-		UE_LOG(LogGuLiStrike, Error, TEXT("Spell fields disabled: %s"), *SpellFieldCatalogError);
-	}
-}
+
 
 void UGuLiCommanderDataSubsystem::LoadSkillCatalog(const UGuLiCommanderDataSettings* Settings)
 {
@@ -397,3 +341,11 @@ void UGuLiCommanderDataSubsystem::LoadWeaponMountCatalog(const UGuLiCommanderDat
 		UE_LOG(LogGuLiStrike, Error, TEXT("Commander weapon effects disabled: %s"), *WeaponMountCatalogError);
 	}
 }
+
+const TArray<FGuLiSoldierDefinition>& UGuLiCommanderDataSubsystem::GetSoldierDefinitions() const { return Units->GetMassDefinitions(); }
+const FGuLiSoldierDefinition& UGuLiCommanderDataSubsystem::GetDefaultSoldierDefinition() const { return Units->GetDefaultDefinition(); }
+bool UGuLiCommanderDataSubsystem::IsDefaultSoldierDefinitionFromDataTable() const { return Units->IsDefaultFromTable(); }
+const TArray<FGuLiSpellFieldConfig>& UGuLiCommanderDataSubsystem::GetSpellFieldConfigs() const { return Fields->GetCombatFields(); }
+bool UGuLiCommanderDataSubsystem::IsSpellFieldCatalogValid() const { return Fields->IsCatalogValid(); }
+const FString& UGuLiCommanderDataSubsystem::GetSpellFieldCatalogError() const { return Fields->GetCatalogError(); }
+bool UGuLiCommanderDataSubsystem::IsTeleportCatalogValid() const { return Fields->IsTeleportCatalogValid(); }

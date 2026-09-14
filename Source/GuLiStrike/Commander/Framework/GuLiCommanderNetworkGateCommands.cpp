@@ -294,7 +294,8 @@ namespace GuLiCommanderNetworkGate
 		void IssueSelection(const double NowSeconds)
 		{
 			// Measure steady-state command/pose traffic after the reliable roster bootstrap.
-			IncomingMegabitsPerSecond.Reset();
+			IncomingBytesPerSecond.Reset();
+			ConnectionBudgetBytesPerSecond = 0;
 			PoseFrameCountAtStart = NetSync->GetAcceptedPoseFrameCount();
 			MeasurementStartTimeSeconds = NowSeconds;
 			Presentation->ResetSoldierPresentationDiagnostics(SeedSoldierId);
@@ -392,7 +393,7 @@ namespace GuLiCommanderNetworkGate
 			NextMoveIssueTimeSeconds = NowSeconds + 0.2;
 		}
 
-		// 每秒采集客户端连接入站总字节率并换算 Mbps；包含该连接其他复制流量，不是姿态净载荷。
+		// 每秒直接采集连接入站 B/s；包含该连接其他复制流量，不把传输/RPC 开销藏在 Mbps 换算后面。
 		void CaptureBandwidthSample(const double NowSeconds)
 		{
 			if (!World.IsValid() || NowSeconds < NextBandwidthSampleTimeSeconds)
@@ -404,8 +405,8 @@ namespace GuLiCommanderNetworkGate
 			{
 				if (const UNetConnection* Connection = NetDriver->ServerConnection)
 				{
-					IncomingMegabitsPerSecond.Add(
-						static_cast<double>(Connection->InBytesPerSecond) * 8.0 / 1000000.0);
+					IncomingBytesPerSecond.Add(static_cast<double>(Connection->InBytesPerSecond));
+					ConnectionBudgetBytesPerSecond = Connection->CurrentNetSpeed;
 				}
 			}
 		}
@@ -491,8 +492,10 @@ namespace GuLiCommanderNetworkGate
 
 			const double AckP95Milliseconds = Percentile95(MoveAckRoundTripMilliseconds);
 			const double AckAverageMilliseconds = Average(MoveAckRoundTripMilliseconds);
-			const double BandwidthP95Megabits = Percentile95(IncomingMegabitsPerSecond);
-			const double BandwidthAverageMegabits = Average(IncomingMegabitsPerSecond);
+			const double BandwidthP95BytesPerSecond = Percentile95(IncomingBytesPerSecond);
+			const double BandwidthAverageBytesPerSecond = Average(IncomingBytesPerSecond);
+			const double BandwidthP95Megabits = BandwidthP95BytesPerSecond * 8.0 / 1000000.0;
+			const double BandwidthAverageMegabits = BandwidthAverageBytesPerSecond * 8.0 / 1000000.0;
 			const double PresentedStepP95Centimeters = Percentile95(PresentedStepCentimeters);
 			FGuLiCommanderSoldierPresentationDiagnostics PresentationDiagnostics;
 			if (Presentation.IsValid())
@@ -524,7 +527,7 @@ namespace GuLiCommanderNetworkGate
 			GateEvidence.ReceivedMoveAckSamples = MoveAckRoundTripMilliseconds.Num();
 			GateEvidence.DesiredMoveAckSamples = DesiredMoveSamples;
 			GateEvidence.AckP95Milliseconds = AckP95Milliseconds;
-			GateEvidence.BandwidthSampleCount = IncomingMegabitsPerSecond.Num();
+			GateEvidence.BandwidthSampleCount = IncomingBytesPerSecond.Num();
 			GateEvidence.BandwidthAverageMegabits = BandwidthAverageMegabits;
 			GateEvidence.BandwidthP95Megabits = BandwidthP95Megabits;
 			GateEvidence.FreshPoseFrameCount = FreshPoseFrameCount;
@@ -537,7 +540,7 @@ namespace GuLiCommanderNetworkGate
 			const bool bGatePassed = GuLiCommanderNetworkGateValidation::CanPass(GateEvidence);
 
 			const FString Summary = FString::Printf(
-				TEXT("reason=%s impairment_valid=%d configured_rtt_ms=%d measured_rtt_ms=%.1f jitter_ms=%d loss_pct=%d reordering=%d selection_ack_ms=%.1f move_samples=%d ack_avg_ms=%.1f ack_p95_ms=%.1f bandwidth_samples=%d inbound_avg_mbps=%.3f inbound_p95_mbps=%.3f fresh_pose_frames=%llu presentation_clock_rtt_ms=%.1f clock_rtt_source=%s presentation_step_samples=%d presentation_travel_cm=%.1f presentation_step_p95_cm=%.1f seed_pose_gap_max_ms=%.1f untagged_hard_snaps=%llu last_hard_snap_delta_cm=(%.1f,%.1f,%.1f) prior_sample_delta_cm=(%.1f,%.1f,%.1f) hard_snap_velocity_cmps=(%.1f,%.1f,%.1f) hard_snap_frame_gap=%u hard_snap_server_gap_ms=%.1f hard_snap_chunk_sample=%u:%u->%u:%u current_anchor=(%.1f,%.1f,%.1f) current_relative=(%.1f,%.1f,%.1f) previous_anchor=(%.1f,%.1f,%.1f) previous_relative=(%.1f,%.1f,%.1f) explicit_teleport_snaps=%llu presented_frames=%d max_presented_step_cm=%.1f."),
+				TEXT("reason=%s impairment_valid=%d configured_rtt_ms=%d measured_rtt_ms=%.1f jitter_ms=%d loss_pct=%d reordering=%d selection_ack_ms=%.1f move_samples=%d ack_avg_ms=%.1f ack_p95_ms=%.1f bandwidth_samples=%d connection_budget_Bps=%d inbound_avg_Bps=%.0f inbound_p95_Bps=%.0f inbound_avg_mbps=%.3f inbound_p95_mbps=%.3f fresh_pose_frames=%llu presentation_clock_rtt_ms=%.1f clock_rtt_source=%s presentation_step_samples=%d presentation_travel_cm=%.1f presentation_step_p95_cm=%.1f seed_pose_gap_max_ms=%.1f untagged_hard_snaps=%llu last_hard_snap_delta_cm=(%.1f,%.1f,%.1f) prior_sample_delta_cm=(%.1f,%.1f,%.1f) hard_snap_velocity_cmps=(%.1f,%.1f,%.1f) hard_snap_frame_gap=%u hard_snap_server_gap_ms=%.1f hard_snap_chunk_sample=%u:%u->%u:%u current_anchor=(%.1f,%.1f,%.1f) current_relative=(%.1f,%.1f,%.1f) previous_anchor=(%.1f,%.1f,%.1f) previous_relative=(%.1f,%.1f,%.1f) explicit_teleport_snaps=%llu presented_frames=%d max_presented_step_cm=%.1f."),
 				Reason,
 				bRuntimeImpairmentValid ? 1 : 0,
 				RuntimeImpairment.ConfiguredNominalRoundTripLagMilliseconds,
@@ -549,7 +552,10 @@ namespace GuLiCommanderNetworkGate
 				MoveAckRoundTripMilliseconds.Num(),
 				AckAverageMilliseconds,
 				AckP95Milliseconds,
-				IncomingMegabitsPerSecond.Num(),
+				IncomingBytesPerSecond.Num(),
+				ConnectionBudgetBytesPerSecond,
+				BandwidthAverageBytesPerSecond,
+				BandwidthP95BytesPerSecond,
 				BandwidthAverageMegabits,
 				BandwidthP95Megabits,
 				static_cast<unsigned long long>(FreshPoseFrameCount),
@@ -616,7 +622,8 @@ namespace GuLiCommanderNetworkGate
 		double PresentationEvidenceStartTimeSeconds = 0.0;
 		double PresentedTravelDistanceCentimeters = 0.0;
 		TArray<double> MoveAckRoundTripMilliseconds;
-		TArray<double> IncomingMegabitsPerSecond;
+		TArray<double> IncomingBytesPerSecond;
+		int32 ConnectionBudgetBytesPerSecond = 0;
 		TArray<double> PresentedStepCentimeters;
 		FGuLiCommanderNetworkImpairmentEvidence RuntimeImpairment;
 		FGuLiSoldierId SeedSoldierId;

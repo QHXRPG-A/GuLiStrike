@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Ship/GuLiShipMovementComponent.h"
+#include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -641,6 +642,24 @@ void UGuLiShipMovementComponent::RefreshMovementSynchronization()
 	}
 }
 
+void UGuLiShipMovementComponent::ApplyExternalDisplacement(const FTransform& Transform)
+{
+	if (!CharacterOwner || !CharacterOwner->HasAuthority() || Transform.ContainsNaN()) { return; }
+	CharacterOwner->SetActorTransform(Transform, false, nullptr, ETeleportType::TeleportPhysics);
+	CharacterOwner->SetBase(nullptr);
+	StopMovementImmediately();
+	ClearFlightInput();
+	YawVelocity = 0.0f;
+	CurrentBankRoll = Transform.Rotator().Roll;
+	bJustTeleported = true;
+	FGuLiConnectionBootstrapState Identity;
+	BuildCurrentConnectionIdentity(Identity);
+	BeginServerMovementBarrier(Identity);
+	ServerPredictionBarrierFloor = MovementSyncState.BarrierGeneration;
+	ResetCanonicalMoveHistory();
+	RecordCanonicalMoveAfterAuthoritySimulation();
+}
+
 void UGuLiShipMovementComponent::BeginServerMovementBarrier(const FGuLiConnectionBootstrapState& Identity)
 {
 	MovementSyncState.BarrierGeneration = GuLiShipMovement::NextRevision(MovementSyncState.BarrierGeneration);
@@ -813,6 +832,7 @@ void UGuLiShipMovementComponent::ServerAcknowledgeMovementConfig_Implementation(
 
 bool UGuLiShipMovementComponent::CanSimulateCurrentMove() const
 {
+	if (UGuLiExternalUnitControlComponent::AreActorActionsLocked(GetOwner())) { return false; }
 	if (!HasValidData() || !IsMovementConfigReady()
 		|| ActiveInput.ConfigRevision != MovementSyncState.ConfigRevision
 		|| ActiveInput.BarrierGeneration != MovementSyncState.BarrierGeneration)

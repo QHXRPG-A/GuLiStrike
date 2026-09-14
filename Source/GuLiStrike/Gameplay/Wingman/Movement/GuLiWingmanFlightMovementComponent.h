@@ -55,9 +55,12 @@ private:
 		FHitResult& OutHit);
 	bool PerformLocalDeadlockRecovery(bool bBypassNavigationForTests);
 	void ApplyReposition(const FTransform& Transform, const FVector& InitialVelocity);
+	void UpdateOwnerPresentation(float Alpha);
 	void UpdateProgressState(float StepSeconds, float MovedDistance,
 		bool bHadSafeHeading, bool bBlockedByCarrierBoundary);
 
 	TWeakObjectPtr<AGuLiWingmanPawn> WingmanPawn;
 	TWeakObjectPtr<AActor> CarrierActor;
+	FTransform PreviousSimulationTransform = FTransform::Identity;
+	FTransform CurrentSimulationTransform = FTransform::Identity;
 };

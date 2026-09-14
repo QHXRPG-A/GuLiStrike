@@ -20,6 +20,7 @@
 #include "Components/BrushComponent.h"
 #include "Components/SphereComponent.h"
 #include "Components/StateTreeComponentSchema.h"
+#include "Components/StaticMeshComponent.h"
 #include "Misc/AutomationTest.h"
 #include "PhysicsEngine/BodySetup.h"
 #include "StateTree.h"
@@ -360,6 +361,18 @@ bool FGuLiWingmanPawnExecutionDomainTest::RunTest(const FString& Parameters)
 	{
 		TestEqual(TEXT("Wingman Pawns never block each other"),
 			CollisionDefaults->GetCollisionResponseToChannel(ECC_Pawn), ECR_Ignore);
+	}
+	const UStaticMeshComponent* VisualDefaults = PawnDefaults
+		? PawnDefaults->FindComponentByClass<UStaticMeshComponent>() : nullptr;
+	if (TestNotNull(TEXT("Wingman Pawn owns a visual mesh"), VisualDefaults))
+	{
+		TestTrue(TEXT("Only the visual mesh is yaw-corrected by 180 degrees"),
+			FMath::IsNearlyEqual(
+				FMath::Abs(FRotator::NormalizeAxis(VisualDefaults->GetRelativeRotation().Yaw)),
+				180.0f,
+				0.01f));
+		TestTrue(TEXT("Visual correction leaves actor +X as the logical forward axis"),
+			PawnDefaults->GetActorForwardVector().Equals(FVector::ForwardVector, 0.001f));
 	}
 	return true;
 }

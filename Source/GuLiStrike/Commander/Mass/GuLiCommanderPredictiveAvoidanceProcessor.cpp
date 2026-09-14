@@ -147,7 +147,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 					? FVector::ZeroVector
 					: Velocities[It].Value;
 				Entry.Agent.Radius = Radii[It].Radius;
-				Entry.Agent.bParticipates = Health.IsEmpty() || !Health[It].bDead;
+				Entry.Agent.bParticipates = Health.IsEmpty() || (!Health[It].bDead && !Health[It].bPhased);
 				Entry.Agent.bMoving = MoveTargets.IsEmpty()
 					|| MoveTargets[It].GetCurrentAction() == EMassMovementAction::Move;
 				AgentIndexByEntity.Add(Entry.Entity, Agents.Num() - 1);
@@ -200,7 +200,7 @@ void UGuLiCommanderPredictiveAvoidanceProcessor::Execute(
 				Entry.SoldierId = Identities[It].SoldierId.Value;
 				Entry.OrderRevision = Orders[It].OrderRevision;
 				Entry.LastProcessedOrderRevision = States[It].LastProcessedOrderRevision;
-				Entry.bShouldReceive = !Health[It].bDead
+				Entry.bShouldReceive = !Health[It].bDead && !Health[It].bPhased
 					&& Entry.SoldierId != 0u
 					&& Orders[It].bHasMoveTarget
 					&& MoveTargets[It].GetCurrentAction() == EMassMovementAction::Move;

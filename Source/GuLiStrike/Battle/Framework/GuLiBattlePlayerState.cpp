@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Battle/Framework/GuLiBattlePlayerState.h"
+#include "Gameplay/Teleport/GuLiTeleportAbility.h"
 
 #include "Net/UnrealNetwork.h"
 #include "AbilitySystemComponent.h"
@@ -176,6 +177,7 @@ void AGuLiBattlePlayerState::InitializeArmyAbilitySystem()
 	if (HasAuthority() && !bArmySkillAbilityGranted)
 	{
 		ArmyAbilitySystem->GiveAbility(FGameplayAbilitySpec(UGuLiArmySkillAbility::StaticClass(), 1));
+		ArmyAbilitySystem->GiveAbility(FGameplayAbilitySpec(UGuLiTeleportAbility::StaticClass(), 1));
 		bArmySkillAbilityGranted = true;
 	}
 }
@@ -241,6 +243,43 @@ void AGuLiBattlePlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 	DOREPLIFETIME(AGuLiBattlePlayerState, bBattleReady);
 	DOREPLIFETIME(AGuLiBattlePlayerState, bSyncReady);
 	DOREPLIFETIME(AGuLiBattlePlayerState, ShipAbilityLoadoutState);
+	DOREPLIFETIME_CONDITION(AGuLiBattlePlayerState, ResourcePrivateState, COND_OwnerOnly);
+}
+
+bool AGuLiBattlePlayerState::SetServerResourcePrivateState(FGuLiTeamResourcePrivateState NewState)
+{
+	check(HasAuthority());
+	NewState.SortByStableId();
+	if (ResourcePrivateState.HasSamePayload(NewState))
+	{
+		return false;
+	}
+	const FGuLiResourceAmounts PreviousInventory = ResourcePrivateState.Inventory;
+	NewState.Revision = ResourcePrivateState.Revision == MAX_uint32
+		? 1u
+		: ResourcePrivateState.Revision + 1u;
+	ResourcePrivateState = MoveTemp(NewState);
+	ForceNetUpdate();
+	OnResourcePrivateStateChanged.Broadcast();
+	if (PreviousInventory.Blue != ResourcePrivateState.Inventory.Blue
+		|| PreviousInventory.Red != ResourcePrivateState.Inventory.Red
+		|| PreviousInventory.Revision != ResourcePrivateState.Inventory.Revision)
+	{
+		OnResourceInventoryChanged.Broadcast(ResourcePrivateState.Inventory);
+	}
+	return true;
+}
+
+void AGuLiBattlePlayerState::OnRep_ResourcePrivateState(
+	FGuLiTeamResourcePrivateState PreviousState)
+{
+	OnResourcePrivateStateChanged.Broadcast();
+	if (PreviousState.Inventory.Blue != ResourcePrivateState.Inventory.Blue
+		|| PreviousState.Inventory.Red != ResourcePrivateState.Inventory.Red
+		|| PreviousState.Inventory.Revision != ResourcePrivateState.Inventory.Revision)
+	{
+		OnResourceInventoryChanged.Broadcast(ResourcePrivateState.Inventory);
+	}
 }
 
 void AGuLiBattlePlayerState::CopyProperties(APlayerState* PlayerState)

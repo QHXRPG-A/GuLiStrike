@@ -175,10 +175,11 @@ void Validate(const FGuLiMapSnapshot& S,TArray<FGuLiMapIssue>& Issues)
         }
         for (FName N:ValidatorNames) Validators[N](E,Issues);
     }
+    ValidateDensity(S,Issues);
 }
 bool BuildFiles(const FGuLiMapSnapshot& Input,TMap<FString,FString>& Out,TArray<FGuLiMapIssue>& Issues)
 {
-    Validate(Input,Issues); if (!Issues.IsEmpty()) return false;
+    Validate(Input,Issues); if (HasErrors(Issues)) return false;
     FGuLiMapSnapshot S=Input;
     S.Markers.Sort([](const auto& A,const auto& B){return A.Record.MarkerKey.LexicalLess(B.Record.MarkerKey);});
     TMap<FString,FString> Files;
@@ -266,6 +267,7 @@ bool BuildFiles(const FGuLiMapSnapshot& Input,TMap<FString,FString>& Out,TArray<
     Root->SetArrayField(TEXT("types"),TypeArray); Root->SetArrayField(TEXT("markers"),Markers);
     if (!JsonFinite(Obj(Root))) { Issues.Emplace(TEXT("Serializer produced non-finite or missing data.")); return false; }
     Files.Add(TEXT("layout.json"),CanonicalJson(Obj(Root))+TEXT("\n"));
+    if (S.DensityMap.IsSet() && !BuildDensityFiles(S,Files,Issues)) return false;
     TArray<FName> Names; Exporters.GetKeys(Names); Names.Sort(FNameLexicalLess());
     for (FName Name:Names)
     {

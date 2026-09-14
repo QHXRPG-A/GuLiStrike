@@ -1,6 +1,9 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/WarMachine/GuLiWarMachinePlaceholderPawn.h"
+#include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
+#include "Gameplay/Units/GuLiExternalCharacterMovementComponent.h"
+#include "Gameplay/CombatEffects/GuLiUnitFeedbackComponent.h"
 
 #include "Battle/Framework/GuLiBattlePlayerController.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -16,8 +19,12 @@
 #include "InputCoreTypes.h"
 #include "UObject/ConstructorHelpers.h"
 
-AGuLiWarMachinePlaceholderPawn::AGuLiWarMachinePlaceholderPawn()
+AGuLiWarMachinePlaceholderPawn::AGuLiWarMachinePlaceholderPawn(const FObjectInitializer& ObjectInitializer)
+	: Super(ObjectInitializer.SetDefaultSubobjectClass<UGuLiExternalCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
+	CreateDefaultSubobject<UGuLiExternalUnitControlComponent>(TEXT("ExternalUnitControl"));
+	auto* UnitFeedback = CreateDefaultSubobject<UGuLiUnitFeedbackComponent>(TEXT("UnitFeedback"));
+	UnitFeedback->bPlayDestructionEffect = false;
 	bReplicates = true;
 	// 战局最多十个玩家 Pawn，允许空中远距相机同样观察 Ground；士兵仍走独立姿态流。
 	bAlwaysRelevant = true;
@@ -78,10 +85,6 @@ void AGuLiWarMachinePlaceholderPawn::SetupPlayerInputComponent(UInputComponent* 
 	}
 
 	// 直接绑定已有键，不创建输入资产；派生角色输入与指挥官 Controller 的快捷键分离。
-	IncomingInputComponent->BindAxisKey(EKeys::W, this, &AGuLiWarMachinePlaceholderPawn::HandleMoveForward);
-	IncomingInputComponent->BindAxisKey(EKeys::S, this, &AGuLiWarMachinePlaceholderPawn::HandleMoveBackward);
-	IncomingInputComponent->BindAxisKey(EKeys::D, this, &AGuLiWarMachinePlaceholderPawn::HandleMoveRight);
-	IncomingInputComponent->BindAxisKey(EKeys::A, this, &AGuLiWarMachinePlaceholderPawn::HandleMoveLeft);
 	IncomingInputComponent->BindAxisKey(EKeys::MouseX, this, &AGuLiWarMachinePlaceholderPawn::HandleLookYaw);
 	IncomingInputComponent->BindAxisKey(EKeys::MouseY, this, &AGuLiWarMachinePlaceholderPawn::HandleLookPitch);
 }
@@ -100,6 +103,7 @@ bool AGuLiWarMachinePlaceholderPawn::CanAcceptGroundInput() const
 
 void AGuLiWarMachinePlaceholderPawn::ApplyMoveInput(const float AxisValue, const bool bForwardAxis)
 {
+	if (UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) { return; }
 	if (!CanAcceptGroundInput() || !FMath::IsFinite(AxisValue) || FMath::IsNearlyZero(AxisValue))
 	{
 		return;
@@ -110,24 +114,17 @@ void AGuLiWarMachinePlaceholderPawn::ApplyMoveInput(const float AxisValue, const
 	AddMovementInput(MoveDirection, AxisValue);
 }
 
-void AGuLiWarMachinePlaceholderPawn::HandleMoveForward(const float AxisValue)
+void AGuLiWarMachinePlaceholderPawn::Tick(float DeltaSeconds)
 {
-	ApplyMoveInput(AxisValue, true);
-}
-
-void AGuLiWarMachinePlaceholderPawn::HandleMoveBackward(const float AxisValue)
-{
-	ApplyMoveInput(-AxisValue, true);
-}
-
-void AGuLiWarMachinePlaceholderPawn::HandleMoveRight(const float AxisValue)
-{
-	ApplyMoveInput(AxisValue, false);
-}
-
-void AGuLiWarMachinePlaceholderPawn::HandleMoveLeft(const float AxisValue)
-{
-	ApplyMoveInput(-AxisValue, false);
+	Super::Tick(DeltaSeconds);
+	// Digital keys are not Axis1D keys in UE5.7. Sample the held keys without
+	// adding global input mappings; camera axes retain their normal input path.
+	const auto* PC = Cast<APlayerController>(GetController());
+	if (PC && CanAcceptGroundInput())
+	{
+		ApplyMoveInput(float(PC->IsInputKeyDown(EKeys::W))-float(PC->IsInputKeyDown(EKeys::S)),true);
+		ApplyMoveInput(float(PC->IsInputKeyDown(EKeys::D))-float(PC->IsInputKeyDown(EKeys::A)),false);
+	}
 }
 
 void AGuLiWarMachinePlaceholderPawn::HandleLookYaw(const float AxisValue)

@@ -11,5 +11,6 @@ public class GuLiStrikeEditorTarget : TargetRules
 		DefaultBuildSettings = BuildSettingsVersion.V6;
 		IncludeOrderVersion = EngineIncludeOrderVersion.Unreal5_7;
 		ExtraModuleNames.Add("GuLiStrike");
+		ExtraModuleNames.Add("GuLiStrikeEditor");
 	}
 }

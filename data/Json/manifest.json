@@ -3,61 +3,133 @@
     "DT_GuLiStrikeCommander_Soldiers": {
       "excel": "GuLiStrikeCommander.xlsx",
       "sheet": "Soldiers",
+      "sources": [
+        {
+          "excel": "GuLiStrikeCommander.xlsx",
+          "sheet": "Soldiers"
+        }
+      ],
       "struct": "/Script/GuLiStrike.GuLiStrikeCommanderSoldiersRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeCommander_Skills": {
-      "excel": "GuLiStrikeCommander.xlsx",
+      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
       "sheet": "Skills",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+          "sheet": "Skills"
+        }
+      ],
       "struct": "/Script/GuLiStrike.GuLiStrikeCommanderSkillsRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeCommander_UnitSkills": {
-      "excel": "GuLiStrikeCommander.xlsx",
+      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
       "sheet": "UnitSkills",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+          "sheet": "UnitSkills"
+        }
+      ],
       "struct": "/Script/GuLiStrike.GuLiStrikeCommanderUnitSkillsRow",
       "row_key_column": "name"
     },
-    "DT_GuLiStrikeCommander_SpellFields": {
-      "excel": "GuLiStrikeCommander.xlsx",
-      "sheet": "SpellFields",
-      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderSpellFieldsRow",
+    "DT_GuLiStrikeCommander_WeaponMounts": {
+      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+      "sheet": "WeaponMounts",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+          "sheet": "WeaponMounts"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderWeaponMountsRow",
       "row_key_column": "name"
     },
-    "DT_GuLiStrikeCommander_WeaponMounts": {
-      "excel": "GuLiStrikeCommander.xlsx",
-      "sheet": "WeaponMounts",
-      "struct": "/Script/GuLiStrike.GuLiStrikeCommanderWeaponMountsRow",
+    "DT_GuLiStrikeShip_WingmanWeapons": {
+      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+      "sheet": "WingmanWeapons",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+          "sheet": "WingmanWeapons"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeShipWingmanWeaponsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeShip_WingmanTargeting": {
+      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+      "sheet": "WingmanTargeting",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+          "sheet": "WingmanTargeting"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeShipWingmanTargetingRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeSecondaryWeapons_Projectiles": {
+      "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+      "sheet": "Projectiles",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryWeapons.xlsx",
+          "sheet": "Projectiles"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeSecondaryWeaponsProjectilesRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeShip_Parts": {
       "excel": "GuLiStrikeShip.xlsx",
       "sheet": "Parts",
+      "sources": [
+        {
+          "excel": "GuLiStrikeShip.xlsx",
+          "sheet": "Parts"
+        }
+      ],
       "struct": "/Script/GuLiStrike.GuLiStrikeShipPartsRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeShip_Tuning": {
       "excel": "GuLiStrikeShip.xlsx",
       "sheet": "Tuning",
+      "sources": [
+        {
+          "excel": "GuLiStrikeShip.xlsx",
+          "sheet": "Tuning"
+        }
+      ],
       "struct": "/Script/GuLiStrike.GuLiStrikeShipTuningRow",
       "row_key_column": "name"
     },
     "DT_GuLiStrikeShip_Camera": {
       "excel": "GuLiStrikeShip.xlsx",
       "sheet": "Camera",
+      "sources": [
+        {
+          "excel": "GuLiStrikeShip.xlsx",
+          "sheet": "Camera"
+        }
+      ],
       "struct": "/Script/GuLiStrike.GuLiStrikeShipCameraRow",
       "row_key_column": "name"
     },
-    "DT_GuLiStrikeShip_WingmanTargeting": {
-      "excel": "GuLiStrikeShip.xlsx",
-      "sheet": "WingmanTargeting",
-      "struct": "/Script/GuLiStrike.GuLiStrikeShipWingmanTargetingRow",
-      "row_key_column": "name"
-    },
-    "DT_GuLiStrikeShip_WingmanWeapons": {
-      "excel": "GuLiStrikeShip.xlsx",
-      "sheet": "WingmanWeapons",
-      "struct": "/Script/GuLiStrike.GuLiStrikeShipWingmanWeaponsRow",
+    "DT_GuLiStrikeSpellFields_Fields": {
+      "excel": "GuLiStrikeSpellFields.xlsx",
+      "sheet": "Fields",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSpellFields.xlsx",
+          "sheet": "Fields"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeSpellFieldsFieldsRow",
       "row_key_column": "name"
     }
   }

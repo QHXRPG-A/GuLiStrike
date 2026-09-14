@@ -1169,4 +1169,146 @@ bool FGuLiWingmanEmergencyRebaseAuthorityTest::RunTest(const FString& Parameters
 		FMath::IsNearlyEqual(NoSafeResult.RetryAfterServerTimeSeconds, 2.8));
 	return true;
 }
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiTeleportWingmanGroupTest,
+	"GuLiStrike.Teleport.WingmanWholeGroupIdentityAndStalePackets",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiTeleportWingmanGroupTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiWingmanRelayTests;
+	FGuLiWingmanRelayServer Relay;
+	FGuid Owner;
+	FGuid Backup;
+	if (!InitializeRelay(*this, Relay, Owner, Backup))
+	{
+		return false;
+	}
+	FGuLiWingmanRelayValidationRevisions Revisions;
+	Revisions.NavSchemaRevision = 1u;
+	Revisions.NavDataChecksum = 0x12345678u;
+	Revisions.TuningRevision = 1u;
+	Revisions.ObstacleRevision = 1u;
+	if (!TestTrue(TEXT("The fixture enables the v13 strict Flight contract"),
+		Relay.ConfigureStrictFlightContract(3u, Revisions, 0.03)))
+	{
+		return false;
+	}
+	FGuLiWingmanBootstrapBundle Bootstrap;
+	if (!TestTrue(TEXT("The strict v13 bootstrap builds"), Relay.BuildBootstrap(Bootstrap)))
+	{
+		return false;
+	}
+	FGuLiGroupAbilityConfigAck AbilityAck;
+	AbilityAck.Group = Relay.GetLeaseState().Group;
+	AbilityAck.LeaseEpoch = Relay.GetLeaseState().LeaseEpoch;
+	AbilityAck.SnapshotRevision = Relay.GetAbilityConfig().SnapshotRevision;
+	AbilityAck.SnapshotHash = Relay.GetAbilityConfig().SnapshotHash;
+	TestTrue(TEXT("The strict ability projection is acknowledged"),
+		Relay.AcknowledgeAbilityConfig(Owner, AbilityAck, 0.04));
+	TestTrue(TEXT("The strict six-scope cut is acknowledged"),
+		Relay.AcknowledgeBootstrap(Owner, Bootstrap.Commit, nullptr, 0.05));
+
+	TArray<FGuLiWingmanCandidateBatch> SlowFlights;
+	for (uint8 FlightIndex = 0u; FlightIndex < GULI_WINGMAN_FLIGHT_COUNT; ++FlightIndex)
+	{
+		SlowFlights.Add(MakeStrictSlowFlightCandidate(
+			Relay, FlightIndex, FlightIndex + 1u, 1u, 0u, 100u, 0.1));
+		TestTrue(TEXT("Each strict slow Flight candidate is well formed"),
+			SlowFlights.Last().IsWellFormed());
+	}
+	FGuLiWingmanAtomicCandidateBatchFragment Fragment;
+	Fragment.Header.BatchId = 1u;
+	Fragment.Header.BatchKind = Bootstrap.AtomicBatchKind;
+	Fragment.Header.Group = Relay.GetLeaseState().Group;
+	Fragment.Header.ConnectionGeneration = Relay.GetConnectionGeneration();
+	Fragment.Header.LeaseEpoch = Relay.GetLeaseState().LeaseEpoch;
+	Fragment.Header.FrozenRosterRevision = Relay.GetRosterRevision();
+	Fragment.Header.FrozenRequiredFlightMask = Bootstrap.RequiredFlightMask;
+	Fragment.Header.FrozenRequiredMemberMaskHash = Bootstrap.RequiredMemberMaskHash;
+	Fragment.Header.BaselineRevision = Bootstrap.AtomicBaselineRevision;
+	Fragment.Header.BaselineHash = Bootstrap.AtomicBaselineHash;
+	Fragment.Header.IncludedFlightMask = Bootstrap.RequiredFlightMask;
+	Fragment.Header.ClientBatchStartTick = 100u;
+	Fragment.Header.FragmentCount = 1u;
+	Fragment.Header.BatchPayloadHash = GuLiWingmanRelayHash::CandidatePayloads(SlowFlights);
+	Fragment.FragmentIndex = 0u;
+	Fragment.Flights = SlowFlights;
+	for (const FGuLiWingmanCandidateBatch& Flight : SlowFlights)
+	{
+		FGuLiWingmanAtomicCandidateBatchFragment OneFlight;
+		OneFlight.Flights.Add(Flight);
+		Fragment.Header.BatchPayloadBytes += OneFlight.EstimatePayloadBytes();
+	}
+	const FGuLiWingmanAtomicBatchAcceptance AtomicAccepted =
+		Relay.SubmitAtomicCandidateFragment(
+			Owner, Fragment, 0.1, FoundCarrier(), PermitWorld());
+	if (!TestEqual(TEXT("The slow all-Flight baseline activates atomically"),
+		AtomicAccepted.Disposition, EGuLiWingmanSubmissionDisposition::Accepted))
+	{
+		return false;
+	}
+
+	const auto Dead = Relay.GetRoster().Last().Wingman;
+	const auto Survivor = Relay.GetRoster()[0].Wingman;
+	TestTrue(TEXT("A member can die before the cast"),Relay.MarkWingmanDead(Dead));
+	TestTrue(TEXT("A damaged survivor has a preserved health value"),Relay.SetWingmanHealthPermille(Survivor,650));
+	const auto RosterBefore = Relay.GetRoster();
+	const uint64 HealthHash = GuLiWingmanRelayHash::Health(Relay.GetHealth());
+	const uint64 ConfigHash = Relay.GetAbilityConfig().SnapshotHash;
+	const uint32 LeaseBefore = Relay.GetLeaseState().LeaseEpoch;
+	const auto PreDisplacementFireSource = Relay.GetAcceptedHistory()[0].StateRef;
+	auto& Checkpoint = Relay.AttackState.Checkpoints.AddDefaulted_GetRef();
+	Checkpoint.Emitter=Survivor; Checkpoint.SlotId=TEXT("BasicWeapon"); Checkpoint.NextFireTime=42.5;
+	TestTrue(TEXT("External capture begins"),Relay.BeginExternalControl(.2));
+	TestTrue(TEXT("Captured group is phased and action locked"),Relay.IsPhased() && Relay.IsExternallyControlled());
+	TestFalse(TEXT("Duplicate capture cannot take ownership"),Relay.BeginExternalControl(.21));
+	TMap<FGuLiWingmanHandle,FTransform> Positions;
+	for (const auto& R : Relay.GetRoster())
+		if (!R.bDead) Positions.Add(R.Wingman,FTransform(FRotator(0,90,0),FVector(90000,R.Wingman.GetGroupMemberIndex()*1000,8000)));
+	FGuLiCarrierSourceRef Source; Source.CanonicalEpoch=9; Source.MoveRevision=1;
+	TArray<FGuLiWingmanAcceptedBatch> Baselines;
+	auto Incomplete=Positions; Incomplete.Remove(Survivor);
+	TestFalse(TEXT("A missing destination rejects the entire group"),Relay.CommitExternalGroupDisplacement(Incomplete,Source,.3,Baselines));
+	TestEqual(TEXT("Rejected batch has no movement writes"),Relay.GetServerWingmanMovementWriteCount(),uint64(0));
+	TestTrue(TEXT("All living destinations commit together"),Relay.CommitExternalGroupDisplacement(Positions,Source,.4,Baselines));
+	TestEqual(TEXT("All 24 living members move"),Relay.GetServerWingmanMovementWriteCount(),uint64(24));
+	TestNull(TEXT("A pre-displacement fire source no longer resolves"),Relay.FindAcceptedBatch(PreDisplacementFireSource));
+	TestEqual(TEXT("Health is preserved"),GuLiWingmanRelayHash::Health(Relay.GetHealth()),HealthHash);
+	TestEqual(TEXT("Loadout and abilities are preserved"),Relay.GetAbilityConfig().SnapshotHash,ConfigHash);
+	TestEqual(TEXT("Cooldown is preserved"),Relay.AttackState.Checkpoints[0].NextFireTime,42.5);
+	for (int32 I=0; I<RosterBefore.Num(); ++I)
+	{
+		TestTrue(TEXT("Every original identity remains"),RosterBefore[I].Wingman==Relay.GetRoster()[I].Wingman);
+		TestEqual(TEXT("Dead members are not revived"),RosterBefore[I].bDead,Relay.GetRoster()[I].bDead);
+	}
+	int32 Count=0;
+	for (const auto& B : Baselines)
+	{
+		TestTrue(TEXT("Multi-member rebase is a valid network payload"),B.IsWellFormed());
+		for (const auto& Sample : B.Samples)
+		{
+			++Count;
+			TestTrue(TEXT("Dead member is absent"),Sample.Wingman!=Dead);
+			TestTrue(TEXT("Destination matches the prepared member pose"),FVector(Sample.PositionCentimeters).Equals(Positions[Sample.Wingman].GetLocation(),1));
+			TestEqual(TEXT("Velocity is cleared"),Sample.VelocityCentimetersPerSecond,FIntVector::ZeroValue);
+		}
+	}
+	TestEqual(TEXT("Baseline contains all living members"),Count,24);
+	const auto Stale=Relay.SubmitCandidate(Owner,SlowFlights[0],.45,FoundCarrier(),PermitWorld());
+	TestTrue(TEXT("Pre-cast position data is rejected"),Stale.Disposition==EGuLiWingmanSubmissionDisposition::Rejected);
+	Relay.ReleaseExternalControl(.9);
+	TestTrue(TEXT("Unacknowledged baseline still prevents stale owner simulation"),Relay.IsExternallyControlled());
+	TestFalse(TEXT("Wrong displacement acknowledgment rejected"),Relay.AcknowledgeExternalDisplacement(Owner,Relay.GetExternalDisplacementRevision()-1,.91));
+	TestTrue(TEXT("Exact owner and revision acknowledge the new baseline"),Relay.AcknowledgeExternalDisplacement(Owner,Relay.GetExternalDisplacementRevision(),.92));
+	TestFalse(TEXT("Group resumes after recovery and baseline acknowledgment"),Relay.IsExternallyControlled());
+	TestEqual(TEXT("Displacement preserves the existing owner lease"),Relay.GetLeaseState().LeaseEpoch,LeaseBefore);
+	const auto OldAfterUnlock=Relay.SubmitCandidate(Owner,SlowFlights[0],.93,FoundCarrier(),PermitWorld());
+	TestTrue(TEXT("Old position data remains rejected after unlocking"),OldAfterUnlock.Disposition==EGuLiWingmanSubmissionDisposition::Rejected);
+	auto Fresh = MakeStrictSlowFlightCandidate(Relay,0,99,3,Baselines[0].StateRef.AcceptedSequence,120,1.05);
+	Fresh.Samples = Baselines[0].Samples;
+	const auto Resumed = Relay.SubmitCandidate(Owner,Fresh,1.05,FoundCarrier(),PermitWorld());
+	TestEqual(TEXT("Fresh owner movement resumes on the displaced baseline"),Resumed.Disposition,EGuLiWingmanSubmissionDisposition::Accepted);
+	return true;
+}
 #endif

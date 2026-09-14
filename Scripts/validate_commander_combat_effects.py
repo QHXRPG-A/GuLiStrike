@@ -235,7 +235,7 @@ def assets():
     REPORT['field_definition']=str(field)
     if not field or str(field.get_editor_property('config_id'))!='WM01_MissileExplosion':
         REPORT['errors'].append('WM01 field definition is not bound to SpellFields/WM01_MissileExplosion')
-    table=unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_SpellFields')
+    table=unreal.load_asset('/Game/GuLiStrike/Data/DT_GuLiStrikeSpellFields_Fields')
     if not table:
         REPORT['errors'].append('Missing SpellFields DataTable')
     else:

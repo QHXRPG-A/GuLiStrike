@@ -6,20 +6,24 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | building, commander, network, ship, wingman | — | 按首版 3v3 需求细化 Ship 战略机动与三线选牌节奏，验证操作者如何制造可被指挥官兑现的突破。 | 2026-09-09 |
 | [指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属 — 技术方案](../DevelopmentDocumentation/20260905-指挥官兵种技能与Roguelike升级归属.md) | commander, network, ship, ui, wingman | 9/18 (50%) | P1：稳定绑定、可扩展通道定义、兼容校验、启用/移除与完整 Loadout 版本；代码已覆盖 Army/Wingman，仍待 P3 协议定向验证 | 2026-09-07 |
 | [非 Mass 大规模弹道与特效架构 — 技术方案](../DevelopmentDocumentation/20260906-非Mass大规模弹道与特效架构.md) | combat, commander, network, vfx, wingman | 0/17 (0%) | 用户确认范围假设：仅特效/弹道栈不用 Mass，不移除单位系统 Mass | 2026-09-06 |
 | [据点混凝土巨构模型 — 技术方案](../DevelopmentDocumentation/20260905-据点混凝土巨构模型.md) | assets, building, combat, commander, vfx | 9/9 (100%) | — | 2026-09-05 |
 | [基地建造玩法探索草案 v0.1](../RequirementDocument/20260831-基地建造玩法探索.md) | assets, building, combat, commander, ship | — | 玩家能说明选址和建筑选择的原因、放弃的其他投入，以及队友的作用 | 2026-08-31 |
-| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | building, commander, network, ship, wingman | — | 操作者能够说明自己至少一次如何制造了可被指挥官兑现的突破 | 2026-08-26 |
 
 ## 规划中
 
-暂无。
+| 工作项 | 模块 | 任务 | 下一步 | 更新 |
+|---|---|---|---|---|
+| [首版 Demo 3v3、Ship 战略机动与高频选牌](../RequirementDocument/20260909-Demo3v3与Ship战略机动及高频选牌.md) | combat, commander, economy, ship, ui | — | 细化战略机动的调用与支付方式、出入口和僚机随行规则，以及三线选牌频率、单次强化幅度和 Ship 卡牌内容规划。 | 2026-09-09 |
+| [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | building, combat, commander, economy, ship | — | 细化维护及断供恢复、战略机动支付与采集加工参数，以及三线经验曲线、Ship 高频选牌和强力牌费用。 | 2026-09-09 |
 
 ## 实施中
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | combat, commander, network, ui | 5/6 (83%) | 重启源码版 Editor，完成三分辨率、Commander/Ground/Air、Standalone/Listen/客户端的人工 PIE 验收。 | 2026-09-10 |
 | [地图战略点标注与数据导出工具 — 技术方案](../DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md) | assets, building, commander, data-pipeline, map-authoring | 15/22 (68%) | M2 完整验收（实现完成，交互矩阵待验收） | 2026-09-07 |
 | [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | assets, network, ship, ui | 28/29 (97%) | 用户手动加 7 个 socket（教程见下，坐标已定稿） | 2026-09-05 |
 | [僚机世界空间近距编队与租约恢复 — 技术方案](../DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md) | network, ship, wingman | 8/10 (80%) | 在优化配置复跑完整 GuLiStrike.Wingman：DebugGame 已执行 79 项，仅既有 H4000 ServerValidator 性能预算失败 | 2026-09-04 |
@@ -31,6 +35,9 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | combat, commander, data, wingman | 8/8 (100%) | 本次归并已交付；前次4项现有回归适配仍等待用户范围确认。 | 2026-09-14 |
+| [地图资源密度涂绘与导出 — 技术方案与实施记录](../DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md) | data-pipeline, map-authoring, outpost, resource | 8/9 (89%) | 保存并重启旧 Editor，在隔离验证地图执行人工验收矩阵并记录证据。 | 2026-09-10 |
+| [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | combat, ship, ui, vfx, wingman | — | 在交互式源码Editor中补做三种目标分辨率、分屏、贴地绕山、Listen/Dedicated/Late Join及10枚齐射GPU/Bounds截图验收。 | 2026-09-10 |
 | [指挥官双机甲骨骼与武器挂点 — 技术方案](../DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md) | assets, combat, commander, network, vfx | 7/12 (58%) | 完成主体、武器、四足/六足 FK 和 IK 控制，保留辅助结构 | 2026-09-07 |
 | [指挥官 WM01 第二兵种与多 ISM 表现 — 技术方案](../DevelopmentDocumentation/20260904-指挥官WM01第二兵种与多ISM表现.md) | assets, combat, commander, network, ui | 9/12 (75%) | 在最终 WM01 资产和数据上运行获准的聚焦测试（本轮按要求停在测试阶段） | 2026-09-05 |
 | [僚机无规则护航盘旋技能重构 — 开发文档](../DevelopmentDocumentation/20260904-僚机无规则护航盘旋技能重构.md) | combat, commander, network, ship, wingman | 11/13 (85%) | 向用户说明拟新增测试及文件，取得明确测试许可 | 2026-09-05 |
@@ -44,11 +51,29 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | combat, vfx, wingman | 7/7 (100%) | 后续另行处理既有失败断言；独立GPU计时与强制扩容未纳入本次实测。 | 2026-09-14 |
+| [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | combat, commander, resources, ship, vfx, wingman | 10/10 (100%) | — | 2026-09-14 |
+| [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | combat, commander, data, resources, ship | 7/7 (100%) | 单独维护旧网络包预算和Ship快照测试夹具；跟踪场外绕矿簇减速及已有距离场ensure。 | 2026-09-13 |
+| [激光采矿与矿车进出厂](../DevelopmentDocumentation/20260913-激光采矿与矿车进出厂.md) | resources | 7/7 (100%) | 等待矿车受击专项测试范围确认；保留距离场渲染警告供后续定位。 | 2026-09-13 |
+| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | commander, network, ship, ui, wingman | 12/12 (100%) | — | 2026-09-13 |
+| [ShipComponent正式部件蓝图 — 制作与迁移](../DevelopmentDocumentation/20260912-ShipComponent正式部件蓝图.md) | assets, ship | 6/6 (100%) | — | 2026-09-12 |
+| [空战测试关卡远端地面单位 — 实施](../DevelopmentDocumentation/20260912-空战测试关卡远端地面单位.md) | commander, level, ship | 4/4 (100%) | 在原地图直接PIE体验；可在GroundUnits文件夹调整小队位置、数量和间距。 | 2026-09-12 |
+| [通用敌方描边与普通PIE僚机跳变修复 — 技术方案](../DevelopmentDocumentation/20260912-通用敌方描边与普通PIE僚机跳变修复.md) | network, presentation, ship, wingman | 4/4 (100%) | 用户直接PIE复核手感；旧Coordinator限制测试迁移需另获授权，公网长期丢包表现未验证。 | 2026-09-12 |
+| [僚机玩法门精简 — 技术方案](../DevelopmentDocumentation/20260912-僚机玩法门精简.md) | movement, networking, presentation, wingman | 8/8 (100%) | 待用户授权后更新已删除射程/归队门、v7金样和旧Pawn攻击状态的测试预期。 | 2026-09-12 |
+| [僚机视觉插值与远端缓冲 — 技术方案](../DevelopmentDocumentation/20260912-僚机视觉插值与远端缓冲.md) | networking, presentation, wingman | 9/9 (100%) | 更新旧 `PerMemberAirGroundAttackExecution` 的空/地攻击状态预期后，重跑完整Pawn套件。 | 2026-09-12 |
+| [红蓝矿棋盘与自动采矿闭环 — 技术方案](../DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md) | commander, economy, map, navigation, network | 15/15 (100%) | — | 2026-09-12 |
+| [Ship 僚机对空攻击—盘旋冷却循环 — 技术方案](../DevelopmentDocumentation/20260911-Ship僚机对空攻击盘旋冷却循环.md) | combat, network, ship, wingman | 5/5 (100%) | — | 2026-09-11 |
+| [飞船骨骼部件与Socket保留 — 技术方案](../DevelopmentDocumentation/20260911-飞船骨骼部件与Socket保留.md) | assets, combat, ship | 7/7 (100%) | — | 2026-09-11 |
+| [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | combat, commander, network, ship, ui, vfx, wingman | 8/8 (100%) | 用户自测最新范围、500米光柱和边缘渐变 | 2026-09-11 |
+| [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | combat, commander, network, ship, wingman | — | — | 2026-09-11 |
+| [双矿单位矿模型 UE 导入](../DevelopmentDocumentation/20260910-双矿单位矿模型UE导入.md) | art, economy | 5/5 (100%) | 用户在UE中审核资源；后续另行确认矿量与采矿状态接入。 | 2026-09-10 |
+| [双矿单位矿模型与 Blender 审核](../DevelopmentDocumentation/20260910-双矿单位矿模型与Blender审核.md) | art, economy | 7/7 (100%) | UE导入已按后续指令交付，用户可在UE中继续审核造型、材质和尺度。 | 2026-09-10 |
+| [僚机飞行尾焰与拖尾 — 实施记录](../DevelopmentDocumentation/20260910-僚机飞行尾焰与拖尾.md) | ship, vfx, wingman | 7/7 (100%) | — | 2026-09-10 |
+| [Ship僚机俯冲轰炸门槛简化 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机俯冲轰炸门槛简化.md) | combat, network, ship, wingman | 6/6 (100%) | — | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | ai, combat, network, ship, wingman | 8/8 (100%) | 后续另立空战射界循环工作项，使持续目标场景的25个成员均完成至少两轮有效开火。 | 2026-09-09 |
+| [资源加工厂正式模型与门动画 — 实施记录](../DevelopmentDocumentation/20260909-资源加工厂正式模型与门动画.md) | art, building | 13/13 (100%) | 使用 BP_ResourceProcessingFactory 的公开接口，后续另行接入建造菜单和加工玩法。 | 2026-09-09 |
 | [Ship 僚机空地统一匈牙利自动选敌 — 技术方案](../DevelopmentDocumentation/20260908-Ship僚机空地统一匈牙利自动选敌.md) | combat, network, ship, wingman | 8/8 (100%) | — | 2026-09-09 |
 | [Ship 空中部队原型关卡与三倍航速 — 技术方案与验证](../DevelopmentDocumentation/20260908-Ship空中部队原型关卡与三倍航速.md) | data-pipeline, level, navigation, ship, wingman | 13/13 (100%) | — | 2026-09-08 |
-| [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | combat, commander, network, ship, wingman | — | — | 2026-09-08 |
-| [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | commander, network, ship, ui, wingman | 11/11 (100%) | — | 2026-09-07 |
 | [僚机体系、空中三维导航与客户端校验转发 — 技术方案](../DevelopmentDocumentation/20260902-僚机体系与空中三维导航.md) | combat, commander, network, ship, wingman | — | — | 2026-09-07 |
 | [指挥官武器特效与独立法术场 — 技术方案](../DevelopmentDocumentation/20260905-指挥官武器特效与独立法术场.md) | commander, network, ship, vfx, wingman | 10/10 (100%) | — | 2026-09-06 |
 | [据点巨构导入与占位替换 — 技术方案](../DevelopmentDocumentation/20260905-据点巨构导入与占位替换.md) | assets, building | 8/8 (100%) | — | 2026-09-05 |

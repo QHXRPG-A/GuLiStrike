@@ -62,13 +62,21 @@ D:\UE5.7\test1\Plugins\GuLiMapAuthoring\Binaries\Win64\UnrealEditor.modules
 
 ## 当前已授权自动化
 
-唯一测试文件：`Plugins/GuLiMapAuthoring/Source/GuLiMapAuthoringEditor/Private/Tests/GuLiMapAuthoringTests.cpp`。当前测试：
+基础测试位于 `Plugins/GuLiMapAuthoring/Source/GuLiMapAuthoringEditor/Private/Tests/GuLiMapAuthoringTests.cpp`：
 
 - `GuLi.MapAuthoring.FieldsMigration`
 - `GuLi.MapAuthoring.GeometryAndTransforms`
 - `GuLi.MapAuthoring.ExportDeterminismAndAtomicity`
 - `GuLi.MapAuthoring.AtomicPatch`
 - `GuLi.MapAuthoring.EditorIdentityUndoSaveReload`
+
+资源密度测试位于用户已明确授权的新文件 `Plugins/GuLiMapAuthoring/Source/GuLiMapAuthoringEditor/Private/Tests/GuLiMapDensityPaintTests.cpp`：
+
+- `GuLi.MapAuthoring.Density.GridBrushAndSparseTiles`
+- `GuLi.MapAuthoring.Density.TerritoryAssignmentAndSeverity`
+- `GuLi.MapAuthoring.Density.AtomicPatch`
+- `GuLi.MapAuthoring.Density.ExtensionDeterminismAndLegacy`
+- `GuLi.MapAuthoring.Density.EditorSingletonUndoWorldPartitionSaveReload`
 
 生命周期测试会切换地图，只能在独立进程使用 `-GuLiMapAuthoringTestSession`：
 
@@ -92,15 +100,20 @@ NullRHI 自动化不证明 Slate/视口交互。相关修改至少在隔离 Edit
 - Marker 删除后不崩溃，列表/Details/选择刷新，Undo 恢复同一身份，Redo 再删除。
 - 新配置类型和字段同步/显式升级，保存重开，完整导出。
 - WP 远处真正未加载 Marker 的恢复加载，以及无法完整收集时明确失败。
+- 资源涂绘页切换、红蓝层显隐和叠色；加深/擦除、半径/强度/Falloff 的笔刷手感。
+- 笔画中的固定距离补点、一次拖拽一次 Undo/Redo；第一次 Esc 回滚当前笔画，第二次退出模式；Alt 相机操作不落笔。
+- Landscape 贴地热图、Visibility 命中回退和工作平面回退；地图/面板/PIE/删除/GC 时清理未完成事务。
+- 非空密度图修改格尺寸时阻止隐式重采样；“清空全部并改分辨率”和“清空当前层”的确认路径。
+- Territory 未归属/重叠 Warning、错误形状/倾斜 Error、据点统计与三份扩展文件；8 km 双层压力场景。
 
-截至 2026-09-07，源码构建、五项自动化、四形状填充、普通/WP 示例导出已有证据；完整鼠标交互矩阵、删除修复后的按钮实测和真正未加载 WP 恢复仍需以当前开发文档为准，不能宣称通过。
+截至 2026-09-10，资源密度功能的源码构建和十项 `GuLi.MapAuthoring` 自动化已有证据；完整鼠标交互、贴地/叠色视觉检查、8 km 双层压力场景、删除修复后的按钮实测和真正未加载 WP 恢复仍需以当前开发文档为准，不能宣称通过。
 
 ## 交付与文档
 
 行为或接口变化时更新：
 
 1. `Plugins/GuLiMapAuthoring/README.md` 的用户操作和扩展示例。
-2. `Progress/DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md` 的任务/风险/验收状态。
+2. 对应工作项的 Progress Requirement/DevelopmentDocumentation；资源密度扩展使用 `REQ/DEV-20260910-005`。
 3. 当天 `Progress/Archive/YYYYMMDD-....md`，记录真实文件、原因、验证命令/结果和遗留项。
 4. `Progress/README.md` 归档索引顶部一行。
 5. 本 Skill 中受影响的参考，避免维护知识漂移。
@@ -110,4 +123,3 @@ NullRHI 自动化不证明 Slate/视口交互。相关修改至少在隔离 Edit
 ## 完成判据
 
 只有同时满足以下相关项才写“完成”：实现/说明与当前源码一致；失败路径无部分修改；已有测试报告逐项通过；原生变更的源码版构建和 BuildId 一致；需要的人工交互已真实执行；文档和 Skill 已同步。缺证据的项明确写“未验证”。
-

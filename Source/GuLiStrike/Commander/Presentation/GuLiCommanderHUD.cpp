@@ -13,6 +13,7 @@
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
+#include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Camera/PlayerCameraManager.h"
 #include "Blueprint/UserWidget.h"
 #include "UObject/ConstructorHelpers.h"
@@ -111,6 +112,12 @@ namespace GuLiCommanderHUD
 
 	FBox2D GetWorldBounds(const UWorld* World)
 	{
+		const UGuLiResourceWorldSubsystem* Resources = World
+			? World->GetSubsystem<UGuLiResourceWorldSubsystem>() : nullptr;
+		if (Resources && Resources->IsResourceWorldActive() && Resources->GetMapDefinition())
+		{
+			return Resources->GetPlayableBounds();
+		}
 		FBox2D Bounds(ForceInit);
 		const UGuLiCommanderLandscapeQuerySubsystem* Query = World
 			? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
@@ -280,21 +287,7 @@ void AGuLiCommanderHUD::CreateRuntimeHUD()
 
 	if (!HealthBarRenderer)
 	{
-		if (UWorld* World = GetWorld())
-		{
-			FActorSpawnParameters SpawnParameters;
-			SpawnParameters.Owner = CommanderController;
-			SpawnParameters.ObjectFlags |= RF_Transient;
-			SpawnParameters.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
-			HealthBarRenderer = World->SpawnActor<AGuLiCommanderHealthBarRenderer>(
-				AGuLiCommanderHealthBarRenderer::StaticClass(),
-				FTransform::Identity,
-				SpawnParameters);
-			if (HealthBarRenderer)
-			{
-				HealthBarRenderer->InitializeForController(CommanderController);
-			}
-		}
+		HealthBarRenderer = AGuLiCommanderHealthBarRenderer::FindOrSpawn(GetWorld(), CommanderController);
 	}
 }
 
@@ -307,7 +300,7 @@ void AGuLiCommanderHUD::DestroyRuntimeHUD()
 	}
 	if (HealthBarRenderer)
 	{
-		HealthBarRenderer->Destroy();
+		// The world-owned batch also serves Ship/ground views; only drop this HUD's reference.
 		HealthBarRenderer = nullptr;
 	}
 }
@@ -546,7 +539,13 @@ bool AGuLiCommanderHUD::EnsureMiniMapTerrainCache()
 		return false;
 	}
 
-	if (!LandscapeQuery || !LandscapeQuery->TryGetBounds(MiniMapWorldBounds))
+	if (const UGuLiResourceWorldSubsystem* Resources =
+		World->GetSubsystem<UGuLiResourceWorldSubsystem>();
+		Resources && Resources->GetMapDefinition())
+	{
+		MiniMapWorldBounds = Resources->GetPlayableBounds();
+	}
+	else if (!LandscapeQuery || !LandscapeQuery->TryGetBounds(MiniMapWorldBounds))
 	{
 		MiniMapWorldBounds = GuLiCommanderHUD::GetWorldBounds(World);
 		return false;

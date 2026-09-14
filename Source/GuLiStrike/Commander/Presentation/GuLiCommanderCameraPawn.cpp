@@ -11,6 +11,7 @@
 #include "EngineUtils.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
+#include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "HAL/IConsoleManager.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogGuLiCommanderCamera, Log, All);
@@ -433,7 +434,13 @@ bool AGuLiCommanderCameraPawn::ConstrainStateToLandscape(
 		? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
 		: nullptr;
 	FBox2D LandscapeBounds(ForceInit);
-	if (!LandscapeQuery || !LandscapeQuery->TryGetBounds(LandscapeBounds))
+	if (const UGuLiResourceWorldSubsystem* Resources = World
+		? World->GetSubsystem<UGuLiResourceWorldSubsystem>() : nullptr;
+		Resources && Resources->IsResourceWorldActive() && Resources->GetMapDefinition())
+	{
+		LandscapeBounds = Resources->GetPlayableBounds();
+	}
+	else if (!LandscapeQuery || !LandscapeQuery->TryGetBounds(LandscapeBounds))
 	{
 		return false;
 	}

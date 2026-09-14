@@ -850,7 +850,7 @@ void UGuLiWingmanQASubsystem::EmitSample(const bool bFinalSample)
 		NetworkIncomingBytesPerSecondSum += IncomingBytesPerSecond;
 		NetworkOutgoingBytesPerSecondSum += OutgoingBytesPerSecond;
 	}
-	const bool bProtocolVersionsMatch = GULI_WINGMAN_PROTOCOL_VERSION == 13u
+	const bool bProtocolVersionsMatch = GULI_WINGMAN_PROTOCOL_VERSION == 14u
 		&& (!BattleState || BattleState->GetProtocolVersion() == GULI_BATTLE_PROTOCOL_VERSION);
 	const bool bExpectedGroupCount = GroupCount > 0
 		&& (!bServer || ExpectedClientEndpoints <= 0

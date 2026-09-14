@@ -1,0 +1,219 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "2DCF0519490C5A32774206A390D8C81E",
+			"instanceName": "DESKTOP-6D3B0FC-9432",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9168] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.08-15.37.39",
+	"succeeded": 2,
+	"succeededWithWarnings": 2,
+	"failed": 2,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.15537817776203156,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BasicWeaponIndependentAcceptedState",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.BasicWeaponIndependentAcceptedState",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"2DCF0519490C5A32774206A390D8C81E"
+			],
+			"duration": 0.11350040137767792,
+			"dateTime": "2026.09.08-15.37.38",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(337): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.08-15.37.38"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogTemp: Wingman group 13572468-2468-1357-1122-334455667788 is driven by authored StateTree /Game/GuLiStrike/Wingman/ST_WingmanGroupBehavior.ST_WingmanGroupBehavior.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.08-15.37.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Emitter advances its own domain after its cooldown' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanMassSimulationTests.cpp",
+					"lineNumber": 808,
+					"timestamp": "2026.09.08-15.37.39"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Only successful builds advance that emitter's sequence: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanMassSimulationTests.cpp",
+					"lineNumber": 808,
+					"timestamp": "2026.09.08-15.37.39"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClientOnlyProcessorExecutionDomain",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.ClientOnlyProcessorExecutionDomain",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"2DCF0519490C5A32774206A390D8C81E"
+			],
+			"duration": 0.0071053989231586456,
+			"dateTime": "2026.09.08-15.37.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FlightNavigationAsyncStateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.FlightNavigationAsyncStateLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"2DCF0519490C5A32774206A390D8C81E"
+			],
+			"duration": 0.0083431005477905273,
+			"dateTime": "2026.09.08-15.37.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InitialFormationNavigationValidatesAllSlots",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.InitialFormationNavigationValidatesAllSlots",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"2DCF0519490C5A32774206A390D8C81E"
+			],
+			"duration": 0.0085797980427742004,
+			"dateTime": "2026.09.08-15.37.39",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Initial-formation config is a usable protocol-v7 projection' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Wingman\\Tests\\GuLiWingmanInitialFormationNavigationTests.cpp",
+					"lineNumber": 140,
+					"timestamp": "2026.09.08-15.37.39"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OwnerGroupCandidateLifecycle",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.OwnerGroupCandidateLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"2DCF0519490C5A32774206A390D8C81E"
+			],
+			"duration": 0.008876897394657135,
+			"dateTime": "2026.09.08-15.37.39",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: [GULI_WINGMAN_INITIAL_NAV_GATE] Ship=13572468246813571122334455667788 ShipGen=3 GroupGen=9 Navigation=Present FailedMember=-1 Status=InvalidData(1) Position=V(0) Carrier=V(0) AgentRadius=1500.0 Model=0 SwarmBand=(24000.0..52000.0 Z=14000.0 Hull=14000.0) Inner=(Slots=13 Radius=61000.0 Height=16000.0) Outer=(Slots=12 Radius=92000.0 Height=-17000.0) Diagnostics={Point=V(0) RegisteredVolumes=0}",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.08-15.37.39"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: Wingman group 13572468-2468-1357-1122-334455667788 entered controlled C++ fallback: authored StateTree is missing or failed to load.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.08-15.37.39"
+				}
+			],
+			"warnings": 2,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PerMemberAirGroundAttackExecution",
+			"fullTestPath": "GuLiStrike.Wingman.Mass.PerMemberAirGroundAttackExecution",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"2DCF0519490C5A32774206A390D8C81E"
+			],
+			"duration": 0.0089726001024246216,
+			"dateTime": "2026.09.08-15.37.39",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: Wingman group 13572468-2468-1357-1122-334455667788 entered controlled C++ fallback: authored StateTree is missing or failed to load.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.08-15.37.39"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}
