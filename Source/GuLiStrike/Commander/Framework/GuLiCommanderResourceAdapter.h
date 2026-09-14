@@ -9,6 +9,7 @@
 
 class AGuLiBattlePlayerState;
 class AGuLiMiningVehiclePawn;
+class APawn;
 class UGuLiResourceWorldSubsystem;
 
 /**
@@ -60,6 +61,7 @@ private:
 	void SynchronizeAuthorityState() const;
 	void SynchronizeTeamPrivateState() const;
 	AGuLiMiningVehiclePawn* FindMiningVehicle(FGuLiControllableActorId Id) const;
+	APawn* FindEngineeringVehicle(FGuLiControllableActorId Id) const;
 	static bool RayPassesSphere(
 		const FVector& Origin,
 		const FVector& Direction,

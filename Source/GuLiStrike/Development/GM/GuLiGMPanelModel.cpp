@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Development/GM/GuLiGMPanelModel.h"
+#include "Gameplay/Stronghold/GuLiStrongholdDiagnostics.h"
 
 #include "Battle/Framework/GuLiBattlePlayerController.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -1050,6 +1051,13 @@ GuLiGMPanel::FActionResult GuLiGMPanel::FModel::QueryNavigationStats() const
 			Stats.MaximumDestinationPlanningMilliseconds,
 			Stats.SlowestSoldierId.Value,
 			Stats.SlowestNoProgressSeconds));
+}
+
+GuLiGMPanel::FActionResult GuLiGMPanel::FModel::QueryStrongholds() const
+{
+	UWorld* World = GetWorld();
+	return World ? FActionResult::Success(TEXT("据点与工程车快照"),GuLiStrongholds::DescribeWorld(*World))
+		: FActionResult::Failure(TEXT("游戏世界未就绪"));
 }
 
 GuLiGMPanel::FActionResult GuLiGMPanel::FModel::QueryLastMove(const FString& OptionalCohortId) const

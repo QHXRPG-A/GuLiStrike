@@ -35,12 +35,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-14 |
 | [飞船组件文档资源引用与覆盖盘点](../Archive/20260914-飞船组件文档资源引用与覆盖盘点.md) | archive | recorded | 2026-09-14 |
 | [ShipComponent正式部件蓝图](../RequirementDocument/20260912-ShipComponent正式部件蓝图.md) | requirement | approved | 2026-09-12 |
 | [ShipComponent正式部件蓝图 — 制作与迁移](../DevelopmentDocumentation/20260912-ShipComponent正式部件蓝图.md) | development | done | 2026-09-12 |
 | [ShipComponent部件蓝图与占位清理](../Archive/20260912-ShipComponent部件蓝图与占位清理.md) | archive | recorded | 2026-09-12 |
 | [飞船骨骼部件与Socket保留](../RequirementDocument/20260911-飞船骨骼部件与Socket保留.md) | requirement | approved | 2026-09-11 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-11 |
 | [飞船骨骼部件与Socket保留 — 技术方案](../DevelopmentDocumentation/20260911-飞船骨骼部件与Socket保留.md) | development | done | 2026-09-11 |
 | [飞船骨骼部件接入与Socket保留](../Archive/20260911-飞船骨骼部件接入与Socket保留.md) | archive | recorded | 2026-09-11 |
 | [指挥官双机甲骨骼与武器挂点 — 技术方案](../DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md) | development | verification | 2026-09-07 |
@@ -123,7 +123,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-11 |
+| [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-14 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-14 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-14 |
+| [空中通道联机与特效增量验收](../Archive/20260914-空中通道联机与特效增量验收.md) | archive | recorded | 2026-09-14 |
+| [指挥官建筑闭环与空中通道首轮实现](../Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md) | archive | recorded | 2026-09-14 |
 | [资源加工厂正式模型与门动画](../RequirementDocument/20260909-资源加工厂正式模型与门动画.md) | requirement | approved | 2026-09-09 |
 | [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | requirement | approved | 2026-09-09 |
 | [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-09 |
@@ -251,18 +255,23 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-14 |
 | [次级单位武器独立Excel维护](../RequirementDocument/20260914-次级单位武器独立Excel维护.md) | requirement | approved | 2026-09-14 |
 | [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-14 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-14 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-14 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-14 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-14 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | development | verification | 2026-09-14 |
 | [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
+| [空中通道联机与特效增量验收](../Archive/20260914-空中通道联机与特效增量验收.md) | archive | recorded | 2026-09-14 |
+| [指挥官建筑闭环与空中通道首轮实现](../Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md) | archive | recorded | 2026-09-14 |
 | [法术场统一入口与武器ID引用](../Archive/20260914-法术场统一入口与武器ID引用.md) | archive | recorded | 2026-09-14 |
 | [次级单位武器独立Excel重构](../Archive/20260914-次级单位武器独立Excel重构.md) | archive | recorded | 2026-09-14 |
 | [单位铁锈残骸与僚机物理坠落](../Archive/20260914-单位铁锈残骸与僚机物理坠落.md) | archive | recorded | 2026-09-14 |
 | [Soldiers统一单位与全局法术场及矿车调度](../RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | requirement | approved | 2026-09-13 |
 | [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-13 |
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-13 |
 | [Soldiers统一单位与全局法术场及矿车调度](../DevelopmentDocumentation/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | development | done | 2026-09-13 |
 | [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
 | [Soldiers统一单位与全局法术场及矿车调度](../Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | archive | recorded | 2026-09-13 |
@@ -277,7 +286,6 @@
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-11 |
 | [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | superseded | 2026-09-11 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-11 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-11 |
 | [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | development | done | 2026-09-11 |
 | [资源经济、动态障碍与 Commander 适配层解耦](../Archive/20260911-资源经济障碍与Commander适配层解耦.md) | archive | recorded | 2026-09-11 |
 | [红蓝矿棋盘与自动采矿闭环](../Archive/20260911-红蓝矿棋盘与自动采矿闭环.md) | archive | recorded | 2026-09-11 |
@@ -397,8 +405,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-14 |
 | [次级单位武器独立Excel维护](../RequirementDocument/20260914-次级单位武器独立Excel维护.md) | requirement | approved | 2026-09-14 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-14 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | development | verification | 2026-09-14 |
+| [指挥官建筑闭环与空中通道首轮实现](../Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md) | archive | recorded | 2026-09-14 |
 | [法术场统一入口与武器ID引用](../Archive/20260914-法术场统一入口与武器ID引用.md) | archive | recorded | 2026-09-14 |
 | [次级单位武器独立Excel重构](../Archive/20260914-次级单位武器独立Excel重构.md) | archive | recorded | 2026-09-14 |
 | [Soldiers统一单位与全局法术场及矿车调度](../RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | requirement | approved | 2026-09-13 |
@@ -466,7 +477,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-13 |
+| [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-14 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-14 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-14 |
+| [空中通道联机与特效增量验收](../Archive/20260914-空中通道联机与特效增量验收.md) | archive | recorded | 2026-09-14 |
+| [指挥官建筑闭环与空中通道首轮实现](../Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md) | archive | recorded | 2026-09-14 |
 | [激光采矿与矿车进出厂及受击接入](../Archive/20260913-激光采矿与矿车进出厂及受击接入.md) | archive | recorded | 2026-09-13 |
 | [红蓝矿棋盘与自动采矿闭环 — 技术方案](../DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md) | development | done | 2026-09-12 |
 | [矿车 Dock、队伍私有代理与 500 人姿态流修复](../Archive/20260912-矿车Dock私有代理与500人姿态流修复.md) | archive | recorded | 2026-09-12 |
@@ -530,7 +545,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-13 |
+| [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-14 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-14 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-14 |
+| [指挥官建筑闭环与空中通道首轮实现](../Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md) | archive | recorded | 2026-09-14 |
 | [红蓝矿棋盘与自动采矿闭环 — 技术方案](../DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md) | development | done | 2026-09-12 |
 | [红蓝矿棋盘与自动采矿闭环](../RequirementDocument/20260911-红蓝矿棋盘与自动采矿闭环.md) | requirement | approved | 2026-09-11 |
 | [红蓝矿棋盘与自动采矿闭环](../Archive/20260911-红蓝矿棋盘与自动采矿闭环.md) | archive | recorded | 2026-09-11 |
@@ -559,7 +577,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-13 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-14 |
 | [红蓝矿棋盘与自动采矿闭环 — 技术方案](../DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md) | development | done | 2026-09-12 |
 | [矿车 Dock、队伍私有代理与 500 人姿态流修复](../Archive/20260912-矿车Dock私有代理与500人姿态流修复.md) | archive | recorded | 2026-09-12 |
 | [红蓝矿棋盘与自动采矿闭环](../RequirementDocument/20260911-红蓝矿棋盘与自动采矿闭环.md) | requirement | approved | 2026-09-11 |
@@ -576,9 +594,13 @@
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-14 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-14 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-14 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-14 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-14 |
+| [空中通道联机与特效增量验收](../Archive/20260914-空中通道联机与特效增量验收.md) | archive | recorded | 2026-09-14 |
+| [指挥官建筑闭环与空中通道首轮实现](../Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md) | archive | recorded | 2026-09-14 |
 | [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-13 |
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-13 |
 | [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
 | [Soldiers统一单位与全局法术场及矿车调度](../Archive/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | archive | recorded | 2026-09-13 |
 | [激光采矿与矿车进出厂及受击接入](../Archive/20260913-激光采矿与矿车进出厂及受击接入.md) | archive | recorded | 2026-09-13 |
@@ -593,7 +615,6 @@
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-11 |
 | [Ship 僚机三维往返缠斗与随机转向](../RequirementDocument/20260907-Ship僚机三维往返缠斗与随机转向.md) | requirement | superseded | 2026-09-11 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-11 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-11 |
 | [Ship 僚机对空攻击—盘旋冷却循环 — 技术方案](../DevelopmentDocumentation/20260911-Ship僚机对空攻击盘旋冷却循环.md) | development | done | 2026-09-11 |
 | [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | development | done | 2026-09-11 |
 | [红蓝矿棋盘与自动采矿闭环](../Archive/20260911-红蓝矿棋盘与自动采矿闭环.md) | archive | recorded | 2026-09-11 |
@@ -912,11 +933,11 @@
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-14 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-14 |
 | [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-13 |
 | [单位受击血条与模型尺寸爆炸缩放](../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md) | archive | recorded | 2026-09-13 |
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-11 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-11 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-11 |
 | [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | development | done | 2026-09-11 |
 | [指挥官双点传送技能实施与验收](../Archive/20260911-指挥官双点传送技能验收.md) | archive | recorded | 2026-09-11 |
 | [游戏内 GM 分页浮层面板](../RequirementDocument/20260910-游戏内GM分页浮层面板.md) | requirement | approved | 2026-09-10 |
@@ -984,8 +1005,11 @@
 | [僚机短激光与炮弹池](../RequirementDocument/20260914-僚机短激光与炮弹池.md) | requirement | approved | 2026-09-14 |
 | [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-14 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | verification | 2026-09-14 |
 | [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | development | done | 2026-09-14 |
 | [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
+| [空中通道联机与特效增量验收](../Archive/20260914-空中通道联机与特效增量验收.md) | archive | recorded | 2026-09-14 |
+| [指挥官建筑闭环与空中通道首轮实现](../Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md) | archive | recorded | 2026-09-14 |
 | [僚机直线激光炮弹池与最终数值](../Archive/20260914-僚机直线激光炮弹池与最终数值.md) | archive | recorded | 2026-09-14 |
 | [单位铁锈残骸与僚机物理坠落](../Archive/20260914-单位铁锈残骸与僚机物理坠落.md) | archive | recorded | 2026-09-14 |
 | [冲击波外径上限与重复缩放修正](../Archive/20260914-冲击波外径上限与重复缩放修正.md) | archive | recorded | 2026-09-14 |

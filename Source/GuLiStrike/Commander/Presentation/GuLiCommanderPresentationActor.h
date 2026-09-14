@@ -462,6 +462,7 @@ private:
 	// SoldierId 到本地实体句柄的映射；两端 FMassEntityHandle 不相同，不能当网络身份发送。
 	TMap<FGuLiSoldierId, FMassEntityHandle> ClientMirrorEntities;
 	TMap<FGuLiSoldierId, FGuLiCommanderSoldierInstanceHandle> SoldierInstanceHandles;
+	TArray<int32> FreeRingInstanceIndices;
 	TMap<uint16, FGuLiCommanderUnitInstanceBatchState> UnitInstanceBatchStates;
 	TSet<uint16> LoggedMissingUnitBatchTypes;
 	TMap<FGuLiSoldierId, FGuLiCommanderPresentedSoldier> PresentedSoldiers;

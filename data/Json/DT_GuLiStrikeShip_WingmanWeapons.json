@@ -29,7 +29,8 @@
     },
     "WeaponAsset": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MachineGun.DA_WingmanWeapon_MachineGun",
     "bRequiresLineOfSight": true,
-    "MaximumHomingTurnRateDegreesPerSecond": 0.0
+    "MaximumHomingTurnRateDegreesPerSecond": 0.0,
+    "AttackProjectile": ""
   },
   {
     "Name": "WingmanGroundMissile",
@@ -38,6 +39,7 @@
     "SkillId": "Wingman.GroundMissile",
     "AttackPattern": "GroundDive",
     "ExecutorId": "WingmanGroundMissile",
+    "Damage": 0.0,
     "CooldownSeconds": 8.0,
     "RangeCentimeters": 150000.0,
     "FireConeHalfAngleDegrees": 20.0,
@@ -94,7 +96,8 @@
     },
     "WeaponAsset": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_BasicAuto.DA_WingmanWeapon_BasicAuto",
     "bRequiresLineOfSight": true,
-    "MaximumHomingTurnRateDegreesPerSecond": 0.0
+    "MaximumHomingTurnRateDegreesPerSecond": 0.0,
+    "AttackProjectile": ""
   },
   {
     "Name": "WingmanMissileSalvo",
@@ -126,6 +129,7 @@
     },
     "WeaponAsset": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MissileSalvo.DA_WingmanWeapon_MissileSalvo",
     "bRequiresLineOfSight": true,
-    "MaximumHomingTurnRateDegreesPerSecond": 45.0
+    "MaximumHomingTurnRateDegreesPerSecond": 45.0,
+    "AttackProjectile": ""
   }
 ]

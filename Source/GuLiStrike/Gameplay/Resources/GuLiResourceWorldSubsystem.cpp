@@ -1,7 +1,11 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
+#include "Gameplay/Building/GuLiConstructionVehiclePawn.h"
+#include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
+#include "Gameplay/Data/GuLiCommanderSoldierDefinition.h"
 #include "Gameplay/Resources/GuLiMiningVehicleManager.h"
+#include "Gameplay/Stronghold/GuLiStrongholdCaptureComponent.h"
 #include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 
 #include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
@@ -32,6 +36,51 @@ namespace
 		ECVF_Cheat);
 #endif
 
+}
+
+int32 UGuLiResourceWorldSubsystem::FindTerritoryIndex(const FVector& Location) const
+{
+	if (!MapDefinition) return INDEX_NONE;
+	for (int32 Index = 0; Index < MapDefinition->Territories.Num(); ++Index)
+	{
+		const auto& Center = MapDefinition->Territories[Index].Center;
+		if (FMath::Abs(Location.X - Center.X) <= GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM
+			&& FMath::Abs(Location.Y - Center.Y) <= GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM) return Index;
+	}
+	return INDEX_NONE;
+}
+void UGuLiResourceWorldSubsystem::RegisterFactory(AGuLiResourceFactoryActor& Factory)
+{
+	Factories.AddUnique(&Factory);
+}
+AGuLiResourceFactoryActor* UGuLiResourceWorldSubsystem::FindNearestFriendlyFactory(EGuLiTeam Team, const FVector& Location) const
+{
+	AGuLiResourceFactoryActor* Best = nullptr;
+	double Distance = TNumericLimits<double>::Max();
+	for (const auto& Factory : Factories)
+		if (IsValid(Factory) && !Factory->IsActorBeingDestroyed() && Factory->GetTeam() == Team
+			&& Factory->FindComponentByClass<UGuLiBuildingLifecycleComponent>()->IsCompleted())
+		{
+			const double Candidate = FVector::DistSquared2D(Location, Factory->GetDockPoint());
+			if (Candidate < Distance) { Distance = Candidate; Best = Factory; }
+		}
+	return Best;
+}
+
+AGuLiConstructionVehiclePawn* UGuLiResourceWorldSubsystem::SpawnConstructionVehicle(EGuLiTeam Team, const FVector& GroundLocation)
+{
+	check(GetWorld()->GetNetMode() != NM_Client);
+	const auto* Unit = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>()->FindSoldierDefinition(EconomyConfig->ConstructionVehicleUnitTypeId);
+	check(Unit);
+	FActorSpawnParameters Params; Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
+	auto* Vehicle = GetWorld()->SpawnActor<AGuLiConstructionVehiclePawn>(AGuLiConstructionVehiclePawn::StaticClass(),
+		FTransform(FRotator::ZeroRotator, ProjectAnchorToGround(GroundLocation) + FVector(0,0,650)), Params);
+	if (Vehicle) Vehicle->InitializeVehicle(Team, AllocateControllableActorId(), *Unit);
+	return Vehicle;
+}
+void UGuLiResourceWorldSubsystem::CreditFactoryOutput(EGuLiTeam Team, EGuLiResourceType Type, int32 Amount)
+{
+	GetWorld()->GetSubsystem<UGuLiTeamEconomySubsystem>()->Credit(Team, Type, Amount);
 }
 
 UGuLiResourceWorldSubsystem::UGuLiResourceWorldSubsystem()
@@ -92,6 +141,7 @@ void UGuLiResourceWorldSubsystem::OnWorldBeginPlay(UWorld& InWorld)
 		UE_LOG(LogGuLiResources, Error, TEXT("Resource startup blocked: %s"), *InitializationError);
 		return;
 	}
+	StrongholdTopology.Initialize(MapDefinition->Territories);
 	if (InWorld.GetNetMode() != NM_Client)
 	{
 		if (!SpawnAuthorityActors())
@@ -155,6 +205,7 @@ void UGuLiResourceWorldSubsystem::Tick(const float DeltaTime)
 	else
 	{
 		UpdateNavigationReadiness();
+		if (bRuntimeReady) TickStrongholds(DeltaTime);
 	}
 }
 
@@ -216,6 +267,8 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 	for (const FGuLiTerritoryDefinition& Territory : MapDefinition->Territories)
 		Owners.Add(Territory.InitialOwner);
 	WorldState->InitializeAuthority(MapDefinition->LayoutHash, Owners);
+	WorldState->SetTransportEdgesAuthority(StrongholdTopology.GetTransportEdges());
+	MaintenanceAccount = FGuid::NewGuid();
 	WorldState->OnStateChanged().AddUObject(this, &ThisClass::HandleWorldStateChanged);
 
 	NodeRemaining.SetNum(MapDefinition->Nodes.Num());
@@ -254,6 +307,7 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 		}
 		Outpost->InitializeOutpost(static_cast<uint8>(Index), Territory.TerritoryId, Territory.InitialOwner);
 		Outposts.Add(Outpost);
+		WorldState->SetTerritoryGroundAuthority(Index, Outpost->GetBuildingGroundLocation());
 	}
 
 	ClusterObstacles.Reserve(MapDefinition->Clusters.Num());
@@ -291,7 +345,7 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 				FactoryLocation), Params);
 		if (!Factory) return false;
 		Factory->InitializeFactory(Team, *EconomyConfig, DockPoint);
-		Factories.Add(Factory);
+		Factories.AddUnique(Factory);
 		FVector VehicleLocation = ProjectAnchorToGround(VehicleAnchor);
 		VehicleLocation.Z += 650.0f;
 		return World->GetSubsystem<UGuLiMiningVehicleManager>()->SpawnMiningVehicle(Factory,
@@ -305,6 +359,13 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 		InitializationError = TEXT("Could not spawn both team factories and mining vehicles.");
 		return false;
 	}
+	for (int32 Index = 0; Index < EconomyConfig->InitialConstructionVehiclesPerTeam; ++Index)
+	{
+		const FVector Offset(6000 + Index * 2000, 0, 0);
+		SpawnConstructionVehicle(EGuLiTeam::Red, MapDefinition->SpawnAnchors.RedAssembly + Offset);
+		SpawnConstructionVehicle(EGuLiTeam::Blue, MapDefinition->SpawnAnchors.BlueAssembly + Offset);
+	}
+	RefreshEncirclement();
 	bAuthorityActorsSpawned = true;
 	UE_LOG(LogGuLiResources, Display,
 		TEXT("Initialized 25 territories, 240 ore clusters, 6240 nodes, 24 HISMs, 2 factories and 2 miners; waiting for dynamic navigation."));
@@ -422,13 +483,17 @@ bool UGuLiResourceWorldSubsystem::SetTerritoryOwner(
 	const uint8 TerritoryIndex,
 	const EGuLiTeam NewOwner)
 {
+	const EGuLiTeam OldOwner = WorldState ? WorldState->GetTerritoryOwner(TerritoryIndex) : EGuLiTeam::Unassigned;
 	if (!GetWorld() || GetWorld()->GetNetMode() == NM_Client || !WorldState
 		|| !WorldState->SetTerritoryOwnerAuthority(TerritoryIndex, NewOwner))
 	{
 		return false;
 	}
-	if (Outposts.IsValidIndex(TerritoryIndex) && Outposts[TerritoryIndex])
-		Outposts[TerritoryIndex]->SetTerritoryOwnerAuthority(NewOwner);
+	if (OldOwner == NewOwner) return true;
+	Outposts[TerritoryIndex]->SetTerritoryOwnerAuthority(NewOwner);
+	Outposts[TerritoryIndex]->FindComponentByClass<UGuLiStrongholdCaptureComponent>()->SetOwnerEndpoint(NewOwner);
+	RefreshEncirclement();
+	OnTerritoryOwnershipChanged.Broadcast(TerritoryIndex, OldOwner, NewOwner);
 	return true;
 }
 

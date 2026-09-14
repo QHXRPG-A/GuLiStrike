@@ -171,6 +171,9 @@ private:
 	void HandleToggleBuildModeInput();
 	void HandleSelectBuildingTwoInput();
 	void HandleSelectBuildingThreeInput();
+	void HandleSelectBuildingFourInput();
+	void HandleSelectBuildingFiveInput();
+	void HandleSelectBuildingSixInput();
 	void HandleCancelInput();
 	// 本地把光标落点封装成选兵意图；返回 true 仅表示已提交，不代表服务器接受。
 	bool TryIssueSelectionAtCursor();

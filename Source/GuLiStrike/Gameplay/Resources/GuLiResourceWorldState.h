@@ -9,6 +9,7 @@
 #include "GuLiResourceWorldState.generated.h"
 
 class AGuLiResourceWorldState;
+struct FGuLiStrongholdEdge;
 
 USTRUCT()
 struct GULISTRIKE_API FGuLiOreDeltaItem : public FFastArraySerializerItem
@@ -65,6 +66,9 @@ struct GULISTRIKE_API FGuLiTerritoryRuntimeState
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Resources|Territory")
 	EGuLiTeam Owner = EGuLiTeam::Unassigned;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Resources|Territory") bool bSupplied = true;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Resources|Territory") bool bEncircled = false;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Resources|Territory") FVector GroundLocation = FVector::ZeroVector;
 
 	UPROPERTY(VisibleAnywhere, Category = "Resources|Territory")
 	uint32 Revision = 0u;
@@ -86,7 +90,12 @@ public:
 
 	void InitializeAuthority(const FString& InLayoutHash, TConstArrayView<EGuLiTeam> InitialOwners);
 	void SetAuthorityReady(bool bReady);
+	void SetTransportEdgesAuthority(TConstArrayView<FGuLiStrongholdEdge> Edges);
+	const TArray<FIntPoint>& GetTransportEdges() const { return TransportEdges; }
 	bool SetTerritoryOwnerAuthority(uint8 TerritoryIndex, EGuLiTeam NewOwner);
+	void SetTerritorySupplyAuthority(int32 Index, bool bSupplied);
+	void SetTerritoryEncircledAuthority(int32 Index, bool bEncircled);
+	void SetTerritoryGroundAuthority(int32 Index, const FVector& GroundLocation);
 	bool SetNodeRemainingAuthority(uint32 NodeId, uint8 RemainingAmount);
 
 	UFUNCTION(BlueprintPure, Category = "Resources|Network")
@@ -120,6 +129,7 @@ private:
 
 	UPROPERTY(Replicated)
 	FGuLiOreDeltaFastArray OreDeltas;
+	UPROPERTY(Replicated) TArray<FIntPoint> TransportEdges;
 
 	TMap<uint32, int32> OreDeltaIndexByNodeId;
 	FGuLiResourceWorldStateChanged StateChanged;

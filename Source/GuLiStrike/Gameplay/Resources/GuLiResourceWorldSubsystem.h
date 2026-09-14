@@ -5,19 +5,24 @@
 #include "CoreMinimal.h"
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
+#include "Gameplay/Stronghold/GuLiStrongholdTopology.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "GuLiResourceWorldSubsystem.generated.h"
 
 struct FCollisionQueryParams;
 
 class AGuLiMiningVehiclePawn;
+class AGuLiConstructionVehiclePawn;
 class AGuLiOreClusterObstacleActor;
 class AGuLiOreFieldActor;
 class AGuLiResourceFactoryActor;
 class AGuLiResourceWorldState;
 class AGuLiTerritoryOutpostActor;
+class UGuLiStrongholdGateComponent;
 class UGuLiResourceEconomyConfig;
 class UGuLiResourceMapDefinition;
+
+DECLARE_MULTICAST_DELEGATE_ThreeParams(FGuLiTerritoryOwnershipChanged, int32, EGuLiTeam, EGuLiTeam);
 
 /** Match-scoped authority for ore, territory and factories; economy is a separate service. */
 UCLASS(Config = Game)
@@ -49,6 +54,19 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Resources|Runtime")
 	AGuLiResourceWorldState* GetResourceWorldState() const { return WorldState; }
 	FBox2D GetPlayableBounds() const;
+	int32 FindTerritoryIndex(const FVector& Location) const;
+	const FGuLiStrongholdTopology& GetStrongholdTopology() const { return StrongholdTopology; }
+	FVector GetTerritoryGroundLocation(int32 Index) const;
+	bool IsTerritorySupplied(int32 Index) const;
+	bool CanUseStrongholdTransit(int32 Index, EGuLiTeam Team) const;
+	UGuLiStrongholdGateComponent* GetStrongholdGate(int32 Index) const;
+	FVector GetInitialBaseExit(EGuLiTeam Team) const;
+	FGuLiTerritoryOwnershipChanged OnTerritoryOwnershipChanged;
+	FGuLiControllableActorId AllocateControllableActorId() { return FGuLiControllableActorId(NextControllableActorId++); }
+	AGuLiResourceFactoryActor* FindNearestFriendlyFactory(EGuLiTeam Team, const FVector& Location) const;
+	void RegisterFactory(AGuLiResourceFactoryActor& Factory);
+	AGuLiConstructionVehiclePawn* SpawnConstructionVehicle(EGuLiTeam Team, const FVector& GroundLocation);
+	void CreditFactoryOutput(EGuLiTeam SettlementTeam, EGuLiResourceType Type, int32 Amount);
 
 	UFUNCTION(BlueprintPure, Category = "Resources|Territory")
 	bool CanTeamMineAt(EGuLiTeam Team, int32 ClusterId) const;
@@ -112,7 +130,16 @@ private:
 	bool bEconomyMatchStarted = false;
 	FString InitializationError;
 	uint32 LastAppliedWorldStateRevision = 0u;
+	uint32 NextControllableActorId = 1000;
 	bool bReplicatedStateDirty = true;
+	FGuLiStrongholdTopology StrongholdTopology;
+	float CaptureAccumulator = 0;
+	float MaintenanceAccumulator = 0;
+	float ActiveMaintenancePeriod = 0;
+	FGuid MaintenanceAccount;
+	uint32 MaintenanceRequestId = 0;
+	void TickStrongholds(float DeltaTime);
+	void RefreshEncirclement();
 
 	bool LoadAndValidateAssets();
 	bool ValidateCurrentMap() const;

@@ -1,0 +1,28 @@
+{
+  "before": {
+    "<GuLiTeam.RED: 1>": "(Blue=40,Red=0,Revision=1)",
+    "<GuLiTeam.BLUE: 2>": "(Blue=30,Red=0,Revision=2)"
+  },
+  "old_slots": [
+    "(InstanceId=3,DefinitionId=7,TerritoryIndex=2,Phase=Completed,Origin=Map,BuilderGuid=00000000000000000000000000000000,WorkDone=0.000000)",
+    "(InstanceId=4,DefinitionId=4,TerritoryIndex=2,Phase=Completed,Origin=Gift,BuilderGuid=00000000000000000000000000000000,WorkDone=10.000000)",
+    "(InstanceId=5,DefinitionId=5,TerritoryIndex=2,Phase=Completed,Origin=Gift,BuilderGuid=00000000000000000000000000000000,WorkDone=10.000000)",
+    "(InstanceId=6,DefinitionId=6,TerritoryIndex=2,Phase=Completed,Origin=Gift,BuilderGuid=00000000000000000000000000000000,WorkDone=10.000000)"
+  ],
+  "queued_old": true,
+  "changed": true,
+  "repeat": true,
+  "queued_new": true,
+  "team_after": "<GuLiTeam.BLUE: 2>",
+  "after": {
+    "<GuLiTeam.RED: 1>": "(Blue=40,Red=10,Revision=11)",
+    "<GuLiTeam.BLUE: 2>": "(Blue=20,Red=4,Revision=7)"
+  },
+  "new_slots": [
+    "(InstanceId=3,DefinitionId=7,TerritoryIndex=2,Phase=Completed,Origin=Map,BuilderGuid=00000000000000000000000000000000,WorkDone=0.000000)",
+    "(InstanceId=4,DefinitionId=4,TerritoryIndex=2,Phase=Completed,Origin=Gift,BuilderGuid=00000000000000000000000000000000,WorkDone=10.000000)",
+    "(InstanceId=5,DefinitionId=5,TerritoryIndex=2,Phase=Completed,Origin=Gift,BuilderGuid=00000000000000000000000000000000,WorkDone=10.000000)",
+    "(InstanceId=6,DefinitionId=6,TerritoryIndex=2,Phase=Completed,Origin=Gift,BuilderGuid=00000000000000000000000000000000,WorkDone=10.000000)"
+  ],
+  "queue_remaining": 0
+}

@@ -19,6 +19,8 @@ struct GULISTRIKE_API FGuLiCombatHealthState
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Health")
 	float MaxHealth = 0.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Combat|Shield") float Shield = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Combat|Shield") float MaxShield = 0;
 
 	UPROPERTY(VisibleAnywhere, Category = "Combat|Health")
 	uint32 Revision = 0u;
@@ -102,6 +104,7 @@ struct GULISTRIKE_API FGuLiDamageCommitResult
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Damage")
 	float AppliedDamage = 0.0f;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Combat|Shield") float AbsorbedDamage = 0;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Damage")
 	float RemainingHealth = 0.0f;
@@ -304,6 +307,9 @@ public:
 
 	/** Authority-only initialization; preserves the current health ratio when requested. */
 	bool InitializeServerHealth(float NewMaxHealth, bool bPreserveRatio = false);
+	void InitializeServerShield(float Maximum);
+	float ConsumeServerShield(float Damage);
+	void RechargeServerShield(float Amount);
 
 	/** Called only by the Damage Ledger's registered adapter. */
 	bool ApplyServerDamage(const FGuLiDamageRequest& Request, FGuLiDamageCommitResult& OutResult);
@@ -358,6 +364,9 @@ public:
 	bool TryGetTargetSnapshot(const FGuLiTargetHandle& Handle, FGuLiCombatTargetSnapshot& OutSnapshot);
 	/** Authority-only stable snapshot of the current target directory for server target acquisition. */
 	void GetTargetSnapshots(TArray<FGuLiCombatTargetSnapshot>& OutSnapshots);
+	/** Optional barriers absorb before target damage; no building/resource types enter the ledger. */
+	void RegisterDamageBarrier(UObject& Owner, uint32 StableOrder, TFunction<float(const FGuLiCombatTargetSnapshot&, float)> Absorb);
+	void UnregisterDamageBarrier(const UObject& Owner);
 	FGuLiDamageCommitResult CommitDamage(const FGuLiDamageRequest& Request);
 
 	/** Authority-only cast provenance. A lease is not a target and survives its source Actor's destruction. */
@@ -402,6 +411,13 @@ private:
 	void PruneInvalidTargets();
 
 	TMap<FGuLiTargetHandle, FGuLiCombatTargetAdapter> TargetAdapters;
+	struct FDamageBarrier
+	{
+		TWeakObjectPtr<UObject> Owner;
+		uint32 StableOrder = 0;
+		TFunction<float(const FGuLiCombatTargetSnapshot&, float)> Absorb;
+	};
+	TArray<FDamageBarrier> DamageBarriers;
 	TMap<FGuid, FGuLiDamageCommitResult> ResultsByEvent;
 	TArray<FGuid> EventOrder;
 	TMap<FGuid, FGuLiDeathCommitRecord> DeathRecordsByEvent;

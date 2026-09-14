@@ -1,5 +1,17 @@
 {
   "tables": {
+    "DT_GuLiStrikeBuildings_Buildings": {
+      "excel": "GuLiStrikeBuildings.xlsx",
+      "sheet": "Buildings",
+      "sources": [
+        {
+          "excel": "GuLiStrikeBuildings.xlsx",
+          "sheet": "Buildings"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeBuildingsBuildingsRow",
+      "row_key_column": "name"
+    },
     "DT_GuLiStrikeCommander_Soldiers": {
       "excel": "GuLiStrikeCommander.xlsx",
       "sheet": "Soldiers",

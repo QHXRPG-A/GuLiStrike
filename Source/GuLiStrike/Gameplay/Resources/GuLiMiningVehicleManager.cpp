@@ -30,7 +30,8 @@ AGuLiMiningVehiclePawn* UGuLiMiningVehicleManager::SpawnMiningVehicle(
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 	auto* Vehicle = GetWorld()->SpawnActor<AGuLiMiningVehiclePawn>(Unit->ActorClass, Transform, Params);
-	if (Vehicle) Vehicle->InitializeVehicle(Factory->GetTeam(), FGuLiControllableActorId(NextVehicleId++), *Unit, *Economy, *Factory);
+	if (Vehicle) Vehicle->InitializeVehicle(Factory->GetTeam(),
+		GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>()->AllocateControllableActorId(), *Unit, *Economy, *Factory);
 	return Vehicle;
 }
 

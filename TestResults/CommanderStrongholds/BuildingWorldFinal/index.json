@@ -1,0 +1,177 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "94FBCB5B408195B87F876EA4DB81CC02",
+			"instanceName": "DESKTOP-6D3B0FC-19088",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.14-12.55.41",
+	"succeeded": 0,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 1.3363703489303589,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuildingWorldTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingWorldTests",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"94FBCB5B408195B87F876EA4DB81CC02"
+			],
+			"duration": 1.3363703489303589,
+			"dateTime": "2026.09.14-12.55.39",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(335): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.14-12.55.39"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogAbilitySystem: Processing InitializeRuntimeObjectLibrary.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.14-12.55.40"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: Building spawn rejected: definition ID 0 is absent from Buildings.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.14-12.55.40"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A legal Commander request is accepted' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 306,
+					"timestamp": "2026.09.14-12.55.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The first accepted request spawns exactly one building' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 310,
+					"timestamp": "2026.09.14-12.55.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'An identical reliable retry replays the accepted result' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 312,
+					"timestamp": "2026.09.14-12.55.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'An identical reliable retry does not spawn a duplicate' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 315,
+					"timestamp": "2026.09.14-12.55.41"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: Building spawn rejected: definition ID 0 is absent from Buildings.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.14-12.55.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "A newer request cannot overlap the placed building: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 323,
+					"timestamp": "2026.09.14-12.55.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Every rejection leaves the accepted building count unchanged' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 329,
+					"timestamp": "2026.09.14-12.55.41"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The accepted replicated building exists' to be not null.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 330,
+					"timestamp": "2026.09.14-12.55.41"
+				}
+			],
+			"warnings": 2,
+			"errors": 7,
+			"artifacts": []
+		}
+	]
+}

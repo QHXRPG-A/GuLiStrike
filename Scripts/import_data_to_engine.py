@@ -48,6 +48,7 @@ WIRING = {
 
 # 由 C++ Config settings 通过软引用接线；成功导入后不应被误报为未接线。
 CONFIG_WIRED_TABLES = {
+    "DT_GuLiStrikeBuildings_Buildings",
     # Ship V3 assets reference these rows; deployed by deploy_wingman_attack_assets.py.
     "DT_GuLiStrikeShip_WingmanWeapons",
     "DT_GuLiStrikeShip_WingmanTargeting",

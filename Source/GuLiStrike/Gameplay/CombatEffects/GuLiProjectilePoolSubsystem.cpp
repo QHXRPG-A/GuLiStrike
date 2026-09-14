@@ -10,9 +10,9 @@
 
 namespace
 {
-	constexpr double CellSize = 20000.0;
-	FIntVector Cell(const FVector& P)
-	{ return FIntVector(FMath::FloorToInt(P.X / CellSize), FMath::FloorToInt(P.Y / CellSize), FMath::FloorToInt(P.Z / CellSize)); }
+	constexpr double ProjectileGridCellSize = 20000.0;
+	FIntVector ProjectileGridCell(const FVector& P)
+	{ return FIntVector(FMath::FloorToInt(P.X / ProjectileGridCellSize), FMath::FloorToInt(P.Y / ProjectileGridCellSize), FMath::FloorToInt(P.Z / ProjectileGridCellSize)); }
 	// Earliest contact of two swept spheres, expressed in relative coordinates.
 	bool SphereContact(const FVector& RelativeStart, const FVector& RelativeDelta, double Radius, double& Alpha)
 	{
@@ -197,7 +197,7 @@ void UGuLiProjectilePoolSubsystem::BuildSpatialIndex(const float Now)
 		const FVector* Previous = PreviousTargets.Find(Snapshot.Handle);
 		Target.Previous = Previous && Now > PreviousSnapshotTime ? *Previous : Snapshot.Location;
 		const FBox Box = FBox(Target.Previous.ComponentMin(Snapshot.Location), Target.Previous.ComponentMax(Snapshot.Location)).ExpandBy(Snapshot.CollisionRadius);
-		const FIntVector Min = Cell(Box.Min), Max = Cell(Box.Max);
+		const FIntVector Min = ProjectileGridCell(Box.Min), Max = ProjectileGridCell(Box.Max);
 		for (int32 X = Min.X; X <= Max.X; ++X) for (int32 Y = Min.Y; Y <= Max.Y; ++Y) for (int32 Z = Min.Z; Z <= Max.Z; ++Z)
 			SpatialGrid.FindOrAdd(FIntVector(X, Y, Z)).Add(Targets.Num() - 1);
 	}
@@ -232,7 +232,7 @@ void UGuLiProjectilePoolSubsystem::Step(const float Now)
 		const FVector Start = State.Location;
 		const FVector End = FVector(State.LaunchLocation) + FVector(State.Velocity) * (EndTime - State.StartTime);
 		const FBox Box = FBox(Start.ComponentMin(End), Start.ComponentMax(End)).ExpandBy(Copy.SweepRadius);
-		const FIntVector Min = Cell(Box.Min), Max = Cell(Box.Max); Candidates.Reset();
+		const FIntVector Min = ProjectileGridCell(Box.Min), Max = ProjectileGridCell(Box.Max); Candidates.Reset();
 		for (int32 X = Min.X; X <= Max.X; ++X) for (int32 Y = Min.Y; Y <= Max.Y; ++Y) for (int32 Z = Min.Z; Z <= Max.Z; ++Z)
 			if (const auto* CellTargets = SpatialGrid.Find(FIntVector(X, Y, Z))) for (const int32 Index : *CellTargets) Candidates.Add(Index);
 		double FirstAlpha = 2; int32 FirstTarget = INDEX_NONE;

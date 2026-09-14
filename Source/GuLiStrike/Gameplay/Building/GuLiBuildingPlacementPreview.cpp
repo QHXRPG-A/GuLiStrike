@@ -50,7 +50,7 @@ bool AGuLiBuildingPlacementPreview::Configure(
 	PreviewMesh->SetStaticMesh(Definition.Mesh);
 	PreviewMesh->SetRelativeLocation(Definition.VisualOffset);
 	PreviewMesh->SetRelativeRotation(FRotator::ZeroRotator);
-	PreviewMesh->SetRelativeScale3D(FVector::OneVector);
+	PreviewMesh->SetRelativeScale3D(Definition.MeshScale);
 
 	PreviewMaterialInstance = UMaterialInstanceDynamic::Create(PreviewMaterial, this);
 	if (!PreviewMaterialInstance)

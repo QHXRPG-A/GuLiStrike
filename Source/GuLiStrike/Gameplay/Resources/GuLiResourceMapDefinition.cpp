@@ -29,7 +29,7 @@ namespace
 		}
 	}
 
-	bool Fail(FString& OutError, const FString& Message)
+	bool FailResourceDefinition(FString& OutError, const FString& Message)
 	{
 		OutError = Message;
 		return false;
@@ -48,18 +48,18 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 		|| DeterministicSeed != GULI_RESOURCE_BAKE_SEED || SourceHash.IsEmpty()
 		|| LayoutHash.IsEmpty() || !SpawnAnchors.IsWellFormed())
 	{
-		return Fail(OutError, TEXT("Bake metadata, fixed seed, or spawn anchors are missing/invalid."));
+		return FailResourceDefinition(OutError, TEXT("Bake metadata, fixed seed, or spawn anchors are missing/invalid."));
 	}
 	if (!PlayableMinimum.Equals(FVector2D(-GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM), 0.1f)
 		|| !PlayableMaximum.Equals(FVector2D(GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM), 0.1f))
 	{
-		return Fail(OutError, TEXT("Playable bounds must be the canonical 560000 x 560000 cm square."));
+		return FailResourceDefinition(OutError, TEXT("Playable bounds must be the canonical 560000 x 560000 cm square."));
 	}
 	if (Territories.Num() != GULI_RESOURCE_TERRITORY_COUNT
 		|| Clusters.Num() != GULI_RESOURCE_CLUSTER_COUNT
 		|| Nodes.Num() != GULI_RESOURCE_NODE_COUNT)
 	{
-		return Fail(OutError, FString::Printf(
+		return FailResourceDefinition(OutError, FString::Printf(
 			TEXT("Expected 25 territories, 240 clusters and 6240 nodes; got %d/%d/%d."),
 			Territories.Num(), Clusters.Num(), Nodes.Num()));
 	}
@@ -74,11 +74,11 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 		if (!Territory.IsWellFormed(&TerritoryError)
 			|| GuLiResources::ToTerritoryIndex(Territory.BoardRow, Territory.BoardColumn) != Index)
 		{
-			return Fail(OutError, FString::Printf(TEXT("Territory[%d]: %s"), Index, *TerritoryError));
+			return FailResourceDefinition(OutError, FString::Printf(TEXT("Territory[%d]: %s"), Index, *TerritoryError));
 		}
 		if (TerritoryIds.Contains(Territory.TerritoryId))
 		{
-			return Fail(OutError, TEXT("Duplicate TerritoryId."));
+			return FailResourceDefinition(OutError, TEXT("Duplicate TerritoryId."));
 		}
 		TerritoryIds.Add(Territory.TerritoryId);
 		const EGuLiTeam ExpectedOwner = Territory.BoardRow == 1 && Territory.BoardColumn == 3
@@ -89,7 +89,7 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 			|| !Territory.Center.Equals(GuLiResources::GetTerritoryCenter(
 				Territory.BoardRow, Territory.BoardColumn), 1.0f))
 		{
-			return Fail(OutError, TEXT("Territory center or initial ownership differs from the canonical board."));
+			return FailResourceDefinition(OutError, TEXT("Territory center or initial ownership differs from the canonical board."));
 		}
 		TotalBlueBudget += Territory.BlueClusterBudget;
 		TotalRedBudget += Territory.RedClusterBudget;
@@ -97,7 +97,7 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 	if (TotalBlueBudget != GULI_RESOURCE_BLUE_CLUSTER_COUNT
 		|| TotalRedBudget != GULI_RESOURCE_RED_CLUSTER_COUNT)
 	{
-		return Fail(OutError, TEXT("Territory budgets do not total 200 blue / 40 red clusters."));
+		return FailResourceDefinition(OutError, TEXT("Territory budgets do not total 200 blue / 40 red clusters."));
 	}
 
 	TArray<int32> BluePerTerritory;
@@ -113,11 +113,11 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 			|| Cluster.ClusterId != static_cast<uint16>(ClusterIndex + 1)
 			|| Cluster.FirstNodeIndex != static_cast<uint32>(ClusterIndex * GULI_RESOURCE_NODES_PER_CLUSTER))
 		{
-			return Fail(OutError, FString::Printf(TEXT("Cluster[%d]: %s"), ClusterIndex, *ClusterError));
+			return FailResourceDefinition(OutError, FString::Printf(TEXT("Cluster[%d]: %s"), ClusterIndex, *ClusterError));
 		}
 		if (ClusterIds.Contains(Cluster.ClusterId))
 		{
-			return Fail(OutError, TEXT("Duplicate ClusterId."));
+			return FailResourceDefinition(OutError, TEXT("Duplicate ClusterId."));
 		}
 		ClusterIds.Add(Cluster.ClusterId);
 		(Cluster.ResourceType == EGuLiResourceType::Blue
@@ -129,7 +129,7 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 		const float LegalHalfExtent = GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM - 3000.0f;
 		if (FMath::Abs(Local.X) > LegalHalfExtent || FMath::Abs(Local.Y) > LegalHalfExtent)
 		{
-			return Fail(OutError, TEXT("Cluster violates the 30 m Territory boundary margin."));
+			return FailResourceDefinition(OutError, TEXT("Cluster violates the 30 m Territory boundary margin."));
 		}
 
 		int32 Capacity = 0;
@@ -145,7 +145,7 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 				|| Node.NodeId != static_cast<uint32>(NodeIndex + 1)
 				|| Node.ClusterId != Cluster.ClusterId || Node.ResourceType != Cluster.ResourceType)
 			{
-				return Fail(OutError, FString::Printf(TEXT("Node[%d]: %s"), NodeIndex, *NodeError));
+				return FailResourceDefinition(OutError, FString::Printf(TEXT("Node[%d]: %s"), NodeIndex, *NodeError));
 			}
 			Capacity += Node.InitialAmount;
 			FullCount += Node.InitialAmount == 3u ? 1 : 0;
@@ -155,7 +155,7 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 		if (Capacity != GULI_RESOURCE_RAW_PER_CLUSTER
 			|| FullCount != 3 || PartialCount != 8 || RemnantCount != 15)
 		{
-			return Fail(OutError, TEXT("Each cluster must contain 3 Full, 8 Partial and 15 Remnant nodes (40 raw)."));
+			return FailResourceDefinition(OutError, TEXT("Each cluster must contain 3 Full, 8 Partial and 15 Remnant nodes (40 raw)."));
 		}
 	}
 	for (int32 TerritoryIndex = 0; TerritoryIndex < Territories.Num(); ++TerritoryIndex)
@@ -163,7 +163,7 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 		if (BluePerTerritory[TerritoryIndex] != Territories[TerritoryIndex].BlueClusterBudget
 			|| RedPerTerritory[TerritoryIndex] != Territories[TerritoryIndex].RedClusterBudget)
 		{
-			return Fail(OutError, TEXT("Baked cluster counts differ from a Territory budget."));
+			return FailResourceDefinition(OutError, TEXT("Baked cluster counts differ from a Territory budget."));
 		}
 	}
 	for (int32 Left = 0; Left < Clusters.Num(); ++Left)
@@ -173,7 +173,7 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 			if (FVector::DistSquared2D(Clusters[Left].Center, Clusters[Right].Center)
 				< FMath::Square(5500.0f))
 			{
-				return Fail(OutError, TEXT("Two cluster centers are closer than 55 m."));
+				return FailResourceDefinition(OutError, TEXT("Two cluster centers are closer than 55 m."));
 			}
 		}
 	}
@@ -189,12 +189,12 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 			});
 		if (!Mirror)
 		{
-			return Fail(OutError, TEXT("A cluster is missing its 180-degree rotational counterpart."));
+			return FailResourceDefinition(OutError, TEXT("A cluster is missing its 180-degree rotational counterpart."));
 		}
 		if (!FMath::IsNearlyEqual(
 			Cluster.ObstacleRadiusCentimeters, Mirror->ObstacleRadiusCentimeters, 0.1f))
 		{
-			return Fail(OutError, TEXT("Mirrored cluster obstacle radii differ."));
+			return FailResourceDefinition(OutError, TEXT("Mirrored cluster obstacle radii differ."));
 		}
 		for (int32 LocalNodeIndex = 0; LocalNodeIndex < Cluster.NodeCount; ++LocalNodeIndex)
 		{
@@ -213,14 +213,14 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 				|| FMath::Abs(FMath::FindDeltaAngleDegrees(
 					ExpectedMirrorYaw, MirrorNode.WorldTransform.Rotator().Yaw)) > 0.05f)
 			{
-				return Fail(OutError,
+				return FailResourceDefinition(OutError,
 					TEXT("Mirrored cluster nodes must share family/scale/stage and rotate by 180 degrees."));
 			}
 		}
 	}
 	if (!LayoutHash.Equals(CalculateLayoutHash(), ESearchCase::IgnoreCase))
 	{
-		return Fail(OutError, TEXT("LayoutHash is stale; rebake before starting this map."));
+		return FailResourceDefinition(OutError, TEXT("LayoutHash is stale; rebake before starting this map."));
 	}
 	return true;
 }

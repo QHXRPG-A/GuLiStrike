@@ -17,6 +17,8 @@ class GULISTRIKE_API UGuLiBuildingCatalog : public UDataAsset
 
 public:
 	const FGuLiBuildingDefinition* FindDefinition(EGuLiBuildingType Type) const;
+	const FGuLiBuildingDefinition* FindById(int32 Id) const;
+	bool ResolveTable();
 	bool IsUsable() const;
 
 	static const TCHAR* GetDefaultCatalogObjectPath();
@@ -27,5 +29,7 @@ public:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")
 	TObjectPtr<UMaterialInterface> PreviewMaterial;
-};
 
+private:
+	bool bTableResolved = false;
+};

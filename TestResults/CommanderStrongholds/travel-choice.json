@@ -1,0 +1,32 @@
+[
+  {
+    "case": "same",
+    "accepted": true,
+    "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=2,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=10000.000000,Y=224000.000000,Z=-6419.146061),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))"
+  },
+  {
+    "case": "adjacent_enemy",
+    "accepted": true,
+    "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=7,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=10000.000000,Y=112000.000000,Z=-7230.079174),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))"
+  },
+  {
+    "case": "distant_enemy",
+    "accepted": true,
+    "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=22,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=10000.000000,Y=-224000.000000,Z=-6419.146061),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))"
+  },
+  {
+    "case": "distant_neutral",
+    "accepted": true,
+    "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=12,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=10000.000000,Y=0.000000,Z=6499.612331),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))"
+  },
+  {
+    "case": "friendly_without_route",
+    "accepted": true,
+    "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=12,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=10000.000000,Y=0.000000,Z=6499.612331),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))"
+  },
+  {
+    "case": "distant_friendly_route",
+    "accepted": true,
+    "state": "(JourneyId=C91BF46E4B7B5F71767AB894403C0A65,Phase=ApproachingGate,GateFieldId=2001,DestinationTerritory=12,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=3000.000000,Y=224000.000000,Z=-6402.422729),FinalGroundTarget=(X=10000.000000,Y=0.000000,Z=6499.612331),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))"
+  }
+]

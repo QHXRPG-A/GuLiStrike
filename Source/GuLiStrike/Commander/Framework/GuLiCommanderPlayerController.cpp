@@ -166,6 +166,9 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 	InputComponent->BindKey(EKeys::One, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleArmMoveToolInput).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::Two, IE_Pressed, this, &ThisClass::HandleSelectBuildingTwoInput).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::Three, IE_Pressed, this, &ThisClass::HandleSelectBuildingThreeInput).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::Four, IE_Pressed, this, &ThisClass::HandleSelectBuildingFourInput).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::Five, IE_Pressed, this, &ThisClass::HandleSelectBuildingFiveInput).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::Six, IE_Pressed, this, &ThisClass::HandleSelectBuildingSixInput).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::B, IE_Pressed, this, &ThisClass::HandleToggleBuildModeInput).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::Seven, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleActivateSelectionToolInput).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::Add, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleStepSelectionRadiusInput).bConsumeInput = false;
@@ -489,6 +492,10 @@ void AGuLiCommanderPlayerController::HandleSelectBuildingThreeInput()
 		BuildingPlacementComponent->HandleNumberKey(3);
 	}
 }
+
+void AGuLiCommanderPlayerController::HandleSelectBuildingFourInput() { BuildingPlacementComponent->HandleNumberKey(4); }
+void AGuLiCommanderPlayerController::HandleSelectBuildingFiveInput() { BuildingPlacementComponent->HandleNumberKey(5); }
+void AGuLiCommanderPlayerController::HandleSelectBuildingSixInput() { BuildingPlacementComponent->HandleNumberKey(6); }
 
 void AGuLiCommanderPlayerController::HandleCancelInput()
 {

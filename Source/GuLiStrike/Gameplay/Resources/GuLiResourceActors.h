@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "GameFramework/Character.h"
 #include "AIController.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
@@ -101,7 +102,7 @@ private:
 
 /** Public whitebox board landmark; owner color is replicated to both teams. */
 UCLASS(NotPlaceable)
-class GULISTRIKE_API AGuLiTerritoryOutpostActor final : public AActor
+class GULISTRIKE_API AGuLiTerritoryOutpostActor final : public AActor, public IGuLiBuildingOwner
 {
 	GENERATED_BODY()
 
@@ -112,6 +113,9 @@ public:
 	void SetTerritoryOwnerAuthority(EGuLiTeam InOwner);
 	uint8 GetTerritoryIndex() const { return TerritoryIndex; }
 	EGuLiTeam GetTerritoryOwner() const { return TerritoryOwner; }
+	virtual EGuLiTeam GetBuildingTeam() const override { return TerritoryOwner; }
+	virtual void SetBuildingTeamAuthority(EGuLiTeam NewTeam) override;
+	virtual FVector GetBuildingGroundLocation() const override { return GetActorLocation() - FVector(0,0,2500); }
 
 private:
 	UFUNCTION()

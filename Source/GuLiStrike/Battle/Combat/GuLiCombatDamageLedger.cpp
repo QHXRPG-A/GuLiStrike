@@ -25,6 +25,7 @@ bool FGuLiCombatHealthState::IsWellFormed() const
 {
 	return Revision != 0u && FMath::IsFinite(Health) && FMath::IsFinite(MaxHealth)
 		&& MaxHealth > 0.0f && Health >= 0.0f && Health <= MaxHealth
+		&& FMath::IsFinite(Shield) && FMath::IsFinite(MaxShield) && Shield >= 0 && MaxShield >= Shield
 		&& bDead == (Health <= 0.0f);
 }
 
@@ -174,6 +175,31 @@ bool UGuLiCombatHealthComponent::InitializeServerHealth(const float NewMaxHealth
 	return true;
 }
 
+void UGuLiCombatHealthComponent::InitializeServerShield(float Maximum)
+{
+	check(GetOwner()->HasAuthority() && FMath::IsFinite(Maximum) && Maximum >= 0);
+	HealthState.MaxShield = Maximum; HealthState.Shield = Maximum;
+	HealthState.Revision = NextRevision(HealthState.Revision);
+	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
+}
+float UGuLiCombatHealthComponent::ConsumeServerShield(float Damage)
+{
+	check(GetOwner()->HasAuthority() && Damage >= 0);
+	const float Absorbed = FMath::Min(Damage, HealthState.Shield);
+	if (Absorbed == 0) return 0;
+	HealthState.Shield -= Absorbed; HealthState.Revision = NextRevision(HealthState.Revision);
+	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
+	return Absorbed;
+}
+void UGuLiCombatHealthComponent::RechargeServerShield(float Amount)
+{
+	check(GetOwner()->HasAuthority() && Amount >= 0);
+	if (HealthState.bDead || HealthState.Shield >= HealthState.MaxShield) return;
+	HealthState.Shield = FMath::Min(HealthState.MaxShield, HealthState.Shield + Amount);
+	HealthState.Revision = NextRevision(HealthState.Revision);
+	GetOwner()->FlushNetDormancy(); GetOwner()->ForceNetUpdate();
+}
+
 bool UGuLiCombatHealthComponent::ApplyServerDamage(
 	const FGuLiDamageRequest& Request, FGuLiDamageCommitResult& OutResult)
 {
@@ -196,7 +222,8 @@ bool UGuLiCombatHealthComponent::ApplyServerDamage(
 
 	const bool bWasDead = HealthState.bDead;
 	const float PreviousHealth = HealthState.Health;
-	HealthState.Health = FMath::Max(0.0f, HealthState.Health - Request.Damage);
+	OutResult.AbsorbedDamage = ConsumeServerShield(Request.Damage);
+	HealthState.Health = FMath::Max(0.0f, HealthState.Health - (Request.Damage - OutResult.AbsorbedDamage));
 	HealthState.bDead = HealthState.Health <= 0.0f;
 	HealthState.Revision = NextRevision(HealthState.Revision);
 	OutResult.Status = EGuLiDamageCommitStatus::Committed;
@@ -252,6 +279,7 @@ void UGuLiCombatHealthComponent::BroadcastHealthState(const bool bWasDead)
 
 void UGuLiDamageLedgerSubsystem::Deinitialize()
 {
+	DamageBarriers.Reset();
 	RetainedEffectSources.Reset();
 	TargetAdapters.Reset();
 	ResultsByEvent.Reset();
@@ -635,12 +663,31 @@ FGuLiDamageCommitResult UGuLiDamageLedgerSubsystem::CommitDamageInternal(
 #endif
 
 	FGuLiCombatTargetAdapter* Adapter = TargetAdapters.Find(Request.Target);
-	if (!Adapter || !Adapter->IsBound() || !Adapter->ApplyDamage(Request, Result))
+	if (!Adapter || !Adapter->IsBound())
 	{
 		Result.Status = EGuLiDamageCommitStatus::RejectedByAdapter;
 		RememberResult(Request.DamageEventId, Result);
 		return Result;
 	}
+	FGuLiDamageRequest Remaining = Request;
+	for (const auto& Barrier : DamageBarriers)
+	{
+		if (!Barrier.Owner.IsValid() || Remaining.Damage == 0) continue;
+		const float Absorbed = Barrier.Absorb(TargetSnapshot, Remaining.Damage);
+		check(FMath::IsFinite(Absorbed) && Absorbed >= 0 && Absorbed <= Remaining.Damage);
+		Remaining.Damage -= Absorbed;
+	}
+	if (Remaining.Damage > 0)
+	{
+		if (!Adapter->ApplyDamage(Remaining, Result))
+		{
+			Result.Status = EGuLiDamageCommitStatus::RejectedByAdapter;
+			RememberResult(Request.DamageEventId, Result);
+			return Result;
+		}
+	}
+	else Result.RemainingHealth = TargetSnapshot.Health;
+	Result.AbsorbedDamage += Request.Damage - Remaining.Damage;
 	Result.Status = EGuLiDamageCommitStatus::Committed;
 	Result.CommitOrdinal = ++CommitCount;
 	if (Result.bKilled)
@@ -649,6 +696,18 @@ FGuLiDamageCommitResult UGuLiDamageLedgerSubsystem::CommitDamageInternal(
 	}
 	RememberResult(Request.DamageEventId, Result);
 	return Result;
+}
+
+void UGuLiDamageLedgerSubsystem::RegisterDamageBarrier(UObject& Owner, uint32 StableOrder,
+	TFunction<float(const FGuLiCombatTargetSnapshot&, float)> Absorb)
+{
+	check(IsAuthorityWorld() && Absorb && !DamageBarriers.ContainsByPredicate([&](const auto& B) { return B.Owner == &Owner; }));
+	DamageBarriers.Add({&Owner, StableOrder, MoveTemp(Absorb)});
+	DamageBarriers.Sort([](const auto& A, const auto& B) { return A.StableOrder < B.StableOrder; });
+}
+void UGuLiDamageLedgerSubsystem::UnregisterDamageBarrier(const UObject& Owner)
+{
+	DamageBarriers.RemoveAll([&](const auto& Barrier) { return Barrier.Owner == &Owner; });
 }
 
 void UGuLiDamageLedgerSubsystem::RememberResult(

@@ -3,10 +3,11 @@
 #include "Gameplay/Building/GuLiBuildingTypes.h"
 
 #include "Engine/StaticMesh.h"
+#include "Gameplay/Building/GuLiBuildingCatalog.h"
 
 bool FGuLiBuildingDefinition::IsUsable() const
 {
-	return GuLiBuildingPlacementPolicy::IsKnownBuildingType(Type)
+	return (GuLiBuildingPlacementPolicy::IsKnownBuildingType(Type) || Category == EGuLiBuildingCategory::Stronghold)
 		&& Mesh != nullptr
 		&& !DisplayName.IsEmpty()
 		&& FMath::IsFinite(CollisionExtent.X)
@@ -40,20 +41,17 @@ bool GuLiBuildingPlacementPolicy::IsKnownBuildingType(const EGuLiBuildingType Ty
 {
 	return Type == EGuLiBuildingType::MissileTurret
 		|| Type == EGuLiBuildingType::SentryTurret
-		|| Type == EGuLiBuildingType::Outpost;
+		|| Type == EGuLiBuildingType::Outpost
+		|| Type == EGuLiBuildingType::Barracks
+		|| Type == EGuLiBuildingType::ShieldGenerator
+		|| Type == EGuLiBuildingType::Factory;
 }
 
 FGuLiResourceAmounts GuLiBuildingPlacementPolicy::GetEconomyCost(const EGuLiBuildingType Type)
 {
-	FGuLiResourceAmounts Cost;
-	switch (Type)
-	{
-	case EGuLiBuildingType::MissileTurret: Cost.Blue = 20; break;
-	case EGuLiBuildingType::SentryTurret: Cost.Blue = 10; break;
-	case EGuLiBuildingType::Outpost: Cost.Blue = 40; break;
-	default: checkNoEntry();
-	}
-	return Cost;
+	const auto* Definition = UGuLiBuildingCatalog::LoadDefaultCatalog()->FindDefinition(Type);
+	check(Definition);
+	return Definition->Cost;
 }
 
 bool GuLiBuildingPlacementPolicy::IsSlopeAllowed(
@@ -119,7 +117,7 @@ GuLiBuildingPlacementPolicy::FNumberKeyDecision GuLiBuildingPlacementPolicy::Res
 	const EGuLiCommanderRole Role)
 {
 	FNumberKeyDecision Decision;
-	if (bBuildModeActive && IsBuildingRole(Role) && Number >= 1 && Number <= 3)
+	if (bBuildModeActive && IsBuildingRole(Role) && Number >= 1 && Number <= 6)
 	{
 		Decision.bHandled = true;
 		Decision.SelectedType = static_cast<EGuLiBuildingType>(Number);
@@ -137,7 +135,7 @@ FText GetGuLiBuildingPlacementReasonText(const EGuLiBuildingPlacementRejectReaso
 	switch (Reason)
 	{
 	case EGuLiBuildingPlacementRejectReason::None:
-		return NSLOCTEXT("GuLiBuilding", "Accepted", "已建造");
+		return NSLOCTEXT("GuLiBuilding", "Accepted", "工地已放置，右键派建造车施工");
 	case EGuLiBuildingPlacementRejectReason::NotReady:
 		return NSLOCTEXT("GuLiBuilding", "NotReady", "战局或连接尚未就绪");
 	case EGuLiBuildingPlacementRejectReason::UnauthorizedRole:
@@ -165,7 +163,7 @@ FText GetGuLiBuildingPlacementReasonText(const EGuLiBuildingPlacementRejectReaso
 	case EGuLiBuildingPlacementRejectReason::Duplicate:
 		return NSLOCTEXT("GuLiBuilding", "Duplicate", "建造请求已过期");
 	case EGuLiBuildingPlacementRejectReason::InsufficientResources:
-		return NSLOCTEXT("GuLiBuilding", "InsufficientResources", "蓝矿库存不足");
+		return NSLOCTEXT("GuLiBuilding", "InsufficientResources", "团队蓝矿或红矿不足");
 	case EGuLiBuildingPlacementRejectReason::SpawnFailed:
 		return NSLOCTEXT("GuLiBuilding", "SpawnFailed", "建筑生成失败");
 	default:
@@ -183,6 +181,12 @@ FText GetGuLiBuildingFallbackDisplayName(const EGuLiBuildingType Type)
 		return NSLOCTEXT("GuLiBuilding", "SentryTurret", "哨戒炮");
 	case EGuLiBuildingType::Outpost:
 		return NSLOCTEXT("GuLiBuilding", "Outpost", "据点");
+	case EGuLiBuildingType::Barracks:
+		return NSLOCTEXT("GuLiBuilding", "Barracks", "基础兵营");
+	case EGuLiBuildingType::ShieldGenerator:
+		return NSLOCTEXT("GuLiBuilding", "ShieldGenerator", "护盾发生器");
+	case EGuLiBuildingType::Factory:
+		return NSLOCTEXT("GuLiBuilding", "Factory", "矿厂");
 	default:
 		return NSLOCTEXT("GuLiBuilding", "UnknownBuilding", "未知建筑");
 	}

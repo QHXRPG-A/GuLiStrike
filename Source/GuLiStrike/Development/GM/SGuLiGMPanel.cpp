@@ -562,6 +562,11 @@ TSharedRef<SWidget> SGuLiGMPanel::BuildCommanderTab()
 			+ SVerticalBox::Slot().AutoHeight()[MakeSectionTitle(TEXT("本地相机调试"), TEXT("gs.GM.Commander.Camera.Debug"))]
 			+ SVerticalBox::Slot().AutoHeight()
 			[
+				SNew(SButton).Text(Text(TEXT("刷新据点 / 建筑 / 空中运输"))).OnClicked_Lambda([this]()
+				{ PublishResult(Model.QueryStrongholds()); return FReply::Handled(); })
+			]
+			+ SVerticalBox::Slot().AutoHeight()
+			[
 				SNew(SButton).Text(this, &SGuLiGMPanel::GetCameraDebugText).OnClicked(this, &SGuLiGMPanel::ToggleCameraDebug)
 				.IsEnabled_Lambda([this]() { return Model.GetAccessPolicy().bCanToggleLocalCameraDebug; })
 			]

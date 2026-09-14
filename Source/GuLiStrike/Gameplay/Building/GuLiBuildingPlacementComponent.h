@@ -97,7 +97,7 @@ private:
 	EGuLiBuildingPlacementRejectReason ValidateServerRequest(
 		const FGuLiBuildingPlacementRequest& Request,
 		FTransform& OutSpawnTransform,
-		const FGuLiBuildingDefinition*& OutDefinition) const;
+		const FGuLiBuildingDefinition*& OutDefinition, AActor*& OutSupportingActor) const;
 	void CountPlacedBuildings(const FGuid& BuilderGuid, int32& OutBuilderCount, int32& OutWorldCount) const;
 	bool ConsumeServerRequestBudget();
 	FGuLiBuildingPlacementResult ProcessServerRequest(

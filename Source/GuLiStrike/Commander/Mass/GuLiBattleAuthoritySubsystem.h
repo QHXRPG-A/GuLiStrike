@@ -313,6 +313,14 @@ public:
 	bool RegisterCombatExecutor(FName ExecutorId, FGuLiCombatExecutorRegistry::FExecutor Executor);
 	/** Non-shipping authoritative test spawn. Uses the same data and current profile as initial Soldiers. */
 	bool SpawnDebugSoldier(EGuLiTeam Team, uint16 UnitTypeId, const FVector& Location, FGuLiSoldierId& OutId);
+	/** Formal production boundary: reserve the available population before creating any entity. */
+	int32 SpawnSoldierBatch(EGuLiTeam Team, uint16 UnitTypeId, TConstArrayView<FVector> Locations, TArray<FGuLiSoldierId>& OutIds);
+	FIntPoint GetTeamPopulation(EGuLiTeam Team) const;
+	int32 GetTeamUnitCap() const;
+	void RegisterAutomaticAdvance(TConstArrayView<FGuLiSoldierId> Soldiers);
+	bool IsAutomaticallyAdvancing(FGuLiSoldierId Soldier) const;
+	bool IssueAttackMove(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers, const FVector& Destination);
+	void StopAutomaticMove(TConstArrayView<FGuLiSoldierId> Soldiers);
 	const FGuLiAuthorityPerformanceCounters& GetPerformanceCounters() const { return PerformanceCounters; }
 
 	/**
@@ -383,6 +391,10 @@ public:
 	bool HasSpawnedAuthorityPopulation() const;
 
 private:
+	int32 ReservedRedPopulation = 0;
+	int32 ReservedBluePopulation = 0;
+	bool SpawnReservedSoldier(EGuLiTeam Team, uint16 UnitTypeId, const FVector& Location, FGuLiSoldierId& OutId);
+	void RetireExpiredSoldiers();
 	/** 检查 World 存在且不是普通客户端；生成部队还需满足世界和导航就绪条件。 */
 	bool IsAuthorityWorld() const;
 

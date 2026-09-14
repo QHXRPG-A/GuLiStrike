@@ -2,25 +2,45 @@
   {
     "Name": "重型引擎",
     "Id": 1,
+    "Note": "",
     "PartId": "Engine_Heavy",
     "Type": "Engine",
     "PartMass": 30.0,
-    "Thrust": 1000.0
+    "Thrust": 1000.0,
+    "Damage": 0.0,
+    "FireRate": 0.0,
+    "Muzzle": {
+      "X": 0.0,
+      "Y": 0.0,
+      "Z": 0.0
+    },
+    "ProjectileClass": ""
   },
   {
     "Name": "标准引擎",
     "Id": 2,
+    "Note": "",
     "PartId": "Engine_Standard",
     "Type": "Engine",
     "PartMass": 10.0,
-    "Thrust": 600.0
+    "Thrust": 600.0,
+    "Damage": 0.0,
+    "FireRate": 0.0,
+    "Muzzle": {
+      "X": 0.0,
+      "Y": 0.0,
+      "Z": 0.0
+    },
+    "ProjectileClass": ""
   },
   {
     "Name": "激光炮",
     "Id": 3,
+    "Note": "",
     "PartId": "Weapon_Laser",
     "Type": "Weapon",
     "PartMass": 10.0,
+    "Thrust": 0.0,
     "Damage": 10.0,
     "FireRate": 3.0,
     "Muzzle": {
@@ -33,9 +53,11 @@
   {
     "Name": "火箭巢",
     "Id": 4,
+    "Note": "",
     "PartId": "Weapon_RocketPod",
     "Type": "Weapon",
     "PartMass": 10.0,
+    "Thrust": 0.0,
     "Damage": 40.0,
     "FireRate": 0.8,
     "Muzzle": {

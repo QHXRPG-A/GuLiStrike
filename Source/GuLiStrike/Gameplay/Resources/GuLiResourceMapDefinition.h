@@ -97,6 +97,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Mining", meta = (ClampMin = "1", ClampMax = "65535"))
 	int32 MiningVehicleUnitTypeId = 3;
 
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources|Construction") int32 ConstructionVehicleUnitTypeId = 4;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources|Construction") int32 InitialConstructionVehiclesPerTeam = 1;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Mining", meta = (ClampMin = "1.0"))
 	float MiningDistanceCentimeters = 5400.0f;
 

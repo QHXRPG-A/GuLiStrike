@@ -33,5 +33,4 @@ private:
 	UPROPERTY(Transient) TArray<TObjectPtr<AGuLiMiningVehiclePawn>> Vehicles;
 	TMap<uint32, TWeakObjectPtr<AGuLiMiningVehiclePawn>> NodeOwners;
 	TMap<TWeakObjectPtr<const AGuLiMiningVehiclePawn>, uint32> AssignedNodes;
-	uint32 NextVehicleId = 1;
 };

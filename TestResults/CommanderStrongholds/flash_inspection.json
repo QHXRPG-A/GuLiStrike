@@ -1,0 +1,35 @@
+{
+  "LocationBasedRibbon": {
+    "modules": [
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E0CD0) {module_name: \"SolveForcesAndVelocity\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Solvers/SolveForcesAndVelocity.SolveForcesAndVelocity\", module_index: 0, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E08C0) {module_name: \"ReceiveLocationEvent\", module_type: \"ParticleEvent\", script_asset_path: \"/Niagara/Modules/Events/ReceiveLocationEvent.ReceiveLocationEvent\", module_index: 1, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E2530) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 2, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E4F60) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 3, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E5870) {module_name: \"InitializeParticle\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle.InitializeParticle\", module_index: 4, is_enabled: True, inputs: }>"
+    ],
+    "renderers": [
+      "<Struct 'NiagaraRendererInfo_Custom' (0x00000227DBFBCDC0) {renderer_name: \"NiagaraRibbonRendererProperties_0\", renderer_type: \"Ribbon\", renderer_index: 0, is_enabled: True}>"
+    ]
+  },
+  "DirectionalBurst": {
+    "modules": [
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E4A60) {module_name: \"SolveForcesAndVelocity\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Solvers/SolveForcesAndVelocity.SolveForcesAndVelocity\", module_index: 0, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E64A0) {module_name: \"SpawnBurst_Instantaneous\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous\", module_index: 1, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E3D40) {module_name: \"AddVelocityInCone\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Velocity/AddVelocityInCone.AddVelocityInCone\", module_index: 2, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E4D30) {module_name: \"GravityForce\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Forces/GravityForce.GravityForce\", module_index: 3, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E4920) {module_name: \"Drag\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Forces/Drag.Drag\", module_index: 4, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E4100) {module_name: \"ScaleColor\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Color/ScaleColor.ScaleColor\", module_index: 5, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228EF7E7AA0) {module_name: \"FloatFromCurve\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve\", module_index: 6, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228EF7E4B60) {module_name: \"ParticleState\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 7, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228EF7E10E0) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 8, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228EF7E2B20) {module_name: \"ScaleSpriteSizeBySpeed\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Size/ScaleSpriteSizeBySpeed.ScaleSpriteSizeBySpeed\", module_index: 9, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228EF7E7200) {module_name: \"RandomRangeFloat002\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/V2/RandomRangeFloat.RandomRangeFloat\", module_index: 10, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228EF7E9780) {module_name: \"InitializeParticle\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Initialization/V2/InitializeParticle.InitializeParticle\", module_index: 11, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E40B0) {module_name: \"RandomRangeFloat\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/V2/RandomRangeFloat.RandomRangeFloat\", module_index: 12, is_enabled: True, inputs: }>",
+      "<Struct 'NiagaraModuleInfo_Custom' (0x00000228F87E4920) {module_name: \"GenerateLocationEvent\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Events/GenerateLocationEvent.GenerateLocationEvent\", module_index: 13, is_enabled: True, inputs: }>"
+    ],
+    "renderers": [
+      "<Struct 'NiagaraRendererInfo_Custom' (0x00000228E36C75C0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+    ]
+  }
+}

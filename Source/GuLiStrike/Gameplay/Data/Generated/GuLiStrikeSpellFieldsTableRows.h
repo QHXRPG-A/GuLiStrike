@@ -87,4 +87,56 @@ struct FGuLiStrikeSpellFieldsFieldsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
 	float MaxShipHeightCentimeters = 0.0f;
 
+	/** bPermanent (bool, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	bool bPermanent = false;
+
+	/** bIndestructible (bool, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	bool bIndestructible = false;
+
+	/** LaneHeightCentimeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	float LaneHeightCentimeters = 0.0f;
+
+	/** AscentSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	float AscentSeconds = 0.0f;
+
+	/** AccelerationSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	float AccelerationSeconds = 0.0f;
+
+	/** DecelerationSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	float DecelerationSeconds = 0.0f;
+
+	/** ExitFlashSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	float ExitFlashSeconds = 0.0f;
+
+	/** SpeedMultiplier (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	float SpeedMultiplier = 0.0f;
+
+	/** ExitRadiusCentimeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	float ExitRadiusCentimeters = 0.0f;
+
+	/** EnergyMaterial (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	TSoftObjectPtr<UObject> EnergyMaterial;
+
+	/** GateMaterial (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	TSoftObjectPtr<UObject> GateMaterial;
+
+	/** TrailSystem (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	TSoftObjectPtr<UObject> TrailSystem;
+
+	/** FlashSystem (softobject, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
+	TSoftObjectPtr<UObject> FlashSystem;
+
 };

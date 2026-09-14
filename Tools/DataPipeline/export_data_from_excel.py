@@ -154,7 +154,8 @@ def check_value(sheet, col, row_idx, raw):
     if raw is None or (isinstance(raw, str) and not raw.strip()):
         if col["necessary"]:
             raise SheetError(f"{where}: 列 '{col['name']}' 标记 Necessary 但单元格为空")
-        return None
+        return {"int": 0, "float": 0.0, "bool": False,
+                "str": "", "softclass": "", "softobject": ""}[col["type"]]
     t = col["type"]
     if t == "int":
         if isinstance(raw, bool) or not isinstance(raw, (int, float)) or float(raw) != int(raw):
@@ -322,6 +323,56 @@ def resolve_spell_field_references(tables):
             row["EffectConfigId"] = field["Name"]
 
 
+def validate_building_references(tables):
+    """Validate conditional building fields before any output is replaced."""
+    entry = tables.get("DT_GuLiStrikeBuildings_Buildings")
+    if entry is None:
+        return
+    buildings = {row["Id"]: row for row in entry["rows"]}
+    soldiers = {row["Id"]: row for row in tables["DT_GuLiStrikeCommander_Soldiers"]["rows"]}
+    fields = {row["Id"]: row for row in tables[SPELL_FIELD_TABLE]["rows"]}
+    for row in buildings.values():
+        label = f"Buildings/{row['Name']}"
+        category = row["Category"]
+        if row["Id"] <= 0 or category not in range(6) or row["PlacementType"] not in range(7):
+            raise SheetError(f"{label}: invalid ID, Category or PlacementType enum")
+        if row["MaxHealth"] <= 0 or any(row[key] < 0 for key in
+                ("MaxShield", "BuildLevel", "BlueCost", "RedCost", "ConstructionWork")):
+            raise SheetError(f"{label}: invalid health, cost or construction work")
+        if any(row[key][axis] <= 0 for key in ("CollisionExtent", "MeshScale") for axis in "XYZ"):
+            raise SheetError(f"{label}: footprint and mesh scale must be positive")
+        if category != 5 and row["ConstructionWork"] <= 0:
+            raise SheetError(f"{label}: constructible buildings require ConstructionWork")
+        if category == 2:
+            unit = soldiers.get(row["ProductionUnitId"])
+            if not unit or unit.get("ActorClass") or not unit.get("ModelAsset") \
+                    or row["ProductionSeconds"] <= 0 or row["ProductionCount"] <= 0:
+                raise SheetError(f"{label}: barracks require a Mass unit, positive period and count")
+        if category == 3 and (row["ShieldRadius"] <= 0 or row["ShieldRechargePerSecond"] <= 0):
+            raise SheetError(f"{label}: shield supply parameters are required")
+        gifts = row["FirstCaptureGiftIds"]
+        if gifts and not re.fullmatch(r"[1-9][0-9]*(,[1-9][0-9]*)*", gifts):
+            raise SheetError(f"{label}: gift IDs must be comma-separated positive integers")
+        gift_ids = [int(value) for value in gifts.split(",")] if gifts else []
+        if len(gift_ids) > 4:
+            raise SheetError(f"{label}: strongholds have four fixed facility slots")
+        if any(value not in buildings or buildings[value]["Category"] == 5 for value in gift_ids):
+            raise SheetError(f"{label}: invalid gift building reference")
+        gate = fields.get(row["GateFieldId"])
+        if row["GateFieldId"] and (not gate or gate["FieldType"] != "StrongholdGate"):
+            raise SheetError(f"{label}: GateFieldId must reference a StrongholdGate")
+        if category == 5 and (not gift_ids or not gate):
+            raise SheetError(f"{label}: strongholds require gift IDs and gate field")
+    for row in fields.values():
+        if row["FieldType"] != "StrongholdGate":
+            continue
+        required = ("RadiusCentimeters", "LaneHeightCentimeters", "AscentSeconds",
+                    "AccelerationSeconds", "DecelerationSeconds", "ExitFlashSeconds",
+                    "SpeedMultiplier", "ExitRadiusCentimeters")
+        if not row["bPermanent"] or not row["bIndestructible"] or any(row[key] <= 0 for key in required):
+            raise SheetError(f"Fields/{row['Name']}: invalid permanent gate configuration")
+
+
 def main():
     workbooks = [w for w in sorted(EXCEL_DIR.glob("*.xlsx")) if not w.name.startswith("~$")]
     if not workbooks:
@@ -378,6 +429,12 @@ def main():
     if not failed and consolidated:
         try:
             resolve_spell_field_references(tables)
+        except SheetError as e:
+            print(f"error: {e}", file=sys.stderr)
+            failed = True
+    if not failed:
+        try:
+            validate_building_references(tables)
         except SheetError as e:
             print(f"error: {e}", file=sys.stderr)
             failed = True

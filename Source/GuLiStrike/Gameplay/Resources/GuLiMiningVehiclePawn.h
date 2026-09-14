@@ -4,6 +4,7 @@
 #include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "GameFramework/Character.h"
 #include "AIController.h"
+#include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
 #include "GuLiMiningVehiclePawn.generated.h"
 
 class UChildActorComponent;
@@ -28,7 +29,7 @@ class GULISTRIKE_API AGuLiMiningVehicleAIController final : public AAIController
 
 /** Replicated, server-driven mining vehicle. Player orders temporarily override automatic scheduling. */
 UCLASS(NotPlaceable)
-class GULISTRIKE_API AGuLiMiningVehiclePawn final : public ACharacter
+class GULISTRIKE_API AGuLiMiningVehiclePawn final : public ACharacter, public IGuLiEngineeringVehicle
 {
 	GENERATED_BODY()
 
@@ -64,6 +65,9 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Resources|Mining")
 	EGuLiTeam GetTeam() const { return Team; }
 	FGuLiControllableActorId GetStableActorId() const { return StableActorId; }
+	virtual float GetEngineeringBaseSpeed() const override { return SpeedCentimetersPerSecond; }
+	virtual void SetEngineeringPresentationVisible(bool bVisible) override;
+	virtual FBox GetEngineeringTravelBounds() const override { return TravelBounds; }
 	UFUNCTION(BlueprintPure, Category = "Resources|Mining")
 	FGuLiResourceAmounts GetCargo() const { return Cargo; }
 	UFUNCTION(BlueprintPure, Category = "Resources|Mining")

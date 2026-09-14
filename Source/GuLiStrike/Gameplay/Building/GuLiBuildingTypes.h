@@ -17,7 +17,16 @@ enum class EGuLiBuildingType : uint8
 	Invalid = 0,
 	MissileTurret = 1,
 	SentryTurret = 2,
-	Outpost = 3
+	Outpost = 3,
+	Barracks = 4,
+	ShieldGenerator = 5,
+	Factory = 6
+};
+
+UENUM(BlueprintType)
+enum class EGuLiBuildingCategory : uint8
+{
+	General, Tower, Barracks, ShieldGenerator, Factory, Stronghold
 };
 
 /** One authoritative reason for a placement result. None means the server accepted the request. */
@@ -47,6 +56,23 @@ USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiBuildingDefinition
 {
 	GENERATED_BODY()
+
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 DefinitionId = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") EGuLiBuildingCategory Category = EGuLiBuildingCategory::General;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") FText Description;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") FVector MeshScale = FVector::OneVector;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float MaxHealth = 1000;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float MaxShield = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 BuildLevel = 1;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") FGuLiResourceAmounts Cost;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float ConstructionWork = 10;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 ProductionUnitId = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float ProductionSeconds = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 ProductionCount = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") TArray<int32> FirstCaptureGiftIds;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 GateFieldId = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float ShieldRadius = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float ShieldRechargePerSecond = 0;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")
 	EGuLiBuildingType Type = EGuLiBuildingType::MissileTurret;

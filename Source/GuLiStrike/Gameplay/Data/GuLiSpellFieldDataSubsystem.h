@@ -4,6 +4,7 @@
 #include "Subsystems/WorldSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectTypes.h"
 #include "Gameplay/Teleport/GuLiTeleportTypes.h"
+#include "Gameplay/Stronghold/GuLiStrongholdGateConfig.h"
 #include "GuLiSpellFieldDataSubsystem.generated.h"
 
 class UDataTable;
@@ -27,6 +28,7 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	const FGuLiSpellFieldConfig* FindCombatField(FName ConfigId) const;
 	const FGuLiTeleportFieldConfig* FindTeleportField(int32 Level) const;
+	const FGuLiStrongholdGateConfig* FindStrongholdGate(int32 Id) const;
 	const TArray<FGuLiSpellFieldConfig>& GetCombatFields() const { return CombatFields; }
 	bool IsCatalogValid() const { return CatalogError.IsEmpty(); }
 	bool IsTeleportCatalogValid() const { return TeleportFields.Num() == 4; }
@@ -38,5 +40,6 @@ public:
 private:
 	UPROPERTY(Transient) TArray<FGuLiSpellFieldConfig> CombatFields;
 	UPROPERTY(Transient) TArray<FGuLiTeleportFieldConfig> TeleportFields;
+	UPROPERTY(Transient) TArray<FGuLiStrongholdGateConfig> StrongholdGates;
 	FString CatalogError;
 };

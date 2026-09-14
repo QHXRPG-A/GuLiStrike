@@ -1,0 +1,164 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "DD11CB9942B3B37A7443CDB62143588B",
+			"instanceName": "DESKTOP-6D3B0FC-26892",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.14-12.51.37",
+	"succeeded": 9,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.86991888284683228,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "EpochResetAndOptionalPipeline",
+			"fullTestPath": "GuLiStrike.Combat.DamageLedger.DeathReward.EpochResetAndOptionalPipeline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"DD11CB9942B3B37A7443CDB62143588B"
+			],
+			"duration": 0.70456117391586304,
+			"dateTime": "2026.09.14-12.51.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "IdempotentPolicyUnavailable",
+			"fullTestPath": "GuLiStrike.Combat.DamageLedger.DeathReward.IdempotentPolicyUnavailable",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"DD11CB9942B3B37A7443CDB62143588B"
+			],
+			"duration": 0.014733601361513138,
+			"dateTime": "2026.09.14-12.51.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "IdempotentCommit",
+			"fullTestPath": "GuLiStrike.Combat.DamageLedger.IdempotentCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"DD11CB9942B3B37A7443CDB62143588B"
+			],
+			"duration": 0.014978498220443726,
+			"dateTime": "2026.09.14-12.51.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalAsset",
+			"fullTestPath": "GuLiStrike.Resources.Bake.CanonicalAsset",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"DD11CB9942B3B37A7443CDB62143588B"
+			],
+			"duration": 0.078680098056793213,
+			"dateTime": "2026.09.14-12.51.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalContract",
+			"fullTestPath": "GuLiStrike.Resources.Board.CanonicalContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"DD11CB9942B3B37A7443CDB62143588B"
+			],
+			"duration": 0.0078619010746479034,
+			"dateTime": "2026.09.14-12.51.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ValidationAndRevision",
+			"fullTestPath": "GuLiStrike.Resources.Commands.ValidationAndRevision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"DD11CB9942B3B37A7443CDB62143588B"
+			],
+			"duration": 0.0083777979016304016,
+			"dateTime": "2026.09.14-12.51.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DefaultsAndConservation",
+			"fullTestPath": "GuLiStrike.Resources.Economy.DefaultsAndConservation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"DD11CB9942B3B37A7443CDB62143588B"
+			],
+			"duration": 0.0078596025705337524,
+			"dateTime": "2026.09.14-12.51.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PublicDeltaState",
+			"fullTestPath": "GuLiStrike.Resources.Network.PublicDeltaState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"DD11CB9942B3B37A7443CDB62143588B"
+			],
+			"duration": 0.013204000890254974,
+			"dateTime": "2026.09.14-12.51.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "HISMSwapIndex",
+			"fullTestPath": "GuLiStrike.Resources.Rendering.HISMSwapIndex",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"DD11CB9942B3B37A7443CDB62143588B"
+			],
+			"duration": 0.019662197679281235,
+			"dateTime": "2026.09.14-12.51.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

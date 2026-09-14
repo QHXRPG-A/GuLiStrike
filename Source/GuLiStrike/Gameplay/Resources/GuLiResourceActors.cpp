@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Resources/GuLiResourceActors.h"
+#include "Gameplay/Stronghold/GuLiStrongholdCaptureComponent.h"
+#include "Gameplay/Stronghold/GuLiStrongholdFacilitiesComponent.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
@@ -322,8 +324,15 @@ float AGuLiOreClusterObstacleActor::GetObstacleRadius() const
 	return CollisionSphere ? CollisionSphere->GetScaledSphereRadius() : 0.0f;
 }
 
+#include "Gameplay/Stronghold/GuLiStrongholdGateComponent.h"
+
 AGuLiTerritoryOutpostActor::AGuLiTerritoryOutpostActor()
 {
+	CreateDefaultSubobject<UGuLiBuildingLifecycleComponent>(TEXT("Lifecycle"));
+	CreateDefaultSubobject<UGuLiStrongholdCaptureComponent>(TEXT("Capture"));
+	CreateDefaultSubobject<UGuLiStrongholdFacilitiesComponent>(TEXT("Facilities"));
+	CreateDefaultSubobject<UGuLiStrongholdGateComponent>(TEXT("Gate"));
+	SetCanBeDamaged(false);
 	bReplicates = true;
 	bAlwaysRelevant = true;
 	SetReplicateMovement(false);
@@ -357,6 +366,16 @@ void AGuLiTerritoryOutpostActor::InitializeOutpost(
 	TerritoryId = InTerritoryId;
 	TerritoryOwner = InOwner;
 	ApplyOwnerColor();
+	FindComponentByClass<UGuLiBuildingLifecycleComponent>()->InitializeBuilding(7, InTerritoryIndex, EGuLiBuildingOrigin::Map, true);
+	FindComponentByClass<UGuLiStrongholdCaptureComponent>()->InitializeCapture(InTerritoryIndex, InOwner);
+	FindComponentByClass<UGuLiStrongholdFacilitiesComponent>()->InitializeFacilities();
+	FindComponentByClass<UGuLiStrongholdGateComponent>()->InitializeGate(
+		FindComponentByClass<UGuLiBuildingLifecycleComponent>()->GetDefinition().GateFieldId,InTerritoryIndex,GetBuildingGroundLocation());
+}
+
+void AGuLiTerritoryOutpostActor::SetBuildingTeamAuthority(EGuLiTeam NewTeam)
+{
+	GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>()->SetTerritoryOwner(TerritoryIndex, NewTeam);
 }
 
 void AGuLiTerritoryOutpostActor::SetTerritoryOwnerAuthority(const EGuLiTeam InOwner)
@@ -364,6 +383,7 @@ void AGuLiTerritoryOutpostActor::SetTerritoryOwnerAuthority(const EGuLiTeam InOw
 	if (HasAuthority() && TerritoryOwner != InOwner)
 	{
 		TerritoryOwner = InOwner;
+		FindComponentByClass<UGuLiStrongholdFacilitiesComponent>()->HandleOwnerChanged(InOwner);
 		ApplyOwnerColor();
 		ForceNetUpdate();
 	}

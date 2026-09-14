@@ -5,15 +5,16 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Gameplay/Building/GuLiBuildingTypes.h"
+#include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "GuLiPlacedBuilding.generated.h"
 
 class UBoxComponent;
 class UNavModifierComponent;
 class UStaticMeshComponent;
 
-/** Immutable match-local building. Authority initializes it once and replication fans out the result. */
+/** Building instance; authored definition, lifecycle and individual functions have separate owners. */
 UCLASS(NotBlueprintable)
-class GULISTRIKE_API AGuLiPlacedBuilding : public AActor
+class GULISTRIKE_API AGuLiPlacedBuilding : public AActor, public IGuLiBuildingOwner
 {
 	GENERATED_BODY()
 
@@ -31,12 +32,18 @@ public:
 
 	EGuLiBuildingType GetBuildingType() const { return BuildingType; }
 	EGuLiTeam GetBuildingTeam() const { return Team; }
+	virtual void SetBuildingTeamAuthority(EGuLiTeam NewTeam) override;
+	virtual FVector GetBuildingGroundLocation() const override;
+	bool InitializeFromDefinition(int32 DefinitionId, EGuLiTeam InTeam, const FGuid& BuilderGuid,
+		int32 TerritoryIndex, EGuLiBuildingOrigin Origin, bool bCompleted);
 	const FGuid& GetBuilderPlayerGuid() const { return BuilderPlayerGuid; }
 	UBoxComponent* GetBuildingCollision() const { return CollisionRoot; }
 	UStaticMeshComponent* GetBuildingVisual() const { return VisualMesh; }
 	UNavModifierComponent* GetNavigationModifier() const { return NavigationModifier; }
 
 private:
+	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiBuildingLifecycleComponent> Lifecycle;
+	UPROPERTY(ReplicatedUsing=OnRep_BuildingState) int32 DefinitionId = 0;
 	void ApplyDefinition(const FGuLiBuildingDefinition& Definition);
 
 	UFUNCTION()
@@ -60,4 +67,3 @@ private:
 	UPROPERTY(ReplicatedUsing = OnRep_BuildingState, VisibleInstanceOnly, Category = "Building")
 	FGuid BuilderPlayerGuid;
 };
-

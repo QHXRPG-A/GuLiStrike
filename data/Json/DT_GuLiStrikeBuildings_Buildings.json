@@ -1,0 +1,268 @@
+[
+  {
+    "Name": "MissileTurret",
+    "Id": 1,
+    "Note": "首版白模，可调原型值",
+    "Category": 1,
+    "PlacementType": 1,
+    "DisplayName": "防空炮",
+    "Description": "防空炮功能建筑",
+    "Mesh": "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/StaticMeshes/missile_turret.missile_turret",
+    "CollisionExtent": {
+      "X": 1259.73111,
+      "Y": 1364.374146,
+      "Z": 1760.383118
+    },
+    "VisualOffset": {
+      "X": 0.0,
+      "Y": -24.28981,
+      "Z": 0.0
+    },
+    "MeshScale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    },
+    "MaxHealth": 2000.0,
+    "MaxShield": 0.0,
+    "BuildLevel": 1,
+    "BlueCost": 20,
+    "RedCost": 0,
+    "ConstructionWork": 10.0,
+    "ProductionUnitId": 0,
+    "ProductionSeconds": 0.0,
+    "ProductionCount": 0,
+    "FirstCaptureGiftIds": "",
+    "GateFieldId": 0,
+    "ShieldRadius": 0.0,
+    "ShieldRechargePerSecond": 0.0
+  },
+  {
+    "Name": "SentryTurret",
+    "Id": 2,
+    "Note": "首版白模，可调原型值",
+    "Category": 1,
+    "PlacementType": 2,
+    "DisplayName": "哨戒炮",
+    "Description": "哨戒炮功能建筑",
+    "Mesh": "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_a.Stylized_Turrets_A_a",
+    "CollisionExtent": {
+      "X": 967.89624,
+      "Y": 1933.390137,
+      "Z": 837.594452
+    },
+    "VisualOffset": {
+      "X": 0.0,
+      "Y": 0.0,
+      "Z": 3.978149
+    },
+    "MeshScale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    },
+    "MaxHealth": 1500.0,
+    "MaxShield": 0.0,
+    "BuildLevel": 1,
+    "BlueCost": 10,
+    "RedCost": 0,
+    "ConstructionWork": 10.0,
+    "ProductionUnitId": 0,
+    "ProductionSeconds": 0.0,
+    "ProductionCount": 0,
+    "FirstCaptureGiftIds": "",
+    "GateFieldId": 0,
+    "ShieldRadius": 0.0,
+    "ShieldRechargePerSecond": 0.0
+  },
+  {
+    "Name": "ManualOutpost",
+    "Id": 3,
+    "Note": "首版白模，可调原型值",
+    "Category": 0,
+    "PlacementType": 3,
+    "DisplayName": "前哨建筑",
+    "Description": "前哨建筑功能建筑",
+    "Mesh": "/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder",
+    "CollisionExtent": {
+      "X": 3551.543213,
+      "Y": 3309.902588,
+      "Z": 15000.0
+    },
+    "VisualOffset": {
+      "X": 10.589355,
+      "Y": -252.585938,
+      "Z": 0.0
+    },
+    "MeshScale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    },
+    "MaxHealth": 5000.0,
+    "MaxShield": 0.0,
+    "BuildLevel": 1,
+    "BlueCost": 40,
+    "RedCost": 0,
+    "ConstructionWork": 10.0,
+    "ProductionUnitId": 0,
+    "ProductionSeconds": 0.0,
+    "ProductionCount": 0,
+    "FirstCaptureGiftIds": "",
+    "GateFieldId": 0,
+    "ShieldRadius": 0.0,
+    "ShieldRechargePerSecond": 0.0
+  },
+  {
+    "Name": "BasicBarracks",
+    "Id": 4,
+    "Note": "首版白模，可调原型值",
+    "Category": 2,
+    "PlacementType": 4,
+    "DisplayName": "基础兵营",
+    "Description": "基础兵营功能建筑",
+    "Mesh": "/Engine/BasicShapes/Cube.Cube",
+    "CollisionExtent": {
+      "X": 2000.0,
+      "Y": 1500.0,
+      "Z": 1000.0
+    },
+    "VisualOffset": {
+      "X": 0.0,
+      "Y": 0.0,
+      "Z": 1000.0
+    },
+    "MeshScale": {
+      "X": 40.0,
+      "Y": 30.0,
+      "Z": 20.0
+    },
+    "MaxHealth": 2000.0,
+    "MaxShield": 0.0,
+    "BuildLevel": 1,
+    "BlueCost": 30,
+    "RedCost": 10,
+    "ConstructionWork": 10.0,
+    "ProductionUnitId": 1,
+    "ProductionSeconds": 10.0,
+    "ProductionCount": 24,
+    "FirstCaptureGiftIds": "",
+    "GateFieldId": 0,
+    "ShieldRadius": 0.0,
+    "ShieldRechargePerSecond": 0.0
+  },
+  {
+    "Name": "ShieldGenerator",
+    "Id": 5,
+    "Note": "首版白模，可调原型值",
+    "Category": 3,
+    "PlacementType": 5,
+    "DisplayName": "护盾发生器",
+    "Description": "护盾发生器功能建筑",
+    "Mesh": "/Game/GuLiStrike/Buildings/ShieldGenerator/Meshes/SM_ShieldGenerator.SM_ShieldGenerator",
+    "CollisionExtent": {
+      "X": 1525.43503,
+      "Y": 1726.4402,
+      "Z": 2500.0
+    },
+    "VisualOffset": {
+      "X": 234.56497,
+      "Y": 0.0,
+      "Z": 0.0
+    },
+    "MeshScale": {
+      "X": 10.0,
+      "Y": 10.0,
+      "Z": 10.0
+    },
+    "MaxHealth": 2000.0,
+    "MaxShield": 500.0,
+    "BuildLevel": 1,
+    "BlueCost": 20,
+    "RedCost": 10,
+    "ConstructionWork": 10.0,
+    "ProductionUnitId": 0,
+    "ProductionSeconds": 0.0,
+    "ProductionCount": 0,
+    "FirstCaptureGiftIds": "",
+    "GateFieldId": 0,
+    "ShieldRadius": 20000.0,
+    "ShieldRechargePerSecond": 20.0
+  },
+  {
+    "Name": "ResourceFactory",
+    "Id": 6,
+    "Note": "首版白模，可调原型值",
+    "Category": 4,
+    "PlacementType": 6,
+    "DisplayName": "矿厂",
+    "Description": "矿厂功能建筑",
+    "Mesh": "/Engine/BasicShapes/Cube.Cube",
+    "CollisionExtent": {
+      "X": 3000.0,
+      "Y": 3250.0,
+      "Z": 2000.0
+    },
+    "VisualOffset": {
+      "X": 0.0,
+      "Y": 0.0,
+      "Z": 2000.0
+    },
+    "MeshScale": {
+      "X": 60.0,
+      "Y": 65.0,
+      "Z": 40.0
+    },
+    "MaxHealth": 3000.0,
+    "MaxShield": 0.0,
+    "BuildLevel": 1,
+    "BlueCost": 40,
+    "RedCost": 10,
+    "ConstructionWork": 10.0,
+    "ProductionUnitId": 0,
+    "ProductionSeconds": 0.0,
+    "ProductionCount": 0,
+    "FirstCaptureGiftIds": "",
+    "GateFieldId": 0,
+    "ShieldRadius": 0.0,
+    "ShieldRechargePerSecond": 0.0
+  },
+  {
+    "Name": "TerritoryStronghold",
+    "Id": 7,
+    "Note": "首版白模，可调原型值",
+    "Category": 5,
+    "PlacementType": 0,
+    "DisplayName": "地图据点",
+    "Description": "地图据点功能建筑",
+    "Mesh": "/Engine/BasicShapes/Cylinder.Cylinder",
+    "CollisionExtent": {
+      "X": 1500.0,
+      "Y": 1500.0,
+      "Z": 2500.0
+    },
+    "VisualOffset": {
+      "X": 0.0,
+      "Y": 0.0,
+      "Z": 2500.0
+    },
+    "MeshScale": {
+      "X": 30.0,
+      "Y": 30.0,
+      "Z": 50.0
+    },
+    "MaxHealth": 1.0,
+    "MaxShield": 0.0,
+    "BuildLevel": 0,
+    "BlueCost": 0,
+    "RedCost": 0,
+    "ConstructionWork": 0.0,
+    "ProductionUnitId": 0,
+    "ProductionSeconds": 0.0,
+    "ProductionCount": 0,
+    "FirstCaptureGiftIds": "4,5,6",
+    "GateFieldId": 2001,
+    "ShieldRadius": 0.0,
+    "ShieldRechargePerSecond": 0.0
+  }
+]

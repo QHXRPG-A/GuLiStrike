@@ -41,7 +41,7 @@ CSV_DEFINE_CATEGORY(GuLiCommanderPresentation, true);
 
 namespace GuLiCommanderPresentation
 {
-	constexpr int32 MaximumPresentedSoldiers = 500;
+	constexpr int32 InitialPresentedSoldierCapacity = 500;
 	constexpr int32 MaximumBufferedPoseSamples = 8;
 	constexpr float MaximumClockRoundTripMilliseconds = 500.0f;
 	constexpr double MaximumForwardClockCorrectionSeconds = 0.025;
@@ -298,7 +298,7 @@ void AGuLiCommanderPresentationActor::BeginPlay()
 
 	ResolveSoftAssets();
 	InitializeUnitInstanceBatches();
-	RingInstances->PreAllocateInstancesMemory(GuLiCommanderPresentation::MaximumPresentedSoldiers);
+	RingInstances->PreAllocateInstancesMemory(GuLiCommanderPresentation::InitialPresentedSoldierCapacity);
 	EnsureClientMirrorArchetype();
 	FindStateReplicator();
 	FindLocalController();
@@ -2164,6 +2164,23 @@ void AGuLiCommanderPresentationActor::EnsureStableInstancePool(
 	}
 
 	TArray<const FGuLiSoldierStateItem*> NewSoldierStates;
+	TSet<FGuLiSoldierId> CurrentIds;
+	for (const auto& State : Replicator.GetItems()) CurrentIds.Add(State.SoldierId);
+	TArray<FMassEntityHandle> RetiredEntities;
+	for (auto It = SoldierInstanceHandles.CreateIterator(); It; ++It)
+	{
+		if (CurrentIds.Contains(It.Key())) continue;
+		const auto Handle = It.Value();
+		ReleaseUnitInstanceSlot(Handle.BatchUnitTypeId,Handle.UnitInstanceIndex);
+		FreeRingInstanceIndices.Add(Handle.RingInstanceIndex);
+		if (const auto* Entity = ClientMirrorEntities.Find(It.Key())) RetiredEntities.Add(*Entity);
+		ClientMirrorEntities.Remove(It.Key()); WreckExpireTimes.Remove(It.Key()); PredictedMoves.Remove(It.Key());
+		It.RemoveCurrent();
+	}
+	if (!RetiredEntities.IsEmpty())
+		ClientMirrorMassSubsystem->GetMutableEntityManager().Defer().DestroyEntities(MoveTemp(RetiredEntities));
+	for (auto It = PresentedSoldiers.CreateIterator(); It; ++It)
+		if (!CurrentIds.Contains(It.Key())) It.RemoveCurrent();
 	for (const FGuLiSoldierStateItem& State : Replicator.GetItems())
 	{
 		EnsureClientMirrorEntity(State);
@@ -2219,29 +2236,21 @@ void AGuLiCommanderPresentationActor::EnsureStableInstancePool(
 		{
 			continue;
 		}
-		if (SoldierInstanceHandles.Num() >= GuLiCommanderPresentation::MaximumPresentedSoldiers)
-		{
-			if (!bLoggedInstancePoolFailure)
-			{
-				UE_LOG(LogGuLiStrike, Error, TEXT("Commander presentation exceeded its stable 500-Soldier instance pool."));
-				bLoggedInstancePoolFailure = true;
-			}
-			break;
-		}
-
 		const FTransform HiddenTransform = GuLiCommanderPresentation::MakeHiddenTransform();
 		const uint16 BatchUnitTypeId = ResolveUnitBatchTypeId(State->UnitTypeId);
 		const int32 UnitIndex = AcquireUnitInstanceSlot(BatchUnitTypeId);
-		const int32 RingIndex = RingInstances->AddInstance(HiddenTransform, true);
+		const bool bReuseRing = !FreeRingInstanceIndices.IsEmpty();
+		const int32 RingIndex = bReuseRing ? FreeRingInstanceIndices.Pop(EAllowShrinking::No) : RingInstances->AddInstance(HiddenTransform, true);
 		const int32 ExpectedRingIndex = CachedRingTransforms.Num();
 		if (UnitIndex == INDEX_NONE || RingIndex == INDEX_NONE
-			|| RingIndex != ExpectedRingIndex)
+			|| (!bReuseRing && RingIndex != ExpectedRingIndex))
 		{
 			if (UnitIndex != INDEX_NONE)
 			{
 				ReleaseUnitInstanceSlot(BatchUnitTypeId, UnitIndex);
 			}
-			if (RingIndex != INDEX_NONE && RingIndex == RingInstances->GetInstanceCount() - 1)
+			if (bReuseRing) FreeRingInstanceIndices.Add(RingIndex);
+			else if (RingIndex != INDEX_NONE && RingIndex == RingInstances->GetInstanceCount() - 1)
 			{
 				RingInstances->RemoveInstance(RingIndex);
 			}
@@ -2259,8 +2268,11 @@ void AGuLiCommanderPresentationActor::EnsureStableInstancePool(
 		Handle.BatchUnitTypeId = BatchUnitTypeId;
 		Handle.UnitInstanceIndex = UnitIndex;
 		Handle.RingInstanceIndex = RingIndex;
-		CachedRingTransforms.Add(HiddenTransform);
-		CachedRingColors.Add(GuLiCommanderPresentation::UnassignedColor);
+		if (!bReuseRing)
+		{
+			CachedRingTransforms.Add(HiddenTransform);
+			CachedRingColors.Add(GuLiCommanderPresentation::UnassignedColor);
+		}
 	}
 }
 

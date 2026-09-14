@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
+#include "Gameplay/Stronghold/GuLiStrongholdNetworkPresentationComponent.h"
+#include "Gameplay/Stronghold/GuLiStrongholdTopology.h"
 
 #include "Net/UnrealNetwork.h"
 
@@ -40,6 +42,8 @@ void AGuLiResourceWorldState::BeginPlay()
 	Super::BeginPlay();
 	OreDeltas.SetOwner(this);
 	RebuildOreIndex();
+	if (GetNetMode() != NM_DedicatedServer)
+		NewObject<UGuLiStrongholdNetworkPresentationComponent>(this)->RegisterComponent();
 }
 
 void AGuLiResourceWorldState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
@@ -49,6 +53,15 @@ void AGuLiResourceWorldState::GetLifetimeReplicatedProps(TArray<FLifetimePropert
 	DOREPLIFETIME(AGuLiResourceWorldState, bAuthorityReady);
 	DOREPLIFETIME(AGuLiResourceWorldState, Territories);
 	DOREPLIFETIME(AGuLiResourceWorldState, OreDeltas);
+	DOREPLIFETIME(AGuLiResourceWorldState, TransportEdges);
+}
+
+void AGuLiResourceWorldState::SetTransportEdgesAuthority(TConstArrayView<FGuLiStrongholdEdge> Edges)
+{
+	check(HasAuthority());
+	TransportEdges.Reset();
+	for (const auto& Edge : Edges) TransportEdges.Add(FIntPoint(Edge.A,Edge.B));
+	ForceNetUpdate();
 }
 
 void AGuLiResourceWorldState::InitializeAuthority(
@@ -106,6 +119,29 @@ bool AGuLiResourceWorldState::SetTerritoryOwnerAuthority(
 	ForceNetUpdate();
 	StateChanged.Broadcast();
 	return true;
+}
+
+void AGuLiResourceWorldState::SetTerritorySupplyAuthority(int32 Index, bool bSupplied)
+{
+	check(HasAuthority());
+	if (Territories[Index].bSupplied == bSupplied) return;
+	Territories[Index].bSupplied = bSupplied;
+	Territories[Index].Revision = NextStateRevision++;
+	ForceNetUpdate(); StateChanged.Broadcast();
+}
+void AGuLiResourceWorldState::SetTerritoryEncircledAuthority(int32 Index, bool bEncircled)
+{
+	check(HasAuthority());
+	if (Territories[Index].bEncircled == bEncircled) return;
+	Territories[Index].bEncircled = bEncircled;
+	Territories[Index].Revision = NextStateRevision++;
+	ForceNetUpdate(); StateChanged.Broadcast();
+}
+void AGuLiResourceWorldState::SetTerritoryGroundAuthority(int32 Index, const FVector& GroundLocation)
+{
+	check(HasAuthority());
+	Territories[Index].GroundLocation = GroundLocation;
+	ForceNetUpdate();
 }
 
 bool AGuLiResourceWorldState::SetNodeRemainingAuthority(

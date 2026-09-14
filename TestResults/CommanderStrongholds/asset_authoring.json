@@ -1,0 +1,110 @@
+{
+  "saved": [
+    "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle",
+    "/Game/GuLiStrike/FX/StrongholdTransit/M_TransitGate",
+    "/Game/GuLiStrike/FX/StrongholdTransit/M_TransitEnergy",
+    "/Game/GuLiStrike/FX/StrongholdTransit/M_TransitTrail",
+    "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail",
+    "/Game/GuLiStrike/FX/StrongholdTransit/M_TransitFlash",
+    "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash"
+  ],
+  "tables": [
+    {
+      "asset": "DT_GuLiStrikeBuildings_Buildings",
+      "source_rows": [
+        "MissileTurret",
+        "SentryTurret",
+        "ManualOutpost",
+        "BasicBarracks",
+        "ShieldGenerator",
+        "ResourceFactory",
+        "TerritoryStronghold"
+      ],
+      "created": false,
+      "row_names": [
+        "MissileTurret",
+        "SentryTurret",
+        "ManualOutpost",
+        "BasicBarracks",
+        "ShieldGenerator",
+        "ResourceFactory",
+        "TerritoryStronghold"
+      ],
+      "row_checks": {
+        "MissileTurret": true,
+        "SentryTurret": true,
+        "ManualOutpost": true,
+        "BasicBarracks": true,
+        "ShieldGenerator": true,
+        "ResourceFactory": true,
+        "TerritoryStronghold": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeCommander_Soldiers",
+      "source_rows": [
+        "DefaultSoldier",
+        "WM01",
+        "ElectromagneticMiner",
+        "ConstructionVehicle"
+      ],
+      "created": false,
+      "row_names": [
+        "DefaultSoldier",
+        "WM01",
+        "ElectromagneticMiner",
+        "ConstructionVehicle"
+      ],
+      "row_checks": {
+        "DefaultSoldier": true,
+        "WM01": true,
+        "ElectromagneticMiner": true,
+        "ConstructionVehicle": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeSpellFields_Fields",
+      "source_rows": [
+        "WM01_MissileExplosion",
+        "WingmanGroundMissile",
+        "Teleport_L1",
+        "Teleport_L2",
+        "Teleport_L3",
+        "Teleport_L4",
+        "StrongholdGate"
+      ],
+      "created": false,
+      "row_names": [
+        "WM01_MissileExplosion",
+        "WingmanGroundMissile",
+        "Teleport_L1",
+        "Teleport_L2",
+        "Teleport_L3",
+        "Teleport_L4",
+        "StrongholdGate"
+      ],
+      "row_checks": {
+        "WM01_MissileExplosion": true,
+        "WingmanGroundMissile": true,
+        "Teleport_L1": true,
+        "Teleport_L2": true,
+        "Teleport_L3": true,
+        "Teleport_L4": true,
+        "StrongholdGate": true
+      },
+      "imported": true
+    }
+  ],
+  "niagara": {
+    "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail": "<Struct 'NiagaraCompilationResult' (0x00000228EDFE5910) {success: True, system_path: \"/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.001134}>",
+    "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash": "<Struct 'NiagaraCompilationResult' (0x00000228DF6348D0) {success: True, system_path: \"/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.712726}>"
+  },
+  "materials": {
+    "/Game/GuLiStrike/FX/StrongholdTransit/M_TransitEnergy": "<Struct 'MaterialDiagnostics' (0x00000228E7791480) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 7, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 2, vector_parameter_count: 1}>",
+    "/Game/GuLiStrike/FX/StrongholdTransit/M_TransitGate": "<Struct 'MaterialDiagnostics' (0x00000227DBFB9040) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: , expression_count: 10, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 4, vector_parameter_count: 1}>"
+  },
+  "builder_compile": "<Struct 'BlueprintCompileResult' (0x00000228E3EC58B0) {success: True, num_errors: 0, num_warnings: 0, errors: , warnings: }>",
+  "success": true
+}

@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "GameFramework/Actor.h"
+#include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "GuLiResourceFactoryActor.generated.h"
 
 class UBoxComponent;
@@ -20,6 +21,7 @@ struct GULISTRIKE_API FGuLiFactoryQueueEntry
 
 	UPROPERTY()
 	int32 Amount = 0;
+	UPROPERTY() EGuLiTeam SettlementTeam = EGuLiTeam::Unassigned;
 };
 
 
@@ -32,7 +34,7 @@ struct FGuLiFactoryDockRoute
 };
 /** Authority factory with a shared FIFO line; the existing Blueprint is presentation-only child content. */
 UCLASS(NotPlaceable)
-class GULISTRIKE_API AGuLiResourceFactoryActor final : public AActor
+class GULISTRIKE_API AGuLiResourceFactoryActor final : public AActor, public IGuLiBuildingOwner
 {
 	GENERATED_BODY()
 
@@ -45,7 +47,12 @@ public:
 	void InitializeFactory(
 		EGuLiTeam InTeam,
 		const UGuLiResourceEconomyConfig& Config,
-		const FVector& InDockPoint);
+		const FVector& InDockPoint, FGuLiControllableActorId InId = FGuLiControllableActorId(),
+		int32 TerritoryIndex = INDEX_NONE, EGuLiBuildingOrigin Origin = EGuLiBuildingOrigin::Map,
+		bool bCompleted = true, const FGuid& Builder = FGuid(), int32 DefinitionId = 6);
+	virtual EGuLiTeam GetBuildingTeam() const override { return Team; }
+	virtual void SetBuildingTeamAuthority(EGuLiTeam NewTeam) override;
+	virtual FVector GetBuildingGroundLocation() const override { return GetActorLocation(); }
 	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Resources|Factory")
 	bool EnqueueCargo(const FGuLiResourceAmounts& Cargo);
 	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Resources|Factory")
@@ -70,6 +77,7 @@ public:
 	bool ShouldDoorBeOpen() const { return DoorState.bOpen; }
 
 private:
+	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiBuildingLifecycleComponent> Lifecycle;
 	UFUNCTION()
 	void OnRep_DockPoint();
 	UFUNCTION()

@@ -17,6 +17,9 @@
 #include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
 #include "Gameplay/Building/GuLiBuildingCatalog.h"
+#include "Gameplay/Building/GuLiBuildingRegistrySubsystem.h"
+#include "Gameplay/Building/GuLiBuildingSpawner.h"
+#include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Building/GuLiBuildingPlacementPreview.h"
 #include "Gameplay/Building/GuLiPlacedBuilding.h"
 #include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
@@ -632,7 +635,7 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateLoca
 EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateServerRequest(
 	const FGuLiBuildingPlacementRequest& Request,
 	FTransform& OutSpawnTransform,
-	const FGuLiBuildingDefinition*& OutDefinition) const
+	const FGuLiBuildingDefinition*& OutDefinition, AActor*& OutSupportingActor) const
 {
 	OutDefinition = nullptr;
 	const APlayerController* PlayerController = GetOwningPlayerController();
@@ -719,6 +722,7 @@ EGuLiBuildingPlacementRejectReason UGuLiBuildingPlacementComponent::ValidateServ
 		return CapacityResult;
 	}
 
+	OutSupportingActor = GroundHit.GetActor();
 	OutSpawnTransform = FTransform(
 		FRotator(0.0f, YawDegrees, 0.0f),
 		GroundHit.ImpactPoint + FVector(0.0f, 0.0f, OutDefinition->CollisionExtent.Z),
@@ -737,15 +741,13 @@ void UGuLiBuildingPlacementComponent::CountPlacedBuildings(
 	{
 		return;
 	}
-	for (TActorIterator<AGuLiPlacedBuilding> It(GetWorld()); It; ++It)
+	TArray<UGuLiBuildingLifecycleComponent*> Buildings;
+	GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->Query(Buildings);
+	for (const auto* Building : Buildings)
 	{
-		const AGuLiPlacedBuilding* Building = *It;
-		if (!IsValid(Building) || Building->IsActorBeingDestroyed())
-		{
-			continue;
-		}
+		if (!Building->CountsForManualLimit()) continue;
 		++OutWorldCount;
-		if (Building->GetBuilderPlayerGuid() == BuilderGuid)
+		if (Building->GetState().BuilderGuid == BuilderGuid)
 		{
 			++OutBuilderCount;
 		}
@@ -826,7 +828,8 @@ FGuLiBuildingPlacementResult UGuLiBuildingPlacementComponent::ProcessServerReque
 
 	FTransform SpawnTransform;
 	const FGuLiBuildingDefinition* Definition = nullptr;
-	Result.RejectReason = ValidateServerRequest(Request, SpawnTransform, Definition);
+	AActor* SupportingActor = nullptr;
+	Result.RejectReason = ValidateServerRequest(Request, SpawnTransform, Definition, SupportingActor);
 	if (Result.RejectReason == EGuLiBuildingPlacementRejectReason::None)
 	{
 		APlayerController* PlayerController = GetOwningPlayerController();
@@ -860,30 +863,19 @@ FGuLiBuildingPlacementResult UGuLiBuildingPlacementComponent::ProcessServerReque
 			if (bSendResult) SendPlacementResult(Result);
 			return Result;
 		}
-		AGuLiPlacedBuilding* Building = World && PlayerController && PlayerState && Definition
-			? World->SpawnActorDeferred<AGuLiPlacedBuilding>(
-				AGuLiPlacedBuilding::StaticClass(),
-				SpawnTransform,
-				PlayerController,
-				nullptr,
-				ESpawnActorCollisionHandlingMethod::AlwaysSpawn)
-			: nullptr;
-		if (!Building || !Building->InitializeBuilding(
-			Request.Type,
-			PlayerState->GetTeam(),
-			PlayerState->GetPlayerGuid(),
-			*Definition))
+		FTransform GroundTransform = SpawnTransform;
+		GroundTransform.AddToTranslation(FVector(0,0,-Definition->CollisionExtent.Z));
+		AActor* Building = GuLiBuildings::Spawn(*World, Definition->DefinitionId, PlayerState->GetTeam(), GroundTransform, *SupportingActor,
+			World->GetSubsystem<UGuLiResourceWorldSubsystem>()->FindTerritoryIndex(GroundTransform.GetLocation()),
+			EGuLiBuildingOrigin::Manual, false, PlayerState->GetPlayerGuid());
+		if (!Building)
 		{
-			if (Building)
-			{
-				Building->Destroy();
-			}
 			Result.RejectReason = EGuLiBuildingPlacementRejectReason::SpawnFailed;
 			if (bUseEconomy) Economy.Refund(EconomyReservation);
 		}
 		else
 		{
-			Building->FinishSpawning(SpawnTransform);
+			Building->SetOwner(PlayerController);
 			if (bUseEconomy) Economy.Commit(EconomyReservation);
 		}
 	}

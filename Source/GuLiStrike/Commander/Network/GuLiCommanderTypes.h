@@ -106,7 +106,8 @@ UENUM(BlueprintType)
 enum class EGuLiOrderType : uint8
 {
 	None = 0,
-	Move
+	Move,
+	AttackMove
 };
 
 /** 战局内稳定的士兵身份，0 无效，同一战局不复用；不是数组下标或客户端 Mass 句柄。 */

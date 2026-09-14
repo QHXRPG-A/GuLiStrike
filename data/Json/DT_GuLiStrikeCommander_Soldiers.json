@@ -7,6 +7,8 @@
     "MaxHealth": 100.0,
     "ModelAsset": "/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd",
     "Defense": 0.0,
+    "ActorClass": "",
+    "PresentationClass": "",
     "PresentationScale": 1.0
   },
   {
@@ -17,6 +19,8 @@
     "MaxHealth": 300.5,
     "ModelAsset": "/Game/Commander/Units/SM_WM01_Crowd.SM_WM01_Crowd",
     "Defense": 0.0,
+    "ActorClass": "",
+    "PresentationClass": "",
     "PresentationScale": 1.0
   },
   {
@@ -25,9 +29,22 @@
     "Note": "指挥官可控制矿车；原车18米，4500cm/s；采矿业务由矿车Manager调度",
     "MovementSpeedCmPerSecond": 4500.0,
     "MaxHealth": 1000.0,
+    "ModelAsset": "",
     "Defense": 0.0,
     "ActorClass": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
     "PresentationClass": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+    "PresentationScale": 3.0422898572084356
+  },
+  {
+    "Name": "ConstructionVehicle",
+    "Id": 4,
+    "Note": "开局每队一辆；独立建造车，施工与采矿分工",
+    "MovementSpeedCmPerSecond": 4500.0,
+    "MaxHealth": 1000.0,
+    "ModelAsset": "",
+    "Defense": 0.0,
+    "ActorClass": "/Script/GuLiStrike.GuLiConstructionVehiclePawn",
+    "PresentationClass": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C",
     "PresentationScale": 3.0422898572084356
   }
 ]

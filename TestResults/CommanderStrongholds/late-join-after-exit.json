@@ -1,0 +1,892 @@
+{
+  "reconnect_requested": true,
+  "server_state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32934.985161)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.024288)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.853939)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.024288)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.859991)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.642517)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3601.953983)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.642517)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.842110))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23584.985161),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.842110),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.842110),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.301012))",
+  "samples": [
+    {
+      "wall_seconds": 0.062000000005355105,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.10899999999674037,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.15600000000267755,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.1870000000053551,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.21799999999348074,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.2649999999994179,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.2960000000020955,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.3279999999940628,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.35899999999674037,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.3899999999994179,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.4210000000020955,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.4529999999940628,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.5,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.5310000000026776,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.5620000000053551,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.5929999999934807,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.6399999999994179,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.6710000000020955,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.7179999999934807,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.75,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.7960000000020955,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.8429999999934807,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.875,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.9060000000026776,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.9370000000053551,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 0.9839999999967404,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 1.014999999999418,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 1.0460000000020955,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 1.0779999999940628,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 2.952999999994063,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 2.9839999999967404,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 3.0310000000026776,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=351B357D4C67F53DE0444DB853A1D9B6,Phase=Ground,GateFieldId=2001,DestinationTerritory=24,bEmergencyExit=False,Route=((TerritoryIndex=0,Position=(X=-224000.000000,Y=224000.000000,Z=32935.000000)),(TerritoryIndex=1,Position=(X=-112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=2,Position=(X=0.000000,Y=224000.000000,Z=3580.900000)),(TerritoryIndex=3,Position=(X=112000.000000,Y=224000.000000,Z=3882.000000)),(TerritoryIndex=4,Position=(X=224000.000000,Y=224000.000000,Z=32934.900000)),(TerritoryIndex=9,Position=(X=224000.000000,Y=112000.000000,Z=3872.600000)),(TerritoryIndex=14,Position=(X=224000.000000,Y=0.000000,Z=3602.000000)),(TerritoryIndex=19,Position=(X=224000.000000,Y=-112000.000000,Z=3872.600000)),(TerritoryIndex=24,Position=(X=224000.000000,Y=-224000.000000,Z=32934.800000))),Timing=(InitialSpeed=0.000000,PeakSpeed=225000.000000,Acceleration=1.000000,Cruise=3.298149,Deceleration=0.500000,Length=910833.466946),StartServerTime=715.830863,ExitServerTime=722.267074,AscentSeconds=0.500000,FlashSeconds=0.200000,EntryPosition=(X=-220800.000000,Y=224000.000000,Z=23585.000000),FinalGroundTarget=(X=234000.000000,Y=-224000.000000,Z=22934.800000),ExitCenter=(X=224000.000000,Y=-224000.000000,Z=22934.800000),ExitPosition=(X=228000.000000,Y=-224000.000000,Z=24288.300000))",
+          "effects": [
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+              "active": false
+            },
+            {
+              "asset": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+              "active": false
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "wall_seconds": 4.967999999993481,
+      "clients": []
+    },
+    {
+      "wall_seconds": 5.0460000000020955,
+      "clients": []
+    },
+    {
+      "wall_seconds": 5.125,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 5.1710000000020955,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 5.23399999999674,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 5.312000000005355,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 5.375,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 5.4210000000020955,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 5.467999999993481,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 5.5,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.342999999993481,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.389999999999418,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.4210000000020955,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.452999999994063,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.48399999999674,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.5310000000026776,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.577999999994063,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.60899999999674,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.6560000000026776,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.687000000005355,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.717999999993481,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.75,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.7960000000020955,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.827999999994063,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.85899999999674,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.9060000000026776,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.937000000005355,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 7.967999999993481,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    },
+    {
+      "wall_seconds": 8.014999999999418,
+      "clients": [
+        {
+          "actor": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiConstructionVehiclePawn_0",
+          "state": "(JourneyId=00000000000000000000000000000000,Phase=Ground,GateFieldId=0,DestinationTerritory=-1,bEmergencyExit=False,Route=,Timing=(InitialSpeed=0.000000,PeakSpeed=0.000000,Acceleration=0.000000,Cruise=0.000000,Deceleration=0.000000,Length=0.000000),StartServerTime=0.000000,ExitServerTime=0.000000,AscentSeconds=0.000000,FlashSeconds=0.200000,EntryPosition=(X=0.000000,Y=0.000000,Z=0.000000),FinalGroundTarget=(X=0.000000,Y=0.000000,Z=0.000000),ExitCenter=(X=0.000000,Y=0.000000,Z=0.000000),ExitPosition=(X=0.000000,Y=0.000000,Z=0.000000))",
+          "effects": []
+        }
+      ]
+    }
+  ]
+}

@@ -1,6 +1,11 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Framework/GuLiCommanderResourceAdapter.h"
+#include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
+#include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
+#include "Gameplay/Building/GuLiConstructionVehiclePawn.h"
+#include "Gameplay/Building/GuLiBuildingRegistrySubsystem.h"
+#include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Engine/World.h"
@@ -86,9 +91,12 @@ bool UGuLiCommanderResourceAdapter::ResolveActorSelection(
 	TArray<FGuLiControllableActorId> Hits;
 	if (Request.Modifier != EGuLiSelectionModifier::Clear)
 	{
-		for (TActorIterator<AGuLiMiningVehiclePawn> It(GetWorld()); It; ++It)
+		for (TActorIterator<APawn> It(GetWorld()); It; ++It)
 		{
-			const AGuLiMiningVehiclePawn& Vehicle = **It;
+			const APawn& Pawn = **It;
+			const auto* Interface = Cast<IGuLiEngineeringVehicle>(&Pawn);
+			if (!Interface || UGuLiExternalUnitControlComponent::IsActorPhased(&Pawn)) continue;
+			const auto& Vehicle = *Interface;
 			if (Vehicle.GetTeam() != Team || !Vehicle.GetStableActorId().IsValid()) continue;
 			bool bHit = false;
 			if (Request.Kind == EGuLiSelectionKind::Point)
@@ -96,19 +104,20 @@ bool UGuLiCommanderResourceAdapter::ResolveActorSelection(
 				double Along = 0.0;
 				bHit = Vehicle.GetStableActorId() == Request.SeedActorId
 					&& RayPassesSphere(Request.RayOrigin, Request.RayDirection,
-						Vehicle.GetActorLocation(), 1200.0f, Along);
+						Pawn.GetActorLocation(), 1200.0f, Along);
 			}
 			else if (Request.Kind == EGuLiSelectionKind::SameType)
 			{
-				bHit = Request.SeedActorId.IsValid();
+				const APawn* Seed = FindEngineeringVehicle(Request.SeedActorId);
+				bHit = Seed && Seed->GetClass() == Pawn.GetClass();
 			}
 			else if (Request.Kind == EGuLiSelectionKind::Box)
 			{
-				bHit = IsPointInsideSelectionBox(Request, Vehicle.GetActorLocation());
+				bHit = IsPointInsideSelectionBox(Request, Pawn.GetActorLocation());
 			}
 			else
 			{
-				bHit = FVector::DistSquared2D(Vehicle.GetActorLocation(), Request.Center)
+				bHit = FVector::DistSquared2D(Pawn.GetActorLocation(), Request.Center)
 					<= FMath::Square(GuLiCommanderProtocol::GetSelectionRadiusCentimeters(Request.RadiusPreset));
 			}
 			if (bHit) Hits.Add(Vehicle.GetStableActorId());
@@ -140,8 +149,26 @@ bool UGuLiCommanderResourceAdapter::IssueMiningCommand(
 	bool bAcceptedAny = false;
 	for (const FGuLiControllableActorId Id : SelectedIds)
 	{
-		AGuLiMiningVehiclePawn* Vehicle = FindMiningVehicle(Id);
-		bAcceptedAny |= Vehicle && Vehicle->IssuePlayerCommand(Command, PlayerState.GetTeam());
+		APawn* Pawn = FindEngineeringVehicle(Id);
+		if (!Pawn || CastChecked<IGuLiEngineeringVehicle>(Pawn)->GetTeam() != PlayerState.GetTeam()) continue;
+		if (auto* Miner = Cast<AGuLiMiningVehiclePawn>(Pawn))
+			bAcceptedAny |= Miner->IssuePlayerCommand(Command, PlayerState.GetTeam());
+		else if (auto* Builder = Cast<AGuLiConstructionVehiclePawn>(Pawn))
+		{
+			if (Command.Type == EGuLiMiningOrderType::Cancel) { bAcceptedAny |= Builder->IssueMove(Builder->GetActorLocation()); continue; }
+			if (Command.Type != EGuLiMiningOrderType::Move) continue;
+			TArray<UGuLiBuildingLifecycleComponent*> Buildings;
+			GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->Query(Buildings);
+			UGuLiBuildingLifecycleComponent* Site = nullptr;
+			for (auto* Building : Buildings)
+			{
+				if (Building->GetTeam() != PlayerState.GetTeam() || Building->GetState().Phase != EGuLiBuildingPhase::UnderConstruction) continue;
+				const FVector Local = Building->GetOwner()->GetActorTransform().InverseTransformPosition(Command.Target);
+				const FVector Extent = Building->GetDefinition().CollisionExtent;
+				if (FMath::Abs(Local.X) <= Extent.X && FMath::Abs(Local.Y) <= Extent.Y) { Site = Building; break; }
+			}
+			bAcceptedAny |= Site ? Builder->IssueConstruction(Site) : Builder->IssueMove(Command.Target);
+		}
 	}
 	return bAcceptedAny;
 }
@@ -168,7 +195,7 @@ bool UGuLiCommanderResourceAdapter::GetControllableActorCenter(
 	int32 Count = 0;
 	for (const FGuLiControllableActorId Id : ActorIds)
 	{
-		if (const AGuLiMiningVehiclePawn* Vehicle = FindMiningVehicle(Id))
+		if (const APawn* Vehicle = FindEngineeringVehicle(Id))
 		{
 			OutCenter += Vehicle->GetActorLocation();
 			++Count;
@@ -187,14 +214,17 @@ FGuLiControllableActorId UGuLiCommanderResourceAdapter::FindControllableActorAlo
 {
 	FGuLiControllableActorId Result;
 	double BestAlong = TNumericLimits<double>::Max();
-	for (TActorIterator<AGuLiMiningVehiclePawn> It(GetWorld()); It; ++It)
+	for (TActorIterator<APawn> It(GetWorld()); It; ++It)
 	{
-		const AGuLiMiningVehiclePawn& Vehicle = **It;
+		const APawn& Pawn = **It;
+		const auto* Interface = Cast<IGuLiEngineeringVehicle>(&Pawn);
+		if (!Interface || UGuLiExternalUnitControlComponent::IsActorPhased(&Pawn)) continue;
+		const auto& Vehicle = *Interface;
 		if (Vehicle.GetTeam() != Team) continue;
 		double Along = 0.0;
 		const float Radius = 1200.0f
 			+ static_cast<float>(FMath::Tan(PickHalfAngleRadians) * 10000.0);
-		if (RayPassesSphere(RayOrigin, RayDirection, Vehicle.GetActorLocation(), Radius, Along)
+		if (RayPassesSphere(RayOrigin, RayDirection, Pawn.GetActorLocation(), Radius, Along)
 			&& Along < BestAlong)
 		{
 			BestAlong = Along;
@@ -316,6 +346,14 @@ void UGuLiCommanderResourceAdapter::SynchronizeTeamPrivateState() const
 		PlayerState->SetServerResourcePrivateState(
 			PlayerState->GetTeam() == EGuLiTeam::Red ? RedState : BlueState);
 	}
+}
+
+APawn* UGuLiCommanderResourceAdapter::FindEngineeringVehicle(FGuLiControllableActorId Id) const
+{
+	for (TActorIterator<APawn> It(GetWorld()); It; ++It)
+		if (const auto* Vehicle = Cast<IGuLiEngineeringVehicle>(*It))
+			if (Vehicle->GetStableActorId() == Id) return *It;
+	return nullptr;
 }
 
 AGuLiMiningVehiclePawn* UGuLiCommanderResourceAdapter::FindMiningVehicle(

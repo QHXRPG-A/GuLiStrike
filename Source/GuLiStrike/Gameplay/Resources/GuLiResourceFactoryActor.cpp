@@ -1,5 +1,7 @@
 #include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
+#include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
 #include "Components/BoxComponent.h"
 #include "Components/ChildActorComponent.h"
@@ -9,10 +11,15 @@
 #include "GameFramework/GameStateBase.h"
 #include "Engine/World.h"
 #include "Net/UnrealNetwork.h"
+#include "Battle/Combat/GuLiCombatDamageLedger.h"
+#include "Battle/Combat/GuLiActorDamageReceiverComponent.h"
 
 AGuLiResourceFactoryActor::AGuLiResourceFactoryActor()
 {
 	PrimaryActorTick.bCanEverTick = true;
+	CreateDefaultSubobject<UGuLiCombatHealthComponent>(TEXT("CombatHealth"));
+	Lifecycle = CreateDefaultSubobject<UGuLiBuildingLifecycleComponent>(TEXT("Lifecycle"));
+	CreateDefaultSubobject<UGuLiActorDamageReceiverComponent>(TEXT("DamageReceiver"))->bDestroyOwnerOnDeath = false;
 	bReplicates = true;
 	bAlwaysRelevant = true;
 	SetReplicateMovement(true);
@@ -41,29 +48,38 @@ void AGuLiResourceFactoryActor::BeginPlay()
 void AGuLiResourceFactoryActor::InitializeFactory(
 	const EGuLiTeam InTeam,
 	const UGuLiResourceEconomyConfig& Config,
-	const FVector& InDockPoint)
+	const FVector& InDockPoint, FGuLiControllableActorId InId, int32 TerritoryIndex, EGuLiBuildingOrigin Origin,
+	bool bCompleted, const FGuid& Builder, int32 DefinitionId)
 {
 	Team = InTeam;
-	StableActorId = FGuLiControllableActorId(InTeam == EGuLiTeam::Red ? 101u : 102u);
+	StableActorId = InId.IsValid() ? InId : FGuLiControllableActorId(InTeam == EGuLiTeam::Red ? 101u : 102u);
+	Lifecycle->InitializeBuilding(DefinitionId, TerritoryIndex, Origin, bCompleted, Builder);
 	DockPoint = InDockPoint;
 	OnRep_DockPoint();
 	ProcessingRatePerSecond = Config.FactoryProcessingRatePerSecond;
 	PresentationClass = Config.FactoryPresentationClass.LoadSynchronous();
 	check(PresentationClass);
 	OnRep_PresentationClass();
+	GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>()->RegisterFactory(*this);
 	ForceNetUpdate();
+}
+
+void AGuLiResourceFactoryActor::SetBuildingTeamAuthority(EGuLiTeam NewTeam)
+{
+	check(HasAuthority()); Team = NewTeam; Lifecycle->RefreshTeam(); ForceNetUpdate();
 }
 
 bool AGuLiResourceFactoryActor::EnqueueCargo(const FGuLiResourceAmounts& Cargo)
 {
-	if (!HasAuthority() || Cargo.Blue < 0 || Cargo.Red < 0 || Cargo.Blue + Cargo.Red <= 0)
+	if (!HasAuthority() || !Lifecycle->IsCompleted() || !GuLiResources::IsPlayableTeam(Team)
+		|| Cargo.Blue < 0 || Cargo.Red < 0 || Cargo.Blue + Cargo.Red <= 0)
 	{
 		return false;
 	}
 	auto Append = [this](const EGuLiResourceType Type, const int32 Amount)
 	{
 		if (Amount <= 0) return;
-		if (!Queue.IsEmpty() && Queue.Last().ResourceType == Type)
+		if (!Queue.IsEmpty() && Queue.Last().ResourceType == Type && Queue.Last().SettlementTeam == Team)
 		{
 			Queue.Last().Amount += Amount;
 		}
@@ -72,6 +88,7 @@ bool AGuLiResourceFactoryActor::EnqueueCargo(const FGuLiResourceAmounts& Cargo)
 			FGuLiFactoryQueueEntry& Entry = Queue.AddDefaulted_GetRef();
 			Entry.ResourceType = Type;
 			Entry.Amount = Amount;
+			Entry.SettlementTeam = Team;
 		}
 	};
 	Append(EGuLiResourceType::Blue, Cargo.Blue);
@@ -96,7 +113,7 @@ void AGuLiResourceFactoryActor::Tick(const float DeltaSeconds)
 {
 	Super::Tick(DeltaSeconds);
 	ApplyDoorPose();
-	if (!HasAuthority() || Queue.IsEmpty())
+	if (!HasAuthority() || !Lifecycle->IsCompleted() || Queue.IsEmpty())
 	{
 		return;
 	}
@@ -109,9 +126,7 @@ void AGuLiResourceFactoryActor::Tick(const float DeltaSeconds)
 			Queue.RemoveAt(0, 1, EAllowShrinking::No);
 			continue;
 		}
-		UGuLiTeamEconomySubsystem* Economy = GetWorld()->GetSubsystem<UGuLiTeamEconomySubsystem>();
-		check(Economy);
-		Economy->Credit(Team, Entry.ResourceType, 1);
+		GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>()->CreditFactoryOutput(Entry.SettlementTeam, Entry.ResourceType, 1);
 		--Entry.Amount;
 		ProcessingAccumulator -= 1.0f;
 		if (Entry.Amount == 0) Queue.RemoveAt(0, 1, EAllowShrinking::No);
@@ -212,7 +227,9 @@ FGuLiFactoryDockRoute AGuLiResourceFactoryActor::GetDockRoute() const
 
 bool AGuLiResourceFactoryActor::TryReserveDock(AActor& Vehicle)
 {
-	if (!HasAuthority() || !AssignedVehicles.Contains(&Vehicle)) return false;
+	const auto* Engineering = Cast<IGuLiEngineeringVehicle>(&Vehicle);
+	if (!HasAuthority() || !Lifecycle->IsCompleted() || !Engineering || Engineering->GetTeam() != Team
+		|| !AssignedVehicles.Contains(&Vehicle)) return false;
 	DockSessions.FindOrAdd(&Vehicle, false);
 	return true;
 }
@@ -225,7 +242,8 @@ void AGuLiResourceFactoryActor::ReleaseDock(AActor& Vehicle)
 bool AGuLiResourceFactoryActor::UploadCargo(AActor& Vehicle, const FGuLiResourceAmounts& Cargo)
 {
 	bool* Uploaded = DockSessions.Find(&Vehicle);
-	if (!HasAuthority() || !Uploaded || *Uploaded) return false;
+	const auto* Engineering = Cast<IGuLiEngineeringVehicle>(&Vehicle);
+	if (!HasAuthority() || !Engineering || Engineering->GetTeam() != Team || !Uploaded || *Uploaded) return false;
 	if (!EnqueueCargo(Cargo)) return false;
 	*Uploaded = true;
 	return true;

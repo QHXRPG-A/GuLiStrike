@@ -225,6 +225,7 @@ namespace GuLiGMPanel
 
 		FActionResult InspectNavigationSoldier(const FString& SoldierId) const;
 		FActionResult QueryNavigationStats() const;
+		FActionResult QueryStrongholds() const;
 		FActionResult QueryLastMove(const FString& OptionalCohortId) const;
 		FActionResult SetCameraDebugEnabled(bool bEnabled) const;
 		bool IsCameraDebugEnabled() const;
