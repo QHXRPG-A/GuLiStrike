@@ -7,7 +7,7 @@
 #include "Battle/Relay/GuLiWingmanRelayServer.h"
 
 class UGuLiLogicalMissileSubsystem;
-class UGuLiShipAbilitySystemComponent;
+class UGuLiShipHangarCapabilityComponent;
 
 using FGuLiWingmanTargetResolver = TFunction<bool(
 	const FGuLiTargetHandle& Handle, FGuLiCombatTargetSnapshot& OutSnapshot)>;
@@ -69,7 +69,7 @@ struct GULISTRIKE_API FGuLiWingmanCombatContext
 	uint32 MatchEpoch = 0u;
 	FGuLiTargetHandle ShipSource;
 	EGuLiTeam ShipTeam = EGuLiTeam::Unassigned;
-	TWeakObjectPtr<UGuLiShipAbilitySystemComponent> ShipASC;
+	TWeakObjectPtr<UGuLiShipHangarCapabilityComponent> HangarCapability;
 	FGuLiWingmanRelayServer* Relay = nullptr;
 	TWeakObjectPtr<UGuLiDamageLedgerSubsystem> DamageLedger;
 	TWeakObjectPtr<UGuLiLogicalMissileSubsystem> LogicalMissiles;

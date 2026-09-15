@@ -44,7 +44,7 @@ DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiMoveReadyToSendSignature,
  * 网络层负责校验/去重/限流，具体选兵、成员归属与寻路仍由 Authority 判定。
  */
 UCLASS(ClassGroup = (GuLiStrike), meta = (BlueprintSpawnableComponent))
-class UGuLiCommanderNetSyncComponent : public UGuLiPlayerNetSyncComponent
+class GULISTRIKE_API UGuLiCommanderNetSyncComponent : public UGuLiPlayerNetSyncComponent
 {
 	GENERATED_BODY()
 

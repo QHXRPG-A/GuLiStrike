@@ -112,6 +112,7 @@ public:
 	void InitializeOutpost(uint8 InTerritoryIndex, FName InTerritoryId, EGuLiTeam InOwner);
 	void SetTerritoryOwnerAuthority(EGuLiTeam InOwner);
 	uint8 GetTerritoryIndex() const { return TerritoryIndex; }
+	UFUNCTION(BlueprintPure) FName GetTerritoryId() const { return TerritoryId; }
 	EGuLiTeam GetTerritoryOwner() const { return TerritoryOwner; }
 	virtual EGuLiTeam GetBuildingTeam() const override { return TerritoryOwner; }
 	virtual void SetBuildingTeamAuthority(EGuLiTeam NewTeam) override;

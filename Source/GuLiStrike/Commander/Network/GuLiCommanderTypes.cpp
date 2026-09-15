@@ -211,6 +211,7 @@ bool FGuLiMoveRequest::IsWellFormed() const
 		&& SelectionRevision != 0u
 		&& IsFiniteVector(Target)
 		&& bTargetKindValid
+		&& (TargetTerritoryId.IsNone() || MiningOrderType == EGuLiMiningOrderType::Move)
 		&& ((MiningOrderType == EGuLiMiningOrderType::MineCluster) == (TargetClusterId != 0u));
 }
 
@@ -490,6 +491,13 @@ void FGuLiCommandAck::Sanitize()
 		{
 			Result = EGuLiCommandAckResult::InvalidRequest;
 		}
+		return;
+	}
+
+	// Explicit engineer relocation has per-Actor outcomes and never creates a Mass batch.
+	if (CommandKind == EGuLiCommandKind::Move && !EngineeringResults.IsEmpty())
+	{
+		BatchOrderId = 0; CohortResults.Reset();
 		return;
 	}
 

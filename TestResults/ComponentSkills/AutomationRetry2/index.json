@@ -1,0 +1,59 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "63B7C185413D6DE4058167BC46B31F72",
+			"instanceName": "DESKTOP-6D3B0FC-52132",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.14-17.10.01",
+	"succeeded": 2,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.7600255012512207,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "SustainedGunLedgerAndState",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.SustainedGunLedgerAndState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"63B7C185413D6DE4058167BC46B31F72"
+			],
+			"duration": 0.73495471477508545,
+			"dateTime": "2026.09.14-17.10.00",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnifiedAutomaticTargetingAndAuthorization",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.UnifiedAutomaticTargetingAndAuthorization",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"63B7C185413D6DE4058167BC46B31F72"
+			],
+			"duration": 0.025070797652006149,
+			"dateTime": "2026.09.14-17.10.01",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

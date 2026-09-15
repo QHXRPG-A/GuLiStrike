@@ -1,14 +1,13 @@
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
-#include "AbilitySystemComponent.h"
+#include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/Pawn.h"
 #include "GameFramework/PlayerController.h"
-#include "Gameplay/Skills/GuLiArmySkillAbility.h"
 #include "Misc/AutomationTest.h"
 
 namespace GuLiSkillLifecycleTests
@@ -78,7 +77,7 @@ namespace GuLiSkillLifecycleTests
 			Parameters.Owner = OutController;
 			Parameters.ObjectFlags |= RF_Transient;
 			auto* PlayerState = World->SpawnActor<AGuLiBattlePlayerState>(Parameters);
-			if (!Test.TestNotNull(TEXT("A real BattlePlayerState and ASC exist"), PlayerState)) return nullptr;
+			if (!Test.TestNotNull(TEXT("A real BattlePlayerState and skill component exist"), PlayerState)) return nullptr;
 			OutController->SetPlayerState(PlayerState);
 			if (!ClaimReadySeat(Test, *PlayerState)) return nullptr;
 			return PlayerState;
@@ -115,7 +114,7 @@ namespace GuLiSkillLifecycleTests
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiSkillPawnLifecycleTest,
-	"GuLiStrike.Skills.Lifecycle.PawnReplacementAndASCRebinding", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+	"GuLiStrike.Skills.Lifecycle.PawnReplacementRetainsCommanderSkills", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 
 bool FGuLiSkillPawnLifecycleTest::RunTest(const FString& Parameters)
 {
@@ -130,15 +129,15 @@ bool FGuLiSkillPawnLifecycleTest::RunTest(const FString& Parameters)
 	Controller->Possess(FirstPawn);
 	if (!TestTrue(TEXT("The real controller possesses its first Pawn"), Controller->GetPawn() == FirstPawn)) return false;
 	const auto Source = SourceCommand(1);
-	if (!Execute(*this, *PlayerState, Source, TEXT("The actual ServerOnly GA submits the source"))) return false;
+	if (!Execute(*this, *PlayerState, Source, TEXT("The actual authority command submits the source"))) return false;
 	Fixture.DamageEquals(*this, TEXT("Submission waits for the authority boundary"), 1.0f);
 	Fixture.Bridge->CommitPendingChanges();
 	Fixture.DamageEquals(*this, TEXT("The committed source adds exactly twenty percent"), 1.2f);
 	const auto* Profile = Fixture.Bridge->FindResolvedSkill(EGuLiTeam::Red, 1);
 	if (!Profile) return false;
 	const uint32 Revision = Profile->Revision;
-	UAbilitySystemComponent* AbilitySystem = PlayerState->GetAbilitySystemComponent();
-	if (!TestNotNull(TEXT("The Commander owns an ASC"), AbilitySystem)) return false;
+	auto* Skills = PlayerState->GetCommanderSkills();
+	if (!TestNotNull(TEXT("The Commander owns a skill component"), Skills)) return false;
 
 	TestTrue(TEXT("Destroying the occupied Pawn succeeds"), FirstPawn->Destroy());
 	auto* SecondPawn = Fixture.World->SpawnActor<APawn>();
@@ -147,22 +146,20 @@ bool FGuLiSkillPawnLifecycleTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("The real controller possesses the replacement Pawn"), Controller->GetPawn() == SecondPawn);
 	Fixture.Bridge->CommitPendingChanges();
 	Fixture.DamageEquals(*this, TEXT("Pawn destruction and replacement preserve the World source"), 1.2f);
-	TestTrue(TEXT("Pawn replacement retains the same PlayerState ASC"), AbilitySystem == PlayerState->GetAbilitySystemComponent());
-	TestTrue(TEXT("Army ability owner remains the PlayerState"), AbilitySystem->GetOwnerActor() == PlayerState);
-	TestTrue(TEXT("Army ability avatar remains the PlayerState, not the destroyed Pawn"), AbilitySystem->GetAvatarActor() == PlayerState);
+	TestTrue(TEXT("Pawn replacement retains the same PlayerState skill component"), Skills == PlayerState->GetCommanderSkills());
+	TestTrue(TEXT("Army ability owner remains the PlayerState"), Skills->GetOwner() == PlayerState);
+	TestTrue(TEXT("Commander skill owner remains the PlayerState, not the destroyed Pawn"), Skills->GetOwner() == PlayerState);
 
-	// ExecuteArmySkillCommand rebinds the actual ASC each time; the same source ID must stay idempotent.
+	// The same source ID remains idempotent through the ordinary authority command.
 	for (int32 Index = 0; Index < 3; ++Index)
-		if (!Execute(*this, *PlayerState, Source, TEXT("Repeated ASC initialization can update the same source"))) return false;
+		if (!Execute(*this, *PlayerState, Source, TEXT("Repeated commands can update the same source"))) return false;
 	Fixture.Bridge->CommitPendingChanges();
-	Fixture.DamageEquals(*this, TEXT("Repeated ASC binding and source upsert never multiply the same source"), 1.2f);
+	Fixture.DamageEquals(*this, TEXT("Repeated source upserts never multiply the same source"), 1.2f);
 	Profile = Fixture.Bridge->FindResolvedSkill(EGuLiTeam::Red, 1);
 	if (TestNotNull(TEXT("The rebound profile remains visible"), Profile))
 		TestEqual(TEXT("Unchanged final configuration retains its revision"), Profile->Revision, Revision);
-	int32 ArmyAbilityCount = 0;
-	for (const auto& Spec : AbilitySystem->GetActivatableAbilities())
-		if (Spec.Ability && Spec.Ability->IsA<UGuLiArmySkillAbility>()) ++ArmyAbilityCount;
-	TestEqual(TEXT("ASC reinitialization grants the command ability only once"), ArmyAbilityCount, 1);
+	TestTrue(TEXT("Automatic profiles do not create per-unit skill components"),
+		PlayerState->GetCommanderSkills() == Skills);
 	return true;
 }
 
@@ -213,18 +210,7 @@ bool FGuLiSkillWM01OwnershipModelTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Two Soldier types produce two active Red-team BasicAttack profiles"),
 		RedBasicAttackProfiles, 2);
 
-	UAbilitySystemComponent* AbilitySystem = Commander->GetAbilitySystemComponent();
-	if (!TestNotNull(TEXT("The Commander owns its army ASC"), AbilitySystem)) return false;
-	int32 ArmyAbilityCount = 0;
-	for (const FGameplayAbilitySpec& Spec : AbilitySystem->GetActivatableAbilities())
-	{
-		if (Spec.Ability && Spec.Ability->IsA<UGuLiArmySkillAbility>())
-		{
-			++ArmyAbilityCount;
-		}
-	}
-	TestEqual(TEXT("Adding WM01 profiles does not grant a second ArmySkill GA"),
-		ArmyAbilityCount, 1);
+	TestNotNull(TEXT("Commander owns one global skill component independently of army weapon profiles"), Commander->GetCommanderSkills());
 	return true;
 }
 
@@ -363,10 +349,10 @@ bool FGuLiSkillCommanderLifecycleTest::RunTest(const FString& Parameters)
 	Fixture.Bridge->CommitPendingChanges();
 	Fixture.DamageEquals(*this, TEXT("New and retained team sources compose across a commander change"), 1.44f);
 
-	// Exercise the stale logout guard as well as actual host/ASC component destruction.
+	// Exercise the stale logout guard as well as actual host/skill component component destruction.
 	Fixture.State->ReleaseRoleSlot(Seat, OldGuid);
 	OldController->SetPlayerState(nullptr);
-	TestTrue(TEXT("Destroying the old PlayerState and ASC succeeds"), OldCommander->Destroy());
+	TestTrue(TEXT("Destroying the old PlayerState and skill component succeeds"), OldCommander->Destroy());
 	TestTrue(TEXT("Destroying the old controller succeeds"), OldController->Destroy());
 	Fixture.Bridge->CommitPendingChanges();
 	Fixture.DamageEquals(*this, TEXT("Old host destruction cannot revoke sources now owned by the World ledger"), 1.44f);

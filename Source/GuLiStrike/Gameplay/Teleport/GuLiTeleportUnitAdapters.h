@@ -27,7 +27,6 @@ namespace GuLiTeleportMassAdapter
 	bool IsAlive(UWorld& World, const FGuLiTeleportUnit& Unit);
 	bool CanApply(UWorld& World, TConstArrayView<FGuLiTeleportUnit> Units, FGuid Token);
 	bool Apply(UWorld& World, TConstArrayView<FGuLiTeleportUnit> Units, FGuid Token, bool bPhased, bool bLocked, bool bDisplace);
-	bool ResolveGround(UWorld& World, const FVector& Point, FVector& Out, double* OutSurfaceHeight = nullptr);
 	void GetObstacles(UWorld& World, TArray<FGuLiTeleportUnit>& Out);
 }
 namespace GuLiTeleportActorAdapter

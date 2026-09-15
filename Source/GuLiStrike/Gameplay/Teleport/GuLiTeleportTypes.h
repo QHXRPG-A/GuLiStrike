@@ -5,6 +5,9 @@
 #include "GuLiTeleportTypes.generated.h"
 
 UENUM(BlueprintType)
+enum class EGuLiTeleportCommand : uint8 { Source, Destination, Cancel };
+
+UENUM(BlueprintType)
 enum class EGuLiTeleportPhase : uint8 { Idle, Windup, AwaitingDestination, Recovery, Returning, Finished };
 
 USTRUCT(BlueprintType)

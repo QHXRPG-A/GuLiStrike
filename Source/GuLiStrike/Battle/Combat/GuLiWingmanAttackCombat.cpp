@@ -1,6 +1,6 @@
 #include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
 #include "Battle/Combat/GuLiWingmanCombatCoordinator.h"
-#include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
+#include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityDefinitions.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
 #include "Gameplay/Wingman/Combat/GuLiWingmanAttackNavigation.h"
@@ -216,7 +216,7 @@ void FGuLiWingmanCombatCoordinator::TickAttackTargeting(double Now, const FGuLiW
 		State.Target = SharedManualTarget;
 		State.AutomaticTargets = MoveTemp(AutomaticTargets);
 		if (UGuLiCombatEffectRuntimeSubsystem* Effects =
-			Context.ShipASC->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
+			Context.HangarCapability->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
 		{
 			for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
 			{
@@ -267,7 +267,7 @@ void FGuLiWingmanCombatCoordinator::TickAttackTargeting(double Now, const FGuLiW
 				{
 					Params.AddIgnoredActor(ManualSnapshot.CollisionActor.Get());
 				}
-				if (Context.ShipASC->GetWorld()->LineTraceSingleByObjectType(
+				if (Context.HangarCapability->GetWorld()->LineTraceSingleByObjectType(
 					Hit, ManualSnapshot.Location + FVector(0, 0, 5000),
 					ManualSnapshot.Location - FVector(0, 0, 500000),
 					FCollisionObjectQueryParams(ECC_WorldStatic), Params))
@@ -371,7 +371,7 @@ void FGuLiWingmanCombatCoordinator::TickAttackTargeting(double Now, const FGuLiW
 			FHitResult Hit;
 			FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiWingmanGroundTarget), false);
 			if (Snapshot.CollisionActor.IsValid()) Params.AddIgnoredActor(Snapshot.CollisionActor.Get());
-			if (!Context.ShipASC->GetWorld()->LineTraceSingleByObjectType(
+			if (!Context.HangarCapability->GetWorld()->LineTraceSingleByObjectType(
 				Hit, Snapshot.Location + FVector(0, 0, 5000),
 				Snapshot.Location - FVector(0, 0, 500000),
 				FCollisionObjectQueryParams(ECC_WorldStatic), Params))
@@ -439,7 +439,7 @@ void FGuLiWingmanCombatCoordinator::TickAttackTargeting(double Now, const FGuLiW
 			return Channel.bEnabled
 				&& Channel.Runtime.Attack.Pattern == EGuLiWingmanAttackPattern::GroundDive;
 		});
-	UWorld* World = Context.ShipASC->GetWorld();
+	UWorld* World = Context.HangarCapability->GetWorld();
 	FString NavigationError;
 	const UGuLiFlightNavigationSubsystem* Navigation =
 		World ? World->GetSubsystem<UGuLiFlightNavigationSubsystem>() : nullptr;
@@ -584,10 +584,10 @@ void FGuLiWingmanCombatCoordinator::InvalidateMemberAfterEmergencyRebase(
 	{
 		return;
 	}
-	if (Context.ShipASC.IsValid())
+	if (Context.HangarCapability.IsValid())
 	{
 		if (UGuLiCombatEffectRuntimeSubsystem* Effects =
-			Context.ShipASC->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
+			Context.HangarCapability->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
 		{
 			Effects->CancelWingmanGunBurst(Emitter, true);
 		}
@@ -684,14 +684,14 @@ int32 FGuLiWingmanCombatCoordinator::CommitValidatedAttackBatch(const FGuLiWingm
 		|| Context.Relay->GetLeaseState().Lifecycle != EGuLiWingmanGroupLifecycle::Active) return 0;
 	const auto& Config = Context.Relay->GetAbilityConfig();
 	if (!Config.IsUsableByLeaseOwner() || Candidate.AbilitySetRevision != Config.AbilitySetRevision) return 0;
-	UGuLiCombatEffectRuntimeSubsystem* Effects = Context.ShipASC->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>();
+	UGuLiCombatEffectRuntimeSubsystem* Effects = Context.HangarCapability->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>();
 	if (!Effects) return 0;
 	int32 Count = 0;
 	for (const auto& Shot : Candidate.AttackFireRecords)
 	{
 		const auto* Channel = Config.WeaponChannels.FindByPredicate([&](const auto& C) { return C.Binding.SlotId == Shot.SlotId; });
 		if (!Channel || !Channel->bEnabled || Shot.ProfileRevision != Channel->ProfileRevision || Shot.LoadoutRevision != Config.LoadoutRevision
-			|| !Context.ShipASC->IsWeaponConfigurationCurrent(Channel->Binding, Channel->SkillId, Shot.LoadoutRevision, Shot.ProfileRevision)) { continue; }
+			|| !Context.HangarCapability->IsWeaponConfigurationCurrent(Channel->Binding, Channel->SkillId, Shot.LoadoutRevision, Shot.ProfileRevision)) { continue; }
 		const auto& Runtime = Channel->Runtime; const auto& Profile = Runtime.Attack;
 		if (Profile.Pattern == EGuLiWingmanAttackPattern::Legacy) continue;
 		const bool bGround = Profile.Pattern == EGuLiWingmanAttackPattern::GroundDive;
@@ -767,7 +767,7 @@ int32 FGuLiWingmanCombatCoordinator::CommitValidatedAttackBatch(const FGuLiWingm
 			if (Shot.ShotIndex >= Profile.MissileCount || Shot.ShotIndex <= Checkpoint.LastShotIndex
 				|| !GuLiWingmanAttack::BuildGroundPath(Checkpoint.FrozenTarget, Checkpoint.ApproachDirection,
 					Profile, Config.FormationRuntime.MaximumTurnRateDegreesPerSecond, Path)) { continue; }
-			if (!bSameRun && !GuLiWingmanAttack::GroundRunClearsTerrain(Context.ShipASC->GetWorld(), Path,
+			if (!bSameRun && !GuLiWingmanAttack::GroundRunClearsTerrain(Context.HangarCapability->GetWorld(), Path,
 				Config.FormationRuntime.AgentRadiusCentimeters)) { continue; }
 			const float Age = float(CaptureTime - Checkpoint.StartTime);
 			if (FMath::Abs(Age - GuLiWingmanAttack::ShotTime(Shot.ShotIndex, Profile.MissileCount, Profile.DiveSeconds)) > 0.075f) { continue; }
@@ -796,10 +796,10 @@ int32 FGuLiWingmanCombatCoordinator::CommitValidatedAttackBatch(const FGuLiWingm
 		Request.Context.RootEventId = Request.Context.ShotId;
 		if (bGround)
 		{
-			const auto* Grant = Context.ShipASC->FindConfiguredGrant(Channel->Binding);
+			const auto* Grant = Context.HangarCapability->FindConfiguredGrant(Channel->Binding);
 			if (!Grant || !Grant->WeaponDefinition) continue;
 			Request.Projectile = Grant->WeaponDefinition->ResolveAttackProjectile();
-			const auto* Field = Context.ShipASC->GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindCombatField(Runtime.EffectConfigId);
+			const auto* Field = Context.HangarCapability->GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindCombatField(Runtime.EffectConfigId);
 			if (!Field) continue;
 			Request.FrozenField = *Field;
 			Request.FrozenField.Damage = Runtime.Damage;

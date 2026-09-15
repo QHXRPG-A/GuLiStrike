@@ -1,0 +1,765 @@
+[
+  {
+    "directory": "TestResults\\CommanderMove10Hz\\phased-net-n800-c2\\client1",
+    "setup_seconds": 12.354972500354052,
+    "error": "",
+    "mode": "client",
+    "fixture": "authored_terrain",
+    "movement_pattern": "8_second_shuttle",
+    "shuttle_rounds": 0,
+    "camera": "fixed commander view: X=-150000 Y=110000; terrain-constrained default arm/yaw",
+    "join_order": "population_before_join",
+    "map": "LVL_CommanderMassPrototype",
+    "requested_population": 800,
+    "authority_hz": 10,
+    "measured_seconds": 40.00528370216489,
+    "probe_id": 806,
+    "probe_distance_cm": 11585.450925146346,
+    "accepted_pose_frames": 396,
+    "frame_ms": {
+      "n": 2309,
+      "mean": 16.89991624079688,
+      "p50": 16.6645,
+      "p95": 17.6535,
+      "p99": 29.1189,
+      "max": 30.9095
+    },
+    "sim_ms": {
+      "n": 2309,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "combat_ms": {
+      "n": 2309,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "alive": {
+      "n": 2309,
+      "mean": 800.0,
+      "p50": 800.0,
+      "p95": 800.0,
+      "p99": 800.0,
+      "max": 800.0
+    },
+    "ordered_moving": {
+      "n": 2309,
+      "mean": 800.0,
+      "p50": 800.0,
+      "p95": 800.0,
+      "p99": 800.0,
+      "max": 800.0
+    },
+    "observed_moving": {
+      "n": 2309,
+      "mean": 799.9865742745777,
+      "p50": 800.0,
+      "p95": 800.0,
+      "p99": 800.0,
+      "max": 800.0
+    },
+    "blocked": {
+      "n": 2309,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "arrived": {
+      "n": 2309,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "in_bytes_s": {
+      "n": 2309,
+      "mean": 131998.93676916414,
+      "p50": 125387.0,
+      "p95": 189748.0,
+      "p99": 204489.0,
+      "max": 204489.0
+    },
+    "out_bytes_s": {
+      "n": 2309,
+      "mean": 2157.952360329147,
+      "p50": 2205.0,
+      "p95": 2282.0,
+      "p99": 2284.0,
+      "max": 2284.0
+    },
+    "pose_age_ms": {
+      "n": 2309,
+      "mean": 12.028156344737981,
+      "p50": 3.847,
+      "p95": 36.086,
+      "p99": 37.062,
+      "max": 48.929
+    },
+    "sampled_fixed_step_ms": {
+      "n": 0,
+      "mean": null,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "max": null
+    },
+    "multi_step_frames": 0,
+    "engine": {
+      "GuLiCommanderPresentation/GameThread/RebuildLocalInstances": {
+        "n": 2368,
+        "mean": 0.7966109797297297,
+        "p50": 0.7608,
+        "p95": 1.1673,
+        "p99": 1.322,
+        "max": 1.6226
+      },
+      "GuLiCommanderHealthBars/GameThread/UpdateInstances": {
+        "n": 2368,
+        "mean": 0.028282263513513515,
+        "p50": 0.0264,
+        "p95": 0.0381,
+        "p99": 0.048,
+        "max": 0.1485
+      },
+      "GuLiCommanderHealthBars/VisibleInstances": {
+        "n": 2368,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "Ticks/GuLiCommanderCameraPawn": {
+        "n": 2368,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "Ticks/GuLiCommanderHealthBarRenderer": {
+        "n": 2368,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "Ticks/GuLiCommanderHUD": {
+        "n": 2368,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "Ticks/GuLiCommanderNetSyncComponent": {
+        "n": 2368,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "Ticks/GuLiCommanderPlayerController": {
+        "n": 2368,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "Ticks/GuLiCommanderPresentationActor": {
+        "n": 2368,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "FrameTime": {
+        "n": 2368,
+        "mean": 16.899374324324324,
+        "p50": 16.6652,
+        "p95": 17.6703,
+        "p99": 29.1219,
+        "max": 30.9064
+      },
+      "RenderThreadTime": {
+        "n": 2368,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "GameThreadTime": {
+        "n": 2368,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "GPUTime": {
+        "n": 2368,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "RenderThreadTime_CriticalPath": {
+        "n": 2368,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "GameThreadTime_CriticalPath": {
+        "n": 2368,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    },
+    "accepted_pose_hz": 9.89869245643096,
+    "actual_moving_p05": 800.0,
+    "movement_load_valid": true,
+    "client_60fps_pass": null,
+    "client_30fps_pass": null,
+    "headless_clients": true
+  },
+  {
+    "directory": "TestResults\\CommanderMove10Hz\\phased-net-n800-c2\\client2",
+    "setup_seconds": 11.280279401689768,
+    "error": "",
+    "mode": "client",
+    "fixture": "authored_terrain",
+    "movement_pattern": "8_second_shuttle",
+    "shuttle_rounds": 0,
+    "camera": "fixed commander view: X=-150000 Y=110000; terrain-constrained default arm/yaw",
+    "join_order": "population_before_join",
+    "map": "LVL_CommanderMassPrototype",
+    "requested_population": 800,
+    "authority_hz": 10,
+    "measured_seconds": 40.00481430068612,
+    "probe_id": 801,
+    "probe_distance_cm": 7919.604458254954,
+    "accepted_pose_frames": 396,
+    "frame_ms": {
+      "n": 2308,
+      "mean": 16.899843804159445,
+      "p50": 16.6798,
+      "p95": 17.6554,
+      "p99": 29.0945,
+      "max": 30.8991
+    },
+    "sim_ms": {
+      "n": 2308,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "combat_ms": {
+      "n": 2308,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "alive": {
+      "n": 2308,
+      "mean": 800.0,
+      "p50": 800.0,
+      "p95": 800.0,
+      "p99": 800.0,
+      "max": 800.0
+    },
+    "ordered_moving": {
+      "n": 2308,
+      "mean": 800.0,
+      "p50": 800.0,
+      "p95": 800.0,
+      "p99": 800.0,
+      "max": 800.0
+    },
+    "observed_moving": {
+      "n": 2308,
+      "mean": 800.0,
+      "p50": 800.0,
+      "p95": 800.0,
+      "p99": 800.0,
+      "max": 800.0
+    },
+    "blocked": {
+      "n": 2308,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "arrived": {
+      "n": 2308,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "in_bytes_s": {
+      "n": 2308,
+      "mean": 131925.78032928944,
+      "p50": 124844.0,
+      "p95": 184852.0,
+      "p99": 198130.0,
+      "max": 198130.0
+    },
+    "out_bytes_s": {
+      "n": 2308,
+      "mean": 2166.1382149046794,
+      "p50": 2203.0,
+      "p95": 2281.0,
+      "p99": 2282.0,
+      "max": 2282.0
+    },
+    "pose_age_ms": {
+      "n": 2308,
+      "mean": 11.798819757365685,
+      "p50": 3.678,
+      "p95": 35.961,
+      "p99": 36.708,
+      "max": 48.996
+    },
+    "sampled_fixed_step_ms": {
+      "n": 0,
+      "mean": null,
+      "p50": null,
+      "p95": null,
+      "p99": null,
+      "max": null
+    },
+    "multi_step_frames": 0,
+    "engine": {
+      "GuLiCommanderPresentation/GameThread/RebuildLocalInstances": {
+        "n": 2368,
+        "mean": 0.7961924408783784,
+        "p50": 0.759,
+        "p95": 1.1742,
+        "p99": 1.323,
+        "max": 1.482
+      },
+      "GuLiCommanderHealthBars/GameThread/UpdateInstances": {
+        "n": 2368,
+        "mean": 0.027661655405405404,
+        "p50": 0.026,
+        "p95": 0.037,
+        "p99": 0.0453,
+        "max": 0.2081
+      },
+      "GuLiCommanderHealthBars/VisibleInstances": {
+        "n": 2368,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "Ticks/GuLiCommanderCameraPawn": {
+        "n": 2368,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "Ticks/GuLiCommanderHealthBarRenderer": {
+        "n": 2368,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "Ticks/GuLiCommanderHUD": {
+        "n": 2368,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "Ticks/GuLiCommanderNetSyncComponent": {
+        "n": 2368,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "Ticks/GuLiCommanderPlayerController": {
+        "n": 2368,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "Ticks/GuLiCommanderPresentationActor": {
+        "n": 2368,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "FrameTime": {
+        "n": 2368,
+        "mean": 16.89924083614865,
+        "p50": 16.6769,
+        "p95": 17.6591,
+        "p99": 29.1118,
+        "max": 30.9059
+      },
+      "RenderThreadTime": {
+        "n": 2368,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "GameThreadTime": {
+        "n": 2368,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "GPUTime": {
+        "n": 2368,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "RenderThreadTime_CriticalPath": {
+        "n": 2368,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "GameThreadTime_CriticalPath": {
+        "n": 2368,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    },
+    "accepted_pose_hz": 9.898808603973652,
+    "actual_moving_p05": 800.0,
+    "movement_load_valid": true,
+    "client_60fps_pass": null,
+    "client_30fps_pass": null,
+    "headless_clients": true
+  },
+  {
+    "directory": "TestResults\\CommanderMove10Hz\\phased-net-n800-c2\\server",
+    "spawn_candidate_count": 800,
+    "command_source": "server synthetic owners; production BeginMovePlanning/PollMovePlanning; 100 members per batch, both teams",
+    "travel_distance_cm": 150000,
+    "shuttle_east_offset_cm": 100000,
+    "shuttle_west_offset_cm": -50000,
+    "setup_seconds": 50.25263210013509,
+    "error": "",
+    "mode": "server",
+    "fixture": "authored_terrain",
+    "movement_pattern": "8_second_shuttle",
+    "shuttle_rounds": 6,
+    "camera": "fixed commander view: X=-150000 Y=110000; terrain-constrained default arm/yaw",
+    "join_order": "population_before_join",
+    "map": "LVL_CommanderMassPrototype",
+    "requested_population": 800,
+    "authority_hz": 10,
+    "measured_seconds": 50.00743459910154,
+    "probe_id": 501,
+    "probe_distance_cm": 4962.309703839768,
+    "simulation_steps": 500,
+    "dropped_steps": 0,
+    "movement_updates": 400000,
+    "speed_cm_s": 3600,
+    "server_plan_commit_ms": [
+      122.32759967446327,
+      103.88800129294395,
+      200.35719871520996,
+      196.933101862669,
+      80.67169785499573,
+      198.85500147938728,
+      200.8717991411686,
+      202.2516019642353,
+      88.43039721250534,
+      201.6565017402172,
+      202.76819914579391,
+      200.33450052142143,
+      103.35750132799149,
+      200.1923993229866,
+      200.19669830799103,
+      200.12950152158737,
+      73.70799779891968,
+      196.58920168876648,
+      201.10969990491867,
+      212.58660033345222,
+      87.75350078940392,
+      197.46430218219757,
+      199.22329857945442,
+      201.65849849581718,
+      173.64449799060822,
+      218.68140250444412,
+      402.048297226429,
+      402.60840207338333,
+      226.21560096740723,
+      200.35719871520996,
+      296.34790122509,
+      200.71779936552048,
+      180.46490103006363,
+      200.7118985056877,
+      201.2265995144844,
+      201.28190144896507,
+      188.98439779877663,
+      203.3694013953209,
+      198.68599995970726,
+      200.75659826397896,
+      201.99229940772057,
+      202.064398676157,
+      197.70370051264763,
+      201.63560286164284,
+      171.42459750175476,
+      213.8146013021469,
+      199.55680146813393,
+      200.98520070314407,
+      187.49690055847168,
+      197.3567008972168,
+      200.76389983296394,
+      198.2681006193161,
+      298.15809801220894,
+      282.3625020682812,
+      427.38400027155876,
+      391.5915973484516
+    ],
+    "frame_ms": {
+      "n": 2693,
+      "mean": 18.19871927218715,
+      "p50": 17.1153,
+      "p95": 30.804,
+      "p99": 36.4012,
+      "max": 67.078
+    },
+    "sim_ms": {
+      "n": 2693,
+      "mean": 0.7713455625696249,
+      "p50": 0.0,
+      "p95": 4.1559,
+      "p99": 5.8834,
+      "max": 14.2287
+    },
+    "combat_ms": {
+      "n": 2693,
+      "mean": 0.1655020051986632,
+      "p50": 0.0,
+      "p95": 0.8582,
+      "p99": 1.4025,
+      "max": 3.1318
+    },
+    "alive": {
+      "n": 2693,
+      "mean": 800.0,
+      "p50": 800.0,
+      "p95": 800.0,
+      "p99": 800.0,
+      "max": 800.0
+    },
+    "ordered_moving": {
+      "n": 2693,
+      "mean": 800.0,
+      "p50": 800.0,
+      "p95": 800.0,
+      "p99": 800.0,
+      "max": 800.0
+    },
+    "observed_moving": {
+      "n": 2693,
+      "mean": 799.9658373561084,
+      "p50": 800.0,
+      "p95": 800.0,
+      "p99": 800.0,
+      "max": 800.0
+    },
+    "blocked": {
+      "n": 2693,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "arrived": {
+      "n": 2693,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "in_bytes_s": {
+      "n": 2693,
+      "mean": 3843.214259190494,
+      "p50": 4343.0,
+      "p95": 4596.0,
+      "p99": 4625.0,
+      "max": 4625.0
+    },
+    "out_bytes_s": {
+      "n": 2693,
+      "mean": 234206.72744151505,
+      "p50": 246903.0,
+      "p95": 360856.0,
+      "p99": 401572.0,
+      "max": 401572.0
+    },
+    "pose_age_ms": {
+      "n": 2693,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "sampled_fixed_step_ms": {
+      "n": 490,
+      "mean": 4.239252244897959,
+      "p50": 3.8714,
+      "p95": 6.0658,
+      "p99": 13.9633,
+      "max": 14.2287
+    },
+    "multi_step_frames": 0,
+    "engine": {
+      "GuLiCommanderAuthority/GameThread/WorldTick": {
+        "n": 2753,
+        "mean": 0.821457028695968,
+        "p50": 0.0046,
+        "p95": 4.2038,
+        "p99": 6.305,
+        "max": 14.2495
+      },
+      "Ticks/GuLiCommanderGameMode": {
+        "n": 2752,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "Ticks/GuLiCommanderCameraPawn": {
+        "n": 2752,
+        "mean": 1.7805232558139534,
+        "p50": 2.0,
+        "p95": 2.0,
+        "p99": 2.0,
+        "max": 2.0
+      },
+      "Ticks/GuLiCommanderNetSyncComponent": {
+        "n": 2752,
+        "mean": 1.7805232558139534,
+        "p50": 2.0,
+        "p95": 2.0,
+        "p99": 2.0,
+        "max": 2.0
+      },
+      "Ticks/GuLiCommanderPlayerController": {
+        "n": 2752,
+        "mean": 1.7805232558139534,
+        "p50": 2.0,
+        "p95": 2.0,
+        "p99": 2.0,
+        "max": 2.0
+      },
+      "Ticks/GuLiCommanderWorldReplicationComponent": {
+        "n": 2752,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "FrameTime": {
+        "n": 2752,
+        "mean": 18.174592514534883,
+        "p50": 17.0936,
+        "p95": 30.7826,
+        "p99": 36.2329,
+        "max": 67.0811
+      },
+      "GuLiCommanderPoseDispatch/AttemptedChunks": {
+        "n": 2752,
+        "mean": 8.169331395348838,
+        "p50": 0.0,
+        "p95": 18.0,
+        "p99": 18.0,
+        "max": 18.0
+      },
+      "GuLiCommanderAuthority/GameThread/FixedStep": {
+        "n": 2752,
+        "mean": 0.7734068677325582,
+        "p50": 0.0,
+        "p95": 4.1969,
+        "p99": 5.877,
+        "max": 14.2361
+      },
+      "GuLiCommanderPoseDispatch/SaturatedAtAttempt": {
+        "n": 2752,
+        "mean": 0.028706395348837208,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 8.0
+      }
+    },
+    "effective_sim_hz": 9.998513301239877,
+    "movement_updates_per_unit_second": 9.998513301239877,
+    "planning_ms": {
+      "n": 56,
+      "mean": 206.10672501581055,
+      "p50": 200.35719871520996,
+      "p95": 402.048297226429,
+      "p99": 427.38400027155876,
+      "max": 427.38400027155876
+    },
+    "actual_moving_p05": 800.0,
+    "movement_load_valid": true,
+    "server_budget_pass": true,
+    "headless_clients": true
+  }
+]

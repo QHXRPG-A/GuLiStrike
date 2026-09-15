@@ -1,3 +1,4 @@
+#include "Gameplay/Skills/GuLiSkillTargeting.h"
 #include "Gameplay/Teleport/GuLiTeleportUnitAdapters.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
@@ -16,7 +17,8 @@ namespace
 {
 	FGuLiWingmanRelayServer* GetCore(AActor* Actor)
 	{
-		auto* Ship = Cast<AGuLiStrikeShip>(Actor); auto* Relay = Ship ? Ship->GetWingmanRelay() : nullptr;
+		auto* Ship = Cast<AGuLiStrikeShip>(Actor);
+		auto* Relay = Ship && Ship->GetHangarCapability() ? Ship->GetWingmanRelay() : nullptr;
 		return Relay ? Relay->GetServerRelay() : nullptr;
 	}
 	FTransform Decode(const FGuLiWingmanCandidateSample& Sample)
@@ -50,12 +52,12 @@ void GuLiTeleportActorAdapter::Collect(UWorld& World, const FGuLiTeleportCastSta
 		const bool bPlayerVehicle = Pawn->IsPlayerControlled() && (Ship || Pawn->IsA<AGuLiWarMachinePlaceholderPawn>());
 		if (Pawn->IsPlayerControlled() && !bPlayerVehicle) { continue; }
 		FVector Ground; double SurfaceHeight = 0;
-		if (!GuLiTeleportMassAdapter::ResolveGround(World,Pawn->GetActorLocation(),Ground,&SurfaceHeight)) { continue; }
+		if (!GuLiSkillTargeting::ResolveGround(World,Pawn->GetActorLocation(),Ground,&SurfaceHeight)) { continue; }
 		// Flight clearance is measured from physical terrain, not Recast's voxelized surface.
 		const double Height = Pawn->GetActorLocation().Z - SurfaceHeight;
 		if (bPlayerVehicle && !GuLiTeleport::CanCollectVehicle(State.Config,Ship != nullptr,Height)) { continue; }
 		auto* Core = GetCore(Pawn);
-		if (Ship)
+		if (Ship && Ship->GetHangarCapability())
 		{
 			if (!Core || Core->IsExternallyControlled() || Core->GetLeaseState().Lifecycle != EGuLiWingmanGroupLifecycle::Active || Core->IsTransferInProgress()) { continue; }
 			bool bComplete = true;
@@ -136,7 +138,8 @@ bool GuLiTeleportActorAdapter::Apply(UWorld& World, TConstArrayView<FGuLiTelepor
 	{
 		if (Unit.Kind != EGuLiTeleportUnitKind::Actor || !IsAlive(Unit)) { continue; }
 		auto* Actor = Unit.Actor.Get(); auto* Control = Actor->FindComponentByClass<UGuLiExternalUnitControlComponent>();
-		auto* Ship = Cast<AGuLiStrikeShip>(Actor); auto* Relay = Ship ? Ship->GetWingmanRelay() : nullptr;
+		auto* Ship = Cast<AGuLiStrikeShip>(Actor);
+		auto* Relay = Ship && Ship->GetHangarCapability() ? Ship->GetWingmanRelay() : nullptr;
 		auto* Core = Relay ? Relay->GetServerRelay() : nullptr;
 		if (Core && bPhased && !Core->IsPhased())
 		{ if (!Core->BeginExternalControl(World.GetTimeSeconds())) { return false; } Relay->PublishServerExternalControl({}); }

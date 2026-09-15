@@ -10,7 +10,7 @@
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySet.h"
-#include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
+#include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
 #include "Misc/AutomationTest.h"
 #include "UObject/UObjectGlobals.h"
@@ -33,7 +33,7 @@ namespace GuLiWingmanCombatCoordinatorTests
 		AActor* Enemy = nullptr;
 		AActor* FarEnemy = nullptr;
 		AActor* Friendly = nullptr;
-		UGuLiShipAbilitySystemComponent* ASC = nullptr;
+		UGuLiShipHangarCapabilityComponent* ASC = nullptr;
 		UGuLiShipAbilitySet* AbilitySet = nullptr;
 		UGuLiDamageLedgerSubsystem* Ledger = nullptr;
 		UGuLiLogicalMissileSubsystem* Missiles = nullptr;
@@ -131,10 +131,11 @@ namespace GuLiWingmanCombatCoordinatorTests
 				return false;
 			}
 
-			ASC = NewObject<UGuLiShipAbilitySystemComponent>(Ship, TEXT("WingmanCombatShipASC"));
+			ASC = NewObject<UGuLiShipHangarCapabilityComponent>(Ship, TEXT("WingmanCombatShipASC"));
 			Ship->AddInstanceComponent(ASC);
 			ASC->RegisterComponent();
 			ASC->InitializeShipActorInfo(Ship);
+			ASC->SetCapabilityEnabled(true);
 			FGuLiShipAbilityProjectionContext Projection;
 			Projection.ShipInstanceId = ShipTarget.AuthorityId;
 			Projection.MatchEpoch = 17u;
@@ -311,7 +312,7 @@ namespace GuLiWingmanCombatCoordinatorTests
 			CombatContext.MatchEpoch = 17u;
 			CombatContext.ShipSource = ShipTarget;
 			CombatContext.ShipTeam = EGuLiTeam::Red;
-			CombatContext.ShipASC = ASC;
+			CombatContext.HangarCapability = ASC;
 			CombatContext.Relay = &Relay;
 			CombatContext.DamageLedger = Ledger;
 			CombatContext.LogicalMissiles = Missiles;
@@ -661,7 +662,7 @@ bool FGuLiWingmanUnifiedAutomaticTargetingTest::RunTest(const FString& Parameter
 
 	Fixture.FarEnemy->SetActorLocation(FVector(180001.0, 0.0, 0.0));
 	Fixture.Coordinator.TickAttackTargeting(1.08, Tuning);
-	TestFalse(TEXT("One over-release target is removed without clearing the whole table"),
+	TestTrue(TEXT("Air targets remain eligible beyond the ground release radius"),
 		Fixture.Relay.AttackState.AutomaticTargets.ContainsByPredicate(
 			[&Fixture](const auto& Assignment)
 			{
@@ -722,14 +723,28 @@ bool FGuLiWingmanUnifiedAutomaticTargetingTest::RunTest(const FString& Parameter
 				return Assignment.Emitter == Replacement->Wingman;
 			}));
 
-	Fixture.Enemy->SetActorLocation(FVector(180001.0, 0.0, 0.0));
-	NewAir->SetActorLocation(FVector(180001.0, 10000.0, 0.0));
+	// The release/rejoin gate applies to ground targets. Remove the air targets
+	// before exercising that gate; their existing selection has no ground radius limit.
+	for (AActor* AirActor : { Fixture.Enemy, Fixture.FarEnemy, NewAir })
+	{
+		FGuLiDamageRequest KillAir = KillGround;
+		KillAir.Target = AirActor->FindComponentByClass<UGuLiCombatHealthComponent>()->GetTargetHandle();
+		KillAir.DamageEventId = FGuid::NewGuid(); KillAir.ShotId = FGuid::NewGuid();
+		FGuLiDamageCommitResult Death;
+		TestTrue(TEXT("Air target is removed before the ground release case"),
+			AirActor->FindComponentByClass<UGuLiCombatHealthComponent>()->ApplyServerDamage(KillAir, Death) && Death.bKilled);
+	}
+	AActor* ReleaseGround = Fixture.SpawnTargetActor(*this,
+		GuLiCombatTargets::MakeCommanderSoldierTargetHandle(17u, 901u), EGuLiTeam::Blue, FVector(60000.0, 0.0, 0.0));
 	Fixture.Coordinator.TickAttackTargeting(1.30, Tuning);
+	TestFalse(TEXT("The remaining ground target acquires living members"), Fixture.Relay.AttackState.AutomaticTargets.IsEmpty());
+	ReleaseGround->SetActorLocation(FVector(Tuning.ReleaseRadiusCentimeters + 1.0, 0.0, 0.0));
+	Fixture.Coordinator.TickAttackTargeting(1.51, Tuning);
 	TestTrue(TEXT("Losing every prior automatic target only by release range clears the table"),
 		Fixture.Relay.AttackState.AutomaticTargets.IsEmpty());
-	Fixture.Enemy->SetActorLocation(FVector(50000.0, 0.0, 0.0));
-	Fixture.Coordinator.TickAttackTargeting(1.51, Tuning);
-	TestTrue(TEXT("The existing group rejoin gate blocks immediate reacquisition"),
+	ReleaseGround->SetActorLocation(FVector(50000.0, 0.0, 0.0));
+	Fixture.Coordinator.TickAttackTargeting(1.72, Tuning);
+	TestFalse(TEXT("Returning ground targets reacquire members on the next scan"),
 		Fixture.Relay.AttackState.AutomaticTargets.IsEmpty());
 	return true;
 }

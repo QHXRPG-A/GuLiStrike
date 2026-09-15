@@ -2,7 +2,6 @@
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
 #include "Blueprint/UserWidget.h"
-#include "Gameplay/Teleport/GuLiTeleportAbility.h"
 #include "Gameplay/Teleport/GuLiTeleportTypes.h"
 #include "GuLiTeleportInputComponent.generated.h"
 class AGuLiTeleportFieldActor;
@@ -34,13 +33,12 @@ public:
 	bool HandlePrimaryAction();
 	bool IsHUDHovered() const;
 	UFUNCTION(BlueprintPure, Category="Commander|Teleport") FText GetStatusText() const;
-	int32 GetLevel() const { return Level; }
-	UFUNCTION(Server, Reliable, BlueprintCallable, Category="Commander|Teleport") void ServerSubmit(EGuLiTeleportCommand Command, FGuid CastId, FVector Point);
+	int32 GetLevel() const;
+	UFUNCTION(Server, Reliable, BlueprintCallable, Category="Commander|Teleport") void ServerSubmit(FGuid RequestId, EGuLiTeleportCommand Command, FGuid CastId, FVector Point);
 private:
 	UFUNCTION(Client, Reliable) void ClientResult(EGuLiTeleportCommand Command, bool bSucceeded, FGuid CastId, const FString& Error);
 	void ClearLocalAim();
 	AGuLiCommanderPlayerController* GetCommander() const;
-	UPROPERTY(Replicated) int32 Level = 1;
 	UPROPERTY(Transient) TObjectPtr<AGuLiTeleportFieldActor> Preview;
 	UPROPERTY(Transient) TObjectPtr<UGuLiTeleportHUDWidget> HUD;
 	FGuid CurrentCastId;
@@ -48,5 +46,4 @@ private:
 	bool bArmed = false;
 	bool bSourcePending = false;
 	bool bCancelPending = false;
-	double NextServerPointTime = 0;
 };

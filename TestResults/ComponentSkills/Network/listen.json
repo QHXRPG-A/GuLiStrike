@@ -1,0 +1,4999 @@
+{
+  "pid": 41948,
+  "mode": 1,
+  "checks": {
+    "selection_rpc_sent": true,
+    "mixed_selection_rpc_sent": true,
+    "all_no_skill_q_sends_no_request": true,
+    "qa_configuration_valid": true,
+    "q_executes_real_point_effects": true,
+    "mixed_units_skip_out_of_range": true,
+    "selected_cooldown_views_replicated": true,
+    "native_owned_rpc_sent": true,
+    "duplicate_returns_original_effect_ids_and_cooldowns": true,
+    "successful_units_have_independent_cooldowns": true,
+    "no_ground_rejected_for_ready_point_units": true,
+    "stale_selection_rejected": true,
+    "request_id_content_reuse_rejected": true,
+    "air_join_prepared": true,
+    "ship_has_no_startup_hangar": true,
+    "global_teleport_without_hangar": true,
+    "server_choice_commits_hangar": true,
+    "all_peers_reconstruct_one_hangar": true,
+    "all_peers_reconstruct_two_mounts": true,
+    "global_teleport_and_late_join": true
+  },
+  "replies": [
+    {
+      "id": "11CBAD894C76A53E29BE1B86FA9D4A21",
+      "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+      "error": "",
+      "units": [
+        {
+          "id": 1,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "DD985CCE4AFA1345572CCBBFB708C8BB",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 6,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "EFCD144A418987ADDF4DD4A79569DB24",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 7,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "B24EF1F542E83916AF3F4A8ECF19805C",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 2,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "4769704B47895ECC9A566AB19B402C0A",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 12,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "A50E67B94C59CABE331ABBA2157C82BF",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 11,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "9B405A444F9519251E901DBA5AF031EE",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 8,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "AE7793F145EF936AA8ED348201DE3976",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 13,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "BC25CFC2486E8FE4FA143791C43479C1",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 3,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "0FDA64CE4AD063D48AA9D686C1CA5B3E",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 17,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "7B2BA6F34A1DAC0E33A3D2801E48BE1F",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 9,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "B74BCE0A4414FED5CD7C14B9AC1F818C",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 14,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "A2261AF74AE413C313F542AEB0EAD7B9",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 18,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "3E331DCC49274F613C90A48E651E210B",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 16,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "2BBF42AE44DA7F11F8C76E978E40D2D8",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 19,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "F768C03441258F6DF659AC909F35FE7F",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 4,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "51305B3848632E2EBE9B6797F4D06D52",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 22,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "ED048CCF4C03FB894203F9BA9D202792",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 23,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "1AD6094F44A1B596879020A1E9C188FF",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 15,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "2577B9614DF75880AB09BC8B47E273BD",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 10,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "042DAF244FF841CEF3C47CBA4BA9B5DE",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 24,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "FE9B49254CCD48BA5CEDA68F5396D273",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 20,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "5B9D3A3E4CEDDCA46E7C7A9587C4041B",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 21,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "DB9A86624DD184496FBB2E9D39E83D86",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 25,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "9E3A88474D33FBDA394F7A9F7A0111E4",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 5,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "DDE063E34F240F5F02402F842D95EC4D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 26,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 27,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 32,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 31,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 28,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 33,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 37,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 36,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 38,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 34,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 42,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 43,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 39,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 29,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 41,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 44,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 35,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 40,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 48,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 47,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 45,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 49,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 46,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 30,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 50,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 51,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "A2610EA94D87EB0426AB7C825E7E484D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 52,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "818C560449FFA6CC5DFC6B840ADE91A9",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 57,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "F0D6BD0B41316F5125D8CEB62B695FC4",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 56,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "2BD769A944B4F3C788B6ABA06362B730",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 62,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "C161B443468ABFAC47CD55911D4E6B56",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 61,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "7D8230AB4164721C90B8DD91096691C2",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 58,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "69524AE644AF80D8A93B2786EB5B77F9",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 53,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "7225B831488E62993B5E7494C4AF7725",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 63,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "352DCDF5452CC9E79E535781E069F181",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 59,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "48161C2045CD3C2FE9BB23AFCF0A1B0C",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 67,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "BBBAA581476D06658D260F9B27FC759F",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 68,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "B2CE81BD4EBA2F0363004C880B3F64D9",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 64,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "736F1D5B453BF95668500D950F8B5694",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 66,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "980F065D4F3981545F56C18AE9D80145",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 54,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "91D1397E439D857C469E07AFB29E437D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 69,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "5AA0B40C44361082568BC8A72B030BEC",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 72,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "D7E3F8E644B8C3AF7E4570BA9BF2F9AA",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 73,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "C00C7B1B48929167556369A51C9BE735",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 65,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "BE1914DF4648D8F793D992918244A2E3",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 60,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "E4215CFB42563F1F97445686389CFCA4",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 70,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "FCE0FB8D45C2C4399AE60AADF78D9399",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 74,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "D8E5DBE4417D53B9DDB7F4B55BE39C45",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 71,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "1913749E471EC69F387BEC808A66868C",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 75,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "C7ABE3A349F491A9A5D203A7BFF0AF0D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 55,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "6BDEF5EB4C6397756A66FEA96E2960FA",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 76,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 77,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 81,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 82,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 87,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 86,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 83,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 78,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 88,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 84,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 92,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 89,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 93,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 79,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 94,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 91,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 85,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 90,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 98,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 97,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 99,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 95,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 96,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 100,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 80,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 101,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "A055C35C4D50DC25A6DF04A112E8BB59",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 106,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "143320664913D8AC8AA40C84C821AAAC",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 205,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "AC9CB1414F4051B7ACCD45B3475A4240",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 204,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "593F7F1347B7CBA3F32B30BB5691235B",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 210,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "63B062CA43F59CAF4DFAC9B179825086",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 203,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "24008335415F876C5BA646B7721EFC23",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 209,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "5B6820FE48FA2F287A6D48A5FE67BABD",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 215,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "8F5F10B444FC3AB62BF2BAAF511409F4",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 208,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "F2F290DE40671A736E56338D89144238",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 214,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "10DA66C24556F7D506E34EB21192C336",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 202,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "4E696F334624237E7D776698B853348B",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 213,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "D400228240AC25E47FEB16ABAB543D09",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 207,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "1D89CA7542ABDE42D2767CACDFDB26AF",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 220,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "159FB0B149132BFE39851E920ABA858C",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 219,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "1C28752342B5BF52CEC97E9C64C3A5FF",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 212,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "9151D90C4D3B694E0395A8A2177C0B58",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 218,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "66CCAFF241924A373DD1D2AA9058F644",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 201,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "808981944FDC587D2867D9A9C803EB38",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 206,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "EBBE8C5A41B6672104C1F28962CFC291",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 217,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "9BD210F0455450C44BEA6AA6E2CE6A22",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 211,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "1CC624EC4790C41CC1B8D1B00FCB4AE8",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 224,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "63248D1248B456870A4F69B87B46DFEC",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 223,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "4FFD12574CBD09A5E852B094A727ED8D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 225,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "2DD7B71D4DB8B366E54B92B5C7FB9457",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 216,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "3BD104874F24F1799A6A4085DDB2CCE1",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 126,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 127,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 132,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 131,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 128,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 133,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 137,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 136,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 138,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 134,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 142,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 139,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 143,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 141,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 129,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 144,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 147,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 148,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 140,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 135,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 145,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 149,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 146,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 130,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 150,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 151,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "BF991FE749FDC771CD4C1E8A66E890D8",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 152,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "F3A5AA2245EA2062AEDE58A05D4D9BB8",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 157,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "707A342043A60AE5F6ADD6AF6BEF5F96",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 156,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "41EBE44E48602FE8040C8DB388742F73",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 153,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "6D94FD0A44F192C9855B9692FD34183B",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 158,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "6194E6244D7CD63154B6138A4472B089",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 162,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "C48C51A44FD840E5540FDA91BEA11A9C",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 161,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "67B57E5F4D802EAA6B7EB0995C6FBF8E",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 163,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "35E1F5844D17BFCC91C323B791B5B2DE",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 159,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "786036C140FFB471E25EE68BE3060CBA",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 167,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "E393148E4892DA880DD12C8384073504",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 168,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "AF9001FA411F7219B2C938BC7565AB96",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 164,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "F074CE894A65C5E5D69F788FCB79922A",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 154,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "B5843EFE4F8C74FF1F3EE5899F74DB0D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 166,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "33FC95394676570FA54A42910880BB28",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 169,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "1EC23B5D4849C922FF8CF8AC32EA62B6",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 160,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "47D6977249423A6E82FAB7BCA89299AE",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 165,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "75A89AA447505F32372333AD851BA5B3",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 173,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "AD906C96450262A256F520A89B45810D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 172,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "059EA4FE4D3C72A1800D15AC5AE4FD95",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 174,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "DE0253EB4B3A57993EA4BFA48F9421BF",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 170,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "CB11AF5A4E59C8EE9EFBCCA0128820FD",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 171,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "48163EA0491CE8020BFAAFAF7FC6C176",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 175,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "CAB717EC4C2296154AC7F3B3A2332EF7",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 155,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "CC0EE42040046A3014930FAAD067777F",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 176,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 177,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 182,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 181,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 187,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 186,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 183,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 178,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 188,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 184,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 192,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 193,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 189,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 191,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 179,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 194,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 197,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 198,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 190,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 185,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 195,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 199,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 180,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 200,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 196,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 221,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "6ED6E3DF40F185E6BCD6A695F09E027A",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 222,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "8401C0484080A8159928D6AA76A17C5F",
+          "ready_at": 86.73420741036534
+        }
+      ]
+    },
+    {
+      "id": "11CBAD894C76A53E29BE1B86FA9D4A21",
+      "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+      "error": "",
+      "units": [
+        {
+          "id": 1,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "DD985CCE4AFA1345572CCBBFB708C8BB",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 6,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "EFCD144A418987ADDF4DD4A79569DB24",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 7,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "B24EF1F542E83916AF3F4A8ECF19805C",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 2,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "4769704B47895ECC9A566AB19B402C0A",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 12,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "A50E67B94C59CABE331ABBA2157C82BF",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 11,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "9B405A444F9519251E901DBA5AF031EE",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 8,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "AE7793F145EF936AA8ED348201DE3976",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 13,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "BC25CFC2486E8FE4FA143791C43479C1",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 3,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "0FDA64CE4AD063D48AA9D686C1CA5B3E",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 17,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "7B2BA6F34A1DAC0E33A3D2801E48BE1F",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 9,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "B74BCE0A4414FED5CD7C14B9AC1F818C",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 14,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "A2261AF74AE413C313F542AEB0EAD7B9",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 18,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "3E331DCC49274F613C90A48E651E210B",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 16,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "2BBF42AE44DA7F11F8C76E978E40D2D8",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 19,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "F768C03441258F6DF659AC909F35FE7F",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 4,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "51305B3848632E2EBE9B6797F4D06D52",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 22,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "ED048CCF4C03FB894203F9BA9D202792",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 23,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "1AD6094F44A1B596879020A1E9C188FF",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 15,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "2577B9614DF75880AB09BC8B47E273BD",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 10,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "042DAF244FF841CEF3C47CBA4BA9B5DE",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 24,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "FE9B49254CCD48BA5CEDA68F5396D273",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 20,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "5B9D3A3E4CEDDCA46E7C7A9587C4041B",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 21,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "DB9A86624DD184496FBB2E9D39E83D86",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 25,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "9E3A88474D33FBDA394F7A9F7A0111E4",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 5,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "DDE063E34F240F5F02402F842D95EC4D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 26,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 27,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 32,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 31,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 28,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 33,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 37,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 36,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 38,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 34,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 42,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 43,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 39,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 29,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 41,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 44,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 35,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 40,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 48,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 47,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 45,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 49,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 46,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 30,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 50,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 51,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "A2610EA94D87EB0426AB7C825E7E484D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 52,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "818C560449FFA6CC5DFC6B840ADE91A9",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 57,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "F0D6BD0B41316F5125D8CEB62B695FC4",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 56,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "2BD769A944B4F3C788B6ABA06362B730",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 62,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "C161B443468ABFAC47CD55911D4E6B56",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 61,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "7D8230AB4164721C90B8DD91096691C2",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 58,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "69524AE644AF80D8A93B2786EB5B77F9",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 53,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "7225B831488E62993B5E7494C4AF7725",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 63,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "352DCDF5452CC9E79E535781E069F181",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 59,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "48161C2045CD3C2FE9BB23AFCF0A1B0C",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 67,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "BBBAA581476D06658D260F9B27FC759F",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 68,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "B2CE81BD4EBA2F0363004C880B3F64D9",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 64,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "736F1D5B453BF95668500D950F8B5694",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 66,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "980F065D4F3981545F56C18AE9D80145",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 54,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "91D1397E439D857C469E07AFB29E437D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 69,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "5AA0B40C44361082568BC8A72B030BEC",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 72,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "D7E3F8E644B8C3AF7E4570BA9BF2F9AA",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 73,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "C00C7B1B48929167556369A51C9BE735",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 65,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "BE1914DF4648D8F793D992918244A2E3",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 60,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "E4215CFB42563F1F97445686389CFCA4",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 70,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "FCE0FB8D45C2C4399AE60AADF78D9399",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 74,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "D8E5DBE4417D53B9DDB7F4B55BE39C45",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 71,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "1913749E471EC69F387BEC808A66868C",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 75,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "C7ABE3A349F491A9A5D203A7BFF0AF0D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 55,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "6BDEF5EB4C6397756A66FEA96E2960FA",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 76,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 77,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 81,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 82,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 87,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 86,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 83,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 78,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 88,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 84,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 92,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 89,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 93,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 79,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 94,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 91,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 85,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 90,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 98,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 97,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 99,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 95,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 96,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 100,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 80,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 101,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "A055C35C4D50DC25A6DF04A112E8BB59",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 106,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "143320664913D8AC8AA40C84C821AAAC",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 205,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "AC9CB1414F4051B7ACCD45B3475A4240",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 204,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "593F7F1347B7CBA3F32B30BB5691235B",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 210,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "63B062CA43F59CAF4DFAC9B179825086",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 203,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "24008335415F876C5BA646B7721EFC23",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 209,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "5B6820FE48FA2F287A6D48A5FE67BABD",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 215,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "8F5F10B444FC3AB62BF2BAAF511409F4",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 208,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "F2F290DE40671A736E56338D89144238",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 214,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "10DA66C24556F7D506E34EB21192C336",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 202,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "4E696F334624237E7D776698B853348B",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 213,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "D400228240AC25E47FEB16ABAB543D09",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 207,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "1D89CA7542ABDE42D2767CACDFDB26AF",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 220,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "159FB0B149132BFE39851E920ABA858C",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 219,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "1C28752342B5BF52CEC97E9C64C3A5FF",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 212,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "9151D90C4D3B694E0395A8A2177C0B58",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 218,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "66CCAFF241924A373DD1D2AA9058F644",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 201,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "808981944FDC587D2867D9A9C803EB38",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 206,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "EBBE8C5A41B6672104C1F28962CFC291",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 217,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "9BD210F0455450C44BEA6AA6E2CE6A22",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 211,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "1CC624EC4790C41CC1B8D1B00FCB4AE8",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 224,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "63248D1248B456870A4F69B87B46DFEC",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 223,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "4FFD12574CBD09A5E852B094A727ED8D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 225,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "2DD7B71D4DB8B366E54B92B5C7FB9457",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 216,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "3BD104874F24F1799A6A4085DDB2CCE1",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 126,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 127,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 132,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 131,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 128,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 133,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 137,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 136,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 138,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 134,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 142,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 139,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 143,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 141,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 129,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 144,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 147,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 148,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 140,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 135,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 145,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 149,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 146,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 130,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 150,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 151,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "BF991FE749FDC771CD4C1E8A66E890D8",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 152,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "F3A5AA2245EA2062AEDE58A05D4D9BB8",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 157,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "707A342043A60AE5F6ADD6AF6BEF5F96",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 156,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "41EBE44E48602FE8040C8DB388742F73",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 153,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "6D94FD0A44F192C9855B9692FD34183B",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 158,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "6194E6244D7CD63154B6138A4472B089",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 162,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "C48C51A44FD840E5540FDA91BEA11A9C",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 161,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "67B57E5F4D802EAA6B7EB0995C6FBF8E",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 163,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "35E1F5844D17BFCC91C323B791B5B2DE",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 159,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "786036C140FFB471E25EE68BE3060CBA",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 167,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "E393148E4892DA880DD12C8384073504",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 168,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "AF9001FA411F7219B2C938BC7565AB96",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 164,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "F074CE894A65C5E5D69F788FCB79922A",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 154,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "B5843EFE4F8C74FF1F3EE5899F74DB0D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 166,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "33FC95394676570FA54A42910880BB28",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 169,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "1EC23B5D4849C922FF8CF8AC32EA62B6",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 160,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "47D6977249423A6E82FAB7BCA89299AE",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 165,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "75A89AA447505F32372333AD851BA5B3",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 173,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "AD906C96450262A256F520A89B45810D",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 172,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "059EA4FE4D3C72A1800D15AC5AE4FD95",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 174,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "DE0253EB4B3A57993EA4BFA48F9421BF",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 170,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "CB11AF5A4E59C8EE9EFBCCA0128820FD",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 171,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "48163EA0491CE8020BFAAFAF7FC6C176",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 175,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "CAB717EC4C2296154AC7F3B3A2332EF7",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 155,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "CC0EE42040046A3014930FAAD067777F",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 176,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 177,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 182,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 181,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 187,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 186,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 183,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 178,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 188,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 184,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 192,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 193,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 189,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 191,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 179,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 194,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 197,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 198,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 190,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 185,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 195,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 199,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 180,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 200,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 196,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 26.734207410365343
+        },
+        {
+          "id": 221,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "6ED6E3DF40F185E6BCD6A695F09E027A",
+          "ready_at": 86.73420741036534
+        },
+        {
+          "id": 222,
+          "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+          "effect": "8401C0484080A8159928D6AA76A17C5F",
+          "ready_at": 86.73420741036534
+        }
+      ]
+    },
+    {
+      "id": "C99F62464D9E7CB3CCF4AF8C92F7D79A",
+      "code": "<GuLiActiveSkillResultCode.INELIGIBLE: 2>",
+      "error": "",
+      "units": [
+        {
+          "id": 1,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 6,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 7,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 2,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 12,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 11,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 8,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 13,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 3,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 17,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 9,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 14,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 18,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 16,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 19,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 4,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 22,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 23,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 15,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 10,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 24,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 20,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 21,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 25,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 5,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 26,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 27,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 32,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 31,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 28,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 33,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 37,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 36,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 38,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 34,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 42,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 43,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 39,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 29,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 41,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 44,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 35,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 40,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 48,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 47,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 45,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 49,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 46,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 30,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 50,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 51,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 52,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 57,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 56,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 62,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 61,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 58,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 53,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 63,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 59,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 67,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 68,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 64,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 66,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 54,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 69,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 72,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 73,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 65,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 60,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 70,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 74,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 71,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 75,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 55,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 76,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 77,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 81,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 82,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 87,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 86,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 83,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 78,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 88,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 84,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 92,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 89,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 93,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 79,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 94,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 91,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 85,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 90,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 98,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 97,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 99,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 95,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 96,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 100,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 80,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 101,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 106,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 205,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 204,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 210,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 203,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 209,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 215,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 208,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 214,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 202,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 213,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 207,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 220,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 219,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 212,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 218,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 201,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 206,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 217,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 211,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 224,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 223,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 225,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 216,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 126,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 127,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 132,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 131,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 128,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 133,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 137,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 136,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 138,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 134,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 142,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 139,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 143,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 141,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 129,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 144,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 147,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 148,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 140,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 135,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 145,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 149,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 146,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 130,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 150,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 151,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 152,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 157,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 156,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 153,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 158,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 162,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 161,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 163,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 159,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 167,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 168,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 164,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 154,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 166,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 169,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 160,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 165,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 173,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 172,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 174,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 170,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 171,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 175,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 155,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 176,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 177,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 182,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 181,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 187,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 186,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 183,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 178,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 188,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 184,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 192,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 193,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 189,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 191,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 179,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 194,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 197,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 198,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 190,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 185,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 195,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 199,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 180,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 200,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 196,
+          "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.82011980563402
+        },
+        {
+          "id": 221,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        },
+        {
+          "id": 222,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.72011974826455
+        }
+      ]
+    },
+    {
+      "id": "808D2D594572E0FD6B08D5A4466369A2",
+      "code": "<GuLiActiveSkillResultCode.INELIGIBLE: 2>",
+      "error": "",
+      "units": [
+        {
+          "id": 1,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 6,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 7,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 2,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 12,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 11,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 8,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 13,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 3,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 17,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 9,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 14,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 18,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 16,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 19,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 4,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 22,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 23,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 15,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 10,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 24,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 20,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 21,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 25,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 5,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 26,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 27,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 32,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 31,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 28,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 33,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 37,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 36,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 38,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 34,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 42,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 43,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 39,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 29,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 41,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 44,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 35,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 40,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 48,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 47,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 45,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 49,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 46,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 30,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 50,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 51,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 52,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 57,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 56,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 62,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 61,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 58,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 53,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 63,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 59,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 67,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 68,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 64,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 66,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 54,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 69,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 72,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 73,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 65,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 60,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 70,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 74,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 71,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 75,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 55,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 76,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 77,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 81,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 82,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 87,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 86,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 83,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 78,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 88,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 84,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 92,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 89,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 93,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 79,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 94,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 91,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 85,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 90,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 98,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 97,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 99,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 95,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 96,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 100,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 80,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 101,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 106,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 205,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 204,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 210,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 203,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 209,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 215,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 208,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 214,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 202,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 213,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 207,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 220,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 219,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 212,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 218,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 201,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 206,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 217,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 211,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 224,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 223,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 225,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 216,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 126,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 127,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 132,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 131,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 128,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 133,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 137,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 136,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 138,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 134,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 142,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 139,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 143,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 141,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 129,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 144,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 147,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 148,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 140,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 135,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 145,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 149,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 146,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 130,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 150,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 151,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 152,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 157,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 156,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 153,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 158,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 162,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 161,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 163,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 159,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 167,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 168,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 164,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 154,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 166,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 169,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 160,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 165,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 173,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 172,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 174,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 170,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 171,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 175,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 155,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 176,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 177,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 182,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 181,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 187,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 186,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 183,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 178,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 188,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 184,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 192,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 193,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 189,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 191,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 179,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 194,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 197,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 198,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 190,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 185,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 195,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 199,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 180,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 200,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 196,
+          "code": "<GuLiActiveSkillResultCode.INVALID_GROUND: 5>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 27.866393607109785
+        },
+        {
+          "id": 221,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        },
+        {
+          "id": 222,
+          "code": "<GuLiActiveSkillResultCode.COOLDOWN: 3>",
+          "effect": "00000000000000000000000000000000",
+          "ready_at": 86.73306021466851
+        }
+      ]
+    },
+    {
+      "id": "B4D21D57409D9361511F79A663A3C086",
+      "code": "<GuLiActiveSkillResultCode.STALE_SELECTION: 7>",
+      "error": "Selection changed before the skill request.",
+      "units": []
+    },
+    {
+      "id": "11CBAD894C76A53E29BE1B86FA9D4A21",
+      "code": "<GuLiActiveSkillResultCode.INVALID_REQUEST: 6>",
+      "error": "Request ID was already used for different skill content.",
+      "units": []
+    }
+  ],
+  "passed": true,
+  "errors": [],
+  "stage": 12,
+  "selected_types": [
+    1,
+    2
+  ],
+  "choice_reason": "",
+  "wingman_bootstrap": {
+    "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": [
+      {
+        "controller": "GuLiCommanderPlayerController_0",
+        "local": true,
+        "lifecycle": 0,
+        "carrier_valid": false,
+        "config_usable": false,
+        "bootstrap_valid": false,
+        "accepted_sequence": 0,
+        "atomic_attempts": 0,
+        "atomic_accepted": 0,
+        "atomic_rejected": 0,
+        "atomic_reject_reason": 0
+      },
+      {
+        "controller": "GuLiCommanderPlayerController_1",
+        "local": false,
+        "lifecycle": 0,
+        "carrier_valid": false,
+        "config_usable": false,
+        "bootstrap_valid": false,
+        "accepted_sequence": 0,
+        "atomic_attempts": 0,
+        "atomic_accepted": 0,
+        "atomic_rejected": 0,
+        "atomic_reject_reason": 0
+      },
+      {
+        "controller": "GuLiCommanderPlayerController_2",
+        "local": false,
+        "lifecycle": 2,
+        "carrier_valid": true,
+        "config_usable": true,
+        "bootstrap_valid": false,
+        "accepted_sequence": 195,
+        "atomic_attempts": 0,
+        "atomic_accepted": 0,
+        "atomic_rejected": 0,
+        "atomic_reject_reason": 0,
+        "applied_loadout_revision": 3
+      }
+    ],
+    "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": [
+      {
+        "controller": "GuLiCommanderPlayerController_0",
+        "local": true,
+        "lifecycle": 0,
+        "carrier_valid": false,
+        "config_usable": false,
+        "bootstrap_valid": false,
+        "accepted_sequence": 0,
+        "atomic_attempts": 0,
+        "atomic_accepted": 0,
+        "atomic_rejected": 0,
+        "atomic_reject_reason": 0
+      }
+    ],
+    "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": [
+      {
+        "controller": "GuLiCommanderPlayerController_0",
+        "local": true,
+        "lifecycle": 2,
+        "carrier_valid": true,
+        "config_usable": true,
+        "bootstrap_valid": true,
+        "accepted_sequence": 195,
+        "atomic_attempts": 0,
+        "atomic_accepted": 0,
+        "atomic_rejected": 0,
+        "atomic_reject_reason": 0,
+        "applied_loadout_revision": 3
+      }
+    ]
+  }
+}

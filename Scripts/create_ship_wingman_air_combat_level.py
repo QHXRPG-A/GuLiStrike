@@ -23,7 +23,10 @@ import unreal
 
 SOURCE_MAP = "/Game/Maps/LVL_CommanderMassPrototype"
 TARGET_MAP = "/Game/Maps/LVL_ShipWingmanAirCombatPrototype"
-GAME_MODE_CLASS = "/Script/GuLiStrike.GuLiShipTestGameMode"
+GAME_MODE_CLASS = (
+    "/Game/GuLiStrike/Ship/BP_GM_ShipWingmanAirCombatPrototype."
+    "BP_GM_ShipWingmanAirCombatPrototype_C"
+)
 REPORT_PATH = os.path.join(
     unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()),
     "TestResults",

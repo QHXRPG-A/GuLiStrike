@@ -267,7 +267,6 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 	for (const FGuLiTerritoryDefinition& Territory : MapDefinition->Territories)
 		Owners.Add(Territory.InitialOwner);
 	WorldState->InitializeAuthority(MapDefinition->LayoutHash, Owners);
-	WorldState->SetTransportEdgesAuthority(StrongholdTopology.GetTransportEdges());
 	MaintenanceAccount = FGuid::NewGuid();
 	WorldState->OnStateChanged().AddUObject(this, &ThisClass::HandleWorldStateChanged);
 

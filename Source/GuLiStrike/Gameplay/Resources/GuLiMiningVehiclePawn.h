@@ -50,6 +50,9 @@ public:
 	UFUNCTION(BlueprintPure, Category="Resources|Mining")
 	int32 GetUnitTypeId() const { return UnitTypeId; }
 	bool IssuePlayerCommand(const FGuLiMiningCommand& Command, EGuLiTeam RequestingTeam);
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category="Resources|Transit")
+	virtual EGuLiTransitOrderResult IssueStrongholdTransit(const FGuLiStrongholdTransitOrder& Order, EGuLiTeam RequestingTeam) override;
+	UFUNCTION(BlueprintPure, Category="Resources|Transit") EGuLiTransitOrderResult GetLastTransitResult() const { return LastTransitResult; }
 	/** Reflected convenience entry that still runs the same authority validation/state machine. */
 	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category = "Resources|Mining")
 	bool IssuePlayerCommandByValue(
@@ -160,7 +163,16 @@ private:
 	bool bDockAligned = false;
 	FBox TravelBounds = FBox(ForceInit);
 	uint32 TargetNodeId = 0;
-	TOptional<FGuLiMiningCommand> PendingCommand;
+	struct FPendingEngineeringCommand
+	{
+		FGuLiMiningCommand Mining;
+		FGuLiStrongholdTransitOrder Transit;
+		FPendingEngineeringCommand(const FGuLiMiningCommand& In) : Mining(In) {}
+		FPendingEngineeringCommand(const FGuLiStrongholdTransitOrder& In) : Transit(In) {}
+	};
+	TOptional<FPendingEngineeringCommand> PendingCommand;
+	UPROPERTY(Replicated) EGuLiTransitOrderResult LastTransitResult = EGuLiTransitOrderResult::InvalidRequest;
+	void ExecuteTransit(const FGuLiStrongholdTransitOrder& Order, const FGuLiPreparedTransit& Prepared);
 	bool bPendingAutomatic = false;
 
 	UGuLiResourceWorldSubsystem* GetResourceSubsystem() const;

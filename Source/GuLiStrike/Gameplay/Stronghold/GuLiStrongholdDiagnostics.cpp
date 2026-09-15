@@ -18,7 +18,14 @@ FString GuLiStrongholds::DescribeWorld(UWorld& World)
 	if (!Resources.IsRuntimeReady()) return TEXT("据点世界未就绪。");
 	TArray<UGuLiBuildingLifecycleComponent*> Buildings;
 	World.GetSubsystem<UGuLiBuildingRegistrySubsystem>()->Query(Buildings);
-	FString Result = FString::Printf(TEXT("建筑 %d；空中连接 %d\n"),Buildings.Num(),Resources.GetStrongholdTopology().GetTransportEdges().Num());
+	const auto& Network = Resources.GetResourceWorldState()->GetTransportNetwork();
+	FString Result = FString::Printf(TEXT("建筑 %d；运输网络版本 %u\n"),Buildings.Num(),Network.Revision);
+	for (auto Team : {EGuLiTeam::Red,EGuLiTeam::Blue})
+	{
+		const int32 Nodes = Network.Nodes.FilterByPredicate([Team](const auto& Node) { return Node.Team == Team; }).Num();
+		const int32 Edges = Network.Edges.FilterByPredicate([Team](const auto& Edge) { return Edge.Team == Team; }).Num();
+		Result += FString::Printf(TEXT("%s通道：有效据点 %d，连接 %d / %d\n"),Team == EGuLiTeam::Red ? TEXT("红方") : TEXT("蓝方"),Nodes,Edges,FMath::Max(0,Nodes-1));
+	}
 	if (World.GetNetMode() != NM_Client)
 	{
 		const auto& Battle = *World.GetSubsystem<UGuLiBattleAuthoritySubsystem>();

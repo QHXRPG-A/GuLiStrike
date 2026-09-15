@@ -9,14 +9,13 @@
 
 class AGuLiStrikeShip;
 class APlayerController;
-class UGameplayAbility;
-class UGuLiShipAbilitySystemComponent;
+class UGuLiShipHangarCapabilityComponent;
 class USpringArmComponent;
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiShipAimModeChanged, EGuLiShipReticleMode);
 
 /**
- * Local-only bridge between active GAS abilities, the Ship camera and a virtual screen reticle.
+ * Local-only bridge between active capability actions, the Ship camera and a virtual screen reticle.
  * It never selects targets, mutates gameplay authority, sends RPCs, or owns visual widgets.
  */
 UCLASS(ClassGroup = (GuLiStrike), meta = (BlueprintSpawnableComponent))
@@ -27,10 +26,10 @@ class GULISTRIKE_API UGuLiShipAimComponent final : public UActorComponent
 public:
 	UGuLiShipAimComponent();
 
-	/** Re-evaluates local ownership and ASC bindings after possession changes. */
+	/** Re-evaluates local ownership and capability bindings after possession changes. */
 	void HandleOwnerControllerChanged();
 
-	/** Clears presentation state when the owning Ship dies without changing GAS authority. */
+	/** Clears presentation state when the owning Ship dies without changing gameplay authority. */
 	void ResetForOwnerUnavailable();
 
 	/** Returns true while aiming, meaning the caller must not also orbit the camera. */
@@ -69,10 +68,9 @@ protected:
 		FActorComponentTickFunction* ThisTickFunction) override;
 
 private:
-	void BindAbilitySystem(UGuLiShipAbilitySystemComponent* AbilitySystem);
-	void UnbindAbilitySystem();
-	void HandleAbilityActivated(UGameplayAbility* Ability);
-	void HandleAbilityEnded(UGameplayAbility* Ability);
+	void BindHangar(UGuLiShipHangarCapabilityComponent* Hangar);
+	void UnbindHangar();
+	void HandleAbilityPresentation(FGameplayTag AbilityId, bool bActive);
 	void ApplyActiveClaim();
 	void EnterAimMode();
 	void ExitAimMode();
@@ -94,11 +92,11 @@ private:
 
 	TWeakObjectPtr<AGuLiStrikeShip> OwnerShip;
 	TWeakObjectPtr<APlayerController> LocalController;
-	TWeakObjectPtr<UGuLiShipAbilitySystemComponent> BoundAbilitySystem;
+	TWeakObjectPtr<UGuLiShipHangarCapabilityComponent> BoundHangar;
 	TWeakObjectPtr<USpringArmComponent> ShipSpringArm;
 	TWeakObjectPtr<UObject> CurrentClaimOwner;
-	FDelegateHandle AbilityActivatedHandle;
-	FDelegateHandle AbilityEndedHandle;
+	FDelegateHandle PresentationHandle;
+	UPROPERTY(Transient) TMap<FGameplayTag, TObjectPtr<UObject>> PresentationOwners;
 	FGuLiShipReticleActivationStack ActivationStack;
 	FGuLiShipAimModeChanged AimModeChangedDelegate;
 	FGuLiShipReticleConfig ActiveConfig;

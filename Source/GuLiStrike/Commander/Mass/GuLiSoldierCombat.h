@@ -107,7 +107,7 @@ struct GULISTRIKE_API FGuLiCombatBenchmarkResult
 namespace GuLiSoldierCombat
 {
 	inline constexpr float SpatialCellSizeCentimeters = 10000.0f;
-	inline constexpr uint32 AcquisitionPeriodTicks = 6; // 200 ms at 30 Hz.
+	inline constexpr uint32 AcquisitionPeriodTicks = GuLiCommanderSimulationTiming::RateHz / 5u; // 200 ms.
 	GULISTRIKE_API const TCHAR* LexToString(EGuLiCombatStopReason Reason);
 	GULISTRIKE_API FIntPoint MakeSpatialCell(const FVector& Location);
 	GULISTRIKE_API bool IsProfileUsable(const FGuLiResolvedSkillProfile& Profile);

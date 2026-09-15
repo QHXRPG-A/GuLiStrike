@@ -65,7 +65,7 @@ class TeleportEdgeRun:
         try:
             elapsed=self.now()-self.started
             if self.stage==0 and elapsed>=1:
-                self.input.server_submit(unreal.GuLiTeleportCommand.SOURCE,unreal.Guid(),self.source)
+                unreal.GuLiTeleportQALibrary.submit_intent(self.input, unreal.GuLiTeleportCommand.SOURCE,unreal.Guid(),self.source)
                 s=self.input.query_state(); self.cast=s.cast_id
                 assert s.phase==unreal.GuLiTeleportPhase.WINDUP, str(self.input.get_status_text())
                 self.case['checks']['source_accepted']=True
@@ -73,7 +73,7 @@ class TeleportEdgeRun:
                 if self.name=='freeze_duplicate': self.input.set_server_level(4)
             elif self.stage==1 and self.now()-self.source_time>=.2:
                 if self.name=='freeze_duplicate':
-                    self.input.server_submit(unreal.GuLiTeleportCommand.SOURCE,unreal.Guid(),self.source)
+                    unreal.GuLiTeleportQALibrary.submit_intent(self.input, unreal.GuLiTeleportCommand.SOURCE,unreal.Guid(),self.source)
                     s=self.input.query_state()
                     self.case['checks']['duplicate_keeps_cast']=s.cast_id.to_string()==self.cast.to_string()
                     self.case['checks']['configuration_frozen']=s.config.level==1 and s.config.radius_centimeters==1000
@@ -100,7 +100,7 @@ class TeleportEdgeRun:
                     elif self.name=='match_end':
                         unreal.GameplayStatics.get_game_mode(self.world).end_match()
                     else:
-                        self.input.server_submit(unreal.GuLiTeleportCommand.CANCEL,self.cast,unreal.Vector())
+                        unreal.GuLiTeleportQALibrary.submit_intent(self.input, unreal.GuLiTeleportCommand.CANCEL,self.cast,unreal.Vector())
                 self.stage=3
             elif self.stage==3 and self.now()-self.source_time>=5:
                 s=self.state()

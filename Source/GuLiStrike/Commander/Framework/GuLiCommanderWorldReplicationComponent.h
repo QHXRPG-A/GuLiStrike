@@ -46,7 +46,7 @@ private:
 	uint8 StationaryPoseFrameDivisor = 2u;
 
 	uint32 LastPublishedPoseSimTick = 0u;
-	uint32 LastPoseChunkDispatchSimTick = 0u;
+	double PoseFrameCapturedAtSeconds = 0.0;
 	uint32 PublishedMatchEpoch = 0u;
 	TArray<FGuLiSoldierPoseChunk> PendingPoseChunks;
 	uint8 PendingPoseDispatchPhase = 0u;

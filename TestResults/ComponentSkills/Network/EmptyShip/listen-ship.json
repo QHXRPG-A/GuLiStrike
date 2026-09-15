@@ -1,0 +1,511 @@
+{
+  "mode": 2,
+  "vehicle": "ship",
+  "passed": true,
+  "checks": {
+    "local_player_rpc_sent": true,
+    "server_collected": true,
+    "clients_show_blue_vehicle": true,
+    "clients_show_phased_mass": true,
+    "camera_follows_while_blue": true,
+    "landing_finished": true,
+    "no_server_pullback": true,
+    "displaced": true,
+    "original_pawn_alive": true,
+    "camera_keeps_original_target": true,
+    "normal_appearance_restored": true,
+    "all_clients_at_destination": true
+  },
+  "stages": [
+    {
+      "label": "before",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -33309.05884768712,
+                184630.87483498614,
+                2272.0
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -33309.06,
+                184630.87,
+                2272.0
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -33309.05884768712,
+                184630.87483498614,
+                2272.0
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "BP_CombatAvatarFly01_C_0"
+            }
+          ],
+          "group_pawns": [],
+          "group_state": null
+        }
+      ]
+    },
+    {
+      "label": "phased",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 191,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 194,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -33309.05884768712,
+                184630.87483498614,
+                2272.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 191,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 194,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -33309.05884768712,
+                184630.87483498614,
+                2272.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 191,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 194,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -33309.05884768712,
+                184630.87483498614,
+                2272.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "BP_CombatAvatarFly01_C_0"
+            }
+          ],
+          "group_pawns": [],
+          "group_state": null
+        }
+      ]
+    },
+    {
+      "label": "late_join",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 191,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 194,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -33309.05884768712,
+                184630.87483498614,
+                2272.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 191,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 194,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -33309.05884768712,
+                184630.87483498614,
+                2272.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 191,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.AWAITING_DESTINATION: 2>",
+              "count": 194,
+              "cosmetics": 2,
+              "message": ""
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -33309.05884768712,
+                184630.87483498614,
+                2272.0
+              ],
+              "blue": true,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "BP_CombatAvatarFly01_C_0"
+            }
+          ],
+          "group_pawns": [],
+          "group_state": null
+        }
+      ]
+    },
+    {
+      "label": "landed",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 0,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.FINISHED: 5>",
+              "count": 194,
+              "cosmetics": 2,
+              "message": "传送成功"
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -49309.05884768712,
+                176630.87483498614,
+                2238.827856775006
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.FINISHED: 5>",
+              "count": 194,
+              "cosmetics": 2,
+              "message": "传送成功"
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -49309.06,
+                176630.87,
+                2238.83
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [
+            {
+              "phase": "<GuLiTeleportPhase.FINISHED: 5>",
+              "count": 194,
+              "cosmetics": 2,
+              "message": "传送成功"
+            }
+          ],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -49309.05884768712,
+                176630.87483498614,
+                2238.827856775006
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "BP_CombatAvatarFly01_C_0"
+            }
+          ],
+          "group_pawns": [],
+          "group_state": null
+        }
+      ]
+    },
+    {
+      "label": "stable",
+      "worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 2,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -49309.05884768712,
+                176630.87483498614,
+                2238.827856775006
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -49309.06,
+                176630.87,
+                2238.83
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [],
+          "group_pawns": [],
+          "group_state": null
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+          "mode": 3,
+          "phased_mass": 0,
+          "fields": [],
+          "vehicles": [
+            {
+              "name": "BP_CombatAvatarFly01_C_0",
+              "location": [
+                -49309.05884768712,
+                176630.87483498614,
+                2238.827856775006
+              ],
+              "blue": false,
+              "hidden": false,
+              "speed": 0.0
+            }
+          ],
+          "wingmen": 0,
+          "blue_wingmen": 0,
+          "cameras": [
+            {
+              "same_target": true,
+              "pawn": "BP_CombatAvatarFly01_C_0"
+            }
+          ],
+          "group_pawns": [],
+          "group_state": null
+        }
+      ]
+    }
+  ],
+  "errors": [],
+  "source": [
+    -33309.05884768712,
+    184630.87483498614,
+    2272.0
+  ],
+  "server_status": "选择落点 9.4 秒 · 194 个单位",
+  "sender_status": "选择落点 9.4 秒 · 194 个单位",
+  "destination_attempts": [
+    {
+      "offset": [
+        -16000,
+        -8000
+      ],
+      "previous_rejection": ""
+    }
+  ]
+}

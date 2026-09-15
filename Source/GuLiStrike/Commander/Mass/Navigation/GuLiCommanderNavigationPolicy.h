@@ -3,6 +3,7 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Commander/GuLiCommanderSimulationTiming.h"
 #include "AI/Navigation/NavigationTypes.h"
 
 class ANavigationData;
@@ -21,9 +22,9 @@ namespace GuLiCommanderNavigationPolicy
 	inline constexpr float RequiredAgentRadiusCentimeters = 750.0f;
 	inline constexpr float MaximumSurfaceMoveZDeltaCentimeters = 250.0f;
 	inline constexpr float MinimumNavigationProgressCentimeters = 30.0f;
-	inline constexpr int32 RequiredTransitExpansionSuccessSteps = 15;
+	inline constexpr int32 RequiredTransitExpansionSuccessSteps = GuLiCommanderSimulationTiming::RateHz / 2u;
 	inline constexpr double MinimumTransitRearrangementIntervalSeconds = 0.5;
-	inline constexpr uint32 MovementUpdateIntervalTicks = 3u;
+	inline constexpr uint32 MovementUpdateIntervalTicks = 1u;
 	inline constexpr float MaximumMovementUpdateDeltaSeconds = 0.1f;
 
 	/** Frozen terminal coordinate frame derived from the last usable NavMesh path segment. */
@@ -97,7 +98,7 @@ namespace GuLiCommanderNavigationPolicy
 	/** The only SupportedAgent name legal for Commander movement. */
 	GULISTRIKE_API FName GetRequiredAgentName();
 
-	/** Stable per-Soldier phase used to spread 10 Hz work across a 30 Hz authority loop. */
+	/** Optional phase scheduling; the 10 Hz authority runtime updates every Soldier on every step. */
 	GULISTRIKE_API uint32 ResolveMovementUpdatePhase(
 		uint32 StableSoldierId,
 		uint32 UpdateIntervalTicks = MovementUpdateIntervalTicks);

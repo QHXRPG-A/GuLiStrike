@@ -1,0 +1,116 @@
+{
+  "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV1.DA_ShipAbilitySet_WingmanV1": [
+    {
+      "id": "Ship.Ability.Formation.SwarmOrbit",
+      "input": "None",
+      "slot": "None",
+      "skill_id": "None",
+      "profile_revision": 1,
+      "cooldown_group": "None",
+      "weapon": null,
+      "formation": "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_SwarmOrbit.DA_WingmanFormation_SwarmOrbit",
+      "resolved_weapon": null
+    },
+    {
+      "id": "Ship.Ability.Formation.DoubleRing",
+      "input": "None",
+      "slot": "None",
+      "skill_id": "None",
+      "profile_revision": 1,
+      "cooldown_group": "None",
+      "weapon": null,
+      "formation": "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_DoubleRing.DA_WingmanFormation_DoubleRing",
+      "resolved_weapon": null
+    },
+    {
+      "id": "Ship.Ability.Weapon.Basic.Auto",
+      "input": "None",
+      "slot": "None",
+      "skill_id": "None",
+      "profile_revision": 1,
+      "cooldown_group": "None",
+      "weapon": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_BasicAuto.DA_WingmanWeapon_BasicAuto",
+      "formation": null,
+      "resolved_weapon": "(EffectConfigId=\"\",Attack=(Pattern=Legacy,ExecutorId=\"Legacy\",FlightSpeed=0.000000,DiveSeconds=0.000000,MissileCount=0,StripLength=0.000000,PullUpHeight=0.000000,ExplosionRadius=800.000000,AirFireStartDistance=0.000000,AirFireStopDistance=0.000000,AirBurstDurationSeconds=0.000000,AirOrbitCooldownSeconds=0.000000,Muzzle=(X=0.000000,Y=0.000000,Z=0.000000)),Damage=10.000000,RangeCentimeters=150000.000000,CooldownSeconds=2.000000,TargetConeHalfAngleDegrees=20.000000,bRequiresLineOfSight=True,ProjectileSpeedCentimetersPerSecond=120000.000000,ProjectileLifetimeSeconds=1.500000,SweepRadiusCentimeters=45.000000,MaximumHomingTurnRateDegreesPerSecond=0.000000)"
+    },
+    {
+      "id": "Ship.Ability.Weapon.Missile.Salvo",
+      "input": "InputTag.Ship.Wingman.Missile",
+      "slot": "None",
+      "skill_id": "None",
+      "profile_revision": 1,
+      "cooldown_group": "None",
+      "weapon": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MissileSalvo.DA_WingmanWeapon_MissileSalvo",
+      "formation": null,
+      "resolved_weapon": "(EffectConfigId=\"\",Attack=(Pattern=Legacy,ExecutorId=\"Legacy\",FlightSpeed=0.000000,DiveSeconds=0.000000,MissileCount=0,StripLength=0.000000,PullUpHeight=0.000000,ExplosionRadius=800.000000,AirFireStartDistance=0.000000,AirFireStopDistance=0.000000,AirBurstDurationSeconds=0.000000,AirOrbitCooldownSeconds=0.000000,Muzzle=(X=0.000000,Y=0.000000,Z=0.000000)),Damage=100.000000,RangeCentimeters=250000.000000,CooldownSeconds=8.000000,TargetConeHalfAngleDegrees=8.000000,bRequiresLineOfSight=True,ProjectileSpeedCentimetersPerSecond=45000.000000,ProjectileLifetimeSeconds=8.000000,SweepRadiusCentimeters=150.000000,MaximumHomingTurnRateDegreesPerSecond=45.000000)"
+    }
+  ],
+  "/Game/GuLiStrike/Ship/Abilities/DA_ShipAbilitySet_WingmanV3.DA_ShipAbilitySet_WingmanV3": [
+    {
+      "id": "Ship.Ability.Formation.SwarmOrbit",
+      "input": "None",
+      "slot": "None",
+      "skill_id": "None",
+      "profile_revision": 1,
+      "cooldown_group": "None",
+      "weapon": null,
+      "formation": "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_SwarmOrbit.DA_WingmanFormation_SwarmOrbit",
+      "resolved_weapon": null
+    },
+    {
+      "id": "Ship.Ability.Formation.DoubleRing",
+      "input": "None",
+      "slot": "None",
+      "skill_id": "None",
+      "profile_revision": 1,
+      "cooldown_group": "None",
+      "weapon": null,
+      "formation": "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_DoubleRing.DA_WingmanFormation_DoubleRing",
+      "resolved_weapon": null
+    },
+    {
+      "id": "Ship.Ability.Weapon.Basic.Auto",
+      "input": "None",
+      "slot": "None",
+      "skill_id": "None",
+      "profile_revision": 1,
+      "cooldown_group": "None",
+      "weapon": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_BasicAuto.DA_WingmanWeapon_BasicAuto",
+      "formation": null,
+      "resolved_weapon": "(EffectConfigId=\"\",Attack=(Pattern=Legacy,ExecutorId=\"Legacy\",FlightSpeed=0.000000,DiveSeconds=0.000000,MissileCount=0,StripLength=0.000000,PullUpHeight=0.000000,ExplosionRadius=800.000000,AirFireStartDistance=0.000000,AirFireStopDistance=0.000000,AirBurstDurationSeconds=0.000000,AirOrbitCooldownSeconds=0.000000,Muzzle=(X=0.000000,Y=0.000000,Z=0.000000)),Damage=10.000000,RangeCentimeters=150000.000000,CooldownSeconds=2.000000,TargetConeHalfAngleDegrees=20.000000,bRequiresLineOfSight=True,ProjectileSpeedCentimetersPerSecond=120000.000000,ProjectileLifetimeSeconds=1.500000,SweepRadiusCentimeters=45.000000,MaximumHomingTurnRateDegreesPerSecond=0.000000)"
+    },
+    {
+      "id": "Ship.Ability.Weapon.Missile.Salvo",
+      "input": "InputTag.Ship.Wingman.Missile",
+      "slot": "None",
+      "skill_id": "None",
+      "profile_revision": 1,
+      "cooldown_group": "None",
+      "weapon": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MissileSalvo.DA_WingmanWeapon_MissileSalvo",
+      "formation": null,
+      "resolved_weapon": "(EffectConfigId=\"\",Attack=(Pattern=Legacy,ExecutorId=\"Legacy\",FlightSpeed=0.000000,DiveSeconds=0.000000,MissileCount=0,StripLength=0.000000,PullUpHeight=0.000000,ExplosionRadius=800.000000,AirFireStartDistance=0.000000,AirFireStopDistance=0.000000,AirBurstDurationSeconds=0.000000,AirOrbitCooldownSeconds=0.000000,Muzzle=(X=0.000000,Y=0.000000,Z=0.000000)),Damage=100.000000,RangeCentimeters=250000.000000,CooldownSeconds=8.000000,TargetConeHalfAngleDegrees=8.000000,bRequiresLineOfSight=True,ProjectileSpeedCentimetersPerSecond=45000.000000,ProjectileLifetimeSeconds=8.000000,SweepRadiusCentimeters=150.000000,MaximumHomingTurnRateDegreesPerSecond=45.000000)"
+    },
+    {
+      "id": "Ship.Ability.Weapon.Wingman.MachineGun",
+      "input": "None",
+      "slot": "AirWeapon",
+      "skill_id": "Wingman.MachineGun",
+      "profile_revision": 1,
+      "cooldown_group": "None",
+      "weapon": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MachineGun.DA_WingmanWeapon_MachineGun",
+      "formation": null,
+      "resolved_weapon": "(EffectConfigId=\"\",Attack=(Pattern=AirBurstOrbit,ExecutorId=\"WingmanMachineGun\",FlightSpeed=9000.000000,DiveSeconds=1.500000,MissileCount=10,StripLength=12000.000000,PullUpHeight=10000.000000,ExplosionRadius=800.000000,AirFireStartDistance=10000.000000,AirFireStopDistance=5000.000000,AirBurstDurationSeconds=5.000000,AirOrbitCooldownSeconds=3.000000,Muzzle=(X=1200.000000,Y=0.000000,Z=0.000000)),Damage=10.000000,RangeCentimeters=150000.000000,CooldownSeconds=0.200000,TargetConeHalfAngleDegrees=20.000000,bRequiresLineOfSight=True,ProjectileSpeedCentimetersPerSecond=80000.000000,ProjectileLifetimeSeconds=1.875000,SweepRadiusCentimeters=45.000000,MaximumHomingTurnRateDegreesPerSecond=0.000000)"
+    },
+    {
+      "id": "Ship.Ability.Weapon.Wingman.GroundMissile",
+      "input": "None",
+      "slot": "GroundWeapon",
+      "skill_id": "Wingman.GroundMissile",
+      "profile_revision": 1,
+      "cooldown_group": "None",
+      "weapon": "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_GroundMissile.DA_WingmanWeapon_GroundMissile",
+      "formation": null,
+      "resolved_weapon": "(EffectConfigId=\"WingmanGroundMissile\",Attack=(Pattern=GroundDive,ExecutorId=\"WingmanGroundMissile\",FlightSpeed=9000.000000,DiveSeconds=1.500000,MissileCount=10,StripLength=12000.000000,PullUpHeight=10000.000000,ExplosionRadius=4000.000000,AirFireStartDistance=10000.000000,AirFireStopDistance=5000.000000,AirBurstDurationSeconds=5.000000,AirOrbitCooldownSeconds=3.000000,Muzzle=(X=1200.000000,Y=0.000000,Z=0.000000)),Damage=30.000000,RangeCentimeters=150000.000000,CooldownSeconds=8.000000,TargetConeHalfAngleDegrees=20.000000,bRequiresLineOfSight=True,ProjectileSpeedCentimetersPerSecond=6000.000000,ProjectileLifetimeSeconds=8.000000,SweepRadiusCentimeters=30.000000,MaximumHomingTurnRateDegreesPerSecond=0.000000)"
+    }
+  ]
+}

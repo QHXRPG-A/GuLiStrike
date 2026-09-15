@@ -10,10 +10,13 @@ AGuLiCommanderDeploymentPoint::AGuLiCommanderDeploymentPoint()
 	bNetLoadOnClient = false;
 	SetRootComponent(CreateDefaultSubobject<USceneComponent>(TEXT("DeploymentRoot")));
 #if WITH_EDITORONLY_DATA
-	UArrowComponent* Arrow = CreateEditorOnlyDefaultSubobject<UArrowComponent>(TEXT("DeploymentDirection"));
-	Arrow->SetupAttachment(GetRootComponent());
-	Arrow->ArrowSize = 8.0f;
-	Arrow->SetHiddenInGame(true);
+	// Editor-only subobjects are intentionally absent when the editor binary runs as a server.
+	if (UArrowComponent* Arrow = CreateEditorOnlyDefaultSubobject<UArrowComponent>(TEXT("DeploymentDirection")))
+	{
+		Arrow->SetupAttachment(GetRootComponent());
+		Arrow->ArrowSize = 8.0f;
+		Arrow->SetHiddenInGame(true);
+	}
 #endif
 }
 

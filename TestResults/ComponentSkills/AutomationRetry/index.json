@@ -1,0 +1,139 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "0ECB45C640CD7EE390CF36934F88604A",
+			"instanceName": "DESKTOP-6D3B0FC-7424",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.14-17.04.16",
+	"succeeded": 2,
+	"succeededWithWarnings": 0,
+	"failed": 2,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 1.0236421823501587,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AbilitySetContract",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.AbilitySetContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0ECB45C640CD7EE390CF36934F88604A"
+			],
+			"duration": 0.0069150999188423157,
+			"dateTime": "2026.09.14-17.04.15",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroupConfigHashAndInvalidation",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.GroupConfigHashAndInvalidation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"0ECB45C640CD7EE390CF36934F88604A"
+			],
+			"duration": 0.0081238001585006714,
+			"dateTime": "2026.09.14-17.04.15",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SustainedGunLedgerAndState",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.SustainedGunLedgerAndState",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"0ECB45C640CD7EE390CF36934F88604A"
+			],
+			"duration": 0.97688049077987671,
+			"dateTime": "2026.09.14-17.04.15",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(334): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.14-17.04.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Five-hertz full burst deals exactly 250 damage' to be 9750.000000, but it was 9820.000000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Combat\\Tests\\GuLiWingmanAttackCombatTests.cpp",
+					"lineNumber": 480,
+					"timestamp": "2026.09.14-17.04.16"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Thirty-hertz full burst deals exactly 1500 damage' to be 8500.000000, but it was 8910.000000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Combat\\Tests\\GuLiWingmanAttackCombatTests.cpp",
+					"lineNumber": 520,
+					"timestamp": "2026.09.14-17.04.16"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnifiedAutomaticTargetingAndAuthorization",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.UnifiedAutomaticTargetingAndAuthorization",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"0ECB45C640CD7EE390CF36934F88604A"
+			],
+			"duration": 0.031722798943519592,
+			"dateTime": "2026.09.14-17.04.16",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The existing group rejoin gate blocks immediate reacquisition' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Battle\\Combat\\Tests\\GuLiWingmanCombatCoordinatorTests.cpp",
+					"lineNumber": 749,
+					"timestamp": "2026.09.14-17.04.16"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

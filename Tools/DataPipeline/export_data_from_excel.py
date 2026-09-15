@@ -358,19 +358,21 @@ def validate_building_references(tables):
             raise SheetError(f"{label}: strongholds have four fixed facility slots")
         if any(value not in buildings or buildings[value]["Category"] == 5 for value in gift_ids):
             raise SheetError(f"{label}: invalid gift building reference")
-        gate = fields.get(row["GateFieldId"])
-        if row["GateFieldId"] and (not gate or gate["FieldType"] != "StrongholdGate"):
-            raise SheetError(f"{label}: GateFieldId must reference a StrongholdGate")
-        if category == 5 and (not gift_ids or not gate):
-            raise SheetError(f"{label}: strongholds require gift IDs and gate field")
+        transit = fields.get(row["TransitFieldId"])
+        if row["TransitFieldId"] and (not transit or transit["FieldType"] != "StrongholdTransit"):
+            raise SheetError(f"{label}: TransitFieldId must reference a StrongholdTransit")
+        if category == 5 and (not gift_ids or not transit):
+            raise SheetError(f"{label}: strongholds require gift IDs and transit configuration")
     for row in fields.values():
-        if row["FieldType"] != "StrongholdGate":
+        if row["FieldType"] in ("Combat", "Teleport") and row["RadiusCentimeters"] <= 0:
+            raise SheetError(f"Fields/{row['Name']}: combat and teleport fields require a positive radius")
+        if row["FieldType"] != "StrongholdTransit":
             continue
-        required = ("RadiusCentimeters", "LaneHeightCentimeters", "AscentSeconds",
+        required = ("LaneHeightCentimeters", "AscentSeconds",
                     "AccelerationSeconds", "DecelerationSeconds", "ExitFlashSeconds",
                     "SpeedMultiplier", "ExitRadiusCentimeters")
-        if not row["bPermanent"] or not row["bIndestructible"] or any(row[key] <= 0 for key in required):
-            raise SheetError(f"Fields/{row['Name']}: invalid permanent gate configuration")
+        if any(row[key] <= 0 for key in required):
+            raise SheetError(f"Fields/{row['Name']}: invalid airborne transit configuration")
 
 
 def main():

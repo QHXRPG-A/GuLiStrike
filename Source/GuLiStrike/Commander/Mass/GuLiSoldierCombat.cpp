@@ -184,10 +184,10 @@ FGuLiCombatStepMetrics GuLiSoldierCombat::CollectChannelAttacks(const TConstArra
 		{
 			// Never replay shots accumulated while moving, without a target, or after a hitch.
 			const double Interval = 1.0 / Source.Profile->AttackRatePerSecond;
-			// Carry only fixed-step rounding error (e.g. 4/s needs alternating 7/8 ticks).
+			// Carry only fixed-step rounding error (e.g. 4/s needs alternating 2/3 ticks).
 			// Any larger overdue period is discarded, so movement/hitches cannot bank a burst.
 			const bool bOnlyStepRounding = State.NextFireSeconds > 0.0
-				&& SimulationSeconds - State.NextFireSeconds <= 1.0 / 30.0 + 1.e-7;
+				&& SimulationSeconds - State.NextFireSeconds <= GuLiCommanderSimulationTiming::StepSeconds + 1.e-7;
 			State.NextFireSeconds = bOnlyStepRounding ? State.NextFireSeconds + Interval
 				: SimulationSeconds + Interval;
 			State.StopReason = EGuLiCombatStopReason::Fired;
@@ -227,7 +227,7 @@ bool GuLiSoldierCombat::RunBenchmark(const int32 PopulationCount, const int32 St
 		const double Start = FPlatformTime::Seconds();
 		BuildSpatialGrid(Samples, Grid);
 		const FGuLiCombatStepMetrics Metrics = CollectAttacks(Samples, Indices, Grid,
-			Step + 1, static_cast<double>(Step + 1) / 30.0, Executors, Events);
+			Step + 1, static_cast<double>(Step + 1) / GuLiCommanderSimulationTiming::RateHz, Executors, Events);
 		const double Milliseconds = (FPlatformTime::Seconds() - Start) * 1000.0;
 		Times.Add(Milliseconds); OutResult.MeanMilliseconds += Milliseconds;
 		OutResult.Shots += Metrics.Shots; OutResult.TargetQueries += Metrics.TargetQueries;

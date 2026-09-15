@@ -1,0 +1,675 @@
+{
+  "profile": "D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\network-profile-n1200-c2\\server\\network.nprof",
+  "header": {
+    "version": 14,
+    "tag": "",
+    "game": "GuLiStrike",
+    "url": "/Game/Maps/LVL_CommanderMassPrototype?Name=Player"
+  },
+  "token_counts": {
+    "0": 2983,
+    "15": 14693,
+    "17": 57,
+    "5": 18975,
+    "18": 2,
+    "16": 13250,
+    "13": 41705,
+    "4": 125967,
+    "9": 26443,
+    "2": 32653,
+    "1": 26443,
+    "3": 33398,
+    "10": 180,
+    "7": 2,
+    "6": 1
+  },
+  "full_frame_range": [
+    96.09115600585938,
+    146.09466552734375
+  ],
+  "full_events": 320459,
+  "window_engine_seconds": [
+    101.10065460205078,
+    131.10317993164062
+  ],
+  "window_monotonic_seconds": [
+    16791919.6784752,
+    16791949.68100053
+  ],
+  "measured_seconds": 30.002525329589844,
+  "connections": [
+    {
+      "address": "127.0.0.1:58159",
+      "socket_packet_count": 9412,
+      "packet_overhead_bytes": 28,
+      "udp_bytes": 5370261,
+      "accounted_bytes": 5624830,
+      "wire_accounted_bytes": 5633797,
+      "wire_bytes_s": 187777.42667027083,
+      "packet_handler_extra_bytes": 8967,
+      "packet_handler_extra_bytes_histogram": {
+        "1": 8967,
+        "0": 445
+      },
+      "bytes_s": 187478.55182885352,
+      "counter_delta_bytes": 5624852.0,
+      "counter_boundary_skew_ms": [
+        3.935798949214586,
+        3.1178703593752743
+      ],
+      "counter_difference_bytes": 22.0,
+      "categories": [
+        {
+          "name": "soldier_poses",
+          "bits": 40362766,
+          "bytes": 5045345.75,
+          "bytes_s": 168164.03601279698,
+          "percent": 89.69774642078072,
+          "events": 11635
+        },
+        {
+          "name": "other_rpc",
+          "bits": 9600,
+          "bytes": 1200.0,
+          "bytes_s": 39.99663317729144,
+          "percent": 0.02133397809356016,
+          "events": 300
+        },
+        {
+          "name": "world_buildings_and_other_state",
+          "bits": 270362,
+          "bytes": 33795.25,
+          "bytes_s": 1126.4135144873821,
+          "percent": 0.6008226026386575,
+          "events": 7065
+        },
+        {
+          "name": "soldier_roster_and_state",
+          "bits": 585396,
+          "bytes": 73174.5,
+          "bytes_s": 2438.9446953597603,
+          "percent": 1.3009193166726818,
+          "events": 72
+        },
+        {
+          "name": "commands_and_endpoints",
+          "bits": 476526,
+          "bytes": 59565.75,
+          "bytes_s": 1985.3578772335397,
+          "percent": 1.058978671355401,
+          "events": 18
+        },
+        {
+          "name": "protocol_and_unattributed",
+          "bits": 3293990,
+          "bytes": 411748.75,
+          "bytes_s": 13723.803095798567,
+          "percent": 7.320199010458984,
+          "events": 0
+        }
+      ],
+      "rpcs": [
+        {
+          "name": "GuLiCommanderPlayerController.ClientReceiveSoldierPoseChunk",
+          "count": 11635,
+          "bits": 40362766,
+          "header_bits": 314145,
+          "parameter_bits": 40048621,
+          "bytes": 5045345.75,
+          "bytes_s": 168164.03601279698,
+          "percent": 89.69774642078072
+        },
+        {
+          "name": "GuLiCommanderPlayerController.ClientReceivePublicPoseFrame",
+          "count": 300,
+          "bits": 9600,
+          "header_bits": 5700,
+          "parameter_bits": 3900,
+          "bytes": 1200.0,
+          "bytes_s": 39.99663317729144,
+          "percent": 0.02133397809356016
+        }
+      ],
+      "properties": [
+        {
+          "name": "GuLiSoldierStateReplicator.ReplicatedSoldiers",
+          "count": 36,
+          "bits": 584244,
+          "bytes": 73030.5,
+          "bytes_s": 2434.1450993784856,
+          "percent": 1.2983592393014545
+        },
+        {
+          "name": "GuLiCommanderPlayerController.MoveEndpoints",
+          "count": 18,
+          "bits": 476526,
+          "bytes": 59565.75,
+          "bytes_s": 1985.3578772335397,
+          "percent": 1.058978671355401
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.ReplicatedMovement",
+          "count": 907,
+          "bits": 110826,
+          "bytes": 13853.25,
+          "bytes_s": 461.7361321360939,
+          "percent": 0.2462874433538436
+        },
+        {
+          "name": "GuLiPlacedBuilding.HealthState",
+          "count": 1200,
+          "bits": 38400,
+          "bytes": 4800.0,
+          "bytes_s": 159.98653270916577,
+          "percent": 0.08533591237424064
+        },
+        {
+          "name": "GuLiPlacedBuilding.TargetHandle",
+          "count": 240,
+          "bits": 36480,
+          "bytes": 4560.0,
+          "bytes_s": 151.98720607370748,
+          "percent": 0.08106911675552861
+        },
+        {
+          "name": "GuLiPlacedBuilding.State",
+          "count": 1440,
+          "bits": 31680,
+          "bytes": 3960.0,
+          "bytes_s": 131.98888948506175,
+          "percent": 0.07040212770874853
+        },
+        {
+          "name": "GuLiCommanderGameState.ReplicatedWorldTimeSecondsDouble",
+          "count": 257,
+          "bits": 16448,
+          "bytes": 2056.0,
+          "bytes_s": 68.52756484375934,
+          "percent": 0.03655221580029974
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.Progress",
+          "count": 401,
+          "bits": 12832,
+          "bytes": 1604.0,
+          "bytes_s": 53.46216634697956,
+          "percent": 0.028516417385058748
+        },
+        {
+          "name": "GuLiPlacedBuilding.DefinitionId",
+          "count": 240,
+          "bits": 7680,
+          "bytes": 960.0,
+          "bytes_s": 31.997306541833154,
+          "percent": 0.01706718247484813
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.RedCount",
+          "count": 172,
+          "bits": 5504,
+          "bytes": 688.0,
+          "bytes_s": 22.931403021647093,
+          "percent": 0.012231480773641158
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.BlueCount",
+          "count": 162,
+          "bits": 5184,
+          "bytes": 648.0,
+          "bytes_s": 21.598181915737378,
+          "percent": 0.011520348170522486
+        },
+        {
+          "name": "GuLiPlacedBuilding.RemoteRole",
+          "count": 534,
+          "bits": 1602,
+          "bytes": 200.25,
+          "bytes_s": 6.674438161460509,
+          "percent": 0.0035601075943628513
+        },
+        {
+          "name": "GuLiPlacedBuilding.Role",
+          "count": 534,
+          "bits": 1602,
+          "bytes": 200.25,
+          "bytes_s": 6.674438161460509,
+          "percent": 0.0035601075943628513
+        },
+        {
+          "name": "GuLiSoldierStateReplicator.SnapshotRevision",
+          "count": 36,
+          "bits": 1152,
+          "bytes": 144.0,
+          "bytes_s": 4.799595981274973,
+          "percent": 0.0025600773712272195
+        },
+        {
+          "name": "GuLiPlacedBuilding.Team",
+          "count": 480,
+          "bits": 960,
+          "bytes": 120.0,
+          "bytes_s": 3.9996633177291443,
+          "percent": 0.0021333978093560162
+        },
+        {
+          "name": "GuLiPlacedBuilding.BuildingType",
+          "count": 240,
+          "bits": 720,
+          "bytes": 90.0,
+          "bytes_s": 2.9997474882968582,
+          "percent": 0.0016000483570170123
+        },
+        {
+          "name": "GuLiPlacedBuilding.bEnabled",
+          "count": 240,
+          "bits": 240,
+          "bytes": 30.0,
+          "bytes_s": 0.9999158294322861,
+          "percent": 0.0005333494523390041
+        },
+        {
+          "name": "GuLiCommanderPlayerState.ResourcePrivateState",
+          "count": 6,
+          "bits": 108,
+          "bytes": 13.5,
+          "bytes_s": 0.4499621232445287,
+          "percent": 0.0002400072535525518
+        },
+        {
+          "name": "GuLiCommanderPlayerState.CompressedPing",
+          "count": 12,
+          "bits": 96,
+          "bytes": 12.0,
+          "bytes_s": 0.3999663317729144,
+          "percent": 0.0002133397809356016
+        }
+      ],
+      "layers": {
+        "packet_overhead_bits": 2108288,
+        "socket_packet_bits": 131768,
+        "socket_bunch_bits": 42221774,
+        "socket_ack_bits": 499581,
+        "socket_padding_bits": 0,
+        "bunch_header_bits": 336015,
+        "bunch_payload_bits": 41885759,
+        "property_header_bits": 1224,
+        "property_handle_bits": 50024,
+        "content_begin_bits_inclusive_rpc": 160935
+      }
+    },
+    {
+      "address": "127.0.0.1:58160",
+      "socket_packet_count": 9398,
+      "packet_overhead_bytes": 28,
+      "udp_bytes": 5367710,
+      "accounted_bytes": 5621886,
+      "wire_accounted_bytes": 5630854,
+      "wire_bytes_s": 187679.3349274035,
+      "packet_handler_extra_bytes": 8968,
+      "packet_handler_extra_bytes_histogram": {
+        "1": 8968,
+        "0": 430
+      },
+      "bytes_s": 187380.42675545855,
+      "counter_delta_bytes": 5621908.0,
+      "counter_boundary_skew_ms": [
+        3.935798949214586,
+        3.1178703593752743
+      ],
+      "counter_difference_bytes": 22.0,
+      "categories": [
+        {
+          "name": "soldier_poses",
+          "bits": 40363600,
+          "bytes": 5045450.0,
+          "bytes_s": 168167.51072030424,
+          "percent": 89.74657259147553,
+          "events": 11635
+        },
+        {
+          "name": "other_rpc",
+          "bits": 9600,
+          "bytes": 1200.0,
+          "bytes_s": 39.99663317729144,
+          "percent": 0.021345150008377972,
+          "events": 300
+        },
+        {
+          "name": "world_buildings_and_other_state",
+          "bits": 268622,
+          "bytes": 33577.75,
+          "bytes_s": 1119.1641247239982,
+          "percent": 0.5972684255781778,
+          "events": 6485
+        },
+        {
+          "name": "soldier_roster_and_state",
+          "bits": 585396,
+          "bytes": 73174.5,
+          "bytes_s": 2438.9446953597603,
+          "percent": 1.3016005660733783,
+          "events": 72
+        },
+        {
+          "name": "commands_and_endpoints",
+          "bits": 475926,
+          "bytes": 59490.75,
+          "bytes_s": 1982.858087659959,
+          "percent": 1.0581991523840932,
+          "events": 18
+        },
+        {
+          "name": "protocol_and_unattributed",
+          "bits": 3271944,
+          "bytes": 408993.0,
+          "bytes_s": 13631.9524942333,
+          "percent": 7.275014114480443,
+          "events": 0
+        }
+      ],
+      "rpcs": [
+        {
+          "name": "GuLiCommanderPlayerController.ClientReceiveSoldierPoseChunk",
+          "count": 11635,
+          "bits": 40363600,
+          "header_bits": 314145,
+          "parameter_bits": 40049455,
+          "bytes": 5045450.0,
+          "bytes_s": 168167.51072030424,
+          "percent": 89.74657259147553
+        },
+        {
+          "name": "GuLiCommanderPlayerController.ClientReceivePublicPoseFrame",
+          "count": 300,
+          "bits": 9600,
+          "header_bits": 5700,
+          "parameter_bits": 3900,
+          "bytes": 1200.0,
+          "bytes_s": 39.99663317729144,
+          "percent": 0.021345150008377972
+        }
+      ],
+      "properties": [
+        {
+          "name": "GuLiSoldierStateReplicator.ReplicatedSoldiers",
+          "count": 36,
+          "bits": 584244,
+          "bytes": 73030.5,
+          "bytes_s": 2434.1450993784856,
+          "percent": 1.2990391480723729
+        },
+        {
+          "name": "GuLiCommanderPlayerController.MoveEndpoints",
+          "count": 18,
+          "bits": 475926,
+          "bytes": 59490.75,
+          "bytes_s": 1982.858087659959,
+          "percent": 1.0581991523840932
+        },
+        {
+          "name": "GuLiMiningVehiclePawn.ReplicatedMovement",
+          "count": 907,
+          "bits": 110826,
+          "bytes": 13853.25,
+          "bytes_s": 461.7361321360939,
+          "percent": 0.24641641612796844
+        },
+        {
+          "name": "GuLiPlacedBuilding.HealthState",
+          "count": 1200,
+          "bits": 38400,
+          "bytes": 4800.0,
+          "bytes_s": 159.98653270916577,
+          "percent": 0.08538060003351189
+        },
+        {
+          "name": "GuLiPlacedBuilding.TargetHandle",
+          "count": 240,
+          "bits": 36480,
+          "bytes": 4560.0,
+          "bytes_s": 151.98720607370748,
+          "percent": 0.08111157003183629
+        },
+        {
+          "name": "GuLiPlacedBuilding.State",
+          "count": 1440,
+          "bits": 31680,
+          "bytes": 3960.0,
+          "bytes_s": 131.98888948506175,
+          "percent": 0.0704389950276473
+        },
+        {
+          "name": "GuLiCommanderGameState.ReplicatedWorldTimeSecondsDouble",
+          "count": 257,
+          "bits": 16448,
+          "bytes": 2056.0,
+          "bytes_s": 68.52756484375934,
+          "percent": 0.03657135701435425
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.Progress",
+          "count": 401,
+          "bits": 12832,
+          "bytes": 1604.0,
+          "bytes_s": 53.46216634697956,
+          "percent": 0.028531350511198553
+        },
+        {
+          "name": "GuLiPlacedBuilding.DefinitionId",
+          "count": 240,
+          "bits": 7680,
+          "bytes": 960.0,
+          "bytes_s": 31.997306541833154,
+          "percent": 0.01707612000670238
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.RedCount",
+          "count": 172,
+          "bits": 5504,
+          "bytes": 688.0,
+          "bytes_s": 22.931403021647093,
+          "percent": 0.012237886004803371
+        },
+        {
+          "name": "GuLiTerritoryOutpostActor.BlueCount",
+          "count": 162,
+          "bits": 5184,
+          "bytes": 648.0,
+          "bytes_s": 21.598181915737378,
+          "percent": 0.011526381004524104
+        },
+        {
+          "name": "GuLiSoldierStateReplicator.SnapshotRevision",
+          "count": 36,
+          "bits": 1152,
+          "bytes": 144.0,
+          "bytes_s": 4.799595981274973,
+          "percent": 0.0025614180010053566
+        },
+        {
+          "name": "GuLiPlacedBuilding.Team",
+          "count": 480,
+          "bits": 960,
+          "bytes": 120.0,
+          "bytes_s": 3.9996633177291443,
+          "percent": 0.0021345150008377973
+        },
+        {
+          "name": "GuLiPlacedBuilding.RemoteRole",
+          "count": 244,
+          "bits": 732,
+          "bytes": 91.5,
+          "bytes_s": 3.0497432797684723,
+          "percent": 0.0016275676881388201
+        },
+        {
+          "name": "GuLiPlacedBuilding.Role",
+          "count": 244,
+          "bits": 732,
+          "bytes": 91.5,
+          "bytes_s": 3.0497432797684723,
+          "percent": 0.0016275676881388201
+        },
+        {
+          "name": "GuLiPlacedBuilding.BuildingType",
+          "count": 240,
+          "bits": 720,
+          "bytes": 90.0,
+          "bytes_s": 2.9997474882968582,
+          "percent": 0.0016008862506283479
+        },
+        {
+          "name": "GuLiPlacedBuilding.bEnabled",
+          "count": 240,
+          "bits": 240,
+          "bytes": 30.0,
+          "bytes_s": 0.9999158294322861,
+          "percent": 0.0005336287502094493
+        },
+        {
+          "name": "GuLiCommanderPlayerState.ResourcePrivateState",
+          "count": 6,
+          "bits": 108,
+          "bytes": 13.5,
+          "bytes_s": 0.4499621232445287,
+          "percent": 0.00024013293759425215
+        },
+        {
+          "name": "GuLiCommanderPlayerState.CompressedPing",
+          "count": 12,
+          "bits": 96,
+          "bytes": 12.0,
+          "bytes_s": 0.3999663317729144,
+          "percent": 0.00021345150008377972
+        }
+      ],
+      "layers": {
+        "packet_overhead_bits": 2105152,
+        "socket_packet_bits": 131572,
+        "socket_bunch_bits": 42202369,
+        "socket_ack_bits": 498746,
+        "socket_padding_bits": 0,
+        "bunch_header_bits": 328266,
+        "bunch_payload_bits": 41874103,
+        "property_header_bits": 1224,
+        "property_handle_bits": 35032,
+        "content_begin_bits_inclusive_rpc": 160355
+      }
+    }
+  ],
+  "client_counters": [
+    {
+      "role": "client1",
+      "received_bytes": 5616738.0,
+      "measured_seconds": 29.99616599828005,
+      "bytes_s": 187248.53037291695,
+      "boundary_skew_ms": [
+        4.889000207185745,
+        -1.4703311026096344
+      ]
+    },
+    {
+      "role": "client2",
+      "received_bytes": 5624841.0,
+      "measured_seconds": 30.00510650128126,
+      "bytes_s": 187462.7907006366,
+      "boundary_skew_ms": [
+        -5.3705014288425446,
+        -2.7893297374248505
+      ]
+    }
+  ],
+  "aggregate_categories": [
+    {
+      "name": "soldier_poses",
+      "bytes": 10090795.75,
+      "bytes_s_per_client": 168165.77336655062,
+      "percent": 89.72215311562948
+    },
+    {
+      "name": "protocol_and_unattributed",
+      "bytes": 820741.75,
+      "bytes_s_per_client": 13677.877795015933,
+      "percent": 7.297612476388664
+    },
+    {
+      "name": "soldier_roster_and_state",
+      "bytes": 146349.0,
+      "bytes_s_per_client": 2438.9446953597603,
+      "percent": 1.3012598522093026
+    },
+    {
+      "name": "commands_and_endpoints",
+      "bytes": 119056.5,
+      "bytes_s_per_client": 1984.1079824467495,
+      "percent": 1.0585890138952563
+    },
+    {
+      "name": "world_buildings_and_other_state",
+      "bytes": 67373.0,
+      "bytes_s_per_client": 1122.7888196056902,
+      "percent": 0.5990459792885319
+    },
+    {
+      "name": "other_rpc",
+      "bytes": 2400.0,
+      "bytes_s_per_client": 39.99663317729144,
+      "percent": 0.021339562588759246
+    }
+  ],
+  "per_client_mean_bytes_s": 187429.48929215604,
+  "per_client_mean_wire_bytes_s": 187728.38079883717,
+  "protocol_subcategories": [
+    {
+      "name": "packet_overhead_bits",
+      "bits": 4213440,
+      "bytes": 526680.0,
+      "bytes_s_per_client": 8777.261150756607,
+      "percent": 4.682967010103216
+    },
+    {
+      "name": "bunch_header_bits",
+      "bits": 664281,
+      "bytes": 83035.125,
+      "bytes_s_per_client": 1383.8022647731425,
+      "percent": 0.7383055195845615
+    },
+    {
+      "name": "socket_packet_bits",
+      "bits": 263340,
+      "bytes": 32917.5,
+      "bytes_s_per_client": 548.578821922288,
+      "percent": 0.292685438131451
+    },
+    {
+      "name": "socket_ack_bits",
+      "bits": 998327,
+      "bytes": 124790.875,
+      "bytes_s_per_client": 2079.672854686762,
+      "percent": 1.1095761198202212
+    },
+    {
+      "name": "other_framing_and_unattributed",
+      "bits": 426546,
+      "bytes": 53318.25,
+      "bytes_s_per_client": 888.5627028771331,
+      "percent": 0.47407838874921354
+    }
+  ],
+  "cross_check": {
+    "reconstructed_connection_bytes": 11246716,
+    "server_counter_bytes": 11246760.0,
+    "client_received_bytes": 11241579.0,
+    "server_counter_difference_percent": 0.00039122531412250083,
+    "client_counter_difference_percent": -0.04567555542435153
+  },
+  "notes": [
+    "RPC byte attribution includes the RPC field header and content block header; it is not raw pose struct size.",
+    "Properties are measured serialized values; container metadata remains in protocol_and_unattributed.",
+    "Do not sum nested layer counters: RPC content headers also occur in content_begin events.",
+    "Main denominator reconstructs pre-PacketHandler connection bytes from packet/ACK/bunch bits plus one termination bit, rounded per packet, plus runtime PacketOverhead; cross-checked against cumulative counters.",
+    "Actual socket bytes plus PacketOverhead are separately retained as wire bytes; neither denominator includes Ethernet headers.",
+    "No per-property classification of retransmitted bunches is inferred; any unclassified bytes remain explicit.",
+    "Existing synthetic server-owned movement commands do not represent human mouse-command traffic."
+  ]
+}

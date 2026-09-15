@@ -5,7 +5,7 @@
 #include "NativeGameplayTags.h"
 
 // Stable ability identifiers. These are persisted in the PlayerState loadout;
-// GameplayAbilitySpecHandle is deliberately never part of that contract.
+// Runtime object identities are never part of that contract.
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GuLi_ShipAbility_Formation_DoubleRing);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GuLi_ShipAbility_Formation_SwarmOrbit);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GuLi_ShipAbility_Weapon_Basic_Auto);
@@ -17,11 +17,11 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GuLi_ShipAbility_Weapon_Wingman_GroundMissile
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GuLi_ShipAbility_Reticle_Omni);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GuLi_ShipAbility_Reticle_Bounded);
 
-// Mutually exclusive group-level slots projected from the Ship ASC.
+// Mutually exclusive group-level slots projected from the hangar capability.
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GuLi_ShipWingman_Formation);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GuLi_ShipWingman_Weapon_Basic);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GuLi_ShipWingman_Weapon_Missile);
 
-// Player input and non-numeric GAS state. No ship AttributeSet is introduced.
+// Player input and non-numeric capability state.
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GuLi_Input_Ship_Wingman_Missile);
 UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_GuLi_ShipAbility_State_MissileCooldown);

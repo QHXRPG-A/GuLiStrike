@@ -1,0 +1,77 @@
+{
+  "Pattern": "shuttle",
+  "Duration": 40,
+  "Population": 500,
+  "Clients": 2,
+  "Engine": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64",
+  "Date": "2026-09-15T10:10:21.5155597+08:00",
+  "Renderer": "1920x1080, Epic, screen percentage 100, VSync off, client uncapped/server 60 FPS cap, offscreen",
+  "Processes": [
+    {
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "/Game/Maps/LVL_CommanderMassPrototype",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-server",
+        "-NullRHI",
+        "-port=17951",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\shuttle-n500-c2\\server.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,gs.Commander.MoveStress 500 50 D:/UE5.7/test1/TestResults/CommanderMove10Hz/shuttle-n500-c2/server server 2 shuttle\""
+      ],
+      "Role": "server",
+      "Pid": 24640
+    },
+    {
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "127.0.0.1:17951",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-RenderOffscreen",
+        "-windowed",
+        "-ResX=1920",
+        "-ResY=1080",
+        "-ForceRes",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\shuttle-n500-c2\\client1.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,t.MaxFPS 0,gs.Commander.MoveStress 500 40 D:/UE5.7/test1/TestResults/CommanderMove10Hz/shuttle-n500-c2/client1 client 2 shuttle\""
+      ],
+      "Role": "client1",
+      "Pid": 21956
+    },
+    {
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "127.0.0.1:17951",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-RenderOffscreen",
+        "-windowed",
+        "-ResX=1920",
+        "-ResY=1080",
+        "-ForceRes",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\shuttle-n500-c2\\client2.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,t.MaxFPS 0,gs.Commander.MoveStress 500 40 D:/UE5.7/test1/TestResults/CommanderMove10Hz/shuttle-n500-c2/client2 client 2 shuttle\""
+      ],
+      "Role": "client2",
+      "Pid": 16680
+    }
+  ],
+  "PartitionCpu": false,
+  "Map": "/Game/Maps/LVL_CommanderMassPrototype"
+}

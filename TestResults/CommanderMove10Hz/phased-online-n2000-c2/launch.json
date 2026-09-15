@@ -1,0 +1,71 @@
+{
+  "Pattern": "shuttle",
+  "Date": "2026-09-15T10:58:24.2376011+08:00",
+  "PartitionCpu": false,
+  "Clients": 2,
+  "Renderer": "NullRHI clients/server, 60 FPS world cap; network/CPU capture only",
+  "HeadlessClients": true,
+  "Engine": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64",
+  "Processes": [
+    {
+      "Pid": 29172,
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "/Game/Maps/LVL_CommanderMassPrototype",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-server",
+        "-NullRHI",
+        "-port=17951",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\phased-online-n2000-c2\\server.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,gs.Commander.MoveStress 2000 50 D:/UE5.7/test1/TestResults/CommanderMove10Hz/phased-online-n2000-c2/server server 2 shuttle join-first\""
+      ],
+      "Role": "server"
+    },
+    {
+      "Pid": 32272,
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "127.0.0.1:17951",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-NullRHI",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\phased-online-n2000-c2\\client1.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,t.MaxFPS 60,gs.Commander.MoveStress 2000 40 D:/UE5.7/test1/TestResults/CommanderMove10Hz/phased-online-n2000-c2/client1 client 2 shuttle join-first\""
+      ],
+      "Role": "client1"
+    },
+    {
+      "Pid": 32076,
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "127.0.0.1:17951",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-NullRHI",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\phased-online-n2000-c2\\client2.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,t.MaxFPS 60,gs.Commander.MoveStress 2000 40 D:/UE5.7/test1/TestResults/CommanderMove10Hz/phased-online-n2000-c2/client2 client 2 shuttle join-first\""
+      ],
+      "Role": "client2"
+    }
+  ],
+  "Map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "Duration": 40,
+  "JoinBeforePopulation": true,
+  "Population": 2000
+}

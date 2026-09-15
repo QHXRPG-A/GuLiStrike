@@ -1,0 +1,51 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1500" height="630" viewBox="0 0 1500 630">
+<rect width="1500" height="630" fill="#f8fafc"/>
+<g font-family="Microsoft YaHei,Segoe UI,sans-serif" fill="#0f172a">
+<text x="40" y="51" font-size="28" font-weight="700">1,200 人 · 同机双客户端 · 时间线采样</text>
+<text x="40" y="88" font-size="17">客户端 1，采集开始约 20 秒后的一个完整游戏帧：16.10 ms（此帧不是 P95）</text>
+<text x="40" y="118" font-size="15" fill="#475569">时间片 58.4468732–58.4629727 s；GPU 异步执行，行间有嵌套，耗时不得相加。橙色代表等待。</text>
+<line x1="340.00" y1="140" x2="340.00" y2="525" stroke="#cbd5e1"/>
+<text x="340.00" y="550" text-anchor="middle" font-size="14">0 ms</text>
+<line x1="476.03" y1="140" x2="476.03" y2="525" stroke="#cbd5e1"/>
+<text x="476.03" y="550" text-anchor="middle" font-size="14">2 ms</text>
+<line x1="612.06" y1="140" x2="612.06" y2="525" stroke="#cbd5e1"/>
+<text x="612.06" y="550" text-anchor="middle" font-size="14">4 ms</text>
+<line x1="748.09" y1="140" x2="748.09" y2="525" stroke="#cbd5e1"/>
+<text x="748.09" y="550" text-anchor="middle" font-size="14">6 ms</text>
+<line x1="884.12" y1="140" x2="884.12" y2="525" stroke="#cbd5e1"/>
+<text x="884.12" y="550" text-anchor="middle" font-size="14">8 ms</text>
+<line x1="1020.15" y1="140" x2="1020.15" y2="525" stroke="#cbd5e1"/>
+<text x="1020.15" y="550" text-anchor="middle" font-size="14">10 ms</text>
+<line x1="1156.17" y1="140" x2="1156.17" y2="525" stroke="#cbd5e1"/>
+<text x="1156.17" y="550" text-anchor="middle" font-size="14">12 ms</text>
+<line x1="1292.20" y1="140" x2="1292.20" y2="525" stroke="#cbd5e1"/>
+<text x="1292.20" y="550" text-anchor="middle" font-size="14">14 ms</text>
+<line x1="1428.23" y1="140" x2="1428.23" y2="525" stroke="#cbd5e1"/>
+<text x="1428.23" y="550" text-anchor="middle" font-size="14">16 ms</text>
+<text x="40" y="181" font-size="16">GT · FEngineLoop::Tick</text>
+<rect x="340.000" y="160" width="1095.000" height="30" rx="3" fill="#718096"><title>FEngineLoop::Tick: visible 16.100 ms</title></rect>
+<text x="887.50" y="180" text-anchor="middle" font-size="14" fill="white">16.10 ms</text>
+<text x="40" y="226" font-size="16">GT · 士兵实例更新</text>
+<rect x="511.832" y="205" width="73.939" height="30" rx="3" fill="#2563eb"><title>GuLiCommanderPresentation_RebuildLocalInstances: visible 1.087 ms</title></rect>
+<text x="548.80" y="225" text-anchor="middle" font-size="14" fill="white">1.09 ms</text>
+<text x="40" y="271" font-size="16">GT · ISM 批量变换（上行子项）</text>
+<rect x="575.228" y="250" width="4.543" height="30" rx="3" fill="#0d9488"><title>UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms: visible 0.067 ms</title></rect>
+<rect x="580.384" y="250" width="4.639" height="30" rx="3" fill="#0d9488"><title>UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms: visible 0.068 ms</title></rect>
+<text x="40" y="316" font-size="16">GT · 小地图绘制</text>
+<rect x="727.730" y="295" width="25.852" height="30" rx="3" fill="#7c3aed"><title>GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Paint: visible 0.380 ms</title></rect>
+<text x="40" y="361" font-size="16">GT · Game thread idle time</text>
+<rect x="795.146" y="340" width="630.236" height="30" rx="3" fill="#d97706"><title>Game thread idle time: visible 9.266 ms</title></rect>
+<text x="1110.26" y="360" text-anchor="middle" font-size="14" fill="white">9.27 ms</text>
+<text x="40" y="406" font-size="16">RT · WaitForTasks</text>
+<rect x="364.839" y="385" width="42.931" height="30" rx="3" fill="#d97706"><title>WaitForTasks: visible 0.631 ms</title></rect>
+<rect x="445.069" y="385" width="525.868" height="30" rx="3" fill="#d97706"><title>WaitForTasks: visible 7.732 ms</title></rect>
+<text x="708.00" y="405" text-anchor="middle" font-size="14" fill="white">7.73 ms</text>
+<text x="40" y="451" font-size="16">GPU Graphics · ShadowDepths</text>
+<rect x="1172.620" y="430" width="9.753" height="30" rx="3" fill="#0891b2"><title>ShadowDepths: visible 0.143 ms</title></rect>
+<rect x="1182.652" y="430" width="75.986" height="30" rx="3" fill="#0891b2"><title>ShadowDepths: visible 1.117 ms</title></rect>
+<text x="1220.65" y="450" text-anchor="middle" font-size="14" fill="white">1.12 ms</text>
+<text x="40" y="496" font-size="16">GPU Graphics · TSR</text>
+<rect x="383.182" y="475" width="93.955" height="30" rx="3" fill="#7c3aed"><title>TemporalSuperResolution(sg.AntiAliasingQuality=%d%s) %dx%d -&gt; %dx%d: visible 1.381 ms</title></rect>
+<text x="430.16" y="495" text-anchor="middle" font-size="14" fill="white">1.38 ms</text>
+<text x="40" y="594" font-size="15" fill="#475569">来源：Unreal Insights 实测事件；仅展示选定范围，不是完整调用树或 RenderDoc draw call 截帧。</text>
+</g></svg>

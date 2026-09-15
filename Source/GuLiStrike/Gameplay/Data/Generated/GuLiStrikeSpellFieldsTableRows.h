@@ -35,7 +35,7 @@ struct FGuLiStrikeSpellFieldsFieldsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
 	float Damage = 0.0f;
 
-	/** RadiusCentimeters (float, Necessary) */
+	/** RadiusCentimeters (float, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
 	float RadiusCentimeters = 0.0f;
 
@@ -87,14 +87,6 @@ struct FGuLiStrikeSpellFieldsFieldsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
 	float MaxShipHeightCentimeters = 0.0f;
 
-	/** bPermanent (bool, Optional) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
-	bool bPermanent = false;
-
-	/** bIndestructible (bool, Optional) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
-	bool bIndestructible = false;
-
 	/** LaneHeightCentimeters (float, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
 	float LaneHeightCentimeters = 0.0f;
@@ -126,10 +118,6 @@ struct FGuLiStrikeSpellFieldsFieldsRow : public FTableRowBase
 	/** EnergyMaterial (softobject, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
 	TSoftObjectPtr<UObject> EnergyMaterial;
-
-	/** GateMaterial (softobject, Optional) */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
-	TSoftObjectPtr<UObject> GateMaterial;
 
 	/** TrailSystem (softobject, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")

@@ -372,6 +372,13 @@ void AGuLiCommanderHUD::HandleBuildingFeedback(
 	BuildingFeedbackExpireTime = GetWorld() ? GetWorld()->GetRealTimeSeconds() + 2.0 : 0.0;
 }
 
+void AGuLiCommanderHUD::ShowCommandFeedback(const FText& Message, bool bAccepted)
+{
+	BuildingFeedbackMessage = Message;
+	BuildingFeedbackTone = bAccepted ? EGuLiBuildingFeedbackTone::Success : EGuLiBuildingFeedbackTone::Error;
+	BuildingFeedbackExpireTime = GetWorld()->GetRealTimeSeconds()+3.0;
+}
+
 void AGuLiCommanderHUD::DrawBuildingFeedback()
 {
 	if (!Canvas || BuildingFeedbackMessage.IsEmpty() || !GetWorld()

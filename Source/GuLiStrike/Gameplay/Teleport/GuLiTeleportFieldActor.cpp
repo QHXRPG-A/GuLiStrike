@@ -1,4 +1,5 @@
 #include "Gameplay/Teleport/GuLiTeleportFieldActor.h"
+#include "Gameplay/Skills/GuLiSkillTargeting.h"
 #include "Gameplay/Teleport/GuLiTeleportUnitAdapters.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -73,7 +74,7 @@ AGuLiTeleportFieldActor* AGuLiTeleportFieldActor::StartCast(AGuLiBattlePlayerSta
 	if (const auto* Previous = FindCast(*World,Commander.GetPlayerGuid()); Previous && Previous->State.IsActive())
 	{ Error = TEXT("已有传送正在进行"); return nullptr; }
 	FVector GroundLocation;
-	if (!GuLiTeleportMassAdapter::ResolveGround(*World,Point,GroundLocation)) { Error = TEXT("请点击地图内可站立地面"); return nullptr; }
+	if (!GuLiSkillTargeting::ResolveGround(*World,Point,GroundLocation)) { Error = TEXT("请点击地图内可站立地面"); return nullptr; }
 	FActorSpawnParameters Params; Params.Owner = Commander.GetOwner();
 	auto* Field = World->SpawnActor<AGuLiTeleportFieldActor>(GroundLocation,FRotator::ZeroRotator,Params);
 	if (!Field) { Error = TEXT("创建法术场失败"); return nullptr; }
@@ -141,7 +142,7 @@ bool AGuLiTeleportFieldActor::PlanLanding(FVector Center, bool bReturning)
 			const float Angle = Attempt*2.39996323f;
 			FVector GroundLocation; double SurfaceHeight = 0;
 			const FVector Desired = Center + FVector(Offset.X+FMath::Cos(Angle)*D,Offset.Y+FMath::Sin(Angle)*D,0);
-			if (!GuLiTeleportMassAdapter::ResolveGround(*GetWorld(),Desired,GroundLocation,&SurfaceHeight) || !GuLiTeleport::IsInsideDisc(GroundLocation,Center,Radius)) { continue; }
+			if (!GuLiSkillTargeting::ResolveGround(*GetWorld(),Desired,GroundLocation,&SurfaceHeight) || !GuLiTeleport::IsInsideDisc(GroundLocation,Center,Radius)) { continue; }
 			if (Unit.bPreserveGroundClearance) { GroundLocation.Z = SurfaceHeight; }
 			Unit.Landing = FTransform(Unit.Original.GetRotation(),GroundLocation+FVector(0,0,Unit.Altitude),Unit.Original.GetScale3D());
 			if (!IsBlocked(Unit)) { Reserved.Add(Unit); bFound = true; break; }
@@ -172,7 +173,7 @@ bool AGuLiTeleportFieldActor::SubmitDestination(AGuLiBattlePlayerState& Commande
 	{ Error = TEXT("当前不在选择落点阶段"); return false; }
 	if (GetSynchronizedTime(*GetWorld()) >= State.Deadline) { ReturnToSource(TEXT("落点选择超时")); return false; }
 	FVector GroundLocation;
-	if (!GuLiTeleportMassAdapter::ResolveGround(*GetWorld(),Point,GroundLocation) || !PlanLanding(GroundLocation,false))
+	if (!GuLiSkillTargeting::ResolveGround(*GetWorld(),Point,GroundLocation) || !PlanLanding(GroundLocation,false))
 	{ Error = State.Message = TEXT("此处无法容纳整批部队，请选择其他落点"); Publish(); return false; }
 	State.Destination = GroundLocation; return CommitLanding(false);
 }

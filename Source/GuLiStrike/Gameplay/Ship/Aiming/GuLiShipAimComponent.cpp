@@ -3,8 +3,7 @@
 #include "Gameplay/Ship/Aiming/GuLiShipAimComponent.h"
 
 #include "Gameplay/Ship/GuLiStrikeShip.h"
-#include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
-#include "Gameplay/Ship/Abilities/GuLiShipGameplayAbility.h"
+#include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "HAL/IConsoleManager.h"
@@ -29,7 +28,7 @@ void UGuLiShipAimComponent::BeginPlay()
 void UGuLiShipAimComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	ResetAimState();
-	UnbindAbilitySystem();
+	UnbindHangar();
 	LocalController.Reset();
 	ShipSpringArm.Reset();
 	OwnerShip.Reset();
@@ -78,7 +77,7 @@ void UGuLiShipAimComponent::HandleOwnerControllerChanged()
 	if (!Ship || !Ship->IsLocallyControlled() || !Controller || !Controller->IsLocalController())
 	{
 		ResetAimState();
-		UnbindAbilitySystem();
+		UnbindHangar();
 		LocalController.Reset();
 		ShipSpringArm.Reset();
 		return;
@@ -86,7 +85,7 @@ void UGuLiShipAimComponent::HandleOwnerControllerChanged()
 
 	LocalController = Controller;
 	ShipSpringArm = Ship->FindComponentByClass<USpringArmComponent>();
-	BindAbilitySystem(Ship->GetShipAbilitySystemComponent());
+	BindHangar(Ship->GetHangarCapability());
 }
 
 void UGuLiShipAimComponent::ResetForOwnerUnavailable()
@@ -94,81 +93,41 @@ void UGuLiShipAimComponent::ResetForOwnerUnavailable()
 	ResetAimState();
 }
 
-void UGuLiShipAimComponent::BindAbilitySystem(UGuLiShipAbilitySystemComponent* AbilitySystem)
+void UGuLiShipAimComponent::BindHangar(UGuLiShipHangarCapabilityComponent* Hangar)
 {
-	if (BoundAbilitySystem.Get() == AbilitySystem)
-	{
-		return;
-	}
-	UnbindAbilitySystem();
-	BoundAbilitySystem = AbilitySystem;
-	if (AbilitySystem)
-	{
-		AbilityActivatedHandle = AbilitySystem->AbilityActivatedCallbacks.AddUObject(
-			this, &UGuLiShipAimComponent::HandleAbilityActivated);
-		AbilityEndedHandle = AbilitySystem->AbilityEndedCallbacks.AddUObject(
-			this, &UGuLiShipAimComponent::HandleAbilityEnded);
-	}
+	if (BoundHangar.Get() == Hangar) return;
+	UnbindHangar();
+	BoundHangar = Hangar;
+	if (Hangar)
+		PresentationHandle = Hangar->OnAbilityPresentationChanged().AddUObject(this, &ThisClass::HandleAbilityPresentation);
 }
 
-void UGuLiShipAimComponent::UnbindAbilitySystem()
+void UGuLiShipAimComponent::UnbindHangar()
 {
-	if (UGuLiShipAbilitySystemComponent* AbilitySystem = BoundAbilitySystem.Get())
-	{
-		if (AbilityActivatedHandle.IsValid())
-		{
-			AbilitySystem->AbilityActivatedCallbacks.Remove(AbilityActivatedHandle);
-		}
-		if (AbilityEndedHandle.IsValid())
-		{
-			AbilitySystem->AbilityEndedCallbacks.Remove(AbilityEndedHandle);
-		}
-	}
-	AbilityActivatedHandle.Reset();
-	AbilityEndedHandle.Reset();
-	BoundAbilitySystem.Reset();
-}
-
-void UGuLiShipAimComponent::HandleAbilityActivated(UGameplayAbility* Ability)
-{
-	const UGuLiShipGameplayAbility* ShipAbility = Cast<UGuLiShipGameplayAbility>(Ability);
-	if (!ShipAbility || !LocalController.IsValid())
-	{
-		return;
-	}
-
-	bool bConflict = false;
-	const EGuLiShipReticleMode Mode = GuLiShipReticle::ResolveMode(
-		ShipAbility->GetAssetTags(), &bConflict);
-	if (bConflict)
-	{
-		UE_LOG(LogGuLiStrike, Error,
-			TEXT("Ship ability %s has conflicting reticle AssetTags; presentation is disabled."),
-			*GetNameSafe(Ability));
-		return;
-	}
-	if (Mode == EGuLiShipReticleMode::None)
-	{
-		return;
-	}
-
-	const FGuLiShipReticleConfig Config = ShipAbility->GetReticleConfig();
-	if (!ActivationStack.Activate(Ability, Mode, Config))
-	{
-		UE_LOG(LogGuLiStrike, Warning,
-			TEXT("Ship ability %s supplied an invalid reticle configuration."),
-			*GetNameSafe(Ability));
-		return;
-	}
+	if (auto* Hangar = BoundHangar.Get()) Hangar->OnAbilityPresentationChanged().Remove(PresentationHandle);
+	PresentationHandle.Reset();
+	BoundHangar.Reset();
+	ActivationStack.Reset(); PresentationOwners.Reset();
 	ApplyActiveClaim();
 }
 
-void UGuLiShipAimComponent::HandleAbilityEnded(UGameplayAbility* Ability)
+void UGuLiShipAimComponent::HandleAbilityPresentation(FGameplayTag AbilityId, bool bActive)
 {
-	if (ActivationStack.End(Ability))
+	if (!bActive)
 	{
-		ApplyActiveClaim();
+		if (auto* Owner = PresentationOwners.Find(AbilityId))
+		{
+			ActivationStack.End(*Owner); PresentationOwners.Remove(AbilityId); ApplyActiveClaim();
+		}
+		return;
 	}
+	const auto& Grant = *BoundHangar->FindConfiguredGrant(AbilityId);
+	const auto Mode = GuLiShipReticle::ResolveMode(Grant.PresentationTags);
+	if (Mode == EGuLiShipReticleMode::None) return;
+	auto& Owner = PresentationOwners.FindOrAdd(AbilityId);
+	if (!Owner) Owner = NewObject<UObject>(this);
+	ActivationStack.Activate(Owner, Mode, Grant.ReticleConfig);
+	ApplyActiveClaim();
 }
 
 void UGuLiShipAimComponent::ApplyActiveClaim()

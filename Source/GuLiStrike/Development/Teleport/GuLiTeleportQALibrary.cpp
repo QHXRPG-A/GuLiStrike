@@ -32,7 +32,7 @@ bool UGuLiTeleportQALibrary::SubmitIntent(UGuLiTeleportInputComponent* Input,EGu
 	const auto* Controller=Input?Cast<APlayerController>(Input->GetOwner()):nullptr;
 	if (!Controller || !Controller->IsLocalController() || !Controller->GetWorld()->IsPlayInEditor()) return false;
 	TGuardValue<bool> ScriptGuard(GAllowActorScriptExecutionInEditor,false);
-	Input->ServerSubmit(Command,CastId,Point);
+	Input->ServerSubmit(FGuid::NewGuid(), Command,CastId,Point);
 	return true;
 }
 bool UGuLiTeleportQALibrary::PreferAirForNextJoin(UObject* Context)

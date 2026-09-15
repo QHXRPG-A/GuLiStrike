@@ -11,8 +11,11 @@ class GULISTRIKE_API UGuLiStrongholdNetworkPresentationComponent : public UActor
 	GENERATED_BODY()
 public:
 	UGuLiStrongholdNetworkPresentationComponent();
+	virtual void EndPlay(const EEndPlayReason::Type Reason) override;
 	virtual void TickComponent(float Dt,ELevelTick TickType,FActorComponentTickFunction* TickFunction) override;
 private:
-	UPROPERTY(Transient) TArray<TObjectPtr<UStaticMeshComponent>> Lines;
+	uint32 AppliedRevision = 0;
+	void ClearPresentation();
+	UPROPERTY(Transient) TArray<TObjectPtr<UStaticMeshComponent>> Primitives;
 	UPROPERTY(Transient) TArray<TObjectPtr<UMaterialInstanceDynamic>> Materials;
 };

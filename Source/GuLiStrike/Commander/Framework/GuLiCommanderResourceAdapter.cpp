@@ -173,6 +173,27 @@ bool UGuLiCommanderResourceAdapter::IssueMiningCommand(
 	return bAcceptedAny;
 }
 
+void UGuLiCommanderResourceAdapter::IssueStrongholdTransit(
+	const AGuLiBattlePlayerState& PlayerState, TConstArrayView<FGuLiControllableActorId> SelectedIds,
+	const FGuLiStrongholdTransitOrder& Order, FGuLiCommandAck& Ack) const
+{
+	check(GetWorld()->GetNetMode() != NM_Client && PlayerState.IsCommander());
+	int32 Accepted = 0;
+	for (const auto Id : SelectedIds)
+	{
+		APawn* Pawn = FindEngineeringVehicle(Id);
+		const auto Result = Pawn ? CastChecked<IGuLiEngineeringVehicle>(Pawn)->IssueStrongholdTransit(Order,PlayerState.GetTeam())
+			: EGuLiTransitOrderResult::InvalidVehicle;
+		Ack.EngineeringResults.Add({Id,Result});
+		Accepted += GuLiEngineeringCommands::IsAccepted(Result) ? 1 : 0;
+		UE_LOG(LogTemp,Display,TEXT("StrongholdTransit request=%u vehicle=%u target=%s result=%s"),
+			uint32(Order.RequestId),Id.Value,*Order.TerritoryId.ToString(),*GuLiEngineeringCommands::Describe(Result));
+	}
+	Ack.Result = SelectedIds.IsEmpty() ? EGuLiCommandAckResult::NoSelection
+		: Accepted == SelectedIds.Num() ? EGuLiCommandAckResult::Accepted
+		: Accepted > 0 ? EGuLiCommandAckResult::PartiallyAccepted : EGuLiCommandAckResult::InvalidTarget;
+}
+
 void UGuLiCommanderResourceAdapter::HandleCommanderDisconnected(const EGuLiTeam Team) const
 {
 	check(GetWorld()->GetNetMode() != NM_Client);
@@ -322,6 +343,8 @@ void UGuLiCommanderResourceAdapter::SynchronizeTeamPrivateState() const
 	BlueState.Inventory = Economy->GetTeamBalance(EGuLiTeam::Blue);
 	for (TActorIterator<AGuLiResourceFactoryActor> It(GetWorld()); It; ++It)
 	{
+		// A neutralized outpost retains its facilities, but no team owns their private status.
+		if (It->GetTeam() == EGuLiTeam::Unassigned) continue;
 		check(GuLiResources::IsPlayableTeam(It->GetTeam()));
 		FGuLiTeamResourcePrivateState& State = It->GetTeam() == EGuLiTeam::Red
 			? RedState

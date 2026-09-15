@@ -52,19 +52,20 @@ void UGuLiSpellFieldDataSubsystem::Initialize(FSubsystemCollectionBase& Collecti
 			Field.MaxTargetWaitSeconds = Row.MaxTargetWaitSeconds; Field.MaxShipHeightCentimeters = Row.MaxShipHeightCentimeters;
 			if (Field.IsValid() && !FindTeleportField(Field.Level)) { TeleportFields.Add(Field); continue; }
 		}
-		else if (Row.FieldType == TEXT("StrongholdGate"))
+		else if (Row.FieldType == TEXT("StrongholdTransit"))
 		{
-			if (Row.bPermanent && Row.bIndestructible && Row.RadiusCentimeters > 0 && Row.SpeedMultiplier > 0)
+			if (Row.LaneHeightCentimeters > 0 && Row.AscentSeconds > 0 && Row.AccelerationSeconds > 0
+				&& Row.DecelerationSeconds > 0 && Row.ExitFlashSeconds > 0 && Row.SpeedMultiplier > 0 && Row.ExitRadiusCentimeters > 0
+				&& !FindStrongholdTransit(Row.Id))
 			{
-				auto& Gate = StrongholdGates.AddDefaulted_GetRef();
-				Gate.Id = Row.Id; Gate.Radius = Row.RadiusCentimeters; Gate.LaneHeight = Row.LaneHeightCentimeters;
-				Gate.AscentSeconds = Row.AscentSeconds; Gate.AccelerationSeconds = Row.AccelerationSeconds;
-				Gate.DecelerationSeconds = Row.DecelerationSeconds; Gate.ExitFlashSeconds = Row.ExitFlashSeconds;
-				Gate.SpeedMultiplier = Row.SpeedMultiplier; Gate.ExitRadius = Row.ExitRadiusCentimeters;
-				Gate.EnergyMaterial = TSoftObjectPtr<UMaterialInterface>(Row.EnergyMaterial.ToSoftObjectPath());
-				Gate.GateMaterial = TSoftObjectPtr<UMaterialInterface>(Row.GateMaterial.ToSoftObjectPath());
-				Gate.TrailSystem = TSoftObjectPtr<UNiagaraSystem>(Row.TrailSystem.ToSoftObjectPath());
-				Gate.FlashSystem = TSoftObjectPtr<UNiagaraSystem>(Row.FlashSystem.ToSoftObjectPath());
+				auto& Transit = StrongholdTransits.AddDefaulted_GetRef();
+				Transit.Id = Row.Id; Transit.LaneHeight = Row.LaneHeightCentimeters;
+				Transit.AscentSeconds = Row.AscentSeconds; Transit.AccelerationSeconds = Row.AccelerationSeconds;
+				Transit.DecelerationSeconds = Row.DecelerationSeconds; Transit.ExitFlashSeconds = Row.ExitFlashSeconds;
+				Transit.SpeedMultiplier = Row.SpeedMultiplier; Transit.ExitRadius = Row.ExitRadiusCentimeters;
+				Transit.EnergyMaterial = TSoftObjectPtr<UMaterialInterface>(Row.EnergyMaterial.ToSoftObjectPath());
+				Transit.TrailSystem = TSoftObjectPtr<UNiagaraSystem>(Row.TrailSystem.ToSoftObjectPath());
+				Transit.FlashSystem = TSoftObjectPtr<UNiagaraSystem>(Row.FlashSystem.ToSoftObjectPath());
 				continue;
 			}
 		}
@@ -74,14 +75,14 @@ void UGuLiSpellFieldDataSubsystem::Initialize(FSubsystemCollectionBase& Collecti
 			if (ResolveCombatRow(Name, Row, Field)) { CombatFields.Add(Field); continue; }
 		}
 		CatalogError = FString::Printf(TEXT("Global field '%s' has invalid type, timing, values or duplicate teleport level."), *Name.ToString());
-		CombatFields.Reset(); TeleportFields.Reset(); StrongholdGates.Reset();
+		CombatFields.Reset(); TeleportFields.Reset(); StrongholdTransits.Reset();
 		return;
 	}
 }
 
-const FGuLiStrongholdGateConfig* UGuLiSpellFieldDataSubsystem::FindStrongholdGate(int32 Id) const
+const FGuLiStrongholdTransitConfig* UGuLiSpellFieldDataSubsystem::FindStrongholdTransit(int32 Id) const
 {
-	return StrongholdGates.FindByPredicate([Id](const auto& Gate) { return Gate.Id == Id; });
+	return StrongholdTransits.FindByPredicate([Id](const auto& Transit) { return Transit.Id == Id; });
 }
 
 const FGuLiSpellFieldConfig* UGuLiSpellFieldDataSubsystem::FindCombatField(const FName ConfigId) const

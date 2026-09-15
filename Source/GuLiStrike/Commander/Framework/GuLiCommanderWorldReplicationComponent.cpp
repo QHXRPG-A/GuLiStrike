@@ -8,15 +8,19 @@
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
+#include "Engine/NetConnection.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/GameModeBase.h"
 #include "GameFramework/PlayerController.h"
+#include "ProfilingDebugging/CsvProfiler.h"
+
+CSV_DEFINE_CATEGORY(GuLiCommanderPoseDispatch, true);
 
 namespace
 {
-	static_assert(30u % GULI_POSE_CAPTURE_RATE_HZ == 0u);
-	constexpr uint8 PoseDispatchPhaseCount = 30u / GULI_POSE_CAPTURE_RATE_HZ;
+	static_assert(GuLiCommanderSimulationTiming::RateHz % GULI_POSE_CAPTURE_RATE_HZ == 0u);
+	constexpr uint8 PoseDispatchPhaseCount = GULI_POSE_DISPATCH_PHASE_COUNT;
 
 	uint8 GetPoseRateDivisor(
 		const FGuLiCompressedSoldierPose& Pose,
@@ -189,13 +193,13 @@ void UGuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses()
 		return;
 	}
 	const uint32 CurrentSimTick = Authority->GetServerSimTick();
-	// 30 Hz 权威模拟每三个 Tick 目标捕获一次；渲染 Tick 不等于模拟 Tick，也不等于网络包到达频率。
-	constexpr uint32 SimulationTicksPerPoseFrame = 30u / GULI_POSE_CAPTURE_RATE_HZ;
-	if (CurrentSimTick == 0u || CurrentSimTick == LastPoseChunkDispatchSimTick)
+	// 10 Hz 权威模拟每步捕获一次；渲染 Tick 不等于模拟 Tick，也不等于网络包到达频率。
+	constexpr uint32 SimulationTicksPerPoseFrame = GuLiCommanderSimulationTiming::RateHz / GULI_POSE_CAPTURE_RATE_HZ;
+	if (CurrentSimTick == 0u)
 	{
 		return;
 	}
-	LastPoseChunkDispatchSimTick = CurrentSimTick;
+	const double Now = GetWorld()->GetTimeSeconds();
 
 	const AGuLiBattleGameState* CommanderGameState = GetWorld()->GetGameState<AGuLiBattleGameState>();
 	const uint32 MatchEpoch = CommanderGameState ? CommanderGameState->GetMatchEpoch() : 0u;
@@ -226,6 +230,7 @@ void UGuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses()
 		PendingPoseChunks.Reset();
 		Authority->CaptureSoldierPoseChunks(PendingPoseChunks, MatchEpoch);
 		PendingPoseDispatchPhase = 0u;
+		PoseFrameCapturedAtSeconds = Now;
 	}
 
 	if (PendingPoseChunks.IsEmpty())
@@ -233,43 +238,54 @@ void UGuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses()
 		return;
 	}
 
-	// SoldierId 永久映射到一个 30 Hz 发送槽；空间重排不会改变单兵的块发送相位。
-	for (TActorIterator<APlayerController> It(GetWorld()); It; ++It)
+	// 网络三相按世界时间独立推进；权威步仍为 10 Hz，每单位每捕获帧只发一次。
+	// 较慢的世界帧可以一次推进已到期相位，最多处理当前捕获帧的三个相位。
+	const uint8 ReadyPhaseCount = static_cast<uint8>(FMath::Min<int32>(PoseDispatchPhaseCount,
+		1 + FMath::FloorToInt((Now - PoseFrameCapturedAtSeconds) * GULI_POSE_CAPTURE_RATE_HZ * PoseDispatchPhaseCount)));
+	for (; PendingPoseDispatchPhase < ReadyPhaseCount; ++PendingPoseDispatchPhase)
 	{
-		if (UGuLiCommanderNetSyncComponent* NetSync = It->FindComponentByClass<UGuLiCommanderNetSyncComponent>())
+		for (TActorIterator<APlayerController> It(GetWorld()); It; ++It)
 		{
-			NetSync->EnsureServerBootstrapForMatch(MatchEpoch);
-			if (!NetSync->IsSoldierStreamReady())
+			if (UGuLiCommanderNetSyncComponent* NetSync = It->FindComponentByClass<UGuLiCommanderNetSyncComponent>())
 			{
-				// 首次登录可能早于 Mass 创建，无缝切图也可能带着旧的非零代次。
-				// EnsureServerBootstrapForMatch 兼顾两种情况，不会反复递增已经有效的当前代次。
-				continue;
-			}
-
-			NetSync->RefreshServerSelection();
-			FVector ViewLocation;
-			FRotator ViewRotation;
-			It->GetPlayerViewPoint(ViewLocation, ViewRotation);
-			check(!ViewLocation.ContainsNaN());
-			for (const FGuLiSoldierPoseChunk& SourceChunk : PendingPoseChunks)
-			{
-				check(!SourceChunk.Samples.IsEmpty());
-				const uint8 ChunkPhase = static_cast<uint8>(
-					SourceChunk.Samples[0].SoldierId.Value % PoseDispatchPhaseCount);
-				if (ChunkPhase != PendingPoseDispatchPhase)
+				NetSync->EnsureServerBootstrapForMatch(MatchEpoch);
+				if (!NetSync->IsSoldierStreamReady())
 				{
+					// 首次登录可能早于 Mass 创建，无缝切图也可能带着旧的非零代次。
+					// EnsureServerBootstrapForMatch 兼顾两种情况，不会反复递增已经有效的当前代次。
 					continue;
 				}
-				FGuLiSoldierPoseChunk ConnectionChunk;
-				if (BuildConnectionPoseChunk(
-					SourceChunk,
-					ViewLocation,
-					FullRatePoseDistanceCentimeters,
-					FarMovingPoseFrameDivisor,
-					StationaryPoseFrameDivisor,
-					ConnectionChunk))
+
+				NetSync->RefreshServerSelection();
+				FVector ViewLocation;
+				FRotator ViewRotation;
+				It->GetPlayerViewPoint(ViewLocation, ViewRotation);
+				check(!ViewLocation.ContainsNaN());
+				for (const FGuLiSoldierPoseChunk& SourceChunk : PendingPoseChunks)
 				{
-					NetSync->SendPoseChunk(ConnectionChunk);
+					check(!SourceChunk.Samples.IsEmpty());
+					const uint8 ChunkPhase = static_cast<uint8>(
+						SourceChunk.Samples[0].SoldierId.Value % PoseDispatchPhaseCount);
+					if (ChunkPhase != PendingPoseDispatchPhase)
+					{
+						continue;
+					}
+					FGuLiSoldierPoseChunk ConnectionChunk;
+					if (BuildConnectionPoseChunk(
+						SourceChunk,
+						ViewLocation,
+						FullRatePoseDistanceCentimeters,
+						FarMovingPoseFrameDivisor,
+						StationaryPoseFrameDivisor,
+						ConnectionChunk))
+					{
+						CSV_CUSTOM_STAT(GuLiCommanderPoseDispatch, AttemptedChunks, 1, ECsvCustomStatOp::Accumulate);
+						if (const UNetConnection* Connection = It->GetNetConnection(); Connection && !Connection->IsNetReady())
+						{
+							CSV_CUSTOM_STAT(GuLiCommanderPoseDispatch, SaturatedAtAttempt, 1, ECsvCustomStatOp::Accumulate);
+						}
+						NetSync->SendPoseChunk(ConnectionChunk);
+					}
 				}
 			}
 		}
@@ -277,7 +293,6 @@ void UGuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses()
 
 	// 姿态是通过不可靠 RPC 发送的时效性快照，没有就绪客户端也应推进并丢弃过时帧。
 	// 否则空服可能一直保留同一帧，下一位晚加入者会先收到积压的旧姿态。
-	++PendingPoseDispatchPhase;
 	if (PendingPoseDispatchPhase >= PoseDispatchPhaseCount)
 	{
 		PendingPoseChunks.Reset();

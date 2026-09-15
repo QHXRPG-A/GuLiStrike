@@ -175,6 +175,7 @@ private:
 	void HandleSelectBuildingFiveInput();
 	void HandleSelectBuildingSixInput();
 	void HandleCancelInput();
+	void HandleUnitSkillInput();
 	// 本地把光标落点封装成选兵意图；返回 true 仅表示已提交，不代表服务器接受。
 	bool TryIssueSelectionAtCursor();
 	// 本地创建移动请求并启动有限表现预测；网络结果稍后通过 ACK 更新。

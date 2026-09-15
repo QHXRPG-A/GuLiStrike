@@ -1,7 +1,5 @@
 #include "Gameplay/Stronghold/GuLiStrongholdNetworkPresentationComponent.h"
-#include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
-#include "Gameplay/Building/GuLiBuildingCatalog.h"
 #include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
 #include "Components/StaticMeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
@@ -12,38 +10,50 @@ UGuLiStrongholdNetworkPresentationComponent::UGuLiStrongholdNetworkPresentationC
 {
 	PrimaryComponentTick.bCanEverTick = true; PrimaryComponentTick.TickInterval = .25f;
 }
+void UGuLiStrongholdNetworkPresentationComponent::ClearPresentation()
+{
+	for (UStaticMeshComponent* Primitive : Primitives) Primitive->DestroyComponent();
+	Primitives.Reset(); Materials.Reset();
+}
+void UGuLiStrongholdNetworkPresentationComponent::EndPlay(const EEndPlayReason::Type Reason)
+{
+	ClearPresentation(); Super::EndPlay(Reason);
+}
 void UGuLiStrongholdNetworkPresentationComponent::TickComponent(float Dt,ELevelTick TickType,FActorComponentTickFunction* TickFunction)
 {
 	Super::TickComponent(Dt,TickType,TickFunction);
-	auto& Resources = *GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
-	if (!Resources.IsResourceWorldActive() || !Resources.IsRuntimeReady()) return;
-	const auto& WorldState = *Resources.GetResourceWorldState();
-	const auto& Edges = WorldState.GetTransportEdges();
-	if (Lines.IsEmpty())
+	const auto& WorldState = *CastChecked<AGuLiResourceWorldState>(GetOwner());
+	const auto& Snapshot = WorldState.GetTransportNetwork();
+	if (!WorldState.IsAuthorityReady() || Snapshot.Revision == AppliedRevision) return;
+	ClearPresentation();
+	TMap<int32,FVector> Positions;
+	TMap<int32,UMaterialInstanceDynamic*> NodeMaterials;
+	auto AddMesh = [this](const TCHAR* Path, const FVector& Position, const FRotator& Rotation,
+		const FVector& Scale, UMaterialInstanceDynamic* Material)
 	{
-		const int32 FieldId = UGuLiBuildingCatalog::LoadDefaultCatalog()->FindById(7)->GateFieldId;
-		const auto& Config = *GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindStrongholdGate(FieldId);
+		auto* Mesh = NewObject<UStaticMeshComponent>(GetOwner());
+		Mesh->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,Path));
+		Mesh->SetCollisionEnabled(ECollisionEnabled::NoCollision); Mesh->SetCanEverAffectNavigation(false); Mesh->SetCastShadow(false);
+		Mesh->SetWorldLocationAndRotation(Position,Rotation); Mesh->SetWorldScale3D(Scale);
+		Mesh->SetMaterial(0,Material); Mesh->RegisterComponent(); Primitives.Add(Mesh);
+	};
+	for (const auto& Node : Snapshot.Nodes)
+	{
+		const auto& Config = *GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindStrongholdTransit(Node.TransitFieldId);
 		auto* Energy = Config.EnergyMaterial.LoadSynchronous(); check(Energy);
-		for (const auto& Edge : Edges)
-		{
-			const FVector A = Resources.GetTerritoryGroundLocation(Edge.X) + FVector(0,0,Config.LaneHeight);
-			const FVector B = Resources.GetTerritoryGroundLocation(Edge.Y) + FVector(0,0,Config.LaneHeight);
-			auto* Line = NewObject<UStaticMeshComponent>(GetOwner());
-			Line->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,TEXT("/Engine/BasicShapes/Cylinder.Cylinder")));
-			Line->SetCollisionEnabled(ECollisionEnabled::NoCollision); Line->SetCanEverAffectNavigation(false); Line->SetCastShadow(false);
-			Line->SetWorldLocation((A+B)*.5);
-			Line->SetWorldRotation(FRotationMatrix::MakeFromZ(B-A).Rotator());
-			Line->SetWorldScale3D(FVector(.8,.8,FVector::Distance(A,B)/100.));
-			auto* Material = UMaterialInstanceDynamic::Create(Energy,this); Line->SetMaterial(0,Material);
-			Line->RegisterComponent(); Lines.Add(Line); Materials.Add(Material);
-		}
+		auto* Material = UMaterialInstanceDynamic::Create(Energy,this);
+		Material->SetVectorParameterValue(TEXT("Tint"),Node.Team == EGuLiTeam::Red
+			? FLinearColor(1,.025f,.005f,1) : FLinearColor(0,.55f,1,1));
+		Material->SetScalarParameterValue(TEXT("Opacity"),.35f); Materials.Add(Material);
+		const FVector Position = Node.GroundLocation+FVector(0,0,Config.LaneHeight);
+		Positions.Add(Node.TerritoryIndex,Position); NodeMaterials.Add(Node.TerritoryIndex,Material);
+		AddMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"),Position,FRotator::ZeroRotator,FVector(6),Material);
 	}
-	for (int32 Index = 0; Index < Edges.Num(); ++Index)
+	for (const auto& Edge : Snapshot.Edges)
 	{
-		const auto& Edge = Edges[Index];
-		const auto Team = WorldState.GetTerritoryOwner(Edge.X);
-		const bool bOpen = Resources.CanUseStrongholdTransit(Edge.X,Team) && Resources.CanUseStrongholdTransit(Edge.Y,Team);
-		Lines[Index]->SetVisibility(!WorldState.GetTerritories()[Edge.X].bEncircled && !WorldState.GetTerritories()[Edge.Y].bEncircled);
-		Materials[Index]->SetScalarParameterValue(TEXT("Opacity"), bOpen ? .35f : .035f);
+		const FVector A = Positions[Edge.A], B = Positions[Edge.B];
+		AddMesh(TEXT("/Engine/BasicShapes/Cylinder.Cylinder"),(A+B)*.5,FRotationMatrix::MakeFromZ(B-A).Rotator(),
+			FVector(.8,.8,FVector::Distance(A,B)/100.),NodeMaterials[Edge.A]);
 	}
+	AppliedRevision = Snapshot.Revision;
 }

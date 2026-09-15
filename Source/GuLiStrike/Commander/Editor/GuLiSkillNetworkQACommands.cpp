@@ -49,7 +49,7 @@ public:
 		Report = MakeShared<FJsonObject>();
 		Checks = MakeShared<FJsonObject>();
 		Report->SetStringField(TEXT("mode"), bServer ? TEXT("Server") : TEXT("Client"));
-		Report->SetStringField(TEXT("origin"), TEXT("native FTSTicker; server PlayerState ServerOnly GameplayAbility"));
+		Report->SetStringField(TEXT("origin"), TEXT("native FTSTicker; server PlayerState authority command"));
 		Report->SetNumberField(TEXT("pid"), FPlatformProcess::GetCurrentProcessId());
 		Report->SetNumberField(TEXT("protocol"), GULI_COMMANDER_PROTOCOL_VERSION);
 		Report->SetNumberField(TEXT("schema_version"), 1);

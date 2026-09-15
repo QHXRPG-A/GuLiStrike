@@ -12,7 +12,7 @@
 #include "Engine/LocalPlayer.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
-#include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
+#include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
 #include "Gameplay/Ship/Aiming/GuLiShipAimComponent.h"
 #include "Gameplay/Ship/GuLiShipMovementComponent.h"
@@ -377,14 +377,14 @@ void UGuLiShipWorldHUDComponent::RefreshData()
 		bHasFlightSnapshot = true;
 	}
 
-	const UGuLiShipAbilitySystemComponent* AbilitySystem = Ship->GetShipAbilitySystemComponent();
-	const bool bBasicAvailable = AbilitySystem
-		&& (AbilitySystem->IsAbilityGranted(TAG_GuLi_ShipAbility_Weapon_Basic_Auto)
-			|| AbilitySystem->IsAbilityGranted(TAG_GuLi_ShipAbility_Weapon_Wingman_MachineGun));
-	const bool bMissileAvailable = AbilitySystem
-		&& (AbilitySystem->IsAbilityGranted(TAG_GuLi_ShipAbility_Weapon_Missile_Salvo)
-			|| AbilitySystem->IsAbilityGranted(TAG_GuLi_ShipAbility_Weapon_Wingman_GroundMissile));
-	const bool bMissileCoolingDown = AbilitySystem && AbilitySystem->IsMissileCooldownActive();
+	const UGuLiShipHangarCapabilityComponent* Hangar = Ship->GetHangarCapability();
+	const bool bBasicAvailable = Hangar
+		&& (Hangar->IsAbilityGranted(TAG_GuLi_ShipAbility_Weapon_Basic_Auto)
+			|| Hangar->IsAbilityGranted(TAG_GuLi_ShipAbility_Weapon_Wingman_MachineGun));
+	const bool bMissileAvailable = Hangar
+		&& (Hangar->IsAbilityGranted(TAG_GuLi_ShipAbility_Weapon_Missile_Salvo)
+			|| Hangar->IsAbilityGranted(TAG_GuLi_ShipAbility_Weapon_Wingman_GroundMissile));
+	const bool bMissileCoolingDown = Hangar && Hangar->IsMissileCooldownActive();
 	if (!bHasCombatSnapshot || bCachedBasicAvailable != bBasicAvailable
 		|| bCachedMissileAvailable != bMissileAvailable
 		|| bCachedMissileCoolingDown != bMissileCoolingDown)

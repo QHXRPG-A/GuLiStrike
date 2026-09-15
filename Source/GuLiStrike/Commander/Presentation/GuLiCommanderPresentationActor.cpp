@@ -1406,7 +1406,7 @@ void AGuLiCommanderPresentationActor::IngestPoseChunk(
 		: 0.0;
 	if (ServerTimeSeconds <= 0.0 && Chunk.ServerSimTick > 0u)
 	{
-		ServerTimeSeconds = static_cast<double>(Chunk.ServerSimTick) / 30.0;
+		ServerTimeSeconds = static_cast<double>(Chunk.ServerSimTick) / GuLiCommanderSimulationTiming::RateHz;
 	}
 	// 同捕获帧的后续块不会反复更新时钟测量，避免发送分摊时间被当成样本时间推进。
 	const bool bAdvancesClockFrame = LatestClockFrameSequence == 0u

@@ -7,6 +7,8 @@
 #include "Engine/World.h"
 #include "GameFramework/PlayerStart.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h"
+#include "Gameplay/Ship/GuLiStrikeShip.h"
+#include "Gameplay/Ship/Build/GuLiShipBuildComponent.h"
 #include "GuLiFlightNavigationSubsystem.h"
 #include "GuLiStrike.h"
 #include "Misc/CommandLine.h"
@@ -89,6 +91,19 @@ AGuLiWingmanQAGameMode::AGuLiWingmanQAGameMode()
 		EGuLiCommanderRole::Commander,
 		EGuLiCommanderRole::Ground
 	};
+}
+
+void AGuLiWingmanQAGameMode::RestartPlayer(AController* NewPlayer)
+{
+	Super::RestartPlayer(NewPlayer);
+#if !UE_BUILD_SHIPPING
+	if (!FParse::Param(FCommandLine::Get(), TEXT("GuLiWingmanQA")) || !Cast<AGuLiStrikeShip>(NewPlayer->GetPawn())) return;
+	auto& Build = *NewPlayer->GetPlayerState<AGuLiBattlePlayerState>()->GetShipBuild();
+	const auto State = Build.GetBuildState();
+	if (State.ChosenNodeIds.Contains(TEXT("08"))) return; // Respawn already restored this match choice.
+	const auto Result = Build.CommitConfirmedChoice(FGuid::NewGuid(), TEXT("08"), State.MatchEpoch, State.BuildRevision);
+	UE_LOG(LogGuLiStrike, Display, TEXT("Wingman QA confirmed hangar choice: committed=%d reason=%s"), Result.bCommitted, *Result.Reason);
+#endif
 }
 
 void AGuLiWingmanQAGameMode::BeginPlay()

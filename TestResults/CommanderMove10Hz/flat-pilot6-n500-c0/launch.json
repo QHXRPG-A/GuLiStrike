@@ -1,0 +1,33 @@
+{
+  "PartitionCpu": false,
+  "Processes": [
+    {
+      "Pid": 26216,
+      "Role": "server",
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "/Game/Maps/LVL_CommanderMassPrototype",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-server",
+        "-NullRHI",
+        "-port=17951",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\flat-pilot6-n500-c0\\server.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,gs.Commander.MoveStress 500 40 D:/UE5.7/test1/TestResults/CommanderMove10Hz/flat-pilot6-n500-c0/server server 0 flat\""
+      ]
+    }
+  ],
+  "Fixture": "flat",
+  "Engine": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64",
+  "Renderer": "1920x1080, Epic, screen percentage 100, VSync off, client uncapped/server 60 FPS cap, offscreen",
+  "Duration": 40,
+  "Population": 500,
+  "Date": "2026-09-15T10:00:34.5767837+08:00",
+  "Map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "Clients": 0
+}

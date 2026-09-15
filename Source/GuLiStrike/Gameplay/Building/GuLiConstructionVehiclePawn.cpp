@@ -68,6 +68,21 @@ void AGuLiConstructionVehiclePawn::SetEngineeringPresentationVisible(bool bVisib
 {
 	if (AActor* Child = Presentation->GetChildActor()) Child->SetActorHiddenInGame(!bVisible);
 }
+EGuLiTransitOrderResult AGuLiConstructionVehiclePawn::IssueStrongholdTransit(
+	const FGuLiStrongholdTransitOrder& Order, EGuLiTeam RequestingTeam)
+{
+	using Result = EGuLiTransitOrderResult;
+	if (!HasAuthority() || RequestingTeam != Team) return Result::Unauthorized;
+	if (!Order.IsWellFormed()) return Result::InvalidRequest;
+	if (uint32(Order.RequestId) == LastTransitRequestId) return Result::Accepted;
+	if (LastTransitRequestId != 0 && int32(uint32(Order.RequestId)-LastTransitRequestId) <= 0) return Result::StaleRequest;
+	FGuLiPreparedTransit Prepared;
+	const auto Decision = Travel->PrepareTransport(Order,Prepared);
+	if (Decision != Result::Accepted) return Decision;
+	Work->StopWork(); LastTransitRequestId = uint32(Order.RequestId);
+	Travel->BeginTransport(Prepared);
+	return Result::Accepted;
+}
 bool AGuLiConstructionVehiclePawn::IssueMove(const FVector& Target)
 {
 	if (!HasAuthority() || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;

@@ -515,19 +515,19 @@ namespace GuLiCommanderNavigationPolicyTests
 				State,
 				MaximumFormationColumns,
 				true,
-				static_cast<double>(Step) / 30.0);
+				static_cast<double>(Step) / GuLiCommanderSimulationTiming::RateHz);
 		}
-		TestEqual(TEXT("Fourteen successful steps do not widen the layout"),
+		TestEqual(TEXT("Four successful steps do not widen the layout"),
 			State.ColumnCount, 3);
-		TestEqual(TEXT("Fourteen successful steps remain queued"),
-			State.ConsecutiveExpansionSuccessSteps, 14);
+		TestEqual(TEXT("Four successful steps remain queued"),
+			State.ConsecutiveExpansionSuccessSteps, 4);
 
 		State = UpdateTransitColumnHysteresis(
 			State,
 			MaximumFormationColumns,
 			true,
 			0.5);
-		TestEqual(TEXT("The fifteenth success at 0.5 seconds widens the layout"),
+		TestEqual(TEXT("The fifth success at 0.5 seconds widens the layout"),
 			State.ColumnCount, MaximumFormationColumns);
 		TestEqual(TEXT("A completed expansion clears the streak"),
 			State.ConsecutiveExpansionSuccessSteps, 0);
@@ -548,7 +548,7 @@ namespace GuLiCommanderNavigationPolicyTests
 		{
 			State = UpdateTransitColumnHysteresis(State, 4, true, 10.1 + Step * 0.01);
 		}
-		TestEqual(TEXT("Fifteen successes cannot bypass the 0.5 second throttle"),
+		TestEqual(TEXT("Five successes cannot bypass the 0.5 second throttle"),
 			State.ColumnCount, 2);
 		TestEqual(TEXT("A throttled expansion retains its completed streak"),
 			State.ConsecutiveExpansionSuccessSteps,
@@ -803,15 +803,13 @@ namespace GuLiCommanderNavigationPolicyTests
 		TArray<int32> UpdatesBySoldier;
 		UpdatesBySoldier.Init(0, 501);
 		TArray<int32> SoldiersByPhase;
-		SoldiersByPhase.Init(0, 3);
+		SoldiersByPhase.Init(0, MovementUpdateIntervalTicks);
 		for (uint32 SoldierId = 1u; SoldierId <= 500u; ++SoldierId)
 		{
 			++SoldiersByPhase[ResolveMovementUpdatePhase(SoldierId)];
 		}
-		TestEqual(TEXT("Phase 0 contains 166 Soldiers"), SoldiersByPhase[0], 166);
-		TestEqual(TEXT("Phase 1 contains 167 Soldiers"), SoldiersByPhase[1], 167);
-		TestEqual(TEXT("Phase 2 contains 167 Soldiers"), SoldiersByPhase[2], 167);
-		for (uint32 SimTick = 0u; SimTick < 30u; ++SimTick)
+		TestEqual(TEXT("The single phase contains all 500 Soldiers"), SoldiersByPhase[0], 500);
+		for (uint32 SimTick = 0u; SimTick < GuLiCommanderSimulationTiming::RateHz; ++SimTick)
 		{
 			int32 UpdatesThisStep = 0;
 			for (uint32 SoldierId = 1u; SoldierId <= 500u; ++SoldierId)
@@ -823,19 +821,19 @@ namespace GuLiCommanderNavigationPolicyTests
 				}
 			}
 			TestTrue(
-				TEXT("Each steady-state step contains only one balanced third of 500 Soldiers"),
-				UpdatesThisStep == 166 || UpdatesThisStep == 167);
+				TEXT("Each 10 Hz step updates all 500 Soldiers"),
+				UpdatesThisStep == 500);
 		}
 		for (uint32 SoldierId = 1u; SoldierId <= 500u; ++SoldierId)
 		{
 			TestEqual(
-				TEXT("Every Soldier receives exactly ten updates over thirty authority ticks"),
+				TEXT("Every Soldier receives exactly ten updates over ten authority ticks"),
 				UpdatesBySoldier[SoldierId],
 				10);
 		}
 
-		TestFalse(
-			TEXT("Soldier 1 normally waits for phase 1 at tick 0"),
+		TestTrue(
+			TEXT("Soldier 1 is scheduled on the first step"),
 			ShouldRunMovementUpdate(0u, 1u, false));
 		TestTrue(
 			TEXT("A newly committed order bypasses the phase gate for its first update"),
@@ -843,8 +841,8 @@ namespace GuLiCommanderNavigationPolicyTests
 		TestFalse(
 			TEXT("An invalid Soldier id is never scheduled"),
 			ShouldRunMovementUpdate(0u, 0u, true));
-		TestFalse(
-			TEXT("After an immediate update Soldier 2 waits for its stable phase"),
+		TestTrue(
+			TEXT("After an immediate update Soldier 2 also updates on the next step"),
 			ShouldRunMovementUpdate(1u, 2u, false));
 		TestTrue(
 			TEXT("Soldier 2 resumes on its stable phase"),
@@ -853,13 +851,13 @@ namespace GuLiCommanderNavigationPolicyTests
 			TEXT("Soldier 2 keeps the same phase on later cycles"),
 			ShouldRunMovementUpdate(5u, 2u, false));
 
-		const float FixedDeltaSeconds = 1.0f / 30.0f;
+		const float FixedDeltaSeconds = GuLiCommanderSimulationTiming::StepSeconds;
 		const float FirstUpdateDelta = ResolveMovementUpdateDeltaSeconds(
 			10.0 + static_cast<double>(FixedDeltaSeconds),
 			10.0,
 			FixedDeltaSeconds);
 		TestTrue(
-			TEXT("The immediate first update preserves one 30 Hz step"),
+			TEXT("The immediate first update preserves one 10 Hz step"),
 			FMath::IsNearlyEqual(FirstUpdateDelta, FixedDeltaSeconds, KINDA_SMALL_NUMBER));
 		const float SteadyUpdateDelta = ResolveMovementUpdateDeltaSeconds(
 			10.1,

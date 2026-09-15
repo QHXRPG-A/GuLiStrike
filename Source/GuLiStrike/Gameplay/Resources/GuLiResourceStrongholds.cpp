@@ -3,7 +3,6 @@
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Resources/GuLiResourceActors.h"
 #include "Gameplay/Stronghold/GuLiStrongholdCaptureComponent.h"
-#include "Gameplay/Stronghold/GuLiStrongholdGateComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
@@ -23,10 +22,10 @@ FVector UGuLiResourceWorldSubsystem::GetTerritoryGroundLocation(int32 Index) con
 {
 	return WorldState->GetTerritories()[Index].GroundLocation;
 }
-UGuLiStrongholdGateComponent* UGuLiResourceWorldSubsystem::GetStrongholdGate(int32 Index) const
+int32 UGuLiResourceWorldSubsystem::FindTerritoryIndexById(FName TerritoryId) const
 {
-	check(GetWorld()->GetNetMode() != NM_Client && Outposts.IsValidIndex(Index));
-	return Outposts[Index]->FindComponentByClass<UGuLiStrongholdGateComponent>();
+	return MapDefinition ? MapDefinition->Territories.IndexOfByPredicate(
+		[TerritoryId](const auto& Territory) { return Territory.TerritoryId == TerritoryId; }) : INDEX_NONE;
 }
 FVector UGuLiResourceWorldSubsystem::GetInitialBaseExit(EGuLiTeam Team) const
 {
@@ -51,6 +50,15 @@ void UGuLiResourceWorldSubsystem::RefreshEncirclement()
 	const TArray<bool> Blue = StrongholdTopology.FindEncircled(EGuLiTeam::Blue, Owner);
 	for (int32 Index = 0; Index < Red.Num(); ++Index)
 		WorldState->SetTerritoryEncircledAuthority(Index, Red[Index] || Blue[Index]);
+	TArray<FGuLiTransportNode> Nodes;
+	for (int32 Index = 0; Index < Outposts.Num(); ++Index)
+	{
+		const EGuLiTeam Team = Owner(Index);
+		if (!CanUseStrongholdTransit(Index,Team)) continue;
+		const auto& Definition = Outposts[Index]->FindComponentByClass<UGuLiBuildingLifecycleComponent>()->GetDefinition();
+		Nodes.Add({Index,MapDefinition->Territories[Index].TerritoryId,Team,GetTerritoryGroundLocation(Index),Definition.TransitFieldId});
+	}
+	if (TransportNetwork.Rebuild(MoveTemp(Nodes))) WorldState->SetTransportNetworkAuthority(TransportNetwork.GetSnapshot());
 }
 void UGuLiResourceWorldSubsystem::TickStrongholds(float DeltaTime)
 {

@@ -1,0 +1,241 @@
+{
+  "success": true,
+  "map": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype",
+  "game_mode": "/Game/GuLiStrike/Ship/BP_GM_ShipWingmanAirCombatPrototype.BP_GM_ShipWingmanAirCombatPrototype_C",
+  "starting_choices": [
+    "08"
+  ],
+  "events": [
+    "K2_OnSetMatchState",
+    "K2_OnRestartPlayer"
+  ],
+  "blueprint_errors": 0,
+  "blueprint_warnings": 0,
+  "nodes": [
+    {
+      "id": "apply",
+      "pins": [
+        "NewPlayer",
+        "OutputDelegate",
+        "then"
+      ]
+    },
+    {
+      "id": "restart",
+      "pins": [
+        "NewPlayer",
+        "OutputDelegate",
+        "then"
+      ]
+    },
+    {
+      "id": "game_state",
+      "pins": [
+        "ReturnValue",
+        "WorldContextObject",
+        "self"
+      ]
+    },
+    {
+      "id": "begun_play",
+      "pins": [
+        "ReturnValue",
+        "self"
+      ]
+    },
+    {
+      "id": "world_started",
+      "pins": [
+        "Condition",
+        "else",
+        "execute",
+        "then"
+      ]
+    },
+    {
+      "id": "apply_restart",
+      "pins": [
+        "NewPlayer",
+        "execute",
+        "self",
+        "then"
+      ]
+    },
+    {
+      "id": "match_state",
+      "pins": [
+        "NewState",
+        "OutputDelegate",
+        "then"
+      ]
+    },
+    {
+      "id": "in_progress",
+      "pins": [
+        "A",
+        "B",
+        "ReturnValue",
+        "self"
+      ]
+    },
+    {
+      "id": "match_started",
+      "pins": [
+        "Condition",
+        "else",
+        "execute",
+        "then"
+      ]
+    },
+    {
+      "id": "controllers",
+      "pins": [
+        "ActorClass",
+        "OutActors",
+        "WorldContextObject",
+        "execute",
+        "self",
+        "then"
+      ]
+    },
+    {
+      "id": "each_player",
+      "pins": [
+        "Array",
+        "Array Element",
+        "Array Index",
+        "Completed",
+        "Exec",
+        "LoopBody"
+      ]
+    },
+    {
+      "id": "apply_initial",
+      "pins": [
+        "NewPlayer",
+        "execute",
+        "self",
+        "then"
+      ]
+    },
+    {
+      "id": "pawn",
+      "pins": [
+        "ReturnValue",
+        "self"
+      ]
+    },
+    {
+      "id": "ship",
+      "pins": [
+        "AsGu Li Strike Ship",
+        "CastFailed",
+        "Object",
+        "bSuccess",
+        "execute",
+        "then"
+      ]
+    },
+    {
+      "id": "player_state",
+      "pins": [
+        "PlayerState",
+        "self"
+      ]
+    },
+    {
+      "id": "battle_state",
+      "pins": [
+        "AsGu Li Battle Player State",
+        "CastFailed",
+        "Object",
+        "bSuccess",
+        "execute",
+        "then"
+      ]
+    },
+    {
+      "id": "build",
+      "pins": [
+        "ReturnValue",
+        "self"
+      ]
+    },
+    {
+      "id": "state",
+      "pins": [
+        "ReturnValue",
+        "ReturnValue_BuildRevision",
+        "ReturnValue_ChosenNodeIds",
+        "ReturnValue_MatchEpoch",
+        "self"
+      ]
+    },
+    {
+      "id": "contains",
+      "pins": [
+        "ItemToFind",
+        "ReturnValue",
+        "TargetArray",
+        "self"
+      ]
+    },
+    {
+      "id": "already_chosen",
+      "pins": [
+        "Condition",
+        "else",
+        "execute",
+        "then"
+      ]
+    },
+    {
+      "id": "request",
+      "pins": [
+        "ReturnValue",
+        "self"
+      ]
+    },
+    {
+      "id": "commit",
+      "pins": [
+        "ExpectedBuildRevision",
+        "MatchEpoch",
+        "NodeId",
+        "RequestId",
+        "ReturnValue",
+        "ReturnValue_BuildRevision",
+        "ReturnValue_Reason",
+        "ReturnValue_RequestId",
+        "ReturnValue_bCommitted",
+        "execute",
+        "self",
+        "then"
+      ]
+    },
+    {
+      "id": "committed",
+      "pins": [
+        "Condition",
+        "else",
+        "execute",
+        "then"
+      ]
+    },
+    {
+      "id": "failure",
+      "pins": [
+        "Duration",
+        "InString",
+        "Key",
+        "TextColor",
+        "WorldContextObject",
+        "bPrintToLog",
+        "bPrintToScreen",
+        "execute",
+        "self",
+        "then"
+      ]
+    }
+  ]
+}

@@ -7,7 +7,7 @@
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityDefinitions.h"
-#include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
+#include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
 
 namespace
@@ -117,7 +117,7 @@ bool GuLiWingmanMissileAim::Decode(
 bool FGuLiWingmanCombatContext::IsWellFormed() const
 {
 	return MatchEpoch != 0u && ShipSource.IsValid() && ShipTeam != EGuLiTeam::Unassigned
-		&& ShipASC.IsValid() && Relay && DamageLedger.IsValid() && LogicalMissiles.IsValid()
+		&& HangarCapability.IsValid() && Relay && DamageLedger.IsValid() && LogicalMissiles.IsValid()
 		&& FMath::IsFinite(MaximumAcceptedAgeSeconds) && MaximumAcceptedAgeSeconds > 0.0;
 }
 
@@ -259,10 +259,10 @@ bool FGuLiWingmanCombatCoordinator::Initialize(
 
 void FGuLiWingmanCombatCoordinator::Reset()
 {
-	if (Context.Relay && Context.ShipASC.IsValid())
+	if (Context.Relay && Context.HangarCapability.IsValid())
 	{
 		if (UGuLiCombatEffectRuntimeSubsystem* Effects =
-			Context.ShipASC->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
+			Context.HangarCapability->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
 		{
 			for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
 				Effects->CancelWingmanGunBurst(Entry.Wingman, true);
@@ -303,7 +303,7 @@ bool FGuLiWingmanCombatCoordinator::ApplyCommittedAbilityConfig(
 		return true;
 	}
 	if (UGuLiCombatEffectRuntimeSubsystem* Effects =
-		Context.ShipASC->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
+		Context.HangarCapability->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>())
 	{
 		for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
 			Effects->CancelWingmanGunBurst(Entry.Wingman, true);
@@ -536,7 +536,7 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 	}
 	if (!IsReady() || !IsFiniteTime(NowSeconds)
 		|| Context.Relay->GetLeaseState().Lifecycle != EGuLiWingmanGroupLifecycle::Active
-		|| !Context.ShipASC->IsActiveAbilityInputEnabled())
+		|| !Context.HangarCapability->IsActiveAbilityInputEnabled())
 	{
 		Result.RejectReason = EGuLiWingmanRejectReason::InactiveGroup;
 		return Finish(Result);
@@ -553,7 +553,7 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 		Result.RejectReason = EGuLiWingmanRejectReason::WeaponDefinitionMismatch;
 		return Finish(Result);
 	}
-	if (Context.ShipASC->IsWeaponCooldownActive(Channel->CooldownGroupId))
+	if (Context.HangarCapability->IsWeaponCooldownActive(Channel->CooldownGroupId))
 	{
 		Result.RejectReason = EGuLiWingmanRejectReason::CooldownActive;
 		return Finish(Result);
@@ -663,7 +663,7 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 		Result.RejectReason = EGuLiWingmanRejectReason::InvalidTarget;
 		return Finish(Result);
 	}
-	if (!Context.ShipASC->ServerTryReserveWeaponCooldown(
+	if (!Context.HangarCapability->ServerTryReserveWeaponCooldown(
 		Channel->CooldownGroupId, Channel->Runtime.CooldownSeconds, Request.ActivationId))
 	{
 		Result.RejectReason = EGuLiWingmanRejectReason::CooldownActive;
@@ -674,7 +674,7 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 	if (!Context.LogicalMissiles->LaunchFlightSalvo(Launches, LaunchedCount)
 		|| LaunchedCount != Launches.Num())
 	{
-		Context.ShipASC->ServerRollbackWeaponCooldown(
+		Context.HangarCapability->ServerRollbackWeaponCooldown(
 			Channel->CooldownGroupId, Request.ActivationId);
 		Result.RejectReason = EGuLiWingmanRejectReason::InvalidTarget;
 		return Finish(Result);
@@ -688,8 +688,8 @@ FGuLiWingmanMissileSalvoResult FGuLiWingmanCombatCoordinator::ActivateMissileSal
 int32 FGuLiWingmanCombatCoordinator::SynchronizeRosterState()
 {
 	int32 RemovedCount = 0;
-	if (UGuLiCombatEffectRuntimeSubsystem* Effects = Context.ShipASC.IsValid()
-		? Context.ShipASC->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>() : nullptr)
+	if (UGuLiCombatEffectRuntimeSubsystem* Effects = Context.HangarCapability.IsValid()
+		? Context.HangarCapability->GetWorld()->GetSubsystem<UGuLiCombatEffectRuntimeSubsystem>() : nullptr)
 	{
 		for (const FGuLiWingmanRosterEntry& Entry : Context.Relay->GetRoster())
 		{
@@ -881,8 +881,8 @@ bool FGuLiWingmanCombatCoordinator::HasLineOfSight(
 	{
 		return Context.LineOfSightResolver(SourceLocation, Target);
 	}
-	const UGuLiShipAbilitySystemComponent* ASC = Context.ShipASC.Get();
-	const AActor* Ship = ASC ? ASC->GetOwnerActor() : nullptr;
+	const UGuLiShipHangarCapabilityComponent* ASC = Context.HangarCapability.Get();
+	const AActor* Ship = ASC ? ASC->GetOwner() : nullptr;
 	UWorld* World = Ship ? Ship->GetWorld() : nullptr;
 	if (!World)
 	{
@@ -972,7 +972,7 @@ EGuLiWingmanRejectReason FGuLiWingmanCombatCoordinator::ValidateCurrentBasicDefi
 	{
 		return EGuLiWingmanRejectReason::WeaponDefinitionMismatch;
 	}
-	UGuLiShipAbilitySystemComponent* ASC = Context.ShipASC.Get();
+	UGuLiShipHangarCapabilityComponent* ASC = Context.HangarCapability.Get();
 	const FGuLiShipAbilityGrant* Grant = ASC ? ASC->FindConfiguredGrant(Intent.Binding) : nullptr;
 	return ASC && ASC->IsAbilityConfigurationCurrent(Intent.WeaponAbilityId, Intent.AbilitySetRevision)
 		&& ASC->IsWeaponConfigurationCurrent(Intent.Binding, Intent.SkillId,
@@ -1021,7 +1021,7 @@ EGuLiWingmanRejectReason FGuLiWingmanCombatCoordinator::ValidateCurrentMissileDe
 	{
 		return EGuLiWingmanRejectReason::WeaponDefinitionMismatch;
 	}
-	UGuLiShipAbilitySystemComponent* ASC = Context.ShipASC.Get();
+	UGuLiShipHangarCapabilityComponent* ASC = Context.HangarCapability.Get();
 	const FGuLiShipAbilityGrant* Grant = ASC ? ASC->FindConfiguredGrant(Request.Binding) : nullptr;
 	return ASC && ASC->IsAbilityConfigurationCurrent(Request.MissileAbilityId, Request.AbilitySetRevision)
 		&& ASC->IsWeaponConfigurationCurrent(Request.Binding, Request.SkillId,
@@ -1039,7 +1039,7 @@ double FGuLiWingmanCombatCoordinator::GetServerTimeSeconds() const
 	{
 		return Context.ServerTimeProvider();
 	}
-	const UGuLiShipAbilitySystemComponent* ASC = Context.ShipASC.Get();
+	const UGuLiShipHangarCapabilityComponent* ASC = Context.HangarCapability.Get();
 	return ASC && ASC->GetWorld() ? static_cast<double>(ASC->GetWorld()->GetTimeSeconds()) : -1.0;
 }
 

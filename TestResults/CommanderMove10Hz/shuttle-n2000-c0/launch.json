@@ -1,0 +1,33 @@
+{
+  "Population": 2000,
+  "Date": "2026-09-15T10:12:24.8427942+08:00",
+  "Engine": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64",
+  "Duration": 40,
+  "Renderer": "1920x1080, Epic, screen percentage 100, VSync off, client uncapped/server 60 FPS cap, offscreen",
+  "Processes": [
+    {
+      "Pid": 20972,
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "/Game/Maps/LVL_CommanderMassPrototype",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-server",
+        "-NullRHI",
+        "-port=17951",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\shuttle-n2000-c0\\server.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,gs.Commander.MoveStress 2000 40 D:/UE5.7/test1/TestResults/CommanderMove10Hz/shuttle-n2000-c0/server server 0 shuttle\""
+      ],
+      "Role": "server"
+    }
+  ],
+  "Clients": 0,
+  "Pattern": "shuttle",
+  "Map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "PartitionCpu": false
+}

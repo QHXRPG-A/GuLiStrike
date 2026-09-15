@@ -26,7 +26,6 @@ bool UGuLiConstructionWorkComponent::AssignBuilding(UGuLiBuildingLifecycleCompon
 }
 void UGuLiConstructionWorkComponent::StopWork()
 {
-	GetOwner()->FindComponentByClass<UGuLiEngineeringTravelComponent>()->CancelApproach();
 	Target.Reset(); SetComponentTickEnabled(false);
 }
 void UGuLiConstructionWorkComponent::TickComponent(float Dt, ELevelTick TickType, FActorComponentTickFunction* Function)

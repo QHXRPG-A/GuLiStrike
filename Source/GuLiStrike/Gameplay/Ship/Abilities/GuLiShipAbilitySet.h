@@ -6,12 +6,11 @@
 #include "Engine/DataAsset.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityDefinitions.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h"
+#include "Gameplay/Ship/Aiming/GuLiShipReticleTypes.h"
 #include "Templates/SubclassOf.h"
 #include "GuLiShipAbilitySet.generated.h"
 
-class UGuLiShipGameplayAbility;
-
-/** One catalog mapping from stable AbilityId to a GA class and immutable group definition. */
+/** Stable Wingman action identity and immutable configuration; no runtime ability object. */
 USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiShipAbilityGrant
 {
@@ -23,7 +22,7 @@ struct GULISTRIKE_API FGuLiShipAbilityGrant
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities")
 	EGuLiShipAbilitySlot Slot = EGuLiShipAbilitySlot::None;
 
-	/** Stable equipment binding within WingmanTypeId; independent from GAS slot/category. */
+	/** Stable equipment binding within WingmanTypeId; independent from action category. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
 	FName WeaponSlotId;
 
@@ -38,11 +37,11 @@ struct GULISTRIKE_API FGuLiShipAbilityGrant
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
 	FName CooldownGroupId;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities")
-	TSubclassOf<UGuLiShipGameplayAbility> AbilityClass;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Presentation")
+	FGameplayTagContainer PresentationTags;
 
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities", meta = (ClampMin = "1"))
-	int32 AbilityLevel = 1;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Presentation")
+	FGuLiShipReticleConfig ReticleConfig;
 
 	/** Empty for persistent abilities; required for input-triggered abilities. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities")

@@ -1,0 +1,25 @@
+[
+  {
+    "command": [
+      "build"
+    ],
+    "exit_code": 0,
+    "output": "TestResults\\CommanderMove10Hz\\progress-build-client-profile.log"
+  },
+  {
+    "command": [
+      "check",
+      "--json"
+    ],
+    "exit_code": 0,
+    "output": "TestResults\\CommanderMove10Hz\\progress-check-client-profile.json"
+  },
+  {
+    "command": [
+      "split",
+      "--check"
+    ],
+    "exit_code": 0,
+    "output": "TestResults\\CommanderMove10Hz\\progress-split-client-profile.log"
+  }
+]

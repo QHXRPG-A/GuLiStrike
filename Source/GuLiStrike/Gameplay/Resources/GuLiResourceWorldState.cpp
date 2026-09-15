@@ -2,7 +2,6 @@
 
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
 #include "Gameplay/Stronghold/GuLiStrongholdNetworkPresentationComponent.h"
-#include "Gameplay/Stronghold/GuLiStrongholdTopology.h"
 
 #include "Net/UnrealNetwork.h"
 
@@ -53,15 +52,19 @@ void AGuLiResourceWorldState::GetLifetimeReplicatedProps(TArray<FLifetimePropert
 	DOREPLIFETIME(AGuLiResourceWorldState, bAuthorityReady);
 	DOREPLIFETIME(AGuLiResourceWorldState, Territories);
 	DOREPLIFETIME(AGuLiResourceWorldState, OreDeltas);
-	DOREPLIFETIME(AGuLiResourceWorldState, TransportEdges);
+	DOREPLIFETIME(AGuLiResourceWorldState, TransportNetwork);
 }
 
-void AGuLiResourceWorldState::SetTransportEdgesAuthority(TConstArrayView<FGuLiStrongholdEdge> Edges)
+void AGuLiResourceWorldState::SetTransportNetworkAuthority(const FGuLiTransportNetworkSnapshot& Snapshot)
 {
 	check(HasAuthority());
-	TransportEdges.Reset();
-	for (const auto& Edge : Edges) TransportEdges.Add(FIntPoint(Edge.A,Edge.B));
+	TransportNetwork = Snapshot;
 	ForceNetUpdate();
+	OnRep_TransportNetwork();
+}
+void AGuLiResourceWorldState::OnRep_TransportNetwork()
+{
+	StateChanged.Broadcast();
 }
 
 void AGuLiResourceWorldState::InitializeAuthority(

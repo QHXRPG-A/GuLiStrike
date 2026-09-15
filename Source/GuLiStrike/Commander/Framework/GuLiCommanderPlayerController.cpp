@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
+#include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
 #include "Gameplay/Teleport/GuLiTeleportInputComponent.h"
 
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
@@ -21,6 +22,7 @@
 #include "GameFramework/HUD.h"
 #include "InputCoreTypes.h"
 #include "LandscapeProxy.h"
+#include "Gameplay/Resources/GuLiResourceActors.h"
 
 namespace GuLiCommanderCursorTrace
 {
@@ -159,6 +161,7 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 	}
 
 	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor).bConsumeInput = false;
+	InputComponent->BindKey(EKeys::Q, IE_Pressed, this, &ThisClass::HandleUnitSkillInput).bConsumeInput = true;
 	InputComponent->BindKey(EKeys::T, IE_Pressed, TeleportInput.Get(), &UGuLiTeleportInputComponent::ActivateAiming).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Released, this, &ThisClass::HandlePrimaryReleased).bConsumeInput = false;
 	InputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor).bConsumeInput = false;
@@ -673,41 +676,46 @@ bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 		return false;
 	}
 
-	FVector GroundLocation;
-	if (!TraceGroundUnderCursor(GroundLocation))
-	{
-		return false;
-	}
-
 	FGuLiMoveRequest Request;
-	Request.Target = GroundLocation;
 	Request.SelectionRevision = NetSyncComponent->GetSelectionState().SelectionRevision;
 	Request.ClientCommandId = AllocateMoveCommandId();
-	const UGuLiCommanderResourceAdapter* ResourceAdapter =
-		GetWorld()->GetSubsystem<UGuLiCommanderResourceAdapter>();
-	check(ResourceAdapter);
-	FVector RayOrigin;
-	FVector RayDirection;
-	if (DeprojectMousePositionToWorld(RayOrigin, RayDirection))
+	FVector RayOrigin, RayDirection;
+	const bool bHasRay = DeprojectMousePositionToWorld(RayOrigin,RayDirection);
+	const auto* BattlePlayer = GetPlayerState<AGuLiBattlePlayerState>();
+	if (bHasRay && BattlePlayer && (!NetSyncComponent->GetSelectionState().ActorIds.IsEmpty()
+		|| NetSyncComponent->HasUnresolvedSelectionIntent()))
 	{
-		uint16 ClusterId = 0u;
-		FVector ClusterCenter = FVector::ZeroVector;
-		if (ResourceAdapter->FindClusterAlongRay(
-			RayOrigin, RayDirection, ClusterId, ClusterCenter))
+		// Model picking is separate from the Landscape-only ground trace.
+		FHitResult Hit;
+		FCollisionQueryParams Query(SCENE_QUERY_STAT(CommanderOutpostOrder),true,GetPawn());
+		if (GetWorld()->LineTraceSingleByChannel(Hit,RayOrigin,
+			RayOrigin+RayDirection*GuLiCommanderCursorTrace::MaximumGroundTraceDistanceCentimeters,ECC_Visibility,Query))
+			if (const auto* Outpost = Cast<AGuLiTerritoryOutpostActor>(Hit.GetActor()); Outpost && Outpost->GetTerritoryOwner() == BattlePlayer->GetTeam())
+			{ Request.TargetTerritoryId = Outpost->GetTerritoryId(); Request.Target = Hit.ImpactPoint; }
+	}
+	if (Request.TargetTerritoryId.IsNone())
+	{
+		FVector Ground;
+		if (!TraceGroundUnderCursor(Ground)) return false;
+		Request.Target = Ground;
+		const auto& ResourceAdapter = *GetWorld()->GetSubsystem<UGuLiCommanderResourceAdapter>();
+		if (bHasRay)
 		{
-			if (NetSyncComponent->GetSelectionState().ActorIds.IsEmpty()) return false;
-			Request.MiningOrderType = EGuLiMiningOrderType::MineCluster;
-			Request.TargetClusterId = ClusterId;
-			Request.Target = ClusterCenter;
-		}
-		else if (const AGuLiBattlePlayerState* State = GetPlayerState<AGuLiBattlePlayerState>();
-			State && ResourceAdapter->IsFactoryAlongRay(
-				State->GetTeam(), RayOrigin, RayDirection))
-		{
-			if (NetSyncComponent->GetSelectionState().ActorIds.IsEmpty()) return false;
-			Request.MiningOrderType = EGuLiMiningOrderType::ReturnToFactory;
+			uint16 ClusterId = 0; FVector ClusterCenter;
+			if (ResourceAdapter.FindClusterAlongRay(RayOrigin,RayDirection,ClusterId,ClusterCenter))
+			{
+				if (NetSyncComponent->GetSelectionState().ActorIds.IsEmpty()) return false;
+				Request.MiningOrderType = EGuLiMiningOrderType::MineCluster;
+				Request.TargetClusterId = ClusterId; Request.Target = ClusterCenter;
+			}
+			else if (BattlePlayer && ResourceAdapter.IsFactoryAlongRay(BattlePlayer->GetTeam(),RayOrigin,RayDirection))
+			{
+				if (NetSyncComponent->GetSelectionState().ActorIds.IsEmpty()) return false;
+				Request.MiningOrderType = EGuLiMiningOrderType::ReturnToFactory;
+			}
 		}
 	}
+	const FVector GroundLocation = Request.Target;
 #if !UE_BUILD_SHIPPING
 	for (TActorIterator<AGuLiCommanderPresentationActor> It(GetWorld()); It; ++It)
 	{
@@ -1089,8 +1097,8 @@ void AGuLiCommanderPlayerController::UpdateCameraInput(const float DeltaTime)
 	}
 
 	CameraPawn->AddPlanarMovement(MovementInput.GetClampedToMaxSize(1.0f) * DeltaTime);
-	const float YawInput = (IsInputKeyDown(EKeys::E) ? 1.0f : 0.0f)
-		- (IsInputKeyDown(EKeys::Q) ? 1.0f : 0.0f);
+	const float YawInput = (IsInputKeyDown(EKeys::C) ? 1.0f : 0.0f)
+		- (IsInputKeyDown(EKeys::Z) ? 1.0f : 0.0f);
 	CameraPawn->AddYawInput(YawInput * DeltaTime);
 }
 
@@ -1158,7 +1166,15 @@ bool AGuLiCommanderPlayerController::ProcessMoveCommandAck(const FGuLiCommandAck
 		return true;
 	}
 
-	const bool bAccepted = Ack.IsAccepted() && Ack.BatchOrderId != 0u;
+	const bool bAccepted = Ack.IsAccepted() && (Ack.BatchOrderId != 0u || !Ack.EngineeringResults.IsEmpty());
+	if (!Ack.EngineeringResults.IsEmpty())
+	{
+		TArray<FString> Messages;
+		for (const auto& Result : Ack.EngineeringResults)
+			Messages.AddUnique(GuLiEngineeringCommands::Describe(Result.Result));
+		if (auto* HUD = Cast<AGuLiCommanderHUD>(GetHUD()))
+			HUD->ShowCommandFeedback(FText::FromString(FString::Join(Messages,TEXT("；"))),bAccepted);
+	}
 	CommandLineState = bAccepted
 		? EGuLiCommandLineState::Accepted
 		: EGuLiCommandLineState::Rejected;
@@ -1168,4 +1184,14 @@ bool AGuLiCommanderPlayerController::ProcessMoveCommandAck(const FGuLiCommandAck
 	LastVisualizedMoveCommandId = Ack.ClientCommandId;
 	LatestMoveIntentCommandId = 0u;
 	return true;
+}
+
+void AGuLiCommanderPlayerController::HandleUnitSkillInput()
+{
+	if (!CanIssueCommanderOrders() || IsCursorOverCommanderUI() || bSelectionMouseDown
+		|| (TeleportInput && TeleportInput->IsAiming())
+		|| (GetBuildingPlacementComponent() && GetBuildingPlacementComponent()->IsBuildModeActive())) return;
+	FVector Ground = FVector::ZeroVector;
+	const bool bHasGround = TraceGroundUnderCursor(Ground);
+	GetPlayerState<AGuLiBattlePlayerState>()->GetCommanderSkills()->ActivateSelectedUnits(bHasGround, Ground);
 }

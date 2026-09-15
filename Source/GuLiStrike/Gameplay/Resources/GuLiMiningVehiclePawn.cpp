@@ -62,6 +62,7 @@ void AGuLiMiningVehiclePawn::BeginPlay()
 	FindComponentByClass<UGuLiEngineeringTravelComponent>()->OnTransportEnded.AddWeakLambda(this, [this]()
 	{
 		if (bPendingAutomatic) { bPendingAutomatic = false; ForceAutomaticControl(); }
+		else BeginGrace();
 	});
 }
 
@@ -496,10 +497,21 @@ void AGuLiMiningVehiclePawn::FinishFactoryManeuver()
     TaskState = EGuLiMiningTaskState::Idle;
     if (PendingCommand.IsSet())
     {
-        const FGuLiMiningCommand Command = PendingCommand.GetValue();
+        const FPendingEngineeringCommand Pending = PendingCommand.GetValue();
         PendingCommand.Reset();
-        if (Command.Type == EGuLiMiningOrderType::MineCluster && !GetResourceSubsystem()->CanTeamMineAt(Team, Command.ClusterId)) BeginGrace();
-        else ExecutePlayerCommand(Command);
+        if (!Pending.Transit.TerritoryId.IsNone())
+        {
+            FGuLiPreparedTransit Prepared;
+            LastTransitResult = FindComponentByClass<UGuLiEngineeringTravelComponent>()->PrepareTransport(Pending.Transit,Prepared);
+            if (LastTransitResult == EGuLiTransitOrderResult::Accepted) ExecuteTransit(Pending.Transit,Prepared);
+            else
+            {
+                UE_LOG(LogTemp, Display, TEXT("StrongholdTransit deferred vehicle=%u result=%s"),StableActorId.Value,*GuLiEngineeringCommands::Describe(LastTransitResult));
+                BeginGrace();
+            }
+        }
+        else if (Pending.Mining.Type == EGuLiMiningOrderType::MineCluster && !GetResourceSubsystem()->CanTeamMineAt(Team, Pending.Mining.ClusterId)) BeginGrace();
+        else ExecutePlayerCommand(Pending.Mining);
     }
     else if (GetCargoTotal() > 0 && (!IsValid(Factory) || Factory->GetTeam() != Team)) BeginReturnToFactory(false);
     else if (bPendingAutomatic) { bPendingAutomatic = false; ForceAutomaticControl(); }
@@ -550,7 +562,7 @@ bool AGuLiMiningVehiclePawn::IssuePlayerCommand(
     ActivePlayerRequestId = Command.RequestId;
     if (IsFactoryManeuverActive())
     {
-        PendingCommand = Command;
+        PendingCommand.Emplace(Command);
         bPendingAutomatic = false;
         ForceNetUpdate();
     }
@@ -558,10 +570,40 @@ bool AGuLiMiningVehiclePawn::IssuePlayerCommand(
     return true;
 }
 
+EGuLiTransitOrderResult AGuLiMiningVehiclePawn::IssueStrongholdTransit(
+	const FGuLiStrongholdTransitOrder& Order, EGuLiTeam RequestingTeam)
+{
+	using Result = EGuLiTransitOrderResult;
+	if (!HasAuthority() || RequestingTeam != Team) return Result::Unauthorized;
+	if (!Order.IsWellFormed()) return Result::InvalidRequest;
+	if (uint32(Order.RequestId) == ActivePlayerRequestId) return LastTransitResult;
+	if (ActivePlayerRequestId != 0 && int32(uint32(Order.RequestId)-ActivePlayerRequestId) <= 0) return Result::StaleRequest;
+	FGuLiPreparedTransit Prepared;
+	LastTransitResult = FindComponentByClass<UGuLiEngineeringTravelComponent>()->PrepareTransport(Order,Prepared);
+	if (LastTransitResult != Result::Accepted) return LastTransitResult;
+	ActivePlayerRequestId = uint32(Order.RequestId);
+	if (IsFactoryManeuverActive())
+	{
+		PendingCommand.Emplace(Order); bPendingAutomatic = false;
+		LastTransitResult = Result::DeferredUntilFactoryExit;
+	}
+	else ExecuteTransit(Order,Prepared);
+	ForceNetUpdate();
+	return LastTransitResult;
+}
+void AGuLiMiningVehiclePawn::ExecuteTransit(const FGuLiStrongholdTransitOrder& Order, const FGuLiPreparedTransit& Prepared)
+{
+	FinishCurrentTarget();
+	PendingCommand.Reset(); bPendingAutomatic = false; bManualReturnOrder = false;
+	ActivePlayerRequestId = uint32(Order.RequestId);
+	ControlMode = EGuLiMiningControlMode::PlayerOrder; TaskState = EGuLiMiningTaskState::Idle;
+	GraceEndServerTime = 0;
+	FindComponentByClass<UGuLiEngineeringTravelComponent>()->BeginTransport(Prepared);
+}
+
 void AGuLiMiningVehiclePawn::ExecutePlayerCommand(const FGuLiMiningCommand& Command)
 {
 	UGuLiResourceWorldSubsystem* Resources = GetResourceSubsystem();
-	FindComponentByClass<UGuLiEngineeringTravelComponent>()->CancelApproach();
 	FinishCurrentTarget();
 	if (AAIController* AIController = Cast<AAIController>(GetController())) AIController->StopMovement();
 	ControlMode = EGuLiMiningControlMode::PlayerOrder;
@@ -622,7 +664,6 @@ void AGuLiMiningVehiclePawn::ForceAutomaticControl()
     if (!HasAuthority()) return;
     if (IsFactoryManeuverActive() || FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsInTransit())
     { PendingCommand.Reset(); bPendingAutomatic = true; return; }
-	FindComponentByClass<UGuLiEngineeringTravelComponent>()->CancelApproach();
 	FinishCurrentTarget();
 	if (AAIController* AIController = Cast<AAIController>(GetController())) AIController->StopMovement();
 	ControlMode = EGuLiMiningControlMode::Auto;
@@ -635,7 +676,6 @@ void AGuLiMiningVehiclePawn::ForceAutomaticControl()
 
 void AGuLiMiningVehiclePawn::BeginGrace()
 {
-	FindComponentByClass<UGuLiEngineeringTravelComponent>()->CancelApproach();
 	FinishCurrentTarget();
 	if (AAIController* AIController = Cast<AAIController>(GetController())) AIController->StopMovement();
 	ControlMode = EGuLiMiningControlMode::Grace;
@@ -690,6 +730,7 @@ void AGuLiMiningVehiclePawn::OnRep_Presentation()
         TravelBounds += VisualMesh->CalcBounds(VisualMesh->GetComponentTransform().GetRelativeTransform(GetActorTransform())).GetBox();
     MiningDistanceCentimeters = 591.6596f * PresentationDefinition.Scale * 3.0f;
     OnRep_MiningVisual();
+    SetEngineeringPresentationVisible(!FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsInTransit());
 }
 
 void AGuLiMiningVehiclePawn::OnRep_MiningVisual()
@@ -712,6 +753,7 @@ void AGuLiMiningVehiclePawn::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 	DOREPLIFETIME(AGuLiMiningVehiclePawn, Team);
+	DOREPLIFETIME(AGuLiMiningVehiclePawn, LastTransitResult);
 	DOREPLIFETIME(AGuLiMiningVehiclePawn, UnitTypeId);
     DOREPLIFETIME(AGuLiMiningVehiclePawn, StableActorId);
     DOREPLIFETIME(AGuLiMiningVehiclePawn, MiningVisual);

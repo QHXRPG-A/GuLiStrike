@@ -1,0 +1,71 @@
+{
+  "Clients": 2,
+  "Map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "Processes": [
+    {
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "/Game/Maps/LVL_CommanderMassPrototype",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-server",
+        "-NullRHI",
+        "-port=17951",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\online-fixed-n2000-c2\\server.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,gs.Commander.MoveStress 2000 50 D:/UE5.7/test1/TestResults/CommanderMove10Hz/online-fixed-n2000-c2/server server 2 shuttle join-first\""
+      ],
+      "Pid": 34688,
+      "Role": "server"
+    },
+    {
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "127.0.0.1:17951",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-NullRHI",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\online-fixed-n2000-c2\\client1.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,t.MaxFPS 60,gs.Commander.MoveStress 2000 40 D:/UE5.7/test1/TestResults/CommanderMove10Hz/online-fixed-n2000-c2/client1 client 2 shuttle join-first\""
+      ],
+      "Pid": 27936,
+      "Role": "client1"
+    },
+    {
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "127.0.0.1:17951",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-NullRHI",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\online-fixed-n2000-c2\\client2.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,t.MaxFPS 60,gs.Commander.MoveStress 2000 40 D:/UE5.7/test1/TestResults/CommanderMove10Hz/online-fixed-n2000-c2/client2 client 2 shuttle join-first\""
+      ],
+      "Pid": 32200,
+      "Role": "client2"
+    }
+  ],
+  "Date": "2026-09-15T11:07:02.7071194+08:00",
+  "PartitionCpu": false,
+  "Population": 2000,
+  "Engine": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64",
+  "HeadlessClients": true,
+  "Pattern": "shuttle",
+  "Renderer": "NullRHI clients/server, 60 FPS world cap; network/CPU capture only",
+  "JoinBeforePopulation": true,
+  "Duration": 40
+}

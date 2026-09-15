@@ -37,6 +37,10 @@ public:
 		const AGuLiBattlePlayerState& PlayerState,
 		TConstArrayView<FGuLiControllableActorId> SelectedIds,
 		const FGuLiMiningCommand& Command) const;
+	void IssueStrongholdTransit(
+		const AGuLiBattlePlayerState& PlayerState,
+		TConstArrayView<FGuLiControllableActorId> SelectedIds,
+		const FGuLiStrongholdTransitOrder& Order, FGuLiCommandAck& Ack) const;
 	void HandleCommanderDisconnected(EGuLiTeam Team) const;
 	bool GetControllableActorCenter(
 		TConstArrayView<FGuLiControllableActorId> ActorIds,

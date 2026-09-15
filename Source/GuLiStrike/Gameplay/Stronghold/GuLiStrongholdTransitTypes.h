@@ -5,7 +5,7 @@
 UENUM(BlueprintType)
 enum class EGuLiTransitPhase : uint8
 {
-	Ground, ApproachingGate, Ascending, Accelerating, Cruising, Decelerating, WaitingForExit, ExitFlash
+	Ground, Ascending, Accelerating, Cruising, Decelerating, WaitingForExit, ExitFlash
 };
 
 USTRUCT()
@@ -38,9 +38,10 @@ struct FGuLiStrongholdTransitState
 	GENERATED_BODY()
 	UPROPERTY() FGuid JourneyId;
 	UPROPERTY(BlueprintReadOnly) EGuLiTransitPhase Phase = EGuLiTransitPhase::Ground;
-	UPROPERTY(BlueprintReadOnly) int32 GateFieldId = 0;
+	UPROPERTY(BlueprintReadOnly) int32 TransitFieldId = 0;
 	UPROPERTY(BlueprintReadOnly) int32 DestinationTerritory = INDEX_NONE;
 	UPROPERTY(BlueprintReadOnly) bool bEmergencyExit = false;
+	UPROPERTY() uint32 NetworkRevision = 0;
 	UPROPERTY() TArray<FGuLiTransitRoutePoint> Route;
 	UPROPERTY() FGuLiTransitTiming Timing;
 	UPROPERTY() double StartServerTime = 0;
@@ -52,6 +53,6 @@ struct FGuLiStrongholdTransitState
 	UPROPERTY() FVector_NetQuantize10 ExitCenter = FVector::ZeroVector;
 	UPROPERTY() FVector_NetQuantize10 ExitPosition = FVector::ZeroVector;
 	bool IsPhased() const { return Phase >= EGuLiTransitPhase::Ascending && Phase <= EGuLiTransitPhase::WaitingForExit; }
-	bool IsRouting() const { return Phase >= EGuLiTransitPhase::ApproachingGate && Phase <= EGuLiTransitPhase::WaitingForExit; }
+	bool IsRouting() const { return Phase >= EGuLiTransitPhase::Ascending && Phase <= EGuLiTransitPhase::WaitingForExit; }
 	FVector SamplePosition(double ServerTime, int32* OutLeg = nullptr) const;
 };

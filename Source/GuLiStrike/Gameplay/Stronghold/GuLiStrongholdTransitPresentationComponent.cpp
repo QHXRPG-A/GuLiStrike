@@ -24,7 +24,7 @@ void UGuLiStrongholdTransitPresentationComponent::ApplyState(const FGuLiStrongho
 	State = InState;
 	if (!Orb)
 	{
-		const auto& Config = *GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindStrongholdGate(State.GateFieldId);
+		const auto& Config = *GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindStrongholdTransit(State.TransitFieldId);
 		Orb = NewObject<UStaticMeshComponent>(GetOwner());
 		Orb->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,TEXT("/Engine/BasicShapes/Sphere.Sphere")));
 		Orb->SetMaterial(0,Config.EnergyMaterial.LoadSynchronous());

@@ -12,7 +12,7 @@ class APlayerController;
 class UGuLiCombatHealthComponent;
 class UGuLiShipAimComponent;
 class UGuLiShipMovementComponent;
-class UGuLiShipAbilitySystemComponent;
+class UGuLiShipHangarCapabilityComponent;
 class UGuLiShipWorldAimBoundsWidget;
 class UGuLiShipWorldCombatWidget;
 class UGuLiShipWorldFlightWidget;
@@ -25,7 +25,7 @@ class UWidgetComponent;
 
 /**
  * Local-only presenter for one owning-player screen widget and four world-space Ship HUD nodes.
- * Gameplay state remains owned by the Ship, movement, health and ASC components.
+ * Gameplay state remains owned by the Ship, movement, health and capability components.
  */
 UCLASS(ClassGroup = (GuLiStrike), meta = (BlueprintSpawnableComponent))
 class GULISTRIKE_API UGuLiShipWorldHUDComponent final : public UActorComponent

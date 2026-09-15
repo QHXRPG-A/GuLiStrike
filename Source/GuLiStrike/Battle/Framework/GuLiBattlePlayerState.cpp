@@ -1,11 +1,10 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Battle/Framework/GuLiBattlePlayerState.h"
-#include "Gameplay/Teleport/GuLiTeleportAbility.h"
+#include "Gameplay/Ship/Build/GuLiShipBuildComponent.h"
+#include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
 
 #include "Net/UnrealNetwork.h"
-#include "AbilitySystemComponent.h"
-#include "Gameplay/Skills/GuLiArmySkillAbility.h"
 #include "Gameplay/Skills/GuLiSkillTags.h"
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
@@ -14,16 +13,13 @@
 
 AGuLiBattlePlayerState::AGuLiBattlePlayerState()
 {
-	ArmyAbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("ArmyAbilitySystem"));
-	ArmyAbilitySystem->SetIsReplicated(true);
-	ArmyAbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Minimal);
-	ShipAbilityLoadoutState = FGuLiShipAbilityLoadoutState::MakeNativeV3();
+	ShipBuild = CreateDefaultSubobject<UGuLiShipBuildComponent>(TEXT("ShipBuild"));
+	CommanderSkills = CreateDefaultSubobject<UGuLiCommanderSkillComponent>(TEXT("CommanderSkills"));
 }
 
 void AGuLiBattlePlayerState::BeginPlay()
 {
 	Super::BeginPlay();
-	InitializeArmyAbilitySystem();
 	if (HasAuthority())
 		if (auto* Skills = GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>())
 			Skills->OnWeaponLoadoutCommitted().AddUObject(this, &ThisClass::HandleArmyWeaponLoadoutCommitted);
@@ -164,74 +160,15 @@ void AGuLiBattlePlayerState::ClientReceiveWeaponChangeResult_Implementation(cons
 	OnWeaponChangeResult.Broadcast(Result);
 }
 
-UAbilitySystemComponent* AGuLiBattlePlayerState::GetAbilitySystemComponent() const
-{
-	return ArmyAbilitySystem;
-}
-
-void AGuLiBattlePlayerState::InitializeArmyAbilitySystem()
-{
-	if (!ArmyAbilitySystem) return;
-	// Army commands belong to the player state, and do not depend on its current Pawn.
-	ArmyAbilitySystem->InitAbilityActorInfo(this, this);
-	if (HasAuthority() && !bArmySkillAbilityGranted)
-	{
-		ArmyAbilitySystem->GiveAbility(FGameplayAbilitySpec(UGuLiArmySkillAbility::StaticClass(), 1));
-		ArmyAbilitySystem->GiveAbility(FGameplayAbilitySpec(UGuLiTeleportAbility::StaticClass(), 1));
-		bArmySkillAbilityGranted = true;
-	}
-}
-
 bool AGuLiBattlePlayerState::ExecuteArmySkillCommand(const FGuLiArmySkillCommand& Command, FString& OutError)
 {
-	if (!HasAuthority() || !ArmyAbilitySystem)
-	{
-		OutError = TEXT("Army skill commands execute only on the server."); return false;
-	}
-	InitializeArmyAbilitySystem();
-	auto* Payload = NewObject<UGuLiArmySkillCommandPayload>(this);
-	Payload->Request = Command;
-	FGameplayEventData Event;
-	Event.EventTag = TAG_GuLi_ArmySkillCommand;
-	Event.Instigator = this;
-	Event.Target = this;
-	Event.OptionalObject = Payload;
-	ArmyAbilitySystem->HandleGameplayEvent(TAG_GuLi_ArmySkillCommand, &Event);
-	OutError = Payload->bExecuted ? Payload->Error : TEXT("ServerOnly army skill ability did not activate.");
-	return Payload->bExecuted && Payload->bSucceeded;
+	if (!HasAuthority()) { OutError = TEXT("Army commands execute only on the server."); return false; }
+	auto* Skills = GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>();
+	if (!Skills) { OutError = TEXT("Army skill runtime is unavailable."); return false; }
+	return Skills->ExecuteCommand(*this, Command, OutError);
 }
 
-bool AGuLiBattlePlayerState::SetServerShipAbilityLoadoutState(
-	const FGuLiShipAbilityLoadoutState& NewLoadout,
-	FString& OutError)
-{
-	OutError.Reset();
-	if (!HasAuthority())
-	{
-		OutError = TEXT("Ship ability loadout may only be changed by the authoritative PlayerState.");
-		return false;
-	}
 
-	FGuLiShipAbilityLoadoutState NormalizedLoadout = NewLoadout;
-	NormalizedLoadout.Normalize();
-	if (!NormalizedLoadout.IsWellFormed(&OutError))
-	{
-		return false;
-	}
-	if (ShipAbilityLoadoutState.HasSameSelection(NormalizedLoadout))
-	{
-		return false;
-	}
-
-	NormalizedLoadout.Revision = ShipAbilityLoadoutState.Revision == MAX_uint32
-		? 1u
-		: ShipAbilityLoadoutState.Revision + 1u;
-	ShipAbilityLoadoutState = MoveTemp(NormalizedLoadout);
-	ForceNetUpdate();
-	return true;
-}
-
-// 身份、分配结果与就绪位走属性复制；C++ 服务器 setter 另行广播本地通知。
 void AGuLiBattlePlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
 	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
@@ -242,7 +179,6 @@ void AGuLiBattlePlayerState::GetLifetimeReplicatedProps(TArray<FLifetimeProperty
 	DOREPLIFETIME(AGuLiBattlePlayerState, SlotIndex);
 	DOREPLIFETIME(AGuLiBattlePlayerState, bBattleReady);
 	DOREPLIFETIME(AGuLiBattlePlayerState, bSyncReady);
-	DOREPLIFETIME(AGuLiBattlePlayerState, ShipAbilityLoadoutState);
 	DOREPLIFETIME_CONDITION(AGuLiBattlePlayerState, ResourcePrivateState, COND_OwnerOnly);
 }
 
@@ -295,7 +231,8 @@ void AGuLiBattlePlayerState::CopyProperties(APlayerState* PlayerState)
 		// 身份跨通用/指挥官派生类迁移，公共与士兵流握手都必须重新完成。
 		NewPlayerState->bBattleReady = false;
 		NewPlayerState->bSyncReady = false;
-		NewPlayerState->ShipAbilityLoadoutState = ShipAbilityLoadoutState;
+		NewPlayerState->ShipBuild->CopyMatchStateFrom(*ShipBuild);
+		NewPlayerState->CommanderSkills->CopyMatchStateFrom(*CommanderSkills);
 	}
 }
 
@@ -314,10 +251,11 @@ void AGuLiBattlePlayerState::OverrideWith(APlayerState* PlayerState)
 			CommanderRole = IncomingPlayerState->CommanderRole;
 			SlotIndex = IncomingPlayerState->SlotIndex;
 		}
-		if (IncomingPlayerState->ShipAbilityLoadoutState.IsWellFormed())
-		{
-			ShipAbilityLoadoutState = IncomingPlayerState->ShipAbilityLoadoutState;
-		}
+		// A newly logged-in empty state must not erase the recovered match build.
+		if (IncomingPlayerState->ShipBuild->GetBuildState().MatchEpoch != 0)
+			ShipBuild->CopyMatchStateFrom(*IncomingPlayerState->ShipBuild);
+		if (!IncomingPlayerState->CommanderSkills->GetGlobalSkills().IsEmpty())
+			CommanderSkills->CopyMatchStateFrom(*IncomingPlayerState->CommanderSkills);
 	}
 	bBattleReady = false;
 	bSyncReady = false;

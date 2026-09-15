@@ -4,14 +4,13 @@
 
 #include "CoreMinimal.h"
 #include "Battle/Network/GuLiBattleTypes.h"
-#include "Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h"
 #include "GameFramework/PlayerState.h"
-#include "AbilitySystemInterface.h"
 #include "Gameplay/Skills/GuLiWeaponChannelTypes.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "GuLiBattlePlayerState.generated.h"
 
-class UAbilitySystemComponent;
+class UGuLiCommanderSkillComponent;
+class UGuLiShipBuildComponent;
 struct FGuLiArmySkillCommand;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGuLiCommanderPlayerStateChangedSignature);
@@ -24,16 +23,17 @@ DECLARE_DYNAMIC_MULTICAST_DELEGATE(FGuLiResourcePrivateStateChangedSignature);
 
 /** 通用玩家身份与角色复制；公共战局就绪、士兵流就绪分别维护，不互相替代。 */
 UCLASS()
-class GULISTRIKE_API AGuLiBattlePlayerState : public APlayerState, public IAbilitySystemInterface
+class GULISTRIKE_API AGuLiBattlePlayerState : public APlayerState
 {
 	GENERATED_BODY()
 
 public:
 	AGuLiBattlePlayerState();
+	UFUNCTION(BlueprintPure, Category="Ship|Build") UGuLiShipBuildComponent* GetShipBuild() const { return ShipBuild; }
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
-	/** Server-local GM/gameplay entry through a real ServerOnly GameplayAbility; no client RPC. */
+	UFUNCTION(BlueprintPure, Category="Commander|Skills") UGuLiCommanderSkillComponent* GetCommanderSkills() const { return CommanderSkills; }
+	/** Server-local automatic-weapon/upgrades command; no client RPC. */
 	bool ExecuteArmySkillCommand(const FGuLiArmySkillCommand& Command, FString& OutError);
 
 	/** Committed, read-only equipment view; locked/empty slots remain visible for progression. */
@@ -50,9 +50,6 @@ public:
 	UFUNCTION(BlueprintPure, Category="Battle|Weapons")
 	FGuLiWeaponChangeResult GetLastWeaponChangeResult() const { return LastWeaponChangeResult; }
 
-	/** Session-only stable Ship ability selection; spec handles/effects/cooldowns never live here. */
-	const FGuLiShipAbilityLoadoutState& GetShipAbilityLoadoutState() const { return ShipAbilityLoadoutState; }
-	bool SetServerShipAbilityLoadoutState(const FGuLiShipAbilityLoadoutState& NewLoadout, FString& OutError);
 	static constexpr uint8 InvalidSlotIndex = MAX_uint8;
 
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
@@ -139,6 +136,7 @@ public:
 	FGuLiCommanderPlayerStateChangedSignature OnCommanderPlayerStateChanged;
 
 private:
+	UPROPERTY(VisibleAnywhere, Category="Ship|Build") TObjectPtr<UGuLiShipBuildComponent> ShipBuild;
 	UFUNCTION(Client, Reliable)
 	void ClientReceiveWeaponChangeResult(const FGuLiWeaponChangeResult& Result);
 	/** Shared server handler for the RPC; returns the immediate result before any fixed-step commit. */
@@ -160,9 +158,7 @@ private:
 	FGuLiWeaponChangeResult LastWeaponChangeResult;
 
 	UPROPERTY(VisibleAnywhere, Category = "Battle|Abilities")
-	TObjectPtr<UAbilitySystemComponent> ArmyAbilitySystem;
-	bool bArmySkillAbilityGranted = false;
-	void InitializeArmyAbilitySystem();
+	TObjectPtr<UGuLiCommanderSkillComponent> CommanderSkills;
 
 	void NotifyStateChanged();
 
@@ -197,10 +193,6 @@ private:
 	/** 保留字段名兼容旧复制/反射查找，仅表示士兵流就绪。 */
 	UPROPERTY(ReplicatedUsing = OnRep_SyncReady)
 	bool bSyncReady = false;
-
-	/** Persisted across Ship Pawn replacement, but not across a new PlayerState/session. */
-	UPROPERTY(Replicated)
-	FGuLiShipAbilityLoadoutState ShipAbilityLoadoutState;
 
 	/** Session state only; intentionally omitted from CopyProperties/OverrideWith. */
 	UPROPERTY(ReplicatedUsing = OnRep_ResourcePrivateState)

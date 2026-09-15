@@ -1,4 +1,4 @@
-"""Exercise the real ASC/RPC/field flow in an active commander PIE; retain structured evidence."""
+"""Exercise the commander global-skill RPC/field flow in PIE; retain structured evidence."""
 import json
 import traceback
 from pathlib import Path
@@ -47,7 +47,7 @@ class TeleportPIERun:
         normal = next(c for c in self.presentation.get_components_by_class(unreal.InstancedStaticMeshComponent) if c.get_name() == 'UnitInstances')
         self.source = normal.get_instance_transform(0, world_space=True).translation
         self.input.set_server_level(4)
-        self.input.server_submit(unreal.GuLiTeleportCommand.SOURCE, unreal.Guid(), self.source)
+        unreal.GuLiTeleportQALibrary.submit_intent(self.input, unreal.GuLiTeleportCommand.SOURCE, unreal.Guid(), self.source)
         state = self.input.query_state()
         assert state.phase == unreal.GuLiTeleportPhase.WINDUP, 'Source rejected: ' + state.message
         self.cast = state.cast_id
@@ -94,10 +94,10 @@ class TeleportPIERun:
                 self.save()
             if self.name == 'cancel_before_capture':
                 if self.stage == 0 and elapsed >= 1:
-                    self.input.server_submit(unreal.GuLiTeleportCommand.CANCEL,self.cast,unreal.Vector())
+                    unreal.GuLiTeleportQALibrary.submit_intent(self.input, unreal.GuLiTeleportCommand.CANCEL,self.cast,unreal.Vector())
                     self.stage = 1
             elif phase == unreal.GuLiTeleportPhase.WINDUP and elapsed >= 1 and self.stage == 0:
-                self.input.server_submit(unreal.GuLiTeleportCommand.DESTINATION,self.cast,self.source+unreal.Vector(3000,0,0))
+                unreal.GuLiTeleportQALibrary.submit_intent(self.input, unreal.GuLiTeleportCommand.DESTINATION,self.cast,self.source+unreal.Vector(3000,0,0))
                 self.case['checks']['early_click_ignored'] = self.input.query_state().phase == unreal.GuLiTeleportPhase.WINDUP
                 self.stage = 1
             elif phase == unreal.GuLiTeleportPhase.AWAITING_DESTINATION:
@@ -114,9 +114,9 @@ class TeleportPIERun:
                         self.blocker = unreal.GuLiTeleportQALibrary.create_blocker(self.world,self.source+unreal.Vector(3000,0,5000),unreal.Vector(4100,4100,5000))
                     self.case['deadline'] = state.deadline
                     if self.name == 'cancel_after_capture':
-                        self.input.server_submit(unreal.GuLiTeleportCommand.CANCEL,self.cast,unreal.Vector())
+                        unreal.GuLiTeleportQALibrary.submit_intent(self.input, unreal.GuLiTeleportCommand.CANCEL,self.cast,unreal.Vector())
                     else:
-                        self.input.server_submit(unreal.GuLiTeleportCommand.DESTINATION,self.cast,(self.source+unreal.Vector(3000,0,0)) if self.name == 'crowded' else unreal.Vector(99999999,0,0))
+                        unreal.GuLiTeleportQALibrary.submit_intent(self.input, unreal.GuLiTeleportCommand.DESTINATION,self.cast,(self.source+unreal.Vector(3000,0,0)) if self.name == 'crowded' else unreal.Vector(99999999,0,0))
                         after = self.input.query_state()
                         self.case['checks']['invalid_target_keeps_deadline'] = after.deadline == state.deadline and after.phase == phase
                     self.stage = 2
@@ -124,7 +124,7 @@ class TeleportPIERun:
                     if self.blocker:
                         self.blocker.destroy_actor()
                         self.blocker = None
-                    self.input.server_submit(unreal.GuLiTeleportCommand.DESTINATION,self.cast,self.source+unreal.Vector(3000,0,0))
+                    unreal.GuLiTeleportQALibrary.submit_intent(self.input, unreal.GuLiTeleportCommand.DESTINATION,self.cast,self.source+unreal.Vector(3000,0,0))
                     after = self.input.query_state()
                     self.case['checks']['landing_accepted'] = after.phase == unreal.GuLiTeleportPhase.RECOVERY
                     self.stage = 3

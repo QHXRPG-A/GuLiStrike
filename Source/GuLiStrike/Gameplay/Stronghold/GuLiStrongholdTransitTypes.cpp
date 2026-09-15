@@ -37,7 +37,6 @@ FVector FGuLiStrongholdTransitState::SamplePosition(double ServerTime, int32* Ou
 {
 	if (OutLeg) *OutLeg = 0;
 	if (Phase == EGuLiTransitPhase::Ground || Phase == EGuLiTransitPhase::ExitFlash) return ExitPosition;
-	if (Phase == EGuLiTransitPhase::ApproachingGate) return EntryPosition;
 	check(!Route.IsEmpty());
 	const double Elapsed = FMath::Max(0., ServerTime - StartServerTime);
 	if (AscentSeconds > 0 && Elapsed < AscentSeconds)
@@ -54,6 +53,6 @@ FVector FGuLiStrongholdTransitState::SamplePosition(double ServerTime, int32* Ou
 		}
 		Distance -= Length;
 	}
-	if (OutLeg) *OutLeg = FMath::Max(0, Route.Num() - 2);
+	if (OutLeg) *OutLeg = Route.Num() - 1;
 	return Route.Last().Position;
 }

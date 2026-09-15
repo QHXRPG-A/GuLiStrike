@@ -6,10 +6,10 @@
 #include "GameFramework/Actor.h"
 #include "Net/Serialization/FastArraySerializer.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
+#include "Gameplay/Stronghold/GuLiStrongholdTransportNetwork.h"
 #include "GuLiResourceWorldState.generated.h"
 
 class AGuLiResourceWorldState;
-struct FGuLiStrongholdEdge;
 
 USTRUCT()
 struct GULISTRIKE_API FGuLiOreDeltaItem : public FFastArraySerializerItem
@@ -90,8 +90,9 @@ public:
 
 	void InitializeAuthority(const FString& InLayoutHash, TConstArrayView<EGuLiTeam> InitialOwners);
 	void SetAuthorityReady(bool bReady);
-	void SetTransportEdgesAuthority(TConstArrayView<FGuLiStrongholdEdge> Edges);
-	const TArray<FIntPoint>& GetTransportEdges() const { return TransportEdges; }
+	void SetTransportNetworkAuthority(const FGuLiTransportNetworkSnapshot& Snapshot);
+	UFUNCTION(BlueprintPure) FGuLiTransportNetworkSnapshot GetTransportNetworkSnapshot() const { return TransportNetwork; }
+	const FGuLiTransportNetworkSnapshot& GetTransportNetwork() const { return TransportNetwork; }
 	bool SetTerritoryOwnerAuthority(uint8 TerritoryIndex, EGuLiTeam NewOwner);
 	void SetTerritorySupplyAuthority(int32 Index, bool bSupplied);
 	void SetTerritoryEncircledAuthority(int32 Index, bool bEncircled);
@@ -129,7 +130,8 @@ private:
 
 	UPROPERTY(Replicated)
 	FGuLiOreDeltaFastArray OreDeltas;
-	UPROPERTY(Replicated) TArray<FIntPoint> TransportEdges;
+	UPROPERTY(ReplicatedUsing=OnRep_TransportNetwork) FGuLiTransportNetworkSnapshot TransportNetwork;
+	UFUNCTION() void OnRep_TransportNetwork();
 
 	TMap<uint32, int32> OreDeltaIndexByNodeId;
 	FGuLiResourceWorldStateChanged StateChanged;

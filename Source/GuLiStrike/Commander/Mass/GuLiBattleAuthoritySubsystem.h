@@ -14,6 +14,9 @@
 class AGuLiBattlePlayerState;
 class ANavigationData;
 struct FGuLiBattleAuthorityState;
+class UGuLiCommanderSkillCatalog;
+struct FGuLiActiveSkillUnitResult;
+struct FGuLiActiveSkillRuntime;
 
 /**
  * 将 PImpl 的 delete 放在 .cpp 中执行，那里能看到 FGuLiBattleAuthorityState 的完整定义。
@@ -191,7 +194,7 @@ struct FGuLiMovePlanningDebug
 };
 
 /**
- * 当前 World 的战斗权威子系统：在单机或服务器维护 500 名独立士兵，并按 30 Hz 推进模拟。
+ * 当前 World 的战斗权威子系统：在单机或服务器维护 500 名独立士兵，并按 10 Hz 推进模拟。
  *
  * SoldierId 是跨网络使用的士兵身份；Mass Entity 句柄只用于服务端本地访问 Fragment。
  * ControlCohort 是选兵产生的临时控制组，OrderFormation 是执行一次移动的临时编队，
@@ -230,7 +233,7 @@ public:
 	//~ 生命周期接口结束
 
 	//~ FTickableGameObject 更新与性能统计
-	/** 每世界帧处理流场预算，再按 1/30 秒固定步追赶模拟；累计时间最多保留 4 步。 */
+	/** 每世界帧处理流场预算，再按 1/10 秒固定步追赶模拟；累计时间最多保留 4 步。 */
 	virtual void Tick(float DeltaTime) override;
 
 	/** 为引擎 Tick 性能统计提供本子系统的标识。 */
@@ -292,6 +295,11 @@ public:
 	 * 此处不计算攻防公式；死亡时清除指令和速度，保留实体用于残骸窗口及后续状态同步。
 	 */
 	bool ApplyDamage(FGuLiSoldierId SoldierId, float Amount);
+	/** Selection is the fixed owner's confirmed server state; no client-provided caster list. */
+	void ExecuteSelectedUnitSkills(AGuLiBattlePlayerState& PlayerState, const FGuLiCommanderSelectionState& Selection,
+		const UGuLiCommanderSkillCatalog& Catalog, FGuid RequestId, bool bHasGroundPoint, FVector GroundPoint,
+		TArray<FGuLiActiveSkillUnitResult>& OutResults);
+	bool QueryUnitSkillRuntime(FGuLiSoldierId SoldierId, const UGuLiCommanderSkillCatalog& Catalog, FGuLiActiveSkillRuntime& OutRuntime) const;
 	void CollectExternalUnitsInDisc(EGuLiTeam Team, FVector Center, float Radius, TArray<FGuLiMassExternalUnit>& Out) const;
 	bool CanApplyExternalUnitState(TConstArrayView<FGuLiMassExternalUnit> Participants, FGuid Token) const;
 	bool ApplyExternalUnitState(TConstArrayView<FGuLiMassExternalUnit> Soldiers, FGuid CastId,
@@ -325,7 +333,7 @@ public:
 
 	/**
 	 * 校验并应用本 World 的士兵调参：普通属性立即同步，最大生命变化按比例保留当前生命。
-	 * 速度先记录为待提交值，部队就绪后在下一个 30 Hz 模拟步开头更新 Mass 共享参数。
+	 * 速度先记录为待提交值，部队就绪后在下一个 10 Hz 模拟步开头更新 Mass 共享参数。
 	 * 完成属性遍历后返回部队记录总数；校验失败或部队/Mass 未就绪时返回 0。
 	 * 部队未生成时仍可保存有效参数；返回值不表示新速度已提交的实体数量。
 	 */
@@ -421,10 +429,10 @@ private:
 	/** Advances a NavMesh-generation repair job without exceeding the shared per-frame query budgets. */
 	void TickNavigationRepairs(int32& RemainingProjectionBudget, int32& RemainingPathBudget);
 
-	/** Commits every ready plan at the start of one authoritative 30 Hz step. */
+	/** Commits every ready plan at the start of one authoritative 10 Hz step. */
 	void CommitReadyMovePlans();
 
-	/** Applies one completed navigation repair at a 30 Hz boundary before movement reads its results. */
+	/** Applies one completed navigation repair at a 10 Hz boundary before movement reads its results. */
 	void CommitReadyNavigationRepairs();
 
 	/** 在固定步边界交替迁移 Even/Odd Archetype，以替换只读共享的移动参数。 */

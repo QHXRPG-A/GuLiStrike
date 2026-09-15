@@ -99,9 +99,9 @@ struct FGuLiStrikeBuildingsBuildingsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buildings")
 	FString FirstCaptureGiftIds;
 
-	/** GateFieldId (int, Optional) */
+	/** TransitFieldId (int, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buildings")
-	int32 GateFieldId = 0;
+	int32 TransitFieldId = 0;
 
 	/** ShieldRadius (float, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Buildings")

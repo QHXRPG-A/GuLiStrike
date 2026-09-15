@@ -28,12 +28,12 @@ namespace
 				UE_LOG(LogGuLiTeleportGM,Display,TEXT("Level accepted=%d level=%d"),bValid,Input->GetLevel()); return;
 			}
 			const auto State = Input->QueryState();
-			if (Args[0].Equals(TEXT("Cancel"),ESearchCase::IgnoreCase)) Input->ServerSubmit(EGuLiTeleportCommand::Cancel,State.CastId,FVector::ZeroVector);
+			if (Args[0].Equals(TEXT("Cancel"),ESearchCase::IgnoreCase)) Input->ServerSubmit(FGuid::NewGuid(), EGuLiTeleportCommand::Cancel,State.CastId,FVector::ZeroVector);
 			else if (Args[0].Equals(TEXT("Source"),ESearchCase::IgnoreCase) || Args[0].Equals(TEXT("Destination"),ESearchCase::IgnoreCase))
 			{
 				FVector Point;
 				if (Args.Num()!=5 || !LexTryParseString(Point.X,*Args[2]) || !LexTryParseString(Point.Y,*Args[3]) || !LexTryParseString(Point.Z,*Args[4]) || Point.ContainsNaN()) return;
-				Input->ServerSubmit(Args[0].Equals(TEXT("Source"),ESearchCase::IgnoreCase)?EGuLiTeleportCommand::Source:EGuLiTeleportCommand::Destination,State.CastId,Point);
+				Input->ServerSubmit(FGuid::NewGuid(), Args[0].Equals(TEXT("Source"),ESearchCase::IgnoreCase)?EGuLiTeleportCommand::Source:EGuLiTeleportCommand::Destination,State.CastId,Point);
 			}
 			const auto Result = Input->QueryState();
 			UE_LOG(LogGuLiTeleportGM,Display,TEXT("cast=%s phase=%d level=%d units=%d source=%s destination=%s message=%s"),

@@ -1,0 +1,181 @@
+[
+  {
+    "directory": "TestResults\\CommanderMove10Hz\\pilot3-n500-c0\\server",
+    "spawn_candidate_count": 500,
+    "command_source": "server synthetic owners; production BeginMovePlanning/PollMovePlanning; 100 members per batch, both teams",
+    "travel_distance_cm": 350000,
+    "setup_seconds": 26.30376559868455,
+    "error": "",
+    "mode": "server",
+    "map": "LVL_CommanderMassPrototype",
+    "requested_population": 500,
+    "authority_hz": 10,
+    "measured_seconds": 15.001901600509882,
+    "probe_id": 501,
+    "probe_distance_cm": 52880.72736442028,
+    "simulation_steps": 150,
+    "dropped_steps": 0,
+    "movement_updates": 75000,
+    "speed_cm_s": 3600,
+    "server_plan_commit_ms": [
+      92.16630086302757,
+      204.7754004597664,
+      83.38180184364319,
+      193.56980174779892,
+      103.37189957499504,
+      182.847298681736
+    ],
+    "frame_ms": {
+      "n": 839,
+      "mean": 16.716568295589987,
+      "p50": 16.8208,
+      "p95": 19.752,
+      "p99": 21.1637,
+      "max": 28.7557
+    },
+    "sim_ms": {
+      "n": 839,
+      "mean": 0.4864311084624553,
+      "p50": 0.0,
+      "p95": 3.3007,
+      "p99": 4.1377,
+      "max": 5.2252
+    },
+    "combat_ms": {
+      "n": 839,
+      "mean": 0.08472252681764005,
+      "p50": 0.0,
+      "p95": 0.5504,
+      "p99": 0.661,
+      "max": 0.8359
+    },
+    "alive": {
+      "n": 839,
+      "mean": 500.0,
+      "p50": 500.0,
+      "p95": 500.0,
+      "p99": 500.0,
+      "max": 500.0
+    },
+    "ordered_moving": {
+      "n": 839,
+      "mean": 500.0,
+      "p50": 500.0,
+      "p95": 500.0,
+      "p99": 500.0,
+      "max": 500.0
+    },
+    "observed_moving": {
+      "n": 839,
+      "mean": 499.74731823599524,
+      "p50": 500.0,
+      "p95": 500.0,
+      "p99": 500.0,
+      "max": 500.0
+    },
+    "blocked": {
+      "n": 839,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "arrived": {
+      "n": 839,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "in_bytes_s": {
+      "n": 839,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "out_bytes_s": {
+      "n": 839,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "pose_age_ms": {
+      "n": 839,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "sampled_fixed_step_ms": {
+      "n": 141,
+      "mean": 2.8944375886524822,
+      "p50": 2.6496,
+      "p95": 4.1445,
+      "p99": 4.9018,
+      "max": 5.2252
+    },
+    "multi_step_frames": 0,
+    "engine": {
+      "GuLiCommanderAuthority/GameThread/WorldTick": {
+        "n": 898,
+        "mean": 0.4882992204899777,
+        "p50": 0.0054,
+        "p95": 3.2551,
+        "p99": 4.146,
+        "max": 5.234
+      },
+      "Ticks/GuLiCommanderGameMode": {
+        "n": 897,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "Ticks/GuLiCommanderWorldReplicationComponent": {
+        "n": 897,
+        "mean": 1.0,
+        "p50": 1.0,
+        "p95": 1.0,
+        "p99": 1.0,
+        "max": 1.0
+      },
+      "FrameTime": {
+        "n": 897,
+        "mean": 16.725753623188407,
+        "p50": 16.7891,
+        "p95": 19.7224,
+        "p99": 21.3432,
+        "max": 28.7888
+      },
+      "GuLiCommanderAuthority/GameThread/FixedStep": {
+        "n": 897,
+        "mean": 0.48340289855072466,
+        "p50": 0.0,
+        "p95": 3.2481,
+        "p99": 4.1398,
+        "max": 5.2271
+      }
+    },
+    "effective_sim_hz": 9.99873242702124,
+    "movement_updates_per_unit_second": 9.99873242702124,
+    "planning_ms": {
+      "n": 6,
+      "mean": 143.35208386182785,
+      "p50": 103.37189957499504,
+      "p95": 204.7754004597664,
+      "p99": 204.7754004597664,
+      "max": 204.7754004597664
+    },
+    "actual_moving_p05": 498.0,
+    "movement_load_valid": true,
+    "server_budget_pass": true
+  }
+]

@@ -6,6 +6,7 @@
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "Gameplay/Stronghold/GuLiStrongholdTopology.h"
+#include "Gameplay/Stronghold/GuLiStrongholdTransportNetwork.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "GuLiResourceWorldSubsystem.generated.h"
 
@@ -18,7 +19,6 @@ class AGuLiOreFieldActor;
 class AGuLiResourceFactoryActor;
 class AGuLiResourceWorldState;
 class AGuLiTerritoryOutpostActor;
-class UGuLiStrongholdGateComponent;
 class UGuLiResourceEconomyConfig;
 class UGuLiResourceMapDefinition;
 
@@ -59,7 +59,8 @@ public:
 	FVector GetTerritoryGroundLocation(int32 Index) const;
 	bool IsTerritorySupplied(int32 Index) const;
 	bool CanUseStrongholdTransit(int32 Index, EGuLiTeam Team) const;
-	UGuLiStrongholdGateComponent* GetStrongholdGate(int32 Index) const;
+	int32 FindTerritoryIndexById(FName TerritoryId) const;
+	const FGuLiStrongholdTransportNetwork& GetTransportNetwork() const { return TransportNetwork; }
 	FVector GetInitialBaseExit(EGuLiTeam Team) const;
 	FGuLiTerritoryOwnershipChanged OnTerritoryOwnershipChanged;
 	FGuLiControllableActorId AllocateControllableActorId() { return FGuLiControllableActorId(NextControllableActorId++); }
@@ -133,6 +134,7 @@ private:
 	uint32 NextControllableActorId = 1000;
 	bool bReplicatedStateDirty = true;
 	FGuLiStrongholdTopology StrongholdTopology;
+	FGuLiStrongholdTransportNetwork TransportNetwork;
 	float CaptureAccumulator = 0;
 	float MaintenanceAccumulator = 0;
 	float ActiveMaintenancePeriod = 0;

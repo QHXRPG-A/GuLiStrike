@@ -1,0 +1,39 @@
+{
+  "render-final-n800-c1": {
+    "client1": {
+      "peak_working_set_MiB": 6323.20703125,
+      "peak_private_MiB": 11898.0546875,
+      "peak_cpu_core_equivalents": 10.714436823668274
+    },
+    "server": {
+      "peak_working_set_MiB": 5484.17578125,
+      "peak_private_MiB": 6245.84765625,
+      "peak_cpu_core_equivalents": 0.5213794015830502
+    }
+  },
+  "render-final-n800-c2": {
+    "client1": {
+      "peak_working_set_MiB": 6096.37109375,
+      "peak_private_MiB": 11883.55078125,
+      "peak_cpu_core_equivalents": 6.750828782828733
+    },
+    "client2": {
+      "peak_working_set_MiB": 6002.23828125,
+      "peak_private_MiB": 11892.90234375,
+      "peak_cpu_core_equivalents": 7.760618120656814
+    },
+    "server": {
+      "peak_working_set_MiB": 5495.63671875,
+      "peak_private_MiB": 6247.71484375,
+      "peak_cpu_core_equivalents": 0.5680032948857942
+    }
+  },
+  "server-final-n4000-c0": {
+    "server": {
+      "peak_working_set_MiB": 5468.76953125,
+      "peak_private_MiB": 6239.8203125,
+      "peak_cpu_core_equivalents": 1.0066881261600145
+    }
+  },
+  "scope": "Includes startup, capture and shutdown; peaks are per process and may not coincide. Private commit is not resident physical RAM."
+}

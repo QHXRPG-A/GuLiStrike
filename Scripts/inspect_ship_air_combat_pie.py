@@ -12,7 +12,10 @@ import unreal
 
 
 EXPECTED_MAP_TOKEN = "LVL_ShipWingmanAirCombatPrototype"
-EXPECTED_GAME_MODE = "/Script/GuLiStrike.GuLiShipTestGameMode"
+EXPECTED_GAME_MODE = (
+    "/Game/GuLiStrike/Ship/BP_GM_ShipWingmanAirCombatPrototype."
+    "BP_GM_ShipWingmanAirCombatPrototype_C"
+)
 EXPECTED_SHIP_CLASS_SUFFIX = "BP_CombatAvatarFly01_C"
 EXPECTED_ABILITY_SET = (
     "/Game/GuLiStrike/Ship/Abilities/"
@@ -154,7 +157,8 @@ def main() -> dict[str, Any]:
             controller = ship.get_controller()
             player_state = controller.get_editor_property("player_state") if controller else None
             movement = ship.get_ship_movement()
-            ability_set = ship.get_editor_property("ship_ability_set")
+            hangar = ship.get_hangar_capability()
+            ability_set = hangar.get_applied_ability_set() if hangar else None
             target = ship.get_wingman_attack_target()
             target_handle = target.target
             target_location = target.location

@@ -3,10 +3,12 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Commander/GuLiCommanderSimulationTiming.h"
 #include "Battle/Network/GuLiBattleTypes.h"
 #include "Engine/NetSerialization.h"
 #include "Net/Serialization/FastArraySerializer.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
+#include "Gameplay/Units/GuLiEngineeringCommandTypes.h"
 #include "GuLiCommanderTypes.generated.h"
 
 /** 一个临时控制组最多 25 名士兵，允许不足额；不是网络 Actor 数量。 */
@@ -23,8 +25,11 @@ inline constexpr uint16 GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID = 1u;
 /** 每块最多 32 个姿态样本，用于控制载荷；实际网络包还包含 UE/传输层开销。 */
 inline constexpr uint32 GULI_MAX_POSE_SAMPLES_PER_CHUNK = 32u;
 
-/** 30 Hz 权威模拟每三个 Tick 目标捕获一次姿态，即 10 Hz。 */
+/** 10 Hz 权威模拟每步捕获一次姿态；远处/静止单位仍按连接的降频配置发送。 */
 inline constexpr uint32 GULI_POSE_CAPTURE_RATE_HZ = 10u;
+
+/** 将同一捕获帧分三相发出，独立于权威模拟频率，避免姿态 RPC 集中挤满一个网络帧。 */
+inline constexpr uint8 GULI_POSE_DISPATCH_PHASE_COUNT = 3u;
 
 /** 每帧最多 512 块；为空间分块留余量，不表示当前已有一万士兵。 */
 inline constexpr uint32 GULI_MAX_POSE_CHUNKS_PER_FRAME = 512u;
@@ -111,7 +116,7 @@ enum class EGuLiOrderType : uint8
 };
 
 /** 战局内稳定的士兵身份，0 无效，同一战局不复用；不是数组下标或客户端 Mass 句柄。 */
-USTRUCT()
+USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiSoldierId
 {
 	GENERATED_BODY()
@@ -263,6 +268,9 @@ struct GULISTRIKE_API FGuLiMoveRequest
 	UPROPERTY(EditAnywhere, Category = "Commander|Network")
 	uint16 TargetClusterId = 0u;
 
+	/** None is an ordinary ground/mining command; otherwise this is explicit outpost relocation. */
+	UPROPERTY(EditAnywhere, Category="Commander|Network") FName TargetTerritoryId;
+
 	bool IsWellFormed() const;
 };
 
@@ -362,6 +370,14 @@ struct GULISTRIKE_API FGuLiCohortCommandAck
  * CommandKind + ClientCommandId 关联原请求；BatchOrderId 关联服务器接受的移动批次。
  * Result 是总体结果，CohortResults 是逐组结果，ServerSelectionRevision 是本回执携带的选择版本。 */
 USTRUCT()
+struct FGuLiEngineeringCommandAck
+{
+	GENERATED_BODY()
+	UPROPERTY() FGuLiControllableActorId ActorId;
+	UPROPERTY() EGuLiTransitOrderResult Result = EGuLiTransitOrderResult::InvalidRequest;
+};
+
+USTRUCT()
 struct GULISTRIKE_API FGuLiCommandAck
 {
 	GENERATED_BODY()
@@ -386,6 +402,8 @@ struct GULISTRIKE_API FGuLiCommandAck
 	// 逐控制组结果保留部分成功信息；不能把所有失败组当作已加入 BatchOrderId。
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	TArray<FGuLiCohortCommandAck> CohortResults;
+
+	UPROPERTY() TArray<FGuLiEngineeringCommandAck> EngineeringResults;
 
 	// 仅检查总体结果为全部或部分接受；不检查抵达、执行结束或复制状态是否已到达。
 	bool IsAccepted() const;

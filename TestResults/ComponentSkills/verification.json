@@ -1,0 +1,48 @@
+{
+  "passed": true,
+  "date": "2026-09-15",
+  "engine": "D:/UnrealEngine-5.7",
+  "editor_development_exit_code": 0,
+  "game_development_exit_code": 0,
+  "build_ids_match": true,
+  "build_id": "26d441ba-b96a-4e7b-b104-c2c6cd3e663c",
+  "automation": {
+    "succeeded": 42,
+    "warnings": 0,
+    "failed": 0,
+    "report": "TestResults/ComponentSkills/AutomationFinal/index.json"
+  },
+  "network": {
+    "dedicated": true,
+    "listen": true
+  },
+  "cold_asset_audit": true,
+  "cold_asset_checks": 11,
+  "ship_socket_count": 55,
+  "wingman_combat_contract": true,
+  "python_syntax_scripts": [
+    "audit_component_skill_assets.py",
+    "author_component_skill_assets.py",
+    "snapshot_ship_wingman_contract.py",
+    "validate_component_skills_network.py",
+    "validate_commander_teleport_network.py",
+    "validate_commander_teleport_pie.py",
+    "validate_commander_teleport_edges.py",
+    "deploy_wingman_attack_assets.py",
+    "inspect_ship_air_combat_pie.py",
+    "check_wingman_combat_migration.py",
+    "deploy_ship_ability_assets.py",
+    "audit_ship_ability_assets.py"
+  ],
+  "doc_index": {
+    "errors": 0,
+    "existing_warnings": 11
+  },
+  "diff_check_exit_code": 0,
+  "scope": "Source Editor/Game and single-process Listen/Dedicated PIE with real RPCs; NullRHI state/material validation, not packaged-server performance or visual-quality certification",
+  "baseline_log_diagnostics": {
+    "startup_condition_failed": 2,
+    "dedicated_mass_pose_discontinuity": 53,
+    "listen_mass_pose_discontinuity": 14
+  }
+}

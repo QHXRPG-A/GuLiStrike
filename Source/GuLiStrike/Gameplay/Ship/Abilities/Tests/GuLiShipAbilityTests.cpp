@@ -7,22 +7,21 @@
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
-#include "Gameplay/Ship/Abilities/GuLiShipAbilities.h"
-#include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
+#include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
 #include "Misc/AutomationTest.h"
 
 namespace GuLiShipAbilityTests
 {
-	struct FShipASCFixture
+	struct FHangarFixture
 	{
 		UWorld* World = nullptr;
 		AActor* Ship = nullptr;
-		UGuLiShipAbilitySystemComponent* ASC = nullptr;
+		UGuLiShipHangarCapabilityComponent* Hangar = nullptr;
 		UGuLiShipAbilitySet* AbilitySet = nullptr;
 		bool bWorldContextRegistered = false;
 
-		~FShipASCFixture()
+		~FHangarFixture()
 		{
 			if (!World)
 			{
@@ -38,7 +37,7 @@ namespace GuLiShipAbilityTests
 
 		bool Initialize(FAutomationTestBase& Test)
 		{
-			if (!Test.TestNotNull(TEXT("Engine exists for Ship ASC test World"), GEngine))
+			if (!Test.TestNotNull(TEXT("Engine exists for Ship Hangar test World"), GEngine))
 			{
 				return false;
 			}
@@ -54,46 +53,28 @@ namespace GuLiShipAbilityTests
 			{
 				return false;
 			}
-			ASC = NewObject<UGuLiShipAbilitySystemComponent>(Ship, TEXT("ShipAbilitySystem"));
-			if (!Test.TestNotNull(TEXT("Pawn-owned Ship ASC exists"), ASC))
+			Hangar = NewObject<UGuLiShipHangarCapabilityComponent>(Ship, TEXT("HangarCapability"));
+			if (!Test.TestNotNull(TEXT("Pawn-owned Ship Hangar exists"), Hangar))
 			{
 				return false;
 			}
-			Ship->AddInstanceComponent(ASC);
-			ASC->RegisterComponent();
-			ASC->InitializeShipActorInfo(Ship);
-			AbilitySet = UGuLiShipAbilitySet::CreateNativeV1Transient(ASC);
+			Ship->AddInstanceComponent(Hangar);
+			Hangar->RegisterComponent();
+			Hangar->InitializeShipActorInfo(Ship);
+			Hangar->SetCapabilityEnabled(true);
+			AbilitySet = UGuLiShipAbilitySet::CreateNativeV1Transient(Hangar);
 			return Test.TestNotNull(TEXT("Native v1 ability set exists"), AbilitySet);
 		}
 
-		static int32 CountShipAbilities(const UGuLiShipAbilitySystemComponent& InASC)
+		static int32 CountShipAbilities(const UGuLiShipHangarCapabilityComponent& InHangar)
 		{
-			int32 Count = 0;
-			for (const FGameplayAbilitySpec& Spec : InASC.GetActivatableAbilities())
-			{
-				if (Spec.Ability && Spec.Ability->IsA<UGuLiShipGameplayAbility>())
-				{
-					++Count;
-				}
-			}
-			return Count;
+			return InHangar.GetAppliedLoadout().AbilityIds.Num();
 		}
-
-		static int32 CountActivePersistentAbilities(const UGuLiShipAbilitySystemComponent& InASC)
+		static int32 CountActivePersistentAbilities(const UGuLiShipHangarCapabilityComponent& InHangar)
 		{
 			int32 Count = 0;
-			for (const FGameplayAbilitySpec& Spec : InASC.GetActivatableAbilities())
-			{
-				const UGuLiShipGameplayAbility* Ability = Spec.Ability
-					? Cast<UGuLiShipGameplayAbility>(Spec.Ability)
-					: nullptr;
-				if (Ability
-					&& Ability->GetShipActivationPolicy() == EGuLiShipAbilityActivationPolicy::WhileGranted
-					&& Spec.IsActive())
-				{
-					++Count;
-				}
-			}
+			for (auto Id : InHangar.GetAppliedLoadout().AbilityIds)
+				if (InHangar.IsAbilityGranted(Id) && !InHangar.FindConfiguredGrant(Id)->InputTag.IsValid()) ++Count;
 			return Count;
 		}
 	};
@@ -149,7 +130,7 @@ bool FGuLiShipAbilitySetContractTest::RunTest(const FString& Parameters)
 	FGuLiShipAbilityLoadoutState Duplicate = Loadout;
 	Duplicate.AbilityIds.Add(TAG_GuLi_ShipAbility_Formation_DoubleRing);
 	Error.Reset();
-	TestFalse(TEXT("Duplicate stable IDs are rejected before any GAS grant"),
+	TestFalse(TEXT("Duplicate stable IDs are rejected before any action grant"),
 		Set->ResolveLoadout(Duplicate, Resolved, &Error));
 	TestTrue(TEXT("Duplicate rejection is diagnosable"), Error.Contains(TEXT("duplicate")));
 
@@ -158,7 +139,7 @@ bool FGuLiShipAbilitySetContractTest::RunTest(const FString& Parameters)
 	Error.Reset();
 	TestFalse(TEXT("A loadout without a formation slot cannot become Active"),
 		Set->ResolveLoadout(MissingFormation, Resolved, &Error));
-	TestTrue(TEXT("Missing formation rejection names a required slot"), Error.Contains(TEXT("missing required slot")));
+	TestTrue(TEXT("Missing formation rejection names the required formation"), Error.Contains(TEXT("required formation")));
 	return true;
 }
 
@@ -185,9 +166,14 @@ bool FGuLiGroupAbilityConfigHashTest::RunTest(const FString& Parameters)
 	FGuLiGroupAbilityConfigSnapshot Snapshot;
 	const FGuLiShipAbilityProjectionContext Context = GuLiShipAbilityTests::ProjectionContext();
 	Snapshot.ShipInstanceId = Context.ShipInstanceId;
+	Snapshot.MatchEpoch = Context.MatchEpoch;
+	Snapshot.Team = Context.Team;
+	Snapshot.OwnerPlayerGuid = Context.OwnerPlayerGuid;
+	Snapshot.WingmanTypeId = Context.WingmanTypeId;
 	Snapshot.ShipGeneration = Context.ShipGeneration;
 	Snapshot.GroupGeneration = Context.GroupGeneration;
 	Snapshot.AbilitySetRevision = 3u;
+	Snapshot.LoadoutRevision = Loadout.Revision;
 	Snapshot.SnapshotRevision = 5u;
 	Snapshot.bGroupAbilitiesValid = true;
 	Snapshot.FormationAbilityId = Grants[0].AbilityId;
@@ -202,8 +188,8 @@ bool FGuLiGroupAbilityConfigHashTest::RunTest(const FString& Parameters)
 	Snapshot.FormationCommandRevision = Context.FormationCommandRevision;
 	Snapshot.EffectiveClientSimTick = Context.EffectiveClientSimTick;
 	Snapshot.RefreshHash();
-	TestTrue(TEXT("Complete v7 group config validates its deterministic hash"), Snapshot.IsWellFormed());
-	TestTrue(TEXT("Complete v7 group config is usable by a Lease Owner"), Snapshot.IsUsableByLeaseOwner());
+	TestTrue(TEXT("Complete current-protocol group config validates its deterministic hash"), Snapshot.IsWellFormed());
+	TestTrue(TEXT("Complete current-protocol group config is usable by a Lease Owner"), Snapshot.IsUsableByLeaseOwner());
 
 	const uint64 OriginalHash = Snapshot.SnapshotHash;
 	FGuLiGroupAbilityConfigSnapshot Copy = Snapshot;
@@ -223,6 +209,11 @@ bool FGuLiGroupAbilityConfigHashTest::RunTest(const FString& Parameters)
 
 	FGuLiGroupAbilityConfigSnapshot Tombstone;
 	Tombstone.ShipInstanceId = Context.ShipInstanceId;
+	Tombstone.MatchEpoch = Context.MatchEpoch;
+	Tombstone.Team = Context.Team;
+	Tombstone.OwnerPlayerGuid = Context.OwnerPlayerGuid;
+	Tombstone.WingmanTypeId = Context.WingmanTypeId;
+	Tombstone.LoadoutRevision = 0u;
 	Tombstone.ShipGeneration = Context.ShipGeneration;
 	Tombstone.GroupGeneration = Context.GroupGeneration;
 	Tombstone.AbilitySetRevision = Snapshot.AbilitySetRevision;
@@ -237,14 +228,14 @@ bool FGuLiGroupAbilityConfigHashTest::RunTest(const FString& Parameters)
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
-	FGuLiShipASCGrantProjectionTest,
-	"GuLiStrike.Ship.Abilities.ASCGrantProjectionAndInputLifecycle",
+	FGuLiShipHangarGrantProjectionTest,
+	"GuLiStrike.Ship.Abilities.HangarGrantProjectionAndInputLifecycle",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::ClientContext | EAutomationTestFlags::EngineFilter)
 
-bool FGuLiShipASCGrantProjectionTest::RunTest(const FString& Parameters)
+bool FGuLiShipHangarGrantProjectionTest::RunTest(const FString& Parameters)
 {
 	using namespace GuLiShipAbilityTests;
-	FShipASCFixture Fixture;
+	FHangarFixture Fixture;
 	if (!Fixture.Initialize(*this))
 	{
 		return false;
@@ -255,56 +246,49 @@ bool FGuLiShipASCGrantProjectionTest::RunTest(const FString& Parameters)
 		return false;
 	}
 	ClientProxyShip->SetRole(ROLE_SimulatedProxy);
-	auto* NeverAuthorityInitializedASC = NewObject<UGuLiShipAbilitySystemComponent>(
-		ClientProxyShip, TEXT("NeverAuthorityInitializedShipAbilitySystem"));
-	if (!TestNotNull(TEXT("An uninitialized Ship ASC can be constructed for the teardown guard test"),
-		NeverAuthorityInitializedASC))
+	auto* NeverAuthorityInitializedHangar = NewObject<UGuLiShipHangarCapabilityComponent>(
+		ClientProxyShip, TEXT("NeverAuthorityInitializedHangarCapability"));
+	if (!TestNotNull(TEXT("An uninitialized Ship Hangar can be constructed for the teardown guard test"),
+		NeverAuthorityInitializedHangar))
 	{
 		return false;
 	}
-	ClientProxyShip->AddInstanceComponent(NeverAuthorityInitializedASC);
-	NeverAuthorityInitializedASC->RegisterComponent();
-	NeverAuthorityInitializedASC->InitializeShipActorInfo(ClientProxyShip);
-	NeverAuthorityInitializedASC->SetLooseGameplayTagCount(
-		TAG_GuLi_ShipAbility_State_MissileCooldown,
-		1,
-		EGameplayTagReplicationState::TagOnly);
-	NeverAuthorityInitializedASC->ServerClearShipAbilities();
-	TestTrue(TEXT("A client-proxy ASC cannot use the authority-only EndPlay teardown capability"),
-		NeverAuthorityInitializedASC->IsMissileCooldownActive());
+	ClientProxyShip->AddInstanceComponent(NeverAuthorityInitializedHangar);
+	NeverAuthorityInitializedHangar->RegisterComponent();
+	NeverAuthorityInitializedHangar->InitializeShipActorInfo(ClientProxyShip);
+	TestFalse(TEXT("Client proxy cannot reserve an authoritative cooldown"),
+		NeverAuthorityInitializedHangar->ServerTryReserveMissileCooldown(8.f, FGuid::NewGuid()));
 	ClientProxyShip->SetRole(ROLE_Authority);
 
-	TestTrue(TEXT("Ship is both ASC owner and avatar"),
-		Fixture.ASC->GetOwnerActor() == Fixture.Ship && Fixture.ASC->GetAvatarActor() == Fixture.Ship);
-	TestTrue(TEXT("Ship ASC starts with no AttributeSet"), Fixture.ASC->GetSpawnedAttributes().IsEmpty());
-	TestTrue(TEXT("Projection context changes once"), Fixture.ASC->SetProjectionContext(ProjectionContext()));
-	const uint32 ContextRevision = Fixture.ASC->GetProjectionSnapshotRevision();
+	TestTrue(TEXT("Ship is both Hangar owner and avatar"),
+		Fixture.Hangar->GetOwner() == Fixture.Ship);
+	TestTrue(TEXT("Projection context changes once"), Fixture.Hangar->SetProjectionContext(ProjectionContext()));
+	const uint32 ContextRevision = Fixture.Hangar->GetProjectionSnapshotRevision();
 	TestFalse(TEXT("Repeating identical projection context is a no-op"),
-		Fixture.ASC->SetProjectionContext(ProjectionContext()));
+		Fixture.Hangar->SetProjectionContext(ProjectionContext()));
 	TestEqual(TEXT("No-op context does not advance SnapshotRevision"),
-		Fixture.ASC->GetProjectionSnapshotRevision(), ContextRevision);
+		Fixture.Hangar->GetProjectionSnapshotRevision(), ContextRevision);
 
 	FString Error;
 	FGuLiShipAbilityLoadoutState Loadout = FGuLiShipAbilityLoadoutState::MakeNativeV1();
 	if (!TestTrue(FString::Printf(TEXT("Authority grants v1 loadout: %s"), *Error),
-		Fixture.ASC->ServerApplyAbilitySet(Fixture.AbilitySet, Loadout, Error)))
+		Fixture.Hangar->ServerApplyAbilitySet(Fixture.AbilitySet, Loadout, Error)))
 	{
 		AddError(Error);
 		return false;
 	}
-	TestEqual(TEXT("Exactly three Ship abilities are granted"), FShipASCFixture::CountShipAbilities(*Fixture.ASC), 3);
+	TestEqual(TEXT("Exactly three Ship abilities are granted"), FHangarFixture::CountShipAbilities(*Fixture.Hangar), 3);
 	TestEqual(TEXT("Exactly two persistent abilities auto-activate"),
-		FShipASCFixture::CountActivePersistentAbilities(*Fixture.ASC), 2);
-	TestTrue(TEXT("Granting Ship abilities still creates no AttributeSet"), Fixture.ASC->GetSpawnedAttributes().IsEmpty());
+		FHangarFixture::CountActivePersistentAbilities(*Fixture.Hangar), 2);
 
 	FGuLiGroupAbilityConfigSnapshot Snapshot;
-	TestTrue(TEXT("ASC builds a structurally valid projection"),
-		Fixture.ASC->BuildGroupAbilityConfigSnapshot(Snapshot));
+	TestTrue(TEXT("Hangar builds a structurally valid projection"),
+		Fixture.Hangar->BuildGroupAbilityConfigSnapshot(Snapshot));
 	TestTrue(TEXT("Formation/basic/missile projection is Active-ready"), Snapshot.IsUsableByLeaseOwner());
-	TestEqual(TEXT("Projected ability set revision matches ASC"),
-		Snapshot.AbilitySetRevision, Fixture.ASC->GetAbilitySetRevision());
-	TestEqual(TEXT("Projected snapshot revision matches ASC"),
-		Snapshot.SnapshotRevision, Fixture.ASC->GetProjectionSnapshotRevision());
+	TestEqual(TEXT("Projected ability set revision matches Hangar"),
+		Snapshot.AbilitySetRevision, Fixture.Hangar->GetAbilitySetRevision());
+	TestEqual(TEXT("Projected snapshot revision matches Hangar"),
+		Snapshot.SnapshotRevision, Fixture.Hangar->GetProjectionSnapshotRevision());
 	TestEqual(TEXT("Formation turn rate is quadrupled for the doubled flight speed"),
 		Snapshot.FormationRuntime.MaximumTurnRateDegreesPerSecond, 80.0f);
 	TestEqual(TEXT("Formation minimum speed is doubled"),
@@ -321,67 +305,67 @@ bool FGuLiShipASCGrantProjectionTest::RunTest(const FString& Parameters)
 		Snapshot.BasicWeaponRuntime.RangeCentimeters, 150000.0f);
 	TestEqual(TEXT("Basic weapon DataAsset projects independent two-second cadence"),
 		Snapshot.BasicWeaponRuntime.CooldownSeconds, 2.0f);
-	TestEqual(TEXT("Missile targeting parameters are present without ASC access"),
+	TestEqual(TEXT("Missile targeting parameters are present without Hangar access"),
 		Snapshot.MissileRuntime.RangeCentimeters, 250000.0f);
 
-	const uint32 AbilityRevision = Fixture.ASC->GetAbilitySetRevision();
-	const uint32 ProjectionRevision = Fixture.ASC->GetProjectionSnapshotRevision();
+	const uint32 AbilityRevision = Fixture.Hangar->GetAbilitySetRevision();
+	const uint32 ProjectionRevision = Fixture.Hangar->GetProjectionSnapshotRevision();
 	Error.Reset();
 	TestFalse(TEXT("Applying the identical set/loadout is an idempotent no-op"),
-		Fixture.ASC->ServerApplyAbilitySet(Fixture.AbilitySet, Loadout, Error));
+		Fixture.Hangar->ServerApplyAbilitySet(Fixture.AbilitySet, Loadout, Error));
 	TestTrue(TEXT("Idempotent no-op is not reported as an error"), Error.IsEmpty());
-	TestEqual(TEXT("Idempotent grant retains exactly three specs"), FShipASCFixture::CountShipAbilities(*Fixture.ASC), 3);
+	TestEqual(TEXT("Idempotent grant retains exactly three action bindings"), FHangarFixture::CountShipAbilities(*Fixture.Hangar), 3);
 	TestEqual(TEXT("Idempotent grant does not advance AbilitySetRevision"),
-		Fixture.ASC->GetAbilitySetRevision(), AbilityRevision);
+		Fixture.Hangar->GetAbilitySetRevision(), AbilityRevision);
 	TestEqual(TEXT("Idempotent grant does not advance SnapshotRevision"),
-		Fixture.ASC->GetProjectionSnapshotRevision(), ProjectionRevision);
+		Fixture.Hangar->GetProjectionSnapshotRevision(), ProjectionRevision);
 
 	for (int32 Index = 0; Index < 3; ++Index)
 	{
-		Fixture.ASC->InitializeShipActorInfo(Fixture.Ship);
+		Fixture.Hangar->InitializeShipActorInfo(Fixture.Ship);
 	}
 	TestEqual(TEXT("BeginPlay/possession-style ActorInfo refresh never duplicates grants"),
-		FShipASCFixture::CountShipAbilities(*Fixture.ASC), 3);
+		FHangarFixture::CountShipAbilities(*Fixture.Hangar), 3);
 
 	int32 MissileAuthorizations = 0;
-	Fixture.ASC->OnTriggeredAbilityAuthorized().AddLambda(
-		[&MissileAuthorizations](FGameplayAbilitySpecHandle, FGameplayTag, uint32, bool)
+	Fixture.Hangar->OnTriggeredAbilityAuthorized().AddLambda(
+		[&MissileAuthorizations](FGameplayTag, uint32, bool)
 		{
 			++MissileAuthorizations;
 		});
-	Fixture.ASC->AbilityInputTagPressed(TAG_GuLi_Input_Ship_Wingman_Missile);
-	Fixture.ASC->AbilityInputTagReleased(TAG_GuLi_Input_Ship_Wingman_Missile);
+	Fixture.Hangar->AbilityInputTagPressed(TAG_GuLi_Input_Ship_Wingman_Missile);
+	Fixture.Hangar->AbilityInputTagReleased(TAG_GuLi_Input_Ship_Wingman_Missile);
 	TestEqual(TEXT("Missile input produces one group-level authorization, not per-wingman GA activations"),
 		MissileAuthorizations, 1);
 	const FGuid CooldownOwner(0x10u, 0x20u, 0x30u, 0x40u);
 	const FGuid WrongCooldownOwner(0x11u, 0x21u, 0x31u, 0x41u);
 	TestTrue(TEXT("A valid salvo identity reserves the shared cooldown atomically"),
-		Fixture.ASC->ServerTryReserveMissileCooldown(8.0f, CooldownOwner));
+		Fixture.Hangar->ServerTryReserveMissileCooldown(8.0f, CooldownOwner));
 	TestFalse(TEXT("A second activation cannot steal the shared cooldown"),
-		Fixture.ASC->ServerTryReserveMissileCooldown(8.0f, WrongCooldownOwner));
+		Fixture.Hangar->ServerTryReserveMissileCooldown(8.0f, WrongCooldownOwner));
 	TestFalse(TEXT("A different activation cannot roll back the reservation"),
-		Fixture.ASC->ServerRollbackMissileCooldown(WrongCooldownOwner));
-	TestTrue(TEXT("The original reservation remains active"), Fixture.ASC->IsMissileCooldownActive());
+		Fixture.Hangar->ServerRollbackMissileCooldown(WrongCooldownOwner));
+	TestTrue(TEXT("The original reservation remains active"), Fixture.Hangar->IsMissileCooldownActive());
 	TestTrue(TEXT("Only the owning activation may roll back a failed batch"),
-		Fixture.ASC->ServerRollbackMissileCooldown(CooldownOwner));
-	TestFalse(TEXT("Rollback leaves no shared cooldown side effect"), Fixture.ASC->IsMissileCooldownActive());
-	Fixture.ASC->SetActiveAbilityInputEnabled(false);
-	Fixture.ASC->AbilityInputTagPressed(TAG_GuLi_Input_Ship_Wingman_Missile);
+		Fixture.Hangar->ServerRollbackMissileCooldown(CooldownOwner));
+	TestFalse(TEXT("Rollback leaves no shared cooldown side effect"), Fixture.Hangar->IsMissileCooldownActive());
+	Fixture.Hangar->SetActiveAbilityInputEnabled(false);
+	Fixture.Hangar->AbilityInputTagPressed(TAG_GuLi_Input_Ship_Wingman_Missile);
 	TestEqual(TEXT("UnPossess-style input disable blocks active missile without cancelling passives"),
 		MissileAuthorizations, 1);
 	TestEqual(TEXT("Persistent formation/basic abilities survive input disable"),
-		FShipASCFixture::CountActivePersistentAbilities(*Fixture.ASC), 2);
+		FHangarFixture::CountActivePersistentAbilities(*Fixture.Hangar), 2);
 	const FGuid TeardownCooldownOwner(0x12u, 0x22u, 0x32u, 0x42u);
 	TestTrue(TEXT("A live cooldown may exist when Ship teardown begins"),
-		Fixture.ASC->ServerTryReserveMissileCooldown(8.0f, TeardownCooldownOwner));
+		Fixture.Hangar->ServerTryReserveMissileCooldown(8.0f, TeardownCooldownOwner));
 
-	Fixture.ASC->ServerClearShipAbilities();
+	Fixture.Hangar->ServerClearShipAbilities();
 	TestFalse(TEXT("Death teardown clears the loose cooldown tag and timer"),
-		Fixture.ASC->IsMissileCooldownActive());
-	TestEqual(TEXT("Death teardown clears every Ship ability spec"), FShipASCFixture::CountShipAbilities(*Fixture.ASC), 0);
+		Fixture.Hangar->IsMissileCooldownActive());
+	TestEqual(TEXT("Death teardown clears every Ship action binding"), FHangarFixture::CountShipAbilities(*Fixture.Hangar), 0);
 	FGuLiGroupAbilityConfigSnapshot Tombstone;
 	TestTrue(TEXT("Death teardown still builds a reliable invalidation payload"),
-		Fixture.ASC->BuildGroupAbilityConfigSnapshot(Tombstone));
+		Fixture.Hangar->BuildGroupAbilityConfigSnapshot(Tombstone));
 	TestTrue(TEXT("Invalidation payload is structurally valid"), Tombstone.IsWellFormed());
 	TestFalse(TEXT("Invalidation payload cannot activate the old group"), Tombstone.IsUsableByLeaseOwner());
 	TestTrue(TEXT("Death teardown advances SnapshotRevision"), Tombstone.SnapshotRevision > Snapshot.SnapshotRevision);
@@ -396,10 +380,10 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 bool FGuLiWingmanWeaponBindingProjectionTest::RunTest(const FString& Parameters)
 {
 	using namespace GuLiShipAbilityTests;
-	FShipASCFixture Fixture;
+	FHangarFixture Fixture;
 	if (!Fixture.Initialize(*this)
 		|| !TestTrue(TEXT("The authoritative projection context is accepted"),
-			Fixture.ASC->SetProjectionContext(ProjectionContext())))
+			Fixture.Hangar->SetProjectionContext(ProjectionContext())))
 	{
 		return false;
 	}
@@ -409,14 +393,14 @@ bool FGuLiWingmanWeaponBindingProjectionTest::RunTest(const FString& Parameters)
 	FormationOnly.AbilityIds.Add(TAG_GuLi_ShipAbility_Formation_DoubleRing);
 	FormationOnly.Revision = 1u;
 	if (!TestTrue(TEXT("A formation-only loadout is a legal committed configuration"),
-		Fixture.ASC->ServerApplyAbilitySet(Fixture.AbilitySet, FormationOnly, Error)))
+		Fixture.Hangar->ServerApplyAbilitySet(Fixture.AbilitySet, FormationOnly, Error)))
 	{
 		AddError(Error);
 		return false;
 	}
 	FGuLiGroupAbilityConfigSnapshot FormationOnlySnapshot;
 	TestTrue(TEXT("Formation-only projection builds"),
-		Fixture.ASC->BuildGroupAbilityConfigSnapshot(FormationOnlySnapshot));
+		Fixture.Hangar->BuildGroupAbilityConfigSnapshot(FormationOnlySnapshot));
 	TestTrue(TEXT("Formation-only projection is lease-owner usable"),
 		FormationOnlySnapshot.IsUsableByLeaseOwner());
 	TestEqual(TEXT("Formation-only projection contains zero weapon channels"),
@@ -456,7 +440,7 @@ bool FGuLiWingmanWeaponBindingProjectionTest::RunTest(const FString& Parameters)
 	MultiWeaponLoadout.Normalize();
 	Error.Reset();
 	if (!TestTrue(TEXT("One formation and four weapon entries apply as one loadout"),
-		Fixture.ASC->ServerApplyAbilitySet(Fixture.AbilitySet, MultiWeaponLoadout, Error)))
+		Fixture.Hangar->ServerApplyAbilitySet(Fixture.AbilitySet, MultiWeaponLoadout, Error)))
 	{
 		AddError(Error);
 		return false;
@@ -464,14 +448,14 @@ bool FGuLiWingmanWeaponBindingProjectionTest::RunTest(const FString& Parameters)
 
 	FGuLiGroupAbilityConfigSnapshot Snapshot;
 	if (!TestTrue(TEXT("Multi-channel projection builds"),
-		Fixture.ASC->BuildGroupAbilityConfigSnapshot(Snapshot)))
+		Fixture.Hangar->BuildGroupAbilityConfigSnapshot(Snapshot)))
 	{
 		return false;
 	}
 	TestTrue(TEXT("Multi-channel projection is structurally valid"), Snapshot.IsUsableByLeaseOwner());
 	TestEqual(TEXT("Every selected weapon becomes exactly one channel"), Snapshot.WeaponChannels.Num(), 4);
 	TestEqual(TEXT("Projection carries the complete loadout revision"),
-		Snapshot.LoadoutRevision, Fixture.ASC->GetWeaponLoadoutRevision());
+		Snapshot.LoadoutRevision, Fixture.Hangar->GetWeaponLoadoutRevision());
 
 	const FGuLiWeaponBindingKey PrimaryBasicBinding = FGuLiWeaponBindingKey::Wingman(
 		Snapshot.MatchEpoch, Snapshot.Team, Snapshot.OwnerPlayerGuid, Snapshot.WingmanTypeId, TEXT("BasicWeapon"));
@@ -482,10 +466,10 @@ bool FGuLiWingmanWeaponBindingProjectionTest::RunTest(const FString& Parameters)
 	const FGuLiWeaponBindingKey SecondaryMissileBinding = FGuLiWeaponBindingKey::Wingman(
 		Snapshot.MatchEpoch, Snapshot.Team, Snapshot.OwnerPlayerGuid, Snapshot.WingmanTypeId, TEXT("SecondaryMissile"));
 
-	const FGuLiShipAbilityGrant* ProjectedPrimaryBasic = Fixture.ASC->FindConfiguredGrant(PrimaryBasicBinding);
-	const FGuLiShipAbilityGrant* ProjectedSecondaryBasic = Fixture.ASC->FindConfiguredGrant(SecondaryBasicBinding);
-	const FGuLiShipAbilityGrant* ProjectedPrimaryMissile = Fixture.ASC->FindConfiguredGrant(PrimaryMissileBinding);
-	const FGuLiShipAbilityGrant* ProjectedSecondaryMissile = Fixture.ASC->FindConfiguredGrant(SecondaryMissileBinding);
+	const FGuLiShipAbilityGrant* ProjectedPrimaryBasic = Fixture.Hangar->FindConfiguredGrant(PrimaryBasicBinding);
+	const FGuLiShipAbilityGrant* ProjectedSecondaryBasic = Fixture.Hangar->FindConfiguredGrant(SecondaryBasicBinding);
+	const FGuLiShipAbilityGrant* ProjectedPrimaryMissile = Fixture.Hangar->FindConfiguredGrant(PrimaryMissileBinding);
+	const FGuLiShipAbilityGrant* ProjectedSecondaryMissile = Fixture.Hangar->FindConfiguredGrant(SecondaryMissileBinding);
 	if (!TestNotNull(TEXT("Primary automatic binding resolves"), ProjectedPrimaryBasic)
 		|| !TestNotNull(TEXT("Secondary automatic binding resolves"), ProjectedSecondaryBasic)
 		|| !TestNotNull(TEXT("Primary missile binding resolves"), ProjectedPrimaryMissile)
@@ -493,33 +477,32 @@ bool FGuLiWingmanWeaponBindingProjectionTest::RunTest(const FString& Parameters)
 	{
 		return false;
 	}
-	TestTrue(TEXT("Two automatic channels may reuse the same GA class"),
-		ProjectedPrimaryBasic->AbilityClass == ProjectedSecondaryBasic->AbilityClass);
-	TestTrue(TEXT("Two missile channels may reuse the same GA class"),
-		ProjectedPrimaryMissile->AbilityClass == ProjectedSecondaryMissile->AbilityClass);
-	TestTrue(TEXT("Reused GA classes retain distinct stable catalog identities"),
+	TestTrue(TEXT("Two automatic channels may reuse the same action kind"),
+		ProjectedPrimaryBasic->Slot == ProjectedSecondaryBasic->Slot);
+	TestTrue(TEXT("Two missile channels may reuse the same action kind"),
+		ProjectedPrimaryMissile->Slot == ProjectedSecondaryMissile->Slot);
+	TestTrue(TEXT("Reused action kindes retain distinct stable catalog identities"),
 		ProjectedPrimaryBasic->AbilityId != ProjectedSecondaryBasic->AbilityId
 		&& ProjectedPrimaryMissile->AbilityId != ProjectedSecondaryMissile->AbilityId);
 
 	int32 BindingAuthorizations = 0;
 	FGuLiWeaponBindingKey AuthorizedBinding;
-	Fixture.ASC->OnWeaponAbilityAuthorized().AddLambda(
-		[&BindingAuthorizations, &AuthorizedBinding](FGameplayAbilitySpecHandle,
-			FGuLiWeaponBindingKey Binding, FName, FGameplayTag, uint32, bool)
+	Fixture.Hangar->OnWeaponAbilityAuthorized().AddLambda(
+		[&BindingAuthorizations, &AuthorizedBinding](FGuLiWeaponBindingKey Binding, FName, FGameplayTag, uint32, bool)
 		{
 			++BindingAuthorizations;
 			AuthorizedBinding = Binding;
 		});
-	Fixture.ASC->AbilityInputTagPressed(TAG_GuLi_Input_Ship_Wingman_Missile);
+	Fixture.Hangar->AbilityInputTagPressed(TAG_GuLi_Input_Ship_Wingman_Missile);
 	TestEqual(TEXT("A shared InputTag never implicitly fans out to multiple weapon channels"),
 		BindingAuthorizations, 0);
 	TestTrue(TEXT("Binding-exact input activates only the requested missile channel"),
-		Fixture.ASC->AbilityWeaponBindingPressed(PrimaryMissileBinding));
+		Fixture.Hangar->AbilityWeaponBindingPressed(PrimaryMissileBinding));
 	TestEqual(TEXT("Binding-exact input emits one authorization"), BindingAuthorizations, 1);
 	TestTrue(TEXT("Authorization carries the exact requested binding"),
 		AuthorizedBinding == PrimaryMissileBinding);
 	TestTrue(TEXT("Binding-exact release resolves the same channel"),
-		Fixture.ASC->AbilityWeaponBindingReleased(PrimaryMissileBinding));
+		Fixture.Hangar->AbilityWeaponBindingReleased(PrimaryMissileBinding));
 
 	FGuLiShipAbilityGrant* MutableSecondaryBasic = Fixture.AbilitySet->Grants.FindByPredicate(
 		[](const FGuLiShipAbilityGrant& Grant)

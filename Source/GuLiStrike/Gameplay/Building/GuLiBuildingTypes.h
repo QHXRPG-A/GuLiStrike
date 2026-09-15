@@ -70,7 +70,7 @@ struct GULISTRIKE_API FGuLiBuildingDefinition
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float ProductionSeconds = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 ProductionCount = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") TArray<int32> FirstCaptureGiftIds;
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 GateFieldId = 0;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") int32 TransitFieldId = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float ShieldRadius = 0;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Building") float ShieldRechargePerSecond = 0;
 

@@ -17,6 +17,8 @@ public:
 	void InitializeVehicle(EGuLiTeam InTeam, FGuLiControllableActorId InId, const FGuLiSoldierDefinition& Definition);
 	UFUNCTION(BlueprintCallable,BlueprintAuthorityOnly) bool IssueMove(const FVector& Target);
 	UFUNCTION(BlueprintCallable,BlueprintAuthorityOnly) bool IssueConstruction(UGuLiBuildingLifecycleComponent* Building);
+	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
+	virtual EGuLiTransitOrderResult IssueStrongholdTransit(const FGuLiStrongholdTransitOrder& Order, EGuLiTeam RequestingTeam) override;
 	virtual EGuLiTeam GetTeam() const override { return Team; }
 	virtual FGuLiControllableActorId GetStableActorId() const override { return StableId; }
 	virtual float GetEngineeringBaseSpeed() const override { return BaseSpeed; }
@@ -25,6 +27,7 @@ public:
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& Out) const override;
 private:
 	FBox TravelBounds = FBox(ForceInit);
+	uint32 LastTransitRequestId = 0;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UChildActorComponent> Presentation;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiEngineeringTravelComponent> Travel;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiConstructionWorkComponent> Work;

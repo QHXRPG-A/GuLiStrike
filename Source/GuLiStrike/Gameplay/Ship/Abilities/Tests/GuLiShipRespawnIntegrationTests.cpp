@@ -4,13 +4,14 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 
-#include "AbilitySystemComponent.h"
+#include "Gameplay/Ship/Build/GuLiShipBuildComponent.h"
+#include "Gameplay/Ship/Build/GuLiShipAssemblyComponent.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Engine/Engine.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
-#include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
+#include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "Misc/AutomationTest.h"
 #include "UObject/UObjectGlobals.h"
 
@@ -73,14 +74,15 @@ namespace GuLiShipRespawnIntegrationTests
 			}
 			Controller->SetPlayerState(PlayerState);
 			PlayerState->EnsureServerPlayerGuid();
-			return Test.TestTrue(TEXT("The session-level Ship loadout begins well formed"),
-				PlayerState->GetShipAbilityLoadoutState().IsWellFormed());
+			PlayerState->SetServerRoleAssignment(EGuLiTeam::Red, EGuLiCommanderRole::Air, 1);
+			return Test.TestTrue(TEXT("A new PlayerState begins with no committed Ship choices"),
+				PlayerState->GetShipBuild()->GetBuildState().ChosenNodeIds.IsEmpty());
 		}
 
 		AGuLiStrikeShip* SpawnAndPossessShip(FAutomationTestBase& Test, const TCHAR* Description)
 		{
 			UClass* ShipClass = LoadObject<UClass>(
-				nullptr, TEXT("/Game/GuLiStrike/Ship/BP_GuLiStrikeShip.BP_GuLiStrikeShip_C"));
+				nullptr, TEXT("/Game/GuLiStrike/Ship/BP_CombatAvatarFly01.BP_CombatAvatarFly01_C"));
 			if (!Test.TestNotNull(TEXT("The concrete Ship Blueprint class loads"), ShipClass)
 				|| !Test.TestTrue(TEXT("The loaded class derives from AGuLiStrikeShip"),
 					ShipClass->IsChildOf(AGuLiStrikeShip::StaticClass())))
@@ -109,20 +111,11 @@ namespace GuLiShipRespawnIntegrationTests
 		}
 	};
 
-	int32 CountActiveAbilities(const UAbilitySystemComponent& AbilitySystem)
-	{
-		int32 Count = 0;
-		for (const FGameplayAbilitySpec& Spec : AbilitySystem.GetActivatableAbilities())
-		{
-			Count += Spec.IsActive() ? 1 : 0;
-		}
-		return Count;
-	}
 }
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FGuLiShipWorldRespawnAbilityLifecycleTest,
-	"GuLiStrike.Ship.Abilities.WorldRespawnCreatesFreshASCAndRetainsStableLoadout",
+	"GuLiStrike.Ship.Abilities.WorldRespawnRestoresCommittedBuild",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 
 bool FGuLiShipWorldRespawnAbilityLifecycleTest::RunTest(const FString& Parameters)
@@ -140,74 +133,56 @@ bool FGuLiShipWorldRespawnAbilityLifecycleTest::RunTest(const FString& Parameter
 	{
 		return false;
 	}
-	UGuLiShipAbilitySystemComponent* FirstASC = FirstShip->GetShipAbilitySystemComponent();
-	if (!TestNotNull(TEXT("The first Ship owns its ASC"), FirstASC))
-	{
-		return false;
-	}
-	const FGuLiGroupAbilityConfigSnapshot FirstConfig = FirstShip->GetGroupAbilityConfig();
-	const FGuLiShipAbilityLoadoutState FirstLoadout = FirstASC->GetAppliedLoadout();
-	TestTrue(TEXT("The first Ship projects an active three-ability group config"),
-		FirstConfig.IsUsableByLeaseOwner());
-	TestEqual(TEXT("The first Ship grants exactly the three v1 stable abilities"),
-		FirstASC->GetActivatableAbilities().Num(), 3);
-	TestTrue(TEXT("The first Ship loadout matches the PlayerState session loadout"),
-		FirstLoadout.HasSameSelection(Fixture.PlayerState->GetShipAbilityLoadoutState()));
-	TestTrue(TEXT("The default formation/basic passives are active"), CountActiveAbilities(*FirstASC) >= 2);
-
-	const FGuid CooldownReservation = FGuid::NewGuid();
-	TestTrue(TEXT("The old Ship can own a temporary missile cooldown"),
-		FirstASC->ServerTryReserveMissileCooldown(8.0f, CooldownReservation));
-	TestTrue(TEXT("The old Ship cooldown is active before death/destruction"),
-		FirstASC->IsMissileCooldownActive());
-
+	TestNull(TEXT("Ship starts without an automatic Wingman grant"), FirstShip->GetHangarCapability());
+	auto* Build = Fixture.PlayerState->GetShipBuild();
+	const FGuid RequestId = FGuid::NewGuid();
+	const auto Before = Build->GetBuildState();
+	const auto Choice = Build->CommitConfirmedChoice(RequestId, TEXT("08"), Before.MatchEpoch, Before.BuildRevision);
+	if (!TestTrue(*Choice.Reason, Choice.bCommitted)) return false;
+	const auto Duplicate = Build->CommitConfirmedChoice(RequestId, TEXT("08"), Before.MatchEpoch, Before.BuildRevision);
+	TestTrue(TEXT("Retry returns the original committed result"), Duplicate.bCommitted && Duplicate.BuildRevision == Choice.BuildRevision);
+	auto* FirstHangar = FirstShip->GetHangarCapability();
+	if (!TestNotNull(TEXT("Committed hangar grants exactly one capability"), FirstHangar)) return false;
+	TestTrue(TEXT("Both authored hangar mounts exist"), FirstShip->GetPartAt(TEXT("wingman_bay_1")) && FirstShip->GetPartAt(TEXT("wingman_bay_2")));
+	auto* Assembly = FirstShip->GetShipAssembly();
+	auto* OriginalCatalog = Assembly->Catalog.Get();
+	auto* BrokenCatalog = DuplicateObject<UGuLiShipBuildCatalog>(OriginalCatalog, FirstShip);
+	++BrokenCatalog->Revision;
+	for (auto& Group : BrokenCatalog->Groups) if (Group.GroupId == FName("Hangar"))
+		Group.Mounts[1].PartClass = TSoftClassPtr<UGuLiStrikeShipPartComponent>(FSoftObjectPath("/Game/GuLiStrike/Ship/Parts/Missing_QA.Missing_QA_C"));
+	Assembly->Catalog = BrokenCatalog;
+	FString PrepareError;
+	AddExpectedError(TEXT("Missing_QA"), EAutomationExpectedErrorFlags::Contains, 0);
+	TestFalse(TEXT("Missing part resources reject preparation"), Assembly->PrepareBuild(Build->GetBuildState(), PrepareError));
+	Assembly->Catalog = OriginalCatalog;
+	TestTrue(TEXT("Failed preparation preserves the old capability and both mounts"), FirstShip->GetHangarCapability() == FirstHangar
+		&& FirstShip->GetPartAt(TEXT("wingman_bay_1")) && FirstShip->GetPartAt(TEXT("wingman_bay_2")));
+	TestEqual(TEXT("Failed preparation does not append a choice"), Build->GetBuildState().ChosenNodeIds.Num(), 1);
+	const auto Stale = Build->CommitConfirmedChoice(FGuid::NewGuid(), TEXT("08"), Before.MatchEpoch, Before.BuildRevision);
+	TestFalse(TEXT("A stale build revision cannot commit"), Stale.bCommitted);
+	const auto FirstConfig = FirstShip->GetGroupAbilityConfig();
+	TestTrue(TEXT("Hangar publishes a usable group"), FirstConfig.IsUsableByLeaseOwner());
+	const auto Loadout = FirstHangar->GetAppliedLoadout();
+	TestTrue(TEXT("Temporary cooldown starts"), FirstHangar->ServerTryReserveMissileCooldown(8.f, FGuid::NewGuid()));
 	Fixture.Controller->UnPossess();
-	TestTrue(TEXT("Destroying the old Ship executes its EndPlay lifecycle"), FirstShip->Destroy());
-	TestFalse(TEXT("The old Ship EndPlay cancels every active ability"),
-		CountActiveAbilities(*FirstASC) > 0);
-	TestEqual(TEXT("The old Ship EndPlay removes every granted ability spec"),
-		FirstASC->GetActivatableAbilities().Num(), 0);
-	TestNull(TEXT("The old Ship EndPlay releases its applied ability set"),
-		FirstASC->GetAppliedAbilitySet());
-	TestTrue(TEXT("The old Ship EndPlay clears its applied stable-id loadout"),
-		FirstASC->GetAppliedLoadout().AbilityIds.IsEmpty());
-	TestFalse(TEXT("The old Ship EndPlay clears its temporary missile cooldown"),
-		FirstASC->IsMissileCooldownActive());
-	TestFalse(TEXT("The old Ship publishes a non-activatable ability-config tombstone"),
-		FirstShip->GetGroupAbilityConfig().IsUsableByLeaseOwner());
-
-	AGuLiStrikeShip* SecondShip = Fixture.SpawnAndPossessShip(*this, TEXT("The replacement real Ship spawns"));
-	if (!SecondShip)
-	{
-		return false;
-	}
-	UGuLiShipAbilitySystemComponent* SecondASC = SecondShip->GetShipAbilitySystemComponent();
-	if (!TestNotNull(TEXT("The replacement Ship owns its ASC"), SecondASC))
-	{
-		return false;
-	}
-	const FGuLiGroupAbilityConfigSnapshot SecondConfig = SecondShip->GetGroupAbilityConfig();
-	const FGuLiShipAbilityLoadoutState SecondLoadout = SecondASC->GetAppliedLoadout();
-
-	TestTrue(TEXT("Respawn creates a distinct Pawn-owned ASC instance"), SecondASC != FirstASC);
-	TestTrue(TEXT("The replacement ASC owns and avatars only the replacement Ship"),
-		SecondASC->GetOwnerActor() == SecondShip && SecondASC->GetAvatarActor() == SecondShip);
-	TestTrue(TEXT("The replacement Ship has a distinct stable instance identity"),
-		SecondConfig.ShipInstanceId.IsValid()
-			&& SecondConfig.ShipInstanceId != FirstConfig.ShipInstanceId);
-	TestTrue(TEXT("The replacement Ship allocates new Ship and group generations"),
-		SecondConfig.ShipGeneration != 0u && SecondConfig.GroupGeneration != 0u
-			&& SecondConfig.ShipGeneration != FirstConfig.ShipGeneration
-			&& SecondConfig.GroupGeneration != FirstConfig.GroupGeneration);
-	TestEqual(TEXT("The replacement Ship re-grants exactly three abilities"),
-		SecondASC->GetActivatableAbilities().Num(), 3);
-	TestTrue(TEXT("Only stable AbilityIds survive the respawn"),
-		SecondLoadout.HasSameSelection(FirstLoadout)
-			&& SecondLoadout.HasSameSelection(Fixture.PlayerState->GetShipAbilityLoadoutState()));
-	TestFalse(TEXT("Missile cooldown never migrates to the fresh ASC"),
-		SecondASC->IsMissileCooldownActive());
-	TestTrue(TEXT("The replacement formation/basic passives restart as fresh instances"),
-		CountActiveAbilities(*SecondASC) >= 2);
+	TestTrue(TEXT("Losing control preserves persistent Wingman behavior"), FirstHangar->IsCapabilityEnabled());
+	TestFalse(TEXT("Losing control closes active input"), FirstHangar->IsActiveAbilityInputEnabled());
+	TestTrue(TEXT("Old Ship executes destruction lifecycle"), FirstShip->Destroy());
+	TestNull(TEXT("Old runtime releases its data references"), FirstHangar->GetAppliedAbilitySet());
+	TestFalse(TEXT("Old runtime releases temporary cooldowns"), FirstHangar->IsMissileCooldownActive());
+	TestFalse(TEXT("Old Ship publishes a group tombstone"), FirstShip->GetGroupAbilityConfig().IsUsableByLeaseOwner());
+	auto* SecondShip = Fixture.SpawnAndPossessShip(*this, TEXT("Replacement Ship spawns"));
+	if (!SecondShip) return false;
+	auto* SecondHangar = SecondShip->GetHangarCapability();
+	if (!TestNotNull(TEXT("Match choices restore the hangar"), SecondHangar)) return false;
+	TestTrue(TEXT("Respawn creates new runtime components"), FirstHangar != SecondHangar && SecondHangar->GetOwner() == SecondShip);
+	TestTrue(TEXT("Immutable action selection survives respawn"), SecondHangar->GetAppliedLoadout().HasSameSelection(Loadout));
+	TestFalse(TEXT("Temporary cooldown does not survive respawn"), SecondHangar->IsMissileCooldownActive());
+	const auto SecondConfig = SecondShip->GetGroupAbilityConfig();
+	TestTrue(TEXT("Respawn allocates fresh network identity"), SecondConfig.ShipInstanceId != FirstConfig.ShipInstanceId
+		&& SecondConfig.ShipGeneration != FirstConfig.ShipGeneration && SecondConfig.GroupGeneration != FirstConfig.GroupGeneration);
+	const auto Locked = Build->CommitConfirmedChoice(FGuid::NewGuid(), TEXT("11"), Before.MatchEpoch, Build->GetBuildState().BuildRevision);
+	TestFalse(TEXT("Respawn retains historical route exclusion"), Locked.bCommitted);
 	return true;
 }
 

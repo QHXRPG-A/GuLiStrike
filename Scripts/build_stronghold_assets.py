@@ -66,10 +66,6 @@ def main():
         report['tables'].append(result)
         assert result.get('imported'), result
 
-    gate = ROOT+'/M_TransitGate'
-    duplicate('/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportGround',gate)
-    MAT.recompile_material(ASSETS.load_asset(gate))
-    save(gate)
     energy = ROOT+'/M_TransitEnergy'
     material = ASSETS.load_asset(energy) if ASSETS.does_asset_exist(energy) else TOOLS.create_asset(
         'M_TransitEnergy',ROOT,unreal.Material,unreal.MaterialFactoryNew())
@@ -91,7 +87,7 @@ def main():
     MAT.layout_material_expressions(material)
     MAT.recompile_material(material)
     save(energy)
-    for path in [energy,gate]:
+    for path in [energy]:
         diagnostics = unreal.MaterialNodeService.get_material_diagnostics(path)
         report['materials'][path] = str(diagnostics)
         assert diagnostics.success and diagnostics.is_compiled_ok and not diagnostics.compile_errors, str(diagnostics)

@@ -1,0 +1,95 @@
+{
+  "asset_bounds_cm": [
+    1510.5240478515625,
+    1510.52392578125,
+    1221.6988525390625
+  ],
+  "speed_cm_s": 3600,
+  "distance_per_10hz_step_cm": 360.0,
+  "projection_assumptions": {
+    "width_px": 1920,
+    "horizontal_fov_degrees": 45,
+    "focus_distance_cm": [
+      20000,
+      80000
+    ],
+    "screen_center_single_screen_horizontal_axis_error": true,
+    "excludes_extreme_terrain_boom_retraction_and_camera_near_geometry": true,
+    "anchor_rounding_not_in_pixel_table_cm_per_axis": 0.5
+  },
+  "position_quantization": [
+    {
+      "step_cm": 10,
+      "max_axis_rounding_error_cm": 5.0,
+      "position_step_percent_of_mesh_width": 0.6620218998977955,
+      "error_pixels_at_200m": 0.5794112549695428,
+      "error_pixels_at_800m": 0.1448528137423857
+    },
+    {
+      "step_cm": 25,
+      "max_axis_rounding_error_cm": 12.5,
+      "position_step_percent_of_mesh_width": 1.6550547497444887,
+      "error_pixels_at_200m": 1.448528137423857,
+      "error_pixels_at_800m": 0.36213203435596425
+    },
+    {
+      "step_cm": 50,
+      "max_axis_rounding_error_cm": 25.0,
+      "position_step_percent_of_mesh_width": 3.3101094994889775,
+      "error_pixels_at_200m": 2.897056274847714,
+      "error_pixels_at_800m": 0.7242640687119285
+    },
+    {
+      "step_cm": 100,
+      "max_axis_rounding_error_cm": 50.0,
+      "position_step_percent_of_mesh_width": 6.620218998977955,
+      "error_pixels_at_200m": 5.794112549695428,
+      "error_pixels_at_800m": 1.448528137423857
+    }
+  ],
+  "yaw_quantization": [
+    {
+      "bits": 16,
+      "step_degrees": 0.0054931640625,
+      "max_rounding_error_degrees": 0.00274658203125
+    },
+    {
+      "bits": 10,
+      "step_degrees": 0.3515625,
+      "max_rounding_error_degrees": 0.17578125
+    },
+    {
+      "bits": 8,
+      "step_degrees": 1.40625,
+      "max_rounding_error_degrees": 0.703125
+    }
+  ],
+  "velocity_quantization": [
+    {
+      "step_cm_s": 10,
+      "max_axis_error_cm_s": 5.0,
+      "max_velocity_only_axis_extrapolation_error_cm_100ms": 0.5
+    },
+    {
+      "step_cm_s": 50,
+      "max_axis_error_cm_s": 25.0,
+      "max_velocity_only_axis_extrapolation_error_cm_100ms": 2.5
+    },
+    {
+      "step_cm_s": 100,
+      "max_axis_error_cm_s": 50.0,
+      "max_velocity_only_axis_extrapolation_error_cm_100ms": 5.0
+    }
+  ],
+  "status": "analytical review; no coarser protocol implementation or visual A/B capture",
+  "unchanged_int16_serialization_has_no_byte_savings_from_quantization_step_alone": true,
+  "recommendation_not_implemented": {
+    "horizontal_position_step_cm": 25,
+    "height_position_step_cm": 10,
+    "velocity_step_cm_s": 50,
+    "yaw_bits": 8,
+    "yaw_step_degrees": 1.40625,
+    "reason_height_kept": "Current presentation interpolates received Z; no separate ground re-projection was found in EvaluateAuthoritativeTransform."
+  },
+  "bandwidth_note": "Changing quantization step while retaining Ar << int16 does not reduce the serialized bit count. Reduced field widths and an explicit representable range are needed. No bandwidth savings measured for this proposal."
+}

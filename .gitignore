@@ -3,6 +3,8 @@ Binaries/
 Intermediate/
 DerivedDataCache/
 Build/
+!Source/GuLiStrike/Gameplay/Ship/Build/
+!Content/GuLiStrike/Ship/Build/
 
 # IDE
 .vs/
@@ -112,6 +114,7 @@ htmlcov/
 *.tmp
 *.temp
 *.dmp
+*.utrace
 *.lnk
 # Packaged acceptance builds and binary inspection backups are reproducible local outputs.
 TestResults/**/CookedBuild*/

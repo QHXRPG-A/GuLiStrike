@@ -1,6 +1,5 @@
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
-#include "Gameplay/Stronghold/GuLiStrongholdGateComponent.h"
 #include "Gameplay/Stronghold/GuLiStrongholdTransitPresentationComponent.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
@@ -43,35 +42,45 @@ bool UGuLiEngineeringTravelComponent::BeginMove(const FVector& Target, float Acc
 {
 	check(GetOwner()->HasAuthority());
 	if (Target.ContainsNaN() || AcceptanceRadius < 0 || Control->AreActionsLocked()) return false;
-	State = {}; PassedNodes.Reset(); GroundAcceptance = AcceptanceRadius;
-	State.FinalGroundTarget = Target;
-	SourceTerritory = Resources().FindTerritoryIndex(GetOwner()->GetActorLocation());
-	State.DestinationTerritory = Resources().FindTerritoryIndex(Target);
-	const int32 Destination = State.DestinationTerritory;
-	const auto* WorldState = Resources().GetResourceWorldState();
-	if (!Resources().IsRuntimeReady() || SourceTerritory == INDEX_NONE || Destination == INDEX_NONE
-		|| SourceTerritory == Destination || Resources().GetStrongholdTopology().IsAdjacent(SourceTerritory,Destination)
-		|| WorldState->GetTerritoryOwner(Destination) != Vehicle().GetTeam())
-	{
-		PublishPhase(EGuLiTransitPhase::Ground); return MoveOnGround(Target,AcceptanceRadius);
-	}
-	const auto Route = Resources().GetStrongholdTopology().FindRoute(SourceTerritory,Destination,
-		[this](int32 Node) { return Resources().CanUseStrongholdTransit(Node,Vehicle().GetTeam()); });
-	auto* Gate = Resources().GetStrongholdGate(SourceTerritory);
-	if (Route.IsEmpty() || !Gate->CanEnter(*CastChecked<APawn>(GetOwner()))
-		|| !Gate->FindEntry(*CastChecked<APawn>(GetOwner()),GateEntry) || !MoveOnGround(GateEntry,150))
-	{
-		PublishPhase(EGuLiTransitPhase::Ground); return MoveOnGround(Target,AcceptanceRadius);
-	}
-	State.GateFieldId = Gate->GetConfig().Id;
-	State.JourneyId = FGuid::NewGuid(); State.EntryPosition = GateEntry;
-	PublishPhase(EGuLiTransitPhase::ApproachingGate); return true;
+	return MoveOnGround(Target,AcceptanceRadius);
 }
-void UGuLiEngineeringTravelComponent::CancelApproach()
+EGuLiTransitOrderResult UGuLiEngineeringTravelComponent::PrepareTransport(
+	const FGuLiStrongholdTransitOrder& Order, FGuLiPreparedTransit& Out) const
 {
 	check(GetOwner()->HasAuthority());
-	if (State.Phase == EGuLiTransitPhase::ApproachingGate)
-	{ Controller().StopMovement(); PublishPhase(EGuLiTransitPhase::Ground); }
+	using Result = EGuLiTransitOrderResult;
+	if (!Order.IsWellFormed() || !Resources().IsRuntimeReady()) return Result::InvalidRequest;
+	if (!GetOwner()->FindComponentByClass<UGuLiCombatHealthComponent>()->IsAlive()) return Result::InvalidVehicle;
+	if (Control->AreActionsLocked()) return Result::ActionsLocked;
+	const EGuLiTeam Team = Vehicle().GetTeam();
+	const int32 Source = Resources().FindTerritoryIndex(GetOwner()->GetActorLocation());
+	const int32 Target = Resources().FindTerritoryIndexById(Order.TerritoryId);
+	const auto& WorldState = *Resources().GetResourceWorldState();
+	if (Target == INDEX_NONE || WorldState.GetTerritoryOwner(Target) != Team) return Result::InvalidTarget;
+	if (WorldState.GetTerritories()[Target].bEncircled) return Result::TargetEncircled;
+	if (Source == INDEX_NONE || WorldState.GetTerritoryOwner(Source) != Team) return Result::InvalidSource;
+	if (WorldState.GetTerritories()[Source].bEncircled) return Result::SourceEncircled;
+	if (Source == Target) return Result::SameTerritory;
+	const auto& Network = Resources().GetTransportNetwork();
+	Out.Route = Network.FindRoute(Source,Target,Team);
+	if (Out.Route.IsEmpty()) return Result::NoRoute;
+	Out.FieldId = Network.GetSnapshot().FindNode(Source)->TransitFieldId;
+	Out.ClickLocation = Order.ClickLocation;
+	return Result::Accepted;
+}
+void UGuLiEngineeringTravelComponent::BeginTransport(const FGuLiPreparedTransit& Prepared)
+{
+	check(GetOwner()->HasAuthority() && Prepared.Route.Num() >= 2 && !Control->AreActionsLocked());
+	State = {}; State.JourneyId = FGuid::NewGuid(); State.TransitFieldId = Prepared.FieldId;
+	State.DestinationTerritory = Prepared.Route.Last(); State.FinalGroundTarget = Prepared.ClickLocation;
+	State.ExitCenter = Resources().GetTerritoryGroundLocation(State.DestinationTerritory);
+	PassedNodes = {Prepared.Route[0]}; ExitQueryAccumulator = 0;
+	Controller().StopMovement();
+	const bool bApplied = Control->ApplyServerState(State.JourneyId,true,true,GetOwner()->GetActorTransform(),false);
+	check(bApplied);
+	OnTransportStarted.Broadcast();
+	const auto& Config = *GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindStrongholdTransit(State.TransitFieldId);
+	StartAirRoute(Prepared.Route,GetOwner()->GetActorLocation(),GetWorld()->GetTimeSeconds(),Config.AscentSeconds,0);
 }
 void UGuLiEngineeringTravelComponent::PublishPhase(EGuLiTransitPhase Phase)
 {
@@ -81,9 +90,11 @@ void UGuLiEngineeringTravelComponent::PublishPhase(EGuLiTransitPhase Phase)
 void UGuLiEngineeringTravelComponent::StartAirRoute(const TArray<int32>& Route, const FVector& From,
 	double Now, float Ascent, float InitialSpeed)
 {
-	const auto& Config = *GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindStrongholdGate(State.GateFieldId);
+	const auto& Config = *GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindStrongholdTransit(State.TransitFieldId);
 	State.Route.Reset(); State.EntryPosition = From; State.AscentSeconds = Ascent; State.StartServerTime = Now;
-	if (Ascent == 0) State.Route.Add({INDEX_NONE,From});
+	// The ascent is vertical at the vehicle; the merge to the source node belongs to the timed polyline.
+	State.Route.Add({INDEX_NONE,From + FVector(0,0,Ascent > 0 ? Config.LaneHeight : 0)});
+	State.NetworkRevision = Resources().GetTransportNetwork().GetSnapshot().Revision;
 	for (int32 Node : Route)
 		State.Route.Add({Node,Resources().GetTerritoryGroundLocation(Node)+FVector(0,0,Config.LaneHeight)});
 	if (Route.IsEmpty()) State.Route.Add({INDEX_NONE,FVector(State.ExitCenter)+FVector(0,0,Config.LaneHeight)});
@@ -94,36 +105,27 @@ void UGuLiEngineeringTravelComponent::StartAirRoute(const TArray<int32>& Route, 
 	State.FlashSeconds = Config.ExitFlashSeconds;
 	PublishPhase(Ascent > 0 ? EGuLiTransitPhase::Ascending : EGuLiTransitPhase::Accelerating);
 }
-void UGuLiEngineeringTravelComponent::EnterGate(const TArray<int32>& Route)
-{
-	const auto& Config = Resources().GetStrongholdGate(SourceTerritory)->GetConfig();
-	Controller().StopMovement();
-	const bool bApplied = Control->ApplyServerState(State.JourneyId,true,true,GetOwner()->GetActorTransform(),false);
-	check(bApplied);
-	PassedNodes = {SourceTerritory}; State.ExitCenter = Resources().GetTerritoryGroundLocation(State.DestinationTerritory);
-	OnTransportStarted.Broadcast();
-	StartAirRoute(Route,GetOwner()->GetActorLocation(),GetWorld()->GetTimeSeconds(),Config.AscentSeconds,0);
-}
 void UGuLiEngineeringTravelComponent::ResolveDisruption(double Now)
 {
 	const FVector Current = State.SamplePosition(Now);
 	const float Speed = State.Timing.SpeedAt(Now-State.StartServerTime-State.AscentSeconds);
-	int32 Nearest = INDEX_NONE;
-	double Best = TNumericLimits<double>::Max();
+	int32 NearestOwned = INDEX_NONE, NearestConnected = INDEX_NONE;
+	double OwnedDistance = TNumericLimits<double>::Max(), ConnectedDistance = TNumericLimits<double>::Max();
 	for (int32 Node : PassedNodes)
 	{
 		if (Resources().GetResourceWorldState()->GetTerritoryOwner(Node) != Vehicle().GetTeam()) continue;
 		const double Distance = FVector::DistSquared2D(Current,Resources().GetTerritoryGroundLocation(Node));
-		if (Distance < Best) { Nearest = Node; Best = Distance; }
+		if (Distance < OwnedDistance) { NearestOwned = Node; OwnedDistance = Distance; }
+		if (Distance < ConnectedDistance && Resources().CanUseStrongholdTransit(Node,Vehicle().GetTeam()))
+		{ NearestConnected = Node; ConnectedDistance = Distance; }
 	}
 	TArray<int32> Route;
-	if (Nearest != INDEX_NONE && !State.bEmergencyExit)
-		Route = Resources().GetStrongholdTopology().FindRoute(Nearest,State.DestinationTerritory,
-			[this](int32 Node) { return Resources().CanUseStrongholdTransit(Node,Vehicle().GetTeam()); });
+	if (NearestConnected != INDEX_NONE && !State.bEmergencyExit)
+		Route = Resources().GetTransportNetwork().FindRoute(NearestConnected,State.DestinationTerritory,Vehicle().GetTeam());
 	if (Route.IsEmpty())
 	{
-		State.bEmergencyExit = true; State.DestinationTerritory = Nearest;
-		if (Nearest != INDEX_NONE) { Route.Add(Nearest); State.ExitCenter = Resources().GetTerritoryGroundLocation(Nearest); }
+		State.bEmergencyExit = true; State.DestinationTerritory = NearestOwned;
+		if (NearestOwned != INDEX_NONE) { Route.Add(NearestOwned); State.ExitCenter = Resources().GetTerritoryGroundLocation(NearestOwned); }
 		else State.ExitCenter = Resources().GetInitialBaseExit(Vehicle().GetTeam());
 	}
 	StartAirRoute(Route,Current,Now,0,Speed);
@@ -131,7 +133,7 @@ void UGuLiEngineeringTravelComponent::ResolveDisruption(double Now)
 bool UGuLiEngineeringTravelComponent::FindExit(FTransform& Transform) const
 {
 	const auto& Pawn = *CastChecked<ACharacter>(GetOwner());
-	const auto& Config = *GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindStrongholdGate(State.GateFieldId);
+	const auto& Config = *GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindStrongholdTransit(State.TransitFieldId);
 	auto* Navigation = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 	if (!Navigation) return false;
 	const auto* Data = Navigation->GetNavDataForProps(Pawn.GetNavAgentPropertiesRef(),State.ExitCenter);
@@ -191,7 +193,6 @@ void UGuLiEngineeringTravelComponent::ExitTransit(const FTransform& Transform, d
 	const bool bApplied = Control->ApplyServerState(State.JourneyId,false,false,Transform,true); check(bApplied);
 	State.ExitPosition = Transform.GetLocation(); State.ExitServerTime = Now;
 	PublishPhase(EGuLiTransitPhase::ExitFlash);
-	MoveOnGround(State.FinalGroundTarget,GroundAcceptance);
 	OnTransportEnded.Broadcast();
 }
 void UGuLiEngineeringTravelComponent::TickComponent(float Dt, ELevelTick TickType,FActorComponentTickFunction* TickFunction)
@@ -204,33 +205,27 @@ void UGuLiEngineeringTravelComponent::TickComponent(float Dt, ELevelTick TickTyp
 		if (Now >= State.ExitServerTime+State.FlashSeconds) PublishPhase(EGuLiTransitPhase::Ground);
 		return;
 	}
-	if (State.Phase == EGuLiTransitPhase::ApproachingGate)
-	{
-		const auto Route = Resources().GetStrongholdTopology().FindRoute(SourceTerritory,State.DestinationTerritory,
-			[this](int32 Node) { return Resources().CanUseStrongholdTransit(Node,Vehicle().GetTeam()); });
-		if (Route.IsEmpty() || !Resources().GetStrongholdGate(SourceTerritory)->CanEnter(*CastChecked<APawn>(GetOwner())))
-		{
-			PublishPhase(EGuLiTransitPhase::Ground); MoveOnGround(State.FinalGroundTarget,GroundAcceptance); return;
-		}
-		const auto& Gate = *Resources().GetStrongholdGate(SourceTerritory);
-		if (FVector::DistSquared2D(GetOwner()->GetActorLocation(),GateEntry) <= FMath::Square(1100.f)
-			&& FVector::DistSquared2D(GetOwner()->GetActorLocation(),Gate.GetGroundLocation()) <= FMath::Square(Gate.GetConfig().Radius))
-		{ EnterGate(Route); return; }
-		if (Controller().GetMoveStatus() == EPathFollowingStatus::Idle)
-		{ PublishPhase(EGuLiTransitPhase::Ground); MoveOnGround(State.FinalGroundTarget,GroundAcceptance); }
-		return;
-	}
 	int32 Leg = 0; State.SamplePosition(Now,&Leg);
 	for (int32 I = 0; I <= Leg; ++I)
 		if (State.Route[I].TerritoryIndex != INDEX_NONE) PassedNodes.AddUnique(State.Route[I].TerritoryIndex);
+	const auto& Network = Resources().GetTransportNetwork();
 	bool bBroken = false;
-	if (State.bEmergencyExit)
-		bBroken = State.DestinationTerritory != INDEX_NONE
-			&& Resources().GetResourceWorldState()->GetTerritoryOwner(State.DestinationTerritory) != Vehicle().GetTeam();
-	else
-		for (int32 I = Leg; I < State.Route.Num(); ++I)
-			if (State.Route[I].TerritoryIndex != INDEX_NONE && !Resources().CanUseStrongholdTransit(State.Route[I].TerritoryIndex,Vehicle().GetTeam()))
-			{ bBroken = true; break; }
+	if (State.NetworkRevision != Network.GetSnapshot().Revision)
+	{
+		if (State.bEmergencyExit)
+			bBroken = State.DestinationTerritory != INDEX_NONE
+				&& Resources().GetResourceWorldState()->GetTerritoryOwner(State.DestinationTerritory) != Vehicle().GetTeam();
+		else
+			for (int32 I = Leg; I < State.Route.Num(); ++I)
+			{
+				const int32 Node = State.Route[I].TerritoryIndex;
+				if (Node == INDEX_NONE) continue;
+				if (!Resources().CanUseStrongholdTransit(Node,Vehicle().GetTeam())) { bBroken = true; break; }
+				if (I+1 < State.Route.Num() && State.Route[I+1].TerritoryIndex != INDEX_NONE
+					&& !Network.HasEdge(Node,State.Route[I+1].TerritoryIndex,Vehicle().GetTeam())) { bBroken = true; break; }
+			}
+		State.NetworkRevision = Network.GetSnapshot().Revision;
+	}
 	if (bBroken) { ResolveDisruption(Now); return; }
 	const double Time = Now-State.StartServerTime;
 	EGuLiTransitPhase Phase;
@@ -253,7 +248,7 @@ void UGuLiEngineeringTravelComponent::TickComponent(float Dt, ELevelTick TickTyp
 void UGuLiEngineeringTravelComponent::OnRep_State()
 {
 	Vehicle().SetEngineeringPresentationVisible(!State.IsPhased());
-	if (GetNetMode() == NM_DedicatedServer || State.GateFieldId == 0) return;
+	if (GetNetMode() == NM_DedicatedServer || State.TransitFieldId == 0) return;
 	if (!Presentation)
 	{
 		Presentation = NewObject<UGuLiStrongholdTransitPresentationComponent>(GetOwner());

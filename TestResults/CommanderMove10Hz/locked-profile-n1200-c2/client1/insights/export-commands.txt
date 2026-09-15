@@ -1,0 +1,8 @@
+TimingInsights.ExportThreads D:\UE5.7\test1\TestResults\CommanderMove10Hz\locked-profile-n1200-c2\client1\insights/threads.csv
+TimingInsights.ExportTimerStatistics D:\UE5.7\test1\TestResults\CommanderMove10Hz\locked-profile-n1200-c2\client1\insights/timers-gamethread.csv -threads=GameThread -sortBy=TotalInclusiveTime
+TimingInsights.ExportTimerStatistics D:\UE5.7\test1\TestResults\CommanderMove10Hz\locked-profile-n1200-c2\client1\insights/timers-renderthread.csv -threads=Render* -sortBy=TotalInclusiveTime
+TimingInsights.ExportTimerStatistics D:\UE5.7\test1\TestResults\CommanderMove10Hz\locked-profile-n1200-c2\client1\insights/timers-rhithread.csv -threads=RHIThread -sortBy=TotalInclusiveTime
+TimingInsights.ExportTimerStatistics D:\UE5.7\test1\TestResults\CommanderMove10Hz\locked-profile-n1200-c2\client1\insights/timers-gpu.csv -threads=GPU1,GPU2 -sortBy=TotalInclusiveTime
+TimingInsights.ExportTimerCallees D:\UE5.7\test1\TestResults\CommanderMove10Hz\locked-profile-n1200-c2\client1\insights/callees-presentation.csv -threads=GameThread -timers=*RebuildLocalInstances*
+TimingInsights.ExportTimingEvents D:\UE5.7\test1\TestResults\CommanderMove10Hz\locked-profile-n1200-c2\client1\insights/events-project.csv -threads=GameThread -timers=*GuLiCommander*,*EngineLoop* -columns=ThreadId,TimerId,TimerName,StartTime,EndTime,Duration,Depth
+

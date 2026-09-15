@@ -3,7 +3,6 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "AbilitySystemInterface.h"
 #include "Battle/Combat/GuLiWingmanCombatCoordinator.h"
 #include "Battle/Combat/GuLiWingmanReplenishmentController.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h"
@@ -16,11 +15,12 @@ class UCameraComponent;
 class UInputAction;
 class UInputMappingContext;
 class UDataTable;
-class UAbilitySystemComponent;
 class UGuLiCombatHealthComponent;
 class UGuLiShipAimComponent;
-class UGuLiShipAbilitySet;
-class UGuLiShipAbilitySystemComponent;
+class UGuLiShipHangarCapabilityComponent;
+class UGuLiShipAssemblyComponent;
+class UGuLiShipCapabilityComponent;
+enum class EGuLiShipCapabilityState : uint8;
 class UGuLiWingmanWeaponDefinition;
 class UGuLiShipMovementComponent;
 class UGuLiShipWorldHUDComponent;
@@ -31,7 +31,6 @@ class UGuLiStrikeShipPartComponent;
 class UGuLiStrikeEnginePart;
 class UGuLiStrikeWeaponPart;
 struct FInputActionValue;
-struct FGameplayAbilitySpecHandle;
 
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_FiveParams(
 	FGuLiWingmanMissileLockPredictedSignature,
@@ -115,6 +114,9 @@ struct FGuLiShipLoadoutState
 	uint32 Revision = 0u;
 
 	UPROPERTY()
+	int64 BuildRevision = 0;
+
+	UPROPERTY()
 	TArray<FGuLiStrikeShipDefaultPart> Parts;
 };
 
@@ -133,7 +135,7 @@ struct FGuLiStrikeInstalledPart
  *  （多态分发），飞船只负责装配与聚合——新增部件类型无需改飞船代码。
  */
 UCLASS(abstract)
-class AGuLiStrikeShip : public ACharacter, public IAbilitySystemInterface
+class AGuLiStrikeShip : public ACharacter
 {
 	GENERATED_BODY()
 
@@ -149,15 +151,18 @@ class AGuLiStrikeShip : public ACharacter, public IAbilitySystemInterface
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UCameraComponent* Camera;
 
-	/** Pawn-owned ASC. OwnerActor and AvatarActor are always this Ship. */
+	/** Borrowed reference to the currently enabled hangar capability. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
-	UGuLiShipAbilitySystemComponent* ShipAbilitySystem;
+	UGuLiShipHangarCapabilityComponent* HangarCapability = nullptr;
 
-	/** Custom authoritative Ship health; numeric health intentionally stays outside GAS. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Components", meta=(AllowPrivateAccess="true"))
+	TObjectPtr<UGuLiShipAssemblyComponent> ShipAssembly;
+
+	/** Authoritative Ship health owned by the existing damage ledger. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UGuLiCombatHealthComponent* CombatHealth;
 
-	/** Local-only GAS reticle ownership, virtual cursor and aim-camera bridge. */
+	/** Local-only capability reticle ownership, virtual cursor and aim-camera bridge. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Components", meta = (AllowPrivateAccess = "true"))
 	UGuLiShipAimComponent* ShipAim;
 
@@ -272,11 +277,7 @@ protected:
 	UPROPERTY(ReplicatedUsing=OnRep_LoadoutState)
 	FGuLiShipLoadoutState LoadoutState;
 
-	/** Optional authored catalog; a deterministic native v1 set is used when this is unset. */
-	UPROPERTY(EditDefaultsOnly, Category="Ship|Abilities")
-	TObjectPtr<UGuLiShipAbilitySet> ShipAbilitySet;
-
-	/** Reliable ASC-independent projection consumed by Lease owners and backups. */
+	/** Reliable immutable Wingman projection consumed by Lease owners and backups. */
 	UPROPERTY(ReplicatedUsing=OnRep_GroupAbilityConfig)
 	FGuLiGroupAbilityConfigSnapshot GroupAbilityConfig;
 
@@ -410,10 +411,16 @@ public:
 	/** 构造函数 */
 	AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
 
-	virtual UAbilitySystemComponent* GetAbilitySystemComponent() const override;
 
 	UFUNCTION(BlueprintPure, Category="Ship|Abilities")
-	UGuLiShipAbilitySystemComponent* GetShipAbilitySystemComponent() const { return ShipAbilitySystem; }
+	UGuLiShipHangarCapabilityComponent* GetHangarCapability() const { return HangarCapability; }
+	UFUNCTION(BlueprintPure, Category="Ship|Build")
+	UGuLiShipAssemblyComponent* GetShipAssembly() const { return ShipAssembly; }
+	void HandleCapabilityStateChanged(UGuLiShipCapabilityComponent* Capability, EGuLiShipCapabilityState State);
+	void BindHangarCapability(UGuLiShipHangarCapabilityComponent* Capability);
+	void UnbindHangarCapability(UGuLiShipHangarCapabilityComponent* Capability);
+	void CommitAssemblyParts(const TArray<UGuLiStrikeShipPartComponent*>& Previous, const TArray<UGuLiStrikeShipPartComponent*>& Next);
+	void FinishAssemblyCommit();
 
 	UFUNCTION(BlueprintPure, Category="Ship|Combat")
 	UGuLiCombatHealthComponent* GetCombatHealthComponent() const { return CombatHealth; }
@@ -672,7 +679,7 @@ private:
 	void UpdateShipInputContext();
 	void RemoveShipInputContext();
 	void SetFiringIntent(bool bRequested);
-	void InitializeShipAbilitySystem();
+	void InitializeShipCapabilities();
 	void PublishGroupAbilityConfig();
 	void RefreshLocalOwnedWingmanGroup();
 	void RefreshServerCombatRegistration();
@@ -683,6 +690,7 @@ private:
 	void MaintainWingmanCombatLifecycle();
 	void RevokeWingmanGroupAuthority();
 	bool EnsureWingmanCombatCoordinator();
+	FGuLiWingmanCombatCoordinator* GetWingmanCombatCoordinator() const;
 	void RegisterWingmanCombatTargets();
 	void UnregisterWingmanCombatTargets();
 	static FGuLiTargetHandle MakeWingmanTargetHandle(const FGuLiWingmanHandle& Wingman);
@@ -710,7 +718,6 @@ private:
 	void HandleServerWingmanFireIntentAccepted(const FGuLiWingmanFireIntent& Intent);
 	void HandleGroupAbilityProjectionChanged();
 	void HandleTriggeredShipWeaponAbility(
-		FGameplayAbilitySpecHandle LocalSpecHandle,
 		FGuLiWeaponBindingKey WeaponBinding,
 		FName SkillId,
 		FGameplayTag CatalogAbilityId,
@@ -724,18 +731,13 @@ private:
 	bool bLocalFireHeld = false;
 	bool bServerFiring = false;
 	bool bEndingShipPlay = false;
-	bool bShipAbilityDelegatesBound = false;
 	bool bShipDeathHandled = false;
 	FGuid ShipInstanceId;
 	uint32 ShipGeneration = 0u;
 	uint32 GroupGeneration = 0u;
 	FGuLiWeaponBindingKey ActiveMissileInputBinding;
-	UPROPERTY(Transient)
-	TObjectPtr<UGuLiShipAbilitySet> RuntimeShipAbilitySet;
 	TWeakObjectPtr<UGuLiWingmanRelayComponent> BoundWingmanRelay;
 	FGuLiWingmanGroupHandle BoundWorldValidatorGroup;
-	TUniquePtr<FGuLiWingmanCombatCoordinator> WingmanCombatCoordinator;
-	FGuLiWingmanReplenishmentController WingmanReplenishmentController;
 	FGuLiWingmanRelayServer* BoundCombatRelayCore = nullptr;
 	uint32 BoundCombatAbilitySnapshotRevision = 0u;
 	TArray<FGuLiTargetHandle> RegisteredWingmanCombatTargets;

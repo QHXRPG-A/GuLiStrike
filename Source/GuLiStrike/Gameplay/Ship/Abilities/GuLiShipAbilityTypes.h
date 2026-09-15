@@ -12,7 +12,7 @@ inline constexpr uint32 GULI_WINGMAN_PROTOCOL_VERSION = 14u;
 inline constexpr int32 GULI_MAX_WINGMAN_WEAPON_CHANNELS = 8;
 inline constexpr double GULI_WINGMAN_AUTOMATIC_FIRE_BUDGET_PER_SECOND = 50.0;
 
-/** The three group-level Ship GAS slots in the first vertical slice. */
+/** The three group-level Wingman action categories in the first vertical slice. */
 UENUM(BlueprintType)
 enum class EGuLiShipAbilitySlot : uint8
 {
@@ -89,7 +89,7 @@ enum class EGuLiWingmanFormationModel : uint8
 
 /**
  * Pure numeric SwarmOrbit payload. Values are copied into the reliable group
- * snapshot; Mass never reads the source DataAsset or Ship ASC.
+ * snapshot; Mass never reads the source DataAsset or hangar capability.
  */
 USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiWingmanSwarmOrbitTuning
@@ -218,7 +218,7 @@ struct GULISTRIKE_API FGuLiShipAbilityProjectionContext
 /**
  * Numeric guidance inputs copied out of the authoritative formation DataAsset.
  * Lease owners (including a backup owner) consume this value without loading or
- * inspecting the Ship ASC. These are Wingman simulation constants, not Ship GAS
+ * inspecting the hangar capability. These are Wingman simulation constants, not Ship
  * attributes.
  */
 USTRUCT(BlueprintType)
@@ -357,7 +357,7 @@ struct GULISTRIKE_API FGuLiWingmanWeaponChannelConfig
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
 	FName SkillId;
 
-	/** GAS catalog/entry identity. It is not the growth or execution identity. */
+	/** Action catalog/entry identity. It is not the growth or execution identity. */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
 	FGameplayTag AbilityId;
 
@@ -388,7 +388,7 @@ struct GULISTRIKE_API FGuLiWingmanWeaponChannelConfig
 };
 
 /**
- * Reliable, ASC-independent projection consumed by the current Lease Owner and
+ * Reliable, component-independent projection consumed by the current Lease Owner and
  * its backup. Transport reliability/ACK belongs to the relay component; this
  * value is the immutable protocol-v9 payload and its deterministic hash.
  */

@@ -24,6 +24,7 @@ public:
 	AGuLiWingmanQAGameMode();
 
 	virtual void BeginPlay() override;
+	virtual void RestartPlayer(AController* NewPlayer) override;
 	virtual AActor* FindPlayerStart_Implementation(
 		AController* Player,
 		const FString& IncomingName = TEXT("")) override;

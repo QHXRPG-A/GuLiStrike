@@ -2,9 +2,7 @@
 
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySet.h"
 
-#include "Gameplay/Ship/Abilities/GuLiShipAbilities.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilityTags.h"
-#include "Gameplay/Ship/Abilities/GuLiShipGameplayAbility.h"
 
 namespace
 {
@@ -39,43 +37,24 @@ bool FGuLiShipAbilityGrant::IsWellFormed(FString* OutError) const
 	{
 		return Fail(OutError, FString::Printf(TEXT("Ability %s has an invalid slot."), *AbilityId.ToString()));
 	}
-	if (!AbilityClass)
-	{
-		return Fail(OutError, FString::Printf(TEXT("Ability %s has no GameplayAbility class."), *AbilityId.ToString()));
-	}
-	if (AbilityLevel <= 0)
-	{
-		return Fail(OutError, FString::Printf(TEXT("Ability %s has a non-positive level."), *AbilityId.ToString()));
-	}
-
-	const UGuLiShipGameplayAbility* AbilityCDO = AbilityClass->GetDefaultObject<UGuLiShipGameplayAbility>();
-	if (!AbilityCDO || AbilityCDO->GetShipAbilitySlot() != Slot)
-	{
-		return Fail(OutError, FString::Printf(
-			TEXT("Ability %s does not match its class's activation-slot metadata."), *AbilityId.ToString()));
-	}
-
 	bool bReticleTagConflict = false;
 	const EGuLiShipReticleMode ReticleMode = GuLiShipReticle::ResolveMode(
-		AbilityCDO->GetAssetTags(), &bReticleTagConflict);
+		PresentationTags, &bReticleTagConflict);
 	if (bReticleTagConflict)
 	{
 		return Fail(OutError, FString::Printf(
 			TEXT("Ability %s declares both Ship reticle mode tags."), *AbilityId.ToString()));
 	}
 	if (ReticleMode == EGuLiShipReticleMode::Bounded
-		&& !AbilityCDO->GetReticleConfig().IsValid())
+		&& !ReticleConfig.IsValid())
 	{
 		return Fail(OutError, FString::Printf(
 			TEXT("Ability %s has an invalid bounded reticle configuration."), *AbilityId.ToString()));
 	}
 
-	const bool bInputTriggered =
-		AbilityCDO->GetShipActivationPolicy() == EGuLiShipAbilityActivationPolicy::OnInputTriggered;
-	if (bInputTriggered != InputTag.IsValid())
+	if ((Slot == EGuLiShipAbilitySlot::Missile) != InputTag.IsValid())
 	{
-		return Fail(OutError, FString::Printf(
-			TEXT("Ability %s must have an input tag iff it is input-triggered."), *AbilityId.ToString()));
+		return Fail(OutError, TEXT("Only triggered missile actions require an input tag."));
 	}
 
 	if (Slot == EGuLiShipAbilitySlot::Formation)
@@ -285,8 +264,6 @@ uint64 UGuLiShipAbilitySet::ComputeLoadoutChecksum(const FGuLiShipAbilityLoadout
 		GuLiShipAbilityHash::AddString(Hash, Grant.GetEffectiveSkillId().ToString());
 		GuLiShipAbilityHash::AddUInt32(Hash, Grant.ProfileRevision);
 		GuLiShipAbilityHash::AddString(Hash, Grant.GetEffectiveCooldownGroupId().ToString());
-		GuLiShipAbilityHash::AddString(Hash, Grant.AbilityClass->GetPathName());
-		GuLiShipAbilityHash::AddUInt32(Hash, static_cast<uint32>(Grant.AbilityLevel));
 		GuLiShipAbilityHash::AddTag(Hash, Grant.InputTag);
 		GuLiShipAbilityHash::AddUInt32(Hash, Grant.GetDefinitionRevision());
 		GuLiShipAbilityHash::AddUInt64(Hash, Grant.GetDefinitionChecksum());
@@ -337,7 +314,6 @@ UGuLiShipAbilitySet* UGuLiShipAbilitySet::CreateNativeV1Transient(UObject* Outer
 	FGuLiShipAbilityGrant& FormationGrant = Set->Grants.AddDefaulted_GetRef();
 	FormationGrant.AbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
 	FormationGrant.Slot = EGuLiShipAbilitySlot::Formation;
-	FormationGrant.AbilityClass = UGuLiShipDoubleRingFormationAbility::StaticClass();
 	FormationGrant.FormationDefinition = Formation;
 
 	FGuLiShipAbilityGrant& BasicGrant = Set->Grants.AddDefaulted_GetRef();
@@ -345,7 +321,6 @@ UGuLiShipAbilitySet* UGuLiShipAbilitySet::CreateNativeV1Transient(UObject* Outer
 	BasicGrant.Slot = EGuLiShipAbilitySlot::BasicWeapon;
 	BasicGrant.WeaponSlotId = TEXT("BasicWeapon");
 	BasicGrant.SkillId = TEXT("Wingman.Basic.Auto");
-	BasicGrant.AbilityClass = UGuLiShipBasicAutomaticWeaponAbility::StaticClass();
 	BasicGrant.WeaponDefinition = Basic;
 
 	FGuLiShipAbilityGrant& MissileGrant = Set->Grants.AddDefaulted_GetRef();
@@ -354,7 +329,6 @@ UGuLiShipAbilitySet* UGuLiShipAbilitySet::CreateNativeV1Transient(UObject* Outer
 	MissileGrant.WeaponSlotId = TEXT("Missile");
 	MissileGrant.SkillId = TEXT("Wingman.Missile.Salvo");
 	MissileGrant.CooldownGroupId = TEXT("WingmanMissileSalvo");
-	MissileGrant.AbilityClass = UGuLiShipMissileSalvoAbility::StaticClass();
 	MissileGrant.InputTag = TAG_GuLi_Input_Ship_Wingman_Missile;
 	MissileGrant.WeaponDefinition = Missile;
 	return Set;
@@ -398,7 +372,6 @@ UGuLiShipAbilitySet* UGuLiShipAbilitySet::CreateNativeV3Transient(UObject* Outer
 		Grant.Slot = EGuLiShipAbilitySlot::BasicWeapon;
 		Grant.WeaponSlotId = bGround ? TEXT("GroundWeapon") : TEXT("AirWeapon");
 		Grant.SkillId = bGround ? TEXT("Wingman.GroundMissile") : TEXT("Wingman.MachineGun");
-		Grant.AbilityClass = bGround ? UGuLiShipWingmanGroundMissileAbility::StaticClass() : UGuLiShipWingmanMachineGunAbility::StaticClass();
 		Grant.WeaponDefinition = Weapon;
 	}
 	return Set;
@@ -460,13 +433,11 @@ UGuLiShipAbilitySet* UGuLiShipAbilitySet::CreateNativeV2Transient(UObject* Outer
 	FGuLiShipAbilityGrant& LegacyGrant = Set->Grants.AddDefaulted_GetRef();
 	LegacyGrant.AbilityId = TAG_GuLi_ShipAbility_Formation_DoubleRing;
 	LegacyGrant.Slot = EGuLiShipAbilitySlot::Formation;
-	LegacyGrant.AbilityClass = UGuLiShipDoubleRingFormationAbility::StaticClass();
 	LegacyGrant.FormationDefinition = LegacyFormation;
 
 	FGuLiShipAbilityGrant& SwarmGrant = Set->Grants.AddDefaulted_GetRef();
 	SwarmGrant.AbilityId = TAG_GuLi_ShipAbility_Formation_SwarmOrbit;
 	SwarmGrant.Slot = EGuLiShipAbilitySlot::Formation;
-	SwarmGrant.AbilityClass = UGuLiShipSwarmOrbitFormationAbility::StaticClass();
 	SwarmGrant.FormationDefinition = SwarmFormation;
 
 	FGuLiShipAbilityGrant& BasicGrant = Set->Grants.AddDefaulted_GetRef();
@@ -474,7 +445,6 @@ UGuLiShipAbilitySet* UGuLiShipAbilitySet::CreateNativeV2Transient(UObject* Outer
 	BasicGrant.Slot = EGuLiShipAbilitySlot::BasicWeapon;
 	BasicGrant.WeaponSlotId = TEXT("BasicWeapon");
 	BasicGrant.SkillId = TEXT("Wingman.Basic.Auto");
-	BasicGrant.AbilityClass = UGuLiShipBasicAutomaticWeaponAbility::StaticClass();
 	BasicGrant.WeaponDefinition = Basic;
 
 	FGuLiShipAbilityGrant& MissileGrant = Set->Grants.AddDefaulted_GetRef();
@@ -483,7 +453,6 @@ UGuLiShipAbilitySet* UGuLiShipAbilitySet::CreateNativeV2Transient(UObject* Outer
 	MissileGrant.WeaponSlotId = TEXT("Missile");
 	MissileGrant.SkillId = TEXT("Wingman.Missile.Salvo");
 	MissileGrant.CooldownGroupId = TEXT("WingmanMissileSalvo");
-	MissileGrant.AbilityClass = UGuLiShipMissileSalvoAbility::StaticClass();
 	MissileGrant.InputTag = TAG_GuLi_Input_Ship_Wingman_Missile;
 	MissileGrant.WeaponDefinition = Missile;
 	return Set;

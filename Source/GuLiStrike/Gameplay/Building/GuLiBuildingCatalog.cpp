@@ -34,7 +34,7 @@ bool UGuLiBuildingCatalog::ResolveTable()
 		D.MaxHealth = R.MaxHealth; D.MaxShield = R.MaxShield; D.BuildLevel = R.BuildLevel;
 		D.Cost.Blue = R.BlueCost; D.Cost.Red = R.RedCost; D.ConstructionWork = R.ConstructionWork;
 		D.ProductionUnitId = R.ProductionUnitId; D.ProductionSeconds = R.ProductionSeconds; D.ProductionCount = R.ProductionCount;
-		D.GateFieldId = R.GateFieldId; D.ShieldRadius = R.ShieldRadius; D.ShieldRechargePerSecond = R.ShieldRechargePerSecond;
+		D.TransitFieldId = R.TransitFieldId; D.ShieldRadius = R.ShieldRadius; D.ShieldRechargePerSecond = R.ShieldRechargePerSecond;
 		TArray<FString> Gifts; R.FirstCaptureGiftIds.ParseIntoArray(Gifts, TEXT(","));
 		for (const auto& Gift : Gifts) D.FirstCaptureGiftIds.Add(FCString::Atoi(*Gift));
 		if (R.Id <= 0 || R.Category < 0 || R.Category > 5 || !D.IsUsable() || R.MaxHealth <= 0)

@@ -56,6 +56,9 @@ namespace GuLiCommanderNetwork
 	{
 		return Lhs.ClientCommandId == Rhs.ClientCommandId
 			&& Lhs.SelectionRevision == Rhs.SelectionRevision
+			&& Lhs.TargetTerritoryId == Rhs.TargetTerritoryId
+			&& Lhs.MiningOrderType == Rhs.MiningOrderType
+			&& Lhs.TargetClusterId == Rhs.TargetClusterId
 			&& FVector(Lhs.Target).Equals(FVector(Rhs.Target), 0.5f);
 	}
 

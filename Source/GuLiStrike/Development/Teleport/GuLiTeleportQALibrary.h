@@ -1,7 +1,7 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Kismet/BlueprintFunctionLibrary.h"
-#include "Gameplay/Teleport/GuLiTeleportAbility.h"
+#include "Gameplay/Teleport/GuLiTeleportTypes.h"
 #include "GuLiTeleportQALibrary.generated.h"
 class ASceneCapture2D;
 class UGuLiTeleportInputComponent;

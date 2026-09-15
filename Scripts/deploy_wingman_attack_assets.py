@@ -204,8 +204,6 @@ def grant_signature(grant):
         'slot': str(grant.get_editor_property('slot')),
         'weapon_slot_id': str(grant.get_editor_property('weapon_slot_id')),
         'skill_id': str(grant.get_editor_property('skill_id')),
-        'ability_class': object_path(grant.get_editor_property('ability_class')),
-        'ability_level': int(grant.get_editor_property('ability_level')),
         'input_tag': tag_name(grant.get_editor_property('input_tag')),
         'formation_definition': object_path(grant.get_editor_property('formation_definition')),
         'weapon_definition': object_path(grant.get_editor_property('weapon_definition')),
@@ -220,10 +218,6 @@ def make_attack_grant(ground, weapon):
         slot=unreal.GuLiShipAbilitySlot.BASIC_WEAPON,
         weapon_slot_id='GroundWeapon' if ground else 'AirWeapon',
         skill_id='Wingman.' + suffix,
-        ability_class=(
-            unreal.GuLiShipWingmanGroundMissileAbility
-            if ground else unreal.GuLiShipWingmanMachineGunAbility
-        ).static_class(),
         weapon_definition=weapon,
     )
 
@@ -484,16 +478,16 @@ def main():
         catalog.set_editor_property('revision', 4)
     if str(catalog.get_editor_property('wingman_type_id')) != str(old_set.get_editor_property('wingman_type_id')):
         catalog.set_editor_property('wingman_type_id', old_set.get_editor_property('wingman_type_id'))
+    hangar = unreal.load_asset('/Game/GuLiStrike/Ship/Build/DA_ShipHangar_V1')
+    if hangar is None:
+        raise RuntimeError('Author the Ship component catalogue before updating Wingman actions.')
+    hangar.set_editor_property('ability_set', catalog)
+    unreal.EditorAssetLibrary.save_loaded_asset(hangar)
     for path in ('/Game/GuLiStrike/Ship/BP_GuLiStrikeShip', '/Game/GuLiStrike/Ship/BP_CombatAvatarFly01'):
         blueprint = unreal.load_asset(path)
         if not blueprint:
             raise RuntimeError('Production ship Blueprint missing: ' + path)
         cdo = unreal.get_default_object(blueprint.generated_class())
-        current_catalog_path = object_path(cdo.get_editor_property('ship_ability_set'))
-        if current_catalog_path not in {
-            canonical(BASE + '/DA_ShipAbilitySet_WingmanV1'), canonical(catalog_path)
-        }:
-            raise RuntimeError('Unknown Ship ability-set reference at ' + path + ': ' + current_catalog_path)
         current_targeting = cdo.get_editor_property('wingman_targeting_row')
         expected_targeting = unreal.DataTableRowHandle(data_table=targeting, row_name='Default')
         if row_handle_signature(current_targeting) not in {
@@ -501,17 +495,12 @@ def main():
         }:
             raise RuntimeError('Unknown Wingman targeting row at ' + path + ': ' + str(current_targeting))
         blueprint_changed = False
-        if current_catalog_path != canonical(catalog_path):
-            cdo.set_editor_property('ship_ability_set', catalog)
-            blueprint_changed = True
         if row_handle_signature(current_targeting) != row_handle_signature(expected_targeting):
             cdo.set_editor_property('wingman_targeting_row', expected_targeting)
             blueprint_changed = True
         if blueprint_changed:
             unreal.BlueprintEditorLibrary.compile_blueprint(blueprint)
         cdo = unreal.get_default_object(blueprint.generated_class())
-        if cdo.get_editor_property('ship_ability_set') != catalog:
-            raise RuntimeError('Blueprint compile lost catalog reference: ' + path)
     mesh = unreal.load_asset('/Game/GuLiStrike/Wingman/SM_Wingman_Mass')
     report['wingman_mesh_bounds'] = str(mesh.get_bounding_box()) if mesh else None
 

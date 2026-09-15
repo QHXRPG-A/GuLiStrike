@@ -1,4 +1,5 @@
 #include "Gameplay/Teleport/GuLiTeleportInputComponent.h"
+#include "Gameplay/Skills/GuLiSkillTargeting.h"
 #include "Gameplay/Teleport/GuLiTeleportUnitAdapters.h"
 #include "Gameplay/Teleport/GuLiTeleportFieldActor.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
@@ -6,7 +7,8 @@
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/UI/GuLiCommanderCursorWidget.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
-#include "AbilitySystemComponent.h"
+#include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
+#include "Battle/Framework/GuLiBattleGameState.h"
 #include "Engine/World.h"
 #include "Net/UnrealNetwork.h"
 #include "Widgets/Layout/SBox.h"
@@ -54,7 +56,7 @@ UGuLiTeleportInputComponent::UGuLiTeleportInputComponent()
 }
 void UGuLiTeleportInputComponent::GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const
 {
-	Super::GetLifetimeReplicatedProps(OutLifetimeProps); DOREPLIFETIME(UGuLiTeleportInputComponent,Level);
+	Super::GetLifetimeReplicatedProps(OutLifetimeProps);
 }
 AGuLiCommanderPlayerController* UGuLiTeleportInputComponent::GetCommander() const { return Cast<AGuLiCommanderPlayerController>(GetOwner()); }
 FGuLiTeleportCastState UGuLiTeleportInputComponent::QueryState() const
@@ -68,7 +70,7 @@ bool UGuLiTeleportInputComponent::SetServerLevel(int32 NewLevel)
 {
 	auto* PC = GetCommander(); auto* PS = PC ? PC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
 	if (!PS || !PS->HasAuthority() || NewLevel < 1 || NewLevel > 4) { return false; }
-	Level = NewLevel; PC->ForceNetUpdate(); return true;
+	return PS->GetCommanderSkills()->SetServerGlobalSkillLevel(TEXT("Teleport"), NewLevel);
 }
 void UGuLiTeleportInputComponent::ActivateAiming()
 {
@@ -91,7 +93,7 @@ void UGuLiTeleportInputComponent::CancelTeleport()
 {
 	if (!bArmed && !bSourcePending) { return; }
 	if (bSourcePending && !CurrentCastId.IsValid()) { bCancelPending = true; }
-	else if (CurrentCastId.IsValid()) { ServerSubmit(EGuLiTeleportCommand::Cancel,CurrentCastId,FVector::ZeroVector); }
+	else if (CurrentCastId.IsValid()) { ServerSubmit(FGuid::NewGuid(), EGuLiTeleportCommand::Cancel,CurrentCastId,FVector::ZeroVector); }
 	ClearLocalAim();
 }
 bool UGuLiTeleportInputComponent::HandlePrimaryAction()
@@ -102,27 +104,28 @@ bool UGuLiTeleportInputComponent::HandlePrimaryAction()
 	FVector Point; if (!PC->TraceGroundUnderCursor(Point)) { Feedback = TEXT("请点击合法地面"); return true; }
 	const auto State = QueryState();
 	if (!CurrentCastId.IsValid() && !bSourcePending)
-	{ bSourcePending = true; ServerSubmit(EGuLiTeleportCommand::Source,{},Point); }
+	{ bSourcePending = true; ServerSubmit(FGuid::NewGuid(), EGuLiTeleportCommand::Source,{},Point); }
 	else if (State.CastId == CurrentCastId && State.Phase == EGuLiTeleportPhase::AwaitingDestination)
-	{ ServerSubmit(EGuLiTeleportCommand::Destination,CurrentCastId,Point); }
+	{ ServerSubmit(FGuid::NewGuid(), EGuLiTeleportCommand::Destination,CurrentCastId,Point); }
 	return true;
 }
-void UGuLiTeleportInputComponent::ServerSubmit_Implementation(EGuLiTeleportCommand Command, FGuid CastId, FVector Point)
+int32 UGuLiTeleportInputComponent::GetLevel() const
 {
-	auto* PC = GetCommander(); auto* PS = PC ? PC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
-	if (!PS || !PS->HasAuthority() || Point.ContainsNaN()) { return; }
-	if (Command != EGuLiTeleportCommand::Cancel)
-	{
-		if (GetWorld()->GetTimeSeconds() < NextServerPointTime)
-		{ ClientResult(Command,false,CastId,TEXT("请稍候再选点")); return; }
-		NextServerPointTime = GetWorld()->GetTimeSeconds() + .1;
-	}
-	auto* ASC = PS->GetAbilitySystemComponent(); if (!ASC) { return; }
-	auto* Payload = NewObject<UGuLiTeleportCommandPayload>(PS);
-	Payload->Command = Command; Payload->CastId = CastId; Payload->Point = Point; Payload->Level = Level;
-	FGameplayEventData Event; Event.EventTag = TAG_GuLi_CommanderTeleport; Event.Instigator = PS; Event.Target = PS; Event.OptionalObject = Payload;
-	ASC->HandleGameplayEvent(Event.EventTag,&Event);
-	ClientResult(Command,Payload->bSucceeded,Payload->CastId,Payload->Error);
+	const auto* PC = GetCommander();
+	const auto* PS = PC ? PC->GetPlayerState<AGuLiBattlePlayerState>() : nullptr;
+	return PS ? PS->GetCommanderSkills()->GetGlobalSkillLevel(TEXT("Teleport")) : 1;
+}
+void UGuLiTeleportInputComponent::ServerSubmit_Implementation(FGuid RequestId, EGuLiTeleportCommand Command, FGuid CastId, FVector Point)
+{
+	auto* PS = GetCommander()->GetPlayerState<AGuLiBattlePlayerState>();
+	const auto* State = GetWorld()->GetGameState<AGuLiBattleGameState>();
+	if (!PS || !State) return;
+	FGuLiActiveSkillRequest Request;
+	Request.RequestId = RequestId; Request.GlobalSkillId = TEXT("Teleport"); Request.MatchEpoch = State->GetMatchEpoch();
+	Request.Command = static_cast<EGuLiActiveSkillCommand>(Command);
+	Request.CastId = CastId; Request.bHasGroundPoint = Command != EGuLiTeleportCommand::Cancel; Request.GroundPoint = Point;
+	const auto Reply = PS->GetCommanderSkills()->ExecuteServerRequest(Request);
+	ClientResult(Command, Reply.Global.bSucceeded, Reply.Global.CastId, Reply.Error);
 }
 void UGuLiTeleportInputComponent::ClientResult_Implementation(EGuLiTeleportCommand Command, bool bSucceeded, FGuid CastId, const FString& Error)
 {
@@ -131,7 +134,7 @@ void UGuLiTeleportInputComponent::ClientResult_Implementation(EGuLiTeleportComma
 	{
 		bSourcePending = false;
 		if (bSucceeded) { CurrentCastId = CastId; }
-		if (bCancelPending) { bCancelPending = false; if (bSucceeded) { ServerSubmit(EGuLiTeleportCommand::Cancel,CastId,FVector::ZeroVector); } }
+		if (bCancelPending) { bCancelPending = false; if (bSucceeded) { ServerSubmit(FGuid::NewGuid(), EGuLiTeleportCommand::Cancel,CastId,FVector::ZeroVector); } }
 	}
 	if (Command == EGuLiTeleportCommand::Destination && bSucceeded) { ClearLocalAim(); }
 }
@@ -146,9 +149,9 @@ FText UGuLiTeleportInputComponent::GetStatusText() const
 	if (S.Phase == EGuLiTeleportPhase::Returning) { return FText::FromString(TEXT("正在送回源点附近")); }
 	if (!Feedback.IsEmpty()) { return FText::FromString(Feedback); }
 	const auto* Data = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr;
-	const auto* Config = Data ? Data->FindTeleportFieldConfig(Level) : nullptr;
+	const auto* Config = Data ? Data->FindTeleportFieldConfig(GetLevel()) : nullptr;
 	const int32 RadiusMeters = Config ? FMath::RoundToInt(Config->RadiusCentimeters / 100.f) : 0;
-	return FText::FromString(bArmed ? TEXT("点击源点 · 右键 / Esc 取消") : (Level == 4
+	return FText::FromString(bArmed ? TEXT("点击源点 · 右键 / Esc 取消") : (GetLevel() == 4
 		? FString::Printf(TEXT("%d 米 · 可传 WM / Ship 及僚机"), RadiusMeters)
 		: FString::Printf(TEXT("%d 米 · 己方普通部队"), RadiusMeters)));
 }
@@ -179,9 +182,9 @@ void UGuLiTeleportInputComponent::TickComponent(float DeltaTime, ELevelTick Tick
 	{
 		if (!Preview) { Preview = GetWorld()->SpawnActor<AGuLiTeleportFieldActor>(); }
 		const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
-		const auto* Config = S.IsActive() ? &S.Config : (Data ? Data->FindTeleportFieldConfig(Level) : nullptr);
+		const auto* Config = S.IsActive() ? &S.Config : (Data ? Data->FindTeleportFieldConfig(GetLevel()) : nullptr);
 		FVector Ground;
-		const bool bValid = GuLiTeleportMassAdapter::ResolveGround(*GetWorld(),Point,Ground);
+		const bool bValid = GuLiSkillTargeting::ResolveGround(*GetWorld(),Point,Ground);
 		if (Preview && Config) { Preview->SetActorHiddenInGame(false); Preview->SetPreview(bValid?Ground:Point,Config->RadiusCentimeters,bValid); }
 	}
 	else if (Preview) { Preview->SetActorHiddenInGame(true); }

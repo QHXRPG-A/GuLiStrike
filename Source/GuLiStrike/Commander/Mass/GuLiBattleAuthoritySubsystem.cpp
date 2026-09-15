@@ -24,9 +24,12 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
+#include "Gameplay/CommanderSkills/GuLiCommanderSkillDefinition.h"
+#include "Gameplay/CommanderSkills/GuLiUnitSkillExecution.h"
 #include "Gameplay/Tuning/GuLiRuntimeTuningSubsystem.h"
 #include "GameFramework/Controller.h"
 #include "HAL/PlatformTime.h"
+#include "ProfilingDebugging/CsvProfiler.h"
 #include "HAL/IConsoleManager.h"
 #include "MassCommonFragments.h"
 #include "MassEntityManager.h"
@@ -41,9 +44,10 @@
 #include "UObject/ObjectKey.h"
 
 DEFINE_LOG_CATEGORY_STATIC(LogGuLiCommanderMass, Log, All);
+CSV_DEFINE_CATEGORY(GuLiCommanderAuthority, true);
 
 // 本文件是 Commander 的服务端战斗权威入口：维护独立士兵、解析选兵/移动意图，
-// 以 30 Hz 推进权威状态、按每兵错峰 10 Hz 求解位置并生成网络快照。
+// 以 10 Hz 推进权威状态，每步求解全部士兵位置并生成网络快照。
 // SoldierId 跨网络，Mass Entity 句柄只在本地使用。
 // 建议阅读顺序：生命周期与生成 -> ResolveSelection -> BeginMovePlanning -> TickAuthority -> 快照输出。
 namespace GuLiCommanderMassPrivate
@@ -56,7 +60,7 @@ namespace GuLiCommanderMassPrivate
 	constexpr int32 FormationColumns = 5;
 	constexpr int32 FormationRows = 5;
 	// 模拟按固定步长推进；最多积累 4 步，卡顿时舍弃超额时间，避免单帧无限追赶。
-	constexpr float FixedStepSeconds = 1.0f / 30.0f;
+	constexpr float FixedStepSeconds = GuLiCommanderSimulationTiming::StepSeconds;
 	constexpr float MaxAccumulatedSeconds = FixedStepSeconds * 4.0f;
 	// 此常量及下方 FRequestGate 当前未接入请求路径；实际网络限流由 NetSyncComponent 负责。
 	constexpr int32 MaxRequestsPerSecond = 10;
@@ -75,7 +79,7 @@ namespace GuLiCommanderMassPrivate
 	constexpr int32 SurfaceFailuresBeforeCenterline = 2;
 	constexpr int32 SurfaceFailuresBeforePersonalPath = 6;
 	constexpr int32 MaximumPersonalPathQueriesPerStep = 4;
-	constexpr int32 ExpansionSuccessfulStepsRequired = 15;
+	constexpr int32 ExpansionSuccessfulStepsRequired = GuLiCommanderNavigationPolicy::RequiredTransitExpansionSuccessSteps;
 	constexpr float TransitReassignmentCooldownSeconds = 0.5f;
 	constexpr float DestinationMinimumSeparationCentimeters = 1600.0f;
 	constexpr float DestinationMaximumProjectionCorrectionCentimeters = 750.0f;
@@ -94,7 +98,7 @@ namespace GuLiCommanderMassPrivate
 	static_assert(SoldierCountPerFormation == static_cast<int32>(GULI_CONTROL_COHORT_TARGET_SIZE));
 	static_assert(FormationColumns == GuLiCommanderNavigationPolicy::MaximumFormationColumns);
 	static_assert(SoldierCountPerFormation == GuLiCommanderNavigationPolicy::FormationMemberCapacity);
-	static_assert(GuLiCommanderNavigationPolicy::MovementUpdateIntervalTicks == 3u);
+	static_assert(GuLiCommanderNavigationPolicy::MovementUpdateIntervalTicks == 1u);
 
 	struct FSoldierWeaponRuntime
 	{
@@ -120,6 +124,8 @@ namespace GuLiCommanderMassPrivate
 		float Defense = 0.0f;
 		TSharedPtr<const TArray<FGuLiResolvedSkillProfile>> WeaponProfiles;
 		TArray<FSoldierWeaponRuntime> Weapons;
+		// Unique active skill is independent of automatic weapon slots and advances on SimulationSeconds.
+		FGuLiActiveSkillRuntime ActiveSkill;
 		// StateRevision 标识离散状态变化；ActiveOrderId 指向当前批次，0 表示无活动指令。
 		uint32 StateRevision = 1u;
 		uint32 ActiveOrderId = 0u;
@@ -1509,6 +1515,7 @@ void UGuLiBattleAuthoritySubsystem::OnWorldEndPlay(UWorld& InWorld)
 
 void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 {
+	CSV_SCOPED_TIMING_STAT(GuLiCommanderAuthority, WorldTick);
 	if (!bSoldierSimulationEnabled || !AuthorityState || !IsAuthorityWorld())
 	{
 		return;
@@ -4145,10 +4152,11 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyNavigationRepairs()
 	}
 	AuthorityState->NavigationRepairJob.Reset();
 }
-// 固定步：提交配置 -> 编队速度 -> 10 Hz 避让缓存/错峰位移 -> 按批次收尾 -> 统一攻击/伤害。
+// 固定步：提交配置 -> 编队速度 -> 10 Hz 避让缓存/全员位移 -> 按批次收尾 -> 统一攻击/伤害。
 // 实际位置由这里积分并写回 Fragment；导航策略函数负责判定，不直接改世界状态。
 void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 {
+	CSV_SCOPED_TIMING_STAT(GuLiCommanderAuthority, FixedStep);
 	using namespace GuLiCommanderMassPrivate;
 	check(AuthorityState);
 #if !UE_BUILD_SHIPPING
@@ -5368,6 +5376,15 @@ bool UGuLiBattleAuthoritySubsystem::BeginMovePlanning(
 		OutImmediateAck.Result = EGuLiCommandAckResult::NoSelection;
 		return false;
 	}
+	if (!Request.TargetTerritoryId.IsNone())
+	{
+		FGuLiStrongholdTransitOrder Order;
+		Order.RequestId = int32(Request.ClientCommandId); Order.SelectionRevision = int32(Request.SelectionRevision);
+		Order.TerritoryId = Request.TargetTerritoryId; Order.ClickLocation = Request.Target;
+		GetWorld()->GetSubsystem<UGuLiCommanderResourceAdapter>()->IssueStrongholdTransit(
+			PlayerState,Selection.ActorIds,Order,OutImmediateAck);
+		return false; // Immediate actor-only acknowledgement; Mass keeps its orders.
+	}
 	if (Request.MiningOrderType != EGuLiMiningOrderType::Move)
 	{
 		if (Selection.ActorIds.IsEmpty())
@@ -5415,6 +5432,7 @@ bool UGuLiBattleAuthoritySubsystem::BeginMovePlanning(
 		if (Existing->Request.SelectionRevision != Request.SelectionRevision
 			|| Existing->Request.MiningOrderType != Request.MiningOrderType
 			|| Existing->Request.TargetClusterId != Request.TargetClusterId
+			|| Existing->Request.TargetTerritoryId != Request.TargetTerritoryId
 			|| !FVector(Existing->Request.Target).Equals(FVector(Request.Target), 0.01))
 		{
 			OutImmediateAck.Result = EGuLiCommandAckResult::InvalidRequest;
@@ -5715,7 +5733,7 @@ void UGuLiBattleAuthoritySubsystem::ApplyPendingMovementSpeed()
 	UE_LOG(
 		LogGuLiCommanderMass,
 		Display,
-		TEXT("Applied Soldier movement speed %.3f cm/s to %d Mass entities at the 30 Hz authority boundary."),
+		TEXT("Applied Soldier movement speed %.3f cm/s to %d Mass entities at the 10 Hz authority boundary."),
 		MovementSpeedCentimetersPerSecond,
 		UpdatedEntityCount);
 }
@@ -6053,7 +6071,7 @@ void UGuLiBattleAuthoritySubsystem::BuildSoldierStateSnapshot(
 	}
 }
 
-// 这里只捕获/压缩一帧；WorldReplicationComponent 按 30 Hz 模拟每 3 步调度一次（目标 10 Hz）。
+// 这里只捕获/压缩一帧；WorldReplicationComponent 按 10 Hz 模拟每步调度一次。
 // 同一帧各分块共享 FrameSequence、ServerSimTick 和 AuthorityEpoch，接收端据此识别时序与战局。
 // 跨文件出口：这里只捕获、量化并分块；WorldReplicationComponent 调度，NetSync::SendPoseChunk 发 Client RPC。
 void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
@@ -6073,10 +6091,10 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 	{
 		SortedIndices.Add(Index);
 	}
-	static_assert(30u % GULI_POSE_CAPTURE_RATE_HZ == 0u);
-	constexpr uint32 CapturePosePhaseCount = 30u / GULI_POSE_CAPTURE_RATE_HZ;
-	// SoldierId 先固定映射到 30 Hz 的一个发送相位；相位内再按阵营和空间装块。
-	// 因此空间排序变化不会把同一士兵在 0/33/66 ms 槽之间来回搬动。
+	static_assert(GuLiCommanderSimulationTiming::RateHz % GULI_POSE_CAPTURE_RATE_HZ == 0u);
+	constexpr uint32 CapturePosePhaseCount = GULI_POSE_DISPATCH_PHASE_COUNT;
+	// 10 Hz 捕获与三相发送分别调度；相位内再按阵营和空间装块。
+	// SoldierId 的相位固定，位置变化不影响单兵每秒收到的样本数。
 	SortedIndices.Sort([this](const int32 LhsIndex, const int32 RhsIndex)
 	{
 		const GuLiCommanderMassPrivate::FSoldierRuntime& Lhs = AuthorityState->Soldiers[LhsIndex];
@@ -6852,5 +6870,53 @@ bool UGuLiBattleAuthoritySubsystem::IssueAttackMove(EGuLiTeam Team, TConstArrayV
 		MemberSpacingCentimeters, Formation.BatchOrderId, Formation.TransitColumnCount);
 	AuthorityState->OrderFormations.Add(MoveTemp(Formation));
 	AuthorityState->bForceManualAvoidanceRefresh = true;
+	return true;
+}
+
+
+void UGuLiBattleAuthoritySubsystem::ExecuteSelectedUnitSkills(AGuLiBattlePlayerState& PlayerState,
+	const FGuLiCommanderSelectionState& Selection, const UGuLiCommanderSkillCatalog& Catalog,
+	FGuid RequestId, bool bHasGroundPoint, FVector GroundPoint, TArray<FGuLiActiveSkillUnitResult>& OutResults)
+{
+	OutResults.Reset();
+	if (!IsAuthorityWorld() || !AuthorityState || !PlayerState.IsCommander() || !RequestId.IsValid()) return;
+	TSet<uint32> Visited;
+	const double Now = AuthorityState->SimulationSeconds;
+	for (const auto& Cohort : Selection.Cohorts) for (auto Id : Cohort.MemberIds)
+	{
+		if (Visited.Contains(Id.Value)) continue;
+		Visited.Add(Id.Value);
+		const int32* Index = AuthorityState->SoldierIndexById.Find(Id.Value);
+		if (!Index)
+		{
+			auto& Result = OutResults.AddDefaulted_GetRef(); Result.SoldierId = Id;
+			Result.Code = EGuLiActiveSkillResultCode::Ineligible; continue;
+		}
+		auto& Soldier = AuthorityState->Soldiers[*Index];
+		const auto* Definition = Catalog.FindUnitSkill(Soldier.UnitTypeId);
+		FGuLiUnitSkillCaster Caster;
+		Caster.bEligible = Soldier.Team == PlayerState.GetTeam() && Soldier.CanAct() && Soldier.IsPresent();
+		Caster.bHasGroundPoint = bHasGroundPoint;
+		auto& Context = Caster.Context;
+		Context.Commander = &PlayerState; Context.SoldierId = Id; Context.Source = MakeSoldierTargetHandle(Id);
+		Context.SourceTransform = FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location);
+		Context.GroundPoint = GroundPoint; Context.RequestId = RequestId; Context.SkillId = Definition ? Definition->SkillId : NAME_None;
+		Context.Level = Soldier.ActiveSkill.Level;
+		OutResults.Add(GuLiUnitSkillExecution::Execute(Definition, Caster, Soldier.ActiveSkill, Now, GetWorld()->GetTimeSeconds(),
+			[Definition](const FGuLiActiveSkillExecutionContext& Cast, const UDataAsset* Configuration)
+			{ return Definition->ExecutorClass->GetDefaultObject<UGuLiCommanderSkillExecutor>()->Execute(Cast, Configuration); }));
+	}
+}
+
+bool UGuLiBattleAuthoritySubsystem::QueryUnitSkillRuntime(FGuLiSoldierId SoldierId, const UGuLiCommanderSkillCatalog& Catalog, FGuLiActiveSkillRuntime& OutRuntime) const
+{
+	const int32* Index = AuthorityState ? AuthorityState->SoldierIndexById.Find(SoldierId.Value) : nullptr;
+	if (!Index) return false;
+	const auto& Soldier = AuthorityState->Soldiers[*Index];
+	const auto* Definition = Catalog.FindUnitSkill(Soldier.UnitTypeId);
+	if (!Definition) return false;
+	OutRuntime = Soldier.ActiveSkill;
+	OutRuntime.SkillId = Definition->SkillId;
+	OutRuntime.ReadyAt = GetWorld()->GetTimeSeconds() + FMath::Max(0., OutRuntime.ReadyAt - AuthorityState->SimulationSeconds);
 	return true;
 }

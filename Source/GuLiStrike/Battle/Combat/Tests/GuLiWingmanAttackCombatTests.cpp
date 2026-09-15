@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Engine/Engine.h"
@@ -8,7 +9,7 @@
 #include "Gameplay/Presentation/GuLiTeamOutlineComponent.h"
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
 #include "Gameplay/Ship/Abilities/GuLiShipAbilitySet.h"
-#include "Gameplay/Ship/Abilities/GuLiShipAbilitySystemComponent.h"
+#include "Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #if WITH_EDITOR
@@ -336,9 +337,18 @@ struct FGuLiWingmanAttackCombatTestAccess
 	static void Step(UGuLiCombatEffectRuntimeSubsystem* Runtime, FGuid Id, float Now)
 	{ Runtime->StepProjectile(Id, 1.0f/30.0f, Now); }
 	static void StepGun(UGuLiCombatEffectRuntimeSubsystem* Runtime, FGuid Id, float Now)
-	{ Runtime->StepSustainedHitscan(Id, Now); }
+	{
+		Runtime->StepSustainedHitscan(Id, Now);
+		Runtime->GetWorld()->GetSubsystem<UGuLiProjectilePoolSubsystem>()->Step(Now);
+	}
 	static void StepCooldowns(UGuLiCombatEffectRuntimeSubsystem* Runtime, float Now)
 	{ Runtime->StepWingmanBurstCooldowns(Now); }
+	static void DrainGunProjectiles(UWorld* World, float BurstEnd, float Lifetime)
+	{
+		auto* Pool = World->GetSubsystem<UGuLiProjectilePoolSubsystem>();
+		for (float Now = BurstEnd + 1.0f / 30.0f; Now <= BurstEnd + Lifetime + 1.0f / 30.0f; Now += 1.0f / 30.0f)
+			Pool->Step(Now);
+	}
 	static bool HasCooldown(UGuLiCombatEffectRuntimeSubsystem* Runtime,
 		const FGuLiWingmanHandle& Emitter, FName Slot)
 	{
@@ -470,6 +480,7 @@ bool FGuLiWingmanGunLedgerTest::RunTest(const FString&)
 		&& Started.MuzzleOffset.Equals(R.MuzzleOffset) && FMath::IsNearlyEqual(Started.FireRateHz,5.0f));
 	for(int32 Step=1;Step<=150;++Step)
 		FGuLiWingmanAttackCombatTestAccess::StepGun(F.Runtime,Burst,Step/30.0f);
+	FGuLiWingmanAttackCombatTestAccess::DrainGunProjectiles(F.World, 5.0f, R.Motion.MaximumLifetime);
 	const auto FiveHzCounters=F.Runtime->GetCounters();
 	TestEqual(TEXT("Five-hertz full burst produces exactly 25 logical shots"),FiveHzCounters.LogicalGunShots,25ll);
 	TestEqual(TEXT("Five-hertz full burst deals exactly 250 damage"),Target.Snapshot.Health,9750.0f);
@@ -506,6 +517,8 @@ bool FGuLiWingmanGunLedgerTest::RunTest(const FString&)
 		5.0f,5000.0f,52000.0f,3.0f);
 	for(int32 Step=1;Step<=150;++Step)
 		FGuLiWingmanAttackCombatTestAccess::StepGun(F30.Runtime,Burst30,Step/30.0f);
+	// The last rounds remain in flight after the firing segment ends.
+	FGuLiWingmanAttackCombatTestAccess::DrainGunProjectiles(F30.World, 5.0f, R30.Motion.MaximumLifetime);
 	TestEqual(TEXT("Thirty-hertz full burst produces exactly 150 logical shots"),
 		F30.Runtime->GetCounters().LogicalGunShots,150ll);
 	TestEqual(TEXT("Thirty-hertz full burst deals exactly 1500 damage"),Target30.Snapshot.Health,8500.0f);
@@ -711,10 +724,11 @@ bool FGuLiWingmanAllDeadRosterCutTest::RunTest(const FString&)
 	GuLiWingmanAttackCombatTests::FFixture F;
 	if (!F.Initialize()) return false;
 	AActor* Ship = F.World->SpawnActor<AActor>();
-	auto* ASC = NewObject<UGuLiShipAbilitySystemComponent>(Ship);
+	auto* ASC = NewObject<UGuLiShipHangarCapabilityComponent>(Ship);
 	Ship->AddInstanceComponent(ASC);
 	ASC->RegisterComponent();
 	ASC->InitializeShipActorInfo(Ship);
+			ASC->SetCapabilityEnabled(true);
 	FGuLiShipAbilityProjectionContext Projection;
 	Projection.ShipInstanceId = FGuid(10, 20, 30, 40);
 	Projection.MatchEpoch = 9;

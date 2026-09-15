@@ -1,0 +1,10 @@
+{
+  "Stage": "late_join_roster_bootstrap",
+  "Reason": "Initial SoldierStateReplicator FastArray exceeds 2048 changes and maximum bunch size; stopped known measurement PIDs before timeout",
+  "MaximumBunchSize": 65536,
+  "MeasurementValid": false,
+  "Log": "server.log",
+  "RequestedPopulation": 4000,
+  "ObservedBunchSize": 319543,
+  "Stopped": "2026-09-15T10:33:51.5458247+08:00"
+}
