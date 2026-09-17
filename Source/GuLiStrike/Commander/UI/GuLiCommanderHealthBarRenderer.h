@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
@@ -16,11 +16,14 @@ class UInstancedStaticMeshComponent;
 class UMaterialInterface;
 class USceneComponent;
 class UStaticMesh;
+class UGuLiUnitFeedbackSubsystem;
+class UGuLiCombatHealthComponent;
+struct FGuLiSoldierRosterDelta;
 
 /**
  * Local-only, single-batch world-space health-bar presentation.
  *
- * One stable ISM slot is allocated per SoldierId. Gameplay facts remain owned by
+ * Slots are shared and recycled by the active selected/hit soldier and Actor sets. Gameplay facts remain owned by
  * AGuLiSoldierStateReplicator and positions remain owned by the existing Commander
  * presentation actor; this actor only turns those read-only views into billboards.
  */
@@ -65,6 +68,16 @@ public:
 #endif
 
 private:
+	friend class FGuLiCommanderHealthBarActivityTest;
+	void MaintainActivity();
+	void RefreshSoldierActivity(FGuLiSoldierId Id);
+	void HandleRosterDelta(const FGuLiSoldierRosterDelta& Delta);
+	void HandleVisualStatesChanged(const TArray<FGuLiSoldierId>& Ids);
+	void HandleActorBarChanged(TWeakObjectPtr<AActor> Actor);
+	UFUNCTION() void HandleActorHealthChanged(float Health, float MaxHealth);
+	void UpdateTickActivity();
+	void ReleaseInstanceSlot(int32 Index);
+	void WriteInstance(int32 Index, const FTransform& Transform, float Health, float Selected, float Visible);
 	void ResolveSoftAssets();
 	void ResolveRuntimeDependencies();
 	void BindNetSync(UGuLiCommanderNetSyncComponent* InNetSync);
@@ -72,7 +85,6 @@ private:
 	void BindPresentationActor(AGuLiCommanderPresentationActor* InPresentationActor);
 	void UnbindRuntimeDependencies();
 	void HandleSelectionChanged(const FGuLiCommanderSelectionState& Selection);
-	void HandleSoldierStatesChanged(uint32 SnapshotRevision);
 	void RebuildSelectedSoldiers(const FGuLiCommanderSelectionState& Selection);
 	void EnsureStableInstancePool(const AGuLiSoldierStateReplicator& Replicator);
 	int32 AllocateInstanceSlot();
@@ -116,9 +128,18 @@ private:
 	TMap<uint16, float> SoldierHeightOffsetsCentimeters;
 	FDelegateHandle SelectionChangedHandle;
 	FDelegateHandle SoldierStatesChangedHandle;
+	FDelegateHandle VisualStatesChangedHandle;
+	FDelegateHandle ActorBarsChangedHandle;
+	TWeakObjectPtr<UGuLiUnitFeedbackSubsystem> BoundFeedback;
+	FTimerHandle MaintenanceTimer;
+	TMap<FGuLiSoldierId, FGuLiSoldierStateItem> ActiveSoldierStates;
+	TMap<FGuLiSoldierId, float> ActiveHitStartTimes;
+	TMap<TWeakObjectPtr<AActor>, TWeakObjectPtr<UGuLiCombatHealthComponent>> ActorHealthProviders;
+	TMap<TWeakObjectPtr<AActor>, float> ActorHealthFractions;
+	TArray<int32> FreeInstanceSlots;
 	TMap<FGuLiSoldierId, int32> SoldierInstanceIndices;
 	TMap<TWeakObjectPtr<AActor>, int32> ActorInstanceIndices;
-	TArray<int32> FreeActorInstanceSlots;
+	TSet<FGuLiSoldierId> PendingActivityIds;
 	TSet<FGuLiSoldierId> SelectedSoldiers;
 	TArray<FTransform> CachedTransforms;
 	TArray<float> CachedHealthFractions;

@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Network/GuLiCommanderTypes.h"
 
@@ -13,9 +13,82 @@
 #include "Misc/AutomationTest.h"
 #include "Serialization/MemoryReader.h"
 #include "Serialization/MemoryWriter.h"
+#include "Serialization/BitReader.h"
+#include "Serialization/BitWriter.h"
+#include "Commander/Network/GuLiCommanderPoseCodec.h"
 #include "UObject/UnrealType.h"
 
 #include <limits>
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiCommanderRosterCacheTest,
+	"GuLiStrike.Commander.Network.RosterCache",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiCommanderRosterCacheTest::RunTest(const FString& Parameters)
+{
+	UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
+	auto* Source = World->SpawnActor<AGuLiSoldierStateReplicator>();
+	TArray<FGuLiSoldierStateItem> States;
+	for (uint32 Id = 1; Id <= 3; ++Id)
+	{
+		auto& State = States.AddDefaulted_GetRef(); State.SoldierId = FGuLiSoldierId(Id);
+		State.UnitTypeId = 1; State.Health = State.MaxHealth = 100;
+	}
+	TArray<FGuLiSoldierRosterDelta> Received;
+	Source->OnRosterDelta.AddLambda([&](const auto& Delta) { Received.Add(Delta); });
+	Source->ApplyAuthoritySnapshot(States, 1);
+	TestTrue(TEXT("First snapshot initializes shared ID cache"), Source->ContainsSoldier(FGuLiSoldierId(3)));
+	Received.Reset(); Source->ApplyAuthoritySnapshot(States, 1);
+	TestTrue(TEXT("Unchanged roster emits no maintenance"), Received.IsEmpty());
+	States[0].DisplacementYaw = 30;
+	TestEqual(TEXT("Ordinary facing never dirties reliable roster"), Source->ApplyAuthoritySnapshot(States, 1), 0);
+	TestTrue(TEXT("Ordinary facing emits no roster notifications"), Received.IsEmpty());
+	States[0].DisplacementFrameFloor = 101; States[0].DisplacementLocation = FVector(100,200,300);
+	Source->ApplyAuthoritySnapshot(States, 1);
+	TestTrue(TEXT("New displacement floor publishes its discrete event"), EnumHasAnyFlags(Received.Last().Changed.FindRef(States[0].SoldierId), EGuLiSoldierStateChange::Displacement));
+	TestEqual(TEXT("Displacement carries its facing"), Source->FindSoldierState(States[0].SoldierId)->DisplacementYaw, 30.0f);
+	Received.Reset();
+	States[0].Health = 75; States[0].Team = EGuLiTeam::Blue; States[0].UnitTypeId = 2;
+	States.RemoveAtSwap(1); // count stays three after replacing the removed ID
+	auto Replacement = States[0]; Replacement.SoldierId = FGuLiSoldierId(4); States.Add(Replacement);
+	Source->ApplyAuthoritySnapshot(States, 1);
+	TestEqual(TEXT("One complete notification per snapshot"), Received.Num(), 1);
+	TestFalse(TEXT("Swap removal deletes old ID"), Source->ContainsSoldier(FGuLiSoldierId(2)));
+	TestTrue(TEXT("Same-count replacement adds new ID"), Source->ContainsSoldier(FGuLiSoldierId(4)));
+	const auto Flags = Received.Last().Changed.FindRef(FGuLiSoldierId(1));
+	TestTrue(TEXT("Type/team/health change flags survive merging"), EnumHasAllFlags(Flags,
+		EGuLiSoldierStateChange::Type | EGuLiSoldierStateChange::Team | EGuLiSoldierStateChange::Health));
+	TestEqual(TEXT("Swap survivor retains its own value"), Source->FindSoldierState(FGuLiSoldierId(3))->Health, 100.0f);
+	Received.Reset(); Source->ApplyAuthoritySnapshot(States, 2);
+	TestTrue(TEXT("Reused IDs produce a reset on new match"), Received.Num() == 1 && Received[0].bReset);
+	Source->OnRosterDelta.Clear();
+
+	// Exercise the actual FastArray callbacks in both independent-property arrival orders.
+	auto* Replica = World->SpawnActor<AGuLiSoldierStateReplicator>();
+	Replica->SnapshotRevision = 99; Replica->TestOnly_InvokeSnapshotRevisionRepNotify();
+	TestFalse(TEXT("Revision notification does not invent missing roster data"), Replica->ContainsSoldier(FGuLiSoldierId(1)));
+	Replica->SnapshotMatchEpoch = 2; Replica->PostNetReceive();
+	Replica->ReplicatedSoldiers.Items = States;
+	TArray<int32> Indices = {0, 1, 2};
+	Replica->ReplicatedSoldiers.PostReplicatedAdd(Indices, States.Num());
+	TestFalse(TEXT("Partial receive callbacks are not published"), Replica->ContainsSoldier(FGuLiSoldierId(1)));
+	FFastArraySerializer::FPostReplicatedReceiveParameters ReceiveParameters{};
+	Replica->ReplicatedSoldiers.PostReplicatedReceive(ReceiveParameters);
+	TestEqual(TEXT("Completed receive publishes cached values"), Replica->FindSoldierState(FGuLiSoldierId(1))->Health, 75.0f);
+	Replica->ReplicatedSoldiers.Items.Reserve(4096);
+	Replica->ReplicatedSoldiers.Items[0].Health = 12;
+	TestEqual(TEXT("Cache owns its value across array allocation and mutation"), Replica->FindSoldierState(FGuLiSoldierId(1))->Health, 75.0f);
+	TArray<int32> Removed = {1}, Changed = {0};
+	Replica->ReplicatedSoldiers.PreReplicatedRemove(Removed, 2);
+	Replica->ReplicatedSoldiers.PostReplicatedChange(Changed, 2);
+	Replica->ReplicatedSoldiers.Items.RemoveAtSwap(1);
+	Replica->ReplicatedSoldiers.PostReplicatedReceive(ReceiveParameters);
+	Replica->SnapshotMatchEpoch = 3; Replica->PostNetReceive();
+	TestEqual(TEXT("Array-first epoch transition preserves received latest value"), Replica->FindSoldierState(FGuLiSoldierId(1))->Health, 12.0f);
+	TestFalse(TEXT("Removed ID cannot reappear after epoch refresh"), Replica->ContainsSoldier(FGuLiSoldierId(3)));
+	World->DestroyWorld(false);
+	return true;
+}
 
 namespace GuLiCommanderNetworkTests
 {
@@ -91,17 +164,27 @@ namespace GuLiCommanderNetworkTests
 		FGuLiSoldierPoseChunk Chunk;
 		Chunk.AuthorityEpoch = MatchEpoch;
 		Chunk.FrameSequence = FrameSequence;
-		Chunk.ServerSimTick = FrameSequence * 3u;
+		Chunk.ServerSimTick = FrameSequence;
 		Chunk.ServerTimeSeconds = static_cast<float>(FrameSequence) / GULI_POSE_CAPTURE_RATE_HZ;
 		Chunk.ChunkIndex = 0u;
 		Chunk.ChunkCount = 1u;
-		FGuLiCompressedSoldierPose& Pose = Chunk.Samples.AddDefaulted_GetRef();
+		FGuLiQuantizedSoldierPose& Pose = Chunk.Samples.AddDefaulted_GetRef();
 		Pose.SoldierId = FGuLiSoldierId(SoldierIdValue);
-		Pose.SetRelativeLocationCentimeters(FVector(
+		Pose.SetWorldLocationCentimeters(FVector(
 			static_cast<double>(FrameSequence) * 10.0,
 			0.0,
 			0.0));
 		return Chunk;
+	}
+
+	FGuLiEncodedPoseBlock MakePoseBlock(uint32 MatchEpoch, uint32 FrameSequence, uint32 SoldierId)
+	{
+		GuLiCommanderPoseCodec::FSender Sender;
+		Sender.Reset(1u, MatchEpoch);
+		TArray<FGuLiEncodedPoseBlock> Blocks;
+		Sender.Encode(MakePoseChunk(MatchEpoch, FrameSequence, SoldierId), Blocks);
+		check(Blocks.Num() == 1);
+		return MoveTemp(Blocks[0]);
 	}
 }
 
@@ -114,8 +197,8 @@ bool FGuLiCommanderDynamicCohortContractTest::RunTest(const FString& Parameters)
 {
 	(void)Parameters;
 
-	TestEqual(TEXT("Stable ActorId, unified SelectionRevision and interaction orders use protocol version 8"),
-		GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(8u));
+	TestEqual(TEXT("Pose prediction and field deltas use protocol version 9"),
+		GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(9u));
 	TestEqual(TEXT("Control granularity remains capped at 25 soldiers"),
 		GULI_CONTROL_COHORT_TARGET_SIZE, static_cast<uint32>(25u));
 	TestEqual(TEXT("Authoritative pose contract is captured at 10 Hz"),
@@ -612,128 +695,68 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 
 bool FGuLiCommanderPoseChunkContractTest::RunTest(const FString& Parameters)
 {
-	(void)Parameters;
-
-	FGuLiCompressedSoldierPose QuantizedPose;
-	QuantizedPose.SoldierId = FGuLiSoldierId(1u);
-	QuantizedPose.SetRelativeLocationCentimeters(FVector(100000000.0, -100000000.0, 15.0));
-	QuantizedPose.SetVelocityCentimetersPerSecond(FVector(123.0, -456.0, 0.0));
-	TestEqual(TEXT("Positive relative position saturates safely"), QuantizedPose.RelativeXDecimeters, MAX_int16);
-	TestEqual(TEXT("Negative relative position saturates safely"), QuantizedPose.RelativeYDecimeters, MIN_int16);
-	TestEqual(TEXT("Ten-centimeter position quantization rounds deterministically"),
-		QuantizedPose.RelativeZDecimeters, static_cast<int16>(2));
-	TestEqual(TEXT("Velocity uses the same ten-centimeter quantization"),
-		QuantizedPose.VelocityXDecimetersPerSecond, static_cast<int16>(12));
-
-	FGuLiSoldierPoseChunk SourceChunk;
-	SourceChunk.AuthorityEpoch = 3u;
-	SourceChunk.FrameSequence = 123456u;
-	SourceChunk.ServerSimTick = 987654u;
-	SourceChunk.ServerTimeSeconds = 321.125f;
-	SourceChunk.ChunkIndex = 4u;
-	SourceChunk.ChunkCount = 16u;
-	SourceChunk.Anchor = FVector(100000.0, -200000.0, 3000.0);
-	for (uint32 Index = 0u; Index < GULI_MAX_POSE_SAMPLES_PER_CHUNK; ++Index)
+	using namespace GuLiCommanderPoseCodec;
+	FSender Sender, SameSender;
+	FReceiver Receiver;
+	Sender.Reset(7, 3); SameSender.Reset(7, 3); Receiver.Reset(7, 3);
+	FGuLiSoldierPoseChunk Source = GuLiCommanderNetworkTests::MakePoseChunk(3, 123456, 1);
+	Source.Samples.Reset();
+	Source.ServerSimTick = 987654; Source.ServerTimeSeconds = 321.125f;
+	Source.ChunkIndex = 4; Source.ChunkCount = 16;
+	for (uint32 Index = 0; Index < 32; ++Index)
 	{
-		FGuLiCompressedSoldierPose& Sample = SourceChunk.Samples.AddDefaulted_GetRef();
-		Sample.SoldierId = FGuLiSoldierId(MAX_uint32 - Index);
-		Sample.SetRelativeLocationCentimeters(FVector(
-			static_cast<double>(Index) * 100.0,
-			-static_cast<double>(Index) * 80.0,
-			30.0));
-		Sample.SetVelocityCentimetersPerSecond(FVector(1200.0, -800.0, 10.0));
-		Sample.FacingYaw = GuLiCommanderProtocol::QuantizeYawDegrees(static_cast<float>(Index) * 11.25f);
-		Sample.ActiveOrderId = MAX_uint32 - Index;
-		Sample.State = EGuLiSoldierPoseState::Moving;
-		Sample.Flags = Index == 0u ? static_cast<uint8>(GULI_SOLDIER_POSE_FLAG_TELEPORT | 0x80u) : 0u;
+		auto& Pose = Source.Samples.AddDefaulted_GetRef();
+		Pose.SoldierId = FGuLiSoldierId(MAX_uint32 - Index * 10000000);
+		Pose.WorldXMeters = MAX_int32 - Index; Pose.WorldYMeters = MIN_int32 + Index;
+		Pose.WorldZDecimeters = MAX_int32;
+		Pose.VelocityXMetersPerSecond = MAX_int16; Pose.VelocityYMetersPerSecond = MIN_int16;
+		Pose.VelocityZMetersPerSecond = MAX_int16;
+		Pose.ActiveOrderId = MAX_uint32 - Index; Pose.FacingYaw = uint8(Index * 8);
+		Pose.State = EGuLiSoldierPoseState::Moving;
+		Pose.Flags = Index == 0 ? GULI_SOLDIER_POSE_FLAG_TELEPORT : 0;
 	}
-
-	TArray<uint8> FirstBytes;
-	TArray<uint8> SecondBytes;
-	TestTrue(TEXT("Full 32-soldier pose chunk serializes"),
-		GuLiCommanderNetworkTests::NetSerializeToBytes(SourceChunk, FirstBytes));
-	TestTrue(TEXT("Identical pose chunk serializes a second time"),
-		GuLiCommanderNetworkTests::NetSerializeToBytes(SourceChunk, SecondBytes));
-	TestTrue(TEXT("Pose chunk serialization is byte deterministic"), FirstBytes == SecondBytes);
-	TestTrue(TEXT("Worst-case 32-soldier chunk stays below the 1000-byte budget"), FirstBytes.Num() <= 1000);
-
-	FGuLiSoldierPoseChunk ChunkCopy;
-	TestTrue(TEXT("Pose chunk NetSerialize round-trip completes"),
-		GuLiCommanderNetworkTests::NetDeserializeFromBytes(FirstBytes, ChunkCopy));
-	TestEqual(TEXT("FrameSequence survives the wire"), ChunkCopy.FrameSequence, SourceChunk.FrameSequence);
-	TestEqual(TEXT("AuthorityEpoch survives the wire"), ChunkCopy.AuthorityEpoch, SourceChunk.AuthorityEpoch);
-	TestEqual(TEXT("ServerSimTick survives the wire"), ChunkCopy.ServerSimTick, SourceChunk.ServerSimTick);
-	TestEqual(TEXT("ServerTimeSeconds survives the wire"),
-		ChunkCopy.ServerTimeSeconds, SourceChunk.ServerTimeSeconds);
-	TestEqual(TEXT("ChunkIndex survives the wire"), ChunkCopy.ChunkIndex, SourceChunk.ChunkIndex);
-	TestEqual(TEXT("ChunkCount survives the wire"), ChunkCopy.ChunkCount, SourceChunk.ChunkCount);
-	TestTrue(TEXT("Chunk anchor survives centimeter quantization"),
-		FVector(ChunkCopy.Anchor).Equals(FVector(SourceChunk.Anchor), 1.0f));
-	TestEqual(TEXT("All 32 pose samples survive the wire"),
-		ChunkCopy.Samples.Num(), static_cast<int32>(GULI_MAX_POSE_SAMPLES_PER_CHUNK));
-	bool bEverySampleRoundTrips =
-		ChunkCopy.Samples.Num() == SourceChunk.Samples.Num();
-	for (int32 Index = 0; bEverySampleRoundTrips && Index < SourceChunk.Samples.Num(); ++Index)
+	TArray<FGuLiEncodedPoseBlock> Blocks, SameBlocks;
+	Sender.Encode(Source, Blocks); SameSender.Encode(Source, SameBlocks);
+	TestTrue(TEXT("Worst-case values split by actual wire size"), Blocks.Num() > 1);
+	TestEqual(TEXT("Deterministic split count"), Blocks.Num(), SameBlocks.Num());
+	int32 DecodedCount = 0;
+	for (int32 Index = 0; Index < Blocks.Num(); ++Index)
 	{
-		const FGuLiCompressedSoldierPose& SourceSample = SourceChunk.Samples[Index];
-		const FGuLiCompressedSoldierPose& CopySample = ChunkCopy.Samples[Index];
-		const uint8 ExpectedFlags = Index == 0
-			? GULI_SOLDIER_POSE_FLAG_TELEPORT
-			: 0u;
-		bEverySampleRoundTrips = CopySample.SoldierId == SourceSample.SoldierId
-			&& CopySample.RelativeXDecimeters == SourceSample.RelativeXDecimeters
-			&& CopySample.RelativeYDecimeters == SourceSample.RelativeYDecimeters
-			&& CopySample.RelativeZDecimeters == SourceSample.RelativeZDecimeters
-			&& CopySample.VelocityXDecimetersPerSecond
-				== SourceSample.VelocityXDecimetersPerSecond
-			&& CopySample.VelocityYDecimetersPerSecond
-				== SourceSample.VelocityYDecimetersPerSecond
-			&& CopySample.VelocityZDecimetersPerSecond
-				== SourceSample.VelocityZDecimetersPerSecond
-			&& CopySample.FacingYaw == SourceSample.FacingYaw
-			&& CopySample.ActiveOrderId == SourceSample.ActiveOrderId
-			&& CopySample.State == SourceSample.State
-			&& CopySample.Flags == ExpectedFlags;
+		TestTrue(TEXT("Byte-deterministic encoding"), Blocks[Index].Data == SameBlocks[Index].Data);
+		FBitWriter Writer(8192, true);
+		bool Success = false;
+		Blocks[Index].NetSerialize(Writer, nullptr, Success);
+		TestTrue(TEXT("Actual bit archive respects total 1000-byte payload budget"), Success && Writer.GetNumBytes() <= 1000);
+		FBitReader Reader(Writer.GetData(), Writer.GetNumBits());
+		FGuLiEncodedPoseBlock Wire;
+		Wire.NetSerialize(Reader, nullptr, Success);
+		TestTrue(TEXT("Bounded encoded RPC round trip"), Success && Wire.Data == Blocks[Index].Data);
+		FGuLiSoldierPoseChunk Decoded;
+		TestTrue(TEXT("Each split block decodes independently"), Receiver.Decode(Wire, Decoded) == EDecodeResult::Decoded);
+		TestEqual(TEXT("Capture frame preserved"), Decoded.FrameSequence, Source.FrameSequence);
+		TestEqual(TEXT("Simulation tick preserved"), Decoded.ServerSimTick, Source.ServerSimTick);
+		TestEqual(TEXT("Simulation time preserved"), Decoded.ServerTimeSeconds, Source.ServerTimeSeconds);
+		TestTrue(TEXT("Per-block sample cap"), Decoded.Samples.Num() <= 32);
+		for (const auto& Copy : Decoded.Samples)
+		{
+			const auto* Original = Source.Samples.FindByPredicate([&Copy](const auto& P) { return P.SoldierId == Copy.SoldierId; });
+			TestTrue(TEXT("Every quantized field survives"), Original && Copy.GetWorldLocationCentimeters() == Original->GetWorldLocationCentimeters()
+				&& Copy.GetVelocityCentimetersPerSecond() == Original->GetVelocityCentimetersPerSecond()
+				&& Copy.FacingYaw == Original->FacingYaw && Copy.ActiveOrderId == Original->ActiveOrderId
+				&& Copy.State == Original->State && Copy.Flags == Original->Flags);
+		}
+		DecodedCount += Decoded.Samples.Num();
 	}
-	TestTrue(TEXT("Every field of all 32 pose samples survives the wire"),
-		bEverySampleRoundTrips);
-
-	FGuLiSoldierPoseChunk OversizedChunk;
-	OversizedChunk.ChunkCount = 0u;
-	OversizedChunk.ChunkIndex = MAX_uint16;
-	OversizedChunk.ServerTimeSeconds = -1.0f;
-	for (uint32 Index = 0u; Index < GULI_MAX_POSE_SAMPLES_PER_CHUNK + 4u; ++Index)
-	{
-		FGuLiCompressedSoldierPose& Sample = OversizedChunk.Samples.AddDefaulted_GetRef();
-		Sample.SoldierId = FGuLiSoldierId(Index + 1u);
-	}
-	OversizedChunk.Samples.AddDefaulted_GetRef().SoldierId = FGuLiSoldierId(1u);
-	OversizedChunk.Samples.AddDefaulted_GetRef().SoldierId.Reset();
-	OversizedChunk.Sanitize();
-	TestEqual(TEXT("Pose chunks are capped at 32 unique soldiers"),
-		OversizedChunk.Samples.Num(), static_cast<int32>(GULI_MAX_POSE_SAMPLES_PER_CHUNK));
-	TestEqual(TEXT("Invalid zero ChunkCount normalizes to one"), OversizedChunk.ChunkCount, static_cast<uint16>(1u));
-	TestEqual(TEXT("ChunkIndex normalizes inside ChunkCount"), OversizedChunk.ChunkIndex, static_cast<uint16>(0u));
-	TestEqual(TEXT("Invalid server time normalizes to zero"), OversizedChunk.ServerTimeSeconds, 0.0f);
-
-	if (FirstBytes.Num() >= static_cast<int32>(sizeof(uint16)))
-	{
-		TArray<uint8> WrongVersionBytes = FirstBytes;
-		WrongVersionBytes[0] = 1u;
-		WrongVersionBytes[1] = 0u;
-		FGuLiSoldierPoseChunk WrongVersionChunk;
-		TestFalse(TEXT("Mismatched pose protocol version is rejected"),
-			GuLiCommanderNetworkTests::NetDeserializeFromBytes(WrongVersionBytes, WrongVersionChunk));
-	}
-	if (FirstBytes.Num() > static_cast<int32>(sizeof(uint16)))
-	{
-		TArray<uint8> ZeroEpochBytes = FirstBytes;
-		ZeroEpochBytes[sizeof(uint16)] = 0u;
-		FGuLiSoldierPoseChunk ZeroEpochChunk;
-		TestFalse(TEXT("Zero authority epoch is rejected"),
-			GuLiCommanderNetworkTests::NetDeserializeFromBytes(ZeroEpochBytes, ZeroEpochChunk));
-	}
-
+	TestEqual(TEXT("All source units decoded exactly once"), DecodedCount, 32);
+	FGuLiPoseAcknowledgment Ack, WireAck;
+	TestTrue(TEXT("Decoded blocks generate ACK"), Receiver.BuildAcknowledgment(Ack));
+	TestTrue(TEXT("ACK serializer preserves bitmap and session"), GuLiCommanderNetworkTests::NetSerializeRoundTrip(Ack, WireAck)
+		&& WireAck.LatestSequence == Ack.LatestSequence && WireAck.SyncGeneration == 7 && WireAck.MatchEpoch == 3
+		&& FMemory::Memcmp(Ack.ReceivedBits, WireAck.ReceivedBits, sizeof(Ack.ReceivedBits)) == 0);
+	TestTrue(TEXT("Server confirms decoded samples"), Sender.Confirm(WireAck));
+	auto WrongVersion = Blocks[0]; WrongVersion.Data[0] = 8;
+	FGuLiSoldierPoseChunk Ignored;
+	TestTrue(TEXT("Old protocol is rejected"), Receiver.Decode(WrongVersion, Ignored) == EDecodeResult::WrongSession);
 	return true;
 }
 
@@ -940,7 +963,7 @@ bool FGuLiCommanderBootstrapSnapshotGateTest::RunTest(const FString& Parameters)
 			MatchEpoch,
 			SnapshotRevision,
 			RosterCount));
-	TestFalse(TEXT("A protocol-v5 client cannot join the partial-member move wire contract"),
+	TestFalse(TEXT("A protocol-v8 client cannot join the v9 wire contract"),
 		PassesGate(
 			GULI_COMMANDER_PROTOCOL_VERSION - 1u,
 			MatchEpoch,
@@ -974,8 +997,8 @@ bool FGuLiCommanderPoseMatchEpochGateTest::RunTest(const FString& Parameters)
 	constexpr uint32 MatchEpoch = 1001u;
 	constexpr uint32 OtherMatchEpoch = 2002u;
 	NetSync->TestOnly_ConfigureClientPoseGate(true, MatchEpoch);
-	NetSync->TestOnly_ReceivePoseChunk(
-		GuLiCommanderNetworkTests::MakePoseChunk(MatchEpoch, 1u, 1u));
+	NetSync->TestOnly_ReceivePoseBlock(
+		GuLiCommanderNetworkTests::MakePoseBlock(MatchEpoch, 1u, 1u));
 	TArray<FGuLiSoldierPoseChunk> AcceptedChunks;
 	NetSync->ConsumePendingPoseChunks(AcceptedChunks);
 	TestEqual(TEXT("A pose from the accepted MatchEpoch enters the client queue"),
@@ -983,8 +1006,8 @@ bool FGuLiCommanderPoseMatchEpochGateTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("The first accepted chunk advances one fresh pose frame"),
 		NetSync->GetAcceptedPoseFrameCount(), static_cast<uint64>(1u));
 
-	NetSync->TestOnly_ReceivePoseChunk(
-		GuLiCommanderNetworkTests::MakePoseChunk(OtherMatchEpoch, 2u, 1u));
+	NetSync->TestOnly_ReceivePoseBlock(
+		GuLiCommanderNetworkTests::MakePoseBlock(OtherMatchEpoch, 2u, 1u));
 	TArray<FGuLiSoldierPoseChunk> CrossMatchChunks;
 	NetSync->ConsumePendingPoseChunks(CrossMatchChunks);
 	TestTrue(TEXT("A pose from another MatchEpoch is rejected before interpolation"),
@@ -992,26 +1015,27 @@ bool FGuLiCommanderPoseMatchEpochGateTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("A rejected cross-MatchEpoch chunk cannot advance pose freshness"),
 		NetSync->GetAcceptedPoseFrameCount(), static_cast<uint64>(1u));
 
-	FGuLiSoldierPoseChunk WrongProtocolChunk =
-		GuLiCommanderNetworkTests::MakePoseChunk(MatchEpoch, 3u, 1u);
-	WrongProtocolChunk.ProtocolVersion = GULI_COMMANDER_PROTOCOL_VERSION + 1u;
-	NetSync->TestOnly_ReceivePoseChunk(WrongProtocolChunk);
+	FGuLiEncodedPoseBlock WrongProtocolBlock =
+		GuLiCommanderNetworkTests::MakePoseBlock(MatchEpoch, 3u, 1u);
+	// The first 16 bits are the real wire version; no decoded DTO can bypass this boundary.
+	WrongProtocolBlock.Data[0] = uint8(GULI_COMMANDER_PROTOCOL_VERSION - 1u);
+	NetSync->TestOnly_ReceivePoseBlock(WrongProtocolBlock);
 	TArray<FGuLiSoldierPoseChunk> WrongProtocolChunks;
 	NetSync->ConsumePendingPoseChunks(WrongProtocolChunks);
 	TestTrue(TEXT("A pose with another protocol version is rejected by the runtime gate"),
 		WrongProtocolChunks.IsEmpty());
 
 	NetSync->TestOnly_ConfigureClientPoseGate(false, MatchEpoch);
-	NetSync->TestOnly_ReceivePoseChunk(
-		GuLiCommanderNetworkTests::MakePoseChunk(MatchEpoch, 4u, 1u));
+	NetSync->TestOnly_ReceivePoseBlock(
+		GuLiCommanderNetworkTests::MakePoseBlock(MatchEpoch, 4u, 1u));
 	TArray<FGuLiSoldierPoseChunk> PreBootstrapChunks;
 	NetSync->ConsumePendingPoseChunks(PreBootstrapChunks);
 	TestTrue(TEXT("A matching pose is rejected until the roster/bootstrap gate is ready"),
 		PreBootstrapChunks.IsEmpty());
 
 	NetSync->TestOnly_ConfigureClientPoseGate(true, OtherMatchEpoch);
-	NetSync->TestOnly_ReceivePoseChunk(
-		GuLiCommanderNetworkTests::MakePoseChunk(OtherMatchEpoch, 5u, 1u));
+	NetSync->TestOnly_ReceivePoseBlock(
+		GuLiCommanderNetworkTests::MakePoseBlock(OtherMatchEpoch, 5u, 1u));
 	TArray<FGuLiSoldierPoseChunk> NewMatchChunks;
 	NetSync->ConsumePendingPoseChunks(NewMatchChunks);
 	TestEqual(TEXT("The same pose is accepted after the client explicitly adopts the new MatchEpoch"),
@@ -1334,6 +1358,196 @@ bool FGuLiCommanderFloatHealthContractTest::RunTest(const FString& Parameters)
 		TestEqual(TEXT("Non-finite health is never replicated"), Stored->Health, 0.0f);
 	}
 	TestWorld->DestroyWorld(false);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiPoseQuantizationTest,
+	"GuLiStrike.Commander.Network.PoseQuantization", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuLiPoseQuantizationTest::RunTest(const FString& Parameters)
+{
+	FGuLiQuantizedSoldierPose Pose;
+	TestTrue(TEXT("Quantize signed half steps"), GuLiCommanderPoseCodec::Quantize(FVector(50, -50, -5), FVector(50, -50, 150), 359.8f, Pose));
+	TestEqual(TEXT("XY positive half rounds away"), Pose.WorldXMeters, 1);
+	TestEqual(TEXT("XY negative half rounds away"), Pose.WorldYMeters, -1);
+	TestEqual(TEXT("Z negative half rounds away"), Pose.WorldZDecimeters, -1);
+	TestEqual(TEXT("Velocity uses meters/second"), Pose.VelocityXMetersPerSecond, int16(1));
+	TestEqual(TEXT("Signed velocity"), Pose.VelocityYMetersPerSecond, int16(-1));
+	TestEqual(TEXT("Yaw wraps to zero"), Pose.FacingYaw, uint8(0));
+	TestEqual(TEXT("Negative yaw wraps"), GuLiCommanderProtocol::QuantizeYawDegrees(-1.40625f), uint8(255));
+	for (int32 Index = -1000; Index <= 1000; ++Index)
+	{
+		const FVector Position(Index * 53.7, Index * -71.1, Index * 3.1);
+		const FVector Velocity(Index * 1.7, Index * -2.3, Index * 0.8);
+		const float Yaw = Index * 0.37f;
+		if (!GuLiCommanderPoseCodec::Quantize(Position, Velocity, Yaw, Pose)) return false;
+		const FVector Error = (Pose.GetWorldLocationCentimeters() - Position).GetAbs();
+		TestTrue(TEXT("Position error stays within each axis budget"), Error.X <= 50.0001 && Error.Y <= 50.0001 && Error.Z <= 5.0001);
+		TestTrue(TEXT("Velocity component error stays within 0.5m/s"), (Pose.GetVelocityCentimetersPerSecond() - Velocity).GetAbs().GetMax() <= 50.0001);
+		TestTrue(TEXT("Yaw error stays within half an 8-bit step"), FMath::Abs(FMath::FindDeltaAngleDegrees(Yaw,
+			GuLiCommanderProtocol::DequantizeYawDegrees(Pose.FacingYaw))) <= 0.7032f);
+	}
+	TestFalse(TEXT("Out-of-range world coordinate is rejected, not saturated"), Pose.SetWorldLocationCentimeters(FVector(1e15, 0, 0)));
+	TestFalse(TEXT("Out-of-range velocity is rejected"), Pose.SetVelocityCentimetersPerSecond(FVector(1e15, 0, 0)));
+	TestFalse(TEXT("Non-finite network sample is rejected"), GuLiCommanderPoseCodec::Quantize(FVector::ZeroVector,
+		FVector::ZeroVector, std::numeric_limits<float>::quiet_NaN(), Pose));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiPosePredictionTest,
+	"GuLiStrike.Commander.Network.PosePredictionAndFields", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuLiPosePredictionTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiCommanderPoseCodec;
+	FSender Sender; FReceiver Receiver;
+	Sender.Reset(2, 4); Receiver.Reset(2, 4);
+	auto Source = GuLiCommanderNetworkTests::MakePoseChunk(4, 1, 99);
+	auto& Pose = Source.Samples[0];
+	Pose.WorldXMeters = -100; Pose.WorldYMeters = 100; Pose.WorldZDecimeters = 7;
+	Pose.VelocityXMetersPerSecond = 10; Pose.VelocityYMetersPerSecond = -10; Pose.VelocityZMetersPerSecond = 2;
+	Pose.FacingYaw = 255; Pose.State = EGuLiSoldierPoseState::Moving; Pose.ActiveOrderId = 123;
+	TArray<FGuLiEncodedPoseBlock> Blocks;
+	Sender.Encode(Source, Blocks);
+	const int32 AbsoluteBytes = Blocks[0].Data.Num();
+	FGuLiSoldierPoseChunk Decoded;
+	TestTrue(TEXT("Initial absolute sample"), Receiver.Decode(Blocks[0], Decoded) == EDecodeResult::Decoded);
+	FGuLiPoseAcknowledgment Ack;
+	Receiver.BuildAcknowledgment(Ack); Sender.Confirm(Ack);
+	Source.FrameSequence = 2; Source.ServerSimTick = 2; Source.ServerTimeSeconds = 0.2f;
+	++Pose.WorldXMeters; --Pose.WorldYMeters; Pose.WorldZDecimeters += 2;
+	Sender.Encode(Source, Blocks);
+	const int32 PredictionBytes = Blocks[0].Data.Num();
+	TestTrue(TEXT("Constant-velocity fields compress"), PredictionBytes < AbsoluteBytes);
+	TestTrue(TEXT("Current-tick prediction decodes"), Receiver.Decode(Blocks[0], Decoded) == EDecodeResult::Decoded);
+	TestTrue(TEXT("Omitted positions still advance at the sample cadence"), Decoded.Samples[0].GetWorldLocationCentimeters() == Pose.GetWorldLocationCentimeters()
+		&& Decoded.ServerSimTick == 2 && Decoded.ServerTimeSeconds == 0.2f);
+	Receiver.BuildAcknowledgment(Ack); Sender.Confirm(Ack);
+	Source.FrameSequence = 3; Source.ServerSimTick = 3; Source.ServerTimeSeconds = 0.3f;
+	Pose.WorldXMeters += 2; Pose.WorldYMeters += 3; Pose.WorldZDecimeters -= 2;
+	Pose.VelocityXMetersPerSecond = -36; Pose.VelocityYMetersPerSecond = 21; Pose.VelocityZMetersPerSecond = -3;
+	Pose.FacingYaw = 0; Pose.ActiveOrderId = MAX_uint32;
+	Sender.Encode(Source, Blocks);
+	TestTrue(TEXT("Turning and order changes decode"), Receiver.Decode(Blocks[0], Decoded) == EDecodeResult::Decoded);
+	TestTrue(TEXT("All component deltas are exact"), Decoded.Samples[0].GetWorldLocationCentimeters() == Pose.GetWorldLocationCentimeters()
+		&& Decoded.Samples[0].GetVelocityCentimetersPerSecond() == Pose.GetVelocityCentimetersPerSecond()
+		&& Decoded.Samples[0].FacingYaw == 0 && Decoded.Samples[0].ActiveOrderId == MAX_uint32);
+	Receiver.BuildAcknowledgment(Ack); Sender.Confirm(Ack);
+	Source.FrameSequence = 4; Source.ServerSimTick = 4;
+	Pose.SetVelocityCentimetersPerSecond(FVector::ZeroVector); Pose.State = EGuLiSoldierPoseState::Idle; Pose.ActiveOrderId = 0;
+	Sender.Encode(Source, Blocks); Receiver.Decode(Blocks[0], Decoded);
+	TestTrue(TEXT("Stop cancels predicted motion with exact residuals"), Decoded.Samples[0].GetWorldLocationCentimeters() == Pose.GetWorldLocationCentimeters()
+		&& Decoded.Samples[0].GetVelocityCentimetersPerSecond().IsZero() && Decoded.Samples[0].State == EGuLiSoldierPoseState::Idle);
+	Receiver.BuildAcknowledgment(Ack); Sender.Confirm(Ack);
+	Source.FrameSequence = 5; Source.ServerSimTick = 5;
+	Sender.Encode(Source, Blocks); Receiver.Decode(Blocks[0], Decoded);
+	TestTrue(TEXT("Unchanged fields still create a complete current sample"), Decoded.ServerSimTick == 5
+		&& Decoded.Samples[0].GetWorldLocationCentimeters() == Pose.GetWorldLocationCentimeters() && Blocks[0].Data.Num() <= PredictionBytes);
+	Pose.Flags = GULI_SOLDIER_POSE_FLAG_TELEPORT; Pose.WorldXMeters = 98765;
+	++Source.FrameSequence; ++Source.ServerSimTick;
+	Sender.Encode(Source, Blocks);
+	FReceiver Fresh; Fresh.Reset(2, 4);
+	TestTrue(TEXT("Teleport has no historical dependency"), Fresh.Decode(Blocks[0], Decoded) == EDecodeResult::Decoded
+		&& Decoded.Samples[0].IsTeleport() && Decoded.Samples[0].WorldXMeters == 98765);
+	Receiver.Decode(Blocks[0], Decoded); Receiver.BuildAcknowledgment(Ack); Sender.Confirm(Ack);
+	Pose.Flags = 0; ++Source.FrameSequence; ++Source.ServerSimTick;
+	Sender.Encode(Source, Blocks); Receiver.Decode(Blocks[0], Decoded);
+	TestFalse(TEXT("Teleport flag clears through its own field delta"), Decoded.Samples[0].IsTeleport());
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiPoseLossAndSessionTest,
+	"GuLiStrike.Commander.Network.PoseLossReorderingAndSession", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuLiPoseLossAndSessionTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiCommanderPoseCodec;
+	FSender Sender; FReceiver Receiver;
+	Sender.Reset(1, 3); Receiver.Reset(1, 3);
+	auto Source = GuLiCommanderNetworkTests::MakePoseChunk(3, 1, 9);
+	TArray<FGuLiEncodedPoseBlock> First, Second, Third;
+	Sender.Encode(Source, First);
+	++Source.FrameSequence; ++Source.ServerSimTick;
+	Sender.Encode(Source, Second); // The first block was lost: no speculative baseline.
+	FGuLiSoldierPoseChunk Decoded;
+	TestTrue(TEXT("Loss before any ACK sends a fresh absolute"), Receiver.Decode(Second[0], Decoded) == EDecodeResult::Decoded);
+	TestTrue(TEXT("Out-of-order old absolute can fill history"), Receiver.Decode(First[0], Decoded) == EDecodeResult::Decoded);
+	TestTrue(TEXT("Duplicate is identified without duplicate sample insertion"), Receiver.Decode(Second[0], Decoded) == EDecodeResult::Duplicate);
+	FGuLiPoseAcknowledgment Ack;
+	Receiver.BuildAcknowledgment(Ack);
+	TestTrue(TEXT("ACK bitmap includes both decoded blocks"), Ack.LatestSequence == 2 && (Ack.ReceivedBits[0] & 3) == 3);
+	TestTrue(TEXT("Confirm complete decoded history"), Sender.Confirm(Ack));
+	auto FutureAck = Ack; FutureAck.LatestSequence = 9999;
+	TestFalse(TEXT("Future ACK cannot promote a baseline"), Sender.Confirm(FutureAck));
+	++Source.FrameSequence; ++Source.ServerSimTick;
+	Sender.Encode(Source, Third);
+	FReceiver Missing; Missing.Reset(1, 3);
+	TestTrue(TEXT("Missing baseline drops whole delta block"), Missing.Decode(Third[0], Decoded) == EDecodeResult::MissingBaseline);
+	TestFalse(TEXT("Incomplete decoding is not acknowledged"), Missing.BuildAcknowledgment(FutureAck));
+	// A malformed new block cannot confirm its already decoded prefix.
+	auto Truncated = Third[0]; Truncated.Data.Pop();
+	TestTrue(TEXT("Truncated block is rejected"), Receiver.Decode(Truncated, Decoded) == EDecodeResult::InvalidPayload);
+	Receiver.BuildAcknowledgment(FutureAck);
+	TestEqual(TEXT("Failed block did not enter ACK history"), FutureAck.LatestSequence, 2u);
+	TestTrue(TEXT("Valid block still decodes after malformed copy"), Receiver.Decode(Third[0], Decoded) == EDecodeResult::Decoded);
+	TestTrue(TEXT("An old ACK is idempotent"), Sender.Confirm(Ack));
+	Receiver.Reset(2, 3);
+	TestEqual(TEXT("Reconnect releases receive allocations"), Receiver.GetAllocatedBytes(), uint64(0));
+	TestTrue(TEXT("Old connection block is rejected"), Receiver.Decode(First[0], Decoded) == EDecodeResult::WrongSession);
+	Sender.Reset(2, 3);
+	TestEqual(TEXT("Reconnect returns sender storage to empty-container size"), Sender.GetAllocatedBytes(), FSender().GetAllocatedBytes());
+	TestFalse(TEXT("Old connection ACK is rejected"), Sender.Confirm(Ack));
+	Sender.Encode(Source, First);
+	TestTrue(TEXT("New connection starts absolute"), Receiver.Decode(First[0], Decoded) == EDecodeResult::Decoded);
+	Receiver.Reset(2, 4);
+	TestTrue(TEXT("Old match is rejected even with matching connection generation"), Receiver.Decode(First[0], Decoded) == EDecodeResult::WrongSession);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiPoseHistoryExpiryTest,
+	"GuLiStrike.Commander.Network.PoseHistoryExpiryAndCleanup", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuLiPoseHistoryExpiryTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiCommanderPoseCodec;
+	FSender Sender; FReceiver Receiver;
+	Sender.Reset(1, 1); Receiver.Reset(1, 1);
+	auto Source = GuLiCommanderNetworkTests::MakePoseChunk(1, 1, 1);
+	TArray<FGuLiEncodedPoseBlock> Blocks;
+	Sender.Encode(Source, Blocks);
+	const auto Old = Blocks[0];
+	FGuLiSoldierPoseChunk Decoded;
+	Receiver.Decode(Blocks[0], Decoded);
+	FGuLiPoseAcknowledgment Ack;
+	Receiver.BuildAcknowledgment(Ack); Sender.Confirm(Ack);
+	Source.ServerSimTick = 22; ++Source.FrameSequence;
+	Sender.Encode(Source, Blocks);
+	FReceiver Fresh; Fresh.Reset(1, 1);
+	TestTrue(TEXT("More than 20 steps forces an absolute sample"), Fresh.Decode(Blocks[0], Decoded) == EDecodeResult::Decoded);
+	Receiver.Decode(Blocks[0], Decoded); Receiver.BuildAcknowledgment(Ack); Sender.Confirm(Ack);
+	// Hold simulation tick fixed to isolate the block-distance expiry rule.
+	for (uint32 Index = 0; Index < MaxBaselineBlocks + 1; ++Index)
+	{
+		++Source.FrameSequence; Sender.Encode(Source, Blocks);
+		Receiver.Decode(Blocks[0], Decoded);
+	}
+	Fresh.Reset(1, 1);
+	TestTrue(TEXT("More than 1024 blocks forces absolute regardless of step age"), Fresh.Decode(Blocks[0], Decoded) == EDecodeResult::Decoded);
+	Receiver.BuildAcknowledgment(Ack); Sender.Confirm(Ack);
+	TArray<FGuLiSoldierId> Removed { FGuLiSoldierId(1) };
+	Sender.Forget(Removed); Receiver.Forget(Removed);
+	++Source.FrameSequence; Sender.Encode(Source, Blocks);
+	Fresh.Reset(1, 1);
+	TestTrue(TEXT("Recycled unit has no sender baseline"), Fresh.Decode(Blocks[0], Decoded) == EDecodeResult::Decoded);
+	// A delayed pre-removal ACK must not resurrect a removed baseline.
+	Sender.Confirm(Ack); ++Source.FrameSequence; Sender.Encode(Source, Blocks);
+	Fresh.Reset(1, 1);
+	TestTrue(TEXT("Old ACK cannot restore forgotten samples"), Fresh.Decode(Blocks[0], Decoded) == EDecodeResult::Decoded);
+	for (uint32 Index = 0; Index < HistoryCapacity + 10; ++Index)
+	{
+		++Source.FrameSequence; Sender.Encode(Source, Blocks); Receiver.Decode(Blocks[0], Decoded);
+	}
+	TestTrue(TEXT("Out-of-window block cannot overwrite a recent ring slot"), Receiver.Decode(Old, Decoded) == EDecodeResult::TooOld);
+	TestTrue(TEXT("Only 2048 blocks plus one unit baseline are retained"), Sender.GetAllocatedBytes() < 1024u * 1024u && Receiver.GetAllocatedBytes() < 1024u * 1024u);
+	Receiver.Reset(); Sender.Reset();
+	TestFalse(TEXT("Cache reset removes ACK readiness"), Receiver.BuildAcknowledgment(Ack));
+	TestEqual(TEXT("Cache reset returns to empty-container storage"), Sender.GetAllocatedBytes() + Receiver.GetAllocatedBytes(), FSender().GetAllocatedBytes());
 	return true;
 }
 

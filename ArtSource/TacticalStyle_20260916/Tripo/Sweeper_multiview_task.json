@@ -1,0 +1,38 @@
+{
+  "unit": "Sweeper",
+  "inputs": [
+    "ArtSource\\TacticalStyle_20260916\\Concepts\\Sweeper_Front.png",
+    "ArtSource\\TacticalStyle_20260916\\Concepts\\Sweeper_Left.png",
+    "ArtSource\\TacticalStyle_20260916\\Concepts\\Sweeper_Back.png"
+  ],
+  "payload": {
+    "type": "multiview_to_model",
+    "model_version": "P1-20260311",
+    "files": [
+      {
+        "type": "png",
+        "file_token": "5d5c5589-1d99-46a1-926d-8a6a96b46d9f"
+      },
+      {
+        "type": "png",
+        "file_token": "4f1ccf02-9cac-4c15-8f02-0031a4350baf"
+      },
+      {
+        "type": "png",
+        "file_token": "72442937-f82d-41a6-8b6b-631290e2289e"
+      },
+      {}
+    ],
+    "face_limit": 4000,
+    "texture": true,
+    "pbr": true,
+    "model_seed": 20260916,
+    "texture_seed": 20260916,
+    "texture_quality": "standard",
+    "texture_alignment": "geometry",
+    "export_uv": true
+  },
+  "submission_pending": false,
+  "documentation": "https://docs.tripo3d.ai/model-generation/multiview-to-model-p1-20260311.html",
+  "task_id": "837deaa2-03e7-49c4-a54a-37b12ac219e9"
+}

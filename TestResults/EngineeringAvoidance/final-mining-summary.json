@@ -1,0 +1,102 @@
+{
+  "first_ready_time": 112.81802293285728,
+  "last_time": 206.62984243407845,
+  "max_ground_obstacles": 40,
+  "deployment": {
+    "red": "<Struct 'Vector' (0x000001A6EF7DFA58) {x: 0.000000, y: 180000.000000, z: 0.000000}>",
+    "blue": "<Struct 'Vector' (0x000001A6EF7DFA70) {x: 0.000000, y: -180000.000000, z: 0.000000}>"
+  },
+  "vehicles": {
+    "GuLiMiningVehiclePawn_0": {
+      "states": {
+        "<GuLiMiningTaskState.IDLE: 0>": [
+          "Mode=1"
+        ],
+        "<GuLiMiningTaskState.MOVING_TO_CLUSTER: 1>": [
+          "Mode=0"
+        ],
+        "<GuLiMiningTaskState.MINING: 2>": [
+          "Mode=1"
+        ],
+        "<GuLiMiningTaskState.RETURNING_TO_FACTORY: 3>": [
+          "Mode=0"
+        ],
+        "<GuLiMiningTaskState.ENTERING_FACTORY: 8>": [
+          "Mode=1"
+        ],
+        "<GuLiMiningTaskState.DOCKING: 4>": [
+          "Mode=1"
+        ],
+        "<GuLiMiningTaskState.EXITING_FACTORY: 10>": [
+          "Mode=1"
+        ]
+      },
+      "unload_times": [
+        141.2875578328967,
+        165.86841953918338,
+        189.29453633725643
+      ],
+      "mining_after_unload": true,
+      "final": {
+        "name": "GuLiMiningVehiclePawn_0",
+        "position": [
+          -9820.64325312261,
+          229314.5707354124,
+          -5712.687319642554
+        ],
+        "task": "<GuLiMiningTaskState.RETURNING_TO_FACTORY: 3>",
+        "cargo": "(Blue=10,Red=0,Revision=10)",
+        "cluster": 0,
+        "laser": false,
+        "debug": "Mode=0 Registered=1 Radius=1093.6 Query=12000.0 Neighbours=0 Path=3 Nav=RecastNavMesh-CommanderSoldier"
+      }
+    },
+    "GuLiMiningVehiclePawn_1": {
+      "states": {
+        "<GuLiMiningTaskState.IDLE: 0>": [
+          "Mode=1"
+        ],
+        "<GuLiMiningTaskState.MOVING_TO_CLUSTER: 1>": [
+          "Mode=0"
+        ],
+        "<GuLiMiningTaskState.MINING: 2>": [
+          "Mode=1"
+        ],
+        "<GuLiMiningTaskState.RETURNING_TO_FACTORY: 3>": [
+          "Mode=0"
+        ],
+        "<GuLiMiningTaskState.WAITING_FOR_FACTORY_DOOR: 7>": [
+          "Mode=1"
+        ],
+        "<GuLiMiningTaskState.ENTERING_FACTORY: 8>": [
+          "Mode=1"
+        ],
+        "<GuLiMiningTaskState.DOCKING: 4>": [
+          "Mode=1"
+        ],
+        "<GuLiMiningTaskState.EXITING_FACTORY: 10>": [
+          "Mode=1"
+        ]
+      },
+      "unload_times": [
+        140.88032283261418,
+        165.46006433665752,
+        189.51333143934608
+      ],
+      "mining_after_unload": true,
+      "final": {
+        "name": "GuLiMiningVehiclePawn_1",
+        "position": [
+          -9816.627154659875,
+          -218156.86255275487,
+          -5820.186461005747
+        ],
+        "task": "<GuLiMiningTaskState.MINING: 2>",
+        "cargo": "(Blue=9,Red=0,Revision=9)",
+        "cluster": 217,
+        "laser": true,
+        "debug": "Mode=1 Registered=1 Radius=1093.6 Query=12000.0 Neighbours=0 Path=0 Nav=RecastNavMesh-CommanderSoldier"
+      }
+    }
+  }
+}

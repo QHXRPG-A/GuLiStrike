@@ -1,0 +1,151 @@
+{
+  "wheel_pivots_m": {
+    "Wheel_FL": [
+      4.143702030181885,
+      5.458268165588379,
+      1.8825104236602783
+    ],
+    "Wheel_FR": [
+      4.143702030181885,
+      -5.458268165588379,
+      1.8825104236602783
+    ],
+    "Wheel_RL": [
+      -5.513233661651611,
+      5.458268165588379,
+      2.042459726333618
+    ],
+    "Wheel_RR": [
+      -5.513233661651611,
+      -5.458268165588379,
+      2.042459726333618
+    ]
+  },
+  "wheel_radius_m": 1.9193909591254439,
+  "sockets_m": {
+    "Rig_GunPitch": [
+      0.0250086709856987,
+      0.0,
+      5.881241798400879
+    ],
+    "Muzzle_Gun": [
+      7.572613716125488,
+      0.0,
+      5.881241798400879
+    ]
+  },
+  "gun_pitch_limits_degrees": [
+    -15,
+    60
+  ],
+  "shoulder_surface": "Mirrored convex formed shells; integral curved paint and seams",
+  "shoulder_crown_author_units": 0.52,
+  "unit": "Sweeper",
+  "display_name": "扫荡者",
+  "method": "Authored Blender geometry from approved concept and three views. No Tripo geometry or texture.",
+  "references": [
+    "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\Sweeper_Concept_v1.png",
+    "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\Sweeper_Front.png",
+    "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\Sweeper_Left.png",
+    "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\Sweeper_Back.png"
+  ],
+  "palette": [
+    "DD6038",
+    "F2EBDD",
+    "52687A",
+    "283844",
+    "FFD166",
+    "8295A1",
+    "AC452B"
+  ],
+  "bounds_m": [
+    [
+      -7.600710391998291,
+      -6.561491966247559,
+      -0.04839032143354416
+    ],
+    [
+      7.596341133117676,
+      6.561491966247559,
+      11.44225025177002
+    ]
+  ],
+  "triangles": 10964,
+  "symmetry_error_m": 4.915124804938387e-07,
+  "source_scale": 1.9993655824223375,
+  "source_offset": [
+    -0.13749170303344727,
+    0.0,
+    -0.01844608783721924
+  ],
+  "parts": 106,
+  "hidden_triangles_removed": 462,
+  "vertices": 3342,
+  "bone_names": [
+    "root",
+    "Body",
+    "Wheel_FL",
+    "Wheel_FR",
+    "Wheel_RL",
+    "Wheel_RR",
+    "Gun_Pitch"
+  ],
+  "rigid_weights_valid": true,
+  "material_slots": 2,
+  "texture_size": [
+    2048,
+    2048
+  ],
+  "uv_layers": [
+    "Atlas",
+    "RigidPivotXY_UE",
+    "RigidPivotZ_Radius_UE"
+  ],
+  "pose_inspection": [
+    {
+      "gun_pitch_degrees": -15,
+      "rigid_skin_error_m": 5.331201499700045e-07,
+      "body_movement_error_m": 0
+    },
+    {
+      "gun_pitch_degrees": 0,
+      "rigid_skin_error_m": 5.331201499700045e-07,
+      "body_movement_error_m": 0
+    },
+    {
+      "gun_pitch_degrees": 35,
+      "rigid_skin_error_m": 9.5367431640625e-07,
+      "body_movement_error_m": 0
+    },
+    {
+      "gun_pitch_degrees": 60,
+      "rigid_skin_error_m": 1.066240299940009e-06,
+      "body_movement_error_m": 0
+    }
+  ],
+  "cel": {
+    "structural_edges": 1865,
+    "line_radius_m": 0.019993655824223376,
+    "mask_size": [
+      2048,
+      2048
+    ],
+    "ink_fraction": 0.09015798568725586
+  },
+  "contour_width_m": 0.05198350514298077,
+  "body_triangles": 5482,
+  "contour_triangles": 5482,
+  "body_bounds_m": [
+    [
+      -7.552619934082031,
+      -6.528728485107422,
+      0.0
+    ],
+    [
+      7.552619934082031,
+      6.528728485107422,
+      11.409486770629883
+    ]
+  ],
+  "runtime_light": "Three bands from world normal and an art-directed directional-light parameter; no engine shading-model change"
+}

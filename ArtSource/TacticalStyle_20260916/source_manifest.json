@@ -1,0 +1,826 @@
+{
+  "units": {
+    "Sweeper": {
+      "source_blueprint": "/Game/MC_Vehicle_Constructor/Blueprints/Wheeled_Bug_Blueprint.Wheeled_Bug_Blueprint",
+      "components": [
+        {
+          "name": "SkeletalMeshComponent0",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Bug/Chassis_Bug_Lvl2.Chassis_Bug_Lvl2",
+          "transform": {
+            "translation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "bones": {
+            "ROOT": {
+              "translation": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation": [
+                -1.1102230246251565e-16,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "Body": {
+              "translation": [
+                0.0,
+                5.473822126268817e-46,
+                100.0
+              ],
+              "rotation": [
+                1.1102230246251565e-16,
+                0.0,
+                0.0,
+                -1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "Wheel_FL": {
+              "translation": [
+                230.33428955078125,
+                -144.50271606445312,
+                70.59841918945312
+              ],
+              "rotation": [
+                -1.1102230246251565e-16,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "Wheel_FR": {
+              "translation": [
+                230.33428955078125,
+                144.50271606445312,
+                70.59841918945312
+              ],
+              "rotation": [
+                -1.1102230246251565e-16,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "Wheel_RL": {
+              "translation": [
+                -236.2906494140625,
+                -150.5761260986328,
+                83.9630126953125
+              ],
+              "rotation": [
+                -1.1102230246251565e-16,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "Wheel_RR": {
+              "translation": [
+                -236.2906494140625,
+                150.57611083984375,
+                83.9630126953125
+              ],
+              "rotation": [
+                -1.1102230246251565e-16,
+                0.0,
+                0.0,
+                1.0
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "Mount_Cockpit": {
+              "translation": [
+                72.67713165283203,
+                1.6137565831970523e-14,
+                157.7194366455078
+              ],
+              "rotation": [
+                -7.850462293418877e-17,
+                -7.850462293418876e-17,
+                -0.7071067811865476,
+                0.7071067811865477
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            },
+            "Mount_Chassis_Quad_Extension": {
+              "translation": [
+                72.67713165283203,
+                -1.8883183319946817e-14,
+                157.7194366455078
+              ],
+              "rotation": [
+                -0.02467768227944052,
+                0.024677659277226104,
+                -0.7066757014921389,
+                0.706676360189377
+              ],
+              "scale": [
+                1.0,
+                1.0,
+                1.0
+              ]
+            }
+          }
+        },
+        {
+          "name": "Chassis_Quad_Headlights_Lvl1",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Chassis/Chassis_Quad/Chassis_Quad_Extensions/Chassis_Quad_Headlights_Lvl1.Chassis_Quad_Headlights_Lvl1",
+          "transform": {
+            "translation": [
+              72.67713165283203,
+              -1.8883183319946817e-14,
+              157.7194366455078
+            ],
+            "rotation": [
+              -0.02467768227944052,
+              0.024677659277226104,
+              -0.7066757014921389,
+              0.706676360189377
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Cockpit_Freight_Wedge",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Freight_Wedge.Cockpit_Freight_Wedge",
+          "transform": {
+            "translation": [
+              72.67713165283203,
+              1.6137565831970523e-14,
+              157.7194366455078
+            ],
+            "rotation": [
+              -7.850462293418877e-17,
+              -7.850462293418876e-17,
+              -0.7071067811865476,
+              0.7071067811865477
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Back_Flat",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Backs/Back_Flat.Back_Flat",
+          "transform": {
+            "translation": [
+              28.371471405029283,
+              -2.1834153696886254e-13,
+              230.31277465820312
+            ],
+            "rotation": [
+              -5.685572205845241e-17,
+              -1.001535238099251e-16,
+              -0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Back_Base_Bee",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Backs/Back_Base_Bee.Back_Base_Bee",
+          "transform": {
+            "translation": [
+              28.371471405029283,
+              -2.1834153696886254e-13,
+              230.31277465820312
+            ],
+            "rotation": [
+              -5.685572205845241e-17,
+              -1.001535238099251e-16,
+              -0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Antenna_RC",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Backs/Antenna_RC.Antenna_RC",
+          "transform": {
+            "translation": [
+              -119.93791580200197,
+              40.50846481323217,
+              301.8884811401367
+            ],
+            "rotation": [
+              -3.5206821182716046e-17,
+              -1.2180242468566142e-16,
+              -0.7071067811865474,
+              0.7071067811865475
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Back_Thruster_Lvl1",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Backs/Back_Thrusters/Back_Thruster_Lvl1.Back_Thruster_Lvl1",
+          "transform": {
+            "translation": [
+              -136.7442512512207,
+              -2.4676324639926655e-13,
+              236.17468786239624
+            ],
+            "rotation": [
+              -3.5206821182716046e-17,
+              -1.2180242468566142e-16,
+              -0.7071067811865474,
+              0.7071067811865475
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        }
+      ],
+      "old_bounds": {
+        "origin": [
+          0.0,
+          -3.0517578125e-05,
+          582.8300170898438
+        ],
+        "extent": [
+          755.2620239257812,
+          755.261962890625,
+          610.8494262695312
+        ]
+      },
+      "old_triangles": [
+        18999,
+        964,
+        238
+      ]
+    },
+    "WarMachine": {
+      "source_blueprint": "/Game/MC_Vehicle_Constructor/Blueprints/Quad_Lvl3_Blueprint.Quad_Lvl3_Blueprint",
+      "components": [
+        {
+          "name": "StaticMeshComponent0",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Chassis/Chassis_Quad/Chassis_Quad_Lvl3.Chassis_Quad_Lvl3",
+          "transform": {
+            "translation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Fan_Hoverpad_Lvl2",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Fans/Fan_Hoverpad_Lvl2.Fan_Hoverpad_Lvl2",
+          "transform": {
+            "translation": [
+              216.07737731933594,
+              -118.52908325195312,
+              87.09024810791016
+            ],
+            "rotation": [
+              2.164890087573635e-17,
+              -2.1648900875736347e-17,
+              -0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Fan_Hoverpad_Lvl3",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Fans/Fan_Hoverpad_Lvl2.Fan_Hoverpad_Lvl2",
+          "transform": {
+            "translation": [
+              216.07737731933594,
+              118.52869415283203,
+              87.09024810791016
+            ],
+            "rotation": [
+              2.1648900875736347e-17,
+              -2.1648900875736347e-17,
+              -0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              -1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Fan_Hoverpad_Lvl4",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Fans/Fan_Hoverpad_Lvl3.Fan_Hoverpad_Lvl3",
+          "transform": {
+            "translation": [
+              -243.5322723388672,
+              -142.95355224609375,
+              88.28578186035156
+            ],
+            "rotation": [
+              2.164890087573635e-17,
+              -2.1648900875736347e-17,
+              -0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Fan_Hoverpad_Lvl5",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Fans/Fan_Hoverpad_Lvl3.Fan_Hoverpad_Lvl3",
+          "transform": {
+            "translation": [
+              -243.5322723388672,
+              142.9531707763672,
+              88.28578186035156
+            ],
+            "rotation": [
+              2.1648900875736347e-17,
+              -2.1648900875736347e-17,
+              -0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              -1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Cockpit_Aero_Blunt",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Aero_Blunt.Cockpit_Aero_Blunt",
+          "transform": {
+            "translation": [
+              58.547454833984375,
+              3.257997882165787e-15,
+              159.1013641357422
+            ],
+            "rotation": [
+              2.164890087573635e-17,
+              -2.1648900875736347e-17,
+              -0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Cockpit_Nose_Sting",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Nose_Sting.Cockpit_Nose_Sting",
+          "transform": {
+            "translation": [
+              58.547454833984375,
+              3.257997882165787e-15,
+              159.1013641357422
+            ],
+            "rotation": [
+              4.3297801751472694e-17,
+              -4.329780175147269e-17,
+              -0.7071067811865474,
+              0.7071067811865475
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Back_Base_Cobra_Lvl2",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes/Backs/Back_Base_Cobra_Lvl2.Back_Base_Cobra_Lvl2",
+          "transform": {
+            "translation": [
+              14.241794586181634,
+              -2.667482417066723e-13,
+              231.6947021484375
+            ],
+            "rotation": [
+              4.3297801751472694e-17,
+              -4.329780175147269e-17,
+              -0.7071067811865474,
+              0.7071067811865475
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ]
+        },
+        {
+          "name": "Weapon_TwinCannon_Lvl2",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Sides/Weapons/Weapon_TwinCannon_Lvl2.Weapon_TwinCannon_Lvl2",
+          "transform": {
+            "translation": [
+              -46.77547836303702,
+              -126.62799072265649,
+              304.14685821533203
+            ],
+            "rotation": [
+              6.494670262720902e-17,
+              -6.494670262720902e-17,
+              -0.7071067811865472,
+              0.7071067811865474
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "bones": {
+            "TwinCannon_Body": {
+              "translation": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation": [
+                -0.7071067094802852,
+                0.0,
+                0.0,
+                0.7071068286895746
+              ],
+              "scale": [
+                1.0,
+                0.9999999403953552,
+                0.9999999403953552
+              ]
+            },
+            "TwinCannon_Barrel": {
+              "translation": [
+                40.118637084960866,
+                77.952926950564,
+                1.581013201235264e-05
+              ],
+              "rotation": [
+                0.7071067215818988,
+                0.0,
+                0.0,
+                -0.7071068407911902
+              ],
+              "scale": [
+                1.0,
+                0.9999999403953552,
+                0.9999999403953552
+              ]
+            },
+            "Barrel_End_1": {
+              "translation": [
+                40.59023690223685,
+                229.81395573540362,
+                2.203898702515247
+              ],
+              "rotation": [
+                -0.7071067215818988,
+                0.0,
+                0.0,
+                0.7071068407911902
+              ],
+              "scale": [
+                1.0,
+                0.9999999403953552,
+                0.9999999403953552
+              ]
+            },
+            "Barrel_End_2": {
+              "translation": [
+                40.59023690223694,
+                229.8139591647203,
+                -18.137578432913912
+              ],
+              "rotation": [
+                -0.7071067215818988,
+                0.0,
+                0.0,
+                0.7071068407911902
+              ],
+              "scale": [
+                1.0,
+                0.9999999403953552,
+                0.9999999403953552
+              ]
+            }
+          }
+        },
+        {
+          "name": "Weapon_TwinCannon_Lvl3",
+          "mesh": "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Sides/Weapons/Weapon_TwinCannon_Lvl2.Weapon_TwinCannon_Lvl2",
+          "transform": {
+            "translation": [
+              -46.77547836303716,
+              126.65698242187466,
+              304.14685821533203
+            ],
+            "rotation": [
+              6.494670262720905e-17,
+              -6.4946702627209e-17,
+              -0.7071067811865474,
+              0.7071067811865477
+            ],
+            "scale": [
+              -1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "bones": {
+            "TwinCannon_Body": {
+              "translation": [
+                0.0,
+                0.0,
+                0.0
+              ],
+              "rotation": [
+                -0.7071067094802832,
+                3.2335483074835105e-30,
+                3.1843973452964853e-23,
+                0.7071068528928046
+              ],
+              "scale": [
+                1.0,
+                0.9999999403953552,
+                0.9999999403953552
+              ]
+            },
+            "TwinCannon_Barrel": {
+              "translation": [
+                40.11863708496095,
+                77.9529269505641,
+                1.5810132026672363e-05
+              ],
+              "rotation": [
+                -0.7071067215818994,
+                2.2399512918990264e-30,
+                2.6469777834268798e-23,
+                0.7071068407911908
+              ],
+              "scale": [
+                1.0,
+                0.9999999403953552,
+                0.9999999403953552
+              ]
+            },
+            "Barrel_End_1": {
+              "translation": [
+                40.59023690223695,
+                229.81395573540397,
+                2.203898702515289
+              ],
+              "rotation": [
+                -0.7071067215818994,
+                2.2399512918990264e-30,
+                2.6469777834268798e-23,
+                0.7071068407911908
+              ],
+              "scale": [
+                1.0,
+                0.9999999403953552,
+                0.9999999403953552
+              ]
+            },
+            "Barrel_End_2": {
+              "translation": [
+                40.59023690223695,
+                229.81395916472064,
+                -18.13757843291387
+              ],
+              "rotation": [
+                -0.7071067215818994,
+                2.2399512918990264e-30,
+                2.6469777834268798e-23,
+                0.7071068407911908
+              ],
+              "scale": [
+                1.0,
+                0.9999999403953552,
+                0.9999999403953552
+              ]
+            }
+          }
+        }
+      ],
+      "old_bounds": {
+        "origin": [
+          261.3143310546875,
+          494.84326171875,
+          919.8495483398438
+        ],
+        "extent": [
+          2839.9365234375,
+          2880.746337890625,
+          1850.409423828125
+        ]
+      },
+      "old_triangles": [
+        19000,
+        321,
+        78
+      ]
+    }
+  },
+  "meshes": {
+    "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Chassis/Chassis_Bug/Chassis_Bug_Lvl2.Chassis_Bug_Lvl2": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Chassis_Bug_Lvl2.fbx",
+      "skeletal": true
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes/Chassis/Chassis_Quad/Chassis_Quad_Extensions/Chassis_Quad_Headlights_Lvl1.Chassis_Quad_Headlights_Lvl1": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Chassis_Quad_Headlights_Lvl1.fbx",
+      "skeletal": false
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Freight_Wedge.Cockpit_Freight_Wedge": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Cockpit_Freight_Wedge.fbx",
+      "skeletal": false
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes/Backs/Back_Flat.Back_Flat": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Back_Flat.fbx",
+      "skeletal": false
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes/Backs/Back_Base_Bee.Back_Base_Bee": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Back_Base_Bee.fbx",
+      "skeletal": false
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes/Backs/Antenna_RC.Antenna_RC": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Antenna_RC.fbx",
+      "skeletal": false
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes/Backs/Back_Thrusters/Back_Thruster_Lvl1.Back_Thruster_Lvl1": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Back_Thruster_Lvl1.fbx",
+      "skeletal": false
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes/Chassis/Chassis_Quad/Chassis_Quad_Lvl3.Chassis_Quad_Lvl3": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Chassis_Quad_Lvl3.fbx",
+      "skeletal": false
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Fans/Fan_Hoverpad_Lvl2.Fan_Hoverpad_Lvl2": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Fan_Hoverpad_Lvl2.fbx",
+      "skeletal": false
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes/Sides/Side_Fans/Fan_Hoverpad_Lvl3.Fan_Hoverpad_Lvl3": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Fan_Hoverpad_Lvl3.fbx",
+      "skeletal": false
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Aero_Blunt.Cockpit_Aero_Blunt": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Cockpit_Aero_Blunt.fbx",
+      "skeletal": false
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes/Cockpits/Cockpit_Nose_Sting.Cockpit_Nose_Sting": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Cockpit_Nose_Sting.fbx",
+      "skeletal": false
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes/Backs/Back_Base_Cobra_Lvl2.Back_Base_Cobra_Lvl2": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Back_Base_Cobra_Lvl2.fbx",
+      "skeletal": false
+    },
+    "/Game/MC_Vehicle_Constructor/Meshes_Skeletal/Sides/Weapons/Weapon_TwinCannon_Lvl2.Weapon_TwinCannon_Lvl2": {
+      "file": "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Source\\Weapon_TwinCannon_Lvl2.fbx",
+      "skeletal": true
+    }
+  },
+  "engine": "5.7.4-0+UE5"
+}

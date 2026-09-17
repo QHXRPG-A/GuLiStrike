@@ -1,0 +1,116 @@
+{
+  "success": true,
+  "assets": [
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel.SM_Sweeper_Cel",
+      "dimensions_cm": [
+        1519.7052001953125,
+        1312.2984619140625,
+        1149.0640077590942
+      ],
+      "triangles": 10912,
+      "uv_channels": 3,
+      "slots": [
+        "M_Tactical_Contour",
+        "M_Sweeper_Cel"
+      ]
+    },
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SK_Sweeper_Cel.SK_Sweeper_Cel",
+      "dimensions_cm": [
+        1519.7052001953125,
+        1312.2984619140625,
+        1149.0640077590942
+      ],
+      "bones": [
+        "Rig_Sweeper",
+        "root",
+        "Body",
+        "Wheel_FL",
+        "Wheel_FR",
+        "Wheel_RL",
+        "Wheel_RR",
+        "Gun_Pitch"
+      ],
+      "slots": [
+        "M_Tactical_Contour",
+        "M_Sweeper_Cel"
+      ]
+    },
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel",
+      "dimensions_cm": [
+        5494.144287109375,
+        5790.17041015625,
+        3448.2857837677
+      ],
+      "triangles": 27303,
+      "uv_channels": 3,
+      "slots": [
+        "M_Tactical_Contour",
+        "M_WarMachine_Cel"
+      ]
+    },
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SK_WarMachine_Cel.SK_WarMachine_Cel",
+      "dimensions_cm": [
+        5494.144287109375,
+        5790.17041015625,
+        3448.2857837677
+      ],
+      "bones": [
+        "Rig_WarMachine",
+        "root",
+        "Body"
+      ],
+      "slots": [
+        "M_Tactical_Contour",
+        "M_WarMachine_Cel"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Stylized/Meshes/SM_Ship_AnimeHull.SM_Ship_AnimeHull",
+      "dimensions_cm": [
+        19378.0390625,
+        45023.205078125,
+        6984.659912109375
+      ],
+      "triangles": 13314,
+      "uv_channels": 4,
+      "slots": [
+        "SS_Armor_Pearl",
+        "SS_Armor_Blue",
+        "SS_Structure_Slate",
+        "SS_Recess_Navy",
+        "SS_Safety_Amber",
+        "SS_Engine_Cyan"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Stylized/Meshes/SM_Ship_AnimeContour.SM_Ship_AnimeContour",
+      "dimensions_cm": [
+        19091.9169921875,
+        41740.7744140625,
+        6096.498046875
+      ],
+      "triangles": 3088,
+      "uv_channels": 3,
+      "slots": [
+        "SS_Ink_Outer_Navy"
+      ]
+    }
+  ],
+  "materials": [
+    "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel",
+    "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Contour.M_Sweeper_Contour",
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel",
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour",
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Pearl.M_SS_Armor_Pearl",
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Blue.M_SS_Armor_Blue",
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Structure_Slate.M_SS_Structure_Slate",
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Recess_Navy.M_SS_Recess_Navy",
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Safety_Amber.M_SS_Safety_Amber",
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Engine_Cyan.M_SS_Engine_Cyan",
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_Ship_Contour.M_Ship_Contour"
+  ]
+}

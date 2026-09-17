@@ -1,0 +1,53 @@
+{
+  "capturedAt": "2026-09-15T19:51:35.7552737+08:00",
+  "processes": [
+    {
+      "Id": 8752,
+      "StartTime": "2026-09-15T19:35:35.9289805+08:00",
+      "CPU": 3592.5625,
+      "WorkingSet64": 9139789824,
+      "PrivateMemorySize64": 20539518976,
+      "MainWindowTitle": "GuLiStrike - 虚幻编辑器",
+      "Responding": true
+    },
+    {
+      "Id": 16424,
+      "StartTime": "2026-09-15T19:13:58.522374+08:00",
+      "CPU": 7059.796875,
+      "WorkingSet64": 1724219392,
+      "PrivateMemorySize64": 19970797568,
+      "MainWindowTitle": "",
+      "Responding": true
+    }
+  ],
+  "commands": [
+    {
+      "ProcessId": 16424,
+      "ExecutablePath": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.exe",
+      "CommandLine": "\"D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.exe\" \"D:/UE5.7/test1/GuLiStrike.uproject\" /Game/Maps/LVL_CommanderMassPrototype -NoLiveCoding -NoSplash -DisablePlugins=Fab -abslog=\"D:/UE5.7/test1/TestResults/EngineeringAvoidance/PIE-final-native.log\""
+    },
+    {
+      "ProcessId": 8752,
+      "ExecutablePath": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.exe",
+      "CommandLine": "\"D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.exe\" \"D:\\UE5.7\\test1\\GuLiStrike.uproject\""
+    }
+  ],
+  "memory": {
+    "TotalVisibleMemorySize": 33363020,
+    "FreePhysicalMemory": 7657808,
+    "TotalVirtualMemorySize": 71144416,
+    "FreeVirtualMemory": 3963156
+  },
+  "bridgeListeners": [
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 55557,
+      "OwningProcess": 16424
+    },
+    {
+      "LocalAddress": "127.0.0.1",
+      "LocalPort": 12029,
+      "OwningProcess": 16424
+    }
+  ]
+}

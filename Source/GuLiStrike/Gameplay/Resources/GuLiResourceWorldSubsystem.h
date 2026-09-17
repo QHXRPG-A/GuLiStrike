@@ -19,6 +19,7 @@ class AGuLiOreFieldActor;
 class AGuLiResourceFactoryActor;
 class AGuLiResourceWorldState;
 class AGuLiTerritoryOutpostActor;
+class ARecastNavMesh;
 class UGuLiResourceEconomyConfig;
 class UGuLiResourceMapDefinition;
 
@@ -127,6 +128,9 @@ private:
 	bool bRuntimeReady = false;
 	bool bFatalInitializationError = false;
 	bool bAuthorityActorsSpawned = false;
+	double NavigationWaitStartSeconds = 0;
+	// Runtime world copies only; restore fully asynchronous gathering when the startup gate opens.
+	TArray<TWeakObjectPtr<ARecastNavMesh>> InitialSynchronousGatheringNavData;
 	bool bOreFieldInitialized = false;
 	bool bEconomyMatchStarted = false;
 	FString InitializationError;

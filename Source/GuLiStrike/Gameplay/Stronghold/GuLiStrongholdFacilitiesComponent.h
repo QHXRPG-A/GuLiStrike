@@ -27,5 +27,8 @@ public:
 private:
 	UPROPERTY(Replicated) bool bFirstCaptured = false;
 	UPROPERTY(Replicated) TArray<FGuLiStrongholdGiftSlot> Slots;
+	// Authority-only bounded search state; failed placement never consumes a gift.
+	TMap<int32, int32> PlacementSearchCursor;
+	TMap<int32, FString> LastPlacementFailure;
 	void DeliverPendingSlots();
 };

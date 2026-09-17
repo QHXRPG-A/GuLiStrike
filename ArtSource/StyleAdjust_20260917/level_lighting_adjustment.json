@@ -1,0 +1,72 @@
+{
+  "success": true,
+  "changes": [
+    {
+      "property": "color_gamma",
+      "before": "<Struct 'Vector4' (0x000001DA019A9150) {x: 0.980794, y: 0.986862, z: 1.000000, w: 0.540000}>",
+      "after": "<Struct 'Vector4' (0x000001D99AE9BE40) {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}>"
+    },
+    {
+      "property": "color_contrast",
+      "before": "<Struct 'Vector4' (0x000001DA019A9130) {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.390000}>",
+      "after": "<Struct 'Vector4' (0x000001DB779CA180) {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}>"
+    },
+    {
+      "property": "color_gamma_midtones",
+      "before": "<Struct 'Vector4' (0x000001DA019A9290) {x: 0.983128, y: 1.000000, z: 0.987240, w: 1.000000}>",
+      "after": "<Struct 'Vector4' (0x000001DB77B1E900) {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}>"
+    },
+    {
+      "property": "scene_color_tint",
+      "before": "<Struct 'LinearColor' (0x000001DA019A93BC) {r: 0.614583, g: 0.614583, b: 0.614583, a: 1.000000}>",
+      "after": "<Struct 'LinearColor' (0x000001DB7790F660) {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}>"
+    },
+    {
+      "property": "white_temp",
+      "before": "7657.14208984375",
+      "after": "6500.0"
+    },
+    {
+      "property": "white_tint",
+      "before": "0.1333329975605011",
+      "after": "0.0"
+    },
+    {
+      "property": "film_slope",
+      "before": "0.6571429967880249",
+      "after": "0.78"
+    },
+    {
+      "property": "film_toe",
+      "before": "0.5785719752311707",
+      "after": "0.45"
+    },
+    {
+      "property": "vignette_intensity",
+      "before": "0.4000000059604645",
+      "after": "0.12"
+    },
+    {
+      "property": "ambient_occlusion_intensity",
+      "before": "0.5",
+      "after": "0.35"
+    }
+  ],
+  "sky_lower_color": "<Struct 'LinearColor' (0x000001DA0C09DA18) {r: 0.120000, g: 0.150000, b: 0.200000, a: 1.000000}>",
+  "post_process_readback": {
+    "color_gamma": "<Struct 'Vector4' (0x000001DA019A9150) {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}>",
+    "color_contrast": "<Struct 'Vector4' (0x000001DA019A9130) {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}>",
+    "color_gamma_midtones": "<Struct 'Vector4' (0x000001DA019A9290) {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}>",
+    "scene_color_tint": "<Struct 'LinearColor' (0x000001DA019A93BC) {r: 1.000000, g: 1.000000, b: 1.000000, a: 1.000000}>",
+    "white_temp": "6500.0",
+    "white_tint": "0.0",
+    "film_slope": "0.7799999713897705",
+    "film_toe": "0.44999998807907104",
+    "vignette_intensity": "0.11999999731779099",
+    "ambient_occlusion_intensity": "0.3499999940395355"
+  },
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "saved": false,
+  "sun_intensity_unchanged": true,
+  "exposure_limits_unchanged": true
+}

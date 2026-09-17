@@ -1,0 +1,43 @@
+{
+  "kind": "existing 1200-unit two-rendered-client integration rerun, no before/after performance claim",
+  "window_monotonic_seconds": [
+    16806291.8640508,
+    16806321.8640508
+  ],
+  "roles": {
+    "server": {
+      "error": "",
+      "alive_min": 1200.0,
+      "moving_min": 1199.0,
+      "moving_p05": 1199.0,
+      "moving_mean": 1199.9496362618913,
+      "decode_failures": 0.0,
+      "dropped_steps": 0,
+      "unit_pose_hz": 0.0,
+      "sim_hz": 10.0
+    },
+    "client1": {
+      "error": "",
+      "alive_min": 1200.0,
+      "moving_min": 1198.0,
+      "moving_p05": 1199.0,
+      "moving_mean": 1199.9319055464032,
+      "decode_failures": 0.0,
+      "dropped_steps": null,
+      "unit_pose_hz": 7.500790534039073,
+      "sim_hz": null
+    },
+    "client2": {
+      "error": "",
+      "alive_min": 1200.0,
+      "moving_min": 1198.0,
+      "moving_p05": 1200.0,
+      "moving_mean": 1199.9619978284472,
+      "decode_failures": 0.0,
+      "dropped_steps": null,
+      "unit_pose_hz": 7.497722991281958,
+      "sim_hz": null
+    }
+  },
+  "passed": true
+}

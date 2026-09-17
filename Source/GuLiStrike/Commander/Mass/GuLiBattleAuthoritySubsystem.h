@@ -380,6 +380,8 @@ public:
 
 	/** Reuses the caller-owned array and captures finite locations of living authoritative Soldiers. */
 	void BuildLivingSoldierLocationSnapshot(TArray<FVector>& OutLocations) const;
+	/** Unquantized server poses for passive local-avoidance bodies; no movement or replication side effects. */
+	void BuildGroundAvoidanceSnapshot(TArray<struct FGuLiGroundAvoidanceBody>& OutBodies) const;
 	float GetExternalUnitRadius() const { return MemberAgentRadiusCentimeters; }
 
 	/** 当前保留的临时移动编队数量；同一 BatchOrderId 可包含多个编队。 */
@@ -450,11 +452,11 @@ private:
 	// 配置声明中的初始值可被 Game 配置覆盖；移动速度还会在 Initialize 中读取运行时调参值。
 	/** 红方出生布局中心，使用世界坐标（cm）；实际士兵出生位置还需投影到专用 NavMesh。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Spawn")
-	FVector RedSpawnCenter = FVector(0.0, 196000.0, 0.0);
+	FVector RedSpawnCenter = FVector(0.0, 180000.0, 0.0);
 
 	/** 蓝方出生布局中心，使用世界坐标（cm）；与红方一样须满足导航就绪条件。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Spawn")
-	FVector BlueSpawnCenter = FVector(0.0, -196000.0, 0.0);
+	FVector BlueSpawnCenter = FVector(0.0, -180000.0, 0.0);
 
 	/** 出生方阵之间的间距（cm），仅用于初始部署，不表示移动指令中的编队间距。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Formation", meta = (ClampMin = "1000.0", Units = "cm"))

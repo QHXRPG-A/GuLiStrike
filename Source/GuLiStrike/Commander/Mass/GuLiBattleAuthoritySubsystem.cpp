@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+#include "Gameplay/Units/GuLiGroundCrowdManager.h"
+#include "Commander/Network/GuLiCommanderPoseCodec.h"
 
 #include "Algo/MinElement.h"
 #include "Avoidance/MassAvoidanceFragments.h"
@@ -6123,16 +6125,12 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 	});
 
 	const int32 ChunkSize = static_cast<int32>(GULI_MAX_POSE_SAMPLES_PER_CHUNK);
-	constexpr double MaximumEncodableRelativeCentimeters = static_cast<double>(MAX_int16 - 1) * GULI_POSE_QUANTIZATION_CENTIMETERS;
 	TArray<TArray<int32>> ChunkSoldierIndices;
-	TArray<FVector> ChunkLocationSums;
 	ChunkSoldierIndices.Reserve(FMath::DivideAndRoundUp(SortedIndices.Num(), ChunkSize));
-	ChunkLocationSums.Reserve(ChunkSoldierIndices.Max());
 	for (const int32 SoldierIndex : SortedIndices)
 	{
 		const GuLiCommanderMassPrivate::FSoldierRuntime& CandidateSoldier =
 			AuthorityState->Soldiers[SoldierIndex];
-		const FVector CandidateLocation = CandidateSoldier.Location;
 		bool bStartNewChunk = ChunkSoldierIndices.IsEmpty()
 			|| ChunkSoldierIndices.Last().Num() >= ChunkSize;
 		if (!bStartNewChunk)
@@ -6142,37 +6140,13 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 			bStartNewChunk = FirstSoldier.SoldierId.Value % CapturePosePhaseCount
 				!= CandidateSoldier.SoldierId.Value % CapturePosePhaseCount;
 		}
-		// 最多 32 人之外还检查 int16 相对坐标范围；候选加入后锚点变化，已有成员也必须重新检查。
-		if (!bStartNewChunk)
-		{
-			const TArray<int32>& CurrentChunk = ChunkSoldierIndices.Last();
-			const FVector CandidateAnchor = (ChunkLocationSums.Last() + CandidateLocation)
-				/ static_cast<double>(CurrentChunk.Num() + 1);
-			auto FitsRelativeEncoding = [&CandidateAnchor](const FVector& Location)
-			{
-				const FVector Relative = Location - CandidateAnchor;
-				return FMath::Abs(Relative.X) <= MaximumEncodableRelativeCentimeters
-					&& FMath::Abs(Relative.Y) <= MaximumEncodableRelativeCentimeters
-					&& FMath::Abs(Relative.Z) <= MaximumEncodableRelativeCentimeters;
-			};
-			bStartNewChunk = !FitsRelativeEncoding(CandidateLocation);
-			for (int32 ExistingOffset = 0;
-				!bStartNewChunk && ExistingOffset < CurrentChunk.Num();
-				++ExistingOffset)
-			{
-				bStartNewChunk = !FitsRelativeEncoding(
-					AuthorityState->Soldiers[CurrentChunk[ExistingOffset]].Location);
-			}
-		}
 
 		if (bStartNewChunk)
 		{
 			ChunkSoldierIndices.AddDefaulted();
 			ChunkSoldierIndices.Last().Reserve(ChunkSize);
-			ChunkLocationSums.Add(FVector::ZeroVector);
 		}
 		ChunkSoldierIndices.Last().Add(SoldierIndex);
-		ChunkLocationSums.Last() += CandidateLocation;
 	}
 
 	const int32 ChunkCount = ChunkSoldierIndices.Num();
@@ -6196,14 +6170,12 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 		const int32 Count = ChunkIndices.Num();
 
 		FGuLiSoldierPoseChunk& Chunk = OutChunks.AddDefaulted_GetRef();
-		Chunk.ProtocolVersion = GULI_COMMANDER_PROTOCOL_VERSION;
 		Chunk.AuthorityEpoch = AuthorityState->AuthorityEpoch;
 		Chunk.FrameSequence = FrameSequence;
 		Chunk.ServerSimTick = AuthorityState->ServerSimTick;
 		Chunk.ServerTimeSeconds = static_cast<float>(AuthorityState->SimulationSeconds);
 		Chunk.ChunkIndex = static_cast<uint16>(ChunkIndex);
 		Chunk.ChunkCount = static_cast<uint16>(ChunkCount);
-		Chunk.Anchor = ChunkLocationSums[ChunkIndex] / static_cast<double>(Count);
 		Chunk.Samples.Reserve(Count);
 		for (int32 Offset = 0; Offset < Count; ++Offset)
 		{
@@ -6237,44 +6209,14 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 			}
 			Soldier.LastCapturedPoseLocation = Soldier.Location;
 			Soldier.LastCapturedPoseFrameSequence = FrameSequence;
-			FGuLiCompressedSoldierPose& Pose = Chunk.Samples.AddDefaulted_GetRef();
+			FGuLiQuantizedSoldierPose& Pose = Chunk.Samples.AddDefaulted_GetRef();
 			Pose.SoldierId = Soldier.SoldierId;
-			Pose.SetRelativeLocationCentimeters(Soldier.Location - FVector(Chunk.Anchor));
-			// 用网络锚点的厘米舍入方式在本地重建位置，检测量化/溢出异常；日志不会自动修正位置。
-			const FVector QuantizedAnchor(
-				FMath::RoundToDouble(Chunk.Anchor.X),
-				FMath::RoundToDouble(Chunk.Anchor.Y),
-				FMath::RoundToDouble(Chunk.Anchor.Z));
-			const FVector LocallyReconstructedLocation = QuantizedAnchor + Pose.GetRelativeLocationCentimeters();
-			const float LocalCompressionErrorCentimeters = FVector::Dist(
-				Soldier.Location,
-				LocallyReconstructedLocation);
-			if (LocalCompressionErrorCentimeters > 100.0f)
+			if (!GuLiCommanderPoseCodec::Quantize(Soldier.Location, Soldier.Velocity, Soldier.FacingYawDegrees, Pose))
 			{
-				UE_LOG(
-					LogGuLiCommanderMass,
-					Error,
-					TEXT("Authority pose compression error: soldier=%u frame=%u chunk=%d sample=%d error_cm=%.1f anchor=(%.1f,%.1f,%.1f) relative_dm=(%d,%d,%d) authority=(%.1f,%.1f,%.1f) reconstructed=(%.1f,%.1f,%.1f)."),
-					Soldier.SoldierId.Value,
-					FrameSequence,
-					ChunkIndex,
-					Offset,
-					LocalCompressionErrorCentimeters,
-					Chunk.Anchor.X,
-					Chunk.Anchor.Y,
-					Chunk.Anchor.Z,
-					Pose.RelativeXDecimeters,
-					Pose.RelativeYDecimeters,
-					Pose.RelativeZDecimeters,
-					Soldier.Location.X,
-					Soldier.Location.Y,
-					Soldier.Location.Z,
-					LocallyReconstructedLocation.X,
-					LocallyReconstructedLocation.Y,
-					LocallyReconstructedLocation.Z);
+				UE_LOG(LogGuLiCommanderMass, Error, TEXT("Pose quantization range exceeded: soldier=%u"), Soldier.SoldierId.Value);
+				OutChunks.Reset();
+				return;
 			}
-			Pose.SetVelocityCentimetersPerSecond(Soldier.Velocity);
-			Pose.FacingYaw = GuLiCommanderProtocol::QuantizeYawDegrees(Soldier.FacingYawDegrees);
 			Pose.ActiveOrderId = Soldier.ActiveOrderId;
 			Pose.State = Soldier.IsAlive()
 				? (Soldier.ActiveOrderId != 0u
@@ -6284,7 +6226,6 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 			Pose.Flags = Soldier.DisplacementFrameFloor != 0 && int32(FrameSequence - Soldier.DisplacementFrameFloor) < 3
 				? GULI_SOLDIER_POSE_FLAG_TELEPORT : 0u;
 		}
-		Chunk.Sanitize();
 	}
 }
 
@@ -6304,6 +6245,18 @@ bool UGuLiBattleAuthoritySubsystem::TryGetSoldierTransform(
 	const GuLiCommanderMassPrivate::FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
 	OutTransform = FTransform(FRotator(0.0f, Soldier.FacingYawDegrees, 0.0f), Soldier.Location);
 	return true;
+}
+
+void UGuLiBattleAuthoritySubsystem::BuildGroundAvoidanceSnapshot(TArray<FGuLiGroundAvoidanceBody>& OutBodies) const
+{
+	OutBodies.Reset();
+	if (!AuthorityState) return; // World exists before the battle is initialized.
+	OutBodies.Reserve(AuthorityState->Soldiers.Num());
+	for (const auto& Soldier : AuthorityState->Soldiers)
+	{
+		if (Soldier.IsPresent())
+			OutBodies.Add({Soldier.SoldierId.Value, Soldier.Location, Soldier.Velocity, MemberAgentRadiusCentimeters});
+	}
 }
 
 void UGuLiBattleAuthoritySubsystem::BuildLivingSoldierLocationSnapshot(

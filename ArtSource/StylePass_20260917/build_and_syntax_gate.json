@@ -1,0 +1,36 @@
+{
+  "engine": "D:/UnrealEngine-5.7",
+  "targets": {
+    "GuLiStrikeEditor Win64 Development": {
+      "exit_code": 0,
+      "log": "editor_final_build.log"
+    },
+    "GuLiStrike Win64 Development": {
+      "exit_code": 0,
+      "log": "game_final_build.log"
+    }
+  },
+  "build_ids": {
+    "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.modules": "11b8900e-cd30-41cb-ad6b-96933e5d3584",
+    "D:\\UE5.7\\test1\\Binaries\\Win64\\UnrealEditor.modules": "11b8900e-cd30-41cb-ad6b-96933e5d3584",
+    "D:\\UE5.7\\test1\\Plugins\\UnrealMCP\\Binaries\\Win64\\UnrealEditor.modules": "11b8900e-cd30-41cb-ad6b-96933e5d3584",
+    "D:\\UE5.7\\test1\\Plugins\\UnrealMCPython\\Binaries\\Win64\\UnrealEditor.modules": "11b8900e-cd30-41cb-ad6b-96933e5d3584",
+    "D:\\UE5.7\\test1\\Plugins\\VibeUE\\Binaries\\Win64\\UnrealEditor.modules": "11b8900e-cd30-41cb-ad6b-96933e5d3584",
+    "D:\\UE5.7\\test1\\Plugins\\GuLiFlightNavigation\\Binaries\\Win64\\UnrealEditor.modules": "11b8900e-cd30-41cb-ad6b-96933e5d3584",
+    "D:\\UE5.7\\test1\\Plugins\\GuLiMapAuthoring\\Binaries\\Win64\\UnrealEditor.modules": "11b8900e-cd30-41cb-ad6b-96933e5d3584"
+  },
+  "build_ids_match": true,
+  "python_syntax_checked": [
+    "Scripts/Blender/build_tactical_cel_pass.py",
+    "Scripts/import_cel_model_assets.py",
+    "Scripts/finalize_cel_model_assets.py",
+    "Scripts/install_stylized_ship.py",
+    "Scripts/build_reference_combat_explosions.py",
+    "Scripts/install_reference_combat_explosions.py",
+    "Scripts/deploy_wingman_attack_assets.py",
+    "Scripts/set_wingman_explosion_variant.py",
+    "Scripts/preview_cel_models.py",
+    "Scripts/preview_reference_combat_explosions.py"
+  ],
+  "new_cpp_changes_this_pass": false
+}

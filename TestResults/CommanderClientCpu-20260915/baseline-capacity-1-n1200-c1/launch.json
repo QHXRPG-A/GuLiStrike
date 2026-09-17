@@ -1,0 +1,69 @@
+{
+  "JoinBeforePopulation": true,
+  "Engine": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64",
+  "Clients": 1,
+  "CaptureNetwork": true,
+  "Map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "Processes": [
+    {
+      "Pid": 34336,
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "/Game/Maps/LVL_CommanderMassPrototype",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-ini:Engine:[/Script/GuLiStrike.GuLiGroundCrowdManager]:MaxAgents=2048",
+        "-MoveStressNetworkProfile",
+        "-MoveStressTrace",
+        "-statnamedevents",
+        "-server",
+        "-NullRHI",
+        "-port=18111",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderClientCpu-20260915\\baseline-capacity-1-n1200-c1\\server.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,gs.Commander.MoveStress 1200 50 D:/UE5.7/test1/TestResults/CommanderClientCpu-20260915/baseline-capacity-1-n1200-c1/server server 1 shuttle join-first\""
+      ],
+      "Role": "server"
+    },
+    {
+      "Pid": 37984,
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "127.0.0.1:18111",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-ini:Engine:[/Script/GuLiStrike.GuLiGroundCrowdManager]:MaxAgents=2048",
+        "-MoveStressNetworkProfile",
+        "-MoveStressTrace",
+        "-statnamedevents",
+        "-RenderOffscreen",
+        "-windowed",
+        "-ResX=1920",
+        "-ResY=1080",
+        "-ForceRes",
+        "-MoveStressTrace",
+        "-statnamedevents",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderClientCpu-20260915\\baseline-capacity-1-n1200-c1\\client1.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,t.MaxFPS 0,gs.Commander.MoveStress 1200 40 D:/UE5.7/test1/TestResults/CommanderClientCpu-20260915/baseline-capacity-1-n1200-c1/client1 client 1 shuttle join-first\""
+      ],
+      "Role": "client1"
+    }
+  ],
+  "PartitionCpu": false,
+  "Pattern": "shuttle",
+  "Renderer": "1920x1080, Epic, screen percentage 100, VSync off, client uncapped/server 60 FPS cap, offscreen",
+  "Population": 1200,
+  "CaptureTrace": true,
+  "HeadlessClients": false,
+  "Date": "2026-09-15T22:42:10.9716763+08:00",
+  "Duration": 40
+}

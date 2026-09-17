@@ -1,0 +1,112 @@
+[
+  {
+    "clients": "c1",
+    "role": "server",
+    "rounds": 3,
+    "moving_p05": [
+      1200.0,
+      1199.0,
+      1199.0
+    ],
+    "zero_fractions": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "median_frame_p95_ms": 21.9414,
+    "load_pass": true,
+    "dropped_steps": [
+      0,
+      0,
+      0
+    ],
+    "crowd_mean_ms": [
+      1.829231534852547,
+      1.8398822326516928,
+      2.1104961809045224
+    ],
+    "max_tile_tasks": 0.0
+  },
+  {
+    "clients": "c1",
+    "role": "client1",
+    "rounds": 3,
+    "moving_p05": [
+      1200.0,
+      1199.0,
+      1199.0
+    ],
+    "zero_fractions": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "median_frame_p95_ms": 10.7483,
+    "load_pass": true,
+    "frame_budget_pass": true
+  },
+  {
+    "clients": "c2",
+    "role": "server",
+    "rounds": 3,
+    "moving_p05": [
+      1200.0,
+      1200.0,
+      1200.0
+    ],
+    "zero_fractions": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "median_frame_p95_ms": 22.0784,
+    "load_pass": true,
+    "dropped_steps": [
+      0,
+      0,
+      0
+    ],
+    "crowd_mean_ms": [
+      1.8283607836570663,
+      1.8225710455764075,
+      2.1585848688634837
+    ],
+    "max_tile_tasks": 0.0
+  },
+  {
+    "clients": "c2",
+    "role": "client1",
+    "rounds": 3,
+    "moving_p05": [
+      1199.0,
+      1200.0,
+      1199.0
+    ],
+    "zero_fractions": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "median_frame_p95_ms": 18.6609,
+    "load_pass": true,
+    "frame_budget_pass": true
+  },
+  {
+    "clients": "c2",
+    "role": "client2",
+    "rounds": 3,
+    "moving_p05": [
+      1200.0,
+      1200.0,
+      1199.0
+    ],
+    "zero_fractions": [
+      0.0,
+      0.0,
+      0.0
+    ],
+    "median_frame_p95_ms": 18.5659,
+    "load_pass": true,
+    "frame_budget_pass": true
+  }
+]

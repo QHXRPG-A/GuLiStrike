@@ -135,6 +135,8 @@ FGuLiCommanderUnitTypeSummary BuildGuLiCommanderUnitTypeSummary(
 			continue;
 		}
 		++Summary.AliveCount;
+		if (Summary.UnitTypeId == 0) Summary.UnitTypeId = Soldier.UnitTypeId;
+		else if (Summary.UnitTypeId != Soldier.UnitTypeId) Summary.bMixedUnitTypes = true;
 		Summary.TotalHealth += Soldier.Health;
 		Summary.TotalMaxHealth += Soldier.MaxHealth;
 

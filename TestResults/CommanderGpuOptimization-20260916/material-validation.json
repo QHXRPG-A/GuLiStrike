@@ -1,0 +1,97 @@
+{
+  "after_epic_cvars": {
+    "r.AntiAliasingMethod": 1.0,
+    "r.VolumetricFog": 0.0,
+    "r.Shadow.Virtual.ResolutionLodBiasDirectional": 0.0,
+    "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": 0.0,
+    "r.Shadow.Virtual.ResolutionLodBiasLocal": 1.0,
+    "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": 2.0,
+    "r.Lumen.ScreenProbeGather.DownsampleFactor": 32.0,
+    "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": 16.0,
+    "r.LumenScene.DirectLighting.UpdateFactor": 64.0,
+    "r.LumenScene.Radiosity.UpdateFactor": 128.0,
+    "r.Lumen.AsyncCompute": 1.0,
+    "r.VRS.EnableSoftware": 1.0,
+    "r.VRS.ContrastAdaptiveShading": 1.0
+  },
+  "materials": {
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/M_CommanderFourFRobot_LowReflection.M_CommanderFourFRobot_LowReflection": {
+      "success": true,
+      "compiled": true,
+      "errors": [],
+      "class": "Material"
+    },
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection": {
+      "success": true,
+      "compiled": true,
+      "errors": [],
+      "class": "Material"
+    },
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/M_Wingman_LowReflection.M_Wingman_LowReflection": {
+      "success": true,
+      "compiled": true,
+      "errors": [],
+      "class": "Material"
+    },
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/M_WM01_LowReflection.M_WM01_LowReflection": {
+      "success": true,
+      "compiled": true,
+      "errors": [],
+      "class": "Material"
+    },
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_cockpit_LowReflection.MI_Wingman_cockpit_LowReflection": {
+      "success": false,
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_Wingman_LowReflection.M_Wingman_LowReflection",
+      "diagnostic_scope": "base-material API does not diagnose material instances"
+    },
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_empty_black_LowReflection.MI_Wingman_empty_black_LowReflection": {
+      "success": false,
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_Wingman_LowReflection.M_Wingman_LowReflection",
+      "diagnostic_scope": "base-material API does not diagnose material instances"
+    },
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_engines_LowReflection.MI_Wingman_engines_LowReflection": {
+      "success": false,
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_Wingman_LowReflection.M_Wingman_LowReflection",
+      "diagnostic_scope": "base-material API does not diagnose material instances"
+    },
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_intakes_LowReflection.MI_Wingman_intakes_LowReflection": {
+      "success": false,
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_Wingman_LowReflection.M_Wingman_LowReflection",
+      "diagnostic_scope": "base-material API does not diagnose material instances"
+    },
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_lasers_LowReflection.MI_Wingman_lasers_LowReflection": {
+      "success": false,
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_Wingman_LowReflection.M_Wingman_LowReflection",
+      "diagnostic_scope": "base-material API does not diagnose material instances"
+    },
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_mainbody_mat_LowReflection.MI_Wingman_mainbody_mat_LowReflection": {
+      "success": false,
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_Wingman_LowReflection.M_Wingman_LowReflection",
+      "diagnostic_scope": "base-material API does not diagnose material instances"
+    },
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_nose_mat_LowReflection.MI_Wingman_nose_mat_LowReflection": {
+      "success": false,
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_Wingman_LowReflection.M_Wingman_LowReflection",
+      "diagnostic_scope": "base-material API does not diagnose material instances"
+    },
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_rocket_LowReflection.MI_Wingman_rocket_LowReflection": {
+      "success": false,
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_Wingman_LowReflection.M_Wingman_LowReflection",
+      "diagnostic_scope": "base-material API does not diagnose material instances"
+    },
+    "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_stripes_LowReflection.MI_Wingman_stripes_LowReflection": {
+      "success": false,
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_Wingman_LowReflection.M_Wingman_LowReflection",
+      "diagnostic_scope": "base-material API does not diagnose material instances"
+    }
+  }
+}

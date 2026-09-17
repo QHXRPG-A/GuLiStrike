@@ -1,0 +1,20 @@
+[
+  {
+    "ProcessId": 36004,
+    "Name": "UnrealEditor.exe",
+    "ExecutablePath": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.exe",
+    "CommandLine": "\"D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.exe\" D:/UE5.7/test1/GuLiStrike.uproject /Game/Maps/LVL_CommanderMassPrototype -NoSplash -NoLiveCoding -DisablePlugins=Fab -abslog=D:/UE5.7/test1/TestResults/NavigationBake-20260915/PIE-restart.log"
+  },
+  {
+    "ProcessId": 34336,
+    "Name": "UnrealEditor-Cmd.exe",
+    "ExecutablePath": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor-Cmd.exe",
+    "CommandLine": "\"D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor-Cmd.exe\" D:\\UE5.7\\test1\\GuLiStrike.uproject /Game/Maps/LVL_CommanderMassPrototype -game -Unattended -NoSound -NoSplash -NoLiveCoding -DisablePlugins=Fab -NoScreenMessages -ini:Engine:[/Script/GuLiStrike.GuLiGroundCrowdManager]:MaxAgents=2048 -MoveStressNetworkProfile -MoveStressTrace -statnamedevents -server -NullRHI -port=18111 -abslog=D:\\UE5.7\\test1\\TestResults\\CommanderClientCpu-20260915\\baseline-capacity-1-n1200-c1\\server.log -ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,gs.Commander.MoveStress 1200 50 D:/UE5.7/test1/TestResults/CommanderClientCpu-20260915/baseline-capacity-1-n1200-c1/server server 1 shuttle join-first\""
+  },
+  {
+    "ProcessId": 37984,
+    "Name": "UnrealEditor.exe",
+    "ExecutablePath": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.exe",
+    "CommandLine": "\"D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.exe\" D:\\UE5.7\\test1\\GuLiStrike.uproject 127.0.0.1:18111 -game -Unattended -NoSound -NoSplash -NoLiveCoding -DisablePlugins=Fab -NoScreenMessages -ini:Engine:[/Script/GuLiStrike.GuLiGroundCrowdManager]:MaxAgents=2048 -MoveStressNetworkProfile -MoveStressTrace -statnamedevents -RenderOffscreen -windowed -ResX=1920 -ResY=1080 -ForceRes -MoveStressTrace -statnamedevents -abslog=D:\\UE5.7\\test1\\TestResults\\CommanderClientCpu-20260915\\baseline-capacity-1-n1200-c1\\client1.log -ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,t.MaxFPS 0,gs.Commander.MoveStress 1200 40 D:/UE5.7/test1/TestResults/CommanderClientCpu-20260915/baseline-capacity-1-n1200-c1/client1 client 1 shuttle join-first\""
+  }
+]

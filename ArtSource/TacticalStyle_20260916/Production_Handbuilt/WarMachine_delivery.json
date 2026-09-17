@@ -1,0 +1,85 @@
+{
+  "sockets_m": {
+    "Muzzle_Cannon_L": [
+      17.6986026763916,
+      14.6123685836792,
+      15.80907154083252
+    ],
+    "Muzzle_Cannon_R": [
+      17.6986026763916,
+      -14.6123685836792,
+      15.80907154083252
+    ],
+    "Muzzle_Missile_R": [
+      -7.2916035652160645,
+      -9.321683883666992,
+      31.22332191467285
+    ],
+    "Muzzle_Missile_L": [
+      -7.2916035652160645,
+      9.321683883666992,
+      31.22332191467285
+    ]
+  },
+  "missile_pod_pitch_degrees": 45,
+  "missile_pod_outward_splay_degrees": 0,
+  "wheel_pivots_m": {},
+  "wheel_radius_m": 0.0,
+  "design_revision": "Approved four-view reconstruction: layered hull, four armored hover discs, nested side twin cannons, parallel 45-degree missile pods",
+  "unit": "WarMachine",
+  "display_name": "战争机器",
+  "method": "Authored Blender geometry from approved concept and three views. No Tripo geometry or texture.",
+  "references": [
+    "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\WarMachine_Concept_v1.png",
+    "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\WarMachine_Front.png",
+    "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\WarMachine_Left.png",
+    "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\WarMachine_Back.png"
+  ],
+  "palette": [
+    "DD6038",
+    "F2EBDD",
+    "52687A",
+    "283844",
+    "FFD166",
+    "8295A1",
+    "AC452B"
+  ],
+  "bounds_m": [
+    [
+      -27.327335357666016,
+      -28.807466506958008,
+      0.0
+    ],
+    [
+      27.327333450317383,
+      28.807466506958008,
+      34.17231750488281
+    ]
+  ],
+  "triangles": 14018,
+  "symmetry_error_m": 3.814697265625e-06,
+  "source_scale": 6.29843451869186,
+  "source_offset": [
+    0.03500008583068848,
+    0.0,
+    -0.050000015646219254
+  ],
+  "parts": 243,
+  "hidden_triangles_removed": 1562,
+  "vertices": 8300,
+  "bone_names": [
+    "root",
+    "Body"
+  ],
+  "rigid_weights_valid": true,
+  "material_slots": 1,
+  "texture_size": [
+    2048,
+    2048
+  ],
+  "uv_layers": [
+    "Atlas",
+    "RigidPivotXY_UE",
+    "RigidPivotZ_Radius_UE"
+  ]
+}

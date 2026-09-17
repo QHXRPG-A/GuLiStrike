@@ -1,0 +1,20 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "/Game/_VFXResources/Niagara_System/NS_Explosion_03": "=== Debug Activation for /Game/_VFXResources/Niagara_System/NS_Explosion_03 ===\nSystem Name: NS_Explosion_03\nIs Valid: No\nNeeds Recompile: Yes\nEffect Type: None\n\n--- Emitters (9 total) ---\n\n[NE_Cloud_01] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_Impact] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_Cloud_02] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_Rock001] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_Rock] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: Yes\n  EmitterUpdate RI Params: 10\n\n[NE_Dust_Trail] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 9\n\n[NE_CloudLine01] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_Cloud_01B] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_CloudLine02] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n--- Activation Analysis ---\nISSUE: System is not valid - needs compilation or has errors\n",
+    "/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03": "=== Debug Activation for /Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03 ===\nSystem Name: NS_GroundDestruction_03\nIs Valid: No\nNeeds Recompile: No\nEffect Type: None\n\n--- Emitters (10 total) ---\n\n[NE_Cloud_01] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_Impact] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_Cloud_02] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_Rock001] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_Rock] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: Yes\n  EmitterUpdate RI Params: 10\n\n[NE_Dust_Trail] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 9\n\n[NE_CloudLine01] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_Cloud_01B] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_CloudLine02] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: Yes\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n[NE_GroundShockwave] Enabled: Yes\n  SimTarget: CPU\n  LocalSpace: No\n  Determinism: No\n  EmitterUpdate RI Params: 10\n\n--- Activation Analysis ---\nISSUE: System is not valid - needs compilation or has errors\n",
+    "attrs": [
+      "source"
+    ],
+    "dataasset_methods": [
+      "get_editor_property",
+      "get_properties_as_json",
+      "get_property",
+      "is_editor_property_overridden",
+      "reset_editor_property",
+      "set_editor_property",
+      "set_property"
+    ]
+  }
+}

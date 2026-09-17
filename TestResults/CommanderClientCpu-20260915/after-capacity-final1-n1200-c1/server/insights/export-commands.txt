@@ -1,0 +1,4 @@
+TimingInsights.ExportThreads D:\UE5.7\test1\TestResults\CommanderClientCpu-20260915\after-capacity-final1-n1200-c1\server\insights\threads.csv
+TimingInsights.ExportTimingEvents D:\UE5.7\test1\TestResults\CommanderClientCpu-20260915\after-capacity-final1-n1200-c1\server\insights\events-project.csv -threads=GameThread -timers=*GuLi*,*EngineLoop*,UWorld_Tick -startTime=81.810726900 -endTime=111.810726900 -columns=ThreadId,TimerId,TimerName,StartTime,EndTime,Duration,Depth
+TimingInsights.ExportTimerStatistics D:\UE5.7\test1\TestResults\CommanderClientCpu-20260915\after-capacity-final1-n1200-c1\server\insights\timers-gamethread.csv -threads=GameThread -startTime=81.810726900 -endTime=111.810726900 -sortBy=TotalInclusiveTime
+TimingInsights.ExportTimerStatistics D:\UE5.7\test1\TestResults\CommanderClientCpu-20260915\after-capacity-final1-n1200-c1\server\insights\timers-gpu.csv -threads=GPU1,GPU2 -startTime=81.810726900 -endTime=111.810726900 -sortBy=TotalInclusiveTime

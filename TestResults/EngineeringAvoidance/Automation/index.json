@@ -1,0 +1,179 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "4CD045AC4424CCC5760634BF5B6444A8",
+			"instanceName": "DESKTOP-6D3B0FC-33112",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.15-10.37.29",
+	"succeeded": 10,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 1.6722772121429443,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuildingPlacementPolicyTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingPlacementPolicyTests",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4CD045AC4424CCC5760634BF5B6444A8"
+			],
+			"duration": 0.0077793002128601074,
+			"dateTime": "2026.09.15-10.37.27",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EpochResetAndOptionalPipeline",
+			"fullTestPath": "GuLiStrike.Combat.DamageLedger.DeathReward.EpochResetAndOptionalPipeline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4CD045AC4424CCC5760634BF5B6444A8"
+			],
+			"duration": 1.4713927507400513,
+			"dateTime": "2026.09.15-10.37.27",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "IdempotentPolicyUnavailable",
+			"fullTestPath": "GuLiStrike.Combat.DamageLedger.DeathReward.IdempotentPolicyUnavailable",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4CD045AC4424CCC5760634BF5B6444A8"
+			],
+			"duration": 0.017974600195884705,
+			"dateTime": "2026.09.15-10.37.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "IdempotentCommit",
+			"fullTestPath": "GuLiStrike.Combat.DamageLedger.IdempotentCommit",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4CD045AC4424CCC5760634BF5B6444A8"
+			],
+			"duration": 0.018733199685811996,
+			"dateTime": "2026.09.15-10.37.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalAsset",
+			"fullTestPath": "GuLiStrike.Resources.Bake.CanonicalAsset",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4CD045AC4424CCC5760634BF5B6444A8"
+			],
+			"duration": 0.085219696164131165,
+			"dateTime": "2026.09.15-10.37.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalContract",
+			"fullTestPath": "GuLiStrike.Resources.Board.CanonicalContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4CD045AC4424CCC5760634BF5B6444A8"
+			],
+			"duration": 0.008894801139831543,
+			"dateTime": "2026.09.15-10.37.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ValidationAndRevision",
+			"fullTestPath": "GuLiStrike.Resources.Commands.ValidationAndRevision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4CD045AC4424CCC5760634BF5B6444A8"
+			],
+			"duration": 0.011078700423240662,
+			"dateTime": "2026.09.15-10.37.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DefaultsAndConservation",
+			"fullTestPath": "GuLiStrike.Resources.Economy.DefaultsAndConservation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4CD045AC4424CCC5760634BF5B6444A8"
+			],
+			"duration": 0.0084709003567695618,
+			"dateTime": "2026.09.15-10.37.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PublicDeltaState",
+			"fullTestPath": "GuLiStrike.Resources.Network.PublicDeltaState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4CD045AC4424CCC5760634BF5B6444A8"
+			],
+			"duration": 0.015070501714944839,
+			"dateTime": "2026.09.15-10.37.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "HISMSwapIndex",
+			"fullTestPath": "GuLiStrike.Resources.Rendering.HISMSwapIndex",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"4CD045AC4424CCC5760634BF5B6444A8"
+			],
+			"duration": 0.027662701904773712,
+			"dateTime": "2026.09.15-10.37.29",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

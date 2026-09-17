@@ -1,0 +1,800 @@
+--- a/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp
++++ b/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp
+@@ -87,21 +87,6 @@
+ 			&& bSnapshotRevisionAccepted
+ 			&& ExpectedRosterCount != 0u
+ 			&& RosterCount >= static_cast<int32>(ExpectedRosterCount);
+-	}
+-
+-	static bool IsClientPoseChunkAcceptable(
+-		const FGuLiSoldierPoseChunk& Chunk,
+-		const bool bClientPoseReady,
+-		const uint32 ClientAcceptedMatchEpoch)
+-	{
+-		return Chunk.ProtocolVersion == GULI_COMMANDER_PROTOCOL_VERSION
+-			&& bClientPoseReady
+-			&& ClientAcceptedMatchEpoch != 0u
+-			&& Chunk.AuthorityEpoch == ClientAcceptedMatchEpoch
+-			&& Chunk.FrameSequence != 0u
+-			&& Chunk.ChunkCount != 0u
+-			&& Chunk.ChunkIndex < Chunk.ChunkCount
+-			&& !Chunk.Samples.IsEmpty();
+ 	}
+ 
+ 	static EBootstrapAuthorityAction EvaluateBootstrapAuthorityAction(
+@@ -532,8 +517,7 @@
+ 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Send);
+ 	GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Send);
+ 	if (!GetOwner() || !GetOwner()->HasAuthority()
+-		|| !IsSoldierStreamReady() || Chunk.AuthorityEpoch != ServerAcceptedMatchEpoch
+-		|| Chunk.ProtocolVersion != GULI_COMMANDER_PROTOCOL_VERSION)
++		|| !IsSoldierStreamReady() || Chunk.AuthorityEpoch != ServerAcceptedMatchEpoch)
+ 	{
+ 		return;
+ 	}
+@@ -1606,6 +1590,11 @@
+ 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Receive);
+ 	GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Receive);
+ 	if (!IsSoldierStreamReady()) return;
++	DecodeAndQueuePoseBlock(Block);
++}
++
++void UGuLiCommanderNetSyncComponent::DecodeAndQueuePoseBlock(const FGuLiEncodedPoseBlock& Block)
++{
+ 	FGuLiSoldierPoseChunk Chunk;
+ 	const auto Result = PoseReceiver.Decode(Block, Chunk);
+ 	if (Result == GuLiCommanderPoseCodec::EDecodeResult::Decoded) QueueDecodedPoseChunk(MoveTemp(Chunk));
+@@ -1901,13 +1890,13 @@
+ 	bClientPoseReady = bReady;
+ 	ClientAcceptedMatchEpoch = AcceptedMatchEpoch;
+ 	PendingPoseChunks.Reset();
+-}
+-
+-void UGuLiCommanderNetSyncComponent::TestOnly_ReceivePoseChunk(
+-	const FGuLiSoldierPoseChunk& Chunk)
+-{
+-	if (GuLiCommanderNetwork::IsClientPoseChunkAcceptable(Chunk, bClientPoseReady, ClientAcceptedMatchEpoch))
+-		QueueDecodedPoseChunk(Chunk);
++	PoseReceiver.Reset(1u, AcceptedMatchEpoch);
++}
++
++void UGuLiCommanderNetSyncComponent::TestOnly_ReceivePoseBlock(
++	const FGuLiEncodedPoseBlock& Block)
++{
++	if (bClientPoseReady) DecodeAndQueuePoseBlock(Block);
+ }
+ #endif
+ 
+--- a/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h
++++ b/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h
+@@ -212,7 +212,7 @@
+ 	void TestOnly_ConfigureClientPoseGate(bool bReady, uint32 AcceptedMatchEpoch);
+ 
+ 	/** Test-only injection through the same client pose implementation used by the unreliable RPC. */
+-	void TestOnly_ReceivePoseChunk(const FGuLiSoldierPoseChunk& Chunk);
++	void TestOnly_ReceivePoseBlock(const FGuLiEncodedPoseBlock& Block);
+ #endif
+ 
+ protected:
+@@ -252,6 +252,7 @@
+ 	UFUNCTION(Server, Unreliable)
+ 	void ServerAcknowledgePoseBlocks(const FGuLiPoseAcknowledgment& Ack);
+ 
++	void DecodeAndQueuePoseBlock(const FGuLiEncodedPoseBlock& Block);
+ 	void QueueDecodedPoseChunk(FGuLiSoldierPoseChunk Chunk);
+ 	void TickPoseAcknowledgments();
+ 	void BindPoseRoster(AGuLiSoldierStateReplicator& Roster);
+--- a/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetworkGateCommands.cpp
++++ b/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetworkGateCommands.cpp
+@@ -540,7 +540,7 @@
+ 			const bool bGatePassed = GuLiCommanderNetworkGateValidation::CanPass(GateEvidence);
+ 
+ 			const FString Summary = FString::Printf(
+-				TEXT("reason=%s impairment_valid=%d configured_rtt_ms=%d measured_rtt_ms=%.1f jitter_ms=%d loss_pct=%d reordering=%d selection_ack_ms=%.1f move_samples=%d ack_avg_ms=%.1f ack_p95_ms=%.1f bandwidth_samples=%d connection_budget_Bps=%d inbound_avg_Bps=%.0f inbound_p95_Bps=%.0f inbound_avg_mbps=%.3f inbound_p95_mbps=%.3f fresh_pose_frames=%llu presentation_clock_rtt_ms=%.1f clock_rtt_source=%s presentation_step_samples=%d presentation_travel_cm=%.1f presentation_step_p95_cm=%.1f seed_pose_gap_max_ms=%.1f untagged_hard_snaps=%llu last_hard_snap_delta_cm=(%.1f,%.1f,%.1f) prior_sample_delta_cm=(%.1f,%.1f,%.1f) hard_snap_velocity_cmps=(%.1f,%.1f,%.1f) hard_snap_frame_gap=%u hard_snap_server_gap_ms=%.1f hard_snap_chunk_sample=%u:%u->%u:%u current_anchor=(%.1f,%.1f,%.1f) current_relative=(%.1f,%.1f,%.1f) previous_anchor=(%.1f,%.1f,%.1f) previous_relative=(%.1f,%.1f,%.1f) explicit_teleport_snaps=%llu presented_frames=%d max_presented_step_cm=%.1f."),
++				TEXT("reason=%s impairment_valid=%d configured_rtt_ms=%d measured_rtt_ms=%.1f jitter_ms=%d loss_pct=%d reordering=%d selection_ack_ms=%.1f move_samples=%d ack_avg_ms=%.1f ack_p95_ms=%.1f bandwidth_samples=%d connection_budget_Bps=%d inbound_avg_Bps=%.0f inbound_p95_Bps=%.0f inbound_avg_mbps=%.3f inbound_p95_mbps=%.3f fresh_pose_frames=%llu presentation_clock_rtt_ms=%.1f clock_rtt_source=%s presentation_step_samples=%d presentation_travel_cm=%.1f presentation_step_p95_cm=%.1f seed_pose_gap_max_ms=%.1f untagged_hard_snaps=%llu last_hard_snap_delta_cm=(%.1f,%.1f,%.1f) prior_sample_delta_cm=(%.1f,%.1f,%.1f) hard_snap_velocity_cmps=(%.1f,%.1f,%.1f) hard_snap_frame_gap=%u hard_snap_server_gap_ms=%.1f hard_snap_chunk_sample=%u:%u->%u:%u current_world_cm=(%.1f,%.1f,%.1f) previous_world_cm=(%.1f,%.1f,%.1f) explicit_teleport_snaps=%llu presented_frames=%d max_presented_step_cm=%.1f."),
+ 				Reason,
+ 				bRuntimeImpairmentValid ? 1 : 0,
+ 				RuntimeImpairment.ConfiguredNominalRoundTripLagMilliseconds,
+@@ -581,18 +581,12 @@
+ 				PresentationDiagnostics.LastHardSnapPreviousSampleIndex,
+ 				PresentationDiagnostics.LastHardSnapCurrentChunkIndex,
+ 				PresentationDiagnostics.LastHardSnapCurrentSampleIndex,
+-				PresentationDiagnostics.LastHardSnapCurrentAnchor.X,
+-				PresentationDiagnostics.LastHardSnapCurrentAnchor.Y,
+-				PresentationDiagnostics.LastHardSnapCurrentAnchor.Z,
+-				PresentationDiagnostics.LastHardSnapCurrentRelative.X,
+-				PresentationDiagnostics.LastHardSnapCurrentRelative.Y,
+-				PresentationDiagnostics.LastHardSnapCurrentRelative.Z,
+-				PresentationDiagnostics.LastHardSnapPreviousAnchor.X,
+-				PresentationDiagnostics.LastHardSnapPreviousAnchor.Y,
+-				PresentationDiagnostics.LastHardSnapPreviousAnchor.Z,
+-				PresentationDiagnostics.LastHardSnapPreviousRelative.X,
+-				PresentationDiagnostics.LastHardSnapPreviousRelative.Y,
+-				PresentationDiagnostics.LastHardSnapPreviousRelative.Z,
++				PresentationDiagnostics.LastHardSnapCurrentLocation.X,
++				PresentationDiagnostics.LastHardSnapCurrentLocation.Y,
++				PresentationDiagnostics.LastHardSnapCurrentLocation.Z,
++				PresentationDiagnostics.LastHardSnapPreviousLocation.X,
++				PresentationDiagnostics.LastHardSnapPreviousLocation.Y,
++				PresentationDiagnostics.LastHardSnapPreviousLocation.Z,
+ 				static_cast<unsigned long long>(PresentationDiagnostics.TeleportSnapCount),
+ 				PresentedFrameSamples,
+ 				MaximumPresentedStepCentimeters);
+--- a/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h
++++ b/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h
+@@ -21,7 +21,7 @@
+ class USceneComponent;
+ class UStaticMesh;
+ 
+-/** One authoritative 10 Hz sample after resolving its chunk-relative position. */
++/** One decoded authoritative sample in world coordinates, ready for interpolation. */
+ // 本地解压后的带时间戳样本；SampleIndex/ChunkIndex 留作诊断，位置已恢复到世界坐标。
+ struct FGuLiCommanderBufferedSoldierPose
+ {
+@@ -29,8 +29,6 @@
+ 	uint32 FrameSequence = 0u;
+ 	FVector Location = FVector::ZeroVector;
+ 	FVector Velocity = FVector::ZeroVector;
+-	FVector ChunkAnchor = FVector::ZeroVector;
+-	FVector RelativeLocation = FVector::ZeroVector;
+ 	float FacingYawDegrees = 0.0f;
+ 	uint32 ActiveOrderId = 0u;
+ 	EGuLiSoldierPoseState State = EGuLiSoldierPoseState::Idle;
+@@ -59,10 +57,8 @@
+ 	FVector LastUntaggedHardSnapDelta = FVector::ZeroVector;
+ 	FVector LastHardSnapPriorSampleDelta = FVector::ZeroVector;
+ 	FVector LastHardSnapSampleVelocity = FVector::ZeroVector;
+-	FVector LastHardSnapCurrentAnchor = FVector::ZeroVector;
+-	FVector LastHardSnapCurrentRelative = FVector::ZeroVector;
+-	FVector LastHardSnapPreviousAnchor = FVector::ZeroVector;
+-	FVector LastHardSnapPreviousRelative = FVector::ZeroVector;
++	FVector LastHardSnapCurrentLocation = FVector::ZeroVector;
++	FVector LastHardSnapPreviousLocation = FVector::ZeroVector;
+ 	double LastHardSnapServerTimeGapSeconds = 0.0;
+ 	uint32 LastHardSnapFrameGap = 0u;
+ 	uint16 LastHardSnapCurrentChunkIndex = 0u;
+@@ -84,10 +80,8 @@
+ 	FVector LastUntaggedHardSnapDelta = FVector::ZeroVector;
+ 	FVector LastHardSnapPriorSampleDelta = FVector::ZeroVector;
+ 	FVector LastHardSnapSampleVelocity = FVector::ZeroVector;
+-	FVector LastHardSnapCurrentAnchor = FVector::ZeroVector;
+-	FVector LastHardSnapCurrentRelative = FVector::ZeroVector;
+-	FVector LastHardSnapPreviousAnchor = FVector::ZeroVector;
+-	FVector LastHardSnapPreviousRelative = FVector::ZeroVector;
++	FVector LastHardSnapCurrentLocation = FVector::ZeroVector;
++	FVector LastHardSnapPreviousLocation = FVector::ZeroVector;
+ 	double LastHardSnapServerTimeGapSeconds = 0.0;
+ 	uint32 LastHardSnapFrameGap = 0u;
+ 	uint16 LastHardSnapCurrentChunkIndex = 0u;
+--- a/Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp
++++ b/Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp
+@@ -25,7 +25,7 @@
+ 	constexpr uint8 PoseDispatchPhaseCount = GULI_POSE_DISPATCH_PHASE_COUNT;
+ 
+ 	uint8 GetPoseRateDivisor(
+-		const FGuLiCompressedSoldierPose& Pose,
++		const FGuLiQuantizedSoldierPose& Pose,
+ 		const FVector& WorldLocation,
+ 		const FVector& ViewLocation,
+ 		const float FullRateDistanceCentimeters,
+@@ -52,7 +52,7 @@
+ 	{
+ 		OutChunk = Source;
+ 		OutChunk.Samples.Reset(Source.Samples.Num());
+-		for (const FGuLiCompressedSoldierPose& Pose : Source.Samples)
++		for (const FGuLiQuantizedSoldierPose& Pose : Source.Samples)
+ 		{
+ 			const FVector WorldLocation = Pose.GetWorldLocationCentimeters();
+ 			const uint8 Divisor = GetPoseRateDivisor(
+--- a/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
++++ b/Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp
+@@ -6169,7 +6169,6 @@
+ 		const int32 Count = ChunkIndices.Num();
+ 
+ 		FGuLiSoldierPoseChunk& Chunk = OutChunks.AddDefaulted_GetRef();
+-		Chunk.ProtocolVersion = GULI_COMMANDER_PROTOCOL_VERSION;
+ 		Chunk.AuthorityEpoch = AuthorityState->AuthorityEpoch;
+ 		Chunk.FrameSequence = FrameSequence;
+ 		Chunk.ServerSimTick = AuthorityState->ServerSimTick;
+@@ -6209,7 +6208,7 @@
+ 			}
+ 			Soldier.LastCapturedPoseLocation = Soldier.Location;
+ 			Soldier.LastCapturedPoseFrameSequence = FrameSequence;
+-			FGuLiCompressedSoldierPose& Pose = Chunk.Samples.AddDefaulted_GetRef();
++			FGuLiQuantizedSoldierPose& Pose = Chunk.Samples.AddDefaulted_GetRef();
+ 			Pose.SoldierId = Soldier.SoldierId;
+ 			if (!GuLiCommanderPoseCodec::Quantize(Soldier.Location, Soldier.Velocity, Soldier.FacingYawDegrees, Pose))
+ 			{
+@@ -6226,7 +6225,6 @@
+ 			Pose.Flags = Soldier.DisplacementFrameFloor != 0 && int32(FrameSequence - Soldier.DisplacementFrameFloor) < 3
+ 				? GULI_SOLDIER_POSE_FLAG_TELEPORT : 0u;
+ 		}
+-		Chunk.Sanitize();
+ 	}
+ }
+ 
+--- a/Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.cpp
++++ b/Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.cpp
+@@ -29,7 +29,7 @@
+ 	return Numerator < 0 ? -((-Numerator + 5) / 10) : (Numerator + 5) / 10;
+ }
+ 
+-void Predict(const FGuLiCompressedSoldierPose& Pose, uint32 Steps, int64 (&Values)[6])
++void Predict(const FGuLiQuantizedSoldierPose& Pose, uint32 Steps, int64 (&Values)[6])
+ {
+ 	static_assert(GuLiCommanderSimulationTiming::RateHz == 10u);
+ 	Values[0] = int64(Pose.WorldXMeters) + RoundTenths(int64(Pose.VelocityXMetersPerSecond) * Steps);
+@@ -97,19 +97,19 @@
+ 	}
+ };
+ 
+-bool IsPoseValid(const FGuLiCompressedSoldierPose& Pose)
++bool IsPoseValid(const FGuLiQuantizedSoldierPose& Pose)
+ {
+ 	return Pose.SoldierId.IsValid() && uint8(Pose.State) <= uint8(EGuLiSoldierPoseState::Destroyed)
+ 		&& (Pose.Flags & ~GULI_VALID_SOLDIER_POSE_FLAGS) == 0;
+ }
+ 
+-const FGuLiCompressedSoldierPose* FindSample(const FHistoryBlock& Block, FGuLiSoldierId Id)
+-{
+-	const int32 Index = Algo::LowerBoundBy(Block.Samples, Id, &FGuLiCompressedSoldierPose::SoldierId);
++const FGuLiQuantizedSoldierPose* FindSample(const FHistoryBlock& Block, FGuLiSoldierId Id)
++{
++	const int32 Index = Algo::LowerBoundBy(Block.Samples, Id, &FGuLiQuantizedSoldierPose::SoldierId);
+ 	return Block.Samples.IsValidIndex(Index) && Block.Samples[Index].SoldierId == Id ? &Block.Samples[Index] : nullptr;
+ }
+ 
+-void WriteRecord(FBitWriter& Writer, const FGuLiCompressedSoldierPose& Pose,
++void WriteRecord(FBitWriter& Writer, const FGuLiQuantizedSoldierPose& Pose,
+ 	uint32 PreviousId, const FBaseline* Baseline, uint32 Sequence, uint32 SimTick)
+ {
+ 	WriteUnsigned(Writer, Pose.SoldierId.Value - PreviousId);
+@@ -140,7 +140,7 @@
+ }
+ }
+ 
+-bool Quantize(const FVector& Position, const FVector& Velocity, float Yaw, FGuLiCompressedSoldierPose& OutPose)
++bool Quantize(const FVector& Position, const FVector& Velocity, float Yaw, FGuLiQuantizedSoldierPose& OutPose)
+ {
+ 	if (!FMath::IsFinite(Yaw)) return false;
+ 	if (!OutPose.SetWorldLocationCentimeters(Position) || !OutPose.SetVelocityCentimetersPerSecond(Velocity)) return false;
+@@ -150,7 +150,7 @@
+ 
+ void FHistory::Reset() { Blocks.Empty(); }
+ 
+-void FHistory::Store(uint32 Sequence, uint32 SimTick, TConstArrayView<FGuLiCompressedSoldierPose> Samples)
++void FHistory::Store(uint32 Sequence, uint32 SimTick, TConstArrayView<FGuLiQuantizedSoldierPose> Samples)
+ {
+ 	if (Blocks.IsEmpty()) Blocks.SetNum(HistoryCapacity);
+ 	FHistoryBlock& Block = Blocks[Sequence % HistoryCapacity];
+@@ -199,11 +199,11 @@
+ {
+ 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Encode);
+ 	check(SyncGeneration != 0 && MatchEpoch == Chunk.AuthorityEpoch);
+-	check(Chunk.ProtocolVersion == GULI_COMMANDER_PROTOCOL_VERSION && Chunk.FrameSequence != 0);
++	check(Chunk.FrameSequence != 0);
+ 	check(Chunk.ChunkCount > 0 && Chunk.ChunkCount <= GULI_MAX_POSE_CHUNKS_PER_FRAME && Chunk.ChunkIndex < Chunk.ChunkCount);
+ 	check(FMath::IsFinite(Chunk.ServerTimeSeconds) && Chunk.ServerTimeSeconds >= 0);
+ 	OutBlocks.Reset();
+-	TArray<FGuLiCompressedSoldierPose, TInlineAllocator<GULI_MAX_POSE_SAMPLES_PER_CHUNK>> Sorted(Chunk.Samples);
++	TArray<FGuLiQuantizedSoldierPose, TInlineAllocator<GULI_MAX_POSE_SAMPLES_PER_CHUNK>> Sorted(Chunk.Samples);
+ 	Sorted.Sort([](const auto& A, const auto& B) { return A.SoldierId < B.SoldierId; });
+ 	for (int32 Index = 0; Index < Sorted.Num(); ++Index)
+ 		check(IsPoseValid(Sorted[Index]) && (Index == 0 || Sorted[Index - 1].SoldierId < Sorted[Index].SoldierId));
+@@ -332,7 +332,7 @@
+ 		PreviousId = Id.Value;
+ 		const uint32 BaselineDistance = Reader.ReadId();
+ 		if (!Reader.bValid || BaselineDistance > MaxBaselineBlocks) return EDecodeResult::InvalidPayload;
+-		FGuLiCompressedSoldierPose Pose;
++		FGuLiQuantizedSoldierPose Pose;
+ 		int64 Values[6] = {};
+ 		if (BaselineDistance)
+ 		{
+@@ -392,7 +392,7 @@
+ void FReceiver::Forget(TConstArrayView<FGuLiSoldierId> Removed) { History.Forget(Removed); }
+ }
+ 
+-bool FGuLiCompressedSoldierPose::SetWorldLocationCentimeters(const FVector& WorldLocation)
++bool FGuLiQuantizedSoldierPose::SetWorldLocationCentimeters(const FVector& WorldLocation)
+ {
+ 	int64 X, Y, Z;
+ 	using namespace GuLiCommanderPoseCodec;
+@@ -403,13 +403,13 @@
+ 	return true;
+ }
+ 
+-FVector FGuLiCompressedSoldierPose::GetWorldLocationCentimeters() const
++FVector FGuLiQuantizedSoldierPose::GetWorldLocationCentimeters() const
+ {
+ 	return FVector(WorldXMeters * GULI_POSE_XY_STEP_CENTIMETERS, WorldYMeters * GULI_POSE_XY_STEP_CENTIMETERS,
+ 		WorldZDecimeters * GULI_POSE_Z_STEP_CENTIMETERS);
+ }
+ 
+-bool FGuLiCompressedSoldierPose::SetVelocityCentimetersPerSecond(const FVector& Velocity)
++bool FGuLiQuantizedSoldierPose::SetVelocityCentimetersPerSecond(const FVector& Velocity)
+ {
+ 	int64 X, Y, Z;
+ 	using namespace GuLiCommanderPoseCodec;
+@@ -420,7 +420,7 @@
+ 	return true;
+ }
+ 
+-FVector FGuLiCompressedSoldierPose::GetVelocityCentimetersPerSecond() const
++FVector FGuLiQuantizedSoldierPose::GetVelocityCentimetersPerSecond() const
+ {
+ 	return FVector(VelocityXMetersPerSecond, VelocityYMetersPerSecond, VelocityZMetersPerSecond)
+ 		* GULI_POSE_VELOCITY_STEP_CENTIMETERS_PER_SECOND;
+--- a/Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.h
++++ b/Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.h
+@@ -48,21 +48,21 @@
+ inline constexpr uint32 MaxBaselineBlocks = 1024;
+ 
+ GULISTRIKE_API bool Quantize(const FVector& Position, const FVector& Velocity, float Yaw,
+-	FGuLiCompressedSoldierPose& OutPose);
++	FGuLiQuantizedSoldierPose& OutPose);
+ 
+ struct FHistoryBlock
+ {
+ 	uint32 Sequence = 0;
+ 	uint32 SimTick = 0;
+ 	bool bAcknowledged = false;
+-	TArray<FGuLiCompressedSoldierPose> Samples;
++	TArray<FGuLiQuantizedSoldierPose> Samples;
+ };
+ 
+ class GULISTRIKE_API FHistory
+ {
+ public:
+ 	void Reset();
+-	void Store(uint32 Sequence, uint32 SimTick, TConstArrayView<FGuLiCompressedSoldierPose> Samples);
++	void Store(uint32 Sequence, uint32 SimTick, TConstArrayView<FGuLiQuantizedSoldierPose> Samples);
+ 	FHistoryBlock* Find(uint32 Sequence);
+ 	const FHistoryBlock* Find(uint32 Sequence) const;
+ 	void Forget(TConstArrayView<FGuLiSoldierId> Removed);
+@@ -73,7 +73,7 @@
+ 
+ struct FBaseline
+ {
+-	FGuLiCompressedSoldierPose Pose;
++	FGuLiQuantizedSoldierPose Pose;
+ 	uint32 Sequence = 0;
+ 	uint32 SimTick = 0;
+ };
+--- a/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp
++++ b/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp
+@@ -74,19 +74,6 @@
+ 	{
+ 		return State == EGuLiSoldierLifeState::Alive
+ 			|| State == EGuLiSoldierLifeState::Destroyed;
+-	}
+-
+-	bool IsValidPoseState(const EGuLiSoldierPoseState State)
+-	{
+-		switch (State)
+-		{
+-		case EGuLiSoldierPoseState::Idle:
+-		case EGuLiSoldierPoseState::Moving:
+-		case EGuLiSoldierPoseState::Destroyed:
+-			return true;
+-		default:
+-			return false;
+-		}
+ 	}
+ 
+ 	bool IsValidCommandKind(const EGuLiCommandKind Kind)
+@@ -834,28 +821,11 @@
+ 	return true;
+ }
+ 
+-bool FGuLiCompressedSoldierPose::IsTeleport() const
++bool FGuLiQuantizedSoldierPose::IsTeleport() const
+ {
+ 	return (Flags & GULI_SOLDIER_POSE_FLAG_TELEPORT) != 0u;
+ }
+ 
+-void FGuLiCompressedSoldierPose::Sanitize()
+-{
+-	Flags &= GULI_VALID_SOLDIER_POSE_FLAGS;
+-	if (!IsValidPoseState(State))
+-	{
+-		State = EGuLiSoldierPoseState::Idle;
+-	}
+-	if (State == EGuLiSoldierPoseState::Destroyed)
+-	{
+-		VelocityXMetersPerSecond = 0;
+-		VelocityYMetersPerSecond = 0;
+-		VelocityZMetersPerSecond = 0;
+-		ActiveOrderId = 0u;
+-	}
+-}
+-
+-// 整理会重置协议字段并裁剪数量，因此不能先整理再据其验证原始协议版本。
+ void FGuLiSoldierStateFastArray::PreReplicatedRemove(const TArrayView<int32> RemovedIndices, int32 FinalSize)
+ {
+ 	TArray<FGuLiSoldierId> Removed;
+@@ -863,35 +833,3 @@
+ 	for (int32 Index : RemovedIndices) Removed.Add(Items[Index].SoldierId);
+ 	OnRemoved.Broadcast(Removed);
+ }
+-
+-void FGuLiSoldierPoseChunk::Sanitize()
+-{
+-	ProtocolVersion = GULI_COMMANDER_PROTOCOL_VERSION;
+-	if (!FMath::IsFinite(ServerTimeSeconds) || ServerTimeSeconds < 0.0f)
+-	{
+-		ServerTimeSeconds = 0.0f;
+-	}
+-
+-	ChunkCount = static_cast<uint16>(FMath::Clamp<uint32>(ChunkCount, 1u, GULI_MAX_POSE_CHUNKS_PER_FRAME));
+-	ChunkIndex = FMath::Min<uint16>(ChunkIndex, static_cast<uint16>(ChunkCount - 1u));
+-
+-	TSet<FGuLiSoldierId> SeenSoldiers;
+-	for (int32 Index = 0; Index < Samples.Num();)
+-	{
+-		FGuLiCompressedSoldierPose& Sample = Samples[Index];
+-		Sample.Sanitize();
+-		if (!Sample.SoldierId.IsValid() || SeenSoldiers.Contains(Sample.SoldierId))
+-		{
+-			Samples.RemoveAt(Index, 1, EAllowShrinking::No);
+-			continue;
+-		}
+-
+-		SeenSoldiers.Add(Sample.SoldierId);
+-		++Index;
+-	}
+-
+-	if (Samples.Num() > static_cast<int32>(GULI_MAX_POSE_SAMPLES_PER_CHUNK))
+-	{
+-		Samples.SetNum(static_cast<int32>(GULI_MAX_POSE_SAMPLES_PER_CHUNK), EAllowShrinking::No);
+-	}
+-}
+--- a/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h
++++ b/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h
+@@ -552,46 +552,25 @@
+ 	enum { WithNetDeltaSerializer = true };
+ };
+ 
+-/** Complete quantized pose in stable world coordinates; the connection codec owns wire encoding. */
+-USTRUCT()
+-struct GULISTRIKE_API FGuLiCompressedSoldierPose
+-{
+-	GENERATED_BODY()
+-
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
++/** Native quantized sample; only FGuLiEncodedPoseBlock is serialized on the wire. */
++struct GULISTRIKE_API FGuLiQuantizedSoldierPose
++{
+ 	FGuLiSoldierId SoldierId;
+ 
+-	// XY: meters. Z: decimeters. Never relative to a moving chunk anchor.
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
++	// Stable world coordinates: XY in meters, Z in decimeters.
+ 	int32 WorldXMeters = 0;
+-
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	int32 WorldYMeters = 0;
+-
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	int32 WorldZDecimeters = 0;
+ 
+-	// Velocity components in meters/second, not displacement per packet.
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
++	// Velocity components in meters/second.
+ 	int16 VelocityXMetersPerSecond = 0;
+-
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	int16 VelocityYMetersPerSecond = 0;
+-
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	int16 VelocityZMetersPerSecond = 0;
+ 
+ 	// 256 directions; interpolation and residuals take the shortest angular arc.
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	uint8 FacingYaw = 0u;
+-
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	uint32 ActiveOrderId = 0u;
+-
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	EGuLiSoldierPoseState State = EGuLiSoldierPoseState::Idle;
+-
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	uint8 Flags = 0u;
+ 
+ 	bool SetWorldLocationCentimeters(const FVector& WorldLocation);
+@@ -599,43 +578,24 @@
+ 	bool SetVelocityCentimetersPerSecond(const FVector& Velocity);
+ 	FVector GetVelocityCentimetersPerSecond() const;
+ 	bool IsTeleport() const;
+-	void Sanitize();
+-};
+-
+-
+-/** 一帧权威姿态中可独立消费的块；丢块不补齐整帧，由后续新样本恢复表现。 */
+-USTRUCT()
++};
++
++/** Native capture/decoded batch. Wire version and validation belong to the connection codec. */
+ struct GULISTRIKE_API FGuLiSoldierPoseChunk
+ {
+-	GENERATED_BODY()
+-
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+-	uint16 ProtocolVersion = GULI_COMMANDER_PROTOCOL_VERSION;
+-
+ 	// 所属战局，必须与 Bootstrap 接受的 MatchEpoch 一致，隔离旧战局迟到数据。
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	uint32 AuthorityEpoch = 0u;
+ 
+ 	// 捕获帧序号；同帧多个块共享此值，不能用它直接过滤该帧后续块。
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	uint32 FrameSequence = 0u;
+ 
+ 	// 服务器模拟步编号；ServerTimeSeconds 是样本时间，客户端收包时间不是样本生成时间。
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	uint32 ServerSimTick = 0u;
+-
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	float ServerTimeSeconds = 0.0f;
+ 
+ 	// 块号从 0 开始，必须小于 ChunkCount；并不要求客户端等待全部块到齐。
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	uint16 ChunkIndex = 0u;
+-
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+ 	uint16 ChunkCount = 1u;
+ 
+-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+-	TArray<FGuLiCompressedSoldierPose> Samples;
+-
+-	void Sanitize();
+-};
++	TArray<FGuLiQuantizedSoldierPose> Samples;
++};
+--- a/Source/GuLiStrike/Commander/Network/Tests/GuLiCommanderNetworkTests.cpp
++++ b/Source/GuLiStrike/Commander/Network/Tests/GuLiCommanderNetworkTests.cpp
+@@ -98,13 +98,23 @@
+ 		Chunk.ServerTimeSeconds = static_cast<float>(FrameSequence) / GULI_POSE_CAPTURE_RATE_HZ;
+ 		Chunk.ChunkIndex = 0u;
+ 		Chunk.ChunkCount = 1u;
+-		FGuLiCompressedSoldierPose& Pose = Chunk.Samples.AddDefaulted_GetRef();
++		FGuLiQuantizedSoldierPose& Pose = Chunk.Samples.AddDefaulted_GetRef();
+ 		Pose.SoldierId = FGuLiSoldierId(SoldierIdValue);
+ 		Pose.SetWorldLocationCentimeters(FVector(
+ 			static_cast<double>(FrameSequence) * 10.0,
+ 			0.0,
+ 			0.0));
+ 		return Chunk;
++	}
++
++	FGuLiEncodedPoseBlock MakePoseBlock(uint32 MatchEpoch, uint32 FrameSequence, uint32 SoldierId)
++	{
++		GuLiCommanderPoseCodec::FSender Sender;
++		Sender.Reset(1u, MatchEpoch);
++		TArray<FGuLiEncodedPoseBlock> Blocks;
++		Sender.Encode(MakePoseChunk(MatchEpoch, FrameSequence, SoldierId), Blocks);
++		check(Blocks.Num() == 1);
++		return MoveTemp(Blocks[0]);
+ 	}
+ }
+ 
+@@ -883,7 +893,7 @@
+ 			MatchEpoch,
+ 			SnapshotRevision,
+ 			RosterCount));
+-	TestFalse(TEXT("A protocol-v5 client cannot join the partial-member move wire contract"),
++	TestFalse(TEXT("A protocol-v8 client cannot join the v9 wire contract"),
+ 		PassesGate(
+ 			GULI_COMMANDER_PROTOCOL_VERSION - 1u,
+ 			MatchEpoch,
+@@ -917,8 +927,8 @@
+ 	constexpr uint32 MatchEpoch = 1001u;
+ 	constexpr uint32 OtherMatchEpoch = 2002u;
+ 	NetSync->TestOnly_ConfigureClientPoseGate(true, MatchEpoch);
+-	NetSync->TestOnly_ReceivePoseChunk(
+-		GuLiCommanderNetworkTests::MakePoseChunk(MatchEpoch, 1u, 1u));
++	NetSync->TestOnly_ReceivePoseBlock(
++		GuLiCommanderNetworkTests::MakePoseBlock(MatchEpoch, 1u, 1u));
+ 	TArray<FGuLiSoldierPoseChunk> AcceptedChunks;
+ 	NetSync->ConsumePendingPoseChunks(AcceptedChunks);
+ 	TestEqual(TEXT("A pose from the accepted MatchEpoch enters the client queue"),
+@@ -926,8 +936,8 @@
+ 	TestEqual(TEXT("The first accepted chunk advances one fresh pose frame"),
+ 		NetSync->GetAcceptedPoseFrameCount(), static_cast<uint64>(1u));
+ 
+-	NetSync->TestOnly_ReceivePoseChunk(
+-		GuLiCommanderNetworkTests::MakePoseChunk(OtherMatchEpoch, 2u, 1u));
++	NetSync->TestOnly_ReceivePoseBlock(
++		GuLiCommanderNetworkTests::MakePoseBlock(OtherMatchEpoch, 2u, 1u));
+ 	TArray<FGuLiSoldierPoseChunk> CrossMatchChunks;
+ 	NetSync->ConsumePendingPoseChunks(CrossMatchChunks);
+ 	TestTrue(TEXT("A pose from another MatchEpoch is rejected before interpolation"),
+@@ -935,26 +945,27 @@
+ 	TestEqual(TEXT("A rejected cross-MatchEpoch chunk cannot advance pose freshness"),
+ 		NetSync->GetAcceptedPoseFrameCount(), static_cast<uint64>(1u));
+ 
+-	FGuLiSoldierPoseChunk WrongProtocolChunk =
+-		GuLiCommanderNetworkTests::MakePoseChunk(MatchEpoch, 3u, 1u);
+-	WrongProtocolChunk.ProtocolVersion = GULI_COMMANDER_PROTOCOL_VERSION + 1u;
+-	NetSync->TestOnly_ReceivePoseChunk(WrongProtocolChunk);
++	FGuLiEncodedPoseBlock WrongProtocolBlock =
++		GuLiCommanderNetworkTests::MakePoseBlock(MatchEpoch, 3u, 1u);
++	// The first 16 bits are the real wire version; no decoded DTO can bypass this boundary.
++	WrongProtocolBlock.Data[0] = uint8(GULI_COMMANDER_PROTOCOL_VERSION - 1u);
++	NetSync->TestOnly_ReceivePoseBlock(WrongProtocolBlock);
+ 	TArray<FGuLiSoldierPoseChunk> WrongProtocolChunks;
+ 	NetSync->ConsumePendingPoseChunks(WrongProtocolChunks);
+ 	TestTrue(TEXT("A pose with another protocol version is rejected by the runtime gate"),
+ 		WrongProtocolChunks.IsEmpty());
+ 
+ 	NetSync->TestOnly_ConfigureClientPoseGate(false, MatchEpoch);
+-	NetSync->TestOnly_ReceivePoseChunk(
+-		GuLiCommanderNetworkTests::MakePoseChunk(MatchEpoch, 4u, 1u));
++	NetSync->TestOnly_ReceivePoseBlock(
++		GuLiCommanderNetworkTests::MakePoseBlock(MatchEpoch, 4u, 1u));
+ 	TArray<FGuLiSoldierPoseChunk> PreBootstrapChunks;
+ 	NetSync->ConsumePendingPoseChunks(PreBootstrapChunks);
+ 	TestTrue(TEXT("A matching pose is rejected until the roster/bootstrap gate is ready"),
+ 		PreBootstrapChunks.IsEmpty());
+ 
+ 	NetSync->TestOnly_ConfigureClientPoseGate(true, OtherMatchEpoch);
+-	NetSync->TestOnly_ReceivePoseChunk(
+-		GuLiCommanderNetworkTests::MakePoseChunk(OtherMatchEpoch, 5u, 1u));
++	NetSync->TestOnly_ReceivePoseBlock(
++		GuLiCommanderNetworkTests::MakePoseBlock(OtherMatchEpoch, 5u, 1u));
+ 	TArray<FGuLiSoldierPoseChunk> NewMatchChunks;
+ 	NetSync->ConsumePendingPoseChunks(NewMatchChunks);
+ 	TestEqual(TEXT("The same pose is accepted after the client explicitly adopts the new MatchEpoch"),
+@@ -1284,7 +1295,7 @@
+ 	"GuLiStrike.Commander.Network.PoseQuantization", EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+ bool FGuLiPoseQuantizationTest::RunTest(const FString& Parameters)
+ {
+-	FGuLiCompressedSoldierPose Pose;
++	FGuLiQuantizedSoldierPose Pose;
+ 	TestTrue(TEXT("Quantize signed half steps"), GuLiCommanderPoseCodec::Quantize(FVector(50, -50, -5), FVector(50, -50, 150), 359.8f, Pose));
+ 	TestEqual(TEXT("XY positive half rounds away"), Pose.WorldXMeters, 1);
+ 	TestEqual(TEXT("XY negative half rounds away"), Pose.WorldYMeters, -1);
+--- a/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp
++++ b/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp
+@@ -1102,10 +1102,8 @@
+ 		Soldier->LastUntaggedHardSnapDelta = FVector::ZeroVector;
+ 		Soldier->LastHardSnapPriorSampleDelta = FVector::ZeroVector;
+ 		Soldier->LastHardSnapSampleVelocity = FVector::ZeroVector;
+-		Soldier->LastHardSnapCurrentAnchor = FVector::ZeroVector;
+-		Soldier->LastHardSnapCurrentRelative = FVector::ZeroVector;
+-		Soldier->LastHardSnapPreviousAnchor = FVector::ZeroVector;
+-		Soldier->LastHardSnapPreviousRelative = FVector::ZeroVector;
++		Soldier->LastHardSnapCurrentLocation = FVector::ZeroVector;
++		Soldier->LastHardSnapPreviousLocation = FVector::ZeroVector;
+ 		Soldier->LastHardSnapServerTimeGapSeconds = 0.0;
+ 		Soldier->LastHardSnapFrameGap = 0u;
+ 		Soldier->LastHardSnapCurrentChunkIndex = 0u;
+@@ -1131,10 +1129,8 @@
+ 	OutDiagnostics.LastUntaggedHardSnapDelta = Soldier->LastUntaggedHardSnapDelta;
+ 	OutDiagnostics.LastHardSnapPriorSampleDelta = Soldier->LastHardSnapPriorSampleDelta;
+ 	OutDiagnostics.LastHardSnapSampleVelocity = Soldier->LastHardSnapSampleVelocity;
+-	OutDiagnostics.LastHardSnapCurrentAnchor = Soldier->LastHardSnapCurrentAnchor;
+-	OutDiagnostics.LastHardSnapCurrentRelative = Soldier->LastHardSnapCurrentRelative;
+-	OutDiagnostics.LastHardSnapPreviousAnchor = Soldier->LastHardSnapPreviousAnchor;
+-	OutDiagnostics.LastHardSnapPreviousRelative = Soldier->LastHardSnapPreviousRelative;
++	OutDiagnostics.LastHardSnapCurrentLocation = Soldier->LastHardSnapCurrentLocation;
++	OutDiagnostics.LastHardSnapPreviousLocation = Soldier->LastHardSnapPreviousLocation;
+ 	OutDiagnostics.LastHardSnapServerTimeGapSeconds = Soldier->LastHardSnapServerTimeGapSeconds;
+ 	OutDiagnostics.LastHardSnapFrameGap = Soldier->LastHardSnapFrameGap;
+ 	OutDiagnostics.LastHardSnapCurrentChunkIndex = Soldier->LastHardSnapCurrentChunkIndex;
+@@ -1344,15 +1340,12 @@
+ 	}
+ }
+ 
+-// NetSync 已校验 Bootstrap 战局；这里进一步解压并绑定名册身份，未知 SoldierId 的姿态不能创建士兵。
++// v9编解码器已校验完整姿态；这里绑定当前战局和可靠名册，再写入插值时间线。
+ void AGuLiCommanderPresentationActor::IngestPoseChunk(
+ 	const FGuLiSoldierPoseChunk& Chunk,
+ 	const double LocalNowSeconds)
+ {
+-	if (Chunk.ProtocolVersion != GULI_COMMANDER_PROTOCOL_VERSION
+-		|| Chunk.AuthorityEpoch == 0u || Chunk.AuthorityEpoch != LastObservedMatchEpoch
+-		|| Chunk.FrameSequence == 0u || Chunk.ChunkCount == 0u
+-		|| Chunk.ChunkIndex >= Chunk.ChunkCount || Chunk.Samples.IsEmpty())
++	if (Chunk.AuthorityEpoch != LastObservedMatchEpoch)
+ 	{
+ 		return;
+ 	}
+@@ -1379,10 +1372,8 @@
+ 			Pair.Value.LastUntaggedHardSnapDelta = FVector::ZeroVector;
+ 			Pair.Value.LastHardSnapPriorSampleDelta = FVector::ZeroVector;
+ 			Pair.Value.LastHardSnapSampleVelocity = FVector::ZeroVector;
+-			Pair.Value.LastHardSnapCurrentAnchor = FVector::ZeroVector;
+-			Pair.Value.LastHardSnapCurrentRelative = FVector::ZeroVector;
+-			Pair.Value.LastHardSnapPreviousAnchor = FVector::ZeroVector;
+-			Pair.Value.LastHardSnapPreviousRelative = FVector::ZeroVector;
++			Pair.Value.LastHardSnapCurrentLocation = FVector::ZeroVector;
++			Pair.Value.LastHardSnapPreviousLocation = FVector::ZeroVector;
+ 			Pair.Value.LastHardSnapServerTimeGapSeconds = 0.0;
+ 			Pair.Value.LastHardSnapFrameGap = 0u;
+ 			Pair.Value.LastHardSnapCurrentChunkIndex = 0u;
+@@ -1401,13 +1392,7 @@
+ 		bLatestClockRoundTripFromConnectionStats = false;
+ 	}
+ 
+-	double ServerTimeSeconds = FMath::IsFinite(Chunk.ServerTimeSeconds)
+-		? static_cast<double>(Chunk.ServerTimeSeconds)
+-		: 0.0;
+-	if (ServerTimeSeconds <= 0.0 && Chunk.ServerSimTick > 0u)
+-	{
+-		ServerTimeSeconds = static_cast<double>(Chunk.ServerSimTick) / GuLiCommanderSimulationTiming::RateHz;
+-	}
++	const double ServerTimeSeconds = Chunk.ServerTimeSeconds;
+ 	// 同捕获帧的后续块不会反复更新时钟测量，避免发送分摊时间被当成样本时间推进。
+ 	const bool bAdvancesClockFrame = LatestClockFrameSequence == 0u
+ 		|| GuLiCommanderPresentation::IsNewerSerial(
+@@ -1459,9 +1444,8 @@
+ 	}
+ 	for (int32 SampleIndex = 0; SampleIndex < Chunk.Samples.Num(); ++SampleIndex)
+ 	{
+-		const FGuLiCompressedSoldierPose& CompressedPose = Chunk.Samples[SampleIndex];
+-		if (!CompressedPose.SoldierId.IsValid()
+-			|| !Replicator->FindSoldierState(CompressedPose.SoldierId))
++		const FGuLiQuantizedSoldierPose& QuantizedPose = Chunk.Samples[SampleIndex];
++		if (!Replicator->FindSoldierState(QuantizedPose.SoldierId))
+ 		{
+ 			// A lossy transform packet cannot create a reliable Soldier identity.
+ 			continue;
+@@ -1470,18 +1454,15 @@
+ 		FGuLiCommanderBufferedSoldierPose Sample;
+ 		Sample.ServerTimeSeconds = ServerTimeSeconds;
+ 		Sample.FrameSequence = Chunk.FrameSequence;
+-		Sample.Location = CompressedPose.GetWorldLocationCentimeters();
+-		// Retained diagnostic fields: protocol 9 has no spatial anchor or relative offset.
+-		Sample.ChunkAnchor = FVector::ZeroVector;
+-		Sample.RelativeLocation = Sample.Location;
+-		Sample.Velocity = CompressedPose.GetVelocityCentimetersPerSecond();
+-		Sample.FacingYawDegrees = GuLiCommanderProtocol::DequantizeYawDegrees(CompressedPose.FacingYaw);
+-		Sample.ActiveOrderId = CompressedPose.ActiveOrderId;
+-		Sample.State = CompressedPose.State;
++		Sample.Location = QuantizedPose.GetWorldLocationCentimeters();
++		Sample.Velocity = QuantizedPose.GetVelocityCentimetersPerSecond();
++		Sample.FacingYawDegrees = GuLiCommanderProtocol::DequantizeYawDegrees(QuantizedPose.FacingYaw);
++		Sample.ActiveOrderId = QuantizedPose.ActiveOrderId;
++		Sample.State = QuantizedPose.State;
+ 		Sample.ChunkIndex = Chunk.ChunkIndex;
+ 		Sample.SampleIndex = static_cast<uint8>(SampleIndex);
+-		Sample.bTeleport = CompressedPose.IsTeleport();
+-		InsertPoseSample(CompressedPose.SoldierId, Sample, LocalNowSeconds);
++		Sample.bTeleport = QuantizedPose.IsTeleport();
++		InsertPoseSample(QuantizedPose.SoldierId, Sample, LocalNowSeconds);
+ 	}
+ }
+ 
+@@ -1593,16 +1574,14 @@
+ 			++Soldier.UntaggedHardSnapCount;
+ 			Soldier.LastUntaggedHardSnapDelta = Sample.Location - Soldier.PresentedTransform.GetLocation();
+ 			Soldier.LastHardSnapSampleVelocity = Sample.Velocity;
+-			Soldier.LastHardSnapCurrentAnchor = Sample.ChunkAnchor;
+-			Soldier.LastHardSnapCurrentRelative = Sample.RelativeLocation;
++			Soldier.LastHardSnapCurrentLocation = Sample.Location;
+ 			Soldier.LastHardSnapCurrentChunkIndex = Sample.ChunkIndex;
+ 			Soldier.LastHardSnapCurrentSampleIndex = Sample.SampleIndex;
+ 			if (bHasLatestSample)
+ 			{
+ 				const FGuLiCommanderBufferedSoldierPose& PreviousLatest = Soldier.Samples.Last();
+ 				Soldier.LastHardSnapPriorSampleDelta = Sample.Location - PreviousLatest.Location;
+-				Soldier.LastHardSnapPreviousAnchor = PreviousLatest.ChunkAnchor;
+-				Soldier.LastHardSnapPreviousRelative = PreviousLatest.RelativeLocation;
++				Soldier.LastHardSnapPreviousLocation = PreviousLatest.Location;
+ 				Soldier.LastHardSnapPreviousChunkIndex = PreviousLatest.ChunkIndex;
+ 				Soldier.LastHardSnapPreviousSampleIndex = PreviousLatest.SampleIndex;
+ 				Soldier.LastHardSnapServerTimeGapSeconds = FMath::Max(
+@@ -2070,10 +2049,8 @@
+ 		Pair.Value.LastUntaggedHardSnapDelta = FVector::ZeroVector;
+ 		Pair.Value.LastHardSnapPriorSampleDelta = FVector::ZeroVector;
+ 		Pair.Value.LastHardSnapSampleVelocity = FVector::ZeroVector;
+-		Pair.Value.LastHardSnapCurrentAnchor = FVector::ZeroVector;
+-		Pair.Value.LastHardSnapCurrentRelative = FVector::ZeroVector;
+-		Pair.Value.LastHardSnapPreviousAnchor = FVector::ZeroVector;
+-		Pair.Value.LastHardSnapPreviousRelative = FVector::ZeroVector;
++		Pair.Value.LastHardSnapCurrentLocation = FVector::ZeroVector;
++		Pair.Value.LastHardSnapPreviousLocation = FVector::ZeroVector;
+ 		Pair.Value.LastHardSnapServerTimeGapSeconds = 0.0;
+ 		Pair.Value.LastHardSnapFrameGap = 0u;
+ 		Pair.Value.LastHardSnapCurrentChunkIndex = 0u;

@@ -15,6 +15,7 @@
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Engine/GameViewportClient.h"
+#include "Engine/Console.h"
 #include "UnrealClient.h"
 #include "Components/PrimitiveComponent.h"
 #include "Engine/World.h"
@@ -1062,6 +1063,11 @@ void AGuLiCommanderPlayerController::UpdateCameraInput(const float DeltaTime)
 	{
 		return;
 	}
+	UGameViewportClient* GameViewport = GetWorld()->GetGameViewport();
+	if (GameViewport && GameViewport->ViewportConsole && GameViewport->ViewportConsole->ConsoleActive())
+	{
+		return;
+	}
 
 	FVector2D MovementInput = FVector2D::ZeroVector;
 	MovementInput.X = (IsInputKeyDown(EKeys::W) ? 1.0f : 0.0f)
@@ -1074,7 +1080,6 @@ void AGuLiCommanderPlayerController::UpdateCameraInput(const float DeltaTime)
 	GetViewportSize(ViewportX, ViewportY);
 	float MouseX = 0.0f;
 	float MouseY = 0.0f;
-	UGameViewportClient* GameViewport = GetWorld() ? GetWorld()->GetGameViewport() : nullptr;
 	const bool bViewportFocused = GameViewport && GameViewport->Viewport
 		&& GameViewport->Viewport->HasFocus();
 	if (bViewportFocused

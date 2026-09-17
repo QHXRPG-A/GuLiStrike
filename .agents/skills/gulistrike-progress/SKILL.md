@@ -1,6 +1,6 @@
 ---
 name: gulistrike-progress
-description: 'GuLiStrike (UE5.7, D:\UE5.7\test1) development documentation and archiving system. Use whenever working on the GuLiStrike project and the user mentions requirements, new ideas, gameplay/UI/tech proposals (需求/点子/想法), technical design or task lists (开发文档/技术方案/任务清单), session summaries or change records (归档/总结/变更记录), or gameplay module documentation (玩法记录/战斗/循环/技能/刷怪) — also trigger for any file operation under D:\UE5.7\test1\Progress. English triggers: requirement doc, dev doc, spec, task breakdown, archive, changelog, gameplay record.'
+description: 'GuLiStrike (UE5.7, D:\UE5.7\test1) development documentation and archiving system. Use for requirements, ideas, technical plans, task lists, archives, gameplay records, and project art-standard changes or visual-approval records (需求/技术方案/归档/玩法/美术规范/美术审核); also for any file operation under D:\UE5.7\test1\Progress.'
 ---
 
 # GuLiStrike Progress
@@ -14,6 +14,16 @@ description: 'GuLiStrike (UE5.7, D:\UE5.7\test1) development documentation and a
 - 新增归档、里程碑、勘误或删除讨论：再读取 [`references/archive-policy.md`](references/archive-policy.md)。
 
 不要为普通状态更新加载所有参考文件。
+
+## 美术规范与审核维护
+
+涉及项目美术方向、参考版本、资产例外或美术审核时，先读[《GuLiStrike 美术规范》](../../../Progress/RequirementDocument/GuLiStrike美术规范.md)和[配套变更与验收台账](../../../Progress/DevelopmentDocumentation/GuLiStrike美术规范.md)。规范是当前规则的唯一来源；模型、特效、地编技能仅链接并执行，不各自复制一份。
+
+- 用户确认新的美术规则后，同步规范正文、`art_revision`、日期和资产例外；按现有归档策略追加增量记录，写清依据、影响范围及旧/新规则。实验结果和助手判断不能自动成为已验收标准。
+- 对具体资产记录参考/源文件版本、路径或哈希、用户审核 A/B 的决定与消息依据、预览证据、UE验证和剩余偏差。审核与编译、技术验证、性能验证分别记录；没有用户决定的阶段不得填写“通过”。
+- 复用已有明确过审记录，不重复索要批准。规范新增默认规则不自动撤销扫荡者无线稿等明确例外，不自动重做已导入资产；用户改变例外时记录具体资产和版本。
+- 两台兵种的非三视图效果图在 `ArtSource/UI/UnitPortraits`，战争机器补充参考在 `ArtSource/ArtDirection/References`。它们是长期源资源；清理临时文件时保留原图、来源清单和必要的审核证据。
+- 普通玩法、构建或文档任务不触发美术双审。美术任务需要停在审核阶段时，先完成可供审核的产物，并链接实际约束的技能和规范说明原因。
 
 ## 固定工作流
 

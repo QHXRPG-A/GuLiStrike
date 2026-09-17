@@ -1,0 +1,34 @@
+{
+  "fog": {
+    "volumetric_fog": null,
+    "fog_density": 0.0024999999441206455,
+    "volumetric_fog_distance": 300000.0,
+    "volumetric_fog_start_distance": 0.0,
+    "volumetric_fog_scattering_distribution": 0.20000000298023224
+  },
+  "postprocess": {
+    "unbound": true,
+    "override_dynamic_global_illumination_method": false,
+    "dynamic_global_illumination_method": "<DynamicGlobalIlluminationMethod.LUMEN: 1>",
+    "override_reflection_method": false,
+    "reflection_method": "<ReflectionMethod.LUMEN: 1>",
+    "override_lumen_scene_lighting_quality": false,
+    "lumen_scene_lighting_quality": 1.0,
+    "lumen_scene_detail": 1.0,
+    "lumen_final_gather_quality": 1.0,
+    "override_motion_blur_amount": false,
+    "motion_blur_amount": 0.5
+  },
+  "landscape": {
+    "scale": "<Struct 'Vector' (0x0000029DEC4D4B00) {x: 100.000000, y: 100.000000, z: 150.000000}>",
+    "bounds": "(<Struct 'Vector' (0x0000029DEC4D4B00) {x: 0.000000, y: 0.000000, z: 8432.617188}>, <Struct 'Vector' (0x0000029DEC4D4B50) {x: 408000.000000, y: 408000.000000, z: 15817.382812}>)",
+    "component_size_quads": null,
+    "num_subsections": null,
+    "subsection_size_quads": null,
+    "landscape_material": null,
+    "enable_nanite": false,
+    "lod0_screen_size": 0.5,
+    "lod_distribution_setting": 3.0,
+    "lod0_distribution_setting": 1.25
+  }
+}

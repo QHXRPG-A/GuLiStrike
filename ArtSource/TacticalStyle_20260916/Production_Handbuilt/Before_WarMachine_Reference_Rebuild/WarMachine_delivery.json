@@ -1,0 +1,83 @@
+{
+  "sockets_m": {
+    "Muzzle_Cannon_L": [
+      23.91057014465332,
+      13.001264572143555,
+      18.118785858154297
+    ],
+    "Muzzle_Cannon_R": [
+      23.91057014465332,
+      -13.001264572143555,
+      18.118785858154297
+    ],
+    "Muzzle_Missile_R": [
+      -7.150501251220703,
+      -9.336014747619629,
+      35.328365325927734
+    ],
+    "Muzzle_Missile_L": [
+      -7.150501251220703,
+      9.336014747619629,
+      35.328365325927734
+    ]
+  },
+  "missile_pod_pitch_degrees": 45,
+  "wheel_pivots_m": {},
+  "wheel_radius_m": 0.0,
+  "unit": "WarMachine",
+  "display_name": "战争机器",
+  "method": "Authored Blender geometry from approved concept and three views. No Tripo geometry or texture.",
+  "references": [
+    "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\WarMachine_Concept_v1.png",
+    "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\WarMachine_Front.png",
+    "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\WarMachine_Left.png",
+    "D:\\UE5.7\\test1\\ArtSource\\TacticalStyle_20260916\\Concepts\\WarMachine_Back.png"
+  ],
+  "palette": [
+    "DD6038",
+    "F2EBDD",
+    "52687A",
+    "283844",
+    "FFD166",
+    "8295A1",
+    "AC452B"
+  ],
+  "bounds_m": [
+    [
+      -23.806838989257812,
+      -28.807466506958008,
+      0.0
+    ],
+    [
+      23.80683708190918,
+      28.807466506958008,
+      37.29416275024414
+    ]
+  ],
+  "triangles": 7904,
+  "symmetry_error_m": 1.9660499219753547e-06,
+  "source_scale": 6.915566235851615,
+  "source_offset": [
+    0.09749996662139893,
+    0.0,
+    -0.03999999165534973
+  ],
+  "parts": 176,
+  "hidden_triangles_removed": 804,
+  "vertices": 4906,
+  "bone_names": [
+    "root",
+    "Body"
+  ],
+  "rigid_weights_valid": true,
+  "material_slots": 1,
+  "texture_size": [
+    2048,
+    2048
+  ],
+  "uv_layers": [
+    "Atlas",
+    "RigidPivotXY_UE",
+    "RigidPivotZ_Radius_UE"
+  ]
+}

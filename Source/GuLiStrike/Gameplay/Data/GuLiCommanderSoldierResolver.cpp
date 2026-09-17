@@ -151,6 +151,7 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 	}
 
 	FGuLiSoldierDefinition Resolved = Fallback;
+	Resolved.DisplayName = FText::FromString(Row->DisplayName);
 	bOutEntireDefinitionFromDataTable = true;
 	if (Row->Id > 0 && Row->Id <= MAX_uint16)
 	{

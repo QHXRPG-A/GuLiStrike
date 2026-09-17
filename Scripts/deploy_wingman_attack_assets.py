@@ -23,6 +23,8 @@ WINGMAN_IMPACT_FIELD = '/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundExplo
 WINGMAN_EXPLOSION_SOURCE = '/Game/AllExplosions/Niagara/Big/NS_Explosion_Big_17'
 WINGMAN_EXPLOSION_SYSTEM = '/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanGroundExplosion_Big_17'
 WINGMAN_EXPLOSION_VISUAL_SCALE = 5.0
+WINGMAN_TOON_EXPLOSION_SYSTEM = '/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/NS_WingmanGroundExplosion_Toon'
+WINGMAN_REFERENCE_EXPLOSION_SYSTEM = '/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01'
 WINGMAN_SHOCKWAVE_SYSTEM = '/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanGroundShockwave_Big_17'
 WINGMAN_SHOCKWAVE_VISUAL_SCALE = 3.1
 SHOCKWAVE_EMITTERS = {'refr_mesh', 'smoke_shockwave'}
@@ -106,6 +108,7 @@ def variant_signature(variant):
     return {
         'system': object_path(variant.get_editor_property('system')),
         'scale': float(variant.get_editor_property('scale')),
+        'scale_parameter_name': str(variant.get_editor_property('scale_parameter_name')),
         'random_yaw': bool(variant.get_editor_property('random_yaw')),
         'maximum_lifetime': float(variant.get_editor_property('maximum_lifetime')),
         'additional_layers': [
@@ -125,9 +128,32 @@ def expected_variant_signature():
                                'scale': WINGMAN_SHOCKWAVE_VISUAL_SCALE}],
     }
 
+
+def toon_variant_signature():
+    """The approved four-emitter visual contract; never recreate the old extra wave."""
+    return {
+        'system': canonical(WINGMAN_TOON_EXPLOSION_SYSTEM),
+        'scale': WINGMAN_EXPLOSION_VISUAL_SCALE,
+        'random_yaw': True,
+        'maximum_lifetime': 2.0,
+        'additional_layers': [],
+    }
+
+
+def reference_variant_signature():
+    return {'system': canonical(WINGMAN_REFERENCE_EXPLOSION_SYSTEM),
+            'scale': WINGMAN_EXPLOSION_VISUAL_SCALE, 'scale_parameter_name': 'User.Area_Scale',
+            'random_yaw': True, 'maximum_lifetime': 5.25, 'additional_layers': []}
+
+def uses_toon_explosion(field):
+    variants = list(field.get_editor_property('activation_variants')) if field else []
+    return len(variants) == 1 and variant_signatures_match(
+        variant_signature(variants[0]), toon_variant_signature())
+
 def variant_signatures_match(actual, expected, tolerance=0.001):
     return (
         actual['system'] == expected['system']
+        and actual.get('scale_parameter_name', 'None') == expected.get('scale_parameter_name', 'None')
         and abs(actual['scale'] - expected['scale']) <= tolerance
         and actual['random_yaw'] == expected['random_yaw']
         and abs(actual['maximum_lifetime'] - expected['maximum_lifetime']) <= tolerance
@@ -144,7 +170,7 @@ def require_wingman_impact_contract(field, allow_legacy_scale=False):
     if field.get_editor_property('timing') != unreal.GuLiSpellFieldTiming.INSTANT:
         raise RuntimeError('Wingman impact field is not Instant')
     variants = list(field.get_editor_property('activation_variants'))
-    allowed = [expected_variant_signature()]
+    allowed = [expected_variant_signature(), toon_variant_signature(), reference_variant_signature()]
     if allow_legacy_scale:
         for old_scale in (1.0, 3.1):
             legacy = expected_variant_signature()
@@ -370,6 +396,19 @@ def main():
     existing_impact = unreal.load_asset(WINGMAN_IMPACT_FIELD)
     if existing_impact:
         require_wingman_impact_contract(existing_impact, allow_legacy_scale=True)
+    preserve_toon = uses_toon_explosion(existing_impact)
+    active_variant = variant_signature(existing_impact.activation_variants[0]) if existing_impact else None
+    preserve_reference = bool(active_variant and variant_signatures_match(active_variant, reference_variant_signature()))
+    if preserve_reference:
+        reference_system = unreal.load_asset(WINGMAN_REFERENCE_EXPLOSION_SYSTEM)
+        if not isinstance(reference_system, unreal.NiagaraSystem):
+            raise RuntimeError('Active reference explosion is missing; refusing visual downgrade')
+        report['reference_niagara'] = compile_niagara(WINGMAN_REFERENCE_EXPLOSION_SYSTEM)
+    if preserve_toon:
+        toon_system = unreal.load_asset(WINGMAN_TOON_EXPLOSION_SYSTEM)
+        if not isinstance(toon_system, unreal.NiagaraSystem):
+            raise RuntimeError('Active toon explosion asset is missing; refusing visual downgrade')
+        report['toon_niagara'] = compile_niagara(WINGMAN_TOON_EXPLOSION_SYSTEM)
 
     machine_path = BASE + '/Weapons/DA_WingmanWeapon_MachineGun'
     ground_path = BASE + '/Weapons/DA_WingmanWeapon_GroundMissile'
@@ -410,7 +449,8 @@ def main():
     report['wingman_niagara'] = compile_niagara(WINGMAN_EXPLOSION_SYSTEM)
     if report['wingman_niagara']['emitters'] != report['source_niagara']['emitters']:
         raise RuntimeError('Big_17 emitter readback changed during duplication')
-    report['explosion_layers'] = partition_explosion_layers()
+    report['explosion_layers'] = ({'preserved_toon': preserve_toon, 'preserved_reference': preserve_reference, 'additional_layers': []}
+                                  if preserve_toon or preserve_reference else partition_explosion_layers())
 
     impact_field = asset(WINGMAN_IMPACT_FIELD, unreal.GuLiSpellFieldDefinition)
     impact_field.set_editor_property("config_id", "WingmanGroundMissile")
@@ -421,17 +461,19 @@ def main():
     if abs(float(impact_field.get_editor_property('dissipation_seconds')) - 3.0) > 0.001:
         impact_field.set_editor_property('dissipation_seconds', 3.0)
     visual = unreal.GuLiEffectVisualVariant()
-    visual.set_editor_property('system', wingman_explosion)
+    visual.set_editor_property('system', reference_system if preserve_reference else (toon_system if preserve_toon else wingman_explosion))
     visual.set_editor_property('scale', WINGMAN_EXPLOSION_VISUAL_SCALE)
     visual.set_editor_property('random_yaw', True)
-    visual.set_editor_property('maximum_lifetime', 3.0)
+    visual.set_editor_property('scale_parameter_name', 'User.Area_Scale' if preserve_reference else 'None')
+    visual.set_editor_property('maximum_lifetime', 5.25 if preserve_reference else (2.0 if preserve_toon else 3.0))
     wave = unreal.GuLiEffectVisualLayer()
     wave.set_editor_property('system', unreal.load_asset(WINGMAN_SHOCKWAVE_SYSTEM))
     wave.set_editor_property('scale', WINGMAN_SHOCKWAVE_VISUAL_SCALE)
-    visual.set_editor_property('additional_layers', [wave])
+    visual.set_editor_property('additional_layers', [] if preserve_toon or preserve_reference else [wave])
     current_variants = list(impact_field.get_editor_property('activation_variants'))
     if len(current_variants) != 1 or not variant_signatures_match(
-            variant_signature(current_variants[0]), expected_variant_signature()):
+            variant_signature(current_variants[0]),
+            reference_variant_signature() if preserve_reference else (toon_variant_signature() if preserve_toon else expected_variant_signature())):
         impact_field.set_editor_property('activation_variants', [visual])
 
     if wingman_projectile is None:

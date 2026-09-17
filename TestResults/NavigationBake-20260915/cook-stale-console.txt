@@ -1,0 +1,520 @@
+[2026.09.15-14.19.25:658][  0]LogInit: Display: Running engine for game: GuLiStrike
+[2026.09.15-14.19.25:658][  0]LogCore: Display: Requested channels: 'cpu,gpu,frame,log,bookmark,screenshot,region'
+[2026.09.15-14.19.25:658][  0]LogTrace: Display: Control listening on port 1985
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : platform="Windows"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : config="Development"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : buildversion="UE5-CL-0"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : engineversion="5.7.4-0+UE5"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : enginereleaseversion="5.7.4"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : os="Windows 11 (25H2) [10.0.26200.9445] "
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : cpu="GenuineIntel|Intel(R) Core(TM) i9-14900KF"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : pgoenabled="0"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : pgoprofilingenabled="0"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : ltoenabled="0"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : asan="0"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : mergedmodules="0"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : commandline="" D:/UE5.7/test1/GuLiStrike.uproject -run=Cook -TargetPlatform=Windows -Map=/Game/Tests/NavBakeCookGateStale_20260915 -CookSinglePackage -unattended -NoSplash -NoLiveCoding -NullRHI -NoSound -DisablePlugins=Fab -OutputDir=D:/UE5.7/test1/TestResults/NavigationBake-20260915/CookedNegative -abslog=D:/UE5.7/test1/TestResults/NavigationBake-20260915/cook-stale.log""
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : loginid="0781115f42f406fa2c101691d7cea477"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : llm="0"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : systemresolution.resx="1280"
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : systemresolution.resy="720"
+[2026.09.15-14.19.25:658][  0]LogAudio: Display: Audio Device Manager not initializing due to all audio being disabled. If this is not intentional, please check command line arguments for "-nosound".
+[2026.09.15-14.19.25:658][  0]LogConfig: Display: Loading Mac ini files took 0.06 seconds
+[2026.09.15-14.19.25:658][  0]LogConfig: Display: Loading VulkanPC ini files took 0.07 seconds
+[2026.09.15-14.19.25:658][  0]LogConfig: Display: Loading Android ini files took 0.08 seconds
+[2026.09.15-14.19.25:658][  0]LogConfig: Display: Loading IOS ini files took 0.08 seconds
+[2026.09.15-14.19.25:658][  0]LogConfig: Display: Loading Unix ini files took 0.09 seconds
+[2026.09.15-14.19.25:658][  0]LogAssetRegistry: Display: Asset registry cache read as 87.8 MiB from ../../../../UE5.7/test1/Intermediate/CachedAssetRegistry_0.bin.
+[2026.09.15-14.19.25:658][  0]LogConfig: Display: Loading VisionOS ini files took 0.09 seconds
+[2026.09.15-14.19.25:658][  0]LogConfig: Display: Loading TVOS ini files took 0.10 seconds
+[2026.09.15-14.19.25:658][  0]LogConfig: Display: Loading Windows ini files took 0.10 seconds
+[2026.09.15-14.19.25:658][  0]LogConfig: Display: Loading Linux ini files took 0.11 seconds
+[2026.09.15-14.19.25:658][  0]LogConfig: Display: Loading LinuxArm64 ini files took 0.11 seconds
+[2026.09.15-14.19.25:658][  0]LogPluginManager: Display: The Plugin StructUtils has been marked deprecated for 5.5 and will be removed soon. Please update your dependencies.
+[2026.09.15-14.19.25:658][  0]RenderDocPlugin: Display: RenderDoc plugin will not be loaded. Use '-AttachRenderDoc' on the cmd line or enable 'renderdoc.AutoAttach' in the plugin settings.
+[2026.09.15-14.19.25:658][  0]LogHAL: Display: Platform has ~ 32 GB [34163732480 / 34359738368 / 32], which maps to Largest [LargestMinGB=32, LargerMinGB=12, DefaultMinGB=8, SmallerMinGB=6, SmallestMinGB=0)
+[2026.09.15-14.19.25:658][  0]LogCsvProfiler: Display: Metadata set : extradevelopmentmemorymb="0"
+[2026.09.15-14.19.25:668][  0]LogTextureFormatASTC: Display: ASTCEnc version 5.0.1 library loaded
+[2026.09.15-14.19.25:668][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatASTC
+[2026.09.15-14.19.25:668][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatDXT
+[2026.09.15-14.19.25:668][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatETC2
+[2026.09.15-14.19.25:668][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatIntelISPCTexComp
+[2026.09.15-14.19.25:668][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatUncompressed
+[2026.09.15-14.19.25:668][  0]LogTextureFormatOodle: Display: Oodle Texture TFO init; latest sdk version = 2.9.14
+[2026.09.15-14.19.25:668][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.14.dll
+[2026.09.15-14.19.25:669][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.5.dll
+[2026.09.15-14.19.25:670][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatOodle
+[2026.09.15-14.19.25:715][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android'
+[2026.09.15-14.19.25:715][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ASTC'
+[2026.09.15-14.19.25:715][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_DXT'
+[2026.09.15-14.19.25:715][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ETC2'
+[2026.09.15-14.19.25:715][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_OpenXR'
+[2026.09.15-14.19.25:715][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'AndroidClient'
+[2026.09.15-14.19.25:715][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ASTCClient'
+[2026.09.15-14.19.25:715][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_DXTClient'
+[2026.09.15-14.19.25:715][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ETC2Client'
+[2026.09.15-14.19.25:715][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_OpenXRClient'
+[2026.09.15-14.19.25:715][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_Multi'
+[2026.09.15-14.19.25:715][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_MultiClient'
+[2026.09.15-14.19.25:750][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Linux'
+[2026.09.15-14.19.25:750][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxEditor'
+[2026.09.15-14.19.25:750][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxServer'
+[2026.09.15-14.19.25:750][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxClient'
+[2026.09.15-14.19.25:767][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxArm64'
+[2026.09.15-14.19.25:767][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxArm64Server'
+[2026.09.15-14.19.25:767][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxArm64Client'
+[2026.09.15-14.19.25:806][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Windows'
+[2026.09.15-14.19.25:806][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsEditor'
+[2026.09.15-14.19.25:806][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsServer'
+[2026.09.15-14.19.25:806][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsClient'
+[2026.09.15-14.19.25:806][  0]LogTargetPlatformManager: Display: Building Assets For Windows
+[2026.09.15-14.19.25:811][  0]LogAudioDebug: Display: Lib vorbis DLL was dynamically loaded.
+[2026.09.15-14.19.26:381][  0]LogObj: Display: Attempting to load config data for Default__SlateThemeManager before the Class has been constructed/registered/linked (likely during module loading or early startup). This will result in the load silently failing and should be fixed.
+[2026.09.15-14.19.26:535][  0]LogCsvProfiler: Display: Metadata set : verbatimrhiname="Null"
+[2026.09.15-14.19.26:535][  0]LogCsvProfiler: Display: Metadata set : rhiname="Null"
+[2026.09.15-14.19.26:535][  0]LogCsvProfiler: Display: Metadata set : rhifeaturelevel="SM6"
+[2026.09.15-14.19.26:535][  0]LogCsvProfiler: Display: Metadata set : shaderplatform="PCD3D_SM6"
+[2026.09.15-14.19.26:540][  0]LogDerivedDataCache: Display: Memory: Max Cache Size: -1 MB
+[2026.09.15-14.19.26:542][  0]LogZenServiceInstance: Display: Launching zen utility 'D:/UnrealEngine-5.7/Engine/Binaries/Win64/zen.exe service status'.
+[2026.09.15-14.19.27:353][  0]LogZenServiceInstance: Display: Launching zen utility 'D:/UnrealEngine-5.7/Engine/Binaries/Win64/zen.exe service status'.
+[2026.09.15-14.19.28:669][  0]LogZenServiceInstance: Display: Read zen version cache file from 'D:/UnrealEngine-5.7/Engine/Saved/Zen/zen.version', version: '5.7.6-202510061608-windows-x64-release-9a1ebb9'
+[2026.09.15-14.19.28:669][  0]LogZenServiceInstance: Display: Read zen version cache file from 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install/zen.version', version: '5.7.6-202510061608-windows-x64-release-9a1ebb9'
+[2026.09.15-14.19.28:669][  0]LogZenServiceInstance: Display: Installed service at 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install/zenserver.exe' is up to date
+[2026.09.15-14.19.28:669][  0]LogZenServiceInstance: Display: Launching executable 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install/zenserver.exe', working dir 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install', data dir 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Data', args '--port 8558 --data-dir C:\Users\a\AppData\Local\UnrealEngine\Common\Zen\Data --http asio --gc-cache-duration-seconds 1209600 --gc-interval-seconds 21600 --gc-low-diskspace-threshold 2147483648 --cache-bucket-limit-overwrites --quiet --http-forceloopback --owner-pid 25160  --child-id Zen_25160_Startup'
+[2026.09.15-14.19.28:852][  0]LogZenServiceInstance: Display: Unreal Zen Storage Server HTTP service at http://[::1]:8558 status: OK!.
+[2026.09.15-14.19.28:854][  0]LogDerivedDataCache: Display: ZenLocal: Using ZenServer HTTP service at [::1] with namespace ue.ddc status: OK!.
+[2026.09.15-14.19.28:863][  0]LogDerivedDataCache: Display: ../../../Engine/DerivedDataCache: Performance: Latency=0.01ms. RandomReadSpeed=1215.91MBs, RandomWriteSpeed=133.44MBs. Assigned SpeedClass 'Local'
+[2026.09.15-14.19.28:866][  0]LogUbaHorde: Display: UBA/Horde Configuration [Uba.Provider.Horde]: Not Enabled
+[2026.09.15-14.19.28:866][  0]LogShaderCompilers: Display: No distributed shader compiler controller found
+[2026.09.15-14.19.28:866][  0]LogShaderCompilers: Display: Using 29 local workers for shader compilation
+[2026.09.15-14.19.28:879][  0]LogShaderCompilers: Display: Compiling shader autogen file: ../../../../UE5.7/test1/Intermediate/ShaderAutogen/PCD3D_SM6/AutogenShaderHeaders.ush
+[2026.09.15-14.19.28:879][  0]LogShaderCompilers: Display: Autogen file is unchanged, skipping write.
+[2026.09.15-14.19.29:371][  0]LogEditorDomain: Display: EditorDomain is Disabled
+[2026.09.15-14.19.29:384][  0]LogAssetRegistry: Display: AssetDataGatherer spent 0.001s loading caches ../../../../UE5.7/test1/Intermediate/CachedAssetRegistry_*.bin.
+[2026.09.15-14.19.29:746][  0]LogDeviceProfileManager: Display: Deviceprofile LinuxArm64Editor not found.
+[2026.09.15-14.19.29:746][  0]LogDeviceProfileManager: Display: Deviceprofile LinuxArm64 not found.
+[2026.09.15-14.19.29:807][  0]LogCsvProfiler: Display: Metadata set : deviceprofile="WindowsEditor"
+[2026.09.15-14.19.29:812][  0]LogStreaming: Display: FlushAsyncLoading(1): 1 QueuedPackages, 0 AsyncPackages
+[2026.09.15-14.19.29:826][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-14.19.29:827][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness because of a recursive sync load
+[2026.09.15-14.19.29:827][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-14.19.29:828][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-14.19.29:828][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec because of a recursive sync load
+[2026.09.15-14.19.29:828][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-14.19.29:829][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/WorldGridMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-14.19.29:831][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/WorldGridMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-14.19.29:832][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-14.19.29:833][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultPostProcessMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-14.19.29:835][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultLightFunctionMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultPostProcessMaterial because of a recursive sync load
+[2026.09.15-14.19.29:835][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultPostProcessMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-14.19.29:835][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultDeferredDecalMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultLightFunctionMaterial because of a recursive sync load
+[2026.09.15-14.19.29:835][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-14.19.29:836][  0]LogStreaming: Display: Package /Engine/EngineMaterials/WorldGridMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultDeferredDecalMaterial because of a recursive sync load
+[2026.09.15-14.19.29:836][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/WorldGridMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-14.19.29:836][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/EngineMaterials/WorldGridMaterial because of a recursive sync load
+[2026.09.15-14.19.29:836][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/WorldGridMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-14.19.29:838][  0]LogTextureEncodingSettings: Display: Texture Encode Speed: Final (cook).
+[2026.09.15-14.19.29:838][  0]LogTextureEncodingSettings: Display: Oodle Texture Encode Speed settings: Fast: RDO Off Lambda=0, Effort=Normal Final: RDO Off Lambda=0, Effort=Normal
+[2026.09.15-14.19.29:838][  0]LogTextureEncodingSettings: Display: Shared linear texture encoding: Disabled
+[2026.09.15-14.19.29:862][  0]LogMeshReduction: Display: Using QuadricMeshReduction for automatic static mesh reduction
+[2026.09.15-14.19.29:862][  0]LogMeshReduction: Display: Using SkeletalMeshReduction for automatic skeletal mesh reduction
+[2026.09.15-14.19.29:862][  0]LogMeshReduction: Display: Using ProxyLODMeshReduction for automatic mesh merging
+[2026.09.15-14.19.29:862][  0]LogMeshReduction: Display: No distributed automatic mesh merging module available
+[2026.09.15-14.19.30:123][  0]LogShaderCompilers: Display: Compiling shader autogen file: ../../../../UE5.7/test1/Intermediate/ShaderAutogen/PCD3D_SM5/AutogenShaderHeaders.ush
+[2026.09.15-14.19.30:123][  0]LogShaderCompilers: Display: Autogen file is unchanged, skipping write.
+[2026.09.15-14.19.30:123][  0]LogVirtualization: Display: VirtualizationSystem name found in ini file: None
+[2026.09.15-14.19.30:123][  0]LogVirtualization: Display: FNullVirtualizationSystem mounted, virtualization will be disabled
+[2026.09.15-14.19.30:223][  0]LogWorldPartition: Display: FWorldPartitionClassDescRegistry::Initialize started...
+[2026.09.15-14.19.30:227][  0]LogWorldPartition: Display: FWorldPartitionClassDescRegistry::Initialize took 3.141 ms
+[2026.09.15-14.19.31:483][  0]LogMetaSound: Display: MetaSound Page Target Initialized to 'Default'
+[2026.09.15-14.19.31:484][  0]LogAudio: Display: Registering Engine Module Parameter Interfaces...
+[2026.09.15-14.19.32:353][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2026.09.15-14.19.32:353][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2026.09.15-14.19.32:511][  0]LogTemp: Display: VibeUE Module has started
+[2026.09.15-14.19.32:514][  0]LogTemp: Display: Epic Unreal MCP Module has started
+[2026.09.15-14.19.32:638][  0]LogTemp: Display: EpicUnrealMCPBridge: Initializing
+[2026.09.15-14.19.32:639][  0]LogTemp: Display: EpicUnrealMCPBridge: Server started on 127.0.0.1:55557
+[2026.09.15-14.19.32:639][  0]LogTemp: Display: MCPServerRunnable: Created server runnable
+[2026.09.15-14.19.32:642][  0]LogTemp: Display: MCPServerRunnable: Server thread starting...
+[2026.09.15-14.19.32:696][  0]LogCsvProfiler: Display: Metadata set : largeworldcoordinates="1"
+[2026.09.15-14.19.32:923][  0]LogCook: Display: CookProcessCount=1. CookMultiprocess is disabled and the cooker is running as a single process.
+[2026.09.15-14.19.32:925][  0]LogCook: Display: CookSettings for Memory:
+	MemoryMaxUsedVirtual 0MiB
+	MemoryMaxUsedPhysical 0MiB
+	MemoryMinFreeVirtual 2048MiB
+	MemoryMinFreePhysical 2048MiB
+	MemoryTriggerGCAtPressureLevel None
+	SoftGCMemoryUseTrigger disabled
+	SoftGCTimeBudgetTrigger enabled (0.05 budget, 30s min period)
+[2026.09.15-14.19.32:926][  0]LogCook: Display: SkipOnlyEditorOnly is enabled, unsolicited packages will not be cooked unless they are referenced from the cooked version of the instigator package.
+[2026.09.15-14.19.33:305][  0]LogEditorDomain: Display: Cycle detected in parents of class /Script/RigVMDeveloper.RigVMUnitNode. Allow flags for editordomain and incremental cooking will be invalid.
+[2026.09.15-14.19.33:434][  0]LogZenServiceInstance: Display: Launching zen utility 'D:/UnrealEngine-5.7/Engine/Binaries/Win64/zen.exe service status'.
+[2026.09.15-14.19.34:345][  0]LogZenServiceInstance: Display: Launching zen utility 'D:/UnrealEngine-5.7/Engine/Binaries/Win64/zen.exe service status'.
+[2026.09.15-14.19.35:874][  0]LogZenStore: Display: Establishing oplog 'GuLiStrike.be401db0/EditorDomain'
+[2026.09.15-14.19.35:891][  0]LogZenStore: Display: Zen project 'GuLiStrike.be401db0' already exists
+[2026.09.15-14.19.35:896][  0]LogZenStore: Display: Zen oplog 'GuLiStrike.be401db0/EditorDomain' already exists
+[2026.09.15-14.19.35:901][  0]LogCook: Display: Waiting for Asset Registry
+[2026.09.15-14.19.35:925][  0]LogAssetRegistry: Display: Starting OnFilesLoaded.Broadcast
+[2026.09.15-14.19.35:935][  0]LogPlacementMode: Display: The Asset Registry is done with its initial scan, the list of placeable classes has been updated.
+[2026.09.15-14.19.35:958][  0]LogAssetRegistry: Display: Completed OnFilesLoaded.Broadcast: 1.030s
+[2026.09.15-14.19.35:966][  0]LogCook: Display: INCREMENTAL COOK DEPENDENCIES: Disabled. Incremental Cook Dependencies are disabled because the cooker is not using ZenStore, and we do not yet support storage of Incremental Cook dependency data with loose cooked packages. Falling back to legacy iterative cook mode.
+[2026.09.15-14.19.35:981][  0]LogCook: Display: CalculateGlobalDependenciesHash(Windows):
+[2026.09.15-14.19.35:981][  0]LogCook: Display: 	[Engine]:Core.System.CanStripEditorOnlyExportsAndImports = True
+[2026.09.15-14.19.35:982][  0]LogCook: Display: 	[Engine]:Core.System.CanSkipEditorReferencedPackagesWhenCooking = False
+[2026.09.15-14.19.35:982][  0]LogCook: Display: 	CanUseUnversionedPropertySerialization = True
+[2026.09.15-14.19.35:982][  0]LogCook: Display: 	[Editor]:CookSettings.AutomaticOptionalInclusionAssetType = /Script/Niagara.NiagaraScript, /Script/Niagara.NiagaraEmitter, /Script/Niagara.NiagaraSystem, /Script/NiagaraEditor.NiagaraParameterDefinitions, /Script/Niagara.NiagaraEffectType, /Script/Niagara.NiagaraValidationRuleSet
+[2026.09.15-14.19.35:983][  0]LogCook: Display: 	IsCookFlagSet(ECookInitializationFlags::Unversioned) = False
+[2026.09.15-14.19.35:983][  0]LogCook: Display: 	FCoreRedirects::AppendHashOfGlobalRedirects = 07547a7196d962f1ea71bce7af9d674457f0935b16dba0f05c0c158a40d50101
+[2026.09.15-14.19.35:984][  0]LogCook: Display: 	GlobalDependenciesHash(Windows) = afde372016c04ef9e6dfe96591108a27fbb51df26f07a9ffe8d9bf90b30ff5b3
+[2026.09.15-14.19.36:016][  0]LogCook: Display: FULL COOK: Incremental Cook Dependencies are disabled, and -legacyiterative was not specified. Deleting previously cooked packages for platform Windows and recooking all packages discovered in the current cook.
+[2026.09.15-14.19.36:605][  0]LogCook: Display: Sandbox cleanup took 0.128 seconds for platforms Windows
+[2026.09.15-14.19.36:621][  0]LogCook: Display: Discovering localized assets for cultures: en
+[2026.09.15-14.19.36:623][  0]LogCook: Display: Found 0 localized assets
+[2026.09.15-14.19.36:624][  0]LogCook: Display: Cooked packages 0 Packages Remain 362 Total 362
+[2026.09.15-14.19.36:625][  0]LogCook: Display: Cook Diagnostics: OpenFileHandles=362, VirtualMemory=1644MiB, VirtualMemoryAvailable=39918MiB
+[2026.09.15-14.19.36:626][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_signal_lights has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_23 which does not exist.
+[2026.09.15-14.19.36:627][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_signal_lights has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_24 which does not exist.
+[2026.09.15-14.19.36:628][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_signal_lights has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_25 which does not exist.
+[2026.09.15-14.19.36:628][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_signal_lights has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_26 which does not exist.
+[2026.09.15-14.19.36:629][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_top has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_20 which does not exist.
+[2026.09.15-14.19.36:630][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_top has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_21 which does not exist.
+[2026.09.15-14.19.36:630][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_top has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_22 which does not exist.
+[2026.09.15-14.19.36:631][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_bottom has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_17 which does not exist.
+[2026.09.15-14.19.36:632][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_bottom has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_18 which does not exist.
+[2026.09.15-14.19.36:632][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_bottom has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_19 which does not exist.
+[2026.09.15-14.19.36:633][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_structure has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_14 which does not exist.
+[2026.09.15-14.19.36:634][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_structure has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_15 which does not exist.
+[2026.09.15-14.19.36:634][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_structure has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_16 which does not exist.
+[2026.09.15-14.19.36:635][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_bay has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_11 which does not exist.
+[2026.09.15-14.19.36:636][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_bay has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_12 which does not exist.
+[2026.09.15-14.19.36:636][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_bay has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_13 which does not exist.
+[2026.09.15-14.19.36:638][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_engineering_pod has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_8 which does not exist.
+[2026.09.15-14.19.36:638][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_engineering_pod has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_9 which does not exist.
+[2026.09.15-14.19.36:639][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_engineering_pod has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_10 which does not exist.
+[2026.09.15-14.19.36:639][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge_window has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_4 which does not exist.
+[2026.09.15-14.19.36:640][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge_window has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_5 which does not exist.
+[2026.09.15-14.19.36:641][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge_window has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_6 which does not exist.
+[2026.09.15-14.19.36:642][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge_window has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_7 which does not exist.
+[2026.09.15-14.19.36:642][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_1 which does not exist.
+[2026.09.15-14.19.36:643][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_2 which does not exist.
+[2026.09.15-14.19.36:644][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_3 which does not exist.
+[2026.09.15-14.19.36:644][  0]LogCook: Display: Package /Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Credits_EVE-Kaneda_NepsterCZ has a dependency on package /Game/Fab/CombatAvatarFly/bsg_virgon_express_carina/Textures/bsg_virgon_express_carina_texture_0 which does not exist.
+[2026.09.15-14.19.36:733][  0]LogCook: Display: Garbage collection triggered (Soft). Triggered by conditions:
+  CookSettings.SoftGCTimeTrigger: Periodic triggering of SoftGC: No duration data.
+[2026.09.15-14.19.36:734][  0]LogCookCommandlet: Display: GarbageCollection... (Periodic GC)
+[2026.09.15-14.19.36:811][  0]LogGuLiFlightNav: Error: [FLIGHTNAV_COOK_GATE][StaleSourceWorld] /Game/Tests/NavBakeCookGateStale_20260915.NavBakeCookGateStale_20260915:PersistentLevel.GuLiFlightNavigationVolume_0: Baked source world '/Game/Maps/LVL_ShipTest' does not match loaded world '/Game/Tests/NavBakeCookGateStale_20260915'; explicitly re-bake.
+[2026.09.15-14.19.36:812][  0]LogTemp: Error: [GULI_NAV_COOK_GATE] /Game/Tests/NavBakeCookGateStale_20260915.NavBakeCookGateStale_20260915: /Game/Tests/NavBakeCookGateStale_20260915.NavBakeCookGateStale_20260915:PersistentLevel.GuLiFlightNavigationVolume_0: Stale flight-navigation bake: the source world no longer matches. Run -run=GuLiNavigationPrepare before cooking.
+[2026.09.15-14.19.37:150][  0]LogMaterial: Display: Missing cached shadermap for ScifiDreadnoughtWeapons in PCD3D_SM6, Default, SM6, Game (DDC key hash: a89ed1ff8dbb3d7d68444c9f585f6ee868e7a316), compiling. 
+[2026.09.15-14.19.38:649][  0]LogCook: Display: Cooked packages 173 Packages Remain 192 Total 365
+[2026.09.15-14.19.40:285][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.11.dll
+[2026.09.15-14.19.40:431][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.12.dll
+[2026.09.15-14.19.40:706][  0]LogCook: Display: Cooked packages 353 Packages Remain 12 Total 365
+[2026.09.15-14.19.41:311][  0]LogMaterial: Display: Missing cached shadermap for ScifiDreadnoughtWeapons in PCD3D_SM5, Default, SM5, Game (DDC key hash: 8f081867c041052030f09ddbc977b50f6ba1aaf7), compiling. 
+[2026.09.15-14.19.42:715][  0]LogCook: Display: Cooked packages 364 Packages Remain 1 Total 365
+[2026.09.15-14.19.44:538][  0]LogCook: Display: Cooked packages 365 Packages Remain 0 Total 365
+[2026.09.15-14.19.44:538][  0]LogCook: Display: Cook Diagnostics: OpenFileHandles=1099, VirtualMemory=1843MiB, VirtualMemoryAvailable=38443MiB
+[2026.09.15-14.19.44:539][  0]LogShaderCompilers: Display: ================================================
+[2026.09.15-14.19.44:539][  0]LogShaderCompilers: Display: === FShaderJobCache stats ===
+[2026.09.15-14.19.44:539][  0]LogShaderCompilers: Display: Total job queries 38, among them cache hits 0 (0.00%), DDC hits 18 (47.37%), Duplicates 0 (0.00%)
+[2026.09.15-14.19.44:540][  0]LogShaderCompilers: Display: Tracking 38 distinct input hashes that result in 32 distinct outputs (84.21%)
+[2026.09.15-14.19.44:540][  0]LogShaderCompilers: Display: RAM used: 383.03 KiB of 1.60 GiB budget. Usage: 0.02%
+[2026.09.15-14.19.44:540][  0]LogShaderCompilers: Display: === Shader Compilation stats ===
+[2026.09.15-14.19.44:541][  0]LogShaderCompilers: Display: Shaders Compiled: 20
+[2026.09.15-14.19.44:541][  0]LogShaderCompilers: Display: Jobs assigned 20, completed 20 (100%)
+[2026.09.15-14.19.44:541][  0]LogShaderCompilers: Display: Average time worker was idle: 2.33 s
+[2026.09.15-14.19.44:541][  0]LogShaderCompilers: Display: Time job spent in pending queue: average 0.03 s, longest 0.05 s
+[2026.09.15-14.19.44:542][  0]LogShaderCompilers: Display: Job execution time: average 1.65 s, max 2.47 s
+[2026.09.15-14.19.44:542][  0]LogShaderCompilers: Display: Job life time (pending + execution): average 1.68 s, max 2.48
+[2026.09.15-14.19.44:543][  0]LogShaderCompilers: Display: Shader code size: total 287.764 KiB, numShaders 26, average 11.067 KiB, min 512 B, max 34.562 KiB
+[2026.09.15-14.19.44:543][  0]LogShaderCompilers: Display: Time at least one job was in flight (either pending or executed): 4.80 s
+[2026.09.15-14.19.44:543][  0]LogShaderCompilers: Display: Mutex wait stall in FShaderJobCache::SubmitJobs:  0.00%
+[2026.09.15-14.19.44:544][  0]LogShaderCompilers: Display: Jobs were issued in 20 batches (only local compilation was used), average 1.00 jobs/batch
+[2026.09.15-14.19.44:544][  0]LogShaderCompilers: Display: Average processing rate: 4.17 jobs/sec
+[2026.09.15-14.19.44:545][  0]LogShaderCompilers: Display: Total thread time: 20.898 s
+[2026.09.15-14.19.44:545][  0]LogShaderCompilers: Display: Total thread preprocess time: 0.917 s
+[2026.09.15-14.19.44:545][  0]LogShaderCompilers: Display: Percentage time preprocessing: 4.39%
+[2026.09.15-14.19.44:545][  0]LogShaderCompilers: Display: Effective parallelization: 4.35 (times faster than compiling all shaders on one thread). Compare with number of workers: 28 - 0.155519
+[2026.09.15-14.19.44:546][  0]LogShaderCompilers: Display: Top 5 most expensive shader types by average time:
+[2026.09.15-14.19.44:546][  0]LogShaderCompilers: Display:                                TMaterialCHSFNoLightMapPolicy (compiled    1 times, average 1.35 sec, max 1.35 sec, min 1.35 sec)
+[2026.09.15-14.19.44:547][  0]LogShaderCompilers: Display:                                      FPathTracingMaterialCHS (compiled    2 times, average 1.13 sec, max 1.30 sec, min 0.96 sec)
+[2026.09.15-14.19.44:547][  0]LogShaderCompilers: Display:            TVelocityPS<EVelocityPassMode::Velocity_Standard> (compiled    3 times, average 1.08 sec, max 1.40 sec, min 0.46 sec)
+[2026.09.15-14.19.44:548][  0]LogShaderCompilers: Display:                         TBasePassCSFNoLightMapPolicySkylight (compiled    1 times, average 1.08 sec, max 1.08 sec, min 1.08 sec)
+[2026.09.15-14.19.44:548][  0]LogShaderCompilers: Display:                                                FAnisotropyPS (compiled    3 times, average 1.03 sec, max 1.33 sec, min 0.48 sec)
+[2026.09.15-14.19.44:548][  0]LogShaderCompilers: Display: Top 5 shader types by total compile time:
+[2026.09.15-14.19.44:548][  0]LogShaderCompilers: Display:            TVelocityPS<EVelocityPassMode::Velocity_Standard> - 15.56% of total time (compiled    3 times, average 1.08 sec, max 1.40 sec, min 0.46 sec)
+[2026.09.15-14.19.44:549][  0]LogShaderCompilers: Display:                                                FAnisotropyPS - 14.76% of total time (compiled    3 times, average 1.03 sec, max 1.33 sec, min 0.48 sec)
+[2026.09.15-14.19.44:549][  0]LogShaderCompilers: Display:                         TBasePassPSFNoLightMapPolicySkylight - 13.60% of total time (compiled    4 times, average 0.71 sec, max 1.08 sec, min 0.32 sec)
+[2026.09.15-14.19.44:550][  0]LogShaderCompilers: Display:                                 TBasePassPSFNoLightMapPolicy - 11.56% of total time (compiled    3 times, average 0.81 sec, max 1.05 sec, min 0.31 sec)
+[2026.09.15-14.19.44:550][  0]LogShaderCompilers: Display:                                      FPathTracingMaterialCHS - 10.82% of total time (compiled    2 times, average 1.13 sec, max 1.30 sec, min 0.96 sec)
+[2026.09.15-14.19.44:551][  0]LogShaderCompilers: Display: === Material stats ===
+[2026.09.15-14.19.44:551][  0]LogShaderCompilers: Display: Materials Cooked:        77
+[2026.09.15-14.19.44:551][  0]LogShaderCompilers: Display: Materials Translated:    2
+[2026.09.15-14.19.44:551][  0]LogShaderCompilers: Display: Material Total Translate Time: 0.01 s
+[2026.09.15-14.19.44:551][  0]LogShaderCompilers: Display: Material Translation Only: 0.01 s (61%)
+[2026.09.15-14.19.44:551][  0]LogShaderCompilers: Display: Material DDC Serialization Only: 0.00 s (0%)
+[2026.09.15-14.19.44:552][  0]LogShaderCompilers: Display: Material Cache Hits: 0 (0%)
+[2026.09.15-14.19.44:552][  0]LogShaderCompilers: Display: ================================================
+[2026.09.15-14.19.44:643][  0]LogAssetRegistryGenerator: Display: Saving asset registry v22.
+[2026.09.15-14.19.44:666][  0]LogAssetRegistryGenerator: Display: Generated development asset registry D:/UE5.7/test1/TestResults/NavigationBake-20260915/CookedNegative/GuLiStrike/Metadata/DevelopmentAssetRegistry.bin num assets 387, size is 329.38kb, XxHash64[LE] = 0xFF670E277A9114D, waited on hash 0.00 seconds
+[2026.09.15-14.19.44:674][  0]LogAssetRegistryGenerator: Display: Generated asset registry num assets 380, size is 125.72kb
+[2026.09.15-14.19.44:776][  0]LogShaderLibrary: Display: 
+[2026.09.15-14.19.44:776][  0]LogShaderLibrary: Display: Shader Library 'GuLiStrike' (PCD3D_SM6-PCD3D_SM6) Stats:
+[2026.09.15-14.19.44:776][  0]LogShaderLibrary: Display: =================
+[2026.09.15-14.19.44:777][  0]LogShaderLibrary: Display: Assets: 72, Unique Shadermaps: 64 (88.89%)
+[2026.09.15-14.19.44:778][  0]LogShaderLibrary: Display: Total Shaders: 2218, Unique Shaders: 1771 (79.85%)
+[2026.09.15-14.19.44:778][  0]LogShaderLibrary: Display: Total Shader Size: 17.95mb, Unique Shaders Size: 15.35mb (85.53%)
+[2026.09.15-14.19.44:778][  0]LogShaderLibrary: Display: === Extended info:
+[2026.09.15-14.19.44:778][  0]LogShaderLibrary: Display: Minimum number of shaders in shadermap: 1
+[2026.09.15-14.19.44:778][  0]LogShaderLibrary: Display: Median number of shaders in shadermap: 15
+[2026.09.15-14.19.44:778][  0]LogShaderLibrary: Display: Maximum number of shaders in shadermap: 875
+[2026.09.15-14.19.44:779][  0]LogShaderLibrary: Display: Number of shadermaps referencing top 10 most shared shaders:
+[2026.09.15-14.19.44:779][  0]LogShaderLibrary: Display:     55, 22, 18, 14, 13, 11, 11, 10, 10, 10
+[2026.09.15-14.19.44:779][  0]LogShaderLibrary: Display: Unique shaders itemization (sorted by compressed size):
+[2026.09.15-14.19.44:779][  0]LogShaderLibrary: Display: SF_Compute: 455 shaders (25.69%), compressed size: 5.83 MB (13.12 KB avg per shader), uncompressed size: 7.71 MB (17.36 KB avg per shader)
+[2026.09.15-14.19.44:780][  0]LogShaderLibrary: Display: SF_Vertex: 452 shaders (25.52%), compressed size: 3.21 MB (7.27 KB avg per shader), uncompressed size: 4.21 MB (9.54 KB avg per shader)
+[2026.09.15-14.19.44:780][  0]LogShaderLibrary: Display: SF_Pixel: 548 shaders (30.94%), compressed size: 2.84 MB (5.30 KB avg per shader), uncompressed size: 3.62 MB (6.77 KB avg per shader)
+[2026.09.15-14.19.44:780][  0]LogShaderLibrary: Display: SF_RayHitGroup: 193 shaders (10.90%), compressed size: 2.39 MB (12.70 KB avg per shader), uncompressed size: 3.00 MB (15.91 KB avg per shader)
+[2026.09.15-14.19.44:781][  0]LogShaderLibrary: Display: SF_Mesh: 120 shaders (6.78%), compressed size: 1.04 MB (8.87 KB avg per shader), uncompressed size: 1.25 MB (10.66 KB avg per shader)
+[2026.09.15-14.19.44:781][  0]LogShaderLibrary: Display: SF_RayMiss: 2 shaders (0.11%), compressed size: 0.04 MB (20.57 KB avg per shader), uncompressed size: 0.06 MB (28.55 KB avg per shader)
+[2026.09.15-14.19.44:782][  0]LogShaderLibrary: Display: SF_RayCallable: 1 shaders (0.06%), compressed size: 0.00 MB (4.57 KB avg per shader), uncompressed size: 0.01 MB (5.67 KB avg per shader)
+[2026.09.15-14.19.44:782][  0]LogShaderLibrary: Display: Textual dump saved to '../../../../UE5.7/test1/Saved/Shaders/PCD3D_SM6-PCD3D_SM6/ShaderDebug-GuLiStrike-PCD3D_SM6-PCD3D_SM6/Dump.txt'
+[2026.09.15-14.19.44:782][  0]LogShaderLibrary: Display: =================
+[2026.09.15-14.19.44:817][  0]LogShaderLibrary: Display: 
+[2026.09.15-14.19.44:817][  0]LogShaderLibrary: Display: Shader Library 'GuLiStrike' (PCD3D_SM5-PCD3D_SM5) Stats:
+[2026.09.15-14.19.44:817][  0]LogShaderLibrary: Display: =================
+[2026.09.15-14.19.44:818][  0]LogShaderLibrary: Display: Assets: 72, Unique Shadermaps: 64 (88.89%)
+[2026.09.15-14.19.44:818][  0]LogShaderLibrary: Display: Total Shaders: 1201, Unique Shaders: 896 (74.60%)
+[2026.09.15-14.19.44:818][  0]LogShaderLibrary: Display: Total Shader Size: 2.44mb, Unique Shaders Size: 1.86mb (76.03%)
+[2026.09.15-14.19.44:818][  0]LogShaderLibrary: Display: === Extended info:
+[2026.09.15-14.19.44:818][  0]LogShaderLibrary: Display: Minimum number of shaders in shadermap: 1
+[2026.09.15-14.19.44:818][  0]LogShaderLibrary: Display: Median number of shaders in shadermap: 8
+[2026.09.15-14.19.44:818][  0]LogShaderLibrary: Display: Maximum number of shaders in shadermap: 347
+[2026.09.15-14.19.44:819][  0]LogShaderLibrary: Display: Number of shadermaps referencing top 10 most shared shaders:
+[2026.09.15-14.19.44:819][  0]LogShaderLibrary: Display:     18, 17, 13, 11, 11, 10, 10, 9, 9, 7
+[2026.09.15-14.19.44:819][  0]LogShaderLibrary: Display: Unique shaders itemization (sorted by compressed size):
+[2026.09.15-14.19.44:819][  0]LogShaderLibrary: Display: SF_Vertex: 340 shaders (37.95%), compressed size: 0.88 MB (2.66 KB avg per shader), uncompressed size: 2.76 MB (8.32 KB avg per shader)
+[2026.09.15-14.19.44:820][  0]LogShaderLibrary: Display: SF_Pixel: 411 shaders (45.87%), compressed size: 0.68 MB (1.68 KB avg per shader), uncompressed size: 2.06 MB (5.14 KB avg per shader)
+[2026.09.15-14.19.44:820][  0]LogShaderLibrary: Display: SF_Compute: 145 shaders (16.18%), compressed size: 0.30 MB (2.09 KB avg per shader), uncompressed size: 1.10 MB (7.79 KB avg per shader)
+[2026.09.15-14.19.44:821][  0]LogShaderLibrary: Display: Textual dump saved to '../../../../UE5.7/test1/Saved/Shaders/PCD3D_SM5-PCD3D_SM5/ShaderDebug-GuLiStrike-PCD3D_SM5-PCD3D_SM5/Dump.txt'
+[2026.09.15-14.19.44:821][  0]LogShaderLibrary: Display: =================
+[2026.09.15-14.19.44:858][  0]LogCook: Display: Dependent plugin "SteamShared" referenced by "EOS Shared" wasn't found in enabled plugins list when creating cook metadata file... skipping
+[2026.09.15-14.19.44:861][  0]LogCook: Display: Finalize package store(s)...
+[2026.09.15-14.19.44:863][  0]LogCook: Display: Cook by the book total time in tick 7.895118s total time 8.966327
+[2026.09.15-14.19.44:863][  0]LogCook: Display: Peak Used virtual 1861 MiB Peak Used physical 1904 MiB
+[2026.09.15-14.19.44:864][  0]LogCook: Display: Packages Cooked: 358, Packages Incrementally Skipped: 0, Packages Skipped by Platform: 7, Total Packages: 365
+[2026.09.15-14.19.44:864][  0]LogCookStats: Display: Hierarchy Timer Information:
+[2026.09.15-14.19.44:864][  0]LogCookStats: Display:   Root: 0.000s (0)
+[2026.09.15-14.19.44:864][  0]LogCookStats: Display:     CleanSandbox: 0.128s (1)
+[2026.09.15-14.19.44:865][  0]LogCookStats: Display:     CollectFilesToCook: 0.000s (1)
+[2026.09.15-14.19.44:865][  0]LogCookStats: Display:     GenerateLongPackageName: 0.001s (1)
+[2026.09.15-14.19.44:865][  0]LogCookStats: Display:     TickMainCookLoop: 7.895s (2)
+[2026.09.15-14.19.44:865][  0]LogCookStats: Display:       PumpPollables: 0.002s (4)
+[2026.09.15-14.19.44:865][  0]LogCookStats: Display:       PumpRequests: 0.004s (12)
+[2026.09.15-14.19.44:865][  0]LogCookStats: Display:       LoadPackageForCooking: 0.014s (367)
+[2026.09.15-14.19.44:866][  0]LogCookStats: Display:       ValidateSourcePackage: 0.000s (365)
+[2026.09.15-14.19.44:866][  0]LogCookStats: Display:       SavingPackages: 4.073s (428)
+[2026.09.15-14.19.44:866][  0]LogCookStats: Display:         PollPendingCookedPlatformDatas: 0.289s (1439)
+[2026.09.15-14.19.44:866][  0]LogCookStats: Display:         PrepareSave: 1.792s (1124)
+[2026.09.15-14.19.44:866][  0]LogCookStats: Display:         PrecachePlatformDataForNextPackage: 1.205s (364)
+[2026.09.15-14.19.44:867][  0]LogCookStats: Display:           PrepareSave: 1.205s (498)
+[2026.09.15-14.19.44:867][  0]LogCookStats: Display:         SaveCookedPackage: 0.764s (365)
+[2026.09.15-14.19.44:867][  0]LogCookStats: Display:           GEditorSavePackage: 0.728s (365)
+[2026.09.15-14.19.44:867][  0]LogCookStats: Display:             VerifyCanCookPackage: 0.002s (358)
+[2026.09.15-14.19.44:868][  0]LogCookStats: Display:         ClearAllCachedCookedPlatformData: 0.012s (365)
+[2026.09.15-14.19.44:868][  0]LogCookStats: Display:       PostLoadPackageFixup: 0.000s (1)
+[2026.09.15-14.19.44:868][  0]LogCookStats: Display:       WaitForAsync: 3.680s (113258)
+[2026.09.15-14.19.44:868][  0]LogCookStats: Display:     CookByTheBookFinished: 0.324s (1)
+[2026.09.15-14.19.44:868][  0]LogCookStats: Display:       SavingCurrentIniSettings: 0.041s (1)
+[2026.09.15-14.19.44:868][  0]LogCookStats: Display:         ProcessingAccessedStrings: 0.004s (1)
+[2026.09.15-14.19.44:868][  0]LogCookStats: Display:       ChunkGeneration: 0.015s (1)
+[2026.09.15-14.19.44:869][  0]LogCookStats: Display:       CalculateReferencedSet: 0.000s (1)
+[2026.09.15-14.19.44:869][  0]LogCookStats: Display:       FinishPopulateShaderLibrary: 0.002s (1)
+[2026.09.15-14.19.44:869][  0]LogCookStats: Display:       GeneratorPreSave: 0.000s (1)
+[2026.09.15-14.19.44:869][  0]LogCookStats: Display:       BuildChunkManifest: 0.046s (1)
+[2026.09.15-14.19.44:869][  0]LogCookStats: Display:         FixupPackageDependenciesForChunks: 0.008s (1)
+[2026.09.15-14.19.44:870][  0]LogCookStats: Display:       SaveManifests: 0.000s (1)
+[2026.09.15-14.19.44:870][  0]LogCookStats: Display:       SaveAssetRegistry: 0.032s (1)
+[2026.09.15-14.19.44:870][  0]LogCookStats: Display:       WriteCookerOpenOrder: 0.026s (1)
+[2026.09.15-14.19.44:870][  0]LogCookStats: Display:       WriteCookMetadata: 0.002s (1)
+[2026.09.15-14.19.44:870][  0]LogCookStats: Display:       WriteReferencedSet: 0.001s (1)
+[2026.09.15-14.19.44:871][  0]LogCookStats: Display:       FinalizePackageStore: 0.002s (1)
+[2026.09.15-14.19.44:871][  0]LogCookStats: Display: Misc Cook Stats
+[2026.09.15-14.19.44:871][  0]LogCookStats: Display: ===============
+[2026.09.15-14.19.44:871][  0]LogCookStats: Display: Niagara
+[2026.09.15-14.19.44:871][  0]LogCookStats: Display:     NiagaraScriptTranslationCount=0
+[2026.09.15-14.19.44:872][  0]LogCookStats: Display:     NiagaraCpuScriptCompileCount=0
+[2026.09.15-14.19.44:872][  0]LogCookStats: Display:     NiagaraCpuScriptDdcCacheHitCount=0
+[2026.09.15-14.19.44:872][  0]LogCookStats: Display:     NiagaraCpuScriptDdcCacheMissCount=0
+[2026.09.15-14.19.44:872][  0]LogCookStats: Display:     NiagaraGpuScriptCompileCount=0
+[2026.09.15-14.19.44:872][  0]LogCookStats: Display:     NiagaraGpuScriptDdcCacheHitCount=0
+[2026.09.15-14.19.44:873][  0]LogCookStats: Display:     NiagaraGpuScriptDdcCacheMissCount=0
+[2026.09.15-14.19.44:873][  0]LogCookStats: Display:     NiagaraSystemWaitForCompilationCompleteTime=0.000000
+[2026.09.15-14.19.44:873][  0]LogCookStats: Display: NiagaraShader.Misc
+[2026.09.15-14.19.44:873][  0]LogCookStats: Display:     ShadersCompiled=0
+[2026.09.15-14.19.44:873][  0]LogCookStats: Display: ComputeKernelShader.Misc
+[2026.09.15-14.19.44:874][  0]LogCookStats: Display:     ShadersCompiled=0
+[2026.09.15-14.19.44:874][  0]LogCookStats: Display: ShaderCompiler
+[2026.09.15-14.19.44:874][  0]LogCookStats: Display:     BlockingTimeSec=0.000038
+[2026.09.15-14.19.44:874][  0]LogCookStats: Display:     AsyncCompileTimeSec=32.933281
+[2026.09.15-14.19.44:874][  0]LogCookStats: Display:     GlobalBeginCompileShaderTimeSec=0.005511
+[2026.09.15-14.19.44:875][  0]LogCookStats: Display:     GlobalBeginCompileShaderCalls=46
+[2026.09.15-14.19.44:875][  0]LogCookStats: Display:     ProcessAsyncResultsTimeSec=0.011031
+[2026.09.15-14.19.44:875][  0]LogCookStats: Display: GlobalShader.Misc
+[2026.09.15-14.19.44:875][  0]LogCookStats: Display:     ShadersCompiled=0
+[2026.09.15-14.19.44:875][  0]LogCookStats: Display: Material
+[2026.09.15-14.19.44:875][  0]LogCookStats: Display:     FinishCacheShadersSec=0.151920
+[2026.09.15-14.19.44:876][  0]LogCookStats: Display: Package.Load
+[2026.09.15-14.19.44:876][  0]LogCookStats: Display:     NumRequestedLoads=4
+[2026.09.15-14.19.44:876][  0]LogCookStats: Display:     NumPackagesLoaded=6
+[2026.09.15-14.19.44:876][  0]LogCookStats: Display:     NumInlineLoads=2
+[2026.09.15-14.19.44:876][  0]LogCookStats: Display:     LoadPackageTimeSec=0.503894
+[2026.09.15-14.19.44:876][  0]LogCookStats: Display: Package.Save
+[2026.09.15-14.19.44:876][  0]LogCookStats: Display:     NumPackagesIncrementallySkipped=0
+[2026.09.15-14.19.44:877][  0]LogCookStats: Display:     NumPackagesSaved=365
+[2026.09.15-14.19.44:877][  0]LogCookStats: Display:     SavePackageTimeSec=0.715203
+[2026.09.15-14.19.44:877][  0]LogCookStats: Display:     TagPackageExportsPresaveTimeSec=0.000000
+[2026.09.15-14.19.44:877][  0]LogCookStats: Display:     TagPackageExportsTimeSec=0.000000
+[2026.09.15-14.19.44:877][  0]LogCookStats: Display:     FullyLoadLoadersTimeSec=0.000000
+[2026.09.15-14.19.44:877][  0]LogCookStats: Display:     ResetLoadersTimeSec=0.000000
+[2026.09.15-14.19.44:877][  0]LogCookStats: Display:     TagPackageExportsGetObjectsWithOuter=0.000000
+[2026.09.15-14.19.44:879][  0]LogCookStats: Display:     TagPackageExportsGetObjectsWithMarks=0.000000
+[2026.09.15-14.19.44:879][  0]LogCookStats: Display:     SerializeImportsTimeSec=0.000000
+[2026.09.15-14.19.44:879][  0]LogCookStats: Display:     SortExportsSeekfreeInnerTimeSec=0.000000
+[2026.09.15-14.19.44:879][  0]LogCookStats: Display:     SerializeExportsTimeSec=0.000000
+[2026.09.15-14.19.44:879][  0]LogCookStats: Display:     SerializeBulkDataTimeSec=0.002588
+[2026.09.15-14.19.44:880][  0]LogCookStats: Display:     AsyncWriteTimeSec=0.000000
+[2026.09.15-14.19.44:880][  0]LogCookStats: Display:     MBWritten=0.000000
+[2026.09.15-14.19.44:880][  0]LogCookStats: Display: CookOnTheFlyServer
+[2026.09.15-14.19.44:880][  0]LogCookStats: Display:     PeakRequestQueueSize=365
+[2026.09.15-14.19.44:880][  0]LogCookStats: Display:     PeakLoadQueueSize=40
+[2026.09.15-14.19.44:881][  0]LogCookStats: Display:     PeakSaveQueueSize=49
+[2026.09.15-14.19.44:881][  0]LogCookStats: Display: Package.DifferentPackagesSizeMBPerAsset
+[2026.09.15-14.19.44:881][  0]LogCookStats: Display: Package.NumberOfDifferencesInPackagesPerAsset
+[2026.09.15-14.19.44:881][  0]LogCookStats: Display: Package.PackageDifferencesSizeMBPerAsset
+[2026.09.15-14.19.44:881][  0]LogCookStats: Display: Package.DiffTotal
+[2026.09.15-14.19.44:882][  0]LogCookStats: Display:     NumberOfDifferentPackages=0
+[2026.09.15-14.19.44:882][  0]LogCookStats: Display:     DifferentPackagesSizeMB=0.000000
+[2026.09.15-14.19.44:882][  0]LogCookStats: Display:     NumberOfDifferencesInPackages=0
+[2026.09.15-14.19.44:882][  0]LogCookStats: Display:     PackageDifferencesSizeMB=0.000000
+[2026.09.15-14.19.44:882][  0]LogCookStats: Display: UnversionedProperties
+[2026.09.15-14.19.44:882][  0]LogCookStats: Display:     SavedStructs=0
+[2026.09.15-14.19.44:883][  0]LogCookStats: Display:     SavedMB=0
+[2026.09.15-14.19.44:883][  0]LogCookStats: Display:     EquivalentTaggedMB=0
+[2026.09.15-14.19.44:883][  0]LogCookStats: Display:     CompressionRatio=-nan(ind)
+[2026.09.15-14.19.44:883][  0]LogCookStats: Display:     BitfieldWasteKB=0
+[2026.09.15-14.19.44:883][  0]LogCookStats: Display: 
+[2026.09.15-14.19.44:884][  0]LogCookStats: Display: Cook Profile
+[2026.09.15-14.19.44:884][  0]LogCookStats: Display: ============
+[2026.09.15-14.19.44:884][  0]LogCookStats: Display:  0.CookWallTimeSec=20.271248
+[2026.09.15-14.19.44:884][  0]LogCookStats: Display:  0. 0.StartupWallTimeSec=8.321829
+[2026.09.15-14.19.44:884][  0]LogCookStats: Display:  0. 1.StartCookByTheBookTimeSec=3.696963
+[2026.09.15-14.19.44:884][  0]LogCookStats: Display:  0. 1. 0.BlockOnAssetRegistryTimeSec=0.063908
+[2026.09.15-14.19.44:885][  0]LogCookStats: Display:  0. 1. 1.GameCookModificationDelegateTimeSec=0.000000
+[2026.09.15-14.19.44:885][  0]LogCookStats: Display:  0. 2.TickCookOnTheSideTimeSec=0.109185
+[2026.09.15-14.19.44:885][  0]LogCookStats: Display:  0. 2. 0.TickCookOnTheSideLoadPackagesTimeSec=0.013992
+[2026.09.15-14.19.44:885][  0]LogCookStats: Display:  0. 2. 1.TickCookOnTheSideSaveCookedPackageTimeSec=0.764000
+[2026.09.15-14.19.44:886][  0]LogCookStats: Display:  0. 2. 1. 0.TickCookOnTheSideResolveRedirectorsTimeSec=0.000000
+[2026.09.15-14.19.44:886][  0]LogCookStats: Display:  0. 2. 2.TickCookOnTheSidePrepareSaveTimeSec=2.996836
+[2026.09.15-14.19.44:886][  0]LogCookStats: Display:  0. 3.TickLoopGCTimeSec=0.018706
+[2026.09.15-14.19.44:886][  0]LogCookStats: Display:  0. 4.TickLoopRecompileShaderRequestsTimeSec=0.000000
+[2026.09.15-14.19.44:887][  0]LogCookStats: Display:  0. 5.TickLoopShaderProcessAsyncResultsTimeSec=0.000342
+[2026.09.15-14.19.44:887][  0]LogCookStats: Display:  0. 6.TickLoopProcessDeferredCommandsTimeSec=0.000002
+[2026.09.15-14.19.44:887][  0]LogCookStats: Display:  0. 7.TickLoopTickCommandletStatsTimeSec=0.000001
+[2026.09.15-14.19.44:887][  0]LogCookStats: Display:  0. 8.TickLoopFlushRenderingCommandsTimeSec=0.001691
+[2026.09.15-14.19.44:887][  0]LogCookStats: Display:  0. 9.ShaderFlushTimeSec=0.000000
+[2026.09.15-14.19.44:888][  0]LogCookStats: Display:  0. 10.ValidationTimeSec=0.000052
+[2026.09.15-14.19.44:888][  0]LogCookStats: Display:  1.CookParameters=
+[2026.09.15-14.19.44:888][  0]LogCookStats: Display:  1. 0.TargetPlatforms=Windows
+[2026.09.15-14.19.44:888][  0]LogCookStats: Display:  1. 1.CookProject=GuLiStrike
+[2026.09.15-14.19.44:888][  0]LogCookStats: Display:  1. 2.CookCultures=
+[2026.09.15-14.19.44:888][  0]LogCookStats: Display:  1. 3.IsCookAll=false
+[2026.09.15-14.19.44:888][  0]LogCookStats: Display:  1. 4.IsCookOnTheFly=false
+[2026.09.15-14.19.44:889][  0]LogCookStats: Display:  1. 5.IsIterativeCook=false
+[2026.09.15-14.19.44:889][  0]LogCookStats: Display:  1. 6.IsUnversioned=false
+[2026.09.15-14.19.44:889][  0]LogCookStats: Display:  1. 7.CookLabel=
+[2026.09.15-14.19.44:889][  0]LogCookStats: Display:  1. 8.IsFastCook=false
+[2026.09.15-14.19.44:889][  0]LogCookStats: Display: 
+[2026.09.15-14.19.44:889][  0]LogCookStats: Display: DDC Summary Stats
+[2026.09.15-14.19.44:890][  0]LogCookStats: Display: =================
+[2026.09.15-14.19.44:890][  0]LogCookStats: Display: BackEnd         =DerivedDataBackendGraph
+[2026.09.15-14.19.44:890][  0]LogCookStats: Display: HasLocalCache   =      true
+[2026.09.15-14.19.44:890][  0]LogCookStats: Display: HasSharedCache  =     false
+[2026.09.15-14.19.44:890][  0]LogCookStats: Display: HasCloudCache   =     false
+[2026.09.15-14.19.44:890][  0]LogCookStats: Display: HasZenCache     =      true
+[2026.09.15-14.19.44:891][  0]LogCookStats: Display: TotalGetHits    =       541
+[2026.09.15-14.19.44:891][  0]LogCookStats: Display: TotalGetMisses  =        24
+[2026.09.15-14.19.44:891][  0]LogCookStats: Display: TotalGets       =       565
+[2026.09.15-14.19.44:891][  0]LogCookStats: Display: TotalGetHitPct  =  0.957522
+[2026.09.15-14.19.44:891][  0]LogCookStats: Display: GetMissPct      =  0.042478
+[2026.09.15-14.19.44:892][  0]LogCookStats: Display: TotalPutHits    =        24
+[2026.09.15-14.19.44:892][  0]LogCookStats: Display: TotalPutMisses  =         0
+[2026.09.15-14.19.44:892][  0]LogCookStats: Display: TotalPuts       =        24
+[2026.09.15-14.19.44:892][  0]LogCookStats: Display: TotalPutHitPct  =  1.000000
+[2026.09.15-14.19.44:892][  0]LogCookStats: Display: PutMissPct      =  0.000000
+[2026.09.15-14.19.44:892][  0]LogCookStats: Display: LocalGetHits    =       541
+[2026.09.15-14.19.44:893][  0]LogCookStats: Display: LocalGetMisses  =        24
+[2026.09.15-14.19.44:893][  0]LogCookStats: Display: LocalGetTotal   =       565
+[2026.09.15-14.19.44:893][  0]LogCookStats: Display: LocalGetHitPct  =  0.957522
+[2026.09.15-14.19.44:893][  0]LogCookStats: Display: SharedGetHits   =         0
+[2026.09.15-14.19.44:893][  0]LogCookStats: Display: SharedGetTotal  =         0
+[2026.09.15-14.19.44:893][  0]LogCookStats: Display: SharedGetHitPct =  0.000000
+[2026.09.15-14.19.44:894][  0]LogCookStats: Display: ZenLocalGetHits =       541
+[2026.09.15-14.19.44:894][  0]LogCookStats: Display: ZenLocalGetTotal=       565
+[2026.09.15-14.19.44:894][  0]LogCookStats: Display: ZenLocalGetHitPct=  0.957522
+[2026.09.15-14.19.44:894][  0]LogCookStats: Display: ZenRemoteGetHits=         0
+[2026.09.15-14.19.44:894][  0]LogCookStats: Display: ZenRemoteGetTotal=         0
+[2026.09.15-14.19.44:895][  0]LogCookStats: Display: ZenRemoteGetHitPct=  0.000000
+[2026.09.15-14.19.44:895][  0]LogCookStats: Display: ZenRemoteReadSpeed=  0.000000
+[2026.09.15-14.19.44:895][  0]LogCookStats: Display: ZenRemoteWriteSpeed=  0.000000
+[2026.09.15-14.19.44:895][  0]LogCookStats: Display: ZenRemoteLatency=  0.000000
+[2026.09.15-14.19.44:895][  0]LogCookStats: Display: CloudGetHits    =         0
+[2026.09.15-14.19.44:896][  0]LogCookStats: Display: CloudGetTotal   =         0
+[2026.09.15-14.19.44:896][  0]LogCookStats: Display: CloudGetHitPct  =  0.000000
+[2026.09.15-14.19.44:896][  0]LogCookStats: Display: LocalLatency    =  1.047110
+[2026.09.15-14.19.44:896][  0]LogCookStats: Display: LocalReadSpeed  = 82.656136
+[2026.09.15-14.19.44:896][  0]LogCookStats: Display: LocalWriteSpeed = 22.529660
+[2026.09.15-14.19.44:896][  0]LogCookStats: Display: SharedLatency   =  0.000000
+[2026.09.15-14.19.44:896][  0]LogCookStats: Display: SharedReadSpeed =  0.000000
+[2026.09.15-14.19.44:896][  0]LogCookStats: Display: SharedWriteSpeed=  0.000000
+[2026.09.15-14.19.44:896][  0]LogCookStats: Display: CloudLatency    =  0.000000
+[2026.09.15-14.19.44:897][  0]LogCookStats: Display: CloudReadSpeed  =  0.000000
+[2026.09.15-14.19.44:897][  0]LogCookStats: Display: CloudWriteSpeed =  0.000000
+[2026.09.15-14.19.44:897][  0]LogCookStats: Display: 
+[2026.09.15-14.19.44:897][  0]LogCookStats: Display: DDC Resource Stats
+[2026.09.15-14.19.44:897][  0]LogCookStats: Display: =======================================================================================================
+[2026.09.15-14.19.44:898][  0]LogCookStats: Display: Asset Type                          Total Time (Sec)  GameThread Time (Sec)  Assets Built  MB Processed
+[2026.09.15-14.19.44:898][  0]LogCookStats: Display: ----------------------------------  ----------------  ---------------------  ------------  ------------
+[2026.09.15-14.19.44:898][  0]LogCookStats: Display: MaterialShader                                  0.13                   0.25             2         22.67
+[2026.09.15-14.19.44:900][  0]LogCookStats: Display: Texture                                         0.01                   0.17             0         16.25
+[2026.09.15-14.19.44:900][  0]LogCookStats: Display: Shader                                          0.00                   0.00            20          0.16
+[2026.09.15-14.19.44:900][  0]LogCookStats: Display: StaticMesh                                      0.00                   0.02             0          3.33
+[2026.09.15-14.19.44:901][  0]LogCookStats: Display: NavCollision                                    0.00                   0.01             0          0.14
+[2026.09.15-14.19.44:901][  0]LogCookStats: Display: CardRepresentation                              0.00                   0.01             0          0.01
+[2026.09.15-14.19.44:901][  0]LogCookStats: Display: DistanceField                                   0.00                   0.02             0          3.72
+[2026.09.15-14.19.44:902][  0]LogCookStats: Display: MaterialTranslation                             0.00                   0.00             2          0.00
+[2026.09.15-14.19.44:902][  0]LogCookStats: Display: STREAMEDAUDIO                                   0.00                   0.00             0          0.09
+[2026.09.15-14.19.44:902][  0]LogCookStats: Display: SkeletalMesh                                    0.00                   0.00             0          1.54
+[2026.09.15-14.19.44:903][  0]LogCookStats: Display: Audio                                           0.00                   0.00             0          0.09
+[2026.09.15-14.19.44:903][  0]LogCookStats: Display: CKERSM                                          0.00                   0.00             0          0.38
+[2026.09.15-14.19.44:904][  0]LogCookStats: Display: BulkDataList                                    0.00                   0.00             0          0.00
+[2026.09.15-14.19.44:904][  0]LogCookStats: Display: BodySetup                                       0.00                   0.00             0          3.10
+[2026.09.15-14.19.44:904][  0]LogPackageBuildDependencyTracker: Display: Package Accesses (150 referencing packages with a total of 1126 unique accesses)
+[2026.09.15-14.19.44:905][  0]LogConfigBuildDependencyTracker: Display: Config Accesses (218 referencing packages with a total of 634 unique accesses). 1795 unique accesses that were not associated with a package.
+[2026.09.15-14.19.44:905][  0]LogCook: Display: Done!
+[2026.09.15-14.19.44:905][  0]LogSavePackage: Display: Took 0.000553s to verify the EDL loading graph.
+[2026.09.15-14.19.44:905][  0]LogInit: Display: 
+[2026.09.15-14.19.44:906][  0]LogInit: Display: Warning/Error Summary (Unique only)
+[2026.09.15-14.19.44:906][  0]LogInit: Display: -----------------------------------
+[2026.09.15-14.19.44:906][  0]LogInit: Display: LogGuLiFlightNav: Error: [FLIGHTNAV_COOK_GATE][StaleSourceWorld] /Game/Tests/NavBakeCookGateStale_20260915.NavBakeCookGateStale_20260915:PersistentLevel.GuLiFlightNavigationVolume_0: Baked source world '/Game/Maps/LVL_ShipTest' does not match loaded world '/Game/Tests/NavBakeCookGateStale_20260915'; explicitly re-bake.
+[2026.09.15-14.19.44:907][  0]LogInit: Display: LogTemp: Error: [GULI_NAV_COOK_GATE] /Game/Tests/NavBakeCookGateStale_20260915.NavBakeCookGateStale_20260915: /Game/Tests/NavBakeCookGateStale_20260915.NavBakeCookGateStale_20260915:PersistentLevel.GuLiFlightNavigationVolume_0: Stale flight-navigation bake: the source world no longer matches. Run -run=GuLiNavigationPrepare before cooking.
+[2026.09.15-14.19.44:907][  0]LogInit: Display: 
+[2026.09.15-14.19.44:907][  0]LogInit: Display: Failure - 2 error(s), 0 warning(s)
+[2026.09.15-14.19.44:907][  0]LogInit: Display: 
+
+Execution of commandlet took:  11.96 seconds
+[2026.09.15-14.19.44:907][  0]LogTemp: Display: EpicUnrealMCPBridge: Shutting down
+[2026.09.15-14.19.44:925][  0]LogTemp: Display: MCPServerRunnable: Server thread stopping
+[2026.09.15-14.19.44:927][  0]LogTemp: Display: EpicUnrealMCPBridge: Server stopped
+[2026.09.15-14.19.45:198][  0]LogShaderCompilers: Display: Shaders left to compile 0
+[2026.09.15-14.19.45:558][  0]LogTemp: Display: Epic Unreal MCP Module has shut down
+[2026.09.15-14.19.45:559][  0]LogTemp: Display: VibeUE Module has shut down

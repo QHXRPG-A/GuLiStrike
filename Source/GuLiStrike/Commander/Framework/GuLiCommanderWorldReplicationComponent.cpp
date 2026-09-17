@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Framework/GuLiCommanderWorldReplicationComponent.h"
+#include "Commander/Network/GuLiCommanderPoseMetrics.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
@@ -23,7 +25,7 @@ namespace
 	constexpr uint8 PoseDispatchPhaseCount = GULI_POSE_DISPATCH_PHASE_COUNT;
 
 	uint8 GetPoseRateDivisor(
-		const FGuLiCompressedSoldierPose& Pose,
+		const FGuLiQuantizedSoldierPose& Pose,
 		const FVector& WorldLocation,
 		const FVector& ViewLocation,
 		const float FullRateDistanceCentimeters,
@@ -50,10 +52,9 @@ namespace
 	{
 		OutChunk = Source;
 		OutChunk.Samples.Reset(Source.Samples.Num());
-		for (const FGuLiCompressedSoldierPose& Pose : Source.Samples)
+		for (const FGuLiQuantizedSoldierPose& Pose : Source.Samples)
 		{
-			const FVector WorldLocation = FVector(Source.Anchor)
-				+ Pose.GetRelativeLocationCentimeters();
+			const FVector WorldLocation = Pose.GetWorldLocationCentimeters();
 			const uint8 Divisor = GetPoseRateDivisor(
 				Pose,
 				WorldLocation,
@@ -228,7 +229,11 @@ void UGuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses()
 		SoldierStateReplicator->ApplyAuthoritySnapshot(SoldierStates, MatchEpoch);
 
 		PendingPoseChunks.Reset();
-		Authority->CaptureSoldierPoseChunks(PendingPoseChunks, MatchEpoch);
+		{
+			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Capture);
+			GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Capture);
+			Authority->CaptureSoldierPoseChunks(PendingPoseChunks, MatchEpoch);
+		}
 		PendingPoseDispatchPhase = 0u;
 		PoseFrameCapturedAtSeconds = Now;
 	}

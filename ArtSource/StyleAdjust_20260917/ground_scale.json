@@ -1,0 +1,177 @@
+{
+  "success": true,
+  "system": "/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03",
+  "visual_multiplier": 0.6,
+  "emitters": [
+    {
+      "name": "NE_Cloud_01",
+      "local_space": true,
+      "bindings": [
+        {
+          "property": "PositionBinding",
+          "before": "(RootName=\"Position\",ParamMapVariable=(Name=\"Particles.Position\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"Position\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Position\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        },
+        {
+          "property": "ScaleBinding",
+          "before": "(RootName=\"Scale\",ParamMapVariable=(Name=\"Particles.Scale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"Scale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Scale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationScale\",ParamMapVariable=(Name=\"Particles.PresentationScale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"PresentationScale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationScale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        }
+      ]
+    },
+    {
+      "name": "NE_Impact",
+      "local_space": true,
+      "bindings": [
+        {
+          "property": "PositionBinding",
+          "before": "(RootName=\"Position\",ParamMapVariable=(Name=\"Particles.Position\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"Position\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Position\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        },
+        {
+          "property": "SpriteSizeBinding",
+          "before": "(RootName=\"SpriteSize\",ParamMapVariable=(Name=\"Particles.SpriteSize\",TypeDefHandle=(RegisteredTypeIndex=98)),DataSetName=\"SpriteSize\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.SpriteSize\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationSpriteSize\",ParamMapVariable=(Name=\"Particles.PresentationSpriteSize\",TypeDefHandle=(RegisteredTypeIndex=98)),DataSetName=\"PresentationSpriteSize\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationSpriteSize\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        }
+      ]
+    },
+    {
+      "name": "NE_Cloud_02",
+      "local_space": true,
+      "bindings": [
+        {
+          "property": "PositionBinding",
+          "before": "(RootName=\"Position\",ParamMapVariable=(Name=\"Particles.Position\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"Position\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Position\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        },
+        {
+          "property": "ScaleBinding",
+          "before": "(RootName=\"Scale\",ParamMapVariable=(Name=\"Particles.Scale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"Scale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Scale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationScale\",ParamMapVariable=(Name=\"Particles.PresentationScale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"PresentationScale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationScale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        }
+      ]
+    },
+    {
+      "name": "NE_Rock001",
+      "local_space": true,
+      "bindings": [
+        {
+          "property": "PositionBinding",
+          "before": "(RootName=\"Position\",ParamMapVariable=(Name=\"Particles.Position\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"Position\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Position\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        },
+        {
+          "property": "SpriteSizeBinding",
+          "before": "(RootName=\"SpriteSize\",ParamMapVariable=(Name=\"Particles.SpriteSize\",TypeDefHandle=(RegisteredTypeIndex=98)),DataSetName=\"SpriteSize\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.SpriteSize\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationSpriteSize\",ParamMapVariable=(Name=\"Particles.PresentationSpriteSize\",TypeDefHandle=(RegisteredTypeIndex=98)),DataSetName=\"PresentationSpriteSize\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationSpriteSize\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        }
+      ]
+    },
+    {
+      "name": "NE_Rock",
+      "local_space": true,
+      "bindings": [
+        {
+          "property": "PositionBinding",
+          "before": "(RootName=\"Position\",ParamMapVariable=(Name=\"Particles.Position\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"Position\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Position\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        },
+        {
+          "property": "SpriteSizeBinding",
+          "before": "(RootName=\"SpriteSize\",ParamMapVariable=(Name=\"Particles.SpriteSize\",TypeDefHandle=(RegisteredTypeIndex=98)),DataSetName=\"SpriteSize\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.SpriteSize\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationSpriteSize\",ParamMapVariable=(Name=\"Particles.PresentationSpriteSize\",TypeDefHandle=(RegisteredTypeIndex=98)),DataSetName=\"PresentationSpriteSize\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationSpriteSize\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        }
+      ]
+    },
+    {
+      "name": "NE_Dust_Trail",
+      "local_space": true,
+      "bindings": [
+        {
+          "property": "PositionBinding",
+          "before": "(RootName=\"Position\",ParamMapVariable=(Name=\"Particles.Position\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"Position\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Position\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        },
+        {
+          "property": "SpriteSizeBinding",
+          "before": "(RootName=\"SpriteSize\",ParamMapVariable=(Name=\"Particles.SpriteSize\",TypeDefHandle=(RegisteredTypeIndex=98)),DataSetName=\"SpriteSize\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.SpriteSize\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationSpriteSize\",ParamMapVariable=(Name=\"Particles.PresentationSpriteSize\",TypeDefHandle=(RegisteredTypeIndex=98)),DataSetName=\"PresentationSpriteSize\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationSpriteSize\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        }
+      ]
+    },
+    {
+      "name": "NE_CloudLine01",
+      "local_space": true,
+      "bindings": [
+        {
+          "property": "PositionBinding",
+          "before": "(RootName=\"Position\",ParamMapVariable=(Name=\"Particles.Position\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"Position\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Position\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        },
+        {
+          "property": "ScaleBinding",
+          "before": "(RootName=\"Scale\",ParamMapVariable=(Name=\"Particles.Scale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"Scale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Scale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationScale\",ParamMapVariable=(Name=\"Particles.PresentationScale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"PresentationScale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationScale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        }
+      ]
+    },
+    {
+      "name": "NE_Cloud_01B",
+      "local_space": true,
+      "bindings": [
+        {
+          "property": "PositionBinding",
+          "before": "(RootName=\"Position\",ParamMapVariable=(Name=\"Particles.Position\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"Position\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Position\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        },
+        {
+          "property": "ScaleBinding",
+          "before": "(RootName=\"Scale\",ParamMapVariable=(Name=\"Particles.Scale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"Scale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Scale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationScale\",ParamMapVariable=(Name=\"Particles.PresentationScale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"PresentationScale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationScale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        }
+      ]
+    },
+    {
+      "name": "NE_CloudLine02",
+      "local_space": true,
+      "bindings": [
+        {
+          "property": "PositionBinding",
+          "before": "(RootName=\"Position\",ParamMapVariable=(Name=\"Particles.Position\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"Position\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Position\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        },
+        {
+          "property": "ScaleBinding",
+          "before": "(RootName=\"Scale\",ParamMapVariable=(Name=\"Particles.Scale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"Scale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Scale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationScale\",ParamMapVariable=(Name=\"Particles.PresentationScale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"PresentationScale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationScale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        }
+      ]
+    },
+    {
+      "name": "NE_GroundShockwave",
+      "local_space": false,
+      "bindings": [
+        {
+          "property": "PositionBinding",
+          "before": "(RootName=\"Position\",ParamMapVariable=(Name=\"Particles.Position\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"Position\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Position\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        },
+        {
+          "property": "ScaleBinding",
+          "before": "(RootName=\"Scale\",ParamMapVariable=(Name=\"Particles.Scale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"Scale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.Scale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+          "after": "(RootName=\"PresentationScale\",ParamMapVariable=(Name=\"Particles.PresentationScale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"PresentationScale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationScale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+        }
+      ]
+    }
+  ],
+  "compile": {
+    "success": true,
+    "errors": [],
+    "warnings": []
+  },
+  "rollback": "/Game/GuLiStrike/FX/CombatExplosions/Rollback/NS_GroundDestruction_03_Before060",
+  "component_scale_unchanged": true,
+  "area_parameter_unchanged": true,
+  "particle_counts_and_lifetimes_unchanged": true,
+  "air_asset_untouched": true
+}

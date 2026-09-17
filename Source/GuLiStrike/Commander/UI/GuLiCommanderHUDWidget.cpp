@@ -23,6 +23,7 @@
 #include "GameFramework/GameState.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
+#include "Gameplay/Data/GuLiUnitDataSubsystem.h"
 #include "TimerManager.h"
 
 namespace GuLiCommanderHUDWidget
@@ -405,10 +406,6 @@ void UGuLiCommanderHUDWidget::RefreshSelection(
 	}
 	RefreshUnitTypeCard();
 	RefreshCommandControls();
-	if (MiniMapWidget)
-	{
-		MiniMapWidget->RequestImmediateRefresh();
-	}
 }
 
 void UGuLiCommanderHUDWidget::RefreshCommandAck(const FGuLiCommandAck& Ack)
@@ -439,10 +436,6 @@ void UGuLiCommanderHUDWidget::RefreshSoldierStates(const uint32 SnapshotRevision
 	RefreshCoreAndRoster();
 	RefreshUnitTypeCard();
 	RefreshCommandControls();
-	if (MiniMapWidget)
-	{
-		MiniMapWidget->RequestImmediateRefresh();
-	}
 }
 
 void UGuLiCommanderHUDWidget::RefreshPlayerState()
@@ -643,7 +636,12 @@ void UGuLiCommanderHUDWidget::RefreshUnitTypeCard()
 			? ESlateVisibility::HitTestInvisible
 			: ESlateVisibility::Collapsed);
 	}
-	SetText(TEXT("TXT_UnitTypeName"), FText::FromString(TEXT("士兵")));
+	FText UnitName = FText::FromString(Summary.bMixedUnitTypes ? TEXT("混合部队") : TEXT("士兵"));
+	if (!Summary.bMixedUnitTypes)
+		if (const auto* Data = GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>())
+			if (const auto* Definition = Data->FindDefinition(Summary.UnitTypeId); Definition && !Definition->DisplayName.IsEmpty())
+				UnitName = Definition->DisplayName;
+	SetText(TEXT("TXT_UnitTypeName"), UnitName);
 	SetText(
 		TEXT("TXT_UnitTypeCount"),
 		FText::FromString(Summary.bSyncing

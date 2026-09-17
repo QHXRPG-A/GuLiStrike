@@ -1,0 +1,4690 @@
+{
+  "run": "baseline-complete-1-n1200-c2",
+  "window_monotonic_seconds": [
+    16802888.3771383,
+    16802918.3771383
+  ],
+  "seconds": 30.0,
+  "roles": {
+    "server": {
+      "actual_moving_p05": 1200.0,
+      "valid_load": true,
+      "actual_moving": {
+        "n": 1791,
+        "mean": 1200.0,
+        "p50": 1200.0,
+        "p95": 1200.0,
+        "p99": 1200.0,
+        "max": 1200.0,
+        "min": 1200.0
+      },
+      "effective_sim_hz": 10.0,
+      "full_capture_sim_hz": 9.999509304254383,
+      "dropped_steps": 0,
+      "accepted_pose_hz": null,
+      "decoded_samples_per_second": 0.0,
+      "mean_unit_pose_hz": 0.0,
+      "sample_intervals": {
+        "count": 0,
+        "histogram_steps_1_to_20_then_overflow": [
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "mean_ms": null,
+        "p50_ms": null,
+        "p95_ms": null
+      },
+      "decode_failures": 0.0,
+      "absolute_samples": 0.0,
+      "delta_samples": 0.0,
+      "frame_ms": {
+        "n": 1791,
+        "mean": 16.756854215522054,
+        "p50": 16.791,
+        "p95": 22.0074,
+        "p99": 23.5083,
+        "max": 30.3765
+      },
+      "fixed_step_ms": {
+        "n": 300,
+        "mean": 6.623409333333333,
+        "p50": 6.3991,
+        "p95": 8.0732,
+        "p99": 8.8372,
+        "max": 10.0525
+      },
+      "pose_age_ms": {
+        "n": 1791,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "timing": {
+        "send": {
+          "calls": 23374.0,
+          "total_ms": 869.173068553,
+          "ms_per_second": 28.97171856957184,
+          "mean_ms_per_call": 0.03718546541255241,
+          "ms_per_world_frame": {
+            "n": 1790,
+            "mean": 0.4855715466776537,
+            "p50": 0.6837174289998984,
+            "p95": 1.2263879180000004,
+            "p99": 1.3967901469999333,
+            "max": 1.6588084400000298
+          }
+        },
+        "receive": {
+          "calls": 0.0,
+          "total_ms": 0.0,
+          "ms_per_second": 0.0,
+          "mean_ms_per_call": 0,
+          "ms_per_world_frame": {
+            "n": 1790,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          }
+        },
+        "ack": {
+          "calls": 0.0,
+          "total_ms": 0.0,
+          "ms_per_second": 0.0,
+          "mean_ms_per_call": 0,
+          "ms_per_world_frame": {
+            "n": 1790,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          }
+        },
+        "capture": {
+          "calls": 300.0,
+          "total_ms": 174.4315736,
+          "ms_per_second": 5.814241884415455,
+          "mean_ms_per_call": 0.5814385786666667,
+          "ms_per_world_frame": {
+            "n": 1790,
+            "mean": 0.09744780648044693,
+            "p50": 0.0,
+            "p95": 0.5833990870000036,
+            "p99": 0.7845014339999921,
+            "max": 0.9607002139999992
+          }
+        },
+        "wire_read": {
+          "calls": 0.0,
+          "total_ms": 0.0,
+          "ms_per_second": 0.0,
+          "mean_ms_per_call": 0,
+          "ms_per_world_frame": {
+            "n": 1790,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          }
+        }
+      },
+      "network": {
+        "in_bytes_per_second": 4311.6266207490535,
+        "out_bytes_per_second": 374335.60187567765,
+        "connections": [
+          {
+            "connection": "127.0.0.1:51890",
+            "seconds": 30.000742498785257,
+            "boundary_skew_ms": [
+              1.1986978352069855,
+              1.941196620464325
+            ],
+            "in_bytes_per_second": 2148.2134984695635,
+            "out_bytes_per_second": 187387.66216294907
+          },
+          {
+            "connection": "127.0.0.1:51891",
+            "seconds": 30.000742498785257,
+            "boundary_skew_ms": [
+              1.1986978352069855,
+              1.941196620464325
+            ],
+            "in_bytes_per_second": 2163.41312227949,
+            "out_bytes_per_second": 186947.93971272858
+          }
+        ]
+      },
+      "outbound_profile": {
+        "packet_count": 18806,
+        "packets_per_second": 626.8666666666667,
+        "socket_plus_ip_udp_bytes": 11248327,
+        "connection_accounted_bytes": 11230346,
+        "rpcs": {
+          "ClientReceiveSoldierPoseChunk": {
+            "calls": 23233,
+            "bits": 80602380,
+            "parameter_bits": 79975089,
+            "bytes_per_second": 335843.25,
+            "parameter_bytes_per_second": 333229.5375
+          },
+          "ClientReceivePublicPoseFrame": {
+            "calls": 600,
+            "bits": 19200,
+            "parameter_bits": 7800,
+            "bytes_per_second": 80.0,
+            "parameter_bytes_per_second": 32.5
+          }
+        }
+      },
+      "cpu_core_equivalents": {
+        "n": 29,
+        "mean": 0.5636582216472896,
+        "p50": 0.5483776843331372,
+        "p95": 0.7285972375672896,
+        "p99": 0.7528387860575977,
+        "max": 0.7528387860575977
+      },
+      "working_set_mib": {
+        "n": 29,
+        "mean": 5483.984105603448,
+        "p50": 5484.3984375,
+        "p95": 5484.54296875,
+        "p99": 5484.546875,
+        "max": 5484.546875
+      },
+      "private_commit_mib": {
+        "n": 29,
+        "mean": 6232.275727370689,
+        "p50": 6232.7265625,
+        "p95": 6232.921875,
+        "p99": 6232.921875,
+        "max": 6232.921875
+      },
+      "codec_cache_bytes": {
+        "n": 1791,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "codec_cache_capture_peak_bytes": 0.0,
+      "camera_stationary": null,
+      "full_capture_engine": {
+        "Exclusive/GameThread/EngineTickMisc": {
+          "n": 2983,
+          "mean": 0.07107941669460274,
+          "p50": 0.0691,
+          "p95": 0.0837,
+          "p99": 0.1065,
+          "max": 0.3864
+        },
+        "Exclusive/GameThread/NetworkProfiler": {
+          "n": 2983,
+          "mean": 0.13768216560509555,
+          "p50": 0.1362,
+          "p95": 0.2777,
+          "p99": 0.3314,
+          "max": 0.4312
+        },
+        "Exclusive/GameThread/AsyncLoading": {
+          "n": 2983,
+          "mean": 0.013323198122695274,
+          "p50": 0.0132,
+          "p95": 0.0169,
+          "p99": 0.0216,
+          "max": 0.1835
+        },
+        "Exclusive/GameThread/WorldTickMisc": {
+          "n": 2983,
+          "mean": 0.10258186389540731,
+          "p50": 0.097,
+          "p95": 0.136,
+          "p99": 0.1696,
+          "max": 1.0539
+        },
+        "Exclusive/GameThread/Effects": {
+          "n": 2983,
+          "mean": 0.01589899430103922,
+          "p50": 0.0157,
+          "p95": 0.0189,
+          "p99": 0.0224,
+          "max": 0.0646
+        },
+        "Exclusive/GameThread/NetworkIncoming": {
+          "n": 2983,
+          "mean": 0.07350254777070064,
+          "p50": 0.0762,
+          "p95": 0.1035,
+          "p99": 0.1282,
+          "max": 1.2592
+        },
+        "Exclusive/GameThread/NavigationBuild": {
+          "n": 2983,
+          "mean": 0.026116996312437142,
+          "p50": 0.0249,
+          "p95": 0.0325,
+          "p99": 0.0431,
+          "max": 0.1974
+        },
+        "Exclusive/GameThread/ResetAsyncTraceTickTime": {
+          "n": 2983,
+          "mean": 0.0013439155212872946,
+          "p50": 0.0013,
+          "p95": 0.0017,
+          "p99": 0.0021,
+          "max": 0.0572
+        },
+        "Exclusive/GameThread/WorldPreActorTick": {
+          "n": 2983,
+          "mean": 0.005060610124036205,
+          "p50": 0.0048,
+          "p95": 0.0067,
+          "p99": 0.0083,
+          "max": 0.1093
+        },
+        "Exclusive/GameThread/QueueTicks": {
+          "n": 2983,
+          "mean": 0.03434324505531344,
+          "p50": 0.0339,
+          "p95": 0.042,
+          "p99": 0.0546,
+          "max": 0.2542
+        },
+        "Exclusive/GameThread/TickActors": {
+          "n": 2983,
+          "mean": 0.9682032852832718,
+          "p50": 0.793,
+          "p95": 2.3879,
+          "p99": 2.7275,
+          "max": 3.3782
+        },
+        "Exclusive/GameThread/Animation": {
+          "n": 2983,
+          "mean": 0.28222541066040896,
+          "p50": 0.2688,
+          "p95": 0.3851,
+          "p99": 0.4524,
+          "max": 0.6667
+        },
+        "Exclusive/GameThread/CharacterMovement": {
+          "n": 2983,
+          "mean": 1.0930200134093195,
+          "p50": 1.0307,
+          "p95": 1.5228,
+          "p99": 1.8002,
+          "max": 12.8563
+        },
+        "Exclusive/GameThread/MassProcessorTask": {
+          "n": 2983,
+          "mean": 0.017185819644653034,
+          "p50": 0.0162,
+          "p95": 0.0237,
+          "p99": 0.0342,
+          "max": 0.1659
+        },
+        "Exclusive/GameThread/PlayerControllerTick": {
+          "n": 2983,
+          "mean": 0.004483003687562856,
+          "p50": 0.0046,
+          "p95": 0.0076,
+          "p99": 0.0099,
+          "max": 0.1168
+        },
+        "Exclusive/GameThread/EventWait/PrePhysics": {
+          "n": 2983,
+          "mean": 1.2524057324840765,
+          "p50": 0.1122,
+          "p95": 3.9263,
+          "p99": 4.6453,
+          "max": 5.6866
+        },
+        "Exclusive/GameThread/Physics": {
+          "n": 2983,
+          "mean": 0.357775025142474,
+          "p50": 0.3483,
+          "p95": 0.4931,
+          "p99": 0.564,
+          "max": 0.8397
+        },
+        "Exclusive/GameThread/SyncBodies": {
+          "n": 2983,
+          "mean": 0.02541592356687898,
+          "p50": 0.0262,
+          "p95": 0.0371,
+          "p99": 0.0454,
+          "max": 0.1652
+        },
+        "Exclusive/GameThread/FlushLatentActions": {
+          "n": 2983,
+          "mean": 0.0007396580623533355,
+          "p50": 0.0007,
+          "p95": 0.0011,
+          "p99": 0.0014,
+          "max": 0.011
+        },
+        "Exclusive/GameThread/TimerManager": {
+          "n": 2983,
+          "mean": 0.012567985249748575,
+          "p50": 0.0024,
+          "p95": 0.0731,
+          "p99": 0.0964,
+          "max": 0.4382
+        },
+        "GuLiCommanderAuthority/GameThread/WorldTick": {
+          "n": 2983,
+          "mean": 1.1822464968152866,
+          "p50": 0.0051,
+          "p95": 6.929,
+          "p99": 8.3157,
+          "max": 10.0616
+        },
+        "Exclusive/GameThread/Tickables": {
+          "n": 2983,
+          "mean": 1.3578390546429768,
+          "p50": 0.129,
+          "p95": 7.1503,
+          "p99": 8.4993,
+          "max": 10.2062
+        },
+        "Exclusive/GameThread/AIPerception": {
+          "n": 2983,
+          "mean": 0.0016856185048608782,
+          "p50": 0.0016,
+          "p95": 0.0024,
+          "p99": 0.0032,
+          "max": 0.0144
+        },
+        "Exclusive/GameThread/EnvQueryManager": {
+          "n": 2983,
+          "mean": 0.0009124371438149514,
+          "p50": 0.0009,
+          "p95": 0.0012,
+          "p99": 0.0016,
+          "max": 0.0313
+        },
+        "Exclusive/GameThread/Camera": {
+          "n": 2983,
+          "mean": 0.0025158565202815955,
+          "p50": 0.0024,
+          "p95": 0.005,
+          "p99": 0.0061,
+          "max": 0.0431
+        },
+        "Exclusive/GameThread/UpdateStreamingState": {
+          "n": 2983,
+          "mean": 0.016855514582634932,
+          "p50": 0.0168,
+          "p95": 0.0253,
+          "p99": 0.0313,
+          "max": 0.0992
+        },
+        "Exclusive/GameThread/NetworkOutgoing": {
+          "n": 2983,
+          "mean": 0.06143533355682199,
+          "p50": 0.0511,
+          "p95": 0.1268,
+          "p99": 0.1661,
+          "max": 0.2464
+        },
+        "Exclusive/GameThread/ServerReplicateActors": {
+          "n": 2983,
+          "mean": 0.5131876299027824,
+          "p50": 0.5279,
+          "p95": 0.961,
+          "p99": 1.2248,
+          "max": 2.03
+        },
+        "Exclusive/GameThread/FlushNet": {
+          "n": 2983,
+          "mean": 0.2622792490781093,
+          "p50": 0.1342,
+          "p95": 0.6027,
+          "p99": 0.6941,
+          "max": 1.6224
+        },
+        "Exclusive/GameThread/RecordTickCountsToCSV": {
+          "n": 2983,
+          "mean": 0.022227254441837076,
+          "p50": 0.0213,
+          "p95": 0.0307,
+          "p99": 0.0418,
+          "max": 0.3233
+        },
+        "Exclusive/GameThread/RecordActorCountsToCSV": {
+          "n": 2983,
+          "mean": 0.001405833053972511,
+          "p50": 0.0014,
+          "p95": 0.0018,
+          "p99": 0.002,
+          "max": 0.0181
+        },
+        "Exclusive/GameThread/UpdateLevelStreaming": {
+          "n": 2983,
+          "mean": 0.0018571237009721757,
+          "p50": 0.0018,
+          "p95": 0.0024,
+          "p99": 0.003,
+          "max": 0.0392
+        },
+        "Exclusive/GameThread/DeferredTickTime": {
+          "n": 2983,
+          "mean": 0.12922695273214885,
+          "p50": 0.0984,
+          "p95": 0.3105,
+          "p99": 0.693,
+          "max": 18.7763
+        },
+        "Exclusive/GameThread/CsvProfiler": {
+          "n": 2983,
+          "mean": 0.014439758632249413,
+          "p50": 0.0137,
+          "p95": 0.0174,
+          "p99": 0.028,
+          "max": 0.8793
+        },
+        "Exclusive/GameThread/LLM": {
+          "n": 2983,
+          "mean": 0.00016144820650351995,
+          "p50": 0.0001,
+          "p95": 0.0003,
+          "p99": 0.0004,
+          "max": 0.0006
+        },
+        "Ticks/GuLiCommanderGameMode": {
+          "n": 2983,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "Ticks/GuLiCommanderCameraPawn": {
+          "n": 2983,
+          "mean": 1.6845457593027153,
+          "p50": 2.0,
+          "p95": 2.0,
+          "p99": 2.0,
+          "max": 2.0
+        },
+        "Ticks/GuLiCommanderNetSyncComponent": {
+          "n": 2983,
+          "mean": 1.6845457593027153,
+          "p50": 2.0,
+          "p95": 2.0,
+          "p99": 2.0,
+          "max": 2.0
+        },
+        "Ticks/GuLiCommanderPlayerController": {
+          "n": 2983,
+          "mean": 1.6845457593027153,
+          "p50": 2.0,
+          "p95": 2.0,
+          "p99": 2.0,
+          "max": 2.0
+        },
+        "Ticks/GuLiCommanderWorldReplicationComponent": {
+          "n": 2983,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "FrameTime": {
+          "n": 2983,
+          "mean": 16.76399721756621,
+          "p50": 16.6797,
+          "p95": 22.0101,
+          "p99": 24.0655,
+          "max": 33.3024
+        },
+        "GuLiCommanderPoseDispatch/AttemptedChunks": {
+          "n": 2983,
+          "mean": 11.004022795843111,
+          "p50": 0.0,
+          "p95": 26.0,
+          "p99": 26.0,
+          "max": 26.0
+        },
+        "Exclusive/GameThread/Pathfinding": {
+          "n": 2983,
+          "mean": 0.004532450553134428,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.1629,
+          "max": 0.5306
+        },
+        "GuLiCommanderAuthority/GameThread/FixedStep": {
+          "n": 2983,
+          "mean": 1.1073890378813276,
+          "p50": 0.0,
+          "p95": 6.8067,
+          "p99": 8.0485,
+          "max": 10.0564
+        },
+        "GuLiCommanderPoseDispatch/SaturatedAtAttempt": {
+          "n": 2983,
+          "mean": 0.07509218907140462,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 3.0,
+          "max": 10.0
+        },
+        "Exclusive/GameThread/LogFlush": {
+          "n": 2983,
+          "mean": 0.005148038887026484,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 8.8815
+        },
+        "Exclusive/GameThread/ActorDestroying": {
+          "n": 2983,
+          "mean": 0.0007887361716392893,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 2.0516
+        },
+        "Exclusive/GameThread/ActorSpawning": {
+          "n": 2983,
+          "mean": 0.00011414683204827354,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.214
+        },
+        "Exclusive/GameThread/EventWait": {
+          "n": 2983,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        }
+      },
+      "trace": "TestResults\\CommanderPoseCompression\\baseline-complete-1-n1200-c2\\server\\process.utrace",
+      "trace_cpu": {
+        "window_seconds": [
+          121.0800039023161,
+          151.0800039023161
+        ],
+        "game_thread_active_ms": {
+          "n": 1790,
+          "mean": 7.279922402234637,
+          "p50": 7.3870999999999984,
+          "p95": 11.8692,
+          "p99": 14.1083,
+          "max": 17.372
+        },
+        "engine_tick_including_wait_ms": {
+          "n": 1790,
+          "mean": 16.75484905027933,
+          "p50": 16.6889,
+          "p95": 22.1123,
+          "p99": 23.9216,
+          "max": 30.3461
+        },
+        "limiter_wait_ms": {
+          "n": 1791,
+          "mean": 9.469642992741486,
+          "p50": 9.4832,
+          "p95": 13.2558,
+          "p99": 13.8967,
+          "max": 14.581999999999999
+        },
+        "world_tick_ms": {
+          "n": 1790,
+          "mean": 6.771161508379889,
+          "p50": 6.8964,
+          "p95": 11.332099999999999,
+          "p99": 13.2765,
+          "max": 16.9169
+        },
+        "pose_scopes_ms": {
+          "GuLiPose_Send": {
+            "n": 23374,
+            "mean": 0.03730155728587319,
+            "p50": 0.0326,
+            "p95": 0.0988,
+            "p99": 0.1394,
+            "max": 0.2697,
+            "ms_per_second": 29.062886666666667
+          },
+          "GuLiPose_Receive": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Ack": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Capture": {
+            "n": 300,
+            "mean": 0.5819866666666667,
+            "p50": 0.5567000000000001,
+            "p95": 0.7979,
+            "p99": 0.8805,
+            "max": 0.9612,
+            "ms_per_second": 5.819866666666667
+          },
+          "GuLiPose_Wire": {
+            "n": 23233,
+            "mean": 0.008054495760340894,
+            "p50": 0.0079,
+            "p95": 0.0157,
+            "p99": 0.0218,
+            "max": 0.1538,
+            "ms_per_second": 6.23767
+          },
+          "GuLiPose_Encode": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Decode": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Confirm": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          }
+        },
+        "project_exclusive_top": [
+          {
+            "Name": "UGuLiBattleAuthoritySubsystem",
+            "Count": "1791",
+            "C.Avg": "1791.000000",
+            "Incl": "2.102294",
+            "I.Min": "0.000004",
+            "I.Max": "0.010063",
+            "I.Avg": "0.001174",
+            "I.Med": "0.000004",
+            "Excl": "0.997899",
+            "E.Min": "0.000001",
+            "E.Max": "0.005298",
+            "E.Avg": "0.000557",
+            "E.Med": "0.000001",
+            "exclusive_ms_per_second": 33.2633
+          },
+          {
+            "Name": "GuLiCommander_SoldierCombat",
+            "Count": "300",
+            "C.Avg": "300.000000",
+            "Incl": "0.485571",
+            "I.Min": "0.001282",
+            "I.Max": "0.003032",
+            "I.Avg": "0.001619",
+            "I.Med": "0.001511",
+            "Excl": "0.485571",
+            "E.Min": "0.001282",
+            "E.Max": "0.003032",
+            "E.Avg": "0.001619",
+            "E.Med": "0.001511",
+            "exclusive_ms_per_second": 16.1857
+          },
+          {
+            "Name": "GuLiCommander_ManualAvoidanceRefresh",
+            "Count": "300",
+            "C.Avg": "300.000000",
+            "Incl": "0.380803",
+            "I.Min": "0.000725",
+            "I.Max": "0.001849",
+            "I.Avg": "0.001269",
+            "I.Med": "0.001247",
+            "Excl": "0.380803",
+            "E.Min": "0.000725",
+            "E.Max": "0.001849",
+            "E.Avg": "0.001269",
+            "E.Med": "0.001247",
+            "exclusive_ms_per_second": 12.693433333333333
+          },
+          {
+            "Name": "GuLiPose_Wire",
+            "Count": "23233",
+            "C.Avg": "23233.000000",
+            "Incl": "0.187130",
+            "I.Min": "0.000002",
+            "I.Max": "0.000154",
+            "I.Avg": "0.000008",
+            "I.Med": "0.000009",
+            "Excl": "0.187130",
+            "E.Min": "0.000002",
+            "E.Max": "0.000154",
+            "E.Avg": "0.000008",
+            "E.Med": "0.000009",
+            "exclusive_ms_per_second": 6.237666666666667
+          },
+          {
+            "Name": "GuLiTerritoryOutpostActor",
+            "Count": "57399",
+            "C.Avg": "57399.000000",
+            "Incl": "0.445598",
+            "I.Min": "0.000004",
+            "I.Max": "0.000209",
+            "I.Avg": "0.000008",
+            "I.Med": "0.000008",
+            "Excl": "0.176312",
+            "E.Min": "0.000002",
+            "E.Max": "0.000203",
+            "E.Avg": "0.000003",
+            "E.Med": "0.000002",
+            "exclusive_ms_per_second": 5.877066666666666
+          },
+          {
+            "Name": "GuLiPose_Capture",
+            "Count": "300",
+            "C.Avg": "300.000000",
+            "Incl": "0.174596",
+            "I.Min": "0.000355",
+            "I.Max": "0.000961",
+            "I.Avg": "0.000582",
+            "I.Med": "0.000557",
+            "Excl": "0.174596",
+            "E.Min": "0.000355",
+            "E.Max": "0.000961",
+            "E.Avg": "0.000582",
+            "E.Med": "0.000557",
+            "exclusive_ms_per_second": 5.819866666666667
+          },
+          {
+            "Name": "UGuLiResourceWorldSubsystem",
+            "Count": "1791",
+            "C.Avg": "1791.000000",
+            "Incl": "0.110318",
+            "I.Min": "0.000001",
+            "I.Max": "0.001235",
+            "I.Avg": "0.000062",
+            "I.Med": "0.000001",
+            "Excl": "0.110318",
+            "E.Min": "0.000001",
+            "E.Max": "0.001235",
+            "E.Avg": "0.000062",
+            "E.Med": "0.000001",
+            "exclusive_ms_per_second": 3.6772666666666667
+          },
+          {
+            "Name": "UGuLiCommanderResourceAdapter",
+            "Count": "1791",
+            "C.Avg": "1791.000000",
+            "Incl": "0.086479",
+            "I.Min": "0.000031",
+            "I.Max": "0.000173",
+            "I.Avg": "0.000048",
+            "I.Med": "0.000047",
+            "Excl": "0.074137",
+            "E.Min": "0.000026",
+            "E.Max": "0.000165",
+            "E.Avg": "0.000041",
+            "E.Med": "0.000040",
+            "exclusive_ms_per_second": 2.471233333333333
+          },
+          {
+            "Name": "GuLiMiningVehiclePawn",
+            "Count": "5408",
+            "C.Avg": "5408.000000",
+            "Incl": "0.087799",
+            "I.Min": "0.000001",
+            "I.Max": "0.000460",
+            "I.Avg": "0.000016",
+            "I.Med": "0.000006",
+            "Excl": "0.044770",
+            "E.Min": "0.000001",
+            "E.Max": "0.000117",
+            "E.Avg": "0.000008",
+            "E.Med": "0.000007",
+            "exclusive_ms_per_second": 1.4923333333333333
+          },
+          {
+            "Name": "GuLiResourceFactoryActor",
+            "Count": "16042",
+            "C.Avg": "16042.000000",
+            "Incl": "0.074847",
+            "I.Min": "0.000000",
+            "I.Max": "0.000283",
+            "I.Avg": "0.000005",
+            "I.Med": "0.000003",
+            "Excl": "0.041853",
+            "E.Min": "0.000000",
+            "E.Max": "0.000274",
+            "E.Avg": "0.000003",
+            "E.Med": "0.000003",
+            "exclusive_ms_per_second": 1.3951
+          },
+          {
+            "Name": "GuLiCommanderPlayerController",
+            "Count": "5829",
+            "C.Avg": "5829.000000",
+            "Incl": "0.128556",
+            "I.Min": "0.000001",
+            "I.Max": "0.000876",
+            "I.Avg": "0.000022",
+            "I.Med": "0.000001",
+            "Excl": "0.036033",
+            "E.Min": "0.000000",
+            "E.Max": "0.000115",
+            "E.Avg": "0.000006",
+            "E.Med": "0.000001",
+            "exclusive_ms_per_second": 1.2011
+          },
+          {
+            "Name": "GuLiPose_Send",
+            "Count": "23374",
+            "C.Avg": "23374.000000",
+            "Incl": "0.871887",
+            "I.Min": "0.000001",
+            "I.Max": "0.000270",
+            "I.Avg": "0.000037",
+            "I.Med": "0.000033",
+            "Excl": "0.035077",
+            "E.Min": "0.000000",
+            "E.Max": "0.000091",
+            "E.Avg": "0.000002",
+            "E.Med": "0.000001",
+            "exclusive_ms_per_second": 1.1692333333333333
+          }
+        ],
+        "definition": "GameThread active wall time = FEngineLoop::Tick minus its frame-rate-limiter scope; other waits remain. CPU utilization is measured separately from process CPU time."
+      }
+    },
+    "client1": {
+      "actual_moving_p05": 1200.0,
+      "valid_load": true,
+      "actual_moving": {
+        "n": 1805,
+        "mean": 1199.9612188365652,
+        "p50": 1200.0,
+        "p95": 1200.0,
+        "p99": 1200.0,
+        "max": 1200.0,
+        "min": 1198.0
+      },
+      "effective_sim_hz": null,
+      "full_capture_sim_hz": null,
+      "dropped_steps": null,
+      "accepted_pose_hz": 9.998567880366378,
+      "decoded_samples_per_second": 8961.722305884487,
+      "mean_unit_pose_hz": 7.468101921570406,
+      "sample_intervals": {
+        "count": 268846,
+        "histogram_steps_1_to_20_then_overflow": [
+          179560,
+          88552,
+          0,
+          734,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "mean_ms": 133.75687196387523,
+        "p50_ms": 100,
+        "p95_ms": 200
+      },
+      "decode_failures": 0.0,
+      "absolute_samples": 0.0,
+      "delta_samples": 0.0,
+      "frame_ms": {
+        "n": 1805,
+        "mean": 16.619924210526317,
+        "p50": 16.7974,
+        "p95": 18.8078,
+        "p99": 19.5827,
+        "max": 21.0423
+      },
+      "fixed_step_ms": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "p99": null,
+        "max": null
+      },
+      "pose_age_ms": {
+        "n": 1805,
+        "mean": 23.458152354570636,
+        "p50": 17.087,
+        "p95": 44.918,
+        "p99": 51.44,
+        "max": 59.588
+      },
+      "timing": {
+        "send": {
+          "calls": 0.0,
+          "total_ms": 0.0,
+          "ms_per_second": 0.0,
+          "mean_ms_per_call": 0,
+          "ms_per_world_frame": {
+            "n": 1804,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          }
+        },
+        "receive": {
+          "calls": 11632.0,
+          "total_ms": 38.783468306,
+          "ms_per_second": 1.2928095378671962,
+          "mean_ms_per_call": 0.003334204634284732,
+          "ms_per_world_frame": {
+            "n": 1804,
+            "mean": 0.02149859662195122,
+            "p50": 0.014696270000001732,
+            "p95": 0.05169585400000187,
+            "p99": 0.06010010800000032,
+            "max": 0.29499456300000304
+          }
+        },
+        "ack": {
+          "calls": 0.0,
+          "total_ms": 0.0,
+          "ms_per_second": 0.0,
+          "mean_ms_per_call": 0,
+          "ms_per_world_frame": {
+            "n": 1804,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          }
+        },
+        "capture": {
+          "calls": 0.0,
+          "total_ms": 0.0,
+          "ms_per_second": 0.0,
+          "mean_ms_per_call": 0,
+          "ms_per_world_frame": {
+            "n": 1804,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          }
+        },
+        "wire_read": {
+          "calls": 11632.0,
+          "total_ms": 86.009584367,
+          "ms_per_second": 2.867046601926744,
+          "mean_ms_per_call": 0.007394221489597662,
+          "ms_per_world_frame": {
+            "n": 1804,
+            "mean": 0.04767715319678492,
+            "p50": 0.026900320999999394,
+            "p95": 0.11830031799999574,
+            "p99": 0.13409927499999696,
+            "max": 0.189397483999997
+          }
+        }
+      },
+      "network": {
+        "in_bytes_per_second": 187394.25151384648,
+        "out_bytes_per_second": 2148.3119673331325,
+        "connections": [
+          {
+            "connection": "127.0.0.1:18071",
+            "seconds": 29.999367401003838,
+            "boundary_skew_ms": [
+              3.955196589231491,
+              3.3225975930690765
+            ],
+            "in_bytes_per_second": 187394.25151384648,
+            "out_bytes_per_second": 2148.3119673331325
+          }
+        ]
+      },
+      "outbound_profile": {
+        "packet_count": 1696,
+        "packets_per_second": 56.53333333333333,
+        "socket_plus_ip_udp_bytes": 66144,
+        "connection_accounted_bytes": 64448,
+        "rpcs": {}
+      },
+      "cpu_core_equivalents": {
+        "n": 29,
+        "mean": 3.5107909351559767,
+        "p50": 3.506374205792581,
+        "p95": 4.599310737819167,
+        "p99": 5.34794100309943,
+        "max": 5.34794100309943
+      },
+      "working_set_mib": {
+        "n": 29,
+        "mean": 5802.202586206897,
+        "p50": 5805.38671875,
+        "p95": 5805.88671875,
+        "p99": 5805.91015625,
+        "max": 5805.91015625
+      },
+      "private_commit_mib": {
+        "n": 29,
+        "mean": 11589.124595905172,
+        "p50": 11592.7265625,
+        "p95": 11593.33984375,
+        "p99": 11593.33984375,
+        "max": 11593.33984375
+      },
+      "codec_cache_bytes": {
+        "n": 1805,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "codec_cache_capture_peak_bytes": 0.0,
+      "camera_stationary": true,
+      "full_capture_engine": {
+        "GPU/RayTracingGeometry": {
+          "n": 2375,
+          "mean": 0.0002737684210526316,
+          "p50": 0.0003,
+          "p95": 0.0003,
+          "p99": 0.0006,
+          "max": 0.0012
+        },
+        "GPU/UpdateLumenSceneBuffers": {
+          "n": 2375,
+          "mean": 0.007759621052631579,
+          "p50": 0.003,
+          "p95": 0.0039,
+          "p99": 0.0046,
+          "max": 1.5006
+        },
+        "GPU/GPUSceneUpdate": {
+          "n": 2375,
+          "mean": 0.03241275789473684,
+          "p50": 0.0164,
+          "p95": 0.0257,
+          "p99": 0.6406,
+          "max": 1.8674
+        },
+        "GPU/NaniteStreaming": {
+          "n": 2375,
+          "mean": 0.0010063157894736842,
+          "p50": 0.0007,
+          "p95": 0.0021,
+          "p99": 0.0037,
+          "max": 0.0057
+        },
+        "GPU/NaniteReadback": {
+          "n": 2375,
+          "mean": 0.08971903157894737,
+          "p50": 0.0537,
+          "p95": 0.1334,
+          "p99": 0.9012,
+          "max": 1.9798
+        },
+        "GPU/FXSystemPreRender": {
+          "n": 2375,
+          "mean": 0.0003192842105263158,
+          "p50": 0.0,
+          "p95": 0.0011,
+          "p99": 0.0011,
+          "max": 0.0082
+        },
+        "GPU/BuildRenderingCommandsDeferred": {
+          "n": 2375,
+          "mean": 0.06933397894736842,
+          "p50": 0.0327,
+          "p95": 0.6103,
+          "p99": 0.7987,
+          "max": 2.4125
+        },
+        "GPU/Prepass": {
+          "n": 2375,
+          "mean": 1.33324,
+          "p50": 1.1526,
+          "p95": 2.8845,
+          "p99": 3.2503,
+          "max": 3.7179
+        },
+        "GPU/RenderVelocities": {
+          "n": 2375,
+          "mean": 0.1519699789473684,
+          "p50": 0.0243,
+          "p95": 0.675,
+          "p99": 1.0768,
+          "max": 2.3683
+        },
+        "GPU/NaniteVisBuffer": {
+          "n": 2375,
+          "mean": 0.48662349473684213,
+          "p50": 0.2064,
+          "p95": 1.1328,
+          "p99": 2.2487,
+          "max": 2.8363
+        },
+        "GPU/NaniteBasePass": {
+          "n": 2375,
+          "mean": 0.13708749473684212,
+          "p50": 0.0698,
+          "p95": 0.6917,
+          "p99": 1.1245,
+          "max": 2.6194
+        },
+        "GPU/HZB": {
+          "n": 2375,
+          "mean": 0.10435313684210526,
+          "p50": 0.0277,
+          "p95": 0.6492,
+          "p99": 0.941,
+          "max": 2.092
+        },
+        "GPU/BeginOcclusionTests": {
+          "n": 2375,
+          "mean": 0.46485115789473685,
+          "p50": 0.1362,
+          "p95": 1.1253,
+          "p99": 2.0756,
+          "max": 2.6931
+        },
+        "GPU/LightGrid": {
+          "n": 2375,
+          "mean": 0.04535431578947369,
+          "p50": 0.0188,
+          "p95": 0.0211,
+          "p99": 0.6471,
+          "max": 2.2496
+        },
+        "GPU/LightFunctionAtlasGeneration": {
+          "n": 2375,
+          "mean": 0.0005725473684210526,
+          "p50": 0.001,
+          "p95": 0.0011,
+          "p99": 0.0011,
+          "max": 0.0021
+        },
+        "GPU/SkyAtmosphereLUTs": {
+          "n": 2375,
+          "mean": 0.11245351578947368,
+          "p50": 0.0479,
+          "p95": 0.6636,
+          "p99": 1.0748,
+          "max": 2.6094
+        },
+        "GPU/CaptureConvolveSkyEnvMap": {
+          "n": 2375,
+          "mean": 0.028722526315789473,
+          "p50": 0.0151,
+          "p95": 0.0293,
+          "p99": 0.6367,
+          "max": 1.992
+        },
+        "GPU/LumenSceneUpdate": {
+          "n": 2375,
+          "mean": 0.03145423157894737,
+          "p50": 0.0133,
+          "p95": 0.0216,
+          "p99": 0.647,
+          "max": 2.2879
+        },
+        "GPU/RayTracingScene": {
+          "n": 2375,
+          "mean": 0.12531073684210525,
+          "p50": 0.0609,
+          "p95": 0.6825,
+          "p99": 1.123,
+          "max": 2.5516
+        },
+        "GPU/BasePass": {
+          "n": 2375,
+          "mean": 1.6168909894736843,
+          "p50": 1.7178,
+          "p95": 3.165,
+          "p99": 3.727,
+          "max": 4.0495
+        },
+        "GPU/RenderDeferredLighting": {
+          "n": 2375,
+          "mean": 0.44986602105263157,
+          "p50": 0.1932,
+          "p95": 1.1926,
+          "p99": 2.2447,
+          "max": 2.8829
+        },
+        "GPU/LumenScreenProbeGather": {
+          "n": 2375,
+          "mean": 0.13988955789473684,
+          "p50": 0.0323,
+          "p95": 0.669,
+          "p99": 1.7986,
+          "max": 2.5336
+        },
+        "GPU/ShadowDepths": {
+          "n": 2375,
+          "mean": 1.6529634947368421,
+          "p50": 1.4235,
+          "p95": 3.0339,
+          "p99": 3.4672,
+          "max": 4.1932
+        },
+        "GPU/LumenReflections": {
+          "n": 2375,
+          "mean": 0.7746464842105263,
+          "p50": 0.895,
+          "p95": 1.4111,
+          "p99": 2.473,
+          "max": 3.0249
+        },
+        "GPU/TranslucentLighting": {
+          "n": 2375,
+          "mean": 0.13436593684210527,
+          "p50": 0.0369,
+          "p95": 0.6666,
+          "p99": 1.3251,
+          "max": 2.3859
+        },
+        "GPU/Lights": {
+          "n": 2375,
+          "mean": 0.18416762105263157,
+          "p50": 0.0665,
+          "p95": 0.727,
+          "p99": 1.9588,
+          "max": 2.603
+        },
+        "GPU/ShadowProjection": {
+          "n": 2375,
+          "mean": 0.5439736,
+          "p50": 0.2294,
+          "p95": 1.1806,
+          "p99": 2.2364,
+          "max": 2.7781
+        },
+        "GPU/VolumetricFog": {
+          "n": 2375,
+          "mean": 0.7652312842105263,
+          "p50": 0.8459,
+          "p95": 1.4039,
+          "p99": 2.6173,
+          "max": 4.2251
+        },
+        "GPU/TemporalSuperResolution": {
+          "n": 2375,
+          "mean": 1.7581771789473684,
+          "p50": 1.8186,
+          "p95": 3.1068,
+          "p99": 3.6209,
+          "max": 4.0203
+        },
+        "GPU/SkyAtmosphere": {
+          "n": 2375,
+          "mean": 0.054061094736842105,
+          "p50": 0.0256,
+          "p95": 0.044,
+          "p99": 0.6728,
+          "max": 2.175
+        },
+        "GPU/Fog": {
+          "n": 2375,
+          "mean": 0.05899490526315789,
+          "p50": 0.0226,
+          "p95": 0.04,
+          "p99": 0.7742,
+          "max": 2.5611
+        },
+        "GPU/PostRenderOpsFX": {
+          "n": 2375,
+          "mean": 0.0020458105263157895,
+          "p50": 0.002,
+          "p95": 0.0024,
+          "p99": 0.003,
+          "max": 0.0064
+        },
+        "GPU/FXSystemPostRenderOpaque": {
+          "n": 2375,
+          "mean": 0.0027048,
+          "p50": 0.0027,
+          "p95": 0.0031,
+          "p99": 0.0044,
+          "max": 0.0077
+        },
+        "GPU/Translucency": {
+          "n": 2375,
+          "mean": 0.09610568421052632,
+          "p50": 0.0478,
+          "p95": 0.6511,
+          "p99": 0.9774,
+          "max": 2.3616
+        },
+        "GPU/Postprocessing": {
+          "n": 2375,
+          "mean": 0.6479496421052632,
+          "p50": 0.8294,
+          "p95": 1.2902,
+          "p99": 2.2731,
+          "max": 2.8437
+        },
+        "GPU/MotionBlur": {
+          "n": 2375,
+          "mean": 0.19232193684210527,
+          "p50": 0.0541,
+          "p95": 0.7127,
+          "p99": 1.6712,
+          "max": 2.9143
+        },
+        "GPU/VirtualTextureUpdate": {
+          "n": 2375,
+          "mean": 0.18346656842105263,
+          "p50": 0.0503,
+          "p95": 0.7866,
+          "p99": 1.902,
+          "max": 3.0754
+        },
+        "GPU/SlateUI": {
+          "n": 2375,
+          "mean": 0.24035452631578946,
+          "p50": 0.0898,
+          "p95": 0.8488,
+          "p99": 1.8697,
+          "max": 2.4468
+        },
+        "GPU/Unaccounted": {
+          "n": 2375,
+          "mean": 1.6320445894736841,
+          "p50": 1.3692,
+          "p95": 3.2308,
+          "p99": 4.1802,
+          "max": 6.0796
+        },
+        "Exclusive/RenderThread/RenderThreadOther": {
+          "n": 2375,
+          "mean": 0.988942652631579,
+          "p50": 0.9795,
+          "p95": 1.1565,
+          "p99": 1.2611,
+          "max": 1.6166
+        },
+        "Exclusive/RenderThread/InitRenderResource": {
+          "n": 2375,
+          "mean": 0.0060877052631578945,
+          "p50": 0.0058,
+          "p95": 0.0078,
+          "p99": 0.0099,
+          "max": 0.0364
+        },
+        "Exclusive/RenderThread/RemovePrimitiveSceneInfos": {
+          "n": 2375,
+          "mean": 0.030126863157894736,
+          "p50": 0.0292,
+          "p95": 0.0382,
+          "p99": 0.0448,
+          "max": 0.1229
+        },
+        "Exclusive/RenderThread/UpdatePrimitiveInstances": {
+          "n": 2375,
+          "mean": 0.0016440842105263159,
+          "p50": 0.0015,
+          "p95": 0.0024,
+          "p99": 0.0038,
+          "max": 0.0147
+        },
+        "Exclusive/RenderThread/ConsolidateInstanceDataAllocations": {
+          "n": 2375,
+          "mean": 0.0014425684210526315,
+          "p50": 0.0014,
+          "p95": 0.0019,
+          "p99": 0.0036,
+          "max": 0.0159
+        },
+        "Exclusive/RenderThread/AddPrimitiveSceneInfos": {
+          "n": 2375,
+          "mean": 0.00838501052631579,
+          "p50": 0.008,
+          "p95": 0.0114,
+          "p99": 0.0133,
+          "max": 0.0417
+        },
+        "Exclusive/RenderThread/UpdatePrimitiveTransform": {
+          "n": 2375,
+          "mean": 0.017401263157894736,
+          "p50": 0.0158,
+          "p95": 0.0242,
+          "p99": 0.0326,
+          "max": 0.1649
+        },
+        "Exclusive/RenderThread/PreRender": {
+          "n": 2375,
+          "mean": 0.022156757894736843,
+          "p50": 0.0212,
+          "p95": 0.0292,
+          "p99": 0.0382,
+          "max": 0.2451
+        },
+        "Exclusive/RenderThread/EventWait": {
+          "n": 2375,
+          "mean": 0.4522136,
+          "p50": 0.4247,
+          "p95": 0.7908,
+          "p99": 1.036,
+          "max": 21.2166
+        },
+        "Exclusive/RenderThread/UpdateGPUScene": {
+          "n": 2375,
+          "mean": 0.09408888421052632,
+          "p50": 0.0918,
+          "p95": 0.1208,
+          "p99": 0.1417,
+          "max": 0.4108
+        },
+        "Exclusive/RenderThread/VirtualTextureSystem_Update": {
+          "n": 2375,
+          "mean": 0.004758947368421053,
+          "p50": 0.0047,
+          "p95": 0.006,
+          "p99": 0.0071,
+          "max": 0.0088
+        },
+        "Exclusive/RenderThread/PrepareDistanceFieldScene": {
+          "n": 2375,
+          "mean": 0.06638113684210527,
+          "p50": 0.0639,
+          "p95": 0.088,
+          "p99": 0.1055,
+          "max": 0.2737
+        },
+        "Exclusive/RenderThread/RenderOther": {
+          "n": 2375,
+          "mean": 2.3204229473684213,
+          "p50": 2.2751,
+          "p95": 2.7735,
+          "p99": 3.0317,
+          "max": 3.4194
+        },
+        "Exclusive/RenderThread/InitViews_Scene": {
+          "n": 2375,
+          "mean": 0.16723086315789473,
+          "p50": 0.1586,
+          "p95": 0.2181,
+          "p99": 0.3634,
+          "max": 0.8487
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "n": 2375,
+          "mean": 0.013768421052631579,
+          "p50": 0.0134,
+          "p95": 0.0176,
+          "p99": 0.021,
+          "max": 0.0577
+        },
+        "Exclusive/RenderThread/InitViews_Shadows": {
+          "n": 2375,
+          "mean": 0.010190063157894736,
+          "p50": 0.0096,
+          "p95": 0.0135,
+          "p99": 0.0176,
+          "max": 0.1578
+        },
+        "Exclusive/RenderThread/EventWait/Visibility": {
+          "n": 2375,
+          "mean": 8.48373187368421,
+          "p50": 8.7407,
+          "p95": 10.6209,
+          "p99": 11.27,
+          "max": 12.309
+        },
+        "Exclusive/RenderThread/FXSystem": {
+          "n": 2375,
+          "mean": 0.043796842105263155,
+          "p50": 0.0429,
+          "p95": 0.0531,
+          "p99": 0.0649,
+          "max": 0.2339
+        },
+        "Exclusive/RenderThread/GPUSort": {
+          "n": 2375,
+          "mean": 0.011456631578947368,
+          "p50": 0.0113,
+          "p95": 0.0139,
+          "p99": 0.0167,
+          "max": 0.0642
+        },
+        "Exclusive/RenderThread/RayTracing_FinishGatherInstances": {
+          "n": 2375,
+          "mean": 0.033073978947368424,
+          "p50": 0.0312,
+          "p95": 0.0497,
+          "p99": 0.0638,
+          "max": 0.2228
+        },
+        "Exclusive/RenderThread/RenderPrePass": {
+          "n": 2375,
+          "mean": 0.015496505263157895,
+          "p50": 0.0146,
+          "p95": 0.0207,
+          "p99": 0.0386,
+          "max": 0.205
+        },
+        "Exclusive/RenderThread/RenderVelocities": {
+          "n": 2375,
+          "mean": 0.022050610526315788,
+          "p50": 0.0205,
+          "p95": 0.0293,
+          "p99": 0.0446,
+          "max": 0.1444
+        },
+        "Exclusive/RenderThread/ShadowInitDynamic": {
+          "n": 2375,
+          "mean": 0.07240715789473684,
+          "p50": 0.0686,
+          "p95": 0.0985,
+          "p99": 0.1197,
+          "max": 0.2593
+        },
+        "Exclusive/RenderThread/PrepareForwardLightData": {
+          "n": 2375,
+          "mean": 0.008010147368421053,
+          "p50": 0.0074,
+          "p95": 0.0127,
+          "p99": 0.0154,
+          "max": 0.0965
+        },
+        "Exclusive/RenderThread/ComputeLightGrid": {
+          "n": 2375,
+          "mean": 0.03385157894736842,
+          "p50": 0.0325,
+          "p95": 0.0463,
+          "p99": 0.0577,
+          "max": 0.1883
+        },
+        "Exclusive/RenderThread/LightFunctionAtlasGeneration": {
+          "n": 2375,
+          "mean": 0.002921684210526316,
+          "p50": 0.0026,
+          "p95": 0.0041,
+          "p99": 0.0059,
+          "max": 0.0503
+        },
+        "Exclusive/RenderThread/SkyAtmosphere": {
+          "n": 2375,
+          "mean": 0.11583785263157895,
+          "p50": 0.108,
+          "p95": 0.1691,
+          "p99": 0.213,
+          "max": 0.3451
+        },
+        "Exclusive/RenderThread/DeferredShadingSceneRenderer_DBuffer": {
+          "n": 2375,
+          "mean": 0.01038581052631579,
+          "p50": 0.0098,
+          "p95": 0.014,
+          "p99": 0.0192,
+          "max": 0.0922
+        },
+        "Exclusive/RenderThread/RenderBasePass": {
+          "n": 2375,
+          "mean": 0.09623212631578948,
+          "p50": 0.0913,
+          "p95": 0.1294,
+          "p99": 0.1719,
+          "max": 0.3464
+        },
+        "Exclusive/RenderThread/RenderShadows": {
+          "n": 2375,
+          "mean": 0.7440130526315789,
+          "p50": 0.7091,
+          "p95": 0.9966,
+          "p99": 1.1359,
+          "max": 1.2785
+        },
+        "Exclusive/RenderThread/AfterBasePass": {
+          "n": 2375,
+          "mean": 0.008402315789473685,
+          "p50": 0.0078,
+          "p95": 0.0124,
+          "p99": 0.0159,
+          "max": 0.0614
+        },
+        "Exclusive/RenderThread/RenderLighting": {
+          "n": 2375,
+          "mean": 0.3683189052631579,
+          "p50": 0.3524,
+          "p95": 0.4922,
+          "p99": 0.5584,
+          "max": 0.6302
+        },
+        "Exclusive/RenderThread/RenderIndirectCapsuleShadows": {
+          "n": 2375,
+          "mean": 0.0010554526315789475,
+          "p50": 0.001,
+          "p95": 0.0015,
+          "p99": 0.0025,
+          "max": 0.0195
+        },
+        "Exclusive/RenderThread/VolumetricFog": {
+          "n": 2375,
+          "mean": 0.04973818947368421,
+          "p50": 0.0464,
+          "p95": 0.0675,
+          "p99": 0.0818,
+          "max": 0.1722
+        },
+        "Exclusive/RenderThread/RenderFog": {
+          "n": 2375,
+          "mean": 0.00739978947368421,
+          "p50": 0.0068,
+          "p95": 0.0101,
+          "p99": 0.0142,
+          "max": 0.1186
+        },
+        "Exclusive/RenderThread/RenderLocalFogVolume": {
+          "n": 2375,
+          "mean": 0.0007269052631578947,
+          "p50": 0.0006,
+          "p95": 0.0011,
+          "p99": 0.0021,
+          "max": 0.018
+        },
+        "Exclusive/RenderThread/RenderOpaqueFX": {
+          "n": 2375,
+          "mean": 0.04209098947368421,
+          "p50": 0.0411,
+          "p95": 0.0517,
+          "p99": 0.0642,
+          "max": 0.1521
+        },
+        "Exclusive/RenderThread/RenderTranslucency": {
+          "n": 2375,
+          "mean": 0.05608282105263158,
+          "p50": 0.0519,
+          "p95": 0.0769,
+          "p99": 0.0966,
+          "max": 0.2287
+        },
+        "Exclusive/RenderThread/RenderPostProcessing": {
+          "n": 2375,
+          "mean": 0.37259225263157897,
+          "p50": 0.356,
+          "p95": 0.4904,
+          "p99": 0.5537,
+          "max": 0.6256
+        },
+        "Exclusive/RenderThread/RDG": {
+          "n": 2375,
+          "mean": 0.7262763789473684,
+          "p50": 0.7159,
+          "p95": 0.8825,
+          "p99": 0.9694,
+          "max": 1.2033
+        },
+        "Exclusive/RenderThread/STAT_RDG_FlushResourcesRHI": {
+          "n": 2375,
+          "mean": 0.03137044210526316,
+          "p50": 0.03,
+          "p95": 0.0393,
+          "p99": 0.0465,
+          "max": 0.2045
+        },
+        "Exclusive/RenderThread/RDG_CollectResources": {
+          "n": 2375,
+          "mean": 0.8973182315789474,
+          "p50": 0.8635,
+          "p95": 1.1407,
+          "p99": 1.2568,
+          "max": 1.4775
+        },
+        "Exclusive/RenderThread/RDG_Execute": {
+          "n": 2375,
+          "mean": 0.18299557894736843,
+          "p50": 0.1717,
+          "p95": 0.2524,
+          "p99": 0.3132,
+          "max": 0.5915
+        },
+        "Exclusive/RenderThread/PostRenderCleanUp": {
+          "n": 2375,
+          "mean": 0.0025658526315789475,
+          "p50": 0.0024,
+          "p95": 0.0035,
+          "p99": 0.005,
+          "max": 0.0223
+        },
+        "Exclusive/RenderThread/RayTracingGeometryManager_Tick": {
+          "n": 2375,
+          "mean": 0.01486,
+          "p50": 0.0141,
+          "p95": 0.0203,
+          "p99": 0.0355,
+          "max": 0.119
+        },
+        "Exclusive/RenderThread/Material_UpdateDeferredCachedUniformExpressions": {
+          "n": 2375,
+          "mean": 0.0009312,
+          "p50": 0.0009,
+          "p95": 0.0013,
+          "p99": 0.0018,
+          "max": 0.0105
+        },
+        "Exclusive/RenderThread/Slate": {
+          "n": 2375,
+          "mean": 0.15780686315789474,
+          "p50": 0.1509,
+          "p95": 0.2096,
+          "p99": 0.2432,
+          "max": 0.5922
+        },
+        "RenderThreadIdle/Total": {
+          "n": 2375,
+          "mean": 0.013187452631578948,
+          "p50": 0.0,
+          "p95": 0.007,
+          "p99": 0.0307,
+          "max": 21.21
+        },
+        "RenderThreadIdle/CriticalPath": {
+          "n": 2375,
+          "mean": 0.0013387368421052632,
+          "p50": 0.0,
+          "p95": 0.006,
+          "p99": 0.03,
+          "max": 0.2798
+        },
+        "RenderThreadIdle/SwapBuffer": {
+          "n": 2375,
+          "mean": 0.011318652631578947,
+          "p50": 0.0099,
+          "p95": 0.0197,
+          "p99": 0.0289,
+          "max": 0.0711
+        },
+        "RenderThreadIdle/NonCriticalPath": {
+          "n": 2375,
+          "mean": 0.011848715789473685,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 21.21
+        },
+        "RenderThreadIdle/GPUQuery": {
+          "n": 2375,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "Exclusive/GameThread/Input": {
+          "n": 2375,
+          "mean": 0.022647705263157895,
+          "p50": 0.0223,
+          "p95": 0.0279,
+          "p99": 0.0334,
+          "max": 0.0883
+        },
+        "Exclusive/GameThread/EngineTickMisc": {
+          "n": 2375,
+          "mean": 0.08920282105263158,
+          "p50": 0.0875,
+          "p95": 0.108,
+          "p99": 0.1274,
+          "max": 0.2342
+        },
+        "Exclusive/GameThread/NetworkProfiler": {
+          "n": 2375,
+          "mean": 0.024228715789473686,
+          "p50": 0.0243,
+          "p95": 0.0309,
+          "p99": 0.0416,
+          "max": 0.1652
+        },
+        "Exclusive/GameThread/AsyncLoading": {
+          "n": 2375,
+          "mean": 0.013783621052631579,
+          "p50": 0.0133,
+          "p95": 0.0173,
+          "p99": 0.022,
+          "max": 0.2186
+        },
+        "Exclusive/GameThread/WorldTickMisc": {
+          "n": 2375,
+          "mean": 1.7280513684210526,
+          "p50": 1.6616,
+          "p95": 2.2493,
+          "p99": 2.4766,
+          "max": 12.5971
+        },
+        "Exclusive/GameThread/Effects": {
+          "n": 2375,
+          "mean": 0.06691301052631579,
+          "p50": 0.0655,
+          "p95": 0.0824,
+          "p99": 0.0971,
+          "max": 0.1604
+        },
+        "Exclusive/GameThread/NetworkIncoming": {
+          "n": 2375,
+          "mean": 0.20485612631578948,
+          "p50": 0.2009,
+          "p95": 0.3895,
+          "p99": 0.4938,
+          "max": 0.6996
+        },
+        "Exclusive/GameThread/HandleRPC": {
+          "n": 2375,
+          "mean": 0.11477216842105263,
+          "p50": 0.1365,
+          "p95": 0.273,
+          "p99": 0.3111,
+          "max": 0.5453
+        },
+        "Exclusive/GameThread/Generic_RepNotifies": {
+          "n": 2375,
+          "mean": 0.10622197894736841,
+          "p50": 0.0115,
+          "p95": 0.3134,
+          "p99": 0.6239,
+          "max": 0.9663
+        },
+        "Exclusive/GameThread/ResetAsyncTraceTickTime": {
+          "n": 2375,
+          "mean": 0.0010730526315789475,
+          "p50": 0.001,
+          "p95": 0.0015,
+          "p99": 0.0025,
+          "max": 0.0258
+        },
+        "Exclusive/GameThread/WorldPreActorTick": {
+          "n": 2375,
+          "mean": 0.005836505263157894,
+          "p50": 0.0057,
+          "p95": 0.0079,
+          "p99": 0.0093,
+          "max": 0.0394
+        },
+        "Exclusive/GameThread/QueueTicks": {
+          "n": 2375,
+          "mean": 0.03885494736842105,
+          "p50": 0.038,
+          "p95": 0.0478,
+          "p99": 0.0612,
+          "max": 0.1674
+        },
+        "Exclusive/GameThread/TickActors": {
+          "n": 2375,
+          "mean": 0.43897456842105265,
+          "p50": 0.433,
+          "p95": 0.5472,
+          "p99": 0.6035,
+          "max": 0.7652
+        },
+        "Exclusive/GameThread/CharacterMovement": {
+          "n": 2375,
+          "mean": 0.6282341473684211,
+          "p50": 0.6008,
+          "p95": 0.846,
+          "p99": 0.9395,
+          "max": 1.0846
+        },
+        "Exclusive/GameThread/Animation": {
+          "n": 2375,
+          "mean": 0.18231006315789475,
+          "p50": 0.1778,
+          "p95": 0.2391,
+          "p99": 0.2715,
+          "max": 0.3913
+        },
+        "Exclusive/GameThread/MassProcessorTask": {
+          "n": 2375,
+          "mean": 0.0064632,
+          "p50": 0.0063,
+          "p95": 0.0083,
+          "p99": 0.0111,
+          "max": 0.0512
+        },
+        "Exclusive/GameThread/PlayerControllerTick": {
+          "n": 2375,
+          "mean": 0.1357695157894737,
+          "p50": 0.1327,
+          "p95": 0.1714,
+          "p99": 0.1977,
+          "max": 0.4336
+        },
+        "Exclusive/GameThread/Physics": {
+          "n": 2375,
+          "mean": 0.05299515789473684,
+          "p50": 0.051,
+          "p95": 0.0673,
+          "p99": 0.082,
+          "max": 0.2658
+        },
+        "Exclusive/GameThread/EventWait/EndPhysics": {
+          "n": 2375,
+          "mean": 0.2559296842105263,
+          "p50": 0.2507,
+          "p95": 0.3501,
+          "p99": 0.4135,
+          "max": 0.5927
+        },
+        "Exclusive/GameThread/SyncBodies": {
+          "n": 2375,
+          "mean": 0.03504467368421053,
+          "p50": 0.0343,
+          "p95": 0.0453,
+          "p99": 0.0552,
+          "max": 0.1048
+        },
+        "Exclusive/GameThread/FlushLatentActions": {
+          "n": 2375,
+          "mean": 0.000752,
+          "p50": 0.0007,
+          "p95": 0.0011,
+          "p99": 0.002,
+          "max": 0.0057
+        },
+        "Exclusive/GameThread/TimerManager": {
+          "n": 2375,
+          "mean": 0.024721726315789474,
+          "p50": 0.0026,
+          "p95": 0.133,
+          "p99": 0.2289,
+          "max": 0.2946
+        },
+        "Exclusive/GameThread/Tickables": {
+          "n": 2375,
+          "mean": 0.0881997052631579,
+          "p50": 0.087,
+          "p95": 0.1073,
+          "p99": 0.1209,
+          "max": 0.2448
+        },
+        "Exclusive/GameThread/Landscape": {
+          "n": 2375,
+          "mean": 0.034131115789473684,
+          "p50": 0.0333,
+          "p95": 0.0415,
+          "p99": 0.0512,
+          "max": 0.3043
+        },
+        "Exclusive/GameThread/Camera": {
+          "n": 2375,
+          "mean": 0.034562315789473684,
+          "p50": 0.0327,
+          "p95": 0.0449,
+          "p99": 0.0538,
+          "max": 0.1681
+        },
+        "Exclusive/GameThread/UpdateStreamingState": {
+          "n": 2375,
+          "mean": 0.007467873684210527,
+          "p50": 0.0071,
+          "p95": 0.0097,
+          "p99": 0.0118,
+          "max": 0.0484
+        },
+        "Exclusive/GameThread/UInstancedStaticMeshComponent_BatchUpdateInstancesTransforms": {
+          "n": 2375,
+          "mean": 0.1626872,
+          "p50": 0.1477,
+          "p95": 0.2441,
+          "p99": 0.2736,
+          "max": 0.4171
+        },
+        "GuLiCommanderPresentation/GameThread/RebuildLocalInstances": {
+          "n": 2375,
+          "mean": 1.3877799157894737,
+          "p50": 1.3335,
+          "p95": 1.8923,
+          "p99": 2.0947,
+          "max": 2.3804
+        },
+        "GuLiCommanderHealthBars/GameThread/UpdateInstances": {
+          "n": 2375,
+          "mean": 0.10828143157894737,
+          "p50": 0.1014,
+          "p95": 0.1504,
+          "p99": 0.1813,
+          "max": 0.29
+        },
+        "Exclusive/GameThread/NetworkOutgoing": {
+          "n": 2375,
+          "mean": 0.05295136842105263,
+          "p50": 0.0511,
+          "p95": 0.0663,
+          "p99": 0.0776,
+          "max": 0.1737
+        },
+        "Exclusive/GameThread/FlushNet": {
+          "n": 2375,
+          "mean": 0.0871258105263158,
+          "p50": 0.089,
+          "p95": 0.1222,
+          "p99": 0.1405,
+          "max": 0.243
+        },
+        "Exclusive/GameThread/RecordTickCountsToCSV": {
+          "n": 2375,
+          "mean": 0.023882526315789472,
+          "p50": 0.0225,
+          "p95": 0.0315,
+          "p99": 0.0404,
+          "max": 0.1954
+        },
+        "Exclusive/GameThread/RecordActorCountsToCSV": {
+          "n": 2375,
+          "mean": 0.0015349052631578948,
+          "p50": 0.0015,
+          "p95": 0.0019,
+          "p99": 0.003,
+          "max": 0.0229
+        },
+        "Exclusive/GameThread/ViewportMisc": {
+          "n": 2375,
+          "mean": 0.19128307368421052,
+          "p50": 0.1866,
+          "p95": 0.2395,
+          "p99": 0.271,
+          "max": 0.4436
+        },
+        "Exclusive/GameThread/PostProcessSettings": {
+          "n": 2375,
+          "mean": 0.06343814736842106,
+          "p50": 0.0611,
+          "p95": 0.0815,
+          "p99": 0.0998,
+          "max": 0.1821
+        },
+        "Exclusive/GameThread/UpdateLevelStreaming": {
+          "n": 2375,
+          "mean": 0.0018129684210526317,
+          "p50": 0.0017,
+          "p95": 0.0024,
+          "p99": 0.0034,
+          "max": 0.0167
+        },
+        "Exclusive/GameThread/EndOfFrameUpdates": {
+          "n": 2375,
+          "mean": 0.5428970947368421,
+          "p50": 0.5249,
+          "p95": 0.6755,
+          "p99": 0.7318,
+          "max": 0.8709
+        },
+        "Exclusive/GameThread/UI": {
+          "n": 2375,
+          "mean": 1.7068374315789474,
+          "p50": 1.6368,
+          "p95": 2.1917,
+          "p99": 2.4191,
+          "max": 2.8544
+        },
+        "Exclusive/GameThread/DebugHUD": {
+          "n": 2375,
+          "mean": 0.038659663157894736,
+          "p50": 0.0367,
+          "p95": 0.0504,
+          "p99": 0.0629,
+          "max": 0.2054
+        },
+        "Exclusive/GameThread/RenderAssetStreaming": {
+          "n": 2375,
+          "mean": 0.1740074947368421,
+          "p50": 0.1979,
+          "p95": 0.271,
+          "p99": 0.3152,
+          "max": 0.3793
+        },
+        "Exclusive/GameThread/EventWait/RenderAssetStreaming": {
+          "n": 2375,
+          "mean": 0.0034756631578947367,
+          "p50": 0.0034,
+          "p95": 0.0046,
+          "p99": 0.0057,
+          "max": 0.0207
+        },
+        "Slate/GameThread/TickPlatform": {
+          "n": 2375,
+          "mean": 0.05357136842105263,
+          "p50": 0.0614,
+          "p95": 0.0837,
+          "p99": 0.0967,
+          "max": 0.1544
+        },
+        "Slate/GameThread/DrawPrePass": {
+          "n": 2375,
+          "mean": 0.24231242105263157,
+          "p50": 0.2278,
+          "p95": 0.3299,
+          "p99": 0.3799,
+          "max": 0.6244
+        },
+        "Slate/GameThread/SObjectWidget_Tick": {
+          "n": 2375,
+          "mean": 0.009224042105263158,
+          "p50": 0.0085,
+          "p95": 0.0141,
+          "p99": 0.0197,
+          "max": 0.114
+        },
+        "Slate/GameThread/DrawWindows_Private": {
+          "n": 2375,
+          "mean": 0.3981021894736842,
+          "p50": 0.3821,
+          "p95": 0.4975,
+          "p99": 0.5404,
+          "max": 0.6332
+        },
+        "Exclusive/GameThread/DeferredTickTime": {
+          "n": 2375,
+          "mean": 0.1654205052631579,
+          "p50": 0.1558,
+          "p95": 0.2122,
+          "p99": 0.3124,
+          "max": 10.4805
+        },
+        "Exclusive/GameThread/CsvProfiler": {
+          "n": 2375,
+          "mean": 0.008116631578947368,
+          "p50": 0.0078,
+          "p95": 0.0106,
+          "p99": 0.0143,
+          "max": 0.0976
+        },
+        "Exclusive/GameThread/LLM": {
+          "n": 2375,
+          "mean": 0.0001095578947368421,
+          "p50": 0.0001,
+          "p95": 0.0002,
+          "p99": 0.0003,
+          "max": 0.0017
+        },
+        "Exclusive/GameThread/EventWait": {
+          "n": 2375,
+          "mean": 8.725335368421053,
+          "p50": 8.9125,
+          "p95": 11.1978,
+          "p99": 12.0989,
+          "max": 14.1609
+        },
+        "Exclusive/GameThread/EventWait/StartPhysics": {
+          "n": 2375,
+          "mean": 0.0002096842105263158,
+          "p50": 0.0,
+          "p95": 0.0019,
+          "p99": 0.0027,
+          "max": 0.0349
+        },
+        "GuLiCommanderHealthBars/VisibleInstances": {
+          "n": 2375,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "Ticks/GuLiCommanderHealthBarRenderer": {
+          "n": 2375,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "Ticks/GuLiCommanderHUD": {
+          "n": 2375,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "Ticks/GuLiCommanderNetSyncComponent": {
+          "n": 2375,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "Ticks/GuLiCommanderPlayerController": {
+          "n": 2375,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "Ticks/GuLiCommanderPresentationActor": {
+          "n": 2375,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "View/PosX": {
+          "n": 2375,
+          "mean": -195886.1094,
+          "p50": -195886.1094,
+          "p95": -195886.1094,
+          "p99": -195886.1094,
+          "max": -195886.1094
+        },
+        "View/PosY": {
+          "n": 2375,
+          "mean": 110000.0,
+          "p50": 110000.0,
+          "p95": 110000.0,
+          "p99": 110000.0,
+          "max": 110000.0
+        },
+        "View/PosZ": {
+          "n": 2375,
+          "mean": 59937.2383,
+          "p50": 59937.2383,
+          "p95": 59937.2383,
+          "p99": 59937.2383,
+          "max": 59937.2383
+        },
+        "View/Speed": {
+          "n": 2375,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "View/Speed2D": {
+          "n": 2375,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "View/ForwardX": {
+          "n": 2375,
+          "mean": 0.5736,
+          "p50": 0.5736,
+          "p95": 0.5736,
+          "p99": 0.5736,
+          "max": 0.5736
+        },
+        "View/ForwardY": {
+          "n": 2375,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "View/ForwardZ": {
+          "n": 2375,
+          "mean": -0.8192,
+          "p50": -0.8192,
+          "p95": -0.8192,
+          "p99": -0.8192,
+          "max": -0.8192
+        },
+        "View/UpX": {
+          "n": 2375,
+          "mean": 0.8192,
+          "p50": 0.8192,
+          "p95": 0.8192,
+          "p99": 0.8192,
+          "max": 0.8192
+        },
+        "View/UpY": {
+          "n": 2375,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "View/UpZ": {
+          "n": 2375,
+          "mean": 0.5736,
+          "p50": 0.5736,
+          "p95": 0.5736,
+          "p99": 0.5736,
+          "max": 0.5736
+        },
+        "FrameTime": {
+          "n": 2375,
+          "mean": 16.84784745263158,
+          "p50": 17.0554,
+          "p95": 18.9773,
+          "p99": 19.7423,
+          "max": 41.4566
+        },
+        "RenderThreadTime": {
+          "n": 2375,
+          "mean": 16.819972421052633,
+          "p50": 17.0446,
+          "p95": 18.95,
+          "p99": 19.6893,
+          "max": 21.8352
+        },
+        "GameThreadTime": {
+          "n": 2375,
+          "mean": 8.115350105263158,
+          "p50": 8.0384,
+          "p95": 9.3191,
+          "p99": 10.0563,
+          "max": 41.4409
+        },
+        "GPUTime": {
+          "n": 2375,
+          "mean": 14.6615608,
+          "p50": 14.8351,
+          "p95": 16.9956,
+          "p99": 17.8254,
+          "max": 20.0795
+        },
+        "RenderThreadTime_CriticalPath": {
+          "n": 2375,
+          "mean": 16.821311157894737,
+          "p50": 17.0446,
+          "p95": 18.95,
+          "p99": 19.6893,
+          "max": 21.8352
+        },
+        "GameThreadTime_CriticalPath": {
+          "n": 2375,
+          "mean": 8.1196416,
+          "p50": 8.0414,
+          "p95": 9.3248,
+          "p99": 10.0563,
+          "max": 41.6464
+        },
+        "RHIThreadTime": {
+          "n": 2375,
+          "mean": 5.342548631578947,
+          "p50": 5.3205,
+          "p95": 6.0944,
+          "p99": 6.4901,
+          "max": 7.6374
+        },
+        "Exclusive/GameThread/EventWait/PrePhysics": {
+          "n": 2375,
+          "mean": 0.0040970526315789475,
+          "p50": 0.0,
+          "p95": 0.0374,
+          "p99": 0.0774,
+          "max": 0.2271
+        },
+        "Exclusive/GameThread/GarbageCollection": {
+          "n": 277,
+          "mean": 0.09606498194945849,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 2.0206,
+          "max": 21.4585
+        },
+        "Exclusive/GameThread/EventWait/WorldTickMisc": {
+          "n": 277,
+          "mean": 0.0007472924187725632,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.207
+        },
+        "Exclusive/GameThread/DeleteLinkers": {
+          "n": 274,
+          "mean": 0.00020072992700729926,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0308
+        },
+        "Exclusive/RenderThread/EventWait/Shadows": {
+          "n": 212,
+          "mean": 0.0006882075471698113,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.1459
+        }
+      },
+      "trace": "TestResults\\CommanderPoseCompression\\baseline-complete-1-n1200-c2\\client1\\process.utrace",
+      "trace_cpu": {
+        "window_seconds": [
+          46.89591380208731,
+          76.8959138020873
+        ],
+        "game_thread_active_ms": {
+          "n": 1804,
+          "mean": 16.607418403547673,
+          "p50": 16.7762,
+          "p95": 18.7971,
+          "p99": 19.5694,
+          "max": 20.9709
+        },
+        "engine_tick_including_wait_ms": {
+          "n": 1804,
+          "mean": 16.61897123059867,
+          "p50": 16.787300000000002,
+          "p95": 18.8088,
+          "p99": 19.5822,
+          "max": 20.9821
+        },
+        "limiter_wait_ms": {
+          "n": 1805,
+          "mean": 0.011554238227146815,
+          "p50": 0.0112,
+          "p95": 0.0145,
+          "p99": 0.017900000000000003,
+          "max": 0.0405
+        },
+        "world_tick_ms": {
+          "n": 1805,
+          "mean": 4.468983490304709,
+          "p50": 4.405799999999999,
+          "p95": 5.4467,
+          "p99": 5.8839,
+          "max": 6.9828
+        },
+        "pose_scopes_ms": {
+          "GuLiPose_Send": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Receive": {
+            "n": 11632,
+            "mean": 0.003454040577716644,
+            "p50": 0.0028,
+            "p95": 0.008199999999999999,
+            "p99": 0.0106,
+            "max": 0.24489999999999998,
+            "ms_per_second": 1.3392466666666667
+          },
+          "GuLiPose_Ack": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Capture": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Wire": {
+            "n": 11632,
+            "mean": 0.007551770976616231,
+            "p50": 0.0068000000000000005,
+            "p95": 0.015099999999999999,
+            "p99": 0.0189,
+            "max": 0.0774,
+            "ms_per_second": 2.9280733333333333
+          },
+          "GuLiPose_Encode": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Decode": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Confirm": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          }
+        },
+        "project_exclusive_top": [
+          {
+            "Name": "GuLiCommanderPresentation_RebuildLocalInstances",
+            "Count": "1805",
+            "C.Avg": "1805.000000",
+            "Incl": "2.490223",
+            "I.Min": "0.001070",
+            "I.Max": "0.002381",
+            "I.Avg": "0.001380",
+            "I.Med": "0.001322",
+            "Excl": "2.198299",
+            "E.Min": "0.000935",
+            "E.Max": "0.002122",
+            "E.Avg": "0.001218",
+            "E.Med": "0.001175",
+            "exclusive_ms_per_second": 73.27663333333334
+          },
+          {
+            "Name": "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Paint",
+            "Count": "1805",
+            "C.Avg": "1805.000000",
+            "Incl": "0.764864",
+            "I.Min": "0.000374",
+            "I.Max": "0.000739",
+            "I.Avg": "0.000424",
+            "I.Med": "0.000400",
+            "Excl": "0.764864",
+            "E.Min": "0.000374",
+            "E.Max": "0.000739",
+            "E.Avg": "0.000424",
+            "E.Med": "0.000400",
+            "exclusive_ms_per_second": 25.49546666666667
+          },
+          {
+            "Name": "GuLiCommanderHealthBars_UpdateInstances",
+            "Count": "1805",
+            "C.Avg": "1805.000000",
+            "Incl": "0.195182",
+            "I.Min": "0.000082",
+            "I.Max": "0.000290",
+            "I.Avg": "0.000108",
+            "I.Med": "0.000101",
+            "Excl": "0.195182",
+            "E.Min": "0.000082",
+            "E.Max": "0.000290",
+            "E.Avg": "0.000108",
+            "E.Med": "0.000101",
+            "exclusive_ms_per_second": 6.506066666666666
+          },
+          {
+            "Name": "GuLiPose_Wire",
+            "Count": "11632",
+            "C.Avg": "11632.000000",
+            "Incl": "0.087842",
+            "I.Min": "0.000002",
+            "I.Max": "0.000077",
+            "I.Avg": "0.000008",
+            "I.Med": "0.000007",
+            "Excl": "0.087842",
+            "E.Min": "0.000002",
+            "E.Max": "0.000077",
+            "E.Avg": "0.000008",
+            "E.Med": "0.000007",
+            "exclusive_ms_per_second": 2.9280666666666666
+          },
+          {
+            "Name": "GuLiPose_Receive",
+            "Count": "11632",
+            "C.Avg": "11632.000000",
+            "Incl": "0.040177",
+            "I.Min": "0.000001",
+            "I.Max": "0.000245",
+            "I.Avg": "0.000003",
+            "I.Med": "0.000003",
+            "Excl": "0.040177",
+            "E.Min": "0.000001",
+            "E.Max": "0.000245",
+            "E.Avg": "0.000003",
+            "E.Med": "0.000003",
+            "exclusive_ms_per_second": 1.3392333333333333
+          },
+          {
+            "Name": "GuLiCommanderCursorGround",
+            "Count": "1805",
+            "C.Avg": "1805.000000",
+            "Incl": "0.038645",
+            "I.Min": "0.000013",
+            "I.Max": "0.000282",
+            "I.Avg": "0.000021",
+            "I.Med": "0.000022",
+            "Excl": "0.035051",
+            "E.Min": "0.000012",
+            "E.Max": "0.000280",
+            "E.Avg": "0.000019",
+            "E.Med": "0.000018",
+            "exclusive_ms_per_second": 1.1683666666666668
+          },
+          {
+            "Name": "GuLiCommanderMiniMapWidget",
+            "Count": "300",
+            "C.Avg": "300.000000",
+            "Incl": "0.035066",
+            "I.Min": "0.000078",
+            "I.Max": "0.000287",
+            "I.Avg": "0.000117",
+            "I.Med": "0.000106",
+            "Excl": "0.034216",
+            "E.Min": "0.000076",
+            "E.Max": "0.000278",
+            "E.Avg": "0.000114",
+            "E.Med": "0.000103",
+            "exclusive_ms_per_second": 1.1405333333333334
+          },
+          {
+            "Name": "GuLiTeleportHUDWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiTeleportHUDWidget_0_Paint",
+            "Count": "1805",
+            "C.Avg": "1805.000000",
+            "Incl": "0.023218",
+            "I.Min": "0.000010",
+            "I.Max": "0.000110",
+            "I.Avg": "0.000013",
+            "I.Med": "0.000012",
+            "Excl": "0.020770",
+            "E.Min": "0.000008",
+            "E.Max": "0.000108",
+            "E.Avg": "0.000012",
+            "E.Med": "0.000010",
+            "exclusive_ms_per_second": 0.6923333333333334
+          },
+          {
+            "Name": "GuLiResourceFactoryActor",
+            "Count": "7220",
+            "C.Avg": "7220.000000",
+            "Incl": "0.036162",
+            "I.Min": "0.000000",
+            "I.Max": "0.000304",
+            "I.Avg": "0.000005",
+            "I.Med": "0.000000",
+            "Excl": "0.015000",
+            "E.Min": "0.000000",
+            "E.Max": "0.000059",
+            "E.Avg": "0.000002",
+            "E.Med": "0.000001",
+            "exclusive_ms_per_second": 0.5
+          },
+          {
+            "Name": "GuLiCombatEffects_Presentation",
+            "Count": "1805",
+            "C.Avg": "1805.000000",
+            "Incl": "0.008928",
+            "I.Min": "0.000003",
+            "I.Max": "0.000022",
+            "I.Avg": "0.000005",
+            "I.Med": "0.000005",
+            "Excl": "0.008928",
+            "E.Min": "0.000003",
+            "E.Max": "0.000022",
+            "E.Avg": "0.000005",
+            "E.Med": "0.000005",
+            "exclusive_ms_per_second": 0.29760000000000003
+          },
+          {
+            "Name": "/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green [GT]",
+            "Count": "15866",
+            "C.Avg": "15866.000000",
+            "Incl": "0.006804",
+            "I.Min": "0.000000",
+            "I.Max": "0.000035",
+            "I.Avg": "0.000000",
+            "I.Med": "0.000000",
+            "Excl": "0.006804",
+            "E.Min": "0.000000",
+            "E.Max": "0.000035",
+            "E.Avg": "0.000000",
+            "E.Med": "0.000000",
+            "exclusive_ms_per_second": 0.2268
+          },
+          {
+            "Name": "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Tick",
+            "Count": "1805",
+            "C.Avg": "1805.000000",
+            "Incl": "0.005198",
+            "I.Min": "0.000001",
+            "I.Max": "0.000031",
+            "I.Avg": "0.000003",
+            "I.Med": "0.000002",
+            "Excl": "0.005198",
+            "E.Min": "0.000001",
+            "E.Max": "0.000031",
+            "E.Avg": "0.000003",
+            "E.Med": "0.000002",
+            "exclusive_ms_per_second": 0.17326666666666668
+          }
+        ],
+        "definition": "GameThread active wall time = FEngineLoop::Tick minus its frame-rate-limiter scope; other waits remain. CPU utilization is measured separately from process CPU time."
+      }
+    },
+    "client2": {
+      "actual_moving_p05": 1200.0,
+      "valid_load": true,
+      "actual_moving": {
+        "n": 1827,
+        "mean": 1199.9616858237548,
+        "p50": 1200.0,
+        "p95": 1200.0,
+        "p99": 1200.0,
+        "max": 1200.0,
+        "min": 1198.0
+      },
+      "effective_sim_hz": null,
+      "full_capture_sim_hz": null,
+      "dropped_steps": null,
+      "accepted_pose_hz": 9.999454679835624,
+      "decoded_samples_per_second": 8946.658168474147,
+      "mean_unit_pose_hz": 7.455548473728456,
+      "sample_intervals": {
+        "count": 268328,
+        "histogram_steps_1_to_20_then_overflow": [
+          179304,
+          88292,
+          0,
+          476,
+          0,
+          160,
+          0,
+          56,
+          0,
+          40,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0,
+          0
+        ],
+        "mean_ms": 134.01508601413198,
+        "p50_ms": 100,
+        "p95_ms": 200
+      },
+      "decode_failures": 0.0,
+      "absolute_samples": 0.0,
+      "delta_samples": 0.0,
+      "frame_ms": {
+        "n": 1827,
+        "mean": 16.42567963875205,
+        "p50": 16.5955,
+        "p95": 18.4533,
+        "p99": 19.3879,
+        "max": 20.5767
+      },
+      "fixed_step_ms": {
+        "n": 0,
+        "mean": null,
+        "p50": null,
+        "p95": null,
+        "p99": null,
+        "max": null
+      },
+      "pose_age_ms": {
+        "n": 1827,
+        "mean": 22.85851943076081,
+        "p50": 16.736,
+        "p95": 44.242,
+        "p99": 50.916,
+        "max": 54.104
+      },
+      "timing": {
+        "send": {
+          "calls": 0.0,
+          "total_ms": 0.0,
+          "ms_per_second": 0.0,
+          "mean_ms_per_call": 0,
+          "ms_per_world_frame": {
+            "n": 1826,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          }
+        },
+        "receive": {
+          "calls": 11601.0,
+          "total_ms": 39.533670991,
+          "ms_per_second": 1.318141381076144,
+          "mean_ms_per_call": 0.0034077813111800708,
+          "ms_per_world_frame": {
+            "n": 1826,
+            "mean": 0.02165042222946331,
+            "p50": 0.014998018000000002,
+            "p95": 0.052802265000003956,
+            "p99": 0.060506165999999695,
+            "max": 0.14210119899999896
+          }
+        },
+        "ack": {
+          "calls": 0.0,
+          "total_ms": 0.0,
+          "ms_per_second": 0.0,
+          "mean_ms_per_call": 0,
+          "ms_per_world_frame": {
+            "n": 1826,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          }
+        },
+        "capture": {
+          "calls": 0.0,
+          "total_ms": 0.0,
+          "ms_per_second": 0.0,
+          "mean_ms_per_call": 0,
+          "ms_per_world_frame": {
+            "n": 1826,
+            "mean": 0.0,
+            "p50": 0.0,
+            "p95": 0.0,
+            "p99": 0.0,
+            "max": 0.0
+          }
+        },
+        "wire_read": {
+          "calls": 11601.0,
+          "total_ms": 87.21332624600001,
+          "ms_per_second": 2.9078881729024797,
+          "mean_ms_per_call": 0.007517742112404103,
+          "ms_per_world_frame": {
+            "n": 1826,
+            "mean": 0.04776195303723987,
+            "p50": 0.024795532000013054,
+            "p95": 0.11990219299999438,
+            "p99": 0.13399496699999247,
+            "max": 0.2574920649999939
+          }
+        }
+      },
+      "network": {
+        "in_bytes_per_second": 187000.55317028455,
+        "out_bytes_per_second": 2164.0451304621433,
+        "connections": [
+          {
+            "connection": "127.0.0.1:18071",
+            "seconds": 29.9919807985425,
+            "boundary_skew_ms": [
+              4.401799291372299,
+              -3.6174021661281586
+            ],
+            "in_bytes_per_second": 187000.55317028455,
+            "out_bytes_per_second": 2164.0451304621433
+          }
+        ]
+      },
+      "outbound_profile": {
+        "packet_count": 1709,
+        "packets_per_second": 56.96666666666667,
+        "socket_plus_ip_udp_bytes": 66651,
+        "connection_accounted_bytes": 64942,
+        "rpcs": {}
+      },
+      "cpu_core_equivalents": {
+        "n": 29,
+        "mean": 3.5385461602898616,
+        "p50": 3.497218842014704,
+        "p95": 4.354751875806303,
+        "p99": 4.987157206157789,
+        "max": 4.987157206157789
+      },
+      "working_set_mib": {
+        "n": 29,
+        "mean": 5922.5149515086205,
+        "p50": 5922.45703125,
+        "p95": 5935.6953125,
+        "p99": 5935.7109375,
+        "max": 5935.7109375
+      },
+      "private_commit_mib": {
+        "n": 29,
+        "mean": 11612.421336206897,
+        "p50": 11612.7578125,
+        "p95": 11626.31640625,
+        "p99": 11626.31640625,
+        "max": 11626.31640625
+      },
+      "codec_cache_bytes": {
+        "n": 1827,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "codec_cache_capture_peak_bytes": 0.0,
+      "camera_stationary": true,
+      "full_capture_engine": {
+        "GPU/RayTracingGeometry": {
+          "n": 2403,
+          "mean": 0.0002759883478984602,
+          "p50": 0.0003,
+          "p95": 0.0003,
+          "p99": 0.0007,
+          "max": 0.0012
+        },
+        "GPU/UpdateLumenSceneBuffers": {
+          "n": 2403,
+          "mean": 0.011240074906367041,
+          "p50": 0.0033,
+          "p95": 0.0077,
+          "p99": 0.5057,
+          "max": 1.4872
+        },
+        "GPU/GPUSceneUpdate": {
+          "n": 2403,
+          "mean": 0.0344715771951727,
+          "p50": 0.0162,
+          "p95": 0.0199,
+          "p99": 0.6448,
+          "max": 2.1448
+        },
+        "GPU/NaniteStreaming": {
+          "n": 2403,
+          "mean": 0.00097786100707449,
+          "p50": 0.0007,
+          "p95": 0.002,
+          "p99": 0.0033,
+          "max": 0.0047
+        },
+        "GPU/NaniteReadback": {
+          "n": 2403,
+          "mean": 0.14305339159384103,
+          "p50": 0.0938,
+          "p95": 0.6837,
+          "p99": 1.0768,
+          "max": 2.4254
+        },
+        "GPU/FXSystemPreRender": {
+          "n": 2403,
+          "mean": 0.0010094465251768623,
+          "p50": 0.0,
+          "p95": 0.0011,
+          "p99": 0.002,
+          "max": 1.0147
+        },
+        "GPU/BuildRenderingCommandsDeferred": {
+          "n": 2403,
+          "mean": 0.06123150228880566,
+          "p50": 0.0328,
+          "p95": 0.039,
+          "p99": 0.6739,
+          "max": 1.9662
+        },
+        "GPU/Prepass": {
+          "n": 2403,
+          "mean": 1.4504519766957968,
+          "p50": 1.3747,
+          "p95": 2.5578,
+          "p99": 3.1635,
+          "max": 3.451
+        },
+        "GPU/RenderVelocities": {
+          "n": 2403,
+          "mean": 0.06805663753641282,
+          "p50": 0.0239,
+          "p95": 0.628,
+          "p99": 0.9441,
+          "max": 2.2668
+        },
+        "GPU/NaniteVisBuffer": {
+          "n": 2403,
+          "mean": 0.4223777361631294,
+          "p50": 0.2042,
+          "p95": 1.0988,
+          "p99": 1.752,
+          "max": 2.9494
+        },
+        "GPU/NaniteBasePass": {
+          "n": 2403,
+          "mean": 0.1437918435289222,
+          "p50": 0.0698,
+          "p95": 0.6927,
+          "p99": 1.2916,
+          "max": 2.6799
+        },
+        "GPU/HZB": {
+          "n": 2403,
+          "mean": 0.06976858094049106,
+          "p50": 0.0276,
+          "p95": 0.6256,
+          "p99": 0.9257,
+          "max": 1.9568
+        },
+        "GPU/BeginOcclusionTests": {
+          "n": 2403,
+          "mean": 0.5255692467748647,
+          "p50": 0.7158,
+          "p95": 1.1397,
+          "p99": 2.0766,
+          "max": 2.4085
+        },
+        "GPU/LightGrid": {
+          "n": 2403,
+          "mean": 0.03577257594673325,
+          "p50": 0.0189,
+          "p95": 0.0202,
+          "p99": 0.639,
+          "max": 2.0899
+        },
+        "GPU/LightFunctionAtlasGeneration": {
+          "n": 2403,
+          "mean": 0.0005857677902621723,
+          "p50": 0.001,
+          "p95": 0.0011,
+          "p99": 0.0011,
+          "max": 0.0021
+        },
+        "GPU/SkyAtmosphereLUTs": {
+          "n": 2403,
+          "mean": 0.10649246774864753,
+          "p50": 0.0478,
+          "p95": 0.6652,
+          "p99": 1.0585,
+          "max": 2.1277
+        },
+        "GPU/CaptureConvolveSkyEnvMap": {
+          "n": 2403,
+          "mean": 0.026741531419059508,
+          "p50": 0.0153,
+          "p95": 0.0295,
+          "p99": 0.6309,
+          "max": 2.0508
+        },
+        "GPU/LumenSceneUpdate": {
+          "n": 2403,
+          "mean": 0.029314689970869747,
+          "p50": 0.0132,
+          "p95": 0.0211,
+          "p99": 0.638,
+          "max": 2.1245
+        },
+        "GPU/RayTracingScene": {
+          "n": 2403,
+          "mean": 0.12013012900540991,
+          "p50": 0.0614,
+          "p95": 0.6791,
+          "p99": 1.0694,
+          "max": 2.0677
+        },
+        "GPU/BasePass": {
+          "n": 2403,
+          "mean": 1.4702285892634208,
+          "p50": 1.3037,
+          "p95": 2.5103,
+          "p99": 3.2845,
+          "max": 3.5755
+        },
+        "GPU/RenderDeferredLighting": {
+          "n": 2403,
+          "mean": 0.5707855597170204,
+          "p50": 0.6785,
+          "p95": 1.2557,
+          "p99": 2.1176,
+          "max": 2.9244
+        },
+        "GPU/LumenScreenProbeGather": {
+          "n": 2403,
+          "mean": 0.08819321681231794,
+          "p50": 0.0315,
+          "p95": 0.6515,
+          "p99": 1.0192,
+          "max": 2.0499
+        },
+        "GPU/ShadowDepths": {
+          "n": 2403,
+          "mean": 1.5724088223054515,
+          "p50": 1.2618,
+          "p95": 2.5884,
+          "p99": 3.2255,
+          "max": 3.5076
+        },
+        "GPU/LumenReflections": {
+          "n": 2403,
+          "mean": 0.8122059092800665,
+          "p50": 0.9155,
+          "p95": 1.3906,
+          "p99": 2.3103,
+          "max": 2.6285
+        },
+        "GPU/TranslucentLighting": {
+          "n": 2403,
+          "mean": 0.11440549313358302,
+          "p50": 0.0379,
+          "p95": 0.6604,
+          "p99": 1.0618,
+          "max": 4.2333
+        },
+        "GPU/Lights": {
+          "n": 2403,
+          "mean": 0.15437211818560134,
+          "p50": 0.0666,
+          "p95": 0.6994,
+          "p99": 1.0977,
+          "max": 2.1534
+        },
+        "GPU/ShadowProjection": {
+          "n": 2403,
+          "mean": 0.5921144402829797,
+          "p50": 0.7772,
+          "p95": 1.2226,
+          "p99": 2.1586,
+          "max": 2.4003
+        },
+        "GPU/VolumetricFog": {
+          "n": 2403,
+          "mean": 0.7887547648772368,
+          "p50": 0.8561,
+          "p95": 1.5001,
+          "p99": 2.2918,
+          "max": 3.2369
+        },
+        "GPU/TemporalSuperResolution": {
+          "n": 2403,
+          "mean": 1.8385538909696213,
+          "p50": 1.8669,
+          "p95": 3.1222,
+          "p99": 3.3526,
+          "max": 3.6465
+        },
+        "GPU/SkyAtmosphere": {
+          "n": 2403,
+          "mean": 0.050058177278402,
+          "p50": 0.0256,
+          "p95": 0.0379,
+          "p99": 0.681,
+          "max": 2.0603
+        },
+        "GPU/Fog": {
+          "n": 2403,
+          "mean": 0.0562786100707449,
+          "p50": 0.0226,
+          "p95": 0.0369,
+          "p99": 0.7926,
+          "max": 1.9579
+        },
+        "GPU/PostRenderOpsFX": {
+          "n": 2403,
+          "mean": 0.0020367873491468997,
+          "p50": 0.002,
+          "p95": 0.0024,
+          "p99": 0.003,
+          "max": 0.0067
+        },
+        "GPU/FXSystemPostRenderOpaque": {
+          "n": 2403,
+          "mean": 0.0027213066999583852,
+          "p50": 0.0027,
+          "p95": 0.0031,
+          "p99": 0.0041,
+          "max": 0.024
+        },
+        "GPU/Translucency": {
+          "n": 2403,
+          "mean": 0.09748106533499792,
+          "p50": 0.0477,
+          "p95": 0.659,
+          "p99": 1.001,
+          "max": 2.3053
+        },
+        "GPU/Postprocessing": {
+          "n": 2403,
+          "mean": 0.7046029546400333,
+          "p50": 0.86,
+          "p95": 1.2943,
+          "p99": 2.2557,
+          "max": 2.4955
+        },
+        "GPU/MotionBlur": {
+          "n": 2403,
+          "mean": 0.14828959633791094,
+          "p50": 0.0533,
+          "p95": 0.686,
+          "p99": 1.0783,
+          "max": 2.3081
+        },
+        "GPU/VirtualTextureUpdate": {
+          "n": 2403,
+          "mean": 0.14721431543903454,
+          "p50": 0.05,
+          "p95": 0.6849,
+          "p99": 1.1085,
+          "max": 2.1983
+        },
+        "GPU/SlateUI": {
+          "n": 2403,
+          "mean": 0.30231240116521013,
+          "p50": 0.0912,
+          "p95": 1.0025,
+          "p99": 1.943,
+          "max": 2.5622
+        },
+        "GPU/Unaccounted": {
+          "n": 2403,
+          "mean": 1.526632709113608,
+          "p50": 1.2397,
+          "p95": 2.9603,
+          "p99": 3.6294,
+          "max": 5.4074
+        },
+        "Exclusive/RenderThread/RenderThreadOther": {
+          "n": 2403,
+          "mean": 0.9917256762380358,
+          "p50": 0.9824,
+          "p95": 1.1585,
+          "p99": 1.272,
+          "max": 1.4822
+        },
+        "Exclusive/RenderThread/InitRenderResource": {
+          "n": 2403,
+          "mean": 0.0060729088639201,
+          "p50": 0.0058,
+          "p95": 0.0077,
+          "p99": 0.0094,
+          "max": 0.0822
+        },
+        "Exclusive/RenderThread/RemovePrimitiveSceneInfos": {
+          "n": 2403,
+          "mean": 0.03135626300457761,
+          "p50": 0.0304,
+          "p95": 0.0396,
+          "p99": 0.0525,
+          "max": 0.1381
+        },
+        "Exclusive/RenderThread/UpdatePrimitiveInstances": {
+          "n": 2403,
+          "mean": 0.001697544735746983,
+          "p50": 0.0016,
+          "p95": 0.0024,
+          "p99": 0.0038,
+          "max": 0.0147
+        },
+        "Exclusive/RenderThread/ConsolidateInstanceDataAllocations": {
+          "n": 2403,
+          "mean": 0.001521223470661673,
+          "p50": 0.0014,
+          "p95": 0.0021,
+          "p99": 0.0037,
+          "max": 0.0065
+        },
+        "Exclusive/RenderThread/AddPrimitiveSceneInfos": {
+          "n": 2403,
+          "mean": 0.00854161464835622,
+          "p50": 0.0082,
+          "p95": 0.0115,
+          "p99": 0.0137,
+          "max": 0.1231
+        },
+        "Exclusive/RenderThread/UpdatePrimitiveTransform": {
+          "n": 2403,
+          "mean": 0.016582230545151892,
+          "p50": 0.0151,
+          "p95": 0.0232,
+          "p99": 0.0274,
+          "max": 0.1308
+        },
+        "Exclusive/RenderThread/PreRender": {
+          "n": 2403,
+          "mean": 0.022503287557220142,
+          "p50": 0.0215,
+          "p95": 0.0301,
+          "p99": 0.0374,
+          "max": 0.1648
+        },
+        "Exclusive/RenderThread/EventWait": {
+          "n": 2403,
+          "mean": 0.46207311693716185,
+          "p50": 0.4261,
+          "p95": 0.7772,
+          "p99": 1.0063,
+          "max": 22.4482
+        },
+        "Exclusive/RenderThread/UpdateGPUScene": {
+          "n": 2403,
+          "mean": 0.09567861007074491,
+          "p50": 0.0929,
+          "p95": 0.1242,
+          "p99": 0.142,
+          "max": 0.4145
+        },
+        "Exclusive/RenderThread/VirtualTextureSystem_Update": {
+          "n": 2403,
+          "mean": 0.005355264253017062,
+          "p50": 0.0052,
+          "p95": 0.0068,
+          "p99": 0.0081,
+          "max": 0.0271
+        },
+        "Exclusive/RenderThread/PrepareDistanceFieldScene": {
+          "n": 2403,
+          "mean": 0.0676605493133583,
+          "p50": 0.0652,
+          "p95": 0.0892,
+          "p99": 0.1026,
+          "max": 0.4965
+        },
+        "Exclusive/RenderThread/RenderOther": {
+          "n": 2403,
+          "mean": 2.3419548481065333,
+          "p50": 2.3011,
+          "p95": 2.8026,
+          "p99": 3.0945,
+          "max": 3.4537
+        },
+        "Exclusive/RenderThread/InitViews_Scene": {
+          "n": 2403,
+          "mean": 0.16838218893050352,
+          "p50": 0.1594,
+          "p95": 0.2148,
+          "p99": 0.3554,
+          "max": 0.8723
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "n": 2403,
+          "mean": 0.013804702455264254,
+          "p50": 0.0133,
+          "p95": 0.0174,
+          "p99": 0.0206,
+          "max": 0.287
+        },
+        "Exclusive/RenderThread/InitViews_Shadows": {
+          "n": 2403,
+          "mean": 0.010171535580524345,
+          "p50": 0.0096,
+          "p95": 0.0134,
+          "p99": 0.0168,
+          "max": 0.0694
+        },
+        "Exclusive/RenderThread/EventWait/Visibility": {
+          "n": 2403,
+          "mean": 8.21471622971286,
+          "p50": 8.4089,
+          "p95": 10.1619,
+          "p99": 10.9033,
+          "max": 11.7709
+        },
+        "Exclusive/RenderThread/FXSystem": {
+          "n": 2403,
+          "mean": 0.044181772784019975,
+          "p50": 0.0428,
+          "p95": 0.0549,
+          "p99": 0.0666,
+          "max": 0.3362
+        },
+        "Exclusive/RenderThread/GPUSort": {
+          "n": 2403,
+          "mean": 0.011769496462754889,
+          "p50": 0.0114,
+          "p95": 0.0142,
+          "p99": 0.0166,
+          "max": 0.2847
+        },
+        "Exclusive/RenderThread/RayTracing_FinishGatherInstances": {
+          "n": 2403,
+          "mean": 0.0339317519766958,
+          "p50": 0.0317,
+          "p95": 0.0518,
+          "p99": 0.068,
+          "max": 0.2641
+        },
+        "Exclusive/RenderThread/RenderPrePass": {
+          "n": 2403,
+          "mean": 0.015421389929255097,
+          "p50": 0.0144,
+          "p95": 0.0211,
+          "p99": 0.0333,
+          "max": 0.2175
+        },
+        "Exclusive/RenderThread/RenderVelocities": {
+          "n": 2403,
+          "mean": 0.022538368705784437,
+          "p50": 0.0209,
+          "p95": 0.0304,
+          "p99": 0.0489,
+          "max": 0.158
+        },
+        "Exclusive/RenderThread/ShadowInitDynamic": {
+          "n": 2403,
+          "mean": 0.07322476071577196,
+          "p50": 0.0692,
+          "p95": 0.0983,
+          "p99": 0.1256,
+          "max": 0.3438
+        },
+        "Exclusive/RenderThread/PrepareForwardLightData": {
+          "n": 2403,
+          "mean": 0.008297960882230546,
+          "p50": 0.0078,
+          "p95": 0.0132,
+          "p99": 0.0157,
+          "max": 0.105
+        },
+        "Exclusive/RenderThread/ComputeLightGrid": {
+          "n": 2403,
+          "mean": 0.03424698293799417,
+          "p50": 0.0327,
+          "p95": 0.0472,
+          "p99": 0.0598,
+          "max": 0.1022
+        },
+        "Exclusive/RenderThread/LightFunctionAtlasGeneration": {
+          "n": 2403,
+          "mean": 0.0028888056595921764,
+          "p50": 0.0026,
+          "p95": 0.0043,
+          "p99": 0.0055,
+          "max": 0.0258
+        },
+        "Exclusive/RenderThread/SkyAtmosphere": {
+          "n": 2403,
+          "mean": 0.11660145651269246,
+          "p50": 0.1085,
+          "p95": 0.1749,
+          "p99": 0.219,
+          "max": 0.3318
+        },
+        "Exclusive/RenderThread/DeferredShadingSceneRenderer_DBuffer": {
+          "n": 2403,
+          "mean": 0.010389471493965876,
+          "p50": 0.0098,
+          "p95": 0.0144,
+          "p99": 0.0203,
+          "max": 0.0463
+        },
+        "Exclusive/RenderThread/RenderBasePass": {
+          "n": 2403,
+          "mean": 0.09672143154390346,
+          "p50": 0.0919,
+          "p95": 0.133,
+          "p99": 0.1627,
+          "max": 0.304
+        },
+        "Exclusive/RenderThread/RenderShadows": {
+          "n": 2403,
+          "mean": 0.7531801914273825,
+          "p50": 0.7234,
+          "p95": 0.9975,
+          "p99": 1.1548,
+          "max": 1.3184
+        },
+        "Exclusive/RenderThread/AfterBasePass": {
+          "n": 2403,
+          "mean": 0.008578610070744902,
+          "p50": 0.0081,
+          "p95": 0.0119,
+          "p99": 0.0154,
+          "max": 0.1608
+        },
+        "Exclusive/RenderThread/RenderLighting": {
+          "n": 2403,
+          "mean": 0.3713250936329588,
+          "p50": 0.3571,
+          "p95": 0.4862,
+          "p99": 0.5518,
+          "max": 0.6497
+        },
+        "Exclusive/RenderThread/RenderIndirectCapsuleShadows": {
+          "n": 2403,
+          "mean": 0.001102455264253017,
+          "p50": 0.001,
+          "p95": 0.0015,
+          "p99": 0.0026,
+          "max": 0.0249
+        },
+        "Exclusive/RenderThread/VolumetricFog": {
+          "n": 2403,
+          "mean": 0.05013391593841032,
+          "p50": 0.0468,
+          "p95": 0.0669,
+          "p99": 0.082,
+          "max": 0.1861
+        },
+        "Exclusive/RenderThread/RenderFog": {
+          "n": 2403,
+          "mean": 0.0074750312109862676,
+          "p50": 0.0068,
+          "p95": 0.01,
+          "p99": 0.0133,
+          "max": 0.1165
+        },
+        "Exclusive/RenderThread/RenderLocalFogVolume": {
+          "n": 2403,
+          "mean": 0.0006943820224719101,
+          "p50": 0.0006,
+          "p95": 0.001,
+          "p99": 0.0017,
+          "max": 0.0034
+        },
+        "Exclusive/RenderThread/RenderOpaqueFX": {
+          "n": 2403,
+          "mean": 0.04272634207240949,
+          "p50": 0.042,
+          "p95": 0.0525,
+          "p99": 0.0635,
+          "max": 0.1542
+        },
+        "Exclusive/RenderThread/RenderTranslucency": {
+          "n": 2403,
+          "mean": 0.05628942987931752,
+          "p50": 0.0525,
+          "p95": 0.0765,
+          "p99": 0.0999,
+          "max": 0.1815
+        },
+        "Exclusive/RenderThread/RenderPostProcessing": {
+          "n": 2403,
+          "mean": 0.37666412817311695,
+          "p50": 0.3617,
+          "p95": 0.4969,
+          "p99": 0.553,
+          "max": 0.6717
+        },
+        "Exclusive/RenderThread/RDG": {
+          "n": 2403,
+          "mean": 0.728035289221806,
+          "p50": 0.7208,
+          "p95": 0.8849,
+          "p99": 0.9752,
+          "max": 1.1126
+        },
+        "Exclusive/RenderThread/STAT_RDG_FlushResourcesRHI": {
+          "n": 2403,
+          "mean": 0.031833624635871825,
+          "p50": 0.0304,
+          "p95": 0.0396,
+          "p99": 0.0489,
+          "max": 0.2183
+        },
+        "Exclusive/RenderThread/RDG_CollectResources": {
+          "n": 2403,
+          "mean": 0.9055953391593841,
+          "p50": 0.8788,
+          "p95": 1.1403,
+          "p99": 1.287,
+          "max": 1.5262
+        },
+        "Exclusive/RenderThread/RDG_Execute": {
+          "n": 2403,
+          "mean": 0.18361052850603413,
+          "p50": 0.1719,
+          "p95": 0.258,
+          "p99": 0.3258,
+          "max": 0.5456
+        },
+        "Exclusive/RenderThread/PostRenderCleanUp": {
+          "n": 2403,
+          "mean": 0.002526633374947982,
+          "p50": 0.0024,
+          "p95": 0.0033,
+          "p99": 0.005,
+          "max": 0.0342
+        },
+        "Exclusive/RenderThread/RayTracingGeometryManager_Tick": {
+          "n": 2403,
+          "mean": 0.015017561381606325,
+          "p50": 0.0141,
+          "p95": 0.0208,
+          "p99": 0.0358,
+          "max": 0.1325
+        },
+        "Exclusive/RenderThread/Material_UpdateDeferredCachedUniformExpressions": {
+          "n": 2403,
+          "mean": 0.0009551394090719933,
+          "p50": 0.0009,
+          "p95": 0.0013,
+          "p99": 0.0023,
+          "max": 0.0038
+        },
+        "Exclusive/RenderThread/Slate": {
+          "n": 2403,
+          "mean": 0.15574219725343322,
+          "p50": 0.1489,
+          "p95": 0.2076,
+          "p99": 0.2314,
+          "max": 0.4787
+        },
+        "RenderThreadIdle/Total": {
+          "n": 2403,
+          "mean": 0.012297669579692052,
+          "p50": 0.0,
+          "p95": 0.0022,
+          "p99": 0.0299,
+          "max": 22.4408
+        },
+        "RenderThreadIdle/CriticalPath": {
+          "n": 2403,
+          "mean": 0.0012257178526841447,
+          "p50": 0.0,
+          "p95": 0.0021,
+          "p99": 0.0294,
+          "max": 0.1778
+        },
+        "RenderThreadIdle/SwapBuffer": {
+          "n": 2403,
+          "mean": 0.011242363712026634,
+          "p50": 0.0099,
+          "p95": 0.0193,
+          "p99": 0.0287,
+          "max": 0.0703
+        },
+        "RenderThreadIdle/NonCriticalPath": {
+          "n": 2403,
+          "mean": 0.011071951727007907,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 22.4408
+        },
+        "RenderThreadIdle/GPUQuery": {
+          "n": 2403,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "Exclusive/GameThread/Input": {
+          "n": 2403,
+          "mean": 0.01493558052434457,
+          "p50": 0.0144,
+          "p95": 0.019,
+          "p99": 0.0249,
+          "max": 0.1022
+        },
+        "Exclusive/GameThread/EngineTickMisc": {
+          "n": 2403,
+          "mean": 0.08932451102788182,
+          "p50": 0.0878,
+          "p95": 0.1072,
+          "p99": 0.1259,
+          "max": 0.2163
+        },
+        "Exclusive/GameThread/NetworkProfiler": {
+          "n": 2403,
+          "mean": 0.024278027465667915,
+          "p50": 0.0245,
+          "p95": 0.0316,
+          "p99": 0.0413,
+          "max": 0.2043
+        },
+        "Exclusive/GameThread/AsyncLoading": {
+          "n": 2403,
+          "mean": 0.01377324178110695,
+          "p50": 0.0134,
+          "p95": 0.0175,
+          "p99": 0.0209,
+          "max": 0.1555
+        },
+        "Exclusive/GameThread/WorldTickMisc": {
+          "n": 2403,
+          "mean": 1.7534270079067833,
+          "p50": 1.6926,
+          "p95": 2.2387,
+          "p99": 2.5365,
+          "max": 14.4743
+        },
+        "Exclusive/GameThread/Effects": {
+          "n": 2403,
+          "mean": 0.06754748231377444,
+          "p50": 0.0665,
+          "p95": 0.0846,
+          "p99": 0.0966,
+          "max": 0.2007
+        },
+        "Exclusive/GameThread/NetworkIncoming": {
+          "n": 2403,
+          "mean": 0.20433616312942154,
+          "p50": 0.2044,
+          "p95": 0.3914,
+          "p99": 0.4811,
+          "max": 0.6306
+        },
+        "Exclusive/GameThread/HandleRPC": {
+          "n": 2403,
+          "mean": 0.11675451518934665,
+          "p50": 0.1046,
+          "p95": 0.2784,
+          "p99": 0.3309,
+          "max": 0.6164
+        },
+        "Exclusive/GameThread/Generic_RepNotifies": {
+          "n": 2403,
+          "mean": 0.10563795255930088,
+          "p50": 0.0115,
+          "p95": 0.312,
+          "p99": 0.5898,
+          "max": 0.9651
+        },
+        "Exclusive/GameThread/ResetAsyncTraceTickTime": {
+          "n": 2403,
+          "mean": 0.001098501872659176,
+          "p50": 0.0011,
+          "p95": 0.0015,
+          "p99": 0.0028,
+          "max": 0.0047
+        },
+        "Exclusive/GameThread/WorldPreActorTick": {
+          "n": 2403,
+          "mean": 0.005841156887224303,
+          "p50": 0.0056,
+          "p95": 0.0081,
+          "p99": 0.01,
+          "max": 0.073
+        },
+        "Exclusive/GameThread/QueueTicks": {
+          "n": 2403,
+          "mean": 0.039193549729504784,
+          "p50": 0.0384,
+          "p95": 0.0486,
+          "p99": 0.0599,
+          "max": 0.1486
+        },
+        "Exclusive/GameThread/TickActors": {
+          "n": 2403,
+          "mean": 0.44512942155638785,
+          "p50": 0.4381,
+          "p95": 0.562,
+          "p99": 0.6156,
+          "max": 0.7443
+        },
+        "Exclusive/GameThread/CharacterMovement": {
+          "n": 2403,
+          "mean": 0.627036329588015,
+          "p50": 0.6,
+          "p95": 0.8553,
+          "p99": 0.9436,
+          "max": 1.0291
+        },
+        "Exclusive/GameThread/Animation": {
+          "n": 2403,
+          "mean": 0.1844094049105285,
+          "p50": 0.18,
+          "p95": 0.246,
+          "p99": 0.2798,
+          "max": 0.3902
+        },
+        "Exclusive/GameThread/MassProcessorTask": {
+          "n": 2403,
+          "mean": 0.006594881398252185,
+          "p50": 0.0063,
+          "p95": 0.0085,
+          "p99": 0.0117,
+          "max": 0.0761
+        },
+        "Exclusive/GameThread/PlayerControllerTick": {
+          "n": 2403,
+          "mean": 0.07432155638784853,
+          "p50": 0.0725,
+          "p95": 0.0932,
+          "p99": 0.113,
+          "max": 0.2203
+        },
+        "Exclusive/GameThread/Physics": {
+          "n": 2403,
+          "mean": 0.05400803162713275,
+          "p50": 0.0521,
+          "p95": 0.0688,
+          "p99": 0.0831,
+          "max": 0.2666
+        },
+        "Exclusive/GameThread/EventWait/EndPhysics": {
+          "n": 2403,
+          "mean": 0.25479225967540575,
+          "p50": 0.2482,
+          "p95": 0.3545,
+          "p99": 0.4218,
+          "max": 0.7582
+        },
+        "Exclusive/GameThread/SyncBodies": {
+          "n": 2403,
+          "mean": 0.035266250520183104,
+          "p50": 0.0346,
+          "p95": 0.0458,
+          "p99": 0.0545,
+          "max": 0.1406
+        },
+        "Exclusive/GameThread/FlushLatentActions": {
+          "n": 2403,
+          "mean": 0.0006903870162297129,
+          "p50": 0.0007,
+          "p95": 0.001,
+          "p99": 0.0019,
+          "max": 0.0035
+        },
+        "Exclusive/GameThread/TimerManager": {
+          "n": 2403,
+          "mean": 0.02493778610070745,
+          "p50": 0.0026,
+          "p95": 0.1375,
+          "p99": 0.2365,
+          "max": 0.3495
+        },
+        "Exclusive/GameThread/Tickables": {
+          "n": 2403,
+          "mean": 0.08952147315855181,
+          "p50": 0.0876,
+          "p95": 0.1107,
+          "p99": 0.1242,
+          "max": 0.1851
+        },
+        "Exclusive/GameThread/Landscape": {
+          "n": 2403,
+          "mean": 0.03420923845193508,
+          "p50": 0.0334,
+          "p95": 0.0426,
+          "p99": 0.055,
+          "max": 0.1561
+        },
+        "Exclusive/GameThread/Camera": {
+          "n": 2403,
+          "mean": 0.03616100707449022,
+          "p50": 0.0342,
+          "p95": 0.0472,
+          "p99": 0.0555,
+          "max": 0.0904
+        },
+        "Exclusive/GameThread/UpdateStreamingState": {
+          "n": 2403,
+          "mean": 0.007262047440699126,
+          "p50": 0.0069,
+          "p95": 0.0096,
+          "p99": 0.012,
+          "max": 0.0403
+        },
+        "Exclusive/GameThread/UInstancedStaticMeshComponent_BatchUpdateInstancesTransforms": {
+          "n": 2403,
+          "mean": 0.16374294631710362,
+          "p50": 0.1507,
+          "p95": 0.2419,
+          "p99": 0.2778,
+          "max": 0.3468
+        },
+        "GuLiCommanderPresentation/GameThread/RebuildLocalInstances": {
+          "n": 2403,
+          "mean": 1.4119524760715771,
+          "p50": 1.3619,
+          "p95": 1.8692,
+          "p99": 2.1167,
+          "max": 2.4511
+        },
+        "GuLiCommanderHealthBars/GameThread/UpdateInstances": {
+          "n": 2403,
+          "mean": 0.10796824802330421,
+          "p50": 0.1008,
+          "p95": 0.1518,
+          "p99": 0.1851,
+          "max": 0.2642
+        },
+        "Exclusive/GameThread/NetworkOutgoing": {
+          "n": 2403,
+          "mean": 0.051636912193091966,
+          "p50": 0.0496,
+          "p95": 0.0655,
+          "p99": 0.0785,
+          "max": 0.1449
+        },
+        "Exclusive/GameThread/FlushNet": {
+          "n": 2403,
+          "mean": 0.08765796920516021,
+          "p50": 0.0898,
+          "p95": 0.1247,
+          "p99": 0.1424,
+          "max": 0.8028
+        },
+        "Exclusive/GameThread/RecordTickCountsToCSV": {
+          "n": 2403,
+          "mean": 0.023894090719933418,
+          "p50": 0.0224,
+          "p95": 0.0325,
+          "p99": 0.0392,
+          "max": 0.0717
+        },
+        "Exclusive/GameThread/RecordActorCountsToCSV": {
+          "n": 2403,
+          "mean": 0.0016474823137744485,
+          "p50": 0.0016,
+          "p95": 0.002,
+          "p99": 0.0031,
+          "max": 0.0181
+        },
+        "Exclusive/GameThread/ViewportMisc": {
+          "n": 2403,
+          "mean": 0.1940519766957969,
+          "p50": 0.1881,
+          "p95": 0.2488,
+          "p99": 0.2767,
+          "max": 0.4016
+        },
+        "Exclusive/GameThread/PostProcessSettings": {
+          "n": 2403,
+          "mean": 0.0645635039533916,
+          "p50": 0.0618,
+          "p95": 0.0853,
+          "p99": 0.0982,
+          "max": 0.2046
+        },
+        "Exclusive/GameThread/UpdateLevelStreaming": {
+          "n": 2403,
+          "mean": 0.0019187682064086557,
+          "p50": 0.0018,
+          "p95": 0.0026,
+          "p99": 0.0036,
+          "max": 0.0444
+        },
+        "Exclusive/GameThread/EndOfFrameUpdates": {
+          "n": 2403,
+          "mean": 0.5479471077819392,
+          "p50": 0.5299,
+          "p95": 0.6843,
+          "p99": 0.7532,
+          "max": 0.8575
+        },
+        "Exclusive/GameThread/UI": {
+          "n": 2403,
+          "mean": 1.682904910528506,
+          "p50": 1.613,
+          "p95": 2.1782,
+          "p99": 2.3839,
+          "max": 2.6619
+        },
+        "Exclusive/GameThread/DebugHUD": {
+          "n": 2403,
+          "mean": 0.03827765293383271,
+          "p50": 0.0365,
+          "p95": 0.0506,
+          "p99": 0.0597,
+          "max": 0.1593
+        },
+        "Exclusive/GameThread/RenderAssetStreaming": {
+          "n": 2403,
+          "mean": 0.17489338327091136,
+          "p50": 0.1972,
+          "p95": 0.2766,
+          "p99": 0.3227,
+          "max": 0.4238
+        },
+        "Exclusive/GameThread/EventWait/RenderAssetStreaming": {
+          "n": 2403,
+          "mean": 0.0036355805243445693,
+          "p50": 0.0034,
+          "p95": 0.0048,
+          "p99": 0.0061,
+          "max": 0.1039
+        },
+        "Slate/GameThread/TickPlatform": {
+          "n": 2403,
+          "mean": 0.023174947981689554,
+          "p50": 0.0243,
+          "p95": 0.0339,
+          "p99": 0.0443,
+          "max": 0.1585
+        },
+        "Slate/GameThread/DrawPrePass": {
+          "n": 2403,
+          "mean": 0.24941781106949645,
+          "p50": 0.2351,
+          "p95": 0.3392,
+          "p99": 0.3893,
+          "max": 0.5266
+        },
+        "Slate/GameThread/SObjectWidget_Tick": {
+          "n": 2403,
+          "mean": 0.009047191011235954,
+          "p50": 0.0083,
+          "p95": 0.0135,
+          "p99": 0.0172,
+          "max": 0.1306
+        },
+        "Slate/GameThread/DrawWindows_Private": {
+          "n": 2403,
+          "mean": 0.39873196004993755,
+          "p50": 0.3847,
+          "p95": 0.4989,
+          "p99": 0.5416,
+          "max": 0.7032
+        },
+        "Exclusive/GameThread/DeferredTickTime": {
+          "n": 2403,
+          "mean": 0.16897145235122762,
+          "p50": 0.1554,
+          "p95": 0.212,
+          "p99": 0.3095,
+          "max": 18.6638
+        },
+        "Exclusive/GameThread/CsvProfiler": {
+          "n": 2403,
+          "mean": 0.008010778193924262,
+          "p50": 0.0077,
+          "p95": 0.0105,
+          "p99": 0.0137,
+          "max": 0.0597
+        },
+        "Exclusive/GameThread/LLM": {
+          "n": 2403,
+          "mean": 0.00011872659176029963,
+          "p50": 0.0001,
+          "p95": 0.0002,
+          "p99": 0.0003,
+          "max": 0.0024
+        },
+        "Exclusive/GameThread/EventWait/PrePhysics": {
+          "n": 2403,
+          "mean": 0.004866375364128173,
+          "p50": 0.0,
+          "p95": 0.0443,
+          "p99": 0.0703,
+          "max": 0.2831
+        },
+        "Exclusive/GameThread/EventWait": {
+          "n": 2403,
+          "mean": 8.592120557636289,
+          "p50": 8.8084,
+          "p95": 10.9537,
+          "p99": 11.8253,
+          "max": 16.7322
+        },
+        "Exclusive/GameThread/EventWait/StartPhysics": {
+          "n": 2403,
+          "mean": 0.00030532667498959636,
+          "p50": 0.0,
+          "p95": 0.002,
+          "p99": 0.0033,
+          "max": 0.0276
+        },
+        "GuLiCommanderHealthBars/VisibleInstances": {
+          "n": 2403,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "Ticks/GuLiCommanderHealthBarRenderer": {
+          "n": 2403,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "Ticks/GuLiCommanderHUD": {
+          "n": 2403,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "Ticks/GuLiCommanderNetSyncComponent": {
+          "n": 2403,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "Ticks/GuLiCommanderPlayerController": {
+          "n": 2403,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "Ticks/GuLiCommanderPresentationActor": {
+          "n": 2403,
+          "mean": 1.0,
+          "p50": 1.0,
+          "p95": 1.0,
+          "p99": 1.0,
+          "max": 1.0
+        },
+        "View/PosX": {
+          "n": 2403,
+          "mean": -195886.1094,
+          "p50": -195886.1094,
+          "p95": -195886.1094,
+          "p99": -195886.1094,
+          "max": -195886.1094
+        },
+        "View/PosY": {
+          "n": 2403,
+          "mean": 110000.0,
+          "p50": 110000.0,
+          "p95": 110000.0,
+          "p99": 110000.0,
+          "max": 110000.0
+        },
+        "View/PosZ": {
+          "n": 2403,
+          "mean": 59937.2383,
+          "p50": 59937.2383,
+          "p95": 59937.2383,
+          "p99": 59937.2383,
+          "max": 59937.2383
+        },
+        "View/Speed": {
+          "n": 2403,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "View/Speed2D": {
+          "n": 2403,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "View/ForwardX": {
+          "n": 2403,
+          "mean": 0.5736,
+          "p50": 0.5736,
+          "p95": 0.5736,
+          "p99": 0.5736,
+          "max": 0.5736
+        },
+        "View/ForwardY": {
+          "n": 2403,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "View/ForwardZ": {
+          "n": 2403,
+          "mean": -0.8192,
+          "p50": -0.8192,
+          "p95": -0.8192,
+          "p99": -0.8192,
+          "max": -0.8192
+        },
+        "View/UpX": {
+          "n": 2403,
+          "mean": 0.8192,
+          "p50": 0.8192,
+          "p95": 0.8192,
+          "p99": 0.8192,
+          "max": 0.8192
+        },
+        "View/UpY": {
+          "n": 2403,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "View/UpZ": {
+          "n": 2403,
+          "mean": 0.5736,
+          "p50": 0.5736,
+          "p95": 0.5736,
+          "p99": 0.5736,
+          "max": 0.5736
+        },
+        "FrameTime": {
+          "n": 2403,
+          "mean": 16.65370911360799,
+          "p50": 16.8035,
+          "p95": 18.6244,
+          "p99": 19.5204,
+          "max": 41.9256
+        },
+        "RenderThreadTime": {
+          "n": 2403,
+          "mean": 16.623417062005824,
+          "p50": 16.7935,
+          "p95": 18.6095,
+          "p99": 19.4695,
+          "max": 24.7632
+        },
+        "GameThreadTime": {
+          "n": 2403,
+          "mean": 8.050404910528506,
+          "p50": 7.9516,
+          "p95": 9.2762,
+          "p99": 10.1467,
+          "max": 41.6569
+        },
+        "GPUTime": {
+          "n": 2403,
+          "mean": 14.613206783187682,
+          "p50": 14.772,
+          "p95": 16.6831,
+          "p99": 17.4217,
+          "max": 18.8061
+        },
+        "RenderThreadTime_CriticalPath": {
+          "n": 2403,
+          "mean": 16.62464277985851,
+          "p50": 16.7941,
+          "p95": 18.6095,
+          "p99": 19.4695,
+          "max": 24.7632
+        },
+        "GameThreadTime_CriticalPath": {
+          "n": 2403,
+          "mean": 8.055447274240533,
+          "p50": 7.9557,
+          "p95": 9.2851,
+          "p99": 10.1467,
+          "max": 41.6985
+        },
+        "RHIThreadTime": {
+          "n": 2403,
+          "mean": 5.334833083645443,
+          "p50": 5.2997,
+          "p95": 6.0666,
+          "p99": 6.4795,
+          "max": 14.9472
+        },
+        "Exclusive/RenderThread/EventWait/Shadows": {
+          "n": 544,
+          "mean": 0.0002536764705882353,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.138
+        },
+        "Exclusive/GameThread/GarbageCollection": {
+          "n": 274,
+          "mean": 0.08399817518248176,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.8923,
+          "max": 19.8255
+        },
+        "Exclusive/GameThread/EventWait/WorldTickMisc": {
+          "n": 274,
+          "mean": 0.0001551094890510949,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0425
+        },
+        "Exclusive/GameThread/DeleteLinkers": {
+          "n": 274,
+          "mean": 0.00016897810218978102,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0463
+        }
+      },
+      "trace": "TestResults\\CommanderPoseCompression\\baseline-complete-1-n1200-c2\\client2\\process.utrace",
+      "trace_cpu": {
+        "window_seconds": [
+          46.891614601016045,
+          76.89161460101604
+        ],
+        "game_thread_active_ms": {
+          "n": 1826,
+          "mean": 16.412664019715226,
+          "p50": 16.575100000000003,
+          "p95": 18.448,
+          "p99": 19.3902,
+          "max": 20.5817
+        },
+        "engine_tick_including_wait_ms": {
+          "n": 1826,
+          "mean": 16.4241004381161,
+          "p50": 16.587600000000002,
+          "p95": 18.4606,
+          "p99": 19.404,
+          "max": 20.5913
+        },
+        "limiter_wait_ms": {
+          "n": 1827,
+          "mean": 0.011437328954570334,
+          "p50": 0.0111,
+          "p95": 0.0146,
+          "p99": 0.0178,
+          "max": 0.058
+        },
+        "world_tick_ms": {
+          "n": 1826,
+          "mean": 4.463274808324206,
+          "p50": 4.4056,
+          "p95": 5.455299999999999,
+          "p99": 5.9716,
+          "max": 6.9321
+        },
+        "pose_scopes_ms": {
+          "GuLiPose_Send": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Receive": {
+            "n": 11614,
+            "mean": 0.003524083003271913,
+            "p50": 0.0029000000000000002,
+            "p95": 0.0085,
+            "p99": 0.0109,
+            "max": 0.0825,
+            "ms_per_second": 1.36429
+          },
+          "GuLiPose_Ack": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Capture": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Wire": {
+            "n": 11614,
+            "mean": 0.007674961253659377,
+            "p50": 0.0069,
+            "p95": 0.015400000000000002,
+            "p99": 0.0189,
+            "max": 0.14129999999999998,
+            "ms_per_second": 2.971233333333333
+          },
+          "GuLiPose_Encode": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Decode": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          },
+          "GuLiPose_Confirm": {
+            "n": 0,
+            "mean": null,
+            "p50": null,
+            "p95": null,
+            "p99": null,
+            "max": null,
+            "ms_per_second": 0.0
+          }
+        },
+        "project_exclusive_top": [
+          {
+            "Name": "GuLiCommanderPresentation_RebuildLocalInstances",
+            "Count": "1827",
+            "C.Avg": "1827.000000",
+            "Incl": "2.584413",
+            "I.Min": "0.000679",
+            "I.Max": "0.002451",
+            "I.Avg": "0.001415",
+            "I.Med": "0.001359",
+            "Excl": "2.285470",
+            "E.Min": "0.000679",
+            "E.Max": "0.002170",
+            "E.Avg": "0.001251",
+            "E.Med": "0.001206",
+            "exclusive_ms_per_second": 76.18233333333335
+          },
+          {
+            "Name": "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Paint",
+            "Count": "1826",
+            "C.Avg": "1826.000000",
+            "Incl": "0.785115",
+            "I.Min": "0.000376",
+            "I.Max": "0.000709",
+            "I.Avg": "0.000430",
+            "I.Med": "0.000406",
+            "Excl": "0.785115",
+            "E.Min": "0.000376",
+            "E.Max": "0.000709",
+            "E.Avg": "0.000430",
+            "E.Med": "0.000406",
+            "exclusive_ms_per_second": 26.1705
+          },
+          {
+            "Name": "GuLiCommanderHealthBars_UpdateInstances",
+            "Count": "1826",
+            "C.Avg": "1826.000000",
+            "Incl": "0.199440",
+            "I.Min": "0.000081",
+            "I.Max": "0.000265",
+            "I.Avg": "0.000109",
+            "I.Med": "0.000101",
+            "Excl": "0.199440",
+            "E.Min": "0.000081",
+            "E.Max": "0.000265",
+            "E.Avg": "0.000109",
+            "E.Med": "0.000101",
+            "exclusive_ms_per_second": 6.648
+          },
+          {
+            "Name": "GuLiPose_Wire",
+            "Count": "11614",
+            "C.Avg": "11614.000000",
+            "Incl": "0.089137",
+            "I.Min": "0.000002",
+            "I.Max": "0.000141",
+            "I.Avg": "0.000008",
+            "I.Med": "0.000007",
+            "Excl": "0.089137",
+            "E.Min": "0.000002",
+            "E.Max": "0.000141",
+            "E.Avg": "0.000008",
+            "E.Med": "0.000007",
+            "exclusive_ms_per_second": 2.971233333333333
+          },
+          {
+            "Name": "GuLiPose_Receive",
+            "Count": "11614",
+            "C.Avg": "11614.000000",
+            "Incl": "0.040929",
+            "I.Min": "0.000001",
+            "I.Max": "0.000083",
+            "I.Avg": "0.000004",
+            "I.Med": "0.000003",
+            "Excl": "0.040929",
+            "E.Min": "0.000001",
+            "E.Max": "0.000083",
+            "E.Avg": "0.000004",
+            "E.Med": "0.000003",
+            "exclusive_ms_per_second": 1.3643
+          },
+          {
+            "Name": "GuLiCommanderMiniMapWidget",
+            "Count": "300",
+            "C.Avg": "300.000000",
+            "Incl": "0.035963",
+            "I.Min": "0.000080",
+            "I.Max": "0.000302",
+            "I.Avg": "0.000120",
+            "I.Med": "0.000107",
+            "Excl": "0.035085",
+            "E.Min": "0.000079",
+            "E.Max": "0.000291",
+            "E.Avg": "0.000117",
+            "E.Med": "0.000105",
+            "exclusive_ms_per_second": 1.1695
+          },
+          {
+            "Name": "GuLiTeleportHUDWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiTeleportHUDWidget_0_Paint",
+            "Count": "1826",
+            "C.Avg": "1826.000000",
+            "Incl": "0.023253",
+            "I.Min": "0.000009",
+            "I.Max": "0.000058",
+            "I.Avg": "0.000013",
+            "I.Med": "0.000011",
+            "Excl": "0.020902",
+            "E.Min": "0.000008",
+            "E.Max": "0.000057",
+            "E.Avg": "0.000011",
+            "E.Med": "0.000010",
+            "exclusive_ms_per_second": 0.6967333333333333
+          },
+          {
+            "Name": "GuLiResourceFactoryActor",
+            "Count": "7308",
+            "C.Avg": "7308.000000",
+            "Incl": "0.039624",
+            "I.Min": "0.000000",
+            "I.Max": "0.000353",
+            "I.Avg": "0.000005",
+            "I.Med": "0.000000",
+            "Excl": "0.014808",
+            "E.Min": "0.000000",
+            "E.Max": "0.000086",
+            "E.Avg": "0.000002",
+            "E.Med": "0.000001",
+            "exclusive_ms_per_second": 0.4936
+          },
+          {
+            "Name": "GuLiCombatEffects_Presentation",
+            "Count": "1827",
+            "C.Avg": "1827.000000",
+            "Incl": "0.009413",
+            "I.Min": "0.000003",
+            "I.Max": "0.000038",
+            "I.Avg": "0.000005",
+            "I.Med": "0.000005",
+            "Excl": "0.009413",
+            "E.Min": "0.000003",
+            "E.Max": "0.000038",
+            "E.Avg": "0.000005",
+            "E.Med": "0.000005",
+            "exclusive_ms_per_second": 0.3137666666666667
+          },
+          {
+            "Name": "/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green [GT]",
+            "Count": "16046",
+            "C.Avg": "16046.000000",
+            "Incl": "0.006875",
+            "I.Min": "0.000000",
+            "I.Max": "0.000025",
+            "I.Avg": "0.000000",
+            "I.Med": "0.000000",
+            "Excl": "0.006875",
+            "E.Min": "0.000000",
+            "E.Max": "0.000025",
+            "E.Avg": "0.000000",
+            "E.Med": "0.000000",
+            "exclusive_ms_per_second": 0.22916666666666666
+          },
+          {
+            "Name": "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Tick",
+            "Count": "1826",
+            "C.Avg": "1826.000000",
+            "Incl": "0.006151",
+            "I.Min": "0.000002",
+            "I.Max": "0.000017",
+            "I.Avg": "0.000003",
+            "I.Med": "0.000003",
+            "Excl": "0.006151",
+            "E.Min": "0.000002",
+            "E.Max": "0.000017",
+            "E.Avg": "0.000003",
+            "E.Med": "0.000003",
+            "exclusive_ms_per_second": 0.20503333333333332
+          },
+          {
+            "Name": "GuLiTeleportHUDWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiTeleportHUDWidget_0_Tick",
+            "Count": "1826",
+            "C.Avg": "1826.000000",
+            "Incl": "0.003945",
+            "I.Min": "0.000001",
+            "I.Max": "0.000010",
+            "I.Avg": "0.000002",
+            "I.Med": "0.000002",
+            "Excl": "0.003945",
+            "E.Min": "0.000001",
+            "E.Max": "0.000010",
+            "E.Avg": "0.000002",
+            "E.Med": "0.000002",
+            "exclusive_ms_per_second": 0.1315
+          }
+        ],
+        "definition": "GameThread active wall time = FEngineLoop::Tick minus its frame-rate-limiter scope; other waits remain. CPU utilization is measured separately from process CPU time."
+      }
+    }
+  },
+  "valid_comparison_load": true
+}

@@ -1,0 +1,82 @@
+{
+  "assets": [
+    {
+      "source": "/Game/Commander/Units/M_CommanderFourFRobot_Crowd",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_CommanderFourFRobot_LowReflection.M_CommanderFourFRobot_LowReflection",
+      "roughness_floor": 0.8,
+      "input_node": "MaterialExpressionTextureSample",
+      "output": "RGB"
+    },
+    {
+      "source": "/Game/Commander/Units/M_WM01_Crowd",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_WM01_LowReflection.M_WM01_LowReflection",
+      "roughness_floor": 0.8,
+      "input_node": "MaterialExpressionTextureSample",
+      "output": "RGB"
+    },
+    {
+      "source": "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+      "roughness_floor": 0.8,
+      "input_node": "MaterialExpressionTextureSample",
+      "output": "RGB"
+    },
+    {
+      "source": "/InterchangeAssets/Materials/FBXLegacyPhongSurfaceMaterial",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_Wingman_LowReflection.M_Wingman_LowReflection",
+      "roughness_floor": 0.8,
+      "input_node": "MaterialExpressionStaticSwitchParameter",
+      "output": ""
+    }
+  ],
+  "mappings": [
+    {
+      "original": "/Game/Commander/Units/M_CommanderFourFRobot_Crowd.M_CommanderFourFRobot_Crowd",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_CommanderFourFRobot_LowReflection.M_CommanderFourFRobot_LowReflection"
+    },
+    {
+      "original": "/Game/Commander/Units/M_WM01_Crowd.M_WM01_Crowd",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_WM01_LowReflection.M_WM01_LowReflection"
+    },
+    {
+      "original": "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+    },
+    {
+      "original": "/Game/Assets/Arma/fly-01/mainbody_mat.mainbody_mat",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_mainbody_mat_LowReflection.MI_Wingman_mainbody_mat_LowReflection"
+    },
+    {
+      "original": "/Game/Assets/Arma/fly-01/cockpit.cockpit",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_cockpit_LowReflection.MI_Wingman_cockpit_LowReflection"
+    },
+    {
+      "original": "/Game/Assets/Arma/fly-01/engines.engines",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_engines_LowReflection.MI_Wingman_engines_LowReflection"
+    },
+    {
+      "original": "/Game/Assets/Arma/fly-01/rocket.rocket",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_rocket_LowReflection.MI_Wingman_rocket_LowReflection"
+    },
+    {
+      "original": "/Game/Assets/Arma/fly-01/lasers.lasers",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_lasers_LowReflection.MI_Wingman_lasers_LowReflection"
+    },
+    {
+      "original": "/Game/Assets/Arma/fly-01/intakes.intakes",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_intakes_LowReflection.MI_Wingman_intakes_LowReflection"
+    },
+    {
+      "original": "/Game/Assets/Arma/fly-01/empty_black.empty_black",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_empty_black_LowReflection.MI_Wingman_empty_black_LowReflection"
+    },
+    {
+      "original": "/Game/Assets/Arma/fly-01/nose_mat.nose_mat",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_nose_mat_LowReflection.MI_Wingman_nose_mat_LowReflection"
+    },
+    {
+      "original": "/Game/Assets/Arma/fly-01/stripes.stripes",
+      "variant": "/Game/GuLiStrike/Rendering/UnitLowReflection/MI_Wingman_stripes_LowReflection.MI_Wingman_stripes_LowReflection"
+    }
+  ]
+}

@@ -1,0 +1,123 @@
+{
+  "success": true,
+  "pid": 47576,
+  "saved_packages": [],
+  "checks": {
+    "neutral_gamma": true,
+    "neutral_contrast": true,
+    "neutral_scene_tint": true,
+    "fixed_exposure_preserved": true,
+    "no_review_actors_saved": true,
+    "sky_fill_saved": true,
+    "sweeper_one_body": true,
+    "sweeper_no_line_mask": true,
+    "war_machine_ink_preserved": true,
+    "ground_scale_060": true,
+    "air_no_added_scaling": true,
+    "ground_all_renderers_scaled": true
+  },
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "sky_lower_color": [
+    0.11999999731779099,
+    0.15000000596046448,
+    0.20000000298023224,
+    1.0
+  ],
+  "models": {
+    "Sweeper": {
+      "triangles": [
+        5456,
+        1363,
+        901,
+        220
+      ],
+      "sections": [
+        1,
+        1,
+        1,
+        1
+      ],
+      "materials": [
+        "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel"
+      ],
+      "textures": [
+        "/Game/Commander/Units/Tactical/Cel/Sweeper/Textures/T_Sweeper_BaseColor.T_Sweeper_BaseColor"
+      ]
+    },
+    "WarMachine": {
+      "triangles": [
+        27303,
+        6826,
+        300,
+        70
+      ],
+      "sections": [
+        2,
+        2,
+        2,
+        2
+      ],
+      "materials": [
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour",
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+      ],
+      "textures": [
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_BaseColor.T_WarMachine_BaseColor",
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Textures/T_WarMachine_LineMask.T_WarMachine_LineMask"
+      ]
+    }
+  },
+  "ground_scale": "0.600000",
+  "ground_render_bindings": [
+    [
+      "NE_Cloud_01_0",
+      "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+      "(RootName=\"PresentationScale\",ParamMapVariable=(Name=\"Particles.PresentationScale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"PresentationScale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationScale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+    ],
+    [
+      "NE_Cloud_01B_8",
+      "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+      "(RootName=\"PresentationScale\",ParamMapVariable=(Name=\"Particles.PresentationScale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"PresentationScale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationScale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+    ],
+    [
+      "NE_Cloud_02_3",
+      "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+      "(RootName=\"PresentationScale\",ParamMapVariable=(Name=\"Particles.PresentationScale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"PresentationScale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationScale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+    ],
+    [
+      "NE_CloudLine01_5",
+      "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+      "(RootName=\"PresentationScale\",ParamMapVariable=(Name=\"Particles.PresentationScale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"PresentationScale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationScale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+    ],
+    [
+      "NE_CloudLine02_11",
+      "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+      "(RootName=\"PresentationScale\",ParamMapVariable=(Name=\"Particles.PresentationScale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"PresentationScale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationScale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+    ],
+    [
+      "NE_GroundShockwave_1",
+      "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+      "(RootName=\"PresentationScale\",ParamMapVariable=(Name=\"Particles.PresentationScale\",TypeDefHandle=(RegisteredTypeIndex=99)),DataSetName=\"PresentationScale\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationScale\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+    ],
+    [
+      "NE_Dust_Trail_5",
+      "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+      "(RootName=\"PresentationSpriteSize\",ParamMapVariable=(Name=\"Particles.PresentationSpriteSize\",TypeDefHandle=(RegisteredTypeIndex=98)),DataSetName=\"PresentationSpriteSize\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationSpriteSize\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+    ],
+    [
+      "NE_Impact_4",
+      "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+      "(RootName=\"PresentationSpriteSize\",ParamMapVariable=(Name=\"Particles.PresentationSpriteSize\",TypeDefHandle=(RegisteredTypeIndex=98)),DataSetName=\"PresentationSpriteSize\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationSpriteSize\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+    ],
+    [
+      "NE_Rock001_2",
+      "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+      "(RootName=\"PresentationSpriteSize\",ParamMapVariable=(Name=\"Particles.PresentationSpriteSize\",TypeDefHandle=(RegisteredTypeIndex=98)),DataSetName=\"PresentationSpriteSize\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationSpriteSize\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+    ],
+    [
+      "NE_Rock_4",
+      "(RootName=\"PresentationPosition\",ParamMapVariable=(Name=\"Particles.PresentationPosition\",TypeDefHandle=(RegisteredTypeIndex=102)),DataSetName=\"PresentationPosition\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationPosition\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)",
+      "(RootName=\"PresentationSpriteSize\",ParamMapVariable=(Name=\"Particles.PresentationSpriteSize\",TypeDefHandle=(RegisteredTypeIndex=98)),DataSetName=\"PresentationSpriteSize\",BoundVariable=(VarData=,Name=\"\",TypeDefHandle=(RegisteredTypeIndex=100)),CachedDisplayName=\"Particles.PresentationSpriteSize\",BindingSourceMode=ImplicitFromSource,bBindingExistsOnSource=True,bIsCachedParticleValue=True)"
+    ]
+  ]
+}

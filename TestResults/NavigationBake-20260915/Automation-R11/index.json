@@ -1,0 +1,194 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "A6148EC147F37BE974C87181DA948CAC",
+			"instanceName": "DESKTOP-6D3B0FC-36108",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.15-14.36.05",
+	"succeeded": 11,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 1.4548323154449463,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AgentRadiusFringeSourceStaleness",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.AgentRadiusFringeSourceStaleness",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6148EC147F37BE974C87181DA948CAC"
+			],
+			"duration": 0.015371702611446381,
+			"dateTime": "2026.09.15-14.36.03",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CookGateFailClosed",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.CookGateFailClosed",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6148EC147F37BE974C87181DA948CAC"
+			],
+			"duration": 0.0091699995100498199,
+			"dateTime": "2026.09.15-14.36.03",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CookGateRequiredMaps",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.CookGateRequiredMaps",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6148EC147F37BE974C87181DA948CAC"
+			],
+			"duration": 0.0082892999053001404,
+			"dateTime": "2026.09.15-14.36.03",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DeterministicBakeAndPath",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.DeterministicBakeAndPath",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6148EC147F37BE974C87181DA948CAC"
+			],
+			"duration": 0.0082368999719619751,
+			"dateTime": "2026.09.15-14.36.03",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DisconnectedComponents",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.DisconnectedComponents",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6148EC147F37BE974C87181DA948CAC"
+			],
+			"duration": 0.0081118009984493256,
+			"dateTime": "2026.09.15-14.36.03",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NoCollisionVolumeRetainsBoundsContainment",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.NoCollisionVolumeRetainsBoundsContainment",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6148EC147F37BE974C87181DA948CAC"
+			],
+			"duration": 0.0090704001486301422,
+			"dateTime": "2026.09.15-14.36.03",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SettingsHashCoversBakeContract",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.SettingsHashCoversBakeContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6148EC147F37BE974C87181DA948CAC"
+			],
+			"duration": 0.0083820000290870667,
+			"dateTime": "2026.09.15-14.36.03",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VolumeSourceStaleness",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.VolumeSourceStaleness",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6148EC147F37BE974C87181DA948CAC"
+			],
+			"duration": 0.013107199221849442,
+			"dateTime": "2026.09.15-14.36.03",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AutomaticFlightRebakeAndReachability",
+			"fullTestPath": "GuLi.NavigationBake.AutomaticFlightRebakeAndReachability",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6148EC147F37BE974C87181DA948CAC"
+			],
+			"duration": 0.049385901540517807,
+			"dateTime": "2026.09.15-14.36.03",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollisionTerrainAndSettingsSignature",
+			"fullTestPath": "GuLi.NavigationBake.CollisionTerrainAndSettingsSignature",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6148EC147F37BE974C87181DA948CAC"
+			],
+			"duration": 0.012513600289821625,
+			"dateTime": "2026.09.15-14.36.03",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroundCacheAndDynamicReachability",
+			"fullTestPath": "GuLi.NavigationBake.GroundCacheAndDynamicReachability",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6148EC147F37BE974C87181DA948CAC"
+			],
+			"duration": 1.3131935596466064,
+			"dateTime": "2026.09.15-14.36.04",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

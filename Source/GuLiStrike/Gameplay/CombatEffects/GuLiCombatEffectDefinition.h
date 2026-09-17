@@ -23,6 +23,8 @@ struct GULISTRIKE_API FGuLiEffectVisualVariant
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual") TSoftObjectPtr<UNiagaraSystem> System;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual", meta=(ClampMin="0.001")) float Scale = 1.0f;
+	/** None preserves component scaling. A named float receives Scale with unit component scale. */
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual") FName ScaleParameterName;
 	/** Rotates this world-space burst around +Z from the replicated effect seed. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual") bool bRandomYaw = false;
 	/** Maximum visual lifetime, including smoke; enforces cleanup even for a broken looping template. */

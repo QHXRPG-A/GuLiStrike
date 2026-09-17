@@ -1,0 +1,22 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel": {
+      "screens": [
+        2.0
+      ],
+      "bounds": "<Struct 'BoxSphereBounds' (0x000001DAF0644C40) {origin: {x: -0.218506, y: 0.000000, z: 569.692972}, box_extent: {x: 759.852600, y: 656.149231, z: 574.532004}, sphere_radius: 1062.443798}>",
+      "add_socket": "x.add_socket(socket) -> None\r\nAdd a socket object in this StaticMesh.\r\n\r\nArgs:\r\n    socket (StaticMeshSocket):"
+    },
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel": {
+      "screens": [
+        2.0
+      ],
+      "bounds": "<Struct 'BoxSphereBounds' (0x000001DAF064CB80) {origin: {x: -0.000122, y: 0.000000, z: 1708.434989}, box_extent: {x: 2747.072144, y: 2895.085205, z: 1724.142892}, sphere_radius: 3885.119936}>",
+      "add_socket": "x.add_socket(socket) -> None\r\nAdd a socket object in this StaticMesh.\r\n\r\nArgs:\r\n    socket (StaticMeshSocket):"
+    },
+    "pie_doc": "X.start_pie() -> bool\r\nStart Play-In-Editor if it is not already running.\nMaps to action=\"start_pie\"\r\n\r\nReturns:\r\n    bool:",
+    "cache_doc": "X.capture_niagara_sim_cache_immediate(sim_cache, create_parameters, niagara_component, advance_simulation=False, advance_delta_time=0.016660) -> NiagaraSimCache or None\r\nCaptures the simulations current frame data into the SimCache.\nThis happens immediately so you may need to be careful with tick order of the component you are capturing from.\nThe return can be invalid if the component can not be captured for some reason (i.e. not active).\nWhen AdvanceSimulation is true we will manually advance the simulation one frame using the provided AdvanceDeltaTime before capturing.\r\n\r\nArgs:\r\n    sim_cache (NiagaraSimCache): \r\n    create_parameters (NiagaraSimCacheCreateParameters): \r\n    niagara_component (NiagaraComponent): \r\n    advance_simulation (bool): \r\n    advance_delta_time (float): \r\n\r\nReturns:\r\n    NiagaraSimCache or None: \r\n\r\n    out_sim_cache (NiagaraSimCache):"
+  }
+}

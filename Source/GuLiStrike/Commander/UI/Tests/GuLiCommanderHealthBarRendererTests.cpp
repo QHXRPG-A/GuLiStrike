@@ -4,6 +4,67 @@
 
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
 #include "Misc/AutomationTest.h"
+#include "Commander/Network/GuLiSoldierStateReplicator.h"
+#include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Components/InstancedStaticMeshComponent.h"
+#include "Engine/Engine.h"
+#include "Engine/World.h"
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiCommanderHealthBarActivityTest,
+	"GuLiStrike.Commander.UI.HealthBar.Activity",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiCommanderHealthBarActivityTest::RunTest(const FString& Parameters)
+{
+	UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
+	GEngine->CreateNewWorldContext(EWorldType::Game).SetCurrentWorld(World);
+	World->InitializeActorsForPlay(FURL());
+	auto* Source = World->SpawnActor<AGuLiSoldierStateReplicator>();
+	auto* Presentation = World->SpawnActor<AGuLiCommanderPresentationActor>();
+	auto* Bars = World->SpawnActor<AGuLiCommanderHealthBarRenderer>();
+	Bars->DispatchBeginPlay(); Bars->BindStateReplicator(Source); Bars->BindPresentationActor(Presentation);
+	FGuLiSoldierStateItem State; State.SoldierId = FGuLiSoldierId(1); State.UnitTypeId = 1;
+	State.Health = State.MaxHealth = 100;
+	TArray<FGuLiSoldierStateItem> States = {State}; Source->ApplyAuthoritySnapshot(States, 1);
+	TestFalse(TEXT("Unselected idle roster leaves health renderer asleep"), Bars->IsActorTickEnabled());
+	TestEqual(TEXT("Idle roster allocates no bar capacity"), Bars->GetAllocatedInstanceCount(), 0);
+	FGuLiCommanderSelectionState Selection;
+	Selection.Cohorts.AddDefaulted_GetRef().MemberIds.Add(State.SoldierId);
+	Bars->HandleSelectionChanged(Selection);
+	TestTrue(TEXT("Selection wakes renderer immediately"), Bars->IsActorTickEnabled());
+	const int32 Slot = Bars->SoldierInstanceIndices.FindChecked(State.SoldierId);
+	World->SendAllEndOfFrameUpdates();
+	Bars->WriteInstance(Slot, FTransform(FVector(123,456,789)), 1, 1, 1);
+	TestFalse(TEXT("Ordinary bar position/color does not dirty full render state"), Bars->HealthBarInstances->IsRenderStateDirty());
+	Bars->HandleSelectionChanged({});
+	TestFalse(TEXT("Deselecting final idle bar sleeps immediately"), Bars->IsActorTickEnabled());
+	FTransform Hidden; Bars->HealthBarInstances->GetInstanceTransform(Slot, Hidden, true);
+	TestTrue(TEXT("Released bar slot is explicitly hidden"), Hidden.GetScale3D().IsNearlyZero());
+	auto& Soldier = Presentation->PresentedSoldiers.FindOrAdd(State.SoldierId);
+	Soldier.HitFlashStartTime = 0;
+	States[0].Health = 50; Source->ApplyAuthoritySnapshot(States, 1);
+	Presentation->OnVisualStatesChanged.Broadcast({State.SoldierId});
+	TestTrue(TEXT("Hit event wakes unselected soldier immediately"), Bars->IsActorTickEnabled());
+	TestEqual(TEXT("Hit bar reuses free slot"), Bars->SoldierInstanceIndices.FindChecked(State.SoldierId), Slot);
+	TestEqual(TEXT("Damage caches latest health"), Bars->ActiveSoldierStates.FindChecked(State.SoldierId).Health, 50.0f);
+	Soldier.HitFlashStartTime = -1000;
+	Bars->MaintainActivity();
+	TestFalse(TEXT("Expired hit removes final active bar and sleeps"), Bars->IsActorTickEnabled());
+	Bars->HandleSelectionChanged(Selection);
+	States[0].LifeState = EGuLiSoldierLifeState::Destroyed; States[0].Health = 0;
+	Source->ApplyAuthoritySnapshot(States, 1);
+	TestTrue(TEXT("Death immediately releases selected bar"), Bars->SoldierInstanceIndices.IsEmpty());
+	TestFalse(TEXT("Dead selection does not keep Tick awake"), Bars->IsActorTickEnabled());
+	Source->ApplyAuthoritySnapshot({}, 1);
+	States[0] = State; States[0].SoldierId = FGuLiSoldierId(2); Source->ApplyAuthoritySnapshot(States, 1);
+	Selection.Cohorts[0].MemberIds[0] = States[0].SoldierId; Bars->HandleSelectionChanged(Selection);
+	TestEqual(TEXT("New identity reuses hidden capacity"), Bars->GetAllocatedInstanceCount(), 1);
+	TestFalse(TEXT("Old identity cannot inherit reused bar"), Bars->SoldierInstanceIndices.Contains(State.SoldierId));
+	Bars->BindStateReplicator(nullptr);
+	TestFalse(TEXT("Source loss sleeps renderer"), Bars->IsActorTickEnabled());
+	World->DestroyWorld(false); GEngine->DestroyWorldContext(World);
+	return true;
+}
 
 #include <limits>
 

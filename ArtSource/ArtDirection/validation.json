@@ -1,0 +1,152 @@
+{
+  "scope": "Art standard, skill wiring, reference preservation and explicit temporary-file cleanup; no UE/model visual acceptance claim",
+  "skills": {
+    "status": "passed",
+    "validator": "C:/Users/a/.codex/skills/.system/skill-creator/scripts/quick_validate.py",
+    "encoding": "python -X utf8",
+    "names": [
+      "guli-model-production",
+      "ue5-vfx-production",
+      "ue5-scene-building",
+      "gulistrike-progress"
+    ]
+  },
+  "links": {
+    "files": [
+      "Progress/RequirementDocument/GuLiStrike美术规范.md",
+      "Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+      "Progress/README.md",
+      ".agents/skills/guli-model-production/SKILL.md",
+      ".agents/skills/guli-model-production/references/project-examples.md",
+      ".agents/skills/guli-model-production/references/blender-production.md",
+      ".agents/skills/guli-model-production/references/unreal-import.md",
+      ".agents/skills/ue5-vfx-production/SKILL.md",
+      ".agents/skills/ue5-scene-building/SKILL.md",
+      ".agents/skills/ue5-scene-building/references/art-direction-qa.md",
+      ".agents/skills/gulistrike-progress/SKILL.md",
+      "ArtSource/UI/UnitPortraits/README.md",
+      "Progress/Archive/20260917-美术规范建立与制作技能接入.md"
+    ],
+    "checked": 79,
+    "errors": []
+  },
+  "references": {
+    "manifest_entries": 15,
+    "approved_design_hashes": 8,
+    "status": "passed"
+  },
+  "ui_sources": [
+    {
+      "file": "ArtSource/UI/UnitPortraits/Sweeper_Concept_UI.png",
+      "size": [
+        1360,
+        1156
+      ],
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "bf2f9e06e0934064098094b381c0c5cf11a4e737647f1d63fa32136c779ae27e"
+    },
+    {
+      "file": "ArtSource/UI/UnitPortraits/WarMachine_Concept_UI.png",
+      "size": [
+        1431,
+        1099
+      ],
+      "mode": "RGBA",
+      "transparent": true,
+      "sha256": "fa2338caced1233afd0760dc2c2aafb9149409804a4d4e7a5971ffa1087cc17e"
+    }
+  ],
+  "cleanup": {
+    "deleted_count": 58,
+    "deleted_bytes": 4476259.0,
+    "failures": [],
+    "confirmed_absent": true,
+    "protected_files_present": [
+      "ArtSource/FX/WingmanGroundExplosion_Toon/editor.log",
+      "ArtSource/StyleAdjust_20260917/saved_readback.json",
+      "ArtSource/StylePass_20260917/README.md",
+      "ArtSource/Ships/ShipStylizedStudy_20260916/README.md"
+    ]
+  },
+  "progress_check": {
+    "status": "passed",
+    "build": {
+      "mode": "write",
+      "changed": 5,
+      "paths": [
+        "Progress/_Index/Current.md",
+        "Progress/_Index/Verification.md",
+        "Progress/_Index/ByArea.md",
+        "Progress/_Index/Archive.md",
+        "Progress/_Index/catalog.jsonl"
+      ]
+    },
+    "errors": [],
+    "warnings": [
+      {
+        "path": "Progress/Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md",
+        "code": "oversize",
+        "message": "88.3KB，建议阈值 80KB"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/20260820-DIY飞船.md",
+        "code": "large_task_list",
+        "message": "29 个任务项"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md",
+        "code": "large_task_list",
+        "message": "46 个任务项"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md",
+        "code": "oversize",
+        "message": "44.8KB，建议阈值 30KB"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/06-任务风险与结果.md",
+        "code": "large_task_list",
+        "message": "44 个任务项"
+      },
+      {
+        "path": "Progress/DevelopmentDocumentation/20260904-僚机无规则护航盘旋技能重构.md",
+        "code": "oversize",
+        "message": "39.0KB，建议阈值 30KB"
+      },
+      {
+        "path": "Progress/Gameplay/战斗.md",
+        "code": "oversize",
+        "message": "32.3KB，建议阈值 30KB"
+      },
+      {
+        "path": "Progress/Gameplay/飞船.md",
+        "code": "oversize",
+        "message": "61.2KB，建议阈值 30KB"
+      },
+      {
+        "path": "Progress/RequirementDocument/20260826-5v5大战场玩法草案.md",
+        "code": "oversize",
+        "message": "35.7KB，建议阈值 20KB"
+      },
+      {
+        "path": "Progress/RequirementDocument/20260827-Mass双端同步架构草案.md",
+        "code": "oversize",
+        "message": "24.7KB，建议阈值 20KB"
+      },
+      {
+        "path": "Progress/RequirementDocument/20260902-僚机体系与空中三维导航.md",
+        "code": "oversize",
+        "message": "27.9KB，建议阈值 20KB"
+      },
+      {
+        "path": "Progress/RequirementDocument/20260915-客户端性能优化与压测问题记录.md",
+        "code": "oversize",
+        "message": "28.0KB，建议阈值 20KB"
+      }
+    ],
+    "warning_count": 12
+  },
+  "errors": [],
+  "status": "passed"
+}

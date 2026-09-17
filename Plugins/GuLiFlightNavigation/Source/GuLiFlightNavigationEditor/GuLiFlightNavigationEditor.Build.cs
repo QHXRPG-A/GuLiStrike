@@ -18,6 +18,7 @@ public class GuLiFlightNavigationEditor : ModuleRules
 		{
 			"AssetRegistry",
 			"DataValidation",
+			"Landscape",
 			"UnrealEd"
 		});
 	}

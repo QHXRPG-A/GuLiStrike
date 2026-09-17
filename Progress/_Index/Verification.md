@@ -4,8 +4,12 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | in_progress | partial | 继续实战轰炸、僚机死亡、机械姿态和完整性能验收。 | 2026-09-17 |
+| [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | verification | partial | 用户先在 UE 评审视觉；随后补齐稳定 GPU 对照、尺寸精测和真实客户端/专用服务器验收。 | 2026-09-16 |
+| [GPU渲染降耗 — 技术方案与实施](../DevelopmentDocumentation/20260916-GPU渲染降耗.md) | done | partial | 继续归因未下降的ShadowDepths；后续实机游玩关注FXAA远距闪烁和快速转镜头下的Lumen收敛。 | 2026-09-16 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | in_progress | partial | 补齐包围、厂内延后指令及运输边界观察；坡道断言已由9月16日落点修复处理。 | 2026-09-16 |
+| [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | verification | partial | 后续确认旧BuildingWorld测试更新范围，补密集狭路及大规模性能观察。 | 2026-09-15 |
 | [指挥官10Hz权威循环与移动容量压测 — 技术方案](../DevelopmentDocumentation/20260915-指挥官10Hz权威循环与移动容量压测.md) | done | partial | 后续先解决初始名册分片与姿态带宽预算，再以打包分机、长时多轮条件复测部署容量。 | 2026-09-15 |
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | in_progress | partial | 补齐包围、厂内延后指令及运输边界观察，处理旧矿厂坡道在部分地形首次生成时的断言。 | 2026-09-15 |
 | [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | done | partial | 后续另行处理既有失败断言；独立GPU计时与强制扩容未纳入本次实测。 | 2026-09-14 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | verification | partial | 本次归并已交付；前次4项现有回归适配仍等待用户范围确认。 | 2026-09-14 |
 | [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | done | partial | — | 2026-09-14 |

@@ -5,6 +5,7 @@
 
 ## 快速入口
 
+- [GuLiStrike 美术规范](./RequirementDocument/GuLiStrike美术规范.md)：已审参考、默认线稿/三渲二、模型双审流程、灯光和爆炸风格；由美术制作技能共同读取。
 - [当前工作](./_Index/Current.md)：草案、规划、实施、验收、完成五段工作流。
 - [待验收](./_Index/Verification.md)：处于验收阶段或验证未完全通过的工作。
 - [模块视图](./_Index/ByArea.md)：按模块查看需求、开发、玩法与参考资料。

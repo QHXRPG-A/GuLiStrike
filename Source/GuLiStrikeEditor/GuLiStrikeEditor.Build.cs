@@ -19,9 +19,14 @@ public class GuLiStrikeEditor : ModuleRules
 		PrivateDependencyModuleNames.AddRange(new[]
 		{
 			"AssetRegistry",
+			"AIModule",
 			"Json",
 			"Landscape",
 			"NavigationSystem",
+			"Navmesh",
+			"GuLiFlightNavigationRuntime",
+			"GuLiFlightNavigationEditor",
+			"DeveloperToolSettings",
 			"StructUtils",
 			"UnrealEd",
 			"GuLiMapAuthoringCore",

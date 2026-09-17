@@ -1,0 +1,480 @@
+{
+  "groups": [
+    {
+      "clients": 1,
+      "role": "client1",
+      "rounds": 3,
+      "median_frame_ms": {
+        "mean": 9.553129331210192,
+        "p95": 10.8967,
+        "p99": 11.4751
+      },
+      "moving_p05_min": 1198.0,
+      "moving_p05_max": 1200.0,
+      "maximum_frame_ms": 16.4325,
+      "load_and_frame_pass": true
+    },
+    {
+      "clients": 2,
+      "role": "client1",
+      "rounds": 3,
+      "median_frame_ms": {
+        "mean": 16.31953443960827,
+        "p95": 18.4497,
+        "p99": 19.3235
+      },
+      "moving_p05_min": 1199.0,
+      "moving_p05_max": 1199.0,
+      "maximum_frame_ms": 23.4907,
+      "load_and_frame_pass": true
+    },
+    {
+      "clients": 2,
+      "role": "client2",
+      "rounds": 3,
+      "median_frame_ms": {
+        "mean": 16.426419934282585,
+        "p95": 18.7338,
+        "p99": 19.6326
+      },
+      "moving_p05_min": 1199.0,
+      "moving_p05_max": 1200.0,
+      "maximum_frame_ms": 21.0984,
+      "load_and_frame_pass": true
+    }
+  ],
+  "gates": {
+    "six_runs_nine_clients_complete": true,
+    "all_clients_alive_1200_and_moving_p05_at_least_1140": true,
+    "all_clients_within_p95_budget": true,
+    "all_servers_zero_dropped_steps": true,
+    "zero_moving_samples_absent": true,
+    "no_static_roster_full_pool_reconcile": true,
+    "idle_healthbar_no_instance_updates": true,
+    "mass_position_sampling_at_most_10hz": true,
+    "minimap_sampling_at_most_10hz": true
+  },
+  "scopes": {
+    "GuLiCommanderRoster_ApplyDelta": {
+      "count_range_per_30s": [
+        35,
+        36
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.00043917197452229297,
+          "median_inclusive_ms_per_call": 0.03838888888888889,
+          "median_count": 36
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.0008188248095756257,
+          "median_inclusive_ms_per_call": 0.04180555555555556,
+          "median_count": 36
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.0008183783783783784,
+          "median_inclusive_ms_per_call": 0.042055555555555554,
+          "median_count": 36
+        }
+      }
+    },
+    "GuLiCommanderPresentation_StateChanges": {
+      "count_range_per_30s": [
+        0,
+        0
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        }
+      }
+    },
+    "GuLiCommanderPresentation_PoolReconcile": {
+      "count_range_per_30s": [
+        0,
+        0
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        }
+      }
+    },
+    "GuLiCommanderPresentation_PoolDelta": {
+      "count_range_per_30s": [
+        0,
+        0
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        }
+      }
+    },
+    "GuLiCommanderPresentationActor": {
+      "count_range_per_30s": [
+        1806,
+        3169
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.6107387703090156,
+          "median_inclusive_ms_per_call": 0.6107387703090156,
+          "median_count": 3141
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.6610809025866813,
+          "median_inclusive_ms_per_call": 0.6610809025866813,
+          "median_count": 1838
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.6620509309967141,
+          "median_inclusive_ms_per_call": 0.6620509309967141,
+          "median_count": 1826
+        }
+      }
+    },
+    "GuLiCommanderPresentation_Interpolation": {
+      "count_range_per_30s": [
+        1806,
+        3169
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.3596470213443772,
+          "median_inclusive_ms_per_call": 0.3596470213443772,
+          "median_count": 3141
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.37243090315560395,
+          "median_inclusive_ms_per_call": 0.37243090315560395,
+          "median_count": 1838
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.3714048648648649,
+          "median_inclusive_ms_per_call": 0.3714048648648649,
+          "median_count": 1826
+        }
+      }
+    },
+    "GuLiCommanderPresentation_InstanceSubmit": {
+      "count_range_per_30s": [
+        1806,
+        3169
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.2001844536476585,
+          "median_inclusive_ms_per_call": 0.2001844536476585,
+          "median_count": 3141
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.21018436984039623,
+          "median_inclusive_ms_per_call": 0.21018436984039623,
+          "median_count": 1838
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.20965891891891894,
+          "median_inclusive_ms_per_call": 0.20965891891891894,
+          "median_count": 1826
+        }
+      }
+    },
+    "GuLiCommanderPresentation_MassPositionSample": {
+      "count_range_per_30s": [
+        300,
+        300
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.009795157693532973,
+          "median_inclusive_ms_per_call": 0.10249,
+          "median_count": 300
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.017659878921298843,
+          "median_inclusive_ms_per_call": 0.10696,
+          "median_count": 300
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.018121883656509696,
+          "median_inclusive_ms_per_call": 0.10903333333333333,
+          "median_count": 300
+        }
+      }
+    },
+    "GuLiCommanderPresentation_MassBatchSubmit": {
+      "count_range_per_30s": [
+        300,
+        300
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.009775406180312201,
+          "median_inclusive_ms_per_call": 0.10228333333333332,
+          "median_count": 300
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.017623004953219595,
+          "median_inclusive_ms_per_call": 0.10673666666666667,
+          "median_count": 300
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.018086426592797786,
+          "median_inclusive_ms_per_call": 0.10882,
+          "median_count": 300
+        }
+      }
+    },
+    "GuLiCommanderPresentation_MassBatchExecute": {
+      "count_range_per_30s": [
+        300,
+        300
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.013222152098453772,
+          "median_inclusive_ms_per_call": 0.13890666666666668,
+          "median_count": 300
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.023716565767749036,
+          "median_inclusive_ms_per_call": 0.14364333333333332,
+          "median_count": 300
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.024190027700831028,
+          "median_inclusive_ms_per_call": 0.14554333333333336,
+          "median_count": 300
+        }
+      }
+    },
+    "MassDeferredCommand_Execute": {
+      "count_range_per_30s": [
+        300,
+        300
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.013284632376143893,
+          "median_inclusive_ms_per_call": 0.13958666666666666,
+          "median_count": 300
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.02383214089157953,
+          "median_inclusive_ms_per_call": 0.14434333333333335,
+          "median_count": 300
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.024298060941828258,
+          "median_inclusive_ms_per_call": 0.14619333333333334,
+          "median_count": 300
+        }
+      }
+    },
+    "GuLiCommanderMiniMap_Snapshot": {
+      "count_range_per_30s": [
+        300,
+        300
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.01577738853503185,
+          "median_inclusive_ms_per_call": 0.16513666666666668,
+          "median_count": 300
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.029346175013758944,
+          "median_inclusive_ms_per_call": 0.17815333333333333,
+          "median_count": 300
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.029599671412924425,
+          "median_inclusive_ms_per_call": 0.1795,
+          "median_count": 300
+        }
+      }
+    },
+    "GuLiCommanderMiniMap_TerrainPaint": {
+      "count_range_per_30s": [
+        0,
+        0
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        }
+      }
+    },
+    "GuLiCommanderMiniMap_DynamicPaint": {
+      "count_range_per_30s": [
+        300,
+        300
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.03172953169799299,
+          "median_inclusive_ms_per_call": 0.3319966666666666,
+          "median_count": 300
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.05917627856365615,
+          "median_inclusive_ms_per_call": 0.3590966666666667,
+          "median_count": 300
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.058922782037239864,
+          "median_inclusive_ms_per_call": 0.35803,
+          "median_count": 300
+        }
+      }
+    },
+    "GuLiCommanderHealthBars_UpdateInstances": {
+      "count_range_per_30s": [
+        0,
+        0
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0,
+          "median_inclusive_ms_per_call": 0,
+          "median_count": 0
+        }
+      }
+    },
+    "GuLiCommanderHealthBars_MaintainActivity": {
+      "count_range_per_30s": [
+        300,
+        300
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.0006573248407643312,
+          "median_inclusive_ms_per_call": 0.00688,
+          "median_count": 300
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.0012517482517482518,
+          "median_inclusive_ms_per_call": 0.007756666666666667,
+          "median_count": 300
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.0012546549835706462,
+          "median_inclusive_ms_per_call": 0.007636666666666667,
+          "median_count": 300
+        }
+      }
+    },
+    "DeferredRenderUpdates_GameThread": {
+      "count_range_per_30s": [
+        1806,
+        3170
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.41948327492832116,
+          "median_inclusive_ms_per_call": 0.41948327492832116,
+          "median_count": 3141
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.43898171059709523,
+          "median_inclusive_ms_per_call": 0.43898171059709523,
+          "median_count": 1838
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.4392907995618839,
+          "median_inclusive_ms_per_call": 0.4392907995618839,
+          "median_count": 1826
+        }
+      }
+    },
+    "Recreate": {
+      "count_range_per_30s": [
+        103,
+        136
+      ],
+      "groups": {
+        "c1-client1": {
+          "median_inclusive_ms_per_frame": 0.0008082191780821919,
+          "median_inclusive_ms_per_call": 0.019366412213740462,
+          "median_count": 131
+        },
+        "c2-client1": {
+          "median_inclusive_ms_per_frame": 0.0014303797468354432,
+          "median_inclusive_ms_per_call": 0.020388349514563107,
+          "median_count": 129
+        },
+        "c2-client2": {
+          "median_inclusive_ms_per_frame": 0.001433734939759036,
+          "median_inclusive_ms_per_call": 0.020294573643410852,
+          "median_count": 129
+        }
+      }
+    }
+  },
+  "explicit_cache_component_high_water_bytes": {
+    "GuLiCommanderHealthBars/DataCacheBytes": 64.0,
+    "GuLiCommanderMiniMap/DataCacheBytes": 69680.0,
+    "GuLiCommanderPresentation/InstanceAndMirrorCacheBytes": 621468.0,
+    "GuLiCommanderPresentation/RosterCacheBytes": 202188.0
+  },
+  "explicit_cache_component_high_water_sum_bytes": 893400.0
+}

@@ -1,0 +1,705 @@
+{
+  "observations": [
+    {
+      "vehicle": "Mining",
+      "phase": "initial",
+      "child": "BP_MiningVehicle_TransporterLvl2_C_1",
+      "meshes": [
+        {
+          "component": "SkeletalMeshComponent0",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Cockpit_Freight_Spoiler",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Top_Turret_2x_Lvl1",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Weapon_Rocket_Mount_Lvl2",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Weapon_Rocket_Mount_Lvl3",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Collector_L",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Collector_R",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Side_Winglet_Spike_Lvl3",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        }
+      ]
+    },
+    {
+      "vehicle": "Mining",
+      "phase": "recreated",
+      "child": "BP_MiningVehicle_TransporterLvl2_C_2",
+      "meshes": [
+        {
+          "component": "SkeletalMeshComponent0",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Cockpit_Freight_Spoiler",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Top_Turret_2x_Lvl1",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Weapon_Rocket_Mount_Lvl2",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Weapon_Rocket_Mount_Lvl3",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Collector_L",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Collector_R",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Side_Winglet_Spike_Lvl3",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        }
+      ]
+    },
+    {
+      "vehicle": "Construction",
+      "phase": "initial",
+      "child": "BP_ConstructionVehicle_C_0",
+      "meshes": [
+        {
+          "component": "SkeletalMeshComponent0",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Cockpit_Freight_Spoiler",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Top_Turret_2x_Lvl1",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Weapon_Rocket_Mount_Lvl2",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Weapon_Rocket_Mount_Lvl3",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Collector_L",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Collector_R",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Side_Winglet_Spike_Lvl3",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        }
+      ]
+    },
+    {
+      "vehicle": "Construction",
+      "phase": "recreated",
+      "child": "BP_ConstructionVehicle_C_1",
+      "meshes": [
+        {
+          "component": "SkeletalMeshComponent0",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Cockpit_Freight_Spoiler",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Top_Turret_2x_Lvl1",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Weapon_Rocket_Mount_Lvl2",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Weapon_Rocket_Mount_Lvl3",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Collector_L",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Collector_R",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection",
+            "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+          ],
+          "body_and_effect_materials_correct": true
+        },
+        {
+          "component": "Side_Winglet_Spike_Lvl3",
+          "materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "flags": {
+            "visible_in_ray_tracing": false,
+            "affect_distance_field_lighting": false,
+            "affect_dynamic_indirect_lighting": false,
+            "visible_in_reflection_captures": false,
+            "visible_in_real_time_sky_captures": false
+          },
+          "original_materials": [
+            "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+          ],
+          "expected_materials": [
+            "/Game/GuLiStrike/Rendering/UnitLowReflection/M_VehicleConstructor_LowReflection.M_VehicleConstructor_LowReflection"
+          ],
+          "body_and_effect_materials_correct": true
+        }
+      ]
+    }
+  ],
+  "all_flags_disabled": true,
+  "mesh_counts": [
+    8,
+    8,
+    8,
+    8
+  ],
+  "all_body_and_effect_materials_correct": true,
+  "scope": "Native vehicle child-actor creation callbacks in Editor world, initial creation and class removal/recreation. Body slots mapped; collector emissive effect slots retained."
+}

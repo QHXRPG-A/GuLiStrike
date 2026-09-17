@@ -1,0 +1,302 @@
+{
+  "scope": "Whole approximately 40s CSV; secondary rendering-load audit only, not the 30s performance comparison.",
+  "records": [
+    {
+      "run": "A-1-n1200-c1",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5732.915763467493,
+        "RHI/DrawCalls": 611.2099071207431,
+        "RHI/PrimitivesDrawn": 2865432.13622291,
+        "GPUSceneInstanceCount": 10715.814860681114
+      }
+    },
+    {
+      "run": "A-1-n1200-c2",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10713.918918918918,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5763.644500000001,
+        "RHI/DrawCalls": 611.4763513513514,
+        "RHI/PrimitivesDrawn": 2865430.0675675673
+      }
+    },
+    {
+      "run": "A-1-n1200-c2",
+      "role": "client2",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10713.920798454605,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5763.461058081133,
+        "RHI/DrawCalls": 611.4797166773985,
+        "RHI/PrimitivesDrawn": 2865430.05924018
+      }
+    },
+    {
+      "run": "A-2-n1200-c1",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5729.921715060241,
+        "RHI/DrawCalls": 612.075,
+        "RHI/PrimitivesDrawn": 2865432.143373494,
+        "GPUSceneInstanceCount": 10715.633734939758
+      }
+    },
+    {
+      "run": "A-2-n1200-c2",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10714.95267489712,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5728.8242,
+        "RHI/DrawCalls": 612.2153635116598,
+        "RHI/PrimitivesDrawn": 2865432.146776406
+      }
+    },
+    {
+      "run": "A-2-n1200-c2",
+      "role": "client2",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10714.972762645915,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5764.0742,
+        "RHI/DrawCalls": 611.2140077821011,
+        "RHI/PrimitivesDrawn": 2865430.1076523997
+      }
+    },
+    {
+      "run": "A-3-n1200-c1",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10715.436683874887,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5729.941392104464,
+        "RHI/DrawCalls": 612.068934102642,
+        "RHI/PrimitivesDrawn": 2865432.0917096874
+      }
+    },
+    {
+      "run": "A-3-n1200-c2",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10714.962962962964,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5729.699200000001,
+        "RHI/DrawCalls": 611.1447811447812,
+        "RHI/PrimitivesDrawn": 2865430.1535353535
+      }
+    },
+    {
+      "run": "A-3-n1200-c2",
+      "role": "client2",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10714.956715467855,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5733.2992472310625,
+        "RHI/DrawCalls": 612.1394016549968,
+        "RHI/PrimitivesDrawn": 2865432.1387651176
+      }
+    },
+    {
+      "run": "B-1-n1200-c1",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5055.292097220097,
+        "RHI/DrawCalls": 612.8051517470033,
+        "RHI/PrimitivesDrawn": 2865432.128538638,
+        "GPUSceneInstanceCount": 10717.693700586586
+      }
+    },
+    {
+      "run": "B-1-n1200-c2",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10714.716851558373,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5058.3594,
+        "RHI/DrawCalls": 613.2123613312203,
+        "RHI/PrimitivesDrawn": 2865434.1944004227
+      }
+    },
+    {
+      "run": "B-1-n1200-c2",
+      "role": "client2",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10714.714924538848,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5060.640098099498,
+        "RHI/DrawCalls": 613.2202347680268,
+        "RHI/PrimitivesDrawn": 2865434.2470654
+      }
+    },
+    {
+      "run": "B-2-n1200-c1",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10717.562753036438,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5053.803585964912,
+        "RHI/DrawCalls": 612.212685560054,
+        "RHI/PrimitivesDrawn": 2865432.153846154
+      }
+    },
+    {
+      "run": "B-2-n1200-c2",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10713.56382400869,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5060.1992,
+        "RHI/DrawCalls": 613.558392178164,
+        "RHI/PrimitivesDrawn": 2865432.1955458988
+      }
+    },
+    {
+      "run": "B-2-n1200-c2",
+      "role": "client2",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10713.5461404527,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5095.6094,
+        "RHI/DrawCalls": 613.5519442832269,
+        "RHI/PrimitivesDrawn": 2865432.123041207
+      }
+    },
+    {
+      "run": "B-3-n1200-c1",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5054.573953103837,
+        "RHI/DrawCalls": 612.6757900677201,
+        "RHI/PrimitivesDrawn": 2865432.1145598195,
+        "GPUSceneInstanceCount": 10717.95118510158
+      }
+    },
+    {
+      "run": "B-3-n1200-c2",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5054.26108379524,
+        "RHI/DrawCalls": 613.2096511248777,
+        "RHI/PrimitivesDrawn": 2865434.1708509945,
+        "GPUSceneInstanceCount": 10713.439191392239
+      }
+    },
+    {
+      "run": "B-3-n1200-c2",
+      "role": "client2",
+      "full_capture_means": {
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5088.74938598285,
+        "RHI/DrawCalls": 612.2064643799472,
+        "RHI/PrimitivesDrawn": 2865432.1134564644,
+        "GPUSceneInstanceCount": 10713.466029023746
+      }
+    },
+    {
+      "run": "C-1-n1200-c1",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5053.143667670011,
+        "RHI/DrawCalls": 613.208751393534,
+        "RHI/PrimitivesDrawn": 2865434.13154961,
+        "GPUSceneInstanceCount": 10717.60061315496
+      }
+    },
+    {
+      "run": "C-1-n1200-c2",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10714.740141557128,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5055.217147724975,
+        "RHI/DrawCalls": 612.2189079878665,
+        "RHI/PrimitivesDrawn": 2865432.225480283
+      }
+    },
+    {
+      "run": "C-1-n1200-c2",
+      "role": "client2",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10714.71648118707,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5153.7344,
+        "RHI/DrawCalls": 613.2019077901431,
+        "RHI/PrimitivesDrawn": 2865434.0529941707
+      }
+    },
+    {
+      "run": "C-2-n1200-c1",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10715.944166447196,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5057.077499815644,
+        "RHI/DrawCalls": 612.9518040558336,
+        "RHI/PrimitivesDrawn": 2865432.138003687
+      }
+    },
+    {
+      "run": "C-2-n1200-c2",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10714.424406047516,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5060.6092650108,
+        "RHI/DrawCalls": 614.2446004319654,
+        "RHI/PrimitivesDrawn": 2865434.0723542115
+      }
+    },
+    {
+      "run": "C-2-n1200-c2",
+      "role": "client2",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10714.41730670763,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5058.322853661035,
+        "RHI/DrawCalls": 613.2555043522785,
+        "RHI/PrimitivesDrawn": 2865432.091141833
+      }
+    },
+    {
+      "run": "C-3-n1200-c1",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUSceneInstanceCount": 10715.853705752212,
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5055.37875840708,
+        "RHI/DrawCalls": 613.9737278761062,
+        "RHI/PrimitivesDrawn": 2865434.097345133
+      }
+    },
+    {
+      "run": "C-3-n1200-c2",
+      "role": "client1",
+      "full_capture_means": {
+        "GPUMem/LocalBudgetMB": 23362.061820652172,
+        "GPUMem/LocalUsedMB": 5049.900516508153,
+        "RHI/DrawCalls": 613.0023777173913,
+        "RHI/PrimitivesDrawn": 2864460.8430706523,
+        "GPUSceneInstanceCount": 10715.863451086956
+      }
+    },
+    {
+      "run": "C-3-n1200-c2",
+      "role": "client2",
+      "full_capture_means": {
+        "GPUMem/LocalBudgetMB": 23370.0,
+        "GPUMem/LocalUsedMB": 5088.560089655173,
+        "RHI/DrawCalls": 612.208275862069,
+        "RHI/PrimitivesDrawn": 2865432.103448276,
+        "GPUSceneInstanceCount": 10715.943103448275
+      }
+    }
+  ]
+}

@@ -1,0 +1,68 @@
+{
+  "Map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "Port": 18097,
+  "Engine": "D:/UnrealEngine-5.7",
+  "LogDirectory": "D:/UE5.7/test1/TestResults/CommanderPoseCompression/manual-sync-20260915-172231",
+  "Server": {
+    "Pid": 28384,
+    "Arguments": [
+      "D:/UE5.7/test1/GuLiStrike.uproject",
+      "/Game/Maps/LVL_CommanderMassPrototype",
+      "-game",
+      "-server",
+      "-NullRHI",
+      "-Unattended",
+      "-NoSound",
+      "-NoSplash",
+      "-NoLiveCoding",
+      "-DisablePlugins=Fab",
+      "-port=18097",
+      "-abslog=D:/UE5.7/test1/TestResults/CommanderPoseCompression/manual-sync-20260915-172231/server.log",
+      "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0\""
+    ]
+  },
+  "Clients": [
+    {
+      "Index": 1,
+      "Pid": 31720,
+      "Arguments": [
+        "D:/UE5.7/test1/GuLiStrike.uproject",
+        "127.0.0.1:18097?Name=SyncClient1",
+        "-game",
+        "-windowed",
+        "-ForceRes",
+        "-ResX=936",
+        "-ResY=702",
+        "-WinX=8",
+        "-WinY=60",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-abslog=D:/UE5.7/test1/TestResults/CommanderPoseCompression/manual-sync-20260915-172231/client1.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0\""
+      ]
+    },
+    {
+      "Index": 2,
+      "Pid": 7080,
+      "Arguments": [
+        "D:/UE5.7/test1/GuLiStrike.uproject",
+        "127.0.0.1:18097?Name=SyncClient2",
+        "-game",
+        "-windowed",
+        "-ForceRes",
+        "-ResX=936",
+        "-ResY=702",
+        "-WinX=968",
+        "-WinY=60",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-abslog=D:/UE5.7/test1/TestResults/CommanderPoseCompression/manual-sync-20260915-172231/client2.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0\""
+      ]
+    }
+  ]
+}

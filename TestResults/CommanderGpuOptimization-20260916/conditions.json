@@ -1,0 +1,34 @@
+{
+  "population": 1200,
+  "clients": [
+    1,
+    2
+  ],
+  "rounds_each": 3,
+  "client_capture_seconds": 40,
+  "server_capture_seconds": 50,
+  "common_window_seconds": 30,
+  "pattern": "shuttle",
+  "join": "join-first",
+  "temporary_max_agents": 2048,
+  "graphics": "1920x1080 Epic, screen percentage100%, VSync off, dynamic resolution off, fixed camera, offscreen rendering",
+  "source_engine": "D:/UnrealEngine-5.7",
+  "background_editor_during_capture": false,
+  "movement_gate": "alive=1200 and observed_moving P05>=1140",
+  "client_frame_budget_p95_ms": {
+    "one_client": 16.67,
+    "two_clients": 33.33
+  },
+  "historical_CPU_optimization_baseline_is_not_matched_load": true,
+  "profiles": {
+    "A": "Original source/config, captured before implementation",
+    "B": "Optimized, software VRS enabled",
+    "C": "Optimized, software VRS disabled"
+  },
+  "bc_order": "Alternating B then C per round and client count",
+  "final_profile": "B",
+  "software_vrs_final_enabled": true,
+  "selection_rule": "C GPU mean median improves at least 3% for single-client and both dual-client roles; P95 regression at most 3% in every group. Otherwise retain B.",
+  "primary_gpu_window": "CSV GPUTime mean in the common 30s QPC window, then median of three runs",
+  "baseline_note": "This fresh A differs from the prior session baseline; do not combine improvement percentages across sessions."
+}

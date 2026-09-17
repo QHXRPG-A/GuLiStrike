@@ -1,0 +1,21 @@
+diff --git a/Engine/Source/Runtime/Navmesh/Private/DetourCrowd/DetourCrowd.cpp b/Engine/Source/Runtime/Navmesh/Private/DetourCrowd/DetourCrowd.cpp
+index d9b9858cc..962343145 100644
+--- a/Engine/Source/Runtime/Navmesh/Private/DetourCrowd/DetourCrowd.cpp
++++ b/Engine/Source/Runtime/Navmesh/Private/DetourCrowd/DetourCrowd.cpp
+@@ -1265,6 +1265,16 @@ void dtCrowd::updateStepProximityData(const dtReal dt, dtCrowdAgentDebugInfo* de
+ 		if (ag->state != DT_CROWDAGENT_STATE_WALKING)
+ 			continue;
+ 
++		// Passive external obstacles have no collision query of their own. They
++		// remain in the proximity grid above so simulated agents still avoid them.
++		// A zero-radius shared boundary never reuses a moving obstacle's sample;
++		// rebuilding it for every passive agent creates a quadratic cache scan.
++		if (ag->params.collisionQueryRange <= 0)
++		{
++			ag->nneis = 0;
++			continue;
++		}
++
+ 		m_navquery->updateLinkFilter(ag->params.linkFilter.Get());
+ 		int sharedDataIdx = -1;
+ 		if (m_raycastSingleArea)

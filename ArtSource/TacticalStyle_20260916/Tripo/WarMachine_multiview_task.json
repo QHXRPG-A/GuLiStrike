@@ -1,0 +1,38 @@
+{
+  "unit": "WarMachine",
+  "inputs": [
+    "ArtSource\\TacticalStyle_20260916\\Concepts\\WarMachine_Front.png",
+    "ArtSource\\TacticalStyle_20260916\\Concepts\\WarMachine_Left.png",
+    "ArtSource\\TacticalStyle_20260916\\Concepts\\WarMachine_Back.png"
+  ],
+  "payload": {
+    "type": "multiview_to_model",
+    "model_version": "P1-20260311",
+    "files": [
+      {
+        "type": "png",
+        "file_token": "42cf3be3-671e-4d4b-bc3f-578f4996df7f"
+      },
+      {
+        "type": "png",
+        "file_token": "bb0d775b-0a85-4ace-b2c9-0cb52ea304d5"
+      },
+      {
+        "type": "png",
+        "file_token": "d9ff8e2e-be99-4623-a2fe-06312b69f406"
+      },
+      {}
+    ],
+    "face_limit": 6000,
+    "texture": true,
+    "pbr": true,
+    "model_seed": 20260916,
+    "texture_seed": 20260916,
+    "texture_quality": "standard",
+    "texture_alignment": "geometry",
+    "export_uv": true
+  },
+  "submission_pending": false,
+  "documentation": "https://docs.tripo3d.ai/model-generation/multiview-to-model-p1-20260311.html",
+  "task_id": "8ee590dc-ad05-4d90-8ee2-5dee1c7f0e21"
+}

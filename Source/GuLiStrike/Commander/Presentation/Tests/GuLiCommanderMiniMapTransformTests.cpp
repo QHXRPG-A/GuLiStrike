@@ -1,10 +1,61 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Presentation/GuLiCommanderMiniMapTransform.h"
 
 #if WITH_DEV_AUTOMATION_TESTS
 
 #include "Misc/AutomationTest.h"
+#include "Commander/UI/GuLiCommanderMiniMapWidget.h"
+#include "Commander/Network/GuLiSoldierStateReplicator.h"
+#include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Engine/World.h"
+#include "Widgets/SWidget.h"
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiCommanderMiniMapCacheTest,
+	"GuLiStrike.Commander.Presentation.MiniMap.Cache",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiCommanderMiniMapCacheTest::RunTest(const FString& Parameters)
+{
+	UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
+	auto* Source = World->SpawnActor<AGuLiSoldierStateReplicator>();
+	auto* Presentation = World->SpawnActor<AGuLiCommanderPresentationActor>();
+	auto* Map = NewObject<UGuLiCommanderMiniMapWidget>(World);
+	Map->SoldierStateReplicator = Source; Map->PresentationActor = Presentation;
+	Map->BindRuntimeEvents();
+	FGuLiSoldierStateItem State; State.SoldierId = FGuLiSoldierId(1); State.UnitTypeId = 1;
+	State.Health = State.MaxHealth = 100;
+	TArray<FGuLiSoldierStateItem> States = {State}; Source->ApplyAuthoritySnapshot(States, 1);
+	auto& Soldier = Presentation->PresentedSoldiers.FindOrAdd(State.SoldierId);
+	Soldier.PresentedTransform.SetLocation(FVector(10,20,30)); Soldier.bHasPresentedTransform = true;
+	TestTrue(TEXT("First pose creates one marker"), Map->RefreshPoint(State.SoldierId, true));
+	TestFalse(TEXT("Unchanged sample does not dirty marker"), Map->RefreshPoint(State.SoldierId, true));
+	const uint64 TerrainBefore = Map->TerrainInvalidations, DynamicBefore = Map->DynamicInvalidations;
+	States[0].Health = 50; Source->ApplyAuthoritySnapshot(States, 1);
+	TestEqual(TEXT("Health-only event preserves minimap drawing"), Map->DynamicInvalidations, DynamicBefore);
+	FGuLiCommanderSelectionState Selection; Selection.Cohorts.AddDefaulted_GetRef().MemberIds.Add(State.SoldierId);
+	Map->HandleSelectionChanged(Selection);
+	TestTrue(TEXT("Selection updates marker before next sample"), Map->SoldierPoints.FindChecked(State.SoldierId).bSelected);
+	TestEqual(TEXT("Selection does not invalidate terrain"), Map->TerrainInvalidations, TerrainBefore);
+	const uint64 SelectedInvalidations = Map->DynamicInvalidations;
+	Map->HandleSelectionChanged(Selection);
+	TestEqual(TEXT("Repeated selection does not repaint"), Map->DynamicInvalidations, SelectedInvalidations);
+	States[0].Team = EGuLiTeam::Red; Source->ApplyAuthoritySnapshot(States, 1);
+	TestTrue(TEXT("Team event updates one cached marker"), Map->SoldierPoints.FindChecked(State.SoldierId).Team == EGuLiTeam::Red);
+	States[0].Health = 0; States[0].LifeState = EGuLiSoldierLifeState::Destroyed; Source->ApplyAuthoritySnapshot(States, 1);
+	TestTrue(TEXT("Death immediately removes marker"), Map->SoldierPoints.IsEmpty());
+	Map->RebuildWidget();
+	TestTrue(TEXT("Terrain and dynamic layer own independent cache children"), Map->TerrainLayer && Map->DynamicLayer && Map->TerrainLayer != Map->DynamicLayer);
+	Map->ReleaseSlateResources(true);
+	TestTrue(TEXT("Widget reconstruction releases old cache children"), !Map->TerrainLayer && !Map->DynamicLayer);
+	Map->SetVisibility(ESlateVisibility::Hidden);
+	TestFalse(TEXT("Hidden widget suspends sampling"), Map->IsHierarchyVisible());
+	const auto RebuiltWidget = Map->TakeWidget();
+	Map->SetVisibility(ESlateVisibility::Visible);
+	TestTrue(TEXT("Showing widget restores visibility"), Map->IsHierarchyVisible());
+	Map->UnbindRuntimeEvents(); World->DestroyWorld(false);
+	return true;
+}
 
 namespace GuLiCommanderMiniMapTransformTests
 {

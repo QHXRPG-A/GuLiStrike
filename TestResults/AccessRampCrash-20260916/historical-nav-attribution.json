@@ -1,0 +1,446 @@
+[
+  {
+    "run": "after-capacity-final1-n1200-c1",
+    "simulation_steps": 380,
+    "dropped_steps": 95,
+    "metrics": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "frames": 95,
+        "mean": 0.0016736842105263157,
+        "max": 0.0026
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "frames": 95,
+        "mean": 0.006722105263157895,
+        "max": 0.0311
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "frames": 95,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "frames": 95,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "frames": 95,
+        "mean": 487.1488978947368,
+        "max": 654.5797
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "frames": 95,
+        "mean": 487.16756736842103,
+        "max": 654.5978
+      }
+    }
+  },
+  {
+    "run": "after-capacity-final1-n1200-c2",
+    "simulation_steps": 501,
+    "dropped_steps": 0,
+    "metrics": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "frames": 317,
+        "mean": 0.002474763406940063,
+        "max": 0.0196
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "frames": 317,
+        "mean": 0.008169400630914826,
+        "max": 0.1218
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "frames": 317,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "frames": 317,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "frames": 317,
+        "mean": 123.03526088328076,
+        "max": 279.8855
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "frames": 317,
+        "mean": 123.0576785488959,
+        "max": 279.9059
+      }
+    }
+  },
+  {
+    "run": "after-capacity-final2-n1200-c1",
+    "simulation_steps": 280,
+    "dropped_steps": 70,
+    "metrics": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "frames": 70,
+        "mean": 0.0016914285714285714,
+        "max": 0.0027
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "frames": 70,
+        "mean": 0.0065985714285714285,
+        "max": 0.0094
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "frames": 70,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "frames": 70,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "frames": 70,
+        "mean": 679.2838971428571,
+        "max": 931.2707
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "frames": 70,
+        "mean": 679.30341,
+        "max": 931.2902
+      }
+    }
+  },
+  {
+    "run": "after-capacity-final2-n1200-c2",
+    "simulation_steps": 500,
+    "dropped_steps": 0,
+    "metrics": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "frames": 321,
+        "mean": 0.0023373831775700933,
+        "max": 0.0159
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "frames": 321,
+        "mean": 0.007522741433021807,
+        "max": 0.024
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "frames": 321,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "frames": 321,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "frames": 321,
+        "mean": 120.53869501557632,
+        "max": 181.2015
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "frames": 321,
+        "mean": 120.55983676012461,
+        "max": 181.2159
+      }
+    }
+  },
+  {
+    "run": "after-capacity-final3-n1200-c1",
+    "simulation_steps": 409,
+    "dropped_steps": 20,
+    "metrics": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "frames": 237,
+        "mean": 0.002293248945147679,
+        "max": 0.0047
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "frames": 237,
+        "mean": 0.00791012658227848,
+        "max": 0.0145
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "frames": 237,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "frames": 237,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "frames": 237,
+        "mean": 176.48102616033756,
+        "max": 1502.5536
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "frames": 237,
+        "mean": 176.50287848101266,
+        "max": 1502.571
+      }
+    }
+  },
+  {
+    "run": "after-capacity-final3-n1200-c2",
+    "simulation_steps": 501,
+    "dropped_steps": 1,
+    "metrics": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "frames": 293,
+        "mean": 0.0025023890784982936,
+        "max": 0.038
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "frames": 293,
+        "mean": 0.008863481228668943,
+        "max": 0.1988
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "frames": 293,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "frames": 293,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "frames": 293,
+        "mean": 128.94752491467577,
+        "max": 283.2279
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "frames": 293,
+        "mean": 128.97152662116042,
+        "max": 283.2473
+      }
+    }
+  },
+  {
+    "run": "baseline-capacity-1-n1200-c1",
+    "simulation_steps": 501,
+    "dropped_steps": 0,
+    "metrics": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "frames": 302,
+        "mean": 0.0023890728476821193,
+        "max": 0.0213
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "frames": 302,
+        "mean": 0.007906622516556291,
+        "max": 0.0347
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "frames": 302,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "frames": 302,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "frames": 302,
+        "mean": 124.52535860927152,
+        "max": 197.2991
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "frames": 302,
+        "mean": 124.54788741721855,
+        "max": 197.3207
+      }
+    }
+  },
+  {
+    "run": "baseline-capacity-1-n1200-c2",
+    "simulation_steps": 499,
+    "dropped_steps": 0,
+    "metrics": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "frames": 328,
+        "mean": 0.0024814024390243904,
+        "max": 0.0331
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "frames": 328,
+        "mean": 0.007817987804878048,
+        "max": 0.0131
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "frames": 328,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "frames": 328,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "frames": 328,
+        "mean": 118.73777042682927,
+        "max": 182.8035
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "frames": 328,
+        "mean": 118.75953841463415,
+        "max": 182.8281
+      }
+    }
+  },
+  {
+    "run": "baseline-capacity-2-n1200-c1",
+    "simulation_steps": 502,
+    "dropped_steps": 0,
+    "metrics": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "frames": 330,
+        "mean": 0.002204848484848485,
+        "max": 0.0043
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "frames": 330,
+        "mean": 0.00753969696969697,
+        "max": 0.0287
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "frames": 330,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "frames": 330,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "frames": 330,
+        "mean": 119.17347818181818,
+        "max": 197.5475
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "frames": 330,
+        "mean": 119.19445696969697,
+        "max": 197.5675
+      }
+    }
+  },
+  {
+    "run": "baseline-capacity-2-n1200-c2",
+    "simulation_steps": 501,
+    "dropped_steps": 0,
+    "metrics": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "frames": 324,
+        "mean": 0.0024080246913580246,
+        "max": 0.0379
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "frames": 324,
+        "mean": 0.007914197530864198,
+        "max": 0.0265
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "frames": 324,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "frames": 324,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "frames": 324,
+        "mean": 120.09648425925926,
+        "max": 192.897
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "frames": 324,
+        "mean": 120.11828858024691,
+        "max": 192.9189
+      }
+    }
+  },
+  {
+    "run": "baseline-capacity-3-n1200-c1",
+    "simulation_steps": 502,
+    "dropped_steps": 0,
+    "metrics": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "frames": 330,
+        "mean": 0.0024203030303030304,
+        "max": 0.0718
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "frames": 330,
+        "mean": 0.007752424242424242,
+        "max": 0.0403
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "frames": 330,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "frames": 330,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "frames": 330,
+        "mean": 120.35259424242425,
+        "max": 197.4474
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "frames": 330,
+        "mean": 120.37353636363636,
+        "max": 197.4657
+      }
+    }
+  },
+  {
+    "run": "baseline-capacity-3-n1200-c2",
+    "simulation_steps": 502,
+    "dropped_steps": 0,
+    "metrics": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "frames": 328,
+        "mean": 0.0022746951219512193,
+        "max": 0.004
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "frames": 328,
+        "mean": 0.00779969512195122,
+        "max": 0.0355
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "frames": 328,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "frames": 328,
+        "mean": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "frames": 328,
+        "mean": 119.38506493902439,
+        "max": 247.7315
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "frames": 328,
+        "mean": 119.40650762195122,
+        "max": 247.752
+      }
+    }
+  }
+]

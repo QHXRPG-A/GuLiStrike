@@ -1,0 +1,89 @@
+{
+  "success": true,
+  "saved": [
+    "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel.SM_Sweeper_Cel",
+    "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SK_Sweeper_Cel.SK_Sweeper_Cel"
+  ],
+  "finalization": {
+    "success": true,
+    "models": {
+      "Sweeper": {
+        "asset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel.SM_Sweeper_Cel",
+        "lod_triangles": [
+          5456,
+          1363,
+          901,
+          220
+        ],
+        "screens": [
+          1.0,
+          0.3199999928474426,
+          0.09000000357627869,
+          0.02500000037252903
+        ],
+        "sockets": {
+          "FX_AimTarget": [
+            0.0,
+            0.0,
+            650.0
+          ],
+          "FX_Muzzle_Basic_01": [
+            757.2613716125488,
+            0.0,
+            588.1241798400879
+          ]
+        }
+      }
+    }
+  },
+  "assets": [
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel.SM_Sweeper_Cel",
+      "dimensions_cm": [
+        1510.5240478515625,
+        1305.7457885742188,
+        1140.94873046875
+      ],
+      "triangles": 5456,
+      "uv_channels": 3,
+      "slots": [
+        "M_Tactical_Contour",
+        "M_Sweeper_Cel"
+      ]
+    },
+    {
+      "path": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SK_Sweeper_Cel.SK_Sweeper_Cel",
+      "dimensions_cm": [
+        1510.5240478515625,
+        1305.7457885742188,
+        1140.94873046875
+      ],
+      "bones": [
+        "Rig_Sweeper",
+        "root",
+        "Body",
+        "Wheel_FL",
+        "Wheel_FR",
+        "Wheel_RL",
+        "Wheel_RR",
+        "Gun_Pitch"
+      ],
+      "slots": [
+        "M_Tactical_Contour",
+        "M_Sweeper_Cel"
+      ]
+    }
+  ],
+  "material": "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel",
+  "diagnostic": "<Struct 'MaterialDiagnostics' (0x000001D993280D00) {success: True, is_compiled_ok: True, compile_errors: , referenced_texture_paths: (\"/Game/Commander/Units/Tactical/Cel/Sweeper/Textures/T_Sweeper_BaseColor.T_Sweeper_BaseColor\"), expression_count: 11, texture_sample_count: 2, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 4}>",
+  "material_slots": [
+    {
+      "slot": "M_Tactical_Contour",
+      "material": "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel"
+    },
+    {
+      "slot": "M_Sweeper_Cel",
+      "material": "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel"
+    }
+  ]
+}

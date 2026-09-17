@@ -1,0 +1,69 @@
+{
+  "success": true,
+  "models": {
+    "Sweeper": {
+      "asset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel.SM_Sweeper_Cel",
+      "lod_triangles": [
+        10912,
+        2727,
+        900,
+        220
+      ],
+      "screens": [
+        1.0,
+        0.3199999928474426,
+        0.09000000357627869,
+        0.02500000037252903
+      ],
+      "sockets": {
+        "FX_AimTarget": [
+          0.0,
+          0.0,
+          650.0
+        ],
+        "FX_Muzzle_Basic_01": [
+          757.2613716125488,
+          0.0,
+          588.1241798400879
+        ]
+      }
+    },
+    "WarMachine": {
+      "asset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel",
+      "lod_triangles": [
+        27303,
+        6826,
+        300,
+        70
+      ],
+      "screens": [
+        1.0,
+        0.3199999928474426,
+        0.09000000357627869,
+        0.02500000037252903
+      ],
+      "sockets": {
+        "FX_AimTarget": [
+          0.0,
+          0.0,
+          1600.0
+        ],
+        "FX_Muzzle_Basic_01": [
+          1769.8602676391602,
+          1461.23685836792,
+          1580.907154083252
+        ],
+        "FX_Missile_01": [
+          -729.1603565216064,
+          932.1683883666992,
+          3122.332191467285
+        ],
+        "FX_Missile_02": [
+          -729.1603565216064,
+          -932.1683883666992,
+          3122.332191467285
+        ]
+      }
+    }
+  }
+}

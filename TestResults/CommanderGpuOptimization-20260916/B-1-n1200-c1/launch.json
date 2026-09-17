@@ -1,0 +1,69 @@
+{
+  "Date": "2026-09-16T15:56:46.9642147+08:00",
+  "Renderer": "1920x1080, Epic, screen percentage 100, VSync off, client uncapped/server 60 FPS cap, offscreen",
+  "CaptureTrace": true,
+  "Engine": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64",
+  "Pattern": "shuttle",
+  "HeadlessClients": false,
+  "Clients": 1,
+  "Map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "JoinBeforePopulation": true,
+  "Duration": 40,
+  "CaptureNetwork": true,
+  "Processes": [
+    {
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "/Game/Maps/LVL_CommanderMassPrototype",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-ini:Engine:[/Script/GuLiStrike.GuLiGroundCrowdManager]:MaxAgents=2048",
+        "-MoveStressNetworkProfile",
+        "-MoveStressTrace",
+        "-statnamedevents",
+        "-server",
+        "-NullRHI",
+        "-port=17951",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderGpuOptimization-20260916\\B-1-n1200-c1\\server.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,r.VRS.ContrastAdaptiveShading 1,r.VRS.EnableSoftware 1,r.AntiAliasingMethod,r.VolumetricFog,r.Shadow.Virtual.ResolutionLodBiasDirectional,r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving,r.Shadow.Virtual.ResolutionLodBiasLocal,r.Shadow.Virtual.ResolutionLodBiasLocalMoving,r.Lumen.ScreenProbeGather.DownsampleFactor,r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution,r.LumenScene.DirectLighting.UpdateFactor,r.LumenScene.Radiosity.UpdateFactor,r.Lumen.AsyncCompute,r.VRS.EnableSoftware,r.VRS.ContrastAdaptiveShading,gs.Commander.MoveStress 1200 50 D:/UE5.7/test1/TestResults/CommanderGpuOptimization-20260916/B-1-n1200-c1/server server 1 shuttle join-first\""
+      ],
+      "Pid": 44084,
+      "Role": "server"
+    },
+    {
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "127.0.0.1:17951",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-ini:Engine:[/Script/GuLiStrike.GuLiGroundCrowdManager]:MaxAgents=2048",
+        "-MoveStressNetworkProfile",
+        "-MoveStressTrace",
+        "-statnamedevents",
+        "-RenderOffscreen",
+        "-windowed",
+        "-ResX=1920",
+        "-ResY=1080",
+        "-ForceRes",
+        "-MoveStressTrace",
+        "-statnamedevents",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderGpuOptimization-20260916\\B-1-n1200-c1\\client1.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,r.VRS.ContrastAdaptiveShading 1,r.VRS.EnableSoftware 1,r.AntiAliasingMethod,r.VolumetricFog,r.Shadow.Virtual.ResolutionLodBiasDirectional,r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving,r.Shadow.Virtual.ResolutionLodBiasLocal,r.Shadow.Virtual.ResolutionLodBiasLocalMoving,r.Lumen.ScreenProbeGather.DownsampleFactor,r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution,r.LumenScene.DirectLighting.UpdateFactor,r.LumenScene.Radiosity.UpdateFactor,r.Lumen.AsyncCompute,r.VRS.EnableSoftware,r.VRS.ContrastAdaptiveShading,t.MaxFPS 0,gs.Commander.MoveStress 1200 40 D:/UE5.7/test1/TestResults/CommanderGpuOptimization-20260916/B-1-n1200-c1/client1 client 1 shuttle join-first\""
+      ],
+      "Pid": 13192,
+      "Role": "client1"
+    }
+  ],
+  "PartitionCpu": false,
+  "Population": 1200
+}

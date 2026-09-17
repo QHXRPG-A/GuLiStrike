@@ -5,9 +5,11 @@
 #include "CoreMinimal.h"
 #include "Battle/Network/GuLiPlayerNetSyncComponent.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
+#include "Commander/Network/GuLiCommanderPoseCodec.h"
 #include "GuLiCommanderNetSyncComponent.generated.h"
 
 class AGuLiBattlePlayerState;
+class AGuLiSoldierStateReplicator;
 
 /** 把专业名册代次绑定到公共连接；单独属性用于保留旧 Bootstrap RPC 的参数布局。 */
 USTRUCT()
@@ -70,6 +72,7 @@ public:
 
 	/** 服务器把已构造的姿态块发给拥有者；捕获目标为 10 Hz，具体分块/调度不在本函数。 */
 	void SendPoseChunk(const FGuLiSoldierPoseChunk& Chunk);
+	uint64 GetPoseCodecAllocatedBytes() const { return PoseSender.GetAllocatedBytes() + PoseReceiver.GetAllocatedBytes(); }
 
 	/** 服务器刷新选择中的存活/命令摘要并剔除全灭控制组；仅发生变化时返回 true 并请求复制。 */
 	bool RefreshServerSelection();
@@ -209,7 +212,7 @@ public:
 	void TestOnly_ConfigureClientPoseGate(bool bReady, uint32 AcceptedMatchEpoch);
 
 	/** Test-only injection through the same client pose implementation used by the unreliable RPC. */
-	void TestOnly_ReceivePoseChunk(const FGuLiSoldierPoseChunk& Chunk);
+	void TestOnly_ReceivePoseBlock(const FGuLiEncodedPoseBlock& Block);
 #endif
 
 protected:
@@ -244,7 +247,20 @@ private:
 
 	// 服务器 → 拥有客户端，不可靠姿态块；每块可独立消费，不等待整帧凑齐。
 	UFUNCTION(Client, Unreliable)
-	void ClientReceiveSoldierPoseChunk(const FGuLiSoldierPoseChunk& Chunk);
+	void ClientReceiveEncodedPoseBlock(const FGuLiEncodedPoseBlock& Block);
+
+	UFUNCTION(Server, Unreliable)
+	void ServerAcknowledgePoseBlocks(const FGuLiPoseAcknowledgment& Ack);
+
+	void DecodeAndQueuePoseBlock(const FGuLiEncodedPoseBlock& Block);
+	void QueueDecodedPoseChunk(FGuLiSoldierPoseChunk Chunk);
+	void TickPoseAcknowledgments();
+	void BindPoseRoster(AGuLiSoldierStateReplicator& Roster);
+	void ForgetPoseSoldiers(TConstArrayView<FGuLiSoldierId> Removed);
+	GuLiCommanderPoseCodec::FSender PoseSender;
+	GuLiCommanderPoseCodec::FReceiver PoseReceiver;
+	TWeakObjectPtr<AGuLiSoldierStateReplicator> PoseRoster;
+	double NextPoseAckTime = 0.0;
 
 	UFUNCTION()
 	void OnRep_SelectionState();

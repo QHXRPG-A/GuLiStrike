@@ -35,10 +35,9 @@ AGuLiPlacedBuilding::AGuLiPlacedBuilding()
 	CollisionRoot->SetBoxExtent(FVector(100.0f));
 	CollisionRoot->SetCollisionProfileName(UCollisionProfile::BlockAll_ProfileName);
 	CollisionRoot->SetGenerateOverlapEvents(false);
-	// Mass Soldiers do not own physics bodies. Runtime building avoidance is deferred,
-	// so this physical blocker must not invalidate the global Commander NavMesh and
-	// briefly stop every active formation when a building is placed.
-	CollisionRoot->SetCanEverAffectNavigation(false);
+	// Export the real footprint. NavModifier ignores collision components whose
+	// navigation flag is disabled, regardless of their physical blocking profile.
+	CollisionRoot->SetCanEverAffectNavigation(true);
 
 	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BuildingVisual"));
 	VisualMesh->SetupAttachment(CollisionRoot);
@@ -52,7 +51,7 @@ AGuLiPlacedBuilding::AGuLiPlacedBuilding()
 
 	NavigationModifier = CreateDefaultSubobject<UNavModifierComponent>(TEXT("NavigationModifier"));
 	NavigationModifier->SetAreaClass(UNavArea_Null::StaticClass());
-	NavigationModifier->SetNavigationRelevancy(false);
+	NavigationModifier->SetNavigationRelevancy(true);
 }
 
 void AGuLiPlacedBuilding::GetLifetimeReplicatedProps(
@@ -149,6 +148,10 @@ void AGuLiPlacedBuilding::ApplyDefinition(const FGuLiBuildingDefinition& Definit
 	{
 		VisualMesh->SetMobility(EComponentMobility::Static);
 	}
+	// Resizing a registered primitive does not change the Actor transform, so the
+	// modifier's cached bounds must be rebuilt before publishing the update.
+	NavigationModifier->UpdateNavigationBounds();
+	NavigationModifier->RefreshNavigationModifiers();
 }
 
 void AGuLiPlacedBuilding::OnRep_BuildingState()

@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Commander/Presentation/GuLiCommanderPresentationPerformanceSettings.h"
@@ -12,6 +12,107 @@
 #include "HAL/IConsoleManager.h"
 #include "Misc/AutomationTest.h"
 #include "Misc/OutputDeviceNull.h"
+#include "MassEntitySubsystem.h"
+#include "MassCommonFragments.h"
+#include "Commander/Mass/GuLiCommanderMassFragments.h"
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiCommanderClientMaintenanceTest,
+	"GuLiStrike.Commander.Presentation.ClientMaintenance",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+
+bool FGuLiCommanderClientMaintenanceTest::RunTest(const FString& Parameters)
+{
+	FGuLiCommanderRefreshCadence Cadence;
+	int32 Updates = 0;
+	for (int32 Frame = 0; Frame < 120; ++Frame) Updates += Cadence.Consume(Frame / 120.0) ? 1 : 0;
+	TestEqual(TEXT("120 frames produce ten maintenance samples"), Updates, 10);
+	TestTrue(TEXT("Hitch consumes latest sample once"), Cadence.Consume(4.31));
+	TestFalse(TEXT("Hitch never replays missed samples"), Cadence.Consume(4.31));
+	TestFalse(TEXT("Next frame stays below next boundary"), Cadence.Consume(4.32));
+	TestTrue(TEXT("Next boundary resumes cadence"), Cadence.Consume(4.4));
+	TestFalse(TEXT("Exact floating-point boundary is consumed once"), Cadence.Consume(4.4));
+	Cadence.Reset(); TestTrue(TEXT("Source reset resets clock"), Cadence.Consume(0));
+
+	UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
+	GEngine->CreateNewWorldContext(EWorldType::Game).SetCurrentWorld(World);
+	World->InitializeActorsForPlay(FURL());
+	auto* Presentation = World->SpawnActor<AGuLiCommanderPresentationActor>();
+	auto* Source = World->SpawnActor<AGuLiSoldierStateReplicator>();
+	Presentation->DispatchBeginPlay();
+	FGuLiSoldierStateItem State; State.SoldierId = FGuLiSoldierId(1); State.UnitTypeId = 1;
+	State.Health = State.MaxHealth = 100;
+	TArray<FGuLiSoldierStateItem> States = {State};
+	Source->ApplyAuthoritySnapshot(States, 1);
+	Presentation->EnsureStableInstancePool(*Source);
+	Presentation->ApplyReliableStateChanges(*Source, 0);
+	const auto Initial = Presentation->SoldierInstanceHandles.FindChecked(State.SoldierId);
+	TestTrue(TEXT("Static pool has no pending full reconciliation"), !Presentation->bReconcilePool && Presentation->PendingPoolIds.IsEmpty());
+	const int32 Capacity = Presentation->GetUnitInstances()->GetInstanceCount();
+	for (int32 Frame = 0; Frame < 120; ++Frame) Presentation->EnsureStableInstancePool(*Source);
+	TestEqual(TEXT("Static pool never grows"), Presentation->GetUnitInstances()->GetInstanceCount(), Capacity);
+
+	// Temporarily unavailable destination simulates component rebuild/allocation failure.
+	auto Destination = MoveTemp(Presentation->UnitInstanceBatchStates.FindChecked(2));
+	Presentation->UnitInstanceBatchStates.Remove(2);
+	States[0].UnitTypeId = 2; Source->ApplyAuthoritySnapshot(States, 1);
+	Presentation->EnsureStableInstancePool(*Source);
+	TestEqual(TEXT("Failed migration retains original model slot"), Presentation->SoldierInstanceHandles.FindChecked(State.SoldierId).BatchUnitTypeId, uint16(1));
+	TestTrue(TEXT("Failed migration remains retryable"), Presentation->RetryPoolIds.Contains(State.SoldierId));
+	Presentation->UnitInstanceBatchStates.Add(2, MoveTemp(Destination));
+	States[0].Health = 90; Source->ApplyAuthoritySnapshot(States, 1);
+	Presentation->MaintainInstancePool(*Source, false);
+	TestEqual(TEXT("Health event does not bypass failed-slot cadence"), Presentation->SoldierInstanceHandles.FindChecked(State.SoldierId).BatchUnitTypeId, uint16(1));
+	Presentation->MaintainInstancePool(*Source, true);
+	TestEqual(TEXT("Recovered destination receives unit"), Presentation->SoldierInstanceHandles.FindChecked(State.SoldierId).BatchUnitTypeId, uint16(2));
+	TestEqual(TEXT("Migration preserves ring identity"), Presentation->SoldierInstanceHandles.FindChecked(State.SoldierId).RingInstanceIndex, Initial.RingInstanceIndex);
+	FTransform Hidden;
+	Presentation->GetUnitInstances()->GetInstanceTransform(Initial.UnitInstanceIndex, Hidden, true);
+	TestTrue(TEXT("Released model is hidden"), Hidden.GetScale3D().IsNearlyZero());
+
+	auto& Manager = World->GetSubsystem<UMassEntitySubsystem>()->GetMutableEntityManager();
+	const auto Entity = Presentation->ClientMirrorEntities.FindChecked(State.SoldierId);
+	Presentation->FlushClientMirrorUpdates(0);
+	States[0].Health = 42; Source->ApplyAuthoritySnapshot(States, 1);
+	Presentation->ApplyReliableStateChanges(*Source, 0.01);
+	Presentation->FlushClientMirrorUpdates(0.01);
+	TestFalse(TEXT("Deferred creation does not write across Mass phase"), Manager.IsEntityActive(Entity));
+	Manager.FlushCommands();
+	TestTrue(TEXT("Mirror activates at safe boundary"), Manager.IsEntityActive(Entity));
+	auto& Soldier = Presentation->PresentedSoldiers.FindChecked(State.SoldierId);
+	Soldier.PresentedTransform.SetLocation(FVector(10, 20, 30)); Soldier.bHasPresentedTransform = true;
+	Presentation->FlushClientMirrorUpdates(0.02); Manager.FlushCommands();
+	TestEqual(TEXT("Creation retains newest pre-activation health"), Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Entity).Health, 42.0f);
+	TestTrue(TEXT("Creation fills latest available pose"), Manager.GetFragmentDataChecked<FTransformFragment>(Entity).GetTransform().GetLocation().Equals(FVector(10,20,30)));
+	Soldier.PresentedTransform.SetLocation(FVector(40,50,60));
+	Presentation->FlushClientMirrorUpdates(0.03); Manager.FlushCommands();
+	TestTrue(TEXT("Routine transform waits for 10 Hz sample"), Manager.GetFragmentDataChecked<FTransformFragment>(Entity).GetTransform().GetLocation().Equals(FVector(10,20,30)));
+	States[0].Health = 0; States[0].LifeState = EGuLiSoldierLifeState::Destroyed;
+	Source->ApplyAuthoritySnapshot(States, 1); Presentation->ApplyReliableStateChanges(*Source, 0.04);
+	Presentation->FlushClientMirrorUpdates(0.04); Manager.FlushCommands();
+	TestTrue(TEXT("Death crosses safe boundary without waiting for 10 Hz"), Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Entity).bDead);
+	TestTrue(TEXT("Dead roster entry retains identity"), Presentation->SoldierInstanceHandles.Contains(State.SoldierId));
+	Presentation->FlushClientMirrorUpdates(0.1); // queue an old-generation write
+	Presentation->DestroyClientMirrorEntities();
+	States[0] = State; Source->ApplyAuthoritySnapshot(States, 2);
+	Presentation->ResetNetworkPresentationState(); Presentation->bReconcilePool = true;
+	Presentation->EnsureStableInstancePool(*Source); Presentation->ApplyReliableStateChanges(*Source, 0);
+	const auto Replacement = Presentation->ClientMirrorEntities.FindChecked(State.SoldierId);
+	Presentation->FlushClientMirrorUpdates(0); Manager.FlushCommands();
+	TestFalse(TEXT("Old-generation entity is released"), Manager.IsEntityValid(Entity));
+	TestTrue(TEXT("New generation uses a different serial handle"), Entity != Replacement);
+	TestEqual(TEXT("Old deferred health cannot overwrite reused SoldierId"), Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Replacement).Health, 100.0f);
+	Source->ApplyAuthoritySnapshot({}, 2); Presentation->EnsureStableInstancePool(*Source); Manager.FlushCommands();
+	TestFalse(TEXT("Roster removal destroys mirror"), Manager.IsEntityValid(Replacement));
+	TestTrue(TEXT("Roster removal clears visual identity"), Presentation->SoldierInstanceHandles.IsEmpty());
+	States[0].SoldierId = FGuLiSoldierId(7); Source->ApplyAuthoritySnapshot(States, 2);
+	Presentation->EnsureStableInstancePool(*Source);
+	const auto Cancelled = Presentation->ClientMirrorEntities.FindChecked(States[0].SoldierId);
+	Presentation->FlushClientMirrorUpdates(0.02);
+	Source->ApplyAuthoritySnapshot({}, 2); Presentation->EnsureStableInstancePool(*Source); Manager.FlushCommands();
+	TestFalse(TEXT("Cancelled pending create releases reserved handle"), Manager.IsEntityValid(Cancelled));
+	World->DestroyWorld(false); GEngine->DestroyWorldContext(World);
+	return true;
+}
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FGuLiCommanderPresentationPerformanceRegistryTest,

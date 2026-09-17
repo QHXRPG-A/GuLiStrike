@@ -1,0 +1,4 @@
+TimingInsights.ExportThreads D:\UE5.7\test1\TestResults\CommanderPoseCompression\baseline-complete-2-n1200-c2\server\insights\threads.csv
+TimingInsights.ExportTimingEvents D:\UE5.7\test1\TestResults\CommanderPoseCompression\baseline-complete-2-n1200-c2\server\insights\events-project.csv -threads=GameThread -timers=*GuLi*,*EngineLoop*,UWorld_Tick -startTime=89.461247101 -endTime=119.461247101 -columns=ThreadId,TimerId,TimerName,StartTime,EndTime,Duration,Depth
+TimingInsights.ExportTimerStatistics D:\UE5.7\test1\TestResults\CommanderPoseCompression\baseline-complete-2-n1200-c2\server\insights\timers-gamethread.csv -threads=GameThread -startTime=89.461247101 -endTime=119.461247101 -sortBy=TotalInclusiveTime
+TimingInsights.ExportTimerStatistics D:\UE5.7\test1\TestResults\CommanderPoseCompression\baseline-complete-2-n1200-c2\server\insights\timers-gpu.csv -threads=GPU1,GPU2 -startTime=89.461247101 -endTime=119.461247101 -sortBy=TotalInclusiveTime

@@ -1,0 +1,30 @@
+{
+  "trace": "outputs\\commander-selection-20260831\\diagnostics\\prediction-baseline-20260916-000324-7868.csv",
+  "mouse_inputs": 3,
+  "mouse_input_times": [
+    173.897547,
+    174.269894,
+    174.591105
+  ],
+  "first_motion_after_mouse_ms": 345.69700000000125,
+  "motion_frames": 96,
+  "negative_x_frames": 12,
+  "positive_x_frames": 84,
+  "max_frame_step_cm": 203.34632002817284,
+  "max_frame_gap_ms": 62.57400000001212,
+  "last_2_seconds_max_step_cm": 0.008999999990919605,
+  "last_position": [
+    5800.0,
+    -187500.0,
+    -6720.0
+  ],
+  "has_prediction_begin_hook": false,
+  "legacy_dispatch_gate_applicable": false,
+  "reason": "Existing controller HandleMoveReadyToSend explicitly disables predicted displacement; input events in this legacy trace are BeginPredictedMove hooks. Do not re-enable the preexisting behavior as part of CPU optimization.",
+  "motion_measurement_threshold_cm": 1,
+  "authority_accepted_move_commands": [
+    1,
+    2,
+    3
+  ]
+}

@@ -1,0 +1,3339 @@
+--- before/Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.h
++++ after/Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.h
+@@ -8,6 +8,24 @@
+ #include "GuLiSoldierStateReplicator.generated.h"
+ 
+ DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierStatesChangedSignature, uint32);
++
++enum class EGuLiSoldierStateChange : uint8
++{
++	None = 0, Type = 1, Team = 2, Health = 4, Life = 8,
++	Order = 16, Displacement = 32, Phase = 64, All = 127
++};
++ENUM_CLASS_FLAGS(EGuLiSoldierStateChange);
++
++/** Native derived state only; never serialized or used as authority. */
++struct FGuLiSoldierRosterDelta
++{
++	TArray<FGuLiSoldierId> Added;
++	TArray<FGuLiSoldierId> Removed;
++	TMap<FGuLiSoldierId, EGuLiSoldierStateChange> Changed;
++	bool bReset = false;
++	bool IsEmpty() const { return !bReset && Added.IsEmpty() && Removed.IsEmpty() && Changed.IsEmpty(); }
++};
++DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierRosterDeltaSignature, const FGuLiSoldierRosterDelta&);
+ 
+ /**
+  * Reliable, always-relevant roster and gameplay state for the current Soldier population.
+@@ -24,6 +42,8 @@
+ 	AGuLiSoldierStateReplicator();
+ 
+ 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
++	virtual void PostNetReceive() override;
++	virtual void PostInitProperties() override;
+ 
+ 	/** Authority only. Applies one coherent roster capture and dirties changed items only. */
+ 	// 服务器本地应用同次捕获的名册；返回新增/修改/删除条目数，单独战局切换仍可能返回 0。
+@@ -33,6 +53,8 @@
+ 
+ 	// 读取本端当前副本；未找到返回 nullptr，客户端读取结果不代表服务器实时状态。
+ 	const FGuLiSoldierStateItem* FindSoldierState(FGuLiSoldierId SoldierId) const;
++	bool ContainsSoldier(FGuLiSoldierId SoldierId) const { return LocalSoldierStates.Contains(SoldierId); }
++	SIZE_T GetLocalCacheAllocatedSize() const { return LocalSoldierStates.GetAllocatedSize(); }
+ 	UFUNCTION(BlueprintPure, Category="Commander|Units")
+ 	TArray<FGuLiSoldierStateItem> GetAllSoldierStates() const;
+ 
+@@ -53,9 +75,15 @@
+ 	/** One batch notification per changed authority snapshot or replicated client revision. */
+ 	// 本地批量变更通知；不是网络多播，也不保证一次通知对应一次完整网络事务。
+ 	FGuLiSoldierStatesChangedSignature OnSoldierStatesChanged;
++	FGuLiSoldierRosterDeltaSignature OnRosterDelta;
+ 	FGuLiSoldierRemovalSignature& OnSoldiersRemoved() { return ReplicatedSoldiers.OnRemoved; }
+ 
+ private:
++	friend class FGuLiCommanderRosterCacheTest;
++	void ApplyLocalDelta(const TArray<FGuLiSoldierStateItem>& States, const TArray<FGuLiSoldierId>& Removed);
++	void RefreshLocalEpoch();
++	TMap<FGuLiSoldierId, FGuLiSoldierStateItem> LocalSoldierStates;
++	uint32 LocalCacheEpoch = 0;
+ 	int32 FindItemIndex(FGuLiSoldierId SoldierId) const;
+ 
+ 	UFUNCTION()
+--- before/Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.cpp
++++ after/Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.cpp
+@@ -3,6 +3,15 @@
+ #include "Commander/Network/GuLiSoldierStateReplicator.h"
+ 
+ #include "Net/UnrealNetwork.h"
++
++void AGuLiSoldierStateReplicator::PostInitProperties()
++{
++	Super::PostInitProperties();
++	if (!IsTemplate())
++	{
++		ReplicatedSoldiers.OnReceivedDelta.AddUObject(this, &ThisClass::ApplyLocalDelta);
++	}
++}
+ 
+ AGuLiSoldierStateReplicator::AGuLiSoldierStateReplicator()
+ {
+@@ -43,6 +52,7 @@
+ 	TSet<FGuLiSoldierId> SnapshotIds;
+ 	SnapshotIds.Reserve(InStates.Num());
+ 	int32 ChangedItemCount = 0;
++	TArray<FGuLiSoldierStateItem> ChangedStates;
+ 
+ 	for (const FGuLiSoldierStateItem& InState : InStates)
+ 	{
+@@ -76,10 +86,14 @@
+ 
+ 			// 新增条目需 MarkItemDirty 分配/更新 FastArray 复制标识；业务 SoldierId 与内部复制 ID 不同。
+ 			ReplicatedSoldiers.MarkItemDirty(NewItem);
++			ChangedStates.Add(NewItem);
+ 			++ChangedItemCount;
+ 			continue;
+ 		}
+ 
++		// DisplacementYaw is filled from live facing by the authority snapshot.
++		// Ordinary turning must not dirty the reliable roster; a new displacement
++		// frame floor carries its yaw with the rest of that discrete event.
+ 		FGuLiSoldierStateItem& ExistingItem = ReplicatedSoldiers.Items[ExistingIndex];
+ 		if (ExistingItem.Team == SanitizedState.Team
+ 			&& ExistingItem.UnitTypeId == SanitizedState.UnitTypeId
+@@ -87,7 +101,12 @@
+ 			&& ExistingItem.Health == SanitizedState.Health
+ 			&& ExistingItem.MaxHealth == SanitizedState.MaxHealth
+ 			&& ExistingItem.StateRevision == SanitizedState.StateRevision
+-			&& ExistingItem.ActiveOrderId == SanitizedState.ActiveOrderId)
++			&& ExistingItem.ActiveOrderId == SanitizedState.ActiveOrderId
++			&& ExistingItem.bPhased == SanitizedState.bPhased
++			&& ExistingItem.bExternalActionsLocked == SanitizedState.bExternalActionsLocked
++			&& ExistingItem.DisplacementFrameFloor == SanitizedState.DisplacementFrameFloor
++			&& ExistingItem.DisplacementLocation == SanitizedState.DisplacementLocation
++			&& ExistingItem.DisplacementSimulationTime == SanitizedState.DisplacementSimulationTime)
+ 		{
+ 			continue;
+ 		}
+@@ -108,6 +127,7 @@
+ 
+ 		// 只给变化条目标脏，静止不变的离散状态不随每次姿态捕获重复发送。
+ 		ReplicatedSoldiers.MarkItemDirty(ExistingItem);
++		ChangedStates.Add(ExistingItem);
+ 		++ChangedItemCount;
+ 	}
+ 
+@@ -134,6 +154,7 @@
+ 	}
+ 	if (ChangedItemCount > 0 || bEpochChanged)
+ 	{
++		ApplyLocalDelta(ChangedStates, RemovedIds);
+ 		++SnapshotRevision;
+ 		if (SnapshotRevision == 0u)
+ 		{
+@@ -154,8 +175,67 @@
+ const FGuLiSoldierStateItem* AGuLiSoldierStateReplicator::FindSoldierState(
+ 	const FGuLiSoldierId SoldierId) const
+ {
+-	const int32 Index = FindItemIndex(SoldierId);
+-	return Index != INDEX_NONE ? &ReplicatedSoldiers.Items[Index] : nullptr;
++	return LocalSoldierStates.Find(SoldierId);
++}
++
++void AGuLiSoldierStateReplicator::PostNetReceive()
++{
++	Super::PostNetReceive();
++	RefreshLocalEpoch();
++}
++
++void AGuLiSoldierStateReplicator::RefreshLocalEpoch()
++{
++	if (LocalCacheEpoch == SnapshotMatchEpoch) return;
++	LocalCacheEpoch = SnapshotMatchEpoch;
++	LocalSoldierStates.Reset();
++	LocalSoldierStates.Reserve(ReplicatedSoldiers.Items.Num());
++	FGuLiSoldierRosterDelta Delta;
++	Delta.bReset = true;
++	for (const FGuLiSoldierStateItem& State : ReplicatedSoldiers.Items)
++	{
++		if (!State.SoldierId.IsValid()) continue;
++		LocalSoldierStates.Add(State.SoldierId, State);
++		Delta.Added.Add(State.SoldierId);
++	}
++	OnRosterDelta.Broadcast(Delta);
++}
++
++void AGuLiSoldierStateReplicator::ApplyLocalDelta(
++	const TArray<FGuLiSoldierStateItem>& States, const TArray<FGuLiSoldierId>& Removed)
++{
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderRoster_ApplyDelta);
++	RefreshLocalEpoch();
++	FGuLiSoldierRosterDelta Delta;
++	for (const FGuLiSoldierId Id : Removed)
++	{
++		if (LocalSoldierStates.Remove(Id)) Delta.Removed.Add(Id);
++	}
++	for (const FGuLiSoldierStateItem& State : States)
++	{
++		if (!State.SoldierId.IsValid()) continue;
++		const FGuLiSoldierStateItem* Previous = LocalSoldierStates.Find(State.SoldierId);
++		if (!Previous)
++		{
++			Delta.Added.Add(State.SoldierId);
++		}
++		else
++		{
++			EGuLiSoldierStateChange Flags = EGuLiSoldierStateChange::None;
++			if (Previous->UnitTypeId != State.UnitTypeId) Flags |= EGuLiSoldierStateChange::Type;
++			if (Previous->Team != State.Team) Flags |= EGuLiSoldierStateChange::Team;
++			if (Previous->Health != State.Health || Previous->MaxHealth != State.MaxHealth) Flags |= EGuLiSoldierStateChange::Health;
++			if (Previous->LifeState != State.LifeState || Previous->IsAlive() != State.IsAlive()) Flags |= EGuLiSoldierStateChange::Life;
++			if (Previous->ActiveOrderId != State.ActiveOrderId) Flags |= EGuLiSoldierStateChange::Order;
++			if (Previous->bPhased != State.bPhased || Previous->bExternalActionsLocked != State.bExternalActionsLocked) Flags |= EGuLiSoldierStateChange::Phase;
++			if (Previous->DisplacementFrameFloor != State.DisplacementFrameFloor
++				|| Previous->DisplacementLocation != State.DisplacementLocation
++				|| Previous->DisplacementSimulationTime != State.DisplacementSimulationTime) Flags |= EGuLiSoldierStateChange::Displacement;
++			if (Flags != EGuLiSoldierStateChange::None) Delta.Changed.FindOrAdd(State.SoldierId) |= Flags;
++		}
++		LocalSoldierStates.Add(State.SoldierId, State);
++	}
++	if (!Delta.IsEmpty()) OnRosterDelta.Broadcast(Delta);
+ }
+ 
+ TArray<FGuLiSoldierStateItem> AGuLiSoldierStateReplicator::GetAllSoldierStates() const
+--- before/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h
++++ after/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h
+@@ -466,7 +466,13 @@
+ 
+ 	// Native notification carries the identities before FastArray erases them.
+ 	FGuLiSoldierRemovalSignature OnRemoved;
++	// Local-only, value snapshots: FastArray indices cease to be valid after callbacks.
++	DECLARE_MULTICAST_DELEGATE_TwoParams(FReceivedDelta, const TArray<FGuLiSoldierStateItem>&, const TArray<FGuLiSoldierId>&);
++	FReceivedDelta OnReceivedDelta;
+ 	void PreReplicatedRemove(const TArrayView<int32> RemovedIndices, int32 FinalSize);
++	void PostReplicatedAdd(const TArrayView<int32>& AddedIndices, int32 FinalSize);
++	void PostReplicatedChange(const TArrayView<int32>& ChangedIndices, int32 FinalSize);
++	void PostReplicatedReceive(const FFastArraySerializer::FPostReplicatedReceiveParameters& Parameters);
+ 
+ 	// UE 增量序列化入口，由 WithNetDeltaSerializer 接入；脏标记由 Replicator 维护。
+ 	bool NetDeltaSerialize(FNetDeltaSerializeInfo& DeltaParams)
+@@ -479,6 +485,10 @@
+ 	void Sanitize();
+ 	const FGuLiSoldierStateItem* Find(FGuLiSoldierId SoldierId) const;
+ 	FGuLiSoldierStateItem* FindMutable(FGuLiSoldierId SoldierId);
++
++private:
++	TArray<FGuLiSoldierStateItem> PendingReceivedStates;
++	TArray<FGuLiSoldierId> PendingRemovedIds;
+ };
+ 
+ template <>
+--- before/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp
++++ after/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp
+@@ -831,5 +831,26 @@
+ 	TArray<FGuLiSoldierId> Removed;
+ 	Removed.Reserve(RemovedIndices.Num());
+ 	for (int32 Index : RemovedIndices) Removed.Add(Items[Index].SoldierId);
++	PendingRemovedIds.Append(Removed);
+ 	OnRemoved.Broadcast(Removed);
+ }
++
++void FGuLiSoldierStateFastArray::PostReplicatedAdd(const TArrayView<int32>& AddedIndices, int32 FinalSize)
++{
++	for (const int32 Index : AddedIndices) PendingReceivedStates.Add(Items[Index]);
++}
++
++void FGuLiSoldierStateFastArray::PostReplicatedChange(const TArrayView<int32>& ChangedIndices, int32 FinalSize)
++{
++	for (const int32 Index : ChangedIndices) PendingReceivedStates.Add(Items[Index]);
++}
++
++void FGuLiSoldierStateFastArray::PostReplicatedReceive(const FFastArraySerializer::FPostReplicatedReceiveParameters& Parameters)
++{
++	if (!PendingReceivedStates.IsEmpty() || !PendingRemovedIds.IsEmpty())
++	{
++		OnReceivedDelta.Broadcast(PendingReceivedStates, PendingRemovedIds);
++		PendingReceivedStates.Reset();
++		PendingRemovedIds.Reset();
++	}
++}
+--- before/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h
++++ after/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h
+@@ -3,8 +3,10 @@
+ #pragma once
+ 
+ #include "CoreMinimal.h"
++#include "HAL/ThreadSafeBool.h"
+ #include "Commander/Network/GuLiCommanderTypes.h"
+ #include "Commander/Presentation/GuLiCommanderPresentationPerformanceSettings.h"
++#include "Commander/Presentation/GuLiCommanderRefreshCadence.h"
+ #include "GameFramework/Actor.h"
+ #include "MassArchetypeTypes.h"
+ #include "MassEntityHandle.h"
+@@ -20,6 +22,16 @@
+ class UMassEntitySubsystem;
+ class USceneComponent;
+ class UStaticMesh;
++struct FGuLiSoldierRosterDelta;
++
++DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiCommanderVisualStatesChanged, const TArray<FGuLiSoldierId>&);
++
++struct FGuLiCommanderMirrorCreate
++{
++	FMassEntityHandle Entity;
++	FGuLiSoldierStateItem State;
++	TSharedPtr<FThreadSafeBool, ESPMode::ThreadSafe> Live;
++};
+ 
+ /** One decoded authoritative sample in world coordinates, ready for interpolation. */
+ // 本地解压后的带时间戳样本；SampleIndex/ChunkIndex 留作诊断，位置已恢复到世界坐标。
+@@ -125,6 +137,7 @@
+ /** Non-UObject state owned by one UnitTypeId ISM batch. */
+ struct FGuLiCommanderUnitInstanceBatchState
+ {
++	TArray<int32> DirtyTransformSlots;
+ 	TArray<FTransform> CachedTransforms;
+ 	TArray<int32> FreeInstanceIndices;
+ };
+@@ -209,6 +222,7 @@
+ 	bool TryGetPresentedSoldierTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
+ 	/** Same timestamp used by the hit-white overlay; no independent health-delta detector in the HUD. */
+ 	float GetSoldierHitStartTime(FGuLiSoldierId SoldierId) const;
++	FGuLiCommanderVisualStatesChanged OnVisualStatesChanged;
+ 
+ 	/**
+ 	 * Returns the accepted-pose timeline result before local command prediction is applied.
+@@ -292,6 +306,9 @@
+ private:
+ #if WITH_DEV_AUTOMATION_TESTS
+ 	friend class FGuLiCommanderUnitTypeBatchRoutingTest;
++	friend class FGuLiCommanderClientMaintenanceTest;
++	friend class FGuLiCommanderHealthBarActivityTest;
++	friend class FGuLiCommanderMiniMapCacheTest;
+ #endif
+ 
+ 	void InitializePresentationPerformanceSettings();
+@@ -329,14 +346,18 @@
+ 	// 本地创建仅含身份/生命/变换的 Mass 镜像；Dedicated Server 不创建，不接入客户端移动模拟。
+ 	bool EnsureClientMirrorArchetype();
+ 	void EnsureClientMirrorEntity(const FGuLiSoldierStateItem& ReliableState);
+-	void UpdateClientMirrorEntity(
+-		const FGuLiSoldierStateItem& ReliableState,
+-		const FTransform* PresentedTransform);
++	void FlushClientMirrorUpdates(double Now);
+ 	void DestroyClientMirrorEntities();
+ 	void ResetNetworkPresentationState();
+ 	// 每 Tick 只检查来源/就绪边沿；失效时一次性清样本与镜像，保留稳定 ISM 槽位。
+ 	bool UpdateNetworkPresentationSource(AGuLiSoldierStateReplicator* Replicator);
+-	void EnsureStableInstancePool(const AGuLiSoldierStateReplicator& Replicator);
++	void EnsureStableInstancePool(AGuLiSoldierStateReplicator& Replicator);
++	void MaintainInstancePool(AGuLiSoldierStateReplicator& Replicator, bool bMaintenanceDue);
++	void BindRosterSource(AGuLiSoldierStateReplicator* Replicator);
++	void HandleRosterDelta(const FGuLiSoldierRosterDelta& Delta);
++	void HandleSelectionChanged(const FGuLiCommanderSelectionState& Selection);
++	void ApplyReliableStateChanges(const AGuLiSoldierStateReplicator& Replicator, double Now);
++	void HideInstancePool();
+ 	void RebuildLocalInstances(float DeltaSeconds);
+ 	FTransform BuildRingTransform(const FTransform& SoldierTransform) const;
+ 	static bool IsAckResultAccepted(EGuLiCommandAckResult Result);
+@@ -455,6 +476,29 @@
+ 	FMassArchetypeHandle ClientMirrorArchetype;
+ 	// SoldierId 到本地实体句柄的映射；两端 FMassEntityHandle 不相同，不能当网络身份发送。
+ 	TMap<FGuLiSoldierId, FMassEntityHandle> ClientMirrorEntities;
++	TMap<FGuLiSoldierId, TSharedPtr<FThreadSafeBool, ESPMode::ThreadSafe>> MirrorLiveTokens;
++	TArray<FGuLiCommanderMirrorCreate> PendingMirrorCreates;
++	TSet<FGuLiSoldierId> PendingMirrorStates;
++	TSet<FGuLiSoldierId> PendingMirrorTransforms;
++	TSet<FGuLiSoldierId> PendingPoolIds;
++	TSet<FGuLiSoldierId> RetryPoolIds;
++	TSet<FGuLiSoldierId> PendingRemovedIds;
++	TSet<FGuLiSoldierId> PendingStateIds;
++	TSet<FGuLiSoldierId> PendingVisualChangeIds;
++	TSet<FGuLiSoldierId> PendingDestructionIds;
++	TSet<FGuLiSoldierId> DirtyRingColorIds;
++	TSet<FGuLiSoldierId> SelectedSoldiers;
++	TWeakObjectPtr<AGuLiSoldierStateReplicator> BoundRosterSource;
++	TWeakObjectPtr<UGuLiCommanderNetSyncComponent> BoundSelectionSource;
++	FDelegateHandle RosterDeltaHandle;
++	FDelegateHandle SelectionChangedHandle;
++	FGuLiCommanderRefreshCadence MaintenanceCadence;
++	FGuLiCommanderRefreshCadence MirrorCadence;
++	FGuLiCommanderRefreshCadence ReplicatorResolveCadence;
++	FGuLiCommanderRefreshCadence ControllerResolveCadence;
++	bool bReconcilePool = true;
++	bool bPoolChangesPending = false;
++	TArray<int32> DirtyRingTransformSlots;
+ 	TMap<FGuLiSoldierId, FGuLiCommanderSoldierInstanceHandle> SoldierInstanceHandles;
+ 	TArray<int32> FreeRingInstanceIndices;
+ 	TMap<uint16, FGuLiCommanderUnitInstanceBatchState> UnitInstanceBatchStates;
+--- before/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp
++++ after/Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp
+@@ -41,6 +41,19 @@
+ 
+ namespace GuLiCommanderPresentation
+ {
++	void DeferMirrorDestruction(FMassEntityManager& Manager, TArray<FMassEntityHandle>&& Entities)
++	{
++		Manager.Defer().PushCommand<FMassDeferredDestroyCommand>(
++			[Retired = MoveTemp(Entities)](FMassEntityManager& Target)
++			{
++				TArray<FMassEntityHandle> Valid;
++				for (const auto Entity : Retired) if (Target.IsEntityValid(Entity)) Valid.Add(Entity);
++				// The standard chunk command requires an archetype. Cancelled creations
++				// only reserve a handle; the handle-based API releases those safely too.
++				if (!Valid.IsEmpty()) Target.BatchDestroyEntities(Valid);
++			});
++	}
++
+ 	constexpr int32 InitialPresentedSoldierCapacity = 500;
+ 	constexpr int32 MaximumBufferedPoseSamples = 8;
+ 	constexpr float MaximumClockRoundTripMilliseconds = 500.0f;
+@@ -526,7 +539,6 @@
+ 	Component->UpdateInstanceTransform(InstanceIndex, HiddenTransform, true, false, false);
+ 	BatchState->CachedTransforms[InstanceIndex] = HiddenTransform;
+ 	BatchState->FreeInstanceIndices.AddUnique(InstanceIndex);
+-	Component->MarkRenderStateDirty();
+ }
+ 
+ TArray<FGuLiCommanderPresentationSettingView>
+@@ -686,6 +698,8 @@
+ 		StopPredictionTrace(Output);
+ 	}
+ #endif
++	BindRosterSource(nullptr);
++	if (auto* Old = BoundSelectionSource.Get()) Old->OnSelectionChanged.Remove(SelectionChangedHandle);
+ 	DestroyClientMirrorEntities();
+ 	Super::EndPlay(EndPlayReason);
+ }
+@@ -1268,6 +1282,7 @@
+ 	{
+ 		return nullptr;
+ 	}
++	if (!ReplicatorResolveCadence.Consume(GetWorld()->GetTimeSeconds())) return nullptr;
+ 	for (TActorIterator<AGuLiSoldierStateReplicator> It(GetWorld()); It; ++It)
+ 	{
+ 		StateReplicator = *It;
+@@ -1289,6 +1304,7 @@
+ 	{
+ 		return nullptr;
+ 	}
++	if (!ControllerResolveCadence.Consume(GetWorld()->GetTimeSeconds())) return nullptr;
+ 	for (FConstPlayerControllerIterator It = GetWorld()->GetPlayerControllerIterator(); It; ++It)
+ 	{
+ 		if (APlayerController* Candidate = Cast<APlayerController>(It->Get()))
+@@ -1444,7 +1460,7 @@
+ 	for (int32 SampleIndex = 0; SampleIndex < Chunk.Samples.Num(); ++SampleIndex)
+ 	{
+ 		const FGuLiQuantizedSoldierPose& QuantizedPose = Chunk.Samples[SampleIndex];
+-		if (!Replicator->FindSoldierState(QuantizedPose.SoldierId))
++		if (!Replicator->ContainsSoldier(QuantizedPose.SoldierId))
+ 		{
+ 			// A lossy transform packet cannot create a reliable Soldier identity.
+ 			continue;
+@@ -1846,144 +1862,121 @@
+ 	return true;
+ }
+ 
+-void AGuLiCommanderPresentationActor::EnsureClientMirrorEntity(
+-	const FGuLiSoldierStateItem& ReliableState)
+-{
+-	if (!ReliableState.SoldierId.IsValid() || !EnsureClientMirrorArchetype())
+-	{
+-		return;
+-	}
+-
+-	UMassEntitySubsystem* MassSubsystem = ClientMirrorMassSubsystem.Get();
+-	if (!MassSubsystem)
+-	{
+-		return;
+-	}
+-	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
+-	if (const FMassEntityHandle* Existing = ClientMirrorEntities.Find(ReliableState.SoldierId))
+-	{
+-		if (EntityManager.IsEntityValid(*Existing))
+-		{
+-			return;
+-		}
+-		ClientMirrorEntities.Remove(ReliableState.SoldierId);
+-	}
+-
+-	const FMassEntityHandle ReservedEntity = EntityManager.ReserveEntity();
+-	if (!EntityManager.IsEntityValid(ReservedEntity))
+-	{
+-		return;
+-	}
+-
+-	const FGuLiSoldierId SoldierId = ReliableState.SoldierId;
+-	const EGuLiTeam Team = ReliableState.Team;
+-	const float HealthValue = ReliableState.Health;
+-	const bool bDead = !ReliableState.IsAlive();
+-	const bool bPhased = ReliableState.bPhased;
+-	const FMassArchetypeHandle Archetype = ClientMirrorArchetype;
+-	ClientMirrorEntities.Add(SoldierId, ReservedEntity);
+-	// Replication callbacks and presentation ticks can overlap parallel Mass phases.
+-	// Reserve synchronously so the map has a stable handle, then build and initialize it
+-	// through the default command buffer at the next Mass-safe boundary.
+-	EntityManager.Defer().PushCommand<FMassDeferredCreateCommand>(
+-		[ReservedEntity, Archetype, SoldierId, Team, HealthValue, bDead, bPhased](
+-			FMassEntityManager& Manager)
+-		{
+-			if (!Manager.IsEntityReserved(ReservedEntity) || !Archetype.IsValid())
+-			{
+-				return;
+-			}
+-			Manager.BuildEntity(ReservedEntity, Archetype);
+-			FGuLiMassIdentityFragment& Identity =
+-				Manager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(ReservedEntity);
+-			Identity.SoldierId = SoldierId;
+-			Identity.Team = Team;
+-			FGuLiMassHealthFragment& Health =
+-				Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(ReservedEntity);
+-			Health.Health = HealthValue;
+-			Health.bDead = bDead;
+-			Health.bPhased = bPhased;
+-			Health.WreckSecondsRemaining = 0.0f;
+-			Manager.GetFragmentDataChecked<FTransformFragment>(ReservedEntity)
+-				.SetTransform(FTransform::Identity);
++void AGuLiCommanderPresentationActor::EnsureClientMirrorEntity(const FGuLiSoldierStateItem& State)
++{
++	if (!State.SoldierId.IsValid() || !EnsureClientMirrorArchetype()) return;
++	auto& Manager = ClientMirrorMassSubsystem->GetMutableEntityManager();
++	if (const auto* Existing = ClientMirrorEntities.Find(State.SoldierId))
++		if (Manager.IsEntityValid(*Existing)) return;
++	if (auto* PreviousLive = MirrorLiveTokens.Find(State.SoldierId)) **PreviousLive = false;
++	const auto Entity = Manager.ReserveEntity();
++	if (!Manager.IsEntityValid(Entity)) return;
++	auto Live = MakeShared<FThreadSafeBool, ESPMode::ThreadSafe>(true);
++	ClientMirrorEntities.Add(State.SoldierId, Entity);
++	MirrorLiveTokens.Add(State.SoldierId, Live);
++	PendingMirrorCreates.Add({Entity, State, Live});
++	PendingMirrorStates.Add(State.SoldierId);
++	PendingMirrorTransforms.Add(State.SoldierId);
++}
++
++void AGuLiCommanderPresentationActor::FlushClientMirrorUpdates(double Now)
++{
++	if (!ClientMirrorMassSubsystem.IsValid()) return;
++	auto& Manager = ClientMirrorMassSubsystem->GetMutableEntityManager();
++	if (!PendingMirrorCreates.IsEmpty())
++	{
++		const auto Archetype = ClientMirrorArchetype;
++		Manager.Defer().PushCommand<FMassDeferredCreateCommand>(
++			[Creates = MoveTemp(PendingMirrorCreates), Archetype](FMassEntityManager& Target)
++			{
++				for (const auto& Row : Creates)
++				{
++					if (!*Row.Live || !Archetype.IsValid() || !Target.IsEntityReserved(Row.Entity)) continue;
++					Target.BuildEntity(Row.Entity, Archetype);
++					auto& Identity = Target.GetFragmentDataChecked<FGuLiMassIdentityFragment>(Row.Entity);
++					Identity.SoldierId = Row.State.SoldierId; Identity.Team = Row.State.Team;
++					auto& Health = Target.GetFragmentDataChecked<FGuLiMassHealthFragment>(Row.Entity);
++					Health.Health = Row.State.Health; Health.bDead = !Row.State.IsAlive(); Health.bPhased = Row.State.bPhased;
++					Health.WreckSecondsRemaining = 0.0f;
++					Target.GetFragmentDataChecked<FTransformFragment>(Row.Entity).SetTransform(FTransform::Identity);
++				}
++			});
++		PendingMirrorCreates.Reset();
++	}
++	const bool bSampleTransforms = MirrorCadence.Consume(Now);
++	TRACE_CPUPROFILER_EVENT_SCOPE_CONDITIONAL(GuLiCommanderPresentation_MassPositionSample, bSampleTransforms);
++	if (!bSampleTransforms && PendingMirrorStates.IsEmpty() && PendingMirrorTransforms.IsEmpty()) return;
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_MassBatchSubmit);
++	struct FUpdate
++	{
++		FMassEntityHandle Entity;
++		FGuLiSoldierId Id;
++		TSharedPtr<FThreadSafeBool, ESPMode::ThreadSafe> Live;
++		FTransform Transform;
++		EGuLiTeam Team;
++		float Health, WreckRemaining;
++		bool bState, bTransform, bDead, bPhased;
++	};
++	TArray<FGuLiSoldierId> Ids;
++	if (bSampleTransforms) ClientMirrorEntities.GetKeys(Ids);
++	else
++	{
++		TSet<FGuLiSoldierId> Dirty = PendingMirrorStates; Dirty.Append(PendingMirrorTransforms);
++		Ids = Dirty.Array();
++	}
++	TArray<FUpdate> Updates;
++	Updates.Reserve(Ids.Num());
++	const auto* Replicator = BoundRosterSource.Get();
++	if (!Replicator) return;
++	for (const auto Id : Ids)
++	{
++		const auto* Entity = ClientMirrorEntities.Find(Id);
++		const auto* State = Replicator->FindSoldierState(Id);
++		if (!Entity || !State) { PendingMirrorStates.Remove(Id); PendingMirrorTransforms.Remove(Id); continue; }
++		if (!Manager.IsEntityActive(*Entity))
++		{
++			if (!Manager.IsEntityValid(*Entity)) { PendingPoolIds.Add(Id); bPoolChangesPending = true; }
++			continue;
++		}
++		const auto* Soldier = PresentedSoldiers.Find(Id);
++		const auto* Expire = WreckExpireTimes.Find(Id);
++		const bool bState = PendingMirrorStates.Contains(Id);
++		Updates.Add({*Entity, Id, MirrorLiveTokens.FindChecked(Id),
++			Soldier ? Soldier->PresentedTransform : FTransform::Identity, State->Team, State->Health,
++			Expire ? float(FMath::Max(0.0, *Expire - Now)) : 0.0f,
++			bState, (bSampleTransforms || PendingMirrorTransforms.Contains(Id)) && Soldier && Soldier->bHasPresentedTransform, !State->IsAlive(), State->bPhased});
++		PendingMirrorStates.Remove(Id);
++		if (Soldier && Soldier->bHasPresentedTransform) PendingMirrorTransforms.Remove(Id);
++	}
++	if (Updates.IsEmpty()) return;
++	Manager.Defer().PushCommand<FMassDeferredSetCommand>(
++		[Rows = MoveTemp(Updates)](FMassEntityManager& Target)
++		{
++			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_MassBatchExecute);
++			for (const auto& Row : Rows)
++			{
++				if (!*Row.Live || !Target.IsEntityActive(Row.Entity)) continue;
++				auto& Identity = Target.GetFragmentDataChecked<FGuLiMassIdentityFragment>(Row.Entity);
++				if (Identity.SoldierId != Row.Id) continue;
++				if (Row.bState || Row.bDead)
++				{
++					auto& Health = Target.GetFragmentDataChecked<FGuLiMassHealthFragment>(Row.Entity);
++					if (Row.bState)
++					{
++						Identity.Team = Row.Team; Health.Health = Row.Health;
++						Health.bDead = Row.bDead; Health.bPhased = Row.bPhased;
++					}
++					Health.WreckSecondsRemaining = Row.WreckRemaining;
++				}
++				if (Row.bTransform) Target.GetFragmentDataChecked<FTransformFragment>(Row.Entity).SetTransform(Row.Transform);
++			}
+ 		});
+ }
+ 
+-void AGuLiCommanderPresentationActor::UpdateClientMirrorEntity(
+-	const FGuLiSoldierStateItem& ReliableState,
+-	const FTransform* PresentedTransform)
+-{
+-	EnsureClientMirrorEntity(ReliableState);
+-	UMassEntitySubsystem* MassSubsystem = ClientMirrorMassSubsystem.Get();
+-	FMassEntityHandle* Entity = ClientMirrorEntities.Find(ReliableState.SoldierId);
+-	if (!MassSubsystem || !Entity)
+-	{
+-		return;
+-	}
+-
+-	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
+-	if (!EntityManager.IsEntityValid(*Entity))
+-	{
+-		ClientMirrorEntities.Remove(ReliableState.SoldierId);
+-		return;
+-	}
+-	if (!EntityManager.IsEntityActive(*Entity))
+-	{
+-		// The reserved handle is waiting for the deferred create boundary. The next
+-		// presentation tick will enqueue the newest state after it becomes active.
+-		return;
+-	}
+-
+-	float WreckSecondsRemaining = 0.0f;
+-	const bool bDead = !ReliableState.IsAlive();
+-	const bool bPhased = ReliableState.bPhased;
+-	if (bDead && GetWorld())
+-	{
+-		if (const double* ExpireTime = WreckExpireTimes.Find(ReliableState.SoldierId))
+-		{
+-			WreckSecondsRemaining = static_cast<float>(FMath::Max(
+-				0.0,
+-				*ExpireTime - static_cast<double>(GetWorld()->GetTimeSeconds())));
+-		}
+-	}
+-	const FMassEntityHandle TargetEntity = *Entity;
+-	const FGuLiSoldierId SoldierId = ReliableState.SoldierId;
+-	const EGuLiTeam Team = ReliableState.Team;
+-	const float HealthValue = ReliableState.Health;
+-	const bool bHasPresentedTransform = PresentedTransform != nullptr;
+-	const FTransform PendingTransform = PresentedTransform
+-		? *PresentedTransform
+-		: FTransform::Identity;
+-	EntityManager.Defer().PushCommand<FMassDeferredSetCommand>(
+-		[TargetEntity, SoldierId, Team, HealthValue, bDead, bPhased, WreckSecondsRemaining,
+-			bHasPresentedTransform, PendingTransform](FMassEntityManager& Manager)
+-		{
+-			if (!Manager.IsEntityActive(TargetEntity))
+-			{
+-				return;
+-			}
+-			FGuLiMassIdentityFragment& Identity =
+-				Manager.GetFragmentDataChecked<FGuLiMassIdentityFragment>(TargetEntity);
+-			Identity.SoldierId = SoldierId;
+-			Identity.Team = Team;
+-			FGuLiMassHealthFragment& Health =
+-				Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(TargetEntity);
+-			Health.Health = HealthValue;
+-			Health.bDead = bDead;
+-			Health.bPhased = bPhased;
+-			Health.WreckSecondsRemaining = WreckSecondsRemaining;
+-			if (bHasPresentedTransform)
+-			{
+-				// Client mirrors have no simulation fragments; presentation is their sole
+-				// Transform writer, committed at a Mass-safe command-buffer boundary.
+-				Manager.GetFragmentDataChecked<FTransformFragment>(TargetEntity)
+-					.SetTransform(PendingTransform);
+-			}
+-		});
+-}
+-
+ void AGuLiCommanderPresentationActor::DestroyClientMirrorEntities()
+ {
++	for (auto& Pair : MirrorLiveTokens) *Pair.Value = false;
++	MirrorLiveTokens.Reset(); PendingMirrorCreates.Reset(); PendingMirrorStates.Reset(); PendingMirrorTransforms.Reset();
+ 	if (UMassEntitySubsystem* MassSubsystem = ClientMirrorMassSubsystem.Get())
+ 	{
+ 		FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
+@@ -1998,7 +1991,7 @@
+ 		}
+ 		if (!ValidEntities.IsEmpty())
+ 		{
+-			EntityManager.Defer().DestroyEntities(MoveTemp(ValidEntities));
++			GuLiCommanderPresentation::DeferMirrorDestruction(EntityManager, MoveTemp(ValidEntities));
+ 		}
+ 	}
+ 
+@@ -2010,6 +2003,10 @@
+ // 同步代次变化时丢弃旧样本、预测和时钟，防止把新战局数据接到旧时间线上。
+ void AGuLiCommanderPresentationActor::ResetNetworkPresentationState()
+ {
++	HideInstancePool();
++	PendingStateIds.Reset(); PendingDestructionIds.Reset(); PendingVisualChangeIds.Reset();
++	PendingPoolIds.Reset(); RetryPoolIds.Reset(); PendingRemovedIds.Reset();
++	MaintenanceCadence.Reset(); MirrorCadence.Reset();
+ 	UpdatePhasedInstances({});
+ 	UpdateHitFlashInstances({}, {});
+ 	UpdateWreckInstances({});
+@@ -2059,6 +2056,11 @@
+ 	CurrentAuthorityEpoch = 0u;
+ 	bServerClockInitialized = false;
+ 	bLatestClockRoundTripFromConnectionStats = false;
++	if (OnVisualStatesChanged.IsBound())
++	{
++		TArray<FGuLiSoldierId> ResetIds; PresentedSoldiers.GetKeys(ResetIds);
++		OnVisualStatesChanged.Broadcast(ResetIds);
++	}
+ }
+ 
+ bool AGuLiCommanderPresentationActor::UpdateNetworkPresentationSource(
+@@ -2085,14 +2087,25 @@
+ 	if (bSourceChanged || bObservedSoldierStreamReady != bStreamReady)
+ 	{
+ 		// 同一 SoldierId 可在新战局复用；新姿态未到时也不能继续旧样本、预测或 Mass 镜像。
++		BindRosterSource(Replicator);
+ 		ResetNetworkPresentationState();
+ 		DestroyClientMirrorEntities();
++		bReconcilePool = true;
+ 		SetUnitInstanceBatchesVisibility(false);
+ 		if (RingInstances)
+ 		{
+ 			RingInstances->SetVisibility(false);
+ 		}
+ 		bNetworkPresentationHidden = true;
++		if (auto* Old = BoundSelectionSource.Get()) Old->OnSelectionChanged.Remove(SelectionChangedHandle);
++		BoundSelectionSource = NetSync;
++		SelectionChangedHandle.Reset();
++		if (NetSync)
++		{
++			SelectionChangedHandle = NetSync->OnSelectionChanged.AddUObject(this, &ThisClass::HandleSelectionChanged);
++			HandleSelectionChanged(NetSync->GetSelectionState());
++		}
++		else HandleSelectionChanged(FGuLiCommanderSelectionState());
+ 		ObservedNetSyncComponent = NetSync;
+ 		ObservedPlayerState = BattlePlayerState;
+ 		ObservedStateReplicator = Replicator;
+@@ -2104,229 +2117,61 @@
+ 	return bStreamReady;
+ }
+ 
+-void AGuLiCommanderPresentationActor::EnsureStableInstancePool(
+-	const AGuLiSoldierStateReplicator& Replicator)
+-{
+-	if (UnitInstancesByType.IsEmpty() || !RingInstances)
+-	{
+-		return;
+-	}
+-
+-	if (!bUnitBatchCapacityReserved)
+-	{
+-		TMap<uint16, int32> CountsByBatch;
+-		for (const FGuLiSoldierStateItem& State : Replicator.GetItems())
+-		{
+-			int32& Count = CountsByBatch.FindOrAdd(
+-				ResolveUnitBatchTypeId(State.UnitTypeId));
+-			++Count;
+-		}
+-		for (const TPair<uint16, int32>& Pair : CountsByBatch)
+-		{
+-			if (UInstancedStaticMeshComponent* Component = FindUnitInstances(Pair.Key))
+-			{
+-				Component->PreAllocateInstancesMemory(Pair.Value);
+-			}
+-		}
+-		bUnitBatchCapacityReserved = true;
+-	}
+-
+-	TArray<const FGuLiSoldierStateItem*> NewSoldierStates;
+-	TSet<FGuLiSoldierId> CurrentIds;
+-	for (const auto& State : Replicator.GetItems()) CurrentIds.Add(State.SoldierId);
+-	TArray<FMassEntityHandle> RetiredEntities;
+-	for (auto It = SoldierInstanceHandles.CreateIterator(); It; ++It)
+-	{
+-		if (CurrentIds.Contains(It.Key())) continue;
+-		const auto Handle = It.Value();
+-		ReleaseUnitInstanceSlot(Handle.BatchUnitTypeId,Handle.UnitInstanceIndex);
+-		FreeRingInstanceIndices.Add(Handle.RingInstanceIndex);
+-		if (const auto* Entity = ClientMirrorEntities.Find(It.Key())) RetiredEntities.Add(*Entity);
+-		ClientMirrorEntities.Remove(It.Key()); WreckExpireTimes.Remove(It.Key()); PredictedMoves.Remove(It.Key());
+-		It.RemoveCurrent();
+-	}
+-	if (!RetiredEntities.IsEmpty())
+-		ClientMirrorMassSubsystem->GetMutableEntityManager().Defer().DestroyEntities(MoveTemp(RetiredEntities));
+-	for (auto It = PresentedSoldiers.CreateIterator(); It; ++It)
+-		if (!CurrentIds.Contains(It.Key())) It.RemoveCurrent();
+-	for (const FGuLiSoldierStateItem& State : Replicator.GetItems())
+-	{
+-		EnsureClientMirrorEntity(State);
+-		if (!State.SoldierId.IsValid())
+-		{
+-			continue;
+-		}
+-
+-		if (FGuLiCommanderSoldierInstanceHandle* Existing =
+-			SoldierInstanceHandles.Find(State.SoldierId))
+-		{
+-			const uint16 NewBatchUnitTypeId = ResolveUnitBatchTypeId(State.UnitTypeId);
+-			if (Existing->RequestedUnitTypeId != State.UnitTypeId
+-				|| Existing->BatchUnitTypeId != NewBatchUnitTypeId)
+-			{
+-				if (NewBatchUnitTypeId != 0u
+-					&& NewBatchUnitTypeId != Existing->BatchUnitTypeId)
+-				{
+-					const int32 NewUnitIndex = AcquireUnitInstanceSlot(NewBatchUnitTypeId);
+-					if (NewUnitIndex == INDEX_NONE)
+-					{
+-						if (!bLoggedInstancePoolFailure)
+-						{
+-							UE_LOG(LogGuLiStrike, Error, TEXT("Commander presentation failed to migrate an ISM instance between UnitTypeId batches."));
+-							bLoggedInstancePoolFailure = true;
+-						}
+-						continue;
+-					}
+-					ReleaseUnitInstanceSlot(
+-						Existing->BatchUnitTypeId,
+-						Existing->UnitInstanceIndex);
+-					Existing->BatchUnitTypeId = NewBatchUnitTypeId;
+-					Existing->UnitInstanceIndex = NewUnitIndex;
+-				}
+-				Existing->RequestedUnitTypeId = State.UnitTypeId;
+-			}
+-		}
+-		else
+-		{
+-			NewSoldierStates.Add(&State);
+-		}
+-	}
+-	NewSoldierStates.Sort([](
+-		const FGuLiSoldierStateItem& Lhs,
+-		const FGuLiSoldierStateItem& Rhs)
+-	{
+-		return Lhs.SoldierId.Value < Rhs.SoldierId.Value;
+-	});
+-
+-	for (const FGuLiSoldierStateItem* State : NewSoldierStates)
+-	{
+-		if (!State || SoldierInstanceHandles.Contains(State->SoldierId))
+-		{
+-			continue;
+-		}
+-		const FTransform HiddenTransform = GuLiCommanderPresentation::MakeHiddenTransform();
+-		const uint16 BatchUnitTypeId = ResolveUnitBatchTypeId(State->UnitTypeId);
+-		const int32 UnitIndex = AcquireUnitInstanceSlot(BatchUnitTypeId);
+-		const bool bReuseRing = !FreeRingInstanceIndices.IsEmpty();
+-		const int32 RingIndex = bReuseRing ? FreeRingInstanceIndices.Pop(EAllowShrinking::No) : RingInstances->AddInstance(HiddenTransform, true);
+-		const int32 ExpectedRingIndex = CachedRingTransforms.Num();
+-		if (UnitIndex == INDEX_NONE || RingIndex == INDEX_NONE
+-			|| (!bReuseRing && RingIndex != ExpectedRingIndex))
+-		{
+-			if (UnitIndex != INDEX_NONE)
+-			{
+-				ReleaseUnitInstanceSlot(BatchUnitTypeId, UnitIndex);
+-			}
+-			if (bReuseRing) FreeRingInstanceIndices.Add(RingIndex);
+-			else if (RingIndex != INDEX_NONE && RingIndex == RingInstances->GetInstanceCount() - 1)
+-			{
+-				RingInstances->RemoveInstance(RingIndex);
+-			}
+-			if (!bLoggedInstancePoolFailure)
+-			{
+-				UE_LOG(LogGuLiStrike, Error, TEXT("Commander presentation failed to extend its stable ISM instance pool."));
+-				bLoggedInstancePoolFailure = true;
+-			}
+-			break;
+-		}
+-
+-		FGuLiCommanderSoldierInstanceHandle& Handle =
+-			SoldierInstanceHandles.Add(State->SoldierId);
+-		Handle.RequestedUnitTypeId = State->UnitTypeId;
+-		Handle.BatchUnitTypeId = BatchUnitTypeId;
+-		Handle.UnitInstanceIndex = UnitIndex;
+-		Handle.RingInstanceIndex = RingIndex;
+-		if (!bReuseRing)
+-		{
+-			CachedRingTransforms.Add(HiddenTransform);
+-			CachedRingColors.Add(GuLiCommanderPresentation::UnassignedColor);
+-		}
+-	}
+-}
+-
+-void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSeconds)
+-{
+-	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_RebuildLocalInstances);
+-	CSV_SCOPED_TIMING_STAT(GuLiCommanderPresentation, RebuildLocalInstances);
+-
+-	AGuLiSoldierStateReplicator* Replicator = FindStateReplicator();
+-	// 先检查失效边沿，Replicator/Controller 暂时消失时也要立即隐藏旧表现。
+-	if (!UpdateNetworkPresentationSource(Replicator)
+-		|| UnitInstancesByType.IsEmpty() || !RingInstances || !GetWorld())
+-	{
+-		return;
+-	}
+-
+-	const double LocalNowSeconds = GetWorld()->GetTimeSeconds();
+-	ConsumePoseChunks(LocalNowSeconds);
+-	EnsureStableInstancePool(*Replicator);
+-	if (bServerClockInitialized)
+-	{
+-		const double ExtrapolatedMeasuredServerNowSeconds = GuLiCommanderPresentation::ExtrapolateMeasuredServerNow(
+-				LatestMeasuredServerNowSeconds,
+-				LocalNowSeconds - LatestClockMeasurementLocalTimeSeconds);
+-		EstimatedServerTimeSeconds = GuLiCommanderPresentation::AdvanceEstimatedServerTime(
+-			EstimatedServerTimeSeconds,
+-			ExtrapolatedMeasuredServerNowSeconds,
+-			DeltaSeconds);
+-	}
+-	TSet<FGuLiSoldierId> SelectedSoldiers;
+-	if (APlayerController* Controller = FindLocalController())
+-	{
+-		if (const UGuLiCommanderNetSyncComponent* NetSync = Controller->FindComponentByClass<UGuLiCommanderNetSyncComponent>())
+-		{
+-			for (const FGuLiControlCohortDescriptor& Cohort : NetSync->GetSelectionState().Cohorts)
+-			{
+-				for (const FGuLiSoldierId SoldierId : Cohort.MemberIds)
+-				{
+-					if (SoldierId.IsValid())
+-					{
+-						SelectedSoldiers.Add(SoldierId);
+-					}
+-				}
+-			}
+-		}
+-	}
+-
+-	TMap<uint16, TArray<FTransform>> DesiredUnitTransformsByType;
+-	TMap<uint16,TArray<FTransform>> DesiredPhasedTransforms;
+-	TMap<uint16,TArray<FTransform>> DesiredWreckTransforms;
+-	TMap<uint16,TArray<FTransform>> DesiredHitTransforms;
+-	TMap<uint16,TArray<float>> DesiredHitStartTimes;
+-	auto* UnitFeedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>();
+-	for (const TPair<uint16, FGuLiCommanderUnitInstanceBatchState>& Pair :
+-		UnitInstanceBatchStates)
+-	{
+-		TArray<FTransform>& DesiredTransforms =
+-			DesiredUnitTransformsByType.Add(Pair.Key, Pair.Value.CachedTransforms);
+-		for (FTransform& Transform : DesiredTransforms)
+-		{
+-			Transform.SetScale3D(FVector::ZeroVector);
+-		}
+-	}
+-	TArray<FTransform> DesiredRingTransforms = CachedRingTransforms;
+-	TArray<FLinearColor> DesiredRingColors = CachedRingColors;
+-	for (FTransform& Transform : DesiredRingTransforms)
+-	{
+-		Transform.SetScale3D(FVector::ZeroVector);
+-	}
+-
+-	for (const FGuLiSoldierStateItem& ReliableState : Replicator->GetItems())
+-	{
+-		const FGuLiCommanderSoldierInstanceHandle* InstanceHandle =
+-			SoldierInstanceHandles.Find(ReliableState.SoldierId);
+-		TArray<FTransform>* DesiredUnitTransforms = InstanceHandle
+-			? DesiredUnitTransformsByType.Find(InstanceHandle->BatchUnitTypeId)
+-			: nullptr;
+-		if (!InstanceHandle || !DesiredUnitTransforms
+-			|| !DesiredUnitTransforms->IsValidIndex(InstanceHandle->UnitInstanceIndex)
+-			|| !DesiredRingTransforms.IsValidIndex(InstanceHandle->RingInstanceIndex)
+-			|| !DesiredRingColors.IsValidIndex(InstanceHandle->RingInstanceIndex))
+-		{
+-			continue;
+-		}
+-
+-		FGuLiCommanderPresentedSoldier& Soldier = PresentedSoldiers.FindOrAdd(ReliableState.SoldierId);
++void AGuLiCommanderPresentationActor::BindRosterSource(AGuLiSoldierStateReplicator* Replicator)
++{
++	if (BoundRosterSource.Get() == Replicator) return;
++	if (auto* Previous = BoundRosterSource.Get()) Previous->OnRosterDelta.Remove(RosterDeltaHandle);
++	RosterDeltaHandle.Reset();
++	BoundRosterSource = Replicator;
++	bReconcilePool = true;
++	if (Replicator) RosterDeltaHandle = Replicator->OnRosterDelta.AddUObject(this, &ThisClass::HandleRosterDelta);
++}
++
++void AGuLiCommanderPresentationActor::HandleRosterDelta(const FGuLiSoldierRosterDelta& Delta)
++{
++	bReconcilePool |= Delta.bReset;
++	for (const auto Id : Delta.Added)
++	{
++		PendingPoolIds.Add(Id); PendingStateIds.Add(Id); PendingMirrorStates.Add(Id); DirtyRingColorIds.Add(Id);
++	}
++	for (const auto Id : Delta.Removed) PendingRemovedIds.Add(Id);
++	for (const auto& Pair : Delta.Changed)
++	{
++		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange(uint8(EGuLiSoldierStateChange::All) & ~uint8(EGuLiSoldierStateChange::Order)))) PendingStateIds.Add(Pair.Key);
++		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Team | EGuLiSoldierStateChange::Health | EGuLiSoldierStateChange::Life | EGuLiSoldierStateChange::Phase)) PendingMirrorStates.Add(Pair.Key);
++		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Displacement)) PendingMirrorTransforms.Add(Pair.Key);
++		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Type))
++		{
++			PendingPoolIds.Add(Pair.Key); RetryPoolIds.Remove(Pair.Key); bPoolChangesPending = true;
++		}
++		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Type | EGuLiSoldierStateChange::Team | EGuLiSoldierStateChange::Life))
++			DirtyRingColorIds.Add(Pair.Key);
++	}
++	bPoolChangesPending |= Delta.bReset || !Delta.Added.IsEmpty() || !Delta.Removed.IsEmpty();
++}
++
++void AGuLiCommanderPresentationActor::HandleSelectionChanged(const FGuLiCommanderSelectionState& Selection)
++{
++	TSet<FGuLiSoldierId> Next;
++	for (const auto& Cohort : Selection.Cohorts)
++		for (const auto Id : Cohort.MemberIds) if (Id.IsValid()) Next.Add(Id);
++	for (const auto Id : SelectedSoldiers) if (!Next.Contains(Id)) DirtyRingColorIds.Add(Id);
++	for (const auto Id : Next) if (!SelectedSoldiers.Contains(Id)) DirtyRingColorIds.Add(Id);
++	SelectedSoldiers = MoveTemp(Next);
++}
++
++void AGuLiCommanderPresentationActor::ApplyReliableStateChanges(const AGuLiSoldierStateReplicator& Replicator, double Now)
++{
++	if (PendingStateIds.IsEmpty()) return;
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_StateChanges);
++	bool bAnyHit = false;
++	TArray<FGuLiSoldierId> Changed;
++	for (const auto Id : PendingStateIds)
++	{
++		const auto* State = Replicator.FindSoldierState(Id);
++		if (!State) continue;
++		const auto& ReliableState = *State;
++		auto& Soldier = PresentedSoldiers.FindOrAdd(Id);
+ 		if (ReliableState.DisplacementFrameFloor != 0 && ReliableState.DisplacementFrameFloor != Soldier.DisplacementFrameFloor)
+ 		{
+ 			Soldier.DisplacementFrameFloor = ReliableState.DisplacementFrameFloor;
+@@ -2356,8 +2201,8 @@
+ 			&& Soldier.LastLifeState == EGuLiSoldierLifeState::Alive && !bAlive;
+ 		if (Soldier.bLifeStateInitialized && ReliableState.Health < Soldier.LastObservedHealth)
+ 		{
+-			Soldier.HitFlashStartTime = static_cast<float>(LocalNowSeconds);
+-			if (UnitFeedback) UnitFeedback->EnsureHealthBarRenderers();
++			Soldier.HitFlashStartTime = static_cast<float>(Now);
++			bAnyHit = true;
+ 		}
+ 		Soldier.LastObservedHealth = ReliableState.Health;
+ 		if (!Soldier.bLifeStateInitialized)
+@@ -2365,12 +2210,12 @@
+ 			Soldier.bLifeStateInitialized = true;
+ 			if (!bAlive)
+ 			{
+-				WreckExpireTimes.FindOrAdd(ReliableState.SoldierId) = LocalNowSeconds + static_cast<double>(WreckLifetimeSeconds);
++				WreckExpireTimes.FindOrAdd(ReliableState.SoldierId) = Now + static_cast<double>(WreckLifetimeSeconds);
+ 			}
+ 		}
+ 		else if (Soldier.LastLifeState == EGuLiSoldierLifeState::Alive && !bAlive)
+ 		{
+-			WreckExpireTimes.FindOrAdd(ReliableState.SoldierId) = LocalNowSeconds + static_cast<double>(WreckLifetimeSeconds);
++			WreckExpireTimes.FindOrAdd(ReliableState.SoldierId) = Now + static_cast<double>(WreckLifetimeSeconds);
+ 		}
+ 		if (bAlive)
+ 		{
+@@ -2383,6 +2228,182 @@
+ 		{
+ 			PredictedMoves.Remove(ReliableState.SoldierId);
+ 		}
++
++		if (bJustDestroyed) PendingDestructionIds.Add(ReliableState.SoldierId);
++		Changed.Add(Id);
++	}
++	PendingStateIds.Reset();
++	if (bAnyHit) if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>()) Feedback->EnsureHealthBarRenderers();
++	PendingVisualChangeIds.Append(Changed);
++}
++
++void AGuLiCommanderPresentationActor::HideInstancePool()
++{
++	for (auto& Pair : UnitInstanceBatchStates)
++	{
++		for (auto& Transform : Pair.Value.CachedTransforms) Transform.SetScale3D(FVector::ZeroVector);
++		if (auto* Component = FindUnitInstances(Pair.Key); Component && !Pair.Value.CachedTransforms.IsEmpty())
++			Component->BatchUpdateInstancesTransforms(0, Pair.Value.CachedTransforms, true, false, true);
++		Pair.Value.DirtyTransformSlots.Reset();
++	}
++	for (auto& Transform : CachedRingTransforms) Transform.SetScale3D(FVector::ZeroVector);
++	if (RingInstances && !CachedRingTransforms.IsEmpty()) RingInstances->BatchUpdateInstancesTransforms(0, CachedRingTransforms, true, false, true);
++	DirtyRingTransformSlots.Reset();
++}
++
++void AGuLiCommanderPresentationActor::EnsureStableInstancePool(AGuLiSoldierStateReplicator& Replicator)
++{
++	BindRosterSource(&Replicator);
++	if (UnitInstancesByType.IsEmpty() || !RingInstances) return;
++	if (bReconcilePool)
++	{
++		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_PoolReconcile);
++		for (const auto& State : Replicator.GetItems())
++		{
++			PendingPoolIds.Add(State.SoldierId); PendingStateIds.Add(State.SoldierId); PendingMirrorStates.Add(State.SoldierId); DirtyRingColorIds.Add(State.SoldierId);
++		}
++		for (const auto& Pair : SoldierInstanceHandles)
++			if (!Replicator.ContainsSoldier(Pair.Key)) PendingRemovedIds.Add(Pair.Key);
++		bReconcilePool = false;
++	}
++	if (PendingPoolIds.IsEmpty() && PendingRemovedIds.IsEmpty()) return;
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_PoolDelta);
++	TArray<FMassEntityHandle> Retired;
++	for (const auto Id : PendingRemovedIds)
++	{
++		if (const auto* Handle = SoldierInstanceHandles.Find(Id))
++		{
++			ReleaseUnitInstanceSlot(Handle->BatchUnitTypeId, Handle->UnitInstanceIndex);
++			const int32 RingIndex = Handle->RingInstanceIndex;
++			if (CachedRingTransforms.IsValidIndex(RingIndex))
++			{
++				CachedRingTransforms[RingIndex] = GuLiCommanderPresentation::MakeHiddenTransform();
++				RingInstances->UpdateInstanceTransform(RingIndex, CachedRingTransforms[RingIndex], true, false, true);
++				FreeRingInstanceIndices.AddUnique(RingIndex);
++			}
++		}
++		if (auto* Live = MirrorLiveTokens.Find(Id)) **Live = false;
++		if (const auto* Entity = ClientMirrorEntities.Find(Id)) Retired.Add(*Entity);
++		ClientMirrorEntities.Remove(Id); MirrorLiveTokens.Remove(Id); PendingMirrorStates.Remove(Id); PendingMirrorTransforms.Remove(Id);
++		SoldierInstanceHandles.Remove(Id); PresentedSoldiers.Remove(Id); WreckExpireTimes.Remove(Id);
++		PredictedMoves.Remove(Id); PendingDestructionIds.Remove(Id); DirtyRingColorIds.Remove(Id);
++		PendingStateIds.Remove(Id); RetryPoolIds.Remove(Id);
++		if (!Replicator.ContainsSoldier(Id)) PendingPoolIds.Remove(Id);
++	}
++	PendingRemovedIds.Reset();
++	if (!Retired.IsEmpty() && ClientMirrorMassSubsystem.IsValid())
++		GuLiCommanderPresentation::DeferMirrorDestruction(ClientMirrorMassSubsystem->GetMutableEntityManager(), MoveTemp(Retired));
++	TArray<FGuLiSoldierId> Ordered = PendingPoolIds.Array();
++	Ordered.Sort();
++	for (const auto Id : Ordered)
++	{
++		const auto* State = Replicator.FindSoldierState(Id);
++		if (!State) { PendingPoolIds.Remove(Id); continue; }
++		EnsureClientMirrorEntity(*State);
++		const uint16 BatchId = ResolveUnitBatchTypeId(State->UnitTypeId);
++		if (auto* Existing = SoldierInstanceHandles.Find(Id))
++		{
++			if (BatchId != Existing->BatchUnitTypeId)
++			{
++				const int32 NewSlot = AcquireUnitInstanceSlot(BatchId);
++				if (NewSlot == INDEX_NONE) { RetryPoolIds.Add(Id); PendingPoolIds.Remove(Id); continue; }
++				ReleaseUnitInstanceSlot(Existing->BatchUnitTypeId, Existing->UnitInstanceIndex);
++				Existing->BatchUnitTypeId = BatchId; Existing->UnitInstanceIndex = NewSlot;
++			}
++			Existing->RequestedUnitTypeId = State->UnitTypeId;
++		}
++		else
++		{
++			const int32 UnitIndex = AcquireUnitInstanceSlot(BatchId);
++			if (UnitIndex == INDEX_NONE) { RetryPoolIds.Add(Id); PendingPoolIds.Remove(Id); continue; }
++			const bool bReuse = !FreeRingInstanceIndices.IsEmpty();
++			const auto Hidden = GuLiCommanderPresentation::MakeHiddenTransform();
++			const int32 RingIndex = bReuse ? FreeRingInstanceIndices.Pop(EAllowShrinking::No) : RingInstances->AddInstance(Hidden, true);
++			if (RingIndex == INDEX_NONE || (!bReuse && RingIndex != CachedRingTransforms.Num()))
++			{
++				ReleaseUnitInstanceSlot(BatchId, UnitIndex);
++				if (RingIndex != INDEX_NONE) RingInstances->RemoveInstance(RingIndex);
++				RetryPoolIds.Add(Id); PendingPoolIds.Remove(Id);
++				continue;
++			}
++			if (!bReuse) { CachedRingTransforms.Add(Hidden); CachedRingColors.Add(FLinearColor(-1, -1, -1, -1)); }
++			auto& Handle = SoldierInstanceHandles.Add(Id);
++			Handle.RequestedUnitTypeId = State->UnitTypeId; Handle.BatchUnitTypeId = BatchId;
++			Handle.UnitInstanceIndex = UnitIndex; Handle.RingInstanceIndex = RingIndex;
++			PendingStateIds.Add(Id); DirtyRingColorIds.Add(Id);
++		}
++		PendingPoolIds.Remove(Id);
++		if (!ClientMirrorEntities.Contains(Id)) RetryPoolIds.Add(Id);
++		else RetryPoolIds.Remove(Id);
++	}
++}
++
++
++void AGuLiCommanderPresentationActor::MaintainInstancePool(AGuLiSoldierStateReplicator& Replicator, bool bMaintenanceDue)
++{
++	if (bMaintenanceDue && !RetryPoolIds.IsEmpty())
++	{
++		PendingPoolIds.Append(RetryPoolIds); RetryPoolIds.Reset();
++	}
++	if (bReconcilePool || bPoolChangesPending || (bMaintenanceDue && !PendingPoolIds.IsEmpty()))
++	{
++		EnsureStableInstancePool(Replicator);
++		bPoolChangesPending = false;
++	}
++}
++
++void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSeconds)
++{
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_RebuildLocalInstances);
++	CSV_SCOPED_TIMING_STAT(GuLiCommanderPresentation, RebuildLocalInstances);
++
++	AGuLiSoldierStateReplicator* Replicator = FindStateReplicator();
++	// 先检查失效边沿，Replicator/Controller 暂时消失时也要立即隐藏旧表现。
++	if (!UpdateNetworkPresentationSource(Replicator)
++		|| UnitInstancesByType.IsEmpty() || !RingInstances || !GetWorld())
++	{
++		return;
++	}
++
++	const double LocalNowSeconds = GetWorld()->GetTimeSeconds();
++	ConsumePoseChunks(LocalNowSeconds);
++	const bool bMaintain = MaintenanceCadence.Consume(LocalNowSeconds);
++	MaintainInstancePool(*Replicator, bMaintain);
++	ApplyReliableStateChanges(*Replicator, LocalNowSeconds);
++	if (bServerClockInitialized)
++	{
++		const double ExtrapolatedMeasuredServerNowSeconds = GuLiCommanderPresentation::ExtrapolateMeasuredServerNow(
++				LatestMeasuredServerNowSeconds,
++				LocalNowSeconds - LatestClockMeasurementLocalTimeSeconds);
++		EstimatedServerTimeSeconds = GuLiCommanderPresentation::AdvanceEstimatedServerTime(
++			EstimatedServerTimeSeconds,
++			ExtrapolatedMeasuredServerNowSeconds,
++			DeltaSeconds);
++	}
++	TMap<uint16,TArray<FTransform>> DesiredPhasedTransforms;
++	TMap<uint16,TArray<FTransform>> DesiredWreckTransforms;
++	TMap<uint16,TArray<FTransform>> DesiredHitTransforms;
++	TMap<uint16,TArray<float>> DesiredHitStartTimes;
++	auto* UnitFeedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>();
++
++	{
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_Interpolation);
++	for (const FGuLiSoldierStateItem& ReliableState : Replicator->GetItems())
++	{
++		const FGuLiCommanderSoldierInstanceHandle* InstanceHandle =
++			SoldierInstanceHandles.Find(ReliableState.SoldierId);
++		auto* BatchState = InstanceHandle ? UnitInstanceBatchStates.Find(InstanceHandle->BatchUnitTypeId) : nullptr;
++		TArray<FTransform>* DesiredUnitTransforms = BatchState ? &BatchState->CachedTransforms : nullptr;
++		if (!InstanceHandle || !DesiredUnitTransforms
++			|| !DesiredUnitTransforms->IsValidIndex(InstanceHandle->UnitInstanceIndex)
++			|| !CachedRingTransforms.IsValidIndex(InstanceHandle->RingInstanceIndex)
++			|| !CachedRingColors.IsValidIndex(InstanceHandle->RingInstanceIndex))
++		{
++			continue;
++		}
++
++		FGuLiCommanderPresentedSoldier& Soldier = PresentedSoldiers.FindOrAdd(ReliableState.SoldierId);
++		const bool bAlive = ReliableState.IsAlive();
+ 
+ 		FTransform AuthoritativeTransform;
+ 		const float AdaptiveInterpolationBackTimeSeconds =
+@@ -2440,11 +2461,9 @@
+ 
+ 		if (!Soldier.bHasPresentedTransform)
+ 		{
+-			UpdateClientMirrorEntity(ReliableState, nullptr);
+ 			continue;
+ 		}
+-		UpdateClientMirrorEntity(ReliableState, &Soldier.PresentedTransform);
+-		if (bJustDestroyed && UnitFeedback)
++		if (PendingDestructionIds.Remove(ReliableState.SoldierId) && UnitFeedback)
+ 		{
+ 			const auto* Batch = FindUnitInstances(InstanceHandle->BatchUnitTypeId);
+ 			const UStaticMesh* Mesh = Batch ? Batch->GetStaticMesh() : nullptr;
+@@ -2455,57 +2474,60 @@
+ 				Bounds.IsValid ? static_cast<float>(Bounds.GetExtent().GetMax()) : 0.0f);
+ 		}
+ 
+-		FTransform HiddenUnitTransform = Soldier.PresentedTransform;
+-		HiddenUnitTransform.SetScale3D(FVector::ZeroVector);
+-		(*DesiredUnitTransforms)[InstanceHandle->UnitInstanceIndex] = HiddenUnitTransform;
+-		FTransform HiddenRingTransform = BuildRingTransform(Soldier.PresentedTransform);
+-		HiddenRingTransform.SetScale3D(FVector::ZeroVector);
+-		DesiredRingTransforms[InstanceHandle->RingInstanceIndex] = HiddenRingTransform;
+-
++		FTransform UnitTransform = Soldier.PresentedTransform;
++		UnitTransform.SetScale3D(FVector::ZeroVector);
++		FTransform RingTransform = BuildRingTransform(Soldier.PresentedTransform);
++		RingTransform.SetScale3D(FVector::ZeroVector);
+ 		if (bAlive)
+ 		{
+-			FTransform UnitTransform = Soldier.PresentedTransform;
+-			UnitTransform.SetScale3D(FVector::OneVector);
+-			if (ReliableState.bPhased)
+-			{
+-				DesiredPhasedTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(UnitTransform);
+-				continue;
+-			}
+-			(*DesiredUnitTransforms)[InstanceHandle->UnitInstanceIndex] = UnitTransform;
+-			if (UnitFeedback && LocalNowSeconds - Soldier.HitFlashStartTime < UGuLiUnitFeedbackSubsystem::HitDuration
+-				&& UnitFeedback->IsWithinCullDistance(UnitTransform.GetLocation()))
+-			{
+-				DesiredHitTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(UnitTransform);
+-				DesiredHitStartTimes.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Soldier.HitFlashStartTime);
+-			}
+-			DesiredRingTransforms[InstanceHandle->RingInstanceIndex] =
+-				BuildRingTransform(Soldier.PresentedTransform);
+-			DesiredRingColors[InstanceHandle->RingInstanceIndex] =
+-				SelectedSoldiers.Contains(ReliableState.SoldierId)
+-				? GuLiCommanderPresentation::SelectedColor
+-				: GuLiCommanderPresentation::GetTeamColor(ReliableState.Team);
+-		}
+-		else if (const double* ExpireTime = WreckExpireTimes.Find(ReliableState.SoldierId))
+-		{
+-			if (*ExpireTime > LocalNowSeconds)
+-			{
+-				if (UnitFeedback && UnitFeedback->IsWithinCullDistance(Soldier.PresentedTransform.GetLocation()))
++			FTransform Visible = Soldier.PresentedTransform;
++			Visible.SetScale3D(FVector::OneVector);
++			if (ReliableState.bPhased) DesiredPhasedTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Visible);
++			else
++			{
++				UnitTransform = Visible;
++				RingTransform = BuildRingTransform(Soldier.PresentedTransform);
++				if (UnitFeedback && LocalNowSeconds - Soldier.HitFlashStartTime < UGuLiUnitFeedbackSubsystem::HitDuration
++					&& UnitFeedback->IsWithinCullDistance(Visible.GetLocation()))
+ 				{
+-					FTransform WreckTransform = Soldier.PresentedTransform;
+-					WreckTransform.SetScale3D(FVector::OneVector);
+-					DesiredWreckTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(WreckTransform);
++					DesiredHitTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Visible);
++					DesiredHitStartTimes.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Soldier.HitFlashStartTime);
+ 				}
+-				DesiredRingTransforms[InstanceHandle->RingInstanceIndex] =
+-					BuildRingTransform(Soldier.PresentedTransform);
+-				DesiredRingColors[InstanceHandle->RingInstanceIndex] =
+-					GuLiCommanderPresentation::WreckColor;
+-			}
+-		}
+-	}
+-
++			}
++		}
++		else if (const double* Expire = WreckExpireTimes.Find(ReliableState.SoldierId); Expire && *Expire > LocalNowSeconds)
++		{
++			if (UnitFeedback && UnitFeedback->IsWithinCullDistance(Soldier.PresentedTransform.GetLocation()))
++			{
++				auto Wreck = Soldier.PresentedTransform; Wreck.SetScale3D(FVector::OneVector);
++				DesiredWreckTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Wreck);
++			}
++			RingTransform = BuildRingTransform(Soldier.PresentedTransform);
++		}
++		auto& CachedUnit = (*DesiredUnitTransforms)[InstanceHandle->UnitInstanceIndex];
++		if (!CachedUnit.Equals(UnitTransform, 0.01f)) { CachedUnit = UnitTransform; BatchState->DirtyTransformSlots.Add(InstanceHandle->UnitInstanceIndex); }
++		auto& CachedRing = CachedRingTransforms[InstanceHandle->RingInstanceIndex];
++		if (!CachedRing.Equals(RingTransform, 0.01f)) { CachedRing = RingTransform; DirtyRingTransformSlots.Add(InstanceHandle->RingInstanceIndex); }
++
++	}
++
++	}
++	if (!PendingVisualChangeIds.IsEmpty())
++	{
++		const auto Changed = PendingVisualChangeIds.Array(); PendingVisualChangeIds.Reset();
++		OnVisualStatesChanged.Broadcast(Changed);
++	}
+ 	UpdatePhasedInstances(DesiredPhasedTransforms);
+ 	UpdateHitFlashInstances(DesiredHitTransforms, DesiredHitStartTimes);
+ 	UpdateWreckInstances(DesiredWreckTransforms);
++	FlushClientMirrorUpdates(LocalNowSeconds);
++	if (bMaintain)
++	{
++		SIZE_T CacheBytes = SoldierInstanceHandles.GetAllocatedSize() + CachedRingTransforms.GetAllocatedSize()
++			+ CachedRingColors.GetAllocatedSize() + ClientMirrorEntities.GetAllocatedSize() + MirrorLiveTokens.GetAllocatedSize();
++		for (const auto& Pair : UnitInstanceBatchStates) CacheBytes += Pair.Value.CachedTransforms.GetAllocatedSize() + Pair.Value.DirtyTransformSlots.GetAllocatedSize();
++		CSV_CUSTOM_STAT(GuLiCommanderPresentation, InstanceAndMirrorCacheBytes, float(CacheBytes), ECsvCustomStatOp::Set);
++		CSV_CUSTOM_STAT(GuLiCommanderPresentation, RosterCacheBytes, float(Replicator->GetLocalCacheAllocatedSize()), ECsvCustomStatOp::Set);
+ 	for (auto It = WreckExpireTimes.CreateIterator(); It; ++It)
+ 	{
+ 		if (It.Value() <= LocalNowSeconds)
+@@ -2523,68 +2545,47 @@
+ 		}
+ 	}
+ 
+-	const bool bRingTransformsChanged = !GuLiCommanderPresentation::AreTransformsEqual(
+-		CachedRingTransforms,
+-		DesiredRingTransforms);
+-	const bool bRingColorsChanged = !GuLiCommanderPresentation::AreColorsEqual(
+-		CachedRingColors,
+-		DesiredRingColors);
+-
+-	for (TPair<uint16, TArray<FTransform>>& Pair : DesiredUnitTransformsByType)
+-	{
+-		UInstancedStaticMeshComponent* Component = FindUnitInstances(Pair.Key);
+-		FGuLiCommanderUnitInstanceBatchState* BatchState =
+-			UnitInstanceBatchStates.Find(Pair.Key);
+-		if (!Component || !BatchState || Pair.Value.IsEmpty()
+-			|| GuLiCommanderPresentation::AreTransformsEqual(
+-				BatchState->CachedTransforms,
+-				Pair.Value))
+-		{
+-			continue;
+-		}
+-		if (Component->BatchUpdateInstancesTransforms(
+-			0,
+-			Pair.Value,
+-			true,
+-			false,
+-			false))
+-		{
+-			BatchState->CachedTransforms = MoveTemp(Pair.Value);
+-			Component->MarkRenderStateDirty();
+-		}
+-	}
+-	if (bRingTransformsChanged && !DesiredRingTransforms.IsEmpty()
+-		&& RingInstances->BatchUpdateInstancesTransforms(
+-			0,
+-			DesiredRingTransforms,
+-			true,
+-			false,
+-			false))
+-	{
+-		CachedRingTransforms = DesiredRingTransforms;
+-		RingInstances->MarkRenderStateDirty();
+-	}
+-
+-	if (bRingColorsChanged && RingInstances->GetInstanceCount() == DesiredRingColors.Num())
+-	{
+-		for (int32 InstanceIndex = 0; InstanceIndex < DesiredRingColors.Num(); ++InstanceIndex)
+-		{
+-			if (CachedRingColors.IsValidIndex(InstanceIndex)
+-				&& CachedRingColors[InstanceIndex].Equals(
+-					DesiredRingColors[InstanceIndex],
+-					KINDA_SMALL_NUMBER))
+-			{
+-				continue;
+-			}
+-
+-			const FLinearColor& Color = DesiredRingColors[InstanceIndex];
+-			RingInstances->SetCustomDataValue(InstanceIndex, 0, Color.R, false);
+-			RingInstances->SetCustomDataValue(InstanceIndex, 1, Color.G, false);
+-			RingInstances->SetCustomDataValue(InstanceIndex, 2, Color.B, false);
+-			RingInstances->SetCustomDataValue(InstanceIndex, 3, Color.A, false);
+-		}
+-		CachedRingColors = DesiredRingColors;
+-		RingInstances->MarkRenderStateDirty();
++	}
++
++	{
++		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_InstanceSubmit);
++		auto SubmitSlots = [](UInstancedStaticMeshComponent* Component, const TArray<FTransform>& Transforms, TArray<int32>& Slots)
++		{
++			if (!Component || Slots.IsEmpty()) return;
++			Slots.Sort();
++			bool bComplete = true;
++			for (int32 First = 0; First < Slots.Num();)
++			{
++				int32 Last = First + 1;
++				while (Last < Slots.Num() && Slots[Last] <= Slots[Last - 1] + 1) ++Last;
++				const int32 Start = Slots[First], Count = Slots[Last - 1] - Start + 1;
++				bComplete &= Component->BatchUpdateInstancesTransforms(Start,
++					MakeArrayView(Transforms).Slice(Start, Count), true, false, false);
++				First = Last;
++			}
++			if (bComplete) Slots.Reset();
++		};
++		for (auto& Pair : UnitInstanceBatchStates)
++			SubmitSlots(FindUnitInstances(Pair.Key), Pair.Value.CachedTransforms, Pair.Value.DirtyTransformSlots);
++		SubmitSlots(RingInstances, CachedRingTransforms, DirtyRingTransformSlots);
++		for (const auto Id : DirtyRingColorIds)
++		{
++			const auto* Handle = SoldierInstanceHandles.Find(Id);
++			const auto* State = Replicator->FindSoldierState(Id);
++			if (!Handle || !State) continue;
++			const auto Color = !State->IsAlive() ? GuLiCommanderPresentation::WreckColor
++				: SelectedSoldiers.Contains(Id) ? GuLiCommanderPresentation::SelectedColor : GuLiCommanderPresentation::GetTeamColor(State->Team);
++			const int32 Index = Handle->RingInstanceIndex;
++			if (!CachedRingColors[Index].Equals(Color, KINDA_SMALL_NUMBER))
++			{
++				CachedRingColors[Index] = Color;
++				RingInstances->SetCustomDataValue(Index, 0, Color.R, false);
++				RingInstances->SetCustomDataValue(Index, 1, Color.G, false);
++				RingInstances->SetCustomDataValue(Index, 2, Color.B, false);
++				RingInstances->SetCustomDataValue(Index, 3, Color.A, false);
++			}
++		}
++		DirtyRingColorIds.Reset();
+ 	}
+ 
+ 	if (bNetworkPresentationHidden)
+@@ -2639,7 +2640,7 @@
+   if (GuLiCommanderPresentation::AreTransformsEqual(Cached,Pair.Value)) continue;
+   if (Component->GetInstanceCount() != Pair.Value.Num())
+   { Component->ClearInstances(); Component->AddInstances(Pair.Value,false,true,false); }
+-  else Component->BatchUpdateInstancesTransforms(0,Pair.Value,true,true,true);
++  else Component->BatchUpdateInstancesTransforms(0,Pair.Value,true,false,true);
+   Cached = Pair.Value;
+  }
+ }
+@@ -2682,7 +2683,7 @@
+ 			Component->ClearInstances();
+ 			Component->AddInstances(Pair.Value, false, true, false);
+ 		}
+-		else Component->BatchUpdateInstancesTransforms(0, Pair.Value, true, true, true);
++		else Component->BatchUpdateInstancesTransforms(0, Pair.Value, true, false, true);
+ 		Cached = Pair.Value;
+ 	}
+ }
+@@ -2726,6 +2727,6 @@
+ 		}
+ 		else Component->BatchUpdateInstancesTransforms(0, Pair.Value, true, false, true);
+ 		for (int32 Index = 0; Index < Times->Num(); ++Index) Component->SetCustomDataValue(Index, 0, (*Times)[Index], false);
+-		Component->MarkRenderStateDirty();
+-	}
+-}
++
++	}
++}
+--- before/Source/GuLiStrike/Commander/UI/GuLiCommanderMiniMapWidget.h
++++ after/Source/GuLiStrike/Commander/UI/GuLiCommanderMiniMapWidget.h
+@@ -11,6 +11,9 @@
+ class AGuLiCommanderPresentationActor;
+ class AGuLiSoldierStateReplicator;
+ class USlateBrushAsset;
++class UGuLiCommanderNetSyncComponent;
++class SGuLiCommanderMiniMapLayer;
++struct FGuLiSoldierRosterDelta;
+ 
+ /** One immutable point consumed by the native Slate paint pass. */
+ struct FGuLiCommanderMiniMapSoldierPoint
+@@ -25,7 +28,7 @@
+  *
+  * The widget owns no gameplay state. Every tenth of a second it snapshots the
+  * reliable Soldier facts, final interpolated presentation transforms and the
+- * local confirmed selection, then paints the whole map through one Slate layer.
++ * local confirmed selection. Terrain and dynamic markers have separate Slate caches.
+  */
+ UCLASS(BlueprintType, Blueprintable)
+ class GULISTRIKE_API UGuLiCommanderMiniMapWidget : public UUserWidget
+@@ -41,8 +44,11 @@
+ 
+ 	/** Consumes a viewport-pixel click routed by the transparent map button. */
+ 	bool HandleMapClickAtScreenPosition(const FVector2D& ScreenPixelPosition);
++	virtual void SetVisibility(ESlateVisibility InVisibility) override;
++	virtual void ReleaseSlateResources(bool bReleaseChildren) override;
+ 
+ protected:
++	virtual TSharedRef<SWidget> RebuildWidget() override;
+ 	virtual void NativeConstruct() override;
+ 	virtual void NativeDestruct() override;
+ 	virtual int32 NativePaint(
+@@ -55,6 +61,18 @@
+ 		bool bParentEnabled) const override;
+ 
+ private:
++	friend class SGuLiCommanderMiniMapLayer;
++	friend class FGuLiCommanderMiniMapCacheTest;
++	int32 PaintMapLayer(bool bTerrain, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect,
++		FSlateWindowElementList& OutDrawElements, int32 LayerId, const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const;
++	void BindRuntimeEvents();
++	void UnbindRuntimeEvents();
++	void HandleRosterDelta(const FGuLiSoldierRosterDelta& Delta);
++	void HandleVisualStatesChanged(const TArray<FGuLiSoldierId>& Ids);
++	void HandleSelectionChanged(const FGuLiCommanderSelectionState& Selection);
++	bool RefreshPoint(FGuLiSoldierId Id, bool bRefreshPosition);
++	void InvalidateMapLayer(bool bTerrain);
++	bool IsHierarchyVisible() const;
+ 	void StartRefreshTimer();
+ 	void StopRefreshTimer();
+ 	void RefreshSnapshot();
+@@ -72,7 +90,19 @@
+ 	UPROPERTY(Transient)
+ 	TObjectPtr<USlateBrushAsset> SolidBrushAsset;
+ 
+-	TArray<FGuLiCommanderMiniMapSoldierPoint> SoldierPoints;
++	TMap<FGuLiSoldierId, FGuLiCommanderMiniMapSoldierPoint> SoldierPoints;
++	TSet<FGuLiSoldierId> SelectedSoldiers;
++	TWeakObjectPtr<AGuLiSoldierStateReplicator> BoundRosterEvents;
++	TWeakObjectPtr<UGuLiCommanderNetSyncComponent> BoundSelectionEvents;
++	TWeakObjectPtr<AGuLiCommanderPresentationActor> BoundPresentationEvents;
++	FDelegateHandle VisualStateHandle;
++	FDelegateHandle RosterDeltaHandle;
++	FDelegateHandle SelectionChangedHandle;
++	TSharedPtr<SWidget> TerrainLayer;
++	TSharedPtr<SWidget> DynamicLayer;
++	uint64 TerrainInvalidations = 0;
++	uint64 DynamicInvalidations = 0;
++	bool bWasHierarchyVisible = false;
+ 	TArray<FVector2D> CameraFootprintWorld;
+ 	FVector2D CameraWorldPosition = FVector2D::ZeroVector;
+ 	float CameraYawDegrees = 0.0f;
+--- before/Source/GuLiStrike/Commander/UI/GuLiCommanderMiniMapWidget.cpp
++++ after/Source/GuLiStrike/Commander/UI/GuLiCommanderMiniMapWidget.cpp
+@@ -17,6 +17,69 @@
+ #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
+ #include "Slate/SlateBrushAsset.h"
+ #include "TimerManager.h"
++#include "Widgets/SLeafWidget.h"
++#include "Widgets/SOverlay.h"
++#include "Widgets/SInvalidationPanel.h"
++#include "ProfilingDebugging/CpuProfilerTrace.h"
++#include "ProfilingDebugging/CsvProfiler.h"
++
++CSV_DEFINE_CATEGORY(GuLiCommanderMiniMap, true);
++
++class SGuLiCommanderMiniMapLayer : public SLeafWidget
++{
++public:
++	SLATE_BEGIN_ARGS(SGuLiCommanderMiniMapLayer) {} SLATE_END_ARGS()
++	void Construct(const FArguments&, UGuLiCommanderMiniMapWidget* InOwner, bool bInTerrain)
++	{ Owner = InOwner; bTerrain = bInTerrain; SetVisibility(EVisibility::HitTestInvisible); }
++	virtual FVector2D ComputeDesiredSize(float) const override { return FVector2D::ZeroVector; }
++	virtual int32 OnPaint(const FPaintArgs&, const FGeometry& Geometry, const FSlateRect& Culling,
++		FSlateWindowElementList& Elements, int32 Layer, const FWidgetStyle& Style, bool bEnabled) const override
++	{
++		return Owner.IsValid() ? Owner->PaintMapLayer(bTerrain, Geometry, Culling, Elements, Layer, Style, bEnabled) : Layer;
++	}
++private:
++	TWeakObjectPtr<UGuLiCommanderMiniMapWidget> Owner;
++	bool bTerrain = false;
++};
++
++TSharedRef<SWidget> UGuLiCommanderMiniMapWidget::RebuildWidget()
++{
++	const auto Content = Super::RebuildWidget();
++	TerrainLayer = SNew(SGuLiCommanderMiniMapLayer, this, true);
++	DynamicLayer = SNew(SGuLiCommanderMiniMapLayer, this, false);
++	return SNew(SOverlay)
++		+ SOverlay::Slot()[Content]
++		+ SOverlay::Slot()[SNew(SInvalidationPanel).Visibility(EVisibility::HitTestInvisible)[TerrainLayer.ToSharedRef()]]
++		+ SOverlay::Slot()[SNew(SInvalidationPanel).Visibility(EVisibility::HitTestInvisible)[DynamicLayer.ToSharedRef()]];
++}
++
++void UGuLiCommanderMiniMapWidget::ReleaseSlateResources(bool bReleaseChildren)
++{
++	Super::ReleaseSlateResources(bReleaseChildren);
++	TerrainLayer.Reset(); DynamicLayer.Reset();
++}
++
++void UGuLiCommanderMiniMapWidget::InvalidateMapLayer(bool bTerrain)
++{
++	if (bTerrain) { ++TerrainInvalidations; if (TerrainLayer) TerrainLayer->Invalidate(EInvalidateWidgetReason::Paint); }
++	else { ++DynamicInvalidations; if (DynamicLayer) DynamicLayer->Invalidate(EInvalidateWidgetReason::Paint); }
++}
++
++bool UGuLiCommanderMiniMapWidget::IsHierarchyVisible() const
++{
++	if (!IsVisible()) return false;
++	for (auto Widget = GetCachedWidget(); Widget; Widget = Widget->GetParentWidget())
++		if (!Widget->GetVisibility().IsVisible()) return false;
++	return true;
++}
++
++void UGuLiCommanderMiniMapWidget::SetVisibility(ESlateVisibility InVisibility)
++{
++	Super::SetVisibility(InVisibility);
++	if (!bNativeConstructed) return;
++	if (IsVisible()) { RequestImmediateRefresh(); StartRefreshTimer(); }
++	else { bWasHierarchyVisible = false; StopRefreshTimer(); }
++}
+ 
+ namespace GuLiCommanderNativeMiniMap
+ {
+@@ -170,7 +233,8 @@
+ 	}
+ 
+ 	RefreshSnapshot();
+-	Invalidate(EInvalidateWidgetReason::Paint);
++	InvalidateMapLayer(true);
++	InvalidateMapLayer(false);
+ }
+ 
+ void UGuLiCommanderMiniMapWidget::NativeConstruct()
+@@ -197,6 +261,7 @@
+ void UGuLiCommanderMiniMapWidget::NativeDestruct()
+ {
+ 	StopRefreshTimer();
++	UnbindRuntimeEvents();
+ 	bNativeConstructed = false;
+ 	SoldierPoints.Reset();
+ 	CameraFootprintWorld.Reset();
+@@ -213,13 +278,10 @@
+ 	if (UWorld* World = GetWorld(); World
+ 		&& !World->GetTimerManager().IsTimerActive(RefreshTimerHandle))
+ 	{
+-		World->GetTimerManager().SetTimer(
+-			RefreshTimerHandle,
+-			this,
+-			&UGuLiCommanderMiniMapWidget::RefreshSnapshot,
+-			GuLiCommanderNativeMiniMap::RefreshIntervalSeconds,
+-			true,
+-			GuLiCommanderNativeMiniMap::RefreshIntervalSeconds);
++		FTimerManagerTimerParameters Parameters;
++		Parameters.bLoop = true; Parameters.bMaxOncePerFrame = true;
++		World->GetTimerManager().SetTimer(RefreshTimerHandle, this, &ThisClass::RefreshSnapshot,
++			GuLiCommanderNativeMiniMap::RefreshIntervalSeconds, Parameters);
+ 	}
+ }
+ 
+@@ -259,80 +321,126 @@
+ 	}
+ }
+ 
++void UGuLiCommanderMiniMapWidget::UnbindRuntimeEvents()
++{
++	if (auto* Source = BoundPresentationEvents.Get()) Source->OnVisualStatesChanged.Remove(VisualStateHandle);
++	BoundPresentationEvents.Reset(); VisualStateHandle.Reset();
++	if (auto* Source = BoundRosterEvents.Get()) Source->OnRosterDelta.Remove(RosterDeltaHandle);
++	if (auto* Source = BoundSelectionEvents.Get()) Source->OnSelectionChanged.Remove(SelectionChangedHandle);
++	BoundRosterEvents.Reset(); BoundSelectionEvents.Reset();
++	RosterDeltaHandle.Reset(); SelectionChangedHandle.Reset();
++}
++
++void UGuLiCommanderMiniMapWidget::BindRuntimeEvents()
++{
++	auto* Presentation = PresentationActor.Get();
++	if (BoundPresentationEvents.Get() != Presentation)
++	{
++		if (auto* Old = BoundPresentationEvents.Get()) Old->OnVisualStatesChanged.Remove(VisualStateHandle);
++		BoundPresentationEvents = Presentation;
++		if (Presentation) VisualStateHandle = Presentation->OnVisualStatesChanged.AddUObject(this, &ThisClass::HandleVisualStatesChanged);
++	}
++	auto* Replicator = SoldierStateReplicator.Get();
++	if (BoundRosterEvents.Get() != Replicator)
++	{
++		if (auto* Old = BoundRosterEvents.Get()) Old->OnRosterDelta.Remove(RosterDeltaHandle);
++		BoundRosterEvents = Replicator; SoldierPoints.Reset();
++		if (Replicator) RosterDeltaHandle = Replicator->OnRosterDelta.AddUObject(this, &ThisClass::HandleRosterDelta);
++		InvalidateMapLayer(false);
++	}
++	const auto* Controller = CommanderController.Get();
++	auto* Selection = Controller ? Controller->GetCommanderNetSyncComponent() : nullptr;
++	if (BoundSelectionEvents.Get() != Selection)
++	{
++		if (auto* Old = BoundSelectionEvents.Get()) Old->OnSelectionChanged.Remove(SelectionChangedHandle);
++		BoundSelectionEvents = Selection;
++		if (Selection)
++		{
++			SelectionChangedHandle = Selection->OnSelectionChanged.AddUObject(this, &ThisClass::HandleSelectionChanged);
++			HandleSelectionChanged(Selection->GetSelectionState());
++		}
++		else HandleSelectionChanged(FGuLiCommanderSelectionState());
++	}
++}
++
++bool UGuLiCommanderMiniMapWidget::RefreshPoint(FGuLiSoldierId Id, bool bRefreshPosition)
++{
++	const auto* State = SoldierStateReplicator.IsValid() ? SoldierStateReplicator->FindSoldierState(Id) : nullptr;
++	if (!State || !State->IsAlive() || State->bPhased) return SoldierPoints.Remove(Id) != 0;
++	const auto* Previous = SoldierPoints.Find(Id);
++	FGuLiCommanderMiniMapSoldierPoint Point;
++	if (Previous) Point = *Previous;
++	if (bRefreshPosition || !Previous)
++	{
++		FTransform Pose;
++		if (!PresentationActor.IsValid() || !PresentationActor->TryGetPresentedSoldierTransform(Id, Pose) || Pose.ContainsNaN())
++			return SoldierPoints.Remove(Id) != 0;
++		Point.WorldPosition = FVector2D(Pose.GetLocation());
++	}
++	Point.Team = State->Team; Point.bSelected = SelectedSoldiers.Contains(Id);
++	if (Previous && Previous->WorldPosition.Equals(Point.WorldPosition, 0.01) && Previous->Team == Point.Team && Previous->bSelected == Point.bSelected) return false;
++	SoldierPoints.Add(Id, Point);
++	return true;
++}
++
++void UGuLiCommanderMiniMapWidget::HandleVisualStatesChanged(const TArray<FGuLiSoldierId>& Ids)
++{
++	bool bChanged = false;
++	for (auto Id : Ids) bChanged |= RefreshPoint(Id, true);
++	if (bChanged) InvalidateMapLayer(false);
++}
++
++void UGuLiCommanderMiniMapWidget::HandleRosterDelta(const FGuLiSoldierRosterDelta& Delta)
++{
++	bool bChanged = false;
++	if (Delta.bReset) { SoldierPoints.Reset(); InvalidateMapLayer(false); return; }
++	for (auto Id : Delta.Removed) bChanged |= SoldierPoints.Remove(Id) != 0;
++	for (auto Id : Delta.Added) bChanged |= RefreshPoint(Id, true);
++	for (const auto& Pair : Delta.Changed)
++		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Team | EGuLiSoldierStateChange::Life | EGuLiSoldierStateChange::Phase))
++			bChanged |= RefreshPoint(Pair.Key, false);
++	if (bChanged) InvalidateMapLayer(false);
++}
++
++void UGuLiCommanderMiniMapWidget::HandleSelectionChanged(const FGuLiCommanderSelectionState& Selection)
++{
++	TSet<FGuLiSoldierId> Next;
++	for (const auto& Cohort : Selection.Cohorts) for (auto Id : Cohort.MemberIds) if (Id.IsValid()) Next.Add(Id);
++	TSet<FGuLiSoldierId> Affected;
++	for (auto Id : Next) if (!SelectedSoldiers.Contains(Id)) Affected.Add(Id);
++	for (auto Id : SelectedSoldiers) if (!Next.Contains(Id)) Affected.Add(Id);
++	SelectedSoldiers = MoveTemp(Next);
++	bool bChanged = false;
++	for (auto Id : Affected) bChanged |= RefreshPoint(Id, false);
++	if (bChanged) InvalidateMapLayer(false);
++}
++
+ void UGuLiCommanderMiniMapWidget::RefreshSnapshot()
+ {
+-	if (IsDesignTime())
+-	{
+-		return;
+-	}
+-
+-	ResolveRuntimeSources();
++	if (IsDesignTime() || !GetWorld()) return;
++	if (!IsHierarchyVisible()) { bWasHierarchyVisible = false; return; }
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderMiniMap_Snapshot);
++	const bool bShown = !bWasHierarchyVisible;
++	bWasHierarchyVisible = true;
++	ResolveRuntimeSources(); BindRuntimeEvents();
++	const uint32 PreviousTerrainRevision = TerrainLandscapeRevision;
++	const bool bPreviousTerrainReady = bTerrainCacheInitialized;
++	const FBox2D PreviousBounds = TerrainWorldBounds;
+ 	EnsureTerrainCache();
+-	SoldierPoints.Reset();
+-
+-	AGuLiCommanderPlayerController* Controller = CommanderController.Get();
+-	if (!Controller)
+-	{
+-		Controller = Cast<AGuLiCommanderPlayerController>(GetOwningPlayer());
+-		CommanderController = Controller;
+-	}
+-
+-	TSet<uint32> SelectedSoldierValues;
+-	if (Controller)
+-	{
+-		if (const UGuLiCommanderNetSyncComponent* NetSync = Controller->GetCommanderNetSyncComponent())
+-		{
+-			const FGuLiCommanderSelectionState& Selection = NetSync->GetSelectionState();
+-			for (const FGuLiControlCohortDescriptor& Cohort : Selection.Cohorts)
+-			{
+-				for (const FGuLiSoldierId SoldierId : Cohort.MemberIds)
+-				{
+-					if (SoldierId.IsValid())
+-					{
+-						SelectedSoldierValues.Add(SoldierId.Value);
+-					}
+-				}
+-			}
+-		}
+-	}
+-
+-	const AGuLiSoldierStateReplicator* Replicator = SoldierStateReplicator.Get();
+-	const AGuLiCommanderPresentationActor* Presentation = PresentationActor.Get();
+-	if (Replicator && Presentation)
+-	{
+-		SoldierPoints.Reserve(Replicator->GetItems().Num());
+-		for (const FGuLiSoldierStateItem& Soldier : Replicator->GetItems())
+-		{
+-			if (!Soldier.SoldierId.IsValid() || !Soldier.IsAlive() || Soldier.bPhased)
+-			{
+-				continue;
+-			}
+-
+-			FTransform PresentedTransform;
+-			if (!Presentation->TryGetPresentedSoldierTransform(
+-				Soldier.SoldierId,
+-				PresentedTransform)
+-				|| PresentedTransform.ContainsNaN())
+-			{
+-				continue;
+-			}
+-
+-			const FVector PresentedLocation = PresentedTransform.GetLocation();
+-			if (PresentedLocation.ContainsNaN())
+-			{
+-				continue;
+-			}
+-
+-			FGuLiCommanderMiniMapSoldierPoint& Point = SoldierPoints.AddDefaulted_GetRef();
+-			Point.WorldPosition = FVector2D(PresentedLocation.X, PresentedLocation.Y);
+-			Point.Team = Soldier.Team;
+-			Point.bSelected = SelectedSoldierValues.Contains(Soldier.SoldierId.Value);
+-		}
+-	}
+-
+-	CameraYawDegrees = ResolveCameraYawDegrees();
+-	RefreshCameraFootprint();
+-	Invalidate(EInvalidateWidgetReason::Paint);
++	bool bDynamicChanged = bShown;
++	if (const auto* Replicator = SoldierStateReplicator.Get())
++		for (const auto& State : Replicator->GetItems()) bDynamicChanged |= RefreshPoint(State.SoldierId, true);
++	else if (!SoldierPoints.IsEmpty()) { SoldierPoints.Reset(); bDynamicChanged = true; }
++	const float PreviousYaw = CameraYawDegrees;
++	const auto PreviousFootprint = CameraFootprintWorld;
++	const auto PreviousPosition = CameraWorldPosition;
++	const bool bPreviousCamera = bHasCameraWorldPosition;
++	CameraYawDegrees = ResolveCameraYawDegrees(); RefreshCameraFootprint();
++	const bool bHeadingChanged = !FMath::IsNearlyEqual(PreviousYaw, CameraYawDegrees);
++	if (bShown || bHeadingChanged || PreviousTerrainRevision != TerrainLandscapeRevision || !bPreviousTerrainReady || PreviousBounds != TerrainWorldBounds) InvalidateMapLayer(true);
++	bDynamicChanged |= bHeadingChanged || PreviousFootprint != CameraFootprintWorld || PreviousPosition != CameraWorldPosition || bPreviousCamera != bHasCameraWorldPosition;
++	if (bDynamicChanged) InvalidateMapLayer(false);
++	CSV_CUSTOM_STAT(GuLiCommanderMiniMap, DataCacheBytes, float(SoldierPoints.GetAllocatedSize() + TerrainHeights.GetAllocatedSize() + TerrainValidity.GetAllocatedSize() + CameraFootprintWorld.GetAllocatedSize()), ECsvCustomStatOp::Set);
+ }
+ 
+ void UGuLiCommanderMiniMapWidget::EnsureTerrainCache()
+@@ -342,7 +450,8 @@
+ 		? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
+ 		: nullptr;
+ 	const uint32 LandscapeRevision = LandscapeQuery ? LandscapeQuery->GetCacheRevision() : 0u;
+-	if (bTerrainCacheInitialized && TerrainLandscapeRevision == LandscapeRevision)
++	const FBox2D CurrentBounds = GuLiCommanderNativeMiniMap::GetWorldBounds(World);
++	if (bTerrainCacheInitialized && TerrainLandscapeRevision == LandscapeRevision && TerrainWorldBounds == CurrentBounds)
+ 	{
+ 		return;
+ 	}
+@@ -594,30 +703,21 @@
+ 		FVector2D(MaximumX, MaximumY));
+ }
+ 
+-int32 UGuLiCommanderMiniMapWidget::NativePaint(
+-	const FPaintArgs& Args,
+-	const FGeometry& AllottedGeometry,
+-	const FSlateRect& MyCullingRect,
+-	FSlateWindowElementList& OutDrawElements,
+-	const int32 LayerId,
+-	const FWidgetStyle& InWidgetStyle,
+-	const bool bParentEnabled) const
+-{
+-	const int32 SuperLayer = Super::NativePaint(
+-		Args,
+-		AllottedGeometry,
+-		MyCullingRect,
+-		OutDrawElements,
+-		LayerId,
+-		InWidgetStyle,
+-		bParentEnabled);
+-	const int32 PaintLayer = SuperLayer + 1;
++int32 UGuLiCommanderMiniMapWidget::NativePaint(const FPaintArgs& Args, const FGeometry& Geometry, const FSlateRect& Culling,
++	FSlateWindowElementList& Elements, int32 Layer, const FWidgetStyle& Style, bool bEnabled) const
++{
++	return Super::NativePaint(Args, Geometry, Culling, Elements, Layer, Style, bEnabled);
++}
++
++int32 UGuLiCommanderMiniMapWidget::PaintMapLayer(bool bTerrain, const FGeometry& AllottedGeometry,
++	const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId,
++	const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
++{
++	TRACE_CPUPROFILER_EVENT_SCOPE_CONDITIONAL(GuLiCommanderMiniMap_TerrainPaint, bTerrain);
++	TRACE_CPUPROFILER_EVENT_SCOPE_CONDITIONAL(GuLiCommanderMiniMap_DynamicPaint, !bTerrain);
++	const int32 PaintLayer = LayerId + 1;
+ 	const FVector2D WidgetSize = AllottedGeometry.GetLocalSize();
+-	if (WidgetSize.X <= 2.0 || WidgetSize.Y <= 2.0)
+-	{
+-		return PaintLayer;
+-	}
+-
++	if (WidgetSize.X <= 2.0 || WidgetSize.Y <= 2.0) return PaintLayer;
+ 	using namespace GuLiCommanderNativeMiniMap;
+ 	FPaintContext PaintContext(
+ 		AllottedGeometry,
+@@ -628,6 +728,16 @@
+ 		bParentEnabled);
+ 	const FBox2D ContentBounds = GetLocalContentBounds(AllottedGeometry);
+ 	const FVector2D ContentSize = ContentBounds.GetSize();
++	const FBox2D WorldBounds = TerrainWorldBounds.bIsValid
++		? TerrainWorldBounds
++		: GetWorldBounds(GetWorld());
++	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = MakeHeadingTransform(
++		WorldBounds,
++		ContentBounds,
++		CameraYawDegrees);
++
++	if (bTerrain)
++	{
+ 	DrawSolidBox(
+ 		PaintContext,
+ 		SolidBrushAsset.Get(),
+@@ -644,14 +754,6 @@
+ 		ContentSize,
+ 		FallbackTerrainColor,
+ 		InWidgetStyle);
+-
+-	const FBox2D WorldBounds = TerrainWorldBounds.bIsValid
+-		? TerrainWorldBounds
+-		: GetWorldBounds(GetWorld());
+-	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = MakeHeadingTransform(
+-		WorldBounds,
+-		ContentBounds,
+-		CameraYawDegrees);
+ 
+ 	if (!TerrainHeights.IsEmpty() && Transform.IsValid())
+ 	{
+@@ -726,80 +828,6 @@
+ 			1.0f);
+ 	}
+ 
+-	if (Transform.IsValid())
+-	{
+-		for (const FGuLiCommanderMiniMapSoldierPoint& Point : SoldierPoints)
+-		{
+-			FVector2D MapPoint;
+-			if (!Transform.TryWorldToScreen(Point.WorldPosition, MapPoint))
+-			{
+-				continue;
+-			}
+-
+-			if (Point.bSelected)
+-			{
+-				DrawClippedSolidBox(
+-					PaintContext,
+-					SolidBrushAsset.Get(),
+-					PaintLayer,
+-					ContentBounds,
+-					MapPoint - FVector2D(4.5, 4.5),
+-					FVector2D(9.0, 9.0),
+-					SelectionColor,
+-					InWidgetStyle);
+-			}
+-
+-			const double HalfPointSize = Point.bSelected ? 2.5 : 1.8;
+-			DrawClippedSolidBox(
+-				PaintContext,
+-				SolidBrushAsset.Get(),
+-				PaintLayer,
+-				ContentBounds,
+-				MapPoint - FVector2D(HalfPointSize, HalfPointSize),
+-				FVector2D(HalfPointSize * 2.0, HalfPointSize * 2.0),
+-				GetTeamColor(Point.Team),
+-				InWidgetStyle);
+-		}
+-
+-		if (CameraFootprintWorld.Num() == 4)
+-		{
+-			for (int32 CornerIndex = 0; CornerIndex < CameraFootprintWorld.Num(); ++CornerIndex)
+-			{
+-				FVector2D Start = Transform.WorldToScreenUnchecked(
+-					CameraFootprintWorld[CornerIndex]);
+-				FVector2D End = Transform.WorldToScreenUnchecked(
+-					CameraFootprintWorld[(CornerIndex + 1) % CameraFootprintWorld.Num()]);
+-				if (GuLiCommanderMiniMap::ClipLineToScreenBounds(ContentBounds, Start, End))
+-				{
+-					DrawLine(
+-						PaintContext,
+-						PaintLayer,
+-						Start,
+-						End,
+-						CameraFrameColor,
+-						InWidgetStyle,
+-						1.6f);
+-				}
+-			}
+-		}
+-
+-		if (bHasCameraWorldPosition)
+-		{
+-			FVector2D CameraPoint;
+-			if (Transform.TryWorldToScreen(CameraWorldPosition, CameraPoint))
+-			{
+-				DrawClippedSolidBox(
+-					PaintContext,
+-					SolidBrushAsset.Get(),
+-					PaintLayer,
+-					ContentBounds,
+-					CameraPoint - FVector2D(2.0, 2.0),
+-					FVector2D(4.0, 4.0),
+-					CameraFrameColor,
+-					InWidgetStyle);
+-			}
+-		}
+-	}
+ 
+ 	DrawSolidBox(
+ 		PaintContext,
+@@ -834,6 +862,86 @@
+ 		BorderColor,
+ 		InWidgetStyle);
+ 
++	}
++	else
++	{
++	if (Transform.IsValid())
++	{
++		for (const auto& Pair : SoldierPoints)
++		{
++			const auto& Point = Pair.Value;
++			FVector2D MapPoint;
++			if (!Transform.TryWorldToScreen(Point.WorldPosition, MapPoint))
++			{
++				continue;
++			}
++
++			if (Point.bSelected)
++			{
++				DrawClippedSolidBox(
++					PaintContext,
++					SolidBrushAsset.Get(),
++					PaintLayer,
++					ContentBounds,
++					MapPoint - FVector2D(4.5, 4.5),
++					FVector2D(9.0, 9.0),
++					SelectionColor,
++					InWidgetStyle);
++			}
++
++			const double HalfPointSize = Point.bSelected ? 2.5 : 1.8;
++			DrawClippedSolidBox(
++				PaintContext,
++				SolidBrushAsset.Get(),
++				PaintLayer,
++				ContentBounds,
++				MapPoint - FVector2D(HalfPointSize, HalfPointSize),
++				FVector2D(HalfPointSize * 2.0, HalfPointSize * 2.0),
++				GetTeamColor(Point.Team),
++				InWidgetStyle);
++		}
++
++		if (CameraFootprintWorld.Num() == 4)
++		{
++			for (int32 CornerIndex = 0; CornerIndex < CameraFootprintWorld.Num(); ++CornerIndex)
++			{
++				FVector2D Start = Transform.WorldToScreenUnchecked(
++					CameraFootprintWorld[CornerIndex]);
++				FVector2D End = Transform.WorldToScreenUnchecked(
++					CameraFootprintWorld[(CornerIndex + 1) % CameraFootprintWorld.Num()]);
++				if (GuLiCommanderMiniMap::ClipLineToScreenBounds(ContentBounds, Start, End))
++				{
++					DrawLine(
++						PaintContext,
++						PaintLayer,
++						Start,
++						End,
++						CameraFrameColor,
++						InWidgetStyle,
++						1.6f);
++				}
++			}
++		}
++
++		if (bHasCameraWorldPosition)
++		{
++			FVector2D CameraPoint;
++			if (Transform.TryWorldToScreen(CameraWorldPosition, CameraPoint))
++			{
++				DrawClippedSolidBox(
++					PaintContext,
++					SolidBrushAsset.Get(),
++					PaintLayer,
++					ContentBounds,
++					CameraPoint - FVector2D(2.0, 2.0),
++					FVector2D(4.0, 4.0),
++					CameraFrameColor,
++					InWidgetStyle);
++			}
++		}
++	}
++
++	}
+ 	return FMath::Max(PaintLayer, PaintContext.MaxLayer);
+ }
+ 
+--- before/Source/GuLiStrike/Commander/UI/GuLiCommanderHealthBarRenderer.h
++++ after/Source/GuLiStrike/Commander/UI/GuLiCommanderHealthBarRenderer.h
+@@ -16,11 +16,14 @@
+ class UMaterialInterface;
+ class USceneComponent;
+ class UStaticMesh;
++class UGuLiUnitFeedbackSubsystem;
++class UGuLiCombatHealthComponent;
++struct FGuLiSoldierRosterDelta;
+ 
+ /**
+  * Local-only, single-batch world-space health-bar presentation.
+  *
+- * One stable ISM slot is allocated per SoldierId. Gameplay facts remain owned by
++ * Slots are shared and recycled by the active selected/hit soldier and Actor sets. Gameplay facts remain owned by
+  * AGuLiSoldierStateReplicator and positions remain owned by the existing Commander
+  * presentation actor; this actor only turns those read-only views into billboards.
+  */
+@@ -65,6 +68,16 @@
+ #endif
+ 
+ private:
++	friend class FGuLiCommanderHealthBarActivityTest;
++	void MaintainActivity();
++	void RefreshSoldierActivity(FGuLiSoldierId Id);
++	void HandleRosterDelta(const FGuLiSoldierRosterDelta& Delta);
++	void HandleVisualStatesChanged(const TArray<FGuLiSoldierId>& Ids);
++	void HandleActorBarChanged(TWeakObjectPtr<AActor> Actor);
++	UFUNCTION() void HandleActorHealthChanged(float Health, float MaxHealth);
++	void UpdateTickActivity();
++	void ReleaseInstanceSlot(int32 Index);
++	void WriteInstance(int32 Index, const FTransform& Transform, float Health, float Selected, float Visible);
+ 	void ResolveSoftAssets();
+ 	void ResolveRuntimeDependencies();
+ 	void BindNetSync(UGuLiCommanderNetSyncComponent* InNetSync);
+@@ -72,7 +85,6 @@
+ 	void BindPresentationActor(AGuLiCommanderPresentationActor* InPresentationActor);
+ 	void UnbindRuntimeDependencies();
+ 	void HandleSelectionChanged(const FGuLiCommanderSelectionState& Selection);
+-	void HandleSoldierStatesChanged(uint32 SnapshotRevision);
+ 	void RebuildSelectedSoldiers(const FGuLiCommanderSelectionState& Selection);
+ 	void EnsureStableInstancePool(const AGuLiSoldierStateReplicator& Replicator);
+ 	int32 AllocateInstanceSlot();
+@@ -116,9 +128,18 @@
+ 	TMap<uint16, float> SoldierHeightOffsetsCentimeters;
+ 	FDelegateHandle SelectionChangedHandle;
+ 	FDelegateHandle SoldierStatesChangedHandle;
++	FDelegateHandle VisualStatesChangedHandle;
++	FDelegateHandle ActorBarsChangedHandle;
++	TWeakObjectPtr<UGuLiUnitFeedbackSubsystem> BoundFeedback;
++	FTimerHandle MaintenanceTimer;
++	TMap<FGuLiSoldierId, FGuLiSoldierStateItem> ActiveSoldierStates;
++	TMap<FGuLiSoldierId, float> ActiveHitStartTimes;
++	TMap<TWeakObjectPtr<AActor>, TWeakObjectPtr<UGuLiCombatHealthComponent>> ActorHealthProviders;
++	TMap<TWeakObjectPtr<AActor>, float> ActorHealthFractions;
++	TArray<int32> FreeInstanceSlots;
+ 	TMap<FGuLiSoldierId, int32> SoldierInstanceIndices;
+ 	TMap<TWeakObjectPtr<AActor>, int32> ActorInstanceIndices;
+-	TArray<int32> FreeActorInstanceSlots;
++	TSet<FGuLiSoldierId> PendingActivityIds;
+ 	TSet<FGuLiSoldierId> SelectedSoldiers;
+ 	TArray<FTransform> CachedTransforms;
+ 	TArray<float> CachedHealthFractions;
+--- before/Source/GuLiStrike/Commander/UI/GuLiCommanderHealthBarRenderer.cpp
++++ after/Source/GuLiStrike/Commander/UI/GuLiCommanderHealthBarRenderer.cpp
+@@ -16,6 +16,7 @@
+ #include "Engine/StaticMesh.h"
+ #include "Engine/World.h"
+ #include "EngineUtils.h"
++#include "TimerManager.h"
+ #include "GameFramework/Pawn.h"
+ #include "HAL/PlatformTime.h"
+ #include "Materials/MaterialInterface.h"
+@@ -45,21 +46,7 @@
+ 		return Hidden;
+ 	}
+ 
+-	bool AreTransformsEqual(const TArray<FTransform>& Lhs, const TArray<FTransform>& Rhs)
+-	{
+-		if (Lhs.Num() != Rhs.Num())
+-		{
+-			return false;
+-		}
+-		for (int32 Index = 0; Index < Lhs.Num(); ++Index)
+-		{
+-			if (!Lhs[Index].Equals(Rhs[Index], 0.01f))
+-			{
+-				return false;
+-			}
+-		}
+-		return true;
+-	}
++
+ }
+ 
+ AGuLiCommanderHealthBarRenderer::AGuLiCommanderHealthBarRenderer()
+@@ -69,7 +56,7 @@
+ 	SetReplicateMovement(false);
+ 	SetActorEnableCollision(false);
+ 	PrimaryActorTick.bCanEverTick = true;
+-	PrimaryActorTick.bStartWithTickEnabled = true;
++	PrimaryActorTick.bStartWithTickEnabled = false;
+ 	PrimaryActorTick.TickInterval = 0.0f;
+ 	PrimaryActorTick.TickGroup = TG_PostUpdateWork;
+ 
+@@ -111,10 +98,15 @@
+ 
+ 	ResolveSoftAssets();
+ 	ResolveRuntimeDependencies();
++	FTimerManagerTimerParameters TimerParameters;
++	TimerParameters.bLoop = true; TimerParameters.bMaxOncePerFrame = true;
++	GetWorld()->GetTimerManager().SetTimer(MaintenanceTimer, this, &ThisClass::MaintainActivity, 0.1f, TimerParameters);
++	MaintainActivity();
+ }
+ 
+ void AGuLiCommanderHealthBarRenderer::EndPlay(const EEndPlayReason::Type EndPlayReason)
+ {
++	if (GetWorld()) GetWorld()->GetTimerManager().ClearTimer(MaintenanceTimer);
+ 	UnbindRuntimeDependencies();
+ 	Super::EndPlay(EndPlayReason);
+ }
+@@ -126,12 +118,6 @@
+ 	CSV_SCOPED_TIMING_STAT(GuLiCommanderHealthBars, UpdateInstances);
+ 
+ 	const double StartSeconds = FPlatformTime::Seconds();
+-	ResolveRuntimeDependencies();
+-	if (const AGuLiSoldierStateReplicator* Replicator = StateReplicator.Get())
+-	{
+-		EnsureStableInstancePool(*Replicator);
+-	}
+-	RefreshActorInstancePool();
+ 	RebuildLocalInstances();
+ 	LastUpdateMilliseconds = (FPlatformTime::Seconds() - StartSeconds) * 1000.0;
+ 	CSV_CUSTOM_STAT(
+@@ -269,14 +255,14 @@
+ 	}
+ 	SelectionChangedHandle.Reset();
+ 	BoundNetSync = InNetSync;
+-	SelectedSoldiers.Reset();
++	HandleSelectionChanged(FGuLiCommanderSelectionState());
+ 
+ 	if (InNetSync)
+ 	{
+ 		SelectionChangedHandle = InNetSync->OnSelectionChanged.AddUObject(
+ 			this,
+ 			&AGuLiCommanderHealthBarRenderer::HandleSelectionChanged);
+-		RebuildSelectedSoldiers(InNetSync->GetSelectionState());
++		HandleSelectionChanged(InNetSync->GetSelectionState());
+ 	}
+ }
+ 
+@@ -290,16 +276,20 @@
+ 
+ 	if (AGuLiSoldierStateReplicator* Previous = StateReplicator.Get())
+ 	{
+-		Previous->OnSoldierStatesChanged.Remove(SoldierStatesChangedHandle);
++		Previous->OnRosterDelta.Remove(SoldierStatesChangedHandle);
+ 	}
+ 	SoldierStatesChangedHandle.Reset();
+ 	StateReplicator = InReplicator;
++	if (!InReplicator)
++	{
++		for (const auto& Pair : SoldierInstanceIndices) ReleaseInstanceSlot(Pair.Value);
++		SoldierInstanceIndices.Reset(); ActiveSoldierStates.Reset(); ActiveHitStartTimes.Reset();
++		PendingActivityIds.Reset(); UpdateTickActivity();
++	}
+ 
+ 	if (InReplicator)
+ 	{
+-		SoldierStatesChangedHandle = InReplicator->OnSoldierStatesChanged.AddUObject(
+-			this,
+-			&AGuLiCommanderHealthBarRenderer::HandleSoldierStatesChanged);
++		SoldierStatesChangedHandle = InReplicator->OnRosterDelta.AddUObject(this, &ThisClass::HandleRosterDelta);
+ 		EnsureStableInstancePool(*InReplicator);
+ 	}
+ }
+@@ -315,7 +305,9 @@
+ 	if (AGuLiCommanderPresentationActor* Previous = PresentationActor.Get())
+ 	{
+ 		RemoveTickPrerequisiteActor(Previous);
+-	}
++		Previous->OnVisualStatesChanged.Remove(VisualStatesChangedHandle);
++	}
++	VisualStatesChangedHandle.Reset();
+ 	PresentationActor = InPresentationActor;
+ 	CachedSoldierMeshes.Reset();
+ 	SoldierHeightOffsetsCentimeters.Reset();
+@@ -323,6 +315,7 @@
+ 	if (InPresentationActor)
+ 	{
+ 		AddTickPrerequisiteActor(InPresentationActor);
++		VisualStatesChangedHandle = InPresentationActor->OnVisualStatesChanged.AddUObject(this, &ThisClass::HandleVisualStatesChanged);
+ 	}
+ }
+ 
+@@ -332,20 +325,19 @@
+ 	BindStateReplicator(nullptr);
+ 	BindPresentationActor(nullptr);
+ 	LocalController.Reset();
++	if (auto* Feedback = BoundFeedback.Get()) Feedback->OnActorHealthBarChanged.Remove(ActorBarsChangedHandle);
++	for (auto& Pair : ActorHealthProviders) if (auto* Health = Pair.Value.Get()) Health->OnHealthChanged.RemoveDynamic(this, &ThisClass::HandleActorHealthChanged);
++	ActorHealthProviders.Reset(); BoundFeedback.Reset();
+ }
+ 
+ void AGuLiCommanderHealthBarRenderer::HandleSelectionChanged(
+ 	const FGuLiCommanderSelectionState& Selection)
+ {
++	TSet<FGuLiSoldierId> Affected = SelectedSoldiers;
+ 	RebuildSelectedSoldiers(Selection);
+-}
+-
+-void AGuLiCommanderHealthBarRenderer::HandleSoldierStatesChanged(const uint32 SnapshotRevision)
+-{
+-	if (const AGuLiSoldierStateReplicator* Replicator = StateReplicator.Get())
+-	{
+-		EnsureStableInstancePool(*Replicator);
+-	}
++	Affected.Append(SelectedSoldiers);
++	for (auto Id : Affected) RefreshSoldierActivity(Id);
++	UpdateTickActivity();
+ }
+ 
+ void AGuLiCommanderHealthBarRenderer::RebuildSelectedSoldiers(
+@@ -370,58 +362,134 @@
+ 	}
+ }
+ 
+-void AGuLiCommanderHealthBarRenderer::EnsureStableInstancePool(
+-	const AGuLiSoldierStateReplicator& Replicator)
+-{
+-	if (!HealthBarInstances)
+-	{
++void AGuLiCommanderHealthBarRenderer::EnsureStableInstancePool(const AGuLiSoldierStateReplicator& Replicator)
++{
++	// Only a source transition calls this. Membership is independent of roster size.
++	TArray<FGuLiSoldierId> Existing;
++	SoldierInstanceIndices.GetKeys(Existing);
++	for (auto Id : Existing) if (const auto* Index = SoldierInstanceIndices.Find(Id)) ReleaseInstanceSlot(*Index);
++	SoldierInstanceIndices.Reset(); ActiveSoldierStates.Reset(); ActiveHitStartTimes.Reset(); PendingActivityIds.Reset();
++	for (auto Id : SelectedSoldiers) RefreshSoldierActivity(Id);
++	UpdateTickActivity();
++}
++
++void AGuLiCommanderHealthBarRenderer::RefreshSoldierActivity(FGuLiSoldierId Id)
++{
++	const auto* State = StateReplicator.IsValid() ? StateReplicator->FindSoldierState(Id) : nullptr;
++	const float HitStart = PresentationActor.IsValid() ? PresentationActor->GetSoldierHitStartTime(Id) : -1000.0f;
++	const bool bSelected = SelectedSoldiers.Contains(Id);
++	const float Now = GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0f;
++	if (!State || !State->IsAlive() || State->bPhased
++		|| (!bSelected && UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - HitStart) <= 0.0f))
++	{
++		if (const int32* Index = SoldierInstanceIndices.Find(Id)) ReleaseInstanceSlot(*Index);
++		SoldierInstanceIndices.Remove(Id); ActiveSoldierStates.Remove(Id); ActiveHitStartTimes.Remove(Id); PendingActivityIds.Remove(Id);
+ 		return;
+ 	}
+-
+-	TArray<const FGuLiSoldierStateItem*> OrderedStates;
+-	OrderedStates.Reserve(Replicator.GetItems().Num());
+-	for (const FGuLiSoldierStateItem& State : Replicator.GetItems())
+-	{
+-		if (State.SoldierId.IsValid() && !SoldierInstanceIndices.Contains(State.SoldierId))
+-		{
+-			OrderedStates.Add(&State);
+-		}
+-	}
+-	OrderedStates.Sort([](const FGuLiSoldierStateItem& Lhs, const FGuLiSoldierStateItem& Rhs)
+-	{
+-		return Lhs.SoldierId < Rhs.SoldierId;
+-	});
+-
+-	bool bPoolExtended = false;
+-	for (const FGuLiSoldierStateItem* State : OrderedStates)
+-	{
+-		if (!State)
+-		{
+-			continue;
+-		}
+-		const int32 InstanceIndex = AllocateInstanceSlot();
+-		if (InstanceIndex == INDEX_NONE)
+-		{
+-			UE_LOG(
+-				LogGuLiStrike,
+-				Error,
+-				TEXT("Commander health bars failed to allocate an ISM slot for SoldierId=%u."),
+-				State->SoldierId.Value);
+-			break;
+-		}
+-
+-		SoldierInstanceIndices.Add(State->SoldierId, InstanceIndex);
+-		bPoolExtended = true;
+-	}
+-
+-	if (bPoolExtended)
+-	{
+-		HealthBarInstances->MarkRenderStateDirty();
+-	}
++	int32* Index = SoldierInstanceIndices.Find(Id);
++	if (!Index)
++	{
++		const int32 Slot = AllocateInstanceSlot();
++		if (Slot == INDEX_NONE) { PendingActivityIds.Add(Id); return; }
++		Index = &SoldierInstanceIndices.Add(Id, Slot);
++	}
++	PendingActivityIds.Remove(Id);
++	ActiveSoldierStates.Add(Id, *State);
++	ActiveHitStartTimes.Add(Id, HitStart);
++	ResolveSoldierHeightOffset(State->UnitTypeId);
++}
++
++void AGuLiCommanderHealthBarRenderer::HandleRosterDelta(const FGuLiSoldierRosterDelta& Delta)
++{
++	if (Delta.bReset && StateReplicator.IsValid()) EnsureStableInstancePool(*StateReplicator);
++	for (auto Id : Delta.Removed) RefreshSoldierActivity(Id);
++	for (auto Id : Delta.Added) if (SelectedSoldiers.Contains(Id)) RefreshSoldierActivity(Id);
++	for (const auto& Pair : Delta.Changed) RefreshSoldierActivity(Pair.Key);
++	UpdateTickActivity();
++}
++
++void AGuLiCommanderHealthBarRenderer::HandleVisualStatesChanged(const TArray<FGuLiSoldierId>& Ids)
++{
++	for (auto Id : Ids) RefreshSoldierActivity(Id);
++	UpdateTickActivity();
++}
++
++void AGuLiCommanderHealthBarRenderer::UpdateTickActivity()
++{
++	const bool bActive = !SoldierInstanceIndices.IsEmpty() || !ActorInstanceIndices.IsEmpty();
++	SetActorTickEnabled(bActive);
++	if (!bActive) { VisibleInstanceCount = 0; LastUpdateMilliseconds = 0.0; }
++}
++
++void AGuLiCommanderHealthBarRenderer::MaintainActivity()
++{
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderHealthBars_MaintainActivity);
++	ResolveRuntimeDependencies();
++	if (!BoundFeedback.IsValid())
++		if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>())
++		{
++			BoundFeedback = Feedback;
++			ActorBarsChangedHandle = Feedback->OnActorHealthBarChanged.AddUObject(this, &ThisClass::HandleActorBarChanged);
++			for (const auto& Pair : Feedback->GetActorHealthBars()) HandleActorBarChanged(Pair.Key);
++		}
++	TArray<FGuLiSoldierId> Active;
++	SoldierInstanceIndices.GetKeys(Active);
++	for (auto Id : Active) RefreshSoldierActivity(Id);
++	const auto Pending = PendingActivityIds.Array();
++	for (auto Id : Pending) RefreshSoldierActivity(Id);
++	// A selected unit with unavailable dependencies/slot allocation remains retryable.
++	for (auto Id : SelectedSoldiers) if (!SoldierInstanceIndices.Contains(Id)) RefreshSoldierActivity(Id);
++	RefreshActorInstancePool();
++	UpdateTickActivity();
++	CSV_CUSTOM_STAT(GuLiCommanderHealthBars, DataCacheBytes, float(CachedTransforms.GetAllocatedSize() + ActiveSoldierStates.GetAllocatedSize() + ActiveHitStartTimes.GetAllocatedSize() + SoldierInstanceIndices.GetAllocatedSize() + ActorInstanceIndices.GetAllocatedSize()), ECsvCustomStatOp::Set);
++}
++
++void AGuLiCommanderHealthBarRenderer::ReleaseInstanceSlot(int32 Index)
++{
++	if (!CachedTransforms.IsValidIndex(Index)) return;
++	WriteInstance(Index, GuLiCommanderHealthBars::MakeHiddenTransform(), -1.0f, 0.0f, 0.0f);
++	FreeInstanceSlots.AddUnique(Index);
++}
++
++void AGuLiCommanderHealthBarRenderer::HandleActorBarChanged(TWeakObjectPtr<AActor> Actor)
++{
++	const auto* Feedback = BoundFeedback.Get();
++	const auto* Bar = Feedback ? Feedback->GetActorHealthBars().Find(Actor) : nullptr;
++	if (!Actor.IsValid() || !Bar)
++	{
++		if (const auto* Index = ActorInstanceIndices.Find(Actor)) ReleaseInstanceSlot(*Index);
++		if (const auto* Provider = ActorHealthProviders.Find(Actor); Provider && Provider->IsValid())
++			Provider->Get()->OnHealthChanged.RemoveDynamic(this, &ThisClass::HandleActorHealthChanged);
++		ActorInstanceIndices.Remove(Actor); ActorHealthProviders.Remove(Actor); ActorHealthFractions.Remove(Actor);
++	}
++	else
++	{
++		if (!ActorInstanceIndices.Contains(Actor))
++		{
++			const int32 Slot = AllocateInstanceSlot();
++			if (Slot == INDEX_NONE) return;
++			ActorInstanceIndices.Add(Actor, Slot);
++			auto* Health = Actor->FindComponentByClass<UGuLiCombatHealthComponent>();
++			ActorHealthProviders.Add(Actor, Health);
++			if (Health) Health->OnHealthChanged.AddUniqueDynamic(this, &ThisClass::HandleActorHealthChanged);
++		}
++		ActorHealthFractions.Add(Actor, Bar->HealthFraction);
++		HandleActorHealthChanged(0, 0);
++	}
++	UpdateTickActivity();
++}
++
++void AGuLiCommanderHealthBarRenderer::HandleActorHealthChanged(float Health, float MaxHealth)
++{
++	for (const auto& Pair : ActorHealthProviders)
++		if (const auto* Provider = Pair.Value.Get())
++			ActorHealthFractions.Add(Pair.Key, Provider->IsAlive()
++				? CalculateHealthFraction(Provider->GetHealthState().Health, Provider->GetHealthState().MaxHealth) : 0.0f);
+ }
+ 
+ int32 AGuLiCommanderHealthBarRenderer::AllocateInstanceSlot()
+ {
++	if (!FreeInstanceSlots.IsEmpty()) return FreeInstanceSlots.Pop(EAllowShrinking::No);
+ 	const FTransform Hidden = GuLiCommanderHealthBars::MakeHiddenTransform();
+ 	const int32 Index = HealthBarInstances->AddInstance(Hidden, true);
+ 	if (Index != INDEX_NONE)
+@@ -436,21 +504,13 @@
+ 
+ void AGuLiCommanderHealthBarRenderer::RefreshActorInstancePool()
+ {
+-	const auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>();
+-	if (!Feedback || !HealthBarInstances) return;
+-	const auto& Bars = Feedback->GetActorHealthBars();
+-	for (auto It = ActorInstanceIndices.CreateIterator(); It; ++It)
+-		if (!It.Key().IsValid() || !Bars.Contains(It.Key()))
+-		{
+-			FreeActorInstanceSlots.Add(It.Value());
+-			It.RemoveCurrent();
+-		}
+-	for (const auto& Bar : Bars)
+-		if (Bar.Key.IsValid() && !ActorInstanceIndices.Contains(Bar.Key))
+-		{
+-			const int32 Index = FreeActorInstanceSlots.IsEmpty() ? AllocateInstanceSlot() : FreeActorInstanceSlots.Pop(EAllowShrinking::No);
+-			if (Index != INDEX_NONE) ActorInstanceIndices.Add(Bar.Key, Index);
+-		}
++	if (!BoundFeedback.IsValid()) return;
++	TArray<TWeakObjectPtr<AActor>> Existing;
++	ActorInstanceIndices.GetKeys(Existing);
++	for (auto Actor : Existing)
++		if (!Actor.IsValid() || !BoundFeedback->GetActorHealthBars().Contains(Actor)) HandleActorBarChanged(Actor);
++	for (const auto& Pair : BoundFeedback->GetActorHealthBars())
++		if (!ActorInstanceIndices.Contains(Pair.Key)) HandleActorBarChanged(Pair.Key);
+ }
+ 
+ float AGuLiCommanderHealthBarRenderer::ResolveSoldierHeightOffset(
+@@ -482,271 +542,98 @@
+ 	return HeightOffset;
+ }
+ 
++void AGuLiCommanderHealthBarRenderer::WriteInstance(int32 Index, const FTransform& Transform, float Health, float Selected, float Visible)
++{
++	if (!HealthBarInstances || !CachedTransforms.IsValidIndex(Index)) return;
++	if (!CachedTransforms[Index].Equals(Transform, 0.01f)
++		&& HealthBarInstances->UpdateInstanceTransform(Index, Transform, true, false, false)) CachedTransforms[Index] = Transform;
++	const float Values[] = {Health, Selected, Visible};
++	TArray<float>* Caches[] = {&CachedHealthFractions, &CachedSelectedValues, &CachedVisibleValues};
++	for (int32 Channel = 0; Channel < 3; ++Channel)
++		if (!FMath::IsNearlyEqual((*Caches[Channel])[Index], Values[Channel]))
++		{
++			HealthBarInstances->SetCustomDataValue(Index, Channel, Values[Channel], false);
++			(*Caches[Channel])[Index] = Values[Channel];
++		}
++}
++
+ void AGuLiCommanderHealthBarRenderer::RebuildLocalInstances()
+ {
+-	APlayerController* Controller = LocalController.Get();
+-	const AGuLiSoldierStateReplicator* Replicator = StateReplicator.Get();
+-	const AGuLiCommanderPresentationActor* Presentation = PresentationActor.Get();
+-	if (!HealthBarInstances || !Controller || !Controller->IsLocalController()
+-		|| !Controller->PlayerCameraManager)
+-	{
+-		HideAllInstances();
+-		return;
+-	}
+-	// OnlyOwnerSee is evaluated against the scene's ViewActor, not its PlayerController.
+-	// Follow camera/Pawn changes while keeping one isolated billboard batch per local view.
++	auto* Controller = LocalController.Get();
++	const auto* Presentation = PresentationActor.Get();
++	if (!HealthBarInstances || !Controller || !Controller->IsLocalController() || !Controller->PlayerCameraManager)
++	{ HideAllInstances(); return; }
+ 	if (GetOwner() != Controller->GetViewTarget()) SetOwner(Controller->GetViewTarget());
+-
+-	int32 ViewportWidth = 0;
+-	int32 ViewportHeight = 0;
+-	Controller->GetViewportSize(ViewportWidth, ViewportHeight);
+-	if (ViewportWidth <= 0 || ViewportHeight <= 0)
+-	{
+-		HideAllInstances();
+-		return;
+-	}
+-
+-	const FVector CameraLocation = Controller->PlayerCameraManager->GetCameraLocation();
+-	const APawn* CameraPawn = Controller->GetPawn();
+-	const FVector CameraFocusLocation = CameraPawn
+-		? CameraPawn->GetActorLocation()
+-		: CameraLocation;
+-	const FRotator CameraRotation = Controller->PlayerCameraManager->GetCameraRotation();
+-	const float HorizontalFieldOfViewDegrees = Controller->PlayerCameraManager->GetFOVAngle();
++	int32 Width = 0, Height = 0;
++	Controller->GetViewportSize(Width, Height);
++	if (Width <= 0 || Height <= 0) { HideAllInstances(); return; }
++	const APlayerCameraManager* Camera = Controller->PlayerCameraManager.Get();
++	const FVector CameraLocation = Camera->GetCameraLocation();
++	const FVector FocusLocation = Controller->GetPawn() ? Controller->GetPawn()->GetActorLocation() : CameraLocation;
+ 	const auto* Commander = Cast<AGuLiCommanderPlayerController>(Controller);
+ 	const bool bCommanderView = Commander && Commander->IsCommanderViewActive();
+-	const float MaximumDistance = bCommanderView ? GuLiCommanderHealthBars::MaximumDrawDistanceCentimeters
+-		: GetDefault<UGuLiUnitFeedbackSettings>()->CullDistance;
++	const float MaxDistance = bCommanderView ? GuLiCommanderHealthBars::MaximumDrawDistanceCentimeters : GetDefault<UGuLiUnitFeedbackSettings>()->CullDistance;
+ 	const float Now = GetWorld()->GetTimeSeconds();
+-	const int32 InstanceCount = HealthBarInstances->GetInstanceCount();
+-	if (InstanceCount <= 0 || CachedTransforms.Num() != InstanceCount)
+-	{
+-		VisibleInstanceCount = 0;
+-		return;
+-	}
+-
+-	TArray<FTransform> DesiredTransforms = CachedTransforms;
+-	for (FTransform& Transform : DesiredTransforms)
+-	{
+-		Transform.SetScale3D(FVector::ZeroVector);
+-	}
+-	TArray<float> DesiredHealthFractions = CachedHealthFractions;
+-	TArray<float> DesiredSelectedValues;
+-	DesiredSelectedValues.Init(0.0f, InstanceCount);
+-	TArray<float> DesiredVisibleValues;
+-	DesiredVisibleValues.Init(0.0f, InstanceCount);
+-
++	const FRotationMatrix Basis(Camera->GetCameraRotation());
++	const FQuat Rotation = FRotationMatrix::MakeFromXY(Basis.GetUnitAxis(EAxis::Y), Basis.GetUnitAxis(EAxis::Z)).ToQuat();
++	const FTransform Hidden = GuLiCommanderHealthBars::MakeHiddenTransform();
++	auto MakeBarTransform = [&](const FVector& Location, FTransform& Out)
++	{
++		const float Distance = FVector::Distance(CameraLocation, Location);
++		const float CullDistance = bCommanderView ? FVector::Dist2D(FocusLocation, Location) : Distance;
++		if (MaxDistance > 0 && CullDistance > MaxDistance) return false;
++		const FVector2D Size = CalculateWorldSizeCentimeters(Distance, Camera->GetFOVAngle(), Width, Height);
++		if (Size.X <= UE_SMALL_NUMBER || Size.Y <= UE_SMALL_NUMBER) return false;
++		Out = FTransform(Rotation, Location, FVector(Size.X / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, Size.Y / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, 1));
++		return true;
++	};
+ 	VisibleInstanceCount = 0;
+-	if (Replicator && Presentation) for (const FGuLiSoldierStateItem& State : Replicator->GetItems())
+-	{
+-		const int32* InstanceIndex = SoldierInstanceIndices.Find(State.SoldierId);
+-		if (!InstanceIndex || !DesiredTransforms.IsValidIndex(*InstanceIndex)
+-			|| !DesiredHealthFractions.IsValidIndex(*InstanceIndex))
+-		{
+-			continue;
+-		}
+-
+-		const bool bSelected = SelectedSoldiers.Contains(State.SoldierId);
+-		const float HitOpacity = UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - Presentation->GetSoldierHitStartTime(State.SoldierId));
+-		if (!bSelected && HitOpacity <= 0.0f) continue;
+-		const float HealthFraction = CalculateHealthFraction(State.Health, State.MaxHealth);
+-		DesiredHealthFractions[*InstanceIndex] = HealthFraction;
+-		DesiredSelectedValues[*InstanceIndex] = bSelected ? 1.0f : 0.0f;
+-
+-		if (!ShouldDisplayHealthBar(
+-			(State.IsAlive() && !State.bPhased),
+-			State.Health,
+-			State.MaxHealth,
+-			bSelected || HitOpacity > 0.0f,
+-			0.0f,
+-			MaximumDistance))
+-		{
+-			continue;
+-		}
+-
+-		FTransform SoldierTransform;
+-		if (!Presentation->TryGetPresentedSoldierTransform(State.SoldierId, SoldierTransform))
+-		{
+-			continue;
+-		}
+-
+-		FVector BarLocation = SoldierTransform.GetLocation();
+-		BarLocation.Z += ResolveSoldierHeightOffset(State.UnitTypeId)
+-			* FMath::Abs(SoldierTransform.GetScale3D().Z);
+-		const float CameraDistanceCentimeters = FVector::Distance(CameraLocation, BarLocation);
+-		const float FocusDistanceCentimeters = bCommanderView ? FVector::Dist2D(CameraFocusLocation, BarLocation) : CameraDistanceCentimeters;
+-		if (!ShouldDisplayHealthBar(
+-			(State.IsAlive() && !State.bPhased),
+-			State.Health,
+-			State.MaxHealth,
+-			bSelected || HitOpacity > 0.0f,
+-			FocusDistanceCentimeters,
+-			MaximumDistance))
+-		{
+-			continue;
+-		}
+-
+-		const FVector2D WorldSize = CalculateWorldSizeCentimeters(
+-			CameraDistanceCentimeters,
+-			HorizontalFieldOfViewDegrees,
+-			ViewportWidth,
+-			ViewportHeight);
+-		if (WorldSize.X <= UE_SMALL_NUMBER || WorldSize.Y <= UE_SMALL_NUMBER)
+-		{
+-			continue;
+-		}
+-
+-		const FRotationMatrix CameraBasis(CameraRotation);
+-		const FVector BillboardRight = CameraBasis.GetUnitAxis(EAxis::Y);
+-		const FVector BillboardUp = CameraBasis.GetUnitAxis(EAxis::Z);
+-		const FQuat BillboardRotation = FRotationMatrix::MakeFromXY(
+-			BillboardRight,
+-			BillboardUp).ToQuat();
+-		DesiredTransforms[*InstanceIndex] = FTransform(
+-			BillboardRotation,
+-			BarLocation,
+-			FVector(
+-				WorldSize.X / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters,
+-				WorldSize.Y / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters,
+-				1.0f));
+-		DesiredVisibleValues[*InstanceIndex] = bSelected ? 1.0f : HitOpacity;
+-		++VisibleInstanceCount;
+-	}
+-
+-	if (const auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>())
+-	for (const auto& Bar : Feedback->GetActorHealthBars())
+-	{
+-		AActor* Actor = Bar.Key.Get();
+-		const int32* Index = ActorInstanceIndices.Find(Bar.Key);
+-		if (!Actor || !Index || Actor->IsHidden() || UGuLiExternalUnitControlComponent::IsActorPhased(Actor)) continue;
+-		const float Alpha = UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - Bar.Value.StartTime);
+-		if (Alpha <= 0.0f) continue;
+-		float HealthFraction = Bar.Value.HealthFraction;
+-		if (const auto* Health = Actor->FindComponentByClass<UGuLiCombatHealthComponent>())
+-		{
+-			if (!Health->IsAlive()) continue;
+-			HealthFraction = CalculateHealthFraction(Health->GetHealthState().Health, Health->GetHealthState().MaxHealth);
+-		}
+-		if (HealthFraction == 0.0f) continue;
+-		FBox Bounds(ForceInit); float ModelSize = 0.0f;
+-		if (!UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(Actor, Bounds, ModelSize)) continue;
+-		FVector Location = Bounds.GetCenter();
+-		Location.Z = Bounds.Max.Z + GuLiCommanderHealthBars::HeightPaddingCentimeters;
+-		const float CameraDistance = FVector::Distance(CameraLocation, Location);
+-		const float CullDistance = bCommanderView ? FVector::Dist2D(CameraFocusLocation, Location) : CameraDistance;
+-		if (MaximumDistance > 0.0f && CullDistance > MaximumDistance) continue;
+-		const FVector2D Size = CalculateWorldSizeCentimeters(CameraDistance, HorizontalFieldOfViewDegrees, ViewportWidth, ViewportHeight);
+-		if (Size.X <= UE_SMALL_NUMBER || Size.Y <= UE_SMALL_NUMBER) continue;
+-		const FRotationMatrix Basis(CameraRotation);
+-		DesiredTransforms[*Index] = FTransform(FRotationMatrix::MakeFromXY(Basis.GetUnitAxis(EAxis::Y), Basis.GetUnitAxis(EAxis::Z)).ToQuat(),
+-			Location, FVector(Size.X / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, Size.Y / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, 1.0f));
+-		DesiredHealthFractions[*Index] = HealthFraction;
+-		DesiredVisibleValues[*Index] = Alpha;
+-		++VisibleInstanceCount;
+-	}
+-
+-	bool bRenderStateDirty = false;
+-	if (!GuLiCommanderHealthBars::AreTransformsEqual(CachedTransforms, DesiredTransforms)
+-		&& HealthBarInstances->BatchUpdateInstancesTransforms(
+-			0,
+-			DesiredTransforms,
+-			true,
+-			false,
+-			false))
+-	{
+-		CachedTransforms = MoveTemp(DesiredTransforms);
+-		bRenderStateDirty = true;
+-	}
+-
+-	for (int32 InstanceIndex = 0; InstanceIndex < InstanceCount; ++InstanceIndex)
+-	{
+-		if (!FMath::IsNearlyEqual(
+-			CachedHealthFractions[InstanceIndex],
+-			DesiredHealthFractions[InstanceIndex]))
+-		{
+-			HealthBarInstances->SetCustomDataValue(
+-				InstanceIndex,
+-				GuLiCommanderHealthBars::HealthFractionCustomDataIndex,
+-				DesiredHealthFractions[InstanceIndex],
+-				false);
+-			CachedHealthFractions[InstanceIndex] = DesiredHealthFractions[InstanceIndex];
+-			bRenderStateDirty = true;
+-		}
+-		if (!FMath::IsNearlyEqual(
+-			CachedSelectedValues[InstanceIndex],
+-			DesiredSelectedValues[InstanceIndex]))
+-		{
+-			HealthBarInstances->SetCustomDataValue(
+-				InstanceIndex,
+-				GuLiCommanderHealthBars::SelectedCustomDataIndex,
+-				DesiredSelectedValues[InstanceIndex],
+-				false);
+-			CachedSelectedValues[InstanceIndex] = DesiredSelectedValues[InstanceIndex];
+-			bRenderStateDirty = true;
+-		}
+-		if (!FMath::IsNearlyEqual(
+-			CachedVisibleValues[InstanceIndex],
+-			DesiredVisibleValues[InstanceIndex]))
+-		{
+-			HealthBarInstances->SetCustomDataValue(
+-				InstanceIndex,
+-				GuLiCommanderHealthBars::VisibleCustomDataIndex,
+-				DesiredVisibleValues[InstanceIndex],
+-				false);
+-			CachedVisibleValues[InstanceIndex] = DesiredVisibleValues[InstanceIndex];
+-			bRenderStateDirty = true;
+-		}
+-	}
+-
+-	if (bRenderStateDirty)
+-	{
+-		HealthBarInstances->MarkRenderStateDirty();
++	for (const auto& Pair : SoldierInstanceIndices)
++	{
++		const auto& State = ActiveSoldierStates.FindChecked(Pair.Key);
++		const bool bSelected = SelectedSoldiers.Contains(Pair.Key);
++		float Opacity = bSelected ? 1.0f : UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - ActiveHitStartTimes.FindChecked(Pair.Key));
++		FTransform Transform = Hidden, Soldier;
++		bool bVisible = false;
++		if (Presentation && Opacity > 0 && State.IsAlive() && !State.bPhased && Presentation->TryGetPresentedSoldierTransform(Pair.Key, Soldier))
++		{
++			FVector Location = Soldier.GetLocation();
++			Location.Z += SoldierHeightOffsetsCentimeters.FindRef(State.UnitTypeId) * FMath::Abs(Soldier.GetScale3D().Z);
++			bVisible = MakeBarTransform(Location, Transform);
++		}
++		WriteInstance(Pair.Value, Transform, CalculateHealthFraction(State.Health, State.MaxHealth), bSelected ? 1.0f : 0.0f, bVisible ? Opacity : 0.0f);
++		if (bVisible) ++VisibleInstanceCount;
++	}
++	const auto* Feedback = BoundFeedback.Get();
++	for (const auto& Pair : ActorInstanceIndices)
++	{
++		auto* Actor = Pair.Key.Get();
++		const auto* Bar = Feedback ? Feedback->GetActorHealthBars().Find(Pair.Key) : nullptr;
++		const float Health = ActorHealthFractions.FindRef(Pair.Key);
++		const float Opacity = Bar ? UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - Bar->StartTime) : 0.0f;
++		FTransform Transform = Hidden;
++		bool bVisible = false;
++		if (Actor && !Actor->IsHidden() && Health != 0 && Opacity > 0 && !UGuLiExternalUnitControlComponent::IsActorPhased(Actor))
++		{
++			FBox Bounds(ForceInit); float ModelSize = 0;
++			if (UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(Actor, Bounds, ModelSize))
++			{
++				auto Location = Bounds.GetCenter(); Location.Z = Bounds.Max.Z + GuLiCommanderHealthBars::HeightPaddingCentimeters;
++				bVisible = MakeBarTransform(Location, Transform);
++			}
++		}
++		WriteInstance(Pair.Value, Transform, Health, 0, bVisible ? Opacity : 0);
++		if (bVisible) ++VisibleInstanceCount;
+ 	}
+ }
+ 
+ void AGuLiCommanderHealthBarRenderer::HideAllInstances()
+ {
++	for (const auto& Pair : SoldierInstanceIndices)
++		WriteInstance(Pair.Value, GuLiCommanderHealthBars::MakeHiddenTransform(), CachedHealthFractions[Pair.Value], 0, 0);
++	for (const auto& Pair : ActorInstanceIndices)
++		WriteInstance(Pair.Value, GuLiCommanderHealthBars::MakeHiddenTransform(), CachedHealthFractions[Pair.Value], 0, 0);
+ 	VisibleInstanceCount = 0;
+-	if (!HealthBarInstances || CachedTransforms.IsEmpty())
+-	{
+-		return;
+-	}
+-
+-	TArray<FTransform> HiddenTransforms = CachedTransforms;
+-	for (FTransform& Transform : HiddenTransforms)
+-	{
+-		Transform.SetScale3D(FVector::ZeroVector);
+-	}
+-	bool bRenderStateDirty = false;
+-	if (!GuLiCommanderHealthBars::AreTransformsEqual(CachedTransforms, HiddenTransforms)
+-		&& HealthBarInstances->BatchUpdateInstancesTransforms(
+-			0,
+-			HiddenTransforms,
+-			true,
+-			false,
+-			false))
+-	{
+-		CachedTransforms = MoveTemp(HiddenTransforms);
+-		bRenderStateDirty = true;
+-	}
+-
+-	for (int32 InstanceIndex = 0; InstanceIndex < CachedVisibleValues.Num(); ++InstanceIndex)
+-	{
+-		if (!FMath::IsNearlyZero(CachedVisibleValues[InstanceIndex]))
+-		{
+-			HealthBarInstances->SetCustomDataValue(
+-				InstanceIndex,
+-				GuLiCommanderHealthBars::VisibleCustomDataIndex,
+-				0.0f,
+-				false);
+-			CachedVisibleValues[InstanceIndex] = 0.0f;
+-			bRenderStateDirty = true;
+-		}
+-	}
+-	if (bRenderStateDirty)
+-	{
+-		HealthBarInstances->MarkRenderStateDirty();
+-	}
+ }
+ 
+ bool AGuLiCommanderHealthBarRenderer::ShouldDisplayHealthBar(
+--- before/Source/GuLiStrike/Commander/UI/GuLiCommanderHUDWidget.cpp
++++ after/Source/GuLiStrike/Commander/UI/GuLiCommanderHUDWidget.cpp
+@@ -405,10 +405,6 @@
+ 	}
+ 	RefreshUnitTypeCard();
+ 	RefreshCommandControls();
+-	if (MiniMapWidget)
+-	{
+-		MiniMapWidget->RequestImmediateRefresh();
+-	}
+ }
+ 
+ void UGuLiCommanderHUDWidget::RefreshCommandAck(const FGuLiCommandAck& Ack)
+@@ -439,10 +435,6 @@
+ 	RefreshCoreAndRoster();
+ 	RefreshUnitTypeCard();
+ 	RefreshCommandControls();
+-	if (MiniMapWidget)
+-	{
+-		MiniMapWidget->RequestImmediateRefresh();
+-	}
+ }
+ 
+ void UGuLiCommanderHUDWidget::RefreshPlayerState()
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h
++++ after/Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h
+@@ -11,6 +11,7 @@
+ class UNiagaraComponent;
+ class UNiagaraSystem;
+ struct FStreamableHandle;
++DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiActorHealthBarChanged, TWeakObjectPtr<AActor>);
+ 
+ /** Local presentation defaults. The config references are also covered by an explicit cook directory. */
+ UCLASS(Config=Game, DefaultConfig)
+@@ -85,6 +86,7 @@
+ 	static float HealthBarOpacity(float Age);
+ 	void EnsureHealthBarRenderers();
+ 	const TMap<TWeakObjectPtr<AActor>, FGuLiActorHitHealthBar>& GetActorHealthBars() const { return ActorHealthBars; }
++	FGuLiActorHealthBarChanged OnActorHealthBarChanged;
+ 	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetActiveExplosionCount() const { return ActiveExplosions.Num(); }
+ 	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetLoadedExplosionCount() const { return LoadedExplosions.Num(); }
+ 	UMaterialInterface* GetInstancedHitMaterial() const { return InstancedHitMaterial; }
+@@ -101,6 +103,7 @@
+ 	AGuLiUnitWreck* AllocateWreck(const FVector& Location);
+ 	float ReferenceUnitSize = 0.0f;
+ 	TMap<TWeakObjectPtr<AActor>, FGuLiActorHitHealthBar> ActorHealthBars;
++	float NextHealthBarCleanupTime = 0.0f;
+ 	struct FPendingExplosion { FVector Location; float UnitSize; float ExpireTime; bool bWingman; };
+ 	TArray<FPendingExplosion> PendingExplosions;
+ 	TSharedPtr<FStreamableHandle> LoadHandle;
+--- before/Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.cpp
++++ after/Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.cpp
+@@ -146,6 +146,7 @@
+ 	}
+ 	ActorHealthBars.Add(Actor, {Now, HealthFraction});
+ 	EnsureHealthBarRenderers();
++	OnActorHealthBarChanged.Broadcast(Actor);
+ 	if (!HitMaterial || !IsWithinCullDistance(Actor->GetActorLocation())) return;
+ 	TInlineComponentArray<UMeshComponent*> Meshes;
+ 	Actor->GetComponents(Meshes, true);
+@@ -168,6 +169,7 @@
+ void UGuLiUnitFeedbackSubsystem::ClearActorFlash(AActor* Actor)
+ {
+ 	ActorHealthBars.Remove(Actor);
++	OnActorHealthBarChanged.Broadcast(Actor);
+ 	for (int32 Index = ActiveHits.Num() - 1; Index >= 0; --Index)
+ 	{
+ 		auto& Hit = ActiveHits[Index];
+@@ -308,9 +310,15 @@
+ void UGuLiUnitFeedbackSubsystem::Tick(float DeltaTime)
+ {
+ 	const float Now = GetWorld()->GetTimeSeconds();
+-	for (auto It = ActorHealthBars.CreateIterator(); It; ++It)
+-		if (!It.Key().IsValid() || It.Key()->IsHidden() || HealthBarOpacity(Now - It.Value().StartTime) <= 0.0f)
+-			It.RemoveCurrent();
++	if (Now >= NextHealthBarCleanupTime)
++	{
++		NextHealthBarCleanupTime = Now + 0.1f;
++		TArray<TWeakObjectPtr<AActor>> RemovedBars;
++		for (auto It = ActorHealthBars.CreateIterator(); It; ++It)
++			if (!It.Key().IsValid() || It.Key()->IsHidden() || HealthBarOpacity(Now - It.Value().StartTime) <= 0.0f)
++			{ RemovedBars.Add(It.Key()); It.RemoveCurrent(); }
++		for (auto Actor : RemovedBars) OnActorHealthBarChanged.Broadcast(Actor);
++	}
+ 	for (int32 Index = ActiveHits.Num() - 1; Index >= 0; --Index)
+ 	{
+ 		const auto& Hit = ActiveHits[Index];
+--- before/Source/GuLiStrike/Commander/Network/Tests/GuLiCommanderNetworkTests.cpp
++++ after/Source/GuLiStrike/Commander/Network/Tests/GuLiCommanderNetworkTests.cpp
+@@ -19,6 +19,76 @@
+ #include "UObject/UnrealType.h"
+ 
+ #include <limits>
++
++IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiCommanderRosterCacheTest,
++	"GuLiStrike.Commander.Network.RosterCache",
++	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
++
++bool FGuLiCommanderRosterCacheTest::RunTest(const FString& Parameters)
++{
++	UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
++	auto* Source = World->SpawnActor<AGuLiSoldierStateReplicator>();
++	TArray<FGuLiSoldierStateItem> States;
++	for (uint32 Id = 1; Id <= 3; ++Id)
++	{
++		auto& State = States.AddDefaulted_GetRef(); State.SoldierId = FGuLiSoldierId(Id);
++		State.UnitTypeId = 1; State.Health = State.MaxHealth = 100;
++	}
++	TArray<FGuLiSoldierRosterDelta> Received;
++	Source->OnRosterDelta.AddLambda([&](const auto& Delta) { Received.Add(Delta); });
++	Source->ApplyAuthoritySnapshot(States, 1);
++	TestTrue(TEXT("First snapshot initializes shared ID cache"), Source->ContainsSoldier(FGuLiSoldierId(3)));
++	Received.Reset(); Source->ApplyAuthoritySnapshot(States, 1);
++	TestTrue(TEXT("Unchanged roster emits no maintenance"), Received.IsEmpty());
++	States[0].DisplacementYaw = 30;
++	TestEqual(TEXT("Ordinary facing never dirties reliable roster"), Source->ApplyAuthoritySnapshot(States, 1), 0);
++	TestTrue(TEXT("Ordinary facing emits no roster notifications"), Received.IsEmpty());
++	States[0].DisplacementFrameFloor = 101; States[0].DisplacementLocation = FVector(100,200,300);
++	Source->ApplyAuthoritySnapshot(States, 1);
++	TestTrue(TEXT("New displacement floor publishes its discrete event"), EnumHasAnyFlags(Received.Last().Changed.FindRef(States[0].SoldierId), EGuLiSoldierStateChange::Displacement));
++	TestEqual(TEXT("Displacement carries its facing"), Source->FindSoldierState(States[0].SoldierId)->DisplacementYaw, 30.0f);
++	Received.Reset();
++	States[0].Health = 75; States[0].Team = EGuLiTeam::Blue; States[0].UnitTypeId = 2;
++	States.RemoveAtSwap(1); // count stays three after replacing the removed ID
++	auto Replacement = States[0]; Replacement.SoldierId = FGuLiSoldierId(4); States.Add(Replacement);
++	Source->ApplyAuthoritySnapshot(States, 1);
++	TestEqual(TEXT("One complete notification per snapshot"), Received.Num(), 1);
++	TestFalse(TEXT("Swap removal deletes old ID"), Source->ContainsSoldier(FGuLiSoldierId(2)));
++	TestTrue(TEXT("Same-count replacement adds new ID"), Source->ContainsSoldier(FGuLiSoldierId(4)));
++	const auto Flags = Received.Last().Changed.FindRef(FGuLiSoldierId(1));
++	TestTrue(TEXT("Type/team/health change flags survive merging"), EnumHasAllFlags(Flags,
++		EGuLiSoldierStateChange::Type | EGuLiSoldierStateChange::Team | EGuLiSoldierStateChange::Health));
++	TestEqual(TEXT("Swap survivor retains its own value"), Source->FindSoldierState(FGuLiSoldierId(3))->Health, 100.0f);
++	Received.Reset(); Source->ApplyAuthoritySnapshot(States, 2);
++	TestTrue(TEXT("Reused IDs produce a reset on new match"), Received.Num() == 1 && Received[0].bReset);
++	Source->OnRosterDelta.Clear();
++
++	// Exercise the actual FastArray callbacks in both independent-property arrival orders.
++	auto* Replica = World->SpawnActor<AGuLiSoldierStateReplicator>();
++	Replica->SnapshotRevision = 99; Replica->TestOnly_InvokeSnapshotRevisionRepNotify();
++	TestFalse(TEXT("Revision notification does not invent missing roster data"), Replica->ContainsSoldier(FGuLiSoldierId(1)));
++	Replica->SnapshotMatchEpoch = 2; Replica->PostNetReceive();
++	Replica->ReplicatedSoldiers.Items = States;
++	TArray<int32> Indices = {0, 1, 2};
++	Replica->ReplicatedSoldiers.PostReplicatedAdd(Indices, States.Num());
++	TestFalse(TEXT("Partial receive callbacks are not published"), Replica->ContainsSoldier(FGuLiSoldierId(1)));
++	FFastArraySerializer::FPostReplicatedReceiveParameters ReceiveParameters{};
++	Replica->ReplicatedSoldiers.PostReplicatedReceive(ReceiveParameters);
++	TestEqual(TEXT("Completed receive publishes cached values"), Replica->FindSoldierState(FGuLiSoldierId(1))->Health, 75.0f);
++	Replica->ReplicatedSoldiers.Items.Reserve(4096);
++	Replica->ReplicatedSoldiers.Items[0].Health = 12;
++	TestEqual(TEXT("Cache owns its value across array allocation and mutation"), Replica->FindSoldierState(FGuLiSoldierId(1))->Health, 75.0f);
++	TArray<int32> Removed = {1}, Changed = {0};
++	Replica->ReplicatedSoldiers.PreReplicatedRemove(Removed, 2);
++	Replica->ReplicatedSoldiers.PostReplicatedChange(Changed, 2);
++	Replica->ReplicatedSoldiers.Items.RemoveAtSwap(1);
++	Replica->ReplicatedSoldiers.PostReplicatedReceive(ReceiveParameters);
++	Replica->SnapshotMatchEpoch = 3; Replica->PostNetReceive();
++	TestEqual(TEXT("Array-first epoch transition preserves received latest value"), Replica->FindSoldierState(FGuLiSoldierId(1))->Health, 12.0f);
++	TestFalse(TEXT("Removed ID cannot reappear after epoch refresh"), Replica->ContainsSoldier(FGuLiSoldierId(3)));
++	World->DestroyWorld(false);
++	return true;
++}
+ 
+ namespace GuLiCommanderNetworkTests
+ {
+--- before/Source/GuLiStrike/Commander/Presentation/Tests/GuLiCommanderPresentationPerformanceTests.cpp
++++ after/Source/GuLiStrike/Commander/Presentation/Tests/GuLiCommanderPresentationPerformanceTests.cpp
+@@ -12,6 +12,107 @@
+ #include "HAL/IConsoleManager.h"
+ #include "Misc/AutomationTest.h"
+ #include "Misc/OutputDeviceNull.h"
++#include "MassEntitySubsystem.h"
++#include "MassCommonFragments.h"
++#include "Commander/Mass/GuLiCommanderMassFragments.h"
++
++IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiCommanderClientMaintenanceTest,
++	"GuLiStrike.Commander.Presentation.ClientMaintenance",
++	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
++
++bool FGuLiCommanderClientMaintenanceTest::RunTest(const FString& Parameters)
++{
++	FGuLiCommanderRefreshCadence Cadence;
++	int32 Updates = 0;
++	for (int32 Frame = 0; Frame < 120; ++Frame) Updates += Cadence.Consume(Frame / 120.0) ? 1 : 0;
++	TestEqual(TEXT("120 frames produce ten maintenance samples"), Updates, 10);
++	TestTrue(TEXT("Hitch consumes latest sample once"), Cadence.Consume(4.31));
++	TestFalse(TEXT("Hitch never replays missed samples"), Cadence.Consume(4.31));
++	TestFalse(TEXT("Next frame stays below next boundary"), Cadence.Consume(4.32));
++	TestTrue(TEXT("Next boundary resumes cadence"), Cadence.Consume(4.4));
++	TestFalse(TEXT("Exact floating-point boundary is consumed once"), Cadence.Consume(4.4));
++	Cadence.Reset(); TestTrue(TEXT("Source reset resets clock"), Cadence.Consume(0));
++
++	UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
++	GEngine->CreateNewWorldContext(EWorldType::Game).SetCurrentWorld(World);
++	World->InitializeActorsForPlay(FURL());
++	auto* Presentation = World->SpawnActor<AGuLiCommanderPresentationActor>();
++	auto* Source = World->SpawnActor<AGuLiSoldierStateReplicator>();
++	Presentation->DispatchBeginPlay();
++	FGuLiSoldierStateItem State; State.SoldierId = FGuLiSoldierId(1); State.UnitTypeId = 1;
++	State.Health = State.MaxHealth = 100;
++	TArray<FGuLiSoldierStateItem> States = {State};
++	Source->ApplyAuthoritySnapshot(States, 1);
++	Presentation->EnsureStableInstancePool(*Source);
++	Presentation->ApplyReliableStateChanges(*Source, 0);
++	const auto Initial = Presentation->SoldierInstanceHandles.FindChecked(State.SoldierId);
++	TestTrue(TEXT("Static pool has no pending full reconciliation"), !Presentation->bReconcilePool && Presentation->PendingPoolIds.IsEmpty());
++	const int32 Capacity = Presentation->GetUnitInstances()->GetInstanceCount();
++	for (int32 Frame = 0; Frame < 120; ++Frame) Presentation->EnsureStableInstancePool(*Source);
++	TestEqual(TEXT("Static pool never grows"), Presentation->GetUnitInstances()->GetInstanceCount(), Capacity);
++
++	// Temporarily unavailable destination simulates component rebuild/allocation failure.
++	auto Destination = MoveTemp(Presentation->UnitInstanceBatchStates.FindChecked(2));
++	Presentation->UnitInstanceBatchStates.Remove(2);
++	States[0].UnitTypeId = 2; Source->ApplyAuthoritySnapshot(States, 1);
++	Presentation->EnsureStableInstancePool(*Source);
++	TestEqual(TEXT("Failed migration retains original model slot"), Presentation->SoldierInstanceHandles.FindChecked(State.SoldierId).BatchUnitTypeId, uint16(1));
++	TestTrue(TEXT("Failed migration remains retryable"), Presentation->RetryPoolIds.Contains(State.SoldierId));
++	Presentation->UnitInstanceBatchStates.Add(2, MoveTemp(Destination));
++	States[0].Health = 90; Source->ApplyAuthoritySnapshot(States, 1);
++	Presentation->MaintainInstancePool(*Source, false);
++	TestEqual(TEXT("Health event does not bypass failed-slot cadence"), Presentation->SoldierInstanceHandles.FindChecked(State.SoldierId).BatchUnitTypeId, uint16(1));
++	Presentation->MaintainInstancePool(*Source, true);
++	TestEqual(TEXT("Recovered destination receives unit"), Presentation->SoldierInstanceHandles.FindChecked(State.SoldierId).BatchUnitTypeId, uint16(2));
++	TestEqual(TEXT("Migration preserves ring identity"), Presentation->SoldierInstanceHandles.FindChecked(State.SoldierId).RingInstanceIndex, Initial.RingInstanceIndex);
++	FTransform Hidden;
++	Presentation->GetUnitInstances()->GetInstanceTransform(Initial.UnitInstanceIndex, Hidden, true);
++	TestTrue(TEXT("Released model is hidden"), Hidden.GetScale3D().IsNearlyZero());
++
++	auto& Manager = World->GetSubsystem<UMassEntitySubsystem>()->GetMutableEntityManager();
++	const auto Entity = Presentation->ClientMirrorEntities.FindChecked(State.SoldierId);
++	Presentation->FlushClientMirrorUpdates(0);
++	States[0].Health = 42; Source->ApplyAuthoritySnapshot(States, 1);
++	Presentation->ApplyReliableStateChanges(*Source, 0.01);
++	Presentation->FlushClientMirrorUpdates(0.01);
++	TestFalse(TEXT("Deferred creation does not write across Mass phase"), Manager.IsEntityActive(Entity));
++	Manager.FlushCommands();
++	TestTrue(TEXT("Mirror activates at safe boundary"), Manager.IsEntityActive(Entity));
++	auto& Soldier = Presentation->PresentedSoldiers.FindChecked(State.SoldierId);
++	Soldier.PresentedTransform.SetLocation(FVector(10, 20, 30)); Soldier.bHasPresentedTransform = true;
++	Presentation->FlushClientMirrorUpdates(0.02); Manager.FlushCommands();
++	TestEqual(TEXT("Creation retains newest pre-activation health"), Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Entity).Health, 42.0f);
++	TestTrue(TEXT("Creation fills latest available pose"), Manager.GetFragmentDataChecked<FTransformFragment>(Entity).GetTransform().GetLocation().Equals(FVector(10,20,30)));
++	Soldier.PresentedTransform.SetLocation(FVector(40,50,60));
++	Presentation->FlushClientMirrorUpdates(0.03); Manager.FlushCommands();
++	TestTrue(TEXT("Routine transform waits for 10 Hz sample"), Manager.GetFragmentDataChecked<FTransformFragment>(Entity).GetTransform().GetLocation().Equals(FVector(10,20,30)));
++	States[0].Health = 0; States[0].LifeState = EGuLiSoldierLifeState::Destroyed;
++	Source->ApplyAuthoritySnapshot(States, 1); Presentation->ApplyReliableStateChanges(*Source, 0.04);
++	Presentation->FlushClientMirrorUpdates(0.04); Manager.FlushCommands();
++	TestTrue(TEXT("Death crosses safe boundary without waiting for 10 Hz"), Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Entity).bDead);
++	TestTrue(TEXT("Dead roster entry retains identity"), Presentation->SoldierInstanceHandles.Contains(State.SoldierId));
++	Presentation->FlushClientMirrorUpdates(0.1); // queue an old-generation write
++	Presentation->DestroyClientMirrorEntities();
++	States[0] = State; Source->ApplyAuthoritySnapshot(States, 2);
++	Presentation->ResetNetworkPresentationState(); Presentation->bReconcilePool = true;
++	Presentation->EnsureStableInstancePool(*Source); Presentation->ApplyReliableStateChanges(*Source, 0);
++	const auto Replacement = Presentation->ClientMirrorEntities.FindChecked(State.SoldierId);
++	Presentation->FlushClientMirrorUpdates(0); Manager.FlushCommands();
++	TestFalse(TEXT("Old-generation entity is released"), Manager.IsEntityValid(Entity));
++	TestTrue(TEXT("New generation uses a different serial handle"), Entity != Replacement);
++	TestEqual(TEXT("Old deferred health cannot overwrite reused SoldierId"), Manager.GetFragmentDataChecked<FGuLiMassHealthFragment>(Replacement).Health, 100.0f);
++	Source->ApplyAuthoritySnapshot({}, 2); Presentation->EnsureStableInstancePool(*Source); Manager.FlushCommands();
++	TestFalse(TEXT("Roster removal destroys mirror"), Manager.IsEntityValid(Replacement));
++	TestTrue(TEXT("Roster removal clears visual identity"), Presentation->SoldierInstanceHandles.IsEmpty());
++	States[0].SoldierId = FGuLiSoldierId(7); Source->ApplyAuthoritySnapshot(States, 2);
++	Presentation->EnsureStableInstancePool(*Source);
++	const auto Cancelled = Presentation->ClientMirrorEntities.FindChecked(States[0].SoldierId);
++	Presentation->FlushClientMirrorUpdates(0.02);
++	Source->ApplyAuthoritySnapshot({}, 2); Presentation->EnsureStableInstancePool(*Source); Manager.FlushCommands();
++	TestFalse(TEXT("Cancelled pending create releases reserved handle"), Manager.IsEntityValid(Cancelled));
++	World->DestroyWorld(false); GEngine->DestroyWorldContext(World);
++	return true;
++}
+ 
+ IMPLEMENT_SIMPLE_AUTOMATION_TEST(
+ 	FGuLiCommanderPresentationPerformanceRegistryTest,
+--- before/Source/GuLiStrike/Commander/UI/Tests/GuLiCommanderHealthBarRendererTests.cpp
++++ after/Source/GuLiStrike/Commander/UI/Tests/GuLiCommanderHealthBarRendererTests.cpp
+@@ -4,6 +4,67 @@
+ 
+ #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
+ #include "Misc/AutomationTest.h"
++#include "Commander/Network/GuLiSoldierStateReplicator.h"
++#include "Commander/Presentation/GuLiCommanderPresentationActor.h"
++#include "Components/InstancedStaticMeshComponent.h"
++#include "Engine/Engine.h"
++#include "Engine/World.h"
++
++IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiCommanderHealthBarActivityTest,
++	"GuLiStrike.Commander.UI.HealthBar.Activity",
++	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
++
++bool FGuLiCommanderHealthBarActivityTest::RunTest(const FString& Parameters)
++{
++	UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
++	GEngine->CreateNewWorldContext(EWorldType::Game).SetCurrentWorld(World);
++	World->InitializeActorsForPlay(FURL());
++	auto* Source = World->SpawnActor<AGuLiSoldierStateReplicator>();
++	auto* Presentation = World->SpawnActor<AGuLiCommanderPresentationActor>();
++	auto* Bars = World->SpawnActor<AGuLiCommanderHealthBarRenderer>();
++	Bars->DispatchBeginPlay(); Bars->BindStateReplicator(Source); Bars->BindPresentationActor(Presentation);
++	FGuLiSoldierStateItem State; State.SoldierId = FGuLiSoldierId(1); State.UnitTypeId = 1;
++	State.Health = State.MaxHealth = 100;
++	TArray<FGuLiSoldierStateItem> States = {State}; Source->ApplyAuthoritySnapshot(States, 1);
++	TestFalse(TEXT("Unselected idle roster leaves health renderer asleep"), Bars->IsActorTickEnabled());
++	TestEqual(TEXT("Idle roster allocates no bar capacity"), Bars->GetAllocatedInstanceCount(), 0);
++	FGuLiCommanderSelectionState Selection;
++	Selection.Cohorts.AddDefaulted_GetRef().MemberIds.Add(State.SoldierId);
++	Bars->HandleSelectionChanged(Selection);
++	TestTrue(TEXT("Selection wakes renderer immediately"), Bars->IsActorTickEnabled());
++	const int32 Slot = Bars->SoldierInstanceIndices.FindChecked(State.SoldierId);
++	World->SendAllEndOfFrameUpdates();
++	Bars->WriteInstance(Slot, FTransform(FVector(123,456,789)), 1, 1, 1);
++	TestFalse(TEXT("Ordinary bar position/color does not dirty full render state"), Bars->HealthBarInstances->IsRenderStateDirty());
++	Bars->HandleSelectionChanged({});
++	TestFalse(TEXT("Deselecting final idle bar sleeps immediately"), Bars->IsActorTickEnabled());
++	FTransform Hidden; Bars->HealthBarInstances->GetInstanceTransform(Slot, Hidden, true);
++	TestTrue(TEXT("Released bar slot is explicitly hidden"), Hidden.GetScale3D().IsNearlyZero());
++	auto& Soldier = Presentation->PresentedSoldiers.FindOrAdd(State.SoldierId);
++	Soldier.HitFlashStartTime = 0;
++	States[0].Health = 50; Source->ApplyAuthoritySnapshot(States, 1);
++	Presentation->OnVisualStatesChanged.Broadcast({State.SoldierId});
++	TestTrue(TEXT("Hit event wakes unselected soldier immediately"), Bars->IsActorTickEnabled());
++	TestEqual(TEXT("Hit bar reuses free slot"), Bars->SoldierInstanceIndices.FindChecked(State.SoldierId), Slot);
++	TestEqual(TEXT("Damage caches latest health"), Bars->ActiveSoldierStates.FindChecked(State.SoldierId).Health, 50.0f);
++	Soldier.HitFlashStartTime = -1000;
++	Bars->MaintainActivity();
++	TestFalse(TEXT("Expired hit removes final active bar and sleeps"), Bars->IsActorTickEnabled());
++	Bars->HandleSelectionChanged(Selection);
++	States[0].LifeState = EGuLiSoldierLifeState::Destroyed; States[0].Health = 0;
++	Source->ApplyAuthoritySnapshot(States, 1);
++	TestTrue(TEXT("Death immediately releases selected bar"), Bars->SoldierInstanceIndices.IsEmpty());
++	TestFalse(TEXT("Dead selection does not keep Tick awake"), Bars->IsActorTickEnabled());
++	Source->ApplyAuthoritySnapshot({}, 1);
++	States[0] = State; States[0].SoldierId = FGuLiSoldierId(2); Source->ApplyAuthoritySnapshot(States, 1);
++	Selection.Cohorts[0].MemberIds[0] = States[0].SoldierId; Bars->HandleSelectionChanged(Selection);
++	TestEqual(TEXT("New identity reuses hidden capacity"), Bars->GetAllocatedInstanceCount(), 1);
++	TestFalse(TEXT("Old identity cannot inherit reused bar"), Bars->SoldierInstanceIndices.Contains(State.SoldierId));
++	Bars->BindStateReplicator(nullptr);
++	TestFalse(TEXT("Source loss sleeps renderer"), Bars->IsActorTickEnabled());
++	World->DestroyWorld(false); GEngine->DestroyWorldContext(World);
++	return true;
++}
+ 
+ #include <limits>
+ 
+--- before/Source/GuLiStrike/Commander/Presentation/Tests/GuLiCommanderMiniMapTransformTests.cpp
++++ after/Source/GuLiStrike/Commander/Presentation/Tests/GuLiCommanderMiniMapTransformTests.cpp
+@@ -5,6 +5,57 @@
+ #if WITH_DEV_AUTOMATION_TESTS
+ 
+ #include "Misc/AutomationTest.h"
++#include "Commander/UI/GuLiCommanderMiniMapWidget.h"
++#include "Commander/Network/GuLiSoldierStateReplicator.h"
++#include "Commander/Presentation/GuLiCommanderPresentationActor.h"
++#include "Engine/World.h"
++#include "Widgets/SWidget.h"
++
++IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiCommanderMiniMapCacheTest,
++	"GuLiStrike.Commander.Presentation.MiniMap.Cache",
++	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
++
++bool FGuLiCommanderMiniMapCacheTest::RunTest(const FString& Parameters)
++{
++	UWorld* World = UWorld::CreateWorld(EWorldType::Game, false);
++	auto* Source = World->SpawnActor<AGuLiSoldierStateReplicator>();
++	auto* Presentation = World->SpawnActor<AGuLiCommanderPresentationActor>();
++	auto* Map = NewObject<UGuLiCommanderMiniMapWidget>(World);
++	Map->SoldierStateReplicator = Source; Map->PresentationActor = Presentation;
++	Map->BindRuntimeEvents();
++	FGuLiSoldierStateItem State; State.SoldierId = FGuLiSoldierId(1); State.UnitTypeId = 1;
++	State.Health = State.MaxHealth = 100;
++	TArray<FGuLiSoldierStateItem> States = {State}; Source->ApplyAuthoritySnapshot(States, 1);
++	auto& Soldier = Presentation->PresentedSoldiers.FindOrAdd(State.SoldierId);
++	Soldier.PresentedTransform.SetLocation(FVector(10,20,30)); Soldier.bHasPresentedTransform = true;
++	TestTrue(TEXT("First pose creates one marker"), Map->RefreshPoint(State.SoldierId, true));
++	TestFalse(TEXT("Unchanged sample does not dirty marker"), Map->RefreshPoint(State.SoldierId, true));
++	const uint64 TerrainBefore = Map->TerrainInvalidations, DynamicBefore = Map->DynamicInvalidations;
++	States[0].Health = 50; Source->ApplyAuthoritySnapshot(States, 1);
++	TestEqual(TEXT("Health-only event preserves minimap drawing"), Map->DynamicInvalidations, DynamicBefore);
++	FGuLiCommanderSelectionState Selection; Selection.Cohorts.AddDefaulted_GetRef().MemberIds.Add(State.SoldierId);
++	Map->HandleSelectionChanged(Selection);
++	TestTrue(TEXT("Selection updates marker before next sample"), Map->SoldierPoints.FindChecked(State.SoldierId).bSelected);
++	TestEqual(TEXT("Selection does not invalidate terrain"), Map->TerrainInvalidations, TerrainBefore);
++	const uint64 SelectedInvalidations = Map->DynamicInvalidations;
++	Map->HandleSelectionChanged(Selection);
++	TestEqual(TEXT("Repeated selection does not repaint"), Map->DynamicInvalidations, SelectedInvalidations);
++	States[0].Team = EGuLiTeam::Red; Source->ApplyAuthoritySnapshot(States, 1);
++	TestTrue(TEXT("Team event updates one cached marker"), Map->SoldierPoints.FindChecked(State.SoldierId).Team == EGuLiTeam::Red);
++	States[0].Health = 0; States[0].LifeState = EGuLiSoldierLifeState::Destroyed; Source->ApplyAuthoritySnapshot(States, 1);
++	TestTrue(TEXT("Death immediately removes marker"), Map->SoldierPoints.IsEmpty());
++	Map->RebuildWidget();
++	TestTrue(TEXT("Terrain and dynamic layer own independent cache children"), Map->TerrainLayer && Map->DynamicLayer && Map->TerrainLayer != Map->DynamicLayer);
++	Map->ReleaseSlateResources(true);
++	TestTrue(TEXT("Widget reconstruction releases old cache children"), !Map->TerrainLayer && !Map->DynamicLayer);
++	Map->SetVisibility(ESlateVisibility::Hidden);
++	TestFalse(TEXT("Hidden widget suspends sampling"), Map->IsHierarchyVisible());
++	const auto RebuiltWidget = Map->TakeWidget();
++	Map->SetVisibility(ESlateVisibility::Visible);
++	TestTrue(TEXT("Showing widget restores visibility"), Map->IsHierarchyVisible());
++	Map->UnbindRuntimeEvents(); World->DestroyWorld(false);
++	return true;
++}
+ 
+ namespace GuLiCommanderMiniMapTransformTests
+ {
+--- before/Source/GuLiStrike/Commander/Presentation/GuLiCommanderRefreshCadence.h
++++ after/Source/GuLiStrike/Commander/Presentation/GuLiCommanderRefreshCadence.h
+@@ -0,0 +1,18 @@
++#pragma once
++
++#include "CoreMinimal.h"
++
++/** Client maintenance cadence. A hitch consumes one latest update, never a catch-up loop. */
++struct FGuLiCommanderRefreshCadence
++{
++	static constexpr double IntervalSeconds = 0.1;
++	double NextSeconds = 0.0;
++	bool Consume(double Now)
++	{
++		if (!FMath::IsFinite(Now) || Now + 1.e-6 < NextSeconds) return false;
++		const double Steps = FMath::FloorToDouble(FMath::Max(0.0, Now - NextSeconds + 1.e-6) / IntervalSeconds) + 1.0;
++		NextSeconds += Steps * IntervalSeconds;
++		return true;
++	}
++	void Reset() { NextSeconds = 0.0; }
++};

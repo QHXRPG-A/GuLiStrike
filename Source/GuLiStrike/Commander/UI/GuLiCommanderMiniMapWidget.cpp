@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/UI/GuLiCommanderMiniMapWidget.h"
 
@@ -17,6 +17,69 @@
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Slate/SlateBrushAsset.h"
 #include "TimerManager.h"
+#include "Widgets/SLeafWidget.h"
+#include "Widgets/SOverlay.h"
+#include "Widgets/SInvalidationPanel.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
+#include "ProfilingDebugging/CsvProfiler.h"
+
+CSV_DEFINE_CATEGORY(GuLiCommanderMiniMap, true);
+
+class SGuLiCommanderMiniMapLayer : public SLeafWidget
+{
+public:
+	SLATE_BEGIN_ARGS(SGuLiCommanderMiniMapLayer) {} SLATE_END_ARGS()
+	void Construct(const FArguments&, UGuLiCommanderMiniMapWidget* InOwner, bool bInTerrain)
+	{ Owner = InOwner; bTerrain = bInTerrain; SetVisibility(EVisibility::HitTestInvisible); }
+	virtual FVector2D ComputeDesiredSize(float) const override { return FVector2D::ZeroVector; }
+	virtual int32 OnPaint(const FPaintArgs&, const FGeometry& Geometry, const FSlateRect& Culling,
+		FSlateWindowElementList& Elements, int32 Layer, const FWidgetStyle& Style, bool bEnabled) const override
+	{
+		return Owner.IsValid() ? Owner->PaintMapLayer(bTerrain, Geometry, Culling, Elements, Layer, Style, bEnabled) : Layer;
+	}
+private:
+	TWeakObjectPtr<UGuLiCommanderMiniMapWidget> Owner;
+	bool bTerrain = false;
+};
+
+TSharedRef<SWidget> UGuLiCommanderMiniMapWidget::RebuildWidget()
+{
+	const auto Content = Super::RebuildWidget();
+	TerrainLayer = SNew(SGuLiCommanderMiniMapLayer, this, true);
+	DynamicLayer = SNew(SGuLiCommanderMiniMapLayer, this, false);
+	return SNew(SOverlay)
+		+ SOverlay::Slot()[Content]
+		+ SOverlay::Slot()[SNew(SInvalidationPanel).Visibility(EVisibility::HitTestInvisible)[TerrainLayer.ToSharedRef()]]
+		+ SOverlay::Slot()[SNew(SInvalidationPanel).Visibility(EVisibility::HitTestInvisible)[DynamicLayer.ToSharedRef()]];
+}
+
+void UGuLiCommanderMiniMapWidget::ReleaseSlateResources(bool bReleaseChildren)
+{
+	Super::ReleaseSlateResources(bReleaseChildren);
+	TerrainLayer.Reset(); DynamicLayer.Reset();
+}
+
+void UGuLiCommanderMiniMapWidget::InvalidateMapLayer(bool bTerrain)
+{
+	if (bTerrain) { ++TerrainInvalidations; if (TerrainLayer) TerrainLayer->Invalidate(EInvalidateWidgetReason::Paint); }
+	else { ++DynamicInvalidations; if (DynamicLayer) DynamicLayer->Invalidate(EInvalidateWidgetReason::Paint); }
+}
+
+bool UGuLiCommanderMiniMapWidget::IsHierarchyVisible() const
+{
+	if (!IsVisible()) return false;
+	for (auto Widget = GetCachedWidget(); Widget; Widget = Widget->GetParentWidget())
+		if (!Widget->GetVisibility().IsVisible()) return false;
+	return true;
+}
+
+void UGuLiCommanderMiniMapWidget::SetVisibility(ESlateVisibility InVisibility)
+{
+	Super::SetVisibility(InVisibility);
+	if (!bNativeConstructed) return;
+	if (IsVisible()) { RequestImmediateRefresh(); StartRefreshTimer(); }
+	else { bWasHierarchyVisible = false; StopRefreshTimer(); }
+}
 
 namespace GuLiCommanderNativeMiniMap
 {
@@ -170,7 +233,8 @@ void UGuLiCommanderMiniMapWidget::RequestImmediateRefresh()
 	}
 
 	RefreshSnapshot();
-	Invalidate(EInvalidateWidgetReason::Paint);
+	InvalidateMapLayer(true);
+	InvalidateMapLayer(false);
 }
 
 void UGuLiCommanderMiniMapWidget::NativeConstruct()
@@ -197,6 +261,7 @@ void UGuLiCommanderMiniMapWidget::NativeConstruct()
 void UGuLiCommanderMiniMapWidget::NativeDestruct()
 {
 	StopRefreshTimer();
+	UnbindRuntimeEvents();
 	bNativeConstructed = false;
 	SoldierPoints.Reset();
 	CameraFootprintWorld.Reset();
@@ -213,13 +278,10 @@ void UGuLiCommanderMiniMapWidget::StartRefreshTimer()
 	if (UWorld* World = GetWorld(); World
 		&& !World->GetTimerManager().IsTimerActive(RefreshTimerHandle))
 	{
-		World->GetTimerManager().SetTimer(
-			RefreshTimerHandle,
-			this,
-			&UGuLiCommanderMiniMapWidget::RefreshSnapshot,
-			GuLiCommanderNativeMiniMap::RefreshIntervalSeconds,
-			true,
-			GuLiCommanderNativeMiniMap::RefreshIntervalSeconds);
+		FTimerManagerTimerParameters Parameters;
+		Parameters.bLoop = true; Parameters.bMaxOncePerFrame = true;
+		World->GetTimerManager().SetTimer(RefreshTimerHandle, this, &ThisClass::RefreshSnapshot,
+			GuLiCommanderNativeMiniMap::RefreshIntervalSeconds, Parameters);
 	}
 }
 
@@ -259,80 +321,126 @@ void UGuLiCommanderMiniMapWidget::ResolveRuntimeSources()
 	}
 }
 
+void UGuLiCommanderMiniMapWidget::UnbindRuntimeEvents()
+{
+	if (auto* Source = BoundPresentationEvents.Get()) Source->OnVisualStatesChanged.Remove(VisualStateHandle);
+	BoundPresentationEvents.Reset(); VisualStateHandle.Reset();
+	if (auto* Source = BoundRosterEvents.Get()) Source->OnRosterDelta.Remove(RosterDeltaHandle);
+	if (auto* Source = BoundSelectionEvents.Get()) Source->OnSelectionChanged.Remove(SelectionChangedHandle);
+	BoundRosterEvents.Reset(); BoundSelectionEvents.Reset();
+	RosterDeltaHandle.Reset(); SelectionChangedHandle.Reset();
+}
+
+void UGuLiCommanderMiniMapWidget::BindRuntimeEvents()
+{
+	auto* Presentation = PresentationActor.Get();
+	if (BoundPresentationEvents.Get() != Presentation)
+	{
+		if (auto* Old = BoundPresentationEvents.Get()) Old->OnVisualStatesChanged.Remove(VisualStateHandle);
+		BoundPresentationEvents = Presentation;
+		if (Presentation) VisualStateHandle = Presentation->OnVisualStatesChanged.AddUObject(this, &ThisClass::HandleVisualStatesChanged);
+	}
+	auto* Replicator = SoldierStateReplicator.Get();
+	if (BoundRosterEvents.Get() != Replicator)
+	{
+		if (auto* Old = BoundRosterEvents.Get()) Old->OnRosterDelta.Remove(RosterDeltaHandle);
+		BoundRosterEvents = Replicator; SoldierPoints.Reset();
+		if (Replicator) RosterDeltaHandle = Replicator->OnRosterDelta.AddUObject(this, &ThisClass::HandleRosterDelta);
+		InvalidateMapLayer(false);
+	}
+	const auto* Controller = CommanderController.Get();
+	auto* Selection = Controller ? Controller->GetCommanderNetSyncComponent() : nullptr;
+	if (BoundSelectionEvents.Get() != Selection)
+	{
+		if (auto* Old = BoundSelectionEvents.Get()) Old->OnSelectionChanged.Remove(SelectionChangedHandle);
+		BoundSelectionEvents = Selection;
+		if (Selection)
+		{
+			SelectionChangedHandle = Selection->OnSelectionChanged.AddUObject(this, &ThisClass::HandleSelectionChanged);
+			HandleSelectionChanged(Selection->GetSelectionState());
+		}
+		else HandleSelectionChanged(FGuLiCommanderSelectionState());
+	}
+}
+
+bool UGuLiCommanderMiniMapWidget::RefreshPoint(FGuLiSoldierId Id, bool bRefreshPosition)
+{
+	const auto* State = SoldierStateReplicator.IsValid() ? SoldierStateReplicator->FindSoldierState(Id) : nullptr;
+	if (!State || !State->IsAlive() || State->bPhased) return SoldierPoints.Remove(Id) != 0;
+	const auto* Previous = SoldierPoints.Find(Id);
+	FGuLiCommanderMiniMapSoldierPoint Point;
+	if (Previous) Point = *Previous;
+	if (bRefreshPosition || !Previous)
+	{
+		FTransform Pose;
+		if (!PresentationActor.IsValid() || !PresentationActor->TryGetPresentedSoldierTransform(Id, Pose) || Pose.ContainsNaN())
+			return SoldierPoints.Remove(Id) != 0;
+		Point.WorldPosition = FVector2D(Pose.GetLocation());
+	}
+	Point.Team = State->Team; Point.bSelected = SelectedSoldiers.Contains(Id);
+	if (Previous && Previous->WorldPosition.Equals(Point.WorldPosition, 0.01) && Previous->Team == Point.Team && Previous->bSelected == Point.bSelected) return false;
+	SoldierPoints.Add(Id, Point);
+	return true;
+}
+
+void UGuLiCommanderMiniMapWidget::HandleVisualStatesChanged(const TArray<FGuLiSoldierId>& Ids)
+{
+	bool bChanged = false;
+	for (auto Id : Ids) bChanged |= RefreshPoint(Id, true);
+	if (bChanged) InvalidateMapLayer(false);
+}
+
+void UGuLiCommanderMiniMapWidget::HandleRosterDelta(const FGuLiSoldierRosterDelta& Delta)
+{
+	bool bChanged = false;
+	if (Delta.bReset) { SoldierPoints.Reset(); InvalidateMapLayer(false); return; }
+	for (auto Id : Delta.Removed) bChanged |= SoldierPoints.Remove(Id) != 0;
+	for (auto Id : Delta.Added) bChanged |= RefreshPoint(Id, true);
+	for (const auto& Pair : Delta.Changed)
+		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Team | EGuLiSoldierStateChange::Life | EGuLiSoldierStateChange::Phase))
+			bChanged |= RefreshPoint(Pair.Key, false);
+	if (bChanged) InvalidateMapLayer(false);
+}
+
+void UGuLiCommanderMiniMapWidget::HandleSelectionChanged(const FGuLiCommanderSelectionState& Selection)
+{
+	TSet<FGuLiSoldierId> Next;
+	for (const auto& Cohort : Selection.Cohorts) for (auto Id : Cohort.MemberIds) if (Id.IsValid()) Next.Add(Id);
+	TSet<FGuLiSoldierId> Affected;
+	for (auto Id : Next) if (!SelectedSoldiers.Contains(Id)) Affected.Add(Id);
+	for (auto Id : SelectedSoldiers) if (!Next.Contains(Id)) Affected.Add(Id);
+	SelectedSoldiers = MoveTemp(Next);
+	bool bChanged = false;
+	for (auto Id : Affected) bChanged |= RefreshPoint(Id, false);
+	if (bChanged) InvalidateMapLayer(false);
+}
+
 void UGuLiCommanderMiniMapWidget::RefreshSnapshot()
 {
-	if (IsDesignTime())
-	{
-		return;
-	}
-
-	ResolveRuntimeSources();
+	if (IsDesignTime() || !GetWorld()) return;
+	if (!IsHierarchyVisible()) { bWasHierarchyVisible = false; return; }
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderMiniMap_Snapshot);
+	const bool bShown = !bWasHierarchyVisible;
+	bWasHierarchyVisible = true;
+	ResolveRuntimeSources(); BindRuntimeEvents();
+	const uint32 PreviousTerrainRevision = TerrainLandscapeRevision;
+	const bool bPreviousTerrainReady = bTerrainCacheInitialized;
+	const FBox2D PreviousBounds = TerrainWorldBounds;
 	EnsureTerrainCache();
-	SoldierPoints.Reset();
-
-	AGuLiCommanderPlayerController* Controller = CommanderController.Get();
-	if (!Controller)
-	{
-		Controller = Cast<AGuLiCommanderPlayerController>(GetOwningPlayer());
-		CommanderController = Controller;
-	}
-
-	TSet<uint32> SelectedSoldierValues;
-	if (Controller)
-	{
-		if (const UGuLiCommanderNetSyncComponent* NetSync = Controller->GetCommanderNetSyncComponent())
-		{
-			const FGuLiCommanderSelectionState& Selection = NetSync->GetSelectionState();
-			for (const FGuLiControlCohortDescriptor& Cohort : Selection.Cohorts)
-			{
-				for (const FGuLiSoldierId SoldierId : Cohort.MemberIds)
-				{
-					if (SoldierId.IsValid())
-					{
-						SelectedSoldierValues.Add(SoldierId.Value);
-					}
-				}
-			}
-		}
-	}
-
-	const AGuLiSoldierStateReplicator* Replicator = SoldierStateReplicator.Get();
-	const AGuLiCommanderPresentationActor* Presentation = PresentationActor.Get();
-	if (Replicator && Presentation)
-	{
-		SoldierPoints.Reserve(Replicator->GetItems().Num());
-		for (const FGuLiSoldierStateItem& Soldier : Replicator->GetItems())
-		{
-			if (!Soldier.SoldierId.IsValid() || !Soldier.IsAlive() || Soldier.bPhased)
-			{
-				continue;
-			}
-
-			FTransform PresentedTransform;
-			if (!Presentation->TryGetPresentedSoldierTransform(
-				Soldier.SoldierId,
-				PresentedTransform)
-				|| PresentedTransform.ContainsNaN())
-			{
-				continue;
-			}
-
-			const FVector PresentedLocation = PresentedTransform.GetLocation();
-			if (PresentedLocation.ContainsNaN())
-			{
-				continue;
-			}
-
-			FGuLiCommanderMiniMapSoldierPoint& Point = SoldierPoints.AddDefaulted_GetRef();
-			Point.WorldPosition = FVector2D(PresentedLocation.X, PresentedLocation.Y);
-			Point.Team = Soldier.Team;
-			Point.bSelected = SelectedSoldierValues.Contains(Soldier.SoldierId.Value);
-		}
-	}
-
-	CameraYawDegrees = ResolveCameraYawDegrees();
-	RefreshCameraFootprint();
-	Invalidate(EInvalidateWidgetReason::Paint);
+	bool bDynamicChanged = bShown;
+	if (const auto* Replicator = SoldierStateReplicator.Get())
+		for (const auto& State : Replicator->GetItems()) bDynamicChanged |= RefreshPoint(State.SoldierId, true);
+	else if (!SoldierPoints.IsEmpty()) { SoldierPoints.Reset(); bDynamicChanged = true; }
+	const float PreviousYaw = CameraYawDegrees;
+	const auto PreviousFootprint = CameraFootprintWorld;
+	const auto PreviousPosition = CameraWorldPosition;
+	const bool bPreviousCamera = bHasCameraWorldPosition;
+	CameraYawDegrees = ResolveCameraYawDegrees(); RefreshCameraFootprint();
+	const bool bHeadingChanged = !FMath::IsNearlyEqual(PreviousYaw, CameraYawDegrees);
+	if (bShown || bHeadingChanged || PreviousTerrainRevision != TerrainLandscapeRevision || !bPreviousTerrainReady || PreviousBounds != TerrainWorldBounds) InvalidateMapLayer(true);
+	bDynamicChanged |= bHeadingChanged || PreviousFootprint != CameraFootprintWorld || PreviousPosition != CameraWorldPosition || bPreviousCamera != bHasCameraWorldPosition;
+	if (bDynamicChanged) InvalidateMapLayer(false);
+	CSV_CUSTOM_STAT(GuLiCommanderMiniMap, DataCacheBytes, float(SoldierPoints.GetAllocatedSize() + TerrainHeights.GetAllocatedSize() + TerrainValidity.GetAllocatedSize() + CameraFootprintWorld.GetAllocatedSize()), ECsvCustomStatOp::Set);
 }
 
 void UGuLiCommanderMiniMapWidget::EnsureTerrainCache()
@@ -342,7 +450,8 @@ void UGuLiCommanderMiniMapWidget::EnsureTerrainCache()
 		? World->GetSubsystem<UGuLiCommanderLandscapeQuerySubsystem>()
 		: nullptr;
 	const uint32 LandscapeRevision = LandscapeQuery ? LandscapeQuery->GetCacheRevision() : 0u;
-	if (bTerrainCacheInitialized && TerrainLandscapeRevision == LandscapeRevision)
+	const FBox2D CurrentBounds = GuLiCommanderNativeMiniMap::GetWorldBounds(World);
+	if (bTerrainCacheInitialized && TerrainLandscapeRevision == LandscapeRevision && TerrainWorldBounds == CurrentBounds)
 	{
 		return;
 	}
@@ -594,30 +703,21 @@ FBox2D UGuLiCommanderMiniMapWidget::GetLocalContentBounds(const FGeometry& Geome
 		FVector2D(MaximumX, MaximumY));
 }
 
-int32 UGuLiCommanderMiniMapWidget::NativePaint(
-	const FPaintArgs& Args,
-	const FGeometry& AllottedGeometry,
-	const FSlateRect& MyCullingRect,
-	FSlateWindowElementList& OutDrawElements,
-	const int32 LayerId,
-	const FWidgetStyle& InWidgetStyle,
-	const bool bParentEnabled) const
+int32 UGuLiCommanderMiniMapWidget::NativePaint(const FPaintArgs& Args, const FGeometry& Geometry, const FSlateRect& Culling,
+	FSlateWindowElementList& Elements, int32 Layer, const FWidgetStyle& Style, bool bEnabled) const
 {
-	const int32 SuperLayer = Super::NativePaint(
-		Args,
-		AllottedGeometry,
-		MyCullingRect,
-		OutDrawElements,
-		LayerId,
-		InWidgetStyle,
-		bParentEnabled);
-	const int32 PaintLayer = SuperLayer + 1;
-	const FVector2D WidgetSize = AllottedGeometry.GetLocalSize();
-	if (WidgetSize.X <= 2.0 || WidgetSize.Y <= 2.0)
-	{
-		return PaintLayer;
-	}
+	return Super::NativePaint(Args, Geometry, Culling, Elements, Layer, Style, bEnabled);
+}
 
+int32 UGuLiCommanderMiniMapWidget::PaintMapLayer(bool bTerrain, const FGeometry& AllottedGeometry,
+	const FSlateRect& MyCullingRect, FSlateWindowElementList& OutDrawElements, int32 LayerId,
+	const FWidgetStyle& InWidgetStyle, bool bParentEnabled) const
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE_CONDITIONAL(GuLiCommanderMiniMap_TerrainPaint, bTerrain);
+	TRACE_CPUPROFILER_EVENT_SCOPE_CONDITIONAL(GuLiCommanderMiniMap_DynamicPaint, !bTerrain);
+	const int32 PaintLayer = LayerId + 1;
+	const FVector2D WidgetSize = AllottedGeometry.GetLocalSize();
+	if (WidgetSize.X <= 2.0 || WidgetSize.Y <= 2.0) return PaintLayer;
 	using namespace GuLiCommanderNativeMiniMap;
 	FPaintContext PaintContext(
 		AllottedGeometry,
@@ -628,6 +728,16 @@ int32 UGuLiCommanderMiniMapWidget::NativePaint(
 		bParentEnabled);
 	const FBox2D ContentBounds = GetLocalContentBounds(AllottedGeometry);
 	const FVector2D ContentSize = ContentBounds.GetSize();
+	const FBox2D WorldBounds = TerrainWorldBounds.bIsValid
+		? TerrainWorldBounds
+		: GetWorldBounds(GetWorld());
+	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = MakeHeadingTransform(
+		WorldBounds,
+		ContentBounds,
+		CameraYawDegrees);
+
+	if (bTerrain)
+	{
 	DrawSolidBox(
 		PaintContext,
 		SolidBrushAsset.Get(),
@@ -644,14 +754,6 @@ int32 UGuLiCommanderMiniMapWidget::NativePaint(
 		ContentSize,
 		FallbackTerrainColor,
 		InWidgetStyle);
-
-	const FBox2D WorldBounds = TerrainWorldBounds.bIsValid
-		? TerrainWorldBounds
-		: GetWorldBounds(GetWorld());
-	const GuLiCommanderMiniMap::FHeadingUpTransform Transform = MakeHeadingTransform(
-		WorldBounds,
-		ContentBounds,
-		CameraYawDegrees);
 
 	if (!TerrainHeights.IsEmpty() && Transform.IsValid())
 	{
@@ -726,10 +828,48 @@ int32 UGuLiCommanderMiniMapWidget::NativePaint(
 			1.0f);
 	}
 
+
+	DrawSolidBox(
+		PaintContext,
+		SolidBrushAsset.Get(),
+		PaintLayer,
+		ContentBounds.Min,
+		FVector2D(ContentSize.X, 1.5),
+		BorderColor,
+		InWidgetStyle);
+	DrawSolidBox(
+		PaintContext,
+		SolidBrushAsset.Get(),
+		PaintLayer,
+		FVector2D(ContentBounds.Min.X, ContentBounds.Max.Y - 1.5),
+		FVector2D(ContentSize.X, 1.5),
+		BorderColor,
+		InWidgetStyle);
+	DrawSolidBox(
+		PaintContext,
+		SolidBrushAsset.Get(),
+		PaintLayer,
+		ContentBounds.Min,
+		FVector2D(1.5, ContentSize.Y),
+		BorderColor,
+		InWidgetStyle);
+	DrawSolidBox(
+		PaintContext,
+		SolidBrushAsset.Get(),
+		PaintLayer,
+		FVector2D(ContentBounds.Max.X - 1.5, ContentBounds.Min.Y),
+		FVector2D(1.5, ContentSize.Y),
+		BorderColor,
+		InWidgetStyle);
+
+	}
+	else
+	{
 	if (Transform.IsValid())
 	{
-		for (const FGuLiCommanderMiniMapSoldierPoint& Point : SoldierPoints)
+		for (const auto& Pair : SoldierPoints)
 		{
+			const auto& Point = Pair.Value;
 			FVector2D MapPoint;
 			if (!Transform.TryWorldToScreen(Point.WorldPosition, MapPoint))
 			{
@@ -801,39 +941,7 @@ int32 UGuLiCommanderMiniMapWidget::NativePaint(
 		}
 	}
 
-	DrawSolidBox(
-		PaintContext,
-		SolidBrushAsset.Get(),
-		PaintLayer,
-		ContentBounds.Min,
-		FVector2D(ContentSize.X, 1.5),
-		BorderColor,
-		InWidgetStyle);
-	DrawSolidBox(
-		PaintContext,
-		SolidBrushAsset.Get(),
-		PaintLayer,
-		FVector2D(ContentBounds.Min.X, ContentBounds.Max.Y - 1.5),
-		FVector2D(ContentSize.X, 1.5),
-		BorderColor,
-		InWidgetStyle);
-	DrawSolidBox(
-		PaintContext,
-		SolidBrushAsset.Get(),
-		PaintLayer,
-		ContentBounds.Min,
-		FVector2D(1.5, ContentSize.Y),
-		BorderColor,
-		InWidgetStyle);
-	DrawSolidBox(
-		PaintContext,
-		SolidBrushAsset.Get(),
-		PaintLayer,
-		FVector2D(ContentBounds.Max.X - 1.5, ContentBounds.Min.Y),
-		FVector2D(1.5, ContentSize.Y),
-		BorderColor,
-		InWidgetStyle);
-
+	}
 	return FMath::Max(PaintLayer, PaintContext.MaxLayer);
 }
 

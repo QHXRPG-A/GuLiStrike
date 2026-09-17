@@ -58,6 +58,8 @@ public:
 	const FGuLiExternalUnitControlState& GetState() const { return State; }
 	/** Presentation-only Pawns can share material restoration without creating a network authority. */
 	void ApplyLocalPhaseAppearance(bool bPhased, UMaterialInterface* Material);
+	DECLARE_MULTICAST_DELEGATE(FStateApplied);
+	FStateApplied OnStateApplied;
 	static bool IsActorPhased(const AActor* Actor);
 	static bool AreActorActionsLocked(const AActor* Actor);
 private:

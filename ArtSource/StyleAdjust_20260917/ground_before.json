@@ -1,0 +1,79 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "emitters": [
+      {
+        "name": "NE_Cloud_01",
+        "props": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD82D2AF00) {emitter_name: \"NE_Cloud_01\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001DAB4FEA050) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      {
+        "name": "NE_Impact",
+        "props": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD82D201E0) {emitter_name: \"NE_Impact\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001DAB4FE0000) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      {
+        "name": "NE_Cloud_02",
+        "props": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD82D26FE0) {emitter_name: \"NE_Cloud_02\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001DAB4FEC300) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      {
+        "name": "NE_Rock001",
+        "props": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD82D20BE0) {emitter_name: \"NE_Rock001\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001DAB4FE68D0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      {
+        "name": "NE_Rock",
+        "props": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD82D2C940) {emitter_name: \"NE_Rock\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: True, random_seed: 12, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001DAB4FE17D0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      {
+        "name": "NE_Dust_Trail",
+        "props": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD82D2C760) {emitter_name: \"NE_Dust_Trail\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001DAB4FE2CA0) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      {
+        "name": "NE_CloudLine01",
+        "props": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD82D22EE0) {emitter_name: \"NE_CloudLine01\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001DAB4FE2FD0) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      {
+        "name": "NE_Cloud_01B",
+        "props": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD82D2E4C0) {emitter_name: \"NE_Cloud_01B\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001DAB4FEA410) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      {
+        "name": "NE_CloudLine02",
+        "props": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD82D2ED80) {emitter_name: \"NE_CloudLine02\", is_enabled: True, sim_target: \"CPUSim\", local_space: True, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001DAB4FE5280) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}>"
+        ]
+      },
+      {
+        "name": "NE_GroundShockwave",
+        "props": "<Struct 'NiagaraEmitterPropertiesInfo' (0x000001DD82D2C9E0) {emitter_name: \"NE_GroundShockwave\", is_enabled: True, sim_target: \"CPUSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Once\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+        "renderers": [
+          "<Struct 'NiagaraRendererInfo_Custom' (0x000001DAB4FE6150) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True}>"
+        ]
+      }
+    ]
+  }
+}

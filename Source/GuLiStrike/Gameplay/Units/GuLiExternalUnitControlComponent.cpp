@@ -141,6 +141,7 @@ void UGuLiExternalUnitControlComponent::ApplyState()
 	}
 	SetComponentTickEnabled(State.bActionsLocked || State.bPhased);
 	if (!State.bActionsLocked && !State.bPhased) { bCapturedSettings = false; }
+	OnStateApplied.Broadcast();
 }
 void UGuLiExternalUnitControlComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {

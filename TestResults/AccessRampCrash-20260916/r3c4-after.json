@@ -1,0 +1,145 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "pid": 43932,
+    "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "buildings": [
+      {
+        "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_0",
+        "id": 4,
+        "territory": 2,
+        "phase": "<GuLiBuildingPhase.COMPLETED: 1>",
+        "location": "<Struct 'Vector' (0x000001FA7A043760) {x: 7000.000000, y: 224000.000000, z: -5417.971075}>",
+        "rotation": "<Struct 'Rotator' (0x000001FA7A043760) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+        "ramps": []
+      },
+      {
+        "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_1",
+        "id": 5,
+        "territory": 2,
+        "phase": "<GuLiBuildingPhase.COMPLETED: 1>",
+        "location": "<Struct 'Vector' (0x000001FA7A043760) {x: 0.000000, y: 231000.000000, z: -3850.007975}>",
+        "rotation": "<Struct 'Rotator' (0x000001FA7A043760) {pitch: 0.000000, yaw: 90.000000, roll: 0.000000}>",
+        "ramps": []
+      },
+      {
+        "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiResourceFactoryActor_0",
+        "id": 6,
+        "territory": 2,
+        "phase": "<GuLiBuildingPhase.COMPLETED: 1>",
+        "location": "<Struct 'Vector' (0x000001FA7A043760) {x: -7000.000000, y: 224000.000000, z: -6417.971075}>",
+        "rotation": "<Struct 'Rotator' (0x000001FA7A043760) {pitch: 0.000000, yaw: 180.000000, roll: 0.000000}>",
+        "ramps": [
+          {
+            "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ResourceProcessingFactory_C_0.AccessRamp",
+            "visible": true,
+            "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+            "location": "<Struct 'Vector' (0x000001FA7A043760) {x: -10199.687826, y: 224000.000000, z: -6389.791985}>"
+          }
+        ]
+      },
+      {
+        "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_2",
+        "id": 4,
+        "territory": 22,
+        "phase": "<GuLiBuildingPhase.COMPLETED: 1>",
+        "location": "<Struct 'Vector' (0x000001FA7A043760) {x: 7000.000000, y: -224000.000000, z: -5417.971075}>",
+        "rotation": "<Struct 'Rotator' (0x000001FA7A043760) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+        "ramps": []
+      },
+      {
+        "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_3",
+        "id": 5,
+        "territory": 22,
+        "phase": "<GuLiBuildingPhase.COMPLETED: 1>",
+        "location": "<Struct 'Vector' (0x000001FA7A043760) {x: 0.000000, y: -217000.000000, z: -3984.766430}>",
+        "rotation": "<Struct 'Rotator' (0x000001FA7A043760) {pitch: 0.000000, yaw: 90.000000, roll: 0.000000}>",
+        "ramps": []
+      },
+      {
+        "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiResourceFactoryActor_1",
+        "id": 6,
+        "territory": 22,
+        "phase": "<GuLiBuildingPhase.COMPLETED: 1>",
+        "location": "<Struct 'Vector' (0x000001FA7A043760) {x: -7000.000000, y: -224000.000000, z: -6417.971075}>",
+        "rotation": "<Struct 'Rotator' (0x000001FA7A043760) {pitch: 0.000000, yaw: 180.000000, roll: 0.000000}>",
+        "ramps": [
+          {
+            "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ResourceProcessingFactory_C_1.AccessRamp",
+            "visible": true,
+            "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+            "location": "<Struct 'Vector' (0x000001FA7A043760) {x: -10199.687826, y: -224000.000000, z: -6389.791985}>"
+          }
+        ]
+      },
+      {
+        "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiResourceFactoryActor_2",
+        "id": 6,
+        "territory": -1,
+        "phase": "<GuLiBuildingPhase.COMPLETED: 1>",
+        "location": "<Struct 'Vector' (0x000001FA7A043760) {x: 0.000000, y: 252000.000000, z: -5857.818723}>",
+        "rotation": "<Struct 'Rotator' (0x000001FA7A043760) {pitch: 0.000000, yaw: -90.000000, roll: 0.000000}>",
+        "ramps": [
+          {
+            "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ResourceProcessingFactory_C_2.AccessRamp",
+            "visible": true,
+            "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+            "location": "<Struct 'Vector' (0x000001FA7A043760) {x: 0.000000, y: 248801.438783, z: -5952.554011}>"
+          }
+        ]
+      },
+      {
+        "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiResourceFactoryActor_3",
+        "id": 6,
+        "territory": -1,
+        "phase": "<GuLiBuildingPhase.COMPLETED: 1>",
+        "location": "<Struct 'Vector' (0x000001FA7A043760) {x: 0.000000, y: -252000.000000, z: -5857.818723}>",
+        "rotation": "<Struct 'Rotator' (0x000001FA7A043760) {pitch: 0.000000, yaw: 90.000000, roll: 0.000000}>",
+        "ramps": [
+          {
+            "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ResourceProcessingFactory_C_3.AccessRamp",
+            "visible": true,
+            "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+            "location": "<Struct 'Vector' (0x000001FA7A043760) {x: 0.000000, y: -248801.438783, z: -5952.554011}>"
+          }
+        ]
+      },
+      {
+        "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_4",
+        "id": 4,
+        "territory": 13,
+        "phase": "<GuLiBuildingPhase.COMPLETED: 1>",
+        "location": "<Struct 'Vector' (0x000001FA7A043760) {x: 119000.000000, y: 0.000000, z: -5999.248219}>",
+        "rotation": "<Struct 'Rotator' (0x000001FA7A043760) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+        "ramps": []
+      },
+      {
+        "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_5",
+        "id": 5,
+        "territory": 13,
+        "phase": "<GuLiBuildingPhase.COMPLETED: 1>",
+        "location": "<Struct 'Vector' (0x000001FA7A043760) {x: 112000.000000, y: 7000.000000, z: -3554.694796}>",
+        "rotation": "<Struct 'Rotator' (0x000001FA7A043760) {pitch: 0.000000, yaw: 90.000000, roll: 0.000000}>",
+        "ramps": []
+      },
+      {
+        "actor": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiResourceFactoryActor_4",
+        "id": 6,
+        "territory": 13,
+        "phase": "<GuLiBuildingPhase.COMPLETED: 1>",
+        "location": "<Struct 'Vector' (0x000001FA7A043760) {x: 126000.000000, y: 0.000000, z: -7151.610709}>",
+        "rotation": "<Struct 'Rotator' (0x000001FA7A043760) {pitch: 0.000000, yaw: 0.000000, roll: 0.000000}>",
+        "ramps": [
+          {
+            "path": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.BP_ResourceProcessingFactory_C_4.AccessRamp",
+            "visible": true,
+            "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>",
+            "location": "<Struct 'Vector' (0x000001FA7A043760) {x: 129199.781246, y: 0.000000, z: -7113.451173}>"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -83,6 +83,11 @@ public:
 	using FPoseResolver = TFunction<bool(const FGuLiTargetHandle&, FTransform&, int32&)>;
 	void RegisterPoseResolver(EGuLiTargetKind Kind, UObject* Owner, FPoseResolver Resolver);
 	void UnregisterPoseResolver(EGuLiTargetKind Kind, const UObject* Owner);
+	using FMuzzleResolver = TFunction<bool(const FGuLiCombatShotCue&, FVector&)>;
+	void RegisterMuzzleResolver(EGuLiTargetKind Kind, UObject* Owner, FMuzzleResolver Resolver);
+	void UnregisterMuzzleResolver(EGuLiTargetKind Kind, const UObject* Owner);
+	/** Existing accepted shot cues supply cosmetic aim; no authority or network state is added. */
+	bool TryGetWeaponAim(const FGuLiTargetHandle& Source, FName SlotId, FVector& Target) const;
 
 	UFUNCTION(BlueprintPure, Category="Combat Effects") FGuLiCombatEffectVisualCounters GetCounters() const;
 	UFUNCTION(BlueprintPure, Category="Combat Effects") TArray<FGuLiCombatEffectState> GetEffectStates() const;
@@ -90,6 +95,7 @@ public:
 
 private:
 	struct FPoseProvider { TWeakObjectPtr<UObject> Owner; FPoseResolver Resolve; };
+	struct FMuzzleProvider { TWeakObjectPtr<UObject> Owner; FMuzzleResolver Resolve; };
 	struct FActiveMuzzleKey
 	{
 		FGuLiTargetHandle Source;
@@ -109,7 +115,7 @@ private:
 	float ServerTime() const;
 	UGuLiCombatEffectCatalog* GetCatalog();
 	UNiagaraComponent* SpawnPooled(UNiagaraSystem* System, FVector Location, float Scale,
-		float Radius = 0, FRotator Rotation = FRotator::ZeroRotator);
+		float Radius = 0, FRotator Rotation = FRotator::ZeroRotator, FName ScaleParameterName = NAME_None);
 	void Retire(UNiagaraComponent* Component, float Seconds, bool bDeactivate = true);
 	void RemoveVisual(const FGuid& Id, bool bImmediate);
 	void QueueSustainedGunfire(float Now, bool bEnabled);
@@ -135,6 +141,7 @@ private:
 	UPROPERTY(Transient) TArray<FGuLiLaserRenderBlock> LaserBlocks;
 	TArray<int32> FreeLaserSlots;
 	TMap<EGuLiTargetKind, FPoseProvider> PoseProviders;
+	TMap<EGuLiTargetKind, FMuzzleProvider> MuzzleProviders;
 	mutable TMap<FGuLiTargetHandle, TWeakObjectPtr<AActor>> ShipPoseCache;
 	TMap<FGuid, uint32> Tombstones;
 	TArray<FGuid> TombstoneOrder;

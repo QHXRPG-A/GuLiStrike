@@ -1,0 +1,121 @@
+{
+  "project": "../../../../UE5.7/test1/GuLiStrike.uproject",
+  "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "pie": false,
+  "dirty_content": [
+    "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Flash",
+    "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Ring",
+    "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Spark"
+  ],
+  "dirty_maps": [],
+  "systems": {
+    "01": "<Struct 'NiagaraSystemSummary' (0x000001DAB5F86C00) {system_path: \"/Game/_VFXResources/Niagara_System/NS_Explosion_01\", system_name: \"NS_Explosion_01\", emitter_count: 18, emitter_names: (\"NE_Cloud_01\",\"NE_Cloud_02\",\"NE_Cloud_03\",\"NE_Cloud_04\",\"NE_Core01\",\"NE_Core02\",\"NE_CloudOut_01\",\"NE_GlowOut\",\"NE_Glow_Base\",\"NE_Bullet_01\",\"NE_Bullet_02\",\"NE_DustOut_01\",\"NE_Rock001\",\"NE_Rock\",\"NE_Dust_Trail\",\"NE_Glow_End\",\"NE_Ground_01\",\"NE_Ground_02\"), user_parameter_count: 1, user_parameter_names: (\"User.Area_Scale\"), has_gpu_emitters: False}>",
+    "03": "<Struct 'NiagaraSystemSummary' (0x000001DAB5F8AF20) {system_path: \"/Game/_VFXResources/Niagara_System/NS_Explosion_03\", system_name: \"NS_Explosion_03\", emitter_count: 9, emitter_names: (\"NE_Cloud_01\",\"NE_Impact\",\"NE_Cloud_02\",\"NE_Rock001\",\"NE_Rock\",\"NE_Dust_Trail\",\"NE_CloudLine01\",\"NE_Cloud_01B\",\"NE_CloudLine02\"), user_parameter_count: 1, user_parameter_names: (\"User.Area_Scale\"), has_gpu_emitters: False}>",
+    "05": "<Struct 'NiagaraSystemSummary' (0x000001DAB5F8A0E0) {system_path: \"/Game/_VFXResources/Niagara_System/NS_Explosion_05\", system_name: \"NS_Explosion_05\", emitter_count: 8, emitter_names: (\"NS_Cloud_02\",\"NE_Impact\",\"NE_GlowOut\",\"NE_Bullet_01\",\"NE_DustOut_01\",\"NE_Rock001\",\"NE_Rock\",\"NE_Dust_Trail\"), user_parameter_count: 1, user_parameter_names: (\"User.Area_Scale\"), has_gpu_emitters: False}>"
+  },
+  "reflection": {
+    "GuLiEffectVisualVariant": [
+      "scale"
+    ],
+    "GuLiUnitFeedSettings": null,
+    "NiagaraEmitterService": [
+      "add_module",
+      "enable_module",
+      "get_module_info",
+      "get_module_input",
+      "get_rapid_iteration_parameters",
+      "list_builtin_modules",
+      "list_modules",
+      "remove_module",
+      "reorder_module",
+      "search_module_scripts",
+      "set_module_input"
+    ],
+    "NiagaraService": [
+      "add_user_parameter",
+      "compile_system",
+      "compile_with_results",
+      "get_parameter",
+      "list_parameters",
+      "parameter_exists",
+      "remove_user_parameter",
+      "set_parameter"
+    ],
+    "BlueprintService": [
+      "add_component",
+      "add_custom_event_input",
+      "add_event_dispatcher_parameter",
+      "add_function_input",
+      "add_function_parameter",
+      "add_input_action_node",
+      "blueprint_exists",
+      "compare_components",
+      "compile_blueprint",
+      "component_exists",
+      "create_blueprint",
+      "diff_blueprints",
+      "get_all_component_properties",
+      "get_available_components",
+      "get_blueprint_info",
+      "get_component_hierarchy",
+      "get_component_info",
+      "get_component_property",
+      "get_custom_event_inputs",
+      "get_function_parameters",
+      "is_widget_blueprint",
+      "list_component_properties",
+      "list_components",
+      "modify_custom_event_input",
+      "remove_component",
+      "remove_custom_event_input",
+      "remove_function_parameter",
+      "reparent_blueprint",
+      "reparent_component",
+      "set_component_property",
+      "set_root_component"
+    ],
+    "MaterialService": [
+      "clear_instance_parameter_override",
+      "compile_material",
+      "get_parameter",
+      "list_instance_parameters",
+      "list_parameters",
+      "parameter_exists",
+      "set_instance_parameters_bulk",
+      "set_instance_scalar_parameter",
+      "set_instance_texture_parameter",
+      "set_instance_vector_parameter",
+      "set_parameter_default"
+    ],
+    "MaterialNodeService": [
+      "add_function_input",
+      "batch_connect_expressions",
+      "batch_create_expressions",
+      "connect_expressions",
+      "connect_function_expressions",
+      "create_collection_parameter",
+      "create_custom_expression",
+      "create_expression",
+      "create_function_expression",
+      "create_parameter",
+      "delete_expression",
+      "disconnect_input",
+      "get_expression_details",
+      "get_expression_pins",
+      "get_expression_property",
+      "layout_expressions",
+      "list_expression_properties",
+      "list_expressions",
+      "move_expression",
+      "promote_to_parameter",
+      "set_expression_property",
+      "set_function_expression_property",
+      "set_parameter_metadata"
+    ]
+  },
+  "destinations": {
+    "/Game/Commander/Units/Tactical/Cel": false,
+    "/Game/GuLiStrike/Ship/Stylized": false,
+    "/Game/GuLiStrike/FX/CombatExplosions": false
+  }
+}

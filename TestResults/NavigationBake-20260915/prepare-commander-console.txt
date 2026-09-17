@@ -1,0 +1,265 @@
+[2026.09.15-13.09.33:062][  0]LogInit: Display: Running engine for game: GuLiStrike
+[2026.09.15-13.09.33:062][  0]LogCore: Display: Requested channels: 'cpu,gpu,frame,log,bookmark,screenshot,region'
+[2026.09.15-13.09.33:062][  0]LogTrace: Display: Control listening on port 1985
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : platform="Windows"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : config="Development"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : buildversion="UE5-CL-0"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : engineversion="5.7.4-0+UE5"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : enginereleaseversion="5.7.4"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : os="Windows 11 (25H2) [10.0.26200.9445] "
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : cpu="GenuineIntel|Intel(R) Core(TM) i9-14900KF"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : pgoenabled="0"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : pgoprofilingenabled="0"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : ltoenabled="0"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : asan="0"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : mergedmodules="0"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : commandline="" D:\UE5.7\test1\GuLiStrike.uproject -run=GuLiNavigationPrepare -Map=/Game/Maps/LVL_CommanderMassPrototype -unattended -NoSplash -NoLiveCoding -AllowCommandletRendering -abslog=D:/UE5.7/test1/TestResults/NavigationBake-20260915/prepare-commander.log""
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : loginid="0781115f42f406fa2c101691d7cea477"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : llm="0"
+[2026.09.15-13.09.33:062][  0]LogCsvProfiler: Display: Metadata set : systemresolution.resx="1280"
+[2026.09.15-13.09.33:063][  0]LogCsvProfiler: Display: Metadata set : systemresolution.resy="720"
+[2026.09.15-13.09.33:063][  0]LogAudio: Display: Audio Device Manager not initializing due to all audio being disabled. If this is not intentional, please check command line arguments for "-nosound".
+[2026.09.15-13.09.33:063][  0]LogConfig: Display: Loading IOS ini files took 0.07 seconds
+[2026.09.15-13.09.33:063][  0]LogConfig: Display: Loading VulkanPC ini files took 0.08 seconds
+[2026.09.15-13.09.33:063][  0]LogConfig: Display: Loading Mac ini files took 0.08 seconds
+[2026.09.15-13.09.33:063][  0]LogConfig: Display: Loading Android ini files took 0.08 seconds
+[2026.09.15-13.09.33:063][  0]LogConfig: Display: Loading TVOS ini files took 0.09 seconds
+[2026.09.15-13.09.33:063][  0]LogConfig: Display: Loading Unix ini files took 0.09 seconds
+[2026.09.15-13.09.33:063][  0]LogConfig: Display: Loading Windows ini files took 0.09 seconds
+[2026.09.15-13.09.33:063][  0]LogConfig: Display: Loading VisionOS ini files took 0.09 seconds
+[2026.09.15-13.09.33:063][  0]LogConfig: Display: Loading LinuxArm64 ini files took 0.11 seconds
+[2026.09.15-13.09.33:063][  0]LogConfig: Display: Loading Linux ini files took 0.11 seconds
+[2026.09.15-13.09.33:063][  0]LogPluginManager: Display: The Plugin StructUtils has been marked deprecated for 5.5 and will be removed soon. Please update your dependencies.
+[2026.09.15-13.09.33:063][  0]RenderDocPlugin: Display: RenderDoc plugin will not be loaded. Use '-AttachRenderDoc' on the cmd line or enable 'renderdoc.AutoAttach' in the plugin settings.
+[2026.09.15-13.09.33:063][  0]LogHAL: Display: Platform has ~ 32 GB [34163732480 / 34359738368 / 32], which maps to Largest [LargestMinGB=32, LargerMinGB=12, DefaultMinGB=8, SmallerMinGB=6, SmallestMinGB=0)
+[2026.09.15-13.09.33:063][  0]LogCsvProfiler: Display: Metadata set : extradevelopmentmemorymb="0"
+[2026.09.15-13.09.33:652][  0]LogObj: Display: Attempting to load config data for Default__SlateThemeManager before the Class has been constructed/registered/linked (likely during module loading or early startup). This will result in the load silently failing and should be fixed.
+[2026.09.15-13.09.33:822][  0]LogD3D12RHI: Display: Creating D3D12 RHI with Max Feature Level SM6
+[2026.09.15-13.09.34:635][  0]LogD3D12RHI: Display: Not using pipeline state disk cache per r.D3D12.PSO.DiskCache=0
+[2026.09.15-13.09.34:635][  0]LogD3D12RHI: Display: Not using driver-optimized pipeline state disk cache per r.D3D12.PSO.DriverOptimizedDiskCache=0
+[2026.09.15-13.09.35:477][  0]LogCsvProfiler: Display: Metadata set : verbatimrhiname="D3D12"
+[2026.09.15-13.09.35:477][  0]LogCsvProfiler: Display: Metadata set : rhiname="D3D12"
+[2026.09.15-13.09.35:477][  0]LogCsvProfiler: Display: Metadata set : rhifeaturelevel="SM6"
+[2026.09.15-13.09.35:477][  0]LogCsvProfiler: Display: Metadata set : shaderplatform="PCD3D_SM6"
+[2026.09.15-13.09.35:491][  0]LogTextureFormatASTC: Display: ASTCEnc version 5.0.1 library loaded
+[2026.09.15-13.09.35:491][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatASTC
+[2026.09.15-13.09.35:491][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatDXT
+[2026.09.15-13.09.35:491][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatETC2
+[2026.09.15-13.09.35:491][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatIntelISPCTexComp
+[2026.09.15-13.09.35:491][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatUncompressed
+[2026.09.15-13.09.35:491][  0]LogTextureFormatOodle: Display: Oodle Texture TFO init; latest sdk version = 2.9.14
+[2026.09.15-13.09.35:491][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.14.dll
+[2026.09.15-13.09.35:492][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.5.dll
+[2026.09.15-13.09.35:493][  0]LogTextureFormatManager: Display: Loaded Base TextureFormat: TextureFormatOodle
+[2026.09.15-13.09.35:547][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android'
+[2026.09.15-13.09.35:547][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ASTC'
+[2026.09.15-13.09.35:547][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_DXT'
+[2026.09.15-13.09.35:547][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ETC2'
+[2026.09.15-13.09.35:547][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_OpenXR'
+[2026.09.15-13.09.35:547][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'AndroidClient'
+[2026.09.15-13.09.35:547][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ASTCClient'
+[2026.09.15-13.09.35:547][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_DXTClient'
+[2026.09.15-13.09.35:547][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_ETC2Client'
+[2026.09.15-13.09.35:547][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_OpenXRClient'
+[2026.09.15-13.09.35:547][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_Multi'
+[2026.09.15-13.09.35:547][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Android_MultiClient'
+[2026.09.15-13.09.35:592][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Linux'
+[2026.09.15-13.09.35:592][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxEditor'
+[2026.09.15-13.09.35:592][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxServer'
+[2026.09.15-13.09.35:592][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxClient'
+[2026.09.15-13.09.35:620][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxArm64'
+[2026.09.15-13.09.35:620][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxArm64Server'
+[2026.09.15-13.09.35:620][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'LinuxArm64Client'
+[2026.09.15-13.09.35:676][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'Windows'
+[2026.09.15-13.09.35:676][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsEditor'
+[2026.09.15-13.09.35:676][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsServer'
+[2026.09.15-13.09.35:676][  0]LogTargetPlatformManager: Display: Loaded TargetPlatform 'WindowsClient'
+[2026.09.15-13.09.35:676][  0]LogTargetPlatformManager: Display: Building Assets For WindowsEditor
+[2026.09.15-13.09.35:683][  0]LogAudioDebug: Display: Lib vorbis DLL was dynamically loaded.
+[2026.09.15-13.09.35:752][  0]LogDerivedDataCache: Display: Memory: Max Cache Size: -1 MB
+[2026.09.15-13.09.35:755][  0]LogZenServiceInstance: Display: Launching zen utility 'D:/UnrealEngine-5.7/Engine/Binaries/Win64/zen.exe service status'.
+[2026.09.15-13.09.37:776][  0]LogZenServiceInstance: Display: Zen utility process has been running for 2.0 seconds without completing, still waiting...
+[2026.09.15-13.09.38:777][  0]LogZenServiceInstance: Display: Launching zen utility 'D:/UnrealEngine-5.7/Engine/Binaries/Win64/zen.exe service status'.
+[2026.09.15-13.09.40:795][  0]LogZenServiceInstance: Display: Zen utility process has been running for 2.0 seconds without completing, still waiting...
+[2026.09.15-13.09.41:796][  0]LogZenServiceInstance: Display: Read zen version cache file from 'D:/UnrealEngine-5.7/Engine/Saved/Zen/zen.version', version: '5.7.6-202510061608-windows-x64-release-9a1ebb9'
+[2026.09.15-13.09.41:796][  0]LogZenServiceInstance: Display: Read zen version cache file from 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install/zen.version', version: '5.7.6-202510061608-windows-x64-release-9a1ebb9'
+[2026.09.15-13.09.41:796][  0]LogZenServiceInstance: Display: Installed service at 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install/zenserver.exe' is up to date
+[2026.09.15-13.09.41:797][  0]LogZenServiceInstance: Display: Launching executable 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install/zenserver.exe', working dir 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Install', data dir 'C:/Users/a/AppData/Local/UnrealEngine/Common/Zen/Data', args '--port 8558 --data-dir C:\Users\a\AppData\Local\UnrealEngine\Common\Zen\Data --http asio --gc-cache-duration-seconds 1209600 --gc-interval-seconds 21600 --gc-low-diskspace-threshold 2147483648 --cache-bucket-limit-overwrites --quiet --http-forceloopback --owner-pid 37928  --child-id Zen_37928_Startup'
+[2026.09.15-13.09.41:988][  0]LogZenServiceInstance: Display: Unreal Zen Storage Server HTTP service at http://[::1]:8558 status: OK!.
+[2026.09.15-13.09.41:990][  0]LogDerivedDataCache: Display: ZenLocal: Using ZenServer HTTP service at [::1] with namespace ue.ddc status: OK!.
+[2026.09.15-13.09.42:000][  0]LogDerivedDataCache: Display: ../../../Engine/DerivedDataCache: Performance: Latency=0.01ms. RandomReadSpeed=1077.27MBs, RandomWriteSpeed=122.47MBs. Assigned SpeedClass 'Local'
+[2026.09.15-13.09.42:004][  0]LogUbaHorde: Display: UBA/Horde Configuration [Uba.Provider.Horde]: Not Enabled
+[2026.09.15-13.09.42:004][  0]LogShaderCompilers: Display: No distributed shader compiler controller found
+[2026.09.15-13.09.42:005][  0]LogShaderCompilers: Display: Using 29 local workers for shader compilation
+[2026.09.15-13.09.42:020][  0]LogShaderCompilers: Display: Compiling shader autogen file: ../../../../UE5.7/test1/Intermediate/ShaderAutogen/PCD3D_SM6/AutogenShaderHeaders.ush
+[2026.09.15-13.09.42:021][  0]LogShaderCompilers: Display: Autogen file is unchanged, skipping write.
+[2026.09.15-13.09.44:878][  0]LogEditorDomain: Display: EditorDomain is Disabled
+[2026.09.15-13.09.45:298][  0]LogDeviceProfileManager: Display: Deviceprofile LinuxArm64Editor not found.
+[2026.09.15-13.09.45:298][  0]LogDeviceProfileManager: Display: Deviceprofile LinuxArm64 not found.
+[2026.09.15-13.09.45:367][  0]LogCsvProfiler: Display: Metadata set : deviceprofile="WindowsEditor"
+[2026.09.15-13.09.45:378][  0]LogStreaming: Display: FlushAsyncLoading(1): 1 QueuedPackages, 0 AsyncPackages
+[2026.09.15-13.09.45:380][  0]LogTextureEncodingSettings: Display: Texture Encode Speed: Final (cook).
+[2026.09.15-13.09.45:380][  0]LogTextureEncodingSettings: Display: Oodle Texture Encode Speed settings: Fast: RDO Off Lambda=0, Effort=Normal Final: RDO Off Lambda=0, Effort=Normal
+[2026.09.15-13.09.45:380][  0]LogTextureEncodingSettings: Display: Shared linear texture encoding: Disabled
+[2026.09.15-13.09.45:417][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-13.09.45:418][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness because of a recursive sync load
+[2026.09.15-13.09.45:418][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/PowerToRoughness (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-13.09.45:418][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-13.09.45:420][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec because of a recursive sync load
+[2026.09.15-13.09.45:420][  0]LogStreaming: Display: Flushing package /Engine/Functions/Engine_MaterialFunctions01/Shading/ConvertFromDiffSpec (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-13.09.45:420][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/WorldGridMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-13.09.45:428][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/WorldGridMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-13.09.45:429][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-13.09.45:430][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultPostProcessMaterial (state: WaitingForIo) recursively from another package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-13.09.45:433][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultLightFunctionMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultPostProcessMaterial because of a recursive sync load
+[2026.09.15-13.09.45:433][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultPostProcessMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-13.09.45:491][  0]LogMaterial: Display: Missing cached shadermap for DefaultPostProcessMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: dd9d4beaae3cb47a2a03f732232a076eb5813021), compiling. 
+[2026.09.15-13.09.47:918][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultDeferredDecalMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultLightFunctionMaterial because of a recursive sync load
+[2026.09.15-13.09.47:918][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultLightFunctionMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-13.09.47:943][  0]LogMaterial: Display: Missing cached shadermap for DefaultLightFunctionMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 0fd32a0ca8cbfbebd920b89cb3079470d34ad309), compiling. 
+[2026.09.15-13.09.49:445][  0]LogStreaming: Display: Package /Engine/EngineMaterials/WorldGridMaterial is adding a dynamic import to package /Engine/EngineMaterials/DefaultDeferredDecalMaterial because of a recursive sync load
+[2026.09.15-13.09.49:445][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/DefaultDeferredDecalMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/WorldGridMaterial (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-13.09.49:468][  0]LogMaterial: Display: Missing cached shadermap for DefaultDeferredDecalMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 46a6497963aeb048ea711c5be9da2b34726b20f5), compiling. 
+[2026.09.15-13.09.51:326][  0]LogStreaming: Display: Package /Engine/EngineMaterials/DefaultTextMaterialOpaque is adding a dynamic import to package /Engine/EngineMaterials/WorldGridMaterial because of a recursive sync load
+[2026.09.15-13.09.51:326][  0]LogStreaming: Display: Flushing package /Engine/EngineMaterials/WorldGridMaterial (state: DeferredPostLoad) recursively from another package /Engine/EngineMaterials/DefaultTextMaterialOpaque (state: CreateLinkerLoadExports) will result in a partially loaded package to avoid a deadlock.
+[2026.09.15-13.09.51:506][  0]LogMaterial: Display: Missing cached shadermap for WorldGridMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 9b52fff438d6c622492a2a4f4eb661d78c4ff4f5), compiling. Is special engine material.
+[2026.09.15-13.10.24:079][  0]LogMaterial: Display: Missing cached shadermap for DefaultTextMaterialOpaque in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 9420f49cb670b25c1336912e586b58baadfaa39e), compiling. 
+[2026.09.15-13.10.24:124][  0]LogMeshReduction: Display: Using QuadricMeshReduction for automatic static mesh reduction
+[2026.09.15-13.10.24:124][  0]LogMeshReduction: Display: Using SkeletalMeshReduction for automatic skeletal mesh reduction
+[2026.09.15-13.10.24:124][  0]LogMeshReduction: Display: Using ProxyLODMeshReduction for automatic mesh merging
+[2026.09.15-13.10.24:124][  0]LogMeshReduction: Display: No distributed automatic mesh merging module available
+[2026.09.15-13.10.24:289][  0]LogMaterial: Display: Missing cached shadermap for M_VolumeRenderSphereTracePP in PCD3D_SM6, Default, SM6, Editor (DDC key hash: b0b94decad6ea79488c6bd72a45cad7f0487939b), compiling. 
+[2026.09.15-13.10.24:306][  0]LogMaterial: Display: Missing cached shadermap for CineMat in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 467d6edd6066d098cbd4c67f83782e7fa1fa23e9), compiling. 
+[2026.09.15-13.10.24:382][  0]LogMaterial: Display: Missing cached shadermap for SplineEditorMeshMat in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 3ba2641e4aeee267b4d6a38aaea9abfb353c3802), compiling. 
+[2026.09.15-13.10.24:454][  0]LogMaterial: Display: Missing cached shadermap for HairDebugMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 9b3314136e461c0961d14d058cc4eccd31d6d722), compiling. 
+[2026.09.15-13.10.24:482][  0]LogMaterial: Display: Missing cached shadermap for HairDefaultMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 63df90e20fac075fa671c518972f995e00dc5a24), compiling. 
+[2026.09.15-13.10.24:501][  0]LogMaterial: Display: Missing cached shadermap for HairCardsDefaultMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 14371e0c275e6a0325b2ba21e5dea607b5eb6a68), compiling. 
+[2026.09.15-13.10.24:526][  0]LogMaterial: Display: Missing cached shadermap for HairMeshesDefaultMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 626c729782f6c59d114e71d8c8f697ab56dbcf53), compiling. 
+[2026.09.15-13.10.24:548][  0]LogMaterial: Display: Missing cached shadermap for Widget3DPassThrough in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 9ce86f51010dd17d87c7817ebabdbdd384bf04b1), compiling. 
+[2026.09.15-13.10.24:560][  0]LogMaterial: Display: Missing cached shadermap for Widget3DPassThrough_Translucent in PCD3D_SM6, Default, SM6, Editor (DDC key hash: f0503d7f837e3ffc9d859f57334dd828eeae7829), compiling. 
+[2026.09.15-13.10.24:575][  0]LogMaterial: Display: Missing cached shadermap for Widget3DPassThrough_Opaque in PCD3D_SM6, Default, SM6, Editor (DDC key hash: a44833cbadd7130104c3cb332af3fd1529dda83e), compiling. 
+[2026.09.15-13.10.24:586][  0]LogMaterial: Display: Missing cached shadermap for Widget3DPassThrough_Opaque_OneSided in PCD3D_SM6, Default, SM6, Editor (DDC key hash: b34fd5b93a2b7661c8ece24b259e45bc0fcfbc26), compiling. 
+[2026.09.15-13.10.24:598][  0]LogMaterial: Display: Missing cached shadermap for Widget3DPassThrough_Masked in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 0f6daffaa0246544d1ef1e02a0412897f7f586e2), compiling. 
+[2026.09.15-13.10.24:611][  0]LogMaterial: Display: Missing cached shadermap for Widget3DPassThrough_Masked_OneSided in PCD3D_SM6, Default, SM6, Editor (DDC key hash: d63b021fdb75ebe0d4ff5131de767be102cca50a), compiling. 
+[2026.09.15-13.10.24:655][  0]LogMaterial: Display: Missing cached shadermap for TranslucentTransformGizmoMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: fd7dcf86fa90ec7ab91547dd49cc2daed751c63c), compiling. 
+[2026.09.15-13.10.24:667][  0]LogMaterial: Display: Missing cached shadermap for SnapGridMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 2575715e9a58acdb34382c52cd3b5c88ecfe7334), compiling. 
+[2026.09.15-13.10.24:679][  0]LogMaterial: Display: Missing cached shadermap for TransformGizmoMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: a17e4377cdb447f5e93e5507350b915a6f098017), compiling. 
+[2026.09.15-13.10.24:754][  0]LogMaterial: Display: Missing cached shadermap for M_SimpleUnlitTranslucent in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 8be1bd32bea11da0ed544fa4d086ef8156f72a4b), compiling. 
+[2026.09.15-13.10.24:821][  0]LogShaderCompilers: Display: Compiling shader autogen file: ../../../../UE5.7/test1/Intermediate/ShaderAutogen/PCD3D_SM5/AutogenShaderHeaders.ush
+[2026.09.15-13.10.24:821][  0]LogShaderCompilers: Display: Autogen file is unchanged, skipping write.
+[2026.09.15-13.10.24:821][  0]LogVirtualization: Display: VirtualizationSystem name found in ini file: None
+[2026.09.15-13.10.24:821][  0]LogVirtualization: Display: FNullVirtualizationSystem mounted, virtualization will be disabled
+[2026.09.15-13.10.24:946][  0]LogMaterial: Display: Missing cached shadermap for BaseColor in PCD3D_SM6, Default, SM6, Editor (DDC key hash: be2d524c521d1c20bb2aba299df1a453a30c5768), compiling. 
+[2026.09.15-13.10.24:954][  0]LogMaterial: Display: Missing cached shadermap for CustomDepth in PCD3D_SM6, Default, SM6, Editor (DDC key hash: f17cd268108009337e64564bdd8fa23f91aa7d46), compiling. 
+[2026.09.15-13.10.24:973][  0]LogMaterial: Display: Missing cached shadermap for CustomStencil in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 005b42437a239f6d72c63d9c1882d81115345fa4), compiling. 
+[2026.09.15-13.10.24:980][  0]LogMaterial: Display: Missing cached shadermap for FinalImage in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 3110713ba4df2f5090862b5f62e23bd402c25ec9), compiling. 
+[2026.09.15-13.10.24:989][  0]LogMaterial: Display: Missing cached shadermap for LightingModel in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 54f1a94e58285fec41beea3ad03ee97d7f4de012), compiling. 
+[2026.09.15-13.10.24:996][  0]LogMaterial: Display: Missing cached shadermap for MaterialAO in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 8cfc54365b120568b7b0a56bf13787ca6f036438), compiling. 
+[2026.09.15-13.10.25:003][  0]LogMaterial: Display: Missing cached shadermap for Metallic in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 0a4d0cf5e8859d014c19d3f4f7f0e8199c429a8c), compiling. 
+[2026.09.15-13.10.25:009][  0]LogMaterial: Display: Missing cached shadermap for Opacity in PCD3D_SM6, Default, SM6, Editor (DDC key hash: cf46830027dc98a30ff35444e5780f3bddd92064), compiling. 
+[2026.09.15-13.10.25:017][  0]LogMaterial: Display: Missing cached shadermap for Roughness in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 358e792b918941901aaf9c8325f81325932e496e), compiling. 
+[2026.09.15-13.10.25:026][  0]LogMaterial: Display: Missing cached shadermap for Anisotropy in PCD3D_SM6, Default, SM6, Editor (DDC key hash: aaa709baf5e4b902eb607d0803f1000e79a6652b), compiling. 
+[2026.09.15-13.10.25:034][  0]LogMaterial: Display: Missing cached shadermap for SceneColor in PCD3D_SM6, Default, SM6, Editor (DDC key hash: ed91d4a7c8d0e0cf3e94c416c701f4b4e9ce9432), compiling. 
+[2026.09.15-13.10.25:042][  0]LogMaterial: Display: Missing cached shadermap for SceneDepth in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 94109811a90a62b813ec7cfa4d6d49eb62ce1bcb), compiling. 
+[2026.09.15-13.10.25:050][  0]LogMaterial: Display: Missing cached shadermap for SeparateTranslucencyRGB in PCD3D_SM6, Default, SM6, Editor (DDC key hash: ec3ab21a417a9f2d22ad281cd6dad1862aabb643), compiling. 
+[2026.09.15-13.10.25:061][  0]LogMaterial: Display: Missing cached shadermap for SeparateTranslucencyA in PCD3D_SM6, Default, SM6, Editor (DDC key hash: e17f122e3734c766bc829dbeb41d9b72beaf3e29), compiling. 
+[2026.09.15-13.10.25:068][  0]LogMaterial: Display: Missing cached shadermap for Specular in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 10058a5f0525d298af8bba6c04978b6ccb56aac9), compiling. 
+[2026.09.15-13.10.25:076][  0]LogMaterial: Display: Missing cached shadermap for SubsurfaceColor in PCD3D_SM6, Default, SM6, Editor (DDC key hash: b364d1653748073770b4e666c93dc561ec8283f6), compiling. 
+[2026.09.15-13.10.25:084][  0]LogMaterial: Display: Missing cached shadermap for WorldNormal in PCD3D_SM6, Default, SM6, Editor (DDC key hash: d212bf71d2d4150e2984e91588a3729f620937e8), compiling. 
+[2026.09.15-13.10.25:091][  0]LogMaterial: Display: Missing cached shadermap for WorldTangent in PCD3D_SM6, Default, SM6, Editor (DDC key hash: da466ce1367a2ed1a31fdc9e6ac1fde755f05f7f), compiling. 
+[2026.09.15-13.10.25:102][  0]LogMaterial: Display: Missing cached shadermap for AmbientOcclusion in PCD3D_SM6, Default, SM6, Editor (DDC key hash: bcfd6997fe4c6a9bfa9e328d9be0397ff0b36e36), compiling. 
+[2026.09.15-13.10.25:112][  0]LogMaterial: Display: Missing cached shadermap for CustomDepthWorldUnits in PCD3D_SM6, Default, SM6, Editor (DDC key hash: c4d61bc17595f9b5172d03873cd7a5a4a490d77c), compiling. 
+[2026.09.15-13.10.25:119][  0]LogMaterial: Display: Missing cached shadermap for SceneDepthWorldUnits in PCD3D_SM6, Default, SM6, Editor (DDC key hash: f5d46b81d204e2cbff1b85ebda538d541827909a), compiling. 
+[2026.09.15-13.10.25:128][  0]LogMaterial: Display: Missing cached shadermap for Velocity in PCD3D_SM6, Default, SM6, Editor (DDC key hash: ec7b27569bc3b8df5fe48a4a933f00ca27ca83d0), compiling. 
+[2026.09.15-13.10.25:135][  0]LogMaterial: Display: Missing cached shadermap for PreTonemapHDRColor in PCD3D_SM6, Default, SM6, Editor (DDC key hash: b80393af800b48e16ba9dd4d111721149bec2455), compiling. 
+[2026.09.15-13.10.25:143][  0]LogMaterial: Display: Missing cached shadermap for PostTonemapHDRColor in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 6cd56daf413887af399d90fd7ca2510a8fc3793a), compiling. 
+[2026.09.15-13.10.25:224][  0]LogWorldPartition: Display: FWorldPartitionClassDescRegistry::Initialize started...
+[2026.09.15-13.10.25:229][  0]LogWorldPartition: Display: FWorldPartitionClassDescRegistry::Initialize took 5.255 ms
+[2026.09.15-13.10.25:979][  0]LogMaterial: Display: Missing cached shadermap for ControlRigXRayMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 727dedc5ffe4e06dcdecf4b5fd032a836f74a4bc), compiling. 
+[2026.09.15-13.10.26:087][  0]LogMetaSound: Display: MetaSound Page Target Initialized to 'Default'
+[2026.09.15-13.10.26:087][  0]LogAudio: Display: Registering Engine Module Parameter Interfaces...
+[2026.09.15-13.10.26:209][  0]LogMaterial: Display: Missing cached shadermap for M_Manip in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 979817b4d742abcf4eba461dbd61a1a0a34e1c19), compiling. 
+[2026.09.15-13.10.26:357][  0]LogMaterial: Display: Missing cached shadermap for DefaultSpriteMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: fc7731792f5a930fb4d1d84a42a63b032b5c4661), compiling. 
+[2026.09.15-13.10.26:375][  0]LogMaterial: Display: Missing cached shadermap for OpaqueUnlitSpriteMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: c52a289be6f342fc38e9925ba631b81ac7053cdb), compiling. 
+[2026.09.15-13.10.26:572][  0]LogMaterial: Display: Missing cached shadermap for DefaultMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: a6b3822fa052057733afabec81834cacf2826bd7), compiling. 
+[2026.09.15-13.10.26:594][  0]LogMaterial: Display: Missing cached shadermap for M_BlinkAfterimage in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 9fab780ccbf4316932e3615e1652df19391f7667), compiling. 
+[2026.09.15-13.10.26:604][  0]LogMaterial: Display: Missing cached shadermap for M_BlinkHeatwave in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 2800fc11894ce4df1664d90e0f5b14b621436f23), compiling. 
+[2026.09.15-13.10.28:217][  0]LogMaterial: Display: Missing cached shadermap for M_Default in PCD3D_SM6, Default, SM6, Editor (DDC key hash: d4943a5677605f0dc8547b1e23632557d04f1064), compiling. 
+[2026.09.15-13.10.28:241][  0]LogMaterial: Display: Missing cached shadermap for MI_Default_Opaque_DS in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 8e5e3b90c20033245a54b9510ff7c0b9aa9bc134), compiling. 
+[2026.09.15-13.10.28:262][  0]LogMaterial: Display: Missing cached shadermap for ScifiDreadnoughtVengeanceBlue in PCD3D_SM6, Default, SM6, Editor (DDC key hash: b3b3807827915323b68ba6c609f3fce6f9504bf7), compiling. 
+[2026.09.15-13.10.28:278][  0]LogMaterial: Display: Missing cached shadermap for Credits_EVE-Kaneda_NepsterCZ in PCD3D_SM6, Default, SM6, Editor (DDC key hash: c18955c24313027559a3296deaf2343850c6c54e), compiling. 
+[2026.09.15-13.10.28:292][  0]LogMaterial: Display: Missing cached shadermap for Flattop_bridge in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 277447ce6b2cd0755f4cef9fadd22ebe46e9c8f9), compiling. 
+[2026.09.15-13.10.28:307][  0]LogMaterial: Display: Missing cached shadermap for Flattop_bridge_window in PCD3D_SM6, Default, SM6, Editor (DDC key hash: fcd84964b5e9b7ac86962393b42f01b4ccf3ea64), compiling. 
+[2026.09.15-13.10.28:323][  0]LogMaterial: Display: Missing cached shadermap for ScifiDreadnoughtWeapons in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 4cc2e296958e8da425db3fffa42b39904362a32a), compiling. 
+[2026.09.15-13.10.29:011][  0]LogMaterial: Display: Missing cached shadermap for SpeedTreeMaster in PCD3D_SM6, Default, SM6, Editor (DDC key hash: eead79782aebc470308258e9583b98d0a3781e80), compiling. 
+[2026.09.15-13.10.29:055][  0]LogMaterial: Display: Missing cached shadermap for SpeedTreeBillboardMaster in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 7b0d170582b2efeebf3513414e8ba93ddd3af9d6), compiling. 
+[2026.09.15-13.10.29:199][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2026.09.15-13.10.29:199][  0]LogAudioCaptureCore: Display: No Audio Capture implementations found. Audio input will be silent.
+[2026.09.15-13.10.29:814][  0]LogTemp: Display: Epic Unreal MCP Module has started
+[2026.09.15-13.10.29:869][  0]LogTemp: Display: VibeUE Module has started
+[2026.09.15-13.10.29:968][  0]LogMaterial: Display: Missing cached shadermap for BasicShapeMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: a255e712521d7682754c9a261062390eeb72d02d), compiling. 
+[2026.09.15-13.10.29:984][  0]LogMaterial: Display: Missing cached shadermap for DataflowVertexMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 7e42755755a6b9e5f8b50ead0431e494e7e61ae2), compiling. 
+[2026.09.15-13.10.30:002][  0]LogMaterial: Display: Missing cached shadermap for DataflowTwoSidedVertexMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 4a4caca5f71f9d8acc10f167f0fe6599e7164c00), compiling. 
+[2026.09.15-13.10.30:016][  0]LogMaterial: Display: Missing cached shadermap for SculptMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 45ecef0eecf06bac21a56522894a1f24b1a7a90f), compiling. 
+[2026.09.15-13.10.30:042][  0]LogMaterial: Display: Missing cached shadermap for PointSetOverlaidComponentMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 9eac9d27957155c298435a95ac93137e9d1acc7d), compiling. 
+[2026.09.15-13.10.30:160][  0]LogMaterial: Display: Missing cached shadermap for LayerVisMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 241ad8ab41dc88b174de215d8908d32bff3de105), compiling. 
+[2026.09.15-13.10.30:174][  0]LogMaterial: Display: Missing cached shadermap for LandscapeMaterialInstanceConstant_LayerVisMaterial_0 in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 010971ee8f42e1b2a215d405f1f8f6b3c18ef7f5), compiling. 
+[2026.09.15-13.10.30:193][  0]LogMaterial: Display: Missing cached shadermap for SelectBrushMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: cdfe4e44a7cb3582c0f03af826fb5adc6dea856f), compiling. 
+[2026.09.15-13.10.30:206][  0]LogMaterial: Display: Missing cached shadermap for LandscapeMaterialInstanceConstant_SelectBrushMaterial_Selected_0 in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 5c9e1440adb674b1880d5e8bcc86b015a1f5bbc5), compiling. 
+[2026.09.15-13.10.30:218][  0]LogMaterial: Display: Missing cached shadermap for SelectBrushMaterial_SelectedRegion in PCD3D_SM6, Default, SM6, Editor (DDC key hash: bb868eddef5b3c4f945ef3b9441c18c1c351b558), compiling. 
+[2026.09.15-13.10.30:224][  0]LogMaterial: Display: Missing cached shadermap for LandscapeMaterialInstanceConstant_SelectBrushMaterial_SelectedRegion_0 in PCD3D_SM6, Default, SM6, Editor (DDC key hash: b2a9d16a93b574d11923c452f4cde8cf2e5b5f88), compiling. 
+[2026.09.15-13.10.30:242][  0]LogMaterial: Display: Missing cached shadermap for MaskBrushMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: ecd10cbc64ba26e4234c99488f50f77b0e7cf3b9), compiling. 
+[2026.09.15-13.10.30:256][  0]LogMaterial: Display: Missing cached shadermap for LandscapeMaterialInstanceConstant_MaskBrushMaterial_MaskedRegion_0 in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 1874575806540000a4d2bf26cfa3fe66eefcfda8), compiling. 
+[2026.09.15-13.10.30:269][  0]LogMaterial: Display: Missing cached shadermap for ColorMaskBrushMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 11aeef55df3d09bdd69e67d01d3567e67947ec79), compiling. 
+[2026.09.15-13.10.30:276][  0]LogMaterial: Display: Missing cached shadermap for LandscapeMaterialInstanceConstant_ColorMaskBrushMaterial_MaskedRegion_0 in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 7d2d1262b8b2d88802f173e7c40f684f8a622f9d), compiling. 
+[2026.09.15-13.10.30:288][  0]LogMaterial: Display: Missing cached shadermap for LandscapeDirtyMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 64f2758b9014f9fe65f7a05d50d225e2bcaa8649), compiling. 
+[2026.09.15-13.10.30:300][  0]LogMaterial: Display: Missing cached shadermap for LandscapeMaterialInstanceConstant_LandscapeDirtyMaterial_0 in PCD3D_SM6, Default, SM6, Editor (DDC key hash: dc15c4de0a14600873eadb436dab35bcefca5a43), compiling. 
+[2026.09.15-13.10.30:343][  0]LogMaterial: Display: Missing cached shadermap for LandscapeLayerUsageMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: ef450b9f6b6e6127117c1756e89650fe7c9ae438), compiling. 
+[2026.09.15-13.10.30:358][  0]LogMaterial: Display: Missing cached shadermap for LandscapeMaterialInstanceConstant_LandscapeLayerUsageMaterial_0 in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 73d0c80aa4741605b2174097fda79a2c6cff9d82), compiling. 
+[2026.09.15-13.10.30:389][  0]LogTemp: Display: EpicUnrealMCPBridge: Initializing
+[2026.09.15-13.10.30:390][  0]LogTemp: Display: EpicUnrealMCPBridge: Server started on 127.0.0.1:55557
+[2026.09.15-13.10.30:390][  0]LogTemp: Display: MCPServerRunnable: Created server runnable
+[2026.09.15-13.10.30:395][  0]LogTemp: Display: MCPServerRunnable: Server thread starting...
+[2026.09.15-13.10.30:418][  0]LogMaterial: Display: Missing cached shadermap for WireframeMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 7c430d4b61f21ab37baafc4c627ec6bafdcbf697), compiling. Is special engine material.
+[2026.09.15-13.10.30:522][  0]LogMaterial: Display: Missing cached shadermap for LevelColorationLitMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 213308396f7823eeac618fdc6605c84076b2d24a), compiling. Is special engine material.
+[2026.09.15-13.10.30:627][  0]LogMaterial: Display: Missing cached shadermap for LevelColorationUnlitMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 154089b2df62e3cb44a84ee34dfe955199cc4f47), compiling. Is special engine material.
+[2026.09.15-13.10.30:713][  0]LogMaterial: Display: Missing cached shadermap for MAT_LevelColorationLitLightmapUV in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 1c2b692b8fee62f7d228ae064427a000d114e8ac), compiling. Is special engine material.
+[2026.09.15-13.10.30:810][  0]LogMaterial: Display: Missing cached shadermap for ShadedLevelColorationLitMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 0f9760ff15569885a721d07d4d8203ede7555cd7), compiling. Is special engine material.
+[2026.09.15-13.10.30:904][  0]LogMaterial: Display: Missing cached shadermap for ShadedLevelColorationUnlitMateri in PCD3D_SM6, Default, SM6, Editor (DDC key hash: d4bfb4cd1e76b2b7ac81dbb015b321a91cc14f39), compiling. Is special engine material.
+[2026.09.15-13.10.31:230][  0]LogMaterial: Display: Missing cached shadermap for VertexColorMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 56fb65bcc97ec569c253b32f8853fa4b5d06d1fa), compiling. 
+[2026.09.15-13.10.31:253][  0]LogMaterial: Display: Missing cached shadermap for VertexColorViewMode_ColorOnly in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 94fc8e7d98c070c952bb8612d187e41f9512f216), compiling. 
+[2026.09.15-13.10.31:272][  0]LogMaterial: Display: Missing cached shadermap for VertexColorViewMode_AlphaAsColor in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 298cbe28fcb9421fd6316f8d38ce96731aa75c8a), compiling. 
+[2026.09.15-13.10.31:284][  0]LogMaterial: Display: Missing cached shadermap for VertexColorViewMode_RedOnly in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 4ea2177c745fef114b4389f99ed6cd06a441676e), compiling. 
+[2026.09.15-13.10.31:297][  0]LogMaterial: Display: Missing cached shadermap for VertexColorViewMode_GreenOnly in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 3f742f10cab55ccc1994d231c5c04872ca606456), compiling. 
+[2026.09.15-13.10.31:308][  0]LogMaterial: Display: Missing cached shadermap for VertexColorViewMode_BlueOnly in PCD3D_SM6, Default, SM6, Editor (DDC key hash: fe76afb974d87eff359d5187dfb1f7b5b49aeb34), compiling. 
+[2026.09.15-13.10.31:327][  0]LogMaterial: Display: Missing cached shadermap for TextureColorViewMode in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 0c4545e5e19680a221a36460389f45fe9721d005), compiling. 
+[2026.09.15-13.10.31:344][  0]LogMaterial: Display: Missing cached shadermap for NaniteHiddenSectionMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 99ab5450b3aaba874fbeb48a53c8bf9588c60017), compiling. 
+[2026.09.15-13.10.31:358][  0]LogMaterial: Display: Missing cached shadermap for RemoveSurfaceMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 61bc7758757c3a5b1b36e5b4c9d96c70b87673e6), compiling. 
+[2026.09.15-13.10.31:364][  0]LogMaterial: Display: Missing cached shadermap for DebugMeshMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 16da4894fb1ab14bcb3bca79d072059b42d933da), compiling. 
+[2026.09.15-13.10.31:379][  0]LogMaterial: Display: Missing cached shadermap for EmissiveMeshMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: f61b0ea01d2423648c65261ee128d8c33d3078cd), compiling. 
+[2026.09.15-13.10.31:396][  0]LogMaterial: Display: Missing cached shadermap for M_InvalidLightmapSettings in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 8f087fe9fa106574c2cadbf719e3fd501f34f376), compiling. 
+[2026.09.15-13.10.31:406][  0]LogMaterial: Display: Missing cached shadermap for GizmoMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 4231d4943dd960c06e44fb6175375c488db1712e), compiling. 
+[2026.09.15-13.10.31:417][  0]LogMaterial: Display: Missing cached shadermap for PhAT_JointLimitMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: d7074d3a4932b65169ed6b43ad3a1ec25c142e7a), compiling. 
+[2026.09.15-13.10.31:440][  0]LogMaterial: Display: Missing cached shadermap for FlattenMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: dbdad72e35d45d357d166c3af178f13e68c442b6), compiling. 
+[2026.09.15-13.10.31:458][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.11.dll
+[2026.09.15-13.10.31:503][  0]LogMaterial: Display: Missing cached shadermap for FlattenMaterial_VT in PCD3D_SM6, Default, SM6, Editor (DDC key hash: f093f2521d887ec8553259274b045354887937ac), compiling. 
+[2026.09.15-13.10.31:517][  0]LogMaterial: Display: Missing cached shadermap for FlattenMaterial_WS_Normal_VT in PCD3D_SM6, Default, SM6, Editor (DDC key hash: d1f03b66a37b9782a262f77a28d0a43bda7ceb7e), compiling. 
+[2026.09.15-13.10.31:562][  0]LogTextureFormatOodle: Display: Oodle Texture loading DLL: oo2tex_win64_2.9.12.dll
+[2026.09.15-13.10.32:714][  0]LogTexture: Display: 正在等待纹理就绪72/75（/Engine/EngineMaterials/EnergyConservation/GGX_TransmissionEnergyArray）……
+[2026.09.15-13.10.32:784][  0]LogTexture: Display: 正在等待纹理就绪73/75（/Engine/EngineMaterials/EnergyConservation/Sheen_Energy）……
+[2026.09.15-13.10.32:814][  0]LogTexture: Display: 正在等待纹理就绪74/75（/Engine/EngineMaterials/EnergyConservation/Diffuse_Energy）……
+[2026.09.15-13.10.33:054][  0]LogAssetRegistry: Display: Asset registry cache read as 87.8 MiB from ../../../../UE5.7/test1/Intermediate/CachedAssetRegistry_0.bin.
+[2026.09.15-13.10.33:055][  0]LogAssetRegistry: Display: AssetDataGatherer spent 0.210s loading caches ../../../../UE5.7/test1/Intermediate/CachedAssetRegistry_*.bin.
+[2026.09.15-13.10.33:314][  0]LogCsvProfiler: Display: Metadata set : largeworldcoordinates="1"
+[2026.09.15-13.10.33:339][  0]LogMaterial: Display: Missing cached shadermap for M_DynamicMeshComponentVtxColor in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 87f38dd754d6a7aec172d27ed52b2855a0916ad3), compiling. 
+[2026.09.15-13.10.33:429][  0]LogPython: Display: No pip-enabled plugins with python dependencies found, skipping
+[2026.09.15-13.10.37:703][  0]LogMaterial: Display: Missing cached shadermap for PhAT_UnselectedMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: 3ea7363f5bda1e25da56aa6bcc02825014cd5fe9), compiling. 
+[2026.09.15-13.10.37:713][  0]LogMaterial: Display: Missing cached shadermap for PhAT_NoCollisionMaterial in PCD3D_SM6, Default, SM6, Editor (DDC key hash: c0b9d4fb419e8d102038de08ebe3c68fd0c2a749), compiling. 
+[2026.09.15-13.10.37:927][  0]LogPython: Display: 正在运行启动脚本D:/UnrealEngine-5.7/Engine/Plugins/Animation/IKRig/Content/Python/init_unreal.py…… started...
+[2026.09.15-13.10.37:974][  0]LogPython: Display: 正在运行启动脚本D:/UnrealEngine-5.7/Engine/Plugins/Animation/IKRig/Content/Python/init_unreal.py…… took 47.896 ms
+[2026.09.15-13.10.37:975][  0]LogPython: Display: 正在运行启动脚本D:/UnrealEngine-5.7/Engine/Plugins/Animation/ControlRig/Content/Python/init_unreal.py…… started...
+[2026.09.15-13.10.38:016][  0]LogPython: Display: 正在运行启动脚本D:/UnrealEngine-5.7/Engine/Plugins/Animation/ControlRig/Content/Python/init_unreal.py…… took 40.826 ms (total: 88.723 ms)
+[2026.09.15-13.10.39:761][  0]LogDeviceProfileManager: Display: Deviceprofile None not found.
+[2026.09.15-13.11.37:188][  0]LogMaterial: Display: Missing cached shadermap for LandscapeMaterialInstanceConstant_0 in PCD3D_SM6, Default, SM6, Editor (DDC key hash: f177ee93b70abc1f8adac314189ed897b26f07d6), compiling. Is special engine material.
+[2026.09.15-13.11.38:346][  0]LogMaterial: Display: Missing cached shadermap for LandscapeMaterialInstanceConstant_3 in PCD3D_SM6, Default, SM6, Editor (DDC key hash: bb71c2a06c3c29d9013e6eb9322f58ec6476f9c1), compiling. Is special engine material.
+[2026.09.15-13.11.54:443][  0]LogNavigationDataBuild: Display:    ANavigationData::RebuildAll load time: 0.00s

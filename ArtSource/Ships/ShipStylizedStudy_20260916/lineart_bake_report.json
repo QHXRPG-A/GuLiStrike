@@ -1,0 +1,50 @@
+{
+  "success": true,
+  "method": "Selected structural edge distance rasterized into UV space",
+  "resolution": [
+    4096,
+    4096
+  ],
+  "mask": "D:\\UE5.7\\test1\\ArtSource\\Ships\\ShipStylizedStudy_20260916\\Textures\\T_Ship_Internal_LineMask_4K.png",
+  "uv_layer": "SS_LineartUV",
+  "mask_convention": "white=ink, black=paint",
+  "color_space": "Non-Color",
+  "mask_stats": {
+    "minimum": 0.0,
+    "maximum": 1.0,
+    "white_pixel_fraction": 0.09068936109542847,
+    "nonzero_pixel_fraction": 0.09682732820510864,
+    "atlas_face_coverage": 0.34808945655822754
+  },
+  "antialias_samples_per_texel": 16,
+  "padding_pixels": 8,
+  "selected_edges": 1048,
+  "atlas_faces": 626,
+  "line_radii_m": [
+    0.135,
+    0.19
+  ],
+  "unlined_faces": "reserved black texel",
+  "body_geometry_sha256": "6b52d923c3564482e2dc6f574cd63c1be7afa331830f711b03aa64e2231ae92a",
+  "body_geometry_unchanged": true,
+  "outline_geometry_sha256": "1e18284101ed795ddccd81d1d0b51d664510eb5d711fa8bd9ddd68341c9b65b2",
+  "outline_geometry_unchanged": true,
+  "objects": [
+    {
+      "name": "SS_Dreadnought_Stylized",
+      "vertices": 9167,
+      "polygons": 5061,
+      "triangles": 13314
+    },
+    {
+      "name": "SS_Ink_Outer_Contour",
+      "vertices": 1842,
+      "polygons": 1082,
+      "triangles": 3088
+    }
+  ],
+  "total_triangles": 16402,
+  "previous_triangles": 37362,
+  "removed_triangles": 20960,
+  "source_backup": "D:\\UE5.7\\test1\\ArtSource\\Ships\\ShipStylizedStudy_20260916\\GuLiStrike_Ship_AnimeStudy_GeometricLines.blend"
+}

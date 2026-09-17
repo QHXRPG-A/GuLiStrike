@@ -1,0 +1,364 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "3C8EC0A04F7DE9400CC14F80396E9E07",
+			"instanceName": "DESKTOP-6D3B0FC-38472",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.15-12.55.36",
+	"succeeded": 9,
+	"succeededWithWarnings": 0,
+	"failed": 2,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 1.1782572269439697,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AgentRadiusFringeSourceStaleness",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.AgentRadiusFringeSourceStaleness",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"3C8EC0A04F7DE9400CC14F80396E9E07"
+			],
+			"duration": 0.01204179972410202,
+			"dateTime": "2026.09.15-12.55.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CookGateFailClosed",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.CookGateFailClosed",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"3C8EC0A04F7DE9400CC14F80396E9E07"
+			],
+			"duration": 0.0085496008396148682,
+			"dateTime": "2026.09.15-12.55.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CookGateRequiredMaps",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.CookGateRequiredMaps",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"3C8EC0A04F7DE9400CC14F80396E9E07"
+			],
+			"duration": 0.01526239886879921,
+			"dateTime": "2026.09.15-12.55.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DeterministicBakeAndPath",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.DeterministicBakeAndPath",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"3C8EC0A04F7DE9400CC14F80396E9E07"
+			],
+			"duration": 0.0076574012637138367,
+			"dateTime": "2026.09.15-12.55.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DisconnectedComponents",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.DisconnectedComponents",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"3C8EC0A04F7DE9400CC14F80396E9E07"
+			],
+			"duration": 0.01436619833111763,
+			"dateTime": "2026.09.15-12.55.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NoCollisionVolumeRetainsBoundsContainment",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.NoCollisionVolumeRetainsBoundsContainment",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"3C8EC0A04F7DE9400CC14F80396E9E07"
+			],
+			"duration": 0.0088812001049518585,
+			"dateTime": "2026.09.15-12.55.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SettingsHashCoversBakeContract",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.SettingsHashCoversBakeContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"3C8EC0A04F7DE9400CC14F80396E9E07"
+			],
+			"duration": 0.015883699059486389,
+			"dateTime": "2026.09.15-12.55.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VolumeSourceStaleness",
+			"fullTestPath": "GuLi.FlightNavigation.Editor.VolumeSourceStaleness",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"3C8EC0A04F7DE9400CC14F80396E9E07"
+			],
+			"duration": 0.024013202637434006,
+			"dateTime": "2026.09.15-12.55.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AutomaticFlightRebakeAndReachability",
+			"fullTestPath": "GuLi.NavigationBake.AutomaticFlightRebakeAndReachability",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"3C8EC0A04F7DE9400CC14F80396E9E07"
+			],
+			"duration": 0.045903798192739487,
+			"dateTime": "2026.09.15-12.55.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollisionTerrainAndSettingsSignature",
+			"fullTestPath": "GuLi.NavigationBake.CollisionTerrainAndSettingsSignature",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"3C8EC0A04F7DE9400CC14F80396E9E07"
+			],
+			"duration": 0.17888720333576202,
+			"dateTime": "2026.09.15-12.55.35",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Changing actual Recast resolution invalidates navigation: The two values are equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrikeEditor\\Private\\Tests\\GuLiNavigationBakeTests.cpp",
+					"lineNumber": 171,
+					"timestamp": "2026.09.15-12.55.35"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroundCacheAndDynamicReachability",
+			"fullTestPath": "GuLi.NavigationBake.GroundCacheAndDynamicReachability",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"3C8EC0A04F7DE9400CC14F80396E9E07"
+			],
+			"duration": 0.84681069850921631,
+			"dateTime": "2026.09.15-12.55.36",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogNavigationDataBuild:    ANavigationData::RebuildAll load time: 0.00s",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-12.55.36"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogNavigationDataBuild:    FRecastNavMeshGenerator::ProcessTileTasksAndGetUpdatedTiles build time: 0.16s",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-12.55.36"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] kind=Ground status=Rebuilt object=/Temp/Untitled_7.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default hash=9d5981f9631ed82c check_s=0.000345 build_s=0.157254 reason=Source geometry/settings changed, or no versioned bake record exists.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-12.55.36"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] result=Ready world=/Temp/Untitled_7.GuLiNavigationBakeTest ground_rebuilds=1 flight_rebuilds=0 save_s=0.000000 total_s=0.337315 reason=All source navigation is ready.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-12.55.36"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] kind=Ground status=Hit object=/Temp/Untitled_7.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default hash=9d5981f9631ed82c check_s=0.000167 build_s=0.000000 reason=Validated saved ground tiles.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-12.55.36"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] result=Ready world=/Temp/Untitled_7.GuLiNavigationBakeTest ground_rebuilds=0 flight_rebuilds=0 save_s=0.000000 total_s=0.000417 reason=All source navigation is ready.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-12.55.36"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Depleted ore restores the baked ground connection' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrikeEditor\\Private\\Tests\\GuLiNavigationBakeTests.cpp",
+					"lineNumber": 125,
+					"timestamp": "2026.09.15-12.55.36"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] kind=Ground status=Hit object=/Temp/Untitled_7.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default hash=9d5981f9631ed82c check_s=0.000359 build_s=0.000000 reason=Validated saved ground tiles.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-12.55.36"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] result=Ready world=/Temp/Untitled_7.GuLiNavigationBakeTest ground_rebuilds=0 flight_rebuilds=0 save_s=0.000000 total_s=0.000620 reason=All source navigation is ready.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-12.55.36"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogNavigationDataBuild:    ANavigationData::RebuildAll load time: 0.00s",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-12.55.36"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogNavigationDataBuild:    FRecastNavMeshGenerator::ProcessTileTasksAndGetUpdatedTiles build time: 0.14s",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-12.55.36"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] kind=Ground status=Rebuilt object=/Temp/Untitled_7.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default hash=9d5981f9631ed82c check_s=0.000159 build_s=0.141563 reason=Ground tile checksum differs from the saved bake record.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-12.55.36"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] result=Ready world=/Temp/Untitled_7.GuLiNavigationBakeTest ground_rebuilds=1 flight_rebuilds=0 save_s=0.000000 total_s=0.142484 reason=All source navigation is ready.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-12.55.36"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

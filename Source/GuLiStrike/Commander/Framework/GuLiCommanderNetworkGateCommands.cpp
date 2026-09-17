@@ -540,7 +540,7 @@ namespace GuLiCommanderNetworkGate
 			const bool bGatePassed = GuLiCommanderNetworkGateValidation::CanPass(GateEvidence);
 
 			const FString Summary = FString::Printf(
-				TEXT("reason=%s impairment_valid=%d configured_rtt_ms=%d measured_rtt_ms=%.1f jitter_ms=%d loss_pct=%d reordering=%d selection_ack_ms=%.1f move_samples=%d ack_avg_ms=%.1f ack_p95_ms=%.1f bandwidth_samples=%d connection_budget_Bps=%d inbound_avg_Bps=%.0f inbound_p95_Bps=%.0f inbound_avg_mbps=%.3f inbound_p95_mbps=%.3f fresh_pose_frames=%llu presentation_clock_rtt_ms=%.1f clock_rtt_source=%s presentation_step_samples=%d presentation_travel_cm=%.1f presentation_step_p95_cm=%.1f seed_pose_gap_max_ms=%.1f untagged_hard_snaps=%llu last_hard_snap_delta_cm=(%.1f,%.1f,%.1f) prior_sample_delta_cm=(%.1f,%.1f,%.1f) hard_snap_velocity_cmps=(%.1f,%.1f,%.1f) hard_snap_frame_gap=%u hard_snap_server_gap_ms=%.1f hard_snap_chunk_sample=%u:%u->%u:%u current_anchor=(%.1f,%.1f,%.1f) current_relative=(%.1f,%.1f,%.1f) previous_anchor=(%.1f,%.1f,%.1f) previous_relative=(%.1f,%.1f,%.1f) explicit_teleport_snaps=%llu presented_frames=%d max_presented_step_cm=%.1f."),
+				TEXT("reason=%s impairment_valid=%d configured_rtt_ms=%d measured_rtt_ms=%.1f jitter_ms=%d loss_pct=%d reordering=%d selection_ack_ms=%.1f move_samples=%d ack_avg_ms=%.1f ack_p95_ms=%.1f bandwidth_samples=%d connection_budget_Bps=%d inbound_avg_Bps=%.0f inbound_p95_Bps=%.0f inbound_avg_mbps=%.3f inbound_p95_mbps=%.3f fresh_pose_frames=%llu presentation_clock_rtt_ms=%.1f clock_rtt_source=%s presentation_step_samples=%d presentation_travel_cm=%.1f presentation_step_p95_cm=%.1f seed_pose_gap_max_ms=%.1f untagged_hard_snaps=%llu last_hard_snap_delta_cm=(%.1f,%.1f,%.1f) prior_sample_delta_cm=(%.1f,%.1f,%.1f) hard_snap_velocity_cmps=(%.1f,%.1f,%.1f) hard_snap_frame_gap=%u hard_snap_server_gap_ms=%.1f hard_snap_chunk_sample=%u:%u->%u:%u current_world_cm=(%.1f,%.1f,%.1f) previous_world_cm=(%.1f,%.1f,%.1f) explicit_teleport_snaps=%llu presented_frames=%d max_presented_step_cm=%.1f."),
 				Reason,
 				bRuntimeImpairmentValid ? 1 : 0,
 				RuntimeImpairment.ConfiguredNominalRoundTripLagMilliseconds,
@@ -581,18 +581,12 @@ namespace GuLiCommanderNetworkGate
 				PresentationDiagnostics.LastHardSnapPreviousSampleIndex,
 				PresentationDiagnostics.LastHardSnapCurrentChunkIndex,
 				PresentationDiagnostics.LastHardSnapCurrentSampleIndex,
-				PresentationDiagnostics.LastHardSnapCurrentAnchor.X,
-				PresentationDiagnostics.LastHardSnapCurrentAnchor.Y,
-				PresentationDiagnostics.LastHardSnapCurrentAnchor.Z,
-				PresentationDiagnostics.LastHardSnapCurrentRelative.X,
-				PresentationDiagnostics.LastHardSnapCurrentRelative.Y,
-				PresentationDiagnostics.LastHardSnapCurrentRelative.Z,
-				PresentationDiagnostics.LastHardSnapPreviousAnchor.X,
-				PresentationDiagnostics.LastHardSnapPreviousAnchor.Y,
-				PresentationDiagnostics.LastHardSnapPreviousAnchor.Z,
-				PresentationDiagnostics.LastHardSnapPreviousRelative.X,
-				PresentationDiagnostics.LastHardSnapPreviousRelative.Y,
-				PresentationDiagnostics.LastHardSnapPreviousRelative.Z,
+				PresentationDiagnostics.LastHardSnapCurrentLocation.X,
+				PresentationDiagnostics.LastHardSnapCurrentLocation.Y,
+				PresentationDiagnostics.LastHardSnapCurrentLocation.Z,
+				PresentationDiagnostics.LastHardSnapPreviousLocation.X,
+				PresentationDiagnostics.LastHardSnapPreviousLocation.Y,
+				PresentationDiagnostics.LastHardSnapPreviousLocation.Z,
 				static_cast<unsigned long long>(PresentationDiagnostics.TeleportSnapCount),
 				PresentedFrameSamples,
 				MaximumPresentedStepCentimeters);

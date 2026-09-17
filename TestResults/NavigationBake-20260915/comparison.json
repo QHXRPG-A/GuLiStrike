@@ -1,0 +1,50 @@
+{
+  "configuration": {
+    "world": "/Game/Maps/LVL_CommanderMassPrototype",
+    "clients": 2,
+    "single_process": true,
+    "soldiers": 500
+  },
+  "runs_each": 3,
+  "before_pid": 16424,
+  "after_pid": 3404,
+  "median": {
+    "host_ready_seconds": {
+      "before": 124.08,
+      "after": 22.443,
+      "reduction_percent": 81.91
+    },
+    "client_ready_seconds": {
+      "before": 126.098,
+      "after": 24.449,
+      "reduction_percent": 80.61
+    },
+    "navigation_wait_seconds": {
+      "before": 116.635,
+      "after": 12.007,
+      "reduction_percent": 89.71
+    },
+    "pie_initialization_seconds": {
+      "before": 6.484,
+      "after": 6.804
+    },
+    "hash_and_payload_check_seconds": {
+      "before": 0,
+      "after": 1.233582
+    },
+    "prepare_seconds": {
+      "before": null,
+      "after": 2.523881
+    },
+    "save_seconds": {
+      "before": null,
+      "after": 0.0
+    },
+    "bake_seconds": {
+      "before": 0,
+      "after": 0.0
+    }
+  },
+  "after_all_gates_ordered": true,
+  "after_all_cache_hits": true
+}

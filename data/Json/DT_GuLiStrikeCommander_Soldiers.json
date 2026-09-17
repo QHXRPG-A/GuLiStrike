@@ -5,11 +5,12 @@
     "Note": "扫射调试兵种A；数值非平衡定案",
     "MovementSpeedCmPerSecond": 3600.0,
     "MaxHealth": 100.0,
-    "ModelAsset": "/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd",
+    "ModelAsset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel.SM_Sweeper_Cel",
     "Defense": 0.0,
     "ActorClass": "",
     "PresentationClass": "",
-    "PresentationScale": 1.0
+    "PresentationScale": 1.0,
+    "DisplayName": "扫荡者"
   },
   {
     "Name": "WM01",
@@ -17,11 +18,12 @@
     "Note": "WM01 第二兵种；首版沿用调试数值，尚未平衡",
     "MovementSpeedCmPerSecond": 3600.0,
     "MaxHealth": 300.5,
-    "ModelAsset": "/Game/Commander/Units/SM_WM01_Crowd.SM_WM01_Crowd",
+    "ModelAsset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel",
     "Defense": 0.0,
     "ActorClass": "",
     "PresentationClass": "",
-    "PresentationScale": 1.0
+    "PresentationScale": 1.0,
+    "DisplayName": "战争机器"
   },
   {
     "Name": "ElectromagneticMiner",
@@ -33,7 +35,8 @@
     "Defense": 0.0,
     "ActorClass": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
     "PresentationClass": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
-    "PresentationScale": 3.0422898572084356
+    "PresentationScale": 3.0422898572084356,
+    "DisplayName": "电磁矿车"
   },
   {
     "Name": "ConstructionVehicle",
@@ -45,6 +48,7 @@
     "Defense": 0.0,
     "ActorClass": "/Script/GuLiStrike.GuLiConstructionVehiclePawn",
     "PresentationClass": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C",
-    "PresentationScale": 3.0422898572084356
+    "PresentationScale": 3.0422898572084356,
+    "DisplayName": "建造车"
   }
 ]

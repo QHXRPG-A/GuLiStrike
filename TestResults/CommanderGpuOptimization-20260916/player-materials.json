@@ -1,0 +1,22 @@
+{
+  "blueprint": "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01",
+  "mesh_materials": [
+    {
+      "component": "CharacterMesh0",
+      "materials": []
+    },
+    {
+      "component": "Hull Mesh",
+      "materials": [
+        "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtVengeanceBlue.ScifiDreadnoughtVengeanceBlue"
+      ]
+    },
+    {
+      "component": "CameraProxyMeshComponent_0",
+      "materials": [
+        "/Engine/EditorMaterials/MatineeCam_mat.MatineeCam_mat"
+      ]
+    }
+  ],
+  "no_unit_variants": true
+}

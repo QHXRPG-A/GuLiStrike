@@ -1,0 +1,36 @@
+{
+  "success": true,
+  "before": {
+    "system": "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/NS_WingmanGroundExplosion_Toon.NS_WingmanGroundExplosion_Toon",
+    "scale": 5.0,
+    "scale_parameter_name": "None",
+    "random_yaw": true,
+    "maximum_lifetime": 2.0,
+    "additional_layers": []
+  },
+  "after": {
+    "system": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01.NS_WingmanBombardment_01",
+    "scale": 5.0,
+    "scale_parameter_name": "User.Area_Scale",
+    "random_yaw": true,
+    "maximum_lifetime": 5.25,
+    "additional_layers": []
+  },
+  "settings": {
+    "Explosions": "[\"/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03.NS_GroundDestruction_03\"]",
+    "WingmanExplosions": "[\"/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanDestruction_05.NS_WingmanDestruction_05\"]",
+    "GroundExplosionScaleParameter": "User.Area_Scale",
+    "WingmanExplosionScaleParameter": "User.Area_Scale"
+  },
+  "unchanged_gameplay": {
+    "config_id": "WingmanGroundMissile",
+    "radius": "4000.0",
+    "timing": "<GuLiSpellFieldTiming.INSTANT: 0>",
+    "dissipation_seconds": "3.0"
+  },
+  "paths": {
+    "ground": "/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03",
+    "air": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanDestruction_05",
+    "bomb": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01"
+  }
+}

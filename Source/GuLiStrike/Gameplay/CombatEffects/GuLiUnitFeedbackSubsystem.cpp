@@ -146,6 +146,7 @@ void UGuLiUnitFeedbackSubsystem::FlashActor(AActor* Actor, float HealthFraction)
 	}
 	ActorHealthBars.Add(Actor, {Now, HealthFraction});
 	EnsureHealthBarRenderers();
+	OnActorHealthBarChanged.Broadcast(Actor);
 	if (!HitMaterial || !IsWithinCullDistance(Actor->GetActorLocation())) return;
 	TInlineComponentArray<UMeshComponent*> Meshes;
 	Actor->GetComponents(Meshes, true);
@@ -168,6 +169,7 @@ void UGuLiUnitFeedbackSubsystem::FlashActor(AActor* Actor, float HealthFraction)
 void UGuLiUnitFeedbackSubsystem::ClearActorFlash(AActor* Actor)
 {
 	ActorHealthBars.Remove(Actor);
+	OnActorHealthBarChanged.Broadcast(Actor);
 	for (int32 Index = ActiveHits.Num() - 1; Index >= 0; --Index)
 	{
 		auto& Hit = ActiveHits[Index];
@@ -274,12 +276,13 @@ void UGuLiUnitFeedbackSubsystem::SpawnExplosion(const FVector& Location, float U
 		|| ActiveExplosions.Num() >= FMath::Max(1, GetDefault<UGuLiUnitFeedbackSettings>()->MaximumConcurrentExplosions)) return;
 	UNiagaraSystem* System = Variants[CosmeticRandom.RandRange(0, Variants.Num() - 1)];
 	const float Scale = CalculateDestructionScale(UnitSize);
-	// AllExplosions aerial systems use owner transforms; the ground pack consumes User.Scale instead.
+	const auto* Settings = GetDefault<UGuLiUnitFeedbackSettings>();
+	const FName ScaleParameter = bWingman ? Settings->WingmanExplosionScaleParameter : Settings->GroundExplosionScaleParameter;
 	UNiagaraComponent* Component = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), System, Location,
-		FRotator(0, CosmeticRandom.FRandRange(0, 360), 0), bWingman ? FVector(Scale) : FVector::OneVector,
+		FRotator(0, CosmeticRandom.FRandRange(0, 360), 0), ScaleParameter.IsNone() ? FVector(Scale) : FVector::OneVector,
 		false, false, ENCPoolMethod::ManualRelease, true);
 	if (!Component) return;
-	if (!bWingman) Component->SetVariableFloat(TEXT("User.Scale"), Scale);
+	if (!ScaleParameter.IsNone()) Component->SetVariableFloat(ScaleParameter, Scale);
 	Component->SetCastShadow(false);
 	auto& Active = ActiveExplosions.AddDefaulted_GetRef();
 	Active.Component = Component;
@@ -308,9 +311,15 @@ TStatId UGuLiUnitFeedbackSubsystem::GetStatId() const
 void UGuLiUnitFeedbackSubsystem::Tick(float DeltaTime)
 {
 	const float Now = GetWorld()->GetTimeSeconds();
-	for (auto It = ActorHealthBars.CreateIterator(); It; ++It)
-		if (!It.Key().IsValid() || It.Key()->IsHidden() || HealthBarOpacity(Now - It.Value().StartTime) <= 0.0f)
-			It.RemoveCurrent();
+	if (Now >= NextHealthBarCleanupTime)
+	{
+		NextHealthBarCleanupTime = Now + 0.1f;
+		TArray<TWeakObjectPtr<AActor>> RemovedBars;
+		for (auto It = ActorHealthBars.CreateIterator(); It; ++It)
+			if (!It.Key().IsValid() || It.Key()->IsHidden() || HealthBarOpacity(Now - It.Value().StartTime) <= 0.0f)
+			{ RemovedBars.Add(It.Key()); It.RemoveCurrent(); }
+		for (auto Actor : RemovedBars) OnActorHealthBarChanged.Broadcast(Actor);
+	}
 	for (int32 Index = ActiveHits.Num() - 1; Index >= 0; --Index)
 	{
 		const auto& Hit = ActiveHits[Index];

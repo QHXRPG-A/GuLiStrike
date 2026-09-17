@@ -1,0 +1,39 @@
+{
+  "editor": {
+    "success": true,
+    "pid": 43932,
+    "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "clients": 2,
+    "one_process": true,
+    "playing": false
+  },
+  "source_log": "D:\\UE5.7\\test1\\TestResults\\AccessRampCrash-20260916\\PIE-fixed.log",
+  "runs": [
+    {
+      "request_seconds": 0.0,
+      "pie_copy_started_seconds": 4.027,
+      "resource_initialized_seconds": 19.037,
+      "navigation_ready_seconds": 40.82,
+      "soldiers_spawned_seconds": 40.947,
+      "host_ready_seconds": 40.968,
+      "client_ready_seconds": 42.899,
+      "navigation_wait_seconds": 21.783,
+      "navigation_preparation_logs": [
+        "[2026.09.16-00.39.54:230][416]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] kind=Ground status=Hit object=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier hash=4575e26483fb5383 check_s=0.368778 build_s=0.000000 reason=Validated saved ground tiles.",
+        "[2026.09.16-00.39.54:230][416]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] kind=Ground status=Hit object=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default hash=bfa2402bb725dc45 check_s=0.351554 build_s=0.000000 reason=Validated saved ground tiles.",
+        "[2026.09.16-00.39.54:230][416]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] kind=Flight status=Hit object=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0 hash=1e08276fd72799b2 check_s=0.591427 build_s=0.000000 reason=Validated saved flight graph.",
+        "[2026.09.16-00.39.54:230][416]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] result=Ready world=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype ground_rebuilds=0 flight_rebuilds=0 save_s=0.000000 total_s=2.623120 reason=All source navigation is ready."
+      ],
+      "hash_and_payload_check_seconds": 1.311759,
+      "bake_seconds": 0.0,
+      "prepare_seconds": 2.62312,
+      "save_seconds": 0.0,
+      "ground_rebuilds": 0,
+      "flight_rebuilds": 0,
+      "pie_initialization_seconds": 15.01,
+      "gates_in_order": true
+    }
+  ],
+  "median_host_ready_seconds": 40.968,
+  "median_client_ready_seconds": 42.899
+}

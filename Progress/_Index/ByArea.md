@@ -20,6 +20,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-09-17 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-17 |
+| [美术规范建立与制作技能接入](../Archive/20260917-美术规范建立与制作技能接入.md) | archive | recorded | 2026-09-17 |
+| [Ship动漫低模风格Blender样板](../RequirementDocument/20260916-Ship动漫低模风格Blender样板.md) | requirement | approved | 2026-09-16 |
+| [Ship动漫低模风格Blender样板 — 制作与交付](../DevelopmentDocumentation/20260916-Ship动漫低模风格Blender样板.md) | development | done | 2026-09-16 |
+| [Ship内部线稿烘焙遮罩](../Archive/20260916-Ship内部线稿烘焙遮罩.md) | archive | recorded | 2026-09-16 |
+| [Ship风格样板追加线稿](../Archive/20260916-Ship风格样板追加线稿.md) | archive | recorded | 2026-09-16 |
+| [Ship动漫低模风格Blender样板交付](../Archive/20260916-Ship动漫低模风格Blender样板交付.md) | archive | recorded | 2026-09-16 |
 | [双矿单位矿模型 UE 导入](../RequirementDocument/20260910-双矿单位矿模型UE导入.md) | requirement | approved | 2026-09-10 |
 | [双矿单位矿模型与 Blender 审核](../RequirementDocument/20260910-双矿单位矿模型与Blender审核.md) | requirement | approved | 2026-09-10 |
 | [双矿单位矿模型 UE 导入](../DevelopmentDocumentation/20260910-双矿单位矿模型UE导入.md) | development | done | 2026-09-10 |
@@ -35,7 +43,16 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-15 |
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-09-17 |
+| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-17 |
+| [美术规范建立与制作技能接入](../Archive/20260917-美术规范建立与制作技能接入.md) | archive | recorded | 2026-09-17 |
+| [Ship动漫低模风格Blender样板](../RequirementDocument/20260916-Ship动漫低模风格Blender样板.md) | requirement | approved | 2026-09-16 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-16 |
+| [Ship动漫低模风格Blender样板 — 制作与交付](../DevelopmentDocumentation/20260916-Ship动漫低模风格Blender样板.md) | development | done | 2026-09-16 |
+| [Ship内部线稿烘焙遮罩](../Archive/20260916-Ship内部线稿烘焙遮罩.md) | archive | recorded | 2026-09-16 |
+| [Ship风格样板追加线稿](../Archive/20260916-Ship风格样板追加线稿.md) | archive | recorded | 2026-09-16 |
+| [Ship动漫低模风格Blender样板交付](../Archive/20260916-Ship动漫低模风格Blender样板交付.md) | archive | recorded | 2026-09-16 |
 | [飞船组件文档资源引用与覆盖盘点](../Archive/20260914-飞船组件文档资源引用与覆盖盘点.md) | archive | recorded | 2026-09-14 |
 | [ShipComponent正式部件蓝图](../RequirementDocument/20260912-ShipComponent正式部件蓝图.md) | requirement | approved | 2026-09-12 |
 | [ShipComponent正式部件蓝图 — 制作与迁移](../DevelopmentDocumentation/20260912-ShipComponent正式部件蓝图.md) | development | done | 2026-09-12 |
@@ -123,9 +140,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [实时势力范围与阵营覆盖](../RequirementDocument/20260916-实时势力范围与阵营覆盖.md) | requirement | approved | 2026-09-16 |
+| [据点矿厂落点与大规模避让修复](../RequirementDocument/20260916-据点矿厂落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-16 |
+| [据点矿厂落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md) | development | done | 2026-09-16 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-16 |
+| [据点矿厂落点与Detour避让卡顿修复](../Archive/20260916-据点矿厂落点与Detour避让卡顿修复.md) | archive | recorded | 2026-09-16 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-15 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-15 |
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-15 |
+| [工程车动态避让与建筑矿体导航修复](../Archive/20260915-工程车动态避让与建筑矿体导航修复.md) | archive | recorded | 2026-09-15 |
 | [阵营独立通道与点击据点即时运输修复](../Archive/20260915-阵营独立通道与点击据点即时运输修复.md) | archive | recorded | 2026-09-15 |
 | [空中通道联机与特效增量验收](../Archive/20260914-空中通道联机与特效增量验收.md) | archive | recorded | 2026-09-14 |
 | [指挥官建筑闭环与空中通道首轮实现](../Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md) | archive | recorded | 2026-09-14 |
@@ -156,6 +178,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Ship导入与扫荡者战争机器风格重制](../RequirementDocument/20260916-Ship导入与扫荡者战争机器风格重制.md) | requirement | approved | 2026-09-17 |
+| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
+| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | in_progress | 2026-09-17 |
+| [扫荡者去线稿与爆炸场景明暗调整](../Archive/20260917-扫荡者去线稿与爆炸场景明暗调整.md) | archive | recorded | 2026-09-17 |
+| [三渲二模型与指定爆炸接入阶段记录](../Archive/20260917-三渲二模型与指定爆炸接入阶段记录.md) | archive | recorded | 2026-09-17 |
+| [僚机对地轰炸动漫爆炸样板](../RequirementDocument/20260916-僚机对地轰炸动漫爆炸样板.md) | requirement | approved | 2026-09-16 |
+| [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | development | verification | 2026-09-16 |
+| [僚机动漫爆炸样板制作与接入](../Archive/20260916-僚机动漫爆炸样板制作与接入.md) | archive | recorded | 2026-09-16 |
 | [Ship组件能力与指挥官技能去GAS重构](../RequirementDocument/20260914-Ship组件能力与指挥官技能去GAS重构.md) | requirement | approved | 2026-09-15 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-15 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-15 |
@@ -259,6 +289,27 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Ship导入与扫荡者战争机器风格重制](../RequirementDocument/20260916-Ship导入与扫荡者战争机器风格重制.md) | requirement | approved | 2026-09-17 |
+| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | in_progress | 2026-09-17 |
+| [扫荡者去线稿与爆炸场景明暗调整](../Archive/20260917-扫荡者去线稿与爆炸场景明暗调整.md) | archive | recorded | 2026-09-17 |
+| [三渲二模型与指定爆炸接入阶段记录](../Archive/20260917-三渲二模型与指定爆炸接入阶段记录.md) | archive | recorded | 2026-09-17 |
+| [GPU渲染降耗](../RequirementDocument/20260916-GPU渲染降耗.md) | requirement | approved | 2026-09-16 |
+| [实时势力范围与阵营覆盖](../RequirementDocument/20260916-实时势力范围与阵营覆盖.md) | requirement | approved | 2026-09-16 |
+| [据点矿厂落点与大规模避让修复](../RequirementDocument/20260916-据点矿厂落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
+| [客户端性能优化与压测问题记录](../RequirementDocument/20260915-客户端性能优化与压测问题记录.md) | requirement | approved | 2026-09-16 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-16 |
+| [GPU渲染降耗 — 技术方案与实施](../DevelopmentDocumentation/20260916-GPU渲染降耗.md) | development | done | 2026-09-16 |
+| [据点矿厂落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md) | development | done | 2026-09-16 |
+| [客户端 CPU 增量维护与 10Hz 刷新](../DevelopmentDocumentation/20260915-客户端CPU增量维护与10Hz刷新.md) | development | done | 2026-09-16 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-16 |
+| [扫荡者UE导入与战争机器参考重建](../Archive/20260916-扫荡者UE导入与战争机器参考重建.md) | archive | recorded | 2026-09-16 |
+| [GPU渲染降耗实施与三组对照](../Archive/20260916-GPU渲染降耗实施与三组对照.md) | archive | recorded | 2026-09-16 |
+| [客户端CPU修复后六轮复测验收](../Archive/20260916-客户端CPU修复后六轮复测验收.md) | archive | recorded | 2026-09-16 |
+| [据点矿厂落点与Detour避让卡顿修复](../Archive/20260916-据点矿厂落点与Detour避让卡顿修复.md) | archive | recorded | 2026-09-16 |
+| [客户端CPU增量维护与10Hz刷新实施](../Archive/20260916-客户端CPU增量维护与10Hz刷新实施.md) | archive | recorded | 2026-09-16 |
+| [导航预烘焙与哈希判新](../RequirementDocument/20260915-导航预烘焙与哈希判新.md) | requirement | approved | 2026-09-15 |
+| [工程车地面动态避障](../RequirementDocument/20260915-工程车地面动态避障.md) | requirement | approved | 2026-09-15 |
+| [指挥官姿态预测差分压缩与性能对比](../RequirementDocument/20260915-指挥官姿态预测差分压缩与性能对比.md) | requirement | approved | 2026-09-15 |
 | [指挥官10Hz权威循环与移动容量压测](../RequirementDocument/20260915-指挥官10Hz权威循环与移动容量压测.md) | requirement | approved | 2026-09-15 |
 | [Ship组件能力与指挥官技能去GAS重构](../RequirementDocument/20260914-Ship组件能力与指挥官技能去GAS重构.md) | requirement | approved | 2026-09-15 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-15 |
@@ -266,10 +317,16 @@
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-15 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-15 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-15 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-15 |
+| [导航预烘焙与哈希判新 — 技术方案](../DevelopmentDocumentation/20260915-导航预烘焙与哈希判新.md) | development | done | 2026-09-15 |
+| [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | development | verification | 2026-09-15 |
+| [指挥官姿态预测差分压缩与性能对比 — 技术方案](../DevelopmentDocumentation/20260915-指挥官姿态预测差分压缩与性能对比.md) | development | done | 2026-09-15 |
 | [指挥官10Hz权威循环与移动容量压测 — 技术方案](../DevelopmentDocumentation/20260915-指挥官10Hz权威循环与移动容量压测.md) | development | done | 2026-09-15 |
 | [Ship组件能力与指挥官技能去GAS重构 — 实施记录](../DevelopmentDocumentation/20260914-Ship组件能力与指挥官技能去GAS重构.md) | development | done | 2026-09-15 |
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-15 |
+| [导航预烘焙与 PIE 启动优化验收](../Archive/20260915-导航预烘焙与PIE启动优化.md) | archive | recorded | 2026-09-15 |
+| [工程车动态避让与建筑矿体导航修复](../Archive/20260915-工程车动态避让与建筑矿体导航修复.md) | archive | recorded | 2026-09-15 |
+| [指挥官旧姿态协议残留清理](../Archive/20260915-指挥官旧姿态协议残留清理.md) | archive | recorded | 2026-09-15 |
+| [指挥官姿态压测移动人数口径勘误](../Archive/20260915-指挥官姿态压测移动人数口径勘误.md) | archive | recorded | 2026-09-15 |
+| [指挥官姿态协议9压缩与六轮对比](../Archive/20260915-指挥官姿态协议9压缩与六轮对比.md) | archive | superseded | 2026-09-15 |
 | [阵营独立通道与点击据点即时运输修复](../Archive/20260915-阵营独立通道与点击据点即时运输修复.md) | archive | recorded | 2026-09-15 |
 | [指挥官移动下行数据占比实测](../Archive/20260915-指挥官移动下行数据占比实测.md) | archive | recorded | 2026-09-15 |
 | [客户端CPU-GPU剖析与压测相机勘误](../Archive/20260915-客户端CPU-GPU剖析与压测相机勘误.md) | archive | recorded | 2026-09-15 |
@@ -418,8 +475,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-16 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-15 |
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-15 |
 | [阵营独立通道与点击据点即时运输修复](../Archive/20260915-阵营独立通道与点击据点即时运输修复.md) | archive | recorded | 2026-09-15 |
 | [次级单位武器独立Excel维护](../RequirementDocument/20260914-次级单位武器独立Excel维护.md) | requirement | approved | 2026-09-14 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | development | verification | 2026-09-14 |
@@ -435,6 +492,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
 | [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
 | [地图资源密度涂绘与导出](../RequirementDocument/20260910-地图资源密度涂绘与导出.md) | requirement | approved | 2026-09-10 |
 | [地图资源密度涂绘与导出 — 技术方案与实施记录](../DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md) | development | verification | 2026-09-10 |
@@ -443,7 +501,6 @@
 | [Ship 空中部队原型关卡与三倍航速 — 技术方案与验证](../DevelopmentDocumentation/20260908-Ship空中部队原型关卡与三倍航速.md) | development | done | 2026-09-08 |
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | development | done | 2026-09-08 |
 | [2026-09-08 完成了 Ship 空中部队原型关卡与三倍航速](../Archive/20260908-Ship空中部队原型关卡与三倍航速.md) | archive | recorded | 2026-09-08 |
-| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-07 |
 | [指挥官双机甲骨骼与武器挂点 — 技术方案](../DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md) | development | verification | 2026-09-07 |
 | [地图战略点标注与数据导出工具 — 技术方案](../DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md) | development | in_progress | 2026-09-07 |
 | [2026-09-07 解决了：地图标记删除后视口绘制空指针崩溃](../Archive/20260907-地图标记删除崩溃空指针修复.md) | archive | recorded | 2026-09-07 |
@@ -491,9 +548,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-16 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-15 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-15 |
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-15 |
 | [阵营独立通道与点击据点即时运输修复](../Archive/20260915-阵营独立通道与点击据点即时运输修复.md) | archive | recorded | 2026-09-15 |
 | [空中通道联机与特效增量验收](../Archive/20260914-空中通道联机与特效增量验收.md) | archive | recorded | 2026-09-14 |
 | [指挥官建筑闭环与空中通道首轮实现](../Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md) | archive | recorded | 2026-09-14 |
@@ -516,7 +573,6 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-07 |
 | [WM01 程序化六足行走动画 — Blender 到 UE 完整管线教程](../DevelopmentDocumentation/20260826-WM01程序化六足行走动画-Blender到UE管线教程.md) | development | abandoned | 2026-09-05 |
 | [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | development | in_progress | 2026-09-05 |
 | [10 联机验证与故障定位](../DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md) | reference | reference | 2026-09-01 |
@@ -560,9 +616,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [实时势力范围与阵营覆盖](../RequirementDocument/20260916-实时势力范围与阵营覆盖.md) | requirement | approved | 2026-09-16 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-16 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-15 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-15 |
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-15 |
 | [阵营独立通道与点击据点即时运输修复](../Archive/20260915-阵营独立通道与点击据点即时运输修复.md) | archive | recorded | 2026-09-15 |
 | [指挥官建筑闭环与空中通道首轮实现](../Archive/20260914-指挥官建筑闭环与空中通道首轮实现.md) | archive | recorded | 2026-09-14 |
 | [红蓝矿棋盘与自动采矿闭环 — 技术方案](../DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md) | development | done | 2026-09-12 |
@@ -593,7 +650,16 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [据点矿厂落点与大规模避让修复](../RequirementDocument/20260916-据点矿厂落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
+| [据点矿厂落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md) | development | done | 2026-09-16 |
+| [据点矿厂落点与Detour避让卡顿修复](../Archive/20260916-据点矿厂落点与Detour避让卡顿修复.md) | archive | recorded | 2026-09-16 |
+| [导航预烘焙与哈希判新](../RequirementDocument/20260915-导航预烘焙与哈希判新.md) | requirement | approved | 2026-09-15 |
+| [工程车地面动态避障](../RequirementDocument/20260915-工程车地面动态避障.md) | requirement | approved | 2026-09-15 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-15 |
+| [导航预烘焙与哈希判新 — 技术方案](../DevelopmentDocumentation/20260915-导航预烘焙与哈希判新.md) | development | done | 2026-09-15 |
+| [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | development | verification | 2026-09-15 |
+| [导航预烘焙与 PIE 启动优化验收](../Archive/20260915-导航预烘焙与PIE启动优化.md) | archive | recorded | 2026-09-15 |
+| [工程车动态避让与建筑矿体导航修复](../Archive/20260915-工程车动态避让与建筑矿体导航修复.md) | archive | recorded | 2026-09-15 |
 | [红蓝矿棋盘与自动采矿闭环 — 技术方案](../DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md) | development | done | 2026-09-12 |
 | [矿车 Dock、队伍私有代理与 500 人姿态流修复](../Archive/20260912-矿车Dock私有代理与500人姿态流修复.md) | archive | recorded | 2026-09-12 |
 | [红蓝矿棋盘与自动采矿闭环](../RequirementDocument/20260911-红蓝矿棋盘与自动采矿闭环.md) | requirement | approved | 2026-09-11 |
@@ -609,16 +675,26 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
+| [客户端性能优化与压测问题记录](../RequirementDocument/20260915-客户端性能优化与压测问题记录.md) | requirement | approved | 2026-09-16 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-16 |
+| [客户端 CPU 增量维护与 10Hz 刷新](../DevelopmentDocumentation/20260915-客户端CPU增量维护与10Hz刷新.md) | development | done | 2026-09-16 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-16 |
+| [客户端CPU修复后六轮复测验收](../Archive/20260916-客户端CPU修复后六轮复测验收.md) | archive | recorded | 2026-09-16 |
+| [客户端CPU增量维护与10Hz刷新实施](../Archive/20260916-客户端CPU增量维护与10Hz刷新实施.md) | archive | recorded | 2026-09-16 |
+| [指挥官姿态预测差分压缩与性能对比](../RequirementDocument/20260915-指挥官姿态预测差分压缩与性能对比.md) | requirement | approved | 2026-09-15 |
 | [指挥官10Hz权威循环与移动容量压测](../RequirementDocument/20260915-指挥官10Hz权威循环与移动容量压测.md) | requirement | approved | 2026-09-15 |
 | [Ship组件能力与指挥官技能去GAS重构](../RequirementDocument/20260914-Ship组件能力与指挥官技能去GAS重构.md) | requirement | approved | 2026-09-15 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-15 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-15 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-15 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-15 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-15 |
+| [指挥官姿态预测差分压缩与性能对比 — 技术方案](../DevelopmentDocumentation/20260915-指挥官姿态预测差分压缩与性能对比.md) | development | done | 2026-09-15 |
 | [指挥官10Hz权威循环与移动容量压测 — 技术方案](../DevelopmentDocumentation/20260915-指挥官10Hz权威循环与移动容量压测.md) | development | done | 2026-09-15 |
 | [Ship组件能力与指挥官技能去GAS重构 — 实施记录](../DevelopmentDocumentation/20260914-Ship组件能力与指挥官技能去GAS重构.md) | development | done | 2026-09-15 |
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-15 |
+| [指挥官旧姿态协议残留清理](../Archive/20260915-指挥官旧姿态协议残留清理.md) | archive | recorded | 2026-09-15 |
+| [指挥官姿态压测移动人数口径勘误](../Archive/20260915-指挥官姿态压测移动人数口径勘误.md) | archive | recorded | 2026-09-15 |
+| [指挥官姿态协议9压缩与六轮对比](../Archive/20260915-指挥官姿态协议9压缩与六轮对比.md) | archive | superseded | 2026-09-15 |
 | [阵营独立通道与点击据点即时运输修复](../Archive/20260915-阵营独立通道与点击据点即时运输修复.md) | archive | recorded | 2026-09-15 |
 | [指挥官移动下行数据占比实测](../Archive/20260915-指挥官移动下行数据占比实测.md) | archive | recorded | 2026-09-15 |
 | [客户端CPU-GPU剖析与压测相机勘误](../Archive/20260915-客户端CPU-GPU剖析与压测相机勘误.md) | archive | recorded | 2026-09-15 |
@@ -662,7 +738,6 @@
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | development | done | 2026-09-08 |
 | [2026-09-08 修复了 Ship 僚机在 FlightNav 边界停住不动](../Archive/20260908-Ship僚机FlightNav边界停滞恢复.md) | archive | recorded | 2026-09-08 |
 | [指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属](../RequirementDocument/20260905-指挥官兵种技能与Roguelike升级归属.md) | requirement | draft | 2026-09-07 |
-| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-07 |
 | [指挥官双机甲骨骼与武器挂点 — 技术方案](../DevelopmentDocumentation/20260906-指挥官双机甲骨骼与武器挂点.md) | development | verification | 2026-09-07 |
 | [僚机体系、空中三维导航与客户端校验转发 — 技术方案](../DevelopmentDocumentation/20260902-僚机体系与空中三维导航.md) | development | done | 2026-09-07 |
 | [2026-09-07 勘误：Ship僚机最终构建恢复源码版 UE5.7 门禁](../Archive/20260907-Ship僚机源码版构建门禁勘误.md) | archive | recorded | 2026-09-07 |
@@ -788,8 +863,26 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GPU渲染降耗](../RequirementDocument/20260916-GPU渲染降耗.md) | requirement | approved | 2026-09-16 |
+| [据点矿厂落点与大规模避让修复](../RequirementDocument/20260916-据点矿厂落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
+| [客户端性能优化与压测问题记录](../RequirementDocument/20260915-客户端性能优化与压测问题记录.md) | requirement | approved | 2026-09-16 |
+| [GPU渲染降耗 — 技术方案与实施](../DevelopmentDocumentation/20260916-GPU渲染降耗.md) | development | done | 2026-09-16 |
+| [据点矿厂落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md) | development | done | 2026-09-16 |
+| [客户端 CPU 增量维护与 10Hz 刷新](../DevelopmentDocumentation/20260915-客户端CPU增量维护与10Hz刷新.md) | development | done | 2026-09-16 |
+| [GPU渲染降耗实施与三组对照](../Archive/20260916-GPU渲染降耗实施与三组对照.md) | archive | recorded | 2026-09-16 |
+| [客户端CPU修复后六轮复测验收](../Archive/20260916-客户端CPU修复后六轮复测验收.md) | archive | recorded | 2026-09-16 |
+| [据点矿厂落点与Detour避让卡顿修复](../Archive/20260916-据点矿厂落点与Detour避让卡顿修复.md) | archive | recorded | 2026-09-16 |
+| [客户端CPU增量维护与10Hz刷新实施](../Archive/20260916-客户端CPU增量维护与10Hz刷新实施.md) | archive | recorded | 2026-09-16 |
+| [导航预烘焙与哈希判新](../RequirementDocument/20260915-导航预烘焙与哈希判新.md) | requirement | approved | 2026-09-15 |
+| [指挥官姿态预测差分压缩与性能对比](../RequirementDocument/20260915-指挥官姿态预测差分压缩与性能对比.md) | requirement | approved | 2026-09-15 |
 | [指挥官10Hz权威循环与移动容量压测](../RequirementDocument/20260915-指挥官10Hz权威循环与移动容量压测.md) | requirement | approved | 2026-09-15 |
+| [导航预烘焙与哈希判新 — 技术方案](../DevelopmentDocumentation/20260915-导航预烘焙与哈希判新.md) | development | done | 2026-09-15 |
+| [指挥官姿态预测差分压缩与性能对比 — 技术方案](../DevelopmentDocumentation/20260915-指挥官姿态预测差分压缩与性能对比.md) | development | done | 2026-09-15 |
 | [指挥官10Hz权威循环与移动容量压测 — 技术方案](../DevelopmentDocumentation/20260915-指挥官10Hz权威循环与移动容量压测.md) | development | done | 2026-09-15 |
+| [导航预烘焙与 PIE 启动优化验收](../Archive/20260915-导航预烘焙与PIE启动优化.md) | archive | recorded | 2026-09-15 |
+| [指挥官旧姿态协议残留清理](../Archive/20260915-指挥官旧姿态协议残留清理.md) | archive | recorded | 2026-09-15 |
+| [指挥官姿态压测移动人数口径勘误](../Archive/20260915-指挥官姿态压测移动人数口径勘误.md) | archive | recorded | 2026-09-15 |
+| [指挥官姿态协议9压缩与六轮对比](../Archive/20260915-指挥官姿态协议9压缩与六轮对比.md) | archive | superseded | 2026-09-15 |
 | [指挥官移动下行数据占比实测](../Archive/20260915-指挥官移动下行数据占比实测.md) | archive | recorded | 2026-09-15 |
 | [客户端CPU-GPU剖析与压测相机勘误](../Archive/20260915-客户端CPU-GPU剖析与压测相机勘误.md) | archive | recorded | 2026-09-15 |
 | [指挥官10Hz循环与移动容量实测](../Archive/20260915-指挥官10Hz循环与移动容量实测.md) | archive | superseded | 2026-09-15 |
@@ -812,8 +905,21 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [2026-09 点子 Backlog](../Backlog/2026-09.md) | backlog | current | 2026-09-10 |
-| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-07 |
+| [2026-09 点子 Backlog](../Backlog/2026-09.md) | backlog | current | 2026-09-16 |
+
+## rendering
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-09-17 |
+| [Ship导入与扫荡者战争机器风格重制](../RequirementDocument/20260916-Ship导入与扫荡者战争机器风格重制.md) | requirement | approved | 2026-09-17 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-17 |
+| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | in_progress | 2026-09-17 |
+| [美术规范建立与制作技能接入](../Archive/20260917-美术规范建立与制作技能接入.md) | archive | recorded | 2026-09-17 |
+| [扫荡者去线稿与爆炸场景明暗调整](../Archive/20260917-扫荡者去线稿与爆炸场景明暗调整.md) | archive | recorded | 2026-09-17 |
+| [Ship玩家蓝图补保存与独立读回](../Archive/20260917-Ship玩家蓝图补保存与独立读回.md) | archive | recorded | 2026-09-17 |
+| [三渲二模型与指定爆炸接入阶段记录](../Archive/20260917-三渲二模型与指定爆炸接入阶段记录.md) | archive | recorded | 2026-09-17 |
+| [扫荡者UE导入与战争机器参考重建](../Archive/20260916-扫荡者UE导入与战争机器参考重建.md) | archive | recorded | 2026-09-16 |
 
 ## resource
 
@@ -827,6 +933,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [导航预烘焙与哈希判新](../RequirementDocument/20260915-导航预烘焙与哈希判新.md) | requirement | approved | 2026-09-15 |
+| [工程车地面动态避障](../RequirementDocument/20260915-工程车地面动态避障.md) | requirement | approved | 2026-09-15 |
+| [导航预烘焙与哈希判新 — 技术方案](../DevelopmentDocumentation/20260915-导航预烘焙与哈希判新.md) | development | done | 2026-09-15 |
+| [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | development | verification | 2026-09-15 |
+| [导航预烘焙与 PIE 启动优化验收](../Archive/20260915-导航预烘焙与PIE启动优化.md) | archive | recorded | 2026-09-15 |
+| [工程车动态避让与建筑矿体导航修复](../Archive/20260915-工程车动态避让与建筑矿体导航修复.md) | archive | recorded | 2026-09-15 |
 | [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
 | [单位受击白光与摧毁爆炸 — 技术方案](../DevelopmentDocumentation/20260913-单位受击白光与摧毁爆炸.md) | development | done | 2026-09-14 |
 | [Soldiers统一单位与全局法术场及矿车调度](../RequirementDocument/20260913-Soldiers统一单位与全局法术场及矿车调度.md) | requirement | approved | 2026-09-13 |
@@ -841,6 +953,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [Ship导入与扫荡者战争机器风格重制](../RequirementDocument/20260916-Ship导入与扫荡者战争机器风格重制.md) | requirement | approved | 2026-09-17 |
+| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | in_progress | 2026-09-17 |
+| [Ship玩家蓝图补保存与独立读回](../Archive/20260917-Ship玩家蓝图补保存与独立读回.md) | archive | recorded | 2026-09-17 |
+| [三渲二模型与指定爆炸接入阶段记录](../Archive/20260917-三渲二模型与指定爆炸接入阶段记录.md) | archive | recorded | 2026-09-17 |
+| [Ship动漫低模风格Blender样板](../RequirementDocument/20260916-Ship动漫低模风格Blender样板.md) | requirement | approved | 2026-09-16 |
+| [Ship动漫低模风格Blender样板 — 制作与交付](../DevelopmentDocumentation/20260916-Ship动漫低模风格Blender样板.md) | development | done | 2026-09-16 |
+| [Ship内部线稿烘焙遮罩](../Archive/20260916-Ship内部线稿烘焙遮罩.md) | archive | recorded | 2026-09-16 |
+| [Ship风格样板追加线稿](../Archive/20260916-Ship风格样板追加线稿.md) | archive | recorded | 2026-09-16 |
+| [Ship动漫低模风格Blender样板交付](../Archive/20260916-Ship动漫低模风格Blender样板交付.md) | archive | recorded | 2026-09-16 |
 | [Ship组件能力与指挥官技能去GAS重构](../RequirementDocument/20260914-Ship组件能力与指挥官技能去GAS重构.md) | requirement | approved | 2026-09-15 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-15 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-15 |
@@ -971,10 +1092,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [实时势力范围与阵营覆盖](../RequirementDocument/20260916-实时势力范围与阵营覆盖.md) | requirement | approved | 2026-09-16 |
+| [客户端性能优化与压测问题记录](../RequirementDocument/20260915-客户端性能优化与压测问题记录.md) | requirement | approved | 2026-09-16 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-16 |
+| [客户端 CPU 增量维护与 10Hz 刷新](../DevelopmentDocumentation/20260915-客户端CPU增量维护与10Hz刷新.md) | development | done | 2026-09-16 |
+| [客户端CPU修复后六轮复测验收](../Archive/20260916-客户端CPU修复后六轮复测验收.md) | archive | recorded | 2026-09-16 |
+| [客户端CPU增量维护与10Hz刷新实施](../Archive/20260916-客户端CPU增量维护与10Hz刷新实施.md) | archive | recorded | 2026-09-16 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-15 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-15 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-15 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-15 |
 | [Ship僚机对地轰炸与对空盘旋攻击](../RequirementDocument/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | requirement | approved | 2026-09-13 |
 | [单位受击血条与模型尺寸爆炸缩放](../Archive/20260913-单位受击血条与模型尺寸爆炸缩放.md) | archive | recorded | 2026-09-13 |
 | [指挥官双点传送技能](../RequirementDocument/20260910-指挥官双点传送技能.md) | requirement | approved | 2026-09-11 |
@@ -1041,9 +1167,16 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-09-17 |
+| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-17 |
+| [美术规范建立与制作技能接入](../Archive/20260917-美术规范建立与制作技能接入.md) | archive | recorded | 2026-09-17 |
+| [僚机对地轰炸动漫爆炸样板](../RequirementDocument/20260916-僚机对地轰炸动漫爆炸样板.md) | requirement | approved | 2026-09-16 |
+| [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | development | verification | 2026-09-16 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-16 |
+| [僚机动漫爆炸样板制作与接入](../Archive/20260916-僚机动漫爆炸样板制作与接入.md) | archive | recorded | 2026-09-16 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-15 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-15 |
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-15 |
 | [阵营独立通道与点击据点即时运输修复](../Archive/20260915-阵营独立通道与点击据点即时运输修复.md) | archive | recorded | 2026-09-15 |
 | [僚机短激光与炮弹池](../RequirementDocument/20260914-僚机短激光与炮弹池.md) | requirement | approved | 2026-09-14 |
 | [单位受击白光与摧毁爆炸](../RequirementDocument/20260913-单位受击白光与摧毁爆炸.md) | requirement | approved | 2026-09-14 |
@@ -1089,6 +1222,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [僚机对地轰炸动漫爆炸样板](../RequirementDocument/20260916-僚机对地轰炸动漫爆炸样板.md) | requirement | approved | 2026-09-16 |
+| [GPU渲染降耗](../RequirementDocument/20260916-GPU渲染降耗.md) | requirement | approved | 2026-09-16 |
+| [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | development | verification | 2026-09-16 |
+| [GPU渲染降耗 — 技术方案与实施](../DevelopmentDocumentation/20260916-GPU渲染降耗.md) | development | done | 2026-09-16 |
+| [僚机动漫爆炸样板制作与接入](../Archive/20260916-僚机动漫爆炸样板制作与接入.md) | archive | recorded | 2026-09-16 |
+| [GPU渲染降耗实施与三组对照](../Archive/20260916-GPU渲染降耗实施与三组对照.md) | archive | recorded | 2026-09-16 |
 | [Ship组件能力与指挥官技能去GAS重构](../RequirementDocument/20260914-Ship组件能力与指挥官技能去GAS重构.md) | requirement | approved | 2026-09-15 |
 | [飞船（DIY 模块化装配）](../Gameplay/飞船.md) | gameplay | current | 2026-09-15 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-15 |

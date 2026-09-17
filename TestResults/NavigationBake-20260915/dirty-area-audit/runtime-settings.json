@@ -1,0 +1,29 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "pid": 3404,
+    "runtime_worlds": [
+      {
+        "world": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "ground": [
+          {
+            "name": "RecastNavMesh-Default",
+            "async_gathering": true,
+            "mode": "<RuntimeGenerationType.DYNAMIC: 2>"
+          },
+          {
+            "name": "RecastNavMesh-CommanderSoldier",
+            "async_gathering": true,
+            "mode": "<RuntimeGenerationType.DYNAMIC: 2>"
+          }
+        ]
+      },
+      {
+        "world": "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+        "ground": []
+      }
+    ]
+  }
+}

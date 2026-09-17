@@ -1,0 +1,92 @@
+{
+  "pod_geometry_checks": [
+    {
+      "part": "WM missile pod armored shell",
+      "pitch_degrees": 45.00000965934551,
+      "outward_splay_degrees": 4.252653000158749e-06
+    },
+    {
+      "part": "WM missile pod armored shell.001",
+      "pitch_degrees": 45.00000965934551,
+      "outward_splay_degrees": -4.252653000158749e-06
+    }
+  ],
+  "fbx_readback": [
+    {
+      "asset": "SM_WarMachine_Crowd",
+      "mesh_count": 1,
+      "triangles": 14018,
+      "bounds_m": [
+        [
+          -27.32733726501465,
+          -28.80746841430664,
+          0.0
+        ],
+        [
+          27.327335357666016,
+          28.80746841430664,
+          34.17231750488281
+        ]
+      ],
+      "bounds_error_m": 1.9073486328125e-06,
+      "symmetry_error_m": 6.8770432335441e-06,
+      "material_slots": [
+        1
+      ],
+      "uv_layers": [
+        [
+          "Atlas",
+          "RigidPivotXY_UE",
+          "RigidPivotZ_Radius_UE"
+        ]
+      ],
+      "vertex_colors": [
+        [
+          "RigidPart"
+        ]
+      ],
+      "bones": []
+    },
+    {
+      "asset": "SK_WarMachine",
+      "mesh_count": 1,
+      "triangles": 14018,
+      "bounds_m": [
+        [
+          -27.32733726501465,
+          -28.80746841430664,
+          0.0
+        ],
+        [
+          27.327335357666016,
+          28.80746841430664,
+          34.17231750488281
+        ]
+      ],
+      "bounds_error_m": 1.9073486328125e-06,
+      "symmetry_error_m": 6.8770432335441e-06,
+      "material_slots": [
+        1
+      ],
+      "uv_layers": [
+        [
+          "Atlas",
+          "RigidPivotXY_UE",
+          "RigidPivotZ_Radius_UE"
+        ]
+      ],
+      "vertex_colors": [
+        [
+          "RigidPart"
+        ]
+      ],
+      "bones": [
+        "root",
+        "Body"
+      ],
+      "rigid_weights_valid": true
+    }
+  ],
+  "gameplay_integration": "not changed",
+  "lod_budget_status": "source art mesh exceeds original 6000-triangle game budget"
+}

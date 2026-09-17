@@ -1,0 +1,3125 @@
+[
+  {
+    "run": "retest-1-n1200-c1",
+    "phase": "retest",
+    "clients": 1,
+    "role": "client1",
+    "window_monotonic_seconds": [
+      16871518.489455,
+      16871548.489455
+    ],
+    "frame_ms": {
+      "n": 3169,
+      "mean": 9.466554338908173,
+      "p50": 9.3222,
+      "p95": 10.7674,
+      "p99": 11.2121,
+      "max": 12.9428
+    },
+    "alive_min": 1200.0,
+    "moving": {
+      "n": 3169,
+      "mean": 1199.9823288103503,
+      "p50": 1200.0,
+      "p95": 1200.0,
+      "p99": 1200.0,
+      "max": 1200.0
+    },
+    "moving_p05": 1200.0,
+    "load_pass": true,
+    "frame_budget_pass": true,
+    "scopes": {
+      "FEngineLoop::Tick": {
+        "count": 3170,
+        "hz": 105.66666666666667,
+        "inclusive_ms": 29997.563,
+        "exclusive_ms": 24.793,
+        "inclusive_ms_per_frame": 9.465939728621015,
+        "mean_ms_per_call": 9.462953627760252
+      },
+      "GuLiCommanderPresentationActor": {
+        "count": 3169,
+        "hz": 105.63333333333334,
+        "inclusive_ms": 1911.646,
+        "exclusive_ms": 4.449,
+        "inclusive_ms_per_frame": 0.6032331965919848,
+        "mean_ms_per_call": 0.6032331965919848
+      },
+      "GuLiCommanderPresentation_RebuildLocalInstances": {
+        "count": 3169,
+        "hz": 105.63333333333334,
+        "inclusive_ms": 1907.1970000000001,
+        "exclusive_ms": 124.35000000000001,
+        "inclusive_ms_per_frame": 0.6018292836857053,
+        "mean_ms_per_call": 0.6018292836857053
+      },
+      "DeferredRenderUpdates_GameThread": {
+        "count": 3170,
+        "hz": 105.66666666666667,
+        "inclusive_ms": 1305.538,
+        "exclusive_ms": 30.104,
+        "inclusive_ms_per_frame": 0.41197159987377724,
+        "mean_ms_per_call": 0.4118416403785489
+      },
+      "GuLiCommanderPresentation_Interpolation": {
+        "count": 3169,
+        "hz": 105.63333333333334,
+        "inclusive_ms": 1121.882,
+        "exclusive_ms": 1121.882,
+        "inclusive_ms_per_frame": 0.3540176711896498,
+        "mean_ms_per_call": 0.3540176711896498
+      },
+      "GuLiCommanderPresentation_InstanceSubmit": {
+        "count": 3169,
+        "hz": 105.63333333333334,
+        "inclusive_ms": 629.616,
+        "exclusive_ms": 260.595,
+        "inclusive_ms_per_frame": 0.1986797096875986,
+        "mean_ms_per_call": 0.1986797096875986
+      },
+      "GuLiCommanderPlayerController": {
+        "count": 3169,
+        "hz": 105.63333333333334,
+        "inclusive_ms": 390.73600000000005,
+        "exclusive_ms": 3.9560000000000004,
+        "inclusive_ms_per_frame": 0.12329946355317137,
+        "mean_ms_per_call": 0.12329946355317137
+      },
+      "UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms": {
+        "count": 6354,
+        "hz": 211.8,
+        "inclusive_ms": 369.022,
+        "exclusive_ms": 369.022,
+        "inclusive_ms_per_frame": 0.11644745976648785,
+        "mean_ms_per_call": 0.05807711677683349
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Paint": {
+        "count": 3169,
+        "hz": 105.63333333333334,
+        "inclusive_ms": 138.941,
+        "exclusive_ms": 15.241,
+        "inclusive_ms_per_frame": 0.04384379930577469,
+        "mean_ms_per_call": 0.04384379930577469
+      },
+      "GuLiCommanderMiniMap_DynamicPaint": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 99.314,
+        "exclusive_ms": 99.314,
+        "inclusive_ms_per_frame": 0.031339223729883244,
+        "mean_ms_per_call": 0.33104666666666666
+      },
+      "GuLiPose_Receive": {
+        "count": 11687,
+        "hz": 389.56666666666666,
+        "inclusive_ms": 90.946,
+        "exclusive_ms": 15.228,
+        "inclusive_ms_per_frame": 0.028698643105080468,
+        "mean_ms_per_call": 0.007781808847437324
+      },
+      "GuLiPose_Decode": {
+        "count": 11687,
+        "hz": 389.56666666666666,
+        "inclusive_ms": 75.71799999999999,
+        "exclusive_ms": 75.71799999999999,
+        "inclusive_ms_per_frame": 0.023893341748185543,
+        "mean_ms_per_call": 0.0064788226234277395
+      },
+      "WBP_CommanderHUD [C_Map(GuLiCommanderMiniMapWidget.cpp(49))]": {
+        "count": 900,
+        "hz": 30.0,
+        "inclusive_ms": 64.403,
+        "exclusive_ms": 0.211,
+        "inclusive_ms_per_frame": 0.020322814768065637,
+        "mean_ms_per_call": 0.0715588888888889
+      },
+      "GuLiCommanderCursorGround": {
+        "count": 3169,
+        "hz": 105.63333333333334,
+        "inclusive_ms": 59.442,
+        "exclusive_ms": 54.412,
+        "inclusive_ms_per_frame": 0.018757336699274218,
+        "mean_ms_per_call": 0.018757336699274218
+      },
+      "GuLiCommanderMiniMapWidget": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 51.128,
+        "exclusive_ms": 1.606,
+        "inclusive_ms_per_frame": 0.01613379615020511,
+        "mean_ms_per_call": 0.17042666666666667
+      },
+      "GuLiCommanderMiniMap_Snapshot": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 49.522,
+        "exclusive_ms": 48.092999999999996,
+        "inclusive_ms_per_frame": 0.015627011675607448,
+        "mean_ms_per_call": 0.16507333333333332
+      },
+      "MassDeferredCommand_Execute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 42.099,
+        "exclusive_ms": 0.19799999999999998,
+        "inclusive_ms_per_frame": 0.013284632376143893,
+        "mean_ms_per_call": 0.14032999999999998
+      },
+      "GuLiCommanderPresentation_MassBatchExecute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 41.901,
+        "exclusive_ms": 41.901,
+        "inclusive_ms_per_frame": 0.013222152098453772,
+        "mean_ms_per_call": 0.13967000000000002
+      },
+      "GuLiCommanderPresentation_MassPositionSample": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 31.349,
+        "exclusive_ms": 0.061,
+        "inclusive_ms_per_frame": 0.009892395077311454,
+        "mean_ms_per_call": 0.10449666666666667
+      },
+      "GuLiCommanderPresentation_MassBatchSubmit": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 31.288000000000004,
+        "exclusive_ms": 31.288000000000004,
+        "inclusive_ms_per_frame": 0.00987314610287157,
+        "mean_ms_per_call": 0.10429333333333335
+      },
+      "GuLiPose_Ack": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 19.561,
+        "exclusive_ms": 2.215,
+        "inclusive_ms_per_frame": 0.006172609656042916,
+        "mean_ms_per_call": 0.06520333333333334
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Tick": {
+        "count": 3169,
+        "hz": 105.63333333333334,
+        "inclusive_ms": 6.890000000000001,
+        "exclusive_ms": 6.890000000000001,
+        "inclusive_ms_per_frame": 0.0021741874408330707,
+        "mean_ms_per_call": 0.0021741874408330707
+      },
+      "GuLiPose_Wire": {
+        "count": 11687,
+        "hz": 389.56666666666666,
+        "inclusive_ms": 6.532,
+        "exclusive_ms": 6.532,
+        "inclusive_ms_per_frame": 0.0020612180498579993,
+        "mean_ms_per_call": 0.0005589116111919226
+      },
+      "GuLiCommanderCursorWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderCursorWidget_0_Paint": {
+        "count": 3169,
+        "hz": 105.63333333333334,
+        "inclusive_ms": 6.141,
+        "exclusive_ms": 6.141,
+        "inclusive_ms_per_frame": 0.0019378352792679078,
+        "mean_ms_per_call": 0.0019378352792679078
+      },
+      "GuLiCommanderCursorWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderCursorWidget_0_Tick": {
+        "count": 3169,
+        "hz": 105.63333333333334,
+        "inclusive_ms": 3.0100000000000002,
+        "exclusive_ms": 3.0100000000000002,
+        "inclusive_ms_per_frame": 0.000949826443673083,
+        "mean_ms_per_call": 0.000949826443673083
+      },
+      "GuLiCommanderHealthBarRenderer": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.235,
+        "exclusive_ms": 0.186,
+        "inclusive_ms_per_frame": 0.0007052698011991164,
+        "mean_ms_per_call": 0.007449999999999999
+      },
+      "Recreate": {
+        "count": 112,
+        "hz": 3.7333333333333334,
+        "inclusive_ms": 2.1510000000000002,
+        "exclusive_ms": 0.791,
+        "inclusive_ms_per_frame": 0.0006787630167245189,
+        "mean_ms_per_call": 0.019205357142857146
+      },
+      "GuLiCommanderHealthBars_MaintainActivity": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.049,
+        "exclusive_ms": 2.049,
+        "inclusive_ms_per_frame": 0.0006465762070053644,
+        "mean_ms_per_call": 0.00683
+      },
+      "GuLiCommanderHUD": {
+        "count": 3169,
+        "hz": 105.63333333333334,
+        "inclusive_ms": 1.452,
+        "exclusive_ms": 1.452,
+        "inclusive_ms_per_frame": 0.00045818870306090246,
+        "mean_ms_per_call": 0.00045818870306090246
+      },
+      "GuLiCommanderRoster_ApplyDelta": {
+        "count": 36,
+        "hz": 1.2,
+        "inclusive_ms": 1.331,
+        "exclusive_ms": 1.331,
+        "inclusive_ms_per_frame": 0.0004200063111391606,
+        "mean_ms_per_call": 0.03697222222222222
+      },
+      "UGuLiCommanderResourceAdapter": {
+        "count": 3169,
+        "hz": 105.63333333333334,
+        "inclusive_ms": 1.093,
+        "exclusive_ms": 1.093,
+        "inclusive_ms_per_frame": 0.00034490375512780054,
+        "mean_ms_per_call": 0.00034490375512780054
+      },
+      "GuLiCommanderGameState": {
+        "count": 30,
+        "hz": 1.0,
+        "inclusive_ms": 0.412,
+        "exclusive_ms": 0.175,
+        "inclusive_ms_per_frame": 0.00013000946670874093,
+        "mean_ms_per_call": 0.013733333333333332
+      }
+    },
+    "explicit_cache_high_water_bytes": {
+      "GuLiCommanderMiniMap/DataCacheBytes": 69680.0,
+      "GuLiCommanderHealthBars/DataCacheBytes": 64.0,
+      "GuLiCommanderPresentation/InstanceAndMirrorCacheBytes": 620844.0,
+      "GuLiCommanderPresentation/RosterCacheBytes": 202188.0
+    },
+    "engine_full_capture": {
+      "GameThreadTime": {
+        "n": 4204,
+        "mean": 5.97869186489058,
+        "p50": 6.0173,
+        "p95": 7.3906,
+        "p99": 8.0263,
+        "max": 28.7915
+      },
+      "RenderThreadTime": {
+        "n": 4204,
+        "mean": 9.498252949571837,
+        "p50": 9.3532,
+        "p95": 10.7876,
+        "p99": 11.2695,
+        "max": 13.0663
+      },
+      "GPUTime": {
+        "n": 4204,
+        "mean": 5.724828615604187,
+        "p50": 5.6926,
+        "p95": 6.8886,
+        "p99": 7.2557,
+        "max": 7.7184
+      },
+      "View/Speed": {
+        "n": 4204,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    },
+    "process_samples": 29,
+    "process": {
+      "CpuCoreEquivalents": {
+        "n": 29,
+        "mean": 5.844074326392026,
+        "p50": 5.855403732527109,
+        "p95": 6.938177550397214,
+        "p99": 7.537375843978167,
+        "max": 7.537375843978167
+      },
+      "WorkingSetMiB": {
+        "n": 29,
+        "mean": 5904.496901939655,
+        "p50": 5904.41015625,
+        "p95": 5906.90234375,
+        "p99": 5906.984375,
+        "max": 5906.984375
+      },
+      "PrivateMiB": {
+        "n": 29,
+        "mean": 11576.929956896553,
+        "p50": 11575.58203125,
+        "p95": 11580.30078125,
+        "p99": 11580.30078125,
+        "max": 11580.30078125
+      }
+    }
+  },
+  {
+    "run": "retest-1-n1200-c2",
+    "phase": "retest",
+    "clients": 2,
+    "role": "client1",
+    "window_monotonic_seconds": [
+      16871914.673017,
+      16871944.673017
+    ],
+    "frame_ms": {
+      "n": 1838,
+      "mean": 16.31953443960827,
+      "p50": 16.4773,
+      "p95": 18.4497,
+      "p99": 19.3235,
+      "max": 20.9225
+    },
+    "alive_min": 1200.0,
+    "moving": {
+      "n": 1838,
+      "mean": 1199.9129488574538,
+      "p50": 1200.0,
+      "p95": 1200.0,
+      "p99": 1200.0,
+      "max": 1200.0
+    },
+    "moving_p05": 1199.0,
+    "load_pass": true,
+    "frame_budget_pass": true,
+    "scopes": {
+      "FEngineLoop::Tick": {
+        "count": 1839,
+        "hz": 61.3,
+        "inclusive_ms": 29998.477000000003,
+        "exclusive_ms": 15.32,
+        "inclusive_ms_per_frame": 16.321260609358,
+        "mean_ms_per_call": 16.312385535617185
+      },
+      "GuLiCommanderPresentationActor": {
+        "count": 1838,
+        "hz": 61.266666666666666,
+        "inclusive_ms": 1222.567,
+        "exclusive_ms": 2.885,
+        "inclusive_ms_per_frame": 0.6651615886833515,
+        "mean_ms_per_call": 0.6651615886833515
+      },
+      "GuLiCommanderPresentation_RebuildLocalInstances": {
+        "count": 1838,
+        "hz": 61.266666666666666,
+        "inclusive_ms": 1219.682,
+        "exclusive_ms": 114.008,
+        "inclusive_ms_per_frame": 0.6635919477693145,
+        "mean_ms_per_call": 0.6635919477693145
+      },
+      "DeferredRenderUpdates_GameThread": {
+        "count": 1838,
+        "hz": 61.266666666666666,
+        "inclusive_ms": 801.553,
+        "exclusive_ms": 20.704,
+        "inclusive_ms_per_frame": 0.4361006528835691,
+        "mean_ms_per_call": 0.4361006528835691
+      },
+      "GuLiCommanderPresentation_Interpolation": {
+        "count": 1838,
+        "hz": 61.266666666666666,
+        "inclusive_ms": 684.528,
+        "exclusive_ms": 684.528,
+        "inclusive_ms_per_frame": 0.37243090315560395,
+        "mean_ms_per_call": 0.37243090315560395
+      },
+      "GuLiCommanderPresentation_InstanceSubmit": {
+        "count": 1838,
+        "hz": 61.266666666666666,
+        "inclusive_ms": 388.07399999999996,
+        "exclusive_ms": 157.641,
+        "inclusive_ms_per_frame": 0.21113928182807398,
+        "mean_ms_per_call": 0.21113928182807398
+      },
+      "GuLiCommanderPlayerController": {
+        "count": 1838,
+        "hz": 61.266666666666666,
+        "inclusive_ms": 239.937,
+        "exclusive_ms": 2.558,
+        "inclusive_ms_per_frame": 0.13054243743199131,
+        "mean_ms_per_call": 0.13054243743199131
+      },
+      "UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms": {
+        "count": 3676,
+        "hz": 122.53333333333333,
+        "inclusive_ms": 230.433,
+        "exclusive_ms": 230.433,
+        "inclusive_ms_per_frame": 0.12537159956474428,
+        "mean_ms_per_call": 0.06268579978237214
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Paint": {
+        "count": 1839,
+        "hz": 61.3,
+        "inclusive_ms": 135.28699999999998,
+        "exclusive_ms": 10.13,
+        "inclusive_ms_per_frame": 0.0736055495103373,
+        "mean_ms_per_call": 0.07356552474170744
+      },
+      "GuLiCommanderMiniMap_DynamicPaint": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 108.766,
+        "exclusive_ms": 108.766,
+        "inclusive_ms_per_frame": 0.05917627856365615,
+        "mean_ms_per_call": 0.36255333333333334
+      },
+      "GuLiPose_Receive": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 95.953,
+        "exclusive_ms": 15.683,
+        "inclusive_ms_per_frame": 0.052205114254624596,
+        "mean_ms_per_call": 0.008201111111111112
+      },
+      "GuLiPose_Decode": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 80.27,
+        "exclusive_ms": 80.27,
+        "inclusive_ms_per_frame": 0.04367247007616975,
+        "mean_ms_per_call": 0.00686068376068376
+      },
+      "WBP_CommanderHUD [C_Map(GuLiCommanderMiniMapWidget.cpp(49))]": {
+        "count": 900,
+        "hz": 30.0,
+        "inclusive_ms": 68.747,
+        "exclusive_ms": 0.241,
+        "inclusive_ms_per_frame": 0.0374031556039173,
+        "mean_ms_per_call": 0.07638555555555555
+      },
+      "GuLiCommanderMiniMapWidget": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 56.724999999999994,
+        "exclusive_ms": 1.782,
+        "inclusive_ms_per_frame": 0.030862350380848745,
+        "mean_ms_per_call": 0.18908333333333333
+      },
+      "GuLiCommanderMiniMap_Snapshot": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 54.943,
+        "exclusive_ms": 53.529,
+        "inclusive_ms_per_frame": 0.029892818280739933,
+        "mean_ms_per_call": 0.18314333333333332
+      },
+      "MassDeferredCommand_Execute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 45.138,
+        "exclusive_ms": 0.199,
+        "inclusive_ms_per_frame": 0.0245582154515778,
+        "mean_ms_per_call": 0.15045999999999998
+      },
+      "GuLiCommanderPresentation_MassBatchExecute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 44.939,
+        "exclusive_ms": 44.939,
+        "inclusive_ms_per_frame": 0.02444994559303591,
+        "mean_ms_per_call": 0.14979666666666666
+      },
+      "GuLiCommanderCursorGround": {
+        "count": 1838,
+        "hz": 61.266666666666666,
+        "inclusive_ms": 36.997,
+        "exclusive_ms": 33.634,
+        "inclusive_ms_per_frame": 0.020128944504896627,
+        "mean_ms_per_call": 0.020128944504896627
+      },
+      "GuLiCommanderPresentation_MassPositionSample": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 33.071999999999996,
+        "exclusive_ms": 0.063,
+        "inclusive_ms_per_frame": 0.01799347116430903,
+        "mean_ms_per_call": 0.11023999999999999
+      },
+      "GuLiCommanderPresentation_MassBatchSubmit": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 33.008,
+        "exclusive_ms": 33.008,
+        "inclusive_ms_per_frame": 0.017958650707290535,
+        "mean_ms_per_call": 0.11002666666666668
+      },
+      "GuLiPose_Ack": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 22.005,
+        "exclusive_ms": 2.52,
+        "inclusive_ms_per_frame": 0.011972252448313384,
+        "mean_ms_per_call": 0.07335
+      },
+      "GuLiPose_Wire": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 7.215,
+        "exclusive_ms": 7.215,
+        "inclusive_ms_per_frame": 0.003925462459194777,
+        "mean_ms_per_call": 0.0006166666666666666
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Tick": {
+        "count": 1839,
+        "hz": 61.3,
+        "inclusive_ms": 4.844,
+        "exclusive_ms": 4.844,
+        "inclusive_ms_per_frame": 0.002635473340587595,
+        "mean_ms_per_call": 0.002634040239260468
+      },
+      "GuLiCommanderCursorWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderCursorWidget_0_Paint": {
+        "count": 1839,
+        "hz": 61.3,
+        "inclusive_ms": 3.932,
+        "exclusive_ms": 3.932,
+        "inclusive_ms_per_frame": 0.0021392818280739933,
+        "mean_ms_per_call": 0.0021381185426862423
+      },
+      "GuLiCommanderHealthBarRenderer": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.615,
+        "exclusive_ms": 0.208,
+        "inclusive_ms_per_frame": 0.0014227421109902069,
+        "mean_ms_per_call": 0.008716666666666668
+      },
+      "GuLiCommanderHealthBars_MaintainActivity": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.407,
+        "exclusive_ms": 2.407,
+        "inclusive_ms_per_frame": 0.001309575625680087,
+        "mean_ms_per_call": 0.008023333333333334
+      },
+      "Recreate": {
+        "count": 103,
+        "hz": 3.433333333333333,
+        "inclusive_ms": 2.1,
+        "exclusive_ms": 0.778,
+        "inclusive_ms_per_frame": 0.0011425462459194776,
+        "mean_ms_per_call": 0.020388349514563107
+      },
+      "GuLiCommanderCursorWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderCursorWidget_0_Tick": {
+        "count": 1839,
+        "hz": 61.3,
+        "inclusive_ms": 2.011,
+        "exclusive_ms": 2.011,
+        "inclusive_ms_per_frame": 0.0010941240478781285,
+        "mean_ms_per_call": 0.0010935290918977706
+      },
+      "GuLiCommanderRoster_ApplyDelta": {
+        "count": 36,
+        "hz": 1.2,
+        "inclusive_ms": 1.5050000000000001,
+        "exclusive_ms": 1.5050000000000001,
+        "inclusive_ms_per_frame": 0.0008188248095756257,
+        "mean_ms_per_call": 0.04180555555555556
+      },
+      "GuLiCommanderHUD": {
+        "count": 1838,
+        "hz": 61.266666666666666,
+        "inclusive_ms": 0.954,
+        "exclusive_ms": 0.954,
+        "inclusive_ms_per_frame": 0.0005190424374319913,
+        "mean_ms_per_call": 0.0005190424374319913
+      },
+      "UGuLiCommanderResourceAdapter": {
+        "count": 1838,
+        "hz": 61.266666666666666,
+        "inclusive_ms": 0.673,
+        "exclusive_ms": 0.673,
+        "inclusive_ms_per_frame": 0.0003661588683351469,
+        "mean_ms_per_call": 0.0003661588683351469
+      },
+      "GuLiCommanderGameState": {
+        "count": 30,
+        "hz": 1.0,
+        "inclusive_ms": 0.439,
+        "exclusive_ms": 0.195,
+        "inclusive_ms_per_frame": 0.00023884657236126225,
+        "mean_ms_per_call": 0.014633333333333333
+      }
+    },
+    "explicit_cache_high_water_bytes": {
+      "GuLiCommanderPresentation/InstanceAndMirrorCacheBytes": 621468.0,
+      "GuLiCommanderPresentation/RosterCacheBytes": 202188.0,
+      "GuLiCommanderMiniMap/DataCacheBytes": 69680.0,
+      "GuLiCommanderHealthBars/DataCacheBytes": 64.0
+    },
+    "engine_full_capture": {
+      "GameThreadTime": {
+        "n": 2420,
+        "mean": 6.651828925619835,
+        "p50": 6.5439,
+        "p95": 8.5843,
+        "p99": 9.3971,
+        "max": 35.3254
+      },
+      "RenderThreadTime": {
+        "n": 2420,
+        "mean": 16.515215743801654,
+        "p50": 16.6976,
+        "p95": 18.5488,
+        "p99": 19.4822,
+        "max": 20.9091
+      },
+      "GPUTime": {
+        "n": 2420,
+        "mean": 14.456025413223141,
+        "p50": 14.5997,
+        "p95": 16.5413,
+        "p99": 17.3606,
+        "max": 18.6088
+      },
+      "View/Speed": {
+        "n": 2420,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    },
+    "process_samples": 29,
+    "process": {
+      "CpuCoreEquivalents": {
+        "n": 29,
+        "mean": 3.610729201027635,
+        "p50": 3.5684100277898736,
+        "p95": 4.341207072687277,
+        "p99": 4.964388380019561,
+        "max": 4.964388380019561
+      },
+      "WorkingSetMiB": {
+        "n": 29,
+        "mean": 5923.892780172414,
+        "p50": 5923.2265625,
+        "p95": 5934.9140625,
+        "p99": 5935.3203125,
+        "max": 5935.3203125
+      },
+      "PrivateMiB": {
+        "n": 29,
+        "mean": 11623.508620689656,
+        "p50": 11623.82421875,
+        "p95": 11633.671875,
+        "p99": 11634.07421875,
+        "max": 11634.07421875
+      }
+    }
+  },
+  {
+    "run": "retest-1-n1200-c2",
+    "phase": "retest",
+    "clients": 2,
+    "role": "client2",
+    "window_monotonic_seconds": [
+      16871914.673017,
+      16871944.673017
+    ],
+    "frame_ms": {
+      "n": 1805,
+      "mean": 16.61587540166205,
+      "p50": 16.7099,
+      "p95": 18.9448,
+      "p99": 19.906,
+      "max": 20.9452
+    },
+    "alive_min": 1200.0,
+    "moving": {
+      "n": 1805,
+      "mean": 1199.930193905817,
+      "p50": 1200.0,
+      "p95": 1200.0,
+      "p99": 1200.0,
+      "max": 1200.0
+    },
+    "moving_p05": 1200.0,
+    "load_pass": true,
+    "frame_budget_pass": true,
+    "scopes": {
+      "FEngineLoop::Tick": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 29998.513,
+        "exclusive_ms": 15.212,
+        "inclusive_ms_per_frame": 16.619674792243767,
+        "mean_ms_per_call": 16.6104723145072
+      },
+      "GuLiCommanderPresentationActor": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 1201.911,
+        "exclusive_ms": 2.8930000000000002,
+        "inclusive_ms_per_frame": 0.6658786703601108,
+        "mean_ms_per_call": 0.6655099667774087
+      },
+      "GuLiCommanderPresentation_RebuildLocalInstances": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 1199.019,
+        "exclusive_ms": 113.663,
+        "inclusive_ms_per_frame": 0.6642764542936288,
+        "mean_ms_per_call": 0.6639086378737542
+      },
+      "DeferredRenderUpdates_GameThread": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 785.64,
+        "exclusive_ms": 19.751,
+        "inclusive_ms_per_frame": 0.43525761772853183,
+        "mean_ms_per_call": 0.43501661129568103
+      },
+      "GuLiCommanderPresentation_Interpolation": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 673.102,
+        "exclusive_ms": 673.102,
+        "inclusive_ms_per_frame": 0.3729096952908587,
+        "mean_ms_per_call": 0.372703211517165
+      },
+      "GuLiCommanderPresentation_InstanceSubmit": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 379.544,
+        "exclusive_ms": 154.59300000000002,
+        "inclusive_ms_per_frame": 0.2102736842105263,
+        "mean_ms_per_call": 0.21015725359911405
+      },
+      "GuLiCommanderPlayerController": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 243.102,
+        "exclusive_ms": 2.625,
+        "inclusive_ms_per_frame": 0.1346825484764543,
+        "mean_ms_per_call": 0.1346079734219269
+      },
+      "UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms": {
+        "count": 3612,
+        "hz": 120.4,
+        "inclusive_ms": 224.95000000000002,
+        "exclusive_ms": 224.95000000000002,
+        "inclusive_ms_per_frame": 0.12462603878116345,
+        "mean_ms_per_call": 0.06227851605758583
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Paint": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 133.276,
+        "exclusive_ms": 9.793,
+        "inclusive_ms_per_frame": 0.07383711911357341,
+        "mean_ms_per_call": 0.07379623477297896
+      },
+      "GuLiCommanderMiniMap_DynamicPaint": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 107.409,
+        "exclusive_ms": 107.409,
+        "inclusive_ms_per_frame": 0.059506371191135735,
+        "mean_ms_per_call": 0.35803
+      },
+      "GuLiPose_Receive": {
+        "count": 11694,
+        "hz": 389.8,
+        "inclusive_ms": 95.817,
+        "exclusive_ms": 15.26,
+        "inclusive_ms_per_frame": 0.05308421052631578,
+        "mean_ms_per_call": 0.008193689071318625
+      },
+      "GuLiPose_Decode": {
+        "count": 11694,
+        "hz": 389.8,
+        "inclusive_ms": 80.557,
+        "exclusive_ms": 80.557,
+        "inclusive_ms_per_frame": 0.04462991689750693,
+        "mean_ms_per_call": 0.0068887463656576026
+      },
+      "WBP_CommanderHUD [C_Map(GuLiCommanderMiniMapWidget.cpp(49))]": {
+        "count": 900,
+        "hz": 30.0,
+        "inclusive_ms": 66.812,
+        "exclusive_ms": 0.23,
+        "inclusive_ms_per_frame": 0.03701495844875346,
+        "mean_ms_per_call": 0.07423555555555555
+      },
+      "GuLiCommanderMiniMapWidget": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 55.374,
+        "exclusive_ms": 1.7750000000000001,
+        "inclusive_ms_per_frame": 0.030678116343490307,
+        "mean_ms_per_call": 0.18458
+      },
+      "GuLiCommanderMiniMap_Snapshot": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 53.598,
+        "exclusive_ms": 52.115,
+        "inclusive_ms_per_frame": 0.029694182825484763,
+        "mean_ms_per_call": 0.17865999999999999
+      },
+      "MassDeferredCommand_Execute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 43.858000000000004,
+        "exclusive_ms": 0.195,
+        "inclusive_ms_per_frame": 0.024298060941828258,
+        "mean_ms_per_call": 0.14619333333333334
+      },
+      "GuLiCommanderPresentation_MassBatchExecute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 43.663000000000004,
+        "exclusive_ms": 43.663000000000004,
+        "inclusive_ms_per_frame": 0.024190027700831028,
+        "mean_ms_per_call": 0.14554333333333336
+      },
+      "GuLiCommanderCursorGround": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 36.596999999999994,
+        "exclusive_ms": 33.08,
+        "inclusive_ms_per_frame": 0.020275346260387808,
+        "mean_ms_per_call": 0.0202641196013289
+      },
+      "GuLiCommanderPresentation_MassPositionSample": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 32.71,
+        "exclusive_ms": 0.064,
+        "inclusive_ms_per_frame": 0.018121883656509696,
+        "mean_ms_per_call": 0.10903333333333333
+      },
+      "GuLiCommanderPresentation_MassBatchSubmit": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 32.646,
+        "exclusive_ms": 32.646,
+        "inclusive_ms_per_frame": 0.018086426592797786,
+        "mean_ms_per_call": 0.10882
+      },
+      "GuLiPose_Ack": {
+        "count": 301,
+        "hz": 10.033333333333333,
+        "inclusive_ms": 22.769000000000002,
+        "exclusive_ms": 2.654,
+        "inclusive_ms_per_frame": 0.012614404432132966,
+        "mean_ms_per_call": 0.07564451827242526
+      },
+      "GuLiPose_Wire": {
+        "count": 11694,
+        "hz": 389.8,
+        "inclusive_ms": 7.059,
+        "exclusive_ms": 7.059,
+        "inclusive_ms_per_frame": 0.003910803324099723,
+        "mean_ms_per_call": 0.0006036428937916881
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Tick": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 4.642,
+        "exclusive_ms": 4.642,
+        "inclusive_ms_per_frame": 0.0025717451523545706,
+        "mean_ms_per_call": 0.002570321151716501
+      },
+      "GuLiCommanderCursorWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderCursorWidget_0_Paint": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 3.628,
+        "exclusive_ms": 3.628,
+        "inclusive_ms_per_frame": 0.0020099722991689752,
+        "mean_ms_per_call": 0.0020088593576965672
+      },
+      "GuLiCommanderHealthBarRenderer": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.6359999999999997,
+        "exclusive_ms": 0.223,
+        "inclusive_ms_per_frame": 0.0014603878116343488,
+        "mean_ms_per_call": 0.008786666666666665
+      },
+      "GuLiCommanderHealthBars_MaintainActivity": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.4139999999999997,
+        "exclusive_ms": 2.4139999999999997,
+        "inclusive_ms_per_frame": 0.0013373961218836564,
+        "mean_ms_per_call": 0.008046666666666666
+      },
+      "GuLiCommanderCursorWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderCursorWidget_0_Tick": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 2.2729999999999997,
+        "exclusive_ms": 2.2729999999999997,
+        "inclusive_ms_per_frame": 0.0012592797783933516,
+        "mean_ms_per_call": 0.001258582502768549
+      },
+      "Recreate": {
+        "count": 103,
+        "hz": 3.433333333333333,
+        "inclusive_ms": 1.9,
+        "exclusive_ms": 0.748,
+        "inclusive_ms_per_frame": 0.0010526315789473684,
+        "mean_ms_per_call": 0.018446601941747572
+      },
+      "GuLiCommanderRoster_ApplyDelta": {
+        "count": 36,
+        "hz": 1.2,
+        "inclusive_ms": 1.4549999999999998,
+        "exclusive_ms": 1.4549999999999998,
+        "inclusive_ms_per_frame": 0.0008060941828254847,
+        "mean_ms_per_call": 0.04041666666666666
+      },
+      "GuLiCommanderHUD": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 0.9319999999999999,
+        "exclusive_ms": 0.9319999999999999,
+        "inclusive_ms_per_frame": 0.0005163434903047091,
+        "mean_ms_per_call": 0.0005160575858250277
+      },
+      "UGuLiCommanderResourceAdapter": {
+        "count": 1806,
+        "hz": 60.2,
+        "inclusive_ms": 0.661,
+        "exclusive_ms": 0.661,
+        "inclusive_ms_per_frame": 0.0003662049861495845,
+        "mean_ms_per_call": 0.0003660022148394242
+      },
+      "GuLiCommanderGameState": {
+        "count": 30,
+        "hz": 1.0,
+        "inclusive_ms": 0.451,
+        "exclusive_ms": 0.193,
+        "inclusive_ms_per_frame": 0.00024986149584487534,
+        "mean_ms_per_call": 0.015033333333333334
+      }
+    },
+    "explicit_cache_high_water_bytes": {
+      "GuLiCommanderPresentation/InstanceAndMirrorCacheBytes": 620844.0,
+      "GuLiCommanderPresentation/RosterCacheBytes": 202188.0,
+      "GuLiCommanderMiniMap/DataCacheBytes": 69680.0,
+      "GuLiCommanderHealthBars/DataCacheBytes": 64.0
+    },
+    "engine_full_capture": {
+      "GameThreadTime": {
+        "n": 2376,
+        "mean": 6.691197643097643,
+        "p50": 6.5555,
+        "p95": 8.6467,
+        "p99": 9.7908,
+        "max": 30.1382
+      },
+      "RenderThreadTime": {
+        "n": 2376,
+        "mean": 16.820463215488214,
+        "p50": 16.9536,
+        "p95": 19.0581,
+        "p99": 20.0445,
+        "max": 21.423
+      },
+      "GPUTime": {
+        "n": 2376,
+        "mean": 14.661494107744108,
+        "p50": 14.7577,
+        "p95": 17.0426,
+        "p99": 17.8973,
+        "max": 18.7545
+      },
+      "View/Speed": {
+        "n": 2376,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    },
+    "process_samples": 29,
+    "process": {
+      "CpuCoreEquivalents": {
+        "n": 29,
+        "mean": 3.6173256651137193,
+        "p50": 3.5215386044176515,
+        "p95": 4.615965292605553,
+        "p99": 4.737701072861762,
+        "max": 4.737701072861762
+      },
+      "WorkingSetMiB": {
+        "n": 29,
+        "mean": 5732.790409482759,
+        "p50": 5732.94921875,
+        "p95": 5734.453125,
+        "p99": 5734.6015625,
+        "max": 5734.6015625
+      },
+      "PrivateMiB": {
+        "n": 29,
+        "mean": 11523.742052801725,
+        "p50": 11524.171875,
+        "p95": 11524.921875,
+        "p99": 11525.234375,
+        "max": 11525.234375
+      }
+    }
+  },
+  {
+    "run": "retest-2-n1200-c1",
+    "phase": "retest",
+    "clients": 1,
+    "role": "client1",
+    "window_monotonic_seconds": [
+      16871649.4125997,
+      16871679.4125997
+    ],
+    "frame_ms": {
+      "n": 3139,
+      "mean": 9.557802484867793,
+      "p50": 9.3984,
+      "p95": 10.936,
+      "p99": 11.7408,
+      "max": 16.4325
+    },
+    "alive_min": 1200.0,
+    "moving": {
+      "n": 3139,
+      "mean": 1199.8821280662632,
+      "p50": 1200.0,
+      "p95": 1200.0,
+      "p99": 1200.0,
+      "max": 1200.0
+    },
+    "moving_p05": 1199.0,
+    "load_pass": true,
+    "frame_budget_pass": true,
+    "scopes": {
+      "FEngineLoop::Tick": {
+        "count": 3140,
+        "hz": 104.66666666666667,
+        "inclusive_ms": 29997.458000000002,
+        "exclusive_ms": 25.047,
+        "inclusive_ms_per_frame": 9.55637400446002,
+        "mean_ms_per_call": 9.553330573248408
+      },
+      "GuLiCommanderPresentationActor": {
+        "count": 3139,
+        "hz": 104.63333333333334,
+        "inclusive_ms": 1917.109,
+        "exclusive_ms": 4.509,
+        "inclusive_ms_per_frame": 0.6107387703090156,
+        "mean_ms_per_call": 0.6107387703090156
+      },
+      "GuLiCommanderPresentation_RebuildLocalInstances": {
+        "count": 3139,
+        "hz": 104.63333333333334,
+        "inclusive_ms": 1912.6000000000001,
+        "exclusive_ms": 124.542,
+        "inclusive_ms_per_frame": 0.6093023255813954,
+        "mean_ms_per_call": 0.6093023255813954
+      },
+      "DeferredRenderUpdates_GameThread": {
+        "count": 3139,
+        "hz": 104.63333333333334,
+        "inclusive_ms": 1316.758,
+        "exclusive_ms": 30.589000000000002,
+        "inclusive_ms_per_frame": 0.41948327492832116,
+        "mean_ms_per_call": 0.41948327492832116
+      },
+      "GuLiCommanderPresentation_Interpolation": {
+        "count": 3139,
+        "hz": 104.63333333333334,
+        "inclusive_ms": 1128.932,
+        "exclusive_ms": 1128.932,
+        "inclusive_ms_per_frame": 0.3596470213443772,
+        "mean_ms_per_call": 0.3596470213443772
+      },
+      "GuLiCommanderPresentation_InstanceSubmit": {
+        "count": 3139,
+        "hz": 104.63333333333334,
+        "inclusive_ms": 628.379,
+        "exclusive_ms": 260.746,
+        "inclusive_ms_per_frame": 0.2001844536476585,
+        "mean_ms_per_call": 0.2001844536476585
+      },
+      "UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms": {
+        "count": 6286,
+        "hz": 209.53333333333333,
+        "inclusive_ms": 367.633,
+        "exclusive_ms": 367.633,
+        "inclusive_ms_per_frame": 0.11711787193373685,
+        "mean_ms_per_call": 0.05848440979955456
+      },
+      "GuLiCommanderPlayerController": {
+        "count": 3139,
+        "hz": 104.63333333333334,
+        "inclusive_ms": 220.482,
+        "exclusive_ms": 3.852,
+        "inclusive_ms_per_frame": 0.07023956674100032,
+        "mean_ms_per_call": 0.07023956674100032
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Paint": {
+        "count": 3139,
+        "hz": 104.63333333333334,
+        "inclusive_ms": 140.747,
+        "exclusive_ms": 16.221,
+        "inclusive_ms_per_frame": 0.044838165020707234,
+        "mean_ms_per_call": 0.044838165020707234
+      },
+      "GuLiCommanderMiniMap_DynamicPaint": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 99.59899999999999,
+        "exclusive_ms": 99.59899999999999,
+        "inclusive_ms_per_frame": 0.03172953169799299,
+        "mean_ms_per_call": 0.3319966666666666
+      },
+      "GuLiPose_Receive": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 90.325,
+        "exclusive_ms": 14.841999999999999,
+        "inclusive_ms_per_frame": 0.028775087607518318,
+        "mean_ms_per_call": 0.00772008547008547
+      },
+      "GuLiPose_Decode": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 75.48299999999999,
+        "exclusive_ms": 75.48299999999999,
+        "inclusive_ms_per_frame": 0.024046830200700857,
+        "mean_ms_per_call": 0.006451538461538461
+      },
+      "WBP_CommanderHUD [C_Map(GuLiCommanderMiniMapWidget.cpp(49))]": {
+        "count": 900,
+        "hz": 30.0,
+        "inclusive_ms": 64.361,
+        "exclusive_ms": 0.214,
+        "inclusive_ms_per_frame": 0.02050366358712966,
+        "mean_ms_per_call": 0.07151222222222223
+      },
+      "GuLiCommanderMiniMapWidget": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 52.212,
+        "exclusive_ms": 1.761,
+        "inclusive_ms_per_frame": 0.016633322714240204,
+        "mean_ms_per_call": 0.17404
+      },
+      "GuLiCommanderMiniMap_Snapshot": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 50.452,
+        "exclusive_ms": 49.071,
+        "inclusive_ms_per_frame": 0.016072634597005416,
+        "mean_ms_per_call": 0.1681733333333333
+      },
+      "MassDeferredCommand_Execute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 41.543,
+        "exclusive_ms": 0.201,
+        "inclusive_ms_per_frame": 0.013234469576298183,
+        "mean_ms_per_call": 0.13847666666666666
+      },
+      "GuLiCommanderPresentation_MassBatchExecute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 41.342,
+        "exclusive_ms": 41.342,
+        "inclusive_ms_per_frame": 0.01317043644472762,
+        "mean_ms_per_call": 0.13780666666666666
+      },
+      "GuLiCommanderPresentation_MassPositionSample": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 30.747,
+        "exclusive_ms": 0.063,
+        "inclusive_ms_per_frame": 0.009795157693532973,
+        "mean_ms_per_call": 0.10249
+      },
+      "GuLiCommanderPresentation_MassBatchSubmit": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 30.685,
+        "exclusive_ms": 30.685,
+        "inclusive_ms_per_frame": 0.009775406180312201,
+        "mean_ms_per_call": 0.10228333333333332
+      },
+      "GuLiPose_Ack": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 20.511000000000003,
+        "exclusive_ms": 2.388,
+        "inclusive_ms_per_frame": 0.006534246575342467,
+        "mean_ms_per_call": 0.06837000000000001
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Tick": {
+        "count": 3139,
+        "hz": 104.63333333333334,
+        "inclusive_ms": 8.575,
+        "exclusive_ms": 8.575,
+        "inclusive_ms_per_frame": 0.002731761707550175,
+        "mean_ms_per_call": 0.002731761707550175
+      },
+      "GuLiPose_Wire": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 6.562,
+        "exclusive_ms": 6.562,
+        "inclusive_ms_per_frame": 0.0020904746734628863,
+        "mean_ms_per_call": 0.0005608547008547008
+      },
+      "Recreate": {
+        "count": 131,
+        "hz": 4.366666666666666,
+        "inclusive_ms": 2.5370000000000004,
+        "exclusive_ms": 0.882,
+        "inclusive_ms_per_frame": 0.0008082191780821919,
+        "mean_ms_per_call": 0.019366412213740462
+      },
+      "GuLiCommanderHealthBarRenderer": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.265,
+        "exclusive_ms": 0.194,
+        "inclusive_ms_per_frame": 0.0007215673781459064,
+        "mean_ms_per_call": 0.00755
+      },
+      "GuLiCommanderHealthBars_MaintainActivity": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.0709999999999997,
+        "exclusive_ms": 2.0709999999999997,
+        "inclusive_ms_per_frame": 0.0006597642561325262,
+        "mean_ms_per_call": 0.0069033333333333325
+      },
+      "GuLiCommanderHUD": {
+        "count": 3139,
+        "hz": 104.63333333333334,
+        "inclusive_ms": 1.4829999999999999,
+        "exclusive_ms": 1.4829999999999999,
+        "inclusive_ms_per_frame": 0.00047244345332908566,
+        "mean_ms_per_call": 0.00047244345332908566
+      },
+      "GuLiCommanderRoster_ApplyDelta": {
+        "count": 36,
+        "hz": 1.2,
+        "inclusive_ms": 1.382,
+        "exclusive_ms": 1.382,
+        "inclusive_ms_per_frame": 0.00044026760114686204,
+        "mean_ms_per_call": 0.03838888888888889
+      },
+      "UGuLiCommanderResourceAdapter": {
+        "count": 3139,
+        "hz": 104.63333333333334,
+        "inclusive_ms": 1.139,
+        "exclusive_ms": 1.139,
+        "inclusive_ms_per_frame": 0.0003628544122331953,
+        "mean_ms_per_call": 0.0003628544122331953
+      },
+      "GuLiCommanderGameState": {
+        "count": 30,
+        "hz": 1.0,
+        "inclusive_ms": 0.4,
+        "exclusive_ms": 0.164,
+        "inclusive_ms_per_frame": 0.00012742911755336096,
+        "mean_ms_per_call": 0.013333333333333334
+      }
+    },
+    "explicit_cache_high_water_bytes": {
+      "GuLiCommanderPresentation/InstanceAndMirrorCacheBytes": 620844.0,
+      "GuLiCommanderPresentation/RosterCacheBytes": 202188.0,
+      "GuLiCommanderHealthBars/DataCacheBytes": 64.0,
+      "GuLiCommanderMiniMap/DataCacheBytes": 69680.0
+    },
+    "engine_full_capture": {
+      "GameThreadTime": {
+        "n": 4141,
+        "mean": 6.017677058681478,
+        "p50": 6.088,
+        "p95": 7.4119,
+        "p99": 8.1733,
+        "max": 32.2146
+      },
+      "RenderThreadTime": {
+        "n": 4141,
+        "mean": 9.6430897126298,
+        "p50": 9.4648,
+        "p95": 11.0825,
+        "p99": 12.0076,
+        "max": 17.8758
+      },
+      "GPUTime": {
+        "n": 4141,
+        "mean": 5.653023158657329,
+        "p50": 5.6488,
+        "p95": 6.875,
+        "p99": 7.2721,
+        "max": 7.8103
+      },
+      "View/Speed": {
+        "n": 4141,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    },
+    "process_samples": 29,
+    "process": {
+      "CpuCoreEquivalents": {
+        "n": 29,
+        "mean": 5.776566020180498,
+        "p50": 5.753019135218469,
+        "p95": 6.597496235517518,
+        "p99": 6.868258105687248,
+        "max": 6.868258105687248
+      },
+      "WorkingSetMiB": {
+        "n": 29,
+        "mean": 5924.995959051724,
+        "p50": 5925.5703125,
+        "p95": 5928.4921875,
+        "p99": 5928.84375,
+        "max": 5928.84375
+      },
+      "PrivateMiB": {
+        "n": 29,
+        "mean": 11548.514143318966,
+        "p50": 11547.9140625,
+        "p95": 11559.31640625,
+        "p99": 11559.33984375,
+        "max": 11559.33984375
+      }
+    }
+  },
+  {
+    "run": "retest-2-n1200-c2",
+    "phase": "retest",
+    "clients": 2,
+    "role": "client1",
+    "window_monotonic_seconds": [
+      16872047.5012877,
+      16872077.5012877
+    ],
+    "frame_ms": {
+      "n": 1859,
+      "mean": 16.140852286175363,
+      "p50": 16.2249,
+      "p95": 18.347,
+      "p99": 19.1852,
+      "max": 23.4907
+    },
+    "alive_min": 1200.0,
+    "moving": {
+      "n": 1859,
+      "mean": 1199.9241527703066,
+      "p50": 1200.0,
+      "p95": 1200.0,
+      "p99": 1200.0,
+      "max": 1200.0
+    },
+    "moving_p05": 1199.0,
+    "load_pass": true,
+    "frame_budget_pass": true,
+    "scopes": {
+      "FEngineLoop::Tick": {
+        "count": 1860,
+        "hz": 62.0,
+        "inclusive_ms": 29998.436999999998,
+        "exclusive_ms": 15.751999999999999,
+        "inclusive_ms_per_frame": 16.136867670790746,
+        "mean_ms_per_call": 16.12819193548387
+      },
+      "GuLiCommanderPresentationActor": {
+        "count": 1859,
+        "hz": 61.96666666666667,
+        "inclusive_ms": 1226.957,
+        "exclusive_ms": 3.0109999999999997,
+        "inclusive_ms_per_frame": 0.6600091447014524,
+        "mean_ms_per_call": 0.6600091447014524
+      },
+      "GuLiCommanderPresentation_RebuildLocalInstances": {
+        "count": 1859,
+        "hz": 61.96666666666667,
+        "inclusive_ms": 1223.946,
+        "exclusive_ms": 111.438,
+        "inclusive_ms_per_frame": 0.658389456697149,
+        "mean_ms_per_call": 0.658389456697149
+      },
+      "DeferredRenderUpdates_GameThread": {
+        "count": 1859,
+        "hz": 61.96666666666667,
+        "inclusive_ms": 816.067,
+        "exclusive_ms": 20.201,
+        "inclusive_ms_per_frame": 0.43898171059709523,
+        "mean_ms_per_call": 0.43898171059709523
+      },
+      "GuLiCommanderPresentation_Interpolation": {
+        "count": 1859,
+        "hz": 61.96666666666667,
+        "inclusive_ms": 692.4559999999999,
+        "exclusive_ms": 692.4559999999999,
+        "inclusive_ms_per_frame": 0.37248843464228076,
+        "mean_ms_per_call": 0.37248843464228076
+      },
+      "GuLiCommanderPresentation_InstanceSubmit": {
+        "count": 1859,
+        "hz": 61.96666666666667,
+        "inclusive_ms": 389.04499999999996,
+        "exclusive_ms": 158.577,
+        "inclusive_ms_per_frame": 0.20927649273803117,
+        "mean_ms_per_call": 0.20927649273803117
+      },
+      "UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms": {
+        "count": 3718,
+        "hz": 123.93333333333334,
+        "inclusive_ms": 230.46800000000002,
+        "exclusive_ms": 230.46800000000002,
+        "inclusive_ms_per_frame": 0.12397417966648737,
+        "mean_ms_per_call": 0.061987089833243685
+      },
+      "GuLiCommanderPlayerController": {
+        "count": 1859,
+        "hz": 61.96666666666667,
+        "inclusive_ms": 139.79500000000002,
+        "exclusive_ms": 2.561,
+        "inclusive_ms_per_frame": 0.07519903173749329,
+        "mean_ms_per_call": 0.07519903173749329
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Paint": {
+        "count": 1859,
+        "hz": 61.96666666666667,
+        "inclusive_ms": 132.86999999999998,
+        "exclusive_ms": 10.286999999999999,
+        "inclusive_ms_per_frame": 0.07147391070467993,
+        "mean_ms_per_call": 0.07147391070467993
+      },
+      "GuLiCommanderMiniMap_DynamicPaint": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 106.16799999999999,
+        "exclusive_ms": 106.16799999999999,
+        "inclusive_ms_per_frame": 0.05711027434104357,
+        "mean_ms_per_call": 0.3538933333333333
+      },
+      "GuLiPose_Receive": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 95.43,
+        "exclusive_ms": 15.315999999999999,
+        "inclusive_ms_per_frame": 0.0513340505648198,
+        "mean_ms_per_call": 0.008156410256410257
+      },
+      "GuLiPose_Decode": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 80.114,
+        "exclusive_ms": 80.114,
+        "inclusive_ms_per_frame": 0.043095212479827866,
+        "mean_ms_per_call": 0.006847350427350428
+      },
+      "WBP_CommanderHUD [C_Map(GuLiCommanderMiniMapWidget.cpp(49))]": {
+        "count": 900,
+        "hz": 30.0,
+        "inclusive_ms": 70.163,
+        "exclusive_ms": 0.23,
+        "inclusive_ms_per_frame": 0.037742334588488434,
+        "mean_ms_per_call": 0.07795888888888888
+      },
+      "GuLiCommanderMiniMapWidget": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 55.489,
+        "exclusive_ms": 2.043,
+        "inclusive_ms_per_frame": 0.02984884346422808,
+        "mean_ms_per_call": 0.1849633333333333
+      },
+      "GuLiCommanderMiniMap_Snapshot": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 53.446,
+        "exclusive_ms": 51.971999999999994,
+        "inclusive_ms_per_frame": 0.028749865519096286,
+        "mean_ms_per_call": 0.17815333333333333
+      },
+      "MassDeferredCommand_Execute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 42.238,
+        "exclusive_ms": 0.22599999999999998,
+        "inclusive_ms_per_frame": 0.022720817643894567,
+        "mean_ms_per_call": 0.14079333333333333
+      },
+      "GuLiCommanderPresentation_MassBatchExecute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 42.011,
+        "exclusive_ms": 42.011,
+        "inclusive_ms_per_frame": 0.02259870898332437,
+        "mean_ms_per_call": 0.14003666666666667
+      },
+      "GuLiCommanderPresentation_MassPositionSample": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 31.007,
+        "exclusive_ms": 0.062,
+        "inclusive_ms_per_frame": 0.016679397525551372,
+        "mean_ms_per_call": 0.10335666666666667
+      },
+      "GuLiCommanderPresentation_MassBatchSubmit": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 30.945,
+        "exclusive_ms": 30.945,
+        "inclusive_ms_per_frame": 0.016646046261430878,
+        "mean_ms_per_call": 0.10315
+      },
+      "GuLiPose_Ack": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 22.194,
+        "exclusive_ms": 2.518,
+        "inclusive_ms_per_frame": 0.011938676707907476,
+        "mean_ms_per_call": 0.07397999999999999
+      },
+      "GuLiPose_Wire": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 7.038,
+        "exclusive_ms": 7.038,
+        "inclusive_ms_per_frame": 0.003785906401291017,
+        "mean_ms_per_call": 0.0006015384615384615
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Tick": {
+        "count": 1859,
+        "hz": 61.96666666666667,
+        "inclusive_ms": 5.452,
+        "exclusive_ms": 5.452,
+        "inclusive_ms_per_frame": 0.0029327595481441634,
+        "mean_ms_per_call": 0.0029327595481441634
+      },
+      "Recreate": {
+        "count": 129,
+        "hz": 4.3,
+        "inclusive_ms": 2.6719999999999997,
+        "exclusive_ms": 0.955,
+        "inclusive_ms_per_frame": 0.0014373318988703603,
+        "mean_ms_per_call": 0.020713178294573642
+      },
+      "GuLiCommanderHealthBarRenderer": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.559,
+        "exclusive_ms": 0.232,
+        "inclusive_ms_per_frame": 0.0013765465303926844,
+        "mean_ms_per_call": 0.008530000000000001
+      },
+      "GuLiCommanderHealthBars_MaintainActivity": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.327,
+        "exclusive_ms": 2.327,
+        "inclusive_ms_per_frame": 0.0012517482517482518,
+        "mean_ms_per_call": 0.007756666666666667
+      },
+      "GuLiCommanderRoster_ApplyDelta": {
+        "count": 36,
+        "hz": 1.2,
+        "inclusive_ms": 1.5330000000000001,
+        "exclusive_ms": 1.5330000000000001,
+        "inclusive_ms_per_frame": 0.0008246369015599786,
+        "mean_ms_per_call": 0.042583333333333334
+      },
+      "GuLiCommanderHUD": {
+        "count": 1859,
+        "hz": 61.96666666666667,
+        "inclusive_ms": 1.09,
+        "exclusive_ms": 1.09,
+        "inclusive_ms_per_frame": 0.000586336740182894,
+        "mean_ms_per_call": 0.000586336740182894
+      },
+      "UGuLiCommanderResourceAdapter": {
+        "count": 1859,
+        "hz": 61.96666666666667,
+        "inclusive_ms": 0.6669999999999999,
+        "exclusive_ms": 0.6669999999999999,
+        "inclusive_ms_per_frame": 0.00035879505110274337,
+        "mean_ms_per_call": 0.00035879505110274337
+      },
+      "GuLiCommanderGameState": {
+        "count": 30,
+        "hz": 1.0,
+        "inclusive_ms": 0.44499999999999995,
+        "exclusive_ms": 0.195,
+        "inclusive_ms_per_frame": 0.0002393760086067778,
+        "mean_ms_per_call": 0.014833333333333332
+      }
+    },
+    "explicit_cache_high_water_bytes": {
+      "GuLiCommanderPresentation/InstanceAndMirrorCacheBytes": 620844.0,
+      "GuLiCommanderPresentation/RosterCacheBytes": 202188.0,
+      "GuLiCommanderMiniMap/DataCacheBytes": 69680.0,
+      "GuLiCommanderHealthBars/DataCacheBytes": 64.0
+    },
+    "engine_full_capture": {
+      "GameThreadTime": {
+        "n": 2447,
+        "mean": 6.5883862689006945,
+        "p50": 6.5595,
+        "p95": 8.4077,
+        "p99": 9.313,
+        "max": 31.7963
+      },
+      "RenderThreadTime": {
+        "n": 2447,
+        "mean": 16.33159570903147,
+        "p50": 16.474,
+        "p95": 18.4431,
+        "p99": 19.1731,
+        "max": 23.4796
+      },
+      "GPUTime": {
+        "n": 2447,
+        "mean": 14.202305721291378,
+        "p50": 14.2753,
+        "p95": 16.3953,
+        "p99": 17.0934,
+        "max": 19.7947
+      },
+      "View/Speed": {
+        "n": 2447,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    },
+    "process_samples": 29,
+    "process": {
+      "CpuCoreEquivalents": {
+        "n": 29,
+        "mean": 3.8561732191560525,
+        "p50": 3.7611426885327366,
+        "p95": 4.9027053989801495,
+        "p99": 6.451557668975774,
+        "max": 6.451557668975774
+      },
+      "WorkingSetMiB": {
+        "n": 29,
+        "mean": 5832.560479525862,
+        "p50": 5832.7265625,
+        "p95": 5834.484375,
+        "p99": 5834.609375,
+        "max": 5834.609375
+      },
+      "PrivateMiB": {
+        "n": 29,
+        "mean": 11590.864358836207,
+        "p50": 11591.03125,
+        "p95": 11591.984375,
+        "p99": 11592.109375,
+        "max": 11592.109375
+      }
+    }
+  },
+  {
+    "run": "retest-2-n1200-c2",
+    "phase": "retest",
+    "clients": 2,
+    "role": "client2",
+    "window_monotonic_seconds": [
+      16872047.5012877,
+      16872077.5012877
+    ],
+    "frame_ms": {
+      "n": 1826,
+      "mean": 16.426419934282585,
+      "p50": 16.5521,
+      "p95": 18.7338,
+      "p99": 19.6326,
+      "max": 21.0984
+    },
+    "alive_min": 1200.0,
+    "moving": {
+      "n": 1826,
+      "mean": 1199.7508214676889,
+      "p50": 1200.0,
+      "p95": 1200.0,
+      "p99": 1200.0,
+      "max": 1200.0
+    },
+    "moving_p05": 1199.0,
+    "load_pass": true,
+    "frame_budget_pass": true,
+    "scopes": {
+      "FEngineLoop::Tick": {
+        "count": 1827,
+        "hz": 60.9,
+        "inclusive_ms": 29998.49,
+        "exclusive_ms": 15.215,
+        "inclusive_ms_per_frame": 16.428526834611173,
+        "mean_ms_per_call": 16.419534756431307
+      },
+      "GuLiCommanderPresentationActor": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 1208.905,
+        "exclusive_ms": 2.839,
+        "inclusive_ms_per_frame": 0.6620509309967141,
+        "mean_ms_per_call": 0.6620509309967141
+      },
+      "GuLiCommanderPresentation_RebuildLocalInstances": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 1206.066,
+        "exclusive_ms": 112.064,
+        "inclusive_ms_per_frame": 0.6604961664841184,
+        "mean_ms_per_call": 0.6604961664841184
+      },
+      "DeferredRenderUpdates_GameThread": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 802.145,
+        "exclusive_ms": 20.101999999999997,
+        "inclusive_ms_per_frame": 0.4392907995618839,
+        "mean_ms_per_call": 0.4392907995618839
+      },
+      "GuLiCommanderPresentation_Interpolation": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 677.4200000000001,
+        "exclusive_ms": 677.4200000000001,
+        "inclusive_ms_per_frame": 0.3709857612267251,
+        "mean_ms_per_call": 0.3709857612267251
+      },
+      "GuLiCommanderPresentation_InstanceSubmit": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 381.545,
+        "exclusive_ms": 155.757,
+        "inclusive_ms_per_frame": 0.2089512595837897,
+        "mean_ms_per_call": 0.2089512595837897
+      },
+      "GuLiCommanderPlayerController": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 240.67,
+        "exclusive_ms": 2.523,
+        "inclusive_ms_per_frame": 0.13180175246440307,
+        "mean_ms_per_call": 0.13180175246440307
+      },
+      "UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms": {
+        "count": 3652,
+        "hz": 121.73333333333333,
+        "inclusive_ms": 225.789,
+        "exclusive_ms": 225.789,
+        "inclusive_ms_per_frame": 0.12365224534501643,
+        "mean_ms_per_call": 0.06182612267250821
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Paint": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 133.575,
+        "exclusive_ms": 10.057,
+        "inclusive_ms_per_frame": 0.07315169769989047,
+        "mean_ms_per_call": 0.07315169769989047
+      },
+      "GuLiCommanderMiniMap_DynamicPaint": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 107.59299999999999,
+        "exclusive_ms": 107.59299999999999,
+        "inclusive_ms_per_frame": 0.058922782037239864,
+        "mean_ms_per_call": 0.3586433333333333
+      },
+      "GuLiPose_Receive": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 94.733,
+        "exclusive_ms": 14.86,
+        "inclusive_ms_per_frame": 0.051880065717415116,
+        "mean_ms_per_call": 0.008096837606837607
+      },
+      "GuLiPose_Decode": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 79.873,
+        "exclusive_ms": 79.873,
+        "inclusive_ms_per_frame": 0.043742059145673605,
+        "mean_ms_per_call": 0.0068267521367521376
+      },
+      "WBP_CommanderHUD [C_Map(GuLiCommanderMiniMapWidget.cpp(49))]": {
+        "count": 900,
+        "hz": 30.0,
+        "inclusive_ms": 70.545,
+        "exclusive_ms": 0.23900000000000002,
+        "inclusive_ms_per_frame": 0.03863362541073385,
+        "mean_ms_per_call": 0.07838333333333333
+      },
+      "GuLiCommanderMiniMapWidget": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 55.853,
+        "exclusive_ms": 1.804,
+        "inclusive_ms_per_frame": 0.03058762322015334,
+        "mean_ms_per_call": 0.18617666666666668
+      },
+      "GuLiCommanderMiniMap_Snapshot": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 54.049,
+        "exclusive_ms": 52.604,
+        "inclusive_ms_per_frame": 0.029599671412924425,
+        "mean_ms_per_call": 0.18016333333333334
+      },
+      "MassDeferredCommand_Execute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 45.595,
+        "exclusive_ms": 0.21000000000000002,
+        "inclusive_ms_per_frame": 0.024969879518072287,
+        "mean_ms_per_call": 0.15198333333333333
+      },
+      "GuLiCommanderPresentation_MassBatchExecute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 45.385000000000005,
+        "exclusive_ms": 45.385000000000005,
+        "inclusive_ms_per_frame": 0.024854874041621032,
+        "mean_ms_per_call": 0.15128333333333335
+      },
+      "GuLiCommanderCursorGround": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 35.464000000000006,
+        "exclusive_ms": 32.086999999999996,
+        "inclusive_ms_per_frame": 0.019421686746987955,
+        "mean_ms_per_call": 0.019421686746987955
+      },
+      "GuLiCommanderPresentation_MassPositionSample": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 35.037,
+        "exclusive_ms": 0.066,
+        "inclusive_ms_per_frame": 0.019187842278203724,
+        "mean_ms_per_call": 0.11678999999999999
+      },
+      "GuLiCommanderPresentation_MassBatchSubmit": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 34.971000000000004,
+        "exclusive_ms": 34.971000000000004,
+        "inclusive_ms_per_frame": 0.019151697699890474,
+        "mean_ms_per_call": 0.11657000000000001
+      },
+      "GuLiPose_Ack": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 21.798000000000002,
+        "exclusive_ms": 2.453,
+        "inclusive_ms_per_frame": 0.011937568455640746,
+        "mean_ms_per_call": 0.07266
+      },
+      "GuLiPose_Wire": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 6.917999999999999,
+        "exclusive_ms": 6.917999999999999,
+        "inclusive_ms_per_frame": 0.0037886089813800655,
+        "mean_ms_per_call": 0.0005912820512820512
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Tick": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 4.677,
+        "exclusive_ms": 4.677,
+        "inclusive_ms_per_frame": 0.002561336254107338,
+        "mean_ms_per_call": 0.002561336254107338
+      },
+      "GuLiCommanderCursorWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderCursorWidget_0_Paint": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 4.021,
+        "exclusive_ms": 4.021,
+        "inclusive_ms_per_frame": 0.002202081051478642,
+        "mean_ms_per_call": 0.002202081051478642
+      },
+      "Recreate": {
+        "count": 129,
+        "hz": 4.3,
+        "inclusive_ms": 2.618,
+        "exclusive_ms": 0.929,
+        "inclusive_ms_per_frame": 0.001433734939759036,
+        "mean_ms_per_call": 0.020294573643410852
+      },
+      "GuLiCommanderHealthBarRenderer": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.511,
+        "exclusive_ms": 0.221,
+        "inclusive_ms_per_frame": 0.0013751369112814896,
+        "mean_ms_per_call": 0.00837
+      },
+      "GuLiCommanderHealthBars_MaintainActivity": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.291,
+        "exclusive_ms": 2.291,
+        "inclusive_ms_per_frame": 0.0012546549835706462,
+        "mean_ms_per_call": 0.007636666666666667
+      },
+      "GuLiCommanderCursorWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderCursorWidget_0_Tick": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 2.058,
+        "exclusive_ms": 2.058,
+        "inclusive_ms_per_frame": 0.0011270536692223438,
+        "mean_ms_per_call": 0.0011270536692223438
+      },
+      "GuLiCommanderRoster_ApplyDelta": {
+        "count": 36,
+        "hz": 1.2,
+        "inclusive_ms": 1.585,
+        "exclusive_ms": 1.585,
+        "inclusive_ms_per_frame": 0.0008680175246440307,
+        "mean_ms_per_call": 0.04402777777777778
+      },
+      "GuLiCommanderHUD": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 0.901,
+        "exclusive_ms": 0.901,
+        "inclusive_ms_per_frame": 0.0004934282584884995,
+        "mean_ms_per_call": 0.0004934282584884995
+      },
+      "UGuLiCommanderResourceAdapter": {
+        "count": 1826,
+        "hz": 60.86666666666667,
+        "inclusive_ms": 0.664,
+        "exclusive_ms": 0.664,
+        "inclusive_ms_per_frame": 0.00036363636363636367,
+        "mean_ms_per_call": 0.00036363636363636367
+      },
+      "GuLiCommanderGameState": {
+        "count": 30,
+        "hz": 1.0,
+        "inclusive_ms": 0.437,
+        "exclusive_ms": 0.187,
+        "inclusive_ms_per_frame": 0.00023932092004381162,
+        "mean_ms_per_call": 0.014566666666666667
+      }
+    },
+    "explicit_cache_high_water_bytes": {
+      "GuLiCommanderMiniMap/DataCacheBytes": 69680.0,
+      "GuLiCommanderHealthBars/DataCacheBytes": 64.0,
+      "GuLiCommanderPresentation/InstanceAndMirrorCacheBytes": 621468.0,
+      "GuLiCommanderPresentation/RosterCacheBytes": 202188.0
+    },
+    "engine_full_capture": {
+      "GameThreadTime": {
+        "n": 2404,
+        "mean": 6.733122753743761,
+        "p50": 6.7406,
+        "p95": 8.6706,
+        "p99": 9.4852,
+        "max": 14.1412
+      },
+      "RenderThreadTime": {
+        "n": 2404,
+        "mean": 16.629793926788686,
+        "p50": 16.7799,
+        "p95": 18.8618,
+        "p99": 19.7455,
+        "max": 23.5402
+      },
+      "GPUTime": {
+        "n": 2404,
+        "mean": 14.342763103161397,
+        "p50": 14.4285,
+        "p95": 16.6401,
+        "p99": 17.4835,
+        "max": 19.8145
+      },
+      "View/Speed": {
+        "n": 2404,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    },
+    "process_samples": 29,
+    "process": {
+      "CpuCoreEquivalents": {
+        "n": 29,
+        "mean": 3.5938601406551913,
+        "p50": 3.4881565256553606,
+        "p95": 4.931209535380033,
+        "p99": 5.442546279989041,
+        "max": 5.442546279989041
+      },
+      "WorkingSetMiB": {
+        "n": 29,
+        "mean": 5987.556573275862,
+        "p50": 5987.59765625,
+        "p95": 5989.19140625,
+        "p99": 5989.37890625,
+        "max": 5989.37890625
+      },
+      "PrivateMiB": {
+        "n": 29,
+        "mean": 11631.281384698275,
+        "p50": 11630.6015625,
+        "p95": 11633.6015625,
+        "p99": 11633.6015625,
+        "max": 11633.6015625
+      }
+    }
+  },
+  {
+    "run": "retest-3-n1200-c1",
+    "phase": "retest",
+    "clients": 1,
+    "role": "client1",
+    "window_monotonic_seconds": [
+      16871780.2131429,
+      16871810.2131429
+    ],
+    "frame_ms": {
+      "n": 3140,
+      "mean": 9.553129331210192,
+      "p50": 9.4153,
+      "p95": 10.8967,
+      "p99": 11.4751,
+      "max": 14.0553
+    },
+    "alive_min": 1200.0,
+    "moving": {
+      "n": 3140,
+      "mean": 1199.8117834394905,
+      "p50": 1200.0,
+      "p95": 1200.0,
+      "p99": 1200.0,
+      "max": 1200.0
+    },
+    "moving_p05": 1198.0,
+    "load_pass": true,
+    "frame_budget_pass": true,
+    "scopes": {
+      "FEngineLoop::Tick": {
+        "count": 3141,
+        "hz": 104.7,
+        "inclusive_ms": 29997.505,
+        "exclusive_ms": 25.52,
+        "inclusive_ms_per_frame": 9.553345541401274,
+        "mean_ms_per_call": 9.550304043298313
+      },
+      "GuLiCommanderPresentationActor": {
+        "count": 3141,
+        "hz": 104.7,
+        "inclusive_ms": 1930.874,
+        "exclusive_ms": 4.681,
+        "inclusive_ms_per_frame": 0.614928025477707,
+        "mean_ms_per_call": 0.6147322508755173
+      },
+      "GuLiCommanderPresentation_RebuildLocalInstances": {
+        "count": 3141,
+        "hz": 104.7,
+        "inclusive_ms": 1926.192,
+        "exclusive_ms": 125.636,
+        "inclusive_ms_per_frame": 0.6134369426751592,
+        "mean_ms_per_call": 0.6132416427889207
+      },
+      "DeferredRenderUpdates_GameThread": {
+        "count": 3141,
+        "hz": 104.7,
+        "inclusive_ms": 1326.195,
+        "exclusive_ms": 31.154,
+        "inclusive_ms_per_frame": 0.42235509554140127,
+        "mean_ms_per_call": 0.4222206303724928
+      },
+      "GuLiCommanderPresentation_Interpolation": {
+        "count": 3141,
+        "hz": 104.7,
+        "inclusive_ms": 1139.3819999999998,
+        "exclusive_ms": 1139.3819999999998,
+        "inclusive_ms_per_frame": 0.36286050955414006,
+        "mean_ms_per_call": 0.3627449856733524
+      },
+      "GuLiCommanderPresentation_InstanceSubmit": {
+        "count": 3141,
+        "hz": 104.7,
+        "inclusive_ms": 631.193,
+        "exclusive_ms": 261.545,
+        "inclusive_ms_per_frame": 0.2010168789808917,
+        "mean_ms_per_call": 0.2009528812480102
+      },
+      "GuLiCommanderPlayerController": {
+        "count": 3140,
+        "hz": 104.66666666666667,
+        "inclusive_ms": 385.589,
+        "exclusive_ms": 3.8930000000000002,
+        "inclusive_ms_per_frame": 0.12279904458598725,
+        "mean_ms_per_call": 0.12279904458598725
+      },
+      "UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms": {
+        "count": 6302,
+        "hz": 210.06666666666666,
+        "inclusive_ms": 369.64799999999997,
+        "exclusive_ms": 369.64799999999997,
+        "inclusive_ms_per_frame": 0.11772229299363056,
+        "mean_ms_per_call": 0.05865566486829577
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Paint": {
+        "count": 3141,
+        "hz": 104.7,
+        "inclusive_ms": 141.329,
+        "exclusive_ms": 15.703999999999999,
+        "inclusive_ms_per_frame": 0.04500923566878981,
+        "mean_ms_per_call": 0.04499490608086597
+      },
+      "GuLiCommanderMiniMap_DynamicPaint": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 100.59899999999999,
+        "exclusive_ms": 100.59899999999999,
+        "inclusive_ms_per_frame": 0.03203789808917197,
+        "mean_ms_per_call": 0.33532999999999996
+      },
+      "GuLiPose_Receive": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 91.438,
+        "exclusive_ms": 15.16,
+        "inclusive_ms_per_frame": 0.029120382165605096,
+        "mean_ms_per_call": 0.007815213675213675
+      },
+      "GuLiPose_Decode": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 76.27799999999999,
+        "exclusive_ms": 76.27799999999999,
+        "inclusive_ms_per_frame": 0.024292356687898087,
+        "mean_ms_per_call": 0.006519487179487179
+      },
+      "WBP_CommanderHUD [C_Map(GuLiCommanderMiniMapWidget.cpp(49))]": {
+        "count": 900,
+        "hz": 30.0,
+        "inclusive_ms": 65.038,
+        "exclusive_ms": 0.228,
+        "inclusive_ms_per_frame": 0.020712738853503183,
+        "mean_ms_per_call": 0.07226444444444444
+      },
+      "GuLiCommanderCursorGround": {
+        "count": 3140,
+        "hz": 104.66666666666667,
+        "inclusive_ms": 59.003,
+        "exclusive_ms": 54.392999999999994,
+        "inclusive_ms_per_frame": 0.018790764331210193,
+        "mean_ms_per_call": 0.018790764331210193
+      },
+      "GuLiCommanderMiniMapWidget": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 51.145999999999994,
+        "exclusive_ms": 1.605,
+        "inclusive_ms_per_frame": 0.016288535031847132,
+        "mean_ms_per_call": 0.17048666666666665
+      },
+      "GuLiCommanderMiniMap_Snapshot": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 49.541000000000004,
+        "exclusive_ms": 48.127,
+        "inclusive_ms_per_frame": 0.01577738853503185,
+        "mean_ms_per_call": 0.16513666666666668
+      },
+      "MassDeferredCommand_Execute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 41.876,
+        "exclusive_ms": 0.204,
+        "inclusive_ms_per_frame": 0.013336305732484077,
+        "mean_ms_per_call": 0.13958666666666666
+      },
+      "GuLiCommanderPresentation_MassBatchExecute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 41.672000000000004,
+        "exclusive_ms": 41.672000000000004,
+        "inclusive_ms_per_frame": 0.013271337579617836,
+        "mean_ms_per_call": 0.13890666666666668
+      },
+      "GuLiCommanderPresentation_MassPositionSample": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 29.982000000000003,
+        "exclusive_ms": 0.064,
+        "inclusive_ms_per_frame": 0.009548407643312103,
+        "mean_ms_per_call": 0.09994000000000001
+      },
+      "GuLiCommanderPresentation_MassBatchSubmit": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 29.918,
+        "exclusive_ms": 29.918,
+        "inclusive_ms_per_frame": 0.009528025477707007,
+        "mean_ms_per_call": 0.09972666666666666
+      },
+      "GuLiPose_Ack": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 21.319000000000003,
+        "exclusive_ms": 2.376,
+        "inclusive_ms_per_frame": 0.006789490445859874,
+        "mean_ms_per_call": 0.07106333333333334
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Tick": {
+        "count": 3141,
+        "hz": 104.7,
+        "inclusive_ms": 7.3759999999999994,
+        "exclusive_ms": 7.3759999999999994,
+        "inclusive_ms_per_frame": 0.002349044585987261,
+        "mean_ms_per_call": 0.002348296720789557
+      },
+      "GuLiPose_Wire": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 6.644,
+        "exclusive_ms": 6.644,
+        "inclusive_ms_per_frame": 0.002115923566878981,
+        "mean_ms_per_call": 0.0005678632478632479
+      },
+      "GuLiCommanderCursorWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderCursorWidget_0_Paint": {
+        "count": 3141,
+        "hz": 104.7,
+        "inclusive_ms": 5.734,
+        "exclusive_ms": 5.734,
+        "inclusive_ms_per_frame": 0.0018261146496815286,
+        "mean_ms_per_call": 0.0018255332696593442
+      },
+      "GuLiCommanderCursorWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderCursorWidget_0_Tick": {
+        "count": 3141,
+        "hz": 104.7,
+        "inclusive_ms": 3.0799999999999996,
+        "exclusive_ms": 3.0799999999999996,
+        "inclusive_ms_per_frame": 0.0009808917197452229,
+        "mean_ms_per_call": 0.0009805794333014961
+      },
+      "Recreate": {
+        "count": 136,
+        "hz": 4.533333333333333,
+        "inclusive_ms": 2.676,
+        "exclusive_ms": 0.939,
+        "inclusive_ms_per_frame": 0.0008522292993630574,
+        "mean_ms_per_call": 0.019676470588235295
+      },
+      "GuLiCommanderHealthBarRenderer": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.287,
+        "exclusive_ms": 0.223,
+        "inclusive_ms_per_frame": 0.000728343949044586,
+        "mean_ms_per_call": 0.007623333333333333
+      },
+      "GuLiCommanderHealthBars_MaintainActivity": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.064,
+        "exclusive_ms": 2.064,
+        "inclusive_ms_per_frame": 0.0006573248407643312,
+        "mean_ms_per_call": 0.00688
+      },
+      "GuLiCommanderHUD": {
+        "count": 3140,
+        "hz": 104.66666666666667,
+        "inclusive_ms": 1.545,
+        "exclusive_ms": 1.545,
+        "inclusive_ms_per_frame": 0.0004920382165605095,
+        "mean_ms_per_call": 0.0004920382165605095
+      },
+      "GuLiCommanderRoster_ApplyDelta": {
+        "count": 35,
+        "hz": 1.1666666666666667,
+        "inclusive_ms": 1.379,
+        "exclusive_ms": 1.379,
+        "inclusive_ms_per_frame": 0.00043917197452229297,
+        "mean_ms_per_call": 0.0394
+      },
+      "UGuLiCommanderResourceAdapter": {
+        "count": 3141,
+        "hz": 104.7,
+        "inclusive_ms": 1.1329999999999998,
+        "exclusive_ms": 1.1329999999999998,
+        "inclusive_ms_per_frame": 0.00036082802547770696,
+        "mean_ms_per_call": 0.00036071314867876464
+      },
+      "GuLiCommanderGameState": {
+        "count": 30,
+        "hz": 1.0,
+        "inclusive_ms": 0.408,
+        "exclusive_ms": 0.171,
+        "inclusive_ms_per_frame": 0.00012993630573248407,
+        "mean_ms_per_call": 0.0136
+      }
+    },
+    "explicit_cache_high_water_bytes": {
+      "GuLiCommanderHealthBars/DataCacheBytes": 64.0,
+      "GuLiCommanderMiniMap/DataCacheBytes": 69680.0,
+      "GuLiCommanderPresentation/InstanceAndMirrorCacheBytes": 620844.0,
+      "GuLiCommanderPresentation/RosterCacheBytes": 202188.0
+    },
+    "engine_full_capture": {
+      "GameThreadTime": {
+        "n": 4163,
+        "mean": 6.13810033629594,
+        "p50": 6.1901,
+        "p95": 7.7576,
+        "p99": 8.6112,
+        "max": 32.6113
+      },
+      "RenderThreadTime": {
+        "n": 4163,
+        "mean": 9.59112149891905,
+        "p50": 9.451,
+        "p95": 10.957,
+        "p99": 11.6686,
+        "max": 14.0605
+      },
+      "GPUTime": {
+        "n": 4163,
+        "mean": 5.65003591160221,
+        "p50": 5.6498,
+        "p95": 6.8599,
+        "p99": 7.2558,
+        "max": 8.4048
+      },
+      "View/Speed": {
+        "n": 4163,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    },
+    "process_samples": 29,
+    "process": {
+      "CpuCoreEquivalents": {
+        "n": 29,
+        "mean": 5.953006622832325,
+        "p50": 6.096713048381461,
+        "p95": 7.070620144515046,
+        "p99": 7.143952272059521,
+        "max": 7.143952272059521
+      },
+      "WorkingSetMiB": {
+        "n": 29,
+        "mean": 5959.4967672413795,
+        "p50": 5966.56640625,
+        "p95": 5967.5625,
+        "p99": 5967.96484375,
+        "max": 5967.96484375
+      },
+      "PrivateMiB": {
+        "n": 29,
+        "mean": 11573.491244612069,
+        "p50": 11580.421875,
+        "p95": 11581.9375,
+        "p99": 11581.9375,
+        "max": 11581.9375
+      }
+    }
+  },
+  {
+    "run": "retest-3-n1200-c2",
+    "phase": "retest",
+    "clients": 2,
+    "role": "client1",
+    "window_monotonic_seconds": [
+      16872179.5195955,
+      16872209.5195955
+    ],
+    "frame_ms": {
+      "n": 1817,
+      "mean": 16.509665217391305,
+      "p50": 16.6235,
+      "p95": 18.75,
+      "p99": 19.666,
+      "max": 20.6709
+    },
+    "alive_min": 1200.0,
+    "moving": {
+      "n": 1817,
+      "mean": 1199.9460649422124,
+      "p50": 1200.0,
+      "p95": 1200.0,
+      "p99": 1200.0,
+      "max": 1200.0
+    },
+    "moving_p05": 1199.0,
+    "load_pass": true,
+    "frame_budget_pass": true,
+    "scopes": {
+      "FEngineLoop::Tick": {
+        "count": 1818,
+        "hz": 60.6,
+        "inclusive_ms": 29998.468,
+        "exclusive_ms": 15.274,
+        "inclusive_ms_per_frame": 16.50988882773803,
+        "mean_ms_per_call": 16.500807480748076
+      },
+      "GuLiCommanderPresentationActor": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 1201.184,
+        "exclusive_ms": 2.921,
+        "inclusive_ms_per_frame": 0.6610809025866813,
+        "mean_ms_per_call": 0.6610809025866813
+      },
+      "GuLiCommanderPresentation_RebuildLocalInstances": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 1198.2630000000001,
+        "exclusive_ms": 111.748,
+        "inclusive_ms_per_frame": 0.6594733076499726,
+        "mean_ms_per_call": 0.6594733076499726
+      },
+      "DeferredRenderUpdates_GameThread": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 805.756,
+        "exclusive_ms": 19.962,
+        "inclusive_ms_per_frame": 0.44345404512933406,
+        "mean_ms_per_call": 0.44345404512933406
+      },
+      "GuLiCommanderPresentation_Interpolation": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 672.5219999999999,
+        "exclusive_ms": 672.5219999999999,
+        "inclusive_ms_per_frame": 0.37012768299394605,
+        "mean_ms_per_call": 0.37012768299394605
+      },
+      "GuLiCommanderPresentation_InstanceSubmit": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 381.905,
+        "exclusive_ms": 154.465,
+        "inclusive_ms_per_frame": 0.21018436984039623,
+        "mean_ms_per_call": 0.21018436984039623
+      },
+      "GuLiCommanderPlayerController": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 237.977,
+        "exclusive_ms": 2.609,
+        "inclusive_ms_per_frame": 0.1309724821133737,
+        "mean_ms_per_call": 0.1309724821133737
+      },
+      "UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms": {
+        "count": 3640,
+        "hz": 121.33333333333333,
+        "inclusive_ms": 227.439,
+        "exclusive_ms": 227.439,
+        "inclusive_ms_per_frame": 0.1251728123280132,
+        "mean_ms_per_call": 0.062483241758241756
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Paint": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 134.152,
+        "exclusive_ms": 9.906,
+        "inclusive_ms_per_frame": 0.073831590533847,
+        "mean_ms_per_call": 0.073831590533847
+      },
+      "GuLiCommanderMiniMap_DynamicPaint": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 107.729,
+        "exclusive_ms": 107.729,
+        "inclusive_ms_per_frame": 0.05928948816730875,
+        "mean_ms_per_call": 0.3590966666666667
+      },
+      "GuLiPose_Receive": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 94.428,
+        "exclusive_ms": 14.775,
+        "inclusive_ms_per_frame": 0.051969179966978536,
+        "mean_ms_per_call": 0.00807076923076923
+      },
+      "GuLiPose_Decode": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 79.653,
+        "exclusive_ms": 79.653,
+        "inclusive_ms_per_frame": 0.04383764446890479,
+        "mean_ms_per_call": 0.006807948717948718
+      },
+      "WBP_CommanderHUD [C_Map(GuLiCommanderMiniMapWidget.cpp(49))]": {
+        "count": 900,
+        "hz": 30.0,
+        "inclusive_ms": 69.601,
+        "exclusive_ms": 0.231,
+        "inclusive_ms_per_frame": 0.03830544854155201,
+        "mean_ms_per_call": 0.07733444444444444
+      },
+      "GuLiCommanderMiniMapWidget": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 55.095,
+        "exclusive_ms": 1.7730000000000001,
+        "inclusive_ms_per_frame": 0.030321959273527793,
+        "mean_ms_per_call": 0.18365
+      },
+      "GuLiCommanderMiniMap_Snapshot": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 53.322,
+        "exclusive_ms": 51.857,
+        "inclusive_ms_per_frame": 0.029346175013758944,
+        "mean_ms_per_call": 0.17774
+      },
+      "MassDeferredCommand_Execute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 43.303000000000004,
+        "exclusive_ms": 0.211,
+        "inclusive_ms_per_frame": 0.02383214089157953,
+        "mean_ms_per_call": 0.14434333333333335
+      },
+      "GuLiCommanderPresentation_MassBatchExecute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 43.092999999999996,
+        "exclusive_ms": 43.092999999999996,
+        "inclusive_ms_per_frame": 0.023716565767749036,
+        "mean_ms_per_call": 0.14364333333333332
+      },
+      "GuLiCommanderCursorGround": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 34.677,
+        "exclusive_ms": 31.389,
+        "inclusive_ms_per_frame": 0.019084755090809025,
+        "mean_ms_per_call": 0.019084755090809025
+      },
+      "GuLiCommanderPresentation_MassPositionSample": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 32.088,
+        "exclusive_ms": 0.067,
+        "inclusive_ms_per_frame": 0.017659878921298843,
+        "mean_ms_per_call": 0.10696
+      },
+      "GuLiCommanderPresentation_MassBatchSubmit": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 32.021,
+        "exclusive_ms": 32.021,
+        "inclusive_ms_per_frame": 0.017623004953219595,
+        "mean_ms_per_call": 0.10673666666666667
+      },
+      "GuLiPose_Ack": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 22.424,
+        "exclusive_ms": 2.538,
+        "inclusive_ms_per_frame": 0.012341221794166208,
+        "mean_ms_per_call": 0.07474666666666667
+      },
+      "GuLiPose_Wire": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 6.831,
+        "exclusive_ms": 6.831,
+        "inclusive_ms_per_frame": 0.0037594936708860763,
+        "mean_ms_per_call": 0.0005838461538461539
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Tick": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 4.375,
+        "exclusive_ms": 4.375,
+        "inclusive_ms_per_frame": 0.002407815079801871,
+        "mean_ms_per_call": 0.002407815079801871
+      },
+      "GuLiCommanderCursorWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderCursorWidget_0_Paint": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 4.2,
+        "exclusive_ms": 4.2,
+        "inclusive_ms_per_frame": 0.0023115024766097963,
+        "mean_ms_per_call": 0.0023115024766097963
+      },
+      "Recreate": {
+        "count": 129,
+        "hz": 4.3,
+        "inclusive_ms": 2.599,
+        "exclusive_ms": 0.92,
+        "inclusive_ms_per_frame": 0.0014303797468354432,
+        "mean_ms_per_call": 0.020147286821705426
+      },
+      "GuLiCommanderHealthBarRenderer": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.46,
+        "exclusive_ms": 0.20900000000000002,
+        "inclusive_ms_per_frame": 0.0013538800220143092,
+        "mean_ms_per_call": 0.0082
+      },
+      "GuLiCommanderHealthBars_MaintainActivity": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.25,
+        "exclusive_ms": 2.25,
+        "inclusive_ms_per_frame": 0.0012383048981838194,
+        "mean_ms_per_call": 0.0075
+      },
+      "GuLiCommanderCursorWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderCursorWidget_0_Tick": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 1.9819999999999998,
+        "exclusive_ms": 1.9819999999999998,
+        "inclusive_ms_per_frame": 0.0010908090258668133,
+        "mean_ms_per_call": 0.0010908090258668133
+      },
+      "GuLiCommanderRoster_ApplyDelta": {
+        "count": 36,
+        "hz": 1.2,
+        "inclusive_ms": 1.452,
+        "exclusive_ms": 1.452,
+        "inclusive_ms_per_frame": 0.0007991194276279582,
+        "mean_ms_per_call": 0.04033333333333333
+      },
+      "GuLiCommanderHUD": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 0.902,
+        "exclusive_ms": 0.902,
+        "inclusive_ms_per_frame": 0.0004964226747385801,
+        "mean_ms_per_call": 0.0004964226747385801
+      },
+      "UGuLiCommanderResourceAdapter": {
+        "count": 1817,
+        "hz": 60.56666666666667,
+        "inclusive_ms": 0.6849999999999999,
+        "exclusive_ms": 0.6849999999999999,
+        "inclusive_ms_per_frame": 0.0003769950467804072,
+        "mean_ms_per_call": 0.0003769950467804072
+      },
+      "GuLiCommanderGameState": {
+        "count": 30,
+        "hz": 1.0,
+        "inclusive_ms": 0.43,
+        "exclusive_ms": 0.186,
+        "inclusive_ms_per_frame": 0.00023665382498624105,
+        "mean_ms_per_call": 0.014333333333333333
+      }
+    },
+    "explicit_cache_high_water_bytes": {
+      "GuLiCommanderMiniMap/DataCacheBytes": 69680.0,
+      "GuLiCommanderHealthBars/DataCacheBytes": 64.0,
+      "GuLiCommanderPresentation/InstanceAndMirrorCacheBytes": 620844.0,
+      "GuLiCommanderPresentation/RosterCacheBytes": 202188.0
+    },
+    "engine_full_capture": {
+      "GameThreadTime": {
+        "n": 2393,
+        "mean": 6.739146301713331,
+        "p50": 6.7016,
+        "p95": 8.5377,
+        "p99": 9.3395,
+        "max": 31.6353
+      },
+      "RenderThreadTime": {
+        "n": 2393,
+        "mean": 16.705419097367322,
+        "p50": 16.8473,
+        "p95": 18.8576,
+        "p99": 19.8065,
+        "max": 20.9336
+      },
+      "GPUTime": {
+        "n": 2393,
+        "mean": 14.473947889678229,
+        "p50": 14.5592,
+        "p95": 16.8611,
+        "p99": 17.6859,
+        "max": 18.4505
+      },
+      "View/Speed": {
+        "n": 2393,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    },
+    "process_samples": 29,
+    "process": {
+      "CpuCoreEquivalents": {
+        "n": 29,
+        "mean": 3.610602255443134,
+        "p50": 3.4517606984266447,
+        "p95": 4.554253841809601,
+        "p99": 4.806651430299345,
+        "max": 4.806651430299345
+      },
+      "WorkingSetMiB": {
+        "n": 29,
+        "mean": 5830.584455818966,
+        "p50": 5830.5234375,
+        "p95": 5832.34375,
+        "p99": 5832.52734375,
+        "max": 5832.52734375
+      },
+      "PrivateMiB": {
+        "n": 29,
+        "mean": 11597.844827586207,
+        "p50": 11599.1328125,
+        "p95": 11599.5859375,
+        "p99": 11599.5859375,
+        "max": 11599.5859375
+      }
+    }
+  },
+  {
+    "run": "retest-3-n1200-c2",
+    "phase": "retest",
+    "clients": 2,
+    "role": "client2",
+    "window_monotonic_seconds": [
+      16872179.5195955,
+      16872209.5195955
+    ],
+    "frame_ms": {
+      "n": 1850,
+      "mean": 16.217211945945945,
+      "p50": 16.3472,
+      "p95": 18.3087,
+      "p99": 19.1398,
+      "max": 20.8585
+    },
+    "alive_min": 1200.0,
+    "moving": {
+      "n": 1850,
+      "mean": 1199.908108108108,
+      "p50": 1200.0,
+      "p95": 1200.0,
+      "p99": 1200.0,
+      "max": 1200.0
+    },
+    "moving_p05": 1200.0,
+    "load_pass": true,
+    "frame_budget_pass": true,
+    "scopes": {
+      "FEngineLoop::Tick": {
+        "count": 1851,
+        "hz": 61.7,
+        "inclusive_ms": 29998.407,
+        "exclusive_ms": 15.385,
+        "inclusive_ms_per_frame": 16.215355135135134,
+        "mean_ms_per_call": 16.206594813614263
+      },
+      "GuLiCommanderPresentationActor": {
+        "count": 1850,
+        "hz": 61.666666666666664,
+        "inclusive_ms": 1221.929,
+        "exclusive_ms": 2.907,
+        "inclusive_ms_per_frame": 0.6605021621621622,
+        "mean_ms_per_call": 0.6605021621621622
+      },
+      "GuLiCommanderPresentation_RebuildLocalInstances": {
+        "count": 1850,
+        "hz": 61.666666666666664,
+        "inclusive_ms": 1219.021,
+        "exclusive_ms": 112.121,
+        "inclusive_ms_per_frame": 0.6589302702702703,
+        "mean_ms_per_call": 0.6589302702702703
+      },
+      "DeferredRenderUpdates_GameThread": {
+        "count": 1850,
+        "hz": 61.666666666666664,
+        "inclusive_ms": 813.431,
+        "exclusive_ms": 19.017,
+        "inclusive_ms_per_frame": 0.43969243243243245,
+        "mean_ms_per_call": 0.43969243243243245
+      },
+      "GuLiCommanderPresentation_Interpolation": {
+        "count": 1850,
+        "hz": 61.666666666666664,
+        "inclusive_ms": 687.099,
+        "exclusive_ms": 687.099,
+        "inclusive_ms_per_frame": 0.3714048648648649,
+        "mean_ms_per_call": 0.3714048648648649
+      },
+      "GuLiCommanderPresentation_InstanceSubmit": {
+        "count": 1850,
+        "hz": 61.666666666666664,
+        "inclusive_ms": 387.869,
+        "exclusive_ms": 157.114,
+        "inclusive_ms_per_frame": 0.20965891891891894,
+        "mean_ms_per_call": 0.20965891891891894
+      },
+      "UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms": {
+        "count": 3706,
+        "hz": 123.53333333333333,
+        "inclusive_ms": 230.755,
+        "exclusive_ms": 230.755,
+        "inclusive_ms_per_frame": 0.12473243243243243,
+        "mean_ms_per_call": 0.06226524554776039
+      },
+      "GuLiCommanderPlayerController": {
+        "count": 1850,
+        "hz": 61.666666666666664,
+        "inclusive_ms": 137.918,
+        "exclusive_ms": 2.572,
+        "inclusive_ms_per_frame": 0.07455027027027028,
+        "mean_ms_per_call": 0.07455027027027028
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Paint": {
+        "count": 1850,
+        "hz": 61.666666666666664,
+        "inclusive_ms": 132.726,
+        "exclusive_ms": 10.096,
+        "inclusive_ms_per_frame": 0.07174378378378378,
+        "mean_ms_per_call": 0.07174378378378378
+      },
+      "GuLiCommanderMiniMap_DynamicPaint": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 106.64,
+        "exclusive_ms": 106.64,
+        "inclusive_ms_per_frame": 0.05764324324324324,
+        "mean_ms_per_call": 0.35546666666666665
+      },
+      "GuLiPose_Receive": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 94.332,
+        "exclusive_ms": 14.918000000000001,
+        "inclusive_ms_per_frame": 0.05099027027027027,
+        "mean_ms_per_call": 0.008062564102564103
+      },
+      "GuLiPose_Decode": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 79.414,
+        "exclusive_ms": 79.414,
+        "inclusive_ms_per_frame": 0.04292648648648649,
+        "mean_ms_per_call": 0.006787521367521368
+      },
+      "WBP_CommanderHUD [C_Map(GuLiCommanderMiniMapWidget.cpp(49))]": {
+        "count": 900,
+        "hz": 30.0,
+        "inclusive_ms": 70.1,
+        "exclusive_ms": 0.235,
+        "inclusive_ms_per_frame": 0.03789189189189189,
+        "mean_ms_per_call": 0.07788888888888888
+      },
+      "GuLiCommanderMiniMapWidget": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 55.763,
+        "exclusive_ms": 1.913,
+        "inclusive_ms_per_frame": 0.030142162162162162,
+        "mean_ms_per_call": 0.18587666666666666
+      },
+      "GuLiCommanderMiniMap_Snapshot": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 53.85,
+        "exclusive_ms": 52.399,
+        "inclusive_ms_per_frame": 0.02910810810810811,
+        "mean_ms_per_call": 0.1795
+      },
+      "MassDeferredCommand_Execute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 42.457,
+        "exclusive_ms": 0.207,
+        "inclusive_ms_per_frame": 0.02294972972972973,
+        "mean_ms_per_call": 0.14152333333333333
+      },
+      "GuLiCommanderPresentation_MassBatchExecute": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 42.251,
+        "exclusive_ms": 42.251,
+        "inclusive_ms_per_frame": 0.022838378378378377,
+        "mean_ms_per_call": 0.14083666666666667
+      },
+      "GuLiCommanderPresentation_MassPositionSample": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 31.933000000000003,
+        "exclusive_ms": 0.06999999999999999,
+        "inclusive_ms_per_frame": 0.017261081081081084,
+        "mean_ms_per_call": 0.10644333333333335
+      },
+      "GuLiCommanderPresentation_MassBatchSubmit": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 31.863000000000003,
+        "exclusive_ms": 31.863000000000003,
+        "inclusive_ms_per_frame": 0.017223243243243244,
+        "mean_ms_per_call": 0.10621000000000001
+      },
+      "GuLiPose_Ack": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 22.264,
+        "exclusive_ms": 2.447,
+        "inclusive_ms_per_frame": 0.012034594594594595,
+        "mean_ms_per_call": 0.07421333333333333
+      },
+      "GuLiPose_Wire": {
+        "count": 11700,
+        "hz": 390.0,
+        "inclusive_ms": 7.05,
+        "exclusive_ms": 7.05,
+        "inclusive_ms_per_frame": 0.003810810810810811,
+        "mean_ms_per_call": 0.0006025641025641026
+      },
+      "GuLiCommanderMiniMapWidget /Engine/Transient.GameEngine_0:GameInstance_0.GuLiCommanderMiniMapWidget_0_Tick": {
+        "count": 1850,
+        "hz": 61.666666666666664,
+        "inclusive_ms": 5.443,
+        "exclusive_ms": 5.443,
+        "inclusive_ms_per_frame": 0.002942162162162162,
+        "mean_ms_per_call": 0.002942162162162162
+      },
+      "Recreate": {
+        "count": 129,
+        "hz": 4.3,
+        "inclusive_ms": 2.7279999999999998,
+        "exclusive_ms": 0.968,
+        "inclusive_ms_per_frame": 0.0014745945945945946,
+        "mean_ms_per_call": 0.021147286821705424
+      },
+      "GuLiCommanderHealthBarRenderer": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.426,
+        "exclusive_ms": 0.222,
+        "inclusive_ms_per_frame": 0.0013113513513513515,
+        "mean_ms_per_call": 0.008086666666666667
+      },
+      "GuLiCommanderHealthBars_MaintainActivity": {
+        "count": 300,
+        "hz": 10.0,
+        "inclusive_ms": 2.2039999999999997,
+        "exclusive_ms": 2.2039999999999997,
+        "inclusive_ms_per_frame": 0.0011913513513513512,
+        "mean_ms_per_call": 0.007346666666666665
+      },
+      "GuLiCommanderRoster_ApplyDelta": {
+        "count": 36,
+        "hz": 1.2,
+        "inclusive_ms": 1.514,
+        "exclusive_ms": 1.514,
+        "inclusive_ms_per_frame": 0.0008183783783783784,
+        "mean_ms_per_call": 0.042055555555555554
+      },
+      "GuLiCommanderHUD": {
+        "count": 1850,
+        "hz": 61.666666666666664,
+        "inclusive_ms": 0.937,
+        "exclusive_ms": 0.937,
+        "inclusive_ms_per_frame": 0.0005064864864864865,
+        "mean_ms_per_call": 0.0005064864864864865
+      },
+      "UGuLiCommanderResourceAdapter": {
+        "count": 1850,
+        "hz": 61.666666666666664,
+        "inclusive_ms": 0.673,
+        "exclusive_ms": 0.673,
+        "inclusive_ms_per_frame": 0.0003637837837837838,
+        "mean_ms_per_call": 0.0003637837837837838
+      },
+      "GuLiCommanderGameState": {
+        "count": 30,
+        "hz": 1.0,
+        "inclusive_ms": 0.429,
+        "exclusive_ms": 0.183,
+        "inclusive_ms_per_frame": 0.00023189189189189188,
+        "mean_ms_per_call": 0.0143
+      }
+    },
+    "explicit_cache_high_water_bytes": {
+      "GuLiCommanderMiniMap/DataCacheBytes": 69680.0,
+      "GuLiCommanderHealthBars/DataCacheBytes": 64.0,
+      "GuLiCommanderPresentation/InstanceAndMirrorCacheBytes": 621468.0,
+      "GuLiCommanderPresentation/RosterCacheBytes": 202188.0
+    },
+    "engine_full_capture": {
+      "GameThreadTime": {
+        "n": 2436,
+        "mean": 6.6056441297208535,
+        "p50": 6.6118,
+        "p95": 8.4068,
+        "p99": 9.1454,
+        "max": 33.8564
+      },
+      "RenderThreadTime": {
+        "n": 2436,
+        "mean": 16.40441539408867,
+        "p50": 16.5638,
+        "p95": 18.3693,
+        "p99": 19.2077,
+        "max": 20.8375
+      },
+      "GPUTime": {
+        "n": 2436,
+        "mean": 14.24261198686371,
+        "p50": 14.3004,
+        "p95": 16.3725,
+        "p99": 17.012,
+        "max": 18.4359
+      },
+      "View/Speed": {
+        "n": 2436,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    },
+    "process_samples": 29,
+    "process": {
+      "CpuCoreEquivalents": {
+        "n": 29,
+        "mean": 3.6246354422694638,
+        "p50": 3.5886146468224145,
+        "p95": 4.473066788448917,
+        "p99": 4.568957853658975,
+        "max": 4.568957853658975
+      },
+      "WorkingSetMiB": {
+        "n": 29,
+        "mean": 5929.084186422414,
+        "p50": 5929.9453125,
+        "p95": 5932.03125,
+        "p99": 5932.1640625,
+        "max": 5932.1640625
+      },
+      "PrivateMiB": {
+        "n": 29,
+        "mean": 11567.391567887931,
+        "p50": 11566.39453125,
+        "p95": 11574.796875,
+        "p99": 11575.18359375,
+        "max": 11575.18359375
+      }
+    }
+  }
+]

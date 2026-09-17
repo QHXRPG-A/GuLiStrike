@@ -1,0 +1,749 @@
+[
+  {
+    "run": "retest-1-n1200-c1",
+    "role": "server",
+    "window_monotonic_seconds": [
+      16871518.489455,
+      16871548.489455
+    ],
+    "frame_ms": {
+      "n": 1787,
+      "mean": 16.782380078343593,
+      "p50": 16.9749,
+      "p95": 21.8349,
+      "p99": 23.4059,
+      "max": 29.6006
+    },
+    "alive_min": 1200,
+    "moving_p05": 1200.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 1787,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "simulation_steps": 500,
+    "dropped_steps": 0,
+    "shuttle_rounds": 6,
+    "navigation_full_capture": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "n": 2979,
+        "mean": 0.002279523329976502,
+        "p50": 0.0023,
+        "p95": 0.0028,
+        "p99": 0.0031,
+        "max": 0.0107
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "n": 2979,
+        "mean": 0.007875193017791205,
+        "p50": 0.0076,
+        "p95": 0.0096,
+        "p99": 0.0109,
+        "max": 0.0321
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "n": 2979,
+        "mean": 1.8136501846257134,
+        "p50": 1.8246,
+        "p95": 2.0652,
+        "p99": 2.2701,
+        "max": 2.4903
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "n": 2979,
+        "mean": 1.836631218529708,
+        "p50": 1.8477,
+        "p95": 2.0877,
+        "p99": 2.2935,
+        "max": 2.5179
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "n": 2979,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "n": 2979,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    }
+  },
+  {
+    "run": "retest-1-n1200-c1",
+    "role": "client1",
+    "window_monotonic_seconds": [
+      16871518.489455,
+      16871548.489455
+    ],
+    "frame_ms": {
+      "n": 3169,
+      "mean": 9.466554338908173,
+      "p50": 9.3222,
+      "p95": 10.7674,
+      "p99": 11.2121,
+      "max": 12.9428
+    },
+    "alive_min": 1200,
+    "moving_p05": 1200.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 3169,
+      "mean": 18.60285736825497,
+      "p50": 17.672,
+      "p95": 37.71,
+      "p99": 47.121,
+      "max": 49.102
+    },
+    "frame_budget_pass": true
+  },
+  {
+    "run": "retest-1-n1200-c2",
+    "role": "server",
+    "window_monotonic_seconds": [
+      16871914.673017,
+      16871944.673017
+    ],
+    "frame_ms": {
+      "n": 1789,
+      "mean": 16.768316154276132,
+      "p50": 16.8819,
+      "p95": 22.3903,
+      "p99": 25.5532,
+      "max": 48.4434
+    },
+    "alive_min": 1200,
+    "moving_p05": 1200.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 1789,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "simulation_steps": 500,
+    "dropped_steps": 0,
+    "shuttle_rounds": 6,
+    "navigation_full_capture": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "n": 2982,
+        "mean": 0.00245177733065057,
+        "p50": 0.0023,
+        "p95": 0.003,
+        "p99": 0.0034,
+        "max": 0.136
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "n": 2982,
+        "mean": 0.007657310529845741,
+        "p50": 0.0073,
+        "p95": 0.0097,
+        "p99": 0.0116,
+        "max": 0.0512
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "n": 2982,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "n": 2982,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "n": 2982,
+        "mean": 1.8231577464788733,
+        "p50": 1.8337,
+        "p95": 2.2569,
+        "p99": 2.4337,
+        "max": 3.1317
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "n": 2982,
+        "mean": 1.8460400737759892,
+        "p50": 1.8566,
+        "p95": 2.2819,
+        "p99": 2.4633,
+        "max": 3.1663
+      }
+    }
+  },
+  {
+    "run": "retest-1-n1200-c2",
+    "role": "client1",
+    "window_monotonic_seconds": [
+      16871914.673017,
+      16871944.673017
+    ],
+    "frame_ms": {
+      "n": 1838,
+      "mean": 16.31953443960827,
+      "p50": 16.4773,
+      "p95": 18.4497,
+      "p99": 19.3235,
+      "max": 20.9225
+    },
+    "alive_min": 1200,
+    "moving_p05": 1199.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 1838,
+      "mean": 22.61976822633297,
+      "p50": 16.682,
+      "p95": 43.343,
+      "p99": 51.033,
+      "max": 55.042
+    },
+    "frame_budget_pass": true
+  },
+  {
+    "run": "retest-1-n1200-c2",
+    "role": "client2",
+    "window_monotonic_seconds": [
+      16871914.673017,
+      16871944.673017
+    ],
+    "frame_ms": {
+      "n": 1805,
+      "mean": 16.61587540166205,
+      "p50": 16.7099,
+      "p95": 18.9448,
+      "p99": 19.906,
+      "max": 20.9452
+    },
+    "alive_min": 1200,
+    "moving_p05": 1200.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 1805,
+      "mean": 22.669505817174514,
+      "p50": 16.921,
+      "p95": 43.164,
+      "p99": 51.737,
+      "max": 71.315
+    },
+    "frame_budget_pass": true
+  },
+  {
+    "run": "retest-2-n1200-c1",
+    "role": "server",
+    "window_monotonic_seconds": [
+      16871649.4125997,
+      16871679.4125997
+    ],
+    "frame_ms": {
+      "n": 1791,
+      "mean": 16.75877911781128,
+      "p50": 16.8125,
+      "p95": 22.0589,
+      "p99": 24.5293,
+      "max": 28.5942
+    },
+    "alive_min": 1200,
+    "moving_p05": 1200.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 1791,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "simulation_steps": 500,
+    "dropped_steps": 0,
+    "shuttle_rounds": 6,
+    "navigation_full_capture": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "n": 2981,
+        "mean": 0.002357262663535726,
+        "p50": 0.0023,
+        "p95": 0.0029,
+        "p99": 0.0036,
+        "max": 0.0333
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "n": 2981,
+        "mean": 0.007619154646091916,
+        "p50": 0.0072,
+        "p95": 0.0096,
+        "p99": 0.0119,
+        "max": 0.1452
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "n": 2981,
+        "mean": 1.8297135860449514,
+        "p50": 1.8292,
+        "p95": 2.1893,
+        "p99": 2.4908,
+        "max": 3.5476
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "n": 2981,
+        "mean": 1.8526946326735996,
+        "p50": 1.8518,
+        "p95": 2.2146,
+        "p99": 2.519,
+        "max": 3.5904
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "n": 2981,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "n": 2981,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    }
+  },
+  {
+    "run": "retest-2-n1200-c1",
+    "role": "client1",
+    "window_monotonic_seconds": [
+      16871649.4125997,
+      16871679.4125997
+    ],
+    "frame_ms": {
+      "n": 3139,
+      "mean": 9.557802484867793,
+      "p50": 9.3984,
+      "p95": 10.936,
+      "p99": 11.7408,
+      "max": 16.4325
+    },
+    "alive_min": 1200,
+    "moving_p05": 1199.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 3139,
+      "mean": 18.744791971965594,
+      "p50": 17.731,
+      "p95": 37.921,
+      "p99": 47.239,
+      "max": 55.362
+    },
+    "frame_budget_pass": true
+  },
+  {
+    "run": "retest-2-n1200-c2",
+    "role": "server",
+    "window_monotonic_seconds": [
+      16872047.5012877,
+      16872077.5012877
+    ],
+    "frame_ms": {
+      "n": 1791,
+      "mean": 16.744503015075377,
+      "p50": 16.6151,
+      "p95": 22.2308,
+      "p99": 23.8073,
+      "max": 29.7746
+    },
+    "alive_min": 1200,
+    "moving_p05": 1200.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 1791,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "simulation_steps": 500,
+    "dropped_steps": 0,
+    "shuttle_rounds": 6,
+    "navigation_full_capture": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "n": 2984,
+        "mean": 0.002372520107238606,
+        "p50": 0.0023,
+        "p95": 0.003,
+        "p99": 0.0035,
+        "max": 0.0396
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "n": 2984,
+        "mean": 0.007679691689008043,
+        "p50": 0.0073,
+        "p95": 0.0099,
+        "p99": 0.0122,
+        "max": 0.0576
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "n": 2984,
+        "mean": 1.837180563002681,
+        "p50": 1.8416,
+        "p95": 2.2633,
+        "p99": 2.462,
+        "max": 3.2604
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "n": 2984,
+        "mean": 1.8599537868632707,
+        "p50": 1.8646,
+        "p95": 2.2897,
+        "p99": 2.4888,
+        "max": 3.2976
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "n": 2984,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "n": 2984,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    }
+  },
+  {
+    "run": "retest-2-n1200-c2",
+    "role": "client1",
+    "window_monotonic_seconds": [
+      16872047.5012877,
+      16872077.5012877
+    ],
+    "frame_ms": {
+      "n": 1859,
+      "mean": 16.140852286175363,
+      "p50": 16.2249,
+      "p95": 18.347,
+      "p99": 19.1852,
+      "max": 23.4907
+    },
+    "alive_min": 1200,
+    "moving_p05": 1199.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 1859,
+      "mean": 22.782125874125875,
+      "p50": 16.63,
+      "p95": 43.239,
+      "p99": 50.759,
+      "max": 57.216
+    },
+    "frame_budget_pass": true
+  },
+  {
+    "run": "retest-2-n1200-c2",
+    "role": "client2",
+    "window_monotonic_seconds": [
+      16872047.5012877,
+      16872077.5012877
+    ],
+    "frame_ms": {
+      "n": 1826,
+      "mean": 16.426419934282585,
+      "p50": 16.5521,
+      "p95": 18.7338,
+      "p99": 19.6326,
+      "max": 21.0984
+    },
+    "alive_min": 1200,
+    "moving_p05": 1199.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 1826,
+      "mean": 23.03140909090909,
+      "p50": 16.856,
+      "p95": 43.838,
+      "p99": 51.381,
+      "max": 55.34
+    },
+    "frame_budget_pass": true
+  },
+  {
+    "run": "retest-3-n1200-c1",
+    "role": "server",
+    "window_monotonic_seconds": [
+      16871780.2131429,
+      16871810.2131429
+    ],
+    "frame_ms": {
+      "n": 1790,
+      "mean": 16.75723312849162,
+      "p50": 16.7637,
+      "p95": 21.9162,
+      "p99": 23.5421,
+      "max": 30.2744
+    },
+    "alive_min": 1200,
+    "moving_p05": 1200.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 1790,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "simulation_steps": 500,
+    "dropped_steps": 0,
+    "shuttle_rounds": 6,
+    "navigation_full_capture": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "n": 2983,
+        "mean": 0.0023169292658397588,
+        "p50": 0.0023,
+        "p95": 0.0028,
+        "p99": 0.0033,
+        "max": 0.036
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "n": 2983,
+        "mean": 0.00775434126718069,
+        "p50": 0.0074,
+        "p95": 0.0096,
+        "p99": 0.0114,
+        "max": 0.1183
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "n": 2983,
+        "mean": 1.8181523298692592,
+        "p50": 1.8275,
+        "p95": 2.1208,
+        "p99": 2.3045,
+        "max": 2.6105
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "n": 2983,
+        "mean": 1.84074743546765,
+        "p50": 1.8503,
+        "p95": 2.1425,
+        "p99": 2.3306,
+        "max": 2.6395
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "n": 2983,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "n": 2983,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    }
+  },
+  {
+    "run": "retest-3-n1200-c1",
+    "role": "client1",
+    "window_monotonic_seconds": [
+      16871780.2131429,
+      16871810.2131429
+    ],
+    "frame_ms": {
+      "n": 3140,
+      "mean": 9.553129331210192,
+      "p50": 9.4153,
+      "p95": 10.8967,
+      "p99": 11.4751,
+      "max": 14.0553
+    },
+    "alive_min": 1200,
+    "moving_p05": 1198.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 3140,
+      "mean": 18.687071656050957,
+      "p50": 17.789,
+      "p95": 37.67,
+      "p99": 47.318,
+      "max": 48.987
+    },
+    "frame_budget_pass": true
+  },
+  {
+    "run": "retest-3-n1200-c2",
+    "role": "server",
+    "window_monotonic_seconds": [
+      16872179.5195955,
+      16872209.5195955
+    ],
+    "frame_ms": {
+      "n": 1789,
+      "mean": 16.77162604807155,
+      "p50": 16.8197,
+      "p95": 22.4795,
+      "p99": 24.7279,
+      "max": 28.8726
+    },
+    "alive_min": 1200,
+    "moving_p05": 1200.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 1789,
+      "mean": 0.0,
+      "p50": 0.0,
+      "p95": 0.0,
+      "p99": 0.0,
+      "max": 0.0
+    },
+    "simulation_steps": 500,
+    "dropped_steps": 0,
+    "shuttle_rounds": 6,
+    "navigation_full_capture": {
+      "NavigationBuildDetailed/GameThread/Navigation_RebuildDirtyAreas": {
+        "n": 2979,
+        "mean": 0.00240879489761665,
+        "p50": 0.0024,
+        "p95": 0.003,
+        "p99": 0.0037,
+        "max": 0.0226
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_TickAsyncBuild": {
+        "n": 2979,
+        "mean": 0.007758509566968781,
+        "p50": 0.0074,
+        "p95": 0.0099,
+        "p99": 0.0119,
+        "max": 0.0382
+      },
+      "NavigationBuildDetailed/GameThread/Navigation_CrowdManager": {
+        "n": 2979,
+        "mean": 1.8640639812017457,
+        "p50": 1.8519,
+        "p95": 2.2488,
+        "p99": 2.4576,
+        "max": 3.2678
+      },
+      "Exclusive/GameThread/NavigationBuild": {
+        "n": 2979,
+        "mean": 1.8870614300100705,
+        "p50": 1.8756,
+        "p95": 2.2755,
+        "p99": 2.4881,
+        "max": 3.3086
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-CommanderSoldier": {
+        "n": 2979,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      },
+      "NavTasks/NumRemainingTasks_RecastNavMesh-Default": {
+        "n": 2979,
+        "mean": 0.0,
+        "p50": 0.0,
+        "p95": 0.0,
+        "p99": 0.0,
+        "max": 0.0
+      }
+    }
+  },
+  {
+    "run": "retest-3-n1200-c2",
+    "role": "client1",
+    "window_monotonic_seconds": [
+      16872179.5195955,
+      16872209.5195955
+    ],
+    "frame_ms": {
+      "n": 1817,
+      "mean": 16.509665217391305,
+      "p50": 16.6235,
+      "p95": 18.75,
+      "p99": 19.666,
+      "max": 20.6709
+    },
+    "alive_min": 1200,
+    "moving_p05": 1199.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 1817,
+      "mean": 22.87196257567419,
+      "p50": 17.046,
+      "p95": 36.418,
+      "p99": 50.921,
+      "max": 58.71
+    },
+    "frame_budget_pass": true
+  },
+  {
+    "run": "retest-3-n1200-c2",
+    "role": "client2",
+    "window_monotonic_seconds": [
+      16872179.5195955,
+      16872209.5195955
+    ],
+    "frame_ms": {
+      "n": 1850,
+      "mean": 16.217211945945945,
+      "p50": 16.3472,
+      "p95": 18.3087,
+      "p99": 19.1398,
+      "max": 20.8585
+    },
+    "alive_min": 1200,
+    "moving_p05": 1200.0,
+    "zero_moving_fraction": 0.0,
+    "load_pass": true,
+    "pose_age_ms": {
+      "n": 1850,
+      "mean": 22.699796216216217,
+      "p50": 16.652,
+      "p95": 41.581,
+      "p99": 50.504,
+      "max": 56.899
+    },
+    "frame_budget_pass": true
+  }
+]

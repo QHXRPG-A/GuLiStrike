@@ -1,0 +1,174 @@
+{
+  "current-editor": {
+    "label": "current-editor",
+    "source": "D:\\UE5.7\\test1\\Saved\\Logs\\GuLiStrike.log",
+    "snapshot": "D:\\UE5.7\\test1\\TestResults\\PIEStartupAnalysis-20260915\\current-editor.log",
+    "snapshot_sha256": "860e18ea7e4780326b683638cc2c69396032a62bfc967d1af085f7babc576da9",
+    "log_lines": 2024,
+    "start_utc": "2026-09-15T11:36:15.826000",
+    "start_basis": "Explicit editor play-command log marker",
+    "start_to_resource_initialized_s": 10.614,
+    "resource_navigation_wait_wall_s": 122.12,
+    "resource_ready_to_soldiers_s": 0.11,
+    "resource_ready_to_host_bootstrap_s": 0.126,
+    "start_to_host_bootstrap_s": 132.86,
+    "start_to_client_bootstrap_s": 134.78,
+    "host_to_client_bootstrap_s": 1.92,
+    "navigation_wait_share_of_host_startup_percent": 91.92,
+    "soldier_count": 500,
+    "async_compile_memory_budget_messages": {
+      "TextureDerivedData": 252,
+      "StaticMesh": 4
+    },
+    "events": {
+      "resource_initialized": {
+        "line": 1531,
+        "utc": "2026-09-15T11:36:26.440000",
+        "text": "[2026.09.15-11.36.26:440][172]LogGuLiResources: Display: Initialized 25 territories, 240 ore clusters, 6240 nodes, 24 HISMs, 2 factories and 2 miners; waiting for dynamic navigation."
+      },
+      "resource_navigation_ready": {
+        "line": 1889,
+        "utc": "2026-09-15T11:38:28.560000",
+        "text": "[2026.09.15-11.38.28:560][637]LogGuLiResources: Display: Resource world and navigation are Ready; Mass spawning and Commander input may proceed."
+      },
+      "soldiers_spawned": {
+        "line": 1893,
+        "utc": "2026-09-15T11:38:28.670000",
+        "text": "[2026.09.15-11.38.28:670][638]LogGuLiCommanderMass: Display: Spawned 500 independent server-authoritative Mass Soldiers (500 CommanderSoldier NavMesh projections); no permanent 25-Soldier groups."
+      },
+      "server_bootstrap_ready": {
+        "line": 1894,
+        "utc": "2026-09-15T11:38:28.686000",
+        "text": "[2026.09.15-11.38.28:686][638]LogGuLiStrike: Display: Commander bootstrap ready: generation=1 owner=GuLiCommanderPlayerController_0 player=0274291348AACB9A41020AA5EE76E635."
+      },
+      "client_bootstrap_ready": {
+        "line": 1898,
+        "utc": "2026-09-15T11:38:30.606000",
+        "text": "[2026.09.15-11.38.30:606][721]LogGuLiStrike: Display: Commander bootstrap ready: generation=1 owner=GuLiCommanderPlayerController_1 player=458D4BDC45213F2A2B50BDBF1626FDEA."
+      },
+      "pie_announcements": [
+        {
+          "line": 1538,
+          "utc": "2026-09-15T11:36:26.468000",
+          "text": "[2026.09.15-11.36.26:468][172]PIE: PIE总开始时间：10.62秒。"
+        },
+        {
+          "line": 1584,
+          "utc": "2026-09-15T11:36:26.587000",
+          "text": "[2026.09.15-11.36.26:587][172]PIE: PIE总开始时间：10.738秒。"
+        }
+      ],
+      "blueprint_check": {
+        "line": 1442,
+        "utc": "2026-09-15T11:36:17.002000",
+        "text": "[2026.09.15-11.36.17:002][172]LogPlayLevel: PlayLevel: No blueprints needed recompiling"
+      },
+      "world_duplicate": {
+        "line": 1446,
+        "utc": "2026-09-15T11:36:19.232000",
+        "text": "[2026.09.15-11.36.19:232][172]LogPlayLevel: PIE: StaticDuplicateObject took: (2.210396s)"
+      },
+      "world_init": {
+        "line": 1460,
+        "utc": "2026-09-15T11:36:20.228000",
+        "text": "[2026.09.15-11.36.20:228][172]LogPlayLevel: PIE: World Init took: (0.942438s)"
+      },
+      "client_load_map": {
+        "line": 1875,
+        "utc": "2026-09-15T11:36:34.407000",
+        "text": "[2026.09.15-11.36.34:407][185]LogLoad: Took 3.835902 seconds to LoadMap(/Game/Maps/LVL_CommanderMassPrototype)"
+      }
+    },
+    "limits": [
+      "The navigation wait is a wall-clock gate interval, not exclusive CPU time.",
+      "Client loading and asset work overlap the navigation wait; do not add them again.",
+      "Readiness markers measure gameplay bootstrap, not the first presented video frame."
+    ]
+  },
+  "earlier-editor": {
+    "label": "earlier-editor",
+    "source": "D:\\UE5.7\\test1\\TestResults\\EngineeringAvoidance\\PIE-final-native.log",
+    "snapshot": "D:\\UE5.7\\test1\\TestResults\\PIEStartupAnalysis-20260915\\earlier-editor.log",
+    "snapshot_sha256": "a21cc88407399fb6c653d8e05cd664415dfdff4db28602c82bd2602c5c80b3c4",
+    "log_lines": 1740,
+    "start_utc": "2026-09-15T11:14:58.509000",
+    "start_basis": "Inferred from UE's reported total PIE startup duration",
+    "start_to_resource_initialized_s": 10.326,
+    "resource_navigation_wait_wall_s": 117.939,
+    "resource_ready_to_soldiers_s": 0.059,
+    "resource_ready_to_host_bootstrap_s": 0.072,
+    "start_to_host_bootstrap_s": 128.337,
+    "start_to_client_bootstrap_s": 130.308,
+    "host_to_client_bootstrap_s": 1.971,
+    "navigation_wait_share_of_host_startup_percent": 91.9,
+    "soldier_count": 40,
+    "async_compile_memory_budget_messages": {
+      "TextureDerivedData": 0,
+      "StaticMesh": 0
+    },
+    "events": {
+      "resource_initialized": {
+        "line": 1496,
+        "utc": "2026-09-15T11:15:08.835000",
+        "text": "[2026.09.15-11.15.08:835][ 67]LogGuLiResources: Display: Initialized 25 territories, 240 ore clusters, 6240 nodes, 24 HISMs, 2 factories and 2 miners; waiting for dynamic navigation."
+      },
+      "resource_navigation_ready": {
+        "line": 1638,
+        "utc": "2026-09-15T11:17:06.774000",
+        "text": "[2026.09.15-11.17.06:774][690]LogGuLiResources: Display: Resource world and navigation are Ready; Mass spawning and Commander input may proceed."
+      },
+      "soldiers_spawned": {
+        "line": 1642,
+        "utc": "2026-09-15T11:17:06.833000",
+        "text": "[2026.09.15-11.17.06:833][691]LogGuLiCommanderMass: Display: Spawned 40 independent server-authoritative Mass Soldiers (40 CommanderSoldier NavMesh projections); no permanent 25-Soldier groups."
+      },
+      "server_bootstrap_ready": {
+        "line": 1643,
+        "utc": "2026-09-15T11:17:06.846000",
+        "text": "[2026.09.15-11.17.06:846][691]LogGuLiStrike: Display: Commander bootstrap ready: generation=1 owner=GuLiCommanderPlayerController_0 player=CDFC59DF4CDE8DC376644A8ACDB5BE1A."
+      },
+      "client_bootstrap_ready": {
+        "line": 1647,
+        "utc": "2026-09-15T11:17:08.817000",
+        "text": "[2026.09.15-11.17.08:817][780]LogGuLiStrike: Display: Commander bootstrap ready: generation=1 owner=GuLiCommanderPlayerController_1 player=852F12AA4CCE9FD74AE90AA49833E729."
+      },
+      "pie_announcements": [
+        {
+          "line": 1503,
+          "utc": "2026-09-15T11:15:08.876000",
+          "text": "[2026.09.15-11.15.08:876][ 67]PIE: PIE总开始时间：10.367秒。"
+        },
+        {
+          "line": 1549,
+          "utc": "2026-09-15T11:15:08.989000",
+          "text": "[2026.09.15-11.15.08:989][ 67]PIE: PIE总开始时间：10.481秒。"
+        }
+      ],
+      "blueprint_check": {
+        "line": 1441,
+        "utc": "2026-09-15T11:14:59.642000",
+        "text": "[2026.09.15-11.14.59:642][ 67]LogPlayLevel: PlayLevel: No blueprints needed recompiling"
+      },
+      "world_duplicate": {
+        "line": 1445,
+        "utc": "2026-09-15T11:15:01.058000",
+        "text": "[2026.09.15-11.15.01:058][ 67]LogPlayLevel: PIE: StaticDuplicateObject took: (1.391686s)"
+      },
+      "world_init": {
+        "line": 1449,
+        "utc": "2026-09-15T11:15:01.857000",
+        "text": "[2026.09.15-11.15.01:857][ 67]LogPlayLevel: PIE: World Init took: (0.750997s)"
+      },
+      "client_load_map": {
+        "line": 1620,
+        "utc": "2026-09-15T11:15:15.077000",
+        "text": "[2026.09.15-11.15.15:077][ 86]LogLoad: Took 2.395226 seconds to LoadMap(/Game/Maps/LVL_CommanderMassPrototype)"
+      }
+    },
+    "limits": [
+      "The navigation wait is a wall-clock gate interval, not exclusive CPU time.",
+      "Client loading and asset work overlap the navigation wait; do not add them again.",
+      "Readiness markers measure gameplay bootstrap, not the first presented video frame."
+    ]
+  }
+}

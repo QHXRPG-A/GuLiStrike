@@ -1,0 +1,26 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "pie": false,
+    "fx_preview": "{'frame': 318, 'actors': [<Object '/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.NiagaraActor_36' (0x000001DC61D3B900) Class 'NiagaraActor'>, <Object '/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.StaticMeshActor_41' (0x000001DC61D33700) Class 'StaticMeshActor'>, <Object '/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.SceneCapture2D_38' (0x000001DCDA903700) Class 'SceneCapture2D'>], 'frames': [{'name': 'empty', 'time': 0.0, 'path': 'D:\\\\UE5.7\\\\test1\\\\ArtSource\\\\StylePass_20260917\\\\FXFrames\\\\ground_slope_x1.0\\\\empty.png'}, {'name': 'start', 'time': 0.05, 'path': 'D:\\\\UE5.7\\\\test1\\\\ArtSource\\\\StylePass_20260917\\\\FXFrames\\\\ground_slope_x1.0\\\\start.png'}, {'name': 'peak', 'time': 0.2, 'path': 'D:\\\\UE5.7\\\\test1\\\\ArtSource\\\\StylePass_20260917\\\\FXFrames\\\\ground_slope_x1.0\\\\peak.png'}, {'name': 'expansion', 'time': 0.45, 'path': 'D:\\\\UE5.7\\\\test1\\\\ArtSource\\\\StylePass_20260917\\\\FXFrames\\\\ground_slope_x1.0\\\\expansion.png'}, {'name': 'smoke', 'time': 1.2, 'path': 'D:\\\\UE5.7\\\\test1\\\\ArtSource\\\\StylePass_20260917\\\\FXFrames\\\\ground_slope_x1.0\\\\smoke.png'}, {'name': 'tail', 'time': 3.0, 'path': 'D:\\\\UE5.7\\\\test1\\\\ArtSource\\\\StylePass_20260917\\\\FXFrames\\\\ground_slope_x1.0\\\\tail.png'}, {'name': 'end', 'time': 5.25, 'path': 'D:\\\\UE5.7\\\\test1\\\\ArtSource\\\\StylePass_20260917\\\\FXFrames\\\\ground_slope_x1.0\\\\end.png'}], 'variant': 'ground', 'area': 1.0, 'view': 'slope', 'handle': <_DelegateHandle object at 0x000001DC16F90EF0>}",
+    "socket_methods": [],
+    "mesh_socket_methods": [
+      "add_socket",
+      "find_socket",
+      "get_sockets_by_tag",
+      "remove_socket"
+    ],
+    "set_lods": "x.set_lods(static_mesh, reduction_options) -> int32\r\nSame as SetLodsWithNotification but changes are applied.\r\n\r\nArgs:\r\n    static_mesh (StaticMesh): \r\n    reduction_options (StaticMeshReductionOptions): \r\n\r\nReturns:\r\n    int32:",
+    "dirty": [
+      "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01",
+      "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Flash",
+      "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Ring",
+      "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Spark",
+      "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel",
+      "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel",
+      "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Pearl",
+      "/Game/GuLiStrike/Ship/Stylized/Rollback/BP_CombatAvatarFly01_BeforeCel"
+    ]
+  }
+}

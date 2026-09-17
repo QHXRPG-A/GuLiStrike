@@ -290,7 +290,10 @@ AGuLiOreClusterObstacleActor::AGuLiOreClusterObstacleActor()
 	CollisionSphere->SetCollisionObjectType(ECC_WorldStatic);
 	CollisionSphere->SetCollisionResponseToAllChannels(ECR_Block);
 	CollisionSphere->SetGenerateOverlapEvents(false);
-	CollisionSphere->SetCanEverAffectNavigation(false);
+	CollisionSphere->SetCanEverAffectNavigation(true);
+	// A removable ore cluster changes walkability, not the underlying terrain geometry.
+	CollisionSphere->bDynamicObstacle = true;
+	CollisionSphere->SetAreaClassOverride(UNavArea_Null::StaticClass());
 	NavModifier = CreateDefaultSubobject<UNavModifierComponent>(TEXT("ClusterNavAreaNull"));
 	NavModifier->SetAreaClass(UNavArea_Null::StaticClass());
 	NavModifier->ForceNavigationRelevancy(true);
@@ -301,8 +304,21 @@ void AGuLiOreClusterObstacleActor::InitializeObstacle(
 	const float RadiusCentimeters)
 {
 	ClusterId = InClusterId;
-	CollisionSphere->SetSphereRadius(FMath::Max(1.0f, RadiusCentimeters), true);
-	NavModifier->RefreshNavigationModifiers();
+	const float Radius = FMath::Max(1.0f, RadiusCentimeters);
+	if (CollisionSphere->IsRegistered())
+	{
+		if (!FMath::IsNearlyEqual(CollisionSphere->GetUnscaledSphereRadius(), Radius))
+		{
+			CollisionSphere->SetSphereRadius(Radius, true);
+			NavModifier->UpdateNavigationBounds();
+			NavModifier->RefreshNavigationModifiers();
+		}
+	}
+	else
+	{
+		// Deferred spawn registers the final footprint once, without a default-radius dirty area.
+		CollisionSphere->InitSphereRadius(Radius);
+	}
 }
 
 void AGuLiOreClusterObstacleActor::SetObstacleEnabled(const bool bEnabled)
@@ -314,6 +330,9 @@ void AGuLiOreClusterObstacleActor::SetObstacleEnabled(const bool bEnabled)
 	bObstacleEnabled = bEnabled;
 	CollisionSphere->SetCollisionEnabled(bEnabled
 		? ECollisionEnabled::QueryAndPhysics : ECollisionEnabled::NoCollision);
+	// Dynamic shape modifiers can remain relevant without physical collision.
+	// Remove both navigation exporters when a cluster is depleted.
+	CollisionSphere->SetCanEverAffectNavigation(bEnabled);
 	NavModifier->SetNavigationRelevancy(bEnabled);
 	NavModifier->RefreshNavigationModifiers();
 	SetActorHiddenInGame(!bEnabled);
@@ -339,7 +358,7 @@ AGuLiTerritoryOutpostActor::AGuLiTerritoryOutpostActor()
 	LandmarkMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	LandmarkMesh->SetCollisionObjectType(ECC_WorldStatic);
 	LandmarkMesh->SetCollisionResponseToAllChannels(ECR_Block);
-	LandmarkMesh->SetCanEverAffectNavigation(false);
+	LandmarkMesh->SetCanEverAffectNavigation(true);
 	LandmarkMesh->SetRelativeScale3D(FVector(30.0f, 30.0f, 50.0f));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshFinder(
 		TEXT("/Engine/BasicShapes/Cylinder.Cylinder"));

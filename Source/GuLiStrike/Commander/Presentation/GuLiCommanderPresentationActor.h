@@ -1,10 +1,12 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #pragma once
 
 #include "CoreMinimal.h"
+#include "HAL/ThreadSafeBool.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "Commander/Presentation/GuLiCommanderPresentationPerformanceSettings.h"
+#include "Commander/Presentation/GuLiCommanderRefreshCadence.h"
 #include "GameFramework/Actor.h"
 #include "MassArchetypeTypes.h"
 #include "MassEntityHandle.h"
@@ -20,8 +22,18 @@ class UMaterialInterface;
 class UMassEntitySubsystem;
 class USceneComponent;
 class UStaticMesh;
+struct FGuLiSoldierRosterDelta;
 
-/** One authoritative 10 Hz sample after resolving its chunk-relative position. */
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiCommanderVisualStatesChanged, const TArray<FGuLiSoldierId>&);
+
+struct FGuLiCommanderMirrorCreate
+{
+	FMassEntityHandle Entity;
+	FGuLiSoldierStateItem State;
+	TSharedPtr<FThreadSafeBool, ESPMode::ThreadSafe> Live;
+};
+
+/** One decoded authoritative sample in world coordinates, ready for interpolation. */
 // 本地解压后的带时间戳样本；SampleIndex/ChunkIndex 留作诊断，位置已恢复到世界坐标。
 struct FGuLiCommanderBufferedSoldierPose
 {
@@ -29,8 +41,6 @@ struct FGuLiCommanderBufferedSoldierPose
 	uint32 FrameSequence = 0u;
 	FVector Location = FVector::ZeroVector;
 	FVector Velocity = FVector::ZeroVector;
-	FVector ChunkAnchor = FVector::ZeroVector;
-	FVector RelativeLocation = FVector::ZeroVector;
 	float FacingYawDegrees = 0.0f;
 	uint32 ActiveOrderId = 0u;
 	EGuLiSoldierPoseState State = EGuLiSoldierPoseState::Idle;
@@ -55,14 +65,12 @@ struct FGuLiCommanderPresentedSoldier
 	double PreviousAdaptivePoseReceiptLocalTimeSeconds = 0.0;
 	double SmoothedPoseReceiptIntervalSeconds = 0.0;
 	double SmoothedPoseReceiptJitterSeconds = 0.0;
-	EGuLiSoldierPoseState LastReceivedPoseState = EGuLiSoldierPoseState::Idle;
+	double RenderServerTimeSeconds = 0.0;
 	FVector LastUntaggedHardSnapDelta = FVector::ZeroVector;
 	FVector LastHardSnapPriorSampleDelta = FVector::ZeroVector;
 	FVector LastHardSnapSampleVelocity = FVector::ZeroVector;
-	FVector LastHardSnapCurrentAnchor = FVector::ZeroVector;
-	FVector LastHardSnapCurrentRelative = FVector::ZeroVector;
-	FVector LastHardSnapPreviousAnchor = FVector::ZeroVector;
-	FVector LastHardSnapPreviousRelative = FVector::ZeroVector;
+	FVector LastHardSnapCurrentLocation = FVector::ZeroVector;
+	FVector LastHardSnapPreviousLocation = FVector::ZeroVector;
 	double LastHardSnapServerTimeGapSeconds = 0.0;
 	uint32 LastHardSnapFrameGap = 0u;
 	uint16 LastHardSnapCurrentChunkIndex = 0u;
@@ -74,7 +82,7 @@ struct FGuLiCommanderPresentedSoldier
 	bool bHasAuthoritativeTransform = false;
 	bool bHasPresentedTransform = false;
 	bool bLifeStateInitialized = false;
-	bool bAdaptiveReceiptStateInitialized = false;
+	bool bRenderClockInitialized = false;
 };
 
 /** Non-authoritative diagnostics used by the development network acceptance gate. */
@@ -84,10 +92,8 @@ struct FGuLiCommanderSoldierPresentationDiagnostics
 	FVector LastUntaggedHardSnapDelta = FVector::ZeroVector;
 	FVector LastHardSnapPriorSampleDelta = FVector::ZeroVector;
 	FVector LastHardSnapSampleVelocity = FVector::ZeroVector;
-	FVector LastHardSnapCurrentAnchor = FVector::ZeroVector;
-	FVector LastHardSnapCurrentRelative = FVector::ZeroVector;
-	FVector LastHardSnapPreviousAnchor = FVector::ZeroVector;
-	FVector LastHardSnapPreviousRelative = FVector::ZeroVector;
+	FVector LastHardSnapCurrentLocation = FVector::ZeroVector;
+	FVector LastHardSnapPreviousLocation = FVector::ZeroVector;
 	double LastHardSnapServerTimeGapSeconds = 0.0;
 	uint32 LastHardSnapFrameGap = 0u;
 	uint16 LastHardSnapCurrentChunkIndex = 0u;
@@ -131,6 +137,7 @@ struct FGuLiCommanderSoldierInstanceHandle
 /** Non-UObject state owned by one UnitTypeId ISM batch. */
 struct FGuLiCommanderUnitInstanceBatchState
 {
+	TArray<int32> DirtyTransformSlots;
 	TArray<FTransform> CachedTransforms;
 	TArray<int32> FreeInstanceIndices;
 };
@@ -215,6 +222,7 @@ public:
 	bool TryGetPresentedSoldierTransform(FGuLiSoldierId SoldierId, FTransform& OutTransform) const;
 	/** Same timestamp used by the hit-white overlay; no independent health-delta detector in the HUD. */
 	float GetSoldierHitStartTime(FGuLiSoldierId SoldierId) const;
+	FGuLiCommanderVisualStatesChanged OnVisualStatesChanged;
 
 	/**
 	 * Returns the accepted-pose timeline result before local command prediction is applied.
@@ -298,6 +306,9 @@ public:
 private:
 #if WITH_DEV_AUTOMATION_TESTS
 	friend class FGuLiCommanderUnitTypeBatchRoutingTest;
+	friend class FGuLiCommanderClientMaintenanceTest;
+	friend class FGuLiCommanderHealthBarActivityTest;
+	friend class FGuLiCommanderMiniMapCacheTest;
 #endif
 
 	void InitializePresentationPerformanceSettings();
@@ -335,14 +346,18 @@ private:
 	// 本地创建仅含身份/生命/变换的 Mass 镜像；Dedicated Server 不创建，不接入客户端移动模拟。
 	bool EnsureClientMirrorArchetype();
 	void EnsureClientMirrorEntity(const FGuLiSoldierStateItem& ReliableState);
-	void UpdateClientMirrorEntity(
-		const FGuLiSoldierStateItem& ReliableState,
-		const FTransform* PresentedTransform);
+	void FlushClientMirrorUpdates(double Now);
 	void DestroyClientMirrorEntities();
 	void ResetNetworkPresentationState();
 	// 每 Tick 只检查来源/就绪边沿；失效时一次性清样本与镜像，保留稳定 ISM 槽位。
 	bool UpdateNetworkPresentationSource(AGuLiSoldierStateReplicator* Replicator);
-	void EnsureStableInstancePool(const AGuLiSoldierStateReplicator& Replicator);
+	void EnsureStableInstancePool(AGuLiSoldierStateReplicator& Replicator);
+	void MaintainInstancePool(AGuLiSoldierStateReplicator& Replicator, bool bMaintenanceDue);
+	void BindRosterSource(AGuLiSoldierStateReplicator* Replicator);
+	void HandleRosterDelta(const FGuLiSoldierRosterDelta& Delta);
+	void HandleSelectionChanged(const FGuLiCommanderSelectionState& Selection);
+	void ApplyReliableStateChanges(const AGuLiSoldierStateReplicator& Replicator, double Now);
+	void HideInstancePool();
 	void RebuildLocalInstances(float DeltaSeconds);
 	FTransform BuildRingTransform(const FTransform& SoldierTransform) const;
 	static bool IsAckResultAccepted(EGuLiCommandAckResult Result);
@@ -461,6 +476,29 @@ private:
 	FMassArchetypeHandle ClientMirrorArchetype;
 	// SoldierId 到本地实体句柄的映射；两端 FMassEntityHandle 不相同，不能当网络身份发送。
 	TMap<FGuLiSoldierId, FMassEntityHandle> ClientMirrorEntities;
+	TMap<FGuLiSoldierId, TSharedPtr<FThreadSafeBool, ESPMode::ThreadSafe>> MirrorLiveTokens;
+	TArray<FGuLiCommanderMirrorCreate> PendingMirrorCreates;
+	TSet<FGuLiSoldierId> PendingMirrorStates;
+	TSet<FGuLiSoldierId> PendingMirrorTransforms;
+	TSet<FGuLiSoldierId> PendingPoolIds;
+	TSet<FGuLiSoldierId> RetryPoolIds;
+	TSet<FGuLiSoldierId> PendingRemovedIds;
+	TSet<FGuLiSoldierId> PendingStateIds;
+	TSet<FGuLiSoldierId> PendingVisualChangeIds;
+	TSet<FGuLiSoldierId> PendingDestructionIds;
+	TSet<FGuLiSoldierId> DirtyRingColorIds;
+	TSet<FGuLiSoldierId> SelectedSoldiers;
+	TWeakObjectPtr<AGuLiSoldierStateReplicator> BoundRosterSource;
+	TWeakObjectPtr<UGuLiCommanderNetSyncComponent> BoundSelectionSource;
+	FDelegateHandle RosterDeltaHandle;
+	FDelegateHandle SelectionChangedHandle;
+	FGuLiCommanderRefreshCadence MaintenanceCadence;
+	FGuLiCommanderRefreshCadence MirrorCadence;
+	FGuLiCommanderRefreshCadence ReplicatorResolveCadence;
+	FGuLiCommanderRefreshCadence ControllerResolveCadence;
+	bool bReconcilePool = true;
+	bool bPoolChangesPending = false;
+	TArray<int32> DirtyRingTransformSlots;
 	TMap<FGuLiSoldierId, FGuLiCommanderSoldierInstanceHandle> SoldierInstanceHandles;
 	TArray<int32> FreeRingInstanceIndices;
 	TMap<uint16, FGuLiCommanderUnitInstanceBatchState> UnitInstanceBatchStates;

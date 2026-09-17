@@ -10,6 +10,8 @@ struct GULISTRIKE_API FGuLiCommanderUnitTypeSummary
 {
 	int32 SelectedCount = 0;
 	int32 AliveCount = 0;
+	uint16 UnitTypeId = 0;
+	bool bMixedUnitTypes = false;
 	float TotalHealth = 0.0f;
 	float TotalMaxHealth = 0.0f;
 	bool bSyncing = false;

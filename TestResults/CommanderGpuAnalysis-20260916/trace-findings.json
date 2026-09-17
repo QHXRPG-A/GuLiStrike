@@ -1,0 +1,854 @@
+{
+  "scope": "first single-client and first dual-client client1 traces, original common 30 s windows",
+  "caveats": [
+    "These are GPU event elapsed spans, not isolated shader busy time.",
+    "Graphics and compute queues overlap and include scheduling/dependency effects.",
+    "Per-call means from these two traces are not the nine-run CSV medians."
+  ],
+  "runs": [
+    {
+      "run": "retest-1-n1200-c1",
+      "trace_window_seconds": [
+        43.20173269882798,
+        73.20173269882798
+      ],
+      "visibility_wait_ms_per_call": {
+        "n": 3169,
+        "mean": 1.8462314610287156,
+        "p50": 1.6655000000000002,
+        "p95": 3.0475,
+        "p99": 3.3337000000000003,
+        "max": 5.1815999999999995
+      },
+      "gpu_occlusion_query_wait_ms_per_call": {
+        "n": 3169,
+        "mean": 2.06925089933733,
+        "p50": 1.8885,
+        "p95": 3.2554,
+        "p99": 3.5387,
+        "max": 5.387099999999999
+      },
+      "visibility_wait_time_overlapping_gpu_query_wait_fraction": 0.9075087585561834,
+      "example_query_wait": {
+        "thread": "Background Worker #0",
+        "start": 53.9337203,
+        "end": 53.9357216,
+        "nested_scopes": [
+          {
+            "name": "GPUBound_WaitingForGPUForOcclusionQueries_SeeGPUTrack",
+            "depth": 3,
+            "duration_ms": 2.0013
+          },
+          {
+            "name": "SyncPoint_Wait",
+            "depth": 4,
+            "duration_ms": 1.9992999999999999
+          },
+          {
+            "name": "FTaskBase::WaitWithNamedThreadsSupport",
+            "depth": 5,
+            "duration_ms": 1.9982
+          },
+          {
+            "name": "FTaskBase::TryRetractAndExecute",
+            "depth": 6,
+            "duration_ms": 0.00019999999999999998
+          },
+          {
+            "name": "FTaskBase::TryRetractAndExecute",
+            "depth": 6,
+            "duration_ms": 0.0
+          },
+          {
+            "name": "FTaskBase::WaitImpl_StateChangeEvent_WaitFor",
+            "depth": 6,
+            "duration_ms": 1.996
+          },
+          {
+            "name": "Oversubscription",
+            "depth": 7,
+            "duration_ms": 1.9948000000000001
+          },
+          {
+            "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+            "depth": 8,
+            "duration_ms": 0.0024
+          }
+        ]
+      },
+      "gpu_queue_scopes": [
+        {
+          "queue": "GPU0-Compute0",
+          "scope": "ContrastAdaptiveShading",
+          "timer_ids": [
+            "7711"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 1.0190208583149258,
+            "p50": 0.9277000000000001,
+            "p95": 2.1903,
+            "p99": 2.4914,
+            "max": 2.8867
+          }
+        },
+        {
+          "queue": "GPU0-Compute0",
+          "scope": "Frame",
+          "timer_ids": [
+            "8310"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3170,
+            "mean": 9.413779179810726,
+            "p50": 9.2017,
+            "p95": 11.7718,
+            "p99": 12.2255,
+            "max": 12.909500000000001
+          }
+        },
+        {
+          "queue": "GPU0-Compute0",
+          "scope": "LumenScreenProbeGather",
+          "timer_ids": [
+            "7647"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 1.5131005680025245,
+            "p50": 1.3773,
+            "p95": 2.7423,
+            "p99": 2.9859,
+            "max": 3.3782
+          }
+        },
+        {
+          "queue": "GPU0-Compute0",
+          "scope": "PrepareImageBasedVRS",
+          "timer_ids": [
+            "7710"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 1.0242327232565478,
+            "p50": 0.9319000000000001,
+            "p95": 2.1944999999999997,
+            "p99": 2.4945000000000004,
+            "max": 2.8918
+          }
+        },
+        {
+          "queue": "GPU0-Compute0",
+          "scope": "TemporalSuperResolution(sg.AntiAliasingQuality=%d%s) %dx%d -> %dx%d",
+          "timer_ids": [
+            "7673"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 0.4279058693594194,
+            "p50": 0.3973,
+            "p95": 0.7546999999999999,
+            "p99": 1.709,
+            "max": 2.1361000000000003
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "BasePass",
+          "timer_ids": [
+            "7648"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3170,
+            "mean": 0.7230243217665615,
+            "p50": 0.7273,
+            "p95": 1.2806,
+            "p99": 2.1381,
+            "max": 2.4728
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Frame",
+          "timer_ids": [
+            "8310"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3170,
+            "mean": 9.41957356466877,
+            "p50": 9.2828,
+            "p95": 11.6483,
+            "p99": 12.278799999999999,
+            "max": 12.9288
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "LumenReflections",
+          "timer_ids": [
+            "7664"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 0.36358636793941307,
+            "p50": 0.3276,
+            "p95": 0.7076,
+            "p99": 1.6251,
+            "max": 2.1309
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "LumenScreenProbeGather",
+          "timer_ids": [
+            "7647"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 0.05558097191543074,
+            "p50": 0.0484,
+            "p95": 0.0563,
+            "p99": 0.4151,
+            "max": 1.4032
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::BasePass",
+          "timer_ids": [
+            "8154"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 0.05620580624802777,
+            "p50": 0.0518,
+            "p95": 0.0657,
+            "p99": 0.2625,
+            "max": 1.4422
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::DrawGeometry",
+          "timer_ids": [
+            "8113"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 6338,
+            "mean": 0.2671775796781319,
+            "p50": 0.2468,
+            "p95": 0.6246,
+            "p99": 1.5309,
+            "max": 2.0747
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::EmitDepthTargets",
+          "timer_ids": [
+            "8119"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 0.054136320605869356,
+            "p50": 0.0477,
+            "p95": 0.0496,
+            "p99": 0.2763,
+            "max": 1.4953
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::InitContext",
+          "timer_ids": [
+            "8111"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 0.03366437361943831,
+            "p50": 0.028900000000000002,
+            "p95": 0.0299,
+            "p99": 0.2541,
+            "max": 1.1672
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::Readback",
+          "timer_ids": [
+            "8151"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 0.11894039129062796,
+            "p50": 0.10880000000000001,
+            "p95": 0.1631,
+            "p99": 0.5057,
+            "max": 1.3837000000000002
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::ShadeBinning",
+          "timer_ids": [
+            "8155"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 0.04581773430104134,
+            "p50": 0.043000000000000003,
+            "p95": 0.0543,
+            "p99": 0.0614,
+            "max": 1.4326
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::Streaming",
+          "timer_ids": [
+            "8107"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 0.12000697380877248,
+            "p50": 0.1098,
+            "p95": 0.164,
+            "p99": 0.5085,
+            "max": 1.3864
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::VisBuffer",
+          "timer_ids": [
+            "8110",
+            "8112"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 6338,
+            "mean": 0.1234050962448722,
+            "p50": 0.16899999999999998,
+            "p95": 0.1782,
+            "p99": 0.9862,
+            "max": 2.0501
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "NaniteBasePass",
+          "timer_ids": [
+            "8118",
+            "8153"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 6338,
+            "mean": 0.05725255601136005,
+            "p50": 0.050800000000000005,
+            "p95": 0.0668,
+            "p99": 0.2793,
+            "max": 1.4965
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "PrePass %s %s",
+          "timer_ids": [
+            "7606"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 0.5165903124013884,
+            "p50": 0.517,
+            "p95": 1.0585,
+            "p99": 1.934,
+            "max": 2.2426999999999997
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "RenderVirtualShadowMaps",
+          "timer_ids": [
+            "7658",
+            "8124"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 6338,
+            "mean": 0.21375077311454718,
+            "p50": 0.2693,
+            "p95": 0.5325,
+            "p99": 1.4879,
+            "max": 2.1279
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "ShadowDepths",
+          "timer_ids": [
+            "7653",
+            "7655"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 6338,
+            "mean": 0.3588338908172925,
+            "p50": 0.4465,
+            "p95": 0.8407,
+            "p99": 1.7857999999999998,
+            "max": 3.0044
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "TemporalSuperResolution",
+          "timer_ids": [
+            "7680"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 0.01932319343641527,
+            "p50": 0.0184,
+            "p95": 0.0195,
+            "p99": 0.021500000000000002,
+            "max": 0.7865
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "TemporalSuperResolution(sg.AntiAliasingQuality=%d%s) %dx%d -> %dx%d",
+          "timer_ids": [
+            "7673"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3169,
+            "mean": 0.6775497948879773,
+            "p50": 0.6114,
+            "p95": 1.1172,
+            "p99": 2.0233999999999996,
+            "max": 2.4832
+          }
+        }
+      ]
+    },
+    {
+      "run": "retest-1-n1200-c2",
+      "trace_window_seconds": [
+        45.62471880018711,
+        75.62471880018711
+      ],
+      "visibility_wait_ms_per_call": {
+        "n": 1839,
+        "mean": 8.310241109298532,
+        "p50": 8.440700000000001,
+        "p95": 10.345699999999999,
+        "p99": 11.0595,
+        "max": 12.1682
+      },
+      "gpu_occlusion_query_wait_ms_per_call": {
+        "n": 1839,
+        "mean": 8.527888417618271,
+        "p50": 8.6565,
+        "p95": 10.552000000000001,
+        "p99": 11.3238,
+        "max": 12.2232
+      },
+      "visibility_wait_time_overlapping_gpu_query_wait_fraction": 0.9758237068462403,
+      "example_query_wait": {
+        "thread": "Background Worker #10",
+        "start": 55.6664943,
+        "end": 55.6763438,
+        "nested_scopes": [
+          {
+            "name": "GPUBound_WaitingForGPUForOcclusionQueries_SeeGPUTrack",
+            "depth": 3,
+            "duration_ms": 9.8495
+          },
+          {
+            "name": "SyncPoint_Wait",
+            "depth": 4,
+            "duration_ms": 9.8469
+          },
+          {
+            "name": "FTaskBase::WaitWithNamedThreadsSupport",
+            "depth": 5,
+            "duration_ms": 9.8457
+          },
+          {
+            "name": "FTaskBase::TryRetractAndExecute",
+            "depth": 6,
+            "duration_ms": 0.00019999999999999998
+          },
+          {
+            "name": "FTaskBase::TryRetractAndExecute",
+            "depth": 6,
+            "duration_ms": 9.999999999999999e-05
+          },
+          {
+            "name": "FTaskBase::WaitImpl_StateChangeEvent_WaitFor",
+            "depth": 6,
+            "duration_ms": 9.840200000000001
+          },
+          {
+            "name": "Oversubscription",
+            "depth": 7,
+            "duration_ms": 9.838700000000001
+          },
+          {
+            "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+            "depth": 8,
+            "duration_ms": 0.0029000000000000002
+          }
+        ]
+      },
+      "gpu_queue_scopes": [
+        {
+          "queue": "GPU0-Compute0",
+          "scope": "ContrastAdaptiveShading",
+          "timer_ids": [
+            "7824"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1839,
+            "mean": 2.692943175638934,
+            "p50": 2.5958,
+            "p95": 3.8677,
+            "p99": 4.3336,
+            "max": 4.563000000000001
+          }
+        },
+        {
+          "queue": "GPU0-Compute0",
+          "scope": "Frame",
+          "timer_ids": [
+            "8312"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1839,
+            "mean": 16.271164817835782,
+            "p50": 16.430899999999998,
+            "p95": 18.1973,
+            "p99": 18.702199999999998,
+            "max": 19.6494
+          }
+        },
+        {
+          "queue": "GPU0-Compute0",
+          "scope": "LumenScreenProbeGather",
+          "timer_ids": [
+            "7722"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1838,
+            "mean": 4.026842383025027,
+            "p50": 4.0929,
+            "p95": 5.4190000000000005,
+            "p99": 5.661700000000001,
+            "max": 6.2023
+          }
+        },
+        {
+          "queue": "GPU0-Compute0",
+          "scope": "PrepareImageBasedVRS",
+          "timer_ids": [
+            "7823"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1839,
+            "mean": 2.714840619902121,
+            "p50": 2.6357,
+            "p95": 3.9261,
+            "p99": 4.351,
+            "max": 4.567
+          }
+        },
+        {
+          "queue": "GPU0-Compute0",
+          "scope": "TemporalSuperResolution(sg.AntiAliasingQuality=%d%s) %dx%d -> %dx%d",
+          "timer_ids": [
+            "7748"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1838,
+            "mean": 1.0696227421109903,
+            "p50": 1.0230000000000001,
+            "p95": 1.8709,
+            "p99": 2.4289,
+            "max": 3.2441
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "BasePass",
+          "timer_ids": [
+            "7723"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1838,
+            "mean": 1.6937625680087052,
+            "p50": 1.8344,
+            "p95": 3.0408000000000004,
+            "p99": 3.4151,
+            "max": 3.9959000000000002
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Frame",
+          "timer_ids": [
+            "8312"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1839,
+            "mean": 16.189413485589995,
+            "p50": 16.330199999999998,
+            "p95": 18.1326,
+            "p99": 18.6561,
+            "max": 19.6782
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "LumenReflections",
+          "timer_ids": [
+            "7739"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1838,
+            "mean": 0.8772992383025027,
+            "p50": 0.939,
+            "p95": 1.5575,
+            "p99": 2.3439,
+            "max": 2.7382
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "LumenScreenProbeGather",
+          "timer_ids": [
+            "7722"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1838,
+            "mean": 0.18719842219804134,
+            "p50": 0.050899999999999994,
+            "p95": 0.6917,
+            "p99": 1.1039999999999999,
+            "max": 2.3901
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::BasePass",
+          "timer_ids": [
+            "8147"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1838,
+            "mean": 0.1077557671381937,
+            "p50": 0.0531,
+            "p95": 0.6732,
+            "p99": 0.9853999999999999,
+            "max": 2.075
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::DrawGeometry",
+          "timer_ids": [
+            "8109"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3677,
+            "mean": 0.5983477019309219,
+            "p50": 0.6174999999999999,
+            "p95": 1.2851,
+            "p99": 2.2087,
+            "max": 2.5907
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::EmitDepthTargets",
+          "timer_ids": [
+            "8115"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1839,
+            "mean": 0.10206454594888527,
+            "p50": 0.0493,
+            "p95": 0.6625,
+            "p99": 1.0016999999999998,
+            "max": 2.2385
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::InitContext",
+          "timer_ids": [
+            "8107"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1839,
+            "mean": 0.08486296900489397,
+            "p50": 0.0297,
+            "p95": 0.64,
+            "p99": 1.0257,
+            "max": 2.0453
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::Readback",
+          "timer_ids": [
+            "8145"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1839,
+            "mean": 0.18907808591625883,
+            "p50": 0.1179,
+            "p95": 0.7314,
+            "p99": 1.1813,
+            "max": 2.2024000000000004
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::ShadeBinning",
+          "timer_ids": [
+            "8148"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1838,
+            "mean": 0.08647045701849837,
+            "p50": 0.044,
+            "p95": 0.6605,
+            "p99": 0.9236,
+            "max": 2.004
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::Streaming",
+          "timer_ids": [
+            "8104"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1839,
+            "mean": 0.19005932572050027,
+            "p50": 0.1189,
+            "p95": 0.7322,
+            "p99": 1.1820000000000002,
+            "max": 2.2032000000000003
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "Nanite::VisBuffer",
+          "timer_ids": [
+            "8106",
+            "8108"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3678,
+            "mean": 0.26195116911364874,
+            "p50": 0.1761,
+            "p95": 0.8509,
+            "p99": 1.9016,
+            "max": 2.4126
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "NaniteBasePass",
+          "timer_ids": [
+            "8114",
+            "8146"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3677,
+            "mean": 0.10801055208050041,
+            "p50": 0.053399999999999996,
+            "p95": 0.6723,
+            "p99": 1.004,
+            "max": 2.2401
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "PrePass %s %s",
+          "timer_ids": [
+            "7681"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1839,
+            "mean": 1.272935780315389,
+            "p50": 1.1401000000000001,
+            "p95": 2.3301,
+            "p99": 3.077,
+            "max": 3.5355
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "RenderVirtualShadowMaps",
+          "timer_ids": [
+            "7733",
+            "8116"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3676,
+            "mean": 0.5148541349292709,
+            "p50": 0.2938,
+            "p95": 1.2667,
+            "p99": 2.2445999999999997,
+            "max": 3.2891
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "ShadowDepths",
+          "timer_ids": [
+            "7728",
+            "7730"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 3676,
+            "mean": 0.8559835963003264,
+            "p50": 1.0507,
+            "p95": 2.0327,
+            "p99": 2.7483999999999997,
+            "max": 5.2940000000000005
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "TemporalSuperResolution",
+          "timer_ids": [
+            "7755"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1838,
+            "mean": 0.05086284004352557,
+            "p50": 0.0174,
+            "p95": 0.0307,
+            "p99": 0.7772,
+            "max": 1.9681
+          }
+        },
+        {
+          "queue": "GPU0-Graphics0",
+          "scope": "TemporalSuperResolution(sg.AntiAliasingQuality=%d%s) %dx%d -> %dx%d",
+          "timer_ids": [
+            "7748"
+          ],
+          "elapsed_ms_per_call": {
+            "n": 1838,
+            "mean": 1.748742219804135,
+            "p50": 1.8432,
+            "p95": 2.7668,
+            "p99": 3.3096,
+            "max": 4.6018
+          }
+        }
+      ]
+    }
+  ]
+}

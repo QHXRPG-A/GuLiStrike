@@ -1,0 +1,15 @@
+{
+  "current_source_matches_final_manifest": true,
+  "capture_to_final_changes": [
+    "Source/GuLiStrike/Commander/UI/GuLiCommanderMiniMapWidget.cpp"
+  ],
+  "capture_to_final_note": "Only split the minimap static trace name into two conditional static trace scopes; runtime drawing and scheduling logic unchanged. Final source rebuilt and 42 tests rerun.",
+  "protected_files_unchanged": [
+    "Config/DefaultEngine.ini",
+    "Config/DefaultGame.ini",
+    "Scripts/run_commander_move_stress.ps1"
+  ],
+  "modified_source_files": 18,
+  "added": 1569,
+  "removed": 1035
+}

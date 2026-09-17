@@ -1,0 +1,81 @@
+{
+  "Population": 1200,
+  "Clients": 2,
+  "HeadlessClients": false,
+  "Pattern": "shuttle",
+  "Engine": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64",
+  "CaptureNetwork": false,
+  "Duration": 40,
+  "CaptureTrace": false,
+  "Map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "Renderer": "1920x1080, Epic, screen percentage 100, VSync off, client uncapped/server 60 FPS cap, offscreen",
+  "Date": "2026-09-15T17:13:07.2960736+08:00",
+  "PartitionCpu": false,
+  "JoinBeforePopulation": true,
+  "Processes": [
+    {
+      "Role": "server",
+      "Pid": 36792,
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "/Game/Maps/LVL_CommanderMassPrototype",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-server",
+        "-NullRHI",
+        "-port=18091",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderPoseCompression\\protocol-cleanup\\integration-n1200-c2\\server.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,gs.Commander.MoveStress 1200 50 D:/UE5.7/test1/TestResults/CommanderPoseCompression/protocol-cleanup/integration-n1200-c2/server server 2 shuttle join-first\""
+      ]
+    },
+    {
+      "Role": "client1",
+      "Pid": 5928,
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "127.0.0.1:18091",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-RenderOffscreen",
+        "-windowed",
+        "-ResX=1920",
+        "-ResY=1080",
+        "-ForceRes",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderPoseCompression\\protocol-cleanup\\integration-n1200-c2\\client1.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,t.MaxFPS 0,gs.Commander.MoveStress 1200 40 D:/UE5.7/test1/TestResults/CommanderPoseCompression/protocol-cleanup/integration-n1200-c2/client1 client 2 shuttle join-first\""
+      ]
+    },
+    {
+      "Role": "client2",
+      "Pid": 14908,
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "127.0.0.1:18091",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-RenderOffscreen",
+        "-windowed",
+        "-ResX=1920",
+        "-ResY=1080",
+        "-ForceRes",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderPoseCompression\\protocol-cleanup\\integration-n1200-c2\\client2.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,t.MaxFPS 0,gs.Commander.MoveStress 1200 40 D:/UE5.7/test1/TestResults/CommanderPoseCompression/protocol-cleanup/integration-n1200-c2/client2 client 2 shuttle join-first\""
+      ]
+    }
+  ]
+}

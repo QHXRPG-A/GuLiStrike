@@ -1,0 +1,21 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "dirty": [
+      "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01",
+      "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Flash",
+      "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Ring",
+      "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Spark",
+      "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel",
+      "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel",
+      "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Pearl",
+      "/Game/GuLiStrike/Ship/Stylized/Rollback/BP_CombatAvatarFly01_BeforeCel"
+    ],
+    "ship_backup_exists": true,
+    "lodb": "Static Mesh Reduction Options\r\n\r\n**C++ Source:**\r\n\r\n- **Module**: StaticMeshEditor\r\n- **File**: StaticMeshEditorSubsystemHelpers.h\r\n\r\n**Editor Properties:** (see get_editor_property/set_editor_property)\r\n\r\n- ``auto_compute_lod_screen_size`` (bool):  [Read-Write] If true, the screen sizes at which LODs swap are computed automatically\r\n  note: that this is displayed as 'Auto Compute LOD Distances' in the UI\r\n- ``reduction_settings`` (Array[StaticMeshReductionSettings]):  [Read-Write] Array of reduction settings to apply to each new LOD mesh.",
+    "simulation_library": [
+      "NiagaraSimCacheFunctionLibrary"
+    ]
+  }
+}

@@ -1,0 +1,67 @@
+{
+  "blueprints": [
+    {
+      "path": "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip",
+      "components": [
+        {
+          "name": "Hull Mesh",
+          "mesh": "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/StaticMeshes/bsg_virgon_express_carina.bsg_virgon_express_carina",
+          "materials": [
+            "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Credits_EVE-Kaneda_NepsterCZ.Credits_EVE-Kaneda_NepsterCZ",
+            "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge.Flattop_bridge",
+            "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_bridge_window.Flattop_bridge_window",
+            "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_engineering_pod.Flattop_engineering_pod",
+            "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_bay.Flattop_hull_bay",
+            "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_hull_structure.Flattop_hull_structure",
+            "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_bottom.Flattop_machinery_bottom",
+            "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_machinery_top.Flattop_machinery_top",
+            "/Game/Assets/Arma/CombatAvatarFly/bsg_virgon_express_carina/Materials/Flattop_signal_lights.Flattop_signal_lights"
+          ]
+        }
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01",
+      "components": [
+        {
+          "name": "Hull Mesh",
+          "mesh": "/Game/Assets/Arma/CombatAvatarFly-01/StaticMeshes/SM_Dreadnought_Hull.SM_Dreadnought_Hull",
+          "materials": [
+            "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtVengeanceBlue.ScifiDreadnoughtVengeanceBlue"
+          ]
+        }
+      ]
+    }
+  ],
+  "actors": [],
+  "materials": [
+    {
+      "slot": "ScifiDreadnoughtVengeanceBlue",
+      "material": "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtVengeanceBlue.ScifiDreadnoughtVengeanceBlue",
+      "textures": {
+        "BaseColorTexture": "/Game/Assets/Arma/CombatAvatarFly-01/Textures/scifi_dreadnought_vengeance_texture_0.scifi_dreadnought_vengeance_texture_0",
+        "MetallicRoughnessTexture": "/Game/Assets/Arma/CombatAvatarFly-01/Textures/scifi_dreadnought_vengeance_texture_1.scifi_dreadnought_vengeance_texture_1",
+        "NormalTexture": "/Game/Assets/Arma/CombatAvatarFly-01/Textures/scifi_dreadnought_vengeance_texture_3.scifi_dreadnought_vengeance_texture_3",
+        "OcclusionTexture": "/Game/Assets/Arma/CombatAvatarFly-01/Textures/scifi_dreadnought_vengeance_texture_1.scifi_dreadnought_vengeance_texture_1",
+        "SpecularTexture": "/InterchangeAssets/gltf/Textures/T_White_srgb.T_White_srgb",
+        "EmissiveTexture": "/Game/Assets/Arma/CombatAvatarFly-01/Textures/scifi_dreadnought_vengeance_texture_2.scifi_dreadnought_vengeance_texture_2",
+        "IridescenceTexture": "/InterchangeAssets/gltf/Textures/T_White_srgb.T_White_srgb",
+        "IridescenceThicknessTexture": "/InterchangeAssets/gltf/Textures/T_White_srgb.T_White_srgb",
+        "AnisotropyTexture": "/InterchangeAssets/gltf/Textures/T_Anisotropy_Direction_Linear.T_Anisotropy_Direction_Linear"
+      }
+    }
+  ],
+  "source_mesh": "/Game/Assets/Arma/CombatAvatarFly-01/StaticMeshes/SM_Dreadnought_Hull.SM_Dreadnought_Hull",
+  "bounds": "<Struct 'Box' (0x0000018965F9D8C0) {min: {x: -19378.037109, y: -30861.472656, z: -6055.144531}, max: {x: 19378.041016, y: 59184.937500, z: 7914.175781}, is_valid: True}>",
+  "import_sources": [
+    "D:/UE5.7/test1/Saved/exports/shipparts/SM_Dreadnought_Hull.fbx"
+  ],
+  "fbx": "D:\\UE5.7\\test1\\ArtSource\\Ships\\ShipStylizedStudy_20260916\\Source\\SM_Dreadnought_Hull.fbx",
+  "exported_textures": {
+    "BaseColorTexture": "D:\\UE5.7\\test1\\ArtSource\\Ships\\ShipStylizedStudy_20260916\\Source\\BaseColorTexture.tga",
+    "MetallicRoughnessTexture": "D:\\UE5.7\\test1\\ArtSource\\Ships\\ShipStylizedStudy_20260916\\Source\\MetallicRoughnessTexture.tga",
+    "NormalTexture": "D:\\UE5.7\\test1\\ArtSource\\Ships\\ShipStylizedStudy_20260916\\Source\\NormalTexture.tga",
+    "EmissiveTexture": "D:\\UE5.7\\test1\\ArtSource\\Ships\\ShipStylizedStudy_20260916\\Source\\EmissiveTexture.tga"
+  },
+  "success": true
+}

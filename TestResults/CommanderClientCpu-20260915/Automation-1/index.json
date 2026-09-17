@@ -1,0 +1,997 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "A34B5EAE4893281433DC76BA77FFFCBE",
+			"instanceName": "DESKTOP-6D3B0FC-10264",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9445] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.15-15.14.40",
+	"succeeded": 40,
+	"succeededWithWarnings": 0,
+	"failed": 2,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 4.1952204704284668,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AckBeforeSnapshot",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.AckBeforeSnapshot",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.008427400141954422,
+			"dateTime": "2026.09.15-15.14.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FullPayloadIdentity",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.FullPayloadIdentity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.008387099951505661,
+			"dateTime": "2026.09.15-15.14.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "IndependentDependencies",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.IndependentDependencies",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0084598995745182037,
+			"dateTime": "2026.09.15-15.14.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MoveAckBeforePrunedSnapshot",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.MoveAckBeforePrunedSnapshot",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0084104984998703003,
+			"dateTime": "2026.09.15-15.14.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingMoveSerializesLatestClick",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.PendingMoveSerializesLatestClick",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0083563029766082764,
+			"dateTime": "2026.09.15-15.14.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RejectionCancels",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.RejectionCancels",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0082192011177539825,
+			"dateTime": "2026.09.15-15.14.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SnapshotBeforeAck",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.SnapshotBeforeAck",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0082524009048938751,
+			"dateTime": "2026.09.15-15.14.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AckRoutingAndFifo",
+			"fullTestPath": "GuLiStrike.Commander.Network.AckRoutingAndFifo",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0085554011166095734,
+			"dateTime": "2026.09.15-15.14.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BootstrapMatchEpochLifecycle",
+			"fullTestPath": "GuLiStrike.Commander.Network.BootstrapMatchEpochLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0081261023879051208,
+			"dateTime": "2026.09.15-15.14.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BootstrapSnapshotGate",
+			"fullTestPath": "GuLiStrike.Commander.Network.BootstrapSnapshotGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0082332007586956024,
+			"dateTime": "2026.09.15-15.14.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DynamicCohortContract",
+			"fullTestPath": "GuLiStrike.Commander.Network.DynamicCohortContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0082863979041576385,
+			"dateTime": "2026.09.15-15.14.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FloatHealthContract",
+			"fullTestPath": "GuLiStrike.Commander.Network.FloatHealthContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 1.4044169187545776,
+			"dateTime": "2026.09.15-15.14.35",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MoveEndpointFastArrayContract",
+			"fullTestPath": "GuLiStrike.Commander.Network.MoveEndpointFastArrayContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0096764974296092987,
+			"dateTime": "2026.09.15-15.14.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NetworkGateEvidence",
+			"fullTestPath": "GuLiStrike.Commander.Network.NetworkGateEvidence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0089052990078926086,
+			"dateTime": "2026.09.15-15.14.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoseChunkContract",
+			"fullTestPath": "GuLiStrike.Commander.Network.PoseChunkContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0093537978827953339,
+			"dateTime": "2026.09.15-15.14.36",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoseHistoryExpiryAndCleanup",
+			"fullTestPath": "GuLiStrike.Commander.Network.PoseHistoryExpiryAndCleanup",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.016759999096393585,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoseLossReorderingAndSession",
+			"fullTestPath": "GuLiStrike.Commander.Network.PoseLossReorderingAndSession",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0093600004911422729,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoseMatchEpochGate",
+			"fullTestPath": "GuLiStrike.Commander.Network.PoseMatchEpochGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0085896998643875122,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PosePredictionAndFields",
+			"fullTestPath": "GuLiStrike.Commander.Network.PosePredictionAndFields",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0084202997386455536,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoseQuantization",
+			"fullTestPath": "GuLiStrike.Commander.Network.PoseQuantization",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0080294013023376465,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PresentationServerClock",
+			"fullTestPath": "GuLiStrike.Commander.Network.PresentationServerClock",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0082850009202957153,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RosterCache",
+			"fullTestPath": "GuLiStrike.Commander.Network.RosterCache",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.013270501047372818,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SoldierFastArrayContract",
+			"fullTestPath": "GuLiStrike.Commander.Network.SoldierFastArrayContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0082319006323814392,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SoldierSnapshotNotification",
+			"fullTestPath": "GuLiStrike.Commander.Network.SoldierSnapshotNotification",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.013402197510004044,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MaterialContract",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.CrowdAsset.MaterialContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0082062035799026489,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MeshContract",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.CrowdAsset.MeshContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0081424973905086517,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WM01Contract",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.CrowdAsset.WM01Contract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0083146989345550537,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Cache",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.MiniMap.Cache",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.30379518866539001,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Showing widget restores visibility' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\Presentation\\Tests\\GuLiCommanderMiniMapTransformTests.cpp",
+					"lineNumber": 55,
+					"timestamp": "2026.09.15-15.14.37"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CardinalHeadings",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.MiniMap.CardinalHeadings",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0082204006612300873,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RotatedCornerRejection",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.MiniMap.RotatedCornerRejection",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0090698003768920898,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StaticPanelAndClipping",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.MiniMap.StaticPanelAndClipping",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0082808993756771088,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldScreenRoundTrip",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.MiniMap.WorldScreenRoundTrip",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0082084983587265015,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Contract",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.RingAsset.Contract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.028684098273515701,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClientMaintenance",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.ClientMaintenance",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 2.0923545360565186,
+			"dateTime": "2026.09.15-15.14.37",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogOutputDevice: \n\nScript Stack (0 frames) :\n",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.37"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: === Handled ensure: ===",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: ",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: Ensure condition failed: EntityCollection.GetArchetype().IsValid() && EntityCollection.IsUpToDate()  [File:D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\MassEntity\\Private\\MassEntityManager.cpp] [Line: 895] ",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: Provided collection is out of data",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: Stack: ",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x0000018be61ceb7b UnrealEditor-MassEntity.dll!`FMassEntityManager::BatchDestroyEntityChunks'::`51'::<lambda_1>::operator()() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\MassEntity\\Private\\MassEntityManager.cpp:895]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x0000018be614a8ad UnrealEditor-MassEntity.dll!FMassEntityManager::BatchDestroyEntityChunks() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\MassEntity\\Private\\MassEntityManager.cpp:895]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ffc38728145 UnrealEditor-GuLiStrike.dll!FMassCommandDestroyEntities::Run() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\MassEntity\\Public\\MassCommands.h:235]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x0000018be617094e UnrealEditor-MassEntity.dll!FMassCommandBuffer::Flush() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\MassEntity\\Private\\MassCommandBuffer.cpp:211]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x0000018be6170e02 UnrealEditor-MassEntity.dll!FMassEntityManager::FlushCommands() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\MassEntity\\Private\\MassEntityManager.cpp:2064]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ffc38734668 UnrealEditor-GuLiStrike.dll!FGuLiCommanderClientMaintenanceTest::RunTest() [D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\Presentation\\Tests\\GuLiCommanderPresentationPerformanceTests.cpp:109]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ffc91f35856 UnrealEditor-Core.dll!FAutomationTestFramework::InternalStartTest() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Core\\Private\\Misc\\AutomationTest.cpp:1311]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ffc91f3f93f UnrealEditor-Core.dll!FAutomationTestFramework::StartTestByName() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Core\\Private\\Misc\\AutomationTest.cpp:649]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x0000018c2c570271 UnrealEditor-AutomationWorker.dll!FAutomationWorkerModule::HandleRunTestsMessage() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\AutomationWorker\\Private\\AutomationWorkerModule.cpp:699]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x0000018c2c56f1db UnrealEditor-AutomationWorker.dll!TRawMessageHandler<FAutomationWorkerRunTests,FAutomationWorkerModule>::HandleMessage() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\MessagingCommon\\Public\\MessageHandlers.h:103]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x0000018c2c5736ea UnrealEditor-AutomationWorker.dll!FMessageEndpoint::ProcessInbox() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\MessagingCommon\\Public\\MessageEndpoint.h:449]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x0000018c2c561a6c UnrealEditor-AutomationWorker.dll!FAutomationWorkerModule::Tick() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\AutomationWorker\\Private\\AutomationWorkerModule.cpp:100]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ff76bfe5872 UnrealEditor-Cmd.exe!FEngineLoop::Tick() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\LaunchEngineLoop.cpp:6012]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ff76c000bfe UnrealEditor-Cmd.exe!GuardedMain() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\Launch.cpp:190]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ff76c000d0a UnrealEditor-Cmd.exe!GuardedMainWrapper() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\Windows\\LaunchWindows.cpp:123]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ff76c004590 UnrealEditor-Cmd.exe!LaunchWindowsStartup() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\Windows\\LaunchWindows.cpp:277]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ff76c015bd4 UnrealEditor-Cmd.exe!WinMain() [D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Launch\\Private\\Windows\\LaunchWindows.cpp:334]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ff76c0182e6 UnrealEditor-Cmd.exe!__scrt_common_main_seh() [D:\\a\\_work\\1\\s\\src\\vctools\\crt\\vcstartup\\src\\startup\\exe_common.inl:288]",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ffd789dcd87 KERNEL32.DLL!UnknownFunction []",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: [Callstack] 0x00007ffd79a6caec ntdll.dll!UnknownFunction []",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "LogOutputDevice: ",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.15-15.14.38"
+				}
+			],
+			"warnings": 1,
+			"errors": 26,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ConsoleWorldIsolation",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.ConsoleWorldIsolation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.018457800149917603,
+			"dateTime": "2026.09.15-15.14.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MoveEndpointHUDPolicy",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.MoveEndpointHUDPolicy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0080747008323669434,
+			"dateTime": "2026.09.15-15.14.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MoveEndpointScreenClip",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.MoveEndpointScreenClip",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0085017010569572449,
+			"dateTime": "2026.09.15-15.14.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PerformanceRegistry",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.PerformanceRegistry",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0080176033079624176,
+			"dateTime": "2026.09.15-15.14.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnitTypeBatchRouting",
+			"fullTestPath": "GuLiStrike.Commander.Presentation.UnitTypeBatchRouting",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.018068898469209671,
+			"dateTime": "2026.09.15-15.14.39",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Activity",
+			"fullTestPath": "GuLiStrike.Commander.UI.HealthBar.Activity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.016066201031208038,
+			"dateTime": "2026.09.15-15.14.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SizingPolicy",
+			"fullTestPath": "GuLiStrike.Commander.UI.HealthBar.SizingPolicy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0079638995230197906,
+			"dateTime": "2026.09.15-15.14.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VisibilityPolicy",
+			"fullTestPath": "GuLiStrike.Commander.UI.HealthBar.VisibilityPolicy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A34B5EAE4893281433DC76BA77FFFCBE"
+			],
+			"duration": 0.0083774998784065247,
+			"dateTime": "2026.09.15-15.14.40",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

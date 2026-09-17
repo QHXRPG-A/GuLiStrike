@@ -19,6 +19,7 @@
 #include "EngineUtils.h"
 #include "DrawDebugHelpers.h"
 #include "NavigationSystem.h"
+#include "NavMesh/RecastNavMesh.h"
 #include "Engine/StaticMesh.h"
 #include "Subsystems/SubsystemCollection.h"
 
@@ -27,6 +28,27 @@ DEFINE_LOG_CATEGORY_STATIC(LogGuLiResources, Log, All);
 namespace
 {
 	constexpr TCHAR CanonicalResourceMapPackage[] = TEXT("/Game/Maps/LVL_CommanderMassPrototype");
+
+	/** Keep the individual dirty bounds, and let Recast coalesce overlapping tiles once spawning finishes. */
+	class FResourceNavigationBuildBatch
+	{
+	public:
+		explicit FResourceNavigationBuildBatch(UWorld* World)
+			: Navigation(FNavigationSystem::GetCurrent<UNavigationSystemV1>(World))
+		{
+			bOwnsLock = Navigation && !Navigation->IsNavigationBuildingLocked(ENavigationBuildLock::Custom);
+			if (bOwnsLock) Navigation->AddNavigationBuildLock(ENavigationBuildLock::Custom);
+		}
+		~FResourceNavigationBuildBatch()
+		{
+			if (bOwnsLock)
+				Navigation->RemoveNavigationBuildLock(ENavigationBuildLock::Custom,
+					UNavigationSystemV1::ELockRemovalRebuildAction::NoRebuild);
+		}
+	private:
+		UNavigationSystemV1* Navigation = nullptr;
+		bool bOwnsLock = false;
+	};
 
 #if !UE_BUILD_SHIPPING
 	TAutoConsoleVariable<int32> CVarDrawResourceBoard(
@@ -252,6 +274,24 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 {
 	UWorld* World = GetWorld();
 	if (!World || !MapDefinition || !EconomyConfig || bAuthorityActorsSpawned) return false;
+	const FResourceNavigationBuildBatch NavigationBatch(World);
+	if (const UNavigationSystemV1* Navigation = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+		Navigation && Navigation->GetNumRunningBuildTasks() == 0)
+	{
+		// UE restricts fully asynchronous gathering to one tile worker. Before input is
+		// enabled, gather initial dirty geometry on the game thread and rasterize in parallel.
+		// Never switch modes underneath an already running tile task.
+		for (TActorIterator<ARecastNavMesh> It(World); It; ++It)
+		{
+			if (It->bDoFullyAsyncNavDataGathering)
+			{
+				InitialSynchronousGatheringNavData.Add(*It);
+				It->bDoFullyAsyncNavDataGathering = false;
+			}
+		}
+		UE_LOG(LogGuLiResources, Display, TEXT("[GULI_NAV_STARTUP] initial_dynamic_updates_parallel nav_data=%d"),
+			InitialSynchronousGatheringNavData.Num());
+	}
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
 
@@ -316,15 +356,17 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 	check(DynamicObstacles);
 	for (const FGuLiResourceClusterDefinition& Cluster : MapDefinition->Clusters)
 	{
-		AGuLiOreClusterObstacleActor* Obstacle = World->SpawnActor<AGuLiOreClusterObstacleActor>(
+		const FTransform ObstacleTransform(FRotator::ZeroRotator, Cluster.Center);
+		AGuLiOreClusterObstacleActor* Obstacle = World->SpawnActorDeferred<AGuLiOreClusterObstacleActor>(
 			AGuLiOreClusterObstacleActor::StaticClass(),
-			FTransform(FRotator::ZeroRotator, Cluster.Center), Params);
+			ObstacleTransform, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 		if (!Obstacle)
 		{
 			InitializationError = TEXT("Could not spawn all 240 cluster obstacles.");
 			return false;
 		}
 		Obstacle->InitializeObstacle(Cluster.ClusterId, Cluster.ObstacleRadiusCentimeters);
+		Obstacle->FinishSpawning(ObstacleTransform);
 		ClusterObstacles.Add(Obstacle);
 		ClusterObstacleHandles.Add(DynamicObstacles->RegisterObstacle(
 			Cluster.Center, Cluster.ObstacleRadiusCentimeters));
@@ -366,6 +408,7 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 	}
 	RefreshEncirclement();
 	bAuthorityActorsSpawned = true;
+	NavigationWaitStartSeconds = FPlatformTime::Seconds();
 	UE_LOG(LogGuLiResources, Display,
 		TEXT("Initialized 25 territories, 240 ore clusters, 6240 nodes, 24 HISMs, 2 factories and 2 miners; waiting for dynamic navigation."));
 	return true;
@@ -441,11 +484,16 @@ void UGuLiResourceWorldSubsystem::UpdateNavigationReadiness()
 	if (bRuntimeReady || !bAuthorityActorsSpawned || !WorldState) return;
 	if (!UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld()))
 	{
+		for (const TWeakObjectPtr<ARecastNavMesh>& Navigation : InitialSynchronousGatheringNavData)
+			if (Navigation.IsValid()) Navigation->bDoFullyAsyncNavDataGathering = true;
+		InitialSynchronousGatheringNavData.Reset();
 		UGuLiTeamEconomySubsystem* Economy = GetWorld()->GetSubsystem<UGuLiTeamEconomySubsystem>();
 		check(Economy && bEconomyMatchStarted);
 		Economy->OpenTransactions();
 		bRuntimeReady = true;
 		WorldState->SetAuthorityReady(true);
+		UE_LOG(LogGuLiResources, Display, TEXT("[GULI_NAV_STARTUP] initial_dynamic_updates_ready wait_s=%.6f"),
+			FPlatformTime::Seconds() - NavigationWaitStartSeconds);
 		UE_LOG(LogGuLiResources, Display,
 			TEXT("Resource world and navigation are Ready; Mass spawning and Commander input may proceed."));
 	}

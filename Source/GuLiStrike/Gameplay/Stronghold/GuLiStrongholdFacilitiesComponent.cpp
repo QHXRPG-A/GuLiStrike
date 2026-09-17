@@ -37,23 +37,54 @@ void UGuLiStrongholdFacilitiesComponent::DeliverPendingSlots()
 	const auto& Lifecycle = *GetOwner()->FindComponentByClass<UGuLiBuildingLifecycleComponent>();
 	if (!GuLiResources::IsPlayableTeam(Lifecycle.GetTeam())) return;
 	bool bPending = false;
+	bool bSearching = false;
 	for (int32 Index = 0; Index < Slots.Num(); ++Index)
 	{
 		auto& Slot = Slots[Index];
 		if (Slot.bDelivered) continue;
-		// Fixed east/north/west/south slots stay inside the map's surrounding ore belt.
-		const double Angle = Index * UE_HALF_PI;
-		const FVector Position = Lifecycle.GetGroundLocation() + FVector(FMath::Cos(Angle), FMath::Sin(Angle),0) * 7000;
-		FHitResult Ground;
-		FCollisionQueryParams Query(SCENE_QUERY_STAT(GuLiGiftGround), false, GetOwner());
-		if (!GetWorld()->LineTraceSingleByChannel(Ground, Position + FVector(0,0,50000), Position - FVector(0,0,50000), ECC_WorldStatic, Query))
-		{ bPending = true; continue; }
-		Slot.Building = GuLiBuildings::Spawn(*GetWorld(), Slot.DefinitionId, Lifecycle.GetTeam(),
-			FTransform(FRotator(0, FMath::RadiansToDegrees(Angle), 0), Ground.ImpactPoint), *Ground.GetActor(),
-			Lifecycle.GetState().TerritoryIndex, EGuLiBuildingOrigin::Gift, true);
-		Slot.bDelivered = IsValid(Slot.Building);
+		const TArray<FTransform> Candidates = GuLiBuildings::GetGiftPlacementCandidates(Lifecycle.GetGroundLocation(), Index);
+		int32& Cursor = PlacementSearchCursor.FindOrAdd(Index);
+		FString Failure;
+		// Do not turn one capture into a long game-thread placement/navigation burst.
+		// Resume the deterministic search next tick, and preserve undelivered slots.
+		const int32 End = FMath::Min(Cursor + 4, Candidates.Num());
+		for (; Cursor < End; ++Cursor)
+		{
+			FTransform GroundTransform;
+			AActor* SupportingActor = nullptr;
+			if (!GuLiBuildings::ProjectPlacementCandidate(*GetWorld(), Candidates[Cursor], GetOwner(), GroundTransform, SupportingActor))
+			{
+				Failure = TEXT("No valid supporting terrain at the candidate center.");
+				continue;
+			}
+			Slot.Building = GuLiBuildings::Spawn(*GetWorld(), Slot.DefinitionId, Lifecycle.GetTeam(), GroundTransform,
+				*SupportingActor, Lifecycle.GetState().TerritoryIndex, EGuLiBuildingOrigin::Gift, true, FGuid(), &Failure);
+			Slot.bDelivered = IsValid(Slot.Building);
+			if (Slot.bDelivered)
+			{
+				UE_LOG(LogTemp, Display, TEXT("[GULI_GIFT_PLACEMENT] Delivered owner=%s slot=%d definition=%d candidate=%d location=%s yaw=%.0f"),
+					*GetOwner()->GetName(), Index, Slot.DefinitionId, Cursor, *GroundTransform.GetLocation().ToCompactString(), GroundTransform.Rotator().Yaw);
+				LastPlacementFailure.Remove(Index);
+				break;
+			}
+		}
+		if (!Slot.bDelivered)
+		{
+			if (Cursor >= Candidates.Num())
+			{
+				Cursor = 0;
+				if (!LastPlacementFailure.Contains(Index) || LastPlacementFailure[Index] != Failure)
+				{
+					UE_LOG(LogTemp, Warning, TEXT("[GULI_GIFT_PLACEMENT] Pending owner=%s slot=%d definition=%d: %s"),
+						*GetOwner()->GetName(), Index, Slot.DefinitionId, *Failure);
+					LastPlacementFailure.Add(Index, Failure);
+				}
+			}
+			else bSearching = true;
+		}
 		bPending |= !Slot.bDelivered;
 	}
+	SetComponentTickInterval(bSearching ? 0.2f : 1.0f);
 	SetComponentTickEnabled(bPending);
 	GetOwner()->ForceNetUpdate();
 }

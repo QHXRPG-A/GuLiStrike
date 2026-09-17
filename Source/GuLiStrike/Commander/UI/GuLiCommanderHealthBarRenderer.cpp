@@ -1,4 +1,4 @@
-// Copyright Epic Games, Inc. All Rights Reserved.
+﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
 
@@ -16,6 +16,7 @@
 #include "Engine/StaticMesh.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "TimerManager.h"
 #include "GameFramework/Pawn.h"
 #include "HAL/PlatformTime.h"
 #include "Materials/MaterialInterface.h"
@@ -45,21 +46,7 @@ namespace GuLiCommanderHealthBars
 		return Hidden;
 	}
 
-	bool AreTransformsEqual(const TArray<FTransform>& Lhs, const TArray<FTransform>& Rhs)
-	{
-		if (Lhs.Num() != Rhs.Num())
-		{
-			return false;
-		}
-		for (int32 Index = 0; Index < Lhs.Num(); ++Index)
-		{
-			if (!Lhs[Index].Equals(Rhs[Index], 0.01f))
-			{
-				return false;
-			}
-		}
-		return true;
-	}
+
 }
 
 AGuLiCommanderHealthBarRenderer::AGuLiCommanderHealthBarRenderer()
@@ -69,7 +56,7 @@ AGuLiCommanderHealthBarRenderer::AGuLiCommanderHealthBarRenderer()
 	SetReplicateMovement(false);
 	SetActorEnableCollision(false);
 	PrimaryActorTick.bCanEverTick = true;
-	PrimaryActorTick.bStartWithTickEnabled = true;
+	PrimaryActorTick.bStartWithTickEnabled = false;
 	PrimaryActorTick.TickInterval = 0.0f;
 	PrimaryActorTick.TickGroup = TG_PostUpdateWork;
 
@@ -111,10 +98,15 @@ void AGuLiCommanderHealthBarRenderer::BeginPlay()
 
 	ResolveSoftAssets();
 	ResolveRuntimeDependencies();
+	FTimerManagerTimerParameters TimerParameters;
+	TimerParameters.bLoop = true; TimerParameters.bMaxOncePerFrame = true;
+	GetWorld()->GetTimerManager().SetTimer(MaintenanceTimer, this, &ThisClass::MaintainActivity, 0.1f, TimerParameters);
+	MaintainActivity();
 }
 
 void AGuLiCommanderHealthBarRenderer::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	if (GetWorld()) GetWorld()->GetTimerManager().ClearTimer(MaintenanceTimer);
 	UnbindRuntimeDependencies();
 	Super::EndPlay(EndPlayReason);
 }
@@ -126,12 +118,6 @@ void AGuLiCommanderHealthBarRenderer::Tick(const float DeltaSeconds)
 	CSV_SCOPED_TIMING_STAT(GuLiCommanderHealthBars, UpdateInstances);
 
 	const double StartSeconds = FPlatformTime::Seconds();
-	ResolveRuntimeDependencies();
-	if (const AGuLiSoldierStateReplicator* Replicator = StateReplicator.Get())
-	{
-		EnsureStableInstancePool(*Replicator);
-	}
-	RefreshActorInstancePool();
 	RebuildLocalInstances();
 	LastUpdateMilliseconds = (FPlatformTime::Seconds() - StartSeconds) * 1000.0;
 	CSV_CUSTOM_STAT(
@@ -269,14 +255,14 @@ void AGuLiCommanderHealthBarRenderer::BindNetSync(UGuLiCommanderNetSyncComponent
 	}
 	SelectionChangedHandle.Reset();
 	BoundNetSync = InNetSync;
-	SelectedSoldiers.Reset();
+	HandleSelectionChanged(FGuLiCommanderSelectionState());
 
 	if (InNetSync)
 	{
 		SelectionChangedHandle = InNetSync->OnSelectionChanged.AddUObject(
 			this,
 			&AGuLiCommanderHealthBarRenderer::HandleSelectionChanged);
-		RebuildSelectedSoldiers(InNetSync->GetSelectionState());
+		HandleSelectionChanged(InNetSync->GetSelectionState());
 	}
 }
 
@@ -290,16 +276,20 @@ void AGuLiCommanderHealthBarRenderer::BindStateReplicator(
 
 	if (AGuLiSoldierStateReplicator* Previous = StateReplicator.Get())
 	{
-		Previous->OnSoldierStatesChanged.Remove(SoldierStatesChangedHandle);
+		Previous->OnRosterDelta.Remove(SoldierStatesChangedHandle);
 	}
 	SoldierStatesChangedHandle.Reset();
 	StateReplicator = InReplicator;
+	if (!InReplicator)
+	{
+		for (const auto& Pair : SoldierInstanceIndices) ReleaseInstanceSlot(Pair.Value);
+		SoldierInstanceIndices.Reset(); ActiveSoldierStates.Reset(); ActiveHitStartTimes.Reset();
+		PendingActivityIds.Reset(); UpdateTickActivity();
+	}
 
 	if (InReplicator)
 	{
-		SoldierStatesChangedHandle = InReplicator->OnSoldierStatesChanged.AddUObject(
-			this,
-			&AGuLiCommanderHealthBarRenderer::HandleSoldierStatesChanged);
+		SoldierStatesChangedHandle = InReplicator->OnRosterDelta.AddUObject(this, &ThisClass::HandleRosterDelta);
 		EnsureStableInstancePool(*InReplicator);
 	}
 }
@@ -315,7 +305,9 @@ void AGuLiCommanderHealthBarRenderer::BindPresentationActor(
 	if (AGuLiCommanderPresentationActor* Previous = PresentationActor.Get())
 	{
 		RemoveTickPrerequisiteActor(Previous);
+		Previous->OnVisualStatesChanged.Remove(VisualStatesChangedHandle);
 	}
+	VisualStatesChangedHandle.Reset();
 	PresentationActor = InPresentationActor;
 	CachedSoldierMeshes.Reset();
 	SoldierHeightOffsetsCentimeters.Reset();
@@ -323,6 +315,7 @@ void AGuLiCommanderHealthBarRenderer::BindPresentationActor(
 	if (InPresentationActor)
 	{
 		AddTickPrerequisiteActor(InPresentationActor);
+		VisualStatesChangedHandle = InPresentationActor->OnVisualStatesChanged.AddUObject(this, &ThisClass::HandleVisualStatesChanged);
 	}
 }
 
@@ -332,20 +325,19 @@ void AGuLiCommanderHealthBarRenderer::UnbindRuntimeDependencies()
 	BindStateReplicator(nullptr);
 	BindPresentationActor(nullptr);
 	LocalController.Reset();
+	if (auto* Feedback = BoundFeedback.Get()) Feedback->OnActorHealthBarChanged.Remove(ActorBarsChangedHandle);
+	for (auto& Pair : ActorHealthProviders) if (auto* Health = Pair.Value.Get()) Health->OnHealthChanged.RemoveDynamic(this, &ThisClass::HandleActorHealthChanged);
+	ActorHealthProviders.Reset(); BoundFeedback.Reset();
 }
 
 void AGuLiCommanderHealthBarRenderer::HandleSelectionChanged(
 	const FGuLiCommanderSelectionState& Selection)
 {
+	TSet<FGuLiSoldierId> Affected = SelectedSoldiers;
 	RebuildSelectedSoldiers(Selection);
-}
-
-void AGuLiCommanderHealthBarRenderer::HandleSoldierStatesChanged(const uint32 SnapshotRevision)
-{
-	if (const AGuLiSoldierStateReplicator* Replicator = StateReplicator.Get())
-	{
-		EnsureStableInstancePool(*Replicator);
-	}
+	Affected.Append(SelectedSoldiers);
+	for (auto Id : Affected) RefreshSoldierActivity(Id);
+	UpdateTickActivity();
 }
 
 void AGuLiCommanderHealthBarRenderer::RebuildSelectedSoldiers(
@@ -370,58 +362,134 @@ void AGuLiCommanderHealthBarRenderer::RebuildSelectedSoldiers(
 	}
 }
 
-void AGuLiCommanderHealthBarRenderer::EnsureStableInstancePool(
-	const AGuLiSoldierStateReplicator& Replicator)
+void AGuLiCommanderHealthBarRenderer::EnsureStableInstancePool(const AGuLiSoldierStateReplicator& Replicator)
 {
-	if (!HealthBarInstances)
+	// Only a source transition calls this. Membership is independent of roster size.
+	TArray<FGuLiSoldierId> Existing;
+	SoldierInstanceIndices.GetKeys(Existing);
+	for (auto Id : Existing) if (const auto* Index = SoldierInstanceIndices.Find(Id)) ReleaseInstanceSlot(*Index);
+	SoldierInstanceIndices.Reset(); ActiveSoldierStates.Reset(); ActiveHitStartTimes.Reset(); PendingActivityIds.Reset();
+	for (auto Id : SelectedSoldiers) RefreshSoldierActivity(Id);
+	UpdateTickActivity();
+}
+
+void AGuLiCommanderHealthBarRenderer::RefreshSoldierActivity(FGuLiSoldierId Id)
+{
+	const auto* State = StateReplicator.IsValid() ? StateReplicator->FindSoldierState(Id) : nullptr;
+	const float HitStart = PresentationActor.IsValid() ? PresentationActor->GetSoldierHitStartTime(Id) : -1000.0f;
+	const bool bSelected = SelectedSoldiers.Contains(Id);
+	const float Now = GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0f;
+	if (!State || !State->IsAlive() || State->bPhased
+		|| (!bSelected && UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - HitStart) <= 0.0f))
 	{
+		if (const int32* Index = SoldierInstanceIndices.Find(Id)) ReleaseInstanceSlot(*Index);
+		SoldierInstanceIndices.Remove(Id); ActiveSoldierStates.Remove(Id); ActiveHitStartTimes.Remove(Id); PendingActivityIds.Remove(Id);
 		return;
 	}
-
-	TArray<const FGuLiSoldierStateItem*> OrderedStates;
-	OrderedStates.Reserve(Replicator.GetItems().Num());
-	for (const FGuLiSoldierStateItem& State : Replicator.GetItems())
+	int32* Index = SoldierInstanceIndices.Find(Id);
+	if (!Index)
 	{
-		if (State.SoldierId.IsValid() && !SoldierInstanceIndices.Contains(State.SoldierId))
-		{
-			OrderedStates.Add(&State);
-		}
+		const int32 Slot = AllocateInstanceSlot();
+		if (Slot == INDEX_NONE) { PendingActivityIds.Add(Id); return; }
+		Index = &SoldierInstanceIndices.Add(Id, Slot);
 	}
-	OrderedStates.Sort([](const FGuLiSoldierStateItem& Lhs, const FGuLiSoldierStateItem& Rhs)
-	{
-		return Lhs.SoldierId < Rhs.SoldierId;
-	});
+	PendingActivityIds.Remove(Id);
+	ActiveSoldierStates.Add(Id, *State);
+	ActiveHitStartTimes.Add(Id, HitStart);
+	ResolveSoldierHeightOffset(State->UnitTypeId);
+}
 
-	bool bPoolExtended = false;
-	for (const FGuLiSoldierStateItem* State : OrderedStates)
-	{
-		if (!State)
+void AGuLiCommanderHealthBarRenderer::HandleRosterDelta(const FGuLiSoldierRosterDelta& Delta)
+{
+	if (Delta.bReset && StateReplicator.IsValid()) EnsureStableInstancePool(*StateReplicator);
+	for (auto Id : Delta.Removed) RefreshSoldierActivity(Id);
+	for (auto Id : Delta.Added) if (SelectedSoldiers.Contains(Id)) RefreshSoldierActivity(Id);
+	for (const auto& Pair : Delta.Changed) RefreshSoldierActivity(Pair.Key);
+	UpdateTickActivity();
+}
+
+void AGuLiCommanderHealthBarRenderer::HandleVisualStatesChanged(const TArray<FGuLiSoldierId>& Ids)
+{
+	for (auto Id : Ids) RefreshSoldierActivity(Id);
+	UpdateTickActivity();
+}
+
+void AGuLiCommanderHealthBarRenderer::UpdateTickActivity()
+{
+	const bool bActive = !SoldierInstanceIndices.IsEmpty() || !ActorInstanceIndices.IsEmpty();
+	SetActorTickEnabled(bActive);
+	if (!bActive) { VisibleInstanceCount = 0; LastUpdateMilliseconds = 0.0; }
+}
+
+void AGuLiCommanderHealthBarRenderer::MaintainActivity()
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderHealthBars_MaintainActivity);
+	ResolveRuntimeDependencies();
+	if (!BoundFeedback.IsValid())
+		if (auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>())
 		{
-			continue;
+			BoundFeedback = Feedback;
+			ActorBarsChangedHandle = Feedback->OnActorHealthBarChanged.AddUObject(this, &ThisClass::HandleActorBarChanged);
+			for (const auto& Pair : Feedback->GetActorHealthBars()) HandleActorBarChanged(Pair.Key);
 		}
-		const int32 InstanceIndex = AllocateInstanceSlot();
-		if (InstanceIndex == INDEX_NONE)
-		{
-			UE_LOG(
-				LogGuLiStrike,
-				Error,
-				TEXT("Commander health bars failed to allocate an ISM slot for SoldierId=%u."),
-				State->SoldierId.Value);
-			break;
-		}
+	TArray<FGuLiSoldierId> Active;
+	SoldierInstanceIndices.GetKeys(Active);
+	for (auto Id : Active) RefreshSoldierActivity(Id);
+	const auto Pending = PendingActivityIds.Array();
+	for (auto Id : Pending) RefreshSoldierActivity(Id);
+	// A selected unit with unavailable dependencies/slot allocation remains retryable.
+	for (auto Id : SelectedSoldiers) if (!SoldierInstanceIndices.Contains(Id)) RefreshSoldierActivity(Id);
+	RefreshActorInstancePool();
+	UpdateTickActivity();
+	CSV_CUSTOM_STAT(GuLiCommanderHealthBars, DataCacheBytes, float(CachedTransforms.GetAllocatedSize() + ActiveSoldierStates.GetAllocatedSize() + ActiveHitStartTimes.GetAllocatedSize() + SoldierInstanceIndices.GetAllocatedSize() + ActorInstanceIndices.GetAllocatedSize()), ECsvCustomStatOp::Set);
+}
 
-		SoldierInstanceIndices.Add(State->SoldierId, InstanceIndex);
-		bPoolExtended = true;
-	}
+void AGuLiCommanderHealthBarRenderer::ReleaseInstanceSlot(int32 Index)
+{
+	if (!CachedTransforms.IsValidIndex(Index)) return;
+	WriteInstance(Index, GuLiCommanderHealthBars::MakeHiddenTransform(), -1.0f, 0.0f, 0.0f);
+	FreeInstanceSlots.AddUnique(Index);
+}
 
-	if (bPoolExtended)
+void AGuLiCommanderHealthBarRenderer::HandleActorBarChanged(TWeakObjectPtr<AActor> Actor)
+{
+	const auto* Feedback = BoundFeedback.Get();
+	const auto* Bar = Feedback ? Feedback->GetActorHealthBars().Find(Actor) : nullptr;
+	if (!Actor.IsValid() || !Bar)
 	{
-		HealthBarInstances->MarkRenderStateDirty();
+		if (const auto* Index = ActorInstanceIndices.Find(Actor)) ReleaseInstanceSlot(*Index);
+		if (const auto* Provider = ActorHealthProviders.Find(Actor); Provider && Provider->IsValid())
+			Provider->Get()->OnHealthChanged.RemoveDynamic(this, &ThisClass::HandleActorHealthChanged);
+		ActorInstanceIndices.Remove(Actor); ActorHealthProviders.Remove(Actor); ActorHealthFractions.Remove(Actor);
 	}
+	else
+	{
+		if (!ActorInstanceIndices.Contains(Actor))
+		{
+			const int32 Slot = AllocateInstanceSlot();
+			if (Slot == INDEX_NONE) return;
+			ActorInstanceIndices.Add(Actor, Slot);
+			auto* Health = Actor->FindComponentByClass<UGuLiCombatHealthComponent>();
+			ActorHealthProviders.Add(Actor, Health);
+			if (Health) Health->OnHealthChanged.AddUniqueDynamic(this, &ThisClass::HandleActorHealthChanged);
+		}
+		ActorHealthFractions.Add(Actor, Bar->HealthFraction);
+		HandleActorHealthChanged(0, 0);
+	}
+	UpdateTickActivity();
+}
+
+void AGuLiCommanderHealthBarRenderer::HandleActorHealthChanged(float Health, float MaxHealth)
+{
+	for (const auto& Pair : ActorHealthProviders)
+		if (const auto* Provider = Pair.Value.Get())
+			ActorHealthFractions.Add(Pair.Key, Provider->IsAlive()
+				? CalculateHealthFraction(Provider->GetHealthState().Health, Provider->GetHealthState().MaxHealth) : 0.0f);
 }
 
 int32 AGuLiCommanderHealthBarRenderer::AllocateInstanceSlot()
 {
+	if (!FreeInstanceSlots.IsEmpty()) return FreeInstanceSlots.Pop(EAllowShrinking::No);
 	const FTransform Hidden = GuLiCommanderHealthBars::MakeHiddenTransform();
 	const int32 Index = HealthBarInstances->AddInstance(Hidden, true);
 	if (Index != INDEX_NONE)
@@ -436,21 +504,13 @@ int32 AGuLiCommanderHealthBarRenderer::AllocateInstanceSlot()
 
 void AGuLiCommanderHealthBarRenderer::RefreshActorInstancePool()
 {
-	const auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>();
-	if (!Feedback || !HealthBarInstances) return;
-	const auto& Bars = Feedback->GetActorHealthBars();
-	for (auto It = ActorInstanceIndices.CreateIterator(); It; ++It)
-		if (!It.Key().IsValid() || !Bars.Contains(It.Key()))
-		{
-			FreeActorInstanceSlots.Add(It.Value());
-			It.RemoveCurrent();
-		}
-	for (const auto& Bar : Bars)
-		if (Bar.Key.IsValid() && !ActorInstanceIndices.Contains(Bar.Key))
-		{
-			const int32 Index = FreeActorInstanceSlots.IsEmpty() ? AllocateInstanceSlot() : FreeActorInstanceSlots.Pop(EAllowShrinking::No);
-			if (Index != INDEX_NONE) ActorInstanceIndices.Add(Bar.Key, Index);
-		}
+	if (!BoundFeedback.IsValid()) return;
+	TArray<TWeakObjectPtr<AActor>> Existing;
+	ActorInstanceIndices.GetKeys(Existing);
+	for (auto Actor : Existing)
+		if (!Actor.IsValid() || !BoundFeedback->GetActorHealthBars().Contains(Actor)) HandleActorBarChanged(Actor);
+	for (const auto& Pair : BoundFeedback->GetActorHealthBars())
+		if (!ActorInstanceIndices.Contains(Pair.Key)) HandleActorBarChanged(Pair.Key);
 }
 
 float AGuLiCommanderHealthBarRenderer::ResolveSoldierHeightOffset(
@@ -482,271 +542,98 @@ float AGuLiCommanderHealthBarRenderer::ResolveSoldierHeightOffset(
 	return HeightOffset;
 }
 
+void AGuLiCommanderHealthBarRenderer::WriteInstance(int32 Index, const FTransform& Transform, float Health, float Selected, float Visible)
+{
+	if (!HealthBarInstances || !CachedTransforms.IsValidIndex(Index)) return;
+	if (!CachedTransforms[Index].Equals(Transform, 0.01f)
+		&& HealthBarInstances->UpdateInstanceTransform(Index, Transform, true, false, false)) CachedTransforms[Index] = Transform;
+	const float Values[] = {Health, Selected, Visible};
+	TArray<float>* Caches[] = {&CachedHealthFractions, &CachedSelectedValues, &CachedVisibleValues};
+	for (int32 Channel = 0; Channel < 3; ++Channel)
+		if (!FMath::IsNearlyEqual((*Caches[Channel])[Index], Values[Channel]))
+		{
+			HealthBarInstances->SetCustomDataValue(Index, Channel, Values[Channel], false);
+			(*Caches[Channel])[Index] = Values[Channel];
+		}
+}
+
 void AGuLiCommanderHealthBarRenderer::RebuildLocalInstances()
 {
-	APlayerController* Controller = LocalController.Get();
-	const AGuLiSoldierStateReplicator* Replicator = StateReplicator.Get();
-	const AGuLiCommanderPresentationActor* Presentation = PresentationActor.Get();
-	if (!HealthBarInstances || !Controller || !Controller->IsLocalController()
-		|| !Controller->PlayerCameraManager)
-	{
-		HideAllInstances();
-		return;
-	}
-	// OnlyOwnerSee is evaluated against the scene's ViewActor, not its PlayerController.
-	// Follow camera/Pawn changes while keeping one isolated billboard batch per local view.
+	auto* Controller = LocalController.Get();
+	const auto* Presentation = PresentationActor.Get();
+	if (!HealthBarInstances || !Controller || !Controller->IsLocalController() || !Controller->PlayerCameraManager)
+	{ HideAllInstances(); return; }
 	if (GetOwner() != Controller->GetViewTarget()) SetOwner(Controller->GetViewTarget());
-
-	int32 ViewportWidth = 0;
-	int32 ViewportHeight = 0;
-	Controller->GetViewportSize(ViewportWidth, ViewportHeight);
-	if (ViewportWidth <= 0 || ViewportHeight <= 0)
-	{
-		HideAllInstances();
-		return;
-	}
-
-	const FVector CameraLocation = Controller->PlayerCameraManager->GetCameraLocation();
-	const APawn* CameraPawn = Controller->GetPawn();
-	const FVector CameraFocusLocation = CameraPawn
-		? CameraPawn->GetActorLocation()
-		: CameraLocation;
-	const FRotator CameraRotation = Controller->PlayerCameraManager->GetCameraRotation();
-	const float HorizontalFieldOfViewDegrees = Controller->PlayerCameraManager->GetFOVAngle();
+	int32 Width = 0, Height = 0;
+	Controller->GetViewportSize(Width, Height);
+	if (Width <= 0 || Height <= 0) { HideAllInstances(); return; }
+	const APlayerCameraManager* Camera = Controller->PlayerCameraManager.Get();
+	const FVector CameraLocation = Camera->GetCameraLocation();
+	const FVector FocusLocation = Controller->GetPawn() ? Controller->GetPawn()->GetActorLocation() : CameraLocation;
 	const auto* Commander = Cast<AGuLiCommanderPlayerController>(Controller);
 	const bool bCommanderView = Commander && Commander->IsCommanderViewActive();
-	const float MaximumDistance = bCommanderView ? GuLiCommanderHealthBars::MaximumDrawDistanceCentimeters
-		: GetDefault<UGuLiUnitFeedbackSettings>()->CullDistance;
+	const float MaxDistance = bCommanderView ? GuLiCommanderHealthBars::MaximumDrawDistanceCentimeters : GetDefault<UGuLiUnitFeedbackSettings>()->CullDistance;
 	const float Now = GetWorld()->GetTimeSeconds();
-	const int32 InstanceCount = HealthBarInstances->GetInstanceCount();
-	if (InstanceCount <= 0 || CachedTransforms.Num() != InstanceCount)
+	const FRotationMatrix Basis(Camera->GetCameraRotation());
+	const FQuat Rotation = FRotationMatrix::MakeFromXY(Basis.GetUnitAxis(EAxis::Y), Basis.GetUnitAxis(EAxis::Z)).ToQuat();
+	const FTransform Hidden = GuLiCommanderHealthBars::MakeHiddenTransform();
+	auto MakeBarTransform = [&](const FVector& Location, FTransform& Out)
 	{
-		VisibleInstanceCount = 0;
-		return;
-	}
-
-	TArray<FTransform> DesiredTransforms = CachedTransforms;
-	for (FTransform& Transform : DesiredTransforms)
-	{
-		Transform.SetScale3D(FVector::ZeroVector);
-	}
-	TArray<float> DesiredHealthFractions = CachedHealthFractions;
-	TArray<float> DesiredSelectedValues;
-	DesiredSelectedValues.Init(0.0f, InstanceCount);
-	TArray<float> DesiredVisibleValues;
-	DesiredVisibleValues.Init(0.0f, InstanceCount);
-
+		const float Distance = FVector::Distance(CameraLocation, Location);
+		const float CullDistance = bCommanderView ? FVector::Dist2D(FocusLocation, Location) : Distance;
+		if (MaxDistance > 0 && CullDistance > MaxDistance) return false;
+		const FVector2D Size = CalculateWorldSizeCentimeters(Distance, Camera->GetFOVAngle(), Width, Height);
+		if (Size.X <= UE_SMALL_NUMBER || Size.Y <= UE_SMALL_NUMBER) return false;
+		Out = FTransform(Rotation, Location, FVector(Size.X / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, Size.Y / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, 1));
+		return true;
+	};
 	VisibleInstanceCount = 0;
-	if (Replicator && Presentation) for (const FGuLiSoldierStateItem& State : Replicator->GetItems())
+	for (const auto& Pair : SoldierInstanceIndices)
 	{
-		const int32* InstanceIndex = SoldierInstanceIndices.Find(State.SoldierId);
-		if (!InstanceIndex || !DesiredTransforms.IsValidIndex(*InstanceIndex)
-			|| !DesiredHealthFractions.IsValidIndex(*InstanceIndex))
+		const auto& State = ActiveSoldierStates.FindChecked(Pair.Key);
+		const bool bSelected = SelectedSoldiers.Contains(Pair.Key);
+		float Opacity = bSelected ? 1.0f : UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - ActiveHitStartTimes.FindChecked(Pair.Key));
+		FTransform Transform = Hidden, Soldier;
+		bool bVisible = false;
+		if (Presentation && Opacity > 0 && State.IsAlive() && !State.bPhased && Presentation->TryGetPresentedSoldierTransform(Pair.Key, Soldier))
 		{
-			continue;
+			FVector Location = Soldier.GetLocation();
+			Location.Z += SoldierHeightOffsetsCentimeters.FindRef(State.UnitTypeId) * FMath::Abs(Soldier.GetScale3D().Z);
+			bVisible = MakeBarTransform(Location, Transform);
 		}
-
-		const bool bSelected = SelectedSoldiers.Contains(State.SoldierId);
-		const float HitOpacity = UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - Presentation->GetSoldierHitStartTime(State.SoldierId));
-		if (!bSelected && HitOpacity <= 0.0f) continue;
-		const float HealthFraction = CalculateHealthFraction(State.Health, State.MaxHealth);
-		DesiredHealthFractions[*InstanceIndex] = HealthFraction;
-		DesiredSelectedValues[*InstanceIndex] = bSelected ? 1.0f : 0.0f;
-
-		if (!ShouldDisplayHealthBar(
-			(State.IsAlive() && !State.bPhased),
-			State.Health,
-			State.MaxHealth,
-			bSelected || HitOpacity > 0.0f,
-			0.0f,
-			MaximumDistance))
-		{
-			continue;
-		}
-
-		FTransform SoldierTransform;
-		if (!Presentation->TryGetPresentedSoldierTransform(State.SoldierId, SoldierTransform))
-		{
-			continue;
-		}
-
-		FVector BarLocation = SoldierTransform.GetLocation();
-		BarLocation.Z += ResolveSoldierHeightOffset(State.UnitTypeId)
-			* FMath::Abs(SoldierTransform.GetScale3D().Z);
-		const float CameraDistanceCentimeters = FVector::Distance(CameraLocation, BarLocation);
-		const float FocusDistanceCentimeters = bCommanderView ? FVector::Dist2D(CameraFocusLocation, BarLocation) : CameraDistanceCentimeters;
-		if (!ShouldDisplayHealthBar(
-			(State.IsAlive() && !State.bPhased),
-			State.Health,
-			State.MaxHealth,
-			bSelected || HitOpacity > 0.0f,
-			FocusDistanceCentimeters,
-			MaximumDistance))
-		{
-			continue;
-		}
-
-		const FVector2D WorldSize = CalculateWorldSizeCentimeters(
-			CameraDistanceCentimeters,
-			HorizontalFieldOfViewDegrees,
-			ViewportWidth,
-			ViewportHeight);
-		if (WorldSize.X <= UE_SMALL_NUMBER || WorldSize.Y <= UE_SMALL_NUMBER)
-		{
-			continue;
-		}
-
-		const FRotationMatrix CameraBasis(CameraRotation);
-		const FVector BillboardRight = CameraBasis.GetUnitAxis(EAxis::Y);
-		const FVector BillboardUp = CameraBasis.GetUnitAxis(EAxis::Z);
-		const FQuat BillboardRotation = FRotationMatrix::MakeFromXY(
-			BillboardRight,
-			BillboardUp).ToQuat();
-		DesiredTransforms[*InstanceIndex] = FTransform(
-			BillboardRotation,
-			BarLocation,
-			FVector(
-				WorldSize.X / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters,
-				WorldSize.Y / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters,
-				1.0f));
-		DesiredVisibleValues[*InstanceIndex] = bSelected ? 1.0f : HitOpacity;
-		++VisibleInstanceCount;
+		WriteInstance(Pair.Value, Transform, CalculateHealthFraction(State.Health, State.MaxHealth), bSelected ? 1.0f : 0.0f, bVisible ? Opacity : 0.0f);
+		if (bVisible) ++VisibleInstanceCount;
 	}
-
-	if (const auto* Feedback = GetWorld()->GetSubsystem<UGuLiUnitFeedbackSubsystem>())
-	for (const auto& Bar : Feedback->GetActorHealthBars())
+	const auto* Feedback = BoundFeedback.Get();
+	for (const auto& Pair : ActorInstanceIndices)
 	{
-		AActor* Actor = Bar.Key.Get();
-		const int32* Index = ActorInstanceIndices.Find(Bar.Key);
-		if (!Actor || !Index || Actor->IsHidden() || UGuLiExternalUnitControlComponent::IsActorPhased(Actor)) continue;
-		const float Alpha = UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - Bar.Value.StartTime);
-		if (Alpha <= 0.0f) continue;
-		float HealthFraction = Bar.Value.HealthFraction;
-		if (const auto* Health = Actor->FindComponentByClass<UGuLiCombatHealthComponent>())
+		auto* Actor = Pair.Key.Get();
+		const auto* Bar = Feedback ? Feedback->GetActorHealthBars().Find(Pair.Key) : nullptr;
+		const float Health = ActorHealthFractions.FindRef(Pair.Key);
+		const float Opacity = Bar ? UGuLiUnitFeedbackSubsystem::HealthBarOpacity(Now - Bar->StartTime) : 0.0f;
+		FTransform Transform = Hidden;
+		bool bVisible = false;
+		if (Actor && !Actor->IsHidden() && Health != 0 && Opacity > 0 && !UGuLiExternalUnitControlComponent::IsActorPhased(Actor))
 		{
-			if (!Health->IsAlive()) continue;
-			HealthFraction = CalculateHealthFraction(Health->GetHealthState().Health, Health->GetHealthState().MaxHealth);
+			FBox Bounds(ForceInit); float ModelSize = 0;
+			if (UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(Actor, Bounds, ModelSize))
+			{
+				auto Location = Bounds.GetCenter(); Location.Z = Bounds.Max.Z + GuLiCommanderHealthBars::HeightPaddingCentimeters;
+				bVisible = MakeBarTransform(Location, Transform);
+			}
 		}
-		if (HealthFraction == 0.0f) continue;
-		FBox Bounds(ForceInit); float ModelSize = 0.0f;
-		if (!UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(Actor, Bounds, ModelSize)) continue;
-		FVector Location = Bounds.GetCenter();
-		Location.Z = Bounds.Max.Z + GuLiCommanderHealthBars::HeightPaddingCentimeters;
-		const float CameraDistance = FVector::Distance(CameraLocation, Location);
-		const float CullDistance = bCommanderView ? FVector::Dist2D(CameraFocusLocation, Location) : CameraDistance;
-		if (MaximumDistance > 0.0f && CullDistance > MaximumDistance) continue;
-		const FVector2D Size = CalculateWorldSizeCentimeters(CameraDistance, HorizontalFieldOfViewDegrees, ViewportWidth, ViewportHeight);
-		if (Size.X <= UE_SMALL_NUMBER || Size.Y <= UE_SMALL_NUMBER) continue;
-		const FRotationMatrix Basis(CameraRotation);
-		DesiredTransforms[*Index] = FTransform(FRotationMatrix::MakeFromXY(Basis.GetUnitAxis(EAxis::Y), Basis.GetUnitAxis(EAxis::Z)).ToQuat(),
-			Location, FVector(Size.X / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, Size.Y / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, 1.0f));
-		DesiredHealthFractions[*Index] = HealthFraction;
-		DesiredVisibleValues[*Index] = Alpha;
-		++VisibleInstanceCount;
-	}
-
-	bool bRenderStateDirty = false;
-	if (!GuLiCommanderHealthBars::AreTransformsEqual(CachedTransforms, DesiredTransforms)
-		&& HealthBarInstances->BatchUpdateInstancesTransforms(
-			0,
-			DesiredTransforms,
-			true,
-			false,
-			false))
-	{
-		CachedTransforms = MoveTemp(DesiredTransforms);
-		bRenderStateDirty = true;
-	}
-
-	for (int32 InstanceIndex = 0; InstanceIndex < InstanceCount; ++InstanceIndex)
-	{
-		if (!FMath::IsNearlyEqual(
-			CachedHealthFractions[InstanceIndex],
-			DesiredHealthFractions[InstanceIndex]))
-		{
-			HealthBarInstances->SetCustomDataValue(
-				InstanceIndex,
-				GuLiCommanderHealthBars::HealthFractionCustomDataIndex,
-				DesiredHealthFractions[InstanceIndex],
-				false);
-			CachedHealthFractions[InstanceIndex] = DesiredHealthFractions[InstanceIndex];
-			bRenderStateDirty = true;
-		}
-		if (!FMath::IsNearlyEqual(
-			CachedSelectedValues[InstanceIndex],
-			DesiredSelectedValues[InstanceIndex]))
-		{
-			HealthBarInstances->SetCustomDataValue(
-				InstanceIndex,
-				GuLiCommanderHealthBars::SelectedCustomDataIndex,
-				DesiredSelectedValues[InstanceIndex],
-				false);
-			CachedSelectedValues[InstanceIndex] = DesiredSelectedValues[InstanceIndex];
-			bRenderStateDirty = true;
-		}
-		if (!FMath::IsNearlyEqual(
-			CachedVisibleValues[InstanceIndex],
-			DesiredVisibleValues[InstanceIndex]))
-		{
-			HealthBarInstances->SetCustomDataValue(
-				InstanceIndex,
-				GuLiCommanderHealthBars::VisibleCustomDataIndex,
-				DesiredVisibleValues[InstanceIndex],
-				false);
-			CachedVisibleValues[InstanceIndex] = DesiredVisibleValues[InstanceIndex];
-			bRenderStateDirty = true;
-		}
-	}
-
-	if (bRenderStateDirty)
-	{
-		HealthBarInstances->MarkRenderStateDirty();
+		WriteInstance(Pair.Value, Transform, Health, 0, bVisible ? Opacity : 0);
+		if (bVisible) ++VisibleInstanceCount;
 	}
 }
 
 void AGuLiCommanderHealthBarRenderer::HideAllInstances()
 {
+	for (const auto& Pair : SoldierInstanceIndices)
+		WriteInstance(Pair.Value, GuLiCommanderHealthBars::MakeHiddenTransform(), CachedHealthFractions[Pair.Value], 0, 0);
+	for (const auto& Pair : ActorInstanceIndices)
+		WriteInstance(Pair.Value, GuLiCommanderHealthBars::MakeHiddenTransform(), CachedHealthFractions[Pair.Value], 0, 0);
 	VisibleInstanceCount = 0;
-	if (!HealthBarInstances || CachedTransforms.IsEmpty())
-	{
-		return;
-	}
-
-	TArray<FTransform> HiddenTransforms = CachedTransforms;
-	for (FTransform& Transform : HiddenTransforms)
-	{
-		Transform.SetScale3D(FVector::ZeroVector);
-	}
-	bool bRenderStateDirty = false;
-	if (!GuLiCommanderHealthBars::AreTransformsEqual(CachedTransforms, HiddenTransforms)
-		&& HealthBarInstances->BatchUpdateInstancesTransforms(
-			0,
-			HiddenTransforms,
-			true,
-			false,
-			false))
-	{
-		CachedTransforms = MoveTemp(HiddenTransforms);
-		bRenderStateDirty = true;
-	}
-
-	for (int32 InstanceIndex = 0; InstanceIndex < CachedVisibleValues.Num(); ++InstanceIndex)
-	{
-		if (!FMath::IsNearlyZero(CachedVisibleValues[InstanceIndex]))
-		{
-			HealthBarInstances->SetCustomDataValue(
-				InstanceIndex,
-				GuLiCommanderHealthBars::VisibleCustomDataIndex,
-				0.0f,
-				false);
-			CachedVisibleValues[InstanceIndex] = 0.0f;
-			bRenderStateDirty = true;
-		}
-	}
-	if (bRenderStateDirty)
-	{
-		HealthBarInstances->MarkRenderStateDirty();
-	}
 }
 
 bool AGuLiCommanderHealthBarRenderer::ShouldDisplayHealthBar(

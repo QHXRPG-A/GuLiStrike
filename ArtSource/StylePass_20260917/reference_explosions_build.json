@@ -1,0 +1,106 @@
+{
+  "success": true,
+  "systems": [
+    {
+      "path": "/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03",
+      "source": "NS_Explosion_03",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000001DCDDB25960) {success: True, system_path: \"/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.647809}>",
+      "changes": [],
+      "emitters": [
+        "NE_Cloud_01",
+        "NE_Impact",
+        "NE_Cloud_02",
+        "NE_Rock001",
+        "NE_Rock",
+        "NE_Dust_Trail",
+        "NE_CloudLine01",
+        "NE_Cloud_01B",
+        "NE_CloudLine02",
+        "NE_GroundShockwave"
+      ],
+      "parameters": [
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001DD82E68D60) {parameter_name: \"User.Area_Scale\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001DD82E66E40) {parameter_name: \"User.ShockwaveDiameter\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1800.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanDestruction_05",
+      "source": "NS_Explosion_05",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000001DDD1F68F70) {success: True, system_path: \"/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanDestruction_05\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.012834}>",
+      "changes": [],
+      "emitters": [
+        "NS_Cloud_02",
+        "NE_Impact",
+        "NE_GlowOut",
+        "NE_Bullet_01",
+        "NE_DustOut_01",
+        "NE_Rock001",
+        "NE_Rock",
+        "NE_Dust_Trail",
+        "NE_AirShockwave"
+      ],
+      "parameters": [
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001DD111152E0) {parameter_name: \"User.Area_Scale\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>",
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001DD11110DE0) {parameter_name: \"User.ShockwaveDiameter\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1500.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+      ]
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01",
+      "source": "NS_Explosion_01",
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000001DCDDCB4800) {success: True, system_path: \"/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.490605}>",
+      "changes": [
+        {
+          "emitter": "NE_Cloud_01",
+          "fixed_burst_count": 20
+        },
+        {
+          "emitter": "NE_Cloud_02",
+          "fixed_burst_count": 25
+        },
+        {
+          "emitter": "NE_Cloud_03",
+          "fixed_burst_count": 25
+        },
+        {
+          "emitter": "NE_Cloud_04",
+          "fixed_burst_count": 7
+        },
+        {
+          "emitter": "NE_CloudOut_01",
+          "radial_scale": 0.45
+        },
+        {
+          "emitter": "NE_GlowOut",
+          "radial_scale": 0.45
+        },
+        {
+          "emitter": "NE_DustOut_01",
+          "radial_scale": 0.45
+        }
+      ],
+      "emitters": [
+        "NE_Cloud_01",
+        "NE_Cloud_02",
+        "NE_Cloud_03",
+        "NE_Cloud_04",
+        "NE_Core01",
+        "NE_Core02",
+        "NE_CloudOut_01",
+        "NE_GlowOut",
+        "NE_Glow_Base",
+        "NE_Bullet_01",
+        "NE_Bullet_02",
+        "NE_DustOut_01",
+        "NE_Rock001",
+        "NE_Rock",
+        "NE_Dust_Trail",
+        "NE_Glow_End",
+        "NE_Ground_01",
+        "NE_Ground_02"
+      ],
+      "parameters": [
+        "<Struct 'NiagaraParameterInfo_Custom' (0x000001DD0ABF9420) {parameter_name: \"User.Area_Scale\", parameter_type: \"Float\", namespace: \"User\", current_value: \"1.000000\", default_value: \"\", is_overridden: False, is_user_exposed: True}>"
+      ]
+    }
+  ]
+}

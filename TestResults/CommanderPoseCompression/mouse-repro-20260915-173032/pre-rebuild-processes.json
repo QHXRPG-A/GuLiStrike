@@ -1,0 +1,17 @@
+[
+  {
+    "ProcessId": 28384,
+    "Name": "UnrealEditor-Cmd.exe",
+    "CommandLine": "\"D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor-Cmd.exe\" D:/UE5.7/test1/GuLiStrike.uproject /Game/Maps/LVL_CommanderMassPrototype -game -server -NullRHI -Unattended -NoSound -NoSplash -NoLiveCoding -DisablePlugins=Fab -port=18097 -abslog=D:/UE5.7/test1/TestResults/CommanderPoseCompression/manual-sync-20260915-172231/server.log -ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0\""
+  },
+  {
+    "ProcessId": 10396,
+    "Name": "UnrealEditor.exe",
+    "CommandLine": "\"D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.exe\" D:/UE5.7/test1/GuLiStrike.uproject 127.0.0.1:18097?Name=SyncClient1 -game -windowed -ForceRes -ResX=936 -ResY=702 -WinX=8 -WinY=60 -NoSound -NoSplash -NoLiveCoding -DisablePlugins=Fab -abslog=D:/UE5.7/test1/TestResults/CommanderPoseCompression/mouse-repro-20260915-173032/client1.log -ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0\""
+  },
+  {
+    "ProcessId": 12560,
+    "Name": "UnrealEditor.exe",
+    "CommandLine": "\"D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64\\UnrealEditor.exe\" D:/UE5.7/test1/GuLiStrike.uproject 127.0.0.1:18097?Name=SyncClient2 -game -windowed -ForceRes -ResX=936 -ResY=702 -WinX=968 -WinY=60 -NoSound -NoSplash -NoLiveCoding -DisablePlugins=Fab -abslog=D:/UE5.7/test1/TestResults/CommanderPoseCompression/mouse-repro-20260915-173032/client2.log -ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0\""
+  }
+]

@@ -4,6 +4,8 @@
 
 ## 范围和执行入口
 
+先核对[美术规范](../../../../Progress/RequirementDocument/GuLiStrike美术规范.md)中的参考审核与 Blender 成品审核记录，只有对应源版本放行后才执行导入；保留用户已有明确批准或免审，不重复请求。
+
 先核对源文件版本、目标路径及同名资产。只更新任务范围内的资源；覆盖已存在模型时保留对象路径和引用，不把名称相近但用途不同的游戏资产替换掉。
 
 实例 `Scripts/import_industrial_defense_models.py` 使用项目 ArtSource 下认可的 V3 文件，分别写入 `/Game/GuLiStrike/Buildings/RedOreRefinery`、`ShieldGenerator`、`HeavyDefenseCannon`。各根分 Meshes、Materials、Textures，重防炮另有 Animations。
@@ -28,6 +30,8 @@
 | ORM | 关闭 sRGB，Masks | R → AO，G → Roughness，B → Metallic |
 | NormalDX | 关闭 sRGB，Normalmap | RGB → Normal；已经是 DX 时不再翻绿 |
 | Emissive | sRGB，Default | RGB → Emissive Color |
+
+该表描述基础PBR通道语义。项目默认三渲二还须重建分档着色与内线遮罩，必要时通过Unlit输出；不能用直接接Base Color的默认PBR材质替代已审外观。内部LineMask关闭sRGB，外轮廓单独处理并按资产例外启停。
 
 纹理采样器类型与压缩设置匹配。骨骼使用的材质启用 used_with_skeletal_mesh。按 Blender 光照前的 PBR 值还原；色调映射差异不等于贴图失效。
 

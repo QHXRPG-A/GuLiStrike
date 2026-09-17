@@ -1,4 +1,5 @@
 #include "GuLiFlightNavigationEditorLibrary.h"
+#include "GuLiNavigationSourceHash.h"
 
 #include "CollisionQueryParams.h"
 #include "CollisionShape.h"
@@ -21,211 +22,47 @@
 
 namespace
 {
-	class FGuLiSourceGeometryHash
-	{
-	public:
-		void AddByte(const uint8 Value)
-		{
-			State ^= Value;
-			State *= 1099511628211ull;
-		}
-
-		void AddUInt64(const uint64 Value)
-		{
-			for (uint32 Shift = 0; Shift < 64; Shift += 8)
-			{
-				AddByte(static_cast<uint8>((Value >> Shift) & 0xffull));
-			}
-		}
-
-		void AddVector(const FVector& Value)
-		{
-			AddUInt64(static_cast<uint64>(FMath::RoundToInt64(Value.X * 100.0)));
-			AddUInt64(static_cast<uint64>(FMath::RoundToInt64(Value.Y * 100.0)));
-			AddUInt64(static_cast<uint64>(FMath::RoundToInt64(Value.Z * 100.0)));
-		}
-
-		void AddRotator(const FRotator& Value)
-		{
-			AddUInt64(static_cast<uint64>(FMath::RoundToInt64(Value.Pitch * 100.0)));
-			AddUInt64(static_cast<uint64>(FMath::RoundToInt64(Value.Yaw * 100.0)));
-			AddUInt64(static_cast<uint64>(FMath::RoundToInt64(Value.Roll * 100.0)));
-		}
-
-		void AddGuid(const FGuid& Value)
-		{
-			AddUInt64(Value.A);
-			AddUInt64(Value.B);
-			AddUInt64(Value.C);
-			AddUInt64(Value.D);
-		}
-
-		void AddString(const FString& Value)
-		{
-			const FTCHARToUTF8 Utf8(*Value);
-			AddUInt64(static_cast<uint64>(Utf8.Length()));
-			for (int32 Index = 0; Index < Utf8.Length(); ++Index)
-			{
-				AddByte(static_cast<uint8>(Utf8.Get()[Index]));
-			}
-		}
-
-		uint64 Get() const
-		{
-			return State == 0 ? 1 : State;
-		}
-
-	private:
-		uint64 State = 14695981039346656037ull;
-	};
-
-	struct FGuLiSourceGeometryRecord
-	{
-		FString StablePath;
-		FString ClassPath;
-		FString CollisionProfile;
-		FString StaticMeshPath;
-		FTransform ComponentTransform = FTransform::Identity;
-		FBoxSphereBounds Bounds;
-		FGuid StaticMeshLightingGuid;
-		FGuid StaticMeshPackageGuid;
-		FGuid BodySetupGuid;
-		ECollisionEnabled::Type CollisionEnabled = ECollisionEnabled::NoCollision;
-		ECollisionChannel ObjectType = ECC_WorldStatic;
-		ECollisionResponse ChannelResponse = ECR_Ignore;
-		TArray<FTransform> InstanceTransforms;
-	};
-
 	bool IsBakedStaticCollisionSource(
-		const UPrimitiveComponent* Component,
-		const AGuLiFlightNavigationVolume* Volume,
-		const FBox& VolumeBounds,
-		const ECollisionChannel CollisionChannel)
-	{
-		return IsValid(Component)
-			&& Component->GetOwner() != Volume
-			&& !Component->IsEditorOnly()
-			&& Component->IsRegistered()
-			&& Component->Mobility == EComponentMobility::Static
-			&& Component->GetCollisionEnabled() != ECollisionEnabled::NoCollision
-			&& Component->GetCollisionResponseToChannel(CollisionChannel) == ECR_Block
-			&& Component->Bounds.GetBox().Intersect(VolumeBounds);
-	}
+        const UPrimitiveComponent* Component,
+        const AGuLiFlightNavigationVolume* Volume,
+        const FBox& Bounds,
+        const ECollisionChannel Channel)
+    {
+        return IsValid(Component) && Component->GetOwner() != Volume
+            && !Component->IsEditorOnly() && !Component->GetOwner()->IsEditorOnly()
+            && Component->IsRegistered() && Component->Mobility == EComponentMobility::Static
+            && Component->GetCollisionEnabled() != ECollisionEnabled::NoCollision
+            && Component->GetCollisionResponseToChannel(Channel) == ECR_Block
+            && Component->Bounds.GetBox().Intersect(Bounds);
+    }
 
-	uint64 ComputeSourceGeometrySignatureInternal(
-		UWorld* World,
-		const AGuLiFlightNavigationVolume* Volume,
-		const FGuLiFlightNavBakeSettings& Settings)
-	{
-		FGuLiSourceGeometryHash Hash;
-		const FBox VolumeBounds = Volume->GetComponentsBoundingBox(true);
-		// Bake expands every tested cell by AgentRadius. Include that same fringe
-		// in the source signature or an obstacle just outside the raw volume could
-		// change baked occupancy without making the asset stale.
-		const FBox SignatureBounds = VolumeBounds.ExpandBy(Settings.AgentRadius);
-		Hash.AddVector(VolumeBounds.Min);
-		Hash.AddVector(VolumeBounds.Max);
-		Hash.AddUInt64(static_cast<uint64>(Settings.CollisionChannel.GetValue()));
-		Hash.AddUInt64(Settings.bTraceComplex ? 1ull : 0ull);
-
-		TArray<FGuLiSourceGeometryRecord> Records;
-		for (TActorIterator<AActor> ActorIterator(World); ActorIterator; ++ActorIterator)
-		{
-			AActor* Actor = *ActorIterator;
-			if (!IsValid(Actor) || Actor == Volume)
-			{
-				continue;
-			}
-
-			TInlineComponentArray<UPrimitiveComponent*> PrimitiveComponents;
-			Actor->GetComponents(PrimitiveComponents);
-			for (UPrimitiveComponent* Component : PrimitiveComponents)
-			{
-				if (!IsBakedStaticCollisionSource(Component, Volume, SignatureBounds, Settings.CollisionChannel))
-				{
-					continue;
-				}
-
-				FGuLiSourceGeometryRecord& Record = Records.AddDefaulted_GetRef();
-				Record.StablePath = Component->GetPathName();
-				Record.ClassPath = Component->GetClass()->GetPathName();
-				Record.CollisionProfile = Component->GetCollisionProfileName().ToString();
-				Record.ComponentTransform = Component->GetComponentTransform();
-				Record.Bounds = Component->Bounds;
-				Record.CollisionEnabled = Component->GetCollisionEnabled();
-				Record.ObjectType = Component->GetCollisionObjectType();
-				Record.ChannelResponse = Component->GetCollisionResponseToChannel(Settings.CollisionChannel);
-
-				if (UBodySetup* BodySetup = Component->GetBodySetup())
-				{
-					Record.BodySetupGuid = BodySetup->BodySetupGuid;
-				}
-
-				if (const UStaticMeshComponent* StaticMeshComponent = Cast<UStaticMeshComponent>(Component))
-				{
-					if (const UStaticMesh* StaticMesh = StaticMeshComponent->GetStaticMesh())
-					{
-						Record.StaticMeshPath = StaticMesh->GetPathName();
-						Record.StaticMeshLightingGuid = StaticMesh->GetLightingGuid();
-						if (const UPackage* Package = StaticMesh->GetPackage())
-						{
-							Record.StaticMeshPackageGuid = Package->GetPersistentGuid();
-						}
-					}
-				}
-
-				if (const UInstancedStaticMeshComponent* InstancedComponent = Cast<UInstancedStaticMeshComponent>(Component))
-				{
-					Record.InstanceTransforms.Reserve(InstancedComponent->GetInstanceCount());
-					for (int32 InstanceIndex = 0; InstanceIndex < InstancedComponent->GetInstanceCount(); ++InstanceIndex)
-					{
-						FTransform InstanceTransform;
-						if (InstancedComponent->GetInstanceTransform(InstanceIndex, InstanceTransform, true))
-						{
-							Record.InstanceTransforms.Add(InstanceTransform);
-						}
-					}
-				}
-			}
-		}
-
-		Records.Sort([](const FGuLiSourceGeometryRecord& Lhs, const FGuLiSourceGeometryRecord& Rhs)
-		{
-			if (Lhs.StablePath != Rhs.StablePath)
-			{
-				return Lhs.StablePath < Rhs.StablePath;
-			}
-			return Lhs.ClassPath < Rhs.ClassPath;
-		});
-
-		Hash.AddUInt64(static_cast<uint64>(Records.Num()));
-		for (const FGuLiSourceGeometryRecord& Record : Records)
-		{
-			Hash.AddString(Record.StablePath);
-			Hash.AddString(Record.ClassPath);
-			Hash.AddString(Record.CollisionProfile);
-			Hash.AddString(Record.StaticMeshPath);
-			Hash.AddVector(Record.ComponentTransform.GetLocation());
-			Hash.AddRotator(Record.ComponentTransform.Rotator().GetNormalized());
-			Hash.AddVector(Record.ComponentTransform.GetScale3D());
-			Hash.AddVector(Record.Bounds.Origin);
-			Hash.AddVector(Record.Bounds.BoxExtent);
-			Hash.AddUInt64(static_cast<uint64>(Record.CollisionEnabled));
-			Hash.AddUInt64(static_cast<uint64>(Record.ObjectType));
-			Hash.AddUInt64(static_cast<uint64>(Record.ChannelResponse));
-			Hash.AddGuid(Record.StaticMeshLightingGuid);
-			Hash.AddGuid(Record.StaticMeshPackageGuid);
-			Hash.AddGuid(Record.BodySetupGuid);
-			Hash.AddUInt64(static_cast<uint64>(Record.InstanceTransforms.Num()));
-			for (const FTransform& InstanceTransform : Record.InstanceTransforms)
-			{
-				Hash.AddVector(InstanceTransform.GetLocation());
-				Hash.AddRotator(InstanceTransform.Rotator().GetNormalized());
-				Hash.AddVector(InstanceTransform.GetScale3D());
-			}
-		}
-		return Hash.Get();
-	}
+    uint64 ComputeSourceGeometrySignatureInternal(
+        UWorld* World, const AGuLiFlightNavigationVolume* Volume,
+        const FGuLiFlightNavBakeSettings& Settings)
+    {
+        FGuLiNavigationSourceHash Hash;
+        Hash.AddString(TEXT("GuLiFlightSource-v2"));
+        const FBox Bounds = Volume->GetComponentsBoundingBox(true);
+        const FBox ExpandedBounds = Bounds.ExpandBy(Settings.AgentRadius);
+        Hash.AddVector(Bounds.Min);
+        Hash.AddVector(Bounds.Max);
+        Hash.AddUInt64(Settings.CollisionChannel.GetValue());
+        Hash.AddUInt64(Settings.bTraceComplex);
+        TArray<UPrimitiveComponent*> Components;
+        for (TActorIterator<AActor> It(World); It; ++It)
+        {
+            TInlineComponentArray<UPrimitiveComponent*> ActorComponents;
+            It->GetComponents(ActorComponents);
+            for (UPrimitiveComponent* Component : ActorComponents)
+                if (IsBakedStaticCollisionSource(Component, Volume, ExpandedBounds, Settings.CollisionChannel))
+                    Components.Add(Component);
+        }
+        Components.Sort([](const UPrimitiveComponent& A, const UPrimitiveComponent& B)
+        { return A.GetPathName() < B.GetPathName(); });
+        Hash.AddUInt64(Components.Num());
+        for (const UPrimitiveComponent* Component : Components) Hash.AddCollisionSource(Component);
+        return Hash.Get();
+    }
 }
 
 uint64 UGuLiFlightNavigationEditorLibrary::ComputeSourceGeometrySignature(
@@ -304,10 +141,8 @@ bool UGuLiFlightNavigationEditorLibrary::BakeVolume(
 		for (const FOverlapResult& Overlap : Overlaps)
 		{
 			const UPrimitiveComponent* Component = Overlap.Component.Get();
-			if (IsValid(Component)
-				&& Component->GetOwner() != Volume
-				&& Component->Mobility == EComponentMobility::Static
-				&& Component->GetCollisionResponseToChannel(Settings.CollisionChannel) == ECR_Block)
+			if (IsBakedStaticCollisionSource(Component, Volume,
+                CandidateBounds.ExpandBy(Settings.AgentRadius), Settings.CollisionChannel))
 			{
 				return true;
 			}

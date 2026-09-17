@@ -1,0 +1,4 @@
+TimingInsights.ExportThreads D:\UE5.7\test1\TestResults\AccessRampCrash-20260916\MoveStress\detour-fixed1-n1200-c1\server\insights\threads.csv
+TimingInsights.ExportTimingEvents D:\UE5.7\test1\TestResults\AccessRampCrash-20260916\MoveStress\detour-fixed1-n1200-c1\server\insights\events-project.csv -threads=GameThread -timers=*GuLi*,*EngineLoop*,UWorld_Tick -startTime=91.821198400 -endTime=121.821198400 -columns=ThreadId,TimerId,TimerName,StartTime,EndTime,Duration,Depth
+TimingInsights.ExportTimerStatistics D:\UE5.7\test1\TestResults\AccessRampCrash-20260916\MoveStress\detour-fixed1-n1200-c1\server\insights\timers-gamethread.csv -threads=GameThread -startTime=91.821198400 -endTime=121.821198400 -sortBy=TotalInclusiveTime
+TimingInsights.ExportTimerStatistics D:\UE5.7\test1\TestResults\AccessRampCrash-20260916\MoveStress\detour-fixed1-n1200-c1\server\insights\timers-gpu.csv -threads=GPU1,GPU2 -startTime=91.821198400 -endTime=121.821198400 -sortBy=TotalInclusiveTime

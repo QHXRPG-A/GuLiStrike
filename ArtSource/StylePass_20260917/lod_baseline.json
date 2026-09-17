@@ -1,0 +1,22 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "/Game/Commander/Units/SM_CommanderFourFRobot_Crowd": [
+      18999,
+      964,
+      238
+    ],
+    "/Game/Commander/Units/SM_WM01_Crowd": [
+      19000,
+      321,
+      78
+    ],
+    "reduction": "Static Mesh Reduction Settings\r\n\r\n**C++ Source:**\r\n\r\n- **Module**: StaticMeshEditor\r\n- **File**: StaticMeshEditorSubsystemHelpers.h\r\n\r\n**Editor Properties:** (see get_editor_property/set_editor_property)\r\n\r\n- ``percent_triangles`` (float):  [Read-Write] Percentage of triangles to keep. Ranges from 0.0 to 1.0: 1.0 = no reduction, 0.0 = no triangles.\r\n- ``screen_size`` (float):  [Read-Write] ScreenSize to display this LOD. Ranges from 0.0 to 1.0.",
+    "cache": "Niagara Sim Cache Function Library\r\n\r\n**C++ Source:**\r\n\r\n- **Plugin**: Niagara\r\n- **Module**: Niagara\r\n- **File**: NiagaraSimCacheFunctionLibrary.h\r\n",
+    "cache_methods": [
+      "capture_niagara_sim_cache_immediate",
+      "create_niagara_sim_cache"
+    ]
+  }
+}

@@ -35,7 +35,9 @@ AAIController& UGuLiEngineeringTravelComponent::Controller() const
 { return *CastChecked<AAIController>(CastChecked<APawn>(GetOwner())->GetController()); }
 bool UGuLiEngineeringTravelComponent::MoveOnGround(const FVector& Target, float AcceptanceRadius)
 {
-	return Controller().MoveToLocation(Target, AcceptanceRadius, true, true, true, true, nullptr, false)
+	// Tasks provide a vehicle-centre waypoint (including a validated mining pose).
+	// Adding the capsule radius stops hundreds of centimetres before that pose.
+	return Controller().MoveToLocation(Target, AcceptanceRadius, false, true, true, true, nullptr, false)
 		!= EPathFollowingRequestResult::Failed;
 }
 bool UGuLiEngineeringTravelComponent::BeginMove(const FVector& Target, float AcceptanceRadius)

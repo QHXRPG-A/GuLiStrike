@@ -1,0 +1,122 @@
+{
+  "bounds_unchanged": true,
+  "muzzles_unchanged": true,
+  "wheel_pivots_unchanged": true,
+  "shoulders": [
+    {
+      "object": "Shoulder armor_L",
+      "closed": true,
+      "triangles": 572,
+      "analytic_crown_author_units": 0.52,
+      "custom_normals": true
+    },
+    {
+      "object": "Shoulder armor_R",
+      "closed": true,
+      "triangles": 572,
+      "analytic_crown_author_units": 0.52,
+      "custom_normals": true
+    }
+  ],
+  "fbx_readback": [
+    {
+      "asset": "SM_Sweeper_Crowd",
+      "mesh_count": 1,
+      "triangles": 5482,
+      "bounds_m": [
+        [
+          -7.5526204109191895,
+          -6.52872896194458,
+          0.0
+        ],
+        [
+          7.552619934082031,
+          6.52872896194458,
+          11.409486770629883
+        ]
+      ],
+      "bounds_error_m": 4.76837158203125e-07,
+      "material_slots": [
+        1
+      ],
+      "uv_layers": [
+        [
+          "Atlas",
+          "RigidPivotXY_UE",
+          "RigidPivotZ_Radius_UE"
+        ]
+      ],
+      "vertex_colors": [
+        [
+          "RigidPart"
+        ]
+      ],
+      "bones": []
+    },
+    {
+      "asset": "SK_Sweeper",
+      "mesh_count": 1,
+      "triangles": 5482,
+      "bounds_m": [
+        [
+          -7.5526204109191895,
+          -6.52872896194458,
+          0.0
+        ],
+        [
+          7.552619934082031,
+          6.52872896194458,
+          11.409486770629883
+        ]
+      ],
+      "bounds_error_m": 4.76837158203125e-07,
+      "material_slots": [
+        1
+      ],
+      "uv_layers": [
+        [
+          "Atlas",
+          "RigidPivotXY_UE",
+          "RigidPivotZ_Radius_UE"
+        ]
+      ],
+      "vertex_colors": [
+        [
+          "RigidPart"
+        ]
+      ],
+      "bones": [
+        "root",
+        "Body",
+        "Wheel_FL",
+        "Wheel_FR",
+        "Wheel_RL",
+        "Wheel_RR",
+        "Gun_Pitch"
+      ]
+    }
+  ],
+  "symmetric_error_m": 2.384185791015625e-07,
+  "pose_inspection": [
+    {
+      "gun_pitch_degrees": -15,
+      "rigid_skin_error_m": 5.331201499700045e-07,
+      "body_movement_error_m": 0
+    },
+    {
+      "gun_pitch_degrees": 0,
+      "rigid_skin_error_m": 5.331201499700045e-07,
+      "body_movement_error_m": 0
+    },
+    {
+      "gun_pitch_degrees": 35,
+      "rigid_skin_error_m": 9.5367431640625e-07,
+      "body_movement_error_m": 0
+    },
+    {
+      "gun_pitch_degrees": 60,
+      "rigid_skin_error_m": 1.066240299940009e-06,
+      "body_movement_error_m": 0
+    }
+  ]
+}

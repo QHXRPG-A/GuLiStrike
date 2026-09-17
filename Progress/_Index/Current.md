@@ -16,6 +16,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [实时势力范围与阵营覆盖](../RequirementDocument/20260916-实时势力范围与阵营覆盖.md) | building, commander, map, ui | — | 围绕现有据点与Territory梳理势力源、扩散规则、刷新方式及覆盖渲染，形成技术方案。 | 2026-09-16 |
 | [首版 Demo 3v3、Ship 战略机动与高频选牌](../RequirementDocument/20260909-Demo3v3与Ship战略机动及高频选牌.md) | combat, commander, economy, ship, ui | — | 细化战略机动的调用与支付方式、出入口和僚机随行规则，以及三线选牌频率、单次强化幅度和 Ship 卡牌内容规划。 | 2026-09-09 |
 | [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | building, combat, commander, economy, ship | — | 细化维护及断供恢复、战略机动支付与采集加工参数，以及三线经验曲线、Ship 高频选牌和强力牌费用。 | 2026-09-09 |
 
@@ -23,7 +24,8 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | building, commander, data, economy, map | 18/20 (90%) | 补齐包围、厂内延后指令及运输边界观察，处理旧矿厂坡道在部分地形首次生成时的断言。 | 2026-09-15 |
+| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | combat, commander, rendering, ship | 9/12 (75%) | 继续实战轰炸、僚机死亡、机械姿态和完整性能验收。 | 2026-09-17 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | building, commander, data, economy, map | 18/20 (90%) | 补齐包围、厂内延后指令及运输边界观察；坡道断言已由9月16日落点修复处理。 | 2026-09-16 |
 | [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | combat, commander, network, ui | 5/6 (83%) | 重启源码版 Editor，完成三分辨率、Commander/Ground/Air、Standalone/Listen/客户端的人工 PIE 验收。 | 2026-09-10 |
 | [地图战略点标注与数据导出工具 — 技术方案](../DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md) | assets, building, commander, data-pipeline, map-authoring | 15/22 (68%) | M2 完整验收（实现完成，交互矩阵待验收） | 2026-09-07 |
 | [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | assets, network, ship, ui | 28/29 (97%) | 用户手动加 7 个 socket（教程见下，坐标已定稿） | 2026-09-05 |
@@ -36,6 +38,8 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | combat, vfx, wingman | 5/7 (71%) | 用户先在 UE 评审视觉；随后补齐稳定 GPU 对照、尺寸精测和真实客户端/专用服务器验收。 | 2026-09-16 |
+| [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | commander, navigation, resources | 4/4 (100%) | 后续确认旧BuildingWorld测试更新范围，补密集狭路及大规模性能观察。 | 2026-09-15 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | combat, commander, data, wingman | 8/8 (100%) | 本次归并已交付；前次4项现有回归适配仍等待用户范围确认。 | 2026-09-14 |
 | [地图资源密度涂绘与导出 — 技术方案与实施记录](../DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md) | data-pipeline, map-authoring, outpost, resource | 8/9 (89%) | 保存并重启旧 Editor，在隔离验证地图执行人工验收矩阵并记录证据。 | 2026-09-10 |
 | [Ship僚机战斗表现、HUD与相机调整 — 技术方案](../DevelopmentDocumentation/20260910-Ship僚机战斗表现HUD与相机调整.md) | combat, ship, ui, vfx, wingman | — | 在交互式源码Editor中补做三种目标分辨率、分屏、贴地绕山、Listen/Dedicated/Late Join及10枚齐射GPU/Bounds截图验收。 | 2026-09-10 |
@@ -52,6 +56,13 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。 | 2026-09-17 |
+| [Ship动漫低模风格Blender样板 — 制作与交付](../DevelopmentDocumentation/20260916-Ship动漫低模风格Blender样板.md) | art, assets, ship | 4/4 (100%) | 等待用户美术评审；后续UE材质适配与模型替换另按确认范围实施。 | 2026-09-16 |
+| [GPU渲染降耗 — 技术方案与实施](../DevelopmentDocumentation/20260916-GPU渲染降耗.md) | commander, performance, wingman | 9/9 (100%) | 继续归因未下降的ShadowDepths；后续实机游玩关注FXAA远距闪烁和快速转镜头下的Lumen收敛。 | 2026-09-16 |
+| [据点矿厂落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md) | building, commander, navigation, performance | 7/7 (100%) | — | 2026-09-16 |
+| [客户端 CPU 增量维护与 10Hz 刷新](../DevelopmentDocumentation/20260915-客户端CPU增量维护与10Hz刷新.md) | commander, network, performance, ui | 12/12 (100%) | — | 2026-09-16 |
+| [导航预烘焙与哈希判新 — 技术方案](../DevelopmentDocumentation/20260915-导航预烘焙与哈希判新.md) | commander, navigation, performance, resources | 11/11 (100%) | — | 2026-09-15 |
+| [指挥官姿态预测差分压缩与性能对比 — 技术方案](../DevelopmentDocumentation/20260915-指挥官姿态预测差分压缩与性能对比.md) | commander, network, performance | 9/9 (100%) | — | 2026-09-15 |
 | [指挥官10Hz权威循环与移动容量压测 — 技术方案](../DevelopmentDocumentation/20260915-指挥官10Hz权威循环与移动容量压测.md) | commander, network, performance | 8/8 (100%) | 后续先解决初始名册分片与姿态带宽预算，再以打包分机、长时多轮条件复测部署容量。 | 2026-09-15 |
 | [Ship组件能力与指挥官技能去GAS重构 — 实施记录](../DevelopmentDocumentation/20260914-Ship组件能力与指挥官技能去GAS重构.md) | combat, commander, network, ship, wingman | 8/8 (100%) | — | 2026-09-15 |
 | [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | combat, vfx, wingman | 7/7 (100%) | 后续另行处理既有失败断言；独立GPU计时与强制扩容未纳入本次实测。 | 2026-09-14 |

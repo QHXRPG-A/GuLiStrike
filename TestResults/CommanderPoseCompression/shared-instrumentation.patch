@@ -1,0 +1,249 @@
+diff --git a/Scripts/run_commander_move_stress.ps1 b/Scripts/run_commander_move_stress.ps1
+index 8100b4fc..3fd764de 100644
+--- a/Scripts/run_commander_move_stress.ps1
++++ b/Scripts/run_commander_move_stress.ps1
+@@ -4,6 +4,7 @@ param(
+     [ValidateRange(0, 2)][int]$Clients = 0,
+     [int]$Seconds = 40,
+     [string]$Label = 'run',
++    [string]$EvidenceRoot = 'TestResults/CommanderMove10Hz',
+     [int]$Port = 17951,
+     [switch]$PartitionCpu,
+     [switch]$HeadlessClients,
+@@ -14,7 +15,7 @@ param(
+ )
+ $ErrorActionPreference = 'Stop'
+ $projectRoot = Split-Path -Parent $PSScriptRoot
+-$runDir = Join-Path $projectRoot "TestResults\CommanderMove10Hz\${Label}-n${Population}-c${Clients}"
++$runDir = Join-Path $projectRoot "$EvidenceRoot/${Label}-n${Population}-c${Clients}"
+ if (Test-Path -LiteralPath $runDir) { throw "Evidence directory already exists: $runDir" }
+ New-Item -ItemType Directory -Path $runDir | Out-Null
+ $engineDir = 'D:\UnrealEngine-5.7\Engine\Binaries\Win64'
+@@ -25,6 +26,7 @@ $samples = [System.Collections.Generic.List[object]]::new()
+ $serverSeconds = $Seconds + $(if ($Clients -gt 0) { 10 } else { 0 })
+ $common = @('-game', '-Unattended', '-NoSound', '-NoSplash', '-NoLiveCoding', '-DisablePlugins=Fab', '-NoScreenMessages')
+ if ($CaptureNetwork) { $common += '-MoveStressNetworkProfile' }
++if ($CaptureTrace) { $common += @('-MoveStressTrace', '-statnamedevents') }
+ $cvars = 't.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1'
+ foreach ($quality in @('ViewDistance','AntiAliasing','Shadow','GlobalIllumination','Reflection','PostProcess','Texture','Effects','Foliage','Shading')) {
+     $cvars += ",sg.${quality}Quality 3"
+@@ -65,6 +67,7 @@ try {
+     $captureSeen = $false
+     while ($true) {
+         $now = Get-Date
++        $qpcSeconds = [Diagnostics.Stopwatch]::GetTimestamp() / [double][Diagnostics.Stopwatch]::Frequency
+         if (!$captureSeen) {
+             $serverSummary = Join-Path $runDir 'server\summary.json'
+             if (Test-Path -LiteralPath $serverSummary) {
+@@ -90,7 +93,7 @@ try {
+             $anyAlive = $true
+             $cpu = $entry.Process.TotalProcessorTime.TotalSeconds
+             $samples.Add([pscustomobject]@{
+-                Seconds = ($now - $started).TotalSeconds; Role = $entry.Role; Pid = $entry.Process.Id
++                Seconds = ($now - $started).TotalSeconds; QpcSeconds = $qpcSeconds; Role = $entry.Role; Pid = $entry.Process.Id
+                 CpuCoreEquivalents = $(if ($elapsed -gt 0 -and $entry.PreviousCpu -gt 0) { ($cpu - $entry.PreviousCpu) / $elapsed } else { 0 })
+                 WorkingSetMiB = $entry.Process.WorkingSet64 / 1MB; PrivateMiB = $entry.Process.PrivateMemorySize64 / 1MB
+             })
+diff --git a/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp b/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp
+index 1728c2cc..8432bff9 100644
+--- a/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp
++++ b/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp
+@@ -11,6 +11,8 @@
+ #include "Engine/World.h"
+ #include "EngineUtils.h"
+ #include "Net/UnrealNetwork.h"
++#include "Commander/Network/GuLiCommanderPoseMetrics.h"
++#include "ProfilingDebugging/CpuProfilerTrace.h"
+ 
+ namespace GuLiCommanderNetwork
+ {
+@@ -519,6 +521,8 @@ void UGuLiCommanderNetSyncComponent::EnsureServerBootstrapForMatch(
+ 
+ void UGuLiCommanderNetSyncComponent::SendPoseChunk(const FGuLiSoldierPoseChunk& Chunk)
+ {
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Send);
++	GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Send);
+ 	if (!GetOwner() || !GetOwner()->HasAuthority()
+ 		|| !IsSoldierStreamReady() || Chunk.AuthorityEpoch != ServerAcceptedMatchEpoch
+ 		|| Chunk.ProtocolVersion != GULI_COMMANDER_PROTOCOL_VERSION)
+@@ -1592,6 +1596,8 @@ void UGuLiCommanderNetSyncComponent::ReceiveCommandAck(const FGuLiCommandAck& Ac
+ void UGuLiCommanderNetSyncComponent::ClientReceiveSoldierPoseChunk_Implementation(
+ 	const FGuLiSoldierPoseChunk& Chunk)
+ {
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Receive);
++	GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Receive);
+ 	// 测试注入没有 Actor/World，仍复用下方原始协议谓词；网络接收须先通过公共连接门。
+ 	if (GetOwner() && !IsSoldierStreamReady())
+ 	{
+@@ -1616,6 +1622,7 @@ void UGuLiCommanderNetSyncComponent::ClientReceiveSoldierPoseChunk_Implementatio
+ 			EAllowShrinking::No);
+ 	}
+ 	PendingPoseChunks.Add(Sanitized);
++	GuLiCommanderPoseMetrics::RecordDecoded(Sanitized.Samples.Num());
+ #if !UE_BUILD_SHIPPING
+ 	// 仅用于非 Shipping 的新帧统计，不意味着整帧所有块已收齐，也不会据此拒绝其他块。
+ 	if (LastAcceptedPoseFrameSequence == 0u
+diff --git a/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h b/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h
+index 6283bb58..7c385d76 100644
+--- a/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h
++++ b/Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h
+@@ -70,6 +70,7 @@ public:
+ 
+ 	/** 服务器把已构造的姿态块发给拥有者；捕获目标为 10 Hz，具体分块/调度不在本函数。 */
+ 	void SendPoseChunk(const FGuLiSoldierPoseChunk& Chunk);
++	uint64 GetPoseCodecAllocatedBytes() const { return 0u; }
+ 
+ 	/** 服务器刷新选择中的存活/命令摘要并剔除全灭控制组；仅发生变化时返回 true 并请求复制。 */
+ 	bool RefreshServerSelection();
+diff --git a/Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp b/Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp
+index 3b59c80a..945c87f1 100644
+--- a/Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp
++++ b/Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp
+@@ -1,6 +1,8 @@
+ // Copyright Epic Games, Inc. All Rights Reserved.
+ 
+ #include "Commander/Framework/GuLiCommanderWorldReplicationComponent.h"
++#include "Commander/Network/GuLiCommanderPoseMetrics.h"
++#include "ProfilingDebugging/CpuProfilerTrace.h"
+ 
+ #include "Battle/Framework/GuLiBattleGameState.h"
+ #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
+@@ -228,7 +230,11 @@ void UGuLiCommanderWorldReplicationComponent::PublishSoldierSnapshotAndPoses()
+ 		SoldierStateReplicator->ApplyAuthoritySnapshot(SoldierStates, MatchEpoch);
+ 
+ 		PendingPoseChunks.Reset();
+-		Authority->CaptureSoldierPoseChunks(PendingPoseChunks, MatchEpoch);
++		{
++			TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Capture);
++			GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Capture);
++			Authority->CaptureSoldierPoseChunks(PendingPoseChunks, MatchEpoch);
++		}
+ 		PendingPoseDispatchPhase = 0u;
+ 		PoseFrameCapturedAtSeconds = Now;
+ 	}
+diff --git a/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp b/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp
+index 61a2d509..489e945d 100644
+--- a/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp
++++ b/Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp
+@@ -1,6 +1,8 @@
+ // Copyright Epic Games, Inc. All Rights Reserved.
+ 
+ #include "Commander/Network/GuLiCommanderTypes.h"
++#include "Commander/Network/GuLiCommanderPoseMetrics.h"
++#include "ProfilingDebugging/CpuProfilerTrace.h"
+ 
+ namespace
+ {
+@@ -993,6 +995,9 @@ void FGuLiSoldierPoseChunk::Sanitize()
+ 
+ bool FGuLiSoldierPoseChunk::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess)
+ {
++	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Wire);
++	TOptional<GuLiCommanderPoseMetrics::FScope> ReadMeasure;
++	if (Ar.IsLoading()) ReadMeasure.Emplace(GuLiCommanderPoseMetrics::EScope::WireRead);
+ 	if (Ar.IsSaving())
+ 	{
+ 		Sanitize();
+diff --git a/Source/GuLiStrike/Development/GuLiCommanderMoveStress.cpp b/Source/GuLiStrike/Development/GuLiCommanderMoveStress.cpp
+index ea322424..09469adb 100644
+--- a/Source/GuLiStrike/Development/GuLiCommanderMoveStress.cpp
++++ b/Source/GuLiStrike/Development/GuLiCommanderMoveStress.cpp
+@@ -11,6 +11,7 @@
+ #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+ #include "Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h"
+ #include "Commander/Network/GuLiSoldierStateReplicator.h"
++#include "Commander/Network/GuLiCommanderPoseMetrics.h"
+ #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+ #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
+ #include "Containers/Ticker.h"
+@@ -104,6 +105,8 @@ struct FRun : TSharedFromThis<FRun>
+ 	TMap<uint32, FVector> LastLocations;
+ 	TArray<FString> Frames;
+ 	TArray<FString> NetworkFrames;
++	TArray<FString> PoseMetricFrames;
++	uint64 PeakCodecBytes = 0;
+ 	TSharedRef<FJsonObject> Report = MakeShared<FJsonObject>();
+ 	TSharedFuture<FString> CsvCompletion;
+ 	bool bPrepared = false;
+@@ -124,11 +127,25 @@ struct FRun : TSharedFromThis<FRun>
+ 		else for (const auto& Connection : Driver->ClientConnections) Record(Connection);
+ 	}
+ 
++	void SamplePoseMetrics(double Now)
++	{
++		uint64 CacheBytes = 0;
++		for (TActorIterator<APlayerController> It(World.Get()); It; ++It)
++			if (auto* Sync = It->FindComponentByClass<UGuLiCommanderNetSyncComponent>()) CacheBytes += Sync->GetPoseCodecAllocatedBytes();
++		PeakCodecBytes = FMath::Max(PeakCodecBytes, CacheBytes);
++		const auto& S = GuLiCommanderPoseMetrics::GetSnapshot();
++		PoseMetricFrames.Add(FString::Printf(TEXT("%.9f,%.9f,%.9f,%.9f,%.9f,%.9f,%llu,%llu,%llu,%llu,%llu,%llu,%llu,%llu,%llu,%llu,%llu,%llu"),
++			Now, S.Milliseconds[0], S.Milliseconds[1], S.Milliseconds[2], S.Milliseconds[3], S.Milliseconds[4],
++			S.Calls[0], S.Calls[1], S.Calls[2], S.Calls[3], S.Calls[4], S.DecodedSamples, S.DecodeFailures,
++			S.AbsoluteSamples, S.DeltaSamples, S.PayloadBytes, CacheBytes, PeakCodecBytes));
++	}
++
+ 	void Save(const FString& Error)
+ 	{
+ 		if (bSaved) return;
+ 		bSaved = true;
+ 		Finished = FPlatformTime::Seconds();
++		GuLiCommanderPoseMetrics::EndCapture();
+ 		if (bTraceStarted) FTraceAuxiliary::Stop();
+ #if USE_NETWORK_PROFILER
+ 		if (bNetworkProfileStarted)
+@@ -171,7 +188,10 @@ struct FRun : TSharedFromThis<FRun>
+ 		FFileHelper::SaveStringToFile(Json, *(Directory / TEXT("summary.json")), FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
+ 		FFileHelper::SaveStringArrayToFile(Frames, *(Directory / TEXT("frames.csv")), FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
+ 		if (bCaptureNetwork) FFileHelper::SaveStringArrayToFile(NetworkFrames, *(Directory / TEXT("network.csv")), FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
+-		if (CaptureStarted > 0) CsvCompletion = FCsvProfiler::Get()->EndCapture();
++		if (CaptureStarted > 0) {
++			FFileHelper::SaveStringArrayToFile(PoseMetricFrames, *(Directory / TEXT("pose-metrics.csv")), FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
++			CsvCompletion = FCsvProfiler::Get()->EndCapture();
++		}
+ 		UE_LOG(LogGuLiStrike, Display, TEXT("MoveStress finished: mode=%s requested=%d error=%s output=%s"),
+ 			bClient ? TEXT("client") : TEXT("server"), Population, *Error, *Directory);
+ 	}
+@@ -467,13 +487,16 @@ struct FRun : TSharedFromThis<FRun>
+ 		if (CaptureStarted == 0)
+ 		{
+ 			CaptureStarted = Now; PreviousFrameTime = Now;
++			GuLiCommanderPoseMetrics::BeginCapture();
++			PoseMetricFrames.Add(TEXT("monotonic_seconds,send_ms,receive_ms,ack_ms,capture_ms,wire_read_ms,send_calls,receive_calls,ack_calls,capture_calls,wire_read_calls,decoded_samples,decode_failures,absolute_samples,delta_samples,payload_bytes,cache_bytes,peak_cache_bytes"));
++			SamplePoseMetrics(Now);
++			Report->SetNumberField(TEXT("capture_start_qpc_seconds"), FPlatformTime::Cycles64() * FPlatformTime::GetSecondsPerCycle64());
+ 			Report->SetNumberField(TEXT("capture_start_monotonic_seconds"), Now);
+ 			Report->SetNumberField(TEXT("capture_start_engine_seconds"), Now - GStartTime);
+ 			if (bCaptureNetwork)
+ 			{
+ 				NetworkFrames.Add(TEXT("monotonic_seconds,engine_seconds,connection,in_total_bytes,out_total_bytes,packet_overhead"));
+ 				SampleNetwork(Now);
+-				if (!bClient)
+ 				{
+ #if USE_NETWORK_PROFILER
+ 					check(!GNetworkProfiler.IsTrackingEnabled());
+@@ -506,7 +529,7 @@ struct FRun : TSharedFromThis<FRun>
+ 				FTraceAuxiliary::FOptions Options;
+ 				Options.bExcludeTail = true;
+ 				bTraceStarted = FTraceAuxiliary::Start(FTraceAuxiliary::EConnectionType::File,
+-					*(Directory / TEXT("client.utrace")), TEXT("cpu,gpu,frame,bookmark,task"), &Options);
++					*(Directory / TEXT("process.utrace")), TEXT("cpu,gpu,frame,bookmark,task"), &Options);
+ 				if (!bTraceStarted) { Save(TEXT("trace_start_failed")); return true; }
+ 			}
+ 			UE_LOG(LogGuLiStrike, Display, TEXT("MoveStress capture started count=%d seconds=%.1f"), Population, Duration);
+@@ -533,6 +556,7 @@ struct FRun : TSharedFromThis<FRun>
+ 			Alive, Moving, ObservedMoving, Blocked, Arrived, In, Out, PoseAge));
+ 		PreviousFrameTime = Now;
+ 		SampleNetwork(Now);
++		SamplePoseMetrics(Now);
+ 		if (Now - CaptureStarted >= Duration) Save(TEXT(""));
+ 		return true;
+ 	}
+@@ -544,7 +568,7 @@ void Start(const TArray<FString>& Args, UWorld*)
+ 	auto Run = MakeShared<FRun>();
+ 	Run->Population = FCString::Atoi(*Args[0]); Run->Duration = FCString::Atod(*Args[1]);
+ 	Run->Directory = FPaths::ConvertRelativePathToFull(Args[2]); Run->bClient = Args[3] == TEXT("client");
+-	Run->bCaptureTrace = Run->bClient && FParse::Param(FCommandLine::Get(), TEXT("MoveStressTrace"));
++	Run->bCaptureTrace = FParse::Param(FCommandLine::Get(), TEXT("MoveStressTrace"));
+ 	Run->bCaptureNetwork = FParse::Param(FCommandLine::Get(), TEXT("MoveStressNetworkProfile"));
+ 	Run->ExpectedClients = FCString::Atoi(*Args[4]);
+ 	check(Args[5] == TEXT("march") || Args[5] == TEXT("shuttle"));

@@ -1,5 +1,7 @@
 # 项目已认可实例
 
+当前统一方向与新模型默认线稿/三渲二见[《GuLiStrike 美术规范》](../../../../Progress/RequirementDocument/GuLiStrike美术规范.md)。下列早期建筑实例主要作为几何、装配和源文件经验；其旧PBR外观不能覆盖当前规范、兵种参考或用户专属要求。
+
 ## 风格基准
 
 用户指定资产：`/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory`。

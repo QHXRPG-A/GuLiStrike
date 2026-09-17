@@ -1,0 +1,802 @@
+{
+  "source": "UE5.7 CSV profiler",
+  "scope": "Controlled 1280x960 SceneCapture with identical frame-stepped solo simulations; actual combat entry validated separately",
+  "cases": {
+    "1": {
+      "old": {
+        "GPUTime": {
+          "absolute_ms": 6.976432505910166,
+          "delta_ms": 0.3568808510638304,
+          "delta_runs_ms": [
+            2.087754609929079,
+            -0.43708297872340385,
+            -0.5800290780141841
+          ],
+          "repeat_range_ms": 2.6677836879432633,
+          "repeat_stdev_ms": 1.5006836354381454
+        },
+        "Exclusive/GameThread/Effects": {
+          "absolute_ms": 0.18442399527186762,
+          "delta_ms": 0.15481063829787234,
+          "delta_runs_ms": [
+            0.15795992907801418,
+            0.15084751773049646,
+            0.15562446808510638
+          ],
+          "repeat_range_ms": 0.007112411347517722,
+          "repeat_stdev_ms": 0.00362537418565543
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "absolute_ms": 0.01714739952718676,
+          "delta_ms": 0.01714739952718676,
+          "delta_runs_ms": [
+            0.018179078014184398,
+            0.01579113475177305,
+            0.017471985815602838
+          ],
+          "repeat_range_ms": 0.0023879432624113496,
+          "repeat_stdev_ms": 0.0012266154450742634
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "absolute_ms": 0.10237293144208039,
+          "delta_ms": 0.04446666666666667,
+          "delta_runs_ms": [
+            0.04502517730496454,
+            0.04399397163120568,
+            0.04438085106382979
+          ],
+          "repeat_range_ms": 0.0010312056737588615,
+          "repeat_stdev_ms": 0.000520931400153427
+        },
+        "GPU/Translucency": {
+          "absolute_ms": 0.6520429078014185,
+          "delta_ms": 0.017453546099290767,
+          "delta_runs_ms": [
+            0.13433936170212768,
+            -0.03971418439716312,
+            -0.04226453900709226
+          ],
+          "repeat_range_ms": 0.17660390070921994,
+          "repeat_stdev_ms": 0.10123411724322187
+        },
+        "GPU/Distortion": {
+          "absolute_ms": 0.009188888888888889,
+          "delta_ms": 0.009188888888888889,
+          "delta_runs_ms": [
+            0.008743971631205674,
+            0.01270354609929078,
+            0.006119148936170212
+          ],
+          "repeat_range_ms": 0.006584397163120568,
+          "repeat_stdev_ms": 0.003314669670580435
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "absolute_ms": 0.030636997635933805,
+          "delta_ms": 0.030636997635933805,
+          "delta_runs_ms": [
+            0.031802482269503544,
+            0.02764290780141844,
+            0.03246560283687943
+          ],
+          "repeat_range_ms": 0.00482269503546099,
+          "repeat_stdev_ms": 0.002614070135742424
+        },
+        "GPU/BasePass": {
+          "absolute_ms": 0.4518145390070922,
+          "delta_ms": 0.0009120567375886512,
+          "delta_runs_ms": [
+            0.129636524822695,
+            -0.008767730496453852,
+            -0.1181326241134752
+          ],
+          "repeat_range_ms": 0.2477691489361702,
+          "repeat_stdev_ms": 0.12416787628775315
+        }
+      }
+    },
+    "10": {
+      "old": {
+        "GPUTime": {
+          "absolute_ms": 6.955312174940898,
+          "delta_ms": 0.33576052009456286,
+          "delta_runs_ms": [
+            3.4693670212765957,
+            -0.8033946808510635,
+            -1.6586907801418436
+          ],
+          "repeat_range_ms": 5.128057801418439,
+          "repeat_stdev_ms": 2.747271397687755
+        },
+        "Exclusive/GameThread/Effects": {
+          "absolute_ms": 0.9163420803782506,
+          "delta_ms": 0.8867287234042552,
+          "delta_runs_ms": [
+            0.9715535460992907,
+            0.8202421985815602,
+            0.8683904255319149
+          ],
+          "repeat_range_ms": 0.15131134751773045,
+          "repeat_stdev_ms": 0.07730459784869759
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "absolute_ms": 0.03892978723404255,
+          "delta_ms": 0.03892978723404255,
+          "delta_runs_ms": [
+            0.04100354609929078,
+            0.038897163120567374,
+            0.0368886524822695
+          ],
+          "repeat_range_ms": 0.004114893617021276,
+          "repeat_stdev_ms": 0.0020576407896996116
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "absolute_ms": 0.23972293144208037,
+          "delta_ms": 0.18181666666666665,
+          "delta_runs_ms": [
+            0.19494219858156026,
+            0.17447269503546098,
+            0.1760351063829787
+          ],
+          "repeat_range_ms": 0.020469503546099277,
+          "repeat_stdev_ms": 0.01139385682468325
+        },
+        "GPU/Translucency": {
+          "absolute_ms": 0.6918898345153665,
+          "delta_ms": 0.057300472813238766,
+          "delta_runs_ms": [
+            0.2652021276595745,
+            -0.0195095744680851,
+            -0.07379113475177312
+          ],
+          "repeat_range_ms": 0.33899326241134764,
+          "repeat_stdev_ms": 0.18208224930671196
+        },
+        "GPU/Distortion": {
+          "absolute_ms": 0.048708628841607565,
+          "delta_ms": 0.048708628841607565,
+          "delta_runs_ms": [
+            0.048700709219858154,
+            0.047899645390070925,
+            0.04952553191489362
+          ],
+          "repeat_range_ms": 0.0016258865248226922,
+          "repeat_stdev_ms": 0.0008129721939934311
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "absolute_ms": 0.05096891252955083,
+          "delta_ms": 0.05096891252955083,
+          "delta_runs_ms": [
+            0.07738404255319149,
+            0.03947517730496454,
+            0.036047517730496456
+          ],
+          "repeat_range_ms": 0.04133652482269504,
+          "repeat_stdev_ms": 0.02294028188937513
+        },
+        "GPU/BasePass": {
+          "absolute_ms": 0.4226813238770685,
+          "delta_ms": -0.028221158392434997,
+          "delta_runs_ms": [
+            0.1972,
+            -0.07538404255319148,
+            -0.2064794326241135
+          ],
+          "repeat_range_ms": 0.4036794326241135,
+          "repeat_stdev_ms": 0.20593087265561288
+        }
+      }
+    },
+    "30": {
+      "old": {
+        "GPUTime": {
+          "absolute_ms": 6.465856501182033,
+          "delta_ms": -0.15369515366430253,
+          "delta_runs_ms": [
+            0.6154322695035468,
+            0.065024113475177,
+            -1.1415418439716314
+          ],
+          "repeat_range_ms": 1.7569741134751782,
+          "repeat_stdev_ms": 0.8986757464285966
+        },
+        "Exclusive/GameThread/Effects": {
+          "absolute_ms": 2.7080020094562647,
+          "delta_ms": 2.6783886524822695,
+          "delta_runs_ms": [
+            2.6655251773049646,
+            2.6703418439716313,
+            2.699298936170213
+          ],
+          "repeat_range_ms": 0.03377375886524847,
+          "repeat_stdev_ms": 0.018268279677548977
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "absolute_ms": 0.06744349881796691,
+          "delta_ms": 0.06744349881796691,
+          "delta_runs_ms": [
+            0.06691099290780142,
+            0.06739574468085106,
+            0.06802375886524822
+          ],
+          "repeat_range_ms": 0.001112765957446804,
+          "repeat_stdev_ms": 0.0005579178812530429
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "absolute_ms": 0.4554457446808511,
+          "delta_ms": 0.39753947990543737,
+          "delta_runs_ms": [
+            0.3932748226950355,
+            0.4013822695035461,
+            0.3979613475177305
+          ],
+          "repeat_range_ms": 0.00810744680851061,
+          "repeat_stdev_ms": 0.004070153885289062
+        },
+        "GPU/Translucency": {
+          "absolute_ms": 0.7587315602836879,
+          "delta_ms": 0.12414219858156024,
+          "delta_runs_ms": [
+            0.14463936170212766,
+            0.1721343971631205,
+            0.055652836879432566
+          ],
+          "repeat_range_ms": 0.11648156028368795,
+          "repeat_stdev_ms": 0.060885866533407974
+        },
+        "GPU/Distortion": {
+          "absolute_ms": 0.05961382978723404,
+          "delta_ms": 0.05961382978723404,
+          "delta_runs_ms": [
+            0.058835460992907804,
+            0.0629854609929078,
+            0.057020567375886524
+          ],
+          "repeat_range_ms": 0.00596489361702128,
+          "repeat_stdev_ms": 0.003057675988488801
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "absolute_ms": 0.10670591016548463,
+          "delta_ms": 0.10670591016548463,
+          "delta_runs_ms": [
+            0.107172695035461,
+            0.11784432624113475,
+            0.09510070921985815
+          ],
+          "repeat_range_ms": 0.0227436170212766,
+          "repeat_stdev_ms": 0.011378991382752463
+        },
+        "GPU/BasePass": {
+          "absolute_ms": 0.418175768321513,
+          "delta_ms": -0.03272671394799054,
+          "delta_runs_ms": [
+            0.007415957446808508,
+            0.08570425531914899,
+            -0.1913003546099291
+          ],
+          "repeat_range_ms": 0.2770046099290781,
+          "repeat_stdev_ms": 0.14279868357419578
+        }
+      }
+    }
+  },
+  "raw": {
+    "old": {
+      "0-r1": {
+        "frames": 282,
+        "GPUTime": {
+          "mean": 5.92811914893617,
+          "median": 5.4872499999999995,
+          "p95": 8.5644
+        },
+        "Exclusive/GameThread/Effects": {
+          "mean": 0.029773404255319148,
+          "median": 0.0288,
+          "p95": 0.0359
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0.0
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "mean": 0.05047482269503546,
+          "median": 0.0489,
+          "p95": 0.0627
+        },
+        "GPU/Translucency": {
+          "mean": 0.5866457446808511,
+          "median": 0.4783,
+          "p95": 1.2207
+        },
+        "GPU/Distortion": {
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0.0
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0.0
+        },
+        "GPU/BasePass": {
+          "mean": 0.39795531914893617,
+          "median": 0.36524999999999996,
+          "p95": 0.7307
+        }
+      },
+      "0-r2": {
+        "frames": 282,
+        "GPUTime": {
+          "mean": 6.746860283687943,
+          "median": 5.835850000000001,
+          "p95": 11.9279
+        },
+        "Exclusive/GameThread/Effects": {
+          "mean": 0.029732978723404257,
+          "median": 0.0287,
+          "p95": 0.0356
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0.0
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "mean": 0.05789503546099291,
+          "median": 0.0561,
+          "p95": 0.0727
+        },
+        "GPU/Translucency": {
+          "mean": 0.6464439716312057,
+          "median": 0.48785,
+          "p95": 1.3652
+        },
+        "GPU/Distortion": {
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0.0
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0.0
+        },
+        "GPU/BasePass": {
+          "mean": 0.41774858156028366,
+          "median": 0.35495,
+          "p95": 0.6304
+        }
+      },
+      "0-r3": {
+        "frames": 282,
+        "GPUTime": {
+          "mean": 7.1836755319148935,
+          "median": 5.89935,
+          "p95": 12.9849
+        },
+        "Exclusive/GameThread/Effects": {
+          "mean": 0.02933368794326241,
+          "median": 0.0289,
+          "p95": 0.0349
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0.0
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "mean": 0.06534893617021277,
+          "median": 0.0629,
+          "p95": 0.0795
+        },
+        "GPU/Translucency": {
+          "mean": 0.6706783687943263,
+          "median": 0.4948,
+          "p95": 1.0597
+        },
+        "GPU/Distortion": {
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0.0
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "mean": 0.0,
+          "median": 0.0,
+          "p95": 0.0
+        },
+        "GPU/BasePass": {
+          "mean": 0.5370035460992908,
+          "median": 0.4061,
+          "p95": 0.9922
+        }
+      },
+      "1-r1": {
+        "frames": 282,
+        "GPUTime": {
+          "mean": 8.015873758865249,
+          "median": 7.4674499999999995,
+          "p95": 11.7154
+        },
+        "Exclusive/GameThread/Effects": {
+          "mean": 0.18773333333333334,
+          "median": 0.25325,
+          "p95": 0.3083
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "mean": 0.018179078014184398,
+          "median": 0.022,
+          "p95": 0.0382
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "mean": 0.0955,
+          "median": 0.1017,
+          "p95": 0.1354
+        },
+        "GPU/Translucency": {
+          "mean": 0.7209851063829787,
+          "median": 0.768,
+          "p95": 1.203
+        },
+        "GPU/Distortion": {
+          "mean": 0.008743971631205674,
+          "median": 0.0,
+          "p95": 0.0
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "mean": 0.031802482269503544,
+          "median": 0.03695,
+          "p95": 0.0834
+        },
+        "GPU/BasePass": {
+          "mean": 0.5275918439716312,
+          "median": 0.48855,
+          "p95": 1.1134
+        }
+      },
+      "1-r2": {
+        "frames": 282,
+        "GPUTime": {
+          "mean": 6.309777304964539,
+          "median": 5.72935,
+          "p95": 8.6623
+        },
+        "Exclusive/GameThread/Effects": {
+          "mean": 0.1805804964539007,
+          "median": 0.2476,
+          "p95": 0.2916
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "mean": 0.01579113475177305,
+          "median": 0.02025,
+          "p95": 0.0403
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "mean": 0.10188900709219859,
+          "median": 0.10855000000000001,
+          "p95": 0.1483
+        },
+        "GPU/Translucency": {
+          "mean": 0.6067297872340426,
+          "median": 0.51185,
+          "p95": 1.1672
+        },
+        "GPU/Distortion": {
+          "mean": 0.01270354609929078,
+          "median": 0.0,
+          "p95": 0.0
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "mean": 0.02764290780141844,
+          "median": 0.02785,
+          "p95": 0.0426
+        },
+        "GPU/BasePass": {
+          "mean": 0.4089808510638298,
+          "median": 0.36575,
+          "p95": 0.6296
+        }
+      },
+      "1-r3": {
+        "frames": 282,
+        "GPUTime": {
+          "mean": 6.603646453900709,
+          "median": 5.639950000000001,
+          "p95": 11.6682
+        },
+        "Exclusive/GameThread/Effects": {
+          "mean": 0.1849581560283688,
+          "median": 0.25155,
+          "p95": 0.2966
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "mean": 0.017471985815602838,
+          "median": 0.02215,
+          "p95": 0.0421
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "mean": 0.10972978723404256,
+          "median": 0.1145,
+          "p95": 0.1576
+        },
+        "GPU/Translucency": {
+          "mean": 0.628413829787234,
+          "median": 0.5104,
+          "p95": 0.8714
+        },
+        "GPU/Distortion": {
+          "mean": 0.006119148936170212,
+          "median": 0.0,
+          "p95": 0.0
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "mean": 0.03246560283687943,
+          "median": 0.032350000000000004,
+          "p95": 0.0677
+        },
+        "GPU/BasePass": {
+          "mean": 0.4188709219858156,
+          "median": 0.34875,
+          "p95": 0.6215
+        }
+      },
+      "10-r1": {
+        "frames": 282,
+        "GPUTime": {
+          "mean": 9.397486170212765,
+          "median": 10.16615,
+          "p95": 13.6259
+        },
+        "Exclusive/GameThread/Effects": {
+          "mean": 1.0013269503546098,
+          "median": 1.154,
+          "p95": 1.7007
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "mean": 0.04100354609929078,
+          "median": 0.043800000000000006,
+          "p95": 0.0806
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "mean": 0.24541702127659573,
+          "median": 0.24385,
+          "p95": 0.5243
+        },
+        "GPU/Translucency": {
+          "mean": 0.8518478723404256,
+          "median": 0.8755,
+          "p95": 1.6463
+        },
+        "GPU/Distortion": {
+          "mean": 0.048700709219858154,
+          "median": 0.0,
+          "p95": 0.2217
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "mean": 0.07738404255319149,
+          "median": 0.078,
+          "p95": 0.1498
+        },
+        "GPU/BasePass": {
+          "mean": 0.5951553191489362,
+          "median": 0.5446,
+          "p95": 1.5445
+        }
+      },
+      "10-r2": {
+        "frames": 282,
+        "GPUTime": {
+          "mean": 5.94346560283688,
+          "median": 5.49935,
+          "p95": 8.2351
+        },
+        "Exclusive/GameThread/Effects": {
+          "mean": 0.8499751773049645,
+          "median": 1.11035,
+          "p95": 1.3543
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "mean": 0.038897163120567374,
+          "median": 0.040499999999999994,
+          "p95": 0.0738
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "mean": 0.2323677304964539,
+          "median": 0.2209,
+          "p95": 0.5425
+        },
+        "GPU/Translucency": {
+          "mean": 0.6269343971631206,
+          "median": 0.52135,
+          "p95": 1.2252
+        },
+        "GPU/Distortion": {
+          "mean": 0.047899645390070925,
+          "median": 0.0,
+          "p95": 0.2017
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "mean": 0.03947517730496454,
+          "median": 0.0364,
+          "p95": 0.081
+        },
+        "GPU/BasePass": {
+          "mean": 0.3423645390070922,
+          "median": 0.3366,
+          "p95": 0.3853
+        }
+      },
+      "10-r3": {
+        "frames": 282,
+        "GPUTime": {
+          "mean": 5.52498475177305,
+          "median": 5.38885,
+          "p95": 7.1303
+        },
+        "Exclusive/GameThread/Effects": {
+          "mean": 0.8977241134751773,
+          "median": 1.14535,
+          "p95": 1.5592
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "mean": 0.0368886524822695,
+          "median": 0.0399,
+          "p95": 0.0673
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "mean": 0.24138404255319149,
+          "median": 0.23475000000000001,
+          "p95": 0.5662
+        },
+        "GPU/Translucency": {
+          "mean": 0.5968872340425532,
+          "median": 0.5206999999999999,
+          "p95": 1.0857
+        },
+        "GPU/Distortion": {
+          "mean": 0.04952553191489362,
+          "median": 0.0,
+          "p95": 0.1672
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "mean": 0.036047517730496456,
+          "median": 0.03365,
+          "p95": 0.0755
+        },
+        "GPU/BasePass": {
+          "mean": 0.3305241134751773,
+          "median": 0.31595,
+          "p95": 0.4043
+        }
+      },
+      "30-r1": {
+        "frames": 282,
+        "GPUTime": {
+          "mean": 6.5435514184397165,
+          "median": 5.9072499999999994,
+          "p95": 11.2915
+        },
+        "Exclusive/GameThread/Effects": {
+          "mean": 2.6952985815602837,
+          "median": 3.49505,
+          "p95": 4.5181
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "mean": 0.06691099290780142,
+          "median": 0.07250000000000001,
+          "p95": 0.1178
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "mean": 0.44374964539007095,
+          "median": 0.435,
+          "p95": 1.1501
+        },
+        "GPU/Translucency": {
+          "mean": 0.7312851063829787,
+          "median": 0.6737500000000001,
+          "p95": 1.0747
+        },
+        "GPU/Distortion": {
+          "mean": 0.058835460992907804,
+          "median": 0.0,
+          "p95": 0.1759
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "mean": 0.107172695035461,
+          "median": 0.10975,
+          "p95": 0.1621
+        },
+        "GPU/BasePass": {
+          "mean": 0.4053712765957447,
+          "median": 0.3653,
+          "p95": 0.6372
+        }
+      },
+      "30-r2": {
+        "frames": 282,
+        "GPUTime": {
+          "mean": 6.81188439716312,
+          "median": 6.2322,
+          "p95": 10.7369
+        },
+        "Exclusive/GameThread/Effects": {
+          "mean": 2.7000748226950355,
+          "median": 3.5358,
+          "p95": 4.6309
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "mean": 0.06739574468085106,
+          "median": 0.0754,
+          "p95": 0.1142
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "mean": 0.459277304964539,
+          "median": 0.4514,
+          "p95": 1.1617
+        },
+        "GPU/Translucency": {
+          "mean": 0.8185783687943262,
+          "median": 0.6791,
+          "p95": 1.5508
+        },
+        "GPU/Distortion": {
+          "mean": 0.0629854609929078,
+          "median": 0.0,
+          "p95": 0.2332
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "mean": 0.11784432624113475,
+          "median": 0.11455,
+          "p95": 0.2592
+        },
+        "GPU/BasePass": {
+          "mean": 0.5034528368794327,
+          "median": 0.3923,
+          "p95": 0.9033
+        }
+      },
+      "30-r3": {
+        "frames": 282,
+        "GPUTime": {
+          "mean": 6.042133687943262,
+          "median": 5.9936,
+          "p95": 8.2795
+        },
+        "Exclusive/GameThread/Effects": {
+          "mean": 2.7286326241134753,
+          "median": 3.57205,
+          "p95": 4.6618
+        },
+        "Exclusive/AllWorkers/Niagara": {
+          "mean": 0.06802375886524822,
+          "median": 0.0732,
+          "p95": 0.1231
+        },
+        "Exclusive/RenderThread/Niagara": {
+          "mean": 0.46331028368794325,
+          "median": 0.46094999999999997,
+          "p95": 1.0718
+        },
+        "GPU/Translucency": {
+          "mean": 0.7263312056737589,
+          "median": 0.6246,
+          "p95": 1.3571
+        },
+        "GPU/Distortion": {
+          "mean": 0.057020567375886524,
+          "median": 0.0,
+          "p95": 0.2179
+        },
+        "GPU/NiagaraGPUSimulation": {
+          "mean": 0.09510070921985815,
+          "median": 0.0862,
+          "p95": 0.179
+        },
+        "GPU/BasePass": {
+          "mean": 0.3457031914893617,
+          "median": 0.3223,
+          "p95": 0.4334
+        }
+      }
+    }
+  }
+}

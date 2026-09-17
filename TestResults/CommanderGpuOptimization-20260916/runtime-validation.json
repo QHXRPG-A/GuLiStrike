@@ -1,0 +1,1881 @@
+{
+  "logs": [
+    {
+      "run": "A-1-n1200-c1",
+      "role": "server",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-1-n1200-c1",
+      "role": "client1",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-1-n1200-c2",
+      "role": "server",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-1-n1200-c2",
+      "role": "client1",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-1-n1200-c2",
+      "role": "client2",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-2-n1200-c1",
+      "role": "server",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-2-n1200-c1",
+      "role": "client1",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-2-n1200-c2",
+      "role": "server",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-2-n1200-c2",
+      "role": "client1",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-2-n1200-c2",
+      "role": "client2",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-3-n1200-c1",
+      "role": "server",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-3-n1200-c1",
+      "role": "client1",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-3-n1200-c2",
+      "role": "server",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-3-n1200-c2",
+      "role": "client1",
+      "runtime_errors": []
+    },
+    {
+      "run": "A-3-n1200-c2",
+      "role": "client2",
+      "runtime_errors": []
+    },
+    {
+      "run": "B-1-n1200-c1",
+      "role": "server",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-1-n1200-c1",
+      "role": "client1",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-1-n1200-c2",
+      "role": "server",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-1-n1200-c2",
+      "role": "client1",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-1-n1200-c2",
+      "role": "client2",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-2-n1200-c1",
+      "role": "server",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-2-n1200-c1",
+      "role": "client1",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-2-n1200-c2",
+      "role": "server",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-2-n1200-c2",
+      "role": "client1",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-2-n1200-c2",
+      "role": "client2",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-3-n1200-c1",
+      "role": "server",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-3-n1200-c1",
+      "role": "client1",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-3-n1200-c2",
+      "role": "server",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-3-n1200-c2",
+      "role": "client1",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "B-3-n1200-c2",
+      "role": "client2",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 1.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 1.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-1-n1200-c1",
+      "role": "server",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-1-n1200-c1",
+      "role": "client1",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-1-n1200-c2",
+      "role": "server",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-1-n1200-c2",
+      "role": "client1",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-1-n1200-c2",
+      "role": "client2",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-2-n1200-c1",
+      "role": "server",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-2-n1200-c1",
+      "role": "client1",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-2-n1200-c2",
+      "role": "server",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-2-n1200-c2",
+      "role": "client1",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-2-n1200-c2",
+      "role": "client2",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-3-n1200-c1",
+      "role": "server",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-3-n1200-c1",
+      "role": "client1",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-3-n1200-c2",
+      "role": "server",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-3-n1200-c2",
+      "role": "client1",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    },
+    {
+      "run": "C-3-n1200-c2",
+      "role": "client2",
+      "runtime_errors": [],
+      "cvars": {
+        "r.AntiAliasingMethod": {
+          "value": 1.0,
+          "priority": "ProjectSetting"
+        },
+        "r.VolumetricFog": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectional": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasDirectionalMoving": {
+          "value": 0.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocal": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Shadow.Virtual.ResolutionLodBiasLocalMoving": {
+          "value": 2.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.DownsampleFactor": {
+          "value": 32.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.ScreenProbeGather.RadianceCache.ProbeResolution": {
+          "value": 16.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.DirectLighting.UpdateFactor": {
+          "value": 64.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.LumenScene.Radiosity.UpdateFactor": {
+          "value": 128.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.Lumen.AsyncCompute": {
+          "value": 1.0,
+          "priority": "SystemSettingsIni"
+        },
+        "r.VRS.EnableSoftware": {
+          "value": 0.0,
+          "priority": "Console"
+        },
+        "r.VRS.ContrastAdaptiveShading": {
+          "value": 0.0,
+          "priority": "Console"
+        }
+      },
+      "cvars_correct": true
+    }
+  ],
+  "all_optimized_cvars_correct": true,
+  "no_runtime_error_markers": true
+}

@@ -1,0 +1,66 @@
+{
+  "saved": [
+    "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Puff.M_WingmanToon_Puff",
+    "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Ring.M_WingmanToon_Ring",
+    "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Flash.M_WingmanToon_Flash",
+    "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Spark.M_WingmanToon_Spark",
+    "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/NS_WingmanGroundExplosion_Toon.NS_WingmanGroundExplosion_Toon"
+  ],
+  "materials": {
+    "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Puff": "<Struct 'MaterialDiagnostics' (0x0000020E073D6A40) {success: True, is_compiled_ok: False, compile_errors: , referenced_texture_paths: , expression_count: 12, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 0}>",
+    "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Ring": "<Struct 'MaterialDiagnostics' (0x0000020E073D9A80) {success: True, is_compiled_ok: False, compile_errors: , referenced_texture_paths: , expression_count: 8, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 0}>",
+    "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Flash": "<Struct 'MaterialDiagnostics' (0x0000020E073D7580) {success: True, is_compiled_ok: False, compile_errors: , referenced_texture_paths: , expression_count: 8, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 0}>",
+    "/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Spark": "<Struct 'MaterialDiagnostics' (0x0000020E073D5E00) {success: True, is_compiled_ok: False, compile_errors: , referenced_texture_paths: , expression_count: 8, texture_sample_count: 0, texture_object_parameter_count: 0, function_call_count: 0, scalar_parameter_count: 0, vector_parameter_count: 0}>"
+  },
+  "emitters": [
+    {
+      "name": "Ignition",
+      "count": 1,
+      "lifetime": 0.1,
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000020DAA4EFA00) {success: False, system_path: \"/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/NS_WingmanGroundExplosion_Toon\", error_count: 1, warning_count: 0, errors: (\"System is not ready to run after compilation - likely has compile errors\"), warnings: , compilation_time_seconds: 0.001072}>"
+    },
+    {
+      "name": "FireSmoke",
+      "count": 8,
+      "lifetime": 1.8,
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000020DAAA64600) {success: False, system_path: \"/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/NS_WingmanGroundExplosion_Toon\", error_count: 2, warning_count: 0, errors: (\"System is invalid after compilation\",\"System is not ready to run after compilation - likely has compile errors\"), warnings: , compilation_time_seconds: 0.430800}>"
+    },
+    {
+      "name": "ExpansionRing",
+      "count": 1,
+      "lifetime": 0.5,
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000020DAAA6D430) {success: False, system_path: \"/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/NS_WingmanGroundExplosion_Toon\", error_count: 2, warning_count: 0, errors: (\"System is invalid after compilation\",\"System is not ready to run after compilation - likely has compile errors\"), warnings: , compilation_time_seconds: 0.363318}>"
+    },
+    {
+      "name": "Sparks",
+      "count": 12,
+      "lifetime": 0.65,
+      "compile": "<Struct 'NiagaraCompilationResult' (0x0000020DAAF46F90) {success: False, system_path: \"/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/NS_WingmanGroundExplosion_Toon\", error_count: 2, warning_count: 0, errors: (\"System is invalid after compilation\",\"System is not ready to run after compilation - likely has compile errors\"), warnings: , compilation_time_seconds: 0.002945}>"
+    }
+  ],
+  "rendered_material_validation": "PENDING: validate all saved materials in rendered editor",
+  "rendered_niagara_validation": "PENDING: compile saved graph in rendered editor",
+  "readback": [
+    {
+      "name": "Ignition",
+      "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x0000020DAA89B580) {emitter_name: \"Ignition\", is_enabled: True, sim_target: \"CPUSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+      "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x0000020DAAE18E80) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Flash.M_WingmanToon_Flash\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"Automatic\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>"
+    },
+    {
+      "name": "FireSmoke",
+      "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x0000020DAAE18F20) {emitter_name: \"FireSmoke\", is_enabled: True, sim_target: \"CPUSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+      "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x0000020DAAE16540) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Puff.M_WingmanToon_Puff\", has_material: True, sub_image_size: \"\", alignment: \"\", facing_mode: \"\", sort_mode: \"None\", mesh_path: \"/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/SM_WingmanToon_Puff320.SM_WingmanToon_Puff320\", ribbon_shape: \"\"}>"
+    },
+    {
+      "name": "ExpansionRing",
+      "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x0000020DAAE19240) {emitter_name: \"ExpansionRing\", is_enabled: True, sim_target: \"CPUSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+      "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x0000020DAAE19240) {renderer_name: \"NiagaraMeshRendererProperties_0\", renderer_type: \"Mesh\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Ring.M_WingmanToon_Ring\", has_material: True, sub_image_size: \"\", alignment: \"\", facing_mode: \"\", sort_mode: \"None\", mesh_path: \"/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/SM_WingmanToon_Ring128.SM_WingmanToon_Ring128\", ribbon_shape: \"\"}>"
+    },
+    {
+      "name": "Sparks",
+      "properties": "<Struct 'NiagaraEmitterPropertiesInfo' (0x0000020DAAE16540) {emitter_name: \"Sparks\", is_enabled: True, sim_target: \"CPUSim\", local_space: False, determinism: False, random_seed: 0, calculate_bounds_mode: \"Dynamic\", fixed_bounds: \"Min(-100.000000,-100.000000,-100.000000) Max(100.000000,100.000000,100.000000)\", allocation_mode: \"AutomaticEstimate\", pre_allocation_count: 0, loop_behavior: \"Infinite\", loop_duration: \"Unknown\", inactive_response: \"Complete (Let Particles Finish then Kill Emitter)\"}>",
+      "renderer": "<Struct 'NiagaraRendererDetailedInfo' (0x0000020DAAE14740) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True, material_path: \"/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/M_WingmanToon_Spark.M_WingmanToon_Spark\", has_material: True, sub_image_size: \"(X=1.000000,Y=1.000000)\", alignment: \"CustomAlignment\", facing_mode: \"Automatic\", sort_mode: \"None\", mesh_path: \"\", ribbon_shape: \"\"}>"
+    }
+  ],
+  "success": true
+}

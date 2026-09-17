@@ -1,0 +1,152 @@
+[
+  {
+    "asset": "SM_Sweeper_Crowd",
+    "mesh_count": 1,
+    "triangles": 5482,
+    "bounds_m": [
+      [
+        -7.5526204109191895,
+        -6.52872896194458,
+        0.0
+      ],
+      [
+        7.552619934082031,
+        6.52872896194458,
+        11.409486770629883
+      ]
+    ],
+    "bounds_error_m": 4.76837158203125e-07,
+    "material_slots": [
+      1
+    ],
+    "uv_layers": [
+      [
+        "Atlas",
+        "RigidPivotXY_UE",
+        "RigidPivotZ_Radius_UE"
+      ]
+    ],
+    "vertex_colors": [
+      [
+        "RigidPart"
+      ]
+    ],
+    "bones": []
+  },
+  {
+    "asset": "SK_Sweeper",
+    "mesh_count": 1,
+    "triangles": 5482,
+    "bounds_m": [
+      [
+        -7.5526204109191895,
+        -6.52872896194458,
+        0.0
+      ],
+      [
+        7.552619934082031,
+        6.52872896194458,
+        11.409486770629883
+      ]
+    ],
+    "bounds_error_m": 4.76837158203125e-07,
+    "material_slots": [
+      1
+    ],
+    "uv_layers": [
+      [
+        "Atlas",
+        "RigidPivotXY_UE",
+        "RigidPivotZ_Radius_UE"
+      ]
+    ],
+    "vertex_colors": [
+      [
+        "RigidPart"
+      ]
+    ],
+    "bones": [
+      "root",
+      "Body",
+      "Wheel_FL",
+      "Wheel_FR",
+      "Wheel_RL",
+      "Wheel_RR",
+      "Gun_Pitch"
+    ]
+  },
+  {
+    "asset": "SM_WarMachine_Crowd",
+    "mesh_count": 1,
+    "triangles": 14018,
+    "bounds_m": [
+      [
+        -27.32733726501465,
+        -28.80746841430664,
+        0.0
+      ],
+      [
+        27.327335357666016,
+        28.80746841430664,
+        34.17231750488281
+      ]
+    ],
+    "bounds_error_m": 1.9073486328125e-06,
+    "symmetry_error_m": 6.8770432335441e-06,
+    "material_slots": [
+      1
+    ],
+    "uv_layers": [
+      [
+        "Atlas",
+        "RigidPivotXY_UE",
+        "RigidPivotZ_Radius_UE"
+      ]
+    ],
+    "vertex_colors": [
+      [
+        "RigidPart"
+      ]
+    ],
+    "bones": []
+  },
+  {
+    "asset": "SK_WarMachine",
+    "mesh_count": 1,
+    "triangles": 14018,
+    "bounds_m": [
+      [
+        -27.32733726501465,
+        -28.80746841430664,
+        0.0
+      ],
+      [
+        27.327335357666016,
+        28.80746841430664,
+        34.17231750488281
+      ]
+    ],
+    "bounds_error_m": 1.9073486328125e-06,
+    "symmetry_error_m": 6.8770432335441e-06,
+    "material_slots": [
+      1
+    ],
+    "uv_layers": [
+      [
+        "Atlas",
+        "RigidPivotXY_UE",
+        "RigidPivotZ_Radius_UE"
+      ]
+    ],
+    "vertex_colors": [
+      [
+        "RigidPart"
+      ]
+    ],
+    "bones": [
+      "root",
+      "Body"
+    ],
+    "rigid_weights_valid": true
+  }
+]

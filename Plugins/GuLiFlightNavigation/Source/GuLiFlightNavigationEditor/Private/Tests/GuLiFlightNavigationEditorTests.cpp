@@ -571,13 +571,15 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 bool FGuLiFlightNavigationCookGateConfigurationTest::RunTest(const FString& Parameters)
 {
 	const UGuLiFlightNavigationCookSettings* Settings = GetDefault<UGuLiFlightNavigationCookSettings>();
-	TestEqual(TEXT("Exactly three release maps are guarded"), Settings->RequiredWorldPackages.Num(), 3);
+	TestEqual(TEXT("Exactly four release maps are guarded"), Settings->RequiredWorldPackages.Num(), 4);
 	TestTrue(TEXT("Commander Mass prototype is guarded"),
 		Settings->RequiredWorldPackages.Contains(TEXT("/Game/Maps/LVL_CommanderMassPrototype")));
 	TestTrue(TEXT("Main map is guarded"),
 		Settings->RequiredWorldPackages.Contains(TEXT("/Game/Maps/LVL_Main")));
 	TestTrue(TEXT("Ship test map is guarded"),
 		Settings->RequiredWorldPackages.Contains(TEXT("/Game/Maps/LVL_ShipTest")));
+	TestTrue(TEXT("Air-combat prototype is guarded"),
+		Settings->RequiredWorldPackages.Contains(TEXT("/Game/Maps/LVL_ShipWingmanAirCombatPrototype")));
 	return true;
 }
 

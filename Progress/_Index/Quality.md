@@ -3,7 +3,7 @@
 > 自动生成，请勿手改。运行 `progress_docs.py build` 刷新。
 
 - 错误：0
-- 提示：11
+- 提示：12
 
 ## 错误
 
@@ -24,3 +24,4 @@
 | Progress/RequirementDocument/20260826-5v5大战场玩法草案.md | oversize | 35.7KB，建议阈值 20KB |
 | Progress/RequirementDocument/20260827-Mass双端同步架构草案.md | oversize | 24.7KB，建议阈值 20KB |
 | Progress/RequirementDocument/20260902-僚机体系与空中三维导航.md | oversize | 27.9KB，建议阈值 20KB |
+| Progress/RequirementDocument/20260915-客户端性能优化与压测问题记录.md | oversize | 28.0KB，建议阈值 20KB |

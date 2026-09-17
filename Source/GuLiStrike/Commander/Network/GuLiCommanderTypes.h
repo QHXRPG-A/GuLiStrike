@@ -34,8 +34,10 @@ inline constexpr uint8 GULI_POSE_DISPATCH_PHASE_COUNT = 3u;
 /** 每帧最多 512 块；为空间分块留余量，不表示当前已有一万士兵。 */
 inline constexpr uint32 GULI_MAX_POSE_CHUNKS_PER_FRAME = 512u;
 
-/** 相对位置每单位 10 cm，速度每单位 10 cm/s；使用有符号 int16。 */
-inline constexpr float GULI_POSE_QUANTIZATION_CENTIMETERS = 10.0f;
+/** Network-only units. Authority simulation retains full centimeter precision. */
+inline constexpr double GULI_POSE_XY_STEP_CENTIMETERS = 100.0;
+inline constexpr double GULI_POSE_Z_STEP_CENTIMETERS = 10.0;
+inline constexpr double GULI_POSE_VELOCITY_STEP_CENTIMETERS_PER_SECOND = 100.0;
 
 /** 表现瞬移标志；生命等玩法事实仍以离散状态复制为准。 */
 inline constexpr uint8 GULI_SOLDIER_POSE_FLAG_TELEPORT = 1u << 0u;
@@ -181,10 +183,8 @@ namespace GuLiCommanderProtocol
 {
 	GULISTRIKE_API bool IsPlayableTeam(EGuLiTeam Team);
 	GULISTRIKE_API float GetSelectionRadiusCentimeters(EGuLiSelectionRadiusPreset Preset);
-	GULISTRIKE_API uint16 QuantizeYawDegrees(float YawDegrees);
-	GULISTRIKE_API float DequantizeYawDegrees(uint16 QuantizedYaw);
-	GULISTRIKE_API int16 QuantizeCentimetersToDecimeters(float Centimeters);
-	GULISTRIKE_API float DequantizeDecimetersToCentimeters(int16 Decimeters);
+	GULISTRIKE_API uint8 QuantizeYawDegrees(float YawDegrees);
+	GULISTRIKE_API float DequantizeYawDegrees(uint8 QuantizedYaw);
 }
 
 /** 客户端选兵意图。SeedSoldierId 仅是带射线校验的点选目标提示；最终成员由服务器产生。 */
@@ -453,6 +453,8 @@ struct GULISTRIKE_API FGuLiSoldierStateItem : public FFastArraySerializerItem
 	void Sanitize();
 };
 
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiSoldierRemovalSignature, TConstArrayView<FGuLiSoldierId>);
+
 /** FastArray 增量容器；由所属 Replicator 决定复制范围，并在增改/删除后标脏。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiSoldierStateFastArray : public FFastArraySerializer
@@ -461,6 +463,16 @@ struct GULISTRIKE_API FGuLiSoldierStateFastArray : public FFastArraySerializer
 
 	UPROPERTY()
 	TArray<FGuLiSoldierStateItem> Items;
+
+	// Native notification carries the identities before FastArray erases them.
+	FGuLiSoldierRemovalSignature OnRemoved;
+	// Local-only, value snapshots: FastArray indices cease to be valid after callbacks.
+	DECLARE_MULTICAST_DELEGATE_TwoParams(FReceivedDelta, const TArray<FGuLiSoldierStateItem>&, const TArray<FGuLiSoldierId>&);
+	FReceivedDelta OnReceivedDelta;
+	void PreReplicatedRemove(const TArrayView<int32> RemovedIndices, int32 FinalSize);
+	void PostReplicatedAdd(const TArrayView<int32>& AddedIndices, int32 FinalSize);
+	void PostReplicatedChange(const TArrayView<int32>& ChangedIndices, int32 FinalSize);
+	void PostReplicatedReceive(const FFastArraySerializer::FPostReplicatedReceiveParameters& Parameters);
 
 	// UE 增量序列化入口，由 WithNetDeltaSerializer 接入；脏标记由 Replicator 维护。
 	bool NetDeltaSerialize(FNetDeltaSerializeInfo& DeltaParams)
@@ -473,6 +485,10 @@ struct GULISTRIKE_API FGuLiSoldierStateFastArray : public FFastArraySerializer
 	void Sanitize();
 	const FGuLiSoldierStateItem* Find(FGuLiSoldierId SoldierId) const;
 	FGuLiSoldierStateItem* FindMutable(FGuLiSoldierId SoldierId);
+
+private:
+	TArray<FGuLiSoldierStateItem> PendingReceivedStates;
+	TArray<FGuLiSoldierId> PendingRemovedIds;
 };
 
 template <>
@@ -546,109 +562,50 @@ struct TStructOpsTypeTraits<FGuLiMoveEndpointFastArray>
 	enum { WithNetDeltaSerializer = true };
 };
 
-/** 单兵压缩姿态：以 SoldierId 关联名册，位置相对所属块 Anchor，速度与朝向用于平滑。 */
-USTRUCT()
-struct GULISTRIKE_API FGuLiCompressedSoldierPose
+/** Native quantized sample; only FGuLiEncodedPoseBlock is serialized on the wire. */
+struct GULISTRIKE_API FGuLiQuantizedSoldierPose
 {
-	GENERATED_BODY()
-
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	FGuLiSoldierId SoldierId;
 
-	// 三轴相对位置采用分米；世界坐标需要 Anchor + 解量化偏移，不能直接将该值当厘米。
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
-	int16 RelativeXDecimeters = 0;
+	// Stable world coordinates: XY in meters, Z in decimeters.
+	int32 WorldXMeters = 0;
+	int32 WorldYMeters = 0;
+	int32 WorldZDecimeters = 0;
 
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
-	int16 RelativeYDecimeters = 0;
+	// Velocity components in meters/second.
+	int16 VelocityXMetersPerSecond = 0;
+	int16 VelocityYMetersPerSecond = 0;
+	int16 VelocityZMetersPerSecond = 0;
 
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
-	int16 RelativeZDecimeters = 0;
-
-	// 三轴速度采用分米/秒；不是两次包到达时间之间的位移。
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
-	int16 VelocityXDecimetersPerSecond = 0;
-
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
-	int16 VelocityYDecimetersPerSecond = 0;
-
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
-	int16 VelocityZDecimetersPerSecond = 0;
-
-	// 一周朝向量化到 uint16；绕回 0/65535 时需要按角度而非普通整数差插值。
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
-	uint16 FacingYaw = 0u;
-
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
+	// 256 directions; interpolation and residuals take the shortest angular arc.
+	uint8 FacingYaw = 0u;
 	uint32 ActiveOrderId = 0u;
-
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	EGuLiSoldierPoseState State = EGuLiSoldierPoseState::Idle;
-
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint8 Flags = 0u;
 
-	void SetRelativeLocationCentimeters(const FVector& RelativeLocation);
-	FVector GetRelativeLocationCentimeters() const;
-	void SetVelocityCentimetersPerSecond(const FVector& Velocity);
+	bool SetWorldLocationCentimeters(const FVector& WorldLocation);
+	FVector GetWorldLocationCentimeters() const;
+	bool SetVelocityCentimetersPerSecond(const FVector& Velocity);
 	FVector GetVelocityCentimetersPerSecond() const;
 	bool IsTeleport() const;
-	void Sanitize();
-	bool NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess);
 };
 
-template <>
-struct TStructOpsTypeTraits<FGuLiCompressedSoldierPose>
-	: public TStructOpsTypeTraitsBase2<FGuLiCompressedSoldierPose>
-{
-	enum { WithNetSerializer = true };
-};
-
-/** 一帧权威姿态中可独立消费的块；丢块不补齐整帧，由后续新样本恢复表现。 */
-USTRUCT()
+/** Native capture/decoded batch. Wire version and validation belong to the connection codec. */
 struct GULISTRIKE_API FGuLiSoldierPoseChunk
 {
-	GENERATED_BODY()
-
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
-	uint16 ProtocolVersion = GULI_COMMANDER_PROTOCOL_VERSION;
-
 	// 所属战局，必须与 Bootstrap 接受的 MatchEpoch 一致，隔离旧战局迟到数据。
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 AuthorityEpoch = 0u;
 
 	// 捕获帧序号；同帧多个块共享此值，不能用它直接过滤该帧后续块。
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 FrameSequence = 0u;
 
 	// 服务器模拟步编号；ServerTimeSeconds 是样本时间，客户端收包时间不是样本生成时间。
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint32 ServerSimTick = 0u;
-
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	float ServerTimeSeconds = 0.0f;
 
 	// 块号从 0 开始，必须小于 ChunkCount；并不要求客户端等待全部块到齐。
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint16 ChunkIndex = 0u;
-
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
 	uint16 ChunkCount = 1u;
 
-	// 本块公共世界坐标锚点；每个压缩样本只传相对该锚点的位置。
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
-	FVector_NetQuantize Anchor = FVector::ZeroVector;
-
-	UPROPERTY(VisibleAnywhere, Category = "Commander|Network")
-	TArray<FGuLiCompressedSoldierPose> Samples;
-
-	void Sanitize();
-	bool NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess);
-};
-
-template <>
-struct TStructOpsTypeTraits<FGuLiSoldierPoseChunk>
-	: public TStructOpsTypeTraitsBase2<FGuLiSoldierPoseChunk>
-{
-	enum { WithNetSerializer = true };
+	TArray<FGuLiQuantizedSoldierPose> Samples;
 };

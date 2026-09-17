@@ -1,0 +1,87 @@
+{
+  "editor": {
+    "success": true,
+    "pid": 3404,
+    "world": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+    "clients": 2,
+    "one_process": true,
+    "playing": false
+  },
+  "source_log": "D:\\UE5.7\\test1\\TestResults\\NavigationBake-20260915\\PIE-after-R2.log",
+  "runs": [
+    {
+      "request_seconds": 0.0,
+      "pie_copy_started_seconds": 3.725,
+      "resource_initialized_seconds": 14.864,
+      "navigation_ready_seconds": 32.936,
+      "soldiers_spawned_seconds": 32.99,
+      "host_ready_seconds": 32.997,
+      "client_ready_seconds": 34.976,
+      "navigation_wait_seconds": 18.072,
+      "navigation_preparation_logs": [
+        "[2026.09.15-13.51.00:524][103]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] kind=Ground status=Hit object=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier hash=4575e26483fb5383 check_s=0.324348 build_s=0.000000 reason=Validated saved ground tiles.",
+        "[2026.09.15-13.51.00:524][103]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] kind=Ground status=Hit object=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default hash=bfa2402bb725dc45 check_s=0.329340 build_s=0.000000 reason=Validated saved ground tiles.",
+        "[2026.09.15-13.51.00:524][103]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] kind=Flight status=Hit object=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0 hash=1e08276fd72799b2 check_s=0.570729 build_s=0.000000 reason=Validated saved flight graph.",
+        "[2026.09.15-13.51.00:524][103]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] result=Ready world=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype ground_rebuilds=0 flight_rebuilds=0 save_s=0.000000 total_s=2.517385 reason=All source navigation is ready."
+      ],
+      "hash_and_payload_check_seconds": 1.224417,
+      "bake_seconds": 0.0,
+      "prepare_seconds": 2.517385,
+      "save_seconds": 0.0,
+      "ground_rebuilds": 0,
+      "flight_rebuilds": 0,
+      "pie_initialization_seconds": 11.139,
+      "gates_in_order": true
+    },
+    {
+      "request_seconds": 0.0,
+      "pie_copy_started_seconds": 3.588,
+      "resource_initialized_seconds": 10.392,
+      "navigation_ready_seconds": 22.399,
+      "soldiers_spawned_seconds": 22.435,
+      "host_ready_seconds": 22.443,
+      "client_ready_seconds": 24.449,
+      "navigation_wait_seconds": 12.007,
+      "navigation_preparation_logs": [
+        "[2026.09.15-13.51.45:549][157]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] kind=Ground status=Hit object=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier hash=4575e26483fb5383 check_s=0.333820 build_s=0.000000 reason=Validated saved ground tiles.",
+        "[2026.09.15-13.51.45:549][157]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] kind=Ground status=Hit object=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default hash=bfa2402bb725dc45 check_s=0.328200 build_s=0.000000 reason=Validated saved ground tiles.",
+        "[2026.09.15-13.51.45:549][157]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] kind=Flight status=Hit object=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0 hash=1e08276fd72799b2 check_s=0.576460 build_s=0.000000 reason=Validated saved flight graph.",
+        "[2026.09.15-13.51.45:549][157]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] result=Ready world=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype ground_rebuilds=0 flight_rebuilds=0 save_s=0.000000 total_s=2.538430 reason=All source navigation is ready."
+      ],
+      "hash_and_payload_check_seconds": 1.23848,
+      "bake_seconds": 0.0,
+      "prepare_seconds": 2.53843,
+      "save_seconds": 0.0,
+      "ground_rebuilds": 0,
+      "flight_rebuilds": 0,
+      "pie_initialization_seconds": 6.804,
+      "gates_in_order": true
+    },
+    {
+      "request_seconds": 0.0,
+      "pie_copy_started_seconds": 3.58,
+      "resource_initialized_seconds": 9.712,
+      "navigation_ready_seconds": 21.294,
+      "soldiers_spawned_seconds": 21.319,
+      "host_ready_seconds": 21.325,
+      "client_ready_seconds": 23.33,
+      "navigation_wait_seconds": 11.582,
+      "navigation_preparation_logs": [
+        "[2026.09.15-13.52.15:639][ 26]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] kind=Ground status=Hit object=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier hash=4575e26483fb5383 check_s=0.324478 build_s=0.000000 reason=Validated saved ground tiles.",
+        "[2026.09.15-13.52.15:639][ 26]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] kind=Ground status=Hit object=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default hash=bfa2402bb725dc45 check_s=0.329312 build_s=0.000000 reason=Validated saved ground tiles.",
+        "[2026.09.15-13.52.15:639][ 26]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] kind=Flight status=Hit object=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0 hash=1e08276fd72799b2 check_s=0.579792 build_s=0.000000 reason=Validated saved flight graph.",
+        "[2026.09.15-13.52.15:639][ 26]LogGuLiNavigationBake: Display: [GULI_NAV_PREPARE] result=Ready world=/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype ground_rebuilds=0 flight_rebuilds=0 save_s=0.000000 total_s=2.523881 reason=All source navigation is ready."
+      ],
+      "hash_and_payload_check_seconds": 1.233582,
+      "bake_seconds": 0.0,
+      "prepare_seconds": 2.523881,
+      "save_seconds": 0.0,
+      "ground_rebuilds": 0,
+      "flight_rebuilds": 0,
+      "pie_initialization_seconds": 6.132,
+      "gates_in_order": true
+    }
+  ],
+  "median_host_ready_seconds": 22.443,
+  "median_client_ready_seconds": 24.449
+}

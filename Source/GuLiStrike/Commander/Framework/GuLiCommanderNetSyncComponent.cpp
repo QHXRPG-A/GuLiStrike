@@ -11,6 +11,8 @@
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "Net/UnrealNetwork.h"
+#include "Commander/Network/GuLiCommanderPoseMetrics.h"
+#include "ProfilingDebugging/CpuProfilerTrace.h"
 
 namespace GuLiCommanderNetwork
 {
@@ -87,21 +89,6 @@ namespace GuLiCommanderNetwork
 			&& RosterCount >= static_cast<int32>(ExpectedRosterCount);
 	}
 
-	static bool IsClientPoseChunkAcceptable(
-		const FGuLiSoldierPoseChunk& Chunk,
-		const bool bClientPoseReady,
-		const uint32 ClientAcceptedMatchEpoch)
-	{
-		return Chunk.ProtocolVersion == GULI_COMMANDER_PROTOCOL_VERSION
-			&& bClientPoseReady
-			&& ClientAcceptedMatchEpoch != 0u
-			&& Chunk.AuthorityEpoch == ClientAcceptedMatchEpoch
-			&& Chunk.FrameSequence != 0u
-			&& Chunk.ChunkCount != 0u
-			&& Chunk.ChunkIndex < Chunk.ChunkCount
-			&& !Chunk.Samples.IsEmpty();
-	}
-
 	static EBootstrapAuthorityAction EvaluateBootstrapAuthorityAction(
 		const uint32 ExistingSyncGeneration,
 		const uint32 ExistingBootstrapMatchEpoch,
@@ -144,6 +131,7 @@ void UGuLiCommanderNetSyncComponent::TickComponent(
 	TickSoldierBootstrap();
 	TryCompleteClientBootstrap();
 	TickPendingCommandRetries();
+	TickPoseAcknowledgments();
 	if (GetOwner() && GetOwner()->HasAuthority() && GetWorld())
 	{
 		AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState();
@@ -233,6 +221,8 @@ void UGuLiCommanderNetSyncComponent::TickComponent(
 void UGuLiCommanderNetSyncComponent::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
 	CancelPendingServerMovePlanning();
+	if (PoseRoster.IsValid()) PoseRoster->OnSoldiersRemoved().RemoveAll(this);
+	PoseSender.Reset(); PoseReceiver.Reset();
 	Super::EndPlay(EndPlayReason);
 }
 
@@ -265,6 +255,8 @@ bool UGuLiCommanderNetSyncComponent::IsSoldierStreamReady() const
 
 void UGuLiCommanderNetSyncComponent::ResetClientSoldierState()
 {
+	PoseReceiver.Reset();
+	NextPoseAckTime = 0.0;
 	PendingPoseChunks.Reset();
 	PendingCommandAcks.Reset();
 	QueuedSelectionIntents.Reset();
@@ -317,6 +309,7 @@ void UGuLiCommanderNetSyncComponent::OnConnectionBootstrapReset()
 	// captured when planning began so an old connection cannot commit after this reset.
 	CancelPendingServerMovePlanning();
 	Super::OnConnectionBootstrapReset();
+	PoseSender.Reset();
 	ResetClientSoldierState();
 	SelectionState = FGuLiCommanderSelectionState{};
 	LastSelectionAck = FGuLiCommandAck{};
@@ -486,6 +479,8 @@ void UGuLiCommanderNetSyncComponent::StartServerBootstrap()
 	SoldierBootstrapBinding.SoldierSyncGeneration = SyncGeneration;
 	HighestAckedStreamSeq = 0u;
 	BootstrapMatchEpoch = BattleGameState->GetMatchEpoch();
+	PoseSender.Reset(SyncGeneration, BootstrapMatchEpoch);
+	BindPoseRoster(*SoldierReplicator);
 	BootstrapExpectedRosterCount = static_cast<uint16>(ExpectedRosterCount);
 	BootstrapExpectedSnapshotRevision = SoldierReplicator->GetSnapshotRevision();
 	GetOwner()->ForceNetUpdate();
@@ -519,14 +514,16 @@ void UGuLiCommanderNetSyncComponent::EnsureServerBootstrapForMatch(
 
 void UGuLiCommanderNetSyncComponent::SendPoseChunk(const FGuLiSoldierPoseChunk& Chunk)
 {
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Send);
+	GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Send);
 	if (!GetOwner() || !GetOwner()->HasAuthority()
-		|| !IsSoldierStreamReady() || Chunk.AuthorityEpoch != ServerAcceptedMatchEpoch
-		|| Chunk.ProtocolVersion != GULI_COMMANDER_PROTOCOL_VERSION)
+		|| !IsSoldierStreamReady() || Chunk.AuthorityEpoch != ServerAcceptedMatchEpoch)
 	{
 		return;
 	}
-	// 调用 RPC 包装函数才会按所有权路由；不要在发送处直接调用 _Implementation。
-	ClientReceiveSoldierPoseChunk(Chunk);
+	TArray<FGuLiEncodedPoseBlock> Blocks;
+	PoseSender.Encode(Chunk, Blocks);
+	for (const FGuLiEncodedPoseBlock& Block : Blocks) ClientReceiveEncodedPoseBlock(Block);
 }
 
 bool UGuLiCommanderNetSyncComponent::RefreshServerSelection()
@@ -1588,45 +1585,77 @@ void UGuLiCommanderNetSyncComponent::ReceiveCommandAck(const FGuLiCommandAck& Ac
 	AdvanceSelectionQueue();
 }
 
-// 先检查协议/初始同步/战局，再整理数据并入队；后续样本排序与旧数据过滤在 PresentationActor。
-void UGuLiCommanderNetSyncComponent::ClientReceiveSoldierPoseChunk_Implementation(
-	const FGuLiSoldierPoseChunk& Chunk)
+void UGuLiCommanderNetSyncComponent::ClientReceiveEncodedPoseBlock_Implementation(const FGuLiEncodedPoseBlock& Block)
 {
-	// 测试注入没有 Actor/World，仍复用下方原始协议谓词；网络接收须先通过公共连接门。
-	if (GetOwner() && !IsSoldierStreamReady())
-	{
-		return;
-	}
-	if (!GuLiCommanderNetwork::IsClientPoseChunkAcceptable(
-		Chunk,
-		bClientPoseReady,
-		ClientAcceptedMatchEpoch))
-	{
-		return;
-	}
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Receive);
+	GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Receive);
+	if (!IsSoldierStreamReady()) return;
+	DecodeAndQueuePoseBlock(Block);
+}
 
-	FGuLiSoldierPoseChunk Sanitized = Chunk;
-	Sanitized.Sanitize();
+void UGuLiCommanderNetSyncComponent::DecodeAndQueuePoseBlock(const FGuLiEncodedPoseBlock& Block)
+{
+	FGuLiSoldierPoseChunk Chunk;
+	const auto Result = PoseReceiver.Decode(Block, Chunk);
+	if (Result == GuLiCommanderPoseCodec::EDecodeResult::Decoded) QueueDecodedPoseChunk(MoveTemp(Chunk));
+	else if (Result == GuLiCommanderPoseCodec::EDecodeResult::MissingBaseline
+		|| Result == GuLiCommanderPoseCodec::EDecodeResult::InvalidPayload) GuLiCommanderPoseMetrics::RecordFailure();
+}
+
+void UGuLiCommanderNetSyncComponent::QueueDecodedPoseChunk(FGuLiSoldierPoseChunk Chunk)
+{
 	const int32 MaximumPendingPoseChunks = static_cast<int32>(GULI_MAX_POSE_CHUNKS_PER_FRAME);
 	if (PendingPoseChunks.Num() >= MaximumPendingPoseChunks)
-	{
-		PendingPoseChunks.RemoveAt(
-			0,
-			PendingPoseChunks.Num() - MaximumPendingPoseChunks + 1,
-			EAllowShrinking::No);
-	}
-	PendingPoseChunks.Add(Sanitized);
+		PendingPoseChunks.RemoveAt(0, PendingPoseChunks.Num() - MaximumPendingPoseChunks + 1, EAllowShrinking::No);
+	GuLiCommanderPoseMetrics::RecordDecoded(Chunk);
 #if !UE_BUILD_SHIPPING
-	// 仅用于非 Shipping 的新帧统计，不意味着整帧所有块已收齐，也不会据此拒绝其他块。
-	if (LastAcceptedPoseFrameSequence == 0u
-		|| IsNewerSerial(Sanitized.FrameSequence, LastAcceptedPoseFrameSequence))
+	// A diagnostic capture-frame counter is never an acknowledgment of any block.
+	if (LastAcceptedPoseFrameSequence == 0u || IsNewerSerial(Chunk.FrameSequence, LastAcceptedPoseFrameSequence))
 	{
-		LastAcceptedPoseFrameSequence = Sanitized.FrameSequence;
+		LastAcceptedPoseFrameSequence = Chunk.FrameSequence;
 		++AcceptedPoseFrameCount;
 	}
 	LastAcceptedPoseReceiveTimeSeconds = FPlatformTime::Seconds();
 #endif
+	PendingPoseChunks.Add(MoveTemp(Chunk));
 	OnPoseChunkReceived.Broadcast(PendingPoseChunks.Last());
+}
+
+void UGuLiCommanderNetSyncComponent::TickPoseAcknowledgments()
+{
+	const APlayerController* Controller = GetOwningPlayerController();
+	if (!Controller || !Controller->IsLocalController() || !IsSoldierStreamReady()) return;
+	const double Now = FPlatformTime::Seconds();
+	if (Now < NextPoseAckTime) return;
+	// Keep 10 Hz without accumulating frame-rounding drift; a stall skips old ACK slots.
+	NextPoseAckTime = NextPoseAckTime == 0.0 ? Now + 0.1
+		: NextPoseAckTime + (FMath::FloorToDouble((Now - NextPoseAckTime) / 0.1) + 1.0) * 0.1;
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Ack);
+	GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Ack);
+	FGuLiPoseAcknowledgment Ack;
+	if (PoseReceiver.BuildAcknowledgment(Ack)) ServerAcknowledgePoseBlocks(Ack);
+}
+
+void UGuLiCommanderNetSyncComponent::ServerAcknowledgePoseBlocks_Implementation(const FGuLiPoseAcknowledgment& Ack)
+{
+	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiPose_Ack);
+	GuLiCommanderPoseMetrics::FScope Measure(GuLiCommanderPoseMetrics::EScope::Ack);
+	if (!IsSoldierStreamReady()) return;
+	PoseSender.Confirm(Ack);
+}
+
+void UGuLiCommanderNetSyncComponent::BindPoseRoster(AGuLiSoldierStateReplicator& Roster)
+{
+	if (PoseRoster.Get() == &Roster) return;
+	if (PoseRoster.IsValid()) PoseRoster->OnSoldiersRemoved().RemoveAll(this);
+	PoseRoster = &Roster;
+	Roster.OnSoldiersRemoved().AddUObject(this, &UGuLiCommanderNetSyncComponent::ForgetPoseSoldiers);
+}
+
+void UGuLiCommanderNetSyncComponent::ForgetPoseSoldiers(TConstArrayView<FGuLiSoldierId> Removed)
+{
+	PoseSender.Forget(Removed);
+	PoseReceiver.Forget(Removed);
 }
 
 void UGuLiCommanderNetSyncComponent::OnRep_SelectionState()
@@ -1649,6 +1678,8 @@ void UGuLiCommanderNetSyncComponent::OnRep_SyncGeneration()
 		ClientAcceptedSyncGeneration = 0u;
 		ClientAcceptedMatchEpoch = 0u;
 		PendingPoseChunks.Reset();
+		PoseReceiver.Reset();
+		NextPoseAckTime = 0.0;
 	}
 }
 
@@ -1710,7 +1741,7 @@ void UGuLiCommanderNetSyncComponent::TryCompleteClientBootstrap()
 		return;
 	}
 
-	const AGuLiSoldierStateReplicator* SoldierReplicator = nullptr;
+	AGuLiSoldierStateReplicator* SoldierReplicator = nullptr;
 	for (TActorIterator<AGuLiSoldierStateReplicator> It(World); It; ++It)
 	{
 		SoldierReplicator = *It;
@@ -1752,6 +1783,9 @@ void UGuLiCommanderNetSyncComponent::TryCompleteClientBootstrap()
 	PendingBootstrapMatchEpoch = 0u;
 	PendingBootstrapRosterCount = 0u;
 	PendingBootstrapSnapshotRevision = 0u;
+	PoseReceiver.Reset(CompletedGeneration, CompletedMatchEpoch);
+	BindPoseRoster(*SoldierReplicator);
+	NextPoseAckTime = 0.0;
 	ClientAcceptedMatchEpoch = CompletedMatchEpoch;
 	ClientAcceptedSyncGeneration = CompletedGeneration;
 	ClientAppliedRosterCount = CompletedRosterCount;
@@ -1856,12 +1890,13 @@ void UGuLiCommanderNetSyncComponent::TestOnly_ConfigureClientPoseGate(
 	bClientPoseReady = bReady;
 	ClientAcceptedMatchEpoch = AcceptedMatchEpoch;
 	PendingPoseChunks.Reset();
+	PoseReceiver.Reset(1u, AcceptedMatchEpoch);
 }
 
-void UGuLiCommanderNetSyncComponent::TestOnly_ReceivePoseChunk(
-	const FGuLiSoldierPoseChunk& Chunk)
+void UGuLiCommanderNetSyncComponent::TestOnly_ReceivePoseBlock(
+	const FGuLiEncodedPoseBlock& Block)
 {
-	ClientReceiveSoldierPoseChunk_Implementation(Chunk);
+	if (bClientPoseReady) DecodeAndQueuePoseBlock(Block);
 }
 #endif
 

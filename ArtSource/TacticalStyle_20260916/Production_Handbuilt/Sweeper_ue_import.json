@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "unit": "Sweeper",
+  "assets": [
+    {
+      "path": "/Game/Commander/Units/Tactical/Sweeper/Meshes/SM_Sweeper_Crowd.SM_Sweeper_Crowd",
+      "class": "StaticMesh",
+      "lod_count": 1,
+      "triangles": 5456,
+      "uv_channels": 3,
+      "dimensions_cm": [
+        1510.5240478515625,
+        1305.7457885742188,
+        1140.94873046875
+      ],
+      "expected_dimensions_cm": [
+        1510.5239868164062,
+        1305.7456970214844,
+        1140.9486770629883
+      ],
+      "max_dimension_error_cm": 9.1552734375e-05
+    },
+    {
+      "path": "/Game/Commander/Units/Tactical/Sweeper/Meshes/SK_Sweeper.SK_Sweeper",
+      "class": "SkeletalMesh",
+      "bones": [
+        "Rig_Sweeper",
+        "root",
+        "Body",
+        "Wheel_FL",
+        "Wheel_FR",
+        "Wheel_RL",
+        "Wheel_RR",
+        "Gun_Pitch"
+      ],
+      "skeleton": "/Game/Commander/Units/Tactical/Sweeper/Meshes/SK_Sweeper_Skeleton.SK_Sweeper_Skeleton",
+      "fbx_container_root": [
+        "Rig_Sweeper"
+      ],
+      "dimensions_cm": [
+        1510.5240478515625,
+        1305.7457885742188,
+        1140.94873046875
+      ],
+      "expected_dimensions_cm": [
+        1510.5239868164062,
+        1305.7456970214844,
+        1140.9486770629883
+      ],
+      "max_dimension_error_cm": 9.1552734375e-05
+    }
+  ],
+  "material": "/Game/Commander/Units/Tactical/Sweeper/Materials/M_Sweeper_Armor.M_Sweeper_Armor",
+  "texture": "/Game/Commander/Units/Tactical/Sweeper/Textures/T_Sweeper_BaseColor.T_Sweeper_BaseColor",
+  "engine": "5.7.4-0+UE5",
+  "stage": "Imported art assets; gameplay bindings unchanged"
+}

@@ -40,7 +40,7 @@ TStatId UGuLiCombatEffectPresentationSubsystem::GetStatId() const { RETURN_QUICK
 
 void UGuLiCombatEffectPresentationSubsystem::Deinitialize()
 {
-	ResetVisuals(); PoseProviders.Reset(); Catalog = nullptr; CommanderData = nullptr; Super::Deinitialize();
+	ResetVisuals(); PoseProviders.Reset(); MuzzleProviders.Reset(); Catalog = nullptr; CommanderData = nullptr; Super::Deinitialize();
 }
 
 void UGuLiCombatEffectPresentationSubsystem::ResetVisuals()
@@ -86,6 +86,25 @@ void UGuLiCombatEffectPresentationSubsystem::UnregisterPoseResolver(EGuLiTargetK
 	if (const auto* Provider = PoseProviders.Find(Kind); Provider && Provider->Owner.Get() == Owner) PoseProviders.Remove(Kind);
 }
 
+void UGuLiCombatEffectPresentationSubsystem::RegisterMuzzleResolver(EGuLiTargetKind Kind, UObject* Owner, FMuzzleResolver Resolver)
+{
+	if (Owner && Resolver) MuzzleProviders.Add(Kind, {Owner, MoveTemp(Resolver)});
+}
+
+void UGuLiCombatEffectPresentationSubsystem::UnregisterMuzzleResolver(EGuLiTargetKind Kind, const UObject* Owner)
+{
+	if (const auto* Provider = MuzzleProviders.Find(Kind); Provider && Provider->Owner.Get() == Owner) MuzzleProviders.Remove(Kind);
+}
+
+bool UGuLiCombatEffectPresentationSubsystem::TryGetWeaponAim(const FGuLiTargetHandle& Source, FName SlotId, FVector& Target) const
+{
+	const auto* Muzzle = ActiveMuzzles.Find({Source, SlotId, 0});
+	if (!Muzzle || ServerTime() > Muzzle->ExpireServerTime) return false;
+	Target = Muzzle->Cue.End;
+	ResolveTargetPosition(Muzzle->Cue, Target);
+	return !Target.ContainsNaN();
+}
+
 bool UGuLiCombatEffectPresentationSubsystem::ResolvePose(const FGuLiTargetHandle& Target, FTransform& Transform, int32& UnitTypeId) const
 {
     if (Target.Kind == EGuLiTargetKind::Ship)
@@ -108,6 +127,9 @@ bool UGuLiCombatEffectPresentationSubsystem::ResolvePose(const FGuLiTargetHandle
 
 bool UGuLiCombatEffectPresentationSubsystem::ResolveMuzzlePosition(const FGuLiCombatShotCue& Cue, FVector& Position) const
 {
+	if (const auto* Provider = MuzzleProviders.Find(Cue.Source.Kind);
+		Provider && Provider->Owner.IsValid() && Provider->Resolve && Provider->Resolve(Cue, Position))
+		return !Position.ContainsNaN();
 	FTransform SourcePose;
 	int32 ResolvedUnitType = Cue.UnitTypeId;
 	if (!ResolvePose(Cue.Source, SourcePose, ResolvedUnitType)) return false;
@@ -165,14 +187,15 @@ bool UGuLiCombatEffectPresentationSubsystem::IsVisibleLocation(FVector Location)
 }
 
 UNiagaraComponent* UGuLiCombatEffectPresentationSubsystem::SpawnPooled(
-	UNiagaraSystem* System, FVector Location, float Scale, float Radius, FRotator Rotation)
+	UNiagaraSystem* System, FVector Location, float Scale, float Radius, FRotator Rotation, FName ScaleParameterName)
 {
 	if (!System || CVarGuLiCombatEffectVisuals.GetValueOnGameThread() == 0) return nullptr;
 	UNiagaraComponent* Component = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), System, Location,
-		Rotation, FVector(Scale), false, false, ENCPoolMethod::ManualRelease, false);
+		Rotation, ScaleParameterName.IsNone() ? FVector(Scale) : FVector::OneVector, false, false, ENCPoolMethod::ManualRelease, false);
 	if (Component)
 	{
 		Component->SetCastShadow(false);
+		if (!ScaleParameterName.IsNone()) Component->SetVariableFloat(ScaleParameterName, Scale);
 		Component->SetVariableFloat(TEXT("User.Radius"), Radius);
 		Component->SetVariableLinearColor(TEXT("User.Tint"), Catalog ? Catalog->GunfireTint : FLinearColor::White);
 		Component->Activate(true);
@@ -549,7 +572,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateField(FGuLiLocalCombatEffect&
 					Rotation.Yaw = Random.FRandRange(-180.0f, 180.0f);
 				}
 				if (UNiagaraComponent* Burst = SpawnPooled(Variant.System.LoadSynchronous(), Position,
-					Variant.Scale * FieldScale, Visual.State.Radius, Rotation))
+					Variant.Scale * FieldScale, Visual.State.Radius, Rotation, Variant.ScaleParameterName))
 				{ Retire(Burst, Variant.MaximumLifetime, false); ++Counters.BurstsPlayed; }
 				for (const FGuLiEffectVisualLayer& Layer : Variant.AdditionalLayers)
 				{

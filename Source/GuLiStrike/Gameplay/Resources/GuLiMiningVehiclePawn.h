@@ -3,7 +3,7 @@
 #include "CoreMinimal.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "GameFramework/Character.h"
-#include "AIController.h"
+#include "Gameplay/Units/GuLiEngineeringAIController.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
 #include "GuLiMiningVehiclePawn.generated.h"
 
@@ -22,7 +22,7 @@ struct FGuLiMiningPresentationDefinition
 	UPROPERTY() float Scale = 1.0f;
 };
 UCLASS(NotPlaceable)
-class GULISTRIKE_API AGuLiMiningVehicleAIController final : public AAIController
+class GULISTRIKE_API AGuLiMiningVehicleAIController final : public AGuLiEngineeringAIController
 {
 	GENERATED_BODY()
 };

@@ -1,0 +1,35 @@
+{
+  "implementation": {
+    "succeeded": 32,
+    "succeededWithWarnings": 2,
+    "failed": 3,
+    "notRun": 0
+  },
+  "original_source": {
+    "succeeded": 32,
+    "succeededWithWarnings": 2,
+    "failed": 3,
+    "notRun": 0
+  },
+  "same_failures_on_original_source": true,
+  "failures": {
+    "GuLiStrike.Building.BuildingWorldTests": [
+      "A newer request cannot overlap the placed building: The two values are not equal.",
+      "Expected 'A legal Commander request is accepted' to be true.",
+      "Expected 'An identical reliable retry does not spawn a duplicate' to be 1, but it was 0.",
+      "Expected 'An identical reliable retry replays the accepted result' to be true.",
+      "Expected 'Every rejection leaves the accepted building count unchanged' to be 1, but it was 0.",
+      "Expected 'The accepted replicated building exists' to be not null.",
+      "Expected 'The first accepted request spawns exactly one building' to be 1, but it was 0."
+    ],
+    "GuLiStrike.CombatEffects.NetworkOrderAndCleanup": [
+      "Expected 'full-endpoint shot is under 65 bytes' to be true."
+    ],
+    "GuLiStrike.Wingman.Pawn.PerMemberAirGroundAttackExecution": [
+      "Air member keeps the manual target's air attack channel: The two values are not equal.",
+      "Expected 'Ground member steers toward the shared manual target' to be true.",
+      "Ground member uses the manual target's air attack channel: The two values are not equal."
+    ]
+  },
+  "scope": "Same existing 37-test suite and execution order; original session source/config restored temporarily, implementation then restored byte-for-byte. New helper class remained registered but had no callers in the original source. No new automation test cases."
+}

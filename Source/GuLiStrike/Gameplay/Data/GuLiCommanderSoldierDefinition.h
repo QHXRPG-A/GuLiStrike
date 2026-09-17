@@ -22,6 +22,8 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 	/** Stable Soldiers table Id; zero is reserved for invalid definitions. */
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Soldier")
 	uint16 UnitTypeId = 1u;
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Units")
+	FText DisplayName;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier", meta = (Units = "cm/s"))
 	float MovementSpeedCmPerSecond = 3600.0f;

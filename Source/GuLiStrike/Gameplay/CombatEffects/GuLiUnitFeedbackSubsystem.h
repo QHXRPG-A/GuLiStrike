@@ -11,6 +11,7 @@ class UMeshComponent;
 class UNiagaraComponent;
 class UNiagaraSystem;
 struct FStreamableHandle;
+DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiActorHealthBarChanged, TWeakObjectPtr<AActor>);
 
 /** Local presentation defaults. The config references are also covered by an explicit cook directory. */
 UCLASS(Config=Game, DefaultConfig)
@@ -27,6 +28,9 @@ public:
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") TArray<TSoftObjectPtr<UNiagaraSystem>> Explosions;
 	/** Aerial one-shots, authored for component-transform scaling (including their shockwaves). */
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") TArray<TSoftObjectPtr<UNiagaraSystem>> WingmanExplosions;
+	/** None uses the component transform; a named float receives the complete size once. */
+	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") FName GroundExplosionScaleParameter = TEXT("User.Scale");
+	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") FName WingmanExplosionScaleParameter;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="1")) int32 MaximumConcurrentExplosions = 64;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0")) float CullDistance = 180000.0f;
 	/** Art calibration for the smallest model in the soldier catalog; model sizes are never hardcoded. */
@@ -85,6 +89,7 @@ public:
 	static float HealthBarOpacity(float Age);
 	void EnsureHealthBarRenderers();
 	const TMap<TWeakObjectPtr<AActor>, FGuLiActorHitHealthBar>& GetActorHealthBars() const { return ActorHealthBars; }
+	FGuLiActorHealthBarChanged OnActorHealthBarChanged;
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetActiveExplosionCount() const { return ActiveExplosions.Num(); }
 	UFUNCTION(BlueprintPure, Category="Unit Feedback") int32 GetLoadedExplosionCount() const { return LoadedExplosions.Num(); }
 	UMaterialInterface* GetInstancedHitMaterial() const { return InstancedHitMaterial; }
@@ -101,6 +106,7 @@ private:
 	AGuLiUnitWreck* AllocateWreck(const FVector& Location);
 	float ReferenceUnitSize = 0.0f;
 	TMap<TWeakObjectPtr<AActor>, FGuLiActorHitHealthBar> ActorHealthBars;
+	float NextHealthBarCleanupTime = 0.0f;
 	struct FPendingExplosion { FVector Location; float UnitSize; float ExpireTime; bool bWingman; };
 	TArray<FPendingExplosion> PendingExplosions;
 	TSharedPtr<FStreamableHandle> LoadHandle;
