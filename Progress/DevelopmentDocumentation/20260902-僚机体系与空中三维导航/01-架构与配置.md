@@ -11,6 +11,8 @@ areas:
 - ship
 - network
 - combat
+categories:
+- gameplay
 status: done
 verification: passed
 created: '2026-09-02'

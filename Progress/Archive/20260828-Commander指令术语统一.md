@@ -10,6 +10,9 @@ areas:
 - network
 - assets
 - learning
+categories:
+- art
+- gameplay
 status: recorded
 verification: not_run
 created: '2026-08-28'

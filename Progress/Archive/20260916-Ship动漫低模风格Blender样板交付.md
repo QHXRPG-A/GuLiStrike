@@ -5,7 +5,13 @@ work_id: WORK-20260916-004
 kind: archive
 role: root
 title: Ship动漫低模风格Blender样板交付
-areas: [ship, assets, art]
+areas:
+- ship
+- assets
+- art
+categories:
+- art
+- gameplay
 status: recorded
 verification: passed
 created: '2026-09-16'
@@ -13,7 +19,8 @@ updated: '2026-09-16'
 summary: 保留当前Dreadnought主形状，完成13,314三角面、六色与三档明暗的独立Blender样板，并在当前Blender中显示供用户评审。
 next_action: 用户评审样板；按反馈调整配色、细节或三渲二强度。
 relations:
-  work_items: [WORK-20260916-004]
+  work_items:
+  - WORK-20260916-004
 status_note: 已完成本轮Blender制作和视觉检查；用户美术定稿与UE接入不在本次完成范围内。
 ---
 

@@ -11,6 +11,8 @@ areas:
 - commander
 - combat
 - ship
+categories:
+- gameplay
 status: approved
 verification: not_applicable
 created: '2026-09-08'

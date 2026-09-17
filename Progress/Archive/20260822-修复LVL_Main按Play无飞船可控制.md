@@ -9,6 +9,9 @@ areas:
 - ship
 - vfx
 - assets
+categories:
+- art
+- gameplay
 status: recorded
 verification: not_run
 created: '2026-08-22'

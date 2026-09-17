@@ -5,7 +5,12 @@ work_id: WORK-20260912-005
 kind: development
 role: root
 title: ShipComponent正式部件蓝图 — 制作与迁移
-areas: [ship, assets]
+areas:
+- ship
+- assets
+categories:
+- art
+- gameplay
 status: done
 verification: passed
 created: '2026-09-12'

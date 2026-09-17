@@ -11,6 +11,8 @@ areas:
 - combat
 - network
 - ai
+categories:
+- gameplay
 status: done
 verification: partial
 created: '2026-09-09'
@@ -20,7 +22,8 @@ next_action: 后续另立空战射界循环工作项，使持续目标场景的2
 relations:
   requirement: REQ-20260909-002
   predecessor: WORK-20260908-002
-status_note: Pawn/Movement/UE StateTree/Actor池、僚机Mass清理及v13合同已落地。正常Candidate取消服务器World、FlightNav、运动包络、配置版本、上传Grant与ACK基线门禁；本地0.5秒脱困且无僚机互撞，服务器重定位RPC仅保留兼容。Wingman 95/95、200 Actor、300秒持续飞行、Editor/Game构建与BuildId门禁通过；300秒空战每成员两轮开火仅主机17/25、远端7/25，用户于2026-09-09决定暂不扩修，故以done / partial收尾。
+status_note: Pawn/Movement/UE StateTree/Actor池、僚机Mass清理及v13合同已落地。正常Candidate取消服务器World、FlightNav、运动包络、配置版本、上传Grant与ACK基线门禁；本地0.5秒脱困且无僚机互撞，服务器重定位RPC仅保留兼容。Wingman
+  95/95、200 Actor、300秒持续飞行、Editor/Game构建与BuildId门禁通过；300秒空战每成员两轮开火仅主机17/25、远端7/25，用户于2026-09-09决定暂不扩修，故以done / partial收尾。
 ---
 
 # Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案

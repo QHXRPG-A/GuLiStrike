@@ -8,6 +8,8 @@ title: 2026-08-16 解决了：Marketplace 资产包统一整合至 Content/Asset
 areas:
 - vfx
 - assets
+categories:
+- art
 status: recorded
 verification: passed
 created: '2026-08-16'

@@ -10,6 +10,9 @@ areas:
 - network
 - assets
 - learning
+categories:
+- art
+- gameplay
 status: abandoned
 verification: partial
 created: '2026-08-26'

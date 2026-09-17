@@ -11,6 +11,9 @@ areas:
 - data-pipeline
 - vfx
 - assets
+categories:
+- art
+- gameplay
 status: recorded
 verification: partial
 created: '2026-08-27'

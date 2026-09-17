@@ -37,6 +37,29 @@ STATUS_VALUES = {
     "reference": {"reference"},
 }
 VERIFICATION_VALUES = {"not_run", "partial", "passed", "failed", "not_applicable"}
+CATEGORY_VALUES = {"art", "gameplay", "performance"}
+CATEGORY_AREA_MAP = {
+    "art": {"art", "assets", "vfx", "rendering", "presentation"},
+    "gameplay": {
+        "commander",
+        "ship",
+        "combat",
+        "wingman",
+        "building",
+        "economy",
+        "outpost",
+        "movement",
+        "ai",
+        "navigation",
+        "gameplay",
+        "map",
+        "map-authoring",
+        "level",
+        "resource",
+        "resources",
+    },
+    "performance": {"performance"},
+}
 COMMON_FIELDS = (
     "schema",
     "id",
@@ -297,6 +320,11 @@ def classify_areas(title: str, body: str, relative_path: str) -> list[str]:
     haystack = f" {title} {relative_path} {body[:2500]} ".lower()
     found = [area for area, terms in AREA_RULES if any(term.lower() in haystack for term in terms)]
     return found[:5] or ["cross-cutting"]
+
+
+def suggest_categories(areas: Iterable[str]) -> list[str]:
+    unique = {str(area) for area in areas}
+    return [category for category, rule in CATEGORY_AREA_MAP.items() if unique & rule]
 
 
 def normalize_status(kind: str, raw: str, body: str) -> tuple[str, str]:
@@ -930,6 +958,12 @@ def validate(project_root: Path, documents: list[Document] | None = None) -> dic
         verification = str(meta.get("verification", ""))
         if verification not in VERIFICATION_VALUES:
             errors.append(issue(doc, "invalid_verification", verification))
+        categories = meta.get("categories")
+        if categories is not None:
+            if not isinstance(categories, list) or not set(categories) <= CATEGORY_VALUES:
+                errors.append(issue(doc, "invalid_categories", f"允许值：{sorted(CATEGORY_VALUES)}"))
+        elif kind in {"requirement", "development", "archive"} and meta.get("role") == "root":
+            warnings.append(issue(doc, "missing_categories", "归档/需求/开发根文档建议填写 categories（可为空数组）"))
         if status in {"draft", "planned", "in_progress", "verification"} and not str(meta.get("next_action", "")).strip():
             errors.append(issue(doc, "missing_next_action", "活跃文档必须填写 next_action"))
         size_kb = doc.path.stat().st_size / 1024
@@ -1138,7 +1172,7 @@ def generated_files(project_root: Path) -> dict[Path, str]:
         quality_parts.extend([table(["路径", "代码", "说明"], rows) if rows else "暂无。", ""])
     catalog_lines = []
     for doc in sorted(snapshot["documents"], key=lambda value: value["id"]):
-        catalog = {key: doc.get(key) for key in ("id", "work_id", "kind", "role", "title", "areas", "status", "verification", "created", "updated", "summary", "next_action", "relations", "path", "headings", "tasks_total", "tasks_done", "task_progress")}
+        catalog = {key: doc.get(key) for key in ("id", "work_id", "kind", "role", "title", "areas", "categories", "status", "verification", "created", "updated", "summary", "next_action", "relations", "path", "headings", "tasks_total", "tasks_done", "task_progress")}
         catalog_lines.append(json.dumps(catalog, ensure_ascii=False, separators=(",", ":")))
     return {
         index_root / "Current.md": "\n".join(current_parts).rstrip() + "\n",

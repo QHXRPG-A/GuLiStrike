@@ -11,6 +11,9 @@ areas:
 - ui
 - network
 - assets
+categories:
+- art
+- gameplay
 status: recorded
 verification: passed
 created: '2026-09-03'

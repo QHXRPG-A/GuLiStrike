@@ -71,7 +71,8 @@ import type {
   WorkflowStage,
   WorkItem,
 } from '@/lib/progress-types';
-import { KIND_LABELS, StatusBadge, readableDate } from '@/lib/labels';
+import { CATEGORY_LABELS, CATEGORY_ORDER, KIND_LABELS, StatusBadge, readableDate } from '@/lib/labels';
+import type { CategoryKey } from '@/lib/labels';
 import { cn } from '@/lib/utils';
 import { WeeklySummaryTrigger } from '@/components/weekly-summary';
 
@@ -125,6 +126,74 @@ function stageClass(stage: WorkflowStage): string {
 function formatBytes(bytes: number): string {
   if (bytes < 1024) return `${bytes} B`;
   return `${(bytes / 1024).toFixed(1)} KB`;
+}
+
+function documentCategories(document: ProgressDocument): string[] {
+  return (document.categories ?? []).filter((category) => CATEGORY_LABELS[category]);
+}
+
+function matchesCategories(document: ProgressDocument, selected: string[]): boolean {
+  if (!selected.length) return true;
+  const categories = documentCategories(document);
+  return selected.some((category) => categories.includes(category));
+}
+
+function CategoryTag({ category }: { category: string }) {
+  return <span className={`category-tag category-tag-${category}`}>{CATEGORY_LABELS[category]}</span>;
+}
+
+function CategoryFilterBar({
+  documents,
+  selected,
+  onChange,
+}: {
+  documents: ProgressDocument[];
+  selected: string[];
+  onChange: (next: string[]) => void;
+}) {
+  const counts = useMemo(() => {
+    const result: Record<string, number> = {};
+    for (const key of CATEGORY_ORDER) result[key] = 0;
+    for (const document of documents) {
+      for (const category of documentCategories(document)) {
+        if (category in result) result[category] += 1;
+      }
+    }
+    return result;
+  }, [documents]);
+  const toggle = (key: CategoryKey) =>
+    onChange(selected.includes(key) ? selected.filter((item) => item !== key) : [...selected, key]);
+  return (
+    <fieldset className="flex flex-wrap items-center gap-2 border-0 p-0">
+      <legend className="console-label sr-only">按分类筛选（可多选）</legend>
+      <span aria-hidden="true" className="console-label">分类</span>
+      {CATEGORY_ORDER.map((key) => {
+        const active = selected.includes(key);
+        return (
+          <button
+            key={key}
+            type="button"
+            aria-pressed={active}
+            onClick={() => toggle(key)}
+            title={active ? '点击取消该分类筛选' : '点击仅叠加该分类（可多选）'}
+            className={cn('category-chip', active && 'category-chip-active')}
+          >
+            {CATEGORY_LABELS[key]}
+            <span className="font-mono text-[10px] opacity-75">{counts[key]}</span>
+          </button>
+        );
+      })}
+      {selected.length > 0 && (
+        <button
+          type="button"
+          onClick={() => onChange([])}
+          className="ml-1 font-mono text-[10px] text-slate-500 underline decoration-dotted underline-offset-4 hover:text-cyan-300"
+        >
+          清除
+        </button>
+      )}
+    </fieldset>
+  );
 }
 
 function SectionHeading({ eyebrow, title, description }: { eyebrow: string; title: string; description: string }) {
@@ -585,13 +654,23 @@ function DocumentTable({
   documents,
   openDocument,
   placeholder,
+  enableCategoryFilter = false,
 }: {
   documents: ProgressDocument[];
   openDocument: (id: string, anchor?: string) => void;
   placeholder: string;
+  enableCategoryFilter?: boolean;
 }) {
   const [sorting, setSorting] = useState<SortingState>([{ id: 'updated', desc: true }]);
   const [filter, setFilter] = useState('');
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const visibleDocuments = useMemo(
+    () =>
+      enableCategoryFilter && selectedCategories.length
+        ? documents.filter((document) => matchesCategories(document, selectedCategories))
+        : documents,
+    [documents, selectedCategories, enableCategoryFilter],
+  );
   const columns = useMemo<ColumnDef<ProgressDocument>[]>(
     () => [
       {
@@ -620,6 +699,7 @@ function DocumentTable({
         header: '模块',
         cell: ({ row }) => (
           <div className="flex max-w-[240px] flex-wrap gap-1">
+            {documentCategories(row.original).map((category) => <CategoryTag key={category} category={category} />)}
             {row.original.areas.slice(0, 3).map((area) => (
               <span key={area} className="area-chip">{area}</span>
             ))}
@@ -649,7 +729,7 @@ function DocumentTable({
     [openDocument],
   );
   const table = useReactTable({
-    data: documents,
+    data: visibleDocuments,
     columns,
     state: { sorting, globalFilter: filter },
     onSortingChange: setSorting,
@@ -661,17 +741,22 @@ function DocumentTable({
 
   return (
     <div>
-      <div className="mb-3 flex items-center justify-between gap-3">
-        <div className="relative w-full max-w-sm">
-          <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-600" />
-          <Input
-            value={filter}
-            onChange={(event) => setFilter(event.target.value)}
-            placeholder={placeholder}
-            className="border-slate-700 bg-slate-950/60 pl-9 text-slate-200 placeholder:text-slate-600"
-          />
+      <div className="mb-3 flex flex-col gap-3">
+        <div className="flex items-center justify-between gap-3">
+          <div className="relative w-full max-w-sm">
+            <Search className="absolute left-3 top-1/2 size-4 -translate-y-1/2 text-slate-600" />
+            <Input
+              value={filter}
+              onChange={(event) => setFilter(event.target.value)}
+              placeholder={placeholder}
+              className="border-slate-700 bg-slate-950/60 pl-9 text-slate-200 placeholder:text-slate-600"
+            />
+          </div>
+          <span className="shrink-0 font-mono text-xs text-slate-600">{table.getFilteredRowModel().rows.length} DOCS</span>
         </div>
-        <span className="shrink-0 font-mono text-xs text-slate-600">{table.getFilteredRowModel().rows.length} DOCS</span>
+        {enableCategoryFilter && (
+          <CategoryFilterBar documents={documents} selected={selectedCategories} onChange={setSelectedCategories} />
+        )}
       </div>
       <div className="overflow-hidden rounded-lg border border-slate-800 bg-slate-900/45">
         <Table>
@@ -796,9 +881,18 @@ function SearchView({ openDocument }: { openDocument: (id: string, anchor?: stri
 }
 
 function ArchiveTimeline({ documents, openDocument }: { documents: ProgressDocument[]; openDocument: (id: string, anchor?: string) => void }) {
-  const archives = documents
-    .filter((document) => document.kind === 'archive' && document.role === 'root')
-    .sort((left, right) => right.created.localeCompare(left.created) || right.updated.localeCompare(left.updated));
+  const [selectedCategories, setSelectedCategories] = useState<string[]>([]);
+  const archives = useMemo(
+    () =>
+      documents
+        .filter((document) => document.kind === 'archive' && document.role === 'root')
+        .sort((left, right) => right.created.localeCompare(left.created) || right.updated.localeCompare(left.updated)),
+    [documents],
+  );
+  const visible = useMemo(
+    () => archives.filter((document) => matchesCategories(document, selectedCategories)),
+    [archives, selectedCategories],
+  );
   return (
     <div>
       <SectionHeading
@@ -806,19 +900,27 @@ function ArchiveTimeline({ documents, openDocument }: { documents: ProgressDocum
         title="归档时间线"
         description="增量事实按时间倒序排列；勘误和里程碑通过关系链接历史，不覆盖原记录。"
       />
-      <div className="relative ml-2 border-l border-slate-800 pl-6">
-        {archives.map((document) => (
-          <button key={document.id} type="button" onClick={() => openDocument(document.id)} className="timeline-entry group">
-            <span className="timeline-dot" />
-            <div className="flex flex-wrap items-center gap-2">
-              <span className="font-mono text-xs text-cyan-400/80">{document.created}</span>
-              <StatusBadge value={document.status} />
-            </div>
-            <h3 className="mt-2 text-left font-medium text-slate-200 group-hover:text-cyan-200">{document.title}</h3>
-            <p className="mt-1 line-clamp-2 text-left text-sm leading-6 text-slate-500">{document.summary}</p>
-          </button>
-        ))}
+      <div className="mb-4">
+        <CategoryFilterBar documents={archives} selected={selectedCategories} onChange={setSelectedCategories} />
       </div>
+      {visible.length ? (
+        <div className="relative ml-2 border-l border-slate-800 pl-6">
+          {visible.map((document) => (
+            <button key={document.id} type="button" onClick={() => openDocument(document.id)} className="timeline-entry group">
+              <span className="timeline-dot" />
+              <div className="flex flex-wrap items-center gap-2">
+                <span className="font-mono text-xs text-cyan-400/80">{document.created}</span>
+                <StatusBadge value={document.status} />
+                {documentCategories(document).map((category) => <CategoryTag key={category} category={category} />)}
+              </div>
+              <h3 className="mt-2 text-left font-medium text-slate-200 group-hover:text-cyan-200">{document.title}</h3>
+              <p className="mt-1 line-clamp-2 text-left text-sm leading-6 text-slate-500">{document.summary}</p>
+            </button>
+          ))}
+        </div>
+      ) : (
+        <EmptyState label="当前分类组合下没有归档" />
+      )}
     </div>
   );
 }
@@ -1148,6 +1250,7 @@ function ViewContent({
       title: '需求文档',
       description: '已确认边界与草案状态以 front matter 为准；work_id 是需求和开发的权威关系。',
       placeholder: '筛选需求、模块或 ID……',
+      categoryFilter: true,
     },
     development: {
       kind: 'development',
@@ -1155,6 +1258,7 @@ function ViewContent({
       title: '开发文档',
       description: '技术方案、任务勾选和验证状态集中查看；长文档子页保留同一 work_id。',
       placeholder: '筛选开发方案、模块或 ID……',
+      categoryFilter: true,
     },
     gameplay: {
       kind: 'gameplay',
@@ -1162,13 +1266,19 @@ function ViewContent({
       title: '玩法模块',
       description: '玩法总册记录当前规则与验证边界，历史事实通过归档追溯。',
       placeholder: '筛选玩法模块……',
+      categoryFilter: false,
     },
   }[view];
   const documents = snapshot.documents.filter((document) => document.kind === config.kind);
   return (
     <div>
       <SectionHeading eyebrow={config.eyebrow} title={config.title} description={config.description} />
-      <DocumentTable documents={documents} openDocument={openDocument} placeholder={config.placeholder} />
+      <DocumentTable
+        documents={documents}
+        openDocument={openDocument}
+        placeholder={config.placeholder}
+        enableCategoryFilter={config.categoryFilter}
+      />
     </div>
   );
 }

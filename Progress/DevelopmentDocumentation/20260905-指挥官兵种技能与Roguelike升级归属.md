@@ -11,6 +11,8 @@ areas:
 - ship
 - ui
 - network
+categories:
+- gameplay
 status: in_progress
 verification: partial
 created: '2026-09-05'

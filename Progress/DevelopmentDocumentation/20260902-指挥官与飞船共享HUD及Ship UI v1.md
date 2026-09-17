@@ -11,6 +11,9 @@ areas:
 - ui
 - network
 - assets
+categories:
+- art
+- gameplay
 status: in_progress
 verification: partial
 created: '2026-09-02'

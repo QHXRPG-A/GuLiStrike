@@ -11,6 +11,8 @@ areas:
 - ship
 - ui
 - network
+categories:
+- gameplay
 status: draft
 verification: not_applicable
 created: '2026-09-05'

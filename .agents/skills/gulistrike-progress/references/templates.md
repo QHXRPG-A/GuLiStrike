@@ -13,6 +13,7 @@ kind: requirement
 role: root
 title: <需求名称>
 areas: [<area>]
+categories: [<art|gameplay|performance>]
 status: draft
 verification: not_applicable
 created: YYYY-MM-DD
@@ -50,6 +51,7 @@ kind: development
 role: root
 title: <需求名称> — 技术方案
 areas: [<area>]
+categories: [<art|gameplay|performance>]
 status: planned
 verification: not_run
 created: YYYY-MM-DD
@@ -90,6 +92,7 @@ kind: archive
 role: root
 title: <本次开发事实标题>
 areas: [<area>]
+categories: [<art|gameplay|performance>]
 status: recorded
 verification: <not_run|partial|passed|failed|not_applicable>
 created: YYYY-MM-DD

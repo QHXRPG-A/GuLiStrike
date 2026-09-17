@@ -11,6 +11,8 @@ areas:
 - combat
 - network
 - ai
+categories:
+- gameplay
 status: approved
 verification: not_applicable
 created: '2026-09-09'

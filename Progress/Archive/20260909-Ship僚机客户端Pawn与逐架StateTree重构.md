@@ -11,6 +11,8 @@ areas:
 - combat
 - network
 - ai
+categories:
+- gameplay
 status: recorded
 verification: partial
 created: '2026-09-09'

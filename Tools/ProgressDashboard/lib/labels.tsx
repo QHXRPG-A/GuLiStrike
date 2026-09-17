@@ -10,6 +10,16 @@ export const KIND_LABELS: Record<string, string> = {
   reference: '参考',
 };
 
+export const CATEGORY_ORDER = ['art', 'gameplay', 'performance'] as const;
+
+export type CategoryKey = (typeof CATEGORY_ORDER)[number];
+
+export const CATEGORY_LABELS: Record<string, string> = {
+  art: '美术',
+  gameplay: '玩法',
+  performance: '性能优化',
+};
+
 export const STATUS_LABELS: Record<string, string> = {
   draft: '草案',
   approved: '已确认',

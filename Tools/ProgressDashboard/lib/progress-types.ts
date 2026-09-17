@@ -20,6 +20,7 @@ export interface ProgressDocument {
   role: string;
   title: string;
   areas: string[];
+  categories?: string[];
   status: string;
   verification: string;
   created: string;

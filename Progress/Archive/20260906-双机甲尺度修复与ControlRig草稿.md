@@ -11,6 +11,9 @@ areas:
 - data-pipeline
 - combat
 - assets
+categories:
+- art
+- gameplay
 status: recorded
 verification: partial
 created: '2026-09-06'

@@ -5,7 +5,12 @@ work_id: ''
 kind: archive
 role: root
 title: ShipComponent部件蓝图与占位清理
-areas: [ship, assets]
+areas:
+- ship
+- assets
+categories:
+- art
+- gameplay
 status: recorded
 verification: passed
 created: '2026-09-12'
@@ -13,7 +18,8 @@ updated: '2026-09-12'
 summary: 14个正式部件蓝图替换旧占位目录，82个Socket完整保留；冷启动配置校验、源码Editor构建及既有2项部件验收通过。
 next_action: ''
 relations:
-  work_items: [WORK-20260912-005]
+  work_items:
+  - WORK-20260912-005
 status_note: 本轮仅制作部件及装配配置；升级依赖、互斥和火力定位保存在说明与元数据，未扩展运行期判定。热重载崩溃已通过冷启动恢复并验证保存结果。
 ---
 

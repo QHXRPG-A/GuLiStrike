@@ -5,7 +5,12 @@ work_id: WORK-20260912-005
 kind: requirement
 role: root
 title: ShipComponent正式部件蓝图
-areas: [ship, assets]
+areas:
+- ship
+- assets
+categories:
+- art
+- gameplay
 status: approved
 verification: not_applicable
 created: '2026-09-12'

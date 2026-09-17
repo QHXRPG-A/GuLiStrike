@@ -10,6 +10,8 @@ areas:
 - ship
 - navigation
 - network
+categories:
+- gameplay
 status: recorded
 verification: passed
 created: '2026-09-08'

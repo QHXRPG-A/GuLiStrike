@@ -26,6 +26,21 @@
 
 可以增加工具维护字段，但不得删除公共字段。
 
+## 分类字段 categories
+
+可选多值字段，取值 `art / gameplay / performance`，面向进度面板「归档 / 需求 / 开发」筛选，与 `areas`（模块粒度）互补：
+
+- `art`：美术方向、模型资产、特效、渲染与表现；
+- `gameplay`：指挥官、飞船、僚机、战斗、建筑、经济等玩法机制；
+- `performance`：性能分析与优化。
+
+规则：
+
+- 归档、需求、开发三类文档应填写（不属于任何分类时写 `[]`）；玩法、Backlog、参考文档可省略。
+- 同一 `work_id` 的需求与开发根文档保持一致；拆分子页继承父文档；归档取关联工作项与其自身 `areas` 推导结果的并集。
+- 取值必须与 `areas` 语义一致：工具按 `progress_docs.py` 的 `CATEGORY_AREA_MAP`（`suggest_categories`）从 `areas` 推导，人工改动时不得与之冲突。
+- `check` 校验取值合法，并对缺失分类的三类根文档给出维护提示。分类回填属于元数据维护，不更新 `updated`。
+
 ## 状态枚举
 
 - 需求：`draft / approved / superseded / cancelled`

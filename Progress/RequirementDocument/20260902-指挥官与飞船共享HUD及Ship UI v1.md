@@ -11,6 +11,9 @@ areas:
 - ui
 - network
 - assets
+categories:
+- art
+- gameplay
 status: approved
 verification: not_applicable
 created: '2026-09-02'

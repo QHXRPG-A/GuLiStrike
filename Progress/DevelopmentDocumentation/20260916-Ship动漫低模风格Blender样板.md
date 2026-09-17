@@ -5,7 +5,13 @@ work_id: WORK-20260916-004
 kind: development
 role: root
 title: Ship动漫低模风格Blender样板 — 制作与交付
-areas: [ship, assets, art]
+areas:
+- ship
+- assets
+- art
+categories:
+- art
+- gameplay
 status: done
 verification: passed
 created: '2026-09-16'

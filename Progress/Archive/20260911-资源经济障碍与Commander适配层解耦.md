@@ -10,6 +10,8 @@ areas:
 - economy
 - commander
 - navigation
+categories:
+- gameplay
 status: recorded
 verification: passed
 created: '2026-09-11'
@@ -17,7 +19,8 @@ updated: '2026-09-11'
 summary: 将团队经济账本、动态障碍发布和 Commander 资源交互从资源世界拆成三个通用边界，既有玩法与测试用例保持不变，范围自动化、双客户端 PIE 及三类 Target 均通过。
 next_action: ''
 relations:
-  work_items: [WORK-20260911-003]
+  work_items:
+  - WORK-20260911-003
 status_note: 范围验证通过。额外执行完整 Building 套件时，BuildingAssetTests 因当前 Outpost 二进制资产 BuildScale/尺寸偏离既有断言而失败；该资产问题与本次源码解耦无关，未修改测试或资产。
 ---
 

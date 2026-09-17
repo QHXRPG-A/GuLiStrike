@@ -5,7 +5,13 @@ work_id: WORK-20260917-001
 kind: requirement
 role: root
 title: GuLiStrike 美术规范
-areas: [art, rendering, assets, vfx]
+areas:
+- art
+- rendering
+- assets
+- vfx
+categories:
+- art
 status: approved
 verification: passed
 created: '2026-09-17'
