@@ -27,6 +27,7 @@
 | [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | verification | 2026-09-18 |
 | [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | verification | 2026-09-18 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-18 |
+| [本会话临时文件清理](../Archive/20260918-本会话临时文件清理.md) | archive | recorded | 2026-09-18 |
 | [玩法光照对齐与战争机器拥挤诊断](../Archive/20260918-玩法光照对齐与战争机器拥挤诊断.md) | archive | recorded | 2026-09-18 |
 | [松树林原Demo地图全资源适配交付候选](../Archive/20260918-松树林原Demo地图全资源适配交付候选.md) | archive | recorded | 2026-09-18 |
 | [松树林v1审核通过与原图原位重构授权](../Archive/20260918-松树林v1审核通过与原图原位重构授权.md) | archive | recorded | 2026-09-18 |
@@ -394,6 +395,7 @@
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | development | in_progress | 2026-09-18 |
+| [本会话临时文件清理](../Archive/20260918-本会话临时文件清理.md) | archive | recorded | 2026-09-18 |
 | [玩法光照对齐与战争机器拥挤诊断](../Archive/20260918-玩法光照对齐与战争机器拥挤诊断.md) | archive | recorded | 2026-09-18 |
 | [Q圆面打击与赠品清场选兵恢复实现](../Archive/20260918-Q圆面打击与赠品清场选兵恢复实现.md) | archive | recorded | 2026-09-18 |
 | [战争机器Q导弹与通用地面预警](../RequirementDocument/20260917-战争机器Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
@@ -1046,6 +1048,7 @@
 | [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | verification | 2026-09-18 |
 | [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | verification | 2026-09-18 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-18 |
+| [本会话临时文件清理](../Archive/20260918-本会话临时文件清理.md) | archive | recorded | 2026-09-18 |
 | [玩法光照对齐与战争机器拥挤诊断](../Archive/20260918-玩法光照对齐与战争机器拥挤诊断.md) | archive | recorded | 2026-09-18 |
 | [松树林原Demo地图全资源适配交付候选](../Archive/20260918-松树林原Demo地图全资源适配交付候选.md) | archive | recorded | 2026-09-18 |
 | [松树林v1审核通过与原图原位重构授权](../Archive/20260918-松树林v1审核通过与原图原位重构授权.md) | archive | recorded | 2026-09-18 |

@@ -1,0 +1,4280 @@
+{
+  "schema": "guli-session-cleanup/v2",
+  "thread_id": "01a0af5d-ba5f-7d01-ade1-bf98067b84c5",
+  "created": "2026-09-18T19:04:19.7505369+08:00",
+  "workspace": "D:\\UE5.7\\test1",
+  "recovery_commit": "0fb0d26ac9314bcae95a1a37f669926e35e7ffca",
+  "method": "Explicit-file Windows Recycle Bin; validate hash and ancestor paths before applying; no recursive deletion",
+  "allowed_roots": [
+    "ArtSource/Environment/NaturePack_20260917",
+    "ArtSource/Environment/PineStyleComparison_20260917",
+    "ArtSource/Environment/PineStyleAdaptation_20260918",
+    "ArtSource/Environment/PineDemoAdaptation_20260918",
+    "TestResults/Scale020",
+    "TestResults/GameplayLighting_20260918",
+    "Scripts/Scale020",
+    "Scripts/diagnosis"
+  ],
+  "delete": [
+    {
+      "relative_path": "Scripts/Scale020/__pycache__/validate_resource_cycle.cpython-313.pyc",
+      "bytes": 9208,
+      "sha256": "c2643b9556fe0fbe6881df089bc30052feefbbbc0e21949e7575a64f7ad6db98",
+      "reason": "regenerable-python-cache",
+      "tracked": false
+    },
+    {
+      "relative_path": "Scripts/Scale020/__pycache__/disable_factory_door_collision.cpython-313.pyc",
+      "bytes": 5248,
+      "sha256": "6ec9938ba384afce018d81a9e877914f3aa053a1e4dd93af5dcda78885cf118c",
+      "reason": "regenerable-python-cache",
+      "tracked": false
+    },
+    {
+      "relative_path": "Scripts/Scale020/__pycache__/build_review_report.cpython-313.pyc",
+      "bytes": 23636,
+      "sha256": "a9e4d0a79869f72b521dd5a9be9e7adc7dd29a82fa13fa0690aee036d0c22c2e",
+      "reason": "regenerable-python-cache",
+      "tracked": false
+    },
+    {
+      "relative_path": "Scripts/diagnosis/__pycache__/calibrate_gameplay_lighting_from_demo.cpython-313.pyc",
+      "bytes": 9675,
+      "sha256": "14501c27dd2dbb8fcfce0aa128de7966ef4acbef41c5d1da0370b0d425f1acb1",
+      "reason": "regenerable-python-cache",
+      "tracked": false
+    },
+    {
+      "relative_path": "Scripts/diagnosis/__pycache__/analyze_commander_detour.cpython-313.pyc",
+      "bytes": 6322,
+      "sha256": "f4ba0d6f387cbc604bdf618d325098890f9bd479f52cee43151fd5dd8fd80b04",
+      "reason": "regenerable-python-cache",
+      "tracked": false
+    },
+    {
+      "relative_path": "Scripts/diagnosis/__pycache__/capture_pending_commander_selection.cpython-313.pyc",
+      "bytes": 6355,
+      "sha256": "69857f45e568fddbc95b33f8002b31db66851b655aa4d4f191f2527255d1fb70",
+      "reason": "regenerable-python-cache",
+      "tracked": false
+    },
+    {
+      "relative_path": "Scripts/diagnosis/__pycache__/capture_commander_prediction.cpython-313.pyc",
+      "bytes": 22901,
+      "sha256": "bd9141886225fbc3bafc92f59bac920f8cb986fbc3c44ddd5d51363020d15f84",
+      "reason": "regenerable-python-cache",
+      "tracked": false
+    },
+    {
+      "relative_path": "Scripts/diagnosis/__pycache__/commander_prediction_evidence.cpython-313.pyc",
+      "bytes": 12563,
+      "sha256": "47a3bac588052d2d23bceb08ad2f2096fdaf0e5ef885a82671a69c11662860fd",
+      "reason": "regenerable-python-cache",
+      "tracked": false
+    },
+    {
+      "relative_path": "Scripts/diagnosis/__pycache__/inspect_gameplay_lighting.cpython-313.pyc",
+      "bytes": 9079,
+      "sha256": "24e4b8a46404b29a367d4a5c356bdcc856ecba832fb6c836a817950ea77caa0b",
+      "reason": "regenerable-python-cache",
+      "tracked": false
+    },
+    {
+      "relative_path": "ArtSource/Environment/PineDemoAdaptation_20260918/error_landscape.json",
+      "bytes": 238,
+      "sha256": "92ca04fea38343f622e8c891cdbee4d165c2be5ac7a7a6351f75ede718c2188f",
+      "reason": "failed-tool-response",
+      "tracked": true
+    },
+    {
+      "relative_path": "ArtSource/Environment/PineDemoAdaptation_20260918/error_instances.json",
+      "bytes": 253,
+      "sha256": "c6e571b1d794ae43d4972979783a4e7c14a630d88e0587e28e90209558147168",
+      "reason": "failed-tool-response",
+      "tracked": true
+    },
+    {
+      "relative_path": "ArtSource/Environment/PineStyleAdaptation_20260918/error_read_saved_packages.json",
+      "bytes": 523,
+      "sha256": "e5f1b4290d5b21a40af2b1d4e93d144cd700cdf7dc6b96804d6df162aae0ea4a",
+      "reason": "failed-tool-response",
+      "tracked": true
+    },
+    {
+      "relative_path": "ArtSource/Environment/PineStyleAdaptation_20260918/error_materials.json",
+      "bytes": 555,
+      "sha256": "a03d2c5931df23b64816918c1051a63a0ff9d2129d9935646a305390bb834f51",
+      "reason": "failed-tool-response",
+      "tracked": true
+    },
+    {
+      "relative_path": "ArtSource/Environment/PineStyleAdaptation_20260918/error_reload_saved.json",
+      "bytes": 331,
+      "sha256": "8be8fcc2ca381500b9e2f5f8afd45ae740fb9c6fecec0e26661d7d5bf8da54a4",
+      "reason": "failed-tool-response",
+      "tracked": true
+    },
+    {
+      "relative_path": "ArtSource/Environment/PineStyleAdaptation_20260918/error_refine_grass.json",
+      "bytes": 345,
+      "sha256": "1d501a0460f10ee79a1657a0d5a2ab6057ce7baa1f8517991a974270b9b6a7e9",
+      "reason": "failed-tool-response",
+      "tracked": true
+    },
+    {
+      "relative_path": "ArtSource/Environment/PineStyleComparison_20260917/error_readback.json",
+      "bytes": 601,
+      "sha256": "3dbd3bc63638666010344827901ff83d48bddf00114bf81eeba5332c389777aa",
+      "reason": "failed-tool-response",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/Automation-01.log",
+      "bytes": 344599,
+      "sha256": "70e794d2621e9c425142be324925744bc59e1a528381416607704cd51883b127",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Automation-05.log",
+      "bytes": 320601,
+      "sha256": "ea0fd5abfd3fa8a0b3875dfe02e759106dc14f695237ec19016cf644302d8880",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-07.log",
+      "bytes": 11723,
+      "sha256": "645c3e6dd9955b8b15a6ac894d9b52f8a108651a6abed6a79144f3638483ebc1",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Automation-10.log",
+      "bytes": 325315,
+      "sha256": "291b452fdc9f4270278ae859a2607a5043e2f65f817303e15673437baa414ee1",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Automation-04.log",
+      "bytes": 318080,
+      "sha256": "096a610890a79ded2469ac3ebd3692acf0f009f320470c296a9e47e14daa21e4",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Automation-03.log",
+      "bytes": 314075,
+      "sha256": "5e9ace0fbdf6fa69bc3d67e787883158f6539b8896dc2e523a897c955fecd993",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Automation-07.log",
+      "bytes": 322151,
+      "sha256": "6e86f08ddd71f8bd29ad58140a475d5b7158a7f516ee31b8515160c6d369c3b9",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Automation-08.log",
+      "bytes": 322244,
+      "sha256": "eee261850786a3c8c0051b1f24179608d2a1712bd784cb1becc18d85fbdfa701",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Automation-09.log",
+      "bytes": 322270,
+      "sha256": "eb2fda8a70db3ff6ee5079f6a6b3057e9619f2fa8a1559b028175e831db0b5a8",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Game-04.log",
+      "bytes": 14103,
+      "sha256": "b156288bcec2d11bca342b0ea8145280ad66aca0c9a3b2aaff0a555f5fc8becc",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-22.log",
+      "bytes": 15568,
+      "sha256": "6a35608e1994e1ebc17abf23db5c3f0bc8dc191731f1b6e9481326de4f17d0a0",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-20.log",
+      "bytes": 11049,
+      "sha256": "e13624f1c2d6ef424b60654f7713e93c0bb0ea095a0a19fa7ab79f2468e1c231",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-19.log",
+      "bytes": 17100,
+      "sha256": "e86817d8aefc8455979ab58933eb4f6d4614cab4e37f5c09147884c60c0977a6",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-18.log",
+      "bytes": 11956,
+      "sha256": "c86fddd8a37e203d19d81a69f7717d3aa0e5677d0c40baddb36457d3a5e43c56",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-17.log",
+      "bytes": 11164,
+      "sha256": "feeb6f0d522562bf791d7ec4d3066a4d73e0ca13eb7f9ec7cb819b91229faab0",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-16.log",
+      "bytes": 17033,
+      "sha256": "75bc17aac957f415b7b0cc748f53912fe8cf202a5c435a9a9e71085f788d7fdd",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-15.log",
+      "bytes": 17032,
+      "sha256": "69e59acdf84a35b06a4f23bd191481ce5d7972723a89fd054d2917d882cc808d",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-14.log",
+      "bytes": 11921,
+      "sha256": "b937fd1d63aa5ba5f1433770d5860c0a60d5a507d714a3633a6fa3d89f201ca4",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-13.log",
+      "bytes": 10849,
+      "sha256": "183e1afe9c64962f6f047b0313ecbe1ce0f7070b18f241da9bf7b06e4a812e54",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-12-failed-helper-include.log",
+      "bytes": 16256,
+      "sha256": "05e362af43a7dfdeccb627f520caa240b4115ae6f25278488b4f5dc541de871c",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-11.log",
+      "bytes": 16432,
+      "sha256": "2d8299e3e20667c2836f44e6afef8094796f161ac5c617723cda0fa75c290ae2",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-10.log",
+      "bytes": 11066,
+      "sha256": "2c72772967dc7b91efacafad4196155351881fd8ab1abf32a17d77f7cafb7b24",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-09.log",
+      "bytes": 11043,
+      "sha256": "ad3df761a9ca9b5dde34985e916dc31aac9cdd2c19639a0f47c062c8f36e3b4f",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Editor-08.log",
+      "bytes": 17344,
+      "sha256": "68973c5708c2556e5794ec87bcc3d5d7e6c6c3750c519b3a6efc7aa8c8a265f2",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Game-11.log",
+      "bytes": 14010,
+      "sha256": "daffe9d858470631065c3f53e73362483b4a0f38428984127e67c3b8770216d2",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Game-09.log",
+      "bytes": 10475,
+      "sha256": "d94e4c343b901866938ce41aa82fe411c7ac1f077b56e2fee825b8ac73578705",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Game-08.log",
+      "bytes": 15250,
+      "sha256": "f05b2c5ea577c8faf7d7127d5bc5d6c94d3a56b4d7da296e1f15a4a7a37ca18d",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Game-07.log",
+      "bytes": 14569,
+      "sha256": "965d7183e82e1a51c0c5e4893b37caf2d24f6df88074a83218c288b321e28f99",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Game-06.log",
+      "bytes": 14770,
+      "sha256": "74c8cef62dad6c86abb767107e0ef52ad42ce1e27638eddcd5075bbd2996107f",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Build-Game-05.log",
+      "bytes": 10492,
+      "sha256": "5f0398b9d28d3824aa2a9f68af1391a6cac322172c6f765fb134cef219d465d0",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/DemoReview-Editor-01.log",
+      "bytes": 161903,
+      "sha256": "21d7a88b04ad5c254c5853d626003df4811d6d44f943c44ebe7c6b29e7e42ff3",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/DemoReview-Editor-04.log",
+      "bytes": 710933,
+      "sha256": "5fadc4301f273ec1a9a8f12f88c544f8b6487d9592317c7f14a6acf9ef46b81a",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/DemoReview-Editor-03.log",
+      "bytes": 161562,
+      "sha256": "5c5f11c1c01c8d01d4842cf7a2ccacf20af33dd9d5f5215f59759e9419690d69",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/DemoReview-Editor-02.log",
+      "bytes": 161561,
+      "sha256": "22eace03118e063b1243e64de20876bd04911cfffe42f0e885d9b9fd401e837a",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/DemoReview-Editor-06.log",
+      "bytes": 592623,
+      "sha256": "1891b3a51e09c20f90a7f5f0dc86d7b59f9430184bf5b30266b25217c13fc32f",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/DemoReview-Editor-05.log",
+      "bytes": 716580,
+      "sha256": "e0dd39d24aad6bd686a0cc80a01fbff726ed2257841c819942f3bd5fb179bdd2",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Automation-02.log",
+      "bytes": 322397,
+      "sha256": "5c795dd3e2099037bc4faf6b43cc8b0b70cafe2c3fc760906d59781ab1ebe093",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Automation-06.log",
+      "bytes": 321971,
+      "sha256": "bc03fdde3224fc4b6ca51a5ab80c90af1a43dc7c0da1b2f9c08e475dd3cb111b",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/EditorBuild-03.log",
+      "bytes": 22595,
+      "sha256": "bdaa424ac28b0c1464c948ea56a5b30b8a3b54d131ead434b15be3074c891ad4",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/EditorBuild-06.log",
+      "bytes": 10753,
+      "sha256": "f566defff306691fc23ccb25670aa4b5fc15f9ec57551f58aaac8b0c737e0ae8",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/EditorBuild-05.log",
+      "bytes": 21593,
+      "sha256": "587bd45b022c843c387e37953eef37afd403055e91d75caf23b7f44c6cde6e84",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/EditorBuild-04.log",
+      "bytes": 10722,
+      "sha256": "c0df5bc0b43a96176eb239dcb8c168a868749c542569af6fbedebe9047e4a7e3",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/EditorBuild.log",
+      "bytes": 21944,
+      "sha256": "4200bce57313c635f35a752c827f1ce47608f8b02a18520e25532a6448456180",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/EditorBuild-first.log",
+      "bytes": 35411,
+      "sha256": "1be5ee2c18dbbf7c088c7de7b08f88b5a899fa07a553f62855741969ce0a0e42",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/EditorSession-02.log",
+      "bytes": 167082,
+      "sha256": "b11a296d4f2a942f32b0fe7309d8bd9ebb7c0917902986018493bc6d258049d3",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/EditorSession-03.log",
+      "bytes": 167215,
+      "sha256": "c9e7ea26f19d0d0a09740e7b87e0fe5c13dc7e1de29f9378d8de734c8739b153",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/EditorSession.log",
+      "bytes": 280353,
+      "sha256": "ceb702e44eee9f45d0974c017007611d634f85ecd4600fa9361ccdda91ed2240",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/FactoryDoor-04.log",
+      "bytes": 145931,
+      "sha256": "c66dcb7f369daf4cf54f689ce1a7fecdfe7d87b213364ab829b562b196e9f865",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/FactoryDoor-03.log",
+      "bytes": 148812,
+      "sha256": "c6d35126a5d2e57d7df9bd35b5f2ee772359b32faef1962b4cccd4fac734ca85",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/FactoryDoor-02.log",
+      "bytes": 134577,
+      "sha256": "61b1534d470980697aebc7ffece9ae3c74e4e2eaa9369ce2cf1f08f3cb526740",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/FactoryDoor-01.log",
+      "bytes": 131184,
+      "sha256": "98784f87e248b4a4cc0dd2b57f5cf9ebd577185e9a63483a5fc2e41bdb55abcd",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/BuildingFixture/Run-02.log",
+      "bytes": 135443,
+      "sha256": "a06cd1049b0165a07cc83bd651f000392a583450c6d7dfe6e7e33d85b1e1aeb6",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/BuildingFixture/Run-01.log",
+      "bytes": 136900,
+      "sha256": "46428e10a6a29ba8d9f2d981678ae61d49becafebfbc871672616d1491ea9553",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/FactoryGroundDiagnosis-01.log",
+      "bytes": 179742,
+      "sha256": "fdd5d3bc3ff22ed1736ad3addb5e0d7f649cc313cab25e48d9e4cd2070245026",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_019.png",
+      "bytes": 1173227,
+      "sha256": "b3b4a2e292f600a55a680b9a34f358deba7a4ddba4c13990fc8da25176afea42",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_018.png",
+      "bytes": 1173227,
+      "sha256": "b5ab8a0240a8f8d8d1d7542c79777a739f9fb379e390d0d5b999084e9654e90d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_017.png",
+      "bytes": 1173227,
+      "sha256": "eaacbacac671f213160b59293eebc8052f0c07b431aa5c8922b5ff6df4780d1e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_016.png",
+      "bytes": 1173227,
+      "sha256": "86075fc8d20cbd97417a3b6dd8924a70905860ca6a2e3be641db79dbd5aaafbe",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_015.png",
+      "bytes": 1173227,
+      "sha256": "8ef52685013846823e9c00395fcc7357e866ae142b36cd812c6e8a0d51f47b8b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_014.png",
+      "bytes": 1173227,
+      "sha256": "20307482e51487453360964cbb99cbaf9f5cd79f2c77dfe899337ee9c305f750",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_013.png",
+      "bytes": 1173227,
+      "sha256": "b7acd21e7263c714bd43ec0294d588773aa95461de13853d8f552413c1b9994e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_012.png",
+      "bytes": 1173227,
+      "sha256": "7403e3ddf26879d21dd5b1c045d04f6153079b40cf58044a5e448526fa35a2f9",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_011.png",
+      "bytes": 1173227,
+      "sha256": "4f2049414e8aa6e19c80fb2ebb587cfd50add21c3691275aac386825c63061fb",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_010.png",
+      "bytes": 1173227,
+      "sha256": "b227b43e24d6fd8eccf5721b60e9ffebb81749cc5ad20c065de141e67bdacc36",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_009.png",
+      "bytes": 1173227,
+      "sha256": "d5803d6d85adbc5cd47d3498efad584fe256c8fb7dd31a6557a626a5a15b416d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_008.png",
+      "bytes": 1173227,
+      "sha256": "fdffba1707a9791d75f55cdf3a669ce040d4250776a13c1f1958eb0f897e9f82",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_007.png",
+      "bytes": 1173227,
+      "sha256": "09abf628afff9bb0be04a08075b24351c2a995640eefd1a0ae11569e8c4a5d42",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_006.png",
+      "bytes": 1173227,
+      "sha256": "68e0de27573d06dc2523775cfec1fd00a623a74ed80627b0e3159b4be94a186b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_005.png",
+      "bytes": 1173227,
+      "sha256": "68068404e28fe20fce5760232b2ff9dd696ed8188df290322cd553ecb0943857",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_004.png",
+      "bytes": 1173227,
+      "sha256": "757ab11f99acd8fa9e297358894ec3c810d11f7a22e37a28e5531f5ffa255730",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_003.png",
+      "bytes": 1173227,
+      "sha256": "3c4eb17acc2566e756d2ef074fbc9c36088948132723f00b8736719cbd0c0a7e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_002.png",
+      "bytes": 1173227,
+      "sha256": "15dd8108f589272523912f3d31d929d64b50b648454d5bd4c5763d2dc7f3f723",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_001.png",
+      "bytes": 1173227,
+      "sha256": "fe0d8ecaf5c9d6a08d9d6e6abeb448c47c135f030e91c629737d6fe7d721c067",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_000.png",
+      "bytes": 1173227,
+      "sha256": "fe0d8ecaf5c9d6a08d9d6e6abeb448c47c135f030e91c629737d6fe7d721c067",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_031.png",
+      "bytes": 1173227,
+      "sha256": "ecf57434d3b114d0871b741cf5c8c9739e9ab53aedc4612cc9b106648fe928c2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_030.png",
+      "bytes": 1173227,
+      "sha256": "2c5a823ffe6647423d38e86b372f465c71bcc0f9381d6befc4728bc6ea5204ea",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_029.png",
+      "bytes": 1173227,
+      "sha256": "7280f3b327d9708b6ebe23d82308dae7d7145e77d20f168b7a834d02dff9dec3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_028.png",
+      "bytes": 1173227,
+      "sha256": "0aac3328e3b0fc2b580485567ea95602d341b3da5263a1e0fa96ec5882951bdf",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_027.png",
+      "bytes": 1173227,
+      "sha256": "629b3efdaab4567215469d1930b59c5b89b20b866af260629f9aaf45e9ed65c2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_026.png",
+      "bytes": 1173227,
+      "sha256": "35f3f201cdf34dd07ea688d9e7bce12075f8f109d358eaa43795bed540134a26",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_025.png",
+      "bytes": 1173227,
+      "sha256": "3fffc42cd8b7361a631b995214e48caefe989194fca1234027d5afc992f8cf72",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_024.png",
+      "bytes": 1173227,
+      "sha256": "c1578d4f3458fb4809861015e9324287be58bebdabed29c7cce4e8194da909e4",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_023.png",
+      "bytes": 1173227,
+      "sha256": "4c15435b9e250ddeeae7579c617872a5d4ba1991011807d00fc57aaedb304e75",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_022.png",
+      "bytes": 1173227,
+      "sha256": "87c961d74b217d8e85fafd714833e0a7961d1cf7f1ba69204093bbd998de252e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_021.png",
+      "bytes": 1173227,
+      "sha256": "a493e15d6130c33b7ffbc30c90618c063262f39e6f352ff9f461b3611627c9d8",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_020.png",
+      "bytes": 1173227,
+      "sha256": "783e06ed39c8abf416d67d8f75989dc01dbadf8fbf8e3bdfce96b1b50143ded2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_037.png",
+      "bytes": 1173227,
+      "sha256": "c8ca02e996bde233210e43fb858b0be8ba80f696bba7d0e8bbff1ec432b43796",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_036.png",
+      "bytes": 1173227,
+      "sha256": "88d7a9476fd6febeec1a70922bbb726674aef48fda82112b5d384e76711c1432",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_035.png",
+      "bytes": 1173227,
+      "sha256": "44c45576d7265fdd0e38f59a8851ed209f71a52a8290afc904956405652a2d4a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_034.png",
+      "bytes": 1173227,
+      "sha256": "b4ed1c87544ea600283b5383a4ce0f1eb113df4a72292a25f072ef440f1cb650",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_033.png",
+      "bytes": 1173227,
+      "sha256": "da1f811edb949a2ab081bfb520daed971ab22f5ed926e2eb21126268fb50d8c8",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_032.png",
+      "bytes": 1173227,
+      "sha256": "b3e6b9ae8949d482cccada39761018419f93ef83a3a5e80d05942617e9ba8dfe",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_041.png",
+      "bytes": 1173227,
+      "sha256": "f1786a68bec1352b3c5054a283a1fd4a0020860a0f2b1b8d6ea5220f10b73ebb",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_040.png",
+      "bytes": 1173227,
+      "sha256": "dc91d7f2f1f7c3f775299aad28beef83ecf4517a640a78b7da2a0a68f157fe99",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_039.png",
+      "bytes": 1173227,
+      "sha256": "86f7f2fc172f2c38af884728f3eea9b2924385405e344d1567eea39a583315cc",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_038.png",
+      "bytes": 1173227,
+      "sha256": "eefe4a9d1f295cd8d57c623260b0e54c70ebd8fa847f6d3df1155884f3d3f6e6",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_043.png",
+      "bytes": 1173227,
+      "sha256": "742584b0d4ebb80d3dfa5bf06bbdbc1c70ff2d12d38d4e93b73f3a5ea52e95e5",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_042.png",
+      "bytes": 1173227,
+      "sha256": "ab435443861a57630087817e4e054b1e8c2dc5cca7ed58e9632726d64ba1bdb5",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_044.png",
+      "bytes": 1173227,
+      "sha256": "d2f817093c7a764872b165195ebd76fcb1ea3da01eebb4a7e9ec9533425489a0",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_046.png",
+      "bytes": 1173227,
+      "sha256": "b8fa39358ed3476b79ce434c2223a31f7f429f6e82ecc9d1b6f9c15b8b7ee53d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_045.png",
+      "bytes": 1173227,
+      "sha256": "e34e7fcb32798640468cc94a1b89588640f5d80a05136ad42c60c2e2896d33b1",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_047.png",
+      "bytes": 1173227,
+      "sha256": "0a29d25be62bff3af37f08d7640094ce52c8d2f23d7dffa426f7a735d06ed96a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_030.png",
+      "bytes": 1173227,
+      "sha256": "b27da59cea5e7e549ae2f15d73268f83578df2a5980bab4dfcbcaa9374febb19",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_029.png",
+      "bytes": 1173227,
+      "sha256": "6f4c258ea4491ed4d7e793e4fef0d0d87c578aecc2db1b3e832ac76350de94ea",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_028.png",
+      "bytes": 1173227,
+      "sha256": "caa2b501f3659281060d974f7ebb154e276df306083e8939b9d7689285c69b00",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_027.png",
+      "bytes": 1173227,
+      "sha256": "896434e917982c8e52e3d19ce94fe34d4a3f442d3c767d2a4aa788a147c04075",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_026.png",
+      "bytes": 1173227,
+      "sha256": "a7f903eecbeebd6021404bc7c9d006fa2aef6b5f6f1b44b22deec2427eaa854c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_025.png",
+      "bytes": 1173227,
+      "sha256": "49954418099658052e9745586b1403e645e15e3c9eb04767bbf6f3c958beaec3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_024.png",
+      "bytes": 1173227,
+      "sha256": "3a9d154323684bf727019a74eb850a31b130be61f57a0b92613c94e183ee7b9b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_023.png",
+      "bytes": 1173227,
+      "sha256": "7654a6a451d392aac3ff3c0ffb678da9f0eb8ac049bda693727ef6680adaa60f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_022.png",
+      "bytes": 1173227,
+      "sha256": "e6d2fd5ef81f30fad445c7db27e595cc27cb61548b79ea8824423a8591b47496",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_021.png",
+      "bytes": 1173227,
+      "sha256": "f95319c552fd4e202e7818990d538f327046e91ceba93bcf8693e6c405a311ed",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_020.png",
+      "bytes": 1173227,
+      "sha256": "1193fdad6770a20918a93709110f60483478c7425f8dba76957516e369cab500",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_019.png",
+      "bytes": 1173227,
+      "sha256": "6ebfd7721606344de42d00735f05166482d8b27fc09a956dddae9602d2d4946e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_018.png",
+      "bytes": 1173227,
+      "sha256": "45147e3ca79ed63ea60ef477bc570e9dd5f3f0907deb598e0a614e355869782d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_017.png",
+      "bytes": 1173227,
+      "sha256": "a50393d5f185779d13381d81f196bd4f73a8b825db7e5d55fa31fa9529e202cf",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_016.png",
+      "bytes": 1173227,
+      "sha256": "3dc6dde4fbce7c6191cba960e6e542cf1b9c1782cfe4b5d16b5ef37022c3f1d9",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_015.png",
+      "bytes": 1173227,
+      "sha256": "a5b26dda58228c95c78ad12e343d7b72e820c94a630dd52192e332a8ecb5dfaa",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_014.png",
+      "bytes": 1173227,
+      "sha256": "793ab5e417d00d9c656c0318d0d8a8d37d6091c064016bb1b523b076da30e64b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_013.png",
+      "bytes": 1173227,
+      "sha256": "c3454a8bcf6d7a06d3cb768944ce1ff4d3c3f91830b6d3272d5d3522e3ba0a5e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_012.png",
+      "bytes": 1173227,
+      "sha256": "172c8c9ce61686cb884c23d12ca9f4dfab3becbb31739126aaad170b57cd5857",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_011.png",
+      "bytes": 1173227,
+      "sha256": "81f3c6f13eab3b1ac34b5b1c7629d8b816cf58447f4ec99a49c657534d521f03",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_010.png",
+      "bytes": 1173227,
+      "sha256": "416f203b5b56d096db08bd67597cf7718cc2188d26dc371baf3736bd26001822",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_009.png",
+      "bytes": 1173227,
+      "sha256": "c6b322ccc594d01a9f663d54966906dc13c778b130b6693768af120f33173a97",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_008.png",
+      "bytes": 1173227,
+      "sha256": "1a66265b81fd4c2c419d5e1e86a0371f267bcb3f361ec17d1741aab093a72674",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_007.png",
+      "bytes": 1173227,
+      "sha256": "9abc2bcfac20db80e5ff184b28b2e19107d597af5afc06a95affd88e1785efd7",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_006.png",
+      "bytes": 1173227,
+      "sha256": "232c88f96629c424c766300864bc2b26a9cf2666bb198c6bb9cc66524dae2ec1",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_005.png",
+      "bytes": 1173227,
+      "sha256": "0c363cf745292cd413703d396025f6ddfba79fb90a82a62a0eef540e4d129786",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_004.png",
+      "bytes": 1173227,
+      "sha256": "5b7d0e8fb3ed87f4af9ec831195dd2622266d46300c840dfeb59b7a564250dfd",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_003.png",
+      "bytes": 1173227,
+      "sha256": "c4b993ca42e27c1e6a3e574850c4d0812ddfa2ffff9d795d2a0e50df8c31f216",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_002.png",
+      "bytes": 1173227,
+      "sha256": "ceaa870f2653796c9e5ff08faa6987df0ca12057b85d99a5d8b18af222009313",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_001.png",
+      "bytes": 1173227,
+      "sha256": "982ca0534ff9898e7109ff50070d20408d902952216f831475e79ff9b0782a79",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_000.png",
+      "bytes": 1173227,
+      "sha256": "11b87275f9ce5159e2f91da7b6422cc947ac614fdd47119e21157c7d777524cd",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_049.png",
+      "bytes": 1173227,
+      "sha256": "c08c73584df358eeb3c3b57d9c0bd80e790ade6c2abe5f6f6734ba018b3acb50",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_048.png",
+      "bytes": 1173227,
+      "sha256": "629d861cc0ea24d87f1fd4a3585950cc7bdcf8886333d5a896e0fa700e8622e4",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_050.png",
+      "bytes": 1173227,
+      "sha256": "b78fcfd2cade7296bef9d0d01048a3da493c886f310e3bfc2774e5befab6bc40",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_051.png",
+      "bytes": 1173227,
+      "sha256": "661f3b9f79615a1a0e82ff76e746ead454ddd94005157de7fba4921661c685c2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_052.png",
+      "bytes": 1173227,
+      "sha256": "faac2be813c48bdd732cf7971cfddda43159e52d45768f6b48ffa1e275e31bb1",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_046.png",
+      "bytes": 1173227,
+      "sha256": "d2b697647f6677fd7bb4b7987b17ef41af816e195c5e339a279dcc47ab2684db",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_045.png",
+      "bytes": 1173227,
+      "sha256": "4bc656ee047939b47e1e8bfd63875ac2c91c50d8bd5eb00635d468afd0cb3474",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_044.png",
+      "bytes": 1173227,
+      "sha256": "087325a1d665412c0916043213247560c5db6acf0a96621e798676900a143109",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_043.png",
+      "bytes": 1173227,
+      "sha256": "782f9845a1e2c28ab09b961d4cfdefc130b8f00809c654e006a48172fe206151",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_042.png",
+      "bytes": 1173227,
+      "sha256": "6fe2d09c5e1deab31de5d750296c077d96298db42379a858728fb960fef75680",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_041.png",
+      "bytes": 1173227,
+      "sha256": "b4d3d758e88158c544c61b83ba10975a807e2a2ca329ab854f5bee5baf83f19b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_040.png",
+      "bytes": 1173227,
+      "sha256": "6182a268075147825beeb7b8f1c6a34bbdd14bccf56a0d2a0007408daea57cbc",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_039.png",
+      "bytes": 1173227,
+      "sha256": "1106c8c4cc32e175649b362792ae3af7a90659ff44158c891f219dd69b544945",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_038.png",
+      "bytes": 1173227,
+      "sha256": "8d6946d98ea92a4fce3a057cbe8cb9c493bc5651d3bef1f5f7205cefdc1870ad",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_037.png",
+      "bytes": 1173227,
+      "sha256": "0354e761ebf11205cd046885183e350ab5bcbca61fe0c2967b0d4def6024b967",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_036.png",
+      "bytes": 1173227,
+      "sha256": "91038d47451f47c32354ca579fe24448febae831f3bd76d6b9960fd235c01e10",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_035.png",
+      "bytes": 1173227,
+      "sha256": "379e6adb567b629c70705b6ceea4c475a822bea20aa1e19f9699ef24c9ad659a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_034.png",
+      "bytes": 1173227,
+      "sha256": "71bf931ff3e7b15bbe0098580716db04777d5432515a20667d8875facbef97a2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_033.png",
+      "bytes": 1173227,
+      "sha256": "d843f87d1a2a9d7a8ad98b18fd1d3367f20ae279f0fb36c92acce0c7c01428d7",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_032.png",
+      "bytes": 1173227,
+      "sha256": "54a86473e576580d952e2257a2dbff573855c623417dfa03f6b5b9b4b5e6b1e4",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_031.png",
+      "bytes": 1173227,
+      "sha256": "0daaa1d671288ba993994455d949f7210d995df09dd1b3ecbe20c2d3f80385fd",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_053.png",
+      "bytes": 1173227,
+      "sha256": "7809711a3e9eab08727243e1bba3ea9bbe7316cfb002f4f8cc07552ff4714058",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_054.png",
+      "bytes": 1173227,
+      "sha256": "1bfcb4a7fabe4cf2ff3f04c7d3d44ae03384e70c3b6fdfc670eb8ddb3c6e237f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_054.png",
+      "bytes": 1173227,
+      "sha256": "2e700af36442ce3851f090902947193f298d801e4a987478a09de7ae46e09010",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_053.png",
+      "bytes": 1173227,
+      "sha256": "d54ade80494ede5d2e99a6d14c9538cd33187dfd7009f086207a6ba3c3d0ae0c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_052.png",
+      "bytes": 1173227,
+      "sha256": "31fc0f9d2f7eff9728fbfe6def030534010896a659d7e66ee080b7754b134150",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_051.png",
+      "bytes": 1173227,
+      "sha256": "13fe5ed529cbfeb66cc1e39be3328a50d3d4e2aded5b68dd9b9cd5c1a22fd637",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_050.png",
+      "bytes": 1173227,
+      "sha256": "0b3651f8722447dd2e00672ee6b4e8f1913793802a936774fdb8ed7271106796",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_049.png",
+      "bytes": 1173227,
+      "sha256": "bbd833d5455714858391ef6b2b7e228c3a832840ab4bf6fdd5e27b04c3a6b12c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_048.png",
+      "bytes": 1173227,
+      "sha256": "a6fbd6bb8a90d4cb5f68181febbbde4e0c3957b4dd755dc484e9ed2a29822328",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_047.png",
+      "bytes": 1173227,
+      "sha256": "fcc8f73e95d9b9ff30889e7a2aa6610b688762d169219a668acd0efb9567bbee",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_056.png",
+      "bytes": 1173227,
+      "sha256": "a95c10cd48340da4a7a8813ad92ea6d0b7edc98a08f7437ab3e4f8bd8e1bad4b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_055.png",
+      "bytes": 1173227,
+      "sha256": "582c519cc59cc1f7bd402af3cc154867b227121cc4b324eb5d5224a06ba370a7",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_057.png",
+      "bytes": 1173227,
+      "sha256": "f6e8b822ef72262e0f9ee3355f6e19398808305436e03b7f26eeeeae82094944",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_058.png",
+      "bytes": 1173227,
+      "sha256": "e97da83a2e0c5bf0a8ee79193e89990e0201a8e580c77a1d5c9f39bcd88ac558",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_057.png",
+      "bytes": 1173227,
+      "sha256": "5a2f94bb34e4a868daf91e97ddd4e983fd985ac80f866be7daae161a7d46a9a9",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_056.png",
+      "bytes": 1173227,
+      "sha256": "ad0fa87428e1ae0d77822ec7b2aafaf7d0c6181e0f2a99fd1ae87c498f7cf147",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_055.png",
+      "bytes": 1173227,
+      "sha256": "46a4a7570fd0b69354e9cfd5094409d0940f4082ccd9d1f9cf0141c1fa52036b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_058.png",
+      "bytes": 1173227,
+      "sha256": "e11a8dbc62c3487a8e362b3d808780768c538ca830623b48003f0d5edd60544e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_060.png",
+      "bytes": 1173227,
+      "sha256": "b79162b6691716037cc57c61534ff92c38b626cda296137c0ca6b3e3ff202198",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_059.png",
+      "bytes": 1173227,
+      "sha256": "bc5b9c00c585c27c8293375afd61c9ea9c36da2d4d4e5d381d1d205fa84b056c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_061.png",
+      "bytes": 1173227,
+      "sha256": "022e39e300cb87172ac946bd1b555c4e195188bb140f8c58e1c9fd3e3cc5449f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_062.png",
+      "bytes": 1173227,
+      "sha256": "290b2587ccc23976c6d42ee0f1aec489cafed4b9ed6cc82f4c1270bc8c522b73",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/RuntimeQ-02.log",
+      "bytes": 200123,
+      "sha256": "4a549b6d3f397231e4f8349ec911579e01b4110972d799c9a3cb057a83d4437e",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/RuntimeQ-01.log",
+      "bytes": 199688,
+      "sha256": "1e932bc6c62894b1c520f1ae605c7f3d6639ebda2a592646109e653c26627d95",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Navigation-Cold-01.log",
+      "bytes": 150422,
+      "sha256": "4489880b287d31352aa975da70ea71bd9032dba5ca5e9c7dab6dd3fa65bce200",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/MiningSpriteSize-03.log",
+      "bytes": 128567,
+      "sha256": "760ef02683b4ede80f6844e4c37f125cb6dc759a73dcdc429a84124b0220908c",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/MiningSpriteSize-02.log",
+      "bytes": 146659,
+      "sha256": "300628a9396d64ba42f683235035957d786525c1613c4d75cb7c5e02668de7bf",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/MiningSpriteSize-01.log",
+      "bytes": 129346,
+      "sha256": "7825ca1e244fb9ce36392602ab92f35e576154a0dfaed7b80bdaac546c80261c",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/MiningInputs-02.log",
+      "bytes": 159027,
+      "sha256": "7004d477e90f8b8507e9971f8250af3407bb69a6988f37aaa40ec8c880afcbd5",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/MiningInputs-01.log",
+      "bytes": 158596,
+      "sha256": "8f7ccb8b73eb0cc34750400df47929f656a3f172d42f10afe0661b0a4939fda4",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/GameBuild.log",
+      "bytes": 24534,
+      "sha256": "72b518087834ba497ca6833b23e2fa472b4707950db0d83a6d81a7c7b8cd02d6",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/GameBuild-03.log",
+      "bytes": 15519,
+      "sha256": "ed936dc30ed4ac56490d14b1c542a52ef97b13d806fdc24da4985a6b2ef0f9ed",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/GameBuild-02.log",
+      "bytes": 17478,
+      "sha256": "09f539573ace15c537e187d43d6cdc0192355fe8fab6c31db61d82883b62b1b9",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview-Editor-02.log",
+      "bytes": 435200,
+      "sha256": "911005b723a076abab863fc7a6149dddcfdd6ed731ef27aa6c43b9d0a133b567",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview-Editor-01.log",
+      "bytes": 344189,
+      "sha256": "a70d14ab357453c4ab8d220f4aefa6c1c6da7354a671b56047a5c781b7977594",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_062.png",
+      "bytes": 1173227,
+      "sha256": "61bcec5c89057f2851160861f3fb818d83fe9d62c050d27b93a7e6a465c2a209",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_061.png",
+      "bytes": 1173227,
+      "sha256": "1dcc71394c865fc9462fdd971edb5ddf55b627d2ca1a191eba1805967ee535c8",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_060.png",
+      "bytes": 1173227,
+      "sha256": "9c0fc4b84a91b161c0dcf6bbd6c4bd9e5816621b97d0aec1ef9707f45dba932c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_059.png",
+      "bytes": 1173227,
+      "sha256": "3f64ececea8929d49b0259e02b92af8ec0a213383108693ad70b8da20629bfba",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_064.png",
+      "bytes": 1173227,
+      "sha256": "e6a5f6de56478305c3a7b359556dc700e31daf5f951964504cf492a601e6da0a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_063.png",
+      "bytes": 1173227,
+      "sha256": "003f59d5565ddbc75d6c16a473d88e4725b8b27cc0905cc53d3f7df877b53deb",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_065.png",
+      "bytes": 1173227,
+      "sha256": "347bb8317aee76e95d8fed3de15edd3f16d1f3c18190385ecfc4df10477e881d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_066.png",
+      "bytes": 1173227,
+      "sha256": "8eb12bee51b3cb6f04c32d345a2a9a28e5193c3ce5455dc70b69ad4c8fe429bb",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE-10.log",
+      "bytes": 203743,
+      "sha256": "a423760cb6bec3e0fe6e0c4bb118bde3674a76d36936e1c744ba52cc9a75a0a3",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_067.png",
+      "bytes": 1173227,
+      "sha256": "e8f0ec3e47965e03adca3de2c98fb744e595aaf6c0ef3797452f2634cee13e1d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE-09.log",
+      "bytes": 211456,
+      "sha256": "f17af72da9ae48d897d24d80f5a8d07276f0e2891a11ec216ab892cc3244ea39",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE-08.log",
+      "bytes": 209761,
+      "sha256": "4b0f28704e8594a53be40f215e56bb04ca0fd8b7cd4685faf107def0fb0b4b9c",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE-07.log",
+      "bytes": 207815,
+      "sha256": "f36a823ec9e7007a2cc848353fc460c6a76c5735c68f4cf21227b90210abc704",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE-06.log",
+      "bytes": 210986,
+      "sha256": "1aca21179e3cdab349365b0283231ad0bb6dfc23e757e0c1dddc2ead49435640",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE-05.log",
+      "bytes": 189758,
+      "sha256": "3ee8c0e25c1f53937139dcb30935369966d73b336c1de55f24293fe728a37a10",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE-04.log",
+      "bytes": 214928,
+      "sha256": "9c6820a3b5ba4a21c95bfe8e42fe6ee67e91a5ae87d9b4f1081614a6dcc744c1",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE-03.log",
+      "bytes": 208083,
+      "sha256": "30463c6e810029c9244bce6c9a7503031a4e163363f7a6bf3ffc4c9197b12a46",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE-02.log",
+      "bytes": 229060,
+      "sha256": "709ddc3c614a1952b65916962a792d83bb20c733f96b810fcad387d94dde9df2",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE-01.log",
+      "bytes": 200713,
+      "sha256": "76d0fff196cf1f2f696652edcd1fcb0ab3d0e2b60477d47afb41b6a4acd79c1c",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/NavigationTests-03.log",
+      "bytes": 145038,
+      "sha256": "e1e0b170e60e664ed8e8d0233462251f19ef4b3a8e970f5e7159c8bf0923a51d",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/NavigationTests-02.log",
+      "bytes": 152658,
+      "sha256": "462c2ce597cb74c230957f26c02510e9eb170094c6e075075029668e22a04a22",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE/attempt-07-observation-api-error.json",
+      "bytes": 43755,
+      "sha256": "37ec7131adb68999bd853907faf2ccffcd20b7f0a44f3b7b454763c4b1ed577c",
+      "reason": "superseded-diagnostic-attempt",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE/attempt-05-entry-stall-no-diagnostic.json",
+      "bytes": 2040538,
+      "sha256": "9c47a9a6cfb09057aa6946434252e57f04c49dac4a4ffa4686cab1a9c466d442",
+      "reason": "superseded-diagnostic-attempt",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE/attempt-04-wall-clock-fixture.json",
+      "bytes": 42856,
+      "sha256": "4ffeb6d8c2d76a116e991bc125d2a4479a8fd3d4fb479b36b06e598fa372c490",
+      "reason": "superseded-diagnostic-attempt",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE/attempt-03-protected-inspection.json",
+      "bytes": 43393,
+      "sha256": "232478258507d868d247feb1051895e9d457537a1dc647553ef4aa7da85887c8",
+      "reason": "superseded-diagnostic-attempt",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/ResourcePIE/attempt-01-old-factory-count.json",
+      "bytes": 42867,
+      "sha256": "b960db6590088e3fe7eaf84fb05a731bfa7f726cfdfc3c570e3cf0deb13f9316",
+      "reason": "superseded-diagnostic-attempt",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/NavigationTests-01.log",
+      "bytes": 139050,
+      "sha256": "7bb0b60bcc782b0933b8cc194379cce5d4adf8fb4c8e8489ec51e1cb04a660d9",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_031.png",
+      "bytes": 1173227,
+      "sha256": "a2350c0cb7f1b91104de2e027e2cb78e7fdb7101a8f17d220b8f88a208b43b8b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_030.png",
+      "bytes": 1173227,
+      "sha256": "0470b9c3f504b14a09a5def0f1b4e880e948b16bc1af76a045c1e7bcf6490771",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_029.png",
+      "bytes": 1173227,
+      "sha256": "754d1343db9a26adccf842ea8e493a9d60cd22ada4e7a04d8daf933f50812ca7",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_028.png",
+      "bytes": 1173227,
+      "sha256": "e4e40d0455dfcad3841395ffaf95b774527cb9a1952bbb85b42585fa58b4f964",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_027.png",
+      "bytes": 1173227,
+      "sha256": "191ae5cf015bb66fe2cbc0b385a6483dca8fa498a0da120ea7d1f1fdce84fb7f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_026.png",
+      "bytes": 1173227,
+      "sha256": "3ea85cd612e17f7d401092d45f2eec5ad9137505efaa82ccab65d47b62c88f8e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_025.png",
+      "bytes": 1173227,
+      "sha256": "3405d866d13a0a8742e85bbaf9a06cefd846cb69c39f5d07255b3cc4151dfa4e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_024.png",
+      "bytes": 1173227,
+      "sha256": "fd976e70f5470e359296e3a49a31caecbc0ff16b6b33dbe888c9095ec9c1ea6f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_023.png",
+      "bytes": 1173227,
+      "sha256": "a375dba4a68369bb5e07674d76e6f6576f94905ab69b08b08cbdc28bf4ef6b45",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_022.png",
+      "bytes": 1173227,
+      "sha256": "231dfaf06daa692822908c49b7863af331bf6a35d7c537f4e88925df82bfadcb",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_021.png",
+      "bytes": 1173227,
+      "sha256": "0bd2e369ddf0bdd9497b9c6d1ec7cffce339f21e15d3b9e0206e77762a591f37",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_020.png",
+      "bytes": 1173227,
+      "sha256": "b86b096665206b9f7faf4dd7b8620e87299ac94d8e7051879d8c6224396e001a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_019.png",
+      "bytes": 1173227,
+      "sha256": "3b810464f6eb1c36c302f09dd4def88dcc2f97ec4b3be818239564ac1a29b0ef",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_018.png",
+      "bytes": 1173227,
+      "sha256": "652b0d081d92865257e9ddad99b6a55067b154ac26f4042cb0624380820ec61d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_017.png",
+      "bytes": 1173227,
+      "sha256": "5908154ecfc210840713d87f9e8ddf0add6735493809600e0d15f4ab2e55cc27",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_016.png",
+      "bytes": 1173227,
+      "sha256": "471970f6b662401482808068ed3f617dd31e3e672c06fc33d89bd3c8d9ef35f3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_015.png",
+      "bytes": 1173227,
+      "sha256": "2dbb79eda59c4e7e66a5efd59f5459b974cbaf8b45f64a03fa44a71d673306e3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_014.png",
+      "bytes": 1173227,
+      "sha256": "a7e91f13b8dfd4e0f21e0328fe84cfd7b0ef0792ddfd455d3901f4088f4f21c6",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_013.png",
+      "bytes": 1173227,
+      "sha256": "b9458fd609e54e577f413533115d6448cc186d362f190331d90f08b5ad49ec08",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_012.png",
+      "bytes": 1173227,
+      "sha256": "7cdc43ff78258843333a5329fb3e290993beae2ed62004bc6100ee90dd9938ee",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_011.png",
+      "bytes": 1173227,
+      "sha256": "0213cb3e25bf94b424b49ee517e60628eda09ae6c421c4ffc55a754f2cbf096a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_010.png",
+      "bytes": 1173227,
+      "sha256": "557cef4684dab22bce1ae74fb2ee76d9cbb199820fffdaf3cdc812928ecd548c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_009.png",
+      "bytes": 1173227,
+      "sha256": "384487106f9f2e93850c4135d3169c912764383a90d4806827dda5be620a55d2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_008.png",
+      "bytes": 1173227,
+      "sha256": "6273c40d20e8750a51393169734ba670820c72281efbefedd8324848f71d59da",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_007.png",
+      "bytes": 1173227,
+      "sha256": "ae9441e70af062e5c8e6e67f451346c6a2262898ddaf7b9f86d2d58ce0155d71",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_006.png",
+      "bytes": 1173227,
+      "sha256": "74c22ed21eff1ddb4c49c8be1a3c11119a6818418a56facc2d96b89529126fb0",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_005.png",
+      "bytes": 1173227,
+      "sha256": "5a000e159320516a842c964ca7a234235a94fa314dd77c599d79eed75690e20a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_004.png",
+      "bytes": 1173227,
+      "sha256": "cf377898e7711f02250a5242605652ccd335c34b1fb96ee81c3222fab3350173",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_003.png",
+      "bytes": 1173227,
+      "sha256": "6e85b3219eaced908c7206433436d1efcc4f9b63b2293ef82cff723f8ddb1bca",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_002.png",
+      "bytes": 1173227,
+      "sha256": "5043fe876a27fa01fb8824eabd9a7343db444a854cf8c1944bd9c0f0475cbaba",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_001.png",
+      "bytes": 1173227,
+      "sha256": "8c90e78635561897711ba0fd8d481558c10b1019d73ce759007c37dfef765765",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_000.png",
+      "bytes": 1173227,
+      "sha256": "99435da486fa900e1ea680f28a89e93862ad3d151bd3c7951068a16056e077bf",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_063.png",
+      "bytes": 1173227,
+      "sha256": "95c1a53d6eae96dfd10c6e9fa2ddab0d2c52b2d3b2758389360d4c147adc37e6",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_062.png",
+      "bytes": 1173227,
+      "sha256": "63ef9f2a9fb677f4a4092c044cc66bd4b304daab8ea7baa599e1384a1bbe4d5c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_061.png",
+      "bytes": 1173227,
+      "sha256": "0e97572b469bf3c870683a1bc42a58bb31cf42b223e94be4ecbf2798de126837",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_060.png",
+      "bytes": 1173227,
+      "sha256": "bb6b73af585930e4b918f88d846298c438d72d665d02c5d55691ffc1415564f4",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_059.png",
+      "bytes": 1173227,
+      "sha256": "e5f88311be024f0e93c02fc7fbadf90c51f07a5701397ff970cc692cd85dc932",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_058.png",
+      "bytes": 1173227,
+      "sha256": "9b424469992a8cbfb421b9b02e06e91749048752b3ea3ae5ee25c727272ec6a0",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_057.png",
+      "bytes": 1173227,
+      "sha256": "6e774800901c3756770fa4e0e1c8f55a68902f8d1933ca512ee4c7451a0d5362",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_056.png",
+      "bytes": 1173227,
+      "sha256": "c09edf851c10208ccc5079396b2c82f1b105248a5a4be89ec21d5f1508f1a21d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_055.png",
+      "bytes": 1173227,
+      "sha256": "17f4fbd769fa0bda4fc612be0ebcf8f3762a76ee52a80000d1bbae0057db4da2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_054.png",
+      "bytes": 1173227,
+      "sha256": "9b13b2c9918dd806e686b32baed06ab8335705ef7534110a95ace047b24a3e89",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_053.png",
+      "bytes": 1173227,
+      "sha256": "b538f6aa7f0a4b1df29915ce3e2cfb5bf8b89731d66f325e723439d4b9a1efeb",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_052.png",
+      "bytes": 1173227,
+      "sha256": "1e3e19a703d2cef015072eda6f3cb1337b14e33911642fddcf878356ee3f1756",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_051.png",
+      "bytes": 1173227,
+      "sha256": "5c3757cc82f4bdb82bff2fd976fb05fb1b42ff13fe6c660c280a648b0dc7cacc",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_050.png",
+      "bytes": 1173227,
+      "sha256": "395bd0beb25998fa7046d066412efa7334af7b2be304a287db6bff2eb8667420",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_049.png",
+      "bytes": 1173227,
+      "sha256": "09a5695d5005c6d49753c7bb1e8ddfcea4c5ae80f6764f8e10003991b63facb5",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_048.png",
+      "bytes": 1173227,
+      "sha256": "10a44888fbc95fdd07d83b38040f770c3763491f72b56ab1ef6a0a72035228ad",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_047.png",
+      "bytes": 1173227,
+      "sha256": "07ad1b7abdb7f29d96e660cbd278708af9e4a426d0fe69854fb3955e19efe1d5",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_046.png",
+      "bytes": 1173227,
+      "sha256": "e3a1e05099f30761c5e5a19df9ede1413d27f14feadd1aca253b5aa0c2d96408",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_045.png",
+      "bytes": 1173227,
+      "sha256": "3e62d6908c3a8dbe447bbaa090926b298fdd8f802710062a7b486f2003fedc4d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_044.png",
+      "bytes": 1173227,
+      "sha256": "f8180850afbf0d99de6e93b77312322b98d9012a3860d06fd0ae6acc3da9d520",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_043.png",
+      "bytes": 1173227,
+      "sha256": "d44fda0ccfc64a61fead3920be2e8d83e27fdb73714e603fd4c7c2cec2a603e7",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_042.png",
+      "bytes": 1173227,
+      "sha256": "db39e34765e8ba14f9cbf1ca7a92dc6b8c503d55537e7243db91dafc2e2301ee",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_041.png",
+      "bytes": 1173227,
+      "sha256": "ee761d1d7947dbd26117bbbec4390dfae4f52509384c5f7975523919c72f4b0a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_040.png",
+      "bytes": 1173227,
+      "sha256": "af723f6a3c20fcb084159f30cf8e2e1917ddd32bbd003939d563cc6745f89372",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_039.png",
+      "bytes": 1173227,
+      "sha256": "4916a196927e43823cb901e47cd1f85c30e7b9985954acbaaf1e9fad5e0ded57",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_038.png",
+      "bytes": 1173227,
+      "sha256": "1096d0d7b38e9aba9a2f3f30024a2bce157e23f30517d86074cfce15db0381c3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_037.png",
+      "bytes": 1173227,
+      "sha256": "ebd3d4498cc987e72d5b6b79532fd79c6e92b5d846930c2c97dcf293d7f3dcca",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_036.png",
+      "bytes": 1173227,
+      "sha256": "0b90b819ef6ce03befb2aed42a6b7e7387c7b723999811651cfd5a6e4562b4bd",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_035.png",
+      "bytes": 1173227,
+      "sha256": "e6bc1de2c23c505a19ee3eae801407cac8b7bb9e426c0cee7ac48e07194ded3e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_034.png",
+      "bytes": 1173227,
+      "sha256": "12b6b50ea6e7550446b61b6f9b761de0aa2da301ff34ebbed8d627d7ca30f5a4",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_033.png",
+      "bytes": 1173227,
+      "sha256": "11db1f011e6ddda102ce18bd1e3fa43543706e51a712bd492269f186bca439fc",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_032.png",
+      "bytes": 1173227,
+      "sha256": "5147969bff12a008026f6f7e2bc53ce762753fda0359a19c20d06e47f6becacd",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_094.png",
+      "bytes": 1173227,
+      "sha256": "1031af3403a3b300f881a4efc093b98f5872cd80e297317baecd6852ebf2c5e2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_093.png",
+      "bytes": 1173227,
+      "sha256": "788588f414cff732b63b34cca81d82a09fe139797783d75fd35c0a23299180bd",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_092.png",
+      "bytes": 1173227,
+      "sha256": "16e736e2617fc88ab1c44b07bf46632ffcba6f76412b30eb61a44ee15fb88a81",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_091.png",
+      "bytes": 1173227,
+      "sha256": "292133d89ff8529a0c6dabe57345eef9e123ce3b30db83aee542f6fb442d5d39",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_090.png",
+      "bytes": 1173227,
+      "sha256": "d1f971f72144e6b28c300494806b81efe861d50b30cb249ae0c3c431d0f5fc28",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_089.png",
+      "bytes": 1173227,
+      "sha256": "4b2d20fc1beef067e31318ebc07997f8d29d393cc449815216a51ff8ce046cbe",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_088.png",
+      "bytes": 1173227,
+      "sha256": "5c752d1916f3b2035aeb2e29245356079e1efa38ea17979fcf0a3995697bb385",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_087.png",
+      "bytes": 1173227,
+      "sha256": "dd2a26690c59e913789d6583902f1202bf0a4bf40fe756d773add24479315e8b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_086.png",
+      "bytes": 1173227,
+      "sha256": "8a69771ad0b00c4f67d91f0ba7ed1c848ce2db036e046cea254112c325e82906",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_085.png",
+      "bytes": 1173227,
+      "sha256": "7439a8fabd6f27f12ea816fe8fd19c3042efe1723beef9177842dcce9ced153f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_084.png",
+      "bytes": 1173227,
+      "sha256": "380d7eb55ed2840a132730c154624c316b7eba958ab319affd49bd1b6f0fe539",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_083.png",
+      "bytes": 1173227,
+      "sha256": "8c87e003c98135ad31676b1447f0105d3e92e91af0b82c13260cfff28f35684b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_082.png",
+      "bytes": 1173227,
+      "sha256": "aa8482ecc6a39713be287679fc80b67c1c1a11fd00156acdd4cf75262c9e8c7b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_081.png",
+      "bytes": 1173227,
+      "sha256": "3491c184ac65763f03daadcfde94e616f606d603c39e3004438965ce12059b0a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_080.png",
+      "bytes": 1173227,
+      "sha256": "c89d9a48bf54e522712d040107e6e4b5c458d26feff81a203822982c0cb61e48",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_079.png",
+      "bytes": 1173227,
+      "sha256": "21ad998bb3c203c7d01dd8a801f341fa46f698045dcec9f2e32a421cefbb9d6c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_078.png",
+      "bytes": 1173227,
+      "sha256": "8b03574f2429acbbd3dbb4a28a00035e559df607e2aaac00601c2f25830802cc",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_077.png",
+      "bytes": 1173227,
+      "sha256": "f97bcde74a4558a240e928b679be8e880b02bfcf753ea4f4591b03e664d08a11",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_076.png",
+      "bytes": 1173227,
+      "sha256": "332e7040a5b667742a654dfed1adfb109989e4c981b0db099ecd213be10f73e7",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_075.png",
+      "bytes": 1173227,
+      "sha256": "2f3c93089538df9d5c32fcf586821435c5769d01960feab94a3cda355daad6f0",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_074.png",
+      "bytes": 1173227,
+      "sha256": "83efe5733f7dca1a6994c4533725a9a72a04b811a8d38cda08bfd2b8ab898888",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_073.png",
+      "bytes": 1173227,
+      "sha256": "8aeef6c4484d2a75460f55e04edc082f4806d4bd272e6c0dd3223c69e73a9d0f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_072.png",
+      "bytes": 1173227,
+      "sha256": "c821e06a9a0fc425c85d0e0189c684938afa9e90dd9419a3e7b30e399fe1e6d7",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_071.png",
+      "bytes": 1173227,
+      "sha256": "0280e0f427b83490b846605caf3f68f7eb4682982ca3018bc0af392b4b2e018e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_070.png",
+      "bytes": 1173227,
+      "sha256": "56f78bbcdc00c7e23a0a6e7dcb51d810234586354933931a2da7305f004863ef",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_069.png",
+      "bytes": 1173227,
+      "sha256": "bbc259a1b7d26830b32769b7b16ea030f0a6509dc8eba59b42ac9be750f53dab",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_068.png",
+      "bytes": 1173227,
+      "sha256": "ede38e1619b3fb999e75d0c625540e578e977680de7631d4d8cb619299de1524",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_067.png",
+      "bytes": 1173227,
+      "sha256": "380fb33adfca58aeb6ebde572f8df2cc4f2973dd5044a402123e87b7ea7eab58",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_066.png",
+      "bytes": 1173227,
+      "sha256": "a6d90f18a03fb70bd0179a0be0a7d10d4861984ea6e78d8a6242ac173b3fb701",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_065.png",
+      "bytes": 1173227,
+      "sha256": "053ad1f441ba5349e6f56cd760c80c9be089db93aa1d73b0eb4e310636ca14b2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_064.png",
+      "bytes": 1173227,
+      "sha256": "11d57b0617123374153701c1b0413e7723876be9cfcc0c744de79f3d35aaa13e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_110.png",
+      "bytes": 1173227,
+      "sha256": "8e61b98451a161e169e0360cca8dd7272c064d13f963ccb26b46f25d76513069",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_109.png",
+      "bytes": 1173227,
+      "sha256": "8f0c613dfadfb1f585ae377fae91d07640bd1eafa9031e164e5a898dc15700a2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_108.png",
+      "bytes": 1173227,
+      "sha256": "d74063f0ce861938686670ca6d9ac3eeea2f1d409490f7194d0d3ed3847e5a3f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_107.png",
+      "bytes": 1173227,
+      "sha256": "1f88f07e289e9e31fd614d9518b85f02f6ec09bf7d2aa2a61945b920ecbdfc3f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_106.png",
+      "bytes": 1173227,
+      "sha256": "858373b2422a39c998e5c79c242c2e43847c6d17e42a8cae70e567ee14959ea1",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_105.png",
+      "bytes": 1173227,
+      "sha256": "4e59ec467ca907b8ceac3a5886372e58d8dba0d236e9e86bbad499ec6e206b9a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_104.png",
+      "bytes": 1173227,
+      "sha256": "3d4ee7537a2f368c99ae8fc8f161f5df55a3132342fb96aa9f119dedf8200b75",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_103.png",
+      "bytes": 1173227,
+      "sha256": "058182d5c9684f66eef4a1e0440dc397acc1a0bd825c479b40ee88ca6ea3235e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_102.png",
+      "bytes": 1173227,
+      "sha256": "1f3670292396c4afee83009913f0d4396daa4aa260de5612c4c9e14fed00bc84",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_101.png",
+      "bytes": 1173227,
+      "sha256": "6aa85f651c147ec213b92698a228c525b329037fb7b7c64d17ec229da3f1afbd",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_100.png",
+      "bytes": 1173227,
+      "sha256": "983f017df9d18d057a1142fadb6dcb4f9025e588d224a340dda49f79476be785",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_099.png",
+      "bytes": 1173227,
+      "sha256": "fc342558b6f3e0b7a5bda5b24b6ecbe56dd0a7e763eab05f8e575b16d010e3af",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_098.png",
+      "bytes": 1173227,
+      "sha256": "62718465cbd2dbd0b83dc09d3d5f743fa2f3def5360d0b44ac883a2d6325daef",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_097.png",
+      "bytes": 1173227,
+      "sha256": "51902428566a5c54740ffbee9d944df6ddf51261f923625a8856c7d570aa6de8",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_096.png",
+      "bytes": 1173227,
+      "sha256": "c74d27cde4cdea8e036acaf6146ff39a72b821c88ceb18bc8b6ee1e04cf929fe",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_095.png",
+      "bytes": 1173227,
+      "sha256": "60366b5a6d4ae4ca2df924fb05e5dc9c50124f905f6616004d0c0d94ef0578f8",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_118.png",
+      "bytes": 1173227,
+      "sha256": "38a3cec7edfcba93835e0ce5f00c4f233fbf8ae10e8a2944aaeb785dd02a8f99",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_117.png",
+      "bytes": 1173227,
+      "sha256": "a131564daae3dbd16adb32d681769765036986fdd8f5680d63d4a0c4ec554536",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_116.png",
+      "bytes": 1173227,
+      "sha256": "ac78e2d5415bb32f34ad8017585e2a5b9341ce9fa8557c3ade897b382c33d670",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_115.png",
+      "bytes": 1173227,
+      "sha256": "edd5233b9488483f6228302e432e643d185886b75767d893c29e1fa714c32a3b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_114.png",
+      "bytes": 1173227,
+      "sha256": "f63597c9cad3ca4e99836496ec72554f46c304887d4c4199f178891f7b7413f3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_113.png",
+      "bytes": 1173227,
+      "sha256": "97b6db157e54cc8c746261e62c1fcfec8cbce4cb6c8b01b205338c37e46ba91a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_112.png",
+      "bytes": 1173227,
+      "sha256": "bb7db0afa9a278523cf205577e683b552958a842476e3433ffbd6bd08a04e9d7",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_111.png",
+      "bytes": 1173227,
+      "sha256": "ca19037be396241a1d8398747130da828db1bd2f50ede510d8f446f7d5230e33",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_122.png",
+      "bytes": 1173227,
+      "sha256": "fb82c54c031dc25df02f6fe3594170694afc411779ade37ce790b956b2a7db62",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_121.png",
+      "bytes": 1173227,
+      "sha256": "559db5676bf905b3eb41f724daa51f891e3579e6b3aaa1317c3c8b5dab887834",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_120.png",
+      "bytes": 1173227,
+      "sha256": "dbd8c6c9df60b4b8dc8bff482282ee875d41d36c54775c6b6eab91f8e3c4a86e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_119.png",
+      "bytes": 1173227,
+      "sha256": "525628362397dd7abbba7f2951c0146a72a2369c68971efca1dc3707dbfea01f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_124.png",
+      "bytes": 1173227,
+      "sha256": "277d57821d6b5534117b21e95562821e8f6dd19f6c1c535bb13a6549978fbf0e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_123.png",
+      "bytes": 1173227,
+      "sha256": "010d11f4166ca6500a647d644212b19840aea462656fca0723c5e332e94d1395",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_125.png",
+      "bytes": 1173227,
+      "sha256": "82e4184d5f24eddd8ec277b999d2299a012d99fac21fefde07229b5ee61af993",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/Navigation-Editor-07.log",
+      "bytes": 162154,
+      "sha256": "c0ad5eefe2de6ccabc1b10d852b176bf6ce94850491f2e29f2e5a6452a66464c",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/Navigation-Editor-05.log",
+      "bytes": 160999,
+      "sha256": "1feba53c51f4634604e6a88005a88771e1cabe3a7f1ae3285e3652e8de33e088",
+      "reason": "unreferenced-session-log",
+      "tracked": false
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_091.png",
+      "bytes": 1173227,
+      "sha256": "bbc7fc7e4f322776e8acf368d6bf09213f88c5474f47b4f0cb77d46d834b7537",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_090.png",
+      "bytes": 1173227,
+      "sha256": "939ca68faf79a8a31898ac89c12d750a3007821724b9f7bf193af68976c09781",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_089.png",
+      "bytes": 1173227,
+      "sha256": "85ad332f98d11482e66764f34693b874cad8c4de0de06a73531ff8c037a764f3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_088.png",
+      "bytes": 1173227,
+      "sha256": "b6d3474c5be92146807253b2d1254761b4c8350babe13b29bb19e0e437c5a5db",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_087.png",
+      "bytes": 1173227,
+      "sha256": "4a55afadf861cee5bae61dfb219afe9955e12ed8f5c2816b1d1dc7dc300345ff",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_086.png",
+      "bytes": 1173227,
+      "sha256": "e870d699e77be584307a7a44d423da0bffbb9a5371c0890440547fc66ebc0ec4",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_085.png",
+      "bytes": 1173227,
+      "sha256": "07af863ecebecfc17ac762453e1f18cf453c6fe4eb6bd22bb4a79a02864bf30e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_084.png",
+      "bytes": 1173227,
+      "sha256": "2d54da9d39f3bd49de3fdab06820163a2ab036dc34c0144b0e324b54101ba51e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_083.png",
+      "bytes": 1173227,
+      "sha256": "e8e69626ab36ca55b151e3f507b28ef7da8d900e53d5f7a28cbeba7f97834254",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_082.png",
+      "bytes": 1173227,
+      "sha256": "8c832d998c5b66c8ca235c6f62275c9bbfc16c9b6893878876bc6c57f334eefa",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_081.png",
+      "bytes": 1173227,
+      "sha256": "315fe1300b2a5710768fe2d2f90a332890cc3965c8e0d9a5eb1133c0c1b79bf3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_080.png",
+      "bytes": 1173227,
+      "sha256": "d1e6a3adcf6f585b24f946c008c2ed6f237d64d9ea1ba159124e6819b191695f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_079.png",
+      "bytes": 1173227,
+      "sha256": "fcee3107559ad4cb0f5fd14ae8cf74b211225bd36d7828ebcbbc5a422dd919d1",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_078.png",
+      "bytes": 1173227,
+      "sha256": "570e8bb000a18a8ebdea7a53807cd9a099c6fde799445c9e7273de5fdae38573",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_077.png",
+      "bytes": 1173227,
+      "sha256": "ab9d82508624c2ea24e416a77ebb02b7cede7f3a8ea0347d6cf8c6e21dcaa628",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_076.png",
+      "bytes": 1173227,
+      "sha256": "d9b7f7e54da89421c28940310314d745d7a90a62e9b29fdfb54bc242751cdc4b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_075.png",
+      "bytes": 1173227,
+      "sha256": "37a786187650a0f07a4a6003d928e082894de98f48794d4f333df5f9c3bb43cb",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_074.png",
+      "bytes": 1173227,
+      "sha256": "a318b7ad7dd3cc808aa095ae867c2a9955863552d8e59489e36c1a250f9e8b5f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_073.png",
+      "bytes": 1173227,
+      "sha256": "4c55b0dcdc2199fdf05ced04d8aa6eb8b980e111c86fcba7a79fbab8e952787c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_072.png",
+      "bytes": 1173227,
+      "sha256": "07b8a31911de0c4cdd8c583009b154c53a5a6b00a11118c5f0819ba7b0c7b74b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_071.png",
+      "bytes": 1173227,
+      "sha256": "b887485579f4d15c8cd2e600a36cf01b1ba1500e90c4140f32da9172d31b3c02",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_070.png",
+      "bytes": 1173227,
+      "sha256": "636c5f27450a4d543c2edd48befbc793523530b89b1bef36982849539d948375",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_069.png",
+      "bytes": 1173227,
+      "sha256": "0b221946d73217c12cd6c15ef1249937479eb3747d75d5886457b4cbb09af30a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_068.png",
+      "bytes": 1173227,
+      "sha256": "5a2dbd2bd0e03a86236c3d648e2a85bdba6ab7df28dc3a027d31b6d59f920a58",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_105.png",
+      "bytes": 1173227,
+      "sha256": "f27e79a5a0a5fd5b5bd3bda12efd8341a1daf8faa8e2445414d0dab93f757ce9",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_104.png",
+      "bytes": 1173227,
+      "sha256": "6520044c3e0923777cc583243cf31c6c3531fa025121345cba3569f998a1cbc9",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_103.png",
+      "bytes": 1173227,
+      "sha256": "ea8a60fdc0d579222943167f03ae36d188594e2f0ffc4e66c99e27ba22db3a15",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_102.png",
+      "bytes": 1173227,
+      "sha256": "a30d4c4f73e86b02f33a39a5164f591ad7836a4d13295e61dec9c20bf1dd3470",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_101.png",
+      "bytes": 1173227,
+      "sha256": "69824426185506ea7eba41b04ca8fc56eae52be7dad7498da1f97957a52042d0",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_100.png",
+      "bytes": 1173227,
+      "sha256": "8e3996a5a3e7e1bc77219277237cf81b750e6a3019174b32564b122fb1a6ecb0",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_099.png",
+      "bytes": 1173227,
+      "sha256": "056c25c6ac8f73288b8a3f4852621b2a2181520df1b9b7e88ddaf1079e995a77",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_098.png",
+      "bytes": 1173227,
+      "sha256": "3011934ba477d42eb00d621a80552cc6cf2b15922f513db0756532a1d0f34b13",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_097.png",
+      "bytes": 1173227,
+      "sha256": "48f149fe74c33833317e594108ed5152d6be1b04ad388d2a0486256f26acda31",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_096.png",
+      "bytes": 1173227,
+      "sha256": "b5fc34a1a512b709a902a93ab4ca364c4d9de5b2c6ed7403e1cb30f9834ba1b4",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_095.png",
+      "bytes": 1173227,
+      "sha256": "76587edf07d2547be2b630f283314af013b4c0fd8bd3ddb9990bf8f2c64c168f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_094.png",
+      "bytes": 1173227,
+      "sha256": "0e971b9fd6bb89fb96b8e56f01fcad51017ca07de34184da488fed7e26c0ac23",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_093.png",
+      "bytes": 1173227,
+      "sha256": "b53273d67014066e4e5349c78ef607693032d0c09f136c8487ce90e8051d1482",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_092.png",
+      "bytes": 1173227,
+      "sha256": "7ae88e9276baac63a265e048c8676e88153c4ffe084959cb8e051dbc6673a490",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_114.png",
+      "bytes": 1173227,
+      "sha256": "6582caba3cde8df7f5072bddfaae673a768dd0f34916f94cc058f5b5789d6461",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_113.png",
+      "bytes": 1173227,
+      "sha256": "33ef2ef1e5fa508e99b5a95e0d72aea850a2da6abba90ddf52461045696c492a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_112.png",
+      "bytes": 1173227,
+      "sha256": "301e9032e2db12d8f7f2b7c48eb5faca78f34e657b735dab3d8cc9c331c8cd5a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_111.png",
+      "bytes": 1173227,
+      "sha256": "b149df02fb06ae6502044a559c5be573eb9ae2a4e20716f7e24eec9d795cd0ec",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_110.png",
+      "bytes": 1173227,
+      "sha256": "f478faca36a79cdae8e635f0c6358f91f7f9e9415cbdb8312ab771d3e3ec869d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_109.png",
+      "bytes": 1173227,
+      "sha256": "09d3bf7fcb9f1ddca7437a68d9d029212d865a605119d1909d8e416d9b86bf24",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_108.png",
+      "bytes": 1173227,
+      "sha256": "a9f27ee0d3b0ed62d62fee7bbb11b8b6a65c85f4cd6065f88435ff2f12300661",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_107.png",
+      "bytes": 1173227,
+      "sha256": "c5866facc51f483a717c642c115663de462e3fd4a99539e0974e01d00cff1387",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_106.png",
+      "bytes": 1173227,
+      "sha256": "0e61c3308153df737b3a5e51ce9c41e9cc1d18168e18a16cd07030eeccff7656",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_126.png",
+      "bytes": 1173227,
+      "sha256": "abb368ebfb0296425d155828a036b40cd2ca68bbb021770e3a2bc8b4f5dc395b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_119.png",
+      "bytes": 1173227,
+      "sha256": "7ccc9bb367a0aff2dcb4412ade027835fc083fdbae105a973b6bc3d7a72a619f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_118.png",
+      "bytes": 1173227,
+      "sha256": "5a25e236a3b31e40936f8c49cb22093dc4083664061396b90848c48bf03432dc",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_117.png",
+      "bytes": 1173227,
+      "sha256": "7ab1b52b87a16f51525679e5461111e6293d438256616e4465752b942ce1f808",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_122.png",
+      "bytes": 1173227,
+      "sha256": "363ea341767cd8e3276addb16a7c262c09bd8666a68d26e8412c5c2e4e118c3d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_116.png",
+      "bytes": 1173227,
+      "sha256": "19cd70d8eb62bc4e5f910f7df9d92a44bfbcb9e9456787e98601be983f58c98b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_121.png",
+      "bytes": 1173227,
+      "sha256": "baa3273219a29d74cb705f27c4874773305678834fc1e3b5f936faf2a0de35cd",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_115.png",
+      "bytes": 1173227,
+      "sha256": "f5d1d230a3c008271015ab6984430fe6120e14996f12a84d26c93d2dbfb3e233",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_120.png",
+      "bytes": 1173227,
+      "sha256": "9588249186195d00e6b15264aca948a0feb914e3af82af6c031190ae8e484a53",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_127.png",
+      "bytes": 1173227,
+      "sha256": "0b7d3b9fe61596a7fccd7b165bd9325055e7e9ae022f129b0e0e221174df3f52",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_123.png",
+      "bytes": 1173227,
+      "sha256": "051d654e3fb9782c18528dcaa7e61df493701cbf025ceec76b887b10368d7fe2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_124.png",
+      "bytes": 1173227,
+      "sha256": "53fd9d7a8c3ad618154c6487d79e5aed8e8c677241ddcb873820e91ea221cd89",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_128.png",
+      "bytes": 1173227,
+      "sha256": "b96bc1bd6829fd9513d6f799cd4a330ac7c7590db14ce0a01a90f09f7d86b447",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_094.png",
+      "bytes": 1173227,
+      "sha256": "ec4927012dd9fcc0039a2d053ff267a6015c069839b157b537cba4e7a30b85e1",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_093.png",
+      "bytes": 1173227,
+      "sha256": "8abc2ddc98a57d9e74d0bc008cd9cd31fe1418039bd985eb6f5bfae2eac5b306",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_092.png",
+      "bytes": 1173227,
+      "sha256": "1e3daffc912e8eca1fe5a62a70dd7ad5700fa5131df1e3aa6b6395a030b1e177",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_091.png",
+      "bytes": 1173227,
+      "sha256": "8e32cb728e5e1407e5d5d9b69bea59220e653b69ba2d5000885f127785a38237",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_090.png",
+      "bytes": 1173227,
+      "sha256": "62843f0a262d9a4a2df8ffa7c0d22c2ada69a074c65ba4153f57f59aecc3d296",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_089.png",
+      "bytes": 1173227,
+      "sha256": "af1708d04e29b994054f77c3192d258287e101a6fc518062db14bc4e612c4583",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_088.png",
+      "bytes": 1173227,
+      "sha256": "ffcd2038ce688f61a9f79f3df9243d10f57e0cd02a33b6ed12e01360a1c7ba42",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_087.png",
+      "bytes": 1173227,
+      "sha256": "5d7d03da93d407d43c582d9ada0dee9496edf5cb5134409a3425f76b4c8db55b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_086.png",
+      "bytes": 1173227,
+      "sha256": "23983f3b4da5129ad1f050d05c76bad45c6de17799b40aadaf1b920bb4bd8f03",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_085.png",
+      "bytes": 1173227,
+      "sha256": "6cdadf49c286a6b6497812c2be4636765a1293f053bd0f65aca2a26ee5ef4a1b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_084.png",
+      "bytes": 1173227,
+      "sha256": "4bcddfe13ed0af9f9aa6332939693273fe173a06932f1da58ed6dd25ed807ea2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_083.png",
+      "bytes": 1173227,
+      "sha256": "5a11bad191db5b4388a3266252d5055cba003b1b6a20ce382562c518bec69350",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_082.png",
+      "bytes": 1173227,
+      "sha256": "1b2da0e31e1d7c6e42ba827fd04d1776954dfe52053362c0ea2fbdbc2e4287e8",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_081.png",
+      "bytes": 1173227,
+      "sha256": "0809dcc2cbaf1eb2346cc1cbd4a584ad8a9f08b0b916ec7d6f7084fad329440d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_080.png",
+      "bytes": 1173227,
+      "sha256": "5298b6bf3f53357456a7651643cef43f236566b2371f51a2d15ed33b7f7f11b2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_079.png",
+      "bytes": 1173227,
+      "sha256": "dc56e0ed6a6884cbf9197086d714bbc89ffb2f7141e73316ff9ba8e0e7214a07",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_078.png",
+      "bytes": 1173227,
+      "sha256": "2c6c28051e120d3897e681f17af0c731a328f8bc40df8197362a5a858b3b3cfd",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_077.png",
+      "bytes": 1173227,
+      "sha256": "236ce5754ff4d742b40786aee171793c73115a7f37cb6be64bcb3bf040bbcf99",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_076.png",
+      "bytes": 1173227,
+      "sha256": "b5f8cb7e84272476edad3b02c4f308d7f98765de10f94380b5d1916971ebec48",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_075.png",
+      "bytes": 1173227,
+      "sha256": "a2e658bf909544a9bf41126501b131f5c3aa07ff3d6aeda82542cc2243ac4424",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_074.png",
+      "bytes": 1173227,
+      "sha256": "5a2ed70600fd5ad2074d90ddd08b199f097a4108207370dd54ef273f54ccc59e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_073.png",
+      "bytes": 1173227,
+      "sha256": "9603ddb9927b539a30ba41fb83479ef37f75ec1fa08515c0bf5e6bd67c2557a7",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_072.png",
+      "bytes": 1173227,
+      "sha256": "cf1e521a9cd56ff9c88e45e7301c1e50c9ba32e514528747530bb0a4dd521f9f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_071.png",
+      "bytes": 1173227,
+      "sha256": "2cb5a7068558c81e6024e45bd09c3c67f44d99336582162f7e6467a86f64ee51",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_070.png",
+      "bytes": 1173227,
+      "sha256": "82600b45c31d3c5ac79c9cb21ee6dfead615975c88e1f6f18653be86ded2faf2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_069.png",
+      "bytes": 1173227,
+      "sha256": "5ae8f4005def4e48e6b87f28b8b108a92e2e236d030d8e3982c202e96a523c0f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_068.png",
+      "bytes": 1173227,
+      "sha256": "a6b65904f08e53eb8f986d967e7e0c0910d32792669b9b5dda25331b20979d83",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_067.png",
+      "bytes": 1173227,
+      "sha256": "ae3effe00d511d51c5615818f332f30c6fb5e9b3310215b5505ab105cdfe2b97",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_066.png",
+      "bytes": 1173227,
+      "sha256": "be2ae0c9328361f8505d7f7d6854c4db57148fb82e315fed8daa519bdf562945",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_065.png",
+      "bytes": 1173227,
+      "sha256": "ee8f667d54afff5e76ec3d86b91eb3aa90ab6d1d98c5d97265f8f2c4349166c8",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_064.png",
+      "bytes": 1173227,
+      "sha256": "58cd4c3f64723174c9cf7d836b3d513e627cdf6f06d95227414e2dcdb7f0c253",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_063.png",
+      "bytes": 1173227,
+      "sha256": "57332da5ca7de704e51b9407b951c539bd44edecaa520d6e4e84c5cba7f076f0",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_131.png",
+      "bytes": 1173227,
+      "sha256": "6ced1a94234c285291526487b5b23ae853e5cf169cae2094cc37eb01a614469d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_130.png",
+      "bytes": 1173227,
+      "sha256": "f7ad339582c18aa96dd5c0d0294c9e59fec7c0de000edb2523d6a72f2d328282",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_129.png",
+      "bytes": 1173227,
+      "sha256": "2512aa958da760f6b1b1176bccaed7a17839005b277c4e661b919b5aec07ca88",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_133.png",
+      "bytes": 1173227,
+      "sha256": "693c2f3b796d792b5de64a4ded1c5e82d0e87c6a31a615a61b2c0bb0863ed2b5",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_132.png",
+      "bytes": 1173227,
+      "sha256": "f384839c9d92d5f129e81df72ec3ec34fbfa94251d08b93761d51ae3290d1654",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_134.png",
+      "bytes": 1173227,
+      "sha256": "c9b1ea9b4ce6c3fac14f302077cb2c6b7426c88dcf0e9db8311875913fab238c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_135.png",
+      "bytes": 1173227,
+      "sha256": "2b5d29a25cc79664e21b6d779af5101d358efebdeb9aff2fb29c14ab8d6ec6ef",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_126.png",
+      "bytes": 1173227,
+      "sha256": "f37262cd9d34c9af4304be9070998014e9ffe9e47cb0b544e9d4db86d58ad8fc",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_125.png",
+      "bytes": 1173227,
+      "sha256": "4fb8d1be25253f59824de657595b027e1e47d74c81f3530329ea1906eff9d8ca",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_124.png",
+      "bytes": 1173227,
+      "sha256": "570b0cde8ca9319c397d82b0e20e86b2050c6b5b372dc6cbac4aaa4902fcd846",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_123.png",
+      "bytes": 1173227,
+      "sha256": "7dee8bbde98949815f5af9a41639015b3c20fa3a043b1ccde9a41dc4cf4c89ff",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_122.png",
+      "bytes": 1173227,
+      "sha256": "8ce2251a347648e0687005c05994fe37bf5424679be77e2e7b44f4cf7f179e4a",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_121.png",
+      "bytes": 1173227,
+      "sha256": "23fd73eaae43de5cf068bb23bbe41c8e5eb27dfaff14980725677c5ee6f7df25",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_120.png",
+      "bytes": 1173227,
+      "sha256": "82b6cac2b71d29196c2bfdff8e276ba6e148cb2d50f43b0f144fe1f11a4f705b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_119.png",
+      "bytes": 1173227,
+      "sha256": "6a1ad536c36ad0af065e0250ff86b2808086db47ea4b42e1ba074ede9eb03534",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_118.png",
+      "bytes": 1173227,
+      "sha256": "365265ecbf9860054f00592062107687569e1dba5be6e1a3b792d328c9941ec1",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_117.png",
+      "bytes": 1173227,
+      "sha256": "422933c6f412e4bfb954bc8bedff3f449748b334a43fa8774713c885bc874874",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_116.png",
+      "bytes": 1173227,
+      "sha256": "25c62a8b2b0f9bf665659a6be6232ce09259ec62e46cfce7dd87169ea747cfa3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_115.png",
+      "bytes": 1173227,
+      "sha256": "7b5a2e477528e4ea2563afaee8ac28de15a143856ad0f125336aca374be7f643",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_114.png",
+      "bytes": 1173227,
+      "sha256": "64d0d9401b71e5077a49970bfbce7a885fcd9b5721206319ffa0b77a191922b2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_113.png",
+      "bytes": 1173227,
+      "sha256": "d88e475424cb481cbae6374d1a0c537153c06f7857774aa3e3317e7fbbb9596b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_112.png",
+      "bytes": 1173227,
+      "sha256": "45dca1d7aca03057a60c868628f86c34a4014b038e2806cb5ae252285e9f1ac3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_111.png",
+      "bytes": 1173227,
+      "sha256": "111a8df4b0600a71af91aded37b6e4bd2befc20252ad8a571d15dcbdef892aea",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_110.png",
+      "bytes": 1173227,
+      "sha256": "8b00787775a44a71265a336575b5c547d150639360515470003002acfd3f3c0e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_109.png",
+      "bytes": 1173227,
+      "sha256": "fc8eaaadc29240c184ec1da5fb2205a0e7673d8fc5850f2dc4b12e11d114985b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_108.png",
+      "bytes": 1173227,
+      "sha256": "8f693c2beccf8410fd2e205c59786cc2a38653eee93adc8a1a6d06068ca58129",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_107.png",
+      "bytes": 1173227,
+      "sha256": "7978375d48c7830094ef1b5ac7b2e3c83828f472d767917973598a102dfb35e2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_106.png",
+      "bytes": 1173227,
+      "sha256": "2e98efe7a9263f2f3771bd9f01f5ea0d262d2ff3b0c2833e3e974a13b621c3b9",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_105.png",
+      "bytes": 1173227,
+      "sha256": "ab6972f84f432dbc676d9a62e20f076afc3217269c82375e050ee2aa4d1eac60",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_104.png",
+      "bytes": 1173227,
+      "sha256": "b6e82bbb29b40ecadbf53d702cbcd22142ce2522a9a9ef5d998141d04795c8d7",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_103.png",
+      "bytes": 1173227,
+      "sha256": "9b53d865f2463f9a1716d9d2ae3c7f33fc7820b5cccfda7270a291508f2db618",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_102.png",
+      "bytes": 1173227,
+      "sha256": "bb19ba8f8c615d4d8cdac92e8a8ed6b99c2c0864e3400e7b554d92bc90c36e5e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_101.png",
+      "bytes": 1173227,
+      "sha256": "21fa66879bf316af2c03b0b858e1246ffbbcc52e6ed91502bf3e357c6db51c17",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_100.png",
+      "bytes": 1173227,
+      "sha256": "e2a7083a9ed6f877c8b8ba95ace4c42200b9e5247d0c50bf40d3795876492c8c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_099.png",
+      "bytes": 1173227,
+      "sha256": "5376e3fa160eef130cd8f19e5850ed1a0dc1e0362c4fa5ed2879fe8ffa2a9471",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_098.png",
+      "bytes": 1173227,
+      "sha256": "7c56ad251d3839499a7279c35fa3f6ff4d58d92e7a99ed6d7fc9921ef379503c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_097.png",
+      "bytes": 1173227,
+      "sha256": "812ce705955670481e471c925ce2cd401e8268f32f59d3b6abf4a01720888bdc",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_096.png",
+      "bytes": 1173227,
+      "sha256": "8636e678eb0640fd0af976feb5e6824812d662f71ba15d0f83d15acb7054e1e2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_095.png",
+      "bytes": 1173227,
+      "sha256": "537b7b6df2e9d9fbc52bbd1c985da35d3228c8ffa1beb108ad74348b88579c16",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_137.png",
+      "bytes": 1173227,
+      "sha256": "d4e901dfe06538289af6049d24afa392ed379b08b5fa317a76797996dccd7a75",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_136.png",
+      "bytes": 1173227,
+      "sha256": "e43ced7c603c76f31d0cb51b7fe1542668e5dbfa16d81b7e3e48f92bb40b7087",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_138.png",
+      "bytes": 1173227,
+      "sha256": "33a82c83ba4d44f27683fcca1f62f59e7f3a4509060329073cd603f0a4fa54f1",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_139.png",
+      "bytes": 1173227,
+      "sha256": "57d20243a9fcdbe365c7f71662c1d8bf0f64593c9af0079ff978d9b957a572b4",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_125.png",
+      "bytes": 1173227,
+      "sha256": "df49b089d22d4e9a42ba40d85ba2a64cac4b110faa4f12c054c499fbd48c20e1",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_126.png",
+      "bytes": 1173227,
+      "sha256": "7a8ca44f004ff231ac0e52175f74e4f23974d05270e133f281308f2cae109f83",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_127.png",
+      "bytes": 1173227,
+      "sha256": "67d64eeac4ee068fbc0e975ee3ff7cc08745eb3473dd75a291488252518309e1",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_145.png",
+      "bytes": 1173227,
+      "sha256": "1fc561d7cd2b31e42952e23c3bb20ca03cfa26fcf4e155cd73aef739d4bd9621",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_144.png",
+      "bytes": 1173227,
+      "sha256": "58643d60920cf79190d61c9665efe0cb38c85451bfe0da3ab1853794340e83ce",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_143.png",
+      "bytes": 1173227,
+      "sha256": "262fe73235534c72b5144723f8d431d51ea302d84812e2626a86a08a391d676b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_142.png",
+      "bytes": 1173227,
+      "sha256": "2e4aae43576e0c2d527062216da000d32b0765ee797881db5f5d5d06ab2de1a0",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_141.png",
+      "bytes": 1173227,
+      "sha256": "728861eb4dc8c2a104a6c70bf33b90c5aef2442d5dcd044fb138c6521199145d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_140.png",
+      "bytes": 1173227,
+      "sha256": "4360db378e9b2a512eced6452214d6195f7bd6b0b24bb35bcecccc047311e0c6",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_139.png",
+      "bytes": 1173227,
+      "sha256": "ff92bb78699f3be4668812787be00ff090b780f84bf5ec4ed1e3bfbf9ac2432c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_138.png",
+      "bytes": 1173227,
+      "sha256": "2d18559c2aa76cfe0520d068e165b3a27c81229f1316c36bcbcddc7fe2f0999b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_137.png",
+      "bytes": 1173227,
+      "sha256": "4edfd525654c2b60feb1ba68b1659b29d098a045b1537d20f6f1024b685d0c71",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_136.png",
+      "bytes": 1173227,
+      "sha256": "9fe2ceb539ec76533a68401e67f1beafab5307cae92de498fc1a9804c5b8af15",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_135.png",
+      "bytes": 1173227,
+      "sha256": "4f6760724e3b97a448185d73812ee9b47a8d22f564a9c690dbdd62e16c865cd0",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_134.png",
+      "bytes": 1173227,
+      "sha256": "8b9ae38ada9834b54f148e249a32870059e4b50143325bfcbe29d5754ba257ed",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_133.png",
+      "bytes": 1173227,
+      "sha256": "bfbc629e4695fb440e61d4bfdb70b782000225c05d4b92f75a939fb4097c5943",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_132.png",
+      "bytes": 1173227,
+      "sha256": "bdc44f4d438022ad340191b53664d30ba48bdfc6db36d0ecf32212f7040d4fba",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_131.png",
+      "bytes": 1173227,
+      "sha256": "2d606c52847fb8d87d11103fed9c8831878db7345fc6b26ec473f7693171ee7b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_130.png",
+      "bytes": 1173227,
+      "sha256": "30e34ddaefe0adb63306fc37ad5b81171beb95e4c84e7a293b913e80dfabfee4",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_129.png",
+      "bytes": 1173227,
+      "sha256": "c08124a908375531f02dfcd4e89b3d54692d8a84e7160f0ebff47cc423180c2d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_128.png",
+      "bytes": 1173227,
+      "sha256": "63917926655408604ed2cffced2716f2abe9e9f0118a0745f595016c42f69923",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_127.png",
+      "bytes": 1173227,
+      "sha256": "114812d8c2e3fd7c791ee09edae118279c396452fb46c4e65666adf60cb3afb3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_128.png",
+      "bytes": 1173227,
+      "sha256": "ef00f3a203123d314b3ca6813a826b2c69b1d751e1bb88465cc447ac4b4c0953",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_129.png",
+      "bytes": 1173227,
+      "sha256": "cc53283efc329c6539d000913764961958a1791e0bb9a787c82f9cba7075e5dc",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_130.png",
+      "bytes": 1173227,
+      "sha256": "4ea2329be137a929d65075f5f9635bd09047f49ee09524f48dc06b1172870d3b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_155.png",
+      "bytes": 1173227,
+      "sha256": "9619a13dc4afcfeb6aa97a0ad28e6687ce021757f0e1e202e05f523d73403c74",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_154.png",
+      "bytes": 1173227,
+      "sha256": "a946f7b0f038c301f769a411faeb1564a787be0943dc9ecdcc59b7e86bf0d014",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_153.png",
+      "bytes": 1173227,
+      "sha256": "871faf27b15096886deba09c147a7eadb27fada8561e9a01286d30b80e1b3ae1",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_152.png",
+      "bytes": 1173227,
+      "sha256": "786408768282c009b3e3362bd6594da7a474f641a9985e2fab0159ec092b2a73",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_151.png",
+      "bytes": 1173227,
+      "sha256": "986d4c98cb9b5e9ee00f845ef2baf354b6d700ab3f1ed518b54a892cb25e6933",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_150.png",
+      "bytes": 1173227,
+      "sha256": "2e9edddb566fad190aa4fbb295b5620d17cc847d11a2aff597ec191c85707774",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_149.png",
+      "bytes": 1173227,
+      "sha256": "0b824560e5cf71008bb851d6bed33ba044d9c6ef8a24e829b3bbf3f2a9a3a8d7",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_148.png",
+      "bytes": 1173227,
+      "sha256": "843f8c4bb549700cdbb5908453169a48c554ce45bfcc5f8c014d3b9cc9fb66c4",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_147.png",
+      "bytes": 1173227,
+      "sha256": "24ba0cbe25b7af1856a2efb1537e6a3dd4a2be03c838d2c5de0ef53b4bf31631",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_146.png",
+      "bytes": 1173227,
+      "sha256": "ef451c5a2e904e4d7e2fae1ee8c67e36300f4d1968f78149e166186b0e9e4431",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_131.png",
+      "bytes": 1173227,
+      "sha256": "6910e8fcddafc0e3d2d674df3354e5f295dd63c8013ec62e9121d8483b730ad1",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_132.png",
+      "bytes": 1173227,
+      "sha256": "c145c306a7eed9728e88074ade5d6f34168f26d571bfdb344d8eaaa524de303e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_159.png",
+      "bytes": 1173227,
+      "sha256": "a2741c4125e6ae6593f64ab6e0d4f741b463e550eca098c208d11e5571d0c8b4",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_158.png",
+      "bytes": 1173227,
+      "sha256": "1db672ff492a08a31d4cc55d5bdcffa18e2c231c89c121a2c0a53f5a79d47bcf",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_157.png",
+      "bytes": 1173227,
+      "sha256": "4a21db4ddce680212755cebe05050447461f8072ead879cdb9d87a7217dd1daa",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_164.png",
+      "bytes": 1173227,
+      "sha256": "b048ca069907bb136d88ce38ce724c45132d2f27dfc1a29c66ffe6c1a3f38292",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_156.png",
+      "bytes": 1173227,
+      "sha256": "a1b14c5e99e36ef9a13d5f0ee8ad80a30ec020420fdc76c2dd6bdbac085d93ab",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_163.png",
+      "bytes": 1173227,
+      "sha256": "76c5a0b1e23bf9fea00b0e9a3b769757da0180ffc157cb5bcc8e752d5258673d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_133.png",
+      "bytes": 1173227,
+      "sha256": "e3e15cf8ee0de86126adc193e0c5f79a658e980958d7c91e3b8764fdb47e2f70",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_162.png",
+      "bytes": 1173227,
+      "sha256": "344e987de53f325b88b46adf65e7b021f2698cd40a524748eb8e45e9517e93f2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_160.png",
+      "bytes": 1173227,
+      "sha256": "9a97e379d54d5d842d98ef82910ef5be8ead824a60f7c94912af65d53f34182f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9/frame_161.png",
+      "bytes": 1173227,
+      "sha256": "3ed88ffa4daf1eba7f3d05b67358dd348ffb0358b69eb00613eff99760f9f787",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_134.png",
+      "bytes": 1173227,
+      "sha256": "b3fa8cb12818d692d49f5bfb3ffa63543c85da886f7d2691b7768f8ad05b5e47",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_135.png",
+      "bytes": 1173227,
+      "sha256": "1360db9604f4eeb0f2aeb02086e1f46640dc38a5090c942d7b55dba6d816069d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_164.png",
+      "bytes": 1173227,
+      "sha256": "a5f637ce455a5acdee5f98c8c12ee552a855d2ccca259b3fa056b175990247f8",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_163.png",
+      "bytes": 1173227,
+      "sha256": "f9b6dc9b0186efb0bbd38eb1818dc0fc023bae79fa96afcf2896fb27e9ac53ac",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_162.png",
+      "bytes": 1173227,
+      "sha256": "287a76de1a52c69e73ca7b3463ced6e3f0aee6a8a977f847a9dd87c83692cf0f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_161.png",
+      "bytes": 1173227,
+      "sha256": "7beedc1ab13a9317fd5c986486dcfdaa62d332bd77ee48d92db808638aec8b63",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_160.png",
+      "bytes": 1173227,
+      "sha256": "a643ebdf6a2eebfe016e54d5be83ecb59abf5bbdfcb997b4303cd106a741db2b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_159.png",
+      "bytes": 1173227,
+      "sha256": "1a753e4660fa3be0e41816a6f4d07c094ed6169ad30d62d4d65a228580a2905d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_158.png",
+      "bytes": 1173227,
+      "sha256": "ccd6e0b34b2a2e0d3de524b2f759d00c782ba49582785298b4de590e2407b7a3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_157.png",
+      "bytes": 1173227,
+      "sha256": "9d9a5fb115f0a52f8b36167765dfbf41548a75239b42824ca5b10df92240ce8f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_156.png",
+      "bytes": 1173227,
+      "sha256": "bc61c331ee34129c1dfdc0746f0da822eb45737d2739dd9306cb7e235b97b882",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_155.png",
+      "bytes": 1173227,
+      "sha256": "7b39a63b86289d5997f44665a99049461dc039f74fb8f684ced3a748044c09aa",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_154.png",
+      "bytes": 1173227,
+      "sha256": "7065aae60ff79523c9bd3738804580dd45719d870eaecff540c2c429ee1c2a7d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_153.png",
+      "bytes": 1173227,
+      "sha256": "e408a4ed52f647dc1a04ddfaea8f29c1f28911b38d73b7c7fb88f13faa2a2c53",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_152.png",
+      "bytes": 1173227,
+      "sha256": "c30acd8d99163d97fd9063e7c89e5cadffaaeebb773c1565932cd34c84308257",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_151.png",
+      "bytes": 1173227,
+      "sha256": "54f9ea426b469536ba7275f701a0732a3796a4f194505bd24f2c9ac5a0351c93",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_150.png",
+      "bytes": 1173227,
+      "sha256": "239f64e52df0fd679b1bd488f02dfaac045142c50c045858c3367e9fcffa7746",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_149.png",
+      "bytes": 1173227,
+      "sha256": "320e749920c561c4a6e405a0afb38a869bf52b5c27dc7db586676f47b87ed43f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_148.png",
+      "bytes": 1173227,
+      "sha256": "cce45ee23c8ab1f59f4c6ca9b893ba632500220ee2edbaa05f1461dba18ab2a8",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_147.png",
+      "bytes": 1173227,
+      "sha256": "956bdea31f61d565632f1807ee184f3f29c8d0ff579535166c4b94592e19a2c0",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_146.png",
+      "bytes": 1173227,
+      "sha256": "675d6cf5e4cebf478bd0fb5c0b8567e1d534cf7031132491eeb8beb815d62ee0",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_145.png",
+      "bytes": 1173227,
+      "sha256": "06bcc604a892ceb371464bb2b3afb046baefe6ba2b85280947eaecdeeb948a87",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_144.png",
+      "bytes": 1173227,
+      "sha256": "4988714949cc14d985ede5e129842efb90d46a6aae3b8e0032ed21048e515acd",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_164.png",
+      "bytes": 1173227,
+      "sha256": "e002492bcf5476005ff3354c01450989bc86d3b18f52881cf4c9154f7efa563c",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_143.png",
+      "bytes": 1173227,
+      "sha256": "fd7850394fd292837e0491a64b9b78fd2c109ddb27f24ddca9ae306bbf85ab6d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_163.png",
+      "bytes": 1173227,
+      "sha256": "a51646c2ff8f609d47b7deba4d93d3b4b8ed35e2df2f056d9542f8b5c2927b22",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_142.png",
+      "bytes": 1173227,
+      "sha256": "ccfdf97440d282ce9a3fa7b6438582baca8eb0973424840c68b5113695a2db87",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_162.png",
+      "bytes": 1173227,
+      "sha256": "bdcb3c4355452aef7dfb58866f918d7f56d100e39beec07cd64d8d66b4f9973b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_141.png",
+      "bytes": 1173227,
+      "sha256": "1c8c71ab4f6c96de25c057ea812fe7fec3c1b9e13e085d4ab221d815cfb5d557",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_161.png",
+      "bytes": 1173227,
+      "sha256": "b566681e69555e65793ed53c0358834bcfc8daaa432ae9ba666827e944915b13",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7/frame_140.png",
+      "bytes": 1173227,
+      "sha256": "9390627d6ef0402aede6ba9a36b84a2c1c1d6071d9705d32bf2a83733b7a19c3",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_160.png",
+      "bytes": 1173227,
+      "sha256": "404929c34b063c9dddf3b5bf6d7cc70b0e999237280985741dfb0ec4c02d7728",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_159.png",
+      "bytes": 1173227,
+      "sha256": "5555cfa9a06d9df06bfb6b7625cba07fd4e464b24a6f9cb28d1a5c3ef2b37f1f",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_158.png",
+      "bytes": 1173227,
+      "sha256": "188db11b05a279b8b008b630634e46ee655923af48c8a9a4c335d7f51733d587",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_157.png",
+      "bytes": 1173227,
+      "sha256": "9758df6628a6a1fefc29533552428da3335aafbaf625ba536364283f5773dcde",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_156.png",
+      "bytes": 1173227,
+      "sha256": "eac850e85bc580dff5f0060d79b1287088738e55dad9d2438e34d0cf9a0c1c8d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_155.png",
+      "bytes": 1173227,
+      "sha256": "5754e3a11844d87994cb26b8688b02c3e73d281408b7a29ab095b62b0adb4c42",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_154.png",
+      "bytes": 1173227,
+      "sha256": "63f44be64449a4aec9e51da87c741919b2732b6490b94f53dbc7b351f6f952c2",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_146.png",
+      "bytes": 1173227,
+      "sha256": "817e5f6bf3e832f7f28a52da80d22d795a6eb4c9b6e630c2a8141c7cba16d6ab",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_153.png",
+      "bytes": 1173227,
+      "sha256": "10817a3c84447af2873b8b7c36739651eabaa47b800b291e9d47811d6449bf57",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_152.png",
+      "bytes": 1173227,
+      "sha256": "10cb8e572f5582efcff2d6482e64ac4cd578768b2877ef89827ec6562404836b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_151.png",
+      "bytes": 1173227,
+      "sha256": "0599e23e66a13b2cdf32e16176f25854e5b80e5c0adcd457617d6e5989a5a64d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_150.png",
+      "bytes": 1173227,
+      "sha256": "ae15100b6a402e8e34e6c4083ff5791bc9ec01b7321b4e24728b71f943a0c540",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_145.png",
+      "bytes": 1173227,
+      "sha256": "26e07c9d29713f639bab1883f6ee74f361936f6e8a5750a1421a453f5532c131",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_149.png",
+      "bytes": 1173227,
+      "sha256": "b181ff0d01c987f03f828fba96095a1cd8c1a70790dd79cb9ecb7ae4f9754fdb",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_144.png",
+      "bytes": 1173227,
+      "sha256": "9a9949985c876759c6b80f7f3a1da5cc376d5e2e0ab9f6192658ae54aefa6a3b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_148.png",
+      "bytes": 1173227,
+      "sha256": "4003bd8ba4ba17ad9979b8ce627b4a96b9a71d9b837d4c26dc80ec351f0e34bd",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_143.png",
+      "bytes": 1173227,
+      "sha256": "d20dfff307a19c788352f7d93c0f9aeeb4c471871075452f1f0e7b66e40e3123",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_147.png",
+      "bytes": 1173227,
+      "sha256": "8270d25552dea909189eb21af1212bbc58625cef64f3b9b1c1960991f213a4b7",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_142.png",
+      "bytes": 1173227,
+      "sha256": "a04ff4fd43c6462c78ca6a60d488d54b731ddf1797d13236de56022ff652cced",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_141.png",
+      "bytes": 1173227,
+      "sha256": "bf36af6c81a8326154060142b242514bd271869898dd3723cf56458b9b7d8a83",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_140.png",
+      "bytes": 1173227,
+      "sha256": "9497394080756d7deb5850a2a0fbc58879f71b20e06a7a51f551f3598d9c2a2d",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_138.png",
+      "bytes": 1173227,
+      "sha256": "1fa9afb586ed9fbeba02f2983092601b94b22a552f1466130151480ead56510b",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_139.png",
+      "bytes": 1173227,
+      "sha256": "862044f6c669d35d8d9e00060582faa106e626892df39546162c7a4662a65c32",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_137.png",
+      "bytes": 1173227,
+      "sha256": "4996f90ddb6baab5d29e4ee3ad5f6325717bdadf379767ae5b019e57ebd79b1e",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8/frame_136.png",
+      "bytes": 1173227,
+      "sha256": "a76f849d8553d837779f81b52b3946d43472d031198eb15f9c4929a87d53fdc8",
+      "reason": "encoded-video-intermediate-frame",
+      "tracked": true
+    }
+  ],
+  "retained_referenced_candidates": [
+    "TestResults/GameplayLighting_20260918/editor-screenshot-crash.log",
+    "ArtSource/Environment/PineDemoAdaptation_20260918/editor_crash_20260918_015505.log",
+    "TestResults/Scale020/Build-Editor-23.log",
+    "TestResults/Scale020/Build-Editor-21.log",
+    "TestResults/Scale020/Build-Game-12.log",
+    "TestResults/Scale020/Build-Game-10.log",
+    "TestResults/Scale020/EditorSession-04.log",
+    "TestResults/Scale020/FXReview/notes-import.log",
+    "TestResults/Scale020/FactoryGroundDiagnosis-02.log",
+    "TestResults/Scale020/FactoryGroundDiagnosis/legacy-probe.cpp.txt",
+    "TestResults/Scale020/FactoryGroundDiagnosis/legacy-diagnose_factory_ground.py.txt",
+    "TestResults/Scale020/table-import.log",
+    "TestResults/Scale020/ResourcePIE-11.log",
+    "TestResults/Scale020/ResourcePIE/attempt-10-move-request-tolerance-failure.json",
+    "TestResults/Scale020/ResourcePIE/attempt-09-direct-route-before-arrival-tolerance.json",
+    "TestResults/Scale020/ResourcePIE/attempt-08-door-disabled-secondary-stall.json",
+    "TestResults/Scale020/ResourcePIE/attempt-06-door-support-diagnosis.json",
+    "TestResults/Scale020/ResourcePIE/attempt-02-entry-stall.json",
+    "TestResults/Scale020/Navigation-Editor-06.log"
+  ],
+  "retained_evidence": [
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7.mp4",
+      "sha256": "0e861786b3436ce63dab0fd482a2de078b6f9cc154415b6315bc37cf7875b1e3"
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8.mp4",
+      "sha256": "b0430a5b360e2bc9cbc0204bfe88024ca1b22c654c8b70f76c9cfb87fbeb2232"
+    },
+    {
+      "relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9.mp4",
+      "sha256": "094d2eabfa43ae1bec3a70e9ce03e16874ec3209b9bde9b9db6f9b3ef781fbb8"
+    },
+    {
+      "relative_path": "TestResults/Scale020/Review.html",
+      "sha256": "16e453c53ac6c00c68fecdeb4865eb664ff896683b99982d48201643b0d0e550"
+    },
+    {
+      "relative_path": "TestResults/GameplayLighting_20260918/Review.html",
+      "sha256": "cc0f8f01f4e1497c55a8f78c5bd11d2830d8887b76825b6cb208d6bd38cee49d"
+    }
+  ],
+  "summary": {
+    "count": 598,
+    "bytes": 595814484,
+    "by_reason": [
+      {
+        "reason": "encoded-video-intermediate-frame",
+        "count": 495,
+        "bytes": 580747365
+      },
+      {
+        "reason": "failed-tool-response",
+        "count": 7,
+        "bytes": 2846
+      },
+      {
+        "reason": "regenerable-python-cache",
+        "count": 9,
+        "bytes": 104987
+      },
+      {
+        "reason": "superseded-diagnostic-attempt",
+        "count": 5,
+        "bytes": 2213409
+      },
+      {
+        "reason": "unreferenced-session-log",
+        "count": 82,
+        "bytes": 12745877
+      }
+    ]
+  }
+}

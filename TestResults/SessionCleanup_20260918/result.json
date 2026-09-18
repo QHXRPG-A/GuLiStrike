@@ -1,0 +1,20 @@
+{
+  "schema": "guli-session-cleanup-result/v2",
+  "timestamp": "2026-09-18T19:06:29.9760286+08:00",
+  "method": "Windows Recycle Bin; explicit validated file paths; no recursive deletion",
+  "planned_count": 598,
+  "removed_count": 598,
+  "removed_bytes": 595814484,
+  "failures": [],
+  "still_present": [],
+  "retained_evidence": [
+    {"relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_7.mp4", "hash_unchanged": true},
+    {"relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_8.mp4", "hash_unchanged": true},
+    {"relative_path": "TestResults/Scale020/FXReview/NS_WM01_Explosion_9.mp4", "hash_unchanged": true},
+    {"relative_path": "TestResults/Scale020/Review.html", "hash_unchanged": true},
+    {"relative_path": "TestResults/GameplayLighting_20260918/Review.html", "hash_unchanged": true}
+  ],
+  "empty_directories": "Retained; subsequent empty-directory removal command was blocked by the execution policy before it ran.",
+  "recovery_commit": "0fb0d26ac9314bcae95a1a37f669926e35e7ffca",
+  "success": true
+}
