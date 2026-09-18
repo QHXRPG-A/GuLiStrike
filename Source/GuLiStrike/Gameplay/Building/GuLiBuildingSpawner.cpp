@@ -2,10 +2,13 @@
 #include "Gameplay/Building/GuLiBuildingCatalog.h"
 #include "Gameplay/Building/GuLiPlacedBuilding.h"
 #include "Gameplay/Building/GuLiGroundAccessRampComponent.h"
+#include "Gameplay/Building/GuLiGiftBuildingClearance.h"
 #include "Gameplay/Resources/GuLiResourceFactoryActor.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Engine/World.h"
+#include "EngineUtils.h"
+#include "GameFramework/Pawn.h"
 
 bool GuLiBuildings::ValidateGroundPlacement(UWorld& World, const FGuLiBuildingDefinition& Definition,
 	const FTransform& GroundTransform, UClass* PresentationClass, const AActor* IgnoredActor, FString& OutReason)
@@ -21,8 +24,8 @@ bool GuLiBuildings::ValidateGroundPlacement(UWorld& World, const FGuLiBuildingDe
 	const double BaseZ = GroundTransform.GetLocation().Z;
 	// Cover the interior as well as corners; large prefabs must not straddle a hole
 	// or hillside merely because their center trace succeeded. Work remains bounded.
-	const int32 StepsX = FMath::Clamp(FMath::CeilToInt(Extent.X * 2.0 / 1000.0), 2, 16);
-	const int32 StepsY = FMath::Clamp(FMath::CeilToInt(Extent.Y * 2.0 / 1000.0), 2, 16);
+	const int32 StepsX = FMath::Clamp(FMath::CeilToInt(Extent.X * 2.0 / 200.0), 2, 16);
+	const int32 StepsY = FMath::Clamp(FMath::CeilToInt(Extent.Y * 2.0 / 200.0), 2, 16);
 	for (int32 Y = 0; Y <= StepsY; ++Y)
 	{
 		for (int32 X = 0; X <= StepsX; ++X)
@@ -54,8 +57,10 @@ bool GuLiBuildings::ValidateGroundPlacement(UWorld& World, const FGuLiBuildingDe
 			}
 		}
 	}
+	FTransform ModelTransform = GroundTransform;
+	ModelTransform.SetScale3D(Definition.MeshScale);
 	return !PresentationClass || UGuLiGroundAccessRampComponent::ValidatePresentationGround(
-		World, PresentationClass, GroundTransform, Query, OutReason);
+		World, PresentationClass, ModelTransform, Query, OutReason);
 }
 
 TArray<FTransform> GuLiBuildings::GetGiftPlacementCandidates(const FVector& OutpostGround, int32 SlotIndex)
@@ -63,9 +68,9 @@ TArray<FTransform> GuLiBuildings::GetGiftPlacementCandidates(const FVector& Outp
 	struct FCandidate { FTransform Transform; double DistanceSquared; int32 Order; };
 	TArray<FCandidate> Candidates;
 	const double PreferredYaw = SlotIndex * 90.0;
-	const FVector Preferred = OutpostGround + FRotator(0, PreferredYaw, 0).Vector() * 7000.0;
+	const FVector Preferred = OutpostGround + FRotator(0, PreferredYaw, 0).Vector() * 1400.0;
 	// The original slot stays first. All alternatives remain well inside a territory's 560 m half-width.
-	for (const double Radius : { 7000.0, 10500.0, 14000.0, 17500.0, 21000.0 })
+	for (const double Radius : { 1400.0, 2100.0, 2800.0, 3500.0, 4200.0 })
 		for (const double AngleOffset : { 0.0, 45.0, -45.0, 90.0, -90.0, 135.0, -135.0, 180.0 })
 		{
 			const double Yaw = PreferredYaw + AngleOffset;
@@ -139,7 +144,9 @@ AActor* GuLiBuildings::Spawn(UWorld& World, int32 DefinitionId, EGuLiTeam Team,
 		return nullptr;
 	}
 	FCollisionQueryParams Clearance(SCENE_QUERY_STAT(GuLiBuildingSpawn), false, &SupportingActor);
-	const FVector ClearanceCenter = GroundTransform.GetLocation() + FVector(0,0,Definition.CollisionExtent.Z + 20);
+	if (Origin == EGuLiBuildingOrigin::Gift)
+		for (TActorIterator<APawn> It(&World); It; ++It) Clearance.AddIgnoredActor(*It);
+	const FVector ClearanceCenter = GroundTransform.GetLocation() + FVector(0,0,Definition.CollisionExtent.Z + 4);
 	if (World.OverlapBlockingTestByChannel(ClearanceCenter, GroundTransform.GetRotation(), ECC_Pawn,
 		FCollisionShape::MakeBox(Definition.CollisionExtent), Clearance))
 	{
@@ -148,12 +155,19 @@ AActor* GuLiBuildings::Spawn(UWorld& World, int32 DefinitionId, EGuLiTeam Team,
 	}
 	FActorSpawnParameters Params;
 	Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AlwaysSpawn;
+	TUniquePtr<FGuLiGiftBuildingClearance> GiftClearance;
+	if (Origin == EGuLiBuildingOrigin::Gift) GiftClearance = MakeUnique<FGuLiGiftBuildingClearance>(World);
 	if (Definition.Category == EGuLiBuildingCategory::Factory)
 	{
 		auto* Factory = World.SpawnActor<AGuLiResourceFactoryActor>(AGuLiResourceFactoryActor::StaticClass(), GroundTransform, Params);
 		if (!Factory) return nullptr;
 		Factory->InitializeFactory(Team, *Config, GroundTransform.TransformPosition(FVector(Config->FactoryDockOffsetCentimeters,0,0)),
 			World.GetSubsystem<UGuLiResourceWorldSubsystem>()->AllocateControllableActorId(), TerritoryIndex, Origin, bCompleted, Builder, DefinitionId);
+		if (GiftClearance && !GiftClearance->Commit(*Factory, SupportingActor, GroundFailure))
+		{
+			if (OutFailure) *OutFailure = MoveTemp(GroundFailure);
+			return nullptr;
+		}
 		return Factory;
 	}
 	FTransform Transform = GroundTransform;
@@ -163,5 +177,10 @@ AActor* GuLiBuildings::Spawn(UWorld& World, int32 DefinitionId, EGuLiTeam Team,
 	if (!Building) return nullptr;
 	Building->InitializeFromDefinition(DefinitionId, Team, Builder, TerritoryIndex, Origin, bCompleted);
 	Building->FinishSpawning(Transform);
+	if (GiftClearance && !GiftClearance->Commit(*Building, SupportingActor, GroundFailure))
+	{
+		if (OutFailure) *OutFailure = MoveTemp(GroundFailure);
+		return nullptr;
+	}
 	return Building;
 }

@@ -1,0 +1,43 @@
+{
+  "schema": "guli-ship-delivery-documentation-validation/v1",
+  "date": "2026-09-17",
+  "work_id": "WORK-20260917-003",
+  "status": "passed",
+  "commands": [
+    {
+      "command": "python .agents/skills/gulistrike-progress/scripts/progress_docs.py build",
+      "exit_code": 0,
+      "mode": "write",
+      "changed": 5,
+      "paths": [
+        "Progress/_Index/Current.md",
+        "Progress/_Index/Verification.md",
+        "Progress/_Index/ByArea.md",
+        "Progress/_Index/Archive.md",
+        "Progress/_Index/catalog.jsonl"
+      ]
+    },
+    {
+      "command": "python .agents/skills/gulistrike-progress/scripts/progress_docs.py check",
+      "exit_code": 0,
+      "errors": 0,
+      "warnings": 12,
+      "warning_scope": "Existing document-size and task-list-length warnings; no new warning for this work item"
+    }
+  ],
+  "verification_scope": "Approved original-mesh material study, Blender/FBX delivery, media and documentation",
+  "approval_B": "approved; 三件均通过 B，导出 FBX",
+  "UE_formal_validation": "not_run",
+  "UE_source_packages_modified": false,
+  "native_code_changed": false,
+  "browser_delivery_check": {
+    "page": "Delivery/v4/Review.html",
+    "hero_and_comparison_images_loaded": 9,
+    "FBX_links": 3,
+    "videos": 2,
+    "video_duration_seconds_each": 4.041667,
+    "video_readyState_each": 4,
+    "media_errors": 0,
+    "screenshot_review": "passed"
+  }
+}

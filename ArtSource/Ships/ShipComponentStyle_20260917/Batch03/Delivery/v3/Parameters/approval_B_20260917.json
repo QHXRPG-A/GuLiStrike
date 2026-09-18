@@ -1,0 +1,158 @@
+{
+  "schema": "gulistrike-art-approval/v1",
+  "recorded_at": "2026-09-17T10:11:11.406221+00:00",
+  "work_id": "WORK-20260917-005",
+  "art_revision": "1.0",
+  "gate": "B",
+  "decision": "approved",
+  "user_reply": "三件均通过 B，导出 FBX",
+  "review_question": "请审核第三批实际 Blender 材质 v3：无人机标识已移到薄壁外侧，干扰装置深蓝白黄，护盾发生器绿色。是否通过审核 B？",
+  "question_item_id": "[\"request_user_input_async\",\"call_AT0ysi41hJPLaK7xcTNI0Mgx\",0]",
+  "scope": "Batch03 original static mesh material v3; Blender, FBX, textures and previews only",
+  "review_manifest": "Production/v3/Review_B_Manifest.json",
+  "review_manifest_sha256": "798d72062f42e3dd038bb32f32e2cb65324caa706471e24d46d92859a1e46b4a",
+  "review_page": "Review_B_v3.html",
+  "review_page_sha256": "59c109e0df11fad583a3bd8ee18c2ac3573999a9624559fe86b5f2b012e64e3e",
+  "approved_overview": {
+    "path": "Production/v3/ShipComponentStyle_Batch03_Overview.blend",
+    "bytes": 1221438,
+    "sha256": "283dfe9d576c99eed11cef54194cab7cab699bdfcb51e0e425eca4de6ecb4633"
+  },
+  "placement_amendment": {
+    "path": "surface_revision_20260917_exterior_marking.json",
+    "bytes": 1307,
+    "sha256": "5e7073b184621dbfacd2134a6b9a17b09db0005a12c136d80e03ed1be609cb89"
+  },
+  "parts": {
+    "Drone_LaunchBay": {
+      "version": "v3",
+      "reference_version": "v2",
+      "approved_blend": "Production/v3/Drone_LaunchBay_OriginalMesh_MaterialCandidate.blend",
+      "approved_blend_sha256": "82eea6e26b5472733543c16d8bd11f9755dc17d63fd2a64dd227177fe2693c69",
+      "hero": "Previews/v3/Drone_LaunchBay_hero.png",
+      "hero_sha256": "8a3d221aa8d16bc0f9ac81a57b7a1f8a4fb9ddd292c7c3418eb2594eda0143b3",
+      "original_geometry_sha256": "44c34588ba2018946dd7f1807c54834a473f5cc5acce8eb565c85062049dd1a5",
+      "source_file": "Source\\FBX_static_v1\\SM_SC_Drone_LaunchBay.fbx",
+      "source_file_sha256": "4d7204f4b52e028d4bc0038d4f0fff8bb35949acf949543a0ed7845b88f12dc0",
+      "textures": [
+        {
+          "path": "Production/v3/Textures/T_SC_Drone_LaunchBay_BaseColor_2K.png",
+          "bytes": 177590,
+          "sha256": "20bc84d887ecc392d12ab2830b073966ea057dc72831061d88de165f8e9126bb",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v3/Textures/T_SC_Drone_LaunchBay_ORM_2K.png",
+          "bytes": 173966,
+          "sha256": "d0c221886553ac24068b89868820cc10bcc94e8034f599b50e26a9053474f82d",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v3/Textures/T_SC_Drone_LaunchBay_LineMask_2K.png",
+          "bytes": 297937,
+          "sha256": "bfb14c083cebabe9863caf1556026cf89069b828a23e265923394e9d57b00645",
+          "resolution": [
+            2048,
+            2048
+          ]
+        }
+      ],
+      "exterior_preview": {
+        "path": "Previews/v3/Drone_LaunchBay_exterior_hero.png",
+        "bytes": 1481011,
+        "sha256": "581eda2bcbd7943b462b2409d161c49ce9a09fbacb435834d22468ebb7056a91",
+        "resolution": [
+          1440,
+          1080
+        ]
+      }
+    },
+    "Electronic_JammingDevice": {
+      "version": "v3",
+      "reference_version": "v3",
+      "approved_blend": "Production/v3/Electronic_JammingDevice_OriginalMesh_MaterialCandidate.blend",
+      "approved_blend_sha256": "5d26189a54b75e7722a4a2b20307e9d4738a4a05d1c8ba5bdb43dd3b03f64465",
+      "hero": "Previews/v3/Electronic_JammingDevice_hero.png",
+      "hero_sha256": "a212b27458ab93c99770196497c177ad5754153f2a919f412b1cf3ef4ddcf130",
+      "original_geometry_sha256": "099aebd3f50af27ffc0e40832905d86b7d94f8b7357bcabd6f4a18c36aff8c61",
+      "source_file": "Source\\FBX_static_v1\\SM_SC_Electronic_JammingDevice.fbx",
+      "source_file_sha256": "1efd95e79ab5c21d2bbfe3b215068b7cad37841feb37f43dd6ba6dbd104018ea",
+      "textures": [
+        {
+          "path": "Production/v3/Textures/T_SC_Electronic_JammingDevice_BaseColor_2K.png",
+          "bytes": 162004,
+          "sha256": "5dc72b95c49d72b9072b48de7653d425b9eeb131668aa522e23febb3c134eec7",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v3/Textures/T_SC_Electronic_JammingDevice_ORM_2K.png",
+          "bytes": 160796,
+          "sha256": "82128b59136821a0b40b30703336623a8dfd8a04c9eda48659f47764bf131869",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v3/Textures/T_SC_Electronic_JammingDevice_LineMask_2K.png",
+          "bytes": 330791,
+          "sha256": "8b842e128ad4e5a41ee26cb17d4a9b400a5c0e54072f538d13c9b129af519eaa",
+          "resolution": [
+            2048,
+            2048
+          ]
+        }
+      ]
+    },
+    "Shield_Generator": {
+      "version": "v3",
+      "reference_version": "v3",
+      "approved_blend": "Production/v3/Shield_Generator_OriginalMesh_MaterialCandidate.blend",
+      "approved_blend_sha256": "9bfde04f40161b7f1e0c9a7a2b947ed6572580676fb9927fa97641b03b1c74b9",
+      "hero": "Previews/v3/Shield_Generator_hero.png",
+      "hero_sha256": "340db1ebd1124c4e2139df520d003c0578cd5a59e055cba6057b8e5cb227b895",
+      "original_geometry_sha256": "4c19a274493031416c929eec8a30e457824defe6aad9aa159db68025fc13aa63",
+      "source_file": "Source\\FBX_static_v1\\SM_SC_Shield_Generator.fbx",
+      "source_file_sha256": "6ea8cfcf3f05567b5af71daec6aebdf60a4f8e5a30bb45ed6defbfcc9ae6007f",
+      "textures": [
+        {
+          "path": "Production/v3/Textures/T_SC_Shield_Generator_BaseColor_2K.png",
+          "bytes": 145881,
+          "sha256": "a80038157cefa4436436007bd7b05547ec335308b842f152b607301746b1c65a",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v3/Textures/T_SC_Shield_Generator_ORM_2K.png",
+          "bytes": 145476,
+          "sha256": "a14aff939ae56ccd76ad1d9845b9e1123059f2d7b7aaeccbac5aff54f330a4a2",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v3/Textures/T_SC_Shield_Generator_LineMask_2K.png",
+          "bytes": 257850,
+          "sha256": "53009bdfd2a4aca662dd905b40c63a82fa1a10a9781a0dc2d0100cc7334b18ec",
+          "resolution": [
+            2048,
+            2048
+          ]
+        }
+      ]
+    }
+  },
+  "UE_formal_validation": "not_run"
+}

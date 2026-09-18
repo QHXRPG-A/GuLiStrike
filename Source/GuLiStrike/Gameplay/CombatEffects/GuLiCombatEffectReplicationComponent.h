@@ -39,6 +39,8 @@ private:
 	UFUNCTION(NetMulticast, Reliable) void MulticastReliableStates(const TArray<FGuLiCombatEffectState>& States);
 	/** Bounded one-Hz live snapshots: new peers rebuild without replaying old one-shots. */
 	UFUNCTION(NetMulticast, Reliable) void MulticastActiveSnapshot(const TArray<FGuLiCombatEffectState>& States);
+	/** Independent five-Hz, self-contained ground projectile refresh; reliable events carry launches and endings. */
+	UFUNCTION(NetMulticast, Unreliable) void MulticastGroundProjectileSnapshot(const TArray<FGuLiCombatEffectState>& States);
 	UFUNCTION(NetMulticast, Unreliable) void MulticastCorrections(const TArray<FGuLiCombatEffectCorrection>& InCorrections);
 	UFUNCTION(NetMulticast, Unreliable) void MulticastShots(const TArray<FGuLiCombatShotCue>& Shots);
 	UFUNCTION(NetMulticast, Unreliable) void MulticastWingmanFeedback(const TArray<FGuLiWingmanFeedbackCue>& Cues);
@@ -56,4 +58,7 @@ private:
 	TArray<FGuLiCombatEffectState> SnapshotQueue;
 	int32 SnapshotCursor = 0;
 	float SnapshotAccumulator = 0;
+	TArray<FGuLiCombatEffectState> GroundSnapshot;
+	float GroundSnapshotAccumulator = 0;
+	int32 GroundSnapshotStart = 0;
 };

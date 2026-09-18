@@ -2,6 +2,9 @@
 
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
+#include "Components/DecalComponent.h"
+#include "GameFramework/WorldSettings.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
 #include "Engine/Engine.h"
@@ -293,7 +296,7 @@ bool FGuLiCombatEffectMathTest::RunTest(const FString& Parameters)
 	B.RandomSeed = 421;
 	TestFalse(TEXT("different seeds vary the lift"), LiftPosition(A, 0.25f).Equals(LiftPosition(B, 0.25f)));
 	TestTrue(TEXT("lift starts at the authored launch point"), LiftPosition(A, 0).Equals(A.LaunchLocation));
-	TestTrue(TEXT("lift raises the missile"), LiftPosition(A, 0.25f).Z > A.LaunchLocation.Z + 500);
+	TestTrue(TEXT("lift raises the missile"), LiftPosition(A, 0.25f).Z > A.LaunchLocation.Z + 100);
 	TestEqual(TEXT("instant is not due before activation"), PulsesDue(EGuLiSpellFieldTiming::Instant, 1, 0, 1, .99), 0);
 	TestEqual(TEXT("instant remains one pulse"), PulsesDue(EGuLiSpellFieldTiming::Instant, 1, 0, 1, 99), 1);
 	TestEqual(TEXT("delayed activates at the exact boundary"), PulsesDue(EGuLiSpellFieldTiming::Delayed, 2, 0, 1, 2), 1);
@@ -328,7 +331,7 @@ bool FGuLiSpellFieldTableConfigTest::RunTest(const FString& Parameters)
 	TestNotNull(TEXT("Ship bombardment lives alongside WM fields"), Global->FindCombatField(TEXT("WingmanGroundMissile")));
 	if (!TestNotNull(TEXT("WM01 table field"), Field)) return false;
 	TestEqual(TEXT("field base damage comes from SpellFields"), Field->Damage, 30.0f);
-	TestEqual(TEXT("field radius comes from SpellFields"), Field->Radius, 800.0f);
+	TestEqual(TEXT("field radius comes from SpellFields"), Field->Radius, 160.0f);
 	TestEqual(TEXT("field timing comes from SpellFields"), Field->Timing, EGuLiSpellFieldTiming::Instant);
 	const FGuLiSkillDefinition* Skill = Data->FindSkillDefinition(TEXT("WM01_HomingMissile"));
 	TestTrue(TEXT("missile skill links the field row"), Skill && Skill->EffectConfigId == Field->ConfigId);
@@ -340,13 +343,13 @@ bool FGuLiSpellFieldTableConfigTest::RunTest(const FString& Parameters)
 		Weapon && Weapon->Damage == Field->Damage);
 	const FGuLiWeaponMountConfig* FourFGun = Data->FindWeaponMountConfig(1, TEXT("BasicAttack"));
 	TestTrue(TEXT("FourFRobot muzzle is loaded from WeaponMounts"), FourFGun && FourFGun->Muzzles.Num() == 1
-		&& FourFGun->Muzzles[0].Equals(FVector(-480, 5, 935), 0.01)
-		&& FourFGun->AimOffset.Equals(FVector(0, 0, 650), 0.01));
+		&& FourFGun->Muzzles[0].Equals(FVector(757.2613716, 0, 588.1241798) * .2, 0.01)
+		&& FourFGun->AimOffset.Equals(FVector(0, 0, 130), 0.01));
 	const FGuLiWeaponMountConfig* WM01Missiles = Data->FindWeaponMountConfig(2, TEXT("MissileLauncher"));
 	TestTrue(TEXT("WM01 twin missile sockets retain table order"), WM01Missiles && WM01Missiles->Muzzles.Num() == 2
-		&& WM01Missiles->Muzzles[0].Equals(FVector(-260, 1257, 2440), 0.01)
-		&& WM01Missiles->Muzzles[1].Equals(FVector(-260, -326, 2440), 0.01)
-		&& WM01Missiles->AimOffset.Equals(FVector(0, 495, 1600), 0.01));
+		&& WM01Missiles->Muzzles[0].Equals(FVector(-729.1603565, 932.1683884, 3122.3321915) * .2, 0.01)
+		&& WM01Missiles->Muzzles[1].Equals(FVector(-729.1603565, -932.1683884, 3122.3321915) * .2, 0.01)
+		&& WM01Missiles->AimOffset.Equals(FVector(0, 0, 320), 0.01));
 	auto& Source = F.Add(EGuLiTeam::Red, FVector(-5000, 0, 0));
 	auto& Target = F.Add(EGuLiTeam::Blue, FVector::ZeroVector);
 	auto* Visual = NewObject<UGuLiSpellFieldDefinition>(F.World);
@@ -368,8 +371,8 @@ bool FGuLiSpellFieldLedgerTest::RunTest(const FString& Parameters)
 	FFixture F; if (!F.Initialize(*this)) return false;
 	auto& Source = F.Add(EGuLiTeam::Red, FVector(-5000, 0, 0));
 	auto& Actor = F.Add(EGuLiTeam::Blue, FVector::ZeroVector);
-	auto& Mass = F.Add(EGuLiTeam::Blue, FVector(850, 0, 0), true);
-	auto& Outside = F.Add(EGuLiTeam::Blue, FVector(850.1, 0, 0), true);
+	auto& Mass = F.Add(EGuLiTeam::Blue, FVector(210, 0, 0), true);
+	auto& Outside = F.Add(EGuLiTeam::Blue, FVector(210.1, 0, 0), true);
 	auto& Friendly = F.Add(EGuLiTeam::Red, FVector::ZeroVector);
 	auto* Definition = NewObject<UGuLiSpellFieldDefinition>(F.World);
 	const auto Context = F.Context(Source);
@@ -463,6 +466,83 @@ bool FGuLiProjectileLifecycleTest::RunTest(const FString& Parameters)
 	Other = F.Runtime->LaunchProjectile(Projectile, Context2, FTransform(FVector(0, 0, 1000)));
 	FGuLiCombatEffectRuntimeTestAccess::Projectile(F.Runtime, Other, 9, 1 / 30.0f);
 	TestEqual(TEXT("cancel and timeout do not create bonus explosions"), F.Runtime->GetCounters().FieldsCreated, static_cast<int64>(1));
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiScale020FrozenPointRadiusTest, "GuLiStrike.Scale020.FrozenPointRadiusAndDamageBoundary",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuLiScale020FrozenPointRadiusTest::RunTest(const FString& Parameters)
+{
+	using namespace GuLiCombatEffectTests;
+	FFixture F; if (!F.Initialize(*this)) return false;
+	auto& Source = F.Add(EGuLiTeam::Red, FVector(-1200, 0, 100));
+	auto& Inside = F.Add(EGuLiTeam::Blue, FVector(1358, 0, 0), true, 1);
+	auto& Outside = F.Add(EGuLiTeam::Blue, FVector(1362, 0, 0), true, 1);
+	auto* Field = NewObject<UGuLiSpellFieldDefinition>(F.World);
+	auto* Projectile = NewObject<UGuLiProjectileEffectDefinition>(F.World);
+	Projectile->ImpactField = Field;
+	FGuLiCombatAttackRequest Request;
+	Request.Context = F.Context(Source);
+	Request.SourceTransform = FTransform(Source.Snapshot.Location);
+	Request.MuzzleOffset = FVector(100, 0, 40); // Already-resolved centimeters, not source-mesh units.
+	Request.TargetLocation = FVector(1200, 0, 0);
+	Request.Projectile = Projectile;
+	Request.FrozenField.ConfigId = TEXT("Scale020BoundaryFixture");
+	Request.FrozenField.Radius = 160;
+	const FGuid Id = F.Runtime->LaunchPointProjectile(Request);
+	if (!TestTrue(TEXT("authority accepts fixed-point request"), Id.IsValid())) return false;
+	FGuLiCombatEffectState State;
+	if (!TestTrue(TEXT("launched state exists"), F.Runtime->QueryEffect(Id, State))) return false;
+	TestEqual(TEXT("warning payload uses exactly the frozen gameplay radius"), State.Radius, 160.0f);
+	TestTrue(TEXT("muzzle is transformed once"), FVector(State.Location).Equals(FVector(-1100, 0, 140)));
+	TestEqual(TEXT("frozen speed is final centimeters per second"), State.Motion.Speed, 1200.0f);
+	Request.FrozenField.Radius = 1;
+	Field->Radius = 1;
+	Projectile->Motion.Speed = 1;
+	for (int32 Step = 1; Step <= 240 && F.Runtime->QueryEffect(Id, State); ++Step)
+	{
+		TestEqual(TEXT("in-flight radius cannot be changed by later authoring values"), State.Radius, 160.0f);
+		FGuLiCombatEffectRuntimeTestAccess::Projectile(F.Runtime, Id, Step / 30.0f, 1 / 30.0f);
+	}
+	TestEqual(TEXT("fixed-point impact creates one field"), F.Runtime->GetCounters().FieldsCreated, int64(1));
+	TestEqual(TEXT("inside 1.6 meter boundary takes one hit"), Inside.Hits, 1);
+	TestEqual(TEXT("outside 1.6 meter boundary takes no hit"), Outside.Hits, 0);
+	return true;
+}
+
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiScale020WarningPoolTest, "GuLiStrike.Scale020.GroundWarningPoolingAndRadius",
+	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
+bool FGuLiScale020WarningPoolTest::RunTest(const FString& Parameters)
+{
+	GuLiCombatEffectTests::FFixture F; if (!F.Initialize(*this)) return false;
+	auto* Warnings = F.World->GetSubsystem<UGuLiGroundWarningSubsystem>();
+	auto* Style = LoadObject<UGuLiGroundWarningStyle>(nullptr,
+		TEXT("/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red.DA_GroundWarning_Red"));
+	if (!TestNotNull(TEXT("render-world warning subsystem"), Warnings)
+		|| !TestNotNull(TEXT("production warning style"), Style)) return false;
+	FGuLiGroundWarningParams Params;
+	Params.Style = Style; Params.Location = FVector(125000, -240000, 12650);
+	Params.Radius = 160; Params.ExpireServerSeconds = 6;
+	const FGuid Id = FGuid::NewGuid(), Shared = FGuid::NewGuid();
+	TestTrue(TEXT("first warning"), Warnings->UpsertWarning(Id, Params));
+	TestTrue(TEXT("same ID is idempotent"), Warnings->UpsertWarning(Id, Params));
+	TestTrue(TEXT("matching warnings share one circle"), Warnings->UpsertWarning(Shared, Params));
+	TestEqual(TEXT("two callers"), Warnings->GetActiveWarningCount(), 2);
+	TestEqual(TEXT("one decal circle"), Warnings->GetActiveCircleCount(), 1);
+	TInlineComponentArray<UDecalComponent*> Decals(F.World->GetWorldSettings());
+	if (!TestEqual(TEXT("only one pooled decal allocated"), Decals.Num(), 1)) return false;
+	auto* Decal = Decals[0];
+	TestTrue(TEXT("visible edge equals frozen 160 cm radius"), FMath::IsNearlyEqual(Decal->DecalSize.Y * .96, 160.0, .001));
+	TestEqual(TEXT("projection depth migrated once"), Decal->DecalSize.X, 80.0);
+	TestTrue(TEXT("absolute map position is unchanged"), Decal->GetComponentLocation().Equals(Params.Location));
+	Warnings->RemoveWarning(Id);
+	TestEqual(TEXT("shared circle remains until final caller leaves"), Warnings->GetActiveCircleCount(), 1);
+	Warnings->RemoveWarning(Shared);
+	TestFalse(TEXT("released decal is hidden"), Decal->IsVisible());
+	Params.Location += FVector(200, 0, 0);
+	TestTrue(TEXT("pooled component reused"), Warnings->UpsertWarning(FGuid::NewGuid(), Params));
+	TestTrue(TEXT("reuse cannot compound .2 into .04"), FMath::IsNearlyEqual(Decal->DecalSize.Y * .96, 160.0, .001));
+	TestTrue(TEXT("reuse resets world anchor"), Decal->GetComponentLocation().Equals(Params.Location));
 	return true;
 }
 

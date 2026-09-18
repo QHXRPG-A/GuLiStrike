@@ -1,0 +1,95 @@
+{
+  "key": "Thor_MissilePod",
+  "stage": "material_candidate_B_pending",
+  "scope": "Original mesh retained; only shading, textures, line mask and optional render outline",
+  "source_file": "Source\\FBX_static_v1\\SM_SC_Thor_MissilePod.fbx",
+  "source_file_sha256": "36d1285db332a86cd109212814f0bf0bda0237e9b346ab2014bb346047aef991",
+  "original_geometry_sha256": "468c6f4f77ac74a5d69e1551b2d9a801d61a54cddb08568ca7688f5ae28c7ecd",
+  "finished_body_geometry_sha256": "468c6f4f77ac74a5d69e1551b2d9a801d61a54cddb08568ca7688f5ae28c7ecd",
+  "body_geometry_unchanged": true,
+  "original_corner_normals_unchanged": true,
+  "vertices": 1175,
+  "polygons": 2080,
+  "body_triangles": 2080,
+  "outline_triangles": 2080,
+  "body_material_slots": 1,
+  "dimensions_blender_m": [
+    18.048768997192383,
+    45.332401275634766,
+    5.910689353942871
+  ],
+  "uv_channels": [
+    "UVmap_0",
+    "UVmap_1",
+    "LightMapUV",
+    "SC_PaintUV",
+    "SC_LineUV"
+  ],
+  "source_uv_channels": [
+    "UVmap_0",
+    "UVmap_1",
+    "LightMapUV"
+  ],
+  "texture_size": [
+    2048,
+    2048
+  ],
+  "texture_files": [
+    "//Textures/T_SC_Thor_MissilePod_BaseColor_2K.png",
+    "//Textures/T_SC_Thor_MissilePod_ORM_2K.png",
+    "//Textures/T_SC_Thor_MissilePod_LineMask_2K.png"
+  ],
+  "atlas_coverage": 0.3333613872528076,
+  "selected_structural_edges": 1290,
+  "internal_line_halfwidth_m": 0.033,
+  "outline_width_m": 0.065,
+  "motion": {
+    "status": "not_applicable_static"
+  },
+  "sockets": [
+    {
+      "name": "Socket_1",
+      "rest_location_blender_m": [
+        -2.3499999046325684,
+        0.0,
+        2.549999952316284
+      ]
+    },
+    {
+      "name": "Socket_2",
+      "rest_location_blender_m": [
+        -2.3499999046325684,
+        17.350000381469727,
+        2.549999952316284
+      ]
+    },
+    {
+      "name": "Socket_3",
+      "rest_location_blender_m": [
+        4.199999809265137,
+        8.75,
+        2.549999952316284
+      ]
+    },
+    {
+      "name": "Socket_4",
+      "rest_location_blender_m": [
+        -2.3499999046325684,
+        -16.75,
+        2.549999952316284
+      ]
+    },
+    {
+      "name": "Socket_5",
+      "rest_location_blender_m": [
+        3.4000000953674316,
+        -8.75,
+        2.549999952316284
+      ]
+    }
+  ],
+  "user_A": "approved color reference; original geometry supersedes concept silhouette",
+  "user_B": "pending",
+  "UE_formal_validation": "not_run",
+  "blend_sha256": "467ed87155c75f4841c39c57edf9713c26cb1cfed89b2e9f7969e096901a289a"
+}

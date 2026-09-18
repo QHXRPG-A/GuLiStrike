@@ -84,6 +84,11 @@ bool FGuLiMissileVisualEventSequenceTest::RunTest(const FString& Parameters)
 	FGuLiMissileVisualLaunchDTO Launch;
 	Launch.MatchEpoch = 77u;
 	Launch.MissileId = FGuid(10u, 20u, 30u, 40u);
+	Launch.RootEventId = FGuid(10u, 20u, 31u, 40u);
+	Launch.WeaponBinding = FGuLiWeaponBindingKey::Wingman(Launch.MatchEpoch,
+		EGuLiTeam::Red, FGuid(1, 2, 3, 4), TEXT("MissileFixture"), TEXT("BasicAttack"));
+	Launch.SkillId = TEXT("MissileFixture");
+	Launch.ProfileRevision = 1u;
 	Launch.Emitter = MakeEmitter();
 	Launch.Target = MakeTarget(55u);
 	Launch.Position = FVector(100.0, 200.0, 300.0);
@@ -111,6 +116,10 @@ bool FGuLiMissileVisualEventSequenceTest::RunTest(const FString& Parameters)
 	FGuLiMissileVisualTerminalDTO Terminal;
 	Terminal.MatchEpoch = 77u;
 	Terminal.MissileId = Launch.MissileId;
+	Terminal.RootEventId = Launch.RootEventId;
+	Terminal.WeaponBinding = Launch.WeaponBinding;
+	Terminal.SkillId = Launch.SkillId;
+	Terminal.ProfileRevision = Launch.ProfileRevision;
 	Terminal.SimulationSequence = 7u;
 	Terminal.Reason = EGuLiLogicalMissileTerminalReason::Impact;
 	Terminal.Location = FVector(300.0, 200.0, 300.0);
@@ -153,4 +162,3 @@ bool FGuLiMissileVisualRpcContractTest::RunTest(const FString& Parameters)
 	return true;
 }
 #endif
-

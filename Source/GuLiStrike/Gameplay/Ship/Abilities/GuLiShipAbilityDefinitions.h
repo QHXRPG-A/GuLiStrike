@@ -43,16 +43,16 @@ public:
 	uint8 OuterRingSlots = 12u;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation|DoubleRing", meta = (ClampMin = "1.0"))
-	float InnerRingRadiusCentimeters = 60000.0f;
+	float InnerRingRadiusCentimeters = 12000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation|DoubleRing", meta = (ClampMin = "1.0"))
-	float OuterRingRadiusCentimeters = 90000.0f;
+	float OuterRingRadiusCentimeters = 18000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation|DoubleRing")
-	float InnerRingHeightCentimeters = 15000.0f;
+	float InnerRingHeightCentimeters = 3000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation|DoubleRing")
-	float OuterRingHeightCentimeters = -15000.0f;
+	float OuterRingHeightCentimeters = -3000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Formation|DoubleRing", meta = (ClampMin = "0.001"))
 	float InnerAngularSpeedRadiansPerSecond = 0.16f;
@@ -61,40 +61,40 @@ public:
 	float OuterAngularSpeedRadiansPerSecond = 0.12f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
-	float MinimumFlightSpeedCentimetersPerSecond = 6000.0f;
+	float MinimumFlightSpeedCentimetersPerSecond = 1200.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
-	float CruiseFlightSpeedCentimetersPerSecond = 9000.0f;
+	float CruiseFlightSpeedCentimetersPerSecond = 1800.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
-	float CatchUpFlightSpeedCentimetersPerSecond = 15000.0f;
+	float CatchUpFlightSpeedCentimetersPerSecond = 3000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "0.1", ClampMax = "180.0"))
 	float MaximumTurnRateDegreesPerSecond = 80.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
-	float MaximumAccelerationCentimetersPerSecondSquared = 4000.0f;
+	float MaximumAccelerationCentimetersPerSecondSquared = 800.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "1.0"))
-	float MaximumDecelerationCentimetersPerSecondSquared = 3200.0f;
+	float MaximumDecelerationCentimetersPerSecondSquared = 640.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Flight", meta = (ClampMin = "0.1", ClampMax = "90.0"))
 	float MaximumBankDegrees = 45.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Avoidance", meta = (ClampMin = "1.0"))
-	float AgentRadiusCentimeters = 1500.0f;
+	float AgentRadiusCentimeters = 300.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Avoidance", meta = (ClampMin = "1.0"))
-	float SeparationRadiusCentimeters = 3000.0f;
+	float SeparationRadiusCentimeters = 600.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Avoidance", meta = (ClampMin = "1.0"))
-	float ObstacleLookAheadCentimeters = 5000.0f;
+	float ObstacleLookAheadCentimeters = 1000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Recovery", meta = (ClampMin = "1.0"))
-	float CatchUpDistanceCentimeters = 120000.0f;
+	float CatchUpDistanceCentimeters = 24000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Recovery", meta = (ClampMin = "1.0"))
-	float RecoveryDistanceCentimeters = 250000.0f;
+	float RecoveryDistanceCentimeters = 50000.0f;
 
 	bool IsWellFormed(FString* OutError = nullptr) const;
 	bool BuildRuntimeConfig(
@@ -140,19 +140,19 @@ public:
 	float Damage = 10.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (ClampMin = "1.0"))
-	float RangeCentimeters = 100000.0f;
+	float RangeCentimeters = 20000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (ClampMin = "0.033333333"))
 	float CooldownSeconds = 0.2f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (ClampMin = "1.0"))
-	float ProjectileSpeedCentimetersPerSecond = 120000.0f;
+	float ProjectileSpeedCentimetersPerSecond = 24000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (ClampMin = "0.01"))
 	float ProjectileLifetimeSeconds = 3.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Weapon", meta = (ClampMin = "0.0"))
-	float SweepRadiusCentimeters = 50.0f;
+	float SweepRadiusCentimeters = 10.0f;
 
 	/** Full cone angle measured from reticle forward; 180 permits any forward hemisphere target. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Targeting", meta = (ClampMin = "0.1", ClampMax = "180.0"))

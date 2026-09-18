@@ -1,0 +1,5441 @@
+{
+  "pid": 12056,
+  "passed": false,
+  "checks": {
+    "selection_rpc": true,
+    "production_q_succeeded": true,
+    "same_effect_seen_on_server_and_two_clients": true,
+    "radius_and_speed_0": true,
+    "frozen_target_and_launch_0": false
+  },
+  "errors": [
+    "Traceback (most recent call last):\n  File \"D:/UE5.7/test1/Scripts/Scale020/validate_runtime_q.py\", line 120, in tick\n    self.check('frozen_target_and_launch_'+str(index),all(v['target']==first['target'] and v['launch']==first['launch'] and v['seed']==first['seed'] for v in values))\n  File \"D:/UE5.7/test1/Scripts/Scale020/validate_runtime_q.py\", line 39, in check\n    self.report['checks'][key]=bool(ok);self.save();assert ok,key\n                                                    ^^^^^^^^^^^^^\nAssertionError: frozen_target_and_launch_0\n"
+  ],
+  "scope": "Dedicated server plus two clients; unchanged production tables; no persistent writes",
+  "states": {
+    "C866C7494293ABA5B40B75BF23F2AD51": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "C866C7494293ABA5B40B75BF23F2AD51",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3528.74301887054,
+          177921.38730926847,
+          -6187.6560118063135
+        ],
+        "target": [
+          -1129.4190521240234,
+          177727.70219802856,
+          -6812.437215171655
+        ],
+        "seed": -1963627284,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "C866C7494293ABA5B40B75BF23F2AD51",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3529.0,
+          177921.0,
+          -6188.0
+        ],
+        "target": [
+          -1129.0,
+          177728.0,
+          -6812.0
+        ],
+        "seed": -1963627284,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "C866C7494293ABA5B40B75BF23F2AD51",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3529.0,
+          177921.0,
+          -6188.0
+        ],
+        "target": [
+          -1129.0,
+          177728.0,
+          -6812.0
+        ],
+        "seed": -1963627284,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "4FE85B784948841075CF4E90D8DBADAD": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "4FE85B784948841075CF4E90D8DBADAD",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3168.7556232052716,
+          177924.39977705048,
+          -6187.6370996982105
+        ],
+        "target": [
+          -1469.6783294677734,
+          177916.9825592041,
+          -6811.17459719941
+        ],
+        "seed": 111206248,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "4FE85B784948841075CF4E90D8DBADAD",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3169.0,
+          177924.0,
+          -6188.0
+        ],
+        "target": [
+          -1470.0,
+          177917.0,
+          -6811.0
+        ],
+        "seed": 111206248,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "4FE85B784948841075CF4E90D8DBADAD",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3169.0,
+          177924.0,
+          -6188.0
+        ],
+        "target": [
+          -1470.0,
+          177917.0,
+          -6811.0
+        ],
+        "seed": 111206248,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "7869186D4A8279AA99361380ED92ECDC": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "7869186D4A8279AA99361380ED92ECDC",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3171.7680909872715,
+          178284.38717271574,
+          -6185.237463551071
+        ],
+        "target": [
+          -1348.4755935668945,
+          177492.18368530273,
+          -6814.008270431256
+        ],
+        "seed": 854286791,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "7869186D4A8279AA99361380ED92ECDC",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3172.0,
+          178284.0,
+          -6185.0
+        ],
+        "target": [
+          -1348.0,
+          177492.0,
+          -6814.0
+        ],
+        "seed": 854286791,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "7869186D4A8279AA99361380ED92ECDC",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3172.0,
+          178284.0,
+          -6185.0
+        ],
+        "target": [
+          -1348.0,
+          177492.0,
+          -6814.0
+        ],
+        "seed": 854286791,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "85D4115B4A6A377749CB00AB908649A3": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "85D4115B4A6A377749CB00AB908649A3",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3531.7554866525397,
+          178281.37470493375,
+          -6185.256375659174
+        ],
+        "target": [
+          -1097.4048767089844,
+          177607.96069335938,
+          -6813.2359656330345
+        ],
+        "seed": -809621972,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "85D4115B4A6A377749CB00AB908649A3",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3532.0,
+          178281.0,
+          -6185.0
+        ],
+        "target": [
+          -1097.0,
+          177608.0,
+          -6813.0
+        ],
+        "seed": -809621972,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "85D4115B4A6A377749CB00AB908649A3",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3532.0,
+          178281.0,
+          -6185.0
+        ],
+        "target": [
+          -1097.0,
+          177608.0,
+          -6813.0
+        ],
+        "seed": -809621972,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "2A40C7DC46B3368CE24ECA8EE0BE29DA": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2A40C7DC46B3368CE24ECA8EE0BE29DA",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2808.7682275400034,
+          177927.41224483246,
+          -6187.618187590108
+        ],
+        "target": [
+          -1374.3228225708008,
+          177796.9202632904,
+          -6811.975487538313
+        ],
+        "seed": 1827926352,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2A40C7DC46B3368CE24ECA8EE0BE29DA",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2809.0,
+          177927.0,
+          -6188.0
+        ],
+        "target": [
+          -1374.0,
+          177797.0,
+          -6812.0
+        ],
+        "seed": 1827926352,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2A40C7DC46B3368CE24ECA8EE0BE29DA",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2809.0,
+          177927.0,
+          -6188.0
+        ],
+        "target": [
+          -1374.0,
+          177797.0,
+          -6812.0
+        ],
+        "seed": 1827926352,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "4DC49B9E450B8005DB79A693B21D438B": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "4DC49B9E450B8005DB79A693B21D438B",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2811.780695322003,
+          178287.39964049775,
+          -6185.218551442968
+        ],
+        "target": [
+          -1359.243854522705,
+          177515.58499145508,
+          -6813.852169135071
+        ],
+        "seed": 147790747,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "4DC49B9E450B8005DB79A693B21D438B",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2812.0,
+          178287.0,
+          -6185.0
+        ],
+        "target": [
+          -1359.0,
+          177516.0,
+          -6814.0
+        ],
+        "seed": 147790747,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "4DC49B9E450B8005DB79A693B21D438B",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2812.0,
+          178287.0,
+          -6185.0
+        ],
+        "target": [
+          -1359.0,
+          177516.0,
+          -6814.0
+        ],
+        "seed": 147790747,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "8A5495C948E36F390958929F55C56CBD": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "8A5495C948E36F390958929F55C56CBD",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3174.780558769271,
+          178644.374568381,
+          -6182.837827403932
+        ],
+        "target": [
+          -1133.4555206298828,
+          177841.15167999268,
+          -6811.680436423029
+        ],
+        "seed": -1028130064,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "8A5495C948E36F390958929F55C56CBD",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3175.0,
+          178644.0,
+          -6183.0
+        ],
+        "target": [
+          -1133.0,
+          177841.0,
+          -6812.0
+        ],
+        "seed": -1028130064,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "8A5495C948E36F390958929F55C56CBD",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3175.0,
+          178644.0,
+          -6183.0
+        ],
+        "target": [
+          -1133.0,
+          177841.0,
+          -6812.0
+        ],
+        "seed": -1028130064,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "3BB029BD43587B3645C4C48D3ADDAE15": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "3BB029BD43587B3645C4C48D3ADDAE15",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3534.767954434539,
+          178641.362100599,
+          -6182.856739512035
+        ],
+        "target": [
+          -1474.8474578857422,
+          177627.60202026367,
+          -6813.104945741726
+        ],
+        "seed": 2028491403,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "3BB029BD43587B3645C4C48D3ADDAE15",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3535.0,
+          178641.0,
+          -6183.0
+        ],
+        "target": [
+          -1475.0,
+          177628.0,
+          -6813.0
+        ],
+        "seed": 2028491403,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "3BB029BD43587B3645C4C48D3ADDAE15",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3535.0,
+          178641.0,
+          -6183.0
+        ],
+        "target": [
+          -1475.0,
+          177628.0,
+          -6813.0
+        ],
+        "seed": 2028491403,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "1D629CF6435F23A2CA0BD2B5B5E54A21": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "1D629CF6435F23A2CA0BD2B5B5E54A21",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2814.793163104003,
+          178647.387036163,
+          -6182.818915295829
+        ],
+        "target": [
+          -1492.5969543457031,
+          177869.0057220459,
+          -6811.494632603353
+        ],
+        "seed": 1581104980,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "1D629CF6435F23A2CA0BD2B5B5E54A21",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2815.0,
+          178647.0,
+          -6183.0
+        ],
+        "target": [
+          -1493.0,
+          177869.0,
+          -6811.0
+        ],
+        "seed": 1581104980,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "1D629CF6435F23A2CA0BD2B5B5E54A21",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2815.0,
+          178647.0,
+          -6183.0
+        ],
+        "target": [
+          -1493.0,
+          177869.0,
+          -6811.0
+        ],
+        "seed": 1581104980,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "FFAF86ED46CE7F83B134AF8204596C28": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "FFAF86ED46CE7F83B134AF8204596C28",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2451.7932996567347,
+          178290.41210827974,
+          -6185.199639334866
+        ],
+        "target": [
+          -1294.7629871368408,
+          178121.87298583984,
+          -6809.807850362049
+        ],
+        "seed": -1184761490,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "FFAF86ED46CE7F83B134AF8204596C28",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2452.0,
+          178290.0,
+          -6185.0
+        ],
+        "target": [
+          -1295.0,
+          178122.0,
+          -6810.0
+        ],
+        "seed": -1184761490,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "FFAF86ED46CE7F83B134AF8204596C28",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2452.0,
+          178290.0,
+          -6185.0
+        ],
+        "target": [
+          -1295.0,
+          178122.0,
+          -6810.0
+        ],
+        "seed": -1184761490,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "825108364EEFA5E5933055AAA444F9F1": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "825108364EEFA5E5933055AAA444F9F1",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3177.793026551271,
+          179004.3619640463,
+          -6180.437814773509
+        ],
+        "target": [
+          -1486.4785461425781,
+          177486.68853759766,
+          -6814.044870536739
+        ],
+        "seed": -859918893,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "825108364EEFA5E5933055AAA444F9F1",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3178.0,
+          179004.0,
+          -6180.0
+        ],
+        "target": [
+          -1486.0,
+          177487.0,
+          -6814.0
+        ],
+        "seed": -859918893,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "825108364EEFA5E5933055AAA444F9F1",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3178.0,
+          179004.0,
+          -6180.0
+        ],
+        "target": [
+          -1486.0,
+          177487.0,
+          -6814.0
+        ],
+        "seed": -859918893,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "A46EDF50465FDDBA31133083D8B28EC5": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "A46EDF50465FDDBA31133083D8B28EC5",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2817.8056308860027,
+          179007.37443182827,
+          -6180.417719735975
+        ],
+        "target": [
+          -1633.5475158691406,
+          177678.2699356079,
+          -6812.766959169148
+        ],
+        "seed": -500104470,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "A46EDF50465FDDBA31133083D8B28EC5",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2818.0,
+          179007.0,
+          -6180.0
+        ],
+        "target": [
+          -1634.0,
+          177678.0,
+          -6813.0
+        ],
+        "seed": -500104470,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "A46EDF50465FDDBA31133083D8B28EC5",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2818.0,
+          179007.0,
+          -6180.0
+        ],
+        "target": [
+          -1634.0,
+          177678.0,
+          -6813.0
+        ],
+        "seed": -500104470,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "9163EFF2427FBE463ECD6EAEC925CFF9": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "9163EFF2427FBE463ECD6EAEC925CFF9",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2454.8057674387346,
+          178650.39950394502,
+          -6182.798964978678
+        ],
+        "target": [
+          -1617.9984741210938,
+          178003.3097229004,
+          -6810.598741216787
+        ],
+        "seed": -753118796,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "9163EFF2427FBE463ECD6EAEC925CFF9",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2455.0,
+          178650.0,
+          -6183.0
+        ],
+        "target": [
+          -1618.0,
+          178003.0,
+          -6811.0
+        ],
+        "seed": -753118796,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "9163EFF2427FBE463ECD6EAEC925CFF9",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2455.0,
+          178650.0,
+          -6183.0
+        ],
+        "target": [
+          -1618.0,
+          178003.0,
+          -6811.0
+        ],
+        "seed": -753118796,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "E8C8C2914AA131171D5085B137544D56": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "E8C8C2914AA131171D5085B137544D56",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3537.780422216539,
+          179001.34949626427,
+          -6180.457103364896
+        ],
+        "target": [
+          -1443.0499877929688,
+          177487.57733154297,
+          -6814.038997681603
+        ],
+        "seed": -1570114682,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "E8C8C2914AA131171D5085B137544D56",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3538.0,
+          179001.0,
+          -6180.0
+        ],
+        "target": [
+          -1443.0,
+          177488.0,
+          -6814.0
+        ],
+        "seed": -1570114682,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "E8C8C2914AA131171D5085B137544D56",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3538.0,
+          179001.0,
+          -6180.0
+        ],
+        "target": [
+          -1443.0,
+          177488.0,
+          -6814.0
+        ],
+        "seed": -1570114682,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "735CD7464EAB31103606F8ACAD39CA24": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "735CD7464EAB31103606F8ACAD39CA24",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2448.7808318747348,
+          177930.42471261448,
+          -6187.599275482005
+        ],
+        "target": [
+          -1372.1248359680176,
+          178006.2022857666,
+          -6810.5794460197685
+        ],
+        "seed": 1039656534,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "735CD7464EAB31103606F8ACAD39CA24",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2449.0,
+          177930.0,
+          -6188.0
+        ],
+        "target": [
+          -1372.0,
+          178006.0,
+          -6811.0
+        ],
+        "seed": 1039656534,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "735CD7464EAB31103606F8ACAD39CA24",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2449.0,
+          177930.0,
+          -6188.0
+        ],
+        "target": [
+          -1372.0,
+          178006.0,
+          -6811.0
+        ],
+        "seed": 1039656534,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "293DBA594AF99E11D54DD1AE0451D172": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "293DBA594AF99E11D54DD1AE0451D172",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2457.818235220734,
+          179010.38689961028,
+          -6180.39762469844
+        ],
+        "target": [
+          -1372.1786346435547,
+          177985.851852417,
+          -6810.715196092996
+        ],
+        "seed": 1673798728,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "293DBA594AF99E11D54DD1AE0451D172",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2458.0,
+          179010.0,
+          -6180.0
+        ],
+        "target": [
+          -1372.0,
+          177986.0,
+          -6811.0
+        ],
+        "seed": 1673798728,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "293DBA594AF99E11D54DD1AE0451D172",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2458.0,
+          179010.0,
+          -6180.0
+        ],
+        "target": [
+          -1372.0,
+          177986.0,
+          -6811.0
+        ],
+        "seed": 1673798728,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "97561717450B733766496B95B590894D": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "97561717450B733766496B95B590894D",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2091.8059039914665,
+          178293.42457606175,
+          -6185.180210221381
+        ],
+        "target": [
+          -1338.8865280151367,
+          177750.45055007935,
+          -6812.285469486261
+        ],
+        "seed": -765631456,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "97561717450B733766496B95B590894D",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2092.0,
+          178293.0,
+          -6185.0
+        ],
+        "target": [
+          -1339.0,
+          177750.0,
+          -6812.0
+        ],
+        "seed": -765631456,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "97561717450B733766496B95B590894D",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2092.0,
+          178293.0,
+          -6185.0
+        ],
+        "target": [
+          -1339.0,
+          177750.0,
+          -6812.0
+        ],
+        "seed": -765631456,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "0D72D6694937E88AF64FBBBC2F26F81A": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "0D72D6694937E88AF64FBBBC2F26F81A",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2094.8183717734664,
+          178653.411971727,
+          -6182.778869941143
+        ],
+        "target": [
+          -1483.7062225341797,
+          177507.58767700195,
+          -6813.905516206555
+        ],
+        "seed": 1145388771,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "0D72D6694937E88AF64FBBBC2F26F81A",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2095.0,
+          178653.0,
+          -6183.0
+        ],
+        "target": [
+          -1484.0,
+          177508.0,
+          -6814.0
+        ],
+        "seed": 1145388771,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "0D72D6694937E88AF64FBBBC2F26F81A",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2095.0,
+          178653.0,
+          -6183.0
+        ],
+        "target": [
+          -1484.0,
+          177508.0,
+          -6814.0
+        ],
+        "seed": 1145388771,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "A7A0C7E84F5A33E941758EA8FEEFC1D2": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "A7A0C7E84F5A33E941758EA8FEEFC1D2",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2820.818098668002,
+          179367.36182749356,
+          -6178.0163794557375
+        ],
+        "target": [
+          -1455.0143432617188,
+          177815.34746170044,
+          -6811.8525666407295
+        ],
+        "seed": -386206719,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "A7A0C7E84F5A33E941758EA8FEEFC1D2",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2821.0,
+          179367.0,
+          -6178.0
+        ],
+        "target": [
+          -1455.0,
+          177815.0,
+          -6812.0
+        ],
+        "seed": -386206719,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "A7A0C7E84F5A33E941758EA8FEEFC1D2",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2821.0,
+          179367.0,
+          -6178.0
+        ],
+        "target": [
+          -1455.0,
+          177815.0,
+          -6812.0
+        ],
+        "seed": -386206719,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "BF625D8B4D86DFD084A37C985BBB2E45": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "BF625D8B4D86DFD084A37C985BBB2E45",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3180.805494333271,
+          179364.34935971154,
+          -6178.036474493272
+        ],
+        "target": [
+          -1095.3905334472656,
+          177990.9824066162,
+          -6810.680972099026
+        ],
+        "seed": -219905445,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "BF625D8B4D86DFD084A37C985BBB2E45",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3181.0,
+          179364.0,
+          -6178.0
+        ],
+        "target": [
+          -1095.0,
+          177991.0,
+          -6811.0
+        ],
+        "seed": -219905445,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "BF625D8B4D86DFD084A37C985BBB2E45",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3181.0,
+          179364.0,
+          -6178.0
+        ],
+        "target": [
+          -1095.0,
+          177991.0,
+          -6811.0
+        ],
+        "seed": -219905445,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "2D228609433839D4B343F9B566FDF442": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2D228609433839D4B343F9B566FDF442",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2460.830703002734,
+          179370.37429527554,
+          -6177.996284418203
+        ],
+        "target": [
+          -1222.2160568237305,
+          177562.47778320312,
+          -6813.539364989611
+        ],
+        "seed": 1847246813,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2D228609433839D4B343F9B566FDF442",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2461.0,
+          179370.0,
+          -6178.0
+        ],
+        "target": [
+          -1222.0,
+          177562.0,
+          -6814.0
+        ],
+        "seed": 1847246813,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2D228609433839D4B343F9B566FDF442",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2461.0,
+          179370.0,
+          -6178.0
+        ],
+        "target": [
+          -1222.0,
+          177562.0,
+          -6814.0
+        ],
+        "seed": 1847246813,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "6412594B4A9AD31BCF7B618A3062F8F6": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "6412594B4A9AD31BCF7B618A3062F8F6",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2097.830839555466,
+          179013.39936739227,
+          -6180.377529660906
+        ],
+        "target": [
+          -1037.3907470703125,
+          177673.80534362793,
+          -6812.796740780076
+        ],
+        "seed": 780700240,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "6412594B4A9AD31BCF7B618A3062F8F6",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2098.0,
+          179013.0,
+          -6180.0
+        ],
+        "target": [
+          -1037.0,
+          177674.0,
+          -6813.0
+        ],
+        "seed": 780700240,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "6412594B4A9AD31BCF7B618A3062F8F6",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2098.0,
+          179013.0,
+          -6180.0
+        ],
+        "target": [
+          -1037.0,
+          177674.0,
+          -6813.0
+        ],
+        "seed": 780700240,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "3530CB5142030BC66958B3B5CD73E55E": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "3530CB5142030BC66958B3B5CD73E55E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3540.792889998539,
+          179361.33689192956,
+          -6178.056569530806
+        ],
+        "target": [
+          -1088.711685180664,
+          177650.71978759766,
+          -6812.950735826165
+        ],
+        "seed": 1999880343,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "3530CB5142030BC66958B3B5CD73E55E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3541.0,
+          179361.0,
+          -6178.0
+        ],
+        "target": [
+          -1089.0,
+          177651.0,
+          -6813.0
+        ],
+        "seed": 1999880343,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "3530CB5142030BC66958B3B5CD73E55E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -3541.0,
+          179361.0,
+          -6178.0
+        ],
+        "target": [
+          -1089.0,
+          177651.0,
+          -6813.0
+        ],
+        "seed": 1999880343,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "92FCFE70454E26D15C8407AB754595F9": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "92FCFE70454E26D15C8407AB754595F9",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2088.7934362094666,
+          177933.43718039646,
+          -6187.580363373902
+        ],
+        "target": [
+          -1110.4784088134766,
+          178075.51126098633,
+          -6810.1171119603505
+        ],
+        "seed": -676144991,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "92FCFE70454E26D15C8407AB754595F9",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2089.0,
+          177933.0,
+          -6188.0
+        ],
+        "target": [
+          -1110.0,
+          178076.0,
+          -6810.0
+        ],
+        "seed": -676144991,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "92FCFE70454E26D15C8407AB754595F9",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2089.0,
+          177933.0,
+          -6188.0
+        ],
+        "target": [
+          -1110.0,
+          178076.0,
+          -6810.0
+        ],
+        "seed": -676144991,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "BDF33C834DF9BD88158F8B8445307CF8": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "BDF33C834DF9BD88158F8B8445307CF8",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2100.843307337466,
+          179373.38676305756,
+          -6177.976189380668
+        ],
+        "target": [
+          -1474.3357849121094,
+          177727.8127784729,
+          -6812.436477531175
+        ],
+        "seed": -267747061,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "BDF33C834DF9BD88158F8B8445307CF8",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2101.0,
+          179373.0,
+          -6178.0
+        ],
+        "target": [
+          -1474.0,
+          177728.0,
+          -6812.0
+        ],
+        "seed": -267747061,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "BDF33C834DF9BD88158F8B8445307CF8",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -2101.0,
+          179373.0,
+          -6178.0
+        ],
+        "target": [
+          -1474.0,
+          177728.0,
+          -6812.0
+        ],
+        "seed": -267747061,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "802BAC374D4F6F849C85E88E79AB5634": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "802BAC374D4F6F849C85E88E79AB5634",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2461.647759530727,
+          177930.3170258212,
+          -6188.165781545949
+        ],
+        "target": [
+          -1108.6021118164062,
+          177469.5647277832,
+          -6814.1591529744865
+        ],
+        "seed": -849034317,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "802BAC374D4F6F849C85E88E79AB5634",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2462.0,
+          177930.0,
+          -6188.0
+        ],
+        "target": [
+          -1109.0,
+          177470.0,
+          -6814.0
+        ],
+        "seed": -849034317,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "802BAC374D4F6F849C85E88E79AB5634",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2462.0,
+          177930.0,
+          -6188.0
+        ],
+        "target": [
+          -1109.0,
+          177470.0,
+          -6814.0
+        ],
+        "seed": -849034317,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "2A34844A45A5BF9692B6C5AF7248887C": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2A34844A45A5BF9692B6C5AF7248887C",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2821.6351552693063,
+          177927.3045667998,
+          -6188.186712239013
+        ],
+        "target": [
+          -1075.6736450195312,
+          177754.400598526,
+          -6812.259120201375
+        ],
+        "seed": 1871789020,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2A34844A45A5BF9692B6C5AF7248887C",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2822.0,
+          177927.0,
+          -6188.0
+        ],
+        "target": [
+          -1076.0,
+          177754.0,
+          -6812.0
+        ],
+        "seed": 1871789020,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2A34844A45A5BF9692B6C5AF7248887C",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2822.0,
+          177927.0,
+          -6188.0
+        ],
+        "target": [
+          -1076.0,
+          177754.0,
+          -6812.0
+        ],
+        "seed": 1871789020,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "1F1596B3461D1F9E868524BE059068E5": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "1F1596B3461D1F9E868524BE059068E5",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2464.6602185520987,
+          178290.30442155976,
+          -6185.66457385034
+        ],
+        "target": [
+          -1215.7233200073242,
+          177812.86141967773,
+          -6811.8691500903715
+        ],
+        "seed": 1493731629,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "1F1596B3461D1F9E868524BE059068E5",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2465.0,
+          178290.0,
+          -6186.0
+        ],
+        "target": [
+          -1216.0,
+          177813.0,
+          -6812.0
+        ],
+        "seed": 1493731629,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "1F1596B3461D1F9E868524BE059068E5",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2465.0,
+          178290.0,
+          -6186.0
+        ],
+        "target": [
+          -1216.0,
+          177813.0,
+          -6812.0
+        ],
+        "seed": 1493731629,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "27A65D244F2C182AED24EA9AC5F7F590": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "27A65D244F2C182AED24EA9AC5F7F590",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2824.647614290678,
+          178287.29196253838,
+          -6185.685504543404
+        ],
+        "target": [
+          -1267.7166633605957,
+          177649.91261291504,
+          -6812.956120184345
+        ],
+        "seed": 1753892110,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "27A65D244F2C182AED24EA9AC5F7F590",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2825.0,
+          178287.0,
+          -6186.0
+        ],
+        "target": [
+          -1268.0,
+          177650.0,
+          -6813.0
+        ],
+        "seed": 1753892110,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "27A65D244F2C182AED24EA9AC5F7F590",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2825.0,
+          178287.0,
+          -6186.0
+        ],
+        "target": [
+          -1268.0,
+          177650.0,
+          -6813.0
+        ],
+        "seed": 1753892110,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "D021785548680E167478DA8C5C98A711": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "D021785548680E167478DA8C5C98A711",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2467.672677573471,
+          178650.29181729833,
+          -6183.163366154732
+        ],
+        "target": [
+          -1240.4088287353516,
+          178118.42456054688,
+          -6809.830853507879
+        ],
+        "seed": -1740016061,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "D021785548680E167478DA8C5C98A711",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2468.0,
+          178650.0,
+          -6183.0
+        ],
+        "target": [
+          -1240.0,
+          178118.0,
+          -6810.0
+        ],
+        "seed": -1740016061,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "D021785548680E167478DA8C5C98A711",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2468.0,
+          178650.0,
+          -6183.0
+        ],
+        "target": [
+          -1240.0,
+          178118.0,
+          -6810.0
+        ],
+        "seed": -1740016061,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "557BA5454745C7E17C220E94EA820AB1": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "557BA5454745C7E17C220E94EA820AB1",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2827.6600733120504,
+          178647.27935827698,
+          -6183.184296847795
+        ],
+        "target": [
+          -1388.027214050293,
+          177525.22708129883,
+          -6813.787850386675
+        ],
+        "seed": 306078372,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "557BA5454745C7E17C220E94EA820AB1",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2828.0,
+          178647.0,
+          -6183.0
+        ],
+        "target": [
+          -1388.0,
+          177525.0,
+          -6814.0
+        ],
+        "seed": 306078372,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "557BA5454745C7E17C220E94EA820AB1",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2828.0,
+          178647.0,
+          -6183.0
+        ],
+        "target": [
+          -1388.0,
+          177525.0,
+          -6814.0
+        ],
+        "seed": 306078372,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "4F9DF61E4536A839BEF4A5ABCB14F602": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "4F9DF61E4536A839BEF4A5ABCB14F602",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3184.6350100292575,
+          178284.27950351703,
+          -6185.706435236468
+        ],
+        "target": [
+          -1530.9910736083984,
+          177963.7149658203,
+          -6810.862862922734
+        ],
+        "seed": 179002919,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "4F9DF61E4536A839BEF4A5ABCB14F602",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3185.0,
+          178284.0,
+          -6186.0
+        ],
+        "target": [
+          -1531.0,
+          177964.0,
+          -6811.0
+        ],
+        "seed": 179002919,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "4F9DF61E4536A839BEF4A5ABCB14F602",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3185.0,
+          178284.0,
+          -6186.0
+        ],
+        "target": [
+          -1531.0,
+          177964.0,
+          -6811.0
+        ],
+        "seed": 179002919,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "EB27414D402AD0F452C90AB042BC5F54": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "EB27414D402AD0F452C90AB042BC5F54",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3187.6474690506298,
+          178644.2668992556,
+          -6183.205227540859
+        ],
+        "target": [
+          -1218.1619033813477,
+          177556.6399230957,
+          -6813.578307154796
+        ],
+        "seed": -1425174087,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "EB27414D402AD0F452C90AB042BC5F54",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3188.0,
+          178644.0,
+          -6183.0
+        ],
+        "target": [
+          -1218.0,
+          177557.0,
+          -6814.0
+        ],
+        "seed": -1425174087,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "EB27414D402AD0F452C90AB042BC5F54",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3188.0,
+          178644.0,
+          -6183.0
+        ],
+        "target": [
+          -1218.0,
+          177557.0,
+          -6814.0
+        ],
+        "seed": -1425174087,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "552D05D347086E28118EFF9E3D058FFB": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "552D05D347086E28118EFF9E3D058FFB",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3181.6225510078857,
+          177924.29210777843,
+          -6188.207642932077
+        ],
+        "target": [
+          -1106.1255493164062,
+          177950.72846984863,
+          -6810.949490944303
+        ],
+        "seed": 304442363,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "552D05D347086E28118EFF9E3D058FFB",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3182.0,
+          177924.0,
+          -6188.0
+        ],
+        "target": [
+          -1106.0,
+          177951.0,
+          -6811.0
+        ],
+        "seed": 304442363,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "552D05D347086E28118EFF9E3D058FFB",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3182.0,
+          177924.0,
+          -6188.0
+        ],
+        "target": [
+          -1106.0,
+          177951.0,
+          -6811.0
+        ],
+        "seed": 304442363,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "2D82C63042C3B66E2564CDB60D11F73E": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2D82C63042C3B66E2564CDB60D11F73E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2830.6725323334226,
+          179007.26675401555,
+          -6180.683089152187
+        ],
+        "target": [
+          -1308.3103680610657,
+          177424.73654174805,
+          -6814.458184913138
+        ],
+        "seed": 1866559582,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2D82C63042C3B66E2564CDB60D11F73E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2831.0,
+          179007.0,
+          -6181.0
+        ],
+        "target": [
+          -1308.0,
+          177425.0,
+          -6814.0
+        ],
+        "seed": 1866559582,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2D82C63042C3B66E2564CDB60D11F73E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2831.0,
+          179007.0,
+          -6181.0
+        ],
+        "target": [
+          -1308.0,
+          177425.0,
+          -6814.0
+        ],
+        "seed": 1866559582,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "02BCA91C4B216DFD912E4DA003EC791E": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "02BCA91C4B216DFD912E4DA003EC791E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3544.622405767837,
+          178281.26704449565,
+          -6185.7273659295315
+        ],
+        "target": [
+          -1100.3403930664062,
+          178036.17544555664,
+          -6810.379506364112
+        ],
+        "seed": 1235076321,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "02BCA91C4B216DFD912E4DA003EC791E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3545.0,
+          178281.0,
+          -6186.0
+        ],
+        "target": [
+          -1100.0,
+          178036.0,
+          -6810.0
+        ],
+        "seed": 1235076321,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "02BCA91C4B216DFD912E4DA003EC791E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3545.0,
+          178281.0,
+          -6186.0
+        ],
+        "target": [
+          -1100.0,
+          178036.0,
+          -6810.0
+        ],
+        "seed": 1235076321,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "EFA68F52460842442AF09C890ED32DB1": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "EFA68F52460842442AF09C890ED32DB1",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3190.659928072002,
+          179004.25429499417,
+          -6180.70401984525
+        ],
+        "target": [
+          -1226.2703857421875,
+          178147.09857177734,
+          -6809.63957998277
+        ],
+        "seed": -1448162026,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "EFA68F52460842442AF09C890ED32DB1",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3191.0,
+          179004.0,
+          -6181.0
+        ],
+        "target": [
+          -1226.0,
+          178147.0,
+          -6810.0
+        ],
+        "seed": -1448162026,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "EFA68F52460842442AF09C890ED32DB1",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3191.0,
+          179004.0,
+          -6181.0
+        ],
+        "target": [
+          -1226.0,
+          178147.0,
+          -6810.0
+        ],
+        "seed": -1448162026,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "535195704C06B562FECE07BD833E4AA8": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "535195704C06B562FECE07BD833E4AA8",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3547.634864789209,
+          178641.25444023422,
+          -6183.226158233922
+        ],
+        "target": [
+          -1117.8309631347656,
+          177764.84286689758,
+          -6812.189463763511
+        ],
+        "seed": 525803538,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "535195704C06B562FECE07BD833E4AA8",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3548.0,
+          178641.0,
+          -6183.0
+        ],
+        "target": [
+          -1118.0,
+          177765.0,
+          -6812.0
+        ],
+        "seed": 525803538,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "535195704C06B562FECE07BD833E4AA8",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3548.0,
+          178641.0,
+          -6183.0
+        ],
+        "target": [
+          -1118.0,
+          177765.0,
+          -6812.0
+        ],
+        "seed": 525803538,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "81CC68914664EA45983F48B227987822": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "81CC68914664EA45983F48B227987822",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3541.609946746465,
+          177921.27964875707,
+          -6188.22857362514
+        ],
+        "target": [
+          -1521.1243438720703,
+          178012.73371887207,
+          -6810.535877290438
+        ],
+        "seed": -945257772,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "81CC68914664EA45983F48B227987822",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3542.0,
+          177921.0,
+          -6188.0
+        ],
+        "target": [
+          -1521.0,
+          178013.0,
+          -6811.0
+        ],
+        "seed": -945257772,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "81CC68914664EA45983F48B227987822",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3542.0,
+          177921.0,
+          -6188.0
+        ],
+        "target": [
+          -1521.0,
+          178013.0,
+          -6811.0
+        ],
+        "seed": -945257772,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "568F139A4DD7664A58C3E3BE7D7BB080": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "568F139A4DD7664A58C3E3BE7D7BB080",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2470.6851365948432,
+          179010.27921303693,
+          -6180.662158459123
+        ],
+        "target": [
+          -1506.872055053711,
+          178074.6837463379,
+          -6810.122631998779
+        ],
+        "seed": 458782160,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "568F139A4DD7664A58C3E3BE7D7BB080",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2471.0,
+          179010.0,
+          -6181.0
+        ],
+        "target": [
+          -1507.0,
+          178075.0,
+          -6810.0
+        ],
+        "seed": 458782160,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "568F139A4DD7664A58C3E3BE7D7BB080",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2471.0,
+          179010.0,
+          -6181.0
+        ],
+        "target": [
+          -1507.0,
+          178075.0,
+          -6810.0
+        ],
+        "seed": 458782160,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "337CF1844ABD7AF5021759B3A425906E": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "337CF1844ABD7AF5021759B3A425906E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2833.6849913547944,
+          179367.25414975412,
+          -6178.181881456578
+        ],
+        "target": [
+          -1200.1025772094727,
+          178023.3212738037,
+          -6810.465251700674
+        ],
+        "seed": 2042727281,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "337CF1844ABD7AF5021759B3A425906E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2834.0,
+          179367.0,
+          -6178.0
+        ],
+        "target": [
+          -1200.0,
+          178023.0,
+          -6810.0
+        ],
+        "seed": 2042727281,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "337CF1844ABD7AF5021759B3A425906E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2834.0,
+          179367.0,
+          -6178.0
+        ],
+        "target": [
+          -1200.0,
+          178023.0,
+          -6810.0
+        ],
+        "seed": 2042727281,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "521BE35A400E96F62EF81C8279BD09BE": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "521BE35A400E96F62EF81C8279BD09BE",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3193.672387093374,
+          179364.24169073277,
+          -6178.202812149641
+        ],
+        "target": [
+          -1117.8087463378906,
+          177609.97352600098,
+          -6813.222538784878
+        ],
+        "seed": 303396268,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "521BE35A400E96F62EF81C8279BD09BE",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3194.0,
+          179364.0,
+          -6178.0
+        ],
+        "target": [
+          -1118.0,
+          177610.0,
+          -6813.0
+        ],
+        "seed": 303396268,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "521BE35A400E96F62EF81C8279BD09BE",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          3194.0,
+          179364.0,
+          -6178.0
+        ],
+        "target": [
+          -1118.0,
+          177610.0,
+          -6813.0
+        ],
+        "seed": 303396268,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "5F87B2E544C4C1B069730EA7B0FF673C": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "5F87B2E544C4C1B069730EA7B0FF673C",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2473.697595616215,
+          179370.2666087755,
+          -6178.160950763514
+        ],
+        "target": [
+          -1200.1701126098633,
+          177567.20722961426,
+          -6813.507816634566
+        ],
+        "seed": 457405269,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "5F87B2E544C4C1B069730EA7B0FF673C",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2474.0,
+          179370.0,
+          -6178.0
+        ],
+        "target": [
+          -1200.0,
+          177567.0,
+          -6814.0
+        ],
+        "seed": 457405269,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "5F87B2E544C4C1B069730EA7B0FF673C",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          2474.0,
+          179370.0,
+          -6178.0
+        ],
+        "target": [
+          -1200.0,
+          177567.0,
+          -6814.0
+        ],
+        "seed": 457405269,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "3318B62B492A58D722FD6A86C8F42B0A": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "3318B62B492A58D722FD6A86C8F42B0A",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -533.5663108609871,
+          180925.83206481216,
+          -6162.773447440094
+        ],
+        "target": [
+          -1180.6064910888672,
+          177472.04431152344,
+          -6814.142612605614
+        ],
+        "seed": 2050158332,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "3318B62B492A58D722FD6A86C8F42B0A",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -534.0,
+          180926.0,
+          -6163.0
+        ],
+        "target": [
+          -1181.0,
+          177472.0,
+          -6814.0
+        ],
+        "seed": 2050158332,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "3318B62B492A58D722FD6A86C8F42B0A",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -534.0,
+          180926.0,
+          -6163.0
+        ],
+        "target": [
+          -1181.0,
+          177472.0,
+          -6814.0
+        ],
+        "seed": 2050158332,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "8E331A9F497156EBCA36DA82D648483E": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "8E331A9F497156EBCA36DA82D648483E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -173.56631086098716,
+          180925.8320691926,
+          -6163.969129512926
+        ],
+        "target": [
+          -1591.060302734375,
+          177505.31314086914,
+          -6813.920382005965
+        ],
+        "seed": -951956364,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "8E331A9F497156EBCA36DA82D648483E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -174.0,
+          180926.0,
+          -6164.0
+        ],
+        "target": [
+          -1591.0,
+          177505.0,
+          -6814.0
+        ],
+        "seed": -951956364,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "8E331A9F497156EBCA36DA82D648483E",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -174.0,
+          180926.0,
+          -6164.0
+        ],
+        "target": [
+          -1591.0,
+          177505.0,
+          -6814.0
+        ],
+        "seed": -951956364,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "A4940AC94ADF8AB387238E94C622DE61": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "A4940AC94ADF8AB387238E94C622DE61",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -173.56631524145436,
+          181285.8320691926,
+          -6160.968124527986
+        ],
+        "target": [
+          -1651.3474426269531,
+          177564.35775756836,
+          -6813.526603024814
+        ],
+        "seed": -297041798,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "A4940AC94ADF8AB387238E94C622DE61",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -174.0,
+          181286.0,
+          -6161.0
+        ],
+        "target": [
+          -1651.0,
+          177564.0,
+          -6814.0
+        ],
+        "seed": -297041798,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "A4940AC94ADF8AB387238E94C622DE61",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -174.0,
+          181286.0,
+          -6161.0
+        ],
+        "target": [
+          -1651.0,
+          177564.0,
+          -6814.0
+        ],
+        "seed": -297041798,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "12B63FE7487B5F7DF781A086D520BBC3": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "12B63FE7487B5F7DF781A086D520BBC3",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -533.5663152414543,
+          181285.83206481216,
+          -6159.772511985031
+        ],
+        "target": [
+          -1318.6997728347778,
+          177731.1900215149,
+          -6812.413949215322
+        ],
+        "seed": 1523409050,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "12B63FE7487B5F7DF781A086D520BBC3",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -534.0,
+          181286.0,
+          -6160.0
+        ],
+        "target": [
+          -1319.0,
+          177731.0,
+          -6812.0
+        ],
+        "seed": 1523409050,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "12B63FE7487B5F7DF781A086D520BBC3",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -534.0,
+          181286.0,
+          -6160.0
+        ],
+        "target": [
+          -1319.0,
+          177731.0,
+          -6812.0
+        ],
+        "seed": 1523409050,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "45EAE39D425D5C7C187BFC8A2BFEE458": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "45EAE39D425D5C7C187BFC8A2BFEE458",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.4336891390128,
+          180925.83207357308,
+          -6165.536754363159
+        ],
+        "target": [
+          -1682.0650329589844,
+          177718.90045547485,
+          -6812.4959282799055
+        ],
+        "seed": 129482721,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "45EAE39D425D5C7C187BFC8A2BFEE458",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.0,
+          180926.0,
+          -6166.0
+        ],
+        "target": [
+          -1682.0,
+          177719.0,
+          -6812.0
+        ],
+        "seed": 129482721,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "45EAE39D425D5C7C187BFC8A2BFEE458",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.0,
+          180926.0,
+          -6166.0
+        ],
+        "target": [
+          -1682.0,
+          177719.0,
+          -6812.0
+        ],
+        "seed": 129482721,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "308BCDE246F045FE08667093C67D62EA": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "308BCDE246F045FE08667093C67D62EA",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.43368475854558,
+          181285.83207357308,
+          -6162.294809222418
+        ],
+        "target": [
+          -978.29736328125,
+          177695.07020568848,
+          -6812.654890897456
+        ],
+        "seed": 1987807260,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "308BCDE246F045FE08667093C67D62EA",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.0,
+          181286.0,
+          -6162.0
+        ],
+        "target": [
+          -978.0,
+          177695.0,
+          -6813.0
+        ],
+        "seed": 1987807260,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "308BCDE246F045FE08667093C67D62EA",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.0,
+          181286.0,
+          -6162.0
+        ],
+        "target": [
+          -978.0,
+          177695.0,
+          -6813.0
+        ],
+        "seed": 1987807260,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "B6D294334D08329265C40B86B034A2F5": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "B6D294334D08329265C40B86B034A2F5",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -173.56631962192156,
+          181645.8320691926,
+          -6157.9671195430465
+        ],
+        "target": [
+          -1630.57568359375,
+          177909.67039489746,
+          -6811.223373892418
+        ],
+        "seed": -69556575,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "B6D294334D08329265C40B86B034A2F5",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -174.0,
+          181646.0,
+          -6158.0
+        ],
+        "target": [
+          -1631.0,
+          177910.0,
+          -6811.0
+        ],
+        "seed": -69556575,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "B6D294334D08329265C40B86B034A2F5",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -174.0,
+          181646.0,
+          -6158.0
+        ],
+        "target": [
+          -1631.0,
+          177910.0,
+          -6811.0
+        ],
+        "seed": -69556575,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "C43B20DA46A2FC4E7CE7EAA3D2C2963C": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "C43B20DA46A2FC4E7CE7EAA3D2C2963C",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.43368037807838,
+          181645.83207357308,
+          -6159.052864081677
+        ],
+        "target": [
+          -1013.3284606933594,
+          177691.65158843994,
+          -6812.677695205052
+        ],
+        "seed": -2103845740,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "C43B20DA46A2FC4E7CE7EAA3D2C2963C",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.0,
+          181646.0,
+          -6159.0
+        ],
+        "target": [
+          -1013.0,
+          177692.0,
+          -6813.0
+        ],
+        "seed": -2103845740,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "C43B20DA46A2FC4E7CE7EAA3D2C2963C",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.0,
+          181646.0,
+          -6159.0
+        ],
+        "target": [
+          -1013.0,
+          177692.0,
+          -6813.0
+        ],
+        "seed": -2103845740,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "8B15A5F54D8072E671B56F9923CC1654": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "8B15A5F54D8072E671B56F9923CC1654",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -533.5663196219215,
+          181645.83206481216,
+          -6156.772660044917
+        ],
+        "target": [
+          -1275.2401390075684,
+          177969.63917541504,
+          -6810.823344752655
+        ],
+        "seed": -963258605,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "8B15A5F54D8072E671B56F9923CC1654",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -534.0,
+          181646.0,
+          -6157.0
+        ],
+        "target": [
+          -1275.0,
+          177970.0,
+          -6811.0
+        ],
+        "seed": -963258605,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "8B15A5F54D8072E671B56F9923CC1654",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -534.0,
+          181646.0,
+          -6157.0
+        ],
+        "target": [
+          -1275.0,
+          177970.0,
+          -6811.0
+        ],
+        "seed": -963258605,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "3A6C98334670D092F8C07CA22686E3ED": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "3A6C98334670D092F8C07CA22686E3ED",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.4336847585455,
+          181285.83207795356,
+          -6159.784478915979
+        ],
+        "target": [
+          -1033.9805908203125,
+          177970.84631347656,
+          -6810.815292389473
+        ],
+        "seed": 2082228385,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "3A6C98334670D092F8C07CA22686E3ED",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.0,
+          181286.0,
+          -6160.0
+        ],
+        "target": [
+          -1034.0,
+          177971.0,
+          -6811.0
+        ],
+        "seed": 2082228385,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "3A6C98334670D092F8C07CA22686E3ED",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.0,
+          181286.0,
+          -6160.0
+        ],
+        "target": [
+          -1034.0,
+          177971.0,
+          -6811.0
+        ],
+        "seed": 2082228385,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "92DA4D0849F0322A70C02FAC8289635B": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "92DA4D0849F0322A70C02FAC8289635B",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -173.56632400238877,
+          182005.8320691926,
+          -6154.966114558107
+        ],
+        "target": [
+          -1544.7599334716797,
+          177623.1866607666,
+          -6813.134398941309
+        ],
+        "seed": -617971934,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "92DA4D0849F0322A70C02FAC8289635B",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -174.0,
+          182006.0,
+          -6155.0
+        ],
+        "target": [
+          -1545.0,
+          177623.0,
+          -6813.0
+        ],
+        "seed": -617971934,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "92DA4D0849F0322A70C02FAC8289635B",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -174.0,
+          182006.0,
+          -6155.0
+        ],
+        "target": [
+          -1545.0,
+          177623.0,
+          -6813.0
+        ],
+        "seed": -617971934,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "103A26B841DA1B13E33FC7BAF9581C65": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "103A26B841DA1B13E33FC7BAF9581C65",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.43367599761118,
+          182005.83207357308,
+          -6155.810918905724
+        ],
+        "target": [
+          -1652.1322631835938,
+          177801.209318161,
+          -6811.946876869304
+        ],
+        "seed": 1373650347,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "103A26B841DA1B13E33FC7BAF9581C65",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.0,
+          182006.0,
+          -6156.0
+        ],
+        "target": [
+          -1652.0,
+          177801.0,
+          -6812.0
+        ],
+        "seed": 1373650347,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "103A26B841DA1B13E33FC7BAF9581C65",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.0,
+          182006.0,
+          -6156.0
+        ],
+        "target": [
+          -1652.0,
+          177801.0,
+          -6812.0
+        ],
+        "seed": 1373650347,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "2D5D113443814305D28B20A778E6B869": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2D5D113443814305D28B20A778E6B869",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.4336803780783,
+          181645.83207795356,
+          -6156.7819689404605
+        ],
+        "target": [
+          -966.0856323242188,
+          177595.61393737793,
+          -6813.3183261901695
+        ],
+        "seed": 1859932721,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2D5D113443814305D28B20A778E6B869",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.0,
+          181646.0,
+          -6157.0
+        ],
+        "target": [
+          -966.0,
+          177596.0,
+          -6813.0
+        ],
+        "seed": 1859932721,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "2D5D113443814305D28B20A778E6B869",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.0,
+          181646.0,
+          -6157.0
+        ],
+        "target": [
+          -966.0,
+          177596.0,
+          -6813.0
+        ],
+        "seed": 1859932721,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "95A238A2492DC66C94716DA0455EAAEA": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "95A238A2492DC66C94716DA0455EAAEA",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.4336891390127,
+          180925.83207795356,
+          -6162.787299029429
+        ],
+        "target": [
+          -1311.685206413269,
+          177948.57147216797,
+          -6810.9638794631155
+        ],
+        "seed": -594542898,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "95A238A2492DC66C94716DA0455EAAEA",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.0,
+          180926.0,
+          -6163.0
+        ],
+        "target": [
+          -1312.0,
+          177949.0,
+          -6811.0
+        ],
+        "seed": -594542898,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "95A238A2492DC66C94716DA0455EAAEA",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.0,
+          180926.0,
+          -6163.0
+        ],
+        "target": [
+          -1312.0,
+          177949.0,
+          -6811.0
+        ],
+        "seed": -594542898,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "E25D3C694BDCED828188A7960D25B9F2": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "E25D3C694BDCED828188A7960D25B9F2",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -533.5663240023887,
+          182005.83206481216,
+          -6153.772808104803
+        ],
+        "target": [
+          -1350.596046447754,
+          177507.35528564453,
+          -6813.90706640174
+        ],
+        "seed": -1451109909,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "E25D3C694BDCED828188A7960D25B9F2",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -534.0,
+          182006.0,
+          -6154.0
+        ],
+        "target": [
+          -1351.0,
+          177507.0,
+          -6814.0
+        ],
+        "seed": -1451109909,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "E25D3C694BDCED828188A7960D25B9F2",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -534.0,
+          182006.0,
+          -6154.0
+        ],
+        "target": [
+          -1351.0,
+          177507.0,
+          -6814.0
+        ],
+        "seed": -1451109909,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "5A92C3624C93707FCADE678EA6961BF6": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "5A92C3624C93707FCADE678EA6961BF6",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.4336759976111,
+          182005.83207795356,
+          -6153.782129279903
+        ],
+        "target": [
+          -1325.3900232315063,
+          177889.3098449707,
+          -6811.359191449521
+        ],
+        "seed": 369210141,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "5A92C3624C93707FCADE678EA6961BF6",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.0,
+          182006.0,
+          -6154.0
+        ],
+        "target": [
+          -1325.0,
+          177889.0,
+          -6811.0
+        ],
+        "seed": 369210141,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "5A92C3624C93707FCADE678EA6961BF6",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.0,
+          182006.0,
+          -6154.0
+        ],
+        "target": [
+          -1325.0,
+          177889.0,
+          -6811.0
+        ],
+        "seed": 369210141,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "F58A0B494192FC3A352713852E0C6B17": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "F58A0B494192FC3A352713852E0C6B17",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -173.56632838285597,
+          182365.8320691926,
+          -6151.841447764637
+        ],
+        "target": [
+          -1106.4825134277344,
+          177935.16960144043,
+          -6811.053278293175
+        ],
+        "seed": -1273432205,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "F58A0B494192FC3A352713852E0C6B17",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -174.0,
+          182366.0,
+          -6152.0
+        ],
+        "target": [
+          -1106.0,
+          177935.0,
+          -6811.0
+        ],
+        "seed": -1273432205,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "F58A0B494192FC3A352713852E0C6B17",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -174.0,
+          182366.0,
+          -6152.0
+        ],
+        "target": [
+          -1106.0,
+          177935.0,
+          -6811.0
+        ],
+        "seed": -1273432205,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "AA33E5434BAB3DA0F61367B332162095": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "AA33E5434BAB3DA0F61367B332162095",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.43367161714394,
+          182365.83207357308,
+          -6152.568973729772
+        ],
+        "target": [
+          -1297.1861553192139,
+          177724.99425125122,
+          -6812.455278864305
+        ],
+        "seed": -510076701,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "AA33E5434BAB3DA0F61367B332162095",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.0,
+          182366.0,
+          -6153.0
+        ],
+        "target": [
+          -1297.0,
+          177725.0,
+          -6812.0
+        ],
+        "seed": -510076701,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "AA33E5434BAB3DA0F61367B332162095",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          186.0,
+          182366.0,
+          -6153.0
+        ],
+        "target": [
+          -1297.0,
+          177725.0,
+          -6812.0
+        ],
+        "seed": -510076701,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "AEBCB599444F93652E6CF4B927396919": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "AEBCB599444F93652E6CF4B927396919",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          906.4336803780783,
+          181645.832082334,
+          -6156.782271603401
+        ],
+        "target": [
+          -1207.7705154418945,
+          178092.56564331055,
+          -6810.0033486016255
+        ],
+        "seed": -353163524,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "AEBCB599444F93652E6CF4B927396919",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          906.0,
+          181646.0,
+          -6157.0
+        ],
+        "target": [
+          -1208.0,
+          178093.0,
+          -6810.0
+        ],
+        "seed": -353163524,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "AEBCB599444F93652E6CF4B927396919",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          906.0,
+          181646.0,
+          -6157.0
+        ],
+        "target": [
+          -1208.0,
+          178093.0,
+          -6810.0
+        ],
+        "seed": -353163524,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "12EB8D184CCBD048C56F46BB6FBE9A0C": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "12EB8D184CCBD048C56F46BB6FBE9A0C",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          906.4336847585455,
+          181285.832082334,
+          -6159.78415866715
+        ],
+        "target": [
+          -1438.0486068725586,
+          177760.90643787384,
+          -6812.215722198359
+        ],
+        "seed": 1579179344,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "12EB8D184CCBD048C56F46BB6FBE9A0C",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          906.0,
+          181286.0,
+          -6160.0
+        ],
+        "target": [
+          -1438.0,
+          177761.0,
+          -6812.0
+        ],
+        "seed": 1579179344,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "12EB8D184CCBD048C56F46BB6FBE9A0C",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          906.0,
+          181286.0,
+          -6160.0
+        ],
+        "target": [
+          -1438.0,
+          177761.0,
+          -6812.0
+        ],
+        "seed": 1579179344,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "9DA5C11B466782CD3988189D62D32D03": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "9DA5C11B466782CD3988189D62D32D03",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          906.4336759976111,
+          182005.832082334,
+          -6153.779450237661
+        ],
+        "target": [
+          -1134.4735107421875,
+          177754.75828933716,
+          -6812.256734180744
+        ],
+        "seed": -608025642,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "9DA5C11B466782CD3988189D62D32D03",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          906.0,
+          182006.0,
+          -6154.0
+        ],
+        "target": [
+          -1134.0,
+          177755.0,
+          -6812.0
+        ],
+        "seed": -608025642,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "9DA5C11B466782CD3988189D62D32D03",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          906.0,
+          182006.0,
+          -6154.0
+        ],
+        "target": [
+          -1134.0,
+          177755.0,
+          -6812.0
+        ],
+        "seed": -608025642,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "AE4163DD47493D46570923A7533AF1CC": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "AE4163DD47493D46570923A7533AF1CC",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.4336716171439,
+          182365.83207795356,
+          -6150.782289619344
+        ],
+        "target": [
+          -1356.6936492919922,
+          177786.8063993454,
+          -6812.042953313983
+        ],
+        "seed": -385327461,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "AE4163DD47493D46570923A7533AF1CC",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.0,
+          182366.0,
+          -6151.0
+        ],
+        "target": [
+          -1357.0,
+          177787.0,
+          -6812.0
+        ],
+        "seed": -385327461,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "AE4163DD47493D46570923A7533AF1CC",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          546.0,
+          182366.0,
+          -6151.0
+        ],
+        "target": [
+          -1357.0,
+          177787.0,
+          -6812.0
+        ],
+        "seed": -385327461,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "A61F37FF4D83D5264C7A42B86A640B50": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "A61F37FF4D83D5264C7A42B86A640B50",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -533.5663283828559,
+          182365.83206481216,
+          -6150.7729561646875
+        ],
+        "target": [
+          -1177.7054748535156,
+          177833.07440948486,
+          -6811.734316851229
+        ],
+        "seed": -342039847,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "A61F37FF4D83D5264C7A42B86A640B50",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -534.0,
+          182366.0,
+          -6151.0
+        ],
+        "target": [
+          -1178.0,
+          177833.0,
+          -6812.0
+        ],
+        "seed": -342039847,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "A61F37FF4D83D5264C7A42B86A640B50",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          -534.0,
+          182366.0,
+          -6151.0
+        ],
+        "target": [
+          -1178.0,
+          177833.0,
+          -6812.0
+        ],
+        "seed": -342039847,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    },
+    "F7CB42224BC6C18F88EE049F4B3E5796": {
+      "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "F7CB42224BC6C18F88EE049F4B3E5796",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          906.4336891390127,
+          180925.832082334,
+          -6162.7860457309
+        ],
+        "target": [
+          -1367.4334030151367,
+          177500.2703552246,
+          -6813.954327303108
+        ],
+        "seed": -1139965011,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "F7CB42224BC6C18F88EE049F4B3E5796",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          906.0,
+          180926.0,
+          -6163.0
+        ],
+        "target": [
+          -1367.0,
+          177500.0,
+          -6814.0
+        ],
+        "seed": -1139965011,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      },
+      "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+        "id": "F7CB42224BC6C18F88EE049F4B3E5796",
+        "radius": 160.0,
+        "speed": 1200.0,
+        "launch": [
+          906.0,
+          180926.0,
+          -6163.0
+        ],
+        "target": [
+          -1367.0,
+          177500.0,
+          -6814.0
+        ],
+        "seed": -1139965011,
+        "start": 8.654762268066406,
+        "phase": "<GuLiCombatEffectPhase.ACTIVE: 1>",
+        "fixed": true
+      }
+    }
+  },
+  "decals": {
+    "/Game/Maps/UEDPIE_1_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+      "size": [
+        80.0,
+        166.66668701171875,
+        166.66668701171875
+      ],
+      "location": [
+        -1367.0,
+        177500.0,
+        -6814.0
+      ],
+      "damage_edge_cm": 160.00001953125
+    },
+    "/Game/Maps/UEDPIE_2_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype": {
+      "size": [
+        80.0,
+        166.66668701171875,
+        166.66668701171875
+      ],
+      "location": [
+        -1367.0,
+        177500.0,
+        -6814.0
+      ],
+      "damage_edge_cm": 160.00001953125
+    }
+  },
+  "stage": 3,
+  "initial_unit": {
+    "id": 26,
+    "team": 1,
+    "type": 2,
+    "health": 300.5,
+    "phased": false,
+    "locked": false,
+    "cooldown": 0,
+    "shots": 0,
+    "x": -3713.949855766537,
+    "y": 177774.00027310546,
+    "z": -6812.1224593115885,
+    "floor": 0
+  },
+  "selection": {
+    "ready": true,
+    "pending": false,
+    "revision": 1,
+    "members": [
+      1,
+      2,
+      7,
+      6,
+      3,
+      8,
+      12,
+      11,
+      13,
+      17,
+      9,
+      18,
+      14,
+      4,
+      16,
+      19,
+      23,
+      22,
+      15,
+      10,
+      20,
+      24,
+      21,
+      5,
+      25,
+      26,
+      27,
+      32,
+      31,
+      28,
+      33,
+      37,
+      36,
+      38,
+      34,
+      42,
+      43,
+      39,
+      41,
+      29,
+      44,
+      35,
+      40,
+      48,
+      47,
+      49,
+      45,
+      46,
+      30,
+      50,
+      51,
+      52,
+      57,
+      56,
+      53,
+      58,
+      62,
+      63,
+      61,
+      59,
+      67,
+      68,
+      64,
+      54,
+      66,
+      69,
+      72,
+      73,
+      65,
+      60,
+      70,
+      74,
+      71,
+      75,
+      55,
+      76,
+      77,
+      81,
+      82,
+      86,
+      87,
+      83,
+      88,
+      78,
+      92,
+      84,
+      93,
+      89,
+      79,
+      91,
+      94,
+      97,
+      98,
+      90,
+      85,
+      95,
+      99,
+      96,
+      80,
+      100,
+      101,
+      106,
+      205,
+      204,
+      210,
+      203,
+      209,
+      208,
+      215,
+      214,
+      202,
+      213,
+      207,
+      220,
+      219,
+      212,
+      218,
+      201,
+      206,
+      217,
+      211,
+      224,
+      223,
+      225,
+      216,
+      126,
+      127,
+      131,
+      132,
+      128,
+      133,
+      137,
+      136,
+      138,
+      134,
+      142,
+      143,
+      139,
+      141,
+      129,
+      144,
+      147,
+      148,
+      140,
+      135,
+      149,
+      145,
+      146,
+      150,
+      130,
+      151,
+      152,
+      156,
+      157,
+      161,
+      162,
+      158,
+      153,
+      163,
+      159,
+      167,
+      164,
+      168,
+      166,
+      169,
+      154,
+      172,
+      173,
+      165,
+      160,
+      174,
+      170,
+      171,
+      175,
+      155,
+      176,
+      177,
+      182,
+      181,
+      178,
+      183,
+      187,
+      188,
+      186,
+      184,
+      192,
+      193,
+      189,
+      179,
+      191,
+      194,
+      197,
+      198,
+      190,
+      185,
+      195,
+      199,
+      196,
+      200,
+      180,
+      221,
+      222
+    ]
+  },
+  "reply": {
+    "id": "8986FB3646FD1BE2BB1299B265585118",
+    "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+    "error": "",
+    "units": [
+      {
+        "id": 1,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 2,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 7,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 6,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 3,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 8,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 12,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 11,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 13,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 17,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 9,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 18,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 14,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 4,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 16,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 19,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 23,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 22,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 15,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 10,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 20,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 24,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 21,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 5,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 25,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 26,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "C866C7494293ABA5B40B75BF23F2AD51",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 27,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "4FE85B784948841075CF4E90D8DBADAD",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 32,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "7869186D4A8279AA99361380ED92ECDC",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 31,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "85D4115B4A6A377749CB00AB908649A3",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 28,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "2A40C7DC46B3368CE24ECA8EE0BE29DA",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 33,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "4DC49B9E450B8005DB79A693B21D438B",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 37,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "8A5495C948E36F390958929F55C56CBD",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 36,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "3BB029BD43587B3645C4C48D3ADDAE15",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 38,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "1D629CF6435F23A2CA0BD2B5B5E54A21",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 34,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "FFAF86ED46CE7F83B134AF8204596C28",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 42,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "825108364EEFA5E5933055AAA444F9F1",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 43,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "A46EDF50465FDDBA31133083D8B28EC5",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 39,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "9163EFF2427FBE463ECD6EAEC925CFF9",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 41,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "E8C8C2914AA131171D5085B137544D56",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 29,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "735CD7464EAB31103606F8ACAD39CA24",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 44,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "293DBA594AF99E11D54DD1AE0451D172",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 35,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "97561717450B733766496B95B590894D",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 40,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "0D72D6694937E88AF64FBBBC2F26F81A",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 48,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "A7A0C7E84F5A33E941758EA8FEEFC1D2",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 47,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "BF625D8B4D86DFD084A37C985BBB2E45",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 49,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "2D228609433839D4B343F9B566FDF442",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 45,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "6412594B4A9AD31BCF7B618A3062F8F6",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 46,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "3530CB5142030BC66958B3B5CD73E55E",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 30,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "92FCFE70454E26D15C8407AB754595F9",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 50,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "BDF33C834DF9BD88158F8B8445307CF8",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 51,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 52,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 57,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 56,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 53,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 58,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 62,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 63,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 61,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 59,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 67,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 68,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 64,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 54,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 66,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 69,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 72,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 73,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 65,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 60,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 70,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 74,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 71,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 75,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 55,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 76,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "802BAC374D4F6F849C85E88E79AB5634",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 77,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "2A34844A45A5BF9692B6C5AF7248887C",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 81,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "1F1596B3461D1F9E868524BE059068E5",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 82,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "27A65D244F2C182AED24EA9AC5F7F590",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 86,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "D021785548680E167478DA8C5C98A711",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 87,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "557BA5454745C7E17C220E94EA820AB1",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 83,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "4F9DF61E4536A839BEF4A5ABCB14F602",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 88,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "EB27414D402AD0F452C90AB042BC5F54",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 78,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "552D05D347086E28118EFF9E3D058FFB",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 92,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "2D82C63042C3B66E2564CDB60D11F73E",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 84,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "02BCA91C4B216DFD912E4DA003EC791E",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 93,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "EFA68F52460842442AF09C890ED32DB1",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 89,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "535195704C06B562FECE07BD833E4AA8",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 79,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "81CC68914664EA45983F48B227987822",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 91,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "568F139A4DD7664A58C3E3BE7D7BB080",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 94,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 97,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "337CF1844ABD7AF5021759B3A425906E",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 98,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "521BE35A400E96F62EF81C8279BD09BE",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 90,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 85,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 95,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 99,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 96,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "5F87B2E544C4C1B069730EA7B0FF673C",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 80,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 100,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 101,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 106,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 205,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 204,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 210,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 203,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 209,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 208,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 215,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 214,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 202,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 213,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 207,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 220,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 219,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 212,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 218,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 201,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 206,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 217,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 211,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 224,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 223,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 225,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 216,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 126,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 127,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 131,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 132,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 128,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 133,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 137,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 136,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 138,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 134,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 142,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 143,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 139,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 141,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 129,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 144,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 147,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 148,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 140,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 135,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 149,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 145,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 146,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 150,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 130,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 151,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 152,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 156,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 157,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 161,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 162,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 158,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 153,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 163,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 159,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 167,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 164,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 168,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 166,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 169,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 154,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 172,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 173,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 165,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 160,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 174,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 170,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 171,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 175,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 155,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 176,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "3318B62B492A58D722FD6A86C8F42B0A",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 177,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "8E331A9F497156EBCA36DA82D648483E",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 182,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "A4940AC94ADF8AB387238E94C622DE61",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 181,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "12B63FE7487B5F7DF781A086D520BBC3",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 178,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "45EAE39D425D5C7C187BFC8A2BFEE458",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 183,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "308BCDE246F045FE08667093C67D62EA",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 187,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "B6D294334D08329265C40B86B034A2F5",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 188,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "C43B20DA46A2FC4E7CE7EAA3D2C2963C",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 186,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "8B15A5F54D8072E671B56F9923CC1654",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 184,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "3A6C98334670D092F8C07CA22686E3ED",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 192,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "92DA4D0849F0322A70C02FAC8289635B",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 193,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "103A26B841DA1B13E33FC7BAF9581C65",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 189,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "2D5D113443814305D28B20A778E6B869",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 179,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "95A238A2492DC66C94716DA0455EAAEA",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 191,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "E25D3C694BDCED828188A7960D25B9F2",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 194,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "5A92C3624C93707FCADE678EA6961BF6",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 197,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "F58A0B494192FC3A352713852E0C6B17",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 198,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "AA33E5434BAB3DA0F61367B332162095",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 190,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "AEBCB599444F93652E6CF4B927396919",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 185,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "12EB8D184CCBD048C56F46BB6FBE9A0C",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 195,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "9DA5C11B466782CD3988189D62D32D03",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 199,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "AE4163DD47493D46570923A7533AF1CC",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 196,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "A61F37FF4D83D5264C7A42B86A640B50",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 200,
+        "code": "<GuLiActiveSkillResultCode.OUT_OF_RANGE: 4>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 8.654762204736471
+      },
+      {
+        "id": 180,
+        "code": "<GuLiActiveSkillResultCode.SUCCEEDED: 0>",
+        "effect": "F7CB42224BC6C18F88EE049F4B3E5796",
+        "ready_at": 14.654762204736471
+      },
+      {
+        "id": 221,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      },
+      {
+        "id": 222,
+        "code": "<GuLiActiveSkillResultCode.NO_SKILL: 1>",
+        "effect": "00000000000000000000000000000000",
+        "ready_at": 0.0
+      }
+    ]
+  }
+}

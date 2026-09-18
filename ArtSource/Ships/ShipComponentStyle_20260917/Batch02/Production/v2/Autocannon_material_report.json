@@ -1,0 +1,395 @@
+{
+  "key": "Autocannon",
+  "stage": "review_B_ready",
+  "scope": "Original mesh retained; only shading, textures, line mask and optional render outline",
+  "source_file": "Source\\ExistingAuthoring\\SC_Autocannon.blend",
+  "source_file_sha256": "ee18f9f63e096eed6617ff0ca879ca9a01dc90605b7d6dcac55ac902caccbf6f",
+  "original_geometry_sha256": "988f20ed4a3f87dd9bbdd944eff3ccccaab5e883d311de5363ea6c33cb6423a4",
+  "finished_body_geometry_sha256": "988f20ed4a3f87dd9bbdd944eff3ccccaab5e883d311de5363ea6c33cb6423a4",
+  "body_geometry_unchanged": true,
+  "original_corner_normals_unchanged": true,
+  "material_regions": [
+    {
+      "seed": 0,
+      "vertices": 16,
+      "unchanged_anchors": 16,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 16,
+      "vertices": 85,
+      "unchanged_anchors": 85,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 101,
+      "vertices": 85,
+      "unchanged_anchors": 85,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 186,
+      "vertices": 85,
+      "unchanged_anchors": 85,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 271,
+      "vertices": 26,
+      "unchanged_anchors": 26,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 297,
+      "vertices": 26,
+      "unchanged_anchors": 26,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 323,
+      "vertices": 26,
+      "unchanged_anchors": 26,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 349,
+      "vertices": 16,
+      "unchanged_anchors": 16,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 365,
+      "vertices": 19,
+      "unchanged_anchors": 19,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 384,
+      "vertices": 22,
+      "unchanged_anchors": 22,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 406,
+      "vertices": 49,
+      "unchanged_anchors": 49,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 455,
+      "vertices": 26,
+      "unchanged_anchors": 26,
+      "bone": "Root",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 481,
+      "vertices": 36,
+      "unchanged_anchors": 36,
+      "bone": "Root",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 517,
+      "vertices": 26,
+      "unchanged_anchors": 26,
+      "bone": "Root",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 543,
+      "vertices": 178,
+      "unchanged_anchors": 24,
+      "bone": "Root",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 573,
+      "vertices": 24,
+      "unchanged_anchors": 24,
+      "bone": "Root",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 597,
+      "vertices": 16,
+      "unchanged_anchors": 16,
+      "bone": "Root",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 613,
+      "vertices": 8,
+      "unchanged_anchors": 8,
+      "bone": "Root",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 621,
+      "vertices": 24,
+      "unchanged_anchors": 24,
+      "bone": "Root",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 645,
+      "vertices": 16,
+      "unchanged_anchors": 16,
+      "bone": "Root",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 661,
+      "vertices": 8,
+      "unchanged_anchors": 8,
+      "bone": "Root",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 669,
+      "vertices": 20,
+      "unchanged_anchors": 20,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 689,
+      "vertices": 37,
+      "unchanged_anchors": 37,
+      "bone": "BarrelPitch",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 726,
+      "vertices": 34,
+      "unchanged_anchors": 8,
+      "bone": "Root",
+      "anchor_vote_fraction": 1.0
+    },
+    {
+      "seed": 726,
+      "vertices": 36,
+      "unchanged_anchors": 8,
+      "bone": "Root",
+      "anchor_vote_fraction": 1.0
+    }
+  ],
+  "connection_fix": "Whole original connected parts and original rigid-bone ownership define color regions; no per-triangle nearest-shroud assignment",
+  "vertices": 944,
+  "polygons": 1700,
+  "body_triangles": 1700,
+  "outline_triangles": 1700,
+  "body_material_slots": 1,
+  "dimensions_blender_m": [
+    10.829835891723633,
+    21.51050567626953,
+    5.851661682128906
+  ],
+  "uv_channels": [
+    "UVmap_0",
+    "UVmap_1",
+    "LightMapUV",
+    "SC_PaintUV",
+    "SC_LineUV"
+  ],
+  "source_uv_channels": [
+    "UVmap_0",
+    "UVmap_1",
+    "LightMapUV"
+  ],
+  "texture_size": [
+    2048,
+    2048
+  ],
+  "texture_files": [
+    "//Textures/T_SC_Autocannon_BaseColor_2K.png",
+    "//Textures/T_SC_Autocannon_ORM_2K.png",
+    "//Textures/T_SC_Autocannon_LineMask_2K.png"
+  ],
+  "atlas_coverage": 0.4076051712036133,
+  "selected_structural_edges": 852,
+  "internal_line_halfwidth_m": 0.012906303405761717,
+  "outline_width_m": 0.025812606811523434,
+  "motion": {
+    "status": "passed",
+    "sample_count": 91,
+    "angles_degrees": [
+      -15,
+      75
+    ],
+    "rigid_max_error_m": 6.106495129998063e-06,
+    "socket_max_error_m": 5.56082906231432e-06,
+    "single_bone_weight_one": true,
+    "surface_crossings_by_angle": {
+      "-15": {},
+      "-14": {},
+      "-13": {},
+      "-12": {},
+      "-11": {},
+      "-10": {},
+      "-9": {},
+      "-8": {},
+      "-7": {},
+      "-6": {},
+      "-5": {},
+      "-4": {},
+      "-3": {},
+      "-2": {},
+      "-1": {},
+      "0": {},
+      "1": {},
+      "2": {},
+      "3": {},
+      "4": {},
+      "5": {},
+      "6": {},
+      "7": {},
+      "8": {},
+      "9": {},
+      "10": {},
+      "11": {},
+      "12": {},
+      "13": {},
+      "14": {},
+      "15": {},
+      "16": {},
+      "17": {},
+      "18": {},
+      "19": {},
+      "20": {},
+      "21": {},
+      "22": {},
+      "23": {},
+      "24": {},
+      "25": {},
+      "26": {},
+      "27": {},
+      "28": {},
+      "29": {},
+      "30": {},
+      "31": {},
+      "32": {},
+      "33": {},
+      "34": {},
+      "35": {},
+      "36": {},
+      "37": {},
+      "38": {},
+      "39": {},
+      "40": {},
+      "41": {},
+      "42": {},
+      "43": {},
+      "44": {},
+      "45": {},
+      "46": {},
+      "47": {},
+      "48": {},
+      "49": {},
+      "50": {},
+      "51": {},
+      "52": {},
+      "53": {},
+      "54": {},
+      "55": {},
+      "56": {},
+      "57": {},
+      "58": {},
+      "59": {},
+      "60": {},
+      "61": {},
+      "62": {},
+      "63": {},
+      "64": {},
+      "65": {},
+      "66": {},
+      "67": {},
+      "68": {},
+      "69": {},
+      "70": {},
+      "71": {},
+      "72": {},
+      "73": {},
+      "74": {},
+      "75": {}
+    },
+    "geometry_modified_to_resolve_crossings": false
+  },
+  "sockets": [
+    {
+      "name": "Socket_1",
+      "rest_location_blender_m": [
+        -0.41496095061302185,
+        -13.494492530822754,
+        0.756172239780426
+      ]
+    },
+    {
+      "name": "Socket_2",
+      "rest_location_blender_m": [
+        7.812499825377017e-05,
+        -13.494492530822754,
+        1.475058674812317
+      ]
+    },
+    {
+      "name": "Socket_3",
+      "rest_location_blender_m": [
+        0.4151318371295929,
+        -13.494453430175781,
+        0.7561563849449158
+      ]
+    }
+  ],
+  "user_A": {
+    "decision": "approved",
+    "record": "approval_A_20260917.json",
+    "user_message": "开始制作"
+  },
+  "user_B": "pending",
+  "UE_formal_validation": "not_run",
+  "blend_sha256": "97d8658943d3b030db45ce2041cb94766fea9349590b5489dc16303c5a4856e7",
+  "candidate_version": "v2",
+  "reference_version": "v2",
+  "editable_palette_face_attribute": "SC_PaintPaletteIndex",
+  "editable_corner_color_attribute": "SC_EditablePaintColor",
+  "motion_video": "Previews\\v2\\Autocannon_pitch_motion.mp4",
+  "demo_frames": 97,
+  "demo_fps": 24,
+  "lighting": "EEVEE Diffuse -> Shader to RGB -> luminance -> constant 3-step ramp; scene lights and self-shadow",
+  "toon_thresholds": [
+    0,
+    0.18,
+    0.46
+  ],
+  "toon_multipliers_linear": [
+    [
+      0.43,
+      0.5,
+      0.6
+    ],
+    [
+      0.72,
+      0.79,
+      0.84
+    ],
+    [
+      1,
+      1,
+      1
+    ]
+  ],
+  "line_strength": 0.85,
+  "saved_file_geometry_readback": "passed"
+}

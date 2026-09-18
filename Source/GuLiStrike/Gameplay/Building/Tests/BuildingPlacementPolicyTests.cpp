@@ -73,7 +73,7 @@ bool FBuildingPlacementPolicyTests::RunTest(const FString& Parameters)
 		IsGroundPlacementInRange(FVector::ZeroVector, FVector(GroundMaximumRangeCentimeters, 0.0f, 0.0f)));
 	TestFalse(TEXT("A Ground location beyond 100 meters is illegal"),
 		IsGroundPlacementInRange(FVector::ZeroVector, FVector(GroundMaximumRangeCentimeters + 0.1f, 0.0f, 0.0f)));
-	TestEqual(TEXT("Placement clearance is exactly 100 cm"), PlacementClearanceCentimeters, 100.0f);
+	TestEqual(TEXT("Placement clearance is exactly 20 cm"), PlacementClearanceCentimeters, 20.0f);
 
 	TestEqual(TEXT("Counts below both limits are accepted"), ValidateCapacity(5, 23),
 		EGuLiBuildingPlacementRejectReason::None);

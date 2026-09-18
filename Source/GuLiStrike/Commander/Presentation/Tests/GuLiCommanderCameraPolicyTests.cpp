@@ -29,7 +29,7 @@ bool FGuLiCommanderCameraComponentPolicyTest::RunTest(const FString& Parameters)
 	{
 		TestFalse(TEXT("SpringArm collision cannot retract the terrain-solved camera"), SpringArm->bDoCollisionTest);
 		TestFalse(TEXT("SpringArm lag cannot fight the explicit substep solver"), SpringArm->bEnableCameraLag);
-		TestEqual(TEXT("default camera arm remains 800m"), SpringArm->TargetArmLength, 80000.0f);
+		TestEqual(TEXT("default camera arm is 160m after scale020"), SpringArm->TargetArmLength, 16000.0f);
 	}
 
 	TestTrue(

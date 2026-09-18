@@ -2,6 +2,7 @@
 #include "Misc/SecureHash.h"
 #include "NativeGameplayTags.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
+#include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 #include "Engine/PackageMapClient.h"
 
 UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_GuLi_CombatEffectMissileWeapon, "Weapon.Missile");
@@ -61,10 +62,11 @@ bool FGuLiCombatEffectState::IsWellFormed() const
 	{
 		return false;
 	}
-	if (Kind == EGuLiCombatEffectKind::Projectile) return Motion.IsValid();
+	if (Kind == EGuLiCombatEffectKind::Projectile)
+		return Motion.IsValid() && (GroundWarningStyle.IsNull() || (bFixedPoint && Radius > 0 && Radius <= 100000));
 	if (Kind == EGuLiCombatEffectKind::SpellField) return true;
 	if (Kind == EGuLiCombatEffectKind::LinearProjectile)
-		return Source.Kind == EGuLiTargetKind::Wingman && !MuzzleOffset.ContainsNaN()
+		return (Source.Kind == EGuLiTargetKind::Wingman || Source.Kind == EGuLiTargetKind::CommanderSoldier) && !MuzzleOffset.ContainsNaN()
 			&& (SourceTeam == EGuLiTeam::Red || SourceTeam == EGuLiTeam::Blue)
 			&& FMath::IsFinite(Motion.Speed) && Motion.Speed > 0 && Motion.Speed <= 1000000
 			&& EndTime > StartTime && EndTime - StartTime <= 120.01f && !FVector(LaunchDirection).IsNearlyZero();
@@ -151,6 +153,13 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 		{
 			bMapped &= SerializeEffectAsset(Ar,Map,ProjectileDefinition);
 			bMapped &= SerializeEffectAsset(Ar,Map,FieldDefinition);
+			bool bHasGroundWarning = !GroundWarningStyle.IsNull();
+			Ar.SerializeBits(&bHasGroundWarning, 1);
+			if (bHasGroundWarning)
+			{
+				bMapped &= SerializeEffectAsset(Ar, Map, GroundWarningStyle);
+				Ar << Radius;
+			}
 			Velocity.NetSerialize(Ar,Map,bVector); LaunchLocation.NetSerialize(Ar,Map,bVector);
 			LastTargetLocation.NetSerialize(Ar,Map,bVector); LaunchDirection.NetSerialize(Ar,Map,bVector);
 			Ar << bFixedPoint;
@@ -196,8 +205,14 @@ bool FGuLiCombatShotCue::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOut
 	uint8 bBasicAttack=SlotId==TEXT("BasicAttack"); Ar.SerializeBits(&bBasicAttack,1);
 	if (bBasicAttack) { if (Ar.IsLoading()) SlotId=TEXT("BasicAttack"); } else Ar << SlotId;
 	uint32 Type=UnitTypeId; Ar.SerializeIntPacked(Type); if (Ar.IsLoading()) UnitTypeId=static_cast<uint16>(Type);
-	Ar << MuzzleIndex << MuzzleOffset << KeepAliveSeconds;
-	bool bVector=true; Start.NetSerialize(Ar,Map,bVector); End.NetSerialize(Ar,Map,bVector); Ar << ServerTime;
+	Ar << MuzzleIndex << KeepAliveSeconds;
+	uint8 MuzzleOnly = bMuzzleOnly; Ar.SerializeBits(&MuzzleOnly, 1);
+	if (Ar.IsLoading()) bMuzzleOnly = MuzzleOnly != 0;
+	// Use the same centimeter precision as pooled launch payloads, keeping muzzle-only cues within the existing budget.
+	bool bVector = true;
+	FVector_NetQuantize Muzzle(MuzzleOffset); Muzzle.NetSerialize(Ar, Map, bVector);
+	if (Ar.IsLoading()) MuzzleOffset = Muzzle;
+	Start.NetSerialize(Ar,Map,bVector); End.NetSerialize(Ar,Map,bVector); Ar << ServerTime;
 	bOutSuccess=!Ar.IsError() && bVector && Type<=MAX_uint16 && ShotId.IsValid() && FMath::IsFinite(ServerTime);
 	return true;
 }

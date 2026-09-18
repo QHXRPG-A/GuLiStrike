@@ -1,0 +1,58 @@
+{
+  "sky_before": {
+    "Colors determined by sun position": "False",
+    "Cloud opacity": "0.5600000023841858",
+    "Sun brightness": "75.0",
+    "Zenith Color": "<Struct 'LinearColor' (0x000001D3A63A58B8) {r: 0.003347, g: 0.063010, b: 0.296138, a: 1.000000}>",
+    "Horizon color": "<Struct 'LinearColor' (0x000001D3A63A58C8) {r: 0.095307, g: 0.124772, b: 0.147027, a: 1.000000}>",
+    "Cloud color": "<Struct 'LinearColor' (0x000001D3A63A58D8) {r: 0.921582, g: 0.955973, b: 1.000000, a: 1.000000}>",
+    "Horizon Falloff": "3.0"
+  },
+  "sky_after": {
+    "Colors determined by sun position": "False",
+    "Cloud opacity": "0.32",
+    "Sun brightness": "18.0",
+    "Zenith Color": "<Struct 'LinearColor' (0x000001D3A63A58B8) {r: 0.075000, g: 0.240000, b: 0.370000, a: 1.000000}>",
+    "Horizon color": "<Struct 'LinearColor' (0x000001D3A63A58C8) {r: 0.320000, g: 0.490000, b: 0.550000, a: 1.000000}>",
+    "Cloud color": "<Struct 'LinearColor' (0x000001D3A63A58D8) {r: 0.730000, g: 0.790000, b: 0.760000, a: 1.000000}>",
+    "Horizon Falloff": "3.0"
+  },
+  "pp_before": {
+    "override_color_contrast": "True",
+    "color_contrast": "<Struct 'Vector4' (0x000001D3A629BB30) {x: 1.140000, y: 1.140000, z: 1.140000, w: 1.000000}>",
+    "override_white_tint": "True",
+    "white_tint": "0.1333329975605011",
+    "override_film_shoulder": "True",
+    "override_film_white_clip": "True",
+    "override_vignette_intensity": "False",
+    "vignette_intensity": "0.4000000059604645",
+    "override_motion_blur_amount": "False",
+    "motion_blur_amount": "0.5",
+    "override_ambient_occlusion_intensity": "False",
+    "ambient_occlusion_intensity": "0.5"
+  },
+  "pp_after": {
+    "override_color_contrast": "True",
+    "color_contrast": "<Struct 'Vector4' (0x000001D3A629BB30) {x: 1.000000, y: 1.000000, z: 1.000000, w: 1.000000}>",
+    "override_white_tint": "True",
+    "white_tint": "0.0",
+    "override_film_shoulder": "False",
+    "override_film_white_clip": "False",
+    "override_vignette_intensity": "True",
+    "vignette_intensity": "0.07999999821186066",
+    "override_motion_blur_amount": "True",
+    "motion_blur_amount": "0.0",
+    "override_ambient_occlusion_intensity": "True",
+    "ambient_occlusion_intensity": "0.3499999940395355"
+  },
+  "preview_console_before": {
+    "r.AntiAliasingMethod": 1,
+    "r.ScreenPercentage": 0
+  },
+  "preview_console_after": {
+    "r.AntiAliasingMethod": 2,
+    "r.ScreenPercentage": 100
+  },
+  "project_config_changed": false,
+  "sun_and_actor_transforms": "unchanged"
+}

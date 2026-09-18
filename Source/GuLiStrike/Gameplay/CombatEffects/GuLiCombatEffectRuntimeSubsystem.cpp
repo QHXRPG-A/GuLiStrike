@@ -1,5 +1,6 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
@@ -39,6 +40,7 @@ void UGuLiCombatEffectRuntimeSubsystem::Initialize(FSubsystemCollectionBase& Col
 	CommanderData = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 	FieldData = GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>();
 	RegisterAttackExecutor(TEXT("DirectSingleTarget"), [this](const auto& Request, auto& Damage, auto& Cues) { ExecuteDirect(Request, Damage, Cues); });
+	RegisterAttackExecutor(TEXT("GroundMachineGun"), [this](const auto& Request, auto& Damage, auto& Cues) { ExecuteGroundMachineGun(Request, Cues); });
 	RegisterAttackExecutor(TEXT("LaunchProjectile"), [this](const auto& Request, auto& Damage, auto& Cues) { ExecuteProjectile(Request, Damage, Cues); });
 }
 
@@ -189,6 +191,35 @@ void UGuLiCombatEffectRuntimeSubsystem::ExecuteDirect(const FGuLiCombatAttackReq
 	Cue.MuzzleOffset = Mount->Muzzles[Cue.MuzzleIndex];
 	Cue.Start = Request.SourceTransform.TransformPosition(Cue.MuzzleOffset);
 	Cue.End = Target.Location; Cue.ServerTime = GetWorld()->GetTimeSeconds();
+}
+
+void UGuLiCombatEffectRuntimeSubsystem::ExecuteGroundMachineGun(const FGuLiCombatAttackRequest& Request,
+	TArray<FGuLiCombatShotCue>& OutCues)
+{
+	if (!ProjectilePool || Request.Context.Source.Kind != EGuLiTargetKind::CommanderSoldier
+		|| Request.Context.Emitter.IsValid() || Request.SourceTransform.ContainsNaN()) return;
+	FGuLiCombatTargetSnapshot Target;
+	if (!Ledger->TryGetTargetSnapshot(Request.Context.Target, Target) || !Target.bAlive) return;
+	const FGuLiWeaponMountConfig* Mount = CommanderData && CommanderData->IsWeaponMountCatalogValid()
+		? CommanderData->FindWeaponMountConfig(Request.UnitTypeId, Request.Context.WeaponBinding.SlotId) : nullptr;
+	if (!Mount || !Mount->IsValid()) return;
+	const uint8 MuzzleIndex = static_cast<uint8>(Request.ShotOrdinal % Mount->Muzzles.Num());
+	FGuLiPooledProjectileLaunch Launch;
+	Launch.Context = Request.Context; Launch.MuzzleOffset = Mount->Muzzles[MuzzleIndex];
+	Launch.Position = Request.SourceTransform.TransformPosition(Launch.MuzzleOffset);
+	Launch.Direction = (Target.Location - Launch.Position).GetSafeNormal();
+	Launch.Speed = Request.Motion.Speed; Launch.Lifetime = Request.Motion.MaximumLifetime;
+	// Acquisition range only gates firing. Once launched, the frozen lifetime governs straight flight.
+	Launch.MaximumDistance = Launch.Speed * Launch.Lifetime;
+	Launch.SweepRadius = Request.Motion.SweepRadius; Launch.ServerTime = GetWorld()->GetTimeSeconds();
+	if (!ProjectilePool->Launch(Launch).IsValid()) return;
+	FGuLiCombatShotCue& Cue = OutCues.AddDefaulted_GetRef();
+	Cue.MatchEpoch = Epoch; Cue.ShotId = Request.Context.ShotId;
+	Cue.Source = Request.Context.Source; Cue.Target = Request.Context.Target;
+	Cue.UnitTypeId = Request.UnitTypeId; Cue.SlotId = Request.Context.WeaponBinding.SlotId;
+	Cue.MuzzleIndex = MuzzleIndex; Cue.MuzzleOffset = Launch.MuzzleOffset;
+	Cue.Start = Launch.Position; Cue.End = Target.Location; Cue.ServerTime = Launch.ServerTime;
+	Cue.bMuzzleOnly = true;
 }
 
 void UGuLiCombatEffectRuntimeSubsystem::ExecuteProjectile(const FGuLiCombatAttackRequest& Request,
@@ -373,6 +404,7 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::LaunchPointProjectile(const FGuLiCombat
     FGuLiCombatEffectContext Prepared;
     if (!SynchronizeEpoch() || !Definition || !Definition->IsValidDefinition() || !Request.FrozenField.IsValid()
         || !Request.Motion.IsValid() || Request.SourceTransform.ContainsNaN() || Request.TargetLocation.ContainsNaN()
+        || (Request.GroundWarningStyle && !Request.GroundWarningStyle->IsValidStyle())
         || !PrepareContext(Request.Context, Prepared)) return {};
     UGuLiSpellFieldDefinition* Field = Definition->ImpactField.LoadSynchronous();
     if (!Field || !Field->IsValidDefinition()) return {};
@@ -382,6 +414,7 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::LaunchPointProjectile(const FGuLiCombat
     if (!Lease.IsValid()) return {};
     FGuLiRuntimeCombatEffect Instance;
     Instance.Context = Prepared; Instance.SourceLease = Lease; Instance.Projectile = Definition; Instance.Field = Field;
+    Instance.GroundWarningStyle = Request.GroundWarningStyle;
     Instance.Timing = Request.FrozenField.Timing; Instance.Interval = Request.FrozenField.PulseInterval;
     Instance.Duration = Request.FrozenField.Timing == EGuLiSpellFieldTiming::Periodic ? Request.FrozenField.Duration : 0.0f;
     Instance.FrozenDelay = Request.FrozenField.Delay;
@@ -390,10 +423,15 @@ FGuid UGuLiCombatEffectRuntimeSubsystem::LaunchPointProjectile(const FGuLiCombat
     auto& State = Instance.State;
     State.MatchEpoch = Epoch; State.EffectId = Prepared.ShotId; State.Source = Prepared.Source; State.Target = Prepared.Target;
     State.ProjectileDefinition = Definition; State.FieldDefinition = Field; State.Motion = Request.Motion;
-    State.bFixedPoint = true; State.Motion.LiftSeconds = 0; State.Motion.LateralOffset = 0;
+    State.bFixedPoint = true;
+    if (!Request.bUseAuthoredPointTrajectory) { State.Motion.LiftSeconds = 0; State.Motion.LateralOffset = 0; }
+    State.GroundWarningStyle = Request.GroundWarningStyle;
+    State.Radius = Request.FrozenField.Radius;
     State.Location = Request.SourceTransform.TransformPosition(Request.MuzzleOffset); State.LaunchLocation = State.Location;
     State.LastTargetLocation = Request.TargetLocation;
-    State.LaunchDirection = (Request.TargetLocation - FVector(State.Location)).GetSafeNormal();
+    State.LaunchDirection = Request.bUseAuthoredPointTrajectory
+        ? (Request.TargetLocation - FVector(State.Location)).GetSafeNormal2D(UE_SMALL_NUMBER, Request.SourceTransform.GetUnitAxis(EAxis::X))
+        : (Request.TargetLocation - FVector(State.Location)).GetSafeNormal();
     State.Velocity = FVector(State.LaunchDirection) * State.Motion.Speed;
     State.StartTime = State.SampleTime = GetWorld()->GetTimeSeconds();
     State.EndTime = State.StartTime + State.Motion.MaximumLifetime; State.Sequence = 1;
@@ -738,11 +776,18 @@ bool UGuLiCombatEffectRuntimeSubsystem::QueryEffect(FGuid EffectId, FGuLiCombatE
 	OutState = {}; return false;
 }
 
-void UGuLiCombatEffectRuntimeSubsystem::BuildActiveSnapshot(TArray<FGuLiCombatEffectState>& OutStates) const
+void UGuLiCombatEffectRuntimeSubsystem::BuildActiveSnapshot(TArray<FGuLiCombatEffectState>& OutStates, const bool bIncludeGroundProjectiles) const
 {
 	OutStates.Reset(Effects.Num());
 	for (const auto& Pair : Effects) OutStates.Add(Pair.Value.State);
-	if (ProjectilePool) ProjectilePool->AppendActiveSnapshot(OutStates);
+	if (ProjectilePool) ProjectilePool->AppendActiveSnapshot(OutStates,
+		bIncludeGroundProjectiles ? EGuLiTargetKind::None : EGuLiTargetKind::Wingman);
+}
+
+void UGuLiCombatEffectRuntimeSubsystem::BuildGroundProjectileSnapshot(TArray<FGuLiCombatEffectState>& OutStates) const
+{
+	OutStates.Reset();
+	if (ProjectilePool) ProjectilePool->AppendActiveSnapshot(OutStates, EGuLiTargetKind::CommanderSoldier);
 }
 
 void UGuLiCombatEffectRuntimeSubsystem::HandlePooledState(const FGuLiCombatEffectState& State, const bool bReliable)

@@ -26,8 +26,8 @@ public:
 	static bool ValidatePresentationGround(UWorld& World, UClass* PresentationClass, const FTransform& Building,
 		const FCollisionQueryParams& Query, FString& OutReason);
 	static constexpr double GroundTraceDistance = 50000.0;
-	static constexpr double MaximumGroundRise = 500.0;
-	static constexpr double MaximumGroundDrop = 5000.0;
+	static constexpr double MaximumGroundRise = 100.0;
+	static constexpr double MaximumGroundDrop = 1000.0;
 protected:
 	virtual void BeginPlay() override;
 private:

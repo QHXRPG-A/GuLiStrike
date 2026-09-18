@@ -57,6 +57,12 @@ bool FGuLiSkillResolver::ValidateCatalog(const TArray<FGuLiSkillDefinition>& Def
 		if (Row.UnitTypeId == 0 || Row.SlotId.IsNone() || !SkillIds.Contains(Row.SkillId) || UniqueConfigs.Contains(ConfigKey)
 			|| !ValidAttribute(Row.Damage, 0) || !ValidAttribute(Row.AttackRatePerSecond, 1) || !ValidAttribute(Row.RangeCentimeters, 2))
 		{ OutError = FString::Printf(TEXT("Invalid/duplicate UnitSkills row %s (finite nonnegative; damage<=1e9, rate<=30, range<=1e6)."), *ConfigKey); return false; }
+		const auto* Definition = FindDefinition(Definitions, Row.SkillId);
+		if (Definition->ExecutorId == TEXT("GroundMachineGun")
+			&& (!FMath::IsFinite(Row.ProjectileSpeedCentimetersPerSecond) || Row.ProjectileSpeedCentimetersPerSecond <= 0 || Row.ProjectileSpeedCentimetersPerSecond > 1000000
+				|| !FMath::IsFinite(Row.ProjectileLifetimeSeconds) || Row.ProjectileLifetimeSeconds < 0.01f || Row.ProjectileLifetimeSeconds > 120
+				|| !FMath::IsFinite(Row.ProjectileSweepRadiusCentimeters) || Row.ProjectileSweepRadiusCentimeters < 0 || Row.ProjectileSweepRadiusCentimeters > 10000))
+		{ OutError = FString::Printf(TEXT("Invalid ground projectile motion in UnitSkills row %s."), *ConfigKey); return false; }
 		UniqueConfigs.Add(ConfigKey);
 		SlotsByUnit.FindOrAdd(Row.UnitTypeId).Add(Row.SlotId);
 		if (SlotsByUnit.FindChecked(Row.UnitTypeId).Num() > 32)
@@ -248,6 +254,10 @@ bool FGuLiSkillResolver::ResolveSelected(EGuLiTeam Team, const TArray<FGuLiSkill
 		Profile.Team = Team; Profile.UnitTypeId = Default.UnitTypeId; Profile.SlotId = Default.SlotId;
 		Profile.SkillId = SelectedSkill; Profile.ExecutorId = Definition->ExecutorId; Profile.Tags = Definition->Tags;
 		Profile.bUnlocked = bUnlocked;
+		Profile.TriggerMode = Config->TriggerMode;
+		Profile.ProjectileSpeedCentimetersPerSecond = Config->ProjectileSpeedCentimetersPerSecond;
+		Profile.ProjectileLifetimeSeconds = Config->ProjectileLifetimeSeconds;
+		Profile.ProjectileSweepRadiusCentimeters = Config->ProjectileSweepRadiusCentimeters;
 		Profile.bEquipped = bUnlocked && (!Selection || !Selection->SkillId.IsNone());
 		Profile.Damage = static_cast<float>(Values[0]); Profile.AttackRatePerSecond = static_cast<float>(Values[1]); Profile.RangeCentimeters = static_cast<float>(Values[2]);
 	}

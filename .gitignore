@@ -47,6 +47,11 @@ Content/MC_Vehicle_Constructor/
 Content/RealisticExplosionPackD/
 Content/Stylized_Explosion_Pack_Vol1/
 Content/_VFXResources/
+# Pine source pack and copied third-party geometry follow the same local-only policy.
+Content/StylizedPineEnvironment/
+Content/GuLiStrike/Environment/ArtReview/PineStyleAdaptation_20260918/Meshes/
+ArtSource/Environment/PineDemoAdaptation_20260918/Backup_ProjectBefore/
+ArtSource/Environment/PineStyleComparison_20260917/Inspection/
 Assets/Meshes/SM_Card*.fbx
 Assets/Source/Card*.fbx
 Assets/Source/Cards*.psd
@@ -121,6 +126,8 @@ htmlcov/
 *.lnk
 # Packaged acceptance builds and binary inspection backups are reproducible local outputs.
 TestResults/**/Cooked*/
+# Locally installed media tooling is regenerated, not a project source artifact.
+TestResults/Scale020/Tools/
 TestResults/**/*.uasset
 TestResults/**/*.umap
 Artifacts/**/*.uasset

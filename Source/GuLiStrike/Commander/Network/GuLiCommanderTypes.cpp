@@ -110,11 +110,11 @@ float GuLiCommanderProtocol::GetSelectionRadiusCentimeters(const EGuLiSelectionR
 	switch (Preset)
 	{
 	case EGuLiSelectionRadiusPreset::Small:
-		return 8000.0f;
+		return 1600.0f;
 	case EGuLiSelectionRadiusPreset::Medium:
-		return 20000.0f;
+		return 4000.0f;
 	case EGuLiSelectionRadiusPreset::Large:
-		return 45000.0f;
+		return 9000.0f;
 	default:
 		return 0.0f;
 	}
@@ -396,6 +396,11 @@ void FGuLiCohortCommandAck::Sanitize()
 	const uint32 ValidMask = GetValidMemberMask();
 	EligibleMemberMask &= ValidMask;
 	AcceptedMemberMask &= EligibleMemberMask;
+	if (Result == EGuLiCommandAckResult::Cancelled || Result == EGuLiCommandAckResult::TimedOut)
+	{
+		AcceptedMemberMask = 0u;
+		return;
+	}
 
 	if (MemberCount == 0u)
 	{
@@ -490,6 +495,8 @@ void FGuLiCommandAck::Sanitize()
 		for (FGuLiCohortCommandAck& CohortResult : CohortResults)
 		{
 			CohortResult.AcceptedMemberMask = 0u;
+			if (Result == EGuLiCommandAckResult::Cancelled || Result == EGuLiCommandAckResult::TimedOut)
+				CohortResult.Result = Result;
 			CohortResult.Sanitize();
 		}
 		return;

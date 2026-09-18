@@ -22,6 +22,15 @@ namespace
 {
 	constexpr double MaximumSelectionRayDistance = 600000.0;
 
+	void EngineeringPickSphere(const APawn& Pawn, const IGuLiEngineeringVehicle& Vehicle,
+		const FVector& RayOrigin, const float HalfAngle, FVector& Center, float& Radius)
+	{
+		const FBox Bounds = Vehicle.GetEngineeringTravelBounds().TransformBy(Pawn.GetActorTransform());
+		Center = Bounds.IsValid ? Bounds.GetCenter() : Pawn.GetActorLocation();
+		Radius = (Bounds.IsValid ? Bounds.GetExtent().Size() : 240.0)
+			+ FVector::Distance(Center, RayOrigin) * FMath::Tan(HalfAngle);
+	}
+
 	bool IsPointInsideSelectionBox(const FGuLiSelectionRequest& Request, const FVector& Location)
 	{
 		const FVector Rays[] = {
@@ -102,9 +111,13 @@ bool UGuLiCommanderResourceAdapter::ResolveActorSelection(
 			if (Request.Kind == EGuLiSelectionKind::Point)
 			{
 				double Along = 0.0;
+				FVector Center;
+				float Radius;
+				EngineeringPickSphere(Pawn, Vehicle, Request.RayOrigin, Request.PickHalfAngleRadians, Center, Radius);
+				Radius += FMath::Min(Pawn.GetVelocity().Size() * .35, 500.0);
 				bHit = Vehicle.GetStableActorId() == Request.SeedActorId
 					&& RayPassesSphere(Request.RayOrigin, Request.RayDirection,
-						Pawn.GetActorLocation(), 1200.0f, Along);
+						Center, Radius, Along);
 			}
 			else if (Request.Kind == EGuLiSelectionKind::SameType)
 			{
@@ -243,9 +256,10 @@ FGuLiControllableActorId UGuLiCommanderResourceAdapter::FindControllableActorAlo
 		const auto& Vehicle = *Interface;
 		if (Vehicle.GetTeam() != Team) continue;
 		double Along = 0.0;
-		const float Radius = 1200.0f
-			+ static_cast<float>(FMath::Tan(PickHalfAngleRadians) * 10000.0);
-		if (RayPassesSphere(RayOrigin, RayDirection, Pawn.GetActorLocation(), Radius, Along)
+		FVector Center;
+		float Radius;
+		EngineeringPickSphere(Pawn, Vehicle, RayOrigin, PickHalfAngleRadians, Center, Radius);
+		if (RayPassesSphere(RayOrigin, RayDirection, Center, Radius, Along)
 			&& Along < BestAlong)
 		{
 			BestAlong = Along;
@@ -292,7 +306,7 @@ bool UGuLiCommanderResourceAdapter::IsFactoryAlongRay(
 	{
 		if (It->GetTeam() != Team) continue;
 		double Along = 0.0;
-		return RayPassesSphere(RayOrigin, RayDirection, It->GetActorLocation(), 5000.0f, Along);
+		return RayPassesSphere(RayOrigin, RayDirection, It->GetActorLocation(), 1000.0f, Along);
 	}
 	return false;
 }

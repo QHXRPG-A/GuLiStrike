@@ -19,6 +19,7 @@ AGuLiStrikeAoEAttack::AGuLiStrikeAoEAttack()
 	// create the mesh that provides the visual representation for the AoE
 	SphereVisual = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Sphere Visual"));
 	SphereVisual->SetupAttachment(RootComponent);
+	SphereVisual->SetRelativeScale3D(FVector(0.2f));
 
 	SphereVisual->SetCollisionProfileName(FName("NoCollision"));
 
@@ -26,7 +27,7 @@ AGuLiStrikeAoEAttack::AGuLiStrikeAoEAttack()
 	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Collision Sphere"));
 	CollisionSphere->SetupAttachment(RootComponent);
 
-	CollisionSphere->SetSphereRadius(750.0f);
+	CollisionSphere->SetSphereRadius(150.0f);
 	CollisionSphere->SetNotifyRigidBodyCollision(true);
 	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	CollisionSphere->SetCollisionObjectType(ECC_WorldDynamic);

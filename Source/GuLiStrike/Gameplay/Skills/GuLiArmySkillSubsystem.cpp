@@ -22,6 +22,7 @@ void UGuLiArmySkillSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 	Definitions = Data->GetSkillDefinitions();
 	Configs = Data->GetUnitSkillConfigs();
 	RegisteredExecutors.Add(TEXT("DirectSingleTarget"));
+	RegisteredExecutors.Add(TEXT("GroundMachineGun"));
 	RegisteredExecutors.Add(TEXT("LaunchProjectile"));
 	if (GetWorld()->GetNetMode() != NM_Client)
 	{

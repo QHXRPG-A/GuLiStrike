@@ -18,11 +18,11 @@ AGuLiConstructionVehiclePawn::AGuLiConstructionVehiclePawn(const FObjectInitiali
 	: Super(Initializer.SetDefaultSubobjectClass<UGuLiExternalCharacterMovementComponent>(ACharacter::CharacterMovementComponentName))
 {
 	bReplicates = true; bAlwaysRelevant = true; SetReplicateMovement(true);
-	GetCapsuleComponent()->InitCapsuleSize(650,650);
+	GetCapsuleComponent()->InitCapsuleSize(130,130);
 	GetCapsuleComponent()->SetCanEverAffectNavigation(false);
 	GetCharacterMovement()->SetUpdateNavAgentWithOwnersCollisions(false);
 	GetCharacterMovement()->NavAgentProps.AgentRadius = GULI_RESOURCE_MINING_VEHICLE_NAV_RADIUS_CM;
-	GetCharacterMovement()->NavAgentProps.AgentHeight = 144;
+	GetCharacterMovement()->NavAgentProps.AgentHeight = 28.8f;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	bUseControllerRotationYaw = false;
 	AIControllerClass = AGuLiEngineeringAIController::StaticClass(); AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
@@ -55,7 +55,7 @@ void AGuLiConstructionVehiclePawn::OnRep_Definition()
 	if (!PresentationClass) return; // The replicated class may arrive before the scalar fields.
 	Presentation->SetChildActorClass(PresentationClass);
 	Presentation->SetRelativeScale3D(FVector(PresentationScale));
-	Presentation->SetRelativeLocation(FVector(0,0,-650));
+	Presentation->SetRelativeLocation(FVector(0,0,-130));
 	AActor* Child = Presentation->GetChildActor(); check(Child);
 	Child->SetActorEnableCollision(false);
 	TravelBounds = FBox(ForceInit);
@@ -90,7 +90,7 @@ EGuLiTransitOrderResult AGuLiConstructionVehiclePawn::IssueStrongholdTransit(
 bool AGuLiConstructionVehiclePawn::IssueMove(const FVector& Target)
 {
 	if (!HasAuthority() || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;
-	Work->StopWork(); return Travel->BeginMove(Target,500);
+	Work->StopWork(); return Travel->BeginMove(Target,100);
 }
 bool AGuLiConstructionVehiclePawn::IssueConstruction(UGuLiBuildingLifecycleComponent* Building)
 {

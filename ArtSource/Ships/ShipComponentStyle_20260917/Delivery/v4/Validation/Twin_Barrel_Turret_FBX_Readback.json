@@ -1,0 +1,65 @@
+{
+  "key": "Twin_Barrel_Turret",
+  "fbx_file": "FBX\\SKM_SC_Twin_Barrel_Turret_Styled.fbx",
+  "fbx_sha256": "dc3cc679b1e02202e206060b03f01622d0d9b422be7aaafbb4d32deea87b7611",
+  "mesh_count": 1,
+  "body_triangles": 1680,
+  "dimensions_m": [
+    20.16775894165039,
+    49.253318786621094,
+    10.072568893432617
+  ],
+  "max_dimension_error_m": 4.76837158203125e-06,
+  "max_geometry_error_m": 6.873167876619846e-06,
+  "origin_error_m": 0.0,
+  "uv_names": [
+    "SC_PaintUV",
+    "SC_LineUV",
+    "UVmap_0",
+    "UVmap_1",
+    "UVmap_2",
+    "LightMapUV"
+  ],
+  "uv_max_errors": {
+    "SC_PaintUV": 0.0,
+    "SC_LineUV": 0.0,
+    "UVmap_0": 0.0,
+    "UVmap_1": 0.0,
+    "UVmap_2": 0.0,
+    "LightMapUV": 0.0
+  },
+  "materials": [
+    "M_SC_Twin_Barrel_Turret_Portable"
+  ],
+  "bones": {
+    "Root": {
+      "parent": null,
+      "head": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "BarrelPitch": {
+      "parent": "Root",
+      "head": [
+        -1.9233010561947594e-07,
+        2.200000047683716,
+        -0.2700999975204468
+      ]
+    }
+  },
+  "max_bone_pivot_error_m": 1.9233010868616656e-07,
+  "rigid_weights": "single bone, weight 1",
+  "socket_names": [
+    "Socket_1",
+    "Socket_2"
+  ],
+  "socket_metadata_matches_source": true,
+  "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+  "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+  "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+  "demo_animation_exported": false,
+  "UE_formal_validation": "not_run",
+  "passed": true
+}

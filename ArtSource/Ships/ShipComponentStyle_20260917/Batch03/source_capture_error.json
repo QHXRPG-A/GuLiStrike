@@ -1,0 +1,4 @@
+{
+  "success": false,
+  "traceback": "Traceback (most recent call last):\n  File \"D:/UE5.7/test1/Scripts/Art/freeze_ship_component_batch03_sources.py\", line 70, in <module>\n    main()\n  File \"D:/UE5.7/test1/Scripts/Art/freeze_ship_component_batch03_sources.py\", line 49, in main\n    scale=source.xyz(s.relative_scale)) for s in mesh.get_editor_property('sockets')]\n                                                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nException: StaticMesh: Property 'Sockets' for attribute 'sockets' on 'StaticMesh' is protected and cannot be read\n"
+}

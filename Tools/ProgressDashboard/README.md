@@ -31,8 +31,10 @@
 - `GET /api/snapshot`
 - `GET /api/search?q=关键词`
 - `GET /api/documents/{id}`
+- `GET /api/artsource?dir=ArtSource下的相对目录`（逐级列目录，含大小、类型与子项计数）
+- `GET /api/artsource/file?p=ArtSource下的相对文件`（仅允许图片、视频与 Markdown，路径禁止越界）
 
-服务固定绑定 `127.0.0.1`。文档只按元数据 ID 读取，非法 ID、路径穿越和所有写请求都会被拒绝。Markdown 文件修改后，服务按文件修改时间自动刷新内存缓存。
+服务固定绑定 `127.0.0.1`。文档只按元数据 ID 读取，非法 ID、路径穿越和所有写请求都会被拒绝。Markdown 文件修改后，服务按文件修改时间自动刷新内存缓存。侧边栏「美术相关」视图汇总 Progress 美术分类文档，并只读浏览 `ArtSource/` 素材目录。
 
 ## 手动构建
 

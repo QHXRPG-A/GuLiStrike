@@ -1,0 +1,44 @@
+{
+  "checks": {
+    "deterministic_seed": true,
+    "map_package": true,
+    "playable_maximum": true,
+    "playable_minimum": true,
+    "source_hash": true,
+    "spawn_anchors": true,
+    "territories": true,
+    "counts": true,
+    "centers": true,
+    "local_layout_and_economy": true,
+    "layout_version": true,
+    "baked_object_scale": true,
+    "economy_unchanged": true
+  },
+  "failed_node_indices": [],
+  "node_count": 6240,
+  "cluster_count": 240,
+  "max_reground_delta_cm": 392.79172761307564,
+  "old_layout_hash": "2714f7bb7668d56638f0d7a4d752e194a9657996",
+  "new_layout_hash": "5710cc3994205e33848d7d4051a80c2d6cd3b458",
+  "bake": {
+    "cluster_count": 240,
+    "issues": [],
+    "layout_hash": "5710cc3994205e33848d7d4051a80c2d6cd3b458",
+    "message": "Baked 25 territories, 240 clusters and 6240 nodes. Source=ad4553c2929f25d974c11dca3790d3004c827319 Layout=5710cc3994205e33848d7d4051a80c2d6cd3b458",
+    "node_count": 6240,
+    "source_hash": "ad4553c2929f25d974c11dca3790d3004c827319",
+    "success": true,
+    "territory_count": 25
+  },
+  "saved": true,
+  "validation": {
+    "cluster_count": 240,
+    "issues": [],
+    "layout_hash": "5710cc3994205e33848d7d4051a80c2d6cd3b458",
+    "message": "Resource authoring source and baked runtime definition are current.",
+    "node_count": 6240,
+    "source_hash": "ad4553c2929f25d974c11dca3790d3004c827319",
+    "success": true,
+    "territory_count": 25
+  }
+}

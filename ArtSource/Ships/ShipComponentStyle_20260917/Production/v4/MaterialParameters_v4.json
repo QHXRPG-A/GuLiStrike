@@ -1,0 +1,188 @@
+{
+  "schema": "guli-ship-material-parameters/v1",
+  "renderer": "Blender EEVEE",
+  "lighting": "Diffuse BSDF -> Shader to RGB -> RGB to BW -> CONSTANT ColorRamp -> multiply BaseColor -> mix independent ink -> Emission",
+  "thresholds": [
+    0,
+    0.18,
+    0.46
+  ],
+  "linear_tone_multipliers": [
+    [
+      0.43,
+      0.5,
+      0.6
+    ],
+    [
+      0.72,
+      0.79,
+      0.84
+    ],
+    [
+      1,
+      1,
+      1
+    ]
+  ],
+  "palette_sRGB": {
+    "Pearl": "DDE6E6",
+    "Slate": "4B6577",
+    "Navy": "23384A",
+    "Steel": "8298A5",
+    "Ochre": "C9903E",
+    "Cyan": "348B9F",
+    "Brick": "B16352",
+    "Ink": "213D50"
+  },
+  "texture_resolution": [
+    2048,
+    2048
+  ],
+  "BaseColor": "sRGB; no baked lighting or shadows",
+  "ORM": "Non-Color; R=1 AO placeholder (no baked occlusion), G=roughness, B=metallic",
+  "LineMask": "Non-Color; white=ink; strength .85; separately switchable",
+  "UV": "Original channels retained, SC_PaintUV and SC_LineUV added",
+  "outline": "Separate OUTLINE_TOGGLE collection; mesh body untouched; CIWS .010m and large components .065m render width",
+  "limitations": "Shader-to-RGB is a Blender render shader. Future UE material needs equivalent quantized light/shadow and outline logic. FBX alone cannot transfer it.",
+  "parts": {
+    "Twin_Barrel_Turret": {
+      "body_triangles": 1680,
+      "outline_triangles": 1680,
+      "body_material_slots": 1,
+      "dimensions_blender_m": [
+        20.16775894165039,
+        49.253318786621094,
+        10.072564125061035
+      ],
+      "uv_channels": [
+        "UVmap_0",
+        "UVmap_1",
+        "UVmap_2",
+        "LightMapUV",
+        "SC_PaintUV",
+        "SC_LineUV"
+      ],
+      "sockets": [
+        {
+          "name": "Socket_1",
+          "rest_location_blender_m": [
+            -4.404712200164795,
+            -28.850576400756836,
+            -0.8853079676628113
+          ]
+        },
+        {
+          "name": "Socket_2",
+          "rest_location_blender_m": [
+            4.404712677001953,
+            -28.850576400756836,
+            -0.8853079676628113
+          ]
+        }
+      ]
+    },
+    "CIWS": {
+      "body_triangles": 1066,
+      "outline_triangles": 1066,
+      "body_material_slots": 1,
+      "dimensions_blender_m": [
+        3.2010416984558105,
+        6.845887184143066,
+        2.3504979610443115
+      ],
+      "uv_channels": [
+        "UVmap_0",
+        "UVmap_1",
+        "UVmap_2",
+        "LightMapUV",
+        "SC_PaintUV",
+        "SC_LineUV"
+      ],
+      "sockets": [
+        {
+          "name": "Socket_1",
+          "rest_location_blender_m": [
+            -0.13227219879627228,
+            -4.132104873657227,
+            0.11107655614614487
+          ]
+        },
+        {
+          "name": "Socket_2",
+          "rest_location_blender_m": [
+            -4.76837158203125e-07,
+            -4.132104873657227,
+            0.3323778212070465
+          ]
+        },
+        {
+          "name": "Socket_3",
+          "rest_location_blender_m": [
+            0.13227185606956482,
+            -4.132104873657227,
+            0.11107655614614487
+          ]
+        }
+      ]
+    },
+    "Thor_MissilePod": {
+      "body_triangles": 2080,
+      "outline_triangles": 2080,
+      "body_material_slots": 1,
+      "dimensions_blender_m": [
+        18.048768997192383,
+        45.332401275634766,
+        5.910689353942871
+      ],
+      "uv_channels": [
+        "UVmap_0",
+        "UVmap_1",
+        "LightMapUV",
+        "SC_PaintUV",
+        "SC_LineUV"
+      ],
+      "sockets": [
+        {
+          "name": "Socket_1",
+          "rest_location_blender_m": [
+            -2.3499999046325684,
+            0.0,
+            2.549999952316284
+          ]
+        },
+        {
+          "name": "Socket_2",
+          "rest_location_blender_m": [
+            -2.3499999046325684,
+            17.350000381469727,
+            2.549999952316284
+          ]
+        },
+        {
+          "name": "Socket_3",
+          "rest_location_blender_m": [
+            4.199999809265137,
+            8.75,
+            2.549999952316284
+          ]
+        },
+        {
+          "name": "Socket_4",
+          "rest_location_blender_m": [
+            -2.3499999046325684,
+            -16.75,
+            2.549999952316284
+          ]
+        },
+        {
+          "name": "Socket_5",
+          "rest_location_blender_m": [
+            3.4000000953674316,
+            -8.75,
+            2.549999952316284
+          ]
+        }
+      ]
+    }
+  }
+}

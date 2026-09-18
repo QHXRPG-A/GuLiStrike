@@ -18,8 +18,8 @@ using FGuLiWingmanLineOfSightResolver = TFunction<bool(
 
 struct GULISTRIKE_API FGuLiWingmanTargetingTuning
 {
-	float AcquireRadiusCentimeters = 150000.0f;
-	float ReleaseRadiusCentimeters = 180000.0f;
+	float AcquireRadiusCentimeters = 30000.0f;
+	float ReleaseRadiusCentimeters = 36000.0f;
 	float GuardRejoinFraction = 0.8f;
 	float ScanIntervalSeconds = 0.2f;
 	float MaximumPoseAgeSeconds = 1.0f;

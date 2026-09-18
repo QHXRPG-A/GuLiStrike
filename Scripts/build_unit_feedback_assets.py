@@ -91,7 +91,7 @@ def main():
         'FXT_UnitDestruction', DEST, unreal.NiagaraEffectType, unreal.NiagaraEffectTypeFactoryNew())
     settings = unreal.NiagaraSystemScalabilitySettings()
     settings.set_editor_property('cull_by_distance', True)
-    settings.set_editor_property('max_distance', 180000.0)
+    settings.set_editor_property('max_distance', 36000.0)
     array = effect.get_editor_property('system_scalability_settings')
     array.set_editor_property('settings', [settings])
     effect.set_editor_property('system_scalability_settings', array)

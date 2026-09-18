@@ -111,7 +111,7 @@ def main():
     for emitter in list(NS.list_emitters(SYSTEM)):
         require(NS.remove_emitter(SYSTEM, str(emitter.emitter_name)), 'Remove owned emitter')
     for name, kind, value in [('Forward','Vector','(X=1,Y=0,Z=0)'), ('Throttle','Float','1'),
-                              ('Right','Vector','(X=0,Y=1,Z=0)'), ('NozzleSpacing','Float','174'),
+                              ('Right','Vector','(X=0,Y=1,Z=0)'), ('NozzleSpacing','Float','34.8'),
                               ('Opacity','Float','1'), ('Tint','Color','(R=0.12,G=0.55,B=1,A=1)')]:
         if not any(str(p.parameter_name) == 'User.' + name for p in NS.list_parameters(SYSTEM)):
             require(NS.add_user_parameter(SYSTEM, name, kind, value), 'User parameter ' + name)
@@ -136,15 +136,15 @@ def main():
                    ('Width','float','Particles.RibbonWidth')]
         shape = ('float3 dir=Forward/max(length(Forward),0.001); '
                  f'Life={life}; Velocity=float3(0,0,0); Color=float4(Tint.rgb,Opacity); '
-                 'Size=float2(150,1000*Throttle); Alignment=dir; Rotation=0; Width=110; ')
+                 'Size=float2(200*Throttle,30); Alignment=dir; Rotation=0; Width=22; ')
         nozzle = f'Owner+Right*Spacing*{side}.0'
-        shape += f'Position={nozzle}-dir*Size.y*0.43;' if name.endswith('EngineFlame') else f'Position={nozzle};'
+        shape += f'Position={nozzle}-dir*Size.x*0.43;' if name.endswith('EngineFlame') else f'Position={nozzle};'
         scratch(emitter, 'ParticleSpawn', 'InitializeWingman' + name, shared_inputs, outputs, shape)
         if name.endswith('EngineFlame'):
             scratch(emitter, 'ParticleUpdate', 'FollowWingmanNozzle', shared_inputs,
                     [o for o in outputs if o[0] in ('Position','Color','Size','Alignment')],
-                    'float3 dir=Forward/max(length(Forward),0.001); Size=float2(150,1000*Throttle); '
-                    f'Alignment=dir; Position={nozzle}-dir*Size.y*0.43; Color=float4(Tint.rgb,Opacity);')
+                    'float3 dir=Forward/max(length(Forward),0.001); Size=float2(200*Throttle,30); '
+                    f'Alignment=dir; Position={nozzle}-dir*Size.x*0.43; Color=float4(Tint.rgb,Opacity);')
             require(EM.set_renderer_property(SYSTEM, emitter, 0, 'Material', flame), 'Flame material')
             require(EM.set_renderer_property(SYSTEM, emitter, 0, 'Alignment', 'CustomAlignment'), 'Flame alignment')
         else:
@@ -154,10 +154,10 @@ def main():
             scratch(emitter, 'ParticleUpdate', 'FadeWingmanRibbon',
                     [('Age','float','Particles.NormalizedAge'), ('Opacity','float','User.Opacity'), ('Tint','Color','User.Tint')],
                     [('Color','Color','Particles.Color'), ('Width','float','Particles.RibbonWidth')],
-                    'float fade=saturate(1-Age); Color=float4(Tint.rgb,Opacity*fade*fade*0.65); Width=110*fade;')
+                    'float fade=saturate(1-Age); Color=float4(Tint.rgb,Opacity*fade*fade*0.65); Width=22*fade;')
     system = ASSETS.load_asset(SYSTEM)
     system.set_editor_property('bFixedBounds', True)
-    system.set_editor_property('FixedBounds', unreal.Box(min=unreal.Vector(-25000,-25000,-25000), max=unreal.Vector(25000,25000,25000)))
+    system.set_editor_property('FixedBounds', unreal.Box(min=unreal.Vector(-5000,-5000,-5000), max=unreal.Vector(5000,5000,5000)))
     system.set_editor_property('max_pool_size', 0)  # The persistent component is owned by the Pawn pool.
     system.set_editor_property('pool_prime_size', 0)
     effect_path = DEST + '/FXT_WingmanFlight'
@@ -165,7 +165,7 @@ def main():
         'FXT_WingmanFlight', DEST, unreal.NiagaraEffectType, unreal.NiagaraEffectTypeFactoryNew())
     settings = unreal.NiagaraSystemScalabilitySettings()
     settings.set_editor_property('cull_by_distance', True)
-    settings.set_editor_property('max_distance', 180000.0)
+    settings.set_editor_property('max_distance', 36000.0)
     array = effect.get_editor_property('system_scalability_settings')
     array.set_editor_property('settings', [settings])
     effect.set_editor_property('system_scalability_settings', array)

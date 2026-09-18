@@ -37,8 +37,8 @@ namespace
 	constexpr float NavigationEvaluationPeriodSeconds = 0.1f;
 	constexpr double MinimumRepathIntervalSeconds = 0.5;
 	constexpr double FailedPathRetrySeconds = 1.0;
-	constexpr float MinimumGoalDriftForRepathCentimeters = 10000.0f;
-	constexpr float MinimumWaypointReachDistanceCentimeters = 5000.0f;
+	constexpr float MinimumGoalDriftForRepathCentimeters = 2000.0f;
+	constexpr float MinimumWaypointReachDistanceCentimeters = 1000.0f;
 	constexpr int32 MaximumNavigationExpandedNodes = 8192;
 	constexpr uint32 MaximumInitialSwarmCandidateCount = 64u;
 

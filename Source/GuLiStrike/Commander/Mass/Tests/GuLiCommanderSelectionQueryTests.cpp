@@ -173,6 +173,8 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 
 bool FGuLiCommanderPointHintValidationTest::RunTest(const FString& Parameters)
 {
+	// Scale020 fixture: spatial values use final centimeters.
+
 	(void)Parameters;
 	using namespace GuLiCommanderSelectionTests;
 	using namespace GuLiCommanderSelectionQuery;
@@ -181,25 +183,25 @@ bool FGuLiCommanderPointHintValidationTest::RunTest(const FString& Parameters)
 		MakeCandidate(2u, FVector::ZeroVector)
 	};
 	TArray<FGuLiSoldierId> Ids;
-	FGuLiSelectionRequest Request = MakePointRequest();
+	FGuLiSelectionRequest Request = MakePointRequest(); Request.RayOrigin *= 0.2;
 	TestFalse(TEXT("hint far from cursor is rejected"), ResolveCandidates(Request, EGuLiTeam::Red, Population, Ids));
 	TestTrue(TEXT("rejected hint never selects a nearer neighbour"), Ids.IsEmpty());
 	Population[0].Location = FVector::ZeroVector;
-	Request.RayOrigin = FVector(-3000.0, 0.0, 1000.0);
+	Request.RayOrigin = FVector(-600.0, 0.0, 200.0);
 	Request.RayDirection = FVector::ForwardVector;
 	TestTrue(TEXT("stationary body top is clickable without velocity allowance"),
 		ResolveCandidates(Request, EGuLiTeam::Red, Population, Ids));
-	Request.RayOrigin = FVector(-3000.0, 750.0, 500.0);
+	Request.RayOrigin = FVector(-600.0, 150.0, 100.0);
 	TestTrue(TEXT("stationary body side at client pick radius is clickable"),
 		ResolveCandidates(Request, EGuLiTeam::Red, Population, Ids));
-	Request.RayOrigin = FVector(-3000.0, 2000.0, 500.0);
+	Request.RayOrigin = FVector(-600.0, 400.0, 100.0);
 	TestFalse(TEXT("body allowance still rejects a ray far beside a stationary soldier"),
 		ResolveCandidates(Request, EGuLiTeam::Red, Population, Ids));
-	Request = MakePointRequest();
-	Population[0].Location = FVector(1200.0, 0.0, 0.0);
+	Request = MakePointRequest(); Request.RayOrigin *= 0.2;
+	Population[0].Location = FVector(240.0, 0.0, 0.0);
 	TestFalse(TEXT("stationary soldier outside body plus angular allowance is rejected"),
 		ResolveCandidates(Request, EGuLiTeam::Red, Population, Ids));
-	Population[0].Velocity = FVector(1000.0, 0.0, 0.0);
+	Population[0].Velocity = FVector(200.0, 0.0, 0.0);
 	TestTrue(TEXT("bounded moving display error is tolerated"), ResolveCandidates(Request, EGuLiTeam::Red, Population, Ids));
 	Population[0].Team = EGuLiTeam::Blue;
 	TestFalse(TEXT("enemy seed rejected"), ResolveCandidates(Request, EGuLiTeam::Red, Population, Ids));
@@ -208,10 +210,10 @@ bool FGuLiCommanderPointHintValidationTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("dead seed rejected"), ResolveCandidates(Request, EGuLiTeam::Red, Population, Ids));
 	Request.SeedSoldierId = FGuLiSoldierId(999u);
 	TestFalse(TEXT("unknown seed rejected"), ResolveCandidates(Request, EGuLiTeam::Red, Population, Ids));
-	Request = MakePointRequest();
+	Request = MakePointRequest(); Request.RayOrigin *= 0.2;
 	Request.RayDirection = FVector::ZeroVector;
 	TestFalse(TEXT("zero direction is malformed"), Request.IsWellFormed());
-	Request = MakePointRequest();
+	Request = MakePointRequest(); Request.RayOrigin *= 0.2;
 	Request.PickHalfAngleRadians = 0.5f;
 	TestFalse(TEXT("oversized pick aperture is malformed"), Request.IsWellFormed());
 	Request = MakeBoxRequest();

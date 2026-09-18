@@ -3,6 +3,7 @@
 #include "GuLiStrikeShipPartComponent.h"
 #include "GuLiStrikeShip.h"
 #include "GuLiStrike.h"
+#include "Gameplay/Data/GuLiObjectScale.h"
 #include "Components/MeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -83,6 +84,7 @@ bool UGuLiStrikeShipPartComponent::RebuildVisualMesh()
 		if (OverrideMaterials[Index]) { Visual->SetMaterial(Index, OverrideMaterials[Index]); }
 	}
 	Visual->RegisterComponentWithWorld(GetWorld());
+	GuLiObjectScale::ApplyOutlineScale(Visual);
 	if (!Visual->IsRegistered()) { DestroyVisualMesh(); return false; }
 	return true;
 }

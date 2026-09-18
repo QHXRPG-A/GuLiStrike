@@ -287,11 +287,11 @@ protected:
 
 	/** 标称推重比对应的极速 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Stats", meta=(ClampMin = 0))
-	float BaseMaxSpeed = 1200.0f;
+	float BaseMaxSpeed = 240.0f;
 
 	/** 标称推重比对应的加速度 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Stats", meta=(ClampMin = 0))
-	float BaseAcceleration = 400.0f;
+	float BaseAcceleration = 80.0f;
 
 	/** 映射到基础飞行性能的推重比 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Stats", meta=(ClampMin = 0.01))
@@ -359,27 +359,27 @@ protected:
 
 	/** 默认相机臂长（厘米）：出生时的期望臂长与滚轮缩放起点 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
-	float CameraDefaultArmLength = 3000.0f;
+	float CameraDefaultArmLength = 600.0f;
 
 	/** 滚轮每格伸缩的相机臂长度（厘米） */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
-	float CameraZoomStep = 4000.0f;
+	float CameraZoomStep = 800.0f;
 
 	/** 滚轮期望臂长下限（厘米）；实际臂长由 Tick 避障每帧结算，此值只约束期望值 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
-	float CameraZoomMin = 50000.0f;
+	float CameraZoomMin = 10000.0f;
 
 	/** 相机臂长度上限（厘米） */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
-	float CameraZoomMax = 160000.0f;
+	float CameraZoomMax = 32000.0f;
 
 	/** 相机避障扫掠的球半径（厘米）；同时是贴面时镜头与舰面的最小间隙 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 10))
-	float CameraCollisionProbeRadius = 250.0f;
+	float CameraCollisionProbeRadius = 50.0f;
 
 	/** 避障拉回时的软臂长下限（厘米）；障碍更近时优先保证不穿透 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Handling", meta=(ClampMin = 0))
-	float CameraCollisionMinArm = 500.0f;
+	float CameraCollisionMinArm = 100.0f;
 
 	/** 舰体网格体偏移，让飞船几何中心对齐 Actor 原点 */
 	UPROPERTY(EditDefaultsOnly, Category="Ship|Components")

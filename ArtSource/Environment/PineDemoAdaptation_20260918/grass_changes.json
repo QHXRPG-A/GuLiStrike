@@ -1,0 +1,23 @@
+{
+  "success": true,
+  "build_before": "<Struct 'MeshBuildSettings' (0x000002AB4D261540) {use_mikk_t_space: True, recompute_normals: False, recompute_tangents: True, compute_weighted_normals: True, remove_degenerates: True, build_reversed_index_buffer: True, use_high_precision_tangent_basis: False, use_full_precision_u_vs: False, use_backwards_compatible_f16_trunc_u_vs: True, generate_lightmap_u_vs: True, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 16, src_lightmap_index: 0, dst_lightmap_index: 1, build_scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}, distance_field_resolution_scale: 1.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+  "build_after": "<Struct 'MeshBuildSettings' (0x000002AB4D26D2F0) {use_mikk_t_space: True, recompute_normals: False, recompute_tangents: True, compute_weighted_normals: True, remove_degenerates: True, build_reversed_index_buffer: True, use_high_precision_tangent_basis: False, use_full_precision_u_vs: False, use_backwards_compatible_f16_trunc_u_vs: True, generate_lightmap_u_vs: True, generate_distance_field_as_if_two_sided: False, support_face_remap: False, min_lightmap_resolution: 16, src_lightmap_index: 0, dst_lightmap_index: 1, build_scale3d: {x: 1.350000, y: 1.350000, z: 0.600000}, distance_field_resolution_scale: 1.000000, distance_field_replacement_mesh: None, max_lumen_mesh_cards: 12}>",
+  "triangles": 37,
+  "bounds": "<Struct 'BoxSphereBounds' (0x000002AE8AF98AC0) {origin: {x: 3.215337, y: 5.829897, z: 11.595791}, box_extent: {x: 26.917362, y: 22.122795, z: 12.659170}, sphere_radius: 37.070434}>",
+  "types": [
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Misc/LandscapeGrassTypes/LGT_Auto.LGT_Auto",
+      "settings": [
+        "<Struct 'GrassVariety' (0x000002ADEDFC6C00) {grass_mesh: \"/Script/Engine.StaticMesh'/Game/StylizedPineEnvironment/Assets/Meshes/Grass/SM_Grass.SM_Grass'\", override_materials: , grass_density: {default: 550.000000}, grass_density_quality: {default: 400.000000}, use_grid: True, placement_jitter: 1.000000, start_cull_distance: {default: 5000}, start_cull_distance_quality: {default: 10000}, end_cull_distance: {default: 20000}, end_cull_distance_quality: {default: 10000}, min_lod: -1, allowed_density_range: {min: 0.000000, max: 1.000000}, scaling: Uniform, scale_x: {min: 1.000000, max: 1.500000}, scale_y: {min: 1.000000, max: 1.000000}, scale_z: {min: 1.000000, max: 1.000000}, weight_attenuates_max_scale: False, max_scale_weight_attenuation: 0.500000, random_rotation: True, align_to_surface: True, align_to_triangle_normals: True, use_landscape_lightmap: False, lighting_channels: {channel0: True, channel1: False, channel2: False}, receives_decals: False, affect_distance_field_lighting: False, cast_dynamic_shadow: False, cast_contact_shadow: False, keep_instance_buffer_cpu_copy: False, shadow_cache_invalidation_behavior: Auto}>"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Misc/LandscapeGrassTypes/LGT_Placeable.LGT_Placeable",
+      "settings": [
+        "<Struct 'GrassVariety' (0x000002ADEDFC0900) {grass_mesh: \"/Script/Engine.StaticMesh'/Game/StylizedPineEnvironment/Assets/Meshes/Grass/SM_Grass.SM_Grass'\", override_materials: , grass_density: {default: 550.000000}, grass_density_quality: {default: 400.000000}, use_grid: True, placement_jitter: 1.000000, start_cull_distance: {default: 5000}, start_cull_distance_quality: {default: 10000}, end_cull_distance: {default: 20000}, end_cull_distance_quality: {default: 10000}, min_lod: -1, allowed_density_range: {min: 0.000000, max: 1.000000}, scaling: Uniform, scale_x: {min: 1.000000, max: 1.500000}, scale_y: {min: 1.000000, max: 1.000000}, scale_z: {min: 1.000000, max: 1.000000}, weight_attenuates_max_scale: False, max_scale_weight_attenuation: 0.500000, random_rotation: True, align_to_surface: True, align_to_triangle_normals: True, use_landscape_lightmap: False, lighting_channels: {channel0: True, channel1: False, channel2: False}, receives_decals: False, affect_distance_field_lighting: False, cast_dynamic_shadow: False, cast_contact_shadow: False, keep_instance_buffer_cpu_copy: False, shadow_cache_invalidation_behavior: Auto}>"
+      ]
+    }
+  ],
+  "painted_foliage_instances_and_actor_transforms": "unchanged",
+  "grass_distribution": "Original landscape layers retained; auto density 1000 -> 550"
+}

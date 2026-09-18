@@ -1,0 +1,206 @@
+[
+  {
+    "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+    "class": "GuLiFlightNavigationVolume",
+    "transform": {
+      "location": [
+        0.0,
+        0.0,
+        8432.6171875
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        5095.0,
+        5095.0,
+        423.173828125
+      ]
+    },
+    "properties": {
+      "actor_guid": {},
+      "actor_instance_guid": {},
+      "always_relevant": false,
+      "authoring_bake_settings": {
+        "agent_radius": 300.0,
+        "collision_channel": "<CollisionChannel.ECC_WORLD_STATIC: 0>",
+        "face_coordinate_tolerance": 0.10000000149011612,
+        "maximum_cells": 100000,
+        "maximum_depth": 6,
+        "maximum_nodes": 200000,
+        "minimum_cell_size": 8000.0,
+        "minimum_portal_span": 25.0,
+        "trace_complex": false
+      },
+      "auto_destroy_when_finished": false,
+      "brush_component": {
+        "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0.BrushComponent0",
+        "class": "BrushComponent"
+      },
+      "can_be_damaged": false,
+      "content_bundle_guid": {},
+      "custom_time_dilation": 1.0,
+      "enable_auto_lod_generation": true,
+      "find_camera_component_when_view_target": true,
+      "generate_overlap_events_during_level_streaming": false,
+      "hidden": false,
+      "initial_life_span": 0.0,
+      "instigator": null,
+      "is_spatially_loaded": true,
+      "life_span": 0.0,
+      "min_net_update_frequency": 2.0,
+      "navigation_data": {
+        "object_path": "/Game/GuLiStrike/Navigation/Baked/LVL_CommanderMassPrototype/DA_FlightNav_LVL_CommanderMassPrototype.DA_FlightNav_LVL_CommanderMassPrototype",
+        "class": "GuLiFlightNavigationData"
+      },
+      "navigation_enabled": true,
+      "net_cull_distance_squared": 225000000.0,
+      "net_dormancy": "<NetDormancy.DORM_AWAKE: 1>",
+      "net_priority": 1.0,
+      "net_update_frequency": 100.0,
+      "net_use_owner_relevancy": false,
+      "only_relevant_to_owner": false,
+      "pivot_offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "query_priority": 100,
+      "replicate_using_registered_sub_object_list": false,
+      "replicates": false,
+      "root_component": {
+        "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0.BrushComponent0",
+        "class": "BrushComponent"
+      },
+      "runtime_grid": "None",
+      "spawn_collision_handling_method": "<SpawnActorCollisionHandlingMethod.ADJUST_IF_POSSIBLE_BUT_DONT_SPAWN_IF_COLLIDING: 3>",
+      "sprite_scale": 1.0,
+      "tags": [
+        "GuLiFlightNavigation.Managed.v1",
+        "GuLiFlightNavigation.Map.LVL_CommanderMassPrototype"
+      ]
+    }
+  },
+  {
+    "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+    "class": "RecastNavMesh",
+    "transform": {
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "properties": {
+      "actor_guid": {},
+      "actor_instance_guid": {},
+      "always_relevant": false,
+      "auto_destroy_when_finished": false,
+      "can_be_damaged": false,
+      "content_bundle_guid": {},
+      "custom_time_dilation": 1.0,
+      "enable_auto_lod_generation": true,
+      "find_camera_component_when_view_target": true,
+      "generate_overlap_events_during_level_streaming": false,
+      "hidden": false,
+      "initial_life_span": 0.0,
+      "instigator": null,
+      "is_spatially_loaded": false,
+      "life_span": 0.0,
+      "min_net_update_frequency": 2.0,
+      "net_cull_distance_squared": 225000000.0,
+      "net_dormancy": "<NetDormancy.DORM_AWAKE: 1>",
+      "net_priority": 1.0,
+      "net_update_frequency": 100.0,
+      "net_use_owner_relevancy": false,
+      "only_relevant_to_owner": false,
+      "pivot_offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "replicate_using_registered_sub_object_list": false,
+      "replicates": false,
+      "root_component": {
+        "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default.SceneComp",
+        "class": "SceneComponent"
+      },
+      "runtime_grid": "None",
+      "spawn_collision_handling_method": "<SpawnActorCollisionHandlingMethod.ALWAYS_SPAWN: 1>",
+      "sprite_scale": 1.0,
+      "tags": []
+    }
+  },
+  {
+    "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+    "class": "RecastNavMesh",
+    "transform": {
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "properties": {
+      "actor_guid": {},
+      "actor_instance_guid": {},
+      "always_relevant": false,
+      "auto_destroy_when_finished": false,
+      "can_be_damaged": false,
+      "content_bundle_guid": {},
+      "custom_time_dilation": 1.0,
+      "enable_auto_lod_generation": true,
+      "find_camera_component_when_view_target": true,
+      "generate_overlap_events_during_level_streaming": false,
+      "hidden": false,
+      "initial_life_span": 0.0,
+      "instigator": null,
+      "is_spatially_loaded": false,
+      "life_span": 0.0,
+      "min_net_update_frequency": 2.0,
+      "net_cull_distance_squared": 225000000.0,
+      "net_dormancy": "<NetDormancy.DORM_AWAKE: 1>",
+      "net_priority": 1.0,
+      "net_update_frequency": 100.0,
+      "net_use_owner_relevancy": false,
+      "only_relevant_to_owner": false,
+      "pivot_offset": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "replicate_using_registered_sub_object_list": false,
+      "replicates": false,
+      "root_component": {
+        "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier.SceneComp",
+        "class": "SceneComponent"
+      },
+      "runtime_grid": "None",
+      "spawn_collision_handling_method": "<SpawnActorCollisionHandlingMethod.ALWAYS_SPAWN: 1>",
+      "sprite_scale": 1.0,
+      "tags": []
+    }
+  }
+]

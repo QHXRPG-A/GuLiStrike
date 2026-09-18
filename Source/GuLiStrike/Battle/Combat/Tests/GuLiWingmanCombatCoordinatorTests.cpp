@@ -1,3 +1,4 @@
+// Scale020: isolated encounter positions and velocities migrated.
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Battle/Combat/GuLiWingmanCombatCoordinator.h"
@@ -123,9 +124,9 @@ namespace GuLiWingmanCombatCoordinatorTests
 			FarEnemyTarget = MakeShipTarget(21u);
 			FriendlyTarget = MakeShipTarget(30u);
 			Ship = SpawnTargetActor(Test, ShipTarget, EGuLiTeam::Red, FVector::ZeroVector);
-			Enemy = SpawnTargetActor(Test, EnemyTarget, EGuLiTeam::Blue, FVector(50000.0, 0.0, 0.0));
-			FarEnemy = SpawnTargetActor(Test, FarEnemyTarget, EGuLiTeam::Blue, FVector(75000.0, 0.0, 0.0));
-			Friendly = SpawnTargetActor(Test, FriendlyTarget, EGuLiTeam::Red, FVector(50000.0, 0.0, 0.0));
+			Enemy = SpawnTargetActor(Test, EnemyTarget, EGuLiTeam::Blue, FVector(10000, 0, 0));
+			FarEnemy = SpawnTargetActor(Test, FarEnemyTarget, EGuLiTeam::Blue, FVector(15000, 0, 0));
+			Friendly = SpawnTargetActor(Test, FriendlyTarget, EGuLiTeam::Red, FVector(10000, 0, 0));
 			if (!Ship || !Enemy || !FarEnemy || !Friendly)
 			{
 				return false;
@@ -280,9 +281,9 @@ namespace GuLiWingmanCombatCoordinatorTests
 				FGuLiWingmanCandidateSample& Sample = Candidate.Samples.AddDefaulted_GetRef();
 				Sample.Wingman = Roster.Wingman;
 				Sample.PositionCentimeters = FIntVector(0,
-					static_cast<int32>(Roster.Wingman.Flight.FlightIndex) * 1000
-						+ static_cast<int32>(Roster.Wingman.MemberIndex) * 100, 0);
-				Sample.VelocityCentimetersPerSecond = FIntVector(4500, 0, 0);
+					static_cast<int32>(Roster.Wingman.Flight.FlightIndex) * 200
+						+ static_cast<int32>(Roster.Wingman.MemberIndex) * 20, 0);
+				Sample.VelocityCentimetersPerSecond = FIntVector(900, 0, 0);
 				Sample.RotationCentiDegrees = FIntVector::ZeroValue;
 				Sample.FlightMode = 1u;
 			}
@@ -439,11 +440,11 @@ bool FGuLiWingmanBasicWeaponCoordinatorTest::RunTest(const FString& Parameters)
 		Fixture.Coordinator.ValidateBasicFireIntent(Fixture.BasicIntent(Fixture.FriendlyTarget), Accepted, 0.12)
 			== EGuLiWingmanRejectReason::FriendlyTarget);
 
-	Fixture.Enemy->SetActorLocation(FVector(151000.0, 0.0, 0.0));
+	Fixture.Enemy->SetActorLocation(FVector(30200, 0, 0));
 	TestTrue(TEXT("Basic weapon range is enforced from the accepted emitter pose"),
 		Fixture.Coordinator.ValidateBasicFireIntent(Valid, Accepted, 0.12)
 			== EGuLiWingmanRejectReason::OutOfRange);
-	Fixture.Enemy->SetActorLocation(FVector(50000.0, 0.0, 0.0));
+	Fixture.Enemy->SetActorLocation(FVector(10000, 0, 0));
 	Fixture.bLineOfSight = false;
 	TestTrue(TEXT("Occluded basic fire is rejected"),
 		Fixture.Coordinator.ValidateBasicFireIntent(Valid, Accepted, 0.12)
@@ -508,17 +509,17 @@ bool FGuLiWingmanUnifiedAutomaticTargetingTest::RunTest(const FString& Parameter
 	UBoxComponent* FloorBox = NewObject<UBoxComponent>(Floor);
 	Floor->SetRootComponent(FloorBox);
 	Floor->AddInstanceComponent(FloorBox);
-	FloorBox->SetBoxExtent(FVector(300000.0, 300000.0, 100.0));
+	FloorBox->SetBoxExtent(FVector(60000, 60000, 20));
 	FloorBox->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	FloorBox->SetCollisionObjectType(ECC_WorldStatic);
 	FloorBox->SetCollisionResponseToAllChannels(ECR_Block);
 	FloorBox->RegisterComponent();
-	Floor->SetActorLocation(FVector(0.0, 0.0, -200.0));
+	Floor->SetActorLocation(FVector(0, 0, -40));
 
 	const FGuLiTargetHandle GroundTarget =
 		GuLiCombatTargets::MakeCommanderSoldierTargetHandle(17u, 900u);
 	AActor* GroundActor = Fixture.SpawnTargetActor(
-		*this, GroundTarget, EGuLiTeam::Blue, FVector(60000.0, 10000.0, 0.0));
+		*this, GroundTarget, EGuLiTeam::Blue, FVector(12000, 2000, 0));
 	if (!TestNotNull(TEXT("Ground enemy exists"), GroundActor)) return false;
 	UGuLiCombatHealthComponent* GroundHealth =
 		GroundActor->FindComponentByClass<UGuLiCombatHealthComponent>();
@@ -629,7 +630,7 @@ bool FGuLiWingmanUnifiedAutomaticTargetingTest::RunTest(const FString& Parameter
 
 	const FGuLiTargetHandle NewAirTarget = MakeShipTarget(22u);
 	AActor* NewAir = Fixture.SpawnTargetActor(
-		*this, NewAirTarget, EGuLiTeam::Blue, FVector(25000.0, -10000.0, 5000.0));
+		*this, NewAirTarget, EGuLiTeam::Blue, FVector(5000, -2000, 1000));
 	if (!TestNotNull(TEXT("New air enemy exists"), NewAir)) return false;
 	Fixture.Coordinator.TickAttackTargeting(0.66, Tuning);
 	TestTrue(TEXT("A newly entered target receives coverage on the next scan"),
@@ -660,7 +661,7 @@ bool FGuLiWingmanUnifiedAutomaticTargetingTest::RunTest(const FString& Parameter
 	TestEqual(TEXT("Other legal targets immediately absorb the released members"),
 		Fixture.Relay.AttackState.AutomaticTargets.Num(), GULI_WINGMAN_GROUP_SIZE);
 
-	Fixture.FarEnemy->SetActorLocation(FVector(180001.0, 0.0, 0.0));
+	Fixture.FarEnemy->SetActorLocation(FVector(36000.2, 0, 0));
 	Fixture.Coordinator.TickAttackTargeting(1.08, Tuning);
 	TestTrue(TEXT("Air targets remain eligible beyond the ground release radius"),
 		Fixture.Relay.AttackState.AutomaticTargets.ContainsByPredicate(
@@ -735,14 +736,14 @@ bool FGuLiWingmanUnifiedAutomaticTargetingTest::RunTest(const FString& Parameter
 			AirActor->FindComponentByClass<UGuLiCombatHealthComponent>()->ApplyServerDamage(KillAir, Death) && Death.bKilled);
 	}
 	AActor* ReleaseGround = Fixture.SpawnTargetActor(*this,
-		GuLiCombatTargets::MakeCommanderSoldierTargetHandle(17u, 901u), EGuLiTeam::Blue, FVector(60000.0, 0.0, 0.0));
+		GuLiCombatTargets::MakeCommanderSoldierTargetHandle(17u, 901u), EGuLiTeam::Blue, FVector(12000, 0, 0));
 	Fixture.Coordinator.TickAttackTargeting(1.30, Tuning);
 	TestFalse(TEXT("The remaining ground target acquires living members"), Fixture.Relay.AttackState.AutomaticTargets.IsEmpty());
 	ReleaseGround->SetActorLocation(FVector(Tuning.ReleaseRadiusCentimeters + 1.0, 0.0, 0.0));
 	Fixture.Coordinator.TickAttackTargeting(1.51, Tuning);
 	TestTrue(TEXT("Losing every prior automatic target only by release range clears the table"),
 		Fixture.Relay.AttackState.AutomaticTargets.IsEmpty());
-	ReleaseGround->SetActorLocation(FVector(50000.0, 0.0, 0.0));
+	ReleaseGround->SetActorLocation(FVector(10000, 0, 0));
 	Fixture.Coordinator.TickAttackTargeting(1.72, Tuning);
 	TestFalse(TEXT("Returning ground targets reacquire members on the next scan"),
 		Fixture.Relay.AttackState.AutomaticTargets.IsEmpty());
@@ -772,20 +773,20 @@ bool FGuLiWingmanMissileCoordinatorTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Retrying a failed identity still creates no missile"),
 		Fixture.Missiles->GetActiveMissileCount(), 0);
 
-	Fixture.Enemy->SetActorLocation(FVector(-50000.0, 0.0, 0.0));
-	Fixture.FarEnemy->SetActorLocation(FVector(-75000.0, 0.0, 0.0));
+	Fixture.Enemy->SetActorLocation(FVector(-10000, 0, 0));
+	Fixture.FarEnemy->SetActorLocation(FVector(-15000, 0, 0));
 	TestTrue(TEXT("Friendly missile lock is rejected"),
 		Fixture.Coordinator.ActivateMissileSalvo(Fixture.MissileRequest(2u), 0.12).RejectReason
 			== EGuLiWingmanRejectReason::FriendlyTarget);
 
-	Fixture.Friendly->SetActorLocation(FVector(-50000.0, 0.0, 0.0));
-	Fixture.Enemy->SetActorLocation(FVector(300000.0, 0.0, 0.0));
-	Fixture.FarEnemy->SetActorLocation(FVector(350000.0, 0.0, 0.0));
+	Fixture.Friendly->SetActorLocation(FVector(-10000, 0, 0));
+	Fixture.Enemy->SetActorLocation(FVector(60000, 0, 0));
+	Fixture.FarEnemy->SetActorLocation(FVector(70000, 0, 0));
 	TestTrue(TEXT("Ship lock range is enforced"),
 		Fixture.Coordinator.ActivateMissileSalvo(Fixture.MissileRequest(3u), 0.12).RejectReason
 			== EGuLiWingmanRejectReason::OutOfRange);
-	Fixture.Enemy->SetActorLocation(FVector(50000.0, 0.0, 0.0));
-	Fixture.FarEnemy->SetActorLocation(FVector(75000.0, 0.0, 0.0));
+	Fixture.Enemy->SetActorLocation(FVector(10000, 0, 0));
+	Fixture.FarEnemy->SetActorLocation(FVector(15000, 0, 0));
 	Fixture.bLineOfSight = false;
 	TestTrue(TEXT("Ship lock LOS is enforced"),
 		Fixture.Coordinator.ActivateMissileSalvo(Fixture.MissileRequest(4u), 0.12).RejectReason

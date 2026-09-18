@@ -1,0 +1,89 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "E3258CF744F6644F1DA0FDB865CE9FF4",
+			"instanceName": "DESKTOP-6D3B0FC-27008",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.18-06.13.58",
+	"succeeded": 4,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.38505351543426514,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AutomaticFlightRebakeAndReachability",
+			"fullTestPath": "GuLi.NavigationBake.AutomaticFlightRebakeAndReachability",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E3258CF744F6644F1DA0FDB865CE9FF4"
+			],
+			"duration": 0.048324599862098694,
+			"dateTime": "2026.09.18-06.13.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollisionTerrainAndSettingsSignature",
+			"fullTestPath": "GuLi.NavigationBake.CollisionTerrainAndSettingsSignature",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E3258CF744F6644F1DA0FDB865CE9FF4"
+			],
+			"duration": 0.010134801268577576,
+			"dateTime": "2026.09.18-06.13.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FactoryRampGroundContract",
+			"fullTestPath": "GuLi.NavigationBake.FactoryRampGroundContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E3258CF744F6644F1DA0FDB865CE9FF4"
+			],
+			"duration": 0.075270101428031921,
+			"dateTime": "2026.09.18-06.13.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroundCacheAndDynamicReachability",
+			"fullTestPath": "GuLi.NavigationBake.GroundCacheAndDynamicReachability",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E3258CF744F6644F1DA0FDB865CE9FF4"
+			],
+			"duration": 0.25132399797439575,
+			"dateTime": "2026.09.18-06.13.58",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

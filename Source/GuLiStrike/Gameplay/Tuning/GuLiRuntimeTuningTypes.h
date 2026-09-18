@@ -15,7 +15,7 @@ enum class EGuLiRuntimeTuningValueSource : uint8
 /** Effective authoritative Soldier values shared by the data and GM layers. */
 struct GULISTRIKE_API FGuLiSoldierRuntimeTuningValues
 {
-	float MovementSpeedCmPerSecond = 3600.0f;
+	float MovementSpeedCmPerSecond = 720.0f;
 	float MaxHealth = 100.0f;
 	float Defense = 0.0f;
 	/** False restores each Soldier type's own table baseline, not the default type's value. */

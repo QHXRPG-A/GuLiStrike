@@ -17,9 +17,9 @@ namespace GuLiCommanderAvoidancePolicy
 	inline constexpr uint32 SolvePhaseCount = 3u;
 	inline constexpr double FixedStepSeconds = 1.0 / 30.0;
 	inline constexpr double MaximumAccumulatedSeconds = FixedStepSeconds * SolvePhaseCount;
-	inline constexpr float SpatialCellSizeCentimeters = 1500.0f;
-	inline constexpr float DetectionDistanceCentimeters = 6000.0f;
-	inline constexpr float MaximumHeightDifferenceCentimeters = 1500.0f;
+	inline constexpr float SpatialCellSizeCentimeters = 300.0f;
+	inline constexpr float DetectionDistanceCentimeters = 1200.0f;
+	inline constexpr float MaximumHeightDifferenceCentimeters = 300.0f;
 	inline constexpr int32 MaximumNearestCandidates = 24;
 	inline constexpr int32 MaximumColliders = 6;
 
@@ -63,8 +63,8 @@ namespace GuLiCommanderAvoidancePolicy
 	{
 		float PredictiveAvoidanceTime = 2.5f;
 		float PredictiveAvoidanceRadiusScale = 0.65f;
-		float PredictiveAvoidanceDistance = 75.0f;
-		float PredictiveAvoidanceStiffness = 700.0f;
+		float PredictiveAvoidanceDistance = 15.0f;
+		float PredictiveAvoidanceStiffness = 140.0f;
 		float StandingObstacleAvoidanceScale = 0.65f;
 		float MaximumSpeed = 0.0f;
 		float MaximumAcceleration = 0.0f;

@@ -98,7 +98,7 @@ private:
 	FVector FlightTrailOffset = FVector(1258.0f, 0.0f, 300.0f);
 
 	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Flight VFX", meta=(ClampMin="0"))
-	float FlightTrailCullDistance = 180000.0f;
+	float FlightTrailCullDistance = 36000.0f;
 
 	/** Reused with the Pawn pool; never replicated or allocated on a dedicated server. */
 	UPROPERTY(Transient)

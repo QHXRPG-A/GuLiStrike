@@ -25,12 +25,12 @@ struct GULISTRIKE_API FGuLiFactoryQueueEntry
 };
 
 
-/** Facility-local route data. The vehicle owns traversal and ground following. */
+/** Facility-local deck waypoints for direct presentation movement; no per-step collision/ground queries. */
 struct FGuLiFactoryDockRoute
 {
-	FVector Entry = FVector(4000, -600, 0);
-	FVector Unload = FVector(-500, -600, 120);
-	FVector Exit = FVector(4000, -600, 0);
+	FVector Entry = FVector(800, -120, 0);
+	FVector Unload = FVector(-100, -120, 24);
+	FVector Exit = FVector(800, -120, 0);
 };
 /** Authority factory with a shared FIFO line; the existing Blueprint is presentation-only child content. */
 UCLASS(NotPlaceable)
@@ -77,6 +77,9 @@ public:
 	bool ShouldDoorBeOpen() const { return DoorState.bOpen; }
 
 private:
+#if WITH_DEV_AUTOMATION_TESTS
+	friend class FGuLiScale020FactoryDoorPresentationContract;
+#endif
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiBuildingLifecycleComponent> Lifecycle;
 	UFUNCTION()
 	void OnRep_DockPoint();
@@ -86,6 +89,8 @@ private:
 	void OnRep_DoorState();
 	void UpdateDoorTarget();
 	void ApplyDoorPose();
+	/** Door is visual-only; the factory shell, floor and ramp own physical geometry. */
+	void ConfigureDoorPresentation();
 	UPROPERTY(ReplicatedUsing = OnRep_DoorState)
 	FGuLiFactoryDoorState DoorState;
 	TSet<TWeakObjectPtr<AActor>> AssignedVehicles;

@@ -24,7 +24,7 @@ struct GULIFLIGHTNAVIGATIONRUNTIME_API FGuLiFlightNavBakeSettings
 	float MinimumCellSize = 2000.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Flight Navigation", meta = (ClampMin = "0.0"))
-	float AgentRadius = 1500.0f;
+	float AgentRadius = 300.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Flight Navigation", meta = (ClampMin = "0", ClampMax = "16"))
 	int32 MaximumDepth = 8;
@@ -39,7 +39,7 @@ struct GULIFLIGHTNAVIGATIONRUNTIME_API FGuLiFlightNavBakeSettings
 	float FaceCoordinateTolerance = 0.1f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Flight Navigation", meta = (ClampMin = "0.0"))
-	float MinimumPortalSpan = 10.0f;
+	float MinimumPortalSpan = 2.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Collision")
 	TEnumAsByte<ECollisionChannel> CollisionChannel = ECC_WorldStatic;
@@ -83,7 +83,7 @@ struct GULIFLIGHTNAVIGATIONRUNTIME_API FGuLiFlightNavBakeMetadata
 	float MinimumCellSize = 2000.0f;
 
 	UPROPERTY(VisibleAnywhere, Category = "Flight Navigation", meta = (ClampMin = "0.0"))
-	float BakedAgentRadius = 1500.0f;
+	float BakedAgentRadius = 300.0f;
 
 	UPROPERTY(VisibleAnywhere, Category = "Flight Navigation")
 	FName SourceWorldPackage;

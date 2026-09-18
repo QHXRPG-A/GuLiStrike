@@ -339,6 +339,8 @@ UGuLiShipMovementComponent::UGuLiShipMovementComponent(const FObjectInitializer&
 	SetNetworkMoveDataContainer(NetworkStorage->MoveData);
 	SetMoveResponseDataContainer(NetworkStorage->MoveResponse);
 	GravityScale = 0.0f;
+	NetworkMaxSmoothUpdateDistance = 51.2f;
+	NetworkNoSmoothUpdateDistance = 76.8f;
 	bConstrainToPlane = false;
 	bOrientRotationToMovement = false;
 	bUseControllerDesiredRotation = false;

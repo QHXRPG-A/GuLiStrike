@@ -193,10 +193,10 @@ bool FGuLiSkillWM01OwnershipModelTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("WM01 reuses the Strafe behavior definition"),
 		WM01->SkillId, FName(TEXT("Strafe")));
 	TestEqual(TEXT("WM01 integration damage remains 7.5"), WM01->Damage, 7.5f);
-	TestEqual(TEXT("WM01 integration cadence remains four shots per second"),
-		WM01->AttackRatePerSecond, 4.0f);
-	TestEqual(TEXT("WM01 integration range remains 150 metres"),
-		WM01->RangeCentimeters, 15000.0f);
+	TestEqual(TEXT("WM01 current authored cadence remains two shots per second"),
+		WM01->AttackRatePerSecond, 2.0f);
+	TestEqual(TEXT("WM01 integration range is 30 metres"),
+		WM01->RangeCentimeters, 3000.0f);
 
 	int32 RedBasicAttackProfiles = 0;
 	for (const FGuLiResolvedSkillProfile& Profile : Fixture.Bridge->GetResolvedSkills())

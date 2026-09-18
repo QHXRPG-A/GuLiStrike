@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "space": "world-centimeters",
+  "entries": [
+    {
+      "file": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp",
+      "before": "bGround ? Length : FMath::Max(1.0f, Length)",
+      "target": "bGround ? Length : FMath::Max(0.2f, Length)",
+      "sha256_before": "0cb72663622d0f5d76b713db7d037ccdbda20c12851dcea6cd0a4d56842f7451"
+    },
+    {
+      "file": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp",
+      "before": "Muzzle + Direction * 75.0f",
+      "target": "Muzzle + Direction * 15.0f",
+      "sha256_before": "0cb72663622d0f5d76b713db7d037ccdbda20c12851dcea6cd0a4d56842f7451"
+    },
+    {
+      "file": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp",
+      "before": "FVector2D(Catalog->LaserCoreWidth * 3.0f, 30.0f)",
+      "target": "FVector2D(Catalog->LaserCoreWidth * 3.0f, 6.0f)",
+      "sha256_before": "0cb72663622d0f5d76b713db7d037ccdbda20c12851dcea6cd0a4d56842f7451"
+    },
+    {
+      "file": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp",
+      "before": "Muzzle + Direction * 150.0f",
+      "target": "Muzzle + Direction * 30.0f",
+      "sha256_before": "0cb72663622d0f5d76b713db7d037ccdbda20c12851dcea6cd0a4d56842f7451"
+    },
+    {
+      "file": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp",
+      "before": "FMath::Max(Catalog->LaserCoreWidth * 3.0f, 100.0f)",
+      "target": "FMath::Max(Catalog->LaserCoreWidth * 3.0f, 20.0f)",
+      "sha256_before": "0cb72663622d0f5d76b713db7d037ccdbda20c12851dcea6cd0a4d56842f7451"
+    },
+    {
+      "file": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp",
+      "before": "Length <= 1.0f",
+      "target": "Length <= 0.2f",
+      "sha256_before": "de3e81e4a48117ba346ece3949ace8418c51da34cee39de7849300a5e92e3ca5"
+    },
+    {
+      "file": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp",
+      "before": "(GunfireBounds + PreviousGunfireBounds).ExpandBy(100.0)",
+      "target": "(GunfireBounds + PreviousGunfireBounds).ExpandBy(20.0)",
+      "sha256_before": "de3e81e4a48117ba346ece3949ace8418c51da34cee39de7849300a5e92e3ca5"
+    }
+  ]
+}

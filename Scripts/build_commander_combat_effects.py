@@ -245,6 +245,7 @@ def flight():
     body_mesh=missile_mesh()
     path = new_system('NS_WM01_MissileFlight')
     NS.add_user_parameter(path, 'Velocity', 'Vector', '0,0,0')
+    NS.add_user_parameter(path, 'VisualScale', 'Float', '1')
     for name, rate, life, size, smoke in [('Core',30,.05,110,False),('Exhaust',80,.16,85,False),('Trail',45,.5,95,True)]:
         emitter = require(NS.add_emitter(path, FOUNTAIN, name), 'Flight emitter')
         strip_emitter(path, emitter, ['EmitterState','SpawnRate','InitializeParticle','ParticleState'])
@@ -255,10 +256,10 @@ def flight():
             set_ri(path,emitter,'EmitterUpdate','SpawnBurst_Instantaneous','Spawn Count',1)
         # Explicit spawn outputs replace the template's random sizes, sphere locations and fountain velocity.
         scratch(path, emitter, 'ParticleSpawn', 'MissileParticleShape',
-                [('Owner','Position','Engine.Owner.Position'),('Vel','Vector','User.Velocity')],
-                [('Life','float','Particles.Lifetime'),('Size','vec2','Particles.SpriteSize'),('Tint','Color','Particles.Color'),('Velocity','Vector','Particles.Velocity'),('Position','Position','Particles.Position')],
-                f'Life={life}; Size=float2({size},{size}); Tint='+('float4(0.10,0.12,0.15,0.26);' if smoke else 'float4(1.0,0.58,0.12,1.0);')+
-                ' Velocity=float3(0,0,0); Position=Owner;'+('' if name=='Core' else ' Position-=Vel/max(length(Vel),1.0)*155.0;'))
+                [('Owner','Position','Engine.Owner.Position'),('Vel','Vector','User.Velocity'),('EffectScale','float','User.VisualScale')],
+                [('Life','float','Particles.Lifetime'),('Size','vec2','Particles.SpriteSize'),('Tint','Color','Particles.Color'),('Velocity','Vector','Particles.Velocity'),('Position','Position','Particles.Position')]+([('MeshScale','Vector','Particles.Scale')] if name=='Core' else []),
+                f'Life={life}; Size=float2({size},{size})*EffectScale; Tint='+('float4(0.10,0.12,0.15,0.26);' if smoke else 'float4(1.0,0.58,0.12,1.0);')+
+                ' Velocity=float3(0,0,0); Position=Owner;'+(' MeshScale=float3(EffectScale,EffectScale,EffectScale);' if name=='Core' else ' Position-=Vel/max(length(Vel),1.0)*155.0*EffectScale;'))
         if name == 'Core':
             scratch(path, emitter, 'ParticleUpdate', 'FollowMissileBody', [('Owner','Position','Engine.Owner.Position'),('Vel','Vector','User.Velocity')], [('Position','Position','Particles.Position'),('Velocity','Vector','Particles.Velocity')], 'Position=Owner; Velocity=Vel;')
             require(EM.add_renderer(path,emitter,'Mesh'),'Missile mesh renderer')
@@ -270,7 +271,7 @@ def flight():
         if name == 'Trail':
             require(EM.add_renderer(path, emitter, 'Ribbon'), 'Trail ribbon')
             set_renderer(path, emitter, 'Material', DEST+'/M_Commander_Smoke', 1)
-            scratch(path, emitter, 'ParticleSpawn', 'TrailWidth', [], [('Width','float','Particles.RibbonWidth')], 'Width=35;')
+            scratch(path, emitter, 'ParticleSpawn', 'TrailWidth', [('EffectScale','float','User.VisualScale')], [('Width','float','Particles.RibbonWidth')], 'Width=35*EffectScale;')
     compile_system(path); save(path)
 
 def explosions():
@@ -375,19 +376,19 @@ def configure_gunfire_catalog(catalog):
     catalog.set_editor_property('gunfire_channel',ASSETS.load_asset(DEST+'/NDC_CommanderGunfire'))
     catalog.set_editor_property('gunfire_system',ASSETS.load_asset(DEST+'/NS_CommanderGunfireBatch'))
     catalog.set_editor_property('tracer_lifetime',.075)
-    catalog.set_editor_property('tracer_width',30.0)
+    catalog.set_editor_property('tracer_width',6.0)
     catalog.set_editor_property('muzzle_activity_hold_seconds',2.0)
     catalog.set_editor_property('muzzle_refresh_rate',30.0)
     catalog.set_editor_property('muzzle_particle_lifetime',.06)
-    catalog.set_editor_property('muzzle_width',420.0)
-    catalog.set_editor_property('muzzle_length',1200.0)
+    catalog.set_editor_property('muzzle_width',84.0)
+    catalog.set_editor_property('muzzle_length',240.0)
     catalog.set_editor_property('muzzle_strobe_rate',9.0)
     catalog.set_editor_property('muzzle_strobe_duty_cycle',.45)
     catalog.set_editor_property('maximum_muzzle_lights_per_frame',12)
     catalog.set_editor_property('maximum_tracer_lights_per_frame',6)
-    catalog.set_editor_property('muzzle_light_radius',2600.0)
+    catalog.set_editor_property('muzzle_light_radius',520.0)
     catalog.set_editor_property('muzzle_light_brightness',35.0)
-    catalog.set_editor_property('tracer_light_radius',1800.0)
+    catalog.set_editor_property('tracer_light_radius',360.0)
     catalog.set_editor_property('tracer_light_brightness',25.0)
     catalog.set_editor_property('gunfire_tint',unreal.LinearColor(1.0,.72,.32,1.0))
 
@@ -399,7 +400,8 @@ def gunfire_catalog():
 def catalog():
     field = data_asset('DA_WM01_MissileExplosion',unreal.GuLiSpellFieldDefinition)
     field.set_editor_property('config_id','WM01_MissileExplosion')
-    field.set_editor_property('radius',800.0)
+    field.set_editor_property('radius',160.0)
+    field.set_editor_property('visual_reference_radius',800.0)
     field.set_editor_property('timing',unreal.GuLiSpellFieldTiming.INSTANT)
     field.set_editor_property('dissipation_seconds',3.0)
     variants=[]
@@ -411,6 +413,7 @@ def catalog():
     projectile=data_asset('DA_WM01_Missile',unreal.GuLiProjectileEffectDefinition)
     projectile.set_editor_property('impact_field',field)
     projectile.set_editor_property('flight_system',ASSETS.load_asset(DEST+'/NS_WM01_MissileFlight'))
+    projectile.set_editor_property('visual_scale',0.2)
     projectile.set_editor_property('trail_fade_seconds',.55); save(projectile)
     catalog=data_asset('DA_CommanderCombatEffects',unreal.GuLiCombatEffectCatalog)
     configure_gunfire_catalog(catalog)
@@ -419,9 +422,11 @@ def catalog():
             'Complete final Excel WeaponMounts calibration first')
     aims={}
     grouped={}
+    soldiers=json.loads((OUT.parents[1]/'Data/Json/DT_GuLiStrikeCommander_Soldiers.json').read_text(encoding='utf-8'))
+    model_scales={int(row['Id']):float(row['PresentationScale']) for row in soldiers}
     for item in calibration:
         unit=int(item['UnitTypeId'])
-        point=unreal.Vector(item['Offset']['X'],item['Offset']['Y'],item['Offset']['Z'])
+        point=unreal.Vector(item['Offset']['X'],item['Offset']['Y'],item['Offset']['Z'])*model_scales[unit]
         if item['PointRole'].lower()=='aimtarget':
             require(unit not in aims and int(item['PointIndex'])==0 and not item.get('SlotId'),
                     'Invalid or duplicate Excel AimTarget row')

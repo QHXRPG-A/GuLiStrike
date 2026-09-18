@@ -16,14 +16,20 @@
 #include "EngineUtils.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/Pawn.h"
+#include "GameFramework/WorldSettings.h"
 #include "Gameplay/Building/GuLiBuildingCatalog.h"
 #include "Gameplay/Building/GuLiPlacedBuilding.h"
-#include "Materials/MaterialInterface.h"
+#include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
 #include "Misc/AutomationTest.h"
 #include "NavAreas/NavArea_Null.h"
 #include "NavModifierComponent.h"
 #include "UObject/Package.h"
+#include "UObject/StrongObjectPtr.h"
 #include "UObject/UnrealType.h"
+
+#if WITH_EDITOR
+#include "StaticMeshCompiler.h"
+#endif
 
 namespace GuLiBuildingWorldTests
 {
@@ -34,7 +40,7 @@ namespace GuLiBuildingWorldTests
 		AGuLiCommanderPlayerController* Controller = nullptr;
 		AGuLiBattlePlayerState* PlayerState = nullptr;
 		UGuLiBuildingPlacementComponent* Placement = nullptr;
-		UGuLiBuildingCatalog* Catalog = nullptr;
+		TStrongObjectPtr<UGuLiBuildingCatalog> Catalog;
 		AActor* FloorActor = nullptr;
 		bool bWorldContextRegistered = false;
 
@@ -42,16 +48,13 @@ namespace GuLiBuildingWorldTests
 		{
 			if (World)
 			{
+				if (World->HasBegunPlay()) World->EndPlay(EEndPlayReason::Quit);
 				World->DestroyWorld(false);
 				if (bWorldContextRegistered && GEngine)
 				{
 					GEngine->DestroyWorldContext(World);
 				}
 				World = nullptr;
-			}
-			if (Catalog && Catalog->IsRooted())
-			{
-				Catalog->RemoveFromRoot();
 			}
 		}
 
@@ -93,35 +96,46 @@ namespace GuLiBuildingWorldTests
 				return false;
 			}
 
-			Catalog = NewObject<UGuLiBuildingCatalog>(GetTransientPackage());
-			Catalog->AddToRoot();
-			UStaticMesh* Cube = LoadObject<UStaticMesh>(nullptr, TEXT("/Engine/BasicShapes/Cube.Cube"));
-			UMaterialInterface* Preview = LoadObject<UMaterialInterface>(
-				nullptr, TEXT("/Engine/EngineMaterials/DefaultMaterial.DefaultMaterial"));
-			if (!Test.TestNotNull(TEXT("The test catalog can use Engine Cube"), Cube)
-				|| !Test.TestNotNull(TEXT("The test catalog can use the default material"), Preview))
+			// Placement, spawning and lifecycle initialization must resolve the same IDs
+			// and geometry. Do not inject a Cube-only catalog into just the first stage.
+			Catalog.Reset(UGuLiBuildingCatalog::LoadDefaultCatalog());
+			if (!Test.TestNotNull(TEXT("The fixture resolves the production building catalog"), Catalog.Get())
+				|| !Test.TestTrue(TEXT("The production building catalog is usable"), Catalog->IsUsable()))
 			{
 				return false;
 			}
-			Catalog->PreviewMaterial = Preview;
+			FGuLiResourceAmounts StartingBalance;
+			TArray<UStaticMesh*> Meshes;
 			for (const EGuLiBuildingType Type : {
 				EGuLiBuildingType::MissileTurret,
 				EGuLiBuildingType::SentryTurret,
 				EGuLiBuildingType::Outpost})
 			{
-				FGuLiBuildingDefinition& Definition = Catalog->Definitions.AddDefaulted_GetRef();
-				Definition.Type = Type;
-				Definition.DisplayName = GetGuLiBuildingFallbackDisplayName(Type);
-				Definition.Mesh = Cube;
-				Definition.CollisionExtent = FVector(50.0f);
-				Definition.VisualOffset = FVector(0.0f, 0.0f, 50.0f);
+				const FGuLiBuildingDefinition* Definition = Catalog->FindDefinition(Type);
+				if (!Test.TestNotNull(TEXT("Each fixture building type has a production definition"), Definition)
+					|| !Test.TestTrue(TEXT("Each fixture definition has a valid resolvable ID"),
+						Definition->DefinitionId > 0 && Catalog->FindById(Definition->DefinitionId) == Definition))
+				{
+					return false;
+				}
+				Meshes.AddUnique(Definition->Mesh);
+				StartingBalance.Blue = FMath::Max(StartingBalance.Blue,
+					Definition->Cost.Blue * GuLiBuildingPlacementPolicy::MaximumBuildingsPerBuilder);
+				StartingBalance.Red = FMath::Max(StartingBalance.Red,
+					Definition->Cost.Red * GuLiBuildingPlacementPolicy::MaximumBuildingsPerBuilder);
 			}
-			if (!Test.TestTrue(TEXT("The transient three-entry test catalog is usable"), Catalog->IsUsable()))
+#if WITH_EDITOR
+			FStaticMeshCompilingManager::Get().FinishCompilation(Meshes);
+#endif
+			Placement->TestOnly_SetCatalog(Catalog.Get());
+			Placement->TestOnly_BypassConnectionGate(true);
+			auto* Economy = World->GetSubsystem<UGuLiTeamEconomySubsystem>();
+			if (!Test.TestNotNull(TEXT("The building fixture owns a real team economy"), Economy))
 			{
 				return false;
 			}
-			Placement->TestOnly_SetCatalog(Catalog);
-			Placement->TestOnly_BypassConnectionGate(true);
+			Economy->BeginMatch(StartingBalance, StartingBalance);
+			Economy->OpenTransactions();
 
 			if (bCreateLevelFloor)
 			{
@@ -135,7 +149,17 @@ namespace GuLiBuildingWorldTests
 					return false;
 				}
 			}
-			return true;
+			// This isolated world has no GameMode to dispatch actor BeginPlay. Run the
+			// normal lifecycle so newly spawned buildings register for capacity checks.
+			World->BeginPlay();
+			World->GetWorldSettings()->NotifyBeginPlay();
+			return Test.TestTrue(TEXT("The fixture world has begun play"), World->HasBegunPlay());
+		}
+
+		double GetClearPlacementSpacing() const
+		{
+			const FVector Extent = Catalog->FindDefinition(EGuLiBuildingType::Outpost)->CollisionExtent;
+			return 2.0 * (Extent.Size2D() + GuLiBuildingPlacementPolicy::PlacementClearanceCentimeters) + 100.0;
 		}
 
 		void SetRole(const EGuLiCommanderRole Role, const bool bReady = true)
@@ -204,11 +228,13 @@ namespace GuLiBuildingWorldTests
 				ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 			if (!Test.TestNotNull(TEXT("A direct capacity-fixture building begins spawning"), Building)
 				|| !Test.TestTrue(TEXT("A direct capacity-fixture building initializes"),
-					Building->InitializeBuilding(
-						EGuLiBuildingType::Outpost,
+					Building->InitializeFromDefinition(
+						Definition->DefinitionId,
 						EGuLiTeam::Red,
 						BuilderGuid,
-						*Definition)))
+						INDEX_NONE,
+						EGuLiBuildingOrigin::Manual,
+						false)))
 			{
 				if (Building)
 				{
@@ -289,7 +315,7 @@ bool FBuildingWorldTests::RunTest(const FString& Parameters)
 
 		Fixture.Placement->TestOnly_ResetServerRequestState();
 		Fixture.SetRole(EGuLiCommanderRole::Commander, true);
-		UGuLiBuildingCatalog* ValidCatalog = Fixture.Catalog;
+		UGuLiBuildingCatalog* ValidCatalog = Fixture.Catalog.Get();
 		UGuLiBuildingCatalog* EmptyCatalog = NewObject<UGuLiBuildingCatalog>(GetTransientPackage());
 		Fixture.Placement->TestOnly_SetCatalog(EmptyCatalog);
 		TestRejectReason(*this, TEXT("An unusable catalog is rejected"),
@@ -338,7 +364,7 @@ bool FBuildingWorldTests::RunTest(const FString& Parameters)
 		TestTrue(TEXT("The placed Actor replicates"), Building->GetIsReplicated());
 		TestTrue(TEXT("The placed Actor is globally relevant"), Building->bAlwaysRelevant);
 		TestFalse(TEXT("The immutable placed Actor does not replicate movement"), Building->IsReplicatingMovement());
-		TestEqual(TEXT("The placed Actor starts in initial dormancy"), Building->NetDormancy.GetValue(), DORM_Initial);
+		TestEqual(TEXT("Lifecycle initialization flushes initial dormancy"), Building->NetDormancy.GetValue(), DORM_DormantAll);
 		TestTrue(TEXT("The placed Actor remains at Scale 1"), Building->GetActorScale3D().Equals(FVector::OneVector));
 		TestEqual(TEXT("The collision root is static"), Collision->Mobility.GetValue(), EComponentMobility::Static);
 		TestEqual(TEXT("The root uses query and physics collision"),
@@ -351,13 +377,13 @@ bool FBuildingWorldTests::RunTest(const FString& Parameters)
 			Collision->GetCollisionResponseToChannel(ECC_WorldDynamic), ECR_Block);
 		TestEqual(TEXT("The root blocks visibility traces"),
 			Collision->GetCollisionResponseToChannel(ECC_Visibility), ECR_Block);
-		TestFalse(TEXT("The collision root does not trigger a global runtime navigation rebuild"),
+		TestTrue(TEXT("The real collision footprint contributes to navigation"),
 			Collision->CanEverAffectNavigation());
 		TestEqual(TEXT("The visual mesh has no collision"), Visual->GetCollisionEnabled(), ECollisionEnabled::NoCollision);
 		TestFalse(TEXT("The visual mesh does not contribute duplicate navigation geometry"),
 			Visual->CanEverAffectNavigation());
-		TestTrue(TEXT("The visual component remains at Scale 1"),
-			Visual->GetRelativeScale3D().Equals(FVector::OneVector));
+		TestTrue(TEXT("The visual component applies the catalog presentation scale once"),
+			Visual->GetRelativeScale3D().Equals(Fixture.Catalog->FindDefinition(EGuLiBuildingType::MissileTurret)->MeshScale));
 		TestTrue(TEXT("The accepted building applies its catalog mesh"),
 			Visual->GetStaticMesh()
 			== Fixture.Catalog->FindDefinition(EGuLiBuildingType::MissileTurret)->Mesh);
@@ -366,7 +392,7 @@ bool FBuildingWorldTests::RunTest(const FString& Parameters)
 		TestTrue(TEXT("The navigation modifier is registered"), Navigation->IsRegistered());
 		TestTrue(TEXT("The navigation modifier applies NavArea_Null"),
 			Navigation->AreaClass == UNavArea_Null::StaticClass());
-		TestFalse(TEXT("Runtime Soldier building avoidance is intentionally inactive in this phase"),
+		TestTrue(TEXT("The current building footprint is navigation relevant"),
 			Navigation->IsNavigationRelevant());
 		Navigation->CalcAndCacheBounds();
 		TestTrue(TEXT("The navigation modifier derives valid bounds from the Box root"),
@@ -406,8 +432,9 @@ bool FBuildingWorldTests::RunTest(const FString& Parameters)
 		if (!Fixture.Initialize(*this)) return false;
 		Fixture.SetRole(EGuLiCommanderRole::Ground, true);
 		if (!Fixture.SpawnAndPossessPawn(*this, FVector(0.0f, 0.0f, 100.0f))) return false;
-		TestRejectReason(*this, TEXT("Ground cannot place beyond 100 meters from its Pawn"),
-			Fixture.Placement->TestOnly_ProcessServerRequest(MakeRequest(1u, FVector(10001.0f, 0.0f, 0.0f))),
+		TestRejectReason(*this, TEXT("Ground cannot place beyond its current configured range"),
+			Fixture.Placement->TestOnly_ProcessServerRequest(MakeRequest(1u,
+				FVector(GuLiBuildingPlacementPolicy::GroundMaximumRangeCentimeters + 1.0f, 0.0f, 0.0f))),
 			EGuLiBuildingPlacementRejectReason::OutOfRange);
 		AActor* SightBlocker = Fixture.SpawnBox(
 			*this,
@@ -457,17 +484,18 @@ bool FBuildingWorldTests::RunTest(const FString& Parameters)
 		FWorldFixture Fixture;
 		if (!Fixture.Initialize(*this)) return false;
 		Fixture.SetRole(EGuLiCommanderRole::Commander, true);
+		const double Spacing = Fixture.GetClearPlacementSpacing();
 		for (uint32 Index = 0u; Index < 6u; ++Index)
 		{
 			TestTrue(TEXT("Each of the first six builder placements is accepted"),
 				Fixture.Placement->TestOnly_ProcessServerRequest(
-					MakeRequest(Index + 1u, FVector(Index * 500.0f, 0.0f, 0.0f), EGuLiBuildingType::Outpost))
+					MakeRequest(Index + 1u, FVector(Index * Spacing, 0.0f, 0.0f), EGuLiBuildingType::Outpost))
 				.WasAccepted());
 		}
 		TestEqual(TEXT("The builder owns six buildings"), CountBuildings(*Fixture.World), 6);
 		TestRejectReason(*this, TEXT("The seventh clear placement reaches the per-builder cap"),
 			Fixture.Placement->TestOnly_ProcessServerRequest(
-				MakeRequest(7u, FVector(3000.0f, 0.0f, 0.0f), EGuLiBuildingType::Outpost)),
+				MakeRequest(7u, FVector(6.0 * Spacing, 0.0f, 0.0f), EGuLiBuildingType::Outpost)),
 			EGuLiBuildingPlacementRejectReason::BuilderLimitReached);
 	}
 
@@ -475,11 +503,12 @@ bool FBuildingWorldTests::RunTest(const FString& Parameters)
 		FWorldFixture Fixture;
 		if (!Fixture.Initialize(*this)) return false;
 		Fixture.SetRole(EGuLiCommanderRole::Commander, true);
+		const double Spacing = Fixture.GetClearPlacementSpacing();
 		for (uint32 Index = 0u; Index < 24u; ++Index)
 		{
 			const FVector Location(
-				-5000.0f + static_cast<float>(Index % 6u) * 500.0f,
-				-5000.0f + static_cast<float>(Index / 6u) * 500.0f,
+				(-5.0 + static_cast<double>(Index % 6u)) * Spacing,
+				(-5.0 + static_cast<double>(Index / 6u)) * Spacing,
 				0.0f);
 			if (!Fixture.SpawnDirectBuilding(*this, Location, FGuid(17u, 23u, 29u, Index + 1u)))
 			{
@@ -489,7 +518,7 @@ bool FBuildingWorldTests::RunTest(const FString& Parameters)
 		TestEqual(TEXT("The capacity fixture contains 24 buildings"), CountBuildings(*Fixture.World), 24);
 		TestRejectReason(*this, TEXT("A clear placement is rejected at the global cap"),
 			Fixture.Placement->TestOnly_ProcessServerRequest(
-				MakeRequest(1u, FVector(5000.0f, 5000.0f, 0.0f), EGuLiBuildingType::Outpost)),
+				MakeRequest(1u, FVector(2.0 * Spacing, 2.0 * Spacing, 0.0f), EGuLiBuildingType::Outpost)),
 			EGuLiBuildingPlacementRejectReason::WorldLimitReached);
 	}
 

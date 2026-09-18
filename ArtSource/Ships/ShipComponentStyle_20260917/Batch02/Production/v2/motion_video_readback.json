@@ -1,0 +1,45 @@
+{
+  "status": "passed",
+  "method": "Existing ffmpeg runtime; decode all frames without output image edits",
+  "videos": {
+    "Autocannon": {
+      "video": "Previews/v2/Autocannon_pitch_motion.mp4",
+      "decode_exit_code": 0,
+      "decoded_frames": 97,
+      "duration": "00:00:04.04",
+      "resolution": [
+        960,
+        720
+      ],
+      "fps": 24,
+      "rigid_max_error_m": 6.106495129998063e-06,
+      "socket_max_error_m": 5.56082906231432e-06
+    },
+    "Triple_Barrel_Turret": {
+      "video": "Previews/v2/Triple_Barrel_Turret_pitch_motion.mp4",
+      "decode_exit_code": 0,
+      "decoded_frames": 97,
+      "duration": "00:00:04.04",
+      "resolution": [
+        960,
+        720
+      ],
+      "fps": 24,
+      "rigid_max_error_m": 1.375408659158321e-05,
+      "socket_max_error_m": 1.2212990259996125e-05
+    },
+    "Single_Barrel_Turret": {
+      "video": "Previews/v2/Single_Barrel_Turret_pitch_motion.mp4",
+      "decode_exit_code": 0,
+      "decoded_frames": 97,
+      "duration": "00:00:04.04",
+      "resolution": [
+        960,
+        720
+      ],
+      "fps": 24,
+      "rigid_max_error_m": 6.106495129998063e-06,
+      "socket_max_error_m": 4.76837158203125e-06
+    }
+  }
+}

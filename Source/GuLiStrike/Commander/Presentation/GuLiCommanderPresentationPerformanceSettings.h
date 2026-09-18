@@ -18,7 +18,7 @@ enum class EGuLiCommanderPresentationSettingSource : uint8
  */
 struct GULISTRIKE_API FGuLiCommanderPresentationPerformanceSettings
 {
-	static constexpr int32 DefaultUnitCullDistanceCentimeters = 100000;
+	static constexpr int32 DefaultUnitCullDistanceCentimeters = 20000;
 	static constexpr int32 DefaultRingCullDistanceCentimeters = 0;
 	static constexpr int32 MaximumCullDistanceCentimeters = 10000000;
 

@@ -20,19 +20,19 @@ struct GULISTRIKE_API FGuLiWingmanAttackProfile
 	GENERATED_BODY()
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) EGuLiWingmanAttackPattern Pattern = EGuLiWingmanAttackPattern::Legacy;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) FName ExecutorId;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float FlightSpeed = 9000.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float FlightSpeed = 1800.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float DiveSeconds = 1.5f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) int32 MissileCount = 10;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float StripLength = 12000.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float StripLength = 2400.0f;
 	/** Minimum vertical clearance above the assigned ground point across the pull-up arc. */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float PullUpHeight = 10000.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float ExplosionRadius = 800.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float AirFireStartDistance = 10000.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) float AirFireStopDistance = 5000.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float PullUpHeight = 2000.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float ExplosionRadius = 160.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float AirFireStartDistance = 2000.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) float AirFireStopDistance = 1000.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float AirBurstDurationSeconds = 5.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly) float AirOrbitCooldownSeconds = 3.0f;
 	/** Local to the logical +X-forward aircraft, independently calibrated from the rendered -X mesh. */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly) FVector Muzzle = FVector(1200.0, 0.0, 0.0);
+	UPROPERTY(EditAnywhere, BlueprintReadOnly) FVector Muzzle = FVector(240.0, 0.0, 0.0);
 	bool IsWellFormed() const;
 	void AddToStableHash(uint64& Hash) const;
 	/** Includes the first/last endpoint shots and the worst 200ms upload window. */
@@ -64,8 +64,8 @@ namespace GuLiWingmanAttack
 	inline constexpr int32 MaximumFireRecordsPerFlight = 16;
 	inline constexpr float MaximumAirFireRatePerSecond = 30.0f;
 	inline constexpr float MinimumAirShotIntervalSeconds = 1.0f / MaximumAirFireRatePerSecond;
-	inline constexpr float MinimumGroundHeight = 5000.0f;
-	inline constexpr float MaximumPullUpHeight = 10000.0f;
+	inline constexpr float MinimumGroundHeight = 1000.0f;
+	inline constexpr float MaximumPullUpHeight = 2000.0f;
 	/** Eight member-relative directions followed by eight world-stable fallbacks. */
 	inline constexpr int32 MaximumGroundApproachCandidates = 16;
 	inline constexpr double MaximumGroundIngressSeconds = 45.0;

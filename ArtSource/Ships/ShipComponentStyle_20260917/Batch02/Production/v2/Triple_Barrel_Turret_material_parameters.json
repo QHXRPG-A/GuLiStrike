@@ -1,0 +1,60 @@
+{
+  "palette_sRGB": {
+    "Pearl": "DDE6E6",
+    "Slate": "4B6577",
+    "Navy": "23384A",
+    "Steel": "8298A5",
+    "Ochre": "C9903E",
+    "Cyan": "348B9F",
+    "Ink": "213D50"
+  },
+  "render_engine": "BLENDER_EEVEE",
+  "view_transform": "Standard",
+  "look": "None",
+  "shader": "Diffuse -> ShaderToRGB -> luminance -> constant 3-step ramp; multiply BaseColor; independent unlit ink mix",
+  "three_tone_thresholds": [
+    0,
+    0.18,
+    0.46
+  ],
+  "three_tone_multipliers_linear": [
+    [
+      0.43,
+      0.5,
+      0.6
+    ],
+    [
+      0.72,
+      0.79,
+      0.84
+    ],
+    [
+      1,
+      1,
+      1
+    ]
+  ],
+  "line_strength": 0.85,
+  "line_halfwidth_m": 0.03210888061523437,
+  "outline_width_m": 0.06421776123046874,
+  "outline_collection": "OUTLINE_TOGGLE",
+  "outline_export": false,
+  "UV_channels": [
+    "UVmap_0",
+    "UVmap_1",
+    "LightMapUV",
+    "SC_PaintUV",
+    "SC_LineUV"
+  ],
+  "paint_UV": "SC_PaintUV",
+  "line_UV": "SC_LineUV",
+  "editable_face_attribute": "SC_PaintPaletteIndex",
+  "editable_corner_color": "SC_EditablePaintColor",
+  "BaseColor": "sRGB; unlit color only, no baked light or shadow",
+  "ORM": "Non-Color; R=1 AO, G=roughness, B=metallic",
+  "LineMask": "Non-Color; structural boundaries only, coplanar triangle diagonals omitted",
+  "lighting": "Studio_Key sun energy 2; scene lighting and self-shadow drive tone bands",
+  "frame_0": "neutral pose",
+  "frames_1_97": "Review animation only; 24 fps; -15 to +75 to -15 degrees",
+  "FBX_material_note": "EEVEE toon nodes and outline helpers require later shader reconstruction; retain portable textures and parameters."
+}

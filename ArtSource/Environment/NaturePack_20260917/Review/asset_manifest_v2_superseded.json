@@ -1,0 +1,851 @@
+{
+  "schema": "guli-nature-pack/v1",
+  "version": "design-a-v2",
+  "date": "2026-09-17",
+  "work_id": "WORK-20260917-007",
+  "art_revision": "1.1",
+  "stage": "reference_design",
+  "reference_review_A": "pending",
+  "blender_review_B": "not_started",
+  "ue_verification": "not_run",
+  "performance_verification": "not_run",
+  "requested_placement_variants": 34,
+  "planned_unique_meshes": 33,
+  "world_units": "centimeters",
+  "dimensions_units": "meters",
+  "authored_scale_from_natural": 10,
+  "ue_import_scale": 1,
+  "instance_scale": 1,
+  "dimensions_note": "Design targets, not measured geometry. Dimensions are X-width, Y-depth, Z-height. Groundcovers are grouped patches; their height is lower than single flowers.",
+  "surface": {
+    "plants": {
+      "internal_line": false,
+      "outline": false,
+      "three_tone": true,
+      "two_sided": true
+    },
+    "rocks": {
+      "internal_line": "2-3 intentional principal creases",
+      "outline": "fine independent contour",
+      "three_tone": true
+    },
+    "lighting": "Existing Ship three-tone art-light direction, not automatic light/shadow sampling."
+  },
+  "wind": {
+    "implementation": "UE material WPO",
+    "weight": "vertex alpha, root=0 tip=1",
+    "default_tip_displacement_height_ratio": 0.025,
+    "period_seconds": [
+      3,
+      5
+    ],
+    "instance_phase_variation": true,
+    "strength_zero_disables": true
+  },
+  "lods": [
+    "LOD0",
+    "LOD1",
+    "LOD2"
+  ],
+  "collision": {
+    "plants": "none; does not affect navigation",
+    "rocks": "simple convex hull; outline none"
+  },
+  "references": [
+    {
+      "role": "context",
+      "source": "C:/Users/a/AppData/Local/Temp/codex-clipboard-f81402a7-b919-43a6-92c8-a423e75921e7.png",
+      "path": "References/User_Context.png",
+      "sha256": "f6fcec412f4e0c98623dd549b2ec54b91b424c0c382ae1dc9ab4faa9b6bbd8ca",
+      "size": [
+        2273,
+        1279
+      ],
+      "approval": "user_provided_reference_not_new_design_approval"
+    },
+    {
+      "role": "species_and_shapes",
+      "source": "C:/Users/a/AppData/Local/Temp/codex-clipboard-150cff24-1741-448d-8e3e-05b2a8f889a2.png",
+      "path": "References/User_AssetSheet.png",
+      "sha256": "ca0ee22a75a8d596f4eca6eeeefea88044be25f7a9579be7dd498f37af53325c",
+      "size": [
+        2083,
+        826
+      ],
+      "approval": "user_provided_reference_not_new_design_approval"
+    },
+    {
+      "role": "project_style_anchor",
+      "path": "../../Ships/ShipStylizedStudy_20260916/Previews/12_baked_lineart_hero.png",
+      "sha256": "050a9e8727f1b7a57a72bd3769422cd2b2e29f22047625883bcc88525ef0ac6b",
+      "note": "Style only; no ship geometry or blue/white recoloring of plants."
+    }
+  ],
+  "user_decisions": [
+    {
+      "decision": "full_reference_pack",
+      "quote": "图二整套基础包 (Recommended)"
+    },
+    {
+      "decision": "plant_ink_exception",
+      "quote": "植被无线稿"
+    },
+    {
+      "decision": "tenfold_scale",
+      "quote": "整体放大十倍"
+    },
+    {
+      "decision": "gentle_wind",
+      "quote": "包含轻微风摆 (Recommended)"
+    },
+    {
+      "decision": "delivery",
+      "quote": "源文件加 UE 资源样板 (Recommended)"
+    },
+    {
+      "decision": "implementation_authorized",
+      "quote": "PLEASE IMPLEMENT THIS PLAN",
+      "note": "A/B review gates retained by the supplied implementation plan."
+    },
+    {
+      "decision": "reduce_grass_geometry",
+      "quote": "草的面数普遍偏高"
+    },
+    {
+      "decision": "reduce_flower_geometry",
+      "quote": "花朵的面数看着也挺高"
+    }
+  ],
+  "assets": [
+    {
+      "id": "N01",
+      "key": "GrassTallThin",
+      "name_zh": "细叶高草",
+      "category": "grass",
+      "target_dimensions_m": [
+        8,
+        8,
+        7
+      ],
+      "shape": "8片纤细直立尖叶，每片最多3个三角面。",
+      "mesh_key": "GrassTallThin",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        24,
+        12,
+        6
+      ],
+      "main_blade_count": 8
+    },
+    {
+      "id": "N02",
+      "key": "GrassTallWide",
+      "name_zh": "宽叶高草",
+      "category": "grass",
+      "target_dimensions_m": [
+        9,
+        9,
+        10
+      ],
+      "shape": "12片较宽折叶，每片最多4个三角面。",
+      "mesh_key": "GrassTallWide",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        48,
+        24,
+        8
+      ],
+      "main_blade_count": 12
+    },
+    {
+      "id": "N03",
+      "key": "GrassTallDense",
+      "name_zh": "密簇高草",
+      "category": "grass",
+      "target_dimensions_m": [
+        10,
+        10,
+        8
+      ],
+      "shape": "16片简洁细叶，每片最多3个三角面；不增加隐藏填充叶。",
+      "mesh_key": "GrassTallDense",
+      "material_variant": "default",
+      "prototype": true,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        48,
+        24,
+        8
+      ],
+      "main_blade_count": 16
+    },
+    {
+      "id": "N04",
+      "key": "GrassNeedleSparse",
+      "name_zh": "针叶短草·疏",
+      "category": "grass",
+      "target_dimensions_m": [
+        7,
+        6,
+        2.5
+      ],
+      "shape": "6片细直主叶，每片最多2个三角面。",
+      "mesh_key": "GrassNeedleSparse",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        12,
+        6,
+        3
+      ],
+      "main_blade_count": 6
+    },
+    {
+      "id": "N05",
+      "key": "GrassNeedleDense",
+      "name_zh": "针叶短草·密",
+      "category": "grass",
+      "target_dimensions_m": [
+        8,
+        7,
+        3
+      ],
+      "shape": "与N04同族，叶片数量与交叠层次增加。 主叶12片，每片最多2个三角面。",
+      "mesh_key": "GrassNeedleDense",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        24,
+        12,
+        4
+      ],
+      "main_blade_count": 12
+    },
+    {
+      "id": "N06",
+      "key": "GrassBroadSparse",
+      "name_zh": "宽叶短草·疏",
+      "category": "grass",
+      "target_dimensions_m": [
+        8,
+        7,
+        3
+      ],
+      "shape": "短宽折叶，叶间留空。 主叶6片，每片最多2个三角面。",
+      "mesh_key": "GrassBroadSparse",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        12,
+        6,
+        3
+      ],
+      "main_blade_count": 6
+    },
+    {
+      "id": "N07",
+      "key": "GrassBroadDense",
+      "name_zh": "宽叶短草·密",
+      "category": "grass",
+      "target_dimensions_m": [
+        10,
+        8,
+        3.5
+      ],
+      "shape": "同族短宽折叶，密簇圆拱。 主叶12片，每片最多2个三角面。",
+      "mesh_key": "GrassBroadDense",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        24,
+        12,
+        4
+      ],
+      "main_blade_count": 12
+    },
+    {
+      "id": "N08",
+      "key": "GrassFanSparse",
+      "name_zh": "扇形短草·疏",
+      "category": "grass",
+      "target_dimensions_m": [
+        10,
+        6,
+        3
+      ],
+      "shape": "沿横向展开，纵深较浅。 主叶6片，每片最多2个三角面。",
+      "mesh_key": "GrassFanSparse",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        12,
+        6,
+        3
+      ],
+      "main_blade_count": 6
+    },
+    {
+      "id": "N09",
+      "key": "GrassFanDense",
+      "name_zh": "扇形短草·密",
+      "category": "grass",
+      "target_dimensions_m": [
+        12,
+        7,
+        3.5
+      ],
+      "shape": "同族扇形叶，前后两层错位。 主叶12片，每片最多2个三角面。",
+      "mesh_key": "GrassFanDense",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        24,
+        12,
+        4
+      ],
+      "main_blade_count": 12
+    },
+    {
+      "id": "N10",
+      "key": "GrassRadialSparse",
+      "name_zh": "放射短草·疏",
+      "category": "grass",
+      "target_dimensions_m": [
+        8,
+        8,
+        2.5
+      ],
+      "shape": "低矮叶向四周放射，中部通透。 主叶6片，每片最多2个三角面。",
+      "mesh_key": "GrassRadialSparse",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        12,
+        6,
+        3
+      ],
+      "main_blade_count": 6
+    },
+    {
+      "id": "N11",
+      "key": "GrassRadialDense",
+      "name_zh": "放射短草·密",
+      "category": "grass",
+      "target_dimensions_m": [
+        10,
+        10,
+        3
+      ],
+      "shape": "同族圆形放射簇，中心更丰满。 主叶12片，每片最多2个三角面。",
+      "mesh_key": "GrassRadialDense",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        24,
+        12,
+        4
+      ],
+      "main_blade_count": 12
+    },
+    {
+      "id": "N12",
+      "key": "GrassDrySmall",
+      "name_zh": "小干草束",
+      "category": "grass",
+      "target_dimensions_m": [
+        5,
+        4,
+        3
+      ],
+      "shape": "短直稻草金叶片，斜向齐整顶缘。 主叶6片，每片最多2个三角面。",
+      "mesh_key": "GrassDrySmall",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        12,
+        6,
+        3
+      ],
+      "main_blade_count": 6
+    },
+    {
+      "id": "N13",
+      "key": "GrassDryWide",
+      "name_zh": "宽干草束",
+      "category": "grass",
+      "target_dimensions_m": [
+        7,
+        5,
+        4
+      ],
+      "shape": "宽厚干草簇，浅金色，轮廓略不齐。 主叶12片，每片最多2个三角面。",
+      "mesh_key": "GrassDryWide",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        24,
+        12,
+        4
+      ],
+      "main_blade_count": 12
+    },
+    {
+      "id": "N14",
+      "key": "LeafStemSingle",
+      "name_zh": "单枝叶草",
+      "category": "leaf",
+      "target_dimensions_m": [
+        5,
+        3,
+        12
+      ],
+      "shape": "单直茎与交替披针形叶，保留疏朗空隙。",
+      "mesh_key": "LeafStemSingle",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        120,
+        60,
+        24
+      ]
+    },
+    {
+      "id": "N15",
+      "key": "LeafStemBranched",
+      "name_zh": "分枝叶草",
+      "category": "leaf",
+      "target_dimensions_m": [
+        8,
+        6,
+        15
+      ],
+      "shape": "三枝分叉，交替细叶；高低有主次。",
+      "mesh_key": "LeafStemBranched",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        240,
+        120,
+        48
+      ]
+    },
+    {
+      "id": "N16",
+      "key": "LeafClumpThree",
+      "name_zh": "三叶丛",
+      "category": "leaf",
+      "target_dimensions_m": [
+        8,
+        6,
+        8
+      ],
+      "shape": "三片上展大折叶；一高两低。",
+      "mesh_key": "LeafClumpThree",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        36,
+        18,
+        9
+      ]
+    },
+    {
+      "id": "N17",
+      "key": "FernSmall",
+      "name_zh": "小蕨",
+      "category": "leaf",
+      "target_dimensions_m": [
+        8,
+        7,
+        4
+      ],
+      "shape": "五片开放羽状叶，成对简化小叶。",
+      "mesh_key": "FernSmall",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        120,
+        60,
+        24
+      ]
+    },
+    {
+      "id": "N18",
+      "key": "FernLarge",
+      "name_zh": "大蕨",
+      "category": "leaf",
+      "target_dimensions_m": [
+        14,
+        12,
+        7
+      ],
+      "shape": "九片羽状叶，中高外低，叶片宽窄有序。",
+      "mesh_key": "FernLarge",
+      "material_variant": "default",
+      "prototype": true,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        240,
+        120,
+        48
+      ]
+    },
+    {
+      "id": "N19",
+      "key": "LeafClumpBroad",
+      "name_zh": "大阔叶丛",
+      "category": "leaf",
+      "target_dimensions_m": [
+        18,
+        14,
+        10
+      ],
+      "shape": "七片宽大弯折叶，沿地面向外伸展。",
+      "mesh_key": "LeafClumpBroad",
+      "material_variant": "default",
+      "prototype": true,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        84,
+        42,
+        21
+      ]
+    },
+    {
+      "id": "N20",
+      "key": "RosetteSmall",
+      "name_zh": "小莲座",
+      "category": "leaf",
+      "target_dimensions_m": [
+        6,
+        6,
+        4
+      ],
+      "shape": "七片尖阔叶围绕中心，低矮无高茎。",
+      "mesh_key": "RosetteSmall",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        42,
+        21,
+        7
+      ]
+    },
+    {
+      "id": "N21",
+      "key": "WheatGolden",
+      "name_zh": "金黄麦穗",
+      "category": "seed",
+      "target_dimensions_m": [
+        4,
+        3,
+        10
+      ],
+      "shape": "五根细秆配分节穗头，穗头方向略错开。",
+      "mesh_key": "WheatGolden",
+      "material_variant": "default",
+      "prototype": true,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        96,
+        48,
+        18
+      ]
+    },
+    {
+      "id": "N22",
+      "key": "SeedSprayGreen",
+      "name_zh": "绿色穗草",
+      "category": "seed",
+      "target_dimensions_m": [
+        4,
+        3,
+        10
+      ],
+      "shape": "直立绿秆，交替细长穗叶，通透轮廓。",
+      "mesh_key": "SeedSprayGreen",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        72,
+        36,
+        12
+      ]
+    },
+    {
+      "id": "N23",
+      "key": "FlowerWhiteDaisy",
+      "name_zh": "白花",
+      "category": "flower",
+      "target_dimensions_m": [
+        3,
+        2,
+        6
+      ],
+      "shape": "8片平面白花瓣、平花心、三棱细茎和2片平叶，禁止花瓣厚度。",
+      "mesh_key": "FlowerWhiteDaisy",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        32,
+        16,
+        8
+      ]
+    },
+    {
+      "id": "N24",
+      "key": "FlowerYellow",
+      "name_zh": "黄花",
+      "category": "flower",
+      "target_dimensions_m": [
+        3,
+        2,
+        5
+      ],
+      "shape": "6片平面金花瓣、平花心、三棱细茎和2片平叶。",
+      "mesh_key": "FlowerYellow",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        28,
+        14,
+        6
+      ]
+    },
+    {
+      "id": "N25",
+      "key": "FlowerRed",
+      "name_zh": "红花",
+      "category": "flower",
+      "target_dimensions_m": [
+        3,
+        2,
+        7
+      ],
+      "shape": "10片平面红花瓣、平花心、三棱细茎和2片平叶。",
+      "mesh_key": "FlowerRed",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        40,
+        20,
+        8
+      ]
+    },
+    {
+      "id": "N26",
+      "key": "FlowerPurpleBare",
+      "name_zh": "裸茎紫花穗",
+      "category": "flower",
+      "target_dimensions_m": [
+        4,
+        3,
+        9
+      ],
+      "shape": "3支裸茎紫花穗，每头3个宽大几何花瓣组，不细分小花。",
+      "mesh_key": "FlowerPurpleBare",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        96,
+        48,
+        18
+      ]
+    },
+    {
+      "id": "N27",
+      "key": "FlowerPurpleLeafy",
+      "name_zh": "带叶紫花穗",
+      "category": "flower",
+      "target_dimensions_m": [
+        6,
+        5,
+        8
+      ],
+      "shape": "5支简化紫花穗和6片平面基叶。",
+      "mesh_key": "FlowerPurpleLeafy",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        128,
+        64,
+        24
+      ]
+    },
+    {
+      "id": "N28",
+      "key": "FlowerPink",
+      "name_zh": "粉花",
+      "category": "flower",
+      "target_dimensions_m": [
+        3,
+        2,
+        5.5
+      ],
+      "shape": "5片平面粉花瓣、平花心、三棱细茎和2片平叶，不做厚花杯。",
+      "mesh_key": "FlowerPink",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        28,
+        14,
+        6
+      ]
+    },
+    {
+      "id": "N29",
+      "key": "GroundcoverLeaf",
+      "name_zh": "阔叶地被",
+      "category": "groundcover",
+      "target_dimensions_m": [
+        20,
+        20,
+        2
+      ],
+      "shape": "最多20片宽大平叶组成低地被，保持外缘缺口。",
+      "mesh_key": "GroundcoverLeaf",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        128,
+        64,
+        24
+      ]
+    },
+    {
+      "id": "N30",
+      "key": "GroundcoverClover",
+      "name_zh": "三叶草地被",
+      "category": "groundcover",
+      "target_dimensions_m": [
+        18,
+        18,
+        1.5
+      ],
+      "shape": "18枚简化三瓣平面三叶草叶片，无叶片厚度。",
+      "mesh_key": "GroundcoverClover",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        144,
+        72,
+        24
+      ]
+    },
+    {
+      "id": "N31",
+      "key": "GroundcoverFlowersWhite",
+      "name_zh": "白花毯",
+      "category": "groundcover",
+      "target_dimensions_m": [
+        22,
+        18,
+        2
+      ],
+      "shape": "12朵简化平面白花与少量基叶，整块不超过256三角面。",
+      "mesh_key": "GroundcoverFlowersWhite",
+      "material_variant": "default",
+      "prototype": true,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        256,
+        96,
+        32
+      ],
+      "flower_count": 12
+    },
+    {
+      "id": "N32",
+      "key": "GroundcoverFlowersBlue",
+      "name_zh": "蓝花毯",
+      "category": "groundcover",
+      "target_dimensions_m": [
+        22,
+        18,
+        2
+      ],
+      "shape": "完全复用N31的12朵花、位置、网格和UV，仅花瓣浅蓝。",
+      "mesh_key": "GroundcoverFlowersWhite",
+      "material_variant": "pale_blue_petals",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        256,
+        96,
+        32
+      ],
+      "flower_count": 12
+    },
+    {
+      "id": "N33",
+      "key": "RockUpright",
+      "name_zh": "高立岩",
+      "category": "rock",
+      "target_dimensions_m": [
+        20,
+        18,
+        30
+      ],
+      "shape": "不对称高立轮廓，少量大切面与2–3条主折线。",
+      "mesh_key": "RockUpright",
+      "material_variant": "default",
+      "prototype": true,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        160,
+        80,
+        40
+      ]
+    },
+    {
+      "id": "N34",
+      "key": "RockLow",
+      "name_zh": "低矮宽岩",
+      "category": "rock",
+      "target_dimensions_m": [
+        12,
+        10,
+        6
+      ],
+      "shape": "低矮不对称宽岩，大切面，轻外轮廓。",
+      "mesh_key": "RockLow",
+      "material_variant": "default",
+      "prototype": false,
+      "review_A": "pending",
+      "triangle_budget_lod0_lod1_lod2": [
+        96,
+        48,
+        24
+      ]
+    }
+  ],
+  "geometry_budget_note": "LOD triangle upper limits, not measured counts. Count mesh triangles; separately report actual double-sided rendering/material cost. No modeled petal thickness, subdivided rounded flower centers, or extra hidden filler blades."
+}

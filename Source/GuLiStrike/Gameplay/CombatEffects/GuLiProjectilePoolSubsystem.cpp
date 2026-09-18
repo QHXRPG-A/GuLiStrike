@@ -62,8 +62,8 @@ void UGuLiProjectilePoolSubsystem::Clear()
 	}
 	ActiveSlots.Reset(); FreeSlots.Reset(Slots.Num()); ById.Reset(); StepHandles.Reset();
 	for (int32 Index = Slots.Num() - 1; Index >= 0; --Index) FreeSlots.Add(Index);
-	PreviousTargets.Reset(); Targets.Reset(); Snapshots.Reset(); SpatialGrid.Reset(); Candidates.Reset();
-	PreviousSnapshotTime = 0; Stats = {}; Stats.Capacity = Slots.Num();
+	WingmanHistory = {}; GroundHistory = {}; Targets.Reset(); Snapshots.Reset(); SpatialGrid.Reset(); Candidates.Reset();
+	NextGroundStepTime = 0; Stats = {}; Stats.Capacity = Slots.Num();
 }
 
 void UGuLiProjectilePoolSubsystem::BeginEpoch(const uint32 NewEpoch)
@@ -88,8 +88,9 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::Launch(const FGuLiPooled
 {
 	if (!Ledger || !GetWorld() || GetWorld()->GetNetMode() == NM_Client) return {};
 	BeginEpoch(Ledger->GetMatchEpoch());
+	const bool bGround = R.Context.Source.Kind == EGuLiTargetKind::CommanderSoldier && !R.Context.Emitter.IsValid();
 	if (Epoch == 0 || R.Context.MatchEpoch != Epoch || !R.Context.ShotId.IsValid()
-		|| !R.Context.Emitter.IsValid() || !R.Context.Source.IsValid() || ById.Contains(R.Context.ShotId)
+		|| (!bGround && !R.Context.Emitter.IsValid()) || !R.Context.Source.IsValid() || ById.Contains(R.Context.ShotId)
 		|| R.Position.ContainsNaN() || R.Direction.ContainsNaN() || R.Direction.IsNearlyZero() || R.MuzzleOffset.ContainsNaN()
 		|| !FMath::IsFinite(R.Speed) || R.Speed <= 0 || R.Speed > 1000000
 		|| !FMath::IsFinite(R.Lifetime) || R.Lifetime < 0.01f || R.Lifetime > 120
@@ -111,7 +112,8 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::Launch(const FGuLiPooled
 	FGuLiCombatEffectState& State = Slot.State;
 	State = {}; State.Kind = EGuLiCombatEffectKind::LinearProjectile;
 	State.EffectId = R.Context.ShotId; State.MatchEpoch = Epoch; State.Sequence = 1;
-	State.Source = GuLiCombatTargets::MakeWingmanTargetHandle(R.Context.Emitter); State.SourceTeam = Source.Team;
+	State.Source = bGround ? R.Context.Source : GuLiCombatTargets::MakeWingmanTargetHandle(R.Context.Emitter);
+	State.SourceTeam = Source.Team;
 	State.LaunchLocation = State.Location = R.Position; State.LaunchDirection = R.Direction.GetSafeNormal();
 	State.Motion.Speed = R.Speed; State.Velocity = FVector(State.LaunchDirection) * R.Speed;
 	State.MuzzleOffset = R.MuzzleOffset;
@@ -137,9 +139,10 @@ bool UGuLiProjectilePoolSubsystem::QueryById(const FGuid& Id, FGuLiCombatEffectS
 	return Query(*Handle, OutState);
 }
 
-void UGuLiProjectilePoolSubsystem::AppendActiveSnapshot(TArray<FGuLiCombatEffectState>& OutStates) const
+void UGuLiProjectilePoolSubsystem::AppendActiveSnapshot(TArray<FGuLiCombatEffectState>& OutStates, const EGuLiTargetKind SourceKind) const
 {
-	for (const int32 Index : ActiveSlots) OutStates.Add(Slots[Index].State);
+	for (const int32 Index : ActiveSlots)
+		if (SourceKind == EGuLiTargetKind::None || Slots[Index].State.Source.Kind == SourceKind) OutStates.Add(Slots[Index].State);
 }
 
 bool UGuLiProjectilePoolSubsystem::Release(const FGuLiProjectilePoolHandle Handle, const EGuLiCombatEffectEndReason Reason)
@@ -187,15 +190,15 @@ bool UGuLiProjectilePoolSubsystem::Retire(const FGuLiProjectilePoolHandle Handle
 	return true;
 }
 
-void UGuLiProjectilePoolSubsystem::BuildSpatialIndex(const float Now)
+void UGuLiProjectilePoolSubsystem::BuildSpatialIndex(const float Now, const FSimulationHistory& History)
 {
 	Ledger->GetTargetSnapshots(Snapshots); Targets.Reset(Snapshots.Num()); SpatialGrid.Reset();
 	for (const auto& Snapshot : Snapshots)
 	{
 		if (!Snapshot.bAlive || Snapshot.Location.ContainsNaN() || !FMath::IsFinite(Snapshot.CollisionRadius) || Snapshot.CollisionRadius < 0) continue;
 		FTargetMotion& Target = Targets.AddDefaulted_GetRef(); Target.Snapshot = Snapshot;
-		const FVector* Previous = PreviousTargets.Find(Snapshot.Handle);
-		Target.Previous = Previous && Now > PreviousSnapshotTime ? *Previous : Snapshot.Location;
+		const FVector* Previous = History.PreviousTargets.Find(Snapshot.Handle);
+		Target.Previous = Previous && Now > History.PreviousTime ? *Previous : Snapshot.Location;
 		const FBox Box = FBox(Target.Previous.ComponentMin(Snapshot.Location), Target.Previous.ComponentMax(Snapshot.Location)).ExpandBy(Snapshot.CollisionRadius);
 		const FIntVector Min = ProjectileGridCell(Box.Min), Max = ProjectileGridCell(Box.Max);
 		for (int32 X = Min.X; X <= Max.X; ++X) for (int32 Y = Min.Y; Y <= Max.Y; ++Y) for (int32 Z = Min.Z; Z <= Max.Z; ++Z)
@@ -207,11 +210,32 @@ void UGuLiProjectilePoolSubsystem::Step(const float Now)
 {
 	if (bStepping || !Ledger || !FMath::IsFinite(Now)) return;
 	BeginEpoch(Ledger->GetMatchEpoch());
-	if (Epoch == 0 || ActiveSlots.IsEmpty()) { PreviousTargets.Reset(); PreviousSnapshotTime = Now; return; }
+	if (Epoch == 0 || ActiveSlots.IsEmpty())
+	{ WingmanHistory = {}; GroundHistory = {}; NextGroundStepTime = Now; return; }
 	TGuardValue<bool> Guard(bStepping, true);
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiProjectilePool);
 	const double Started = FPlatformTime::Seconds(); const uint32 StepEpoch = Epoch;
-	BuildSpatialIndex(Now);
+	const bool bHasWingman = ActiveSlots.ContainsByPredicate([this](int32 Index)
+		{ return Slots[Index].State.Source.Kind == EGuLiTargetKind::Wingman; });
+	const bool bHasGround = ActiveSlots.ContainsByPredicate([this](int32 Index)
+		{ return Slots[Index].State.Source.Kind == EGuLiTargetKind::CommanderSoldier; });
+	if (bHasWingman) StepDomain(Now, false, WingmanHistory);
+	else WingmanHistory = {};
+	if (Epoch != StepEpoch) return;
+	if (!bHasGround) { GroundHistory = {}; NextGroundStepTime = Now; }
+	else if (Now + UE_KINDA_SMALL_NUMBER >= NextGroundStepTime)
+	{
+		NextGroundStepTime = Now + 0.2f;
+		StepDomain(Now, true, GroundHistory);
+	}
+	if (Epoch == StepEpoch) Stats.LastStepMilliseconds = (FPlatformTime::Seconds() - Started) * 1000.0;
+}
+
+void UGuLiProjectilePoolSubsystem::StepDomain(const float Now, const bool bGround, FSimulationHistory& History)
+{
+	const uint32 StepEpoch = Epoch;
+	// Separate histories preserve the complete 200-ms relative target sweep for ground bullets.
+	BuildSpatialIndex(Now, History);
 	FCollisionQueryParams WorldParams(SCENE_QUERY_STAT(GuLiPooledLaser), false);
 	// Build the ignore set once per simulation step, not once per projectile.
 	for (const auto& Target : Snapshots) if (Target.CollisionActor.IsValid()) WorldParams.AddIgnoredActor(Target.CollisionActor.Get());
@@ -219,6 +243,7 @@ void UGuLiProjectilePoolSubsystem::Step(const float Now)
 	StepHandles.Reset(ActiveSlots.Num());
 	for (const int32 Index : ActiveSlots)
 	{
+		if ((Slots[Index].State.Source.Kind == EGuLiTargetKind::CommanderSoldier) != bGround) continue;
 		auto& Handle = StepHandles.AddDefaulted_GetRef(); Handle.Slot = Index; Handle.Generation = Slots[Index].Generation; Handle.MatchEpoch = Epoch;
 	}
 	// StepHandles is separate from the active list, which can change during damage callbacks.
@@ -236,9 +261,9 @@ void UGuLiProjectilePoolSubsystem::Step(const float Now)
 		for (int32 X = Min.X; X <= Max.X; ++X) for (int32 Y = Min.Y; Y <= Max.Y; ++Y) for (int32 Z = Min.Z; Z <= Max.Z; ++Z)
 			if (const auto* CellTargets = SpatialGrid.Find(FIntVector(X, Y, Z))) for (const int32 Index : *CellTargets) Candidates.Add(Index);
 		double FirstAlpha = 2; int32 FirstTarget = INDEX_NONE;
-		const float SnapshotSpan = Now - PreviousSnapshotTime;
-		const float StartAlpha = SnapshotSpan > UE_SMALL_NUMBER ? FMath::Clamp((State.SampleTime - PreviousSnapshotTime) / SnapshotSpan, 0.0f, 1.0f) : 1;
-		const float EndAlpha = SnapshotSpan > UE_SMALL_NUMBER ? FMath::Clamp((EndTime - PreviousSnapshotTime) / SnapshotSpan, 0.0f, 1.0f) : 1;
+		const float SnapshotSpan = Now - History.PreviousTime;
+		const float StartAlpha = SnapshotSpan > UE_SMALL_NUMBER ? FMath::Clamp((State.SampleTime - History.PreviousTime) / SnapshotSpan, 0.0f, 1.0f) : 1;
+		const float EndAlpha = SnapshotSpan > UE_SMALL_NUMBER ? FMath::Clamp((EndTime - History.PreviousTime) / SnapshotSpan, 0.0f, 1.0f) : 1;
 		for (const int32 Index : Candidates)
 		{
 			const auto& Candidate = Targets[Index]; const auto& Target = Candidate.Snapshot;
@@ -275,9 +300,8 @@ void UGuLiProjectilePoolSubsystem::Step(const float Now)
 	}
 	if (Epoch == StepEpoch)
 	{
-		PreviousTargets.Reset(); PreviousTargets.Reserve(Targets.Num());
-		for (const auto& Target : Targets) PreviousTargets.Add(Target.Snapshot.Handle, Target.Snapshot.Location);
-		PreviousSnapshotTime = Now;
-		Stats.LastStepMilliseconds = (FPlatformTime::Seconds() - Started) * 1000.0;
+		History.PreviousTargets.Reset(); History.PreviousTargets.Reserve(Targets.Num());
+		for (const auto& Target : Targets) History.PreviousTargets.Add(Target.Snapshot.Handle, Target.Snapshot.Location);
+		History.PreviousTime = Now;
 	}
 }

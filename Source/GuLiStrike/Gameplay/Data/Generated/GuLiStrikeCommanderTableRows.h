@@ -139,6 +139,22 @@ struct FGuLiStrikeCommanderUnitSkillsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
 	float RangeCentimeters = 0.0f;
 
+	/** TriggerMode (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	FString TriggerMode;
+
+	/** ProjectileSpeedCentimetersPerSecond (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	float ProjectileSpeedCentimetersPerSecond = 0.0f;
+
+	/** ProjectileLifetimeSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	float ProjectileLifetimeSeconds = 0.0f;
+
+	/** ProjectileSweepRadiusCentimeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="UnitSkills")
+	float ProjectileSweepRadiusCentimeters = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeCommander_WeaponMounts 的行结构（源: GuLiStrikeSecondaryWeapons.xlsx / WeaponMounts）。 */

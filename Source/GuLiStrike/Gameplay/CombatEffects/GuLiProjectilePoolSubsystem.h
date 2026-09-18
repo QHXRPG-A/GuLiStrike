@@ -39,10 +39,10 @@ struct GULISTRIKE_API FGuLiPooledProjectileLaunch
 	FVector Position = FVector::ZeroVector;
 	FVector Direction = FVector::ForwardVector;
 	FVector MuzzleOffset = FVector::ZeroVector;
-	float Speed = 80000.0f;
+	float Speed = 16000.0f;
 	float Lifetime = 1.875f;
-	float MaximumDistance = 150000.0f;
-	float SweepRadius = 45.0f;
+	float MaximumDistance = 30000.0f;
+	float SweepRadius = 9.0f;
 	float ServerTime = 0.0f;
 	/** Optional retained burst lease. Launch acquires its own reference. */
 	FGuid SourceLease;
@@ -50,7 +50,7 @@ struct GULISTRIKE_API FGuLiPooledProjectileLaunch
 
 DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiPooledProjectileStateEvent, const FGuLiCombatEffectState&, bool);
 
-/** Server-only data pool. The combat runtime advances it on its existing 30-Hz clock. */
+/** Server-only data pool. Wingmen step at the runtime's 30 Hz; ground bullets sweep independently at 5 Hz. */
 UCLASS()
 class GULISTRIKE_API UGuLiProjectilePoolSubsystem : public UWorldSubsystem
 {
@@ -64,7 +64,8 @@ public:
 	bool Release(FGuLiProjectilePoolHandle Handle, EGuLiCombatEffectEndReason Reason);
 	bool Query(FGuLiProjectilePoolHandle Handle, FGuLiCombatEffectState& OutState) const;
 	bool QueryById(const FGuid& Id, FGuLiCombatEffectState& OutState) const;
-	void AppendActiveSnapshot(TArray<FGuLiCombatEffectState>& OutStates) const;
+	/** None selects all pooled projectiles; other kinds select one source domain. */
+	void AppendActiveSnapshot(TArray<FGuLiCombatEffectState>& OutStates, EGuLiTargetKind SourceKind = EGuLiTargetKind::None) const;
 	void Step(float ServerTime);
 	UFUNCTION(BlueprintPure, Category="Projectile Pool") FGuLiProjectilePoolStats GetStats() const { return Stats; }
 	UFUNCTION(BlueprintPure, Category="Projectile Pool") int32 GetActiveCount() const { return ActiveSlots.Num(); }
@@ -85,10 +86,16 @@ private:
 		FGuLiCombatTargetSnapshot Snapshot;
 		FVector Previous = FVector::ZeroVector;
 	};
+	struct FSimulationHistory
+	{
+		TMap<FGuLiTargetHandle, FVector> PreviousTargets;
+		float PreviousTime = 0;
+	};
 	bool Matches(FGuLiProjectilePoolHandle Handle) const;
 	void Grow(int32 Count);
 	void Clear();
-	void BuildSpatialIndex(float Now);
+	void BuildSpatialIndex(float Now, const FSimulationHistory& History);
+	void StepDomain(float Now, bool bGround, FSimulationHistory& History);
 	bool Retire(FGuLiProjectilePoolHandle Handle, EGuLiCombatEffectEndReason Reason,
 		const FVector& Position, float Time, const FGuLiTargetHandle* HitTarget = nullptr);
 	UPROPERTY(Transient) TObjectPtr<UGuLiDamageLedgerSubsystem> Ledger;
@@ -97,13 +104,14 @@ private:
 	TArray<int32> ActiveSlots;
 	TArray<FGuLiProjectilePoolHandle> StepHandles;
 	TMap<FGuid, FGuLiProjectilePoolHandle> ById;
-	TMap<FGuLiTargetHandle, FVector> PreviousTargets;
+	FSimulationHistory WingmanHistory;
+	FSimulationHistory GroundHistory;
 	TArray<FGuLiCombatTargetSnapshot> Snapshots;
 	TArray<FTargetMotion> Targets;
 	TMap<FIntVector, TArray<int32>> SpatialGrid;
 	TSet<int32> Candidates;
 	FGuLiProjectilePoolStats Stats;
 	uint32 Epoch = 0;
-	float PreviousSnapshotTime = 0;
+	float NextGroundStepTime = 0;
 	bool bStepping = false;
 };

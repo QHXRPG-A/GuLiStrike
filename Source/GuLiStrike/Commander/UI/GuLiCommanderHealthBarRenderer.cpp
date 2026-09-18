@@ -32,9 +32,9 @@ namespace GuLiCommanderHealthBars
 	constexpr int32 SelectedCustomDataIndex = 1;
 	constexpr int32 VisibleCustomDataIndex = 2;
 	constexpr int32 CustomDataFloatCount = 3;
-	constexpr float MaximumDrawDistanceCentimeters = 30000.0f;
-	constexpr float FallbackSoldierHeightCentimeters = 220.0f;
-	constexpr float HeightPaddingCentimeters = 20.0f;
+	constexpr float MaximumDrawDistanceCentimeters = 6000.0f;
+	constexpr float FallbackSoldierHeightCentimeters = 44.0f;
+	constexpr float HeightPaddingCentimeters = 4.0f;
 	constexpr float DesiredWidthPixels = 84.0f;
 	constexpr float DesiredHeightPixels = 12.0f;
 	constexpr float PlaneMeshSizeCentimeters = 100.0f;
@@ -536,7 +536,9 @@ float AGuLiCommanderHealthBarRenderer::ResolveSoldierHeightOffset(
 	float HeightOffset = GuLiCommanderHealthBars::FallbackSoldierHeightCentimeters;
 	if (SoldierMesh)
 	{
-		HeightOffset = CalculateSoldierHeightOffset(SoldierMesh->GetBounds());
+		const float Scale = Presentation ? Presentation->GetUnitPresentationScale(UnitTypeId) : 0.2f;
+		HeightOffset = CalculateSoldierHeightOffset(SoldierMesh->GetBounds().TransformBy(
+			FTransform(FQuat::Identity, FVector::ZeroVector, FVector(Scale))));
 	}
 	SoldierHeightOffsetsCentimeters.Add(UnitTypeId, HeightOffset);
 	return HeightOffset;

@@ -30,7 +30,7 @@ AGuLiWingmanPawn::AGuLiWingmanPawn()
 	PrimaryActorTick.bCanEverTick = false;
 
 	CollisionRoot = CreateDefaultSubobject<USphereComponent>(TEXT("WingmanCollision"));
-	CollisionRoot->InitSphereRadius(1500.0f);
+	CollisionRoot->InitSphereRadius(300.0f);
 	CollisionRoot->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	CollisionRoot->SetCollisionObjectType(ECC_Pawn);
 	CollisionRoot->SetCollisionResponseToAllChannels(ECR_Ignore);
@@ -46,6 +46,7 @@ AGuLiWingmanPawn::AGuLiWingmanPawn()
 
 	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("WingmanMesh"));
 	VisualMesh->SetupAttachment(PresentationRoot);
+	VisualMesh->SetRelativeScale3D(FVector(0.2f));
 	// The authored aircraft points down local -X. Correct only its presentation layer so
 	// actor +X, collision, simulation velocity and replicated snapshots keep their contract.
 	VisualMesh->SetRelativeRotation(FRotator(0.0f, 180.0f, 0.0f));
@@ -490,6 +491,9 @@ void AGuLiWingmanPawn::UpdateFlightTrail(const float Opacity, const bool bResetT
 		FlightTrail->SetAutoDestroy(false);
 		FlightTrail->SetAsset(System);
 		FlightTrail->SetupAttachment(VisualMesh);
+		// Nozzle location inherits the scaled model; world-space HLSL owns particle dimensions.
+		FlightTrail->SetAbsolute(false, false, true);
+		FlightTrail->SetWorldScale3D(FVector::OneVector);
 		FlightTrail->SetRelativeLocation(FlightTrailOffset);
 		FlightTrail->SetRelativeRotation(FRotator(0.0f, 180.0f, 0.0f));
 		FlightTrail->SetCanEverAffectNavigation(false);
@@ -500,7 +504,7 @@ void AGuLiWingmanPawn::UpdateFlightTrail(const float Opacity, const bool bResetT
 
 	const FVector Location = PresentationRoot->GetComponentLocation();
 	const bool bTeleported = bHasFlightTrailLocation
-		&& FVector::DistSquared(Location, LastFlightTrailLocation) > FMath::Square(10000.0f);
+		&& FVector::DistSquared(Location, LastFlightTrailLocation) > FMath::Square(2000.0f);
 	float Speed = Runtime.Dynamics.Velocity.Size();
 	if (!IsOwnerSimulationPawn() && bHasFlightTrailLocation && !bTeleported && !bResetTrail)
 	{
@@ -514,7 +518,7 @@ void AGuLiWingmanPawn::UpdateFlightTrail(const float Opacity, const bool bResetT
 	}
 	FlightTrail->SetVariableFloat(TEXT("User.Opacity"), SafeOpacity);
 	FlightTrail->SetVariableFloat(TEXT("User.Throttle"), FMath::GetMappedRangeValueClamped(
-		FVector2D(0.0f, 18000.0f), FVector2D(0.65f, 1.3f), Speed));
+		FVector2D(0.0f, 3600.0f), FVector2D(0.65f, 1.3f), Speed));
 	FlightTrail->SetVariableVec3(TEXT("User.Forward"), PresentationRoot->GetForwardVector());
 	FlightTrail->SetVariableVec3(TEXT("User.Right"), PresentationRoot->GetRightVector());
 	// Niagara owns distance-cull resume. Do not reactivate a culled system every frame.

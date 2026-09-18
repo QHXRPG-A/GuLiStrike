@@ -1,0 +1,100 @@
+{
+  "schema": "gulistrike-art-approval/v1",
+  "work_id": "WORK-20260917-004",
+  "recorded_at": "2026-09-17T07:52:56.113973+00:00",
+  "art_revision": "1.0",
+  "stage": "A",
+  "decision": "approved",
+  "user_message": "开始制作",
+  "message_context": "Reply immediately following the review-A request for Autocannon v2, Triple_Barrel_Turret v1 and Single_Barrel_Turret v2.",
+  "scope": "Use approved color, linework and cel lighting references to style original rigged meshes; geometry and mechanical interfaces stay unchanged.",
+  "reference_manifest": {
+    "path": "References/reference_A_manifest_v1.json",
+    "sha256": "a5dd36297fed2b36c7c4533d5c935c090dd2bb2645c84da310faea9ee41ba95f"
+  },
+  "parts": {
+    "Autocannon": {
+      "reference_version": "v2",
+      "reference_sheet": {
+        "path": "References/Autocannon_Reference_v2.png",
+        "sha256": "a21dd45420fb3798af9d7ce6def0e7a9e3b38efa4538333d73eb77645684c0ca",
+        "bytes": 1534150,
+        "resolution": [
+          1536,
+          1024
+        ]
+      },
+      "original_authoring": {
+        "path": "Source/ExistingAuthoring/SC_Autocannon.blend",
+        "sha256": "ee18f9f63e096eed6617ff0ca879ca9a01dc90605b7d6dcac55ac902caccbf6f",
+        "bytes": 156499
+      },
+      "original_rig_fbx": {
+        "path": "Source/ExistingAuthoring/SKM_SC_Autocannon.fbx",
+        "sha256": "45629e5ae88e95dd7c2ef20e2753efa9811ccadaed30719e26d4e6aecf95694b",
+        "bytes": 364476
+      },
+      "original_geometry_snapshot": {
+        "path": "Source/Autocannon_original_geometry.json",
+        "sha256": "e9ad83ca320d785fb1eb050b637dd00d8f6184f749174e4604926d864267f319",
+        "bytes": 166119
+      }
+    },
+    "Triple_Barrel_Turret": {
+      "reference_version": "v1",
+      "reference_sheet": {
+        "path": "References/Triple_Barrel_Turret_Reference_v1.png",
+        "sha256": "db71b036ca781e419ebc5ce2cea12516795d5787d2c480882afe21a576ccd6ce",
+        "bytes": 1331327,
+        "resolution": [
+          1448,
+          1086
+        ]
+      },
+      "original_authoring": {
+        "path": "Source/ExistingAuthoring/SC_Triple_Barrel_Turret.blend",
+        "sha256": "8775c9d8e5cfdfbb9beacbdee9a5d6305f774f0da017cf90ee05070e49a0c788",
+        "bytes": 186210
+      },
+      "original_rig_fbx": {
+        "path": "Source/ExistingAuthoring/SKM_SC_Triple_Barrel_Turret.fbx",
+        "sha256": "42914bc8ae9fd13f2e98dba1f3012df4608ef70ca679e57f2b85112adba53c5b",
+        "bytes": 474428
+      },
+      "original_geometry_snapshot": {
+        "path": "Source/Triple_Barrel_Turret_original_geometry.json",
+        "sha256": "359148ed82200034a5dc0ed70ca84385d7fd9532355903f55d1d5288a6995ee6",
+        "bytes": 261869
+      }
+    },
+    "Single_Barrel_Turret": {
+      "reference_version": "v2",
+      "reference_sheet": {
+        "path": "References/Single_Barrel_Turret_Reference_v2.png",
+        "sha256": "22f940a2dd6ceb35376acdb56b08c8d3d9645644897932ecdfffc1574983ee07",
+        "bytes": 1385287,
+        "resolution": [
+          1448,
+          1086
+        ]
+      },
+      "original_authoring": {
+        "path": "Source/ExistingAuthoring/SC_Single_Barrel_Turret.blend",
+        "sha256": "6bacf752f995d66a9d4d92eb775430aac34b22f7b93571a67e20260d06c9e1d8",
+        "bytes": 143311
+      },
+      "original_rig_fbx": {
+        "path": "Source/ExistingAuthoring/SKM_SC_Single_Barrel_Turret.fbx",
+        "sha256": "9fe56e9c2d3243b7b5d631e7e735662ef9892228c83c7dd0a41a37a42460188e",
+        "bytes": 265756
+      },
+      "original_geometry_snapshot": {
+        "path": "Source/Single_Barrel_Turret_original_geometry.json",
+        "sha256": "9fec37b7d49e0f5f75b3624f72ba8c4a8206df03e430dbd8bb76a517c019ee4b",
+        "bytes": 168794
+      }
+    }
+  },
+  "B": "not_started",
+  "final_FBX_export": "await_B"
+}

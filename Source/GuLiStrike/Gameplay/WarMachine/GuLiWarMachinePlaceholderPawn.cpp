@@ -32,7 +32,7 @@ AGuLiWarMachinePlaceholderPawn::AGuLiWarMachinePlaceholderPawn(const FObjectInit
 	bUseControllerRotationPitch = false;
 	bUseControllerRotationYaw = false;
 	bUseControllerRotationRoll = false;
-	GetCapsuleComponent()->InitCapsuleSize(60.0f, 90.0f);
+	GetCapsuleComponent()->InitCapsuleSize(12.0f, 18.0f);
 
 	// 使用引擎已有形状，不新增模型或蓝图资产；碰撞和移动仍由 Character 的胶囊体承担。
 	BodyMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BodyMesh"));
@@ -40,8 +40,8 @@ AGuLiWarMachinePlaceholderPawn::AGuLiWarMachinePlaceholderPawn(const FObjectInit
 	BodyMesh->SetupAttachment(GetMesh());
 	BodyMesh->SetCollisionEnabled(ECollisionEnabled::NoCollision);
 	BodyMesh->SetGenerateOverlapEvents(false);
-	BodyMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -30.0f));
-	BodyMesh->SetRelativeScale3D(FVector(1.2f));
+	BodyMesh->SetRelativeLocation(FVector(0.0f, 0.0f, -6.0f));
+	BodyMesh->SetRelativeScale3D(FVector(0.24f));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> BodyMeshAsset(TEXT("/Engine/BasicShapes/Cube.Cube"));
 	if (BodyMeshAsset.Succeeded())
 	{
@@ -50,8 +50,9 @@ AGuLiWarMachinePlaceholderPawn::AGuLiWarMachinePlaceholderPawn(const FObjectInit
 
 	CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
 	CameraBoom->SetupAttachment(GetRootComponent());
-	CameraBoom->TargetArmLength = 450.0f;
-	CameraBoom->SocketOffset = FVector(0.0f, 0.0f, 60.0f);
+	CameraBoom->TargetArmLength = 90.0f;
+	CameraBoom->SocketOffset = FVector(0.0f, 0.0f, 12.0f);
+	CameraBoom->ProbeSize = 2.4f;
 	CameraBoom->bUsePawnControlRotation = true;
 	FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
 	FollowCamera->SetupAttachment(CameraBoom, USpringArmComponent::SocketName);
@@ -60,7 +61,7 @@ AGuLiWarMachinePlaceholderPawn::AGuLiWarMachinePlaceholderPawn(const FObjectInit
 	// 复用 CMC 行走/预测/校正，不另外写位置 RPC 或把指挥官姿态协议套到玩家 Pawn 上。
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 540.0f, 0.0f);
-	GetCharacterMovement()->MaxWalkSpeed = 600.0f;
+	GetCharacterMovement()->MaxWalkSpeed = 120.0f;
 }
 
 void AGuLiWarMachinePlaceholderPawn::PawnClientRestart()

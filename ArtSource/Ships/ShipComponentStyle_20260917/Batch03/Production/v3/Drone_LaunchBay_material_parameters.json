@@ -1,0 +1,88 @@
+{
+  "palette_sRGB": {
+    "Pearl": "DDE6E6",
+    "Slate": "4B6577",
+    "Navy": "23384A",
+    "Steel": "8298A5",
+    "Ochre": "C9903E",
+    "Cyan": "348B9F",
+    "Brick": "B16352",
+    "Ink": "213D50",
+    "Yellow": "E0BC49",
+    "Green": "65955D"
+  },
+  "render_engine": "BLENDER_EEVEE",
+  "view_transform": "Standard",
+  "look": "None",
+  "shader": "Diffuse -> ShaderToRGB -> luminance -> constant three-tone ramp; multiply BaseColor; independent ink mix",
+  "three_tone_thresholds": [
+    0,
+    0.18,
+    0.46
+  ],
+  "three_tone_multipliers_linear": [
+    [
+      0.43,
+      0.5,
+      0.6
+    ],
+    [
+      0.72,
+      0.79,
+      0.84
+    ],
+    [
+      1,
+      1,
+      1
+    ]
+  ],
+  "line_strength": 0.85,
+  "line_halfwidth_m": 0.030140513671874997,
+  "outline_width_m": 0.06028102569580077,
+  "outline_collection": "OUTLINE_TOGGLE",
+  "outline_export": false,
+  "UV_channels": [
+    "UVmap_0",
+    "UVmap_1",
+    "LightMapUV",
+    "SC_PaintUV",
+    "SC_LineUV"
+  ],
+  "paint_UV": "SC_PaintUV",
+  "line_UV": "SC_LineUV",
+  "editable_face_attribute": "SC_PaintPaletteIndex",
+  "editable_corner_color": "SC_EditablePaintColor",
+  "BaseColor": "sRGB; paint and launch pictograms only; no baked light/shadows",
+  "ORM": "Non-Color; R=1, G=roughness, B=metallic; retained packed for future PBR data",
+  "LineMask": "Non-Color; structural edges and material boundaries; coplanar diagonals omitted",
+  "lighting": "Studio_Key sun energy 2; scene light and self-shadow drive tone bands",
+  "mechanical_type": "static; no added bones or animation",
+  "original_object_matrix": [
+    [
+      0.009999999776482582,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.009999999776482582,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009999999776482582,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "FBX_material_note": "EEVEE toon nodes and optional outline are Blender presentation; rebuild equivalent shader from these portable data in the target engine."
+}

@@ -13,7 +13,11 @@ FGuLiActiveSkillUnitResult GuLiUnitSkillExecution::Execute(const FGuLiActiveSkil
 	if (Definition->TargetMode == EGuLiActiveSkillTargetMode::GroundPoint)
 	{
 		if (!Caster.bHasGroundPoint) { Result.Code = EGuLiActiveSkillResultCode::InvalidGround; return Result; }
-		if (FVector::DistSquared(Caster.Context.SourceTransform.GetLocation(), Caster.Context.GroundPoint) > FMath::Square(Definition->RangeCentimeters))
+		const float Range = Definition->RangeSourceSlot.IsNone() ? Definition->RangeCentimeters
+			: Caster.ResolvedSourceRange * Definition->RangeMultiplier;
+		if (!FMath::IsFinite(Range) || Range <= 0)
+		{ Result.Code = EGuLiActiveSkillResultCode::ExecutionFailed; return Result; }
+		if (FVector::DistSquared(Caster.Context.SourceTransform.GetLocation(), Caster.Context.GroundPoint) > FMath::Square(Range))
 		{ Result.Code = EGuLiActiveSkillResultCode::OutOfRange; return Result; }
 	}
 	Result.Execution = ExecuteEffect(Caster.Context, Definition->Configuration);
@@ -23,6 +27,7 @@ FGuLiActiveSkillUnitResult GuLiUnitSkillExecution::Execute(const FGuLiActiveSkil
 		Runtime.SkillId = Definition->SkillId;
 		Runtime.ReadyAt = SimulationSeconds + Definition->CooldownSeconds;
 		Runtime.ActiveCastId = Result.Execution.CastId;
+		++Runtime.SuccessfulCasts;
 		Result.ReadyAtServerSeconds = ServerSeconds + Definition->CooldownSeconds;
 	}
 	return Result;

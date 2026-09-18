@@ -37,7 +37,7 @@ AGuLiMiningVehiclePawn::AGuLiMiningVehiclePawn(const FObjectInitializer& ObjectI
 	SetNetUpdateFrequency(20.0f);
 	// ACharacter requires HalfHeight >= Radius. Keep a real Actor collision envelope
 	// while selecting the deliberately conservative CommanderSoldier nav agent.
-	GetCapsuleComponent()->InitCapsuleSize(650.0f, 650.0f);
+	GetCapsuleComponent()->InitCapsuleSize(130.0f, 130.0f);
     GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Block);
     GetCapsuleComponent()->SetCanEverAffectNavigation(false);
     VehiclePresentation = CreateDefaultSubobject<UChildActorComponent>(TEXT("VehiclePresentation"));
@@ -49,10 +49,10 @@ AGuLiMiningVehiclePawn::AGuLiMiningVehiclePawn(const FObjectInitializer& ObjectI
 	bUseControllerRotationYaw = false;
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 240.0f, 0.0f);
-	GetCharacterMovement()->MaxWalkSpeed = 4500.0f;
+	GetCharacterMovement()->MaxWalkSpeed = 900.0f;
 	GetCharacterMovement()->SetUpdateNavAgentWithOwnersCollisions(false);
 	GetCharacterMovement()->NavAgentProps.AgentRadius = GULI_RESOURCE_MINING_VEHICLE_NAV_RADIUS_CM;
-	GetCharacterMovement()->NavAgentProps.AgentHeight = 144.0f;
+	GetCharacterMovement()->NavAgentProps.AgentHeight = 28.8f;
 }
 
 void AGuLiMiningVehiclePawn::BeginPlay()
@@ -124,9 +124,7 @@ void AGuLiMiningVehiclePawn::Tick(const float DeltaSeconds)
 	case EGuLiMiningTaskState::MovingToCluster: TickMovingToCluster(); break;
 	case EGuLiMiningTaskState::Mining: TickMining(DeltaSeconds); break;
 	case EGuLiMiningTaskState::ReturningToFactory: TickReturningToFactory(); break;
-    case EGuLiMiningTaskState::WaitingForFactoryDoor:
     case EGuLiMiningTaskState::EnteringFactory:
-    case EGuLiMiningTaskState::TurningInFactory:
     case EGuLiMiningTaskState::ExitingFactory: TickFactoryManeuver(DeltaSeconds); break;
     case EGuLiMiningTaskState::Docking: TickDocking(DeltaSeconds); break;
 	case EGuLiMiningTaskState::PlayerMoving: TickPlayerMoving(); break;
@@ -321,8 +319,12 @@ void AGuLiMiningVehiclePawn::TickReturningToFactory()
     const FVector Entry = Factory->GetActorTransform().TransformPosition(Factory->GetDockRoute().Entry);
     if (FVector::Dist2D(GetActorLocation(), Entry) <= 100.0f + GULI_RESOURCE_MINING_VEHICLE_NAV_RADIUS_CM + 50.0f)
     {
+        if (!Factory->TryReserveDock(*this)) return;
         CastChecked<AAIController>(GetController())->StopMovement();
-        TaskState = EGuLiMiningTaskState::WaitingForFactoryDoor;
+        GetCharacterMovement()->StopMovementImmediately();
+        GetCharacterMovement()->DisableMovement();
+        bDockAligned = false;
+        TaskState = EGuLiMiningTaskState::EnteringFactory;
         ForceNetUpdate();
     }
     else if (CastChecked<AAIController>(GetController())->GetMoveStatus() == EPathFollowingStatus::Idle)
@@ -334,88 +336,25 @@ void AGuLiMiningVehiclePawn::TickReturningToFactory()
 
 bool AGuLiMiningVehiclePawn::IsFactoryManeuverActive() const
 {
-    return TaskState == EGuLiMiningTaskState::WaitingForFactoryDoor || TaskState == EGuLiMiningTaskState::EnteringFactory
-        || TaskState == EGuLiMiningTaskState::Docking || TaskState == EGuLiMiningTaskState::TurningInFactory
+    return TaskState == EGuLiMiningTaskState::EnteringFactory || TaskState == EGuLiMiningTaskState::Docking
         || TaskState == EGuLiMiningTaskState::ExitingFactory;
-}
-
-bool AGuLiMiningVehiclePawn::CalculateFactoryGroundPose(const FVector& Position, const float Yaw, FTransform& OutPose) const
-{
-    FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiFactoryGround), false, this);
-    Params.AddIgnoredActor(Factory);
-    Params.AddIgnoredActor(VehiclePresentation->GetChildActor());
-    GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->IgnoreVehicles(Params);
-    const float BaseZ = Factory->GetActorLocation().Z;
-    auto GroundAt = [&](const FVector& Point, FHitResult& Hit)
-    {
-        return GetWorld()->LineTraceSingleByChannel(Hit, FVector(Point.X, Point.Y, BaseZ + 500),
-            FVector(Point.X, Point.Y, BaseZ - 5000), ECC_Visibility, Params);
-    };
-    const FVector Center = TravelBounds.GetCenter();
-    const FVector Extent = TravelBounds.GetExtent();
-    const FQuat FlatRotation = FRotator(0, Yaw, 0).Quaternion();
-    float Heights[3][3];
-    for (int32 X = 0; X < 3; ++X)
-        for (int32 Y = 0; Y < 3; ++Y)
-        {
-            FHitResult Hit;
-            const FVector Offset(Center.X + (X - 1) * Extent.X, Center.Y + (Y - 1) * Extent.Y, 0);
-            if (!GroundAt(Position + FlatRotation.RotateVector(Offset), Hit)) return false;
-            Heights[X][Y] = Hit.ImpactPoint.Z;
-        }
-    const float ForwardSlope = (Heights[2][1] - Heights[0][1]) / (2 * Extent.X);
-    const float SideSlope = (Heights[1][2] - Heights[1][0]) / (2 * Extent.Y);
-    const FVector Up = FlatRotation.RotateVector(FVector(-ForwardSlope, -SideSlope, 1).GetSafeNormal());
-    const FQuat Rotation = FRotationMatrix::MakeFromZX(Up, FlatRotation.GetAxisX()).ToQuat();
-    // Support the full model on the sampled surface, including the apron-to-floor transition.
-    float Height = -TNumericLimits<float>::Max();
-    for (int32 X = 0; X < 3; ++X)
-        for (int32 Y = 0; Y < 3; ++Y)
-        {
-            const FVector Offset = Rotation.RotateVector(FVector(
-                Center.X + (X - 1) * Extent.X, Center.Y + (Y - 1) * Extent.Y, TravelBounds.Min.Z));
-            FHitResult Hit;
-            if (!GroundAt(Position + Offset, Hit)) return false;
-            Height = FMath::Max(Height, static_cast<float>(Hit.ImpactPoint.Z - Offset.Z));
-        }
-    OutPose = FTransform(Rotation, FVector(Position.X, Position.Y, Height + 3.0f));
-    // A thin sweep covers the complete footprint, including convex seams between sampled points.
-    const FVector Sole = OutPose.TransformPosition(FVector(Center.X, Center.Y, TravelBounds.Min.Z + 1.0f));
-    FHitResult Support;
-    if (!GetWorld()->SweepSingleByChannel(Support, Sole + FVector(0,0,50), Sole - FVector(0,0,50),
-        Rotation, ECC_Visibility, FCollisionShape::MakeBox(FVector(Extent.X, Extent.Y, 1.0f)), Params)
-        || Support.bStartPenetrating || Support.ImpactNormal.Z < GetCharacterMovement()->GetWalkableFloorZ()) return false;
-    OutPose.AddToTranslation(FVector(0,0,Support.Location.Z - Sole.Z + 3.0f));
-    return true;
 }
 
 bool AGuLiMiningVehiclePawn::MoveFactoryStep(const FVector& LocalTarget, const float LocalYaw, const float DeltaSeconds)
 {
+    if (DeltaSeconds <= 0.0f) return false;
     const FTransform FactoryTransform = Factory->GetActorTransform();
-    const FVector Goal = FactoryTransform.TransformPosition(LocalTarget);
+    // Factory traversal is a scripted presentation route, not a second navigation system.
+    // Route points describe the deck; the resolved model bounds supply its pivot clearance once.
+    FVector Goal = FactoryTransform.TransformPosition(LocalTarget);
+    Goal.Z += -TravelBounds.Min.Z + 0.6f;
     const FVector Previous = GetActorLocation();
-    const FVector Next = FMath::VInterpConstantTo(Previous, FVector(Goal.X, Goal.Y, Previous.Z), DeltaSeconds, ManeuverSpeed);
+    const FVector Next = FMath::VInterpConstantTo(Previous, Goal, DeltaSeconds, ManeuverSpeed);
     const float Yaw = FMath::FixedTurn(GetActorRotation().Yaw,
         Factory->GetActorRotation().Yaw + LocalYaw, 90.0f * DeltaSeconds);
-    FTransform Pose;
-    if (!CalculateFactoryGroundPose(Next, Yaw, Pose)) return false;
-    const FQuat Rotation = Pose.GetRotation();
-    FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiFactoryManeuver), false, this);
-    Params.AddIgnoredActor(Factory);
-    Params.AddIgnoredActor(VehiclePresentation->GetChildActor());
-    GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->IgnoreVehicles(Params);
-    const FVector NextCenter = Pose.TransformPosition(TravelBounds.GetCenter());
-    const FVector PreviousCenter = GetActorTransform().TransformPosition(TravelBounds.GetCenter());
-    const FCollisionShape Body = FCollisionShape::MakeBox(TravelBounds.GetExtent());
-    if (GetWorld()->SweepTestByChannel(PreviousCenter, NextCenter, Rotation, ECC_Pawn, Body, Params)
-        || GetWorld()->OverlapBlockingTestByChannel(NextCenter, Rotation, ECC_Pawn, Body, Params))
-    {
-        GetCharacterMovement()->Velocity = FVector::ZeroVector;
-        return false;
-    }
-    SetActorTransform(Pose, false);
-    GetCharacterMovement()->Velocity = (Pose.GetLocation() - Previous) / DeltaSeconds;
-    const bool bReached = FVector::Dist2D(Next, Goal) < 2.0f
+    SetActorLocationAndRotation(Next, FRotator(0.0f, Yaw, 0.0f), false);
+    GetCharacterMovement()->Velocity = (Next - Previous) / DeltaSeconds;
+    const bool bReached = FVector::Dist(Next, Goal) < 2.0f
         && FMath::Abs(FMath::FindDeltaAngleDegrees(Yaw, Factory->GetActorRotation().Yaw + LocalYaw)) < 0.5f;
     if (bReached) GetCharacterMovement()->Velocity = FVector::ZeroVector;
     return bReached;
@@ -425,48 +364,23 @@ void AGuLiMiningVehiclePawn::TickFactoryManeuver(const float DeltaSeconds)
 {
     if (!IsValid(Factory)) { FinishFactoryManeuver(); return; }
     const FGuLiFactoryDockRoute Route = Factory->GetDockRoute();
-    if (TaskState == EGuLiMiningTaskState::WaitingForFactoryDoor)
+    if (TaskState == EGuLiMiningTaskState::EnteringFactory)
     {
-		if (Factory->GetTeam() != Team) { FinishFactoryManeuver(); BeginReturnToFactory(false); return; }
-        if (!Factory->TryReserveDock(*this) || Factory->GetDoorAlpha() < 1.0f) return;
-        GetCharacterMovement()->StopMovementImmediately();
-        FTransform GroundPose;
-        if (!CalculateFactoryGroundPose(GetActorLocation(), GetActorRotation().Yaw, GroundPose)) return;
-        FCollisionQueryParams Clearance(SCENE_QUERY_STAT(GuLiFactoryEntry), false, this);
-        Clearance.AddIgnoredActor(Factory);
-        Clearance.AddIgnoredActor(VehiclePresentation->GetChildActor());
-    GetWorld()->GetSubsystem<UGuLiMiningVehicleManager>()->IgnoreVehicles(Clearance);
-        if (GetWorld()->OverlapBlockingTestByChannel(GroundPose.TransformPosition(TravelBounds.GetCenter()),
-            GroundPose.GetRotation(), ECC_Pawn, FCollisionShape::MakeBox(TravelBounds.GetExtent()), Clearance)) return;
-        SetActorTransform(GroundPose, false);
-        GetCharacterMovement()->DisableMovement();
-        GetCapsuleComponent()->IgnoreActorWhenMoving(Factory, true);
-        bDockAligned = false;
-        TaskState = EGuLiMiningTaskState::EnteringFactory;
-        ForceNetUpdate();
+        if (!bDockAligned)
+        {
+            bDockAligned = MoveFactoryStep(Route.Entry, 180, DeltaSeconds);
+            return;
+        }
+        if (MoveFactoryStep(Route.Unload, 180, DeltaSeconds))
+        {
+            TaskState = EGuLiMiningTaskState::Docking;
+            DockingAccumulator = 0;
+            ForceNetUpdate();
+        }
     }
-    // Small motion steps also bound the angular gap in the full-vehicle collision sweep.
-    float Remaining = DeltaSeconds;
-    while (Remaining > 0.0f)
+    else if (TaskState == EGuLiMiningTaskState::ExitingFactory && MoveFactoryStep(Route.Exit, 0, DeltaSeconds))
     {
-        const float Step = FMath::Min(Remaining, 1.0f / 60.0f);
-        Remaining -= Step;
-        if (TaskState == EGuLiMiningTaskState::EnteringFactory)
-        {
-            if (!bDockAligned) { bDockAligned = MoveFactoryStep(Route.Entry, 180, Step); continue; }
-            if (MoveFactoryStep(Route.Unload, 180, Step))
-            {
-                TaskState = EGuLiMiningTaskState::Docking;
-                DockingAccumulator = 0;
-                ForceNetUpdate();
-                break;
-            }
-        }
-        else if (TaskState == EGuLiMiningTaskState::ExitingFactory && MoveFactoryStep(Route.Exit, 0, Step))
-        {
-            FinishFactoryManeuver();
-            break;
-        }
+        FinishFactoryManeuver();
     }
 }
 
@@ -480,9 +394,7 @@ void AGuLiMiningVehiclePawn::TickDocking(const float DeltaSeconds)
         if (!Factory->UploadCargo(*this, Cargo)) return;
         Cargo = FGuLiResourceAmounts{};
     }
-    FTransform ExitPose;
-    if (!CalculateFactoryGroundPose(GetActorLocation(), Factory->GetActorRotation().Yaw, ExitPose)) return;
-    SetActorTransform(ExitPose, false);
+    SetActorRotation(FRotator(0.0f, Factory->GetActorRotation().Yaw, 0.0f));
     GetCharacterMovement()->Velocity = FVector::ZeroVector;
     TaskState = EGuLiMiningTaskState::ExitingFactory;
     ForceNetUpdate();
@@ -493,7 +405,6 @@ void AGuLiMiningVehiclePawn::FinishFactoryManeuver()
     if (IsValid(Factory))
     {
         Factory->ReleaseDock(*this);
-        GetCapsuleComponent()->IgnoreActorWhenMoving(Factory, false);
     }
     GetCharacterMovement()->StopMovementImmediately();
     GetCharacterMovement()->SetMovementMode(MOVE_Walking);
@@ -525,7 +436,7 @@ void AGuLiMiningVehiclePawn::FinishFactoryManeuver()
 
 void AGuLiMiningVehiclePawn::TickPlayerMoving()
 {
-	if (FVector::Dist2D(GetActorLocation(), PlayerMoveTarget) <= 600.0f)
+	if (FVector::Dist2D(GetActorLocation(), PlayerMoveTarget) <= 120.0f)
 	{
 		BeginGrace();
 		return;
@@ -617,7 +528,7 @@ void AGuLiMiningVehiclePawn::ExecutePlayerCommand(const FGuLiMiningCommand& Comm
 	{
 	case EGuLiMiningOrderType::Move:
 		PlayerMoveTarget = Command.Target;
-		if (!BeginMoveTo(PlayerMoveTarget, 500.0f)) { BeginGrace(); return; }
+		if (!BeginMoveTo(PlayerMoveTarget, 100.0f)) { BeginGrace(); return; }
 		TaskState = EGuLiMiningTaskState::PlayerMoving;
 		break;
 	case EGuLiMiningOrderType::MineCluster:
@@ -675,6 +586,14 @@ void AGuLiMiningVehiclePawn::ForceAutomaticControl()
 	bManualReturnOrder = false;
 	NextAutoRetryServerTime = 0.0f;
 	ForceNetUpdate();
+}
+
+void AGuLiMiningVehiclePawn::CancelTaskForExternalDisplacement()
+{
+	if (!HasAuthority()) return;
+	PendingCommand.Reset(); bPendingAutomatic = false;
+	if (IsFactoryManeuverActive()) FinishFactoryManeuver();
+	BeginGrace();
 }
 
 void AGuLiMiningVehiclePawn::BeginGrace()
@@ -782,7 +701,7 @@ bool AGuLiMiningVehiclePawn::FindReachableMiningApproach(
     if (!Navigation) return false;
     const ANavigationData* NavData = Navigation->GetNavDataForProps(GetNavAgentPropertiesRef(), GetNavAgentLocation());
     if (!NavData) return false;
-    const float Radius = Cluster.ObstacleRadiusCentimeters + GetNavAgentPropertiesRef().AgentRadius + 150.0f;
+    const float Radius = Cluster.ObstacleRadiusCentimeters + GetNavAgentPropertiesRef().AgentRadius + 30.0f;
     const FVector Direction = (GetActorLocation() - Cluster.Center).GetSafeNormal2D();
     OutPathLength = TNumericLimits<float>::Max();
     bool bFound = false;
@@ -790,7 +709,7 @@ bool AGuLiMiningVehiclePawn::FindReachableMiningApproach(
     {
         const FVector Desired = Cluster.Center + Direction.RotateAngleAxis(Sample * 45.0f, FVector::UpVector) * Radius;
         FNavLocation Projected;
-        if (!Navigation->ProjectPointToNavigation(Desired, Projected, FVector(400,400,5000), NavData)) continue;
+        if (!Navigation->ProjectPointToNavigation(Desired, Projected, FVector(80,80,5000), NavData)) continue;
         const FVector VehiclePosition = Projected.Location + FVector(0,0,GetCapsuleComponent()->GetScaledCapsuleHalfHeight());
         const FTransform Pose(FRotator(0, (Target - VehiclePosition).Rotation().Yaw, 0), VehiclePosition);
         if (!CanMineTargetFrom(Target, Pose)) continue;

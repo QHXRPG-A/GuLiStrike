@@ -1,0 +1,37 @@
+{
+  "version": 1,
+  "date": "2026-09-18",
+  "scope": "Update the existing BuildingWorldTests fixture and rerun the existing targeted regression set; production building guards are unchanged.",
+  "test_source": "Source/GuLiStrike/Gameplay/Building/Tests/BuildingWorldTests.cpp",
+  "test_sha256_before": "6dca5b5b3489bcf51d72a4c4a0faf9d14bf7f0d9c36509961b79b9305604d9b6",
+  "test_sha256_after": "02acc563fe8234091de8fe35df87648acfa66ea52ec57094ecfc4837b92b59fd",
+  "baseline_source_copy": "TestResults/Scale020/BuildingFixture/BuildingWorldTests-before.cpp.txt",
+  "changes": [
+    "Resolve valid production DefinitionIds and use one real catalog across placement, spawning and lifecycle initialization.",
+    "Activate real team economy transactions and begin/end the isolated authority world lifecycle.",
+    "Use actual footprint spacing and the current ground placement distance.",
+    "Update obsolete Cube-era scale, navigation and initial-dormancy assertions; preserve the seven existing fixture blocks and their guards."
+  ],
+  "unchanged_production_sha256": {
+    "Source/GuLiStrike/Gameplay/Building/GuLiBuildingPlacementComponent.cpp": "cf62d452b24c4f48d6b507bb2da1baae987308b78143af497af7cccfd6bfbec6",
+    "Source/GuLiStrike/Gameplay/Building/GuLiBuildingSpawner.cpp": "3b2eb1f29e429c962a2f3dfff87b3d35f7896d97f6d1184128d59e6ef7f7a4b0",
+    "Source/GuLiStrike/Gameplay/Building/GuLiPlacedBuilding.cpp": "bc20f5d99784c6f77f6519ee334012296b6f83a102db1d61af780accb4b31085"
+  },
+  "verification": {
+    "engine": "D:/UnrealEngine-5.7",
+    "build_id": "dd506ae0-11d1-48e9-95ed-8becd4c36a75",
+    "project_engine_build_ids_match": true,
+    "editor_build": {"log": "TestResults/Scale020/Build-Editor-23.log", "exit_code": 0, "result": "Succeeded"},
+    "game_build": {"log": "TestResults/Scale020/Build-Game-12.log", "exit_code": 0, "result": "Succeeded"},
+    "isolated": {"report": "TestResults/Scale020/BuildingFixture/Run-02/index.json", "passed": 1, "failed": 0, "not_run": 0, "warnings": 7, "engine_exit": 0},
+    "regression": {"report": "TestResults/Scale020/Automation-10/index.json", "passed": 167, "failed": 0, "not_run": 0, "passed_with_warnings": 5, "warnings": 16, "engine_exit": 0, "script_exit": 0}
+  },
+  "warning_history": [
+    {"report": "TestResults/Scale020/BuildingFixture/Run-01/index.json", "passed": 1, "warnings": 7, "message": "Missing EndPlay before world cleanup", "status": "Fixed by pairing BeginPlay with EndPlay."},
+    {"report": "TestResults/Scale020/BuildingFixture/Run-02/index.json", "passed": 1, "warnings": 7, "message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world", "status": "Retained without suppression; the spawning caller is not yet identified."}
+  ],
+  "other_regression_warnings": "The other four successful tests contain nine warnings, unchanged from Automation-09.",
+  "runtime_building_rules_changed": false,
+  "assets_changed": false,
+  "full_scale020_acceptance": "Still partial; automated assertions do not replace remaining live gameplay or user visual acceptance."
+}

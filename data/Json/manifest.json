@@ -24,6 +24,30 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeCommanderSoldiersRow",
       "row_key_column": "name"
     },
+    "DT_GuLiStrikeSecondaryUnitSkills_Skills": {
+      "excel": "GuLiStrikeSecondaryUnitSkills.xlsx",
+      "sheet": "Skills",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryUnitSkills.xlsx",
+          "sheet": "Skills"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeSecondaryUnitSkillsSkillsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeSecondaryUnitSkills_UnitSkills": {
+      "excel": "GuLiStrikeSecondaryUnitSkills.xlsx",
+      "sheet": "UnitSkills",
+      "sources": [
+        {
+          "excel": "GuLiStrikeSecondaryUnitSkills.xlsx",
+          "sheet": "UnitSkills"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeSecondaryUnitSkillsUnitSkillsRow",
+      "row_key_column": "name"
+    },
     "DT_GuLiStrikeCommander_Skills": {
       "excel": "GuLiStrikeSecondaryWeapons.xlsx",
       "sheet": "Skills",

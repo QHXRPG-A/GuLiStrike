@@ -6,11 +6,11 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | building, commander, network, ship, wingman | — | 按首版 3v3 需求细化 Ship 战略机动与三线选牌节奏，验证操作者如何制造可被指挥官兑现的突破。 | 2026-09-09 |
+| [基地建造玩法探索草案 v0.1](../RequirementDocument/20260831-基地建造玩法探索.md) | assets, building, combat, commander, ship | — | 玩家能说明选址和建筑选择的原因、放弃的其他投入，以及队友的作用 | 2026-09-17 |
+| [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | building, commander, network, ship, wingman | — | 按首版 3v3 需求细化 Ship 战略机动与三线选牌节奏，验证操作者如何制造可被指挥官兑现的突破。 | 2026-09-17 |
 | [指挥官兵种技能、Ship 武器通道与 Roguelike 升级归属 — 技术方案](../DevelopmentDocumentation/20260905-指挥官兵种技能与Roguelike升级归属.md) | commander, network, ship, ui, wingman | 9/18 (50%) | P1：稳定绑定、可扩展通道定义、兼容校验、启用/移除与完整 Loadout 版本；代码已覆盖 Army/Wingman，仍待 P3 协议定向验证 | 2026-09-07 |
 | [非 Mass 大规模弹道与特效架构 — 技术方案](../DevelopmentDocumentation/20260906-非Mass大规模弹道与特效架构.md) | combat, commander, network, vfx, wingman | 0/17 (0%) | 用户确认范围假设：仅特效/弹道栈不用 Mass，不移除单位系统 Mass | 2026-09-06 |
 | [据点混凝土巨构模型 — 技术方案](../DevelopmentDocumentation/20260905-据点混凝土巨构模型.md) | assets, building, combat, commander, vfx | 9/9 (100%) | — | 2026-09-05 |
-| [基地建造玩法探索草案 v0.1](../RequirementDocument/20260831-基地建造玩法探索.md) | assets, building, combat, commander, ship | — | 玩家能说明选址和建筑选择的原因、放弃的其他投入，以及队友的作用 | 2026-08-31 |
 
 ## 规划中
 
@@ -24,6 +24,9 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | building, combat, commander, economy, navigation, network, ship, ui, vfx, wingman | 10/13 (77%) | 继续其余0.2倍真实运行门禁（Mass、Ship/僚机、建造、空运、护盾占领传送）及用户视觉验收 | 2026-09-18 |
+| [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | building, combat, commander | 8/9 (89%) | 定位原LogUtils错误的实际调用者；复核工程车辆/玩家清场、受阻改选及边界越程等未覆盖行为。 | 2026-09-18 |
+| [GuLiStrike 自然地编资源包 — 制作与验收](../DevelopmentDocumentation/20260917-自然地编资源包.md) | art, assets, rendering | 6/9 (67%) | 用户审核v3工艺及外形参考后，以图集和卡片制作六件Blender代表样板。 | 2026-09-17 |
 | [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | combat, commander, rendering, ship | 9/12 (75%) | 继续实战轰炸、僚机死亡、机械姿态和完整性能验收。 | 2026-09-17 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | building, commander, data, economy, map | 18/20 (90%) | 补齐包围、厂内延后指令及运输边界观察；坡道断言已由9月16日落点修复处理。 | 2026-09-16 |
 | [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | combat, commander, network, ui | 5/6 (83%) | 重启源码版 Editor，完成三分辨率、Commander/Ground/Air、Standalone/Listen/客户端的人工 PIE 验收。 | 2026-09-10 |
@@ -38,6 +41,10 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [玩法地图对齐Demo光照](../DevelopmentDocumentation/20260918-玩法地图对齐Demo光照.md) | art, rendering | 6/7 (86%) | 用户查看实际PIE截图确认明暗；战争机器拥挤按独立诊断决定后续实施范围。 | 2026-09-18 |
+| [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | art, assets, rendering | 11/11 (100%) | 等待用户审核原Demo_Map整图；按反馈修订，动态录像、GPU性能及编辑器崩溃根因不冒充已验证。 | 2026-09-18 |
+| [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | art, assets, rendering | 11/13 (85%) | 在WORK-20260918-002完成原地图全资源适配与整图终验。 | 2026-09-18 |
+| [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | building, combat, network, vfx | 6/6 (100%) | 跟踪既有导弹夹具和挂点断言失配；地面弹丸、配色与5Hz专项留待后续安排。 | 2026-09-17 |
 | [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | combat, vfx, wingman | 5/7 (71%) | 用户先在 UE 评审视觉；随后补齐稳定 GPU 对照、尺寸精测和真实客户端/专用服务器验收。 | 2026-09-16 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | commander, navigation, resources | 4/4 (100%) | 后续确认旧BuildingWorld测试更新范围，补密集狭路及大规模性能观察。 | 2026-09-15 |
 | [次级单位武器独立Excel维护 — 技术方案](../DevelopmentDocumentation/20260914-次级单位武器独立Excel维护.md) | combat, commander, data, wingman | 8/8 (100%) | 本次归并已交付；前次4项现有回归适配仍等待用户范围确认。 | 2026-09-14 |
@@ -56,7 +63,13 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。 | 2026-09-17 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。 | 2026-09-18 |
+| [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | combat, commander, network, ui, vfx | 8/8 (100%) | 单独处理两项既有回归失败；本次功能与崩溃修复已交付。 | 2026-09-17 |
+| [Ship剩余四组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship剩余四组件贴图与框线制作.md) | art, assets, ship | 6/6 (100%) | 查看实际交付总览；现有舰体bottom_mid_0缺失和六个组件未配兼容槽位留作独立玩法工作。 | 2026-09-17 |
+| [Ship第三批支援组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md) | art, assets, ship | 6/6 (100%) | 查看实际交付总览；现有舰体bottom_mid_0缺失和六个组件未配兼容槽位留作独立玩法工作。 | 2026-09-17 |
+| [Ship第二批三组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第二批三组件贴图与框线制作.md) | art, assets, ship | 6/6 (100%) | 查看实际交付总览；现有舰体bottom_mid_0缺失和六个组件未配兼容槽位留作独立玩法工作。 | 2026-09-17 |
+| [Ship三组件风格样板制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship三组件风格样板制作.md) | art, assets, ship | 12/12 (100%) | 查看实际交付总览；现有舰体bottom_mid_0缺失和六个组件未配兼容槽位留作独立玩法工作。 | 2026-09-17 |
+| [进度面板分类筛选与文档分类元数据 — 技术方案](../DevelopmentDocumentation/20260917-进度面板分类筛选与文档分类元数据.md) | project | 8/8 (100%) | — | 2026-09-17 |
 | [Ship动漫低模风格Blender样板 — 制作与交付](../DevelopmentDocumentation/20260916-Ship动漫低模风格Blender样板.md) | art, assets, ship | 4/4 (100%) | 等待用户美术评审；后续UE材质适配与模型替换另按确认范围实施。 | 2026-09-16 |
 | [GPU渲染降耗 — 技术方案与实施](../DevelopmentDocumentation/20260916-GPU渲染降耗.md) | commander, performance, wingman | 9/9 (100%) | 继续归因未下降的ShadowDepths；后续实机游玩关注FXAA远距闪烁和快速转镜头下的Lumen收敛。 | 2026-09-16 |
 | [据点矿厂落点与大规模避让修复 — 技术记录](../DevelopmentDocumentation/20260916-据点矿厂落点与大规模避让修复.md) | building, commander, navigation, performance | 7/7 (100%) | — | 2026-09-16 |

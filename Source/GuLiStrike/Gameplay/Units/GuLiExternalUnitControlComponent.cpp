@@ -30,7 +30,7 @@ bool UGuLiExternalUnitControlComponent::ApplyServerState(FGuid Token, bool bPhas
 {
 	if (!GetOwner() || !GetOwner()->HasAuthority() || !Token.IsValid() || Baseline.ContainsNaN()
 		|| (State.bActionsLocked && State.OwnerToken != Token)) { return false; }
-	if (!State.bActionsLocked && bLocked)
+	if (!State.bActionsLocked && (bLocked || bDisplace))
 	{
 		if (const auto* Character = Cast<ACharacter>(GetOwner()))
 		{ State.RestoreMovementMode = Character->GetCharacterMovement()->MovementMode; }

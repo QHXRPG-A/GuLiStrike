@@ -93,6 +93,13 @@ public:
 	// 拥有客户端 → 服务器，可靠选兵 RPC；Request 只含意图，处理结果经 Client ACK 返回。
 	UFUNCTION(Server, Reliable)
 	void ServerRequestSelection(const FGuLiSelectionRequest& Request);
+	/** Absolute selection supersedes only commands that have not committed. */
+	UFUNCTION(Server, Reliable)
+	void ServerReplaceSelection(const FGuLiSelectionRequest& Request, uint32 CancelMoveThrough, uint32 ConnectionGeneration);
+	UFUNCTION(Server, Reliable)
+	void ServerRecoverCommanderCommands(uint32 RecoveryId, uint32 CancelMoveThrough, uint32 CancelSelectionThrough, uint32 ConnectionGeneration);
+	UFUNCTION(Client, Reliable)
+	void ClientRecoverCommanderCommands(uint32 RecoveryId, uint32 ConnectionGeneration, const FGuLiCommanderSelectionState& State);
 
 	// 拥有客户端 → 服务器，可靠移动 RPC；无同步返回值，不能将调用返回视为接令成功。
 	UFUNCTION(Server, Reliable)
@@ -282,7 +289,10 @@ private:
 	void TickSoldierBootstrap();
 	void ResetClientSoldierState();
 	void CancelPendingServerMovePlanning();
-	void HandleSelectionRequest(const FGuLiSelectionRequest& Request, bool bReliableAck);
+	void HandleSelectionRequest(const FGuLiSelectionRequest& Request, bool bReliableAck, bool bAbsoluteSelection = false);
+	uint32 RetireLocalMoveIntents(EGuLiCommandAckResult Result);
+	void CancelServerMovesThrough(uint32 CommandId, EGuLiCommandAckResult Result);
+	void RequestCommandRecovery();
 	void HandleMoveRequest(const FGuLiMoveRequest& Request, bool bReliableAck);
 	void ReceiveCommandAck(const FGuLiCommandAck& Ack);
 	bool CanProcessCommanderRequest(FGuLiCommandAck& InOutAck, const TCHAR* RpcName);
@@ -300,6 +310,7 @@ private:
 	// 服务器确认的选择，OwnerOnly 属性复制；客户端预测不能修改服务器这份权威值。
 	UPROPERTY(ReplicatedUsing = OnRep_SelectionState)
 	FGuLiCommanderSelectionState SelectionState;
+	FGuLiCommanderSelectionState LastAppliedClientSelection;
 
 	// 本地最近回执缓存，不是复制属性；跨网传递在 PublishAck 的 Client RPC 中完成。
 	FGuLiCommandAck LastCommandAck;
@@ -319,6 +330,16 @@ private:
 	// 服务器去重状态：选兵与移动各有独立序号空间，并分别缓存最近请求及 ACK。
 	uint32 LastSelectionRequestId = 0;
 	uint32 LastMoveCommandId = 0;
+	uint32 ServerCancelledMoveThrough = 0u;
+	uint32 ClientRetiredMoveThrough = 0u;
+	uint32 ClientRetiredSelectionThrough = 0u;
+	uint32 LatestSubmittedMoveId = 0u;
+	uint32 PendingCommandRecoveryId = 0u;
+	uint32 NextCommandRecoveryId = 1u;
+	double PendingCommandRecoveryDeadline = 0.0;
+	double PendingSelectionDeadline = 0.0;
+	double PendingMoveDeadline = 0.0;
+	double SelectionSnapshotDeadline = 0.0;
 	uint32 LastBootstrapRequestId = 0;
 	uint32 HighestAckedStreamSeq = 0;
 	uint32 BootstrapMatchEpoch = 0;

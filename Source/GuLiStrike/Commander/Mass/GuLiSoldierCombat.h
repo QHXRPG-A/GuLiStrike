@@ -45,6 +45,9 @@ struct GULISTRIKE_API FGuLiCombatDamageEvent
 	/** Execution result routed outside Mass; legacy custom damage executors retain the direct default. */
 	FName ExecutorId = TEXT("DirectSingleTarget");
 	uint64 ShotOrdinal = 0;
+	float ProjectileSpeedCentimetersPerSecond = 0.0f;
+	float ProjectileLifetimeSeconds = 0.0f;
+	float ProjectileSweepRadiusCentimeters = 0.0f;
 };
 
 /** Extend with another executor or hit behavior without adding skill switches to Mass. */

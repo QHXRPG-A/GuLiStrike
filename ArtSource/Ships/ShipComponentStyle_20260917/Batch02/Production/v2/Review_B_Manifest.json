@@ -1,0 +1,1048 @@
+{
+  "schema": "gulistrike-art-material-review/v1",
+  "date": "2026-09-17",
+  "work_id": "WORK-20260917-004",
+  "candidate_version": "v2",
+  "art_revision": "1.0",
+  "A": "approved",
+  "B": "pending",
+  "scope": "Original mesh surface treatment; actual Blender EEVEE renders; FBX export after B approval",
+  "approval_A": {
+    "path": "approval_A_20260917.json",
+    "bytes": 3791,
+    "sha256": "3b24cfcbd95901c7a0283b4b1eb1550d05a0a04490adc113fd5a46e7bb405d11"
+  },
+  "overview_blend": {
+    "path": "Production/v2/ShipComponentStyle_Batch02_Overview.blend",
+    "bytes": 1896934,
+    "sha256": "25f8ccabdcd54e0bc38cdfb60481e0724cdbddffab27e8db59cc153cb70a176e"
+  },
+  "saved_blender_readback": {
+    "path": "Production/v2/saved_blender_readback.json",
+    "bytes": 890,
+    "sha256": "2ca8bdab910425865ae1402119d3bc2cfe081b9021c7f9124ed533a0370d5b7d"
+  },
+  "motion_video_readback": {
+    "path": "Production/v2/motion_video_readback.json",
+    "bytes": 1256,
+    "sha256": "6fdcacc5a68221eff2f4d1022901985f891b6907803fbdf2f1f508cc94b926e4"
+  },
+  "UE_formal_validation": "not_run",
+  "FBX_export": "not_run_await_B",
+  "parts": {
+    "Autocannon": {
+      "label": "自动炮",
+      "reference": {
+        "path": "References/Autocannon_Reference_v2.png",
+        "sha256": "a21dd45420fb3798af9d7ce6def0e7a9e3b38efa4538333d73eb77645684c0ca",
+        "bytes": 1534150,
+        "resolution": [
+          1536,
+          1024
+        ]
+      },
+      "reference_version": "v2",
+      "candidate_version": "v2",
+      "blend": {
+        "path": "Production/v2/Autocannon_OriginalMesh_MaterialCandidate.blend",
+        "bytes": 725559,
+        "sha256": "97d8658943d3b030db45ce2041cb94766fea9349590b5489dc16303c5a4856e7"
+      },
+      "report": {
+        "path": "Production/v2/Autocannon_material_report.json",
+        "bytes": 8846,
+        "sha256": "db867ef9752373a460fb295579ac2e971e34cfdb856056eec8ed8f1607aecb10"
+      },
+      "textures": [
+        {
+          "path": "Production/v2/Textures/T_SC_Autocannon_BaseColor_2K.png",
+          "bytes": 170592,
+          "sha256": "75ca7ad6ce58d3f1a7b6a3fcea49589ba9a36f1066022234dd2be78cd1e0b347",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v2/Textures/T_SC_Autocannon_ORM_2K.png",
+          "bytes": 166707,
+          "sha256": "767e195d1a4eaa8a4eb1081addf51f309f4a6f52b4396bf40a739441ccfbc494",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v2/Textures/T_SC_Autocannon_LineMask_2K.png",
+          "bytes": 360831,
+          "sha256": "f1034254bda5092774d3f9d96343b58efa9c8732c0eb821d0385bc2c62e4935d",
+          "resolution": [
+            2048,
+            2048
+          ]
+        }
+      ],
+      "previews": [
+        {
+          "path": "Previews/v2/Autocannon_hero.png",
+          "bytes": 1658233,
+          "sha256": "68d792403643871c0f0c495b9e895e9351b7886e0b01190013df052fe36cfe3e",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_front.png",
+          "bytes": 1471427,
+          "sha256": "bf183d5467772c999e71a6abb50bd2989c78f389774bc5fcba0bfe84bbd1cd9c",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_right.png",
+          "bytes": 1443840,
+          "sha256": "24bc48f3ea89c0a8a999f8e6d531e59c329b56c8afea1250cf5bac08832cdbac",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_rear.png",
+          "bytes": 1445953,
+          "sha256": "de0975375f54274823e0b1ec407ba869d50aac7af62c535ddd57c83b98b63b5c",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_top.png",
+          "bytes": 1463148,
+          "sha256": "49f8449619a4ed3595873d0333e3043aaeb0ca4281eb79bc155daea8388afeaf",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_original_geometry_gray.png",
+          "bytes": 1290128,
+          "sha256": "83b651944b2e1832fb09f00dfd89c5228f93647d3c60b7db3ad368d5e9633391",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_lines_off.png",
+          "bytes": 1542238,
+          "sha256": "b21aafe3ac1fa772249b58757bf1d58c23323b7fc21acbd65789efb85dd05794",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_alternate_light.png",
+          "bytes": 1613157,
+          "sha256": "347fdb94886153af149dbc6a0e93de1eec66e4c8cb60cf1996ccdf9321e8858e",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_small.png",
+          "bytes": 126474,
+          "sha256": "5254313891275ab1fb5ba3c8304a11db69ec1661d4dc52e2fd1fed0deda10a15",
+          "resolution": [
+            360,
+            270
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_pitch_-15.png",
+          "bytes": 1663352,
+          "sha256": "ccf9f1f69874f3aa5700b4c7a0684bc50117b762770be038bd68fb0a5bfee266",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_pitch_0.png",
+          "bytes": 1661628,
+          "sha256": "024895e94ee470056d8e82669a17059d8ab69289a39d9a82024ef6aaf5b8cb46",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_pitch_30.png",
+          "bytes": 1652235,
+          "sha256": "b9232ce15830a7189dc4d5f27cbebc4b7bab5a9c4999c747b0d7e18f7fc1d66b",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_pitch_75.png",
+          "bytes": 1677206,
+          "sha256": "f463f0928c5f75635a156392c12e2eb9f863ac581106cd2b616c4538e3c7f6ef",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_gray_pitch_-15.png",
+          "bytes": 916322,
+          "sha256": "2dc958be68e77fc797ef5f613b6a0ba9aa5f2d63f324fb579520a8b9ea2f6809",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_gray_pitch_0.png",
+          "bytes": 907089,
+          "sha256": "76d14c22a2fe32ccd94513a0e26e4c6e7f2343d7145fdd3367064c3dc64f4bbc",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_gray_pitch_30.png",
+          "bytes": 901735,
+          "sha256": "3eb05ad33b06b9a65b8bf6d457d334fad4f3ddae2cf3306d68e17c73fdcf52ad",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Autocannon_gray_pitch_75.png",
+          "bytes": 939746,
+          "sha256": "aa327709532d58ee90ef533bcb849bfc3e4a30c9de10775b50614caae79e6d82",
+          "resolution": [
+            1440,
+            1080
+          ]
+        }
+      ],
+      "motion_video": {
+        "path": "Previews/v2/Autocannon_pitch_motion.mp4",
+        "bytes": 349107,
+        "sha256": "24ca1744cc99e9dd52bf791031f2d09a256c846f7c80ed07be9adcdb9a0fafe5"
+      },
+      "parameters": {
+        "path": "Production/v2/Autocannon_material_parameters.json",
+        "bytes": 1683,
+        "sha256": "e0bdb1a1f6b2c3466bb66dfee03e115e52029cbc7344a65df26f13848643078f"
+      },
+      "paint_regions": {
+        "path": "Production/v2/Autocannon_paint_regions.json",
+        "bytes": 23951,
+        "sha256": "0cb9addd0183dcf104734b6bf92281666766406dc06da8e1f0af74cd5c4ca160"
+      },
+      "body_triangles": 1700,
+      "body_material_slots": 1,
+      "source_geometry_unchanged": true,
+      "source_normals_unchanged": true,
+      "bones": [
+        "Root",
+        "BarrelPitch"
+      ],
+      "motion": {
+        "status": "passed",
+        "sample_count": 91,
+        "angles_degrees": [
+          -15,
+          75
+        ],
+        "rigid_max_error_m": 6.106495129998063e-06,
+        "socket_max_error_m": 5.56082906231432e-06,
+        "single_bone_weight_one": true,
+        "surface_crossings_by_angle": {
+          "-15": {},
+          "-14": {},
+          "-13": {},
+          "-12": {},
+          "-11": {},
+          "-10": {},
+          "-9": {},
+          "-8": {},
+          "-7": {},
+          "-6": {},
+          "-5": {},
+          "-4": {},
+          "-3": {},
+          "-2": {},
+          "-1": {},
+          "0": {},
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {},
+          "6": {},
+          "7": {},
+          "8": {},
+          "9": {},
+          "10": {},
+          "11": {},
+          "12": {},
+          "13": {},
+          "14": {},
+          "15": {},
+          "16": {},
+          "17": {},
+          "18": {},
+          "19": {},
+          "20": {},
+          "21": {},
+          "22": {},
+          "23": {},
+          "24": {},
+          "25": {},
+          "26": {},
+          "27": {},
+          "28": {},
+          "29": {},
+          "30": {},
+          "31": {},
+          "32": {},
+          "33": {},
+          "34": {},
+          "35": {},
+          "36": {},
+          "37": {},
+          "38": {},
+          "39": {},
+          "40": {},
+          "41": {},
+          "42": {},
+          "43": {},
+          "44": {},
+          "45": {},
+          "46": {},
+          "47": {},
+          "48": {},
+          "49": {},
+          "50": {},
+          "51": {},
+          "52": {},
+          "53": {},
+          "54": {},
+          "55": {},
+          "56": {},
+          "57": {},
+          "58": {},
+          "59": {},
+          "60": {},
+          "61": {},
+          "62": {},
+          "63": {},
+          "64": {},
+          "65": {},
+          "66": {},
+          "67": {},
+          "68": {},
+          "69": {},
+          "70": {},
+          "71": {},
+          "72": {},
+          "73": {},
+          "74": {},
+          "75": {}
+        },
+        "geometry_modified_to_resolve_crossings": false
+      },
+      "socket_count": 3,
+      "B": "pending"
+    },
+    "Triple_Barrel_Turret": {
+      "label": "三联炮",
+      "reference": {
+        "path": "References/Triple_Barrel_Turret_Reference_v1.png",
+        "sha256": "db71b036ca781e419ebc5ce2cea12516795d5787d2c480882afe21a576ccd6ce",
+        "bytes": 1331327,
+        "resolution": [
+          1448,
+          1086
+        ]
+      },
+      "reference_version": "v1",
+      "candidate_version": "v2",
+      "blend": {
+        "path": "Production/v2/Triple_Barrel_Turret_OriginalMesh_MaterialCandidate.blend",
+        "bytes": 999246,
+        "sha256": "db1d4c5cf70d49cebcf2c09f354f94f20a9480f480317fe02c3afb9444151509"
+      },
+      "report": {
+        "path": "Production/v2/Triple_Barrel_Turret_material_report.json",
+        "bytes": 15083,
+        "sha256": "01c7de5204443e32353e113a3679f63f0d7eae1294d00b9644a0156d95ada52d"
+      },
+      "textures": [
+        {
+          "path": "Production/v2/Textures/T_SC_Triple_Barrel_Turret_BaseColor_2K.png",
+          "bytes": 200133,
+          "sha256": "eb83d27b76c0244bdff2cda86cd497516c25c16e2cab7f8de5e2ec701473528c",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v2/Textures/T_SC_Triple_Barrel_Turret_ORM_2K.png",
+          "bytes": 195262,
+          "sha256": "84fd801fe976824f072b96703c56dbe9862aa8091c5b175b350e474983e1d1cf",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v2/Textures/T_SC_Triple_Barrel_Turret_LineMask_2K.png",
+          "bytes": 482391,
+          "sha256": "e40ca6a41fff579b7a6cb2a5ea631b8435ccbad047e6065ca47e4c619bafd006",
+          "resolution": [
+            2048,
+            2048
+          ]
+        }
+      ],
+      "previews": [
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_hero.png",
+          "bytes": 1678204,
+          "sha256": "9e1273e8be7e3bb8f7c93b938b2acbed87a886957c20283933e3344e2e4552a9",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_front.png",
+          "bytes": 1457084,
+          "sha256": "5b2d22e109edc7aa96223ccd42059932f80b4aec081ea9198dccfca888eb73aa",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_right.png",
+          "bytes": 1434092,
+          "sha256": "de6af3dbcb384a72694b145e4f375483ccca87652529a669c28101e80122bd0f",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_rear.png",
+          "bytes": 1446695,
+          "sha256": "495fd6d1ee4019d7f64b9f7c0c5fadee1918520a08ea6ad0990f7731eabfe90d",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_top.png",
+          "bytes": 1473731,
+          "sha256": "c1cf13018eab7b68155b322cc921aec077c38f047579db12cef0c6ef8ee877d6",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_original_geometry_gray.png",
+          "bytes": 1349830,
+          "sha256": "3233e9080c678acdb02be984913bed961fdea368235f910e5247832b3e7ffd61",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_lines_off.png",
+          "bytes": 1557092,
+          "sha256": "3d348d0339b21d7d7034f88bd694a07d4a23cc44737e11f761ea93e60aaf2ef2",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_alternate_light.png",
+          "bytes": 1646424,
+          "sha256": "e389c053f1dd465e2b7f09f3420be19cc61fe9da08b14b9c8f2b19eab3213f5f",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_small.png",
+          "bytes": 129131,
+          "sha256": "cc9f313f30db2154cd89525523472a186d632810fcdce3b8894ee38286f90db0",
+          "resolution": [
+            360,
+            270
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_pitch_-15.png",
+          "bytes": 1678826,
+          "sha256": "0427f6d27efda96bbae07f692aa212e6ff538632501ebc90eac396a981c6fde6",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_pitch_0.png",
+          "bytes": 1674110,
+          "sha256": "1c30b4ebd91d1f8d412612c1182dcb342413b76325ed07ce73b8529d0fb3e303",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_pitch_30.png",
+          "bytes": 1646976,
+          "sha256": "b3f4666a4f982e974303a70b1dc06e791b466bd13b5b1613689bc03ab610a38d",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_pitch_75.png",
+          "bytes": 1666088,
+          "sha256": "c6c4a8bc8e2efdc36e012c1f8ceeb842abad68acd7d3fef4e49cdc5d5f624c14",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_gray_pitch_-15.png",
+          "bytes": 971792,
+          "sha256": "c79fc70945a13f450b8103d73b4ee55d2c7fecec78a6e3e0df00ed2fb5513c87",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_gray_pitch_0.png",
+          "bytes": 938025,
+          "sha256": "98c8dbcd7fb1c43956237cd7d39b681ef81f142e4afa67de0fdba7a61ef895c8",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_gray_pitch_30.png",
+          "bytes": 912708,
+          "sha256": "f9c1217725e9664afb277f986c04d9500de2ed7e82adc8166f3f2c8620d25ec4",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Triple_Barrel_Turret_gray_pitch_75.png",
+          "bytes": 989181,
+          "sha256": "af2367d3acdb8e231cd69af4cd2aa7a4de333e6077260e7549469882ba3c3440",
+          "resolution": [
+            1440,
+            1080
+          ]
+        }
+      ],
+      "motion_video": {
+        "path": "Previews/v2/Triple_Barrel_Turret_pitch_motion.mp4",
+        "bytes": 474867,
+        "sha256": "24e8696ede64f8fa3a5fd07595a134ea945852f73fcfd7ddedbc7147c177b613"
+      },
+      "parameters": {
+        "path": "Production/v2/Triple_Barrel_Turret_material_parameters.json",
+        "bytes": 1681,
+        "sha256": "9b651e6a1f0ce7a5899cc53d14cf791ade0182fd5997643145ddd37dc775329a"
+      },
+      "paint_regions": {
+        "path": "Production/v2/Triple_Barrel_Turret_paint_regions.json",
+        "bytes": 35072,
+        "sha256": "2b00639c3f8e5c35f6fee350671575bd5fb810ed7c7c293c69024b1cdcb85fa9"
+      },
+      "body_triangles": 2497,
+      "body_material_slots": 1,
+      "source_geometry_unchanged": true,
+      "source_normals_unchanged": true,
+      "bones": [
+        "Root",
+        "BarrelPitch"
+      ],
+      "motion": {
+        "status": "passed",
+        "sample_count": 91,
+        "angles_degrees": [
+          -15,
+          75
+        ],
+        "rigid_max_error_m": 1.375408659158321e-05,
+        "socket_max_error_m": 1.2212990259996125e-05,
+        "single_bone_weight_one": true,
+        "surface_crossings_by_angle": {
+          "-15": {},
+          "-14": {},
+          "-13": {},
+          "-12": {},
+          "-11": {},
+          "-10": {},
+          "-9": {},
+          "-8": {},
+          "-7": {},
+          "-6": {},
+          "-5": {},
+          "-4": {},
+          "-3": {},
+          "-2": {},
+          "-1": {},
+          "0": {},
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {},
+          "6": {},
+          "7": {},
+          "8": {},
+          "9": {},
+          "10": {},
+          "11": {},
+          "12": {},
+          "13": {},
+          "14": {},
+          "15": {},
+          "16": {},
+          "17": {},
+          "18": {},
+          "19": {},
+          "20": {},
+          "21": {},
+          "22": {},
+          "23": {},
+          "24": {},
+          "25": {},
+          "26": {},
+          "27": {},
+          "28": {},
+          "29": {},
+          "30": {},
+          "31": {},
+          "32": {},
+          "33": {},
+          "34": {},
+          "35": {},
+          "36": {},
+          "37": {},
+          "38": {},
+          "39": {},
+          "40": {},
+          "41": {},
+          "42": {},
+          "43": {},
+          "44": {},
+          "45": {},
+          "46": {},
+          "47": {},
+          "48": {},
+          "49": {},
+          "50": {},
+          "51": {},
+          "52": {},
+          "53": {},
+          "54": {},
+          "55": {},
+          "56": {},
+          "57": {},
+          "58": {},
+          "59": {},
+          "60": {},
+          "61": {},
+          "62": {},
+          "63": {},
+          "64": {},
+          "65": {},
+          "66": {},
+          "67": {},
+          "68": {},
+          "69": {},
+          "70": {},
+          "71": {},
+          "72": {},
+          "73": {},
+          "74": {},
+          "75": {}
+        },
+        "geometry_modified_to_resolve_crossings": false
+      },
+      "socket_count": 3,
+      "B": "pending"
+    },
+    "Single_Barrel_Turret": {
+      "label": "单管炮",
+      "reference": {
+        "path": "References/Single_Barrel_Turret_Reference_v2.png",
+        "sha256": "22f940a2dd6ceb35376acdb56b08c8d3d9645644897932ecdfffc1574983ee07",
+        "bytes": 1385287,
+        "resolution": [
+          1448,
+          1086
+        ]
+      },
+      "reference_version": "v2",
+      "candidate_version": "v2",
+      "blend": {
+        "path": "Production/v2/Single_Barrel_Turret_OriginalMesh_MaterialCandidate.blend",
+        "bytes": 715778,
+        "sha256": "54927cb098dc9ed0b5042427eb4dfd2fcb9d1b1d5d904b159eb64c9d25ec30e9"
+      },
+      "report": {
+        "path": "Production/v2/Single_Barrel_Turret_material_report.json",
+        "bytes": 11981,
+        "sha256": "31445990e2d97942a7c0970aa7281d98546f08b2c81898e8ae642eabdd8e9a36"
+      },
+      "textures": [
+        {
+          "path": "Production/v2/Textures/T_SC_Single_Barrel_Turret_BaseColor_2K.png",
+          "bytes": 180566,
+          "sha256": "ade74c45325b2d5351114882fbea16ddfcd5b91465b2b39dad1434f36489224a",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v2/Textures/T_SC_Single_Barrel_Turret_ORM_2K.png",
+          "bytes": 176912,
+          "sha256": "77165df891cf3e87de46abfd23364391b1a9ae7cbf583621baec8a69491749fd",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v2/Textures/T_SC_Single_Barrel_Turret_LineMask_2K.png",
+          "bytes": 337273,
+          "sha256": "85db553e38dcc5711ed5a192166345ced18f06b3c85d84424a8a4d77eb5ecf64",
+          "resolution": [
+            2048,
+            2048
+          ]
+        }
+      ],
+      "previews": [
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_hero.png",
+          "bytes": 1646284,
+          "sha256": "8cb0a35e1d5decabb920d0f22e370cb04f388bba4df64133ce5db68160e3c64b",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_front.png",
+          "bytes": 1405333,
+          "sha256": "c0174c0fca8562bff566f6098266abf46feda734dd7c8b29694e9f56be5d2347",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_right.png",
+          "bytes": 1422756,
+          "sha256": "07908f59747198ce45151db7daa6165fea66369bc76afa2b2a3f075af9e832df",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_rear.png",
+          "bytes": 1429624,
+          "sha256": "9954f0cc7dc7e574e4276b1f6f6920532cac3e25174e58382e7afb9019307e5f",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_top.png",
+          "bytes": 1459988,
+          "sha256": "ed48265000922a85e76829055ab65359f17fb31f9187ae1f74ee04d7f31de01d",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_original_geometry_gray.png",
+          "bytes": 1189043,
+          "sha256": "2d6d0cad297f8ad766b6dae446890a8a5b161c52127645697e978b91d8b81299",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_lines_off.png",
+          "bytes": 1544986,
+          "sha256": "4a0e2690b2e046b43c9326ab52c398be1808f6dbb410177e56078f9706e37dcf",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_alternate_light.png",
+          "bytes": 1619414,
+          "sha256": "5d9682109e52d6cdb3e84e0db9cec893e3a1a0024d5468a399d85384e09410d3",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_small.png",
+          "bytes": 124352,
+          "sha256": "958d74d8f469c6507183592791841b704e5c65e7978a1d682ae5d749786208b5",
+          "resolution": [
+            360,
+            270
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_pitch_-15.png",
+          "bytes": 1686113,
+          "sha256": "eb75ae24867f278ac0f8d1e1f0e9f1ef893f793f87fffb84c2c2f4c0966bafe2",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_pitch_0.png",
+          "bytes": 1675717,
+          "sha256": "e6c1d5d17e438c266ffb7b68daac6ee7d5cdb702f3bad74b1eca343d02563537",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_pitch_30.png",
+          "bytes": 1659413,
+          "sha256": "fd65be6e64030cd0bd45af033253a8575fab2813d0295d5332ce0e804a4ec666",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_pitch_75.png",
+          "bytes": 1669444,
+          "sha256": "92a92f2b8349a606693743b28f4733e97392e88d702bc3b2215f5e58a23e57b2",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_gray_pitch_-15.png",
+          "bytes": 912316,
+          "sha256": "6238a14b75392ec11fec773fd84b6c154316e711e5da57d17e2092e866bfc4b9",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_gray_pitch_0.png",
+          "bytes": 882857,
+          "sha256": "efe5eda404c8d1e44d7f0380fda28bda11e72476c3c63a28a0c0ecead6e38ba0",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_gray_pitch_30.png",
+          "bytes": 863993,
+          "sha256": "70db45acee2e978f3847d360a68f9324d2824d7541856bac06b0d9bbc95b9d0f",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v2/Single_Barrel_Turret_gray_pitch_75.png",
+          "bytes": 895179,
+          "sha256": "169d094cb53861bf8d0103029a9680c6dc83abcdae73ef6a53111dffdab315a8",
+          "resolution": [
+            1440,
+            1080
+          ]
+        }
+      ],
+      "motion_video": {
+        "path": "Previews/v2/Single_Barrel_Turret_pitch_motion.mp4",
+        "bytes": 324667,
+        "sha256": "1b955cf292a9084f9bd6db4d39aadcd1caba042351ff8423c41af7cdb172ce7b"
+      },
+      "parameters": {
+        "path": "Production/v2/Single_Barrel_Turret_material_parameters.json",
+        "bytes": 1697,
+        "sha256": "f50c6c273e46ae58b4a4cf4534b60be7b9914ec5e10e272de4926f151785f54e"
+      },
+      "paint_regions": {
+        "path": "Production/v2/Single_Barrel_Turret_paint_regions.json",
+        "bytes": 18071,
+        "sha256": "adef5f9f33bd2c1b2579fc59f823b6639c34a3c88b5c55fd6c48d362698f1d6d"
+      },
+      "body_triangles": 1268,
+      "body_material_slots": 1,
+      "source_geometry_unchanged": true,
+      "source_normals_unchanged": true,
+      "bones": [
+        "Root",
+        "BarrelPitch"
+      ],
+      "motion": {
+        "status": "passed",
+        "sample_count": 91,
+        "angles_degrees": [
+          -15,
+          75
+        ],
+        "rigid_max_error_m": 6.106495129998063e-06,
+        "socket_max_error_m": 4.76837158203125e-06,
+        "single_bone_weight_one": true,
+        "surface_crossings_by_angle": {
+          "-15": {},
+          "-14": {},
+          "-13": {},
+          "-12": {},
+          "-11": {},
+          "-10": {},
+          "-9": {},
+          "-8": {},
+          "-7": {},
+          "-6": {},
+          "-5": {},
+          "-4": {},
+          "-3": {},
+          "-2": {},
+          "-1": {},
+          "0": {},
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {},
+          "6": {},
+          "7": {},
+          "8": {},
+          "9": {},
+          "10": {},
+          "11": {},
+          "12": {},
+          "13": {},
+          "14": {},
+          "15": {},
+          "16": {},
+          "17": {},
+          "18": {},
+          "19": {},
+          "20": {},
+          "21": {},
+          "22": {},
+          "23": {},
+          "24": {},
+          "25": {},
+          "26": {},
+          "27": {},
+          "28": {},
+          "29": {},
+          "30": {},
+          "31": {},
+          "32": {},
+          "33": {},
+          "34": {},
+          "35": {},
+          "36": {},
+          "37": {},
+          "38": {},
+          "39": {},
+          "40": {},
+          "41": {},
+          "42": {},
+          "43": {},
+          "44": {},
+          "45": {},
+          "46": {},
+          "47": {},
+          "48": {},
+          "49": {},
+          "50": {},
+          "51": {},
+          "52": {},
+          "53": {},
+          "54": {},
+          "55": {},
+          "56": {},
+          "57": {},
+          "58": {},
+          "59": {},
+          "60": {},
+          "61": {},
+          "62": {},
+          "63": {},
+          "64": {},
+          "65": {},
+          "66": {},
+          "67": {},
+          "68": {},
+          "69": {},
+          "70": {},
+          "71": {},
+          "72": {},
+          "73": {},
+          "74": {},
+          "75": {}
+        },
+        "geometry_modified_to_resolve_crossings": false
+      },
+      "socket_count": 1,
+      "B": "pending"
+    }
+  }
+}

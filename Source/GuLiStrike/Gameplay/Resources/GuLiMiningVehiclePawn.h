@@ -50,6 +50,8 @@ public:
 	UFUNCTION(BlueprintPure, Category="Resources|Mining")
 	int32 GetUnitTypeId() const { return UnitTypeId; }
 	bool IssuePlayerCommand(const FGuLiMiningCommand& Command, EGuLiTeam RequestingTeam);
+	/** A placement displacement invalidates the old path/task, retaining cargo and ownership. */
+	void CancelTaskForExternalDisplacement();
 	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly, Category="Resources|Transit")
 	virtual EGuLiTransitOrderResult IssueStrongholdTransit(const FGuLiStrongholdTransitOrder& Order, EGuLiTeam RequestingTeam) override;
 	UFUNCTION(BlueprintPure, Category="Resources|Transit") EGuLiTransitOrderResult GetLastTransitResult() const { return LastTransitResult; }
@@ -146,8 +148,8 @@ private:
 	UPROPERTY()
 	TObjectPtr<AGuLiResourceFactoryActor> Factory;
 
-	float SpeedCentimetersPerSecond = 4500.0f;
-	float MiningDistanceCentimeters = 5400.0f;
+	float SpeedCentimetersPerSecond = 900.0f;
+	float MiningDistanceCentimeters = 1080.0f;
 	float MiningRatePerSecond = 1.0f;
 	float DockingSeconds = 1.0f;
 	float GraceSeconds = 3.0f;
@@ -158,7 +160,7 @@ private:
 	float NextAutoRetryServerTime = 0.0f;
 	FVector PlayerMoveTarget = FVector::ZeroVector;
 	bool bManualReturnOrder = false;
-	float ManeuverSpeed = 1500.0f;
+	float ManeuverSpeed = 300.0f;
 	FVector MiningTarget = FVector::ZeroVector;
 	bool bDockAligned = false;
 	FBox TravelBounds = FBox(ForceInit);
@@ -191,7 +193,6 @@ private:
 	void SetMiningVisual(bool bActive);
 	void TickFactoryManeuver(float DeltaSeconds);
 	bool MoveFactoryStep(const FVector& LocalTarget, float LocalYaw, float DeltaSeconds);
-	bool CalculateFactoryGroundPose(const FVector& Position, float Yaw, FTransform& OutPose) const;
 	void FinishFactoryManeuver();
 	void ExecutePlayerCommand(const FGuLiMiningCommand& Command);
 };

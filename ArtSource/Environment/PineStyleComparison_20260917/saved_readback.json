@@ -1,0 +1,684 @@
+{
+  "success": true,
+  "map": "/Game/GuLiStrike/Environment/ArtReview/PineStyleComparison_20260917/LVL_Pine_Units_Comparison.LVL_Pine_Units_Comparison",
+  "actors": [
+    {
+      "label": "PineReview_ReviewGround",
+      "folder": "PineComparison/Stage",
+      "location": [
+        0.0,
+        0.0,
+        -150.0
+      ],
+      "scale": [
+        20000.0,
+        20000.0,
+        3.0
+      ],
+      "bounds_center_cm": [
+        0.0,
+        0.0,
+        -150.0
+      ],
+      "bounds_extent_cm": [
+        1000000.0,
+        1000000.0,
+        150.0
+      ],
+      "mesh": "/Engine/BasicShapes/Cube.Cube",
+      "materials": [
+        "/Game/GuLiStrike/Environment/ArtReview/PineStyleComparison_20260917/Materials/M_ReviewGround.M_ReviewGround"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_Sun_ArtLightAligned",
+      "folder": "PineComparison/Lighting",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        2.5,
+        2.5,
+        2.5
+      ],
+      "bounds_center_cm": [
+        -104.86376559959632,
+        164.78591737079438,
+        -227.70417673055238
+      ],
+      "bounds_extent_cm": [
+        355.0952588801145,
+        400.2311790717258,
+        357.9190570176369
+      ]
+    },
+    {
+      "label": "PineReview_SkyFill",
+      "folder": "PineComparison/Lighting",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds_center_cm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "bounds_extent_cm": [
+        256.0,
+        256.0,
+        256.0
+      ]
+    },
+    {
+      "label": "PineReview_Atmosphere",
+      "folder": "PineComparison/Lighting",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds_center_cm": [
+        56.0,
+        0.0,
+        0.0
+      ],
+      "bounds_extent_cm": [
+        184.0,
+        128.0,
+        128.0
+      ]
+    },
+    {
+      "label": "PineReview_FixedExposure",
+      "folder": "PineComparison/Lighting",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds_center_cm": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "bounds_extent_cm": [
+        100.0,
+        100.0,
+        100.0
+      ]
+    },
+    {
+      "label": "PineReview_Ship",
+      "folder": "PineComparison/Units",
+      "location": [
+        -8080.866210937502,
+        24500.0,
+        4827.572265625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds_center_cm": [
+        -1000.0,
+        24500.0,
+        5292.3299560546875
+      ],
+      "bounds_extent_cm": [
+        22511.602539062507,
+        9689.019531250007,
+        3492.3299560546875
+      ],
+      "mesh": "/Game/GuLiStrike/Ship/Stylized/Meshes/SM_Ship_AnimeHull.SM_Ship_AnimeHull",
+      "materials": [
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Pearl.M_SS_Armor_Pearl",
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Blue.M_SS_Armor_Blue",
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Structure_Slate.M_SS_Structure_Slate",
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Recess_Navy.M_SS_Recess_Navy",
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Safety_Amber.M_SS_Safety_Amber",
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Engine_Cyan.M_SS_Engine_Cyan"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_ShipContour",
+      "folder": "PineComparison/Units",
+      "location": [
+        -8080.866210937502,
+        24500.0,
+        4827.572265625
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds_center_cm": [
+        -1756.12451171875,
+        24499.99951171875,
+        4808.9306640625
+      ],
+      "bounds_extent_cm": [
+        20870.387207031257,
+        9545.958496093757,
+        3048.2490234375
+      ],
+      "mesh": "/Game/GuLiStrike/Ship/Stylized/Meshes/SM_Ship_AnimeContour.SM_Ship_AnimeContour",
+      "materials": [
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_Ship_Contour.M_Ship_Contour"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_WarMachine",
+      "folder": "PineComparison/Units",
+      "location": [
+        3309.0289059597917,
+        -9125.421216651255,
+        329.320068359375
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds_center_cm": [
+        3000.0,
+        -9000.0,
+        1890.948974609375
+      ],
+      "bounds_extent_cm": [
+        4143.649178080114,
+        4133.433451013168,
+        1870.948974609375
+      ],
+      "mesh": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel",
+      "materials": [
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour",
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_Sweeper",
+      "folder": "PineComparison/Units",
+      "location": [
+        -6500.000017504164,
+        -13500.000024998537,
+        10.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds_center_cm": [
+        -6500.0,
+        -13500.0,
+        580.474365234375
+      ],
+      "bounds_extent_cm": [
+        993.1469389680387,
+        968.0026662107848,
+        570.474365234375
+      ],
+      "mesh": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel.SM_Sweeper_Cel",
+      "materials": [
+        "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_Camera",
+      "folder": "PineComparison/Cameras",
+      "location": [
+        50172.04140491516,
+        -68187.75600756178,
+        64906.44968589819
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bounds_center_cm": [
+        50172.04140491516,
+        -68187.75600756178,
+        64906.44968589819
+      ],
+      "bounds_extent_cm": [
+        1010.0,
+        1010.0,
+        1010.0
+      ]
+    },
+    {
+      "label": "PineReview_Tree_01_PineFull",
+      "folder": "PineComparison/Nature/Trees",
+      "location": [
+        -19075.11038985936,
+        -1100.268923714032,
+        0.0
+      ],
+      "scale": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "bounds_center_cm": [
+        -19000.0,
+        -1200.0,
+        6356.4727783203125
+      ],
+      "bounds_extent_cm": [
+        5081.979705431888,
+        5037.654579560625,
+        6356.4727783203125
+      ],
+      "mesh": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Full.SM_PineTree_Full",
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBark.MI_PineBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_Tree_02_PineTall",
+      "folder": "PineComparison/Nature/Trees",
+      "location": [
+        -23204.904845817604,
+        6092.7754727749025,
+        0.0
+      ],
+      "scale": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "bounds_center_cm": [
+        -23100.0,
+        5999.999999999999,
+        8112.1826171875
+      ],
+      "bounds_extent_cm": [
+        4797.427578482326,
+        4707.371424806122,
+        8112.1826171875
+      ],
+      "mesh": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTreeTall_Full.SM_PineTreeTall_Full",
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineTallBark.MI_PineTallBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_Tree_03_PineHalf",
+      "folder": "PineComparison/Nature/Trees",
+      "location": [
+        -14294.774824577835,
+        3676.6580994500127,
+        0.0
+      ],
+      "scale": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "bounds_center_cm": [
+        -14500.0,
+        4000.0,
+        6226.923828125
+      ],
+      "bounds_extent_cm": [
+        3511.143716890827,
+        3551.366242704189,
+        6226.923828125
+      ],
+      "mesh": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_HalfFull.SM_PineTree_HalfFull",
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBark.MI_PineBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_Tree_04_PineTall",
+      "folder": "PineComparison/Nature/Trees",
+      "location": [
+        17066.847229003906,
+        376.94000244140625,
+        0.0
+      ],
+      "scale": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "bounds_center_cm": [
+        17000.0,
+        500.00000000000045,
+        8112.1826171875
+      ],
+      "bounds_extent_cm": [
+        3783.189697265626,
+        3632.5115966796893,
+        8112.1826171875
+      ],
+      "mesh": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTreeTall_Full.SM_PineTreeTall_Full",
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineTallBark.MI_PineTallBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_Tree_05_PineFull",
+      "folder": "PineComparison/Nature/Trees",
+      "location": [
+        23675.321535244537,
+        6006.568003365061,
+        0.0
+      ],
+      "scale": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "bounds_center_cm": [
+        23800.0,
+        6000.0,
+        6356.4727783203125
+      ],
+      "bounds_extent_cm": [
+        5037.654579560625,
+        5081.97970543189,
+        6356.4727783203125
+      ],
+      "mesh": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Full.SM_PineTree_Full",
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBark.MI_PineBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_Rock_01_Rock1",
+      "folder": "PineComparison/Nature/Rocks",
+      "location": [
+        -13286.732011768934,
+        -7576.375266741644,
+        768.5399627685547
+      ],
+      "scale": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "bounds_center_cm": [
+        -13300.0,
+        -7600.0,
+        734.0576171875
+      ],
+      "bounds_extent_cm": [
+        1678.806949301772,
+        1470.3393913630698,
+        814.0576171875
+      ],
+      "mesh": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock1_Light.SM_Rock1_Light",
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock1_Light.MI_Rock1_Light"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_Rock_02_Rock3",
+      "folder": "PineComparison/Nature/Rocks",
+      "location": [
+        -15549.41639089002,
+        -9537.812183383212,
+        970.4856109619141
+      ],
+      "scale": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "bounds_center_cm": [
+        -15500.0,
+        -9500.0,
+        1152.6188659667969
+      ],
+      "bounds_extent_cm": [
+        1311.626865320376,
+        1311.6268653203751,
+        1232.6188659667969
+      ],
+      "mesh": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock3_Light.SM_Rock3_Light",
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock3_Light.MI_Rock3_Light"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_Rock_03_RockTall",
+      "folder": "PineComparison/Nature/Rocks",
+      "location": [
+        11245.701257531806,
+        -4295.373350800708,
+        1245.7781982421875
+      ],
+      "scale": [
+        10.0,
+        10.0,
+        10.0
+      ],
+      "bounds_center_cm": [
+        11500.0,
+        -4100.0,
+        2805.145263671875
+      ],
+      "bounds_extent_cm": [
+        1779.5037412119382,
+        1787.4748581024278,
+        2885.145263671875
+      ],
+      "mesh": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockTall1_Light.SM_RockTall1_Light",
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall1_Light.MI_RockTall1_Light"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    },
+    {
+      "label": "PineReview_Rock_04_Rock1",
+      "folder": "PineComparison/Nature/Rocks",
+      "location": [
+        14720.869674833277,
+        -2994.1413402881462,
+        598.8319702148438
+      ],
+      "scale": [
+        8.0,
+        8.0,
+        8.0
+      ],
+      "bounds_center_cm": [
+        14700.0,
+        -3000.0,
+        571.24609375
+      ],
+      "bounds_extent_cm": [
+        1317.94358254715,
+        1111.8687096260126,
+        651.24609375
+      ],
+      "mesh": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock1_Light.SM_Rock1_Light",
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock1_Light.MI_Rock1_Light"
+      ],
+      "collision": "<CollisionEnabled.QUERY_AND_PHYSICS: 3>"
+    }
+  ],
+  "foliage": [
+    {
+      "type": "/Game/GuLiStrike/Environment/ArtReview/PineStyleComparison_20260917/Foliage/FT_ReviewGrass.FT_ReviewGrass",
+      "mesh": "/Game/StylizedPineEnvironment/Assets/Meshes/Grass/SM_Grass.SM_Grass",
+      "count": 2293
+    }
+  ],
+  "materials": {
+    "/Game/GuLiStrike/Environment/ArtReview/PineStyleComparison_20260917/Materials/M_ReviewGround.M_ReviewGround": {
+      "base": "/Game/GuLiStrike/Environment/ArtReview/PineStyleComparison_20260917/Materials/M_ReviewGround.M_ReviewGround",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_DefaultLit",
+      "two_sided": false
+    },
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Pearl.M_SS_Armor_Pearl": {
+      "base": "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Pearl.M_SS_Armor_Pearl",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Blue.M_SS_Armor_Blue": {
+      "base": "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Blue.M_SS_Armor_Blue",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Structure_Slate.M_SS_Structure_Slate": {
+      "base": "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Structure_Slate.M_SS_Structure_Slate",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Recess_Navy.M_SS_Recess_Navy": {
+      "base": "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Recess_Navy.M_SS_Recess_Navy",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Safety_Amber.M_SS_Safety_Amber": {
+      "base": "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Safety_Amber.M_SS_Safety_Amber",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Engine_Cyan.M_SS_Engine_Cyan": {
+      "base": "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Engine_Cyan.M_SS_Engine_Cyan",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "/Game/GuLiStrike/Ship/Stylized/Materials/M_Ship_Contour.M_Ship_Contour": {
+      "base": "/Game/GuLiStrike/Ship/Stylized/Materials/M_Ship_Contour.M_Ship_Contour",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour": {
+      "base": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel": {
+      "base": "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel": {
+      "base": "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_Unlit",
+      "two_sided": false
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBark.MI_PineBark": {
+      "base": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_DefaultLit",
+      "two_sided": false
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf": {
+      "base": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/M_Leaf.M_Leaf",
+      "blend": "<BlendMode.BLEND_MASKED: 1>",
+      "shading_model": "MSM_Subsurface",
+      "two_sided": true
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall": {
+      "base": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/M_Leaf.M_Leaf",
+      "blend": "<BlendMode.BLEND_MASKED: 1>",
+      "shading_model": "MSM_Subsurface",
+      "two_sided": true
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineTallBark.MI_PineTallBark": {
+      "base": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_DefaultLit",
+      "two_sided": false
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock1_Light.MI_Rock1_Light": {
+      "base": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_DefaultLit",
+      "two_sided": false
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock3_Light.MI_Rock3_Light": {
+      "base": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_DefaultLit",
+      "two_sided": false
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall1_Light.MI_RockTall1_Light": {
+      "base": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+      "blend": "<BlendMode.BLEND_OPAQUE: 0>",
+      "shading_model": "MSM_DefaultLit",
+      "two_sided": false
+    }
+  },
+  "dirty": {
+    "content": [],
+    "maps": []
+  },
+  "review_status": "candidate_pending_user_review",
+  "gameplay_map_modified": false,
+  "source_engine": "D:/UnrealEngine-5.7",
+  "foliage_component": {
+    "class": "FoliageInstancedStaticMeshComponent",
+    "count": 2293,
+    "collision": "<CollisionEnabled.NO_COLLISION: 0>",
+    "mesh": "/Game/StylizedPineEnvironment/Assets/Meshes/Grass/SM_Grass.SM_Grass"
+  },
+  "grass_material": {
+    "base": "/Game/StylizedPineEnvironment/Assets/Materials/Grass/M_Grass.M_Grass",
+    "blend": "<BlendMode.BLEND_MASKED: 1>",
+    "shading_model": "MSM_DefaultLit",
+    "two_sided": true
+  },
+  "reloaded_from_saved_map": true
+}

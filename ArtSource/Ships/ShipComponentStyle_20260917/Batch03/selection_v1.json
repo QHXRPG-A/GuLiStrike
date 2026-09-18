@@ -1,0 +1,16 @@
+{
+  "date": "2026-09-17",
+  "work_id": "WORK-20260917-005",
+  "user_instruction": "继续挑选一批组件进行制作",
+  "basis": "Existing catalogue scripts; selected three assets subsequently verified read-only in UE. Remaining inventory is script-based, not a fresh live inspection of every asset.",
+  "catalogue_sources": ["Scripts/author_ship_component_blueprints.py", "Scripts/author_component_skill_assets.py"],
+  "selected": ["Drone_LaunchBay", "Electronic_JammingDevice", "Shield_Generator"],
+  "reason": "A coherent hangar/electronic-support/shield batch extends the established style beyond gun components without duplicating the previous six meshes.",
+  "previous_batch_01": {"keys": ["Twin_Barrel_Turret", "CIWS", "Thor_MissilePod"], "state": "B approved; delivered v4"},
+  "previous_batch_02": {"keys": ["Autocannon", "Triple_Barrel_Turret", "Single_Barrel_Turret"], "state": "A approved; actual material v2 awaiting B"},
+  "remaining_distinct_meshes_in_catalogue": ["Bottom_Twin_Barrel_Turret", "High_Rate_Fire_Cannon", "Incendiary_Bomb_LaunchBay", "Missile_Bay"],
+  "shared_mesh_variant": {"Thor_MissilePod_Lv2": "Uses Thor_MissilePod original mesh in catalogue; not selected as a new distinct model this batch"},
+  "user_marker_requirement": {"asset": "Drone_LaunchBay", "marking": "Wingman pictogram plus directed launch arrow on existing armor", "exit": "Far upper-right end in supplied hero image, parallel to rails", "reference": "References/Drone_LaunchBay_User_ExitDirection_20260917.png"},
+  "A": "pending",
+  "B": "not_started"
+}

@@ -128,7 +128,10 @@ def build_factory():
     animpath=BASE+'/Animations/A_RPF_Door_Open.A_RPF_Door_Open'
     prop(BP,'Door','AnimationData','(AnimToPlay="'+animpath+'",bSavedLooping=False,bSavedPlaying=False,SavedPosition=0.0,SavedPlayRate=1.0)')
     prop(BP,'Door','VisibilityBasedAnimTickOption','AlwaysTickPoseAndRefreshBones')
-    check(B.set_collision_settings(BP,'Door','QueryAndPhysics','WorldDynamic','BlockAll',{}),'Door collision')
+    # User-approved: door animation is presentation only, including the closed pose.
+    check(B.set_collision_settings(BP,'Door','NoCollision','','NoCollision',{}),'Visual-only door')
+    prop(BP,'Door','bGenerateOverlapEvents','False')
+    prop(BP,'Door','bCanEverAffectNavigation','False')
     for name,loc in [('EntryPoint','(X=3000,Y=0,Z=120)'),('UnloadPoint','(X=-700,Y=0,Z=120)')]:
         comp(BP,name,'SceneComponent','FactoryRoot');prop(BP,name,'RelativeLocation',loc);prop(BP,name,'Mobility','Static')
     for i,(x,y) in enumerate([(x,y) for x in [-1400,-400,600] for y in [-1500,1500]]):
@@ -191,6 +194,10 @@ def build_factory():
 
 
 def finish_factory(asset):
+    # Apply to existing managed blueprints too; never regenerate door collision on rerun.
+    check(B.set_collision_settings(BP,'Door','NoCollision','','NoCollision',{}),'Visual-only door')
+    prop(BP,'Door','bGenerateOverlapEvents','False')
+    prop(BP,'Door','bCanEverAffectNavigation','False')
     # Runtime access joins the existing apron to the terrain without adding vehicle logic to the factory.
     if not B.component_exists(BP,'AccessRamp'):
         check(B.add_component(BP,'/Script/GuLiStrike.GuLiGroundAccessRampComponent','AccessRamp','FactoryRoot'),'Add terrain access ramp')

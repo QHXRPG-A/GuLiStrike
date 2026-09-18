@@ -35,7 +35,7 @@ private:
 
 	/** Moving soldiers inside this planar distance retain the full 10 Hz pose rate. */
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Network", meta = (ClampMin = "0.0", Units = "cm"))
-	float FullRatePoseDistanceCentimeters = 160000.0f;
+	float FullRatePoseDistanceCentimeters = 32000.0f;
 
 	/** Moving soldiers beyond FullRatePoseDistance use 10 / divisor Hz. */
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Network", meta = (ClampMin = "1", ClampMax = "10"))

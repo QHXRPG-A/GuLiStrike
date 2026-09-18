@@ -209,6 +209,10 @@ public:
 
 	/** Exact UnitTypeId lookup. Unknown types return null; runtime fallback is internal and logged once. */
 	UInstancedStaticMeshComponent* FindUnitInstances(uint16 UnitTypeId) const;
+	/** Effective mesh scale; logical pose queries deliberately remain unit scale. */
+	float GetUnitPresentationScale(uint16 UnitTypeId) const;
+	/** Scaled mesh-local bounds in actual centimeters; consumers must not scale them again. */
+	FBox GetUnitModelBoundsCentimeters(uint16 UnitTypeId) const;
 
 	/** Returns all type batches in ascending UnitTypeId order for diagnostics and shared settings. */
 	void GetUnitInstanceComponents(
@@ -309,6 +313,7 @@ private:
 	friend class FGuLiCommanderClientMaintenanceTest;
 	friend class FGuLiCommanderHealthBarActivityTest;
 	friend class FGuLiCommanderMiniMapCacheTest;
+	friend class FGuLiScale020InterpolationContract;
 #endif
 
 	void InitializePresentationPerformanceSettings();
@@ -431,14 +436,14 @@ private:
 	float MaximumExtrapolationSeconds = 0.1f;
 
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Smoothing", meta = (ClampMin = "0.0", Units = "cm"))
-	float HardSnapDistanceCentimeters = 1000.0f;
+	float HardSnapDistanceCentimeters = 200.0f;
 
 	// 本地预表现最长时间；再受距离上限约束，不能代替服务器寻路。
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Prediction", meta = (ClampMin = "0.0"))
 	float PredictionDurationSeconds = 0.25f;
 
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Prediction", meta = (ClampMin = "0.0", Units = "cm"))
-	float MaximumPredictionDistanceCentimeters = 900.0f;
+	float MaximumPredictionDistanceCentimeters = 180.0f;
 
 	// 纠偏时把本地偏移渐退到 0 的时间；最终基准仍来自服务器样本。
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Prediction", meta = (ClampMin = "0.0"))

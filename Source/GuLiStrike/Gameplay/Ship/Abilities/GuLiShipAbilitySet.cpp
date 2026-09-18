@@ -293,21 +293,21 @@ UGuLiShipAbilitySet* UGuLiShipAbilitySet::CreateNativeV1Transient(UObject* Outer
 
 	Basic->Kind = EGuLiWingmanWeaponKind::BasicAutomatic;
 	Basic->Damage = 10.0f;
-	Basic->RangeCentimeters = 150000.0f;
+	Basic->RangeCentimeters = 30000.0f;
 	Basic->CooldownSeconds = 2.0f;
-	Basic->ProjectileSpeedCentimetersPerSecond = 120000.0f;
+	Basic->ProjectileSpeedCentimetersPerSecond = 24000.0f;
 	Basic->ProjectileLifetimeSeconds = 1.5f;
-	Basic->SweepRadiusCentimeters = 45.0f;
+	Basic->SweepRadiusCentimeters = 9.0f;
 	Basic->TargetConeHalfAngleDegrees = 20.0f;
 	Basic->MaximumHomingTurnRateDegreesPerSecond = 0.0f;
 
 	Missile->Kind = EGuLiWingmanWeaponKind::Missile;
 	Missile->Damage = 100.0f;
-	Missile->RangeCentimeters = 250000.0f;
+	Missile->RangeCentimeters = 50000.0f;
 	Missile->CooldownSeconds = 8.0f;
-	Missile->ProjectileSpeedCentimetersPerSecond = 45000.0f;
+	Missile->ProjectileSpeedCentimetersPerSecond = 9000.0f;
 	Missile->ProjectileLifetimeSeconds = 8.0f;
-	Missile->SweepRadiusCentimeters = 150.0f;
+	Missile->SweepRadiusCentimeters = 30.0f;
 	Missile->TargetConeHalfAngleDegrees = 8.0f;
 	Missile->MaximumHomingTurnRateDegreesPerSecond = 45.0f;
 
@@ -346,24 +346,24 @@ UGuLiShipAbilitySet* UGuLiShipAbilitySet::CreateNativeV3Transient(UObject* Outer
 		Weapon->Kind = EGuLiWingmanWeaponKind::BasicAutomatic;
 		Weapon->Damage = bGround ? 30.0f : 10.0f;
 		Weapon->CooldownSeconds = bGround ? 8.0f : 0.2f;
-		Weapon->RangeCentimeters = 150000.0f;
-		Weapon->ProjectileSpeedCentimetersPerSecond = bGround ? 6000.0f : 80000.0f;
+		Weapon->RangeCentimeters = 30000.0f;
+		Weapon->ProjectileSpeedCentimetersPerSecond = bGround ? 1200.0f : 16000.0f;
 		Weapon->ProjectileLifetimeSeconds = bGround ? 8.0f : 1.875f;
-		Weapon->SweepRadiusCentimeters = bGround ? 30.0f : 45.0f;
+		Weapon->SweepRadiusCentimeters = bGround ? 6.0f : 9.0f;
 		Weapon->TargetConeHalfAngleDegrees = 20.0f;
 		Weapon->Attack.Pattern = bGround ? EGuLiWingmanAttackPattern::GroundDive : EGuLiWingmanAttackPattern::AirBurstOrbit;
 		Weapon->Attack.ExecutorId = bGround ? TEXT("WingmanGroundMissile") : TEXT("WingmanMachineGun");
-		Weapon->Attack.FlightSpeed = 9000.0f;
+		Weapon->Attack.FlightSpeed = 1800.0f;
 		if (!bGround)
 		{
-			Weapon->Attack.AirFireStartDistance = 10000.0f;
-			Weapon->Attack.AirFireStopDistance = 5000.0f;
+			Weapon->Attack.AirFireStartDistance = 2000.0f;
+			Weapon->Attack.AirFireStopDistance = 1000.0f;
 			Weapon->Attack.AirBurstDurationSeconds = 5.0f;
 			Weapon->Attack.AirOrbitCooldownSeconds = 3.0f;
 		}
 		if (bGround)
 		{
-			Weapon->Attack.ExplosionRadius = 4000.0f;
+			Weapon->Attack.ExplosionRadius = 800.0f;
 			Weapon->AttackProjectile = FSoftObjectPath(TEXT(
 				"/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundMissile.DA_WingmanGroundMissile"));
 		}
@@ -407,26 +407,26 @@ UGuLiShipAbilitySet* UGuLiShipAbilitySet::CreateNativeV2Transient(UObject* Outer
 	SwarmFormation->Revision = 3u;
 	SwarmFormation->Model = EGuLiWingmanFormationModel::SwarmOrbit;
 	SwarmFormation->GuidanceAlgorithmVersion = 1u;
-	SwarmFormation->CatchUpDistanceCentimeters = 60000.0f;
-	SwarmFormation->RecoveryDistanceCentimeters = 90000.0f;
+	SwarmFormation->CatchUpDistanceCentimeters = 12000.0f;
+	SwarmFormation->RecoveryDistanceCentimeters = 18000.0f;
 
 	Basic->Kind = EGuLiWingmanWeaponKind::BasicAutomatic;
 	Basic->Damage = 10.0f;
-	Basic->RangeCentimeters = 150000.0f;
+	Basic->RangeCentimeters = 30000.0f;
 	Basic->CooldownSeconds = 2.0f;
-	Basic->ProjectileSpeedCentimetersPerSecond = 120000.0f;
+	Basic->ProjectileSpeedCentimetersPerSecond = 24000.0f;
 	Basic->ProjectileLifetimeSeconds = 1.5f;
-	Basic->SweepRadiusCentimeters = 45.0f;
+	Basic->SweepRadiusCentimeters = 9.0f;
 	Basic->TargetConeHalfAngleDegrees = 20.0f;
 	Basic->MaximumHomingTurnRateDegreesPerSecond = 0.0f;
 
 	Missile->Kind = EGuLiWingmanWeaponKind::Missile;
 	Missile->Damage = 100.0f;
-	Missile->RangeCentimeters = 250000.0f;
+	Missile->RangeCentimeters = 50000.0f;
 	Missile->CooldownSeconds = 8.0f;
-	Missile->ProjectileSpeedCentimetersPerSecond = 45000.0f;
+	Missile->ProjectileSpeedCentimetersPerSecond = 9000.0f;
 	Missile->ProjectileLifetimeSeconds = 8.0f;
-	Missile->SweepRadiusCentimeters = 150.0f;
+	Missile->SweepRadiusCentimeters = 30.0f;
 	Missile->TargetConeHalfAngleDegrees = 8.0f;
 	Missile->MaximumHomingTurnRateDegreesPerSecond = 45.0f;
 

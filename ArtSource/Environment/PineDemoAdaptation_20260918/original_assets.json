@@ -1,0 +1,2840 @@
+[
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockTall1_Light.SM_RockTall1_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      460
+    ],
+    "size_cm": [
+      263.2987060546875,
+      258.9432067871094,
+      577.029052734375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall1_Light.MI_RockTall1_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall1_Light.MI_RockTall1_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockTall1_Light.T_RockTall1_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock3_Light.SM_Rock3_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      550
+    ],
+    "size_cm": [
+      178.80569458007812,
+      192.17840576171875,
+      246.52377319335938
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock3_Light.MI_Rock3_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock3_Light.MI_Rock3_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock3_Light.T_Rock3_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock1_Light.SM_Rock1_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      336
+    ],
+    "size_cm": [
+      280.0687255859375,
+      193.86981201171875,
+      162.8115234375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock1_Light.MI_Rock1_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock1_Light.MI_Rock1_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock1_Light.T_Rock1_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "class": "Material",
+    "shading": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+    "blend": "<BlendMode.BLEND_OPAQUE: 0>"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Leaves/T_PineLeaf.T_PineLeaf",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Grass/SM_Grass.SM_Grass",
+    "class": "StaticMesh",
+    "triangles": [
+      37
+    ],
+    "size_cm": [
+      36.914608001708984,
+      29.811546325683594,
+      38.86389923095703
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Grass/MI_Grass.MI_Grass"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Grass/MI_Grass.MI_Grass",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Grass/M_Grass.M_Grass",
+    "texture_overrides": {},
+    "scalar_overrides": {
+      "VariationHighlightPower": 0.8999999761581421,
+      "GradientPowerWind": 0.0,
+      "Wind Intensity": 1.5,
+      "Wind Weight": 0.15000000596046448,
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {
+      "GrassColorBottom": [
+        0.09989900141954422,
+        0.11953800171613693,
+        0.01850000023841858,
+        1.0
+      ],
+      "GrassColorTop": [
+        0.3094690144062042,
+        0.28314900398254395,
+        0.05612799897789955,
+        1.0
+      ]
+    }
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Grass/M_Grass.M_Grass",
+    "class": "Material",
+    "shading": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+    "blend": "<BlendMode.BLEND_MASKED: 1>"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockTall1_Light.T_RockTall1_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock3_Light.T_Rock3_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock1_Light.T_Rock1_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/T_Noise.T_Noise",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineTreeTallBark_Normal.T_PineTreeTallBark_Normal",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineTreeTallBark.T_PineTreeTallBark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineTreeBark_Normal.T_PineTreeBark_Normal",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineTreeBark.T_PineTreeBark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Leaves/T_PineLeafSmall.T_PineLeafSmall",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTreeTall_Full.SM_PineTreeTall_Full",
+    "class": "StaticMesh",
+    "triangles": [
+      2138
+    ],
+    "size_cm": [
+      726.5023193359375,
+      756.637939453125,
+      1622.4365234375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineTallBark.MI_PineTallBark",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_HalfFull.SM_PineTree_HalfFull",
+    "class": "StaticMesh",
+    "triangles": [
+      2472
+    ],
+    "size_cm": [
+      506.0226135253906,
+      528.0006103515625,
+      1245.384765625
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBark.MI_PineBark",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Full.SM_PineTree_Full",
+    "class": "StaticMesh",
+    "triangles": [
+      1770
+    ],
+    "size_cm": [
+      796.9562377929688,
+      782.1236572265625,
+      1271.2945556640625
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBark.MI_PineBark",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+    "texture_overrides": {
+      "LeafTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Leaves/T_PineLeafSmall.T_PineLeafSmall"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/M_Leaf.M_Leaf",
+    "texture_overrides": {},
+    "scalar_overrides": {
+      "Brightness": 1.0,
+      "Color Variation amount": 0.0,
+      "Subsurface Strength": 0.8999999761581421,
+      "wind Intensity": 0.10000000149011612,
+      "Wind Speed": 1.0,
+      "Wind Weight": 1.0,
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {
+      "LeafColor": [
+        0.037438999861478806,
+        0.08854199945926666,
+        0.007540999911725521,
+        1.0
+      ]
+    }
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/M_Leaf.M_Leaf",
+    "class": "Material",
+    "shading": "<MaterialShadingModel.MSM_SUBSURFACE: 2>",
+    "blend": "<BlendMode.BLEND_MASKED: 1>"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineTallBark.MI_PineTallBark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark",
+    "texture_overrides": {
+      "BarkNormal": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineTreeTallBark_Normal.T_PineTreeTallBark_Normal",
+      "BarkTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineTreeTallBark.T_PineTreeTallBark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBark.MI_PineBark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark",
+    "texture_overrides": {
+      "BarkNormal": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineTreeBark_Normal.T_PineTreeBark_Normal",
+      "BarkTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineTreeBark.T_PineTreeBark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark",
+    "class": "Material",
+    "shading": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+    "blend": "<BlendMode.BLEND_OPAQUE: 0>"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Blueprints/BP_Floating_Rock_Light.BP_Floating_Rock_Light",
+    "class": "Blueprint"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockTall3_Light.SM_RockTall3_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      460
+    ],
+    "size_cm": [
+      263.2987060546875,
+      258.9432067871094,
+      577.029052734375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall3_Light.MI_RockTall3_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall3_Light.MI_RockTall3_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockTall3_Light.T_RockTall3_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockTall3_Light.T_RockTall3_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodTop1.SM_WoodTop1",
+    "class": "StaticMesh",
+    "triangles": [
+      504
+    ],
+    "size_cm": [
+      224.2098388671875,
+      434.454345703125,
+      38.29004669189453
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodTop.SM_WoodTop",
+    "class": "StaticMesh",
+    "triangles": [
+      484
+    ],
+    "size_cm": [
+      448.41961669921875,
+      434.454345703125,
+      38.29004669189453
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodStairs.SM_WoodStairs",
+    "class": "StaticMesh",
+    "triangles": [
+      836
+    ],
+    "size_cm": [
+      191.25,
+      446.8687744140625,
+      321.289306640625
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodPlanks4.SM_WoodPlanks4",
+    "class": "StaticMesh",
+    "triangles": [
+      52
+    ],
+    "size_cm": [
+      48.3802490234375,
+      270.9261169433594,
+      7.364163398742676
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodPlanks2.SM_WoodPlanks2",
+    "class": "StaticMesh",
+    "triangles": [
+      104
+    ],
+    "size_cm": [
+      106.30091094970703,
+      271.6072998046875,
+      7.364163398742676
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodPlanks1.SM_WoodPlanks1",
+    "class": "StaticMesh",
+    "triangles": [
+      88
+    ],
+    "size_cm": [
+      109.89878845214844,
+      449.0756530761719,
+      7.364192008972168
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodFenceSmall.SM_WoodFenceSmall",
+    "class": "StaticMesh",
+    "triangles": [
+      244
+    ],
+    "size_cm": [
+      236.82431030273438,
+      19.674314498901367,
+      113.84587097167969
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodFenceLarge.SM_WoodFenceLarge",
+    "class": "StaticMesh",
+    "triangles": [
+      264
+    ],
+    "size_cm": [
+      440.9608154296875,
+      19.67436408996582,
+      113.84588623046875
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodenPillar.SM_WoodenPillar",
+    "class": "StaticMesh",
+    "triangles": [
+      508
+    ],
+    "size_cm": [
+      34.65177917480469,
+      34.651912689208984,
+      824.4216918945312
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodBeams3.SM_WoodBeams3",
+    "class": "StaticMesh",
+    "triangles": [
+      164
+    ],
+    "size_cm": [
+      433.5000305175781,
+      23.2688045501709,
+      318.7499694824219
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodBeams2.SM_WoodBeams2",
+    "class": "StaticMesh",
+    "triangles": [
+      104
+    ],
+    "size_cm": [
+      433.5000305175781,
+      23.268802642822266,
+      318.7499694824219
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodBeams1.SM_WoodBeams1",
+    "class": "StaticMesh",
+    "triangles": [
+      164
+    ],
+    "size_cm": [
+      433.5000305175781,
+      23.2688045501709,
+      318.7499694824219
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/M_Wood.M_Wood",
+    "texture_overrides": {},
+    "scalar_overrides": {},
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/M_Wood.M_Wood",
+    "class": "Material",
+    "shading": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+    "blend": "<BlendMode.BLEND_OPAQUE: 0>"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/WoodenStructures/T_Wood.T_Wood",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Dead_White.SM_PineTree_Dead_White",
+    "class": "StaticMesh",
+    "triangles": [
+      2148
+    ],
+    "size_cm": [
+      328.7862548828125,
+      260.698486328125,
+      1245.384765625
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineDeadBark.MI_PineDeadBark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineDeadBark.MI_PineDeadBark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark",
+    "texture_overrides": {
+      "BarkNormal": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineDeadBark_Normal.T_PineDeadBark_Normal",
+      "BarkTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineDeadBark.T_PineDeadBark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineDeadBark_Normal.T_PineDeadBark_Normal",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineDeadBark.T_PineDeadBark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Dead_Brown.SM_PineTree_Dead_Brown",
+    "class": "StaticMesh",
+    "triangles": [
+      2148
+    ],
+    "size_cm": [
+      328.7862548828125,
+      260.698486328125,
+      1245.384765625
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineHalfFullBark.MI_PineHalfFullBark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineHalfFullBark.MI_PineHalfFullBark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark",
+    "texture_overrides": {
+      "BarkNormal": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineHalfFullBark_Normal.T_PineHalfFullBark_Normal",
+      "BarkTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineHalfFullBark.T_PineHalfFullBark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineHalfFullBark_Normal.T_PineHalfFullBark_Normal",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineHalfFullBark.T_PineHalfFullBark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Stump.SM_PineTree_Stump",
+    "class": "StaticMesh",
+    "triangles": [
+      618
+    ],
+    "size_cm": [
+      126.99594116210938,
+      126.99594116210938,
+      227.2333984375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBark.MI_PineBrokenBark",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenArea.MI_BarkBrokenArea"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_BrokenTop.SM_PineTree_BrokenTop",
+    "class": "StaticMesh",
+    "triangles": [
+      1574
+    ],
+    "size_cm": [
+      175.42019653320312,
+      1082.9775390625,
+      143.50930786132812
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBark.MI_PineBrokenBark",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenArea.MI_BarkBrokenArea"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Broken.SM_PineTree_Broken",
+    "class": "StaticMesh",
+    "triangles": [
+      2327
+    ],
+    "size_cm": [
+      343.5766906738281,
+      1149.0489501953125,
+      245.63880920410156
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBark.MI_PineBrokenBark",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafBroken.MI_LeafBroken",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenArea.MI_BarkBrokenArea"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBark.MI_PineBrokenBark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark",
+    "texture_overrides": {
+      "BarkNormal": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineBrokenBark_Normal.T_PineBrokenBark_Normal",
+      "BarkTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineBrokenBark.T_PineBrokenBark"
+    },
+    "scalar_overrides": {
+      "Wind Sway": 0.0,
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineBrokenBark_Normal.T_PineBrokenBark_Normal",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineBrokenBark.T_PineBrokenBark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenArea.MI_BarkBrokenArea",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark",
+    "texture_overrides": {
+      "BarkNormal": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_BarkBrokenArea_Normal.T_BarkBrokenArea_Normal",
+      "BarkTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_BarkBrokenArea.T_BarkBrokenArea"
+    },
+    "scalar_overrides": {
+      "Wind Sway": 0.0,
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_BarkBrokenArea_Normal.T_BarkBrokenArea_Normal",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_BarkBrokenArea.T_BarkBrokenArea",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/StoneObjects/SM_StonePortal.SM_StonePortal",
+    "class": "StaticMesh",
+    "triangles": [
+      3584
+    ],
+    "size_cm": [
+      531.576171875,
+      190.09808349609375,
+      568.0906982421875
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/StoneObjects/MI_StonePortal.MI_StonePortal"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/StoneObjects/MI_StonePortal.MI_StonePortal",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/StoneObjects/T_StonePortal.T_StonePortal"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/StoneObjects/T_StonePortal.T_StonePortal",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/StoneObjects/SM_StoneLantern.SM_StoneLantern",
+    "class": "StaticMesh",
+    "triangles": [
+      1768
+    ],
+    "size_cm": [
+      87.4242935180664,
+      99.74424743652344,
+      256.84234619140625
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/StoneObjects/MI_StoneLantern.MI_StoneLantern"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/StoneObjects/MI_StoneLantern.MI_StoneLantern",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/StoneObjects/T_StoneLantern.T_StoneLantern"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/StoneObjects/T_StoneLantern.T_StoneLantern",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/StoneObjects/SM_StoneArch.SM_StoneArch",
+    "class": "StaticMesh",
+    "triangles": [
+      2158
+    ],
+    "size_cm": [
+      412.34027099609375,
+      145.46392822265625,
+      418.1499328613281
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/StoneObjects/MI_StoneArch.MI_StoneArch"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/StoneObjects/MI_StoneArch.MI_StoneArch",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/StoneObjects/T_StoneArch.T_StoneArch"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/StoneObjects/T_StoneArch.T_StoneArch",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_SmallRock1_Light.SM_SmallRock1_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      420
+    ],
+    "size_cm": [
+      43.06879425048828,
+      68.02557373046875,
+      13.770953178405762
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_SmallRocks_Light.MI_SmallRocks_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_SmallRocks_Light.MI_SmallRocks_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_SmallRocks_Light.T_SmallRocks_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_SmallRocks_Light.T_SmallRocks_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RocksStacked2_Light.SM_RocksStacked2_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      1140
+    ],
+    "size_cm": [
+      184.09732055664062,
+      167.89926147460938,
+      216.72500610351562
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RocksStacked2_Light.MI_RocksStacked2_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RocksStacked2_Light.MI_RocksStacked2_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RocksStacked2_Light.T_RocksStacked2_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RocksStacked2_Light.T_RocksStacked2_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RocksStacked1_Light.SM_RocksStacked1_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      1724
+    ],
+    "size_cm": [
+      229.76864624023438,
+      222.1469268798828,
+      191.72964477539062
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RocksStacked1_Light.MI_RocksStacked1_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RocksStacked1_Light.MI_RocksStacked1_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RocksStacked1_Light.T_RocksStacked1_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RocksStacked1_Light.T_RocksStacked1_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockLong4_Light.SM_RockLong4_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      764
+    ],
+    "size_cm": [
+      175.72683715820312,
+      203.14588928222656,
+      297.05828857421875
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong4_Light.MI_RockLong4_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong4_Light.MI_RockLong4_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockLong4_Light.T_RockLong4_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockLong4_Light.T_RockLong4_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockLong3_Light.SM_RockLong3_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      422
+    ],
+    "size_cm": [
+      111.13240051269531,
+      137.86688232421875,
+      304.9613037109375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong3_Light.MI_RockLong3_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong3_Light.MI_RockLong3_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockLong3_Light.T_RockLong3_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockLong3_Light.T_RockLong3_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockLong2_Light.SM_RockLong2_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      458
+    ],
+    "size_cm": [
+      159.63299560546875,
+      167.89675903320312,
+      331.58514404296875
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong2_Light.MI_RockLong2_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong2_Light.MI_RockLong2_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockLong2_Light.T_RockLong2_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockLong2_Light.T_RockLong2_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockLong1_Light.SM_RockLong1_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      438
+    ],
+    "size_cm": [
+      175.09109497070312,
+      187.84446716308594,
+      277.40057373046875
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong1_Light.MI_RockLong1_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong1_Light.MI_RockLong1_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockLong1_Light.T_RockLong1_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockLong1_Light.T_RockLong1_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFormation5_Light.SM_RockFormation5_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      3318
+    ],
+    "size_cm": [
+      1709.916748046875,
+      754.4024658203125,
+      821.3492431640625
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation5_Light.MI_RockFormation5_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation5_Light.MI_RockFormation5_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFormation5_Light.T_RockFormation5_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFormation5_Light.T_RockFormation5_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFormation4_Light.SM_RockFormation4_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      1524
+    ],
+    "size_cm": [
+      1663.369140625,
+      821.0826416015625,
+      739.7696533203125
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation4_Light.MI_RockFormation4_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation4_Light.MI_RockFormation4_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFormation4_Light.T_RockFormation4_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFormation4_Light.T_RockFormation4_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFormation3_Light.SM_RockFormation3_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      1370
+    ],
+    "size_cm": [
+      1302.277587890625,
+      871.4894409179688,
+      749.1781005859375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation3_Light.MI_RockFormation3_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation3_Light.MI_RockFormation3_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFormation3_Light.T_RockFormation3_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFormation3_Light.T_RockFormation3_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFormation2_Light.SM_RockFormation2_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      1678
+    ],
+    "size_cm": [
+      661.31103515625,
+      571.1484375,
+      741.5604858398438
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation2_Light.MI_RockFormation2_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation2_Light.MI_RockFormation2_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFormation2_Light.T_RockFormation2_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFormation2_Light.T_RockFormation2_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFormation1_Light.SM_RockFormation1_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      338
+    ],
+    "size_cm": [
+      600.241943359375,
+      547.8353271484375,
+      712.2857666015625
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation1_Light.MI_RockFormation1_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation1_Light.MI_RockFormation1_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFormation1_Light.T_RockFormation1_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFormation1_Light.T_RockFormation1_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFlat3_Light.SM_RockFlat3_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      582
+    ],
+    "size_cm": [
+      865.6253662109375,
+      331.0467529296875,
+      96.07174682617188
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFlat3_Light.MI_RockFlat3_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFlat3_Light.MI_RockFlat3_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFlat3_Light.T_RockFlat3_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFlat3_Light.T_RockFlat3_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFlat2_Light.SM_RockFlat2_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      518
+    ],
+    "size_cm": [
+      387.90155029296875,
+      317.81512451171875,
+      75.79097747802734
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFlat2_Light.MI_RockFlat2_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFlat2_Light.MI_RockFlat2_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFlat2_Light.T_RockFlat2_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFlat2_Light.T_RockFlat2_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock7_Light.SM_Rock7_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      400
+    ],
+    "size_cm": [
+      149.99330139160156,
+      160.47512817382812,
+      172.04612731933594
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock7_Light.MI_Rock7_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock7_Light.MI_Rock7_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock7_Light.T_Rock7_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock7_Light.T_Rock7_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock4_Light.SM_Rock4_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      338
+    ],
+    "size_cm": [
+      168.79229736328125,
+      152.62384033203125,
+      191.72962951660156
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock4_Light.MI_Rock4_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock4_Light.MI_Rock4_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock4_Light.T_Rock4_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock4_Light.T_Rock4_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_SmallRock3_Dark.SM_SmallRock3_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      456
+    ],
+    "size_cm": [
+      40.90116882324219,
+      44.08396911621094,
+      22.736543655395508
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_SmallRocks_Dark.MI_SmallRocks_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_SmallRock2_Dark.SM_SmallRock2_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      362
+    ],
+    "size_cm": [
+      38.975982666015625,
+      42.95414733886719,
+      13.562566757202148
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_SmallRocks_Dark.MI_SmallRocks_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_SmallRock1_Dark.SM_SmallRock1_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      420
+    ],
+    "size_cm": [
+      43.06879425048828,
+      68.02557373046875,
+      13.770953178405762
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_SmallRocks_Dark.MI_SmallRocks_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_SmallRocks_Dark.MI_SmallRocks_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_SmallRocks_Dark.T_SmallRocks_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_SmallRocks_Dark.T_SmallRocks_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockTall3_Dark.SM_RockTall3_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      460
+    ],
+    "size_cm": [
+      263.2987060546875,
+      258.9432067871094,
+      577.029052734375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockTall3_Dark.MI_RockTall3_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockTall3_Dark.MI_RockTall3_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockTall3_Dark.T_RockTall3_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockTall3_Dark.T_RockTall3_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockTall2_Dark.SM_RockTall2_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      362
+    ],
+    "size_cm": [
+      287.8587951660156,
+      170.1432647705078,
+      571.8688354492188
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockTall2_Dark.MI_RockTall2_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockTall2_Dark.MI_RockTall2_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockTall2_Dark.T_RockTall2_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockTall2_Dark.T_RockTall2_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Blueprints/BP_Floating_Rock_Dark.BP_Floating_Rock_Dark",
+    "class": "Blueprint"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockTall1_Dark.SM_RockTall1_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      460
+    ],
+    "size_cm": [
+      263.2987060546875,
+      258.9432067871094,
+      577.029052734375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockTall1_Dark.MI_RockTall1_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockTall1_Dark.MI_RockTall1_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockTall1_Dark.T_RockTall1_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockTall1_Dark.T_RockTall1_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RocksStacked1_Dark.SM_RocksStacked1_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      1724
+    ],
+    "size_cm": [
+      229.76864624023438,
+      222.1469268798828,
+      191.72964477539062
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RocksStacked1_Dark.MI_RocksStacked1_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RocksStacked1_Dark.MI_RocksStacked1_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RocksStacked1_Dark.T_RocksStacked1_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RocksStacked1_Dark.T_RocksStacked1_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockLong4_Dark.SM_RockLong4_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      764
+    ],
+    "size_cm": [
+      175.72683715820312,
+      203.14588928222656,
+      297.05828857421875
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong4_Dark.MI_RockLong4_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong4_Dark.MI_RockLong4_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockLong4_Dark.T_RockLong4_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockLong4_Dark.T_RockLong4_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockLong3_Dark.SM_RockLong3_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      422
+    ],
+    "size_cm": [
+      111.13240051269531,
+      137.86688232421875,
+      304.9613037109375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong3_Dark.MI_RockLong3_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong3_Dark.MI_RockLong3_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockLong3_Dark.T_RockLong3_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockLong3_Dark.T_RockLong3_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Blueprints/BP_Spinning_Rock.BP_Spinning_Rock",
+    "class": "Blueprint"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockLong2_Dark.SM_RockLong2_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      458
+    ],
+    "size_cm": [
+      159.63299560546875,
+      167.89675903320312,
+      331.58514404296875
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong2_Dark.MI_RockLong2_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong2_Dark.MI_RockLong2_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockLong2_Dark.T_RockLong2_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockLong2_Dark.T_RockLong2_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockLong1_Dark.SM_RockLong1_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      438
+    ],
+    "size_cm": [
+      175.09109497070312,
+      187.84446716308594,
+      277.40057373046875
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong1_Dark.MI_RockLong1_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong1_Dark.MI_RockLong1_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockLong1_Dark.T_RockLong1_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockLong1_Dark.T_RockLong1_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFormation5_Dark.SM_RockFormation5_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      3318
+    ],
+    "size_cm": [
+      1709.916748046875,
+      754.4024658203125,
+      821.3492431640625
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation5_Dark.MI_RockFormation5_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation5_Dark.MI_RockFormation5_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFormation5_Dark.T_RockFormation5_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFormation5_Dark.T_RockFormation5_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFormation4_Dark.SM_RockFormation4_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      1524
+    ],
+    "size_cm": [
+      1663.369140625,
+      821.0826416015625,
+      739.7696533203125
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation4_Dark.MI_RockFormation4_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation4_Dark.MI_RockFormation4_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFormation4_Dark.T_RockFormation4_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFormation4_Dark.T_RockFormation4_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFormation3_Dark.SM_RockFormation3_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      1370
+    ],
+    "size_cm": [
+      1302.277587890625,
+      871.4894409179688,
+      749.1781005859375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation3_Dark.MI_RockFormation3_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation3_Dark.MI_RockFormation3_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFormation3_Dark.T_RockFormation3_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFormation3_Dark.T_RockFormation3_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFormation2_Dark.SM_RockFormation2_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      1678
+    ],
+    "size_cm": [
+      661.31103515625,
+      571.1484375,
+      741.5604858398438
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation2_Dark.MI_RockFormation2_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation2_Dark.MI_RockFormation2_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFormation2_Dark.T_RockFormation2_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFormation2_Dark.T_RockFormation2_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFormation1_Dark.SM_RockFormation1_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      338
+    ],
+    "size_cm": [
+      600.241943359375,
+      547.8353271484375,
+      712.2857666015625
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation1_Dark.MI_RockFormation1_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation1_Dark.MI_RockFormation1_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFormation1_Dark.T_RockFormation1_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFormation1_Dark.T_RockFormation1_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFlat3_Dark.SM_RockFlat3_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      582
+    ],
+    "size_cm": [
+      865.6253662109375,
+      331.0467529296875,
+      96.07174682617188
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFlat3_Dark.MI_RockFlat3_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFlat3_Dark.MI_RockFlat3_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFlat3_Dark.T_RockFlat3_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFlat3_Dark.T_RockFlat3_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFlat2_Dark.SM_RockFlat2_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      518
+    ],
+    "size_cm": [
+      387.90155029296875,
+      317.81512451171875,
+      75.79097747802734
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFlat2_Dark.MI_RockFlat2_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFlat2_Dark.MI_RockFlat2_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFlat2_Dark.T_RockFlat2_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFlat2_Dark.T_RockFlat2_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFlat1_Dark.SM_RockFlat1_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      562
+    ],
+    "size_cm": [
+      373.0662841796875,
+      378.85107421875,
+      90.30091857910156
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFlat1_Dark.MI_RockFlat1_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFlat1_Dark.MI_RockFlat1_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFlat1_Dark.T_RockFlat1_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RockFlat1_Dark.T_RockFlat1_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock7_Dark.SM_Rock7_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      400
+    ],
+    "size_cm": [
+      149.99330139160156,
+      160.47512817382812,
+      172.04612731933594
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock7_Dark.MI_Rock7_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock7_Dark.MI_Rock7_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock7_Dark.T_Rock7_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock7_Dark.T_Rock7_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock6_Dark.SM_Rock6_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      390
+    ],
+    "size_cm": [
+      203.6641082763672,
+      200.51077270507812,
+      137.30374145507812
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock6_Dark.MI_Rock6_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock6_Dark.MI_Rock6_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock6_Dark.T_Rock6_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock6_Dark.T_Rock6_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock5_Dark.SM_Rock5_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      386
+    ],
+    "size_cm": [
+      196.56759643554688,
+      200.7065887451172,
+      195.87509155273438
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock5_Dark.MI_Rock5_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock5_Dark.MI_Rock5_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock5_Dark.T_Rock5_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock5_Dark.T_Rock5_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock4_Dark.SM_Rock4_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      338
+    ],
+    "size_cm": [
+      168.79229736328125,
+      152.62384033203125,
+      191.72962951660156
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock4_Dark.MI_Rock4_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock4_Dark.MI_Rock4_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock4_Dark.T_Rock4_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock4_Dark.T_Rock4_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock3_Dark.SM_Rock3_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      550
+    ],
+    "size_cm": [
+      178.80569458007812,
+      192.17840576171875,
+      246.52377319335938
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock3_Dark.MI_Rock3_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock3_Dark.MI_Rock3_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock3_Dark.T_Rock3_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock3_Dark.T_Rock3_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock2_dark.SM_Rock2_dark",
+    "class": "StaticMesh",
+    "triangles": [
+      390
+    ],
+    "size_cm": [
+      253.41250610351562,
+      255.68264770507812,
+      147.36306762695312
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock2_Dark.MI_Rock2_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock2_Dark.MI_Rock2_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock2_Dark.T_Rock2_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock2_Dark.T_Rock2_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock1_Dark.SM_Rock1_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      336
+    ],
+    "size_cm": [
+      280.0687255859375,
+      193.86981201171875,
+      162.8115234375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock1_Dark.MI_Rock1_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock1_Dark.MI_Rock1_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock1_Dark.T_Rock1_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_Rock1_Dark.T_Rock1_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Flowers/SM_Flower3.SM_Flower3",
+    "class": "StaticMesh",
+    "triangles": [
+      40
+    ],
+    "size_cm": [
+      50.39111328125,
+      47.72613525390625,
+      28.052196502685547
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Stem.MI_Stem",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Flower3.MI_Flower3"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Flower3.MI_Flower3",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/M_Flower.M_Flower",
+    "texture_overrides": {
+      "Flower Alpha": "/Game/StylizedPineEnvironment/Assets/Textures/Flowers/T_Flower3.T_Flower3"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {
+      "Color": [
+        0.5699999928474426,
+        0.26046401262283325,
+        0.0,
+        1.0
+      ]
+    }
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Flowers/T_Flower3.T_Flower3",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Flowers/SM_Flower2.SM_Flower2",
+    "class": "StaticMesh",
+    "triangles": [
+      40
+    ],
+    "size_cm": [
+      50.39111328125,
+      47.72613525390625,
+      28.052196502685547
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Stem.MI_Stem",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Flower2.MI_Flower2"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Flower2.MI_Flower2",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/M_Flower.M_Flower",
+    "texture_overrides": {
+      "Flower Alpha": "/Game/StylizedPineEnvironment/Assets/Textures/Flowers/T_Flower2.T_Flower2"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {
+      "Color": [
+        0.9911019802093506,
+        0.0,
+        0.019381999969482422,
+        1.0
+      ]
+    }
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Flowers/T_Flower2.T_Flower2",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Flowers/SM_Flower1.SM_Flower1",
+    "class": "StaticMesh",
+    "triangles": [
+      40
+    ],
+    "size_cm": [
+      50.39111328125,
+      47.72613525390625,
+      28.052196502685547
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Stem.MI_Stem",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Flower1.MI_Flower1"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Stem.MI_Stem",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/M_Flower.M_Flower",
+    "texture_overrides": {},
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {
+      "Color": [
+        0.2737959921360016,
+        0.36979201436042786,
+        0.05930500105023384,
+        1.0
+      ]
+    }
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Flower1.MI_Flower1",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/M_Flower.M_Flower",
+    "texture_overrides": {},
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/M_Flower.M_Flower",
+    "class": "Material",
+    "shading": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+    "blend": "<BlendMode.BLEND_MASKED: 1>"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Flowers/T_Flower1.T_Flower1",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Fern/SM_Fern3.SM_Fern3",
+    "class": "StaticMesh",
+    "triangles": [
+      160
+    ],
+    "size_cm": [
+      299.93792724609375,
+      307.64501953125,
+      79.4422607421875
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Fern.MI_Fern"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Fern/SM_Fern2.SM_Fern2",
+    "class": "StaticMesh",
+    "triangles": [
+      160
+    ],
+    "size_cm": [
+      329.31982421875,
+      316.30816650390625,
+      133.028076171875
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Fern.MI_Fern"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Fern/SM_Fern1.SM_Fern1",
+    "class": "StaticMesh",
+    "triangles": [
+      340
+    ],
+    "size_cm": [
+      350.2505187988281,
+      332.32708740234375,
+      158.02911376953125
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Fern.MI_Fern"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Fern.MI_Fern",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/M_Leaf.M_Leaf",
+    "texture_overrides": {
+      "LeafTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Leaves/T_Fern.T_Fern"
+    },
+    "scalar_overrides": {
+      "Subsurface Strength": 0.8999999761581421,
+      "wind Intensity": 0.699999988079071,
+      "Wind Speed": 0.20000000298023224,
+      "Wind Sway": 0.0,
+      "Wind Weight": 0.30000001192092896,
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Leaves/T_Fern.T_Fern",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Bush/SM_Bush3.SM_Bush3",
+    "class": "StaticMesh",
+    "triangles": [
+      420
+    ],
+    "size_cm": [
+      280.718994140625,
+      244.31304931640625,
+      163.67327880859375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Bush.MI_Bush"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Bush/SM_Bush2.SM_Bush2",
+    "class": "StaticMesh",
+    "triangles": [
+      610
+    ],
+    "size_cm": [
+      206.0794677734375,
+      201.9119873046875,
+      192.33187866210938
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Bush.MI_Bush"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Bush/SM_Bush1.SM_Bush1",
+    "class": "StaticMesh",
+    "triangles": [
+      444
+    ],
+    "size_cm": [
+      117.32646179199219,
+      110.45660400390625,
+      142.03656005859375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Bush.MI_Bush"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Bush.MI_Bush",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/M_Leaf.M_Leaf",
+    "texture_overrides": {
+      "LeafTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Leaves/T_Bush.T_Bush"
+    },
+    "scalar_overrides": {
+      "Subsurface Strength": 0.8999999761581421,
+      "wind Intensity": 0.550000011920929,
+      "Wind Speed": 0.25,
+      "Wind Sway": 0.009999999776482582,
+      "Wind Weight": 0.4000000059604645,
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Leaves/T_Bush.T_Bush",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Landscape/MI_Landscape.MI_Landscape",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Landscape/M_Landscape.M_Landscape",
+    "texture_overrides": {},
+    "scalar_overrides": {
+      "Dirt_Dark scale near": 0.20000000298023224,
+      "Dirt_Gravel Brightness": 2.299999952316284,
+      "Dirt_Light Brightness": 1.0,
+      "Dirt_Light Tiling": 0.30000001192092896,
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {
+      "GrassColor": [
+        0.14163699746131897,
+        0.25415199995040894,
+        0.02912200056016445,
+        1.0
+      ]
+    }
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Landscape/M_Landscape.M_Landscape",
+    "class": "Material",
+    "shading": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+    "blend": "<BlendMode.BLEND_OPAQUE: 0>"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Landscape/MaterialFunctions/MF_Auto.MF_Auto",
+    "class": "MaterialFunction"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Landscape/MaterialFunctions/MF_Rock.MF_Rock",
+    "class": "MaterialFunction"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Landscape/MaterialFunctions/MF_Grass.MF_Grass",
+    "class": "MaterialFunction"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Landscape/MaterialFunctions/MF_Dirt_Light.MF_Dirt_Light",
+    "class": "MaterialFunction"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Landscape/MaterialFunctions/MF_Dirt_Gravel.MF_Dirt_Gravel",
+    "class": "MaterialFunction"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Misc/LandscapeGrassTypes/LGT_Placeable.LGT_Placeable",
+    "class": "LandscapeGrassType",
+    "grass_varieties": [
+      "<Struct 'GrassVariety' (0x000002ADE5FA7B00) {grass_mesh: \"/Script/Engine.StaticMesh'/Game/StylizedPineEnvironment/Assets/Meshes/Grass/SM_Grass.SM_Grass'\", override_materials: , grass_density: {default: 1000.000000}, grass_density_quality: {default: 400.000000}, use_grid: True, placement_jitter: 1.000000, start_cull_distance: {default: 5000}, start_cull_distance_quality: {default: 10000}, end_cull_distance: {default: 20000}, end_cull_distance_quality: {default: 10000}, min_lod: -1, allowed_density_range: {min: 0.000000, max: 1.000000}, scaling: Uniform, scale_x: {min: 1.000000, max: 1.500000}, scale_y: {min: 1.000000, max: 1.000000}, scale_z: {min: 1.000000, max: 1.000000}, weight_attenuates_max_scale: False, max_scale_weight_attenuation: 0.500000, random_rotation: True, align_to_surface: True, align_to_triangle_normals: True, use_landscape_lightmap: False, lighting_channels: {channel0: True, channel1: False, channel2: False}, receives_decals: False, affect_distance_field_lighting: False, cast_dynamic_shadow: False, cast_contact_shadow: True, keep_instance_buffer_cpu_copy: False, shadow_cache_invalidation_behavior: Auto}>"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafBroken.MI_LeafBroken",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/M_Leaf.M_Leaf",
+    "texture_overrides": {},
+    "scalar_overrides": {
+      "Subsurface Strength": 0.8999999761581421,
+      "wind Intensity": 0.5,
+      "Wind Speed": 0.5,
+      "Wind Sway": 0.0,
+      "Wind Weight": 0.30000001192092896,
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Decals/MI_Glyph.MI_Glyph",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Decals/M_Glyph.M_Glyph",
+    "texture_overrides": {},
+    "scalar_overrides": {
+      "Emissiveness": 75.0,
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {
+      "Color": [
+        0.0,
+        0.4969330132007599,
+        1.0,
+        0.0
+      ]
+    }
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Decals/M_Glyph.M_Glyph",
+    "class": "Material",
+    "shading": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+    "blend": "<BlendMode.BLEND_TRANSLUCENT: 2>"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Decals/T_Glyph.T_Glyph",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Landscape/Rock/T_Rock_Normal.T_Rock_Normal",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Landscape/Rock/T_Rock.T_Rock",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Landscape/MacroVariation/T_MacroVariation.T_MacroVariation",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Landscape/Grass/T_Grass_Normal.T_Grass_Normal",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Landscape/Grass/T_Grass.T_Grass",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Landscape/Dirt/T_Dirt_Light_Normal.T_Dirt_Light_Normal",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Landscape/Dirt/T_Dirt_Light.T_Dirt_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Landscape/Dirt/T_Dirt_Dark_Normal.T_Dirt_Dark_Normal",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Landscape/Dirt/T_Dirt_Dark.T_Dirt_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Misc/LandscapeLayerInfo/LL_Rock.LL_Rock",
+    "class": "LandscapeLayerInfoObject"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Misc/LandscapeLayerInfo/LL_Grass_WithFoliage.LL_Grass_WithFoliage",
+    "class": "LandscapeLayerInfoObject"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Misc/LandscapeLayerInfo/LL_Grass.LL_Grass",
+    "class": "LandscapeLayerInfoObject"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Misc/LandscapeLayerInfo/LL_Dirt_Light.LL_Dirt_Light",
+    "class": "LandscapeLayerInfoObject"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Misc/LandscapeLayerInfo/LL_Dirt_Gravel.LL_Dirt_Gravel",
+    "class": "LandscapeLayerInfoObject"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Misc/LandscapeLayerInfo/LL_AutoLayer.LL_AutoLayer",
+    "class": "LandscapeLayerInfoObject"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Misc/LandscapeGrassTypes/LGT_Auto.LGT_Auto",
+    "class": "LandscapeGrassType",
+    "grass_varieties": [
+      "<Struct 'GrassVariety' (0x000002ADE5FAF600) {grass_mesh: \"/Script/Engine.StaticMesh'/Game/StylizedPineEnvironment/Assets/Meshes/Grass/SM_Grass.SM_Grass'\", override_materials: , grass_density: {default: 1000.000000}, grass_density_quality: {default: 400.000000}, use_grid: True, placement_jitter: 1.000000, start_cull_distance: {default: 5000}, start_cull_distance_quality: {default: 10000}, end_cull_distance: {default: 20000}, end_cull_distance_quality: {default: 10000}, min_lod: -1, allowed_density_range: {min: 0.000000, max: 1.000000}, scaling: Uniform, scale_x: {min: 1.000000, max: 1.500000}, scale_y: {min: 1.000000, max: 1.000000}, scale_z: {min: 1.000000, max: 1.000000}, weight_attenuates_max_scale: False, max_scale_weight_attenuation: 0.500000, random_rotation: True, align_to_surface: True, align_to_triangle_normals: True, use_landscape_lightmap: False, lighting_channels: {channel0: True, channel1: False, channel2: False}, receives_decals: False, affect_distance_field_lighting: False, cast_dynamic_shadow: False, cast_contact_shadow: True, keep_instance_buffer_cpu_copy: False, shadow_cache_invalidation_behavior: Auto}>"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenAreaWhite.MI_BarkBrokenAreaWhite",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark",
+    "texture_overrides": {
+      "BarkNormal": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_BarkBrokenArea_Normal.T_BarkBrokenArea_Normal",
+      "BarkTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_BarkBrokenAreaWhite.T_BarkBrokenAreaWhite"
+    },
+    "scalar_overrides": {
+      "Wind Sway": 0.0,
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBarkWhite.MI_PineBrokenBarkWhite",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark",
+    "texture_overrides": {
+      "BarkNormal": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineDeadBark_Normal.T_PineDeadBark_Normal",
+      "BarkTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineDeadBark.T_PineDeadBark"
+    },
+    "scalar_overrides": {
+      "Wind Sway": 0.0,
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RocksStacked2_Dark.MI_RocksStacked2_Dark",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RocksStacked2_Dark.T_RocksStacked2_Dark"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock2_Light.MI_Rock2_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock2_Light.T_Rock2_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock5_Light.MI_Rock5_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock5_Light.T_Rock5_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock6_Light.MI_Rock6_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock6_Light.T_Rock6_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFlat1_Light.MI_RockFlat1_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFlat1_Light.T_RockFlat1_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall2_Light.MI_RockTall2_Light",
+    "class": "MaterialInstanceConstant",
+    "parent": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+    "texture_overrides": {
+      "RockTexture": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockTall2_Light.T_RockTall2_Light"
+    },
+    "scalar_overrides": {
+      "RefractionDepthBias": 0.0
+    },
+    "vector_overrides": {}
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RocksStacked2_Dark.SM_RocksStacked2_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      1140
+    ],
+    "size_cm": [
+      184.09732055664062,
+      167.89926147460938,
+      216.72500610351562
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RocksStacked2_Dark.MI_RocksStacked2_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_SmallRock4_Dark.SM_SmallRock4_Dark",
+    "class": "StaticMesh",
+    "triangles": [
+      442
+    ],
+    "size_cm": [
+      31.04754638671875,
+      43.53204345703125,
+      13.541707992553711
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_SmallRocks_Dark.MI_SmallRocks_Dark"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock2_Light.SM_Rock2_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      390
+    ],
+    "size_cm": [
+      253.41250610351562,
+      255.68264770507812,
+      147.36306762695312
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock2_Light.MI_Rock2_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock5_Light.SM_Rock5_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      386
+    ],
+    "size_cm": [
+      196.56759643554688,
+      200.7065887451172,
+      195.87509155273438
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock5_Light.MI_Rock5_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock6_Light.SM_Rock6_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      390
+    ],
+    "size_cm": [
+      203.6641082763672,
+      200.51077270507812,
+      137.30374145507812
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock6_Light.MI_Rock6_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFlat1_Light.SM_RockFlat1_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      562
+    ],
+    "size_cm": [
+      373.0662841796875,
+      378.85107421875,
+      90.30091857910156
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFlat1_Light.MI_RockFlat1_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockTall2_Light.SM_RockTall2_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      362
+    ],
+    "size_cm": [
+      287.8587951660156,
+      170.1432647705078,
+      571.8688354492188
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall2_Light.MI_RockTall2_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_SmallRock2_Light.SM_SmallRock2_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      362
+    ],
+    "size_cm": [
+      38.975982666015625,
+      42.95414733886719,
+      13.562566757202148
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_SmallRocks_Light.MI_SmallRocks_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_SmallRock3_Light.SM_SmallRock3_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      456
+    ],
+    "size_cm": [
+      40.90116882324219,
+      44.08396911621094,
+      22.736543655395508
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_SmallRocks_Light.MI_SmallRocks_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_SmallRock4_Light.SM_SmallRock4_Light",
+    "class": "StaticMesh",
+    "triangles": [
+      442
+    ],
+    "size_cm": [
+      31.04754638671875,
+      43.53204345703125,
+      13.541707992553711
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_SmallRocks_Light.MI_SmallRocks_Light"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_BrokenTop_Dead.SM_PineTree_BrokenTop_Dead",
+    "class": "StaticMesh",
+    "triangles": [
+      1574
+    ],
+    "size_cm": [
+      175.42019653320312,
+      1082.9775390625,
+      143.50930786132812
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBarkWhite.MI_PineBrokenBarkWhite",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenAreaWhite.MI_BarkBrokenAreaWhite"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Stump_Dead.SM_PineTree_Stump_Dead",
+    "class": "StaticMesh",
+    "triangles": [
+      618
+    ],
+    "size_cm": [
+      126.99594116210938,
+      126.99594116210938,
+      227.2333984375
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBarkWhite.MI_PineBrokenBarkWhite",
+      "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenAreaWhite.MI_BarkBrokenAreaWhite"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodPlanks3.SM_WoodPlanks3",
+    "class": "StaticMesh",
+    "triangles": [
+      44
+    ],
+    "size_cm": [
+      48.380279541015625,
+      448.4195861816406,
+      7.364192008972168
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodTop2.SM_WoodTop2",
+    "class": "StaticMesh",
+    "triangles": [
+      312
+    ],
+    "size_cm": [
+      224.20982360839844,
+      216.75001525878906,
+      38.290008544921875
+    ],
+    "materials": [
+      "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+    ]
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Misc/Heightmap/T_Heightmap.T_Heightmap",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_BarkBrokenAreaWhite.T_BarkBrokenAreaWhite",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Dark/T_RocksStacked2_Dark.T_RocksStacked2_Dark",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock2_Light.T_Rock2_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock5_Light.T_Rock5_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_Rock6_Light.T_Rock6_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockFlat1_Light.T_RockFlat1_Light",
+    "class": "Texture2D"
+  },
+  {
+    "path": "/Game/StylizedPineEnvironment/Assets/Textures/Rock/Light/T_RockTall2_Light.T_RockTall2_Light",
+    "class": "Texture2D"
+  }
+]

@@ -12,6 +12,7 @@ struct FGuLiRuntimeCombatEffect
 	UPROPERTY() FGuLiCombatEffectState State;
 	UPROPERTY() FGuLiCombatEffectContext Context;
 	UPROPERTY() TObjectPtr<UGuLiProjectileEffectDefinition> Projectile;
+	UPROPERTY() TObjectPtr<UGuLiGroundWarningStyle> GroundWarningStyle;
 	UPROPERTY() TObjectPtr<UGuLiSpellFieldDefinition> Field;
 	FGuid SourceLease;
 	EGuLiSpellFieldTiming Timing = EGuLiSpellFieldTiming::Instant;
@@ -81,7 +82,8 @@ public:
 		float DurationSeconds, float StopDistanceCentimeters, float OrbitRadiusCentimeters, float CooldownSeconds);
 	int32 CancelWingmanGunBurst(const FGuLiWingmanHandle& Emitter, bool bClearCooldown = false);
 	FGuid LaunchPointProjectile(const FGuLiCombatAttackRequest& Request);
-	void BuildActiveSnapshot(TArray<FGuLiCombatEffectState>& OutStates) const;
+	void BuildActiveSnapshot(TArray<FGuLiCombatEffectState>& OutStates, bool bIncludeGroundProjectiles = true) const;
+	void BuildGroundProjectileSnapshot(TArray<FGuLiCombatEffectState>& OutStates) const;
 	uint32 GetEffectEpoch() const { return Epoch; }
 
 	FGuLiCombatEffectStateEvent OnState;
@@ -109,6 +111,7 @@ private:
 	void QuerySphere(FVector Center, float Radius, TArray<FGuLiCombatTargetSnapshot>& OutTargets);
 	UGuLiCombatEffectCatalog* GetCatalog();
 	void ExecuteDirect(const FGuLiCombatAttackRequest& Request, TArray<FGuLiDamageRequest>& OutDamage, TArray<FGuLiCombatShotCue>& OutCues);
+	void ExecuteGroundMachineGun(const FGuLiCombatAttackRequest& Request, TArray<FGuLiCombatShotCue>& OutCues);
 	void ExecuteProjectile(const FGuLiCombatAttackRequest& Request, TArray<FGuLiDamageRequest>& OutDamage, TArray<FGuLiCombatShotCue>& OutCues);
 	static FGuLiDamageRequest MakeDamage(const FGuLiCombatEffectContext& Context, FGuid DamageId, FGuLiTargetHandle Target, FVector Location);
 

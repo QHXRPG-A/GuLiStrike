@@ -26,7 +26,7 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 	FText DisplayName;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier", meta = (Units = "cm/s"))
-	float MovementSpeedCmPerSecond = 3600.0f;
+	float MovementSpeedCmPerSecond = 720.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
 	float MaxHealth = 100.0f;
@@ -43,7 +43,12 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Units")
 	TSubclassOf<AActor> PresentationClass;
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Units")
-	float PresentationScale = 1.0f;
+	float PresentationScale = 0.2f;
+
+	/** Source mesh/socket coordinates stay authored; these are final gameplay-centimeter queries. */
+	FTransform MakeModelTransform(const FTransform& LogicalPose) const;
+	FBox GetModelBoundsCentimeters() const;
+	FVector ResolveModelOffsetCentimeters(const FVector& AuthoredOffset) const;
 
 	bool UsesMass() const { return !ActorClass; }
 };

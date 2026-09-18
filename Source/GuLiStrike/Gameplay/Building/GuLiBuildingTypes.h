@@ -85,7 +85,7 @@ struct GULISTRIKE_API FGuLiBuildingDefinition
 
 	/** Half extent of the baked Scale-1 visual bounds in centimeters. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building", meta = (ClampMin = "1.0"))
-	FVector CollisionExtent = FVector(100.0f);
+	FVector CollisionExtent = FVector(20.0f);
 
 	/** Moves the baked mesh so the actor origin is the footprint center at ground height. */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")
@@ -140,9 +140,9 @@ enum class EGuLiBuildingFeedbackTone : uint8
 
 namespace GuLiBuildingPlacementPolicy
 {
-	inline constexpr float GroundMaximumRangeCentimeters = 10000.0f;
+	inline constexpr float GroundMaximumRangeCentimeters = 2000.0f;
 	inline constexpr float MaximumSlopeDegrees = 15.0f;
-	inline constexpr float PlacementClearanceCentimeters = 100.0f;
+	inline constexpr float PlacementClearanceCentimeters = 20.0f;
 	inline constexpr int32 MaximumBuildingsPerBuilder = 6;
 	inline constexpr int32 MaximumBuildingsPerWorld = 24;
 	inline constexpr int32 MaximumRequestsPerSecond = 10;

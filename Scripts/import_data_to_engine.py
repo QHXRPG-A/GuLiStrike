@@ -58,6 +58,9 @@ CONFIG_WIRED_TABLES = {
     "DT_GuLiStrikeSpellFields_Fields",
     "DT_GuLiStrikeCommander_WeaponMounts",
     "DT_GuLiStrikeSecondaryWeapons_Projectiles",
+    # Secondary unit Q definitions are merged into the runtime catalog by author_secondary_unit_skill_assets.py.
+    "DT_GuLiStrikeSecondaryUnitSkills_Skills",
+    "DT_GuLiStrikeSecondaryUnitSkills_UnitSkills",
 }
 
 

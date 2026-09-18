@@ -117,9 +117,13 @@ def author():
     teleport = value(unreal.GuLiActiveSkillDefinition, skill_id='Teleport', scope=unreal.GuLiActiveSkillScope.GLOBAL,
                      target_mode=unreal.GuLiActiveSkillTargetMode.TWO_POINT, cooldown_seconds=0.0,
                      maximum_level=4, executor_class=unreal.GuLiTeleportSkillExecutor)
-    commander.set_editor_property('skills', [teleport])
-    commander.set_editor_property('unit_skills', {})
-    commander.set_editor_property('global_skills', ['Teleport'])
+    # Merge the global tactic; never erase subsequently authored unit Q skills.
+    skills = [s for s in commander.get_editor_property('skills') if str(s.get_editor_property('skill_id')) != 'Teleport']
+    commander.set_editor_property('skills', skills + [teleport])
+    global_skills = list(commander.get_editor_property('global_skills'))
+    if 'Teleport' not in [str(s) for s in global_skills]:
+        global_skills.append('Teleport')
+    commander.set_editor_property('global_skills', global_skills)
     ship_class = unreal.load_class(None, SHIP_BP + '.BP_CombatAvatarFly01_C')
     issues = list(unreal.GuLiSkillAuthoringLibrary.validate_ship_catalog(catalog, ship_class))
     issues += list(unreal.GuLiSkillAuthoringLibrary.validate_commander_catalog(commander))
@@ -148,6 +152,9 @@ def author():
     output.mkdir(parents=True, exist_ok=True)
     (output / 'asset-authoring.json').write_text(json.dumps(report, ensure_ascii=False, indent=2), encoding='utf-8')
     print(json.dumps(report, ensure_ascii=False))
+    # Unit skill values are owned by the independent Excel source; preserve global tactics.
+    unit_author = Path(unreal.Paths.project_dir()) / 'Scripts/author_secondary_unit_skill_assets.py'
+    exec(compile(unit_author.read_text(encoding='utf-8'), str(unit_author), 'exec'), {'__name__': 'secondary_skill_authoring'})
 
 
 if __name__ == '__main__':

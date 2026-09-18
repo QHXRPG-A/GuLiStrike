@@ -31,9 +31,12 @@ FGuLiCombatExecutorRegistry::FGuLiCombatExecutorRegistry()
 	{
 		Events.Add({Source.SoldierId, Target.SoldierId, Source.Profile->SkillId, Source.Profile->Damage,
 			Source.Profile->UnitTypeId, Source.Profile->SlotId, Source.Profile->Revision,
-			Source.Profile->ExecutorId, Source.Attack ? Source.Attack->ShotsFired + 1 : 0});
+			Source.Profile->ExecutorId, Source.Attack ? Source.Attack->ShotsFired + 1 : 0,
+			Source.Profile->ProjectileSpeedCentimetersPerSecond, Source.Profile->ProjectileLifetimeSeconds,
+			Source.Profile->ProjectileSweepRadiusCentimeters});
 	};
 	RegisterExecutor(TEXT("DirectSingleTarget"), EmitAttack);
+	RegisterExecutor(TEXT("GroundMachineGun"), EmitAttack);
 	RegisterExecutor(TEXT("LaunchProjectile"), MoveTemp(EmitAttack));
 }
 
@@ -78,7 +81,8 @@ FIntPoint GuLiSoldierCombat::MakeSpatialCell(const FVector& Location)
 
 bool GuLiSoldierCombat::IsProfileUsable(const FGuLiResolvedSkillProfile& Profile)
 {
-	return Profile.bUnlocked && Profile.bEquipped && !Profile.SkillId.IsNone() && !Profile.ExecutorId.IsNone()
+	return Profile.TriggerMode == EGuLiWeaponTriggerMode::Automatic
+		&& Profile.bUnlocked && Profile.bEquipped && !Profile.SkillId.IsNone() && !Profile.ExecutorId.IsNone()
 		&& FMath::IsFinite(Profile.Damage) && Profile.Damage > 0.0f
 		&& FMath::IsFinite(Profile.AttackRatePerSecond) && Profile.AttackRatePerSecond > 0.0f && Profile.AttackRatePerSecond <= 30.0f
 		&& FMath::IsFinite(Profile.RangeCentimeters) && Profile.RangeCentimeters > 0.0f

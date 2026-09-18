@@ -1,0 +1,4 @@
+{
+  "success": false,
+  "traceback": "Traceback (most recent call last):\n  File \"D:\\UE5.7/test1/Scripts\\pine_style_comparison.py\", line 386, in dispatch\n    result = globals()[action]()\n             ^^^^^^^^^^^^^^^^^^^\n  File \"D:\\UE5.7/test1/Scripts\\pine_style_comparison.py\", line 349, in readback\n    'shading_model': unreal.MaterialService.get_property(path(m), 'ShadingModel'), 'two_sided': m.two_sided}\n                                                                                                ^^^^^^^^^^^\nAttributeError: 'Material' object has no attribute 'two_sided'\n"
+}

@@ -18,8 +18,8 @@ AGuLiStrikePickup::AGuLiStrikePickup()
 	CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Collision Sphere"));
 	CollisionSphere->SetupAttachment(RootComponent);
 
-	CollisionSphere->SetSphereRadius(100.0f);
-	CollisionSphere->SetRelativeLocation(FVector(0.0f, 0.0f, 125.0f));
+	CollisionSphere->SetSphereRadius(20.0f);
+	CollisionSphere->SetRelativeLocation(FVector(0.0f, 0.0f, 25.0f));
 	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	CollisionSphere->SetCollisionObjectType(ECC_WorldDynamic);
 	CollisionSphere->SetCollisionResponseToAllChannels(ECR_Ignore);
@@ -28,6 +28,7 @@ AGuLiStrikePickup::AGuLiStrikePickup()
 	// create the mesh
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(CollisionSphere);
+	Mesh->SetRelativeScale3D(FVector(0.2f));
 
 	Mesh->SetCollisionProfileName(FName("NoCollision"));
 

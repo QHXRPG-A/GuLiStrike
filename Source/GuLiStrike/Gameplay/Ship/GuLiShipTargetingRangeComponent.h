@@ -23,7 +23,7 @@ public:
 
 private:
 	UPROPERTY(EditAnywhere, Category="Targeting Range", meta=(ClampMin="0.0", Units="Centimeters"))
-	float TargetingRadiusCentimeters = 150000.0f;
+	float TargetingRadiusCentimeters = 30000.0f;
 
 	UPROPERTY(EditAnywhere, Category="Targeting Range")
 	FLinearColor RangeColor = FLinearColor(0.0f, 0.75f, 1.0f, 1.0f);

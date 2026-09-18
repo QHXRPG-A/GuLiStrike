@@ -7,11 +7,11 @@ namespace GuLiCommanderSelectionQuery
 	namespace Private
 	{
 		constexpr double MaximumRayDistanceCentimeters = 600000.0;
-		// Match the client picker: a 1000 cm upright body with a 750 cm horizontal radius.
-		constexpr double PickBodyHalfHeightCentimeters = 500.0;
-		constexpr double PickBodyHorizontalRadiusCentimeters = 750.0;
+		// Only synthetic/test candidates without a model use these scaled fallback dimensions.
+		constexpr double PickBodyHalfHeightCentimeters = 100.0;
+		constexpr double PickBodyHorizontalRadiusCentimeters = 150.0;
 		constexpr double PickPresentationToleranceSeconds = 0.35;
-		constexpr double MaximumPickPresentationErrorCentimeters = 2500.0;
+		constexpr double MaximumPickPresentationErrorCentimeters = 500.0;
 
 		bool IsEligible(const FCandidate& Candidate, const EGuLiTeam Team)
 		{
@@ -25,7 +25,8 @@ namespace GuLiCommanderSelectionQuery
 			const FVector Direction = FVector(Request.RayDirection).GetSafeNormal();
 			// A bounded sphere encloses that body so a stationary model's top/side is not
 			// rejected merely because the cursor ray does not pass near its foot point.
-			const FVector BodyCenter = Candidate.Location + FVector(0.0, 0.0, PickBodyHalfHeightCentimeters);
+			const FVector BodyCenter = Candidate.WorldBounds.IsValid ? Candidate.WorldBounds.GetCenter()
+				: Candidate.Location + FVector(0.0, 0.0, PickBodyHalfHeightCentimeters);
 			const FVector Offset = BodyCenter - FVector(Request.RayOrigin);
 			const double AlongRay = FVector::DotProduct(Offset, Direction);
 			if (AlongRay <= 0.0 || AlongRay > MaximumRayDistanceCentimeters)
@@ -36,7 +37,8 @@ namespace GuLiCommanderSelectionQuery
 			const double PresentationAllowance = FMath::Min(
 				Candidate.Velocity.Size() * PickPresentationToleranceSeconds,
 				MaximumPickPresentationErrorCentimeters);
-			const double BodyRadius = FMath::Sqrt(FMath::Square(PickBodyHalfHeightCentimeters)
+			const double BodyRadius = Candidate.WorldBounds.IsValid ? Candidate.WorldBounds.GetExtent().Size()
+				: FMath::Sqrt(FMath::Square(PickBodyHalfHeightCentimeters)
 				+ FMath::Square(PickBodyHorizontalRadiusCentimeters));
 			const double Radius = BodyRadius + PresentationAllowance
 				+ AlongRay * FMath::Tan(static_cast<double>(Request.PickHalfAngleRadians));

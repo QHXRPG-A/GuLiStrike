@@ -359,7 +359,7 @@ AGuLiTerritoryOutpostActor::AGuLiTerritoryOutpostActor()
 	LandmarkMesh->SetCollisionObjectType(ECC_WorldStatic);
 	LandmarkMesh->SetCollisionResponseToAllChannels(ECR_Block);
 	LandmarkMesh->SetCanEverAffectNavigation(true);
-	LandmarkMesh->SetRelativeScale3D(FVector(30.0f, 30.0f, 50.0f));
+	LandmarkMesh->SetRelativeScale3D(FVector(6.0f, 6.0f, 10.0f));
 	static ConstructorHelpers::FObjectFinder<UStaticMesh> MeshFinder(
 		TEXT("/Engine/BasicShapes/Cylinder.Cylinder"));
 	if (MeshFinder.Succeeded()) LandmarkMesh->SetStaticMesh(MeshFinder.Object);

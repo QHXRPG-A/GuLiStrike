@@ -1,0 +1,171 @@
+{
+  "key": "Shield_Generator",
+  "stage": "material_candidate_B_pending",
+  "scope": "Original mesh retained; only shading, textures, line mask and optional render outline",
+  "source_file": "Source\\FBX_static_v1\\SM_SC_Shield_Generator.fbx",
+  "source_file_sha256": "6ea8cfcf3f05567b5af71daec6aebdf60a4f8e5a30bb45ed6defbfcc9ae6007f",
+  "original_geometry_sha256": "4c19a274493031416c929eec8a30e457824defe6aad9aa159db68025fc13aa63",
+  "finished_body_geometry_sha256": "4c19a274493031416c929eec8a30e457824defe6aad9aa159db68025fc13aa63",
+  "body_geometry_unchanged": true,
+  "original_corner_normals_unchanged": true,
+  "material_regions": [
+    {
+      "seed": 0,
+      "vertices": 10,
+      "bone": null
+    },
+    {
+      "seed": 10,
+      "vertices": 37,
+      "bone": null
+    },
+    {
+      "seed": 47,
+      "vertices": 8,
+      "bone": null
+    },
+    {
+      "seed": 55,
+      "vertices": 10,
+      "bone": null
+    },
+    {
+      "seed": 65,
+      "vertices": 10,
+      "bone": null
+    },
+    {
+      "seed": 75,
+      "vertices": 27,
+      "bone": null
+    },
+    {
+      "seed": 102,
+      "vertices": 10,
+      "bone": null
+    },
+    {
+      "seed": 112,
+      "vertices": 18,
+      "bone": null
+    },
+    {
+      "seed": 130,
+      "vertices": 18,
+      "bone": null
+    },
+    {
+      "seed": 148,
+      "vertices": 18,
+      "bone": null
+    },
+    {
+      "seed": 166,
+      "vertices": 8,
+      "bone": null
+    },
+    {
+      "seed": 174,
+      "vertices": 8,
+      "bone": null
+    },
+    {
+      "seed": 182,
+      "vertices": 10,
+      "bone": null
+    },
+    {
+      "seed": 192,
+      "vertices": 10,
+      "bone": null
+    },
+    {
+      "seed": 202,
+      "vertices": 8,
+      "bone": null
+    }
+  ],
+  "connection_fix": "Whole original component and connected coplanar paint assignment.",
+  "vertices": 210,
+  "polygons": 312,
+  "body_triangles": 312,
+  "outline_triangles": 312,
+  "body_material_slots": 1,
+  "dimensions_blender_m": [
+    7.468165397644043,
+    5.868025779724121,
+    9.978872299194336
+  ],
+  "uv_channels": [
+    "UVmap_0",
+    "UVmap_1",
+    "UVmap_2",
+    "LightMapUV",
+    "SC_PaintUV",
+    "SC_LineUV"
+  ],
+  "source_uv_channels": [
+    "UVmap_0",
+    "UVmap_1",
+    "UVmap_2",
+    "LightMapUV"
+  ],
+  "texture_size": [
+    2048,
+    2048
+  ],
+  "texture_files": [
+    "//Textures/T_SC_Shield_Generator_BaseColor_2K.png",
+    "//Textures/T_SC_Shield_Generator_ORM_2K.png",
+    "//Textures/T_SC_Shield_Generator_LineMask_2K.png"
+  ],
+  "atlas_coverage": 0.5389280319213867,
+  "selected_structural_edges": 262,
+  "internal_line_halfwidth_m": 0.005987323608398438,
+  "outline_width_m": 0.011974646759033203,
+  "motion": {
+    "status": "not_applicable_static"
+  },
+  "sockets": [],
+  "user_A": {
+    "decision": "approved",
+    "record": "approval_A_20260917.json",
+    "user_message": "开始实施"
+  },
+  "user_B": "pending",
+  "UE_formal_validation": "not_run",
+  "blend_sha256": "86f7e057240b2b4b5e80455638f2311bd66ece8a2caa6410425778cf4b9daf50",
+  "candidate_version": "v2",
+  "reference_version": "v3",
+  "editable_palette_face_attribute": "SC_PaintPaletteIndex",
+  "editable_corner_color_attribute": "SC_EditablePaintColor",
+  "source_object_matrix": [
+    [
+      0.009999999776482582,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.009999999776482582,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009999999776482582,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "internal_line_halfwidth_local_units": 0.5987323608398437,
+  "mechanical_type": "static",
+  "bones": []
+}

@@ -42,7 +42,7 @@ private:
 	void OnRep_RuntimeTuning();
 
 	UPROPERTY(ReplicatedUsing = OnRep_RuntimeTuning)
-	float EffectiveSoldierMoveSpeedCmPerSecond = 3600.0f;
+	float EffectiveSoldierMoveSpeedCmPerSecond = 720.0f;
 
 	// 两个独立复制属性；客户端不得将两个回调顺序当作原子事务。
 	UPROPERTY(ReplicatedUsing = OnRep_RuntimeTuning)

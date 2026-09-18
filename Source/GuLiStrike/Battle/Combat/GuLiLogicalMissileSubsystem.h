@@ -65,13 +65,13 @@ struct GULISTRIKE_API FGuLiLogicalMissileLaunchRequest
 	FVector LaunchDirection = FVector::ForwardVector;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile", meta = (ClampMin = "1.0"))
-	float SpeedCentimetersPerSecond = 30000.0f;
+	float SpeedCentimetersPerSecond = 6000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile", meta = (ClampMin = "0.0"))
 	float TurnRateDegreesPerSecond = 90.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile", meta = (ClampMin = "0.0"))
-	float SweepRadiusCentimeters = 100.0f;
+	float SweepRadiusCentimeters = 20.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat|Missile", meta = (ClampMin = "0.01"))
 	float MaximumLifetimeSeconds = 8.0f;

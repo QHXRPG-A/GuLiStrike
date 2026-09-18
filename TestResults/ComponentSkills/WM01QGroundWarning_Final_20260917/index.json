@@ -1,0 +1,394 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "34BBCF854B5BA35F92139483C196E19A",
+			"instanceName": "DESKTOP-6D3B0FC-39924",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.17-13.52.24",
+	"succeeded": 19,
+	"succeededWithWarnings": 0,
+	"failed": 2,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 2.4403860569000244,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "MathAndIdentity",
+			"fullTestPath": "GuLiStrike.CombatEffects.MathAndIdentity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.0042790994048118591,
+			"dateTime": "2026.09.17-13.52.21",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NetworkOrderAndCleanup",
+			"fullTestPath": "GuLiStrike.CombatEffects.NetworkOrderAndCleanup",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 2.1554319858551025,
+			"dateTime": "2026.09.17-13.52.21",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'full-endpoint shot is under 65 bytes' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\CombatEffects\\Tests\\GuLiCombatEffectRuntimeTests.cpp",
+					"lineNumber": 497,
+					"timestamp": "2026.09.17-13.52.21"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(334): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.17-13.52.21"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PeriodicRequeryAndCancellation",
+			"fullTestPath": "GuLiStrike.CombatEffects.PeriodicRequeryAndCancellation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.01558380201458931,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ProjectileLossImpactAndExpiry",
+			"fullTestPath": "GuLiStrike.CombatEffects.ProjectileLossImpactAndExpiry",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.017299998551607132,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PublicGameStateInitializesLedger",
+			"fullTestPath": "GuLiStrike.CombatEffects.PublicGameStateInitializesLedger",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.015696700662374496,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SpellFieldTableConfig",
+			"fullTestPath": "GuLiStrike.CombatEffects.SpellFieldTableConfig",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.021502599120140076,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'FourFRobot muzzle is loaded from WeaponMounts' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\CombatEffects\\Tests\\GuLiCombatEffectRuntimeTests.cpp",
+					"lineNumber": 345,
+					"timestamp": "2026.09.17-13.52.23"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'WM01 twin missile sockets retain table order' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\CombatEffects\\Tests\\GuLiCombatEffectRuntimeTests.cpp",
+					"lineNumber": 350,
+					"timestamp": "2026.09.17-13.52.23"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SphereLedgerAndRetainedSource",
+			"fullTestPath": "GuLiStrike.CombatEffects.SphereLedgerAndRetainedSource",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.016824301332235336,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GlobalTacticsAndRequestIdentity",
+			"fullTestPath": "GuLiStrike.Commander.Skills.GlobalTacticsAndRequestIdentity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.012066498398780823,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MixedSelectionIndependentResults",
+			"fullTestPath": "GuLiStrike.Commander.Skills.MixedSelectionIndependentResults",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.012987900525331497,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EarlyCommitPreservesDefaults",
+			"fullTestPath": "GuLiStrike.Skills.Initialization.EarlyCommitPreservesDefaults",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.017836201936006546,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CommanderReplacementAndStaleHost",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.CommanderReplacementAndStaleHost",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.020523298531770706,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NewMatchEpochClearsLedger",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.NewMatchEpochClearsLedger",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.018126599490642548,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PawnReplacementRetainsCommanderSkills",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.PawnReplacementRetainsCommanderSkills",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.019387498497962952,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WeaponEquipmentTransaction",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.WeaponEquipmentTransaction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.020183898508548737,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WM01UsesProfilesNotExtraAbilities",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.WM01UsesProfilesNotExtraAbilities",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.016148801892995834,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DirtyMultiTargetAtomicFailure",
+			"fullTestPath": "GuLiStrike.Skills.Resolver.DirtyMultiTargetAtomicFailure",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.0089798979461193085,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DirtyTargetUnionAndSelectedResolution",
+			"fullTestPath": "GuLiStrike.Skills.Resolver.DirtyTargetUnionAndSelectedResolution",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.011699799448251724,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MultiplicativeSourcesAndFinalFilters",
+			"fullTestPath": "GuLiStrike.Skills.Resolver.MultiplicativeSourcesAndFinalFilters",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.0088706016540527344,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReplacementPriorityAndAtomicFailure",
+			"fullTestPath": "GuLiStrike.Skills.Resolver.ReplacementPriorityAndAtomicFailure",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.0093398988246917725,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ValidationAndFinalOverrides",
+			"fullTestPath": "GuLiStrike.Skills.Resolver.ValidationAndFinalOverrides",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.0086116977035999298,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WeaponSlotEquipmentIsolation",
+			"fullTestPath": "GuLiStrike.Skills.Resolver.WeaponSlotEquipmentIsolation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34BBCF854B5BA35F92139483C196E19A"
+			],
+			"duration": 0.0090055018663406372,
+			"dateTime": "2026.09.17-13.52.23",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

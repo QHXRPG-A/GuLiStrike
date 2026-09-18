@@ -1,0 +1,65 @@
+{
+  "schema": "guli-art-stage-validation/v1",
+  "version": "design-a-v3-foliage-cards",
+  "checked_at": "2026-09-17T21:45:12.8180891+08:00",
+  "scope": "Reference A artifacts and browser technical construction diagram only; no new automated test suite.",
+  "specification": {
+    "assets_34": true,
+    "unique_meshes_33": true,
+    "ids_unique": true,
+    "sheets_cover_34_once": true,
+    "plant_method_all_32": true,
+    "budgets_monotonic": true,
+    "shared_flower_carpet": true,
+    "refs_hash_match": true
+  },
+  "local_links": {
+    "checked_local_links": 71,
+    "missing": []
+  },
+  "browser": {
+    "url": "http://127.0.0.1:8768/Review_A_v3.html",
+    "webgl_texture": "SVG alpha loaded, masked discard visually inspected",
+    "grass_demo": {
+      "cards": 6,
+      "triangles": 24
+    },
+    "single_flower_demo": {
+      "cards": 3,
+      "triangles": 8
+    },
+    "small_fern_demo": {
+      "cards": 5,
+      "triangles": 20
+    },
+    "flower_carpet_demo": {
+      "cards": 4,
+      "triangles": 16
+    },
+    "controls": [
+      "asset selector",
+      "mask on/off",
+      "wireframe on/off",
+      "55-degree technical camera"
+    ],
+    "camera_fix": "Frame computed from projected geometry bounds; fern clipping corrected and visually checked.",
+    "console_errors_observed": 0,
+    "not_a_blender_or_ue_result": true
+  },
+  "user_approval_A": "pending",
+  "user_approval_B": "not_started",
+  "blender": "not_started",
+  "fbx": "not_created",
+  "ue": "not_run",
+  "wind": "not_run",
+  "lod_readback": "not_run",
+  "performance": "not_run",
+  "progress_docs": {
+    "status": "passed_with_existing_warnings",
+    "build_exit_code": 0,
+    "check_exit_code": 0,
+    "errors": 0,
+    "warnings": 12,
+    "warning_scope": "Existing document size/task count warnings outside this nature-pack work item."
+  }
+}

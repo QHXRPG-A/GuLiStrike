@@ -16,6 +16,8 @@ namespace GuLiCommanderSelectionQuery
 		EGuLiTeam Team = EGuLiTeam::Unassigned;
 		uint16 UnitTypeId = GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID;
 		bool bAlive = true;
+		/** Effective world bounds from the same model definition used by presentation. */
+		FBox WorldBounds = FBox(ForceInit);
 	};
 
 	/** A rejected point hint never falls back to a different soldier. Empty areas are accepted. */

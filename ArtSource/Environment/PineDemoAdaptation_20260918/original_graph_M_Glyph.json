@@ -1,0 +1,241 @@
+{
+  "material": {
+    "blend_mode": "BLEND_Translucent",
+    "shading_model": "MSM_DefaultLit",
+    "two_sided": false
+  },
+  "expressions": [
+    {
+      "id": "MaterialExpressionScalarParameter_000002AE1174EB00",
+      "class": "ScalarParameter",
+      "class_full": "MaterialExpressionScalarParameter",
+      "pos_x": -176,
+      "pos_y": 80,
+      "properties": {
+        "DefaultValue": "1.000000",
+        "ControlType": "Numeric",
+        "SliderMin": "0.000000",
+        "SliderMax": "0.000000",
+        "Enumeration": "None",
+        "EnumerationIndex": "0",
+        "bUseCustomPrimitiveData": "False",
+        "PrimitiveDataIndex": "0",
+        "SortPriority": "32"
+      },
+      "is_parameter": true,
+      "parameter_name": "Roughness",
+      "group": "None",
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionMultiply_000002AE1174F280",
+      "class": "Multiply",
+      "class_full": "MaterialExpressionMultiply",
+      "pos_x": -400,
+      "pos_y": 64,
+      "properties": {
+        "ConstA": "0.000000",
+        "ConstB": "1.000000"
+      },
+      "inputs": [
+        "A",
+        "B"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionOneMinus_000002AFA37C1500",
+      "class": "OneMinus",
+      "class_full": "MaterialExpressionOneMinus",
+      "pos_x": -272,
+      "pos_y": 176,
+      "properties": {},
+      "inputs": [
+        "Input"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionVectorParameter_000002ABC87D0900",
+      "class": "VectorParameter",
+      "class_full": "MaterialExpressionVectorParameter",
+      "pos_x": -720,
+      "pos_y": 48,
+      "properties": {
+        "DefaultValue": "(R=0.000000,G=0.000000,B=0.000000,A=0.000000)",
+        "bUseCustomPrimitiveData": "False",
+        "PrimitiveDataIndex": "0",
+        "ChannelNames": "()",
+        "SortPriority": "32"
+      },
+      "is_parameter": true,
+      "parameter_name": "Color",
+      "group": "None",
+      "inputs": [],
+      "outputs": [
+        "RGB",
+        "R",
+        "G",
+        "B",
+        "A",
+        "RGBA"
+      ]
+    },
+    {
+      "id": "MaterialExpressionScalarParameter_000002AE1174AF00",
+      "class": "ScalarParameter",
+      "class_full": "MaterialExpressionScalarParameter",
+      "pos_x": -560,
+      "pos_y": 64,
+      "properties": {
+        "DefaultValue": "0.000000",
+        "ControlType": "Numeric",
+        "SliderMin": "0.000000",
+        "SliderMax": "0.000000",
+        "Enumeration": "None",
+        "EnumerationIndex": "0",
+        "bUseCustomPrimitiveData": "False",
+        "PrimitiveDataIndex": "0",
+        "SortPriority": "32"
+      },
+      "is_parameter": true,
+      "parameter_name": "Emissiveness",
+      "group": "None",
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionTextureSampleParameter2D_000002AE0670A780",
+      "class": "TextureSampleParameter2D",
+      "class_full": "MaterialExpressionTextureSampleParameter2D",
+      "pos_x": -544,
+      "pos_y": 160,
+      "properties": {
+        "SortPriority": "32",
+        "MipValueMode": "TMVM_None",
+        "SamplerSource": "SSM_FromTextureAsset",
+        "GatherMode": "TGM_None",
+        "AutomaticViewMipBias": "True",
+        "ChannelNames": "()",
+        "ConstCoordinate": "0",
+        "ConstMipValue": "-1",
+        "Texture": "/Script/Engine.Texture2D'/Game/StylizedPineEnvironment/Assets/Decals/T_Glyph.T_Glyph'",
+        "SamplerType": "SAMPLERTYPE_Color",
+        "IsDefaultMeshpaintTexture": "False"
+      },
+      "is_parameter": true,
+      "parameter_name": "GlyphAlpha",
+      "group": "None",
+      "inputs": [
+        "Coordinates",
+        "Apply View MipBias"
+      ],
+      "outputs": [
+        "RGB",
+        "R",
+        "G",
+        "B",
+        "A",
+        "RGBA"
+      ]
+    },
+    {
+      "id": "MaterialExpressionConstant_000002AE18E99920",
+      "class": "Constant",
+      "class_full": "MaterialExpressionConstant",
+      "pos_x": -100,
+      "pos_y": -103,
+      "properties": {
+        "R": "0.000000"
+      },
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionConstant_000002AE18E99E60",
+      "class": "Constant",
+      "class_full": "MaterialExpressionConstant",
+      "pos_x": -100,
+      "pos_y": -43,
+      "properties": {
+        "R": "0.500000"
+      },
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "source_id": "MaterialExpressionVectorParameter_000002ABC87D0900",
+      "source_output_index": 0,
+      "source_output_name": "RGB",
+      "target_id": "MaterialExpressionMultiply_000002AE1174F280",
+      "target_input": "A"
+    },
+    {
+      "source_id": "MaterialExpressionScalarParameter_000002AE1174AF00",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionMultiply_000002AE1174F280",
+      "target_input": "B"
+    },
+    {
+      "source_id": "MaterialExpressionTextureSampleParameter2D_000002AE0670A780",
+      "source_output_index": 0,
+      "source_output_name": "RGB",
+      "target_id": "MaterialExpressionOneMinus_000002AFA37C1500",
+      "target_input": "Input"
+    }
+  ],
+  "output_connections": [
+    {
+      "property": "BaseColor",
+      "expression_id": "MaterialExpressionConstant_000002AE18E99920",
+      "output_index": 0,
+      "output_name": ""
+    },
+    {
+      "property": "Metallic",
+      "expression_id": "MaterialExpressionConstant_000002AE18E99920",
+      "output_index": 0,
+      "output_name": ""
+    },
+    {
+      "property": "Specular",
+      "expression_id": "MaterialExpressionConstant_000002AE18E99E60",
+      "output_index": 0,
+      "output_name": ""
+    },
+    {
+      "property": "Roughness",
+      "expression_id": "MaterialExpressionScalarParameter_000002AE1174EB00",
+      "output_index": 0,
+      "output_name": ""
+    },
+    {
+      "property": "EmissiveColor",
+      "expression_id": "MaterialExpressionMultiply_000002AE1174F280",
+      "output_index": 0,
+      "output_name": ""
+    },
+    {
+      "property": "Opacity",
+      "expression_id": "MaterialExpressionOneMinus_000002AFA37C1500",
+      "output_index": 0,
+      "output_name": ""
+    }
+  ]
+}

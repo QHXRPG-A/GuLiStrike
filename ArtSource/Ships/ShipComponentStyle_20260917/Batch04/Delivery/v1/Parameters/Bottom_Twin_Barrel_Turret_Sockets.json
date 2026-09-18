@@ -1,0 +1,82 @@
+{
+  "key": "Bottom_Twin_Barrel_Turret",
+  "sockets": [
+    {
+      "name": "Socket_1",
+      "location": [
+        3105.0595703125,
+        -440.4713439941411,
+        -61.521490180969174
+      ],
+      "rotation": [
+        -0.0,
+        -2.1482476457495523e-31,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bone": "BarrelPitch",
+      "mesh_space": {
+        "location": [
+          -440.4713439941406,
+          2885.0595703125,
+          88.53349018096924
+        ],
+        "rotation": [
+          -0.7071067811865475,
+          -0.7071067811865474,
+          4.3297802811774664e-17,
+          4.329780281177467e-17
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Socket_2",
+      "location": [
+        3105.0595703124995,
+        440.4712219238281,
+        -61.52149018096929
+      ],
+      "rotation": [
+        -0.0,
+        -2.1482476457495523e-31,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bone": "BarrelPitch",
+      "mesh_space": {
+        "location": [
+          440.4712219238286,
+          2885.0595703124995,
+          88.53349018096922
+        ],
+        "rotation": [
+          -0.7071067811865475,
+          -0.7071067811865474,
+          4.3297802811774664e-17,
+          4.329780281177467e-17
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    }
+  ],
+  "FBX_custom_property": "GuLiStrike_Sockets_JSON",
+  "Blender_markers": "Original Socket_1...N; bone-parented for the two guns",
+  "UE_socket_creation": "Restore and verify original socket transforms during authorized formal UE integration"
+}

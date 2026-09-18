@@ -197,8 +197,8 @@ bool FGuLiCommanderDynamicCohortContractTest::RunTest(const FString& Parameters)
 {
 	(void)Parameters;
 
-	TestEqual(TEXT("Pose prediction and field deltas use protocol version 9"),
-		GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(9u));
+	TestEqual(TEXT("Scale020 poses require battle protocol version 13"),
+		GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(13u));
 	TestEqual(TEXT("Control granularity remains capped at 25 soldiers"),
 		GULI_CONTROL_COHORT_TARGET_SIZE, static_cast<uint32>(25u));
 	TestEqual(TEXT("Authoritative pose contract is captured at 10 Hz"),
@@ -707,10 +707,10 @@ bool FGuLiCommanderPoseChunkContractTest::RunTest(const FString& Parameters)
 	{
 		auto& Pose = Source.Samples.AddDefaulted_GetRef();
 		Pose.SoldierId = FGuLiSoldierId(MAX_uint32 - Index * 10000000);
-		Pose.WorldXMeters = MAX_int32 - Index; Pose.WorldYMeters = MIN_int32 + Index;
-		Pose.WorldZDecimeters = MAX_int32;
-		Pose.VelocityXMetersPerSecond = MAX_int16; Pose.VelocityYMetersPerSecond = MIN_int16;
-		Pose.VelocityZMetersPerSecond = MAX_int16;
+		Pose.WorldXUnits = MAX_int32 - Index; Pose.WorldYUnits = MIN_int32 + Index;
+		Pose.WorldZUnits = MAX_int32;
+		Pose.VelocityXUnits = MAX_int16; Pose.VelocityYUnits = MIN_int16;
+		Pose.VelocityZUnits = MAX_int16;
 		Pose.ActiveOrderId = MAX_uint32 - Index; Pose.FacingYaw = uint8(Index * 8);
 		Pose.State = EGuLiSoldierPoseState::Moving;
 		Pose.Flags = Index == 0 ? GULI_SOLDIER_POSE_FLAG_TELEPORT : 0;
@@ -1162,8 +1162,8 @@ bool FGuLiCommanderNetworkGateEvidenceTest::RunTest(const FString& Parameters)
 	PassingGate.BandwidthP95Megabits = 1.9;
 	PassingGate.FreshPoseFrameCount = 1u;
 	PassingGate.PresentedStepSampleCount = 60;
-	PassingGate.PresentedTravelDistanceCentimeters = 600.0;
-	PassingGate.PresentedStepP95Centimeters = 60.0;
+	PassingGate.PresentedTravelDistanceCentimeters = 120.0;
+	PassingGate.PresentedStepP95Centimeters = 12.0;
 	PassingGate.PresentationClockRoundTripMilliseconds = 100.0;
 	PassingGate.MaximumSeedPoseGapSeconds = 0.2;
 	PassingGate.UntaggedHardSnapCount = 0u;
@@ -1188,7 +1188,7 @@ bool FGuLiCommanderNetworkGateEvidenceTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("Too few moving presentation samples cannot produce a false PASS"),
 		GuLiCommanderNetworkGateValidation::CanPass(TooFewPresentedSteps));
 	FGuLiCommanderNetworkGateEvidence StairSteppedPresentation = PassingGate;
-	StairSteppedPresentation.PresentedStepP95Centimeters = 180.0;
+	StairSteppedPresentation.PresentedStepP95Centimeters = 36.0;
 	TestFalse(TEXT("A 10 Hz 180cm presentation staircase cannot pass the smoothness gate"),
 		GuLiCommanderNetworkGateValidation::CanPass(StairSteppedPresentation));
 	FGuLiCommanderNetworkGateEvidence MissingClockRoundTrip = PassingGate;
@@ -1366,12 +1366,12 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiPoseQuantizationTest,
 bool FGuLiPoseQuantizationTest::RunTest(const FString& Parameters)
 {
 	FGuLiQuantizedSoldierPose Pose;
-	TestTrue(TEXT("Quantize signed half steps"), GuLiCommanderPoseCodec::Quantize(FVector(50, -50, -5), FVector(50, -50, 150), 359.8f, Pose));
-	TestEqual(TEXT("XY positive half rounds away"), Pose.WorldXMeters, 1);
-	TestEqual(TEXT("XY negative half rounds away"), Pose.WorldYMeters, -1);
-	TestEqual(TEXT("Z negative half rounds away"), Pose.WorldZDecimeters, -1);
-	TestEqual(TEXT("Velocity uses meters/second"), Pose.VelocityXMetersPerSecond, int16(1));
-	TestEqual(TEXT("Signed velocity"), Pose.VelocityYMetersPerSecond, int16(-1));
+	TestTrue(TEXT("Quantize signed half steps"), GuLiCommanderPoseCodec::Quantize(FVector(10, -10, -1), FVector(10, -10, 30), 359.8f, Pose));
+	TestEqual(TEXT("XY positive half rounds away"), Pose.WorldXUnits, 1);
+	TestEqual(TEXT("XY negative half rounds away"), Pose.WorldYUnits, -1);
+	TestEqual(TEXT("Z negative half rounds away"), Pose.WorldZUnits, -1);
+	TestEqual(TEXT("Velocity uses meters/second"), Pose.VelocityXUnits, int16(1));
+	TestEqual(TEXT("Signed velocity"), Pose.VelocityYUnits, int16(-1));
 	TestEqual(TEXT("Yaw wraps to zero"), Pose.FacingYaw, uint8(0));
 	TestEqual(TEXT("Negative yaw wraps"), GuLiCommanderProtocol::QuantizeYawDegrees(-1.40625f), uint8(255));
 	for (int32 Index = -1000; Index <= 1000; ++Index)
@@ -1381,8 +1381,8 @@ bool FGuLiPoseQuantizationTest::RunTest(const FString& Parameters)
 		const float Yaw = Index * 0.37f;
 		if (!GuLiCommanderPoseCodec::Quantize(Position, Velocity, Yaw, Pose)) return false;
 		const FVector Error = (Pose.GetWorldLocationCentimeters() - Position).GetAbs();
-		TestTrue(TEXT("Position error stays within each axis budget"), Error.X <= 50.0001 && Error.Y <= 50.0001 && Error.Z <= 5.0001);
-		TestTrue(TEXT("Velocity component error stays within 0.5m/s"), (Pose.GetVelocityCentimetersPerSecond() - Velocity).GetAbs().GetMax() <= 50.0001);
+		TestTrue(TEXT("Position error stays within 10/10/1 cm"), Error.X <= 10.0001 && Error.Y <= 10.0001 && Error.Z <= 1.0001);
+		TestTrue(TEXT("Velocity component error stays within 0.1m/s"), (Pose.GetVelocityCentimetersPerSecond() - Velocity).GetAbs().GetMax() <= 10.0001);
 		TestTrue(TEXT("Yaw error stays within half an 8-bit step"), FMath::Abs(FMath::FindDeltaAngleDegrees(Yaw,
 			GuLiCommanderProtocol::DequantizeYawDegrees(Pose.FacingYaw))) <= 0.7032f);
 	}
@@ -1402,8 +1402,8 @@ bool FGuLiPosePredictionTest::RunTest(const FString& Parameters)
 	Sender.Reset(2, 4); Receiver.Reset(2, 4);
 	auto Source = GuLiCommanderNetworkTests::MakePoseChunk(4, 1, 99);
 	auto& Pose = Source.Samples[0];
-	Pose.WorldXMeters = -100; Pose.WorldYMeters = 100; Pose.WorldZDecimeters = 7;
-	Pose.VelocityXMetersPerSecond = 10; Pose.VelocityYMetersPerSecond = -10; Pose.VelocityZMetersPerSecond = 2;
+	Pose.WorldXUnits = -100; Pose.WorldYUnits = 100; Pose.WorldZUnits = 7;
+	Pose.VelocityXUnits = 10; Pose.VelocityYUnits = -10; Pose.VelocityZUnits = 2;
 	Pose.FacingYaw = 255; Pose.State = EGuLiSoldierPoseState::Moving; Pose.ActiveOrderId = 123;
 	TArray<FGuLiEncodedPoseBlock> Blocks;
 	Sender.Encode(Source, Blocks);
@@ -1413,7 +1413,7 @@ bool FGuLiPosePredictionTest::RunTest(const FString& Parameters)
 	FGuLiPoseAcknowledgment Ack;
 	Receiver.BuildAcknowledgment(Ack); Sender.Confirm(Ack);
 	Source.FrameSequence = 2; Source.ServerSimTick = 2; Source.ServerTimeSeconds = 0.2f;
-	++Pose.WorldXMeters; --Pose.WorldYMeters; Pose.WorldZDecimeters += 2;
+	++Pose.WorldXUnits; --Pose.WorldYUnits; Pose.WorldZUnits += 2;
 	Sender.Encode(Source, Blocks);
 	const int32 PredictionBytes = Blocks[0].Data.Num();
 	TestTrue(TEXT("Constant-velocity fields compress"), PredictionBytes < AbsoluteBytes);
@@ -1422,8 +1422,8 @@ bool FGuLiPosePredictionTest::RunTest(const FString& Parameters)
 		&& Decoded.ServerSimTick == 2 && Decoded.ServerTimeSeconds == 0.2f);
 	Receiver.BuildAcknowledgment(Ack); Sender.Confirm(Ack);
 	Source.FrameSequence = 3; Source.ServerSimTick = 3; Source.ServerTimeSeconds = 0.3f;
-	Pose.WorldXMeters += 2; Pose.WorldYMeters += 3; Pose.WorldZDecimeters -= 2;
-	Pose.VelocityXMetersPerSecond = -36; Pose.VelocityYMetersPerSecond = 21; Pose.VelocityZMetersPerSecond = -3;
+	Pose.WorldXUnits += 2; Pose.WorldYUnits += 3; Pose.WorldZUnits -= 2;
+	Pose.VelocityXUnits = -36; Pose.VelocityYUnits = 21; Pose.VelocityZUnits = -3;
 	Pose.FacingYaw = 0; Pose.ActiveOrderId = MAX_uint32;
 	Sender.Encode(Source, Blocks);
 	TestTrue(TEXT("Turning and order changes decode"), Receiver.Decode(Blocks[0], Decoded) == EDecodeResult::Decoded);
@@ -1441,12 +1441,12 @@ bool FGuLiPosePredictionTest::RunTest(const FString& Parameters)
 	Sender.Encode(Source, Blocks); Receiver.Decode(Blocks[0], Decoded);
 	TestTrue(TEXT("Unchanged fields still create a complete current sample"), Decoded.ServerSimTick == 5
 		&& Decoded.Samples[0].GetWorldLocationCentimeters() == Pose.GetWorldLocationCentimeters() && Blocks[0].Data.Num() <= PredictionBytes);
-	Pose.Flags = GULI_SOLDIER_POSE_FLAG_TELEPORT; Pose.WorldXMeters = 98765;
+	Pose.Flags = GULI_SOLDIER_POSE_FLAG_TELEPORT; Pose.WorldXUnits = 98765;
 	++Source.FrameSequence; ++Source.ServerSimTick;
 	Sender.Encode(Source, Blocks);
 	FReceiver Fresh; Fresh.Reset(2, 4);
 	TestTrue(TEXT("Teleport has no historical dependency"), Fresh.Decode(Blocks[0], Decoded) == EDecodeResult::Decoded
-		&& Decoded.Samples[0].IsTeleport() && Decoded.Samples[0].WorldXMeters == 98765);
+		&& Decoded.Samples[0].IsTeleport() && Decoded.Samples[0].WorldXUnits == 98765);
 	Receiver.Decode(Blocks[0], Decoded); Receiver.BuildAcknowledgment(Ack); Sender.Confirm(Ack);
 	Pose.Flags = 0; ++Source.FrameSequence; ++Source.ServerSimTick;
 	Sender.Encode(Source, Blocks); Receiver.Decode(Blocks[0], Decoded);

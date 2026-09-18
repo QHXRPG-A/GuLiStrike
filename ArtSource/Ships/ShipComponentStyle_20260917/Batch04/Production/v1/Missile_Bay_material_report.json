@@ -1,0 +1,158 @@
+{
+  "key": "Missile_Bay",
+  "stage": "review_B_ready",
+  "scope": "Original mesh retained; only shading, textures, line mask and optional render outline",
+  "source_file": "Source\\FBX_static_v1\\SM_SC_Missile_Bay.fbx",
+  "source_file_sha256": "52a200e35060924cb6b8318fb975e77775d4cefa624c3fd28b8c649fdd8d7008",
+  "original_geometry_sha256": "0597f88c7916b0024c386bcc1deab3b0eb9de193ccf1247f1c419e3df79f09a1",
+  "finished_body_geometry_sha256": "0597f88c7916b0024c386bcc1deab3b0eb9de193ccf1247f1c419e3df79f09a1",
+  "body_geometry_unchanged": true,
+  "original_corner_normals_unchanged": true,
+  "material_regions": [
+    {
+      "seed": 0,
+      "vertices": 32,
+      "bone": null
+    },
+    {
+      "seed": 32,
+      "vertices": 24,
+      "bone": null
+    },
+    {
+      "seed": 56,
+      "vertices": 32,
+      "bone": null
+    },
+    {
+      "seed": 88,
+      "vertices": 12,
+      "bone": null
+    },
+    {
+      "seed": 100,
+      "vertices": 12,
+      "bone": null
+    },
+    {
+      "seed": 112,
+      "vertices": 12,
+      "bone": null
+    },
+    {
+      "seed": 124,
+      "vertices": 12,
+      "bone": null
+    },
+    {
+      "seed": 136,
+      "vertices": 12,
+      "bone": null
+    },
+    {
+      "seed": 148,
+      "vertices": 12,
+      "bone": null
+    },
+    {
+      "seed": 160,
+      "vertices": 12,
+      "bone": null
+    },
+    {
+      "seed": 172,
+      "vertices": 12,
+      "bone": null
+    },
+    {
+      "seed": 184,
+      "vertices": 24,
+      "bone": null
+    },
+    {
+      "seed": 208,
+      "vertices": 24,
+      "bone": null
+    }
+  ],
+  "connection_fix": "Whole original connected parts and original rigid-bone ownership define color regions; no per-triangle nearest-shroud assignment",
+  "vertices": 232,
+  "polygons": 368,
+  "body_triangles": 368,
+  "outline_triangles": 368,
+  "body_material_slots": 1,
+  "dimensions_blender_m": [
+    9.599384307861328,
+    16.0596866607666,
+    2.2909786701202393
+  ],
+  "uv_channels": [
+    "UVmap_0",
+    "UVmap_1",
+    "UVmap_2",
+    "LightMapUV",
+    "SC_PaintUV",
+    "SC_LineUV"
+  ],
+  "source_uv_channels": [
+    "UVmap_0",
+    "UVmap_1",
+    "UVmap_2",
+    "LightMapUV"
+  ],
+  "texture_size": [
+    2048,
+    2048
+  ],
+  "texture_files": [
+    "//Textures/T_SC_Missile_Bay_BaseColor_2K.png",
+    "//Textures/T_SC_Missile_Bay_ORM_2K.png",
+    "//Textures/T_SC_Missile_Bay_LineMask_2K.png"
+  ],
+  "atlas_coverage": 0.538813591003418,
+  "selected_structural_edges": 278,
+  "internal_line_halfwidth_m": 0.0096358125,
+  "outline_width_m": 0.01927162399291992,
+  "motion": {
+    "status": "not_applicable_static"
+  },
+  "sockets": [],
+  "user_A": {
+    "decision": "approved",
+    "record": "approval_A_20260917.json",
+    "user_message": "开始实施，然后把这些组件导入至ue替换正式资源"
+  },
+  "user_B": "no_separate_visual_pass; direct_formal_release_authorized",
+  "UE_formal_validation": "not_run",
+  "blend_sha256": "ce5060d63d347a0ee91f98fec569393358c9bb3ff8c32088fbe87503793f5c7c",
+  "candidate_version": "v1",
+  "reference_version": "v1",
+  "release_authorization": "../UE_Integration/release_authorization_20260917.json",
+  "mechanical_type": "static",
+  "internal_line_halfwidth_local_units": 0.96358125,
+  "lighting": "EEVEE Diffuse -> Shader to RGB -> luminance -> constant 3-step ramp; scene lights and self-shadow",
+  "toon_thresholds": [
+    0,
+    0.18,
+    0.46
+  ],
+  "toon_multipliers_linear": [
+    [
+      0.43,
+      0.5,
+      0.6
+    ],
+    [
+      0.72,
+      0.79,
+      0.84
+    ],
+    [
+      1,
+      1,
+      1
+    ]
+  ],
+  "line_strength": 0.85,
+  "saved_file_geometry_readback": "passed"
+}

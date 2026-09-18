@@ -29,6 +29,7 @@
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Components/SkeletalMeshComponent.h"
+#include "Gameplay/Data/GuLiObjectScale.h"
 #include "Components/PrimitiveComponent.h"
 #include "GameFramework/PlayerController.h"
 #include "GuLiStrikeShipPartComponent.h"
@@ -109,6 +110,8 @@ AGuLiStrikeShip::AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer)
 	HullMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Hull Mesh"));
 	// 静态舰体跟随 CharacterMesh0 的网络平滑偏移；胶囊仍是服务器碰撞与预测根。
 	HullMesh->SetupAttachment(GetMesh());
+	// Scale the common model parent once: hidden socket hull, visible hull and parts inherit it.
+	GetMesh()->SetRelativeScale3D(FVector(0.2f));
 	// 舰体只参与查询不产生阻挡：相机避障扫掠需要能命中自身舰体
 	// （对象类型查询不看响应矩阵，Ignore 所有通道也不妨碍被扫到）
 	HullMesh->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
@@ -120,7 +123,7 @@ AGuLiStrikeShip::AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer)
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
 	SpringArm->SetupAttachment(GetRootComponent());
 
-	SpringArm->TargetArmLength = 3000.0f;
+	SpringArm->TargetArmLength = CameraDefaultArmLength;
 	SpringArm->SetRelativeRotation(FRotator(-18.0f, 0.0f, 0.0f));
 	SpringArm->bDoCollisionTest = false;
 	// 位置滞后关闭：贴面避障半径很小，位置滞后插值会抄近路切进舰体；
@@ -146,7 +149,7 @@ AGuLiStrikeShip::AGuLiStrikeShip(const FObjectInitializer& ObjectInitializer)
 	GetCharacterMovement()->bConstrainToPlane = false;
 	GetCharacterMovement()->MaxFlySpeed = BaseMaxSpeed;
 	GetCharacterMovement()->MaxAcceleration = BaseAcceleration;
-	GetCharacterMovement()->BrakingDecelerationFlying = 60.0f;
+	GetCharacterMovement()->BrakingDecelerationFlying = 12.0f;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 0.0f, 0.0f);
 }
 
@@ -166,6 +169,8 @@ void AGuLiStrikeShip::GetLifetimeReplicatedProps(
 void AGuLiStrikeShip::BeginPlay()
 {
 	Super::BeginPlay();
+	TInlineComponentArray<UMeshComponent*> AuthoredMeshes(this);
+	for (UMeshComponent* AuthoredMesh : AuthoredMeshes) GuLiObjectScale::ApplyOutlineScale(AuthoredMesh);
 	InitializeShipCapabilities();
 	// 旧蓝图可能序列化了原 CharacterMovement 模板；未迁移时明确关闭操控，不能解引用空的专用组件。
 	if (!GetShipMovement())
@@ -1973,7 +1978,7 @@ void AGuLiStrikeShip::RegisterWingmanCombatTargets()
 				static_cast<double>(Sample.PositionCentimeters.X),
 				static_cast<double>(Sample.PositionCentimeters.Y),
 				static_cast<double>(Sample.PositionCentimeters.Z));
-			OutSnapshot.CollisionRadius = 1500.0f;
+			OutSnapshot.CollisionRadius = 300.0f;
 			OutSnapshot.Rotation = FRotator(Sample.RotationCentiDegrees.X / 100.0,
 				Sample.RotationCentiDegrees.Y / 100.0, Sample.RotationCentiDegrees.Z / 100.0);
 			OutSnapshot.Health = static_cast<float>(Health->CurrentHealthPermille) * 0.1f;

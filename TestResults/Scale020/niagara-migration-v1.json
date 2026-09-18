@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "nodes": [
+    {
+      "system": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+      "emitter": "LeftEngineFlame",
+      "module": "InitializeWingmanLeftEngineFlame",
+      "node": "E58033814DCCFF0E59BF00A31BA86DF1",
+      "old": "float3 dir=Forward/max(length(Forward),0.001); Life=0.1; Velocity=float3(0,0,0); Color=float4(Tint.rgb,Opacity); Size=float2(1000*Throttle,150); Alignment=dir; Width=110; Position=Owner+Right*Spacing*-1.0-dir*Size.x*0.43; Rotation=0;",
+      "target": "float3 dir=Forward/max(length(Forward),0.001); Life=0.1; Velocity=float3(0,0,0); Color=float4(Tint.rgb,Opacity); Size=float2(200*Throttle,30); Alignment=dir; Width=22; Position=Owner+Right*Spacing*-1.0-dir*Size.x*0.43; Rotation=0;"
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+      "emitter": "LeftEngineFlame",
+      "module": "FollowWingmanNozzle",
+      "node": "E2C1D27944E11F81B4C3728618CA8ACD",
+      "old": "float3 dir=Forward/max(length(Forward),0.001); Size=float2(1000*Throttle,150); Alignment=dir; Position=Owner+Right*Spacing*-1.0-dir*Size.x*0.43; Color=float4(Tint.rgb,Opacity);",
+      "target": "float3 dir=Forward/max(length(Forward),0.001); Size=float2(200*Throttle,30); Alignment=dir; Position=Owner+Right*Spacing*-1.0-dir*Size.x*0.43; Color=float4(Tint.rgb,Opacity);"
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+      "emitter": "RightEngineFlame",
+      "module": "InitializeWingmanRightEngineFlame",
+      "node": "7A3D52834F8CECE2CAC6D18AAC939C77",
+      "old": "float3 dir=Forward/max(length(Forward),0.001); Life=0.1; Velocity=float3(0,0,0); Color=float4(Tint.rgb,Opacity); Size=float2(1000*Throttle,150); Alignment=dir; Width=110; Position=Owner+Right*Spacing*1.0-dir*Size.x*0.43; Rotation=0;",
+      "target": "float3 dir=Forward/max(length(Forward),0.001); Life=0.1; Velocity=float3(0,0,0); Color=float4(Tint.rgb,Opacity); Size=float2(200*Throttle,30); Alignment=dir; Width=22; Position=Owner+Right*Spacing*1.0-dir*Size.x*0.43; Rotation=0;"
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+      "emitter": "RightEngineFlame",
+      "module": "FollowWingmanNozzle",
+      "node": "73068409478807959A5AF6AF72C167BF",
+      "old": "float3 dir=Forward/max(length(Forward),0.001); Size=float2(1000*Throttle,150); Alignment=dir; Position=Owner+Right*Spacing*1.0-dir*Size.x*0.43; Color=float4(Tint.rgb,Opacity);",
+      "target": "float3 dir=Forward/max(length(Forward),0.001); Size=float2(200*Throttle,30); Alignment=dir; Position=Owner+Right*Spacing*1.0-dir*Size.x*0.43; Color=float4(Tint.rgb,Opacity);"
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+      "emitter": "LeftFlightRibbon",
+      "module": "InitializeWingmanLeftFlightRibbon",
+      "node": "59C9F03946E6E1ACAE22B087313FCF61",
+      "old": "float3 dir=Forward/max(length(Forward),0.001); Life=0.45; Velocity=float3(0,0,0); Color=float4(Tint.rgb,Opacity); Size=float2(1000*Throttle,150); Alignment=dir; Width=110; Position=Owner+Right*Spacing*-1.0;",
+      "target": "float3 dir=Forward/max(length(Forward),0.001); Life=0.45; Velocity=float3(0,0,0); Color=float4(Tint.rgb,Opacity); Size=float2(200*Throttle,30); Alignment=dir; Width=22; Position=Owner+Right*Spacing*-1.0;"
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+      "emitter": "LeftFlightRibbon",
+      "module": "FadeWingmanRibbon",
+      "node": "0758E96746BC5DA476A4D9AD3E1B45F1",
+      "old": "float fade=saturate(1-Age); Color=float4(Tint.rgb,Opacity*fade*fade*0.65); Width=110*fade;",
+      "target": "float fade=saturate(1-Age); Color=float4(Tint.rgb,Opacity*fade*fade*0.65); Width=22*fade;"
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+      "emitter": "RightFlightRibbon",
+      "module": "InitializeWingmanRightFlightRibbon",
+      "node": "55A9E4E94E74B6DE33D17C9EA6977679",
+      "old": "float3 dir=Forward/max(length(Forward),0.001); Life=0.45; Velocity=float3(0,0,0); Color=float4(Tint.rgb,Opacity); Size=float2(1000*Throttle,150); Alignment=dir; Width=110; Position=Owner+Right*Spacing*1.0;",
+      "target": "float3 dir=Forward/max(length(Forward),0.001); Life=0.45; Velocity=float3(0,0,0); Color=float4(Tint.rgb,Opacity); Size=float2(200*Throttle,30); Alignment=dir; Width=22; Position=Owner+Right*Spacing*1.0;"
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+      "emitter": "RightFlightRibbon",
+      "module": "FadeWingmanRibbon",
+      "node": "B972C6A84CA1E52FAA6565830EDF8B9F",
+      "old": "float fade=saturate(1-Age); Color=float4(Tint.rgb,Opacity*fade*fade*0.65); Width=110*fade;",
+      "target": "float fade=saturate(1-Age); Color=float4(Tint.rgb,Opacity*fade*fade*0.65); Width=22*fade;"
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight",
+      "emitter": "Core",
+      "module": "MissileParticleShape",
+      "node": "802EF1824C0F999DF0B227A6834307DF",
+      "old": "Life=0.05; Size=float2(110,110); Tint=float4(1.0,0.58,0.12,1.0); Velocity=float3(0,0,0); Position=Owner;",
+      "target": "Life=0.05; Size=float2(110,110)*EffectScale; Tint=float4(1.0,0.58,0.12,1.0); Velocity=float3(0,0,0); Position=Owner; MeshScale=float3(EffectScale,EffectScale,EffectScale);"
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight",
+      "emitter": "Exhaust",
+      "module": "MissileParticleShape",
+      "node": "04C252D343FEE7552D83A09D56EBF8B3",
+      "old": "Life=0.16; Size=float2(85,85); Tint=float4(1.0,0.58,0.12,1.0); Velocity=float3(0,0,0); Position=Owner; Position-=Vel/max(length(Vel),1.0)*155.0;",
+      "target": "Life=0.16; Size=float2(85,85)*EffectScale; Tint=float4(1.0,0.58,0.12,1.0); Velocity=float3(0,0,0); Position=Owner; Position-=Vel/max(length(Vel),1.0)*155.0*EffectScale;"
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight",
+      "emitter": "Trail",
+      "module": "MissileParticleShape",
+      "node": "07A9493D494F41CE4784E281756DF561",
+      "old": "Life=0.5; Size=float2(95,95); Tint=float4(0.10,0.12,0.15,0.26); Velocity=float3(0,0,0); Position=Owner; Position-=Vel/max(length(Vel),1.0)*155.0;",
+      "target": "Life=0.5; Size=float2(95,95)*EffectScale; Tint=float4(0.10,0.12,0.15,0.26); Velocity=float3(0,0,0); Position=Owner; Position-=Vel/max(length(Vel),1.0)*155.0*EffectScale;"
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight",
+      "emitter": "Trail",
+      "module": "TrailWidth",
+      "node": "EA5BEE0943CBF29E8587E582316409BD",
+      "old": "Width=35;",
+      "target": "Width=35*EffectScale;"
+    }
+  ],
+  "compiled": [
+    {
+      "system": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+      "result": "<Struct 'NiagaraCompilationResult' (0x0000027FB5575B40) {success: True, system_path: \"/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.003759}>"
+    },
+    {
+      "system": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight",
+      "result": "<Struct 'NiagaraCompilationResult' (0x0000028007121680) {success: True, system_path: \"/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.002680}>"
+    }
+  ],
+  "saved": [
+    "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail",
+    "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight"
+  ]
+}

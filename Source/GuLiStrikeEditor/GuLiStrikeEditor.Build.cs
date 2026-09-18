@@ -24,6 +24,8 @@ public class GuLiStrikeEditor : ModuleRules
 			"Landscape",
 			"NavigationSystem",
 			"Navmesh",
+			"Niagara",
+			"NiagaraEditor",
 			"GuLiFlightNavigationRuntime",
 			"GuLiFlightNavigationEditor",
 			"DeveloperToolSettings",

@@ -14,6 +14,7 @@ bool UGuLiCombatEffectReplicationComponent::CallRemoteFunction(UFunction* Functi
 {
 	const bool bFreshCue = Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastShots)
 		|| Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastCorrections)
+		|| Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastGroundProjectileSnapshot)
 		|| Function->GetFName()==GET_FUNCTION_NAME_CHECKED(ThisClass,MulticastWingmanFeedback);
 	UNetDriver* Driver=GetWorld() ? GetWorld()->GetNetDriver() : nullptr;
 	if (!bFreshCue || !GetOwner()->HasAuthority() || !Driver)
@@ -73,6 +74,7 @@ void UGuLiCombatEffectReplicationComponent::EndPlay(const EEndPlayReason::Type R
 	WingmanFeedbackQueue.Reset();
 	if (Runtime.IsValid()) { Runtime->OnState.RemoveAll(this); Runtime->OnShots.RemoveAll(this); Runtime->OnEpoch.RemoveAll(this); }
 	Runtime.Reset(); ReliableQueue.Reset(); Corrections.Reset(); ShotQueue.Reset(); SnapshotQueue.Reset();
+	GroundSnapshot.Reset(); GroundSnapshotAccumulator = 0; GroundSnapshotStart = 0;
 	Super::EndPlay(Reason);
 }
 
@@ -88,6 +90,7 @@ void UGuLiCombatEffectReplicationComponent::HandleEpoch(uint32 NewEpoch)
 	Epoch = NewEpoch;
 	WingmanFeedbackQueue.Reset();
 	ReliableQueue.Reset(); Corrections.Reset(); ShotQueue.Reset(); SnapshotQueue.Reset(); SnapshotCursor = 0; SnapshotAccumulator = 0;
+	GroundSnapshot.Reset(); GroundSnapshotAccumulator = 0; GroundSnapshotStart = 0;
 	OnRep_Epoch(); GetOwner()->ForceNetUpdate();
 }
 
@@ -166,6 +169,29 @@ void UGuLiCombatEffectReplicationComponent::TickComponent(float DeltaTime, ELeve
 		}
 		MulticastCorrections(Batch);
 	}
+	// Straight ground bullets are analytically reconstructed from these compact launch records.
+	// Rotate the first batch so a saturated connection cannot always starve the same tail.
+	GroundSnapshotAccumulator += DeltaTime;
+	if (Runtime.IsValid() && GroundSnapshotAccumulator >= 0.2f)
+	{
+		GroundSnapshotAccumulator = FMath::Fmod(GroundSnapshotAccumulator, 0.2f);
+		Runtime->BuildGroundProjectileSnapshot(GroundSnapshot);
+		const int32 Total = GroundSnapshot.Num();
+		if (Total > 0)
+		{
+			GroundSnapshotStart %= Total;
+			for (int32 Index = 0; Index < Total; Index += 16)
+			{
+				TArray<FGuLiCombatEffectState> Batch;
+				const int32 Count = FMath::Min(16, Total - Index);
+				Batch.Reserve(Count);
+				for (int32 Offset = 0; Offset < Count; ++Offset)
+					Batch.Add(GroundSnapshot[(GroundSnapshotStart + Index + Offset) % Total]);
+				MulticastGroundProjectileSnapshot(Batch);
+			}
+			GroundSnapshotStart = (GroundSnapshotStart + 16) % Total;
+		}
+	}
 	// A single FastArray property exceeded UE's 64-KiB actor bunch limit in the real 500-unit fixture.
 	// Stream reliable live snapshots in bounded RPCs, at most two 16-item batches per network tick.
 	// Existing peers deduplicate by sequence; late peers suppress historical activation bursts.
@@ -173,7 +199,7 @@ void UGuLiCombatEffectReplicationComponent::TickComponent(float DeltaTime, ELeve
 	if (Runtime.IsValid() && SnapshotAccumulator >= 1.0f && SnapshotCursor >= SnapshotQueue.Num())
 	{
 		SnapshotAccumulator = 0; SnapshotCursor = 0;
-		Runtime->BuildActiveSnapshot(SnapshotQueue);
+		Runtime->BuildActiveSnapshot(SnapshotQueue, false);
 		SnapshotQueue.RemoveAll([](const auto& State) { return State.Phase == EGuLiCombatEffectPhase::Dissipating; });
 	}
 	for (int32 BatchIndex=0; BatchIndex<2 && SnapshotCursor<SnapshotQueue.Num(); ++BatchIndex)
@@ -234,6 +260,13 @@ void UGuLiCombatEffectReplicationComponent::ApplyStates(const TArray<FGuLiCombat
 {
 	if (GetOwner()->HasAuthority()) return;
 	if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>()) for (const auto& State : States) Visuals->ApplyState(State);
+}
+
+void UGuLiCombatEffectReplicationComponent::MulticastGroundProjectileSnapshot_Implementation(const TArray<FGuLiCombatEffectState>& States)
+{
+	if (GetOwner()->HasAuthority()) return;
+	if (auto* Visuals = GetWorld()->GetSubsystem<UGuLiCombatEffectPresentationSubsystem>())
+		for (const auto& State : States) Visuals->ApplyState(State, true);
 }
 
 void UGuLiCombatEffectReplicationComponent::MulticastReliableStates_Implementation(const TArray<FGuLiCombatEffectState>& States) { ApplyStates(States); }

@@ -1,0 +1,2765 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "A9DD36FB457F2EFBED437DA7B5E0FB3F",
+			"instanceName": "DESKTOP-6D3B0FC-32292",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.18-06.41.20",
+	"succeeded": 161,
+	"succeededWithWarnings": 4,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 2.9491128921508789,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuildingAssetTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingAssetTests",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.077323600649833679,
+			"dateTime": "2026.09.18-06.41.14",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BuildingPlacementPolicyTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingPlacementPolicyTests",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082204006612300873,
+			"dateTime": "2026.09.18-06.41.14",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BuildingWorldTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingWorldTests",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 1.035330057144165,
+			"dateTime": "2026.09.18-06.41.14",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(337): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.41.14"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: Building spawn rejected: definition ID 0 is absent from Buildings.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.41.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'A legal Commander request is accepted' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 306,
+					"timestamp": "2026.09.18-06.41.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The first accepted request spawns exactly one building' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 310,
+					"timestamp": "2026.09.18-06.41.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'An identical reliable retry replays the accepted result' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 312,
+					"timestamp": "2026.09.18-06.41.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'An identical reliable retry does not spawn a duplicate' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 315,
+					"timestamp": "2026.09.18-06.41.15"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogTemp: Building spawn rejected: definition ID 0 is absent from Buildings.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.41.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "A newer request cannot overlap the placed building: The two values are not equal.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 323,
+					"timestamp": "2026.09.18-06.41.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Every rejection leaves the accepted building count unchanged' to be 1, but it was 0.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 329,
+					"timestamp": "2026.09.18-06.41.15"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'The accepted replicated building exists' to be not null.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Gameplay\\Building\\Tests\\BuildingWorldTests.cpp",
+					"lineNumber": 330,
+					"timestamp": "2026.09.18-06.41.15"
+				}
+			],
+			"warnings": 2,
+			"errors": 7,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GameStateRpcReliabilityContract",
+			"fullTestPath": "GuLiStrike.Combat.Missile.Visual.GameStateRpcReliabilityContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.010510500520467758,
+			"dateTime": "2026.09.18-06.41.15",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LaunchCorrectionTerminalSequence",
+			"fullTestPath": "GuLiStrike.Combat.Missile.Visual.LaunchCorrectionTerminalSequence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.012652900069952011,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AtomicSalvoRejectsWithoutPartialCreation",
+			"fullTestPath": "GuLiStrike.Combat.Missile.AtomicSalvoRejectsWithoutPartialCreation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.014599300920963287,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LaunchEpochCannotDamageNextMatch",
+			"fullTestPath": "GuLiStrike.Combat.Missile.LaunchEpochCannotDamageNextMatch",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.014965102076530457,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LogicalImpactWithoutReplicatedActor",
+			"fullTestPath": "GuLiStrike.Combat.Missile.LogicalImpactWithoutReplicatedActor",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.014657799154520035,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TargetDeathDoesNotRetarget",
+			"fullTestPath": "GuLiStrike.Combat.Missile.TargetDeathDoesNotRetarget",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.013970997184514999,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AcceptedWingmanSegmentSphereSweep",
+			"fullTestPath": "GuLiStrike.Combat.ShipProjectile.AcceptedWingmanSegmentSphereSweep",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.012822598218917847,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AuthorityAndRuleRejections",
+			"fullTestPath": "GuLiStrike.Combat.ShipProjectile.AuthorityAndRuleRejections",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.013423901051282883,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnifiedTargetAndIdempotentLedger",
+			"fullTestPath": "GuLiStrike.Combat.ShipProjectile.UnifiedTargetAndIdempotentLedger",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.012889798730611801,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MathAndIdentity",
+			"fullTestPath": "GuLiStrike.CombatEffects.MathAndIdentity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0077101998031139374,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NetworkOrderAndCleanup",
+			"fullTestPath": "GuLiStrike.CombatEffects.NetworkOrderAndCleanup",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.015715699642896652,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PeriodicRequeryAndCancellation",
+			"fullTestPath": "GuLiStrike.CombatEffects.PeriodicRequeryAndCancellation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.012673500925302505,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ProjectileLossImpactAndExpiry",
+			"fullTestPath": "GuLiStrike.CombatEffects.ProjectileLossImpactAndExpiry",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.014435000717639923,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PublicGameStateInitializesLedger",
+			"fullTestPath": "GuLiStrike.CombatEffects.PublicGameStateInitializesLedger",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.012878403067588806,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SpellFieldTableConfig",
+			"fullTestPath": "GuLiStrike.CombatEffects.SpellFieldTableConfig",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.016112498939037323,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SphereLedgerAndRetainedSource",
+			"fullTestPath": "GuLiStrike.CombatEffects.SphereLedgerAndRetainedSource",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.012664802372455597,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExplicitTerrainSolverComponents",
+			"fullTestPath": "GuLiStrike.Commander.Camera.ExplicitTerrainSolverComponents",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082095004618167877,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BenchmarkHarness",
+			"fullTestPath": "GuLiStrike.Commander.Combat.BenchmarkHarness",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084913000464439392,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MachineGunAndMissileIndependentCadence",
+			"fullTestPath": "GuLiStrike.Commander.Combat.MachineGunAndMissileIndependentCadence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0081733018159866333,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MultiWeaponChannelsAndCooldownMigration",
+			"fullTestPath": "GuLiStrike.Commander.Combat.MultiWeaponChannelsAndCooldownMigration",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082890987396240234,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OrdersAndCadence",
+			"fullTestPath": "GuLiStrike.Commander.Combat.OrdersAndCadence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082856006920337677,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ProfileChange",
+			"fullTestPath": "GuLiStrike.Commander.Combat.ProfileChange",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0081829987466335297,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SharedSkillDifferentTypes",
+			"fullTestPath": "GuLiStrike.Commander.Combat.SharedSkillDifferentTypes",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.013892702758312225,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SimultaneousAndExtensible",
+			"fullTestPath": "GuLiStrike.Commander.Combat.SimultaneousAndExtensible",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0087261982262134552,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StrafeTargeting",
+			"fullTestPath": "GuLiStrike.Commander.Combat.StrafeTargeting",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0080367997288703918,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DefaultBaseline",
+			"fullTestPath": "GuLiStrike.Commander.Data.SoldierResolver.DefaultBaseline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082284994423389435,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FloatHealthBoundaries",
+			"fullTestPath": "GuLiStrike.Commander.Data.SoldierResolver.FloatHealthBoundaries",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0098593011498451233,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGuLiStrike: Commander Soldier data: invalid MaxHealth value 0; using fallback 100 (valid range: finite, >0, <=1e9).",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.41.16"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ImportedBaseline",
+			"fullTestPath": "GuLiStrike.Commander.Data.SoldierResolver.ImportedBaseline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0071502998471260071,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InvalidValuesFallback",
+			"fullTestPath": "GuLiStrike.Commander.Data.SoldierResolver.InvalidValuesFallback",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0068925991654396057,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGuLiStrike: Commander Soldier data: invalid Soldier Id 0; using fallback 1.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.41.16"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGuLiStrike: Commander Soldier data: invalid MovementSpeedCmPerSecond value -1; using fallback 3600.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.41.16"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGuLiStrike: Commander Soldier data: invalid Defense value inf; using fallback 12.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.41.16"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGuLiStrike: Commander Soldier data: ModelAsset '/Engine/Transient.DataTable_0' is missing or is not a UStaticMesh; keeping the current proxy fallback.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.41.16"
+				}
+			],
+			"warnings": 4,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MissingTableAndRowFallback",
+			"fullTestPath": "GuLiStrike.Commander.Data.SoldierResolver.MissingTableAndRowFallback",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0088566988706588745,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGuLiStrike: Commander Soldier data: Soldier DataTable is missing; using C++ fallback.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.41.16"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGuLiStrike: Commander Soldier data: row 'DefaultSoldier' is missing; using C++ fallback.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.41.16"
+				}
+			],
+			"warnings": 2,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ValidRow",
+			"fullTestPath": "GuLiStrike.Commander.Data.SoldierResolver.ValidRow",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082945004105567932,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CancelAndMoveCompletion",
+			"fullTestPath": "GuLiStrike.Commander.Framework.ToolMode.CancelAndMoveCompletion",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0085364989936351776,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DefaultAndArm",
+			"fullTestPath": "GuLiStrike.Commander.Framework.ToolMode.DefaultAndArm",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082435980439186096,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MoveAckRouting",
+			"fullTestPath": "GuLiStrike.Commander.Framework.ToolMode.MoveAckRouting",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0072828009724617004,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SelectionRadiusStep",
+			"fullTestPath": "GuLiStrike.Commander.Framework.ToolMode.SelectionRadiusStep",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.011887799948453903,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldIntentBlocking",
+			"fullTestPath": "GuLiStrike.Commander.Framework.ToolMode.WorldIntentBlocking",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.011807899922132492,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DirectionFallback",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.DirectionFallback",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.03551970049738884,
+			"dateTime": "2026.09.18-06.41.16",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FreeAssignmentInvariant",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.FreeAssignmentInvariant",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0097090005874633789,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FreePartialAssignment",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.FreePartialAssignment",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.011268798261880875,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "HexCandidateGeometry",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.HexCandidateGeometry",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0096716992557048798,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "HexCandidateOrdering",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.HexCandidateOrdering",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0099780000746250153,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InputOrderInvariant",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.InputOrderInvariant",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0070556998252868652,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ProjectionPrefix",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.ProjectionPrefix",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083223991096019745,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ProjectionPrefixAssignmentEquivalence",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.ProjectionPrefixAssignmentEquivalence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.016510900110006332,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ScaleAndSpacing",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.ScaleAndSpacing",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0081307999789714813,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnderstrengthCentering",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.UnderstrengthCentering",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084419995546340942,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Cadence",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.PredictiveAvoidance.Cadence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083131007850170135,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DeterministicCandidates",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.PredictiveAvoidance.DeterministicCandidates",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0078445971012115479,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Force",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.PredictiveAvoidance.Force",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083933994174003601,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FormationCost",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.PredictiveAvoidance.FormationCost",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083675980567932129,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GridBoundaries",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.PredictiveAvoidance.GridBoundaries",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008494202047586441,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "OrderRevision",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.PredictiveAvoidance.OrderRevision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083994008600711823,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BatchCompletionGate",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.BatchCompletionGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084134005010128021,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CommonActiveOrder",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.CommonActiveOrder",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084864981472492218,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FinalCorridorLane",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.FinalCorridorLane",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008174799382686615,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FinalPathFrameUsesTerminalSegment",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.FinalPathFrameUsesTerminalSegment",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083740986883640289,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LocalFlowField",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.LocalFlowField",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083035007119178772,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LooseArrivalRadius",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.LooseArrivalRadius",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084302015602588654,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LooseArrivalTerminalPhase",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.LooseArrivalTerminalPhase",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008400697261095047,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LooseArrivalWaitsForTail",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.LooseArrivalWaitsForTail",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084257982671260834,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ManualAvoidanceGrid",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.ManualAvoidanceGrid",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0079911984503269196,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MeaningfulProgress",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.MeaningfulProgress",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084297992289066315,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MovementUpdateCadence",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.MovementUpdateCadence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082572996616363525,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NamedNavDataContract",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.NamedNavDataContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0080865994095802307,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PerMemberLooseArrivalState",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.PerMemberLooseArrivalState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008212599903345108,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RecoveryThresholds",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.RecoveryThresholds",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0086137987673282623,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SharedTargetProjection",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.SharedTargetProjection",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082443989813327789,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SurfaceMoveAcceptance",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.SurfaceMoveAcceptance",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0080683007836341858,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TransitColumnHysteresis",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.TransitColumnHysteresis",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008121199905872345,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TransitColumnPolicy",
+			"fullTestPath": "GuLiStrike.Commander.Mass.Navigation.TransitColumnPolicy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082653015851974487,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AckBeforeSnapshot",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.AckBeforeSnapshot",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084142982959747314,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FullPayloadIdentity",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.FullPayloadIdentity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008492298424243927,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "IndependentDependencies",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.IndependentDependencies",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0085515007376670837,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MoveAckBeforePrunedSnapshot",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.MoveAckBeforePrunedSnapshot",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084354020655155182,
+			"dateTime": "2026.09.18-06.41.17",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingMoveSerializesLatestClick",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.PendingMoveSerializesLatestClick",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008494298905134201,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RejectionCancels",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.RejectionCancels",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008572801947593689,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SnapshotBeforeAck",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.SnapshotBeforeAck",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084245018661022186,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AckRoutingAndFifo",
+			"fullTestPath": "GuLiStrike.Commander.Network.AckRoutingAndFifo",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083707980811595917,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BootstrapMatchEpochLifecycle",
+			"fullTestPath": "GuLiStrike.Commander.Network.BootstrapMatchEpochLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0079629011452198029,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BootstrapSnapshotGate",
+			"fullTestPath": "GuLiStrike.Commander.Network.BootstrapSnapshotGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082556009292602539,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DynamicCohortContract",
+			"fullTestPath": "GuLiStrike.Commander.Network.DynamicCohortContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082540996372699738,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FloatHealthContract",
+			"fullTestPath": "GuLiStrike.Commander.Network.FloatHealthContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0089798979461193085,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MoveEndpointFastArrayContract",
+			"fullTestPath": "GuLiStrike.Commander.Network.MoveEndpointFastArrayContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0081262029707431793,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NetworkGateEvidence",
+			"fullTestPath": "GuLiStrike.Commander.Network.NetworkGateEvidence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0080084986984729767,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoseChunkContract",
+			"fullTestPath": "GuLiStrike.Commander.Network.PoseChunkContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082786977291107178,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoseHistoryExpiryAndCleanup",
+			"fullTestPath": "GuLiStrike.Commander.Network.PoseHistoryExpiryAndCleanup",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0080267973244190216,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoseLossReorderingAndSession",
+			"fullTestPath": "GuLiStrike.Commander.Network.PoseLossReorderingAndSession",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084034986793994904,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoseMatchEpochGate",
+			"fullTestPath": "GuLiStrike.Commander.Network.PoseMatchEpochGate",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083148032426834106,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PosePredictionAndFields",
+			"fullTestPath": "GuLiStrike.Commander.Network.PosePredictionAndFields",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082399994134902954,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PoseQuantization",
+			"fullTestPath": "GuLiStrike.Commander.Network.PoseQuantization",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082469992339611053,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PresentationServerClock",
+			"fullTestPath": "GuLiStrike.Commander.Network.PresentationServerClock",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0081543996930122375,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RosterCache",
+			"fullTestPath": "GuLiStrike.Commander.Network.RosterCache",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0091104991734027863,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SoldierFastArrayContract",
+			"fullTestPath": "GuLiStrike.Commander.Network.SoldierFastArrayContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084030032157897949,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SoldierSnapshotNotification",
+			"fullTestPath": "GuLiStrike.Commander.Network.SoldierSnapshotNotification",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0091731995344161987,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AddMembershipAndCohortCapacity",
+			"fullTestPath": "GuLiStrike.Commander.Selection.AddMembershipAndCohortCapacity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.033733900636434555,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BoxRotatedSlopeExact26",
+			"fullTestPath": "GuLiStrike.Commander.Selection.BoxRotatedSlopeExact26",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0077849999070167542,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExactPointBoxAndRadius",
+			"fullTestPath": "GuLiStrike.Commander.Selection.ExactPointBoxAndRadius",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084044001996517181,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PointHintValidation",
+			"fullTestPath": "GuLiStrike.Commander.Selection.PointHintValidation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084390006959438324,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SameTypeNearest1000",
+			"fullTestPath": "GuLiStrike.Commander.Selection.SameTypeNearest1000",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082040987908840179,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GlobalTacticsAndRequestIdentity",
+			"fullTestPath": "GuLiStrike.Commander.Skills.GlobalTacticsAndRequestIdentity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0080638006329536438,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MixedSelectionIndependentResults",
+			"fullTestPath": "GuLiStrike.Commander.Skills.MixedSelectionIndependentResults",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0080455988645553589,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalAsset",
+			"fullTestPath": "GuLiStrike.Resources.Bake.CanonicalAsset",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.075331099331378937,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalContract",
+			"fullTestPath": "GuLiStrike.Resources.Board.CanonicalContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083255991339683533,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ValidationAndRevision",
+			"fullTestPath": "GuLiStrike.Resources.Commands.ValidationAndRevision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0076660998165607452,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DefaultsAndConservation",
+			"fullTestPath": "GuLiStrike.Resources.Economy.DefaultsAndConservation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084119997918605804,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PublicDeltaState",
+			"fullTestPath": "GuLiStrike.Resources.Network.PublicDeltaState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008668702095746994,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "HISMSwapIndex",
+			"fullTestPath": "GuLiStrike.Resources.Rendering.HISMSwapIndex",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.015690099447965622,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Registry",
+			"fullTestPath": "GuLiStrike.RuntimeTuning.Registry",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0081685967743396759,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CharacterMovement",
+			"fullTestPath": "GuLiStrike.Scale020.ClientInterpolation.CharacterMovement",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083230994641780853,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Mass",
+			"fullTestPath": "GuLiStrike.Scale020.ClientInterpolation.Mass",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0089090988039970398,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Wingman",
+			"fullTestPath": "GuLiStrike.Scale020.ClientInterpolation.Wingman",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084460005164146423,
+			"dateTime": "2026.09.18-06.41.18",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "EffectRadiusAndTiming",
+			"fullTestPath": "GuLiStrike.Scale020.EffectRadiusAndTiming",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008447498083114624,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FrozenPointRadiusAndDamageBoundary",
+			"fullTestPath": "GuLiStrike.Scale020.FrozenPointRadiusAndDamageBoundary",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0092476010322570801,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroundWarningPoolingAndRadius",
+			"fullTestPath": "GuLiStrike.Scale020.GroundWarningPoolingAndRadius",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0090747997164726257,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ModelTransformAndMounts",
+			"fullTestPath": "GuLiStrike.Scale020.ModelTransformAndMounts",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0079785026609897614,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NetworkResolution",
+			"fullTestPath": "GuLiStrike.Scale020.NetworkResolution",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008393801748752594,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AbilitySetContract",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.AbilitySetContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083077996969223022,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ComponentOwnership",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.ComponentOwnership",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0077068991959095001,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroupConfigHashAndInvalidation",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.GroupConfigHashAndInvalidation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083018988370895386,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "HangarGrantProjectionAndInputLifecycle",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.HangarGrantProjectionAndInputLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0096220001578330994,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WingmanWeaponBindingProjection",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.WingmanWeaponBindingProjection",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0093300007283687592,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldRespawnRestoresCommittedBuild",
+			"fullTestPath": "GuLiStrike.Ship.Abilities.WorldRespawnRestoresCommittedBuild",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.17122390866279602,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "Suppressed expected ('Warning') level log message or higher matching 'Missing_QA' 2 times.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UnrealEngine-5.7\\Engine\\Source\\Runtime\\Core\\Private\\Misc\\AutomationTest.cpp",
+					"lineNumber": 1860,
+					"timestamp": "2026.09.18-06.41.19"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExpressionsHistoryAndExclusions",
+			"fullTestPath": "GuLiStrike.Ship.Build.ExpressionsHistoryAndExclusions",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008067600429058075,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InvalidCatalogReasons",
+			"fullTestPath": "GuLiStrike.Ship.Build.InvalidCatalogReasons",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084246024489402771,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalHistoryIsBoundedAndVersioned",
+			"fullTestPath": "GuLiStrike.Ship.Movement.CanonicalHistoryIsBoundedAndVersioned",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084041990339756012,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InstallationRollback",
+			"fullTestPath": "GuLiStrike.Ship.Parts.InstallationRollback",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.015317998826503754,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGuLiStrike: ApplyPartRow: no row with PartId 'SC_Thor_MissilePod' for part BP_SC_Thor_MissilePod_C_0, keeping class defaults",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.41.19"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogGuLiStrike: ApplyPartRow: no row with PartId 'SC_Thor_MissilePod' for part BP_SC_Thor_MissilePod_C_2, keeping class defaults",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.41.19"
+				}
+			],
+			"warnings": 2,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VisualLifecycleAndSockets",
+			"fullTestPath": "GuLiStrike.Ship.Parts.VisualLifecycleAndSockets",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.010546598583459854,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CameraAlignment",
+			"fullTestPath": "GuLiStrike.Ship.WorldHUD.CameraAlignment",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0080776996910572052,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LatestAbilityOwnershipAndCleanup",
+			"fullTestPath": "GuLiStrike.Ship.WorldHUD.LatestAbilityOwnershipAndCleanup",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0085178017616271973,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReticleClampAndConstantPixels",
+			"fullTestPath": "GuLiStrike.Ship.WorldHUD.ReticleClampAndConstantPixels",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008347000926733017,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReticleTagsAndConfig",
+			"fullTestPath": "GuLiStrike.Ship.WorldHUD.ReticleTagsAndConfig",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008452199399471283,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CommanderReplacementAndStaleHost",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.CommanderReplacementAndStaleHost",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.010830100625753403,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NewMatchEpochClearsLedger",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.NewMatchEpochClearsLedger",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.011133000254631042,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PawnReplacementRetainsCommanderSkills",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.PawnReplacementRetainsCommanderSkills",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.012012600898742676,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WeaponEquipmentTransaction",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.WeaponEquipmentTransaction",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0097856000065803528,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WM01UsesProfilesNotExtraAbilities",
+			"fullTestPath": "GuLiStrike.Skills.Lifecycle.WM01UsesProfilesNotExtraAbilities",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0096395015716552734,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ConfigurationAndBoundaries",
+			"fullTestPath": "GuLiStrike.Teleport.ConfigurationAndBoundaries",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008147798478603363,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PawnIdentityMaterialCameraAndRecovery",
+			"fullTestPath": "GuLiStrike.Teleport.PawnIdentityMaterialCameraAndRecovery",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.017614699900150299,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WingmanWholeGroupIdentityAndStalePackets",
+			"fullTestPath": "GuLiStrike.Teleport.WingmanWholeGroupIdentityAndStalePackets",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082303993403911591,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Distribution",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.TargetAssignment.Distribution",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083762966096401215,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LegalityAndDeterminism",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.TargetAssignment.LegalityAndDeterminism",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0081868991255760193,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SwitchPenaltyAndFailure",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.TargetAssignment.SwitchPenaltyAndFailure",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082846991717815399,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AirBurstOrbitStateMachine",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.AirBurstOrbitStateMachine",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0085336007177829742,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AllDeadRosterCutIsValid",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.AllDeadRosterCutIsValid",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0092408992350101471,
+			"dateTime": "2026.09.18-06.41.19",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BoundedCapturedFireWire",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.BoundedCapturedFireWire",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.008366800844669342,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FixedGroundAOEAndAttribution",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.FixedGroundAOEAndAttribution",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0089307986199855804,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroundPathAndCadence",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.GroundPathAndCadence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084460005164146423,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NativeV3SpeedRadiusAndProjectile",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.NativeV3SpeedRadiusAndProjectile",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0078957006335258484,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RemoteModelCorrectionIsVisualOnly",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.RemoteModelCorrectionIsVisualOnly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0091219022870063782,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ReusableTeamOutline",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.ReusableTeamOutline",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0092893019318580627,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ServerAirBurstStartBoundary",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.ServerAirBurstStartBoundary",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084958001971244812,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SustainedGunLedgerAndState",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.SustainedGunLedgerAndState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.026246797293424606,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TargetHysteresisAndGuardRejoin",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.TargetHysteresisAndGuardRejoin",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0084723979234695435,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UnifiedAutomaticTargetingAndAuthorization",
+			"fullTestPath": "GuLiStrike.Wingman.Attack.UnifiedAutomaticTargetingAndAuthorization",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.018944300711154938,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ClientSpatialHashStableThreeDimensionalCut",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.BasicWeapon.ClientSpatialHashStableThreeDimensionalCut",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083654001355171204,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CommanderUsesAuthoritativePoseReaderOnly",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.BasicWeapon.CommanderUsesAuthoritativePoseReaderOnly",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0083463005721569061,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FiveHertzStaggeredCadence",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.BasicWeapon.FiveHertzStaggeredCadence",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0079525969922542572,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "TargetSelectionStableFilters",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.BasicWeapon.TargetSelectionStableFilters",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082198008894920349,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ValidationCooldownAndLedgerIdempotency",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.BasicWeapon.ValidationCooldownAndLedgerIdempotency",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.01202860102057457,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AuthorityReplenishesStableSlotAfter15Seconds",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.Lifecycle.AuthorityReplenishesStableSlotAfter15Seconds",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0082822032272815704,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CameraAimQuantization",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.Missile.CameraAimQuantization",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.0080204010009765625,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "StableFlightSharedCooldownAndNoActors",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.Missile.StableFlightSharedCooldownAndNoActors",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.01246349886059761,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MultiChannelCooldownAndProvenance",
+			"fullTestPath": "GuLiStrike.Wingman.Combat.MultiChannelCooldownAndProvenance",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A9DD36FB457F2EFBED437DA7B5E0FB3F"
+			],
+			"duration": 0.012501101940870285,
+			"dateTime": "2026.09.18-06.41.20",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

@@ -1,6 +1,7 @@
 #include "GuLiNavigationBakeLibrary.h"
 
 #include "AI/Navigation/NavRelevantInterface.h"
+#include "AI/NavDataGenerator.h"
 #include "AssetCompilingManager.h"
 #include "AssetRegistry/AssetRegistryModule.h"
 #include "Components/PrimitiveComponent.h"
@@ -18,6 +19,7 @@
 #include "GuLiFlightNavigationVolume.h"
 #include "GuLiNavigationSourceHash.h"
 #include "HAL/PlatformTime.h"
+#include "HAL/PlatformProcess.h"
 #include "Misc/EngineVersion.h"
 #include "Misc/PackageName.h"
 #include "Misc/ScopedSlowTask.h"
@@ -42,10 +44,43 @@ namespace GuLiNavigationBake
 	constexpr const TCHAR* PayloadKey = TEXT("GuLi.GroundNavigation.Payload.v1");
 	bool bPreparing = false;
 	TSet<TWeakObjectPtr<UWorld>> PendingSaveWorlds;
+	TSet<TWeakObjectPtr<UWorld>> ScaleMigrationWorlds;
 
 	FString Hex(uint64 Value) { return FString::Printf(TEXT("%016llx"), Value); }
 
-	void RebuildGround(ARecastNavMesh* Navigation)
+	bool CompleteGround(ARecastNavMesh* Navigation, FString& Error)
+	{
+		FNavDataGenerator* Generator = Navigation->GetGenerator();
+		if (!Generator) { Error = TEXT("Ground navigation has no generator."); return false; }
+		const double Start = FPlatformTime::Seconds();
+		double LastLog = Start, LastProgress = Start;
+		int32 PreviousRemaining = Generator->GetNumRemaningBuildTasks();
+		while (Generator->GetNumRemaningBuildTasks() > 0)
+		{
+			Generator->TickAsyncBuild(.01f);
+			const double Now = FPlatformTime::Seconds();
+			const int32 Remaining = Generator->GetNumRemaningBuildTasks();
+			const int32 Running = Generator->GetNumRunningBuildTasks();
+			if (Remaining != PreviousRemaining) { PreviousRemaining = Remaining; LastProgress = Now; }
+			if (Now - LastLog > 10)
+			{
+				UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=GroundProgress object=%s remaining=%d running=%d elapsed=%.1f"),
+					*Navigation->GetPathName(), Remaining, Running, Now - Start);
+				LastLog = Now;
+			}
+			if ((Running == 0 && Remaining > 0 && Now - LastProgress > 30) || Now - Start > 1200)
+			{
+				Generator->CancelBuild();
+				Error = FString::Printf(TEXT("Ground bake did not complete: %s remaining=%d running=%d elapsed=%.1fs. Nothing certified or saved."),
+					*Navigation->GetPathName(), Remaining, Running, Now - Start);
+				return false;
+			}
+			FPlatformProcess::Sleep(.002f);
+		}
+		return true;
+	}
+
+	bool RebuildGround(ARecastNavMesh* Navigation, FString& Error)
 	{
 		// Fully asynchronous gathering is intentionally limited to one tile job in UE 5.7.
 		// Editor preparation already blocks Play: gather on the game thread and use UE's
@@ -54,8 +89,9 @@ namespace GuLiNavigationBake
 		Navigation->bDoFullyAsyncNavDataGathering = false;
 		UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=GroundBuild object=%s"), *Navigation->GetPathName());
 		Navigation->RebuildAll();
-		Navigation->EnsureBuildCompletion();
+		const bool bComplete = CompleteGround(Navigation, Error);
 		Navigation->bDoFullyAsyncNavDataGathering = bAsyncGathering;
+		return bComplete;
 	}
 
 	UWorld* ResolveWorld(UObject* Context)
@@ -386,6 +422,7 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 	if (!CheckWorld(World, Result.Message)) return Finish();
 	FScopedSlowTask Progress(3, NSLOCTEXT("GuLiNavigation", "Preparing", "Checking and preparing map navigation"));
 	Progress.MakeDialog(true);
+	UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=AssetCompilation world=%s"), *World->GetPathName());
 	FAssetCompilingManager::Get().FinishAllCompilation();
 	UNavigationSystemV1* NavigationSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
 	bool bRecoveredGroundData = false;
@@ -400,7 +437,28 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 		}
 		// Process changes made immediately before Play before fingerprinting source collision.
 		NavigationSystem->Tick(0.0f);
-		for (ARecastNavMesh* Navigation : GroundData(World)) Navigation->EnsureBuildCompletion();
+		for (ARecastNavMesh* Navigation : GroundData(World))
+		{
+			if (ScaleMigrationWorlds.Contains(World))
+			{
+				// These jobs were queued with the old agent/generator configuration while
+				// loading. They cannot certify the migrated source. CheckGround below will
+				// request a fresh rebuild with the new settings and commit its signature.
+				Navigation->CancelBuild();
+				UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=CancelStaleScaleQueue object=%s"), *Navigation->GetPathName());
+				continue;
+			}
+			UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=SettleGround object=%s asyncGather=%d maxJobs=%d"),
+				*Navigation->GetPathName(), Navigation->bDoFullyAsyncNavDataGathering,
+				Navigation->GetMaxSimultaneousTileGenerationJobsCount());
+			// Completion can also process an already queued editor rebuild. Use the same
+			// gathering contract as RebuildGround, not UE's serial async-gather path.
+			const bool bPreviousAsyncGathering = Navigation->bDoFullyAsyncNavDataGathering;
+			Navigation->bDoFullyAsyncNavDataGathering = false;
+			const bool bComplete = CompleteGround(Navigation, Result.Message);
+			Navigation->bDoFullyAsyncNavDataGathering = bPreviousAsyncGathering;
+			if (!bComplete) return Finish();
+		}
 	}
 	TArray<ARecastNavMesh*> Ground = GroundData(World);
 	if (Ground.IsEmpty() && NavigationSystem && NavigationSystem->IsThereAnywhereToBuildNavigation())
@@ -417,6 +475,7 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 	Progress.EnterProgressFrame(1);
 	for (ARecastNavMesh* Navigation : Ground)
 	{
+		UE_LOG(LogGuLiNavigationBake, Display, TEXT("[GULI_NAV_PREPARE] stage=CheckGround object=%s"), *Navigation->GetPathName());
 		FGuLiNavigationBakeEntry& Entry = Result.Entries.AddDefaulted_GetRef();
 		if (CheckGround(World, Navigation, Entry))
 		{
@@ -429,7 +488,7 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 		const double BuildStart = FPlatformTime::Seconds();
 		if (!bRecoveredGroundData)
 		{
-			RebuildGround(Navigation);
+			if (!RebuildGround(Navigation, Result.Message)) return Finish();
 			++Result.GroundRebuilds;
 		}
 		Entry.BuildSeconds = FPlatformTime::Seconds() - BuildStart;
@@ -521,6 +580,7 @@ FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::PrepareWorldNavigation(UOb
 	const FGuLiNavigationBakeResult Validation = ValidateWorldNavigation(World);
 	Result.bSuccess = Validation.bSuccess;
 	Result.Message = Validation.bSuccess ? TEXT("All source navigation is ready.") : Validation.Message;
+	if (Result.bSuccess) ScaleMigrationWorlds.Remove(World);
 	return Finish();
 }
 
@@ -530,5 +590,57 @@ TArray<FName> UGuLiNavigationBakeLibrary::GetPreparationWorldPackages()
 	for (const FFilePath& Map : GetDefault<UProjectPackagingSettings>()->MapsToCook)
 		if (!Map.FilePath.IsEmpty()) Result.AddUnique(FName(*Map.FilePath));
 	Result.Sort(FNameLexicalLess());
+	return Result;
+}
+
+FGuLiNavigationBakeResult UGuLiNavigationBakeLibrary::MigrateObjectScale020(UObject* Context)
+{
+	using namespace GuLiNavigationBake;
+	FGuLiNavigationBakeResult Result;
+	UWorld* World = ResolveWorld(Context);
+	if (!CheckWorld(World, Result.Message)) return Result;
+	const auto& Agents = GetDefault<UNavigationSystemV1>()->GetSupportedAgents();
+	for (ARecastNavMesh* Navigation : GroundData(World))
+	{
+		const FNavDataConfig Before = Navigation->GetConfig();
+		const auto* Target = Agents.FindByPredicate([&](const FNavDataConfig& A) { return A.Name == Before.Name; });
+		if (!Target) { Result.Message = TEXT("Unrecognized ground Agent; no guessed scale."); return Result; }
+		Navigation->Modify();
+		Navigation->SetConfig(*Target);
+		for (uint8 Index = 0; Index < static_cast<uint8>(ENavigationDataResolution::MAX); ++Index)
+		{
+			const auto Resolution = static_cast<ENavigationDataResolution>(Index);
+			// Horizontal cells and tiles deliberately stay at the authored resolution.
+			Navigation->SetCellHeight(Resolution, 5.0f);
+			Navigation->SetAgentMaxStepHeight(Resolution, Target->AgentStepHeight);
+		}
+		Navigation->MarkPackageDirty();
+		auto& Entry = Result.Entries.AddDefaulted_GetRef();
+		Entry.ObjectPath = Navigation->GetPathName(); Entry.Kind = TEXT("GroundScale020");
+		Entry.Status = TEXT("Configured");
+		Entry.Message = FString::Printf(TEXT("Radius %.3f -> %.3f; height %.3f -> %.3f; cellZ=5; step=%.3f; XY unchanged"),
+			Before.AgentRadius, Target->AgentRadius, Before.AgentHeight, Target->AgentHeight, Target->AgentStepHeight);
+	}
+	for (AGuLiFlightNavigationVolume* Volume : FlightVolumes(World))
+	{
+		auto& Settings = Volume->AuthoringBakeSettings;
+		const float BeforeRadius = Settings.AgentRadius;
+		const float BeforePortal = Settings.MinimumPortalSpan;
+		if (!FMath::IsNearlyEqual(BeforeRadius, 1500.0f) && !FMath::IsNearlyEqual(BeforeRadius, 300.0f))
+		{ Result.Message = TEXT("Unexpected Flight Agent radius; manual merge required."); return Result; }
+		Volume->Modify();
+		Settings.AgentRadius = 300.0f;
+		if (FMath::IsNearlyEqual(BeforePortal, 25.0f)) Settings.MinimumPortalSpan = 5.0f;
+		else if (FMath::IsNearlyEqual(BeforePortal, 10.0f)) Settings.MinimumPortalSpan = 2.0f;
+		else if (!FMath::IsNearlyEqual(BeforePortal, 5.0f) && !FMath::IsNearlyEqual(BeforePortal, 2.0f))
+		{ Result.Message = TEXT("Unexpected Flight portal span; manual merge required."); return Result; }
+		Volume->MarkPackageDirty();
+		auto& Entry = Result.Entries.AddDefaulted_GetRef();
+		Entry.ObjectPath = Volume->GetPathName(); Entry.Kind = TEXT("FlightScale020"); Entry.Status = TEXT("Configured");
+		Entry.Message = FString::Printf(TEXT("Radius %.3f -> %.3f; portal %.3f -> %.3f; bounds/cells unchanged"),
+			BeforeRadius, Settings.AgentRadius, BeforePortal, Settings.MinimumPortalSpan);
+	}
+	ScaleMigrationWorlds.Add(World);
+	Result.bSuccess = true; Result.Message = TEXT("Scale020 configured; rebuild and validation still required.");
 	return Result;
 }

@@ -1,0 +1,3 @@
+# Navigation worker 06: GPU timeout, not a completed fourth map
+
+Worker PID 20328 was launched by this task from D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.exe with run_navigation_migration.py. The first three maps were saved and validated. CommanderMassPrototype finished both ground generators but stalled before its save completed at 2026-09-18 06:00:21 UTC: D3D12 queue GPU timeout, FRDGBuilder::SubmitBufferUploads active. No progress followed. The exact owned worker is stopped; its unsaved fourth-map navigation is discarded. No user editor process is targeted. Retry this map with NullRHI. Keep Navigation-Editor-06.log and navigation-worker.json as failed-attempt evidence.

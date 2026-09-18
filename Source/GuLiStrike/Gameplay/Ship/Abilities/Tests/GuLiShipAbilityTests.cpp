@@ -292,21 +292,21 @@ bool FGuLiShipHangarGrantProjectionTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Formation turn rate is quadrupled for the doubled flight speed"),
 		Snapshot.FormationRuntime.MaximumTurnRateDegreesPerSecond, 80.0f);
 	TestEqual(TEXT("Formation minimum speed is doubled"),
-		Snapshot.FormationRuntime.MinimumSpeedCentimetersPerSecond, 6000.0f);
+		Snapshot.FormationRuntime.MinimumSpeedCentimetersPerSecond, 1200.0f);
 	TestEqual(TEXT("Formation cruise speed is doubled"),
-		Snapshot.FormationRuntime.CruiseSpeedCentimetersPerSecond, 9000.0f);
+		Snapshot.FormationRuntime.CruiseSpeedCentimetersPerSecond, 1800.0f);
 	TestEqual(TEXT("Formation catch-up speed is doubled"),
-		Snapshot.FormationRuntime.CatchUpSpeedCentimetersPerSecond, 15000.0f);
+		Snapshot.FormationRuntime.CatchUpSpeedCentimetersPerSecond, 3000.0f);
 	TestEqual(TEXT("Formation acceleration is quadrupled to preserve acceleration distance"),
-		Snapshot.FormationRuntime.MaximumAccelerationCentimetersPerSecondSquared, 4000.0f);
+		Snapshot.FormationRuntime.MaximumAccelerationCentimetersPerSecondSquared, 800.0f);
 	TestEqual(TEXT("Formation deceleration is quadrupled to preserve braking distance"),
-		Snapshot.FormationRuntime.MaximumDecelerationCentimetersPerSecondSquared, 3200.0f);
+		Snapshot.FormationRuntime.MaximumDecelerationCentimetersPerSecondSquared, 640.0f);
 	TestEqual(TEXT("Basic weapon DataAsset projects the 1500m range"),
-		Snapshot.BasicWeaponRuntime.RangeCentimeters, 150000.0f);
+		Snapshot.BasicWeaponRuntime.RangeCentimeters, 30000.0f);
 	TestEqual(TEXT("Basic weapon DataAsset projects independent two-second cadence"),
 		Snapshot.BasicWeaponRuntime.CooldownSeconds, 2.0f);
 	TestEqual(TEXT("Missile targeting parameters are present without Hangar access"),
-		Snapshot.MissileRuntime.RangeCentimeters, 250000.0f);
+		Snapshot.MissileRuntime.RangeCentimeters, 50000.0f);
 
 	const uint32 AbilityRevision = Fixture.Hangar->GetAbilitySetRevision();
 	const uint32 ProjectionRevision = Fixture.Hangar->GetProjectionSnapshotRevision();

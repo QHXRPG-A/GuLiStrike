@@ -37,7 +37,7 @@ protected:
 
 	/** Radius around the spawner where it can spawn NPCs */
 	UPROPERTY(EditAnywhere, Category="NPC Spawner", meta = (ClampMin = 0, ClampMax = 20, Units = "cm"))
-	float SpawnRadius = 600.0f;
+	float SpawnRadius = 120.0f;
 
 	/** Number of NPCs to spawn per group */
 	UPROPERTY(EditAnywhere, Category="NPC Spawner", meta = (ClampMin = 0, ClampMax = 10))

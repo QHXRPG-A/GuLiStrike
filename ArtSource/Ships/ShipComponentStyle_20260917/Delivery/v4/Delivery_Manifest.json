@@ -1,0 +1,980 @@
+{
+  "schema": "guli-ship-material-delivery/v1",
+  "work_id": "WORK-20260917-003",
+  "art_revision": "1.0",
+  "assembled_at": "2026-09-17T07:00:43.368999+00:00",
+  "status": "delivered",
+  "user_B": "三件均通过 B，导出 FBX",
+  "scope": "Original geometry; Blender and FBX only; textures, toon lighting/shadows and outline",
+  "UE_formal_validation": "not_run",
+  "counts": {
+    ".blend": 4,
+    ".fbx": 3,
+    ".png": 73,
+    ".mp4": 2
+  },
+  "html_local_reference_count": 40,
+  "parts": {
+    "Twin_Barrel_Turret": {
+      "version": "v4",
+      "A": "approved",
+      "B": "approved",
+      "original_source_file": "Source\\ExistingAuthoring\\SC_Twin_Barrel_Turret.blend",
+      "original_source_file_sha256": "c15fc032547762ca792477a93c4cac35377c7c427c856670e32ae76d7214a1de",
+      "approved_source_sha256": "c3ac95335b9cede1a49aaa7bc6b043494a83fc08e40ada828768de30e09ff2b5",
+      "original_geometry_sha256": "95ac0461275b3364509a9abe020a451a1bd6e92d19a8a7b5e5a71793f774a297",
+      "original_geometry_and_normals_unchanged": true,
+      "final_blend": "Blender\\SC_Twin_Barrel_Turret_Styled.blend",
+      "final_blend_sha256": "1c1a297f558bdb5bcefc1421c288b54dae894f7bbb047e8d088d33138e871dab",
+      "FBX_readback": {
+        "key": "Twin_Barrel_Turret",
+        "fbx_file": "FBX\\SKM_SC_Twin_Barrel_Turret_Styled.fbx",
+        "fbx_sha256": "dc3cc679b1e02202e206060b03f01622d0d9b422be7aaafbb4d32deea87b7611",
+        "mesh_count": 1,
+        "body_triangles": 1680,
+        "dimensions_m": [
+          20.16775894165039,
+          49.253318786621094,
+          10.072568893432617
+        ],
+        "max_dimension_error_m": 4.76837158203125e-06,
+        "max_geometry_error_m": 6.873167876619846e-06,
+        "origin_error_m": 0.0,
+        "uv_names": [
+          "SC_PaintUV",
+          "SC_LineUV",
+          "UVmap_0",
+          "UVmap_1",
+          "UVmap_2",
+          "LightMapUV"
+        ],
+        "uv_max_errors": {
+          "SC_PaintUV": 0.0,
+          "SC_LineUV": 0.0,
+          "UVmap_0": 0.0,
+          "UVmap_1": 0.0,
+          "UVmap_2": 0.0,
+          "LightMapUV": 0.0
+        },
+        "materials": [
+          "M_SC_Twin_Barrel_Turret_Portable"
+        ],
+        "bones": {
+          "Root": {
+            "parent": null,
+            "head": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "BarrelPitch": {
+            "parent": "Root",
+            "head": [
+              -1.9233010561947594e-07,
+              2.200000047683716,
+              -0.2700999975204468
+            ]
+          }
+        },
+        "max_bone_pivot_error_m": 1.9233010868616656e-07,
+        "rigid_weights": "single bone, weight 1",
+        "socket_names": [
+          "Socket_1",
+          "Socket_2"
+        ],
+        "socket_metadata_matches_source": true,
+        "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+        "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+        "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+        "demo_animation_exported": false,
+        "UE_formal_validation": "not_run",
+        "passed": true
+      },
+      "motion_audit": {
+        "status": "passed",
+        "sample_count": 91,
+        "angles_degrees": [
+          -15,
+          75
+        ],
+        "rigid_max_error_m": 9.5367431640625e-06,
+        "socket_max_error_m": 8.529922399520072e-06,
+        "single_bone_weight_one": true,
+        "surface_crossings_by_angle": {
+          "-15": {},
+          "-14": {},
+          "-13": {},
+          "-12": {},
+          "-11": {},
+          "-10": {},
+          "-9": {},
+          "-8": {},
+          "-7": {},
+          "-6": {},
+          "-5": {},
+          "-4": {},
+          "-3": {},
+          "-2": {},
+          "-1": {},
+          "0": {},
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {},
+          "6": {},
+          "7": {},
+          "8": {},
+          "9": {},
+          "10": {},
+          "11": {},
+          "12": {},
+          "13": {},
+          "14": {},
+          "15": {},
+          "16": {},
+          "17": {},
+          "18": {},
+          "19": {},
+          "20": {},
+          "21": {},
+          "22": {},
+          "23": {},
+          "24": {},
+          "25": {},
+          "26": {},
+          "27": {},
+          "28": {},
+          "29": {},
+          "30": {},
+          "31": {},
+          "32": {},
+          "33": {},
+          "34": {},
+          "35": {},
+          "36": {},
+          "37": {},
+          "38": {},
+          "39": {},
+          "40": {},
+          "41": {},
+          "42": {},
+          "43": {},
+          "44": {},
+          "45": {},
+          "46": {},
+          "47": {},
+          "48": {},
+          "49": {},
+          "50": {},
+          "51": {},
+          "52": {},
+          "53": {},
+          "54": {},
+          "55": {},
+          "56": {},
+          "57": {},
+          "58": {},
+          "59": {},
+          "60": {},
+          "61": {},
+          "62": {},
+          "63": {},
+          "64": {},
+          "65": {},
+          "66": {},
+          "67": {},
+          "68": {},
+          "69": {},
+          "70": {},
+          "71": {},
+          "72": {},
+          "73": {},
+          "74": {},
+          "75": {}
+        },
+        "geometry_modified_to_resolve_crossings": false
+      }
+    },
+    "CIWS": {
+      "version": "v4",
+      "A": "approved",
+      "B": "approved",
+      "original_source_file": "Source\\ExistingAuthoring\\SC_CIWS.blend",
+      "original_source_file_sha256": "cf45e3a0f0f09d72248a75b1eb4387de82e5b03de3ddc71874233cbb4532467b",
+      "approved_source_sha256": "996ee01303acfd8d97b396a069c849230665e9639eea1a32c7e4881adf896f39",
+      "original_geometry_sha256": "a7d4a3431a61476d0a0f1dd2751483202c1a26c82fe0f3d47c00d8d3c1ffc7d0",
+      "original_geometry_and_normals_unchanged": true,
+      "final_blend": "Blender\\SC_CIWS_Styled.blend",
+      "final_blend_sha256": "563deea607da7e0fa339bdef753793e2a1b67c3d4f9d5cbb54e850ca39cbeeec",
+      "FBX_readback": {
+        "key": "CIWS",
+        "fbx_file": "FBX\\SKM_SC_CIWS_Styled.fbx",
+        "fbx_sha256": "77a938ebc39c1068945ae24bc7ceea49193cee527a1518347207d645a0cc5909",
+        "mesh_count": 1,
+        "body_triangles": 1066,
+        "dimensions_m": [
+          3.2010421752929688,
+          6.845887184143066,
+          2.3504979610443115
+        ],
+        "max_dimension_error_m": 4.76837158203125e-07,
+        "max_geometry_error_m": 9.728145187182236e-07,
+        "origin_error_m": 0.0,
+        "uv_names": [
+          "SC_PaintUV",
+          "SC_LineUV",
+          "UVmap_0",
+          "UVmap_1",
+          "UVmap_2",
+          "LightMapUV"
+        ],
+        "uv_max_errors": {
+          "SC_PaintUV": 0.0,
+          "SC_LineUV": 0.0,
+          "UVmap_0": 0.0,
+          "UVmap_1": 0.0,
+          "UVmap_2": 0.0,
+          "LightMapUV": 0.0
+        },
+        "materials": [
+          "M_SC_CIWS_Portable"
+        ],
+        "bones": {
+          "Root": {
+            "parent": null,
+            "head": [
+              0.0,
+              0.0,
+              0.0
+            ]
+          },
+          "BarrelPitch": {
+            "parent": "Root",
+            "head": [
+              1.7484554248881068e-08,
+              -0.19999998807907104,
+              0.18817999958992004
+            ]
+          }
+        },
+        "max_bone_pivot_error_m": 2.297290260155202e-08,
+        "rigid_weights": "single bone, weight 1",
+        "socket_names": [
+          "Socket_1",
+          "Socket_2",
+          "Socket_3"
+        ],
+        "socket_metadata_matches_source": true,
+        "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+        "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+        "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+        "demo_animation_exported": false,
+        "UE_formal_validation": "not_run",
+        "passed": true
+      },
+      "motion_audit": {
+        "status": "passed",
+        "sample_count": 91,
+        "angles_degrees": [
+          -15,
+          75
+        ],
+        "rigid_max_error_m": 1.5266237824995157e-06,
+        "socket_max_error_m": 1.39020726557858e-06,
+        "single_bone_weight_one": true,
+        "surface_crossings_by_angle": {
+          "-15": {},
+          "-14": {},
+          "-13": {},
+          "-12": {},
+          "-11": {},
+          "-10": {},
+          "-9": {},
+          "-8": {},
+          "-7": {},
+          "-6": {},
+          "-5": {},
+          "-4": {},
+          "-3": {},
+          "-2": {},
+          "-1": {},
+          "0": {},
+          "1": {},
+          "2": {},
+          "3": {},
+          "4": {},
+          "5": {},
+          "6": {},
+          "7": {},
+          "8": {},
+          "9": {},
+          "10": {},
+          "11": {},
+          "12": {},
+          "13": {},
+          "14": {},
+          "15": {},
+          "16": {},
+          "17": {},
+          "18": {},
+          "19": {},
+          "20": {},
+          "21": {},
+          "22": {},
+          "23": {},
+          "24": {},
+          "25": {},
+          "26": {},
+          "27": {},
+          "28": {},
+          "29": {},
+          "30": {},
+          "31": {},
+          "32": {},
+          "33": {},
+          "34": {},
+          "35": {},
+          "36": {},
+          "37": {},
+          "38": {},
+          "39": {},
+          "40": {},
+          "41": {},
+          "42": {},
+          "43": {},
+          "44": {},
+          "45": {},
+          "46": {},
+          "47": {},
+          "48": {},
+          "49": {},
+          "50": {},
+          "51": {},
+          "52": {},
+          "53": {},
+          "54": {},
+          "55": {},
+          "56": {},
+          "57": {},
+          "58": {},
+          "59": {},
+          "60": {},
+          "61": {},
+          "62": {},
+          "63": {},
+          "64": {},
+          "65": {},
+          "66": {},
+          "67": {},
+          "68": {},
+          "69": {},
+          "70": {},
+          "71": {},
+          "72": {},
+          "73": {},
+          "74": {},
+          "75": {}
+        },
+        "geometry_modified_to_resolve_crossings": false
+      }
+    },
+    "Thor_MissilePod": {
+      "version": "v4",
+      "A": "approved",
+      "B": "approved",
+      "original_source_file": "Source\\FBX_static_v1\\SM_SC_Thor_MissilePod.fbx",
+      "original_source_file_sha256": "36d1285db332a86cd109212814f0bf0bda0237e9b346ab2014bb346047aef991",
+      "approved_source_sha256": "4cc4c432ee70d9ed90d4ed535ab9a385368400c4bc4114601a99893e5371a432",
+      "original_geometry_sha256": "468c6f4f77ac74a5d69e1551b2d9a801d61a54cddb08568ca7688f5ae28c7ecd",
+      "original_geometry_and_normals_unchanged": true,
+      "final_blend": "Blender\\SC_Thor_MissilePod_Styled.blend",
+      "final_blend_sha256": "b55f7e3fff33e328fc901f127636d5ade50baf669c5b5911322cd6c42427ee13",
+      "FBX_readback": {
+        "key": "Thor_MissilePod",
+        "fbx_file": "FBX\\SM_SC_Thor_MissilePod_Styled.fbx",
+        "fbx_sha256": "aee4aec4e053e70a1e9e3b74512221a1212523db9f67d1784acf56e6ec96e6bb",
+        "mesh_count": 1,
+        "body_triangles": 2080,
+        "dimensions_m": [
+          18.048770904541016,
+          45.332401275634766,
+          5.910689353942871
+        ],
+        "max_dimension_error_m": 1.9073486328125e-06,
+        "max_geometry_error_m": 1.9073486328125e-06,
+        "origin_error_m": 0.0,
+        "uv_names": [
+          "SC_PaintUV",
+          "SC_LineUV",
+          "UVmap_0",
+          "UVmap_1",
+          "LightMapUV"
+        ],
+        "uv_max_errors": {
+          "SC_PaintUV": 0.0,
+          "SC_LineUV": 0.0,
+          "UVmap_0": 0.0,
+          "UVmap_1": 0.0,
+          "LightMapUV": 0.0
+        },
+        "materials": [
+          "M_SC_Thor_MissilePod_Portable"
+        ],
+        "bones": {},
+        "max_bone_pivot_error_m": 0,
+        "rigid_weights": "not_applicable_static",
+        "socket_names": [
+          "Socket_1",
+          "Socket_2",
+          "Socket_3",
+          "Socket_4",
+          "Socket_5"
+        ],
+        "socket_metadata_matches_source": true,
+        "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+        "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+        "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+        "demo_animation_exported": false,
+        "UE_formal_validation": "not_run",
+        "passed": true
+      },
+      "motion_audit": {
+        "status": "not_applicable_static"
+      }
+    }
+  },
+  "files": [
+    {
+      "path": "Blender/SC_CIWS_Styled.blend",
+      "bytes": 521065,
+      "sha256": "563deea607da7e0fa339bdef753793e2a1b67c3d4f9d5cbb54e850ca39cbeeec"
+    },
+    {
+      "path": "Blender/SC_Thor_MissilePod_Styled.blend",
+      "bytes": 785162,
+      "sha256": "b55f7e3fff33e328fc901f127636d5ade50baf669c5b5911322cd6c42427ee13"
+    },
+    {
+      "path": "Blender/SC_Twin_Barrel_Turret_Styled.blend",
+      "bytes": 780173,
+      "sha256": "1c1a297f558bdb5bcefc1421c288b54dae894f7bbb047e8d088d33138e871dab"
+    },
+    {
+      "path": "Blender/ShipComponentStyle_Overview.blend",
+      "bytes": 1640405,
+      "sha256": "1fc2bb36e2b1ea8437234a5fe1fbb82c74c76ce5c570f74a40905453d2716eec"
+    },
+    {
+      "path": "FBX/SKM_SC_CIWS_Styled.fbx",
+      "bytes": 353004,
+      "sha256": "77a938ebc39c1068945ae24bc7ceea49193cee527a1518347207d645a0cc5909"
+    },
+    {
+      "path": "FBX/SKM_SC_Twin_Barrel_Turret_Styled.fbx",
+      "bytes": 535932,
+      "sha256": "dc3cc679b1e02202e206060b03f01622d0d9b422be7aaafbb4d32deea87b7611"
+    },
+    {
+      "path": "FBX/SM_SC_Thor_MissilePod_Styled.fbx",
+      "bytes": 603036,
+      "sha256": "aee4aec4e053e70a1e9e3b74512221a1212523db9f67d1784acf56e6ec96e6bb"
+    },
+    {
+      "path": "Parameters/approval_A_20260917.json",
+      "bytes": 628,
+      "sha256": "ffca8a75e5aa4b81caa728527b0c88ec623123e48cb6c65f817fe55fb3c51139"
+    },
+    {
+      "path": "Parameters/approval_B_20260917.json",
+      "bytes": 1962,
+      "sha256": "e493693381ae5ec68931fbfec44bd48adf5c5630b3928138592e8aa1387bc3a5"
+    },
+    {
+      "path": "Parameters/CIWS_Sockets.json",
+      "bytes": 2369,
+      "sha256": "d02dea33096c10aadf9644ae81e5df1fcfdef6664aac523c693be70451b81731"
+    },
+    {
+      "path": "Parameters/InterfaceSpec_v1.md",
+      "bytes": 3685,
+      "sha256": "fa3f7b31e54c744f1963cf940b47c46ab6df601c4e1667516729f539cda27124"
+    },
+    {
+      "path": "Parameters/material_scope_and_connection_fix_v4.json",
+      "bytes": 1598,
+      "sha256": "5156fe95a49c81c9fefd529d3c981f10aa5b74518e3153267202e5494a10792c"
+    },
+    {
+      "path": "Parameters/MaterialParameters_v4.json",
+      "bytes": 5895,
+      "sha256": "64069990500cb3c570c1df837c4f20996ff7dde2a3ebed92decbcb36c37eb41c"
+    },
+    {
+      "path": "Parameters/review_B_material_manifest_v4.json",
+      "bytes": 41212,
+      "sha256": "e0f4752719757d8055f3b4e69810042549703282fed94aeb4615ea0c68a5dea2"
+    },
+    {
+      "path": "Parameters/source_snapshot_v1.json",
+      "bytes": 20603,
+      "sha256": "e56f0614ab3db6733288c27ef6e0b0390d0302ddad0803b4b2d2d811cf7d500e"
+    },
+    {
+      "path": "Parameters/Thor_MissilePod_Sockets.json",
+      "bytes": 1599,
+      "sha256": "5fd4a9a1daa6a3fe8f5f7a9ff956a72f3d777d7d335bf7be94a414e8c8b0c07e"
+    },
+    {
+      "path": "Parameters/Twin_Barrel_Turret_Sockets.json",
+      "bytes": 1674,
+      "sha256": "771f03db5cfc35c7a3d33ce8c226576e9c9a5dd0527b774f63dd2387341b1c0f"
+    },
+    {
+      "path": "Previews/CIWS_alternate_light.png",
+      "bytes": 1576619,
+      "sha256": "c13610a9199fe142e54ce9d0a6c13926582ad06cee8421a6ab88e7af5b426c46"
+    },
+    {
+      "path": "Previews/CIWS_front.png",
+      "bytes": 1389546,
+      "sha256": "90490762c9acc5aa6f0bea90eeb4c97eede16198b71a46c9702f5c2bcdfd3bd6"
+    },
+    {
+      "path": "Previews/CIWS_gray_pitch_-15.png",
+      "bytes": 1028628,
+      "sha256": "8d0dbdfebad753db9483d6f3416fa379385937b0cae7af3402efb640fad484fe"
+    },
+    {
+      "path": "Previews/CIWS_gray_pitch_0.png",
+      "bytes": 1014754,
+      "sha256": "5dee1ee26839cfca4e9ad6dc1841e9101b7002af112a7e3008c9ec0fa42b638a"
+    },
+    {
+      "path": "Previews/CIWS_gray_pitch_30.png",
+      "bytes": 1001359,
+      "sha256": "ecf61c24420aa0c99c739a2e9894bb84b08d8aaa4459a54fe95e162657564dd2"
+    },
+    {
+      "path": "Previews/CIWS_gray_pitch_75.png",
+      "bytes": 1026804,
+      "sha256": "b475198f47ca44b697fd0dbdcc05114855d4a7ab9c6c0ed55c4528201543cb73"
+    },
+    {
+      "path": "Previews/CIWS_hero.png",
+      "bytes": 1569327,
+      "sha256": "0a784b590ef27ef0d0dbb696d7bfaef6ea27c596747b02bfa1f365dfefd67387"
+    },
+    {
+      "path": "Previews/CIWS_lines_off.png",
+      "bytes": 1466843,
+      "sha256": "0bb0e642140499116bfd7b8cc181d3df6b18aa4b54d2b20a7c636272f364ac4f"
+    },
+    {
+      "path": "Previews/CIWS_original_geometry_gray.png",
+      "bytes": 1177889,
+      "sha256": "020be5797436a6f9909f022632c214a91b44e182c78965c7583ee98f66336a74"
+    },
+    {
+      "path": "Previews/CIWS_pitch_-15.png",
+      "bytes": 1643433,
+      "sha256": "d5ea62b321012e65ba0f2a75f2efde56d2e226403b3ef51d717de1078db20e25"
+    },
+    {
+      "path": "Previews/CIWS_pitch_0.png",
+      "bytes": 1646950,
+      "sha256": "8f3530d9422ee097d5302e30456bf268b6c03a412606d2caea616b619c3c72e5"
+    },
+    {
+      "path": "Previews/CIWS_pitch_30.png",
+      "bytes": 1653460,
+      "sha256": "de39305c852dee7d495dafa68163a18f4f5e28c4fd29fea5d078cced0ff958f4"
+    },
+    {
+      "path": "Previews/CIWS_pitch_75.png",
+      "bytes": 1666794,
+      "sha256": "61398d46c1f7c17f6b000fe7ac61bca72027cd660ce3b19a0f2e70d6508686aa"
+    },
+    {
+      "path": "Previews/CIWS_pitch_motion.mp4",
+      "bytes": 352308,
+      "sha256": "85a38dfc10f6223d74d4cea86442db0560ffcefeec32837373332c8aeb3e5998"
+    },
+    {
+      "path": "Previews/CIWS_rear.png",
+      "bytes": 1421467,
+      "sha256": "9289751727e17819b4dc7c96bac058c6a92cace7688e70041623117f7759462b"
+    },
+    {
+      "path": "Previews/CIWS_right.png",
+      "bytes": 1428237,
+      "sha256": "be4232c0fd96d2c7e28f6951df38ba04075ebe7c934eef4422a27eaa4ffb38f9"
+    },
+    {
+      "path": "Previews/CIWS_small.png",
+      "bytes": 114310,
+      "sha256": "76ae64cdf5494d6530bb55c918fab3e69f870f7823acf0563cbbda007d190bfb"
+    },
+    {
+      "path": "Previews/CIWS_top.png",
+      "bytes": 1444328,
+      "sha256": "679b1af7b45b6f2dcd31121ab6460832ecfe5730fa75d9528202f2009383230d"
+    },
+    {
+      "path": "Previews/Thor_MissilePod_alternate_light.png",
+      "bytes": 1660232,
+      "sha256": "82b0ff8b522d6875b13b6d8aecc37e8a47b491d1c414a8e7c0ef79e0e2f39878"
+    },
+    {
+      "path": "Previews/Thor_MissilePod_front.png",
+      "bytes": 1376401,
+      "sha256": "0c777e89e2fcdbf928a3e0215fd5c02cc3ceca318d21d6d2b7f921167e0b8cad"
+    },
+    {
+      "path": "Previews/Thor_MissilePod_hero.png",
+      "bytes": 1658550,
+      "sha256": "0d95846456b39e3df6f7686c78e9b913a741a9dfba83bc8daeb1d202263bce7f"
+    },
+    {
+      "path": "Previews/Thor_MissilePod_lines_off.png",
+      "bytes": 1545358,
+      "sha256": "aa4c89e8eb1a90979daee6047c053343cd3086080db0bac3d874f7050f8a7e16"
+    },
+    {
+      "path": "Previews/Thor_MissilePod_original_geometry_gray.png",
+      "bytes": 1211552,
+      "sha256": "2013eb7cf8ecc4e8cee29658abf309e80bb5cbb4743141186d7ee3bb4541e5c7"
+    },
+    {
+      "path": "Previews/Thor_MissilePod_rear.png",
+      "bytes": 1410525,
+      "sha256": "2b180062c6b2510d6a1d8ec3fa6ba2919da6d79c1dd4cd15303435037b9916aa"
+    },
+    {
+      "path": "Previews/Thor_MissilePod_right.png",
+      "bytes": 1409898,
+      "sha256": "bacb29f7b9ac649af9e683b6f3e86aa7533ef2c697e68a2872dd3a715a762b86"
+    },
+    {
+      "path": "Previews/Thor_MissilePod_small.png",
+      "bytes": 128184,
+      "sha256": "306748255974a0a108743417ceff47e4eb63de2c3911e2e6977428c6ec410049"
+    },
+    {
+      "path": "Previews/Thor_MissilePod_top.png",
+      "bytes": 1611928,
+      "sha256": "1d7bc3ce576599ee19773781c7b611c1c024dec97f6636c67e41d4ff31e45048"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_alternate_light.png",
+      "bytes": 1639965,
+      "sha256": "c9bc3e51ed89f91e4baace383f145e22620492f6190474ecb70b52bded669c66"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_front.png",
+      "bytes": 1418397,
+      "sha256": "0faf08cd0dfaac2c35b523579c09637a086beaf6be6f9110f4eee5708e461b37"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_gray_pitch_-15.png",
+      "bytes": 916975,
+      "sha256": "e393c81c47ff02041bbbdc4a12c524def4be3cfb98e00a8165c88de9f8559eaf"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_gray_pitch_0.png",
+      "bytes": 916983,
+      "sha256": "e87fad38541769216213454c1297218e9a6b04b53605db4db6d3ff10abe1ec38"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_gray_pitch_30.png",
+      "bytes": 916983,
+      "sha256": "e87fad38541769216213454c1297218e9a6b04b53605db4db6d3ff10abe1ec38"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_gray_pitch_75.png",
+      "bytes": 916983,
+      "sha256": "c5a71fb2d141d3ba4d2b930358bb9d969380a5fb91ce766ae61844f5cad6a7d1"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_hero.png",
+      "bytes": 1665702,
+      "sha256": "63e7f958e08f5287d500d5e22727cfbaaba2b3c4c18d43950d282de427354783"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_lines_off.png",
+      "bytes": 1567757,
+      "sha256": "2e4fc3abc7f99dc90383dbd76ce52cbbe83f76aae1af86ae973d30bde162346c"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_original_geometry_gray.png",
+      "bytes": 1158651,
+      "sha256": "cbae571b5b2f9cd0b1fe975571c164e66b90852990e7cf2abf3cb9f744e3d6d3"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_pitch_-15.png",
+      "bytes": 1713552,
+      "sha256": "61945d8012f4401c0ad641fa7a52488d2b3f4c37986ba4cc68f2ffc6eacf00b8"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_pitch_0.png",
+      "bytes": 1713622,
+      "sha256": "f61a70eca8ab0f22c2e9b70f9f41aaab0e620c0c622b84c0218dad4f7348c9e8"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_pitch_30.png",
+      "bytes": 1713622,
+      "sha256": "caa77e01040a5b3ed81558168901f678980dd4c1bfcaf13a3041b04f906cc132"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_pitch_75.png",
+      "bytes": 1713593,
+      "sha256": "be31fddc5a9df8a2ca83a9ec8ecb97116c51575f9a7ed22097555c194851fcd3"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_pitch_motion.mp4",
+      "bytes": 404693,
+      "sha256": "e9bb052d86f167195fc7368b95420f6c492beef6704f647fa7b69c13a5faef04"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_rear.png",
+      "bytes": 1451188,
+      "sha256": "4326ae68853f8943b0e764465b4be1fa27b034198ae7dbee86327b504035c0ca"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_right.png",
+      "bytes": 1435008,
+      "sha256": "a0f3165e679f946fa65ead34f4d0ecb7e20ea85f412e929e725b5455290a561c"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_small.png",
+      "bytes": 125659,
+      "sha256": "33e76dac8471fe5c421224c7092fe8970eeb99a2bb08a4553527fe2aeee68f58"
+    },
+    {
+      "path": "Previews/Twin_Barrel_Turret_top.png",
+      "bytes": 1458378,
+      "sha256": "f9d0ea972aacb5502fe13d070e6580fa99110da02bff7ee0c8f439a31f1d8201"
+    },
+    {
+      "path": "README.md",
+      "bytes": 4435,
+      "sha256": "93a161d83106ab4af864d7b3d8944bbad7917cadab9695da08d2cbd92144ce35"
+    },
+    {
+      "path": "References/CIWS_connection_user_markup_20260917.png",
+      "bytes": 2281758,
+      "sha256": "aba9f94e7c2b88af14df2fc590bccbefb3510425ab51e106da34f184f1579e19"
+    },
+    {
+      "path": "References/CIWS_Design_v1.png",
+      "bytes": 1616731,
+      "sha256": "9864ec1aecc5a598d2e196c77f8b631e7b44ac8cddd20bec327fe2f3446f97eb"
+    },
+    {
+      "path": "References/CIWS_original_front_v1.png",
+      "bytes": 1172894,
+      "sha256": "c790df17b5674825028e5d2863f11de7e69e8b7a6a77a1e0417f47083d688f73"
+    },
+    {
+      "path": "References/CIWS_original_hero_v1.png",
+      "bytes": 1146868,
+      "sha256": "4aa8edb72f5288e891c087f89017e572bb128090655ab3a6af5b61f394c9d33b"
+    },
+    {
+      "path": "References/CIWS_original_rear_v1.png",
+      "bytes": 1060847,
+      "sha256": "abcbdac394e1dd3c492702e624f6a4d41961f9fd302dbcaa865f06b904231985"
+    },
+    {
+      "path": "References/CIWS_original_right_v1.png",
+      "bytes": 1036539,
+      "sha256": "22d6ab17c7313c5f5336054dca058748da66e5e49aeb683701e593660257a18e"
+    },
+    {
+      "path": "References/CIWS_original_top_v1.png",
+      "bytes": 1052075,
+      "sha256": "f0f05db5cdc6c063d58714ddc902d57154de4e25df2ca2a2d45e9a1112018633"
+    },
+    {
+      "path": "References/CIWS_v3_superseded.png",
+      "bytes": 1578649,
+      "sha256": "f44db2789d89d155104667727dd9c9f375b9763208dd37f2fde303336e44060a"
+    },
+    {
+      "path": "References/Ship_Style_Anchor_20260916.png",
+      "bytes": 2020765,
+      "sha256": "050a9e8727f1b7a57a72bd3769422cd2b2e29f22047625883bcc88525ef0ac6b"
+    },
+    {
+      "path": "References/Thor_MissilePod_Design_v3.png",
+      "bytes": 1749060,
+      "sha256": "9d2ceff349683ea9f439b08054b166e95c6c2dd5c9d484bec7803624f02d4d29"
+    },
+    {
+      "path": "References/Thor_MissilePod_original_front_v1.png",
+      "bytes": 1052909,
+      "sha256": "9c11a3ae14610371c26dd753b37ac07bd73374c0fb8823a19f7d17decf4dbf10"
+    },
+    {
+      "path": "References/Thor_MissilePod_original_hero_v1.png",
+      "bytes": 1169466,
+      "sha256": "052275111fe274f74e8614b53c7288c5ef4ddb387f6b613600ff8ef636c82452"
+    },
+    {
+      "path": "References/Thor_MissilePod_original_rear_v1.png",
+      "bytes": 1057080,
+      "sha256": "4c7dc530ee92901e0c5c3a6dff95aa4f5bfb8f42820345e3fb69ac837edbcc88"
+    },
+    {
+      "path": "References/Thor_MissilePod_original_right_v1.png",
+      "bytes": 1024978,
+      "sha256": "5ab97b7679ccc2e078a161e4994bc3c0b5da722068f9359daca94030bdc029cb"
+    },
+    {
+      "path": "References/Thor_MissilePod_original_top_v1.png",
+      "bytes": 1087866,
+      "sha256": "ddc54f7e9823c60423e5d91c686e269e93ec8174413e6a9d4f91aaadfda1a84a"
+    },
+    {
+      "path": "References/Twin_Barrel_Turret_Design_v1.png",
+      "bytes": 1786094,
+      "sha256": "0d9b9d9622484e38ce0befd07832dbb57eddd1efa5b7c4d53bb49edbab9e0c7b"
+    },
+    {
+      "path": "References/Twin_Barrel_Turret_original_front_v1.png",
+      "bytes": 1113975,
+      "sha256": "890388a03cfd58eb91434e04a5c17164b0e1e40bb01d71570a7c534171595e45"
+    },
+    {
+      "path": "References/Twin_Barrel_Turret_original_hero_v1.png",
+      "bytes": 1191662,
+      "sha256": "fdf5c16efcb10570d8b5f6d346cdabdeccf01a51fe2a22467e54e631bafc8ff0"
+    },
+    {
+      "path": "References/Twin_Barrel_Turret_original_rear_v1.png",
+      "bytes": 1060256,
+      "sha256": "3dd91c95cb0f22ca0990f5a23ddac051307f12798c1cdab3455cb04b6e138d49"
+    },
+    {
+      "path": "References/Twin_Barrel_Turret_original_right_v1.png",
+      "bytes": 1018672,
+      "sha256": "e67ce3b417b259144ea20eee6590b465e67e0a783ceced831babbbc2faa3e41e"
+    },
+    {
+      "path": "References/Twin_Barrel_Turret_original_top_v1.png",
+      "bytes": 1044457,
+      "sha256": "e5b357e216635562a28dd5566104a085a4741195ea68da5e730b395d3a06e9c5"
+    },
+    {
+      "path": "Review.html",
+      "bytes": 14356,
+      "sha256": "7f51e79569ce3f8421b6d978b6d1ea180f307b131cfb587e56a5ee9c0ea1322a"
+    },
+    {
+      "path": "Textures/T_SC_CIWS_BaseColor_2K.png",
+      "bytes": 156066,
+      "sha256": "ffd02edaf7b0aa72a898c3c58b926e3eb346c331a3256c989f61b4c4dc9431c6"
+    },
+    {
+      "path": "Textures/T_SC_CIWS_LineMask_2K.png",
+      "bytes": 237254,
+      "sha256": "95003a2566c5534ea1d92ee2f9ab0320513fcfc55eac13338d08ca0d0a2b9f51"
+    },
+    {
+      "path": "Textures/T_SC_CIWS_ORM_2K.png",
+      "bytes": 155080,
+      "sha256": "19d1dbd0f6a2e72dc78a92a49c99d5f023e493197e11d7fbbb09d27bfa1bc34c"
+    },
+    {
+      "path": "Textures/T_SC_Thor_MissilePod_BaseColor_2K.png",
+      "bytes": 183397,
+      "sha256": "236496d3fa3ceacf32a83b276fd2e7dc3c95ad533b5625013de21a50f69675b2"
+    },
+    {
+      "path": "Textures/T_SC_Thor_MissilePod_LineMask_2K.png",
+      "bytes": 375874,
+      "sha256": "33ae93980a65e00cd2c3a3774da5ee2395156ef88cbc6afd682fab800478502a"
+    },
+    {
+      "path": "Textures/T_SC_Thor_MissilePod_ORM_2K.png",
+      "bytes": 178186,
+      "sha256": "afc6e504e71c8d316b64c1007ea43680c6825de46ecae1db74df0af59333f2be"
+    },
+    {
+      "path": "Textures/T_SC_Twin_Barrel_Turret_BaseColor_2K.png",
+      "bytes": 184776,
+      "sha256": "546df5ab68189a35bb7ac886cbdc25cf80f0bbf74a54e97d80d8a7bfb005ab58"
+    },
+    {
+      "path": "Textures/T_SC_Twin_Barrel_Turret_LineMask_2K.png",
+      "bytes": 352489,
+      "sha256": "09b7e20eb549095c60b7f515c156b46d2a0721ba9c278676a2e88be584b6c447"
+    },
+    {
+      "path": "Textures/T_SC_Twin_Barrel_Turret_ORM_2K.png",
+      "bytes": 181167,
+      "sha256": "2ab7145befa681f73f6053c6d95c41e54e17f901bd7967e8186dd52af73f6420"
+    },
+    {
+      "path": "Validation/ApprovedSource_Blender_Readback.json",
+      "bytes": 646,
+      "sha256": "a896505d871027c6f61ae79d8c5fdf38e82cb222e650ad6501219a214b9a19f3"
+    },
+    {
+      "path": "Validation/CIWS_ApprovedSource_Audit.json",
+      "bytes": 7069,
+      "sha256": "851766e57461e04f10d2f46a79bddf65c08a9fd99d379ed32e4ece6799f74503"
+    },
+    {
+      "path": "Validation/CIWS_export_expected.json",
+      "bytes": 1357054,
+      "sha256": "2448b12dd9ab23df828ae61aa1d022a5328e2055a000de264bb08090382cc0ee"
+    },
+    {
+      "path": "Validation/CIWS_FBX_Readback.json",
+      "bytes": 1674,
+      "sha256": "0c56fa667551919e9b90a698ab1642cc514b183fc9e13618bc4a2ae5097cab9c"
+    },
+    {
+      "path": "Validation/FBX_Readback_Summary.json",
+      "bytes": 5533,
+      "sha256": "1b7079e8f4b0cc677afe8c3fa0c49233e58174f61f277e1a52c9f5393a15a0ce"
+    },
+    {
+      "path": "Validation/Portable_Blender_Readback.json",
+      "bytes": 3426,
+      "sha256": "332a4a5f9d92ce0c5c17f2195cd773f5d96c13419294f1ff64ad7317a9c919e3"
+    },
+    {
+      "path": "Validation/Thor_MissilePod_ApprovedSource_Audit.json",
+      "bytes": 6888,
+      "sha256": "690bdd3c1194df7dc04a0f05d493f2482d12cb27b2f1f8b5c79db13e151ca9a0"
+    },
+    {
+      "path": "Validation/Thor_MissilePod_export_expected.json",
+      "bytes": 2302623,
+      "sha256": "bcad8eb1ccf8b1a7e627562208d8a26e49dd5298cfad83ba0fe2172536407a7c"
+    },
+    {
+      "path": "Validation/Thor_MissilePod_FBX_Readback.json",
+      "bytes": 1390,
+      "sha256": "b9048663b3f722ab34ac695c46c2dd9bc8a1be3b8601ba23c6e413d42de47eeb"
+    },
+    {
+      "path": "Validation/Twin_Barrel_Turret_ApprovedSource_Audit.json",
+      "bytes": 10089,
+      "sha256": "ef2c6bb26c6b7e1bc0ade097fec8d71145452de923c132d9669c30dd2172b9b7"
+    },
+    {
+      "path": "Validation/Twin_Barrel_Turret_export_expected.json",
+      "bytes": 2178631,
+      "sha256": "f74b86b4101bd61ed374a8a7b403cbbfad3f413667dcdf6314a80972a34bcfd8"
+    },
+    {
+      "path": "Validation/Twin_Barrel_Turret_FBX_Readback.json",
+      "bytes": 1698,
+      "sha256": "364acd9fc8aa06d4a7f198d6d6f6d2c4ff438dd38d4061e868f2b9dcca00a4b8"
+    }
+  ]
+}

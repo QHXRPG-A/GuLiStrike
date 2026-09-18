@@ -1,0 +1,161 @@
+{
+  "pid": 25224,
+  "started": 1789711499.1508322,
+  "maps": [
+    {
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "started": 1789711509.1484928,
+      "ground_parameters_before": [
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+          "tile_size_uu": 5000.0,
+          "cell_size": {
+            "unavailable": "RecastNavMesh: Property 'CellSize' for attribute 'cell_size' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "cell_height": {
+            "unavailable": "RecastNavMesh: Property 'CellHeight' for attribute 'cell_height' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "agent_radius": 6.800000190734863,
+          "agent_height": 28.799999237060547,
+          "agent_max_step_height": {
+            "unavailable": "RecastNavMesh: Property 'AgentMaxStepHeight' for attribute 'agent_max_step_height' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "nav_mesh_resolution_params": "[{}, {}, {}]",
+          "tile_pool_size": 1024
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "tile_size_uu": 5000.0,
+          "cell_size": {
+            "unavailable": "RecastNavMesh: Property 'CellSize' for attribute 'cell_size' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "cell_height": {
+            "unavailable": "RecastNavMesh: Property 'CellHeight' for attribute 'cell_height' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "agent_radius": 150.0,
+          "agent_height": 28.799999237060547,
+          "agent_max_step_height": {
+            "unavailable": "RecastNavMesh: Property 'AgentMaxStepHeight' for attribute 'agent_max_step_height' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "nav_mesh_resolution_params": "[{}, {}, {}]",
+          "tile_pool_size": 1024
+        }
+      ],
+      "configuration": {
+        "entries": [
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.0,
+            "kind": "GroundScale020",
+            "message": "Radius 150.000 -> 150.000; height 28.800 -> 28.800; cellZ=5; step=7.000; XY unchanged",
+            "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+            "source_hash": "",
+            "status": "Configured"
+          },
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.0,
+            "kind": "GroundScale020",
+            "message": "Radius 6.800 -> 6.800; height 28.800 -> 28.800; cellZ=5; step=7.000; XY unchanged",
+            "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+            "source_hash": "",
+            "status": "Configured"
+          },
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.0,
+            "kind": "FlightScale020",
+            "message": "Radius 300.000 -> 300.000; portal 25.000 -> 5.000; bounds/cells unchanged",
+            "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "",
+            "status": "Configured"
+          }
+        ],
+        "flight_rebuilds": 0,
+        "ground_rebuilds": 0,
+        "message": "Scale020 configured; rebuild and validation still required.",
+        "save_seconds": 0.0,
+        "success": true,
+        "total_seconds": 0.0
+      },
+      "prepare": {
+        "entries": [
+          {
+            "build_seconds": 162.71794240176678,
+            "check_seconds": 0.27688369999668794,
+            "kind": "Ground",
+            "message": "Source geometry/settings changed, or no versioned bake record exists.",
+            "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+            "source_hash": "a8822c3a3cfff42d",
+            "status": "Rebuilt"
+          },
+          {
+            "build_seconds": 157.45285670086741,
+            "check_seconds": 0.2678684999991674,
+            "kind": "Ground",
+            "message": "Source geometry/settings changed, or no versioned bake record exists.",
+            "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+            "source_hash": "e69bc2b8c7f4a40b",
+            "status": "Rebuilt"
+          },
+          {
+            "build_seconds": 12.121067799627781,
+            "check_seconds": 0.2604548999952385,
+            "kind": "Flight",
+            "message": "Decoded flight-navigation BulkData failed its deterministic content checksum.",
+            "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "1e08276fd72799b2",
+            "status": "Rebuilt"
+          }
+        ],
+        "flight_rebuilds": 1,
+        "ground_rebuilds": 2,
+        "message": "All source navigation is ready.",
+        "save_seconds": 21.38294880092144,
+        "success": true,
+        "total_seconds": 357.91360710188746
+      },
+      "finished": 1789711867.0790021,
+      "validation": {
+        "entries": [
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.32884670000203187,
+            "kind": "Ground",
+            "message": "Validated saved ground tiles.",
+            "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+            "source_hash": "a8822c3a3cfff42d",
+            "status": "Hit"
+          },
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.3702997000000323,
+            "kind": "Ground",
+            "message": "Validated saved ground tiles.",
+            "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+            "source_hash": "e69bc2b8c7f4a40b",
+            "status": "Hit"
+          },
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.5750696000031894,
+            "kind": "Flight",
+            "message": "Validated saved flight graph.",
+            "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "1e08276fd72799b2",
+            "status": "Hit"
+          }
+        ],
+        "flight_rebuilds": 0,
+        "ground_rebuilds": 0,
+        "message": "",
+        "save_seconds": 0.0,
+        "success": true,
+        "total_seconds": 1.2742899991571903
+      }
+    }
+  ],
+  "success": true,
+  "current": "/Game/Maps/LVL_CommanderMassPrototype",
+  "finished": 1789711868.3562799
+}

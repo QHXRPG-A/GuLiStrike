@@ -2,10 +2,10 @@
   {
     "Name": "Strafe",
     "Id": 1,
-    "Note": "机枪即时单体伤害与枪火表现",
+    "Note": "地面机枪直线飞行弹丸；碰撞扣血，弹道参数见UnitSkills",
     "SkillId": "Strafe",
     "DisplayName": "扫射",
-    "ExecutorId": "DirectSingleTarget",
+    "ExecutorId": "GroundMachineGun",
     "Tags": "Skill.Attack.Basic;Skill.Usage.Common;Weapon.MachineGun"
   },
   {
@@ -20,7 +20,7 @@
   {
     "Name": "WM01_HomingMissile",
     "Id": 3,
-    "Note": "独立自动导弹；爆炸由独立法术场结算；调试初值",
+    "Note": "战争机器Q主动导弹；定点弹道，爆炸由独立法术场结算",
     "SkillId": "WM01_HomingMissile",
     "DisplayName": "WM01导弹",
     "ExecutorId": "LaunchProjectile",

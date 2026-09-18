@@ -1,0 +1,304 @@
+{
+  "Beam": [
+    {
+      "name": "ParticleState",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "EmitterState",
+      "stage": "EmitterUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "InitializeParticle",
+      "stage": "ParticleSpawn",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "SpawnBurst_Instantaneous",
+      "stage": "EmitterUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "BeamWidth",
+      "stage": "ParticleSpawn",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "SpawnBeam",
+      "stage": "ParticleSpawn",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "BeamEmitterSetup",
+      "stage": "EmitterUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "UpdateBeam",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "ScaleBeamWidth",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "CurlNoiseForce",
+      "stage": "ParticleUpdate",
+      "enabled": false,
+      "inputs": []
+    },
+    {
+      "name": "SolveForcesAndVelocity",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "FloatFromCurve",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "Color",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    }
+  ],
+  "Beam001": [
+    {
+      "name": "ParticleState",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "EmitterState",
+      "stage": "EmitterUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "InitializeParticle",
+      "stage": "ParticleSpawn",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "SpawnBurst_Instantaneous",
+      "stage": "EmitterUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "BeamWidth",
+      "stage": "ParticleSpawn",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "SpawnBeam",
+      "stage": "ParticleSpawn",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "BeamEmitterSetup",
+      "stage": "EmitterUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "UpdateBeam",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "ScaleBeamWidth",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "CurlNoiseForce",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "SolveForcesAndVelocity",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "FloatFromCurve",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "Color",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    }
+  ],
+  "Spark": [
+    {
+      "name": "ParticleState",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "EmitterState",
+      "stage": "EmitterUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "InitializeParticle",
+      "stage": "ParticleSpawn",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "SpawnBurst_Instantaneous",
+      "stage": "EmitterUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "AddVelocity",
+      "stage": "ParticleSpawn",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "SolveForcesAndVelocity",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "RandomRangeFloat",
+      "stage": "ParticleSpawn",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "ScaleSpriteSize",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "Drag",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "GravityForce",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "Color",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "Collision",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    }
+  ],
+  "Spark001": [
+    {
+      "name": "ParticleState",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "EmitterState",
+      "stage": "EmitterUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "InitializeParticle",
+      "stage": "ParticleSpawn",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "SpawnBurst_Instantaneous",
+      "stage": "EmitterUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "AddVelocity",
+      "stage": "ParticleSpawn",
+      "enabled": false,
+      "inputs": []
+    },
+    {
+      "name": "SolveForcesAndVelocity",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "RandomRangeFloat",
+      "stage": "ParticleSpawn",
+      "enabled": false,
+      "inputs": []
+    },
+    {
+      "name": "ScaleSpriteSize",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    },
+    {
+      "name": "Drag",
+      "stage": "ParticleUpdate",
+      "enabled": false,
+      "inputs": []
+    },
+    {
+      "name": "GravityForce",
+      "stage": "ParticleUpdate",
+      "enabled": false,
+      "inputs": []
+    },
+    {
+      "name": "Color",
+      "stage": "ParticleUpdate",
+      "enabled": true,
+      "inputs": []
+    }
+  ]
+}

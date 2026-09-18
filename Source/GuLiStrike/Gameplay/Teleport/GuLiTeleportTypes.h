@@ -19,9 +19,9 @@ struct GULISTRIKE_API FGuLiTeleportFieldConfig
 	UPROPERTY(BlueprintReadOnly) bool bAllowPlayerVehicles = false;
 	UPROPERTY(BlueprintReadOnly) float WindupSeconds = 3;
 	UPROPERTY(BlueprintReadOnly) float RecoverySeconds = .5f;
-	UPROPERTY(BlueprintReadOnly) float BeamHeightCentimeters = 50000;
+	UPROPERTY(BlueprintReadOnly) float BeamHeightCentimeters = 10000;
 	UPROPERTY(BlueprintReadOnly) float MaxTargetWaitSeconds = 10;
-	UPROPERTY(BlueprintReadOnly) float MaxShipHeightCentimeters = 10000;
+	UPROPERTY(BlueprintReadOnly) float MaxShipHeightCentimeters = 2000;
 	bool IsValid() const;
 };
 

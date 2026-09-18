@@ -1,0 +1,98 @@
+{
+  "schema": "gulistrike-art-approval/v1",
+  "work_id": "WORK-20260917-005",
+  "recorded_at": "2026-09-17T09:41:57.5090918Z",
+  "art_revision": "1.0",
+  "stage": "A",
+  "decision": "approved",
+  "user_message": "开始实施",
+  "message_context": "Reply to current review-A request for Drone_LaunchBay v2, Electronic_JammingDevice v3 (navy/white/yellow), Shield_Generator v3 (green), after the revised sheets were shown.",
+  "scope": "Original static mesh materials, textures, internal line mask, optional outline and toon lighting only; keep geometry, normals, dimensions, origins and interfaces. B remains pending.",
+  "reference_manifest": {
+    "path": "References/reference_A_manifest_v3.json",
+    "sha256": "78c10e26a54d7cff88686ea166177188c1ec2ff34beb45e9676af5f829d0735c"
+  },
+  "parts": {
+    "Drone_LaunchBay": {
+      "reference_version": "v2",
+      "reference_sheet": {
+        "path": "References/Drone_LaunchBay_Reference_v2.png",
+        "sha256": "f1dddd61354bfa22aa46d870ac5c8628614c621912503c4585da48e6355a3b91",
+        "bytes": 1373482,
+        "resolution": [
+          1448,
+          1086
+        ]
+      },
+      "original_static_fbx": {
+        "path": "Source/FBX_static_v1/SM_SC_Drone_LaunchBay.fbx",
+        "sha256": "4d7204f4b52e028d4bc0038d4f0fff8bb35949acf949543a0ed7845b88f12dc0",
+        "bytes": 61744
+      },
+      "original_inspection_blend": {
+        "path": "Source/Drone_LaunchBay_Original_Inspection.blend",
+        "sha256": "c00ddfe5e8665b1f5558fa80b17aa4b5f4411f563bd68d3e4072ae6b0fe66aa8",
+        "bytes": 136748
+      },
+      "original_geometry_snapshot": {
+        "path": "Source/Drone_LaunchBay_original_geometry.json",
+        "sha256": "82e6244839165f6ad7651f87e62f6bf35e3a6918cee5c258bfec36ee7355f7b9",
+        "bytes": 187553
+      }
+    },
+    "Electronic_JammingDevice": {
+      "reference_version": "v3",
+      "reference_sheet": {
+        "path": "References/Electronic_JammingDevice_Reference_v3.png",
+        "sha256": "cd30300df95183bce9db719706776fbb4012c1092334c49b329fbde293bc67e9",
+        "bytes": 1512708,
+        "resolution": [
+          1536,
+          1024
+        ]
+      },
+      "original_static_fbx": {
+        "path": "Source/FBX_static_v1/SM_SC_Electronic_JammingDevice.fbx",
+        "sha256": "1efd95e79ab5c21d2bbfe3b215068b7cad37841feb37f43dd6ba6dbd104018ea",
+        "bytes": 43424
+      },
+      "original_inspection_blend": {
+        "path": "Source/Electronic_JammingDevice_Original_Inspection.blend",
+        "sha256": "dac9a49b5602fb55fcf1edda5410a660df907ffd65560ce078e0fa7b51f1b389",
+        "bytes": 113638
+      },
+      "original_geometry_snapshot": {
+        "path": "Source/Electronic_JammingDevice_original_geometry.json",
+        "sha256": "cb2a36577055e514ff1b2e7f8a02e9687d57ea203847ef825c45e4b3f28e76ce",
+        "bytes": 78571
+      }
+    },
+    "Shield_Generator": {
+      "reference_version": "v3",
+      "reference_sheet": {
+        "path": "References/Shield_Generator_Reference_v3.png",
+        "sha256": "a20b6a31eb7915dda05ad9d0300a0bd6fd1b4325ae7c834ec08dce7f429a8312",
+        "bytes": 1252852,
+        "resolution": [
+          1448,
+          1086
+        ]
+      },
+      "original_static_fbx": {
+        "path": "Source/FBX_static_v1/SM_SC_Shield_Generator.fbx",
+        "sha256": "6ea8cfcf3f05567b5af71daec6aebdf60a4f8e5a30bb45ed6defbfcc9ae6007f",
+        "bytes": 34704
+      },
+      "original_inspection_blend": {
+        "path": "Source/Shield_Generator_Original_Inspection.blend",
+        "sha256": "2d3bb738c54f41bef3191b8f4086fe36acbfeac0d14ddab4cbe9e2ed1e6bb7c1",
+        "bytes": 105388
+      },
+      "original_geometry_snapshot": {
+        "path": "Source/Shield_Generator_original_geometry.json",
+        "sha256": "b52499bd05912277098944c5407fd582bfdc8da88268e5b221ccde545b7a445b",
+        "bytes": 47834
+      }
+    }
+  }
+}

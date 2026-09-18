@@ -1,0 +1,23 @@
+{
+  "schema": "gulistrike-user-release-authorization/v1",
+  "recorded_at": "2026-09-17T11:03:30.204176+00:00",
+  "user_message": "开始实施，然后把这些组件导入至ue替换正式资源",
+  "decision": "implementation_and_formal_UE_replacement_authorized",
+  "scope": "All 13 unique styled Ship components; Thor Lv2 reuses the Lv1 mesh.",
+  "geometry_policy": "Preserve original body geometry, rigs, transforms, attachment and muzzle contracts.",
+  "visual_review_status": {
+    "Batch01_v4": "B_approved_in_prior_user_message",
+    "Batch02_v2": "actual_candidate_previously_shown; no_separate_explicit_B_visual_pass",
+    "Batch03_v3": "B_approved_in_prior_user_message",
+    "Batch04": "A_approved; no_separate_B_visual_pass"
+  },
+  "workflow_exception": "The latest explicit user instruction authorizes implementation followed by formal UE replacement. This record is release authorization, not a fabricated B visual approval.",
+  "required_validation": [
+    "immutable_body_geometry",
+    "FBX_readback",
+    "UE_bones_sockets_bounds",
+    "UE_actual_visuals",
+    "rollback_copies",
+    "formal_blueprint_references"
+  ]
+}

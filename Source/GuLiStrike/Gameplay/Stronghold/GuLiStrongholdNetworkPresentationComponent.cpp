@@ -47,13 +47,13 @@ void UGuLiStrongholdNetworkPresentationComponent::TickComponent(float Dt,ELevelT
 		Material->SetScalarParameterValue(TEXT("Opacity"),.35f); Materials.Add(Material);
 		const FVector Position = Node.GroundLocation+FVector(0,0,Config.LaneHeight);
 		Positions.Add(Node.TerritoryIndex,Position); NodeMaterials.Add(Node.TerritoryIndex,Material);
-		AddMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"),Position,FRotator::ZeroRotator,FVector(6),Material);
+		AddMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"),Position,FRotator::ZeroRotator,FVector(1.2),Material);
 	}
 	for (const auto& Edge : Snapshot.Edges)
 	{
 		const FVector A = Positions[Edge.A], B = Positions[Edge.B];
 		AddMesh(TEXT("/Engine/BasicShapes/Cylinder.Cylinder"),(A+B)*.5,FRotationMatrix::MakeFromZ(B-A).Rotator(),
-			FVector(.8,.8,FVector::Distance(A,B)/100.),NodeMaterials[Edge.A]);
+			FVector(.16,.16,FVector::Distance(A,B)/100.),NodeMaterials[Edge.A]);
 	}
 	AppliedRevision = Snapshot.Revision;
 }

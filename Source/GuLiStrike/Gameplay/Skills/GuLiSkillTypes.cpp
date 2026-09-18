@@ -6,7 +6,10 @@ bool FGuLiResolvedSkillProfile::HasSameConfiguration(const FGuLiResolvedSkillPro
 		&& SkillId == Other.SkillId && ExecutorId == Other.ExecutorId && Tags == Other.Tags
 		&& Damage == Other.Damage && AttackRatePerSecond == Other.AttackRatePerSecond
 		&& RangeCentimeters == Other.RangeCentimeters
-		&& bUnlocked == Other.bUnlocked && bEquipped == Other.bEquipped;
+		&& ProjectileSpeedCentimetersPerSecond == Other.ProjectileSpeedCentimetersPerSecond
+		&& ProjectileLifetimeSeconds == Other.ProjectileLifetimeSeconds
+		&& ProjectileSweepRadiusCentimeters == Other.ProjectileSweepRadiusCentimeters
+		&& bUnlocked == Other.bUnlocked && bEquipped == Other.bEquipped && TriggerMode == Other.TriggerMode;
 }
 
 bool FGuLiSkillTargetSelector::MatchesUnitSlot(uint16 UnitTypeId, FName InSlotId) const

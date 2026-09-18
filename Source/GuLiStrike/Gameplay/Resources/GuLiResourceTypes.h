@@ -16,14 +16,16 @@ inline constexpr int32 GULI_RESOURCE_CLUSTER_COUNT = 240;
 inline constexpr int32 GULI_RESOURCE_NODES_PER_CLUSTER = 26;
 inline constexpr int32 GULI_RESOURCE_NODE_COUNT = 6240;
 inline constexpr int32 GULI_RESOURCE_RAW_PER_CLUSTER = 40;
-inline constexpr int32 GULI_RESOURCE_LAYOUT_VERSION = 1;
+inline constexpr int32 GULI_RESOURCE_LAYOUT_VERSION = 2;
+// Source meshes and the deterministic authored pattern remain in their original units.
+inline constexpr float GULI_RESOURCE_OBJECT_SCALE = 0.2f;
 inline constexpr int32 GULI_RESOURCE_BAKE_SEED = 20260911;
 inline constexpr float GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM = 280000.0f;
 inline constexpr float GULI_RESOURCE_TERRITORY_SIZE_CM = 112000.0f;
 inline constexpr float GULI_RESOURCE_TERRITORY_HALF_EXTENT_CM = 56000.0f;
-inline constexpr float GULI_RESOURCE_CLUSTER_OBSTACLE_RADIUS_CM = 2600.0f;
-inline constexpr float GULI_RESOURCE_FACTORY_OBSTACLE_HALF_EXTENT_CM = 2500.0f;
-inline constexpr float GULI_RESOURCE_MINING_VEHICLE_NAV_RADIUS_CM = 750.0f;
+inline constexpr float GULI_RESOURCE_CLUSTER_OBSTACLE_RADIUS_CM = 520.0f;
+inline constexpr float GULI_RESOURCE_FACTORY_OBSTACLE_HALF_EXTENT_CM = 500.0f;
+inline constexpr float GULI_RESOURCE_MINING_VEHICLE_NAV_RADIUS_CM = 150.0f;
 inline constexpr float GULI_RESOURCE_FACTORY_DOCK_MIN_OFFSET_CM =
 	GULI_RESOURCE_FACTORY_OBSTACLE_HALF_EXTENT_CM + GULI_RESOURCE_MINING_VEHICLE_NAV_RADIUS_CM;
 
@@ -54,9 +56,9 @@ enum class EGuLiMiningTaskState : uint8
 	Docking,
 	PlayerMoving,
 	Blocked,
-	WaitingForFactoryDoor,
+	WaitingForFactoryDoor UMETA(Hidden), // Legacy ordinal, no longer emitted: doors are presentation only.
 	EnteringFactory,
-	TurningInFactory,
+	TurningInFactory UMETA(Hidden), // Legacy ordinal, turn at unload is immediate.
 	ExitingFactory
 };
 

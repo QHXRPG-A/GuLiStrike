@@ -96,7 +96,7 @@ AGuLiConstructionVehiclePawn* UGuLiResourceWorldSubsystem::SpawnConstructionVehi
 	check(Unit);
 	FActorSpawnParameters Params; Params.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButDontSpawnIfColliding;
 	auto* Vehicle = GetWorld()->SpawnActor<AGuLiConstructionVehiclePawn>(AGuLiConstructionVehiclePawn::StaticClass(),
-		FTransform(FRotator::ZeroRotator, ProjectAnchorToGround(GroundLocation) + FVector(0,0,650)), Params);
+		FTransform(FRotator::ZeroRotator, ProjectAnchorToGround(GroundLocation) + FVector(0,0,130)), Params);
 	if (Vehicle) Vehicle->InitializeVehicle(Team, AllocateControllableActorId(), *Unit);
 	return Vehicle;
 }
@@ -194,10 +194,10 @@ void UGuLiResourceWorldSubsystem::Tick(const float DeltaTime)
 				FVector VerticalEnd = ProjectAnchorToGround(FVector(Coordinate, End, 0.0f));
 				FVector HorizontalStart = ProjectAnchorToGround(FVector(Start, Coordinate, 0.0f));
 				FVector HorizontalEnd = ProjectAnchorToGround(FVector(End, Coordinate, 0.0f));
-				VerticalStart.Z += 500.0f;
-				VerticalEnd.Z += 500.0f;
-				HorizontalStart.Z += 500.0f;
-				HorizontalEnd.Z += 500.0f;
+				VerticalStart.Z += 100.0f;
+				VerticalEnd.Z += 100.0f;
+				HorizontalStart.Z += 100.0f;
+				HorizontalEnd.Z += 100.0f;
 				DrawDebugLine(GetWorld(), VerticalStart, VerticalEnd, FColor::Cyan, false, 0.0f, 0, 60.0f);
 				DrawDebugLine(GetWorld(), HorizontalStart, HorizontalEnd, FColor::Cyan, false, 0.0f, 0, 60.0f);
 			}
@@ -210,7 +210,7 @@ void UGuLiResourceWorldSubsystem::Tick(const float DeltaTime)
 			const FColor Color = Owner == EGuLiTeam::Red ? FColor::Red
 				: (Owner == EGuLiTeam::Blue ? FColor::Blue : FColor::Silver);
 			FVector LabelLocation = ProjectAnchorToGround(Territory.Center);
-			LabelLocation.Z += 8000.0f;
+			LabelLocation.Z += 1600.0f;
 			const TCHAR* OwnerText = Owner == EGuLiTeam::Red ? TEXT("Red")
 				: (Owner == EGuLiTeam::Blue ? TEXT("Blue") : TEXT("Neutral"));
 			DrawDebugString(GetWorld(), LabelLocation,
@@ -336,7 +336,7 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 	{
 		const FGuLiTerritoryDefinition& Territory = MapDefinition->Territories[Index];
 		FVector Location = ProjectAnchorToGround(Territory.Center);
-		Location.Z += 2500.0f;
+		Location.Z += 500.0f;
 		AGuLiTerritoryOutpostActor* Outpost = World->SpawnActor<AGuLiTerritoryOutpostActor>(
 			AGuLiTerritoryOutpostActor::StaticClass(), FTransform(FRotator::ZeroRotator, Location), Params);
 		if (!Outpost)
@@ -388,7 +388,7 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 		Factory->InitializeFactory(Team, *EconomyConfig, DockPoint);
 		Factories.AddUnique(Factory);
 		FVector VehicleLocation = ProjectAnchorToGround(VehicleAnchor);
-		VehicleLocation.Z += 650.0f;
+		VehicleLocation.Z += 130.0f;
 		return World->GetSubsystem<UGuLiMiningVehicleManager>()->SpawnMiningVehicle(Factory,
 			FTransform(FRotator(0.0f, Team == EGuLiTeam::Red ? -90.0f : 90.0f, 0.0f), VehicleLocation)) != nullptr;
 	};
@@ -402,7 +402,7 @@ bool UGuLiResourceWorldSubsystem::SpawnAuthorityActors()
 	}
 	for (int32 Index = 0; Index < EconomyConfig->InitialConstructionVehiclesPerTeam; ++Index)
 	{
-		const FVector Offset(6000 + Index * 2000, 0, 0);
+		const FVector Offset(1200 + Index * 400, 0, 0);
 		SpawnConstructionVehicle(EGuLiTeam::Red, MapDefinition->SpawnAnchors.RedAssembly + Offset);
 		SpawnConstructionVehicle(EGuLiTeam::Blue, MapDefinition->SpawnAnchors.BlueAssembly + Offset);
 	}

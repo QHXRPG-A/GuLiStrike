@@ -22,10 +22,10 @@ public:
 	virtual void OnPathFinished(const FPathFollowingResult& Result) override;
 	UFUNCTION(BlueprintPure, Category="Engineering|Navigation") FString GetAvoidanceDebug() const;
 private:
-	UPROPERTY(Config) float PredictionDistance = 12000;
-	UPROPERTY(Config) float OptimizationDistance = 30000;
+	UPROPERTY(Config) float PredictionDistance = 2400;
+	UPROPERTY(Config) float OptimizationDistance = 6000;
 	UPROPERTY(Config) float VehicleSeparationWeight = 2;
-	float FootprintRadius = 650;
+	float FootprintRadius = 130;
 	bool bPausedForControl = false;
 	void ChangeParticipation(ECrowdSimulationState Desired);
 };

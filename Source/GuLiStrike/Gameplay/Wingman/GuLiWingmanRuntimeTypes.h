@@ -43,8 +43,8 @@ struct GULISTRIKE_API FGuLiWingmanCarrierState
 
 struct GULISTRIKE_API FGuLiWingmanFormationSlotState
 {
-	float RadiusCentimeters = 30000.0f;
-	float HeightCentimeters = 7500.0f;
+	float RadiusCentimeters = 6000.0f;
+	float HeightCentimeters = 1500.0f;
 	float PhaseRadians = 0.0f;
 	float AngularSpeedRadiansPerSecond = 0.16f;
 	bool bClockwise = true;
@@ -56,7 +56,7 @@ struct GULISTRIKE_API FGuLiWingmanSwarmAgentState
 	uint32 AgentSeed = 1u;
 	uint32 FlowSimulationTick = 1u;
 	float FlowStepAccumulator = 0.0f;
-	float PreferredRadiusBaseCentimeters = 36000.0f;
+	float PreferredRadiusBaseCentimeters = 7200.0f;
 	float PreferredVerticalBiasCentimeters = 0.0f;
 	FVector BaseOrbitAxis = FVector::UpVector;
 	FVector NoiseDomainOffset = FVector::ZeroVector;
@@ -68,7 +68,7 @@ struct GULISTRIKE_API FGuLiWingmanGuidanceState
 	FVector DesiredPosition = FVector::ZeroVector;
 	FVector DesiredForward = FVector::ForwardVector;
 	FVector PreferredVelocity = FVector::ZeroVector;
-	float DesiredSpeedCentimetersPerSecond = 9000.0f;
+	float DesiredSpeedCentimetersPerSecond = 1800.0f;
 	bool bUsesVelocityField = false;
 	bool bAttackGuidance = false;
 };

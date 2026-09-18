@@ -1,0 +1,30 @@
+{
+  "schema": "gulistrike-art-surface-revision/v1",
+  "date": "2026-09-17",
+  "work_id": "WORK-20260917-005",
+  "component": "Drone_LaunchBay",
+  "candidate_version": "v3",
+  "user_instruction": "这里是朝外的，图标放这里",
+  "source_annotation": {
+    "path": "References/Drone_LaunchBay_User_ExteriorMarking_20260917.png",
+    "sha256": "54948f9312fe6af4fa8a15fd2c92249ff5137387e50e4fa0f252a500de8ee05d"
+  },
+  "approved_base_reference": "References/Drone_LaunchBay_Reference_v2.png",
+  "approval_A_record": "approval_A_20260917.json",
+  "change": "Move wingman silhouette and direction arrow from top/thick housing to the outward face of the thin long wall; remove the earlier marks.",
+  "surface": {
+    "source_component_seed": 0,
+    "blender_world_x_m": -7.568,
+    "normal_blender": [-1, 0, 0],
+    "flight_direction_blender": [0, 1, 0],
+    "flight_direction_UE": [0, -1, 0],
+    "wingman_sRGB": "#DDE6E6",
+    "arrow_sRGB": "#C9903E"
+  },
+  "implementation": "BaseColor texture only; native editable SVG motif retained; no added mark geometry or sockets.",
+  "geometry_dimensions_origin_normals_original_UV": "unchanged",
+  "A": "approved; explicit user placement correction applied during production",
+  "B": "pending",
+  "FBX_export": "await_B",
+  "UE_formal_validation": "not_run"
+}

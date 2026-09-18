@@ -19,9 +19,9 @@ namespace GuLiCommanderNavigationPolicy
 {
 	inline constexpr int32 FormationMemberCapacity = 25;
 	inline constexpr int32 MaximumFormationColumns = 5;
-	inline constexpr float RequiredAgentRadiusCentimeters = 750.0f;
-	inline constexpr float MaximumSurfaceMoveZDeltaCentimeters = 250.0f;
-	inline constexpr float MinimumNavigationProgressCentimeters = 30.0f;
+	inline constexpr float RequiredAgentRadiusCentimeters = 150.0f;
+	inline constexpr float MaximumSurfaceMoveZDeltaCentimeters = 50.0f;
+	inline constexpr float MinimumNavigationProgressCentimeters = 6.0f;
 	inline constexpr int32 RequiredTransitExpansionSuccessSteps = GuLiCommanderSimulationTiming::RateHz / 2u;
 	inline constexpr double MinimumTransitRearrangementIntervalSeconds = 0.5;
 	inline constexpr uint32 MovementUpdateIntervalTicks = 1u;
@@ -210,12 +210,12 @@ namespace GuLiCommanderNavigationPolicy
 	GULISTRIKE_API float CalculateArrivalDomainRadiusCentimeters(
 		int32 InitialAcceptedMemberCount,
 		float AgentRadiusCentimeters,
-		float PaddingCentimeters = 500.0f);
+		float PaddingCentimeters = 100.0f);
 
 	/** Inner radius at which a member is released; the outer domain is the recovery threshold. */
 	GULISTRIKE_API float CalculateLooseArrivalHoldRadiusCentimeters(
 		float ArrivalDomainRadiusCentimeters,
-		float HysteresisCentimeters = 500.0f);
+		float HysteresisCentimeters = 100.0f);
 
 	/** Largest safe frozen lane offset that still guarantees a discrete inner-domain crossing. */
 	GULISTRIKE_API float CalculateLooseArrivalMaximumLaneOffsetCentimeters(
@@ -263,7 +263,7 @@ namespace GuLiCommanderNavigationPolicy
 		bool bFinalCorridorActive,
 		float DistanceToTargetCentimeters,
 		float ArrivalDomainRadiusCentimeters,
-		float HysteresisCentimeters = 500.0f);
+		float HysteresisCentimeters = 100.0f);
 
 	/** Moving local waypoint that preserves a frozen lateral lane without a longitudinal slot. */
 	GULISTRIKE_API FVector CalculateFinalCorridorLaneTarget(

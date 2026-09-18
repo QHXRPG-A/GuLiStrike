@@ -42,7 +42,7 @@ void AGuLiTeleportFieldActor::EnsureMaterials()
 void AGuLiTeleportFieldActor::SetPreview(const FVector& Point, const float Radius, const bool bValid)
 {
 	bPreview = true; SetActorLocation(Point); EnsureMaterials();
-	Ground->DecalSize = FVector(1000,Radius/.94f,Radius/.94f);
+	Ground->DecalSize = FVector(200,Radius/.94f,Radius/.94f);
 	Beam->SetVisibility(false);
 	if (GroundMID)
 	{
@@ -62,7 +62,7 @@ void AGuLiTeleportFieldActor::TickVisuals()
 	const bool bBeam = bLanding || State.Phase == EGuLiTeleportPhase::AwaitingDestination || State.Phase == EGuLiTeleportPhase::Returning;
 	const float Alpha = State.Phase == EGuLiTeleportPhase::Finished ? FMath::Clamp(1.f-float(Elapsed)/.5f,0.f,1.f) : 1.f;
 	SetActorLocation(bLanding ? State.Destination : State.Source);
-	Ground->DecalSize = FVector(1000,State.Config.RadiusCentimeters/.94f,State.Config.RadiusCentimeters/.94f);
+	Ground->DecalSize = FVector(200,State.Config.RadiusCentimeters/.94f,State.Config.RadiusCentimeters/.94f);
 	if (GroundMID)
 	{
 		const float Progress = State.Phase == EGuLiTeleportPhase::Windup ? GuLiTeleport::WindupProgress(State,Now) : (State.Phase == EGuLiTeleportPhase::Finished ? State.FinalProgress : 1.f);

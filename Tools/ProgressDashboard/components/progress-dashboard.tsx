@@ -19,12 +19,17 @@ import {
   ClipboardCheck,
   Clock3,
   FileQuestion,
+  FileText,
+  Film,
+  Folder,
   FolderKanban,
   Gamepad2,
+  Image as ImageIcon,
   Inbox,
   LayoutDashboard,
   ListChecks,
   LoaderCircle,
+  Palette,
   RefreshCw,
   Search,
   ShieldAlert,
@@ -62,6 +67,8 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import type {
+  ArtSourceEntry,
+  ArtSourceListing,
   BacklogItem,
   Diagnostic,
   ProgressDocument,
@@ -83,6 +90,7 @@ type ViewKey =
   | 'development'
   | 'archive'
   | 'gameplay'
+  | 'art'
   | 'backlog'
   | 'quality'
   | 'stage'
@@ -99,6 +107,7 @@ const NAVIGATION: Array<{
   { key: 'development', label: '开发', icon: Wrench },
   { key: 'archive', label: '归档时间线', icon: Archive },
   { key: 'gameplay', label: '玩法模块', icon: Gamepad2 },
+  { key: 'art', label: '美术相关', icon: Palette },
   { key: 'backlog', label: '月度 Backlog', icon: Inbox },
   { key: 'quality', label: '文档质量', icon: ShieldAlert },
 ];
@@ -1042,6 +1051,341 @@ function QualityView({ snapshot }: { snapshot: Snapshot }) {
   );
 }
 
+function artMediaUrl(path: string): string {
+  return `/api/artsource/file?p=${encodeURIComponent(path)}`;
+}
+
+function ArtFolderNode({
+  name,
+  path,
+  depth,
+  listings,
+  expanded,
+  selectedDir,
+  onOpen,
+}: {
+  name: string;
+  path: string;
+  depth: number;
+  listings: Record<string, ArtSourceListing | null>;
+  expanded: ReadonlySet<string>;
+  selectedDir: string;
+  onOpen: (dir: string) => void;
+}) {
+  const listing = listings[path];
+  const isOpen = expanded.has(path);
+  const active = selectedDir === path;
+  const fileCount = listing ? listing.entries.filter((entry) => entry.type === 'file').length : null;
+  const childDirs = listing ? listing.entries.filter((entry) => entry.type === 'dir') : [];
+  return (
+    <div>
+      <button
+        type="button"
+        onClick={() => onOpen(path)}
+        aria-expanded={isOpen}
+        title={path}
+        className={cn('art-tree-row', active && 'art-tree-row-active')}
+        style={{ paddingLeft: `${0.5 + depth * 0.85}rem` }}
+      >
+        <ChevronRight className={cn('size-3.5 shrink-0 text-slate-600 transition-transform', isOpen && 'rotate-90')} />
+        <Folder className="size-3.5 shrink-0 text-slate-500" />
+        <span className="truncate">{name}</span>
+        {fileCount !== null && fileCount > 0 && (
+          <span className="ml-auto shrink-0 font-mono text-[9px] text-slate-600">{fileCount}</span>
+        )}
+      </button>
+      {isOpen &&
+        (childDirs.length ? (
+          childDirs.map((child) => (
+            <ArtFolderNode
+              key={child.path}
+              name={child.name}
+              path={child.path}
+              depth={depth + 1}
+              listings={listings}
+              expanded={expanded}
+              selectedDir={selectedDir}
+              onOpen={onOpen}
+            />
+          ))
+        ) : (
+          <p className="art-tree-empty" style={{ paddingLeft: `${1.6 + depth * 0.85}rem` }}>
+            {listing ? '无子目录' : '加载中……'}
+          </p>
+        ))}
+    </div>
+  );
+}
+
+function ArtSourceBrowser() {
+  const [listings, setListings] = useState<Record<string, ArtSourceListing | null>>({});
+  const [expanded, setExpanded] = useState<ReadonlySet<string>>(() => new Set());
+  const [selectedDir, setSelectedDir] = useState('');
+  const [preview, setPreview] = useState<ArtSourceEntry | null>(null);
+  const [error, setError] = useState('');
+  const requestedRef = useRef<Set<string>>(new Set());
+
+  const loadDir = useCallback((dir: string) => {
+    if (requestedRef.current.has(dir)) return;
+    requestedRef.current.add(dir);
+    setListings((current) => (dir in current ? current : { ...current, [dir]: null }));
+    fetch(`/api/artsource?dir=${encodeURIComponent(dir)}`)
+      .then((response) => {
+        if (!response.ok) throw new Error(`目录读取失败：HTTP ${response.status}`);
+        return response.json() as Promise<ArtSourceListing>;
+      })
+      .then((listing) => {
+        setListings((current) => ({ ...current, [listing.dir]: listing }));
+        setError('');
+      })
+      .catch((reason: Error) => {
+        requestedRef.current.delete(dir);
+        setListings((current) => {
+          if (current[dir]) return current;
+          const next = { ...current };
+          delete next[dir];
+          return next;
+        });
+        setError(reason.message);
+      });
+  }, []);
+
+  useEffect(() => {
+    loadDir('');
+  }, [loadDir]);
+
+  useEffect(() => {
+    if (!preview) return;
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') setPreview(null);
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [preview]);
+
+  const selectFolder = useCallback(
+    (dir: string) => {
+      loadDir(dir);
+      setSelectedDir(dir);
+    },
+    [loadDir],
+  );
+  const openFolder = useCallback(
+    (dir: string) => {
+      selectFolder(dir);
+      setExpanded((current) => {
+        const next = new Set(current);
+        if (next.has(dir)) next.delete(dir);
+        else next.add(dir);
+        return next;
+      });
+    },
+    [selectFolder],
+  );
+
+  const selectedListing = listings[selectedDir];
+  const childDirs = (selectedListing?.entries ?? []).filter((entry) => entry.type === 'dir');
+  const mediaEntries = (selectedListing?.entries ?? []).filter(
+    (entry) => entry.type === 'file' && (entry.media === 'image' || entry.media === 'video'),
+  );
+  const otherEntries = (selectedListing?.entries ?? []).filter(
+    (entry) => entry.type === 'file' && entry.media !== 'image' && entry.media !== 'video',
+  );
+  const breadcrumbs = selectedDir ? selectedDir.split('/') : [];
+
+  return (
+    <div className="grid gap-4 lg:grid-cols-[240px_minmax(0,1fr)]">
+      <div className="rounded-lg border border-slate-800 bg-slate-950/40 p-2">
+        <p className="console-label mb-2 px-2 pt-1">ArtSource</p>
+        {listings[''] === undefined ? (
+          <div className="flex justify-center py-6">
+            <LoaderCircle className="size-4 animate-spin text-cyan-300" />
+          </div>
+        ) : (
+          (listings['']?.entries ?? [])
+            .filter((entry) => entry.type === 'dir')
+            .map((entry) => (
+              <ArtFolderNode
+                key={entry.path}
+                name={entry.name}
+                path={entry.path}
+                depth={0}
+                listings={listings}
+                expanded={expanded}
+                selectedDir={selectedDir}
+                onOpen={openFolder}
+              />
+            ))
+        )}
+      </div>
+
+      <div className="min-w-0">
+        {error && <p className="mb-3 text-xs text-red-300">{error}</p>}
+        <div className="mb-3 flex flex-wrap items-center gap-2 text-xs text-slate-500">
+          <button type="button" onClick={() => selectFolder('')} className="hover:text-cyan-200">ArtSource</button>
+          {breadcrumbs.map((segment, index) => {
+            const dir = breadcrumbs.slice(0, index + 1).join('/');
+            return (
+              <span key={dir} className="flex items-center gap-2">
+                <ChevronRight className="size-3 text-slate-700" />
+                <button type="button" onClick={() => selectFolder(dir)} className="hover:text-cyan-200">{segment}</button>
+              </span>
+            );
+          })}
+          {selectedListing && (
+            <span className="ml-auto font-mono text-[10px] text-slate-600">
+              {childDirs.length} 目录 · {mediaEntries.length} 媒体 · {otherEntries.length} 文件
+            </span>
+          )}
+        </div>
+
+        {selectedDir === '' ? (
+          <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-3">
+            {childDirs.map((entry) => (
+              <button key={entry.path} type="button" onClick={() => openFolder(entry.path)} className="art-folder-card">
+                <Folder className="size-5 shrink-0 text-cyan-300/70" />
+                <span className="min-w-0 flex-1">
+                  <span className="block truncate text-sm font-medium text-slate-200">{entry.name}</span>
+                  <span className="mt-0.5 block font-mono text-[10px] text-slate-600">
+                    {entry.dir_count} 子目录 / {entry.file_count} 文件
+                  </span>
+                </span>
+                <ChevronRight className="ml-auto size-4 shrink-0 text-slate-600" />
+              </button>
+            ))}
+          </div>
+        ) : !selectedListing ? (
+          <div className="flex justify-center py-10">
+            <LoaderCircle className="size-5 animate-spin text-cyan-300" />
+          </div>
+        ) : (
+          <div className="space-y-4">
+            {childDirs.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {childDirs.map((entry) => (
+                  <button key={entry.path} type="button" onClick={() => openFolder(entry.path)} className="art-subfolder-chip">
+                    <Folder className="size-3.5 text-slate-500" />
+                    <span className="truncate">{entry.name}</span>
+                    <span className="font-mono text-[9px] text-slate-600">{entry.dir_count + entry.file_count}</span>
+                  </button>
+                ))}
+              </div>
+            )}
+            {mediaEntries.length ? (
+              <div className="art-gallery">
+                {mediaEntries.map((entry) => (
+                  <button key={entry.path} type="button" className="art-card" onClick={() => setPreview(entry)} title={entry.path}>
+                    {entry.media === 'video' ? (
+                      <video src={artMediaUrl(entry.path)} muted preload="metadata" className="art-card-media" />
+                    ) : (
+                      <img src={artMediaUrl(entry.path)} alt={entry.name} loading="lazy" className="art-card-media" />
+                    )}
+                    <span className="art-card-caption">
+                      <span className="flex min-w-0 items-center gap-1.5">
+                        {entry.media === 'video' ? (
+                          <Film className="size-3 shrink-0 text-cyan-300/70" />
+                        ) : (
+                          <ImageIcon className="size-3 shrink-0 text-cyan-300/70" />
+                        )}
+                        <span className="truncate">{entry.name}</span>
+                      </span>
+                      <span className="shrink-0 font-mono text-[9px] text-slate-600">{formatBytes(entry.bytes)}</span>
+                    </span>
+                  </button>
+                ))}
+              </div>
+            ) : (
+              <EmptyState label="此目录没有可直接预览的图片或视频" />
+            )}
+            {otherEntries.length > 0 && (
+              <div>
+                <p className="console-label mb-2">其他文件 · {otherEntries.length}</p>
+                <div className="flex flex-wrap gap-2">
+                  {otherEntries.map((entry) => (
+                    <span key={entry.path} className="art-file-chip" title={entry.path}>
+                      <FileText className="size-3 shrink-0 text-slate-500" />
+                      <span className="max-w-56 truncate">{entry.name}</span>
+                      <span className="font-mono text-[9px] text-slate-600">{formatBytes(entry.bytes)}</span>
+                    </span>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+
+      {preview && (
+        <div className="art-lightbox">
+          <button
+            type="button"
+            aria-label="关闭预览"
+            onClick={() => setPreview(null)}
+            className="art-lightbox-backdrop"
+          />
+          <figure className="art-lightbox-figure">
+            {preview.media === 'video' ? (
+              <video src={artMediaUrl(preview.path)} controls autoPlay className="art-lightbox-media" />
+            ) : (
+              <img src={artMediaUrl(preview.path)} alt={preview.name} className="art-lightbox-media" />
+            )}
+            <figcaption className="flex items-center gap-3 text-xs text-slate-400">
+              <span className="min-w-0 flex-1 truncate">{preview.path}</span>
+              <span className="shrink-0 font-mono text-[10px] text-slate-600">{formatBytes(preview.bytes)}</span>
+              <button type="button" onClick={() => setPreview(null)} aria-label="关闭预览" className="task-meter-toggle">
+                <XCircle className="size-4 text-slate-400 hover:text-red-300" />
+              </button>
+            </figcaption>
+          </figure>
+        </div>
+      )}
+    </div>
+  );
+}
+
+function ArtView({ snapshot, openDocument }: { snapshot: Snapshot; openDocument: (id: string, anchor?: string) => void }) {
+  const artDocuments = useMemo(
+    () => snapshot.documents.filter((document) => documentCategories(document).includes('art')),
+    [snapshot.documents],
+  );
+  const kindSummary = useMemo(() => {
+    const counts: Record<string, number> = {};
+    for (const document of artDocuments) counts[document.kind] = (counts[document.kind] ?? 0) + 1;
+    return Object.entries(counts)
+      .map(([kind, count]) => `${KIND_LABELS[kind] ?? kind} ${count}`)
+      .join(' · ');
+  }, [artDocuments]);
+  return (
+    <div>
+      <SectionHeading
+        eyebrow="ART PIPELINE"
+        title="美术相关"
+        description="上方汇总 Progress 中标记美术分类的文档；下方只读浏览 ArtSource/ 素材目录（参考图、风格调整与制作审核证据），点击图片或视频可放大查看。"
+      />
+      <Card className="control-card mb-5">
+        <CardHeader className="border-b border-slate-800 pb-4">
+          <CardDescription className="console-label">ART DOCS</CardDescription>
+          <CardTitle className="text-slate-100">美术文档 · {artDocuments.length} 篇</CardTitle>
+          {kindSummary && <p className="pt-1 font-mono text-[10px] text-slate-600">{kindSummary}</p>}
+        </CardHeader>
+        <CardContent className="pt-5">
+          <DocumentTable documents={artDocuments} openDocument={openDocument} placeholder="筛选美术文档、模块或 ID……" />
+        </CardContent>
+      </Card>
+      <Card className="control-card">
+        <CardHeader className="border-b border-slate-800 pb-4">
+          <CardDescription className="console-label">ARTSOURCE BROWSER</CardDescription>
+          <CardTitle className="text-slate-100">ArtSource 素材目录</CardTitle>
+          <p className="pt-1 font-mono text-[10px] text-slate-600">D:/UE5.7/test1/ArtSource · 只读 · Esc 关闭预览</p>
+        </CardHeader>
+        <CardContent className="pt-5">
+          <ArtSourceBrowser />
+        </CardContent>
+      </Card>
+    </div>
+  );
+}
+
 function resolveMarkdownDocument(sourcePath: string, href: string, documentsByPath: Map<string, ProgressDocument>): ProgressDocument | undefined {
   if (!href || /^(?:https?:|mailto:|#)/i.test(href)) return undefined;
   const rawPath = decodeURIComponent(href.split('#', 1)[0]);
@@ -1242,6 +1586,7 @@ function ViewContent({
   if (view === 'backlog')
     return <BacklogView items={snapshot.backlog} documents={snapshot.documents} openDocument={openDocument} />;
   if (view === 'quality') return <QualityView snapshot={snapshot} />;
+  if (view === 'art') return <ArtView snapshot={snapshot} openDocument={openDocument} />;
 
   const config = {
     requirements: {

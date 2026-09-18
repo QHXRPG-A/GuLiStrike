@@ -1,0 +1,82 @@
+{
+  "key": "High_Rate_Fire_Cannon",
+  "sockets": [
+    {
+      "name": "Socket_1",
+      "location": [
+        1232.4609375,
+        121.27611328125022,
+        0.001374401092533617
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bone": "BarrelPitch",
+      "mesh_space": {
+        "location": [
+          -121.26611328124999,
+          1772.4609375,
+          -80.73762559890747
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.7071067811865475,
+          0.7071067811865476
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "Socket_2",
+      "location": [
+        1232.4609375,
+        -121.27466796874978,
+        0.001374401092533617
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "bone": "BarrelPitch",
+      "mesh_space": {
+        "location": [
+          121.28466796875001,
+          1772.4609375,
+          -80.73762559890747
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.7071067811865475,
+          0.7071067811865476
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    }
+  ],
+  "FBX_custom_property": "GuLiStrike_Sockets_JSON",
+  "Blender_markers": "Original Socket_1...N; bone-parented for the two guns",
+  "UE_socket_creation": "Restore and verify original socket transforms during authorized formal UE integration"
+}

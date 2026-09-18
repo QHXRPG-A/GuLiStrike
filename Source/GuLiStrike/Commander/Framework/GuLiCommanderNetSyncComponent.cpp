@@ -255,11 +255,14 @@ bool UGuLiCommanderNetSyncComponent::IsSoldierStreamReady() const
 
 void UGuLiCommanderNetSyncComponent::ResetClientSoldierState()
 {
+	LastAppliedClientSelection = FGuLiCommanderSelectionState{};
 	PoseReceiver.Reset();
 	NextPoseAckTime = 0.0;
 	PendingPoseChunks.Reset();
 	PendingCommandAcks.Reset();
 	QueuedSelectionIntents.Reset();
+	PendingCommandRecoveryId = 0u;
+	PendingSelectionDeadline = PendingMoveDeadline = SelectionSnapshotDeadline = 0.0;
 	bClientPoseReady = false;
 	ClientAcceptedMatchEpoch = 0u;
 	ClientAcceptedSyncGeneration = 0u;
@@ -575,7 +578,24 @@ void UGuLiCommanderNetSyncComponent::SubmitSelectionRequest(
 		ServerRequestSelection(Request);
 		return;
 	}
-	if (bPendingSelectionIntent || bAwaitingSelectionSnapshot || bPendingMoveIntent)
+	if (Request.Modifier == EGuLiSelectionModifier::Clear || Request.Modifier == EGuLiSelectionModifier::Replace)
+	{
+		if (bPendingSelectionIntent) ClientRetiredSelectionThrough = PendingSelectionIntent.ClientRequestId;
+		for (const auto& Queued : QueuedSelectionIntents)
+			if (!ClientRetiredSelectionThrough || IsNewerSerial(Queued.ClientRequestId, ClientRetiredSelectionThrough))
+				ClientRetiredSelectionThrough = Queued.ClientRequestId;
+		QueuedSelectionIntents.Reset();
+		bPendingSelectionIntent = bPendingSelectionFastRetry = bPendingSelectionReliableFallback = false;
+		bAwaitingSelectionSnapshot = false; AwaitedSelectionRevision = 0u;
+		PendingCommandRecoveryId = 0u;
+		const uint32 CancelThrough = RetireLocalMoveIntents(EGuLiCommandAckResult::Cancelled);
+		PendingSelectionIntent = Request;
+		bPendingSelectionIntent = true;
+		PendingSelectionDeadline = World->GetRealTimeSeconds() + 8.0;
+		ServerReplaceSelection(Request, CancelThrough, GetConnectionGeneration());
+		return;
+	}
+	if (bPendingSelectionIntent || bAwaitingSelectionSnapshot || bPendingMoveIntent || PendingCommandRecoveryId)
 	{
 		if (QueuedSelectionIntents.Num() >= GuLiCommanderNetwork::MaxQueuedSelectionIntents)
 		{
@@ -720,7 +740,9 @@ bool UGuLiCommanderNetSyncComponent::FinalizeServerMovePlanning(
 		GetOwner()->ForceNetUpdate();
 	}
 
-	const bool bReliableDelivery = bPendingServerMoveReliableDelivery;
+	const bool bReliableDelivery = bPendingServerMoveReliableDelivery
+		|| SanitizedAck.Result == EGuLiCommandAckResult::Cancelled
+		|| SanitizedAck.Result == EGuLiCommandAckResult::TimedOut;
 	bServerMovePlanningPending = false;
 	bPendingServerMoveReliableDelivery = false;
 	PendingServerMovePlanningRequest = FGuLiMoveRequest{};
@@ -784,7 +806,7 @@ bool UGuLiCommanderNetSyncComponent::IsMoveCommandPending(const uint32 ClientCom
 
 bool UGuLiCommanderNetSyncComponent::HasUnresolvedSelectionIntent() const
 {
-	return bPendingSelectionIntent || bAwaitingSelectionSnapshot || !QueuedSelectionIntents.IsEmpty();
+	return bPendingSelectionIntent || bAwaitingSelectionSnapshot || PendingCommandRecoveryId || !QueuedSelectionIntents.IsEmpty();
 }
 
 
@@ -800,6 +822,7 @@ void UGuLiCommanderNetSyncComponent::BeginSelectionIntent(
 	const double NowSeconds = World->GetRealTimeSeconds();
 	PendingSelectionIntent = Request;
 	bPendingSelectionIntent = true;
+	PendingSelectionDeadline = NowSeconds + 8.0;
 	bPendingSelectionFastRetry = true;
 	bPendingSelectionReliableFallback = true;
 	PendingSelectionFastRetryTimeSeconds = NowSeconds + GuLiCommanderNetwork::FastCommandRetryDelaySeconds;
@@ -810,6 +833,8 @@ void UGuLiCommanderNetSyncComponent::BeginSelectionIntent(
 // 每次选兵意图保留自己的最新移动目标；不同选兵意图不能互相覆盖未发出的移动。
 void UGuLiCommanderNetSyncComponent::SubmitMoveRequest(const FGuLiMoveRequest& Request)
 {
+	if (Request.ClientCommandId && (!LatestSubmittedMoveId || IsNewerSerial(Request.ClientCommandId, LatestSubmittedMoveId)))
+		LatestSubmittedMoveId = Request.ClientCommandId;
 	if (!GetOwner())
 	{
 		OnMoveReadyToSend.Broadcast(Request, SelectionState);
@@ -840,7 +865,7 @@ void UGuLiCommanderNetSyncComponent::QueueOrBeginMoveIntent(
 			? QueuedSelectionIntents.Last().ClientRequestId
 			: (bPendingSelectionIntent
 				? PendingSelectionIntent.ClientRequestId
-				: (bAwaitingSelectionSnapshot
+				: (bAwaitingSelectionSnapshot || PendingCommandRecoveryId
 					? GuLiCommanderNetwork::SelectionSnapshotMoveDependencyKey
 					: ResolvedSelectionRequestId));
 		MovesAwaitingSelection.Add(SelectionRequestId, Request);
@@ -869,7 +894,7 @@ void UGuLiCommanderNetSyncComponent::DeferMoveUntilCurrentAck(
 			? QueuedSelectionIntents.Last().ClientRequestId
 			: (bPendingSelectionIntent
 				? PendingSelectionIntent.ClientRequestId
-				: (bAwaitingSelectionSnapshot
+				: (bAwaitingSelectionSnapshot || PendingCommandRecoveryId
 					? GuLiCommanderNetwork::SelectionSnapshotMoveDependencyKey
 					: ResolvedSelectionRequestId)))
 		: 0u;
@@ -917,6 +942,7 @@ void UGuLiCommanderNetSyncComponent::BeginMoveIntent(const FGuLiMoveRequest& Req
 	}
 	const double NowSeconds = World->GetRealTimeSeconds();
 	PendingMoveIntent = Request;
+	PendingMoveDeadline = NowSeconds + 8.0;
 	bPendingMoveIntent = true;
 	bPendingMoveFastRetry = true;
 	bPendingMoveReliableFallback = true;
@@ -940,7 +966,7 @@ void UGuLiCommanderNetSyncComponent::RejectDeferredMove(const uint32 SelectionRe
 
 void UGuLiCommanderNetSyncComponent::AdvanceSelectionQueue()
 {
-	if (bAdvancingSelectionQueue || bPendingSelectionIntent || bPendingMoveIntent) return;
+	if (bAdvancingSelectionQueue || bPendingSelectionIntent || bPendingMoveIntent || PendingCommandRecoveryId) return;
 	TGuardValue<bool> AdvancingGuard(bAdvancingSelectionQueue, true);
 	// A rejected selection can cancel its dependent move immediately. A newer revision in the
 	// rejection may still gate later commands, but there is no membership snapshot that can make
@@ -1009,7 +1035,7 @@ void UGuLiCommanderNetSyncComponent::AdvanceSelectionQueue()
 // 快速补发与可靠回退各最多触发一次；收到匹配的业务 ACK 会清除对应标志。
 void UGuLiCommanderNetSyncComponent::TickPendingCommandRetries()
 {
-	if (!GetOwner() || GetOwner()->HasAuthority() || !IsSoldierStreamReady())
+	if (!GetOwner() || !IsSoldierStreamReady())
 	{
 		return;
 	}
@@ -1020,6 +1046,22 @@ void UGuLiCommanderNetSyncComponent::TickPendingCommandRetries()
 	}
 
 	const double NowSeconds = World->GetRealTimeSeconds();
+	if (PendingCommandRecoveryId)
+	{
+		if (NowSeconds >= PendingCommandRecoveryDeadline)
+		{
+			PendingCommandRecoveryDeadline = NowSeconds + 8.0;
+			ServerRecoverCommanderCommands(PendingCommandRecoveryId, ClientRetiredMoveThrough, ClientRetiredSelectionThrough, GetConnectionGeneration());
+		}
+		return;
+	}
+	if ((bPendingSelectionIntent && NowSeconds >= PendingSelectionDeadline)
+		|| (bPendingMoveIntent && NowSeconds >= PendingMoveDeadline)
+		|| (bAwaitingSelectionSnapshot && SelectionSnapshotDeadline > 0 && NowSeconds >= SelectionSnapshotDeadline))
+	{
+		RequestCommandRecovery();
+		return;
+	}
 	if (bPendingSelectionIntent)
 	{
 		if (bPendingSelectionFastRetry
@@ -1058,6 +1100,102 @@ void UGuLiCommanderNetSyncComponent::ServerRequestSelection_Implementation(
 	HandleSelectionRequest(Request, true);
 }
 
+uint32 UGuLiCommanderNetSyncComponent::RetireLocalMoveIntents(const EGuLiCommandAckResult Result)
+{
+	TArray<uint32> Retired;
+	if (bPendingMoveIntent) Retired.AddUnique(PendingMoveIntent.ClientCommandId);
+	if (bHasDeferredMoveAfterCurrentAck) Retired.AddUnique(DeferredMoveAfterCurrentAck.ClientCommandId);
+	for (const auto& Entry : MovesAwaitingSelection) Retired.AddUnique(Entry.Value.ClientCommandId);
+	bPendingMoveIntent = bPendingMoveFastRetry = bPendingMoveReliableFallback = false;
+	bHasDeferredMoveAfterCurrentAck = bDeferredMoveHasSelectionDependency = false;
+	MovesAwaitingSelection.Reset();
+	for (uint32 Id : Retired)
+		if (Id && (!LatestSubmittedMoveId || IsNewerSerial(Id, LatestSubmittedMoveId))) LatestSubmittedMoveId = Id;
+	if (LatestSubmittedMoveId && (!ClientRetiredMoveThrough || IsNewerSerial(LatestSubmittedMoveId, ClientRetiredMoveThrough)))
+		ClientRetiredMoveThrough = LatestSubmittedMoveId;
+	// Notify prediction/HUD owners after draining the queues; callbacks cannot dispatch an old click.
+	for (uint32 Id : Retired)
+	{
+		FGuLiCommandAck Ack; InitializeAck(Ack, Id, EGuLiCommandKind::Move); Ack.Result = Result;
+		if (PendingCommandAcks.Num() >= GuLiCommanderNetwork::MaxPendingCommandAcks)
+			PendingCommandAcks.RemoveAt(0, 1, EAllowShrinking::No);
+		PendingCommandAcks.Add(Ack); LastCommandAck = Ack; OnCommandAckChanged.Broadcast(Ack);
+	}
+	return ClientRetiredMoveThrough;
+}
+
+void UGuLiCommanderNetSyncComponent::CancelServerMovesThrough(uint32 CommandId, EGuLiCommandAckResult Result)
+{
+	if (!CommandId) return;
+	if (!ServerCancelledMoveThrough || IsNewerSerial(CommandId, ServerCancelledMoveThrough)) ServerCancelledMoveThrough = CommandId;
+	if (!bServerMovePlanningPending || IsNewerSerial(PendingServerMovePlanningRequest.ClientCommandId, CommandId)) return;
+	const FGuLiMoveRequest Pending = PendingServerMovePlanningRequest;
+	auto* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+	FGuLiCommandAck Ack; FGuLiCommanderSelectionState Updated; bool bChanged = false;
+	// A job may have committed before the NetSync tick consumes its final receipt.
+	if (Authority && PendingServerMovePlanningPlayerState.IsValid()
+		&& Authority->PollMovePlanning(*PendingServerMovePlanningPlayerState.Get(), Pending.ClientCommandId, Ack, Updated, bChanged)
+			== EGuLiMovePlanningStatus::Completed)
+	{
+		FinalizeServerMovePlanning(Pending, Ack, bChanged ? &Updated : nullptr);
+		return;
+	}
+	CancelPendingServerMovePlanning();
+	InitializeAck(Ack, Pending.ClientCommandId, EGuLiCommandKind::Move); Ack.Result = Result;
+	LastMoveAck = Ack; PublishAck(Ack, true);
+}
+
+void UGuLiCommanderNetSyncComponent::ServerReplaceSelection_Implementation(
+	const FGuLiSelectionRequest& Request, uint32 CancelMoveThrough, uint32 ConnectionGeneration)
+{
+	const auto* Player = GetBattlePlayerState();
+	if (!IsConnectionReady() || ConnectionGeneration != GetConnectionGeneration() || !Player || !Player->IsCommander()
+		|| !Request.IsWellFormed() || (Request.Modifier != EGuLiSelectionModifier::Clear && Request.Modifier != EGuLiSelectionModifier::Replace)) return;
+	if (!LastSelectionRequestId || IsNewerSerial(Request.ClientRequestId, LastSelectionRequestId))
+		CancelServerMovesThrough(CancelMoveThrough, EGuLiCommandAckResult::Cancelled);
+	HandleSelectionRequest(Request, true, true);
+}
+
+void UGuLiCommanderNetSyncComponent::RequestCommandRecovery()
+{
+	if (bPendingSelectionIntent) ClientRetiredSelectionThrough = PendingSelectionIntent.ClientRequestId;
+	for (const auto& Queued : QueuedSelectionIntents)
+		if (!ClientRetiredSelectionThrough || IsNewerSerial(Queued.ClientRequestId, ClientRetiredSelectionThrough))
+			ClientRetiredSelectionThrough = Queued.ClientRequestId;
+	QueuedSelectionIntents.Reset();
+	bPendingSelectionIntent = bPendingSelectionFastRetry = bPendingSelectionReliableFallback = false;
+	bAwaitingSelectionSnapshot = false; AwaitedSelectionRevision = 0;
+	PendingCommandRecoveryId = NextCommandRecoveryId++;
+	if (!NextCommandRecoveryId) ++NextCommandRecoveryId;
+	const uint32 Cutoff = RetireLocalMoveIntents(EGuLiCommandAckResult::TimedOut);
+	PendingCommandRecoveryDeadline = GetWorld()->GetRealTimeSeconds() + 8.0;
+	ServerRecoverCommanderCommands(PendingCommandRecoveryId, Cutoff, ClientRetiredSelectionThrough, GetConnectionGeneration());
+}
+
+void UGuLiCommanderNetSyncComponent::ServerRecoverCommanderCommands_Implementation(
+	uint32 RecoveryId, uint32 CancelMoveThrough, uint32 CancelSelectionThrough, uint32 ConnectionGeneration)
+{
+	const auto* Player = GetBattlePlayerState();
+	if (!RecoveryId || !IsConnectionReady() || ConnectionGeneration != GetConnectionGeneration()
+		|| !Player || !Player->IsCommander() || !ConsumeCommandRateLimit()) return;
+	CancelServerMovesThrough(CancelMoveThrough, EGuLiCommandAckResult::TimedOut);
+	if (CancelSelectionThrough && (!LastSelectionRequestId || IsNewerSerial(CancelSelectionThrough, LastSelectionRequestId)))
+		LastSelectionRequestId = CancelSelectionThrough;
+	ClientRecoverCommanderCommands(RecoveryId, ConnectionGeneration, SelectionState);
+}
+
+void UGuLiCommanderNetSyncComponent::ClientRecoverCommanderCommands_Implementation(
+	uint32 RecoveryId, uint32 ConnectionGeneration, const FGuLiCommanderSelectionState& State)
+{
+	if (!RecoveryId || RecoveryId != PendingCommandRecoveryId || ConnectionGeneration != GetConnectionGeneration() || !IsConnectionReady()) return;
+	PendingCommandRecoveryId = 0;
+	if (!IsNewerSerial(SelectionState.SelectionRevision, State.SelectionRevision)) SelectionState = State;
+	ResolvedSelectionRevision = SelectionState.SelectionRevision;
+	ResolvedSelectionRequestId = SelectionState.AcceptedClientRequestId;
+	bResolvedSelectionAccepted = true;
+	NotifySelectionChanged(); AdvanceSelectionQueue();
+}
+
 void UGuLiCommanderNetSyncComponent::ServerRequestSelectionFast_Implementation(
 	const FGuLiSelectionRequest& Request)
 {
@@ -1068,7 +1206,7 @@ void UGuLiCommanderNetSyncComponent::ServerRequestSelectionFast_Implementation(
 // 重复最近请求只重放缓存结果，不再次执行选兵；这不是无限历史请求的结果存储。
 void UGuLiCommanderNetSyncComponent::HandleSelectionRequest(
 	const FGuLiSelectionRequest& Request,
-	const bool bReliableAck)
+	const bool bReliableAck, const bool bAbsoluteSelection)
 {
 	FGuLiCommandAck Ack;
 	InitializeAck(Ack, Request.ClientRequestId, EGuLiCommandKind::Selection);
@@ -1148,9 +1286,11 @@ void UGuLiCommanderNetSyncComponent::HandleSelectionRequest(
 
 	// 先在候选副本上解算；仅接受后替换复制状态，拒绝不能破坏原有选择。
 	FGuLiCommanderSelectionState CandidateSelection = SelectionState;
+	FGuLiSelectionRequest EffectiveRequest = Request;
+	if (bAbsoluteSelection) EffectiveRequest.KnownSelectionRevision = SelectionState.SelectionRevision;
 	const bool bAccepted = Authority->ResolveSelection(
 		*BattlePlayerState,
-		Request,
+		EffectiveRequest,
 		CandidateSelection,
 		Ack);
 
@@ -1191,6 +1331,14 @@ void UGuLiCommanderNetSyncComponent::HandleMoveRequest(
 {
 	FGuLiCommandAck Ack;
 	InitializeAck(Ack, Request.ClientCommandId, EGuLiCommandKind::Move);
+	if (Request.ClientCommandId && ServerCancelledMoveThrough
+		&& !IsNewerSerial(Request.ClientCommandId, ServerCancelledMoveThrough))
+	{
+		if (!ConsumeCommandRateLimit()) return;
+		Ack.Result = EGuLiCommandAckResult::Cancelled;
+		PublishAck(Ack, bReliableAck);
+		return;
+	}
 
 	if (Request.ClientCommandId == 0)
 	{
@@ -1517,6 +1665,10 @@ void UGuLiCommanderNetSyncComponent::ReceiveCommandAck(const FGuLiCommandAck& Ac
 		return;
 	}
 	bool bResolvedCurrentMove = false;
+	if ((Sanitized.CommandKind == EGuLiCommandKind::Move && ClientRetiredMoveThrough
+		&& !IsNewerSerial(Sanitized.ClientCommandId, ClientRetiredMoveThrough))
+		|| (Sanitized.CommandKind == EGuLiCommandKind::Selection && ClientRetiredSelectionThrough
+		&& !IsNewerSerial(Sanitized.ClientCommandId, ClientRetiredSelectionThrough))) return;
 	if (Sanitized.CommandKind == EGuLiCommandKind::Selection
 		&& bPendingSelectionIntent
 		&& Sanitized.ClientCommandId == PendingSelectionIntent.ClientRequestId)
@@ -1547,6 +1699,7 @@ void UGuLiCommanderNetSyncComponent::ReceiveCommandAck(const FGuLiCommandAck& Ac
 		{
 			AwaitedSelectionRevision = Sanitized.ServerSelectionRevision;
 		}
+		if (!bAwaitingSelectionSnapshot && GetWorld()) SelectionSnapshotDeadline = GetWorld()->GetRealTimeSeconds() + 8.0;
 		bAwaitingSelectionSnapshot = true;
 	}
 	// 这里只抑制与上一次相同种类/ID 的重复通知，不是全历史去重集合。
@@ -1991,6 +2144,14 @@ void UGuLiCommanderNetSyncComponent::PublishAck(
 
 void UGuLiCommanderNetSyncComponent::NotifySelectionChanged()
 {
+	if (!GetOwner() || !GetOwner()->HasAuthority())
+	{
+		if (IsNewerSerial(LastAppliedClientSelection.SelectionRevision, SelectionState.SelectionRevision)
+			|| (LastAppliedClientSelection.SelectionRevision == SelectionState.SelectionRevision
+				&& IsNewerSerial(LastAppliedClientSelection.AcceptedClientRequestId, SelectionState.AcceptedClientRequestId)))
+			SelectionState = LastAppliedClientSelection;
+		else LastAppliedClientSelection = SelectionState;
+	}
 	OnSelectionChanged.Broadcast(SelectionState);
 	AdvanceSelectionQueue();
 }

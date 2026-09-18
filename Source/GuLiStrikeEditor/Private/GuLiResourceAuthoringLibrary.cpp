@@ -366,7 +366,9 @@ namespace GuLiResourceAuthoring
 			ProbeCenter,
 			FQuat::Identity,
 			Objects,
-			FCollisionShape::MakeSphere(GULI_RESOURCE_CLUSTER_OBSTACLE_RADIUS_CM - 100.0f),
+			// Sampling clearance belongs to the fixed map layout, not the smaller runtime obstacle.
+			// Keep the original 2500 cm test so rebaking does not move any cluster center.
+			FCollisionShape::MakeSphere(2500.0f),
 			Params);
 		for (const FOverlapResult& Overlap : Overlaps)
 		{
@@ -682,8 +684,61 @@ namespace GuLiResourceAuthoring
 			OutError = TEXT("A 2500 cm GuLiMap density map is required.");
 			return false;
 		}
+		// Unchanged authoring retains ALL world anchors and source-local layouts, even if
+		// navigation clearance has changed. Cluster array order is NOT symmetry-pair order.
+		const bool bRetainCenters = Definition.SourceHash == SourceHash
+			&& Definition.Clusters.Num() == GULI_RESOURCE_CLUSTER_COUNT
+			&& Definition.Nodes.Num() == GULI_RESOURCE_NODE_COUNT
+			&& Definition.DeterministicSeed == GULI_RESOURCE_BAKE_SEED;
+		if (bRetainCenters)
+		{
+			const bool bAlreadyScaled = FMath::IsNearlyEqual(
+				Definition.BakedObjectScale, GULI_RESOURCE_OBJECT_SCALE);
+			if (!bAlreadyScaled && !FMath::IsNearlyEqual(Definition.BakedObjectScale, 1.0f))
+			{
+				OutError = TEXT("Unknown baked object scale; refusing to compound an unrecognized migration.");
+				return false;
+			}
+			TArray<FGuLiResourceNodeDefinition> RegroundNodes = Definition.Nodes;
+			for (FGuLiResourceNodeDefinition& Node : RegroundNodes)
+			{
+				const FGuLiResourceClusterDefinition* Cluster = Definition.FindCluster(Node.ClusterId);
+				if (!Cluster)
+				{
+					OutError = TEXT("Cannot retain ore layout: invalid node ClusterId.");
+					return false;
+				}
+				FVector2D NodeXY(Node.WorldTransform.GetLocation());
+				if (!bAlreadyScaled)
+				{
+					const float Ratio = GULI_RESOURCE_OBJECT_SCALE / Definition.BakedObjectScale;
+					const FVector2D CenterXY(Cluster->Center);
+					NodeXY = CenterXY + (NodeXY - CenterXY) * Ratio;
+					Node.WorldTransform.SetScale3D(Node.WorldTransform.GetScale3D() * Ratio);
+				}
+				FVector Location, SurfaceNormal;
+				if (!TraceGround(World, NodeXY, Location, SurfaceNormal))
+				{
+					OutError = FString::Printf(TEXT("Retained node %u ground projection failed."), Node.NodeId);
+					return false;
+				}
+				Node.WorldTransform.SetLocation(Location);
+			}
+			Definition.Nodes = MoveTemp(RegroundNodes);
+			for (FGuLiResourceClusterDefinition& Cluster : Definition.Clusters)
+			{
+				Cluster.ObstacleRadiusCentimeters = GULI_RESOURCE_CLUSTER_OBSTACLE_RADIUS_CM;
+			}
+			Definition.LayoutVersion = GULI_RESOURCE_LAYOUT_VERSION;
+			Definition.BakedObjectScale = GULI_RESOURCE_OBJECT_SCALE;
+			Definition.LayoutHash = Definition.CalculateLayoutHash();
+			return Definition.ValidateDefinition(OutError);
+		}
+		TArray<FClusterBakeSeed> BakedClusters;
+		if (!SampleClusters(World, Snapshot.DensityMap.GetValue(), BakedClusters, OutError)) return false;
 		Definition.MapPackage = FName(*Snapshot.MapPackage);
 		Definition.LayoutVersion = GULI_RESOURCE_LAYOUT_VERSION;
+		Definition.BakedObjectScale = GULI_RESOURCE_OBJECT_SCALE;
 		Definition.DeterministicSeed = GULI_RESOURCE_BAKE_SEED;
 		Definition.SourceHash = SourceHash;
 		Definition.PlayableMinimum = FVector2D(-GULI_RESOURCE_PLAYABLE_HALF_EXTENT_CM);
@@ -753,8 +808,6 @@ namespace GuLiResourceAuthoring
 			Territory.LocalPolygon = Polygon->Vertices;
 		}
 
-		TArray<FClusterBakeSeed> BakedClusters;
-		if (!SampleClusters(World, Snapshot.DensityMap.GetValue(), BakedClusters, OutError)) return false;
 		Definition.Clusters.Reset(BakedClusters.Num());
 		for (int32 ClusterIndex = 0; ClusterIndex < BakedClusters.Num(); ++ClusterIndex)
 		{
@@ -793,7 +846,7 @@ namespace GuLiResourceAuthoring
 				const FNodePattern& PatternNode = (*Pattern)[LocalIndex];
 				const FVector2D Offset = ClusterSeed.bMirrored
 					? -PatternNode.LocalOffset : PatternNode.LocalOffset;
-				const FVector2D NodeXY = FVector2D(ClusterSeed.Center) + Offset;
+				const FVector2D NodeXY = FVector2D(ClusterSeed.Center) + Offset * GULI_RESOURCE_OBJECT_SCALE;
 				FVector NodeLocation;
 				FVector SurfaceNormal;
 				if (!TraceGround(World, NodeXY, NodeLocation, SurfaceNormal))
@@ -813,7 +866,7 @@ namespace GuLiResourceAuthoring
 				Node.WorldTransform = FTransform(
 					FRotator(0.0f, Yaw, 0.0f),
 					NodeLocation,
-					FVector(PatternNode.UniformScale));
+					FVector(PatternNode.UniformScale * GULI_RESOURCE_OBJECT_SCALE));
 			}
 		}
 		Definition.LayoutHash = Definition.CalculateLayoutHash();

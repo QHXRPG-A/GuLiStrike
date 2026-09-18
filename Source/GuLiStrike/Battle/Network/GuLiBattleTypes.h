@@ -6,7 +6,7 @@
 #include "GuLiBattleTypes.generated.h"
 
 /** 战局连接的公共协议版本；不等于 MatchEpoch、快照版本或每连接同步代次。 */
-inline constexpr uint16 GULI_BATTLE_PROTOCOL_VERSION = 9u;
+inline constexpr uint16 GULI_BATTLE_PROTOCOL_VERSION = 13u;
 
 /** 历史指挥官协议常量保留别名，现有士兵 RPC/序列化仍使用原名称与数值。 */
 inline constexpr uint16 GULI_COMMANDER_PROTOCOL_VERSION = GULI_BATTLE_PROTOCOL_VERSION;

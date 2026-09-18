@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "asset": "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Blueprints/BP_ResourceProcessingFactory",
+  "component": "Door",
+  "policy": "presentation_only",
+  "success": false,
+  "unchanged": [
+    "Body",
+    "AccessRamp",
+    "source skeletal mesh",
+    "physics asset",
+    "door animation and timing"
+  ],
+  "user_authorized": "关闭门的碰撞，没有必要有碰撞，本身就是表现",
+  "before": {
+    "Door": {
+      "BodyInstance": "(PositionSolverIterationCount=8,VelocitySolverIterationCount=2,ProjectionSolverIterationCount=1,ObjectType=ECC_WorldDynamic,CollisionEnabled=QueryAndPhysics,bAllowPartialIslandSleep=True,bLockTranslation=True,bLockRotation=True,bInterpolateWhenSubStepping=True,bInertiaConditioning=True,SolverAsyncDeltaTime=0.016667,CollisionProfileName=\"Custom\",CollisionResponses=(),MassInKgOverride=100.000000,LinearDamping=0.010000,CustomDOFPlaneNormal=(X=0.000000,Y=0.000000,Z=0.000000),COMNudge=(X=0.000000,Y=0.000000,Z=0.000000),MassScale=1.000000,InertiaTensorScale=(X=1.000000,Y=1.000000,Z=1.000000),WalkableSlopeOverride=(),MaxAngularVelocity=3600.000000,CustomSleepThresholdMultiplier=1.000000,StabilizationThresholdMultiplier=1.000000,bEnableGravity=True,bStartAwake=True,bUpdateMassWhenScaleChanges=True)",
+      "bGenerateOverlapEvents": "False",
+      "bCanEverAffectNavigation": "False",
+      "RelativeLocation": "(X=0.000000,Y=0.000000,Z=0.000000)",
+      "RelativeRotation": "(Pitch=0.000000,Yaw=0.000000,Roll=0.000000)",
+      "RelativeScale3D": "(X=1.000000,Y=1.000000,Z=1.000000)"
+    },
+    "Body": {
+      "BodyInstance": "(PositionSolverIterationCount=8,VelocitySolverIterationCount=2,ProjectionSolverIterationCount=1,CollisionEnabled=QueryAndPhysics,bAllowPartialIslandSleep=True,bLockTranslation=True,bLockRotation=True,bInterpolateWhenSubStepping=True,bInertiaConditioning=True,SolverAsyncDeltaTime=0.016667,CollisionProfileName=\"Custom\",CollisionResponses=(),MassInKgOverride=100.000000,LinearDamping=0.010000,CustomDOFPlaneNormal=(X=0.000000,Y=0.000000,Z=0.000000),COMNudge=(X=0.000000,Y=0.000000,Z=0.000000),MassScale=1.000000,InertiaTensorScale=(X=1.000000,Y=1.000000,Z=1.000000),WalkableSlopeOverride=(),MaxAngularVelocity=3600.000000,CustomSleepThresholdMultiplier=1.000000,StabilizationThresholdMultiplier=1.000000,bEnableGravity=True,bAutoWeld=True,bStartAwake=True,bUpdateMassWhenScaleChanges=True)",
+      "bGenerateOverlapEvents": "True",
+      "bCanEverAffectNavigation": "True",
+      "RelativeLocation": "(X=0.000000,Y=0.000000,Z=0.000000)",
+      "RelativeRotation": "(Pitch=0.000000,Yaw=0.000000,Roll=0.000000)",
+      "RelativeScale3D": "(X=1.000000,Y=1.000000,Z=1.000000)"
+    },
+    "AccessRamp": {
+      "BodyInstance": "(PositionSolverIterationCount=8,VelocitySolverIterationCount=2,ProjectionSolverIterationCount=1,CollisionEnabled=QueryAndPhysics,bAllowPartialIslandSleep=True,bLockTranslation=True,bLockRotation=True,bInterpolateWhenSubStepping=True,bInertiaConditioning=True,SolverAsyncDeltaTime=0.016667,CollisionProfileName=\"BlockAll\",CollisionResponses=(),MassInKgOverride=100.000000,LinearDamping=0.010000,CustomDOFPlaneNormal=(X=0.000000,Y=0.000000,Z=0.000000),COMNudge=(X=0.000000,Y=0.000000,Z=0.000000),MassScale=1.000000,InertiaTensorScale=(X=1.000000,Y=1.000000,Z=1.000000),WalkableSlopeOverride=(),MaxAngularVelocity=3600.000000,CustomSleepThresholdMultiplier=1.000000,StabilizationThresholdMultiplier=1.000000,bEnableGravity=True,bAutoWeld=True,bStartAwake=True,bUpdateMassWhenScaleChanges=True)",
+      "bGenerateOverlapEvents": "True",
+      "bCanEverAffectNavigation": "True",
+      "RelativeLocation": "(X=3199.676863,Y=0.000000,Z=27.006964)",
+      "RelativeRotation": "(Pitch=-2.469350,Yaw=0.000000,Roll=0.000000)",
+      "RelativeScale3D": "(X=16.014871,Y=36.000000,Z=0.150000)"
+    }
+  }
+}

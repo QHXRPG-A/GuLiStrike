@@ -1,0 +1,33 @@
+{
+  "schema": "guli-ship-material-scope/v1",
+  "work_id": "WORK-20260917-003",
+  "recorded_at": "2026-09-17T06:35:29.422658+00:00",
+  "current_version": "v4",
+  "geometry": "Original source body topology, coordinates, corner normals, pivots and weights retained",
+  "allowed_work": [
+    "surface textures",
+    "three-tone scene lighting and shadows",
+    "internal line mask",
+    "optional render outline"
+  ],
+  "user_decisions": [
+    {
+      "text": "原来的组件的模型就很好看了，你只需要改它的渲染。贴图还有框线。就好了，不需要把他们的模型给改了。",
+      "effect": "Supersedes geometry redesign; A references now color/light style only"
+    },
+    {
+      "text": "还有三渲二的光照阴影啥的效果",
+      "effect": "Scene-driven three-tone lighting, self-shadow and cast shadow included"
+    },
+    {
+      "text": "连接处异常",
+      "attachment": "Feedback/CIWS_connection_user_markup_20260917.png",
+      "effect": "v3 not accepted; fix material-region assignment at fixed/moving junction"
+    }
+  ],
+  "connection_diagnosis": "Some fixed faces were incorrectly colored as the moving cyan shroud by nearest-vertex classification. Uniform toon material and unchanged normals isolated the issue to paint regions.",
+  "connection_fix": "Recover whole original connected parts using original rigid-bone ownership and unchanged source anchors; keep each coplanar region one paint color; rebake mask.",
+  "body_geometry_modified": false,
+  "user_B": "pending",
+  "UE_formal_validation": "not_run"
+}

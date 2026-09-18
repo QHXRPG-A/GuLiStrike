@@ -1,0 +1,97 @@
+"""Read-only production collision probes at the frozen factory-entry failure.
+
+Only disposable PIE vehicle poses/ticks are changed to reproduce the snapshot.
+No runtime logic, collision setting, map, asset or editor configuration is saved.
+"""
+from pathlib import Path
+import hashlib,json,time,traceback
+import unreal
+
+ROOT=Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
+DOCK_OUT=ROOT/'TestResults/Scale020/FactoryGroundDiagnosis'
+DOCK_OUT.mkdir(parents=True,exist_ok=True)
+# Reuse only the existing class lookups and read-only world helpers, not its runner.
+helper_path=ROOT/'Scripts/validate_resource_world_pie.py'
+helper_source=helper_path.read_text(encoding='utf-8').split('class MiningCycleAcceptance:')[0]
+exec(compile(helper_source,str(helper_path),'exec'),globals())
+
+class GroundDiagnosis:
+    def __init__(self):
+        self.started=time.monotonic()
+        self.finished=False
+        self.report={'schema':'guli.factory-ground-diagnosis.v1','success':False,'errors':[],
+                     'policy':'diagnosis_only_no_asset_or_collision_writes',
+                     'runtime_source_sha256':hashlib.sha256((ROOT/'Source/GuLiStrike/Gameplay/Resources/GuLiMiningVehiclePawn.cpp').read_bytes()).hexdigest(),
+                     'original_failure':'ResourcePIE/attempt-08-door-disabled-secondary-stall.json'}
+        self.handle=unreal.register_slate_post_tick_callback(self.tick)
+    def save(self):
+        (DOCK_OUT/'probes.json').write_text(json.dumps(self.report,ensure_ascii=False,indent=2),encoding='utf-8')
+    def finish(self):
+        self.finished=True
+        self.save()
+        unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).editor_request_end_play()
+    def tick(self,delta):
+        try:
+            if self.finished:
+                if not unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor():
+                    unreal.unregister_slate_post_tick_callback(self.handle)
+                    unreal.SystemLibrary.quit_editor()
+                return
+            if time.monotonic()-self.started>120:raise TimeoutError('Ground probe startup exceeded 120s')
+            world=_server_world()
+            if not world:return
+            resources=_subsystem(world)
+            miners=_actors(world,MINER)
+            if not resources or not resources.is_runtime_ready() or len(miners)!=2:return
+            miner=_find_by_team(miners,unreal.GuLiTeam.RED)
+            factory=unreal.GuLiScaleMigrationLibrary.read_mining_factory(miner)
+            if not factory or factory.get_door_alpha()<.999:return
+            for vehicle in miners:
+                vehicle.set_actor_tick_enabled(False)
+                vehicle.character_movement.stop_movement_immediately()
+                vehicle.character_movement.set_component_tick_enabled(False)
+                if vehicle.get_controller():vehicle.get_controller().stop_movement()
+            frozen=json.loads((ROOT/'TestResults/Scale020/ResourcePIE/attempt-08-door-disabled-secondary-stall.json').read_text())
+            last=frozen['mining_cycle']['samples'][-1]
+            self.report['factory']=factory.get_path_name()
+            self.report['factory_location']=_vec(factory.get_actor_location())
+            self.report['factory_rotation']=str(factory.get_actor_rotation())
+            self.report['factory_scale']=_vec(factory.get_actor_scale3d())
+            self.report['frozen_sample']=last
+            self.report['components']=[]
+            for child in factory.get_components_by_class(unreal.ChildActorComponent):
+                if not child.child_actor:continue
+                for component in child.child_actor.get_components_by_class(unreal.PrimitiveComponent):
+                    row={'name':component.get_name(),'class':component.get_class().get_name(),
+                         'world_transform':str(component.get_world_transform()),
+                         'collision':str(component.get_collision_enabled())}
+                    if isinstance(component,unreal.StaticMeshComponent) and component.static_mesh:
+                        row['mesh']=component.static_mesh.get_path_name()
+                        row['collision_trace_flag']=str(component.static_mesh.get_editor_property('body_setup').get_editor_property('collision_trace_flag'))
+                    self.report['components'].append(row)
+            self.report['probes']=[]
+            for x in (500.,450.,440.,435.,last['local'][0],430.,420.,400.,300.,0.,-100.):
+                # Exact frozen pose plus nearby X samples. Queries themselves never move the vehicle.
+                local=unreal.Vector(x,last['local'][1],last['local'][2])
+                miner.set_actor_location(factory.get_actor_transform().transform_location(local),False,True)
+                miner.set_actor_rotation(unreal.Rotator(yaw=last['yaw']),True)
+                for probe_top in (500.,100.):
+                    result=dict(unreal.GuLiScaleMigrationLibrary.inspect_mining_dock(
+                        miner,factory,unreal.Vector(-100,-120,24),probe_top))
+                    self.report['probes'].append({'input_local_x':x,'probe_start_height':probe_top,'diagnostics':result})
+            self.report['success']=True
+            self.finish()
+        except Exception:
+            self.report['errors'].append(traceback.format_exc())
+            self.finish()
+
+unreal.EditorPythonScripting.set_keep_python_script_alive(True)
+unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).load_level('/Game/Maps/LVL_CommanderMassPrototype')
+assert unreal.GuLiResourceAuthoringLibrary.configure_listen_server_pie(1)
+performance=unreal.get_default_object(unreal.load_class(None,'/Script/UnrealEd.EditorPerformanceSettings'))
+performance.set_editor_property('bThrottleCPUWhenNotForeground',False)
+world=unreal.get_editor_subsystem(unreal.UnrealEditorSubsystem).get_editor_world()
+for command in ('t.MaxFPS 0','t.IdleWhenNotForeground 0','Slate.bAllowThrottling 0'):
+    unreal.SystemLibrary.execute_console_command(world,command)
+ground_diagnosis=GroundDiagnosis()
+unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).editor_request_begin_play()

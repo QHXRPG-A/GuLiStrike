@@ -83,7 +83,7 @@ bool FBuildingAssetTests::RunTest(const FString& Parameters)
 	FStaticMeshCompilingManager::Get().FinishCompilation(Meshes);
 
 	TestTrue(TEXT("The hard-reference catalog is usable"), Catalog->IsUsable());
-	TestEqual(TEXT("The catalog contains exactly three definitions"), Catalog->Definitions.Num(), 3);
+	TestEqual(TEXT("The current catalog contains seven definitions"), Catalog->Definitions.Num(), 7);
 	TestTrue(TEXT("The catalog uses the target preview material"), Catalog->PreviewMaterial == PreviewMaterial);
 
 	struct FExpectedDefinition
@@ -109,19 +109,19 @@ bool FBuildingAssetTests::RunTest(const FString& Parameters)
 			*this,
 			TEXT("Catalog collision matches final baked mesh bounds"),
 			Definition->CollisionExtent,
-			Expected.Mesh->GetBounds().BoxExtent,
+			Expected.Mesh->GetBounds().BoxExtent * Definition->MeshScale,
 			1.0);
 	}
 
 	TestAllLodBuildScales(*this, TEXT("Missile turret"), *Missile, FVector(12.0f));
 	TestAllLodBuildScales(*this, TEXT("Sentry turret"), *Sentry, FVector(12.0f));
-	TestAllLodBuildScales(*this, TEXT("Outpost"), *Outpost, FVector(20.0f));
+	TestAllLodBuildScales(*this, TEXT("Outpost source is not rebaked by scale020"), *Outpost, FVector(1.0f));
 	TestVectorNear(*this, TEXT("Missile turret final dimensions"),
 		Missile->GetBounds().BoxExtent * 2.0, FVector(2519.46, 2728.75, 3520.77), 12.0);
 	TestVectorNear(*this, TEXT("Sentry turret final dimensions"),
 		Sentry->GetBounds().BoxExtent * 2.0, FVector(1935.79, 3866.78, 1675.19), 12.0);
 	TestVectorNear(*this, TEXT("Outpost final dimensions"),
-		Outpost->GetBounds().BoxExtent * 2.0, FVector(2000.0), 1.0);
+		Outpost->GetBounds().BoxExtent * 2.0, FVector(7103.086, 6619.805, 30000.0), 1.0);
 
 	TestTrue(TEXT("Missile turret has Nanite enabled"), Missile->GetNaniteSettings().bEnabled);
 	TestFalse(TEXT("Sentry turret keeps Nanite disabled"), Sentry->GetNaniteSettings().bEnabled);

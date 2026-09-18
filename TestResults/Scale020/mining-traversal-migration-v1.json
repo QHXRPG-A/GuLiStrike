@@ -1,0 +1,65 @@
+{
+  "schema": "guli.scale020.mining-traversal.v1",
+  "version": 1,
+  "source": "Source/GuLiStrike/Gameplay/Resources/GuLiMiningVehiclePawn.cpp",
+  "sha256_current": "016b9308155eb5590bbc371af2bf7d7b89b2a5b2e23b9fa557f100c94c5f5471",
+  "scope": "Scripted factory traversal and its deferred move handoff; factory shell collision and outdoor navigation algorithm unchanged",
+  "removed": [
+    "Waiting for the visual door to finish opening",
+    "Factory ground ray samples and tilted resampling",
+    "Ground-pose fitting and support-volume queries",
+    "Full-body obstruction sweeps and collision substeps",
+    "Per-miner factory collision-ignore toggles",
+    "Retired editor ground-diagnosis API and active reproduction script"
+  ],
+  "preserved": [
+    "Server authority, team validation and once-per-session cargo upload",
+    "One-second docking, instant exit-facing turn and the latest deferred command",
+    "Factory-local deck route and actual model pivot-to-feet clearance",
+    "Door animation, factory shell/floor/ramp collision and outdoor navigation"
+  ],
+  "entries": [
+    {
+      "field": "TickPlayerMoving.PlayerMoveTarget arrival tolerance",
+      "space": "world-centimeters-distance-2d",
+      "old": 600.0,
+      "target": 120.0,
+      "application": "Absolute code default; not an additional runtime multiplier",
+      "sha256_before": "d3bfc04ce80d225a12b287fb9cf7ec84c6e0dc4d912bef886a941447327fcbf6",
+      "sha256_after": "ef65049f27e4a32f633a49af1d32c34c399bf3794c5210e363852f94b5b01f3c"
+    },
+    {
+      "field": "ExecutePlayerCommand.Move navigation acceptance radius",
+      "space": "world-centimeters-distance",
+      "old": 500.0,
+      "target": 100.0,
+      "application": "Absolute movement request argument; the navigation algorithm is unchanged",
+      "sha256_before": "ef65049f27e4a32f633a49af1d32c34c399bf3794c5210e363852f94b5b01f3c",
+      "sha256_after": "016b9308155eb5590bbc371af2bf7d7b89b2a5b2e23b9fa557f100c94c5f5471"
+    }
+  ],
+  "first_route_run": "ResourcePIE/attempt-09-direct-route-before-arrival-tolerance.json",
+  "first_route_run_caveat": "The legacy destination assertion allowed a later automatic route to cross the destination. It is not proof of deferred-command arrival. The current fixture also requires PlayerMoving or its completion Grace state.",
+  "second_route_run": "ResourcePIE/attempt-10-move-request-tolerance-failure.json",
+  "second_route_run_result": "45 of 46 checks passed, including single/two-miner entry, one-time upload and exit. The stricter destination assertion failed on the remaining 500 cm navigation request tolerance, now migrated to 100 cm.",
+  "validation": {
+    "latest_report": "ResourcePIE/dual-client.json",
+    "latest_log": "ResourcePIE-11.log",
+    "success": true,
+    "passed_checks": 46,
+    "failed_checks": 0,
+    "deferred_destination_state": "PLAYER_MOVING",
+    "deferred_destination_control_mode": "PLAYER_ORDER",
+    "deferred_destination_distance_cm": 319.6403339320313,
+    "destination_check_scope": "Progress into the existing 320 cm acceptance envelope while still executing the deferred player move; not a final stopping-error measurement",
+    "editor_build": "Build-Editor-21.log",
+    "game_build": "Build-Game-10.log",
+    "automation": "Automation-09/index.json",
+    "automation_passed": 166,
+    "automation_legacy_failed": 1
+  },
+  "legacy_diagnostic_sources": [
+    "FactoryGroundDiagnosis/legacy-probe.cpp.txt",
+    "FactoryGroundDiagnosis/legacy-diagnose_factory_ground.py.txt"
+  ]
+}

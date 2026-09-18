@@ -1,0 +1,527 @@
+{
+  "success": true,
+  "parts": {
+    "Twin_Barrel_Turret": {
+      "path": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Twin_Barrel_Turret.SKM_SC_Twin_Barrel_Turret",
+      "class": "SkeletalMesh",
+      "bounds": {
+        "origin": [
+          3.0517578125e-05,
+          422.3916015625,
+          93.71719360351562
+        ],
+        "extent": [
+          1008.3879699707031,
+          2462.666015625,
+          503.6282043457031
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiDreadnoughtWeapons_001",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtWeapons.ScifiDreadnoughtWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Twin_Barrel_Turret",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": true,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        1.0,
+        1.0,
+        538.5309510328543
+      ],
+      "positive_bounds_extension": [
+        0.99993896484375,
+        3.3527663532368024,
+        2375.3465957466615
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Twin_Barrel_Turret.SK_SC_Twin_Barrel_Turret",
+      "physics": null
+    },
+    "CIWS": {
+      "path": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_CIWS.SKM_SC_CIWS",
+      "class": "SkeletalMesh",
+      "bounds": {
+        "origin": [
+          -1.52587890625e-05,
+          70.91612243652344,
+          26.892963409423828
+        ],
+        "extent": [
+          160.05210876464844,
+          342.2943572998047,
+          117.52489852905273
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiDreadnoughtWeapons_001",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtWeapons.ScifiDreadnoughtWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_CIWS",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": true,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        0.9999847412109375,
+        1.0,
+        10.159788862057454
+      ],
+      "positive_bounds_extension": [
+        0.9999847412109375,
+        1.60593566400712,
+        260.86571240830335
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_CIWS.SK_SC_CIWS",
+      "physics": null
+    },
+    "Thor_MissilePod": {
+      "path": "/Game/Assets/Ships/ShipComponent/SM_SC_Thor_MissilePod.SM_SC_Thor_MissilePod",
+      "class": "StaticMesh",
+      "bounds": {
+        "origin": [
+          68.833984375,
+          -4.80859375,
+          -4.32940673828125
+        ],
+        "extent": [
+          902.4384765625,
+          2266.6201171875,
+          295.53448486328125
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Thor_MissilePod",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": false,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_bounds_extension": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "triangles": 2080
+    },
+    "Autocannon": {
+      "path": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Autocannon.SKM_SC_Autocannon",
+      "class": "SkeletalMesh",
+      "bounds": {
+        "origin": [
+          0.0079345703125,
+          273.9238586425781,
+          -18.174560546875
+        ],
+        "extent": [
+          541.4918212890625,
+          1075.5253601074219,
+          292.5830993652344
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Autocannon",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": true,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        1.0,
+        1.0,
+        60.61699442927636
+      ],
+      "positive_bounds_extension": [
+        1.0,
+        2.960962120148224,
+        1379.33520901652
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Autocannon.SK_SC_Autocannon",
+      "physics": null
+    },
+    "Triple_Barrel_Turret": {
+      "path": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Triple_Barrel_Turret.SKM_SC_Triple_Barrel_Turret",
+      "class": "SkeletalMesh",
+      "bounds": {
+        "origin": [
+          -0.10479736328125,
+          567.9530029296875,
+          32.718475341796875
+        ],
+        "extent": [
+          1702.6764526367188,
+          2675.7401123046875,
+          558.5670471191406
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Triple_Barrel_Turret",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": true,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        0.9998779296875,
+        1.0,
+        402.7011663566159
+      ],
+      "positive_bounds_extension": [
+        1.0,
+        2.0476618849679653,
+        3188.450539559123
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Triple_Barrel_Turret.SK_SC_Triple_Barrel_Turret",
+      "physics": null
+    },
+    "Single_Barrel_Turret": {
+      "path": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Single_Barrel_Turret.SKM_SC_Single_Barrel_Turret",
+      "class": "SkeletalMesh",
+      "bounds": {
+        "origin": [
+          -4.57763671875e-05,
+          255.39505004882812,
+          6.150291442871094
+        ],
+        "extent": [
+          503.2669219970703,
+          1134.8202819824219,
+          208.96968841552734
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiDreadnoughtWeapons_001",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtWeapons.ScifiDreadnoughtWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Single_Barrel_Turret",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": true,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        0.99993896484375,
+        1.0,
+        188.21111272315363
+      ],
+      "positive_bounds_extension": [
+        1.000030517578125,
+        2.0898569113446683,
+        1289.1288178026048
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Single_Barrel_Turret.SK_SC_Single_Barrel_Turret",
+      "physics": null
+    },
+    "Drone_LaunchBay": {
+      "path": "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay.SM_SC_Drone_LaunchBay",
+      "class": "StaticMesh",
+      "bounds": {
+        "origin": [
+          20.851318359375,
+          56.7117919921875,
+          0.01055908203125
+        ],
+        "extent": [
+          777.652099609375,
+          2511.7095947265625,
+          759.2745971679688
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Drone_LaunchBay",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": false,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_bounds_extension": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "triangles": 1254
+    },
+    "Electronic_JammingDevice": {
+      "path": "/Game/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice.SM_SC_Electronic_JammingDevice",
+      "class": "StaticMesh",
+      "bounds": {
+        "origin": [
+          -0.0010986328125,
+          75.76638793945312,
+          -3.4580535888671875
+        ],
+        "extent": [
+          645.2545776367188,
+          370.44677734375,
+          269.29689025878906
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Electronic_JammingDevice",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": false,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_bounds_extension": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "triangles": 550
+    },
+    "Shield_Generator": {
+      "path": "/Game/Assets/Ships/ShipComponent/SM_SC_Shield_Generator.SM_SC_Shield_Generator",
+      "class": "StaticMesh",
+      "bounds": {
+        "origin": [
+          3.0517578125e-05,
+          5.309844970703125,
+          253.59073638916016
+        ],
+        "extent": [
+          373.4082946777344,
+          293.40130615234375,
+          498.9436264038086
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiDreadnoughtWeapons_001",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtWeapons.ScifiDreadnoughtWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Shield_Generator",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": false,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_bounds_extension": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "triangles": 312
+    },
+    "Bottom_Twin_Barrel_Turret": {
+      "path": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Bottom_Twin_Barrel_Turret.SKM_SC_Bottom_Twin_Barrel_Turret",
+      "class": "SkeletalMesh",
+      "bounds": {
+        "origin": [
+          3.0517578125e-05,
+          422.3916015625,
+          -93.71792602539062
+        ],
+        "extent": [
+          1008.3879699707031,
+          2462.66796875,
+          503.6293640136719
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiDreadnoughtWeapons_001",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtWeapons.ScifiDreadnoughtWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Bottom_Twin_Barrel_Turret",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": true,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        1.0,
+        1.0,
+        2375.3443481288914
+      ],
+      "positive_bounds_extension": [
+        0.99993896484375,
+        3.352782776033564,
+        538.5334703972633
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Bottom_Twin_Barrel_Turret.SK_SC_Bottom_Twin_Barrel_Turret",
+      "physics": null
+    },
+    "High_Rate_Fire_Cannon": {
+      "path": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_High_Rate_Fire_Cannon.SKM_SC_High_Rate_Fire_Cannon",
+      "class": "SkeletalMesh",
+      "bounds": {
+        "origin": [
+          0.00927734375,
+          247.171875,
+          32.26368713378906
+        ],
+        "extent": [
+          890.6616821289062,
+          1525.2890625,
+          464.28163146972656
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_High_Rate_Fire_Cannon",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": true,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        0.99993896484375,
+        1.0,
+        44.89381292097619
+      ],
+      "positive_bounds_extension": [
+        0.99993896484375,
+        3.1619155668329313,
+        633.0929588184131
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_High_Rate_Fire_Cannon.SK_SC_High_Rate_Fire_Cannon",
+      "physics": null
+    },
+    "Incendiary_Bomb_LaunchBay": {
+      "path": "/Game/Assets/Ships/ShipComponent/SM_SC_Incendiary_Bomb_LaunchBay.SM_SC_Incendiary_Bomb_LaunchBay",
+      "class": "StaticMesh",
+      "bounds": {
+        "origin": [
+          -41.1044921875,
+          -0.13525390625,
+          28.908294677734375
+        ],
+        "extent": [
+          1551.685546875,
+          3801.815185546875,
+          815.178955078125
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Incendiary_Bomb_LaunchBay",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": false,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_bounds_extension": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "triangles": 3978
+    },
+    "Missile_Bay": {
+      "path": "/Game/Assets/Ships/ShipComponent/SM_SC_Missile_Bay.SM_SC_Missile_Bay",
+      "class": "StaticMesh",
+      "bounds": {
+        "origin": [
+          0.0,
+          -0.015625,
+          -33.94140625
+        ],
+        "extent": [
+          479.9692077636719,
+          802.984375,
+          114.54893493652344
+        ]
+      },
+      "materials": [
+        {
+          "name": "ScifiDreadnoughtWeapons_001",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtWeapons.ScifiDreadnoughtWeapons"
+        }
+      ],
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Missile_Bay",
+      "overrides": [],
+      "overlay_slot_available": true,
+      "overlay_asset_available": false,
+      "UV_APIs": [],
+      "negative_bounds_extension": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "positive_bounds_extension": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "triangles": 368
+    }
+  },
+  "skeletal_editor_api": [
+    "get_lod_build_settings",
+    "get_lod_count",
+    "get_lod_material_slot",
+    "import_lod",
+    "regenerate_lod",
+    "reimport_all_custom_lods",
+    "remove_lods",
+    "set_lod_build_settings",
+    "strip_lod_geometry"
+  ],
+  "material_errors_API": [
+    "__getstate__",
+    "get_material_default_static_switch_parameter_value",
+    "get_material_instance_static_switch_parameter_value",
+    "get_static_switch_parameter_names",
+    "get_static_switch_parameter_source",
+    "get_statistics",
+    "set_material_instance_static_switch_parameter_value",
+    "static_class"
+  ]
+}

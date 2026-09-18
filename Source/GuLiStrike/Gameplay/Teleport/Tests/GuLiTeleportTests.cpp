@@ -19,21 +19,21 @@ bool FGuLiTeleportConfigurationTest::RunTest(const FString& Parameters)
 {
 	for (int32 Level=1; Level<=4; ++Level)
 	{
-		constexpr float Radii[] = {4000.f, 10000.f, 20000.f, 50000.f};
+		constexpr float Radii[] = {800.f, 2000.f, 4000.f, 10000.f};
 		FGuLiTeleportFieldConfig Config; Config.Level=Level; Config.RadiusCentimeters=Radii[Level-1]; Config.bAllowPlayerVehicles=Level==4;
 		TestTrue(TEXT("Tier configuration is valid"),Config.IsValid());
 		TestTrue(TEXT("Ground circle boundary is inclusive"),GuLiTeleport::IsInsideDisc(FVector(Config.RadiusCentimeters,0,10000),FVector::ZeroVector,Config.RadiusCentimeters));
 		TestFalse(TEXT("One centimeter beyond the circle is rejected"),GuLiTeleport::IsInsideDisc(FVector(Config.RadiusCentimeters+1,0,0),FVector::ZeroVector,Config.RadiusCentimeters));
 		TestEqual(TEXT("Only tier four accepts player WM"),GuLiTeleport::CanCollectVehicle(Config,false,90),Level==4);
-		TestEqual(TEXT("Only tier four accepts player Ship at exactly 100m"),GuLiTeleport::CanCollectVehicle(Config,true,10000),Level==4);
-		TestFalse(TEXT("Ship above 100m is excluded"),GuLiTeleport::CanCollectVehicle(Config,true,10000.1));
+		TestEqual(TEXT("Only tier four accepts player Ship at exactly 20m"),GuLiTeleport::CanCollectVehicle(Config,true,2000),Level==4);
+		TestFalse(TEXT("Ship above 20m is excluded"),GuLiTeleport::CanCollectVehicle(Config,true,2000.1));
 		TestFalse(TEXT("Underground Ship is excluded"),GuLiTeleport::CanCollectVehicle(Config,true,-1));
 		FGuLiTeleportCastState State; State.Config=Config; State.PhaseStartTime=20;
 		TestEqual(TEXT("Progress starts at twelve o'clock"),GuLiTeleport::WindupProgress(State,20),0.f);
 		TestEqual(TEXT("Half circle at 1.5 seconds"),GuLiTeleport::WindupProgress(State,21.5),.5f);
 		TestTrue(TEXT("Windup is unfinished immediately before 3 seconds"),GuLiTeleport::WindupProgress(State,22.999)<1);
 		TestEqual(TEXT("Full circle exactly at 3 seconds"),GuLiTeleport::WindupProgress(State,23),1.f);
-		TestEqual(TEXT("Beam height is 500m at every tier"),Config.BeamHeightCentimeters,50000.f);
+		TestEqual(TEXT("Beam height is 100m at every tier"),Config.BeamHeightCentimeters,10000.f);
 	}
 	return true;
 }

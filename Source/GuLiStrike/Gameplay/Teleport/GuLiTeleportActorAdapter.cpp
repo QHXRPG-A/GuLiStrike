@@ -67,7 +67,7 @@ void GuLiTeleportActorAdapter::Collect(UWorld& World, const FGuLiTeleportCastSta
 		auto& Unit = Out.AddDefaulted_GetRef(); Unit.Kind = EGuLiTeleportUnitKind::Actor; Unit.Actor = Pawn;
 		Unit.Original = Unit.Landing = Pawn->GetActorTransform(); Unit.bGroundPivot = false;
 		if (const auto* Character = Cast<ACharacter>(Pawn)) { Character->GetCapsuleComponent()->GetScaledCapsuleSize(Unit.Radius,Unit.HalfHeight); }
-		else { Unit.Radius = Unit.HalfHeight = 100; }
+		else { Unit.Radius = Unit.HalfHeight = 20; }
 		Unit.Altitude = Ship ? Height : Unit.HalfHeight+3;
 		Unit.bPreserveGroundClearance = Ship != nullptr;
 		if (Core)

@@ -1,0 +1,153 @@
+{
+  "schema": "gulistrike-art-approval/v1",
+  "work_id": "WORK-20260917-006",
+  "recorded_at": "2026-09-17T11:03:30.202843+00:00",
+  "art_revision": "1.0",
+  "stage": "A",
+  "decision": "approved",
+  "user_message": "开始实施，然后把这些组件导入至ue替换正式资源",
+  "message_context": "User replies to the displayed Batch04 reference review and explicitly requests implementation followed by formal UE replacement.",
+  "scope": "Original geometry retained; approved surface references only.",
+  "reference_manifest": {
+    "path": "References/reference_A_manifest_v1.json",
+    "sha256": "3da1a86a84e08882967ad8ea9a657dd8b53224cb1fcab319dd5b52936bc26be8"
+  },
+  "parts": {
+    "Bottom_Twin_Barrel_Turret": {
+      "reference_version": "v1",
+      "reference_sheet": {
+        "path": "References/Bottom_Twin_Barrel_Turret_Reference_v1.png",
+        "sha256": "d1331d50e8407474d41ce41254e5bc51fbaaf488cb0d5f0ae7a4cb7618b4f374",
+        "bytes": 1196298,
+        "resolution": [
+          1448,
+          1086
+        ]
+      },
+      "original_authoring_source": {
+        "path": "Source/ExistingAuthoring/SC_Bottom_Twin_Barrel_Turret.blend",
+        "sha256": "7a01b9ae251823b4585379a4d4ad76ac09416c0bc0f7f41e7cfccc3277966537",
+        "bytes": 165073
+      },
+      "original_inspection_blend": {
+        "path": "Source/Bottom_Twin_Barrel_Turret_Original_Inspection.blend",
+        "sha256": "67c46799c5f958cd3e7e3d06ab6a059e27cec4c5e67a8042496a6629e6070a65",
+        "bytes": 165371
+      },
+      "original_static_exports": [
+        {
+          "path": "Source/FBX_static_v1/SM_SC_Bottom_Twin_Barrel_Turret.fbx",
+          "sha256": "6132a845f4feb46462771039ee79c0b1f6d82dc569ffd8acf1d4c8d3136eedf4",
+          "bytes": 74288
+        }
+      ],
+      "original_geometry_snapshot": {
+        "path": "Source/Bottom_Twin_Barrel_Turret_original_geometry.json",
+        "sha256": "2808146b52f21bcd0934555e27eb5bfd074a0a239e15823513142c0b39422b7c",
+        "bytes": 170509
+      }
+    },
+    "High_Rate_Fire_Cannon": {
+      "reference_version": "v2",
+      "reference_sheet": {
+        "path": "References/High_Rate_Fire_Cannon_Reference_v2.png",
+        "sha256": "8d0d7b9c43a34e21beda7dc69e94ef86f1664bcbc1918bf5c7b1900e97b6b647",
+        "bytes": 1567567,
+        "resolution": [
+          1536,
+          1024
+        ]
+      },
+      "original_authoring_source": {
+        "path": "Source/ExistingAuthoring/SC_High_Rate_Fire_Cannon.blend",
+        "sha256": "f95a4028f8f95041682f1e997efd7297465ce5856e2aabbe3447d223ce096e3f",
+        "bytes": 140077
+      },
+      "original_inspection_blend": {
+        "path": "Source/High_Rate_Fire_Cannon_Original_Inspection.blend",
+        "sha256": "8e4d6296f8e16ef3dd38a0e748c3eeae2d0ca50730a0142855db9a31d3c9f6cb",
+        "bytes": 141304
+      },
+      "original_static_exports": [
+        {
+          "path": "Source/FBX_static_v1/SM_SC_High_Rate_Fire_Cannon.fbx",
+          "sha256": "531c605b8b297e8985c000005ecc92b916f6ea0df75aa7907d5dac32635bd837",
+          "bytes": 62720
+        }
+      ],
+      "original_geometry_snapshot": {
+        "path": "Source/High_Rate_Fire_Cannon_original_geometry.json",
+        "sha256": "968d74e09ec6424d5f73109ff51f67f12a39d640105633f5578975b32a70a722",
+        "bytes": 126272
+      }
+    },
+    "Incendiary_Bomb_LaunchBay": {
+      "reference_version": "v1",
+      "reference_sheet": {
+        "path": "References/Incendiary_Bomb_LaunchBay_Reference_v1.png",
+        "sha256": "2fd4c9b16e18a4ca14f918290462e17ff9cd0fed1d62febf7b9f8ad43586d1cd",
+        "bytes": 1654983,
+        "resolution": [
+          1536,
+          1024
+        ]
+      },
+      "original_authoring_source": {
+        "path": "Source/FBX_static_v1/SM_SC_Incendiary_Bomb_LaunchBay.fbx",
+        "sha256": "fd8b0b26573b06b1f5bade4bab5cd13236432816647cffdde22aeaf07fdfaff2",
+        "bytes": 155600
+      },
+      "original_inspection_blend": {
+        "path": "Source/Incendiary_Bomb_LaunchBay_Original_Inspection.blend",
+        "sha256": "35e31f139f64db17c9a5ffac63a134290904253b258fe914a60769f27f628a2b",
+        "bytes": 242216
+      },
+      "original_static_exports": [
+        {
+          "path": "Source/FBX_static_v1/SM_SC_Incendiary_Bomb_LaunchBay.fbx",
+          "sha256": "fd8b0b26573b06b1f5bade4bab5cd13236432816647cffdde22aeaf07fdfaff2",
+          "bytes": 155600
+        }
+      ],
+      "original_geometry_snapshot": {
+        "path": "Source/Incendiary_Bomb_LaunchBay_original_geometry.json",
+        "sha256": "7a5dac80738bd18e806be735f1593cfb773d9abb7d0c41a6d6e9c49edafd2127",
+        "bytes": 591752
+      }
+    },
+    "Missile_Bay": {
+      "reference_version": "v1",
+      "reference_sheet": {
+        "path": "References/Missile_Bay_Reference_v1.png",
+        "sha256": "bc6a74250d76b9f83f31be632689d6277200081f68d8cbc4be8e8da75ece801b",
+        "bytes": 1238962,
+        "resolution": [
+          1448,
+          1086
+        ]
+      },
+      "original_authoring_source": {
+        "path": "Source/FBX_static_v1/SM_SC_Missile_Bay.fbx",
+        "sha256": "52a200e35060924cb6b8318fb975e77775d4cefa624c3fd28b8c649fdd8d7008",
+        "bytes": 34000
+      },
+      "original_inspection_blend": {
+        "path": "Source/Missile_Bay_Original_Inspection.blend",
+        "sha256": "20cc283c8b80dc435660ab0dd01f862d6c376c98e2a6465f6516868b50b31f16",
+        "bytes": 105871
+      },
+      "original_static_exports": [
+        {
+          "path": "Source/FBX_static_v1/SM_SC_Missile_Bay.fbx",
+          "sha256": "52a200e35060924cb6b8318fb975e77775d4cefa624c3fd28b8c649fdd8d7008",
+          "bytes": 34000
+        }
+      ],
+      "original_geometry_snapshot": {
+        "path": "Source/Missile_Bay_original_geometry.json",
+        "sha256": "059d79857d2482b8137e59f0477615a877989f715507af68bd5a94165fcb5a7e",
+        "bytes": 51869
+      }
+    }
+  }
+}

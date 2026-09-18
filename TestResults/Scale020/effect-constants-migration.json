@@ -1,0 +1,222 @@
+{
+  "mining": [
+    {
+      "emitter": "Beam",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Beam.BeamWidth.Beam Width",
+      "old": "25.000000",
+      "target": "5.000000"
+    },
+    {
+      "emitter": "Beam",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Beam.SolveForcesAndVelocity.Acceleration Limit",
+      "old": "9999.000000",
+      "target": "1999.800000"
+    },
+    {
+      "emitter": "Beam",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Beam.SolveForcesAndVelocity.Speed Limit",
+      "old": "1000.000000",
+      "target": "200.000000"
+    },
+    {
+      "emitter": "Beam",
+      "stage": "ParticleUpdate",
+      "field": "Constants.Beam.SolveForcesAndVelocity.Acceleration Limit",
+      "old": "9999.000000",
+      "target": "1999.800000"
+    },
+    {
+      "emitter": "Beam",
+      "stage": "ParticleUpdate",
+      "field": "Constants.Beam.SolveForcesAndVelocity.Speed Limit",
+      "old": "1000.000000",
+      "target": "200.000000"
+    },
+    {
+      "emitter": "Beam001",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Beam001.BeamWidth.Beam Width",
+      "old": "5.000000",
+      "target": "1.000000"
+    },
+    {
+      "emitter": "Beam001",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Beam001.SolveForcesAndVelocity.Acceleration Limit",
+      "old": "9999.000000",
+      "target": "1999.800000"
+    },
+    {
+      "emitter": "Beam001",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Beam001.SolveForcesAndVelocity.Speed Limit",
+      "old": "1000.000000",
+      "target": "200.000000"
+    },
+    {
+      "emitter": "Beam001",
+      "stage": "ParticleUpdate",
+      "field": "Constants.Beam001.SolveForcesAndVelocity.Acceleration Limit",
+      "old": "9999.000000",
+      "target": "1999.800000"
+    },
+    {
+      "emitter": "Beam001",
+      "stage": "ParticleUpdate",
+      "field": "Constants.Beam001.SolveForcesAndVelocity.Speed Limit",
+      "old": "1000.000000",
+      "target": "200.000000"
+    },
+    {
+      "emitter": "Spark",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark.AddVelocity.Velocity",
+      "old": "(0.000000, 0.000000, 50.000000)",
+      "target": "0.000000, 0.000000, 10.000000"
+    },
+    {
+      "emitter": "Spark",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark.GravityForce.Gravity",
+      "old": "(0.000000, 0.000000, -980.000000)",
+      "target": "0.000000, 0.000000, -196.000000"
+    },
+    {
+      "emitter": "Spark",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark.RandomRangeFloat.Maximum",
+      "old": "500.000000",
+      "target": "100.000000"
+    },
+    {
+      "emitter": "Spark",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark.RandomRangeFloat.Minimum",
+      "old": "100.000000",
+      "target": "20.000000"
+    },
+    {
+      "emitter": "Spark",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark.SolveForcesAndVelocity.Acceleration Limit",
+      "old": "9999.000000",
+      "target": "1999.800000"
+    },
+    {
+      "emitter": "Spark",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark.SolveForcesAndVelocity.Speed Limit",
+      "old": "1000.000000",
+      "target": "200.000000"
+    },
+    {
+      "emitter": "Spark",
+      "stage": "ParticleUpdate",
+      "field": "Constants.Spark.GravityForce.Gravity",
+      "old": "(0.000000, 0.000000, -980.000000)",
+      "target": "0.000000, 0.000000, -196.000000"
+    },
+    {
+      "emitter": "Spark",
+      "stage": "ParticleUpdate",
+      "field": "Constants.Spark.SolveForcesAndVelocity.Acceleration Limit",
+      "old": "9999.000000",
+      "target": "1999.800000"
+    },
+    {
+      "emitter": "Spark",
+      "stage": "ParticleUpdate",
+      "field": "Constants.Spark.SolveForcesAndVelocity.Speed Limit",
+      "old": "1000.000000",
+      "target": "200.000000"
+    },
+    {
+      "emitter": "Spark001",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark001.AddVelocity.Velocity",
+      "old": "(0.000000, 0.000000, 50.000000)",
+      "target": "0.000000, 0.000000, 10.000000"
+    },
+    {
+      "emitter": "Spark001",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark001.GravityForce.Gravity",
+      "old": "(0.000000, 0.000000, -980.000000)",
+      "target": "0.000000, 0.000000, -196.000000"
+    },
+    {
+      "emitter": "Spark001",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark001.InitializeParticle.Uniform Sprite Size",
+      "old": "15.000000",
+      "target": "3.000000"
+    },
+    {
+      "emitter": "Spark001",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark001.RandomRangeFloat.Maximum",
+      "old": "500.000000",
+      "target": "100.000000"
+    },
+    {
+      "emitter": "Spark001",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark001.RandomRangeFloat.Minimum",
+      "old": "100.000000",
+      "target": "20.000000"
+    },
+    {
+      "emitter": "Spark001",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark001.SolveForcesAndVelocity.Acceleration Limit",
+      "old": "9999.000000",
+      "target": "1999.800000"
+    },
+    {
+      "emitter": "Spark001",
+      "stage": "ParticleSpawn",
+      "field": "Constants.Spark001.SolveForcesAndVelocity.Speed Limit",
+      "old": "1000.000000",
+      "target": "200.000000"
+    },
+    {
+      "emitter": "Spark001",
+      "stage": "ParticleUpdate",
+      "field": "Constants.Spark001.GravityForce.Gravity",
+      "old": "(0.000000, 0.000000, -980.000000)",
+      "target": "0.000000, 0.000000, -196.000000"
+    },
+    {
+      "emitter": "Spark001",
+      "stage": "ParticleUpdate",
+      "field": "Constants.Spark001.SolveForcesAndVelocity.Acceleration Limit",
+      "old": "9999.000000",
+      "target": "1999.800000"
+    },
+    {
+      "emitter": "Spark001",
+      "stage": "ParticleUpdate",
+      "field": "Constants.Spark001.SolveForcesAndVelocity.Speed Limit",
+      "old": "1000.000000",
+      "target": "200.000000"
+    }
+  ],
+  "mining_changed": 0,
+  "effect_type_settings": [
+    {
+      "path": "/Game/GuLiStrike/FX/UnitFeedback/FXT_UnitDestruction",
+      "old": 180000.0,
+      "target": 36000.0
+    },
+    {
+      "path": "/Game/GuLiStrike/FX/WingmanFlight/FXT_WingmanFlight",
+      "old": 180000.0,
+      "target": 36000.0
+    }
+  ],
+  "compile_errors": 0,
+  "compile_warnings": 0
+}

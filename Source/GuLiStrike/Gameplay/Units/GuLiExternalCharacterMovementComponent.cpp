@@ -64,6 +64,16 @@ struct FGuLiExternalMovementNetworkStorage { FExternalMoveContainer Moves; FExte
 void FGuLiExternalMovementStorageDeleter::operator()(FGuLiExternalMovementNetworkStorage* Storage) const { delete Storage; }
 UGuLiExternalCharacterMovementComponent::UGuLiExternalCharacterMovementComponent(const FObjectInitializer& Initializer) : Super(Initializer)
 {
+	// Version-1 object scale. Absolute defaults, never multiplied during initialization/pooling.
+	MaxAcceleration = 409.6f;
+	BrakingDecelerationWalking = 409.6f;
+	MaxStepHeight = 9.0f;
+	PerchRadiusThreshold = 0.0f;
+	PerchAdditionalHeight = 8.0f;
+	JumpZVelocity = 84.0f;
+	GravityScale = 0.2f; // Per-character acceleration only; world gravity/terrain remain unchanged.
+	NetworkMaxSmoothUpdateDistance = 51.2f;
+	NetworkNoSmoothUpdateDistance = 76.8f;
 	NetworkStorage.Reset(new FGuLiExternalMovementNetworkStorage);
 	SetNetworkMoveDataContainer(NetworkStorage->Moves); SetMoveResponseDataContainer(NetworkStorage->Response);
 	bServerAcceptClientAuthoritativePosition = false;

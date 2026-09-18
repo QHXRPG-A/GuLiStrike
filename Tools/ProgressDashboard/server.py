@@ -10,6 +10,7 @@ import mimetypes
 import re
 import sys
 import threading
+from datetime import datetime
 from http import HTTPStatus
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 from pathlib import Path
@@ -22,6 +23,20 @@ PROJECT_ROOT = DASHBOARD_ROOT.parents[1]
 STATIC_ROOT = DASHBOARD_ROOT / "dist" / "client"
 PROGRESS_TOOL = PROJECT_ROOT / ".agents" / "skills" / "gulistrike-progress" / "scripts" / "progress_docs.py"
 DOCUMENT_ID = re.compile(r"^[A-Za-z0-9-]+$")
+
+ART_SOURCE_ROOT = PROJECT_ROOT / "ArtSource"
+ART_MEDIA_EXTENSIONS = {
+    ".png": "image",
+    ".jpg": "image",
+    ".jpeg": "image",
+    ".webp": "image",
+    ".gif": "image",
+    ".bmp": "image",
+    ".svg": "image",
+    ".mp4": "video",
+    ".webm": "video",
+    ".md": "text",
+}
 
 
 def load_progress_module() -> Any:
@@ -139,6 +154,90 @@ class ProgressCache:
 CACHE = ProgressCache()
 
 
+class ArtSourceCache:
+    """逐级只读浏览 ArtSource/；按目录自身 mtime 失效缓存。"""
+
+    def __init__(self) -> None:
+        self._lock = threading.RLock()
+        self._listings: dict[str, tuple[int, list[dict[str, Any]]]] = {}
+
+    def _resolve(self, relative: str, expect_dir: bool) -> Path:
+        candidate = (ART_SOURCE_ROOT / relative).resolve() if relative else ART_SOURCE_ROOT.resolve()
+        try:
+            candidate.relative_to(ART_SOURCE_ROOT.resolve())
+        except ValueError:
+            raise RuntimeError(f"路径越界：{relative}") from None
+        if expect_dir and not candidate.is_dir():
+            raise FileNotFoundError(relative)
+        return candidate
+
+    def listing(self, relative_dir: str) -> dict[str, Any]:
+        target = self._resolve(relative_dir, expect_dir=True)
+        with self._lock:
+            signature = int(target.stat().st_mtime_ns)
+            cached = self._listings.get(relative_dir)
+            if cached and cached[0] == signature:
+                entries = cached[1]
+            else:
+                entries = self._scan(target)
+                self._listings[relative_dir] = (signature, entries)
+        parent = relative_dir.rsplit("/", 1)[0] if "/" in relative_dir else ""
+        return {"dir": relative_dir, "parent": parent or None, "entries": entries}
+
+    def _scan(self, target: Path) -> list[dict[str, Any]]:
+        try:
+            children = sorted(target.iterdir(), key=lambda item: (item.is_file(), item.name.casefold()))
+        except OSError:
+            return []
+        entries: list[dict[str, Any]] = []
+        for child in children:
+            relative = child.relative_to(ART_SOURCE_ROOT).as_posix()
+            if child.is_dir():
+                dir_count = file_count = 0
+                try:
+                    for grandchild in child.iterdir():
+                        if grandchild.is_dir():
+                            dir_count += 1
+                        else:
+                            file_count += 1
+                except OSError:
+                    pass
+                entries.append({
+                    "name": child.name,
+                    "path": relative,
+                    "type": "dir",
+                    "media": None,
+                    "bytes": 0,
+                    "modified": "",
+                    "dir_count": dir_count,
+                    "file_count": file_count,
+                })
+            elif child.is_file():
+                stat = child.stat()
+                entries.append({
+                    "name": child.name,
+                    "path": relative,
+                    "type": "file",
+                    "media": ART_MEDIA_EXTENSIONS.get(child.suffix.lower()),
+                    "bytes": stat.st_size,
+                    "modified": datetime.fromtimestamp(stat.st_mtime).date().isoformat(),
+                    "dir_count": 0,
+                    "file_count": 0,
+                })
+        return entries
+
+    def media_path(self, relative_file: str) -> Path:
+        candidate = self._resolve(relative_file, expect_dir=False)
+        if not candidate.is_file():
+            raise FileNotFoundError(relative_file) from None
+        if candidate.suffix.lower() not in ART_MEDIA_EXTENSIONS:
+            raise PermissionError(relative_file) from None
+        return candidate
+
+
+ART_CACHE = ArtSourceCache()
+
+
 class DashboardHandler(BaseHTTPRequestHandler):
     server_version = "GuLiProgress/1.0"
 
@@ -213,6 +312,32 @@ class DashboardHandler(BaseHTTPRequestHandler):
                     return
                 self._json(document)
                 return
+            if parsed.path == "/api/artsource":
+                query = parse_qs(parsed.query)
+                relative_dir = query.get("dir", [""])[0][:400].replace("\\", "/").strip().strip("/")
+                try:
+                    self._json(ART_CACHE.listing(relative_dir))
+                except FileNotFoundError:
+                    self._json({"error": "not_found"}, HTTPStatus.NOT_FOUND)
+                except RuntimeError as error:
+                    self._json({"error": "invalid_path", "message": str(error)}, HTTPStatus.BAD_REQUEST)
+                return
+            if parsed.path == "/api/artsource/file":
+                query = parse_qs(parsed.query)
+                relative_file = query.get("p", [""])[0][:600].replace("\\", "/").lstrip("/")
+                try:
+                    media_path = ART_CACHE.media_path(relative_file)
+                except FileNotFoundError:
+                    self._json({"error": "not_found"}, HTTPStatus.NOT_FOUND)
+                    return
+                except PermissionError:
+                    self._json({"error": "forbidden_type", "message": "仅提供图片、视频与 Markdown 文件。"}, HTTPStatus.FORBIDDEN)
+                    return
+                except RuntimeError as error:
+                    self._json({"error": "invalid_path", "message": str(error)}, HTTPStatus.BAD_REQUEST)
+                    return
+                self._media(media_path)
+                return
             if parsed.path.startswith("/api/"):
                 self._json({"error": "not_found"}, HTTPStatus.NOT_FOUND)
                 return
@@ -222,6 +347,26 @@ class DashboardHandler(BaseHTTPRequestHandler):
         except Exception as error:  # keep local diagnostics useful without exposing a traceback to the browser
             self.log_error("request failed: %s", error)
             self._json({"error": "internal_error", "message": str(error)}, HTTPStatus.INTERNAL_SERVER_ERROR)
+
+    def _media(self, media_path: Path) -> None:
+        payload_size = media_path.stat().st_size
+        suffix = media_path.suffix.lower()
+        mime_type = mimetypes.guess_type(media_path.name)[0] or "application/octet-stream"
+        if suffix == ".md":
+            mime_type = "text/plain; charset=utf-8"
+        elif mime_type.startswith("text/"):
+            mime_type += "; charset=utf-8"
+        self.send_response(HTTPStatus.OK)
+        self.send_header("Content-Type", mime_type)
+        self.send_header("Content-Length", str(payload_size))
+        self.send_header("Cache-Control", "public, max-age=300")
+        self.send_header("X-Content-Type-Options", "nosniff")
+        if suffix == ".svg":
+            self.send_header("Content-Security-Policy", "default-src 'none'; style-src 'unsafe-inline'")
+        self.end_headers()
+        with media_path.open("rb") as handle:
+            while chunk := handle.read(262144):
+                self.wfile.write(chunk)
 
     def _static(self, request_path: str) -> None:
         if not STATIC_ROOT.is_dir():

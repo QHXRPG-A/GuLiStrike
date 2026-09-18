@@ -20,20 +20,27 @@ AGuLiStrikeNPC::AGuLiStrikeNPC()
 	AutoPossessAI = EAutoPossessAI::PlacedInWorldOrSpawned;
 
 	// configure the inherited components
-	GetCapsuleComponent()->SetCapsuleRadius(45.0f);
+	GetCapsuleComponent()->InitCapsuleSize(9.0f, 19.2f);
 	GetCapsuleComponent()->SetNotifyRigidBodyCollision(true);
 
 	GetMesh()->SetCollisionProfileName(FName("NoCollision"));
+	GetMesh()->SetRelativeScale3D(FVector(0.2f));
 
-	GetCharacterMovement()->GravityScale = 1.5f;
-	GetCharacterMovement()->MaxAcceleration = 1000.0f;
+	GetCharacterMovement()->GravityScale = 0.3f;
+	GetCharacterMovement()->MaxAcceleration = 200.0f;
+	GetCharacterMovement()->BrakingDecelerationWalking = 409.6f;
+	GetCharacterMovement()->MaxStepHeight = 9.0f;
+	GetCharacterMovement()->PerchAdditionalHeight = 8.0f;
+	GetCharacterMovement()->JumpZVelocity = 84.0f;
+	GetCharacterMovement()->NetworkMaxSmoothUpdateDistance = 51.2f;
+	GetCharacterMovement()->NetworkNoSmoothUpdateDistance = 76.8f;
 	GetCharacterMovement()->BrakingFriction = 1.0f;
-	GetCharacterMovement()->MaxWalkSpeed = 200.0f;
-	GetCharacterMovement()->MaxWalkSpeedCrouched = 100.0f;
+	GetCharacterMovement()->MaxWalkSpeed = 40.0f;
+	GetCharacterMovement()->MaxWalkSpeedCrouched = 20.0f;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 640.0f, 0.0f);
 	GetCharacterMovement()->bOrientRotationToMovement = true;
 	GetCharacterMovement()->bUseRVOAvoidance = true;
-	GetCharacterMovement()->AvoidanceConsiderationRadius = 250.0f;
+	GetCharacterMovement()->AvoidanceConsiderationRadius = 50.0f;
 	GetCharacterMovement()->AvoidanceWeight = 1.0f;
 	GetCharacterMovement()->bConstrainToPlane = true;
 	GetCharacterMovement()->bSnapToPlaneAtStart = true;

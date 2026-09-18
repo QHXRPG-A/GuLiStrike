@@ -1,0 +1,3164 @@
+{
+  "performance_status": "Not profiled; geometry counts do not imply GPU or draw-call pass",
+  "source_baseline_mismatches": 0,
+  "approved_v1": [
+    {
+      "bytes": 6994,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleAdaptation_20260918\\Review_v1.html",
+      "sha256": "D99E0D30C1A82B763B5C10611C167C0816D2B9C6C4785831BC7E34A0D9D50359"
+    },
+    {
+      "bytes": 1759350,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleAdaptation_20260918\\Previews\\03_overview.png",
+      "sha256": "4B012DEF3E3E9632BE24A6F9F7316B36CB8B1EEA59C7F2D0824EB5E1E657735D"
+    },
+    {
+      "bytes": 1545572,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleAdaptation_20260918\\Previews\\04_low_angle.png",
+      "sha256": "33911AE70802ED4DC0B705B660E3D65F93B562B5E177D823F3394DE6854BD025"
+    },
+    {
+      "bytes": 1453373,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleAdaptation_20260918\\Previews\\05_top.png",
+      "sha256": "BFA24218A069D48CFBF4B124C46308B6F4E5F5B5F4237D7342E852F7BDB5E6B8"
+    },
+    {
+      "bytes": 2043710,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleAdaptation_20260918\\Previews\\06_commander_200m.png",
+      "sha256": "C53B506E167416698EFCDADC98ACEC927A8F79AF79C0D9032DC36B48013CD0F7"
+    },
+    {
+      "bytes": 1752076,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleAdaptation_20260918\\Previews\\07_commander_800m.png",
+      "sha256": "73C3E6FDE960F6A32FB23DC3C2B7B380DB3A8421CF94DAF6A5E44D2C7ADEE1A7"
+    },
+    {
+      "bytes": 1302887,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleAdaptation_20260918\\Previews\\08_commander_1800m.png",
+      "sha256": "0FE63488E046A9DFFDDF9601F00718BC874A53B6AB966EC0A42AFDF88F1C2A94"
+    },
+    {
+      "bytes": 1620091,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleAdaptation_20260918\\Previews\\09_units_detail.png",
+      "sha256": "0EA8747DD2F3E5DB537253130C9B223EA41E0C96005DA288331A9994C2446010"
+    },
+    {
+      "bytes": 1568888,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleAdaptation_20260918\\Previews\\10_tree_detail.png",
+      "sha256": "75354379A879805D5B5ADE02E7E819C9D5AC49AEBD7B58CEFC843721286A0377"
+    },
+    {
+      "bytes": 1830617,
+      "path": "D:\\UE5.7\\test1\\ArtSource\\Environment\\PineStyleAdaptation_20260918\\Previews\\11_grass_detail.png",
+      "sha256": "7077EF07371AE1B0C78B43D4F6D0EAFD12A04EF973E054427A793C37DE17AA1C"
+    }
+  ],
+  "acceptance_map": "/Game/StylizedPineEnvironment/Maps/Demo_Map",
+  "review_evidence": [
+    {
+      "bytes": 8636,
+      "relative": "Review_Demo_v1.html",
+      "sha256": "1EA07DB131548C15B36386E66BAE328381672318BAB3720C55E4D2051B7F982C"
+    },
+    {
+      "bytes": 5577,
+      "relative": "README.md",
+      "sha256": "F768834A0EC2E2D2D313332FF5AB6C5B6AF3CAF379B766EF1490657D62AD24B4"
+    },
+    {
+      "bytes": 55272,
+      "relative": "readback.json",
+      "sha256": "F2BB59097F8118E26CD4694E1BCCA38E50D198D5B0707C08B55B255A959583ED"
+    },
+    {
+      "bytes": 54049,
+      "relative": "final_readback.json",
+      "sha256": "30249F42098D1C30073DD6BED26BC0DD952FC45F3A4061ED2FB6081D4D5FEC37"
+    },
+    {
+      "bytes": 1763,
+      "relative": "camera_presets.json",
+      "sha256": "B6E220A30609F0BDE6CF58841CC55ABE9250E09ED180CAEFB816A4E11CF4148B"
+    },
+    {
+      "bytes": 1067,
+      "relative": "gallery.json",
+      "sha256": "F2BE869F2FA3F9E797B5B2FC9FBCA5B76864E963297C614C226345E10190A377"
+    },
+    {
+      "bytes": 3259,
+      "relative": "editor_stability.md",
+      "sha256": "186F8057801DA7574BF67CA6AC415933FE29480666449EA0108C61E93A4EB245"
+    },
+    {
+      "bytes": 2968590,
+      "relative": "Previews/00_original_entry.png",
+      "sha256": "EEAE07D9AECFF5165035834E9DF65FDEFEA318E147A0510737D9B75A36D9A32E"
+    },
+    {
+      "bytes": 2202473,
+      "relative": "Previews/01_adapted_entry.png",
+      "sha256": "EFDA2517609B4A7B629C94B6C0DEEAB1D29D9D3D0FDEED9E7C103D9F8A85F0A2"
+    },
+    {
+      "bytes": 2702497,
+      "relative": "Previews/02_reloaded_entry.png",
+      "sha256": "73078E93EF5868DAE6C012D94247E7849F0A975953B7B1EC4D1CE4A5F9095CB3"
+    },
+    {
+      "bytes": 2322509,
+      "relative": "Previews/03_final_entry.png",
+      "sha256": "7E33305A5353ADBD044D83BCF124EBEA6D1CD355EF8B531B6D67B2E7A2835005"
+    },
+    {
+      "bytes": 2434906,
+      "relative": "Previews/04_overview.png",
+      "sha256": "A5129E7F1856435B42922BAD5550D8CF7B279B57F36AF59DD70A8DD77472E69F"
+    },
+    {
+      "bytes": 2401332,
+      "relative": "Previews/05_top.png",
+      "sha256": "CCDF767F0B5D0839E7EF44D281798A5063253C9D16EF6CA5BBBEDBE00821686B"
+    },
+    {
+      "bytes": 2973591,
+      "relative": "Previews/06_wood_stone.png",
+      "sha256": "567F197432D65CBB02BE2C6545697611B8A618746F52B0DBA03AD7D758F55203"
+    },
+    {
+      "bytes": 2859442,
+      "relative": "Previews/07_understory.png",
+      "sha256": "8CECC574CE90D27AF760CEEFE674E900649B2E314E4874626B2D2E1252A045FC"
+    },
+    {
+      "bytes": 2269449,
+      "relative": "Previews/08_glyph.png",
+      "sha256": "6BA40E10A60F7723E9FB6BFBA98D9E759BC62F95B76E32110A4AF4591E47E6C4"
+    },
+    {
+      "bytes": 1359894,
+      "relative": "Previews/09_commander_1800m.png",
+      "sha256": "32AE337145E11705872020D2839DA9FBE49FAE3E25A0F8EFDFCAA3175DF59F37"
+    },
+    {
+      "bytes": 2590138,
+      "relative": "Previews/09_commander_200m.png",
+      "sha256": "5BCBDECBB077F8D719BE4C32DD0D1CAFBB692E09FFB1A2955DDE7254DE8529C6"
+    },
+    {
+      "bytes": 2597990,
+      "relative": "Previews/09_commander_800m.png",
+      "sha256": "7F16376B8B03F2E0CF52A890712A2B2FBFB13AD43BC84A24B646255E4282C2E7"
+    },
+    {
+      "bytes": 2974968,
+      "relative": "Previews/10_skylight_refresh.png",
+      "sha256": "A1E7C3038E83A6171FCC77DFAD485DBEB016B0DA69DE10A659E68FDD06E89546"
+    },
+    {
+      "bytes": 2360305,
+      "relative": "Previews/11_entry_project_defaults.png",
+      "sha256": "F01C8F9EDD230C111701EE12E16952615AFC00D613F82109B691E0E10A19BD72"
+    }
+  ],
+  "review_status": "v1 approved; full Demo_Map awaits final visual approval",
+  "source_integrity": [
+    {
+      "relative": "Demo\\PreviewFloor\\M_PreviewFloor.uasset",
+      "same_as_baseline": true,
+      "sha256": "B56AC01D645206FD5FEF219C33A4BF754363DD6E8348C87776F3C02D85125F2E"
+    },
+    {
+      "relative": "Demo\\PreviewFloor\\MI_PreviewFloor.uasset",
+      "same_as_baseline": true,
+      "sha256": "2B8FFCDFC733DA2C3A9B21897860D107401C1ED3FC0B0FBCF9FA6DBCB550216A"
+    },
+    {
+      "relative": "Demo\\PreviewFloor\\SM_PreviewFloor.uasset",
+      "same_as_baseline": true,
+      "sha256": "5AB23156A58387246BC906161C15995F6C73B195B21197488F5A3A70A6700194"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Blueprints\\BP_ThirdPerson_GM.uasset",
+      "same_as_baseline": true,
+      "sha256": "86C8DABBBBFEB3417EBF2D2168CB4A6C29278867531B052248183253272191AE"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Blueprints\\BP_ThirdPersonCharacter.uasset",
+      "same_as_baseline": true,
+      "sha256": "758E62E3A4E4FC585E6F06DB33AF888F9B3EAF1BEFA7A881719FA1EC324BEE26"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Animations\\ThirdPerson_AnimBP.uasset",
+      "same_as_baseline": true,
+      "sha256": "38C108D9CFA29AD65FE0FDBA9B4641776F61F93F187F671238FC9A100B77F9E3"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Animations\\ThirdPerson_IdleRun_2D.uasset",
+      "same_as_baseline": true,
+      "sha256": "66C618837144AA1022C6F39655E2B57D06FB51F88B1DDB79C1FFCDD15B77D026"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Animations\\ThirdPerson_Jump.uasset",
+      "same_as_baseline": true,
+      "sha256": "C2FFEC28F76DD6B0579657CB6CBB9E5A15E6A449D6144127F7C7A3F76552E293"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Animations\\ThirdPersonIdle.uasset",
+      "same_as_baseline": true,
+      "sha256": "51D88548D886567613F79383D53ABC65E85C2E8D865DF02E8AB7209353C370EE"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Animations\\ThirdPersonJump_End.uasset",
+      "same_as_baseline": true,
+      "sha256": "8BCFDF2FE92BD7C031FA8AD69AE52801D342A8188D86501926B9F832C07F006F"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Animations\\ThirdPersonJump_Loop.uasset",
+      "same_as_baseline": true,
+      "sha256": "F32E6E54E86F2D9F13D9430752BD693E17CC23A565E63E21ABAEDE817368C193"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Animations\\ThirdPersonJump_Start.uasset",
+      "same_as_baseline": true,
+      "sha256": "07C8985F979D055C2768537B82049D66EAD1798A5051D055B0A53C64C90EA66E"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Animations\\ThirdPersonRun.uasset",
+      "same_as_baseline": true,
+      "sha256": "F3EA0328D3E83594A3E4A1395FEA1A341CD8F7BC25C432BE61CFE92FE5542AEB"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Animations\\ThirdPersonWalk.uasset",
+      "same_as_baseline": true,
+      "sha256": "0681B7EE94E4F1D683D3706BA850A8F507868083885D8651E4F08D2BCD97F1BB"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Materials\\M_Male_Body.uasset",
+      "same_as_baseline": true,
+      "sha256": "AD7DB2E363E40CB37FC5D14CAC39087EFEC148D4E7373562DBDE6E750E5A1E8E"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Materials\\M_UE4Man_ChestLogo.uasset",
+      "same_as_baseline": true,
+      "sha256": "20BB2860D97DC12CC707EBFA7DB0942EEF1B33CB7D1B5568BFFE1CBF96D62358"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Materials\\MI_Female_Body.uasset",
+      "same_as_baseline": true,
+      "sha256": "B647F2F812374F26E65A4C335CAB316D12E28B1B33A470223B651882E519A86B"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Materials\\MaterialLayers\\ML_GlossyBlack_Latex_UE4.uasset",
+      "same_as_baseline": true,
+      "sha256": "3AAA671C1D68897C45BF7F6E734A47FDF2D97B20FF49339C1800FDB9A4A92BD1"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Materials\\MaterialLayers\\ML_Plastic_Shiny_Beige_LOGO.uasset",
+      "same_as_baseline": true,
+      "sha256": "878180763687F7F68CE64B6FC633C19BA154DC290A3C81E87E50858DF75A3E33"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Materials\\MaterialLayers\\ML_Plastic_Shiny_Beige.uasset",
+      "same_as_baseline": true,
+      "sha256": "08DC5C63EF9F8AFD9CCCCD9452F34916E048D38D431D92394768DAB09C354E6C"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Materials\\MaterialLayers\\ML_SoftMetal_UE4.uasset",
+      "same_as_baseline": true,
+      "sha256": "6E6C5CB77891C1ED11D40B1A567AC27E2377A17472D32982C8AA84C77300274E"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Materials\\MaterialLayers\\T_ML_Aluminum01_N.uasset",
+      "same_as_baseline": true,
+      "sha256": "96A8D2D58F24D6AAA2D6150EC402D59DA98B744D9EB4C9D16AF03B3FF49AA5AA"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Materials\\MaterialLayers\\T_ML_Aluminum01.uasset",
+      "same_as_baseline": true,
+      "sha256": "E0684DE041855D350797EC6CA8318784FC9AFE32BE6F9283A62512C1001C3DC6"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Materials\\MaterialLayers\\T_ML_Rubber_Blue_01_D.uasset",
+      "same_as_baseline": true,
+      "sha256": "9787DF8B3BE5F2C670328A55C907329E4CA6C67B51A934C60FD60C192DE3CCDD"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Materials\\MaterialLayers\\T_ML_Rubber_Blue_01_N.uasset",
+      "same_as_baseline": true,
+      "sha256": "9C6D523A412B67A9D717334AA3943589DBBA4D158F554DBA1F3FB5CC2800CB9D"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Mesh\\SK_Mannequin_Female_PhysicsAsset.uasset",
+      "same_as_baseline": true,
+      "sha256": "F8AFDE1FFBEAA212201D6EC1504CE126B3ED3E9742C4C446628E987D1664C8E6"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Mesh\\SK_Mannequin_Female.uasset",
+      "same_as_baseline": true,
+      "sha256": "9CC06E8710FAA821A312A143AF6EA5465E746DC08B1D42CDD3CAFFF5E17B52BD"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Mesh\\SK_Mannequin_PhysicsAsset.uasset",
+      "same_as_baseline": true,
+      "sha256": "EAED9FBB4CEA5301BEAD369C429B38C69183B8805356458D7AA71898CEAA0041"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Mesh\\SK_Mannequin.uasset",
+      "same_as_baseline": true,
+      "sha256": "F77A7F137078563F8F16330212847FD5CE40ED1D0CB3D0D60810E22BDCE55387"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Mesh\\UE4_Mannequin_Skeleton.uasset",
+      "same_as_baseline": true,
+      "sha256": "D586527AF4A0DD00C0D9C6EF71257DD77E1CBEDCD5C75FE8AB44F12D807F5A34"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Textures\\T_Female_Mask.uasset",
+      "same_as_baseline": true,
+      "sha256": "E1B2F862C8FE15C6FA6B57341AA051EDD67332079B750CE7F3E758BFD05A9621"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Textures\\T_Female_N.uasset",
+      "same_as_baseline": true,
+      "sha256": "DCE20F74C2D8B6ECE9A7D98561B2A5A35AC91EAB5AD0749E2B0396E49BBB6488"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Textures\\T_Male_Mask.uasset",
+      "same_as_baseline": true,
+      "sha256": "06F6ADD63D618B0F473C4C25227C67B6DFDE6FAD06651A4FF95A26758A9F65D2"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Textures\\T_Male_N.uasset",
+      "same_as_baseline": true,
+      "sha256": "E4E7E911896D168A91448AD18E91D4951A2EFEA35E667C998BAFD7D522018548"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Textures\\T_UE4Logo_Mask.uasset",
+      "same_as_baseline": true,
+      "sha256": "E2817D048FDAEFBCB2DA52FFB15460E4D69751D96FC0ACF286237662387466E5"
+    },
+    {
+      "relative": "Demo\\ThirdPersonBP\\Mannequin\\Character\\Textures\\T_UE4Logo_N.uasset",
+      "same_as_baseline": true,
+      "sha256": "B6C8E4C9BDE2A06E4809BE9C5AA1D7A47C60C15383FF21EE3D5B3273C8314294"
+    },
+    {
+      "relative": "Maps\\Demo_Map_BuiltData.uasset",
+      "same_as_baseline": true,
+      "sha256": "680A3BC07F8795E4F5CF7B9B413B250D00B4EFFB369FE2EE3D9C6F4A16440EF1"
+    },
+    {
+      "relative": "Maps\\Demo_Map.umap",
+      "same_as_baseline": true,
+      "sha256": "09C1C425A285B7677188F8C956070568CA62D9607D2F42E49854474F8BF35902"
+    },
+    {
+      "relative": "Maps\\Heightmap_Map_BuiltData.uasset",
+      "same_as_baseline": true,
+      "sha256": "DC90EC404D9E8B53396A6BB0036E1EBBBF5D7413FD412FA2DBFCD311227EDD3A"
+    },
+    {
+      "relative": "Maps\\Heightmap_Map.umap",
+      "same_as_baseline": true,
+      "sha256": "8F0029441A1AF5283024D8F9EF4CD69151AB65342F84392FD7C28599FD0265DF"
+    },
+    {
+      "relative": "Maps\\Overview_Map_BuiltData.uasset",
+      "same_as_baseline": true,
+      "sha256": "0F582573F56B7E453E039FBDBCABA90686D7E7CE59826BC61535912B67B65DB5"
+    },
+    {
+      "relative": "Maps\\Overview_Map.umap",
+      "same_as_baseline": true,
+      "sha256": "76931A0606DB069627F4A9D89FAC0E279DCAE554987E72135EA36C90949DD88C"
+    },
+    {
+      "relative": "Assets\\Blueprints\\BP_Floating_Rock_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "0BD080655E4A3788ADF628CCC002CA6222C8F2636DD6D9ABB80AF9B363D15FB0"
+    },
+    {
+      "relative": "Assets\\Blueprints\\BP_Floating_Rock_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "36B209771598733D49130C488DF0FD6A5E7269051D267762E2FC9B6A1001823F"
+    },
+    {
+      "relative": "Assets\\Blueprints\\BP_Spinning_Rock.uasset",
+      "same_as_baseline": true,
+      "sha256": "22EB468B2D0B2D0294209C3FCFB46C7BBFDE2EE1FF0990977384AF4DCAF01D61"
+    },
+    {
+      "relative": "Assets\\Decals\\M_Glyph.uasset",
+      "same_as_baseline": true,
+      "sha256": "38AB1FF23047F17B7F53896BA5CAAD05E76D15A47664371E49BE64731BFD90B6"
+    },
+    {
+      "relative": "Assets\\Decals\\MI_Glyph.uasset",
+      "same_as_baseline": true,
+      "sha256": "C7628DEAF7DFE1215CBB62214147D781604F299A8EB1AF56EEBC4798696B4263"
+    },
+    {
+      "relative": "Assets\\Decals\\T_Glyph.uasset",
+      "same_as_baseline": true,
+      "sha256": "3E2945AFA93909781A8CC04FC6C2F9BCEE9B5D3D55726ED20FD1ABEB884C48A9"
+    },
+    {
+      "relative": "Assets\\Materials\\Bark\\M_Bark.uasset",
+      "same_as_baseline": true,
+      "sha256": "DB419A09B4DCF604A32BC8789DC563CA6179C6128F82D7C826C17C760B5B63EC"
+    },
+    {
+      "relative": "Assets\\Materials\\Bark\\MI_BarkBrokenArea.uasset",
+      "same_as_baseline": true,
+      "sha256": "CFC4249DD5CBDFEBCB92FB0B3CB0D8CF85A0B5A35060D54938A2545F40A66C80"
+    },
+    {
+      "relative": "Assets\\Materials\\Bark\\MI_BarkBrokenAreaWhite.uasset",
+      "same_as_baseline": true,
+      "sha256": "6763CED50AF6B7F13C0D1B9C8E95BBD708D19B933F721F34BE02C488AC0825F0"
+    },
+    {
+      "relative": "Assets\\Materials\\Bark\\MI_PineBark.uasset",
+      "same_as_baseline": true,
+      "sha256": "856C3F27C37E0C59071D232EEB8DF3F378999BF822B718E2A22A7C3DF5444ECC"
+    },
+    {
+      "relative": "Assets\\Materials\\Bark\\MI_PineBrokenBark.uasset",
+      "same_as_baseline": true,
+      "sha256": "9FB2A39CEB0FE26577C890E0080EEE82F48A65E68F4FD88ACB626FE00495C119"
+    },
+    {
+      "relative": "Assets\\Materials\\Bark\\MI_PineBrokenBarkWhite.uasset",
+      "same_as_baseline": true,
+      "sha256": "9BBFE054D3237C9209DA632A7FCBD592F69A820ABF2B5F7369646A3D83225EB6"
+    },
+    {
+      "relative": "Assets\\Materials\\Bark\\MI_PineDeadBark.uasset",
+      "same_as_baseline": true,
+      "sha256": "CBFF568A48199B871D690785DEF10D69D1E30E5ACF37C22C72DB7227877CD258"
+    },
+    {
+      "relative": "Assets\\Materials\\Bark\\MI_PineHalfFullBark.uasset",
+      "same_as_baseline": true,
+      "sha256": "3A378FA4208785B263832459689D78449B69B10A29A85DCA3CA52EDB25043552"
+    },
+    {
+      "relative": "Assets\\Materials\\Bark\\MI_PineTallBark.uasset",
+      "same_as_baseline": true,
+      "sha256": "D1B50CE2F6853DCFB9DE8BCF90E24F7EA16ADF4BCF5F79C3DE39905CE411ACD7"
+    },
+    {
+      "relative": "Assets\\Materials\\Flowers\\M_Flower.uasset",
+      "same_as_baseline": true,
+      "sha256": "523615D272E9F6DC61C6BC977312641E6F2713885FF5D1ED2EF9882238681B78"
+    },
+    {
+      "relative": "Assets\\Materials\\Flowers\\MI_Flower1.uasset",
+      "same_as_baseline": true,
+      "sha256": "C6861623543B05D016B3CCBA22415808B10A4CED1A8CE8DF3928A9E3A71C03EF"
+    },
+    {
+      "relative": "Assets\\Materials\\Flowers\\MI_Flower2.uasset",
+      "same_as_baseline": true,
+      "sha256": "922375EF7FF588C006A0EBBC2674F1494F8234FC106211315082C7949078FB76"
+    },
+    {
+      "relative": "Assets\\Materials\\Flowers\\MI_Flower3.uasset",
+      "same_as_baseline": true,
+      "sha256": "627DCEC338478C4C570ED0042A55B17D5EC2E6A78F2670C24485306EDFE3B71F"
+    },
+    {
+      "relative": "Assets\\Materials\\Flowers\\MI_Stem.uasset",
+      "same_as_baseline": true,
+      "sha256": "D035F7F313581112F923634A6A8B277EF51241A74BEBFB4A3CDC55A2ADF4B222"
+    },
+    {
+      "relative": "Assets\\Materials\\Grass\\M_Grass.uasset",
+      "same_as_baseline": true,
+      "sha256": "DAD109FFD449740FF31F9C9FDEB27AF392B744F6D376DCA69F6B8EF9DE1DA062"
+    },
+    {
+      "relative": "Assets\\Materials\\Grass\\MI_Grass.uasset",
+      "same_as_baseline": true,
+      "sha256": "6DECE270351258680D1FB6C9886DFAF0D0323B32CE9927A0AA6BBAE63B2031DD"
+    },
+    {
+      "relative": "Assets\\Materials\\Landscape\\M_Landscape.uasset",
+      "same_as_baseline": true,
+      "sha256": "7B87BE000F7268A240EAA1749A362D977D3093A9148DB54B283731930F59951C"
+    },
+    {
+      "relative": "Assets\\Materials\\Landscape\\MI_Landscape.uasset",
+      "same_as_baseline": true,
+      "sha256": "DD6E9C2B9A41F9F5987E6224E2D82AAA7885E3D092C4FDED562EC0DA792E0AF2"
+    },
+    {
+      "relative": "Assets\\Materials\\Landscape\\MaterialFunctions\\MF_Auto.uasset",
+      "same_as_baseline": true,
+      "sha256": "6F680D8309E108727938FE2A96A98FC973BD2A72385512C5C9BD83F3BCFE71AF"
+    },
+    {
+      "relative": "Assets\\Materials\\Landscape\\MaterialFunctions\\MF_Dirt_Gravel.uasset",
+      "same_as_baseline": true,
+      "sha256": "9767B02E730396EF8CD6B4318EFF08410A0611FCF1675B084F524E82A181FCF0"
+    },
+    {
+      "relative": "Assets\\Materials\\Landscape\\MaterialFunctions\\MF_Dirt_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "69466E12D6B755A0037DD8E4FA8B6F9D250BAD200F7984647AF73B3B0266743D"
+    },
+    {
+      "relative": "Assets\\Materials\\Landscape\\MaterialFunctions\\MF_Grass.uasset",
+      "same_as_baseline": true,
+      "sha256": "5598AB9B216FAEC2135F9DB14F9A4ED828F2F1AD4DCC53F718C91B0D30108A00"
+    },
+    {
+      "relative": "Assets\\Materials\\Landscape\\MaterialFunctions\\MF_Rock.uasset",
+      "same_as_baseline": true,
+      "sha256": "F29A6D157E47385920EFA9F632A3111D0861447A2FAB49C5E44612A4B722C6F5"
+    },
+    {
+      "relative": "Assets\\Materials\\Leaves\\M_Leaf.uasset",
+      "same_as_baseline": true,
+      "sha256": "F7E658AE01548FA14E1DDAD6FA2281F6C8DF8E8BDA5C858CAE9A290DA0A9129C"
+    },
+    {
+      "relative": "Assets\\Materials\\Leaves\\MI_Bush.uasset",
+      "same_as_baseline": true,
+      "sha256": "97ABE27CEE7AAE1BD099C610A311AA889D5EEE0D7A8B689C16F5125DC2F4E6C8"
+    },
+    {
+      "relative": "Assets\\Materials\\Leaves\\MI_Fern.uasset",
+      "same_as_baseline": true,
+      "sha256": "7B419021F1DC8928C84706EB61560A0A132CD72494298C8271B40A6414732DB1"
+    },
+    {
+      "relative": "Assets\\Materials\\Leaves\\MI_Leaf.uasset",
+      "same_as_baseline": true,
+      "sha256": "5977D39D7CD13FF4AA8BCB0724E2BA4E3406278A33312C6F70C2CBA775C3268B"
+    },
+    {
+      "relative": "Assets\\Materials\\Leaves\\MI_LeafBroken.uasset",
+      "same_as_baseline": true,
+      "sha256": "9E5A8DE8D086EA1FAC8E6CFAD2BF0ED822D8EB7F5F582AFD6A43645DD80DE017"
+    },
+    {
+      "relative": "Assets\\Materials\\Leaves\\MI_LeafSmall.uasset",
+      "same_as_baseline": true,
+      "sha256": "B02FFFB60B4A613A71473C64199364DFC888792C63E9C3D8C66940D571152AA5"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\M_Rock.uasset",
+      "same_as_baseline": true,
+      "sha256": "D80005F74B8C77D96D68D1A62DBF05B017E8E3ECDF5DB7B4EDF755D475071AE5"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "C107A7981A6EFF178EBEACEBBDF446A99BC4B0B0D1A0CE008E98E8118E0ACAFA"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "B404FFA16DF2DD0F4FEC466469E63A4FA96176AF398D168B1BFFC7BD4BCD0B9B"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "EB1120F70B6E0B3D1B93C7458C3D0B21C74942CB09221A775E544FF8C27D85A1"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock4_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "7109E4F45B67BFE18EB85D77F7AC5F747AC7472BA45AFEB6B5D59DCB5C06E56E"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock5_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "06BBBBF0C39AB447D511AF9670F6B0B4476FCFB4193F129200C2C0A28C678E24"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock6_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "06786D8265018514FB2E8795411AECEDD3B23BF071FB864B1E0D8F8F5EE63013"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock7_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "16A82A392E2488C9AA87B01B7C6AD6BC1A1FCB7455D96E9EF9043CCF4300EE3C"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFlat1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "A93ACA418312DB440A37DAE01F2AB521B1C0C6B7B7F0ACE19492F318AD585A36"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFlat2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "8A5BF0C9A56EB5A8CA0A4881515C6DC1905A9A08237B865E8D4A1390BEF3F552"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFlat3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "0A12696E9910878CC2FC97E60B814A8A6645EF605B021E6E820138D76023EF0B"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFormation1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "6F542ED3E9566B3DF7197E439FEBC25A6AED2F335561CE305094092180A95130"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFormation2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "5FE4BD8F28B0CA39F0B03F86E9CB669F4DD32685A9C4B4C6AD3E32B1C45C79BA"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFormation3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "67149EB96B448B4137A1AAAE17636FABC7F46C0C81BB70EAE4BD96647DD5E276"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFormation4_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "01A2E972C5946A3E53E6F06AD1FD65DBB44AE6AE1939148D78B2B50D7F3A5863"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFormation5_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "4B124A3690809907638ADBF8854C20BD58DB45C62CF8FF333FC0D91B7A9215BC"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockLong1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "DEB375AA3FB6380441B00E17170AEDA61C23E126E21C1889753A901061591AEA"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockLong2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "C6C381CEFE1EC39C048C15EE6492505B0E4EDF643C2C2378B6BF066BDE607F44"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockLong3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "3D1ABC63FCA28048147E6C4F51501BAF5C3863C672EE3E941D9C010E5E238BC9"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockLong4_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "069ACD9886544316D389575FA5F0ED0E73E95A1C438B77276BA8A6A636316319"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RocksStacked1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "57A8D0F9B3768A82BEB054680DF2CCB6247328466BAF00B6A46735EA795FD1F9"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RocksStacked2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "2FC6880B498D3DF61DF817E415D6B33C79A8D95828F8E23EE9D7907793C8B95C"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockTall1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "10CE80096383E5B8AA03E1A181B5956B1C8C15F1E91664AEFD4DC14A360A6B59"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockTall2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "D9EEDF938065D9A4F37F7C9C0CF7DC8430F44EBFD8936A91DB49FF2FB82A5923"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockTall3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "BE2034CF0037C9FB854C48E276AD5B3C09475F61D3FF3B602BBF51FC8571606B"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_SmallRocks_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "645F3500A76B42A937CE119F545B8D59BDE0F6F2F5C751EA30D39D3A67D38FD0"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "148FA9C64D2626A90B4DABEFDD62C2D125A45A42430B8653CB055EDF6BB4EC78"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "4240E3FA87ACF50286A8A57926AB55A35E50FC6B14D17D539C68DBF9D56DADE6"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "2758AFC00C09EA1EC2D7B97CBFD1178BFA08B09CB102E47DDC04E4C2E0EC0D4F"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock4_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "6CAB66D10137438ACA6A6D218C84D38AB0EA52564D756B72F9E3387421D92793"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock5_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "1F90D2C772E5C7504D8D197CDFB71184A5729B37BDFD17CBBEA9F810DD61712E"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock6_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "D0D4431C341DE3B2BDA06F83775C62B333AEF031D0A16E71C77B5FBD30050E9E"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock7_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "FD3B43F40EB0EDB03556EAEEE5580F5C7D54234DCB40C7E1E42791779ABFAE26"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFlat1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "DF88CD83714CED7F1F5020E3E4F93B08BEDD4AF1D891E5F4A5ECE1AEA8509EF4"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFlat2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "A0939E75BEDA24B81AEEA1B33601889030D0C3D5E253390EAA1720204E360739"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFlat3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "4E3025856D4B1F19673AA4B9509B46F31B0600B1C282BD7532CEA19DE6C1EF4B"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFormation1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "6B6447265184B656BFFD6C84E43C8C4F67B90C72FF136301126917236C4E3360"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFormation2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "E823DA6A37BE1931439428848D60CB0BDA36F9D25CD0BB170A28360408333843"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFormation3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "65DB24B94146C1C103577E846C3C015F07264ABABB28E4B8D1928C2268E7B609"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFormation4_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "8C20A641C16D748B80AD498D17A57AF5BF01288E21D79F71E162514892467B60"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFormation5_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "67B01D97B05757423390CFDF0577A1F9C4B934E2501C0EB271A249E6A7B7148D"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockLong1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "D2C6D988B6D990CDAC76907E7CA5D3C7AADC0076124035DA884F070480E82341"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockLong2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "34312E8A8571D9921225BB2E0CEB7E795670F0DDB70044EBD539E1D707F4A6BF"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockLong3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "9828B958748D3041CB0900577B1809C54D5B54E3E371D6EAED82989B0731A5DD"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockLong4_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "E0486DD5BE97D790F4214948639B2A3BC0F97FE25B9ECEBEE48BF4FC7A3CEBB7"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RocksStacked1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "673132FCA403378D093D7A77705DCDFE963AF61C80350A8D6222DBA889925705"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RocksStacked2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "F98BF28B9CCB4101C446B6DA85A1031692F23B5485EA6FB2D97D319784990317"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockTall1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "46ECFD6E2A36C6402855D2F3D5F7CDA74F19819BB02801C8D69BF6FFD62086CE"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockTall2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "BF7DC8D3775421C594753B0AD3BD662EF7276BF14881F78B18D944C179D03204"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockTall3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "EBABAF9F6B2913F8608FC2D86C2D72A30A67B7803B008C12851D12F5C33F0508"
+    },
+    {
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_SmallRocks_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "4AF802376CCFCC315DCAAF8D467331A098309C2FF476A85E956078BAA2CFDEB2"
+    },
+    {
+      "relative": "Assets\\Materials\\StoneObjects\\MI_StoneArch.uasset",
+      "same_as_baseline": true,
+      "sha256": "6BE13F3043A1D5719E71894406494BAD5D5BE288414D97F08B72BB7D01B7B759"
+    },
+    {
+      "relative": "Assets\\Materials\\StoneObjects\\MI_StoneLantern.uasset",
+      "same_as_baseline": true,
+      "sha256": "DC57E072C0C61EDDC65AC220855705161B6D66492C8D8A4E90C8CBD6BB03E9A0"
+    },
+    {
+      "relative": "Assets\\Materials\\StoneObjects\\MI_StonePortal.uasset",
+      "same_as_baseline": true,
+      "sha256": "028B2AB4602CD5E01DF84F3EE230EB3A4DA65833BBFE9F252E0724ABF79A0F0B"
+    },
+    {
+      "relative": "Assets\\Materials\\WoodStructures\\M_Wood.uasset",
+      "same_as_baseline": true,
+      "sha256": "21705E9FB78C4448B7E3680578027206E6A51233316C2B0ACA0930AB381BC289"
+    },
+    {
+      "relative": "Assets\\Materials\\WoodStructures\\MI_Wood.uasset",
+      "same_as_baseline": true,
+      "sha256": "8DF4EBA51FFB50405207FFBE15B247E4C3A6B8B407C4989791AE1B2ABC582F5B"
+    },
+    {
+      "relative": "Assets\\Meshes\\Bush\\SM_Bush1.uasset",
+      "same_as_baseline": true,
+      "sha256": "355A53AB081E8920E358A3B8AA2F040EC855D1DAC20464CB80953B32ED2F7354"
+    },
+    {
+      "relative": "Assets\\Meshes\\Bush\\SM_Bush2.uasset",
+      "same_as_baseline": true,
+      "sha256": "A3CB3096137DEE22D5F8E2F2843037275E45B7678C68F0380DDD56E4E83DDFF5"
+    },
+    {
+      "relative": "Assets\\Meshes\\Bush\\SM_Bush3.uasset",
+      "same_as_baseline": true,
+      "sha256": "2FF3A5AFE12458E8AF5EDEEF35B495039BF68450CB89A9AE3994F3DD742BC64E"
+    },
+    {
+      "relative": "Assets\\Meshes\\Fern\\SM_Fern1.uasset",
+      "same_as_baseline": true,
+      "sha256": "6A47F6F77B3CAA979895EE4AD2AB692E823B47C8D96EC3E341EE4BD9D1CCD801"
+    },
+    {
+      "relative": "Assets\\Meshes\\Fern\\SM_Fern2.uasset",
+      "same_as_baseline": true,
+      "sha256": "BC997BE56929336749177C2CDBCF4B49B4301483B1ED4683E7BAC79AB1DC91BA"
+    },
+    {
+      "relative": "Assets\\Meshes\\Fern\\SM_Fern3.uasset",
+      "same_as_baseline": true,
+      "sha256": "9DEFC63D4790416AA51D2118B426605B1B0806864338DBE146EC61B9F5D65051"
+    },
+    {
+      "relative": "Assets\\Meshes\\Flowers\\SM_Flower1.uasset",
+      "same_as_baseline": true,
+      "sha256": "1ECFB27ED0681CCBF2397D993E020D85571FF0DC657A189843DD94BD9E390047"
+    },
+    {
+      "relative": "Assets\\Meshes\\Flowers\\SM_Flower2.uasset",
+      "same_as_baseline": true,
+      "sha256": "83B6557E351039DE7FD18467EDFC1C19AC2000B36DBCED4A30FFE63C16AE9AB4"
+    },
+    {
+      "relative": "Assets\\Meshes\\Flowers\\SM_Flower3.uasset",
+      "same_as_baseline": true,
+      "sha256": "C2E82F3D483DD8640E55AEFF9399575C5F24FBDFB7B327F2E6D9C363A31D28BF"
+    },
+    {
+      "relative": "Assets\\Meshes\\Grass\\SM_Grass.uasset",
+      "same_as_baseline": true,
+      "sha256": "8CB75B303679492FBBC4D3AC1BD6EF4962B52CE5A6105BFD76711F9717A4C62D"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "2F9CE2F09924E8AF5215C48DC0F34D184B9799A81E1E9167AB1888789D72297A"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock2_dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "B5AB3AEE2785688B6FCF02FFE4B038FC9D3DB45FCE7BF2ABE515801EACABE623"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "B4AB22C78906CACD745EBDAC3FB1878E35C0D0E100BB820FF270BD8083C0496F"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock4_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "7D45B233FEFBAD86F1DBC3EE55CDE589304BC93E77ED50085B0E3966443570E9"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock5_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "C6B4270C0C18EE0C83F82394F5A996FA788F6213DBE41F64680D4AC794C36F3A"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock6_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "F9AE3C3846C1AEEBFC7E247CC5CC6115C05264D430B3989CE13D03257196F2A3"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock7_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "A0CF33F0D2D289E2D493D3658536FE027D845A3822AFDA0ACA35432B22E4819E"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFlat1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "A08CD972E9971E66CE6A99E48D9B6D45C27D59FA43F644CF6CFFB18FEEBA28E7"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFlat2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "48FABACB6B25FB1DD66D1CB7724529493793A50D9D31E55334E8C2C9DA0E1176"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFlat3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "A92C1456F809D3FD65534857CAF6985238D2B56BEEB2A01DA552E8D775531694"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFormation1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "F33CABF52091A116AE71471EFA6B577A39DC4132B5B2BF9B087F02A0AE687099"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFormation2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "F7A54AFA0008990C48363BE5467F9C1829791CBA1213A5E89270314565DC88A4"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFormation3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "D87571C49CDCD99785289EEC1F3031CCB513DDE0046FEEEA2ADE732100B074C9"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFormation4_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "154EF7799D423AE2891BBFA167106C0BACE684A03A872322BA7B375069919356"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFormation5_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "4156BEB7D59839ECE091AAA4E65729451DAE1139B839511FE56BAF3EB40D4A43"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockLong1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "7C98CA3F0B86970BC029A8FCA7FBEB7DE0F017C71BBC1ED587F32F1F391E6683"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockLong2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "DDB1B44D1E9DCFE44408779752C1FDBCDF7780190E02DD4D88B9F36AB3815ADA"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockLong3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "58307576EDA79E4ABE540065C36BADFD0D7D67F35DE8DCD8B377A4209CE7D7D0"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockLong4_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "B1642E234258CC1D3C64997DD10BCAB9FDE7880DA5CF2EF3BBF12D9BB2205073"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RocksStacked1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "B866FC27C6F55A9083018C83E3E09324D7BE4ABCD9C80E5E82889E3A0189BF47"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RocksStacked2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "155DAF39C23C2DD8BC499B0759071BEE602DD74E38DF91574C43845CA4351035"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockTall1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "CA187D7A76E2D1F97355FBE214FF6AD990D455242476E15BA80524C500129A0E"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockTall2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "C03D0702036EEE9961841BCA3A327FD7A1CEEE208F0D690BBAE2A8C8A8548665"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockTall3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "59D872AA16DC87068B0DE5E792BACC9DC0BDA2C196963DB719692B7DEC87F996"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_SmallRock1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "DD967A941F9BA058A4D98ADD8EE4EFACB0078793BAB690D706857AF69FC33F13"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_SmallRock2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "DA542E3E3C3CDBD3DEA7B3D0C8009C70AA5B83BDF731B28AD96A2DAF2C655CEA"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_SmallRock3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "FC427C1D2032EF36A9982311997DA5E9C0D1D25900BEFA8F5234A674E4FF9774"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_SmallRock4_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "A5260967E6913BF1DBD76BE4E0E426AD7F23B770AF8B69485FEB23BF39145955"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "75BE4070604B098619C1C86FE5DD0E240D9D02CC99635741A760DD614F469A12"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "3FCBE0C364637AF10B22C5F64E540CE52AA74ACD2BF19432CEF049F39D660B8C"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "1B32A72E9B1799874F2A2A9E25B8DE91CB3FDDEA4D4A951C10CA5F5A7F216A81"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock4_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "12FA999E20A537C9E1DC12C2AF6BC45887B24DD6F6BCD7A59686333798CE4640"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock5_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "FE97789F39AD0F20DCCE7810F7A699E3D718F11830C84BB86AEAE13DC78BC03A"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock6_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "F48505988BDBE5257901180F0AD7D88C5A0612169524222F3EC14B87B4FB84B5"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock7_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "5FCB4DC37D5A2C6FEBFA44A7C9CD9421CA070DE9697335B82D78EB4F453F4898"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFlat1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "5EA0E4AC6AFC6ED5C56715307D17A9DAAC332D849861EF5C821DD112A033BE3C"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFlat2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "96E41ED66CD2F05DBC4599FD762E22F7EEB4ACB9660A744077A77FF5F04107DD"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFlat3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "13A00E8315EA6904C0FD97CD3C4C2ABC686FEC80994D4903DB74A865113D7D87"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFormation1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "C932C7EC81BE042934985A407AFA813B1B8829E096294B7DEFC4D19406DA5EBE"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFormation2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "5D13E1BE17408002F4D967B09542314731A98B8DE1C0AF9C211D3ECA089D5039"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFormation3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "864143FFF87A48245B89DCD39A6C8EA41B5FB787A56B07C909B3728E42014D2A"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFormation4_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "76245EC034605A2D6EAECF05C4116FE74DEB53FF2E9182946E4054A9986F50F5"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFormation5_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "6C5FED190DE3DD9947E1823500F0996E0A4279F9A26AC368939B1F1350A6CCD2"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockLong1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "798B9B4C0E041F646B49D68C28185B837F7B25AE3BB2C0193E0DD47027461F5F"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockLong2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "B1577009E2ACC5E98052C3E4A06E4CA85049677E90A1532ABDF9F82BB1A097F3"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockLong3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "31EF0FD2836F1FEC2F90AE9D5C23C5C0027D334796E1E36150009AF4FFB0F7EE"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockLong4_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "DF622CA1CFE3394DA268A58DAA98B5EC0270A403531FF506F8650C17EE2AE381"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RocksStacked1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "72281B8FBF3F4EA21172A54CCB84FBFAB6A39F5887E83BF8D8AFF70FFCDF5B63"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RocksStacked2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "3030C6157E250CE67EB264131C6D4DE7333CDDD66D2A9FE9BE75F51E07CBB397"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockTall1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "B5D29D5350DDD95596C1EA60E92958DB9AD24A1CFFD3197F5521402493E78086"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockTall2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "80907EB085626CCFA65A9368321D5B92C64315D632E603255B4C91C66F738AF0"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockTall3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "C55C101CD63B8ED04745103E1C5E5BDAC19CDCF8A5F71EBDAB8A2E7E26136609"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_SmallRock1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "5AF6E9C57238AABB13876D7B1B5DE8005FB256ABF2ACBF9D0E93B3346DA9A49E"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_SmallRock2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "3A25C7E27BE78E06EE1CD8027B8F9BCE136D8FD7664860A0B08EADF3B16129C2"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_SmallRock3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "ADF909292305DFBDC5891C5704213C68EB7AE7F15E87ACE78855058E1BE23372"
+    },
+    {
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_SmallRock4_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "CF8BFFAE54D36D1BE722AB0AF0C83ADDD720BF1E5E7863BD1153405E8458F6FF"
+    },
+    {
+      "relative": "Assets\\Meshes\\StoneObjects\\SM_StoneArch.uasset",
+      "same_as_baseline": true,
+      "sha256": "1E6DB297B056BB993AAA37CC7046439E79C68C9C831EE40777F44C27F2E6F654"
+    },
+    {
+      "relative": "Assets\\Meshes\\StoneObjects\\SM_StoneLantern.uasset",
+      "same_as_baseline": true,
+      "sha256": "CB3D28936F7D96CED5C073DE79A328EFC38387483D4DDEA16A9AC1A325E6F3C6"
+    },
+    {
+      "relative": "Assets\\Meshes\\StoneObjects\\SM_StonePortal.uasset",
+      "same_as_baseline": true,
+      "sha256": "D7D4DC80E97A46C1CCD96B4510227047AE4668305BD9FB8C4B70E774B644B2D2"
+    },
+    {
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_Broken.uasset",
+      "same_as_baseline": true,
+      "sha256": "816707D8A9C2969BC1E36F2749CFBE80A53C781062943671FF632ECB5D430E57"
+    },
+    {
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_BrokenTop_Dead.uasset",
+      "same_as_baseline": true,
+      "sha256": "05D18F0B45FCEB0593E70B004DA668A1A658A4BF4755E606FD0415A1DA1D635B"
+    },
+    {
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_BrokenTop.uasset",
+      "same_as_baseline": true,
+      "sha256": "8D21241C082F33E2C9CAE33FAC9F9CF517C6AD0F366FDE06890EB4ACBDCD6F40"
+    },
+    {
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_Dead_Brown.uasset",
+      "same_as_baseline": true,
+      "sha256": "9396743304ED7C58CB8C19590B744AC018426FC53F648F1F06C8606126063B46"
+    },
+    {
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_Dead_White.uasset",
+      "same_as_baseline": true,
+      "sha256": "6404B3EC5597F5E4612BE10386D69311CC7696B864BD3E61A20B606951BE8CE2"
+    },
+    {
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_Full.uasset",
+      "same_as_baseline": true,
+      "sha256": "ADDB8AA3462DAF090E0B6EDA7F8DC28C2B489361C3DBD34A7B24CDC3D46C1AD6"
+    },
+    {
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_HalfFull.uasset",
+      "same_as_baseline": true,
+      "sha256": "0825A371ED1429F650C91CB6496C433F426DFC7FC422865415A317CE3C52961E"
+    },
+    {
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_Stump_Dead.uasset",
+      "same_as_baseline": true,
+      "sha256": "5FF16D0E2CB67979C04B551CA6051126386712736AC5CA8F6A8F0744667C1092"
+    },
+    {
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_Stump.uasset",
+      "same_as_baseline": true,
+      "sha256": "66F1B0B0C1AC099B53355690BA537DDF295E1C08B062506F13E3574ED76E1BB4"
+    },
+    {
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTreeTall_Full.uasset",
+      "same_as_baseline": true,
+      "sha256": "A9DD185121797D3C12396948ED20AFDEC3ED28EBED301CE201D49713FFA53C30"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodBeams1.uasset",
+      "same_as_baseline": true,
+      "sha256": "E4F73EE511D0FA4B3CAA99DE9CE4C923FF548D13E983717696C51B994DF0BB6B"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodBeams2.uasset",
+      "same_as_baseline": true,
+      "sha256": "D0874F9CCAA7E0D6DCB4F159CADD0F7D2C2FDB28A05F81D64D6403BEEE05057D"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodBeams3.uasset",
+      "same_as_baseline": true,
+      "sha256": "2E12355AC306906154F7B54F6F516709B134436A67C1E9041A266C183E12410C"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodenPillar.uasset",
+      "same_as_baseline": true,
+      "sha256": "5D13972989D02FF9C30CFC7358F65CA10EB8789C20DB78BE412A731C924528C4"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodFenceLarge.uasset",
+      "same_as_baseline": true,
+      "sha256": "9A20E47AA6A19958D20D0B22DDD736125E86B41962B359637BD7041D81496E6A"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodFenceSmall.uasset",
+      "same_as_baseline": true,
+      "sha256": "3007C5AFBAE259C20142157DCB8E5B0DF09FFBFF7C00832C75FE589609AAB4DD"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodPlanks1.uasset",
+      "same_as_baseline": true,
+      "sha256": "970646B86EDF96EAD490176AD4466952732D09F484610E07673CE3C6F6D35DDF"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodPlanks2.uasset",
+      "same_as_baseline": true,
+      "sha256": "1F9F661E3CD95EC32515BDCFC54A69080A3AC575F275E5FD36D59D3BA8847551"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodPlanks3.uasset",
+      "same_as_baseline": true,
+      "sha256": "9824BE3E09991E83EA37E45852E1C34638ACCA4C2602E0795C21F7C21FA1B8F1"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodPlanks4.uasset",
+      "same_as_baseline": true,
+      "sha256": "273D29DC1C34F7F3E738D325CF7A494DD3EBDBAC5A013277F51E1139691E579C"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodStairs.uasset",
+      "same_as_baseline": true,
+      "sha256": "0E33357CA50B304A13160495768D7885AD362FCC90B24F9D10F8A43749EBF48B"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodTop.uasset",
+      "same_as_baseline": true,
+      "sha256": "E195EA9D0F4C170CB215E8C9E8AD91EC7BB879FCDDF2BFBCBBA8A4822CDE6914"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodTop1.uasset",
+      "same_as_baseline": true,
+      "sha256": "21687B7AF3F84F94039302FF31766EF354EAF0B3EFEA7DB59C075CE084430C1E"
+    },
+    {
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodTop2.uasset",
+      "same_as_baseline": true,
+      "sha256": "DDD0B2716D737D08BD24AB167915BA8ACB03C3CC2B5DDEEBBAFA7138E80990B9"
+    },
+    {
+      "relative": "Assets\\Misc\\Heightmap\\T_Heightmap.uasset",
+      "same_as_baseline": true,
+      "sha256": "7121CAB5BF6357950AF2AE402D2E048C1A58A26BDBB6AF8778BD52CF75368BF4"
+    },
+    {
+      "relative": "Assets\\Misc\\LandscapeGrassTypes\\LGT_Auto.uasset",
+      "same_as_baseline": true,
+      "sha256": "7AC42715DC17968D7BEA1337FB5840C72E5AFAFF2B85BD9CAB7BD5A1B73C98D5"
+    },
+    {
+      "relative": "Assets\\Misc\\LandscapeGrassTypes\\LGT_Placeable.uasset",
+      "same_as_baseline": true,
+      "sha256": "05F1CD6F77612BC4EB1146F51D7F2614570021E40076CCF908279E44970C32C1"
+    },
+    {
+      "relative": "Assets\\Misc\\LandscapeLayerInfo\\LL_AutoLayer.uasset",
+      "same_as_baseline": true,
+      "sha256": "3D7A86B6264B65605E02EB0D393215DE04F2128D91FB3C4C69AB824C71C766A6"
+    },
+    {
+      "relative": "Assets\\Misc\\LandscapeLayerInfo\\LL_Dirt_Gravel.uasset",
+      "same_as_baseline": true,
+      "sha256": "4103ED585E114276BB61E0B23550BEBCC210AA4F3EEEFCF4422DF1F92ABFA95E"
+    },
+    {
+      "relative": "Assets\\Misc\\LandscapeLayerInfo\\LL_Dirt_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "A760848470D94D021928D79D0131269F17F0957BC98CCB1FAE7A20C14BF25241"
+    },
+    {
+      "relative": "Assets\\Misc\\LandscapeLayerInfo\\LL_Grass_WithFoliage.uasset",
+      "same_as_baseline": true,
+      "sha256": "1703532A8DF8B0DA3E306C8E3E5F876C28F2981CE4284DA152185AECD82C6864"
+    },
+    {
+      "relative": "Assets\\Misc\\LandscapeLayerInfo\\LL_Grass.uasset",
+      "same_as_baseline": true,
+      "sha256": "33ACAD5B215A5C2BA22279407FF0B2B6813D000B530753001982B9408FA37DF6"
+    },
+    {
+      "relative": "Assets\\Misc\\LandscapeLayerInfo\\LL_Rock.uasset",
+      "same_as_baseline": true,
+      "sha256": "F2A043E97A5F2F0C62F2294372AFA07EB7A0385F807C149933BE83A3F373FB72"
+    },
+    {
+      "relative": "Assets\\Textures\\T_Noise.uasset",
+      "same_as_baseline": true,
+      "sha256": "F74EE39DB4FC2F169DA80A414EBB2A6F974AC402F9CF765DA3B4CBCE440C7A1B"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_BarkBrokenArea_Normal.uasset",
+      "same_as_baseline": true,
+      "sha256": "8E26A6F8F5C46BBF7D5C5AB70BA102050F2A077751D55140CD43A9B59FE0CE4A"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_BarkBrokenArea.uasset",
+      "same_as_baseline": true,
+      "sha256": "4043527613D1C315979A7F15AE8BF2477DB6CDB4C660A8D2E3C1BB0BBC3DD51E"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_BarkBrokenAreaWhite.uasset",
+      "same_as_baseline": true,
+      "sha256": "673633C6E396B71D3880FC0F869C6B5C1735AC7E89B13F031F6A55309D314FCD"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_PineBrokenBark_Normal.uasset",
+      "same_as_baseline": true,
+      "sha256": "E816E99771E3092A2F6DE68B5AE14E4034B9A3204BD77896611B10D3C73D3016"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_PineBrokenBark.uasset",
+      "same_as_baseline": true,
+      "sha256": "090E0E1A3985BE249C1D1C358A6FB3FA61FD5CDE9FA8677BFB775F158B33E237"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_PineDeadBark_Normal.uasset",
+      "same_as_baseline": true,
+      "sha256": "0E71205DC8613B0C2DD3BBB9BD4CC623F9FC4FD6FE700A77731BF9BCE98A7632"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_PineDeadBark.uasset",
+      "same_as_baseline": true,
+      "sha256": "E104F6C9460D571089499FD3E053A0CCD951DDD228D7C203A3FEF6F6FD35D6E2"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_PineHalfFullBark_Normal.uasset",
+      "same_as_baseline": true,
+      "sha256": "B2D836F808A22A166F64A9ABB387C96771C4A6DF1767575994012F49D74799E9"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_PineHalfFullBark.uasset",
+      "same_as_baseline": true,
+      "sha256": "BF0ACEC9802268645C449D0DD986E0361D3C33D40FDEFE4E31BA5F1705CE04B6"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_PineTreeBark_Normal.uasset",
+      "same_as_baseline": true,
+      "sha256": "9FACAA66C8BAE267703BED02471AC83B232274A2F46C5F5DCB45E83C42087B5D"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_PineTreeBark.uasset",
+      "same_as_baseline": true,
+      "sha256": "E24E27FE3DCACE817210CC9D919DF7EFB41E5C5D19BF7ADB798A92459144ADE0"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_PineTreeTallBark_Normal.uasset",
+      "same_as_baseline": true,
+      "sha256": "679B8DA382C9904765A298315A469F4F5FE116C77E65A88A88CF107CB7E93AF1"
+    },
+    {
+      "relative": "Assets\\Textures\\Bark\\T_PineTreeTallBark.uasset",
+      "same_as_baseline": true,
+      "sha256": "EA1DC41FB8D6571815A2F978A8F42A2079378864D83BA862970708696AEE086C"
+    },
+    {
+      "relative": "Assets\\Textures\\Flowers\\T_Flower1.uasset",
+      "same_as_baseline": true,
+      "sha256": "AF7C737CA2C6EDC8F2F64C40481EA41C3DE642059F52A281E75EC7A36F5CE763"
+    },
+    {
+      "relative": "Assets\\Textures\\Flowers\\T_Flower2.uasset",
+      "same_as_baseline": true,
+      "sha256": "78A5F0C965C14470CF198E6F7D6344570B2F6144271AA1F72272D39CD1A81751"
+    },
+    {
+      "relative": "Assets\\Textures\\Flowers\\T_Flower3.uasset",
+      "same_as_baseline": true,
+      "sha256": "B497828ACCBD47E87DED0EF219A89F359AA3BEBF65B5CD9144F0763D073E036E"
+    },
+    {
+      "relative": "Assets\\Textures\\Landscape\\Dirt\\T_Dirt_Dark_Normal.uasset",
+      "same_as_baseline": true,
+      "sha256": "541B997B2412A3EA10629BA44AC789B01B4310722334DE5A185EBF8D242B9291"
+    },
+    {
+      "relative": "Assets\\Textures\\Landscape\\Dirt\\T_Dirt_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "DF74FAE3ED6C704D67450EFF12991754A945E48BC21077341FFC575E3D5A2C57"
+    },
+    {
+      "relative": "Assets\\Textures\\Landscape\\Dirt\\T_Dirt_Light_Normal.uasset",
+      "same_as_baseline": true,
+      "sha256": "83B26B3AE13205266DFB4E53852D6502F10A5707B4591AFCF3CC336946553F4C"
+    },
+    {
+      "relative": "Assets\\Textures\\Landscape\\Dirt\\T_Dirt_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "FD422C59C42C54617C6FFEBA51EF9C826C1021437A100C3A62D10F2E3B9F56B1"
+    },
+    {
+      "relative": "Assets\\Textures\\Landscape\\Grass\\T_Grass_Normal.uasset",
+      "same_as_baseline": true,
+      "sha256": "9AA9636BE3DCF7E5D34822463B2A1C71E7D55C41917845AEC0AC3FB154D5BD9B"
+    },
+    {
+      "relative": "Assets\\Textures\\Landscape\\Grass\\T_Grass.uasset",
+      "same_as_baseline": true,
+      "sha256": "9BDB00BEB5A824C53E9FE41026FA9A045A5286B32EA0DFA3488051F31857C626"
+    },
+    {
+      "relative": "Assets\\Textures\\Landscape\\MacroVariation\\T_MacroVariation.uasset",
+      "same_as_baseline": true,
+      "sha256": "9B6F8B6F2DE9CCD614FCD3C81F404D47449149E3B5070D6195492F0BDD31F017"
+    },
+    {
+      "relative": "Assets\\Textures\\Landscape\\Rock\\T_Rock_Normal.uasset",
+      "same_as_baseline": true,
+      "sha256": "308CD763646ADF7E2F88D483600FF1326CCF849DC9FA8FA97191CD6BBFB11E7C"
+    },
+    {
+      "relative": "Assets\\Textures\\Landscape\\Rock\\T_Rock.uasset",
+      "same_as_baseline": true,
+      "sha256": "C6DEF3AE5C818003E94DAC0E3346472B3E7CB428A51F0F58B91DCBEE202176BE"
+    },
+    {
+      "relative": "Assets\\Textures\\Leaves\\T_Bush.uasset",
+      "same_as_baseline": true,
+      "sha256": "EA73227778D129C7276927BD27A37DED39C76E728F9E997A8A945930BE4A8859"
+    },
+    {
+      "relative": "Assets\\Textures\\Leaves\\T_Fern.uasset",
+      "same_as_baseline": true,
+      "sha256": "2C4B6B8F305E3BAC192F18E21E927A144DAD5F4B7BF699964AA35453441D9A83"
+    },
+    {
+      "relative": "Assets\\Textures\\Leaves\\T_PineLeaf.uasset",
+      "same_as_baseline": true,
+      "sha256": "88AF544E297E489C5B51C29343E432D41FB6DBA1CB6B177C84DE511E6ED09D28"
+    },
+    {
+      "relative": "Assets\\Textures\\Leaves\\T_PineLeafSmall.uasset",
+      "same_as_baseline": true,
+      "sha256": "A36A89BBE54F5E55D1A588951AEBF5B75EC5B9C9BD5B50EAE4A4AEA63515FC50"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "0988B4F9715F6CDD4A5A51B15B9274283C7A216B38B44FA68377C446C57A7CCC"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "31D62297369FDCB14317D314D4961A2FE28287D839B6B4062025EC0445E61D14"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "7B4B553CD0EF9E1FD361311242DF59A521A6CB6C8B30837D623616639851C005"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock4_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "220BBCC85169A3552FACF4822081C37273AF733C0899C80219B56EC35DF4592C"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock5_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "C1ED8A3E7074F66302F7FA8F0D94105C841B0000A84A295BEAD5B06F4E85E55D"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock6_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "11059694C120FADA8CB7C8F31F8AA158E18DA40EEB39B05B025C89BA424B0F76"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock7_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "5DD45E1AE5850265D3D97A386B40576988529978EE5B4061BAF983D7F928FDA1"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFlat1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "515212BB22A35610A61603586B8153A6560455905F2225017FF1616DEC8640A7"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFlat2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "920B3CF2507075C27CD635F42A39AEB53E869DF9EADA17D90847F473F1185B14"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFlat3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "E6CE360F6E893141436BCC98FCA0DC30E6BA8C16FA3B5B5100524986DD2988A8"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFormation1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "47CED6529EC0304DBA9136D5CEF069D83C1F3EDD917E6AE7D9782BF604AFDBAB"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFormation2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "C3153A8959D56D5477EA26E51CBAA940629E5071C8054605631DC753887DC050"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFormation3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "2A64CDBDB1E0BCC9010DD8B49A6FBFAA330346CD15177E2062B7EFFFD708B64C"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFormation4_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "03F7C030DB56EA8898AB8198C81628CEC40C72C27DEF4FA9F1E3B298BBE249B0"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFormation5_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "3439ACFB15CB3D40C7A627F3C5B34E4BCBFFD54447B75E57ED13AC30DDEBA7CF"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockLong1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "B164498C45D583E41CB5D4727E3D199881830411CC9D1D0E4455AB4346D56872"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockLong2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "635A4D97E80F94EDF263D1ED6821E5CFB22B2AE2D0BDA0FCAE83C6A90BCF52AD"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockLong3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "498EDDA8AF43BEE63E39960427D49FF8E350CF9F9CA2FBA4DF84AE2D5074D027"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockLong4_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "D8273F63CD9E6DF59EBB1C92C339AF5E204FD797CF987A5C4DD5FE232B2D4D35"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RocksStacked1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "0581446B180554CC8B421140B847703FE56E8950B8E4D51021E6585F7298E540"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RocksStacked2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "C19185202C9A97E7B8B7C291C700D7715602B5268D1D2E8D633FA189263AEBFA"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockTall1_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "B91333E3A8D82C24554E215E9CBAA50E1F5BC748BBAB12AA1BBB50EBE676A7A3"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockTall2_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "6A8E021658981D5649B03AFA5B8A9DA8C686367F3CE7E01FCA7C52F5BD4BD01E"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockTall3_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "AC692D13941AE879EAE585A0C943AEA2708CA732B0BC8AE196E1BB6C09841F46"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_SmallRocks_Dark.uasset",
+      "same_as_baseline": true,
+      "sha256": "DB77CB227E9D206F32CD6BC6002191D7DE6E5DA2430B86523F0400E697E85B95"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "F81044EC4E2F4C090B34D09A1F22D8915C927B982BC0CA4F5B97E788AC84CD39"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "E13C49174298C1D3461C5ECA080551B39D9AFB8CF139684C6549B5FCA1D11702"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "760C2831EAC5262A7FD9E20B0FB8926C10F1FF8548DB5214BF59BB8D89C82DC1"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock4_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "0586BB247C66CACBBFAEE6505CCE788B8292F83E8F0711DC4032E962CDD138D7"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock5_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "09792602F90F19E3E5BBD1940C409EAA9F91604F536E96E8A4FA78EB22038D73"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock6_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "D0DCB1C56FC39A2B9C0729698AD779134E42432ABCB3265B2FE6C48031230103"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock7_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "FBD154062AFCAEE4F740676CED47EE2542922F3E5F385DAE8B71ABF1EA3619B0"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFlat1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "3C8B1B4578174E25AC2102072A75CD7567DB946BA62B33B71AD64255E58F5BEE"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFlat2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "94C6F4357880595757798F0C0714A33218B01CB0BEC0D4A37777DA77D61212D6"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFlat3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "90ECDF187A8CBC5C8D81CA60B7C514A902CBCA199F9BFB0499C4101CCEDE8E14"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFormation1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "BA9B3362E6601C8B9126A4D74EE8F56F6698743B34593A67D4375C81984FBBAF"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFormation2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "695F02DEBB168487E3D21E4FF7E521414D5BFDC714C01C7703847C5CF1E00DA7"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFormation3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "DCEA69639E1F6CD8DDE013E25977F1F6CAA55A206D6860072A69573CC05A4ED5"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFormation4_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "E138ABB0883A85EF013DAD3D86F387FBB09691738D7A96EFD701CEADDA250228"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFormation5_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "9900769294AC85C312C368B3FD0C6493D4FD1049FAB4A094D83D4F83D7209D31"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockLong1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "3BA3A763D3C76BCBC64B263E9B97192144693ACB75B5D282DD0971A6D222EAB0"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockLong2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "1A1D31BC48169B44557DB3BF3356810B35A9533ADD18B8A7145AFA53C85E010A"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockLong3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "9D17245046B2F28F703F48118DCEBFD31E2452008C501A834996B6BDA734CA6B"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockLong4_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "89CCF7398A914B5482E5CD679786C00DFF2FE340E85351DDF6B1C0DA674EB165"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RocksStacked1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "076EC8786F95FE30BD9F7BEBD56B37AD7BA174927680BA5646C510D20CE56539"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RocksStacked2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "0385FBD2824C26D9AC09D2C1A0431ECB381A8E7C132A43DDAD594D7F8EF6B24C"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockTall1_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "F05EE7C88BCD40E0142C23F129423886D0F4501B01231C4F917007C4F6E9BF56"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockTall2_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "536292E3B6FBEE41F66404D58216C7419EBFD34C65928DC2092DDEE4A84FB21E"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockTall3_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "A31D7FD42B295DE968145523C1FDCE72A5843851D05CC25DAFE316474EBAA9FD"
+    },
+    {
+      "relative": "Assets\\Textures\\Rock\\Light\\T_SmallRocks_Light.uasset",
+      "same_as_baseline": true,
+      "sha256": "2979B906295070415F4070A4498BA3E6D8E92EF574334F437138A196D1F4F6D4"
+    },
+    {
+      "relative": "Assets\\Textures\\StoneObjects\\T_StoneArch.uasset",
+      "same_as_baseline": true,
+      "sha256": "66BCD6C4494D62B38AF573AA93321C120829566C033DF31FA30A7A6127A0D7E4"
+    },
+    {
+      "relative": "Assets\\Textures\\StoneObjects\\T_StoneLantern.uasset",
+      "same_as_baseline": true,
+      "sha256": "3A30BC5F5CEB4FB0F0528D5ECBC01F72FF60EE8C8C7D13F3AAF31A4E129C5242"
+    },
+    {
+      "relative": "Assets\\Textures\\StoneObjects\\T_StonePortal.uasset",
+      "same_as_baseline": true,
+      "sha256": "10C0633EEB547698B943AC329E8C1347EA85AD85B1636DD5C320458C0921F529"
+    },
+    {
+      "relative": "Assets\\Textures\\WoodenStructures\\T_Wood.uasset",
+      "same_as_baseline": true,
+      "sha256": "EB2AED5C14D36A64BCE1725F532AF477929F68B2B6C15F91D7226EBFC01A7E00"
+    }
+  ],
+  "map_sha256": "D3B82DE8C68622056A69537916B3BC259B396135C2F2E120F93C7BF2635A7DA7",
+  "adapted_content": [
+    {
+      "bytes": 236486,
+      "relative": "Assets\\Blueprints\\BP_Floating_Rock_Dark.uasset",
+      "sha256": "53A53978DAE42DA6204E5E73A6EA94F9F8290C914939309A00F28A9C2683FB4F"
+    },
+    {
+      "bytes": 235058,
+      "relative": "Assets\\Blueprints\\BP_Floating_Rock_Light.uasset",
+      "sha256": "AD5224D9CD9382E13C3D1A6E25365D39274DEC72911D3BF033532E6CDC4D95E2"
+    },
+    {
+      "bytes": 131380,
+      "relative": "Assets\\Blueprints\\BP_Spinning_Rock.uasset",
+      "sha256": "B87647A536A7C9511B0FE94F11D5A6E598E626AC889311782052275C0A195884"
+    },
+    {
+      "bytes": 16177,
+      "relative": "Assets\\Decals\\M_Glyph.uasset",
+      "sha256": "479F547EBDA6684FBD5540044F91F5DE84B1DD949238205E80D1494DFA9BBB2E"
+    },
+    {
+      "bytes": 9321,
+      "relative": "Assets\\Decals\\MI_Glyph.uasset",
+      "sha256": "9378291404DB9647136B42D7C8C2E18F595D1F43AAF89A2FFB9A200F2640862E"
+    },
+    {
+      "bytes": 17653,
+      "relative": "Assets\\Decals\\T_Glyph.uasset",
+      "sha256": "3E2945AFA93909781A8CC04FC6C2F9BCEE9B5D3D55726ED20FD1ABEB884C48A9"
+    },
+    {
+      "bytes": 38317,
+      "relative": "Assets\\Materials\\Bark\\M_Bark.uasset",
+      "sha256": "DAF004FFA2E4C04E56DE964C78E89151BF2C03FB8F5CBF8F1ABDB963B9A72304"
+    },
+    {
+      "bytes": 12689,
+      "relative": "Assets\\Materials\\Bark\\MI_BarkBrokenArea.uasset",
+      "sha256": "E47419E33C47443D6931A0F60E7EBCE41926162D725885082971CC8BAA5F3AA0"
+    },
+    {
+      "bytes": 12795,
+      "relative": "Assets\\Materials\\Bark\\MI_BarkBrokenAreaWhite.uasset",
+      "sha256": "35983C70D6EC831B64B826C1A04FCBF85B9345C7EF0365225A4F3AECB8CF2942"
+    },
+    {
+      "bytes": 12333,
+      "relative": "Assets\\Materials\\Bark\\MI_PineBark.uasset",
+      "sha256": "26A37B929C2894723CC1B38C33E676A96265DB6661EAA3EF21CC690AE62644C9"
+    },
+    {
+      "bytes": 12377,
+      "relative": "Assets\\Materials\\Bark\\MI_PineBrokenBark.uasset",
+      "sha256": "0C28E66C84E81FD877AE1EFF4A5B4853DB53E5AD144A8D584EFD7716ACC00AF5"
+    },
+    {
+      "bytes": 12800,
+      "relative": "Assets\\Materials\\Bark\\MI_PineBrokenBarkWhite.uasset",
+      "sha256": "D503F81413B90BF7B55323DFD99FDFFB6F2FA2042ADFC713A7B93032A91AA9A0"
+    },
+    {
+      "bytes": 12701,
+      "relative": "Assets\\Materials\\Bark\\MI_PineDeadBark.uasset",
+      "sha256": "09DEB5A0C851881485F17E0EC033E73E967B05C500F85A3A8A7171488B58CD92"
+    },
+    {
+      "bytes": 12397,
+      "relative": "Assets\\Materials\\Bark\\MI_PineHalfFullBark.uasset",
+      "sha256": "E71894E3DD01F66B10C22987B731D88205C739CA695B723F420F0FB1225D9535"
+    },
+    {
+      "bytes": 12373,
+      "relative": "Assets\\Materials\\Bark\\MI_PineTallBark.uasset",
+      "sha256": "E321320F3BBA333D9D5971312DA3B78EBB08A474F51D9E17E39BF7957E175392"
+    },
+    {
+      "bytes": 38258,
+      "relative": "Assets\\Materials\\Flowers\\M_Flower.uasset",
+      "sha256": "19C5091796BADD3A1C701EE0A6DAAE8D4364B04738160DC6528637B8D7F8D9B8"
+    },
+    {
+      "bytes": 10930,
+      "relative": "Assets\\Materials\\Flowers\\MI_Flower1.uasset",
+      "sha256": "8F4A722B370578239C43A30EB0E5C553D247112EE554A742853986769194CC7F"
+    },
+    {
+      "bytes": 11588,
+      "relative": "Assets\\Materials\\Flowers\\MI_Flower2.uasset",
+      "sha256": "6CBFF75A042311A8562581228C9C32BF421F6F62C392B492DDE2D4CDAB955A51"
+    },
+    {
+      "bytes": 12811,
+      "relative": "Assets\\Materials\\Flowers\\MI_Flower3.uasset",
+      "sha256": "D3F0AB01C392EAFF4BEFF3E46484579721FCB8BFF34A8FD80E56E0A7D735A3F1"
+    },
+    {
+      "bytes": 10826,
+      "relative": "Assets\\Materials\\Flowers\\MI_Stem.uasset",
+      "sha256": "A02B2F035E71946C081C1AECF4A83C93D20C7B2E3F523A41299B6A0472B7D344"
+    },
+    {
+      "bytes": 57080,
+      "relative": "Assets\\Materials\\Grass\\M_Grass.uasset",
+      "sha256": "8580906893864308E67CB385EB6EF58473BAE219AE06D21F48723646AA2C1F27"
+    },
+    {
+      "bytes": 14194,
+      "relative": "Assets\\Materials\\Grass\\MI_Grass.uasset",
+      "sha256": "732BD533B48286044BB4A3F1AF02FDEDDCCBD2674F2F5B58D0CE4D3038ADFB94"
+    },
+    {
+      "bytes": 45250,
+      "relative": "Assets\\Materials\\Landscape\\M_Landscape.uasset",
+      "sha256": "B1A99BA0E56FA26B57C177AD99A1400D1174E29AE4ECCB17C9E7E81472623F4C"
+    },
+    {
+      "bytes": 12248,
+      "relative": "Assets\\Materials\\Landscape\\MI_Landscape.uasset",
+      "sha256": "7E0E32E2053E7E6783D5D4B25B7D2BE0C4A33D3E0C66CAF5299B2EE3C107D266"
+    },
+    {
+      "bytes": 90053,
+      "relative": "Assets\\Materials\\Landscape\\MaterialFunctions\\MF_Auto.uasset",
+      "sha256": "6F680D8309E108727938FE2A96A98FC973BD2A72385512C5C9BD83F3BCFE71AF"
+    },
+    {
+      "bytes": 158269,
+      "relative": "Assets\\Materials\\Landscape\\MaterialFunctions\\MF_Dirt_Gravel.uasset",
+      "sha256": "9767B02E730396EF8CD6B4318EFF08410A0611FCF1675B084F524E82A181FCF0"
+    },
+    {
+      "bytes": 79496,
+      "relative": "Assets\\Materials\\Landscape\\MaterialFunctions\\MF_Dirt_Light.uasset",
+      "sha256": "69466E12D6B755A0037DD8E4FA8B6F9D250BAD200F7984647AF73B3B0266743D"
+    },
+    {
+      "bytes": 150323,
+      "relative": "Assets\\Materials\\Landscape\\MaterialFunctions\\MF_Grass.uasset",
+      "sha256": "5598AB9B216FAEC2135F9DB14F9A4ED828F2F1AD4DCC53F718C91B0D30108A00"
+    },
+    {
+      "bytes": 145952,
+      "relative": "Assets\\Materials\\Landscape\\MaterialFunctions\\MF_Rock.uasset",
+      "sha256": "F29A6D157E47385920EFA9F632A3111D0861447A2FAB49C5E44612A4B722C6F5"
+    },
+    {
+      "bytes": 49933,
+      "relative": "Assets\\Materials\\Leaves\\M_Leaf.uasset",
+      "sha256": "7FB8620450B437DA7F0D1E447DB8EF6343787D8E0B472BA7C2919FAC5BFD7477"
+    },
+    {
+      "bytes": 18171,
+      "relative": "Assets\\Materials\\Leaves\\MI_Bush.uasset",
+      "sha256": "D3708004A6E5A2DC44F83909696BB6F4D762A39FEF50356DE4F7B94310330BA8"
+    },
+    {
+      "bytes": 16333,
+      "relative": "Assets\\Materials\\Leaves\\MI_Fern.uasset",
+      "sha256": "860A5AD854766421132D1C1F4EFD54DD37EE97782EB80A8398C10236B65D2048"
+    },
+    {
+      "bytes": 15718,
+      "relative": "Assets\\Materials\\Leaves\\MI_Leaf.uasset",
+      "sha256": "BF57469294AFE20ABE27108E943D7157C7E07EE138E268A4DF3CB5C72EF39349"
+    },
+    {
+      "bytes": 13923,
+      "relative": "Assets\\Materials\\Leaves\\MI_LeafBroken.uasset",
+      "sha256": "163ADDD1085CB8A1B5B83FA8C1A3D8235BB50CE8AD4CDFA2FAB6E69F23066701"
+    },
+    {
+      "bytes": 17109,
+      "relative": "Assets\\Materials\\Leaves\\MI_LeafSmall.uasset",
+      "sha256": "8536A8F63CFEF75D55C9B7B95B31462865C85C27D1996E174A9A7429A24687CE"
+    },
+    {
+      "bytes": 35609,
+      "relative": "Assets\\Materials\\Rock\\M_Rock.uasset",
+      "sha256": "900042401A5415EFD9C39A9723B54266A491C748C8ED88F8F906814A462D576D"
+    },
+    {
+      "bytes": 11163,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock1_Dark.uasset",
+      "sha256": "135F6A07271F86F1B63A9E8F78295DA6C0180C430963EB529CF62B9471793B7E"
+    },
+    {
+      "bytes": 11163,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock2_Dark.uasset",
+      "sha256": "3A2916DA8A89AD626373FC7B1242846453C50DFF5B5312CF724B37266CD2B97C"
+    },
+    {
+      "bytes": 11163,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock3_Dark.uasset",
+      "sha256": "0A436EB7201FE3A936327453607040454F6879C78D0A1EACD3730E4A2AE2276F"
+    },
+    {
+      "bytes": 11163,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock4_Dark.uasset",
+      "sha256": "818758462CA285478597ACED830F73A16F7416C9873C020FCF660DE5407592A4"
+    },
+    {
+      "bytes": 11163,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock5_Dark.uasset",
+      "sha256": "83C4A74EA4B3F9260C330C39E7FC1A6FBB86274E2444B2A5A41C2CAA15328DF0"
+    },
+    {
+      "bytes": 11163,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock6_Dark.uasset",
+      "sha256": "63301D8716C96AF2222FFBAEF715B614E12BDB3103A58D1A01C5961962842D57"
+    },
+    {
+      "bytes": 11163,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_Rock7_Dark.uasset",
+      "sha256": "888D6B708CAE2816A263D1A404FDF08D6341CC178D4BF1F4AC664521E623EC15"
+    },
+    {
+      "bytes": 11195,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFlat1_Dark.uasset",
+      "sha256": "2B588B08D50137095232BD427F0C111F9BBD318CACB8F446AEA8695CFCC34704"
+    },
+    {
+      "bytes": 11195,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFlat2_Dark.uasset",
+      "sha256": "6C545F7DCD1AD7A8EA7E61AC9E317BB66A3EB0761380D4F9312D69E39D612B50"
+    },
+    {
+      "bytes": 11195,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFlat3_Dark.uasset",
+      "sha256": "3257F47C8E10AB8D88FAFDE4C9A137D32E5BCA8ED14BC4AA2D291C48739AF993"
+    },
+    {
+      "bytes": 11235,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFormation1_Dark.uasset",
+      "sha256": "7A65E8504D9B91B705A76A74FB41D1D42C8CA6BA7C04BCCA3FB70FE664847D71"
+    },
+    {
+      "bytes": 11235,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFormation2_Dark.uasset",
+      "sha256": "D0FE5297D0B3A242EA75FD6403F7A1DD05A0EC1C06165E97AE45A4EEE3F644B7"
+    },
+    {
+      "bytes": 11235,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFormation3_Dark.uasset",
+      "sha256": "A2AB474D2CEB585ED1A82C2E2F74C30327957313A4DAF8A74FE018DC0D2B6ABC"
+    },
+    {
+      "bytes": 11235,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFormation4_Dark.uasset",
+      "sha256": "14504CBB9EB4091E8595D4F44E6289E7D7C80BCCD1764556A12AFEA97A8EEBF3"
+    },
+    {
+      "bytes": 11235,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockFormation5_Dark.uasset",
+      "sha256": "1628476FCE015C295314D348F83E52699C2CCC07E8EC58636704B5D9B2BD4554"
+    },
+    {
+      "bytes": 11195,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockLong1_Dark.uasset",
+      "sha256": "0989163BBED0BFC0085D2BADED2B6649B4A9CE64F0B66D4B0D45E0E34C6CB580"
+    },
+    {
+      "bytes": 11195,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockLong2_Dark.uasset",
+      "sha256": "431DFDD9E3A9F044D0E8BC56DCA26D0282242307FB510B3303A4EE660FD341C7"
+    },
+    {
+      "bytes": 11195,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockLong3_Dark.uasset",
+      "sha256": "7E7A91F8FFFBC111DA5052212CBB4DB0A5E17270527FED05F18D917C2D6E8DD3"
+    },
+    {
+      "bytes": 11195,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockLong4_Dark.uasset",
+      "sha256": "A58532B028CC02974070CE5FBB72A28C544A2DC126F704CF1E3FF466C180B08E"
+    },
+    {
+      "bytes": 109989,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RocksStacked1_Dark.uasset",
+      "sha256": "886D0E48EA67797E152767FD13E0B7599399269B91348A10579401123B57571A"
+    },
+    {
+      "bytes": 11261,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RocksStacked2_Dark.uasset",
+      "sha256": "244610AF8BFFAB3F3DCDB6E6C7B74D05E86A012EE4DECFC63CAD66160B4F9396"
+    },
+    {
+      "bytes": 11195,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockTall1_Dark.uasset",
+      "sha256": "0060138C542380B9BB5DEF380FA5328BD162AC4B4105984BE4155362A5D80C91"
+    },
+    {
+      "bytes": 11195,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockTall2_Dark.uasset",
+      "sha256": "D5466A224A911B089BF1E4C6FD62A39E8FA3A4757A70C005EC2BB213177A64A8"
+    },
+    {
+      "bytes": 11195,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_RockTall3_Dark.uasset",
+      "sha256": "018B506206644443FF83A24D46D6DE0438885D0EA8D5223D046F76D8D08EC229"
+    },
+    {
+      "bytes": 11203,
+      "relative": "Assets\\Materials\\Rock\\Dark\\MI_SmallRocks_Dark.uasset",
+      "sha256": "D63AB11B0D68653B7E0F9BE6D003B7A21869A28E64D1BD38AE6BA9C433E0C710"
+    },
+    {
+      "bytes": 11255,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock1_Light.uasset",
+      "sha256": "0793CAD33F0964B87BE996373134824B024728EA1DA4FAA7670CA21BB2688AF7"
+    },
+    {
+      "bytes": 11282,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock2_Light.uasset",
+      "sha256": "5D98DFE4B44FC77131FF00F3D2A27364AFAE28190D7DE62CAC2C7653FFEA5947"
+    },
+    {
+      "bytes": 11255,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock3_Light.uasset",
+      "sha256": "83A62BF3D59BBE0927CEDC97A99B505621C08176F7AC053D12951E416BB02995"
+    },
+    {
+      "bytes": 11255,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock4_Light.uasset",
+      "sha256": "819C91F2C311EA0AF3AB330A57CE528341C7F0649BDFA02A88ECFAA20096143F"
+    },
+    {
+      "bytes": 11282,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock5_Light.uasset",
+      "sha256": "0363C5B13320F82938CB24A28F95A2EE3D7E9FD8AFE032D5F1669BEEEC722F6D"
+    },
+    {
+      "bytes": 11282,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock6_Light.uasset",
+      "sha256": "60F51F652CBECC65DF08B827E04605DFA6B9E3D7336ED2747380C670F4441CB0"
+    },
+    {
+      "bytes": 11255,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_Rock7_Light.uasset",
+      "sha256": "064111599CA4C42660C8E0A1DF0826C4D845D2533961727FEA910C996C58BCFB"
+    },
+    {
+      "bytes": 11318,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFlat1_Light.uasset",
+      "sha256": "5ECF8395B332853D4B85AD101B6BB178C6C4E0006E21731D216BDA6E5F6811D5"
+    },
+    {
+      "bytes": 11287,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFlat2_Light.uasset",
+      "sha256": "987D3678E7E37275502C13307E3D5D31A6E49920B7742058CA40142E45856EDA"
+    },
+    {
+      "bytes": 11287,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFlat3_Light.uasset",
+      "sha256": "3F4E5210AF057347745F112091D71F622EF9B1D6F543BA7E424B3887DC286C49"
+    },
+    {
+      "bytes": 11327,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFormation1_Light.uasset",
+      "sha256": "738F245B86BFC7B8C09D5A0FFEBA606286B96A8E3D8532149EBABC4A96CD0280"
+    },
+    {
+      "bytes": 11327,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFormation2_Light.uasset",
+      "sha256": "7C9C3019C1668FBFCE07D0E30F3181672662AF790C1E1CCC067A124FDA992A43"
+    },
+    {
+      "bytes": 11327,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFormation3_Light.uasset",
+      "sha256": "990536DAB2EDF7AE48ED1AD81C73C6EB65DF76FD16A6ACD294E704E601CA3F9A"
+    },
+    {
+      "bytes": 11327,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFormation4_Light.uasset",
+      "sha256": "BF144A44B47FD204F331AF0A955F051BD8406CA4F1D8F5D244EA9420CD2BA9C7"
+    },
+    {
+      "bytes": 11327,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockFormation5_Light.uasset",
+      "sha256": "E1F016BE83B9F0B34ABD94E98E21561D638403F9869D25ABB1BDD59664904655"
+    },
+    {
+      "bytes": 11287,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockLong1_Light.uasset",
+      "sha256": "C01FAC7F268F42FB4B761A4ED28826C7A85ED5412A8205C558A0A5DD74AF2E0F"
+    },
+    {
+      "bytes": 11287,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockLong2_Light.uasset",
+      "sha256": "FD07CA4A2214C35B048EA56F6E139485A395D231372EB75CDF43B8788A7955DE"
+    },
+    {
+      "bytes": 11287,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockLong3_Light.uasset",
+      "sha256": "4E04112F86B2F12AD4F32CD5DF7C6E4CD0DA2649A4E9D7555AF8AF2CE9362689"
+    },
+    {
+      "bytes": 11287,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockLong4_Light.uasset",
+      "sha256": "92420F0B8AF7C086AEFF6558E919E47D609D686C1FB3CA91C1C74EB55F415A86"
+    },
+    {
+      "bytes": 11319,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RocksStacked1_Light.uasset",
+      "sha256": "EE5F3D350CAC78A6466EC0752374838FD8F5166632106244C63BFC9FF02A8C59"
+    },
+    {
+      "bytes": 11319,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RocksStacked2_Light.uasset",
+      "sha256": "6402891F4CC87FB15778C8DBB3D5218D8D9D55CFED74BFBC0E19626C84092123"
+    },
+    {
+      "bytes": 11287,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockTall1_Light.uasset",
+      "sha256": "30A05C7A9D1F039970C7B05AFBDF5206F39BDF6F02A56B8708BE8BDEF32E721C"
+    },
+    {
+      "bytes": 11322,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockTall2_Light.uasset",
+      "sha256": "BA89B6B4706C62788C84826D278C477825778D730A10898D3537B99B69064133"
+    },
+    {
+      "bytes": 11287,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_RockTall3_Light.uasset",
+      "sha256": "4C9477AE5C1D1B9DE24674058C2051AE4DD5CA70F68EC3E6DD3EBC3183F3BAF2"
+    },
+    {
+      "bytes": 11295,
+      "relative": "Assets\\Materials\\Rock\\Light\\MI_SmallRocks_Light.uasset",
+      "sha256": "E5611388BA5D0622DB48A0449E5B92CB64B87B5E941565EF1B750E5AB1245450"
+    },
+    {
+      "bytes": 11245,
+      "relative": "Assets\\Materials\\StoneObjects\\MI_StoneArch.uasset",
+      "sha256": "1C42A8CC2F4D6348BEFD1B5326F5CB29B2398F78DA32F23FCD3967EA618320F8"
+    },
+    {
+      "bytes": 11269,
+      "relative": "Assets\\Materials\\StoneObjects\\MI_StoneLantern.uasset",
+      "sha256": "03543E9AEA7F3C5ED0339235ABA5CE0E74E425E25384F2ECD68A0F1E44CCC576"
+    },
+    {
+      "bytes": 11261,
+      "relative": "Assets\\Materials\\StoneObjects\\MI_StonePortal.uasset",
+      "sha256": "EDAF041C17431A51511C5308FCF58A6AF2C2FEC89391C8CB94E3002E8BA2B9A0"
+    },
+    {
+      "bytes": 23800,
+      "relative": "Assets\\Materials\\WoodStructures\\M_Wood.uasset",
+      "sha256": "058F42D324384AC9CB6253B32798119E11594AF9F2245D3EC84907C5E265EF9C"
+    },
+    {
+      "bytes": 9566,
+      "relative": "Assets\\Materials\\WoodStructures\\MI_Wood.uasset",
+      "sha256": "6F06E93AC0E85D5EA18F35F12E9AB1C2C6487D0F6A893E6BDC58D6337DA54997"
+    },
+    {
+      "bytes": 38678,
+      "relative": "Assets\\Meshes\\Bush\\SM_Bush1.uasset",
+      "sha256": "A0841AABB0A2E97F26C94F0D1E302FE85A2C5F6E562D298CEBBC62ACB906237A"
+    },
+    {
+      "bytes": 53179,
+      "relative": "Assets\\Meshes\\Bush\\SM_Bush2.uasset",
+      "sha256": "4D6A24542AAA05E41C11C69C015FFB6578F4DAD6BE81E68842D4D2A400DC0E58"
+    },
+    {
+      "bytes": 44397,
+      "relative": "Assets\\Meshes\\Bush\\SM_Bush3.uasset",
+      "sha256": "E8753276B77FF975CF0F35181B0ACDA0F6DBF5AF806293639154F6FED2B562AC"
+    },
+    {
+      "bytes": 33605,
+      "relative": "Assets\\Meshes\\Fern\\SM_Fern1.uasset",
+      "sha256": "B31A8F82C5B355C68A5BB7E02D9D1F90771F823C922176871814F7C41389C8C9"
+    },
+    {
+      "bytes": 26497,
+      "relative": "Assets\\Meshes\\Fern\\SM_Fern2.uasset",
+      "sha256": "5C847110FFBF0584C7512D0877ED545C3F527B782BE91BDA86C439D243DBD62A"
+    },
+    {
+      "bytes": 26182,
+      "relative": "Assets\\Meshes\\Fern\\SM_Fern3.uasset",
+      "sha256": "3DB04DC4F8F10FFC4DB8A4AB64854428282DCBE9BAA272F54E694D12EA784E3C"
+    },
+    {
+      "bytes": 25160,
+      "relative": "Assets\\Meshes\\Flowers\\SM_Flower1.uasset",
+      "sha256": "58DFCD9BB68E8902DE2E101BD0F8A3B96C58B35B95C0641A406CDBBD2E079EDB"
+    },
+    {
+      "bytes": 25220,
+      "relative": "Assets\\Meshes\\Flowers\\SM_Flower2.uasset",
+      "sha256": "ACB0DD8DB7EEEA45111B9BC888A912740E48ADC23EBE5E73A19A1E1D9CB2F387"
+    },
+    {
+      "bytes": 25220,
+      "relative": "Assets\\Meshes\\Flowers\\SM_Flower3.uasset",
+      "sha256": "B83D09F5FA531BBA9AADD4C9B2D083FE1211D4B3F8EB5DEB7759A1712AEC9B1A"
+    },
+    {
+      "bytes": 24126,
+      "relative": "Assets\\Meshes\\Grass\\SM_Grass.uasset",
+      "sha256": "BDFA87E93D21F079D05A42C6A0742E060C8E7196C7705D9FC94EA5F93DC39B1E"
+    },
+    {
+      "bytes": 41400,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock1_Dark.uasset",
+      "sha256": "07A91D423DBDA540ACEBC2CF0DCEF333E0B1C590BDAE6EE615AB523D62F46ED8"
+    },
+    {
+      "bytes": 44257,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock2_dark.uasset",
+      "sha256": "9D4C14BB468CC287C5502020D90D9A81903C685C111DE6EBE322C707C7385B8E"
+    },
+    {
+      "bytes": 53037,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock3_Dark.uasset",
+      "sha256": "99A02CCB446CFFE60702DDF5875ECA1E9953C17F42B4A876A87BE3D2CE785D23"
+    },
+    {
+      "bytes": 41312,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock4_Dark.uasset",
+      "sha256": "2161090550B2F3CE498C780BA2A100B1CB26A6945D8E51E2E4CAAB8CC99F7F84"
+    },
+    {
+      "bytes": 43890,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock5_Dark.uasset",
+      "sha256": "3BE96BD43F9EC746C6B7FA5121FF0FA1AF4F6AE52E80233774B10EB472F94CFD"
+    },
+    {
+      "bytes": 44121,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock6_Dark.uasset",
+      "sha256": "5EE5B6945FFF42B3828B14E645247EBFDEBD31544C28E5A6B865FAF026438B14"
+    },
+    {
+      "bytes": 44911,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_Rock7_Dark.uasset",
+      "sha256": "436F7CF0B5BBED95E8FB840BFE404A8574D1DBF8332CF427FEFE773845B5B947"
+    },
+    {
+      "bytes": 54876,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFlat1_Dark.uasset",
+      "sha256": "626147D170BE77523A9F1B72F0B6C42E3968731F61C577F8E13427A51F8BE1BF"
+    },
+    {
+      "bytes": 54084,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFlat2_Dark.uasset",
+      "sha256": "774CB04039BA5C95F6B279AFC5893BC3217132AE358B562DA1C342BA96CBEE0A"
+    },
+    {
+      "bytes": 57943,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFlat3_Dark.uasset",
+      "sha256": "3194CDA4F8514566910F51F48D8AB4C1307E6FC47C1F2BE3A5A71CCFBAD592CC"
+    },
+    {
+      "bytes": 41651,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFormation1_Dark.uasset",
+      "sha256": "43CF1847AFB1203F397C55EF0DBF1E3CA2B4A8B331AB57E47B284ADA0526D5CB"
+    },
+    {
+      "bytes": 117573,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFormation2_Dark.uasset",
+      "sha256": "A294A21D53EB43E00187B4D133A97BD9A9236B459C6C647F233EDD5DE5349100"
+    },
+    {
+      "bytes": 93295,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFormation3_Dark.uasset",
+      "sha256": "8239572721BB5EAAB159183127844C4D90CE6D24F67E839190CDD1EA30035416"
+    },
+    {
+      "bytes": 109324,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFormation4_Dark.uasset",
+      "sha256": "213BE49ED25283B9CCF26A6BF4CD1699A28F8131D625DDE7C1612A7E81B953EA"
+    },
+    {
+      "bytes": 206207,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockFormation5_Dark.uasset",
+      "sha256": "6F57E7874F505BB38DE786E498B383D3740BAC70B7ED756A4A9566B01692BF51"
+    },
+    {
+      "bytes": 38924,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockLong1_Dark.uasset",
+      "sha256": "CC8B762E7994BC79859A8BB2B1A3EFA2EC7AEC43CAB74CA7A3D18CEC470D0B36"
+    },
+    {
+      "bytes": 48404,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockLong2_Dark.uasset",
+      "sha256": "0A3A65C654C8158C6B69D4B196F075EC1F5B9771C082082CA2AB5149A504EEE5"
+    },
+    {
+      "bytes": 46098,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockLong3_Dark.uasset",
+      "sha256": "D2A2DA11141938876AC20C34E785E61C1BEA9CED2A0B64324A61F43C4B6A882C"
+    },
+    {
+      "bytes": 50024,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockLong4_Dark.uasset",
+      "sha256": "03E73E09F728F07F240EC7913FFF19A6290EEB224A1D60C464E8EC3781B7F80D"
+    },
+    {
+      "bytes": 118619,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RocksStacked1_Dark.uasset",
+      "sha256": "A093B3D8D175C2D96608CD9B2F6F46FE4A44C2448C9CF49672186A2FFA85B2A1"
+    },
+    {
+      "bytes": 86770,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RocksStacked2_Dark.uasset",
+      "sha256": "FBDB6670BA49F1498F016B598FBD4CDFD5B8A1DE857C93BF1F7AF8B513068918"
+    },
+    {
+      "bytes": 48727,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockTall1_Dark.uasset",
+      "sha256": "B771CEFAF3F09A7666EFED5C48181B988EF5CCC3630E30E3A257DE852EF3F890"
+    },
+    {
+      "bytes": 43029,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockTall2_Dark.uasset",
+      "sha256": "D49EA11BC0201587CDA8D1E97675C181D8809A9D0EA1A1B9F14AA304CBF0DD15"
+    },
+    {
+      "bytes": 48653,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_RockTall3_Dark.uasset",
+      "sha256": "A864F32AD7DA654980A30C6793B2BE244E26204269F0746336638E93FB56DB30"
+    },
+    {
+      "bytes": 46855,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_SmallRock1_Dark.uasset",
+      "sha256": "734247E2F45ADACBD6D60D29F7A627DAA768E72D1F4E3CC10429D65E561F90E9"
+    },
+    {
+      "bytes": 43184,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_SmallRock2_Dark.uasset",
+      "sha256": "4ACF57B7E46B8A76A3613AACA6F2ABEF39379460C71DAFDC66326599E6015BB2"
+    },
+    {
+      "bytes": 47982,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_SmallRock3_Dark.uasset",
+      "sha256": "EC304A3C7A7035E78B27BF9F28D67C61CB88BFA89EAC4BD7CF99F29E11FED050"
+    },
+    {
+      "bytes": 48925,
+      "relative": "Assets\\Meshes\\Rocks\\Dark\\SM_SmallRock4_Dark.uasset",
+      "sha256": "C9C58830152519A63BA9680482061659A8E2CE71C337CD83BACDF49F9D4A8A8F"
+    },
+    {
+      "bytes": 40980,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock1_Light.uasset",
+      "sha256": "1C56C19D8DCC9B7095D00DFA1D4D167EB43B64420B0C3B06EC8363802D6F130E"
+    },
+    {
+      "bytes": 44299,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock2_Light.uasset",
+      "sha256": "27E65E6B90DC5C4C50DF9C7219F5C4553C17BFD24659410EDCE8E4BB11D8207C"
+    },
+    {
+      "bytes": 53093,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock3_Light.uasset",
+      "sha256": "BDE53E8B83032F8601045DAEE90C6965DB51E6C83E767B773BDE68DAED72E3A8"
+    },
+    {
+      "bytes": 41350,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock4_Light.uasset",
+      "sha256": "78AAE2592AEC609030A8CCA2B5D85D92BB7183ED67B7BE8C08EE8E650036C147"
+    },
+    {
+      "bytes": 43948,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock5_Light.uasset",
+      "sha256": "69531AE93E0B7005A6E14699E189E3C91162AA1FD13DA0670DB89D2E46B81226"
+    },
+    {
+      "bytes": 44160,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock6_Light.uasset",
+      "sha256": "F54C7D457E032998ABCC34D487D9B00949CC96873ED8626D698493AF48529CEC"
+    },
+    {
+      "bytes": 44942,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_Rock7_Light.uasset",
+      "sha256": "89EAFB9219A91A48226F547F2B821EA659C173E625692E32C18595756860D6C4"
+    },
+    {
+      "bytes": 54928,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFlat1_Light.uasset",
+      "sha256": "750D45C538C79F088324266350E69E16F9D5CA9D344FA72F9402047FF6D99D83"
+    },
+    {
+      "bytes": 54118,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFlat2_Light.uasset",
+      "sha256": "1A8446484664A4C19D06BB75D1C6B68D90E6730E385EFA624C30000BD1171EA5"
+    },
+    {
+      "bytes": 57943,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFlat3_Light.uasset",
+      "sha256": "F05A4BD96FEB03DAE1BDF7E6332128EA76634A228FB9B5B2EAC94536A3BB0F5A"
+    },
+    {
+      "bytes": 41695,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFormation1_Light.uasset",
+      "sha256": "3134606960E27D943C48A56D3A55DD21615D30D6CB639242E640A807D44381A8"
+    },
+    {
+      "bytes": 117617,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFormation2_Light.uasset",
+      "sha256": "6CF01463319075908EAF8B8EE58B31584C44C0050C816D267A9795DE34EC5A5F"
+    },
+    {
+      "bytes": 93334,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFormation3_Light.uasset",
+      "sha256": "50E852E9DB2AC26ACB34A8E0202512BA3EA0ACB572D9338E618A2B12668E6793"
+    },
+    {
+      "bytes": 109374,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFormation4_Light.uasset",
+      "sha256": "CE9FA625DDB4D185CB258F96C9293F0ABE29B1B94B52DB1421E06EBA95FF2040"
+    },
+    {
+      "bytes": 206253,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockFormation5_Light.uasset",
+      "sha256": "17997B74C49780D53720D36527B363E788AE1AC2B33184F1FA34563D9EB6A1B0"
+    },
+    {
+      "bytes": 38957,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockLong1_Light.uasset",
+      "sha256": "CF5F2F3067AA08054E434D1E8560113459D2D28B0885650605385193455B434E"
+    },
+    {
+      "bytes": 48441,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockLong2_Light.uasset",
+      "sha256": "E46E3D5EE6399602E4BB6D78163424E9CE41D46FFE40889A82830B39C529A68E"
+    },
+    {
+      "bytes": 46128,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockLong3_Light.uasset",
+      "sha256": "84C9AA5035873D844DF489AE2F7B6AAFB966B09FF3C344B35C4E33CEBBB1A412"
+    },
+    {
+      "bytes": 50060,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockLong4_Light.uasset",
+      "sha256": "D22AD558EFC8F9E767F7A0A1B960ECF3B07504892EB53FC14C1A2628370BF201"
+    },
+    {
+      "bytes": 118687,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RocksStacked1_Light.uasset",
+      "sha256": "44D72247EEB5C2040C737272B92B122840CF85AD80021B65E94EBE896A78BD5A"
+    },
+    {
+      "bytes": 86836,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RocksStacked2_Light.uasset",
+      "sha256": "061E788E867738477854E1AD4E8D766C174F5C2D61036D8C978CB41E04015572"
+    },
+    {
+      "bytes": 48766,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockTall1_Light.uasset",
+      "sha256": "359DD34C2F42FED50514616426BE9E91C852E2150AF33A84762F196C568E5EFE"
+    },
+    {
+      "bytes": 43077,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockTall2_Light.uasset",
+      "sha256": "BA199E73AEA93D102FDC9B1A2212FDA4042C72C3E12ADC4F18D95627A5714F28"
+    },
+    {
+      "bytes": 48692,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_RockTall3_Light.uasset",
+      "sha256": "C7BF8E57FCA727B7B3C5D1E1ED858F8F1DF8F43DB5508846B9A54306224BBCA0"
+    },
+    {
+      "bytes": 46896,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_SmallRock1_Light.uasset",
+      "sha256": "14D8B84359AB1D0003BCFF4CD43E07FAB512F0ADAD9CC234C2DD7EC61A71247C"
+    },
+    {
+      "bytes": 43225,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_SmallRock2_Light.uasset",
+      "sha256": "9204BF9A0531C178CE3140F27205BE89ACC1690418FF9D45F3C1E8F328EF97A7"
+    },
+    {
+      "bytes": 48030,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_SmallRock3_Light.uasset",
+      "sha256": "FBC6ADF4999A03018F06E1452465015A2E190939183A30D675E4D70C9D9B0C03"
+    },
+    {
+      "bytes": 48982,
+      "relative": "Assets\\Meshes\\Rocks\\Light\\SM_SmallRock4_Light.uasset",
+      "sha256": "6F439E1578336E8E1B9D2FFFB8DD22DA904C3F1873DCD83FA7125BCE32D26A8E"
+    },
+    {
+      "bytes": 102969,
+      "relative": "Assets\\Meshes\\StoneObjects\\SM_StoneArch.uasset",
+      "sha256": "C6E1D987B931D14837022F5038ABFD6A4B9CDBF387E7213BC707C73CF38CB96A"
+    },
+    {
+      "bytes": 89445,
+      "relative": "Assets\\Meshes\\StoneObjects\\SM_StoneLantern.uasset",
+      "sha256": "D0E0F2F8CB7F91AE4647EAF69108E9903ADBB3A05B54EC77AE769CED347AC024"
+    },
+    {
+      "bytes": 220004,
+      "relative": "Assets\\Meshes\\StoneObjects\\SM_StonePortal.uasset",
+      "sha256": "648328870037F73A1B1F3B2BDE4C048FEFCA4006E0AC15DCAA74037BD785EF52"
+    },
+    {
+      "bytes": 106599,
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_Broken.uasset",
+      "sha256": "84F6CE56F0F0375EBB6306900055886EA2C345188B6A19AB89A70108159ED760"
+    },
+    {
+      "bytes": 78022,
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_BrokenTop_Dead.uasset",
+      "sha256": "1CCBDFB68264677C84BE4F6F538499C662CA60086CB4A05D34C29E2319562A53"
+    },
+    {
+      "bytes": 77813,
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_BrokenTop.uasset",
+      "sha256": "A6B8C5D7103D118681BF53A95332F1FB83B09EA5E6838D34FC5707C6135EB654"
+    },
+    {
+      "bytes": 83266,
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_Dead_Brown.uasset",
+      "sha256": "6E93BE7288D9FAB20489FB2E5487B78BCC22F81324DC993A42A9AB63EC1BD142"
+    },
+    {
+      "bytes": 83493,
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_Dead_White.uasset",
+      "sha256": "73BEB6709C1BAC3384463685E3CEC6A6F6B8C0F590E01F5231623D5E80E7F110"
+    },
+    {
+      "bytes": 86506,
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_Full.uasset",
+      "sha256": "5CA8C714DFB805A4B049BE660D234B78E6DEF0E6E28727B7ADD3EF70F582D3E9"
+    },
+    {
+      "bytes": 95501,
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_HalfFull.uasset",
+      "sha256": "E982E33395336638659C8F54AB49C5195B46C3A77FD83A1E755680FD2F2719B6"
+    },
+    {
+      "bytes": 46198,
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_Stump_Dead.uasset",
+      "sha256": "F6A60C401E65D37E446356191A73242A3EFB36FA0DEE6FD62D2EA8D05E1D2654"
+    },
+    {
+      "bytes": 45926,
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTree_Stump.uasset",
+      "sha256": "CCFB12922E0F3933E854AAD1E54D960000FF7BB59835CF26DEDA9498E44F3911"
+    },
+    {
+      "bytes": 103207,
+      "relative": "Assets\\Meshes\\Trees\\SM_PineTreeTall_Full.uasset",
+      "sha256": "7F8E6E2733B7EC149790AB16C85DDBCEB1573F75203EE702890F98CB6BFFB306"
+    },
+    {
+      "bytes": 28399,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodBeams1.uasset",
+      "sha256": "CEAEFFFC25AD4E0E1830FFFB26DBF23432160085465D74ABE0CED26F9E7636AF"
+    },
+    {
+      "bytes": 27407,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodBeams2.uasset",
+      "sha256": "4C38C97CFBA24DB6A27E053B0D6D6B3EECD27319D44A9E0237C480436D523FE3"
+    },
+    {
+      "bytes": 30571,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodBeams3.uasset",
+      "sha256": "89C74519786805C341EFFAFA105609D6CEB55A01CA43CA5A397EE0BF46FD3DB1"
+    },
+    {
+      "bytes": 37526,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodenPillar.uasset",
+      "sha256": "D74BAF8AE5D5941C13C959764F31C638950D11C1C8A3386EAE900A2654FA7433"
+    },
+    {
+      "bytes": 30037,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodFenceLarge.uasset",
+      "sha256": "B70DC0D44644E313F4B09139626D170A1722A0560BE4128018A285E8F681FECE"
+    },
+    {
+      "bytes": 29792,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodFenceSmall.uasset",
+      "sha256": "D2CEF24D4B03DA737BBE3E01E48101480BF52D9ABA03FF47B6F059BD6D9452BD"
+    },
+    {
+      "bytes": 25351,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodPlanks1.uasset",
+      "sha256": "373C7A3CB5CC423FFBCEB3F8F444F61C63210E8BC7D146157CA9C3F89249522D"
+    },
+    {
+      "bytes": 26199,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodPlanks2.uasset",
+      "sha256": "7AF79EC0BEA8A69720BEC11EA4E8291603C8DF44F0D0CB6F1B287462F5C2BC46"
+    },
+    {
+      "bytes": 24036,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodPlanks3.uasset",
+      "sha256": "1F51C5C6410C1145303BA3D8DEF739C16E8AB39DDC2D349B081DC6BB0AA5534E"
+    },
+    {
+      "bytes": 24533,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodPlanks4.uasset",
+      "sha256": "74C43B2D48BEEABA439064347F4ED5CFF6239C1BE7B4657933FCD751B783A267"
+    },
+    {
+      "bytes": 40659,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodStairs.uasset",
+      "sha256": "FD2AED088D08053F374EA85F1EE269F3A224D697C54FE0E4BFAF62C7E9CB654C"
+    },
+    {
+      "bytes": 32839,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodTop.uasset",
+      "sha256": "2583A5E9E99ADB73B9724B43A684F90DF2C22867C097DE1787B084F62E85F6C6"
+    },
+    {
+      "bytes": 35736,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodTop1.uasset",
+      "sha256": "4165E92CA16C0B600C7412DAE579453D444E39977BE3A447B774376C699154A8"
+    },
+    {
+      "bytes": 30827,
+      "relative": "Assets\\Meshes\\WoodenStructures\\SM_WoodTop2.uasset",
+      "sha256": "B57EA1D178F64591D71E49244BB84C90CA034DD8E276E9FBBE8220C78895699E"
+    },
+    {
+      "bytes": 429562,
+      "relative": "Assets\\Misc\\Heightmap\\T_Heightmap.uasset",
+      "sha256": "7121CAB5BF6357950AF2AE402D2E048C1A58A26BDBB6AF8778BD52CF75368BF4"
+    },
+    {
+      "bytes": 4660,
+      "relative": "Assets\\Misc\\LandscapeGrassTypes\\LGT_Auto.uasset",
+      "sha256": "9A61C6085B387201DDEE8C33BDBC5734A4E2D320D9E8249D79FB62F9EE82F3E0"
+    },
+    {
+      "bytes": 4685,
+      "relative": "Assets\\Misc\\LandscapeGrassTypes\\LGT_Placeable.uasset",
+      "sha256": "037D8EA762E4DE0D0951F8A827AE82FD6F7822E9553773E8B34096A87CC1E40C"
+    },
+    {
+      "bytes": 1455,
+      "relative": "Assets\\Misc\\LandscapeLayerInfo\\LL_AutoLayer.uasset",
+      "sha256": "3D7A86B6264B65605E02EB0D393215DE04F2128D91FB3C4C69AB824C71C766A6"
+    },
+    {
+      "bytes": 1467,
+      "relative": "Assets\\Misc\\LandscapeLayerInfo\\LL_Dirt_Gravel.uasset",
+      "sha256": "4103ED585E114276BB61E0B23550BEBCC210AA4F3EEEFCF4422DF1F92ABFA95E"
+    },
+    {
+      "bytes": 1461,
+      "relative": "Assets\\Misc\\LandscapeLayerInfo\\LL_Dirt_Light.uasset",
+      "sha256": "A760848470D94D021928D79D0131269F17F0957BC98CCB1FAE7A20C14BF25241"
+    },
+    {
+      "bytes": 1503,
+      "relative": "Assets\\Misc\\LandscapeLayerInfo\\LL_Grass_WithFoliage.uasset",
+      "sha256": "1703532A8DF8B0DA3E306C8E3E5F876C28F2981CE4284DA152185AECD82C6864"
+    },
+    {
+      "bytes": 1431,
+      "relative": "Assets\\Misc\\LandscapeLayerInfo\\LL_Grass.uasset",
+      "sha256": "33ACAD5B215A5C2BA22279407FF0B2B6813D000B530753001982B9408FA37DF6"
+    },
+    {
+      "bytes": 1425,
+      "relative": "Assets\\Misc\\LandscapeLayerInfo\\LL_Rock.uasset",
+      "sha256": "F2A043E97A5F2F0C62F2294372AFA07EB7A0385F807C149933BE83A3F373FB72"
+    },
+    {
+      "bytes": 2421944,
+      "relative": "Assets\\Textures\\T_Noise.uasset",
+      "sha256": "F74EE39DB4FC2F169DA80A414EBB2A6F974AC402F9CF765DA3B4CBCE440C7A1B"
+    },
+    {
+      "bytes": 1226802,
+      "relative": "Assets\\Textures\\Bark\\T_BarkBrokenArea_Normal.uasset",
+      "sha256": "8E26A6F8F5C46BBF7D5C5AB70BA102050F2A077751D55140CD43A9B59FE0CE4A"
+    },
+    {
+      "bytes": 763467,
+      "relative": "Assets\\Textures\\Bark\\T_BarkBrokenArea.uasset",
+      "sha256": "4043527613D1C315979A7F15AE8BF2477DB6CDB4C660A8D2E3C1BB0BBC3DD51E"
+    },
+    {
+      "bytes": 508608,
+      "relative": "Assets\\Textures\\Bark\\T_BarkBrokenAreaWhite.uasset",
+      "sha256": "673633C6E396B71D3880FC0F869C6B5C1735AC7E89B13F031F6A55309D314FCD"
+    },
+    {
+      "bytes": 1404633,
+      "relative": "Assets\\Textures\\Bark\\T_PineBrokenBark_Normal.uasset",
+      "sha256": "E816E99771E3092A2F6DE68B5AE14E4034B9A3204BD77896611B10D3C73D3016"
+    },
+    {
+      "bytes": 2211794,
+      "relative": "Assets\\Textures\\Bark\\T_PineBrokenBark.uasset",
+      "sha256": "090E0E1A3985BE249C1D1C358A6FB3FA61FD5CDE9FA8677BFB775F158B33E237"
+    },
+    {
+      "bytes": 1389462,
+      "relative": "Assets\\Textures\\Bark\\T_PineDeadBark_Normal.uasset",
+      "sha256": "0E71205DC8613B0C2DD3BBB9BD4CC623F9FC4FD6FE700A77731BF9BCE98A7632"
+    },
+    {
+      "bytes": 1356235,
+      "relative": "Assets\\Textures\\Bark\\T_PineDeadBark.uasset",
+      "sha256": "E104F6C9460D571089499FD3E053A0CCD951DDD228D7C203A3FEF6F6FD35D6E2"
+    },
+    {
+      "bytes": 1612815,
+      "relative": "Assets\\Textures\\Bark\\T_PineHalfFullBark_Normal.uasset",
+      "sha256": "B2D836F808A22A166F64A9ABB387C96771C4A6DF1767575994012F49D74799E9"
+    },
+    {
+      "bytes": 2381593,
+      "relative": "Assets\\Textures\\Bark\\T_PineHalfFullBark.uasset",
+      "sha256": "BF0ACEC9802268645C449D0DD986E0361D3C33D40FDEFE4E31BA5F1705CE04B6"
+    },
+    {
+      "bytes": 1473538,
+      "relative": "Assets\\Textures\\Bark\\T_PineTreeBark_Normal.uasset",
+      "sha256": "9FACAA66C8BAE267703BED02471AC83B232274A2F46C5F5DCB45E83C42087B5D"
+    },
+    {
+      "bytes": 2204418,
+      "relative": "Assets\\Textures\\Bark\\T_PineTreeBark.uasset",
+      "sha256": "E24E27FE3DCACE817210CC9D919DF7EFB41E5C5D19BF7ADB798A92459144ADE0"
+    },
+    {
+      "bytes": 1600787,
+      "relative": "Assets\\Textures\\Bark\\T_PineTreeTallBark_Normal.uasset",
+      "sha256": "679B8DA382C9904765A298315A469F4F5FE116C77E65A88A88CF107CB7E93AF1"
+    },
+    {
+      "bytes": 2393156,
+      "relative": "Assets\\Textures\\Bark\\T_PineTreeTallBark.uasset",
+      "sha256": "EA1DC41FB8D6571815A2F978A8F42A2079378864D83BA862970708696AEE086C"
+    },
+    {
+      "bytes": 26499,
+      "relative": "Assets\\Textures\\Flowers\\T_Flower1.uasset",
+      "sha256": "AF7C737CA2C6EDC8F2F64C40481EA41C3DE642059F52A281E75EC7A36F5CE763"
+    },
+    {
+      "bytes": 31392,
+      "relative": "Assets\\Textures\\Flowers\\T_Flower2.uasset",
+      "sha256": "78A5F0C965C14470CF198E6F7D6344570B2F6144271AA1F72272D39CD1A81751"
+    },
+    {
+      "bytes": 25652,
+      "relative": "Assets\\Textures\\Flowers\\T_Flower3.uasset",
+      "sha256": "B497828ACCBD47E87DED0EF219A89F359AA3BEBF65B5CD9144F0763D073E036E"
+    },
+    {
+      "bytes": 9953507,
+      "relative": "Assets\\Textures\\Landscape\\Dirt\\T_Dirt_Dark_Normal.uasset",
+      "sha256": "541B997B2412A3EA10629BA44AC789B01B4310722334DE5A185EBF8D242B9291"
+    },
+    {
+      "bytes": 7162146,
+      "relative": "Assets\\Textures\\Landscape\\Dirt\\T_Dirt_Dark.uasset",
+      "sha256": "DF74FAE3ED6C704D67450EFF12991754A945E48BC21077341FFC575E3D5A2C57"
+    },
+    {
+      "bytes": 2256342,
+      "relative": "Assets\\Textures\\Landscape\\Dirt\\T_Dirt_Light_Normal.uasset",
+      "sha256": "83B26B3AE13205266DFB4E53852D6502F10A5707B4591AFCF3CC336946553F4C"
+    },
+    {
+      "bytes": 4646673,
+      "relative": "Assets\\Textures\\Landscape\\Dirt\\T_Dirt_Light.uasset",
+      "sha256": "FD422C59C42C54617C6FFEBA51EF9C826C1021437A100C3A62D10F2E3B9F56B1"
+    },
+    {
+      "bytes": 11835057,
+      "relative": "Assets\\Textures\\Landscape\\Grass\\T_Grass_Normal.uasset",
+      "sha256": "9AA9636BE3DCF7E5D34822463B2A1C71E7D55C41917845AEC0AC3FB154D5BD9B"
+    },
+    {
+      "bytes": 7579611,
+      "relative": "Assets\\Textures\\Landscape\\Grass\\T_Grass.uasset",
+      "sha256": "9BDB00BEB5A824C53E9FE41026FA9A045A5286B32EA0DFA3488051F31857C626"
+    },
+    {
+      "bytes": 4702446,
+      "relative": "Assets\\Textures\\Landscape\\MacroVariation\\T_MacroVariation.uasset",
+      "sha256": "9B6F8B6F2DE9CCD614FCD3C81F404D47449149E3B5070D6195492F0BDD31F017"
+    },
+    {
+      "bytes": 22364053,
+      "relative": "Assets\\Textures\\Landscape\\Rock\\T_Rock_Normal.uasset",
+      "sha256": "308CD763646ADF7E2F88D483600FF1326CCF849DC9FA8FA97191CD6BBFB11E7C"
+    },
+    {
+      "bytes": 5985359,
+      "relative": "Assets\\Textures\\Landscape\\Rock\\T_Rock.uasset",
+      "sha256": "C6DEF3AE5C818003E94DAC0E3346472B3E7CB428A51F0F58B91DCBEE202176BE"
+    },
+    {
+      "bytes": 103364,
+      "relative": "Assets\\Textures\\Leaves\\T_Bush.uasset",
+      "sha256": "EA73227778D129C7276927BD27A37DED39C76E728F9E997A8A945930BE4A8859"
+    },
+    {
+      "bytes": 362483,
+      "relative": "Assets\\Textures\\Leaves\\T_Fern.uasset",
+      "sha256": "2C4B6B8F305E3BAC192F18E21E927A144DAD5F4B7BF699964AA35453441D9A83"
+    },
+    {
+      "bytes": 1321898,
+      "relative": "Assets\\Textures\\Leaves\\T_PineLeaf.uasset",
+      "sha256": "88AF544E297E489C5B51C29343E432D41FB6DBA1CB6B177C84DE511E6ED09D28"
+    },
+    {
+      "bytes": 157580,
+      "relative": "Assets\\Textures\\Leaves\\T_PineLeafSmall.uasset",
+      "sha256": "A36A89BBE54F5E55D1A588951AEBF5B75EC5B9C9BD5B50EAE4A4AEA63515FC50"
+    },
+    {
+      "bytes": 1150661,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock1_Dark.uasset",
+      "sha256": "0988B4F9715F6CDD4A5A51B15B9274283C7A216B38B44FA68377C446C57A7CCC"
+    },
+    {
+      "bytes": 1130035,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock2_Dark.uasset",
+      "sha256": "31D62297369FDCB14317D314D4961A2FE28287D839B6B4062025EC0445E61D14"
+    },
+    {
+      "bytes": 740894,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock3_Dark.uasset",
+      "sha256": "7B4B553CD0EF9E1FD361311242DF59A521A6CB6C8B30837D623616639851C005"
+    },
+    {
+      "bytes": 1032461,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock4_Dark.uasset",
+      "sha256": "220BBCC85169A3552FACF4822081C37273AF733C0899C80219B56EC35DF4592C"
+    },
+    {
+      "bytes": 886814,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock5_Dark.uasset",
+      "sha256": "C1ED8A3E7074F66302F7FA8F0D94105C841B0000A84A295BEAD5B06F4E85E55D"
+    },
+    {
+      "bytes": 1119832,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock6_Dark.uasset",
+      "sha256": "11059694C120FADA8CB7C8F31F8AA158E18DA40EEB39B05B025C89BA424B0F76"
+    },
+    {
+      "bytes": 919213,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_Rock7_Dark.uasset",
+      "sha256": "5DD45E1AE5850265D3D97A386B40576988529978EE5B4061BAF983D7F928FDA1"
+    },
+    {
+      "bytes": 585418,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFlat1_Dark.uasset",
+      "sha256": "515212BB22A35610A61603586B8153A6560455905F2225017FF1616DEC8640A7"
+    },
+    {
+      "bytes": 1039746,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFlat2_Dark.uasset",
+      "sha256": "920B3CF2507075C27CD635F42A39AEB53E869DF9EADA17D90847F473F1185B14"
+    },
+    {
+      "bytes": 1078553,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFlat3_Dark.uasset",
+      "sha256": "E6CE360F6E893141436BCC98FCA0DC30E6BA8C16FA3B5B5100524986DD2988A8"
+    },
+    {
+      "bytes": 778460,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFormation1_Dark.uasset",
+      "sha256": "47CED6529EC0304DBA9136D5CEF069D83C1F3EDD917E6AE7D9782BF604AFDBAB"
+    },
+    {
+      "bytes": 960405,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFormation2_Dark.uasset",
+      "sha256": "C3153A8959D56D5477EA26E51CBAA940629E5071C8054605631DC753887DC050"
+    },
+    {
+      "bytes": 838736,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFormation3_Dark.uasset",
+      "sha256": "2A64CDBDB1E0BCC9010DD8B49A6FBFAA330346CD15177E2062B7EFFFD708B64C"
+    },
+    {
+      "bytes": 777869,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFormation4_Dark.uasset",
+      "sha256": "03F7C030DB56EA8898AB8198C81628CEC40C72C27DEF4FA9F1E3B298BBE249B0"
+    },
+    {
+      "bytes": 1188826,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockFormation5_Dark.uasset",
+      "sha256": "3439ACFB15CB3D40C7A627F3C5B34E4BCBFFD54447B75E57ED13AC30DDEBA7CF"
+    },
+    {
+      "bytes": 1431990,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockLong1_Dark.uasset",
+      "sha256": "B164498C45D583E41CB5D4727E3D199881830411CC9D1D0E4455AB4346D56872"
+    },
+    {
+      "bytes": 1475771,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockLong2_Dark.uasset",
+      "sha256": "635A4D97E80F94EDF263D1ED6821E5CFB22B2AE2D0BDA0FCAE83C6A90BCF52AD"
+    },
+    {
+      "bytes": 1408433,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockLong3_Dark.uasset",
+      "sha256": "498EDDA8AF43BEE63E39960427D49FF8E350CF9F9CA2FBA4DF84AE2D5074D027"
+    },
+    {
+      "bytes": 1033363,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockLong4_Dark.uasset",
+      "sha256": "D8273F63CD9E6DF59EBB1C92C339AF5E204FD797CF987A5C4DD5FE232B2D4D35"
+    },
+    {
+      "bytes": 1543016,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RocksStacked1_Dark.uasset",
+      "sha256": "0581446B180554CC8B421140B847703FE56E8950B8E4D51021E6585F7298E540"
+    },
+    {
+      "bytes": 1533625,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RocksStacked2_Dark.uasset",
+      "sha256": "C19185202C9A97E7B8B7C291C700D7715602B5268D1D2E8D633FA189263AEBFA"
+    },
+    {
+      "bytes": 1191142,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockTall1_Dark.uasset",
+      "sha256": "B91333E3A8D82C24554E215E9CBAA50E1F5BC748BBAB12AA1BBB50EBE676A7A3"
+    },
+    {
+      "bytes": 1354308,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockTall2_Dark.uasset",
+      "sha256": "6A8E021658981D5649B03AFA5B8A9DA8C686367F3CE7E01FCA7C52F5BD4BD01E"
+    },
+    {
+      "bytes": 1192184,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_RockTall3_Dark.uasset",
+      "sha256": "AC692D13941AE879EAE585A0C943AEA2708CA732B0BC8AE196E1BB6C09841F46"
+    },
+    {
+      "bytes": 1673045,
+      "relative": "Assets\\Textures\\Rock\\Dark\\T_SmallRocks_Dark.uasset",
+      "sha256": "DB77CB227E9D206F32CD6BC6002191D7DE6E5DA2430B86523F0400E697E85B95"
+    },
+    {
+      "bytes": 947897,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock1_Light.uasset",
+      "sha256": "F81044EC4E2F4C090B34D09A1F22D8915C927B982BC0CA4F5B97E788AC84CD39"
+    },
+    {
+      "bytes": 931487,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock2_Light.uasset",
+      "sha256": "E13C49174298C1D3461C5ECA080551B39D9AFB8CF139684C6549B5FCA1D11702"
+    },
+    {
+      "bytes": 690323,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock3_Light.uasset",
+      "sha256": "760C2831EAC5262A7FD9E20B0FB8926C10F1FF8548DB5214BF59BB8D89C82DC1"
+    },
+    {
+      "bytes": 869516,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock4_Light.uasset",
+      "sha256": "0586BB247C66CACBBFAEE6505CCE788B8292F83E8F0711DC4032E962CDD138D7"
+    },
+    {
+      "bytes": 814062,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock5_Light.uasset",
+      "sha256": "09792602F90F19E3E5BBD1940C409EAA9F91604F536E96E8A4FA78EB22038D73"
+    },
+    {
+      "bytes": 942913,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock6_Light.uasset",
+      "sha256": "D0DCB1C56FC39A2B9C0729698AD779134E42432ABCB3265B2FE6C48031230103"
+    },
+    {
+      "bytes": 801798,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_Rock7_Light.uasset",
+      "sha256": "FBD154062AFCAEE4F740676CED47EE2542922F3E5F385DAE8B71ABF1EA3619B0"
+    },
+    {
+      "bytes": 570517,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFlat1_Light.uasset",
+      "sha256": "3C8B1B4578174E25AC2102072A75CD7567DB946BA62B33B71AD64255E58F5BEE"
+    },
+    {
+      "bytes": 959252,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFlat2_Light.uasset",
+      "sha256": "94C6F4357880595757798F0C0714A33218B01CB0BEC0D4A37777DA77D61212D6"
+    },
+    {
+      "bytes": 932603,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFlat3_Light.uasset",
+      "sha256": "90ECDF187A8CBC5C8D81CA60B7C514A902CBCA199F9BFB0499C4101CCEDE8E14"
+    },
+    {
+      "bytes": 702428,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFormation1_Light.uasset",
+      "sha256": "BA9B3362E6601C8B9126A4D74EE8F56F6698743B34593A67D4375C81984FBBAF"
+    },
+    {
+      "bytes": 912031,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFormation2_Light.uasset",
+      "sha256": "695F02DEBB168487E3D21E4FF7E521414D5BFDC714C01C7703847C5CF1E00DA7"
+    },
+    {
+      "bytes": 763539,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFormation3_Light.uasset",
+      "sha256": "DCEA69639E1F6CD8DDE013E25977F1F6CAA55A206D6860072A69573CC05A4ED5"
+    },
+    {
+      "bytes": 688788,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFormation4_Light.uasset",
+      "sha256": "E138ABB0883A85EF013DAD3D86F387FBB09691738D7A96EFD701CEADDA250228"
+    },
+    {
+      "bytes": 1050155,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockFormation5_Light.uasset",
+      "sha256": "9900769294AC85C312C368B3FD0C6493D4FD1049FAB4A094D83D4F83D7209D31"
+    },
+    {
+      "bytes": 1197029,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockLong1_Light.uasset",
+      "sha256": "3BA3A763D3C76BCBC64B263E9B97192144693ACB75B5D282DD0971A6D222EAB0"
+    },
+    {
+      "bytes": 1232397,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockLong2_Light.uasset",
+      "sha256": "1A1D31BC48169B44557DB3BF3356810B35A9533ADD18B8A7145AFA53C85E010A"
+    },
+    {
+      "bytes": 1216554,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockLong3_Light.uasset",
+      "sha256": "9D17245046B2F28F703F48118DCEBFD31E2452008C501A834996B6BDA734CA6B"
+    },
+    {
+      "bytes": 865780,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockLong4_Light.uasset",
+      "sha256": "89CCF7398A914B5482E5CD679786C00DFF2FE340E85351DDF6B1C0DA674EB165"
+    },
+    {
+      "bytes": 1131043,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RocksStacked1_Light.uasset",
+      "sha256": "076EC8786F95FE30BD9F7BEBD56B37AD7BA174927680BA5646C510D20CE56539"
+    },
+    {
+      "bytes": 1316032,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RocksStacked2_Light.uasset",
+      "sha256": "0385FBD2824C26D9AC09D2C1A0431ECB381A8E7C132A43DDAD594D7F8EF6B24C"
+    },
+    {
+      "bytes": 1028256,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockTall1_Light.uasset",
+      "sha256": "F05EE7C88BCD40E0142C23F129423886D0F4501B01231C4F917007C4F6E9BF56"
+    },
+    {
+      "bytes": 1185204,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockTall2_Light.uasset",
+      "sha256": "536292E3B6FBEE41F66404D58216C7419EBFD34C65928DC2092DDEE4A84FB21E"
+    },
+    {
+      "bytes": 1028126,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_RockTall3_Light.uasset",
+      "sha256": "A31D7FD42B295DE968145523C1FDCE72A5843851D05CC25DAFE316474EBAA9FD"
+    },
+    {
+      "bytes": 1189409,
+      "relative": "Assets\\Textures\\Rock\\Light\\T_SmallRocks_Light.uasset",
+      "sha256": "2979B906295070415F4070A4498BA3E6D8E92EF574334F437138A196D1F4F6D4"
+    },
+    {
+      "bytes": 1621654,
+      "relative": "Assets\\Textures\\StoneObjects\\T_StoneArch.uasset",
+      "sha256": "66BCD6C4494D62B38AF573AA93321C120829566C033DF31FA30A7A6127A0D7E4"
+    },
+    {
+      "bytes": 1319225,
+      "relative": "Assets\\Textures\\StoneObjects\\T_StoneLantern.uasset",
+      "sha256": "3A30BC5F5CEB4FB0F0528D5ECBC01F72FF60EE8C8C7D13F3AAF31A4E129C5242"
+    },
+    {
+      "bytes": 1507831,
+      "relative": "Assets\\Textures\\StoneObjects\\T_StonePortal.uasset",
+      "sha256": "10C0633EEB547698B943AC329E8C1347EA85AD85B1636DD5C320458C0921F529"
+    },
+    {
+      "bytes": 3098712,
+      "relative": "Assets\\Textures\\WoodenStructures\\T_Wood.uasset",
+      "sha256": "EB2AED5C14D36A64BCE1725F532AF477929F68B2B6C15F91D7226EBFC01A7E00"
+    }
+  ],
+  "source_blender_or_fbx": "Not supplied by vendor; delivery is editable UE assets plus authoring recipes",
+  "acceptance_map_files": [
+    {
+      "bytes": 5571156,
+      "relative": "Maps\\Demo_Map.umap",
+      "sha256": "D3B82DE8C68622056A69537916B3BC259B396135C2F2E120F93C7BF2635A7DA7"
+    },
+    {
+      "bytes": 1430335,
+      "relative": "Maps\\Demo_Map_BuiltData.uasset",
+      "sha256": "CDB0DD7DCE1F32BC21DE6766BD6081E2EA190552411FEE08CF96A833C32D30C1"
+    }
+  ],
+  "generated_at": "2026-09-18T02:17:54.8808858+08:00"
+}

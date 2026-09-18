@@ -116,7 +116,7 @@ public:
 	EGuLiTeam GetTerritoryOwner() const { return TerritoryOwner; }
 	virtual EGuLiTeam GetBuildingTeam() const override { return TerritoryOwner; }
 	virtual void SetBuildingTeamAuthority(EGuLiTeam NewTeam) override;
-	virtual FVector GetBuildingGroundLocation() const override { return GetActorLocation() - FVector(0,0,2500); }
+	virtual FVector GetBuildingGroundLocation() const override { return GetActorLocation() - FVector(0,0,500); }
 
 private:
 	UFUNCTION()

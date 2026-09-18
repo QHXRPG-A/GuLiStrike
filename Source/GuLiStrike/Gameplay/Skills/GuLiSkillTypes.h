@@ -6,6 +6,9 @@
 #include "GameplayTagContainer.h"
 #include "GuLiSkillTypes.generated.h"
 
+UENUM()
+enum class EGuLiWeaponTriggerMode : uint8 { Automatic, Active };
+
 USTRUCT()
 struct GULISTRIKE_API FGuLiSkillDefinition
 {
@@ -26,11 +29,15 @@ struct GULISTRIKE_API FGuLiUnitSkillConfig
 	UPROPERTY() FName SlotId = TEXT("BasicAttack");
 	UPROPERTY() FName SkillId;
 	UPROPERTY() bool bDefault = false;
+	UPROPERTY() EGuLiWeaponTriggerMode TriggerMode = EGuLiWeaponTriggerMode::Automatic;
 	UPROPERTY() float Damage = 0.0f;
 	UPROPERTY() float AttackRatePerSecond = 0.0f;
 	UPROPERTY() float RangeCentimeters = 0.0f;
 	/** Authored availability; rewards may unlock this stable slot during the match. */
 	UPROPERTY() bool bInitiallyUnlocked = true;
+	UPROPERTY() float ProjectileSpeedCentimetersPerSecond = 0.0f;
+	UPROPERTY() float ProjectileLifetimeSeconds = 0.0f;
+	UPROPERTY() float ProjectileSweepRadiusCentimeters = 0.0f;
 };
 
 /** Final authority configuration; per-soldier target/cooldown/health never live here. */
@@ -50,6 +57,10 @@ struct GULISTRIKE_API FGuLiResolvedSkillProfile
 	UPROPERTY() uint32 Revision = 0;
 	UPROPERTY() bool bUnlocked = true;
 	UPROPERTY() bool bEquipped = true;
+	UPROPERTY() EGuLiWeaponTriggerMode TriggerMode = EGuLiWeaponTriggerMode::Automatic;
+	UPROPERTY() float ProjectileSpeedCentimetersPerSecond = 0.0f;
+	UPROPERTY() float ProjectileLifetimeSeconds = 0.0f;
+	UPROPERTY() float ProjectileSweepRadiusCentimeters = 0.0f;
 	bool HasSameConfiguration(const FGuLiResolvedSkillProfile& Other) const;
 };
 

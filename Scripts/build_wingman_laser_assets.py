@@ -118,7 +118,7 @@ def build_system():
     save(SYSTEM)
     catalog = require(unreal.load_asset(CATALOG), 'Load combat effect catalog')
     catalog.set_editor_property('wingman_laser_system', system)
-    for key, value in [('laser_length', 3000.0), ('laser_core_width', 50.0), ('laser_intensity', 24.0), ('laser_muzzle_seconds', 0.05)]:
+    for key, value in [('laser_length', 600.0), ('laser_core_width', 10.0), ('laser_intensity', 24.0), ('laser_muzzle_seconds', 0.05)]:
         catalog.set_editor_property(key, value)
     catalog.set_editor_property('friendly_laser_tint', unreal.LinearColor(0.05, 1.0, 0.12, 1.0))
     catalog.set_editor_property('enemy_laser_tint', unreal.LinearColor(1.0, 0.025, 0.015, 1.0))

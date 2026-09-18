@@ -28,9 +28,9 @@ namespace
 	}
 	bool Overlaps(const FGuLiTeleportUnit& A, const FGuLiTeleportUnit& B)
 	{
-		const FVector P = A.Landing.GetLocation() + (A.bGroundPivot ? FVector(0,0,A.HalfHeight+3) : FVector::ZeroVector);
-		const FVector Q = B.Landing.GetLocation() + (B.bGroundPivot ? FVector(0,0,B.HalfHeight+3) : FVector::ZeroVector);
-		return FMath::Abs(P.Z-Q.Z) < A.HalfHeight+B.HalfHeight && FVector::DistSquared2D(P,Q) < FMath::Square(A.Radius+B.Radius+2);
+		const FVector P = A.Landing.GetLocation() + (A.bGroundPivot ? FVector(0,0,A.HalfHeight+0.6) : FVector::ZeroVector);
+		const FVector Q = B.Landing.GetLocation() + (B.bGroundPivot ? FVector(0,0,B.HalfHeight+0.6) : FVector::ZeroVector);
+		return FMath::Abs(P.Z-Q.Z) < A.HalfHeight+B.HalfHeight && FVector::DistSquared2D(P,Q) < FMath::Square(A.Radius+B.Radius+0.4);
 	}
 }
 AGuLiTeleportFieldActor::~AGuLiTeleportFieldActor() = default;
@@ -126,7 +126,7 @@ bool AGuLiTeleportFieldActor::PlanLanding(FVector Center, bool bReturning)
 	GuLiTeleportActorAdapter::ConfigureCollisionQuery(*GetWorld(),Runtime->Units,Params);
 	auto IsBlocked = [&](const FGuLiTeleportUnit& Unit)
 	{
-		const FVector P = Unit.Landing.GetLocation() + (Unit.bGroundPivot ? FVector(0,0,Unit.HalfHeight+3) : FVector::ZeroVector);
+		const FVector P = Unit.Landing.GetLocation() + (Unit.bGroundPivot ? FVector(0,0,Unit.HalfHeight+0.6) : FVector::ZeroVector);
 		return Reserved.ContainsByPredicate([&](const auto& Other) { return Overlaps(Unit,Other); })
 			|| GetWorld()->OverlapBlockingTestByChannel(P,FQuat::Identity,ECC_Pawn,FCollisionShape::MakeCapsule(Unit.Radius,FMath::Max(Unit.HalfHeight,Unit.Radius)),Params);
 	};
@@ -138,7 +138,7 @@ bool AGuLiTeleportFieldActor::PlanLanding(FVector Center, bool bReturning)
 		auto& Unit = Runtime->Units[I]; const FVector Offset = Unit.Original.GetLocation()-State.Source; bool bFound = false;
 		for (int32 Attempt = 0; Attempt < 257; ++Attempt)
 		{
-			const float D = Attempt ? FMath::Sqrt(float(Attempt))*FMath::Max(Unit.Radius*2.1f,100.f) : 0;
+			const float D = Attempt ? FMath::Sqrt(float(Attempt))*FMath::Max(Unit.Radius*2.1f,20.f) : 0;
 			const float Angle = Attempt*2.39996323f;
 			FVector GroundLocation; double SurfaceHeight = 0;
 			const FVector Desired = Center + FVector(Offset.X+FMath::Cos(Angle)*D,Offset.Y+FMath::Sin(Angle)*D,0);

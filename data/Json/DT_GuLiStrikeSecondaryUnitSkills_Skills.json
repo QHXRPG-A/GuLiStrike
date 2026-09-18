@@ -1,0 +1,22 @@
+[
+  {
+    "Name": "WM01_HomingMissile",
+    "Id": 1,
+    "Note": "战争机器Q；每台独立6秒；射程取最终普通攻击x1.6（基线48米）；直径8米圆内独立随机落点，圆心验射程、落点允许越界；爆炸与预警半径1.6米，伤害与挂点引用武器槽",
+    "TargetMode": "GroundPoint",
+    "CooldownSeconds": 6.0,
+    "RangeCentimeters": 4800.0,
+    "RangeSourceSlot": "BasicAttack",
+    "RangeMultiplier": 1.6,
+    "MaximumLevel": 1,
+    "ExecutorClass": "/Script/GuLiStrike.GuLiWarMachineMissileSkillExecutor",
+    "ConfigurationClass": "/Script/GuLiStrike.GuLiPointSkillConfiguration",
+    "Configuration": "/Game/GuLiStrike/Commander/Skills/DA_WM01_MissileQ",
+    "Projectile": "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile",
+    "FieldConfigId": "WM01_MissileExplosion",
+    "SourceWeaponSlot": "MissileLauncher",
+    "UseAuthoredTrajectory": true,
+    "GroundWarningStyle": "/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red",
+    "TargetAreaDiameterCentimeters": 800.0
+  }
+]

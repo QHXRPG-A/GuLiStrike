@@ -1,0 +1,254 @@
+{
+  "success": true,
+  "map": "/Game/GuLiStrike/Ship/StylizedComponents/Review/L_ShipComponents_Style",
+  "pictures": [
+    "Previews\\Twin_Barrel_Turret_hero.png",
+    "Previews\\Twin_Barrel_Turret_pitch_-15.png",
+    "Previews\\Twin_Barrel_Turret_pitch_30.png",
+    "Previews\\Twin_Barrel_Turret_pitch_75.png",
+    "Previews\\CIWS_hero.png",
+    "Previews\\CIWS_pitch_-15.png",
+    "Previews\\CIWS_pitch_30.png",
+    "Previews\\CIWS_pitch_75.png",
+    "Previews\\Thor_MissilePod_hero.png",
+    "Previews\\Autocannon_hero.png",
+    "Previews\\Autocannon_pitch_-15.png",
+    "Previews\\Autocannon_pitch_30.png",
+    "Previews\\Autocannon_pitch_75.png",
+    "Previews\\Triple_Barrel_Turret_hero.png",
+    "Previews\\Triple_Barrel_Turret_pitch_-15.png",
+    "Previews\\Triple_Barrel_Turret_pitch_30.png",
+    "Previews\\Triple_Barrel_Turret_pitch_75.png",
+    "Previews\\Single_Barrel_Turret_hero.png",
+    "Previews\\Single_Barrel_Turret_pitch_-15.png",
+    "Previews\\Single_Barrel_Turret_pitch_30.png",
+    "Previews\\Single_Barrel_Turret_pitch_75.png",
+    "Previews\\Drone_LaunchBay_hero.png",
+    "Previews\\Drone_LaunchBay_exterior_mark.png",
+    "Previews\\Electronic_JammingDevice_hero.png",
+    "Previews\\Shield_Generator_hero.png",
+    "Previews\\Bottom_Twin_Barrel_Turret_hero.png",
+    "Previews\\Bottom_Twin_Barrel_Turret_pitch_-15.png",
+    "Previews\\Bottom_Twin_Barrel_Turret_pitch_30.png",
+    "Previews\\Bottom_Twin_Barrel_Turret_pitch_75.png",
+    "Previews\\High_Rate_Fire_Cannon_hero.png",
+    "Previews\\High_Rate_Fire_Cannon_pitch_-15.png",
+    "Previews\\High_Rate_Fire_Cannon_pitch_30.png",
+    "Previews\\High_Rate_Fire_Cannon_pitch_75.png",
+    "Previews\\Incendiary_Bomb_LaunchBay_hero.png",
+    "Previews\\Incendiary_Bomb_LaunchBay_flame_front.png",
+    "Previews\\Incendiary_Bomb_LaunchBay_flame_rear.png",
+    "Previews\\Missile_Bay_hero.png"
+  ],
+  "motion": {
+    "Twin_Barrel_Turret": {
+      "samples": 91,
+      "socket_samples": 182,
+      "max_socket_error_cm": 1.7760725995649402e-12,
+      "max_angle_error_deg": 0.21305597962113412,
+      "root_stable": true
+    },
+    "CIWS": {
+      "samples": 91,
+      "socket_samples": 273,
+      "max_socket_error_cm": 2.2073333447866586e-13,
+      "max_angle_error_deg": 0.21305597962113412,
+      "root_stable": true
+    },
+    "Autocannon": {
+      "samples": 91,
+      "socket_samples": 273,
+      "max_socket_error_cm": 1.836667072598574e-12,
+      "max_angle_error_deg": 0.21305597962113412,
+      "root_stable": true
+    },
+    "Triple_Barrel_Turret": {
+      "samples": 91,
+      "socket_samples": 273,
+      "max_socket_error_cm": 3.2160517457249707e-12,
+      "max_angle_error_deg": 0.21305597962113412,
+      "root_stable": true
+    },
+    "Single_Barrel_Turret": {
+      "samples": 91,
+      "socket_samples": 91,
+      "max_socket_error_cm": 1.2355338144943236e-12,
+      "max_angle_error_deg": 0.21305597962113412,
+      "root_stable": true
+    },
+    "Bottom_Twin_Barrel_Turret": {
+      "samples": 91,
+      "socket_samples": 182,
+      "max_socket_error_cm": 3.9333017166441535e-12,
+      "max_angle_error_deg": 0.21118207045888918,
+      "root_stable": true
+    },
+    "High_Rate_Fire_Cannon": {
+      "samples": 91,
+      "socket_samples": 182,
+      "max_socket_error_cm": 2.2511088365172345e-12,
+      "max_angle_error_deg": 0.21305597962113412,
+      "root_stable": true
+    }
+  },
+  "assembly": [
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Twin_Barrel_Turret",
+      "slots": [
+        "bottom_mid_0",
+        "bottom_mid_2"
+      ],
+      "installed": false,
+      "reason": "Existing gameplay hull has no bottom_mid_0 socket; confirmed by the original install function warning. No hull or compatibility socket changes in this surface task."
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_CIWS",
+      "slots": [
+        "air_13",
+        "air_14",
+        "air_15",
+        "air_16",
+        "air_17",
+        "air_18",
+        "air_19",
+        "air_20",
+        "air_21",
+        "air_22",
+        "air_23",
+        "air_24",
+        "air_25",
+        "air_26",
+        "air_27",
+        "air_28",
+        "air_29",
+        "air_30",
+        "air_31",
+        "air_32",
+        "air_33",
+        "air_34",
+        "air_35",
+        "air_36",
+        "air_37",
+        "air_38",
+        "air_39",
+        "air_40",
+        "air_41"
+      ],
+      "installed": true,
+      "visual_ready": true,
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_CIWS.SKM_SC_CIWS",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_CIWS_Toon.M_SC_CIWS_Toon"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Thor_MissilePod",
+      "slots": [
+        "missilepod_1",
+        "missilepod_2",
+        "missilepod_3"
+      ],
+      "installed": true,
+      "visual_ready": true,
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Thor_MissilePod.SM_SC_Thor_MissilePod",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Thor_MissilePod_Toon.M_SC_Thor_MissilePod_Toon"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Thor_MissilePod_Lv2",
+      "slots": [
+        "missilepod_1",
+        "missilepod_2",
+        "missilepod_3"
+      ],
+      "installed": true,
+      "visual_ready": true,
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Thor_MissilePod.SM_SC_Thor_MissilePod",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Thor_MissilePod_Toon.M_SC_Thor_MissilePod_Toon"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Autocannon",
+      "slots": [
+        "bottom_mid_0",
+        "bottom_mid_1",
+        "bottom_mid_2"
+      ],
+      "installed": false,
+      "reason": "Existing gameplay hull has no bottom_mid_0 socket; confirmed by the original install function warning. No hull or compatibility socket changes in this surface task."
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Triple_Barrel_Turret",
+      "slots": [
+        "bottom_0",
+        "bottom_2",
+        "bottom_3",
+        "bottom_4",
+        "bottom_5"
+      ],
+      "installed": true,
+      "visual_ready": true,
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Triple_Barrel_Turret.SKM_SC_Triple_Barrel_Turret",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Triple_Barrel_Turret_Toon.M_SC_Triple_Barrel_Turret_Toon"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Single_Barrel_Turret",
+      "slots": [
+        "air_1",
+        "air_2",
+        "air_3",
+        "air_4",
+        "air_5",
+        "air_6",
+        "air_7",
+        "air_8",
+        "air_9",
+        "air_10",
+        "air_11",
+        "air_12",
+        "air_13"
+      ],
+      "installed": true,
+      "visual_ready": true,
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Single_Barrel_Turret.SKM_SC_Single_Barrel_Turret",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Single_Barrel_Turret_Toon.M_SC_Single_Barrel_Turret_Toon"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Drone_LaunchBay",
+      "slots": [
+        "wingman_bay_1",
+        "wingman_bay_2"
+      ],
+      "installed": true,
+      "visual_ready": true,
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay.SM_SC_Drone_LaunchBay",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Drone_LaunchBay_Toon.M_SC_Drone_LaunchBay_Toon"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Electronic_JammingDevice",
+      "slots": [],
+      "status": "catalogue has no assigned compatible socket; direct formal mesh and CDO checked"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Shield_Generator",
+      "slots": [],
+      "status": "catalogue has no assigned compatible socket; direct formal mesh and CDO checked"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Bottom_Twin_Barrel_Turret",
+      "slots": [],
+      "status": "catalogue has no assigned compatible socket; direct formal mesh and CDO checked"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_High_Rate_Fire_Cannon",
+      "slots": [],
+      "status": "catalogue has no assigned compatible socket; direct formal mesh and CDO checked"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Incendiary_Bomb_LaunchBay",
+      "slots": [],
+      "status": "catalogue has no assigned compatible socket; direct formal mesh and CDO checked"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Missile_Bay",
+      "slots": [],
+      "status": "catalogue has no assigned compatible socket; direct formal mesh and CDO checked"
+    }
+  ]
+}

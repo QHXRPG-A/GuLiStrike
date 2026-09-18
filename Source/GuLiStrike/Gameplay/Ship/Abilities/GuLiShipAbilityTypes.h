@@ -97,28 +97,28 @@ struct GULISTRIKE_API FGuLiWingmanSwarmOrbitTuning
 	GENERATED_BODY()
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float InnerSoftRadiusCentimeters = 24000.0f;
+	float InnerSoftRadiusCentimeters = 4800.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float OuterSoftRadiusCentimeters = 52000.0f;
+	float OuterSoftRadiusCentimeters = 10400.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float VerticalHalfExtentCentimeters = 14000.0f;
+	float VerticalHalfExtentCentimeters = 2800.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float HullExclusionRadiusCentimeters = 14000.0f;
+	float HullExclusionRadiusCentimeters = 2800.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float SwirlSpeedMinCentimetersPerSecond = 7200.0f;
+	float SwirlSpeedMinCentimetersPerSecond = 1440.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float SwirlSpeedMaxCentimetersPerSecond = 10400.0f;
+	float SwirlSpeedMaxCentimetersPerSecond = 2080.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float CurlStrengthCentimetersPerSecond = 2800.0f;
+	float CurlStrengthCentimetersPerSecond = 560.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float NoiseSpatialScaleCentimeters = 22000.0f;
+	float NoiseSpatialScaleCentimeters = 4400.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
 	float NoiseTemporalScaleSeconds = 6.0f;
@@ -130,13 +130,13 @@ struct GULISTRIKE_API FGuLiWingmanSwarmOrbitTuning
 	float AxisPrecessionRadiansPerSecond = 0.03f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float BoundaryReturnSpeedCentimetersPerSecond = 5600.0f;
+	float BoundaryReturnSpeedCentimetersPerSecond = 1120.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float PreferredRadiusReturnSpeedCentimetersPerSecond = 900.0f;
+	float PreferredRadiusReturnSpeedCentimetersPerSecond = 180.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
-	float VerticalReturnSpeedCentimetersPerSecond = 2800.0f;
+	float VerticalReturnSpeedCentimetersPerSecond = 560.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation|SwarmOrbit")
 	float AlignmentWeight = 0.08f;
@@ -246,16 +246,16 @@ struct GULISTRIKE_API FGuLiWingmanFormationRuntimeConfig
 	uint8 OuterRingSlots = 12u;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation")
-	float InnerRingRadiusCentimeters = 60000.0f;
+	float InnerRingRadiusCentimeters = 12000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation")
-	float OuterRingRadiusCentimeters = 90000.0f;
+	float OuterRingRadiusCentimeters = 18000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation")
-	float InnerRingHeightCentimeters = 15000.0f;
+	float InnerRingHeightCentimeters = 3000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation")
-	float OuterRingHeightCentimeters = -15000.0f;
+	float OuterRingHeightCentimeters = -3000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Formation")
 	float InnerAngularSpeedRadiansPerSecond = 0.16f;
@@ -264,19 +264,19 @@ struct GULISTRIKE_API FGuLiWingmanFormationRuntimeConfig
 	float OuterAngularSpeedRadiansPerSecond = 0.12f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
-	float MinimumSpeedCentimetersPerSecond = 6000.0f;
+	float MinimumSpeedCentimetersPerSecond = 1200.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
-	float CruiseSpeedCentimetersPerSecond = 9000.0f;
+	float CruiseSpeedCentimetersPerSecond = 1800.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
-	float CatchUpSpeedCentimetersPerSecond = 15000.0f;
+	float CatchUpSpeedCentimetersPerSecond = 3000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
-	float MaximumAccelerationCentimetersPerSecondSquared = 4000.0f;
+	float MaximumAccelerationCentimetersPerSecondSquared = 800.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
-	float MaximumDecelerationCentimetersPerSecondSquared = 3200.0f;
+	float MaximumDecelerationCentimetersPerSecondSquared = 640.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Flight")
 	float MaximumTurnRateDegreesPerSecond = 80.0f;
@@ -285,19 +285,19 @@ struct GULISTRIKE_API FGuLiWingmanFormationRuntimeConfig
 	float MaximumBankDegrees = 45.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Avoidance")
-	float AgentRadiusCentimeters = 1500.0f;
+	float AgentRadiusCentimeters = 300.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Avoidance")
-	float SeparationRadiusCentimeters = 3000.0f;
+	float SeparationRadiusCentimeters = 600.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Avoidance")
-	float ObstacleLookAheadCentimeters = 5000.0f;
+	float ObstacleLookAheadCentimeters = 1000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Recovery")
-	float CatchUpDistanceCentimeters = 120000.0f;
+	float CatchUpDistanceCentimeters = 24000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Recovery")
-	float RecoveryDistanceCentimeters = 250000.0f;
+	float RecoveryDistanceCentimeters = 50000.0f;
 
 	bool IsWellFormed() const;
 	void AddToStableHash(uint64& Hash) const;
@@ -318,7 +318,7 @@ struct GULISTRIKE_API FGuLiWingmanWeaponRuntimeConfig
 	float Damage = 10.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
-	float RangeCentimeters = 150000.0f;
+	float RangeCentimeters = 30000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
 	float CooldownSeconds = 2.0f;
@@ -330,13 +330,13 @@ struct GULISTRIKE_API FGuLiWingmanWeaponRuntimeConfig
 	bool bRequiresLineOfSight = true;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
-	float ProjectileSpeedCentimetersPerSecond = 120000.0f;
+	float ProjectileSpeedCentimetersPerSecond = 24000.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
 	float ProjectileLifetimeSeconds = 3.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
-	float SweepRadiusCentimeters = 50.0f;
+	float SweepRadiusCentimeters = 10.0f;
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Ship|Abilities|Weapon")
 	float MaximumHomingTurnRateDegreesPerSecond = 0.0f;

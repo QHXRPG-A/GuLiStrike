@@ -7,6 +7,8 @@ struct FGuLiUnitSkillCaster
 	FGuLiActiveSkillExecutionContext Context;
 	bool bEligible = false;
 	bool bHasGroundPoint = false;
+	/** Filled by the server adapter only when the definition names a source weapon slot. */
+	float ResolvedSourceRange = 0.0f;
 };
 
 namespace GuLiUnitSkillExecution

@@ -41,7 +41,7 @@ void UGuLiBuildingProductionComponent::TickComponent(float Dt, ELevelTick TickTy
 		TArray<FVector> Locations;
 		for (int32 Index = 0; Index < Definition.ProductionCount; ++Index)
 		{
-			const FVector Local(Definition.CollisionExtent.X + 4000 + (Index / 6) * 1600, (Index % 6 - 2.5) * 1600, 0);
+			const FVector Local(Definition.CollisionExtent.X + 800 + (Index / 6) * 320, (Index % 6 - 2.5) * 320, 0);
 			Locations.Add(Life.GetGroundLocation() + GetOwner()->GetActorRotation().RotateVector(Local));
 		}
 		TArray<FGuLiSoldierId> Spawned;

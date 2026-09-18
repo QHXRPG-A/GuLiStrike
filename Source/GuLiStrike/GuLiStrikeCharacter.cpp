@@ -5,6 +5,8 @@
 #include "BlinkVFX.h"
 #include "GameFramework/SpringArmComponent.h"
 #include "Camera/CameraComponent.h"
+#include "Components/CapsuleComponent.h"
+#include "Components/SkeletalMeshComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "EnhancedInputComponent.h"
 #include "InputCoreTypes.h"
@@ -19,6 +21,8 @@
 AGuLiStrikeCharacter::AGuLiStrikeCharacter()
 {
  	PrimaryActorTick.bCanEverTick = true;
+	GetCapsuleComponent()->InitCapsuleSize(8.4f, 19.2f);
+	GetMesh()->SetRelativeScale3D(FVector(0.2f));
 
 	// create the spring arm
 	SpringArm = CreateDefaultSubobject<USpringArmComponent>(TEXT("Spring Arm"));
@@ -26,7 +30,8 @@ AGuLiStrikeCharacter::AGuLiStrikeCharacter()
 
 	SpringArm->SetRelativeRotation(FRotator(-50.0f, 0.0f, 0.0f));
 
-	SpringArm->TargetArmLength = 2200.0f;
+	SpringArm->TargetArmLength = 440.0f;
+	SpringArm->ProbeSize = 2.4f;
 	SpringArm->bDoCollisionTest = false;
 	SpringArm->bInheritYaw = false;
 	SpringArm->bEnableCameraLag = true;
@@ -39,8 +44,15 @@ AGuLiStrikeCharacter::AGuLiStrikeCharacter()
 	Camera->SetFieldOfView(75.0f);
 
 	// configure the character movement
-	GetCharacterMovement()->GravityScale = 1.5f;
-	GetCharacterMovement()->MaxAcceleration = 1000.0f;
+	GetCharacterMovement()->GravityScale = 0.3f;
+	GetCharacterMovement()->MaxAcceleration = 200.0f;
+	GetCharacterMovement()->MaxWalkSpeed = 120.0f;
+	GetCharacterMovement()->BrakingDecelerationWalking = 409.6f;
+	GetCharacterMovement()->MaxStepHeight = 9.0f;
+	GetCharacterMovement()->PerchAdditionalHeight = 8.0f;
+	GetCharacterMovement()->JumpZVelocity = 84.0f;
+	GetCharacterMovement()->NetworkMaxSmoothUpdateDistance = 51.2f;
+	GetCharacterMovement()->NetworkNoSmoothUpdateDistance = 76.8f;
 	GetCharacterMovement()->BrakingFrictionFactor = 1.0f;
 	GetCharacterMovement()->bCanWalkOffLedges = false;
 	GetCharacterMovement()->RotationRate = FRotator(0.0f, 640.0f, 0.0f);
@@ -356,4 +368,3 @@ void AGuLiStrikeCharacter::ResetAutoFire()
 	// reset the autofire flag
 	bAutoFireActive = false;
 }
-

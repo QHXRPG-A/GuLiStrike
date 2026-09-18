@@ -29,7 +29,7 @@ public:
 	int32 Columns = 4;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Deployment", meta=(Units="cm"))
-	float SpacingCentimeters = 2400.0f;
+	float SpacingCentimeters = 480.0f;
 
 	FVector GetSlotLocation(int32 SlotIndex) const;
 };

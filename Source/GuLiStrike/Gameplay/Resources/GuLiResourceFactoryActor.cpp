@@ -10,6 +10,7 @@
 #include "Components/TimelineComponent.h"
 #include "GameFramework/GameStateBase.h"
 #include "Engine/World.h"
+#include "Engine/CollisionProfile.h"
 #include "Net/UnrealNetwork.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Battle/Combat/GuLiActorDamageReceiverComponent.h"
@@ -28,7 +29,7 @@ AGuLiResourceFactoryActor::AGuLiResourceFactoryActor()
 	CollisionBox->SetBoxExtent(FVector(
 		GULI_RESOURCE_FACTORY_OBSTACLE_HALF_EXTENT_CM,
 		GULI_RESOURCE_FACTORY_OBSTACLE_HALF_EXTENT_CM,
-		1800.0f));
+		360.0f));
 	CollisionBox->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
 	CollisionBox->SetCollisionObjectType(ECC_WorldStatic);
 	CollisionBox->SetCollisionResponseToAllChannels(ECR_Block);
@@ -37,6 +38,8 @@ AGuLiResourceFactoryActor::AGuLiResourceFactoryActor()
 	DockPointComponent->SetupAttachment(CollisionBox);
 	Presentation = CreateDefaultSubobject<UChildActorComponent>(TEXT("FactoryPresentation"));
 	Presentation->SetupAttachment(CollisionBox);
+	// Door bones and ramp geometry retain source units beneath this presentation parent.
+	Presentation->SetRelativeScale3D(FVector(0.2f));
 }
 
 void AGuLiResourceFactoryActor::BeginPlay()
@@ -164,6 +167,7 @@ void AGuLiResourceFactoryActor::OnRep_PresentationClass()
 	for (USkeletalMeshComponent* Mesh : Meshes)
 		if (Mesh->GetFName() == TEXT("Door")) DoorMesh = Mesh;
 	check(DoorMesh.IsValid());
+	ConfigureDoorPresentation();
 	DoorMesh->VisibilityBasedAnimTickOption = EVisibilityBasedAnimTickOption::AlwaysTickPoseAndRefreshBones;
 	// The facility owns runtime door progress; the standalone Blueprint timeline remains usable in its showcase.
 	TInlineComponentArray<UTimelineComponent*> Timelines(Child);
@@ -223,6 +227,15 @@ FGuLiFactoryDockRoute AGuLiResourceFactoryActor::GetDockRoute() const
 	Route.Entry.X = GetActorTransform().InverseTransformPosition(FVector(DockPoint)).X;
 	Route.Exit.X = Route.Entry.X;
 	return Route;
+}
+
+void AGuLiResourceFactoryActor::ConfigureDoorPresentation()
+{
+	if (!DoorMesh.IsValid()) return;
+	// User contract: both open and closed door poses are presentation, never an obstacle.
+	DoorMesh->SetCollisionProfileName(UCollisionProfile::NoCollision_ProfileName);
+	DoorMesh->SetGenerateOverlapEvents(false);
+	DoorMesh->SetCanEverAffectNavigation(false);
 }
 
 bool AGuLiResourceFactoryActor::TryReserveDock(AActor& Vehicle)

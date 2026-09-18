@@ -73,6 +73,8 @@ namespace GuLiCommanderNavigationPolicyTests
 
 	bool FCommanderSharedTargetProjectionTest::RunTest(const FString& Parameters)
 	{
+	// Scale020 fixture: spatial values use final centimeters.
+
 		const FVector RequestedTarget(1000.0, 2000.0, 50.0);
 		TestTrue(
 			TEXT("An exact CommanderSoldier projection is accepted"),
@@ -84,13 +86,13 @@ namespace GuLiCommanderNavigationPolicyTests
 			TEXT("Vertical NavMesh correction does not consume horizontal tolerance"),
 			IsProjectedTargetAcceptable(
 				RequestedTarget,
-				RequestedTarget + FVector(750.0, 0.0, 5000.0),
+				RequestedTarget + FVector(150.0, 0.0, 5000.0),
 				RequiredAgentRadiusCentimeters));
 		TestFalse(
 			TEXT("A projection beyond one Soldier radius is InvalidTarget"),
 			IsProjectedTargetAcceptable(
 				RequestedTarget,
-				RequestedTarget + FVector(751.0, 0.0, 0.0),
+				RequestedTarget + FVector(151.0, 0.0, 0.0),
 				RequiredAgentRadiusCentimeters));
 		TestFalse(
 			TEXT("Non-finite targets are never accepted"),
@@ -108,39 +110,41 @@ namespace GuLiCommanderNavigationPolicyTests
 
 	bool FCommanderLooseArrivalRadiusTest::RunTest(const FString& Parameters)
 	{
+	// Scale020 fixture: spatial values use final centimeters.
+
 		TestEqual(
 			TEXT("A 25-Soldier accepted batch gets a 50m arrival domain"),
 			CalculateArrivalDomainRadiusCentimeters(25, RequiredAgentRadiusCentimeters),
-			5000.0f);
+			1000.0f);
 		TestEqual(
 			TEXT("Two cohorts share a 65m batch arrival domain"),
 			CalculateArrivalDomainRadiusCentimeters(50, RequiredAgentRadiusCentimeters),
-			6500.0f);
+			1300.0f);
 		TestEqual(
 			TEXT("Four cohorts share a 95m batch arrival domain"),
 			CalculateArrivalDomainRadiusCentimeters(100, RequiredAgentRadiusCentimeters),
-			9500.0f);
+			1900.0f);
 		TestEqual(
 			TEXT("An empty batch cannot create an arrival domain"),
 			CalculateArrivalDomainRadiusCentimeters(0, RequiredAgentRadiusCentimeters),
 			0.0f);
 		TestEqual(
 			TEXT("The 50m domain releases members at 45m and keeps a 5m recovery band"),
-			CalculateLooseArrivalHoldRadiusCentimeters(5000.0f),
-			4500.0f);
+			CalculateLooseArrivalHoldRadiusCentimeters(1000.0f),
+			900.0f);
 		TestEqual(
 			TEXT("A one-member domain retains the minimum 5m hold radius"),
-			CalculateLooseArrivalHoldRadiusCentimeters(500.0f),
-			500.0f);
+			CalculateLooseArrivalHoldRadiusCentimeters(100.0f),
+			100.0f);
 		TestEqual(
 			TEXT("A 36m/s Soldier lane retains one agent radius of discrete capture margin"),
 			CalculateLooseArrivalMaximumLaneOffsetCentimeters(
-				5000.0f, 500.0f, RequiredAgentRadiusCentimeters, 3600.0f, 1.0f / 30.0f),
-			3750.0f);
+				1000.0f, 100.0f, RequiredAgentRadiusCentimeters, 720.0f, 1.0f / 30.0f),
+			750.0f);
 		TestEqual(
 			TEXT("A one-member domain falls back to its center lane"),
 			CalculateLooseArrivalMaximumLaneOffsetCentimeters(
-				500.0f, 500.0f, RequiredAgentRadiusCentimeters, 3600.0f, 1.0f / 30.0f),
+				100.0f, 100.0f, RequiredAgentRadiusCentimeters, 720.0f, 1.0f / 30.0f),
 			0.0f);
 		return true;
 	}
@@ -152,6 +156,8 @@ namespace GuLiCommanderNavigationPolicyTests
 
 	bool FCommanderSurfaceMoveAcceptanceTest::RunTest(const FString& Parameters)
 	{
+	// Scale020 fixture: spatial values use final centimeters.
+
 		const FVector Previous(1000.0, 2000.0, 300.0);
 		TestFalse(
 			TEXT("A failed FindMoveAlongSurface result is rejected even when it is flat"),
@@ -161,17 +167,17 @@ namespace GuLiCommanderNavigationPolicyTests
 			IsSurfaceMoveResultAcceptable(
 				true, Previous, Previous + FVector(120.0, 0.0, 0.0)));
 		TestTrue(
-			TEXT("The positive 250cm vertical boundary is accepted"),
+			TEXT("The positive 50cm vertical boundary is accepted"),
 			IsSurfaceMoveResultAcceptable(
-				true, Previous, Previous + FVector(0.0, 0.0, 250.0)));
+				true, Previous, Previous + FVector(0.0, 0.0, 50.0)));
 		TestTrue(
-			TEXT("The negative 250cm vertical boundary is accepted"),
+			TEXT("The negative 50cm vertical boundary is accepted"),
 			IsSurfaceMoveResultAcceptable(
-				true, Previous, Previous + FVector(0.0, 0.0, -250.0)));
+				true, Previous, Previous + FVector(0.0, 0.0, -50.0)));
 		TestFalse(
-			TEXT("A successful query cannot cross more than 250cm vertically"),
+			TEXT("A successful query cannot cross more than 50cm vertically"),
 			IsSurfaceMoveResultAcceptable(
-				true, Previous, Previous + FVector(0.0, 0.0, 250.01)));
+				true, Previous, Previous + FVector(0.0, 0.0, 50.01)));
 		TestFalse(
 			TEXT("A non-finite surface candidate is rejected"),
 			IsSurfaceMoveResultAcceptable(
@@ -191,15 +197,17 @@ namespace GuLiCommanderNavigationPolicyTests
 
 	bool FCommanderMeaningfulProgressTest::RunTest(const FString& Parameters)
 	{
+	// Scale020 fixture: spatial values use final centimeters.
+
 		TestTrue(
 			TEXT("Advancing the monotonic path cursor is progress even if distance resets"),
 			HasMeaningfulNavigationProgress(2, 3, 100.0f, 1000.0f));
 		TestFalse(
-			TEXT("A 29.99cm waypoint improvement is below the progress threshold"),
-			HasMeaningfulNavigationProgress(2, 2, 1000.0f, 970.01f));
+			TEXT("A 5.99cm waypoint improvement is below the progress threshold"),
+			HasMeaningfulNavigationProgress(2, 2, 1000.0f, 994.01f));
 		TestTrue(
-			TEXT("Exactly 30cm of waypoint improvement is progress"),
-			HasMeaningfulNavigationProgress(2, 2, 1000.0f, 970.0f));
+			TEXT("Exactly 6cm of waypoint improvement is progress"),
+			HasMeaningfulNavigationProgress(2, 2, 1000.0f, 994.0f));
 		TestFalse(
 			TEXT("Moving farther from the same waypoint is not progress"),
 			HasMeaningfulNavigationProgress(2, 2, 1000.0f, 1100.0f));
@@ -252,47 +260,49 @@ namespace GuLiCommanderNavigationPolicyTests
 
 	bool FCommanderPerMemberLooseArrivalStateTest::RunTest(const FString& Parameters)
 	{
-		constexpr float ArrivalRadius = 5000.0f;
+	// Scale020 fixture: spatial values use final centimeters.
+
+		constexpr float ArrivalRadius = 1000.0f;
 		FLooseArrivalMemberState State;
 		State = UpdateLooseArrivalMemberState(
-			State, true, false, 4000.0f, ArrivalRadius);
+			State, true, false, 800.0f, ArrivalRadius);
 		TestTrue(TEXT("Tail clearance latches before the final corridor"), State.bTailCleared);
 		TestFalse(TEXT("Tail clearance alone cannot release a member"), State.bHasReachedArrival);
 
 		State = UpdateLooseArrivalMemberState(
-			State, false, true, 4600.0f, ArrivalRadius);
+			State, false, true, 920.0f, ArrivalRadius);
 		TestTrue(TEXT("Tail clearance is monotonic"), State.bTailCleared);
 		TestFalse(TEXT("A member outside the 45m hold radius retains its lane"),
 			State.bHasReachedArrival);
 
 		State = UpdateLooseArrivalMemberState(
-			State, false, true, 4500.0f, ArrivalRadius);
+			State, false, true, 900.0f, ArrivalRadius);
 		TestTrue(TEXT("Entering the inner radius latches arrival"), State.bHasReachedArrival);
 		TestFalse(TEXT("A newly arrived member holds position"), State.bRecovering);
 
 		State = UpdateLooseArrivalMemberState(
-			State, false, true, 5100.0f, ArrivalRadius);
+			State, false, true, 1020.0f, ArrivalRadius);
 		TestTrue(TEXT("Crossing the outer radius starts recovery without clearing arrival"),
 			State.bHasReachedArrival && State.bRecovering);
 		State = UpdateLooseArrivalMemberState(
-			State, false, true, 4800.0f, ArrivalRadius);
+			State, false, true, 960.0f, ArrivalRadius);
 		TestTrue(TEXT("Recovery persists through the 5m hysteresis band"), State.bRecovering);
 		State = UpdateLooseArrivalMemberState(
-			State, false, true, 4500.0f, ArrivalRadius);
+			State, false, true, 900.0f, ArrivalRadius);
 		TestFalse(TEXT("Recovery ends only after returning to the inner radius"),
 			State.bRecovering);
 
 		const float MaximumLaneOffset =
 			CalculateLooseArrivalMaximumLaneOffsetCentimeters(
 				ArrivalRadius,
-				500.0f,
+				100.0f,
 				RequiredAgentRadiusCentimeters,
-				3600.0f,
+				720.0f,
 				1.0f / 30.0f);
 		FLooseArrivalMemberState DiscreteCrossingState;
-		for (float LongitudinalOffset = -6000.0f;
-			LongitudinalOffset <= 6000.0f;
-			LongitudinalOffset += 120.0f)
+		for (float LongitudinalOffset = -1200.0f;
+			LongitudinalOffset <= 1200.0f;
+			LongitudinalOffset += 24.0f)
 		{
 			const float Distance = FMath::Sqrt(
 				FMath::Square(LongitudinalOffset)

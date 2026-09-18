@@ -15,7 +15,7 @@ AGuLiStrikeProjectile::AGuLiStrikeProjectile()
 	bReplicates = true;
 	SetReplicateMovement(true);
 	// 当前公里级战场和最远 1.6km 飞船相机超出默认相关距离；弹丸仍按距离相关，不永久常显。
-	SetNetCullDistanceSquared(FMath::Square(1000000.0f));
+	SetNetCullDistanceSquared(FMath::Square(200000.0f));
 
 	// this actor will be destroyed automatically once InitialLifeSpan expires
 	InitialLifeSpan = 2.0f;
@@ -23,7 +23,7 @@ AGuLiStrikeProjectile::AGuLiStrikeProjectile()
 	// create the collision sphere and set it as the root component
 	RootComponent = CollisionSphere = CreateDefaultSubobject<USphereComponent>(TEXT("Collision Sphere"));
 
-	CollisionSphere->SetSphereRadius(35.0f);
+	CollisionSphere->SetSphereRadius(7.0f);
 	CollisionSphere->SetNotifyRigidBodyCollision(true);
 	CollisionSphere->SetCollisionEnabled(ECollisionEnabled::QueryOnly);
 	CollisionSphere->SetCollisionObjectType(ECC_WorldDynamic);
@@ -32,14 +32,15 @@ AGuLiStrikeProjectile::AGuLiStrikeProjectile()
 	// create the mesh
 	Mesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("Mesh"));
 	Mesh->SetupAttachment(RootComponent);
+	Mesh->SetRelativeScale3D(FVector(0.2f));
 
 	Mesh->SetCollisionProfileName(FName("NoCollision"));
 
 	// create the projectile movement comp. No need to attach it because it's not a scene component
 	ProjectileMovement = CreateDefaultSubobject<UProjectileMovementComponent>(TEXT("Projectile Movement"));
 
-	ProjectileMovement->InitialSpeed = 2000.0f;
-	ProjectileMovement->MaxSpeed = 15000.0f;
+	ProjectileMovement->InitialSpeed = 400.0f;
+	ProjectileMovement->MaxSpeed = 3000.0f;
 	ProjectileMovement->bRotationFollowsVelocity = true;
 	ProjectileMovement->bRotationRemainsVertical = true;
 	ProjectileMovement->ProjectileGravityScale = 0.0f;

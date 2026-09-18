@@ -45,6 +45,7 @@ bool UGuLiResourceMapDefinition::ValidateDefinition(FString& OutError) const
 {
 	OutError.Reset();
 	if (MapPackage.IsNone() || LayoutVersion != GULI_RESOURCE_LAYOUT_VERSION
+		|| !FMath::IsNearlyEqual(BakedObjectScale, GULI_RESOURCE_OBJECT_SCALE)
 		|| DeterministicSeed != GULI_RESOURCE_BAKE_SEED || SourceHash.IsEmpty()
 		|| LayoutHash.IsEmpty() || !SpawnAnchors.IsWellFormed())
 	{
@@ -230,6 +231,7 @@ FString UGuLiResourceMapDefinition::CalculateLayoutHash() const
 	FSHA1 Hash;
 	HashString(Hash, MapPackage.ToString());
 	HashValue(Hash, LayoutVersion);
+	HashValue(Hash, BakedObjectScale);
 	HashValue(Hash, DeterministicSeed);
 	HashString(Hash, SourceHash);
 	HashValue(Hash, PlayableMinimum);

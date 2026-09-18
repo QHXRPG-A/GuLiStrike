@@ -1,0 +1,450 @@
+{
+  "schema": "gulistrike-art-reference-review/v1",
+  "work_id": "WORK-20260917-005",
+  "date": "2026-09-17",
+  "art_revision": "1.0",
+  "phase": "reference_A",
+  "review_bundle": "v3",
+  "previous_review_manifest": {
+    "path": "References/reference_A_manifest_v2.json",
+    "sha256": "5b5207764c3038f0502a6afaf51fbed1ac7793e25765c29bf3bc3b0526877b3d",
+    "bytes": 15646
+  },
+  "user_color_instruction": "干扰装置  改成深蓝、白、黄",
+  "earlier_color_instruction": "点子干扰器和混沌发生器和CIWS  色系做一下区分，这三个色系太一致了，CIWS 不改",
+  "color_interpretation": "Jammer navy/white/yellow palette is user-directed; concrete cover placement awaits A. Shield green proposal and approved CIWS cyan remain unchanged.",
+  "ciws_baseline": {
+    "path": "../Previews/v4/CIWS_hero.png",
+    "accent_srgb": "#348B9F",
+    "sha256": "0a784b590ef27ef0d0dbb696d7bfaef6ea27c596747b02bfa1f365dfefd67387",
+    "modification": "none"
+  },
+  "user_selection_instruction": "继续挑选一批组件进行制作",
+  "user_marking_instruction": "无人机发射舱需要有僚机飞出标识；出口方向如用户箭头",
+  "user_direction_image": {
+    "path": "References/Drone_LaunchBay_User_ExitDirection_20260917.png",
+    "sha256": "d589b37680f4437765b8c795dfe8184cc7a580f9cfcd2d04311d71df85e3b575",
+    "bytes": 2715278,
+    "resolution": [
+      1954,
+      1607
+    ]
+  },
+  "launch_marker_rule": "Flat aircraft pictogram and arrow painted on existing armor, parallel to rail, towards the far upper-right end of the original hero view. Same physical direction in all views; no new geometry or gameplay socket.",
+  "A": {
+    "status": "pending",
+    "user_decision": null
+  },
+  "B": {
+    "status": "not_started",
+    "user_decision": null
+  },
+  "production_textures_and_outlines": "not_started",
+  "geometry_policy": "Frozen original static meshes are authoritative; reference images constrain surface treatment only.",
+  "image_generation_mode": "built-in image_gen",
+  "source_capture": {
+    "path": "Source/source_snapshot_v1.json",
+    "sha256": "c470340e1650a727808ed2b502b0b042f402ce3026661773afd553f5fc87786f",
+    "bytes": 7793
+  },
+  "source_capture_method": {
+    "path": "Source/capture_method_v1.json",
+    "sha256": "5f2bf1054d0b9a455a56b75ad7789fe055c89869ba72885709a6b032b251721b",
+    "bytes": 1523
+  },
+  "original_view_manifest": {
+    "path": "Source/prototype_render_manifest_v1.json",
+    "sha256": "c345f87ef9762b03254c47b5692fedb4e4f960fc151c586bdfbdc5e8133cddd6",
+    "bytes": 6212
+  },
+  "source_packages_unchanged": true,
+  "UE_formal_import_and_runtime_validation": "not_run",
+  "prompt_sets": [
+    {
+      "path": "References/prompts_v1.json",
+      "sha256": "c5998d2a379fb96ee134ef7855af9f5366a68badeaa121a027ef3d86006697aa",
+      "bytes": 13711
+    },
+    {
+      "path": "References/prompts_v1_launch_marker.json",
+      "sha256": "f727f0f791bea531d79f622e634f814c21c5e2c9fa397376d63721cca39fafad",
+      "bytes": 14989
+    },
+    {
+      "path": "References/prompts_round2.json",
+      "sha256": "d7a2a5b0ff5dad3c2517a13368f39cb326ac0a58edee0f2cf5cc877b2be3b795",
+      "bytes": 5818
+    },
+    {
+      "path": "References/prompts_round3.json",
+      "sha256": "fdcc7f7faa70f921d8c3f34b926d81528e47ee39558e1bfca34f4965b1967ee0",
+      "bytes": 5956
+    },
+    {
+      "path": "References/prompts_drone_v2.json",
+      "sha256": "0c856c4333a5fd478f67616e07a44cd179d6c79531871beb55fc69e8e5629577",
+      "bytes": 1729
+    },
+    {
+      "path": "References/prompts_color_separation_v1.json",
+      "sha256": "e923275b89b14de3eca627ede2ec62ebc03f36546bd6ee3ce7300cae428c88e2",
+      "bytes": 3899
+    },
+    {
+      "path": "References/prompts_jammer_navy_white_yellow_v1.json",
+      "sha256": "bb34c97f8d65930e084e87fdab271cbf7b930ee4a4b9add54a68e6b433f20749",
+      "bytes": 2703
+    }
+  ],
+  "color_revision_outputs": {
+    "path": "References/generated_outputs_jammer_navy_white_yellow_v1.json",
+    "sha256": "c4619de1ad93f18411e9749c1f19962772fc23f017514eb724ec6c4517dcf182",
+    "bytes": 1348
+  },
+  "prior_color_revision_outputs": {
+    "path": "References/generated_outputs_color_separation_v1.json",
+    "sha256": "0029ace697f7ab967f92b6e623958c2f512dfcd79b9c251f2c95b8d89ff38cc8",
+    "bytes": 2254
+  },
+  "parts": {
+    "Drone_LaunchBay": {
+      "label": "无人机发射舱",
+      "reference_version": "v2",
+      "A": "pending",
+      "B": "not_started",
+      "reference_sheet": {
+        "path": "References/Drone_LaunchBay_Reference_v2.png",
+        "sha256": "f1dddd61354bfa22aa46d870ac5c8628614c621912503c4585da48e6355a3b91",
+        "bytes": 1373482,
+        "resolution": [
+          1448,
+          1086
+        ]
+      },
+      "intent": "保留长条导轨与非对称舱体，增加僚机剪影及沿导轨指向指定出口的箭头。",
+      "accent": "赭黄",
+      "proposed_accent_srgb": "#C9903E",
+      "original_static_fbx": {
+        "path": "Source/FBX_static_v1/SM_SC_Drone_LaunchBay.fbx",
+        "sha256": "4d7204f4b52e028d4bc0038d4f0fff8bb35949acf949543a0ed7845b88f12dc0",
+        "bytes": 61744
+      },
+      "original_inspection_blend": {
+        "path": "Source/Drone_LaunchBay_Original_Inspection.blend",
+        "sha256": "c00ddfe5e8665b1f5558fa80b17aa4b5f4411f563bd68d3e4072ae6b0fe66aa8",
+        "bytes": 136748
+      },
+      "original_geometry_snapshot": {
+        "path": "Source/Drone_LaunchBay_original_geometry.json",
+        "sha256": "82e6244839165f6ad7651f87e62f6bf35e3a6918cee5c258bfec36ee7355f7b9",
+        "bytes": 187553
+      },
+      "original_views": {
+        "hero": {
+          "path": "Source/Previews/Drone_LaunchBay_original_hero_v1.png",
+          "sha256": "bcfb23d7551487a1322c0b1c49a0b56ff6f710a5a4c934caece4b223a9f9fe31",
+          "bytes": 1735756,
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        "front": {
+          "path": "Source/Previews/Drone_LaunchBay_original_front_v1.png",
+          "sha256": "23e4aded89aac1a92aad0263b4d55848ba7bdfe6e4000cd904b79e8d35901723",
+          "bytes": 1577239,
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        "right": {
+          "path": "Source/Previews/Drone_LaunchBay_original_right_v1.png",
+          "sha256": "3e21d00626d83000a65d4fb9170a2b713e7523725a4b0a12fb98256dcd12b5f3",
+          "bytes": 1535930,
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        "rear": {
+          "path": "Source/Previews/Drone_LaunchBay_original_rear_v1.png",
+          "sha256": "e006ef9939b6f94b4c0e8b09b80b21e8e8a6f50abe1ef69a8df6654c19a601c6",
+          "bytes": 1568845,
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        "top": {
+          "path": "Source/Previews/Drone_LaunchBay_original_top_v1.png",
+          "sha256": "6f198e492cd698265b16ff6b48567d7de607be101887bb249fc4aedb8f35c951",
+          "bytes": 1560186,
+          "resolution": [
+            1440,
+            1080
+          ]
+        }
+      },
+      "original_mesh_dimensions_m": [
+        15.553041458129883,
+        50.23419189453125,
+        15.185491561889648
+      ],
+      "original_vertices": 852,
+      "original_triangles": 1254,
+      "bones": [],
+      "mechanical_type": "static",
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Drone_LaunchBay",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay.SM_SC_Drone_LaunchBay",
+      "mesh_sockets": [],
+      "blueprint_compatible_sockets": [
+        "wingman_bay_1",
+        "wingman_bay_2"
+      ],
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "assistant_visual_review": "Reference views, original silhouette, navy-white-yellow jammer and green shield color consistency, and unchanged launch-direction marking inspected; not user approval."
+    },
+    "Electronic_JammingDevice": {
+      "label": "电子干扰装置",
+      "reference_version": "v3",
+      "A": "pending",
+      "B": "not_started",
+      "reference_sheet": {
+        "path": "References/Electronic_JammingDevice_Reference_v3.png",
+        "sha256": "cd30300df95183bce9db719706776fbb4012c1092334c49b329fbde293bc67e9",
+        "bytes": 1512708,
+        "resolution": [
+          1536,
+          1024
+        ]
+      },
+      "intent": "按指定三色重配：深蓝阵面、白色外框和支座，黄色用于前部盖板及两侧连接护罩。",
+      "accent": "深蓝 / 白 / 黄",
+      "proposed_accent_srgb": "#E0BC49",
+      "original_static_fbx": {
+        "path": "Source/FBX_static_v1/SM_SC_Electronic_JammingDevice.fbx",
+        "sha256": "1efd95e79ab5c21d2bbfe3b215068b7cad37841feb37f43dd6ba6dbd104018ea",
+        "bytes": 43424
+      },
+      "original_inspection_blend": {
+        "path": "Source/Electronic_JammingDevice_Original_Inspection.blend",
+        "sha256": "dac9a49b5602fb55fcf1edda5410a660df907ffd65560ce078e0fa7b51f1b389",
+        "bytes": 113638
+      },
+      "original_geometry_snapshot": {
+        "path": "Source/Electronic_JammingDevice_original_geometry.json",
+        "sha256": "cb2a36577055e514ff1b2e7f8a02e9687d57ea203847ef825c45e4b3f28e76ce",
+        "bytes": 78571
+      },
+      "original_views": {
+        "hero": {
+          "path": "Source/Previews/Electronic_JammingDevice_original_hero_v1.png",
+          "sha256": "3f7831be1754bdab539d30aede32da5a94440fe079dbee579e15fab9634eb89e",
+          "bytes": 1711113,
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        "front": {
+          "path": "Source/Previews/Electronic_JammingDevice_original_front_v1.png",
+          "sha256": "1f881b93bced077da12a43c7337276df374b7918c185b49ec0bc0cc7e44e15cd",
+          "bytes": 1592714,
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        "right": {
+          "path": "Source/Previews/Electronic_JammingDevice_original_right_v1.png",
+          "sha256": "7c0ff518ab84a5f9782cf7cad227dff6f89485383d4216ca00af5e48c7abf00d",
+          "bytes": 1604663,
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        "rear": {
+          "path": "Source/Previews/Electronic_JammingDevice_original_rear_v1.png",
+          "sha256": "b19751584dfa9edbd0f153edc642bb11daad029078575e5dd8a10f1774559986",
+          "bytes": 1596438,
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        "top": {
+          "path": "Source/Previews/Electronic_JammingDevice_original_top_v1.png",
+          "sha256": "4396d93e2234d0e1655077ce7898c6b609634f339a420d45c3ff45bd994c0322",
+          "bytes": 1633945,
+          "resolution": [
+            1440,
+            1080
+          ]
+        }
+      },
+      "original_mesh_dimensions_m": [
+        12.905091285705566,
+        7.408935546875,
+        5.385937690734863
+      ],
+      "original_vertices": 343,
+      "original_triangles": 550,
+      "bones": [],
+      "mechanical_type": "static",
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Electronic_JammingDevice",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice.SM_SC_Electronic_JammingDevice",
+      "mesh_sockets": [],
+      "blueprint_compatible_sockets": [],
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "assistant_visual_review": "Reference views, original silhouette, navy-white-yellow jammer and green shield color consistency, and unchanged launch-direction marking inspected; not user approval."
+    },
+    "Shield_Generator": {
+      "label": "护盾发生器",
+      "reference_version": "v3",
+      "A": "pending",
+      "B": "not_started",
+      "reference_sheet": {
+        "path": "References/Shield_Generator_Reference_v3.png",
+        "sha256": "a20b6a31eb7915dda05ad9d0300a0bd6fd1b4325ae7c834ec08dce7f429a8312",
+        "bytes": 1252852,
+        "resolution": [
+          1448,
+          1086
+        ]
+      },
+      "intent": "中央头罩与两个前部小模块改为绿色；双立柱、中央壳体斜面及基座上层保持浅色。",
+      "accent": "叶绿",
+      "proposed_accent_srgb": "#65955D",
+      "original_static_fbx": {
+        "path": "Source/FBX_static_v1/SM_SC_Shield_Generator.fbx",
+        "sha256": "6ea8cfcf3f05567b5af71daec6aebdf60a4f8e5a30bb45ed6defbfcc9ae6007f",
+        "bytes": 34704
+      },
+      "original_inspection_blend": {
+        "path": "Source/Shield_Generator_Original_Inspection.blend",
+        "sha256": "2d3bb738c54f41bef3191b8f4086fe36acbfeac0d14ddab4cbe9e2ed1e6bb7c1",
+        "bytes": 105388
+      },
+      "original_geometry_snapshot": {
+        "path": "Source/Shield_Generator_original_geometry.json",
+        "sha256": "b52499bd05912277098944c5407fd582bfdc8da88268e5b221ccde545b7a445b",
+        "bytes": 47834
+      },
+      "original_views": {
+        "hero": {
+          "path": "Source/Previews/Shield_Generator_original_hero_v1.png",
+          "sha256": "d1f9e02ef0f7a3b06a7d1db5be70f7ac8d03a2901e78f77b0754d228c84dbf75",
+          "bytes": 1626495,
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        "front": {
+          "path": "Source/Previews/Shield_Generator_original_front_v1.png",
+          "sha256": "c9eefcae2b7b0601bd3dc1850fa3f1914e9ddf9569a1cf75f43f4ad62124f7a6",
+          "bytes": 1580112,
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        "right": {
+          "path": "Source/Previews/Shield_Generator_original_right_v1.png",
+          "sha256": "903603cc9ad23f0a7eb0dd15326fefd15221a50bc07fd1cf19865510ad5e549c",
+          "bytes": 1562234,
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        "rear": {
+          "path": "Source/Previews/Shield_Generator_original_rear_v1.png",
+          "sha256": "8486228fbe3f92d93d12e666df62d6f7c198e61502361b3910047ad37b33ed8d",
+          "bytes": 1564093,
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        "top": {
+          "path": "Source/Previews/Shield_Generator_original_top_v1.png",
+          "sha256": "b22ccb7aaba70b3fa0cb1d8f2da8a487e2f676a59b1fc18536aeb54e56cf5b9c",
+          "bytes": 1613417,
+          "resolution": [
+            1440,
+            1080
+          ]
+        }
+      },
+      "original_mesh_dimensions_m": [
+        7.468165397644043,
+        5.868025779724121,
+        9.978872299194336
+      ],
+      "original_vertices": 210,
+      "original_triangles": 312,
+      "bones": [],
+      "mechanical_type": "static",
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Shield_Generator",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Shield_Generator.SM_SC_Shield_Generator",
+      "mesh_sockets": [],
+      "blueprint_compatible_sockets": [],
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "assistant_visual_review": "Reference views, original silhouette, navy-white-yellow jammer and green shield color consistency, and unchanged launch-direction marking inspected; not user approval."
+    }
+  }
+}

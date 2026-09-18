@@ -1,0 +1,706 @@
+{
+  "material": {
+    "blend_mode": "BLEND_Opaque",
+    "shading_model": "MSM_DefaultLit",
+    "two_sided": false
+  },
+  "expressions": [
+    {
+      "id": "MaterialExpressionMaterialFunctionCall_000002AE1174DAC0",
+      "class": "MaterialFunctionCall",
+      "class_full": "MaterialExpressionMaterialFunctionCall",
+      "pos_x": -144,
+      "pos_y": 0,
+      "properties": {
+        "MaterialFunction": "/Script/Engine.MaterialFunction'/Engine/Functions/Engine_MaterialFunctions01/SpeedTree/SpeedTreeColorVariation.SpeedTreeColorVariation'"
+      },
+      "function_path": "/Engine/Functions/Engine_MaterialFunctions01/SpeedTree/SpeedTreeColorVariation.SpeedTreeColorVariation",
+      "inputs": [
+        "BaseColor (V3)",
+        "Amount (S)"
+      ],
+      "outputs": [
+        "Result"
+      ]
+    },
+    {
+      "id": "MaterialExpressionScalarParameter_000002AE11748D40",
+      "class": "ScalarParameter",
+      "class_full": "MaterialExpressionScalarParameter",
+      "pos_x": 128,
+      "pos_y": 0,
+      "properties": {
+        "DefaultValue": "0.000000",
+        "ControlType": "Numeric",
+        "SliderMin": "0.000000",
+        "SliderMax": "0.000000",
+        "Enumeration": "None",
+        "EnumerationIndex": "0",
+        "bUseCustomPrimitiveData": "False",
+        "PrimitiveDataIndex": "0",
+        "SortPriority": "32"
+      },
+      "is_parameter": true,
+      "parameter_name": "Specular",
+      "group": "None",
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionScalarParameter_000002AE11742800",
+      "class": "ScalarParameter",
+      "class_full": "MaterialExpressionScalarParameter",
+      "pos_x": 128,
+      "pos_y": 80,
+      "properties": {
+        "DefaultValue": "1.000000",
+        "ControlType": "Numeric",
+        "SliderMin": "0.000000",
+        "SliderMax": "0.000000",
+        "Enumeration": "None",
+        "EnumerationIndex": "0",
+        "bUseCustomPrimitiveData": "False",
+        "PrimitiveDataIndex": "0",
+        "SortPriority": "32"
+      },
+      "is_parameter": true,
+      "parameter_name": "Roughness",
+      "group": "None",
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionMaterialFunctionCall_000002AE11749240",
+      "class": "MaterialFunctionCall",
+      "class_full": "MaterialExpressionMaterialFunctionCall",
+      "pos_x": -96,
+      "pos_y": 208,
+      "properties": {
+        "MaterialFunction": "/Script/Engine.MaterialFunction'/Engine/Functions/Engine_MaterialFunctions01/Texturing/FlattenNormal.FlattenNormal'"
+      },
+      "function_path": "/Engine/Functions/Engine_MaterialFunctions01/Texturing/FlattenNormal.FlattenNormal",
+      "inputs": [
+        "Normal (V3)",
+        "Flatness (S)"
+      ],
+      "outputs": [
+        "Result"
+      ]
+    },
+    {
+      "id": "MaterialExpressionMultiply_000002AE1174E4C0",
+      "class": "Multiply",
+      "class_full": "MaterialExpressionMultiply",
+      "pos_x": -288,
+      "pos_y": 736,
+      "properties": {
+        "ConstA": "0.000000",
+        "ConstB": "1.000000"
+      },
+      "inputs": [
+        "A",
+        "B"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionTextureSampleParameter2D_000002AC95FDB180",
+      "class": "TextureSampleParameter2D",
+      "class_full": "MaterialExpressionTextureSampleParameter2D",
+      "pos_x": -400,
+      "pos_y": 193,
+      "properties": {
+        "SortPriority": "32",
+        "MipValueMode": "TMVM_None",
+        "SamplerSource": "SSM_FromTextureAsset",
+        "GatherMode": "TGM_None",
+        "AutomaticViewMipBias": "True",
+        "ChannelNames": "()",
+        "ConstCoordinate": "0",
+        "ConstMipValue": "-1",
+        "Texture": "/Script/Engine.Texture2D'/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineTreeBark_Normal.T_PineTreeBark_Normal'",
+        "SamplerType": "SAMPLERTYPE_Normal",
+        "IsDefaultMeshpaintTexture": "False"
+      },
+      "is_parameter": true,
+      "parameter_name": "BarkNormal",
+      "group": "None",
+      "inputs": [
+        "Coordinates",
+        "Apply View MipBias"
+      ],
+      "outputs": [
+        "RGB",
+        "R",
+        "G",
+        "B",
+        "A",
+        "RGBA"
+      ]
+    },
+    {
+      "id": "MaterialExpressionTextureSampleParameter2D_000002AC95FD7D00",
+      "class": "TextureSampleParameter2D",
+      "class_full": "MaterialExpressionTextureSampleParameter2D",
+      "pos_x": -1312,
+      "pos_y": 10,
+      "properties": {
+        "SortPriority": "32",
+        "MipValueMode": "TMVM_None",
+        "SamplerSource": "SSM_FromTextureAsset",
+        "GatherMode": "TGM_None",
+        "AutomaticViewMipBias": "True",
+        "ChannelNames": "()",
+        "ConstCoordinate": "0",
+        "ConstMipValue": "-1",
+        "Texture": "/Script/Engine.Texture2D'/Game/StylizedPineEnvironment/Assets/Textures/Bark/T_PineTreeBark.T_PineTreeBark'",
+        "SamplerType": "SAMPLERTYPE_Color",
+        "IsDefaultMeshpaintTexture": "False"
+      },
+      "is_parameter": true,
+      "parameter_name": "BarkTexture",
+      "group": "None",
+      "inputs": [
+        "Coordinates",
+        "Apply View MipBias"
+      ],
+      "outputs": [
+        "RGB",
+        "R",
+        "G",
+        "B",
+        "A",
+        "RGBA"
+      ]
+    },
+    {
+      "id": "MaterialExpressionMaterialFunctionCall_000002AE117435C0",
+      "class": "MaterialFunctionCall",
+      "class_full": "MaterialExpressionMaterialFunctionCall",
+      "pos_x": -880,
+      "pos_y": 640,
+      "properties": {
+        "MaterialFunction": "/Script/Engine.MaterialFunction'/Engine/Functions/Engine_MaterialFunctions02/WorldPositionOffset/ObjectPivotPoint.ObjectPivotPoint'"
+      },
+      "function_path": "/Engine/Functions/Engine_MaterialFunctions02/WorldPositionOffset/ObjectPivotPoint.ObjectPivotPoint",
+      "inputs": [],
+      "outputs": [
+        "Object Pivot Location",
+        "Mesh Particle Pivot Location"
+      ]
+    },
+    {
+      "id": "MaterialExpressionDistance_000002AC1D6F03C0",
+      "class": "Distance",
+      "class_full": "MaterialExpressionDistance",
+      "pos_x": -624,
+      "pos_y": 608,
+      "properties": {},
+      "inputs": [
+        "A",
+        "B"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionWorldPosition_000002AC377F2680",
+      "class": "WorldPosition",
+      "class_full": "MaterialExpressionWorldPosition",
+      "pos_x": -880,
+      "pos_y": 560,
+      "properties": {
+        "WorldPositionShaderOffset": "WPT_Default"
+      },
+      "inputs": [],
+      "outputs": [
+        "XYZ",
+        "XY",
+        "Z"
+      ]
+    },
+    {
+      "id": "MaterialExpressionConstantBiasScale_000002AE076F7400",
+      "class": "ConstantBiasScale",
+      "class_full": "MaterialExpressionConstantBiasScale",
+      "pos_x": -480,
+      "pos_y": 816,
+      "properties": {
+        "Bias": "1.000000",
+        "Scale": "0.500000"
+      },
+      "inputs": [
+        "Input"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionSine_000002AE076F1C00",
+      "class": "Sine",
+      "class_full": "MaterialExpressionSine",
+      "pos_x": -576,
+      "pos_y": 816,
+      "properties": {
+        "Period": "10.000000"
+      },
+      "inputs": [
+        "Input"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionTime_000002AC377F1500",
+      "class": "Time",
+      "class_full": "MaterialExpressionTime",
+      "pos_x": -816,
+      "pos_y": 768,
+      "properties": {
+        "bIgnorePause": "False",
+        "bOverride_Period": "False",
+        "Period": "0.000000"
+      },
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionObjectPositionWS_000002AC377FAAA0",
+      "class": "ObjectPositionWS",
+      "class_full": "MaterialExpressionObjectPositionWS",
+      "pos_x": -848,
+      "pos_y": 848,
+      "properties": {
+        "OriginType": "Absolute"
+      },
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionAdd_000002AF747BDAC0",
+      "class": "Add",
+      "class_full": "MaterialExpressionAdd",
+      "pos_x": -672,
+      "pos_y": 816,
+      "properties": {
+        "ConstA": "0.000000",
+        "ConstB": "1.000000"
+      },
+      "inputs": [
+        "A",
+        "B"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionMultiply_000002AE11741A40",
+      "class": "Multiply",
+      "class_full": "MaterialExpressionMultiply",
+      "pos_x": -448,
+      "pos_y": 656,
+      "properties": {
+        "ConstA": "0.000000",
+        "ConstB": "1.000000"
+      },
+      "inputs": [
+        "A",
+        "B"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionScalarParameter_000002AE1174AA00",
+      "class": "ScalarParameter",
+      "class_full": "MaterialExpressionScalarParameter",
+      "pos_x": -640,
+      "pos_y": 704,
+      "properties": {
+        "DefaultValue": "0.030000",
+        "ControlType": "Numeric",
+        "SliderMin": "0.100000",
+        "SliderMax": "0.000000",
+        "Enumeration": "None",
+        "EnumerationIndex": "0",
+        "bUseCustomPrimitiveData": "False",
+        "PrimitiveDataIndex": "0",
+        "SortPriority": "32"
+      },
+      "is_parameter": true,
+      "parameter_name": "Wind Sway",
+      "group": "None",
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionScalarParameter_000002AE11747D00",
+      "class": "ScalarParameter",
+      "class_full": "MaterialExpressionScalarParameter",
+      "pos_x": -368,
+      "pos_y": 16,
+      "properties": {
+        "DefaultValue": "0.000000",
+        "ControlType": "Numeric",
+        "SliderMin": "0.000000",
+        "SliderMax": "0.200000",
+        "Enumeration": "None",
+        "EnumerationIndex": "0",
+        "bUseCustomPrimitiveData": "False",
+        "PrimitiveDataIndex": "0",
+        "SortPriority": "32"
+      },
+      "is_parameter": true,
+      "parameter_name": "Color Variation amount",
+      "group": "None",
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionScalarParameter_000002AE1174C800",
+      "class": "ScalarParameter",
+      "class_full": "MaterialExpressionScalarParameter",
+      "pos_x": -112,
+      "pos_y": 304,
+      "properties": {
+        "DefaultValue": "0.000000",
+        "ControlType": "Numeric",
+        "SliderMin": "0.000000",
+        "SliderMax": "0.000000",
+        "Enumeration": "None",
+        "EnumerationIndex": "0",
+        "bUseCustomPrimitiveData": "False",
+        "PrimitiveDataIndex": "0",
+        "SortPriority": "2"
+      },
+      "is_parameter": true,
+      "parameter_name": "Normal",
+      "group": "None",
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionMaterialFunctionCall_000002AE1174CD00",
+      "class": "MaterialFunctionCall",
+      "class_full": "MaterialExpressionMaterialFunctionCall",
+      "pos_x": -1040,
+      "pos_y": 0,
+      "properties": {
+        "MaterialFunction": "/Script/Engine.MaterialFunction'/Engine/Functions/Engine_MaterialFunctions02/HueShift.HueShift'"
+      },
+      "function_path": "/Engine/Functions/Engine_MaterialFunctions02/HueShift.HueShift",
+      "inputs": [
+        "Hue Shift Percentage (S)",
+        "Texture (V3)"
+      ],
+      "outputs": [
+        "Result"
+      ]
+    },
+    {
+      "id": "MaterialExpressionDesaturation_000002AF5BFA7680",
+      "class": "Desaturation",
+      "class_full": "MaterialExpressionDesaturation",
+      "pos_x": -768,
+      "pos_y": 0,
+      "properties": {
+        "LuminanceFactors": "(R=0.212639,G=0.715169,B=0.072192,A=1.000000)"
+      },
+      "inputs": [
+        "Input",
+        "Fraction"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionMultiply_000002AE11741900",
+      "class": "Multiply",
+      "class_full": "MaterialExpressionMultiply",
+      "pos_x": -592,
+      "pos_y": 0,
+      "properties": {
+        "ConstA": "0.000000",
+        "ConstB": "1.000000"
+      },
+      "inputs": [
+        "A",
+        "B"
+      ],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionScalarParameter_000002AE11747E40",
+      "class": "ScalarParameter",
+      "class_full": "MaterialExpressionScalarParameter",
+      "pos_x": -1040,
+      "pos_y": -80,
+      "properties": {
+        "DefaultValue": "0.000000",
+        "ControlType": "Numeric",
+        "SliderMin": "0.000000",
+        "SliderMax": "0.000000",
+        "Enumeration": "None",
+        "EnumerationIndex": "0",
+        "bUseCustomPrimitiveData": "False",
+        "PrimitiveDataIndex": "0",
+        "SortPriority": "3"
+      },
+      "is_parameter": true,
+      "parameter_name": "HueShift",
+      "group": "None",
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionScalarParameter_000002AE117480C0",
+      "class": "ScalarParameter",
+      "class_full": "MaterialExpressionScalarParameter",
+      "pos_x": -832,
+      "pos_y": 96,
+      "properties": {
+        "DefaultValue": "0.000000",
+        "ControlType": "Numeric",
+        "SliderMin": "0.000000",
+        "SliderMax": "0.000000",
+        "Enumeration": "None",
+        "EnumerationIndex": "0",
+        "bUseCustomPrimitiveData": "False",
+        "PrimitiveDataIndex": "0",
+        "SortPriority": "4"
+      },
+      "is_parameter": true,
+      "parameter_name": "Saturation",
+      "group": "None",
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    },
+    {
+      "id": "MaterialExpressionScalarParameter_000002A98DBA9EC0",
+      "class": "ScalarParameter",
+      "class_full": "MaterialExpressionScalarParameter",
+      "pos_x": -640,
+      "pos_y": 96,
+      "properties": {
+        "DefaultValue": "1.000000",
+        "ControlType": "Numeric",
+        "SliderMin": "0.000000",
+        "SliderMax": "0.000000",
+        "Enumeration": "None",
+        "EnumerationIndex": "0",
+        "bUseCustomPrimitiveData": "False",
+        "PrimitiveDataIndex": "0",
+        "SortPriority": "5"
+      },
+      "is_parameter": true,
+      "parameter_name": "Brightness",
+      "group": "None",
+      "inputs": [],
+      "outputs": [
+        "Output_0"
+      ]
+    }
+  ],
+  "connections": [
+    {
+      "source_id": "MaterialExpressionMultiply_000002AE11741900",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionMaterialFunctionCall_000002AE1174DAC0",
+      "target_input": "BaseColor (V3)"
+    },
+    {
+      "source_id": "MaterialExpressionScalarParameter_000002AE11747D00",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionMaterialFunctionCall_000002AE1174DAC0",
+      "target_input": "Amount (S)"
+    },
+    {
+      "source_id": "MaterialExpressionTextureSampleParameter2D_000002AC95FDB180",
+      "source_output_index": 0,
+      "source_output_name": "RGB",
+      "target_id": "MaterialExpressionMaterialFunctionCall_000002AE11749240",
+      "target_input": "Normal (V3)"
+    },
+    {
+      "source_id": "MaterialExpressionScalarParameter_000002AE1174C800",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionMaterialFunctionCall_000002AE11749240",
+      "target_input": "Flatness (S)"
+    },
+    {
+      "source_id": "MaterialExpressionMultiply_000002AE11741A40",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionMultiply_000002AE1174E4C0",
+      "target_input": "A"
+    },
+    {
+      "source_id": "MaterialExpressionConstantBiasScale_000002AE076F7400",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionMultiply_000002AE1174E4C0",
+      "target_input": "B"
+    },
+    {
+      "source_id": "MaterialExpressionWorldPosition_000002AC377F2680",
+      "source_output_index": 0,
+      "source_output_name": "XYZ",
+      "target_id": "MaterialExpressionDistance_000002AC1D6F03C0",
+      "target_input": "A"
+    },
+    {
+      "source_id": "MaterialExpressionMaterialFunctionCall_000002AE117435C0",
+      "source_output_index": 0,
+      "source_output_name": "Object Pivot Location",
+      "target_id": "MaterialExpressionDistance_000002AC1D6F03C0",
+      "target_input": "B"
+    },
+    {
+      "source_id": "MaterialExpressionSine_000002AE076F1C00",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionConstantBiasScale_000002AE076F7400",
+      "target_input": "Input"
+    },
+    {
+      "source_id": "MaterialExpressionAdd_000002AF747BDAC0",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionSine_000002AE076F1C00",
+      "target_input": "Input"
+    },
+    {
+      "source_id": "MaterialExpressionTime_000002AC377F1500",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionAdd_000002AF747BDAC0",
+      "target_input": "A"
+    },
+    {
+      "source_id": "MaterialExpressionObjectPositionWS_000002AC377FAAA0",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionAdd_000002AF747BDAC0",
+      "target_input": "B"
+    },
+    {
+      "source_id": "MaterialExpressionDistance_000002AC1D6F03C0",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionMultiply_000002AE11741A40",
+      "target_input": "A"
+    },
+    {
+      "source_id": "MaterialExpressionScalarParameter_000002AE1174AA00",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionMultiply_000002AE11741A40",
+      "target_input": "B"
+    },
+    {
+      "source_id": "MaterialExpressionScalarParameter_000002AE11747E40",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionMaterialFunctionCall_000002AE1174CD00",
+      "target_input": "Hue Shift Percentage (S)"
+    },
+    {
+      "source_id": "MaterialExpressionTextureSampleParameter2D_000002AC95FD7D00",
+      "source_output_index": 0,
+      "source_output_name": "RGB",
+      "target_id": "MaterialExpressionMaterialFunctionCall_000002AE1174CD00",
+      "target_input": "Texture (V3)"
+    },
+    {
+      "source_id": "MaterialExpressionMaterialFunctionCall_000002AE1174CD00",
+      "source_output_index": 0,
+      "source_output_name": "Result",
+      "target_id": "MaterialExpressionDesaturation_000002AF5BFA7680",
+      "target_input": "Input"
+    },
+    {
+      "source_id": "MaterialExpressionScalarParameter_000002AE117480C0",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionDesaturation_000002AF5BFA7680",
+      "target_input": "Fraction"
+    },
+    {
+      "source_id": "MaterialExpressionDesaturation_000002AF5BFA7680",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionMultiply_000002AE11741900",
+      "target_input": "A"
+    },
+    {
+      "source_id": "MaterialExpressionScalarParameter_000002A98DBA9EC0",
+      "source_output_index": 0,
+      "source_output_name": "",
+      "target_id": "MaterialExpressionMultiply_000002AE11741900",
+      "target_input": "B"
+    }
+  ],
+  "output_connections": [
+    {
+      "property": "BaseColor",
+      "expression_id": "MaterialExpressionMaterialFunctionCall_000002AE1174DAC0",
+      "output_index": 0,
+      "output_name": "Result"
+    },
+    {
+      "property": "Specular",
+      "expression_id": "MaterialExpressionScalarParameter_000002AE11748D40",
+      "output_index": 0,
+      "output_name": ""
+    },
+    {
+      "property": "Roughness",
+      "expression_id": "MaterialExpressionScalarParameter_000002AE11742800",
+      "output_index": 0,
+      "output_name": ""
+    },
+    {
+      "property": "Normal",
+      "expression_id": "MaterialExpressionMaterialFunctionCall_000002AE11749240",
+      "output_index": 0,
+      "output_name": "Result"
+    },
+    {
+      "property": "WorldPositionOffset",
+      "expression_id": "MaterialExpressionMultiply_000002AE1174E4C0",
+      "output_index": 0,
+      "output_name": ""
+    }
+  ]
+}

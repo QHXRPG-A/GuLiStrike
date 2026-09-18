@@ -1,0 +1,569 @@
+{
+  "schema": "gulistrike-art-material-review/v1",
+  "date": "2026-09-17",
+  "work_id": "WORK-20260917-005",
+  "candidate_version": "v3",
+  "art_revision": "1.0",
+  "A": "approved",
+  "B": "pending",
+  "scope": "Original static mesh surface treatment; actual EEVEE renders; final FBX after B",
+  "approval_A": {
+    "path": "approval_A_20260917.json",
+    "bytes": 3955,
+    "sha256": "c28708d46b7b461f549a866771e087136b006727aab0841ea84d639f2772175f"
+  },
+  "overview_blend": {
+    "path": "Production/v3/ShipComponentStyle_Batch03_Overview.blend",
+    "bytes": 1221438,
+    "sha256": "283dfe9d576c99eed11cef54194cab7cab699bdfcb51e0e425eca4de6ecb4633"
+  },
+  "saved_blender_readback": {
+    "path": "Production/v3/saved_blender_readback.json",
+    "bytes": 1556,
+    "sha256": "f9543c09b8f7bba2ccd30f9dabe1692aa3fb4ebffe15e7f64fc2026eb6009fb7"
+  },
+  "launch_markings": {
+    "path": "Production/v3/Drone_LaunchBay_launch_markings.json",
+    "bytes": 2022,
+    "sha256": "553066dc0289c1296376cfd676c68473227c2106c67d5448143c0f62c8a137c8"
+  },
+  "editable_launch_vector": {
+    "path": "Production/v3/Drone_LaunchBay_launch_marking.svg",
+    "bytes": 591,
+    "sha256": "be506c301f3ca4ce940107a2d790b077919662765e5746c6d3ef53e966d5eab5"
+  },
+  "user_exterior_marking_instruction": {
+    "path": "References/Drone_LaunchBay_User_ExteriorMarking_20260917.png",
+    "bytes": 2531815,
+    "sha256": "54948f9312fe6af4fa8a15fd2c92249ff5137387e50e4fa0f252a500de8ee05d",
+    "resolution": [
+      1933,
+      1580
+    ]
+  },
+  "surface_revision": {
+    "path": "surface_revision_20260917_exterior_marking.json",
+    "bytes": 1307,
+    "sha256": "5e7073b184621dbfacd2134a6b9a17b09db0005a12c136d80e03ed1be609cb89"
+  },
+  "UE_formal_validation": "not_run",
+  "FBX_export": "not_run_await_B",
+  "CIWS": "unchanged; first batch v4 remains approved",
+  "parts": {
+    "Drone_LaunchBay": {
+      "label": "无人机发射舱",
+      "reference": {
+        "path": "References/Drone_LaunchBay_Reference_v2.png",
+        "sha256": "f1dddd61354bfa22aa46d870ac5c8628614c621912503c4585da48e6355a3b91",
+        "bytes": 1373482,
+        "resolution": [
+          1448,
+          1086
+        ]
+      },
+      "reference_version": "v2",
+      "candidate_version": "v3",
+      "blend": {
+        "path": "Production/v3/Drone_LaunchBay_OriginalMesh_MaterialCandidate.blend",
+        "bytes": 612611,
+        "sha256": "82eea6e26b5472733543c16d8bd11f9755dc17d63fd2a64dd227177fe2693c69"
+      },
+      "report": {
+        "path": "Production/v3/Drone_LaunchBay_material_report.json",
+        "bytes": 7717,
+        "sha256": "4005a3341c51975a0bc3b87ae443acf267e075a2c2ef5a01c3e26a39718c5903"
+      },
+      "textures": [
+        {
+          "path": "Production/v3/Textures/T_SC_Drone_LaunchBay_BaseColor_2K.png",
+          "bytes": 177590,
+          "sha256": "20bc84d887ecc392d12ab2830b073966ea057dc72831061d88de165f8e9126bb",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v3/Textures/T_SC_Drone_LaunchBay_ORM_2K.png",
+          "bytes": 173966,
+          "sha256": "d0c221886553ac24068b89868820cc10bcc94e8034f599b50e26a9053474f82d",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v3/Textures/T_SC_Drone_LaunchBay_LineMask_2K.png",
+          "bytes": 297937,
+          "sha256": "bfb14c083cebabe9863caf1556026cf89069b828a23e265923394e9d57b00645",
+          "resolution": [
+            2048,
+            2048
+          ]
+        }
+      ],
+      "previews": [
+        {
+          "path": "Previews/v3/Drone_LaunchBay_hero.png",
+          "bytes": 1669236,
+          "sha256": "8a3d221aa8d16bc0f9ac81a57b7a1f8a4fb9ddd292c7c3418eb2594eda0143b3",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Drone_LaunchBay_front.png",
+          "bytes": 1361027,
+          "sha256": "549d3d7845ae77441b6c19587babbf3cc3f6f4208ec740d988885748b8be06c9",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Drone_LaunchBay_right.png",
+          "bytes": 1420817,
+          "sha256": "416570a601596e68b37e809ec93c81b534bafba191ad826e8c3a958cffa233dd",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Drone_LaunchBay_rear.png",
+          "bytes": 1459657,
+          "sha256": "f2169f50a9fd841f80ce8e9b3eaa25874f750deb9831af5df7166a9388fed3f7",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Drone_LaunchBay_top.png",
+          "bytes": 1508384,
+          "sha256": "9bb823dece283ed4794997e28f81aaa591b28f67295cee2c71579efa36d8e462",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Drone_LaunchBay_original_geometry_gray.png",
+          "bytes": 1122546,
+          "sha256": "bbc2711ab1f67bdf551c0a63bf2c4ad59bea90bc1593c40a331442267af8430f",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Drone_LaunchBay_lines_off.png",
+          "bytes": 1595933,
+          "sha256": "47377ab97aa900cb0a8882f6581c093d826d4f199b1603193d4c717adc9634bc",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Drone_LaunchBay_alternate_light.png",
+          "bytes": 1600244,
+          "sha256": "d5e3b4b3841cc10136fc631d0d77f6f49b34b51aa95f2fbed5abe7e0a227b82d",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Drone_LaunchBay_small.png",
+          "bytes": 123338,
+          "sha256": "ee7c8a6a17df6d48b4f21e02b3e595ee0de413ad5e519c15aa36ec4cc001a374",
+          "resolution": [
+            360,
+            270
+          ]
+        },
+        {
+          "path": "Previews/v3/Drone_LaunchBay_exterior_hero.png",
+          "bytes": 1481011,
+          "sha256": "581eda2bcbd7943b462b2409d161c49ce9a09fbacb435834d22468ebb7056a91",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Drone_LaunchBay_left.png",
+          "bytes": 1318927,
+          "sha256": "8dd20c4cf4e8009cfaa48fd1ae07e2feb6e956d16b77ab9898dda8adaa507f10",
+          "resolution": [
+            1440,
+            1080
+          ]
+        }
+      ],
+      "parameters": {
+        "path": "Production/v3/Drone_LaunchBay_material_parameters.json",
+        "bytes": 2113,
+        "sha256": "14778d4fda0bc23a208b688b91c0358825e2da7f6655de7c2b9a7316fd63470e"
+      },
+      "paint_regions": {
+        "path": "Production/v3/Drone_LaunchBay_paint_regions.json",
+        "bytes": 18206,
+        "sha256": "80cedaf56e3bace21cab92a400d56cfbb8dc8f7b1d2f8d529abc4846ed897e31"
+      },
+      "body_triangles": 1254,
+      "body_material_slots": 1,
+      "source_geometry_unchanged": true,
+      "source_normals_unchanged": true,
+      "source_transform_unchanged": true,
+      "source_UV_unchanged": true,
+      "bones": [],
+      "socket_count": 0,
+      "B": "pending"
+    },
+    "Electronic_JammingDevice": {
+      "label": "电子干扰装置",
+      "reference": {
+        "path": "References/Electronic_JammingDevice_Reference_v3.png",
+        "sha256": "cd30300df95183bce9db719706776fbb4012c1092334c49b329fbde293bc67e9",
+        "bytes": 1512708,
+        "resolution": [
+          1536,
+          1024
+        ]
+      },
+      "reference_version": "v3",
+      "candidate_version": "v3",
+      "blend": {
+        "path": "Production/v3/Electronic_JammingDevice_OriginalMesh_MaterialCandidate.blend",
+        "bytes": 598127,
+        "sha256": "5d26189a54b75e7722a4a2b20307e9d4738a4a05d1c8ba5bdb43dd3b03f64465"
+      },
+      "report": {
+        "path": "Production/v3/Electronic_JammingDevice_material_report.json",
+        "bytes": 4435,
+        "sha256": "e08fb5f9dcfe56d5b057bb9c701bd8bd6866e2fd52844ab0ce09856505601f83"
+      },
+      "textures": [
+        {
+          "path": "Production/v3/Textures/T_SC_Electronic_JammingDevice_BaseColor_2K.png",
+          "bytes": 162004,
+          "sha256": "5dc72b95c49d72b9072b48de7653d425b9eeb131668aa522e23febb3c134eec7",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v3/Textures/T_SC_Electronic_JammingDevice_ORM_2K.png",
+          "bytes": 160796,
+          "sha256": "82128b59136821a0b40b30703336623a8dfd8a04c9eda48659f47764bf131869",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v3/Textures/T_SC_Electronic_JammingDevice_LineMask_2K.png",
+          "bytes": 330791,
+          "sha256": "8b842e128ad4e5a41ee26cb17d4a9b400a5c0e54072f538d13c9b129af519eaa",
+          "resolution": [
+            2048,
+            2048
+          ]
+        }
+      ],
+      "previews": [
+        {
+          "path": "Previews/v3/Electronic_JammingDevice_hero.png",
+          "bytes": 1494815,
+          "sha256": "a212b27458ab93c99770196497c177ad5754153f2a919f412b1cf3ef4ddcf130",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Electronic_JammingDevice_front.png",
+          "bytes": 1343430,
+          "sha256": "e379c5a7648838ff40c0abe94f40c12bf10eb73b63a75c52aa3bf59c91bbd8e9",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Electronic_JammingDevice_right.png",
+          "bytes": 1442166,
+          "sha256": "384cd90909b234adb4cdaf3db0f38b79d353be3f6613aac8663d00648aa6a47b",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Electronic_JammingDevice_rear.png",
+          "bytes": 1449098,
+          "sha256": "7c6820ebba79029f02cbb74f031391710eb2dec150ff2476719e8c41486eca77",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Electronic_JammingDevice_top.png",
+          "bytes": 1530280,
+          "sha256": "28bd3186b4d7f16de9ffedb6996af9d661877d5af17a8e697ebb4c32009eebfa",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Electronic_JammingDevice_original_geometry_gray.png",
+          "bytes": 1185373,
+          "sha256": "9ff61c06eb2e70fc450ab8aff256b8684eba57d946a80043daa9a2f603bba0dd",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Electronic_JammingDevice_lines_off.png",
+          "bytes": 1408825,
+          "sha256": "caf24fc9163051ecba33258723ebaa0a5e850940f57c8b186094de661a712ec4",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Electronic_JammingDevice_alternate_light.png",
+          "bytes": 1616203,
+          "sha256": "3f4bb047890ca00c81f0cba247b68a502d262b3f5e551eaad8b6adff7668f93c",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Electronic_JammingDevice_small.png",
+          "bytes": 114920,
+          "sha256": "a1a9b0bb64d4260d28f271ad559b447f1a94a96cc3b0f4fe3fb02db9ebc18beb",
+          "resolution": [
+            360,
+            270
+          ]
+        }
+      ],
+      "parameters": {
+        "path": "Production/v3/Electronic_JammingDevice_material_parameters.json",
+        "bytes": 2114,
+        "sha256": "3e2ee1606b5a6a9773d0a403384c23f877a988d0eabebae59ab1c4a3d6951d50"
+      },
+      "paint_regions": {
+        "path": "Production/v3/Electronic_JammingDevice_paint_regions.json",
+        "bytes": 8412,
+        "sha256": "4a509589723f7c76c6c8ec433030d98136b90a3dccfd416629dfb33452a04b10"
+      },
+      "body_triangles": 550,
+      "body_material_slots": 1,
+      "source_geometry_unchanged": true,
+      "source_normals_unchanged": true,
+      "source_transform_unchanged": true,
+      "source_UV_unchanged": true,
+      "bones": [],
+      "socket_count": 0,
+      "B": "pending"
+    },
+    "Shield_Generator": {
+      "label": "护盾发生器",
+      "reference": {
+        "path": "References/Shield_Generator_Reference_v3.png",
+        "sha256": "a20b6a31eb7915dda05ad9d0300a0bd6fd1b4325ae7c834ec08dce7f429a8312",
+        "bytes": 1252852,
+        "resolution": [
+          1448,
+          1086
+        ]
+      },
+      "reference_version": "v3",
+      "candidate_version": "v3",
+      "blend": {
+        "path": "Production/v3/Shield_Generator_OriginalMesh_MaterialCandidate.blend",
+        "bytes": 452824,
+        "sha256": "9bfde04f40161b7f1e0c9a7a2b947ed6572580676fb9927fa97641b03b1c74b9"
+      },
+      "report": {
+        "path": "Production/v3/Shield_Generator_material_report.json",
+        "bytes": 4271,
+        "sha256": "19a987bf769d3b086f60ed7b62787598208985ec7f7f7ed201fbb11838e6d1df"
+      },
+      "textures": [
+        {
+          "path": "Production/v3/Textures/T_SC_Shield_Generator_BaseColor_2K.png",
+          "bytes": 145881,
+          "sha256": "a80038157cefa4436436007bd7b05547ec335308b842f152b607301746b1c65a",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v3/Textures/T_SC_Shield_Generator_ORM_2K.png",
+          "bytes": 145476,
+          "sha256": "a14aff939ae56ccd76ad1d9845b9e1123059f2d7b7aaeccbac5aff54f330a4a2",
+          "resolution": [
+            2048,
+            2048
+          ]
+        },
+        {
+          "path": "Production/v3/Textures/T_SC_Shield_Generator_LineMask_2K.png",
+          "bytes": 257850,
+          "sha256": "53009bdfd2a4aca662dd905b40c63a82fa1a10a9781a0dc2d0100cc7334b18ec",
+          "resolution": [
+            2048,
+            2048
+          ]
+        }
+      ],
+      "previews": [
+        {
+          "path": "Previews/v3/Shield_Generator_hero.png",
+          "bytes": 1459188,
+          "sha256": "340db1ebd1124c4e2139df520d003c0578cd5a59e055cba6057b8e5cb227b895",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Shield_Generator_front.png",
+          "bytes": 1369490,
+          "sha256": "e57431e06899d83e88553e4cc3813a6a4bac54779b3a34a91b094e13fca9612c",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Shield_Generator_right.png",
+          "bytes": 1409175,
+          "sha256": "ee241dd39be9f000baaab27bd8d1037b6eddfebb6f9ee781245168c90f049ad7",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Shield_Generator_rear.png",
+          "bytes": 1414198,
+          "sha256": "86db44652949adbcc8d21725561202a5df4644306b68e149f4cc6e5838605977",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Shield_Generator_top.png",
+          "bytes": 1479961,
+          "sha256": "70c10665e0d6ed3c97fafb54da694f62008256f1610673b6d9c1cc3b2f9a1bc9",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Shield_Generator_original_geometry_gray.png",
+          "bytes": 941806,
+          "sha256": "a05354a5caa85752677625f263aafada1e75279626330709f1e833bb05e177eb",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Shield_Generator_lines_off.png",
+          "bytes": 1419265,
+          "sha256": "24db6da770e2eba97e87edabaa4b5ebc69f9830ad65617996cb121569fa94c79",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Shield_Generator_alternate_light.png",
+          "bytes": 1517148,
+          "sha256": "fb412d357b8e1464463be1abda41bc61d92aaa6276f505da89347f7a05a7f1b5",
+          "resolution": [
+            1440,
+            1080
+          ]
+        },
+        {
+          "path": "Previews/v3/Shield_Generator_small.png",
+          "bytes": 102652,
+          "sha256": "6641381ee3799e4a0901514e3cee202b12853dc5799c69c9557791bd3af86212",
+          "resolution": [
+            360,
+            270
+          ]
+        }
+      ],
+      "parameters": {
+        "path": "Production/v3/Shield_Generator_material_parameters.json",
+        "bytes": 2130,
+        "sha256": "61383c73a4f52b051845439bce8019db83ce7f213059e509a947295d1f40a02f"
+      },
+      "paint_regions": {
+        "path": "Production/v3/Shield_Generator_paint_regions.json",
+        "bytes": 4987,
+        "sha256": "726f8b3cb6063a2de1e62b6779c9338fd610c37e97cd42416998779cca6fd395"
+      },
+      "body_triangles": 312,
+      "body_material_slots": 1,
+      "source_geometry_unchanged": true,
+      "source_normals_unchanged": true,
+      "source_transform_unchanged": true,
+      "source_UV_unchanged": true,
+      "bones": [],
+      "socket_count": 0,
+      "B": "pending"
+    }
+  },
+  "production_tools": [
+    {
+      "path": "Production/v3/Tools/style_ship_component_batch03_materials.py",
+      "bytes": 17910,
+      "sha256": "f4754fbdb634bab265262deea6b26cdf676d9d2883d9b2d30decb23caea2bd99"
+    },
+    {
+      "path": "Production/v3/Tools/style_ship_component_original_materials.py",
+      "bytes": 29996,
+      "sha256": "0f99e0e502931578964fd04c2e8b039a96104ec06bd336d803a03e7de3c2d2da"
+    },
+    {
+      "path": "Production/v3/Tools/bake_ship_lineart_mask.py",
+      "bytes": 14202,
+      "sha256": "c59c068e953babe384b0bc4add8e11251dc5ebe86b67c77435bb42c9b5eff950"
+    },
+    {
+      "path": "Production/v3/Tools/finish_ship_component_batch03_review.py",
+      "bytes": 6298,
+      "sha256": "d3d3e0ee3fccd0ffe9058ce1cd97106ebc75326b82e6c4490f067ed7d33f92e8"
+    },
+    {
+      "path": "Production/v3/Tools/finish_ship_component_material_review.py",
+      "bytes": 9105,
+      "sha256": "3bb8255d62e854339944434e416c2f642bcc8a3fc6eb9710bbeceab039fb0dd6"
+    },
+    {
+      "path": "Production/v3/Tools/package_ship_component_batch03_material_review.py",
+      "bytes": 14169,
+      "sha256": "3a0466e43bc70aa4178fe1f2d6c7d07e50af498c95bd6c203d756eedf59e5ec4"
+    }
+  ]
+}

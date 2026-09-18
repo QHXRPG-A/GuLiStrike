@@ -70,19 +70,23 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 		auto& Visual = Pair.Value; const auto& State = Visual.State;
 		if (State.Kind != EGuLiCombatEffectKind::LinearProjectile || Visual.LaserSlot == INDEX_NONE) continue;
 		const bool bFinished = State.Phase == EGuLiCombatEffectPhase::Finished;
+		const bool bGround = State.Source.Kind == EGuLiTargetKind::CommanderSoldier;
 		const float Age = FMath::Clamp(Now - State.StartTime, 0.0f, State.EndTime - State.StartTime);
 		const FVector Head = bFinished ? FVector(State.Location) : FVector(State.LaunchLocation) + FVector(State.Velocity) * Age;
 		Visual.RenderLocation = Head;
 		const bool bBoltVisible = IsVisibleLocation(Head);
 		FVector Muzzle = State.LaunchLocation;
 		FGuLiCombatShotCue Cue; Cue.Source = State.Source; Cue.MuzzleOffset = State.MuzzleOffset;
-		const bool bMuzzleVisible = LocalNow < Visual.LaserMuzzleUntil && ResolveMuzzlePosition(Cue, Muzzle) && IsVisibleLocation(Muzzle);
+		const bool bMuzzleVisible = !bGround && LocalNow < Visual.LaserMuzzleUntil && ResolveMuzzlePosition(Cue, Muzzle) && IsVisibleLocation(Muzzle);
 		if (!bBoltVisible && !bMuzzleVisible) continue;
 		auto& Block = LaserBlocks[Visual.LaserSlot / LaserBlockSize]; const int32 Index = Visual.LaserSlot % LaserBlockSize;
 		const FVector Direction = FVector(State.LaunchDirection).GetSafeNormal();
-		const float Length = FMath::Min(Catalog->LaserLength, static_cast<float>(FVector::Distance(Head, State.LaunchLocation)));
+		const float AuthoredLength = Catalog->LaserLength * (bGround ? Catalog->GroundMachineGunLengthScale : 1.0f);
+		const float Length = FMath::Min(AuthoredLength, static_cast<float>(FVector::Distance(Head, State.LaunchLocation)));
 		FLinearColor Tint = LocalTeam == EGuLiTeam::Unassigned ? FLinearColor::White
-			: (State.SourceTeam == LocalTeam ? Catalog->FriendlyLaserTint : Catalog->EnemyLaserTint);
+			: (State.SourceTeam == LocalTeam
+				? (bGround ? Catalog->FriendlyGroundMachineGunTint : Catalog->FriendlyLaserTint)
+				: (bGround ? Catalog->EnemyGroundMachineGunTint : Catalog->EnemyLaserTint));
 		const float Fade = bFinished ? FMath::Clamp((Visual.LaserFadeUntil - LocalNow) / 0.04f, 0.0f, 1.0f) : 1.0f;
 		Tint.R *= Catalog->LaserIntensity; Tint.G *= Catalog->LaserIntensity; Tint.B *= Catalog->LaserIntensity; Tint.A = Fade;
 		Block.Directions[Index] = Direction;
@@ -90,16 +94,16 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 		{
 			Block.Positions[Index] = Head - Direction * (Length * 0.5f);
 			// The analytic material's central half is the authored core; the outside supplies a soft halo.
-			Block.Sizes[Index] = FVector2D(Catalog->LaserCoreWidth * 2.0f, FMath::Max(1.0f, Length));
+			Block.Sizes[Index] = FVector2D(Catalog->LaserCoreWidth * 2.0f, bGround ? Length : FMath::Max(0.2f, Length));
 			Block.Colors[Index] = Tint; Block.Bounds += Head; Block.Bounds += Head - Direction * Length;
 			++Counters.LaserVisible;
 		}
 		if (bMuzzleVisible)
 		{
-			Block.MuzzlePositions[Index] = Muzzle + Direction * 75.0f;
-			Block.MuzzleSizes[Index] = FVector2D(Catalog->LaserCoreWidth * 3.0f, 150.0f);
+			Block.MuzzlePositions[Index] = Muzzle + Direction * 15.0f;
+			Block.MuzzleSizes[Index] = FVector2D(Catalog->LaserCoreWidth * 3.0f, 6.0f);
 			Block.MuzzleColors[Index] = Tint; Block.MuzzleColors[Index].A = FMath::Clamp((Visual.LaserMuzzleUntil - LocalNow) / Catalog->LaserMuzzleSeconds, 0.0f, 1.0f);
-			Block.Bounds += Muzzle; Block.Bounds += Muzzle + Direction * 150.0f;
+			Block.Bounds += Muzzle; Block.Bounds += Muzzle + Direction * 30.0f;
 		}
 		Block.bVisible = true;
 	}
@@ -128,7 +132,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 		Arrays::SetNiagaraArrayPosition(Block.Component, TEXT("User.MuzzlePositions"), Block.MuzzlePositions);
 		Arrays::SetNiagaraArrayVector2D(Block.Component, TEXT("User.MuzzleSizes"), Block.MuzzleSizes);
 		Arrays::SetNiagaraArrayColor(Block.Component, TEXT("User.MuzzleColors"), Block.MuzzleColors);
-		Block.Component->SetSystemFixedBounds(Block.Bounds.ExpandBy(FMath::Max(Catalog->LaserCoreWidth * 3.0f, 100.0f)));
+		Block.Component->SetSystemFixedBounds(Block.Bounds.ExpandBy(FMath::Max(Catalog->LaserCoreWidth * 3.0f, 20.0f)));
 		if (bActivate) Block.Component->Activate(true);
 	}
 }

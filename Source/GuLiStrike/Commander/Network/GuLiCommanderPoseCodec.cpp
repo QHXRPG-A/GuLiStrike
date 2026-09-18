@@ -32,13 +32,13 @@ int64 RoundTenths(int64 Numerator)
 void Predict(const FGuLiQuantizedSoldierPose& Pose, uint32 Steps, int64 (&Values)[6])
 {
 	static_assert(GuLiCommanderSimulationTiming::RateHz == 10u);
-	Values[0] = int64(Pose.WorldXMeters) + RoundTenths(int64(Pose.VelocityXMetersPerSecond) * Steps);
-	Values[1] = int64(Pose.WorldYMeters) + RoundTenths(int64(Pose.VelocityYMetersPerSecond) * Steps);
-	// One m/s for one 0.1-second step is exactly one Z quantization unit.
-	Values[2] = int64(Pose.WorldZDecimeters) + int64(Pose.VelocityZMetersPerSecond) * Steps;
-	Values[3] = Pose.VelocityXMetersPerSecond;
-	Values[4] = Pose.VelocityYMetersPerSecond;
-	Values[5] = Pose.VelocityZMetersPerSecond;
+	Values[0] = int64(Pose.WorldXUnits) + RoundTenths(int64(Pose.VelocityXUnits) * Steps);
+	Values[1] = int64(Pose.WorldYUnits) + RoundTenths(int64(Pose.VelocityYUnits) * Steps);
+	// One 20 cm/s velocity unit for one 0.1-second step is one 2 cm Z unit.
+	Values[2] = int64(Pose.WorldZUnits) + int64(Pose.VelocityZUnits) * Steps;
+	Values[3] = Pose.VelocityXUnits;
+	Values[4] = Pose.VelocityYUnits;
+	Values[5] = Pose.VelocityZUnits;
 }
 
 void WriteUnsigned(FBitWriter& Writer, uint64 Value)
@@ -116,8 +116,8 @@ void WriteRecord(FBitWriter& Writer, const FGuLiQuantizedSoldierPose& Pose,
 	WriteUnsigned(Writer, Baseline ? Sequence - Baseline->Sequence : 0u);
 	int64 Predicted[6] = {};
 	if (Baseline) Predict(Baseline->Pose, SimTick - Baseline->SimTick, Predicted);
-	const int64 Current[6] = { Pose.WorldXMeters, Pose.WorldYMeters, Pose.WorldZDecimeters,
-		Pose.VelocityXMetersPerSecond, Pose.VelocityYMetersPerSecond, Pose.VelocityZMetersPerSecond };
+	const int64 Current[6] = { Pose.WorldXUnits, Pose.WorldYUnits, Pose.WorldZUnits,
+		Pose.VelocityXUnits, Pose.VelocityYUnits, Pose.VelocityZUnits };
 	uint16 Mask = 0;
 	for (int32 Axis = 0; Axis < 6; ++Axis)
 		if (!Baseline || Current[Axis] != Predicted[Axis]) Mask |= 1u << Axis;
@@ -352,8 +352,8 @@ EDecodeResult FReceiver::Decode(const FGuLiEncodedPoseBlock& Block, FGuLiSoldier
 			if (Values[Axis] < (Axis < 3 ? MIN_int32 : MIN_int16)
 				|| Values[Axis] > (Axis < 3 ? MAX_int32 : MAX_int16)) return EDecodeResult::InvalidPayload;
 		}
-		Pose.WorldXMeters = int32(Values[0]); Pose.WorldYMeters = int32(Values[1]); Pose.WorldZDecimeters = int32(Values[2]);
-		Pose.VelocityXMetersPerSecond = int16(Values[3]); Pose.VelocityYMetersPerSecond = int16(Values[4]); Pose.VelocityZMetersPerSecond = int16(Values[5]);
+		Pose.WorldXUnits = int32(Values[0]); Pose.WorldYUnits = int32(Values[1]); Pose.WorldZUnits = int32(Values[2]);
+		Pose.VelocityXUnits = int16(Values[3]); Pose.VelocityYUnits = int16(Values[4]); Pose.VelocityZUnits = int16(Values[5]);
 		if (Mask & (1u << 6))
 		{
 			if (BaselineDistance)
@@ -399,14 +399,14 @@ bool FGuLiQuantizedSoldierPose::SetWorldLocationCentimeters(const FVector& World
 	if (!QuantizeAxis(WorldLocation.X, GULI_POSE_XY_STEP_CENTIMETERS, MIN_int32, MAX_int32, X)
 		|| !QuantizeAxis(WorldLocation.Y, GULI_POSE_XY_STEP_CENTIMETERS, MIN_int32, MAX_int32, Y)
 		|| !QuantizeAxis(WorldLocation.Z, GULI_POSE_Z_STEP_CENTIMETERS, MIN_int32, MAX_int32, Z)) return false;
-	WorldXMeters = int32(X); WorldYMeters = int32(Y); WorldZDecimeters = int32(Z);
+	WorldXUnits = int32(X); WorldYUnits = int32(Y); WorldZUnits = int32(Z);
 	return true;
 }
 
 FVector FGuLiQuantizedSoldierPose::GetWorldLocationCentimeters() const
 {
-	return FVector(WorldXMeters * GULI_POSE_XY_STEP_CENTIMETERS, WorldYMeters * GULI_POSE_XY_STEP_CENTIMETERS,
-		WorldZDecimeters * GULI_POSE_Z_STEP_CENTIMETERS);
+	return FVector(WorldXUnits * GULI_POSE_XY_STEP_CENTIMETERS, WorldYUnits * GULI_POSE_XY_STEP_CENTIMETERS,
+		WorldZUnits * GULI_POSE_Z_STEP_CENTIMETERS);
 }
 
 bool FGuLiQuantizedSoldierPose::SetVelocityCentimetersPerSecond(const FVector& Velocity)
@@ -416,13 +416,13 @@ bool FGuLiQuantizedSoldierPose::SetVelocityCentimetersPerSecond(const FVector& V
 	if (!QuantizeAxis(Velocity.X, GULI_POSE_VELOCITY_STEP_CENTIMETERS_PER_SECOND, MIN_int16, MAX_int16, X)
 		|| !QuantizeAxis(Velocity.Y, GULI_POSE_VELOCITY_STEP_CENTIMETERS_PER_SECOND, MIN_int16, MAX_int16, Y)
 		|| !QuantizeAxis(Velocity.Z, GULI_POSE_VELOCITY_STEP_CENTIMETERS_PER_SECOND, MIN_int16, MAX_int16, Z)) return false;
-	VelocityXMetersPerSecond = int16(X); VelocityYMetersPerSecond = int16(Y); VelocityZMetersPerSecond = int16(Z);
+	VelocityXUnits = int16(X); VelocityYUnits = int16(Y); VelocityZUnits = int16(Z);
 	return true;
 }
 
 FVector FGuLiQuantizedSoldierPose::GetVelocityCentimetersPerSecond() const
 {
-	return FVector(VelocityXMetersPerSecond, VelocityYMetersPerSecond, VelocityZMetersPerSecond)
+	return FVector(VelocityXUnits, VelocityYUnits, VelocityZUnits)
 		* GULI_POSE_VELOCITY_STEP_CENTIMETERS_PER_SECOND;
 }
 

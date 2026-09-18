@@ -1,0 +1,866 @@
+{
+  "success": true,
+  "captured_at": "2026-09-17T07:13:40.381729+00:00",
+  "engine": "5.7.4-0+UE5",
+  "engine_path": "D:/UnrealEngine-5.7",
+  "art_revision": "1.0",
+  "coordinate_system": "UE centimeters; +Z up; original mesh axes retained",
+  "purpose": "Read-only source capture for reference design A; not new model production",
+  "parts": {
+    "Autocannon": {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Autocannon",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Autocannon.SKM_SC_Autocannon",
+      "original_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Autocannon.SM_SC_Autocannon",
+      "visual_type": "<GuLiStrikeShipPartVisualType.SKELETAL_MESH: 1>",
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "compatible_sockets": [
+        "bottom_mid_0",
+        "bottom_mid_1",
+        "bottom_mid_2"
+      ],
+      "muzzle_socket_name": "Socket_1",
+      "sockets": [
+        {
+          "name": "Socket_1",
+          "location": [
+            1586.79521875,
+            41.50409375000049,
+            -23.963774353027347
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "bone": "BarrelPitch",
+          "mesh_space": {
+            "location": [
+              -41.496093750000036,
+              1349.44921875,
+              75.61722564697266
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "Socket_2",
+          "location": [
+            1586.79521875,
+            0.00018750000049294613,
+            47.92486318969726
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "bone": "BarrelPitch",
+          "mesh_space": {
+            "location": [
+              0.007812499999961801,
+              1349.44921875,
+              147.50586318969727
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "Socket_3",
+          "location": [
+            1586.7913124999998,
+            -41.50518359374951,
+            -23.965361267089847
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "bone": "BarrelPitch",
+          "mesh_space": {
+            "location": [
+              41.51318359374974,
+              1349.4453124999998,
+              75.61563873291016
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "original_bounds_cm": [
+        [
+          -541.48388671875,
+          -801.6015625,
+          -310.7576599121094
+        ],
+        [
+          541.499755859375,
+          1349.44921875,
+          274.4085388183594
+        ]
+      ],
+      "original_geometry_sha256": "c4a0c1e7cba2e11f0275969a629f1d396d571d3845e6d255f5b70b7405422612",
+      "original_triangles": 1288,
+      "original_materials": [
+        {
+          "slot": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "exports": [
+        {
+          "path": "Source\\FBX_static_v1\\SM_SC_Autocannon.fbx",
+          "size": 83472,
+          "sha256": "989209dcbaed09a6b00ba42d6bcff025ae55c0a2d67a21ba02fd13f08d0e93e6"
+        }
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Autocannon.SK_SC_Autocannon",
+      "bones": [
+        {
+          "name": "Root",
+          "parent": "",
+          "local": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "global_transform": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "BarrelPitch",
+          "parent": "Root",
+          "local": {
+            "location": [
+              0.008,
+              -237.346,
+              99.581
+            ],
+            "rotation": [
+              0.0,
+              -0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "global_transform": {
+            "location": [
+              0.008,
+              -237.346,
+              99.581
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "skeletal_fbx_export": "not_run: NullRHI unsupported; preserved existing authoring FBX",
+      "preserved_authoring_sources": [
+        {
+          "source": "ArtSource\\Ships\\ShipComponentRigs\\Exports\\SKM_SC_Autocannon.fbx",
+          "path": "Source\\ExistingAuthoring\\SKM_SC_Autocannon.fbx",
+          "size": 364476,
+          "sha256": "45629e5ae88e95dd7c2ef20e2753efa9811ccadaed30719e26d4e6aecf95694b"
+        },
+        {
+          "source": "ArtSource\\Ships\\ShipComponentRigs\\Blender\\SC_Autocannon.blend",
+          "path": "Source\\ExistingAuthoring\\SC_Autocannon.blend",
+          "size": 156499,
+          "sha256": "ee18f9f63e096eed6617ff0ca879ca9a01dc90605b7d6dcac55ac902caccbf6f"
+        }
+      ],
+      "visual_bounds": "<Struct 'BoxSphereBounds' (0x0000017AF4EF7BC0) {origin: {x: 0.007935, y: 274.904340, z: 641.184547}, box_extent: {x: 542.491821, y: 1077.505841, z: 1012.559201}, sphere_radius: 1574.989635}>",
+      "part_mass": 10.0,
+      "damage": 10.0,
+      "fire_rate": 3.0
+    },
+    "Triple_Barrel_Turret": {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Triple_Barrel_Turret",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Triple_Barrel_Turret.SKM_SC_Triple_Barrel_Turret",
+      "original_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Triple_Barrel_Turret.SM_SC_Triple_Barrel_Turret",
+      "visual_type": "<GuLiStrikeShipPartVisualType.SKELETAL_MESH: 1>",
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "compatible_sockets": [
+        "bottom_0",
+        "bottom_2",
+        "bottom_3",
+        "bottom_4",
+        "bottom_5"
+      ],
+      "muzzle_socket_name": "Socket_1",
+      "sockets": [
+        {
+          "name": "Socket_1",
+          "location": [
+            3753.689453125,
+            891.3677783203134,
+            0.0007216033935435462
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "bone": "BarrelPitch",
+          "mesh_space": {
+            "location": [
+              -891.472778320313,
+              3243.689453125,
+              129.91972160339355
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "Socket_2",
+          "location": [
+            3753.693359375,
+            -2.2204556274409697,
+            -0.0007432403564564538
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "bone": "BarrelPitch",
+          "mesh_space": {
+            "location": [
+              2.1154556274414245,
+              3243.693359375,
+              129.91825675964355
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "Socket_3",
+          "location": [
+            3753.6933593749995,
+            -891.3684277343746,
+            0.0007216033935435462
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "bone": "BarrelPitch",
+          "mesh_space": {
+            "location": [
+              891.2634277343755,
+              3243.6933593749995,
+              129.91972160339355
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "original_bounds_cm": [
+        [
+          -1702.7811279296875,
+          -2107.787109375,
+          -525.8485717773438
+        ],
+        [
+          1702.5716552734375,
+          3243.693359375,
+          591.2855224609375
+        ]
+      ],
+      "original_geometry_sha256": "52566ea95997bc152ebbaa167efce91810c73ccc10d0d158f4d4a192881745b9",
+      "original_triangles": 1806,
+      "original_materials": [
+        {
+          "slot": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "exports": [
+        {
+          "path": "Source\\FBX_static_v1\\SM_SC_Triple_Barrel_Turret.fbx",
+          "size": 95120,
+          "sha256": "428d87519bdff0e6372d753ba5e2507bfb9c6818afd73b568ed23c50d7051d78"
+        }
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Triple_Barrel_Turret.SK_SC_Triple_Barrel_Turret",
+      "bones": [
+        {
+          "name": "Root",
+          "parent": "",
+          "local": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "global_transform": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "BarrelPitch",
+          "parent": "Root",
+          "local": {
+            "location": [
+              -0.105,
+              -510.0,
+              129.919
+            ],
+            "rotation": [
+              0.0,
+              -0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "global_transform": {
+            "location": [
+              -0.105,
+              -510.0,
+              129.919
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "skeletal_fbx_export": "not_run: NullRHI unsupported; preserved existing authoring FBX",
+      "preserved_authoring_sources": [
+        {
+          "source": "ArtSource\\Ships\\ShipComponentRigs\\Exports\\SKM_SC_Triple_Barrel_Turret.fbx",
+          "path": "Source\\ExistingAuthoring\\SKM_SC_Triple_Barrel_Turret.fbx",
+          "size": 474428,
+          "sha256": "42914bc8ae9fd13f2e98dba1f3012df4608ef70ca679e57f2b85112adba53c5b"
+        },
+        {
+          "source": "ArtSource\\Ships\\ShipComponentRigs\\Blender\\SC_Triple_Barrel_Turret.blend",
+          "path": "Source\\ExistingAuthoring\\SC_Triple_Barrel_Turret.blend",
+          "size": 186210,
+          "sha256": "8775c9d8e5cfdfbb9beacbdee9a5d6305f774f0da017cf90ee05070e49a0c788"
+        }
+      ],
+      "visual_bounds": "<Struct 'BoxSphereBounds' (0x0000017AF4EF7A40) {origin: {x: -0.104736, y: 568.476834, z: 1425.593162}, box_extent: {x: 1703.676392, y: 2677.263943, z: 2354.142900}, sphere_radius: 3951.233259}>",
+      "part_mass": 10.0,
+      "damage": 10.0,
+      "fire_rate": 3.0
+    },
+    "Single_Barrel_Turret": {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Single_Barrel_Turret",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Single_Barrel_Turret.SKM_SC_Single_Barrel_Turret",
+      "original_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Single_Barrel_Turret.SM_SC_Single_Barrel_Turret",
+      "visual_type": "<GuLiStrikeShipPartVisualType.SKELETAL_MESH: 1>",
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "compatible_sockets": [
+        "air_1",
+        "air_2",
+        "air_3",
+        "air_4",
+        "air_5",
+        "air_6",
+        "air_7",
+        "air_8",
+        "air_9",
+        "air_10",
+        "air_11",
+        "air_12",
+        "air_13"
+      ],
+      "muzzle_socket_name": "Socket_1",
+      "sockets": [
+        {
+          "name": "Socket_1",
+          "location": [
+            1535.21533203125,
+            -1.1444091342127649e-05,
+            34.961583488464356
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "bone": "BarrelPitch",
+          "mesh_space": {
+            "location": [
+              1.1444091796875e-05,
+              1390.21533203125,
+              40.318583488464355
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "original_bounds_cm": [
+        [
+          -503.26690673828125,
+          -879.42529296875,
+          -202.81939697265625
+        ],
+        [
+          503.26690673828125,
+          1390.21533203125,
+          215.11997985839844
+        ]
+      ],
+      "original_geometry_sha256": "4d17f0deb5f198cadf32c5fb3a3d126fce25f892d6b801c124c86ab525574f08",
+      "original_triangles": 1130,
+      "original_materials": [
+        {
+          "slot": "ScifiDreadnoughtWeapons_001",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtWeapons.ScifiDreadnoughtWeapons"
+        }
+      ],
+      "exports": [
+        {
+          "path": "Source\\FBX_static_v1\\SM_SC_Single_Barrel_Turret.fbx",
+          "size": 67312,
+          "sha256": "aa0183ac268f7fd5a3c9090dd7646eaa191304206065821944b0ff745c96469f"
+        }
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Single_Barrel_Turret.SK_SC_Single_Barrel_Turret",
+      "bones": [
+        {
+          "name": "Root",
+          "parent": "",
+          "local": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "global_transform": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "BarrelPitch",
+          "parent": "Root",
+          "local": {
+            "location": [
+              0.0,
+              -145.0,
+              5.357
+            ],
+            "rotation": [
+              0.0,
+              -0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "global_transform": {
+            "location": [
+              0.0,
+              -145.0,
+              5.357
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "skeletal_fbx_export": "not_run: NullRHI unsupported; preserved existing authoring FBX",
+      "preserved_authoring_sources": [
+        {
+          "source": "ArtSource\\Ships\\ShipComponentRigs\\Exports\\SKM_SC_Single_Barrel_Turret.fbx",
+          "path": "Source\\ExistingAuthoring\\SKM_SC_Single_Barrel_Turret.fbx",
+          "size": 265756,
+          "sha256": "9fe56e9c2d3243b7b5d631e7e735662ef9892228c83c7dd0a41a37a42460188e"
+        },
+        {
+          "source": "ArtSource\\Ships\\ShipComponentRigs\\Blender\\SC_Single_Barrel_Turret.blend",
+          "path": "Source\\ExistingAuthoring\\SC_Single_Barrel_Turret.blend",
+          "size": 143311,
+          "sha256": "6bacf752f995d66a9d4d92eb775430aac34b22f7b93571a67e20260d06c9e1d8"
+        }
+      ],
+      "visual_bounds": "<Struct 'BoxSphereBounds' (0x0000017AF4EF89C0) {origin: {x: 0.000000, y: 255.939979, z: 556.609144}, box_extent: {x: 504.266907, y: 1136.365210, z: 947.639654}, sphere_radius: 1563.212051}>",
+      "part_mass": 10.0,
+      "damage": 10.0,
+      "fire_rate": 3.0
+    }
+  },
+  "protected_before": {
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Autocannon": {
+      "size": 75976,
+      "mtime_ns": 1787558717543358000
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Triple_Barrel_Turret": {
+      "size": 92139,
+      "mtime_ns": 1787558717599241000
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Single_Barrel_Turret": {
+      "size": 74318,
+      "mtime_ns": 1787558704322383200
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Autocannon": {
+      "size": 18280,
+      "mtime_ns": 1789404795622470300
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Triple_Barrel_Turret": {
+      "size": 18481,
+      "mtime_ns": 1789404795997530300
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Single_Barrel_Turret": {
+      "size": 19316,
+      "mtime_ns": 1789404795884641900
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Autocannon": {
+      "size": 836233,
+      "mtime_ns": 1789042593187835500
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Autocannon": {
+      "size": 6946,
+      "mtime_ns": 1789086649371012100
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Triple_Barrel_Turret": {
+      "size": 1130319,
+      "mtime_ns": 1789042593751698200
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Triple_Barrel_Turret": {
+      "size": 6841,
+      "mtime_ns": 1789041696188782300
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Single_Barrel_Turret": {
+      "size": 588487,
+      "mtime_ns": 1789042593603400600
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Single_Barrel_Turret": {
+      "size": 6916,
+      "mtime_ns": 1789041694913726500
+    }
+  },
+  "protected_after": {
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Autocannon": {
+      "size": 75976,
+      "mtime_ns": 1787558717543358000
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Triple_Barrel_Turret": {
+      "size": 92139,
+      "mtime_ns": 1787558717599241000
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Single_Barrel_Turret": {
+      "size": 74318,
+      "mtime_ns": 1787558704322383200
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Autocannon": {
+      "size": 18280,
+      "mtime_ns": 1789404795622470300
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Triple_Barrel_Turret": {
+      "size": 18481,
+      "mtime_ns": 1789404795997530300
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Single_Barrel_Turret": {
+      "size": 19316,
+      "mtime_ns": 1789404795884641900
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Autocannon": {
+      "size": 836233,
+      "mtime_ns": 1789042593187835500
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Autocannon": {
+      "size": 6946,
+      "mtime_ns": 1789086649371012100
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Triple_Barrel_Turret": {
+      "size": 1130319,
+      "mtime_ns": 1789042593751698200
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Triple_Barrel_Turret": {
+      "size": 6841,
+      "mtime_ns": 1789041696188782300
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Single_Barrel_Turret": {
+      "size": 588487,
+      "mtime_ns": 1789042593603400600
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Single_Barrel_Turret": {
+      "size": 6916,
+      "mtime_ns": 1789041694913726500
+    }
+  },
+  "source_packages_unchanged": true
+}

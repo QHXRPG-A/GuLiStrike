@@ -121,7 +121,7 @@ private:
 	FVector2D PendingPlanarMovement = FVector2D::ZeroVector;
 	float PendingYawInput = 0.0f;
 	float PendingZoomInput = 0.0f;
-	float DesiredArmLength = 80000.0f;
+	float DesiredArmLength = 16000.0f;
 	float HeldCruisePivotZ = 0.0f;
 	float HeightReanchorRemainingSeconds = 0.0f;
 	bool bHeightReanchorActive = false;

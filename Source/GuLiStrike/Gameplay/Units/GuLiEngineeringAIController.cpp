@@ -23,7 +23,7 @@ void UGuLiEngineeringCrowdFollowingComponent::ConfigureFootprint(const FBox& Loc
 {
 	check(LocalBounds.IsValid);
 	const FVector Reach = LocalBounds.Min.GetAbs().ComponentMax(LocalBounds.Max.GetAbs());
-	FootprintRadius = FMath::Max(650.0f, float(Reach.Size2D()));
+	FootprintRadius = FMath::Max(130.0f, float(Reach.Size2D()));
 	SetCrowdCollisionQueryRange(PredictionDistance, false);
 	SetCrowdPathOptimizationRange(OptimizationDistance, false);
 	SetCrowdSeparationWeight(VehicleSeparationWeight, false);

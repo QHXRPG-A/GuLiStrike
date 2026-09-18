@@ -35,6 +35,6 @@ private:
 	UPROPERTY(Replicated) FGuLiControllableActorId StableId;
 	UPROPERTY(ReplicatedUsing=OnRep_Definition) TSubclassOf<AActor> PresentationClass;
 	UPROPERTY(ReplicatedUsing=OnRep_Definition) float PresentationScale = 1;
-	UPROPERTY(Replicated) float BaseSpeed = 4500;
+	UPROPERTY(Replicated) float BaseSpeed = 900;
 	UFUNCTION() void OnRep_Definition();
 };

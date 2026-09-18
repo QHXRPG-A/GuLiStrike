@@ -1,0 +1,1718 @@
+{
+  "success": true,
+  "layout_differences": [],
+  "unadapted": [],
+  "original_actor_count": 404,
+  "current_actor_count": 405,
+  "original_placed_foliage_instances": 3529,
+  "assets": [
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockTall1_Light.SM_RockTall1_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        460,
+        322,
+        206
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall1_Light.MI_RockTall1_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall1_Light.MI_RockTall1_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock3_Light.SM_Rock3_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        550,
+        384,
+        248
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock3_Light.MI_Rock3_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock3_Light.MI_Rock3_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock1_Light.SM_Rock1_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        336,
+        236,
+        152
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock1_Light.MI_Rock1_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock1_Light.MI_Rock1_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock",
+      "class": "Material",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Grass/SM_Grass.SM_Grass",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        37,
+        37,
+        37
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Grass/MI_Grass.MI_Grass"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Grass/MI_Grass.MI_Grass",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Grass/M_Grass.M_Grass",
+      "class": "Material",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTreeTall_Full.SM_PineTreeTall_Full",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        2138,
+        1496,
+        963
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineTallBark.MI_PineTallBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_HalfFull.SM_PineTree_HalfFull",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        2472,
+        1731,
+        1113
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBark.MI_PineBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Full.SM_PineTree_Full",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1770,
+        1238,
+        797
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBark.MI_PineBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/M_Leaf.M_Leaf",
+      "class": "Material",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineTallBark.MI_PineTallBark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBark.MI_PineBark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark",
+      "class": "Material",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockTall3_Light.SM_RockTall3_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        460,
+        322,
+        206
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall3_Light.MI_RockTall3_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall3_Light.MI_RockTall3_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodTop1.SM_WoodTop1",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        504,
+        352,
+        226
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodTop.SM_WoodTop",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        484,
+        338,
+        218
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodStairs.SM_WoodStairs",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        836,
+        586,
+        376
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodPlanks4.SM_WoodPlanks4",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        52,
+        52,
+        52
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodPlanks2.SM_WoodPlanks2",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        104,
+        72,
+        64
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodPlanks1.SM_WoodPlanks1",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        88,
+        64,
+        64
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodFenceSmall.SM_WoodFenceSmall",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        244,
+        170,
+        110
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodFenceLarge.SM_WoodFenceLarge",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        264,
+        184,
+        118
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodenPillar.SM_WoodenPillar",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        508,
+        356,
+        228
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodBeams3.SM_WoodBeams3",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        164,
+        115,
+        74
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodBeams2.SM_WoodBeams2",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        104,
+        72,
+        63
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodBeams1.SM_WoodBeams1",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        164,
+        115,
+        74
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/M_Wood.M_Wood",
+      "class": "Material",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Dead_White.SM_PineTree_Dead_White",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        2148,
+        1504,
+        967
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineDeadBark.MI_PineDeadBark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineDeadBark.MI_PineDeadBark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Dead_Brown.SM_PineTree_Dead_Brown",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        2148,
+        1504,
+        967
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineHalfFullBark.MI_PineHalfFullBark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineHalfFullBark.MI_PineHalfFullBark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Stump.SM_PineTree_Stump",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        618,
+        432,
+        278
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBark.MI_PineBrokenBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenArea.MI_BarkBrokenArea"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_BrokenTop.SM_PineTree_BrokenTop",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1574,
+        1102,
+        708
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBark.MI_PineBrokenBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenArea.MI_BarkBrokenArea"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Broken.SM_PineTree_Broken",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        2327,
+        1629,
+        1047
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBark.MI_PineBrokenBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafBroken.MI_LeafBroken",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenArea.MI_BarkBrokenArea"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBark.MI_PineBrokenBark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenArea.MI_BarkBrokenArea",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/StoneObjects/SM_StonePortal.SM_StonePortal",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        3584,
+        2508,
+        1612
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/StoneObjects/MI_StonePortal.MI_StonePortal"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/StoneObjects/MI_StonePortal.MI_StonePortal",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/StoneObjects/SM_StoneLantern.SM_StoneLantern",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1768,
+        1238,
+        796
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/StoneObjects/MI_StoneLantern.MI_StoneLantern"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/StoneObjects/MI_StoneLantern.MI_StoneLantern",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/StoneObjects/SM_StoneArch.SM_StoneArch",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        2158,
+        1510,
+        972
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/StoneObjects/MI_StoneArch.MI_StoneArch"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/StoneObjects/MI_StoneArch.MI_StoneArch",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_SmallRock1_Light.SM_SmallRock1_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        420,
+        294,
+        188
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_SmallRocks_Light.MI_SmallRocks_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_SmallRocks_Light.MI_SmallRocks_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RocksStacked2_Light.SM_RocksStacked2_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1140,
+        798,
+        512
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RocksStacked2_Light.MI_RocksStacked2_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RocksStacked2_Light.MI_RocksStacked2_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RocksStacked1_Light.SM_RocksStacked1_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1724,
+        1206,
+        776
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RocksStacked1_Light.MI_RocksStacked1_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RocksStacked1_Light.MI_RocksStacked1_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockLong4_Light.SM_RockLong4_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        764,
+        534,
+        344
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong4_Light.MI_RockLong4_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong4_Light.MI_RockLong4_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockLong3_Light.SM_RockLong3_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        422,
+        296,
+        190
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong3_Light.MI_RockLong3_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong3_Light.MI_RockLong3_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockLong2_Light.SM_RockLong2_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        458,
+        320,
+        206
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong2_Light.MI_RockLong2_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong2_Light.MI_RockLong2_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockLong1_Light.SM_RockLong1_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        438,
+        306,
+        198
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong1_Light.MI_RockLong1_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockLong1_Light.MI_RockLong1_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFormation5_Light.SM_RockFormation5_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        3318,
+        2322,
+        1494
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation5_Light.MI_RockFormation5_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation5_Light.MI_RockFormation5_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFormation4_Light.SM_RockFormation4_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1524,
+        1066,
+        686
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation4_Light.MI_RockFormation4_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation4_Light.MI_RockFormation4_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFormation3_Light.SM_RockFormation3_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1370,
+        958,
+        616
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation3_Light.MI_RockFormation3_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation3_Light.MI_RockFormation3_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFormation2_Light.SM_RockFormation2_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1678,
+        1174,
+        756
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation2_Light.MI_RockFormation2_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation2_Light.MI_RockFormation2_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFormation1_Light.SM_RockFormation1_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        338,
+        236,
+        152
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation1_Light.MI_RockFormation1_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFormation1_Light.MI_RockFormation1_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFlat3_Light.SM_RockFlat3_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        582,
+        408,
+        262
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFlat3_Light.MI_RockFlat3_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFlat3_Light.MI_RockFlat3_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFlat2_Light.SM_RockFlat2_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        518,
+        362,
+        234
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFlat2_Light.MI_RockFlat2_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFlat2_Light.MI_RockFlat2_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock7_Light.SM_Rock7_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        400,
+        280,
+        180
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock7_Light.MI_Rock7_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock7_Light.MI_Rock7_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock4_Light.SM_Rock4_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        338,
+        236,
+        152
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock4_Light.MI_Rock4_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock4_Light.MI_Rock4_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_SmallRock3_Dark.SM_SmallRock3_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        456,
+        320,
+        206
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_SmallRocks_Dark.MI_SmallRocks_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_SmallRock2_Dark.SM_SmallRock2_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        362,
+        254,
+        162
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_SmallRocks_Dark.MI_SmallRocks_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_SmallRock1_Dark.SM_SmallRock1_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        420,
+        294,
+        188
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_SmallRocks_Dark.MI_SmallRocks_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_SmallRocks_Dark.MI_SmallRocks_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockTall3_Dark.SM_RockTall3_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        460,
+        322,
+        206
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockTall3_Dark.MI_RockTall3_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockTall3_Dark.MI_RockTall3_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockTall2_Dark.SM_RockTall2_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        362,
+        254,
+        162
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockTall2_Dark.MI_RockTall2_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockTall2_Dark.MI_RockTall2_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockTall1_Dark.SM_RockTall1_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        460,
+        322,
+        206
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockTall1_Dark.MI_RockTall1_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockTall1_Dark.MI_RockTall1_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RocksStacked1_Dark.SM_RocksStacked1_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1724,
+        1206,
+        776
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RocksStacked1_Dark.MI_RocksStacked1_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RocksStacked1_Dark.MI_RocksStacked1_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockLong4_Dark.SM_RockLong4_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        764,
+        534,
+        344
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong4_Dark.MI_RockLong4_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong4_Dark.MI_RockLong4_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockLong3_Dark.SM_RockLong3_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        422,
+        296,
+        190
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong3_Dark.MI_RockLong3_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong3_Dark.MI_RockLong3_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockLong2_Dark.SM_RockLong2_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        458,
+        320,
+        206
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong2_Dark.MI_RockLong2_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong2_Dark.MI_RockLong2_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockLong1_Dark.SM_RockLong1_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        438,
+        306,
+        198
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong1_Dark.MI_RockLong1_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockLong1_Dark.MI_RockLong1_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFormation5_Dark.SM_RockFormation5_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        3318,
+        2322,
+        1494
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation5_Dark.MI_RockFormation5_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation5_Dark.MI_RockFormation5_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFormation4_Dark.SM_RockFormation4_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1524,
+        1066,
+        686
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation4_Dark.MI_RockFormation4_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation4_Dark.MI_RockFormation4_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFormation3_Dark.SM_RockFormation3_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1370,
+        958,
+        616
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation3_Dark.MI_RockFormation3_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation3_Dark.MI_RockFormation3_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFormation2_Dark.SM_RockFormation2_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1678,
+        1174,
+        756
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation2_Dark.MI_RockFormation2_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation2_Dark.MI_RockFormation2_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFormation1_Dark.SM_RockFormation1_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        338,
+        236,
+        152
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation1_Dark.MI_RockFormation1_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFormation1_Dark.MI_RockFormation1_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFlat3_Dark.SM_RockFlat3_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        582,
+        408,
+        262
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFlat3_Dark.MI_RockFlat3_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFlat3_Dark.MI_RockFlat3_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFlat2_Dark.SM_RockFlat2_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        518,
+        362,
+        234
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFlat2_Dark.MI_RockFlat2_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFlat2_Dark.MI_RockFlat2_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RockFlat1_Dark.SM_RockFlat1_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        562,
+        394,
+        252
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFlat1_Dark.MI_RockFlat1_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RockFlat1_Dark.MI_RockFlat1_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock7_Dark.SM_Rock7_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        400,
+        280,
+        180
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock7_Dark.MI_Rock7_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock7_Dark.MI_Rock7_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock6_Dark.SM_Rock6_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        390,
+        272,
+        176
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock6_Dark.MI_Rock6_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock6_Dark.MI_Rock6_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock5_Dark.SM_Rock5_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        386,
+        270,
+        174
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock5_Dark.MI_Rock5_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock5_Dark.MI_Rock5_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock4_Dark.SM_Rock4_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        338,
+        236,
+        152
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock4_Dark.MI_Rock4_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock4_Dark.MI_Rock4_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock3_Dark.SM_Rock3_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        550,
+        384,
+        248
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock3_Dark.MI_Rock3_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock3_Dark.MI_Rock3_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock2_dark.SM_Rock2_dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        390,
+        272,
+        176
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock2_Dark.MI_Rock2_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock2_Dark.MI_Rock2_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_Rock1_Dark.SM_Rock1_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        336,
+        236,
+        152
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock1_Dark.MI_Rock1_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_Rock1_Dark.MI_Rock1_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Flowers/SM_Flower3.SM_Flower3",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        40,
+        40,
+        40
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Stem.MI_Stem",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Flower3.MI_Flower3"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Flower3.MI_Flower3",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Flowers/SM_Flower2.SM_Flower2",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        40,
+        40,
+        40
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Stem.MI_Stem",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Flower2.MI_Flower2"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Flower2.MI_Flower2",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Flowers/SM_Flower1.SM_Flower1",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        40,
+        40,
+        40
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Stem.MI_Stem",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Flower1.MI_Flower1"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Stem.MI_Stem",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/MI_Flower1.MI_Flower1",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/M_Flower.M_Flower",
+      "class": "Material",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Fern/SM_Fern3.SM_Fern3",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        160,
+        112,
+        72
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Fern.MI_Fern"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Fern/SM_Fern2.SM_Fern2",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        160,
+        112,
+        72
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Fern.MI_Fern"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Fern/SM_Fern1.SM_Fern1",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        340,
+        237,
+        153
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Fern.MI_Fern"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Fern.MI_Fern",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Bush/SM_Bush3.SM_Bush3",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        420,
+        294,
+        189
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Bush.MI_Bush"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Bush/SM_Bush2.SM_Bush2",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        610,
+        427,
+        275
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Bush.MI_Bush"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Bush/SM_Bush1.SM_Bush1",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        444,
+        310,
+        200
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Bush.MI_Bush"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Bush.MI_Bush",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Landscape/MI_Landscape.MI_Landscape",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Landscape/M_Landscape.M_Landscape",
+      "class": "Material",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Misc/LandscapeGrassTypes/LGT_Placeable.LGT_Placeable",
+      "class": "LandscapeGrassType",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafBroken.MI_LeafBroken",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Decals/MI_Glyph.MI_Glyph",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Decals/M_Glyph.M_Glyph",
+      "class": "Material",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Misc/LandscapeGrassTypes/LGT_Auto.LGT_Auto",
+      "class": "LandscapeGrassType",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenAreaWhite.MI_BarkBrokenAreaWhite",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBarkWhite.MI_PineBrokenBarkWhite",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RocksStacked2_Dark.MI_RocksStacked2_Dark",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock2_Light.MI_Rock2_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock5_Light.MI_Rock5_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock6_Light.MI_Rock6_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFlat1_Light.MI_RockFlat1_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall2_Light.MI_RockTall2_Light",
+      "class": "MaterialInstanceConstant",
+      "adapted": true
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_RocksStacked2_Dark.SM_RocksStacked2_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1140,
+        798,
+        512
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_RocksStacked2_Dark.MI_RocksStacked2_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Dark/SM_SmallRock4_Dark.SM_SmallRock4_Dark",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        442,
+        310,
+        198
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Dark/MI_SmallRocks_Dark.MI_SmallRocks_Dark"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock2_Light.SM_Rock2_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        390,
+        272,
+        176
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock2_Light.MI_Rock2_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock5_Light.SM_Rock5_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        386,
+        270,
+        174
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock5_Light.MI_Rock5_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock6_Light.SM_Rock6_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        390,
+        272,
+        176
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock6_Light.MI_Rock6_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockFlat1_Light.SM_RockFlat1_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        562,
+        394,
+        252
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockFlat1_Light.MI_RockFlat1_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockTall2_Light.SM_RockTall2_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        362,
+        254,
+        162
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall2_Light.MI_RockTall2_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_SmallRock2_Light.SM_SmallRock2_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        362,
+        254,
+        162
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_SmallRocks_Light.MI_SmallRocks_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_SmallRock3_Light.SM_SmallRock3_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        456,
+        320,
+        206
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_SmallRocks_Light.MI_SmallRocks_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_SmallRock4_Light.SM_SmallRock4_Light",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        442,
+        310,
+        198
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_SmallRocks_Light.MI_SmallRocks_Light"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_BrokenTop_Dead.SM_PineTree_BrokenTop_Dead",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        1574,
+        1102,
+        708
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBarkWhite.MI_PineBrokenBarkWhite",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenAreaWhite.MI_BarkBrokenAreaWhite"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Stump_Dead.SM_PineTree_Stump_Dead",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        618,
+        432,
+        278
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBrokenBarkWhite.MI_PineBrokenBarkWhite",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_BarkBrokenAreaWhite.MI_BarkBrokenAreaWhite"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodPlanks3.SM_WoodPlanks3",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        44,
+        44,
+        44
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    },
+    {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/WoodenStructures/SM_WoodTop2.SM_WoodTop2",
+      "class": "StaticMesh",
+      "adapted": true,
+      "lod_triangles": [
+        312,
+        218,
+        140
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/MI_Wood.MI_Wood"
+      ]
+    }
+  ],
+  "material_diagnostics": {
+    "/Game/StylizedPineEnvironment/Assets/Materials/Rock/M_Rock.M_Rock": {
+      "available": true,
+      "compiled_ok": true,
+      "errors": "[]",
+      "referenced_textures": []
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/Grass/M_Grass.M_Grass": {
+      "available": true,
+      "compiled_ok": true,
+      "errors": "[]",
+      "referenced_textures": [
+        "/Engine/EngineMaterials/Good64x64TilingNoiseHighFreq.Good64x64TilingNoiseHighFreq"
+      ]
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/M_Leaf.M_Leaf": {
+      "available": true,
+      "compiled_ok": true,
+      "errors": "[]",
+      "referenced_textures": [
+        "/Game/StylizedPineEnvironment/Assets/Textures/Leaves/T_PineLeaf.T_PineLeaf"
+      ]
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/Bark/M_Bark.M_Bark": {
+      "available": true,
+      "compiled_ok": true,
+      "errors": "[]",
+      "referenced_textures": []
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/WoodStructures/M_Wood.M_Wood": {
+      "available": true,
+      "compiled_ok": true,
+      "errors": "[]",
+      "referenced_textures": []
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/Flowers/M_Flower.M_Flower": {
+      "available": true,
+      "compiled_ok": true,
+      "errors": "[]",
+      "referenced_textures": [
+        "/Game/StylizedPineEnvironment/Assets/Textures/Flowers/T_Flower1.T_Flower1"
+      ]
+    },
+    "/Game/StylizedPineEnvironment/Assets/Materials/Landscape/M_Landscape.M_Landscape": {
+      "available": true,
+      "compiled_ok": true,
+      "errors": "[]",
+      "referenced_textures": []
+    },
+    "/Game/StylizedPineEnvironment/Assets/Decals/M_Glyph.M_Glyph": {
+      "available": true,
+      "compiled_ok": true,
+      "errors": "[]",
+      "referenced_textures": [
+        "/Game/StylizedPineEnvironment/Assets/Decals/T_Glyph.T_Glyph"
+      ]
+    }
+  },
+  "dirty": {
+    "maps": [],
+    "content": []
+  },
+  "user_visual_approval": "v1 approved; full Demo_Map pending",
+  "performance": "GPU and draw calls not measured; LOD counts are geometry accounting only",
+  "source_meshes": "Existing supplied UE meshes; no invented Blender/FBX sources"
+}

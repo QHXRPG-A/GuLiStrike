@@ -1,0 +1,363 @@
+{
+  "pid": 20328,
+  "started": 1789710489.2076197,
+  "maps": [
+    {
+      "map": "/Game/Maps/LVL_ShipTest",
+      "started": 1789710489.3957918,
+      "ground_parameters_before": [],
+      "configuration": {
+        "entries": [
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.0,
+            "kind": "FlightScale020",
+            "message": "Radius 300.000 -> 300.000; portal 25.000 -> 5.000; bounds/cells unchanged",
+            "object_path": "/Game/Maps/LVL_ShipTest.LVL_ShipTest:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "",
+            "status": "Configured"
+          }
+        ],
+        "flight_rebuilds": 0,
+        "ground_rebuilds": 0,
+        "message": "Scale020 configured; rebuild and validation still required.",
+        "save_seconds": 0.0,
+        "success": true,
+        "total_seconds": 0.0
+      },
+      "prepare": {
+        "entries": [
+          {
+            "build_seconds": 0.028786897659301758,
+            "check_seconds": 0.00026760000037029386,
+            "kind": "Flight",
+            "message": "Decoded flight-navigation BulkData failed its deterministic content checksum.",
+            "object_path": "/Game/Maps/LVL_ShipTest.LVL_ShipTest:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "e7edd97acd4785eb",
+            "status": "Rebuilt"
+          }
+        ],
+        "flight_rebuilds": 1,
+        "ground_rebuilds": 0,
+        "message": "All source navigation is ready.",
+        "save_seconds": 0.08949410170316696,
+        "success": true,
+        "total_seconds": 0.1927134022116661
+      },
+      "finished": 1789710489.622338,
+      "validation": {
+        "entries": [
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.0012912000020151027,
+            "kind": "Flight",
+            "message": "Validated saved flight graph.",
+            "object_path": "/Game/Maps/LVL_ShipTest.LVL_ShipTest:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "e7edd97acd4785eb",
+            "status": "Hit"
+          }
+        ],
+        "flight_rebuilds": 0,
+        "ground_rebuilds": 0,
+        "message": "",
+        "save_seconds": 0.0,
+        "success": true,
+        "total_seconds": 0.0013274997472763062
+      }
+    },
+    {
+      "map": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype",
+      "started": 1789710500.0705657,
+      "ground_parameters_before": [
+        {
+          "path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.RecastNavMesh-Default",
+          "tile_size_uu": 5000.0,
+          "cell_size": {
+            "unavailable": "RecastNavMesh: Property 'CellSize' for attribute 'cell_size' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "cell_height": {
+            "unavailable": "RecastNavMesh: Property 'CellHeight' for attribute 'cell_height' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "agent_radius": 6.800000190734863,
+          "agent_height": 28.799999237060547,
+          "agent_max_step_height": {
+            "unavailable": "RecastNavMesh: Property 'AgentMaxStepHeight' for attribute 'agent_max_step_height' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "nav_mesh_resolution_params": "[{}, {}, {}]",
+          "tile_pool_size": 1024
+        },
+        {
+          "path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "tile_size_uu": 5000.0,
+          "cell_size": {
+            "unavailable": "RecastNavMesh: Property 'CellSize' for attribute 'cell_size' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "cell_height": {
+            "unavailable": "RecastNavMesh: Property 'CellHeight' for attribute 'cell_height' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "agent_radius": 150.0,
+          "agent_height": 28.799999237060547,
+          "agent_max_step_height": {
+            "unavailable": "RecastNavMesh: Property 'AgentMaxStepHeight' for attribute 'agent_max_step_height' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "nav_mesh_resolution_params": "[{}, {}, {}]",
+          "tile_pool_size": 1024
+        }
+      ],
+      "configuration": {
+        "entries": [
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.0,
+            "kind": "GroundScale020",
+            "message": "Radius 150.000 -> 150.000; height 28.800 -> 28.800; cellZ=5; step=7.000; XY unchanged",
+            "object_path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+            "source_hash": "",
+            "status": "Configured"
+          },
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.0,
+            "kind": "GroundScale020",
+            "message": "Radius 6.800 -> 6.800; height 28.800 -> 28.800; cellZ=5; step=7.000; XY unchanged",
+            "object_path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.RecastNavMesh-Default",
+            "source_hash": "",
+            "status": "Configured"
+          },
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.0,
+            "kind": "FlightScale020",
+            "message": "Radius 300.000 -> 300.000; portal 25.000 -> 5.000; bounds/cells unchanged",
+            "object_path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "",
+            "status": "Configured"
+          }
+        ],
+        "flight_rebuilds": 0,
+        "ground_rebuilds": 0,
+        "message": "Scale020 configured; rebuild and validation still required.",
+        "save_seconds": 0.0,
+        "success": true,
+        "total_seconds": 0.0
+      },
+      "prepare": {
+        "entries": [
+          {
+            "build_seconds": 100.27064020186663,
+            "check_seconds": 0.27413610000076005,
+            "kind": "Ground",
+            "message": "Source geometry/settings changed, or no versioned bake record exists.",
+            "object_path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+            "source_hash": "9ab552da3426585e",
+            "status": "Rebuilt"
+          },
+          {
+            "build_seconds": 97.7964835986495,
+            "check_seconds": 0.2716590999989421,
+            "kind": "Ground",
+            "message": "Source geometry/settings changed, or no versioned bake record exists.",
+            "object_path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.RecastNavMesh-Default",
+            "source_hash": "3eaccfc396dc452c",
+            "status": "Rebuilt"
+          },
+          {
+            "build_seconds": 12.675609599798918,
+            "check_seconds": 0.2609264999991865,
+            "kind": "Flight",
+            "message": "Decoded flight-navigation BulkData failed its deterministic content checksum.",
+            "object_path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "a1c28990d78bf4ea",
+            "status": "Rebuilt"
+          }
+        ],
+        "flight_rebuilds": 1,
+        "ground_rebuilds": 2,
+        "message": "All source navigation is ready.",
+        "save_seconds": 67.46890889853239,
+        "success": true,
+        "total_seconds": 282.91547099873424
+      },
+      "finished": 1789710783.014216,
+      "validation": {
+        "entries": [
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.302581600000849,
+            "kind": "Ground",
+            "message": "Validated saved ground tiles.",
+            "object_path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+            "source_hash": "9ab552da3426585e",
+            "status": "Hit"
+          },
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.3330417999968631,
+            "kind": "Ground",
+            "message": "Validated saved ground tiles.",
+            "object_path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.RecastNavMesh-Default",
+            "source_hash": "3eaccfc396dc452c",
+            "status": "Hit"
+          },
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.5670601000019815,
+            "kind": "Flight",
+            "message": "Validated saved flight graph.",
+            "object_path": "/Game/Maps/LVL_ShipWingmanAirCombatPrototype.LVL_ShipWingmanAirCombatPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "a1c28990d78bf4ea",
+            "status": "Hit"
+          }
+        ],
+        "flight_rebuilds": 0,
+        "ground_rebuilds": 0,
+        "message": "",
+        "save_seconds": 0.0,
+        "success": true,
+        "total_seconds": 1.202769499272108
+      }
+    },
+    {
+      "map": "/Game/Maps/LVL_Main",
+      "started": 1789710789.3595748,
+      "ground_parameters_before": [],
+      "configuration": {
+        "entries": [
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.0,
+            "kind": "FlightScale020",
+            "message": "Radius 300.000 -> 300.000; portal 25.000 -> 5.000; bounds/cells unchanged",
+            "object_path": "/Game/Maps/LVL_Main.LVL_Main:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "",
+            "status": "Configured"
+          }
+        ],
+        "flight_rebuilds": 0,
+        "ground_rebuilds": 0,
+        "message": "Scale020 configured; rebuild and validation still required.",
+        "save_seconds": 0.0,
+        "success": true,
+        "total_seconds": 0.0
+      },
+      "prepare": {
+        "entries": [
+          {
+            "build_seconds": 11.656813099980354,
+            "check_seconds": 0.2680037000027369,
+            "kind": "Flight",
+            "message": "Decoded flight-navigation BulkData failed its deterministic content checksum.",
+            "object_path": "/Game/Maps/LVL_Main.LVL_Main:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "45e14ff76721e614",
+            "status": "Rebuilt"
+          }
+        ],
+        "flight_rebuilds": 1,
+        "ground_rebuilds": 0,
+        "message": "All source navigation is ready.",
+        "save_seconds": 66.5311607979238,
+        "success": true,
+        "total_seconds": 82.26880440115929
+      },
+      "finished": 1789710871.660171,
+      "validation": {
+        "entries": [
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.6046067000061157,
+            "kind": "Flight",
+            "message": "Validated saved flight graph.",
+            "object_path": "/Game/Maps/LVL_Main.LVL_Main:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "45e14ff76721e614",
+            "status": "Hit"
+          }
+        ],
+        "flight_rebuilds": 0,
+        "ground_rebuilds": 0,
+        "message": "",
+        "save_seconds": 0.0,
+        "success": true,
+        "total_seconds": 0.6046486012637615
+      }
+    },
+    {
+      "map": "/Game/Maps/LVL_CommanderMassPrototype",
+      "started": 1789710881.2752755,
+      "ground_parameters_before": [
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+          "tile_size_uu": 5000.0,
+          "cell_size": {
+            "unavailable": "RecastNavMesh: Property 'CellSize' for attribute 'cell_size' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "cell_height": {
+            "unavailable": "RecastNavMesh: Property 'CellHeight' for attribute 'cell_height' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "agent_radius": 6.800000190734863,
+          "agent_height": 28.799999237060547,
+          "agent_max_step_height": {
+            "unavailable": "RecastNavMesh: Property 'AgentMaxStepHeight' for attribute 'agent_max_step_height' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "nav_mesh_resolution_params": "[{}, {}, {}]",
+          "tile_pool_size": 1024
+        },
+        {
+          "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+          "tile_size_uu": 5000.0,
+          "cell_size": {
+            "unavailable": "RecastNavMesh: Property 'CellSize' for attribute 'cell_size' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "cell_height": {
+            "unavailable": "RecastNavMesh: Property 'CellHeight' for attribute 'cell_height' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "agent_radius": 150.0,
+          "agent_height": 28.799999237060547,
+          "agent_max_step_height": {
+            "unavailable": "RecastNavMesh: Property 'AgentMaxStepHeight' for attribute 'agent_max_step_height' on 'RecastNavMesh' is protected and cannot be read"
+          },
+          "nav_mesh_resolution_params": "[{}, {}, {}]",
+          "tile_pool_size": 1024
+        }
+      ],
+      "configuration": {
+        "entries": [
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.0,
+            "kind": "GroundScale020",
+            "message": "Radius 150.000 -> 150.000; height 28.800 -> 28.800; cellZ=5; step=7.000; XY unchanged",
+            "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+            "source_hash": "",
+            "status": "Configured"
+          },
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.0,
+            "kind": "GroundScale020",
+            "message": "Radius 6.800 -> 6.800; height 28.800 -> 28.800; cellZ=5; step=7.000; XY unchanged",
+            "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+            "source_hash": "",
+            "status": "Configured"
+          },
+          {
+            "build_seconds": 0.0,
+            "check_seconds": 0.0,
+            "kind": "FlightScale020",
+            "message": "Radius 300.000 -> 300.000; portal 25.000 -> 5.000; bounds/cells unchanged",
+            "object_path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiFlightNavigationVolume_0",
+            "source_hash": "",
+            "status": "Configured"
+          }
+        ],
+        "flight_rebuilds": 0,
+        "ground_rebuilds": 0,
+        "message": "Scale020 configured; rebuild and validation still required.",
+        "save_seconds": 0.0,
+        "success": true,
+        "total_seconds": 0.0
+      }
+    }
+  ],
+  "success": false,
+  "current": "/Game/Maps/LVL_CommanderMassPrototype"
+}

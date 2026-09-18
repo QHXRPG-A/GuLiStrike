@@ -599,11 +599,14 @@ bool AGuLiCommanderPlayerController::BuildPointSelectionRequest(FGuLiSelectionRe
 		if (!Soldier.IsAlive() || Soldier.Team != State->GetTeam()) continue;
 		FTransform Transform;
 		if (!Presentation->TryGetPresentedSoldierTransform(Soldier.SoldierId, Transform)) continue;
-		const FVector Foot = Transform.GetLocation();
+		const FBox Bounds = Presentation->GetUnitModelBoundsCentimeters(Soldier.UnitTypeId).TransformBy(Transform);
+		if (!Bounds.IsValid) continue;
+		const FVector Foot(Bounds.GetCenter().X, Bounds.GetCenter().Y, Bounds.Min.Z);
+		const double ModelRadius = FMath::Max(Bounds.GetExtent().X, Bounds.GetExtent().Y);
 		FVector2D Bottom, Top, Edge;
 		if (!ProjectWorldLocationToScreen(Foot, Bottom)
-			|| !ProjectWorldLocationToScreen(Foot + FVector(0, 0, 1000), Top)
-			|| !ProjectWorldLocationToScreen(Foot + GetControlRotation().RotateVector(FVector(0, 750, 0)), Edge)) continue;
+			|| !ProjectWorldLocationToScreen(Foot + FVector(0, 0, Bounds.GetSize().Z), Top)
+			|| !ProjectWorldLocationToScreen(Foot + GetControlRotation().RotateVector(FVector(0, ModelRadius, 0)), Edge)) continue;
 		const FVector2D Mouse(MouseX, MouseY);
 		const FVector2D Segment = Top - Bottom;
 		const double Alpha = Segment.SizeSquared() > UE_SMALL_NUMBER
@@ -1168,6 +1171,14 @@ bool AGuLiCommanderPlayerController::ProcessMoveCommandAck(const FGuLiCommandAck
 	}
 	if (!Decision.bUpdateCommandLine)
 	{
+		return true;
+	}
+	if (Ack.Result == EGuLiCommandAckResult::Cancelled || Ack.Result == EGuLiCommandAckResult::TimedOut)
+	{
+		CommandLineState = EGuLiCommandLineState::None;
+		CommandLineExpireTime = 0.0;
+		LastVisualizedMoveCommandId = Ack.ClientCommandId;
+		LatestMoveIntentCommandId = 0u;
 		return true;
 	}
 

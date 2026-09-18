@@ -8,9 +8,9 @@
 
 namespace
 {
-	constexpr double ConstraintHoldPositionToleranceCentimeters = 2.0;
-	constexpr double ConstraintHoldSpeedToleranceCentimetersPerSecond = 2.0;
-	constexpr double EmergencyLowSpeedThresholdCentimetersPerSecond = 100.0;
+	constexpr double ConstraintHoldPositionToleranceCentimeters = 0.4;
+	constexpr double ConstraintHoldSpeedToleranceCentimetersPerSecond = 0.4;
+	constexpr double EmergencyLowSpeedThresholdCentimetersPerSecond = 20.0;
 	constexpr double EmergencyLowSpeedHistorySeconds = 1.5;
 	constexpr double EmergencyRebaseCooldownSeconds = 5.0;
 	constexpr double EmergencyRebaseRetrySeconds = 1.0;

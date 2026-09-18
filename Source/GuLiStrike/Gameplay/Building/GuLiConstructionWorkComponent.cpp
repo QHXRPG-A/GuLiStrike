@@ -20,8 +20,8 @@ bool UGuLiConstructionWorkComponent::AssignBuilding(UGuLiBuildingLifecycleCompon
 	StopWork();
 	const FVector Ground = Building.GetGroundLocation();
 	const FVector Direction = (GetOwner()->GetActorLocation() - Ground).GetSafeNormal2D();
-	WorkPosition = Ground + Direction * (Building.GetDefinition().CollisionExtent.Size2D() + 1200);
-	if (!GetOwner()->FindComponentByClass<UGuLiEngineeringTravelComponent>()->BeginMove(WorkPosition, 500)) return false;
+	WorkPosition = Ground + Direction * (Building.GetDefinition().CollisionExtent.Size2D() + 240);
+	if (!GetOwner()->FindComponentByClass<UGuLiEngineeringTravelComponent>()->BeginMove(WorkPosition, 100)) return false;
 	Target = &Building; SetComponentTickEnabled(true); return true;
 }
 void UGuLiConstructionWorkComponent::StopWork()
@@ -37,6 +37,6 @@ void UGuLiConstructionWorkComponent::TickComponent(float Dt, ELevelTick TickType
 		|| !GetOwner()->FindComponentByClass<UGuLiCombatHealthComponent>()->IsAlive()) { StopWork(); return; }
 	if (UGuLiExternalUnitControlComponent::AreActorActionsLocked(GetOwner())) return;
 	if (GetOwner()->FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsRouting()) return;
-	if (FVector::Dist2D(GetOwner()->GetActorLocation(), WorkPosition) <= 1600)
+	if (FVector::Dist2D(GetOwner()->GetActorLocation(), WorkPosition) <= 320)
 		Building->AddConstructionWork(Dt);
 }

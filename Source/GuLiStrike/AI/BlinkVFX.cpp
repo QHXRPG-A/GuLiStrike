@@ -112,7 +112,7 @@ void ABlinkVFX::InitializeFromCharacter(
 	}
 
 	// 热波从较小尺寸开始，在 Tick 中快速扩张。
-	HeatwaveMesh->SetRelativeScale3D(FVector(0.25f));
+	HeatwaveMesh->SetRelativeScale3D(FVector(0.05f));
 }
 
 void ABlinkVFX::Tick(float DeltaTime)
@@ -137,7 +137,7 @@ void ABlinkVFX::Tick(float DeltaTime)
 	}
 
 	// EaseOut 让热波先快速扩张，结束时自然减速。
-	const float HeatwaveScale = FMath::InterpEaseOut(0.25f, 2.4f, Progress, 2.0f);
+	const float HeatwaveScale = FMath::InterpEaseOut(0.05f, 0.48f, Progress, 2.0f);
 	HeatwaveMesh->SetRelativeScale3D(FVector(HeatwaveScale));
 
 	if (Progress >= 1.0f)

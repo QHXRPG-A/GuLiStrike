@@ -45,8 +45,8 @@ namespace GuLiCommanderNetworkGateValidation
 	inline constexpr int32 RequiredJitterMilliseconds = 30;
 	inline constexpr int32 RequiredLossPercent = 5;
 	inline constexpr int32 RequiredPresentedStepSamples = 20;
-	inline constexpr double RequiredPresentedTravelDistanceCentimeters = 300.0;
-	inline constexpr double MaximumPresentedStepP95Centimeters = 100.0;
+	inline constexpr double RequiredPresentedTravelDistanceCentimeters = 60.0;
+	inline constexpr double MaximumPresentedStepP95Centimeters = 20.0;
 	inline constexpr double MaximumSeedPoseGapSeconds = 0.5;
 
 	// 只读取当前 PacketSimulationSettings 生成证据，不会替调用者开启网络模拟。

@@ -1,0 +1,118 @@
+{
+  "generated_local": "2026-09-18T16:47:15.422242+08:00",
+  "overall": "partial_not_accepted",
+  "scale": 0.2,
+  "counts": {
+    "Excel": 170,
+    "C++": 204,
+    "UE资产": 191,
+    "VFX C++": 7
+  },
+  "comparison_entries": 572,
+  "comparison_scope": "Explicit manifests; not a complete source diff",
+  "automation": {
+    "report": "Automation-10",
+    "passed": 167,
+    "failed": 0,
+    "not_run": 0,
+    "failures": [],
+    "scale_tests": [
+      {
+        "name": "GuLiStrike.Scale020.ClientInterpolation.CharacterMovement",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Scale020.ClientInterpolation.Mass",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Scale020.ClientInterpolation.Wingman",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Scale020.EffectRadiusAndTiming",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Scale020.FactoryDoorIsPresentationOnly",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Scale020.FrozenPointRadiusAndDamageBoundary",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Scale020.GroundWarningPoolingAndRadius",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Scale020.ModelTransformAndMounts",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Scale020.NetworkResolution",
+        "state": "Success"
+      }
+    ],
+    "passed_with_warnings": 5,
+    "warning_tests": [
+      {
+        "name": "GuLiStrike.Building.BuildingWorldTests",
+        "count": 7
+      },
+      {
+        "name": "GuLiStrike.Commander.Data.SoldierResolver.FloatHealthBoundaries",
+        "count": 1
+      },
+      {
+        "name": "GuLiStrike.Commander.Data.SoldierResolver.InvalidValuesFallback",
+        "count": 4
+      },
+      {
+        "name": "GuLiStrike.Commander.Data.SoldierResolver.MissingTableAndRowFallback",
+        "count": 2
+      },
+      {
+        "name": "GuLiStrike.Ship.Parts.InstallationRollback",
+        "count": 2
+      }
+    ]
+  },
+  "builds": {
+    "editor": "Build-Editor-23.log",
+    "game": "Build-Game-12.log",
+    "build_id": {
+      "project": "dd506ae0-11d1-48e9-95ed-8becd4c36a75",
+      "engine": "dd506ae0-11d1-48e9-95ed-8becd4c36a75",
+      "match": true
+    }
+  },
+  "q": {
+    "passed": true,
+    "checks": 275
+  },
+  "demo": {
+    "original_actors": 405,
+    "unchanged": true,
+    "review_actors": 10
+  },
+  "navigation_cold_all_passed": true,
+  "ore": {
+    "nodes": 6240,
+    "clusters": 240,
+    "checks_passed": true
+  },
+  "mining_latest_success": true,
+  "factory_door": {
+    "policy": "presentation_only",
+    "cold_readback_success": true,
+    "repeat_changed": false,
+    "runtime_two_client_policy_passed": true,
+    "report": "factory-door-collision-repeat.json"
+  },
+  "pending": [
+    "实际移动编队、Ship/僚机飞行重生、建造出兵、空运、护盾、占领和传送的完整运行矩阵尚未全部完成。",
+    "原地图陡坡路线与蓝图空间音效衰减需补充验证；未扩大压力测试。",
+    "用户视觉审核尚未进行。技术测试与视觉批准分别记录。"
+  ]
+}

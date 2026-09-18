@@ -1,0 +1,175 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "E5779F7D4528A18C6F6AB4A94DD641E4",
+			"instanceName": "DESKTOP-6D3B0FC-38880",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.18-05.48.06",
+	"succeeded": 2,
+	"succeededWithWarnings": 0,
+	"failed": 2,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.29804998636245728,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AutomaticFlightRebakeAndReachability",
+			"fullTestPath": "GuLi.NavigationBake.AutomaticFlightRebakeAndReachability",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E5779F7D4528A18C6F6AB4A94DD641E4"
+			],
+			"duration": 0.06176140159368515,
+			"dateTime": "2026.09.18-05.48.05",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollisionTerrainAndSettingsSignature",
+			"fullTestPath": "GuLi.NavigationBake.CollisionTerrainAndSettingsSignature",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E5779F7D4528A18C6F6AB4A94DD641E4"
+			],
+			"duration": 0.013208501040935516,
+			"dateTime": "2026.09.18-05.48.05",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FactoryRampGroundContract",
+			"fullTestPath": "GuLi.NavigationBake.FactoryRampGroundContract",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"E5779F7D4528A18C6F6AB4A94DD641E4"
+			],
+			"duration": 0.20985549688339233,
+			"dateTime": "2026.09.18-05.48.05",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogStreaming: FlushAsyncLoading(334): 1 QueuedPackages, 0 AsyncPackages",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-05.48.06"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Original western slot is retained as first candidate' to be 105000.000000, but it was 110600.000000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrikeEditor\\Private\\Tests\\GuLiNavigationBakeTests.cpp",
+					"lineNumber": 338,
+					"timestamp": "2026.09.18-05.48.06"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroundCacheAndDynamicReachability",
+			"fullTestPath": "GuLi.NavigationBake.GroundCacheAndDynamicReachability",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"E5779F7D4528A18C6F6AB4A94DD641E4"
+			],
+			"duration": 0.013224601745605469,
+			"dateTime": "2026.09.18-05.48.06",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=AssetCompilation world=/Temp/Untitled_4.GuLiNavigationBakeTest",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-05.48.06"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogNavigationDataBuild: UNavigationSystemV1::Build started...",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-05.48.06"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogNavigationDataBuild: UNavigationSystemV1::Build total execution time: 0.00s",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-05.48.06"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] result=Failed world=/Temp/Untitled_4.GuLiNavigationBakeTest ground_rebuilds=0 flight_rebuilds=0 save_s=0.000000 total_s=0.000530 reason=Cannot create required ground navigation data.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-05.48.06"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Cannot create required ground navigation data.' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrikeEditor\\Private\\Tests\\GuLiNavigationBakeTests.cpp",
+					"lineNumber": 111,
+					"timestamp": "2026.09.18-05.48.06"
+				}
+			],
+			"warnings": 0,
+			"errors": 1,
+			"artifacts": []
+		}
+	]
+}

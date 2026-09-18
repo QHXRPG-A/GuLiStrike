@@ -32,7 +32,7 @@ public:
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") FName GroundExplosionScaleParameter = TEXT("User.Scale");
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") FName WingmanExplosionScaleParameter;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="1")) int32 MaximumConcurrentExplosions = 64;
-	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0")) float CullDistance = 180000.0f;
+	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0")) float CullDistance = 36000.0f;
 	/** Art calibration for the smallest model in the soldier catalog; model sizes are never hardcoded. */
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0.001")) float ReferenceExplosionScale = 1.0f;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0", Units="s")) float HealthBarHoldSeconds = 3.0f;

@@ -4,6 +4,7 @@
 bool UGuLiSpellFieldDefinition::IsValidDefinition() const
 {
 	return FMath::IsFinite(Radius) && Radius > 0 && Radius <= 100000
+		&& FMath::IsFinite(VisualReferenceRadius) && VisualReferenceRadius > 0
 		&& FMath::IsFinite(Delay) && Delay >= 0 && Delay <= 120
 		&& FMath::IsFinite(Duration) && Duration >= 0.033f && Duration <= 120
 		&& FMath::IsFinite(PulseInterval) && PulseInterval >= 0.033f && PulseInterval <= 120

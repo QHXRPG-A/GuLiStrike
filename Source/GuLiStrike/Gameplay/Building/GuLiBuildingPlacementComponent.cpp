@@ -37,8 +37,8 @@ namespace GuLiBuildingPlacement
 	constexpr float CommanderTraceDistanceCentimeters = 600000.0f;
 	constexpr float ServerGroundTraceUpCentimeters = 5000.0f;
 	constexpr float ServerGroundTraceDownCentimeters = 5000.0f;
-	constexpr float GroundContactToleranceCentimeters = 100.0f;
-	constexpr float CollisionGroundEpsilonCentimeters = 2.0f;
+	constexpr float GroundContactToleranceCentimeters = 20.0f;
+	constexpr float CollisionGroundEpsilonCentimeters = 0.4f;
 
 	uint32 AllocateNonZeroRequestId(uint32& NextId)
 	{
@@ -1000,7 +1000,7 @@ namespace GuLiBuildingPIEQA
 		const APawn* Pawn = PlayerController.GetPawn();
 		const FVector Anchor = Pawn ? Pawn->GetActorLocation() : FVector::ZeroVector;
 		TArray<FVector2D> Offsets;
-		for (float Radius = 3000.0f; Radius <= 18000.0f; Radius += 3000.0f)
+		for (float Radius = 600.0f; Radius <= 3600.0f; Radius += 600.0f)
 		{
 			for (int32 DirectionIndex = 0; DirectionIndex < 8; ++DirectionIndex)
 			{

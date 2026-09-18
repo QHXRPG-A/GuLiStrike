@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>GuLiStrike · 局内光照对照</title>
+<style>
+:root{color-scheme:dark;font-family:system-ui,"Microsoft YaHei",sans-serif}body{margin:0;background:#141b25;color:#e5edf5}main{max-width:1440px;margin:auto;padding:32px 24px 60px}h1{font-size:28px;margin:0 0 10px}h2{font-size:21px;margin-top:34px}p{color:#bac8d7;line-height:1.7}a{color:#76cfdf}.tag{display:inline-block;padding:5px 12px;border-radius:16px;background:#293b46;color:#a9e5d4;margin-right:8px}.pair{display:grid;grid-template-columns:1fr 1fr;gap:16px}figure{margin:0;border:1px solid #334154;background:#1c2735;border-radius:10px;overflow:hidden}img{display:block;width:100%;height:auto}figcaption{padding:12px 16px;font-size:14px;line-height:1.6}.note{border-left:3px solid #e6b766;padding:12px 18px;background:#292920}.ref{max-width:960px}.links{margin-top:28px}@media(max-width:800px){.pair{grid-template-columns:1fr}main{padding:20px 12px}}
+</style></head><body><main>
+<h1>局内光照 · 对齐 Demo_Map</h1>
+<p><span class="tag">两张玩法地图已保存</span><span class="tag">用户视觉复核待确认</span>2026-09-18 · 实际 UE 游戏画面</p>
+<p>固定局内 EV100=0，清除空战关卡遗留的压暗色调。模型、材质、镜头配置及地图布局保持；Demo_Map 未修改。</p>
+<h2>指挥官 · 同机位明暗对照</h2>
+<div class="pair"><figure><a href="commander-restart-before.png"><img src="commander-restart-before.png" alt="指挥官游戏视角修改前"></a><figcaption>修改前：色块偏暗，橙色装甲与蓝灰结构辨识度低。</figcaption></figure><figure><a href="commander-demo-calibrated.png"><img src="commander-demo-calibrated.png" alt="指挥官游戏视角修改后"></a><figcaption>修改后：160米臂长、55°俯角、45°FOV；单位色块与地面明暗均保留。</figcaption></figure></div>
+<h2>Ship · 实际默认飞船镜头</h2>
+<div class="pair"><figure><a href="air-runtime-before.png"><img src="air-runtime-before.png" alt="空战地图Ship修改前"></a><figcaption>修改前：Gamma、对比度和灰色色调叠加压暗。</figcaption></figure><figure><a href="air-runtime-calibrated.png"><img src="air-runtime-calibrated.png" alt="空战地图Ship修改后"></a><figcaption>修改后：蓝白装甲、黄色组件与暗部结构恢复。僚机实时运动，位置不作逐像素对照。</figcaption></figure></div>
+<h2>参考 · Demo_Map 当前实际呈现</h2>
+<figure class="ref"><a href="demo-reference-units.png"><img src="demo-reference-units.png" alt="Demo_Map现有单位与自然环境参考"></a><figcaption>编辑器视口固定 EV100=0；本次对齐实际看到的效果，而非机械复制地图未生效的曝光范围。</figcaption></figure>
+<h2>独立问题 · 战争机器拥挤</h2>
+<p class="note">有效宽约12.5米，单位中心只隔3.6米；模拟统一使用1.5米避让半径。当前仍未修复间距逻辑，以下图片不能作为分离修复通过证据。</p>
+<div class="pair"><figure><a href="commander-near.png"><img src="commander-near.png" alt="战争机器近景拥挤"></a><figcaption>近景：模型0.2倍率仅应用一次。</figcaption></figure><figure><a href="commander-top.png"><img src="commander-top.png" alt="战争机器俯视重叠"></a><figcaption>俯视：车体真正重叠，需让生成、编队与避让使用兵种各自占地。</figcaption></figure></div>
+<p class="links"><a href="README.md">完整记录与回退</a> · <a href="WarMachineSpacing.md">拥挤原因与修复入口</a> · <a href="unit-spacing-diagnosis.json">尺寸/实例读回</a></p>
+</main></body></html>

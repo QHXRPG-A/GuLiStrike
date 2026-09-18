@@ -131,10 +131,12 @@ private:
 	double ClosestLocalCameraDistanceSquared(FVector Location) const;
 	bool IsVisibleLocation(FVector Location) const;
 	void UpdateField(FGuLiLocalCombatEffect& Visual, float Now);
+	void UpdateGroundWarning(const FGuLiCombatEffectState& State, bool bEnabled);
 	void ResetVisuals();
 
 	UPROPERTY(Transient) TObjectPtr<UGuLiCombatEffectCatalog> Catalog;
 	UPROPERTY(Transient) TObjectPtr<class UGuLiCommanderDataSubsystem> CommanderData;
+	UPROPERTY(Transient) TObjectPtr<class UGuLiGroundWarningSubsystem> GroundWarnings;
 	UPROPERTY(Transient) TObjectPtr<UNiagaraComponent> Gunfire;
 	UPROPERTY(Transient) TMap<FGuid, FGuLiLocalCombatEffect> Visuals;
 	UPROPERTY(Transient) TArray<FGuLiRetiringCombatEffect> Retiring;

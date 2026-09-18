@@ -89,7 +89,7 @@ void UGuLiArmyAdvanceSubsystem::Tick(float Dt)
 		for (int32 Candidate : Candidates) if (!Group.Unreachable.Contains(Candidate)) { Group.Target = Candidate; break; }
 		if (Group.Target == INDEX_NONE) { if (bMoving) Authority.StopAutomaticMove(Group.Soldiers); continue; }
 		const FVector Ground = Resources.GetTerritoryGroundLocation(Group.Target);
-		const FVector Approach = Ground + (Center - Ground).GetSafeNormal2D() * 6000;
+		const FVector Approach = Ground + (Center - Ground).GetSafeNormal2D() * 1200;
 		++Queries;
 		if (!Authority.IssueAttackMove(Group.Team, Group.Soldiers, Approach))
 		{

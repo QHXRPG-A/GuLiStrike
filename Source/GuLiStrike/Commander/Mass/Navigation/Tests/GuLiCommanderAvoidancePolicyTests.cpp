@@ -96,14 +96,16 @@ namespace GuLiCommanderAvoidancePolicyTests
 
 	bool FCommanderPredictiveAvoidanceGridBoundaryTest::RunTest(const FString& Parameters)
 	{
+	// Scale020 fixture: spatial values use final centimeters.
+
 		(void)Parameters;
 		TArray<FAgentSnapshot> Agents = {
-			{1u, FVector(1499.0, 10.0, 0.0), FVector::ZeroVector, 750.0f, true, true},
-			{2u, FVector(7499.0, 10.0, 0.0), FVector::ZeroVector, 750.0f, true, true},
-			{3u, FVector(7499.1, 10.0, 0.0), FVector::ZeroVector, 750.0f, true, true},
-			{4u, FVector(1499.0, 10.0, 1500.1), FVector::ZeroVector, 750.0f, true, true},
-			{5u, FVector(-1499.0, -10.0, 0.0), FVector::ZeroVector, 750.0f, true, true},
-			{6u, FVector(-7499.0, -10.0, 0.0), FVector::ZeroVector, 750.0f, true, true}
+			{1u, FVector(299.0, 10.0, 0.0), FVector::ZeroVector, 150.0f, true, true},
+			{2u, FVector(1499.0, 10.0, 0.0), FVector::ZeroVector, 150.0f, true, true},
+			{3u, FVector(1499.1, 10.0, 0.0), FVector::ZeroVector, 150.0f, true, true},
+			{4u, FVector(299.0, 10.0, 300.1), FVector::ZeroVector, 150.0f, true, true},
+			{5u, FVector(-299.0, -10.0, 0.0), FVector::ZeroVector, 150.0f, true, true},
+			{6u, FVector(-1499.0, -10.0, 0.0), FVector::ZeroVector, 150.0f, true, true}
 		};
 		FAvoidanceSpatialGrid Grid;
 		TestEqual(TEXT("The two deliberately adjacent out-of-range samples share one bucket"),
@@ -111,12 +113,12 @@ namespace GuLiCommanderAvoidancePolicyTests
 
 		FNearestCandidateList Candidates;
 		const FCandidateQueryMetrics PositiveMetrics = SelectNearestCandidates(0, Agents, Grid, Candidates);
-		TestTrue(TEXT("A neighbor exactly 6000 cm away across four cells is retained"),
+		TestTrue(TEXT("A neighbor exactly 1200 cm away across four cells is retained"),
 			Candidates.ContainsByPredicate([](const FNearestCandidate& Candidate)
 			{
 				return Candidate.StableKey == 2u;
 			}));
-		TestFalse(TEXT("A neighbor just outside 6000 cm is filtered"),
+		TestFalse(TEXT("A neighbor just outside 1200 cm is filtered"),
 			Candidates.ContainsByPredicate([](const FNearestCandidate& Candidate)
 			{
 				return Candidate.StableKey == 3u;
@@ -130,7 +132,7 @@ namespace GuLiCommanderAvoidancePolicyTests
 			PositiveMetrics.BucketEntriesVisited >= PositiveMetrics.ExactCandidates);
 
 		SelectNearestCandidates(4, Agents, Grid, Candidates);
-		TestTrue(TEXT("Negative-coordinate cell boundaries retain a 6000 cm neighbor"),
+		TestTrue(TEXT("Negative-coordinate cell boundaries retain a 1200 cm neighbor"),
 			Candidates.ContainsByPredicate([](const FNearestCandidate& Candidate)
 			{
 				return Candidate.StableKey == 6u;

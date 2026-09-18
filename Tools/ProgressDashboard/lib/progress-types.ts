@@ -100,3 +100,20 @@ export interface SearchResult extends ProgressDocument {
   score: number;
   excerpt: string;
 }
+
+export interface ArtSourceEntry {
+  name: string;
+  path: string;
+  type: 'dir' | 'file';
+  media: 'image' | 'video' | 'text' | null;
+  bytes: number;
+  modified: string;
+  dir_count: number;
+  file_count: number;
+}
+
+export interface ArtSourceListing {
+  dir: string;
+  parent: string | null;
+  entries: ArtSourceEntry[];
+}

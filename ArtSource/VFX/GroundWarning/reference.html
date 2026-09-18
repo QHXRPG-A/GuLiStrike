@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>通用地面落点预警 · 参考 A1</title>
+<style>
+body{margin:0;background:#121920;color:#e3eaf0;font:16px/1.6 system-ui,sans-serif}main{max-width:1050px;margin:36px auto;padding:0 26px}h1{font-size:28px;margin:0}p{color:#b5c1cb;margin:8px 0 20px}.meta{color:#ff786e}canvas{display:block;width:100%;height:auto;background:#263237;border-radius:8px}button{background:#e8473d;border:0;color:white;padding:11px 18px;border-radius:6px;font-size:15px;cursor:pointer}label{display:inline-flex;align-items:center;gap:8px;margin-left:20px}footer{color:#98a9b6;font-size:14px;margin-top:18px}.frames{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:22px 0}.frames span{display:block;color:#b5c1cb;margin-top:8px}input{width:170px}
+</style>
+<main><div class="meta">参考审核 A1 · 动画设计示意，非 UE 实机画面</div><h1>固定红圈，波纹从中心向外扩散</h1>
+<p>圆周标明落点半径；半透明红底与两道柔和波纹留出地面阅读空间。基础周期 0.8 秒，波纹到边缘淡出。导弹结束时整个预警消失。</p>
+<canvas id="live" width="1000" height="390" aria-label="落点预警动态参考"></canvas>
+<div style="margin-top:16px"><button id="play">播放 4 秒预警</button><label>周期 <input id="period" type="range" min="0.4" max="1.6" step="0.1" value="0.8"><output id="value">0.8 秒</output></label><label><input id="bright" type="checkbox" style="width:auto">浅色地面</label></div>
+<div class="frames"><div><canvas id="f0" width="300" height="220"></canvas><span>0.00 秒 · 外圈固定，内部波纹起始</span></div><div><canvas id="f1" width="300" height="220"></canvas><span>0.20 秒 · 两道波纹向外推进</span></div><div><canvas id="f2" width="300" height="220"></canvas><span>0.40 秒 · 边缘淡出，循环衔接</span></div></div>
+<footer>默认半径 8 米；半径由调用者提供。不同落点可同时显示，同落点同样式共享一个圈。默认双方可见红色，不影响伤害阵营规则。</footer></main>
+<script>
+const live=document.getElementById('live'), period=document.getElementById('period'), bright=document.getElementById('bright');
+let playing=false,start=0,phase=0;
+function draw(canvas,age,expired=false){
+ const c=canvas.getContext('2d'),w=canvas.width,h=canvas.height,r=h*.36;
+ c.clearRect(0,0,w,h);c.fillStyle=bright.checked?'#afb4a4':'#263237';c.fillRect(0,0,w,h);
+ c.strokeStyle=bright.checked?'#989f92':'#334248';c.lineWidth=1;
+ for(let x=0;x<w;x+=32){c.beginPath();c.moveTo(x,0);c.lineTo(x,h);c.stroke()}
+ for(let y=0;y<h;y+=32){c.beginPath();c.moveTo(0,y);c.lineTo(w,y);c.stroke()}
+ if(expired){c.fillStyle=bright.checked?'#39483e':'#b8c7c9';c.font='18px system-ui';c.textAlign='center';c.fillText('导弹结束 · 预警移除',w/2,h/2);return}
+ c.save();c.translate(w/2,h/2);c.scale(1,.72);
+ c.beginPath();c.arc(0,0,r,0,Math.PI*2);c.fillStyle='rgba(255,27,15,.045)';c.fill();
+ c.strokeStyle='rgba(255,40,23,.85)';c.lineWidth=r*.025;c.stroke();
+ for(let i=0;i<2;i++){
+  const t=((age/Number(period.value)+i*.5)%1+1)%1,rr=r*t;
+  c.beginPath();c.arc(0,0,rr,0,Math.PI*2);c.lineWidth=r*.065;
+  c.strokeStyle=`rgba(255,36,21,${.34*Math.sin(Math.PI*t)**.65})`;c.stroke();
+ }
+ c.restore();
+ if(w>500){c.fillStyle=bright.checked?'#39483e':'#d2dedb';c.font='15px system-ui';c.textAlign='center';c.fillText('世界地面投影 · 红圈边界 = 爆炸半径',w/2,h-20)}
+}
+function frames(){[0,.2,.4].forEach((v,i)=>draw(document.getElementById('f'+i),v));draw(live,phase)}
+function animate(t){if(!playing)return;const age=(t-start)/1000;phase=age;draw(live,age,age>=4);if(age<4)requestAnimationFrame(animate);else{playing=false;document.getElementById('play').textContent='再次播放'}}
+document.getElementById('play').onclick=()=>{playing=true;start=performance.now();document.getElementById('play').textContent='从头播放';requestAnimationFrame(animate)};
+period.oninput=()=>{document.getElementById('value').textContent=Number(period.value).toFixed(1)+' 秒';frames()};bright.onchange=frames;frames();
+</script></html>

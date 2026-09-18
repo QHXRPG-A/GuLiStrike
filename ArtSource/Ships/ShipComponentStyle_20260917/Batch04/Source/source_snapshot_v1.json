@@ -1,0 +1,781 @@
+{
+  "success": true,
+  "captured_at": "2026-09-17T10:30:54.863993+00:00",
+  "engine": "5.7.4-0+UE5",
+  "engine_path": "D:/UnrealEngine-5.7",
+  "art_revision": "1.0",
+  "coordinate_system": "UE centimeters; +Z up; original mesh axes retained",
+  "purpose": "Read-only source capture for reference design A; not new model production",
+  "parts": {
+    "Bottom_Twin_Barrel_Turret": {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Bottom_Twin_Barrel_Turret",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Bottom_Twin_Barrel_Turret.SKM_SC_Bottom_Twin_Barrel_Turret",
+      "original_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Bottom_Twin_Barrel_Turret.SM_SC_Bottom_Twin_Barrel_Turret",
+      "visual_type": "<GuLiStrikeShipPartVisualType.SKELETAL_MESH: 1>",
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "compatible_sockets": [],
+      "muzzle_socket_name": "Socket_1",
+      "sockets": [
+        {
+          "name": "Socket_1",
+          "location": [
+            3105.0595703125,
+            -440.4713439941411,
+            -61.521490180969174
+          ],
+          "rotation": [
+            -0.0,
+            -2.1482476457495523e-31,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "bone": "BarrelPitch",
+          "mesh_space": {
+            "location": [
+              -440.4713439941406,
+              2885.0595703125,
+              88.53349018096924
+            ],
+            "rotation": [
+              -0.7071067811865475,
+              -0.7071067811865474,
+              4.3297802811774664e-17,
+              4.329780281177467e-17
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "Socket_2",
+          "location": [
+            3105.0595703124995,
+            440.4712219238281,
+            -61.52149018096929
+          ],
+          "rotation": [
+            -0.0,
+            -2.1482476457495523e-31,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "bone": "BarrelPitch",
+          "mesh_space": {
+            "location": [
+              440.4712219238286,
+              2885.0595703124995,
+              88.53349018096922
+            ],
+            "rotation": [
+              -0.7071067811865475,
+              -0.7071067811865474,
+              4.3297802811774664e-17,
+              4.329780281177467e-17
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "original_bounds_cm": [
+        [
+          -1008.387939453125,
+          -2040.2763671875,
+          -597.3472900390625
+        ],
+        [
+          1008.387939453125,
+          2885.0595703125,
+          409.91143798828125
+        ]
+      ],
+      "original_geometry_sha256": "e8953ebe6fd6cbc97d8888c0cc0143398f9c8bf753f3257d69f77f0efc482ca9",
+      "original_triangles": 1240,
+      "original_materials": [
+        {
+          "slot": "ScifiDreadnoughtWeapons_001",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtWeapons.ScifiDreadnoughtWeapons"
+        }
+      ],
+      "exports": [
+        {
+          "path": "Source\\FBX_static_v1\\SM_SC_Bottom_Twin_Barrel_Turret.fbx",
+          "size": 74288,
+          "sha256": "6132a845f4feb46462771039ee79c0b1f6d82dc569ffd8acf1d4c8d3136eedf4"
+        }
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Bottom_Twin_Barrel_Turret.SK_SC_Bottom_Twin_Barrel_Turret",
+      "bones": [
+        {
+          "name": "Root",
+          "parent": "",
+          "local": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "global_transform": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "BarrelPitch",
+          "parent": "Root",
+          "local": {
+            "location": [
+              0.0,
+              -220.0,
+              27.012
+            ],
+            "rotation": [
+              -0.7071067811865476,
+              -0.7071067811865475,
+              4.329780281177467e-17,
+              4.3297802811774677e-17
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "global_transform": {
+            "location": [
+              0.0,
+              -220.0,
+              27.012
+            ],
+            "rotation": [
+              -0.7071067811865476,
+              -0.7071067811865475,
+              4.329780281177467e-17,
+              4.3297802811774677e-17
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "skeletal_fbx_export": "not_run: NullRHI unsupported; preserved existing authoring FBX",
+      "preserved_authoring_sources": [
+        {
+          "source": "ArtSource\\Ships\\ShipComponentRigs\\Exports\\SKM_SC_Bottom_Twin_Barrel_Turret.fbx",
+          "path": "Source\\ExistingAuthoring\\SKM_SC_Bottom_Twin_Barrel_Turret.fbx",
+          "size": 364300,
+          "sha256": "8a79f711f7a7bb1bc103434186c687cac6ccd6a769a47dea30eaf94d1260552d"
+        },
+        {
+          "source": "ArtSource\\Ships\\ShipComponentRigs\\Blender\\SC_Bottom_Twin_Barrel_Turret.blend",
+          "path": "Source\\ExistingAuthoring\\SC_Bottom_Twin_Barrel_Turret.blend",
+          "size": 165073,
+          "sha256": "7a01b9ae251823b4585379a4d4ad76ac09416c0bc0f7f41e7cfccc3277966537"
+        }
+      ],
+      "visual_bounds": "<Struct 'BoxSphereBounds' (0x000001AD90BC7880) {origin: {x: 0.000000, y: 423.567993, z: -1012.123365}, box_extent: {x: 1009.387939, y: 2464.844360, z: 1960.568273}, sphere_radius: 3307.287361}>",
+      "part_mass": 10.0,
+      "damage": 10.0,
+      "fire_rate": 3.0
+    },
+    "High_Rate_Fire_Cannon": {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_High_Rate_Fire_Cannon",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_High_Rate_Fire_Cannon.SKM_SC_High_Rate_Fire_Cannon",
+      "original_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_High_Rate_Fire_Cannon.SM_SC_High_Rate_Fire_Cannon",
+      "visual_type": "<GuLiStrikeShipPartVisualType.SKELETAL_MESH: 1>",
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "compatible_sockets": [],
+      "muzzle_socket_name": "Socket_1",
+      "sockets": [
+        {
+          "name": "Socket_1",
+          "location": [
+            1232.4609375,
+            121.27611328125022,
+            0.001374401092533617
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "bone": "BarrelPitch",
+          "mesh_space": {
+            "location": [
+              -121.26611328124999,
+              1772.4609375,
+              -80.73762559890747
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "Socket_2",
+          "location": [
+            1232.4609375,
+            -121.27466796874978,
+            0.001374401092533617
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ],
+          "bone": "BarrelPitch",
+          "mesh_space": {
+            "location": [
+              121.28466796875001,
+              1772.4609375,
+              -80.73762559890747
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "original_bounds_cm": [
+        [
+          -890.65234375,
+          -1278.1171875,
+          -432.0179748535156
+        ],
+        [
+          890.6708984375,
+          1772.4609375,
+          496.5453186035156
+        ]
+      ],
+      "original_geometry_sha256": "7cdf3947663483f3bed2b3edd7e399f38123479358dc4f7e7b8286c9fb952dbd",
+      "original_triangles": 920,
+      "original_materials": [
+        {
+          "slot": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "exports": [
+        {
+          "path": "Source\\FBX_static_v1\\SM_SC_High_Rate_Fire_Cannon.fbx",
+          "size": 62720,
+          "sha256": "531c605b8b297e8985c000005ecc92b916f6ea0df75aa7907d5dac32635bd837"
+        }
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_High_Rate_Fire_Cannon.SK_SC_High_Rate_Fire_Cannon",
+      "bones": [
+        {
+          "name": "Root",
+          "parent": "",
+          "local": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "global_transform": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "BarrelPitch",
+          "parent": "Root",
+          "local": {
+            "location": [
+              0.01,
+              540.0,
+              -80.739
+            ],
+            "rotation": [
+              0.0,
+              -0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          },
+          "global_transform": {
+            "location": [
+              0.01,
+              540.0,
+              -80.739
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.7071067811865475,
+              0.7071067811865476
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "skeletal_fbx_export": "not_run: NullRHI unsupported; preserved existing authoring FBX",
+      "preserved_authoring_sources": [
+        {
+          "source": "ArtSource\\Ships\\ShipComponentRigs\\Exports\\SKM_SC_High_Rate_Fire_Cannon.fbx",
+          "path": "Source\\ExistingAuthoring\\SKM_SC_High_Rate_Fire_Cannon.fbx",
+          "size": 254300,
+          "sha256": "a29793c975f9e685ed07f93d701995381d532160edd8a4d94d6714138fc10e37"
+        },
+        {
+          "source": "ArtSource\\Ships\\ShipComponentRigs\\Blender\\SC_High_Rate_Fire_Cannon.blend",
+          "path": "Source\\ExistingAuthoring\\SC_High_Rate_Fire_Cannon.blend",
+          "size": 140077,
+          "sha256": "f95a4028f8f95041682f1e997efd7297465ce5856e2aabbe3447d223ce096e3f"
+        }
+      ],
+      "visual_bounds": "<Struct 'BoxSphereBounds' (0x000001AD0F91F6E0) {origin: {x: 0.009277, y: 248.252833, z: 326.363260}, box_extent: {x: 891.661621, y: 1527.370020, z: 803.275017}, sphere_radius: 1942.465026}>",
+      "part_mass": 10.0,
+      "damage": 10.0,
+      "fire_rate": 3.0
+    },
+    "Incendiary_Bomb_LaunchBay": {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Incendiary_Bomb_LaunchBay",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Incendiary_Bomb_LaunchBay.SM_SC_Incendiary_Bomb_LaunchBay",
+      "original_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Incendiary_Bomb_LaunchBay.SM_SC_Incendiary_Bomb_LaunchBay",
+      "visual_type": "<GuLiStrikeShipPartVisualType.STATIC_MESH: 0>",
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "compatible_sockets": [],
+      "muzzle_socket_name": "Socket_1",
+      "sockets": [
+        {
+          "name": "Socket_1",
+          "location": [
+            -1515.0,
+            -3060.0,
+            0.0
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Socket_2",
+          "location": [
+            -1515.0,
+            -1530.0,
+            0.0
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Socket_3",
+          "location": [
+            -1515.0,
+            0.0,
+            0.0
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Socket_4",
+          "location": [
+            -1515.0,
+            1545.0,
+            0.0
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        {
+          "name": "Socket_5",
+          "location": [
+            -1515.0,
+            3035.0,
+            0.0
+          ],
+          "rotation": [
+            0.0,
+            0.0,
+            0.0
+          ],
+          "scale": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      ],
+      "original_bounds_cm": [
+        [
+          -1592.7900390625,
+          -3801.950439453125,
+          -786.2706604003906
+        ],
+        [
+          1510.5810546875,
+          3801.679931640625,
+          844.0872497558594
+        ]
+      ],
+      "original_geometry_sha256": "ce5fe9fcb2973310e12aa11c45edeb978067e86ecb8cd5a6e687f75f9ea2c5e7",
+      "original_triangles": 3978,
+      "original_materials": [
+        {
+          "slot": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "exports": [
+        {
+          "path": "Source\\FBX_static_v1\\SM_SC_Incendiary_Bomb_LaunchBay.fbx",
+          "size": 155600,
+          "sha256": "fd8b0b26573b06b1f5bade4bab5cd13236432816647cffdde22aeaf07fdfaff2"
+        }
+      ],
+      "visual_bounds": "<Struct 'BoxSphereBounds' (0x000001AD90BC7580) {origin: {x: -41.104492, y: -0.135254, z: 28.908295}, box_extent: {x: 1551.685547, y: 3801.815186, z: 815.178955}, sphere_radius: 4149.951660}>",
+      "part_mass": 10.0,
+      "damage": 10.0,
+      "fire_rate": 3.0
+    },
+    "Missile_Bay": {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Missile_Bay",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Missile_Bay.SM_SC_Missile_Bay",
+      "original_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Missile_Bay.SM_SC_Missile_Bay",
+      "visual_type": "<GuLiStrikeShipPartVisualType.STATIC_MESH: 0>",
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "compatible_sockets": [],
+      "muzzle_socket_name": "None",
+      "sockets": [],
+      "original_bounds_cm": [
+        [
+          -479.9692077636719,
+          -803.0,
+          -148.49034118652344
+        ],
+        [
+          479.9692077636719,
+          802.96875,
+          80.60752868652344
+        ]
+      ],
+      "original_geometry_sha256": "c20b88a30cc302658cf6c182299517c661d02bbd68a789b11b10ca1264da1a56",
+      "original_triangles": 368,
+      "original_materials": [
+        {
+          "slot": "ScifiDreadnoughtWeapons_001",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtWeapons.ScifiDreadnoughtWeapons"
+        }
+      ],
+      "exports": [
+        {
+          "path": "Source\\FBX_static_v1\\SM_SC_Missile_Bay.fbx",
+          "size": 34000,
+          "sha256": "52a200e35060924cb6b8318fb975e77775d4cefa624c3fd28b8c649fdd8d7008"
+        }
+      ],
+      "visual_bounds": "<Struct 'BoxSphereBounds' (0x000001AD90BC7E40) {origin: {x: 0.000000, y: -0.015625, z: -33.941406}, box_extent: {x: 479.969208, y: 802.984375, z: 114.548935}, sphere_radius: 918.658536}>",
+      "part_mass": 10.0,
+      "damage": 10.0,
+      "fire_rate": 3.0
+    }
+  },
+  "protected_before": {
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Bottom_Twin_Barrel_Turret": {
+      "size": 88063,
+      "mtime_ns": 1787558704286073400
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_High_Rate_Fire_Cannon": {
+      "size": 60236,
+      "mtime_ns": 1787558717569328800
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Incendiary_Bomb_LaunchBay": {
+      "size": 177737,
+      "mtime_ns": 1788966753278523000
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Missile_Bay": {
+      "size": 37716,
+      "mtime_ns": 1787558704303797000
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Bottom_Twin_Barrel_Turret": {
+      "size": 18073,
+      "mtime_ns": 1789404795658486900
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_High_Rate_Fire_Cannon": {
+      "size": 17971,
+      "mtime_ns": 1789404795771429200
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Incendiary_Bomb_LaunchBay": {
+      "size": 17820,
+      "mtime_ns": 1789404795583439100
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Missile_Bay": {
+      "size": 17395,
+      "mtime_ns": 1789404795809990800
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Bottom_Twin_Barrel_Turret": {
+      "size": 784210,
+      "mtime_ns": 1789042593294077000
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Bottom_Twin_Barrel_Turret": {
+      "size": 6957,
+      "mtime_ns": 1789041692717287900
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_High_Rate_Fire_Cannon": {
+      "size": 603713,
+      "mtime_ns": 1789042593503549400
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_High_Rate_Fire_Cannon": {
+      "size": 6877,
+      "mtime_ns": 1789041693747856200
+    }
+  },
+  "protected_after": {
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Bottom_Twin_Barrel_Turret": {
+      "size": 88063,
+      "mtime_ns": 1787558704286073400
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_High_Rate_Fire_Cannon": {
+      "size": 60236,
+      "mtime_ns": 1787558717569328800
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Incendiary_Bomb_LaunchBay": {
+      "size": 177737,
+      "mtime_ns": 1788966753278523000
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Missile_Bay": {
+      "size": 37716,
+      "mtime_ns": 1787558704303797000
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Bottom_Twin_Barrel_Turret": {
+      "size": 18073,
+      "mtime_ns": 1789404795658486900
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_High_Rate_Fire_Cannon": {
+      "size": 17971,
+      "mtime_ns": 1789404795771429200
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Incendiary_Bomb_LaunchBay": {
+      "size": 17820,
+      "mtime_ns": 1789404795583439100
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Missile_Bay": {
+      "size": 17395,
+      "mtime_ns": 1789404795809990800
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Bottom_Twin_Barrel_Turret": {
+      "size": 784210,
+      "mtime_ns": 1789042593294077000
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Bottom_Twin_Barrel_Turret": {
+      "size": 6957,
+      "mtime_ns": 1789041692717287900
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_High_Rate_Fire_Cannon": {
+      "size": 603713,
+      "mtime_ns": 1789042593503549400
+    },
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_High_Rate_Fire_Cannon": {
+      "size": 6877,
+      "mtime_ns": 1789041693747856200
+    }
+  },
+  "source_packages_unchanged": true
+}

@@ -92,13 +92,13 @@ struct FGuLiShipMovementConfig
 	GENERATED_BODY()
 
 	UPROPERTY(BlueprintReadOnly, Category = "Ship|Movement")
-	float MaxFlySpeed = 1200.0f;
+	float MaxFlySpeed = 240.0f;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Ship|Movement")
-	float MaxAcceleration = 400.0f;
+	float MaxAcceleration = 80.0f;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Ship|Movement")
-	float BrakingDecelerationFlying = 60.0f;
+	float BrakingDecelerationFlying = 12.0f;
 
 	UPROPERTY(BlueprintReadOnly, Category = "Ship|Movement")
 	float BoostThrustMultiplier = 2.0f;

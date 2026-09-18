@@ -1,3 +1,4 @@
+// Scale020: isolated encounter positions and velocities migrated.
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
@@ -81,7 +82,7 @@ namespace GuLiWingmanAttackPIE
 			PriorStarts.Emplace(*It,It->GetActorTransform());
 			It->SetActorLocation(FVector(-50000,Index++*100000-50000,35000));
 		}
-		ExtraStart=World->SpawnActor<APlayerStart>(FVector(-50000,50000,35000),FRotator::ZeroRotator);
+		ExtraStart=World->SpawnActor<APlayerStart>(FVector(-10000, 10000, 7000),FRotator::ZeroRotator);
 		Settings.Reset(DuplicateObject<ULevelEditorPlaySettings>(GetDefault<ULevelEditorPlaySettings>(),GetTransientPackage()));
 		Settings->SetPlayNetMode(EPlayNetMode::PIE_Client); Settings->SetPlayNumberOfClients(2);
 		Settings->SetRunUnderOneProcess(true); Settings->bLaunchSeparateServer=false;
@@ -124,13 +125,13 @@ namespace GuLiWingmanAttackPIE
 			for(TActorIterator<AGuLiStrikeShip> It(World);It;++It)
 			{
 				const auto* Health=It->FindComponentByClass<UGuLiCombatHealthComponent>(); if(!Health) continue;
-				FVector Point=It->GetActorLocation()+FVector(90000,0,0);
+				FVector Point=It->GetActorLocation()+FVector(18000, 0, 0);
 				const bool Ground=Args[0]==TEXT("ground");
 				if(Ground)
 				{
 					FHitResult Hit;
-					if(!World->LineTraceSingleByObjectType(Hit,Point+FVector(0,0,50000),Point-FVector(0,0,500000),FCollisionObjectQueryParams(ECC_WorldStatic))) continue;
-					Point=Hit.ImpactPoint+FVector(0,0,250);
+					if(!World->LineTraceSingleByObjectType(Hit,Point+FVector(0, 0, 10000),Point-FVector(0, 0, 100000),FCollisionObjectQueryParams(ECC_WorldStatic))) continue;
+					Point=Hit.ImpactPoint+FVector(0, 0, 50);
 				}
 				AStaticMeshActor* Actor=World->SpawnActor<AStaticMeshActor>(Point,FRotator::ZeroRotator);
 				Actor->SetReplicates(true); Actor->SetReplicateMovement(true);
@@ -295,10 +296,10 @@ namespace GuLiWingmanAttackPIE
 			const FGuLiWingmanAttackTarget& Target = *ResolvedTarget;
 			const FVector ShipLocation = PC->GetPawn() ? PC->GetPawn()->GetActorLocation() : Target.Location;
 			const FVector CombatCenter = FMath::Lerp(Target.Location, ShipLocation, 0.45f);
-			FVector Look = Target.bGround ? Target.Location + FVector(6000, 0, 7000) : CombatCenter;
-			FVector Eye = Target.bGround ? Target.Location + FVector(4000, -33000, 15000) : CombatCenter + FVector(25000, -52000, 26000);
-			if (Mode == TEXT("top")) { Eye = CombatCenter + FVector(0,0,52000); Look = CombatCenter; }
-			else if (Mode == TEXT("side")) { Eye = CombatCenter + FVector(0,-52000,8000); Look = CombatCenter + FVector(0,0,4000); }
+			FVector Look = Target.bGround ? Target.Location + FVector(1200, 0, 1400) : CombatCenter;
+			FVector Eye = Target.bGround ? Target.Location + FVector(800, -6600, 3000) : CombatCenter + FVector(5000, -10400, 5200);
+			if (Mode == TEXT("top")) { Eye = CombatCenter + FVector(0, 0, 10400); Look = CombatCenter; }
+			else if (Mode == TEXT("side")) { Eye = CombatCenter + FVector(0, -10400, 1600); Look = CombatCenter + FVector(0, 0, 800); }
 			if (APawn* Pawn = PC->GetPawn())
 			{
 				Pawn->SetActorHiddenInGame(true);
@@ -376,7 +377,7 @@ namespace GuLiWingmanAttackCombatTests
 		{
 			auto Value=MakeUnique<FTarget>(); auto* Ptr=Value.Get();
 			Ptr->Snapshot.Handle=Handle;
-			Ptr->Snapshot.Team=Team; Ptr->Snapshot.Location=Location; Ptr->Snapshot.Health=Health; Ptr->Snapshot.bAlive=true; Ptr->Snapshot.CollisionRadius=50;
+			Ptr->Snapshot.Team=Team; Ptr->Snapshot.Location=Location; Ptr->Snapshot.Health=Health; Ptr->Snapshot.bAlive=true; Ptr->Snapshot.CollisionRadius=10;
 			FGuLiCombatTargetAdapter Adapter; Adapter.LifetimeOwner=World;
 			Adapter.ReadSnapshot=[Ptr](auto& Out) { Out=Ptr->Snapshot; return true; };
 			Adapter.ApplyDamage=[Ptr](const FGuLiDamageRequest& Request,FGuLiDamageCommitResult& Out)
@@ -408,10 +409,10 @@ namespace GuLiWingmanAttackCombatTests
 			R.Context.Emitter.Flight.Group.GroupGeneration=1; R.Context.Emitter.Flight.FlightIndex=0;
 			R.Context.Emitter.MemberIndex=0; R.Context.Emitter.EntityGeneration=1;
 			R.Context.ShotId=FGuid::NewGuid(); R.Context.Damage=37; R.Context.SkillId=TEXT("Wingman.GroundMissile");
-			R.TargetLocation=Target.Snapshot.Location; R.SourceTransform=FTransform(FRotator(-45,0,0),FVector(-6000,0,6000));
+			R.TargetLocation=Target.Snapshot.Location; R.SourceTransform=FTransform(FRotator(-45,0,0),FVector(-1200, 0, 1200));
 			R.ExecutorId=TEXT("WingmanGroundMissile"); R.Projectile=NewObject<UGuLiProjectileEffectDefinition>(World);
 			auto* Field=NewObject<UGuLiSpellFieldDefinition>(World); R.Projectile->ImpactField=Field;
-			R.FrozenField.ConfigId=TEXT("WingmanGroundMissile"); R.FrozenField.Damage=37; R.FrozenField.Radius=4000;
+			R.FrozenField.ConfigId=TEXT("WingmanGroundMissile"); R.FrozenField.Damage=37; R.FrozenField.Radius=800;
 			return R;
 		}
 	};
@@ -423,10 +424,10 @@ bool FGuLiWingmanFixedGroundMissileTest::RunTest(const FString&)
 {
 	using namespace GuLiWingmanAttackCombatTests;
 	FFixture F; if (!TestTrue(TEXT("Authority fixture initializes"),F.Initialize())) return false;
-	auto& Source=F.Add(EGuLiTeam::Red,FVector(-20000,0,10000));
+	auto& Source=F.Add(EGuLiTeam::Red,FVector(-4000, 0, 2000));
 	auto& Target=F.Add(EGuLiTeam::Blue,FVector::ZeroVector);
-	auto& Neighbor=F.Add(EGuLiTeam::Blue,FVector(4000,0,0));
-	auto& Outside=F.Add(EGuLiTeam::Blue,FVector(4051,0,0));
+	auto& Neighbor=F.Add(EGuLiTeam::Blue,FVector(800, 0, 0));
+	auto& Outside=F.Add(EGuLiTeam::Blue,FVector(810.2, 0, 0));
 	auto& Friendly=F.Add(EGuLiTeam::Red,FVector::ZeroVector);
 	auto Request=F.Request(Source,Target);
 	TestTrue(TEXT("Validated point missile launches"),F.Runtime->ExecuteWingmanAttack(Request));
@@ -435,7 +436,7 @@ bool FGuLiWingmanFixedGroundMissileTest::RunTest(const FString&)
 	FGuLiCombatEffectState State; F.Runtime->QueryEffect(Request.Context.ShotId,State);
 	TestTrue(TEXT("Point mode bypasses upward lift"),State.bFixedPoint && State.Motion.LiftSeconds==0 && State.Velocity.Z<0);
 	TestTrue(TEXT("First aim is downward from actual muzzle"),FVector(State.LastTargetLocation).Equals(FVector::ZeroVector));
-	Target.Snapshot.Location=FVector(100000,0,0); Target.Snapshot.bAlive=false;
+	Target.Snapshot.Location=FVector(20000, 0, 0); Target.Snapshot.bAlive=false;
 	F.Ledger->UnregisterTarget(Source.Snapshot.Handle,F.World); Source.Snapshot.bAlive=false;
 	Request.Projectile->Motion.Speed=1; Request.FrozenField.Radius=1;
 	for(int32 I=1;I<=90;++I) FGuLiWingmanAttackCombatTestAccess::Step(F.Runtime,Request.Context.ShotId,I/30.0f);
@@ -455,11 +456,11 @@ bool FGuLiWingmanGunLedgerTest::RunTest(const FString&)
 	using namespace GuLiWingmanAttackCombatTests;
 	FFixture F; if (!F.Initialize()) return false;
 	auto& Carrier=F.AddShip(EGuLiTeam::Red,FVector::ZeroVector,10000);
-	auto& Target=F.AddShip(EGuLiTeam::Blue,FVector(110000,0,0),10000);
+	auto& Target=F.AddShip(EGuLiTeam::Blue,FVector(22000, 0, 0),10000);
 	auto R=F.Request(Carrier,Target); R.ExecutorId=TEXT("WingmanMachineGun");
 	R.Context.SkillId=TEXT("Wingman.MachineGun"); R.Context.Damage=10;
-	R.Context.WeaponBinding.SlotId=TEXT("AirWeapon"); R.MuzzleOffset=FVector(1200,0,0);
-	R.SourceTransform=FTransform(FRotator::ZeroRotator,FVector(100000,0,0));
+	R.Context.WeaponBinding.SlotId=TEXT("AirWeapon"); R.MuzzleOffset=FVector(240, 0, 0);
+	R.SourceTransform=FTransform(FRotator::ZeroRotator,FVector(20000, 0, 0));
 	auto& Emitter=F.AddWingman(R.Context.Emitter,EGuLiTeam::Red,R.SourceTransform.GetLocation(),1000);
 	int32 StateBoundaries=0; int32 NetworkShotCues=0; FGuLiCombatEffectState Started;
 	F.Runtime->OnState.AddLambda([&](const FGuLiCombatEffectState& State, bool bReliable)
@@ -470,10 +471,10 @@ bool FGuLiWingmanGunLedgerTest::RunTest(const FString&)
 		}
 	});
 	F.Runtime->OnShots.AddLambda([&](const auto& Cues) { NetworkShotCues+=Cues.Num(); });
-	const FGuid Burst=F.Runtime->StartWingmanGunBurst(R,0.2f,5.0f,5000.0f,52000.0f,3.0f);
+	const FGuid Burst=F.Runtime->StartWingmanGunBurst(R,0.2f,5.0f,1000.0f,10400.0f,3.0f);
 	TestTrue(TEXT("One accepted record starts one sustained burst"),Burst.IsValid());
 	TestFalse(TEXT("Duplicate record cannot start another burst"),
-		F.Runtime->StartWingmanGunBurst(R,0.2f,5.0f,5000.0f,52000.0f,3.0f).IsValid());
+		F.Runtime->StartWingmanGunBurst(R,0.2f,5.0f,1000.0f,10400.0f,3.0f).IsValid());
 	TestTrue(TEXT("Reliable start state identifies wingman, target, muzzle and five-hertz cadence"),
 		Started.IsWellFormed() && Started.Source==GuLiCombatTargets::MakeWingmanTargetHandle(R.Context.Emitter)
 		&& Started.Target==R.Context.Target && Started.SlotId==TEXT("AirWeapon")
@@ -491,11 +492,11 @@ bool FGuLiWingmanGunLedgerTest::RunTest(const FString&)
 	FGuLiWingmanAttackCombatTestAccess::StepCooldowns(F.Runtime,10.0f);
 	TestTrue(TEXT("Cooldown does not count while the wingman remains outside 520m"),
 		FGuLiWingmanAttackCombatTestAccess::HasCooldown(F.Runtime,R.Context.Emitter,TEXT("AirWeapon")));
-	Emitter.Snapshot.Location=FVector(52001,0,0);
+	Emitter.Snapshot.Location=FVector(10400.2, 0, 0);
 	FGuLiWingmanAttackCombatTestAccess::StepCooldowns(F.Runtime,20.0f);
 	TestTrue(TEXT("Crossing only near the orbit boundary still does not start cooldown"),
 		FGuLiWingmanAttackCombatTestAccess::HasCooldown(F.Runtime,R.Context.Emitter,TEXT("AirWeapon")));
-	Emitter.Snapshot.Location=FVector(52000,0,0);
+	Emitter.Snapshot.Location=FVector(10400, 0, 0);
 	FGuLiWingmanAttackCombatTestAccess::StepCooldowns(F.Runtime,30.0f);
 	FGuLiWingmanAttackCombatTestAccess::StepCooldowns(F.Runtime,32.999f);
 	TestTrue(TEXT("Cooldown remains active before three complete in-orbit seconds"),
@@ -506,15 +507,15 @@ bool FGuLiWingmanGunLedgerTest::RunTest(const FString&)
 
 	FFixture F30; if (!F30.Initialize()) return false;
 	auto& Carrier30=F30.AddShip(EGuLiTeam::Red,FVector::ZeroVector,10000);
-	auto& Target30=F30.AddShip(EGuLiTeam::Blue,FVector(110000,0,0),10000);
+	auto& Target30=F30.AddShip(EGuLiTeam::Blue,FVector(22000, 0, 0),10000);
 	auto R30=F30.Request(Carrier30,Target30); R30.ExecutorId=TEXT("WingmanMachineGun");
 	R30.Context.SkillId=TEXT("Wingman.MachineGun"); R30.Context.Damage=10;
-	R30.Context.WeaponBinding.SlotId=TEXT("AirWeapon"); R30.SourceTransform=FTransform(FVector(100000,0,0));
+	R30.Context.WeaponBinding.SlotId=TEXT("AirWeapon"); R30.SourceTransform=FTransform(FVector(20000, 0, 0));
 	F30.AddWingman(R30.Context.Emitter,EGuLiTeam::Red,R30.SourceTransform.GetLocation(),1000);
 	TestFalse(TEXT("A rate above 30Hz is rejected instead of silently corrected"),
-		F30.Runtime->StartWingmanGunBurst(R30,0.03f,5.0f,5000.0f,52000.0f,3.0f).IsValid());
+		F30.Runtime->StartWingmanGunBurst(R30,0.03f,5.0f,1000.0f,10400.0f,3.0f).IsValid());
 	const FGuid Burst30=F30.Runtime->StartWingmanGunBurst(R30,GuLiWingmanAttack::MinimumAirShotIntervalSeconds,
-		5.0f,5000.0f,52000.0f,3.0f);
+		5.0f,1000.0f,10400.0f,3.0f);
 	for(int32 Step=1;Step<=150;++Step)
 		FGuLiWingmanAttackCombatTestAccess::StepGun(F30.Runtime,Burst30,Step/30.0f);
 	// The last rounds remain in flight after the firing segment ends.
@@ -523,53 +524,53 @@ bool FGuLiWingmanGunLedgerTest::RunTest(const FString&)
 		F30.Runtime->GetCounters().LogicalGunShots,150ll);
 	TestEqual(TEXT("Thirty-hertz full burst deals exactly 1500 damage"),Target30.Snapshot.Health,8500.0f);
 
-	auto& LostTarget=F30.AddShip(EGuLiTeam::Blue,FVector(210000,0,0),1000);
+	auto& LostTarget=F30.AddShip(EGuLiTeam::Blue,FVector(42000, 0, 0),1000);
 	auto Lost=F30.Request(Carrier30,LostTarget); Lost.ExecutorId=TEXT("WingmanMachineGun");
 	Lost.Context.SkillId=TEXT("Wingman.MachineGun"); Lost.Context.Damage=10;
 	Lost.Context.WeaponBinding.SlotId=TEXT("AirWeapon"); Lost.Context.Emitter.MemberIndex=1;
-	Lost.SourceTransform=FTransform(FVector(200000,0,0));
+	Lost.SourceTransform=FTransform(FVector(40000, 0, 0));
 	F30.AddWingman(Lost.Context.Emitter,EGuLiTeam::Red,Lost.SourceTransform.GetLocation(),1000);
-	const FGuid LostBurst=F30.Runtime->StartWingmanGunBurst(Lost,0.2f,5.0f,5000.0f,52000.0f,3.0f);
+	const FGuid LostBurst=F30.Runtime->StartWingmanGunBurst(Lost,0.2f,5.0f,1000.0f,10400.0f,3.0f);
 	F30.Ledger->UnregisterTarget(LostTarget.Snapshot.Handle,F30.World);
 	FGuLiWingmanAttackCombatTestAccess::StepGun(F30.Runtime,LostBurst,0.1f);
 	FGuLiCombatEffectState Query;
 	TestFalse(TEXT("A missing target stops its active burst"),F30.Runtime->QueryEffect(LostBurst,Query));
 
-	auto& DeadTarget=F30.AddShip(EGuLiTeam::Blue,FVector(310000,0,0),1000);
+	auto& DeadTarget=F30.AddShip(EGuLiTeam::Blue,FVector(62000, 0, 0),1000);
 	auto Dead=F30.Request(Carrier30,DeadTarget); Dead.ExecutorId=TEXT("WingmanMachineGun");
 	Dead.Context.SkillId=TEXT("Wingman.MachineGun"); Dead.Context.Damage=10;
 	Dead.Context.WeaponBinding.SlotId=TEXT("AirWeapon"); Dead.Context.Emitter.MemberIndex=2;
-	Dead.SourceTransform=FTransform(FVector(300000,0,0));
+	Dead.SourceTransform=FTransform(FVector(60000, 0, 0));
 	F30.AddWingman(Dead.Context.Emitter,EGuLiTeam::Red,Dead.SourceTransform.GetLocation(),1000);
-	const FGuid DeadBurst=F30.Runtime->StartWingmanGunBurst(Dead,0.2f,5.0f,5000.0f,52000.0f,3.0f);
+	const FGuid DeadBurst=F30.Runtime->StartWingmanGunBurst(Dead,0.2f,5.0f,1000.0f,10400.0f,3.0f);
 	DeadTarget.Snapshot.bAlive=false;
 	FGuLiWingmanAttackCombatTestAccess::StepGun(F30.Runtime,DeadBurst,0.1f);
 	TestFalse(TEXT("A dead target stops its active burst"),F30.Runtime->QueryEffect(DeadBurst,Query));
 
-	auto& SelfTarget=F30.AddShip(EGuLiTeam::Blue,FVector(410000,0,0),1000);
+	auto& SelfTarget=F30.AddShip(EGuLiTeam::Blue,FVector(82000, 0, 0),1000);
 	auto Self=F30.Request(Carrier30,SelfTarget); Self.ExecutorId=TEXT("WingmanMachineGun");
 	Self.Context.SkillId=TEXT("Wingman.MachineGun"); Self.Context.Damage=10;
 	Self.Context.WeaponBinding.SlotId=TEXT("AirWeapon"); Self.Context.Emitter.MemberIndex=3;
-	Self.SourceTransform=FTransform(FVector(400000,0,0));
+	Self.SourceTransform=FTransform(FVector(80000, 0, 0));
 	auto& SelfEmitter=F30.AddWingman(Self.Context.Emitter,EGuLiTeam::Red,Self.SourceTransform.GetLocation(),1000);
-	const FGuid SelfBurst=F30.Runtime->StartWingmanGunBurst(Self,0.2f,5.0f,5000.0f,52000.0f,3.0f);
+	const FGuid SelfBurst=F30.Runtime->StartWingmanGunBurst(Self,0.2f,5.0f,1000.0f,10400.0f,3.0f);
 	SelfEmitter.Snapshot.bAlive=false;
 	FGuLiWingmanAttackCombatTestAccess::StepGun(F30.Runtime,SelfBurst,0.1f);
 	TestFalse(TEXT("A dead wingman immediately clears its active burst"),F30.Runtime->QueryEffect(SelfBurst,Query));
 
-	auto& CloseTarget=F30.AddShip(EGuLiTeam::Blue,FVector(510000,0,0),1000);
+	auto& CloseTarget=F30.AddShip(EGuLiTeam::Blue,FVector(102000, 0, 0),1000);
 	auto Close=F30.Request(Carrier30,CloseTarget); Close.ExecutorId=TEXT("WingmanMachineGun");
 	Close.Context.SkillId=TEXT("Wingman.MachineGun"); Close.Context.Damage=10;
 	Close.Context.WeaponBinding.SlotId=TEXT("AirWeapon"); Close.Context.Emitter.MemberIndex=4;
-	Close.SourceTransform=FTransform(FVector(500000,0,0));
+	Close.SourceTransform=FTransform(FVector(100000, 0, 0));
 	auto& CloseEmitter=F30.AddWingman(Close.Context.Emitter,EGuLiTeam::Red,Close.SourceTransform.GetLocation(),1000);
-	const FGuid CloseBurst=F30.Runtime->StartWingmanGunBurst(Close,0.2f,5.0f,5000.0f,52000.0f,3.0f);
-	CloseEmitter.Snapshot.Location=FVector(505001,0,0);
+	const FGuid CloseBurst=F30.Runtime->StartWingmanGunBurst(Close,0.2f,5.0f,1000.0f,10400.0f,3.0f);
+	CloseEmitter.Snapshot.Location=FVector(101000.2, 0, 0);
 	FGuLiWingmanAttackCombatTestAccess::StepGun(F30.Runtime,CloseBurst,0.1f);
 	TestFalse(TEXT("Strictly below 50m stops the active burst"),F30.Runtime->QueryEffect(CloseBurst,Query));
 	F30.Runtime->CancelWingmanGunBurst(Close.Context.Emitter,true);
-	CloseEmitter.Snapshot.Location=FVector(500000,0,0); Close.Context.ShotId=FGuid::NewGuid();
-	const FGuid SwitchedBurst=F30.Runtime->StartWingmanGunBurst(Close,0.2f,5.0f,5000.0f,52000.0f,3.0f);
+	CloseEmitter.Snapshot.Location=FVector(100000, 0, 0); Close.Context.ShotId=FGuid::NewGuid();
+	const FGuid SwitchedBurst=F30.Runtime->StartWingmanGunBurst(Close,0.2f,5.0f,1000.0f,10400.0f,3.0f);
 	TestEqual(TEXT("Target switching cancels the old segment immediately"),
 		F30.Runtime->CancelWingmanGunBurst(Close.Context.Emitter),1);
 	TestFalse(TEXT("The switched-away segment is no longer active"),F30.Runtime->QueryEffect(SwitchedBurst,Query));
@@ -581,19 +582,21 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanTargetHysteresisAndGuardTest,
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FGuLiWingmanTargetHysteresisAndGuardTest::RunTest(const FString&)
 {
+	// Scale020 fixture: spatial values use final centimeters.
+
 	FGuLiWingmanTargetingTuning Tuning;
 	TestTrue(TEXT("1500m edge is eligible for automatic acquisition"),
-		GuLiWingmanTargeting::IsWithinAcquireRange(150000.0, Tuning));
+		GuLiWingmanTargeting::IsWithinAcquireRange(30000.0, Tuning));
 	TestFalse(TEXT("Automatic acquisition stops beyond 1500m"),
-		GuLiWingmanTargeting::IsWithinAcquireRange(150001.0, Tuning));
+		GuLiWingmanTargeting::IsWithinAcquireRange(30001.0, Tuning));
 	TestTrue(TEXT("An automatic target is retained through the 1800m edge"),
-		GuLiWingmanTargeting::IsWithinReleaseRange(180000.0, Tuning));
+		GuLiWingmanTargeting::IsWithinReleaseRange(36000.0, Tuning));
 	TestFalse(TEXT("An automatic target is released beyond 1800m"),
-		GuLiWingmanTargeting::IsWithinReleaseRange(180001.0, Tuning));
+		GuLiWingmanTargeting::IsWithinReleaseRange(36001.0, Tuning));
 	TestTrue(TEXT("A new specified target inside 1800m can immediately override return lock"),
-		GuLiWingmanTargeting::IsWithinReleaseRange(170000.0, Tuning));
+		GuLiWingmanTargeting::IsWithinReleaseRange(34000.0, Tuning));
 	TestFalse(TEXT("A specified target request beyond 1800m is rejected"),
-		GuLiWingmanTargeting::IsWithinReleaseRange(180001.0, Tuning));
+		GuLiWingmanTargeting::IsWithinReleaseRange(36001.0, Tuning));
 
 	TArray<FGuLiWingmanGuardPoseObservation> Poses;
 	Poses.SetNum(25);
@@ -624,20 +627,22 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiWingmanServerGunGateTest,
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 bool FGuLiWingmanServerGunGateTest::RunTest(const FString&)
 {
+	// Scale020 fixture: spatial values use final centimeters.
+
 	FGuLiCombatTargetSnapshot Target;
 	Target.Handle.Kind=EGuLiTargetKind::Ship; Target.Handle.AuthorityId=FGuid(1,7,7,7);
-	Target.Handle.Generation=1; Target.bAlive=true; Target.Location=FVector(10000,0,0);
-	TestTrue(TEXT("Exactly 100m starts an air burst"),
-		GuLiWingmanAttackAuthority::IsAirBurstStartEligible(FVector::ZeroVector,Target,10000));
-	Target.Location=FVector(9999,0,0);
-	TestFalse(TEXT("Below 100m must separate before starting"),
-		GuLiWingmanAttackAuthority::IsAirBurstStartEligible(FVector::ZeroVector,Target,10000));
-	Target.Location=FVector(-200000,0,0);
+	Target.Handle.Generation=1; Target.bAlive=true; Target.Location=FVector(2000, 0, 0);
+	TestTrue(TEXT("Exactly 20m starts an air burst"),
+		GuLiWingmanAttackAuthority::IsAirBurstStartEligible(FVector::ZeroVector,Target,2000));
+	Target.Location=FVector(1999.8, 0, 0);
+	TestFalse(TEXT("Below 20m must separate before starting"),
+		GuLiWingmanAttackAuthority::IsAirBurstStartEligible(FVector::ZeroVector,Target,2000));
+	Target.Location=FVector(-40000, 0, 0);
 	TestTrue(TEXT("A rear target beyond the old range still starts; facing, range, LOS, Recover and avoidance are not inputs"),
-		GuLiWingmanAttackAuthority::IsAirBurstStartEligible(FVector::ZeroVector,Target,10000));
+		GuLiWingmanAttackAuthority::IsAirBurstStartEligible(FVector::ZeroVector,Target,2000));
 	Target.bAlive=false;
 	TestFalse(TEXT("A dead target cannot start a burst"),
-		GuLiWingmanAttackAuthority::IsAirBurstStartEligible(FVector::ZeroVector,Target,10000));
+		GuLiWingmanAttackAuthority::IsAirBurstStartEligible(FVector::ZeroVector,Target,2000));
 	return true;
 }
 
@@ -695,8 +700,8 @@ bool FGuLiRemoteWingmanModelCorrectionTest::RunTest(const FString&)
 	Handle.EntityGeneration = 1;
 	auto* Pawn = F.World->SpawnActor<AGuLiWingmanPawn>();
 	TestTrue(TEXT("Remote visual fixture initializes"), Pawn->InitializeRemotePresentation(Handle, nullptr));
-	const FTransform First(FVector(1000, 0, 0));
-	const FTransform Next(FVector(3000, 0, 0));
+	const FTransform First(FVector(200, 0, 0));
+	const FTransform Next(FVector(600, 0, 0));
 	Pawn->ApplyRemotePresentation(First, 1, true, false);
 	TestTrue(TEXT("First pose establishes the model at its actual spawn position"),
 		Pawn->GetPresentationTransform().Equals(First));

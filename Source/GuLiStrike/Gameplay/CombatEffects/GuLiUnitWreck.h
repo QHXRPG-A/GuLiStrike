@@ -21,6 +21,7 @@ public:
 	bool InitializeFromActor(AActor* Source, UMaterialInterface* Material);
 	bool InitializeFromStaticMesh(UStaticMesh* Mesh, const FTransform& Transform, UMaterialInterface* Material);
 	void StartFalling(const FVector& InitialVelocity, float MaximumLifetime);
+	virtual void Tick(float DeltaSeconds) override;
 
 private:
 	void ConfigureVisual(UMeshComponent* Mesh, const FTransform& Transform, UMaterialInterface* Material);

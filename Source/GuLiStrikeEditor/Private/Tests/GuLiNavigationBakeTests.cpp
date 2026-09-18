@@ -67,8 +67,9 @@ namespace GuLiNavigationBakeTests
 			UActorFactory::CreateBrushForVolumeActor(Bounds, Builder);
 			FNavigationSystem::AddNavigationSystemToWorld(*World, FNavigationSystemRunMode::EditorMode, nullptr, false);
 			Navigation = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
-			FNavDataConfig Agent;
-			Agent.Name = TEXT("NavBakeTest"); Agent.AgentRadius = 34; Agent.AgentHeight = 144;
+			// Exercise the production Default agent; stale pre-migration dimensions can
+			// be rejected by the Recast CDO before this fixture has a generator at all.
+			FNavDataConfig Agent = GetDefault<UNavigationSystemV1>()->GetSupportedAgents()[0];
 			Agent.SetNavDataClass(ARecastNavMesh::StaticClass());
 			Navigation->OverrideSupportedAgents({ Agent });
 			Navigation->OnWorldInitDone(FNavigationSystemRunMode::EditorMode);
@@ -89,7 +90,7 @@ namespace GuLiNavigationBakeTests
 		{
 			ANavigationData* Data = Navigation->GetDefaultNavDataInstance(FNavigationSystem::DontCreate);
 			if (!Data) return false;
-			FPathFindingQuery Query(nullptr, *Data, FVector(-4500, 0, 75), FVector(4500, 0, 75));
+			FPathFindingQuery Query(nullptr, *Data, FVector(-900, 0, 15), FVector(900, 0, 15));
 			Query.SetAllowPartialPaths(false);
 			const FPathFindingResult Result = Navigation->FindPathSync(Query);
 			return Result.IsSuccessful() && Result.Path.IsValid() && !Result.Path->IsPartial();
@@ -104,8 +105,9 @@ bool FGuLiGroundNavigationBakeCacheTest::RunTest(const FString& Parameters)
 {
 	using namespace GuLiNavigationBakeTests;
 	FWorldFixture Fixture; Fixture.Initialize();
-	Fixture.Floor(TEXT("LeftGround"), FVector(-4000, 0, 0), FVector(2000, 2500, 50));
-	Fixture.Floor(TEXT("RightGround"), FVector(4000, 0, 0), FVector(2000, 2500, 50));
+	// This synthetic local ramp/obstacle fixture shrinks with the actors (not the real map).
+	Fixture.Floor(TEXT("LeftGround"), FVector(-800, 0, 0), FVector(400, 500, 10));
+	Fixture.Floor(TEXT("RightGround"), FVector(800, 0, 0), FVector(400, 500, 10));
 	Fixture.InitializeNavigation();
 	auto Result = UGuLiNavigationBakeLibrary::PrepareWorldNavigation(Fixture.World, false);
 	if (!TestTrue(*Result.Message, Result.bSuccess)) return false;
@@ -117,18 +119,18 @@ bool FGuLiGroundNavigationBakeCacheTest::RunTest(const FString& Parameters)
 			It->bDoFullyAsyncNavDataGathering == GetDefault<ARecastNavMesh>()->bDoFullyAsyncNavDataGathering);
 	TestFalse(TEXT("Separate ground islands are unreachable"), Fixture.HasPath());
 
-	UStaticMeshComponent* Bridge = Fixture.Floor(TEXT("RuntimeBridge"), FVector::ZeroVector, FVector(2000, 2500, 50));
+	UStaticMeshComponent* Bridge = Fixture.Floor(TEXT("RuntimeBridge"), FVector::ZeroVector, FVector(400, 500, 10));
 	TestFalse(TEXT("New walkable geometry invalidates baked source"),
 		UGuLiNavigationBakeLibrary::ValidateWorldNavigation(Fixture.World).bSuccess);
 	Fixture.FlushDirty();
 	TestTrue(TEXT("Dynamic tiles create a new bridge connection"), Fixture.HasPath());
-	// Keep the end steps below the existing agent's 35 cm climb limit.
+	// Same angle, 0.2x local geometry: the end step is below the new 7 cm climb limit.
 	Bridge->SetWorldRotation(FRotator(0.5, 0, 0));
 	Fixture.FlushDirty();
 	TestTrue(TEXT("An inclined runtime ramp remains reachable after local geometry updates"), Fixture.HasPath());
 
 	AGuLiOreClusterObstacleActor* Ore = Fixture.World->SpawnActor<AGuLiOreClusterObstacleActor>();
-	Ore->InitializeObstacle(0, 3000);
+	Ore->InitializeObstacle(0, 600);
 	Fixture.FlushDirty();
 	TestFalse(TEXT("Ore footprint blocks the bridge corridor"), Fixture.HasPath());
 	Ore->SetObstacleEnabled(false);
@@ -140,11 +142,11 @@ bool FGuLiGroundNavigationBakeCacheTest::RunTest(const FString& Parameters)
 	Fixture.World->DestroyActor(Ore);
 	Fixture.FlushDirty();
 	TestTrue(TEXT("Removing a dynamic obstacle restores access"), Fixture.HasPath());
-	const FTransform BuildingTransform(FVector(0, 0, 500));
+	const FTransform BuildingTransform(FVector(0, 0, 100));
 	AGuLiPlacedBuilding* Building = Fixture.World->SpawnActorDeferred<AGuLiPlacedBuilding>(
 		AGuLiPlacedBuilding::StaticClass(), BuildingTransform, nullptr, nullptr, ESpawnActorCollisionHandlingMethod::AlwaysSpawn);
 	if (!TestNotNull(TEXT("The production building actor can be created"), Building)) return false;
-	Building->GetBuildingCollision()->SetBoxExtent(FVector(400, 3000, 500));
+	Building->GetBuildingCollision()->SetBoxExtent(FVector(80, 600, 100));
 	Building->FinishSpawning(BuildingTransform);
 	// ApplyDefinition refreshes these bounds after assigning the catalog footprint.
 	Building->GetNavigationModifier()->UpdateNavigationBounds();
@@ -334,7 +336,7 @@ bool FGuLiBuildingRampGroundContractTest::RunTest(const FString& Parameters)
 	TestFalse(TEXT("A valid center cannot hide unsupported footprint corners"),
 		GuLiBuildings::ValidateGroundPlacement(*Fixture.World, Definition, FTransform::Identity, nullptr, Owner, Reason));
 	const auto Candidates = GuLiBuildings::GetGiftPlacementCandidates(FVector(112000, 0, 0), 2);
-	TestEqual(TEXT("Original western slot is retained as first candidate"), Candidates[0].GetLocation().X, 105000.0);
+	TestEqual(TEXT("World anchor remains fixed; western local offset is scaled once"), Candidates[0].GetLocation().X, 110600.0);
 	for (int32 Index = 1; Index < Candidates.Num(); ++Index)
 		TestTrue(TEXT("Fallback order is nearest-first"),
 			FVector::DistSquared2D(Candidates[Index].GetLocation(), Candidates[0].GetLocation()) + 0.01 >=

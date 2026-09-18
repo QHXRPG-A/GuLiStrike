@@ -1,0 +1,206 @@
+{
+  "key": "Electronic_JammingDevice",
+  "stage": "review_B_ready",
+  "scope": "Original mesh retained; only shading, textures, line mask and optional render outline",
+  "source_file": "Source\\FBX_static_v1\\SM_SC_Electronic_JammingDevice.fbx",
+  "source_file_sha256": "1efd95e79ab5c21d2bbfe3b215068b7cad37841feb37f43dd6ba6dbd104018ea",
+  "original_geometry_sha256": "099aebd3f50af27ffc0e40832905d86b7d94f8b7357bcabd6f4a18c36aff8c61",
+  "finished_body_geometry_sha256": "099aebd3f50af27ffc0e40832905d86b7d94f8b7357bcabd6f4a18c36aff8c61",
+  "body_geometry_unchanged": true,
+  "original_corner_normals_unchanged": true,
+  "material_regions": [
+    {
+      "seed": 0,
+      "vertices": 48,
+      "bone": null
+    },
+    {
+      "seed": 48,
+      "vertices": 14,
+      "bone": null
+    },
+    {
+      "seed": 62,
+      "vertices": 14,
+      "bone": null
+    },
+    {
+      "seed": 76,
+      "vertices": 22,
+      "bone": null
+    },
+    {
+      "seed": 98,
+      "vertices": 14,
+      "bone": null
+    },
+    {
+      "seed": 112,
+      "vertices": 65,
+      "bone": null
+    },
+    {
+      "seed": 177,
+      "vertices": 14,
+      "bone": null
+    },
+    {
+      "seed": 191,
+      "vertices": 8,
+      "bone": null
+    },
+    {
+      "seed": 199,
+      "vertices": 15,
+      "bone": null
+    },
+    {
+      "seed": 214,
+      "vertices": 48,
+      "bone": null
+    },
+    {
+      "seed": 262,
+      "vertices": 12,
+      "bone": null
+    },
+    {
+      "seed": 274,
+      "vertices": 12,
+      "bone": null
+    },
+    {
+      "seed": 286,
+      "vertices": 8,
+      "bone": null
+    },
+    {
+      "seed": 294,
+      "vertices": 21,
+      "bone": null
+    },
+    {
+      "seed": 315,
+      "vertices": 8,
+      "bone": null
+    },
+    {
+      "seed": 323,
+      "vertices": 12,
+      "bone": null
+    },
+    {
+      "seed": 335,
+      "vertices": 8,
+      "bone": null
+    }
+  ],
+  "connection_fix": "Whole original component and connected coplanar paint assignment.",
+  "vertices": 343,
+  "polygons": 550,
+  "body_triangles": 550,
+  "outline_triangles": 550,
+  "body_material_slots": 1,
+  "dimensions_blender_m": [
+    12.905091285705566,
+    7.408935546875,
+    5.385937690734863
+  ],
+  "uv_channels": [
+    "UVmap_0",
+    "UVmap_1",
+    "LightMapUV",
+    "SC_PaintUV",
+    "SC_LineUV"
+  ],
+  "source_uv_channels": [
+    "UVmap_0",
+    "UVmap_1",
+    "LightMapUV"
+  ],
+  "texture_size": [
+    2048,
+    2048
+  ],
+  "texture_files": [
+    "//Textures/T_SC_Electronic_JammingDevice_BaseColor_2K.png",
+    "//Textures/T_SC_Electronic_JammingDevice_ORM_2K.png",
+    "//Textures/T_SC_Electronic_JammingDevice_LineMask_2K.png"
+  ],
+  "atlas_coverage": 0.39002013206481934,
+  "selected_structural_edges": 428,
+  "internal_line_halfwidth_m": 0.007743054931640624,
+  "outline_width_m": 0.015486109542846679,
+  "motion": {
+    "status": "not_applicable_static"
+  },
+  "sockets": [],
+  "user_A": {
+    "decision": "approved",
+    "record": "approval_A_20260917.json",
+    "user_message": "开始实施"
+  },
+  "user_B": "pending",
+  "UE_formal_validation": "not_run",
+  "blend_sha256": "154e16a6634236420c707814869b94747de7f655ac5c276a8d19561d9dc7fe20",
+  "candidate_version": "v1",
+  "reference_version": "v3",
+  "editable_palette_face_attribute": "SC_PaintPaletteIndex",
+  "editable_corner_color_attribute": "SC_EditablePaintColor",
+  "source_object_matrix": [
+    [
+      0.009999999776482582,
+      0.0,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.009999999776482582,
+      0.0,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.009999999776482582,
+      0.0
+    ],
+    [
+      0.0,
+      0.0,
+      0.0,
+      1.0
+    ]
+  ],
+  "internal_line_halfwidth_local_units": 0.7743054931640624,
+  "mechanical_type": "static",
+  "bones": [],
+  "lighting": "EEVEE Diffuse -> Shader to RGB -> luminance -> constant 3-step ramp; scene lights and self-shadow",
+  "toon_thresholds": [
+    0,
+    0.18,
+    0.46
+  ],
+  "toon_multipliers_linear": [
+    [
+      0.43,
+      0.5,
+      0.6
+    ],
+    [
+      0.72,
+      0.79,
+      0.84
+    ],
+    [
+      1,
+      1,
+      1
+    ]
+  ],
+  "line_strength": 0.85,
+  "saved_file_geometry_readback": "passed",
+  "original_object_matrix_unchanged": true,
+  "original_UV_channels_unchanged": true
+}

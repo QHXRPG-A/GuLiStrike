@@ -1,0 +1,2797 @@
+{
+  "schema": "guli-scale020/baseline-v1",
+  "multiplier": 0.2,
+  "captured_at": "2026-09-18T03:14:21.2341717Z",
+  "git_head": "0e4f004d30b9931b15c5040e04eef03514af3548",
+  "preexisting_status": [
+    " M Content/GuLiStrike/Commander/Skills/DA_CommanderSkills_V1.uasset",
+    " M Content/GuLiStrike/Data/DT_GuLiStrikeCommander_Skills.uasset",
+    " M Content/GuLiStrike/Data/DT_GuLiStrikeCommander_UnitSkills.uasset",
+    " M Content/GuLiStrike/Data/DT_GuLiStrikeCommander_WeaponMounts.uasset",
+    " M Content/GuLiStrike/Data/DT_GuLiStrikeSecondaryWeapons_Projectiles.uasset",
+    " M Content/GuLiStrike/Data/DT_GuLiStrikeShip_WingmanTargeting.uasset",
+    " M Content/GuLiStrike/Data/DT_GuLiStrikeShip_WingmanWeapons.uasset",
+    " M Content/GuLiStrike/Data/DT_GuLiStrikeSpellFields_Fields.uasset",
+    " M Content/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile.uasset",
+    " M Content/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_BasicAuto.uasset",
+    " M Content/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_GroundMissile.uasset",
+    " M Content/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MachineGun.uasset",
+    " M Content/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MissileSalvo.uasset",
+    " M Progress/DevelopmentDocumentation/GuLiStrike美术规范.md",
+    " M Progress/Gameplay/建筑.md",
+    " M Progress/Gameplay/战斗.md",
+    " M Progress/Gameplay/指挥官.md",
+    " M Progress/RequirementDocument/20260826-5v5大战场玩法草案.md",
+    " M Progress/RequirementDocument/20260831-基地建造玩法探索.md",
+    " M Progress/RequirementDocument/GuLiStrike美术规范.md",
+    " M Progress/_Index/Archive.md",
+    " M Progress/_Index/ByArea.md",
+    " M Progress/_Index/Current.md",
+    " M Progress/_Index/Quality.md",
+    " M Progress/_Index/Verification.md",
+    " M Progress/_Index/catalog.jsonl",
+    " M Scripts/author_component_skill_assets.py",
+    " M Scripts/import_data_to_engine.py",
+    " M Source/GuLiStrike/Battle/Network/GuLiBattleTypes.h",
+    " M Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp",
+    " M Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h",
+    " M Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp",
+    " M Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp",
+    " M Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h",
+    " M Source/GuLiStrike/Commander/Mass/GuLiSoldierCombat.cpp",
+    " M Source/GuLiStrike/Commander/Mass/GuLiSoldierCombat.h",
+    " M Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp",
+    " M Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h",
+    " M Source/GuLiStrike/Gameplay/Building/GuLiBuildingSpawner.cpp",
+    " M Source/GuLiStrike/Gameplay/Building/GuLiBuildingSpawner.h",
+    " M Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.h",
+    " M Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp",
+    " M Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp",
+    " M Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h",
+    " M Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.cpp",
+    " M Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h",
+    " M Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.cpp",
+    " M Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h",
+    " M Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.cpp",
+    " M Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.h",
+    " M Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.cpp",
+    " M Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h",
+    " D Source/GuLiStrike/Gameplay/CommanderSkills/GuLiCommanderSkillDefinition.cpp",
+    " M Source/GuLiStrike/Gameplay/CommanderSkills/GuLiCommanderSkillDefinition.h",
+    " M Source/GuLiStrike/Gameplay/CommanderSkills/GuLiUnitSkillExecution.cpp",
+    " M Source/GuLiStrike/Gameplay/CommanderSkills/GuLiUnitSkillExecution.h",
+    " M Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h",
+    " M Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSubsystem.cpp",
+    " M Source/GuLiStrike/Gameplay/Resources/GuLiMiningVehiclePawn.cpp",
+    " M Source/GuLiStrike/Gameplay/Resources/GuLiMiningVehiclePawn.h",
+    " M Source/GuLiStrike/Gameplay/Skills/GuLiArmySkillSubsystem.cpp",
+    " M Source/GuLiStrike/Gameplay/Skills/GuLiSkillResolver.cpp",
+    " M Source/GuLiStrike/Gameplay/Skills/GuLiSkillTypes.cpp",
+    " M Source/GuLiStrike/Gameplay/Skills/GuLiSkillTypes.h",
+    " M Source/GuLiStrike/Gameplay/Units/GuLiExternalUnitControlComponent.cpp",
+    " M TestResults/SecondaryWeapons/import-report.json",
+    " M Tools/ProgressDashboard/.oxlintrc.json",
+    " M Tools/ProgressDashboard/README.md",
+    " M Tools/ProgressDashboard/app/globals.css",
+    " M Tools/ProgressDashboard/components/progress-dashboard.tsx",
+    " M Tools/ProgressDashboard/lib/progress-types.ts",
+    " M Tools/ProgressDashboard/server.py",
+    " M data/Excel/GuLiStrikeSecondaryWeapons.xlsx",
+    " M data/Json/DT_GuLiStrikeCommander_Skills.json",
+    " M data/Json/DT_GuLiStrikeCommander_UnitSkills.json",
+    " M data/Json/manifest.json",
+    "?? ArtSource/Environment/",
+    "?? ArtSource/Ships/ShipComponentStyle_20260917/",
+    "?? ArtSource/VFX/",
+    "?? Content/GuLiStrike/Commander/Skills/DA_WM01_MissileQ.uasset",
+    "?? Content/GuLiStrike/Data/DT_GuLiStrikeSecondaryUnitSkills_Skills.uasset",
+    "?? Content/GuLiStrike/Data/DT_GuLiStrikeSecondaryUnitSkills_UnitSkills.uasset",
+    "?? Content/GuLiStrike/Environment/",
+    "?? Content/GuLiStrike/FX/GroundWarning/",
+    "?? Content/GuLiStrike/Ship/StylizedComponents/",
+    "?? Content/StylizedPineEnvironment/",
+    "?? Progress/Archive/20260917-Ship三组件原型冻结与参考审核A材料.md",
+    "?? Progress/Archive/20260917-Ship三组件原网格材质与连接分色修正.md",
+    "?? Progress/Archive/20260917-Ship三组件材质审核B通过与FBX交付.md",
+    "?? Progress/Archive/20260917-Ship全组件表面交付与UE正式替换.md",
+    "?? Progress/Archive/20260917-Ship剩余四组件原型与火焰标识参考A.md",
+    "?? Progress/Archive/20260917-Ship干扰与护盾参考配色区分.md",
+    "?? Progress/Archive/20260917-Ship干扰装置深蓝白黄参考修订.md",
+    "?? Progress/Archive/20260917-Ship第三批支援组件原型与参考审核A.md",
+    "?? Progress/Archive/20260917-Ship第三批支援组件原模型材质成品审核B.md",
+    "?? Progress/Archive/20260917-Ship第三批材质B通过与静态FBX交付.md",
+    "?? Progress/Archive/20260917-Ship第二批原型冻结与参考审核A候选.md",
+    "?? Progress/Archive/20260917-Ship第二批原模型材质制作与成品审核B.md",
+    "?? Progress/Archive/20260917-Ship组件制作临时资源回收清理.md",
+    "?? Progress/Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md",
+    "?? Progress/Archive/20260917-地面玩法定稿与弹速基线核查.md",
+    "?? Progress/Archive/20260917-战争机器Q导弹通用预警与切图断言修复.md",
+    "?? Progress/Archive/20260917-松树林与三单位独立试摆.md",
+    "?? Progress/Archive/20260917-自然资源包参考与植被贴片工艺.md",
+    "?? Progress/Archive/20260917-进度面板分类筛选与文档分类元数据.md",
+    "?? Progress/Archive/20260918-Q圆面打击与赠品清场选兵恢复实现.md",
+    "?? Progress/Archive/20260918-松树林v1审核通过与原图原位重构授权.md",
+    "?? Progress/Archive/20260918-松树林原Demo地图全资源适配交付候选.md",
+    "?? Progress/Archive/20260918-松树林风格适配v1候选.md",
+    "?? Progress/DevelopmentDocumentation/20260917-Ship三组件风格样板制作.md",
+    "?? Progress/DevelopmentDocumentation/20260917-Ship剩余四组件贴图与框线制作.md",
+    "?? Progress/DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md",
+    "?? Progress/DevelopmentDocumentation/20260917-Ship第二批三组件贴图与框线制作.md",
+    "?? Progress/DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md",
+    "?? Progress/DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md",
+    "?? Progress/DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md",
+    "?? Progress/DevelopmentDocumentation/20260917-自然地编资源包.md",
+    "?? Progress/DevelopmentDocumentation/20260917-进度面板分类筛选与文档分类元数据.md",
+    "?? Progress/DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md",
+    "?? Progress/DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md",
+    "?? Progress/DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md",
+    "?? Progress/DevelopmentDocumentation/相关读物/游戏拆解/",
+    "?? Progress/Gameplay/次级单位技能与地面预警.md",
+    "?? Progress/RequirementDocument/20260917-Ship三组件风格样板制作.md",
+    "?? Progress/RequirementDocument/20260917-Ship剩余四组件贴图与框线制作.md",
+    "?? Progress/RequirementDocument/20260917-Ship第三批支援组件贴图与框线制作.md",
+    "?? Progress/RequirementDocument/20260917-Ship第二批三组件贴图与框线制作.md",
+    "?? Progress/RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md",
+    "?? Progress/RequirementDocument/20260917-战争机器Q导弹与通用地面预警.md",
+    "?? Progress/RequirementDocument/20260917-松树林与三单位同场景对照.md",
+    "?? Progress/RequirementDocument/20260917-自然地编资源包.md",
+    "?? Progress/RequirementDocument/20260917-进度面板分类筛选与文档分类元数据.md",
+    "?? Progress/RequirementDocument/20260918-Q导弹圆面打击与赠品建筑防卡死.md",
+    "?? Progress/RequirementDocument/20260918-松树林原地图全资源风格重构.md",
+    "?? Progress/RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md",
+    "?? Scripts/Art/",
+    "?? Scripts/Blender/build_ship_component_style_from_original.py",
+    "?? Scripts/Blender/build_ship_component_style_models.py",
+    "?? Scripts/Blender/export_ship_component_authorized_delivery.py",
+    "?? Scripts/Blender/export_ship_component_batch03_delivery.py",
+    "?? Scripts/Blender/export_ship_component_material_delivery.py",
+    "?? Scripts/Blender/finish_ship_component_batch02_review.py",
+    "?? Scripts/Blender/finish_ship_component_batch03_review.py",
+    "?? Scripts/Blender/finish_ship_component_batch04_review.py",
+    "?? Scripts/Blender/finish_ship_component_material_review.py",
+    "?? Scripts/Blender/inspect_ship_material_connections.py",
+    "?? Scripts/Blender/render_ship_component_batch02_sources.py",
+    "?? Scripts/Blender/render_ship_component_batch03_sources.py",
+    "?? Scripts/Blender/render_ship_component_batch04_sources.py",
+    "?? Scripts/Blender/render_ship_component_style_prototypes.py",
+    "?? Scripts/Blender/style_ship_component_batch02_materials.py",
+    "?? Scripts/Blender/style_ship_component_batch03_materials.py",
+    "?? Scripts/Blender/style_ship_component_batch04_materials.py",
+    "?? Scripts/Blender/style_ship_component_original_materials.py",
+    "?? Scripts/PluginPatches/",
+    "?? Scripts/Scale020/",
+    "?? Scripts/adapt_pine_demo.py",
+    "?? Scripts/adapt_pine_style_review.py",
+    "?? Scripts/author_ground_warning_assets.py",
+    "?? Scripts/author_secondary_unit_skill_assets.py",
+    "?? Scripts/author_wm01_missile_skill.py",
+    "?? Scripts/create_secondary_unit_skill_source.py",
+    "?? Scripts/import_ship_component_styled_assets.py",
+    "?? Scripts/inspect_pine_style_workload.py",
+    "?? Scripts/inspect_ship_component_formal_targets.py",
+    "?? Scripts/package_pine_demo_review.ps1",
+    "?? Scripts/pine_style_comparison.py",
+    "?? Scripts/prepare_pine_demo_adaptation.ps1",
+    "?? Scripts/preview_ground_warning.py",
+    "?? Scripts/preview_ship_component_styled_assets.py",
+    "?? Scripts/restore_ship_component_original_collision.py",
+    "?? Scripts/update_wm01_missile_source.py",
+    "?? Scripts/validate_saved_ship_component_assets.py",
+    "?? Source/GuLiStrike/Gameplay/Building/GuLiGiftBuildingClearance.cpp",
+    "?? Source/GuLiStrike/Gameplay/Building/GuLiGiftBuildingClearance.h",
+    "?? Source/GuLiStrike/Gameplay/CombatEffects/GuLiGroundWarningSubsystem.cpp",
+    "?? Source/GuLiStrike/Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h",
+    "?? Source/GuLiStrike/Gameplay/CommanderSkills/GuLiCommanderSkillTypes.cpp",
+    "?? Source/GuLiStrike/Gameplay/CommanderSkills/GuLiCommanderSkillTypes.h",
+    "?? Source/GuLiStrike/Gameplay/CommanderSkills/GuLiPointSkill.cpp",
+    "?? Source/GuLiStrike/Gameplay/CommanderSkills/GuLiPointSkill.h",
+    "?? Source/GuLiStrike/Gameplay/CommanderSkills/GuLiSelfSkill.cpp",
+    "?? Source/GuLiStrike/Gameplay/CommanderSkills/GuLiSelfSkill.h",
+    "?? Source/GuLiStrike/Gameplay/CommanderSkills/GuLiTeleportSkill.cpp",
+    "?? Source/GuLiStrike/Gameplay/CommanderSkills/GuLiTeleportSkill.h",
+    "?? Source/GuLiStrike/Gameplay/CommanderSkills/GuLiWarMachineMissileSkill.cpp",
+    "?? Source/GuLiStrike/Gameplay/CommanderSkills/GuLiWarMachineMissileSkill.h",
+    "?? Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeSecondaryUnitSkillsTableRows.h",
+    "?? TestResults/ComponentSkills/GroundMachineGun_20260917/",
+    "?? TestResults/ComponentSkills/GroundMachineGun_Final_20260917/",
+    "?? TestResults/ComponentSkills/QGift_20260918/",
+    "?? TestResults/ComponentSkills/WM01QGroundWarning_20260917/",
+    "?? TestResults/ComponentSkills/WM01QGroundWarning_Final_20260917/",
+    "?? TestResults/GroundMachineGun/",
+    "?? data/Excel/GuLiStrikeSecondaryUnitSkills.xlsx",
+    "?? data/Json/DT_GuLiStrikeSecondaryUnitSkills_Skills.json",
+    "?? data/Json/DT_GuLiStrikeSecondaryUnitSkills_UnitSkills.json"
+  ],
+  "files": [
+    {
+      "path": "Config/DefaultEditor.ini",
+      "sha256": "c03935c1489c89e28207d3f84d2e3d0378f7a9bf36fba943649cd49b7dac4183",
+      "bytes": 55706
+    },
+    {
+      "path": "Config/DefaultEditorPerProjectUserSettings.ini",
+      "sha256": "189ee00a1bf64c5c1ada38f71fe8dcd4ce98f9405b46aa73642892da778b3b01",
+      "bytes": 17
+    },
+    {
+      "path": "Config/DefaultEditorSettings.ini",
+      "sha256": "579d14699993318baf4c4460447eb9a2bd07b7b02c0401f71ebfde41d1a4ac69",
+      "bytes": 81
+    },
+    {
+      "path": "Config/DefaultEngine.ini",
+      "sha256": "1e021c1a2fcea33bc823d93e13050c21515194c485eebf68dd8527c407c0e082",
+      "bytes": 7072
+    },
+    {
+      "path": "Config/DefaultGame.ini",
+      "sha256": "ff6fd3e7fefbfd0a58331d48df988282d442ff9b3a94d4605dcd3af7ffed5ae5",
+      "bytes": 19250
+    },
+    {
+      "path": "Config/DefaultInput.ini",
+      "sha256": "02090691777462b6fb2850725da4c9ec86833f3703a83c9edeb262706f003411",
+      "bytes": 8955
+    },
+    {
+      "path": "Data/Excel/_legacy/GuLiStrikeShip_v1_format.xlsx",
+      "sha256": "4eba6a65240aa22e5fcdedaee1fb1ff8b67285cf30068114babc4a14daf0e767",
+      "bytes": 11147
+    },
+    {
+      "path": "Data/Excel/GuLiStrikeBuildings.xlsx",
+      "sha256": "1396011e8b095ff2482b276b290b493b13f12f6ef8393fd1b14bbefc64b41c59",
+      "bytes": 7933
+    },
+    {
+      "path": "Data/Excel/GuLiStrikeCommander.xlsx",
+      "sha256": "71f82340c4fa85b6239e7377bc4aec82068c2825e5b63ceb40d0e726fbe2e1b8",
+      "bytes": 8430
+    },
+    {
+      "path": "Data/Excel/GuLiStrikeSecondaryUnitSkills.xlsx",
+      "sha256": "82b4b7b46f4a8873a5e5b7b7b4b0fc267e2b58bc249eab6fdc31f32557d7184e",
+      "bytes": 7872
+    },
+    {
+      "path": "Data/Excel/GuLiStrikeSecondaryWeapons.xlsx",
+      "sha256": "a900d7c69d4be7023cea3c25a8f4705211699e743e98855bcffbb3e8dcdbe70b",
+      "bytes": 15187
+    },
+    {
+      "path": "Data/Excel/GuLiStrikeShip.xlsx",
+      "sha256": "71ee9efdc96d06a879d573b0642dfc1765ee1472af87f57715d94330ea112e83",
+      "bytes": 10436
+    },
+    {
+      "path": "Data/Excel/GuLiStrikeSpellFields.xlsx",
+      "sha256": "17b7d0071a7dd41ae7a9c2a2e24d2b02c63026e2a3f66afecab026fcdf3fdb48",
+      "bytes": 7811
+    },
+    {
+      "path": "Source/GuLiStrike/AI/BlinkVFX.cpp",
+      "sha256": "b5f8d3c473327965d64be743efdd9c82021648a05736b6c47a3d9161442120a1",
+      "bytes": 5320
+    },
+    {
+      "path": "Source/GuLiStrike/AI/BlinkVFX.h",
+      "sha256": "b7a019846dd8454816c17a444cf037ecef2a4a3953cbb14f73b75f54a17cb844",
+      "bytes": 1908
+    },
+    {
+      "path": "Source/GuLiStrike/AI/GuLiStrikeAIController.cpp",
+      "sha256": "bcf2b21d4c89aa581c45ec2e51a47b0c2b27f29ab55dccf2fac9eafc21a0b0d5",
+      "bytes": 1755
+    },
+    {
+      "path": "Source/GuLiStrike/AI/GuLiStrikeAIController.h",
+      "sha256": "9ae9d03133b52ec0345a7d749e1e740a2443e1416c04f06ae3b316800cf1f735",
+      "bytes": 983
+    },
+    {
+      "path": "Source/GuLiStrike/AI/GuLiStrikeNPC.cpp",
+      "sha256": "eca121926e4a6558004ba99b65e5ce0fb87ee578b0a965dc1d4b16e899b2897f",
+      "bytes": 3701
+    },
+    {
+      "path": "Source/GuLiStrike/AI/GuLiStrikeNPC.h",
+      "sha256": "5292996a1a1a5e9e794c90b0ea63261c136c7e4ddc13bbc97e148ca72d5ac17d",
+      "bytes": 2359
+    },
+    {
+      "path": "Source/GuLiStrike/AI/GuLiStrikeNPCDestruction.cpp",
+      "sha256": "84ad090702185942cf95ae3cf7bb3ed7fda5e9bc4cf227a3bffdbe0a37f88503",
+      "bytes": 191
+    },
+    {
+      "path": "Source/GuLiStrike/AI/GuLiStrikeNPCDestruction.h",
+      "sha256": "871bf1313c9d364af7e6dea956cee70fc221ad9c4c282050cb2c7f453a24828f",
+      "bytes": 492
+    },
+    {
+      "path": "Source/GuLiStrike/AI/GuLiStrikeSpawner.cpp",
+      "sha256": "60a09e160834070ba7a8d594cf6b1dd6814625dcba870f76987c34c257f760b0",
+      "bytes": 2214
+    },
+    {
+      "path": "Source/GuLiStrike/AI/GuLiStrikeSpawner.h",
+      "sha256": "64c394a89346f87d6175f83ee460dbe874780f4880c4d32768d6baf09094490a",
+      "bytes": 2044
+    },
+    {
+      "path": "Source/GuLiStrike/AI/GuLiStrikeStateTreeUtility.cpp",
+      "sha256": "26c2a9718b55737b650edb330cb0776160070139ace7a8a9bf0f70032ea44c64",
+      "bytes": 1079
+    },
+    {
+      "path": "Source/GuLiStrike/AI/GuLiStrikeStateTreeUtility.h",
+      "sha256": "fa5092ff4c6f75033585f9a36151ee151a715c7a70bc6f201aa9aa978fccd309",
+      "bytes": 1419
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiActorDamageReceiverComponent.cpp",
+      "sha256": "ea9a8aa71fe26dabf6b4341283ad9cdbd6d2c59f9ed4a9115a850092374e3667",
+      "bytes": 2527
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiActorDamageReceiverComponent.h",
+      "sha256": "7f47ff3ef1740453f21c0a3e953b8ea3b0cd4c2fc16c10560abb2640ce1d1fca",
+      "bytes": 962
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiCombatDamageLedger.cpp",
+      "sha256": "4f3162b1fe2d40a5ce903e193381a9f22c1cf78471f2d08dffdddffbcab711e3",
+      "bytes": 27241
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiCombatDamageLedger.h",
+      "sha256": "c9de16d4a7c52bdedac139fee071e3b2413d4ca2fe13283d8c7aebd09845bdce",
+      "bytes": 14402
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiLogicalMissileSubsystem.cpp",
+      "sha256": "1f8afacb1200315d6ccc5a41ae90ffe53dd25a85323fbf8f18aa4829a75a766f",
+      "bytes": 13690
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiLogicalMissileSubsystem.h",
+      "sha256": "258c8a496f3afe1bbec367c10b7418a824271cc9df85b5e03635e9c48c01a970",
+      "bytes": 8154
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiMissileVisualSubsystem.cpp",
+      "sha256": "a2f4a15a634c1ce158ce4fd5fee82ebdc829b09a677fef74568ef8038a9b5d0d",
+      "bytes": 4845
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiMissileVisualSubsystem.h",
+      "sha256": "3ea2c1f78592ebe3589968f143c554a5c97c6c322495d20f1abe50b3da65a460",
+      "bytes": 7814
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiShipProjectileLedgerBridge.cpp",
+      "sha256": "720d8b5b6df6d9af74de16104341ed56447b1bd9e53e182c52bf292f686dc6f8",
+      "bytes": 8887
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiShipProjectileLedgerBridge.h",
+      "sha256": "ebc371cc3439e128cf961e4441088fc28d4400e71cdeba0e0e14a0d971268c65",
+      "bytes": 2734
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiWingmanAttackCombat.cpp",
+      "sha256": "78a4ca6aa67f10b7c45ddcd0bf22dab6fbcf4f06aabf7089cfa785ddefb8529a",
+      "bytes": 32596
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiWingmanCombatCoordinator.cpp",
+      "sha256": "08984c2fea6b657a07948f14ea634905c3efb10647ae86f18939de4bfe43e6c4",
+      "bytes": 41226
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiWingmanCombatCoordinator.h",
+      "sha256": "50fa661afe04c804765c95d5458ed0b825d2014b631eb48576b2064a65ee4521",
+      "bytes": 9942
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiWingmanReplenishmentController.cpp",
+      "sha256": "45a0e5dc8fa7da675a0208b7e49eb6a625806f57e79481952071f4f390f69e79",
+      "bytes": 5841
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiWingmanReplenishmentController.h",
+      "sha256": "51f840681d6805160b352544e9a7fbea50e155d89337d0b6bb459a08601ed1bf",
+      "bytes": 2059
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiWingmanTargetAssignment.cpp",
+      "sha256": "07e2b10f0fca11b9dc2c66da9db90186e097f4779929fced27fa00ac2effca26",
+      "bytes": 9903
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/GuLiWingmanTargetAssignment.h",
+      "sha256": "065e9c6b0f727a11ecef724c628cb43470453a72ed332346bc0185acdbab6927",
+      "bytes": 1667
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/Tests/GuLiDamageLedgerTests.cpp",
+      "sha256": "8187389194358b11fc9ae89d5e5993ca776a94f14bd440f6587030466807f469",
+      "bytes": 15572
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/Tests/GuLiLogicalMissileTests.cpp",
+      "sha256": "81ea5441575f07c451868a61e97dfa87c10498c6ce2ee7855ad7c51873cc0afa",
+      "bytes": 10454
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/Tests/GuLiMissileVisualSubsystemTests.cpp",
+      "sha256": "3431f30d68e0585a8fdff0b6c54ef9d6982bc61dc548e2dd235b5c35b801b0ab",
+      "bytes": 6455
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/Tests/GuLiShipProjectileLedgerBridgeTests.cpp",
+      "sha256": "889cd0ee839109cc06956f32e53854abe666685e7ecac4ad884e9ae5848d7ecc",
+      "bytes": 13171
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/Tests/GuLiWingmanAttackCombatTests.cpp",
+      "sha256": "c553a934c54bc42a18442b33c53af9cd61f79b9f34cb0c2b440fd587b31974a1",
+      "bytes": 46242
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/Tests/GuLiWingmanCombatCoordinatorTests.cpp",
+      "sha256": "dfeb0c0846faaa5e4f38f1045980af8135fb7bab65fe7d4f4a1b1e7bec0229ef",
+      "bytes": 51816
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/Tests/GuLiWingmanLifecycleTests.cpp",
+      "sha256": "f8c7aabe7659d51f339e2568a53e9fed34a5bb4b13e5c865fe7d42225be87655",
+      "bytes": 9071
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Combat/Tests/GuLiWingmanTargetAssignmentTests.cpp",
+      "sha256": "a4b29dfc53d8f99cde483df2b89305c7fc2cada1d22b5f0567c3ad287b756300",
+      "bytes": 12795
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Contracts/GuLiWingmanProtocolTypes.cpp",
+      "sha256": "6a96487963b890e60041c4c3674fbb8f3f36b8eca5bc6e5d112bd568f3ae6967",
+      "bytes": 43730
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Contracts/GuLiWingmanProtocolTypes.h",
+      "sha256": "145203d13b8254b2dd7cbe2ba4b2368bc2f1e3dfdd64fda0869558e488779c0f",
+      "bytes": 32402
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Contracts/Tests/GuLiWingmanProtocolTests.cpp",
+      "sha256": "d43a19557537118f5ebf0eaf4e630cef5fe78998428dd44bf84beffe5abea879",
+      "bytes": 30821
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/GuLiBattleGameMode.cpp",
+      "sha256": "44a2c9d337adc4c8bc43e0adae7c05485c8dd5e84444db894c89b326c01831d5",
+      "bytes": 21091
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/GuLiBattleGameMode.h",
+      "sha256": "71fcc6974a0632bc4f0f413c3a9b201b9571863a377cd55464d1d4f2701df49d",
+      "bytes": 3297
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/GuLiBattleGameState.cpp",
+      "sha256": "23d759fb6e44ef01dc71529833e247c664772162d76415f60d4a69bb48a0f4af",
+      "bytes": 23808
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/GuLiBattleGameState.h",
+      "sha256": "3f28a68bc40c782af3f1b3ce390790a7f9ef27ba9f188b81fdcfe8ba8ee32d82",
+      "bytes": 10607
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/GuLiBattlePlayerController.cpp",
+      "sha256": "e8525b4e208df55f61e025c023353d82db188d97b2b58828b278e3ed6e1ffa76",
+      "bytes": 4690
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/GuLiBattlePlayerController.h",
+      "sha256": "dcc0c73e93ec5fc19b79df568bd901da6d3bf16da49c497fc9760b549dd5e6f6",
+      "bytes": 2649
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/GuLiBattlePlayerState.cpp",
+      "sha256": "600b7a582cd1d2ce335cff9457523b9a3db17b5a09152d734a9463f79f479141",
+      "bytes": 13968
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/GuLiBattlePlayerState.h",
+      "sha256": "7125fe1067dbb47d1655c058b907790d05326f835579116aea4f42a46ae9f503",
+      "bytes": 8704
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Framework/Tests/GuLiWingmanPublicRelayTests.cpp",
+      "sha256": "d677cd64c8914eeb08c83b7f256bfe22b689acfbe62226e7ae445a81ece17050",
+      "bytes": 7627
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Network/GuLiBattleTypes.h",
+      "sha256": "6448441c8a817b596908a7f04d22c052d5ab8477929cad28d716c48486484ab0",
+      "bytes": 944
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Network/GuLiPlayerNetSyncComponent.cpp",
+      "sha256": "5b707c61ad6c90faebc202c7c5aac9cb08fd88c14f4f26ce613299d2c22b0e22",
+      "bytes": 9818
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Network/GuLiPlayerNetSyncComponent.h",
+      "sha256": "abf170e0d04cfe4e459450b0d72a63393131572b73370526958bfbb65b4ee926",
+      "bytes": 4558
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Network/Relay/GuLiWingmanRelayComponent.cpp",
+      "sha256": "0311fc2cb45f792b9279a6d003b847083a8d1a5b5844edd620af094767f05afb",
+      "bytes": 145938
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Network/Relay/GuLiWingmanRelayComponent.h",
+      "sha256": "ad12ba1231cdfb1bfbb3c97ac304dc1dfb1b7669c7e21cce2004ebd0b765f27f",
+      "bytes": 21720
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/GuLiWingmanRelayAuthorityRegistry.cpp",
+      "sha256": "6334cf0476021fdcf7e7e95521349937aef965a32f6a4265da63af2598ff5c99",
+      "bytes": 18424
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/GuLiWingmanRelayAuthorityRegistry.h",
+      "sha256": "c9c08e4ef99940f9ff21db0ff95412f1ce9adcd66bfddd462935c3a33f48b2de",
+      "bytes": 7060
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/GuLiWingmanRelayServer.cpp",
+      "sha256": "cec8bf5fd8cce96a06bac13bf5493583cb3ed90098041455892f20fd1baa7334",
+      "bytes": 127714
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/GuLiWingmanRelayServer.h",
+      "sha256": "559a7db7afed62de29f50385dbf18e0ca9d46d5098910856b497c1b9a26b58fd",
+      "bytes": 24617
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/GuLiWingmanRelayTypes.cpp",
+      "sha256": "2cbbc4e5b24c83f6aaeaf60bae45ac6505b161221c7a159d9e91eaad5cd970f3",
+      "bytes": 33128
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/GuLiWingmanRelayTypes.h",
+      "sha256": "b9b52cce239075e2bae580d785b9306d84b08eaa5258064821b8ab156c60c359",
+      "bytes": 17734
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/GuLiWingmanWorldValidator.cpp",
+      "sha256": "7d2fbe4fe3507d4f3c415eb905d9caebd79276382f8c50ca5c9a3679d4da6163",
+      "bytes": 8186
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/GuLiWingmanWorldValidator.h",
+      "sha256": "1eee337b4bf861dd9124cfb6030a9a9e306268c8814cee7b9ead7385da655d64",
+      "bytes": 1850
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/Tests/GuLiWingmanLeaseTransactionTests.cpp",
+      "sha256": "ca03d7c9f41ce5570c3afa4fb82388c224760c63a4b6ba07a97f2dacb41ba562",
+      "bytes": 46041
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/Tests/GuLiWingmanNetworkAcceptanceTests.cpp",
+      "sha256": "b55622f269cfdea9137641d21cd101a6a0899a7f244b934ca4a81cc1b4b7ff2d",
+      "bytes": 46866
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/Tests/GuLiWingmanRelayAuthorityRegistryTests.cpp",
+      "sha256": "4d341ca5781066ef1a7aec658a118ee89608daa9aaf5187995935b856248eb14",
+      "bytes": 17578
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/Tests/GuLiWingmanRelayTests.cpp",
+      "sha256": "a26e97a8a541ee9557b120c67c2df1e319419e66bd3ace428da64ad2824e245c",
+      "bytes": 64901
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/Tests/GuLiWingmanRelayTransactionTests.cpp",
+      "sha256": "7a2fff2bbd622beecee93fc9cc5f410798c3d967733568c996f36fe5bd2ce442",
+      "bytes": 34284
+    },
+    {
+      "path": "Source/GuLiStrike/Battle/Relay/Tests/GuLiWingmanWorldValidatorTests.cpp",
+      "sha256": "6e1119b8a7ac5a118a40cf7f8dc1183d849004af19c03115cbd2d3e36f13868f",
+      "bytes": 9328
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Editor/GuLiCommanderCrowdAssetCommands.cpp",
+      "sha256": "7597bf14d813731aed6820ca7a03c5ec0e1455e5df02a4a2515cfc3203d1b53a",
+      "bytes": 41626
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Editor/GuLiCommanderEditorCommands.cpp",
+      "sha256": "e041a55b446b0936be67dc4e5e7794f3b9783298ae8a9e7cd10f9b7bdb66e5d0",
+      "bytes": 3573
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Editor/GuLiCommanderHUDQACommands.cpp",
+      "sha256": "5c51a3ccd0bd1d1aaa947f72a5cb6c23f9a28730d4808e222eb24f70029b4c76",
+      "bytes": 10188
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Editor/GuLiCommanderInputQACommands.cpp",
+      "sha256": "884ee29c8d82e33f82766d7ecbc64e76fa2a20dce119f8570fa74e39d3b90d2a",
+      "bytes": 13704
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Editor/GuLiCommanderPredictionQACommands.cpp",
+      "sha256": "44d9813e0ecb4408d5a2ee632e62d0df44ee90664260e77edec5c905b8c752ff",
+      "bytes": 2861
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Editor/GuLiCommanderRingAssetCommands.cpp",
+      "sha256": "76c0128dfa12ad389d54d65c43b0c216ce9adbbb2dc368e8dbbd9429212ca92e",
+      "bytes": 24380
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Editor/GuLiCommanderRingBenchmarkCommands.cpp",
+      "sha256": "177ac4fe05fcd72477e7644bbdab87a9a0648051c742c5fc2acb22824734fe6a",
+      "bytes": 12820
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Editor/GuLiCommanderSelectionPIECommands.cpp",
+      "sha256": "35fb2dd95577c75083d9c769ea1c69de5af117e8eacfaa152f7af402f66690f0",
+      "bytes": 5164
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Editor/GuLiCommanderSelectionPointerQACommands.cpp",
+      "sha256": "13d581b8214ebb0aca4d851a8f3e986779af53268a885655ddd8b83f139c7f50",
+      "bytes": 18542
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Editor/GuLiCommanderUIRevisionCommands.cpp",
+      "sha256": "604b63e34168fc82be17cae02c62b239266eff103413589549cd2b18c63dff4c",
+      "bytes": 19458
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Editor/GuLiSkillNetworkQACommands.cpp",
+      "sha256": "209783ccc8e3a67bb3ec39a79344da345c6d5e67b6571709a40e8d0ecf8879c0",
+      "bytes": 35422
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Editor/Tests/GuLiCommanderCrowdAssetTests.cpp",
+      "sha256": "70f5d6fdf81325b2ed0d3455aca6dc863853b298c1735d99eafe0debfaeb0f91",
+      "bytes": 15583
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderDebugCommands.cpp",
+      "sha256": "c96c5028f962bdbe9be76f72035dcf17bc634c4a3d98adfa5a4f2a2eaf6f5866",
+      "bytes": 31584
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderDeploymentPoint.cpp",
+      "sha256": "e713c282cea1f68ceb72e695cd1f728201510ef418636efad0e7181cb762b04e",
+      "bytes": 1068
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderDeploymentPoint.h",
+      "sha256": "f2634e05c3d6c2796fd3fef27e13dde2da5bdb438377f84868b77c87923b7f1f",
+      "bytes": 1012
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderGameMode.cpp",
+      "sha256": "0fe32b3acb5426f192278fc143dc497eb5fe3b27958ef939fe06b0b8c3d8032e",
+      "bytes": 1597
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderGameMode.h",
+      "sha256": "f17acfaee8a537ca3967fc76770be765de41579f052474b2bd5d3234d7cf5636",
+      "bytes": 668
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderGameState.cpp",
+      "sha256": "5cc8de785764e36e8eadf490bc1a2fe761cfd5c3c3299dec3f94f527e7966917",
+      "bytes": 1264
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderGameState.h",
+      "sha256": "0d4cfa8cf8b73da7ee545cd69f524d5a7f21a70dfd95915ca2299a9931b501b8",
+      "bytes": 1723
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.cpp",
+      "sha256": "1b3494d77c5fde790f59f684069046fa592e716f441bf8e2503f91ccd02b2b26",
+      "bytes": 80588
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetSyncComponent.h",
+      "sha256": "7c2771b4751c4356f5bd2d3ab8263d0df9f91d36f15bce3070ff54f14470148b",
+      "bytes": 20199
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetworkGateCommands.cpp",
+      "sha256": "1849920074fb4b2f7e26587fda61bdd0dcbf93cffde0c08014c8fcb630d0e0f4",
+      "bytes": 24214
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetworkGateValidation.cpp",
+      "sha256": "62be45d044f30b9f4ffe912142f1ab8a5557ba81cd6f287bc541eb56cbb13c18",
+      "bytes": 4070
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderNetworkGateValidation.h",
+      "sha256": "3575fc07953c53df1b50f427ba5ebacac2f52ce77622060a305486a44df887b6",
+      "bytes": 2606
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.cpp",
+      "sha256": "b5c9f20c7b5884867017f6808f38af8d64ef009ec157bc7c626bfba198414a1e",
+      "bytes": 42276
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerController.h",
+      "sha256": "038bdb97d77fd1e923be4d2e59cfee90e1f970fd43b1d29794a459e0980b4612",
+      "bytes": 9664
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerState.cpp",
+      "sha256": "a6398497dbd616dca4bf18ccfcf18cefa89bd449e82199e1e0fd77b3f311e567",
+      "bytes": 223
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderPlayerState.h",
+      "sha256": "78c0daf8f29925cd50c6177f65cda2be139adf9ca53035ecc6515c8cc14d6fae",
+      "bytes": 538
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderResourceAdapter.cpp",
+      "sha256": "e93e6c0e643fff57a66ea65e1c27277ea9e83d87f599c76c3af4944f2c03958d",
+      "bytes": 15614
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderResourceAdapter.h",
+      "sha256": "4c90529a3222922e594bee02e4fd5167f7b7d354cf1eacc7a086a037fb23f344",
+      "bytes": 2607
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.cpp",
+      "sha256": "0a245973af9ba0539be8f6348a9f0a785b2d9c204bd6481fe911a506357c5338",
+      "bytes": 10762
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/GuLiCommanderWorldReplicationComponent.h",
+      "sha256": "7139b87a0b82e81d2cb0b4d8a563c353bbae8c4dc76fce7d85ce6309e5236325",
+      "bytes": 2235
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/Tests/GuLiCommanderSelectionMoveGateTests.cpp",
+      "sha256": "ea2942a0e82c288fd0ff88f4e62452017df145d2a079d605e8d99e89e2e65a79",
+      "bytes": 13773
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Framework/Tests/GuLiCommanderToolModeTests.cpp",
+      "sha256": "ee8ad1606bb991a27ba7b1cb43007aa35e09ca15c216dab20fdd3cddc1386e08",
+      "bytes": 6735
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/GuLiCommanderSimulationTiming.h",
+      "sha256": "faf455f68f1ebf6ea2c2f73c819aa71b268bddf46f78acb476d9f7c321a41567",
+      "bytes": 306
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.cpp",
+      "sha256": "0df83859b631198f1f1df967eadcbe249b9b1c2f644e6e24fa78b5e176ecb969",
+      "bytes": 277003
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiBattleAuthoritySubsystem.h",
+      "sha256": "3e1271e8c3befbc243d08fdb31272147db3f9a8fc6aee1240653026f7f4708af",
+      "bytes": 24464
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.cpp",
+      "sha256": "f3ab9286218934dad4b21dae46415af5ddf714ef800487f3e479422f03b0ac89",
+      "bytes": 225
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiCommanderMassFragments.h",
+      "sha256": "02eb048414c9e29c2a3efd28a67a532ff6da8d18d65e7a541516901061c9b4d3",
+      "bytes": 3979
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.cpp",
+      "sha256": "95853138bcfea6cd1bf8d9257f29f021bb866a3c4772312a939b2e8beab4b708",
+      "bytes": 12376
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiCommanderPredictiveAvoidanceProcessor.h",
+      "sha256": "9fd7e9b23d803fd6d5bd3182801775133f256f3aa06b466e387a49f2bb57dab6",
+      "bytes": 1174
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiCommanderSelectionQuery.cpp",
+      "sha256": "f443167b144a39a92b65b10e03ec69320124f263371dc90bb8f9ac8c4b3d17ed",
+      "bytes": 6811
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiCommanderSelectionQuery.h",
+      "sha256": "c770370f10b995b041c4f0db6ca06adab51209c137e86e6067b10ef9adb50154",
+      "bytes": 1112
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiControlCohortBuilder.cpp",
+      "sha256": "eb2327021ce972ce4a455e46e6675f595e9be56f88740591d0c0996441e9fe68",
+      "bytes": 4337
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiControlCohortBuilder.h",
+      "sha256": "56ab948bbba0d0b899731a889d518dc64149f39726c817e627976c3ac9de757e",
+      "bytes": 672
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiMassCrowdObstacleSubsystem.cpp",
+      "sha256": "8dadf7aaa36c1def99dc03a743c8713b6e7b1e199b97f5fc386cd3eb2e4c1793",
+      "bytes": 909
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiMassCrowdObstacleSubsystem.h",
+      "sha256": "4f77a8469104e2151a0f7afe47753f5df9c6427d67500858be32a315d22aea24",
+      "bytes": 600
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiMassExternalControl.h",
+      "sha256": "ff5988b54e990634e30e27fdd9227283be34e3e8732f9300f8598a161e5f12ea",
+      "bytes": 263
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiSoldierCombat.cpp",
+      "sha256": "5d77321f9255912e6da07005ce901d1f084093db8df95b56755d8edc3c9e097a",
+      "bytes": 11776
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/GuLiSoldierCombat.h",
+      "sha256": "c340b5ef83afabae9cba0bced9cd288e431f10ab3767f7d1b68d3cccba3cb57b",
+      "bytes": 5084
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.cpp",
+      "sha256": "68000aed298ec5cb2317dd495d6a48bc9a84b94d9e26ae2487399cccbe144ea4",
+      "bytes": 11381
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderAvoidancePolicy.h",
+      "sha256": "e313eebf8fd41129c6d4ff7adbbb7b6c1125a8c6e985377772cb737ce386b4a8",
+      "bytes": 4880
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderDestinationPlanner.cpp",
+      "sha256": "f259b9d43b07d8a96d33872e9a8bf8a848f7cb7c77172fe0698d1e50152fbfb9",
+      "bytes": 30598
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderDestinationPlanner.h",
+      "sha256": "cc9828b696d12e41f6621a3e8083e1199d7ee546e1a8e8cb5c98cbee31bce69f",
+      "bytes": 6959
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.cpp",
+      "sha256": "3b1e133ab80e1396b1e098a14fe16c912259303aad137c6fc6d3f9f0b90c352f",
+      "bytes": 27096
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiCommanderNavigationPolicy.h",
+      "sha256": "5ede3d84d3885b5c42fd2e496c861701010a7b158700dcb94667872d5adac7fe",
+      "bytes": 13051
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiLocalFlowField.cpp",
+      "sha256": "648ec9a6fd4de1a8c8fcb36ff8f27a0fdb60d940651f1799018ef55aa3a59f89",
+      "bytes": 13514
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/GuLiLocalFlowField.h",
+      "sha256": "e378d8989a6059c563abfe6b29a13760d611741f11b54a227bf56255dd6c74fc",
+      "bytes": 4195
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/Tests/GuLiCommanderAvoidancePolicyTests.cpp",
+      "sha256": "470d215b20c2edc21cddd8d05eae05c7164ce01b04416bec0ddd97c1a8d576e0",
+      "bytes": 12024
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/Tests/GuLiCommanderDestinationPlannerTests.cpp",
+      "sha256": "0fab2fbd1d933db84f730c8ff38fc3c5e886788060c343187c0fca9900a6f2cb",
+      "bytes": 26138
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Navigation/Tests/GuLiCommanderNavigationPolicyTests.cpp",
+      "sha256": "9115a7a2880db7b8a06dfafaf661744d0f4d9106e37945e4b814ca101d7f112c",
+      "bytes": 37631
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Tests/GuLiCommanderSelectionQueryTests.cpp",
+      "sha256": "4f7f52252b1f8d8bd35b1189bcedc9c6cb6be7f66a06083febb7dba87fac8a5c",
+      "bytes": 15095
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Tests/GuLiControlCohortBuilderTests.cpp",
+      "sha256": "8e1bbb08cddfd76ac54eaf0f1c5d254eba8d03182cc7ceb29d062ce58d9d022e",
+      "bytes": 3249
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Mass/Tests/GuLiSoldierCombatTests.cpp",
+      "sha256": "c9f543cf7228bb7a716d7dc7b85c7694f2379a253424a49adb4a2016829ceb14",
+      "bytes": 18652
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.cpp",
+      "sha256": "5e28971dcd6fd9f917aa367ddacc09e27962cd72a08bf867c9b41d68b0761e58",
+      "bytes": 19945
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiCommanderPoseCodec.h",
+      "sha256": "3e535950567e6089daac6df47caac3d384f01f38882c63b810e2c06f27cec480",
+      "bytes": 3525
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiCommanderPoseMetrics.cpp",
+      "sha256": "72166e17dd83c7d302a3503c5fd8f53a5c54ba7b1942e61c820954345d1f1c9e",
+      "bytes": 1754
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiCommanderPoseMetrics.h",
+      "sha256": "730f0975fd6af71cc646ea59284c21e13e6d179b36c0ac059af882bc937c5b16",
+      "bytes": 1146
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.cpp",
+      "sha256": "a084c4e442774170205fba64477824ad39e2be55621093d0cc886c3f050eb8d3",
+      "bytes": 25716
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiCommanderTypes.h",
+      "sha256": "f35e311b4c7e0a2a4b579ab5e05e1a9f1c8808c44047f17e32276f97b8e9604d",
+      "bytes": 22025
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.cpp",
+      "sha256": "f189d8a6c0e4c643051bcf15714fe0f6e5e4f2f4331f9b3b6ba2be1e265ac59a",
+      "bytes": 9781
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/GuLiSoldierStateReplicator.h",
+      "sha256": "ea1390474b641c396e938c029a86ae097a80569e510800d9339df09e1922222a",
+      "bytes": 4281
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Network/Tests/GuLiCommanderNetworkTests.cpp",
+      "sha256": "f2c23a1bb2d63c2def80fca7102893ec2a423a65163d9a5e13d9530e2cec5e7c",
+      "bytes": 74022
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderCameraPawn.cpp",
+      "sha256": "b30d66c973750e9307b3bb8fe8b25234a8c8675750c5c94d6b630a24ee025dca",
+      "bytes": 31953
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderCameraPawn.h",
+      "sha256": "46e4c24900a014c879856b5abcb3ac73b143576991541344c96544e98a6f0282",
+      "bytes": 4875
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.cpp",
+      "sha256": "59067f2a5bc965c15fbb0dacb867747587039b00b9ff7206b95b26ff97fa2701",
+      "bytes": 48102
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderHUD.h",
+      "sha256": "9ae72ba4fd29207c6edf94bc9fce05f4eb97d68a5cb15b4e6fb33264962d1bf9",
+      "bytes": 4556
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.cpp",
+      "sha256": "bc504398f96d2e3524bdef539857e3b064390c6413541ade0a7164e64f52e61b",
+      "bytes": 4339
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.h",
+      "sha256": "eb0a91781bf71a7f05074d9fb6e24d72814099ac3493a2558793dc14778cbc27",
+      "bytes": 1701
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderMiniMapTransform.cpp",
+      "sha256": "88df9d0eb27749c02a552e92a47afceeb6a01aacfcfedfc941ec8724c179faa6",
+      "bytes": 6439
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderMiniMapTransform.h",
+      "sha256": "8b9d1e74e638a2f61a631d78e43d25dbdce34b5644f2a6be3f333c1303a9baed",
+      "bytes": 1668
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.cpp",
+      "sha256": "13675b162880867f5033a195ab39f0401ef550916629e6d4c5f14645600c452d",
+      "bytes": 109338
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationActor.h",
+      "sha256": "8c55d9596b56e29d78eaec24a88ce6c6b4577314061dc0fb3d354797767f4d74",
+      "bytes": 24497
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationCommands.cpp",
+      "sha256": "5c71cf4eb362b3c2b38114d43c49b7cc0fc2d981a11260dfcb78dc6c12788b23",
+      "bytes": 6182
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationPerformanceSettings.cpp",
+      "sha256": "2b5142de8fffd80a613cd8c750c5d6434350d0f3fe5688ab285fd9329cbf88b9",
+      "bytes": 16634
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationPerformanceSettings.h",
+      "sha256": "e742fa78633f85a48530419d225c838c12133640a2b96b398dbe17d3a82f24f5",
+      "bytes": 4395
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/GuLiCommanderRefreshCadence.h",
+      "sha256": "1b7c28d9361a1e0a1042df4a0e98418fb450753fe65a989a3609035884ea054e",
+      "bytes": 579
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/Tests/GuLiCommanderCameraPolicyTests.cpp",
+      "sha256": "6a3c4a86a86c1183c509d8f63e5367dcdff64355bd4dcdc3786eef0ec5290aab",
+      "bytes": 1506
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/Tests/GuLiCommanderMiniMapTransformTests.cpp",
+      "sha256": "2103d33ca69660ef800f71ff0ac425010b43c329186f1ad03613416c5eda0649",
+      "bytes": 9973
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/Tests/GuLiCommanderMoveEndpointHUDTests.cpp",
+      "sha256": "1068c49e8fdcfd735cc324a2bbef525a85906017a5619778420be077a4b22448",
+      "bytes": 4515
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/Presentation/Tests/GuLiCommanderPresentationPerformanceTests.cpp",
+      "sha256": "9c66dddb19fdd13aa48424ea5c654ddd89d31cc498aa1b5d8b6b2acf8d59603a",
+      "bytes": 26601
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/GuLiCommanderCursorWidget.cpp",
+      "sha256": "4d92cfdfbbed856bff491d503d553d2e3d201868a10e20b7792fe9bbdbd51c79",
+      "bytes": 2728
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/GuLiCommanderCursorWidget.h",
+      "sha256": "ec2934390bca71c021dbd87a193a893247f10760918787ad69c828b9d668247d",
+      "bytes": 1330
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/GuLiCommanderHealthBarRenderer.cpp",
+      "sha256": "7cb02d7e8bd18f9c72e32b019c53e923e37645fe6db034cbfecad1e350a3278b",
+      "bytes": 28920
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/GuLiCommanderHealthBarRenderer.h",
+      "sha256": "39a7660c140aeb3cd42728abaf7a264f09ae804671144277b6d9c5e6d619f354",
+      "bytes": 6309
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/GuLiCommanderHUDWidget.cpp",
+      "sha256": "61465650ab60011773c61a4724ae4e90ae9ddc2be894214303263815a75742c4",
+      "bytes": 35486
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/GuLiCommanderHUDWidget.h",
+      "sha256": "d94642e11655e945c59397fb433efa788f66af3405e7222a260e5d3052c9ec1e",
+      "bytes": 5988
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/GuLiCommanderMiniMapWidget.cpp",
+      "sha256": "d2172606de6d6e51f8c9c1ffb95674f54f958e30d080eb9b360c19fc69d52c84",
+      "bytes": 33767
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/GuLiCommanderMiniMapWidget.h",
+      "sha256": "292182cd862782a527479b35fddb878bf041acdaae97dfec7b1889cce8bd19e3",
+      "bytes": 4737
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/GuLiCommanderUnitTypeSummary.cpp",
+      "sha256": "b7a7e6f98fbb8903f8dda3b341a0c89eac68363e81478e08a41089b8f2841180",
+      "bytes": 5914
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/GuLiCommanderUnitTypeSummary.h",
+      "sha256": "4cc8529ff32b352455a06491e88154824457193be034eaa0559542fd3d776b18",
+      "bytes": 1074
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/Tests/GuLiCommanderHealthBarRendererTests.cpp",
+      "sha256": "444b7e89ad3c129324a5b61f01ddff456545dc7298999ee379eb2650bddd9976",
+      "bytes": 9248
+    },
+    {
+      "path": "Source/GuLiStrike/Commander/UI/Tests/GuLiCommanderHUDWidgetTests.cpp",
+      "sha256": "d199976bcc49069e130cceb38c7bfd158a215b23879e62402232ad99829222c5",
+      "bytes": 15835
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GM/GuLiGMPanelModel.cpp",
+      "sha256": "b96eecdac2305b2fb165f68c2bd1a60595dbe00df06bf1df25a29d33f6294087",
+      "bytes": 41673
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GM/GuLiGMPanelModel.h",
+      "sha256": "8820f56b0060a971df80e1bc65083e079dddcc8a49308cf60e036abf07368c30",
+      "bytes": 6921
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GM/SGuLiGMPanel.cpp",
+      "sha256": "3d30a4033288a70d694faff26bf02cbc0b3dd8cdb3abad5c9121baaba5064703",
+      "bytes": 43590
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GM/SGuLiGMPanel.h",
+      "sha256": "e962623e52d8e6558777423a2abe6da5e442fa5eb044829d42f8eca0dbe42f88",
+      "bytes": 6480
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GM/Tests/GuLiGMPanelTests.cpp",
+      "sha256": "c5ccaeaa0796b230fef3c706f56ba453a758b418c88a3762150cb7822817f1d4",
+      "bytes": 8180
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiCommanderMoveStress.cpp",
+      "sha256": "6adaff422fe2af94119fa0d65ef913b76026c8d7955d291c8e01ba112af047b9",
+      "bytes": 26323
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiListenSmokeDiagnosticsSubsystem.cpp",
+      "sha256": "7f4a4e9ef6c65437f302c4f52ba852427fe37f32a7141ef5da454e5d21cfbefe",
+      "bytes": 40889
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiListenSmokeDiagnosticsSubsystem.h",
+      "sha256": "d9179b2953c3980ea637236bd1d2c34f666a40f3d897959e5e669d344b2ead17",
+      "bytes": 2589
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiWingmanAcceptanceCatalog.cpp",
+      "sha256": "9fce66860875728bc5ef953a5e6ea763719d7dbe26b490c68411c7176c5425a1",
+      "bytes": 15497
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiWingmanAcceptanceCatalog.h",
+      "sha256": "ad1fdd0519f1a4b1e89e44b3cd9660bcddf0a0c75a30af2f67c9050cd4f20a14",
+      "bytes": 1984
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiWingmanQAEvidence.cpp",
+      "sha256": "0bf24678ef5ff05b4a2c313b7a304ce933772e5a37375a279b7199747e806091",
+      "bytes": 48775
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiWingmanQAEvidence.h",
+      "sha256": "c1fe07f6cec065facf875896075f9a367e373b3f5caa144930aa6095afcca10c",
+      "bytes": 3372
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiWingmanQAGameMode.cpp",
+      "sha256": "d8c79d8a7cf64d0c94ab8b26a48ca5fac774dd97b49df075a4dea955249f247e",
+      "bytes": 10688
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiWingmanQAGameMode.h",
+      "sha256": "80f37e3e528d034087b37ceefec6d26314d59ae5974df181e3281841b7456322",
+      "bytes": 1300
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiWingmanQARoleProbes.cpp",
+      "sha256": "770e8c359afcded7d25c94b345347130620b24f71da1444452506e8957a00b56",
+      "bytes": 54223
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiWingmanQARoleProbes.h",
+      "sha256": "9734f4ec8f8b5cf85effe181ab1903a83e5870740cb5f165321dcd2d60eaadd9",
+      "bytes": 1179
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiWingmanQASubsystem.cpp",
+      "sha256": "11f2782a253dda8474e4fd1ee552431b511a9986373117ab1e3580ff3a8b9411",
+      "bytes": 81147
+    },
+    {
+      "path": "Source/GuLiStrike/Development/GuLiWingmanQASubsystem.h",
+      "sha256": "8b058f62ffbd67307c8f1b23d451a49c9156913bdea735f3291b8f5e4847abc8",
+      "bytes": 4464
+    },
+    {
+      "path": "Source/GuLiStrike/Development/Teleport/GuLiTeleportQALibrary.cpp",
+      "sha256": "00d37f3ca11f2b862f9d2102b34943dec28433951ab42c6b3d32405df06088f4",
+      "bytes": 7972
+    },
+    {
+      "path": "Source/GuLiStrike/Development/Teleport/GuLiTeleportQALibrary.h",
+      "sha256": "cc50a655987c644c949ed11864882f3504c673dd1221e67106ca0c2a83278a00",
+      "bytes": 1767
+    },
+    {
+      "path": "Source/GuLiStrike/Development/Tests/GuLiWingmanAcceptanceCatalogTests.cpp",
+      "sha256": "c56b4c81beaf292b93d8122ffbd5d39b9dbf092cb76e6ddf0f27d2a076d2214b",
+      "bytes": 5020
+    },
+    {
+      "path": "Source/GuLiStrike/Development/Tests/GuLiWingmanQAEvidenceTests.cpp",
+      "sha256": "4b0586f4fad0dbe90fecb6cf9867fa4f25721be397c25ac65068d4cd14104407",
+      "bytes": 11660
+    },
+    {
+      "path": "Source/GuLiStrike/Development/Tests/GuLiWingmanQARoleProbeTests.cpp",
+      "sha256": "358574ba2e789a3e607aa2036908963c612bec7d04f415a12e9323f20b500fef",
+      "bytes": 2106
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingAssetBakingLibrary.cpp",
+      "sha256": "9ddd2a6ffdad51eaadd091234235ce497d184092700a1fdcba1fef3b2ffd50d1",
+      "bytes": 4884
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingAssetBakingLibrary.h",
+      "sha256": "2377f49cd72cc79a8b2910ad433752e25dafe7e3d6574daac21de535bee76ccd",
+      "bytes": 649
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingCatalog.cpp",
+      "sha256": "93de0769c5c3bc14d9ec101323706943693329434f59b82f7a592853bf81716e",
+      "bytes": 3193
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingCatalog.h",
+      "sha256": "dc36315c8fcd1fb9d589851650ccff32674c91a3be2d6c8d5d77160085c9daa2",
+      "bytes": 1022
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingLifecycleComponent.cpp",
+      "sha256": "5f0ca33bac45d8488ae442280b004f6764250d3cc7fc94e47155788e3f959cbb",
+      "bytes": 4685
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingLifecycleComponent.h",
+      "sha256": "a2f36afd42549862bf219c6a3eff1dc69eba3344a9b3daa33063df14e054ac57",
+      "bytes": 2394
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingPlacementComponent.cpp",
+      "sha256": "32a9c8d557f4736ba02991f8e5f8bc658ee5ef1d16f34733485bef57afa8028d",
+      "bytes": 37357
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingPlacementComponent.h",
+      "sha256": "f2965e934131c198a7169be92d2e398503b25106ad0e747258f28fd9a661e4dd",
+      "bytes": 5318
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingPlacementPreview.cpp",
+      "sha256": "07b2c1e48ef2935e91b4b67446cd7c54889e5ce8dc2db6d0f947e2f91b5b9c82",
+      "bytes": 3072
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingPlacementPreview.h",
+      "sha256": "526868dcc7528b69a49d9bcd08ff60a222a57f61458a0fe66529042aa4a0294f",
+      "bytes": 1171
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingProductionComponent.cpp",
+      "sha256": "28767fe74f48fc8995636409ace64c725513451074b4e06f6d9ff5a020c33156",
+      "bytes": 2921
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingProductionComponent.h",
+      "sha256": "6e00ec40fad94490d6f84b45f1056644f757e1c8c504d78717db59ef4eba85a5",
+      "bytes": 933
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingRegistrySubsystem.cpp",
+      "sha256": "73d898bd6689d0b15bf9295114c219bca7e184f712effaced849ab6b5df87e5a",
+      "bytes": 1283
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingRegistrySubsystem.h",
+      "sha256": "5b9074a8b482021711035ce1202b7afc0e613e750efcb5a7ef47a473abf83e02",
+      "bytes": 1003
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingShieldComponent.cpp",
+      "sha256": "ab83dc27787d0ac62e5b991eb448236a3a642844fda74b3b95a014daf5e3cc10",
+      "bytes": 3108
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingShieldComponent.h",
+      "sha256": "62a9f8a370dd219f62f7db33bfa29cfe1cbffc0bee4d97a8577ac4aeccb9ace0",
+      "bytes": 926
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingSpawner.cpp",
+      "sha256": "90077e547667bbb807598000cd4634e007d8199dbba868993fa1ea07a482af43",
+      "bytes": 9102
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingSpawner.h",
+      "sha256": "25b8ed33b9d7f3faf871be12a9e13d56bf3c7c49ec0a97aef09f495d5865d15b",
+      "bytes": 1224
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingTypes.cpp",
+      "sha256": "9a3f74c8abfd002a7d481b96e49bfd61aedbc3fd4c6c5e783b24b4a48e2d01fc",
+      "bytes": 7302
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiBuildingTypes.h",
+      "sha256": "4e7a0947b365d23aaf9d26af18df198d1fde5ec50a47e09b7c04c6020fcd41ec",
+      "bytes": 6645
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiConstructionCommands.cpp",
+      "sha256": "05081ed1b144d83e22d256a406a70b9f340fd4419dd21ab5c33389bcc899ae46",
+      "bytes": 1472
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiConstructionVehiclePawn.cpp",
+      "sha256": "9e837d12e053c767d61e654cd8551983681885647cb326fbf1c1ecea8107f7ee",
+      "bytes": 6095
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiConstructionVehiclePawn.h",
+      "sha256": "4c1ffdecabaa09ec46409959b2ec4db70d6ac18a6749029e42cbc938fd061bde",
+      "bytes": 2280
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiConstructionWorkComponent.cpp",
+      "sha256": "82bf78488d82fe7f1c704dc3c8738bf1e45551c9aefd364a0c211f4bd5f4bcbe",
+      "bytes": 2221
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiConstructionWorkComponent.h",
+      "sha256": "dbea77be781eddaf28c063a9d6ab6a5b87abcc0779bc8330c782f56229a90b29",
+      "bytes": 700
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiGiftBuildingClearance.cpp",
+      "sha256": "25083db60efa8c42f8b84bb3077412bc546f0a9bb2c96d030d7ea6858f8dd86d",
+      "bytes": 13882
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiGiftBuildingClearance.h",
+      "sha256": "2c284a1329c2a60da57dbb593398855cdd15e6a695bc15d60e34f4e1b14fbd9a",
+      "bytes": 439
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiGroundAccessRampComponent.cpp",
+      "sha256": "d9e9c35d87fd611edd9c3799a242c89c9d0ab919fdb1e5bfccf2f746c3fd5510",
+      "bytes": 5641
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiGroundAccessRampComponent.h",
+      "sha256": "004c246a482caac1e665e4d9a81921f218ebf9312f4f78dbcea11f51b2fd1e1a",
+      "bytes": 1683
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiPlacedBuilding.cpp",
+      "sha256": "2b29bd254be913d2158e6fbda1f9c3d16244e5410b79f46a60f81b0b1cf595b2",
+      "bytes": 7322
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiPlacedBuilding.h",
+      "sha256": "957da46f78b5117151620d3515ec53c84e690c5ec108b8ed908e9bfcb95db9d8",
+      "bytes": 2669
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/Tests/BuildingAssetTests.cpp",
+      "sha256": "dba9c58eb730e461dfec7777be1cdcfc19e83bbdf0136e1d9344169fe26be7e7",
+      "bytes": 7041
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/Tests/BuildingPlacementPolicyTests.cpp",
+      "sha256": "4b98633ecf277a5b5df24ff15fc35e752e94129149a91fccd8120c52e901dcca",
+      "bytes": 6703
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/Tests/BuildingWorldTests.cpp",
+      "sha256": "6dca5b5b3489bcf51d72a4c4a0faf9d14bf7f0d9c36509961b79b9305604d9b6",
+      "bytes": 20274
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectAuthoringLibrary.cpp",
+      "sha256": "3d96ba7217582cdb449978d54dc2270d9c2b3adba36ad3ac5471833a7020bece",
+      "bytes": 17536
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectAuthoringLibrary.h",
+      "sha256": "f6aff6eaa27e01e2a976f4cbd5d22698634d3c49f9c08d2c925ae3d606cde346",
+      "bytes": 2245
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.cpp",
+      "sha256": "0bed97d1e34c86ceedbd3ca048b6fd6377302609ca7ed342b995afa3b55584bb",
+      "bytes": 2161
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectDefinition.h",
+      "sha256": "7caa7d7c672c3349767c0889d60baff4e287fe54708702f2bc03a34ca16e42e7",
+      "bytes": 10719
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectLaserPresentation.cpp",
+      "sha256": "f48e75bd5251e0e965e6cdbfe99d234e1d9a8cb3db667449d871544bb6ab9f02",
+      "bytes": 7641
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.cpp",
+      "sha256": "b84430d02bda1a1234f81cccf1ea7b5b94d1894582afbde2ec9dbc1cb548dd9e",
+      "bytes": 33451
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h",
+      "sha256": "e38e48cfbd578f4b2f2d700e35cc5a83e61dfbdf5fe3b190678cf7967d5e1a9a",
+      "bytes": 7505
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.cpp",
+      "sha256": "e48447eceb4872790d18316014212efb4f240fd1b056bd2622fb305b87b7b77d",
+      "bytes": 14318
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectReplicationComponent.h",
+      "sha256": "a4d2d685c1c22d854232a22331497cfa456ed214ede70e802da181cfafa5e5ca",
+      "bytes": 3319
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.cpp",
+      "sha256": "4306cb04b786325f3f91e55a16a262b5e4f093f9a4be22d775c9dc728ab0819a",
+      "bytes": 42412
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h",
+      "sha256": "9f7c29755413ae66797621406c0b97dd8b0a3e01a2f633e02c66a18f0a0c1f11",
+      "bytes": 7261
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.cpp",
+      "sha256": "04f5b5e2bb6a4332fd50606596d1ee30d7d166ed6b2f8435c7aade075d6c7866",
+      "bytes": 15558
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiCombatEffectTypes.h",
+      "sha256": "0e383677a39a10f08aabaecb9a399b78dae90ac65c436f9a54c7d8ce6569a086",
+      "bytes": 13355
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiGroundWarningSubsystem.cpp",
+      "sha256": "63b4061d9dec2a1d5943f0b0f32ad6d0a590e7b5f3f6f88474122de315f12424",
+      "bytes": 6089
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h",
+      "sha256": "7245c982458e83fd0be29fd1ae3a0005117c30836f78578ccc76e329f6d81747",
+      "bytes": 3405
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.cpp",
+      "sha256": "0e847604ce9cdf0a5a89f2229793fd70a38c3d973b9ffc0031b39fdcc2ae368e",
+      "bytes": 16631
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiProjectilePoolSubsystem.h",
+      "sha256": "ca5fc923e6ac9b88f4bcbac507b914ad20f1c574ae677740b18d65e9529d8cf2",
+      "bytes": 4811
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackComponent.cpp",
+      "sha256": "10ef1d6c250ee593fa6ea79dec0ccf3664fc57549a5a0ffd009fba861943151d",
+      "bytes": 4666
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackComponent.h",
+      "sha256": "2155e5b5654d6c6d60ad0ada5d634948de366b134b83bdfb89af96240c505ca4",
+      "bytes": 1391
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.cpp",
+      "sha256": "1497d269a8bc177cf99c42bf0f980040537a225fdca892c5b950c1abf44962ae",
+      "bytes": 16945
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h",
+      "sha256": "9d0a2019f102f78147d3d421a3261579ab1bae6eb9a24d6a11ce33b370d30f1e",
+      "bytes": 7047
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitWreck.cpp",
+      "sha256": "8decf4e76ea45e402f854d5d526b738a080aaa64c902ed1f45ec8cd778adbd4f",
+      "bytes": 6344
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/GuLiUnitWreck.h",
+      "sha256": "ad46d499d49c04775a10b6a66b65aea56eaa2c1c357b7958f828e6660be27337",
+      "bytes": 1090
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CombatEffects/Tests/GuLiCombatEffectRuntimeTests.cpp",
+      "sha256": "21111f9fd9058c527352cc1db504f2e2dca2e58d799da7d4c391eccacf230a13",
+      "bytes": 33984
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiCommanderSkillComponent.cpp",
+      "sha256": "c9122ff84c0de82af797e7c8b800ac59231b8745d04295349f381a07715fc4b8",
+      "bytes": 12171
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h",
+      "sha256": "a3f184cbdfa2fef60ebfcec11c90f61d9222573346474cefe612806f7bf2e0ed",
+      "bytes": 3218
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiCommanderSkillDefinition.h",
+      "sha256": "adc245f6265a72899f52a770110b52db58c6e114c3563678398785a91c9025b5",
+      "bytes": 342
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiCommanderSkillTypes.cpp",
+      "sha256": "8d2372c94c89cc98beea46843f03a24598744a5f625cc3abe39211ef0b03d53d",
+      "bytes": 3422
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiCommanderSkillTypes.h",
+      "sha256": "d69e7b6eb502eeb2918765df111b10a8171a99ad2ea966d929dbbf11b0b54797",
+      "bytes": 6836
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiPointSkill.cpp",
+      "sha256": "f1950756fb1c8e51e795010f665c6595ac045fd823195e47ba7151db77f3b977",
+      "bytes": 4611
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiPointSkill.h",
+      "sha256": "6e2297261b5fdc1821d84ea257ff4d58bb109142fcec756e0173518c3918eb16",
+      "bytes": 1951
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiSelfSkill.cpp",
+      "sha256": "c784e3224d324b3c3ff5b7e1c528af01b3aca51b2245d1db3407b124923955ad",
+      "bytes": 838
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiSelfSkill.h",
+      "sha256": "273345d6f481913a66e8d4fa80e9525eaf361bf880478224ec4588efb271714d",
+      "bytes": 825
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiTeleportSkill.cpp",
+      "sha256": "496d3c21eded45df28b87181bdad55a34c52f206fd701776a565f0c187fa93a8",
+      "bytes": 1601
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiTeleportSkill.h",
+      "sha256": "0d720c9bd84922a2eef73f0386051baa30e6c2204b12f826cd932f7bba1d1fd4",
+      "bytes": 514
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiUnitSkillExecution.cpp",
+      "sha256": "b5ad8dddb918eab4cecc9295b893a71bd08acaf910a0ab495f16055fc828d308",
+      "bytes": 1971
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiUnitSkillExecution.h",
+      "sha256": "cc648ffdfc336b8a4eaa95f4cc883eaf9e6353b9d1086d4fa5f5df107ca7469d",
+      "bytes": 840
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiWarMachineMissileSkill.cpp",
+      "sha256": "901756324a759311fbf807aa9c90d35bb8f25815befe7ee6f973ab8b7daadfd2",
+      "bytes": 2711
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiWarMachineMissileSkill.h",
+      "sha256": "459992ae5b971b21127e8b862dbc5e393187db28e8db35ed3a3c1f9e92ad2206",
+      "bytes": 658
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/Tests/GuLiCommanderSkillTests.cpp",
+      "sha256": "a8620a2e2bc5e3e9d9e48a89e9967a3badc38f81b109e4fe65e418abe84716c2",
+      "bytes": 5432
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeBuildingsTableRows.h",
+      "sha256": "81bb2b1d752147004b82c6507397885341db97fa99e3f7c081d73f68e38fa1b8",
+      "bytes": 4045
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeCommanderTableRows.h",
+      "sha256": "d2b2d2f6f3777778ba6eb2b20d4f1332d8067460577127fe9b92217081c79d15",
+      "bytes": 6772
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeSecondaryUnitSkillsTableRows.h",
+      "sha256": "861c460dac412b93ce671e7a97d5e95dda0c02ebbfc95f062a966c49729253fd",
+      "bytes": 4031
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeSecondaryWeaponsTableRows.h",
+      "sha256": "8a9dc2d73ea51253d08b957e44984633479c6875fa11d8077bcae5f2d9651bd1",
+      "bytes": 3166
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeShipTableRows.h",
+      "sha256": "3e28d2ce115a7c5776c1db0c0a1245c823a469bf857ba49f2b7e6773c91eab60",
+      "bytes": 12137
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeSpellFieldsTableRows.h",
+      "sha256": "f471552bef88f57b967effd6f7f0ab4e3d547e9446d2f6752db74fcb64e62879",
+      "bytes": 4612
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSettings.cpp",
+      "sha256": "4bdbff73c722da3aa8d292688a83882738d72ee015630f475802dba9cf39cafa",
+      "bytes": 702
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSettings.h",
+      "sha256": "19d8a0288c406b83c3ce22bdf47632058a954ae2025495c39099eea9c629a8fb",
+      "bytes": 1319
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSubsystem.cpp",
+      "sha256": "0c23462ea48a37e9b676622b26500190674c7c94ce3229c74efeadf7375199c5",
+      "bytes": 15650
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/GuLiCommanderDataSubsystem.h",
+      "sha256": "abe056fff2ff6e32189b622060173882a1aeba6fe0c7c39a2f456080287d0f38",
+      "bytes": 3061
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/GuLiCommanderSoldierDefinition.h",
+      "sha256": "2ce947d7929462ccf51a9e82d27a97754696099c773f3acd84d0a60aa3b38fc6",
+      "bytes": 1711
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/GuLiCommanderSoldierResolver.cpp",
+      "sha256": "482675966be74c40d53e26a7cba7acfd98416bbdcab626d3eb7a10aac843d798",
+      "bytes": 7188
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/GuLiCommanderSoldierResolver.h",
+      "sha256": "99ad5cdcbc579459f6a0dfce95167f1000c80b7a2e4cdcc67c739acc8b6e3f6d",
+      "bytes": 1607
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/GuLiSpellFieldDataSubsystem.cpp",
+      "sha256": "aa94fa955a66b16cb0f81d80e5ceb7e103b59f25356172b6876e0c9ac0ba7cb4",
+      "bytes": 5502
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/GuLiSpellFieldDataSubsystem.h",
+      "sha256": "3c4766537b971ed4fa9dc944c0c3f47230f2b856915d9afe607137083b0d79c4",
+      "bytes": 2041
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/GuLiUnitDataSubsystem.cpp",
+      "sha256": "68b5196180c144116a7f0357b9da3b7f3a6bddb197a52159d54b819cffca07d4",
+      "bytes": 2541
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/GuLiUnitDataSubsystem.h",
+      "sha256": "e494fd59736e94a08aead6c856a8346c80e2b3a82d677cf8c8a0ad9804246bd1",
+      "bytes": 1825
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Data/Tests/GuLiCommanderSoldierResolverTests.cpp",
+      "sha256": "bdbaecf176b5c5940a2296bc79b70156d6edf5b723c9a2e3ec28979b074ce49e",
+      "bytes": 11548
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Economy/GuLiEconomyTypes.cpp",
+      "sha256": "cb38f9e7e78a40f40459c874bf3a38d605f941885f70ee273d80ad3eabd8f27e",
+      "bytes": 2095
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Economy/GuLiEconomyTypes.h",
+      "sha256": "25820642514351beb94bc485abfb1fda890d28ebb9301dcd837ef787cb7d6a5c",
+      "bytes": 1347
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Economy/GuLiTeamEconomySubsystem.cpp",
+      "sha256": "4ba7e72d59947e708b29a8eaebc90eef56fa4498314232089985cc5c446960c9",
+      "bytes": 5202
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Economy/GuLiTeamEconomySubsystem.h",
+      "sha256": "0e8e0566ee35657d87eb8fd4337c7ec289aa46669e397a290a0217da482251ad",
+      "bytes": 3473
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GuLiStrikeAoEAttack.cpp",
+      "sha256": "840a6ae84853a44efdf77ba14a8130114faa2f925e63ffcaf88ac6e40954d61e",
+      "bytes": 3140
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GuLiStrikeAoEAttack.h",
+      "sha256": "8714c43678e3beab413b85a61b4b1a88b0de05bbcc18fb67e7a97d487fb674eb",
+      "bytes": 2225
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GuLiStrikePickup.cpp",
+      "sha256": "1447c59869fcac25f2bb814c0573a506c56b43c88a9c350ec1ff188a6b7e8b47",
+      "bytes": 1520
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GuLiStrikePickup.h",
+      "sha256": "504557c31b145b0771819583e13c4dbfcc1ec4a07965d676c284c4681d33b75f",
+      "bytes": 880
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GuLiStrikeProjectile.cpp",
+      "sha256": "ce0a212770abcdec2a817ac0dc8a2fbfb2b8fd812b49bbaeb8c644bcd4af8c0c",
+      "bytes": 6128
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/GuLiStrikeProjectile.h",
+      "sha256": "b8eb2106089aa981030d28e923cae8f51a0900d3659a3055ed7d97d7b5bd0cad",
+      "bytes": 2374
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Navigation/GuLiDynamicObstacleRegistry.cpp",
+      "sha256": "5494847fb6ed7bfe581f498bc5f6ffcf6cfdb150c6fffd73170670b1e0667f5d",
+      "bytes": 1817
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Navigation/GuLiDynamicObstacleRegistry.h",
+      "sha256": "cd719f9f55975dad474215782b3ff4e964885a8677725c0ab6aa5aa0b75500f2",
+      "bytes": 2332
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Presentation/GuLiTeamOutlineCameraManager.cpp",
+      "sha256": "81ce4f1dbb642b23e887fc181e1f1d9af30a79fd2d302ce452e29a53a8504a30",
+      "bytes": 1035
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Presentation/GuLiTeamOutlineCameraManager.h",
+      "sha256": "524986679dd968433dd4a202765ff3368b6bf03cfe44c088bac2cd57fd8a84ba",
+      "bytes": 818
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Presentation/GuLiTeamOutlineComponent.cpp",
+      "sha256": "058527a4d1077baee93808aa34caaf99bc210f0c0584c8e8691b8af0a2f2b10a",
+      "bytes": 1757
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Presentation/GuLiTeamOutlineComponent.h",
+      "sha256": "a0d9ecb4a2f1c0dbcfa6875cf46f9b7c453155a9a07551fe6a79dd2326bf84fd",
+      "bytes": 1287
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Presentation/GuLiUnitRenderPolicy.cpp",
+      "sha256": "468f250ec1c11521f0b7241e911703df458072fd9d88e1a98bc91b21dd6f9431",
+      "bytes": 2367
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Presentation/GuLiUnitRenderPolicy.h",
+      "sha256": "aeb7d5abfc7e0e620bffbacb5559d71cb2d5553ad3021d7177989aa311c796a5",
+      "bytes": 1487
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiMiningPresentationComponent.cpp",
+      "sha256": "1900d7c1116fafadbce7e741ab1d6ebac50aaa7de9925e185d6f76089ad7c2a7",
+      "bytes": 3089
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiMiningPresentationComponent.h",
+      "sha256": "89de2d804477ebff0216edfafd9294f8050b0e87a6c424bc35bf768e67e48aba",
+      "bytes": 969
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiMiningVehicleManager.cpp",
+      "sha256": "225388c0b67f828eb56234b2bc0919168a927341e70c2f02fb43fc67cf8b61bf",
+      "bytes": 5228
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiMiningVehicleManager.h",
+      "sha256": "9ef61f560093da5ea0284bc7443d1f173a0752d69481ab044e77b897e97c9624",
+      "bytes": 1739
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiMiningVehiclePawn.cpp",
+      "sha256": "88206d620bc49d4859940509442ff6e41996dafc359e7ee359caade2fdd32a93",
+      "bytes": 37539
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiMiningVehiclePawn.h",
+      "sha256": "96ce252d267ec66a2f387af630daeb9aded79d82e74790759a5ab1b228fc36ab",
+      "bytes": 8261
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceActors.cpp",
+      "sha256": "4b2ceebc321babf92fe7e1cab15f30d0d7d583982f049d64d255c247cd15577d",
+      "bytes": 14808
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceActors.h",
+      "sha256": "85a56a0f53d85097951bc23949273a0522bdaee6d53a23c31c7a7c66a2e30f23",
+      "bytes": 4792
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceBuildingCompatibility.cpp",
+      "sha256": "d498e00eb66939a05b8939a23adad1df8f97deb241476f00bbbdb8e9d061d22f",
+      "bytes": 694
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceDebugCommands.cpp",
+      "sha256": "7659ae7359ffab166508b7150b8fcf5204194abc506cfd4d7aee1630af455f54",
+      "bytes": 1776
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceFactoryActor.cpp",
+      "sha256": "9a32a533205e20494bca3f449adc08ba6f71cb25efc630dcb46cb9ad598d196e",
+      "bytes": 9241
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceFactoryActor.h",
+      "sha256": "9b89eac2f26ffda8993b8670e7c16b080bbfa41ef894d4ad286a938a790eec90",
+      "bytes": 4402
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceMapDefinition.cpp",
+      "sha256": "5ac63a24eb30498d292479a564715846ef3d7c35d3f9ad5c62098d6cd46c7e83",
+      "bytes": 14487
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceMapDefinition.h",
+      "sha256": "a322bba6b23362aa7c519964f6affee806b7a56131812c03ff79127de1bb4cdd",
+      "bytes": 6783
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceStrongholds.cpp",
+      "sha256": "9439352e17571590211b04aef41199b6400b7b96c2438c784576bd0fff6a8cfe",
+      "bytes": 6579
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceTypes.cpp",
+      "sha256": "e02b8616e76cae2891cb0e7c4ef8a2b7cbd105b326baaaa9adbf594c17c47539",
+      "bytes": 7095
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceTypes.h",
+      "sha256": "b33e1c4d7f7ba8fd6cd7d17abc7677bc0041ee41b6dd9fd58ee6ad0048f3f4cc",
+      "bytes": 10711
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceWorldState.cpp",
+      "sha256": "27cf138e2936d82cd62cc7b8a5757ba4eef1bfe170ca7ef6c84cf4cfb5e5bd45",
+      "bytes": 6677
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceWorldState.h",
+      "sha256": "433b06fdc8b79d882cd77ecd1fd490de96733705688433b33d4a3e685bec650f",
+      "bytes": 5015
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceWorldSubsystem.cpp",
+      "sha256": "a09176daca97540b26f934472ab25ca641c990719b5d7993426b1d7fb1b92837",
+      "bytes": 28311
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/GuLiResourceWorldSubsystem.h",
+      "sha256": "3e7c8e36b79b0224ef4fec9aa15133e1005563dbe53ee0aa3f9a3882f4547c9c",
+      "bytes": 7097
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Resources/Tests/GuLiResourceTests.cpp",
+      "sha256": "f70f62e4964eb5985a7ad07bfad2ae8d927e3f5a7e17edd33f34ae7007a9eab8",
+      "bytes": 12880
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Abilities/GuLiShipAbilityDefinitions.cpp",
+      "sha256": "0ae366d725b7b6f972cb04c6238e70ee44f59b57f7f58d679437911a0f8d5c82",
+      "bytes": 16081
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Abilities/GuLiShipAbilityDefinitions.h",
+      "sha256": "d9c25c35b646d2dc67d4eaabc43c5e491b866cb08aa7d6e8e7c345aa6d5a3dbc",
+      "bytes": 7560
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Abilities/GuLiShipAbilitySet.cpp",
+      "sha256": "7f4446bce7dc5d03207adf0a5767a192d73e37ff969c784eb0f058a0ed81de12",
+      "bytes": 16616
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Abilities/GuLiShipAbilitySet.h",
+      "sha256": "93365deb0a1ec9b94e50580a673141b48504d9a947a6124771497101648e48bd",
+      "bytes": 3984
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Abilities/GuLiShipAbilityTags.cpp",
+      "sha256": "dda0fba43bba0e16b3bb54272263a9d0b4b4d0113947f0b55134f6345d8aea51",
+      "bytes": 1402
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Abilities/GuLiShipAbilityTags.h",
+      "sha256": "1ffe5091d5b4f9f488c8384c4c4a7bffc8249b1b98e60c9b4b771346030b11aa",
+      "bytes": 1436
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Abilities/GuLiShipAbilityTypes.cpp",
+      "sha256": "5bdf3575f2a676adf23c79dd47977ec21b311132296d380d1a1752b4f606c5d2",
+      "bytes": 22985
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Abilities/GuLiShipAbilityTypes.h",
+      "sha256": "8856be91cb5ed21ace2641a06a2f9089c77927a505c6fc78e9a898e9c117141e",
+      "bytes": 19897
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Abilities/Tests/GuLiShipAbilityTests.cpp",
+      "sha256": "5b24b913454703fc3f2f4fcf9d9af17748e82dad7b8ccd35edd37f7ae863f175",
+      "bytes": 26895
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Abilities/Tests/GuLiShipPawnIntegrationTests.cpp",
+      "sha256": "326e1896c37999bdb0c4041787e310679d41ff6ed9b0f57f98ad3c7993fce979",
+      "bytes": 1637
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Abilities/Tests/GuLiShipRespawnIntegrationTests.cpp",
+      "sha256": "be8382cb61e8f97cea22877ee8a1fb46db85359b0147e96e945cfad84f391b1e",
+      "bytes": 8877
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Aiming/GuLiShipAimComponent.cpp",
+      "sha256": "ff55b508a561f6dbd0b450ac05499ab6f37c0655dbc9b30373161b6d179642d0",
+      "bytes": 10897
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Aiming/GuLiShipAimComponent.h",
+      "sha256": "1966ffd7fef5559e4bd16c6ef2c07d77f43e4b055a3fe52efa5c3b11a02fd139",
+      "bytes": 4376
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Aiming/GuLiShipReticleTypes.cpp",
+      "sha256": "1473072960206a101327116dff39ae6ac0235006ed083bc282231472431c046b",
+      "bytes": 6818
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Aiming/GuLiShipReticleTypes.h",
+      "sha256": "91916a535c370d2671c50647ae6526ed2b4a8801d910b03df3cee2fb1b706447",
+      "bytes": 3541
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Build/GuLiShipAssemblyComponent.cpp",
+      "sha256": "3ad235fe5fff11b6a5faa415ac993ffafc9b5d329a16ff6daf1b8aeb8fbd06f9",
+      "bytes": 12723
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Build/GuLiShipAssemblyComponent.h",
+      "sha256": "c9dd9276627ddcf4f250f28803fc0a31dd8d7f393495a504b6d33263c80c289f",
+      "bytes": 4266
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Build/GuLiShipBuildCatalog.cpp",
+      "sha256": "a7746f9bbe4e867fb1fce0910296d6afaaeaa06dada25bf56e2ae0a0c3fd8556",
+      "bytes": 19843
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Build/GuLiShipBuildCatalog.h",
+      "sha256": "da2cc95d744df9abc99d63715bbaed39bb3684c8a57884322be9bf524f72ed5c",
+      "bytes": 6193
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Build/GuLiShipBuildComponent.cpp",
+      "sha256": "7b2165b4a9da94856597bc858878588c2148bc608224da8daf307d0183bdd309",
+      "bytes": 4493
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Build/GuLiShipBuildComponent.h",
+      "sha256": "442a8135014d3cb0db0347f814d285ff8ce698b5b6754434326bafcdc8c525df",
+      "bytes": 2297
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Build/Tests/GuLiShipBuildRulesTests.cpp",
+      "sha256": "c83f7ba01987defcdd55e206813808611adc5bb414f6a0135e28f9ee4f9f485f",
+      "bytes": 6740
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Capabilities/GuLiShipCapabilityComponent.cpp",
+      "sha256": "0285cd22c99ee0139be053454c489eff6fd6448b5286c44929f085304ae9d807",
+      "bytes": 1741
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Capabilities/GuLiShipCapabilityComponent.h",
+      "sha256": "94edb4ce0b5da44ff20846d1d14e7244e962b5a7e5109538a077da627417f0aa",
+      "bytes": 3105
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.cpp",
+      "sha256": "45147a65005f5bf1b981a286612d318fcd3f39a557fd915cdf16150afdb2f017",
+      "bytes": 21668
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Capabilities/GuLiShipHangarCapabilityComponent.h",
+      "sha256": "03e41d612591789c5043557c8c2d7ecab02e3f20bde1c8322fdb773d4e215701",
+      "bytes": 7195
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiShipCameraCollision.cpp",
+      "sha256": "4713f38b062899363a2356cef8d9de084195ea57720a2163add79dc5a3eb39d0",
+      "bytes": 974
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiShipCameraCollision.h",
+      "sha256": "0ba9d7f1d58dde6e5edc8508ee409293879f17838c200777057ef048015f86e1",
+      "bytes": 393
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiShipMovementComponent.cpp",
+      "sha256": "bcb155ff6a7758be510f398ce2b11ad67758ee0bbd48a4fbbaf0849ce0cde3bd",
+      "bytes": 46287
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiShipMovementComponent.h",
+      "sha256": "39a2cfe6e73c48fbdb170383dfea3d72679d45df670f1279e19089addaf4bcc7",
+      "bytes": 13241
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiShipTargetingRangeComponent.cpp",
+      "sha256": "93212144639320bf8fdcc1025ab7242b72b54d8a9c849c0d77e896e3b65c7032",
+      "bytes": 3696
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiShipTargetingRangeComponent.h",
+      "sha256": "3eb52e972038a0fcdae49ba299db48021fed7f2ac249a40bca359f2cbfe2358d",
+      "bytes": 1377
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiShipTestGameMode.cpp",
+      "sha256": "571c1af27f54488c2e5a27feeb5271362825f90850de9632ec34a9a2a20352f9",
+      "bytes": 361
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiShipTestGameMode.h",
+      "sha256": "dbb3a3f90a4a4421570ec6849a03069fbf23d59c9fd851f0121b8461bd5cceaf",
+      "bytes": 446
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiStrikeEnginePart.cpp",
+      "sha256": "798ac13d691b752f11bfba11c2405627012d5f1fe80efb6440edd2399dda4e74",
+      "bytes": 293
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiStrikeEnginePart.h",
+      "sha256": "886b4b2e3dd5b17f988443355572dc4e56c93f3b77907ab347f10f28b184c794",
+      "bytes": 772
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiStrikeShip.cpp",
+      "sha256": "050bfe8bf7804d4d9a775f5d762c5659123c3f7e8ffd4d6b2d0b56b0c59d3517",
+      "bytes": 95269
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiStrikeShip.h",
+      "sha256": "26326240d4f1e074fba783d2afb6d0b939c3fdd379990611028272f635a406d8",
+      "bytes": 31246
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiStrikeShipAssembly.cpp",
+      "sha256": "fb381d656565871c176daeb1b67d82f6a577a72ddce35ffeda83902322498c17",
+      "bytes": 933
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiStrikeShipPartComponent.cpp",
+      "sha256": "e3c846f0ccd2471da681e2e31ba55679da116dd2ec0543f6402100bb1c011d69",
+      "bytes": 7084
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiStrikeShipPartComponent.h",
+      "sha256": "054b44c1d53611374957c7ac261582ba1822d53f0a3171f61b6d97ce161cd7cd",
+      "bytes": 6803
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiStrikeWeaponPart.cpp",
+      "sha256": "8abcf40f1f7c088f4d9f920665b0b199d2c4cf27e17d51ae611a0fc796c1a8cb",
+      "bytes": 2052
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/GuLiStrikeWeaponPart.h",
+      "sha256": "2d309b3229ca3fc4a40a708f806b214b0bb0d665572236a29dc91db554fc68bf",
+      "bytes": 2018
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Tests/GuLiShipCanonicalMoveHistoryTests.cpp",
+      "sha256": "20975bcb146dfb832f82b14067974a557398cb18914c093254bb341c7cf41bd2",
+      "bytes": 2108
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Tests/GuLiShipPartVisualTests.cpp",
+      "sha256": "65c92241cfba5fe3392ebe3bba357415f4e2fbd8b3fe25803dcb011a35f09c00",
+      "bytes": 9814
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/Tests/GuLiShipWorldHUDTests.cpp",
+      "sha256": "86395f65af4857aab6e8f6b652f83cfbba2b725774fc1d17bafd9ab18ed081e5",
+      "bytes": 9611
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/UI/GuLiShipWorldHUDComponent.cpp",
+      "sha256": "3a7bd9151740486cd60edd8f47672ae2afeebde6e2e26aa476d3b79838b50cc9",
+      "bytes": 25595
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/UI/GuLiShipWorldHUDComponent.h",
+      "sha256": "89acbeb1bce0f300af7811a013ca49b2d14ce793178f5730b6c7b4ebc5816197",
+      "bytes": 5066
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/UI/GuLiShipWorldWidgets.cpp",
+      "sha256": "d9516c9ce17587778a6fac670d96b3d78f12a343b667302276e5eeb5d85f8b06",
+      "bytes": 3697
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Ship/UI/GuLiShipWorldWidgets.h",
+      "sha256": "8abb8e03dcaab65db8e18f9e7ba342e945275aee47a61238024f3d9739064677",
+      "bytes": 2367
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiArmySkillReplicationActor.cpp",
+      "sha256": "41f08e118d9f03220258bcb6bd67aaa3e0758a147bdef30831e6119fe958f544",
+      "bytes": 1120
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiArmySkillReplicationActor.h",
+      "sha256": "6c40477e2629b53ee2b7c961b36c3419ac2b8ea40ead69ae108591ffdb6930e0",
+      "bytes": 936
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiArmySkillSubsystem.cpp",
+      "sha256": "a06fb80b04e62155dd4abcf9949932d2d709a0b0fb1ddb67261aaace1153790b",
+      "bytes": 23066
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiArmySkillSubsystem.h",
+      "sha256": "7911182ea9ab440449e76f883f12bf52e48c7437881caf258f48cde03c40d30c",
+      "bytes": 4898
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiSkillGMCommands.cpp",
+      "sha256": "aca53b781e889197be0e62657415e604024ce56b753600557f022fce9139411a",
+      "bytes": 14070
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiSkillGMUtilities.cpp",
+      "sha256": "48e15d6a3cea4ca9124cd3ffbec0f13915e852f0521df1e0f508de1bb4790a5e",
+      "bytes": 378
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiSkillGMUtilities.h",
+      "sha256": "8d3a55d5c895fc6b252b94e23c996bedbe9d295779ad5f866802d2737c3d7f95",
+      "bytes": 323
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiSkillResolver.cpp",
+      "sha256": "9c97d381013d549d1e139ec227ba823574fb057a5494454ecbe7ffae2713c6ee",
+      "bytes": 15420
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiSkillResolver.h",
+      "sha256": "bd0a92b6f9d282bfafdb074bac1082142245c474837e65071ef780d2b2d1d2df",
+      "bytes": 1685
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiSkillTags.cpp",
+      "sha256": "cb56140d4f48f0ea1fb945845f8f4f3ad00b0ef1c8956de29a58aaff8814ad95",
+      "bytes": 383
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiSkillTags.h",
+      "sha256": "f9d59fae9a4fdde10efd708cd8e2be225b49c396b89091fdc4050bc9af10d91e",
+      "bytes": 318
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiSkillTargeting.cpp",
+      "sha256": "fac284c1db40188d39a0f790e9890a8aca5a4d0d99af5269e6465498bf5a0361",
+      "bytes": 1245
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiSkillTargeting.h",
+      "sha256": "879e249ae2887d1b7ff09127bc491adcf33b5516136df9015a78d095e6813d2e",
+      "bytes": 279
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiSkillTypes.cpp",
+      "sha256": "82e74ac16eae4628510d4147e60a4b2e9515f36069a4bae70994a595c97b66eb",
+      "bytes": 1187
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiSkillTypes.h",
+      "sha256": "bb322781994132f0c26ff08cd254e5c341bc1b27933a237109675c33cadcf508",
+      "bytes": 5956
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiWeaponChannelTypes.cpp",
+      "sha256": "a396b105068f2fa22d7aa9090b32da1e9b67320ad7ae8e37694497553597cab8",
+      "bytes": 1825
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/GuLiWeaponChannelTypes.h",
+      "sha256": "4a6eec230782886e9c56e0ad83429228f93838b229f71ef2a0cdb3b83d519dd0",
+      "bytes": 3433
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/Tests/GuLiSkillInitializationTests.cpp",
+      "sha256": "e5dd941094b33c3b703775ce663883fb408adf38ba09cfe442cae0431be9cd11",
+      "bytes": 3022
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/Tests/GuLiSkillLifecycleTests.cpp",
+      "sha256": "8eafbb73781723f539622e5ddbb469197f413d2a330c37f8389367eeb85f20e0",
+      "bytes": 23844
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Skills/Tests/GuLiSkillResolverTests.cpp",
+      "sha256": "6daddf61b76115f1e857ee03948558e195bea53f1735809829049cae89cf8fe2",
+      "bytes": 20854
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.cpp",
+      "sha256": "a670311017f3828b226563152ed9139e26e624b209102a8e2a758428c4717515",
+      "bytes": 4890
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.h",
+      "sha256": "bcd5992c47453ec42f40ba630f8cf28678d1e4b129290d2acc07238145832a5c",
+      "bytes": 1136
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdCaptureComponent.cpp",
+      "sha256": "1d196d5b4a55eab7eaab7d49f4181a7934111ad3d2afa0c22ec2e86d2dfd64bb",
+      "bytes": 1945
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdCaptureComponent.h",
+      "sha256": "c1daedaf1da50d6e9c6e26250615fdbe6c2ada6e9213c32785495bc40058d605",
+      "bytes": 1418
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdDiagnostics.cpp",
+      "sha256": "360ae1c6c6446bf0d57e957dcf6304c73ab30456ab43b9dd3f1fd62f3a023bc4",
+      "bytes": 3734
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdDiagnostics.h",
+      "sha256": "cae11a2644d601da6132f3a7058f6292551d7e542c0b69016e300028518b5a56",
+      "bytes": 135
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdFacilitiesComponent.cpp",
+      "sha256": "3e0346ef13754eefd4eb2f84eaf8295c4a921d33199f2d687af0c6d562873e5d",
+      "bytes": 4338
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdFacilitiesComponent.h",
+      "sha256": "9b880aabd2e28aadb919ef156aca3b68176b917398b3534fbbfb941ea4819237",
+      "bytes": 1208
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdNetworkPresentationComponent.cpp",
+      "sha256": "41491c4654fc03f234fc90dc271c31d644056f3032c7e99fe08b47846355241f",
+      "bytes": 3153
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdNetworkPresentationComponent.h",
+      "sha256": "c584782e6784c3594d509fbe14adf0a265d39b014dd2efcfac750c0c742f87f0",
+      "bytes": 798
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdTopology.cpp",
+      "sha256": "caa81a734618975c02ce6b567f67421f14573b59a405e96fc99f3876cf33b582",
+      "bytes": 2884
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdTopology.h",
+      "sha256": "030866230270ff6a15fd734843934f73408b37c3bf779c045e22813f42ac775c",
+      "bytes": 746
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdTransitConfig.h",
+      "sha256": "d6715595f876e973954aefba0e99caaa2f2f30bebd16a935355ff7d4b2a8c63f",
+      "bytes": 725
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdTransitPresentationComponent.cpp",
+      "sha256": "04a9533ac70a77aba772e357829931f548351a87af67478148a14c2546880884",
+      "bytes": 3917
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdTransitPresentationComponent.h",
+      "sha256": "1c302a3ba79c042b759697314622fbb502ca24029ddac30ffbc4d2c00f0e78c2",
+      "bytes": 1086
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdTransitTypes.cpp",
+      "sha256": "26e375d74646e60827620340c4a4fb37d98d0f706b0b89202f9284dc80a1c20c",
+      "bytes": 2695
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdTransitTypes.h",
+      "sha256": "300a0aed8de3bf67f8fa051f71f265c0522c1f0ffcd09dbbe4f0b8cb95b373d3",
+      "bytes": 2302
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdTransportNetwork.cpp",
+      "sha256": "2ffb45e0efaeff70907895073793dee4accf84d11e1879ee0cf5d550b6197047",
+      "bytes": 2976
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Stronghold/GuLiStrongholdTransportNetwork.h",
+      "sha256": "314501746c59be1b08adc2d15e751fd70eb934b343ddbf2eb8235c00699c4275",
+      "bytes": 1481
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportActorAdapter.cpp",
+      "sha256": "d99d9e5c1f1ae6245e47d5cb04ee177f1a1f0383f56f81b2b270f6b66999c81e",
+      "bytes": 9623
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportFieldActor.cpp",
+      "sha256": "7b9537022535495c2cba510e19bab1c3a347ab8c8a49ac38d17d0624ca921a90",
+      "bytes": 13850
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportFieldActor.h",
+      "sha256": "beda057ca93d4ea70bba917612548e61d7811a6afcef903ca3f87af9800c3ecd",
+      "bytes": 2455
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportFieldPresentation.cpp",
+      "sha256": "d4f8d800c30780e5886193b893cc11a124f8f025d9580f02ce1733af74be036f",
+      "bytes": 4251
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportGMCommands.cpp",
+      "sha256": "3278d0769bd9b93140da88d8f69f7731545ecd525446563a87be9f0b8a45049d",
+      "bytes": 2820
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportInputComponent.cpp",
+      "sha256": "2138ced6eb3c4a5c3feb73dfaeec5342eb32b771df880c34df71e215e5fd4e91",
+      "bytes": 10783
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportInputComponent.h",
+      "sha256": "044a2cc468075ae9377fbd140a6199d40d1625c8f46e4954e77b1ab687988c6b",
+      "bytes": 2307
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportMassAdapter.cpp",
+      "sha256": "5f5a176fb27d78b59c410918077418754d9e44806fc4474192544fe1607cb9d5",
+      "bytes": 2562
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportTypes.cpp",
+      "sha256": "8de7d503fcb50192935e943c40ddd6766ac40a28f3ea0079e0366a6b50348b8c",
+      "bytes": 1414
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportTypes.h",
+      "sha256": "ae0e108e1b50cfe391dfd5db98a2130a2de5166eceea142567478897582f1670",
+      "bytes": 2487
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportUnitAdapters.h",
+      "sha256": "f2cfcaa04c58d87ed74a86416617fbc6dabb6d8577496dd2c508d45e19cc9195",
+      "bytes": 1857
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/Tests/GuLiTeleportTests.cpp",
+      "sha256": "f9a6a41c8bbf8a47d60db3477ee5ebea2284a99e70bd068e7150aa8593205e0d",
+      "bytes": 6027
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Tuning/GuLiRuntimeTuningCommands.cpp",
+      "sha256": "4bc63856f44e057044d51c8cefc87def0cd169b93be2f0c3727bdd2da6c7904d",
+      "bytes": 4337
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Tuning/GuLiRuntimeTuningSubsystem.cpp",
+      "sha256": "53b3ff83904c2309e34afac52d09de4fbe7bb0a69ed14690e934174be3dc993a",
+      "bytes": 11922
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Tuning/GuLiRuntimeTuningSubsystem.h",
+      "sha256": "421fc14367aeabec3485e20873105ab9b6921635e79e674743e7ebb8f0a23530",
+      "bytes": 3213
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Tuning/GuLiRuntimeTuningTypes.cpp",
+      "sha256": "81a4aa77b30e42182dbe42bbf417bf23acf6190d004947af748444f973746568",
+      "bytes": 10782
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Tuning/GuLiRuntimeTuningTypes.h",
+      "sha256": "3a9aab55374bdbf19b9ff6284a79c094db31f6cfdd24394cf14dd8f3d0cd2f93",
+      "bytes": 4155
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Tuning/Tests/GuLiRuntimeTuningTests.cpp",
+      "sha256": "6d187da764ab29cdfa8ea246d49b84becfa5e0292d26a46419a2ed3a1c2d32a0",
+      "bytes": 8197
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringAIController.cpp",
+      "sha256": "930ced5101dc6e7537ccebf8be74351f6c7cadb23e4b942e7da606424503aa88",
+      "bytes": 6300
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringAIController.h",
+      "sha256": "ae1bfc0ca4144144ef2ae423cf0860fa0080b693e06a0fdf362413885b01b1df",
+      "bytes": 1900
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringCommandTypes.cpp",
+      "sha256": "afa85b528f381e68eea9fc886f65b494dbb4013c5d2ef7e928cb5c312e362aea",
+      "bytes": 1527
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringCommandTypes.h",
+      "sha256": "00ef5c4988b00e1a643202b628ac17f5294518680e1bc0c5a1a6d70464bdaf5d",
+      "bytes": 1166
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringTravelComponent.cpp",
+      "sha256": "fb1f7ea9cbf7c4c248423272e709376db573b5a51003c260780478dafc8556a6",
+      "bytes": 15131
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringTravelComponent.h",
+      "sha256": "1b04411d56b095c39008a72162b8349a8e0f681462e1977d118e4e881bfc58e2",
+      "bytes": 3289
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiExternalCharacterMovementComponent.cpp",
+      "sha256": "4b9eeac283a114c54f49bc5b2762bb16b4e648fbde31f4d1dc7874ac126a8714",
+      "bytes": 5224
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiExternalCharacterMovementComponent.h",
+      "sha256": "456b4d7b8894f4e93d6b7add6540832b0c79e9b3c29d6939e496122f800f47bc",
+      "bytes": 1346
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiExternalUnitControlComponent.cpp",
+      "sha256": "fac6981e44fabc01a12b819dcffb9f3d44227ba19073b766c4a1788a3f159357",
+      "bytes": 7042
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiExternalUnitControlComponent.h",
+      "sha256": "1e91f6719ba636e1395898eca299e8eb56ff204998885ed61cd7733ec09dc49d",
+      "bytes": 3090
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiGroundCrowdManager.cpp",
+      "sha256": "482aa7479c694dc1736f1e1c6a436f7a230e3eda78a79715ece1ed6563b1e352",
+      "bytes": 1575
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiGroundCrowdManager.h",
+      "sha256": "aa5e44fbe12b91133eea47f2e2d213391cbd8c8d3851e56478a5141be967fd9e",
+      "bytes": 1542
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/WarMachine/GuLiWarMachinePlaceholderPawn.cpp",
+      "sha256": "fa7adef0ee969251a495d3729e11741dfc0ee108ce3aa4ba9145f288f2e27def",
+      "bytes": 6653
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/WarMachine/GuLiWarMachinePlaceholderPawn.h",
+      "sha256": "3c00a8e3e55474c22c8d9fa92b7cdd5dca3a52161eb0387061e564751ce6b466",
+      "bytes": 2118
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Behavior/GuLiWingmanMemberBehavior.cpp",
+      "sha256": "f9f60e58b59e3c00ef7b74ade2a7b8dbdcf3bf903debec65f6ede2c1e0a23864",
+      "bytes": 4192
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Behavior/GuLiWingmanMemberBehavior.h",
+      "sha256": "30abe39a74e83dffd28e8da59cf04f125e1ecf0b1e4e4acd8650c9f797e450bb",
+      "bytes": 3568
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Behavior/GuLiWingmanStateTreeAssetCommands.cpp",
+      "sha256": "6067163de2b658296293eed9de64d730030c9d0716e041a286f65440953e0ab5",
+      "bytes": 13205
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Combat/GuLiWingmanAttackNavigation.cpp",
+      "sha256": "d403a17ee4617d554beae75d759622c3f6cc6e87dc0c4817a7cef43085892305",
+      "bytes": 3278
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Combat/GuLiWingmanAttackNavigation.h",
+      "sha256": "36c54f0d9c15c92bc54e971760ddc989fc93cf3d3f81658c2e7dc1f2ded2f327",
+      "bytes": 828
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Combat/GuLiWingmanAttackProfile.cpp",
+      "sha256": "7d8f0a346667a41ca03a1be9d76d4cb91ae286ddd8e9689ed08f0cdae626892a",
+      "bytes": 9686
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Combat/GuLiWingmanAttackProfile.h",
+      "sha256": "33c36bf52899538a1c8385c1e1f9f1691c4bb08c061f2c79f7df73b403fc4166",
+      "bytes": 5440
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Combat/GuLiWingmanAttackSimulation.cpp",
+      "sha256": "f55928c9695dec8fa137c64bd81ff72e1a14a7bd9efff10b8cb4273812e02f3b",
+      "bytes": 19730
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Combat/GuLiWingmanTargetAcquisition.cpp",
+      "sha256": "ac5cc72ec5fa1feb5cc185e03c8c4538e9fba7c63b01cedf108e68092b91221e",
+      "bytes": 10130
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Combat/GuLiWingmanTargetAcquisition.h",
+      "sha256": "495f701abea21c8e690fc94caa65f863942056af34c56895df3a0801564481e1",
+      "bytes": 4398
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/GuLiWingmanPawn.cpp",
+      "sha256": "a4d041ea2420676d5133613d423ad488217c9b14e4b52cdd77b7087954a7d87c",
+      "bytes": 19099
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/GuLiWingmanPawn.h",
+      "sha256": "4d4580d38dbe54da88729b8d170d20d3f86e3e3d6b92410c70476a87b48bc28b",
+      "bytes": 6060
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/GuLiWingmanRuntimeTypes.h",
+      "sha256": "bc82316c8c53d5393587fff2cfc866368c895ec8bd552d5048a7af78271f00ac",
+      "bytes": 6570
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/GuLiWingmanSimulationSubsystem.cpp",
+      "sha256": "3337609b489ceb694b087f1a79d138e02a91954c2084f9818172ab304795246c",
+      "bytes": 69698
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/GuLiWingmanSimulationSubsystem.h",
+      "sha256": "24e823a8fb980f6748b51f50767bfe28c048b7019b83002e837077a882987d8a",
+      "bytes": 10798
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Movement/GuLiWingmanFlightMovementComponent.cpp",
+      "sha256": "6ead10a9711057d1a631be7d7e7f8f37d87c1229dde8778c83b9c5b599904442",
+      "bytes": 23193
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Movement/GuLiWingmanFlightMovementComponent.h",
+      "sha256": "9babb91c017cbc46d148de27b189cbb8ae72e31ff2cb2597f28539b373411a96",
+      "bytes": 2584
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Movement/GuLiWingmanSteering.cpp",
+      "sha256": "502780b90b1c41d8d6bf64b05ef34bd54451e38d1c36e0e236b8fd0773039c70",
+      "bytes": 20202
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Movement/GuLiWingmanSteering.h",
+      "sha256": "716ca8cc890e32fc82c49a25d0027e5135e7e3938bff2f73a7f58e6a5fe16107",
+      "bytes": 2863
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Movement/GuLiWingmanSwarmFlow.cpp",
+      "sha256": "cb0cfaac5d1599f74cdc719c53458c949a388601022f8145f282cf8791c67491",
+      "bytes": 14124
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Movement/GuLiWingmanSwarmFlow.h",
+      "sha256": "282ed874e778fa3476419a34f89b1b1ad76e90f322af9e029473db8f14f8c63e",
+      "bytes": 1383
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Presentation/GuLiWingmanPresentationActor.cpp",
+      "sha256": "f0e9ce208fd4d10ee904827620862970896e10b0c5dedb3e4c6e0dc5f0022232",
+      "bytes": 38542
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Presentation/GuLiWingmanPresentationActor.h",
+      "sha256": "18acce5d849e779d9fe42ce0dc9bd0c0e44a1f333057527b5c9d391a3b7c2033",
+      "bytes": 7512
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Presentation/GuLiWingmanPresentationPolicy.cpp",
+      "sha256": "9aa5cdfab03015b34e3399a45cfa96414fb334977f4afabdcaf342a6a2406be7",
+      "bytes": 6431
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Presentation/GuLiWingmanPresentationPolicy.h",
+      "sha256": "d44208741c3f1fbac199a0a801db5acd34e000db9a4ed267b5eb5cd0e9264fa8",
+      "bytes": 2602
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Presentation/Tests/GuLiWingmanPresentationPolicyTests.cpp",
+      "sha256": "ec854e5d8914a9315c34b9a0f9755715e212562879f8634d971dabc177142ed0",
+      "bytes": 6771
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Tests/GuLiWingmanAttackRunTests.cpp",
+      "sha256": "6570479a15b68b489140c44b106f061782b08945f694b1a8df78f215e33545dd",
+      "bytes": 19435
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Tests/GuLiWingmanAvoidanceRecoveryTests.cpp",
+      "sha256": "d25d3b5ae257c196b082573a6a641ee2ccdd72203554b421bfd6f67509afa596",
+      "bytes": 3725
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Tests/GuLiWingmanInitialFormationNavigationTests.cpp",
+      "sha256": "9bfda57f278b77de68d00a784156067db513c45feb6e9e0c0d366432df222284",
+      "bytes": 13517
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Tests/GuLiWingmanPawnSimulationTests.cpp",
+      "sha256": "163ce2ac45b7b1b4b9c4356d7e345c10afc1dd3c976e93c038a5725e39e28854",
+      "bytes": 61360
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Tests/GuLiWingmanPerformanceHarnessTests.cpp",
+      "sha256": "e154917ee2089bff75a9c777de21f644835f7dd3aa18b9cd19c8781dd68fdf33",
+      "bytes": 57576
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Wingman/Tests/GuLiWingmanTargetAcquisitionTests.cpp",
+      "sha256": "ec1147b9d40898b4d8aed66898ede9bb98a9d0e11e179d07984e0e53fdf396c6",
+      "bytes": 10520
+    },
+    {
+      "path": "Source/GuLiStrike/GuLiStrike.Build.cs",
+      "sha256": "ec65c3b1c2f52d94dcd34f8f95577e7edfec65f7dd22ce28172594f089a1131a",
+      "bytes": 2564
+    },
+    {
+      "path": "Source/GuLiStrike/GuLiStrike.cpp",
+      "sha256": "b7e189c17fe92f37dd49efb1aa861eb1b04a298f2fddbcae301b681c9b2af03f",
+      "bytes": 471
+    },
+    {
+      "path": "Source/GuLiStrike/GuLiStrike.h",
+      "sha256": "c14443ed91146755678f7fc4ea9eb93d23065e25706574fa8a52ad265896fc96",
+      "bytes": 644
+    },
+    {
+      "path": "Source/GuLiStrike/GuLiStrikeCharacter.cpp",
+      "sha256": "38dffee237f4d4b035683da64044fdaaf574cf6cf972f7626ce75131e01ffd9e",
+      "bytes": 10516
+    },
+    {
+      "path": "Source/GuLiStrike/GuLiStrikeCharacter.h",
+      "sha256": "d1d329fe9672104991f3d0fdc4b35fbc6fc587c3d150b6dab16289c4691d4c60",
+      "bytes": 6823
+    },
+    {
+      "path": "Source/GuLiStrike/GuLiStrikeGameMode.cpp",
+      "sha256": "b3e11974d3b135f2f7da386c020cdfa21e7033341dcec51bf97d317eff85df1f",
+      "bytes": 2462
+    },
+    {
+      "path": "Source/GuLiStrike/GuLiStrikeGameMode.h",
+      "sha256": "5a2c5e45b9f069d1694e62740ed70873ea18c80f674666fe73dbf817dbe14e8d",
+      "bytes": 2465
+    },
+    {
+      "path": "Source/GuLiStrike/GuLiStrikePlayerController.cpp",
+      "sha256": "5221a9ba9f20eb03af53f3585d0afc20738ff0eef706f5ab39fd92c5bea0e726",
+      "bytes": 2719
+    },
+    {
+      "path": "Source/GuLiStrike/GuLiStrikePlayerController.h",
+      "sha256": "47ee01e06d700e019e5481bfc6c30e4c8728c111a79c21e0596635ae5cb522e1",
+      "bytes": 1896
+    },
+    {
+      "path": "Source/GuLiStrike/UI/GuLiStrikeUI.cpp",
+      "sha256": "f130be03f5b25d1a6ed203bac86c460908642199c47ded629d9cc3d4f60c7231",
+      "bytes": 80
+    },
+    {
+      "path": "Source/GuLiStrike/UI/GuLiStrikeUI.h",
+      "sha256": "f919261182da0f7c330325b0ffc490a5ffb5b26634f5eb245a010c9d42caa927",
+      "bytes": 814
+    },
+    {
+      "path": "Source/GuLiStrike/Variant_Strategy/StrategyGameMode.cpp",
+      "sha256": "1310e3392b3c0d7771c7bb50e2958801391de5013b048018c49d3293002d249d",
+      "bytes": 89
+    },
+    {
+      "path": "Source/GuLiStrike/Variant_Strategy/StrategyGameMode.h",
+      "sha256": "01cd3333b845ba31277668a6bd04d54a9db799cad4f738159c0f01f23fe1a182",
+      "bytes": 336
+    },
+    {
+      "path": "Source/GuLiStrike/Variant_Strategy/StrategyPawn.cpp",
+      "sha256": "8cde52f2053fd40920dabd9c2ea194f6d3ff58d798aa3aade0e1d70de02e52e8",
+      "bytes": 1220
+    },
+    {
+      "path": "Source/GuLiStrike/Variant_Strategy/StrategyPawn.h",
+      "sha256": "b3e6f42ffd9bfb61b0c9b8d68e25238b0231b474a1ce5c6bf2ca8668136a066c",
+      "bytes": 1038
+    },
+    {
+      "path": "Source/GuLiStrike/Variant_Strategy/StrategyPlayerController.cpp",
+      "sha256": "0dc8076dd94b7eb1c8ff436eacebdf605aaff4d2c4948b4c62d55deb7db87156",
+      "bytes": 23481
+    },
+    {
+      "path": "Source/GuLiStrike/Variant_Strategy/StrategyPlayerController.h",
+      "sha256": "081d8ce0542bb871adc910b7bd99b04cae7057835bbdc8682949c8fd67d8f950",
+      "bytes": 10250
+    },
+    {
+      "path": "Source/GuLiStrike/Variant_Strategy/StrategyUnit.cpp",
+      "sha256": "afe956b497ad8fce745138c0706114c053a4619ae3d643d6cfed7dd1debca55f",
+      "bytes": 4427
+    },
+    {
+      "path": "Source/GuLiStrike/Variant_Strategy/StrategyUnit.h",
+      "sha256": "155060ced28c0fb7a7156e22ee0b2996f40e9f2b9e65602cc9b8066d2dc91182",
+      "bytes": 2337
+    },
+    {
+      "path": "Source/GuLiStrike/Variant_Strategy/UI/StrategyHUD.cpp",
+      "sha256": "3ef30f9fda4334787ca1a173a62913dd0c76d258f19f9c4741f17c19b4206516",
+      "bytes": 2127
+    },
+    {
+      "path": "Source/GuLiStrike/Variant_Strategy/UI/StrategyHUD.h",
+      "sha256": "00dc765854636166452e9ec65c7caa9b334cc5035d4faf67f6086735e625c237",
+      "bytes": 1301
+    },
+    {
+      "path": "Source/GuLiStrike/Variant_Strategy/UI/StrategyUI.cpp",
+      "sha256": "2e14134e418ff3667a91be0bd39ae3ae5d403f0b10b318eefb3d5f871604ac4e",
+      "bytes": 375
+    },
+    {
+      "path": "Source/GuLiStrike/Variant_Strategy/UI/StrategyUI.h",
+      "sha256": "3d0757df10f69ab62c08598267d29e06890f19107a0eba69384cd40f3ad3fba1",
+      "bytes": 912
+    },
+    {
+      "path": "Tools/DataPipeline/export_data_from_excel.py",
+      "sha256": "4da985fe158dcd2a027a62f5f76341145875d6fa07a9182ca8a20860a3d9678c",
+      "bytes": 24011
+    },
+    {
+      "path": "Tools/DataPipeline/make_template_xlsx.py",
+      "sha256": "94c4923e9ba1c7f2972d6b55dd9e0c14918a84c16359f78fb7fcca9cf0278d54",
+      "bytes": 6654
+    },
+    {
+      "path": "Tools/DataPipeline/README.md",
+      "sha256": "f15a3c4fad2a5c8c136ae28fc8a8eb3db9f61eaa648c467dec1feb0edca29e4e",
+      "bytes": 4890
+    }
+  ]
+}

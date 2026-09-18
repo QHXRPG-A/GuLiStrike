@@ -68,13 +68,13 @@ struct GULISTRIKE_API FGuLiWingmanRelayTuning
 	double FireTokensPerSecond = 50.0;
 	double MaximumFireSourceAgeSeconds = 0.35;
 	double MaximumCarrierDistanceCentimeters = GULI_WINGMAN_MAXIMUM_CARRIER_DISTANCE_CENTIMETERS;
-	double MaximumWingmanSpeedCentimetersPerSecond = 12000.0;
+	double MaximumWingmanSpeedCentimetersPerSecond = 2400.0;
 	/** Quantization allowance around the ability-authorized endpoint speed. */
-	double SpeedEnvelopeSlackCentimetersPerSecond = 10.0;
+	double SpeedEnvelopeSlackCentimetersPerSecond = 2.0;
 	/** Angular quantization allowance added once per received Candidate packet. */
 	double TurnEnvelopeSlackDegrees = 0.5;
 	/** Position quantization/integration allowance added to the physical reachability envelope. */
-	double PositionEnvelopeSlackCentimeters = 100.0;
+	double PositionEnvelopeSlackCentimeters = 20.0;
 	/** Bounds how far client fixed-step time may run ahead of elapsed authoritative receive time. */
 	double MaximumClientSimulationLeadSeconds = 0.25;
 	double MaximumCaptureFutureSkewSeconds = 0.1;

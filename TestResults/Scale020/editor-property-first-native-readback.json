@@ -1,0 +1,41 @@
+{
+  "entries": 191,
+  "properties_changed": 2,
+  "saved": [
+    "/Game/GuLiStrike/Blueprints/AI/BP_GuLiStrikeNPC",
+    "/Game/GuLiStrike/Blueprints/BP_GuLiStrikePickup",
+    "/Game/GuLiStrike/Commander/Skills/DA_WM01_MissileQ",
+    "/Game/GuLiStrike/Data/Resources/DA_ResourceEconomy",
+    "/Game/GuLiStrike/FX/CommanderWeapons/DA_CommanderCombatEffects",
+    "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_Missile",
+    "/Game/GuLiStrike/FX/CommanderWeapons/DA_WM01_MissileExplosion",
+    "/Game/GuLiStrike/FX/GroundWarning/DA_GroundWarning_Red",
+    "/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundExplosion",
+    "/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundMissile",
+    "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_DoubleRing",
+    "/Game/GuLiStrike/Ship/Abilities/Formations/DA_WingmanFormation_SwarmOrbit",
+    "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_BasicAuto",
+    "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_GroundMissile",
+    "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MachineGun",
+    "/Game/GuLiStrike/Ship/Abilities/Weapons/DA_WingmanWeapon_MissileSalvo",
+    "/Game/GuLiStrike/Ship/BP_CombatAvatarFly01",
+    "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip",
+    "/Game/GuLiStrike/Ship/BP_ShipProjectile"
+  ],
+  "conflicts": 0,
+  "native_schema": "scale020",
+  "recompiled_default_rebases": [
+    {
+      "entry": {
+        "asset": "/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundExplosion",
+        "component": null,
+        "field": "radius",
+        "old": 4000.0,
+        "target": 800.0,
+        "space": "world_cm",
+        "applied_by": "serialized_property"
+      },
+      "reloaded_native_default": 160.0
+    }
+  ]
+}

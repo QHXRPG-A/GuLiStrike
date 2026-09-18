@@ -1,0 +1,838 @@
+{
+  "success": true,
+  "parts": {
+    "Twin_Barrel_Turret": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Twin_Barrel_Turret",
+      "class": "SkeletalMesh",
+      "bounds_max_error_cm": 0.0,
+      "dimensions_cm": [
+        2016.7759399414062,
+        4925.33203125,
+        1007.2564086914062
+      ],
+      "socket_count": 2,
+      "source_fbx": "Delivery\\v4\\FBX\\SKM_SC_Twin_Barrel_Turret_Styled.fbx",
+      "source_fbx_sha256": "dc3cc679b1e02202e206060b03f01622d0d9b422be7aaafbb4d32deea87b7611",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Twin_Barrel_Turret_Toon.M_SC_Twin_Barrel_Turret_Toon",
+      "body_triangles_FBX": 1680,
+      "material_slots": [
+        "ScifiDreadnoughtWeapons_001",
+        "M_SC_Twin_Barrel_Turret_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "rigid_weight_one_vertices": {
+        "Root": 646,
+        "BarrelPitch": 310
+      },
+      "bones": [
+        {
+          "name": "Root",
+          "parent": "",
+          "local": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "BarrelPitch",
+          "parent": "Root",
+          "local": {
+            "location": [
+              0.0,
+              -220.0,
+              -27.01
+            ],
+            "rotation": [
+              0.0,
+              -0.0,
+              0.70710676908493,
+              0.7071067932881648
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Twin_Barrel_Turret.SK_SC_Twin_Barrel_Turret",
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Twin_Barrel_Turret_Outline.M_SC_Twin_Barrel_Turret_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    },
+    "CIWS": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_CIWS",
+      "class": "SkeletalMesh",
+      "bounds_max_error_cm": 0.0,
+      "dimensions_cm": [
+        320.1042175292969,
+        684.5887145996094,
+        235.04979705810547
+      ],
+      "socket_count": 3,
+      "source_fbx": "Delivery\\v4\\FBX\\SKM_SC_CIWS_Styled.fbx",
+      "source_fbx_sha256": "77a938ebc39c1068945ae24bc7ceea49193cee527a1518347207d645a0cc5909",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_CIWS_Toon.M_SC_CIWS_Toon",
+      "body_triangles_FBX": 1066,
+      "material_slots": [
+        "ScifiDreadnoughtWeapons_001",
+        "M_SC_CIWS_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "rigid_weight_one_vertices": {
+        "Root": 319,
+        "BarrelPitch": 272
+      },
+      "bones": [
+        {
+          "name": "Root",
+          "parent": "",
+          "local": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "BarrelPitch",
+          "parent": "Root",
+          "local": {
+            "location": [
+              0.0,
+              20.0,
+              18.818
+            ],
+            "rotation": [
+              0.0,
+              -0.0,
+              0.70710676908493,
+              0.7071067932881648
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_CIWS.SK_SC_CIWS",
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_CIWS_Outline.M_SC_CIWS_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    },
+    "Thor_MissilePod": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Thor_MissilePod",
+      "class": "StaticMesh",
+      "bounds_max_error_cm": 9.1552734375e-05,
+      "dimensions_cm": [
+        1804.8770141601562,
+        4533.240234375,
+        591.0689697265625
+      ],
+      "socket_count": 5,
+      "source_fbx": "Delivery\\v4\\FBX\\SM_SC_Thor_MissilePod_Styled.fbx",
+      "source_fbx_sha256": "aee4aec4e053e70a1e9e3b74512221a1212523db9f67d1784acf56e6ec96e6bb",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Thor_MissilePod_Toon.M_SC_Thor_MissilePod_Toon",
+      "body_triangles_FBX": 2080,
+      "material_slots": [
+        "ScifiSpaceshipStandardWeapons",
+        "M_SC_Thor_MissilePod_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "triangles": 2080,
+      "uv_channels": 5,
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Thor_MissilePod_Outline.M_SC_Thor_MissilePod_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    },
+    "Autocannon": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Autocannon",
+      "class": "SkeletalMesh",
+      "bounds_max_error_cm": 0.0,
+      "dimensions_cm": [
+        1082.983642578125,
+        2151.0507202148438,
+        585.1661987304688
+      ],
+      "socket_count": 3,
+      "source_fbx": "Batch02\\Delivery\\v2\\FBX\\SKM_SC_Autocannon_Styled.fbx",
+      "source_fbx_sha256": "fe9007b4d9c9aec7ab1996b4ebc0bd8aedf795baf4712cc1c731836edc19bce2",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Autocannon_Toon.M_SC_Autocannon_Toon",
+      "body_triangles_FBX": 1700,
+      "material_slots": [
+        "ScifiSpaceshipStandardWeapons",
+        "M_SC_Autocannon_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "rigid_weight_one_vertices": {
+        "Root": 432,
+        "BarrelPitch": 512
+      },
+      "bones": [
+        {
+          "name": "Root",
+          "parent": "",
+          "local": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "BarrelPitch",
+          "parent": "Root",
+          "local": {
+            "location": [
+              0.008,
+              -237.346,
+              99.581
+            ],
+            "rotation": [
+              0.0,
+              -0.0,
+              0.70710676908493,
+              0.7071067932881648
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Autocannon.SK_SC_Autocannon",
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Autocannon_Outline.M_SC_Autocannon_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    },
+    "Triple_Barrel_Turret": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Triple_Barrel_Turret",
+      "class": "SkeletalMesh",
+      "bounds_max_error_cm": 0.0,
+      "dimensions_cm": [
+        3405.3529052734375,
+        5351.480224609375,
+        1117.1340942382812
+      ],
+      "socket_count": 3,
+      "source_fbx": "Batch02\\Delivery\\v2\\FBX\\SKM_SC_Triple_Barrel_Turret_Styled.fbx",
+      "source_fbx_sha256": "91bd8c9896f1f3426e7139239efafadc3f06b389a940e5fcbe6121d5ed2f1995",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Triple_Barrel_Turret_Toon.M_SC_Triple_Barrel_Turret_Toon",
+      "body_triangles_FBX": 2497,
+      "material_slots": [
+        "ScifiSpaceshipStandardWeapons",
+        "M_SC_Triple_Barrel_Turret_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "rigid_weight_one_vertices": {
+        "Root": 787,
+        "BarrelPitch": 729
+      },
+      "bones": [
+        {
+          "name": "Root",
+          "parent": "",
+          "local": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "BarrelPitch",
+          "parent": "Root",
+          "local": {
+            "location": [
+              -0.105,
+              -510.0,
+              129.919
+            ],
+            "rotation": [
+              0.0,
+              -0.0,
+              0.70710676908493,
+              0.7071067932881648
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Triple_Barrel_Turret.SK_SC_Triple_Barrel_Turret",
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Triple_Barrel_Turret_Outline.M_SC_Triple_Barrel_Turret_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    },
+    "Single_Barrel_Turret": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Single_Barrel_Turret",
+      "class": "SkeletalMesh",
+      "bounds_max_error_cm": 0.0,
+      "dimensions_cm": [
+        1006.5338439941406,
+        2269.6405639648438,
+        417.9393768310547
+      ],
+      "socket_count": 1,
+      "source_fbx": "Batch02\\Delivery\\v2\\FBX\\SKM_SC_Single_Barrel_Turret_Styled.fbx",
+      "source_fbx_sha256": "65215aad2cc2407d0cadfa04920e8f6387ff3f5d497418c40770772b80dc2b7b",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Single_Barrel_Turret_Toon.M_SC_Single_Barrel_Turret_Toon",
+      "body_triangles_FBX": 1268,
+      "material_slots": [
+        "ScifiDreadnoughtWeapons_001",
+        "M_SC_Single_Barrel_Turret_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "rigid_weight_one_vertices": {
+        "Root": 433,
+        "BarrelPitch": 382
+      },
+      "bones": [
+        {
+          "name": "Root",
+          "parent": "",
+          "local": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "BarrelPitch",
+          "parent": "Root",
+          "local": {
+            "location": [
+              0.0,
+              -145.0,
+              5.357
+            ],
+            "rotation": [
+              0.0,
+              -0.0,
+              0.70710676908493,
+              0.7071067932881648
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Single_Barrel_Turret.SK_SC_Single_Barrel_Turret",
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Single_Barrel_Turret_Outline.M_SC_Single_Barrel_Turret_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    },
+    "Drone_LaunchBay": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay",
+      "class": "StaticMesh",
+      "bounds_max_error_cm": 0.00018310546875,
+      "dimensions_cm": [
+        1555.3045654296875,
+        5023.419189453125,
+        1518.5491943359375
+      ],
+      "socket_count": 0,
+      "source_fbx": "Batch03\\Delivery\\v3\\FBX\\SM_SC_Drone_LaunchBay_Styled.fbx",
+      "source_fbx_sha256": "842f4b94feb1903c883c6c23e3dc9c97e1df90f4d8a7ae689c82f274db6ab7d6",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Drone_LaunchBay_Toon.M_SC_Drone_LaunchBay_Toon",
+      "body_triangles_FBX": 1254,
+      "material_slots": [
+        "ScifiSpaceshipStandardWeapons",
+        "M_SC_Drone_LaunchBay_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "triangles": 1254,
+      "uv_channels": 5,
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Drone_LaunchBay_Outline.M_SC_Drone_LaunchBay_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    },
+    "Electronic_JammingDevice": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice",
+      "class": "StaticMesh",
+      "bounds_max_error_cm": 0.0,
+      "dimensions_cm": [
+        1290.5091552734375,
+        740.8935546875,
+        538.5937805175781
+      ],
+      "socket_count": 0,
+      "source_fbx": "Batch03\\Delivery\\v3\\FBX\\SM_SC_Electronic_JammingDevice_Styled.fbx",
+      "source_fbx_sha256": "688020f2bf0f6a024b609ebc2132db5b5d84c3b89f43cbbfb1adc1035a00e1c6",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Electronic_JammingDevice_Toon.M_SC_Electronic_JammingDevice_Toon",
+      "body_triangles_FBX": 550,
+      "material_slots": [
+        "ScifiSpaceshipStandardWeapons",
+        "M_SC_Electronic_JammingDevice_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "triangles": 550,
+      "uv_channels": 5,
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Electronic_JammingDevice_Outline.M_SC_Electronic_JammingDevice_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    },
+    "Shield_Generator": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Shield_Generator",
+      "class": "StaticMesh",
+      "bounds_max_error_cm": 0.0,
+      "dimensions_cm": [
+        746.8165893554688,
+        586.8026123046875,
+        997.8872528076172
+      ],
+      "socket_count": 0,
+      "source_fbx": "Batch03\\Delivery\\v3\\FBX\\SM_SC_Shield_Generator_Styled.fbx",
+      "source_fbx_sha256": "9e609fc6727bd93459396af28758183b215300ae83088750e5ea735bc49ac193",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Shield_Generator_Toon.M_SC_Shield_Generator_Toon",
+      "body_triangles_FBX": 312,
+      "material_slots": [
+        "ScifiDreadnoughtWeapons_001",
+        "M_SC_Shield_Generator_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "triangles": 312,
+      "uv_channels": 6,
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Shield_Generator_Outline.M_SC_Shield_Generator_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    },
+    "Bottom_Twin_Barrel_Turret": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Bottom_Twin_Barrel_Turret",
+      "class": "SkeletalMesh",
+      "bounds_max_error_cm": 0.0,
+      "dimensions_cm": [
+        2016.7759399414062,
+        4925.3359375,
+        1007.2587280273438
+      ],
+      "socket_count": 2,
+      "source_fbx": "Batch04\\Delivery\\v1\\FBX\\SKM_SC_Bottom_Twin_Barrel_Turret_Styled.fbx",
+      "source_fbx_sha256": "df1bf669f8918df12eef9c9d27c356dac40a124c268191f38f8725f1fc64c17d",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Bottom_Twin_Barrel_Turret_Toon.M_SC_Bottom_Twin_Barrel_Turret_Toon",
+      "body_triangles_FBX": 1684,
+      "material_slots": [
+        "ScifiDreadnoughtWeapons_001",
+        "M_SC_Bottom_Twin_Barrel_Turret_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "rigid_weight_one_vertices": {
+        "Root": 648,
+        "BarrelPitch": 310
+      },
+      "bones": [
+        {
+          "name": "Root",
+          "parent": "",
+          "local": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "BarrelPitch",
+          "parent": "Root",
+          "local": {
+            "location": [
+              0.0,
+              -220.0,
+              27.012
+            ],
+            "rotation": [
+              -0.7071067932881648,
+              -0.70710676908493,
+              4.329780207076431e-17,
+              4.329780355278502e-17
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Bottom_Twin_Barrel_Turret.SK_SC_Bottom_Twin_Barrel_Turret",
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Bottom_Twin_Barrel_Turret_Outline.M_SC_Bottom_Twin_Barrel_Turret_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    },
+    "High_Rate_Fire_Cannon": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_High_Rate_Fire_Cannon",
+      "class": "SkeletalMesh",
+      "bounds_max_error_cm": 0.0,
+      "dimensions_cm": [
+        1781.3233642578125,
+        3050.578125,
+        928.5632629394531
+      ],
+      "socket_count": 2,
+      "source_fbx": "Batch04\\Delivery\\v1\\FBX\\SKM_SC_High_Rate_Fire_Cannon_Styled.fbx",
+      "source_fbx_sha256": "f565192e0b559859c3bb83b00a349dc602a7df4f0ff99bed994dc7b539c8fd9d",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_High_Rate_Fire_Cannon_Toon.M_SC_High_Rate_Fire_Cannon_Toon",
+      "body_triangles_FBX": 1286,
+      "material_slots": [
+        "ScifiSpaceshipStandardWeapons",
+        "M_SC_High_Rate_Fire_Cannon_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "rigid_weight_one_vertices": {
+        "Root": 507,
+        "BarrelPitch": 258
+      },
+      "bones": [
+        {
+          "name": "Root",
+          "parent": "",
+          "local": {
+            "location": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0,
+              1.0
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        },
+        {
+          "name": "BarrelPitch",
+          "parent": "Root",
+          "local": {
+            "location": [
+              0.01,
+              540.0,
+              -80.739
+            ],
+            "rotation": [
+              0.0,
+              -0.0,
+              0.70710676908493,
+              0.7071067932881648
+            ],
+            "scale": [
+              1.0,
+              1.0,
+              1.0
+            ]
+          }
+        }
+      ],
+      "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_High_Rate_Fire_Cannon.SK_SC_High_Rate_Fire_Cannon",
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_High_Rate_Fire_Cannon_Outline.M_SC_High_Rate_Fire_Cannon_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    },
+    "Incendiary_Bomb_LaunchBay": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Incendiary_Bomb_LaunchBay",
+      "class": "StaticMesh",
+      "bounds_max_error_cm": 0.00018310546875,
+      "dimensions_cm": [
+        3103.3714599609375,
+        7603.63037109375,
+        1630.3579711914062
+      ],
+      "socket_count": 5,
+      "source_fbx": "Batch04\\Delivery\\v1\\FBX\\SM_SC_Incendiary_Bomb_LaunchBay_Styled.fbx",
+      "source_fbx_sha256": "7e61cd2870c6ccae8d5a0ddf80d99065bad8cb4efe855bbfbd4d3728b75af088",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Incendiary_Bomb_LaunchBay_Toon.M_SC_Incendiary_Bomb_LaunchBay_Toon",
+      "body_triangles_FBX": 3978,
+      "material_slots": [
+        "ScifiSpaceshipStandardWeapons",
+        "M_SC_Incendiary_Bomb_LaunchBay_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "triangles": 3978,
+      "uv_channels": 5,
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Incendiary_Bomb_LaunchBay_Outline.M_SC_Incendiary_Bomb_LaunchBay_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    },
+    "Missile_Bay": {
+      "mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Missile_Bay",
+      "class": "StaticMesh",
+      "bounds_max_error_cm": 6.103515625e-05,
+      "dimensions_cm": [
+        959.9385375976562,
+        1605.9688720703125,
+        229.09786987304688
+      ],
+      "socket_count": 0,
+      "source_fbx": "Batch04\\Delivery\\v1\\FBX\\SM_SC_Missile_Bay_Styled.fbx",
+      "source_fbx_sha256": "99cb93d63a11ae116912ecefdee356a5973bd3fff77ab25a7b9e999601661b7e",
+      "material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Missile_Bay_Toon.M_SC_Missile_Bay_Toon",
+      "body_triangles_FBX": 368,
+      "material_slots": [
+        "ScifiDreadnoughtWeapons_001",
+        "M_SC_Missile_Bay_Portable"
+      ],
+      "outline": "separate masked overlay; zero extra mesh vertices",
+      "triangles": 368,
+      "uv_channels": 6,
+      "passed": true,
+      "overlay_material": "/Game/GuLiStrike/Ship/StylizedComponents/Materials/M_SC_Missile_Bay_Outline.M_SC_Missile_Bay_Outline",
+      "texture_color_spaces": {
+        "BaseColor": "sRGB",
+        "ORM": "Masks/linear",
+        "LineMask": "Masks/linear"
+      }
+    }
+  },
+  "rollback": {
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Twin_Barrel_Turret": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SKM_SC_Twin_Barrel_Turret",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Twin_Barrel_Turret": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SK_SC_Twin_Barrel_Turret",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Twin_Barrel_Turret": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_Twin_Barrel_Turret",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_CIWS": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SKM_SC_CIWS",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_CIWS": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SK_SC_CIWS",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_CIWS": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_CIWS",
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Thor_MissilePod": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/SM_SC_Thor_MissilePod",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Thor_MissilePod": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_Thor_MissilePod",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Autocannon": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SKM_SC_Autocannon",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Autocannon": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SK_SC_Autocannon",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Autocannon": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_Autocannon",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Triple_Barrel_Turret": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SKM_SC_Triple_Barrel_Turret",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Triple_Barrel_Turret": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SK_SC_Triple_Barrel_Turret",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Triple_Barrel_Turret": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_Triple_Barrel_Turret",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Single_Barrel_Turret": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SKM_SC_Single_Barrel_Turret",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Single_Barrel_Turret": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SK_SC_Single_Barrel_Turret",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Single_Barrel_Turret": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_Single_Barrel_Turret",
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Drone_LaunchBay": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_Drone_LaunchBay",
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Electronic_JammingDevice": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_Electronic_JammingDevice",
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Shield_Generator": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/SM_SC_Shield_Generator",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Shield_Generator": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_Shield_Generator",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Bottom_Twin_Barrel_Turret": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SKM_SC_Bottom_Twin_Barrel_Turret",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Bottom_Twin_Barrel_Turret": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SK_SC_Bottom_Twin_Barrel_Turret",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Bottom_Twin_Barrel_Turret": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_Bottom_Twin_Barrel_Turret",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_High_Rate_Fire_Cannon": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SKM_SC_High_Rate_Fire_Cannon",
+    "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_High_Rate_Fire_Cannon": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/Rigged/SK_SC_High_Rate_Fire_Cannon",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_High_Rate_Fire_Cannon": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_High_Rate_Fire_Cannon",
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Incendiary_Bomb_LaunchBay": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/SM_SC_Incendiary_Bomb_LaunchBay",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Incendiary_Bomb_LaunchBay": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_Incendiary_Bomb_LaunchBay",
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Missile_Bay": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/Assets/Ships/ShipComponent/SM_SC_Missile_Bay",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Missile_Bay": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_Missile_Bay",
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Thor_MissilePod_Lv2": "/Game/GuLiStrike/Ship/StylizedComponents/Rollback_20260917/GuLiStrike/Ship/Parts/BP_SC_Thor_MissilePod_Lv2"
+  },
+  "blueprints": [
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Twin_Barrel_Turret",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Twin_Barrel_Turret",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_CIWS",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_CIWS",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Thor_MissilePod",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Thor_MissilePod",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Thor_MissilePod_Lv2",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Thor_MissilePod",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Autocannon",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Autocannon",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Triple_Barrel_Turret",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Triple_Barrel_Turret",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Single_Barrel_Turret",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Single_Barrel_Turret",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Drone_LaunchBay",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Electronic_JammingDevice",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Shield_Generator",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Shield_Generator",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Bottom_Twin_Barrel_Turret",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Bottom_Twin_Barrel_Turret",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_High_Rate_Fire_Cannon",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_High_Rate_Fire_Cannon",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Incendiary_Bomb_LaunchBay",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Incendiary_Bomb_LaunchBay",
+      "override_materials_cleared": false
+    },
+    {
+      "path": "/Game/GuLiStrike/Ship/Parts/BP_SC_Missile_Bay",
+      "formal_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Missile_Bay",
+      "override_materials_cleared": false
+    }
+  ],
+  "release_authorization": "release_authorization_20260917.json",
+  "rendering": "Three-tone unlit art light matching the existing Ship pipeline; independent masked backface overlay; body retains real cast shadows.",
+  "lighting_limit": "Surface tone uses exposed ArtLightDirection, as on the approved Ship hull, rather than automatic scene light/shadow sampling.",
+  "unique_meshes": 13,
+  "formal_component_blueprints": 14
+}

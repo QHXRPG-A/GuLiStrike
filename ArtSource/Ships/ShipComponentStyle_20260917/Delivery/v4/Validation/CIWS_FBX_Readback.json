@@ -1,0 +1,66 @@
+{
+  "key": "CIWS",
+  "fbx_file": "FBX\\SKM_SC_CIWS_Styled.fbx",
+  "fbx_sha256": "77a938ebc39c1068945ae24bc7ceea49193cee527a1518347207d645a0cc5909",
+  "mesh_count": 1,
+  "body_triangles": 1066,
+  "dimensions_m": [
+    3.2010421752929688,
+    6.845887184143066,
+    2.3504979610443115
+  ],
+  "max_dimension_error_m": 4.76837158203125e-07,
+  "max_geometry_error_m": 9.728145187182236e-07,
+  "origin_error_m": 0.0,
+  "uv_names": [
+    "SC_PaintUV",
+    "SC_LineUV",
+    "UVmap_0",
+    "UVmap_1",
+    "UVmap_2",
+    "LightMapUV"
+  ],
+  "uv_max_errors": {
+    "SC_PaintUV": 0.0,
+    "SC_LineUV": 0.0,
+    "UVmap_0": 0.0,
+    "UVmap_1": 0.0,
+    "UVmap_2": 0.0,
+    "LightMapUV": 0.0
+  },
+  "materials": [
+    "M_SC_CIWS_Portable"
+  ],
+  "bones": {
+    "Root": {
+      "parent": null,
+      "head": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "BarrelPitch": {
+      "parent": "Root",
+      "head": [
+        1.7484554248881068e-08,
+        -0.19999998807907104,
+        0.18817999958992004
+      ]
+    }
+  },
+  "max_bone_pivot_error_m": 2.297290260155202e-08,
+  "rigid_weights": "single bone, weight 1",
+  "socket_names": [
+    "Socket_1",
+    "Socket_2",
+    "Socket_3"
+  ],
+  "socket_metadata_matches_source": true,
+  "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+  "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+  "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+  "demo_animation_exported": false,
+  "UE_formal_validation": "not_run",
+  "passed": true
+}

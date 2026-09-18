@@ -250,7 +250,7 @@ void UGuLiUnitFeedbackSubsystem::ApplyWingmanFeedback(const FGuLiWingmanHandle& 
 			// A roster refresh can release a Pawn before the reliable fallback reaches this client.
 			if (AGuLiUnitWreck* Wreck = AllocateWreck(Pose.GetLocation()))
 			{
-				const FTransform MeshPose = FTransform(FRotator(0, 180, 0)) * Pose;
+				const FTransform MeshPose = FTransform(FRotator(0, 180, 0), FVector::ZeroVector, FVector(0.2f)) * Pose;
 				if (Wreck->InitializeFromStaticMesh(Presentation->GetFeedbackMesh(), MeshPose, WreckMaterial))
 					Wreck->StartFalling(Velocity, GetDefault<UGuLiUnitFeedbackSettings>()->FallingWreckMaximumLifetime);
 				else Wreck->Destroy();
@@ -260,7 +260,7 @@ void UGuLiUnitFeedbackSubsystem::ApplyWingmanFeedback(const FGuLiWingmanHandle& 
 		if (GetActorVisualBounds(Pawn, Bounds, Size))
 			QueueDestruction(Bounds.GetCenter(), Size, true);
 		else if (const UStaticMesh* Mesh = Presentation ? Presentation->GetFeedbackMesh() : nullptr)
-			QueueDestruction(Location, Mesh->GetBoundingBox().GetExtent().GetMax(), true);
+			QueueDestruction(Location, Mesh->GetBoundingBox().GetExtent().GetMax() * 0.2f, true);
 		else
 			QueueDestruction(Location, 0.0f, true);
 		if (Pawn) ClearActorFlash(Pawn);

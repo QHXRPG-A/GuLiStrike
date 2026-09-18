@@ -1,0 +1,244 @@
+{
+  "success": true,
+  "captured_at": "2026-09-17T08:41:29.976286+00:00",
+  "engine": "5.7.4-0+UE5",
+  "engine_path": "D:/UnrealEngine-5.7",
+  "art_revision": "1.0",
+  "coordinate_system": "UE centimeters; +Z up; original mesh axes retained",
+  "purpose": "Read-only static support-component capture for reference A; not production materials",
+  "parts": {
+    "Drone_LaunchBay": {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Drone_LaunchBay",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay.SM_SC_Drone_LaunchBay",
+      "original_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay.SM_SC_Drone_LaunchBay",
+      "blueprint_parent_class": "GuLiStrikeShipPartComponent",
+      "visual_type": "<GuLiStrikeShipPartVisualType.STATIC_MESH: 0>",
+      "mechanical_type": "static",
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "compatible_sockets": [
+        "wingman_bay_1",
+        "wingman_bay_2"
+      ],
+      "sockets": [],
+      "bones": [],
+      "muzzle_socket_name": null,
+      "weapon_properties": "not_applicable: support part",
+      "original_bounds_cm": [
+        [
+          -756.80078125,
+          -2454.997802734375,
+          -759.2640380859375
+        ],
+        [
+          798.50341796875,
+          2568.42138671875,
+          759.28515625
+        ]
+      ],
+      "original_geometry_sha256": "a80ae9c3a1b8c3686c21c80e3766735b3a54b1362d5ac88500afa8e06abb82a5",
+      "original_triangles": 1254,
+      "original_materials": [
+        {
+          "slot": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "part_mass": 10.0,
+      "exports": [
+        {
+          "path": "Source\\FBX_static_v1\\SM_SC_Drone_LaunchBay.fbx",
+          "size": 61744,
+          "sha256": "4d7204f4b52e028d4bc0038d4f0fff8bb35949acf949543a0ed7845b88f12dc0"
+        }
+      ]
+    },
+    "Electronic_JammingDevice": {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Electronic_JammingDevice",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice.SM_SC_Electronic_JammingDevice",
+      "original_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice.SM_SC_Electronic_JammingDevice",
+      "blueprint_parent_class": "GuLiStrikeShipPartComponent",
+      "visual_type": "<GuLiStrikeShipPartVisualType.STATIC_MESH: 0>",
+      "mechanical_type": "static",
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "compatible_sockets": [],
+      "sockets": [],
+      "bones": [],
+      "muzzle_socket_name": null,
+      "weapon_properties": "not_applicable: support part",
+      "original_bounds_cm": [
+        [
+          -645.2556762695312,
+          -294.6803894042969,
+          -272.75494384765625
+        ],
+        [
+          645.2534790039062,
+          446.2131652832031,
+          265.8388366699219
+        ]
+      ],
+      "original_geometry_sha256": "e70d2515560a7b75010ae22e5cefd90f81490d100f6402a77fc2a19ae722866f",
+      "original_triangles": 550,
+      "original_materials": [
+        {
+          "slot": "ScifiSpaceshipStandardWeapons",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-02/Materials/ScifiSpaceshipStandardWeapons.ScifiSpaceshipStandardWeapons"
+        }
+      ],
+      "part_mass": 10.0,
+      "exports": [
+        {
+          "path": "Source\\FBX_static_v1\\SM_SC_Electronic_JammingDevice.fbx",
+          "size": 43424,
+          "sha256": "1efd95e79ab5c21d2bbfe3b215068b7cad37841feb37f43dd6ba6dbd104018ea"
+        }
+      ]
+    },
+    "Shield_Generator": {
+      "blueprint": "/Game/GuLiStrike/Ship/Parts/BP_SC_Shield_Generator",
+      "visual_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Shield_Generator.SM_SC_Shield_Generator",
+      "original_mesh": "/Game/Assets/Ships/ShipComponent/SM_SC_Shield_Generator.SM_SC_Shield_Generator",
+      "blueprint_parent_class": "GuLiStrikeShipPartComponent",
+      "visual_type": "<GuLiStrikeShipPartVisualType.STATIC_MESH: 0>",
+      "mechanical_type": "static",
+      "part_relative_transform": {
+        "location": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "compatible_sockets": [],
+      "sockets": [],
+      "bones": [],
+      "muzzle_socket_name": null,
+      "weapon_properties": "not_applicable: support part",
+      "original_bounds_cm": [
+        [
+          -373.40826416015625,
+          -288.0914611816406,
+          -245.35289001464844
+        ],
+        [
+          373.4083251953125,
+          298.7111511230469,
+          752.5343627929688
+        ]
+      ],
+      "original_geometry_sha256": "7ed3ad9c5e996c18672c8e74c2d62f401bc923f7a2b125812924d194cdf7c2d8",
+      "original_triangles": 312,
+      "original_materials": [
+        {
+          "slot": "ScifiDreadnoughtWeapons_001",
+          "path": "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtWeapons.ScifiDreadnoughtWeapons"
+        }
+      ],
+      "part_mass": 10.0,
+      "exports": [
+        {
+          "path": "Source\\FBX_static_v1\\SM_SC_Shield_Generator.fbx",
+          "size": 34704,
+          "sha256": "6ea8cfcf3f05567b5af71daec6aebdf60a4f8e5a30bb45ed6defbfcc9ae6007f"
+        }
+      ]
+    }
+  },
+  "protected_before": {
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay": {
+      "size": 66318,
+      "mtime_ns": 1787558717551467700
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice": {
+      "size": 42481,
+      "mtime_ns": 1787558717559993400
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Shield_Generator": {
+      "size": 36878,
+      "mtime_ns": 1787558704312833400
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Drone_LaunchBay": {
+      "size": 17453,
+      "mtime_ns": 1789404795735319700
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Electronic_JammingDevice": {
+      "size": 17557,
+      "mtime_ns": 1789404795543119200
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Shield_Generator": {
+      "size": 17363,
+      "mtime_ns": 1789404795847126900
+    }
+  },
+  "protected_after": {
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Drone_LaunchBay": {
+      "size": 66318,
+      "mtime_ns": 1787558717551467700
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Electronic_JammingDevice": {
+      "size": 42481,
+      "mtime_ns": 1787558717559993400
+    },
+    "/Game/Assets/Ships/ShipComponent/SM_SC_Shield_Generator": {
+      "size": 36878,
+      "mtime_ns": 1787558704312833400
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Drone_LaunchBay": {
+      "size": 17453,
+      "mtime_ns": 1789404795735319700
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Electronic_JammingDevice": {
+      "size": 17557,
+      "mtime_ns": 1789404795543119200
+    },
+    "/Game/GuLiStrike/Ship/Parts/BP_SC_Shield_Generator": {
+      "size": 17363,
+      "mtime_ns": 1789404795847126900
+    }
+  },
+  "source_packages_unchanged": true
+}

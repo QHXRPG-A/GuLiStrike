@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="zh-CN">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>GuLiStrike · 松树林风格适配 v1</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#152027;color:#e4eae8;font:15px/1.7 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1540px;margin:auto;padding:35px 32px 70px}header{display:flex;align-items:flex-start;justify-content:space-between;gap:20px}.eyebrow{font-size:12px;color:#a5b3ad;letter-spacing:2px}h1{font-size:30px;line-height:1.3;margin:9px 0 12px;font-weight:600}p{max-width:1000px;margin:8px 0;color:#bfcac7}.badge{border:1px solid #718a6a;padding:7px 13px;border-radius:20px;color:#c4d7b4;font-size:13px;white-space:nowrap}.stats{display:flex;flex-wrap:wrap;gap:25px;margin:26px 0;padding:18px 0;border-block:1px solid #33454a}.stats strong{font-size:23px;display:block;color:#e5eddd}.stats span{font-size:12px;color:#a9b8b5}.controls{display:flex;gap:8px;flex-wrap:wrap;margin:20px 0 14px}button{background:#223239;color:#bfcac7;border:1px solid #45575c;border-radius:5px;padding:8px 13px;cursor:pointer;font:inherit}button:hover,button[aria-pressed=true]{background:#a9c18c;color:#152027;border-color:#a9c18c}.compare{position:relative;width:100%;aspect-ratio:16/9;background:#293333;overflow:hidden;border-radius:8px}.compare img{position:absolute;width:100%;height:100%;object-fit:contain}.after{clip-path:inset(0 0 0 50%)}.divider{position:absolute;left:50%;top:0;height:100%;width:2px;background:#fff8;pointer-events:none}.tag{position:absolute;top:14px;padding:4px 10px;background:#152027da;border-radius:4px;font-size:12px;pointer-events:none}.tag.before{left:14px}.tag.new{right:14px}.slider{width:100%;accent-color:#aac586;margin:15px 0 0}small{color:#a9b8b5}a{color:#c5dcaa}h2{font-size:20px;margin:32px 0 12px}.details{display:grid;grid-template-columns:1fr 1fr;gap:16px}.details img{width:100%;border-radius:6px}figure{margin:0}figcaption{color:#bdcbc7;font-size:13px;padding:7px 0}.notes{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-top:24px}.notes section{padding:20px;background:#1d2b32;border:1px solid #31444a;border-radius:7px}.notes h2{margin:0 0 10px}.notes p{font-size:14px}code{font-size:12px;overflow-wrap:anywhere;color:#b7c9bf}footer{border-top:1px solid #33454a;margin-top:32px;padding-top:16px;font-size:12px;color:#a5b3ad}@media(max-width:720px){main{padding:24px 14px}header{display:block}.badge{display:inline-block;margin-top:10px}.details,.notes{grid-template-columns:1fr}h1{font-size:24px}.stats{gap:20px}}
+</style>
+<main>
+<header><div><div class="eyebrow">GULISTRIKE / ENVIRONMENT ART / 2026.09.18</div><h1>松树林风格适配 · v1</h1><p>保留原网格与松树层叠剪影，先用三档材质、草坪疏密和底色验证方向。下图均为源码 UE5.7 实际截图，未做外部调色。</p></div><span class="badge">独立候选 · 待视觉审核</span></header>
+<div class="stats"><div><strong>3 款 / 5 棵</strong><span>活松树样板，未扩展到枯树 / 树桩</span></div><div><strong>2,293 → 1,247</strong><span>草簇实例数减少约 45.6%</span></div><div><strong>37 三角面</strong><span>单簇草保持原拓扑，不是减面交付</span></div><div><strong>3 档明暗</strong><span>ArtLightDirection，与单位相同路线</span></div></div>
+<div class="controls" id="views"></div>
+<div class="compare"><img id="before" alt="原资源，同机位"><img id="after" class="after" alt="风格适配v1，同机位"><div id="divider" class="divider"></div><span class="tag before">左：原资源 / 原试摆</span><span class="tag new">右：适配 v1</span></div>
+<input class="slider" id="slider" type="range" min="0" max="100" value="50" aria-label="原版与适配版对比位置">
+<small>拖动滑杆比较同机位；拉到最左显示完整适配版，最右显示完整原版。灯光、曝光、单位与岩石保持不变，草坪增加了局部地表底色。</small>
+<h2>近景观察</h2><div class="details"><figure><a href="Previews/10_tree_detail.png"><img src="Previews/10_tree_detail.png" alt="树冠层叠与树皮色块"></a><figcaption>松树：有限色阶 + 枝簇根部的大色块。原松针图集仍保留，尚未重绘成新图集。</figcaption></figure><figure><a href="Previews/11_grass_detail.png"><img src="Previews/11_grass_detail.png" alt="草坪与扫荡者近景"></a><figcaption>草坪：去黄、草簇缩短放宽、降低密度；仍是原草叶几何，未当作宽叶新模型交付。</figcaption></figure></div>
+<div class="notes"><section><h2>本轮落地</h2><p>三套植被母材质、五个实例、三棵松树网格副本和一个草副本；独立 FoliageType 与独立关卡。树皮暂不采样原颜色 / 法线细纹，改用干净的三档色块。</p><p>草使用根部到叶尖的高度权重，默认 4 秒周期、6 cm 峰值位移；有风强度归零开关。草关闭逐叶投影，地面使用局部草色承接覆盖；树、岩石与单位投影保留。</p></section><section><h2>边界与待审项</h2><p>固定美术光向不自动采样场景灯光和接收阴影，不能将此版当作完整动态光照方案。草色承接依赖当前展示地面，正式地形需另做对应材质。</p><p>尚未新增 LOD、重绘松针 / 树皮贴图、修改草拓扑、扩展其余七种树变体或做 GPU 性能验收；未替换正式地图。静态截图不代表动态风摆已经完成录像验收。</p></section></div>
+<h2>交付入口</h2><p><a href="README.md">制作说明</a> · <a href="scene_changes.json">场景改动读回</a> · <a href="saved_readback.json">保存重载读回</a> · <a href="gallery.json">截图记录</a></p>
+<code>/Game/GuLiStrike/Environment/ArtReview/PineStyleAdaptation_20260918/LVL_Pine_Style_v1</code>
+<footer>供应商原包、原对照关卡、Ship / 扫荡者 / 战争机器资产保持原样。技术检查、性能验证和用户视觉审核分别记录；本页不自动表示已通过审核。</footer>
+</main>
+<script>
+const views=[['03_overview','同场景总览'],['04_low_angle','低机位'],['05_top','俯视'],['06_commander_200m','指挥官 200m'],['07_commander_800m','800m'],['08_commander_1800m','1800m'],['09_units_detail','单位近景']];
+const before=document.getElementById('before'),after=document.getElementById('after'),controls=document.getElementById('views');
+function choose(name){before.src='../PineStyleComparison_20260917/Previews/'+name+'.png';after.src='Previews/'+name+'.png';for(const b of controls.children)b.setAttribute('aria-pressed',b.dataset.name===name?'true':'false')}
+for(const [name,label] of views){const b=document.createElement('button');b.textContent=label;b.dataset.name=name;b.onclick=()=>choose(name);controls.appendChild(b)}
+document.getElementById('slider').oninput=e=>{after.style.clipPath=`inset(0 0 0 ${e.target.value}%)`;document.getElementById('divider').style.left=e.target.value+'%'};
+choose('03_overview');
+</script>
+</html>

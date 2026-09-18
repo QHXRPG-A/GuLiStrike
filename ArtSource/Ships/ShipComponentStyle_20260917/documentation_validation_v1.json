@@ -1,0 +1,25 @@
+{
+  "checked_at": "2026-09-17T05:31:41.924224+00:00",
+  "commands": [
+    {
+      "command": [
+        "python",
+        ".agents/skills/gulistrike-progress/scripts/progress_docs.py",
+        "build"
+      ],
+      "exit_code": 0,
+      "stdout": "{\n  \"mode\": \"write\",\n  \"changed\": 5,\n  \"paths\": [\n    \"Progress/_Index/Current.md\",\n    \"Progress/_Index/Verification.md\",\n    \"Progress/_Index/ByArea.md\",\n    \"Progress/_Index/Archive.md\",\n    \"Progress/_Index/catalog.jsonl\"\n  ]\n}\n",
+      "stderr": ""
+    },
+    {
+      "command": [
+        "python",
+        ".agents/skills/gulistrike-progress/scripts/progress_docs.py",
+        "check"
+      ],
+      "exit_code": 0,
+      "stdout": "errors=0 warnings=12\nWARNING oversize Progress/Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md: 88.4KB，建议阈值 80KB\nWARNING large_task_list Progress/DevelopmentDocumentation/20260820-DIY飞船.md: 29 个任务项\nWARNING large_task_list Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md: 46 个任务项\nWARNING oversize Progress/DevelopmentDocumentation/20260827-Mass双端同步架构草案.md: 44.9KB，建议阈值 30KB\nWARNING large_task_list Progress/DevelopmentDocumentation/20260902-僚机体系与空中三维导航/06-任务风险与结果.md: 44 个任务项\nWARNING oversize Progress/DevelopmentDocumentation/20260904-僚机无规则护航盘旋技能重构.md: 39.0KB，建议阈值 30KB\nWARNING oversize Progress/Gameplay/战斗.md: 32.3KB，建议阈值 30KB\nWARNING oversize Progress/Gameplay/飞船.md: 61.2KB，建议阈值 30KB\nWARNING oversize Progress/RequirementDocument/20260826-5v5大战场玩法草案.md: 35.8KB，建议阈值 20KB\nWARNING oversize Progress/RequirementDocument/20260827-Mass双端同步架构草案.md: 24.7KB，建议阈值 20KB\nWARNING oversize Progress/RequirementDocument/20260902-僚机体系与空中三维导航.md: 27.9KB，建议阈值 20KB\nWARNING oversize Progress/RequirementDocument/20260915-客户端性能优化与压测问题记录.md: 27.8KB，建议阈值 20KB\n",
+      "stderr": ""
+    }
+  ]
+}

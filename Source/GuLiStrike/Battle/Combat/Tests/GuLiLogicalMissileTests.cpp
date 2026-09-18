@@ -84,6 +84,12 @@ namespace GuLiLogicalMissileTests
 		Request.MatchEpoch = 3u;
 		Request.MissileId = FGuid(0u, 0u, 10u, Id);
 		Request.ShotId = FGuid(0u, 0u, 11u, Id);
+		Request.RootEventId = Request.ShotId;
+		Request.WeaponBinding = FGuLiWeaponBindingKey::Wingman(Request.MatchEpoch,
+			EGuLiTeam::Red, Source.AuthorityId, TEXT("MissileFixture"), TEXT("BasicAttack"));
+		Request.SkillId = TEXT("MissileFixture");
+		Request.LoadoutRevision = 1u;
+		Request.ProfileRevision = 1u;
 		Request.Source = Source;
 		Request.Emitter = MakeEmitter(Source);
 		Request.Target = Target;

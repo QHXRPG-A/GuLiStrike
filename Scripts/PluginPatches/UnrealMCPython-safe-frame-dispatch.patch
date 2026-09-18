@@ -1,0 +1,143 @@
+--- a/Plugins/UnrealMCPython/Source/UnrealMCPython/Public/MCPythonTcpServer.h
++++ b/Plugins/UnrealMCPython/Source/UnrealMCPython/Public/MCPythonTcpServer.h
+@@ -9,6 +9,7 @@
+ 
+ class FTcpListener;
+ class FSocket;
++struct FMCPythonPendingCommands;
+ 
+ class FPythonLogCapture : public FOutputDevice
+ {
+@@ -46,11 +47,15 @@
+ 	TSharedPtr<FTcpListener> TcpListener;
+ 	FSocket* ListenSocket = nullptr;
+ 	bool bShouldRun = false;
++	bool bProcessingCommand = false;
++	FDelegateHandle BeginFrameHandle;
++	TSharedPtr<FMCPythonPendingCommands, ESPMode::ThreadSafe> PendingCommands;
+ 	FPythonLogCapture LogCapture;
+ 	TMap<FString, FNativeCommandHandler> NativeHandlers;
+ 
+ 	void RegisterNativeHandlers();
+ 	bool HandleIncomingConnection(FSocket* ClientSocket, const FIPv4Endpoint& ClientEndpoint);
++	void ProcessPendingCommand();
+ 	void ProcessDataOnGameThread(const FString& Data, FSocket* ClientSocket, const FIPv4Endpoint& ClientEndpoint);
+ 	void SendJsonResponse(TSharedPtr<FJsonObject> ResponseJson, FSocket* ClientSocket, bool bCloseSocket = true);
+ 
+--- a/Plugins/UnrealMCPython/Source/UnrealMCPython/Private/MCPythonTcpServer.cpp
++++ b/Plugins/UnrealMCPython/Source/UnrealMCPython/Private/MCPythonTcpServer.cpp
+@@ -15,8 +15,26 @@
+ #include "Misc/FileHelper.h"
+ #include "Misc/Paths.h"
+ #include "Misc/ScopeLock.h"
++#include "Misc/CoreDelegates.h"
++#include "Containers/Queue.h"
+ 
+ DEFINE_LOG_CATEGORY_STATIC(LogMCPython, Log, All);
++
++// Workers own this queue independently of the server, so a socket still waiting
++// for data cannot dereference the server after Stop().
++struct FMCPythonPendingCommands
++{
++    struct FCommand
++    {
++        FString Data;
++        FSocket* Socket = nullptr;
++        FIPv4Endpoint Endpoint;
++    };
++
++    FCriticalSection Lock;
++    bool bAccepting = true;
++    TQueue<FCommand, EQueueMode::Mpsc> Queue;
++};
+ 
+ namespace
+ {
+@@ -215,10 +233,15 @@
+ 
+ bool FMCPythonTcpServer::Start(const FString& InIP, uint16 InPort)
+ {
++    if (bShouldRun)
++        return true;
++
+     FIPv4Address IPAddr;
+     FIPv4Address::Parse(InIP, IPAddr);
+     FIPv4Endpoint Endpoint(IPAddr, InPort);
+ 
++    PendingCommands = MakeShared<FMCPythonPendingCommands, ESPMode::ThreadSafe>();
++    BeginFrameHandle = FCoreDelegates::OnBeginFrame.AddRaw(this, &FMCPythonTcpServer::ProcessPendingCommand);
+     TcpListener = MakeShared<FTcpListener>(Endpoint, FTimespan::FromMilliseconds(100), false);
+     TcpListener->OnConnectionAccepted().BindRaw(this, &FMCPythonTcpServer::HandleIncomingConnection);
+ 
+@@ -230,15 +253,50 @@
+ void FMCPythonTcpServer::Stop()
+ {
+ 	bShouldRun = false;
++	FCoreDelegates::OnBeginFrame.Remove(BeginFrameHandle);
++	BeginFrameHandle.Reset();
+ 	TcpListener.Reset();
++	if (PendingCommands)
++	{
++		FScopeLock Guard(&PendingCommands->Lock);
++		PendingCommands->bAccepting = false;
++		FMCPythonPendingCommands::FCommand Command;
++		while (PendingCommands->Queue.Dequeue(Command))
++		{
++			Command.Socket->Close();
++			ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->DestroySocket(Command.Socket);
++		}
++	}
++	PendingCommands.Reset();
+ 	UE_LOG(LogMCPython, Log, TEXT("TCP server stopped."));
+ }
+ 
++void FMCPythonTcpServer::ProcessPendingCommand()
++{
++    check(IsInGameThread());
++    if (bProcessingCommand || !PendingCommands)
++        return;
++
++    FMCPythonPendingCommands::FCommand Command;
++    {
++        FScopeLock Guard(&PendingCommands->Lock);
++        if (!PendingCommands->Queue.Dequeue(Command))
++            return;
++    }
++
++    // GameThread tasks may run inside UWorld::Tick while it waits for a tick
++    // group. Map loading/GC there can destroy a level still in the tick list.
++    // OnBeginFrame runs before engine/world ticking; execute one command here.
++    TGuardValue<bool> ProcessingGuard(bProcessingCommand, true);
++    ProcessDataOnGameThread(Command.Data, Command.Socket, Command.Endpoint);
++}
++
+ bool FMCPythonTcpServer::HandleIncomingConnection(FSocket* ClientSocket, const FIPv4Endpoint& ClientEndpoint)
+ {
+     UE_LOG(LogMCPython, Verbose, TEXT("Incoming connection from %s"), *ClientEndpoint.ToString());
+ 
+-    AsyncTask(ENamedThreads::AnyBackgroundThreadNormalTask, [this, ClientSocket, ClientEndpoint]() {
++    const TSharedPtr<FMCPythonPendingCommands, ESPMode::ThreadSafe> CommandQueue = PendingCommands;
++    AsyncTask(ENamedThreads::AnyBackgroundThreadNormalTask, [CommandQueue, ClientSocket, ClientEndpoint]() {
+         TArray<uint8> ReceivedData;
+ 
+         // Wait (bounded) for the client to actually send something. Liveness
+@@ -280,9 +338,16 @@
+ 
+         FString ReceivedString = FString(UTF8_TO_TCHAR(reinterpret_cast<const char*>(ReceivedData.GetData())));
+ 
+-        AsyncTask(ENamedThreads::GameThread, [this, ReceivedString, ClientSocket, ClientEndpoint]() {
+-            ProcessDataOnGameThread(ReceivedString, ClientSocket, ClientEndpoint);
+-        });
++        FScopeLock Guard(&CommandQueue->Lock);
++        if (CommandQueue->bAccepting)
++        {
++            CommandQueue->Queue.Enqueue({MoveTemp(ReceivedString), ClientSocket, ClientEndpoint});
++        }
++        else
++        {
++            ClientSocket->Close();
++            ISocketSubsystem::Get(PLATFORM_SOCKETSUBSYSTEM)->DestroySocket(ClientSocket);
++        }
+     });
+ 
+     return true;

@@ -65,7 +65,7 @@ protected:
 
 	/** Distance to teleport when dashing */
 	UPROPERTY(EditAnywhere, Category="Dash", meta = (ClampMin = 0, ClampMax = 10000, Units = "cm"))
-	float DashDistance = 600.0f;
+	float DashDistance = 120.0f;
 
 	/** Number of frozen afterimages placed between the blink start and end positions. */
 	UPROPERTY(EditAnywhere, Category="Dash|VFX", meta = (ClampMin = 0, ClampMax = 12))
@@ -85,7 +85,7 @@ protected:
 
 	/** Distance ahead of the character that the projectile will be spawned at */
 	UPROPERTY(EditAnywhere, Category="Projectile", meta = (ClampMin = 0, ClampMax = 1000, Units = "cm"))
-	float ProjectileOffset = 100.0f;
+	float ProjectileOffset = 20.0f;
 
 	/** Type of AoE attack actor to spawn */
 	UPROPERTY(EditAnywhere, Category="AoE")
@@ -97,7 +97,7 @@ protected:
 
 	/** Knockback impulse to apply to the character when they're damaged */
 	UPROPERTY(EditAnywhere, Category="Damage", meta = (ClampMin = 0, ClampMax = 1000, Units = "cm"))
-	float KnockbackStrength = 2500.0f;
+	float KnockbackStrength = 500.0f;
 
 	/** Time to disallow AoE attacks after one is performed */
 	UPROPERTY(EditAnywhere, Category="AoE", meta = (ClampMin = 0, ClampMax = 10, Units = "s"))

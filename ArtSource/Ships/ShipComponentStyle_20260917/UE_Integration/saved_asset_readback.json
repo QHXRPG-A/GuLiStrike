@@ -1,0 +1,609 @@
+{
+  "passed": true,
+  "parts": {
+    "Twin_Barrel_Turret": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "bones": [
+        "Root",
+        "BarrelPitch"
+      ],
+      "physics_asset": null,
+      "sockets": [
+        "Socket_1",
+        "Socket_2"
+      ],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    },
+    "CIWS": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "bones": [
+        "Root",
+        "BarrelPitch"
+      ],
+      "physics_asset": null,
+      "sockets": [
+        "Socket_1",
+        "Socket_2",
+        "Socket_3"
+      ],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    },
+    "Thor_MissilePod": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "max_original_geometry_error_cm": 0.000325838569703104,
+      "collision_preserved": true,
+      "collision": {
+        "trace_flag": "<CollisionTraceFlag.CTF_USE_COMPLEX_AS_SIMPLE: 3>",
+        "simple_shapes": {
+          "box_elems": 0,
+          "sphere_elems": 0,
+          "sphyl_elems": 0,
+          "convex_elems": 1,
+          "tapered_capsule_elems": 0
+        },
+        "aggregate_geometry_sha256": "a3cbbad84808a9cf365aed02142865d73a9133bacd885567a4943b2d354679db"
+      },
+      "sockets": [
+        "Socket_1",
+        "Socket_2",
+        "Socket_3",
+        "Socket_4",
+        "Socket_5"
+      ],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    },
+    "Autocannon": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "bones": [
+        "Root",
+        "BarrelPitch"
+      ],
+      "physics_asset": null,
+      "sockets": [
+        "Socket_1",
+        "Socket_2",
+        "Socket_3"
+      ],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    },
+    "Triple_Barrel_Turret": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "bones": [
+        "Root",
+        "BarrelPitch"
+      ],
+      "physics_asset": null,
+      "sockets": [
+        "Socket_1",
+        "Socket_2",
+        "Socket_3"
+      ],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    },
+    "Single_Barrel_Turret": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "bones": [
+        "Root",
+        "BarrelPitch"
+      ],
+      "physics_asset": null,
+      "sockets": [
+        "Socket_1"
+      ],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    },
+    "Drone_LaunchBay": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "max_original_geometry_error_cm": 0.000244140625,
+      "collision_preserved": true,
+      "collision": {
+        "trace_flag": "<CollisionTraceFlag.CTF_USE_COMPLEX_AS_SIMPLE: 3>",
+        "simple_shapes": {
+          "box_elems": 0,
+          "sphere_elems": 0,
+          "sphyl_elems": 0,
+          "convex_elems": 1,
+          "tapered_capsule_elems": 0
+        },
+        "aggregate_geometry_sha256": "2c42f88b17c3d4ba6cdbe44c1f68a1a86edac1e2a4cae2f3f56de77b1cd4d689"
+      },
+      "sockets": [],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    },
+    "Electronic_JammingDevice": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "max_original_geometry_error_cm": 5.7220458984375e-05,
+      "collision_preserved": true,
+      "collision": {
+        "trace_flag": "<CollisionTraceFlag.CTF_USE_COMPLEX_AS_SIMPLE: 3>",
+        "simple_shapes": {
+          "box_elems": 0,
+          "sphere_elems": 0,
+          "sphyl_elems": 0,
+          "convex_elems": 1,
+          "tapered_capsule_elems": 0
+        },
+        "aggregate_geometry_sha256": "7f099394e4d262a670bf4be4cdaf305cd7ed6b745cb1db4e1493b293ab0c0f0d"
+      },
+      "sockets": [],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    },
+    "Shield_Generator": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "max_original_geometry_error_cm": 3.4332275390625e-05,
+      "collision_preserved": true,
+      "collision": {
+        "trace_flag": "<CollisionTraceFlag.CTF_USE_COMPLEX_AS_SIMPLE: 3>",
+        "simple_shapes": {
+          "box_elems": 0,
+          "sphere_elems": 0,
+          "sphyl_elems": 0,
+          "convex_elems": 1,
+          "tapered_capsule_elems": 0
+        },
+        "aggregate_geometry_sha256": "4e4d95560ed4e862f4f4a1e857e72991c71b708b42834cacebfd5e819cb32011"
+      },
+      "sockets": [],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    },
+    "Bottom_Twin_Barrel_Turret": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "bones": [
+        "Root",
+        "BarrelPitch"
+      ],
+      "physics_asset": null,
+      "sockets": [
+        "Socket_1",
+        "Socket_2"
+      ],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    },
+    "High_Rate_Fire_Cannon": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "bones": [
+        "Root",
+        "BarrelPitch"
+      ],
+      "physics_asset": null,
+      "sockets": [
+        "Socket_1",
+        "Socket_2"
+      ],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    },
+    "Incendiary_Bomb_LaunchBay": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "max_original_geometry_error_cm": 0.00044013077093066273,
+      "collision_preserved": true,
+      "collision": {
+        "trace_flag": "<CollisionTraceFlag.CTF_USE_COMPLEX_AS_SIMPLE: 3>",
+        "simple_shapes": {
+          "box_elems": 0,
+          "sphere_elems": 0,
+          "sphyl_elems": 0,
+          "convex_elems": 1,
+          "tapered_capsule_elems": 0
+        },
+        "aggregate_geometry_sha256": "4f58ae9db1c391705d3da58765f689b07fc59e967e55bf055e572fcc37a780cb"
+      },
+      "sockets": [
+        "Socket_1",
+        "Socket_2",
+        "Socket_3",
+        "Socket_4",
+        "Socket_5"
+      ],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    },
+    "Missile_Bay": {
+      "material_slots": 2,
+      "all_materials_styled": true,
+      "outline_overlay_retained": true,
+      "source_hash_matches": true,
+      "lod_count": 1,
+      "max_original_geometry_error_cm": 8.631674575031098e-05,
+      "collision_preserved": true,
+      "collision": {
+        "trace_flag": "<CollisionTraceFlag.CTF_USE_COMPLEX_AS_SIMPLE: 3>",
+        "simple_shapes": {
+          "box_elems": 0,
+          "sphere_elems": 0,
+          "sphyl_elems": 0,
+          "convex_elems": 1,
+          "tapered_capsule_elems": 0
+        },
+        "aggregate_geometry_sha256": "bc4b52acfa4035dc94c17e0080da4c6e46d0c35a5d47c72815e36cb869d6b8f5"
+      },
+      "sockets": [],
+      "textures": [
+        {
+          "role": "BaseColor",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": true
+        },
+        {
+          "role": "ORM",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        },
+        {
+          "role": "LineMask",
+          "size": [
+            2048,
+            2048
+          ],
+          "sRGB": false
+        }
+      ],
+      "passed": true
+    }
+  },
+  "scope": "Saved assets only; exact formal paths, original sockets/rigs, original static positions/collision, texture configuration."
+}

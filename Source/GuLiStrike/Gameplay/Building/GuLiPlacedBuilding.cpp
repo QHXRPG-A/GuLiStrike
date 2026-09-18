@@ -32,7 +32,7 @@ AGuLiPlacedBuilding::AGuLiPlacedBuilding()
 	CollisionRoot = CreateDefaultSubobject<UBoxComponent>(TEXT("BuildingCollision"));
 	SetRootComponent(CollisionRoot);
 	CollisionRoot->SetMobility(EComponentMobility::Static);
-	CollisionRoot->SetBoxExtent(FVector(100.0f));
+	CollisionRoot->SetBoxExtent(FVector(20.0f));
 	CollisionRoot->SetCollisionProfileName(UCollisionProfile::BlockAll_ProfileName);
 	CollisionRoot->SetGenerateOverlapEvents(false);
 	// Export the real footprint. NavModifier ignores collision components whose

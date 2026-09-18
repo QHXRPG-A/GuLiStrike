@@ -16,9 +16,9 @@ inline constexpr uint8 GULI_WINGMAN_ATOMIC_BATCH_MAX_FRAGMENTS = 8u;
 inline constexpr uint32 GULI_WINGMAN_ATOMIC_BATCH_MAX_BYTES = 64u * 1024u;
 inline constexpr double GULI_WINGMAN_ATOMIC_BATCH_ASSEMBLY_TIMEOUT_SECONDS = 0.5;
 /** Shared hard envelope used by the owner guard and the server validator. */
-inline constexpr double GULI_WINGMAN_MAXIMUM_CARRIER_DISTANCE_CENTIMETERS = 250000.0;
+inline constexpr double GULI_WINGMAN_MAXIMUM_CARRIER_DISTANCE_CENTIMETERS = 50000.0;
 /** Keeps quantization and carrier motion away from the authoritative hard edge. */
-inline constexpr double GULI_WINGMAN_OWNER_CARRIER_DISTANCE_RESERVE_CENTIMETERS = 10000.0;
+inline constexpr double GULI_WINGMAN_OWNER_CARRIER_DISTANCE_RESERVE_CENTIMETERS = 2000.0;
 
 namespace GuLiWingmanProtocol
 {

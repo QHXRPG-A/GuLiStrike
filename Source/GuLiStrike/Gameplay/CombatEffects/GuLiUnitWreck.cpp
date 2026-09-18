@@ -7,13 +7,16 @@
 #include "Components/SkeletalMeshComponent.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
+#include "Engine/World.h"
 #include "Materials/MaterialInterface.h"
 
 AGuLiUnitWreck::AGuLiUnitWreck()
 {
 	bReplicates = false;
 	SetReplicateMovement(false);
-	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bCanEverTick = true;
+	PrimaryActorTick.bStartWithTickEnabled = false;
+	PrimaryActorTick.TickGroup = TG_PrePhysics;
 	SetCanBeDamaged(false);
 	PhysicsBody = CreateDefaultSubobject<UBoxComponent>(TEXT("WreckPhysics"));
 	SetRootComponent(PhysicsBody);
@@ -115,12 +118,23 @@ void AGuLiUnitWreck::StartFalling(const FVector& InitialVelocity, float MaximumL
 	// The flight model has no authored collision. A bounds-sized body owns Chaos simulation.
 	// Only scenery blocks scrap: no collision, navigation or damage interaction with living units.
 	PhysicsBody->SetCollisionEnabled(ECollisionEnabled::PhysicsOnly);
-	PhysicsBody->SetEnableGravity(true);
+	// This object's acceleration follows the 0.2 gameplay scale; world gravity is untouched.
+	PhysicsBody->SetEnableGravity(false);
 	PhysicsBody->SetSimulatePhysics(true);
+	SetActorTickEnabled(true);
 	PhysicsBody->SetPhysicsLinearVelocity(InitialVelocity);
 	PhysicsBody->SetPhysicsAngularVelocityInDegrees(GetActorQuat().RotateVector(FVector(18.0f, 9.0f, 0.0f)));
 	PhysicsBody->WakeAllRigidBodies();
 	SetLifeSpan(FMath::Max(1.0f, MaximumLifetime)); // Missing terrain / falling beyond the map cannot leak actors.
+}
+
+void AGuLiUnitWreck::Tick(float DeltaSeconds)
+{
+	Super::Tick(DeltaSeconds);
+	if (GetWorld() && PhysicsBody->IsSimulatingPhysics())
+	{
+		PhysicsBody->AddForce(FVector(0.0, 0.0, GetWorld()->GetGravityZ() * 0.2), NAME_None, true);
+	}
 }
 
 void AGuLiUnitWreck::HandleImpact(UPrimitiveComponent* HitComponent, AActor* OtherActor,

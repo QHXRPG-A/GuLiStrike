@@ -35,9 +35,9 @@ inline constexpr uint8 GULI_POSE_DISPATCH_PHASE_COUNT = 3u;
 inline constexpr uint32 GULI_MAX_POSE_CHUNKS_PER_FRAME = 512u;
 
 /** Network-only units. Authority simulation retains full centimeter precision. */
-inline constexpr double GULI_POSE_XY_STEP_CENTIMETERS = 100.0;
-inline constexpr double GULI_POSE_Z_STEP_CENTIMETERS = 10.0;
-inline constexpr double GULI_POSE_VELOCITY_STEP_CENTIMETERS_PER_SECOND = 100.0;
+inline constexpr double GULI_POSE_XY_STEP_CENTIMETERS = 20.0;
+inline constexpr double GULI_POSE_Z_STEP_CENTIMETERS = 2.0;
+inline constexpr double GULI_POSE_VELOCITY_STEP_CENTIMETERS_PER_SECOND = 20.0;
 
 /** 表现瞬移标志；生命等玩法事实仍以离散状态复制为准。 */
 inline constexpr uint8 GULI_SOLDIER_POSE_FLAG_TELEPORT = 1u << 0u;
@@ -82,7 +82,9 @@ enum class EGuLiCommandAckResult : uint8
 	RateLimited,
 	NoSelection,
 	InvalidTarget,
-	PathFailed
+	PathFailed,
+	Cancelled,
+	TimedOut
 };
 
 /** 区分选兵与移动两个独立请求序号空间；路由 ACK 时必须同时比较种类和 ID。 */
@@ -567,15 +569,15 @@ struct GULISTRIKE_API FGuLiQuantizedSoldierPose
 {
 	FGuLiSoldierId SoldierId;
 
-	// Stable world coordinates: XY in meters, Z in decimeters.
-	int32 WorldXMeters = 0;
-	int32 WorldYMeters = 0;
-	int32 WorldZDecimeters = 0;
+	// Protocol 13: XY units are 20 cm; Z units are 2 cm. Absolute world origin is unchanged.
+	int32 WorldXUnits = 0;
+	int32 WorldYUnits = 0;
+	int32 WorldZUnits = 0;
 
-	// Velocity components in meters/second.
-	int16 VelocityXMetersPerSecond = 0;
-	int16 VelocityYMetersPerSecond = 0;
-	int16 VelocityZMetersPerSecond = 0;
+	// Protocol 13: one velocity unit is 20 cm/s; the authority retains full cm precision.
+	int16 VelocityXUnits = 0;
+	int16 VelocityYUnits = 0;
+	int16 VelocityZUnits = 0;
 
 	// 256 directions; interpolation and residuals take the shortest angular arc.
 	uint8 FacingYaw = 0u;

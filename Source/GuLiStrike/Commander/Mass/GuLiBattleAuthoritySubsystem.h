@@ -301,6 +301,8 @@ public:
 		TArray<FGuLiActiveSkillUnitResult>& OutResults);
 	bool QueryUnitSkillRuntime(FGuLiSoldierId SoldierId, const UGuLiCommanderSkillCatalog& Catalog, FGuLiActiveSkillRuntime& OutRuntime) const;
 	void CollectExternalUnitsInDisc(EGuLiTeam Team, FVector Center, float Radius, TArray<FGuLiMassExternalUnit>& Out) const;
+	/** Physical presence across all teams, including externally locked units, for placement clearance. */
+	void CollectExternalUnitsForClearance(const FBox& Bounds, TArray<FGuLiMassExternalUnit>& Out) const;
 	bool CanApplyExternalUnitState(TConstArrayView<FGuLiMassExternalUnit> Participants, FGuid Token) const;
 	bool ApplyExternalUnitState(TConstArrayView<FGuLiMassExternalUnit> Soldiers, FGuid CastId,
 		bool bPhased, bool bLocked, bool bRelocate);
@@ -460,19 +462,19 @@ private:
 
 	/** 出生方阵之间的间距（cm），仅用于初始部署，不表示移动指令中的编队间距。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Formation", meta = (ClampMin = "1000.0", Units = "cm"))
-	float GroupSpacingCentimeters = 15000.0f;
+	float GroupSpacingCentimeters = 3000.0f;
 
 	/** 方阵成员槽位间距（cm），用于出生布局与行进阶段的动态列宽、槽位计算。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Formation", meta = (ClampMin = "100.0", Units = "cm"))
-	float MemberSpacingCentimeters = 1800.0f;
+	float MemberSpacingCentimeters = 360.0f;
 
 	/** 士兵导航/分离半径（cm），参与路径游标与重叠分离；需与 CommanderSoldier 导航 Agent 匹配。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Formation", meta = (ClampMin = "1.0", Units = "cm"))
-	float MemberAgentRadiusCentimeters = 750.0f;
+	float MemberAgentRadiusCentimeters = 150.0f;
 
 	/** 当前已提交的移动速度上限（cm/s）；调参时延迟到固定步边界更新。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Movement", meta = (ClampMin = "1.0", Units = "cm/s"))
-	float MovementSpeedCentimetersPerSecond = 3600.0f;
+	float MovementSpeedCentimetersPerSecond = 720.0f;
 
 	/** 士兵与编队引导方向的最大转向速率（度/秒），按固定步时长限制本步转角。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Movement", meta = (ClampMin = "1.0", Units = "deg/s"))
@@ -488,7 +490,7 @@ private:
 
 	/** 共享路径采样走廊的半宽（cm）；走廊外格子跳过 NavMesh 查询。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|FlowField", meta = (ClampMin = "100.0", Units = "cm"))
-	float FlowFieldCorridorHalfWidthCentimeters = 15000.0f;
+	float FlowFieldCorridorHalfWidthCentimeters = 3000.0f;
 
 	/** 死亡后本地残骸保留的模拟秒数；到期隐藏 Transform，但保留 Entity 与士兵身份。 */
 	UPROPERTY(Config, EditAnywhere, Category = "Commander|Authority|Life", meta = (ClampMin = "0.0", Units = "s"))

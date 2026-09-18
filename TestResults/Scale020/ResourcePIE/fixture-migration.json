@@ -1,0 +1,192 @@
+{
+  "version": 1,
+  "source": "D:\\UE5.7\\test1\\Scripts\\validate_resource_world_pie.py",
+  "sha256": "dd97c5f62b504efcc2976e95d22441aaef98e5952dd997d3f0bdff74215548a8",
+  "changes": [
+    {
+      "before": "unreal.MCPythonHelper.submit_result",
+      "target": "unreal.log",
+      "occurrences": 2
+    },
+    {
+      "before": "TestResults/WORK-20260913-003/ResourcePIE/dual-client.json",
+      "target": "TestResults/Scale020/ResourcePIE/dual-client.json",
+      "occurrences": 1
+    },
+    {
+      "before": "2714f7bb7668d56638f0d7a4d752e194a9657996",
+      "target": "5710cc3994205e33848d7d4051a80c2d6cd3b458",
+      "occurrences": 1
+    },
+    {
+      "before": "row[\"factory_count\"] == 2",
+      "target": "row[\"factory_count\"] == 4",
+      "occurrences": 1
+    },
+    {
+      "before": "self.ready_at = time.monotonic()",
+      "target": "self.ready_at = unreal.GameplayStatics.get_time_seconds(_server_world())",
+      "occurrences": 1
+    },
+    {
+      "before": "elapsed = time.monotonic() - self.ready_at",
+      "target": "elapsed = unreal.GameplayStatics.get_time_seconds(_server_world()) - self.ready_at",
+      "occurrences": 1
+    },
+    {
+      "before": "self.factory = _find_by_team(_actors(self.server, FACTORY), self.miner.get_team())",
+      "target": "self.factory = unreal.GuLiScaleMigrationLibrary.read_mining_factory(self.miner)",
+      "occurrences": 1
+    },
+    {
+      "before": "remote_factory=_find_by_team(_actors(world,FACTORY),self.miner.get_team())",
+      "target": "remote_factory=_peer_factory(world,self.factory)",
+      "occurrences": 1
+    },
+    {
+      "before": "row.update(state=_enum(miner.get_task_state()),cargo=",
+      "target": "row.update(mode=_enum(miner.get_control_mode()),state=_enum(miner.get_task_state()),cargo=",
+      "occurrences": 1
+    },
+    {
+      "before": "factories=[_find_by_team(_actors(w,FACTORY),unreal.GuLiTeam.RED) for w in _worlds()]",
+      "target": "factories=[_peer_factory(w,self.factory) for w in _worlds()]",
+      "occurrences": 2
+    },
+    {
+      "before": "self.parent.report[\"mining_cycle\"] = {\"cluster_id\":self.cluster_id,",
+      "target": "self.parent.report[\"success\"] = False\n        self.parent.report[\"mining_cycle\"] = {\"factory\":self.factory.get_name(),\"cluster_id\":self.cluster_id,",
+      "occurrences": 1
+    },
+    {
+      "before": "\"door\":float(factory.get_door_alpha()),\"door_target\":bool(factory.should_door_be_open()),\"beams\":[]}",
+      "target": "\"door\":float(factory.get_door_alpha()),\"door_target\":bool(factory.should_door_be_open()),\"beams\":[],\n            \"door_collision\":str(next(c for child in factory.get_components_by_class(unreal.ChildActorComponent)\n                if child.child_actor for c in child.child_actor.get_components_by_class(unreal.SkeletalMeshComponent)\n                if c.get_name()==\"Door\").get_collision_enabled())}",
+      "occurrences": 1
+    },
+    {
+      "before": "laser_width_five_times",
+      "target": "laser_width_scaled_020",
+      "occurrences": 2
+    },
+    {
+      "before": "outside_speed_tripled",
+      "target": "outside_speed_scaled_020",
+      "occurrences": 2
+    },
+    {
+      "before": "inside_speed_tripled",
+      "target": "inside_speed_scaled_020",
+      "occurrences": 2
+    },
+    {
+      "before": "miner_range_is_5400_cm",
+      "target": "miner_range_is_1080_cm",
+      "occurrences": 2
+    },
+    {
+      "before": "[\"laser_asset_width_cm\"]-25.0",
+      "target": "[\"laser_asset_width_cm\"]-5.0",
+      "occurrences": 1
+    },
+    {
+      "before": "max_walk_speed - 4500",
+      "target": "max_walk_speed - 900",
+      "occurrences": 1
+    },
+    {
+      "before": "\"factory_maneuver_speed_centimeters_per_second\") - 1500",
+      "target": "\"factory_maneuver_speed_centimeters_per_second\") - 300",
+      "occurrences": 1
+    },
+    {
+      "before": "unreal.Vector(6500,600,0)",
+      "target": "unreal.Vector(1300,120,0)",
+      "occurrences": 1
+    },
+    {
+      "before": "get_mining_range() - 5400",
+      "target": "get_mining_range() - 1080",
+      "occurrences": 1
+    },
+    {
+      "before": "lo,hi = 0.0,10000.0",
+      "target": "lo,hi = 0.0,2000.0",
+      "occurrences": 1
+    },
+    {
+      "before": "span(mid)<5400",
+      "target": "span(mid)<1080",
+      "occurrences": 1
+    },
+    {
+      "before": "unreal.Vector(6000,-6500,4000)",
+      "target": "unreal.Vector(1200,-1300,800)",
+      "occurrences": 1
+    },
+    {
+      "before": "unreal.Vector(-800,0,700)",
+      "target": "unreal.Vector(-160,0,140)",
+      "occurrences": 1
+    },
+    {
+      "before": "unreal.Vector(8000,2500,1900)",
+      "target": "unreal.Vector(1600,500,380)",
+      "occurrences": 1
+    },
+    {
+      "before": "\"outputs/unit-data-mining\"",
+      "target": "\"TestResults/Scale020/ResourcePIE\"",
+      "occurrences": 1
+    },
+    {
+      "before": "[\"scale\"][0]*591.6596-1800",
+      "target": "[\"scale\"][0]*591.6596-360",
+      "occurrences": 1
+    },
+    {
+      "before": "b[\"length\"]<=5400.1",
+      "target": "b[\"length\"]<=1080.1",
+      "occurrences": 1
+    },
+    {
+      "before": "row[\"local\"][0]+900<1100 and abs(row[\"local\"][1])+625<1800",
+      "target": "row[\"local\"][0]+180<220 and abs(row[\"local\"][1])+125<360",
+      "occurrences": 1
+    },
+    {
+      "before": "unreal.Vector(6500,-600,0)",
+      "target": "unreal.Vector(1300,-120,0)",
+      "occurrences": 1
+    },
+    {
+      "before": "abs(row[\"local\"][1]+600)<5",
+      "target": "abs(row[\"local\"][1]+120)<1",
+      "occurrences": 2
+    },
+    {
+      "before": "row[\"local\"][0]>3990",
+      "target": "row[\"local\"][0]>798",
+      "occurrences": 1
+    },
+    {
+      "before": "self.end_target)<1600",
+      "target": "self.end_target)<320",
+      "occurrences": 2
+    },
+    {
+      "before": "self.checks[\"latest_command_destination\"] = _length(self.miner.get_actor_location()-self.end_target)<320",
+      "target": "self.checks[\"latest_command_destination\"] = _length(self.miner.get_actor_location()-self.end_target)<320 and (state==\"PLAYER_MOVING\" or _enum(self.miner.get_control_mode())==\"GRACE\")\n                self.parent.report[\"mining_cycle\"][\"deferred_destination\"] = {\"time\":now,\"state\":state,\"mode\":_enum(self.miner.get_control_mode()),\"distance_cm\":_length(self.miner.get_actor_location()-self.end_target)}",
+      "occurrences": 1
+    },
+    {
+      "before": "unreal.Vector(4000,-600,650)",
+      "target": "unreal.Vector(800,-120,130)",
+      "occurrences": 1
+    },
+    {
+      "before": "self.multi[1].get_actor_location())<20",
+      "target": "self.multi[1].get_actor_location())<4",
+      "occurrences": 1
+    }
+  ]
+}

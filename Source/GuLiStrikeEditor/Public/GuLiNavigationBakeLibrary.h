@@ -37,6 +37,10 @@ class GULISTRIKEEDITOR_API UGuLiNavigationBakeLibrary : public UBlueprintFunctio
 {
 	GENERATED_BODY()
 public:
+	/** Explicit one-time scale020 configuration migration. Does not build or save. */
+	UFUNCTION(BlueprintCallable, Category="GuLi|Navigation", meta=(WorldContext="WorldContextObject"))
+	static FGuLiNavigationBakeResult MigrateObjectScale020(UObject* WorldContextObject);
+
 	/** Check before duplicating the PIE world. Saves rebuilt map tiles and flight assets together. */
 	UFUNCTION(BlueprintCallable, Category="GuLi|Navigation", meta=(WorldContext="WorldContextObject"))
 	static FGuLiNavigationBakeResult PrepareWorldNavigation(UObject* WorldContextObject, bool bSavePackages = true);

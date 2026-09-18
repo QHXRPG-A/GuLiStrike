@@ -1,0 +1,175 @@
+#include "GuLiScaleMigrationLibrary.h"
+
+#include "EdGraph/EdGraphPin.h"
+#include "NiagaraEmitter.h"
+#include "NiagaraEmitterHandle.h"
+#include "NiagaraGraph.h"
+#include "NiagaraNodeFunctionCall.h"
+#include "NiagaraScript.h"
+#include "NiagaraScriptSource.h"
+#include "NiagaraSystem.h"
+#include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
+#include "Gameplay/Resources/GuLiMiningVehicleManager.h"
+#include "Gameplay/Resources/GuLiResourceFactoryActor.h"
+#include "Components/ChildActorComponent.h"
+#include "Engine/World.h"
+#include "Engine/OverlapResult.h"
+#include "GameFramework/CharacterMovementComponent.h"
+#include "UObject/UnrealType.h"
+
+AGuLiResourceFactoryActor* UGuLiScaleMigrationLibrary::ReadMiningFactory(AGuLiMiningVehiclePawn* Miner)
+{
+	if (!IsValid(Miner)) return nullptr;
+	const FObjectPropertyBase* Property = FindFProperty<FObjectPropertyBase>(Miner->GetClass(), TEXT("Factory"));
+	return Property ? Cast<AGuLiResourceFactoryActor>(Property->GetObjectPropertyValue_InContainer(Miner)) : nullptr;
+}
+
+TMap<FString, FString> UGuLiScaleMigrationLibrary::InspectMiningDock(
+	AGuLiMiningVehiclePawn* Miner, AGuLiResourceFactoryActor* Factory, FVector LocalGoal, float ProbeStartHeight)
+{
+	TMap<FString, FString> Result;
+	if (!IsValid(Miner) || !IsValid(Factory) || Miner->GetWorld() != Factory->GetWorld()) return Result;
+	UWorld* World = Miner->GetWorld();
+	const FBox Bounds = Miner->GetTravelBounds();
+	Result.Add(TEXT("bounds"), Bounds.ToString());
+	Result.Add(TEXT("factory"), Factory->GetPathName());
+	Result.Add(TEXT("factory_transform"), Factory->GetActorTransform().ToString());
+	Result.Add(TEXT("current_transform"), Miner->GetActorTransform().ToString());
+	Result.Add(TEXT("probe_start_height"), LexToString(ProbeStartHeight));
+	Result.Add(TEXT("current_local"), Factory->GetActorTransform().InverseTransformPosition(Miner->GetActorLocation()).ToString());
+	const FVector Goal = Factory->GetActorTransform().TransformPosition(LocalGoal);
+	const FVector Next = FMath::VInterpConstantTo(Miner->GetActorLocation(), FVector(Goal.X, Goal.Y, Miner->GetActorLocation().Z), 1.f / 60.f, 300.f);
+	const float Yaw = FMath::FixedTurn(Miner->GetActorRotation().Yaw, Factory->GetActorRotation().Yaw + 180.f, 90.f / 60.f);
+	FCollisionQueryParams Query(SCENE_QUERY_STAT(GuLiScaleDockReadback), false, Miner);
+	Query.AddIgnoredActor(Factory);
+	for (auto* Child : TInlineComponentArray<UChildActorComponent*>(Miner)) Query.AddIgnoredActor(Child->GetChildActor());
+	World->GetSubsystem<UGuLiMiningVehicleManager>()->IgnoreVehicles(Query);
+	const auto HitText = [](const FHitResult& Hit)
+	{
+		return FString::Printf(TEXT("component=%s blocking=%d penetrating=%d normal=%s location=%s impact=%s start=%s end=%s time=%.9f distance=%.6f face=%d depth=%f"),
+			*GetPathNameSafe(Hit.GetComponent()), Hit.bBlockingHit, Hit.bStartPenetrating,
+			*Hit.ImpactNormal.ToString(), *Hit.Location.ToString(), *Hit.ImpactPoint.ToString(),
+			*Hit.TraceStart.ToString(), *Hit.TraceEnd.ToString(), Hit.Time, Hit.Distance, Hit.FaceIndex, Hit.PenetrationDepth);
+	};
+	const auto GroundAt = [&](const FVector& Point, FHitResult& Hit)
+	{
+		const double Z = Factory->GetActorLocation().Z;
+		return World->LineTraceSingleByChannel(Hit, FVector(Point.X, Point.Y, Z + ProbeStartHeight),
+			FVector(Point.X, Point.Y, Z - 5000), ECC_Visibility, Query);
+	};
+	const FVector Center = Bounds.GetCenter(), Extent = Bounds.GetExtent();
+	const FQuat Flat = FRotator(0, Yaw, 0).Quaternion();
+	float Heights[3][3];
+	for (int32 X = 0; X < 3; ++X) for (int32 Y = 0; Y < 3; ++Y)
+	{
+		FHitResult Hit;
+		if (!GroundAt(Next + Flat.RotateVector(FVector(Center.X + (X - 1) * Extent.X, Center.Y + (Y - 1) * Extent.Y, 0)), Hit))
+		{ Result.Add(TEXT("failure"), TEXT("Ground sample missing")); return Result; }
+		Heights[X][Y] = Hit.ImpactPoint.Z;
+		Result.Add(FString::Printf(TEXT("ground_%d_%d"), X, Y), HitText(Hit));
+	}
+	const FVector Up = Flat.RotateVector(FVector(-(Heights[2][1] - Heights[0][1]) / (2 * Extent.X),
+		-(Heights[1][2] - Heights[1][0]) / (2 * Extent.Y), 1).GetSafeNormal());
+	const FQuat Rotation = FRotationMatrix::MakeFromZX(Up, Flat.GetAxisX()).ToQuat();
+	Result.Add(TEXT("sample_rotation"), Rotation.Rotator().ToString());
+	float Height = -TNumericLimits<float>::Max();
+	for (int32 X = 0; X < 3; ++X) for (int32 Y = 0; Y < 3; ++Y)
+	{
+		const FVector Offset = Rotation.RotateVector(FVector(Center.X + (X - 1) * Extent.X,
+			Center.Y + (Y - 1) * Extent.Y, Bounds.Min.Z));
+		FHitResult Hit;
+		if (!GroundAt(Next + Offset, Hit)) { Result.Add(TEXT("failure"), TEXT("Tilted ground sample missing")); return Result; }
+		Result.Add(FString::Printf(TEXT("tilted_ground_%d_%d"), X, Y), HitText(Hit));
+		Result.Add(FString::Printf(TEXT("tilted_offset_%d_%d"), X, Y), Offset.ToString());
+		Height = FMath::Max(Height, static_cast<float>(Hit.ImpactPoint.Z - Offset.Z));
+	}
+	FTransform Pose(Rotation, FVector(Next.X, Next.Y, Height + .6f));
+	Result.Add(TEXT("pose_before_support"), Pose.ToString());
+	const FVector Sole = Pose.TransformPosition(FVector(Center.X, Center.Y, Bounds.Min.Z + .2f));
+	FHitResult Support;
+	const bool bSupport = World->SweepSingleByChannel(Support, Sole + FVector(0,0,10), Sole - FVector(0,0,10),
+		Rotation, ECC_Visibility, FCollisionShape::MakeBox(FVector(Extent.X, Extent.Y, .2)), Query);
+	Result.Add(TEXT("support"), HitText(Support));
+	if (!bSupport || Support.bStartPenetrating || Support.ImpactNormal.Z < Miner->GetCharacterMovement()->GetWalkableFloorZ())
+	{ Result.Add(TEXT("failure"), TEXT("Support sweep rejected")); return Result; }
+	Pose.AddToTranslation(FVector(0,0,Support.Location.Z - Sole.Z + .6));
+	FHitResult Body;
+	const bool bBlocked = World->SweepSingleByChannel(Body, Miner->GetActorTransform().TransformPosition(Center),
+		Pose.TransformPosition(Center), Rotation, ECC_Pawn, FCollisionShape::MakeBox(Extent), Query);
+	Result.Add(TEXT("body_sweep"), HitText(Body));
+	Result.Add(TEXT("body_sweep_blocked"), LexToString(bBlocked));
+	TArray<FOverlapResult> Overlaps;
+	World->OverlapMultiByChannel(Overlaps, Pose.TransformPosition(Center), Rotation, ECC_Pawn, FCollisionShape::MakeBox(Extent), Query);
+	for (int32 Index = 0; Index < Overlaps.Num(); ++Index)
+		Result.Add(FString::Printf(TEXT("body_overlap_%d"), Index), FString::Printf(TEXT("%s blocking=%d"),
+			*GetPathNameSafe(Overlaps[Index].GetComponent()), Overlaps[Index].bBlockingHit));
+	Result.Add(TEXT("proposed_pose"), Pose.ToString());
+	return Result;
+}
+
+namespace
+{
+	UNiagaraSystem* MiningSystem()
+	{
+		return LoadObject<UNiagaraSystem>(nullptr,
+			TEXT("/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green"));
+	}
+}
+
+TMap<FString, FString> UGuLiScaleMigrationLibrary::ReadMiningSizeSwitches()
+{
+	TMap<FString, FString> Result;
+	UNiagaraSystem* System = MiningSystem();
+	if (!System) return Result;
+	for (FNiagaraEmitterHandle& Handle : System->GetEmitterHandles())
+	{
+		FVersionedNiagaraEmitterData* Data = Handle.GetEmitterData();
+		auto* Source = Data ? Cast<UNiagaraScriptSource>(Data->GraphSource) : nullptr;
+		if (!Source || !Source->NodeGraph) continue;
+		TArray<UNiagaraNodeFunctionCall*> Nodes;
+		Source->NodeGraph->GetNodesOfClass(Nodes);
+		for (const auto* Node : Nodes)
+		{
+			const FString Name = Node->GetFunctionName();
+			if (Name != TEXT("ScaleSpriteSize") && Name != TEXT("InitializeParticle")) continue;
+			for (const UEdGraphPin* Pin : Node->Pins)
+				if (Pin && Pin->Direction == EGPD_Input)
+					Result.Add(Handle.GetName().ToString() + TEXT(".") + Name + TEXT(".") + Pin->PinName.ToString(), Pin->DefaultValue);
+		}
+	}
+	return Result;
+}
+
+bool UGuLiScaleMigrationLibrary::SetMiningSpriteSize020(const FString& Emitter, const FString& Stage,
+	const FString& Parameter, const FVector2D ExpectedBefore, const FVector2D Target)
+{
+	if ((Emitter != TEXT("Spark") && Emitter != TEXT("Spark001"))
+		|| ExpectedBefore.ContainsNaN() || Target.ContainsNaN() || !Target.Equals(ExpectedBefore * .2, .0001)) return false;
+	const FString Prefix = TEXT("Constants.") + Emitter + TEXT(".");
+	if (Parameter != Prefix + TEXT("InitializeParticle.Sprite Size Min")
+		&& Parameter != Prefix + TEXT("InitializeParticle.Sprite Size Max")
+		&& Parameter != Prefix + TEXT("ScaleSpriteSize.Initial Sprite Size")) return false;
+	UNiagaraSystem* System = MiningSystem();
+	if (!System) return false;
+	for (FNiagaraEmitterHandle& Handle : System->GetEmitterHandles())
+	{
+		if (Handle.GetName().ToString() != Emitter) continue;
+		FVersionedNiagaraEmitterData* Data = Handle.GetEmitterData();
+		if (!Data) return false;
+		UNiagaraScript* Script = Stage == TEXT("ParticleSpawn") ? Data->SpawnScriptProps.Script.Get()
+			: Stage == TEXT("ParticleUpdate") ? Data->UpdateScriptProps.Script.Get() : nullptr;
+		if (!Script) return false;
+		const FNiagaraVariable Variable(FNiagaraTypeDefinition::GetVec2Def(), FName(Parameter));
+		FNiagaraParameterStore& Store = Script->RapidIterationParameters;
+		if (Store.IndexOf(Variable) == INDEX_NONE) return false;
+		const FVector2f Current = Store.GetParameterValue<FVector2f>(Variable);
+		const FVector2D CurrentDouble(Current.X, Current.Y);
+		if (CurrentDouble.Equals(Target, .0001)) return true;
+		if (!CurrentDouble.Equals(ExpectedBefore, .0001)) return false;
+		System->Modify(); Script->Modify();
+		Store.SetParameterValue(FVector2f(Target.X, Target.Y), Variable);
+		System->MarkPackageDirty();
+		return true;
+	}
+	return false;
+}

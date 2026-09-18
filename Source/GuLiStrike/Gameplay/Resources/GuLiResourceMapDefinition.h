@@ -44,6 +44,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Bake")
 	int32 LayoutVersion = GULI_RESOURCE_LAYOUT_VERSION;
 
+	/** Serialized migration marker. Legacy packages intentionally deserialize as 1, not the new scale. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Bake")
+	float BakedObjectScale = 1.0f;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Bake")
 	int32 DeterministicSeed = GULI_RESOURCE_BAKE_SEED;
 
@@ -101,10 +105,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Resources|Construction") int32 InitialConstructionVehiclesPerTeam = 1;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Mining", meta = (ClampMin = "1.0"))
-	float MiningDistanceCentimeters = 5400.0f;
+	float MiningDistanceCentimeters = 1080.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Factory", meta = (ClampMin = "1.0"))
-	float FactoryManeuverSpeedCentimetersPerSecond = 1500.0f;
+	float FactoryManeuverSpeedCentimetersPerSecond = 300.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Mining", meta = (ClampMin = "0.01"))
 	float MiningRatePerSecond = 1.0f;
@@ -116,8 +120,8 @@ public:
 	float DockingSeconds = 1.0f;
 
 	/** Distance from factory center toward the map interior; keeps the stop outside factory nav clearance. */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Factory", meta = (ClampMin = "3250.0"))
-	float FactoryDockOffsetCentimeters = 4000.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Factory", meta = (ClampMin = "130.0"))
+	float FactoryDockOffsetCentimeters = 800.0f;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Resources|Factory", meta = (ClampMin = "0.01"))
 	float FactoryProcessingRatePerSecond = 2.0f;

@@ -438,7 +438,7 @@ namespace GuLiCommanderNavigationPolicy
 		{
 			return 0.0f;
 		}
-		return FMath::Max(500.0f, ArrivalDomainRadiusCentimeters - HysteresisCentimeters);
+		return FMath::Max(100.0f, ArrivalDomainRadiusCentimeters - HysteresisCentimeters);
 	}
 
 	float CalculateLooseArrivalMaximumLaneOffsetCentimeters(

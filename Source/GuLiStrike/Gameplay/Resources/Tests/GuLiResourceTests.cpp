@@ -117,7 +117,7 @@ bool FGuLiResourceEconomyContractTest::RunTest(const FString& Parameters)
 	TestTrue(TEXT("Native resource economy defaults validate"), Config->ValidateConfig(Error));
 	TestEqual(TEXT("Ore renderer has 24 visual keys"), Config->OreVisuals.Num(), 24);
 	TestEqual(TEXT("Economy references the common Soldiers miner row"), Config->MiningVehicleUnitTypeId, 3);
-	TestEqual(TEXT("Factory speed triples to 15m/s"), Config->FactoryManeuverSpeedCentimetersPerSecond, 1500.0f);
+	TestEqual(TEXT("Factory speed is 3m/s after scale020"), Config->FactoryManeuverSpeedCentimetersPerSecond, 300.0f);
 	TestEqual(TEXT("Sentry costs 10 blue"),
 		Config->GetBlueBuildingCost(EGuLiBuildingType::SentryTurret), 10);
 	TestEqual(TEXT("Missile tower costs 20 blue"),

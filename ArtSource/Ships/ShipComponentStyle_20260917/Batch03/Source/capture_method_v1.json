@@ -1,0 +1,33 @@
+{
+  "success": true,
+  "successful_capture_attempt": 3,
+  "source_snapshot": "Source/source_snapshot_v1.json",
+  "source_package_guard": "package file size and mtime only; binary content not read",
+  "UE_formal_validation": "not_run",
+  "adaptations": [
+    "Support-part Blueprints do not expose weapon-only muzzle/damage/fire-rate properties.",
+    "Static mesh socket names are read via a transient StaticMeshComponent using the existing project API, without saving assets."
+  ],
+  "source_tools": [
+    {
+      "project_path": "Scripts/Art/freeze_ship_component_batch03_sources.py",
+      "frozen_path": "Source/Tools/freeze_ship_component_batch03_sources.py",
+      "sha256": "3cb7ef9dea03ca4ead24fda00d6d516dc7318ee904c85c5d978f66ae2719db57"
+    },
+    {
+      "project_path": "Scripts/Art/freeze_ship_component_style_sources.py",
+      "frozen_path": "Source/Tools/freeze_ship_component_style_sources.py",
+      "sha256": "3171fe7de4611c8c7cd0ee5523abad2d934698bb0148a09342222640b8403030"
+    },
+    {
+      "project_path": "Scripts/author_ship_component_rigs.py",
+      "frozen_path": "Source/Tools/author_ship_component_rigs.py",
+      "sha256": "aed52711f7500bb45aab1142065868ba9adef37e155991a0c527bbe72d9b2f00"
+    },
+    {
+      "project_path": "Scripts/Blender/render_ship_component_batch03_sources.py",
+      "frozen_path": "Source/Tools/render_ship_component_batch03_sources.py",
+      "sha256": "977e1d1d134f153ae55d29e9fa8f5107413d56978764b6106e73fcd21ace1a6f"
+    }
+  ]
+}

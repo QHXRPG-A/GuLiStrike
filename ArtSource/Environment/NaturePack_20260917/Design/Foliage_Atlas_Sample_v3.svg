@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2048" height="1024" viewBox="0 0 2048 1024">
+<title>NaturePack v3：透明图集技术样板，不是最终生产贴图</title>
+<desc>8个512方形槽：草簇、完整白花冠、整张蕨羽叶、茎叶、三朵地被花、阔叶、麦穗、干草。空区真实透明。无灯光投影、无轮廓线。生产图集将在审核后烘焙并完成边缘扩色与mip检查。</desc>
+<defs>
+<g id="grass"><path d="M 83 474 L 61 175 L 47 52 L 107 474 Z"/>
+<path d="M 123 474 L 114 206 L 119 80 L 147 474 Z"/>
+<path d="M 163 474 L 167 237 L 191 108 L 187 474 Z"/>
+<path d="M 198 474 L 176 268 L 162 136 L 222 474 Z"/>
+<path d="M 236 474 L 227 175 L 232 52 L 260 474 Z"/>
+<path d="M 274 474 L 278 206 L 302 80 L 298 474 Z"/>
+<path d="M 313 474 L 291 237 L 277 108 L 337 474 Z"/>
+<path d="M 353 474 L 344 268 L 349 136 L 377 474 Z"/>
+<path d="M 393 474 L 397 175 L 421 52 L 417 474 Z"/></g>
+<g id="head"><g fill="#f1eee0"><path transform="rotate(0 256 256)" d="M 238 232 L 216 128 L 243 53 L 271 53 L 297 128 L 274 232 Z"/>
+<path transform="rotate(45 256 256)" d="M 238 232 L 216 128 L 243 53 L 271 53 L 297 128 L 274 232 Z"/>
+<path transform="rotate(90 256 256)" d="M 238 232 L 216 128 L 243 53 L 271 53 L 297 128 L 274 232 Z"/>
+<path transform="rotate(135 256 256)" d="M 238 232 L 216 128 L 243 53 L 271 53 L 297 128 L 274 232 Z"/>
+<path transform="rotate(180 256 256)" d="M 238 232 L 216 128 L 243 53 L 271 53 L 297 128 L 274 232 Z"/>
+<path transform="rotate(225 256 256)" d="M 238 232 L 216 128 L 243 53 L 271 53 L 297 128 L 274 232 Z"/>
+<path transform="rotate(270 256 256)" d="M 238 232 L 216 128 L 243 53 L 271 53 L 297 128 L 274 232 Z"/>
+<path transform="rotate(315 256 256)" d="M 238 232 L 216 128 L 243 53 L 271 53 L 297 128 L 274 232 Z"/></g><path fill="#e2bd4f" d="M 221 239 L 253 215 L 288 235 L 289 272 L 257 294 L 222 275 Z"/></g>
+<g id="fern"><path d="M 249 478 L 251 85 L 257 34 L 265 85 L 264 478 Z"/><path d="M 256 423 L 100 380 L 89 347 L 142 351 L 256 408 Z M 257 415 L 413 372 L 424 338 L 369 343 L 257 401 Z"/><path d="M 256 384 L 111 341 L 100 308 L 147.5 312 L 256 369 Z M 257 376 L 402 333 L 413 299 L 363.5 304 L 257 362 Z"/><path d="M 256 345 L 122 302 L 111 269 L 153 273 L 256 330 Z M 257 337 L 391 294 L 402 260 L 358 265 L 257 323 Z"/><path d="M 256 306 L 133 263 L 122 230 L 158.5 234 L 256 291 Z M 257 298 L 380 255 L 391 221 L 352.5 226 L 257 284 Z"/><path d="M 256 267 L 144 224 L 133 191 L 164 195 L 256 252 Z M 257 259 L 369 216 L 380 182 L 347 187 L 257 245 Z"/><path d="M 256 228 L 155 185 L 144 152 L 169.5 156 L 256 213 Z M 257 220 L 358 177 L 369 143 L 341.5 148 L 257 206 Z"/><path d="M 256 189 L 166 146 L 155 113 L 175 117 L 256 174 Z M 257 181 L 347 138 L 358 104 L 336 109 L 257 167 Z"/><path d="M 256 150 L 177 107 L 166 74 L 180.5 78 L 256 135 Z M 257 142 L 336 99 L 347 65 L 330.5 70 L 257 128 Z"/><path d="M 256 111 L 188 68 L 177 35 L 186 39 L 256 96 Z M 257 103 L 325 60 L 336 26 L 325 31 L 257 89 Z"/></g>
+<g id="stem"><path d="M 249 480 L 251 36 L 261 36 L 265 480 Z M 251 278 L 112 228 L 77 164 L 161 178 L 255 252 Z M 259 349 L 398 296 L 434 232 L 353 247 L 259 324 Z"/></g>
+<g id="broad"><path d="M 244 480 L 158 404 L 112 298 L 142 151 L 250 39 L 352 151 L 389 291 L 342 411 L 262 480 Z"/></g>
+</defs>
+<g fill="#91b747"><use href="#grass"/></g>
+<g transform="translate(512 0)"><use href="#head"/></g>
+<g transform="translate(1024 0)" fill="#7fa743"><use href="#fern"/></g>
+<g transform="translate(1536 0)" fill="#739544"><use href="#stem"/></g>
+<g transform="translate(0 512)">
+<g fill="#789e44"><use href="#broad" transform="translate(80 122) rotate(-36 120 220) scale(.48)"/><use href="#broad" transform="translate(222 201) rotate(44 120 150) scale(.44)"/><use href="#broad" transform="translate(63 271) rotate(55 110 80) scale(.38)"/></g>
+<use href="#head" transform="translate(35 57) scale(.37)"/><use href="#head" transform="translate(268 160) scale(.34)"/><use href="#head" transform="translate(127 295) scale(.34)"/>
+</g>
+<g transform="translate(512 512)" fill="#91ad45"><use href="#broad"/></g>
+<g transform="translate(1024 512)" fill="#ddc565"><path fill="#8da645" d="M 252 480 L 252 208 L 260 208 L 260 480 Z"/><path d="M 255 286 L 203 247 L 213 219 L 251 243 Z M 258 277 L 309 238 L 299 210 L 263 234 Z"/><path d="M 255 257 L 203 218 L 213 190 L 251 214 Z M 258 248 L 309 209 L 299 181 L 263 205 Z"/><path d="M 255 228 L 203 189 L 213 161 L 251 185 Z M 258 219 L 309 180 L 299 152 L 263 176 Z"/><path d="M 255 199 L 203 160 L 213 132 L 251 156 Z M 258 190 L 309 151 L 299 123 L 263 147 Z"/><path d="M 255 170 L 203 131 L 213 103 L 251 127 Z M 258 161 L 309 122 L 299 94 L 263 118 Z"/><path d="M 255 141 L 203 102 L 213 74 L 251 98 Z M 258 132 L 309 93 L 299 65 L 263 89 Z"/><path d="M 255 112 L 203 73 L 213 45 L 251 69 Z M 258 103 L 309 64 L 299 36 L 263 60 Z"/></g>
+<g transform="translate(1536 512)" fill="#c7b659"><use href="#grass"/></g>
+</svg>

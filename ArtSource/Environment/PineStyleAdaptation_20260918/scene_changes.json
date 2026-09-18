@@ -1,0 +1,46 @@
+{
+  "success": true,
+  "map": "/Game/GuLiStrike/Environment/ArtReview/PineStyleAdaptation_20260918/LVL_Pine_Style_v1",
+  "mesh_copies": {
+    "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Full": "/Game/GuLiStrike/Environment/ArtReview/PineStyleAdaptation_20260918/Meshes/SM_PineTree_Full_Toon.SM_PineTree_Full_Toon",
+    "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTreeTall_Full": "/Game/GuLiStrike/Environment/ArtReview/PineStyleAdaptation_20260918/Meshes/SM_PineTreeTall_Full_Toon.SM_PineTreeTall_Full_Toon",
+    "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_HalfFull": "/Game/GuLiStrike/Environment/ArtReview/PineStyleAdaptation_20260918/Meshes/SM_PineTree_HalfFull_Toon.SM_PineTree_HalfFull_Toon",
+    "/Game/StylizedPineEnvironment/Assets/Meshes/Grass/SM_Grass": "/Game/GuLiStrike/Environment/ArtReview/PineStyleAdaptation_20260918/Meshes/SM_Grass_Toon.SM_Grass_Toon"
+  },
+  "mesh_topology_changed": false,
+  "foliage_type": "/Game/GuLiStrike/Environment/ArtReview/PineStyleAdaptation_20260918/Foliage/FT_Grass_Toon.FT_Grass_Toon",
+  "grass_instances": 1247,
+  "before_grass_instances": 2293,
+  "grass_triangles_per_instance": 37,
+  "grass_lod0_total": 46139,
+  "grass_scale": {
+    "xy": [
+      12,
+      15
+    ],
+    "z": [
+      6,
+      8
+    ]
+  },
+  "tree_scale": "original review 10x retained",
+  "cull_cm": [
+    220000,
+    260000
+  ],
+  "source_cull_cm": [
+    0,
+    260000
+  ],
+  "ground_rocks_lights_units": "Rocks/lights/units unchanged. Ground receives scoped lawn underpainting only.",
+  "dirty": {
+    "content": [],
+    "maps": []
+  },
+  "refinement": {
+    "canopy_root_tone": 0.58,
+    "grass_cast_shadow": false,
+    "reason": "Keep broad branch tiers; replace noisy per-blade ground shadows with coherent lawn underpaint.",
+    "ground_material": "/Game/GuLiStrike/Environment/ArtReview/PineStyleAdaptation_20260918/Materials/M_ReviewGround_GrassUnderlay.M_ReviewGround_GrassUnderlay"
+  }
+}

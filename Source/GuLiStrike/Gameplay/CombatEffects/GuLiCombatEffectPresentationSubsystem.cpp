@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
+#include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -33,6 +34,11 @@ void UGuLiCombatEffectPresentationSubsystem::Initialize(FSubsystemCollectionBase
 	Super::Initialize(Collection);
 	Collection.InitializeDependency<UGuLiCommanderDataSubsystem>();
 	CommanderData = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+	if (GetWorld()->GetNetMode() != NM_DedicatedServer)
+	{
+		Collection.InitializeDependency<UGuLiGroundWarningSubsystem>();
+		GroundWarnings = GetWorld()->GetSubsystem<UGuLiGroundWarningSubsystem>();
+	}
 }
 
 bool UGuLiCombatEffectPresentationSubsystem::IsTickable() const { return !IsTemplate() && GetWorld() && GetWorld()->IsGameWorld() && GetWorld()->GetNetMode() != NM_DedicatedServer; }
@@ -214,6 +220,7 @@ void UGuLiCombatEffectPresentationSubsystem::RemoveVisual(const FGuid& Id, bool 
 {
 	FGuLiLocalCombatEffect Visual;
 	if (!Visuals.RemoveAndCopyValue(Id, Visual)) return;
+	if (GroundWarnings) GroundWarnings->RemoveWarning(Id);
 	if (Visual.LaserSlot != INDEX_NONE) FreeLaserSlot(Visual.LaserSlot);
 	float Tail = 0.5f;
 	if (UGuLiProjectileEffectDefinition* Definition = Visual.State.ProjectileDefinition.Get()) Tail = Definition->TrailFadeSeconds;
@@ -269,7 +276,7 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile)
 		{
 			Visual.LaserSlot = AllocateLaserSlot();
-			if (!bFromSnapshot && ServerTime() - State.StartTime < 0.35f)
+			if (State.Source.Kind == EGuLiTargetKind::Wingman && !bFromSnapshot && ServerTime() - State.StartTime < 0.35f)
 				Visual.LaserMuzzleUntil = GetWorld()->GetTimeSeconds() + (Catalog ? Catalog->LaserMuzzleSeconds : 0.05f);
 		}
 		if (bFromSnapshot && State.Kind == EGuLiCombatEffectKind::SustainedHitscan)
@@ -285,6 +292,20 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 		Visuals.Add(State.EffectId, MoveTemp(Visual));
 	}
 	else Existing->State = State;
+	UpdateGroundWarning(State, CVarGuLiCombatEffectVisuals.GetValueOnGameThread() != 0);
+}
+
+void UGuLiCombatEffectPresentationSubsystem::UpdateGroundWarning(const FGuLiCombatEffectState& State, bool bEnabled)
+{
+	if (!GroundWarnings) return;
+	if (!bEnabled || State.Kind != EGuLiCombatEffectKind::Projectile || State.GroundWarningStyle.IsNull()
+		|| State.Phase == EGuLiCombatEffectPhase::Finished || ServerTime() >= State.EndTime)
+	{ GroundWarnings->RemoveWarning(State.EffectId); return; }
+	FGuLiGroundWarningParams Params;
+	Params.Location = State.LastTargetLocation; Params.Radius = State.Radius;
+	Params.Style = State.GroundWarningStyle.LoadSynchronous();
+	Params.StartServerSeconds = State.StartTime; Params.ExpireServerSeconds = State.EndTime;
+	GroundWarnings->UpsertWarning(State.EffectId, Params);
 }
 
 void UGuLiCombatEffectPresentationSubsystem::QueueSustainedGunfire(const float Now, const bool bEnabled)
@@ -364,7 +385,8 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyShots(const TArray<FGuLiCombat
 			|| !FMath::IsFinite(Cue.ServerTime) || Now - Cue.ServerTime > 0.35f || Cue.ServerTime - Now > 0.5f
 			|| SeenShots.Contains(Cue.ShotId) || PendingShots.Num() >= 2048)
 		{ ++Counters.DroppedShots; continue; }
-		SeenShots.Add(Cue.ShotId); ShotOrder.Add(Cue.ShotId); PendingShots.Add(Cue);
+		SeenShots.Add(Cue.ShotId); ShotOrder.Add(Cue.ShotId);
+		if (!Cue.bMuzzleOnly) PendingShots.Add(Cue);
 		const FActiveMuzzleKey Key{Cue.Source, Cue.SlotId, Cue.MuzzleIndex};
 		FActiveMuzzleVisual& Muzzle = ActiveMuzzles.FindOrAdd(Key);
 		if (!Muzzle.Cue.ShotId.IsValid() || Cue.ServerTime >= Muzzle.Cue.ServerTime)
@@ -435,7 +457,7 @@ void UGuLiCombatEffectPresentationSubsystem::FlushGunfire()
 		ResolveShotEndpoints(Cue, Start, End);
 		const FVector Delta = End - Start;
 		const float Length = Delta.Size();
-		if (!FMath::IsFinite(Length) || Length <= 1.0f)
+		if (!FMath::IsFinite(Length) || Length <= 0.2f)
 		{
 			++Counters.DroppedShots;
 			continue;
@@ -538,7 +560,7 @@ void UGuLiCombatEffectPresentationSubsystem::FlushGunfire()
 		Writer->WriteFloat(TEXT("LightBrightness"), Index, Row.LightBrightness);
 		Writer->WriteFloat(TEXT("LightRadius"), Index, Row.LightRadius);
 	}
-	Gunfire->SetSystemFixedBounds((GunfireBounds + PreviousGunfireBounds).ExpandBy(500.0));
+	Gunfire->SetSystemFixedBounds((GunfireBounds + PreviousGunfireBounds).ExpandBy(20.0));
 	Counters.WrittenShots += TracerRows;
 }
 
@@ -549,7 +571,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateField(FGuLiLocalCombatEffect&
 	const FVector Position = Visual.State.Location;
 	// Radius is frozen from SpellFields on the server. Scale every phase from the
 	// authored reference radius so a table edit changes gameplay and visuals together.
-	const float FieldScale = FMath::Clamp(Visual.State.Radius / FMath::Max(Definition->Radius, 1.0f), 0.05f, 20.0f);
+	const float FieldScale = FMath::Clamp(Visual.State.Radius / FMath::Max(Definition->VisualReferenceRadius, 0.001f), 0.001f, 20.0f);
 	const bool bVisible = IsVisibleLocation(Position);
 	if (Now < Visual.State.ActivationTime)
 	{
@@ -604,6 +626,7 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 	for (auto& Pair : Visuals)
 	{
 		auto& Visual = Pair.Value;
+		if (Visual.State.Kind == EGuLiCombatEffectKind::Projectile) UpdateGroundWarning(Visual.State, bEnabled);
 		if (Visual.State.Kind == EGuLiCombatEffectKind::LinearProjectile)
 		{
 			if ((Visual.State.Phase == EGuLiCombatEffectPhase::Finished && GetWorld()->GetTimeSeconds() >= Visual.LaserFadeUntil)
@@ -643,7 +666,8 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 		Visual.RenderLocation = FMath::VInterpTo(Visual.RenderLocation, FVector(Prediction.Location), DeltaTime, 25.0f);
 		if (IsVisibleLocation(Visual.RenderLocation))
 		{
-			if (!Visual.Flight) Visual.Flight = SpawnPooled(Definition->FlightSystem.LoadSynchronous(), Visual.RenderLocation, Definition->VisualScale);
+			if (!Visual.Flight) Visual.Flight = SpawnPooled(Definition->FlightSystem.LoadSynchronous(),
+				Visual.RenderLocation, Definition->VisualScale, 0.0f, FRotator::ZeroRotator, TEXT("User.VisualScale"));
 			if (Visual.Flight)
 			{
 				Visual.Flight->SetWorldLocationAndRotation(Visual.RenderLocation, FVector(Prediction.Velocity).Rotation());

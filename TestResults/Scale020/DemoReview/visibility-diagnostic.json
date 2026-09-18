@@ -1,0 +1,845 @@
+[
+  {
+    "actor": "Scale020_DefaultSoldier",
+    "components": [
+      {
+        "name": "StaticMeshComponent0",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17000.000002579458,
+            -4299.999994468336,
+            776.9875424391503
+          ],
+          [
+            0.0,
+            0.0,
+            155.0
+          ],
+          [
+            0.2,
+            0.2,
+            0.2
+          ]
+        ],
+        "materials": [
+          "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel"
+        ]
+      }
+    ]
+  },
+  {
+    "actor": "Scale020_WM01",
+    "components": [
+      {
+        "name": "StaticMeshComponent0",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            14736.530183954226,
+            -5420.512345144205,
+            262.287935526605
+          ],
+          [
+            0.0,
+            0.0,
+            155.0
+          ],
+          [
+            0.2,
+            0.2,
+            0.2
+          ]
+        ],
+        "materials": [
+          "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour",
+          "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+        ]
+      }
+    ]
+  },
+  {
+    "actor": "Scale020_ElectromagneticMiner",
+    "components": [
+      {
+        "name": "SkeletalMeshComponent0",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17893.89950915473,
+            -5392.944311921706,
+            747.679472608227
+          ],
+          [
+            0.0,
+            0.0,
+            155.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Cockpit_Freight_Spoiler",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17790.534184995595,
+            -5344.744269678627,
+            841.8768527762159
+          ],
+          [
+            2.11867509481473e-30,
+            1.2722218874358041e-14,
+            65.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Top_Turret_2x_Lvl1",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17948.037832653285,
+            -5418.083522986473,
+            925.0997093829222
+          ],
+          [
+            2.11867509481473e-30,
+            1.2722218874358041e-14,
+            65.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Weapon_Rocket_Mount_Lvl2",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17954.067108222967,
+            -5397.511607623426,
+            966.3372762117574
+          ],
+          [
+            -3.5083545633527932e-15,
+            1.2722218874358041e-14,
+            65.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Weapon_Rocket_Mount_Lvl3",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17936.154374836686,
+            -5435.92558833555,
+            966.3372762117574
+          ],
+          [
+            -3.5083545633527932e-15,
+            1.2722218874358041e-14,
+            65.0
+          ],
+          [
+            -0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Collector_L",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17959.268582069457,
+            -5372.4030899113795,
+            973.4173568951066
+          ],
+          [
+            1.2722218874358041e-14,
+            7.0622501593165195e-31,
+            155.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+        ]
+      },
+      {
+        "name": "Collector_R",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17920.182473634046,
+            -5456.223519946902,
+            973.4173568951066
+          ],
+          [
+            1.2722218874358041e-14,
+            7.0622501593165195e-31,
+            155.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+        ]
+      },
+      {
+        "name": "Side_Winglet_Spike_Lvl3",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            18031.165122209954,
+            -5366.004018796358,
+            870.2980308350134
+          ],
+          [
+            -90.0,
+            9.541664367526768e-15,
+            65.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      }
+    ]
+  },
+  {
+    "actor": "Scale020_ConstructionVehicle",
+    "components": [
+      {
+        "name": "SkeletalMeshComponent0",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17893.89950915473,
+            -6392.944311921706,
+            709.4050772469753
+          ],
+          [
+            0.0,
+            0.0,
+            155.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Cockpit_Freight_Spoiler",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17790.534184995595,
+            -6344.744269678627,
+            803.6024574149642
+          ],
+          [
+            2.11867509481473e-30,
+            1.2722218874358041e-14,
+            65.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Top_Turret_2x_Lvl1",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17948.037832653285,
+            -6418.083522986473,
+            886.8253140216706
+          ],
+          [
+            2.11867509481473e-30,
+            1.2722218874358041e-14,
+            65.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Weapon_Rocket_Mount_Lvl2",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17954.067108222967,
+            -6397.511607623426,
+            928.0628808505057
+          ],
+          [
+            -3.5083545633527932e-15,
+            1.2722218874358041e-14,
+            65.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Weapon_Rocket_Mount_Lvl3",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17936.154374836686,
+            -6435.92558833555,
+            928.0628808505057
+          ],
+          [
+            -3.5083545633527932e-15,
+            1.2722218874358041e-14,
+            65.0
+          ],
+          [
+            -0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      },
+      {
+        "name": "Collector_L",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17959.268582069457,
+            -6372.4030899113795,
+            935.142961533855
+          ],
+          [
+            1.2722218874358041e-14,
+            7.0622501593165195e-31,
+            155.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+        ]
+      },
+      {
+        "name": "Collector_R",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            17920.182473634046,
+            -6456.223519946902,
+            935.142961533855
+          ],
+          [
+            1.2722218874358041e-14,
+            7.0622501593165195e-31,
+            155.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR",
+          "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/Materials/M_Collector_Green_Subtle.M_Collector_Green_Subtle"
+        ]
+      },
+      {
+        "name": "Side_Winglet_Spike_Lvl3",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            18031.165122209954,
+            -6366.004018796358,
+            832.0236354737617
+          ],
+          [
+            -90.0,
+            9.541664367526768e-15,
+            65.0
+          ],
+          [
+            0.6084579714416871,
+            0.6084579714416871,
+            0.6084579714416871
+          ]
+        ],
+        "materials": [
+          "/Game/MC_Vehicle_Constructor/Materials/M_Vehicle_Constructor_PBR.M_Vehicle_Constructor_PBR"
+        ]
+      }
+    ]
+  },
+  {
+    "actor": "Scale020_Factory",
+    "components": [
+      {
+        "name": "Body",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            20500.0,
+            -8659.999975584262,
+            1384.2308226198772
+          ],
+          [
+            -0.0,
+            0.0,
+            90.0
+          ],
+          [
+            0.2,
+            0.2,
+            0.2
+          ]
+        ],
+        "materials": [
+          "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Armor.M_RPF_Armor",
+          "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Interior.M_RPF_Interior",
+          "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Details.M_RPF_Details"
+        ]
+      },
+      {
+        "name": "Door",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            20500.0,
+            -8659.999975584262,
+            1384.2308226198772
+          ],
+          [
+            -0.0,
+            0.0,
+            90.0
+          ],
+          [
+            0.2,
+            0.2,
+            0.2
+          ]
+        ],
+        "materials": [
+          "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Armor.M_RPF_Armor",
+          "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Details.M_RPF_Details",
+          "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Interior.M_RPF_Interior"
+        ]
+      },
+      {
+        "name": "AccessRamp",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            20500.0,
+            -8020.064603015739,
+            1389.63221550155
+          ],
+          [
+            0.0,
+            -2.4693503379821777,
+            90.0
+          ],
+          [
+            3.2029742427937196,
+            7.2,
+            0.029999998211860657
+          ]
+        ],
+        "materials": [
+          "/Game/GuLiStrike/Buildings/ResourceProcessingFactory/Materials/M_RPF_Interior.M_RPF_Interior"
+        ]
+      }
+    ]
+  },
+  {
+    "actor": "Scale020_MissileTurret",
+    "components": [
+      {
+        "name": "StaticMeshComponent0",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            19902.053063471314,
+            -5495.597191177524,
+            682.8087448500737
+          ],
+          [
+            0.0,
+            0.0,
+            155.0
+          ],
+          [
+            0.2,
+            0.2,
+            0.2
+          ]
+        ],
+        "materials": [
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Attention.Attention",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/BackFilter.BackFilter",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/BackPanel.BackPanel",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Bars.Bars",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/BlueWire.BlueWire",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Electronic.Electronic",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/FrontBars.FrontBars",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/GreenWire.GreenWire",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Hazard.Hazard",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Iron.Iron",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Lens.Lens",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Lens2.Lens2",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Lens3.Lens3",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/LensAround.LensAround",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Number.Number",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Pipe.Pipe",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/RedWire.RedWire",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Rhomboid.Rhomboid",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/SolarPanel.SolarPanel",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Vent.Vent",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/controlPanel.controlPanel",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/glass.glass",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/AroundMissile.AroundMissile",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/BlackMetal.BlackMetal",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/BottomBars.BottomBars",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/GreayMetal.GreayMetal",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/LauncherBars.LauncherBars",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/MetalPlate.MetalPlate",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/OrangeMetalPlate.OrangeMetalPlate",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/RustedMetal.RustedMetal",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/Wire.Wire",
+          "/Game/Assets/Props/Buildings/Missile_Turret/missile_turret/Materials/material.material"
+        ]
+      }
+    ]
+  },
+  {
+    "actor": "Scale020_SentryTurret",
+    "components": [
+      {
+        "name": "StaticMeshComponent0",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            19800.0,
+            -4100.0,
+            1048.4455140096165
+          ],
+          [
+            0.0,
+            0.0,
+            155.0
+          ],
+          [
+            0.2,
+            0.2,
+            0.2
+          ]
+        ],
+        "materials": [
+          "/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_mat.Stylized_Turrets_A_mat"
+        ]
+      }
+    ]
+  },
+  {
+    "actor": "Scale020_ManualOutpost",
+    "components": [
+      {
+        "name": "StaticMeshComponent0",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            22019.430042905075,
+            -5253.320828589328,
+            1570.3092455367296
+          ],
+          [
+            0.0,
+            0.0,
+            155.0
+          ],
+          [
+            0.2,
+            0.2,
+            0.2
+          ]
+        ],
+        "materials": [
+          "/Game/GuLiStrike/Buildings/Materials/M_OutpostConcrete.M_OutpostConcrete"
+        ]
+      }
+    ]
+  },
+  {
+    "actor": "Scale020_Camera",
+    "components": [
+      {
+        "name": "CameraProxyMeshComponent_0",
+        "visible": true,
+        "hidden_in_game": true,
+        "transform": [
+          [
+            -3648.7517086376574,
+            -5200.0,
+            30240.253878793705
+          ],
+          [
+            -0.0,
+            -55.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "materials": [
+          "/Engine/EditorMaterials/MatineeCam_mat.MatineeCam_mat"
+        ]
+      }
+    ]
+  },
+  {
+    "actor": "Scale020_Ship",
+    "components": [
+      {
+        "name": "CharacterMesh0",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            12500.0,
+            -10500.0,
+            3800.0
+          ],
+          [
+            -0.0,
+            0.0,
+            65.0
+          ],
+          [
+            0.2,
+            0.2,
+            0.2
+          ]
+        ],
+        "materials": []
+      },
+      {
+        "name": "Hull Mesh",
+        "visible": false,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            11901.48801772282,
+            -11783.513088001302,
+            3707.1
+          ],
+          [
+            0.0,
+            -0.0,
+            -25.0
+          ],
+          [
+            0.2,
+            0.2,
+            0.2
+          ]
+        ],
+        "materials": [
+          "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtVengeanceBlue.ScifiDreadnoughtVengeanceBlue"
+        ]
+      },
+      {
+        "name": "CameraProxyMeshComponent_0",
+        "visible": true,
+        "hidden_in_game": true,
+        "transform": [
+          [
+            9646.83045111454,
+            -10500.0,
+            4727.050983124842
+          ],
+          [
+            -0.0,
+            -18.0,
+            0.0
+          ],
+          [
+            1.0,
+            1.0,
+            1.0
+          ]
+        ],
+        "materials": [
+          "/Engine/EditorMaterials/MatineeCam_mat.MatineeCam_mat"
+        ]
+      },
+      {
+        "name": "AnimeHull",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            11901.48801772282,
+            -11783.513088001302,
+            3707.1
+          ],
+          [
+            0.0,
+            -0.0,
+            -25.0
+          ],
+          [
+            0.2,
+            0.2,
+            0.2
+          ]
+        ],
+        "materials": [
+          "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Pearl.M_SS_Armor_Pearl",
+          "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Blue.M_SS_Armor_Blue",
+          "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Structure_Slate.M_SS_Structure_Slate",
+          "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Recess_Navy.M_SS_Recess_Navy",
+          "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Safety_Amber.M_SS_Safety_Amber",
+          "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Engine_Cyan.M_SS_Engine_Cyan"
+        ]
+      },
+      {
+        "name": "AnimeContour",
+        "visible": true,
+        "hidden_in_game": false,
+        "transform": [
+          [
+            11901.48801772282,
+            -11783.513088001302,
+            3707.1
+          ],
+          [
+            0.0,
+            -0.0,
+            -25.0
+          ],
+          [
+            0.2,
+            0.2,
+            0.2
+          ]
+        ],
+        "materials": [
+          "/Game/GuLiStrike/Ship/Stylized/Materials/M_Ship_Contour.M_Ship_Contour"
+        ]
+      }
+    ]
+  }
+]

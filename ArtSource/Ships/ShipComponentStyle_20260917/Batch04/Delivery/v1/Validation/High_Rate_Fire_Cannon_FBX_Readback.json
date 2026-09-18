@@ -1,0 +1,68 @@
+{
+  "key": "High_Rate_Fire_Cannon",
+  "fbx_file": "FBX\\SKM_SC_High_Rate_Fire_Cannon_Styled.fbx",
+  "fbx_sha256": "f565192e0b559859c3bb83b00a349dc602a7df4f0ff99bed994dc7b539c8fd9d",
+  "mesh_count": 1,
+  "body_triangles": 1286,
+  "dimensions_m": [
+    17.813232421875,
+    30.505781173706055,
+    9.28563117980957
+  ],
+  "max_dimension_error_m": 1.9073486328125e-06,
+  "max_geometry_error_m": 3.80163646696019e-06,
+  "origin_error_m": 0.0,
+  "uv_names": [
+    "SC_PaintUV",
+    "SC_LineUV",
+    "UVmap_0",
+    "UVmap_1",
+    "LightMapUV"
+  ],
+  "uv_max_errors": {
+    "SC_PaintUV": 0.0,
+    "SC_LineUV": 0.0,
+    "UVmap_0": 0.0,
+    "UVmap_1": 0.0,
+    "LightMapUV": 0.0
+  },
+  "materials": [
+    "M_SC_High_Rate_Fire_Cannon_Portable"
+  ],
+  "bones": {
+    "Root": {
+      "parent": null,
+      "head": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    "BarrelPitch": {
+      "parent": "Root",
+      "head": [
+        0.00010048867989098653,
+        -5.400000095367432,
+        -0.8073899745941162
+      ]
+    }
+  },
+  "max_bone_pivot_error_m": 4.88682430198761e-07,
+  "rigid_weights": "single bone, weight 1",
+  "socket_names": [
+    "Socket_1",
+    "Socket_2"
+  ],
+  "socket_metadata_matches_source": true,
+  "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+  "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+  "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+  "demo_animation_exported": false,
+  "UE_formal_validation": "not_run",
+  "Blender_readback_cleaned_degenerate_triangles": 0,
+  "Blender_readback_cleaned_duplicate_triangles": 0,
+  "raw_FBX_preservation": null,
+  "raw_FBX_triangles": 1286,
+  "source_body_geometry_edited": false,
+  "passed": true
+}

@@ -1,0 +1,129 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "26CBF8A8471F646ADC9EF8A14C973643",
+			"instanceName": "DESKTOP-6D3B0FC-16588",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.18-08.36.07",
+	"succeeded": 0,
+	"succeededWithWarnings": 1,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 3.8071250915527344,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuildingWorldTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingWorldTests",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"26CBF8A8471F646ADC9EF8A14C973643"
+			],
+			"duration": 3.8071250915527344,
+			"dateTime": "2026.09.18-08.36.03",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogWorld: UWorld::CleanupWorld called on a world that has begun play, missing call to EndPlay (Untitled)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-08.36.07"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogWorld: UWorld::CleanupWorld called on a world that has begun play, missing call to EndPlay (Untitled)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-08.36.07"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogWorld: UWorld::CleanupWorld called on a world that has begun play, missing call to EndPlay (Untitled)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-08.36.07"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogWorld: UWorld::CleanupWorld called on a world that has begun play, missing call to EndPlay (Untitled)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-08.36.07"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogWorld: UWorld::CleanupWorld called on a world that has begun play, missing call to EndPlay (Untitled)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-08.36.07"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogWorld: UWorld::CleanupWorld called on a world that has begun play, missing call to EndPlay (Untitled)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-08.36.07"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogWorld: UWorld::CleanupWorld called on a world that has begun play, missing call to EndPlay (Untitled)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-08.36.07"
+				}
+			],
+			"warnings": 7,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

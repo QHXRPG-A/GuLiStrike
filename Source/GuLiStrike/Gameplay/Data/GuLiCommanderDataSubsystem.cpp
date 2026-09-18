@@ -148,6 +148,10 @@ void UGuLiCommanderDataSubsystem::LoadSkillCatalog(const UGuLiCommanderDataSetti
 			Config.UnitTypeId = static_cast<uint16>(Row->UnitTypeId);
 			Config.SlotId = FName(*Row->SlotId.TrimStartAndEnd()); Config.SkillId = FName(*Row->SkillId.TrimStartAndEnd());
 			Config.bDefault = Row->bDefault; Config.Damage = Row->Damage;
+			const FString TriggerMode = Row->TriggerMode.TrimStartAndEnd();
+			if (!TriggerMode.IsEmpty() && TriggerMode != TEXT("Automatic") && TriggerMode != TEXT("Active"))
+			{ SkillCatalogError = FString::Printf(TEXT("UnitSkills row %s has invalid TriggerMode '%s'."), *Name.ToString(), *TriggerMode); break; }
+			Config.TriggerMode = TriggerMode == TEXT("Active") ? EGuLiWeaponTriggerMode::Active : EGuLiWeaponTriggerMode::Automatic;
 			const FGuLiSkillDefinition* Definition = FindSkillDefinition(Config.SkillId);
 			if (Definition && !Definition->EffectConfigId.IsNone())
 			{
@@ -161,6 +165,9 @@ void UGuLiCommanderDataSubsystem::LoadSkillCatalog(const UGuLiCommanderDataSetti
 				Config.Damage = Field->Damage;
 			}
 			Config.AttackRatePerSecond = Row->AttackRatePerSecond; Config.RangeCentimeters = Row->RangeCentimeters;
+			Config.ProjectileSpeedCentimetersPerSecond = Row->ProjectileSpeedCentimetersPerSecond;
+			Config.ProjectileLifetimeSeconds = Row->ProjectileLifetimeSeconds;
+			Config.ProjectileSweepRadiusCentimeters = Row->ProjectileSweepRadiusCentimeters;
 		}
 		if (SkillCatalogError.IsEmpty() && Settings)
 		{
@@ -236,6 +243,9 @@ void UGuLiCommanderDataSubsystem::LoadWeaponMountCatalog(const UGuLiCommanderDat
 			}
 
 			const uint16 UnitTypeId = static_cast<uint16>(Row->UnitTypeId);
+			// Tables retain source-mesh local socket coordinates. The runtime catalog
+			// freezes gameplay-centimeter offsets; emitters use unit-scale logical poses.
+			const FVector ResolvedOffset = FindSoldierDefinition(UnitTypeId)->ResolveModelOffsetCentimeters(Row->Offset);
 			if (Role.Equals(TEXT("AimTarget"), ESearchCase::IgnoreCase))
 			{
 				if (!SlotText.IsEmpty() || Row->PointIndex != 0 || AimOffsets.Contains(UnitTypeId))
@@ -244,7 +254,7 @@ void UGuLiCommanderDataSubsystem::LoadWeaponMountCatalog(const UGuLiCommanderDat
 						*Name.ToString());
 					break;
 				}
-				AimOffsets.Add(UnitTypeId, Row->Offset);
+				AimOffsets.Add(UnitTypeId, ResolvedOffset);
 			}
 			else if (Role.Equals(TEXT("Muzzle"), ESearchCase::IgnoreCase))
 			{
@@ -262,7 +272,7 @@ void UGuLiCommanderDataSubsystem::LoadWeaponMountCatalog(const UGuLiCommanderDat
 						*Name.ToString(), Row->PointIndex, UnitTypeId, *SlotText);
 					break;
 				}
-				Builder.Muzzles.Add(Row->PointIndex, Row->Offset);
+				Builder.Muzzles.Add(Row->PointIndex, ResolvedOffset);
 			}
 			else
 			{

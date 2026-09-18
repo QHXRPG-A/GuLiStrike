@@ -6,6 +6,7 @@
 #include "GuLiCombatEffectTypes.generated.h"
 
 class UGuLiProjectileEffectDefinition;
+class UGuLiGroundWarningStyle;
 class UGuLiSpellFieldDefinition;
 
 UENUM(BlueprintType)
@@ -18,7 +19,7 @@ struct GULISTRIKE_API FGuLiSpellFieldConfig
 	GENERATED_BODY()
 	UPROPERTY(BlueprintReadOnly, Category="Spell Field") FName ConfigId;
 	UPROPERTY(BlueprintReadOnly, Category="Spell Field", meta=(ClampMin="0.0")) float Damage = 30.0f;
-	UPROPERTY(BlueprintReadOnly, Category="Spell Field", meta=(ClampMin="0.0", Units="cm")) float Radius = 800.0f;
+	UPROPERTY(BlueprintReadOnly, Category="Spell Field", meta=(ClampMin="0.0", Units="cm")) float Radius = 160.0f;
 	UPROPERTY(BlueprintReadOnly, Category="Spell Field") EGuLiSpellFieldTiming Timing = EGuLiSpellFieldTiming::Instant;
 	UPROPERTY(BlueprintReadOnly, Category="Spell Field", meta=(ClampMin="0.0", Units="s")) float Delay = 0.0f;
 	UPROPERTY(BlueprintReadOnly, Category="Spell Field", meta=(ClampMin="0.0", Units="s")) float Duration = 0.0f;
@@ -27,16 +28,16 @@ struct GULISTRIKE_API FGuLiSpellFieldConfig
 	bool IsValid() const;
 };
 
-/** Table-authored presentation-space weapon points, grouped by unit type and stable weapon slot. */
+/** Resolved weapon points in logical-pose axes, already expressed in final world centimeters. */
 USTRUCT()
 struct GULISTRIKE_API FGuLiWeaponMountConfig
 {
 	GENERATED_BODY()
 	UPROPERTY() uint16 UnitTypeId = 1;
 	UPROPERTY() FName SlotId = TEXT("BasicAttack");
-	/** Final Crowd static-mesh local coordinates, in centimeters. */
+	/** Source-mesh local point times PresentationScale, resolved once by the data subsystem. */
 	UPROPERTY() TArray<FVector> Muzzles;
-	/** Target unit visual aim point in the same Crowd local coordinate space. */
+	/** Actual-size aim point; consumers apply a unit-scale logical pose, not another model scale. */
 	UPROPERTY() FVector AimOffset = FVector::ZeroVector;
 	UPROPERTY() bool bCalibrated = false;
 	bool IsValid() const;
@@ -76,14 +77,14 @@ USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiProjectileMotionSettings
 {
 	GENERATED_BODY()
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="1", Units="cm/s")) float Speed = 6000.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="1", Units="cm/s")) float Speed = 1200.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0.01", Units="s")) float LiftSeconds = 0.25f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float MinimumLiftHeight = 600.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float MaximumLiftHeight = 1000.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float LateralOffset = 200.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="1", Units="cm")) float ConvergenceDistance = 1600.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float MinimumLiftHeight = 120.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float MaximumLiftHeight = 200.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float LateralOffset = 40.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="1", Units="cm")) float ConvergenceDistance = 320.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="1", Units="deg/s")) float TurnRate = 240.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float SweepRadius = 30.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0", Units="cm")) float SweepRadius = 6.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Motion", meta=(ClampMin="0.01", Units="s")) float MaximumLifetime = 8.0f;
 	bool IsValid() const;
 };
@@ -103,6 +104,8 @@ struct GULISTRIKE_API FGuLiCombatEffectState
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") EGuLiTeam SourceTeam = EGuLiTeam::Unassigned;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FGuLiTargetHandle Target;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiProjectileEffectDefinition> ProjectileDefinition;
+	/** Optional generic ground cue, frozen at launch and reconstructed by rendering clients. */
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiGroundWarningStyle> GroundWarningStyle;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiSpellFieldDefinition> FieldDefinition;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize Location = FVector::ZeroVector;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize Velocity = FVector::ZeroVector;
@@ -148,7 +151,7 @@ struct GULISTRIKE_API FGuLiCombatEffectCorrection
 template<> struct TStructOpsTypeTraits<FGuLiCombatEffectCorrection> : TStructOpsTypeTraitsBase2<FGuLiCombatEffectCorrection>
 { enum { WithNetSerializer = true }; };
 
-/** An accepted hitscan shot. Endpoints are complete on the first rendered frame. */
+/** An accepted shot's muzzle cue, optionally including an instantaneous tracer. */
 USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiCombatShotCue
 {
@@ -166,6 +169,8 @@ struct GULISTRIKE_API FGuLiCombatShotCue
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize Start = FVector::ZeroVector;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FVector_NetQuantize End = FVector::ZeroVector;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") float ServerTime = 0.0f;
+	/** Flying projectiles use the pooled laser renderer and retain only the original muzzle effect here. */
+	UPROPERTY() bool bMuzzleOnly = false;
 	bool NetSerialize(FArchive& Ar, UPackageMap* Map, bool& bOutSuccess);
 };
 
@@ -185,7 +190,9 @@ struct GULISTRIKE_API FGuLiCombatAttackRequest
 	UGuLiProjectileEffectDefinition* Projectile = nullptr;
 	FGuLiSpellFieldConfig FrozenField;
 	FGuLiProjectileMotionSettings Motion;
-	float MaximumTravelDistance = 150000.0f;
+	bool bUseAuthoredPointTrajectory = false;
+	UGuLiGroundWarningStyle* GroundWarningStyle = nullptr;
+	float MaximumTravelDistance = 30000.0f;
 };
 
 USTRUCT(BlueprintType)

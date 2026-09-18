@@ -66,15 +66,15 @@ namespace GuLiCommanderMassPrivate
 	constexpr float MaxAccumulatedSeconds = FixedStepSeconds * 4.0f;
 	// 此常量及下方 FRequestGate 当前未接入请求路径；实际网络限流由 NetSyncComponent 负责。
 	constexpr int32 MaxRequestsPerSecond = 10;
-	constexpr float SpatialCellSizeCentimeters = 10000.0f;
-	constexpr float FormationGuideMaximumLeadCentimeters = 9000.0f;
-	constexpr float FormationWaypointToleranceCentimeters = 1800.0f;
-	constexpr float FormationArrivalToleranceCentimeters = 500.0f;
+	constexpr float SpatialCellSizeCentimeters = 2000.0f;
+	constexpr float FormationGuideMaximumLeadCentimeters = 1800.0f;
+	constexpr float FormationWaypointToleranceCentimeters = 360.0f;
+	constexpr float FormationArrivalToleranceCentimeters = 100.0f;
 	constexpr float TravelWeight = 0.70f;
 	constexpr float SlotCorrectionWeight = 0.30f;
 	constexpr float ManualAvoidanceStrength = 0.25f;
-	constexpr float MaximumSurfaceStepZCentimeters = 250.0f;
-	constexpr float ProgressDistanceCentimeters = 30.0f;
+	constexpr float MaximumSurfaceStepZCentimeters = 50.0f;
+	constexpr float ProgressDistanceCentimeters = 6.0f;
 	constexpr float CenterlineRecoverySeconds = 1.0f;
 	constexpr float PersonalRecoveryRetrySeconds = 2.0f;
 	constexpr float PersonalRecoveryBlockedSeconds = 4.0f;
@@ -83,9 +83,9 @@ namespace GuLiCommanderMassPrivate
 	constexpr int32 MaximumPersonalPathQueriesPerStep = 4;
 	constexpr int32 ExpansionSuccessfulStepsRequired = GuLiCommanderNavigationPolicy::RequiredTransitExpansionSuccessSteps;
 	constexpr float TransitReassignmentCooldownSeconds = 0.5f;
-	constexpr float DestinationMinimumSeparationCentimeters = 1600.0f;
-	constexpr float DestinationMaximumProjectionCorrectionCentimeters = 750.0f;
-	constexpr float FreeDestinationMaximumRadiusCentimeters = 45000.0f;
+	constexpr float DestinationMinimumSeparationCentimeters = 320.0f;
+	constexpr float DestinationMaximumProjectionCorrectionCentimeters = 150.0f;
+	constexpr float FreeDestinationMaximumRadiusCentimeters = 9000.0f;
 	constexpr int32 MoveCandidateProjectionBudgetPerFrame = 64;
 	constexpr int32 MovePathQueryBudgetPerFrame = 4;
 	constexpr float MoveCandidateReserveFraction = 0.25f;
@@ -154,6 +154,8 @@ namespace GuLiCommanderMassPrivate
 		bool bForceMovementUpdate = false;
 		FVector LastCapturedPoseLocation = FVector::ZeroVector;
 		uint32 LastCapturedPoseFrameSequence = 0u;
+		double LastCapturedPoseSimulationSeconds = 0.0;
+		float LastCapturedMovementSpeed = 0.0f;
 		// The wreck window retains the identity; expiration retires both entity and replicated record.
 		double DeathSimulationSeconds = -1.0;
 		bool bWreckExpired = false;
@@ -765,10 +767,10 @@ namespace GuLiCommanderMassPrivate
 				NavigationSystem,
 				NavigationData,
 				RequestedPoint,
-				FVector(250.0f, 250.0f, 5000.0f),
+				FVector(50.0f, 50.0f, 5000.0f),
 				ProjectedPoint)
 				&& FVector::DistSquared2D(RequestedPoint, ProjectedPoint.Location)
-					<= FMath::Square(500.0f);
+					<= FMath::Square(100.0f);
 			if (!bProbeWalkable)
 			{
 				return false;
@@ -829,6 +831,7 @@ namespace GuLiCommanderMassPrivate
 		AvoidanceParameters.SeparationRadiusScale = 0.95f;
 		AvoidanceParameters.ObstacleSeparationDistance = AgentRadiusCentimeters * 0.35f;
 		AvoidanceParameters.PredictiveAvoidanceDistance = AgentRadiusCentimeters * 0.35f;
+		AvoidanceParameters.ObstaclePredictiveAvoidanceStiffness = 140.0f;
 
 		FMassArchetypeSharedFragmentValues SharedValues;
 		SharedValues.Add(EntityManager.GetOrCreateConstSharedFragment(
@@ -893,7 +896,7 @@ namespace GuLiCommanderMassPrivate
 		const ANavigationData& NavigationData,
 		const FNavLocation& Start,
 		const FVector& Target,
-		const float TargetToleranceCentimeters = 100.0f,
+		const float TargetToleranceCentimeters = 20.0f,
 		uint64* const InOutFallbackPathQueryCount = nullptr)
 	{
 		FNavLocation ReachedLocation;
@@ -1020,7 +1023,7 @@ namespace GuLiCommanderMassPrivate
 		const ANavigationData& NavigationData,
 		const FNavLocation& Start,
 		const FVector& Target,
-		const float ToleranceCentimeters = 100.0f)
+		const float ToleranceCentimeters = 20.0f)
 	{
 		FNavLocation Reached;
 		return NavigationData.FindMoveAlongSurface(Start, Target, Reached, nullptr, nullptr)
@@ -2132,6 +2135,11 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 			continue;
 		}
 		FMovePlanningJob& Job = *JobPointer;
+		if (FPlatformTime::Seconds() - Job.PlanningStartedAt >= 5.0)
+		{
+			CompleteMovePlanningJobWithSystemFailure(Job, EGuLiCommandAckResult::TimedOut);
+			continue;
+		}
 		const AGuLiBattlePlayerState* PlayerState = Job.PlayerState.Get();
 		if (!PlayerState || !IsMovePlanningOwnerCurrent(Job, *PlayerState)
 			|| !PlayerState->IsCommander() || PlayerState->GetTeam() != Job.Team)
@@ -2600,7 +2608,7 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 					? 0.0f
 					: InitialTravelDirection.GetSafeNormal2D().Rotation().Yaw;
 				const float ArrivalSnapDistance = FMath::Max(
-					100.0f,
+					20.0f,
 					MovementSpeedCentimetersPerSecond * FixedStepSeconds);
 				for (const int32 MemberPlanIndex : Task.MemberPlanIndices)
 				{
@@ -2782,6 +2790,11 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyMovePlans()
 			continue;
 		}
 		FMovePlanningJob& Job = *JobPointer;
+		if (FPlatformTime::Seconds() - Job.PlanningStartedAt >= 5.0)
+		{
+			CompleteMovePlanningJobWithSystemFailure(Job, EGuLiCommandAckResult::TimedOut);
+			continue;
+		}
 		const AGuLiBattlePlayerState* PlayerState = Job.PlayerState.Get();
 		if (!PlayerState || !IsMovePlanningOwnerCurrent(Job, *PlayerState)
 			|| !PlayerState->IsCommander() || PlayerState->GetTeam() != Job.Team)
@@ -2882,7 +2895,7 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyMovePlans()
 						*NavigationData,
 						Soldier.LastValidNavLocation,
 						Formation.PathPoints[0],
-						MovementSpeedCentimetersPerSecond * FixedStepSeconds + 250.0f))
+						MovementSpeedCentimetersPerSecond * FixedStepSeconds + 50.0f))
 				{
 					Member.bAccepted = false;
 					RemoveMoveMemberFromPreparedFormations(Job, SoldierId);
@@ -3669,7 +3682,7 @@ void UGuLiBattleAuthoritySubsystem::TickNavigationRepairs(
 			return Center;
 		}
 		const int32 RingIndex = CandidateIndex - 1;
-		const float Radius = 250.0f * static_cast<float>(RingIndex / 8 + 1);
+		const float Radius = 50.0f * static_cast<float>(RingIndex / 8 + 1);
 		const int32 DirectionIndex = RingIndex % 8;
 		const float AngleRadians = UE_TWO_PI * static_cast<float>(DirectionIndex) / 8.0f;
 		return Center + FVector(
@@ -3799,7 +3812,7 @@ void UGuLiBattleAuthoritySubsystem::TickNavigationRepairs(
 				Task.PreviousFinalLocation, Task.NextCandidateIndex);
 			FNavLocation Projected;
 			if (ProjectPointToCommanderNavigation(*NavigationSystem, *NavigationData,
-					Requested, FVector(100.0f, 100.0f, 5000.0f), Projected)
+					Requested, FVector(20.0f, 20.0f, 5000.0f), Projected)
 				&& FVector::DistSquared2D(Task.PreviousFinalLocation, Projected.Location)
 					<= FMath::Square(DestinationMaximumProjectionCorrectionCentimeters)
 				&& IsCandidateClear(Task, Projected.Location))
@@ -4654,7 +4667,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			}
 
 			const float ArrivalSnapDistance = FMath::Max(
-				100.0f,
+				20.0f,
 				MovementSpeedCentimetersPerSecond
 					* MovementUpdateDeltaSeconds[SoldierIndex]);
 			if (bRunsMovementUpdate[SoldierIndex]
@@ -5153,6 +5166,10 @@ bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
 	{
 		Population.Add({Soldier.SoldierId, Soldier.Location, Soldier.Velocity,
 			Soldier.Team, Soldier.UnitTypeId, Soldier.CanAct()});
+		if (const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
+			if (const auto* Definition = Data->FindSoldierDefinition(Soldier.UnitTypeId))
+				Population.Last().WorldBounds = Definition->GetModelBoundsCentimeters().TransformBy(
+					FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location));
 	}
 	TArray<FGuLiSoldierId> HitIds;
 	if (!GuLiCommanderSelectionQuery::ResolveCandidates(Request, PlayerState.GetTeam(), Population, HitIds))
@@ -5876,6 +5893,12 @@ bool UGuLiBattleAuthoritySubsystem::RegisterCombatLedgerTarget(
 		OutSnapshot.Team = Debug.Team;
 		OutSnapshot.Location = Debug.Location;
 		OutSnapshot.CollisionRadius = Authority->MemberAgentRadiusCentimeters;
+		if (const auto* Data = Authority->GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
+			if (const auto* Definition = Data->FindSoldierDefinition(Debug.UnitTypeId))
+			{
+				const FBox Bounds = Definition->GetModelBoundsCentimeters();
+				if (Bounds.IsValid) OutSnapshot.CollisionRadius = FMath::Max(Bounds.GetExtent().X, Bounds.GetExtent().Y);
+			}
 		OutSnapshot.Health = Debug.Health;
 		OutSnapshot.bAlive = Debug.Health > 0.0f;
 		return !OutSnapshot.Location.ContainsNaN();
@@ -5928,6 +5951,17 @@ bool UGuLiBattleAuthoritySubsystem::IsSoldierPhased(const FGuLiSoldierId Id) con
 	return Index && AuthorityState->Soldiers[*Index].bPhased;
 }
 
+void UGuLiBattleAuthoritySubsystem::CollectExternalUnitsForClearance(const FBox& Bounds, TArray<FGuLiMassExternalUnit>& Out) const
+{
+	Out.Reset();
+	if (!AuthorityState || !Bounds.IsValid) return;
+	const FBox Expanded = Bounds.ExpandBy(MemberAgentRadiusCentimeters * 2.0f);
+	for (const auto& Soldier : AuthorityState->Soldiers)
+		if (Soldier.IsAlive() && Expanded.IsInsideOrOn(Soldier.Location))
+			Out.Add({ Soldier.SoldierId, FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location), MemberAgentRadiusCentimeters });
+	Out.Sort([](const auto& A, const auto& B) { return A.Id.Value < B.Id.Value; });
+}
+
 bool UGuLiBattleAuthoritySubsystem::IsSoldierExternallyLocked(const FGuLiSoldierId Id) const
 {
 	const int32* Index = AuthorityState ? AuthorityState->SoldierIndexById.Find(Id.Value) : nullptr;
@@ -5939,8 +5973,8 @@ bool UGuLiBattleAuthoritySubsystem::ProjectExternalUnitLocation(const FVector De
 	auto* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 	auto* Data = Nav ? GuLiCommanderMassPrivate::GetCommanderNavigationData(*Nav) : nullptr;
 	FNavLocation Projected;
-	if (!Data || !Nav->ProjectPointToNavigation(Desired, Projected, FVector(100,100,2000), Data)
-		|| FVector::DistSquared2D(Desired, Projected.Location) > FMath::Square(100.0)) return false;
+	if (!Data || !Nav->ProjectPointToNavigation(Desired, Projected, FVector(20,20,2000), Data)
+		|| FVector::DistSquared2D(Desired, Projected.Location) > FMath::Square(20.0)) return false;
 	OutLocation = Projected.Location;
 	return true;
 }
@@ -5973,6 +6007,15 @@ bool UGuLiBattleAuthoritySubsystem::ApplyExternalUnitState(TConstArrayView<FGuLi
 	auto& Manager = Mass->GetMutableEntityManager();
 	// Validate the complete batch before modifying any surviving member.
 	if (!CanApplyExternalUnitState(Participants,CastId)) return false;
+	if (bRelocate || bLocked)
+	{
+		TSet<uint32> Displaced;
+		for (const auto& Entry : Participants) Displaced.Add(Entry.Id.Value);
+		for (auto& Job : AuthorityState->MovePlanningJobs)
+			if (Job && Job->Stage != GuLiCommanderMassPrivate::EMovePlanningStage::Completed
+				&& Job->Members.ContainsByPredicate([&Displaced](const auto& Member) { return Displaced.Contains(Member.SoldierId.Value); }))
+				GuLiCommanderMassPrivate::CompleteMovePlanningJobWithSystemFailure(*Job, EGuLiCommandAckResult::Cancelled);
+	}
 	for (const auto& Entry : Participants)
 	{
 		const int32* Index = AuthorityState->SoldierIndexById.Find(Entry.Id.Value);
@@ -6000,7 +6043,7 @@ bool UGuLiBattleAuthoritySubsystem::ApplyExternalUnitState(TConstArrayView<FGuLi
 			Soldier.LastValidNavLocation = FNavLocation(Soldier.Location);
 			auto* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 			auto* Data = Nav ? GuLiCommanderMassPrivate::GetCommanderNavigationData(*Nav) : nullptr;
-			if (Data) Nav->ProjectPointToNavigation(Soldier.Location, Soldier.LastValidNavLocation, FVector(100,100,300), Data);
+			if (Data) Nav->ProjectPointToNavigation(Soldier.Location, Soldier.LastValidNavLocation, FVector(20,20,300), Data);
 			Soldier.DisplacementFrameFloor = AuthorityState->NextPoseFrameSequence;
 			Soldier.DisplacementLocation = Soldier.Location;
 			Soldier.DisplacementSimulationTime = AuthorityState->SimulationSeconds;
@@ -6186,12 +6229,15 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 				const float CapturedStepCentimeters = FVector::Dist(
 					Soldier.LastCapturedPoseLocation,
 					Soldier.Location);
-				if (CapturedStepCentimeters > 1000.0f)
+				const double SampleSeconds = FMath::Max(0.0, AuthorityState->SimulationSeconds - Soldier.LastCapturedPoseSimulationSeconds);
+				const double SpeedBound = FMath::Max(MovementSpeedCentimetersPerSecond, Soldier.LastCapturedMovementSpeed);
+				const double AllowedStep = FMath::Max(200.0, SpeedBound * (SampleSeconds + GuLiCommanderSimulationTiming::StepSeconds));
+				if (CapturedStepCentimeters > AllowedStep)
 				{
 					UE_LOG(
 						LogGuLiCommanderMass,
 						Error,
-						TEXT("Authority pose discontinuity: soldier=%u previous_frame=%u frame=%u step_cm=%.1f previous=(%.1f,%.1f,%.1f) current=(%.1f,%.1f,%.1f) velocity=(%.1f,%.1f,%.1f)."),
+						TEXT("Authority pose discontinuity: soldier=%u previous_frame=%u frame=%u step_cm=%.1f previous=(%.1f,%.1f,%.1f) current=(%.1f,%.1f,%.1f) velocity=(%.1f,%.1f,%.1f) sample_seconds=%.3f allowed_step_cm=%.1f."),
 						Soldier.SoldierId.Value,
 						Soldier.LastCapturedPoseFrameSequence,
 						FrameSequence,
@@ -6204,11 +6250,13 @@ void UGuLiBattleAuthoritySubsystem::CaptureSoldierPoseChunks(
 						Soldier.Location.Z,
 						Soldier.Velocity.X,
 						Soldier.Velocity.Y,
-						Soldier.Velocity.Z);
+						Soldier.Velocity.Z, SampleSeconds, AllowedStep);
 				}
 			}
 			Soldier.LastCapturedPoseLocation = Soldier.Location;
 			Soldier.LastCapturedPoseFrameSequence = FrameSequence;
+			Soldier.LastCapturedPoseSimulationSeconds = AuthorityState->SimulationSeconds;
+			Soldier.LastCapturedMovementSpeed = MovementSpeedCentimetersPerSecond;
 			FGuLiQuantizedSoldierPose& Pose = Chunk.Samples.AddDefaulted_GetRef();
 			Pose.SoldierId = Soldier.SoldierId;
 			if (!GuLiCommanderPoseCodec::Quantize(Soldier.Location, Soldier.Velocity, Soldier.FacingYawDegrees, Pose))
@@ -6380,6 +6428,12 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 			Request.ExecutorId = Event.ExecutorId; Request.UnitTypeId = Event.SourceUnitTypeId;
 			Request.SourceTransform = FTransform(FRotator(0, Source.FacingYawDegrees, 0), Source.Location);
 			Request.TargetLocation = Target.Location; Request.ShotOrdinal = Event.ShotOrdinal;
+			if (Event.ExecutorId == TEXT("GroundMachineGun"))
+			{
+				Request.Motion.Speed = Event.ProjectileSpeedCentimetersPerSecond;
+				Request.Motion.MaximumLifetime = Event.ProjectileLifetimeSeconds;
+				Request.Motion.SweepRadius = Event.ProjectileSweepRadiusCentimeters;
+			}
 		}
 		Effects->ExecuteAttackBatch(Requests);
 	}
@@ -6850,11 +6904,20 @@ void UGuLiBattleAuthoritySubsystem::ExecuteSelectedUnitSkills(AGuLiBattlePlayerS
 		FGuLiUnitSkillCaster Caster;
 		Caster.bEligible = Soldier.Team == PlayerState.GetTeam() && Soldier.CanAct() && Soldier.IsPresent();
 		Caster.bHasGroundPoint = bHasGroundPoint;
+		if (Definition && !Definition->RangeSourceSlot.IsNone())
+		{
+			const auto* RangeProfile = GetWorld()->GetSubsystem<UGuLiArmySkillSubsystem>()->FindResolvedSkill(
+				Soldier.Team, Soldier.UnitTypeId, Definition->RangeSourceSlot);
+			if (RangeProfile && RangeProfile->bUnlocked && RangeProfile->bEquipped)
+				Caster.ResolvedSourceRange = RangeProfile->RangeCentimeters;
+		}
 		auto& Context = Caster.Context;
 		Context.Commander = &PlayerState; Context.SoldierId = Id; Context.Source = MakeSoldierTargetHandle(Id);
 		Context.SourceTransform = FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location);
 		Context.GroundPoint = GroundPoint; Context.RequestId = RequestId; Context.SkillId = Definition ? Definition->SkillId : NAME_None;
 		Context.Level = Soldier.ActiveSkill.Level;
+		Context.UnitTypeId = Soldier.UnitTypeId;
+		Context.ShotOrdinal = Soldier.ActiveSkill.SuccessfulCasts;
 		OutResults.Add(GuLiUnitSkillExecution::Execute(Definition, Caster, Soldier.ActiveSkill, Now, GetWorld()->GetTimeSeconds(),
 			[Definition](const FGuLiActiveSkillExecutionContext& Cast, const UDataAsset* Configuration)
 			{ return Definition->ExecutorClass->GetDefaultObject<UGuLiCommanderSkillExecutor>()->Execute(Cast, Configuration); }));

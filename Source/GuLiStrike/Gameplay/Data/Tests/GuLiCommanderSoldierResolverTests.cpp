@@ -61,7 +61,7 @@ bool FGuLiCommanderSoldierValidRowTest::RunTest(const FString& Parameters)
 	const FGuLiSoldierDefinition Resolved =
 		FGuLiCommanderSoldierResolver::ResolveRow(&Row, Fallback, bEntireDefinitionFromDataTable);
 	TestTrue(TEXT("source is DataTable"), bEntireDefinitionFromDataTable);
-	TestEqual(TEXT("movement speed"), Resolved.MovementSpeedCmPerSecond, 3600.0f);
+	TestEqual(TEXT("custom authored speed is not scaled again"), Resolved.MovementSpeedCmPerSecond, Row.MovementSpeedCmPerSecond);
 	TestEqual(TEXT("Fractional maximum health above the old uint8 ceiling is preserved"), Resolved.MaxHealth, 300.5f);
 	TestEqual(TEXT("Stable unit identity comes from the row id"), Resolved.UnitTypeId, static_cast<uint16>(2u));
 	TestTrue(TEXT("UStaticMesh model accepted"), Resolved.Model == RowMesh.Get());
@@ -146,7 +146,7 @@ bool FGuLiCommanderSoldierDefaultBaselineTest::RunTest(const FString& Parameters
 {
 	(void)Parameters;
 	const FGuLiSoldierDefinition Fallback = FGuLiCommanderSoldierResolver::MakeFallbackDefinition();
-	TestEqual(TEXT("fallback speed is the 36 m/s baseline"), Fallback.MovementSpeedCmPerSecond, 3600.0f);
+	TestEqual(TEXT("fallback speed is the 7.2 m/s baseline"), Fallback.MovementSpeedCmPerSecond, 720.0f);
 	TestEqual(TEXT("fallback health"), Fallback.MaxHealth, 100.0f);
 	TestTrue(TEXT("fallback model is a UStaticMesh"), IsValid(Fallback.Model));
 	if (IsValid(Fallback.Model))
@@ -171,9 +171,9 @@ bool FGuLiCommanderSoldierImportedBaselineTest::RunTest(const FString& Parameter
 	constexpr TCHAR TablePath[] =
 		TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeCommander_Soldiers.DT_GuLiStrikeCommander_Soldiers");
 	constexpr TCHAR CrowdMeshPath[] =
-		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd");
+		TEXT("/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel.SM_Sweeper_Cel");
 	constexpr TCHAR WM01CrowdMeshPath[] =
-		TEXT("/Game/Commander/Units/SM_WM01_Crowd.SM_WM01_Crowd");
+		TEXT("/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel");
 
 	const UDataTable* DataTable = LoadObject<UDataTable>(nullptr, TablePath);
 	if (!TestNotNull(TEXT("imported Soldier DataTable is available"), DataTable))
@@ -189,7 +189,7 @@ bool FGuLiCommanderSoldierImportedBaselineTest::RunTest(const FString& Parameter
 		bEntireDefinitionFromDataTable);
 
 	TestTrue(TEXT("DefaultSoldier resolves entirely from the imported row"), bEntireDefinitionFromDataTable);
-	TestEqual(TEXT("imported movement speed"), Resolved.MovementSpeedCmPerSecond, 3600.0f);
+	TestEqual(TEXT("imported movement speed"), Resolved.MovementSpeedCmPerSecond, 720.0f);
 	TestEqual(TEXT("imported maximum health"), Resolved.MaxHealth, 100.0f);
 	TestNotNull(TEXT("imported model resolves to a UStaticMesh"), Resolved.Model.Get());
 	if (IsValid(Resolved.Model))
@@ -209,11 +209,11 @@ bool FGuLiCommanderSoldierImportedBaselineTest::RunTest(const FString& Parameter
 	const auto Miner = FGuLiCommanderSoldierResolver::Resolve(DataTable, TEXT("ElectromagneticMiner"), Resolved, bEntireDefinitionFromDataTable);
 	TestTrue(TEXT("Miner resolves entirely from Soldiers"), bEntireDefinitionFromDataTable);
 	TestEqual(TEXT("Miner stable Soldiers id"), Miner.UnitTypeId, uint16(3));
-	TestEqual(TEXT("Miner speed is three times the previous 1500 cm/s"), Miner.MovementSpeedCmPerSecond, 4500.0f);
+	TestEqual(TEXT("Miner speed is 900 cm/s after scale020"), Miner.MovementSpeedCmPerSecond, 900.0f);
 	TestEqual(TEXT("Miner health remains 1000"), Miner.MaxHealth, 1000.0f);
 	TestTrue(TEXT("Miner uses its Actor implementation"), Miner.ActorClass == AGuLiMiningVehiclePawn::StaticClass() && !Miner.UsesMass());
-	TestTrue(TEXT("Preserved presentation is uniformly scaled to 18 metres"), Miner.PresentationClass
-		&& FMath::IsNearlyEqual(Miner.PresentationScale * 591.6596f, 1800.0f, 0.01f));
+	TestTrue(TEXT("Preserved presentation is uniformly scaled to 3.6 metres"), Miner.PresentationClass
+		&& FMath::IsNearlyEqual(Miner.PresentationScale * 591.6596f, 360.0f, 0.01f));
 	if (IsValid(SecondType.Model))
 	{
 		TestEqual(

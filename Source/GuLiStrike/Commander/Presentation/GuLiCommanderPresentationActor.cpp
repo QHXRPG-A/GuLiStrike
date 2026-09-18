@@ -59,8 +59,8 @@ namespace GuLiCommanderPresentation
 	constexpr int32 MaximumBufferedPoseSamples = 8;
 	constexpr float MaximumClockRoundTripMilliseconds = 500.0f;
 	constexpr double MaximumForwardClockCorrectionSeconds = 0.025;
-	constexpr float RingHeight = 35.0f;
-	const FVector RingScale(12.0f, 12.0f, 0.02f);
+	constexpr float RingHeight = 7.0f;
+	const FVector RingScale(2.4f, 2.4f, 0.004f);
 	const FLinearColor SelectedColor(1.0f, 0.82f, 0.04f, 0.95f);
 	const FLinearColor RedTeamColor(1.0f, 0.04f, 0.03f, 0.72f);
 	const FLinearColor BlueTeamColor(0.02f, 0.28f, 1.0f, 0.72f);
@@ -726,6 +726,21 @@ float AGuLiCommanderPresentationActor::GetSoldierHitStartTime(const FGuLiSoldier
 {
 	const auto* Soldier = PresentedSoldiers.Find(SoldierId);
 	return Soldier ? Soldier->HitFlashStartTime : -1000.0f;
+}
+
+FBox AGuLiCommanderPresentationActor::GetUnitModelBoundsCentimeters(const uint16 UnitTypeId) const
+{
+	if (const auto* Data = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr)
+		if (const auto* Definition = Data->FindSoldierDefinition(UnitTypeId))
+			return Definition->GetModelBoundsCentimeters();
+	return FBox(FVector(-150, -150, 0), FVector(150, 150, 200));
+}
+
+float AGuLiCommanderPresentationActor::GetUnitPresentationScale(const uint16 UnitTypeId) const
+{
+	const auto* Data = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr;
+	const auto* Definition = Data ? Data->FindSoldierDefinition(UnitTypeId) : nullptr;
+	return Definition ? Definition->PresentationScale : 0.2f;
 }
 
 bool AGuLiCommanderPresentationActor::TryGetPresentedSoldierTransform(
@@ -2468,12 +2483,14 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		{
 			continue;
 		}
+		const float ModelScale = GetUnitPresentationScale(InstanceHandle->BatchUnitTypeId);
 		if (PendingDestructionIds.Remove(ReliableState.SoldierId) && UnitFeedback)
 		{
 			const auto* Batch = FindUnitInstances(InstanceHandle->BatchUnitTypeId);
 			const UStaticMesh* Mesh = Batch ? Batch->GetStaticMesh() : nullptr;
-			const FBox Bounds = Mesh ? Mesh->GetBoundingBox() : FBox(ForceInit);
-			// These ISM units render at unit scale. Measure the model, not a collision radius or the whole ISM batch.
+			const FBox Bounds = Mesh ? Mesh->GetBoundingBox().TransformBy(
+				FTransform(FQuat::Identity, FVector::ZeroVector, FVector(ModelScale))) : FBox(ForceInit);
+			// Match actual model size, not the unscaled source or the whole ISM batch.
 			UnitFeedback->PlayDestruction(Bounds.IsValid
 				? Soldier.PresentedTransform.TransformPosition(Bounds.GetCenter()) : Soldier.PresentedTransform.GetLocation(),
 				Bounds.IsValid ? static_cast<float>(Bounds.GetExtent().GetMax()) : 0.0f);
@@ -2486,7 +2503,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		if (bAlive)
 		{
 			FTransform Visible = Soldier.PresentedTransform;
-			Visible.SetScale3D(FVector::OneVector);
+			Visible.SetScale3D(FVector(ModelScale));
 			if (ReliableState.bPhased) DesiredPhasedTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Visible);
 			else
 			{
@@ -2504,7 +2521,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		{
 			if (UnitFeedback && UnitFeedback->IsWithinCullDistance(Soldier.PresentedTransform.GetLocation()))
 			{
-				auto Wreck = Soldier.PresentedTransform; Wreck.SetScale3D(FVector::OneVector);
+				auto Wreck = Soldier.PresentedTransform; Wreck.SetScale3D(FVector(ModelScale));
 				DesiredWreckTransforms.FindOrAdd(InstanceHandle->BatchUnitTypeId).Add(Wreck);
 			}
 			RingTransform = BuildRingTransform(Soldier.PresentedTransform);

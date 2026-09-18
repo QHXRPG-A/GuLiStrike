@@ -63,7 +63,7 @@ bool FGuLiWingmanGroundRunTest::RunTest(const FString&)
 	TestTrue(TEXT("Freezing a run in place preserves each aircraft's approach"),
 		GuLiWingmanAttack::BuildGroundPath(Oblique.Target, Oblique.Direction, Profile, 20, Oblique)
 		&& Oblique.Entry.Equals(BeforeFreeze.Entry, 0.001) && Oblique.Direction.Equals(BeforeFreeze.Direction, 0.001));
-	Profile.PullUpHeight=5000;
+	Profile.PullUpHeight=1000;
 	TestTrue(TEXT("Minimum 50m clearance raises the turn anchors instead of penetrating terrain"),
 		GuLiWingmanAttack::BuildGroundPath(FVector::ZeroVector,FVector::ForwardVector,Profile,20,Path));
 	Lowest = DBL_MAX;
@@ -71,7 +71,7 @@ bool FGuLiWingmanGroundRunTest::RunTest(const FString&)
 		Lowest = FMath::Min(Lowest, Path.PositionAt(Path.TotalSeconds() * I / 600.0f).Z);
 	TestTrue(TEXT("Minimum authored clearance is preserved across the complete turn"),
 		FMath::IsNearlyEqual(Lowest, GuLiWingmanAttack::MinimumGroundHeight, 0.1));
-	Profile.PullUpHeight=10000; Profile.MissileCount=64;
+	Profile.PullUpHeight=2000; Profile.MissileCount=64;
 	TestFalse(TEXT("A source row exceeding bounded packet capacity is rejected"),Profile.IsWellFormed());
 	auto* SourceTable = LoadObject<UDataTable>(nullptr, TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeShip_WingmanWeapons.DT_GuLiStrikeShip_WingmanWeapons"));
 	const auto* SourceRow = SourceTable ? SourceTable->FindRow<FGuLiStrikeShipWingmanWeaponsRow>(TEXT("WingmanGroundMissile"), TEXT("Wingman attack acceptance")) : nullptr;
@@ -79,11 +79,11 @@ bool FGuLiWingmanGroundRunTest::RunTest(const FString&)
 	TestEqual(TEXT("Authored default is ten missiles"), SourceRow->MissileCount, 10);
 	TestEqual(TEXT("Authored default dive is 1.5 seconds"), SourceRow->DiveSeconds, 1.5f);
 	TestEqual(TEXT("Authored ground attack flight speed is doubled"),
-		SourceRow->FlightSpeedCentimetersPerSecond, 9000.0f);
+		SourceRow->FlightSpeedCentimetersPerSecond, 1800.0f);
 	FGuLiSpellFieldConfig Field;
 	TestTrue(TEXT("Ship ground weapon links the global field row"),
 		UGuLiSpellFieldDataSubsystem::ResolveAuthoredConfig(FName(*SourceRow->EffectConfigId), Field));
-	TestEqual(TEXT("Global ground blast radius is 40m"), Field.Radius, 4000.0f);
+	TestEqual(TEXT("Global ground blast radius is 40m"), Field.Radius, 800.0f);
 	TestEqual(TEXT("Ground damage is authored only in the global table"), SourceRow->Damage, 0.0f);
 	auto* TransientTable = NewObject<UDataTable>();
 	TransientTable->RowStruct = FGuLiStrikeShipWingmanWeaponsRow::StaticStruct();
@@ -122,14 +122,14 @@ bool FGuLiWingmanAirRunTest::RunTest(const FString&)
 	TestEqual(TEXT("Burst-start wire semantics require protocol version fourteen"),
 		GULI_WINGMAN_PROTOCOL_VERSION, 14u);
 	TestTrue(TEXT("Default burst-orbit profile is valid"), Profile.IsWellFormed());
-	TestEqual(TEXT("Below 100m first separates"), SelectAirEntryPhase(9999.0f, Profile),
+	TestEqual(TEXT("Below 100m first separates"), SelectAirEntryPhase(1999.0f, Profile),
 		EGuLiWingmanAttackPhase::AirSeparate);
-	TestEqual(TEXT("Exactly 100m can start a burst"), SelectAirEntryPhase(10000.0f, Profile),
+	TestEqual(TEXT("Exactly 100m can start a burst"), SelectAirEntryPhase(2000.0f, Profile),
 		EGuLiWingmanAttackPhase::AirApproachFire);
-	TestFalse(TEXT("Exactly 50m keeps firing"), ShouldEndAirBurst(5000.0f, 1.0, Profile));
-	TestTrue(TEXT("Strictly below 50m stops firing"), ShouldEndAirBurst(4999.0f, 1.0, Profile));
-	TestFalse(TEXT("Burst remains active before five seconds"), ShouldEndAirBurst(8000.0f, 4.999, Profile));
-	TestTrue(TEXT("Burst ends at five seconds"), ShouldEndAirBurst(8000.0f, 5.0, Profile));
+	TestFalse(TEXT("Exactly 50m keeps firing"), ShouldEndAirBurst(1000.0f, 1.0, Profile));
+	TestTrue(TEXT("Strictly below 50m stops firing"), ShouldEndAirBurst(999.0f, 1.0, Profile));
+	TestFalse(TEXT("Burst remains active before five seconds"), ShouldEndAirBurst(1600.0f, 4.999, Profile));
+	TestTrue(TEXT("Burst ends at five seconds"), ShouldEndAirBurst(1600.0f, 5.0, Profile));
 	TestFalse(TEXT("Cooldown does not start outside the 520m orbit"),
 		ShouldBeginAirOrbitCooldown(52000.1f, 52000.0f));
 	TestTrue(TEXT("Cooldown starts on the 520m boundary"),
@@ -161,9 +161,9 @@ bool FGuLiWingmanAirRunTest::RunTest(const FString&)
 	if (!TestNotNull(TEXT("Burst-orbit source table is deployed"), SourceRow)) return false;
 	TestEqual(TEXT("Authored attack pattern is AirBurstOrbit"), SourceRow->AttackPattern, FString(TEXT("AirBurstOrbit")));
 	TestEqual(TEXT("Authored air attack flight speed is doubled"),
-		SourceRow->FlightSpeedCentimetersPerSecond, 9000.0f);
-	TestEqual(TEXT("Authored fire start distance is 100m"), SourceRow->AirFireStartDistanceCentimeters, 10000.0f);
-	TestEqual(TEXT("Authored fire stop distance is 50m"), SourceRow->AirFireStopDistanceCentimeters, 5000.0f);
+		SourceRow->FlightSpeedCentimetersPerSecond, 1800.0f);
+	TestEqual(TEXT("Authored fire start distance is 100m"), SourceRow->AirFireStartDistanceCentimeters, 2000.0f);
+	TestEqual(TEXT("Authored fire stop distance is 50m"), SourceRow->AirFireStopDistanceCentimeters, 1000.0f);
 	TestEqual(TEXT("Authored burst duration is five seconds"), SourceRow->AirBurstDurationSeconds, 5.0f);
 	TestEqual(TEXT("Authored orbit cooldown is three seconds"), SourceRow->AirOrbitCooldownSeconds, 3.0f);
 	TestEqual(TEXT("Authored machine-gun logical interval is 0.2 seconds"), SourceRow->CooldownSeconds, 0.2f);
@@ -204,10 +204,10 @@ bool FGuLiWingmanNativeV3AttackFallbackTest::RunTest(const FString&)
 		EGuLiWingmanAttackPattern::AirBurstOrbit);
 	TestEqual(TEXT("Native machine-gun logical interval is 0.2 seconds"), MachineGun->CooldownSeconds, 0.2f);
 	TestEqual(TEXT("Native machine-gun burst lasts five seconds"), MachineGun->Attack.AirBurstDurationSeconds, 5.0f);
-	TestEqual(TEXT("Native machine-gun attack speed is doubled"), MachineGun->Attack.FlightSpeed, 9000.0f);
-	TestEqual(TEXT("Native ground-run attack speed is doubled"), GroundMissile->Attack.FlightSpeed, 9000.0f);
+	TestEqual(TEXT("Native machine-gun attack speed is doubled"), MachineGun->Attack.FlightSpeed, 1800.0f);
+	TestEqual(TEXT("Native ground-run attack speed is doubled"), GroundMissile->Attack.FlightSpeed, 1800.0f);
 	TestEqual(TEXT("Native ground blast radius is five times the shared field radius"),
-		GroundMissile->Attack.ExplosionRadius, 4000.0f);
+		GroundMissile->Attack.ExplosionRadius, 800.0f);
 	TestEqual(TEXT("Ground attack uses the Wingman-only projectile definition"),
 		GroundMissile->AttackProjectile.ToSoftObjectPath().ToString(),
 		FString(TEXT("/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundMissile.DA_WingmanGroundMissile")));

@@ -18,24 +18,24 @@ DEFINE_LOG_CATEGORY_STATIC(LogGuLiCommanderCamera, Log, All);
 
 namespace GuLiCommanderCamera
 {
-	constexpr float DefaultArmLength = 80000.0f;
-	constexpr float MinimumArmLength = 20000.0f;
-	constexpr float EmergencyMinimumArmLength = 1000.0f;
-	constexpr float MaximumArmLength = 180000.0f;
-	constexpr float PivotHeightAboveGround = 150.0f;
-	constexpr float BoomHeightAboveGround = 200.0f;
-	constexpr float CameraHeightAboveGround = 500.0f;
-	constexpr float BoundaryPadding = 5000.0f;
-	constexpr float BoomSampleSpacing = 10000.0f;
-	constexpr float CruiseHeightBuffer = 1000.0f;
-	constexpr float CruiseHeightDeadZone = 300.0f;
+	constexpr float DefaultArmLength = 16000.0f;
+	constexpr float MinimumArmLength = 4000.0f;
+	constexpr float EmergencyMinimumArmLength = 200.0f;
+	constexpr float MaximumArmLength = 36000.0f;
+	constexpr float PivotHeightAboveGround = 30.0f;
+	constexpr float BoomHeightAboveGround = 40.0f;
+	constexpr float CameraHeightAboveGround = 100.0f;
+	constexpr float BoundaryPadding = 1000.0f;
+	constexpr float BoomSampleSpacing = 2000.0f;
+	constexpr float CruiseHeightBuffer = 200.0f;
+	constexpr float CruiseHeightDeadZone = 60.0f;
 	constexpr float CruiseRiseHalfLife = 0.20f;
-	constexpr float MaximumCruiseRiseSpeed = 30000.0f;
+	constexpr float MaximumCruiseRiseSpeed = 6000.0f;
 	constexpr float ReanchorHalfLife = 0.35f;
-	constexpr float MaximumReanchorDescentSpeed = 15000.0f;
-	constexpr float ReanchorCompletionTolerance = 50.0f;
+	constexpr float MaximumReanchorDescentSpeed = 3000.0f;
+	constexpr float ReanchorCompletionTolerance = 10.0f;
 	constexpr float MinimumReanchorDuration = 0.75f;
-	constexpr float EmergencyLiftTolerance = 1.0f;
+	constexpr float EmergencyLiftTolerance = 0.2f;
 	constexpr float HeightLookAheadSeconds = 0.75f;
 	constexpr int32 HeightLookAheadSamples = 3;
 	constexpr float MaximumSubstepSeconds = 1.0f / 60.0f;
@@ -226,7 +226,7 @@ void AGuLiCommanderCameraPawn::SimulateCameraStep(
 	const FVector Right = PlanarRotation.RotateVector(FVector::RightVector);
 	const float CameraHeight = CurrentArmLength * FMath::Abs(
 		FMath::Sin(FMath::DegreesToRadians(GuLiCommanderCamera::CameraPitchDegrees)));
-	const float MoveSpeed = FMath::Clamp(CameraHeight * 1.4f, 30000.0f, 230000.0f);
+	const float MoveSpeed = FMath::Clamp(CameraHeight * 1.4f, 1200.0f, 9200.0f);
 	RequestedPivot += (Forward * MovementSeconds.X + Right * MovementSeconds.Y) * MoveSpeed;
 
 	FVector CandidatePivot = RequestedPivot;

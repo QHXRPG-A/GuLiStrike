@@ -1,0 +1,450 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "34E0AB4B4CAC291B691B9B8846EF2D7C",
+			"instanceName": "DESKTOP-6D3B0FC-3832",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.18-06.07.02",
+	"succeeded": 3,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 1.331467866897583,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AutomaticFlightRebakeAndReachability",
+			"fullTestPath": "GuLi.NavigationBake.AutomaticFlightRebakeAndReachability",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34E0AB4B4CAC291B691B9B8846EF2D7C"
+			],
+			"duration": 0.043158400803804398,
+			"dateTime": "2026.09.18-06.07.01",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CollisionTerrainAndSettingsSignature",
+			"fullTestPath": "GuLi.NavigationBake.CollisionTerrainAndSettingsSignature",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34E0AB4B4CAC291B691B9B8846EF2D7C"
+			],
+			"duration": 0.011110696941614151,
+			"dateTime": "2026.09.18-06.07.01",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FactoryRampGroundContract",
+			"fullTestPath": "GuLi.NavigationBake.FactoryRampGroundContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34E0AB4B4CAC291B691B9B8846EF2D7C"
+			],
+			"duration": 0.076626099646091461,
+			"dateTime": "2026.09.18-06.07.01",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "GroundCacheAndDynamicReachability",
+			"fullTestPath": "GuLi.NavigationBake.GroundCacheAndDynamicReachability",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"34E0AB4B4CAC291B691B9B8846EF2D7C"
+			],
+			"duration": 1.2005726099014282,
+			"dateTime": "2026.09.18-06.07.01",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=AssetCompilation world=/Temp/Untitled_4.GuLiNavigationBakeTest",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=SettleGround object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default asyncGather=1 maxJobs=8",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=CheckGround object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=GroundBuild object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogNavigationDataBuild:    ANavigationData::RebuildAll load time: 0.00s",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogNavigationDataBuild:    FRecastNavMeshGenerator::ProcessTileTasksAndGetUpdatedTiles build time: 0.04s",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] kind=Ground status=Rebuilt object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default hash=7168d969cf0e2be7 check_s=0.000363 build_s=0.039058 reason=Source geometry/settings changed, or no versioned bake record exists.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] result=Ready world=/Temp/Untitled_4.GuLiNavigationBakeTest ground_rebuilds=1 flight_rebuilds=0 save_s=0.000000 total_s=0.080570 reason=All source navigation is ready.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=AssetCompilation world=/Temp/Untitled_4.GuLiNavigationBakeTest",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=SettleGround object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default asyncGather=1 maxJobs=8",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=CheckGround object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] kind=Ground status=Hit object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default hash=7168d969cf0e2be7 check_s=0.000159 build_s=0.000000 reason=Validated saved ground tiles.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] result=Ready world=/Temp/Untitled_4.GuLiNavigationBakeTest ground_rebuilds=0 flight_rebuilds=0 save_s=0.000000 total_s=0.000415 reason=All source navigation is ready.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'An inclined runtime ramp remains reachable after local geometry updates' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrikeEditor\\Private\\Tests\\GuLiNavigationBakeTests.cpp",
+					"lineNumber": 131,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Depleted ore restores the baked ground connection' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrikeEditor\\Private\\Tests\\GuLiNavigationBakeTests.cpp",
+					"lineNumber": 138,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Removing a dynamic obstacle restores access' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrikeEditor\\Private\\Tests\\GuLiNavigationBakeTests.cpp",
+					"lineNumber": 144,
+					"timestamp": "2026.09.18-06.07.01"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Demolishing the building restores the same ramp connection' to be true.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrikeEditor\\Private\\Tests\\GuLiNavigationBakeTests.cpp",
+					"lineNumber": 158,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=AssetCompilation world=/Temp/Untitled_4.GuLiNavigationBakeTest",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=SettleGround object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default asyncGather=1 maxJobs=8",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=CheckGround object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] kind=Ground status=Hit object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default hash=7168d969cf0e2be7 check_s=0.000324 build_s=0.000000 reason=Validated saved ground tiles.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] result=Ready world=/Temp/Untitled_4.GuLiNavigationBakeTest ground_rebuilds=0 flight_rebuilds=0 save_s=0.000000 total_s=0.000614 reason=All source navigation is ready.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=AssetCompilation world=/Temp/Untitled_4.GuLiNavigationBakeTest",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=SettleGround object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default asyncGather=1 maxJobs=8",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=CheckGround object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] stage=GroundBuild object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogNavigationDataBuild:    ANavigationData::RebuildAll load time: 0.00s",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogNavigationDataBuild:    FRecastNavMeshGenerator::ProcessTileTasksAndGetUpdatedTiles build time: 0.04s",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] kind=Ground status=Rebuilt object=/Temp/Untitled_4.GuLiNavigationBakeTest:PersistentLevel.RecastNavMesh-Default hash=7168d969cf0e2be7 check_s=0.000158 build_s=0.039314 reason=Ground tile checksum differs from the saved bake record.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				},
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "LogGuLiNavigationBake: [GULI_NAV_PREPARE] result=Ready world=/Temp/Untitled_4.GuLiNavigationBakeTest ground_rebuilds=1 flight_rebuilds=0 save_s=0.000000 total_s=0.040244 reason=All source navigation is ready.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.18-06.07.02"
+				}
+			],
+			"warnings": 0,
+			"errors": 4,
+			"artifacts": []
+		}
+	]
+}

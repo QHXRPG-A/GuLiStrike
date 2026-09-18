@@ -1,0 +1,251 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "key": "Bottom_Twin_Barrel_Turret",
+      "fbx_file": "FBX\\SKM_SC_Bottom_Twin_Barrel_Turret_Styled.fbx",
+      "fbx_sha256": "df1bf669f8918df12eef9c9d27c356dac40a124c268191f38f8725f1fc64c17d",
+      "mesh_count": 1,
+      "body_triangles": 1684,
+      "dimensions_m": [
+        20.16775894165039,
+        49.25335693359375,
+        10.072582244873047
+      ],
+      "max_dimension_error_m": 4.76837158203125e-06,
+      "max_geometry_error_m": 6.873167876619846e-06,
+      "origin_error_m": 6.146194801025211e-15,
+      "uv_names": [
+        "SC_PaintUV",
+        "SC_LineUV",
+        "UVmap_0",
+        "UVmap_1",
+        "UVmap_2",
+        "LightMapUV"
+      ],
+      "uv_max_errors": {
+        "SC_PaintUV": 0.0,
+        "SC_LineUV": 0.0,
+        "UVmap_0": 0.0,
+        "UVmap_1": 0.0,
+        "UVmap_2": 0.0,
+        "LightMapUV": 0.0
+      },
+      "materials": [
+        "M_SC_Bottom_Twin_Barrel_Turret_Portable"
+      ],
+      "bones": {
+        "Root": {
+          "parent": null,
+          "head": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "BarrelPitch": {
+          "parent": "Root",
+          "head": [
+            -1.9233010561947594e-07,
+            2.200000047683716,
+            0.2701199948787689
+          ]
+        }
+      },
+      "max_bone_pivot_error_m": 1.9233010868616656e-07,
+      "rigid_weights": "single bone, weight 1",
+      "socket_names": [
+        "Socket_1",
+        "Socket_2"
+      ],
+      "socket_metadata_matches_source": true,
+      "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+      "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+      "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+      "demo_animation_exported": false,
+      "UE_formal_validation": "not_run",
+      "Blender_readback_cleaned_degenerate_triangles": 0,
+      "Blender_readback_cleaned_duplicate_triangles": 0,
+      "raw_FBX_preservation": null,
+      "raw_FBX_triangles": 1684,
+      "source_body_geometry_edited": false,
+      "passed": true
+    },
+    {
+      "key": "High_Rate_Fire_Cannon",
+      "fbx_file": "FBX\\SKM_SC_High_Rate_Fire_Cannon_Styled.fbx",
+      "fbx_sha256": "f565192e0b559859c3bb83b00a349dc602a7df4f0ff99bed994dc7b539c8fd9d",
+      "mesh_count": 1,
+      "body_triangles": 1286,
+      "dimensions_m": [
+        17.813232421875,
+        30.505781173706055,
+        9.28563117980957
+      ],
+      "max_dimension_error_m": 1.9073486328125e-06,
+      "max_geometry_error_m": 3.80163646696019e-06,
+      "origin_error_m": 0.0,
+      "uv_names": [
+        "SC_PaintUV",
+        "SC_LineUV",
+        "UVmap_0",
+        "UVmap_1",
+        "LightMapUV"
+      ],
+      "uv_max_errors": {
+        "SC_PaintUV": 0.0,
+        "SC_LineUV": 0.0,
+        "UVmap_0": 0.0,
+        "UVmap_1": 0.0,
+        "LightMapUV": 0.0
+      },
+      "materials": [
+        "M_SC_High_Rate_Fire_Cannon_Portable"
+      ],
+      "bones": {
+        "Root": {
+          "parent": null,
+          "head": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "BarrelPitch": {
+          "parent": "Root",
+          "head": [
+            0.00010048867989098653,
+            -5.400000095367432,
+            -0.8073899745941162
+          ]
+        }
+      },
+      "max_bone_pivot_error_m": 4.88682430198761e-07,
+      "rigid_weights": "single bone, weight 1",
+      "socket_names": [
+        "Socket_1",
+        "Socket_2"
+      ],
+      "socket_metadata_matches_source": true,
+      "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+      "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+      "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+      "demo_animation_exported": false,
+      "UE_formal_validation": "not_run",
+      "Blender_readback_cleaned_degenerate_triangles": 0,
+      "Blender_readback_cleaned_duplicate_triangles": 0,
+      "raw_FBX_preservation": null,
+      "raw_FBX_triangles": 1286,
+      "source_body_geometry_edited": false,
+      "passed": true
+    },
+    {
+      "key": "Incendiary_Bomb_LaunchBay",
+      "fbx_file": "FBX\\SM_SC_Incendiary_Bomb_LaunchBay_Styled.fbx",
+      "fbx_sha256": "7e61cd2870c6ccae8d5a0ddf80d99065bad8cb4efe855bbfbd4d3728b75af088",
+      "mesh_count": 1,
+      "body_triangles": 3978,
+      "dimensions_m": [
+        31.033714294433594,
+        76.03630065917969,
+        16.303579330444336
+      ],
+      "max_dimension_error_m": 3.814697265625e-06,
+      "max_geometry_error_m": 3.43852161677205e-06,
+      "origin_error_m": 0.0,
+      "uv_names": [
+        "SC_PaintUV",
+        "SC_LineUV",
+        "UVmap_0",
+        "UVmap_1",
+        "LightMapUV"
+      ],
+      "uv_max_errors": {
+        "SC_PaintUV": 0.0,
+        "SC_LineUV": 0.0,
+        "UVmap_0": 0.0,
+        "UVmap_1": 0.0,
+        "LightMapUV": 0.0
+      },
+      "materials": [
+        "M_SC_Incendiary_Bomb_LaunchBay_Portable"
+      ],
+      "bones": {},
+      "max_bone_pivot_error_m": 0,
+      "rigid_weights": "not_applicable_static",
+      "socket_names": [
+        "Socket_1",
+        "Socket_2",
+        "Socket_3",
+        "Socket_4",
+        "Socket_5"
+      ],
+      "socket_metadata_matches_source": true,
+      "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+      "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+      "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+      "demo_animation_exported": false,
+      "UE_formal_validation": "not_run",
+      "Blender_readback_cleaned_degenerate_triangles": 0,
+      "Blender_readback_cleaned_duplicate_triangles": 0,
+      "raw_FBX_preservation": null,
+      "raw_FBX_triangles": 3978,
+      "source_body_geometry_edited": false,
+      "passed": true
+    },
+    {
+      "key": "Missile_Bay",
+      "fbx_file": "FBX\\SM_SC_Missile_Bay_Styled.fbx",
+      "fbx_sha256": "99cb93d63a11ae116912ecefdee356a5973bd3fff77ab25a7b9e999601661b7e",
+      "mesh_count": 1,
+      "body_triangles": 368,
+      "dimensions_m": [
+        9.599385261535645,
+        16.0596866607666,
+        2.2909786701202393
+      ],
+      "max_dimension_error_m": 9.5367431640625e-07,
+      "max_geometry_error_m": 8.596304041930125e-07,
+      "origin_error_m": 0.0,
+      "uv_names": [
+        "SC_PaintUV",
+        "SC_LineUV",
+        "UVmap_0",
+        "UVmap_1",
+        "UVmap_2",
+        "LightMapUV"
+      ],
+      "uv_max_errors": {
+        "SC_PaintUV": 0.0,
+        "SC_LineUV": 0.0,
+        "UVmap_0": 0.0,
+        "UVmap_1": 0.0,
+        "UVmap_2": 0.0,
+        "LightMapUV": 0.0
+      },
+      "materials": [
+        "M_SC_Missile_Bay_Portable"
+      ],
+      "bones": {},
+      "max_bone_pivot_error_m": 0,
+      "rigid_weights": "not_applicable_static",
+      "socket_names": [],
+      "socket_metadata_matches_source": true,
+      "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+      "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+      "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+      "demo_animation_exported": false,
+      "UE_formal_validation": "not_run",
+      "Blender_readback_cleaned_degenerate_triangles": 0,
+      "Blender_readback_cleaned_duplicate_triangles": 0,
+      "raw_FBX_preservation": null,
+      "raw_FBX_triangles": 368,
+      "source_body_geometry_edited": false,
+      "passed": true
+    }
+  ],
+  "reader": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+  "readback_implementation": "D:\\UE5.7\\test1\\Scripts\\Blender\\export_ship_component_material_delivery.py",
+  "readback_implementation_sha256": "390c7973300d35799d2c669a9157d5c7a59c3f7b2aaf53cb1aa349e7cbd633b9",
+  "release_authorization": "D:\\UE5.7\\test1\\ArtSource\\Ships\\ShipComponentStyle_20260917\\UE_Integration\\release_authorization_20260917.json"
+}

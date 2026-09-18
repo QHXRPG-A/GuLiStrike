@@ -1,0 +1,266 @@
+{
+  "schema": "guli-ship-style-review/v1",
+  "work_id": "WORK-20260917-003",
+  "reference_revision": "v1",
+  "art_revision": "1.0",
+  "assembled_at": "2026-09-17T05:31:38.010752+00:00",
+  "stage": "delivered_Blender_FBX",
+  "user_A": "approved",
+  "user_B": "approved",
+  "new_model_production": "cancelled_per_user_keep_original_geometry",
+  "final_fbx_delivery": "passed",
+  "ue_formal_validation": "not_run",
+  "source_capture": "passed",
+  "thor_layout_decision": {
+    "value": "5 cells x 3 visible bores; preserve 5 existing sockets",
+    "user_reply": "保留原型的 5 组 × 3 孔（推荐）",
+    "date": "2026-09-17"
+  },
+  "parts": {
+    "Twin_Barrel_Turret": {
+      "label": "双联炮",
+      "design_version": "v1",
+      "A": "approved",
+      "B": "approved",
+      "reference_sheet": "References/Twin_Barrel_Turret_Design_v1.png",
+      "reference_sha256": "0d9b9d9622484e38ce0befd07832dbb57eddd1efa5b7c4d53bb49edbab9e0c7b",
+      "prompt_sha256": "08a05d5df87b07d5043283d4d5a3ddbb11a05afd25a6fa5ca14f1b6832c03a80",
+      "source_geometry_sha256": "b3e3ba4ce1cebc269adb3eeec4189b1edfebfd07ec224f4c16e17e2927e414b4",
+      "source_matches_previous_geometry_baseline": true,
+      "dimensions_m_xyz": [
+        20.1677587890625,
+        49.2533203125,
+        10.072564392089843
+      ],
+      "original_triangles": 1240,
+      "sockets": 2,
+      "visual_bores": 2,
+      "feature_count_visual_review": "see References/visual_review_v1.json; not user approval",
+      "mount_origin": [
+        0,
+        0,
+        0
+      ],
+      "prototype_previews": [
+        "Source/Previews/Twin_Barrel_Turret_original_hero_v1.png",
+        "Source/Previews/Twin_Barrel_Turret_original_front_v1.png",
+        "Source/Previews/Twin_Barrel_Turret_original_right_v1.png",
+        "Source/Previews/Twin_Barrel_Turret_original_rear_v1.png",
+        "Source/Previews/Twin_Barrel_Turret_original_top_v1.png"
+      ],
+      "latest_material_candidate": "v4",
+      "delivered_material_version": "v4"
+    },
+    "CIWS": {
+      "label": "CIWS",
+      "design_version": "v1",
+      "A": "approved",
+      "B": "approved",
+      "reference_sheet": "References/CIWS_Design_v1.png",
+      "reference_sha256": "9864ec1aecc5a598d2e196c77f8b631e7b44ac8cddd20bec327fe2f3446f97eb",
+      "prompt_sha256": "578ed2c1cbd8e03c7b37fa0860f48022fbac23462d87feac7e5a1fa752629c83",
+      "source_geometry_sha256": "594d5cc065686ccdb0e6c299eb079b5edf2437e0d19919cfcf2ee0e230aed0c9",
+      "source_matches_previous_geometry_baseline": true,
+      "dimensions_m_xyz": [
+        3.2010418701171877,
+        6.845887451171875,
+        2.350498046875
+      ],
+      "original_triangles": 654,
+      "sockets": 3,
+      "visual_bores": 3,
+      "feature_count_visual_review": "see References/visual_review_v1.json; not user approval",
+      "mount_origin": [
+        0,
+        0,
+        0
+      ],
+      "prototype_previews": [
+        "Source/Previews/CIWS_original_hero_v1.png",
+        "Source/Previews/CIWS_original_front_v1.png",
+        "Source/Previews/CIWS_original_right_v1.png",
+        "Source/Previews/CIWS_original_rear_v1.png",
+        "Source/Previews/CIWS_original_top_v1.png"
+      ],
+      "latest_material_candidate": "v4",
+      "delivered_material_version": "v4"
+    },
+    "Thor_MissilePod": {
+      "label": "Thor 一级导弹舱",
+      "design_version": "v3",
+      "A": "approved",
+      "B": "approved",
+      "reference_sheet": "References/Thor_MissilePod_Design_v3.png",
+      "reference_sha256": "9d2ceff349683ea9f439b08054b166e95c6c2dd5c9d484bec7803624f02d4d29",
+      "prompt_sha256": "ea3b60da2203eabae7727e474df8832657840f85404b4a06b0ce0853d0f2b23b",
+      "source_geometry_sha256": "d7ada1fd5aac8d8a97fc29badacfbf1d8459f0fd06e7a7402aa1239e31b47638",
+      "source_matches_previous_geometry_baseline": true,
+      "dimensions_m_xyz": [
+        18.04876953125,
+        45.33240234375,
+        5.910689697265625
+      ],
+      "original_triangles": 2080,
+      "sockets": 5,
+      "visual_bores": 15,
+      "feature_count_visual_review": "see References/visual_review_v1.json; not user approval",
+      "mount_origin": [
+        0,
+        0,
+        0
+      ],
+      "prototype_previews": [
+        "Source/Previews/Thor_MissilePod_original_hero_v1.png",
+        "Source/Previews/Thor_MissilePod_original_front_v1.png",
+        "Source/Previews/Thor_MissilePod_original_right_v1.png",
+        "Source/Previews/Thor_MissilePod_original_rear_v1.png",
+        "Source/Previews/Thor_MissilePod_original_top_v1.png"
+      ],
+      "previous_references": [
+        {
+          "version": "v1",
+          "status": "superseded_before_A",
+          "reason": "End-on projections incorrectly showed three cells side by side."
+        },
+        {
+          "version": "v2",
+          "status": "superseded_before_A",
+          "reason": "Side projection read as four cells; revised to five distinguishable cells in v3."
+        }
+      ],
+      "latest_material_candidate": "v4",
+      "delivered_material_version": "v4"
+    }
+  },
+  "preserved_evidence": [
+    {
+      "source": "outputs/ship-component-rigs/Twin_Barrel_Turret-authoring.json",
+      "path": "Source/ExistingAuthoring/Twin_Barrel_Turret-authoring.json",
+      "sha256": "3803a1bbddfefb402c69d2516ac47c1c0fe90d61ce1aa06bce01bd5064d41e00"
+    },
+    {
+      "source": "outputs/ship-component-rigs/Twin_Barrel_Turret-ue-import.json",
+      "path": "Source/ExistingAuthoring/Twin_Barrel_Turret-ue-import.json",
+      "sha256": "edbee9f48e46f30a776d194d7e341db63c9578bd0ba1f9f05608acaef9092ae3"
+    },
+    {
+      "source": "outputs/ship-component-rigs/Twin_Barrel_Turret_+00.png",
+      "path": "Source/Previews/Twin_Barrel_Turret_prior_rig_0deg.png",
+      "sha256": "0eb5cb527d9616df2692c1b8571a87b4f41a3d9ab1095697d679f7981fcedace"
+    },
+    {
+      "source": "outputs/ship-component-rigs/CIWS-authoring.json",
+      "path": "Source/ExistingAuthoring/CIWS-authoring.json",
+      "sha256": "2f7bcdafaaa897140d59504e20d2518b642cdd061677014e07cfc0f68cb5c675"
+    },
+    {
+      "source": "outputs/ship-component-rigs/CIWS-ue-import.json",
+      "path": "Source/ExistingAuthoring/CIWS-ue-import.json",
+      "sha256": "4db052f575df53b550c77ce0fca8456d3c5fcfa6fa35daeacefac8e6fc24e8b5"
+    },
+    {
+      "source": "outputs/ship-component-rigs/CIWS_+00.png",
+      "path": "Source/Previews/CIWS_prior_rig_0deg.png",
+      "sha256": "936b0cc3309e685ceaf38ca1042b00dd2d2c5182e0c2b637ec3f265a404b4dfd"
+    },
+    {
+      "source": "Scripts/Art/freeze_ship_component_style_sources.py",
+      "path": "Source/Tools/freeze_ship_component_style_sources.py",
+      "sha256": "9d8bcdcacbb7125f0a80ca413dc4a87575aa61dc05478db94f151f782e100edc"
+    },
+    {
+      "source": "Scripts/Blender/render_ship_component_style_prototypes.py",
+      "path": "Source/Tools/render_ship_component_style_prototypes.py",
+      "sha256": "f5369f74ecf4687537634b174443a10247275dc9373ff79b04a19278ff0b97f2"
+    },
+    {
+      "source": "Scripts/Art/build_ship_component_style_review.py",
+      "path": "Source/Tools/build_ship_component_style_review.py",
+      "sha256": "4c89d8a0f2413097ee23f42df9e0e3650d15c301b28b448955bcb0a6e9547cf2"
+    },
+    {
+      "source": "Scripts/author_ship_component_rigs.py",
+      "path": "Source/Tools/author_ship_component_rigs.py",
+      "sha256": "aed52711f7500bb45aab1142065868ba9adef37e155991a0c527bbe72d9b2f00"
+    },
+    {
+      "source": "Progress/RequirementDocument/GuLiStrike美术规范.md",
+      "path": "Source/Standards/GuLiStrike美术规范_1.0.md",
+      "sha256": "69d253a6ffd898c4b9c075bf27ede2610aafc60e11c32cddeedbd8904f686a2a"
+    },
+    {
+      "source": ".agents/skills/guli-model-production/SKILL.md",
+      "path": "Source/Standards/guli-model-production_SKILL.md",
+      "sha256": "b92d7af9187653bbde061286d7c486b4a96eb001fcf0f50c95d8dc806bbc1d47"
+    }
+  ],
+  "limits": [
+    "Reference sheets are visual proposals, not measured CAD or finished Blender renders.",
+    "All installation dimensions and interfaces are authoritative in source_snapshot_v1.json.",
+    "Fresh UE skeletal FBX export is unsupported under NullRHI; prior authoring FBX and blend are preserved.",
+    "Source skeletal bounds include the motion envelope; use original_bounds_cm for reference-rest dimensions."
+  ],
+  "A_decision": {
+    "date": "2026-09-17T05:32:48.321142+00:00",
+    "user_reply": "三件均通过 A，开始建模",
+    "gate": "A",
+    "decision": "approved",
+    "art_revision": "1.0",
+    "parts": {
+      "Twin_Barrel_Turret": {
+        "version": "v1",
+        "sha256": "0d9b9d9622484e38ce0befd07832dbb57eddd1efa5b7c4d53bb49edbab9e0c7b"
+      },
+      "CIWS": {
+        "version": "v1",
+        "sha256": "9864ec1aecc5a598d2e196c77f8b631e7b44ac8cddd20bec327fe2f3446f97eb"
+      },
+      "Thor_MissilePod": {
+        "version": "v3",
+        "sha256": "9d2ceff349683ea9f439b08054b166e95c6c2dd5c9d484bec7803624f02d4d29"
+      }
+    },
+    "B": "pending"
+  },
+  "material_production": "v4_B_approved_delivered",
+  "latest_review": "Delivery/v4/Review.html",
+  "latest_scope_record": "material_scope_and_connection_fix_v4.json",
+  "B_decision": {
+    "date": "2026-09-17T06:39:41.489340+00:00",
+    "gate": "B",
+    "decision": "approved",
+    "user_reply": "三件均通过 B，导出 FBX",
+    "art_revision": "1.0",
+    "scope": "Original geometry retained; textures, three-tone lighting/shadows, internal ink and optional outline; Blender/FBX delivery only",
+    "parts": {
+      "Twin_Barrel_Turret": {
+        "version": "v4",
+        "approved_blend": "Production/v4/Twin_Barrel_Turret_OriginalMesh_MaterialCandidate.blend",
+        "approved_blend_sha256": "c3ac95335b9cede1a49aaa7bc6b043494a83fc08e40ada828768de30e09ff2b5",
+        "hero": "Previews/v4/Twin_Barrel_Turret_hero.png",
+        "hero_sha256": "63e7f958e08f5287d500d5e22727cfbaaba2b3c4c18d43950d282de427354783",
+        "original_geometry_sha256": "95ac0461275b3364509a9abe020a451a1bd6e92d19a8a7b5e5a71793f774a297"
+      },
+      "CIWS": {
+        "version": "v4",
+        "approved_blend": "Production/v4/CIWS_OriginalMesh_MaterialCandidate.blend",
+        "approved_blend_sha256": "996ee01303acfd8d97b396a069c849230665e9639eea1a32c7e4881adf896f39",
+        "hero": "Previews/v4/CIWS_hero.png",
+        "hero_sha256": "0a784b590ef27ef0d0dbb696d7bfaef6ea27c596747b02bfa1f365dfefd67387",
+        "original_geometry_sha256": "a7d4a3431a61476d0a0f1dd2751483202c1a26c82fe0f3d47c00d8d3c1ffc7d0"
+      },
+      "Thor_MissilePod": {
+        "version": "v4",
+        "approved_blend": "Production/v4/Thor_MissilePod_OriginalMesh_MaterialCandidate.blend",
+        "approved_blend_sha256": "4cc4c432ee70d9ed90d4ed535ab9a385368400c4bc4114601a99893e5371a432",
+        "hero": "Previews/v4/Thor_MissilePod_hero.png",
+        "hero_sha256": "0d95846456b39e3df6f7686c78e9b913a741a9dfba83bc8daeb1d202263bce7f",
+        "original_geometry_sha256": "468c6f4f77ac74a5d69e1551b2d9a801d61a54cddb08568ca7688f5ae28c7ecd"
+      }
+    },
+    "review_manifest_sha256": "e0f4752719757d8055f3b4e69810042549703282fed94aeb4615ea0c68a5dea2",
+    "UE_formal_integration": "not_authorized_this_round"
+  },
+  "final_delivery_manifest": "Delivery/v4/Delivery_Manifest.json",
+  "final_delivery_zip": "ShipComponentStyle_20260917_v4_Delivery.zip"
+}

@@ -16,9 +16,9 @@ namespace GuLiCommanderDestinationPlanner
 {
 	inline constexpr int32 MembersPerBlock = 25;
 	inline constexpr int32 ColumnsPerBlock = 5;
-	inline constexpr float DefaultFreeCandidatePitchCentimeters = 1800.0f;
-	inline constexpr float DefaultFreeCandidateRadiusCentimeters = 45000.0f;
-	inline constexpr float DefaultSoftAnchorPitchCentimeters = 9000.0f;
+	inline constexpr float DefaultFreeCandidatePitchCentimeters = 360.0f;
+	inline constexpr float DefaultFreeCandidateRadiusCentimeters = 9000.0f;
+	inline constexpr float DefaultSoftAnchorPitchCentimeters = 1800.0f;
 	inline constexpr int32 DefaultFreeCandidateCount = 2263;
 
 	struct GULISTRIKE_API FMemberInput
@@ -38,7 +38,7 @@ namespace GuLiCommanderDestinationPlanner
 	{
 		TArray<FCohortInput> Cohorts;
 		FVector TargetAnchor = FVector::ZeroVector;
-		float MemberSpacingCentimeters = 1800.0f;
+		float MemberSpacingCentimeters = 360.0f;
 	};
 
 	struct GULISTRIKE_API FMemberCandidate

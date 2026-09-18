@@ -90,7 +90,7 @@ def require_existing_weapon(path, ground):
 def require_projectile_contract(projectile, commander):
     if not isinstance(projectile, unreal.GuLiProjectileEffectDefinition):
         raise RuntimeError('Unexpected projectile definition class: ' + object_path(projectile))
-    expected_scale = 1.0 if commander else 2.0
+    expected_scale = 0.2 if commander else 0.4
     require_close('projectile visual scale', projectile.get_editor_property('visual_scale'), expected_scale)
 
 def require_wingman_projectile_references(commander, wingman, allow_legacy_impact=False):
@@ -165,7 +165,8 @@ def variant_signatures_match(actual, expected, tolerance=0.001):
 def require_wingman_impact_contract(field, allow_legacy_scale=False):
     if not isinstance(field, unreal.GuLiSpellFieldDefinition):
         raise RuntimeError('Unexpected Wingman impact-field class: ' + object_path(field))
-    require_close('Wingman impact reference radius', field.get_editor_property('radius'), 4000.0)
+    require_close('Wingman impact gameplay radius', field.get_editor_property('radius'), 800.0)
+    require_close('Wingman impact art reference radius', field.get_editor_property('visual_reference_radius'), 4000.0)
     require_close('Wingman impact dissipation', field.get_editor_property('dissipation_seconds'), 3.0)
     if field.get_editor_property('timing') != unreal.GuLiSpellFieldTiming.INSTANT:
         raise RuntimeError('Wingman impact field is not Instant')
@@ -454,8 +455,9 @@ def main():
 
     impact_field = asset(WINGMAN_IMPACT_FIELD, unreal.GuLiSpellFieldDefinition)
     impact_field.set_editor_property("config_id", "WingmanGroundMissile")
-    if abs(float(impact_field.get_editor_property('radius')) - 4000.0) > 0.001:
-        impact_field.set_editor_property('radius', 4000.0)
+    if abs(float(impact_field.get_editor_property('radius')) - 800.0) > 0.001:
+        impact_field.set_editor_property('radius', 800.0)
+    impact_field.set_editor_property('visual_reference_radius', 4000.0)
     if impact_field.get_editor_property('timing') != unreal.GuLiSpellFieldTiming.INSTANT:
         impact_field.set_editor_property('timing', unreal.GuLiSpellFieldTiming.INSTANT)
     if abs(float(impact_field.get_editor_property('dissipation_seconds')) - 3.0) > 0.001:
@@ -485,9 +487,9 @@ def main():
     # Do not inherit the Commander's homing-projectile profile when duplicating FX.
     if wingman_projectile.get_editor_property('motion_profile_row').get_editor_property('data_table'):
         wingman_projectile.set_editor_property('motion_profile_row', unreal.DataTableRowHandle())
-    if abs(float(wingman_projectile.get_editor_property('visual_scale')) - 2.0) > 0.001:
+    if abs(float(wingman_projectile.get_editor_property('visual_scale')) - 0.4) > 0.001:
         wingman_projectile.modify()
-        wingman_projectile.set_editor_property('visual_scale', 2.0)
+        wingman_projectile.set_editor_property('visual_scale', 0.4)
     if object_path(wingman_projectile.get_editor_property('impact_field')) != canonical(WINGMAN_IMPACT_FIELD):
         wingman_projectile.set_editor_property('impact_field', impact_field)
 

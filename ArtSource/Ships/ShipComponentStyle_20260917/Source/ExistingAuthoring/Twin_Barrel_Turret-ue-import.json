@@ -1,0 +1,91 @@
+{
+  "mesh": "/Game/Assets/Ships/ShipComponent/Rigged/SKM_SC_Twin_Barrel_Turret",
+  "skeleton": "/Game/Assets/Ships/ShipComponent/Rigged/SK_SC_Twin_Barrel_Turret",
+  "bones": [
+    {
+      "name": "Root",
+      "parent": "",
+      "local": {
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "global": {
+        "translation": [
+          0.0,
+          0.0,
+          0.0
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.0,
+          1.0
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    },
+    {
+      "name": "BarrelPitch",
+      "parent": "Root",
+      "local": {
+        "translation": [
+          0.0,
+          -220.0,
+          -27.01
+        ],
+        "rotation": [
+          0.0,
+          -0.0,
+          0.7071067811865475,
+          0.7071067811865476
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      },
+      "global": {
+        "translation": [
+          0.0,
+          -220.0,
+          -27.01
+        ],
+        "rotation": [
+          0.0,
+          0.0,
+          0.7071067811865475,
+          0.7071067811865476
+        ],
+        "scale": [
+          1.0,
+          1.0,
+          1.0
+        ]
+      }
+    }
+  ],
+  "material_slots": [
+    "ScifiDreadnoughtWeapons_001"
+  ],
+  "bounds": "<Struct 'BoxSphereBounds' (0x000001FDD3E9E340) {origin: {x: 0.000031, y: 422.391602, z: 93.717194}, box_extent: {x: 1008.387970, y: 2462.666016, z: 503.628204}, sphere_radius: 2708.359572}>",
+  "physics_asset": null
+}

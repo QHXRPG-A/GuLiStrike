@@ -143,13 +143,13 @@ bool UGuLiEngineeringTravelComponent::FindExit(FTransform& Transform) const
 	const FVector Toward = FVector(State.FinalGroundTarget)-FVector(State.ExitCenter);
 	const double Angle = FMath::Atan2(Toward.Y,Toward.X);
 	const FBox Bounds = Vehicle().GetEngineeringTravelBounds(); check(Bounds.IsValid);
-	const float Radius = FMath::Max(Config.ExitRadius, float(Bounds.GetExtent().Size2D()+1800));
+	const float Radius = FMath::Max(Config.ExitRadius, float(Bounds.GetExtent().Size2D()+360));
 	TArray<FVector> Candidates;
 	for (int32 Ring = 0; Ring < 3; ++Ring)
 		for (int32 I = 0; I < 32; ++I)
 		{
 			const double Theta = Angle+I*UE_TWO_PI/32;
-			Candidates.Add(FVector(State.ExitCenter)+FVector(FMath::Cos(Theta),FMath::Sin(Theta),0)*(Radius+Ring*750));
+			Candidates.Add(FVector(State.ExitCenter)+FVector(FMath::Cos(Theta),FMath::Sin(Theta),0)*(Radius+Ring*150));
 		}
 	Candidates.StableSort([this](const FVector& A,const FVector& B)
 	{ return FVector::DistSquared2D(A,State.FinalGroundTarget)<FVector::DistSquared2D(B,State.FinalGroundTarget); });
@@ -162,7 +162,7 @@ bool UGuLiEngineeringTravelComponent::FindExit(FTransform& Transform) const
 	for (const FVector& Candidate : Candidates)
 	{
 		FNavLocation Ground;
-		if (!Navigation->ProjectPointToNavigation(Candidate,Ground,FVector(500,500,5000),Data)) continue;
+		if (!Navigation->ProjectPointToNavigation(Candidate,Ground,FVector(100,100,5000),Data)) continue;
 		const float HalfHeight = Pawn.GetCapsuleComponent()->GetScaledCapsuleHalfHeight();
 		const FRotator Rotation = (FVector(State.FinalGroundTarget)-Ground.Location).Rotation();
 		FTransform Pose(FRotator(0,Rotation.Yaw,0),Ground.Location);
@@ -170,10 +170,10 @@ bool UGuLiEngineeringTravelComponent::FindExit(FTransform& Transform) const
 		const FVector Sole = Pose.TransformPosition(FVector(Bounds.GetCenter().X,Bounds.GetCenter().Y,0));
 		FHitResult Support;
 		if (!GetWorld()->SweepSingleByChannel(Support,Sole+FVector(0,0,1500),Sole-FVector(0,0,1500),
-			Pose.GetRotation(),ECC_Visibility,FCollisionShape::MakeBox(FVector(Bounds.GetExtent().X,Bounds.GetExtent().Y,1)),Query)
+			Pose.GetRotation(),ECC_Visibility,FCollisionShape::MakeBox(FVector(Bounds.GetExtent().X,Bounds.GetExtent().Y,0.2)),Query)
 			|| Support.bStartPenetrating || Support.ImpactNormal.Z < Pawn.GetCharacterMovement()->GetWalkableFloorZ()
-			|| FMath::Abs(Support.Location.Z-Ground.Location.Z)>500) continue;
-		Pose.SetLocation(FVector(Ground.Location.X,Ground.Location.Y,Support.Location.Z+FMath::Max(HalfHeight,-Bounds.Min.Z)+5));
+			|| FMath::Abs(Support.Location.Z-Ground.Location.Z)>100) continue;
+		Pose.SetLocation(FVector(Ground.Location.X,Ground.Location.Y,Support.Location.Z+FMath::Max(HalfHeight,-Bounds.Min.Z)+1));
 		if (GetWorld()->OverlapBlockingTestByChannel(Pose.TransformPosition(Bounds.GetCenter()),Pose.GetRotation(),
 			ECC_Pawn,FCollisionShape::MakeBox(Bounds.GetExtent()),Query)) continue;
 		if (GetWorld()->OverlapBlockingTestByChannel(Pose.GetLocation(),FQuat::Identity,ECC_Pawn,
@@ -182,8 +182,8 @@ bool UGuLiEngineeringTravelComponent::FindExit(FTransform& Transform) const
 		{
 			const FVector Local = Pose.InverseTransformPosition(Target.Location);
 			const FVector Closest = Bounds.GetClosestPointTo(Local);
-			return FVector::DistSquared2D(Local,Closest) < FMath::Square(Target.CollisionRadius+100)
-				&& FMath::Abs(Local.Z-Closest.Z)<Target.CollisionRadius+100;
+			return FVector::DistSquared2D(Local,Closest) < FMath::Square(Target.CollisionRadius+20)
+				&& FMath::Abs(Local.Z-Closest.Z)<Target.CollisionRadius+20;
 		});
 		if (bOccupied) continue;
 		Transform = Pose; return true;

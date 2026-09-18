@@ -1,0 +1,76 @@
+{
+  "phase": "reference_A",
+  "technical_status": "passed",
+  "source_capture_success": true,
+  "source_packages_unchanged": true,
+  "frozen_authoring_and_static_exports": "passed",
+  "original_inspection_blend_hashes": "passed",
+  "all_20_original_view_hashes": "passed",
+  "selected_reference_images": [
+    {
+      "path": "References/Bottom_Twin_Barrel_Turret_Reference_v1.png",
+      "sha256": "d1331d50e8407474d41ce41254e5bc51fbaaf488cb0d5f0ae7a4cb7618b4f374",
+      "bytes": 1196298,
+      "resolution": [
+        1448,
+        1086
+      ]
+    },
+    {
+      "path": "References/High_Rate_Fire_Cannon_Reference_v2.png",
+      "sha256": "8d0d7b9c43a34e21beda7dc69e94ef86f1664bcbc1918bf5c7b1900e97b6b647",
+      "bytes": 1567567,
+      "resolution": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "References/Incendiary_Bomb_LaunchBay_Reference_v1.png",
+      "sha256": "2fd4c9b16e18a4ca14f918290462e17ff9cd0fed1d62febf7b9f8ad43586d1cd",
+      "bytes": 1654983,
+      "resolution": [
+        1536,
+        1024
+      ]
+    },
+    {
+      "path": "References/Missile_Bay_Reference_v1.png",
+      "sha256": "bc6a74250d76b9f83f31be632689d6277200081f68d8cbc4be8e8da75ece801b",
+      "bytes": 1238962,
+      "resolution": [
+        1448,
+        1086
+      ]
+    }
+  ],
+  "manifest": {
+    "path": "References/reference_A_manifest_v1.json",
+    "sha256": "3da1a86a84e08882967ad8ea9a657dd8b53224cb1fcab319dd5b52936bc26be8",
+    "bytes": 27852
+  },
+  "review_page": {
+    "path": "Review_A_v1.html",
+    "sha256": "c332adb0ed562108e756a973f85119f5cf027aa49bd294962e529bee2425aaf9",
+    "bytes": 17674
+  },
+  "user_A": "pending",
+  "user_B": "not_started",
+  "UE_formal_validation": "not_run",
+  "local_review_page_links": {
+    "count": 36,
+    "missing": [],
+    "reader": "Existing Scripts/Art/package_ship_component_material_delivery.py Links"
+  },
+  "browser_visual_check": {
+    "page": "http://127.0.0.1:8769/Batch04/Review_A_v1.html",
+    "result": "passed",
+    "checked": [
+      "four reference sections and version labels",
+      "section navigation",
+      "incendiary reference image lightbox",
+      "exterior flame readable at reduced view"
+    ],
+    "user_A": "pending"
+  }
+}

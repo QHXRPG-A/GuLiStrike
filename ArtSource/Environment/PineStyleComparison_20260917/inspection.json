@@ -1,0 +1,679 @@
+{
+  "world": "/Game/Commander/Units/Tactical/Cel/Review/LVL_CelModels_Review.LVL_CelModels_Review",
+  "game_world": null,
+  "dirty_before": {
+    "content": [],
+    "maps": []
+  },
+  "camera": "(<Struct 'Vector' (0x000001E296E23BC0) {x: 1105.856414, y: -0.000000, z: 296.313333}>, <Struct 'Rotator' (0x000001E294420560) {pitch: -15.000000, yaw: -179.999997, roll: -0.000001}>)",
+  "actors_before": [
+    {
+      "label": "CelReview_Floor",
+      "class": "StaticMeshActor"
+    },
+    {
+      "label": "CelReview_Light0",
+      "class": "DirectionalLight"
+    },
+    {
+      "label": "CelReview_Light1",
+      "class": "DirectionalLight"
+    },
+    {
+      "label": "CelReview_Ambient",
+      "class": "SkyLight"
+    },
+    {
+      "label": "CelReview_Camera",
+      "class": "CameraActor"
+    },
+    {
+      "label": "CelReview_Sweeper",
+      "class": "StaticMeshActor"
+    },
+    {
+      "label": "CelReview_WarMachine",
+      "class": "StaticMeshActor"
+    },
+    {
+      "label": "CelReview_Ship",
+      "class": "StaticMeshActor"
+    },
+    {
+      "label": "CelReview_ShipContour",
+      "class": "StaticMeshActor"
+    }
+  ],
+  "lights_before": [
+    {
+      "actor": "CelReview_Light0",
+      "intensity": 7.0,
+      "rotation": [
+        135.0,
+        50.0,
+        180.0
+      ]
+    },
+    {
+      "actor": "CelReview_Light1",
+      "intensity": 3.0,
+      "rotation": [
+        -25.0,
+        -60.0,
+        0.0
+      ]
+    }
+  ],
+  "meshes": {
+    "PineFull": {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_Full.SM_PineTree_Full",
+      "size_cm": [
+        796.9562377929688,
+        782.1236572265625,
+        1271.2945556640625
+      ],
+      "origin_cm": [
+        3.647064208984375,
+        -11.940582275390625,
+        635.6472778320312
+      ],
+      "triangles_by_lod": [
+        1770
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBark.MI_PineBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall"
+      ]
+    },
+    "PineTall": {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTreeTall_Full.SM_PineTreeTall_Full",
+      "size_cm": [
+        726.5023193359375,
+        756.637939453125,
+        1622.4365234375
+      ],
+      "origin_cm": [
+        -12.305999755859375,
+        -6.684722900390625,
+        811.21826171875
+      ],
+      "triangles_by_lod": [
+        2138
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineTallBark.MI_PineTallBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_LeafSmall.MI_LeafSmall"
+      ]
+    },
+    "PineHalf": {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Trees/SM_PineTree_HalfFull.SM_PineTree_HalfFull",
+      "size_cm": [
+        506.0226135253906,
+        528.0006103515625,
+        1245.384765625
+      ],
+      "origin_cm": [
+        1.605926513671875,
+        -38.26348876953125,
+        622.6923828125
+      ],
+      "triangles_by_lod": [
+        2472
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Bark/MI_PineBark.MI_PineBark",
+        "/Game/StylizedPineEnvironment/Assets/Materials/Leaves/MI_Leaf.MI_Leaf"
+      ]
+    },
+    "Grass": {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Grass/SM_Grass.SM_Grass",
+      "size_cm": [
+        36.914608001708984,
+        29.811546325683594,
+        38.86389923095703
+      ],
+      "origin_cm": [
+        2.3817310333251953,
+        4.318442344665527,
+        19.326316833496094
+      ],
+      "triangles_by_lod": [
+        37
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Grass/MI_Grass.MI_Grass"
+      ]
+    },
+    "Rock1": {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock1_Light.SM_Rock1_Light",
+      "size_cm": [
+        280.0687255859375,
+        193.86981201171875,
+        162.8115234375
+      ],
+      "origin_cm": [
+        -2.2009124755859375,
+        -1.5803985595703125,
+        -3.4482345581054688
+      ],
+      "triangles_by_lod": [
+        336
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock1_Light.MI_Rock1_Light"
+      ]
+    },
+    "Rock3": {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_Rock3_Light.SM_Rock3_Light",
+      "size_cm": [
+        178.80569458007812,
+        192.17840576171875,
+        246.52377319335938
+      ],
+      "origin_cm": [
+        -0.8205413818359375,
+        -6.167991638183594,
+        18.21332550048828
+      ],
+      "triangles_by_lod": [
+        550
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_Rock3_Light.MI_Rock3_Light"
+      ]
+    },
+    "RockTall": {
+      "path": "/Game/StylizedPineEnvironment/Assets/Meshes/Rocks/Light/SM_RockTall1_Light.SM_RockTall1_Light",
+      "size_cm": [
+        263.2987060546875,
+        258.9432067871094,
+        577.029052734375
+      ],
+      "origin_cm": [
+        -29.634765625,
+        12.254249572753906,
+        155.93670654296875
+      ],
+      "triangles_by_lod": [
+        460
+      ],
+      "materials": [
+        "/Game/StylizedPineEnvironment/Assets/Materials/Rock/Light/MI_RockTall1_Light.MI_RockTall1_Light"
+      ]
+    },
+    "Sweeper": {
+      "path": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel.SM_Sweeper_Cel",
+      "size_cm": [
+        1510.5240478515625,
+        1305.7457885742188,
+        1140.94873046875
+      ],
+      "origin_cm": [
+        0.0,
+        3.0517578125e-05,
+        570.474365234375
+      ],
+      "triangles_by_lod": [
+        5456,
+        1363,
+        901,
+        220
+      ],
+      "materials": [
+        "/Game/Commander/Units/Tactical/Cel/Sweeper/Materials/M_Sweeper_Cel.M_Sweeper_Cel"
+      ]
+    },
+    "WarMachine": {
+      "path": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel",
+      "size_cm": [
+        6207.279296875,
+        6249.5201416015625,
+        3741.89794921875
+      ],
+      "origin_cm": [
+        -244.271484375,
+        -227.07000732421875,
+        1561.62890625
+      ],
+      "triangles_by_lod": [
+        27303,
+        6826,
+        300,
+        70
+      ],
+      "materials": [
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Contour.M_WarMachine_Contour",
+        "/Game/Commander/Units/Tactical/Cel/WarMachine/Materials/M_WarMachine_Cel.M_WarMachine_Cel"
+      ]
+    },
+    "Ship": {
+      "path": "/Game/GuLiStrike/Ship/Stylized/Meshes/SM_Ship_AnimeHull.SM_Ship_AnimeHull",
+      "size_cm": [
+        19378.0390625,
+        45023.205078125,
+        6984.659912109375
+      ],
+      "origin_cm": [
+        0.0,
+        7080.8662109375,
+        464.7576904296875
+      ],
+      "triangles_by_lod": [
+        13314
+      ],
+      "materials": [
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Pearl.M_SS_Armor_Pearl",
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Armor_Blue.M_SS_Armor_Blue",
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Structure_Slate.M_SS_Structure_Slate",
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Recess_Navy.M_SS_Recess_Navy",
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Safety_Amber.M_SS_Safety_Amber",
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_SS_Engine_Cyan.M_SS_Engine_Cyan"
+      ]
+    },
+    "ShipContour": {
+      "path": "/Game/GuLiStrike/Ship/Stylized/Meshes/SM_Ship_AnimeContour.SM_Ship_AnimeContour",
+      "size_cm": [
+        19091.9169921875,
+        41740.7744140625,
+        6096.498046875
+      ],
+      "origin_cm": [
+        0.00048828125,
+        6324.74169921875,
+        -18.6416015625
+      ],
+      "triangles_by_lod": [
+        3088
+      ],
+      "materials": [
+        "/Game/GuLiStrike/Ship/Stylized/Materials/M_Ship_Contour.M_Ship_Contour"
+      ]
+    }
+  },
+  "unit_tables": {
+    "DT_GuLiStrikeCommander_Skills": [
+      {
+        "Name": "Strafe",
+        "Id": 1,
+        "Note": "地面机枪直线飞行弹丸；碰撞扣血，弹道参数见UnitSkills",
+        "SkillId": "Strafe",
+        "DisplayName": "扫射",
+        "ExecutorId": "GroundMachineGun",
+        "Tags": "Skill.Attack.Basic;Skill.Usage.Common;Weapon.MachineGun",
+        "EffectConfigId": ""
+      },
+      {
+        "Name": "StrafeTest",
+        "Id": 2,
+        "Note": "替换接口测试；不是正式火炮",
+        "SkillId": "StrafeTest",
+        "DisplayName": "扫射测试变体",
+        "ExecutorId": "DirectSingleTarget",
+        "Tags": "Skill.Attack.Basic;Skill.Usage.Common;Weapon.Test",
+        "EffectConfigId": ""
+      },
+      {
+        "Name": "WM01_HomingMissile",
+        "Id": 3,
+        "Note": "战争机器Q主动导弹；定点弹道，爆炸由独立法术场结算",
+        "SkillId": "WM01_HomingMissile",
+        "DisplayName": "WM01导弹",
+        "ExecutorId": "LaunchProjectile",
+        "Tags": "Skill.Attack.Basic;Skill.Usage.Common;Weapon.Missile",
+        "EffectConfigId": "WM01_MissileExplosion"
+      }
+    ],
+    "DT_GuLiStrikeCommander_Soldiers": [
+      {
+        "Name": "DefaultSoldier",
+        "Id": 1,
+        "Note": "扫射调试兵种A；数值非平衡定案",
+        "MovementSpeedCmPerSecond": 3600,
+        "MaxHealth": 100,
+        "ModelAsset": "/Game/Commander/Units/Tactical/Cel/Sweeper/Meshes/SM_Sweeper_Cel.SM_Sweeper_Cel",
+        "Defense": 0,
+        "ActorClass": "None",
+        "PresentationClass": "None",
+        "PresentationScale": 1,
+        "DisplayName": "扫荡者"
+      },
+      {
+        "Name": "WM01",
+        "Id": 2,
+        "Note": "WM01 第二兵种；首版沿用调试数值，尚未平衡",
+        "MovementSpeedCmPerSecond": 3600,
+        "MaxHealth": 300.5,
+        "ModelAsset": "/Game/Commander/Units/Tactical/Cel/WarMachine/Meshes/SM_WarMachine_Cel.SM_WarMachine_Cel",
+        "Defense": 0,
+        "ActorClass": "None",
+        "PresentationClass": "None",
+        "PresentationScale": 1,
+        "DisplayName": "战争机器"
+      },
+      {
+        "Name": "ElectromagneticMiner",
+        "Id": 3,
+        "Note": "指挥官可控制矿车；原车18米，4500cm/s；采矿业务由矿车Manager调度",
+        "MovementSpeedCmPerSecond": 4500,
+        "MaxHealth": 1000,
+        "ModelAsset": "None",
+        "Defense": 0,
+        "ActorClass": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
+        "PresentationClass": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+        "PresentationScale": 3.04229,
+        "DisplayName": "电磁矿车"
+      },
+      {
+        "Name": "ConstructionVehicle",
+        "Id": 4,
+        "Note": "开局每队一辆；独立建造车，施工与采矿分工",
+        "MovementSpeedCmPerSecond": 4500,
+        "MaxHealth": 1000,
+        "ModelAsset": "None",
+        "Defense": 0,
+        "ActorClass": "/Script/GuLiStrike.GuLiConstructionVehiclePawn",
+        "PresentationClass": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C",
+        "PresentationScale": 3.04229,
+        "DisplayName": "建造车"
+      }
+    ],
+    "DT_GuLiStrikeCommander_UnitSkills": [
+      {
+        "Name": "SoldierA_Strafe",
+        "Id": 1,
+        "Note": "A默认普攻",
+        "UnitTypeId": 1,
+        "SlotId": "BasicAttack",
+        "SkillId": "Strafe",
+        "bDefault": true,
+        "Damage": 10,
+        "AttackRatePerSecond": 2,
+        "RangeCentimeters": 10000,
+        "TriggerMode": "Automatic",
+        "ProjectileSpeedCentimetersPerSecond": 12000,
+        "ProjectileLifetimeSeconds": 5,
+        "ProjectileSweepRadiusCentimeters": 15
+      },
+      {
+        "Name": "WM01_Strafe",
+        "Id": 2,
+        "Note": "WM01 默认普攻",
+        "UnitTypeId": 2,
+        "SlotId": "BasicAttack",
+        "SkillId": "Strafe",
+        "bDefault": true,
+        "Damage": 7.5,
+        "AttackRatePerSecond": 4,
+        "RangeCentimeters": 15000,
+        "TriggerMode": "Automatic",
+        "ProjectileSpeedCentimetersPerSecond": 12000,
+        "ProjectileLifetimeSeconds": 5,
+        "ProjectileSweepRadiusCentimeters": 15
+      },
+      {
+        "Name": "SoldierA_Test",
+        "Id": 3,
+        "Note": "A替换验证",
+        "UnitTypeId": 1,
+        "SlotId": "BasicAttack",
+        "SkillId": "StrafeTest",
+        "bDefault": false,
+        "Damage": 25,
+        "AttackRatePerSecond": 1,
+        "RangeCentimeters": 12000,
+        "TriggerMode": "Automatic",
+        "ProjectileSpeedCentimetersPerSecond": 0,
+        "ProjectileLifetimeSeconds": 0,
+        "ProjectileSweepRadiusCentimeters": 0
+      },
+      {
+        "Name": "WM01_Test",
+        "Id": 4,
+        "Note": "WM01 替换验证",
+        "UnitTypeId": 2,
+        "SlotId": "BasicAttack",
+        "SkillId": "StrafeTest",
+        "bDefault": false,
+        "Damage": 15,
+        "AttackRatePerSecond": 2,
+        "RangeCentimeters": 18000,
+        "TriggerMode": "Automatic",
+        "ProjectileSpeedCentimetersPerSecond": 0,
+        "ProjectileLifetimeSeconds": 0,
+        "ProjectileSweepRadiusCentimeters": 0
+      },
+      {
+        "Name": "WM01_MissileLauncher",
+        "Id": 5,
+        "Note": "主动Q导弹；技能CD6秒、普攻射程x0.8；保留本槽伤害升级与挂点，自动攻速列不参与Q冷却",
+        "UnitTypeId": 2,
+        "SlotId": "MissileLauncher",
+        "SkillId": "WM01_HomingMissile",
+        "bDefault": true,
+        "Damage": 0,
+        "AttackRatePerSecond": 0.333333,
+        "RangeCentimeters": 15000,
+        "TriggerMode": "Active",
+        "ProjectileSpeedCentimetersPerSecond": 0,
+        "ProjectileLifetimeSeconds": 0,
+        "ProjectileSweepRadiusCentimeters": 0
+      }
+    ],
+    "DT_GuLiStrikeCommander_WeaponMounts": [
+      {
+        "Name": "FourFRobot_AimTarget",
+        "Id": 1,
+        "Note": "扫荡者车身视觉瞄准点",
+        "UnitTypeId": 1,
+        "SlotId": "",
+        "PointRole": "AimTarget",
+        "PointIndex": 0,
+        "SocketName": "FX_AimTarget",
+        "Offset": "(X=0.000000,Y=0.000000,Z=650.000000)",
+        "bCalibrated": true
+      },
+      {
+        "Name": "FourFRobot_BasicAttack_Muzzle_0",
+        "Id": 2,
+        "Note": "扫荡者手工模型机枪口；保留 BasicAttack 0",
+        "UnitTypeId": 1,
+        "SlotId": "BasicAttack",
+        "PointRole": "Muzzle",
+        "PointIndex": 0,
+        "SocketName": "FX_Muzzle_Basic_01",
+        "Offset": "(X=757.261372,Y=0.000000,Z=588.124180)",
+        "bCalibrated": true
+      },
+      {
+        "Name": "WM01_AimTarget",
+        "Id": 3,
+        "Note": "战争机器车身视觉瞄准点",
+        "UnitTypeId": 2,
+        "SlotId": "",
+        "PointRole": "AimTarget",
+        "PointIndex": 0,
+        "SocketName": "FX_AimTarget",
+        "Offset": "(X=0.000000,Y=0.000000,Z=1600.000000)",
+        "bCalibrated": true
+      },
+      {
+        "Name": "WM01_BasicAttack_Muzzle_0",
+        "Id": 4,
+        "Note": "战争机器左侧炮口；保留原攻击数量",
+        "UnitTypeId": 2,
+        "SlotId": "BasicAttack",
+        "PointRole": "Muzzle",
+        "PointIndex": 0,
+        "SocketName": "FX_Muzzle_Basic_01",
+        "Offset": "(X=1769.860268,Y=1461.236858,Z=1580.907154)",
+        "bCalibrated": true
+      },
+      {
+        "Name": "WM01_MissileLauncher_Muzzle_0",
+        "Id": 5,
+        "Note": "战争机器左背舱出口；前上方 45 度",
+        "UnitTypeId": 2,
+        "SlotId": "MissileLauncher",
+        "PointRole": "Muzzle",
+        "PointIndex": 0,
+        "SocketName": "FX_Missile_01",
+        "Offset": "(X=-729.160357,Y=932.168388,Z=3122.332191)",
+        "bCalibrated": true
+      },
+      {
+        "Name": "WM01_MissileLauncher_Muzzle_1",
+        "Id": 6,
+        "Note": "战争机器右背舱出口；前上方 45 度",
+        "UnitTypeId": 2,
+        "SlotId": "MissileLauncher",
+        "PointRole": "Muzzle",
+        "PointIndex": 1,
+        "SocketName": "FX_Missile_02",
+        "Offset": "(X=-729.160357,Y=-932.168388,Z=3122.332191)",
+        "bCalibrated": true
+      }
+    ]
+  },
+  "ship_components": [
+    {
+      "name": "CollisionCylinder",
+      "class": "CapsuleComponent",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Arrow",
+      "class": "ArrowComponent",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "CharacterMesh0",
+      "class": "SkeletalMeshComponent",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "WingmanTargetingRange",
+      "class": "GuLiShipTargetingRangeComponent",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Hull Mesh",
+      "class": "StaticMeshComponent",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "location": [
+        -7081.0,
+        0.0,
+        -464.5
+      ],
+      "rotation": [
+        0.0,
+        -0.0,
+        -90.0
+      ],
+      "mesh": "/Game/Assets/Arma/CombatAvatarFly-01/StaticMeshes/SM_Dreadnought_Hull.SM_Dreadnought_Hull",
+      "materials": [
+        "/Game/Assets/Arma/CombatAvatarFly-01/Materials/ScifiDreadnoughtVengeanceBlue.ScifiDreadnoughtVengeanceBlue"
+      ]
+    },
+    {
+      "name": "Spring Arm",
+      "class": "SpringArmComponent",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        -18.0,
+        0.0
+      ]
+    },
+    {
+      "name": "Camera",
+      "class": "CameraComponent",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    }
+  ],
+  "success": true
+}

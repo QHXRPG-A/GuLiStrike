@@ -1,0 +1,228 @@
+{
+  "passed": true,
+  "checks": [
+    {
+      "key": "Autocannon",
+      "fbx_file": "FBX\\SKM_SC_Autocannon_Styled.fbx",
+      "fbx_sha256": "fe9007b4d9c9aec7ab1996b4ebc0bd8aedf795baf4712cc1c731836edc19bce2",
+      "mesh_count": 1,
+      "body_triangles": 1700,
+      "dimensions_m": [
+        10.82983684539795,
+        21.51050567626953,
+        5.8516621589660645
+      ],
+      "max_dimension_error_m": 9.5367431640625e-07,
+      "max_geometry_error_m": 3.2477694276167313e-06,
+      "origin_error_m": 1.525878886976534e-07,
+      "uv_names": [
+        "SC_PaintUV",
+        "SC_LineUV",
+        "UVmap_0",
+        "UVmap_1",
+        "LightMapUV"
+      ],
+      "uv_max_errors": {
+        "SC_PaintUV": 0.0,
+        "SC_LineUV": 0.0,
+        "UVmap_0": 0.0,
+        "UVmap_1": 0.0,
+        "LightMapUV": 0.0
+      },
+      "materials": [
+        "M_SC_Autocannon_Portable"
+      ],
+      "bones": {
+        "Root": {
+          "parent": null,
+          "head": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "BarrelPitch": {
+          "parent": "Root",
+          "head": [
+            7.978193752933294e-05,
+            2.373460054397583,
+            0.9958099126815796
+          ]
+        }
+      },
+      "max_bone_pivot_error_m": 2.26059888501109e-07,
+      "rigid_weights": "single bone, weight 1",
+      "socket_names": [
+        "Socket_1",
+        "Socket_2",
+        "Socket_3"
+      ],
+      "socket_metadata_matches_source": true,
+      "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+      "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+      "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+      "demo_animation_exported": false,
+      "UE_formal_validation": "not_run",
+      "Blender_readback_cleaned_degenerate_triangles": 0,
+      "Blender_readback_cleaned_duplicate_triangles": 0,
+      "raw_FBX_preservation": null,
+      "raw_FBX_triangles": 1700,
+      "source_body_geometry_edited": false,
+      "passed": true
+    },
+    {
+      "key": "Triple_Barrel_Turret",
+      "fbx_file": "FBX\\SKM_SC_Triple_Barrel_Turret_Styled.fbx",
+      "fbx_sha256": "91bd8c9896f1f3426e7139239efafadc3f06b389a940e5fcbe6121d5ed2f1995",
+      "mesh_count": 1,
+      "body_triangles": 2496,
+      "dimensions_m": [
+        34.05352783203125,
+        53.51480484008789,
+        11.171340942382812
+      ],
+      "max_dimension_error_m": 3.814697265625e-06,
+      "max_geometry_error_m": 7.802746949892025e-06,
+      "origin_error_m": 1.4901161005630215e-10,
+      "uv_names": [
+        "SC_PaintUV",
+        "SC_LineUV",
+        "UVmap_0",
+        "UVmap_1",
+        "LightMapUV"
+      ],
+      "uv_max_errors": {
+        "SC_PaintUV": 0.0,
+        "SC_LineUV": 0.0,
+        "UVmap_0": 0.0,
+        "UVmap_1": 0.0,
+        "LightMapUV": 0.0
+      },
+      "materials": [
+        "M_SC_Triple_Barrel_Turret_Portable"
+      ],
+      "bones": {
+        "Root": {
+          "parent": null,
+          "head": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "BarrelPitch": {
+          "parent": "Root",
+          "head": [
+            -0.0010504412930458784,
+            5.099999904632568,
+            1.2991900444030762
+          ]
+        }
+      },
+      "max_bone_pivot_error_m": 4.413304850459099e-07,
+      "rigid_weights": "single bone, weight 1",
+      "socket_names": [
+        "Socket_1",
+        "Socket_2",
+        "Socket_3"
+      ],
+      "socket_metadata_matches_source": true,
+      "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+      "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+      "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+      "demo_animation_exported": false,
+      "UE_formal_validation": "not_run",
+      "Blender_readback_cleaned_degenerate_triangles": 0,
+      "Blender_readback_cleaned_duplicate_triangles": 1,
+      "raw_FBX_preservation": {
+        "triangles": 2497,
+        "all_original_polygon_vertex_indices_preserved": true,
+        "uv_max_errors": {
+          "SC_PaintUV": 0.0,
+          "SC_LineUV": 0.0,
+          "UVmap_0": 0.0,
+          "UVmap_1": 0.0,
+          "LightMapUV": 0.0
+        },
+        "passed": true,
+        "reader": "Blender bundled io_scene_fbx.parse_fbx"
+      },
+      "raw_FBX_triangles": 2497,
+      "source_body_geometry_edited": false,
+      "passed": true
+    },
+    {
+      "key": "Single_Barrel_Turret",
+      "fbx_file": "FBX\\SKM_SC_Single_Barrel_Turret_Styled.fbx",
+      "fbx_sha256": "65215aad2cc2407d0cadfa04920e8f6387ff3f5d497418c40770772b80dc2b7b",
+      "mesh_count": 1,
+      "body_triangles": 1268,
+      "dimensions_m": [
+        10.065338134765625,
+        22.6964054107666,
+        4.179394721984863
+      ],
+      "max_dimension_error_m": 9.5367431640625e-07,
+      "max_geometry_error_m": 3.2885347991395975e-06,
+      "origin_error_m": 0.0,
+      "uv_names": [
+        "SC_PaintUV",
+        "SC_LineUV",
+        "UVmap_0",
+        "UVmap_1",
+        "UVmap_2",
+        "LightMapUV"
+      ],
+      "uv_max_errors": {
+        "SC_PaintUV": 0.0,
+        "SC_LineUV": 0.0,
+        "UVmap_0": 0.0,
+        "UVmap_1": 0.0,
+        "UVmap_2": 0.0,
+        "LightMapUV": 0.0
+      },
+      "materials": [
+        "M_SC_Single_Barrel_Turret_Portable"
+      ],
+      "bones": {
+        "Root": {
+          "parent": null,
+          "head": [
+            0.0,
+            0.0,
+            0.0
+          ]
+        },
+        "BarrelPitch": {
+          "parent": "Root",
+          "head": [
+            -1.2676302674208273e-07,
+            1.4499999284744263,
+            0.05356999859213829
+          ]
+        }
+      },
+      "max_bone_pivot_error_m": 1.740106900334562e-07,
+      "rigid_weights": "single bone, weight 1",
+      "socket_names": [
+        "Socket_1"
+      ],
+      "socket_metadata_matches_source": true,
+      "socket_storage": "FBX mesh custom property GuLiStrike_Sockets_JSON; editable markers retained in Blender",
+      "reader_reused": "ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+      "reader_sha256": "92e91de13e276fd60b7641839905c2441e488d6a8a2e2fb2c4528bf785824c63",
+      "demo_animation_exported": false,
+      "UE_formal_validation": "not_run",
+      "Blender_readback_cleaned_degenerate_triangles": 0,
+      "Blender_readback_cleaned_duplicate_triangles": 0,
+      "raw_FBX_preservation": null,
+      "raw_FBX_triangles": 1268,
+      "source_body_geometry_edited": false,
+      "passed": true
+    }
+  ],
+  "reader": "D:\\UE5.7\\test1\\ArtSource\\Buildings\\IndustrialDefenseSet\\scripts\\validate_exports.py",
+  "readback_implementation": "D:\\UE5.7\\test1\\Scripts\\Blender\\export_ship_component_material_delivery.py",
+  "readback_implementation_sha256": "390c7973300d35799d2c669a9157d5c7a59c3f7b2aaf53cb1aa349e7cbd633b9",
+  "release_authorization": "D:\\UE5.7\\test1\\ArtSource\\Ships\\ShipComponentStyle_20260917\\UE_Integration\\release_authorization_20260917.json"
+}
