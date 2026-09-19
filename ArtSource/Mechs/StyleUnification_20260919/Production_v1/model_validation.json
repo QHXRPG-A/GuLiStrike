@@ -1,0 +1,872 @@
+{
+  "source_based": true,
+  "models": {
+    "SpiderMech": {
+      "triangles": 19656,
+      "meshes": [
+        {
+          "object": "WORK_SpiderMech__SpiderMech.002",
+          "source_asset": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech.SpiderMech",
+          "base_vertices": 10376,
+          "evaluated_triangles": 19656,
+          "uv_layers": [
+            "DiffuseUV"
+          ],
+          "color_attributes": [
+            "属性",
+            "SourceRegion_CleanPaint"
+          ],
+          "materials": 10,
+          "details": null,
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 1.6187550500035286e-07
+        }
+      ]
+    },
+    "Mecha_01": {
+      "triangles": 3982,
+      "meshes": [
+        {
+          "object": "WORK_Mecha_01__Mecha_01.001",
+          "source_asset": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01.Mecha_01",
+          "base_vertices": 689,
+          "evaluated_triangles": 3422,
+          "uv_layers": [
+            "DiffuseUV",
+            "LightMapUV"
+          ],
+          "color_attributes": [
+            "属性"
+          ],
+          "materials": 1,
+          "details": null,
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_01_Center_Panel_Seam",
+          "source_asset": null,
+          "base_vertices": 28,
+          "evaluated_triangles": 48,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_01_Hatch_Frame_-1",
+          "source_asset": null,
+          "base_vertices": 32,
+          "evaluated_triangles": 64,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_01_Hatch_Frame_1",
+          "source_asset": null,
+          "base_vertices": 32,
+          "evaluated_triangles": 64,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_01_Joint_l_upperleg",
+          "source_asset": null,
+          "base_vertices": 48,
+          "evaluated_triangles": 96,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_01_Joint_l_lowerleg",
+          "source_asset": null,
+          "base_vertices": 48,
+          "evaluated_triangles": 96,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_01_Joint_r_upperleg",
+          "source_asset": null,
+          "base_vertices": 48,
+          "evaluated_triangles": 96,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_01_Joint_r_lowerleg",
+          "source_asset": null,
+          "base_vertices": 48,
+          "evaluated_triangles": 96,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        }
+      ]
+    },
+    "Mecha_02": {
+      "triangles": 5964,
+      "meshes": [
+        {
+          "object": "WORK_Mecha_02__mecha_02.001",
+          "source_asset": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02.mecha_02",
+          "base_vertices": 1256,
+          "evaluated_triangles": 5340,
+          "uv_layers": [
+            "DiffuseUV",
+            "LightMapUV"
+          ],
+          "color_attributes": [
+            "属性"
+          ],
+          "materials": 1,
+          "details": null,
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_02_Center_Panel_Seam",
+          "source_asset": null,
+          "base_vertices": 28,
+          "evaluated_triangles": 48,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_02_Hatch_Frame_-1",
+          "source_asset": null,
+          "base_vertices": 48,
+          "evaluated_triangles": 96,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_02_Hatch_Frame_1",
+          "source_asset": null,
+          "base_vertices": 48,
+          "evaluated_triangles": 96,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_02_Joint_l_upperleg",
+          "source_asset": null,
+          "base_vertices": 48,
+          "evaluated_triangles": 96,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_02_Joint_l_lowerleg",
+          "source_asset": null,
+          "base_vertices": 48,
+          "evaluated_triangles": 96,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_02_Joint_r_upperleg",
+          "source_asset": null,
+          "base_vertices": 48,
+          "evaluated_triangles": 96,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Mecha_02_Joint_r_lowerleg",
+          "source_asset": null,
+          "base_vertices": 48,
+          "evaluated_triangles": 96,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        }
+      ]
+    },
+    "Mech_Lightest": {
+      "triangles": 4824,
+      "meshes": [
+        {
+          "object": "WORK_Mech_Lightest__Mech_Legs_Lt.001",
+          "source_asset": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Mech_Legs_Lt.Mech_Legs_Lt",
+          "base_vertices": 464,
+          "evaluated_triangles": 2170,
+          "uv_layers": [
+            "DiffuseUV"
+          ],
+          "color_attributes": [
+            "属性",
+            "SourceRegion_CleanPaint"
+          ],
+          "materials": 1,
+          "details": null,
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "WORK_Mech_Lightest__Cockpit_Jet",
+          "source_asset": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes/Cockpit_Jet.Cockpit_Jet",
+          "base_vertices": 171,
+          "evaluated_triangles": 709,
+          "uv_layers": [
+            "UVmap_0",
+            "LightMapUV"
+          ],
+          "color_attributes": [
+            "SourceRegion_CleanPaint"
+          ],
+          "materials": 1,
+          "details": null
+        },
+        {
+          "object": "WORK_Mech_Lightest__Sealed_Armor_Fairing",
+          "source_asset": null,
+          "base_vertices": 48,
+          "evaluated_triangles": 244,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": null
+        },
+        {
+          "object": "WORK_Mech_Lightest__ArmorSeam_1",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 12,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": null
+        },
+        {
+          "object": "WORK_Mech_Lightest__ArmorSeam_2",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 12,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": null
+        },
+        {
+          "object": "WORK_Mech_Lightest__ArmorSeam_3",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 12,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": null
+        },
+        {
+          "object": "WORK_Mech_Lightest__ArmorSeam_4",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 12,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": null
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Recess_-1",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Slat_-1_0",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Slat_-1_1",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Slat_-1_2",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Slat_-1_3",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Slat_-1_4",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Edge_-1_-0.163",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Edge_-1_0.163",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Recess_1",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Slat_1_0",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Slat_1_1",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Slat_1_2",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Slat_1_3",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Slat_1_4",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Edge_1_-0.163",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Cockpit_Jet_Intake_Edge_1_0.163",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__HalfShoulder_Box",
+          "source_asset": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes/HalfShoulder_Box.HalfShoulder_Box",
+          "base_vertices": 21,
+          "evaluated_triangles": 116,
+          "uv_layers": [
+            "UVmap_0",
+            "LightMapUV"
+          ],
+          "color_attributes": [
+            "SourceRegion_CleanPaint"
+          ],
+          "materials": 1,
+          "details": null
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_HalfShoulder_Box_Cooling_Slat_0",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_HalfShoulder_Box_Cooling_Slat_1",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_HalfShoulder_Box_Cooling_Slat_2",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_HalfShoulder_Box_Cooling_Slat_3",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_HalfShoulder_Box_Cooling_Slat_4",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_HalfShoulder_Box_Cooling_Slat_5",
+          "source_asset": null,
+          "base_vertices": 8,
+          "evaluated_triangles": 44,
+          "uv_layers": [
+            "UV贴图"
+          ],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail"
+        },
+        {
+          "object": "WORK_Mech_Lightest__Weapons_Machinegun_lvl1.001",
+          "source_asset": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Weapons/Weapons_Machinegun_lvl1.Weapons_Machinegun_lvl1",
+          "base_vertices": 106,
+          "evaluated_triangles": 505,
+          "uv_layers": [
+            "DiffuseUV"
+          ],
+          "color_attributes": [
+            "属性",
+            "SourceRegion_CleanPaint"
+          ],
+          "materials": 1,
+          "details": null,
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "WORK_Mech_Lightest__DETAIL_Machinegun_lvl1_Muzzle_Rim",
+          "source_asset": null,
+          "base_vertices": 32,
+          "evaluated_triangles": 64,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        }
+      ]
+    },
+    "FireWeapon_01": {
+      "triangles": 1184,
+      "meshes": [
+        {
+          "object": "WORK_FireWeapon_01__FireWeapon_01.002",
+          "source_asset": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/FireWeapon_01.FireWeapon_01",
+          "base_vertices": 264,
+          "evaluated_triangles": 1184,
+          "uv_layers": [
+            "DiffuseUV"
+          ],
+          "color_attributes": [
+            "属性"
+          ],
+          "materials": 1,
+          "details": null,
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        }
+      ]
+    },
+    "MissileWeapon_01": {
+      "triangles": 7181,
+      "meshes": [
+        {
+          "object": "WORK_MissileWeapon_01__MissileWeapon_01.001",
+          "source_asset": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/MissileWeapon_01.MissileWeapon_01",
+          "base_vertices": 1654,
+          "evaluated_triangles": 7181,
+          "uv_layers": [
+            "DiffuseUV",
+            "LightMapUV"
+          ],
+          "color_attributes": [
+            "属性"
+          ],
+          "materials": 2,
+          "details": null,
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        }
+      ]
+    },
+    "Machinegun_lvl1": {
+      "triangles": 569,
+      "meshes": [
+        {
+          "object": "WORK_Machinegun_lvl1__Weapons_Machinegun_lvl1.001",
+          "source_asset": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Weapons/Weapons_Machinegun_lvl1.Weapons_Machinegun_lvl1",
+          "base_vertices": 106,
+          "evaluated_triangles": 505,
+          "uv_layers": [
+            "DiffuseUV"
+          ],
+          "color_attributes": [
+            "属性",
+            "SourceRegion_CleanPaint"
+          ],
+          "materials": 1,
+          "details": null,
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        },
+        {
+          "object": "DETAIL_Machinegun_lvl1_Muzzle_Rim",
+          "source_asset": null,
+          "base_vertices": 32,
+          "evaluated_triangles": 64,
+          "uv_layers": [],
+          "color_attributes": [],
+          "materials": 1,
+          "details": "Source-guided mechanical panel / joint detail",
+          "invalid_groups": [],
+          "unweighted_vertices": 0,
+          "weight_sum_max_error": 0.0
+        }
+      ]
+    },
+    "Missile_01": {
+      "triangles": 772,
+      "meshes": [
+        {
+          "object": "WORK_Missile_01__lowPoly_missile_01",
+          "source_asset": "/Game/Assets/MechaController/Artistic/Meshes/Projectiles/Missile_01/lowPoly_missile_01.lowPoly_missile_01",
+          "base_vertices": 129,
+          "evaluated_triangles": 772,
+          "uv_layers": [
+            "LightMapUV",
+            "UVmap_1"
+          ],
+          "color_attributes": [],
+          "materials": 2,
+          "details": null
+        }
+      ]
+    }
+  },
+  "rigs": {
+    "SpiderMech": {
+      "ue_bones": 299,
+      "blender_bones": 299,
+      "missing": [],
+      "unexpected": [],
+      "parent_mismatches": {}
+    },
+    "Mecha_01": {
+      "ue_bones": 13,
+      "blender_bones": 13,
+      "missing": [],
+      "unexpected": [],
+      "parent_mismatches": {}
+    },
+    "Mech_Legs_Lt": {
+      "ue_bones": 18,
+      "blender_bones": 18,
+      "missing": [],
+      "unexpected": [],
+      "parent_mismatches": {}
+    },
+    "Mecha_02": {
+      "ue_bones": 13,
+      "blender_bones": 13,
+      "missing": [],
+      "unexpected": [],
+      "parent_mismatches": {}
+    },
+    "FireWeapon_01": {
+      "ue_bones": 3,
+      "blender_bones": 3,
+      "missing": [],
+      "unexpected": [],
+      "parent_mismatches": {}
+    },
+    "MissileWeapon_01": {
+      "ue_bones": 2,
+      "blender_bones": 2,
+      "missing": [],
+      "unexpected": [],
+      "parent_mismatches": {}
+    },
+    "Machinegun_lvl1": {
+      "ue_bones": 5,
+      "blender_bones": 5,
+      "missing": [],
+      "unexpected": [],
+      "parent_mismatches": {}
+    }
+  },
+  "pose_probes": {
+    "SpiderMech": {
+      "bone": "body",
+      "probe_degrees": 10,
+      "all_positions_finite": true,
+      "neutral_restored": true
+    },
+    "Mecha_01": {
+      "bone": "upperbody",
+      "probe_degrees": 10,
+      "all_positions_finite": true,
+      "neutral_restored": true
+    },
+    "Mecha_02": {
+      "bone": "l_lowerleg",
+      "probe_degrees": 10,
+      "all_positions_finite": true,
+      "neutral_restored": true
+    },
+    "Mech_Lightest": {
+      "bone": "Pelvis",
+      "probe_degrees": 10,
+      "all_positions_finite": true,
+      "neutral_restored": true
+    },
+    "Machinegun_lvl1": {
+      "bone": "Barrel_big",
+      "probe_degrees": 10,
+      "all_positions_finite": true,
+      "neutral_restored": true
+    }
+  },
+  "errors": [],
+  "spider": {
+    "source_triangles": 839778,
+    "output_triangles": 19656,
+    "reduction_percent": 97.65938140794353,
+    "sample_count": 5037,
+    "source_vertex_to_output_surface_distance_m": {
+      "median": 0.001843305379152298,
+      "p95": 0.015199599504470824,
+      "p99": 0.046240856933593824,
+      "max": 0.15809158325195313
+    },
+    "retained_uvs": [
+      "DiffuseUV"
+    ],
+    "retained_material_slots": 10
+  },
+  "light_assembly": {
+    "attachment_constraints": 31,
+    "mount_bone": "Mount_top",
+    "driver_geometry_removed": true,
+    "cockpit_sealed": true
+  },
+  "success": true
+}

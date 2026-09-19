@@ -1,0 +1,94 @@
+{
+  "clearance-before-20260919": {
+    "fixed_step_p95_ms": 1.6572,
+    "frame_p95_ms": 18.4566,
+    "simulation_steps": 400,
+    "dropped_steps": 0,
+    "moving_p05": 500.0,
+    "spacing_per_frame": {}
+  },
+  "clearance-after-20260919": {
+    "fixed_step_p95_ms": 2.2492,
+    "frame_p95_ms": 18.5264,
+    "simulation_steps": 400,
+    "dropped_steps": 0,
+    "moving_p05": 500.0,
+    "spacing_per_frame": {
+      "GuLiCommanderSpacing/ConstraintMilliseconds": {
+        "frames": 2386,
+        "mean": 0.09852103939647947,
+        "p95": 0.6695,
+        "max": 1.3571,
+        "sum": 235.0712
+      },
+      "GuLiCommanderSpacing/CandidatePairs": {
+        "frames": 2386,
+        "mean": 1680.9446772841575,
+        "p95": 12727.0,
+        "max": 19632.0,
+        "sum": 4010734.0
+      },
+      "GuLiCommanderSpacing/BlockedMoves": {
+        "frames": 2386,
+        "mean": 13.186085498742665,
+        "p95": 106.0,
+        "max": 191.0,
+        "sum": 31462.0
+      },
+      "GuLiCommanderSpacing/Violations": {
+        "frames": 2386,
+        "mean": 0.0,
+        "p95": 0.0,
+        "max": 0.0,
+        "sum": 0.0
+      }
+    }
+  },
+  "clearance-final-20260919": {
+    "fixed_step_p95_ms": 6.4435,
+    "frame_p95_ms": 20.7103,
+    "simulation_steps": 400,
+    "dropped_steps": 0,
+    "moving_p05": 500.0,
+    "spacing_per_frame": {
+      "GuLiCommanderSpacing/ConstraintMilliseconds": {
+        "frames": 2398,
+        "mean": 0.19140767306088408,
+        "p95": 1.3859,
+        "max": 3.3098,
+        "sum": 458.9956
+      },
+      "GuLiCommanderSpacing/CandidatePairs": {
+        "frames": 2398,
+        "mean": 1671.2285237698081,
+        "p95": 12721.0,
+        "max": 19386.0,
+        "sum": 4007606.0
+      },
+      "GuLiCommanderSpacing/BlockedMoves": {
+        "frames": 2398,
+        "mean": 13.082985821517932,
+        "p95": 107.0,
+        "max": 184.0,
+        "sum": 31373.0
+      },
+      "GuLiCommanderSpacing/Violations": {
+        "frames": 2398,
+        "mean": 0.0,
+        "p95": 0.0,
+        "max": 0.0,
+        "sum": 0.0
+      }
+    }
+  },
+  "radius-only-20260919": {
+    "fixed_step_p95_ms": 1.2891,
+    "frame_p95_ms": 18.2252,
+    "simulation_steps": 400,
+    "dropped_steps": 0,
+    "moving_p05": 500.0,
+    "movement_load_valid": true,
+    "spacing_counters": "removed, not zero violations",
+    "fixture_unit_type": 1
+  }
+}

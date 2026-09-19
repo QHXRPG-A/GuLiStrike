@@ -117,6 +117,7 @@ namespace GuLiCommanderMassPrivate
 		FGuLiSoldierId SoldierId;
 		EGuLiTeam Team = EGuLiTeam::Unassigned;
 		uint16 UnitTypeId = GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID;
+		float AvoidanceRadiusCentimeters = 150.0f;
 		FVector Location = FVector::ZeroVector;
 		FVector Velocity = FVector::ZeroVector;
 		double LastMovementUpdateSimulationSeconds = 0.0;
@@ -233,6 +234,8 @@ namespace GuLiCommanderMassPrivate
 		TArray<FVector> PathPoints;
 		int32 PathPointIndex = 0;
 		float TravelFacingYawDegrees = 0.0f;
+		float MemberSpacingCentimeters = 360.0f;
+		float MaximumMemberRadiusCentimeters = 150.0f;
 		GuLiCommanderNavigationPolicy::FFinalPathFrame FinalPathFrame;
 		uint32 PathRevision = 1u;
 		// 主线程分帧采样可走性，线程池只计算脱离 UObject 的数据；版本键决定结果能否安装。
@@ -264,6 +267,7 @@ namespace GuLiCommanderMassPrivate
 	{
 		uint32 OwnerSoldierId = 0u;
 		FVector Location = FVector::ZeroVector;
+		float RadiusCentimeters = 150.0f;
 	};
 
 	struct FMoveMemberPlan
@@ -331,6 +335,9 @@ namespace GuLiCommanderMassPrivate
 		TMap<FIntPoint, TArray<int32>> HardReservationBuckets;
 		TMap<FIntPoint, TArray<int32>> LegalSlotBuckets;
 		FGuLiMovePlanningDebug Debug;
+		float MaximumMemberRadiusCentimeters = 150.0f;
+		float MinimumSlotSpacingCentimeters = DestinationMinimumSeparationCentimeters;
+		float DestinationBucketSizeCentimeters = DestinationMinimumSeparationCentimeters;
 		EMovePlanningStage Stage = EMovePlanningStage::ValidateStarts;
 		uint32 NavigationGeneration = 0u;
 		uint32 AuthorityEpoch = 0u;
@@ -528,11 +535,11 @@ namespace GuLiCommanderMassPrivate
 			| static_cast<uint64>(static_cast<uint32>(CandidateIndex));
 	}
 
-	FIntPoint MakeMoveDestinationBucket(const FVector& Location)
+	FIntPoint MakeMoveDestinationBucket(const FVector& Location, const FMovePlanningJob& Job)
 	{
 		return FIntPoint(
-			FMath::FloorToInt(Location.X / DestinationMinimumSeparationCentimeters),
-			FMath::FloorToInt(Location.Y / DestinationMinimumSeparationCentimeters));
+			FMath::FloorToInt(Location.X / Job.DestinationBucketSizeCentimeters),
+			FMath::FloorToInt(Location.Y / Job.DestinationBucketSizeCentimeters));
 	}
 
 	void AddHardReservationToMoveJob(
@@ -541,16 +548,14 @@ namespace GuLiCommanderMassPrivate
 	{
 		const int32 ReservationIndex = Job.HardReservations.Add(Reservation);
 		Job.HardReservationBuckets.FindOrAdd(
-			MakeMoveDestinationBucket(Reservation.Location)).Add(ReservationIndex);
+			MakeMoveDestinationBucket(Reservation.Location, Job)).Add(ReservationIndex);
 	}
 
 	bool IsMoveCandidateBlockedByHardReservation(
 		const FMovePlanningJob& Job,
 		const FVector& CandidateLocation)
 	{
-		const FIntPoint CenterBucket = MakeMoveDestinationBucket(CandidateLocation);
-		const double MinimumSeparationSquared =
-			FMath::Square(static_cast<double>(DestinationMinimumSeparationCentimeters));
+		const FIntPoint CenterBucket = MakeMoveDestinationBucket(CandidateLocation, Job);
 		for (int32 OffsetX = -1; OffsetX <= 1; ++OffsetX)
 		{
 			for (int32 OffsetY = -1; OffsetY <= 1; ++OffsetY)
@@ -566,7 +571,8 @@ namespace GuLiCommanderMassPrivate
 					if (Job.HardReservations.IsValidIndex(ReservationIndex)
 						&& FVector::DistSquared2D(
 							Job.HardReservations[ReservationIndex].Location,
-							CandidateLocation) < MinimumSeparationSquared)
+							CandidateLocation) < FMath::Square(FMath::Max(DestinationMinimumSeparationCentimeters,
+							Job.MaximumMemberRadiusCentimeters + Job.HardReservations[ReservationIndex].RadiusCentimeters)))
 					{
 						return true;
 					}
@@ -580,9 +586,9 @@ namespace GuLiCommanderMassPrivate
 		const FMovePlanningJob& Job,
 		const FVector& CandidateLocation)
 	{
-		const FIntPoint CenterBucket = MakeMoveDestinationBucket(CandidateLocation);
+		const FIntPoint CenterBucket = MakeMoveDestinationBucket(CandidateLocation, Job);
 		const double MinimumSeparationSquared =
-			FMath::Square(static_cast<double>(DestinationMinimumSeparationCentimeters));
+			FMath::Square(static_cast<double>(Job.MinimumSlotSpacingCentimeters));
 		for (int32 OffsetX = -1; OffsetX <= 1; ++OffsetX)
 		{
 			for (int32 OffsetY = -1; OffsetY <= 1; ++OffsetY)
@@ -1158,11 +1164,12 @@ namespace GuLiCommanderMassPrivate
 		FOrderFormationRuntime& Formation,
 		const TArray<FSoldierRuntime>& Soldiers,
 		const TMap<uint32, int32>& SoldierIndexById,
-		const float SlotSpacing,
+		float SlotSpacing,
 		const uint32 RequiredOrderId,
 		const int32 ColumnCount = FormationColumns)
 	{
 		Formation.SlotBySoldierId.Reset();
+		Formation.MaximumMemberRadiusCentimeters = 0.0f;
 		TArray<FGuLiSoldierId> ValidMembers;
 		for (const FGuLiSoldierId SoldierId : Formation.MemberIds)
 		{
@@ -1171,8 +1178,12 @@ namespace GuLiCommanderMassPrivate
 				&& (RequiredOrderId == 0u || Soldiers[*Index].ActiveOrderId == RequiredOrderId))
 			{
 				ValidMembers.Add(SoldierId);
+				Formation.MaximumMemberRadiusCentimeters = FMath::Max(
+					Formation.MaximumMemberRadiusCentimeters, Soldiers[*Index].AvoidanceRadiusCentimeters);
 			}
 		}
+		SlotSpacing = FMath::Max(SlotSpacing, Formation.MaximumMemberRadiusCentimeters * 2.0f);
+		Formation.MemberSpacingCentimeters = SlotSpacing;
 		ValidMembers.Sort([](const FGuLiSoldierId& Lhs, const FGuLiSoldierId& Rhs)
 		{
 			return Lhs.Value < Rhs.Value;
@@ -1644,6 +1655,14 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 	});
 	if (Deployments.IsEmpty()) InitialSoldierCount = TotalSoldierCount;
 	const TArray<FGuLiSoldierDefinition>& Definitions = SoldierData->GetSoldierDefinitions();
+	float SpawnGroupSpacing = GroupSpacingCentimeters;
+	for (int32 Index = 0; Index < FMath::Min(2, Definitions.Num()); ++Index)
+	{
+		// The existing square blocks rotate towards the opposing team; include their diagonal.
+		SpawnGroupSpacing = FMath::Max(SpawnGroupSpacing,
+			Definitions[Index].GetMassAvoidanceRadius(MemberAgentRadiusCentimeters)
+				* 2.0f * FormationColumns * UE_SQRT_2);
+	}
 	TArray<FValidatedSpawnSlot> ValidatedSpawnSlots;
 	ValidatedSpawnSlots.Reserve(InitialSoldierCount);
 	bool bSpawnValidationSucceeded = true;
@@ -1660,7 +1679,11 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 		}
 		for (int32 SlotIndex = 0; SlotIndex < Deployment->Rows * Deployment->Columns; ++SlotIndex)
 		{
-			const FVector RequestedLocation = Deployment->GetSlotLocation(SlotIndex);
+			const float SpacingScale = FMath::Max(1.0f,
+				(Definition->GetMassAvoidanceRadius(MemberAgentRadiusCentimeters) * 2.0f + 20.0f)
+					/ FMath::Max(1.0f, Deployment->SpacingCentimeters));
+			const FVector RequestedLocation = Deployment->GetActorLocation()
+				+ (Deployment->GetSlotLocation(SlotIndex) - Deployment->GetActorLocation()) * SpacingScale;
 			FNavLocation ProjectedLocation;
 			if (!ProjectPointToCommanderNavigation(*NavigationSystem, *CommanderNavigationData,
 				RequestedLocation, FVector(DestinationMaximumProjectionCorrectionCentimeters,
@@ -1692,15 +1715,19 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 			FormationIndex < SpawnFormationsPerTeam && bSpawnValidationSucceeded;
 			++FormationIndex)
 		{
+			const FGuLiSoldierDefinition* Definition = Definitions.IsEmpty() ? &SoldierData->GetDefaultSoldierDefinition()
+				: &Definitions[FormationIndex % FMath::Min(2, Definitions.Num())];
+			const float SpawnMemberSpacing = FMath::Max(MemberSpacingCentimeters,
+				Definition->GetMassAvoidanceRadius(MemberAgentRadiusCentimeters) * 2.0f + 20.0f);
 			const FVector FormationAnchor = TeamCenter
-				+ MakeSpawnFormationOffset(FormationIndex, GroupSpacingCentimeters);
+				+ MakeSpawnFormationOffset(FormationIndex, SpawnGroupSpacing);
 			const float FacingYawDegrees = (OpposingCenter - FormationAnchor)
 				.GetSafeNormal2D().Rotation().Yaw;
 			for (int32 SlotIndex = 0; SlotIndex < SoldierCountPerFormation; ++SlotIndex)
 			{
 				const FVector RequestedLocation = FormationAnchor
 					+ FRotator(0.0f, FacingYawDegrees, 0.0f).RotateVector(
-						MakeFormationSlotOffset(SlotIndex, MemberSpacingCentimeters));
+						MakeFormationSlotOffset(SlotIndex, SpawnMemberSpacing));
 				FNavLocation ProjectedLocation;
 				const bool bProjected = ProjectPointToCommanderNavigation(
 						*NavigationSystem,
@@ -1732,19 +1759,20 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 				Slot.Team = Team;
 				Slot.SlotIndex = SlotIndex;
 				Slot.FacingYawDegrees = FacingYawDegrees;
-				Slot.Definition = Definitions.IsEmpty() ? &SoldierData->GetDefaultSoldierDefinition()
-					: &Definitions[FormationIndex % FMath::Min(2, Definitions.Num())];
+				Slot.Definition = Definition;
 				Slot.NavigationLocation = ProjectedLocation;
 			}
 		}
 	}
 	if (bSpawnValidationSucceeded)
 	{
-		const float MinimumDistanceSquared = FMath::Square(DestinationMinimumSeparationCentimeters);
 		for (int32 Left = 0; Left < ValidatedSpawnSlots.Num() && bSpawnValidationSucceeded; ++Left)
 		{
 			for (int32 Right = Left + 1; Right < ValidatedSpawnSlots.Num(); ++Right)
 			{
+				const float MinimumDistanceSquared = FMath::Square(FMath::Max(DestinationMinimumSeparationCentimeters,
+					ValidatedSpawnSlots[Left].Definition->GetMassAvoidanceRadius(MemberAgentRadiusCentimeters)
+						+ ValidatedSpawnSlots[Right].Definition->GetMassAvoidanceRadius(MemberAgentRadiusCentimeters)));
 				if (FVector::DistSquared2D(
 						ValidatedSpawnSlots[Left].NavigationLocation.Location,
 						ValidatedSpawnSlots[Right].NavigationLocation.Location)
@@ -1873,6 +1901,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 				Soldier.Team = Team;
 				Soldier.FacingYawDegrees = FacingYaw;
 				InitializeSoldierCombat(Soldier, *ValidatedSlot.Definition, EffectiveRuntimeTuning, Skills);
+				Soldier.AvoidanceRadiusCentimeters = ValidatedSlot.Definition->GetMassAvoidanceRadius(MemberAgentRadiusCentimeters);
 				Soldier.LastValidNavLocation = ValidatedSlot.NavigationLocation;
 				Soldier.Location = Soldier.LastValidNavLocation.Location;
 				++NavigationProjectionCount;
@@ -1882,7 +1911,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 
 				FTransformFragment& Transform = EntityManager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity);
 				Transform.SetTransform(FTransform(FRotator(0.0f, FacingYaw, 0.0f), Soldier.Location));
-				EntityManager.GetFragmentDataChecked<FAgentRadiusFragment>(Soldier.Entity).Radius = MemberAgentRadiusCentimeters;
+				EntityManager.GetFragmentDataChecked<FAgentRadiusFragment>(Soldier.Entity).Radius = Soldier.AvoidanceRadiusCentimeters;
 				EntityManager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = FVector::ZeroVector;
 				EntityManager.GetFragmentDataChecked<FMassForceFragment>(Soldier.Entity).Value = FVector::ZeroVector;
 				EntityManager.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(Soldier.Entity).Value = FVector::ZeroVector;
@@ -2098,12 +2127,13 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 			}
 			FMoveDestinationReservation Reservation;
 			Reservation.OwnerSoldierId = Soldier.SoldierId.Value;
+			Reservation.RadiusCentimeters = Soldier.AvoidanceRadiusCentimeters;
 			Reservation.Location = ReservationLocation;
 			AddHardReservationToMoveJob(Job, Reservation);
 		}
 		Job.PlannerRequest = FRequest{};
 		Job.PlannerRequest.TargetAnchor = FVector(Job.Request.Target);
-		Job.PlannerRequest.MemberSpacingCentimeters = MemberSpacingCentimeters;
+		Job.PlannerRequest.MemberSpacingCentimeters = FMath::Max(MemberSpacingCentimeters, Job.MinimumSlotSpacingCentimeters);
 		Job.LegalSlots.Reset();
 		Job.LegalSlotBuckets.Reset();
 		Job.ProjectedNavByCandidateIndex.Reset();
@@ -2214,7 +2244,7 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 			{
 				Job.PlannerRequest = FRequest{};
 				Job.PlannerRequest.TargetAnchor = FVector(Job.Request.Target);
-				Job.PlannerRequest.MemberSpacingCentimeters = MemberSpacingCentimeters;
+				Job.PlannerRequest.MemberSpacingCentimeters = FMath::Max(MemberSpacingCentimeters, Job.MinimumSlotSpacingCentimeters);
 				for (const FMoveCohortPlan& Cohort : Job.Cohorts)
 				{
 					FCohortInput CohortInput;
@@ -2290,7 +2320,7 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 						|| FVector::DistSquared2D(Seed, Projected.Location)
 							> FMath::Square(DestinationMaximumProjectionCorrectionCentimeters)
 						|| FVector::DistSquared2D(FVector(Job.Request.Target), Projected.Location)
-							> FMath::Square(FreeDestinationMaximumRadiusCentimeters))
+							> FMath::Square(Job.Debug.MaximumSearchRadiusCentimeters))
 					{
 						++Job.Debug.FailureCounts[
 							static_cast<uint8>(EGuLiMovePlanFailureStage::CandidateProjection)];
@@ -2318,7 +2348,7 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 					Slot.WorldDestination = Projected.Location;
 					Job.ProjectedNavByCandidateIndex.Add(Candidate.CandidateIndex, Projected);
 					Job.LegalSlotBuckets.FindOrAdd(
-						MakeMoveDestinationBucket(Projected.Location)).Add(Job.LegalSlots.Num() - 1);
+						MakeMoveDestinationBucket(Projected.Location, Job)).Add(Job.LegalSlots.Num() - 1);
 				}
 
 				Job.Debug.LegalCandidates = Job.LegalSlots.Num();
@@ -2347,7 +2377,7 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 			if (!AssignFreeDestinations(
 					Job.PlannerRequest,
 					Job.LegalSlots,
-					DefaultSoftAnchorPitchCentimeters,
+					FMath::Max(DefaultSoftAnchorPitchCentimeters, Job.MinimumSlotSpacingCentimeters * FormationColumns),
 					Assignment))
 			{
 				for (FMoveMemberPlan& Member : Job.Members)
@@ -2678,10 +2708,10 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 					continue;
 				}
 				const bool bConflicts = RestoredReservations.ContainsByPredicate(
-					[&Member](const FVector& Restored)
+					[&Member, &Job](const FVector& Restored)
 					{
 						return FVector::DistSquared2D(Restored, Member.Destination.WorldDestination)
-							< FMath::Square(DestinationMinimumSeparationCentimeters);
+							< FMath::Square(Job.MinimumSlotSpacingCentimeters);
 					});
 				if (!bConflicts)
 				{
@@ -2702,10 +2732,10 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 								Candidate.CandidateIndex)
 							&& Job.ProjectedNavByCandidateIndex.Contains(Candidate.CandidateIndex)
 							&& !RestoredReservations.ContainsByPredicate(
-								[&Candidate](const FVector& Restored)
+								[&Candidate, &Job](const FVector& Restored)
 								{
 									return FVector::DistSquared2D(Restored, Candidate.WorldDestination)
-										< FMath::Square(DestinationMinimumSeparationCentimeters);
+										< FMath::Square(Job.MinimumSlotSpacingCentimeters);
 								});
 					});
 				if (!Fallback)
@@ -3693,8 +3723,12 @@ void UGuLiBattleAuthoritySubsystem::TickNavigationRepairs(
 	auto IsCandidateClear = [this, &Job](const FNavigationRepairMemberTask& Task,
 		const FVector& CandidateLocation)
 	{
-		const double MinimumDistanceSquared = FMath::Square(
-			static_cast<double>(DestinationMinimumSeparationCentimeters));
+		auto RadiusFor = [this](const FGuLiSoldierId Id)
+		{
+			const int32* Index = AuthorityState->SoldierIndexById.Find(Id.Value);
+			return Index ? AuthorityState->Soldiers[*Index].AvoidanceRadiusCentimeters : MemberAgentRadiusCentimeters;
+		};
+		const float CandidateRadius = RadiusFor(Task.SoldierId);
 		for (const FSoldierRuntime& Other : AuthorityState->Soldiers)
 		{
 			if (!Other.IsAlive() || Other.Team != Task.Team || Other.SoldierId == Task.SoldierId)
@@ -3707,6 +3741,8 @@ void UGuLiBattleAuthoritySubsystem::TickNavigationRepairs(
 			const FVector& Reservation = bOtherReservesFinal
 				? Other.FinalDestination.Location
 				: Other.Location;
+			const double MinimumDistanceSquared = FMath::Square(FMath::Max(DestinationMinimumSeparationCentimeters,
+				CandidateRadius + Other.AvoidanceRadiusCentimeters));
 			if (FVector::DistSquared2D(CandidateLocation, Reservation) < MinimumDistanceSquared)
 			{
 				return false;
@@ -3722,7 +3758,8 @@ void UGuLiBattleAuthoritySubsystem::TickNavigationRepairs(
 			}
 			if (FVector::DistSquared2D(
 					CandidateLocation,
-					OtherTask.RepairedFinalLocation.Location) < MinimumDistanceSquared)
+					OtherTask.RepairedFinalLocation.Location) < FMath::Square(FMath::Max(DestinationMinimumSeparationCentimeters,
+					CandidateRadius + RadiusFor(OtherTask.SoldierId))))
 			{
 				return false;
 			}
@@ -4460,7 +4497,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				CommanderNavigationData,
 				Formation.GuideAnchor,
 				Formation.TravelFacingYawDegrees,
-				MemberSpacingCentimeters);
+				Formation.MemberSpacingCentimeters);
 			GuLiCommanderNavigationPolicy::FTransitColumnHysteresisState PreviousColumnState;
 			PreviousColumnState.ColumnCount = Formation.TransitColumnCount;
 			PreviousColumnState.ConsecutiveExpansionSuccessSteps =
@@ -4562,7 +4599,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				Soldier.Location,
 				MemberAgentRadiusCentimeters,
 				0.5f * static_cast<float>(Formation.TransitColumnCount - 1)
-					* MemberSpacingCentimeters + MemberAgentRadiusCentimeters);
+					* Formation.MemberSpacingCentimeters + Formation.MaximumMemberRadiusCentimeters);
 
 			FVector WorldTarget = Soldier.Location;
 			FVector DesiredVelocity = FVector::ZeroVector;
@@ -4620,7 +4657,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				const float LaneOffset = TransitSlotIndex
 					? MakeFormationSlotOffset(
 						static_cast<int32>(*TransitSlotIndex),
-						MemberSpacingCentimeters,
+						Formation.MemberSpacingCentimeters,
 						Formation.TransitColumnCount).Y
 					: 0.0f;
 				const FVector LaneWaypoint = GuLiCommanderNavigationPolicy::CalculatePathLaneWaypoint(
@@ -4643,7 +4680,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 				{
 					LocalSlotOffset = MakeFormationSlotOffset(
 						static_cast<int32>(*TransitSlotIndex),
-						MemberSpacingCentimeters,
+						Formation.MemberSpacingCentimeters,
 						Formation.TransitColumnCount);
 					SlotCorrectionTarget += FRotator(
 						0.0f,
@@ -4804,6 +4841,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 		AuthorityState->ManualAvoidanceAgents.SetNum(
 			AuthorityState->Soldiers.Num() + DynamicObstacles.Num());
 		bool bAnySoldierReceivesAvoidance = false;
+		float MaximumSoldierRadius = MemberAgentRadiusCentimeters;
 		for (int32 SoldierIndex = 0; SoldierIndex < AuthorityState->Soldiers.Num(); ++SoldierIndex)
 		{
 			const FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
@@ -4814,10 +4852,11 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			Agent.bParticipates = Soldier.IsPresent() && !Soldier.Location.ContainsNaN();
 			Agent.bReceivesAvoidance = Agent.bParticipates
 				&& bReceivesAvoidance[SoldierIndex];
-			Agent.RadiusCentimeters = MemberAgentRadiusCentimeters;
+			Agent.RadiusCentimeters = Soldier.AvoidanceRadiusCentimeters;
+			MaximumSoldierRadius = FMath::Max(MaximumSoldierRadius, Agent.RadiusCentimeters);
 			bAnySoldierReceivesAvoidance |= Agent.bReceivesAvoidance;
 		}
-		float AvoidanceCellSizeCentimeters = MemberAgentRadiusCentimeters * 2.0f;
+		float AvoidanceCellSizeCentimeters = MaximumSoldierRadius * 2.0f;
 		for (int32 ObstacleIndex = 0; ObstacleIndex < DynamicObstacles.Num(); ++ObstacleIndex)
 		{
 			const FGuLiDynamicObstacle& Obstacle = DynamicObstacles[ObstacleIndex];
@@ -4830,7 +4869,7 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 			Agent.RadiusCentimeters = Obstacle.RadiusCentimeters;
 			AvoidanceCellSizeCentimeters = FMath::Max(
 				AvoidanceCellSizeCentimeters,
-				MemberAgentRadiusCentimeters + Obstacle.RadiusCentimeters);
+				MaximumSoldierRadius + Obstacle.RadiusCentimeters);
 		}
 
 		if (bAnySoldierReceivesAvoidance)
@@ -5513,7 +5552,12 @@ bool UGuLiBattleAuthoritySubsystem::BeginMovePlanning(
 	Job.Ack.Result = EGuLiCommandAckResult::InvalidRequest;
 	Job.Debug.ClientCommandId = Request.ClientCommandId;
 	Job.Debug.RequestedTarget = FVector(Request.Target);
-	Job.Debug.MaximumSearchRadiusCentimeters = FreeDestinationMaximumRadiusCentimeters;
+	Job.MaximumMemberRadiusCentimeters = MemberAgentRadiusCentimeters;
+	for (const FSoldierRuntime& Soldier : AuthorityState->Soldiers)
+	{
+		Job.DestinationBucketSizeCentimeters = FMath::Max(Job.DestinationBucketSizeCentimeters,
+			Soldier.AvoidanceRadiusCentimeters * 2.0f);
+	}
 
 	TSet<uint32> RequestedEligibleIds;
 	for (const FGuLiControlCohortDescriptor& SourceCohort : Selection.Cohorts)
@@ -5550,6 +5594,8 @@ bool UGuLiBattleAuthoritySubsystem::BeginMovePlanning(
 				continue;
 			}
 			Member.bEligible = true;
+			Job.MaximumMemberRadiusCentimeters = FMath::Max(Job.MaximumMemberRadiusCentimeters,
+				Soldier.AvoidanceRadiusCentimeters);
 			Member.OldReservation = Soldier.bHasFinalDestination
 				&& Soldier.ActiveOrderId != 0u
 				? Soldier.FinalDestination.Location
@@ -5568,6 +5614,7 @@ bool UGuLiBattleAuthoritySubsystem::BeginMovePlanning(
 		}
 		FMoveDestinationReservation Reservation;
 		Reservation.OwnerSoldierId = Soldier.SoldierId.Value;
+		Reservation.RadiusCentimeters = Soldier.AvoidanceRadiusCentimeters;
 		Reservation.Location = Soldier.bHasFinalDestination && Soldier.ActiveOrderId != 0u
 			? Soldier.FinalDestination.Location
 			: Soldier.Location;
@@ -5576,8 +5623,13 @@ bool UGuLiBattleAuthoritySubsystem::BeginMovePlanning(
 
 	FHexCandidateRequest CandidateRequest;
 	CandidateRequest.TargetAnchor = FVector(Request.Target);
-	CandidateRequest.CandidatePitchCentimeters = DefaultFreeCandidatePitchCentimeters;
-	CandidateRequest.MaximumRadiusCentimeters = FreeDestinationMaximumRadiusCentimeters;
+	Job.MinimumSlotSpacingCentimeters = FMath::Max(DestinationMinimumSeparationCentimeters,
+		Job.MaximumMemberRadiusCentimeters * 2.0f);
+	CandidateRequest.CandidatePitchCentimeters = DefaultFreeCandidatePitchCentimeters
+		+ Job.MinimumSlotSpacingCentimeters - DestinationMinimumSeparationCentimeters;
+	CandidateRequest.MaximumRadiusCentimeters = FreeDestinationMaximumRadiusCentimeters
+		* CandidateRequest.CandidatePitchCentimeters / DefaultFreeCandidatePitchCentimeters;
+	Job.Debug.MaximumSearchRadiusCentimeters = CandidateRequest.MaximumRadiusCentimeters;
 	if (!BuildHexCandidates(CandidateRequest, Job.HexCandidates))
 	{
 		OutImmediateAck.Result = EGuLiCommandAckResult::InvalidTarget;
@@ -5940,7 +5992,7 @@ void UGuLiBattleAuthoritySubsystem::CollectExternalUnitsInDisc(const EGuLiTeam T
 	for (const auto& Soldier : AuthorityState->Soldiers)
 	{
 		if (Soldier.Team == Team && Soldier.CanAct() && (!Soldier.Location.ContainsNaN() && !Center.ContainsNaN() && FMath::IsFinite(Radius) && Radius > 0 && FVector::DistSquared2D(Soldier.Location,Center) <= FMath::Square(Radius)))
-			Out.Add({Soldier.SoldierId, FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location), MemberAgentRadiusCentimeters});
+			Out.Add({Soldier.SoldierId, FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location), Soldier.AvoidanceRadiusCentimeters});
 	}
 	Out.Sort([](const auto& A, const auto& B) { return A.Id.Value < B.Id.Value; });
 }
@@ -5955,10 +6007,9 @@ void UGuLiBattleAuthoritySubsystem::CollectExternalUnitsForClearance(const FBox&
 {
 	Out.Reset();
 	if (!AuthorityState || !Bounds.IsValid) return;
-	const FBox Expanded = Bounds.ExpandBy(MemberAgentRadiusCentimeters * 2.0f);
 	for (const auto& Soldier : AuthorityState->Soldiers)
-		if (Soldier.IsAlive() && Expanded.IsInsideOrOn(Soldier.Location))
-			Out.Add({ Soldier.SoldierId, FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location), MemberAgentRadiusCentimeters });
+		if (Soldier.IsAlive() && Bounds.ExpandBy(Soldier.AvoidanceRadiusCentimeters * 2.0f).IsInsideOrOn(Soldier.Location))
+			Out.Add({ Soldier.SoldierId, FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location), Soldier.AvoidanceRadiusCentimeters });
 	Out.Sort([](const auto& A, const auto& B) { return A.Id.Value < B.Id.Value; });
 }
 
@@ -6303,7 +6354,7 @@ void UGuLiBattleAuthoritySubsystem::BuildGroundAvoidanceSnapshot(TArray<FGuLiGro
 	for (const auto& Soldier : AuthorityState->Soldiers)
 	{
 		if (Soldier.IsPresent())
-			OutBodies.Add({Soldier.SoldierId.Value, Soldier.Location, Soldier.Velocity, MemberAgentRadiusCentimeters});
+			OutBodies.Add({Soldier.SoldierId.Value, Soldier.Location, Soldier.Velocity, Soldier.AvoidanceRadiusCentimeters});
 	}
 }
 
@@ -6651,14 +6702,15 @@ bool UGuLiBattleAuthoritySubsystem::SpawnReservedSoldier(const EGuLiTeam Team, c
 	UNavigationSystemV1* Navigation = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
 	ANavigationData* NavData = Navigation ? GetCommanderNavigationData(*Navigation) : nullptr;
 	if (!Definition || !Definition->UsesMass() || !MassSubsystem || !Navigation || !NavData) return false;
+	const float SpawnRadius = Definition->GetMassAvoidanceRadius(MemberAgentRadiusCentimeters);
 	FNavLocation Projected;
 	if (!ProjectPointToCommanderNavigation(*Navigation, *NavData, Location,
 		FVector(MemberAgentRadiusCentimeters, MemberAgentRadiusCentimeters, 5000.0f), Projected)
 		|| FVector::DistSquared2D(Location, Projected.Location) > FMath::Square(MemberAgentRadiusCentimeters)) return false;
 	if (AuthorityState->Soldiers.ContainsByPredicate([&](const FSoldierRuntime& Existing)
-		{ return Existing.IsPresent() && FVector::DistSquared2D(Existing.Location, Projected.Location) < FMath::Square(MemberAgentRadiusCentimeters * 2); })) return false;
-	if (World->OverlapBlockingTestByChannel(Projected.Location + FVector(0,0,MemberAgentRadiusCentimeters + 20),
-		FQuat::Identity, ECC_Pawn, FCollisionShape::MakeSphere(MemberAgentRadiusCentimeters))) return false;
+		{ return Existing.IsPresent() && FVector::DistSquared2D(Existing.Location, Projected.Location) < FMath::Square(SpawnRadius + Existing.AvoidanceRadiusCentimeters); })) return false;
+	if (World->OverlapBlockingTestByChannel(Projected.Location + FVector(0,0,SpawnRadius + 20),
+		FQuat::Identity, ECC_Pawn, FCollisionShape::MakeSphere(SpawnRadius))) return false;
 	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
 	FMassArchetypeSharedFragmentValues SharedValues = MakeAuthoritySharedFragmentValues(
 		EntityManager, MovementSpeedCentimetersPerSecond, MemberAgentRadiusCentimeters);
@@ -6677,9 +6729,10 @@ bool UGuLiBattleAuthoritySubsystem::SpawnReservedSoldier(const EGuLiTeam Team, c
 	Soldier.Location = Projected.Location;
 	Soldier.LastValidNavLocation = Projected;
 	InitializeSoldierCombat(Soldier, *Definition, EffectiveRuntimeTuning, World->GetSubsystem<UGuLiArmySkillSubsystem>());
+	Soldier.AvoidanceRadiusCentimeters = SpawnRadius;
 	AuthorityState->SoldierIndexById.Add(Soldier.SoldierId.Value, AuthorityState->Soldiers.Num() - 1);
 	EntityManager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity).SetTransform(FTransform(Soldier.Location));
-	EntityManager.GetFragmentDataChecked<FAgentRadiusFragment>(Soldier.Entity).Radius = MemberAgentRadiusCentimeters;
+	EntityManager.GetFragmentDataChecked<FAgentRadiusFragment>(Soldier.Entity).Radius = Soldier.AvoidanceRadiusCentimeters;
 	FMassMoveTargetFragment& MoveTarget = EntityManager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
 	MoveTarget.CreateNewAction(EMassMovementAction::Stand, *World);
 	MoveTarget.Center = Soldier.Location;
@@ -6809,6 +6862,10 @@ bool UGuLiBattleAuthoritySubsystem::IssueAttackMove(EGuLiTeam Team, TConstArrayV
 	auto* Navigation = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
 	auto* NavData = Navigation ? GetCommanderNavigationData(*Navigation) : nullptr;
 	if (!NavData || UNavigationSystemV1::IsNavigationBeingBuiltOrLocked(GetWorld())) return false;
+	float AttackMoveSpacing = DestinationMinimumSeparationCentimeters;
+	for (const FGuLiSoldierId Id : Soldiers)
+		if (const int32* Index = AuthorityState->SoldierIndexById.Find(Id.Value))
+			AttackMoveSpacing = FMath::Max(AttackMoveSpacing, AuthorityState->Soldiers[*Index].AvoidanceRadiusCentimeters * 2.0f);
 	FOrderFormationRuntime Formation;
 	Formation.Team = Team;
 	FNavLocation Target;
@@ -6821,8 +6878,8 @@ bool UGuLiBattleAuthoritySubsystem::IssueAttackMove(EGuLiTeam Team, TConstArrayV
 		if (!SoldierIndex) continue;
 		const auto& Soldier = AuthorityState->Soldiers[*SoldierIndex];
 		if (!Soldier.CanAct() || !Soldier.bAutomaticAdvance || Soldier.Team != Team) continue;
-		const FVector Offset((Index % 5 - 2) * DestinationMinimumSeparationCentimeters,
-			(Index / 5 - 2) * DestinationMinimumSeparationCentimeters, 0);
+		const FVector Offset((Index % 5 - 2) * AttackMoveSpacing,
+			(Index / 5 - 2) * AttackMoveSpacing, 0);
 		FNavLocation End;
 		if (!ProjectPointToCommanderNavigation(*Navigation, *NavData, Target.Location + Offset,
 			FVector(MemberAgentRadiusCentimeters,MemberAgentRadiusCentimeters,5000), End)) continue;
@@ -6845,7 +6902,7 @@ bool UGuLiBattleAuthoritySubsystem::IssueAttackMove(EGuLiTeam Team, TConstArrayV
 	Formation.GuideAnchor = Start; Formation.TargetAnchor = Target.Location; Formation.PathPointIndex = 1;
 	Formation.FinalPathFrame = GuLiCommanderNavigationPolicy::ResolveFinalPathFrame(Formation.PathPoints, Start, Target.Location);
 	Formation.TravelFacingYawDegrees = (Formation.PathPoints[1] - Start).Rotation().Yaw;
-	Formation.FinalApproachTriggerRadiusCentimeters = DestinationMinimumSeparationCentimeters * 4;
+	Formation.FinalApproachTriggerRadiusCentimeters = AttackMoveSpacing * 4;
 	auto& Manager = AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
 	for (auto Id : Formation.MemberIds)
 	{

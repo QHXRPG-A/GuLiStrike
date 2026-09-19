@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "fresh_instance_root_motion_before_compile": "<RootMotionMode.IGNORE_ROOT_MOTION: 1>",
+  "components": {
+    "mesh": {
+      "mesh": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs.SK_Legs",
+      "material_count": 2,
+      "socket": "None",
+      "scale": [
+        2.0512616634368896,
+        2.0512616634368896,
+        2.0512616634368896
+      ]
+    },
+    "armor": {
+      "mesh": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor.SM_Armor",
+      "material_count": 2,
+      "socket": "None",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "shoulder": {
+      "mesh": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder.SM_Shoulder",
+      "material_count": 2,
+      "socket": "Mount_Weapon_L",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    },
+    "machinegun": {
+      "mesh": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun.SK_Machinegun",
+      "material_count": 2,
+      "socket": "Mount_Weapon_R",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ]
+    }
+  },
+  "spider": {
+    "mesh": "/Game/GuLiStrike/Mechs/SpiderMech/Meshes/SK_SpiderMech.SK_SpiderMech",
+    "materials": 11,
+    "animation": "/Game/Assets/Mech_Project/Characters/SpiderMech/SpiderMech_Anim_BP.SpiderMech_Anim_BP_C",
+    "auto_possess_player": "<AutoReceiveInput.DISABLED: 0>"
+  },
+  "compiled": [
+    "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light",
+    "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech.ABP_GroundMech",
+    "/Game/GuLiStrike/Mechs/SpiderMech/BP_SpiderMech_Styled.BP_SpiderMech_Styled"
+  ]
+}

@@ -1,0 +1,37 @@
+{
+  "Duration": 40,
+  "CaptureNetwork": false,
+  "Pattern": "shuttle",
+  "CaptureTrace": false,
+  "Population": 500,
+  "Map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "Renderer": "1920x1080, Epic, screen percentage 100, VSync off, client uncapped/server 60 FPS cap, offscreen",
+  "JoinBeforePopulation": false,
+  "PartitionCpu": false,
+  "Date": "2026-09-19T00:29:23.3340551+08:00",
+  "Clients": 0,
+  "Processes": [
+    {
+      "Pid": 13544,
+      "Role": "server",
+      "Arguments": [
+        "D:\\UE5.7\\test1\\GuLiStrike.uproject",
+        "/Game/Maps/LVL_CommanderMassPrototype",
+        "-game",
+        "-Unattended",
+        "-NoSound",
+        "-NoSplash",
+        "-NoLiveCoding",
+        "-DisablePlugins=Fab",
+        "-NoScreenMessages",
+        "-server",
+        "-NullRHI",
+        "-port=17951",
+        "-abslog=D:\\UE5.7\\test1\\TestResults\\CommanderMove10Hz\\clearance-before-20260919-n500-c0\\server.log",
+        "-ExecCmds=\"t.MaxFPS 60,t.IdleWhenNotForeground 0,Slate.bAllowThrottling 0,r.VSync 0,r.ScreenPercentage 100,r.DynamicRes.OperationMode 0,r.GPUCsvStatsEnabled 1,sg.ViewDistanceQuality 3,sg.AntiAliasingQuality 3,sg.ShadowQuality 3,sg.GlobalIlluminationQuality 3,sg.ReflectionQuality 3,sg.PostProcessQuality 3,sg.TextureQuality 3,sg.EffectsQuality 3,sg.FoliageQuality 3,sg.ShadingQuality 3,gs.Commander.MoveStress 500 40 D:/UE5.7/test1/TestResults/CommanderMove10Hz/clearance-before-20260919-n500-c0/server server 0 shuttle late-join\""
+      ]
+    }
+  ],
+  "Engine": "D:\\UnrealEngine-5.7\\Engine\\Binaries\\Win64",
+  "HeadlessClients": false
+}

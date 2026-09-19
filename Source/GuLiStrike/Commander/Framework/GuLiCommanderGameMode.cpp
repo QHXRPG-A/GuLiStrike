@@ -8,7 +8,6 @@
 #include "Commander/Framework/GuLiCommanderWorldReplicationComponent.h"
 #include "Commander/Presentation/GuLiCommanderCameraPawn.h"
 #include "Commander/Presentation/GuLiCommanderHUD.h"
-#include "Gameplay/WarMachine/GuLiWarMachinePlaceholderPawn.h"
 #include "UObject/ConstructorHelpers.h"
 
 AGuLiCommanderGameMode::AGuLiCommanderGameMode()
@@ -18,7 +17,8 @@ AGuLiCommanderGameMode::AGuLiCommanderGameMode()
 	PlayerControllerClass = AGuLiCommanderPlayerController::StaticClass();
 	DefaultPawnClass = AGuLiCommanderCameraPawn::StaticClass();
 	RolePawnClasses.Add(EGuLiCommanderRole::Commander, AGuLiCommanderCameraPawn::StaticClass());
-	RolePawnClasses.Add(EGuLiCommanderRole::Ground, AGuLiWarMachinePlaceholderPawn::StaticClass());
+	static ConstructorHelpers::FClassFinder<APawn> GroundPawn(TEXT("/Game/GuLiStrike/GroundMech/BP_GroundMech_Light"));
+	RolePawnClasses.Add(EGuLiCommanderRole::Ground, GroundPawn.Class);
 	// 经编辑器核验的现有飞船蓝图；加载失败时保留缺项，由公共出生流程明确转观察者。
 	static ConstructorHelpers::FClassFinder<APawn> AirPawn(TEXT("/Game/GuLiStrike/Ship/BP_CombatAvatarFly01"));
 	if (AirPawn.Succeeded())

@@ -1,0 +1,3242 @@
+{
+  "roots": {
+    "/Game/Assets/Mech_Project": {
+      "counts": {
+        "Skeleton": 1,
+        "AnimSequence": 22,
+        "BlendSpace": 2,
+        "InputAction": 5,
+        "InputMappingContext": 1,
+        "PhysicsAsset": 1,
+        "Texture2D": 50,
+        "Material": 10,
+        "SkeletalMesh": 1,
+        "AnimBlueprint": 1,
+        "Blueprint": 2,
+        "StaticMesh": 53,
+        "HLODLayer": 1,
+        "World": 1,
+        "ObjectRedirector": 1
+      },
+      "assets": [
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech_Skeleton",
+          "class": "Skeleton"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_Idle",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_IdleToWalk",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_IdleToWalkBackwards",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_Jump",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_JumpInPlace",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_JumpLand",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_JumpLandInPlace",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_JumpLoop",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_JumpLoopInPlace",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_TurnLeft",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_TurnRight",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_Walk",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_StrafeLeft",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_StrafeRight",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_WalkAngleLeft",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_WalkAngleLeftBackwards",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_WalkAngleRight",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_WalkAngleRightBackwards",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_WalkBackwards",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/Walk_Strafe",
+          "class": "BlendSpace"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Input/Jump",
+          "class": "InputAction"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Input/LookUp",
+          "class": "InputAction"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Input/MoveForward",
+          "class": "InputAction"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Input/MoveRight",
+          "class": "InputAction"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Input/Turn",
+          "class": "InputAction"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Input/InputMapping",
+          "class": "InputMappingContext"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/Additive/SpiderMech_Rest",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/Additive/SpiderMech_LeanLeft",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/Additive/SpiderMech_LeanRight",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/Additive/AdditiveLean",
+          "class": "BlendSpace"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech_PhysicsAsset",
+          "class": "PhysicsAsset"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1001_BaseColor",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1001_BumpNormal",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1001_Metallic",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1001_Roughness",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1001_Specular",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1001",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1002_BaseColor",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1002_BumpNormal",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1002_Metallic",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1002_Roughness",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1002_Specular",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1002",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1003_BaseColor",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1003_BumpNormal",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1003_Metallic",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1003_Roughness",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1003_Specular",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1003",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1004_BaseColor",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1004_BumpNormal",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1004_Metallic",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1004_Roughness",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1004_Specular",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1004",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1005_BaseColor",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1005_BumpNormal",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1005_Metallic",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1005_Roughness",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1005_Specular",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1005",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1006_BaseColor",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1006_BumpNormal",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1006_Metallic",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1006_Roughness",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1006_Specular",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1006",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1007_BaseColor",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1007_BumpNormal",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1007_Metallic",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1007_Roughness",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1007_Specular",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1007",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1008_BaseColor",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1008_BumpNormal",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1008_Metallic",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1008_Roughness",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1008_Specular",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1008",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1009_BaseColor",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1009_BumpNormal",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1009_Metallic",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1009_Roughness",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1009_Specular",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1009",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1010_BaseColor",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1010_BumpNormal",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1010_Metallic",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1010_Roughness",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1010_Specular",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1010",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech",
+          "class": "SkeletalMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/SpiderMech_Anim_BP",
+          "class": "AnimBlueprint"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/SpiderMech_BP",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Game",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/body",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/head_connector",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/head_internal_pitch",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/head_main",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_lower",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_root",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_root_pitch",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_root_roll",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_tip",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_twist",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_upper",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_base_hinge_roll",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_base_hinge_yaw",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_claw_main",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_0",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_1",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_2",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_3",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_4",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_base_hinge_roll",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_base_hinge_yaw",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_claw_main",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_0",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_1",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_2",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_3",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_4",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_lower",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_root",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_root_pitch",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_root_roll",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_tip",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_twist",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_upper",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_base_hinge_roll",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_base_hinge_yaw",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_claw_main",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_0",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_1",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_2",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_3",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_4",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_base_hinge_roll",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_base_hinge_yaw",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_claw_main",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_0",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_1",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_2",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_3",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_4",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/tail",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Map/NewMap_HLOD0_Instancing",
+          "class": "HLODLayer"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Map/NewMap",
+          "class": "World"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Map/Meshes/ramp",
+          "class": "ObjectRedirector"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Map/Meshes/SM_ChamferCube",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/Mech_Project/Map/Meshes/SM_Ramp",
+          "class": "StaticMesh"
+        }
+      ]
+    },
+    "/Game/Assets/MechaController": {
+      "counts": {
+        "UserDefinedEnum": 4,
+        "Blueprint": 43,
+        "Skeleton": 8,
+        "Material": 21,
+        "Texture2D": 39,
+        "PhysicsAsset": 6,
+        "AnimSequence": 32,
+        "BlendSpace1D": 3,
+        "SkeletalMesh": 8,
+        "AnimBlueprint": 7,
+        "BlendSpace": 1,
+        "StaticMesh": 8,
+        "Rig": 1,
+        "WidgetBlueprint": 2,
+        "MapBuildDataRegistry": 3,
+        "World": 3,
+        "ParticleSystem": 3,
+        "PhysicalMaterial": 1,
+        "SoundCue": 10,
+        "SoundWave": 15,
+        "AnimMontage": 1,
+        "MaterialFunction": 8,
+        "MaterialInstanceConstant": 1,
+        "DestructibleMesh": 1
+      },
+      "assets": [
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/CameraMode",
+          "class": "UserDefinedEnum"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/InputMode",
+          "class": "UserDefinedEnum"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/MechaMeshType",
+          "class": "UserDefinedEnum"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Turrets/TurretMeshType",
+          "class": "UserDefinedEnum"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/TurretOwnerComponent",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Turrets/ITurretAnimBP",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Turrets/Turret",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_Skeleton",
+          "class": "Skeleton"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Material/Mat_decal",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Material/TargetMask",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/DamageSystem/TargetComponent",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/DamageSystem/StatesComponent",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/MechaController_Tuto",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_PhysicsAsset",
+          "class": "PhysicsAsset"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Mech_Legs_Lt_Skeleton",
+          "class": "Skeleton"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Mech_Legs_Lt_PhysicsAsset",
+          "class": "PhysicsAsset"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_Anim_Idle",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_Anim_Walk",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_IdleToRun",
+          "class": "BlendSpace1D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Diffuse_Mecha_01",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mat_MEcha_01",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01",
+          "class": "SkeletalMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/IMechaAnimBP",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/MechaCharacter",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_AnimBP",
+          "class": "AnimBlueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Idle",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Run",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Run_Turn_L",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Run_Turn_R",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Turn_30_L",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Turn_30_R",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Walk",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Walk_Turn_70_L",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Walk_Turn_70_R",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/SalvaMeshIntegration/Examples/Mech_Legs_Lt_IdleToRunWithTurnRate",
+          "class": "BlendSpace"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/SalvaMeshIntegration/Examples/Mech_Legs_Lt_AnimBP",
+          "class": "AnimBlueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Textures/Mechs_diffuse_atlas_yellow",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Textures/Mechs_Normals",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Textures/Mechs_self_illumination",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Textures/PBR/LtMed_Metalness",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Textures/PBR/LtMed_Roughness",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Textures/PBR/Mechs_LtMed_Occlusion",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Materials/M_LtMed_Main",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes/Cockpit_Jet",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Mech_Legs_Lt",
+          "class": "SkeletalMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/MechaCharacter_TwoMeshes",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/FirstPersonCrosshair",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/MechaHUD",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/MechaPlayerComponent",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/MechaPlayerControllerComponent",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/MechaPlayer_TwoMeshes",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Cockpit_01",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Cockpit_01_Diffuse",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01_Screen_01",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01_Screen_02",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_SkeletonRig",
+          "class": "Rig"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/Diffuse_mecha_02",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/Mat_mecha_02",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02",
+          "class": "SkeletalMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/Mecha_02_AnimBP",
+          "class": "AnimBlueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02_Anim_Idle",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02_Anim_Walk",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/Mecha_02_IdleToRun",
+          "class": "BlendSpace1D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02_PhysicsAsset",
+          "class": "PhysicsAsset"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02_Skeleton",
+          "class": "Skeleton"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Projectiles/Missile_01/lowPoly_missile_01",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Projectiles/Missile_01/Material",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/Diffuse_FireWeapon_01",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/FireWeapon_01",
+          "class": "SkeletalMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/FireWeapon_01_AnimBP",
+          "class": "AnimBlueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/FireWeapon_01_PhysicsAsset",
+          "class": "PhysicsAsset"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/FireWeapon_01_Skeleton",
+          "class": "Skeleton"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/Mat_FireWeapon_01",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/Diffuse_MissileWeapon_01",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/Diffuse_SimpleMissile",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/Mat_MissileWeapon_01",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/Mat_SimpleMissile",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/MissileWeapon_01",
+          "class": "SkeletalMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/MissileWeapon_01_AnimBP",
+          "class": "AnimBlueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/MissileWeapon_01_PhysicsAsset",
+          "class": "PhysicsAsset"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/MissileWeapon_01_Skeleton",
+          "class": "Skeleton"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/DamageSystem/Missile",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/DamageSystem/Projectile",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/DamageSystem/ProjectileWeaponComponent",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/DamageSystem/RayWeaponComponent",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/DamageSystem/WeaponComponent",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/MechaCharacter_OneMesh",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/MechaPlayer",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/MechaPlayerController",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Mecha/MechaPlayer_OneMesh",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/SalvaMeshIntegration/Examples/Mech_Legs_Lt_IdleToRun",
+          "class": "BlendSpace1D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/SalvaMeshIntegration/Examples/MyMechaPlayer02",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/SalvaMeshIntegration/Examples/MyMechaPlayer04",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/SalvaMeshIntegration/Examples/MyRayTurret02",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/SalvaMeshIntegration/Examples/Weapons_Machinegun_lv1_AnimBP",
+          "class": "AnimBlueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Turrets/ProjectileTurret",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/Turrets/RayTurret",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Blueprints/UI/HealthBar",
+          "class": "WidgetBlueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Blueprints/FirstPersonControllerComponent",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Blueprints/MechaDemoGameMode",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Blueprints/MechDriverGameMode",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Blueprints/MixedPlayerController",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Blueprints/MyMechaPlayer",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Blueprints/MyMechaPlayerController",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Blueprints/MyMechaPlayer_OneMesh",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Blueprints/MyMechaPlayer_TwoMeshes",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Blueprints/MyProjectileTurret",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Blueprints/MyRayTurret",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Blueprints/TestInputsWidget",
+          "class": "WidgetBlueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Maps/DemoMap_BuiltData",
+          "class": "MapBuildDataRegistry"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Maps/DemoMechaDriver_BuiltData",
+          "class": "MapBuildDataRegistry"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Maps/Overview_BuiltData",
+          "class": "MapBuildDataRegistry"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Maps/DemoMap",
+          "class": "World"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Maps/DemoMechaDriver",
+          "class": "World"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Maps/Overview",
+          "class": "World"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/ParticleSystem/P_Hit",
+          "class": "ParticleSystem"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/ParticleSystem/P_Shoot",
+          "class": "ParticleSystem"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Props/PMat_TestPhysicCube",
+          "class": "PhysicalMaterial"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Props/TargetExample",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Demo/Props/TestPhysicCube",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Salva3DModels",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Death_1",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Death_2",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Idle_Simple",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Jump_Jetpack_Idle",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Jump_Jetpack_Land",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Jump_Jetpack_Start",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Jump_Simple",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Run_Faster",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Turn_45_L",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Turn_45_R",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Walk_Turn_45_L",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Walk_Turn_45_R",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Weapons_Machinegun_Recoil",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Blueprints/Mech_Lightest_Blueprint",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes/HalfShoulder_Box",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Weapons/Weapons_Machinegun_lvl1",
+          "class": "SkeletalMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Weapons/Weapons_Machinegun_lvl5_Skeleton",
+          "class": "Skeleton"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Cue/Collapse_Cue",
+          "class": "SoundCue"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Cue/Explosion_Cue",
+          "class": "SoundCue"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Cue/Fire01_Cue",
+          "class": "SoundCue"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Cue/Fire_Sparks01_Cue",
+          "class": "SoundCue"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Cue/Light01_Cue",
+          "class": "SoundCue"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Cue/Light02_Cue",
+          "class": "SoundCue"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Cue/Smoke01_Cue",
+          "class": "SoundCue"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Cue/Starter_Background_Cue",
+          "class": "SoundCue"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Cue/Starter_Music_Cue",
+          "class": "SoundCue"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Cue/Steam01_Cue",
+          "class": "SoundCue"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Collapse01",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Collapse02",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Explosion01",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Explosion02",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Fire01",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Fire_Sparks01",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Light01",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Light02",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Smoke01",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Starter_Birds01",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Starter_Music01",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Starter_Wind05",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Starter_Wind06",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Audio/Wave/Steam01",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Animations/FirstPersonFire_Montage",
+          "class": "AnimMontage"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Animations/FirstPerson_AnimBP",
+          "class": "AnimBlueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Animations/FirstPerson_Fire",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Animations/FirstPerson_Idle",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Animations/FirstPerson_JumpEnd",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Animations/FirstPerson_JumpLoop",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Animations/FirstPerson_JumpStart",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Animations/FirstPerson_Run",
+          "class": "AnimSequence"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Audio/FirstPersonTemplateWeaponFire02",
+          "class": "SoundWave"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Materials/M_UE4Man_Body",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Materials/MaterialLayers/ML_GlossyBlack_Latex_UE4",
+          "class": "MaterialFunction"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Materials/MaterialLayers/ML_Plastic_Shiny_Beige",
+          "class": "MaterialFunction"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Materials/MaterialLayers/ML_Plastic_Shiny_Beige_LOGO",
+          "class": "MaterialFunction"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Materials/MaterialLayers/ML_SoftMetal_UE4",
+          "class": "MaterialFunction"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Materials/MaterialLayers/T_ML_Aluminum01",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Materials/MaterialLayers/T_ML_Aluminum01_N",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Materials/MaterialLayers/T_ML_Rubber_Blue_01_D",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Materials/MaterialLayers/T_ML_Rubber_Blue_01_N",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Mesh/SK_Mannequin_Arms",
+          "class": "SkeletalMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Mesh/SK_Mannequin_Arms_PhysicsAsset",
+          "class": "PhysicsAsset"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Mesh/SK_Mannequin_Arms_Skeleton",
+          "class": "Skeleton"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Textures/UE4_LOGO_CARD",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Textures/UE4_Mannequin_MAT_MASKA",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Textures/UE4_Mannequin__normals",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Materials/M_FPGun",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Materials/MaterialLayers/ML_GlossyBlack_Latex_UE4",
+          "class": "MaterialFunction"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Materials/MaterialLayers/ML_Plastic_Shiny_Beige",
+          "class": "MaterialFunction"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Materials/MaterialLayers/ML_Screen",
+          "class": "MaterialFunction"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Materials/MaterialLayers/ML_SoftMetal_UE4",
+          "class": "MaterialFunction"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Materials/MaterialLayers/T_ML_Aluminum01",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Materials/MaterialLayers/T_ML_Aluminum01_N",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Materials/MaterialLayers/T_ML_Rubber_Blue_01_D",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Materials/MaterialLayers/T_ML_Rubber_Blue_01_N",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Mesh/SK_FPGun",
+          "class": "SkeletalMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Mesh/SK_FPGun_Skeleton",
+          "class": "Skeleton"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Textures/T_FPGun_M",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Textures/T_FPGun_N",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Meshes/BaseMaterial",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Meshes/FirstPersonProjectileMaterial",
+          "class": "MaterialInstanceConstant"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Meshes/FirstPersonProjectileMesh",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPersonBP/Blueprints/FirstPersonCharacter",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPersonBP/Blueprints/FirstPersonProjectile",
+          "class": "Blueprint"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/1M_Cube",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/1M_Cube_Chamfer",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/1M_Cube_DM",
+          "class": "DestructibleMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/CubeMaterial",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/TemplateFloor",
+          "class": "StaticMesh"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Particles/P_Explosion",
+          "class": "ParticleSystem"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Particles/Materials/M_Burst",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Particles/Materials/M_explosion_subUV",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Particles/Materials/M_Fire_SubUV",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Particles/Materials/m_flare_01",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Particles/Materials/M_radial_ramp",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Particles/Materials/M_smoke_subUV",
+          "class": "Material"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/T_Burst_M",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/T_Dust_Particle_D",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/T_Explosion_SubUV",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/T_Fire_SubUV",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/T_Fire_Tiled_D",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/T_Frame_M",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/T_Frame_N",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/T_Gradinet_01",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/T_Single_Tile_N",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/T_Smoke_SubUV",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/T_Smoke_Tiled_D",
+          "class": "Texture2D"
+        },
+        {
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Textures/T_Spark_Core",
+          "class": "Texture2D"
+        }
+      ]
+    }
+  },
+  "meshes": [
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech.SpiderMech",
+      "class": "SkeletalMesh",
+      "size_cm": [
+        572.6007690429688,
+        475.9054260253906,
+        367.49851655960083
+      ],
+      "bounds_origin": [
+        0.0,
+        0.0,
+        183.74924635887146
+      ],
+      "materials": [
+        {
+          "slot": "_mat_1010",
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1010._mat_1010"
+        },
+        {
+          "slot": "_mat_1005",
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1005._mat_1005"
+        },
+        {
+          "slot": "_mat_1003",
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1003._mat_1003"
+        },
+        {
+          "slot": "_mat_1006",
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1006._mat_1006"
+        },
+        {
+          "slot": "_mat_1002",
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1002._mat_1002"
+        },
+        {
+          "slot": "_mat_1009",
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1009._mat_1009"
+        },
+        {
+          "slot": "_mat_1001",
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1001._mat_1001"
+        },
+        {
+          "slot": "_mat_1007",
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1007._mat_1007"
+        },
+        {
+          "slot": "_mat_1004",
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1004._mat_1004"
+        },
+        {
+          "slot": "_mat_1008",
+          "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1008._mat_1008"
+        }
+      ],
+      "skeleton": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech_Skeleton.SpiderMech_Skeleton"
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/body.body",
+      "class": "StaticMesh",
+      "size_cm": [
+        144.7716064453125,
+        114.25627517700195,
+        210.0503692626953
+      ],
+      "bounds_origin": [
+        0.00048828125,
+        0.5792331695556641,
+        0.1406097412109375
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/head_connector.head_connector",
+      "class": "StaticMesh",
+      "size_cm": [
+        20.80946922302246,
+        32.42369842529297,
+        27.529621124267578
+      ],
+      "bounds_origin": [
+        0.0,
+        0.1620349884033203,
+        -0.0027532577514648438
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/head_internal_pitch.head_internal_pitch",
+      "class": "StaticMesh",
+      "size_cm": [
+        37.47662353515625,
+        29.925167083740234,
+        113.67627906799316
+      ],
+      "bounds_origin": [
+        0.0,
+        1.1382637023925781,
+        54.32768535614014
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/head_main.head_main",
+      "class": "StaticMesh",
+      "size_cm": [
+        130.0456085205078,
+        99.06743621826172,
+        96.55705642700195
+      ],
+      "bounds_origin": [
+        0.0,
+        0.0117950439453125,
+        -0.17923545837402344
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_lower.LA_lower",
+      "class": "StaticMesh",
+      "size_cm": [
+        31.589794158935547,
+        19.25936985015869,
+        126.59343147277832
+      ],
+      "bounds_origin": [
+        0.0840902328491211,
+        -0.0018658638000488281,
+        -54.223708152770996
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_root.LA_root",
+      "class": "StaticMesh",
+      "size_cm": [
+        33.98704433441162,
+        67.92554664611816,
+        29.4152774810791
+      ],
+      "bounds_origin": [
+        4.826855182647705,
+        22.971617698669434,
+        -4.312981605529785
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_root_pitch.LA_root_pitch",
+      "class": "StaticMesh",
+      "size_cm": [
+        18.75986957550049,
+        18.80453872680664,
+        3.065256118774414
+      ],
+      "bounds_origin": [
+        -0.018870830535888672,
+        0.41112327575683594,
+        -17.889981269836426
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_root_roll.LA_root_roll",
+      "class": "StaticMesh",
+      "size_cm": [
+        20.880236625671387,
+        20.84529399871826,
+        13.067936897277832
+      ],
+      "bounds_origin": [
+        -0.018025875091552734,
+        -0.04800558090209961,
+        2.7254223823547363
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_tip.LA_tip",
+      "class": "StaticMesh",
+      "size_cm": [
+        52.62956619262695,
+        117.61267423629761,
+        14.049458503723145
+      ],
+      "bounds_origin": [
+        -23.575639724731445,
+        55.73971390724182,
+        -0.014913082122802734
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_twist.LA_twist",
+      "class": "StaticMesh",
+      "size_cm": [
+        30.251693725585938,
+        23.03139019012451,
+        53.956653118133545
+      ],
+      "bounds_origin": [
+        1.2997989654541016,
+        -0.07897043228149414,
+        -27.710760354995728
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_upper.LA_upper",
+      "class": "StaticMesh",
+      "size_cm": [
+        32.16496658325195,
+        12.830567359924316,
+        84.62840175628662
+      ],
+      "bounds_origin": [
+        1.721578598022461,
+        0.03224611282348633,
+        -29.961281299591064
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_base_hinge_roll.LBL_base_hinge_roll",
+      "class": "StaticMesh",
+      "size_cm": [
+        31.62553882598877,
+        37.76397705078125,
+        36.54779815673828
+      ],
+      "bounds_origin": [
+        7.3483195304870605,
+        0.18482208251953125,
+        -0.00121307373046875
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_base_hinge_yaw.LBL_base_hinge_yaw",
+      "class": "StaticMesh",
+      "size_cm": [
+        28.425777435302734,
+        21.155595779418945,
+        28.072792053222656
+      ],
+      "bounds_origin": [
+        5.7605743408203125,
+        -0.16298294067382812,
+        0.0035552978515625
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_claw_main.LBL_claw_main",
+      "class": "StaticMesh",
+      "size_cm": [
+        76.94047498703003,
+        51.86517333984375,
+        20.84146785736084
+      ],
+      "bounds_origin": [
+        32.81549096107483,
+        1.5877838134765625,
+        -0.3111720085144043
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_0.LBL_main_0",
+      "class": "StaticMesh",
+      "size_cm": [
+        82.01366329193115,
+        41.00050926208496,
+        34.19814491271973
+      ],
+      "bounds_origin": [
+        29.5947003364563,
+        -0.0025281906127929688,
+        -0.19770145416259766
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_1.LBL_main_1",
+      "class": "StaticMesh",
+      "size_cm": [
+        78.10908317565918,
+        34.429585456848145,
+        27.76097583770752
+      ],
+      "bounds_origin": [
+        36.67288303375244,
+        12.435906887054443,
+        -0.07072973251342773
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_2.LBL_main_2",
+      "class": "StaticMesh",
+      "size_cm": [
+        54.54047870635986,
+        32.713032722473145,
+        19.434965133666992
+      ],
+      "bounds_origin": [
+        23.578542232513428,
+        -9.389901638031006,
+        -0.04572868347167969
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_3.LBL_main_3",
+      "class": "StaticMesh",
+      "size_cm": [
+        43.380210876464844,
+        24.95591640472412,
+        22.367000579833984
+      ],
+      "bounds_origin": [
+        16.23760986328125,
+        4.4167160987854,
+        0.10300254821777344
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_4.LBL_main_4",
+      "class": "StaticMesh",
+      "size_cm": [
+        274.59851837158203,
+        103.8914909362793,
+        58.4141960144043
+      ],
+      "bounds_origin": [
+        11.135433197021484,
+        -28.181230545043945,
+        -0.5720138549804688
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_base_hinge_roll.LFL_base_hinge_roll",
+      "class": "StaticMesh",
+      "size_cm": [
+        31.80106258392334,
+        37.76374053955078,
+        36.547607421875
+      ],
+      "bounds_origin": [
+        7.494869709014893,
+        0.18453598022460938,
+        0.0003299713134765625
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_base_hinge_yaw.LFL_base_hinge_yaw",
+      "class": "StaticMesh",
+      "size_cm": [
+        28.388205528259277,
+        20.888757705688477,
+        28.0764102935791
+      ],
+      "bounds_origin": [
+        5.788626194000244,
+        -0.2808094024658203,
+        0.01925182342529297
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_claw_main.LFL_claw_main",
+      "class": "StaticMesh",
+      "size_cm": [
+        77.06385517120361,
+        52.086280822753906,
+        20.572447776794434
+      ],
+      "bounds_origin": [
+        32.766793727874756,
+        1.871835708618164,
+        -0.21239328384399414
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_0.LFL_main_0",
+      "class": "StaticMesh",
+      "size_cm": [
+        81.70908451080322,
+        41.58929443359375,
+        34.04582977294922
+      ],
+      "bounds_origin": [
+        29.813174724578857,
+        -0.08563423156738281,
+        -0.09227561950683594
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_1.LFL_main_1",
+      "class": "StaticMesh",
+      "size_cm": [
+        78.50952625274658,
+        34.37696647644043,
+        27.760761260986328
+      ],
+      "bounds_origin": [
+        36.472203731536865,
+        12.462979316711426,
+        -0.06619548797607422
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_2.LFL_main_2",
+      "class": "StaticMesh",
+      "size_cm": [
+        54.58516526222229,
+        32.68954658508301,
+        19.500157356262207
+      ],
+      "bounds_origin": [
+        23.58526313304901,
+        -9.378039360046387,
+        -0.0769658088684082
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_3.LFL_main_3",
+      "class": "StaticMesh",
+      "size_cm": [
+        43.37919330596924,
+        24.963449478149414,
+        22.44277000427246
+      ],
+      "bounds_origin": [
+        16.235646724700928,
+        4.349028587341309,
+        0.0956583023071289
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_4.LFL_main_4",
+      "class": "StaticMesh",
+      "size_cm": [
+        274.7143249511719,
+        104.58672332763672,
+        58.77091598510742
+      ],
+      "bounds_origin": [
+        11.192855834960938,
+        -27.83371353149414,
+        0.44284820556640625
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_lower.RA_lower",
+      "class": "StaticMesh",
+      "size_cm": [
+        31.589794158935547,
+        19.22397518157959,
+        126.67874336242676
+      ],
+      "bounds_origin": [
+        -0.0840902328491211,
+        -0.050890445709228516,
+        54.18105220794678
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_root.RA_root",
+      "class": "StaticMesh",
+      "size_cm": [
+        33.926833152770996,
+        68.32554244995117,
+        29.415380477905273
+      ],
+      "bounds_origin": [
+        -4.824310779571533,
+        -22.772932052612305,
+        4.312926292419434
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_root_pitch.RA_root_pitch",
+      "class": "StaticMesh",
+      "size_cm": [
+        18.789040565490723,
+        18.78829002380371,
+        3.065256118774414
+      ],
+      "bounds_origin": [
+        0.03345632553100586,
+        -0.4192476272583008,
+        17.889981269836426
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_root_roll.RA_root_roll",
+      "class": "StaticMesh",
+      "size_cm": [
+        20.880236625671387,
+        20.84529399871826,
+        13.06612491607666
+      ],
+      "bounds_origin": [
+        0.018025875091552734,
+        0.04800558090209961,
+        -2.7263283729553223
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_tip.RA_tip",
+      "class": "StaticMesh",
+      "size_cm": [
+        52.62858867645264,
+        117.63318967819214,
+        14.069575309753418
+      ],
+      "bounds_origin": [
+        23.576128482818604,
+        -55.74997162818909,
+        -0.0425724983215332
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_twist.RA_twist",
+      "class": "StaticMesh",
+      "size_cm": [
+        30.478179931640625,
+        23.232603073120117,
+        53.987138748168945
+      ],
+      "bounds_origin": [
+        -1.1659088134765625,
+        -0.021576881408691406,
+        27.726611137390137
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_upper.RA_upper",
+      "class": "StaticMesh",
+      "size_cm": [
+        32.65960884094238,
+        13.12449598312378,
+        84.42391109466553
+      ],
+      "bounds_origin": [
+        -1.9688997268676758,
+        -0.2858846187591553,
+        29.858654499053955
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_base_hinge_roll.RBL_base_hinge_roll",
+      "class": "StaticMesh",
+      "size_cm": [
+        31.858487129211426,
+        37.76397705078125,
+        36.54779815673828
+      ],
+      "bounds_origin": [
+        -7.464793682098389,
+        -0.18482208251953125,
+        0.00121307373046875
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_base_hinge_yaw.RBL_base_hinge_yaw",
+      "class": "StaticMesh",
+      "size_cm": [
+        28.447675704956055,
+        21.13027572631836,
+        28.072792053222656
+      ],
+      "bounds_origin": [
+        -5.771523475646973,
+        0.1756429672241211,
+        -0.0035552978515625
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_claw_main.RBL_claw_main",
+      "class": "StaticMesh",
+      "size_cm": [
+        76.94047498703003,
+        51.86269187927246,
+        20.84149169921875
+      ],
+      "bounds_origin": [
+        -32.81549096107483,
+        -1.589024543762207,
+        0.3111600875854492
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_0.RBL_main_0",
+      "class": "StaticMesh",
+      "size_cm": [
+        82.04157543182373,
+        40.94532585144043,
+        34.16402626037598
+      ],
+      "bounds_origin": [
+        -29.610086917877197,
+        0.03026103973388672,
+        0.21521282196044922
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_1.RBL_main_1",
+      "class": "StaticMesh",
+      "size_cm": [
+        78.24926137924194,
+        34.4370002746582,
+        27.76097583770752
+      ],
+      "bounds_origin": [
+        -36.60279393196106,
+        -12.432199478149414,
+        0.07072973251342773
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_2.RBL_main_2",
+      "class": "StaticMesh",
+      "size_cm": [
+        54.49082279205322,
+        32.713032722473145,
+        19.43560218811035
+      ],
+      "bounds_origin": [
+        -23.537692546844482,
+        9.389901638031006,
+        0.04589271545410156
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_3.RBL_main_3",
+      "class": "StaticMesh",
+      "size_cm": [
+        43.380210876464844,
+        24.891709327697754,
+        22.367000579833984
+      ],
+      "bounds_origin": [
+        -16.23760986328125,
+        -4.384612560272217,
+        -0.10300254821777344
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_4.RBL_main_4",
+      "class": "StaticMesh",
+      "size_cm": [
+        274.59851837158203,
+        103.8914909362793,
+        59.068321228027344
+      ],
+      "bounds_origin": [
+        -11.135433197021484,
+        28.181230545043945,
+        0.2449512481689453
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_base_hinge_roll.RFL_base_hinge_roll",
+      "class": "StaticMesh",
+      "size_cm": [
+        31.80106258392334,
+        37.76374053955078,
+        36.547607421875
+      ],
+      "bounds_origin": [
+        -7.494869709014893,
+        -0.18453598022460938,
+        -0.0003299713134765625
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_base_hinge_yaw.RFL_base_hinge_yaw",
+      "class": "StaticMesh",
+      "size_cm": [
+        28.38858127593994,
+        20.88170051574707,
+        28.0764102935791
+      ],
+      "bounds_origin": [
+        -5.788730144500732,
+        0.28433799743652344,
+        -0.01925182342529297
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_claw_main.RFL_claw_main",
+      "class": "StaticMesh",
+      "size_cm": [
+        77.06385517120361,
+        52.106475830078125,
+        20.572447776794434
+      ],
+      "bounds_origin": [
+        -32.766793727874756,
+        -1.8819084167480469,
+        0.21239328384399414
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_0.RFL_main_0",
+      "class": "StaticMesh",
+      "size_cm": [
+        81.70900344848633,
+        41.587900161743164,
+        33.93018913269043
+      ],
+      "bounds_origin": [
+        -29.81429100036621,
+        0.0856161117553711,
+        -0.14394283294677734
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_1.RFL_main_1",
+      "class": "StaticMesh",
+      "size_cm": [
+        78.23718667030334,
+        34.40917682647705,
+        27.760761260986328
+      ],
+      "bounds_origin": [
+        -36.608373522758484,
+        -12.446874141693115,
+        0.06619548797607422
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_2.RFL_main_2",
+      "class": "StaticMesh",
+      "size_cm": [
+        54.58205246925354,
+        32.68954658508301,
+        19.433853149414062
+      ],
+      "bounds_origin": [
+        -23.583706736564636,
+        9.378039360046387,
+        0.043956756591796875
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_3.RFL_main_3",
+      "class": "StaticMesh",
+      "size_cm": [
+        43.43155765533447,
+        24.927831649780273,
+        22.44277000427246
+      ],
+      "bounds_origin": [
+        -16.261828899383545,
+        -4.3758039474487305,
+        -0.0956583023071289
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_4.RFL_main_4",
+      "class": "StaticMesh",
+      "size_cm": [
+        274.71435546875,
+        104.58672332763672,
+        58.770917892456055
+      ],
+      "bounds_origin": [
+        -11.19287109375,
+        27.83371353149414,
+        -0.44284725189208984
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/tail.tail",
+      "class": "StaticMesh",
+      "size_cm": [
+        113.08147811889648,
+        175.3761444091797,
+        213.41780853271484
+      ],
+      "bounds_origin": [
+        -0.03381919860839844,
+        0.971466064453125,
+        0.026416778564453125
+      ],
+      "materials": [
+        {
+          "slot": "Material_0",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Map/Meshes/SM_ChamferCube.SM_ChamferCube",
+      "class": "StaticMesh",
+      "size_cm": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "bounds_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "materials": [
+        {
+          "slot": "CubeMaterial",
+          "path": null
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/Mech_Project/Map/Meshes/SM_Ramp.SM_Ramp",
+      "class": "StaticMesh",
+      "size_cm": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "bounds_origin": [
+        50.0,
+        50.0,
+        50.0
+      ],
+      "materials": [
+        {
+          "slot": "lambert1",
+          "path": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01.Mecha_01",
+      "class": "SkeletalMesh",
+      "size_cm": [
+        205.9466094970703,
+        204.73876190185547,
+        467.09744930267334
+      ],
+      "bounds_origin": [
+        0.0,
+        18.978031158447266,
+        220.06901216506958
+      ],
+      "materials": [
+        {
+          "slot": "Mat_MEcha_01",
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mat_MEcha_01.Mat_MEcha_01"
+        }
+      ],
+      "skeleton": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_Skeleton.Mecha_01_Skeleton"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes/Cockpit_Jet.Cockpit_Jet",
+      "class": "StaticMesh",
+      "size_cm": [
+        162.34193420410156,
+        219.74005126953125,
+        140.354736328125
+      ],
+      "bounds_origin": [
+        0.0,
+        34.93275451660156,
+        35.692138671875
+      ],
+      "materials": [
+        {
+          "slot": "lambert1",
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Materials/M_LtMed_Main.M_LtMed_Main"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Mech_Legs_Lt.Mech_Legs_Lt",
+      "class": "SkeletalMesh",
+      "size_cm": [
+        235.58348083496094,
+        148.67095565795898,
+        259.45826345682144
+      ],
+      "bounds_origin": [
+        0.0,
+        19.37967872619629,
+        129.21004673838615
+      ],
+      "materials": [
+        {
+          "slot": "lambert1",
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Materials/M_LtMed_Main.M_LtMed_Main"
+        }
+      ],
+      "skeleton": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Mech_Legs_Lt_Skeleton.Mech_Legs_Lt_Skeleton"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Cockpit_01.Cockpit_01",
+      "class": "StaticMesh",
+      "size_cm": [
+        114.00081634521484,
+        125.5985336303711,
+        61.138484954833984
+      ],
+      "bounds_origin": [
+        15.09603500366211,
+        0.0,
+        -9.207006454467773
+      ],
+      "materials": [
+        {
+          "slot": "Mat_Cockpit",
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01.Mat_Cockpit_01"
+        },
+        {
+          "slot": "Mat_Screen_02",
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01_Screen_02.Mat_Cockpit_01_Screen_02"
+        },
+        {
+          "slot": "Mat_Screen_01",
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01_Screen_01.Mat_Cockpit_01_Screen_01"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02.mecha_02",
+      "class": "SkeletalMesh",
+      "size_cm": [
+        190.77296447753906,
+        218.00435638427734,
+        453.2113838195801
+      ],
+      "bounds_origin": [
+        0.0,
+        21.029788970947266,
+        213.3330898284912
+      ],
+      "materials": [
+        {
+          "slot": "Mat_mecha_02",
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/Mat_mecha_02.Mat_mecha_02"
+        }
+      ],
+      "skeleton": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02_Skeleton.mecha_02_Skeleton"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Projectiles/Missile_01/lowPoly_missile_01.lowPoly_missile_01",
+      "class": "StaticMesh",
+      "size_cm": [
+        36.86262512207031,
+        36.86263656616211,
+        109.49590301513672
+      ],
+      "bounds_origin": [
+        0.0,
+        -3.814697265625e-06,
+        48.284305572509766
+      ],
+      "materials": [
+        {
+          "slot": "Material",
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Projectiles/Missile_01/Material.Material"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/FireWeapon_01.FireWeapon_01",
+      "class": "SkeletalMesh",
+      "size_cm": [
+        56.32459735870361,
+        158.64686965942383,
+        74.18672561645508
+      ],
+      "bounds_origin": [
+        -19.54015874862671,
+        44.927595138549805,
+        0.41731834411621094
+      ],
+      "materials": [
+        {
+          "slot": "Mat_FireWeapon_01",
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/Mat_FireWeapon_01.Mat_FireWeapon_01"
+        }
+      ],
+      "skeleton": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/FireWeapon_01_Skeleton.FireWeapon_01_Skeleton"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/MissileWeapon_01.MissileWeapon_01",
+      "class": "SkeletalMesh",
+      "size_cm": [
+        116.03551864624023,
+        218.52173233032227,
+        140.6019172668457
+      ],
+      "bounds_origin": [
+        -39.15387153625488,
+        58.18354606628418,
+        -24.181882858276367
+      ],
+      "materials": [
+        {
+          "slot": "Mat_SimpleMissile",
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/Mat_SimpleMissile.Mat_SimpleMissile"
+        },
+        {
+          "slot": "Mat_MissileWeapon_01",
+          "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/Mat_MissileWeapon_01.Mat_MissileWeapon_01"
+        }
+      ],
+      "skeleton": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/MissileWeapon_01_Skeleton.MissileWeapon_01_Skeleton"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes/HalfShoulder_Box.HalfShoulder_Box",
+      "class": "StaticMesh",
+      "size_cm": [
+        50.37141418457031,
+        159.86170959472656,
+        97.867919921875
+      ],
+      "bounds_origin": [
+        22.704803466796875,
+        5.400444030761719,
+        3.6798095703125
+      ],
+      "materials": [
+        {
+          "slot": "lambert1",
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Materials/M_LtMed_Main.M_LtMed_Main"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Weapons/Weapons_Machinegun_lvl1.Weapons_Machinegun_lvl1",
+      "class": "SkeletalMesh",
+      "size_cm": [
+        75.68560832738876,
+        271.03429412841797,
+        86.88748168945312
+      ],
+      "bounds_origin": [
+        38.37466409802437,
+        65.35544204711914,
+        -4.5201568603515625
+      ],
+      "materials": [
+        {
+          "slot": "Atlas_mat",
+          "path": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Materials/M_LtMed_Main.M_LtMed_Main"
+        }
+      ],
+      "skeleton": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Weapons/Weapons_Machinegun_lvl5_Skeleton.Weapons_Machinegun_lvl5_Skeleton"
+    },
+    {
+      "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Mesh/SK_Mannequin_Arms.SK_Mannequin_Arms",
+      "class": "SkeletalMesh",
+      "size_cm": [
+        138.72654724121094,
+        31.211198806762695,
+        63.50963592529297
+      ],
+      "bounds_origin": [
+        0.0,
+        -3.356980323791504,
+        124.92654800415039
+      ],
+      "materials": [
+        {
+          "slot": "M_UE4Man_Body",
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Materials/M_UE4Man_Body.M_UE4Man_Body"
+        }
+      ],
+      "skeleton": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Mesh/SK_Mannequin_Arms_Skeleton.SK_Mannequin_Arms_Skeleton"
+    },
+    {
+      "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Mesh/SK_FPGun.SK_FPGun",
+      "class": "SkeletalMesh",
+      "size_cm": [
+        17.802234649658203,
+        81.19708251953125,
+        37.168094635009766
+      ],
+      "bounds_origin": [
+        -9.5367431640625e-07,
+        13.777393341064453,
+        3.646848678588867
+      ],
+      "materials": [
+        {
+          "slot": "M_FPGun",
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Materials/M_FPGun.M_FPGun"
+        }
+      ],
+      "skeleton": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Mesh/SK_FPGun_Skeleton.SK_FPGun_Skeleton"
+    },
+    {
+      "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Meshes/FirstPersonProjectileMesh.FirstPersonProjectileMesh",
+      "class": "StaticMesh",
+      "size_cm": [
+        320.0,
+        320.0,
+        320.0
+      ],
+      "bounds_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "materials": [
+        {
+          "slot": "FirstPersonProjectileMaterial",
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Meshes/FirstPersonProjectileMaterial.FirstPersonProjectileMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/1M_Cube.1M_Cube",
+      "class": "StaticMesh",
+      "size_cm": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "bounds_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "materials": [
+        {
+          "slot": "CubeMaterial",
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/CubeMaterial.CubeMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/1M_Cube_Chamfer.1M_Cube_Chamfer",
+      "class": "StaticMesh",
+      "size_cm": [
+        100.0,
+        100.0,
+        100.0
+      ],
+      "bounds_origin": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "materials": [
+        {
+          "slot": "CubeMaterial",
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/CubeMaterial.CubeMaterial"
+        }
+      ]
+    },
+    {
+      "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/TemplateFloor.TemplateFloor",
+      "class": "StaticMesh",
+      "size_cm": [
+        4000.0,
+        4000.0,
+        200.0
+      ],
+      "bounds_origin": [
+        0.0,
+        0.0,
+        -100.0
+      ],
+      "materials": [
+        {
+          "slot": "CubeMaterial",
+          "path": "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/CubeMaterial.CubeMaterial"
+        }
+      ]
+    }
+  ],
+  "materials": {
+    "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial": {
+      "class": "Material",
+      "base_material": "/Engine/EngineMaterials/WorldGridMaterial.WorldGridMaterial",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1001._mat_1001": {
+      "class": "Material",
+      "base_material": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1001._mat_1001",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1002._mat_1002": {
+      "class": "Material",
+      "base_material": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1002._mat_1002",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1003._mat_1003": {
+      "class": "Material",
+      "base_material": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1003._mat_1003",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1004._mat_1004": {
+      "class": "Material",
+      "base_material": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1004._mat_1004",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1005._mat_1005": {
+      "class": "Material",
+      "base_material": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1005._mat_1005",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1006._mat_1006": {
+      "class": "Material",
+      "base_material": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1006._mat_1006",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1007._mat_1007": {
+      "class": "Material",
+      "base_material": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1007._mat_1007",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1008._mat_1008": {
+      "class": "Material",
+      "base_material": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1008._mat_1008",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1009._mat_1009": {
+      "class": "Material",
+      "base_material": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1009._mat_1009",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1010._mat_1010": {
+      "class": "Material",
+      "base_material": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1010._mat_1010",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01.Mat_Cockpit_01": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01.Mat_Cockpit_01",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01_Screen_01.Mat_Cockpit_01_Screen_01": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01_Screen_01.Mat_Cockpit_01_Screen_01",
+      "shading_model": "<MaterialShadingModel.MSM_UNLIT: 0>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01_Screen_02.Mat_Cockpit_01_Screen_02": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01_Screen_02.Mat_Cockpit_01_Screen_02",
+      "shading_model": "<MaterialShadingModel.MSM_UNLIT: 0>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mat_MEcha_01.Mat_MEcha_01": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mat_MEcha_01.Mat_MEcha_01",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/Mat_mecha_02.Mat_mecha_02": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/Mat_mecha_02.Mat_mecha_02",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/Artistic/Meshes/Projectiles/Missile_01/Material.Material": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/Artistic/Meshes/Projectiles/Missile_01/Material.Material",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/Mat_FireWeapon_01.Mat_FireWeapon_01": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/Mat_FireWeapon_01.Mat_FireWeapon_01",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/Mat_MissileWeapon_01.Mat_MissileWeapon_01": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/Mat_MissileWeapon_01.Mat_MissileWeapon_01",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/Mat_SimpleMissile.Mat_SimpleMissile": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/Mat_SimpleMissile.Mat_SimpleMissile",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Materials/M_LtMed_Main.M_LtMed_Main": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Materials/M_LtMed_Main.M_LtMed_Main",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Materials/M_UE4Man_Body.M_UE4Man_Body": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Character/Materials/M_UE4Man_Body.M_UE4Man_Body",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_MASKED: 1>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Materials/M_FPGun.M_FPGun": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/FPWeapon/Materials/M_FPGun.M_FPGun",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_MASKED: 1>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Meshes/FirstPersonProjectileMaterial.FirstPersonProjectileMaterial": {
+      "class": "MaterialInstanceConstant",
+      "parent": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Meshes/BaseMaterial.BaseMaterial",
+      "scalar_overrides": {
+        "Metallic": 0.0,
+        "Roughness": 0.25,
+        "RefractionDepthBias": 0.0
+      },
+      "vector_overrides": {
+        "DiffuseColor": [
+          0.9607840180397034,
+          0.5843139886856079,
+          0.10980399698019028,
+          1.0
+        ]
+      },
+      "texture_overrides": {},
+      "base_material": "/Game/Assets/MechaController/UE4_DefaultAssets/FirstPerson/Meshes/BaseMaterial.BaseMaterial",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    },
+    "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/CubeMaterial.CubeMaterial": {
+      "class": "Material",
+      "base_material": "/Game/Assets/MechaController/UE4_DefaultAssets/Meshes/CubeMaterial.CubeMaterial",
+      "shading_model": "<MaterialShadingModel.MSM_DEFAULT_LIT: 1>",
+      "blend_mode": "<BlendMode.BLEND_OPAQUE: 0>",
+      "two_sided": false
+    }
+  },
+  "dirty_before": {
+    "content": [],
+    "maps": []
+  },
+  "api": {
+    "ViewportService": [],
+    "EditorAssetLibrary": []
+  },
+  "dirty_after": {
+    "content": [],
+    "maps": []
+  }
+}

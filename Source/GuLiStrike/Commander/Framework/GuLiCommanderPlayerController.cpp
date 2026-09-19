@@ -24,6 +24,11 @@
 #include "InputCoreTypes.h"
 #include "LandscapeProxy.h"
 #include "Gameplay/Resources/GuLiResourceActors.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputAction.h"
+#include "InputMappingContext.h"
+#include "Engine/LocalPlayer.h"
 
 namespace GuLiCommanderCursorTrace
 {
@@ -137,6 +142,8 @@ void AGuLiCommanderPlayerController::BeginPlay()
 
 void AGuLiCommanderPlayerController::EndPlay(const EEndPlayReason::Type EndPlayReason)
 {
+	if (BattleInputSubsystem.IsValid()) BattleInputSubsystem->RemoveMappingContext(BattleCommandMappings);
+	BattleInputSubsystem.Reset();
 	CancelSelectionDrag();
 	RestoreCommanderCursor();
 	if (NetSyncComponent)
@@ -156,29 +163,37 @@ void AGuLiCommanderPlayerController::FlushPressedKeys()
 void AGuLiCommanderPlayerController::SetupInputComponent()
 {
 	Super::SetupInputComponent();
-	if (!InputComponent)
+	auto& Enhanced=*CastChecked<UEnhancedInputComponent>(InputComponent);
+	BattleCommandMappings=LoadObject<UInputMappingContext>(nullptr,TEXT("/Game/GuLiStrike/GroundMech/Input/IMC_BattleCommands"));
+	struct FBinding { const TCHAR* Name; void (ThisClass::*Handler)(); };
+	const FBinding Bindings[]={
+		{TEXT("Primary"),&ThisClass::HandlePrimaryActionAtCursor},
+		{TEXT("Secondary"),&ThisClass::HandleSecondaryActionAtCursor},
+		{TEXT("Cancel"),&ThisClass::HandleCancelInput},
+		{TEXT("Slot1"),&ThisClass::HandleArmMoveToolInput},
+		{TEXT("Slot2"),&ThisClass::HandleSelectBuildingTwoInput},
+		{TEXT("Slot3"),&ThisClass::HandleSelectBuildingThreeInput},
+		{TEXT("Slot4"),&ThisClass::HandleSelectBuildingFourInput},
+		{TEXT("Slot5"),&ThisClass::HandleSelectBuildingFiveInput},
+		{TEXT("Slot6"),&ThisClass::HandleSelectBuildingSixInput},
+		{TEXT("Build"),&ThisClass::HandleToggleBuildModeInput},
+		{TEXT("Select"),&ThisClass::HandleActivateSelectionToolInput},
+		{TEXT("Radius"),&ThisClass::HandleStepSelectionRadiusInput},
+		{TEXT("ZoomIn"),&ThisClass::ZoomCameraIn},
+		{TEXT("ZoomOut"),&ThisClass::ZoomCameraOut},
+		{TEXT("UnitSkill"),&ThisClass::HandleUnitSkillInput}};
+	for (const auto& Binding:Bindings)
 	{
-		return;
+		auto* Action=LoadObject<UInputAction>(nullptr,*(FString(TEXT("/Game/GuLiStrike/GroundMech/Input/IA_Battle_"))+Binding.Name));
+		Enhanced.BindAction(Action,ETriggerEvent::Started,this,Binding.Handler);
+		if (FStringView(Binding.Name)==TEXT("Primary"))
+		{
+			Enhanced.BindAction(Action,ETriggerEvent::Completed,this,&ThisClass::HandlePrimaryReleased);
+			Enhanced.BindAction(Action,ETriggerEvent::Canceled,this,&ThisClass::HandlePrimaryReleased);
+		}
 	}
-
-	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::Q, IE_Pressed, this, &ThisClass::HandleUnitSkillInput).bConsumeInput = true;
-	InputComponent->BindKey(EKeys::T, IE_Pressed, TeleportInput.Get(), &UGuLiTeleportInputComponent::ActivateAiming).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::LeftMouseButton, IE_Released, this, &ThisClass::HandlePrimaryReleased).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::RightMouseButton, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleSecondaryActionAtCursor).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::Escape, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleCancelInput).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::One, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleArmMoveToolInput).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::Two, IE_Pressed, this, &ThisClass::HandleSelectBuildingTwoInput).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::Three, IE_Pressed, this, &ThisClass::HandleSelectBuildingThreeInput).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::Four, IE_Pressed, this, &ThisClass::HandleSelectBuildingFourInput).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::Five, IE_Pressed, this, &ThisClass::HandleSelectBuildingFiveInput).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::Six, IE_Pressed, this, &ThisClass::HandleSelectBuildingSixInput).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::B, IE_Pressed, this, &ThisClass::HandleToggleBuildModeInput).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::Seven, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleActivateSelectionToolInput).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::Add, IE_Pressed, this, &AGuLiCommanderPlayerController::HandleStepSelectionRadiusInput).bConsumeInput = false;
-	InputComponent->BindKey(FInputChord(EKeys::Equals, true, false, false, false), IE_Pressed, this, &AGuLiCommanderPlayerController::HandleStepSelectionRadiusInput).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::MouseScrollUp, IE_Pressed, this, &AGuLiCommanderPlayerController::ZoomCameraIn).bConsumeInput = false;
-	InputComponent->BindKey(EKeys::MouseScrollDown, IE_Pressed, this, &AGuLiCommanderPlayerController::ZoomCameraOut).bConsumeInput = false;
+	Enhanced.BindAction(LoadObject<UInputAction>(nullptr,TEXT("/Game/GuLiStrike/GroundMech/Input/IA_Battle_Teleport")),
+		ETriggerEvent::Started,TeleportInput.Get(),&UGuLiTeleportInputComponent::ActivateAiming);
 }
 
 void AGuLiCommanderPlayerController::PlayerTick(const float DeltaTime)
@@ -995,20 +1010,31 @@ void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 	}
 #endif
 	const bool bShouldEnable = IsCommanderViewActive();
-	if (bCommanderInputModeInitialized && bCommanderInputActive == bShouldEnable)
+	const auto* State=GetPlayerState<AGuLiBattlePlayerState>();
+	const bool bGround=State && State->GetBattleRole()==EGuLiCommanderRole::Ground;
+	if (bCommanderInputModeInitialized && bCommanderInputActive == bShouldEnable && bGroundInputActive==bGround)
 	{
 		return;
 	}
 	bCommanderInputModeInitialized = true;
 	bCommanderInputActive = bShouldEnable;
+	bGroundInputActive = bGround;
+	if (BattleInputSubsystem.IsValid()) BattleInputSubsystem->RemoveMappingContext(BattleCommandMappings);
+	BattleInputSubsystem.Reset();
+	if (bShouldEnable || bGround)
+	{
+		BattleInputSubsystem=ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(GetLocalPlayer());
+		BattleInputSubsystem->AddMappingContext(BattleCommandMappings,10);
+	}
 	// HUD 可能晚于 PC 创建，由其 BeginPlay 补齐；角色切换释放不等待 DrawHUD。
 	if (AGuLiCommanderHUD* CommanderHUD = Cast<AGuLiCommanderHUD>(GetHUD()))
 	{
 		CommanderHUD->RefreshCommanderRole();
 	}
-	bShowMouseCursor = bShouldEnable;
-	bEnableClickEvents = bShouldEnable;
-	bEnableMouseOverEvents = bShouldEnable;
+	bShowMouseCursor = bShouldEnable || bGround;
+	bEnableClickEvents = bShouldEnable || bGround;
+	bEnableMouseOverEvents = bShouldEnable || bGround;
+	DefaultMouseCursor=bGround?EMouseCursor::Crosshairs:EMouseCursor::Default;
 	if (bShouldEnable)
 	{
 		if (UGameViewportClient* Viewport = GetWorld() ? GetWorld()->GetGameViewport() : nullptr)
@@ -1027,7 +1053,14 @@ void AGuLiCommanderPlayerController::UpdateCommanderInputMode()
 	{
 		CancelSelectionDrag();
 		RestoreCommanderCursor();
-		SetInputMode(FInputModeGameOnly());
+		if (bGround)
+		{
+			FInputModeGameAndUI InputMode;
+			InputMode.SetHideCursorDuringCapture(false);
+			InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::LockOnCapture);
+			SetInputMode(InputMode);
+		}
+		else SetInputMode(FInputModeGameOnly());
 		CommandLineState = EGuLiCommandLineState::None;
 		PendingMoveCommandId = 0u;
 		LatestMoveIntentCommandId = 0u;

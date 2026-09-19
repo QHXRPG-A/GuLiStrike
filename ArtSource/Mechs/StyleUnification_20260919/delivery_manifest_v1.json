@@ -1,0 +1,344 @@
+{
+  "title": "两组机甲资源风格统一参考",
+  "date": "2026-09-19",
+  "art_revision": "1.2",
+  "generation": "built-in image_gen",
+  "user_instruction": "不改变色系和着色逻辑，统一项目美术风格，先出效果参考图+三视图；不显示驾驶员；SpiderMech 减面成低模；不显示驾驶舱，该区域封起来",
+  "source_roots": [
+    "/Game/Assets/Mech_Project",
+    "/Game/Assets/MechaController"
+  ],
+  "reference_review_A": "pending",
+  "blender_review_B": "not_started",
+  "ue_style_implementation": "not_started",
+  "shader_contract": "Retain original material graph logic and shading models. Default Lit body surfaces. No shader edits were performed; hidden original cockpit screens are not part of current presentation. Concept art does not verify shader behavior.",
+  "spider_mesh_reduction": "not_started; low-poly 2D direction only; proposed LOD0 15000-25000 triangles from measured 839778",
+  "source_capture_projection": "4 degree narrow perspective for source front/side/back; generated orthographic design drawings are conceptual.",
+  "items": [
+    {
+      "key": "SpiderMech",
+      "title": "蜘蛛机甲 · 低模方向",
+      "palette": "深蓝灰 · 赭黄 · 黑色骨架",
+      "design": {
+        "path": "Concepts/SpiderMech_LowPoly_Concept_ThreeViews_v2.png",
+        "sha256": "e7f007d3ce132f2698b020fc331365d4a6d82cce4312c63fa6d98a3833273ae1",
+        "bytes": 1523644,
+        "width": 1464,
+        "height": 1074
+      },
+      "prompt": {
+        "path": "Prompts/SpiderMech_v2.txt",
+        "sha256": "3f33ab2031bd4950e19e5d56f0b7182652c2b3ce9b88d82c685bea2dd89eebe8",
+        "bytes": 2617
+      },
+      "source_images": [
+        {
+          "path": "Source/Rendered/SpiderMech_Hero.png",
+          "sha256": "e0f9101004b3afe04550c84c66e68cb7d034f0f3361e38ebe1db900244b16619",
+          "bytes": 1535698,
+          "width": 1440,
+          "height": 960
+        }
+      ],
+      "notes": [
+        "保留六条附肢、前方长尖足与翘尾",
+        "合并碎面、简化关节与装甲层级",
+        "原 LOD0 为 839,778 三角面；目标 15,000–25,000，仅为设计预算，尚未实际减面"
+      ],
+      "assistant_visual_review": "reviewed as 2D concept; not user approval",
+      "user_review_A": "pending"
+    },
+    {
+      "key": "Mecha_01",
+      "title": "蓝色步行机甲",
+      "palette": "钴蓝 · 黑灰 · 少量原浅色饰边",
+      "design": {
+        "path": "Concepts/Mecha_01_Concept_ThreeViews_v1.png",
+        "sha256": "e8add578c9f18416e62f538ecf0c33553aeee82a4b240a567c0ac8b39187fa77",
+        "bytes": 1689744,
+        "width": 1536,
+        "height": 1024
+      },
+      "prompt": {
+        "path": "Prompts/Mecha_01_v1.txt",
+        "sha256": "cbc026c1950a62a84ccc026f8e9d6237a744422e0227af9bc7f736117aaed749",
+        "bytes": 3174
+      },
+      "source_images": [
+        {
+          "path": "Source/Rendered/Mecha_01_Hero.png",
+          "sha256": "16e6e1cc3d17115b8c99455dd2ec7d27546eb29d7834574f144218ad8bd35691",
+          "bytes": 1193160,
+          "width": 1440,
+          "height": 960
+        }
+      ],
+      "notes": [
+        "前上风挡、侧舱盖、背面竖格栅",
+        "反关节双腿和双趾足",
+        "原体积内细化轴承与装甲分件"
+      ],
+      "assistant_visual_review": "reviewed as 2D concept; not user approval",
+      "user_review_A": "pending"
+    },
+    {
+      "key": "Mecha_02",
+      "title": "黄色步行机甲",
+      "palette": "金黄 · 黑灰 · 银灰窗沿",
+      "design": {
+        "path": "Concepts/Mecha_02_Concept_ThreeViews_v1.png",
+        "sha256": "8692aa465bc78713285e0d6f8c1e8baf34b51970118bf6c8dbb53ce58debf7a6",
+        "bytes": 1707264,
+        "width": 1536,
+        "height": 1024
+      },
+      "prompt": {
+        "path": "Prompts/Mecha_02_v1.txt",
+        "sha256": "ec2eb9418ba0b7f0c79904dffeb54dd7d2a70f70e67e16793e2728e118a6c0b2",
+        "bytes": 3206
+      },
+      "source_images": [
+        {
+          "path": "Source/Rendered/Mecha_02_Hero.png",
+          "sha256": "85956d8aaa1368e1da97556bbbc3ca86a3d19b2741ade9901faffd4c4e91ad40",
+          "bytes": 1466418,
+          "width": 1440,
+          "height": 960
+        }
+      ],
+      "notes": [
+        "八边形大前窗",
+        "背面四喷口，2×2 排列",
+        "保留圆鼓舱体和原腿部比例"
+      ],
+      "assistant_visual_review": "reviewed as 2D concept; not user approval",
+      "user_review_A": "pending"
+    },
+    {
+      "key": "Mech_Lightest",
+      "title": "轻型机甲 · 封闭装甲舱",
+      "palette": "赭黄 · 深青绿 · 黑色 · 琥珀灯",
+      "design": {
+        "path": "Concepts/Mech_Lightest_Concept_ThreeViews_v4.png",
+        "sha256": "36f1b6aecd83c8f0ea62b96f76c9502e8af0c1496e5bebb2c33c56c107cc8fb2",
+        "bytes": 1831894,
+        "width": 1536,
+        "height": 1024
+      },
+      "prompt": {
+        "path": "Prompts/Mech_Lightest_v4.txt",
+        "sha256": "5b02794eca51c6bcaa9f7e5d78974701116b5ccc228568ab6437383631461a98",
+        "bytes": 1623
+      },
+      "source_images": [
+        {
+          "path": "Source/Rendered/Mech_Lightest_Hero.png",
+          "sha256": "3119ea973ba50316cfae7c4269689d2e02610b7bfea84a26b7ab1d5a6defd1b9",
+          "bytes": 1401847,
+          "width": 1440,
+          "height": 960
+        }
+      ],
+      "notes": [
+        "机体右侧单枪，左侧肩甲",
+        "双背鳍、原反关节腿",
+        "驾驶区由连续实心装甲封闭；各视图不显示驾驶员、座椅、护栏或开放驾驶舱"
+      ],
+      "assistant_visual_review": "reviewed as 2D concept; not user approval",
+      "user_review_A": "pending"
+    },
+    {
+      "key": "Weapons",
+      "title": "三套武器模块",
+      "palette": "双管枪钴蓝 / 导弹武器红灰 / 机枪赭黄深青绿",
+      "design": {
+        "path": "Concepts/Weapons_Concept_ThreeViews_v3.png",
+        "sha256": "f3bf8eac42b1e68630bf5b85b9408dacdfe83be6034dae182fa75480d564d8a7",
+        "bytes": 1636619,
+        "width": 1536,
+        "height": 1024
+      },
+      "prompt": {
+        "path": "Prompts/Weapons_v3.txt",
+        "sha256": "8fd7bae95889e8b14ac7ded045d8e51cecc9c9fa7e2bb6ad907799317f56e31a",
+        "bytes": 1500
+      },
+      "source_images": [
+        {
+          "path": "Source/Accessories/FireWeapon_01_Hero.png",
+          "sha256": "cf515f8dd98d0cc9da05941e6a6a8739b1e228619845daca94d0c2c645fe6e43",
+          "bytes": 1530388,
+          "width": 1440,
+          "height": 960
+        },
+        {
+          "path": "Source/Accessories/MissileWeapon_01_Hero.png",
+          "sha256": "564c922172d8eb720bf91f89940b9d250a41ad3ecf15835f30d25613382eed70",
+          "bytes": 1225046,
+          "width": 1440,
+          "height": 960
+        },
+        {
+          "path": "Source/Accessories/Machinegun_lvl1_Hero.png",
+          "sha256": "561c333e82479f722b47d65e498536ea553a127e1cd77c9184031895440d7a63",
+          "bytes": 1181584,
+          "width": 1440,
+          "height": 960
+        }
+      ],
+      "notes": [
+        "原双管枪上下布置",
+        "原导弹弹架与单管机枪",
+        "保持安装方向、数量和各自色系"
+      ],
+      "assistant_visual_review": "reviewed as 2D concept; not user approval",
+      "user_review_A": "pending"
+    },
+    {
+      "key": "Missile",
+      "title": "独立导弹",
+      "palette": "灰白弹体 · 深灰分界",
+      "design": {
+        "path": "Concepts/Missile_Concept_ThreeViews_v2.png",
+        "sha256": "c1212c0523bda5e7b55127c4a4b254e7b8160e085c7ada60f44d7aaab17e26a0",
+        "bytes": 1469565,
+        "width": 1536,
+        "height": 1024
+      },
+      "prompt": {
+        "path": "Prompts/Missile_v2.txt",
+        "sha256": "eb9fd820239eb89b6362f90ef1078c8f8bb711367a498a3c593d950516bdb996",
+        "bytes": 1009
+      },
+      "source_images": [
+        {
+          "path": "Source/Accessories/Missile_01_Hero.png",
+          "sha256": "047c4255cc3f6d8f67beedc39a708fb2b4fbc8a65901bbb36650c814678d4eaa",
+          "bytes": 1168876,
+          "width": 1440,
+          "height": 960
+        }
+      ],
+      "notes": [
+        "保留原弹体轮廓与十字尾翼",
+        "独立效果参考及正、侧、背视图",
+        "驾驶舱附页已按用户要求退出当前展示"
+      ],
+      "assistant_visual_review": "reviewed as 2D concept; not user approval",
+      "user_review_A": "pending"
+    }
+  ],
+  "source_evidence": [
+    {
+      "path": "Source/source_inventory.json",
+      "sha256": "d71213b42bc5cabfea97e435761a31af099a5d06e23144755c791d0eef5fcf4e",
+      "bytes": 112844
+    },
+    {
+      "path": "Source/Rendered/capture_report.json",
+      "sha256": "6fe0ba0ae0dcf87bf7b74fc34dc631ead49620fe3096185e151851d4adc6c11d",
+      "bytes": 6001
+    },
+    {
+      "path": "Source/Accessories/capture_report.json",
+      "sha256": "12f030ac8bb41a9786dc77134630f64de1b810085a15c23f012eb928d65ee7b7",
+      "bytes": 5866
+    },
+    {
+      "path": "Source/live_cleanup_readback.json",
+      "sha256": "0152206638df7eba95d5e494998b18815ebc538b4fb6fce0d32c3341a81ae039",
+      "bytes": 88
+    },
+    {
+      "path": "Source/spider_mesh_budget.json",
+      "sha256": "dfc52c2c9e263288eb7fefc8c1d4508b41cdce276ffdd5cd3022324cdc02e703",
+      "bytes": 395
+    }
+  ],
+  "superseded_candidates": [
+    {
+      "reason": "User requested a low-poly SpiderMech; v2 simplifies armor and joints",
+      "artifact": {
+        "path": "Concepts/SpiderMech_Concept_ThreeViews_v1.png",
+        "sha256": "d76ea593782df4481c3127c6308743b4d60debaaf2d30f16e30885a12135c1c1",
+        "bytes": 1622052,
+        "width": 1464,
+        "height": 1074
+      }
+    },
+    {
+      "reason": "v2 removes irregular mottled paint and standardizes three-view layout",
+      "artifact": {
+        "path": "Concepts/Mech_Lightest_Concept_ThreeViews_v1.png",
+        "sha256": "c78adaf127c2c0a4ff3bab9576cf3e55bd7e7e6e5ba0d57a7ea252b54895262e",
+        "bytes": 1951658,
+        "width": 1536,
+        "height": 1024
+      }
+    },
+    {
+      "reason": "User requested no driver; v3 shows an empty cockpit in all views",
+      "artifact": {
+        "path": "Concepts/Mech_Lightest_Concept_ThreeViews_v2.png",
+        "sha256": "ed1ac11f2537f3836b238eca1c962e23c45f4bdadb2d61bb95145af4a4c15eb6",
+        "bytes": 1848478,
+        "width": 1536,
+        "height": 1024
+      }
+    },
+    {
+      "reason": "User requested no cockpit either; v4 encloses the former open cockpit with solid armor",
+      "artifact": {
+        "path": "Concepts/Mech_Lightest_Concept_ThreeViews_v3.png",
+        "sha256": "c34fb07d8eb42f38747ffae3c21cc068aa9a4ee82a537cdec4e81ef35004fc01",
+        "bytes": 1845976,
+        "width": 1536,
+        "height": 1024
+      }
+    },
+    {
+      "reason": "Cockpit withdrawn from current presentation; Missile v2 is a standalone sheet",
+      "artifact": {
+        "path": "Concepts/Cockpit_Missile_Concept_ThreeViews_v1.png",
+        "sha256": "9151e207de75efe98812cdbb00c5d171f63e61e84017af691ad6305ff0e32ac4",
+        "bytes": 1394701,
+        "width": 1536,
+        "height": 1024
+      }
+    },
+    {
+      "reason": "v2 restores the asymmetrical exterior mount",
+      "artifact": {
+        "path": "Concepts/Weapons_Concept_ThreeViews_v1.png",
+        "sha256": "cfa9af1a1217520d43283d19d0b16e4ab74c37c44dad0155fe1abb386e97a9c3",
+        "bytes": 1487082,
+        "width": 1536,
+        "height": 1024
+      }
+    },
+    {
+      "reason": "v3 corrects the decorative exterior rack to two columns and four rows",
+      "artifact": {
+        "path": "Concepts/Weapons_Concept_ThreeViews_v2.png",
+        "sha256": "aede9ed7552e958b8ced1dc5b05dd8691eeb9754dfd49822f569548805a765bb",
+        "bytes": 1491067,
+        "width": 1536,
+        "height": 1024
+      }
+    }
+  ],
+  "source_scripts": [
+    {
+      "path": "D:/UE5.7/test1/Scripts/inspect_mech_style_sources.py",
+      "sha256": "10874cc298784f902d5faedefc341f81eece9a6fbdb3f0ef519bc9691e16068b"
+    },
+    {
+      "path": "D:/UE5.7/test1/Scripts/capture_mech_style_sources_worker.py",
+      "sha256": "44ec9c4ce11d09b4bc26408e94f06edfd9900888e77ab6e477d7d0ba30e3c6cc"
+    },
+    {
+      "path": "D:/UE5.7/test1/Scripts/capture_mech_accessories_worker.py",
+      "sha256": "1521301e34318e6eb6ba41c6c113d5edc6e0e071eff788f202a958745e6abd2d"
+    }
+  ]
+}

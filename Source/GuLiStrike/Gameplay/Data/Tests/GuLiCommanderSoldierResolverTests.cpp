@@ -50,6 +50,8 @@ bool FGuLiCommanderSoldierValidRowTest::RunTest(const FString& Parameters)
 		GuLiCommanderSoldierResolverTests::MakeTestFallback(FallbackMesh.Get());
 
 	FGuLiStrikeCommanderSoldiersRow Row;
+	Row.ModelWidthMeters = 3.1f;
+	Row.MinAvoidanceDistanceMeters = 0.5f;
 	Row.PresentationScale = 1.0f;
 	Row.Id = 2;
 	Row.MovementSpeedCmPerSecond = 3600.0f;
@@ -83,6 +85,8 @@ bool FGuLiCommanderSoldierInvalidValuesFallbackTest::RunTest(const FString& Para
 		GuLiCommanderSoldierResolverTests::MakeTestFallback(FallbackMesh.Get());
 
 	FGuLiStrikeCommanderSoldiersRow Row;
+	Row.ModelWidthMeters = 3.1f;
+	Row.MinAvoidanceDistanceMeters = 0.5f;
 	Row.PresentationScale = 1.0f;
 	Row.MovementSpeedCmPerSecond = -1.0f;
 	Row.MaxHealth = std::numeric_limits<float>::quiet_NaN();
@@ -235,6 +239,8 @@ bool FGuLiCommanderSoldierHealthBoundaryTest::RunTest(const FString& Parameters)
 	TStrongObjectPtr<UStaticMesh> Model(NewObject<UStaticMesh>());
 	const FGuLiSoldierDefinition Fallback = GuLiCommanderSoldierResolverTests::MakeTestFallback(Model.Get());
 	FGuLiStrikeCommanderSoldiersRow Row;
+	Row.ModelWidthMeters = 3.1f;
+	Row.MinAvoidanceDistanceMeters = 0.5f;
 	Row.PresentationScale = 1.0f;
 	Row.Id = 2;
 	Row.MovementSpeedCmPerSecond = 3600.0f;

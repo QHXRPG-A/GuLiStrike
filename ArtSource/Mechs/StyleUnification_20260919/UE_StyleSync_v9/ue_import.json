@@ -1,0 +1,78 @@
+{
+  "success": true,
+  "parts": {
+    "Legs": {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs",
+      "dimensions_cm": [
+        236.97003936767578,
+        150.36911392211914,
+        260.63626742362976
+      ],
+      "body_triangles": 2170,
+      "outline_triangles": 752,
+      "material_slots": 2,
+      "bones": 18,
+      "max_reference_translation_cm": 0.00014410528389818329,
+      "max_reference_scale_error": 2.980232238769531e-07,
+      "max_reference_angle_deg": 0.026645920916954148,
+      "skeleton": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Mech_Legs_Lt_Skeleton.Mech_Legs_Lt_Skeleton"
+    },
+    "Armor": {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor",
+      "dimensions_cm": [
+        163.64987182617188,
+        223.10275268554688,
+        141.99283599853516
+      ],
+      "body_triangles": 14985,
+      "outline_triangles": 9685,
+      "material_slots": 2
+    },
+    "Shoulder": {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder",
+      "dimensions_cm": [
+        55.643465995788574,
+        160.94959259033203,
+        98.96232223510742
+      ],
+      "body_triangles": 2314,
+      "outline_triangles": 726,
+      "material_slots": 2
+    },
+    "Machinegun": {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun",
+      "dimensions_cm": [
+        88.49169254302979,
+        272.23509216308594,
+        88.31367111206055
+      ],
+      "body_triangles": 569,
+      "outline_triangles": 162,
+      "material_slots": 2,
+      "bones": 5,
+      "max_reference_translation_cm": 1.7059844799040144e-05,
+      "max_reference_scale_error": 8.429369702178807e-08,
+      "max_reference_angle_deg": 0.021200535403824657,
+      "skeleton": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Weapons/Weapons_Machinegun_lvl5_Skeleton.Weapons_Machinegun_lvl5_Skeleton"
+    },
+    "SpiderMech": {
+      "path": "/Game/GuLiStrike/Mechs/SpiderMech/Meshes/SK_SpiderMech",
+      "dimensions_cm": [
+        575.44287109375,
+        478.6869812011719,
+        370.3608875274658
+      ],
+      "body_triangles": 839778,
+      "outline_triangles": 839778,
+      "material_slots": 11,
+      "bones": 299,
+      "max_reference_translation_cm": 0.00035444957558637333,
+      "max_reference_scale_error": 4.913801241972081e-07,
+      "max_reference_angle_deg": 0.0025421284871121027,
+      "skeleton": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech_Skeleton.SpiderMech_Skeleton"
+    }
+  },
+  "stage": "complete",
+  "spider_blueprint": "/Game/GuLiStrike/Mechs/SpiderMech/BP_SpiderMech_Styled.BP_SpiderMech_Styled",
+  "ground_install": "pending live editor reference update"
+}

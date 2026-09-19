@@ -1,0 +1,384 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "1FB3BB2D45764813689FA7B2E0D5DAE8",
+			"instanceName": "DESKTOP-6D3B0FC-45272",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.19-07.42.13",
+	"succeeded": 17,
+	"succeededWithWarnings": 1,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.61880117654800415,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuildingAssetTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingAssetTests",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.058136802166700363,
+			"dateTime": "2026.09.19-07.42.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BuildingPlacementPolicyTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingPlacementPolicyTests",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.0081799998879432678,
+			"dateTime": "2026.09.19-07.42.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BuildingWorldTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingWorldTests",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.41373750567436218,
+			"dateTime": "2026.09.19-07.42.12",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.19-07.42.12"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.19-07.42.12"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.19-07.42.12"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.19-07.42.12"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.19-07.42.12"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.19-07.42.12"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.19-07.42.12"
+				}
+			],
+			"warnings": 7,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CancelAndMoveCompletion",
+			"fullTestPath": "GuLiStrike.Commander.Framework.ToolMode.CancelAndMoveCompletion",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.010008499026298523,
+			"dateTime": "2026.09.19-07.42.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DefaultAndArm",
+			"fullTestPath": "GuLiStrike.Commander.Framework.ToolMode.DefaultAndArm",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.0089128017425537109,
+			"dateTime": "2026.09.19-07.42.12",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MoveAckRouting",
+			"fullTestPath": "GuLiStrike.Commander.Framework.ToolMode.MoveAckRouting",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.0074272006750106812,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SelectionRadiusStep",
+			"fullTestPath": "GuLiStrike.Commander.Framework.ToolMode.SelectionRadiusStep",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.0093063004314899445,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldIntentBlocking",
+			"fullTestPath": "GuLiStrike.Commander.Framework.ToolMode.WorldIntentBlocking",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.010527700185775757,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AckBeforeSnapshot",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.AckBeforeSnapshot",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.0084412992000579834,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FullPayloadIdentity",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.FullPayloadIdentity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.007197301834821701,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "IndependentDependencies",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.IndependentDependencies",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.0079864002764225006,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MoveAckBeforePrunedSnapshot",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.MoveAckBeforePrunedSnapshot",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.0086537003517150879,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PendingMoveSerializesLatestClick",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.PendingMoveSerializesLatestClick",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.0088870003819465637,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RejectionCancels",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.RejectionCancels",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.0082174018025398254,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SnapshotBeforeAck",
+			"fullTestPath": "GuLiStrike.Commander.Network.SelectionMove.SnapshotBeforeAck",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.0080350004136562347,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ConfigurationAndBoundaries",
+			"fullTestPath": "GuLiStrike.Teleport.ConfigurationAndBoundaries",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.0095179975032806396,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PawnIdentityMaterialCameraAndRecovery",
+			"fullTestPath": "GuLiStrike.Teleport.PawnIdentityMaterialCameraAndRecovery",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.016620900481939316,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WingmanWholeGroupIdentityAndStalePackets",
+			"fullTestPath": "GuLiStrike.Teleport.WingmanWholeGroupIdentityAndStalePackets",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"1FB3BB2D45764813689FA7B2E0D5DAE8"
+			],
+			"duration": 0.0090073011815547943,
+			"dateTime": "2026.09.19-07.42.13",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

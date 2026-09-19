@@ -1,0 +1,141 @@
+{
+  "captures": [
+    "FireWeapon_01_Hero.png",
+    "FireWeapon_01_Front.png",
+    "FireWeapon_01_Side.png",
+    "FireWeapon_01_Back.png",
+    "MissileWeapon_01_Hero.png",
+    "MissileWeapon_01_Front.png",
+    "MissileWeapon_01_Side.png",
+    "MissileWeapon_01_Back.png",
+    "Machinegun_lvl1_Hero.png",
+    "Machinegun_lvl1_Front.png",
+    "Machinegun_lvl1_Side.png",
+    "Machinegun_lvl1_Back.png",
+    "Cockpit_01_Hero.png",
+    "Cockpit_01_Front.png",
+    "Cockpit_01_Side.png",
+    "Cockpit_01_Back.png",
+    "Missile_01_Hero.png",
+    "Missile_01_Front.png",
+    "Missile_01_Side.png",
+    "Missile_01_Back.png"
+  ],
+  "components": {
+    "SpiderMech": [
+      {
+        "name": "SkeletalMeshComponent0",
+        "mesh": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech.SpiderMech",
+        "materials": [
+          "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1010._mat_1010",
+          "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1005._mat_1005",
+          "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1003._mat_1003",
+          "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1006._mat_1006",
+          "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1002._mat_1002",
+          "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1009._mat_1009",
+          "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1001._mat_1001",
+          "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1007._mat_1007",
+          "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1004._mat_1004",
+          "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1008._mat_1008"
+        ]
+      }
+    ],
+    "Mecha_01": [
+      {
+        "name": "SkeletalMeshComponent0",
+        "mesh": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01.Mecha_01",
+        "materials": [
+          "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mat_MEcha_01.Mat_MEcha_01"
+        ]
+      }
+    ],
+    "Mecha_02": [
+      {
+        "name": "SkeletalMeshComponent0",
+        "mesh": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02.mecha_02",
+        "materials": [
+          "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/Mat_mecha_02.Mat_mecha_02"
+        ]
+      }
+    ],
+    "FireWeapon_01": [
+      {
+        "name": "SkeletalMeshComponent0",
+        "mesh": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/FireWeapon_01.FireWeapon_01",
+        "materials": [
+          "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/Mat_FireWeapon_01.Mat_FireWeapon_01"
+        ]
+      }
+    ],
+    "MissileWeapon_01": [
+      {
+        "name": "SkeletalMeshComponent0",
+        "mesh": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/MissileWeapon_01.MissileWeapon_01",
+        "materials": [
+          "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/Mat_SimpleMissile.Mat_SimpleMissile",
+          "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/Mat_MissileWeapon_01.Mat_MissileWeapon_01"
+        ]
+      }
+    ],
+    "Machinegun_lvl1": [
+      {
+        "name": "SkeletalMeshComponent0",
+        "mesh": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Weapons/Weapons_Machinegun_lvl1.Weapons_Machinegun_lvl1",
+        "materials": [
+          "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Materials/M_LtMed_Main.M_LtMed_Main"
+        ]
+      }
+    ],
+    "Cockpit_01": [
+      {
+        "name": "StaticMeshComponent0",
+        "mesh": "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Cockpit_01.Cockpit_01",
+        "materials": [
+          "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01.Mat_Cockpit_01",
+          "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01_Screen_02.Mat_Cockpit_01_Screen_02",
+          "/Game/Assets/MechaController/Artistic/Meshes/Cockpits/Mat_Cockpit_01_Screen_01.Mat_Cockpit_01_Screen_01"
+        ]
+      }
+    ],
+    "Missile_01": [
+      {
+        "name": "StaticMeshComponent0",
+        "mesh": "/Game/Assets/MechaController/Artistic/Meshes/Projectiles/Missile_01/lowPoly_missile_01.lowPoly_missile_01",
+        "materials": [
+          "/Game/Assets/MechaController/Artistic/Meshes/Projectiles/Missile_01/Material.Material"
+        ]
+      }
+    ],
+    "Mech_Lightest": [
+      {
+        "name": "SkeletalMeshComponent0",
+        "mesh": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Mech_Legs_Lt.Mech_Legs_Lt",
+        "materials": [
+          "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Materials/M_LtMed_Main.M_LtMed_Main"
+        ]
+      },
+      {
+        "name": "Cockpit_Jet",
+        "mesh": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes/Cockpit_Jet.Cockpit_Jet",
+        "materials": [
+          "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Materials/M_LtMed_Main.M_LtMed_Main"
+        ]
+      },
+      {
+        "name": "HalfShoulder_Box",
+        "mesh": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes/HalfShoulder_Box.HalfShoulder_Box",
+        "materials": [
+          "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Materials/M_LtMed_Main.M_LtMed_Main"
+        ]
+      },
+      {
+        "name": "Weapons_Machinegun_lvl1",
+        "mesh": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Weapons/Weapons_Machinegun_lvl1.Weapons_Machinegun_lvl1",
+        "materials": [
+          "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Materials/M_LtMed_Main.M_LtMed_Main"
+        ]
+      }
+    ]
+  },
+  "errors": []
+}

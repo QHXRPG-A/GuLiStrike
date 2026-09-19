@@ -172,6 +172,26 @@ FGuLiSoldierDefinition FGuLiCommanderSoldierResolver::ResolveRow(
 		TEXT("MovementSpeedCmPerSecond"),
 		bOutEntireDefinitionFromDataTable);
 
+	// War Machine's stable Soldiers Id is 2. Width is already in world meters.
+	// Other units keep the existing radius; neither scale nor the gap column is applied.
+	Resolved.MassAvoidanceRadiusCm = 0.0f;
+	if (Resolved.UnitTypeId == 2u)
+	{
+		const float Radius = Row->ModelWidthMeters * 50.0f;
+		if (FMath::IsFinite(Radius) && Radius > 0.0f)
+		{
+			Resolved.MassAvoidanceRadiusCm = Radius;
+		}
+		else
+		{
+			Resolved.MassAvoidanceRadiusCm = 625.0f;
+			bOutEntireDefinitionFromDataTable = false;
+			LogWarningOnce(TEXT("InvalidWarMachineWidth"), FString::Printf(
+				TEXT("Soldier Id %d has invalid ModelWidthMeters %.9g; using War Machine radius 625cm."),
+				Row->Id, Row->ModelWidthMeters));
+		}
+	}
+
 	if (FMath::IsFinite(Row->MaxHealth) && Row->MaxHealth > 0.0f
 		&& Row->MaxHealth <= MaximumSupportedHealth)
 	{

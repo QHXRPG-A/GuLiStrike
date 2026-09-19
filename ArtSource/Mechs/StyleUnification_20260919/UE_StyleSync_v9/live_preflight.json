@@ -1,0 +1,580 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "world": "/Game/Maps/LVL_GroundMech_Demo.LVL_GroundMech_Demo",
+    "game_world": "None",
+    "dirty_content": [
+      "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech"
+    ],
+    "dirty_maps": [],
+    "new_ground_exists": false,
+    "new_spider_exists": false,
+    "spider_assets": [
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Game",
+        "class": "Blueprint"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/SpiderMech_Anim_BP",
+        "class": "AnimBlueprint"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/SpiderMech_BP",
+        "class": "Blueprint"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_Idle",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_IdleToWalk",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_IdleToWalkBackwards",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_Jump",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_JumpInPlace",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_JumpLand",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_JumpLandInPlace",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_JumpLoop",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_JumpLoopInPlace",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_StrafeLeft",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_StrafeRight",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_TurnLeft",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_TurnRight",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_Walk",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_WalkAngleLeft",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_WalkAngleLeftBackwards",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_WalkAngleRight",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_WalkAngleRightBackwards",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/SpiderMech_WalkBackwards",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/Walk_Strafe",
+        "class": "BlendSpace"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/Additive/AdditiveLean",
+        "class": "BlendSpace"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/Additive/SpiderMech_LeanLeft",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/Additive/SpiderMech_LeanRight",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Animations/Additive/SpiderMech_Rest",
+        "class": "AnimSequence"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1001",
+        "class": "Material"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1002",
+        "class": "Material"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1003",
+        "class": "Material"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1004",
+        "class": "Material"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1005",
+        "class": "Material"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1006",
+        "class": "Material"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1007",
+        "class": "Material"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1008",
+        "class": "Material"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1009",
+        "class": "Material"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Materials/_mat_1010",
+        "class": "Material"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech",
+        "class": "SkeletalMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech_PhysicsAsset",
+        "class": "PhysicsAsset"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech_Skeleton",
+        "class": "Skeleton"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/body",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/head_connector",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/head_internal_pitch",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/head_main",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_lower",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_root",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_root_pitch",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_root_roll",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_tip",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_twist",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LA_upper",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_base_hinge_roll",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_base_hinge_yaw",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_claw_main",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_0",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_1",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_2",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_3",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LBL_main_4",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_base_hinge_roll",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_base_hinge_yaw",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_claw_main",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_0",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_1",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_2",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_3",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/LFL_main_4",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_lower",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_root",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_root_pitch",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_root_roll",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_tip",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_twist",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RA_upper",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_base_hinge_roll",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_base_hinge_yaw",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_claw_main",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_0",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_1",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_2",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_3",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RBL_main_4",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_base_hinge_roll",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_base_hinge_yaw",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_claw_main",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_0",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_1",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_2",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_3",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/RFL_main_4",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/Collision/tail",
+        "class": "StaticMesh"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1001_BaseColor",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1001_BumpNormal",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1001_Metallic",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1001_Roughness",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1001_Specular",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1002_BaseColor",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1002_BumpNormal",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1002_Metallic",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1002_Roughness",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1002_Specular",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1003_BaseColor",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1003_BumpNormal",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1003_Metallic",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1003_Roughness",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1003_Specular",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1004_BaseColor",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1004_BumpNormal",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1004_Metallic",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1004_Roughness",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1004_Specular",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1005_BaseColor",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1005_BumpNormal",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1005_Metallic",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1005_Roughness",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1005_Specular",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1006_BaseColor",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1006_BumpNormal",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1006_Metallic",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1006_Roughness",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1006_Specular",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1007_BaseColor",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1007_BumpNormal",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1007_Metallic",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1007_Roughness",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1007_Specular",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1008_BaseColor",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1008_BumpNormal",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1008_Metallic",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1008_Roughness",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1008_Specular",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1009_BaseColor",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1009_BumpNormal",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1009_Metallic",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1009_Roughness",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1009_Specular",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1010_BaseColor",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1010_BumpNormal",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1010_Metallic",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1010_Roughness",
+        "class": "Texture2D"
+      },
+      {
+        "path": "/Game/Assets/Mech_Project/Characters/SpiderMech/Textures/Mech_1010_Specular",
+        "class": "Texture2D"
+      }
+    ]
+  }
+}

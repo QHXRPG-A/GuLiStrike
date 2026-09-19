@@ -1,0 +1,72 @@
+{
+  "project": "../../../../UE5.7/test1/",
+  "engine": "../../../Engine/",
+  "world": "/Game/Maps/LVL_GroundMech_Demo.LVL_GroundMech_Demo",
+  "pie": false,
+  "dirty_maps": [],
+  "dirty_content": [],
+  "new_directories": {
+    "/Game/GuLiStrike/Mechs/Mecha_01": false,
+    "/Game/GuLiStrike/Mechs/Mecha_02": false,
+    "/Game/GuLiStrike/Weapons/MechModules/FireWeapon_01": false,
+    "/Game/GuLiStrike/Weapons/MechModules/MissileWeapon_01": false,
+    "/Game/GuLiStrike/Weapons/MechProjectiles/Missile_01": false,
+    "/Game/GuLiStrike/Mechs/StyleShowcase": false
+  },
+  "Mecha_01": [
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_AnimBP",
+      "class": "AnimBlueprint"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_Anim_Idle",
+      "class": "AnimSequence"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_Anim_Walk",
+      "class": "AnimSequence"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_Skeleton",
+      "class": "Skeleton"
+    }
+  ],
+  "Mecha_02": [
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/Mecha_02_AnimBP",
+      "class": "AnimBlueprint"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02_Anim_Idle",
+      "class": "AnimSequence"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02_Anim_Walk",
+      "class": "AnimSequence"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02_Skeleton",
+      "class": "Skeleton"
+    }
+  ],
+  "FireWeapon_01": [
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/FireWeapon_01_AnimBP",
+      "class": "AnimBlueprint"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/FireWeapon_01_Skeleton",
+      "class": "Skeleton"
+    }
+  ],
+  "MissileWeapon_01": [
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/MissileWeapon_01_AnimBP",
+      "class": "AnimBlueprint"
+    },
+    {
+      "path": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/MissileWeapon_01_Skeleton",
+      "class": "Skeleton"
+    }
+  ]
+}

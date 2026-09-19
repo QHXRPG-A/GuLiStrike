@@ -1,0 +1,41 @@
+{
+  "success": true,
+  "ground_blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light",
+  "rollback": "/Game/GuLiStrike/GroundMech/Style_v9/Rollback/BP_GroundMech_Light_BeforeStyle",
+  "previous_meshes": {
+    "mesh": "/Game/GuLiStrike/GroundMech/Meshes/SK_Legs.SK_Legs",
+    "armor": "/Game/GuLiStrike/GroundMech/Meshes/SM_Armor.SM_Armor",
+    "shoulder": "/Game/GuLiStrike/GroundMech/Meshes/SM_Shoulder.SM_Shoulder",
+    "machinegun": "/Game/GuLiStrike/GroundMech/Meshes/SK_Machinegun.SK_Machinegun"
+  },
+  "new_meshes": {
+    "mesh": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs.SK_Legs",
+    "armor": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor.SM_Armor",
+    "shoulder": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder.SM_Shoulder",
+    "machinegun": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun.SK_Machinegun"
+  },
+  "ground_actor_scale": [
+    1,
+    1,
+    1
+  ],
+  "ground_mesh_scale": [
+    2.0512616634368896,
+    2.0512616634368896,
+    2.0512616634368896
+  ],
+  "ground_animation": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech.ABP_GroundMech",
+  "root_motion": "IgnoreRootMotion",
+  "spider_blueprint": "/Game/GuLiStrike/Mechs/SpiderMech/BP_SpiderMech_Styled.BP_SpiderMech_Styled",
+  "spider_placed_actor": "/Game/Maps/LVL_GroundMech_Demo.LVL_GroundMech_Demo:PersistentLevel.BP_SpiderMech_Styled_C_0",
+  "spider_location_cm": [
+    18000.0,
+    -6500.0,
+    882.348463607239
+  ],
+  "spider_animation": "/Game/Assets/Mech_Project/Characters/SpiderMech/SpiderMech_Anim_BP.SpiderMech_Anim_BP_C",
+  "map": "/Game/Maps/LVL_GroundMech_Demo.LVL_GroundMech_Demo",
+  "dirty_content_preserved": [
+    "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech"
+  ]
+}

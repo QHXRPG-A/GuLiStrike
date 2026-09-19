@@ -1,0 +1,224 @@
+{
+  "success": true,
+  "components": {
+    "mesh": {
+      "mesh": "/Game/GuLiStrike/GroundMech/Meshes/SK_Legs.SK_Legs",
+      "scale": [
+        2.0512616634368896,
+        2.0512616634368896,
+        2.0512616634368896
+      ],
+      "socket": "None"
+    },
+    "armor": {
+      "mesh": "/Game/GuLiStrike/GroundMech/Meshes/SM_Armor.SM_Armor",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "socket": "None"
+    },
+    "shoulder": {
+      "mesh": "/Game/GuLiStrike/GroundMech/Meshes/SM_Shoulder.SM_Shoulder",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "socket": "Mount_Weapon_L"
+    },
+    "machinegun": {
+      "mesh": "/Game/GuLiStrike/GroundMech/Meshes/SK_Machinegun.SK_Machinegun",
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "socket": "Mount_Weapon_R"
+    }
+  },
+  "animation_class": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech.ABP_GroundMech_C",
+  "root_motion": "IgnoreRootMotion: extracted from pose, discarded; CMC owns translation",
+  "input_modifiers": [
+    {
+      "key": "W",
+      "modifiers": [
+        "InputModifierSwizzleAxis"
+      ]
+    },
+    {
+      "key": "S",
+      "modifiers": [
+        "InputModifierNegate",
+        "InputModifierSwizzleAxis"
+      ]
+    },
+    {
+      "key": "A",
+      "modifiers": [
+        "InputModifierNegate"
+      ]
+    },
+    {
+      "key": "D",
+      "modifiers": []
+    },
+    {
+      "key": "LeftShift",
+      "modifiers": []
+    },
+    {
+      "key": "RightShift",
+      "modifiers": []
+    },
+    {
+      "key": "MouseWheelAxis",
+      "modifiers": []
+    }
+  ],
+  "reference_pose": {
+    "Legs": [
+      {
+        "bone": "HIPS",
+        "cm": 0.0,
+        "scale": 8.429369702178807e-08,
+        "degrees": 0.021200535403824657
+      },
+      {
+        "bone": "Pelvis",
+        "cm": 1.525878906250013e-05,
+        "scale": 0.0,
+        "degrees": 0.026645920807529606
+      },
+      {
+        "bone": "Hip_R",
+        "cm": 1.6746312153302344e-05,
+        "scale": 1.3328003749250113e-07,
+        "degrees": 0.0
+      },
+      {
+        "bone": "Shin_R",
+        "cm": 4.742449846662224e-05,
+        "scale": 1.3328003749250113e-07,
+        "degrees": 0.008687625749867454
+      },
+      {
+        "bone": "Foot_R",
+        "cm": 0.00015447087237456807,
+        "scale": 1.6858739404357614e-07,
+        "degrees": 0.018209791287475362
+      },
+      {
+        "bone": "Toe_R",
+        "cm": 4.555315190323276e-05,
+        "scale": 0.0,
+        "degrees": 0.0
+      },
+      {
+        "bone": "End_Toe_R",
+        "cm": 5.2448327251947915e-06,
+        "scale": 8.429369702178807e-08,
+        "degrees": 4.182619578303746e-06
+      },
+      {
+        "bone": "Heel_R",
+        "cm": 3.244711868620252e-05,
+        "scale": 0.0,
+        "degrees": 0.0
+      },
+      {
+        "bone": "End_Heel_R",
+        "cm": 1.6882834514711154e-05,
+        "scale": 1.6858739404357614e-07,
+        "degrees": 1.8390847172211968e-05
+      },
+      {
+        "bone": "Hip_L",
+        "cm": 1.6456456720549268e-05,
+        "scale": 0.0,
+        "degrees": 0.015264709834439602
+      },
+      {
+        "bone": "Shin_L",
+        "cm": 4.0492549269754e-05,
+        "scale": 0.0,
+        "degrees": 0.008686778610423601
+      },
+      {
+        "bone": "Foot_L",
+        "cm": 1.0567123874834605e-05,
+        "scale": 1.6858739404357614e-07,
+        "degrees": 0.018209647500824985
+      },
+      {
+        "bone": "Toe_L",
+        "cm": 0.0001465701098182596,
+        "scale": 1.6858739404357614e-07,
+        "degrees": 0.0
+      },
+      {
+        "bone": "End_Toe_L",
+        "cm": 1.578917721497294e-05,
+        "scale": 0.0,
+        "degrees": 7.636383641665691e-06
+      },
+      {
+        "bone": "Heel_L",
+        "cm": 0.00012516982812429774,
+        "scale": 2.980232238769531e-07,
+        "degrees": 0.0
+      },
+      {
+        "bone": "End_Heel_L",
+        "cm": 2.960523789190083e-05,
+        "scale": 1.1920928955078125e-07,
+        "degrees": 7.636383641665691e-06
+      },
+      {
+        "bone": "Top",
+        "cm": 4.601942940037919e-05,
+        "scale": 0.0,
+        "degrees": 0.026645920916954148
+      },
+      {
+        "bone": "Mount_top",
+        "cm": 3.051757812500211e-05,
+        "scale": 0.0,
+        "degrees": 0.0
+      }
+    ],
+    "Machinegun": [
+      {
+        "bone": "Machinegun",
+        "cm": 0.0,
+        "scale": 8.429369702178807e-08,
+        "degrees": 0.021200535403824657
+      },
+      {
+        "bone": "Barrel_big",
+        "cm": 1.7059844799040144e-05,
+        "scale": 0.0,
+        "degrees": 0.0
+      },
+      {
+        "bone": "Barrel_end",
+        "cm": 1.066240299940009e-05,
+        "scale": 0.0,
+        "degrees": 2.1867274910380033e-05
+      },
+      {
+        "bone": "Barrel_small",
+        "cm": 1.5728399755926745e-05,
+        "scale": 0.0,
+        "degrees": 0.0
+      },
+      {
+        "bone": "Ammo",
+        "cm": 2.132480599880018e-06,
+        "scale": 0.0,
+        "degrees": 0.0
+      }
+    ]
+  }
+}

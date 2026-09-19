@@ -14,6 +14,7 @@ public class GuLiStrike : ModuleRules
 			"Engine",
 			"InputCore",
 			"EnhancedInput",
+			"AnimGraphRuntime",
 			"AIModule",
 			"NavigationSystem",
 			"StateTreeModule",

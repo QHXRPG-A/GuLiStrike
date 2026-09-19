@@ -1,0 +1,288 @@
+{
+  "date": "2026-09-19",
+  "authorization": "把已经制作了的资源都同步至UE，然后做一波总结",
+  "scope": "Eight completed assets in the Mech_Project / MechaController style batch; retired cockpit and rejected decimated Spider excluded.",
+  "engine": "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.exe",
+  "source": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\Production_v9_VentMount\\Mechs_VentMount_v9.blend",
+  "source_sha256": "6caa1f5569d1c929b30f924c71f9b06144208ed340c437f3194a3399ec46912b",
+  "asset_count": 8,
+  "unique_mesh_count": 10,
+  "new_meshes_this_turn": 5,
+  "assets": {
+    "Mech_Lightest": {
+      "title": "轻型机甲",
+      "description": "v9 弧面封舱 · 对称灰蓝腿甲 · 贴壳排气口",
+      "usage": "当前 Ground 玩家",
+      "style": "线稿 / 三档明暗",
+      "entry": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+      "body_triangles": 20038,
+      "outline_triangles": 11325,
+      "capture": "UE_Mech_Lightest.png",
+      "migration": "reused_v9"
+    },
+    "SpiderMech": {
+      "title": "SpiderMech",
+      "description": "完整原网格 · 四片完整暗红装甲",
+      "usage": "独立风格蓝图 / Demo 参照",
+      "style": "线稿 / 三档明暗",
+      "entry": "/Game/GuLiStrike/Mechs/SpiderMech/BP_SpiderMech_Styled",
+      "body_triangles": 839778,
+      "outline_triangles": 839778,
+      "capture": "UE_SpiderMech.png",
+      "migration": "reused_v9"
+    },
+    "Mecha_01": {
+      "title": "Mecha 01",
+      "description": "低饱和灰蓝 · 原骨架与武器挂点",
+      "usage": "独立模型 / 原待机与行走动画",
+      "style": "连续受光",
+      "entry": "/Game/GuLiStrike/Mechs/Mecha_01/BP_Mecha_01_Styled",
+      "body_triangles": 3982,
+      "outline_triangles": 0,
+      "capture": "UE_Mecha_01.png",
+      "migration": "new_v10"
+    },
+    "Mecha_02": {
+      "title": "Mecha 02",
+      "description": "金黄与黑灰 · 原骨架与武器挂点",
+      "usage": "独立模型 / 原待机与行走动画",
+      "style": "连续受光",
+      "entry": "/Game/GuLiStrike/Mechs/Mecha_02/BP_Mecha_02_Styled",
+      "body_triangles": 5964,
+      "outline_triangles": 0,
+      "capture": "UE_Mecha_02.png",
+      "migration": "new_v10"
+    },
+    "FireWeapon_01": {
+      "title": "FireWeapon 01 · 三管",
+      "description": "灰蓝与黑灰 · 保留三根炮管",
+      "usage": "独立可装配武器模型",
+      "style": "线稿 / 三档明暗",
+      "entry": "/Game/GuLiStrike/Weapons/MechModules/FireWeapon_01/BP_FireWeapon_01_Styled",
+      "body_triangles": 1184,
+      "outline_triangles": 484,
+      "capture": "UE_FireWeapon_01.png",
+      "migration": "new_v10"
+    },
+    "MissileWeapon_01": {
+      "title": "MissileWeapon 01",
+      "description": "灰红外壳 · 双列弹架",
+      "usage": "独立可装配武器模型",
+      "style": "线稿 / 三档明暗",
+      "entry": "/Game/GuLiStrike/Weapons/MechModules/MissileWeapon_01/BP_MissileWeapon_01_Styled",
+      "body_triangles": 7181,
+      "outline_triangles": 3202,
+      "capture": "UE_MissileWeapon_01.png",
+      "migration": "new_v10"
+    },
+    "Machinegun_lvl1": {
+      "title": "Machinegun · Lv1",
+      "description": "赭黄与深青绿 · 琥珀功能灯",
+      "usage": "轻型玩家的右侧机枪模型",
+      "style": "线稿 / 三档明暗",
+      "entry": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun",
+      "body_triangles": 569,
+      "outline_triangles": 162,
+      "capture": "UE_Machinegun_lvl1.png",
+      "migration": "reused_v9"
+    },
+    "Missile_01": {
+      "title": "Missile 01 · 独立弹体",
+      "description": "灰白弹体 · 深灰分界 · 尾翼",
+      "usage": "独立弹体模型",
+      "style": "连续受光",
+      "entry": "/Game/GuLiStrike/Weapons/MechProjectiles/Missile_01/BP_Missile_01_Styled",
+      "body_triangles": 772,
+      "outline_triangles": 0,
+      "capture": "UE_Missile_01.png",
+      "migration": "new_v10"
+    }
+  },
+  "showcase_map": "/Game/GuLiStrike/Mechs/StyleShowcase/LVL_MechAsset_Showcase",
+  "ground_play_map": "/Game/Maps/LVL_GroundMech_Demo",
+  "previous_delivery": "../UE_StyleSync_v9/delivery_manifest.json",
+  "checks": {
+    "export_report.json": true,
+    "fbx_readback.json": true,
+    "ue_import.json": true,
+    "ue_showcase.json": true,
+    "ue_gallery_saved_readback.json": true
+  },
+  "live_asset_readback": true,
+  "native_build": "not_applicable: no native source or build configuration changes",
+  "gameplay_regression": "not_rerun; v9 root-motion and multiplayer results remain separately recorded",
+  "performance": "not_run",
+  "visual_acceptance": "UE transfer authorized; no new user final aesthetic acceptance inferred",
+  "known_limits": [
+    "Spider body 839778 + outline 839778 triangles; no further reduction",
+    "Mecha_01, Mecha_02 and Missile_01 retain authored continuous-lit style",
+    "Light v9 nose close-up retains minor outline intersections",
+    "Existing flight-navigation WorldValidator returns NotValidated on non-flight gallery and emits handled ensure; save and reload passed"
+  ],
+  "hashes": {
+    "ArtSource/Mechs/StyleUnification_20260919/Production_v9_VentMount/Mechs_VentMount_v9.blend": {
+      "sha256": "6caa1f5569d1c929b30f924c71f9b06144208ed340c437f3194a3399ec46912b",
+      "bytes": 146573980
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/FBX/Mecha_01.fbx": {
+      "sha256": "e31b410dd56810e3e5cd1d32ce763027f0608934ddd4c9a1df92e6f0926bf334",
+      "bytes": 172268
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/FBX/Mecha_02.fbx": {
+      "sha256": "40229d160d0f92ec40518bee3fb0e0497a4004364396d9241098eb17ba36dba1",
+      "bytes": 226284
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/FBX/FireWeapon_01.fbx": {
+      "sha256": "0f1ce70cfab42e028164e65ef707c381d43f1d4678d6170507ab26e8edc3d8d4",
+      "bytes": 77580
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/FBX/MissileWeapon_01.fbx": {
+      "sha256": "d760a02b8472f7209615f73b4831f5c4565cf50555e0cb769aae5c854b8d1b4e",
+      "bytes": 298572
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/FBX/Missile_01.fbx": {
+      "sha256": "9e69d882fc8bbadf584cb824bcdbc558e75286c1ae42297387482f16872576e4",
+      "bytes": 39964
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/Mecha_01_BaseColor.png": {
+      "sha256": "45f71e7de3c0318573571f34f3862b95b1d09e9e01bfe36be94c9ba59ea3c3d3",
+      "bytes": 296723
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/Mecha_01_Roughness.png": {
+      "sha256": "fe0ed66b58db8dad4a5a486245d790c070c633d2036c52e9069b2361636e8877",
+      "bytes": 233772
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/Mecha_01_Metallic.png": {
+      "sha256": "59a140dd6bf7a0b0f72aed425eb6d2480b778397cd3eba8dc49688c14a71481b",
+      "bytes": 236792
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/Mecha_01_Emissive.png": {
+      "sha256": "5630edf42913f842e57308503a7e0977e721d09027a12c453b8878c22108cd37",
+      "bytes": 55235
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/Mecha_02_BaseColor.png": {
+      "sha256": "65534beba52a4e68b4dc9c645c51843e829253cd84b70c47b1584e1d2681162e",
+      "bytes": 356690
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/Mecha_02_Roughness.png": {
+      "sha256": "f0791a24e5da37fa07232669d9d9468e69276d02715722255d69eb2ddde1fc7c",
+      "bytes": 250014
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/Mecha_02_Metallic.png": {
+      "sha256": "084ebcd8f5f74669aa7d1d4f1cdbaf6b31a9c3869c71e6bf95e6db4555bcb04c",
+      "bytes": 98251
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/Mecha_02_Emissive.png": {
+      "sha256": "5630edf42913f842e57308503a7e0977e721d09027a12c453b8878c22108cd37",
+      "bytes": 55235
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/FireWeapon_01_BaseColor.png": {
+      "sha256": "44a9363694e8f0a34a26c0ab9f438e3df5ef4ac0ccec304e8b71473a0df39695",
+      "bytes": 154628
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/FireWeapon_01_LineMask.png": {
+      "sha256": "50c6ae60c764b97c65c461e40ec74efb6cf1b6c167ecca9bfbdb489dd391c92e",
+      "bytes": 411582
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/FireWeapon_01_Emissive.png": {
+      "sha256": "5630edf42913f842e57308503a7e0977e721d09027a12c453b8878c22108cd37",
+      "bytes": 55235
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/MissileWeapon_01_BaseColor.png": {
+      "sha256": "de0d750a8b0bf0735a679c624eab9620939ee6c00b345a5f1e55e586e8d31508",
+      "bytes": 242858
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/MissileWeapon_01_LineMask.png": {
+      "sha256": "1c63805fe568c08ceb4d13e6333e82e999f94e11d8b24b981d82a36e1d7bb0ec",
+      "bytes": 711271
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/MissileWeapon_01_Emissive.png": {
+      "sha256": "5630edf42913f842e57308503a7e0977e721d09027a12c453b8878c22108cd37",
+      "bytes": 55235
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/Missile_01_BaseColor.png": {
+      "sha256": "a8380a348f63b061cfb6115d2779bec56da7c90fff798a08ad5c3ca24c8da5ea",
+      "bytes": 168368
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/Missile_01_Roughness.png": {
+      "sha256": "4eb3dffc52764ebde0b3315cefb00c60d0b22f74d727ebe4001b069a9fe9c7e0",
+      "bytes": 161083
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/Missile_01_Metallic.png": {
+      "sha256": "7e4893354e6f7d684da6c7dff7979a55c5d44d20d86ed9bceb36365fcd1e3b6a",
+      "bytes": 162123
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/Textures/Missile_01_Emissive.png": {
+      "sha256": "5630edf42913f842e57308503a7e0977e721d09027a12c453b8878c22108cd37",
+      "bytes": 55235
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/UE_All_Assets.png": {
+      "sha256": "8941b895f1e12487b31ab53a649e0d60f81fa6d1f83e89b1df924e73a90ca3ef",
+      "bytes": 2429182
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/UE_Mecha_01.png": {
+      "sha256": "81129a57d0496fe1ff185369fede37b918cbdeaf52dadf0ffc39edd65570b347",
+      "bytes": 1825247
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/UE_Mecha_02.png": {
+      "sha256": "e5eac9f3e03f40a30c510485f4a6b5837bf32af665c08cb8636ecbc32f2c9e07",
+      "bytes": 1864520
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/UE_Mech_Lightest.png": {
+      "sha256": "9baade31c256a1b047b09eb843f7822990ce2c2bfef757c0aa1ec4fef2167d41",
+      "bytes": 1884595
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/UE_SpiderMech.png": {
+      "sha256": "f682755b60d70af186515a30736c1e5aefc9e2fe032cb493e65d7ab02df38102",
+      "bytes": 2054682
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/UE_FireWeapon_01.png": {
+      "sha256": "b0f610031adb56a6e0cc3d5243743b72011d3861579e05fc0c811f9fa5451157",
+      "bytes": 1850238
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/UE_MissileWeapon_01.png": {
+      "sha256": "dad7db46d9a6f232f2592068778b12d0f0210c4fa23d7c67f5257af9976aa1be",
+      "bytes": 1785464
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/UE_Machinegun_lvl1.png": {
+      "sha256": "50c24f9218f156b0db83a214df024808ca5f0d02c9959521717b59ea1837caa4",
+      "bytes": 1715808
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/UE_Missile_01.png": {
+      "sha256": "eb7bb17f86c9ceb6660b7ccfe4202e480dd816bccaccd26094e83f7e4853a97b",
+      "bytes": 1754817
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/UE_Mecha_01_Walk.png": {
+      "sha256": "aa3453ebcf05f96a9f2a66739ef49d4166b0904953a6ba8c35239f1ff716ee2c",
+      "bytes": 1804502
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/UE_Mecha_02_Walk.png": {
+      "sha256": "ee4fc17e5890909b55a4f48cea4b52e92f6c0334b4c4ab1580abaedefca365d8",
+      "bytes": 1837230
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/export_report.json": {
+      "sha256": "6f2019426c77d07eb6c24c702c61ecf8c577d3b8dbbf4971618a99786563a19c",
+      "bytes": 7706
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/fbx_readback.json": {
+      "sha256": "54d16c474382457c2259a102f6ed7d97bd12c555c98ba238001de0f5a93e0498",
+      "bytes": 2120
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/ue_import.json": {
+      "sha256": "eaa7d099f264ca25095b7801fdd25a2ed5a4c56decae58d461f3e7c8440a3841",
+      "bytes": 4831
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/live_assets_readback.json": {
+      "sha256": "b8cdd91bbe54c27c52fb8ef7cd9f87ca42de013a566c4bb5bd01416fbe6e95d4",
+      "bytes": 1672
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/ue_showcase.json": {
+      "sha256": "11e73add2f539791b2bf6e91f36da75c11af5148a58678b4c14bf53ab556535b",
+      "bytes": 29043
+    },
+    "ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/ue_gallery_saved_readback.json": {
+      "sha256": "a25fc983cfdf20fb6a6282a44c3e9d868240a0e3660ed2382c4fbf804d8c6b74",
+      "bytes": 2930
+    }
+  }
+}

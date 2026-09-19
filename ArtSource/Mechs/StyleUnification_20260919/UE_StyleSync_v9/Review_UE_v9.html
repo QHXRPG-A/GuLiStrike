@@ -1,0 +1,19 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>机甲 · UE 同步 v9</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#131a1f;color:#e6e7e4;font:16px/1.7 system-ui,"Microsoft YaHei",sans-serif}main{max-width:1320px;margin:auto;padding:36px 24px 64px}h1{font-size:32px;letter-spacing:.04em;margin:0 0 12px}h2{font-size:22px;margin:42px 0 14px}p{color:#b9c6ce;max-width:950px}a{color:#e2b968;text-underline-offset:4px}nav{display:flex;gap:24px;flex-wrap:wrap;margin:22px 0 30px}.tag{color:#a7c6b5;font-size:13px;letter-spacing:.12em}figure{margin:0 0 24px;border:1px solid #354550;background:#1e282f;border-radius:10px;overflow:hidden}img{display:block;width:100%;height:auto}figcaption{padding:14px 18px;color:#c9d0d4}code{color:#d9bb77;overflow-wrap:anywhere}.note{padding:16px 20px;border-left:3px solid #b48a3f;background:#202930}
+</style>
+<main>
+<div class="tag">UNREAL ENGINE 5.7 · 当前导入版本</div>
+<h1>轻型机甲 / SpiderMech</h1>
+<p>两台已同步至 Demo 测试地图。以下为 UE 实际网格和材质截图，沿用测试地图的环境、灯光与曝光。</p>
+<nav><a href="#light">轻型机甲</a><a href="#spider">SpiderMech</a><a href="README.md">交付说明</a><a href="../Production_v9_VentMount/Review_B_v9.html#vent_mount">Blender 来源与修复对比</a></nav>
+<h2 id="light">轻型机甲 · 弧面头甲与贴壳排气口</h2>
+<figure><a href="UE_Light_Hero.png"><img src="UE_Light_Hero.png" alt="轻型机甲在 Demo 地图中的正侧面，赭金弧面头甲、内凹排气口和灰蓝腿甲"></a><figcaption>已更新地面玩家 BP_GroundMech_Light。封闭装甲、蓝色腿甲和肩部散热舱保持当前 Blender 版本。</figcaption></figure>
+<figure><a href="UE_Light_VentRear.png"><img src="UE_Light_VentRear.png" alt="轻型机甲背上方近景，两侧排气口底座与机身连接"></a><figcaption>背上方近景：两侧排气口有连续贴壳底座，保留原功能发光和结构线。</figcaption></figure>
+<h2 id="spider">SpiderMech · 原网格与成对暗红装甲</h2>
+<figure><a href="UE_Spider_Hero.png"><img src="UE_Spider_Hero.png" alt="SpiderMech 的实际 UE 正侧面，蓝灰和赭黄底色配整件暗红上腿甲"></a><figcaption>使用 BP_SpiderMech_Styled，原骨架和动画蓝图保留；主体没有再次减面。</figcaption></figure>
+<figure><a href="UE_Spider_Front.png"><img src="UE_Spider_Front.png" alt="SpiderMech 正面，四片完整暗红装甲左右对称"></a><figcaption>正面核对：完整部件分色，四片上腿甲左右对应，保留三档明暗与内外线稿。</figcaption></figure>
+<div class="note">测试地图：<code>/Game/Maps/LVL_GroundMech_Demo</code><br>WASD 移动 · Shift 跑 · 鼠标瞄准 · 滚轮缩放。根位移与双端同步已复测；详细结果、面数及回退入口见交付说明。</div>
+</main></html>

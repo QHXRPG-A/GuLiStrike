@@ -1,0 +1,58 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "success": true,
+    "assets": {
+      "Mecha_01": {
+        "mesh": "/Game/GuLiStrike/Mechs/Mecha_01/Meshes/SK_Mecha_01.SK_Mecha_01",
+        "sockets": {
+          "names": [
+            "s_RightWeapon",
+            "s_LeftWeapon",
+            "s_Sight"
+          ],
+          "copied_mesh_sockets": []
+        },
+        "blueprint_compiled": true
+      },
+      "Mecha_02": {
+        "mesh": "/Game/GuLiStrike/Mechs/Mecha_02/Meshes/SK_Mecha_02.SK_Mecha_02",
+        "sockets": {
+          "names": [
+            "s_Sight",
+            "s_RightWeapon",
+            "s_LeftWeapon"
+          ],
+          "copied_mesh_sockets": []
+        },
+        "blueprint_compiled": true
+      },
+      "FireWeapon_01": {
+        "mesh": "/Game/GuLiStrike/Weapons/MechModules/FireWeapon_01/Meshes/SK_FireWeapon_01.SK_FireWeapon_01",
+        "sockets": {
+          "names": [
+            "s_PitchBone"
+          ],
+          "copied_mesh_sockets": []
+        },
+        "blueprint_compiled": true
+      },
+      "MissileWeapon_01": {
+        "mesh": "/Game/GuLiStrike/Weapons/MechModules/MissileWeapon_01/Meshes/SK_MissileWeapon_01.SK_MissileWeapon_01",
+        "sockets": {
+          "names": [
+            "s_PitchBone"
+          ],
+          "copied_mesh_sockets": []
+        },
+        "blueprint_compiled": true
+      },
+      "Missile_01": {
+        "mesh": "/Game/GuLiStrike/Weapons/MechProjectiles/Missile_01/Meshes/SM_Missile_01.SM_Missile_01",
+        "sockets": null,
+        "blueprint_compiled": true
+      }
+    }
+  }
+}

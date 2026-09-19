@@ -1,0 +1,110 @@
+{
+  "success": true,
+  "parts": {
+    "Mecha_01": {
+      "path": "/Game/GuLiStrike/Mechs/Mecha_01/Meshes/SK_Mecha_01",
+      "blueprint": "/Game/GuLiStrike/Mechs/Mecha_01/BP_Mecha_01_Styled.BP_Mecha_01_Styled",
+      "source": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01.Mecha_01",
+      "style": "pbr",
+      "dimensions_cm": [
+        205.9466094970703,
+        205.34646606445312,
+        467.0956144332886
+      ],
+      "body_triangles": 3982,
+      "outline_triangles": 0,
+      "material_slots": 1,
+      "idle_animation": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_Anim_Idle.Mecha_01_Anim_Idle",
+      "gameplay": "presentation_only",
+      "bones": 13,
+      "max_reference_translation_cm": 0.00018284898829425947,
+      "max_reference_scale_error": 1.5102457355642232e-06,
+      "max_reference_angle_deg": 0.027373720056162537,
+      "skeleton": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_01/Mecha_01_Skeleton.Mecha_01_Skeleton",
+      "lods": 1
+    },
+    "Mecha_02": {
+      "path": "/Game/GuLiStrike/Mechs/Mecha_02/Meshes/SK_Mecha_02",
+      "blueprint": "/Game/GuLiStrike/Mechs/Mecha_02/BP_Mecha_02_Styled.BP_Mecha_02_Styled",
+      "source": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02.mecha_02",
+      "style": "pbr",
+      "dimensions_cm": [
+        192.8000030517578,
+        217.7544708251953,
+        453.2113838195801
+      ],
+      "body_triangles": 5964,
+      "outline_triangles": 0,
+      "material_slots": 1,
+      "idle_animation": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02_Anim_Idle.mecha_02_Anim_Idle",
+      "gameplay": "presentation_only",
+      "bones": 13,
+      "max_reference_translation_cm": 0.0002357409746914346,
+      "max_reference_scale_error": 1.3341325095653171e-06,
+      "max_reference_angle_deg": 0.02913126709640919,
+      "skeleton": "/Game/Assets/MechaController/Artistic/Meshes/Mechas/Mecha_02/mecha_02_Skeleton.mecha_02_Skeleton",
+      "lods": 1
+    },
+    "FireWeapon_01": {
+      "path": "/Game/GuLiStrike/Weapons/MechModules/FireWeapon_01/Meshes/SK_FireWeapon_01",
+      "blueprint": "/Game/GuLiStrike/Weapons/MechModules/FireWeapon_01/BP_FireWeapon_01_Styled.BP_FireWeapon_01_Styled",
+      "source": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/FireWeapon_01.FireWeapon_01",
+      "style": "ink_cel",
+      "dimensions_cm": [
+        57.09685516357422,
+        159.4106903076172,
+        74.91384887695312
+      ],
+      "body_triangles": 1184,
+      "outline_triangles": 484,
+      "material_slots": 2,
+      "idle_animation": null,
+      "gameplay": "presentation_only",
+      "bones": 3,
+      "max_reference_translation_cm": 9.563863441925983e-06,
+      "max_reference_scale_error": 3.674277068954096e-07,
+      "max_reference_angle_deg": 0.037128894904981204,
+      "skeleton": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_01/FireWeapon_01_Skeleton.FireWeapon_01_Skeleton",
+      "lods": 1
+    },
+    "MissileWeapon_01": {
+      "path": "/Game/GuLiStrike/Weapons/MechModules/MissileWeapon_01/Meshes/SK_MissileWeapon_01",
+      "blueprint": "/Game/GuLiStrike/Weapons/MechModules/MissileWeapon_01/BP_MissileWeapon_01_Styled.BP_MissileWeapon_01_Styled",
+      "source": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/MissileWeapon_01.MissileWeapon_01",
+      "style": "ink_cel",
+      "dimensions_cm": [
+        117.08842849731445,
+        219.5150032043457,
+        141.51781845092773
+      ],
+      "body_triangles": 7181,
+      "outline_triangles": 3202,
+      "material_slots": 2,
+      "idle_animation": null,
+      "gameplay": "presentation_only",
+      "bones": 2,
+      "max_reference_translation_cm": 1.5302037087635023e-05,
+      "max_reference_scale_error": 1.7881393432617188e-07,
+      "max_reference_angle_deg": 0.03542424386253962,
+      "skeleton": "/Game/Assets/MechaController/Artistic/Meshes/Weapons/Weapon_02/MissileWeapon_01_Skeleton.MissileWeapon_01_Skeleton",
+      "lods": 1
+    },
+    "Missile_01": {
+      "path": "/Game/GuLiStrike/Weapons/MechProjectiles/Missile_01/Meshes/SM_Missile_01",
+      "blueprint": "/Game/GuLiStrike/Weapons/MechProjectiles/Missile_01/BP_Missile_01_Styled.BP_Missile_01_Styled",
+      "source": "/Game/Assets/MechaController/Artistic/Meshes/Projectiles/Missile_01/lowPoly_missile_01.lowPoly_missile_01",
+      "style": "pbr",
+      "dimensions_cm": [
+        36.852413177490234,
+        36.81205177307129,
+        109.40303039550781
+      ],
+      "body_triangles": 772,
+      "outline_triangles": 0,
+      "material_slots": 1,
+      "idle_animation": null,
+      "gameplay": "presentation_only"
+    }
+  },
+  "stage": "complete"
+}

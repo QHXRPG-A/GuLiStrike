@@ -100,6 +100,7 @@ Data/Json/*.csv
 # xlsx 备份侧车文件（xlsx CLI --backup 临时产物，勿提交）
 *.xlsx.bak-*
 *.blend1
+ArtSource/**/SessionBefore*.blend
 # Excel creates these lock files while a workbook is open
 ~$*.xlsx
 
@@ -112,6 +113,7 @@ Data/Json/*.csv
 
 # Python/tool caches and temporary diagnostics
 *.py[cod]
+*.err
 .pytest_cache/
 .mypy_cache/
 .ruff_cache/
@@ -142,7 +144,22 @@ Progress/Commander*.json
 # ===== 外部引入的 skill / MCP / 第三方工具目录（本地使用，不入库）=====
 .agents/tmp/
 .codex-tmp/
-outputs/
+# Generated outputs are local-only. Keep the small Markdown entry points used
+# by Progress documentation so links remain valid in clean Git checkouts.
+outputs/**
+!outputs/ore-resource-variants-20260910/
+!outputs/ore-resource-variants-20260910/README.md
+!outputs/ship-part-visual-migration/
+!outputs/ship-part-visual-migration/README.md
+!outputs/ship-component-blueprints/
+!outputs/ship-component-blueprints/README.md
+!outputs/unit-data-mining/
+!outputs/unit-data-mining/README.md
+!outputs/mining-runtime/
+!outputs/mining-runtime/README.md
+!outputs/commander-selection-20260831/
+!outputs/commander-selection-20260831/diagnostics/
+!outputs/commander-selection-20260831/diagnostics/capture-protocol.md
 TripoGenerated/
 Tripo3d_UE_Bridge/
 UE5_Skills_MCP_Package/

@@ -10,7 +10,7 @@ void UGuLiGroundCrowdObstacle::GetCrowdAgentCollisions(float& Radius, float& Hal
 UGuLiGroundCrowdManager::UGuLiGroundCrowdManager(const FObjectInitializer& Initializer) : Super(Initializer)
 {
 	MaxAgents = 1024;
-	MaxAgentRadius = 400;
+	MaxAgentRadius = 625;
 	MaxAvoidedAgents = 32;
 	MaxAvoidedWalls = 16;
 	bResolveCollisions = false;

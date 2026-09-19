@@ -1,0 +1,24 @@
+{
+  "success": true,
+  "message": "Python command executed successfully.",
+  "result": {
+    "ground_meshes": {
+      "mesh": "/Game/GuLiStrike/GroundMech/Meshes/SK_Legs.SK_Legs",
+      "armor": "/Game/GuLiStrike/GroundMech/Meshes/SM_Armor.SM_Armor",
+      "shoulder": "/Game/GuLiStrike/GroundMech/Meshes/SM_Shoulder.SM_Shoulder",
+      "machinegun": "/Game/GuLiStrike/GroundMech/Meshes/SK_Machinegun.SK_Machinegun"
+    },
+    "root_motion": "<RootMotionMode.IGNORE_ROOT_MOTION: 1>",
+    "spider_class": "SpiderMech_BP_C",
+    "spider_component": "CharacterMesh0",
+    "spider_mesh": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech.SpiderMech",
+    "spider_anim": "<Object '/Game/Assets/Mech_Project/Characters/SpiderMech/SpiderMech_Anim_BP.SpiderMech_Anim_BP_C' (0x0000022012509A00) Class 'AnimBlueprintGeneratedClass'>",
+    "spider_overrides": [],
+    "spider_relative": {
+      "relative_location": "<Struct 'Vector' (0x000002215D3AA180) {x: 0.000000, y: 0.000000, z: -160.000000}>",
+      "relative_rotation": "<Struct 'Rotator' (0x000002215D3AA198) {pitch: 0.000000, yaw: -90.000000, roll: 0.000000}>",
+      "relative_scale3d": "<Struct 'Vector' (0x000002215D3AA1B0) {x: 1.000000, y: 1.000000, z: 1.000000}>"
+    },
+    "eye_inverse_doc": "Provides access to the EyeAdaptation render target.\r\n\r\n**C++ Source:**\r\n\r\n- **Module**: Engine\r\n- **File**: MaterialExpressionEyeAdaptationInverse.h\r\n\r\n**Editor Properties:** (see get_editor_property/set_editor_property)\r\n\r\n- ``desc`` (str):  [Read-Write] A description that level designers can add (shows in the material editor UI).\r\n- ``material_expression_editor_x`` (int32):  [Read-Write]\r\n- ``material_expression_editor_y`` (int32):  [Read-Write]"
+  }
+}

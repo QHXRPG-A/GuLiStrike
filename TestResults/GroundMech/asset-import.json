@@ -1,0 +1,253 @@
+{
+  "success": true,
+  "assets": {
+    "Legs": {
+      "bones": [
+        {
+          "name": "HIPS",
+          "parent": "",
+          "local": "<Struct 'Transform' (0x000002214BD0A7C0) {rotation: {x: -0.707107, y: 0.000000, z: 0.000000, w: 0.707107}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Pelvis",
+          "parent": "HIPS",
+          "local": "<Struct 'Transform' (0x000002214BD0BE40) {rotation: {x: 0.000000, y: -0.999663, z: -0.000000, w: 0.025952}, translation: {x: 0.000000, y: -198.105576, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Hip_R",
+          "parent": "Pelvis",
+          "local": "<Struct 'Transform' (0x000002214BD0C980) {rotation: {x: 0.875993, y: -0.012503, z: 0.022741, w: 0.481626}, translation: {x: 52.933254, y: 0.000016, z: -0.000005}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Shin_R",
+          "parent": "Hip_R",
+          "local": "<Struct 'Transform' (0x000002214BD0DC40) {rotation: {x: -0.760058, y: 0.000000, z: 0.000000, w: -0.649855}, translation: {x: -0.000022, y: -57.840771, z: -0.000039}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Foot_R",
+          "parent": "Shin_R",
+          "local": "<Struct 'Transform' (0x000002214BD0DD80) {rotation: {x: 0.613169, y: 0.000000, z: 0.000000, w: -0.789952}, translation: {x: 0.000000, y: -110.862511, z: 0.000153}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Toe_R",
+          "parent": "Foot_R",
+          "local": "<Struct 'Transform' (0x000002214BD0DB00) {rotation: {x: 0.413858, y: 0.000000, z: -0.000000, w: -0.910341}, translation: {x: -0.000001, y: -91.147888, z: 8.344874}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "End_Toe_R",
+          "parent": "Toe_R",
+          "local": "<Struct 'Transform' (0x000002214BD0D9C0) {rotation: {x: -0.000000, y: -0.000000, z: 0.000000, w: -1.000000}, translation: {x: 0.000000, y: -47.220554, z: 2.703040}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Heel_R",
+          "parent": "Foot_R",
+          "local": "<Struct 'Transform' (0x000002214BD0CD40) {rotation: {x: -0.865476, y: 0.000000, z: -0.000000, w: -0.500950}, translation: {x: 0.000001, y: -75.399956, z: -13.724781}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "End_Heel_R",
+          "parent": "Heel_R",
+          "local": "<Struct 'Transform' (0x000002214BD0C480) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: -1.000000}, translation: {x: -0.000001, y: -45.554665, z: 6.846585}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Hip_L",
+          "parent": "Pelvis",
+          "local": "<Struct 'Transform' (0x000002214BD0BA80) {rotation: {x: 0.481626, y: 0.022741, z: 0.012503, w: -0.875993}, translation: {x: -52.734257, y: -0.000396, z: -5.489987}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Shin_L",
+          "parent": "Hip_L",
+          "local": "<Struct 'Transform' (0x000002214BD0C200) {rotation: {x: -0.760058, y: -0.000000, z: -0.000000, w: -0.649855}, translation: {x: -0.000026, y: 57.840847, z: 0.000132}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Foot_L",
+          "parent": "Shin_L",
+          "local": "<Struct 'Transform' (0x000002214BD0D100) {rotation: {x: 0.613168, y: -0.000000, z: -0.000000, w: -0.789952}, translation: {x: -0.000000, y: 110.862717, z: -0.000182}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Toe_L",
+          "parent": "Foot_L",
+          "local": "<Struct 'Transform' (0x000002214BD01440) {rotation: {x: 0.413859, y: -0.000000, z: -0.000000, w: -0.910341}, translation: {x: -0.000001, y: 91.147881, z: -8.345047}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "End_Toe_L",
+          "parent": "Toe_L",
+          "local": "<Struct 'Transform' (0x000002214BD0A040) {rotation: {x: 0.000000, y: 0.000000, z: 0.000000, w: -1.000000}, translation: {x: -0.000004, y: 47.220573, z: -2.703047}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Heel_L",
+          "parent": "Foot_L",
+          "local": "<Struct 'Transform' (0x000002214BD09F00) {rotation: {x: -0.747941, y: -0.000000, z: 0.000000, w: -0.663765}, translation: {x: 0.000001, y: 75.399986, z: 13.724637}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "End_Heel_L",
+          "parent": "Heel_L",
+          "local": "<Struct 'Transform' (0x000002214BD09A00) {rotation: {x: 0.000000, y: 0.000000, z: -0.000000, w: -1.000000}, translation: {x: -0.000007, y: 44.389771, z: 11.937181}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Top",
+          "parent": "Pelvis",
+          "local": "<Struct 'Transform' (0x000002214BD089C0) {rotation: {x: -0.000000, y: -0.999663, z: 0.000000, w: -0.025952}, translation: {x: -0.000000, y: -60.833542, z: 0.000001}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Mount_top",
+          "parent": "Top",
+          "local": "<Struct 'Transform' (0x000002214BD09000) {rotation: {x: 0.000000, y: -0.000000, z: 0.000000, w: -1.000000}, translation: {x: -0.000000, y: -0.000031, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        }
+      ],
+      "skeleton": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Mech_Legs_Lt_Skeleton.Mech_Legs_Lt_Skeleton",
+      "path": "/Game/GuLiStrike/GroundMech/Meshes/SK_Legs.SK_Legs",
+      "size_cm": [
+        235.58348083496094,
+        148.67097091674805,
+        259.45826345682144
+      ]
+    },
+    "Armor": {
+      "path": "/Game/GuLiStrike/GroundMech/Meshes/SM_Armor.SM_Armor",
+      "size_cm": [
+        162.34193420410156,
+        219.20901489257812,
+        139.55275344848633
+      ]
+    },
+    "Shoulder": {
+      "path": "/Game/GuLiStrike/GroundMech/Meshes/SM_Shoulder.SM_Shoulder",
+      "size_cm": [
+        52.430907249450684,
+        159.85803985595703,
+        97.8679428100586
+      ]
+    },
+    "Machinegun": {
+      "bones": [
+        {
+          "name": "Machinegun",
+          "parent": "",
+          "local": "<Struct 'Transform' (0x00000220A47D8380) {rotation: {x: -0.707107, y: 0.000000, z: 0.000000, w: 0.707107}, translation: {x: 0.000000, y: 0.000000, z: 0.000000}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Barrel_big",
+          "parent": "Machinegun",
+          "local": "<Struct 'Transform' (0x00000220A47D7C00) {rotation: {x: 0.000000, y: -0.000000, z: 0.000000, w: -1.000000}, translation: {x: 36.824860, y: -8.810600, z: 188.101471}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Barrel_end",
+          "parent": "Barrel_big",
+          "local": "<Struct 'Transform' (0x00000220A47DBF80) {rotation: {x: 0.000000, y: -0.000000, z: 0.000000, w: -1.000000}, translation: {x: 0.000000, y: 11.675112, z: 12.771055}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Barrel_small",
+          "parent": "Machinegun",
+          "local": "<Struct 'Transform' (0x00000220A47D8880) {rotation: {x: 0.000000, y: -0.000000, z: 0.000000, w: -1.000000}, translation: {x: 36.824860, y: 24.942936, z: 174.211792}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        },
+        {
+          "name": "Ammo",
+          "parent": "Machinegun",
+          "local": "<Struct 'Transform' (0x00000220A47DB300) {rotation: {x: 0.000000, y: -0.000000, z: 0.000000, w: -1.000000}, translation: {x: 48.969681, y: 20.766996, z: -9.162756}, scale3d: {x: 1.000000, y: 1.000000, z: 1.000000}}>"
+        }
+      ],
+      "skeleton": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Weapons/Weapons_Machinegun_lvl5_Skeleton.Weapons_Machinegun_lvl5_Skeleton",
+      "path": "/Game/GuLiStrike/GroundMech/Meshes/SK_Machinegun.SK_Machinegun",
+      "size_cm": [
+        87.73937320709229,
+        271.0292053222656,
+        86.8106689453125
+      ]
+    }
+  },
+  "stage": "complete",
+  "blendspace_axes": [
+    {
+      "display_name": "Speed",
+      "min": "0.0",
+      "max": "1.0"
+    },
+    {
+      "display_name": "TurnRate",
+      "min": "-1.0",
+      "max": "1.0"
+    },
+    {
+      "display_name": "None",
+      "min": "0.0",
+      "max": "100.0"
+    }
+  ],
+  "blendspace_samples": [
+    {
+      "animation": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Run.Mech_Legs_Lt_Run",
+      "position": [
+        1.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "animation": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Idle.Mech_Legs_Lt_Idle",
+      "position": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "animation": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Run_Turn_L.Mech_Legs_Lt_Run_Turn_L",
+      "position": [
+        1.0,
+        -1.0,
+        0.0
+      ]
+    },
+    {
+      "animation": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Run_Turn_R.Mech_Legs_Lt_Run_Turn_R",
+      "position": [
+        1.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "animation": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Turn_30_L.Mech_Legs_Lt_Turn_30_L",
+      "position": [
+        0.0,
+        -1.0,
+        0.0
+      ]
+    },
+    {
+      "animation": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Turn_30_R.Mech_Legs_Lt_Turn_30_R",
+      "position": [
+        0.0,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "animation": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Walk.Mech_Legs_Lt_Walk",
+      "position": [
+        0.5,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "animation": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Walk_Turn_70_R.Mech_Legs_Lt_Walk_Turn_70_R",
+      "position": [
+        0.5,
+        1.0,
+        0.0
+      ]
+    },
+    {
+      "animation": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Animations/Mech_Legs_Lt_Walk_Turn_70_L.Mech_Legs_Lt_Walk_Turn_70_L",
+      "position": [
+        0.5,
+        -1.0,
+        0.0
+      ]
+    }
+  ],
+  "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light",
+  "animation": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech.ABP_GroundMech",
+  "game_mode": "/Game/GuLiStrike/GroundMech/BP_GroundMech_DemoMode.BP_GroundMech_DemoMode"
+}

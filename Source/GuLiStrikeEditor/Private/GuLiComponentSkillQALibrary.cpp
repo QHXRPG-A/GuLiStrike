@@ -1,4 +1,5 @@
 #include "GuLiComponentSkillQALibrary.h"
+#include "Battle/Framework/GuLiBattlePlayerController.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
@@ -12,6 +13,17 @@
 #include "Gameplay/Ship/Build/GuLiShipBuildComponent.h"
 #include "Gameplay/Ship/GuLiStrikeShip.h"
 #include "Gameplay/Ship/GuLiShipMovementComponent.h"
+
+void UGuLiComponentSkillQALibrary::SetGMPanelOpen(APlayerController* Controller, bool bOpen)
+{
+	auto& BattleController = *CastChecked<AGuLiBattlePlayerController>(Controller);
+	if (BattleController.IsGMPanelOpen() != bOpen) BattleController.ToggleGMPanel();
+}
+
+void UGuLiComponentSkillQALibrary::FlushPlayerInput(APlayerController* Controller)
+{
+	Controller->FlushPressedKeys();
+}
 
 bool UGuLiComponentSkillQALibrary::StartPIE(int32 Mode, int32 Clients)
 {

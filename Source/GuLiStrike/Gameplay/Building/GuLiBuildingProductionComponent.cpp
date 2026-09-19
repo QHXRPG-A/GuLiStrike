@@ -3,6 +3,7 @@
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+#include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Engine/World.h"
 #include "Net/UnrealNetwork.h"
 
@@ -38,10 +39,14 @@ void UGuLiBuildingProductionComponent::TickComponent(float Dt, ELevelTick TickTy
 	if (CycleSeconds >= Definition.ProductionSeconds)
 	{
 		CycleSeconds = FMath::Fmod(CycleSeconds, Definition.ProductionSeconds);
+		const auto* SoldierDefinition = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>()
+			->FindSoldierDefinition(Definition.ProductionUnitId);
+		const float SpawnSpacing = FMath::Max(320.0f,
+			SoldierDefinition ? SoldierDefinition->GetMassAvoidanceRadius(150.0f) * 2.0f + 20.0f : 320.0f);
 		TArray<FVector> Locations;
 		for (int32 Index = 0; Index < Definition.ProductionCount; ++Index)
 		{
-			const FVector Local(Definition.CollisionExtent.X + 800 + (Index / 6) * 320, (Index % 6 - 2.5) * 320, 0);
+			const FVector Local(Definition.CollisionExtent.X + 800 + (Index / 6) * SpawnSpacing, (Index % 6 - 2.5) * SpawnSpacing, 0);
 			Locations.Add(Life.GetGroundLocation() + GetOwner()->GetActorRotation().RotateVector(Local));
 		}
 		TArray<FGuLiSoldierId> Spawned;

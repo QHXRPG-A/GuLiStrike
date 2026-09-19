@@ -1,0 +1,142 @@
+{
+  "date": "2026-09-19",
+  "authorization": {
+    "light_mech": "同步至UE",
+    "spider_mech": "SpiderMech 也同步",
+    "scope": "Current v9 light mech and whole-panel SpiderMech in the v9 source; no global approval inferred."
+  },
+  "source": "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\Production_v9_VentMount\\Mechs_VentMount_v9.blend",
+  "source_sha256": "6caa1f5569d1c929b30f924c71f9b06144208ed340c437f3194a3399ec46912b",
+  "engine": "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.exe",
+  "map": "/Game/Maps/LVL_GroundMech_Demo",
+  "ground_blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+  "spider_blueprint": "/Game/GuLiStrike/Mechs/SpiderMech/BP_SpiderMech_Styled",
+  "assets": {
+    "Legs": {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Legs",
+      "dimensions_cm": [
+        236.97003936767578,
+        150.36911392211914,
+        260.63626742362976
+      ],
+      "body_triangles": 2170,
+      "outline_triangles": 752,
+      "material_slots": 2,
+      "bones": 18,
+      "max_reference_translation_cm": 0.00014410528389818329,
+      "max_reference_scale_error": 2.980232238769531e-07,
+      "max_reference_angle_deg": 0.026645920916954148,
+      "skeleton": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Mech_Legs_Lt_Skeleton.Mech_Legs_Lt_Skeleton"
+    },
+    "Armor": {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Armor",
+      "dimensions_cm": [
+        163.64987182617188,
+        223.10275268554688,
+        141.99283599853516
+      ],
+      "body_triangles": 14985,
+      "outline_triangles": 9685,
+      "material_slots": 2
+    },
+    "Shoulder": {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SM_Shoulder",
+      "dimensions_cm": [
+        55.643465995788574,
+        160.94959259033203,
+        98.96232223510742
+      ],
+      "body_triangles": 2314,
+      "outline_triangles": 726,
+      "material_slots": 2
+    },
+    "Machinegun": {
+      "path": "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun",
+      "dimensions_cm": [
+        88.49169254302979,
+        272.23509216308594,
+        88.31367111206055
+      ],
+      "body_triangles": 569,
+      "outline_triangles": 162,
+      "material_slots": 2,
+      "bones": 5,
+      "max_reference_translation_cm": 1.7059844799040144e-05,
+      "max_reference_scale_error": 8.429369702178807e-08,
+      "max_reference_angle_deg": 0.021200535403824657,
+      "skeleton": "/Game/Assets/MechaController/Mech_Constructor_Lt_Med/Meshes_Skeletal/Weapons/Weapons_Machinegun_lvl5_Skeleton.Weapons_Machinegun_lvl5_Skeleton"
+    },
+    "SpiderMech": {
+      "path": "/Game/GuLiStrike/Mechs/SpiderMech/Meshes/SK_SpiderMech",
+      "dimensions_cm": [
+        575.44287109375,
+        478.6869812011719,
+        370.3608875274658
+      ],
+      "body_triangles": 839778,
+      "outline_triangles": 839778,
+      "material_slots": 11,
+      "bones": 299,
+      "max_reference_translation_cm": 0.00035444957558637333,
+      "max_reference_scale_error": 4.913801241972081e-07,
+      "max_reference_angle_deg": 0.0025421284871121027,
+      "skeleton": "/Game/Assets/Mech_Project/Characters/SpiderMech/Mesh/SpiderMech_Skeleton.SpiderMech_Skeleton"
+    }
+  },
+  "checks": {
+    "fbx_readback.json": true,
+    "ue_import.json": true,
+    "live_install.json": true,
+    "root_config_refresh.json": true,
+    "ue_saved_readback.json": true,
+    "root-motion.json": true,
+    "network.json": true,
+    "ue_capture.json": true
+  },
+  "root_motion": "IgnoreRootMotion verified on actual PIE and fresh saved instance before compilation",
+  "native_build": "not_applicable: no C++ or native build configuration changed",
+  "performance": "not_run for current full meshes and ink shells",
+  "full_gameplay_regression": "not_rerun; existing root-motion and network checks only",
+  "hashes": {
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\Production_v9_VentMount\\Mechs_VentMount_v9.blend": {
+      "sha256": "6caa1f5569d1c929b30f924c71f9b06144208ed340c437f3194a3399ec46912b",
+      "bytes": 146573980
+    },
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\UE_StyleSync_v9\\FBX\\Legs.fbx": {
+      "sha256": "7bbfa09b3ce9c32e218240022c469cf15235ba5cc8fc65bffb4fc4c4b0da53e0",
+      "bytes": 151644
+    },
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\UE_StyleSync_v9\\FBX\\Armor.fbx": {
+      "sha256": "c219d324da6399bf5a39ae2b5f7e225810a562cd1de48919db608355516bc69e",
+      "bytes": 628524
+    },
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\UE_StyleSync_v9\\FBX\\Shoulder.fbx": {
+      "sha256": "3a61632be315b0d50ffecbff0819435866766bb4997b2dbfbd99dff4f2625c61",
+      "bytes": 95260
+    },
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\UE_StyleSync_v9\\FBX\\Machinegun.fbx": {
+      "sha256": "956234244fc5b20f834c486f58c63b329177f17edfd919f168dafd00fce0a0c3",
+      "bytes": 55580
+    },
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\UE_StyleSync_v9\\FBX\\SpiderMech.fbx": {
+      "sha256": "fabeb40d38a430ad1487034adfe7d474eb46ae8623150393b529c41b10cd2040",
+      "bytes": 58559180
+    },
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\UE_StyleSync_v9\\UE_Light_Hero.png": {
+      "sha256": "efdeaaaa0b7be1da794d0c0bc292ddf2f44b86d5ba540ecee7c13e2a5a97a02c",
+      "bytes": 2499184
+    },
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\UE_StyleSync_v9\\UE_Light_VentRear.png": {
+      "sha256": "3fe63114a7ad6a373774406450e9886dfe2b6c3022c1c83652824c41b31f96bf",
+      "bytes": 2336409
+    },
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\UE_StyleSync_v9\\UE_Spider_Hero.png": {
+      "sha256": "22c7e0aacccd7bf078ba4b52945343491fefdb99a606cef1cf83d4ae8989803f",
+      "bytes": 2341815
+    },
+    "D:\\UE5.7\\test1\\ArtSource\\Mechs\\StyleUnification_20260919\\UE_StyleSync_v9\\UE_Spider_Front.png": {
+      "sha256": "09821c791772591b77f6676cd9a456037530d1efda8f57d1f50d5602df7994b6",
+      "bytes": 2505785
+    }
+  }
+}

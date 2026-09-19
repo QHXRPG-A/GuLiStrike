@@ -11,6 +11,8 @@ class UGuLiCommanderNetSyncComponent;
 class UGuLiBuildingPlacementComponent;
 class AGuLiCommanderCameraPawn;
 class UGuLiCommanderCursorWidget;
+class UInputMappingContext;
+class UEnhancedInputLocalPlayerSubsystem;
 class UGuLiTeleportInputComponent;
 class SWidget;
 
@@ -235,5 +237,9 @@ private:
 	float CommandLineFadeDurationSeconds = 0.0f;
 	EGuLiCommandLineState CommandLineState = EGuLiCommandLineState::None;
 	bool bCommanderInputModeInitialized = false;
+	bool bGroundInputActive = false;
+	UPROPERTY(Transient)
+	TObjectPtr<UInputMappingContext> BattleCommandMappings;
+	TWeakObjectPtr<UEnhancedInputLocalPlayerSubsystem> BattleInputSubsystem;
 	bool bCommanderInputActive = false;
 };

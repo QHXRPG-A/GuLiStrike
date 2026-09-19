@@ -28,6 +28,15 @@ struct GULISTRIKE_API FGuLiSoldierDefinition
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier", meta = (Units = "cm/s"))
 	float MovementSpeedCmPerSecond = 720.0f;
 
+	/** Model-width override; zero keeps the existing Mass default. No extra clearance. */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier", meta = (Units = "cm"))
+	float MassAvoidanceRadiusCm = 0.0f;
+
+	float GetMassAvoidanceRadius(const float DefaultRadius) const
+	{
+		return MassAvoidanceRadiusCm > 0.0f ? MassAvoidanceRadiusCm : DefaultRadius;
+	}
+
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Commander|Soldier")
 	float MaxHealth = 100.0f;
 

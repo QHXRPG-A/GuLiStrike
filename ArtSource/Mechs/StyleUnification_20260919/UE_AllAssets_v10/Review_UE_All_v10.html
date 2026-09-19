@@ -1,0 +1,45 @@
+<!doctype html><html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>机甲与武器 · UE 全批交付</title><style>
+*{box-sizing:border-box}html{scroll-behavior:smooth;scroll-padding-top:24px}body{margin:0;background:#10181f;color:#ecf0f0;font:16px/1.7 "Segoe UI","Microsoft YaHei",sans-serif}main{max-width:1480px;margin:auto;padding:42px 28px 70px}h1{font-size:clamp(28px,4vw,48px);line-height:1.2;margin:12px 0 18px}h2{font-size:22px;margin:0}.eyebrow{letter-spacing:.12em;color:#9bc5dc;font-size:13px}.lead{color:#bac8d1;max-width:940px}a{color:#a7d4ef;text-decoration:none}a:hover{text-decoration:underline}.stats{display:flex;gap:12px;flex-wrap:wrap;margin:26px 0}.stats b{font-size:25px;color:#e7bd72;margin-right:8px}.stats div{padding:10px 20px;background:#1c2a34;border-radius:9px}.hero{display:block;width:100%;border-radius:12px}figcaption{color:#9bb0bf;font-size:14px;margin-top:12px}figure{margin:0 0 26px}.paths{padding:18px 22px;background:#1a2832;border-left:3px solid #e7bd72;border-radius:4px}.paths p{margin:6px 0}code{display:block;font:13px/1.8 Consolas,monospace;overflow-wrap:anywhere;color:#9eb9cd}nav{display:flex;gap:10px;flex-wrap:wrap;margin:28px 0}nav a{border:1px solid #344853;border-radius:20px;padding:5px 13px}.grid{display:grid;grid-template-columns:1fr 1fr;gap:24px}article{border:1px solid #31434f;border-radius:12px;overflow:hidden;background:#19262f;scroll-margin-top:24px}.cardtitle{padding:17px 21px;display:flex;align-items:center;justify-content:space-between;gap:12px}.cardtitle span{color:#abc3d4;font-size:13px;white-space:nowrap}article img{display:block;width:100%;aspect-ratio:1.5;object-fit:contain;background:#8095a5}.details{padding:17px 21px 22px}.details p{margin:5px 0 12px}.muted{color:#9bb0bf;font-size:14px}.walk{display:block;margin-top:12px}.foot{margin-top:32px;padding-top:24px;border-top:1px solid #31434f;color:#a9b9c4}.links{display:flex;gap:24px;flex-wrap:wrap}@media(max-width:850px){.grid{grid-template-columns:1fr}main{padding:24px 14px}.cardtitle{align-items:start;flex-direction:column}.stats div{flex:1 0 40%}.stats b{display:block}}@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+</style><main><div class="eyebrow">GULISTRIKE / SOURCE UE 5.7 / 2026.09.19</div>
+<h1>机甲与武器，整批同步完成</h1>
+<p class="lead">本批已制作的四台机甲、三套武器和一枚独立导弹均已进入 UE。以下均为保存后资源在引擎中的实际画面，保留各自当前制作版本。</p>
+<div class="stats"><div><b>8 / 8</b>成品已同步</div><div><b>10</b>独立网格</div><div><b>5</b>本次补齐</div><div><b>11</b>引擎截图</div></div>
+<figure><a href="UE_All_Assets.png" target="_blank"><img class="hero" src="UE_All_Assets.png" alt="八项资源在同一 UE 展示关卡中的实际总览"></a><figcaption>后排左起：Mecha 01、Mecha 02、轻型机甲、SpiderMech。前排：三管炮、导弹武器、Lv1 机枪、独立导弹。总览保持实际尺寸；单件相机各自调整。</figcaption></figure>
+<div class="paths"><p><strong>全部资源展示关卡</strong></p><code>/Game/GuLiStrike/Mechs/StyleShowcase/LVL_MechAsset_Showcase</code><p><strong>地面玩家操控测试</strong></p><code>/Game/Maps/LVL_GroundMech_Demo</code><p class="muted">轻型机甲与 Lv1 机枪用于当前 Ground 玩家。其他武器是独立模块，本次同步模型，没有新增开火、伤害或换枪功能。</p></div>
+<nav><a href="#Mech_Lightest">轻型机甲</a><a href="#SpiderMech">SpiderMech</a><a href="#Mecha_01">Mecha 01</a><a href="#Mecha_02">Mecha 02</a><a href="#FireWeapon_01">FireWeapon 01 · 三管</a><a href="#MissileWeapon_01">MissileWeapon 01</a><a href="#Machinegun_lvl1">Machinegun · Lv1</a><a href="#Missile_01">Missile 01 · 独立弹体</a></nav><section class="grid"><article id="Mech_Lightest"><div class="cardtitle"><h2>轻型机甲</h2><span>线稿 / 三档明暗</span></div>
+    <a href="UE_Mech_Lightest.png" target="_blank"><img src="UE_Mech_Lightest.png" alt="轻型机甲 UE 实际画面" loading="lazy"></a>
+    <div class="details"><strong>当前 Ground 玩家</strong><p>v9 弧面封舱 · 对称灰蓝腿甲 · 贴壳排气口</p>
+    <p class="muted">主体 20,038 tris · 描边 11,325 tris</p>
+    <code>/Game/GuLiStrike/GroundMech/BP_GroundMech_Light</code></div></article><article id="SpiderMech"><div class="cardtitle"><h2>SpiderMech</h2><span>线稿 / 三档明暗</span></div>
+    <a href="UE_SpiderMech.png" target="_blank"><img src="UE_SpiderMech.png" alt="SpiderMech UE 实际画面" loading="lazy"></a>
+    <div class="details"><strong>独立风格蓝图 / Demo 参照</strong><p>完整原网格 · 四片完整暗红装甲</p>
+    <p class="muted">主体 839,778 tris · 描边 839,778 tris</p>
+    <code>/Game/GuLiStrike/Mechs/SpiderMech/BP_SpiderMech_Styled</code></div></article><article id="Mecha_01"><div class="cardtitle"><h2>Mecha 01</h2><span>连续受光</span></div>
+    <a href="UE_Mecha_01.png" target="_blank"><img src="UE_Mecha_01.png" alt="Mecha 01 UE 实际画面" loading="lazy"></a>
+    <div class="details"><strong>独立模型 / 原待机与行走动画</strong><p>低饱和灰蓝 · 原骨架与武器挂点</p>
+    <p class="muted">主体 3,982 tris · 描边 0 tris</p>
+    <code>/Game/GuLiStrike/Mechs/Mecha_01/BP_Mecha_01_Styled</code><a class="walk" href="UE_Mecha_01_Walk.png" target="_blank">查看原行走动画姿态 ↗</a></div></article><article id="Mecha_02"><div class="cardtitle"><h2>Mecha 02</h2><span>连续受光</span></div>
+    <a href="UE_Mecha_02.png" target="_blank"><img src="UE_Mecha_02.png" alt="Mecha 02 UE 实际画面" loading="lazy"></a>
+    <div class="details"><strong>独立模型 / 原待机与行走动画</strong><p>金黄与黑灰 · 原骨架与武器挂点</p>
+    <p class="muted">主体 5,964 tris · 描边 0 tris</p>
+    <code>/Game/GuLiStrike/Mechs/Mecha_02/BP_Mecha_02_Styled</code><a class="walk" href="UE_Mecha_02_Walk.png" target="_blank">查看原行走动画姿态 ↗</a></div></article><article id="FireWeapon_01"><div class="cardtitle"><h2>FireWeapon 01 · 三管</h2><span>线稿 / 三档明暗</span></div>
+    <a href="UE_FireWeapon_01.png" target="_blank"><img src="UE_FireWeapon_01.png" alt="FireWeapon 01 · 三管 UE 实际画面" loading="lazy"></a>
+    <div class="details"><strong>独立可装配武器模型</strong><p>灰蓝与黑灰 · 保留三根炮管</p>
+    <p class="muted">主体 1,184 tris · 描边 484 tris</p>
+    <code>/Game/GuLiStrike/Weapons/MechModules/FireWeapon_01/BP_FireWeapon_01_Styled</code></div></article><article id="MissileWeapon_01"><div class="cardtitle"><h2>MissileWeapon 01</h2><span>线稿 / 三档明暗</span></div>
+    <a href="UE_MissileWeapon_01.png" target="_blank"><img src="UE_MissileWeapon_01.png" alt="MissileWeapon 01 UE 实际画面" loading="lazy"></a>
+    <div class="details"><strong>独立可装配武器模型</strong><p>灰红外壳 · 双列弹架</p>
+    <p class="muted">主体 7,181 tris · 描边 3,202 tris</p>
+    <code>/Game/GuLiStrike/Weapons/MechModules/MissileWeapon_01/BP_MissileWeapon_01_Styled</code></div></article><article id="Machinegun_lvl1"><div class="cardtitle"><h2>Machinegun · Lv1</h2><span>线稿 / 三档明暗</span></div>
+    <a href="UE_Machinegun_lvl1.png" target="_blank"><img src="UE_Machinegun_lvl1.png" alt="Machinegun · Lv1 UE 实际画面" loading="lazy"></a>
+    <div class="details"><strong>轻型玩家的右侧机枪模型</strong><p>赭黄与深青绿 · 琥珀功能灯</p>
+    <p class="muted">主体 569 tris · 描边 162 tris</p>
+    <code>/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun</code></div></article><article id="Missile_01"><div class="cardtitle"><h2>Missile 01 · 独立弹体</h2><span>连续受光</span></div>
+    <a href="UE_Missile_01.png" target="_blank"><img src="UE_Missile_01.png" alt="Missile 01 · 独立弹体 UE 实际画面" loading="lazy"></a>
+    <div class="details"><strong>独立弹体模型</strong><p>灰白弹体 · 深灰分界 · 尾翼</p>
+    <p class="muted">主体 772 tris · 描边 0 tris</p>
+    <code>/Game/GuLiStrike/Weapons/MechProjectiles/Missile_01/BP_Missile_01_Styled</code></div></article></section>
+<div class="foot"><p>已核对 FBX 尺寸与权重、UE 骨架和挂点、保存引用、8 项相关蓝图编译及 Mecha 01/02 原动画姿态。五项保留线稿与三档明暗；Mecha 01、Mecha 02 和独立导弹沿用已制作的连续受光材质。</p>
+<p>Spider 保留完整原网格，主体与描边各 839,778 三角面。当前未做性能压测。轻型头甲端部近景仍有少量原 v9 描边交叠点；地图保存时的项目飞行导航验证器提示已在说明中记录。用户最终视觉评价单独记录。</p>
+<p class="links"><a href="README.md">完整总结与资源路径 ↗</a><a href="delivery_manifest.json">版本、哈希与验证清单 ↗</a><a href="ue_showcase.json">引擎验证记录 ↗</a><a href="../UE_StyleSync_v9/Review_UE_v9.html">此前 Demo 实机画面 ↗</a></p></div></main></html>

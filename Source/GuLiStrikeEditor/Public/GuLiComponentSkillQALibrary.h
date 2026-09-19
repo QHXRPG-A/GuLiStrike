@@ -14,6 +14,9 @@ class GULISTRIKEEDITOR_API UGuLiComponentSkillQALibrary : public UBlueprintFunct
 	GENERATED_BODY()
 public:
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Skills") static bool StartPIE(int32 Mode, int32 Clients);
+	/** Existing input-lifecycle boundary, used by the ground-player PIE acceptance capture. */
+	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Input") static void SetGMPanelOpen(APlayerController* Controller, bool bOpen);
+	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Input") static void FlushPlayerInput(APlayerController* Controller);
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Skills") static bool SelectRadius(APlayerController* Controller, FVector Center, int32 RequestId, bool bAdd);
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Skills") static bool SubmitSkill(UGuLiCommanderSkillComponent* Component, FGuid RequestId, FName GlobalSkillId, int64 SelectionRevision, bool bHasPoint, FVector Point);
 	UFUNCTION(BlueprintCallable, Category="GuLiStrike|Editor|Skills") static void PressQ(UGuLiCommanderSkillComponent* Component, bool bHasPoint, FVector Point);

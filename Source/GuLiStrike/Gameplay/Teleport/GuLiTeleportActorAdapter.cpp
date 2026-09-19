@@ -6,7 +6,6 @@
 #include "Battle/Network/Relay/GuLiWingmanRelayComponent.h"
 #include "Gameplay/Ship/GuLiStrikeShip.h"
 #include "Gameplay/Ship/GuLiShipMovementComponent.h"
-#include "Gameplay/WarMachine/GuLiWarMachinePlaceholderPawn.h"
 #include "Gameplay/Wingman/GuLiWingmanSimulationSubsystem.h"
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
 #include "Components/CapsuleComponent.h"
@@ -49,7 +48,7 @@ void GuLiTeleportActorAdapter::Collect(UWorld& World, const FGuLiTeleportCastSta
 		const EGuLiTeam Team = Health ? Health->GetCombatTeam() : (PS ? PS->GetTeam() : EGuLiTeam::Unassigned);
 		if (Team != State.Team || (Health && !Health->IsAlive())) { continue; }
 		auto* Ship = Cast<AGuLiStrikeShip>(Pawn);
-		const bool bPlayerVehicle = Pawn->IsPlayerControlled() && (Ship || Pawn->IsA<AGuLiWarMachinePlaceholderPawn>());
+		const bool bPlayerVehicle = Pawn->IsPlayerControlled() && (Ship || (PS && PS->GetBattleRole()==EGuLiCommanderRole::Ground));
 		if (Pawn->IsPlayerControlled() && !bPlayerVehicle) { continue; }
 		FVector Ground; double SurfaceHeight = 0;
 		if (!GuLiSkillTargeting::ResolveGround(World,Pawn->GetActorLocation(),Ground,&SurfaceHeight)) { continue; }

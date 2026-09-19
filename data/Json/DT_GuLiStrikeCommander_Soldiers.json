@@ -10,7 +10,9 @@
     "ActorClass": "",
     "PresentationClass": "",
     "PresentationScale": 0.2,
-    "DisplayName": "扫荡者"
+    "DisplayName": "扫荡者",
+    "ModelWidthMeters": 3.1,
+    "MinAvoidanceDistanceMeters": 0.5
   },
   {
     "Name": "WM01",
@@ -23,7 +25,9 @@
     "ActorClass": "",
     "PresentationClass": "",
     "PresentationScale": 0.2,
-    "DisplayName": "战争机器"
+    "DisplayName": "战争机器",
+    "ModelWidthMeters": 12.5,
+    "MinAvoidanceDistanceMeters": 2.5
   },
   {
     "Name": "ElectromagneticMiner",
@@ -36,7 +40,9 @@
     "ActorClass": "/Script/GuLiStrike.GuLiMiningVehiclePawn",
     "PresentationClass": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
     "PresentationScale": 0.6084579714416871,
-    "DisplayName": "电磁矿车"
+    "DisplayName": "电磁矿车",
+    "ModelWidthMeters": 3.6,
+    "MinAvoidanceDistanceMeters": 1.0
   },
   {
     "Name": "ConstructionVehicle",
@@ -49,6 +55,8 @@
     "ActorClass": "/Script/GuLiStrike.GuLiConstructionVehiclePawn",
     "PresentationClass": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C",
     "PresentationScale": 0.6084579714416871,
-    "DisplayName": "建造车"
+    "DisplayName": "建造车",
+    "ModelWidthMeters": 3.6,
+    "MinAvoidanceDistanceMeters": 1.0
   }
 ]

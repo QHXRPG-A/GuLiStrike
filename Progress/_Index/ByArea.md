@@ -20,13 +20,28 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
+| [两组机甲资源风格统一参考](../RequirementDocument/20260919-两组机甲资源风格统一参考.md) | requirement | approved | 2026-09-19 |
+| [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | development | done | 2026-09-19 |
+| [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | development | done | 2026-09-19 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-19 |
+| [机甲与武器整批同步UE及总结](../Archive/20260919-机甲与武器整批同步UE及总结.md) | archive | recorded | 2026-09-19 |
+| [轻型机甲与Spider同步UE](../Archive/20260919-轻型机甲与Spider同步UE.md) | archive | recorded | 2026-09-19 |
+| [轻型机甲排气口浮空修复](../Archive/20260919-轻型机甲排气口浮空修复.md) | archive | recorded | 2026-09-19 |
+| [轻型机甲弧面头甲与散热结构细化](../Archive/20260919-轻型机甲弧面头甲与散热结构细化.md) | archive | recorded | 2026-09-19 |
+| [机甲整件分色与黑蓝配色修订](../Archive/20260919-机甲整件分色与黑蓝配色修订.md) | archive | recorded | 2026-09-19 |
+| [机甲线稿三渲二与对称配色修订](../Archive/20260919-机甲线稿三渲二与对称配色修订.md) | archive | recorded | 2026-09-19 |
+| [SpiderMech恢复原网格并整理色块](../Archive/20260919-SpiderMech恢复原网格并整理色块.md) | archive | recorded | 2026-09-19 |
+| [轻型装甲地面玩家接入与根位移修复](../Archive/20260919-轻型装甲地面玩家接入与根位移修复.md) | archive | recorded | 2026-09-19 |
+| [源模型机甲制作与SpiderMech减面](../Archive/20260919-源模型机甲制作与SpiderMech减面.md) | archive | recorded | 2026-09-19 |
+| [机甲与武器参考降低红蓝饱和度](../Archive/20260919-机甲与武器参考降低红蓝饱和度.md) | archive | recorded | 2026-09-19 |
+| [两组机甲风格参考、封舱与低模方向](../Archive/20260919-两组机甲风格参考与低模方向.md) | archive | recorded | 2026-09-19 |
 | [松树林原地图全资源风格重构](../RequirementDocument/20260918-松树林原地图全资源风格重构.md) | requirement | approved | 2026-09-18 |
 | [松树林与三单位同场景对照](../RequirementDocument/20260917-松树林与三单位同场景对照.md) | requirement | approved | 2026-09-18 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-09-18 |
 | [玩法地图对齐Demo光照](../DevelopmentDocumentation/20260918-玩法地图对齐Demo光照.md) | development | verification | 2026-09-18 |
 | [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | verification | 2026-09-18 |
 | [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | verification | 2026-09-18 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-18 |
 | [本会话临时文件清理](../Archive/20260918-本会话临时文件清理.md) | archive | recorded | 2026-09-18 |
 | [玩法光照对齐与战争机器拥挤诊断](../Archive/20260918-玩法光照对齐与战争机器拥挤诊断.md) | archive | recorded | 2026-09-18 |
 | [松树林原Demo地图全资源适配交付候选](../Archive/20260918-松树林原Demo地图全资源适配交付候选.md) | archive | recorded | 2026-09-18 |
@@ -78,13 +93,25 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [两组机甲资源风格统一参考](../RequirementDocument/20260919-两组机甲资源风格统一参考.md) | requirement | approved | 2026-09-19 |
+| [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | development | done | 2026-09-19 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-19 |
+| [机甲与武器整批同步UE及总结](../Archive/20260919-机甲与武器整批同步UE及总结.md) | archive | recorded | 2026-09-19 |
+| [轻型机甲与Spider同步UE](../Archive/20260919-轻型机甲与Spider同步UE.md) | archive | recorded | 2026-09-19 |
+| [轻型机甲排气口浮空修复](../Archive/20260919-轻型机甲排气口浮空修复.md) | archive | recorded | 2026-09-19 |
+| [轻型机甲弧面头甲与散热结构细化](../Archive/20260919-轻型机甲弧面头甲与散热结构细化.md) | archive | recorded | 2026-09-19 |
+| [机甲整件分色与黑蓝配色修订](../Archive/20260919-机甲整件分色与黑蓝配色修订.md) | archive | recorded | 2026-09-19 |
+| [机甲线稿三渲二与对称配色修订](../Archive/20260919-机甲线稿三渲二与对称配色修订.md) | archive | recorded | 2026-09-19 |
+| [SpiderMech恢复原网格并整理色块](../Archive/20260919-SpiderMech恢复原网格并整理色块.md) | archive | recorded | 2026-09-19 |
+| [源模型机甲制作与SpiderMech减面](../Archive/20260919-源模型机甲制作与SpiderMech减面.md) | archive | recorded | 2026-09-19 |
+| [机甲与武器参考降低红蓝饱和度](../Archive/20260919-机甲与武器参考降低红蓝饱和度.md) | archive | recorded | 2026-09-19 |
+| [两组机甲风格参考、封舱与低模方向](../Archive/20260919-两组机甲风格参考与低模方向.md) | archive | recorded | 2026-09-19 |
 | [松树林原地图全资源风格重构](../RequirementDocument/20260918-松树林原地图全资源风格重构.md) | requirement | approved | 2026-09-18 |
 | [松树林与三单位同场景对照](../RequirementDocument/20260917-松树林与三单位同场景对照.md) | requirement | approved | 2026-09-18 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-09-18 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-18 |
 | [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | verification | 2026-09-18 |
 | [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | verification | 2026-09-18 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-18 |
 | [松树林原Demo地图全资源适配交付候选](../Archive/20260918-松树林原Demo地图全资源适配交付候选.md) | archive | recorded | 2026-09-18 |
 | [松树林v1审核通过与原图原位重构授权](../Archive/20260918-松树林v1审核通过与原图原位重构授权.md) | archive | recorded | 2026-09-18 |
 | [松树林风格适配v1候选](../Archive/20260918-松树林风格适配v1候选.md) | archive | recorded | 2026-09-18 |
@@ -258,12 +285,20 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
+| [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
+| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
+| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-19 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
+| [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | development | done | 2026-09-19 |
+| [战争机器导弹范围与特效调整](../DevelopmentDocumentation/20260919-战争机器导弹范围与特效调整.md) | development | done | 2026-09-19 |
+| [轻型装甲地面玩家接入与根位移修复](../Archive/20260919-轻型装甲地面玩家接入与根位移修复.md) | archive | recorded | 2026-09-19 |
+| [战争机器爆炸追加四倍缩放](../Archive/20260919-战争机器爆炸追加四倍缩放.md) | archive | recorded | 2026-09-19 |
+| [战争机器导弹范围与特效调整](../Archive/20260919-战争机器导弹范围与特效调整.md) | archive | recorded | 2026-09-19 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死](../RequirementDocument/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | requirement | approved | 2026-09-18 |
-| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | development | in_progress | 2026-09-18 |
 | [Q圆面打击与赠品清场选兵恢复实现](../Archive/20260918-Q圆面打击与赠品清场选兵恢复实现.md) | archive | recorded | 2026-09-18 |
@@ -384,17 +419,31 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
+| [战争机器模型大小适配](../RequirementDocument/20260919-战争机器模型大小适配.md) | requirement | approved | 2026-09-19 |
+| [Mass单位体型与最小净距](../RequirementDocument/20260919-Mass单位体型与最小净距.md) | requirement | superseded | 2026-09-19 |
+| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
+| [战争机器导弹范围与特效调整](../DevelopmentDocumentation/20260919-战争机器导弹范围与特效调整.md) | development | done | 2026-09-19 |
+| [战争机器模型大小适配](../DevelopmentDocumentation/20260919-战争机器模型大小适配.md) | development | done | 2026-09-19 |
+| [Mass单位体型与最小净距 — 运行时开发](../DevelopmentDocumentation/20260919-Mass单位体型与最小净距.md) | development | abandoned | 2026-09-19 |
+| [战争机器爆炸追加四倍缩放](../Archive/20260919-战争机器爆炸追加四倍缩放.md) | archive | recorded | 2026-09-19 |
+| [战争机器导弹范围与特效调整](../Archive/20260919-战争机器导弹范围与特效调整.md) | archive | recorded | 2026-09-19 |
+| [撤回严格净距并适配战争机器模型大小](../Archive/20260919-撤回严格净距并适配战争机器模型大小.md) | archive | recorded | 2026-09-19 |
+| [Mass体型净距运行时接入与验证记录](../Archive/20260919-Mass体型净距运行时接入与验证记录.md) | archive | recorded | 2026-09-19 |
+| [指挥官单位体型与避障距离配置及接入分析](../RequirementDocument/20260918-指挥官单位体型与避障距离配置及接入分析.md) | requirement | approved | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死](../RequirementDocument/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | requirement | approved | 2026-09-18 |
-| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-18 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-18 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-18 |
+| [指挥官单位体型与避障距离配置及接入分析](../DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md) | development | done | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | development | in_progress | 2026-09-18 |
+| [指挥官原生碰撞与轻量间距约束探索](../Archive/20260918-指挥官原生碰撞与轻量间距约束探索.md) | archive | recorded | 2026-09-18 |
+| [指挥官体型净距源表与接入分析完成](../Archive/20260918-指挥官体型净距源表与接入分析完成.md) | archive | recorded | 2026-09-18 |
 | [本会话临时文件清理](../Archive/20260918-本会话临时文件清理.md) | archive | recorded | 2026-09-18 |
 | [玩法光照对齐与战争机器拥挤诊断](../Archive/20260918-玩法光照对齐与战争机器拥挤诊断.md) | archive | recorded | 2026-09-18 |
 | [Q圆面打击与赠品清场选兵恢复实现](../Archive/20260918-Q圆面打击与赠品清场选兵恢复实现.md) | archive | recorded | 2026-09-18 |
@@ -583,6 +632,19 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
+| [战争机器模型大小适配](../RequirementDocument/20260919-战争机器模型大小适配.md) | requirement | approved | 2026-09-19 |
+| [Mass单位体型与最小净距](../RequirementDocument/20260919-Mass单位体型与最小净距.md) | requirement | superseded | 2026-09-19 |
+| [战争机器导弹范围与特效调整](../DevelopmentDocumentation/20260919-战争机器导弹范围与特效调整.md) | development | done | 2026-09-19 |
+| [战争机器模型大小适配](../DevelopmentDocumentation/20260919-战争机器模型大小适配.md) | development | done | 2026-09-19 |
+| [Mass单位体型与最小净距 — 运行时开发](../DevelopmentDocumentation/20260919-Mass单位体型与最小净距.md) | development | abandoned | 2026-09-19 |
+| [战争机器导弹范围与特效调整](../Archive/20260919-战争机器导弹范围与特效调整.md) | archive | recorded | 2026-09-19 |
+| [撤回严格净距并适配战争机器模型大小](../Archive/20260919-撤回严格净距并适配战争机器模型大小.md) | archive | recorded | 2026-09-19 |
+| [Mass体型净距运行时接入与验证记录](../Archive/20260919-Mass体型净距运行时接入与验证记录.md) | archive | recorded | 2026-09-19 |
+| [指挥官单位体型与避障距离配置及接入分析](../RequirementDocument/20260918-指挥官单位体型与避障距离配置及接入分析.md) | requirement | approved | 2026-09-18 |
+| [指挥官单位体型与避障距离配置及接入分析](../DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md) | development | done | 2026-09-18 |
+| [指挥官原生碰撞与轻量间距约束探索](../Archive/20260918-指挥官原生碰撞与轻量间距约束探索.md) | archive | recorded | 2026-09-18 |
+| [指挥官体型净距源表与接入分析完成](../Archive/20260918-指挥官体型净距源表与接入分析完成.md) | archive | recorded | 2026-09-18 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-16 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-15 |
 | [阵营独立通道与点击据点即时运输修复](../Archive/20260915-阵营独立通道与点击据点即时运输修复.md) | archive | recorded | 2026-09-15 |
@@ -681,6 +743,16 @@
 | [首版 Demo 3v3、Ship 战略机动与高频选牌](../RequirementDocument/20260909-Demo3v3与Ship战略机动及高频选牌.md) | requirement | approved | 2026-09-09 |
 | [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | requirement | approved | 2026-09-09 |
 
+## input
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
+| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-19 |
+| [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | development | done | 2026-09-19 |
+| [轻型机甲与Spider同步UE](../Archive/20260919-轻型机甲与Spider同步UE.md) | archive | recorded | 2026-09-19 |
+| [轻型装甲地面玩家接入与根位移修复](../Archive/20260919-轻型装甲地面玩家接入与根位移修复.md) | archive | recorded | 2026-09-19 |
+
 ## learning
 
 | 文档 | 类型 | 状态 | 更新 |
@@ -762,10 +834,20 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战争机器模型大小适配](../RequirementDocument/20260919-战争机器模型大小适配.md) | requirement | approved | 2026-09-19 |
+| [Mass单位体型与最小净距](../RequirementDocument/20260919-Mass单位体型与最小净距.md) | requirement | superseded | 2026-09-19 |
+| [战争机器模型大小适配](../DevelopmentDocumentation/20260919-战争机器模型大小适配.md) | development | done | 2026-09-19 |
+| [Mass单位体型与最小净距 — 运行时开发](../DevelopmentDocumentation/20260919-Mass单位体型与最小净距.md) | development | abandoned | 2026-09-19 |
+| [撤回严格净距并适配战争机器模型大小](../Archive/20260919-撤回严格净距并适配战争机器模型大小.md) | archive | recorded | 2026-09-19 |
+| [Mass体型净距运行时接入与验证记录](../Archive/20260919-Mass体型净距运行时接入与验证记录.md) | archive | recorded | 2026-09-19 |
+| [指挥官单位体型与避障距离配置及接入分析](../RequirementDocument/20260918-指挥官单位体型与避障距离配置及接入分析.md) | requirement | approved | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
+| [指挥官单位体型与避障距离配置及接入分析](../DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md) | development | done | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
+| [指挥官原生碰撞与轻量间距约束探索](../Archive/20260918-指挥官原生碰撞与轻量间距约束探索.md) | archive | recorded | 2026-09-18 |
+| [指挥官体型净距源表与接入分析完成](../Archive/20260918-指挥官体型净距源表与接入分析完成.md) | archive | recorded | 2026-09-18 |
 | [玩法光照对齐与战争机器拥挤诊断](../Archive/20260918-玩法光照对齐与战争机器拥挤诊断.md) | archive | recorded | 2026-09-18 |
 | [建筑World测试数据与环境更新复跑](../Archive/20260918-建筑World测试数据与环境更新复跑.md) | archive | recorded | 2026-09-18 |
 | [据点矿厂落点与大规模避让修复](../RequirementDocument/20260916-据点矿厂落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
@@ -792,11 +874,16 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
+| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-19 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
+| [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | development | done | 2026-09-19 |
+| [轻型机甲与Spider同步UE](../Archive/20260919-轻型机甲与Spider同步UE.md) | archive | recorded | 2026-09-19 |
+| [轻型装甲地面玩家接入与根位移修复](../Archive/20260919-轻型装甲地面玩家接入与根位移修复.md) | archive | recorded | 2026-09-19 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-18 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
@@ -990,6 +1077,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战争机器模型大小适配](../RequirementDocument/20260919-战争机器模型大小适配.md) | requirement | approved | 2026-09-19 |
+| [Mass单位体型与最小净距](../RequirementDocument/20260919-Mass单位体型与最小净距.md) | requirement | superseded | 2026-09-19 |
+| [战争机器模型大小适配](../DevelopmentDocumentation/20260919-战争机器模型大小适配.md) | development | done | 2026-09-19 |
+| [Mass单位体型与最小净距 — 运行时开发](../DevelopmentDocumentation/20260919-Mass单位体型与最小净距.md) | development | abandoned | 2026-09-19 |
+| [撤回严格净距并适配战争机器模型大小](../Archive/20260919-撤回严格净距并适配战争机器模型大小.md) | archive | recorded | 2026-09-19 |
+| [Mass体型净距运行时接入与验证记录](../Archive/20260919-Mass体型净距运行时接入与验证记录.md) | archive | recorded | 2026-09-19 |
 | [GPU渲染降耗](../RequirementDocument/20260916-GPU渲染降耗.md) | requirement | approved | 2026-09-16 |
 | [据点矿厂落点与大规模避让修复](../RequirementDocument/20260916-据点矿厂落点与大规模避让修复.md) | requirement | approved | 2026-09-16 |
 | [客户端性能优化与压测问题记录](../RequirementDocument/20260915-客户端性能优化与压测问题记录.md) | requirement | approved | 2026-09-16 |
@@ -1041,13 +1134,25 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [两组机甲资源风格统一参考](../RequirementDocument/20260919-两组机甲资源风格统一参考.md) | requirement | approved | 2026-09-19 |
+| [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | development | done | 2026-09-19 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-19 |
+| [机甲与武器整批同步UE及总结](../Archive/20260919-机甲与武器整批同步UE及总结.md) | archive | recorded | 2026-09-19 |
+| [轻型机甲与Spider同步UE](../Archive/20260919-轻型机甲与Spider同步UE.md) | archive | recorded | 2026-09-19 |
+| [轻型机甲排气口浮空修复](../Archive/20260919-轻型机甲排气口浮空修复.md) | archive | recorded | 2026-09-19 |
+| [轻型机甲弧面头甲与散热结构细化](../Archive/20260919-轻型机甲弧面头甲与散热结构细化.md) | archive | recorded | 2026-09-19 |
+| [机甲整件分色与黑蓝配色修订](../Archive/20260919-机甲整件分色与黑蓝配色修订.md) | archive | recorded | 2026-09-19 |
+| [机甲线稿三渲二与对称配色修订](../Archive/20260919-机甲线稿三渲二与对称配色修订.md) | archive | recorded | 2026-09-19 |
+| [SpiderMech恢复原网格并整理色块](../Archive/20260919-SpiderMech恢复原网格并整理色块.md) | archive | recorded | 2026-09-19 |
+| [源模型机甲制作与SpiderMech减面](../Archive/20260919-源模型机甲制作与SpiderMech减面.md) | archive | recorded | 2026-09-19 |
+| [机甲与武器参考降低红蓝饱和度](../Archive/20260919-机甲与武器参考降低红蓝饱和度.md) | archive | recorded | 2026-09-19 |
+| [两组机甲风格参考、封舱与低模方向](../Archive/20260919-两组机甲风格参考与低模方向.md) | archive | recorded | 2026-09-19 |
 | [松树林原地图全资源风格重构](../RequirementDocument/20260918-松树林原地图全资源风格重构.md) | requirement | approved | 2026-09-18 |
 | [松树林与三单位同场景对照](../RequirementDocument/20260917-松树林与三单位同场景对照.md) | requirement | approved | 2026-09-18 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-09-18 |
 | [玩法地图对齐Demo光照](../DevelopmentDocumentation/20260918-玩法地图对齐Demo光照.md) | development | verification | 2026-09-18 |
 | [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | verification | 2026-09-18 |
 | [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | verification | 2026-09-18 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-18 |
 | [本会话临时文件清理](../Archive/20260918-本会话临时文件清理.md) | archive | recorded | 2026-09-18 |
 | [玩法光照对齐与战争机器拥挤诊断](../Archive/20260918-玩法光照对齐与战争机器拥挤诊断.md) | archive | recorded | 2026-09-18 |
 | [松树林原Demo地图全资源适配交付候选](../Archive/20260918-松树林原Demo地图全资源适配交付候选.md) | archive | recorded | 2026-09-18 |
@@ -1260,11 +1365,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
-| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-18 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [战争机器Q导弹与通用地面预警](../RequirementDocument/20260917-战争机器Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
@@ -1342,15 +1447,19 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
+| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
+| [战争机器导弹范围与特效调整](../DevelopmentDocumentation/20260919-战争机器导弹范围与特效调整.md) | development | done | 2026-09-19 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-19 |
+| [战争机器爆炸追加四倍缩放](../Archive/20260919-战争机器爆炸追加四倍缩放.md) | archive | recorded | 2026-09-19 |
+| [战争机器导弹范围与特效调整](../Archive/20260919-战争机器导弹范围与特效调整.md) | archive | recorded | 2026-09-19 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-09-18 |
-| [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-18 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-18 |
 | [战争机器Q导弹与通用地面预警](../RequirementDocument/20260917-战争机器Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
 | [地面机甲弹幕肉鸽与塔防建造](../RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md) | requirement | approved | 2026-09-17 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |

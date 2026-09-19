@@ -1,0 +1,557 @@
+{
+  "work_id": "WORK-20260919-004",
+  "version": 1,
+  "source_based": true,
+  "reference_A": "released_for_production_by_user",
+  "review_B": "pending",
+  "ue_import": "not_started",
+  "blend": {
+    "path": "Production_v1/Mechs_Style_SourceBased_v1.blend",
+    "bytes": 71135116,
+    "sha256": "97fe0d3954dbea27ce36ade02a1efbb19887fdd0a8b09fbde187619c7aa430aa"
+  },
+  "review": {
+    "path": "Production_v1/Review_B_v1.html",
+    "bytes": 19587,
+    "sha256": "663d90a8269265a38b7ab1d1d25c1ef23f4c5ee502ffa649d8a4d1caa66aef75"
+  },
+  "models": [
+    {
+      "asset": "SpiderMech",
+      "title": "SpiderMech · 源网格低模",
+      "triangles": 19656,
+      "concept": {
+        "path": "Concepts/SpiderMech_LowPoly_Concept_ThreeViews_v2.png",
+        "bytes": 1523644,
+        "sha256": "e7f007d3ce132f2698b020fc331365d4a6d82cce4312c63fa6d98a3833273ae1",
+        "width": 1464,
+        "height": 1074
+      },
+      "renders": [
+        {
+          "path": "Production_v1/Previews/SpiderMech_Hero.png",
+          "bytes": 1265321,
+          "sha256": "f9bca6c27bec51ca90b86cf238b987e0c3ac77895fd6e0e31b41dec76f816c79",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/SpiderMech_Front.png",
+          "bytes": 1153065,
+          "sha256": "d8043e860e86ffe6ec0101f38c010cee0743980f48b7cce6c2493470b513b30e",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/SpiderMech_Side.png",
+          "bytes": 1154367,
+          "sha256": "e341c9527d7ed5628a679ce74bbcf711447548c9bf3421257b4f5dcfa16a74dc",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/SpiderMech_Rear.png",
+          "bytes": 1183244,
+          "sha256": "557a793c5e1d453aa94e50c66f14e4b462f1f30449046c1fe7b59e2b61295c41",
+          "width": 1100,
+          "height": 1000
+        }
+      ]
+    },
+    {
+      "asset": "Mecha_01",
+      "title": "Mecha 01 · 灰蓝",
+      "triangles": 3982,
+      "concept": {
+        "path": "Concepts/Mecha_01_Concept_ThreeViews_v2.png",
+        "bytes": 1732958,
+        "sha256": "575d41a39eed370896aa72c181f4bbfd63a7fa2d96162fb8d7360c0e108bf927",
+        "width": 1536,
+        "height": 1024
+      },
+      "renders": [
+        {
+          "path": "Production_v1/Previews/Mecha_01_Hero.png",
+          "bytes": 1145919,
+          "sha256": "a478291f747439bf64f4c31b2ea93f2445cf42c4431cba8a6ef4143290828878",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Mecha_01_Front.png",
+          "bytes": 1078219,
+          "sha256": "99eeed629045f9cec4aef8de6a4df5053e82276aed73ff704cd2d7a9fc4bef54",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Mecha_01_Side.png",
+          "bytes": 1073693,
+          "sha256": "ae937d139c73befb57dd077a9c2640e0a73fa125945606b1dbc9e5e083f1fe03",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Mecha_01_Rear.png",
+          "bytes": 1091035,
+          "sha256": "2a38e99da9266d376df6ab671a4a3e4783d19ed01d22e2414da11da128a9d29e",
+          "width": 1100,
+          "height": 1000
+        }
+      ]
+    },
+    {
+      "asset": "Mecha_02",
+      "title": "Mecha 02 · 金黄",
+      "triangles": 5964,
+      "concept": {
+        "path": "Concepts/Mecha_02_Concept_ThreeViews_v1.png",
+        "bytes": 1707264,
+        "sha256": "8692aa465bc78713285e0d6f8c1e8baf34b51970118bf6c8dbb53ce58debf7a6",
+        "width": 1536,
+        "height": 1024
+      },
+      "renders": [
+        {
+          "path": "Production_v1/Previews/Mecha_02_Hero.png",
+          "bytes": 1204428,
+          "sha256": "9e0d49e565624b679b03000603151f0d7807b5cb6a48d5fbdc1fcdeb2b41e44f",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Mecha_02_Front.png",
+          "bytes": 1116264,
+          "sha256": "0eb367fa0f4d0a452745bf3295cfcb0c1cc24572ed40fcc8aa496031a29f98c2",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Mecha_02_Side.png",
+          "bytes": 1110024,
+          "sha256": "abd64347ce7be640f97d9ec5c7b145ddbaa3a3169437018877fc3695e5c53203",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Mecha_02_Rear.png",
+          "bytes": 1145990,
+          "sha256": "acf4c230de215357efa91cc10450576a7d9c19e79ca4b41a6b516d256193e8df",
+          "width": 1100,
+          "height": 1000
+        }
+      ]
+    },
+    {
+      "asset": "Mech_Lightest",
+      "title": "轻型机甲 · 封闭装甲",
+      "triangles": 4824,
+      "concept": {
+        "path": "Concepts/Mech_Lightest_Concept_ThreeViews_v4.png",
+        "bytes": 1831894,
+        "sha256": "36f1b6aecd83c8f0ea62b96f76c9502e8af0c1496e5bebb2c33c56c107cc8fb2",
+        "width": 1536,
+        "height": 1024
+      },
+      "renders": [
+        {
+          "path": "Production_v1/Previews/Mech_Lightest_Hero.png",
+          "bytes": 1305020,
+          "sha256": "c048290e669641783179ebdd7d18af0d50f8f0388ff1828b4ebee3916ba1dfd6",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Mech_Lightest_Front.png",
+          "bytes": 1152833,
+          "sha256": "7f0016b98cc635e226b0c1980c1dfdc64872ec87966f77a7729c48bd7c758541",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Mech_Lightest_Side.png",
+          "bytes": 1109352,
+          "sha256": "2d8c28b248f061a3ba0ebf3fa02afa1df542d11fb64a12ea372bcc25291876b6",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Mech_Lightest_Rear.png",
+          "bytes": 1167590,
+          "sha256": "e30105eb4968538a862674b05064814079dff18366cba05e69aaca4e935cf666",
+          "width": 1100,
+          "height": 1000
+        }
+      ]
+    },
+    {
+      "asset": "FireWeapon_01",
+      "title": "FireWeapon 01 · 三管",
+      "triangles": 1184,
+      "concept": {
+        "path": "Concepts/Weapons_Concept_ThreeViews_v4.png",
+        "bytes": 1649405,
+        "sha256": "626e3a9472447f28c116c90118c33675a66cd763d6ecc40625cafdf0774ed05d",
+        "width": 1536,
+        "height": 1024
+      },
+      "renders": [
+        {
+          "path": "Production_v1/Previews/FireWeapon_01_Hero.png",
+          "bytes": 1079442,
+          "sha256": "b01186527a408291d74f1e3f2ea6ad4c5d4b507c3a48f08b7586a576d894db49",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/FireWeapon_01_Front.png",
+          "bytes": 1053223,
+          "sha256": "1cdec24200f2fba60e41444e0ccd543ad05b4805a8acb58c41e9864ea105901e",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/FireWeapon_01_Side.png",
+          "bytes": 1052452,
+          "sha256": "59f6178999df331dda4603d895899222f972e1fc58d38b57355553e3455b64bf",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/FireWeapon_01_Rear.png",
+          "bytes": 1031128,
+          "sha256": "89945e031a45aa6d1fcb1c8e0c680516b05b091175a5d07efb15afb7af3ec575",
+          "width": 1100,
+          "height": 1000
+        }
+      ]
+    },
+    {
+      "asset": "MissileWeapon_01",
+      "title": "MissileWeapon 01",
+      "triangles": 7181,
+      "concept": {
+        "path": "Concepts/Weapons_Concept_ThreeViews_v4.png",
+        "bytes": 1649405,
+        "sha256": "626e3a9472447f28c116c90118c33675a66cd763d6ecc40625cafdf0774ed05d",
+        "width": 1536,
+        "height": 1024
+      },
+      "renders": [
+        {
+          "path": "Production_v1/Previews/MissileWeapon_01_Hero.png",
+          "bytes": 1164458,
+          "sha256": "e9c6ef96f8baea389de9a350af43004bc8fcd4340c47a5fe275a1397dae54a0d",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/MissileWeapon_01_Front.png",
+          "bytes": 1068888,
+          "sha256": "2716126351d0d8be1851710a6124ae97cd52653d932c3af67ef3d649cd906d51",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/MissileWeapon_01_Side.png",
+          "bytes": 1088014,
+          "sha256": "8df5933b65286dccc0cb821c6b6bdf54bb4fed1e8068f67865b1246341e64d17",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/MissileWeapon_01_Rear.png",
+          "bytes": 1048837,
+          "sha256": "a8e64df3fce394da2df792520d5bde8c8d4ccc660af94cf6661db79b39827f6d",
+          "width": 1100,
+          "height": 1000
+        }
+      ]
+    },
+    {
+      "asset": "Machinegun_lvl1",
+      "title": "Machinegun · Lv1",
+      "triangles": 569,
+      "concept": {
+        "path": "Concepts/Weapons_Concept_ThreeViews_v4.png",
+        "bytes": 1649405,
+        "sha256": "626e3a9472447f28c116c90118c33675a66cd763d6ecc40625cafdf0774ed05d",
+        "width": 1536,
+        "height": 1024
+      },
+      "renders": [
+        {
+          "path": "Production_v1/Previews/Machinegun_lvl1_Hero.png",
+          "bytes": 1052891,
+          "sha256": "9a81262c2e7d8c8f1c80a6f0cbb9bc41df7475ac8a3efded2fd62510657ebc7f",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Machinegun_lvl1_Front.png",
+          "bytes": 1040274,
+          "sha256": "fd17953aa3d4fa615185db8a3e5e06fbb5f94685a3ca3f9386769f72969cd32d",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Machinegun_lvl1_Side.png",
+          "bytes": 1042299,
+          "sha256": "649cfb469d537801849531cf5fb1187bd38cfa40a0cba6b140f3cd8963a01d2a",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Machinegun_lvl1_Rear.png",
+          "bytes": 1026230,
+          "sha256": "d12503eb36a38fb4a9d60abdf1b2ea760e847ab2686fd799c3975a99468270c1",
+          "width": 1100,
+          "height": 1000
+        }
+      ]
+    },
+    {
+      "asset": "Missile_01",
+      "title": "独立导弹",
+      "triangles": 772,
+      "concept": {
+        "path": "Concepts/Missile_Concept_ThreeViews_v2.png",
+        "bytes": 1469565,
+        "sha256": "c1212c0523bda5e7b55127c4a4b254e7b8160e085c7ada60f44d7aaab17e26a0",
+        "width": 1536,
+        "height": 1024
+      },
+      "renders": [
+        {
+          "path": "Production_v1/Previews/Missile_01_Hero.png",
+          "bytes": 996574,
+          "sha256": "16da51507d0855408b571c60995abf35c811dbeefc6ba28ee7ded2345ac84374",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Missile_01_Front.png",
+          "bytes": 1046936,
+          "sha256": "ecdd707b6c587c845ba916ca048418173c185f9970e078e1464dcb14e5ee64e9",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Missile_01_Side.png",
+          "bytes": 1050324,
+          "sha256": "94865b9dbb872bcf182b9e5225e828ad125bf800b2dd88a99ae0c4d9c3370ff1",
+          "width": 1100,
+          "height": 1000
+        },
+        {
+          "path": "Production_v1/Previews/Missile_01_Rear.png",
+          "bytes": 1052210,
+          "sha256": "388d1affff7859922641710e14ba7bb10744b67b61f401696e3098a1af7bf5e4",
+          "width": 1100,
+          "height": 1000
+        }
+      ]
+    }
+  ],
+  "spider": {
+    "source_triangles": 839778,
+    "output_triangles": 19656,
+    "reduction_percent": 97.65938140794353,
+    "sample_count": 5037,
+    "source_vertex_to_output_surface_distance_m": {
+      "median": 0.001843305379152298,
+      "p95": 0.015199599504470824,
+      "p99": 0.046240856933593824,
+      "max": 0.15809158325195313
+    },
+    "retained_uvs": [
+      "DiffuseUV"
+    ],
+    "retained_material_slots": 10
+  },
+  "evidence": [
+    {
+      "path": "Production_v1/model_validation.json",
+      "bytes": 27511,
+      "sha256": "f2c454e0b58eff459ad647a84e5724907197150ede0ebaf170b16431895c88ea"
+    },
+    {
+      "path": "Production_v1/root_weight_restore.json",
+      "bytes": 391,
+      "sha256": "2705d02ca3839a6d0ff0f026d7b76584e913b0076819081b52fd17d1c5e80840"
+    },
+    {
+      "path": "Production_v1/light_closed_cockpit_report.json",
+      "bytes": 1585,
+      "sha256": "539224286ab9645b1631629858dffa17e195fca9f9fcc6276e2cb3e730782d29"
+    },
+    {
+      "path": "Production_v1/review_b_render_status.json",
+      "bytes": 6283,
+      "sha256": "40fe1935497f7f112dcd43cbe67a6ec5c6877746ab633789ced05febdc68dd13"
+    },
+    {
+      "path": "Production_v1/production_authorization.json",
+      "bytes": 1587,
+      "sha256": "14e076a2e35540f30dae63a184cfa1d963c11d0e46640cfce8e190d119cd2009"
+    },
+    {
+      "path": "Production_v1/import_report.json",
+      "bytes": 157528,
+      "sha256": "ef924b6c5a0150ee7e9438fb6fd4ce600146a2d86e83bed64a71784b9236017f"
+    },
+    {
+      "path": "Production_v1/spider_armor_cleanup.json",
+      "bytes": 3421,
+      "sha256": "915bc6f474b9d4fb3789e3ed3c920ca056691a7f9c475187344fbafc4ce265e3"
+    },
+    {
+      "path": "Production_v1/review_scenes.json",
+      "bytes": 278,
+      "sha256": "7c929815ae2f8265064cee3aad1fe3961e2b20eb6168003ed904872ce798e819"
+    }
+  ],
+  "source_snapshot": {
+    "path": "Source/Production_v1/source_snapshot.json",
+    "bytes": 469180,
+    "sha256": "e4dc11aa04bec591b149611beb4db6704b44e5e4f24f16c96474f5343a52aeb0"
+  },
+  "source_contracts": {
+    "path": "Source/Production_v1/socket_contracts.json",
+    "bytes": 1199,
+    "sha256": "6479139779cfec16624a331f38e858ce36bd4c553b36f2e604267530eb5f21ba"
+  },
+  "gray_comparisons": [
+    {
+      "path": "Production_v1/Previews/SpiderMech_SourceGray_Hero.png",
+      "bytes": 1247593,
+      "sha256": "cb7f1786a62b73a7b50e6fd5b609e8910df6bbc0c574cde3f6482cdc9e7b1aa4",
+      "width": 1100,
+      "height": 1000
+    },
+    {
+      "path": "Production_v1/Previews/SpiderMech_SourceGray_Front.png",
+      "bytes": 1143965,
+      "sha256": "8a243bf6590c9c7ab41e8161d55beb2352d77f61943a3ddcbc0734dee99f58df",
+      "width": 1100,
+      "height": 1000
+    },
+    {
+      "path": "Production_v1/Previews/SpiderMech_SourceGray_Side.png",
+      "bytes": 1151977,
+      "sha256": "1ffc2831ac4a4123f444de334f7138ee7b046d0612cd43b665cee0870e0a01f7",
+      "width": 1100,
+      "height": 1000
+    },
+    {
+      "path": "Production_v1/Previews/SpiderMech_SourceGray_Rear.png",
+      "bytes": 1165635,
+      "sha256": "1c0c53c24744223bb8865377a4ade5a41cd49fc2541620315ee09b1d926192be",
+      "width": 1100,
+      "height": 1000
+    },
+    {
+      "path": "Production_v1/Previews/SpiderMech_FinalGray_Hero.png",
+      "bytes": 1216446,
+      "sha256": "493870ce79400bb1253205f27bb72d8c516c2f32c3f292e880aad353948d32a3",
+      "width": 1100,
+      "height": 1000
+    },
+    {
+      "path": "Production_v1/Previews/SpiderMech_FinalGray_Front.png",
+      "bytes": 1122000,
+      "sha256": "118ce7e081c1ccc45e6df2092921aef004b937058ac24b6870feeded8ed85e5c",
+      "width": 1100,
+      "height": 1000
+    },
+    {
+      "path": "Production_v1/Previews/SpiderMech_FinalGray_Side.png",
+      "bytes": 1127819,
+      "sha256": "138b0976f7f951d6f28e7e663964311502f8abd6f7b8a3c47c1a5989c7b499e9",
+      "width": 1100,
+      "height": 1000
+    },
+    {
+      "path": "Production_v1/Previews/SpiderMech_FinalGray_Rear.png",
+      "bytes": 1146496,
+      "sha256": "6488dfd63f4f30d1c5ff6d6f18772b7b79d623475e82604da371e706e641914e",
+      "width": 1100,
+      "height": 1000
+    }
+  ],
+  "known_reference_correction": "FireWeapon_01 source has three barrels; concept has two. Source geometry is authoritative.",
+  "construction": [
+    {
+      "path": "Production_v1/Construction/SpiderMech_ReductionEditable.blend",
+      "bytes": 33829523,
+      "sha256": "908b40b857457e5186f765989e4ef9d1273484801d8267ded2c7b50ee3625ca9"
+    },
+    {
+      "path": "Production_v1/Construction/SpiderMech_ArmorCleanCandidate.blend",
+      "bytes": 4801473,
+      "sha256": "5dee840cceb3f923542b70674df54652bccb5ee811a743527bc37c017f99e233"
+    }
+  ],
+  "production_scripts": [
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\export_mech_production_sources.py",
+      "sha256": "9b3130c04247a2069cc9492b21befbac6f45d156ce1610677d757c50f2751d9d"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\inspect_mech_socket_contracts.py",
+      "sha256": "0c294b1ac96d16cef32a6c0697110133a4cfd02fdd6f9906d524151b1fd8a426"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\build_mech_production_review.py",
+      "sha256": "d2f0f83f3a632fb2d4345e64044d23ebf6f57fc2a7c7ce8201ac894f63ab5a09"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\import_mech_production_sources.py",
+      "sha256": "ddd1ddc9f91a965632fc352ed04314511f12acd33c8b386b2e4113000a0dfc16"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\mech_production_common.py",
+      "sha256": "97cb619f212135a7a1787cf1657aab92415478ff7ae6fb07d2050a8dcc0e7a51"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\reduce_spider_source_mesh.py",
+      "sha256": "9dd6ba7d4ce8618aa68dcddc97b7e5ee7a30aac48987e2885def0cc58a86dfa3"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\style_mech_source_models.py",
+      "sha256": "7291a3139c976e279f95facd3f53772b896487a9a6f6ee2288fe59cdfdc956a0"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\close_and_assemble_light_mech.py",
+      "sha256": "d942a3af6890fecdd355e0a22463cdd464e5756774400215caed34ae48daa4f2"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\refine_mech_surfaces_and_details.py",
+      "sha256": "cd368a416c0569328f4b6a6a2c5130b58dec18066cbb49bf429d0eabdd910ca9"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\refine_spider_armor_candidate.py",
+      "sha256": "7cdb343061316521e5bf31fa3e6d2b433f1ad28fc7516b8285b86f31c74c9173"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\finalize_mech_detail_fit.py",
+      "sha256": "141066f40656949c03a7ad4abd54fdf4dbfcfc67fc42439ae458f1be2c99e607"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\fit_mecha01_cap_contacts.py",
+      "sha256": "e9e9142ce6f381548acedd82eee51df18796a3a175b52e8ab91cfb9841290f16"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\validate_mech_production.py",
+      "sha256": "ba55a3ef78c7dc20b8f1de92da5c4ec43c172c824ca756c058896c86971ba553"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\prepare_mech_review_scenes.py",
+      "sha256": "0f98e2feab79cb24f8eada5e519f6c2d34f7db69ba76f96a2884c43d7dc20c1d"
+    },
+    {
+      "path": "D:\\UE5.7\\test1\\Scripts\\Blender\\render_mech_review_b.py",
+      "sha256": "97df7af91e77d9eb987d40a0101c001bd81d19df2d1a225a8ad1f579ab63e0ea"
+    }
+  ]
+}

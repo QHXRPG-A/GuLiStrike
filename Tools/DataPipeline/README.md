@@ -20,7 +20,24 @@
 ## 日常修改
 
 前三行是列名、类型、必要性元数据，第4行开始填数值。`id` 是稳定数字ID，`name` 是稳定UE行名，两者不要因显示文本变化而改写。
-所有距离使用厘米，弹速用厘米/秒，`AttackRatePerSecond` 是每秒发数，`CooldownSeconds` 是秒/发。
+距离默认使用厘米，弹速用厘米/秒，`AttackRatePerSecond` 是每秒发数，`CooldownSeconds` 是秒/发。
+`Soldiers` 新增的 `ModelWidthMeters`（模型宽度）和 `MinAvoidanceDistanceMeters`（最小避障距离）明确使用米；单元格保存数字，`m` 仅为显示格式。
+
+### 指挥官单位体型与净距
+
+两列均为 `float / Necessary`，模型宽度表示最终游戏尺度，不修改模型比例。
+
+2026-09-19按用户要求撤回严格净距算法。当前只有战争机器（WM01 / Id 2）读取宽度12.5米，初始化时按宽度×50转换为625厘米Mass避障半径，不再乘 `PresentationScale`。其他兵种保持原有半径。
+
+最小避障距离列及原始数值保留（扫荡者0.5米、战争机器2.5米、工程车1米），当前不参与运行时计算，不承诺硬净距。模型宽度无效时报告兵种ID和字段，使用625厘米战争机器回退半径；其他字段沿用既有目录校验。
+
+正常修改数值后运行导出器，再通过
+`python Scripts/ue_exec.py Scripts/import_commander_unit_footprints.py` 定向导入Soldiers。新增反射字段须先关闭编辑器、正常编译并重启。
+导入会把四行回读结果写入 `TestResults/UnitSpacing/soldiers-import.json`；正在运行的实体使用创建时缓存的体型，重新开始游戏后使用新值。
+当前实施与验收记录见[战争机器模型大小适配](../../Progress/DevelopmentDocumentation/20260919-战争机器模型大小适配.md)，前期取舍见
+[代码接入与成本分析](../../Progress/DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md)。
+
+### 武器表导入
 
 `Skills` 和 `WingmanWeapons` 的“产生的法术场”列为 `int / Optional`，填写 `Fields.id`。
 WM01导弹目前填 `1`，僚机对地导弹填 `2`；机枪等没有法术场引用的攻击留空或填0。

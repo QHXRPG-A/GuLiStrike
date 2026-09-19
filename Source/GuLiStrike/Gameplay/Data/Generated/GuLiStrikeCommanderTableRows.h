@@ -59,6 +59,14 @@ struct FGuLiStrikeCommanderSoldiersRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
 	FString DisplayName;
 
+	/** ModelWidthMeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	float ModelWidthMeters = 0.0f;
+
+	/** MinAvoidanceDistanceMeters (float, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Soldiers")
+	float MinAvoidanceDistanceMeters = 0.0f;
+
 };
 
 /** DataTable DT_GuLiStrikeCommander_Skills 的行结构（源: GuLiStrikeSecondaryWeapons.xlsx / Skills）。 */

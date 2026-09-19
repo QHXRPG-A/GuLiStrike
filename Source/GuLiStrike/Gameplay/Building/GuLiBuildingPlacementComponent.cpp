@@ -369,23 +369,9 @@ bool UGuLiBuildingPlacementComponent::TraceLocalGround(
 	PlayerController->GetPlayerViewPoint(ViewLocation, ViewRotation);
 	OutYawDegrees = ViewRotation.Yaw;
 	float TraceDistance = GuLiBuildingPlacement::CommanderTraceDistanceCentimeters;
-	if (PlayerState->GetBattleRole() == EGuLiCommanderRole::Ground)
-	{
-		int32 ViewportWidth = 0;
-		int32 ViewportHeight = 0;
-		PlayerController->GetViewportSize(ViewportWidth, ViewportHeight);
-		if (ViewportWidth <= 0 || ViewportHeight <= 0
-			|| !PlayerController->DeprojectScreenPositionToWorld(
-				static_cast<float>(ViewportWidth) * 0.5f,
-				static_cast<float>(ViewportHeight) * 0.5f,
-				RayOrigin,
-				RayDirection))
-		{
-			return false;
-		}
-		TraceDistance = GuLiBuildingPlacementPolicy::GroundMaximumRangeCentimeters;
-	}
-	else if (!PlayerController->DeprojectMousePositionToWorld(RayOrigin, RayDirection))
+	// Both ground players and commanders place at the cursor. Range is measured from
+	// the ground Pawn below, not from its elevated camera along the view ray.
+	if (!PlayerController->DeprojectMousePositionToWorld(RayOrigin, RayDirection))
 	{
 		return false;
 	}
