@@ -4,6 +4,7 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | verification | partial | 在Listen Server与Dedicated Server中人工驾驶Ground客户端完成贴边、下落和移动支撑验收，确认无持续校正或抖动后转done。 | 2026-09-20 |
 | [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | verification | partial | 用户审核FireReview的枪口、弹道及缓冲后坐；批准后将已验证配置接到正式BP_GroundMech_Light。 | 2026-09-20 |
 | [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | done | partial | 查看整批UE展示；后续按反馈处理外观，性能和武器玩法另行接入。 | 2026-09-19 |
 | [战争机器模型大小适配](../DevelopmentDocumentation/20260919-战争机器模型大小适配.md) | done | partial | — | 2026-09-19 |

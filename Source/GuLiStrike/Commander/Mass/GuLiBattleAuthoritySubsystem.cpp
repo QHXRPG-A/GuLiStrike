@@ -24,6 +24,7 @@
 #include "EngineUtils.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
+#include "Gameplay/GroundMech/GuLiGroundMassCollisionTypes.h"
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillDefinition.h"
@@ -73,6 +74,14 @@ namespace GuLiCommanderMassPrivate
 	constexpr float TravelWeight = 0.70f;
 	constexpr float SlotCorrectionWeight = 0.30f;
 	constexpr float ManualAvoidanceStrength = 0.25f;
+	constexpr int32 MaximumFriendlyYieldUnitsPerMech = 16;
+	constexpr float GroundMechYieldQueryCellSizeCentimeters = 1000.0f;
+	constexpr float GroundMechYieldActivationPaddingCentimeters = 100.0f;
+	constexpr float GroundMechYieldClearancePaddingCentimeters = 50.0f;
+	constexpr float GroundMechYieldSpeedFraction = 0.25f;
+	constexpr float GroundMechYieldMaximumAnchorOffsetCentimeters = 1250.0f;
+	constexpr double GroundMechYieldReturnDelaySeconds = 0.5;
+	constexpr float GroundMechYieldArrivalToleranceCentimeters = 5.0f;
 	constexpr float MaximumSurfaceStepZCentimeters = 50.0f;
 	constexpr float ProgressDistanceCentimeters = 6.0f;
 	constexpr float CenterlineRecoverySeconds = 1.0f;
@@ -163,6 +172,10 @@ namespace GuLiCommanderMassPrivate
 		FGuid ExternalControlToken;
 		bool bPhased = false;
 		bool bExternalActionsLocked = false;
+		bool bGroundMechYielding = false;
+		FVector GroundMechYieldAnchor = FVector::ZeroVector;
+		FVector GroundMechYieldTarget = FVector::ZeroVector;
+		double GroundMechLastPressureSimulationSeconds = -1.0;
 		uint32 DisplacementFrameFloor = 0;
 		FVector DisplacementLocation = FVector::ZeroVector;
 		double DisplacementSimulationTime = 0;
@@ -1431,6 +1444,8 @@ struct FGuLiBattleAuthorityState
 	uint64 ManualAvoidanceCandidatePairs = 0u;
 	uint64 ManualAvoidanceOverlapPairs = 0u;
 	int32 MaximumManualAvoidanceBucketOccupancy = 0;
+	uint64 GroundMechYieldSteps = 0u;
+	int32 GroundMechYieldingSoldiers = 0;
 	uint64 PathQueries = 0u;
 	uint64 PersonalPathQueries = 0u;
 	uint64 MoveCandidateProjectionQueries = 0u;
@@ -4316,6 +4331,268 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 	TMap<uint32, FOrderFormationRuntime*> FormationBySoldierId;
 	FormationBySoldierId.Reserve(AuthorityState->Soldiers.Num());
 
+	const UGuLiDynamicObstacleRegistrySubsystem* GroundObstacleRegistry =
+		World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
+	check(GroundObstacleRegistry);
+	TArray<FVector> GroundMechYieldVelocities;
+	TBitArray<> bGroundMechYieldReturning;
+	auto SetGroundMechYieldStandTarget = [World, &EntityManager](FSoldierRuntime& Soldier)
+	{
+		if (!EntityManager.IsEntityValid(Soldier.Entity)) return;
+		FMassMoveTargetFragment& MoveTarget = EntityManager
+			.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+		if (MoveTarget.GetCurrentAction() != EMassMovementAction::Stand)
+			MoveTarget.CreateNewAction(EMassMovementAction::Stand, *World);
+		MoveTarget.Center = Soldier.Location;
+		MoveTarget.Forward = FRotator(0.0f, Soldier.FacingYawDegrees, 0.0f).Vector();
+		MoveTarget.DesiredSpeed = FMassInt16Real(0.0f);
+	};
+	int32 GroundMechYieldingSoldiers = 0;
+	const bool bHasGroundMechObstacle = GroundObstacleRegistry->GetObstacles().ContainsByPredicate(
+		[](const FGuLiDynamicObstacle& Obstacle)
+		{
+			return Obstacle.Kind == EGuLiDynamicObstacleKind::GroundMech
+				&& (Obstacle.Team == EGuLiTeam::Red || Obstacle.Team == EGuLiTeam::Blue);
+		});
+	const bool bNeedsGroundMechYieldUpdate = bHasGroundMechObstacle
+		|| AuthorityState->GroundMechYieldingSoldiers > 0;
+	if (bNeedsGroundMechYieldUpdate)
+	{
+		struct FGroundMechYieldPressure
+		{
+			FVector Location = FVector::ZeroVector;
+			float RadiusCentimeters = 0.0f;
+			uint32 StableId = 0u;
+			double DistanceSquared = TNumericLimits<double>::Max();
+			bool bValid = false;
+		};
+		TArray<FGroundMechYieldPressure> GroundMechYieldPressures;
+		GroundMechYieldPressures.SetNum(AuthorityState->Soldiers.Num());
+		if (bHasGroundMechObstacle)
+		{
+			TArray<FGuLiGroundMassYieldCandidate> GroundMechYieldCandidates;
+			GroundMechYieldCandidates.SetNum(AuthorityState->Soldiers.Num());
+			using FGroundMechYieldCandidateBucket = TArray<int32, TInlineAllocator<8>>;
+			TMap<FIntPoint, FGroundMechYieldCandidateBucket> GroundMechYieldCandidateGrid;
+			float MaximumYieldCandidateRadiusCentimeters = 0.0f;
+			for (int32 SoldierIndex = 0;
+				SoldierIndex < AuthorityState->Soldiers.Num();
+				++SoldierIndex)
+			{
+				const FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
+				FGuLiGroundMassYieldCandidate& Candidate =
+					GroundMechYieldCandidates[SoldierIndex];
+				Candidate.StableSoldierId = Soldier.SoldierId.Value;
+				Candidate.Team = Soldier.Team;
+				Candidate.Location = Soldier.Location;
+				Candidate.RadiusCentimeters = Soldier.AvoidanceRadiusCentimeters;
+				Candidate.bCanYield = Soldier.IsPresent() && Soldier.CanAct()
+					&& Soldier.ActiveOrderId == 0u
+					&& (Soldier.NavigationState == EGuLiSoldierNavigationState::Idle
+						|| Soldier.NavigationState == EGuLiSoldierNavigationState::Arrived);
+				if (Candidate.bCanYield
+					&& !Candidate.Location.ContainsNaN()
+					&& FMath::IsFinite(Candidate.RadiusCentimeters)
+					&& Candidate.RadiusCentimeters > 0.0f)
+				{
+					GroundMechYieldCandidateGrid.FindOrAdd(
+						GuLiCommanderNavigationPolicy::MakeAvoidanceSpatialCell(
+							Candidate.Location,
+							GroundMechYieldQueryCellSizeCentimeters)).Add(SoldierIndex);
+					MaximumYieldCandidateRadiusCentimeters = FMath::Max(
+						MaximumYieldCandidateRadiusCentimeters,
+						Candidate.RadiusCentimeters);
+				}
+			}
+			TArray<FGuLiGroundMassYieldCandidate> NearbyYieldCandidates;
+			TArray<int32> NearbyYieldSoldierIndices;
+			TArray<int32> SelectedYieldCandidates;
+			for (const FGuLiDynamicObstacle& Obstacle : GroundObstacleRegistry->GetObstacles())
+			{
+				if (Obstacle.Kind != EGuLiDynamicObstacleKind::GroundMech
+					|| (Obstacle.Team != EGuLiTeam::Red
+						&& Obstacle.Team != EGuLiTeam::Blue)) continue;
+				NearbyYieldCandidates.Reset();
+				NearbyYieldSoldierIndices.Reset();
+				const float QueryRadiusCentimeters = Obstacle.RadiusCentimeters
+					+ MaximumYieldCandidateRadiusCentimeters
+					+ GroundMechYieldActivationPaddingCentimeters;
+				const int32 QueryCellRadius = FMath::CeilToInt(
+					QueryRadiusCentimeters / GroundMechYieldQueryCellSizeCentimeters);
+				const FIntPoint ObstacleCell =
+					GuLiCommanderNavigationPolicy::MakeAvoidanceSpatialCell(
+						Obstacle.Location,
+						GroundMechYieldQueryCellSizeCentimeters);
+				for (int32 CellX = ObstacleCell.X - QueryCellRadius;
+					CellX <= ObstacleCell.X + QueryCellRadius;
+					++CellX)
+				{
+					for (int32 CellY = ObstacleCell.Y - QueryCellRadius;
+						CellY <= ObstacleCell.Y + QueryCellRadius;
+						++CellY)
+					{
+						const FGroundMechYieldCandidateBucket* CandidateIndices =
+							GroundMechYieldCandidateGrid.Find(FIntPoint(CellX, CellY));
+						if (!CandidateIndices) continue;
+						for (const int32 SoldierIndex : *CandidateIndices)
+						{
+							if (!GroundMechYieldCandidates.IsValidIndex(SoldierIndex)) continue;
+							NearbyYieldCandidates.Add(GroundMechYieldCandidates[SoldierIndex]);
+							NearbyYieldSoldierIndices.Add(SoldierIndex);
+						}
+					}
+				}
+				GuLiGroundMassCollision::SelectFriendlyYieldCandidates(
+					NearbyYieldCandidates,
+					Obstacle.Team,
+					Obstacle.Location,
+					Obstacle.RadiusCentimeters,
+					GroundMechYieldActivationPaddingCentimeters,
+					AvoidanceAgentHeightCentimeters,
+					MaximumFriendlyYieldUnitsPerMech,
+					SelectedYieldCandidates);
+				for (const int32 NearbyIndex : SelectedYieldCandidates)
+				{
+					if (!NearbyYieldSoldierIndices.IsValidIndex(NearbyIndex)) continue;
+					const int32 SoldierIndex = NearbyYieldSoldierIndices[NearbyIndex];
+					if (!AuthorityState->Soldiers.IsValidIndex(SoldierIndex)) continue;
+					const double DistanceSquared = FVector::DistSquared2D(
+						Obstacle.Location,
+						AuthorityState->Soldiers[SoldierIndex].Location);
+					FGroundMechYieldPressure& Pressure =
+						GroundMechYieldPressures[SoldierIndex];
+					if (!Pressure.bValid || DistanceSquared < Pressure.DistanceSquared
+						|| (DistanceSquared == Pressure.DistanceSquared
+							&& Obstacle.Handle.Value < Pressure.StableId))
+					{
+						Pressure.Location = Obstacle.Location;
+						Pressure.RadiusCentimeters = Obstacle.RadiusCentimeters;
+						Pressure.StableId = Obstacle.Handle.Value;
+						Pressure.DistanceSquared = DistanceSquared;
+						Pressure.bValid = true;
+					}
+				}
+			}
+		}
+
+		GroundMechYieldVelocities.Init(FVector::ZeroVector, AuthorityState->Soldiers.Num());
+		bGroundMechYieldReturning.Init(false, AuthorityState->Soldiers.Num());
+		for (int32 SoldierIndex = 0;
+			SoldierIndex < AuthorityState->Soldiers.Num();
+			++SoldierIndex)
+		{
+			FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
+			const bool bEligibleIdle = Soldier.IsPresent() && Soldier.CanAct()
+				&& Soldier.ActiveOrderId == 0u
+				&& (Soldier.NavigationState == EGuLiSoldierNavigationState::Idle
+					|| Soldier.NavigationState == EGuLiSoldierNavigationState::Arrived);
+			if (!bEligibleIdle)
+			{
+				Soldier.bGroundMechYielding = false;
+				Soldier.GroundMechLastPressureSimulationSeconds = -1.0;
+				continue;
+			}
+			const FGroundMechYieldPressure& Pressure = GroundMechYieldPressures[SoldierIndex];
+			if (Pressure.bValid)
+			{
+				if (!Soldier.bGroundMechYielding)
+				{
+					Soldier.bGroundMechYielding = true;
+					Soldier.GroundMechYieldAnchor = Soldier.Location;
+				}
+				Soldier.GroundMechYieldTarget = GuLiGroundMassCollision::ComputeYieldTarget(
+					Soldier.GroundMechYieldAnchor,
+					Soldier.Location,
+					Pressure.Location,
+					Pressure.StableId,
+					Soldier.SoldierId.Value,
+					Pressure.RadiusCentimeters + Soldier.AvoidanceRadiusCentimeters
+						+ GroundMechYieldClearancePaddingCentimeters,
+					GroundMechYieldMaximumAnchorOffsetCentimeters);
+				Soldier.GroundMechLastPressureSimulationSeconds =
+					AuthorityState->SimulationSeconds;
+			}
+			else if (Soldier.bGroundMechYielding)
+			{
+				bool bReturning = false;
+				Soldier.GroundMechYieldTarget =
+					GuLiGroundMassCollision::ResolveYieldTargetWithoutPressure(
+						Soldier.GroundMechYieldAnchor,
+						Soldier.GroundMechYieldTarget,
+						AuthorityState->SimulationSeconds,
+						Soldier.GroundMechLastPressureSimulationSeconds,
+						GroundMechYieldReturnDelaySeconds,
+						bReturning);
+				bGroundMechYieldReturning[SoldierIndex] = bReturning;
+			}
+			if (!Soldier.bGroundMechYielding) continue;
+			++GroundMechYieldingSoldiers;
+			FVector ToTarget = Soldier.GroundMechYieldTarget - Soldier.Location;
+			ToTarget.Z = 0.0f;
+			const float Distance = ToTarget.Size2D();
+			if (Distance <= UE_SMALL_NUMBER)
+			{
+				if (bGroundMechYieldReturning[SoldierIndex])
+				{
+					Soldier.bGroundMechYielding = false;
+					--GroundMechYieldingSoldiers;
+				}
+				Soldier.Velocity = FVector::ZeroVector;
+				SetGroundMechYieldStandTarget(Soldier);
+				continue;
+			}
+			const float MaximumSpeed = MovementSpeedCentimetersPerSecond
+				* GroundMechYieldSpeedFraction;
+			const float Speed = FMath::Min(MaximumSpeed, Distance / FixedDeltaSeconds);
+			GroundMechYieldVelocities[SoldierIndex] = ToTarget / Distance * Speed;
+		}
+	}
+	AuthorityState->GroundMechYieldingSoldiers = GroundMechYieldingSoldiers;
+
+	// Yielding is capped per mech, but checking each yielded step against every soldier
+	// would still turn the path into O(yielders * soldiers). Build one current-position
+	// grid and visit only cells that can overlap the candidate step. The extra movement
+	// allowance covers soldiers that advance earlier in the integration loop below.
+	using FGroundMechYieldBucket = TArray<int32, TInlineAllocator<8>>;
+	TMap<FIntPoint, FGroundMechYieldBucket> GroundMechYieldSpatialGrid;
+	float GroundMechYieldCellSizeCentimeters = 1.0f;
+	float MaximumGroundMechYieldBodyRadiusCentimeters = 0.0f;
+	if (GroundMechYieldingSoldiers > 0)
+	{
+		for (const FSoldierRuntime& Soldier : AuthorityState->Soldiers)
+		{
+			if (Soldier.IsPresent()
+				&& !Soldier.Location.ContainsNaN()
+				&& FMath::IsFinite(Soldier.AvoidanceRadiusCentimeters)
+				&& Soldier.AvoidanceRadiusCentimeters > 0.0f)
+			{
+				MaximumGroundMechYieldBodyRadiusCentimeters = FMath::Max(
+					MaximumGroundMechYieldBodyRadiusCentimeters,
+					Soldier.AvoidanceRadiusCentimeters);
+			}
+		}
+		GroundMechYieldCellSizeCentimeters = FMath::Max(
+			1.0f,
+			MaximumGroundMechYieldBodyRadiusCentimeters * 2.0f);
+		for (int32 SoldierIndex = 0;
+			SoldierIndex < AuthorityState->Soldiers.Num();
+			++SoldierIndex)
+		{
+			const FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
+			if (!Soldier.IsPresent()
+				|| Soldier.Location.ContainsNaN()
+				|| !FMath::IsFinite(Soldier.AvoidanceRadiusCentimeters)
+				|| Soldier.AvoidanceRadiusCentimeters <= 0.0f)
+			{
+				continue;
+			}
+			GroundMechYieldSpatialGrid.FindOrAdd(
+				GuLiCommanderNavigationPolicy::MakeAvoidanceSpatialCell(
+					Soldier.Location,
+					GroundMechYieldCellSizeCentimeters)).Add(SoldierIndex);
+		}
+	}
+
 	for (int32 SoldierIndex = 0; SoldierIndex < AuthorityState->Soldiers.Num(); ++SoldierIndex)
 	{
 		FSoldierRuntime& Soldier = AuthorityState->Soldiers[SoldierIndex];
@@ -5106,6 +5383,120 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 						EnterPersonalPathRecovery(Soldier);
 					}
 				}
+			}
+		}
+		else if (Soldier.bGroundMechYielding
+			&& GroundMechYieldVelocities.IsValidIndex(SoldierIndex)
+			&& !GroundMechYieldVelocities[SoldierIndex].IsNearlyZero(1.0f))
+		{
+			const FVector YieldVelocity = GroundMechYieldVelocities[SoldierIndex];
+			const FVector CandidateLocation = Soldier.LastValidNavLocation.Location
+				+ YieldVelocity * FixedDeltaSeconds;
+			bool bCandidateClear = true;
+			const float MaximumEarlierStepCentimeters = MovementSpeedCentimetersPerSecond
+				* GuLiCommanderNavigationPolicy::MaximumMovementUpdateDeltaSeconds;
+			const float QueryRadiusCentimeters = Soldier.AvoidanceRadiusCentimeters
+				+ MaximumGroundMechYieldBodyRadiusCentimeters
+				+ MaximumEarlierStepCentimeters;
+			const int32 QueryCellRadius = FMath::CeilToInt(
+				QueryRadiusCentimeters / GroundMechYieldCellSizeCentimeters);
+			const FIntPoint CandidateCell =
+				GuLiCommanderNavigationPolicy::MakeAvoidanceSpatialCell(
+					CandidateLocation,
+					GroundMechYieldCellSizeCentimeters);
+			for (int32 CellX = CandidateCell.X - QueryCellRadius;
+				CellX <= CandidateCell.X + QueryCellRadius && bCandidateClear;
+				++CellX)
+			{
+				for (int32 CellY = CandidateCell.Y - QueryCellRadius;
+					CellY <= CandidateCell.Y + QueryCellRadius && bCandidateClear;
+					++CellY)
+				{
+					const FGroundMechYieldBucket* NeighborIndices =
+						GroundMechYieldSpatialGrid.Find(FIntPoint(CellX, CellY));
+					if (!NeighborIndices) continue;
+					for (const int32 OtherIndex : *NeighborIndices)
+					{
+						if (OtherIndex == SoldierIndex
+							|| !AuthorityState->Soldiers.IsValidIndex(OtherIndex)) continue;
+						const FSoldierRuntime& Other = AuthorityState->Soldiers[OtherIndex];
+						if (!Other.IsPresent() || Other.Location.ContainsNaN()) continue;
+						const float MinimumDistance = Soldier.AvoidanceRadiusCentimeters
+							+ Other.AvoidanceRadiusCentimeters;
+						const double CandidateDistanceSquared = FVector::DistSquared2D(
+							CandidateLocation,
+							Other.Location);
+						if (CandidateDistanceSquared
+							>= FMath::Square(static_cast<double>(MinimumDistance))) continue;
+						const double CurrentDistanceSquared = FVector::DistSquared2D(
+							Soldier.Location,
+							Other.Location);
+						if (CandidateDistanceSquared <= CurrentDistanceSquared + 1.0)
+						{
+							bCandidateClear = false;
+							break;
+						}
+					}
+				}
+			}
+
+			FNavLocation SurfaceLocation;
+			++AuthorityState->SurfaceMoveCalls;
+			const bool bSurfaceMoveSucceeded = bCandidateClear
+				&& CommanderNavigationData
+				&& CommanderNavigationData->FindMoveAlongSurface(
+					Soldier.LastValidNavLocation,
+					CandidateLocation,
+					SurfaceLocation,
+					nullptr,
+					this);
+			const bool bSurfaceMoveAccepted =
+				GuLiCommanderNavigationPolicy::IsSurfaceMoveResultAcceptable(
+					bSurfaceMoveSucceeded,
+					Soldier.LastValidNavLocation.Location,
+					SurfaceLocation.Location,
+					MaximumSurfaceStepZCentimeters);
+			if (bSurfaceMoveAccepted)
+			{
+				Soldier.Location = SurfaceLocation.Location;
+				Soldier.LastValidNavLocation = SurfaceLocation;
+				Soldier.Velocity = YieldVelocity;
+				Soldier.FacingYawDegrees = FMath::FixedTurn(
+					Soldier.FacingYawDegrees,
+					YieldVelocity.GetSafeNormal2D().Rotation().Yaw,
+					FacingRateDegreesPerSecond * FixedDeltaSeconds);
+				++AuthorityState->GroundMechYieldSteps;
+				if (bGroundMechYieldReturning[SoldierIndex]
+					&& FVector::DistSquared2D(
+						Soldier.Location,
+						Soldier.GroundMechYieldAnchor)
+						<= FMath::Square(GroundMechYieldArrivalToleranceCentimeters))
+				{
+					Soldier.bGroundMechYielding = false;
+					Soldier.GroundMechLastPressureSimulationSeconds = -1.0;
+					Soldier.Velocity = FVector::ZeroVector;
+					AuthorityState->GroundMechYieldingSoldiers = FMath::Max(
+						0,
+						AuthorityState->GroundMechYieldingSoldiers - 1);
+				}
+				FMassMoveTargetFragment& MoveTarget = EntityManager
+					.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+				const EMassMovementAction YieldAction = Soldier.bGroundMechYielding
+					? EMassMovementAction::Move
+					: EMassMovementAction::Stand;
+				if (MoveTarget.GetCurrentAction() != YieldAction)
+					MoveTarget.CreateNewAction(YieldAction, *World);
+				MoveTarget.Center = Soldier.bGroundMechYielding
+					? Soldier.GroundMechYieldTarget
+					: Soldier.Location;
+				MoveTarget.Forward = Soldier.Velocity.GetSafeNormal2D();
+				MoveTarget.DesiredSpeed = FMassInt16Real(Soldier.Velocity.Size2D());
+			}
+			else
+			{
+				Soldier.Velocity = FVector::ZeroVector;
+				SetGroundMechYieldStandTarget(Soldier);
+				if (bCandidateClear) ++AuthorityState->SurfaceMoveFailures;
 			}
 		}
 		else if (!bHasMovingOrder || bSuppressMovementForStep[SoldierIndex])
@@ -6358,6 +6749,52 @@ void UGuLiBattleAuthoritySubsystem::BuildGroundAvoidanceSnapshot(TArray<FGuLiGro
 	}
 }
 
+void UGuLiBattleAuthoritySubsystem::BuildGroundCollisionSnapshot(
+	TArray<FGuLiGroundMassBody>& OutBodies) const
+{
+	OutBodies.Reset();
+	if (!AuthorityState || !GetWorld()) return;
+	const UGuLiCommanderDataSubsystem* Data =
+		GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+	OutBodies.Reserve(AuthorityState->Soldiers.Num());
+	for (const auto& Soldier : AuthorityState->Soldiers)
+	{
+		if (!Soldier.IsPresent() || Soldier.Location.ContainsNaN()
+			|| !FMath::IsFinite(Soldier.AvoidanceRadiusCentimeters)
+			|| Soldier.AvoidanceRadiusCentimeters <= 0.0f) continue;
+		FGuLiGroundMassBody Body;
+		Body.SoldierId = Soldier.SoldierId;
+		Body.Team = Soldier.Team;
+		Body.UnitTypeId = Soldier.UnitTypeId;
+		Body.Location = Soldier.Location;
+		Body.Velocity = Soldier.Velocity;
+		Body.RadiusCentimeters = Soldier.AvoidanceRadiusCentimeters;
+		const FTransform LogicalPose(
+			FRotator(0.0f, Soldier.FacingYawDegrees, 0.0f),
+			Soldier.Location);
+		const FGuLiSoldierDefinition* Definition = Data
+			? Data->FindSoldierDefinition(Soldier.UnitTypeId)
+			: nullptr;
+		const FBox LocalBounds = Definition
+			? Definition->GetModelBoundsCentimeters()
+			: FBox(ForceInit);
+		if (LocalBounds.IsValid)
+		{
+			const FBox WorldBounds = LocalBounds.TransformBy(LogicalPose);
+			Body.BottomZ = WorldBounds.Min.Z;
+			Body.TopZ = WorldBounds.Max.Z;
+		}
+		if (!FMath::IsFinite(Body.BottomZ) || !FMath::IsFinite(Body.TopZ)
+			|| Body.TopZ <= Body.BottomZ)
+		{
+			Body.BottomZ = Soldier.Location.Z;
+			Body.TopZ = Soldier.Location.Z
+				+ FMath::Max(200.0f, Soldier.AvoidanceRadiusCentimeters * 2.0f);
+		}
+		if (Body.IsValid()) OutBodies.Add(Body);
+	}
+}
+
 void UGuLiBattleAuthoritySubsystem::BuildLivingSoldierLocationSnapshot(
 	TArray<FVector>& OutLocations) const
 {
@@ -6596,6 +7033,8 @@ FGuLiNavigationStats UGuLiBattleAuthoritySubsystem::GetNavigationStats() const
 	Result.ManualAvoidanceOverlapPairs = AuthorityState->ManualAvoidanceOverlapPairs;
 	Result.MaximumManualAvoidanceBucketOccupancy =
 		AuthorityState->MaximumManualAvoidanceBucketOccupancy;
+	Result.GroundMechYieldSteps = AuthorityState->GroundMechYieldSteps;
+	Result.GroundMechYieldingSoldiers = AuthorityState->GroundMechYieldingSoldiers;
 	const UMassEntitySubsystem* MassSubsystem = AuthorityState->MassEntitySubsystem.Get();
 	const FMassEntityManager* EntityManager = MassSubsystem
 		? &MassSubsystem->GetEntityManager()

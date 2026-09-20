@@ -21,6 +21,7 @@
 #include "Engine/NetDriver.h"
 #include "EngineUtils.h"
 #include "Gameplay/Building/GuLiBuildingProductionComponent.h"
+#include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
 #include "HAL/FileManager.h"
 #include "HAL/IConsoleManager.h"
 #include "HAL/PlatformMisc.h"
@@ -80,6 +81,7 @@ struct FRun : TSharedFromThis<FRun>
 	TWeakObjectPtr<AGuLiCommanderPresentationActor> Presentation;
 	TWeakObjectPtr<AGuLiSoldierStateReplicator> Roster;
 	TWeakObjectPtr<AGuLiCommanderPlayerController> Controller;
+	TWeakObjectPtr<UGuLiGroundMassContactSubsystem> GroundMassContacts;
 	FTeamRun Teams[2];
 	double Started = FPlatformTime::Seconds();
 	double WarmupStarted = 0;
@@ -92,6 +94,11 @@ struct FRun : TSharedFromThis<FRun>
 	uint64 InitialDropped = 0;
 	uint64 InitialMoves = 0;
 	uint64 InitialPoseFrames = 0;
+	uint64 InitialGroundMassSnapshotRefreshes = 0;
+	uint64 InitialGroundMassQueries = 0;
+	uint64 InitialGroundMassRawCandidates = 0;
+	uint64 InitialGroundMassSideHits = 0;
+	uint64 InitialGroundMassSupportContacts = 0;
 	double PreviousSimulationMs = 0;
 	double PreviousCombatMs = 0;
 	int32 Alive = 0;
@@ -185,6 +192,25 @@ struct FRun : TSharedFromThis<FRun>
 		}
 		if (Controller.IsValid())
 			Report->SetNumberField(TEXT("accepted_pose_frames"), Controller->GetCommanderNetSyncComponent()->GetAcceptedPoseFrameCount() - InitialPoseFrames);
+		if (GroundMassContacts.IsValid())
+		{
+			const FGuLiGroundMassContactStats& ContactStats = GroundMassContacts->GetStats();
+			Report->SetNumberField(TEXT("ground_mass_body_count"), GroundMassContacts->GetBodyCount());
+			Report->SetNumberField(TEXT("ground_mass_snapshot_refreshes"),
+				ContactStats.SnapshotRefreshes - InitialGroundMassSnapshotRefreshes);
+			Report->SetNumberField(TEXT("ground_mass_last_snapshot_ms"),
+				ContactStats.LastSnapshotMilliseconds);
+			Report->SetNumberField(TEXT("ground_mass_max_snapshot_ms"),
+				ContactStats.MaximumSnapshotMilliseconds);
+			Report->SetNumberField(TEXT("ground_mass_queries"),
+				ContactStats.Queries - InitialGroundMassQueries);
+			Report->SetNumberField(TEXT("ground_mass_raw_query_candidates"),
+				ContactStats.RawQueryCandidates - InitialGroundMassRawCandidates);
+			Report->SetNumberField(TEXT("ground_mass_side_hits"),
+				ContactStats.SideHits - InitialGroundMassSideHits);
+			Report->SetNumberField(TEXT("ground_mass_support_contacts"),
+				ContactStats.SupportContacts - InitialGroundMassSupportContacts);
+		}
 		FString Json;
 		FJsonSerializer::Serialize(Report, TJsonWriterFactory<>::Create(&Json));
 		FFileHelper::SaveStringToFile(Json, *(Directory / TEXT("summary.json")), FFileHelper::EEncodingOptions::ForceUTF8WithoutBOM);
@@ -207,6 +233,7 @@ struct FRun : TSharedFromThis<FRun>
 			if ((Candidate->GetNetMode() == NM_Client) != bClient) continue;
 			World = Candidate;
 			Authority = Candidate->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+			GroundMassContacts = Candidate->GetSubsystem<UGuLiGroundMassContactSubsystem>();
 			for (TActorIterator<AGuLiCommanderPresentationActor> It(Candidate); It; ++It) Presentation = *It;
 			for (TActorIterator<AGuLiSoldierStateReplicator> It(Candidate); It; ++It) Roster = *It;
 			for (auto It = Candidate->GetPlayerControllerIterator(); It; ++It)
@@ -526,6 +553,15 @@ struct FRun : TSharedFromThis<FRun>
 				InitialMoves = Authority->GetNavigationStats().MovementUpdateCalls;
 			}
 			if (Controller.IsValid()) InitialPoseFrames = Controller->GetCommanderNetSyncComponent()->GetAcceptedPoseFrameCount();
+			if (GroundMassContacts.IsValid())
+			{
+				const FGuLiGroundMassContactStats& ContactStats = GroundMassContacts->GetStats();
+				InitialGroundMassSnapshotRefreshes = ContactStats.SnapshotRefreshes;
+				InitialGroundMassQueries = ContactStats.Queries;
+				InitialGroundMassRawCandidates = ContactStats.RawQueryCandidates;
+				InitialGroundMassSideHits = ContactStats.SideHits;
+				InitialGroundMassSupportContacts = ContactStats.SupportContacts;
+			}
 			FCsvProfiler::Get()->BeginCapture(-1, Directory, TEXT("engine.csv"));
 			if (bCaptureTrace)
 			{

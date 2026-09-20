@@ -3,8 +3,15 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "Battle/Network/GuLiBattleTypes.h"
 #include "Subsystems/WorldSubsystem.h"
 #include "GuLiDynamicObstacleRegistry.generated.h"
+
+enum class EGuLiDynamicObstacleKind : uint8
+{
+	StaticWorld,
+	GroundMech
+};
 
 struct GULISTRIKE_API FGuLiDynamicObstacleHandle
 {
@@ -24,6 +31,8 @@ struct GULISTRIKE_API FGuLiDynamicObstacle
 	FGuLiDynamicObstacleHandle Handle;
 	FVector Location = FVector::ZeroVector;
 	float RadiusCentimeters = 0.0f;
+	EGuLiDynamicObstacleKind Kind = EGuLiDynamicObstacleKind::StaticWorld;
+	EGuLiTeam Team = EGuLiTeam::Unassigned;
 };
 
 DECLARE_MULTICAST_DELEGATE_OneParam(FGuLiDynamicObstaclesChanged, uint32 /* Revision */);
@@ -34,6 +43,8 @@ class GULISTRIKE_API IGuLiDynamicObstacleRegistry
 public:
 	virtual ~IGuLiDynamicObstacleRegistry() = default;
 	virtual FGuLiDynamicObstacleHandle RegisterObstacle(const FVector& Location, float RadiusCentimeters) = 0;
+	virtual FGuLiDynamicObstacleHandle RegisterObstacle(const FGuLiDynamicObstacle& Obstacle) = 0;
+	virtual bool UpdateObstacle(FGuLiDynamicObstacleHandle Handle, const FGuLiDynamicObstacle& Obstacle) = 0;
 	virtual void UnregisterObstacle(FGuLiDynamicObstacleHandle Handle) = 0;
 	virtual TConstArrayView<FGuLiDynamicObstacle> GetObstacles() const = 0;
 	virtual uint32 GetRevision() const = 0;
@@ -55,6 +66,10 @@ public:
 	virtual FGuLiDynamicObstacleHandle RegisterObstacle(
 		const FVector& Location,
 		float RadiusCentimeters) override;
+	virtual FGuLiDynamicObstacleHandle RegisterObstacle(const FGuLiDynamicObstacle& Obstacle) override;
+	virtual bool UpdateObstacle(
+		FGuLiDynamicObstacleHandle Handle,
+		const FGuLiDynamicObstacle& Obstacle) override;
 	virtual void UnregisterObstacle(FGuLiDynamicObstacleHandle Handle) override;
 	virtual TConstArrayView<FGuLiDynamicObstacle> GetObstacles() const override { return Obstacles; }
 	virtual uint32 GetRevision() const override { return Revision; }

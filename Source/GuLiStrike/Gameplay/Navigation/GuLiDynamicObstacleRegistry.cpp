@@ -4,6 +4,16 @@
 
 #include "Engine/World.h"
 
+namespace
+{
+	bool IsValidObstacle(const FGuLiDynamicObstacle& Obstacle)
+	{
+		return !Obstacle.Location.ContainsNaN()
+			&& FMath::IsFinite(Obstacle.RadiusCentimeters)
+			&& Obstacle.RadiusCentimeters > 0.0f;
+	}
+}
+
 bool UGuLiDynamicObstacleRegistrySubsystem::ShouldCreateSubsystem(UObject* Outer) const
 {
 	const UWorld* World = Cast<UWorld>(Outer);
@@ -24,13 +34,45 @@ FGuLiDynamicObstacleHandle UGuLiDynamicObstacleRegistrySubsystem::RegisterObstac
 	const FVector& Location,
 	const float RadiusCentimeters)
 {
-	check(!Location.ContainsNaN() && FMath::IsFinite(RadiusCentimeters) && RadiusCentimeters > 0.0f);
+	FGuLiDynamicObstacle Obstacle;
+	Obstacle.Location = Location;
+	Obstacle.RadiusCentimeters = RadiusCentimeters;
+	return RegisterObstacle(Obstacle);
+}
+
+FGuLiDynamicObstacleHandle UGuLiDynamicObstacleRegistrySubsystem::RegisterObstacle(
+	const FGuLiDynamicObstacle& Obstacle)
+{
+	check(IsValidObstacle(Obstacle));
 	checkf(NextHandle < 0x80000000u, TEXT("Dynamic obstacle handle space exhausted."));
 	const FGuLiDynamicObstacleHandle Handle{NextHandle++};
-	const int32 Index = Obstacles.Add({Handle, Location, RadiusCentimeters});
+	FGuLiDynamicObstacle Stored = Obstacle;
+	Stored.Handle = Handle;
+	const int32 Index = Obstacles.Add(MoveTemp(Stored));
 	IndexByHandle.Add(Handle.Value, Index);
 	PublishChange();
 	return Handle;
+}
+
+bool UGuLiDynamicObstacleRegistrySubsystem::UpdateObstacle(
+	const FGuLiDynamicObstacleHandle Handle,
+	const FGuLiDynamicObstacle& Obstacle)
+{
+	if (!Handle.IsValid() || !IsValidObstacle(Obstacle)) return false;
+	const int32* Index = IndexByHandle.Find(Handle.Value);
+	if (!Index || !Obstacles.IsValidIndex(*Index)) return false;
+	FGuLiDynamicObstacle& Stored = Obstacles[*Index];
+	const bool bChanged = !Stored.Location.Equals(Obstacle.Location, 0.1f)
+		|| !FMath::IsNearlyEqual(Stored.RadiusCentimeters, Obstacle.RadiusCentimeters, 0.1f)
+		|| Stored.Kind != Obstacle.Kind
+		|| Stored.Team != Obstacle.Team;
+	if (!bChanged) return true;
+	Stored.Location = Obstacle.Location;
+	Stored.RadiusCentimeters = Obstacle.RadiusCentimeters;
+	Stored.Kind = Obstacle.Kind;
+	Stored.Team = Obstacle.Team;
+	PublishChange();
+	return true;
 }
 
 void UGuLiDynamicObstacleRegistrySubsystem::UnregisterObstacle(

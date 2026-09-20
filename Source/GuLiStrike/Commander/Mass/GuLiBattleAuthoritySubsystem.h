@@ -103,6 +103,8 @@ struct FGuLiNavigationStats
 	uint64 ManualAvoidanceCandidatePairs = 0u;
 	uint64 ManualAvoidanceOverlapPairs = 0u;
 	int32 MaximumManualAvoidanceBucketOccupancy = 0;
+	uint64 GroundMechYieldSteps = 0u;
+	int32 GroundMechYieldingSoldiers = 0;
 	uint64 PredictiveAvoidanceSolves = 0u;
 	uint64 ForcedPredictiveAvoidanceSolves = 0u;
 	uint64 PredictiveAvoidanceCandidates = 0u;
@@ -384,6 +386,8 @@ public:
 	void BuildLivingSoldierLocationSnapshot(TArray<FVector>& OutLocations) const;
 	/** Unquantized server poses for passive local-avoidance bodies; no movement or replication side effects. */
 	void BuildGroundAvoidanceSnapshot(TArray<struct FGuLiGroundAvoidanceBody>& OutBodies) const;
+	/** Full data-only cylinders used by player ground-mech side collision and virtual support. */
+	void BuildGroundCollisionSnapshot(TArray<struct FGuLiGroundMassBody>& OutBodies) const;
 	float GetExternalUnitRadius() const { return MemberAgentRadiusCentimeters; }
 
 	/** 当前保留的临时移动编队数量；同一 BatchOrderId 可包含多个编队。 */

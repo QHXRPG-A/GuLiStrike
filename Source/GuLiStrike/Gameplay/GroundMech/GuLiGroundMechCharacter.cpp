@@ -1,6 +1,6 @@
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/GroundMech/GuLiGroundMechMovementComponent.h"
 #include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
-#include "Gameplay/Units/GuLiExternalCharacterMovementComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Battle/Framework/GuLiBattlePlayerController.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -18,7 +18,7 @@
 #include "Net/UnrealNetwork.h"
 
 AGuLiGroundMechCharacter::AGuLiGroundMechCharacter(const FObjectInitializer& Initializer)
-	: Super(Initializer.SetDefaultSubobjectClass<UGuLiExternalCharacterMovementComponent>(CharacterMovementComponentName))
+	: Super(Initializer.SetDefaultSubobjectClass<UGuLiGroundMechMovementComponent>(CharacterMovementComponentName))
 {
 	PrimaryActorTick.bCanEverTick = true;
 	bReplicates = true;
