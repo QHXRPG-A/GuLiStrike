@@ -1,0 +1,365 @@
+{
+  "native": {
+    "succeeded": 4,
+    "failed": 0,
+    "succeededWithWarnings": 0,
+    "reportCreatedOn": "2026.09.20-02.07.16"
+  },
+  "pie": {
+    "listen": {
+      "success": true,
+      "checks": {
+        "rate_1": true,
+        "rate_2": true,
+        "rate_3": true,
+        "release1_stops": true,
+        "release2_stops": true,
+        "release3_stops": true,
+        "focus_flush_stops": true,
+        "ui_lock_stops": true,
+        "build_mode_stops": true,
+        "unpossessed_stops": true,
+        "cleanup_stops": true,
+        "replicated_shot_count": true,
+        "recoil_restored": true,
+        "no_remaining_fire_fx": true,
+        "dedicated_no_cosmetics": true,
+        "invalid_upgrade_rejected": true,
+        "held_before_focus_flush": true,
+        "fire_after_repossess": true,
+        "teleport_existing_ground_role": true,
+        "one_particle_per_bullet": true,
+        "muzzle_axis_alignment": true
+      },
+      "shots_by_level": [
+        5,
+        9,
+        13
+      ],
+      "final_worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_GroundMech_FireReview.LVL_GroundMech_FireReview",
+          "net_mode": 2,
+          "time": 396.331410292536,
+          "commits": 0,
+          "launched": 46,
+          "hits": 0,
+          "blocked": 46,
+          "active_rounds": 0,
+          "players": [
+            {
+              "name": "BP_GroundMech_FireReview_C_0",
+              "shots": 0,
+              "cosmetic_shots": 0,
+              "ready": true,
+              "upgrade": "1.1",
+              "barrel_local_z": 188.10147094726653
+            },
+            {
+              "name": "BP_GroundMech_FireReview_C_1",
+              "shots": 46,
+              "cosmetic_shots": 46,
+              "ready": true,
+              "upgrade": "1.3",
+              "barrel_local_z": 188.10147094726517
+            }
+          ],
+          "effects": [
+            {
+              "asset": "NS_GroundMech_Muzzle",
+              "active": false,
+              "particles": 0
+            },
+            {
+              "asset": "NS_GroundMech_Bullet",
+              "active": false,
+              "particles": 0
+            },
+            {
+              "asset": "NS_GroundMech_Muzzle",
+              "active": false,
+              "particles": 0
+            }
+          ]
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_GroundMech_FireReview.LVL_GroundMech_FireReview",
+          "net_mode": 3,
+          "time": 395.03919050097466,
+          "commits": 0,
+          "players": [
+            {
+              "name": "BP_GroundMech_FireReview_C_0",
+              "shots": 46,
+              "cosmetic_shots": 46,
+              "ready": true,
+              "upgrade": "1.3",
+              "barrel_local_z": 188.101470947267
+            },
+            {
+              "name": "BP_GroundMech_FireReview_C_1",
+              "shots": 0,
+              "cosmetic_shots": 0,
+              "ready": true,
+              "upgrade": "1.1",
+              "barrel_local_z": 188.10147094726653
+            }
+          ],
+          "effects": [
+            {
+              "asset": "NS_GroundMech_Muzzle",
+              "active": false,
+              "particles": 0
+            },
+            {
+              "asset": "NS_GroundMech_Bullet",
+              "active": false,
+              "particles": 0
+            },
+            {
+              "asset": "NS_GroundMech_Muzzle",
+              "active": false,
+              "particles": 0
+            }
+          ]
+        }
+      ]
+    },
+    "dedicated": {
+      "success": true,
+      "checks": {
+        "rate_1": true,
+        "rate_2": true,
+        "rate_3": true,
+        "release1_stops": true,
+        "release2_stops": true,
+        "release3_stops": true,
+        "focus_flush_stops": true,
+        "ui_lock_stops": true,
+        "build_mode_stops": true,
+        "unpossessed_stops": true,
+        "cleanup_stops": true,
+        "replicated_shot_count": true,
+        "recoil_restored": true,
+        "no_remaining_fire_fx": true,
+        "dedicated_no_cosmetics": true,
+        "invalid_upgrade_rejected": true,
+        "held_before_focus_flush": true,
+        "fire_after_repossess": true,
+        "teleport_existing_ground_role": true,
+        "one_particle_per_bullet": true,
+        "muzzle_axis_alignment": true
+      },
+      "shots_by_level": [
+        4,
+        9,
+        13
+      ],
+      "final_worlds": [
+        {
+          "world": "/Game/Maps/UEDPIE_0_LVL_GroundMech_FireReview.LVL_GroundMech_FireReview",
+          "net_mode": 1,
+          "time": 160.6402850151062,
+          "commits": 0,
+          "launched": 45,
+          "hits": 0,
+          "blocked": 45,
+          "active_rounds": 0,
+          "players": [
+            {
+              "name": "BP_GroundMech_FireReview_C_0",
+              "shots": 0,
+              "cosmetic_shots": 0,
+              "ready": true,
+              "upgrade": "1.1",
+              "barrel_local_z": 188.10147094726517
+            },
+            {
+              "name": "BP_GroundMech_FireReview_C_1",
+              "shots": 45,
+              "cosmetic_shots": 0,
+              "ready": true,
+              "upgrade": "1.3",
+              "barrel_local_z": 188.10147094726517
+            }
+          ],
+          "effects": []
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_1_LVL_GroundMech_FireReview.LVL_GroundMech_FireReview",
+          "net_mode": 3,
+          "time": 159.39405750110745,
+          "commits": 0,
+          "players": [
+            {
+              "name": "BP_GroundMech_FireReview_C_0",
+              "shots": 0,
+              "cosmetic_shots": 0,
+              "ready": true,
+              "upgrade": "1.1",
+              "barrel_local_z": 188.1014709472638
+            },
+            {
+              "name": "BP_GroundMech_FireReview_C_1",
+              "shots": 45,
+              "cosmetic_shots": 45,
+              "ready": true,
+              "upgrade": "1.3",
+              "barrel_local_z": 188.10147094726562
+            }
+          ],
+          "effects": [
+            {
+              "asset": "NS_GroundMech_Muzzle",
+              "active": false,
+              "particles": 0
+            },
+            {
+              "asset": "NS_GroundMech_Bullet",
+              "active": false,
+              "particles": 0
+            },
+            {
+              "asset": "NS_GroundMech_Muzzle",
+              "active": false,
+              "particles": 0
+            }
+          ]
+        },
+        {
+          "world": "/Game/Maps/UEDPIE_2_LVL_GroundMech_FireReview.LVL_GroundMech_FireReview",
+          "net_mode": 3,
+          "time": 159.17025450617075,
+          "commits": 0,
+          "players": [
+            {
+              "name": "BP_GroundMech_FireReview_C_0",
+              "shots": 45,
+              "cosmetic_shots": 45,
+              "ready": true,
+              "upgrade": "1.3",
+              "barrel_local_z": 188.10147094726562
+            },
+            {
+              "name": "BP_GroundMech_FireReview_C_1",
+              "shots": 0,
+              "cosmetic_shots": 0,
+              "ready": true,
+              "upgrade": "1.1",
+              "barrel_local_z": 188.10147094726562
+            }
+          ],
+          "effects": [
+            {
+              "asset": "NS_GroundMech_Muzzle",
+              "active": false,
+              "particles": 0
+            },
+            {
+              "asset": "NS_GroundMech_Bullet",
+              "active": false,
+              "particles": 0
+            },
+            {
+              "asset": "NS_GroundMech_Muzzle",
+              "active": false,
+              "particles": 0
+            }
+          ]
+        }
+      ]
+    }
+  },
+  "assets": {
+    "success": true,
+    "animation": {
+      "class": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech_Machinegun.ABP_GroundMech_Machinegun_C",
+      "compiled": true,
+      "compile_result": "<Struct 'BlueprintCompileResult' (0x000001A252C5C3F0) {success: True, num_errors: 0, num_warnings: 0, errors: , warnings: }>",
+      "success": true
+    },
+    "candidates": {
+      "Bullet": {
+        "compile": "<Struct 'NiagaraCompilationResult' (0x000001A3F40A51E0) {success: True, system_path: \"/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.000666}>",
+        "success": true,
+        "emitters": [
+          "NE_forward_simple_bullet"
+        ]
+      },
+      "Muzzle": {
+        "compile": "<Struct 'NiagaraCompilationResult' (0x000001A4883ADB60) {success: True, system_path: \"/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Muzzle\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.001114}>",
+        "success": true,
+        "emitters": [
+          "NE_spread_spark",
+          "NE_gun_nozzle_fire"
+        ]
+      }
+    },
+    "production_weapon_enabled": false
+  },
+  "visual": {
+    "success": true,
+    "frames": 62,
+    "time_scale": 0.1,
+    "single_shot_count": 1,
+    "min_barrel_z": 152.12512588500886,
+    "final": [
+      {
+        "world": "/Game/Maps/UEDPIE_0_LVL_GroundMech_FireReview.LVL_GroundMech_FireReview",
+        "net_mode": 0,
+        "time": 163.31273605360184,
+        "commits": 0,
+        "launched": 3,
+        "hits": 0,
+        "blocked": 3,
+        "active_rounds": 0,
+        "players": [
+          {
+            "name": "BP_GroundMech_FireReview_C_0",
+            "shots": 3,
+            "cosmetic_shots": 3,
+            "ready": true,
+            "upgrade": "1.1",
+            "barrel_local_z": 188.10147094726653
+          }
+        ],
+        "effects": [
+          {
+            "asset": "NS_GroundMech_Muzzle",
+            "active": false,
+            "particles": 0
+          },
+          {
+            "asset": "NS_GroundMech_Bullet",
+            "active": false,
+            "particles": 0
+          }
+        ]
+      }
+    ]
+  },
+  "build_ids": [
+    {
+      "path": "D:/UnrealEngine-5.7/Engine/Binaries/Win64/UnrealEditor.modules",
+      "BuildId": "dd506ae0-11d1-48e9-95ed-8becd4c36a75"
+    },
+    {
+      "path": "D:/UE5.7/test1/Binaries/Win64/UnrealEditor.modules",
+      "BuildId": "dd506ae0-11d1-48e9-95ed-8becd4c36a75"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/VibeUE/Binaries/Win64/UnrealEditor.modules",
+      "BuildId": "dd506ae0-11d1-48e9-95ed-8becd4c36a75"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/UnrealMCPython/Binaries/Win64/UnrealEditor.modules",
+      "BuildId": "dd506ae0-11d1-48e9-95ed-8becd4c36a75"
+    },
+    {
+      "path": "D:/UE5.7/test1/Plugins/GuLiFlightNavigation/Binaries/Win64/UnrealEditor.modules",
+      "BuildId": "dd506ae0-11d1-48e9-95ed-8becd4c36a75"
+    }
+  ],
+  "review_gate": "B visual approval pending; production weapon remains disabled",
+  "success": true
+}

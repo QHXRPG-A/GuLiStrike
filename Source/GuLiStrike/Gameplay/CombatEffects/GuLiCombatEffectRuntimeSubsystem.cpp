@@ -782,6 +782,7 @@ void UGuLiCombatEffectRuntimeSubsystem::BuildActiveSnapshot(TArray<FGuLiCombatEf
 	for (const auto& Pair : Effects) OutStates.Add(Pair.Value.State);
 	if (ProjectilePool) ProjectilePool->AppendActiveSnapshot(OutStates,
 		bIncludeGroundProjectiles ? EGuLiTargetKind::None : EGuLiTargetKind::Wingman);
+	if (ProjectilePool && !bIncludeGroundProjectiles) ProjectilePool->AppendActiveSnapshot(OutStates, EGuLiTargetKind::GroundActor);
 }
 
 void UGuLiCombatEffectRuntimeSubsystem::BuildGroundProjectileSnapshot(TArray<FGuLiCombatEffectState>& OutStates) const

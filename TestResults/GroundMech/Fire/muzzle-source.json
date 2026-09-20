@@ -1,0 +1,340 @@
+{
+  "NE_gun_nozzle_fire": {
+    "modules": [
+      {
+        "name": "SpawnBeam",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/Modules/Beams/SpawnBeam.SpawnBeam",
+        "on": true
+      },
+      {
+        "name": "UpdateAge",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState",
+        "on": true
+      },
+      {
+        "name": "SolveForcesAndVelocity",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Solvers/SolveForcesAndVelocity.SolveForcesAndVelocity",
+        "on": true
+      },
+      {
+        "name": "SpawnBurst_Instantaneous",
+        "stage": "EmitterUpdate",
+        "path": "/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous",
+        "on": true
+      },
+      {
+        "name": "SetVariables_3BA0D56E42524BC176BD5A99CB3389EB",
+        "stage": "ParticleSpawn",
+        "path": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Muzzle.NS_GroundMech_Muzzle:NE_gun_nozzle_fire.NiagaraScriptSource_2.NiagaraGraph_0.NiagaraNodeAssignment_0.SetVariables_3BA0D56E42524BC176BD5A99CB3389EB",
+        "on": true
+      },
+      {
+        "name": "Color",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Update/Color/Color.Color",
+        "on": true
+      },
+      {
+        "name": "BeamWidth",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/Modules/Beams/BeamWidth.BeamWidth",
+        "on": true
+      },
+      {
+        "name": "ScaleColor",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Update/Color/ScaleColor.ScaleColor",
+        "on": true
+      },
+      {
+        "name": "VectorFromFloat",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/DynamicInputs/TypeConversions/VectorFromFloat.VectorFromFloat",
+        "on": true
+      },
+      {
+        "name": "EmitterState",
+        "stage": "EmitterUpdate",
+        "path": "/Niagara/Modules/Emitter/EmitterState.EmitterState",
+        "on": true
+      },
+      {
+        "name": "InitializeParticle",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/Modules/Spawn/Initialization/InitializeParticle.InitializeParticle",
+        "on": true
+      },
+      {
+        "name": "SimulationPosition",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/Functions/Localspace/SimulationPosition.SimulationPosition",
+        "on": true
+      },
+      {
+        "name": "FloatFromCurve001",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve",
+        "on": true
+      },
+      {
+        "name": "BeamEmitterSetup001",
+        "stage": "EmitterUpdate",
+        "path": "/Niagara/Modules/Beams/BeamEmitterSetup.BeamEmitterSetup",
+        "on": true
+      },
+      {
+        "name": "Multiply_VectorByFloat002",
+        "stage": "EmitterUpdate",
+        "path": "/Niagara/DynamicInputs/Multiply/Multiply_VectorByFloat.Multiply_VectorByFloat",
+        "on": true
+      },
+      {
+        "name": "Multiply_VectorByFloat003",
+        "stage": "EmitterUpdate",
+        "path": "/Niagara/DynamicInputs/Multiply/Multiply_VectorByFloat.Multiply_VectorByFloat",
+        "on": true
+      },
+      {
+        "name": "UpdateBeam",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Beams/UpdateBeam.UpdateBeam",
+        "on": true
+      },
+      {
+        "name": "Add_Float",
+        "stage": "EmitterUpdate",
+        "path": "/Niagara/DynamicInputs/Add/Add_Float.Add_Float",
+        "on": true
+      },
+      {
+        "name": "MakeVector",
+        "stage": "EmitterUpdate",
+        "path": "/Niagara/DynamicInputs/TypeConversions/MakeVector.MakeVector",
+        "on": true
+      },
+      {
+        "name": "FloatFromCurve003",
+        "stage": "EmitterUpdate",
+        "path": "/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve",
+        "on": true
+      },
+      {
+        "name": "Multiply_Float002",
+        "stage": "EmitterUpdate",
+        "path": "/Niagara/DynamicInputs/Multiply/Multiply_Float.Multiply_Float",
+        "on": true
+      },
+      {
+        "name": "SphereLocation",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/Modules/Spawn/Location/V2/SphereLocation.SphereLocation",
+        "on": false
+      },
+      {
+        "name": "UniformRangedLinearColor",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/UniformRange/V2/UniformRangedLinearColor.UniformRangedLinearColor",
+        "on": true
+      },
+      {
+        "name": "FloatFromCurve002",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve",
+        "on": true
+      },
+      {
+        "name": "Multiply_Float",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/Multiply/Multiply_Float.Multiply_Float",
+        "on": true
+      },
+      {
+        "name": "FloatFromCurve",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve",
+        "on": true
+      },
+      {
+        "name": "Multiply_Float001",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/Multiply/Multiply_Float.Multiply_Float",
+        "on": true
+      }
+    ],
+    "renderers": [
+      "<Struct 'NiagaraRendererInfo_Custom' (0x0000028D3FA43F90) {renderer_name: \"NiagaraRibbonRendererProperties_0\", renderer_type: \"Ribbon\", renderer_index: 0, is_enabled: True}>"
+    ]
+  },
+  "NE_spread_spark": {
+    "modules": [
+      {
+        "name": "SpawnRate",
+        "stage": "EmitterUpdate",
+        "path": "/Niagara/Modules/Emitter/SpawnRate.SpawnRate",
+        "on": true
+      },
+      {
+        "name": "SolveForcesAndVelocity",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Solvers/SolveForcesAndVelocity.SolveForcesAndVelocity",
+        "on": true
+      },
+      {
+        "name": "SphereLocation",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/Modules/Spawn/Location/SphereLocation.SphereLocation",
+        "on": false
+      },
+      {
+        "name": "UpdateAge",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState",
+        "on": true
+      },
+      {
+        "name": "GravityForce",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Update/Forces/GravityForce.GravityForce",
+        "on": false
+      },
+      {
+        "name": "InitializeParticle",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/Modules/Spawn/Initialization/InitializeParticle.InitializeParticle",
+        "on": true
+      },
+      {
+        "name": "NormalizedAngleToDegrees001",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/Angles/NormalizedAngleToDegrees.NormalizedAngleToDegrees",
+        "on": true
+      },
+      {
+        "name": "UniformRangedFloat005",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat",
+        "on": true
+      },
+      {
+        "name": "ParticleOwnerPosition",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/Functions/Localspace/SimulationPosition.SimulationPosition",
+        "on": true
+      },
+      {
+        "name": "Drag",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Update/Forces/Drag.Drag",
+        "on": true
+      },
+      {
+        "name": "ScaleColor",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Update/Color/ScaleColor.ScaleColor",
+        "on": true
+      },
+      {
+        "name": "EmitterState",
+        "stage": "EmitterUpdate",
+        "path": "/Niagara/Modules/Emitter/EmitterState.EmitterState",
+        "on": true
+      },
+      {
+        "name": "SpawnBurst_Instantaneous",
+        "stage": "EmitterUpdate",
+        "path": "/Niagara/Modules/Emitter/SpawnBurst_Instantaneous.SpawnBurst_Instantaneous",
+        "on": true
+      },
+      {
+        "name": "AddVelocityInCone",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/Modules/Spawn/Velocity/AddVelocityInCone.AddVelocityInCone",
+        "on": true
+      },
+      {
+        "name": "SpriteSizeScaleBySpeed",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Update/Size/ScaleSpriteSizeBySpeed.ScaleSpriteSizeBySpeed",
+        "on": true
+      },
+      {
+        "name": "SphereLocation001",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/Modules/Spawn/Location/V2/SphereLocation.SphereLocation",
+        "on": true
+      },
+      {
+        "name": "UniformRangedFloat003",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat",
+        "on": true
+      },
+      {
+        "name": "UniformRangedFloat004",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat",
+        "on": true
+      },
+      {
+        "name": "Vector2DFromFloat",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat",
+        "on": true
+      },
+      {
+        "name": "UniformRangedFloat001",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat",
+        "on": true
+      },
+      {
+        "name": "Multiply_Float",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/Multiply/Multiply_Float.Multiply_Float",
+        "on": true
+      },
+      {
+        "name": "UniformRangedFloat",
+        "stage": "ParticleSpawn",
+        "path": "/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat",
+        "on": true
+      },
+      {
+        "name": "VectorNoiseForce",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Update/Forces/VectorNoiseForce.VectorNoiseForce",
+        "on": true
+      },
+      {
+        "name": "ScaleSpriteSize",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/Modules/Update/Size/ScaleSpriteSize.ScaleSpriteSize",
+        "on": true
+      },
+      {
+        "name": "Vector2DFromFloat001",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat",
+        "on": true
+      },
+      {
+        "name": "FloatFromCurve",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/DynamicInputs/ValueFromCurve/FloatFromCurve.FloatFromCurve",
+        "on": true
+      },
+      {
+        "name": "VectorFromFloat",
+        "stage": "ParticleUpdate",
+        "path": "/Niagara/DynamicInputs/TypeConversions/VectorFromFloat.VectorFromFloat",
+        "on": true
+      }
+    ],
+    "renderers": [
+      "<Struct 'NiagaraRendererInfo_Custom' (0x0000028D3FA42B20) {renderer_name: \"NiagaraSpriteRendererProperties_0\", renderer_type: \"Sprite\", renderer_index: 0, is_enabled: True}>"
+    ]
+  }
+}

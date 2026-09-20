@@ -275,7 +275,7 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 		FGuLiLocalCombatEffect Visual; Visual.State = State; Visual.RenderLocation = State.Location;
 		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile)
 		{
-			Visual.LaserSlot = AllocateLaserSlot();
+			if (State.Source.Kind != EGuLiTargetKind::GroundActor) Visual.LaserSlot = AllocateLaserSlot();
 			if (State.Source.Kind == EGuLiTargetKind::Wingman && !bFromSnapshot && ServerTime() - State.StartTime < 0.35f)
 				Visual.LaserMuzzleUntil = GetWorld()->GetTimeSeconds() + (Catalog ? Catalog->LaserMuzzleSeconds : 0.05f);
 		}
@@ -629,6 +629,20 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 		if (Visual.State.Kind == EGuLiCombatEffectKind::Projectile) UpdateGroundWarning(Visual.State, bEnabled);
 		if (Visual.State.Kind == EGuLiCombatEffectKind::LinearProjectile)
 		{
+			const auto& State = Visual.State;
+			if (State.Source.Kind == EGuLiTargetKind::GroundActor)
+			{
+				const bool bFinished = State.Phase == EGuLiCombatEffectPhase::Finished;
+				const float Age = FMath::Clamp(Now - State.StartTime, 0.f, State.EndTime - State.StartTime);
+				Visual.RenderLocation = bFinished ? FVector(State.Location) : FVector(State.LaunchLocation) + FVector(State.Velocity) * Age;
+				if (bEnabled && !bFinished && IsVisibleLocation(Visual.RenderLocation))
+				{
+					if (!Visual.Flight) Visual.Flight = SpawnPooled(State.PlayerBulletSystem.LoadSynchronous(), Visual.RenderLocation,
+						1.f, 0, FVector(State.LaunchDirection).Rotation());
+					if (Visual.Flight) Visual.Flight->SetWorldLocationAndRotation(Visual.RenderLocation, FVector(State.LaunchDirection).Rotation());
+				}
+				else if (Visual.Flight) { Retire(Visual.Flight, 0); Visual.Flight = nullptr; }
+			}
 			if ((Visual.State.Phase == EGuLiCombatEffectPhase::Finished && GetWorld()->GetTimeSeconds() >= Visual.LaserFadeUntil)
 				|| (Visual.State.Phase != EGuLiCombatEffectPhase::Finished && Now >= Visual.State.EndTime)) Expired.Add(Pair.Key);
 			continue;

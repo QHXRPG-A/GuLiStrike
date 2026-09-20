@@ -1,4 +1,5 @@
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
 #include "Gameplay/Units/GuLiExternalCharacterMovementComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Battle/Framework/GuLiBattlePlayerController.h"
@@ -23,6 +24,7 @@ AGuLiGroundMechCharacter::AGuLiGroundMechCharacter(const FObjectInitializer& Ini
 	bReplicates = true;
 	bAlwaysRelevant = true;
 	bUseControllerRotationYaw = false;
+	Weapon = CreateDefaultSubobject<UGuLiGroundMechWeaponComponent>(TEXT("Weapon"));
 	CreateDefaultSubobject<UGuLiExternalUnitControlComponent>(TEXT("ExternalUnitControl"));
 	GetCapsuleComponent()->InitCapsuleSize(230.f, 374.1898f);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -75,13 +77,16 @@ void AGuLiGroundMechCharacter::PawnClientRestart()
 {
 	Super::PawnClientRestart();
 	RemoveInputContext();
-	auto* PC = CastChecked<APlayerController>(GetController());
-	InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
-	InputSubsystem->AddMappingContext(MappingContext,20);
+	const auto* PC = Cast<APlayerController>(GetController());
+	ULocalPlayer* Player = PC ? PC->GetLocalPlayer() : nullptr;
+	if (!Player) return;
+	InputSubsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(Player);
+	if (InputSubsystem.IsValid() && MappingContext) InputSubsystem->AddMappingContext(MappingContext,20);
 }
 
 void AGuLiGroundMechCharacter::RemoveInputContext()
 {
+	Weapon->SetFireHeld(false);
 	if (InputSubsystem.IsValid()) InputSubsystem->RemoveMappingContext(MappingContext);
 	InputSubsystem.Reset();
 	bSprintHeld = false;

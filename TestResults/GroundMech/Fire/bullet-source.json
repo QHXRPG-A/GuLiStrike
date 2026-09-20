@@ -1,0 +1,330 @@
+{
+  "settings": [
+    {
+      "name": "Constants.NE_forward_simple_bullet.EmitterState.Loop Delay",
+      "value": "0.000000",
+      "stage": "EmitterUpdate",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.EmitterState.Loop Duration",
+      "value": "3.000000",
+      "stage": "EmitterUpdate",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.EmitterState.MaxDistance",
+      "value": "5000.000000",
+      "stage": "EmitterUpdate",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SpawnRate.Spawn Probability",
+      "value": "1.000000",
+      "stage": "EmitterUpdate",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SpawnRate.SpawnGroup",
+      "value": "0",
+      "stage": "EmitterUpdate",
+      "type": "Int"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SpawnRate.SpawnRate",
+      "value": "10.000000",
+      "stage": "EmitterUpdate",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.AddVelocity.Scale Added Velocity",
+      "value": "(1.000000, 1.000000, 1.000000)",
+      "stage": "ParticleSpawn",
+      "type": "Vector"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.InitializeParticle.Mesh Scale",
+      "value": "(1.000000, 1.000000, 1.000000)",
+      "stage": "ParticleSpawn",
+      "type": "Vector"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.InitializeParticle.Sprite Size",
+      "value": "(raw 8 bytes)",
+      "stage": "ParticleSpawn",
+      "type": "Vector2"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.Multiply_VectorByFloat.Vector",
+      "value": "(-2000.000000, 0.000000, 0.000000)",
+      "stage": "ParticleSpawn",
+      "type": "Vector"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.ScaleColor.Scale Alpha",
+      "value": "100.000000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.ScaleColor.Scale RGBA",
+      "value": "(1.000000, 1.000000, 1.000000, 1.000000)",
+      "stage": "ParticleSpawn",
+      "type": "Vector4"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SolveForcesAndVelocity.Acceleration Limit",
+      "value": "9999.000000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SolveForcesAndVelocity.Manually Enable Rotational Solver",
+      "value": "(raw 4 bytes)",
+      "stage": "ParticleSpawn",
+      "type": "NiagaraBool"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SolveForcesAndVelocity.Mesh Orientation",
+      "value": "(raw 16 bytes)",
+      "stage": "ParticleSpawn",
+      "type": "Quat"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SolveForcesAndVelocity.Rotational Force",
+      "value": "(0.000000, 0.000000, 0.000000)",
+      "stage": "ParticleSpawn",
+      "type": "Vector"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SolveForcesAndVelocity.Rotational Velocity",
+      "value": "(0.000000, 0.000000, 0.000000)",
+      "stage": "ParticleSpawn",
+      "type": "Vector"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SolveForcesAndVelocity.Speed Limit",
+      "value": "1000.000000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SphereLocation.Non Uniform Scale",
+      "value": "(1.000000, 1.000000, 1.000000)",
+      "stage": "ParticleSpawn",
+      "type": "Vector"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SphereLocation.Offset",
+      "value": "(0.000000, 0.000000, 0.000000)",
+      "stage": "ParticleSpawn",
+      "type": "Vector"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SphereLocation.Radius Position",
+      "value": "1.000000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SphereLocation.Random Seed",
+      "value": "0",
+      "stage": "ParticleSpawn",
+      "type": "Int"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SphereLocation.Spawn Group Mask",
+      "value": "0",
+      "stage": "ParticleSpawn",
+      "type": "Int"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SphereLocation.Sphere Radius",
+      "value": "0.010000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SphereLocation.Surface Only Band Thickness",
+      "value": "0.000000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SphereLocation.V Position",
+      "value": "0.500000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SpriteSizeScaleBySpeed.Max Scale Factor",
+      "value": "(raw 8 bytes)",
+      "stage": "ParticleSpawn",
+      "type": "Vector2"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SpriteSizeScaleBySpeed.Min Scale Factor",
+      "value": "(raw 8 bytes)",
+      "stage": "ParticleSpawn",
+      "type": "Vector2"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SpriteSizeScaleBySpeed.Velocity Threshold",
+      "value": "1000.000000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.UniformRangedFloat003.Maximum",
+      "value": "1.750000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.UniformRangedFloat003.Minimum",
+      "value": "1.400000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.UniformRangedFloat003.Random Seed",
+      "value": "0",
+      "stage": "ParticleSpawn",
+      "type": "Int"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.UniformRangedFloat004.Maximum",
+      "value": "1.200000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.UniformRangedFloat004.Minimum",
+      "value": "0.600000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.UniformRangedFloat004.Random Seed",
+      "value": "0",
+      "stage": "ParticleSpawn",
+      "type": "Int"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.UniformRangedFloat005.Maximum",
+      "value": "1.000000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.UniformRangedFloat005.Minimum",
+      "value": "0.000000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.UniformRangedFloat005.Random Seed",
+      "value": "0",
+      "stage": "ParticleSpawn",
+      "type": "Int"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.VectorFromFloat.Value",
+      "value": "800.000000",
+      "stage": "ParticleSpawn",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.ScaleColor.Scale Alpha",
+      "value": "100.000000",
+      "stage": "ParticleUpdate",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.ScaleColor.Scale RGBA",
+      "value": "(1.000000, 1.000000, 1.000000, 1.000000)",
+      "stage": "ParticleUpdate",
+      "type": "Vector4"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SolveForcesAndVelocity.Acceleration Limit",
+      "value": "9999.000000",
+      "stage": "ParticleUpdate",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SolveForcesAndVelocity.Manually Enable Rotational Solver",
+      "value": "(raw 4 bytes)",
+      "stage": "ParticleUpdate",
+      "type": "NiagaraBool"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SolveForcesAndVelocity.Mesh Orientation",
+      "value": "(raw 16 bytes)",
+      "stage": "ParticleUpdate",
+      "type": "Quat"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SolveForcesAndVelocity.Rotational Force",
+      "value": "(0.000000, 0.000000, 0.000000)",
+      "stage": "ParticleUpdate",
+      "type": "Vector"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SolveForcesAndVelocity.Rotational Velocity",
+      "value": "(0.000000, 0.000000, 0.000000)",
+      "stage": "ParticleUpdate",
+      "type": "Vector"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SolveForcesAndVelocity.Speed Limit",
+      "value": "1000.000000",
+      "stage": "ParticleUpdate",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SpriteSizeScaleBySpeed.Max Scale Factor",
+      "value": "(raw 8 bytes)",
+      "stage": "ParticleUpdate",
+      "type": "Vector2"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SpriteSizeScaleBySpeed.Min Scale Factor",
+      "value": "(raw 8 bytes)",
+      "stage": "ParticleUpdate",
+      "type": "Vector2"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.SpriteSizeScaleBySpeed.Velocity Threshold",
+      "value": "1000.000000",
+      "stage": "ParticleUpdate",
+      "type": "Float"
+    },
+    {
+      "name": "Constants.NE_forward_simple_bullet.VectorFromFloat.Value",
+      "value": "800.000000",
+      "stage": "ParticleUpdate",
+      "type": "Float"
+    }
+  ],
+  "modules": [
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD2C2B0) {module_name: \"SpawnRate\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/SpawnRate.SpawnRate\", module_index: 0, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD2DE30) {module_name: \"SolveForcesAndVelocity\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Solvers/SolveForcesAndVelocity.SolveForcesAndVelocity\", module_index: 1, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD273A0) {module_name: \"AddVelocity\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Velocity/AddVelocity.AddVelocity\", module_index: 2, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD2DCA0) {module_name: \"SphereLocation\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Location/SphereLocation.SphereLocation\", module_index: 3, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD25410) {module_name: \"UpdateAge\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Lifetime/ParticleState.ParticleState\", module_index: 4, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD23D40) {module_name: \"InitializeParticle\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Modules/Spawn/Initialization/InitializeParticle.InitializeParticle\", module_index: 5, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD250A0) {module_name: \"UniformRangedFloat003\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 6, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD23E30) {module_name: \"UniformRangedFloat004\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 7, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD24A60) {module_name: \"NormalizedAngleToDegrees001\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/Angles/NormalizedAngleToDegrees.NormalizedAngleToDegrees\", module_index: 8, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD2A640) {module_name: \"UniformRangedFloat005\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/UniformRange/UniformRangedFloat.UniformRangedFloat\", module_index: 9, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD27580) {module_name: \"ParticleOwnerPosition\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/Functions/Localspace/SimulationPosition.SimulationPosition\", module_index: 10, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD2B2C0) {module_name: \"ScaleColor\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Color/ScaleColor.ScaleColor\", module_index: 11, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD2ADC0) {module_name: \"EmitterState\", module_type: \"EmitterUpdate\", script_asset_path: \"/Niagara/Modules/Emitter/EmitterState.EmitterState\", module_index: 12, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD2CF30) {module_name: \"VectorFromFloat\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/VectorFromFloat.VectorFromFloat\", module_index: 13, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD24510) {module_name: \"SpriteSizeScaleBySpeed\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Size/ScaleSpriteSizeBySpeed.ScaleSpriteSizeBySpeed\", module_index: 14, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD27670) {module_name: \"ScaleSpriteSize\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/Modules/Update/Size/ScaleSpriteSize.ScaleSpriteSize\", module_index: 15, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD2D160) {module_name: \"Vector2DFromFloat\", module_type: \"ParticleUpdate\", script_asset_path: \"/Niagara/DynamicInputs/TypeConversions/Vector2DFromFloat.Vector2DFromFloat\", module_index: 16, is_enabled: True, inputs: }>",
+    "<Struct 'NiagaraModuleInfo_Custom' (0x000001C21AD27440) {module_name: \"Multiply_VectorByFloat\", module_type: \"ParticleSpawn\", script_asset_path: \"/Niagara/DynamicInputs/Multiply/Multiply_VectorByFloat.Multiply_VectorByFloat\", module_index: 17, is_enabled: True, inputs: }>"
+  ]
+}

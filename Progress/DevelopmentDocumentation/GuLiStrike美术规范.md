@@ -15,7 +15,7 @@ categories:
 status: done
 verification: passed
 created: '2026-09-17'
-updated: '2026-09-19'
+updated: '2026-09-20'
 summary: 建立独立规范并接入模型、特效、地编技能；维护参考版本、用户双审记录和UI原图保留规则。
 next_action: 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。
 relations:
@@ -179,3 +179,9 @@ Ship组件分批制作与审核入口：[首批双联炮/CIWS/Thor](20260917-Shi
 用户最新要求“把已经制作了的资源都同步至UE，然后做一波总结”，据此补齐Mecha_01、Mecha_02、三管FireWeapon_01、MissileWeapon_01和独立Missile_01；已同步的轻型、Spider与Lv1机枪复用有效版本。本批8项共10个网格全部进入项目目录，并新增完整展示关卡；当前原骨架/挂点、蓝图、保存引用及两台Mecha原动画姿态已验证。
 
 五项指定资源维持线稿和三档明暗；Mecha_01、Mecha_02、独立导弹按已制作成品保留连续受光。导入授权不扩展为新武器玩法、再次减面或用户最终外观通过。完整面数、截图、描边余项与验证边界见[整批交付](../../ArtSource/Mechs/StyleUnification_20260919/UE_AllAssets_v10/README.md)及[新增归档](../Archive/20260919-机甲与武器整批同步UE及总结.md)。全局规范仍v1.2。
+
+## 2026-09-20 地面机枪逐发特效候选
+
+用户明确指定`/Game/Assets/VFX/WeaponBulletVFX/NS/VFX_Smg_Loop`和`VFX_FireGun_Loop`作为已确认参考A，并批准先制作可播放候选、正式接入前完成视觉审核。项目副本为`/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet`及`NS_GroundMech_Muzzle`，前者保留源中央弹道材质与配色、去双侧散射及枪口层，后者提取枪口焰与近口火星并改为逐发有限寿命。
+
+当前B候选与炮管后坐已在`/Game/Maps/LVL_GroundMech_FireReview`实际播放，[62帧连续图、时间轴和采样](../../TestResults/GroundMech/Fire/Review.html)覆盖起始、回缩、复位和消散。Niagara及动画蓝图编译0错误/0警告，单发粒子、池回收和双端同步技术检查通过；没有用户对当前B的通过决定，正式玩家蓝图武器开关保持关闭。全局规范仍v1.2，不改变其他资产审核状态。具体源/目标、镜像枪口轴向修正及边界见[开发记录](20260920-玩家地面机甲开火与升级配置.md)。

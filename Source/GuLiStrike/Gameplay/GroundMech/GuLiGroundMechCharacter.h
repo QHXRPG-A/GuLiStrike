@@ -10,6 +10,7 @@ class UStaticMeshComponent;
 class UInputAction;
 class UInputMappingContext;
 class UEnhancedInputLocalPlayerSubsystem;
+class UGuLiGroundMechWeaponComponent;
 struct FInputActionValue;
 
 /** Ground player locomotion and aim. Assembly and animation assets belong to its Blueprint. */
@@ -24,8 +25,11 @@ public:
 	virtual void NotifyControllerChanged() override;
 	virtual void UnPossessed() override;
 	virtual void GetLifetimeReplicatedProps(TArray<FLifetimeProperty>& OutLifetimeProps) const override;
+	USkeletalMeshComponent* GetMachinegun() const { return Machinegun; }
+	UGuLiGroundMechWeaponComponent* GetWeapon() const { return Weapon; }
 
 protected:
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category="Mech|Weapon") TObjectPtr<UGuLiGroundMechWeaponComponent> Weapon;
 	virtual void BeginPlay() override;
 	virtual void EndPlay(EEndPlayReason::Type Reason) override;
 	virtual void SetupPlayerInputComponent(UInputComponent* Input) override;

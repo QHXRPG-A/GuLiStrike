@@ -20,11 +20,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-20 |
 | [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
 | [两组机甲资源风格统一参考](../RequirementDocument/20260919-两组机甲资源风格统一参考.md) | requirement | approved | 2026-09-19 |
 | [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | development | done | 2026-09-19 |
 | [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | development | done | 2026-09-19 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-19 |
 | [机甲与武器整批同步UE及总结](../Archive/20260919-机甲与武器整批同步UE及总结.md) | archive | recorded | 2026-09-19 |
 | [轻型机甲与Spider同步UE](../Archive/20260919-轻型机甲与Spider同步UE.md) | archive | recorded | 2026-09-19 |
 | [轻型机甲排气口浮空修复](../Archive/20260919-轻型机甲排气口浮空修复.md) | archive | recorded | 2026-09-19 |
@@ -93,9 +93,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-20 |
 | [两组机甲资源风格统一参考](../RequirementDocument/20260919-两组机甲资源风格统一参考.md) | requirement | approved | 2026-09-19 |
 | [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | development | done | 2026-09-19 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-19 |
 | [机甲与武器整批同步UE及总结](../Archive/20260919-机甲与武器整批同步UE及总结.md) | archive | recorded | 2026-09-19 |
 | [轻型机甲与Spider同步UE](../Archive/20260919-轻型机甲与Spider同步UE.md) | archive | recorded | 2026-09-19 |
 | [轻型机甲排气口浮空修复](../Archive/20260919-轻型机甲排气口浮空修复.md) | archive | recorded | 2026-09-19 |
@@ -235,6 +235,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
+| [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死](../RequirementDocument/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | requirement | approved | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
@@ -285,10 +287,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [玩家地面机甲开火与Excel升级配置](../RequirementDocument/20260920-玩家地面机甲开火与升级配置.md) | requirement | approved | 2026-09-20 |
+| [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
+| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-20 |
+| [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | development | verification | 2026-09-20 |
+| [玩家机枪开火与Excel升级候选](../Archive/20260920-玩家机枪开火与Excel升级候选.md) | archive | recorded | 2026-09-20 |
 | [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
 | [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
 | [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
-| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-19 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
 | [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | development | done | 2026-09-19 |
 | [战争机器导弹范围与特效调整](../DevelopmentDocumentation/20260919-战争机器导弹范围与特效调整.md) | development | done | 2026-09-19 |
@@ -419,6 +425,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
+| [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
 | [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
 | [战争机器模型大小适配](../RequirementDocument/20260919-战争机器模型大小适配.md) | requirement | approved | 2026-09-19 |
 | [Mass单位体型与最小净距](../RequirementDocument/20260919-Mass单位体型与最小净距.md) | requirement | superseded | 2026-09-19 |
@@ -747,8 +755,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [玩家地面机甲开火与Excel升级配置](../RequirementDocument/20260920-玩家地面机甲开火与升级配置.md) | requirement | approved | 2026-09-20 |
+| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-20 |
+| [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | development | verification | 2026-09-20 |
+| [玩家机枪开火与Excel升级候选](../Archive/20260920-玩家机枪开火与Excel升级候选.md) | archive | recorded | 2026-09-20 |
 | [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
-| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-19 |
 | [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | development | done | 2026-09-19 |
 | [轻型机甲与Spider同步UE](../Archive/20260919-轻型机甲与Spider同步UE.md) | archive | recorded | 2026-09-19 |
 | [轻型装甲地面玩家接入与根位移修复](../Archive/20260919-轻型装甲地面玩家接入与根位移修复.md) | archive | recorded | 2026-09-19 |
@@ -874,8 +885,13 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [玩家地面机甲开火与Excel升级配置](../RequirementDocument/20260920-玩家地面机甲开火与升级配置.md) | requirement | approved | 2026-09-20 |
+| [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
+| [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
+| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-20 |
+| [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | development | verification | 2026-09-20 |
+| [玩家机枪开火与Excel升级候选](../Archive/20260920-玩家机枪开火与Excel升级候选.md) | archive | recorded | 2026-09-20 |
 | [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
-| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-19 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
 | [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | development | done | 2026-09-19 |
 | [轻型机甲与Spider同步UE](../Archive/20260919-轻型机甲与Spider同步UE.md) | archive | recorded | 2026-09-19 |
@@ -1134,9 +1150,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-20 |
 | [两组机甲资源风格统一参考](../RequirementDocument/20260919-两组机甲资源风格统一参考.md) | requirement | approved | 2026-09-19 |
 | [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | development | done | 2026-09-19 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-19 |
 | [机甲与武器整批同步UE及总结](../Archive/20260919-机甲与武器整批同步UE及总结.md) | archive | recorded | 2026-09-19 |
 | [轻型机甲与Spider同步UE](../Archive/20260919-轻型机甲与Spider同步UE.md) | archive | recorded | 2026-09-19 |
 | [轻型机甲排气口浮空修复](../Archive/20260919-轻型机甲排气口浮空修复.md) | archive | recorded | 2026-09-19 |
@@ -1202,6 +1218,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
@@ -1365,6 +1382,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
+| [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
 | [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
@@ -1447,11 +1466,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [玩家地面机甲开火与Excel升级配置](../RequirementDocument/20260920-玩家地面机甲开火与升级配置.md) | requirement | approved | 2026-09-20 |
+| [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | development | verification | 2026-09-20 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-20 |
+| [玩家机枪开火与Excel升级候选](../Archive/20260920-玩家机枪开火与Excel升级候选.md) | archive | recorded | 2026-09-20 |
 | [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
 | [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
 | [战争机器导弹范围与特效调整](../DevelopmentDocumentation/20260919-战争机器导弹范围与特效调整.md) | development | done | 2026-09-19 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-19 |
 | [战争机器爆炸追加四倍缩放](../Archive/20260919-战争机器爆炸追加四倍缩放.md) | archive | recorded | 2026-09-19 |
 | [战争机器导弹范围与特效调整](../Archive/20260919-战争机器导弹范围与特效调整.md) | archive | recorded | 2026-09-19 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |

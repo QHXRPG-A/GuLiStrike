@@ -7,6 +7,7 @@
 #include "HAL/PlatformTime.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Subsystems/SubsystemCollection.h"
+#include "NiagaraSystem.h"
 
 namespace
 {
@@ -60,7 +61,7 @@ void UGuLiProjectilePoolSubsystem::Clear()
 		const uint32 Generation = Slots[Index].Generation;
 		Slots[Index] = {}; Slots[Index].Generation = Generation;
 	}
-	ActiveSlots.Reset(); FreeSlots.Reset(Slots.Num()); ById.Reset(); StepHandles.Reset();
+	ActiveSlots.Reset(); FreeSlots.Reset(Slots.Num()); ById.Reset(); StepHandles.Reset(); PlayerBulletAssets.Reset();
 	for (int32 Index = Slots.Num() - 1; Index >= 0; --Index) FreeSlots.Add(Index);
 	WingmanHistory = {}; GroundHistory = {}; Targets.Reset(); Snapshots.Reset(); SpatialGrid.Reset(); Candidates.Reset();
 	NextGroundStepTime = 0; Stats = {}; Stats.Capacity = Slots.Num();
@@ -89,8 +90,9 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::Launch(const FGuLiPooled
 	if (!Ledger || !GetWorld() || GetWorld()->GetNetMode() == NM_Client) return {};
 	BeginEpoch(Ledger->GetMatchEpoch());
 	const bool bGround = R.Context.Source.Kind == EGuLiTargetKind::CommanderSoldier && !R.Context.Emitter.IsValid();
+	const bool bPlayer = R.Context.Source.Kind == EGuLiTargetKind::GroundActor && !R.Context.Emitter.IsValid();
 	if (Epoch == 0 || R.Context.MatchEpoch != Epoch || !R.Context.ShotId.IsValid()
-		|| (!bGround && !R.Context.Emitter.IsValid()) || !R.Context.Source.IsValid() || ById.Contains(R.Context.ShotId)
+		|| (!bGround && !bPlayer && !R.Context.Emitter.IsValid()) || !R.Context.Source.IsValid() || ById.Contains(R.Context.ShotId)
 		|| R.Position.ContainsNaN() || R.Direction.ContainsNaN() || R.Direction.IsNearlyZero() || R.MuzzleOffset.ContainsNaN()
 		|| !FMath::IsFinite(R.Speed) || R.Speed <= 0 || R.Speed > 1000000
 		|| !FMath::IsFinite(R.Lifetime) || R.Lifetime < 0.01f || R.Lifetime > 120
@@ -98,7 +100,7 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::Launch(const FGuLiPooled
 		|| !FMath::IsFinite(R.SweepRadius) || R.SweepRadius < 0 || R.SweepRadius > 10000
 		|| !FMath::IsFinite(R.ServerTime) || !FMath::IsFinite(R.Context.Damage) || R.Context.Damage <= 0) return {};
 	FGuLiCombatTargetSnapshot Source;
-	if (!Ledger->TryGetTargetSnapshot(R.Context.Source, Source) || !Source.bAlive
+	if (!Ledger->TryGetSourceSnapshot(R.Context.Source, Source) || !Source.bAlive
 		|| (Source.Team != EGuLiTeam::Red && Source.Team != EGuLiTeam::Blue)) return {};
 	FGuid Lease = R.SourceLease;
 	if (Lease.IsValid()) { if (!Ledger->RetainEffectSource(Lease)) return {}; }
@@ -112,7 +114,9 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::Launch(const FGuLiPooled
 	FGuLiCombatEffectState& State = Slot.State;
 	State = {}; State.Kind = EGuLiCombatEffectKind::LinearProjectile;
 	State.EffectId = R.Context.ShotId; State.MatchEpoch = Epoch; State.Sequence = 1;
-	State.Source = bGround ? R.Context.Source : GuLiCombatTargets::MakeWingmanTargetHandle(R.Context.Emitter);
+	State.Source = (bGround || bPlayer) ? R.Context.Source : GuLiCombatTargets::MakeWingmanTargetHandle(R.Context.Emitter);
+	State.PlayerBulletSystem = R.PlayerBulletSystem;
+	if (bPlayer) if (auto* Asset = R.PlayerBulletSystem.LoadSynchronous()) PlayerBulletAssets.AddUnique(Asset);
 	State.SourceTeam = Source.Team;
 	State.LaunchLocation = State.Location = R.Position; State.LaunchDirection = R.Direction.GetSafeNormal();
 	State.Motion.Speed = R.Speed; State.Velocity = FVector(State.LaunchDirection) * R.Speed;
@@ -216,7 +220,7 @@ void UGuLiProjectilePoolSubsystem::Step(const float Now)
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiProjectilePool);
 	const double Started = FPlatformTime::Seconds(); const uint32 StepEpoch = Epoch;
 	const bool bHasWingman = ActiveSlots.ContainsByPredicate([this](int32 Index)
-		{ return Slots[Index].State.Source.Kind == EGuLiTargetKind::Wingman; });
+		{ return Slots[Index].State.Source.Kind != EGuLiTargetKind::CommanderSoldier; });
 	const bool bHasGround = ActiveSlots.ContainsByPredicate([this](int32 Index)
 		{ return Slots[Index].State.Source.Kind == EGuLiTargetKind::CommanderSoldier; });
 	if (bHasWingman) StepDomain(Now, false, WingmanHistory);
@@ -239,6 +243,9 @@ void UGuLiProjectilePoolSubsystem::StepDomain(const float Now, const bool bGroun
 	FCollisionQueryParams WorldParams(SCENE_QUERY_STAT(GuLiPooledLaser), false);
 	// Build the ignore set once per simulation step, not once per projectile.
 	for (const auto& Target : Snapshots) if (Target.CollisionActor.IsValid()) WorldParams.AddIgnoredActor(Target.CollisionActor.Get());
+	TArray<FGuLiCombatTargetSnapshot> SourceOnly;
+	Ledger->GetSourceOnlySnapshots(SourceOnly);
+	for (const auto& Source : SourceOnly) if (Source.CollisionActor.IsValid()) WorldParams.AddIgnoredActor(Source.CollisionActor.Get());
 	FCollisionObjectQueryParams Objects; Objects.AddObjectTypesToQuery(ECC_WorldStatic); Objects.AddObjectTypesToQuery(ECC_WorldDynamic);
 	StepHandles.Reset(ActiveSlots.Num());
 	for (const int32 Index : ActiveSlots)

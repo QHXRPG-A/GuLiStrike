@@ -1,0 +1,2928 @@
+[
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NiagaraNodeParameterMapSet_0",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_6.OutputMap"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "AddVelocity",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_1.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "SphereLocation",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_7.OutputMap"
+				]
+			},
+			{
+				"name": "MaskSpawnGroup",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Sphere Distribution",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Random",
+					"1=Direct",
+					"2=ENiagara Torus Distribution Mode MAX"
+				]
+			},
+			{
+				"name": "Surface Only",
+				"default": "false",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NiagaraNodeParameterMapSet_1",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_9.Dest"
+				]
+			},
+			{
+				"name": "AddVelocity.Velocity",
+				"default": "(X=12000,Y=0,Z=0)",
+				"links": []
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "UpdateAge",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_5.Input"
+				]
+			},
+			{
+				"name": "Kill Particles When Lifetime Has Elapsed",
+				"default": "true",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NiagaraNodeParameterMapSet_2",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_4.OutputMap"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "InitializeParticle",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_4.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NiagaraNodeParameterMapSet_4",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_7.Dest"
+				]
+			},
+			{
+				"name": "InitializeParticle.Lifetime",
+				"default": "5.1",
+				"links": []
+			},
+			{
+				"name": "InitializeParticle.Mass",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_11.UniformRangedFloat"
+				]
+			},
+			{
+				"name": "InitializeParticle.Write Color",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "InitializeParticle.Write SpriteRotation",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "InitializeParticle.Sprite Rotation",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_12.NewOutput"
+				]
+			},
+			{
+				"name": "InitializeParticle.Write Position",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "InitializeParticle.Position",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_5.OutPosition"
+				]
+			},
+			{
+				"name": "InitializeParticle.Write SpriteSize",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "InitializeParticle.Color",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapGet_0.User.Color01"
+				]
+			},
+			{
+				"name": "InitializeParticle.Sprite Size",
+				"default": "(X=12,Y=90)",
+				"links": []
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "UniformRangedFloat003",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_7.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "UniformRangedFloat004",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_7.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NormalizedAngleToDegrees001",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_7.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NiagaraNodeParameterMapSet_7",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_4.Input"
+				]
+			},
+			{
+				"name": "NormalizedAngleToDegrees001.NormalizedAngle",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_13.UniformRangedFloat"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "UniformRangedFloat005",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_4.Input"
+				]
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "ParticleOwnerPosition",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_7.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "ScaleColor",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_8.Dest"
+				]
+			},
+			{
+				"name": "ColorCurve",
+				"default": "",
+				"links": []
+			},
+			{
+				"name": "Scale Mode",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=RGB and Alpha Separately",
+					"1=RGBA Together",
+					"2=RGBA Linear Color Curve",
+					"3=ENiagara Scale Color Mode MAX"
+				]
+			},
+			{
+				"name": "ScaleA",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "ScaleRGB",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "ScaleRGBA",
+				"default": "true",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NiagaraNodeParameterMapSet_8",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_29.OutputMap"
+				]
+			},
+			{
+				"name": "ScaleColor.Scale RGB",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_19.Vec3"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "EmitterState",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_10.Dest"
+				]
+			},
+			{
+				"name": "ScaleSpawnCountCurve",
+				"default": "",
+				"links": []
+			},
+			{
+				"name": "Enable Distance Culling",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Enable Visibility Culling",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Inactive Response",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Complete (Let Particles Finish then Kill Emitter)",
+					"1=Kill (Emitter and Particles Die Immediately)",
+					"2=Continue (Emitter Deactivates But Doesn't Die Until System Does)",
+					"3=ENiagara Inactive Mode MAX"
+				]
+			},
+			{
+				"name": "Life Cycle Mode",
+				"default": "NewEnumerator1",
+				"links": [],
+				"enum": [
+					"0=System",
+					"1=Self",
+					"2=ENiagara Emitter Life Cycle Mode MAX"
+				]
+			},
+			{
+				"name": "Loop Behavior",
+				"default": "NewEnumerator1",
+				"links": [],
+				"enum": [
+					"0=Infinite",
+					"1=Once",
+					"2=Multiple",
+					"3=ENiagara MAX"
+				]
+			},
+			{
+				"name": "Loop Duration Mode",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Fixed",
+					"1=Infinite",
+					"2=ENiagara MAX"
+				]
+			},
+			{
+				"name": "Scalability Mode",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=System",
+					"1=Self",
+					"2=ENiagara Emitter Scalability Mode MAX"
+				]
+			},
+			{
+				"name": "Scale Spawn Count",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "UseLoopDelay",
+				"default": "false",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "VectorFromFloat",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_29.OutputMap"
+				]
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NiagaraNodeParameterMapSet_5",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_2.Dest"
+				]
+			},
+			{
+				"name": "SpriteSizeScaleBySpeed.Scale Factor Curve",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_1.Input"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "ScaleSpriteSize",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_3.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NiagaraNodeParameterMapSet_3",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_6.Dest"
+				]
+			},
+			{
+				"name": "ScaleSpriteSize.Scale Factor",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_2.Vec2"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "Vector2DFromFloat",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_6.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NiagaraNodeParameterMapSet_6",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_5.Dest"
+				]
+			},
+			{
+				"name": "Vector2DFromFloat.Value",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapGet_1.User.SpriteSizeScale"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "Multiply_VectorByFloat",
+		"inputs": [
+			{
+				"name": "NewInput",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_9.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NiagaraNodeParameterMapSet_9",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_90.OutputMap"
+				]
+			},
+			{
+				"name": "Multiply_VectorByFloat.Float",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapGet_2.User.SpriteSizeScale"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "SpawnBurst_Instantaneous",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_11.Dest"
+				]
+			},
+			{
+				"name": "Use Spawn Probability",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "UseLoopCountLimit",
+				"default": "false",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NiagaraNodeParameterMapSet_10",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_3.Input"
+				]
+			},
+			{
+				"name": "EmitterState.Loop Duration",
+				"default": "0.01",
+				"links": []
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "bullet",
+		"emitter": "NE_forward_simple_bullet",
+		"node": "NiagaraNodeParameterMapSet_11",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_16.OutputMap"
+				]
+			},
+			{
+				"name": "SpawnBurst_Instantaneous.Spawn Count",
+				"default": "1",
+				"links": []
+			},
+			{
+				"name": "SpawnBurst_Instantaneous.Spawn Time",
+				"default": "0",
+				"links": []
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_0",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_16.OutputMap"
+				]
+			},
+			{
+				"name": "SpawnBurst_Instantaneous.Spawn Count",
+				"default": "5",
+				"links": []
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "SolveForcesAndVelocity",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_2.Dest"
+				]
+			},
+			{
+				"name": "Clamp Velocity",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Limit Acceleration",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Rotational Solver Is Enabled",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "Write to Presolve Properties",
+				"default": "true",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "SphereLocation",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_5.Dest"
+				]
+			},
+			{
+				"name": "MaskSpawnGroup",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Sphere Distribution",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Random",
+					"1=Direct",
+					"2=ENiagara Torus Distribution Mode MAX"
+				]
+			},
+			{
+				"name": "Surface Only",
+				"default": "false",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "UpdateAge",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_5.Input"
+				]
+			},
+			{
+				"name": "Kill Particles When Lifetime Has Elapsed",
+				"default": "true",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_2",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_26.OutputMap"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "GravityForce",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_29.OutputMap"
+				]
+			},
+			{
+				"name": "Coordinate Space",
+				"default": "World",
+				"links": [],
+				"enum": [
+					"0=模拟",
+					"1=世界",
+					"2=本地",
+					"3=ENiagara坐标空间MAX"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "InitializeParticle",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_4.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_4",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_7.Dest"
+				]
+			},
+			{
+				"name": "InitializeParticle.Write Color",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "InitializeParticle.Write SpriteRotation",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "InitializeParticle.Sprite Rotation",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_12.NewOutput"
+				]
+			},
+			{
+				"name": "InitializeParticle.Write Position",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "InitializeParticle.Position",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_5.OutPosition"
+				]
+			},
+			{
+				"name": "InitializeParticle.Write SpriteSize",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "InitializeParticle.Lifetime",
+				"default": "0.16",
+				"links": []
+			},
+			{
+				"name": "InitializeParticle.Mass",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_6.UniformRangedFloat"
+				]
+			},
+			{
+				"name": "InitializeParticle.Sprite Size",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_9.Vec2"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NormalizedAngleToDegrees001",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_7.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_7",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_4.Input"
+				]
+			},
+			{
+				"name": "NormalizedAngleToDegrees001.NormalizedAngle",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_13.UniformRangedFloat"
+				]
+			},
+			{
+				"name": "Vector2DFromFloat.Value",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_21.UniformRangedFloat"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "UniformRangedFloat005",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_4.Input"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "ParticleOwnerPosition",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_7.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "Drag",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_3.OutputMap"
+				]
+			},
+			{
+				"name": "Use Linear Drag",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "Use Rotational Drag",
+				"default": "false",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "ScaleColor",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_8.Dest"
+				]
+			},
+			{
+				"name": "ColorCurve",
+				"default": "",
+				"links": []
+			},
+			{
+				"name": "Scale Mode",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=RGB and Alpha Separately",
+					"1=RGBA Together",
+					"2=RGBA Linear Color Curve",
+					"3=ENiagara Scale Color Mode MAX"
+				]
+			},
+			{
+				"name": "ScaleA",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "ScaleRGB",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "ScaleRGBA",
+				"default": "true",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_8",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_12.Dest"
+				]
+			},
+			{
+				"name": "ScaleColor.Scale Alpha",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_30.Value"
+				]
+			},
+			{
+				"name": "ScaleColor.Scale RGB",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_31.Vec3"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "EmitterState",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_9.Dest"
+				]
+			},
+			{
+				"name": "ScaleSpawnCountCurve",
+				"default": "",
+				"links": []
+			},
+			{
+				"name": "Enable Distance Culling",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Enable Visibility Culling",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Inactive Response",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Complete (Let Particles Finish then Kill Emitter)",
+					"1=Kill (Emitter and Particles Die Immediately)",
+					"2=Continue (Emitter Deactivates But Doesn't Die Until System Does)",
+					"3=ENiagara Inactive Mode MAX"
+				]
+			},
+			{
+				"name": "Life Cycle Mode",
+				"default": "NewEnumerator1",
+				"links": [],
+				"enum": [
+					"0=System",
+					"1=Self",
+					"2=ENiagara Emitter Life Cycle Mode MAX"
+				]
+			},
+			{
+				"name": "Loop Behavior",
+				"default": "NewEnumerator1",
+				"links": [],
+				"enum": [
+					"0=Infinite",
+					"1=Once",
+					"2=Multiple",
+					"3=ENiagara MAX"
+				]
+			},
+			{
+				"name": "Loop Duration Mode",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Fixed",
+					"1=Infinite",
+					"2=ENiagara MAX"
+				]
+			},
+			{
+				"name": "Scalability Mode",
+				"default": "NewEnumerator1",
+				"links": [],
+				"enum": [
+					"0=System",
+					"1=Self",
+					"2=ENiagara Emitter Scalability Mode MAX"
+				]
+			},
+			{
+				"name": "Scale Spawn Count",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "UseLoopDelay",
+				"default": "false",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "SpawnBurst_Instantaneous",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_0.Dest"
+				]
+			},
+			{
+				"name": "Use Spawn Probability",
+				"default": "false",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_5",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_7.OutputMap"
+				]
+			},
+			{
+				"name": "SphereLocation.Hemisphere X",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "AddVelocityInCone",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_6.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_6",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_1.Dest"
+				]
+			},
+			{
+				"name": "AddVelocityInCone.Velocity Strength",
+				"default": "900",
+				"links": []
+			},
+			{
+				"name": "AddVelocityInCone.Cone Axis",
+				"default": "(X=1,Y=0,Z=0)",
+				"links": []
+			},
+			{
+				"name": "AddVelocityInCone.Cone Angle",
+				"default": "28",
+				"links": []
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "SpriteSizeScaleBySpeed",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_10.Dest"
+				]
+			},
+			{
+				"name": "ScaleCurve",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_10",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_8.OutputMap"
+				]
+			},
+			{
+				"name": "SpriteSizeScaleBySpeed.Scale Factor Curve",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_1.Input"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "SphereLocation001",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_19.OutputMap"
+				]
+			},
+			{
+				"name": "Evaluation Type",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Spawn Only",
+					"1=Every Frame",
+					"2=ENiagara Randomness Evaluation MAX"
+				]
+			},
+			{
+				"name": "Fixed Random Seed",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "MaskSpawnGroup",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Override Seed",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Randomness Mode",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Simulation Defaults",
+					"1=Determinisitic",
+					"2=Non-Deterministic",
+					"3=ENiagara Randomness Mode MAX"
+				]
+			},
+			{
+				"name": "Sphere Distribution",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Random",
+					"1=Direct",
+					"2=Uniform",
+					"3=ENiagara Sphere Distribution Mode MAX"
+				]
+			},
+			{
+				"name": "Surface Only",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "UseNonUniformScale",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "UseOffset",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "UseSphereOrientation",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Write to Intrinsic Variables",
+				"default": "true",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "UniformRangedFloat003",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_7.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "UniformRangedFloat004",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_7.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "Vector2DFromFloat",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_7.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "UniformRangedFloat001",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_4.Input"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "Multiply_Float",
+		"inputs": [
+			{
+				"name": "NewInput",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_1.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_1",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_90.OutputMap"
+				]
+			},
+			{
+				"name": "Multiply_Float.A",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_25.UniformRangedFloat"
+				]
+			},
+			{
+				"name": "Multiply_Float.B",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapGet_0.User.Size"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "UniformRangedFloat",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_90.OutputMap"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "VectorNoiseForce",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_4.OutputMap"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "ScaleSpriteSize",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_3.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_3",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_11.Dest"
+				]
+			},
+			{
+				"name": "ScaleSpriteSize.Scale Factor",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_28.Vec2"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "Vector2DFromFloat001",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_11.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_11",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_23.OutputMap"
+				]
+			},
+			{
+				"name": "Vector2DFromFloat001.Value",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapGet_1.User.Size"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "FloatFromCurve",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_12.Dest"
+				]
+			},
+			{
+				"name": "DefaultCurve",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_12",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_14.OutputMap"
+				]
+			},
+			{
+				"name": "FloatFromCurve.FloatCurve",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_6.Input"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "VectorFromFloat",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_12.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_spread_spark",
+		"node": "NiagaraNodeParameterMapSet_9",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_3.Input"
+				]
+			},
+			{
+				"name": "EmitterState.bUseMinDistance",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "EmitterState.bUseMaxDistance",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "EmitterState.Spawn Count Scale By Distance",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_0.Input"
+				]
+			},
+			{
+				"name": "EmitterState.bApplySpawnCountScaleByDistance",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "EmitterState.Loop Duration",
+				"default": "0.01",
+				"links": []
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "SpawnBeam",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_27.OutputMap"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "UpdateAge",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_3.Input"
+				]
+			},
+			{
+				"name": "Kill Particles When Lifetime Has Elapsed",
+				"default": "true",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "SolveForcesAndVelocity",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_9.OutputMap"
+				]
+			},
+			{
+				"name": "Clamp Velocity",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Limit Acceleration",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Rotational Solver Is Enabled",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "Write to Presolve Properties",
+				"default": "true",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "SpawnBurst_Instantaneous",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_7.OutputMap"
+				]
+			},
+			{
+				"name": "Use Spawn Probability",
+				"default": "false",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "SetVariables_3BA0D56E42524BC176BD5A99CB3389EB",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_10.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "Color",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_6.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_6",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_8.Dest"
+				]
+			},
+			{
+				"name": "Color.Scale Alpha",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_18.Value"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_10",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_21.OutputMap"
+				]
+			},
+			{
+				"name": "SetVariables_3BA0D56E42524BC176BD5A99CB3389EB.Particles.Lifetime",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapGet_5.User.GlobleDuration"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "BeamWidth",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_13.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_13",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_17.Dest"
+				]
+			},
+			{
+				"name": "BeamWidth.Beam Width",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_29.Value"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "ScaleColor",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_2.Dest"
+				]
+			},
+			{
+				"name": "ColorCurve",
+				"default": "",
+				"links": []
+			},
+			{
+				"name": "Scale Mode",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=RGB and Alpha Separately",
+					"1=RGBA Together",
+					"2=RGBA Linear Color Curve",
+					"3=ENiagara Scale Color Mode MAX"
+				]
+			},
+			{
+				"name": "ScaleA",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "ScaleRGB",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "ScaleRGBA",
+				"default": "true",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_2",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_5.OutputMap"
+				]
+			},
+			{
+				"name": "ScaleColor.Scale RGB",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_10.Vec3"
+				]
+			},
+			{
+				"name": "ScaleColor.Scale Alpha",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapGet_6.User.wick"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "VectorFromFloat",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_5.OutputMap"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "EmitterState",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_0.Dest"
+				]
+			},
+			{
+				"name": "ScaleSpawnCountCurve",
+				"default": "",
+				"links": []
+			},
+			{
+				"name": "Enable Distance Culling",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Enable Visibility Culling",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Inactive Response",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Complete (Let Particles Finish then Kill Emitter)",
+					"1=Kill (Emitter and Particles Die Immediately)",
+					"2=Continue (Emitter Deactivates But Doesn't Die Until System Does)",
+					"3=ENiagara Inactive Mode MAX"
+				]
+			},
+			{
+				"name": "Life Cycle Mode",
+				"default": "NewEnumerator1",
+				"links": [],
+				"enum": [
+					"0=System",
+					"1=Self",
+					"2=ENiagara Emitter Life Cycle Mode MAX"
+				]
+			},
+			{
+				"name": "Loop Behavior",
+				"default": "NewEnumerator1",
+				"links": [],
+				"enum": [
+					"0=Infinite",
+					"1=Once",
+					"2=Multiple",
+					"3=ENiagara MAX"
+				]
+			},
+			{
+				"name": "Loop Duration Mode",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Fixed",
+					"1=Infinite",
+					"2=ENiagara MAX"
+				]
+			},
+			{
+				"name": "Scalability Mode",
+				"default": "NewEnumerator1",
+				"links": [],
+				"enum": [
+					"0=System",
+					"1=Self",
+					"2=ENiagara Emitter Scalability Mode MAX"
+				]
+			},
+			{
+				"name": "Scale Spawn Count",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "UseLoopDelay",
+				"default": "false",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "InitializeParticle",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_5.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_5",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_2.Input"
+				]
+			},
+			{
+				"name": "InitializeParticle.Position",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_16.OutPosition"
+				]
+			},
+			{
+				"name": "InitializeParticle.Write SpriteSize",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "InitializeParticle.Color",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_28.UniformRangedLinearColor"
+				]
+			},
+			{
+				"name": "InitializeParticle.Lifetime",
+				"default": "0.08",
+				"links": []
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "SimulationPosition",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_2.Input"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "FloatFromCurve001",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_8.Dest"
+				]
+			},
+			{
+				"name": "DefaultCurve",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_8",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_2.OutputMap"
+				]
+			},
+			{
+				"name": "FloatFromCurve001.FloatCurve",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_5.Input"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "BeamEmitterSetup001",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_7.Dest"
+				]
+			},
+			{
+				"name": "Absolute Beam End",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Absolute Beam Start",
+				"default": "true",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_7",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_11.Dest"
+				]
+			},
+			{
+				"name": "BeamEmitterSetup001.Beam Start Tangent",
+				"default": "(X=1,Y=0,Z=0)",
+				"links": []
+			},
+			{
+				"name": "BeamEmitterSetup001.Beam End Tangent",
+				"default": "(X=1,Y=0,Z=0)",
+				"links": []
+			},
+			{
+				"name": "BeamEmitterSetup001.Beam End",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_19.Vec3"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "Multiply_VectorByFloat002",
+		"inputs": [
+			{
+				"name": "NewInput",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_11.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_11",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_12.Dest"
+				]
+			},
+			{
+				"name": "Multiply_VectorByFloat002.Vector",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapGet_1.Engine.Owner.SystemXAxis"
+				]
+			},
+			{
+				"name": "MakeVector.X",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_20.Value"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "Multiply_VectorByFloat003",
+		"inputs": [
+			{
+				"name": "NewInput",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_11.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "UpdateBeam",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_4.OutputMap"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_0",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_9.Dest"
+				]
+			},
+			{
+				"name": "EmitterState.Loop Duration",
+				"default": "0.01",
+				"links": []
+			},
+			{
+				"name": "EmitterState.bUseMinDistance",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "EmitterState.bUseMaxDistance",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "EmitterState.Spawn Count Scale By Distance",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_4.Input"
+				]
+			},
+			{
+				"name": "EmitterState.bApplySpawnCountScaleByDistance",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "Add_Float",
+		"inputs": [
+			{
+				"name": "NewInput",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_9.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_9",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_1.Input"
+				]
+			},
+			{
+				"name": "Add_Float.A",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapGet_0.User.GlobleDuration"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "MakeVector",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_11.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "FloatFromCurve003",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_12.Dest"
+				]
+			},
+			{
+				"name": "DefaultCurve",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_12",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_15.Dest"
+				]
+			},
+			{
+				"name": "FloatFromCurve003.FloatCurve",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_6.Input"
+				]
+			},
+			{
+				"name": "FloatFromCurve003.Scale Curve",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_26.Result"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "Multiply_Float002",
+		"inputs": [
+			{
+				"name": "NewInput",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_15.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_15",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_11.OutputMap"
+				]
+			},
+			{
+				"name": "Multiply_Float002.B",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapGet_2.User.Size"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "SphereLocation",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_16.Dest"
+				]
+			},
+			{
+				"name": "Evaluation Type",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Spawn Only",
+					"1=Every Frame",
+					"2=ENiagara Randomness Evaluation MAX"
+				]
+			},
+			{
+				"name": "Fixed Random Seed",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "MaskSpawnGroup",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Override Seed",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Randomness Mode",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Simulation Defaults",
+					"1=Determinisitic",
+					"2=Non-Deterministic",
+					"3=ENiagara Randomness Mode MAX"
+				]
+			},
+			{
+				"name": "Sphere Distribution",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Random",
+					"1=Direct",
+					"2=Uniform",
+					"3=ENiagara Sphere Distribution Mode MAX"
+				]
+			},
+			{
+				"name": "Surface Only",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "UseNonUniformScale",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "UseOffset",
+				"default": "true",
+				"links": []
+			},
+			{
+				"name": "UseSphereOrientation",
+				"default": "false",
+				"links": []
+			},
+			{
+				"name": "Write to Intrinsic Variables",
+				"default": "true",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_16",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_15.OutputMap"
+				]
+			},
+			{
+				"name": "SphereLocation.Offset Coordinate Space",
+				"default": "Simulation",
+				"links": [],
+				"enum": [
+					"0=模拟",
+					"1=世界",
+					"2=本地",
+					"3=ENiagara坐标空间MAX"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "UniformRangedLinearColor",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_2.Input"
+				]
+			},
+			{
+				"name": "Color Channel Mode",
+				"default": "NewEnumerator0",
+				"links": [],
+				"enum": [
+					"0=Link RGBA",
+					"1=Link RGB / Link A",
+					"2=Random Individual Channels",
+					"3=ENiagara Channel Correlation MAX"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "FloatFromCurve002",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_17.Dest"
+				]
+			},
+			{
+				"name": "DefaultCurve",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_17",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_18.Dest"
+				]
+			},
+			{
+				"name": "FloatFromCurve002.FloatCurve",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_9.Input"
+				]
+			},
+			{
+				"name": "FloatFromCurve002.CurveIndex",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapGet_3.Particles.RibbonLinkOrder"
+				]
+			},
+			{
+				"name": "FloatFromCurve002.Scale Curve",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_30.Result"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "Multiply_Float",
+		"inputs": [
+			{
+				"name": "NewInput",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_18.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_18",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_19.Dest"
+				]
+			},
+			{
+				"name": "Multiply_Float.B",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_31.Value"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "FloatFromCurve",
+		"inputs": [
+			{
+				"name": "InputMap",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_19.Dest"
+				]
+			},
+			{
+				"name": "DefaultCurve",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_19",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_20.Dest"
+				]
+			},
+			{
+				"name": "FloatFromCurve.FloatCurve",
+				"default": "",
+				"links": [
+					"NiagaraNodeInput_10.Input"
+				]
+			},
+			{
+				"name": "FloatFromCurve.Scale Curve",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_32.Result"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "Multiply_Float001",
+		"inputs": [
+			{
+				"name": "NewInput",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapSet_20.Dest"
+				]
+			}
+		]
+	},
+	{
+		"system": "muzzle",
+		"emitter": "NE_gun_nozzle_fire",
+		"node": "NiagaraNodeParameterMapSet_20",
+		"inputs": [
+			{
+				"name": "Source",
+				"default": "",
+				"links": [
+					"NiagaraNodeFunctionCall_0.OutputMap"
+				]
+			},
+			{
+				"name": "Multiply_Float001.B",
+				"default": "",
+				"links": [
+					"NiagaraNodeParameterMapGet_4.User.Size"
+				]
+			},
+			{
+				"name": "Add",
+				"default": "",
+				"links": []
+			}
+		]
+	}
+]

@@ -1,0 +1,18 @@
+[
+  {
+    "Name": "BasicMachinegun",
+    "Id": 1,
+    "Note": "基础机枪；距离cm、时间s；射速/伤害只在升级表维护",
+    "ProjectileSpeed": 12000.0,
+    "ProjectileLifetime": 5.0,
+    "SweepRadius": 15.0,
+    "MuzzleSocket": "Muzzle",
+    "RecoilBone": "Barrel_big",
+    "RecoilTargetLocalZCentimeters": 152.0,
+    "RecoilDuration": 0.15,
+    "RecoilCurve": "/Game/GuLiStrike/GroundMech/Animations/CF_Machinegun_Recoil.CF_Machinegun_Recoil",
+    "WeaponAnimation": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech_Machinegun.ABP_GroundMech_Machinegun_C",
+    "BulletSystem": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet.NS_GroundMech_Bullet",
+    "MuzzleSystem": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Muzzle.NS_GroundMech_Muzzle"
+  }
+]

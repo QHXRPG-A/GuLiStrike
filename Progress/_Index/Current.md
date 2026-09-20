@@ -41,6 +41,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | combat, input, network, vfx | 8/9 (89%) | 用户审核FireReview的枪口、弹道及缓冲后坐；批准后将已验证配置接到正式BP_GroundMech_Light。 | 2026-09-20 |
 | [玩法地图对齐Demo光照](../DevelopmentDocumentation/20260918-玩法地图对齐Demo光照.md) | art, rendering | 6/7 (86%) | 用户查看实际PIE截图确认明暗；战争机器拥挤按独立诊断决定后续实施范围。 | 2026-09-18 |
 | [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | art, assets, rendering | 11/11 (100%) | 等待用户审核原Demo_Map整图；按反馈修订，动态录像、GPU性能及编辑器崩溃根因不冒充已验证。 | 2026-09-18 |
 | [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | art, assets, rendering | 11/13 (85%) | 在WORK-20260918-002完成原地图全资源适配与整图终验。 | 2026-09-18 |
@@ -63,12 +64,12 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。 | 2026-09-20 |
 | [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | art, combat, input, network | 8/8 (100%) | — | 2026-09-19 |
 | [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | art, assets, rendering | 7/8 (88%) | 查看整批UE展示；后续按反馈处理外观，性能和武器玩法另行接入。 | 2026-09-19 |
 | [战争机器导弹范围与特效调整](../DevelopmentDocumentation/20260919-战争机器导弹范围与特效调整.md) | combat, commander, data, vfx | — | — | 2026-09-19 |
 | [战争机器模型大小适配](../DevelopmentDocumentation/20260919-战争机器模型大小适配.md) | commander, data, navigation, performance | — | — | 2026-09-19 |
 | [Mass单位体型与最小净距 — 运行时开发](../DevelopmentDocumentation/20260919-Mass单位体型与最小净距.md) | commander, data, navigation, performance | 12/12 (100%) | 已按用户指示撤回算法，转入WORK-20260919-002战争机器模型大小适配。 | 2026-09-19 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。 | 2026-09-19 |
 | [指挥官单位体型与避障距离配置及接入分析](../DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md) | commander, data, navigation | 5/5 (100%) | 后续先接入体型数据和合法生成，再完成Mass位置约束、工程车双向参与及显示预测限幅。 | 2026-09-18 |
 | [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | combat, commander, network, ui, vfx | 8/8 (100%) | 单独处理两项既有回归失败；本次功能与崩溃修复已交付。 | 2026-09-17 |
 | [Ship剩余四组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship剩余四组件贴图与框线制作.md) | art, assets, ship | 6/6 (100%) | 查看实际交付总览；现有舰体bottom_mid_0缺失和六个组件未配兼容槽位留作独立玩法工作。 | 2026-09-17 |

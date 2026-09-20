@@ -24,6 +24,30 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeCommanderSoldiersRow",
       "row_key_column": "name"
     },
+    "DT_GuLiStrikeMech_Upgrades": {
+      "excel": "GuLiStrikeMech.xlsx",
+      "sheet": "升级表",
+      "sources": [
+        {
+          "excel": "GuLiStrikeMech.xlsx",
+          "sheet": "升级表"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeMechUpgradesRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeMech_Skills": {
+      "excel": "GuLiStrikeMech.xlsx",
+      "sheet": "技能表",
+      "sources": [
+        {
+          "excel": "GuLiStrikeMech.xlsx",
+          "sheet": "技能表"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeMechSkillsRow",
+      "row_key_column": "name"
+    },
     "DT_GuLiStrikeSecondaryUnitSkills_Skills": {
       "excel": "GuLiStrikeSecondaryUnitSkills.xlsx",
       "sheet": "Skills",

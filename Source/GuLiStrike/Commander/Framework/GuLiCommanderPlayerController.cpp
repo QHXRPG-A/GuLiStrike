@@ -1,6 +1,8 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
+#include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
+#include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
 #include "Gameplay/Teleport/GuLiTeleportInputComponent.h"
 
@@ -156,6 +158,7 @@ void AGuLiCommanderPlayerController::EndPlay(const EEndPlayReason::Type EndPlayR
 
 void AGuLiCommanderPlayerController::FlushPressedKeys()
 {
+	if (auto* Mech = Cast<AGuLiGroundMechCharacter>(GetPawn())) Mech->GetWeapon()->SetFireHeld(false);
 	CancelSelectionDrag();
 	Super::FlushPressedKeys();
 }
@@ -371,6 +374,13 @@ bool AGuLiCommanderPlayerController::GetActiveCommandLine(
 	return true;
 }
 
+bool AGuLiCommanderPlayerController::CanUseGroundMechFireInput() const
+{
+	return IsLocalController() && !IsMoveInputIgnored() && !IsCursorOverCommanderUI()
+		&& (!TeleportInput || !TeleportInput->IsAiming())
+		&& (!BuildingPlacementComponent || !BuildingPlacementComponent->IsBuildModeActive());
+}
+
 void AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor()
 {
 	if (TeleportInput && TeleportInput->HandlePrimaryAction()) { CancelSelectionDrag(); return; }
@@ -382,6 +392,8 @@ void AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor()
 	}
 	if (!IsCommanderViewActive())
 	{
+		if (auto* Mech = Cast<AGuLiGroundMechCharacter>(GetPawn()); Mech && CanUseGroundMechFireInput())
+			Mech->GetWeapon()->SetFireHeld(true);
 		return;
 	}
 
@@ -409,6 +421,7 @@ void AGuLiCommanderPlayerController::HandlePrimaryActionAtCursor()
 
 void AGuLiCommanderPlayerController::HandlePrimaryReleased()
 {
+	if (auto* Mech = Cast<AGuLiGroundMechCharacter>(GetPawn())) Mech->GetWeapon()->SetFireHeld(false);
 	if (!bSelectionMouseDown) return;
 	float X = 0.0f, Y = 0.0f;
 	if (!IsCommanderViewActive() || !GetMousePosition(X, Y) || IsCursorOverCommanderUI())

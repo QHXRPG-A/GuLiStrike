@@ -28,6 +28,7 @@
 生成结构命名: F{主干}{sheet}Row（如 FGuLiStrikeShipPartsRow）
 """
 import json
+import math
 import re
 import sys
 from pathlib import Path
@@ -79,7 +80,7 @@ class SheetError(Exception):
     pass
 
 
-def load_schema(ws):
+def load_schema(ws, allow_text_id=False):
     """解析三行元数据 -> (列定义列表, 向量前缀集合)。"""
     if ws.max_row < 3 or ws.max_column < 3:
         raise SheetError(f"至少需要 3 行元数据 x 3 列（当前 {ws.max_row} 行 x {ws.max_column} 列）")
@@ -119,7 +120,7 @@ def load_schema(ws):
             raise SheetError(f"{cell_ref(ws.title, 3, i + 1)}: 未知标记 '{marks[i]}'（可选: {sorted(MARKS)}）")
 
     # 标准三列
-    for std_name, std_type in (("id", "int"), ("name", "str"), ("Note", "str")):
+    for std_name, std_type in (("id", "str" if allow_text_id else "int"), ("name", "str"), ("Note", "str")):
         if std_name not in names:
             raise SheetError(f"缺少标准列 '{std_name}'")
         i = names.index(std_name)
@@ -176,9 +177,9 @@ def check_value(sheet, col, row_idx, raw):
     return str(raw).strip()
 
 
-def export_sheet(ws):
+def export_sheet(ws, allow_text_id=False):
     """一个 sheet -> (json 行列表, 结构属性列表)。校验失败抛 SheetError。"""
-    cols, vec_prefixes = load_schema(ws)
+    cols, vec_prefixes = load_schema(ws, allow_text_id)
     by_name = {c["name"]: c for c in cols}
     vec_axis_cols = {f"{p}{a}": p for p in vec_prefixes for a in "XYZ"}
 
@@ -407,7 +408,10 @@ def main():
                 if stem == SECONDARY_WORKBOOK and ws.title in FIELD_REFERENCE_SHEETS:
                     if FIELD_REFERENCE_COLUMN not in [cell.value for cell in ws[1]]:
                         raise SheetError("缺少“产生的法术场”列（int / Optional，引用 Fields.id）")
-                rows, props = export_sheet(ws)
+                is_mech = stem == "GuLiStrikeMech"
+                if is_mech and ws.title not in ("升级表", "技能表"):
+                    raise SheetError("机甲表仅接受升级表和技能表")
+                rows, props = export_sheet(ws, allow_text_id=is_mech and ws.title == "升级表")
                 if consolidated and stem != SECONDARY_WORKBOOK:
                     retired = {(s, t) for s, t in SECONDARY_TABLE_IDENTITIES.values()
                                if s != "GuLiStrikeSpellFields"}
@@ -415,6 +419,8 @@ def main():
                         raise SheetError("此武器工作表已迁至 GuLiStrikeSecondaryWeapons.xlsx；禁止重复维护")
                 identity_stem, identity_sheet = SECONDARY_TABLE_IDENTITIES.get(ws.title, (stem, ws.title)) \
                     if stem == SECONDARY_WORKBOOK else (stem, ws.title)
+                if is_mech:
+                    identity_sheet = {"升级表": "Upgrades", "技能表": "Skills"}[ws.title]
                 table = f"DT_{identity_stem}_{identity_sheet}"
                 source = {"excel": wb_path.name, "sheet": ws.title}
                 if table in tables:
@@ -437,6 +443,21 @@ def main():
     if not failed:
         try:
             validate_building_references(tables)
+            if any(name.startswith('DT_GuLiStrikeMech_') for name in tables):
+                if not all(name in tables for name in ('DT_GuLiStrikeMech_Upgrades','DT_GuLiStrikeMech_Skills')):
+                    raise SheetError('GuLiStrikeMech.xlsx必须同时包含升级表与技能表')
+                skills = {row['Id'] for row in tables['DT_GuLiStrikeMech_Skills']['rows']}
+                for row in tables['DT_GuLiStrikeMech_Upgrades']['rows']:
+                    if not re.fullmatch(r'[1-9][0-9]*\.[1-9][0-9]*', row['Id']) \
+                            or row['SkillId'] not in skills or row['Level'] <= 0 \
+                            or not (0 < row['FireRate'] <= 30) or not math.isfinite(row['Damage']) or row['Damage'] <= 0:
+                        raise SheetError(f"机甲升级行 {row['Name']} 的ID、技能引用或数值无效")
+                for row in tables['DT_GuLiStrikeMech_Skills']['rows']:
+                    if not all(math.isfinite(row[key]) and row[key] > 0 for key in ('ProjectileSpeed','ProjectileLifetime','SweepRadius','RecoilDuration')):
+                        raise SheetError(f"机甲技能行 {row['Name']} 的弹丸或后坐参数无效")
+                    for key in ('RecoilCurve','BulletSystem','MuzzleSystem'):
+                        if '.' not in row[key].rsplit('/',1)[-1]:
+                            raise SheetError(f"机甲技能 {row['Name']}.{key} 必须使用完整资产对象路径（包名.对象名）")
         except SheetError as e:
             print(f"error: {e}", file=sys.stderr)
             failed = True

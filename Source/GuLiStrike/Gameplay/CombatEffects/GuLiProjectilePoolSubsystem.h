@@ -46,11 +46,13 @@ struct GULISTRIKE_API FGuLiPooledProjectileLaunch
 	float ServerTime = 0.0f;
 	/** Optional retained burst lease. Launch acquires its own reference. */
 	FGuid SourceLease;
+	/** Frozen player presentation reference, also usable after the firing Pawn disappears. */
+	TSoftObjectPtr<class UNiagaraSystem> PlayerBulletSystem;
 };
 
 DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiPooledProjectileStateEvent, const FGuLiCombatEffectState&, bool);
 
-/** Server-only data pool. Wingmen step at the runtime's 30 Hz; ground bullets sweep independently at 5 Hz. */
+/** Server-only data pool. Wingmen/players step at 30 Hz; Commander soldiers sweep independently at 5 Hz. */
 UCLASS()
 class GULISTRIKE_API UGuLiProjectilePoolSubsystem : public UWorldSubsystem
 {
@@ -99,6 +101,8 @@ private:
 	bool Retire(FGuLiProjectilePoolHandle Handle, EGuLiCombatEffectEndReason Reason,
 		const FVector& Position, float Time, const FGuLiTargetHandle* HitTarget = nullptr);
 	UPROPERTY(Transient) TObjectPtr<UGuLiDamageLedgerSubsystem> Ledger;
+	/** Keep launch references mapped even after the firing Pawn leaves the world. */
+	UPROPERTY(Transient) TArray<TObjectPtr<class UNiagaraSystem>> PlayerBulletAssets;
 	TArray<FSlot> Slots;
 	TArray<int32> FreeSlots;
 	TArray<int32> ActiveSlots;

@@ -264,6 +264,13 @@ struct GULISTRIKE_API FGuLiCombatTargetAdapter
 	}
 };
 
+/** An attack origin which is deliberately absent from the damage target directory. */
+struct GULISTRIKE_API FGuLiCombatSourceAdapter
+{
+	TWeakObjectPtr<UObject> LifetimeOwner;
+	TFunction<bool(FGuLiCombatTargetSnapshot&)> ReadSnapshot;
+};
+
 namespace GuLiCombatTargets
 {
 	/** Stable match-local Commander Mass identity; LocalId is the authoritative SoldierId. */
@@ -359,6 +366,10 @@ public:
 
 	bool RegisterTarget(const FGuLiTargetHandle& Handle, FGuLiCombatTargetAdapter Adapter);
 	bool RegisterHealthComponent(UGuLiCombatHealthComponent& HealthComponent);
+	bool RegisterSource(const FGuLiTargetHandle& Handle, FGuLiCombatSourceAdapter Adapter);
+	void UnregisterSource(const FGuLiTargetHandle& Handle, const UObject* Owner);
+	bool TryGetSourceSnapshot(const FGuLiTargetHandle& Handle, FGuLiCombatTargetSnapshot& OutSnapshot);
+	void GetSourceOnlySnapshots(TArray<FGuLiCombatTargetSnapshot>& OutSnapshots);
 	void UnregisterTarget(const FGuLiTargetHandle& Handle, const UObject* ExpectedOwner = nullptr);
 
 	bool TryGetTargetSnapshot(const FGuLiTargetHandle& Handle, FGuLiCombatTargetSnapshot& OutSnapshot);
@@ -411,6 +422,7 @@ private:
 	void PruneInvalidTargets();
 
 	TMap<FGuLiTargetHandle, FGuLiCombatTargetAdapter> TargetAdapters;
+	TMap<FGuLiTargetHandle, FGuLiCombatSourceAdapter> SourceAdapters;
 	struct FDamageBarrier
 	{
 		TWeakObjectPtr<UObject> Owner;

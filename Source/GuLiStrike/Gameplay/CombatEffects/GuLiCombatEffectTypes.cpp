@@ -4,6 +4,7 @@
 #include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
 #include "Engine/PackageMapClient.h"
+#include "NiagaraSystem.h"
 
 UE_DEFINE_GAMEPLAY_TAG_STATIC(TAG_GuLi_CombatEffectMissileWeapon, "Weapon.Missile");
 
@@ -66,7 +67,8 @@ bool FGuLiCombatEffectState::IsWellFormed() const
 		return Motion.IsValid() && (GroundWarningStyle.IsNull() || (bFixedPoint && Radius > 0 && Radius <= 100000));
 	if (Kind == EGuLiCombatEffectKind::SpellField) return true;
 	if (Kind == EGuLiCombatEffectKind::LinearProjectile)
-		return (Source.Kind == EGuLiTargetKind::Wingman || Source.Kind == EGuLiTargetKind::CommanderSoldier) && !MuzzleOffset.ContainsNaN()
+		return (Source.Kind == EGuLiTargetKind::Wingman || Source.Kind == EGuLiTargetKind::CommanderSoldier
+			|| Source.Kind == EGuLiTargetKind::GroundActor) && !MuzzleOffset.ContainsNaN()
 			&& (SourceTeam == EGuLiTeam::Red || SourceTeam == EGuLiTeam::Blue)
 			&& FMath::IsFinite(Motion.Speed) && Motion.Speed > 0 && Motion.Speed <= 1000000
 			&& EndTime > StartTime && EndTime - StartTime <= 120.01f && !FVector(LaunchDirection).IsNearlyZero();
@@ -81,7 +83,7 @@ namespace
 	// Local to this cosmetic protocol: do not change the shared damage/wingman wire format.
 	void SerializeEffectTarget(FArchive& Ar, FGuLiTargetHandle& Target, uint32 Epoch)
 	{
-		uint8 Kind = static_cast<uint8>(Target.Kind); Ar.SerializeBits(&Kind, 2);
+		uint8 Kind = static_cast<uint8>(Target.Kind); Ar.SerializeBits(&Kind, 3);
 		if (Ar.IsLoading()) { Target = {}; Target.Kind = static_cast<EGuLiTargetKind>(Kind); }
 		if (Target.Kind == EGuLiTargetKind::None) return;
 		uint8 bCompact = Target.Kind == EGuLiTargetKind::CommanderSoldier
@@ -123,7 +125,7 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 	bool bMapped=true, bVector=true;
 	if (Kind == EGuLiCombatEffectKind::LinearProjectile)
 	{
-		// Straight flight needs one launch payload and a terminal point, no transform corrections or asset paths.
+		// Straight flight needs one launch payload and a terminal point; player rounds also carry their visual asset.
 		if (Phase == EGuLiCombatEffectPhase::Finished)
 		{
 			Location.NetSerialize(Ar, Map, bVector); Ar << SampleTime;
@@ -131,6 +133,7 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 		else
 		{
 			SerializeEffectTarget(Ar, Source, MatchEpoch);
+			if (Source.Kind == EGuLiTargetKind::GroundActor) bMapped &= SerializeEffectAsset(Ar, Map, PlayerBulletSystem);
 			LaunchLocation.NetSerialize(Ar, Map, bVector); LaunchDirection.NetSerialize(Ar, Map, bVector);
 			FVector_NetQuantize Muzzle(MuzzleOffset); Muzzle.NetSerialize(Ar, Map, bVector);
 			Ar << Motion.Speed << StartTime << EndTime;
@@ -142,7 +145,7 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 				SampleTime = ActivationTime = StartTime;
 			}
 		}
-		bOutSuccess = !Ar.IsError() && bVector && IsWellFormed(); return true;
+		bOutSuccess = !Ar.IsError() && bVector && IsWellFormed(); return bMapped;
 	}
 	if (Phase != EGuLiCombatEffectPhase::Finished)
 	{

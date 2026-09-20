@@ -97,6 +97,7 @@ class AGuLiCommanderPlayerController : public AGuLiBattlePlayerController
 
 public:
 	AGuLiCommanderPlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
+	bool CanUseGroundMechFireInput() const;
 
 	virtual void BeginPlay() override;
 	virtual void EndPlay(const EEndPlayReason::Type EndPlayReason) override;

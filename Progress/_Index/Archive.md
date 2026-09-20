@@ -4,6 +4,7 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-09-20 | [玩家机枪开火与Excel升级候选](../Archive/20260920-玩家机枪开火与Excel升级候选.md) | combat, network, input, vfx | partial | 完成玩家机枪原生逻辑、Excel两表和逐发动画特效候选，源码构建及技术验证通过；正式接入等待用户B视觉审核。 |
 | 2026-09-19 | [机甲与武器整批同步UE及总结](../Archive/20260919-机甲与武器整批同步UE及总结.md) | art, assets, rendering | partial | 按全部同步的明确授权补齐五项，八个成品共十网格全部进入源码UE5.7；展示关卡、十一张UE图、用途与保存回读已归档。 |
 | 2026-09-19 | [轻型机甲与Spider同步UE](../Archive/20260919-轻型机甲与Spider同步UE.md) | art, assets, rendering, input, network | partial | 按明确授权将轻型v9和完整网格Spider同步源码UE5.7，更新玩家模型及Demo参照，修复动画默认值缓存并完成相关实机检查。 |
 | 2026-09-19 | [轻型机甲排气口浮空修复](../Archive/20260919-轻型机甲排气口浮空修复.md) | art, assets, rendering | partial | 修复v8成对排气口浮空，内收框体并新增对称贴壳底座，完成保存接触回读及实际前后对比。 |

@@ -1,0 +1,836 @@
+[
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.EmitterState.Loop Count",
+    "v": "1",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.EmitterState.Loop Delay",
+    "v": "0.100000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.EmitterState.Loop Duration",
+    "v": "1.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.EmitterState.MaxDistance",
+    "v": "2000.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.EmitterState.MinDistance",
+    "v": "0.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.EmitterState.Spawn Count Scale",
+    "v": "1.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpawnBurst_Instantaneous.Spawn Count",
+    "v": "5",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpawnBurst_Instantaneous.Spawn Group",
+    "v": "0",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpawnBurst_Instantaneous.Spawn Probability",
+    "v": "1.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpawnBurst_Instantaneous.Spawn Time",
+    "v": "0.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpawnRate.Spawn Probability",
+    "v": "1.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpawnRate.SpawnGroup",
+    "v": "0",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpawnRate.SpawnRate",
+    "v": "30.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.AddVelocityInCone.Cone Angle",
+    "v": "60.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.AddVelocityInCone.Cone Axis",
+    "v": "(-1.000000, 0.000000, 0.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.AddVelocityInCone.Velocity Distribution Along Cone Axis",
+    "v": "10.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.AddVelocityInCone.Velocity Falloff Away From Cone Axis",
+    "v": "2.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.Drag.Drag",
+    "v": "1.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.Drag.Rotational Drag",
+    "v": "1.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.FloatFromCurve.Scale Curve",
+    "v": "1.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.GravityForce.Gravity",
+    "v": "(0.000000, 0.000000, -980.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.InitializeParticle.Color",
+    "v": "(R=1.000000,G=0.257328,B=0.000000,A=1.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.InitializeParticle.Mesh Scale",
+    "v": "(1.000000, 1.000000, 1.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.ScaleColor.Scale RGBA",
+    "v": "(1.000000, 1.000000, 1.000000, 1.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SolveForcesAndVelocity.Acceleration Limit",
+    "v": "9999.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SolveForcesAndVelocity.Manually Enable Rotational Solver",
+    "v": "(raw 4 bytes)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SolveForcesAndVelocity.Mesh Orientation",
+    "v": "(raw 16 bytes)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SolveForcesAndVelocity.Rotational Force",
+    "v": "(0.000000, 0.000000, 0.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SolveForcesAndVelocity.Rotational Velocity",
+    "v": "(0.000000, 0.000000, 0.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SolveForcesAndVelocity.Speed Limit",
+    "v": "1000.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation.Non Uniform Scale",
+    "v": "(1.000000, 1.000000, 1.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation.Offset",
+    "v": "(0.000000, 0.000000, 0.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation.Random Seed",
+    "v": "0",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation.Spawn Group Mask",
+    "v": "0",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation.Sphere Radius",
+    "v": "12.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation.Surface Only Band Thickness",
+    "v": "0.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation001.Non Uniform Scale",
+    "v": "(1.000000, 1.000000, 1.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation001.Offset",
+    "v": "(-20.000000, 0.000000, 0.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation001.Random Seed",
+    "v": "0",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation001.Spawn Group Mask",
+    "v": "0",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation001.Sphere Orientation Axis",
+    "v": "(1.000000, 0.000000, 0.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation001.Sphere Radius",
+    "v": "15.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SphereLocation001.Surface Only Band Thickness",
+    "v": "0.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpriteSizeScaleBySpeed.Max Scale Factor",
+    "v": "(raw 8 bytes)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpriteSizeScaleBySpeed.Min Scale Factor",
+    "v": "(raw 8 bytes)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpriteSizeScaleBySpeed.Velocity Threshold",
+    "v": "1000.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat.Maximum",
+    "v": "200.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat.Minimum",
+    "v": "300.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat.Random Seed",
+    "v": "0",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat001.Maximum",
+    "v": "8.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat001.Minimum",
+    "v": "10.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat001.Random Seed",
+    "v": "0",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat003.Maximum",
+    "v": "0.500000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat003.Minimum",
+    "v": "1.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat003.Random Seed",
+    "v": "0",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat004.Maximum",
+    "v": "0.500000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat004.Minimum",
+    "v": "0.100000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat004.Random Seed",
+    "v": "0",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat005.Maximum",
+    "v": "1.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat005.Minimum",
+    "v": "0.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.UniformRangedFloat005.Random Seed",
+    "v": "0",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.VectorFromFloat.Value",
+    "v": "100.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.VectorNoiseForce.Force Amount",
+    "v": "40.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.VectorNoiseForce.Random Noise Time Interval",
+    "v": "0.250000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.Drag.Drag",
+    "v": "1.000000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.Drag.Rotational Drag",
+    "v": "1.000000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.FloatFromCurve.Scale Curve",
+    "v": "1.000000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.GravityForce.Gravity",
+    "v": "(0.000000, 0.000000, -980.000000)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.ScaleColor.Scale RGBA",
+    "v": "(1.000000, 1.000000, 1.000000, 1.000000)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SolveForcesAndVelocity.Acceleration Limit",
+    "v": "9999.000000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SolveForcesAndVelocity.Manually Enable Rotational Solver",
+    "v": "(raw 4 bytes)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SolveForcesAndVelocity.Mesh Orientation",
+    "v": "(raw 16 bytes)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SolveForcesAndVelocity.Rotational Force",
+    "v": "(0.000000, 0.000000, 0.000000)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SolveForcesAndVelocity.Rotational Velocity",
+    "v": "(0.000000, 0.000000, 0.000000)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SolveForcesAndVelocity.Speed Limit",
+    "v": "1000.000000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpriteSizeScaleBySpeed.Max Scale Factor",
+    "v": "(raw 8 bytes)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpriteSizeScaleBySpeed.Min Scale Factor",
+    "v": "(raw 8 bytes)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.SpriteSizeScaleBySpeed.Velocity Threshold",
+    "v": "1000.000000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.VectorFromFloat.Value",
+    "v": "100.000000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.VectorNoiseForce.Force Amount",
+    "v": "40.000000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_spread_spark",
+    "p": "Constants.NE_spread_spark.VectorNoiseForce.Random Noise Time Interval",
+    "v": "0.250000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.Add_Float.B",
+    "v": "0.150000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.EmitterState.Loop Delay",
+    "v": "0.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.EmitterState.MaxDistance",
+    "v": "1000.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.EmitterState.MinDistance",
+    "v": "0.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.EmitterState.Spawn Count Scale",
+    "v": "1.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.MakeVector.Y",
+    "v": "0.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.MakeVector.Z",
+    "v": "0.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.Multiply_Float002.A",
+    "v": "-130.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.Multiply_VectorByFloat002.Float",
+    "v": "1.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.Multiply_VectorByFloat003.Float",
+    "v": "1.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.Multiply_VectorByFloat003.Vector",
+    "v": "(1.000000, 1.000000, 1.000000)",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SpawnBurst_Instantaneous.Spawn Count",
+    "v": "10",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SpawnBurst_Instantaneous.Spawn Group",
+    "v": "0",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SpawnBurst_Instantaneous.Spawn Probability",
+    "v": "1.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SpawnBurst_Instantaneous.Spawn Time",
+    "v": "0.000000",
+    "stage": "EmitterUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.BeamWidth.Beam Twist Amount",
+    "v": "0.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.Color.Color",
+    "v": "(R=1.000000,G=0.477618,B=0.000000,A=1.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.Color.Scale Color",
+    "v": "(1.000000, 1.000000, 1.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.FloatFromCurve001.Scale Curve",
+    "v": "1.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.InitializeParticle.Lifetime",
+    "v": "1.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.InitializeParticle.Mass",
+    "v": "1.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.InitializeParticle.Mesh Scale",
+    "v": "(1.000000, 1.000000, 1.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.InitializeParticle.Sprite Rotation",
+    "v": "0.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.InitializeParticle.Sprite Size",
+    "v": "(raw 8 bytes)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.Multiply_Float.A",
+    "v": "2.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.Multiply_Float001.A",
+    "v": "50.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.ScaleColor.Scale Alpha",
+    "v": "1.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.ScaleColor.Scale RGBA",
+    "v": "(1.000000, 1.000000, 1.000000, 1.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SolveForcesAndVelocity.Acceleration Limit",
+    "v": "9999.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SolveForcesAndVelocity.Manually Enable Rotational Solver",
+    "v": "(raw 4 bytes)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SolveForcesAndVelocity.Mesh Orientation",
+    "v": "(raw 16 bytes)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SolveForcesAndVelocity.Rotational Force",
+    "v": "(0.000000, 0.000000, 0.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SolveForcesAndVelocity.Rotational Velocity",
+    "v": "(0.000000, 0.000000, 0.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SolveForcesAndVelocity.Speed Limit",
+    "v": "1000.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SpawnBeam.Spline Position Error Threshold",
+    "v": "0.000001",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SphereLocation.Non Uniform Scale",
+    "v": "(1.000000, 1.000000, 1.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SphereLocation.Offset",
+    "v": "(0.000000, 0.000000, 0.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SphereLocation.Random Seed",
+    "v": "0",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SphereLocation.Spawn Group Mask",
+    "v": "0",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SphereLocation.Sphere Orientation Axis",
+    "v": "(1.000000, 0.000000, 0.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SphereLocation.Sphere Radius",
+    "v": "100.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SphereLocation.Surface Only Band Thickness",
+    "v": "0.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.UniformRangedLinearColor.Maximum",
+    "v": "(R=1.000000,G=0.053995,B=0.000000,A=1.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.UniformRangedLinearColor.Minimum",
+    "v": "(R=1.000000,G=0.313532,B=0.000000,A=1.000000)",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.UniformRangedLinearColor.Random Seed",
+    "v": "0",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.VectorFromFloat.Value",
+    "v": "250.000000",
+    "stage": "ParticleSpawn"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.Color.Color",
+    "v": "(R=1.000000,G=0.477618,B=0.000000,A=1.000000)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.Color.Scale Color",
+    "v": "(1.000000, 1.000000, 1.000000)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.FloatFromCurve001.Scale Curve",
+    "v": "1.000000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.ScaleColor.Scale Alpha",
+    "v": "1.000000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.ScaleColor.Scale RGBA",
+    "v": "(1.000000, 1.000000, 1.000000, 1.000000)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SolveForcesAndVelocity.Acceleration Limit",
+    "v": "9999.000000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SolveForcesAndVelocity.Manually Enable Rotational Solver",
+    "v": "(raw 4 bytes)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SolveForcesAndVelocity.Mesh Orientation",
+    "v": "(raw 16 bytes)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SolveForcesAndVelocity.Rotational Force",
+    "v": "(0.000000, 0.000000, 0.000000)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SolveForcesAndVelocity.Rotational Velocity",
+    "v": "(0.000000, 0.000000, 0.000000)",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.SolveForcesAndVelocity.Speed Limit",
+    "v": "1000.000000",
+    "stage": "ParticleUpdate"
+  },
+  {
+    "e": "NE_gun_nozzle_fire",
+    "p": "Constants.NE_gun_nozzle_fire.VectorFromFloat.Value",
+    "v": "250.000000",
+    "stage": "ParticleUpdate"
+  }
+]

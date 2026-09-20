@@ -282,6 +282,7 @@ void UGuLiDamageLedgerSubsystem::Deinitialize()
 	DamageBarriers.Reset();
 	RetainedEffectSources.Reset();
 	TargetAdapters.Reset();
+	SourceAdapters.Reset();
 	ResultsByEvent.Reset();
 	EventOrder.Reset();
 	DeathRecordsByEvent.Reset();
@@ -543,10 +544,46 @@ FGuLiDamageCommitResult UGuLiDamageLedgerSubsystem::CommitDamage(const FGuLiDama
 	return CommitDamageInternal(Request, nullptr);
 }
 
+bool UGuLiDamageLedgerSubsystem::RegisterSource(const FGuLiTargetHandle& Handle, FGuLiCombatSourceAdapter Adapter)
+{
+	if (!IsAuthorityWorld() || !Handle.IsValid() || !Adapter.LifetimeOwner.IsValid() || !Adapter.ReadSnapshot) return false;
+	if (const auto* Existing = SourceAdapters.Find(Handle); Existing && Existing->LifetimeOwner.IsValid()
+		&& Existing->LifetimeOwner != Adapter.LifetimeOwner) return false;
+	SourceAdapters.Add(Handle, MoveTemp(Adapter));
+	return true;
+}
+
+void UGuLiDamageLedgerSubsystem::UnregisterSource(const FGuLiTargetHandle& Handle, const UObject* Owner)
+{
+	if (const auto* Source = SourceAdapters.Find(Handle); Source && Source->LifetimeOwner.Get() == Owner) SourceAdapters.Remove(Handle);
+}
+
+bool UGuLiDamageLedgerSubsystem::TryGetSourceSnapshot(const FGuLiTargetHandle& Handle, FGuLiCombatTargetSnapshot& Out)
+{
+	if (const auto* Source = SourceAdapters.Find(Handle))
+	{
+		Out = {};
+		return Source->LifetimeOwner.IsValid() && Source->ReadSnapshot && Source->ReadSnapshot(Out)
+			&& Out.Handle == Handle && !Out.Location.ContainsNaN();
+	}
+	return TryGetTargetSnapshot(Handle, Out);
+}
+
+void UGuLiDamageLedgerSubsystem::GetSourceOnlySnapshots(TArray<FGuLiCombatTargetSnapshot>& Out)
+{
+	Out.Reset();
+	for (auto It = SourceAdapters.CreateIterator(); It; ++It)
+	{
+		if (!It.Value().LifetimeOwner.IsValid()) { It.RemoveCurrent(); continue; }
+		FGuLiCombatTargetSnapshot Snapshot;
+		if (TryGetSourceSnapshot(It.Key(), Snapshot)) Out.Add(Snapshot);
+	}
+}
+
 FGuid UGuLiDamageLedgerSubsystem::AcquireEffectSource(const FGuLiTargetHandle& Source)
 {
 	FGuLiCombatTargetSnapshot Snapshot;
-	if (!IsAuthorityWorld() || MatchEpoch == 0 || !TryGetTargetSnapshot(Source, Snapshot) || !Snapshot.bAlive) return {};
+	if (!IsAuthorityWorld() || MatchEpoch == 0 || !TryGetSourceSnapshot(Source, Snapshot) || !Snapshot.bAlive) return {};
 	const FGuid Id = FGuid::NewGuid();
 	RetainedEffectSources.Add(Id, {Source, Snapshot.Team, MatchEpoch, 1});
 	return Id;

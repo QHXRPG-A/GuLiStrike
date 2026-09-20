@@ -4,6 +4,7 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | verification | partial | 用户审核FireReview的枪口、弹道及缓冲后坐；批准后将已验证配置接到正式BP_GroundMech_Light。 | 2026-09-20 |
 | [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | done | partial | 查看整批UE展示；后续按反馈处理外观，性能和武器玩法另行接入。 | 2026-09-19 |
 | [战争机器模型大小适配](../DevelopmentDocumentation/20260919-战争机器模型大小适配.md) | done | partial | — | 2026-09-19 |
 | [Mass单位体型与最小净距 — 运行时开发](../DevelopmentDocumentation/20260919-Mass单位体型与最小净距.md) | done | partial | 已按用户指示撤回算法，转入WORK-20260919-002战争机器模型大小适配。 | 2026-09-19 |

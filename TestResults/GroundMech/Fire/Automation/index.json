@@ -1,0 +1,89 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "5FADECA248866DCC3061CDB1175157B9",
+			"instanceName": "DESKTOP-6D3B0FC-36528",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.20-02.07.16",
+	"succeeded": 4,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.45188558101654053,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "NetworkOrderAndCleanup",
+			"fullTestPath": "GuLiStrike.CombatEffects.NetworkOrderAndCleanup",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"5FADECA248866DCC3061CDB1175157B9"
+			],
+			"duration": 0.3396477997303009,
+			"dateTime": "2026.09.20-02.07.15",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PlayerPoolAndWire",
+			"fullTestPath": "GuLiStrike.GroundMech.Fire.PlayerPoolAndWire",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"5FADECA248866DCC3061CDB1175157B9"
+			],
+			"duration": 0.04125170037150383,
+			"dateTime": "2026.09.20-02.07.15",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Recoil",
+			"fullTestPath": "GuLiStrike.GroundMech.Fire.Recoil",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"5FADECA248866DCC3061CDB1175157B9"
+			],
+			"duration": 0.0082019008696079254,
+			"dateTime": "2026.09.20-02.07.15",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UpgradesCadenceAndInterruptions",
+			"fullTestPath": "GuLiStrike.GroundMech.Fire.UpgradesCadenceAndInterruptions",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"5FADECA248866DCC3061CDB1175157B9"
+			],
+			"duration": 0.062784194946289062,
+			"dateTime": "2026.09.20-02.07.15",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

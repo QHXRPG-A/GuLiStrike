@@ -1,0 +1,94 @@
+{
+  "sources": {
+    "VFX_Smg_Loop": {
+      "parameters": 8,
+      "query_ok": true
+    },
+    "VFX_FireGun_Loop": {
+      "parameters": 4,
+      "query_ok": true
+    }
+  },
+  "candidates": {
+    "Bullet": {
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000001A3F40A51E0) {success: True, system_path: \"/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.000666}>",
+      "success": true,
+      "emitters": [
+        "NE_forward_simple_bullet"
+      ]
+    },
+    "Muzzle": {
+      "compile": "<Struct 'NiagaraCompilationResult' (0x000001A4883ADB60) {success: True, system_path: \"/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Muzzle\", error_count: 0, warning_count: 0, errors: , warnings: , compilation_time_seconds: 0.001114}>",
+      "success": true,
+      "emitters": [
+        "NE_spread_spark",
+        "NE_gun_nozzle_fire"
+      ]
+    }
+  },
+  "curve": {
+    "0": 0.0,
+    "0.025": 1.0,
+    "0.055": 0.8500000238418579,
+    "0.1": 0.30000001192092896,
+    "0.15": 0.0
+  },
+  "animation": {
+    "class": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech_Machinegun.ABP_GroundMech_Machinegun_C",
+    "compiled": true,
+    "compile_result": "<Struct 'BlueprintCompileResult' (0x000001A252C5C3F0) {success: True, num_errors: 0, num_warnings: 0, errors: , warnings: }>",
+    "success": true
+  },
+  "tables": {
+    "Upgrades": [
+      {
+        "Name": "Machinegun_Lv1",
+        "Id": "1.1",
+        "Note": "基础机枪；FireRate单位为发/秒；本级绝对数值",
+        "SkillId": 1,
+        "Level": 1,
+        "FireRate": 2,
+        "Damage": 10
+      },
+      {
+        "Name": "Machinegun_Lv2",
+        "Id": "1.2",
+        "Note": "基础机枪；FireRate单位为发/秒；本级绝对数值",
+        "SkillId": 1,
+        "Level": 2,
+        "FireRate": 4,
+        "Damage": 15
+      },
+      {
+        "Name": "Machinegun_Lv3",
+        "Id": "1.3",
+        "Note": "基础机枪；FireRate单位为发/秒；本级绝对数值",
+        "SkillId": 1,
+        "Level": 3,
+        "FireRate": 6,
+        "Damage": 20
+      }
+    ],
+    "Skills": [
+      {
+        "Name": "BasicMachinegun",
+        "Id": 1,
+        "Note": "基础机枪；距离cm、时间s；射速/伤害只在升级表维护",
+        "ProjectileSpeed": 12000,
+        "ProjectileLifetime": 5,
+        "SweepRadius": 15,
+        "MuzzleSocket": "Muzzle",
+        "RecoilBone": "Barrel_big",
+        "RecoilTargetLocalZCentimeters": 152,
+        "RecoilDuration": 0.15,
+        "RecoilCurve": "/Game/GuLiStrike/GroundMech/Animations/CF_Machinegun_Recoil.CF_Machinegun_Recoil",
+        "WeaponAnimation": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech_Machinegun.ABP_GroundMech_Machinegun_C",
+        "BulletSystem": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet.NS_GroundMech_Bullet",
+        "MuzzleSystem": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Muzzle.NS_GroundMech_Muzzle"
+      }
+    ]
+  },
+  "production_weapon_enabled": false,
+  "socket": "<Struct 'MeshSocketInfo' (0x000001A3F5FFD660) {socket_name: \"Muzzle\", bone_name: \"Barrel_end\", relative_location: {x: 0.000000, y: 0.000000, z: 0.000000}, relative_rotation: {pitch: 90.000000, yaw: 0.000000, roll: 0.000000}, relative_scale: {x: 1.000000, y: 1.000000, z: 1.000000}, force_always_animated: True}>",
+  "success": true
+}

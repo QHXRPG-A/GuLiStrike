@@ -1,0 +1,84 @@
+{
+  "success": true,
+  "assets": [
+    "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet.NS_GroundMech_Bullet",
+    "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Muzzle.NS_GroundMech_Muzzle",
+    "/Game/GuLiStrike/GroundMech/Style_v9/Meshes/SK_Machinegun.SK_Machinegun",
+    "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech_Machinegun.ABP_GroundMech_Machinegun",
+    "/Game/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReview.BP_GroundMech_FireReview",
+    "/Game/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReviewMode.BP_GroundMech_FireReviewMode"
+  ],
+  "tables": [
+    {
+      "asset": "DT_GuLiStrikeMech_Upgrades",
+      "source_rows": [
+        "Machinegun_Lv1",
+        "Machinegun_Lv2",
+        "Machinegun_Lv3"
+      ],
+      "created": false,
+      "row_names": [
+        "Machinegun_Lv1",
+        "Machinegun_Lv2",
+        "Machinegun_Lv3"
+      ],
+      "row_checks": {
+        "Machinegun_Lv1": true,
+        "Machinegun_Lv2": true,
+        "Machinegun_Lv3": true
+      },
+      "imported": true
+    },
+    {
+      "asset": "DT_GuLiStrikeMech_Skills",
+      "source_rows": [
+        "BasicMachinegun"
+      ],
+      "created": false,
+      "row_names": [
+        "BasicMachinegun"
+      ],
+      "row_checks": {
+        "BasicMachinegun": true
+      },
+      "imported": true
+    }
+  ],
+  "curve": [
+    {
+      "time": 0,
+      "value": 0.0
+    },
+    {
+      "time": 0.025,
+      "value": 1.0
+    },
+    {
+      "time": 0.055,
+      "value": 0.8500000238418579
+    },
+    {
+      "time": 0.1,
+      "value": 0.30000001192092896
+    },
+    {
+      "time": 0.15,
+      "value": 0.0
+    }
+  ],
+  "socket": "<Struct 'MeshSocketInfo' (0x0000020650949E60) {socket_name: \"Muzzle\", bone_name: \"Barrel_end\", relative_location: {x: 0.000000, y: 0.000000, z: 0.000000}, relative_rotation: {pitch: 90.000000, yaw: 0.000000, roll: 0.000000}, relative_scale: {x: 1.000000, y: 1.000000, z: 1.000000}, force_always_animated: True}>",
+  "review_starts": [
+    [
+      17000.0,
+      -6000.0,
+      1095.3452968597412
+    ],
+    [
+      18000.0,
+      -4300.0,
+      1352.0191097259521
+    ]
+  ],
+  "map": "/Game/Maps/LVL_GroundMech_FireReview",
+  "production_weapon_enabled": false
+}
