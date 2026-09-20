@@ -1,0 +1,463 @@
+{
+  "branch": "codex/ground-mech-mass-collision-fixes",
+  "baseline": "d657833a",
+  "engine": "D:/UnrealEngine-5.7",
+  "automation": {
+    "report": "Saved/Automation/CollisionFixesFinal/index.json",
+    "states": {
+      "Success": 79
+    },
+    "tests": [
+      {
+        "name": "GuLiStrike.Commander.Combat.BenchmarkHarness",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Combat.MachineGunAndMissileIndependentCadence",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Combat.MultiWeaponChannelsAndCooldownMigration",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Combat.OrdersAndCadence",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Combat.ProfileChange",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Combat.SharedSkillDifferentTypes",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Combat.SimultaneousAndExtensible",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Combat.StrafeTargeting",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.DirectionFallback",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.FreeAssignmentInvariant",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.FreePartialAssignment",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.HexCandidateGeometry",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.HexCandidateOrdering",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.InputOrderInvariant",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.ProjectionPrefix",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.ProjectionPrefixAssignmentEquivalence",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.ScaleAndSpacing",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.DestinationPlanner.UnderstrengthCentering",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.PredictiveAvoidance.Cadence",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.PredictiveAvoidance.DeterministicCandidates",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.PredictiveAvoidance.Force",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.PredictiveAvoidance.FormationCost",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.PredictiveAvoidance.GridBoundaries",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.PredictiveAvoidance.OrderRevision",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.BatchCompletionGate",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.CommonActiveOrder",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.FinalCorridorLane",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.FinalPathFrameUsesTerminalSegment",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.LocalFlowField",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.LooseArrivalRadius",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.LooseArrivalTerminalPhase",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.LooseArrivalWaitsForTail",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.ManualAvoidanceGrid",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.MeaningfulProgress",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.MovementUpdateCadence",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.NamedNavDataContract",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.PerMemberLooseArrivalState",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.RecoveryThresholds",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.SharedTargetProjection",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.SurfaceMoveAcceptance",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.TransitColumnHysteresis",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Mass.Navigation.TransitColumnPolicy",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.SelectionMove.AckBeforeSnapshot",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.SelectionMove.FullPayloadIdentity",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.SelectionMove.IndependentDependencies",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.SelectionMove.MoveAckBeforePrunedSnapshot",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.SelectionMove.PendingMoveSerializesLatestClick",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.SelectionMove.RejectionCancels",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.SelectionMove.SnapshotBeforeAck",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.AckRoutingAndFifo",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.BootstrapMatchEpochLifecycle",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.BootstrapSnapshotGate",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.DynamicCohortContract",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.FloatHealthContract",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.MoveEndpointFastArrayContract",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.NetworkGateEvidence",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.PoseChunkContract",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.PoseHistoryExpiryAndCleanup",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.PoseLossReorderingAndSession",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.PoseMatchEpochGate",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.PosePredictionAndFields",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.PoseQuantization",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.PresentationServerClock",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.RosterCache",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.SoldierFastArrayContract",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.Commander.Network.SoldierSnapshotNotification",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.Fire.PlayerPoolAndWire",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.Fire.Recoil",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.Fire.UpgradesCadenceAndInterruptions",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.MassCollision.ContinuousTime",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.MassCollision.DynamicObstacleRegistry",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.MassCollision.FriendlyYield",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.MassCollision.LandingAndSupport",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.MassCollision.MovementReplay",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.MassCollision.NetworkMove",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.MassCollision.RawSnapshot",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.MassCollision.SideSweep",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.MassCollision.SpatialIndex500",
+        "state": "Success"
+      },
+      {
+        "name": "GuLiStrike.GroundMech.MassCollision.WorldLanding",
+        "state": "Success"
+      }
+    ],
+    "succeeded_with_warnings": 5,
+    "warning_note": "Existing transient native mech missing mesh/socket and missing legacy fallback mesh warnings; 0 errors."
+  },
+  "builds": {
+    "engine_editor_build_id": "dd506ae0-11d1-48e9-95ed-8becd4c36a75",
+    "project_editor_build_id": "dd506ae0-11d1-48e9-95ed-8becd4c36a75",
+    "flight_editor_build_id": "dd506ae0-11d1-48e9-95ed-8becd4c36a75",
+    "map_authoring_editor_build_id": "dd506ae0-11d1-48e9-95ed-8becd4c36a75",
+    "editor": {
+      "target": "GuLiStrikeEditor Win64 Development",
+      "exit_code": 0,
+      "log": "Saved/collision-fixes-editor-final.log"
+    },
+    "game": {
+      "target": "GuLiStrike Win64 Development",
+      "exit_code": 0,
+      "log": "Saved/collision-fixes-game-final.log",
+      "build_id": "1c0a5745-2a66-480f-912a-feec8d4ebe2e"
+    }
+  },
+  "stress": {
+    "baseline": {
+      "directory": "D:\\UE5.7\\test1\\Saved\\Performance\\GroundMechMassCollisionFixes\\collision-fixes-baseline-20260920-n500-c0\\server",
+      "simulation_steps": 400,
+      "dropped_steps": 0,
+      "movement_updates": 200000,
+      "sampled_fixed_step_ms": {
+        "n": 390,
+        "mean": 0.8366397435897436,
+        "p50": 0.7946,
+        "p95": 1.114,
+        "p99": 1.7672,
+        "max": 2.0142
+      },
+      "frame_ms": {
+        "n": 2331,
+        "mean": 16.732935135135136,
+        "p50": 16.6288,
+        "p95": 18.2243,
+        "p99": 18.945,
+        "max": 21.8274
+      },
+      "ground_mass_body_count": 500,
+      "ground_mass_snapshot_refreshes": 400,
+      "ground_mass_max_snapshot_ms": 0.14450000162469223,
+      "ground_mass_queries": 0,
+      "ground_mass_raw_query_candidates": 0,
+      "ground_mass_side_hits": 0,
+      "ground_mass_support_contacts": 0,
+      "server_budget_pass": true
+    },
+    "fix": {
+      "directory": "D:\\UE5.7\\worktrees\\ground-mech-mass-collision\\Saved\\Performance\\GroundMechMassCollisionFixes\\collision-fixes-verified-20260920-n500-c0\\server",
+      "simulation_steps": 400,
+      "dropped_steps": 0,
+      "movement_updates": 200000,
+      "sampled_fixed_step_ms": {
+        "n": 390,
+        "mean": 0.8424453846153847,
+        "p50": 0.8021,
+        "p95": 0.9937,
+        "p99": 1.8794,
+        "max": 1.9503
+      },
+      "frame_ms": {
+        "n": 2337,
+        "mean": 16.696950877192982,
+        "p50": 16.6002,
+        "p95": 18.2042,
+        "p99": 18.9189,
+        "max": 26.9883
+      },
+      "ground_mass_body_count": 500,
+      "ground_mass_snapshot_refreshes": 400,
+      "ground_mass_max_snapshot_ms": 0.2930000009655487,
+      "ground_mass_queries": 0,
+      "ground_mass_raw_query_candidates": 0,
+      "ground_mass_side_hits": 0,
+      "ground_mass_support_contacts": 0,
+      "server_budget_pass": true
+    },
+    "contact_performance_verified": false,
+    "limitation": "Existing stress scene has no player mech contact; zero queries/hits. It validates navigation/snapshot overhead, not collision throughput."
+  },
+  "spatial_query": {
+    "synthetic_bodies": 500,
+    "buckets": 500,
+    "raw_candidates": 1,
+    "intersections": 1,
+    "source": "SpatialIndex500 automation output"
+  },
+  "network_live": {
+    "listen": {
+      "status": "partial_before_final_support_reference_fix",
+      "evidence": [
+        "listen-dense-support.json",
+        "listen-moving-support.json"
+      ],
+      "moving_isolated_support": "60 samples over 8 seconds retained support ID 1 on both peers; server carried 2516.15 cm.",
+      "limitation": "Dense formation support switching and large peer deltas were observed; visual jitter is not accepted."
+    },
+    "dedicated": {
+      "status": "functional_verified_visual_partial",
+      "evidence": "dedicated-verified.json",
+      "issue": "SimulateMovement/MoveSmooth calls MoveAlongFloor without prediction context. Remote proxies now use standard CMC floor movement; NetworkMove regression passes.",
+      "net_mode": 1,
+      "clients": 3,
+      "landing": "both peers acquired support ID 1",
+      "ride_samples": 44,
+      "ride_support_consistent": true,
+      "server_carried_cm": 2517.914167764119,
+      "death": "accepted damage at 7 seconds; both peers cleared support, fell and landed on world floor",
+      "remote_proxy_regression": "walked 13.83 m after landing; no repeated assertion",
+      "visual_jitter_acceptance": "not_verified"
+    },
+    "visual_jitter_acceptance": "not_verified"
+  },
+  "blueprint_binding": {
+    "asset": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+    "movement_component": "UGuLiGroundMechMovementComponent",
+    "verified_by": "NetworkMove automation LoadClass + live PIE instance",
+    "preserved": "model scale, capsule, weapon component and upgrade defaults"
+  },
+  "known_limitations": [
+    "User accepts centimeter-level difference between quantized pose stream and authoritative collision pose; no quantization change.",
+    "Network visual acceptance remains unverified; functional samples do not establish absence of sustained jitter."
+  ],
+  "progress_docs": {
+    "build": "passed",
+    "check": {
+      "errors": 0,
+      "warnings": 12,
+      "note": "Existing large documents/task-list warnings; no new collision document errors."
+    }
+  }
+}

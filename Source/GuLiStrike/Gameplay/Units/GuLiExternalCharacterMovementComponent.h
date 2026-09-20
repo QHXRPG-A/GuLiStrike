@@ -25,6 +25,8 @@ public:
 protected:
 	virtual void ServerMove_PerformMovement(const FCharacterNetworkMoveData& MoveData) override;
 	virtual void ClientHandleMoveResponse(const FCharacterMoveResponseDataContainer& Response) override;
+	virtual void BeforeValidatedMoveResponse(const FCharacterMoveResponseDataContainer& Response) {}
+	virtual void AfterValidatedMoveResponse(const FCharacterMoveResponseDataContainer& Response) {}
 private:
 	TUniquePtr<FGuLiExternalMovementNetworkStorage,FGuLiExternalMovementStorageDeleter> NetworkStorage;
 };

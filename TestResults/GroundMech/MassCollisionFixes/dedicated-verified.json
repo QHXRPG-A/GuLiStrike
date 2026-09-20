@@ -1,0 +1,2263 @@
+{
+  "scenario": "Dedicated: isolated landing, move command, death, replicated walking after support loss",
+  "events": [
+    {
+      "elapsed": 2.0,
+      "event": "move_command_injected"
+    },
+    {
+      "elapsed": 7.0,
+      "event": "support_damaged",
+      "accepted": true
+    }
+  ],
+  "samples": [
+    {
+      "elapsed": 0.10900000000037835,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -5985.5976055244855
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6056.70237046284
+        ]
+      }
+    },
+    {
+      "elapsed": 0.2180000000007567,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 0.3280000000013388,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 0.4530000000013388,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 0.5780000000013388,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 0.6870000000017171,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 0.7959999999984575,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 0.9059999999990396,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 1.014999999999418,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 1.125,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 1.2340000000003783,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 1.3590000000003783,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 1.4680000000007567,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 1.5780000000013388,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 1.7030000000013388,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 1.8280000000013388,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 1.9370000000017171,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 2.062000000001717,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 2.1709999999984575,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6116.537260886939
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32299.011991508334,
+          186777.13494767842,
+          -6115.62026716852
+        ]
+      }
+    },
+    {
+      "elapsed": 2.2809999999990396,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32246.80823215992,
+          186674.44512477994,
+          -6117.35498046875
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32246.80823215992,
+          186674.44512477994,
+          -6117.35498046875
+        ]
+      }
+    },
+    {
+      "elapsed": 2.389999999999418,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32210.265595835488,
+          186602.5622393472,
+          -6117.9453125
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32210.265595835488,
+          186602.5622393472,
+          -6117.9453125
+        ]
+      }
+    },
+    {
+      "elapsed": 2.5,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32176.855179821043,
+          186536.8407329593,
+          -6118.48974609375
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32176.855179821043,
+          186536.8407329593,
+          -6118.48974609375
+        ]
+      }
+    },
+    {
+      "elapsed": 2.6090000000003783,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32144.071203795593,
+          186472.35149436837,
+          -6119.02490234375
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32144.071203795593,
+          186472.35149436837,
+          -6119.02490234375
+        ]
+      }
+    },
+    {
+      "elapsed": 2.7180000000007567,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32111.412511540817,
+          186408.10870102173,
+          -6119.55859375
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32111.412511540817,
+          186408.10870102173,
+          -6119.55859375
+        ]
+      }
+    },
+    {
+      "elapsed": 2.8430000000007567,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32046.150237269896,
+          186279.73152147594,
+          -6120.62451171875
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32046.150237269896,
+          186279.73152147594,
+          -6120.62451171875
+        ]
+      }
+    },
+    {
+      "elapsed": 2.9530000000013388,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -32013.522599019023,
+          186215.5498143461,
+          -6121.15673828125
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31993.522599019023,
+          186135.5498143461,
+          -6121.15673828125
+        ]
+      }
+    },
+    {
+      "elapsed": 3.0780000000013388,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31980.895154520564,
+          186151.36848834588,
+          -6121.689453125
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31973.522599019023,
+          186155.5498143461,
+          -6121.15673828125
+        ]
+      }
+    },
+    {
+      "elapsed": 3.187000000001717,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31948.26774291641,
+          186087.1872270519,
+          -6122.22216796875
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31948.26774291641,
+          186087.1872270519,
+          -6122.22216796875
+        ]
+      }
+    },
+    {
+      "elapsed": 3.2959999999984575,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31915.640331589297,
+          186023.0059663029,
+          -6122.75439453125
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31915.640331589297,
+          186023.0059663029,
+          -6122.75439453125
+        ]
+      }
+    },
+    {
+      "elapsed": 3.4059999999990396,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31883.012913517672,
+          185958.82469228687,
+          -6123.2861328125
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31883.012913517672,
+          185958.82469228687,
+          -6123.2861328125
+        ]
+      }
+    },
+    {
+      "elapsed": 3.514999999999418,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31817.758050228174,
+          185830.4620908554,
+          -6124.349609375
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31850.38548673824,
+          185894.6434011417,
+          -6123.81787109375
+        ]
+      }
+    },
+    {
+      "elapsed": 3.625,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31785.130603069156,
+          185766.28075962162,
+          -6124.880859375
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31745.130603069156,
+          185706.28075962162,
+          -6124.880859375
+        ]
+      }
+    },
+    {
+      "elapsed": 3.75,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31752.503144264894,
+          185702.0994054805,
+          -6125.41162109375
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31765.130603069156,
+          185706.28075962162,
+          -6124.880859375
+        ]
+      }
+    },
+    {
+      "elapsed": 3.875,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31719.875672685812,
+          185637.9180262101,
+          -6125.9423828125
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31712.503144264894,
+          185642.0994054805,
+          -6125.41162109375
+        ]
+      }
+    },
+    {
+      "elapsed": 3.9840000000003783,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31687.248187034544,
+          185573.73661925833,
+          -6126.47216796875
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31687.248187034544,
+          185573.73661925833,
+          -6126.47216796875
+        ]
+      }
+    },
+    {
+      "elapsed": 4.093000000000757,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31654.620685809597,
+          185509.55518167163,
+          -6127.00146484375
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31654.620685809597,
+          185509.55518167163,
+          -6127.00146484375
+        ]
+      }
+    },
+    {
+      "elapsed": 4.203000000001339,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31621.99316726082,
+          185445.37371000732,
+          -6127.5302734375
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31621.99316726082,
+          185445.37371000732,
+          -6127.5302734375
+        ]
+      }
+    },
+    {
+      "elapsed": 4.328000000001339,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31556.738069592284,
+          185317.0106475297,
+          -6128.5859375
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31529.36562933284,
+          185241.19220022223,
+          -6130.05859375
+        ]
+      }
+    },
+    {
+      "elapsed": 4.437000000001717,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31524.110485133275,
+          185252.82904621362,
+          -6129.111328125
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31484.110485133275,
+          185192.82904621362,
+          -6129.111328125
+        ]
+      }
+    },
+    {
+      "elapsed": 4.5459999999984575,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31491.482872608514,
+          185188.64738968946,
+          -6129.63427734375
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31504.110485133275,
+          185192.82904621362,
+          -6131.111328125
+        ]
+      }
+    },
+    {
+      "elapsed": 4.6709999999984575,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31458.855228247674,
+          185124.46567054073,
+          -6130.15576171875
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31451.482872608514,
+          185128.64738968946,
+          -6129.63427734375
+        ]
+      }
+    },
+    {
+      "elapsed": 4.78099999999904,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31426.227546726903,
+          185060.28387829478,
+          -6130.6748046875
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31426.227546726903,
+          185060.28387829478,
+          -6130.6748046875
+        ]
+      }
+    },
+    {
+      "elapsed": 4.90599999999904,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31393.599821594875,
+          184996.1020002613,
+          -6130.98095703125
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31393.599821594875,
+          184996.1020002613,
+          -6130.98095703125
+        ]
+      }
+    },
+    {
+      "elapsed": 5.03099999999904,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31360.972134168576,
+          184931.92019639863,
+          -6130.98095703125
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31340.972134168576,
+          184871.92019639863,
+          -6130.98095703125
+        ]
+      }
+    },
+    {
+      "elapsed": 5.139999999999418,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31295.717385508862,
+          184803.55782045497,
+          -6131.25927734375
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31288.344641300228,
+          184807.73877525015,
+          -6131.02099609375
+        ]
+      }
+    },
+    {
+      "elapsed": 5.25,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31263.090322065746,
+          184739.3772440273,
+          -6131.85205078125
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31223.090322065746,
+          184659.3772440273,
+          -6131.85205078125
+        ]
+      }
+    },
+    {
+      "elapsed": 5.359000000000378,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31230.463150783933,
+          184675.19645547058,
+          -6132.39794921875
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31243.090322065746,
+          184679.3772440273,
+          -6131.85205078125
+        ]
+      }
+    },
+    {
+      "elapsed": 5.468000000000757,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31197.83595793439,
+          184611.015624488,
+          -6132.9345703125
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31190.463150783933,
+          184615.19645547058,
+          -6132.39794921875
+        ]
+      }
+    },
+    {
+      "elapsed": 5.578000000001339,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31165.208761490212,
+          184546.83478643445,
+          -6133.4697265625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31177.83595793439,
+          184551.015624488,
+          -6132.9345703125
+        ]
+      }
+    },
+    {
+      "elapsed": 5.687000000001717,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31132.58156324873,
+          184482.65394484543,
+          -6134.00439453125
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31125.208761490212,
+          184486.83478643445,
+          -6135.4697265625
+        ]
+      }
+    },
+    {
+      "elapsed": 5.7959999999984575,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      }
+    },
+    {
+      "elapsed": 5.90599999999904,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      }
+    },
+    {
+      "elapsed": 6.014999999999418,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      }
+    },
+    {
+      "elapsed": 6.125,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      }
+    },
+    {
+      "elapsed": 6.234000000000378,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      }
+    },
+    {
+      "elapsed": 6.343000000000757,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      }
+    },
+    {
+      "elapsed": 6.468000000000757,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      }
+    },
+    {
+      "elapsed": 6.593000000000757,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      }
+    },
+    {
+      "elapsed": 6.703000000001339,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      }
+    },
+    {
+      "elapsed": 6.812000000001717,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      }
+    },
+    {
+      "elapsed": 6.9209999999984575,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      }
+    },
+    {
+      "elapsed": 7.03099999999904,
+      "server": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      },
+      "client": {
+        "support": 1,
+        "mode": "<MovementMode.MOVE_CUSTOM: 6>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.587890625
+        ]
+      }
+    },
+    {
+      "elapsed": 7.139999999999418,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.772380560753
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6133.956537265447
+        ]
+      }
+    },
+    {
+      "elapsed": 7.25,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6135.848687203601
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6136.513926857711
+        ]
+      }
+    },
+    {
+      "elapsed": 7.359000000000378,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6140.359007519786
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6141.522410227519
+        ]
+      }
+    },
+    {
+      "elapsed": 7.468000000000757,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6147.308085504104
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6149.057407566731
+        ]
+      }
+    },
+    {
+      "elapsed": 7.578000000001339,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6156.657407958526
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6158.694823109212
+        ]
+      }
+    },
+    {
+      "elapsed": 7.703000000001339,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6168.546346353367
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6171.1429811150965
+        ]
+      }
+    },
+    {
+      "elapsed": 7.812000000001717,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6182.591168533196
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6185.633172629991
+        ]
+      }
+    },
+    {
+      "elapsed": 7.9209999999984575,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6199.328631464508
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6202.791008113524
+        ]
+      }
+    },
+    {
+      "elapsed": 8.03099999999904,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6218.499798853416
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6222.841705861847
+        ]
+      }
+    },
+    {
+      "elapsed": 8.139999999999418,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6239.9491010467755
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6245.604149426024
+        ]
+      }
+    },
+    {
+      "elapsed": 8.264999999999418,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6264.051043829066
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6268.864451430157
+        ]
+      }
+    },
+    {
+      "elapsed": 8.375,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6291.520244009793
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6296.805392122106
+        ]
+      }
+    },
+    {
+      "elapsed": 8.484000000000378,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6319.095383048523
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6326.186875717631
+        ]
+      }
+    },
+    {
+      "elapsed": 8.593000000000757,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6352.435632475186
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_FALLING: 3>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6359.102563915942
+        ]
+      }
+    },
+    {
+      "elapsed": 8.703000000001339,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 8.812000000001717,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 8.920999999998457,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 9.03099999999904,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31158.000000000007,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31157.892845153816,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 9.139999999999418,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31154.967654347125,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31154.07711584152,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 9.25,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31147.60917737056,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31145.50932271416,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 9.359000000000378,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31134.702220153125,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31131.675816635965,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 9.468000000000757,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31116.92801231639,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31112.891664835504,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 9.578000000001339,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31093.83937808151,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31088.410215573884,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 9.687000000001717,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31069.12154905502,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31062.01434589653,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 9.795999999998457,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31032.341049226558,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -31025.850292789404,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 9.90599999999904,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30997.865110612594,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30989.477029060694,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 10.014999999999418,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30952.667935831894,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30943.031052835875,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 10.139999999999418,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30903.14665247196,
+          184532.65445823615,
+          -6368.58430568821
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30893.640454545482,
+          184532.65445823615,
+          -6368.584687519524
+        ]
+      }
+    },
+    {
+      "elapsed": 10.264999999999418,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30848.85305973771,
+          184532.65445823615,
+          -6368.716492931847
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30836.12849568841,
+          184532.65445823615,
+          -6368.865816752793
+        ]
+      }
+    },
+    {
+      "elapsed": 10.375,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30785.937479275948,
+          184532.65445823615,
+          -6369.305235625281
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30775.768568305022,
+          184532.65445823615,
+          -6369.305629453673
+        ]
+      }
+    },
+    {
+      "elapsed": 10.484000000000378,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30723.762903531915,
+          184532.65445823615,
+          -6369.305235625281
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30709.493124338183,
+          184532.65445823615,
+          -6369.305629453673
+        ]
+      }
+    },
+    {
+      "elapsed": 10.593000000000757,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30652.457056363946,
+          184532.65445823615,
+          -6369.305235625281
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30640.71915731052,
+          184532.65445823615,
+          -6369.305629453673
+        ]
+      }
+    },
+    {
+      "elapsed": 10.718000000000757,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30582.86782296551,
+          184532.65445823615,
+          -6369.305235625281
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30570.041530432496,
+          184532.65445823615,
+          -6369.305629453673
+        ]
+      }
+    },
+    {
+      "elapsed": 10.843000000000757,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30509.84078439129,
+          184532.65445823615,
+          -6369.305235625281
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30494.487526865993,
+          184532.65445823615,
+          -6369.305629453673
+        ]
+      }
+    },
+    {
+      "elapsed": 10.968000000000757,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30429.988489469415,
+          184532.65445823615,
+          -6369.305235625281
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30419.091831745896,
+          184532.65445823615,
+          -6369.305629453673
+        ]
+      }
+    },
+    {
+      "elapsed": 11.078000000001339,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30366.482935270196,
+          184532.65445823615,
+          -6369.305235625281
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30353.718452008758,
+          184532.65445823615,
+          -6369.305629453673
+        ]
+      }
+    },
+    {
+      "elapsed": 11.187000000001717,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30300.720606168634,
+          184532.65445823615,
+          -6369.305235625281
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30288.99305373648,
+          184532.65445823615,
+          -6369.305629453673
+        ]
+      }
+    },
+    {
+      "elapsed": 11.295999999998457,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30231.058130582696,
+          184532.65445823615,
+          -6369.656084988282
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30216.886982919965,
+          184532.65445823615,
+          -6369.656470157913
+        ]
+      }
+    },
+    {
+      "elapsed": 11.40599999999904,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30167.346582731134,
+          184532.65445823615,
+          -6369.656084988282
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30155.383136721644,
+          184532.65445823615,
+          -6369.656470157913
+        ]
+      }
+    },
+    {
+      "elapsed": 11.514999999999418,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30099.780664762384,
+          184532.65445823615,
+          -6369.656084988282
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30087.701081337724,
+          184532.65445823615,
+          -6369.656470157913
+        ]
+      }
+    },
+    {
+      "elapsed": 11.625,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30033.32253487957,
+          184532.65445823615,
+          -6369.656084988282
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -30020.94941497067,
+          184532.65445823615,
+          -6369.656470157913
+        ]
+      }
+    },
+    {
+      "elapsed": 11.734000000000378,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -29974.76540597332,
+          184532.65445823615,
+          -6369.656084988282
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -29961.595777275357,
+          184532.65445823615,
+          -6369.656470157913
+        ]
+      }
+    },
+    {
+      "elapsed": 11.843000000000757,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -29908.45376046551,
+          184532.65445823615,
+          -6370.414113270223
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -29893.2665517948,
+          184532.65445823615,
+          -6370.592782976654
+        ]
+      }
+    },
+    {
+      "elapsed": 11.953000000001339,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -29837.894068082696,
+          184532.65445823615,
+          -6370.592455027482
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -29825.780923517737,
+          184532.65445823615,
+          -6370.592782976654
+        ]
+      }
+    },
+    {
+      "elapsed": 12.062000000001717,
+      "server": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -29775.18960030926,
+          184532.65445823615,
+          -6370.592455027482
+        ]
+      },
+      "client": {
+        "support": 0,
+        "mode": "<MovementMode.MOVE_WALKING: 1>",
+        "position": [
+          -29761.89978853086,
+          184532.65445823615,
+          -6370.592782976654
+        ]
+      }
+    }
+  ]
+}

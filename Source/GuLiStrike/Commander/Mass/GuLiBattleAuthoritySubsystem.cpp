@@ -25,7 +25,7 @@
 #include "EngineUtils.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
-#include "Gameplay/GroundMech/GuLiGroundMassCollisionTypes.h"
+#include "Gameplay/Navigation/GuLiGroundMassCollisionTypes.h"
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 #include "Gameplay/Skills/GuLiArmySkillSubsystem.h"
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillDefinition.h"
@@ -6747,48 +6747,30 @@ void UGuLiBattleAuthoritySubsystem::BuildGroundAvoidanceSnapshot(TArray<FGuLiGro
 }
 
 void UGuLiBattleAuthoritySubsystem::BuildGroundCollisionSnapshot(
-	TArray<FGuLiGroundMassBody>& OutBodies) const
+	TArray<FGuLiGroundMassBody>& OutBodies, uint32& OutEpoch, uint32& OutSequence,
+	double& OutSimulationSeconds) const
 {
-	OutBodies.Reset();
+	OutBodies.Reset(); OutEpoch = 0; OutSequence = 0; OutSimulationSeconds = 0.0;
 	if (!AuthorityState || !GetWorld()) return;
-	const UGuLiCommanderDataSubsystem* Data =
-		GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
+	const auto* State = GetWorld()->GetGameState<AGuLiBattleGameState>();
+	OutEpoch = State ? State->GetMatchEpoch() : 0u;
+	OutSequence = AuthorityState->ServerSimTick;
+	OutSimulationSeconds = AuthorityState->SimulationSeconds;
+	const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 	OutBodies.Reserve(AuthorityState->Soldiers.Num());
 	for (const auto& Soldier : AuthorityState->Soldiers)
 	{
-		if (!Soldier.IsPresent() || Soldier.Location.ContainsNaN()
-			|| !FMath::IsFinite(Soldier.AvoidanceRadiusCentimeters)
-			|| Soldier.AvoidanceRadiusCentimeters <= 0.0f) continue;
+		if (!Soldier.IsPresent()) continue;
 		FGuLiGroundMassBody Body;
-		Body.SoldierId = Soldier.SoldierId;
-		Body.Team = Soldier.Team;
-		Body.UnitTypeId = Soldier.UnitTypeId;
-		Body.Location = Soldier.Location;
-		Body.Velocity = Soldier.Velocity;
+		Body.SoldierId = Soldier.SoldierId; Body.Team = Soldier.Team; Body.UnitTypeId = Soldier.UnitTypeId;
+		Body.Location = Soldier.Location; Body.Velocity = Soldier.Velocity;
+		Body.Rotation = FRotator(0.0f, Soldier.FacingYawDegrees, 0.0f).Quaternion();
+		Body.SampleSimulationSeconds = OutSimulationSeconds;
+		Body.DisplacementRevision = Soldier.DisplacementFrameFloor;
 		Body.RadiusCentimeters = Soldier.AvoidanceRadiusCentimeters;
-		const FTransform LogicalPose(
-			FRotator(0.0f, Soldier.FacingYawDegrees, 0.0f),
-			Soldier.Location);
-		const FGuLiSoldierDefinition* Definition = Data
-			? Data->FindSoldierDefinition(Soldier.UnitTypeId)
-			: nullptr;
-		const FBox LocalBounds = Definition
-			? Definition->GetModelBoundsCentimeters()
-			: FBox(ForceInit);
-		if (LocalBounds.IsValid)
-		{
-			const FBox WorldBounds = LocalBounds.TransformBy(LogicalPose);
-			Body.BottomZ = WorldBounds.Min.Z;
-			Body.TopZ = WorldBounds.Max.Z;
-		}
-		if (!FMath::IsFinite(Body.BottomZ) || !FMath::IsFinite(Body.TopZ)
-			|| Body.TopZ <= Body.BottomZ)
-		{
-			Body.BottomZ = Soldier.Location.Z;
-			Body.TopZ = Soldier.Location.Z
-				+ FMath::Max(200.0f, Soldier.AvoidanceRadiusCentimeters * 2.0f);
-		}
-		if (Body.IsValid()) OutBodies.Add(Body);
+		const auto* Definition = Data ? Data->FindSoldierDefinition(Soldier.UnitTypeId) : nullptr;
+		GuLiGroundMassCollision::ResolveBodyBounds(Definition ? Definition->GetModelBoundsCentimeters() : FBox(ForceInit), Body);
+		if (ensureMsgf(Body.IsValid(), TEXT("Invalid authoritative collision body %u"), Soldier.SoldierId.Value)) OutBodies.Add(Body);
 	}
 }
 

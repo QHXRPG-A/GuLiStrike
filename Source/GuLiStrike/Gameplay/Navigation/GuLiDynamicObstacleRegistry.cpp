@@ -4,6 +4,8 @@
 
 #include "Engine/World.h"
 
+DEFINE_LOG_CATEGORY_STATIC(LogGuLiObstacles, Log, All);
+
 namespace
 {
 	bool IsValidObstacle(const FGuLiDynamicObstacle& Obstacle)
@@ -43,7 +45,11 @@ FGuLiDynamicObstacleHandle UGuLiDynamicObstacleRegistrySubsystem::RegisterObstac
 FGuLiDynamicObstacleHandle UGuLiDynamicObstacleRegistrySubsystem::RegisterObstacle(
 	const FGuLiDynamicObstacle& Obstacle)
 {
-	check(IsValidObstacle(Obstacle));
+	if (!IsValidObstacle(Obstacle))
+	{
+		UE_LOG(LogGuLiObstacles, Verbose, TEXT("Rejected invalid obstacle registration."));
+		return {};
+	}
 	checkf(NextHandle < 0x80000000u, TEXT("Dynamic obstacle handle space exhausted."));
 	const FGuLiDynamicObstacleHandle Handle{NextHandle++};
 	FGuLiDynamicObstacle Stored = Obstacle;
@@ -54,25 +60,30 @@ FGuLiDynamicObstacleHandle UGuLiDynamicObstacleRegistrySubsystem::RegisterObstac
 	return Handle;
 }
 
-bool UGuLiDynamicObstacleRegistrySubsystem::UpdateObstacle(
+EGuLiObstacleUpdateResult UGuLiDynamicObstacleRegistrySubsystem::UpdateObstacle(
 	const FGuLiDynamicObstacleHandle Handle,
 	const FGuLiDynamicObstacle& Obstacle)
 {
-	if (!Handle.IsValid() || !IsValidObstacle(Obstacle)) return false;
+	if (!IsValidObstacle(Obstacle))
+	{
+		UE_LOG(LogGuLiObstacles, Verbose, TEXT("Rejected invalid update for obstacle %u; retaining last valid data."), Handle.Value);
+		return EGuLiObstacleUpdateResult::InvalidData;
+	}
 	const int32* Index = IndexByHandle.Find(Handle.Value);
-	if (!Index || !Obstacles.IsValidIndex(*Index)) return false;
+	if (!Index) return EGuLiObstacleUpdateResult::NotFound;
+	checkSlow(Obstacles.IsValidIndex(*Index));
 	FGuLiDynamicObstacle& Stored = Obstacles[*Index];
 	const bool bChanged = !Stored.Location.Equals(Obstacle.Location, 0.1f)
 		|| !FMath::IsNearlyEqual(Stored.RadiusCentimeters, Obstacle.RadiusCentimeters, 0.1f)
 		|| Stored.Kind != Obstacle.Kind
 		|| Stored.Team != Obstacle.Team;
-	if (!bChanged) return true;
+	if (!bChanged) return EGuLiObstacleUpdateResult::Unchanged;
 	Stored.Location = Obstacle.Location;
 	Stored.RadiusCentimeters = Obstacle.RadiusCentimeters;
 	Stored.Kind = Obstacle.Kind;
 	Stored.Team = Obstacle.Team;
 	PublishChange();
-	return true;
+	return EGuLiObstacleUpdateResult::Updated;
 }
 
 void UGuLiDynamicObstacleRegistrySubsystem::UnregisterObstacle(

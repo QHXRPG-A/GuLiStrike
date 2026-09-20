@@ -1,6 +1,7 @@
 ﻿// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
 
 #include "GuLiStrike.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
@@ -2386,6 +2387,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	}
 
 	const double LocalNowSeconds = GetWorld()->GetTimeSeconds();
+	UGuLiGroundMassContactSubsystem* Contacts = GetWorld()->GetSubsystem<UGuLiGroundMassContactSubsystem>();
 	ConsumePoseChunks(LocalNowSeconds);
 	const bool bMaintain = MaintenanceCadence.Consume(LocalNowSeconds);
 	MaintainInstancePool(*Replicator, bMaintain);
@@ -2469,6 +2471,8 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			}
 #endif
 			ApplyPrediction(ReliableState.SoldierId, LocalNowSeconds, PresentedTransform);
+			if (Contacts)
+				Contacts->ApplyContactPresentation(ReliableState.SoldierId, PresentedTransform);
 			Soldier.PresentedTransform = PresentedTransform;
 			Soldier.bHasPresentedTransform = true;
 #if !UE_BUILD_SHIPPING

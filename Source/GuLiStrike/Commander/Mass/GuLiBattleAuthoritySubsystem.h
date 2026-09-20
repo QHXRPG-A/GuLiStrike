@@ -391,7 +391,8 @@ public:
 	/** Unquantized server poses for passive local-avoidance bodies; no movement or replication side effects. */
 	void BuildGroundAvoidanceSnapshot(TArray<struct FGuLiGroundAvoidanceBody>& OutBodies) const;
 	/** Full data-only cylinders used by player ground-mech side collision and virtual support. */
-	void BuildGroundCollisionSnapshot(TArray<struct FGuLiGroundMassBody>& OutBodies) const;
+	void BuildGroundCollisionSnapshot(TArray<struct FGuLiGroundMassBody>& OutBodies,
+		uint32& OutEpoch, uint32& OutSequence, double& OutSimulationSeconds) const;
 	float GetExternalUnitRadius() const { return MemberAgentRadiusCentimeters; }
 
 	/** 当前保留的临时移动编队数量；同一 BatchOrderId 可包含多个编队。 */

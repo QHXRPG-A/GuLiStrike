@@ -1,91 +1,109 @@
 #include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
 
+#include "Battle/Framework/GuLiBattleGameState.h"
+#include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
-#include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "GameFramework/PlayerController.h"
+#include "GameFramework/PlayerState.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/Data/GuLiCommanderSoldierDefinition.h"
 #include "HAL/PlatformTime.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 
-namespace
+bool UGuLiGroundMassContactSubsystem::ShouldCreateSubsystem(UObject *Outer) const
 {
-	constexpr float SnapshotIntervalSeconds = 0.1f;
-	constexpr float DefaultBodyRadiusCentimeters = 150.0f;
-	constexpr float MaximumEstimatedClientSpeedCentimetersPerSecond = 5000.0f;
-
-	void ResolveBodyBounds(
-		const FGuLiSoldierDefinition* Definition,
-		const FTransform& LogicalPose,
-		const float RadiusCentimeters,
-		float& OutBottomZ,
-		float& OutTopZ)
-	{
-		const FBox LocalBounds = Definition
-			? Definition->GetModelBoundsCentimeters()
-			: FBox(ForceInit);
-		if (LocalBounds.IsValid)
-		{
-			const FTransform LogicalWorldTransform(
-				LogicalPose.GetRotation(),
-				LogicalPose.GetLocation(),
-				FVector::OneVector);
-			const FBox WorldBounds = LocalBounds.TransformBy(LogicalWorldTransform);
-			if (WorldBounds.IsValid && WorldBounds.Max.Z > WorldBounds.Min.Z)
-			{
-				OutBottomZ = WorldBounds.Min.Z;
-				OutTopZ = WorldBounds.Max.Z;
-				return;
-			}
-		}
-		OutBottomZ = LogicalPose.GetLocation().Z;
-		OutTopZ = OutBottomZ + FMath::Max(200.0f, RadiusCentimeters * 2.0f);
-	}
+	const auto *World = Cast<UWorld>(Outer);
+	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld();
 }
 
-bool UGuLiGroundMassContactSubsystem::ShouldCreateSubsystem(UObject* Outer) const
+void UGuLiGroundMassContactSubsystem::ResetSamples()
 {
-	const UWorld* World = Cast<UWorld>(Outer);
-	return Super::ShouldCreateSubsystem(Outer) && World && World->IsGameWorld();
+	++CacheGeneration;
+	Samples.Reset();
+	VisualContacts.Reset();
+	CurrentSnapshot.Reset();
+	LatestSequence = 0;
+	LatestSimulationSample = 0.0;
+	bClockReady = false;
+	ClockSimulationAnchor = ClockLocalAnchor = 0.0;
+	NextRefreshWorldSeconds = 0.0;
 }
 
 void UGuLiGroundMassContactSubsystem::Deinitialize()
 {
-	SpatialIndex.Reset();
-	PreviousClientLocations.Reset();
-	PresentationActor.Reset();
+	if (auto *Source = NetSync.Get())
+		Source->OnPoseChunkReceived.Remove(PoseHandle);
+	if (auto *Source = StateReplicator.Get())
+		Source->OnRosterDelta.Remove(RosterHandle);
+	NetSync.Reset();
 	StateReplicator.Reset();
-	LastSnapshotWorldSeconds = -1.0;
-	LastClientSampleWorldSeconds = -1.0;
-	NextRefreshWorldSeconds = 0.0;
-	ClientMatchEpoch = 0u;
-	Stats = FGuLiGroundMassContactStats{};
+	ResetSamples();
 	Super::Deinitialize();
 }
 
-void UGuLiGroundMassContactSubsystem::Tick(const float DeltaTime)
+void UGuLiGroundMassContactSubsystem::BindSources()
 {
-	(void)DeltaTime;
-	UWorld* World = GetWorld();
-	if (!World) return;
-	const double Now = World->GetTimeSeconds();
-	if (LastSnapshotWorldSeconds < 0.0 || Now + UE_DOUBLE_SMALL_NUMBER >= NextRefreshWorldSeconds)
+#if WITH_DEV_AUTOMATION_TESTS
+	if (bTestSource)
+		return;
+#endif
+	UWorld *World = GetWorld();
+	if (!World)
+		return;
+	auto *Roster = StateReplicator.Get();
+	if (!Roster)
+		for (TActorIterator<AGuLiSoldierStateReplicator> It(World); It; ++It)
+		{
+			Roster = *It;
+			break;
+		}
+	auto *State = World->GetGameState<AGuLiBattleGameState>();
+	const uint32 Epoch = State ? State->GetMatchEpoch() : 0u;
+	auto *Controller = World->GetFirstPlayerController();
+	auto *Sync = Controller && Controller->IsLocalController()
+					 ? Controller->FindComponentByClass<UGuLiCommanderNetSyncComponent>()
+					 : nullptr;
+	const uint32 Connection = Sync ? Sync->GetConnectionGeneration() : 0u;
+	const uint32 Generation = Sync ? Sync->GetSyncGeneration() : 0u;
+	const bool bClient = World->GetNetMode() == NM_Client;
+	const bool bReady =
+		Epoch != 0u && (!bClient || (Sync && Roster && Sync->IsConnectionReady() && Sync->IsSoldierStreamReady() &&
+									 Roster->GetSnapshotMatchEpoch() == Epoch));
+	if (StateReplicator.Get() != Roster || NetSync.Get() != Sync || SourceEpoch != Epoch ||
+		ConnectionGeneration != Connection || SyncGeneration != Generation || bSourceReady != bReady)
 	{
-		const bool bFirstSnapshot = LastSnapshotWorldSeconds < 0.0;
-		RefreshSnapshot();
-		if (bFirstSnapshot)
-		{
-			NextRefreshWorldSeconds = Now + SnapshotIntervalSeconds;
-		}
-		else
-		{
-			NextRefreshWorldSeconds += SnapshotIntervalSeconds;
-			if (NextRefreshWorldSeconds <= Now)
-				NextRefreshWorldSeconds = Now + SnapshotIntervalSeconds;
-		}
+		if (auto *Old = NetSync.Get())
+			Old->OnPoseChunkReceived.Remove(PoseHandle);
+		if (auto *Old = StateReplicator.Get())
+			Old->OnRosterDelta.Remove(RosterHandle);
+		ResetSamples();
+		StateReplicator = Roster;
+		NetSync = Sync;
+		SourceEpoch = Epoch;
+		ConnectionGeneration = Connection;
+		SyncGeneration = Generation;
+		bSourceReady = bReady;
+		PoseHandle.Reset();
+		RosterHandle.Reset();
+		if (Sync)
+			PoseHandle = Sync->OnPoseChunkReceived.AddUObject(this, &ThisClass::HandlePoseChunk);
+		if (Roster)
+			RosterHandle = Roster->OnRosterDelta.AddUObject(this, &ThisClass::HandleRosterDelta);
 	}
+}
+
+void UGuLiGroundMassContactSubsystem::Tick(float DeltaTime)
+{
+	BindSources();
+	if (GetWorld() && GetWorld()->GetTimeSeconds() >= NextRefreshWorldSeconds)
+		RefreshSnapshot();
+	const double Now = GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0;
+	for (auto It = VisualContacts.CreateIterator(); It; ++It)
+		if (Now - It.Value().LastTouched > 0.2)
+			It.RemoveCurrent();
 }
 
 TStatId UGuLiGroundMassContactSubsystem::GetStatId() const
@@ -93,174 +111,320 @@ TStatId UGuLiGroundMassContactSubsystem::GetStatId() const
 	RETURN_QUICK_DECLARE_CYCLE_STAT(UGuLiGroundMassContactSubsystem, STATGROUP_Tickables);
 }
 
+bool UGuLiGroundMassContactSubsystem::FillBody(const FGuLiSoldierStateItem &State, FGuLiGroundMassBody &Body) const
+{
+	if (!State.SoldierId.IsValid() || !State.IsAlive() || State.bPhased)
+		return false;
+	const auto *Data = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr;
+	const auto *Definition = Data ? Data->FindSoldierDefinition(State.UnitTypeId) : nullptr;
+	Body.SoldierId = State.SoldierId;
+	Body.Team = State.Team;
+	Body.UnitTypeId = State.UnitTypeId;
+	Body.RadiusCentimeters = Definition ? Definition->GetMassAvoidanceRadius(150.0f) : 150.0f;
+	GuLiGroundMassCollision::ResolveBodyBounds(Definition ? Definition->GetModelBoundsCentimeters() : FBox(ForceInit),
+											   Body);
+	return Body.IsValid();
+}
+
+void UGuLiGroundMassContactSubsystem::HandlePoseChunk(const FGuLiSoldierPoseChunk &Chunk)
+{
+	const auto *Roster = StateReplicator.Get();
+	if (!bSourceReady || !Roster || Chunk.AuthorityEpoch != SourceEpoch || Chunk.FrameSequence == 0u ||
+		!FMath::IsFinite(Chunk.ServerTimeSeconds) || Chunk.ServerTimeSeconds < 0.0f)
+		return;
+	if (LatestSequence == 0u || int32(Chunk.FrameSequence - LatestSequence) > 0)
+	{
+		const auto *PC = GetWorld()->GetFirstPlayerController();
+		const auto *PlayerState = PC ? PC->PlayerState.Get() : nullptr;
+		const double HalfRTT = PlayerState ? FMath::Max(0.0f, PlayerState->GetPingInMilliseconds()) * 0.0005 : 0.0;
+		LatestSequence = Chunk.FrameSequence;
+		LatestSimulationSample = FMath::Max(LatestSimulationSample, static_cast<double>(Chunk.ServerTimeSeconds));
+		ClockSimulationAnchor = FMath::Max(EstimateSimulationNow(), Chunk.ServerTimeSeconds + HalfRTT);
+		ClockLocalAnchor = GetWorld()->GetTimeSeconds();
+		bClockReady = true;
+	}
+	for (const auto &Pose : Chunk.Samples)
+	{
+		const auto *State = Roster->FindSoldierState(Pose.SoldierId);
+		if (!State || !State->IsAlive() || State->bPhased)
+			continue;
+		if (State->DisplacementFrameFloor && int32(Chunk.FrameSequence - State->DisplacementFrameFloor) < 0)
+			continue;
+		const auto *Previous = Samples.Find(Pose.SoldierId.Value);
+		if (Previous && int32(Chunk.FrameSequence - Previous->Sequence) <= 0)
+			continue;
+		if (Previous && Chunk.ServerTimeSeconds < Previous->Body.SampleSimulationSeconds)
+			continue;
+		FSample Sample;
+		Sample.Sequence = Chunk.FrameSequence;
+		Sample.bTeleport = Pose.IsTeleport();
+		Sample.Body.Location = Pose.GetWorldLocationCentimeters();
+		Sample.Body.Velocity = Pose.GetVelocityCentimetersPerSecond();
+		Sample.Body.Rotation =
+			FRotator(0.0f, GuLiCommanderProtocol::DequantizeYawDegrees(Pose.FacingYaw), 0.0f).Quaternion();
+		Sample.Body.SampleSimulationSeconds = Chunk.ServerTimeSeconds;
+		Sample.Body.DisplacementRevision = State->DisplacementFrameFloor;
+		if (Sample.bTeleport && (!Previous || !Previous->bTeleport))
+			Sample.Body.DisplacementRevision = Chunk.FrameSequence;
+		else if (Sample.bTeleport && Previous)
+			Sample.Body.DisplacementRevision = Previous->Body.DisplacementRevision;
+		if (FillBody(*State, Sample.Body))
+			Samples.Add(Pose.SoldierId.Value, Sample);
+	}
+}
+
+void UGuLiGroundMassContactSubsystem::HandleRosterDelta(const FGuLiSoldierRosterDelta &Delta)
+{
+	const auto *Roster = StateReplicator.Get();
+	if (!Roster)
+		return;
+	if (Roster->GetSnapshotMatchEpoch() != SourceEpoch)
+	{
+		ResetSamples();
+		bSourceReady = false;
+		return;
+	}
+	if (Delta.bReset)
+	{
+		ResetSamples();
+		return;
+	}
+	// Copy only the small lifecycle overlay; historical moves keep their original immutable frame.
+	TSharedPtr<FGuLiGroundMassSnapshot> Frame;
+	if (CurrentSnapshot)
+		Frame = MakeShared<FGuLiGroundMassSnapshot>(*CurrentSnapshot);
+	auto Update = [&](FGuLiSoldierId Id)
+	{
+		const auto *State = Roster->FindSoldierState(Id);
+		FGuLiGroundMassBody Body;
+		bool bValid = false;
+		if (State && State->IsAlive() && !State->bPhased)
+		{
+			const auto *Sample = Samples.Find(Id.Value);
+			if (State->DisplacementFrameFloor &&
+				(!Sample || int32(Sample->Sequence - State->DisplacementFrameFloor) < 0))
+			{
+				Body.Location = State->DisplacementLocation;
+				Body.Rotation = FRotator(0, State->DisplacementYaw, 0).Quaternion();
+				Body.SampleSimulationSeconds = State->DisplacementSimulationTime;
+				Body.DisplacementRevision = State->DisplacementFrameFloor;
+				if (FillBody(*State, Body))
+				{
+					FSample Seed;
+					Seed.Body = Body;
+					Seed.Sequence = State->DisplacementFrameFloor - 1;
+					Samples.Add(Id.Value, Seed);
+					bValid = true;
+				}
+			}
+			else if (Sample)
+			{
+				Body = Sample->Body;
+				bValid = FillBody(*State, Body);
+			}
+		}
+		if (!bValid)
+		{
+			Samples.Remove(Id.Value);
+			VisualContacts.Remove(Id.Value);
+		}
+		if (Frame)
+		{
+			if (bValid)
+				Body = Body.Extrapolated(
+					static_cast<float>(FMath::Max(0.0, Frame->SimulationSeconds - Body.SampleSimulationSeconds)));
+			Frame->Overrides.Add(Id.Value, bValid ? Body : FGuLiGroundMassBody{});
+		}
+	};
+	for (auto Id : Delta.Removed)
+		Update(Id);
+	for (auto Id : Delta.Added)
+		Update(Id);
+	for (const auto &Pair : Delta.Changed)
+		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Life | EGuLiSoldierStateChange::Phase |
+											EGuLiSoldierStateChange::Displacement | EGuLiSoldierStateChange::Type |
+											EGuLiSoldierStateChange::Team))
+			Update(Pair.Key);
+	if (Frame)
+	{
+		TArray<FGuLiGroundMassBody> Bodies;
+		for (const auto &Pair : Frame->Overrides)
+			if (Pair.Value.IsValid())
+				Bodies.Add(Pair.Value);
+		auto Index = MakeShared<FGuLiGroundMassSpatialIndex>();
+		Index->Rebuild(Bodies, Frame->SimulationSeconds);
+		Frame->OverrideIndex = Index;
+		CurrentSnapshot = Frame;
+	}
+}
+
 void UGuLiGroundMassContactSubsystem::RefreshSnapshot()
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMassContact_RefreshSnapshot);
-#if !UE_BUILD_SHIPPING
-	const double StartSeconds = FPlatformTime::Seconds();
+	if (!GetWorld())
+		return;
+	// Keep the 10 Hz deadline across frame jitter, without rebuilding repeatedly after a hitch.
+	NextRefreshWorldSeconds = FMath::Max(NextRefreshWorldSeconds + 0.1, GetWorld()->GetTimeSeconds());
+#if WITH_DEV_AUTOMATION_TESTS
+	if (bTestSource && !StateReplicator.IsValid())
+		return;
 #endif
+	if (!bSourceReady)
+		return;
+	const double Start = FPlatformTime::Seconds();
 	TArray<FGuLiGroundMassBody> Bodies;
-	UWorld* World = GetWorld();
-	if (!World) return;
-	if (UGuLiBattleAuthoritySubsystem* Authority = World->GetSubsystem<UGuLiBattleAuthoritySubsystem>())
+	auto Frame = MakeShared<FGuLiGroundMassSnapshot>();
+	Frame->CacheGeneration = CacheGeneration;
+	if (auto *Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>(); Authority
+#if WITH_DEV_AUTOMATION_TESTS
+																					 && !bTestSource
+#endif
+	)
 	{
-		Authority->BuildGroundCollisionSnapshot(Bodies);
+		Authority->BuildGroundCollisionSnapshot(Bodies, Frame->Epoch, Frame->FrameSequence, Frame->SimulationSeconds);
+		ClockSimulationAnchor = Frame->SimulationSeconds;
+		ClockLocalAnchor = GetWorld()->GetTimeSeconds();
+		bClockReady = true;
 	}
 	else
 	{
-		BuildClientSnapshot(Bodies);
+		Frame->Epoch = SourceEpoch;
+		Frame->FrameSequence = LatestSequence;
+		Frame->SimulationSeconds = LatestSimulationSample;
+		const auto *Roster = StateReplicator.Get();
+		if (!Roster)
+			return;
+		Bodies.Reserve(Samples.Num());
+		for (auto &Pair : Samples)
+		{
+			const auto *State = Roster->FindSoldierState(FGuLiSoldierId(Pair.Key));
+			auto Body = Pair.Value.Body;
+			if (!State || !FillBody(*State, Body))
+				continue;
+			Bodies.Add(Body.Extrapolated(
+				static_cast<float>(FMath::Max(0.0, Frame->SimulationSeconds - Body.SampleSimulationSeconds))));
+		}
 	}
-	SpatialIndex.Rebuild(Bodies);
-	LastSnapshotWorldSeconds = World->GetTimeSeconds();
+	auto Index = MakeShared<FGuLiGroundMassSpatialIndex>();
+	Index->Rebuild(Bodies, Frame->SimulationSeconds);
+	Frame->Index = Index;
+	CurrentSnapshot = Frame;
 #if !UE_BUILD_SHIPPING
-	const double Milliseconds = (FPlatformTime::Seconds() - StartSeconds) * 1000.0;
 	++Stats.SnapshotRefreshes;
-	Stats.LastSnapshotMilliseconds = Milliseconds;
-	Stats.MaximumSnapshotMilliseconds = FMath::Max(Stats.MaximumSnapshotMilliseconds, Milliseconds);
+	Stats.LastSnapshotMilliseconds = (FPlatformTime::Seconds() - Start) * 1000.0;
+	Stats.MaximumSnapshotMilliseconds = FMath::Max(Stats.MaximumSnapshotMilliseconds, Stats.LastSnapshotMilliseconds);
 #endif
 }
 
-void UGuLiGroundMassContactSubsystem::BuildClientSnapshot(TArray<FGuLiGroundMassBody>& OutBodies)
+double UGuLiGroundMassContactSubsystem::EstimateSimulationNow() const
 {
-	OutBodies.Reset();
-	UWorld* World = GetWorld();
-	if (!World) return;
-	if (!PresentationActor.IsValid())
-	{
-		for (TActorIterator<AGuLiCommanderPresentationActor> It(World); It; ++It)
-		{
-			PresentationActor = *It;
-			break;
-		}
-	}
-	if (!StateReplicator.IsValid())
-	{
-		for (TActorIterator<AGuLiSoldierStateReplicator> It(World); It; ++It)
-		{
-			StateReplicator = *It;
-			break;
-		}
-	}
-	AGuLiCommanderPresentationActor* Presentation = PresentationActor.Get();
-	AGuLiSoldierStateReplicator* Roster = StateReplicator.Get();
-	const UGuLiCommanderDataSubsystem* Data = World->GetSubsystem<UGuLiCommanderDataSubsystem>();
-	if (!Presentation || !Roster || !Data) return;
-
-	const uint32 MatchEpoch = Roster->GetSnapshotMatchEpoch();
-	if (MatchEpoch == 0u) return;
-	if (ClientMatchEpoch != MatchEpoch)
-	{
-		ClientMatchEpoch = MatchEpoch;
-		PreviousClientLocations.Reset();
-		LastClientSampleWorldSeconds = -1.0;
-	}
-	const double Now = World->GetTimeSeconds();
-	const float SampleSeconds = LastClientSampleWorldSeconds >= 0.0
-		? FMath::Clamp(static_cast<float>(Now - LastClientSampleWorldSeconds), 0.001f, 0.25f)
-		: 0.0f;
-	TMap<uint32, FVector> NextLocations;
-	NextLocations.Reserve(Roster->GetItems().Num());
-	OutBodies.Reserve(Roster->GetItems().Num());
-	for (const FGuLiSoldierStateItem& State : Roster->GetItems())
-	{
-		if (!State.SoldierId.IsValid() || !State.IsAlive() || State.bPhased) continue;
-		FTransform Pose;
-		if (!Presentation->TryGetPresentedSoldierTransform(State.SoldierId, Pose)
-			|| Pose.ContainsNaN()) continue;
-		const FGuLiSoldierDefinition* Definition = Data->FindSoldierDefinition(State.UnitTypeId);
-		const float Radius = Definition
-			? Definition->GetMassAvoidanceRadius(DefaultBodyRadiusCentimeters)
-			: DefaultBodyRadiusCentimeters;
-		FGuLiGroundMassBody& Body = OutBodies.AddDefaulted_GetRef();
-		Body.SoldierId = State.SoldierId;
-		Body.Team = State.Team;
-		Body.UnitTypeId = State.UnitTypeId;
-		Body.Location = Pose.GetLocation();
-		Body.RadiusCentimeters = Radius;
-		if (SampleSeconds > 0.0f)
-		{
-			if (const FVector* Previous = PreviousClientLocations.Find(State.SoldierId.Value))
-				Body.Velocity = ((Body.Location - *Previous) / SampleSeconds)
-					.GetClampedToMaxSize(MaximumEstimatedClientSpeedCentimetersPerSecond);
-		}
-		ResolveBodyBounds(Definition, Pose, Radius, Body.BottomZ, Body.TopZ);
-		NextLocations.Add(State.SoldierId.Value, Body.Location);
-	}
-	PreviousClientLocations = MoveTemp(NextLocations);
-	LastClientSampleWorldSeconds = Now;
+	return bClockReady && GetWorld()
+			   ? ClockSimulationAnchor + FMath::Max(0.0, GetWorld()->GetTimeSeconds() - ClockLocalAnchor)
+			   : 0.0;
 }
 
-float UGuLiGroundMassContactSubsystem::GetSnapshotAgeSeconds() const
+FGuLiGroundMassMoveContext UGuLiGroundMassContactSubsystem::CaptureMove(float Duration)
 {
-	const UWorld* World = GetWorld();
-	return World && LastSnapshotWorldSeconds >= 0.0
-		? FMath::Clamp(static_cast<float>(World->GetTimeSeconds() - LastSnapshotWorldSeconds), 0.0f, 0.1f)
-		: 0.0f;
+	BindSources();
+	if (!CurrentSnapshot)
+		RefreshSnapshot();
+	FGuLiGroundMassMoveContext Result;
+	Result.Snapshot = CurrentSnapshot;
+	Result.Duration = Duration;
+	Result.StartSimulationSeconds =
+		FMath::Max(CurrentSnapshot ? CurrentSnapshot->SimulationSeconds : 0.0, EstimateSimulationNow() - Duration);
+	return Result;
 }
 
-void UGuLiGroundMassContactSubsystem::QueryMassBodies(
-	const FBox2D& SweptBounds,
-	const float MovementSeconds,
-	TArray<FGuLiGroundMassBody>& OutBodies)
+void UGuLiGroundMassContactSubsystem::QueryMassBodies(const FGuLiGroundMassMoveContext &Move, const FBox2D &Bounds,
+													  double StartSeconds, float Duration,
+													  TArray<FGuLiGroundMassBody> &Out)
 {
 	TRACE_CPUPROFILER_EVENT_SCOPE(GuLiGroundMassContact_Query);
-	// Actor ticks are not ordered after tickable world subsystems. Build once on demand so
-	// the first character move cannot cross an empty cache before this subsystem's first tick.
-	if (LastSnapshotWorldSeconds < 0.0)
-	{
-		RefreshSnapshot();
-		if (LastSnapshotWorldSeconds >= 0.0)
-			NextRefreshWorldSeconds = LastSnapshotWorldSeconds + SnapshotIntervalSeconds;
-	}
-	int32 RawCandidates = 0;
-	SpatialIndex.Query(
-		SweptBounds,
-		GetSnapshotAgeSeconds(),
-		MovementSeconds,
-		OutBodies,
-		&RawCandidates);
+	Out.Reset();
+	int32 Raw = 0;
+	if (Move.Snapshot)
+		Move.Snapshot->Query(Bounds, StartSeconds, Duration, Out, &Raw);
 #if !UE_BUILD_SHIPPING
 	++Stats.Queries;
-	Stats.RawQueryCandidates += static_cast<uint64>(FMath::Max(0, RawCandidates));
+	Stats.RawQueryCandidates += Raw;
 #endif
 }
 
-bool UGuLiGroundMassContactSubsystem::FindMassBody(
-	const FGuLiSoldierId SoldierId,
-	FGuLiGroundMassBody& OutBody)
+void UGuLiGroundMassContactSubsystem::QueryMassBodies(const FBox2D &Bounds, float Duration,
+													  TArray<FGuLiGroundMassBody> &Out)
 {
-	// Owner-only support replication can arrive before either tickable subsystem or the
-	// character has issued a broad-phase query on this client.
-	if (LastSnapshotWorldSeconds < 0.0)
-	{
-		RefreshSnapshot();
-		if (LastSnapshotWorldSeconds >= 0.0)
-			NextRefreshWorldSeconds = LastSnapshotWorldSeconds + SnapshotIntervalSeconds;
-	}
-	return SpatialIndex.Find(SoldierId, GetSnapshotAgeSeconds(), OutBody);
+	const auto Move = CaptureMove(Duration);
+	QueryMassBodies(Move, Bounds, Move.StartSimulationSeconds, Duration, Out);
 }
 
-void UGuLiGroundMassContactSubsystem::RecordSideHits(const int32 Count)
+bool UGuLiGroundMassContactSubsystem::FindMassBody(FGuLiSoldierId Id, FGuLiGroundMassBody &Out)
+{
+	const auto Move = CaptureMove(0.0f);
+	return Move.Snapshot && Move.Snapshot->Find(Id, Move.StartSimulationSeconds, Out);
+}
+
+void UGuLiGroundMassContactSubsystem::MarkLocalContact(const FGuLiGroundMassBody &Body)
+{
+	if (!GetWorld() || GetWorld()->GetNetMode() == NM_DedicatedServer)
+		return;
+	auto &Contact = VisualContacts.FindOrAdd(Body.SoldierId.Value);
+	Contact.Pose = FTransform(Body.Rotation, Body.Location);
+	Contact.Frame = GFrameCounter;
+	Contact.LastTouched = GetWorld()->GetTimeSeconds();
+}
+
+void UGuLiGroundMassContactSubsystem::ApplyContactPresentation(FGuLiSoldierId Id, FTransform &InOutPose)
+{
+	const auto *Contact = VisualContacts.Find(Id.Value);
+	if (!Contact)
+		return;
+	const float Alpha =
+		Contact->Frame == GFrameCounter
+			? 0.0f
+			: FMath::Clamp(static_cast<float>((GetWorld()->GetTimeSeconds() - Contact->LastTouched) / 0.2), 0.0f, 1.0f);
+	const FVector Scale = InOutPose.GetScale3D();
+	InOutPose.Blend(Contact->Pose, InOutPose, Alpha);
+	InOutPose.SetScale3D(Scale);
+}
+
+void UGuLiGroundMassContactSubsystem::RecordSideHits(int32 Count)
 {
 #if !UE_BUILD_SHIPPING
-	if (Count > 0) Stats.SideHits += static_cast<uint64>(Count);
-#else
-	(void)Count;
+	Stats.SideHits += Count;
 #endif
 }
-
 void UGuLiGroundMassContactSubsystem::RecordSupportContact()
 {
 #if !UE_BUILD_SHIPPING
 	++Stats.SupportContacts;
 #endif
 }
-
 #if WITH_DEV_AUTOMATION_TESTS
-void UGuLiGroundMassContactSubsystem::TestOnly_SetBodies(
-	const TConstArrayView<FGuLiGroundMassBody> Bodies)
+void UGuLiGroundMassContactSubsystem::TestOnly_SetBodies(TConstArrayView<FGuLiGroundMassBody> Bodies)
 {
-	SpatialIndex.Rebuild(Bodies);
-	LastSnapshotWorldSeconds = GetWorld() ? GetWorld()->GetTimeSeconds() : 0.0;
+	bTestSource = true;
+	bSourceReady = true;
+	SourceEpoch = 1;
+	auto Frame = MakeShared<FGuLiGroundMassSnapshot>();
+	Frame->Epoch = 1;
+	Frame->FrameSequence = LatestSequence++;
+	Frame->CacheGeneration = CacheGeneration;
+	Frame->SimulationSeconds = GetWorld()->GetTimeSeconds();
+	auto Index = MakeShared<FGuLiGroundMassSpatialIndex>();
+	Index->Rebuild(Bodies, Frame->SimulationSeconds);
+	Frame->Index = Index;
+	CurrentSnapshot = Frame;
+	ClockSimulationAnchor = Frame->SimulationSeconds;
+	ClockLocalAnchor = GetWorld()->GetTimeSeconds();
+	bClockReady = true;
+}
+void UGuLiGroundMassContactSubsystem::TestOnly_SetRoster(AGuLiSoldierStateReplicator *Roster, uint32 Epoch)
+{
+	bTestSource = true;
+	bSourceReady = true;
+	SourceEpoch = Epoch;
+	StateReplicator = Roster;
+	RosterHandle = Roster->OnRosterDelta.AddUObject(this, &ThisClass::HandleRosterDelta);
 }
 #endif

@@ -13,6 +13,14 @@ enum class EGuLiDynamicObstacleKind : uint8
 	GroundMech
 };
 
+enum class EGuLiObstacleUpdateResult : uint8
+{
+	Updated,
+	Unchanged,
+	NotFound,
+	InvalidData
+};
+
 struct GULISTRIKE_API FGuLiDynamicObstacleHandle
 {
 	uint32 Value = 0u;
@@ -44,7 +52,7 @@ public:
 	virtual ~IGuLiDynamicObstacleRegistry() = default;
 	virtual FGuLiDynamicObstacleHandle RegisterObstacle(const FVector& Location, float RadiusCentimeters) = 0;
 	virtual FGuLiDynamicObstacleHandle RegisterObstacle(const FGuLiDynamicObstacle& Obstacle) = 0;
-	virtual bool UpdateObstacle(FGuLiDynamicObstacleHandle Handle, const FGuLiDynamicObstacle& Obstacle) = 0;
+	virtual EGuLiObstacleUpdateResult UpdateObstacle(FGuLiDynamicObstacleHandle Handle, const FGuLiDynamicObstacle& Obstacle) = 0;
 	virtual void UnregisterObstacle(FGuLiDynamicObstacleHandle Handle) = 0;
 	virtual TConstArrayView<FGuLiDynamicObstacle> GetObstacles() const = 0;
 	virtual uint32 GetRevision() const = 0;
@@ -67,7 +75,7 @@ public:
 		const FVector& Location,
 		float RadiusCentimeters) override;
 	virtual FGuLiDynamicObstacleHandle RegisterObstacle(const FGuLiDynamicObstacle& Obstacle) override;
-	virtual bool UpdateObstacle(
+	virtual EGuLiObstacleUpdateResult UpdateObstacle(
 		FGuLiDynamicObstacleHandle Handle,
 		const FGuLiDynamicObstacle& Obstacle) override;
 	virtual void UnregisterObstacle(FGuLiDynamicObstacleHandle Handle) override;
