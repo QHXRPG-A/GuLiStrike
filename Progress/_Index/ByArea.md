@@ -93,13 +93,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-20 |
-| [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-09-20 |
-| [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-09-20 |
-| [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-09-20 |
-| [UE 网络：从基础到 GuLiStrike 项目实现](../DevelopmentDocumentation/相关读物/UE网络教材/README.md) | reference | reference | 2026-09-20 |
-| [02 所有权与 RPC](../DevelopmentDocumentation/相关读物/UE网络教材/02-所有权与RPC.md) | reference | reference | 2026-09-20 |
-| [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-09-20 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-20 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-20 |
 | [两组机甲资源风格统一参考](../RequirementDocument/20260919-两组机甲资源风格统一参考.md) | requirement | approved | 2026-09-19 |
 | [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | development | done | 2026-09-19 |
@@ -116,7 +110,6 @@
 | [松树林原地图全资源风格重构](../RequirementDocument/20260918-松树林原地图全资源风格重构.md) | requirement | approved | 2026-09-18 |
 | [松树林与三单位同场景对照](../RequirementDocument/20260917-松树林与三单位同场景对照.md) | requirement | approved | 2026-09-18 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-09-18 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-18 |
 | [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | verification | 2026-09-18 |
 | [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | verification | 2026-09-18 |
 | [松树林原Demo地图全资源适配交付候选](../Archive/20260918-松树林原Demo地图全资源适配交付候选.md) | archive | recorded | 2026-09-18 |
@@ -128,6 +121,8 @@
 | [Ship第二批三组件贴图与框线制作](../RequirementDocument/20260917-Ship第二批三组件贴图与框线制作.md) | requirement | approved | 2026-09-17 |
 | [Ship三组件风格样板制作](../RequirementDocument/20260917-Ship三组件风格样板制作.md) | requirement | approved | 2026-09-17 |
 | [基地建造玩法探索草案 v0.1](../RequirementDocument/20260831-基地建造玩法探索.md) | requirement | draft | 2026-09-17 |
+| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
+| [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-09-17 |
 | [GuLiStrike 自然地编资源包 — 制作与验收](../DevelopmentDocumentation/20260917-自然地编资源包.md) | development | in_progress | 2026-09-17 |
 | [Ship剩余四组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship剩余四组件贴图与框线制作.md) | development | done | 2026-09-17 |
 | [Ship第三批支援组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md) | development | done | 2026-09-17 |
@@ -192,6 +187,11 @@
 | [指挥官与地面战争机器最小建造系统 — 技术方案](../DevelopmentDocumentation/20260903-指挥官与地面战争机器最小建造系统.md) | development | done | 2026-09-03 |
 | [2026-09-03 解决了：Ship UI v1 Figma 玩家实机成品稿](../Archive/20260903-ShipUIv1-Figma玩家实机稿.md) | archive | recorded | 2026-09-03 |
 | [指挥官与飞船共享 HUD 及 Ship UI v1](../RequirementDocument/20260902-指挥官与飞船共享HUD及Ship UI v1.md) | requirement | approved | 2026-09-02 |
+| [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-09-01 |
+| [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-09-01 |
+| [UE 网络：从基础到 GuLiStrike 项目实现](../DevelopmentDocumentation/相关读物/UE网络教材/README.md) | reference | reference | 2026-09-01 |
+| [02 所有权与 RPC](../DevelopmentDocumentation/相关读物/UE网络教材/02-所有权与RPC.md) | reference | reference | 2026-09-01 |
+| [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-09-01 |
 | [2026-08-31～09-01 解决了：指挥官选兵移动导航与小兵 GAS 扫射（总归档）](../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md) | archive | recorded | 2026-09-01 |
 | [公共战局框架与三类角色接入](../RequirementDocument/20260831-公共战局框架与三类角色接入.md) | requirement | approved | 2026-08-31 |
 | [指挥官 UI 与小兵血条视觉设计](../RequirementDocument/20260829-指挥官UI与小兵血条视觉设计.md) | requirement | approved | 2026-08-31 |
@@ -235,11 +235,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-09-20 |
+| [指挥官部队操作与特殊任务系统](../RequirementDocument/20260920-指挥官部队操作与特殊任务系统.md) | requirement | approved | 2026-09-20 |
+| [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
+| [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-20 |
+| [指挥官部队操作与特殊任务系统 — 技术方案](../DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md) | development | done | 2026-09-20 |
+| [指挥官部队操作与特殊任务系统实施](../Archive/20260920-指挥官部队操作与特殊任务系统.md) | archive | recorded | 2026-09-20 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死](../RequirementDocument/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | requirement | approved | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | development | in_progress | 2026-09-18 |
 | [建筑World测试数据与环境更新复跑](../Archive/20260918-建筑World测试数据与环境更新复跑.md) | archive | recorded | 2026-09-18 |
@@ -247,6 +251,7 @@
 | [地面机甲弹幕肉鸽与塔防建造](../RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md) | requirement | approved | 2026-09-17 |
 | [基地建造玩法探索草案 v0.1](../RequirementDocument/20260831-基地建造玩法探索.md) | requirement | draft | 2026-09-17 |
 | [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-17 |
+| [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-09-17 |
 | [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | verification | 2026-09-17 |
 | [地面机枪5Hz弹丸与僚机弹效复用](../Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md) | archive | recorded | 2026-09-17 |
 | [地面玩法定稿与弹速基线核查](../Archive/20260917-地面玩法定稿与弹速基线核查.md) | archive | recorded | 2026-09-17 |
@@ -286,17 +291,14 @@
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
 | [玩家地面机甲开火与Excel升级配置](../RequirementDocument/20260920-玩家地面机甲开火与升级配置.md) | requirement | approved | 2026-09-20 |
-| [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-09-20 |
-| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-20 |
-| [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-09-20 |
-| [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-09-20 |
+| [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
 | [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-20 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-20 |
 | [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | development | verification | 2026-09-20 |
 | [玩家机枪开火与Excel升级候选](../Archive/20260920-玩家机枪开火与Excel升级候选.md) | archive | recorded | 2026-09-20 |
 | [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
 | [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
 | [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
 | [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | development | done | 2026-09-19 |
 | [战争机器导弹范围与特效调整](../DevelopmentDocumentation/20260919-战争机器导弹范围与特效调整.md) | development | done | 2026-09-19 |
 | [轻型装甲地面玩家接入与根位移修复](../Archive/20260919-轻型装甲地面玩家接入与根位移修复.md) | archive | recorded | 2026-09-19 |
@@ -313,6 +315,8 @@
 | [地面机甲弹幕肉鸽与塔防建造](../RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md) | requirement | approved | 2026-09-17 |
 | [Ship导入与扫荡者战争机器风格重制](../RequirementDocument/20260916-Ship导入与扫荡者战争机器风格重制.md) | requirement | approved | 2026-09-17 |
 | [基地建造玩法探索草案 v0.1](../RequirementDocument/20260831-基地建造玩法探索.md) | requirement | draft | 2026-09-17 |
+| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
+| [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-09-17 |
 | [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
 | [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | verification | 2026-09-17 |
 | [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | in_progress | 2026-09-17 |
@@ -408,6 +412,8 @@
 | [指挥官相机、编队导航与移动射击优化](../RequirementDocument/20260901-指挥官相机编队导航与移动射击优化.md) | requirement | approved | 2026-09-01 |
 | [小兵客户端先行移动拖拽诊断](../RequirementDocument/20260831-小兵客户端先行移动拖拽诊断.md) | requirement | approved | 2026-09-01 |
 | [指挥官脚环优化与兵种面板](../RequirementDocument/20260830-指挥官脚环优化与兵种面板.md) | requirement | approved | 2026-09-01 |
+| [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-09-01 |
+| [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-09-01 |
 | [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | in_progress | 2026-09-01 |
 | [小兵扫射与可扩展技能桥接 — 技术方案](../DevelopmentDocumentation/20260901-小兵扫射与指挥官GAS桥接.md) | development | done | 2026-09-01 |
 | [小兵客户端先行移动拖拽诊断 — 技术方案与证据](../DevelopmentDocumentation/20260831-小兵客户端先行移动拖拽诊断.md) | development | done | 2026-09-01 |
@@ -422,31 +428,18 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [10 联机验证与故障定位](../DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md) | reference | reference | 2026-09-20 |
-| [精读笔记：MassArchetypeTypes.h —— 从服务器权威体与客户端镜像理解 Archetype](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md) | reference | reference | 2026-09-20 |
-| [05 登录、分配与初始同步](../DevelopmentDocumentation/相关读物/UE网络教材/05-登录分配与初始同步.md) | reference | reference | 2026-09-20 |
-| [精读笔记：MassEntityElementTypes.h —— 用 Commander 500 人实现理解五种 Mass 元素](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityElementTypes.md) | reference | reference | 2026-09-20 |
-| [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-09-20 |
-| [精读笔记：MassEntityQuery 与 ExecutionContext —— 避障捕获 Processor 的真实执行链](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityQuery与ExecutionContext.md) | reference | reference | 2026-09-20 |
-| [精读笔记：MassEntityHandle.h —— 本地运行时句柄与 SoldierId 的分工](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityHandle.md) | reference | reference | 2026-09-20 |
-| [03 属性复制与 RepNotify](../DevelopmentDocumentation/相关读物/UE网络教材/03-属性复制与RepNotify.md) | reference | reference | 2026-09-20 |
-| [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-09-20 |
-| [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-09-20 |
-| [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-09-20 |
-| [精读笔记：GuLiBattleAuthoritySubsystem.cpp —— 从选兵意图到服务端权威移动](../DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md) | reference | reference | 2026-09-20 |
-| [Mass 精读笔记](../DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) | reference | reference | 2026-09-20 |
-| [06 选兵与移动请求全过程](../DevelopmentDocumentation/相关读物/UE网络教材/06-选兵与移动请求全过程.md) | reference | reference | 2026-09-20 |
-| [UE 网络：从基础到 GuLiStrike 项目实现](../DevelopmentDocumentation/相关读物/UE网络教材/README.md) | reference | reference | 2026-09-20 |
-| [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-09-20 |
-| [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-09-20 |
-| [04 项目协议与序列化](../DevelopmentDocumentation/相关读物/UE网络教材/04-项目协议与序列化.md) | reference | reference | 2026-09-20 |
-| [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-20 |
-| [LVL_Main 陨石坑地形](../TerrainGeneration/README.md) | reference | reference | 2026-09-20 |
+| [指挥官部队操作与特殊任务系统](../RequirementDocument/20260920-指挥官部队操作与特殊任务系统.md) | requirement | approved | 2026-09-20 |
+| [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
+| [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-20 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-20 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-20 |
+| [指挥官部队操作与特殊任务系统 — 技术方案](../DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md) | development | done | 2026-09-20 |
+| [指挥官部队操作与特殊任务系统实施](../Archive/20260920-指挥官部队操作与特殊任务系统.md) | archive | recorded | 2026-09-20 |
 | [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
 | [战争机器模型大小适配](../RequirementDocument/20260919-战争机器模型大小适配.md) | requirement | approved | 2026-09-19 |
 | [Mass单位体型与最小净距](../RequirementDocument/20260919-Mass单位体型与最小净距.md) | requirement | superseded | 2026-09-19 |
 | [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
 | [战争机器导弹范围与特效调整](../DevelopmentDocumentation/20260919-战争机器导弹范围与特效调整.md) | development | done | 2026-09-19 |
 | [战争机器模型大小适配](../DevelopmentDocumentation/20260919-战争机器模型大小适配.md) | development | done | 2026-09-19 |
 | [Mass单位体型与最小净距 — 运行时开发](../DevelopmentDocumentation/20260919-Mass单位体型与最小净距.md) | development | abandoned | 2026-09-19 |
@@ -457,11 +450,9 @@
 | [指挥官单位体型与避障距离配置及接入分析](../RequirementDocument/20260918-指挥官单位体型与避障距离配置及接入分析.md) | requirement | approved | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死](../RequirementDocument/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | requirement | approved | 2026-09-18 |
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-18 |
 | [指挥官单位体型与避障距离配置及接入分析](../DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md) | development | done | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | development | in_progress | 2026-09-18 |
@@ -474,6 +465,7 @@
 | [Ship导入与扫荡者战争机器风格重制](../RequirementDocument/20260916-Ship导入与扫荡者战争机器风格重制.md) | requirement | approved | 2026-09-17 |
 | [基地建造玩法探索草案 v0.1](../RequirementDocument/20260831-基地建造玩法探索.md) | requirement | draft | 2026-09-17 |
 | [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-17 |
+| [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-09-17 |
 | [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
 | [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | in_progress | 2026-09-17 |
 | [战争机器Q导弹通用预警与切图断言修复](../Archive/20260917-战争机器Q导弹通用预警与切图断言修复.md) | archive | recorded | 2026-09-17 |
@@ -599,6 +591,24 @@
 | [小兵扫射与可扩展技能桥接](../RequirementDocument/20260901-小兵扫射与指挥官GAS桥接.md) | requirement | approved | 2026-09-01 |
 | [小兵客户端先行移动拖拽诊断](../RequirementDocument/20260831-小兵客户端先行移动拖拽诊断.md) | requirement | approved | 2026-09-01 |
 | [指挥官脚环优化与兵种面板](../RequirementDocument/20260830-指挥官脚环优化与兵种面板.md) | requirement | approved | 2026-09-01 |
+| [10 联机验证与故障定位](../DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md) | reference | reference | 2026-09-01 |
+| [精读笔记：MassArchetypeTypes.h —— 从服务器权威体与客户端镜像理解 Archetype](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md) | reference | reference | 2026-09-01 |
+| [05 登录、分配与初始同步](../DevelopmentDocumentation/相关读物/UE网络教材/05-登录分配与初始同步.md) | reference | reference | 2026-09-01 |
+| [精读笔记：MassEntityElementTypes.h —— 用 Commander 500 人实现理解五种 Mass 元素](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityElementTypes.md) | reference | reference | 2026-09-01 |
+| [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-09-01 |
+| [精读笔记：MassEntityQuery 与 ExecutionContext —— 避障捕获 Processor 的真实执行链](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityQuery与ExecutionContext.md) | reference | reference | 2026-09-01 |
+| [精读笔记：MassEntityHandle.h —— 本地运行时句柄与 SoldierId 的分工](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityHandle.md) | reference | reference | 2026-09-01 |
+| [03 属性复制与 RepNotify](../DevelopmentDocumentation/相关读物/UE网络教材/03-属性复制与RepNotify.md) | reference | reference | 2026-09-01 |
+| [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-09-01 |
+| [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-09-01 |
+| [精读笔记：GuLiBattleAuthoritySubsystem.cpp —— 从选兵意图到服务端权威移动](../DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md) | reference | reference | 2026-09-01 |
+| [Mass 精读笔记](../DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) | reference | reference | 2026-09-01 |
+| [06 选兵与移动请求全过程](../DevelopmentDocumentation/相关读物/UE网络教材/06-选兵与移动请求全过程.md) | reference | reference | 2026-09-01 |
+| [UE 网络：从基础到 GuLiStrike 项目实现](../DevelopmentDocumentation/相关读物/UE网络教材/README.md) | reference | reference | 2026-09-01 |
+| [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-09-01 |
+| [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-09-01 |
+| [04 项目协议与序列化](../DevelopmentDocumentation/相关读物/UE网络教材/04-项目协议与序列化.md) | reference | reference | 2026-09-01 |
+| [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-01 |
 | [移动命令自由扩散与静态寻路线 — 技术方案](../DevelopmentDocumentation/20260901-移动命令自由扩散与静态寻路线.md) | development | done | 2026-09-01 |
 | [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | in_progress | 2026-09-01 |
 | [小兵扫射与可扩展技能桥接 — 技术方案](../DevelopmentDocumentation/20260901-小兵扫射与指挥官GAS桥接.md) | development | done | 2026-09-01 |
@@ -628,6 +638,7 @@
 | [2026-08-28 归档：指挥官 3C、Soldier 数据化与运行时 GM 调参](../Archive/20260828-指挥官3C与运行时GM调参.md) | archive | recorded | 2026-08-28 |
 | [2026-08-28 解决了：Commander 的 Order 中文术语统一](../Archive/20260828-Commander指令术语统一.md) | archive | recorded | 2026-08-28 |
 | [2026-08-27 总归档：Mass 动态 25 人控制组与双端平滑同步](../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md) | archive | recorded | 2026-08-28 |
+| [LVL_Main 陨石坑地形](../TerrainGeneration/README.md) | reference | reference | 2026-08-26 |
 | [2026-08-24 第一批飞船组件拆分入库（总归档）](../Archive/20260824-第一批飞船组件拆分入库-总归档.md) | archive | recorded | 2026-08-24 |
 | [2026-08-22 解决了：数据管线 v2 —— Excel 三行元数据驱动，自动生成 C++ 行结构](../Archive/20260822-数据管线v2-Excel元数据驱动自动生成行结构.md) | archive | recorded | 2026-08-22 |
 
@@ -665,7 +676,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-20 |
+| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
 | [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
 | [地图资源密度涂绘与导出](../RequirementDocument/20260910-地图资源密度涂绘与导出.md) | requirement | approved | 2026-09-10 |
 | [地图资源密度涂绘与导出 — 技术方案与实施记录](../DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md) | development | verification | 2026-09-10 |
@@ -721,8 +732,8 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-20 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [建筑World测试数据与环境更新复跑](../Archive/20260918-建筑World测试数据与环境更新复跑.md) | archive | recorded | 2026-09-18 |
@@ -763,28 +774,28 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [10 联机验证与故障定位](../DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md) | reference | reference | 2026-09-20 |
-| [精读笔记：MassArchetypeTypes.h —— 从服务器权威体与客户端镜像理解 Archetype](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md) | reference | reference | 2026-09-20 |
-| [05 登录、分配与初始同步](../DevelopmentDocumentation/相关读物/UE网络教材/05-登录分配与初始同步.md) | reference | reference | 2026-09-20 |
-| [精读笔记：MassEntityElementTypes.h —— 用 Commander 500 人实现理解五种 Mass 元素](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityElementTypes.md) | reference | reference | 2026-09-20 |
-| [关于网络同步的理解与思考[概念理解]（UE 5.7 改编版）](../DevelopmentDocumentation/相关读物/UE网络教材/00-理论篇-网络同步概念理解.md) | reference | reference | 2026-09-20 |
-| [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-09-20 |
-| [精读笔记：MassEntityQuery 与 ExecutionContext —— 避障捕获 Processor 的真实执行链](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityQuery与ExecutionContext.md) | reference | reference | 2026-09-20 |
-| [精读笔记：MassEntityHandle.h —— 本地运行时句柄与 SoldierId 的分工](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityHandle.md) | reference | reference | 2026-09-20 |
-| [03 属性复制与 RepNotify](../DevelopmentDocumentation/相关读物/UE网络教材/03-属性复制与RepNotify.md) | reference | reference | 2026-09-20 |
-| [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-09-20 |
-| [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-09-20 |
-| [精读笔记：GuLiBattleAuthoritySubsystem.cpp —— 从选兵意图到服务端权威移动](../DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md) | reference | reference | 2026-09-20 |
-| [Mass 精读笔记](../DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) | reference | reference | 2026-09-20 |
-| [06 选兵与移动请求全过程](../DevelopmentDocumentation/相关读物/UE网络教材/06-选兵与移动请求全过程.md) | reference | reference | 2026-09-20 |
-| [UE 网络：从基础到 GuLiStrike 项目实现](../DevelopmentDocumentation/相关读物/UE网络教材/README.md) | reference | reference | 2026-09-20 |
-| [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-09-20 |
-| [02 所有权与 RPC](../DevelopmentDocumentation/相关读物/UE网络教材/02-所有权与RPC.md) | reference | reference | 2026-09-20 |
-| [04 项目协议与序列化](../DevelopmentDocumentation/相关读物/UE网络教材/04-项目协议与序列化.md) | reference | reference | 2026-09-20 |
-| [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-20 |
 | [WM01 程序化六足行走动画 — Blender 到 UE 完整管线教程](../DevelopmentDocumentation/20260826-WM01程序化六足行走动画-Blender到UE管线教程.md) | development | abandoned | 2026-09-05 |
 | [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | development | in_progress | 2026-09-05 |
+| [10 联机验证与故障定位](../DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md) | reference | reference | 2026-09-01 |
+| [精读笔记：MassArchetypeTypes.h —— 从服务器权威体与客户端镜像理解 Archetype](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md) | reference | reference | 2026-09-01 |
+| [05 登录、分配与初始同步](../DevelopmentDocumentation/相关读物/UE网络教材/05-登录分配与初始同步.md) | reference | reference | 2026-09-01 |
+| [精读笔记：MassEntityElementTypes.h —— 用 Commander 500 人实现理解五种 Mass 元素](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityElementTypes.md) | reference | reference | 2026-09-01 |
+| [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-09-01 |
+| [精读笔记：MassEntityQuery 与 ExecutionContext —— 避障捕获 Processor 的真实执行链](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityQuery与ExecutionContext.md) | reference | reference | 2026-09-01 |
+| [精读笔记：MassEntityHandle.h —— 本地运行时句柄与 SoldierId 的分工](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityHandle.md) | reference | reference | 2026-09-01 |
+| [03 属性复制与 RepNotify](../DevelopmentDocumentation/相关读物/UE网络教材/03-属性复制与RepNotify.md) | reference | reference | 2026-09-01 |
+| [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-09-01 |
+| [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-09-01 |
+| [精读笔记：GuLiBattleAuthoritySubsystem.cpp —— 从选兵意图到服务端权威移动](../DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md) | reference | reference | 2026-09-01 |
+| [Mass 精读笔记](../DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) | reference | reference | 2026-09-01 |
+| [06 选兵与移动请求全过程](../DevelopmentDocumentation/相关读物/UE网络教材/06-选兵与移动请求全过程.md) | reference | reference | 2026-09-01 |
+| [UE 网络：从基础到 GuLiStrike 项目实现](../DevelopmentDocumentation/相关读物/UE网络教材/README.md) | reference | reference | 2026-09-01 |
+| [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-09-01 |
+| [02 所有权与 RPC](../DevelopmentDocumentation/相关读物/UE网络教材/02-所有权与RPC.md) | reference | reference | 2026-09-01 |
+| [04 项目协议与序列化](../DevelopmentDocumentation/相关读物/UE网络教材/04-项目协议与序列化.md) | reference | reference | 2026-09-01 |
+| [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-01 |
 | [2026-08-31～09-01 解决了：指挥官选兵移动导航与小兵 GAS 扫射（总归档）](../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md) | archive | recorded | 2026-09-01 |
+| [关于网络同步的理解与思考[概念理解]（UE 5.7 改编版）](../DevelopmentDocumentation/相关读物/UE网络教材/00-理论篇-网络同步概念理解.md) | reference | reference | 2026-08-31 |
 | [2026-08-31 解决了：UE4 网络概念教程改编为 UE 5.7 源码版（教材新增理论篇）](../Archive/20260831-网络教材理论篇改编.md) | archive | recorded | 2026-08-31 |
 | [2026-08-31｜UE 网络教材与 Mass 精读笔记同步修订](../Archive/20260831-网络教材与Mass精读笔记同步修订.md) | archive | recorded | 2026-08-31 |
 | [2026-08-31 解决了：补齐项目网络链路中文注释并编写实战教材](../Archive/20260831-UE网络中文注释与项目教材.md) | archive | recorded | 2026-08-31 |
@@ -806,7 +817,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-18 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-20 |
 | [实时势力范围与阵营覆盖](../RequirementDocument/20260916-实时势力范围与阵营覆盖.md) | requirement | approved | 2026-09-16 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-16 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-15 |
@@ -843,6 +854,7 @@
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
 | [玩家地面机甲与Mass单位立体碰撞](../RequirementDocument/20260920-玩家地面机甲与Mass单位立体碰撞.md) | requirement | approved | 2026-09-20 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-20 |
 | [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | development | verification | 2026-09-20 |
 | [战争机器模型大小适配](../RequirementDocument/20260919-战争机器模型大小适配.md) | requirement | approved | 2026-09-19 |
 | [Mass单位体型与最小净距](../RequirementDocument/20260919-Mass单位体型与最小净距.md) | requirement | superseded | 2026-09-19 |
@@ -852,7 +864,6 @@
 | [Mass体型净距运行时接入与验证记录](../Archive/20260919-Mass体型净距运行时接入与验证记录.md) | archive | recorded | 2026-09-19 |
 | [指挥官单位体型与避障距离配置及接入分析](../RequirementDocument/20260918-指挥官单位体型与避障距离配置及接入分析.md) | requirement | approved | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官单位体型与避障距离配置及接入分析](../DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md) | development | done | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
@@ -886,47 +897,29 @@
 |---|---|---|---|
 | [玩家地面机甲与Mass单位立体碰撞](../RequirementDocument/20260920-玩家地面机甲与Mass单位立体碰撞.md) | requirement | approved | 2026-09-20 |
 | [玩家地面机甲开火与Excel升级配置](../RequirementDocument/20260920-玩家地面机甲开火与升级配置.md) | requirement | approved | 2026-09-20 |
-| [10 联机验证与故障定位](../DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md) | reference | reference | 2026-09-20 |
-| [精读笔记：MassArchetypeTypes.h —— 从服务器权威体与客户端镜像理解 Archetype](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md) | reference | reference | 2026-09-20 |
-| [05 登录、分配与初始同步](../DevelopmentDocumentation/相关读物/UE网络教材/05-登录分配与初始同步.md) | reference | reference | 2026-09-20 |
-| [精读笔记：MassEntityElementTypes.h —— 用 Commander 500 人实现理解五种 Mass 元素](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityElementTypes.md) | reference | reference | 2026-09-20 |
-| [关于网络同步的理解与思考[概念理解]（UE 5.7 改编版）](../DevelopmentDocumentation/相关读物/UE网络教材/00-理论篇-网络同步概念理解.md) | reference | reference | 2026-09-20 |
-| [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-09-20 |
-| [精读笔记：MassEntityQuery 与 ExecutionContext —— 避障捕获 Processor 的真实执行链](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityQuery与ExecutionContext.md) | reference | reference | 2026-09-20 |
-| [精读笔记：MassEntityHandle.h —— 本地运行时句柄与 SoldierId 的分工](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityHandle.md) | reference | reference | 2026-09-20 |
-| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-20 |
-| [03 属性复制与 RepNotify](../DevelopmentDocumentation/相关读物/UE网络教材/03-属性复制与RepNotify.md) | reference | reference | 2026-09-20 |
-| [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-09-20 |
-| [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-09-20 |
-| [精读笔记：GuLiBattleAuthoritySubsystem.cpp —— 从选兵意图到服务端权威移动](../DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md) | reference | reference | 2026-09-20 |
-| [Mass 精读笔记](../DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) | reference | reference | 2026-09-20 |
-| [06 选兵与移动请求全过程](../DevelopmentDocumentation/相关读物/UE网络教材/06-选兵与移动请求全过程.md) | reference | reference | 2026-09-20 |
-| [UE 网络：从基础到 GuLiStrike 项目实现](../DevelopmentDocumentation/相关读物/UE网络教材/README.md) | reference | reference | 2026-09-20 |
-| [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-09-20 |
-| [02 所有权与 RPC](../DevelopmentDocumentation/相关读物/UE网络教材/02-所有权与RPC.md) | reference | reference | 2026-09-20 |
-| [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-09-20 |
-| [04 项目协议与序列化](../DevelopmentDocumentation/相关读物/UE网络教材/04-项目协议与序列化.md) | reference | reference | 2026-09-20 |
-| [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-20 |
+| [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
+| [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
+| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-20 |
 | [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-20 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-20 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-20 |
 | [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | development | verification | 2026-09-20 |
 | [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | development | verification | 2026-09-20 |
 | [玩家机枪开火与Excel升级候选](../Archive/20260920-玩家机枪开火与Excel升级候选.md) | archive | recorded | 2026-09-20 |
 | [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
 | [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | development | done | 2026-09-19 |
 | [轻型机甲与Spider同步UE](../Archive/20260919-轻型机甲与Spider同步UE.md) | archive | recorded | 2026-09-19 |
 | [轻型装甲地面玩家接入与根位移修复](../Archive/20260919-轻型装甲地面玩家接入与根位移修复.md) | archive | recorded | 2026-09-19 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
-| [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [建筑World测试数据与环境更新复跑](../Archive/20260918-建筑World测试数据与环境更新复跑.md) | archive | recorded | 2026-09-18 |
 | [战争机器Q导弹与通用地面预警](../RequirementDocument/20260917-战争机器Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
 | [地面机甲弹幕肉鸽与塔防建造](../RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md) | requirement | approved | 2026-09-17 |
 | [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-17 |
+| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
 | [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
 | [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | verification | 2026-09-17 |
 | [地面机枪5Hz弹丸与僚机弹效复用](../Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md) | archive | recorded | 2026-09-17 |
@@ -1036,6 +1029,25 @@
 | [小兵扫射与可扩展技能桥接](../RequirementDocument/20260901-小兵扫射与指挥官GAS桥接.md) | requirement | approved | 2026-09-01 |
 | [小兵客户端先行移动拖拽诊断](../RequirementDocument/20260831-小兵客户端先行移动拖拽诊断.md) | requirement | approved | 2026-09-01 |
 | [指挥官脚环优化与兵种面板](../RequirementDocument/20260830-指挥官脚环优化与兵种面板.md) | requirement | approved | 2026-09-01 |
+| [10 联机验证与故障定位](../DevelopmentDocumentation/相关读物/UE网络教材/10-联机验证与故障定位.md) | reference | reference | 2026-09-01 |
+| [精读笔记：MassArchetypeTypes.h —— 从服务器权威体与客户端镜像理解 Archetype](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassArchetypeTypes.md) | reference | reference | 2026-09-01 |
+| [05 登录、分配与初始同步](../DevelopmentDocumentation/相关读物/UE网络教材/05-登录分配与初始同步.md) | reference | reference | 2026-09-01 |
+| [精读笔记：MassEntityElementTypes.h —— 用 Commander 500 人实现理解五种 Mass 元素](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityElementTypes.md) | reference | reference | 2026-09-01 |
+| [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-09-01 |
+| [精读笔记：MassEntityQuery 与 ExecutionContext —— 避障捕获 Processor 的真实执行链](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityQuery与ExecutionContext.md) | reference | reference | 2026-09-01 |
+| [精读笔记：MassEntityHandle.h —— 本地运行时句柄与 SoldierId 的分工](../DevelopmentDocumentation/相关读物/Mass精读笔记/MassEntityHandle.md) | reference | reference | 2026-09-01 |
+| [03 属性复制与 RepNotify](../DevelopmentDocumentation/相关读物/UE网络教材/03-属性复制与RepNotify.md) | reference | reference | 2026-09-01 |
+| [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-09-01 |
+| [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-09-01 |
+| [精读笔记：GuLiBattleAuthoritySubsystem.cpp —— 从选兵意图到服务端权威移动](../DevelopmentDocumentation/相关读物/Mass精读笔记/GuLiBattleAuthoritySubsystem.md) | reference | reference | 2026-09-01 |
+| [Mass 精读笔记](../DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) | reference | reference | 2026-09-01 |
+| [06 选兵与移动请求全过程](../DevelopmentDocumentation/相关读物/UE网络教材/06-选兵与移动请求全过程.md) | reference | reference | 2026-09-01 |
+| [UE 网络：从基础到 GuLiStrike 项目实现](../DevelopmentDocumentation/相关读物/UE网络教材/README.md) | reference | reference | 2026-09-01 |
+| [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-09-01 |
+| [02 所有权与 RPC](../DevelopmentDocumentation/相关读物/UE网络教材/02-所有权与RPC.md) | reference | reference | 2026-09-01 |
+| [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-09-01 |
+| [04 项目协议与序列化](../DevelopmentDocumentation/相关读物/UE网络教材/04-项目协议与序列化.md) | reference | reference | 2026-09-01 |
+| [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-01 |
 | [移动命令自由扩散与静态寻路线 — 技术方案](../DevelopmentDocumentation/20260901-移动命令自由扩散与静态寻路线.md) | development | done | 2026-09-01 |
 | [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | in_progress | 2026-09-01 |
 | [小兵扫射与可扩展技能桥接 — 技术方案](../DevelopmentDocumentation/20260901-小兵扫射与指挥官GAS桥接.md) | development | done | 2026-09-01 |
@@ -1044,6 +1056,7 @@
 | [2026-08-31～09-01 解决了：指挥官选兵移动导航与小兵 GAS 扫射（总归档）](../Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md) | archive | recorded | 2026-09-01 |
 | [公共战局框架与三类角色接入](../RequirementDocument/20260831-公共战局框架与三类角色接入.md) | requirement | approved | 2026-08-31 |
 | [指挥官 UI 与小兵血条视觉设计](../RequirementDocument/20260829-指挥官UI与小兵血条视觉设计.md) | requirement | approved | 2026-08-31 |
+| [关于网络同步的理解与思考[概念理解]（UE 5.7 改编版）](../DevelopmentDocumentation/相关读物/UE网络教材/00-理论篇-网络同步概念理解.md) | reference | reference | 2026-08-31 |
 | [公共战局框架与三类角色接入 — 技术方案](../DevelopmentDocumentation/20260831-公共战局框架与三类角色接入.md) | development | verification | 2026-08-31 |
 | [指挥官 HUD 逻辑接入与批量小兵血条 — 技术方案](../DevelopmentDocumentation/20260829-指挥官HUD逻辑接入与批量小兵血条.md) | development | done | 2026-08-31 |
 | [2026-08-31 解决了：UE4 网络概念教程改编为 UE 5.7 源码版（教材新增理论篇）](../Archive/20260831-网络教材理论篇改编.md) | archive | recorded | 2026-08-31 |
@@ -1199,6 +1212,9 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [指挥官部队操作与特殊任务系统](../RequirementDocument/20260920-指挥官部队操作与特殊任务系统.md) | requirement | approved | 2026-09-20 |
+| [指挥官部队操作与特殊任务系统 — 技术方案](../DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md) | development | done | 2026-09-20 |
+| [指挥官部队操作与特殊任务系统实施](../Archive/20260920-指挥官部队操作与特殊任务系统.md) | archive | recorded | 2026-09-20 |
 | [导航预烘焙与哈希判新](../RequirementDocument/20260915-导航预烘焙与哈希判新.md) | requirement | approved | 2026-09-15 |
 | [工程车地面动态避障](../RequirementDocument/20260915-工程车地面动态避障.md) | requirement | approved | 2026-09-15 |
 | [导航预烘焙与哈希判新 — 技术方案](../DevelopmentDocumentation/20260915-导航预烘焙与哈希判新.md) | development | done | 2026-09-15 |
@@ -1219,11 +1235,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-09-20 |
-| [Mass 精读笔记](../DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) | reference | reference | 2026-09-20 |
-| [UE 网络：从基础到 GuLiStrike 项目实现](../DevelopmentDocumentation/相关读物/UE网络教材/README.md) | reference | reference | 2026-09-20 |
-| [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-09-20 |
-| [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-20 |
+| [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
@@ -1351,6 +1363,11 @@
 | [移动命令自由扩散与静态寻路线](../RequirementDocument/20260901-移动命令自由扩散与静态寻路线.md) | requirement | approved | 2026-09-01 |
 | [小兵扫射与可扩展技能桥接](../RequirementDocument/20260901-小兵扫射与指挥官GAS桥接.md) | requirement | approved | 2026-09-01 |
 | [小兵客户端先行移动拖拽诊断](../RequirementDocument/20260831-小兵客户端先行移动拖拽诊断.md) | requirement | approved | 2026-09-01 |
+| [09 GM 调参与跨模块复制](../DevelopmentDocumentation/相关读物/UE网络教材/09-GM调参与跨模块复制.md) | reference | reference | 2026-09-01 |
+| [Mass 精读笔记](../DevelopmentDocumentation/相关读物/Mass精读笔记/README.md) | reference | reference | 2026-09-01 |
+| [UE 网络：从基础到 GuLiStrike 项目实现](../DevelopmentDocumentation/相关读物/UE网络教材/README.md) | reference | reference | 2026-09-01 |
+| [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-09-01 |
+| [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-01 |
 | [指挥官精确选兵与快捷提示栏 — 技术方案](../DevelopmentDocumentation/20260831-指挥官精确选兵与快捷提示栏.md) | development | done | 2026-09-01 |
 | [小兵客户端先行移动拖拽诊断 — 技术方案与证据](../DevelopmentDocumentation/20260831-小兵客户端先行移动拖拽诊断.md) | development | done | 2026-09-01 |
 | [公共战局框架与三类角色接入](../RequirementDocument/20260831-公共战局框架与三类角色接入.md) | requirement | approved | 2026-08-31 |
@@ -1382,16 +1399,14 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [03 属性复制与 RepNotify](../DevelopmentDocumentation/相关读物/UE网络教材/03-属性复制与RepNotify.md) | reference | reference | 2026-09-20 |
-| [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-09-20 |
-| [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-09-20 |
-| [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-20 |
+| [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
+| [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-20 |
+| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-20 |
 | [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
-| [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-18 |
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [战争机器Q导弹与通用地面预警](../RequirementDocument/20260917-战争机器Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
 | [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
@@ -1438,6 +1453,10 @@
 | [小兵扫射与可扩展技能桥接](../RequirementDocument/20260901-小兵扫射与指挥官GAS桥接.md) | requirement | approved | 2026-09-01 |
 | [小兵客户端先行移动拖拽诊断](../RequirementDocument/20260831-小兵客户端先行移动拖拽诊断.md) | requirement | approved | 2026-09-01 |
 | [指挥官脚环优化与兵种面板](../RequirementDocument/20260830-指挥官脚环优化与兵种面板.md) | requirement | approved | 2026-09-01 |
+| [03 属性复制与 RepNotify](../DevelopmentDocumentation/相关读物/UE网络教材/03-属性复制与RepNotify.md) | reference | reference | 2026-09-01 |
+| [01 UE 网络模型与对象职责](../DevelopmentDocumentation/相关读物/UE网络教材/01-UE网络模型与对象职责.md) | reference | reference | 2026-09-01 |
+| [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-09-01 |
+| [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-01 |
 | [移动命令自由扩散与静态寻路线 — 技术方案](../DevelopmentDocumentation/20260901-移动命令自由扩散与静态寻路线.md) | development | done | 2026-09-01 |
 | [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | in_progress | 2026-09-01 |
 | [小兵扫射与可扩展技能桥接 — 技术方案](../DevelopmentDocumentation/20260901-小兵扫射与指挥官GAS桥接.md) | development | done | 2026-09-01 |
@@ -1465,13 +1484,12 @@
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
 | [玩家地面机甲开火与Excel升级配置](../RequirementDocument/20260920-玩家地面机甲开火与升级配置.md) | requirement | approved | 2026-09-20 |
-| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-20 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-20 |
 | [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | development | verification | 2026-09-20 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-20 |
 | [玩家机枪开火与Excel升级候选](../Archive/20260920-玩家机枪开火与Excel升级候选.md) | archive | recorded | 2026-09-20 |
 | [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
 | [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-19 |
 | [战争机器导弹范围与特效调整](../DevelopmentDocumentation/20260919-战争机器导弹范围与特效调整.md) | development | done | 2026-09-19 |
 | [战争机器爆炸追加四倍缩放](../Archive/20260919-战争机器爆炸追加四倍缩放.md) | archive | recorded | 2026-09-19 |
 | [战争机器导弹范围与特效调整](../Archive/20260919-战争机器导弹范围与特效调整.md) | archive | recorded | 2026-09-19 |
@@ -1483,6 +1501,7 @@
 | [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [战争机器Q导弹与通用地面预警](../RequirementDocument/20260917-战争机器Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
 | [地面机甲弹幕肉鸽与塔防建造](../RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md) | requirement | approved | 2026-09-17 |
+| [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
 | [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
 | [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | verification | 2026-09-17 |
 | [地面机枪5Hz弹丸与僚机弹效复用](../Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md) | archive | recorded | 2026-09-17 |

@@ -132,6 +132,7 @@ void UGuLiCommanderNetSyncComponent::TickComponent(
 	TryCompleteClientBootstrap();
 	TickPendingCommandRetries();
 	TickPoseAcknowledgments();
+	TickOrderedCommands();
 	if (GetOwner() && GetOwner()->HasAuthority() && GetWorld())
 	{
 		AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState();
@@ -308,6 +309,10 @@ void UGuLiCommanderNetSyncComponent::ResetClientSoldierState()
 
 void UGuLiCommanderNetSyncComponent::OnConnectionBootstrapReset()
 {
+	PendingOrderedSelections.Reset(); PendingOrderedTasks.Reset(); LastOrderedSelectionSequence = 0;
+	LastTaskFeedback.Reset(); TaskSummaries.Reset(); bOrderedSelectionValid = true;
+	PendingTaskSnapshot.Reset(); ReceivedTaskSnapshot.Reset(); PendingGroupCounts.Reset(); ReceivedGroupCounts.Reset();
+	TaskSnapshotOffset = INDEX_NONE; TaskSnapshotRevision = 0; ReceivedTaskSnapshotRevision = 0; TaskSnapshotSelectionRevision = 0;
 	// The current PlayerState may already be the replacement identity. Cancel through the identity
 	// captured when planning began so an old connection cannot commit after this reset.
 	CancelPendingServerMovePlanning();
@@ -460,6 +465,8 @@ void UGuLiCommanderNetSyncComponent::StartServerBootstrap()
 	MirrorSyncReadyToRoleSlot(*BattlePlayerState, false);
 	if (bMatchEpochChanged)
 	{
+		ControlGroups.Reset(); ControlGroupCounts.Reset(); TaskSummaries.Reset();
+		bOrderedSelectionValid = true; LastOrderedSequence = 0; OrderedGeneration = 0;
 		ServerClearMoveEndpoints();
 		SelectionState = FGuLiCommanderSelectionState{};
 		LastCommandAck = FGuLiCommandAck{};
@@ -537,11 +544,18 @@ bool UGuLiCommanderNetSyncComponent::RefreshServerSelection()
 	}
 	AGuLiBattlePlayerState* BattlePlayerState = GetBattlePlayerState();
 	UGuLiBattleAuthoritySubsystem* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
-	if (!BattlePlayerState || !Authority
-		|| !Authority->RefreshSelection(BattlePlayerState->GetTeam(), SelectionState))
+	if (!BattlePlayerState || !Authority) return false;
+	bool bChanged = Authority->RefreshSelection(BattlePlayerState->GetTeam(), SelectionState);
+	FGuLiCommanderControlGroup Vehicles; Vehicles.Actors = SelectionState.ActorIds;
+	PruneControlGroup(Vehicles, BattlePlayerState->GetTeam());
+	if (Vehicles.Actors != SelectionState.ActorIds)
 	{
-		return false;
+		SelectionState.ActorIds = MoveTemp(Vehicles.Actors);
+		if (!++SelectionState.SelectionRevision) ++SelectionState.SelectionRevision;
+		bChanged = true;
 	}
+	if (!bChanged) return false;
+	ClientOrderedSelection(SelectionState, 0, false, GetConnectionGeneration());
 	NotifySelectionChanged();
 	GetOwner()->ForceNetUpdate();
 	return true;
@@ -782,6 +796,7 @@ bool UGuLiCommanderNetSyncComponent::IsServerMovePlanningPending(
 
 bool UGuLiCommanderNetSyncComponent::IsMoveCommandPending(const uint32 ClientCommandId) const
 {
+	if (PendingOrderedTasks.Contains(ClientCommandId)) return true;
 	if (ClientCommandId == 0u)
 	{
 		return false;
@@ -806,7 +821,7 @@ bool UGuLiCommanderNetSyncComponent::IsMoveCommandPending(const uint32 ClientCom
 
 bool UGuLiCommanderNetSyncComponent::HasUnresolvedSelectionIntent() const
 {
-	return bPendingSelectionIntent || bAwaitingSelectionSnapshot || PendingCommandRecoveryId || !QueuedSelectionIntents.IsEmpty();
+	return !PendingOrderedSelections.IsEmpty() || bPendingSelectionIntent || bAwaitingSelectionSnapshot || PendingCommandRecoveryId || !QueuedSelectionIntents.IsEmpty();
 }
 
 

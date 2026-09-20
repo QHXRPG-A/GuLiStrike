@@ -65,6 +65,7 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [指挥官部队操作与特殊任务系统 — 技术方案](../DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md) | building, commander, resources | 7/7 (100%) | — | 2026-09-20 |
 | [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | art, assets, rendering, vfx | 9/9 (100%) | 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。 | 2026-09-20 |
 | [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | art, combat, input, network | 8/8 (100%) | — | 2026-09-19 |
 | [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | art, assets, rendering | 7/8 (88%) | 查看整批UE展示；后续按反馈处理外观，性能和武器玩法另行接入。 | 2026-09-19 |

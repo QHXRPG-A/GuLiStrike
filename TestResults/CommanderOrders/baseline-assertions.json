@@ -1,0 +1,242 @@
+{
+  "base_commit": "fa025ca583cd587208739d0c96834227f2620752",
+  "unrelated_baseline_failures": [
+    {
+      "testDisplayName": "ConsoleWorldIsolation",
+      "fullTestPath": "GuLiStrike.Commander.Presentation.ConsoleWorldIsolation",
+      "tags": [],
+      "state": "Fail",
+      "deviceInstance": [
+        "707A65A84E0CAEACFC733AA287CC270C"
+      ],
+      "duration": 0.016582999378442764,
+      "dateTime": "2026.09.20-04.37.35",
+      "entries": [
+        {
+          "event": {
+            "type": "Info",
+            "message": "LogGuLiStrike: gs.Commander.Presentation.Set key=unit_cull_distance_cm baseline=20000 old_effective=20000 effective=250000 source=local_override applied_actors=1",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Error",
+            "message": "Expected 'The second World does not receive the first World's override' to be 100000, but it was 20000.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\Presentation\\Tests\\GuLiCommanderPresentationPerformanceTests.cpp",
+          "lineNumber": 380,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "LogGuLiStrike: gs.Commander.Presentation.Reset key=ring_cull_distance_cm baseline=0 old_effective=0 effective=0 source=cpp_default applied_actors=1",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "LogGuLiStrike: gs.Commander.Presentation.Reset key=unit.affect_distance_field_lighting baseline=false old_effective=false effective=false source=cpp_default applied_actors=1",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "LogGuLiStrike: gs.Commander.Presentation.Reset key=unit.affect_dynamic_indirect_lighting baseline=false old_effective=false effective=false source=cpp_default applied_actors=1",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "LogGuLiStrike: gs.Commander.Presentation.Reset key=unit.cast_shadow baseline=false old_effective=false effective=false source=cpp_default applied_actors=1",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "LogGuLiStrike: gs.Commander.Presentation.Reset key=unit.visible_in_ray_tracing baseline=false old_effective=false effective=false source=cpp_default applied_actors=1",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Info",
+            "message": "LogGuLiStrike: gs.Commander.Presentation.Reset key=unit_cull_distance_cm baseline=20000 old_effective=250000 effective=20000 source=cpp_default applied_actors=1",
+            "context": "log",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "",
+          "lineNumber": -1,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Error",
+            "message": "Expected 'Reset restores only the first World's baseline' to be 100000, but it was 20000.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\Presentation\\Tests\\GuLiCommanderPresentationPerformanceTests.cpp",
+          "lineNumber": 394,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Error",
+            "message": "Expected 'The second World remains unchanged after the first resets' to be 100000, but it was 20000.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\Presentation\\Tests\\GuLiCommanderPresentationPerformanceTests.cpp",
+          "lineNumber": 400,
+          "timestamp": "2026.09.20-04.37.35"
+        }
+      ],
+      "warnings": 0,
+      "errors": 3,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "PerformanceRegistry",
+      "fullTestPath": "GuLiStrike.Commander.Presentation.PerformanceRegistry",
+      "tags": [],
+      "state": "Fail",
+      "deviceInstance": [
+        "707A65A84E0CAEACFC733AA287CC270C"
+      ],
+      "duration": 0.008256502449512482,
+      "dateTime": "2026.09.20-04.37.35",
+      "entries": [
+        {
+          "event": {
+            "type": "Error",
+            "message": "Expected 'Unit meshes hard-cull at 1000 metres by default' to be 100000, but it was 20000.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\Presentation\\Tests\\GuLiCommanderPresentationPerformanceTests.cpp",
+          "lineNumber": 130,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Error",
+            "message": "Expected 'Invalid Unit Config falls back without clamping' to be 100000, but it was 20000.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\Presentation\\Tests\\GuLiCommanderPresentationPerformanceTests.cpp",
+          "lineNumber": 162,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Error",
+            "message": "Expected 'The native Unit ISM starts its hard cull at the default boundary' to be 100000, but it was 20000.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\Presentation\\Tests\\GuLiCommanderPresentationPerformanceTests.cpp",
+          "lineNumber": 258,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Error",
+            "message": "Expected 'The native Unit ISM ends its hard cull at the same boundary' to be 100000, but it was 20000.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\Presentation\\Tests\\GuLiCommanderPresentationPerformanceTests.cpp",
+          "lineNumber": 260,
+          "timestamp": "2026.09.20-04.37.35"
+        }
+      ],
+      "warnings": 0,
+      "errors": 4,
+      "artifacts": []
+    },
+    {
+      "testDisplayName": "SizingPolicy",
+      "fullTestPath": "GuLiStrike.Commander.UI.HealthBar.SizingPolicy",
+      "tags": [],
+      "state": "Fail",
+      "deviceInstance": [
+        "707A65A84E0CAEACFC733AA287CC270C"
+      ],
+      "duration": 0.008077502250671387,
+      "dateTime": "2026.09.20-04.37.35",
+      "entries": [
+        {
+          "event": {
+            "type": "Error",
+            "message": "Expected 'Soldier A health bar uses its own mesh top plus padding' to be 120.000000, but it was 104.000000 and outside tolerance 0.000100.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\UI\\Tests\\GuLiCommanderHealthBarRendererTests.cpp",
+          "lineNumber": 183,
+          "timestamp": "2026.09.20-04.37.35"
+        },
+        {
+          "event": {
+            "type": "Error",
+            "message": "Expected 'WM01 health bar uses its distinct mesh top plus padding' to be 270.000000, but it was 254.000000 and outside tolerance 0.000100.",
+            "context": "",
+            "artifact": "00000000000000000000000000000000"
+          },
+          "filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\UI\\Tests\\GuLiCommanderHealthBarRendererTests.cpp",
+          "lineNumber": 189,
+          "timestamp": "2026.09.20-04.37.35"
+        }
+      ],
+      "warnings": 0,
+      "errors": 2,
+      "artifacts": []
+    }
+  ],
+  "head_constants": {
+    "Source/GuLiStrike/Commander/Presentation/GuLiCommanderPresentationPerformanceSettings.h": [
+      "static constexpr int32 DefaultUnitCullDistanceCentimeters = 20000;",
+      "int32 UnitCullDistanceCentimeters = DefaultUnitCullDistanceCentimeters;"
+    ],
+    "Source/GuLiStrike/Commander/UI/GuLiCommanderHealthBarRenderer.cpp": [
+      "constexpr float HeightPaddingCentimeters = 4.0f;",
+      "auto Location = Bounds.GetCenter(); Location.Z = Bounds.Max.Z + GuLiCommanderHealthBars::HeightPaddingCentimeters;",
+      "GuLiCommanderHealthBars::HeightPaddingCentimeters,",
+      "MeshTop + GuLiCommanderHealthBars::HeightPaddingCentimeters);"
+    ]
+  },
+  "note": "The protocol expectation was updated to 15 in this change. The three unrelated presentation/health-bar assertions were already inconsistent with HEAD production constants and are outside this implementation scope."
+}

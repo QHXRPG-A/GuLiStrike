@@ -86,9 +86,9 @@ bool FGuLiCommanderCancelAndMoveCompletionTest::RunTest(const FString& Parameter
 		GuLiCommanderToolPolicy::ResolveCancelAction(EGuLiCommanderToolMode::Move)
 			== GuLiCommanderToolPolicy::ECancelAction::CancelMove);
 	TestTrue(
-		TEXT("Escape clears selection when Select is already active"),
+		TEXT("Escape never clears an admitted selection or task queue"),
 		GuLiCommanderToolPolicy::ResolveCancelAction(EGuLiCommanderToolMode::Select)
-			== GuLiCommanderToolPolicy::ECancelAction::ClearSelection);
+			== GuLiCommanderToolPolicy::ECancelAction::CancelMove);
 
 	TestTrue(
 		TEXT("A submitted one-shot move returns to Select"),

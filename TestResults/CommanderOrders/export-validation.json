@@ -1,0 +1,20 @@
+{
+  "passed": true,
+  "checks": {
+    "valid_three_rows": true,
+    "LifetimePolicy=Forever": true,
+    "ApplicableUnitIds=9999": true,
+    "ApplicableUnitIds=1,1": true,
+    "ApplicableUnitIds=1;2": true,
+    "ExecutorClass=D:/Source/Mining.cpp": true,
+    "TaskTag=Wrong Tag": true
+  },
+  "expected_diagnostics": {
+    "LifetimePolicy=Forever": "SpecialTasks/Mining: LifetimePolicy must be InitialOnce or Persistent",
+    "ApplicableUnitIds=9999": "SpecialTasks/Mining: duplicate or unknown Soldiers.id in ApplicableUnitIds",
+    "ApplicableUnitIds=1,1": "SpecialTasks/Mining: duplicate or unknown Soldiers.id in ApplicableUnitIds",
+    "ApplicableUnitIds=1;2": "SpecialTasks/Mining: ApplicableUnitIds must be text containing comma-separated positive IDs",
+    "ExecutorClass=D:/Source/Mining.cpp": "SpecialTasks/Mining: ExecutorClass must be a native /Script/Module.Class softclass path",
+    "TaskTag=Wrong Tag": "SpecialTasks/Mining: invalid task ID or duplicate/invalid TaskTag"
+  }
+}

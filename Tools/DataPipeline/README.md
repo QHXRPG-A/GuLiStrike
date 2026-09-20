@@ -19,6 +19,25 @@
 
 ## 日常修改
 
+### 特殊任务
+
+[`data/Excel/GuLiStrikeSpecialTasks.xlsx`](../../data/Excel/GuLiStrikeSpecialTasks.xlsx) 的 `Tasks` 表维护自动工作定义，前三行仍为列名、类型、必要性。`ApplicableUnitIds` 引用 Soldiers.id，多个值用英文逗号分隔；匹配兵种获得资格，`AutoActivate` 决定是否自动激活，`LifetimePolicy` 只允许 `InitialOnce` 或 `Persistent`。持续停止、已消耗资格和执行进度属于各单位的对局状态，不回写共享表。
+
+| ID | 行名 | 兵种 ID | 生命周期 | Tag | 原生执行类路径 |
+|---|---|---|---|---|---|
+| 1 | Mining | 3 | Persistent | Task.Special.Mining | /Script/GuLiStrike.GuLiMiningSpecialTaskExecutor |
+| 2 | Construction | 4 | Persistent | Task.Special.Construction | /Script/GuLiStrike.GuLiConstructionSpecialTaskExecutor |
+| 3 | StrongholdAdvance | 1,2 | InitialOnce | Task.Special.StrongholdAdvance | /Script/GuLiStrike.GuLiStrongholdAdvanceSpecialTaskExecutor |
+
+`ExecutorClass` 类型为 `softclass`，填完整原生类路径，不填源文件名或 C++ 的 `U` 前缀。执行器必须继承 `UGuLiSpecialTaskExecutor`，是非抽象原生类，并支持配置 Tag 和每个绑定兵种；运行时每个 World 按类复用对象，各单位进度放在任务实例中。新增工作类型需注册 GameplayTag 并实现执行器，再由表选择具体类；目录不再维护另一套 ID → 类映射。
+
+1. 保存 Excel 后运行 `python Tools/DataPipeline/export_data_from_excel.py`，导出器校验 ID、行名、字段、生命周期、Tag 格式、兵种引用和类路径格式。
+2. 若新增表、列或原生反射类，关闭编辑器，正常编译源码版 `GuLiStrikeEditor`。
+3. 通过 `python Scripts/ue_exec.py Scripts/import_special_tasks.py` 导入，或使用源码版 Editor Python commandlet 执行同一脚本。结果保存到 `TestResults/CommanderOrders/special_task_import.json`。
+4. 原生目录在 World 初始化时加载 DataTable，校验 Tag 已注册、类可加载、继承关系、原生性、非抽象及兵种能力。配置错误明确报告并阻止目录启用，没有旧硬编码回退。
+
+运行中的对局不热换配置；重新开始游戏后生效。客户端只提交任务 ID 和目标，执行类由服务端目录决定。实现与验收见[指挥官部队操作与特殊任务系统](../../Progress/DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md)。
+
 前三行是列名、类型、必要性元数据，第4行开始填数值。`id` 是稳定数字ID，`name` 是稳定UE行名，两者不要因显示文本变化而改写。
 距离默认使用厘米，弹速用厘米/秒，`AttackRatePerSecond` 是每秒发数，`CooldownSeconds` 是秒/发。
 `Soldiers` 新增的 `ModelWidthMeters`（模型宽度）和 `MinAvoidanceDistanceMeters`（最小避障距离）明确使用米；单元格保存数字，`m` 仅为显示格式。

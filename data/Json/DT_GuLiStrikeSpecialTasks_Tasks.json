@@ -1,0 +1,35 @@
+[
+  {
+    "Name": "Mining",
+    "Id": 1,
+    "Note": "持续自动采矿；手动队列优先",
+    "DisplayName": "采矿",
+    "TaskTag": "Task.Special.Mining",
+    "ApplicableUnitIds": "3",
+    "AutoActivate": true,
+    "LifetimePolicy": "Persistent",
+    "ExecutorClass": "/Script/GuLiStrike.GuLiMiningSpecialTaskExecutor"
+  },
+  {
+    "Name": "Construction",
+    "Id": 2,
+    "Note": "全图最近可达我方工地；允许协作",
+    "DisplayName": "建造",
+    "TaskTag": "Task.Special.Construction",
+    "ApplicableUnitIds": "4",
+    "AutoActivate": true,
+    "LifetimePolicy": "Persistent",
+    "ExecutorClass": "/Script/GuLiStrike.GuLiConstructionSpecialTaskExecutor"
+  },
+  {
+    "Name": "StrongholdAdvance",
+    "Id": 3,
+    "Note": "初始授予一次；接管永久移除；未中断连续推进",
+    "DisplayName": "据点推进",
+    "TaskTag": "Task.Special.StrongholdAdvance",
+    "ApplicableUnitIds": "1,2",
+    "AutoActivate": true,
+    "LifetimePolicy": "InitialOnce",
+    "ExecutorClass": "/Script/GuLiStrike.GuLiStrongholdAdvanceSpecialTaskExecutor"
+  }
+]

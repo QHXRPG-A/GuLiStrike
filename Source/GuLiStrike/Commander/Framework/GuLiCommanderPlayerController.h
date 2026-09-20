@@ -12,9 +12,11 @@ class UGuLiBuildingPlacementComponent;
 class AGuLiCommanderCameraPawn;
 class UGuLiCommanderCursorWidget;
 class UInputMappingContext;
+class UInputAction;
 class UEnhancedInputLocalPlayerSubsystem;
 class UGuLiTeleportInputComponent;
 class SWidget;
+namespace GuLiOrderNetworkProbe { struct FRun; }
 
 enum class EGuLiCommanderSelectionShape : uint8
 {
@@ -94,6 +96,7 @@ UCLASS()
 class AGuLiCommanderPlayerController : public AGuLiBattlePlayerController
 {
 	GENERATED_BODY()
+	friend struct GuLiOrderNetworkProbe::FRun;
 
 public:
 	AGuLiCommanderPlayerController(const FObjectInitializer& ObjectInitializer = FObjectInitializer::Get());
@@ -122,6 +125,9 @@ public:
 	}
 
 	void ActivateSelectionTool();
+	void FocusSelectedUnits();
+	void StopSelectedUnits();
+	FVector GetSelectedUnitCenter() const { return FindConfirmedSelectionCenter(); }
 	void ToggleSelectionShape();
 	EGuLiCommanderSelectionShape GetSelectionShape() const { return SelectionShape; }
 	bool GetSelectionDragRectangle(FVector2D& OutStart, FVector2D& OutEnd) const;
@@ -161,6 +167,9 @@ private:
 	bool TryIssuePointSelection(bool bSameType, bool bAdd);
 	bool TryIssueBoxSelection(const FVector2D& Start, const FVector2D& End, bool bAdd);
 	bool BuildPointSelectionRequest(FGuLiSelectionRequest& Request) const;
+	bool BuildSelectionFrustum(FGuLiSelectionRequest& Request, FVector2D Min, FVector2D Max) const;
+	void HandleControlGroup(int32 Slot);
+	void HandleSceneBookmark(int32 Slot);
 	void SubmitSelectionIntent(FGuLiSelectionRequest Request);
 	void HandleMoveReadyToSend(const FGuLiMoveRequest& Request, const FGuLiCommanderSelectionState& Selection);
 	void HandleCommandAckChanged(const FGuLiCommandAck& Ack);
@@ -189,7 +198,7 @@ private:
 	bool IsCursorOverCommanderUI() const;
 	bool HasConfirmedSelection() const;
 	bool TraceGroundUnderCursor(FVector& OutLocation) const;
-	FVector FindConfirmedSelectionCenter() const;
+	FVector FindConfirmedSelectionCenter(int32* OutCount = nullptr) const;
 	uint32 AllocateSelectionRequestId();
 	uint32 AllocateMoveCommandId();
 	void UpdateCommanderInputMode();
@@ -210,7 +219,13 @@ private:
 	bool bSelectionMouseDown = false;
 	bool bSelectionDragExceededThreshold = false;
 	bool bSelectionAddOnPress = false;
-	bool bSelectionAltOnPress = false;
+	bool bSelectionSameTypeOnPress = false;
+	FGuLiSoldierId LastClickedSoldier;
+	FGuLiControllableActorId LastClickedActor;
+	double LastUnitClickTime = -1.0;
+	int32 LastGroupKey = INDEX_NONE;
+	double LastGroupKeyTime = -1.0;
+	TOptional<FVector> SceneBookmarks[4];
 	FVector2D SelectionDragStart = FVector2D::ZeroVector;
 	FVector2D SelectionDragEnd = FVector2D::ZeroVector;
 	FDelegateHandle MoveReadyHandle;
@@ -241,6 +256,10 @@ private:
 	bool bGroundInputActive = false;
 	UPROPERTY(Transient)
 	TObjectPtr<UInputMappingContext> BattleCommandMappings;
+	UPROPERTY(Transient)
+	TObjectPtr<UInputMappingContext> CommanderCommandMappings;
+	UPROPERTY(Transient)
+	TArray<TObjectPtr<UInputAction>> CommanderActions;
 	TWeakObjectPtr<UEnhancedInputLocalPlayerSubsystem> BattleInputSubsystem;
 	bool bCommanderInputActive = false;
 };

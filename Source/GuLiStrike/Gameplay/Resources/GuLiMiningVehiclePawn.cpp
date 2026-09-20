@@ -1,4 +1,5 @@
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
+#include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
 #include "Gameplay/Resources/GuLiResourceFactoryActor.h"
 #include "Gameplay/Resources/GuLiMiningVehicleManager.h"
@@ -101,6 +102,11 @@ void AGuLiMiningVehiclePawn::InitializeVehicle(
     InFactory.RegisterMiningVehicle(*this);
 	if (HasAuthority() && !GetController()) SpawnDefaultController();
 	if (HasAuthority()) CastChecked<AGuLiEngineeringAIController>(GetController())->ConfigureVehicleNavigation();
+	if (HasAuthority())
+	{
+		bTaskManaged = true; ControlMode = EGuLiMiningControlMode::PlayerOrder;
+		GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()->RegisterActor(*this);
+	}
 	ForceNetUpdate();
 }
 
@@ -409,6 +415,7 @@ void AGuLiMiningVehiclePawn::FinishFactoryManeuver()
     GetCharacterMovement()->StopMovementImmediately();
     GetCharacterMovement()->SetMovementMode(MOVE_Walking);
     TaskState = EGuLiMiningTaskState::Idle;
+    if (bTaskManaged) { BeginGrace(GetCargoTotal() == 0); return; }
     if (PendingCommand.IsSet())
     {
         const FPendingEngineeringCommand Pending = PendingCommand.GetValue();
@@ -438,7 +445,7 @@ void AGuLiMiningVehiclePawn::TickPlayerMoving()
 {
 	if (FVector::Dist2D(GetActorLocation(), PlayerMoveTarget) <= 120.0f)
 	{
-		BeginGrace();
+		BeginGrace(true);
 		return;
 	}
 	if (const AAIController* AIController = Cast<AAIController>(GetController());
@@ -576,6 +583,7 @@ bool AGuLiMiningVehiclePawn::IssuePlayerCommandByValue(
 void AGuLiMiningVehiclePawn::ForceAutomaticControl()
 {
     if (!HasAuthority()) return;
+    if (bTaskManaged) return; // The task owner alone may re-enable automatic work (S is persistent).
     if (IsFactoryManeuverActive() || FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsInTransit())
     { PendingCommand.Reset(); bPendingAutomatic = true; return; }
 	FinishCurrentTarget();
@@ -596,15 +604,39 @@ void AGuLiMiningVehiclePawn::CancelTaskForExternalDisplacement()
 	BeginGrace();
 }
 
-void AGuLiMiningVehiclePawn::BeginGrace()
+void AGuLiMiningVehiclePawn::BeginGrace(bool bSuccess)
 {
 	FinishCurrentTarget();
 	if (AAIController* AIController = Cast<AAIController>(GetController())) AIController->StopMovement();
-	ControlMode = EGuLiMiningControlMode::Grace;
+	ControlMode = bTaskManaged ? EGuLiMiningControlMode::PlayerOrder : EGuLiMiningControlMode::Grace;
 	TaskState = EGuLiMiningTaskState::Idle;
-	GraceEndServerTime = GetWorld()->GetTimeSeconds() + GraceSeconds;
+	GraceEndServerTime = bTaskManaged ? 0 : GetWorld()->GetTimeSeconds() + GraceSeconds;
+	if (bTaskManaged) { bManagedTaskComplete = true; bManagedTaskFailed = !bSuccess; }
 	bManualReturnOrder = false;
 	ForceNetUpdate();
+}
+
+bool AGuLiMiningVehiclePawn::StartManagedTask(const FGuLiMiningCommand& Command, bool bAutomatic)
+{
+	if (!HasAuthority() || IsFactoryManeuverActive() || UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;
+	bTaskManaged = true; bManagedTaskComplete = false; bManagedTaskFailed = false;
+	PendingCommand.Reset(); bPendingAutomatic = false;
+	if (Command.Type == EGuLiMiningOrderType::ReturnToFactory && GetCargoTotal() == 0) { BeginGrace(true); return true; }
+	if (bAutomatic)
+	{
+		FinishCurrentTarget(); ControlMode = EGuLiMiningControlMode::Auto; TaskState = EGuLiMiningTaskState::Idle;
+		GraceEndServerTime = 0; NextAutoRetryServerTime = 0; TickAutomatic();
+	}
+	else ExecutePlayerCommand(Command);
+	return true;
+}
+bool AGuLiMiningVehiclePawn::StopManagedTask()
+{
+	PendingCommand.Reset(); bPendingAutomatic = false;
+	if (IsFactoryManeuverActive() || FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsInTransit()) return false;
+	BeginGrace(true);
+	FindComponentByClass<UGuLiEngineeringTravelComponent>()->StopAtSafePoint();
+	return true;
 }
 
 void AGuLiMiningVehiclePawn::FinishCurrentTarget()

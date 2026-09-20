@@ -17,6 +17,7 @@ public:
 	virtual void Tick(float Dt) override;
 	virtual TStatId GetStatId() const override;
 	void RegisterBatch(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers, int32 SourceTerritory);
+	void ActivateTaskMember(EGuLiTeam Team, FGuLiSoldierId Soldier, int32 SourceTerritory);
 private:
 	struct FAdvanceGroup
 	{

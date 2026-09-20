@@ -38,6 +38,8 @@ SHIP_BP_PATH = "/Game/GuLiStrike/Ship/BP_GuLiStrikeShip.BP_GuLiStrikeShip"
 MANIFEST_PATH = f"{PROJECT}/Data/Json/manifest.json"
 REPORT = f"{PROJECT}/Data/tmp_import_report.json"
 PROGRESS = f"{PROJECT}/Data/tmp_import_progress.log"
+# Optional caller-supplied table set for a feature-scoped import using the same pipeline.
+TABLE_FILTER = globals().get("GULI_TABLE_FILTER")
 
 # DT 资产名 -> BP_GuLiStrikeShip CDO 上的属性名（飞船游戏侧接线）
 WIRING = {
@@ -48,6 +50,7 @@ WIRING = {
 
 # 由 C++ Config settings 通过软引用接线；成功导入后不应被误报为未接线。
 CONFIG_WIRED_TABLES = {
+    "DT_GuLiStrikeSpecialTasks_Tasks",
     "DT_GuLiStrikeBuildings_Buildings",
     # Ship V3 assets reference these rows; deployed by deploy_wingman_attack_assets.py.
     "DT_GuLiStrikeShip_WingmanWeapons",
@@ -331,6 +334,8 @@ try:
     manifest = json.loads(open(MANIFEST_PATH, encoding="utf-8").read())
     imported_dts = {}
     for table_name, table_cfg in manifest["tables"].items():
+        if TABLE_FILTER is not None and table_name not in TABLE_FILTER:
+            continue
         entry = import_table(table_name, table_cfg)
         report["tables"].append(entry)
         prop = WIRING.get(table_name)
@@ -364,7 +369,7 @@ try:
     # --- 游戏侧接线（飞船专属）：部件蓝图 PartId（= 资产名去 BP_ 前缀） ---
     ar = unreal.AssetRegistryHelpers.get_asset_registry()
     part_ids = {}
-    for ad in ar.get_assets_by_path("/Game/GuLiStrike", recursive=True):
+    for ad in ([] if TABLE_FILTER is not None else ar.get_assets_by_path("/Game/GuLiStrike", recursive=True)):
         asset = ad.get_asset()
         if not isinstance(asset, unreal.Blueprint):
             continue

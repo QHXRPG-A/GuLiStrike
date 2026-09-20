@@ -376,6 +376,30 @@ def validate_building_references(tables):
             raise SheetError(f"Fields/{row['Name']}: invalid airborne transit configuration")
 
 
+def validate_special_tasks(tables):
+    entry = tables.get("DT_GuLiStrikeSpecialTasks_Tasks")
+    if entry is None:
+        return
+    units = {row["Id"] for row in tables["DT_GuLiStrikeCommander_Soldiers"]["rows"]}
+    tags = set()
+    for row in entry["rows"]:
+        label = f"SpecialTasks/{row['Name']}"
+        tag = row.get("TaskTag", "")
+        if row["Id"] <= 0 or not re.fullmatch(r"Task\.Special\.[A-Za-z][A-Za-z0-9_.]*", tag) or tag in tags:
+            raise SheetError(f"{label}: invalid task ID or duplicate/invalid TaskTag")
+        tags.add(tag)
+        if row.get("LifetimePolicy") not in ("InitialOnce", "Persistent"):
+            raise SheetError(f"{label}: LifetimePolicy must be InitialOnce or Persistent")
+        values = row.get("ApplicableUnitIds", "")
+        if not re.fullmatch(r"[1-9][0-9]*(,[1-9][0-9]*)*", values):
+            raise SheetError(f"{label}: ApplicableUnitIds must be text containing comma-separated positive IDs")
+        ids = [int(value) for value in values.split(",")]
+        if len(set(ids)) != len(ids) or any(value not in units for value in ids):
+            raise SheetError(f"{label}: duplicate or unknown Soldiers.id in ApplicableUnitIds")
+        if not re.fullmatch(r"/Script/[A-Za-z_][A-Za-z0-9_]*\.[A-Za-z_][A-Za-z0-9_]*", row.get("ExecutorClass", "")):
+            raise SheetError(f"{label}: ExecutorClass must be a native /Script/Module.Class softclass path")
+
+
 def main():
     workbooks = [w for w in sorted(EXCEL_DIR.glob("*.xlsx")) if not w.name.startswith("~$")]
     if not workbooks:
@@ -443,6 +467,7 @@ def main():
     if not failed:
         try:
             validate_building_references(tables)
+            validate_special_tasks(tables)
             if any(name.startswith('DT_GuLiStrikeMech_') for name in tables):
                 if not all(name in tables for name in ('DT_GuLiStrikeMech_Upgrades','DT_GuLiStrikeMech_Skills')):
                     raise SheetError('GuLiStrikeMech.xlsx必须同时包含升级表与技能表')

@@ -1,0 +1,165 @@
+{
+	"passed": true,
+	"checks":
+	{
+		"ordered_select_then_stop": true,
+		"group_created": true,
+		"selection_change_did_not_redirect_stop": true,
+		"three_appends_preserved_after_selection_and_replay": true,
+		"initial_task_not_recoverable": true,
+		"overlapping_groups": true,
+		"steal_removes_only_selected_members": true,
+		"empty_group_recall_keeps_selection": true,
+		"invalid_command_does_not_release_stop": true,
+		"valid_command_releases_stop_without_initial_restore": true,
+		"final_stop_persists": true,
+		"hud_task_panel_and_stop_status": true,
+		"unit_info_focus_button": true,
+		"ctrl_f5_saves_scene_position": true,
+		"s_key_reaches_stop_scheduler": true,
+		"keyboard_repeat_does_not_submit_again": true,
+		"f5_recalls_position_preserving_zoom_and_yaw": true,
+		"q_does_not_release_persistent_stop": true
+	},
+	"stages": 13,
+	"errors": [],
+	"samples": [
+		{
+			"stage": 0,
+			"summaries": 0,
+			"cohorts": 0,
+			"group_counts": 0,
+			"feedback": ""
+		},
+		{
+			"stage": 1,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "已接收 1，拒绝 0",
+			"members": 1,
+			"tasks": 0,
+			"stopped": true
+		},
+		{
+			"stage": 2,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "已接收 1，拒绝 0",
+			"members": 1,
+			"tasks": 0,
+			"stopped": true
+		},
+		{
+			"stage": 3,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "命令未接受：连接、顺序或选择无效",
+			"members": 1,
+			"tasks": 3,
+			"stopped": false
+		},
+		{
+			"stage": 4,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "命令未接受：连接、顺序或选择无效",
+			"members": 1,
+			"tasks": 3,
+			"stopped": false
+		},
+		{
+			"stage": 5,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "命令未接受：连接、顺序或选择无效",
+			"members": 1,
+			"tasks": 3,
+			"stopped": false
+		},
+		{
+			"stage": 6,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "已接收 1，拒绝 0",
+			"members": 1,
+			"tasks": 0,
+			"stopped": true
+		},
+		{
+			"stage": 7,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "已接收 0，拒绝 1：该兵种不支持此特殊任务",
+			"members": 1,
+			"tasks": 0,
+			"stopped": true
+		},
+		{
+			"stage": 8,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "已接收 1，拒绝 0",
+			"members": 1,
+			"tasks": 1,
+			"stopped": false
+		},
+		{
+			"stage": 9,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "已接收 1，拒绝 0",
+			"members": 1,
+			"tasks": 0,
+			"stopped": true
+		},
+		{
+			"stage": 10,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "已接收 1，拒绝 0",
+			"members": 1,
+			"tasks": 0,
+			"stopped": true
+		},
+		{
+			"stage": 11,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "已接收 1，拒绝 0",
+			"members": 1,
+			"tasks": 0,
+			"stopped": true
+		},
+		{
+			"stage": 12,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "已接收 1，拒绝 0",
+			"members": 1,
+			"tasks": 0,
+			"stopped": true
+		},
+		{
+			"stage": 13,
+			"summaries": 1,
+			"cohorts": 1,
+			"group_counts": 10,
+			"feedback": "已接收 1，拒绝 0",
+			"members": 1,
+			"tasks": 0,
+			"stopped": true
+		}
+	]
+}

@@ -1,0 +1,26 @@
+Using bundled DotNet SDK version: 8.0.412 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" GuLiStrike Win64 Development -Project=D:\UE5.7\test1\GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE -MaxParallelActions=2
+Log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log.txt
+Using 'git status' to determine working set for adaptive non-unity build (D:\UnrealEngine-5.7).
+Using 'git status' to determine working set for adaptive non-unity build (D:\UE5.7\test1).
+Building GuLiStrike...
+Using Visual Studio 2022 14.44.35215 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[Adaptive Build] Excluded from Navmesh unity file: DetourCrowd.cpp
+[Adaptive Build] Excluded from GuLiStrike unity file: GuLiCommanderNetSyncComponent.cpp, GuLiCommanderOrderedCommands.cpp, GuLiCommanderPlayerController.cpp, GuLiCommanderResourceAdapter.cpp, GuLiCommanderSelectionMoveGateTests.cpp, GuLiCommanderToolModeTests.cpp, GuLiBattleAuthoritySubsystem.cpp, GuLiCommanderSelectionQuery.cpp, GuLiCommanderSelectionQueryTests.cpp, GuLiCommanderTypes.cpp, GuLiCommanderNetworkTests.cpp, GuLiSpecialTaskCatalog.cpp, GuLiSpecialTaskExecutor.cpp, GuLiUnitTaskSubsystem.cpp, GuLiUnitTaskTypes.cpp, GuLiOrderBusinessProbe.cpp, GuLiOrderNetworkProbe.cpp, GuLiUnitTaskTests.cpp, GuLiCommanderHUD.cpp, GuLiCommanderHUDWidget.cpp, GuLiCommanderTaskButton.cpp, GuLiCommanderTaskPanel.cpp, GuLiConstructionVehiclePawn.cpp, GuLiConstructionWorkComponent.cpp, GuLiMiningVehiclePawn.cpp, GuLiArmyAdvanceSubsystem.cpp, GuLiEngineeringTravelComponent.cpp
+Executing up to 2 actions based on MaxProcessorCount override
+Using Unreal Build Accelerator local executor to run 5 action(s)
+  Storage capacity 40Gb
+---- Starting trace: 260920_134307 ----
+UbaServer - Listening on 0.0.0.0:1345
+[1/5] Compile [x64] GuLiMiningVehiclePawn.cpp
+[2/5] Compile [x64] GuLiOrderBusinessProbe.cpp
+[3/5] Compile [x64] GuLiSpecialTaskExecutor.cpp
+[4/5] Link [x64] GuLiStrike.exe
+  正在创建库 D:\UE5.7\test1\Binaries\Win64\GuLiStrike.lib 和对象 D:\UE5.7\test1\Binaries\Win64\GuLiStrike.exp
+[5/5] WriteMetadata GuLiStrike.target [NoUba]
+
+Trace written to file D:/UnrealEngine-5.7/Engine/Programs/UnrealBuildTool/Log.uba with size 6.2kb
+Total time in Unreal Build Accelerator local executor: 28.47 seconds
+
+Result: Succeeded
+Total execution time: 30.78 seconds

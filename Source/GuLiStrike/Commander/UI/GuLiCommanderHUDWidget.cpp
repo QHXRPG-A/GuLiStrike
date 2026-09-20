@@ -17,6 +17,10 @@
 #include "Components/Image.h"
 #include "Components/PanelWidget.h"
 #include "Components/TextBlock.h"
+#include "Components/VerticalBox.h"
+#include "Components/HorizontalBox.h"
+#include "Components/ScrollBox.h"
+#include "Components/Border.h"
 #include "Engine/Texture2D.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -87,12 +91,12 @@ UGuLiCommanderHUDWidget::UGuLiCommanderHUDWidget(const FObjectInitializer& Objec
 	SameType.ButtonName = TEXT("BTN_Shortcut_SameType");
 	SameType.IconName = TEXT("I_Shortcut_SameType");
 	SameType.Tooltip = FText::FromString(TEXT(
-		"Alt + 左键点击士兵\n选择同兵种：以该士兵为中心，从近到远选择最多 1000 人；附近不足时从全地图补足。\nAlt + Shift + 左键：追加到当前选择。\n只选择己方可控、存活的同兵种。"));
+		"Ctrl + 点选 / 双击同一单位：选择屏幕内同兵种。\n范围同时受鼠标地面点 500 米二维半径限制。\n加 Shift：追加同兵种；只选择己方存活单位。"));
 	FGuLiCommanderShortcutEntry AddSelection;
 	AddSelection.ButtonName = TEXT("BTN_Shortcut_AddSelection");
 	AddSelection.IconName = TEXT("I_Shortcut_AddSelection");
 	AddSelection.Tooltip = FText::FromString(TEXT(
-		"Shift + 左键点击 / 拖拽 / 范围选取\n追加选择：保留已选单位，再加入本次命中的单位。\n重复命中不会取消或重复计数；未命中时保持原选择。"));
+		"Shift + 点选：切换命中成员。\nShift + 框选：追加成员。\nCtrl + 数字：覆盖编队；Shift + 数字：加入。\nAlt + 数字：覆盖并移出其他编队；Shift + Alt：追加并移出。"));
 	ShortcutEntries = {SameType, AddSelection};
 }
 
@@ -153,6 +157,7 @@ void UGuLiCommanderHUDWidget::NativeConstruct()
 	}
 
 	BuildMiniMapLayer();
+	BuildTaskPanel();
 	HideReviewOnlyMapWidgets();
 	BindShortcutControls();
 	BoxSelectionTexture = LoadObject<UTexture2D>(nullptr,
@@ -163,6 +168,11 @@ void UGuLiCommanderHUDWidget::NativeConstruct()
 	if (UButton* MoveButton = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Move"))))
 	{
 		MoveButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleMoveClicked);
+	}
+	if (UButton* Button = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Stop"))))
+	{
+		Button->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleStopClicked);
+		Button->SetToolTipText(FText::FromString(TEXT("停止移动和工作 [S]。\n清空队列，持续停止至新的有效任务命令。")));
 	}
 	if (UButton* SelectButton = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Select"))))
 	{
@@ -177,6 +187,7 @@ void UGuLiCommanderHUDWidget::NativeConstruct()
 	RefreshInitialState();
 	if (UWorld* World = GetWorld())
 	{
+		World->GetTimerManager().SetTimer(TaskRefreshTimer, this, &ThisClass::RefreshTaskPanel, .2f, true);
 		World->GetTimerManager().SetTimer(
 			SourceResolveTimer,
 			this,
@@ -198,11 +209,16 @@ void UGuLiCommanderHUDWidget::NativeDestruct()
 	{
 		World->GetTimerManager().ClearTimer(SourceResolveTimer);
 		World->GetTimerManager().ClearTimer(ElapsedTimeTimer);
+		World->GetTimerManager().ClearTimer(TaskRefreshTimer);
 	}
+	if (FocusButton) FocusButton->OnClicked.RemoveAll(this);
+	if (StopButton) StopButton->OnClicked.RemoveAll(this);
+	if (TaskPanel) TaskPanel->RemoveFromParent();
+	TaskPanel = nullptr; TaskText = nullptr; FocusButton = nullptr; StopButton = nullptr;
 	UnbindRuntimeSources();
 	UnbindShortcutControls();
 	HideShortcutTooltip();
-	for (const FName ButtonName : {FName(TEXT("BTN_Cmd_Move")), FName(TEXT("BTN_Cmd_Select")), FName(TEXT("BTN_MiniMapJump"))})
+	for (const FName ButtonName : {FName(TEXT("BTN_Cmd_Move")), FName(TEXT("BTN_Cmd_Stop")), FName(TEXT("BTN_Cmd_Select")), FName(TEXT("BTN_MiniMapJump"))})
 	{
 		if (UButton* Button = Cast<UButton>(FindRuntimeWidget(ButtonName)))
 		{
@@ -670,6 +686,7 @@ void UGuLiCommanderHUDWidget::RefreshCommandControls()
 		SetCommandSlotOpacity(SlotIndex, 0.26f);
 	}
 	SetCommandSlotOpacity(0, bCanMove ? 1.0f : 0.38f);
+	SetCommandSlotOpacity(2, bCanMove ? 1.0f : 0.38f);
 	SetCommandSlotOpacity(6, 1.0f);
 
 	if (UImage* MoveOuter = FindImage(TEXT("I_CmdOuter_00")))
@@ -686,7 +703,10 @@ void UGuLiCommanderHUDWidget::RefreshCommandControls()
 	{
 		MoveButton->SetIsEnabled(bCanMove);
 	}
+	if (auto* Button = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Stop")))) Button->SetIsEnabled(bCanMove);
 	const bool bRadius = Controller && Controller->GetSelectionShape() == EGuLiCommanderSelectionShape::Radius;
+	SetText(TEXT("TXT_CmdKey_Move"), FText::FromString(TEXT("M")));
+	SetText(TEXT("TXT_CmdKey_Select"), FText::GetEmpty());
 	SetText(TEXT("TXT_CmdLabel_Select"), FText::FromString(bRadius ? TEXT("范围") : TEXT("框选")));
 	if (UImage* SelectionIcon = FindImage(TEXT("I_CmdIcon_Select")))
 	{
@@ -697,10 +717,15 @@ void UGuLiCommanderHUDWidget::RefreshCommandControls()
 		const int32 RadiusMeters = Controller
 			? FMath::RoundToInt(GuLiCommanderProtocol::GetSelectionRadiusCentimeters(Controller->GetSelectionRadiusPreset()) / 100.0f)
 			: 80;
-		SelectButton->SetToolTipText(FText::FromString(bRadius
-			? FString::Printf(TEXT("7：切换为矩形框选\n当前范围半径 %dm；+ 切换 80 / 200 / 450m。\nShift：追加选择。"), RadiusMeters)
-			: FString(TEXT("7：切换为范围选取\n左键点击单选；按住左键拖拽框选。\nShift：追加选择。"))));
+		SelectButton->SetToolTipText(FText::FromString(TEXT("左键点选或拖拽框选。\nShift 点选切换成员；Shift 框选追加。\nEsc 取消未提交的目标模式。")));
 	}
+	for (int32 KeyIndex = 1; KeyIndex <= 5; ++KeyIndex)
+	{
+		const TCHAR* Names[] = { TEXT("Move"),TEXT("Attack"),TEXT("Stop"),TEXT("Hold"),TEXT("Patrol"),TEXT("Rally") };
+		const FString Name = FString(TEXT("TXT_CmdKey_")) + Names[KeyIndex];
+		SetText(*Name, FText::GetEmpty());
+	}
+	SetText(TEXT("TXT_CmdKey_Stop"), FText::FromString(TEXT("S")));
 }
 
 void UGuLiCommanderHUDWidget::HandleToolModeChanged(const EGuLiCommanderToolMode NewMode)
@@ -1054,6 +1079,7 @@ bool UGuLiCommanderHUDWidget::IsScreenPositionBlocked(
 	return IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_TopStatus")), ScreenPixelPosition)
 		|| IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_MapDesign")), ScreenPixelPosition)
 		|| IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_DockDesign")), ScreenPixelPosition)
+		|| IsWidgetGeometryHit(TaskPanel, ScreenPixelPosition)
 		|| IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_ShortcutsDesign")), ScreenPixelPosition);
 }
 

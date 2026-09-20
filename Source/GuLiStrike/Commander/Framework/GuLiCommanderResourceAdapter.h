@@ -44,7 +44,7 @@ public:
 	void HandleCommanderDisconnected(EGuLiTeam Team) const;
 	bool GetControllableActorCenter(
 		TConstArrayView<FGuLiControllableActorId> ActorIds,
-		FVector& OutCenter) const;
+		FVector& OutCenter, int32* OutCount = nullptr) const;
 	FGuLiControllableActorId FindControllableActorAlongRay(
 		EGuLiTeam Team,
 		const FVector& RayOrigin,

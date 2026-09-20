@@ -13,6 +13,7 @@ class UGuLiResourceWorldSubsystem;
 class AGuLiResourceFactoryActor;
 class UGuLiMiningPresentationComponent;
 struct FGuLiSoldierDefinition;
+namespace GuLiOrderBusinessProbe { struct FRun; }
 
 USTRUCT()
 struct FGuLiMiningPresentationDefinition
@@ -48,7 +49,12 @@ public:
 		AGuLiResourceFactoryActor& InFactory);
 	bool FindReachableMiningApproach(uint32 NodeId, FVector& OutApproach, float& OutPathLength) const;
 	UFUNCTION(BlueprintPure, Category="Resources|Mining")
-	int32 GetUnitTypeId() const { return UnitTypeId; }
+	virtual int32 GetUnitTypeId() const override { return UnitTypeId; }
+	bool StartManagedTask(const FGuLiMiningCommand& Command, bool bAutomatic);
+	bool StopManagedTask();
+	bool IsManagedTaskComplete() const { return bManagedTaskComplete; }
+	bool DidManagedTaskFail() const { return bManagedTaskFailed; }
+	bool HasManagedTaskOwner() const { return bTaskManaged; }
 	bool IssuePlayerCommand(const FGuLiMiningCommand& Command, EGuLiTeam RequestingTeam);
 	/** A placement displacement invalidates the old path/task, retaining cargo and ownership. */
 	void CancelTaskForExternalDisplacement();
@@ -102,6 +108,7 @@ public:
 	FBox GetTravelBounds() const { return TravelBounds; }
 
 private:
+	friend struct GuLiOrderBusinessProbe::FRun;
 	UFUNCTION()
 	void OnRep_Presentation();
 	UFUNCTION()
@@ -176,6 +183,9 @@ private:
 	UPROPERTY(Replicated) EGuLiTransitOrderResult LastTransitResult = EGuLiTransitOrderResult::InvalidRequest;
 	void ExecuteTransit(const FGuLiStrongholdTransitOrder& Order, const FGuLiPreparedTransit& Prepared);
 	bool bPendingAutomatic = false;
+	bool bTaskManaged = false;
+	bool bManagedTaskComplete = false;
+	bool bManagedTaskFailed = false;
 
 	UGuLiResourceWorldSubsystem* GetResourceSubsystem() const;
 	int32 GetCargoTotal() const { return Cargo.Blue + Cargo.Red; }
@@ -187,7 +197,7 @@ private:
 	void TickDocking(float DeltaSeconds);
 	void TickPlayerMoving();
 	void BeginReturnToFactory(bool bFromManualOrder);
-	void BeginGrace();
+	void BeginGrace(bool bSuccess = false);
 	void FinishCurrentTarget();
 	bool SelectMiningTarget();
 	void SetMiningVisual(bool bActive);

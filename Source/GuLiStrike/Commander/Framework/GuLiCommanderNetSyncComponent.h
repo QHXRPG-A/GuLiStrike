@@ -6,10 +6,12 @@
 #include "Battle/Network/GuLiPlayerNetSyncComponent.h"
 #include "Commander/Network/GuLiCommanderTypes.h"
 #include "Commander/Network/GuLiCommanderPoseCodec.h"
+#include "Commander/Orders/GuLiUnitTaskTypes.h"
 #include "GuLiCommanderNetSyncComponent.generated.h"
 
 class AGuLiBattlePlayerState;
 class AGuLiSoldierStateReplicator;
+namespace GuLiOrderNetworkProbe { struct FRun; }
 
 /** 把专业名册代次绑定到公共连接；单独属性用于保留旧 Bootstrap RPC 的参数布局。 */
 USTRUCT()
@@ -49,6 +51,7 @@ UCLASS(ClassGroup = (GuLiStrike), meta = (BlueprintSpawnableComponent))
 class GULISTRIKE_API UGuLiCommanderNetSyncComponent : public UGuLiPlayerNetSyncComponent
 {
 	GENERATED_BODY()
+	friend struct GuLiOrderNetworkProbe::FRun;
 
 public:
 	UGuLiCommanderNetSyncComponent();
@@ -88,6 +91,13 @@ public:
 	// 拥有者提交移动意图；有待确认选兵时只保留最新延后移动，ACK 到达后补入选择版本。
 	void SubmitMoveRequest(const FGuLiMoveRequest& Request);
 	bool HasUnresolvedSelectionIntent() const;
+	/** New UI commands share one reliable actor channel, preserving input order across selection changes. */
+	void SubmitOrderedSelection(FGuLiSelectionRequest Request);
+	void SubmitOrderedTask(FGuLiUnitTaskCommand Command);
+	void SubmitControlGroup(uint8 Slot, bool bSet, bool bAppend, bool bSteal, bool bFocus);
+	const TArray<FGuLiUnitTaskSummary>& GetTaskSummaries() const;
+	const TArray<int32>& GetControlGroupCounts() const { return ControlGroupCounts; }
+	const FString& GetLastTaskFeedback() const { return LastTaskFeedback; }
 	FGuLiMoveReadyToSendSignature OnMoveReadyToSend;
 
 	// 拥有客户端 → 服务器，可靠选兵 RPC；Request 只含意图，处理结果经 Client ACK 返回。
@@ -227,6 +237,37 @@ protected:
 	virtual void OnConnectionBootstrapReady() override;
 
 private:
+	UFUNCTION(Server, Reliable) void ServerOrderedSelection(FGuLiSelectionRequest Request, uint32 Sequence, uint32 Generation);
+	UFUNCTION(Server, Reliable) void ServerOrderedTask(FGuLiUnitTaskCommand Command, uint32 Sequence, uint32 Generation);
+	UFUNCTION(Server, Reliable) void ServerControlGroup(uint8 Slot, bool bSet, bool bAppend, bool bSteal, bool bFocus, uint32 Sequence, uint32 Generation);
+	UFUNCTION(Client, Reliable) void ClientOrderedSelection(const FGuLiCommanderSelectionState& State, uint32 Sequence, bool bFocus, uint32 Generation);
+	UFUNCTION(Client, Reliable) void ClientTaskReceipt(const FGuLiCommandAck& Ack, const FString& Message, uint32 Generation);
+	UFUNCTION(Client, Reliable) void ClientTaskSnapshot(uint32 Revision, int32 Total, int32 Offset,
+		const TArray<FGuLiUnitTaskSummary>& Chunk, const TArray<int32>& Counts, uint32 SelectionRevision, uint32 Generation);
+	bool AdmitOrderedSequence(uint32 Sequence, uint32 Generation);
+	void TickOrderedCommands();
+	void PruneControlGroup(FGuLiCommanderControlGroup& Group, EGuLiTeam Team) const;
+	uint32 NextOrderedSequence = 1;
+	uint32 LastOrderedSequence = 0;
+	uint32 OrderedGeneration = 0;
+	uint32 LastOrderedSelectionSequence = 0;
+	TSet<uint32> PendingOrderedSelections;
+	TSet<uint32> PendingOrderedTasks;
+	TArray<FGuLiCommanderControlGroup> ControlGroups;
+	bool bOrderedSelectionValid = true;
+	double NextOrderedSummaryTime = 0;
+	TArray<FGuLiUnitTaskSummary> TaskSummaries;
+	TArray<int32> ControlGroupCounts;
+	TArray<FGuLiUnitTaskSummary> PendingTaskSnapshot;
+	TArray<FGuLiUnitTaskSummary> ReceivedTaskSnapshot;
+	TArray<int32> PendingGroupCounts;
+	TArray<int32> ReceivedGroupCounts;
+	uint32 TaskSnapshotRevision = 0;
+	uint32 ReceivedTaskSnapshotRevision = 0;
+	uint32 TaskSnapshotSelectionRevision = 0;
+	uint32 DisplayedTaskSelectionRevision = 0;
+	int32 TaskSnapshotOffset = INDEX_NONE;
+	FString LastTaskFeedback;
 	// 拥有客户端 → 服务器，不可靠快速选兵入口；与可靠版本共用 HandleSelectionRequest。
 	UFUNCTION(Server, Unreliable)
 	void ServerRequestSelectionFast(const FGuLiSelectionRequest& Request);

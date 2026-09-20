@@ -10,6 +10,7 @@ class GULISTRIKE_API UGuLiConstructionWorkComponent : public UActorComponent
 public:
 	UGuLiConstructionWorkComponent();
 	bool AssignBuilding(UGuLiBuildingLifecycleComponent& Building);
+	bool PrepareBuilding(const UGuLiBuildingLifecycleComponent& Building, FVector& OutPosition, float& OutPathLength) const;
 	void StopWork();
 	virtual void TickComponent(float Dt, ELevelTick TickType, FActorComponentTickFunction* Function) override;
 	UGuLiBuildingLifecycleComponent* GetTarget() const { return Target.Get(); }

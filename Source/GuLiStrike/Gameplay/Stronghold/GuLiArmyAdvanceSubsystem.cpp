@@ -1,4 +1,5 @@
 #include "Gameplay/Stronghold/GuLiArmyAdvanceSubsystem.h"
+#include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Resources/GuLiResourceWorldState.h"
@@ -30,20 +31,27 @@ void UGuLiArmyAdvanceSubsystem::OnNavigationGenerated(ANavigationData* Data)
 void UGuLiArmyAdvanceSubsystem::RegisterBatch(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers, int32 SourceTerritory)
 {
 	check(GetWorld()->GetNetMode() != NM_Client);
+	GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()->RegisterSoldiers(Team, Soldiers, SourceTerritory);
+}
+void UGuLiArmyAdvanceSubsystem::ActivateTaskMember(EGuLiTeam Team, FGuLiSoldierId Soldier, int32 SourceTerritory)
+{
+	if (!GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()->MayAdvance(Soldier)) return;
 	auto& Authority = *GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
-	Authority.RegisterAutomaticAdvance(Soldiers);
-	for (int32 Start = 0; Start < Soldiers.Num(); Start += 25)
+	Authority.RegisterAutomaticAdvance(MakeArrayView(&Soldier, 1));
+	for (auto& Group : Groups)
 	{
-		auto& Group = Groups.AddDefaulted_GetRef();
-		Group.Team = Team; Group.Source = SourceTerritory;
-		Group.Soldiers.Append(Soldiers.GetData() + Start, FMath::Min(25, Soldiers.Num() - Start));
+		if (Group.Soldiers.Contains(Soldier)) return;
+		if (Group.Team == Team && Group.Source == SourceTerritory && Group.Target == INDEX_NONE && Group.NextDecisionTime == 0 && Group.Soldiers.Num() < 25)
+		{ Group.Soldiers.Add(Soldier); return; }
 	}
+	auto& Group = Groups.AddDefaulted_GetRef(); Group.Team = Team; Group.Source = SourceTerritory; Group.Soldiers.Add(Soldier);
 }
 void UGuLiArmyAdvanceSubsystem::Tick(float Dt)
 {
 	auto& Resources = *GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
 	if (Groups.IsEmpty() || !Resources.IsResourceWorldActive() || !Resources.IsRuntimeReady()) return;
 	auto& Authority = *GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+	auto& Tasks = *GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>();
 	const auto& WorldState = *Resources.GetResourceWorldState();
 	TArray<EGuLiTeam> Owners;
 	for (const auto& State : WorldState.GetTerritories()) Owners.Add(State.Owner);
@@ -53,7 +61,7 @@ void UGuLiArmyAdvanceSubsystem::Tick(float Dt)
 		for (auto& Group : Groups) { Group.Unreachable.Reset(); Group.NextDecisionTime = 0; }
 	}
 	for (auto& Group : Groups)
-		Group.Soldiers.RemoveAll([&](auto Id) { return !Authority.IsAutomaticallyAdvancing(Id); });
+		Group.Soldiers.RemoveAll([&](auto Id) { return !Authority.IsAutomaticallyAdvancing(Id) || !Tasks.MayAdvance(Id); });
 	Groups.RemoveAll([](const auto& Group) { return Group.Soldiers.IsEmpty(); });
 	const double Now = GetWorld()->GetTimeSeconds();
 	int32 Queries = 0;
@@ -82,14 +90,25 @@ void UGuLiArmyAdvanceSubsystem::Tick(float Dt)
 			Group.Unreachable.Add(Group.Target);
 		}
 		const int32 Current = Resources.FindTerritoryIndex(Center);
+		if (Group.Target != INDEX_NONE && WorldState.GetTerritoryOwner(Group.Target) == Group.Team)
+		{
+			for (auto Id : Group.Soldiers) Tasks.NotifyAdvanceStage(Id);
+			Group.Soldiers.RemoveAll([&](auto Id) { return !Tasks.MayAdvance(Id); });
+			if (Group.Soldiers.IsEmpty()) continue;
+		}
 		const int32 Origin = Current != INDEX_NONE ? Current : Group.Source;
 		const TArray<int32> Candidates = Resources.GetStrongholdTopology().FindAttackCandidates(Origin, Group.Team,
 			[&](int32 Index) { return WorldState.GetTerritoryOwner(Index); });
 		Group.Target = INDEX_NONE;
 		for (int32 Candidate : Candidates) if (!Group.Unreachable.Contains(Candidate)) { Group.Target = Candidate; break; }
-		if (Group.Target == INDEX_NONE) { if (bMoving) Authority.StopAutomaticMove(Group.Soldiers); continue; }
+		if (Group.Target == INDEX_NONE)
+		{
+			for (auto Id : Group.Soldiers) { Tasks.UpdateAdvanceTarget(Id, INDEX_NONE, FVector::ZeroVector); Tasks.NotifyAdvanceStage(Id); }
+			if (bMoving) Authority.StopAutomaticMove(Group.Soldiers); continue;
+		}
 		const FVector Ground = Resources.GetTerritoryGroundLocation(Group.Target);
 		const FVector Approach = Ground + (Center - Ground).GetSafeNormal2D() * 1200;
+		for (auto Id : Group.Soldiers) Tasks.UpdateAdvanceTarget(Id, Group.Target, Approach);
 		++Queries;
 		if (!Authority.IssueAttackMove(Group.Team, Group.Soldiers, Approach))
 		{

@@ -1,0 +1,309 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "636E7BAA4CA7BA41047A4AA929E0457B",
+			"instanceName": "DESKTOP-6D3B0FC-50392",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.20-05.44.46",
+	"succeeded": 12,
+	"succeededWithWarnings": 1,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.57695972919464111,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "BuildingAssetTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingAssetTests",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.032098200172185898,
+			"dateTime": "2026.09.20-05.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BuildingPlacementPolicyTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingPlacementPolicyTests",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.0081501007080078125,
+			"dateTime": "2026.09.20-05.44.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "BuildingWorldTests",
+			"fullTestPath": "GuLiStrike.Building.BuildingWorldTests",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.41428810358047485,
+			"dateTime": "2026.09.20-05.44.45",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.20-05.44.46"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.20-05.44.46"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.20-05.44.46"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.20-05.44.46"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.20-05.44.46"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.20-05.44.46"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSpawn: SpawnActor failed because we are in the process of tearing down the world",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.20-05.44.46"
+				}
+			],
+			"warnings": 7,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AppendCapacityAndSafeCancellation",
+			"fullTestPath": "GuLiStrike.Commander.Orders.AppendCapacityAndSafeCancellation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.0074849016964435577,
+			"dateTime": "2026.09.20-05.44.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExcelNativeCatalog",
+			"fullTestPath": "GuLiStrike.Commander.Orders.ExcelNativeCatalog",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.0099708996713161469,
+			"dateTime": "2026.09.20-05.44.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InitialAndPersistentLifecycle",
+			"fullTestPath": "GuLiStrike.Commander.Orders.InitialAndPersistentLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.0081025995314121246,
+			"dateTime": "2026.09.20-05.44.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UntrustedCommandValidation",
+			"fullTestPath": "GuLiStrike.Commander.Orders.UntrustedCommandValidation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.0082874000072479248,
+			"dateTime": "2026.09.20-05.44.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalAsset",
+			"fullTestPath": "GuLiStrike.Resources.Bake.CanonicalAsset",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.039533503353595734,
+			"dateTime": "2026.09.20-05.44.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CanonicalContract",
+			"fullTestPath": "GuLiStrike.Resources.Board.CanonicalContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.0083605013787746429,
+			"dateTime": "2026.09.20-05.44.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ValidationAndRevision",
+			"fullTestPath": "GuLiStrike.Resources.Commands.ValidationAndRevision",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.008082900196313858,
+			"dateTime": "2026.09.20-05.44.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DefaultsAndConservation",
+			"fullTestPath": "GuLiStrike.Resources.Economy.DefaultsAndConservation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.0082732997834682465,
+			"dateTime": "2026.09.20-05.44.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PublicDeltaState",
+			"fullTestPath": "GuLiStrike.Resources.Network.PublicDeltaState",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.0099502988159656525,
+			"dateTime": "2026.09.20-05.44.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "HISMSwapIndex",
+			"fullTestPath": "GuLiStrike.Resources.Rendering.HISMSwapIndex",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"636E7BAA4CA7BA41047A4AA929E0457B"
+			],
+			"duration": 0.01437700167298317,
+			"dateTime": "2026.09.20-05.44.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

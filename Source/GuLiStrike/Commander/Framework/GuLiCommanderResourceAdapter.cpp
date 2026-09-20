@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Framework/GuLiCommanderResourceAdapter.h"
+#include "Commander/Orders/GuLiSpecialTaskCatalog.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Building/GuLiConstructionVehiclePawn.h"
@@ -8,6 +9,7 @@
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 
 #include "Battle/Framework/GuLiBattlePlayerState.h"
+#include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "Gameplay/Economy/GuLiTeamEconomySubsystem.h"
@@ -105,6 +107,8 @@ bool UGuLiCommanderResourceAdapter::ResolveActorSelection(
 			const APawn& Pawn = **It;
 			const auto* Interface = Cast<IGuLiEngineeringVehicle>(&Pawn);
 			if (!Interface || UGuLiExternalUnitControlComponent::IsActorPhased(&Pawn)) continue;
+			const auto* Health = Pawn.FindComponentByClass<UGuLiCombatHealthComponent>();
+			if (!Health || !Health->IsAlive()) continue;
 			const auto& Vehicle = *Interface;
 			if (Vehicle.GetTeam() != Team || !Vehicle.GetStableActorId().IsValid()) continue;
 			bool bHit = false;
@@ -122,7 +126,13 @@ bool UGuLiCommanderResourceAdapter::ResolveActorSelection(
 			else if (Request.Kind == EGuLiSelectionKind::SameType)
 			{
 				const APawn* Seed = FindEngineeringVehicle(Request.SeedActorId);
-				bHit = Seed && Seed->GetClass() == Pawn.GetClass();
+				const auto* SeedVehicle = Cast<IGuLiEngineeringVehicle>(Seed);
+				double Along = 0; FVector PickCenter; float PickRadius = 0;
+				if (Seed && SeedVehicle) EngineeringPickSphere(*Seed, *SeedVehicle, Request.RayOrigin, Request.PickHalfAngleRadians, PickCenter, PickRadius);
+				bHit = SeedVehicle && SeedVehicle->GetTeam() == Team && SeedVehicle->GetUnitTypeId() == Vehicle.GetUnitTypeId()
+					&& RayPassesSphere(Request.RayOrigin, Request.RayDirection, PickCenter, PickRadius + 500, Along)
+					&& IsPointInsideSelectionBox(Request, Pawn.GetActorLocation())
+					&& FVector::DistSquared2D(Pawn.GetActorLocation(), Request.Center) <= FMath::Square(GetDefault<UGuLiUnitTaskSettings>()->SameTypeRadiusCentimeters);
 			}
 			else if (Request.Kind == EGuLiSelectionKind::Box)
 			{
@@ -148,6 +158,7 @@ bool UGuLiCommanderResourceAdapter::ResolveActorSelection(
 		else Combined.Add(Id);
 	}
 	OutIds = Combined.Array();
+	if (OutIds.Num() > int32(GULI_MAX_CONTROLLABLE_ACTOR_SELECTION)) return false;
 	OutIds.Sort();
 	return true;
 }
@@ -223,7 +234,7 @@ void UGuLiCommanderResourceAdapter::HandleCommanderDisconnected(const EGuLiTeam 
 
 bool UGuLiCommanderResourceAdapter::GetControllableActorCenter(
 	const TConstArrayView<FGuLiControllableActorId> ActorIds,
-	FVector& OutCenter) const
+	FVector& OutCenter, int32* OutCount) const
 {
 	OutCenter = FVector::ZeroVector;
 	int32 Count = 0;
@@ -231,10 +242,13 @@ bool UGuLiCommanderResourceAdapter::GetControllableActorCenter(
 	{
 		if (const APawn* Vehicle = FindEngineeringVehicle(Id))
 		{
+			const auto* Health = Vehicle->FindComponentByClass<UGuLiCombatHealthComponent>();
+			if (!Health || !Health->IsAlive() || UGuLiExternalUnitControlComponent::IsActorPhased(Vehicle)) continue;
 			OutCenter += Vehicle->GetActorLocation();
 			++Count;
 		}
 	}
+	if (OutCount) *OutCount = Count;
 	if (Count == 0) return false;
 	OutCenter /= static_cast<double>(Count);
 	return true;
@@ -253,6 +267,8 @@ FGuLiControllableActorId UGuLiCommanderResourceAdapter::FindControllableActorAlo
 		const APawn& Pawn = **It;
 		const auto* Interface = Cast<IGuLiEngineeringVehicle>(&Pawn);
 		if (!Interface || UGuLiExternalUnitControlComponent::IsActorPhased(&Pawn)) continue;
+		const auto* Health = Pawn.FindComponentByClass<UGuLiCombatHealthComponent>();
+		if (!Health || !Health->IsAlive()) continue;
 		const auto& Vehicle = *Interface;
 		if (Vehicle.GetTeam() != Team) continue;
 		double Along = 0.0;

@@ -1,4 +1,5 @@
 #include "Gameplay/Building/GuLiConstructionVehiclePawn.h"
+#include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
 #include "Gameplay/Building/GuLiConstructionWorkComponent.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
@@ -40,6 +41,7 @@ void AGuLiConstructionVehiclePawn::InitializeVehicle(EGuLiTeam InTeam, FGuLiCont
 {
 	check(HasAuthority());
 	Team = InTeam; StableId = InId; BaseSpeed = Definition.MovementSpeedCmPerSecond;
+	UnitTypeId = Definition.UnitTypeId;
 	GetCharacterMovement()->MaxWalkSpeed = BaseSpeed;
 	PresentationClass = Definition.PresentationClass; PresentationScale = Definition.PresentationScale; OnRep_Definition();
 	auto& Health = *FindComponentByClass<UGuLiCombatHealthComponent>();
@@ -48,6 +50,7 @@ void AGuLiConstructionVehiclePawn::InitializeVehicle(EGuLiTeam InTeam, FGuLiCont
 	Health.ConfigureServerTarget(Handle, Team); Health.InitializeServerHealth(Definition.MaxHealth);
 	if (!GetController()) SpawnDefaultController();
 	CastChecked<AGuLiEngineeringAIController>(GetController())->ConfigureVehicleNavigation();
+	GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()->RegisterActor(*this);
 	ForceNetUpdate();
 }
 void AGuLiConstructionVehiclePawn::OnRep_Definition()
@@ -103,4 +106,5 @@ void AGuLiConstructionVehiclePawn::GetLifetimeReplicatedProps(TArray<FLifetimePr
 	DOREPLIFETIME(AGuLiConstructionVehiclePawn, Team); DOREPLIFETIME(AGuLiConstructionVehiclePawn, StableId);
 	DOREPLIFETIME(AGuLiConstructionVehiclePawn, PresentationClass); DOREPLIFETIME(AGuLiConstructionVehiclePawn, PresentationScale);
 	DOREPLIFETIME(AGuLiConstructionVehiclePawn, BaseSpeed);
+	DOREPLIFETIME(AGuLiConstructionVehiclePawn, UnitTypeId);
 }

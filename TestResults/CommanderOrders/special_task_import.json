@@ -1,0 +1,36 @@
+{
+  "tables": [
+    {
+      "asset": "DT_GuLiStrikeSpecialTasks_Tasks",
+      "source_rows": [
+        "Mining",
+        "Construction",
+        "StrongholdAdvance"
+      ],
+      "created": true,
+      "row_names": [
+        "Mining",
+        "Construction",
+        "StrongholdAdvance"
+      ],
+      "row_checks": {
+        "Mining": true,
+        "Construction": true,
+        "StrongholdAdvance": true
+      },
+      "imported": true
+    }
+  ],
+  "config_wired": [
+    "DT_GuLiStrikeSpecialTasks_Tasks"
+  ],
+  "unwired": [],
+  "errors": [],
+  "part_ids": {},
+  "orphan_tables": [],
+  "native_classes": {
+    "Mining": "/Script/GuLiStrike.GuLiMiningSpecialTaskExecutor",
+    "Construction": "/Script/GuLiStrike.GuLiConstructionSpecialTaskExecutor",
+    "StrongholdAdvance": "/Script/GuLiStrike.GuLiStrongholdAdvanceSpecialTaskExecutor"
+  }
+}

@@ -20,6 +20,7 @@ public:
 	UFUNCTION(BlueprintCallable, BlueprintAuthorityOnly)
 	virtual EGuLiTransitOrderResult IssueStrongholdTransit(const FGuLiStrongholdTransitOrder& Order, EGuLiTeam RequestingTeam) override;
 	virtual EGuLiTeam GetTeam() const override { return Team; }
+	virtual int32 GetUnitTypeId() const override { return UnitTypeId; }
 	virtual FGuLiControllableActorId GetStableActorId() const override { return StableId; }
 	virtual float GetEngineeringBaseSpeed() const override { return BaseSpeed; }
 	virtual void SetEngineeringPresentationVisible(bool bVisible) override;
@@ -36,5 +37,6 @@ private:
 	UPROPERTY(ReplicatedUsing=OnRep_Definition) TSubclassOf<AActor> PresentationClass;
 	UPROPERTY(ReplicatedUsing=OnRep_Definition) float PresentationScale = 1;
 	UPROPERTY(Replicated) float BaseSpeed = 900;
+	UPROPERTY(Replicated) int32 UnitTypeId = 0;
 	UFUNCTION() void OnRep_Definition();
 };

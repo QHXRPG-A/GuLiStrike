@@ -1,0 +1,31 @@
+{
+	"passed": false,
+	"checks":
+	{
+		"ordered_select_then_stop": false,
+		"group_created": false,
+		"selection_change_did_not_redirect_stop": false,
+		"three_appends_preserved_after_selection_and_replay": false,
+		"initial_task_not_recoverable": false,
+		"overlapping_groups": false,
+		"steal_removes_only_selected_members": false,
+		"empty_group_recall_keeps_selection": false,
+		"invalid_command_does_not_release_stop": false,
+		"valid_command_releases_stop_without_initial_restore": false,
+		"final_stop_persists": false
+	},
+	"stages": 9,
+	"errors": [
+		"ordered_select_then_stop",
+		"group_created",
+		"selection_change_did_not_redirect_stop",
+		"three_appends_preserved_after_selection_and_replay",
+		"initial_task_not_recoverable",
+		"overlapping_groups",
+		"steal_removes_only_selected_members",
+		"empty_group_recall_keeps_selection",
+		"invalid_command_does_not_release_stop",
+		"valid_command_releases_stop_without_initial_restore",
+		"final_stop_persists"
+	]
+}

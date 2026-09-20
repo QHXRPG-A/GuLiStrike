@@ -333,6 +333,10 @@ public:
 	bool IsAutomaticallyAdvancing(FGuLiSoldierId Soldier) const;
 	bool IssueAttackMove(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers, const FVector& Destination);
 	void StopAutomaticMove(TConstArrayView<FGuLiSoldierId> Soldiers);
+	void StopTaskSoldiers(TConstArrayView<FGuLiSoldierId> Soldiers);
+	bool GetTaskSoldierInfo(FGuLiSoldierId Id, EGuLiTeam& Team, uint16& UnitTypeId, FVector& Location) const;
+	bool SetExplicitSelection(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers,
+		TConstArrayView<FGuLiControllableActorId> Actors, FGuLiCommanderSelectionState& Selection);
 	const FGuLiAuthorityPerformanceCounters& GetPerformanceCounters() const { return PerformanceCounters; }
 
 	/**

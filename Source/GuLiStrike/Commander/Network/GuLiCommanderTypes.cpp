@@ -146,6 +146,7 @@ bool FGuLiSelectionRequest::IsWellFormed() const
 		return IsValidSelectionBox(*this);
 	}
 	return SeedSoldierId.IsValid() != SeedActorId.IsValid()
+		&& (Kind != EGuLiSelectionKind::SameType || IsValidSelectionBox(*this))
 		&& IsUnitSelectionRay(RayDirection)
 		&& FMath::IsFinite(PickHalfAngleRadians)
 		&& PickHalfAngleRadians >= 0.0001f && PickHalfAngleRadians <= 0.05f;

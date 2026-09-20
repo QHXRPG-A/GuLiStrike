@@ -329,6 +329,26 @@ void AGuLiCommanderHUD::DrawHUD()
 			}
 		}
 		DrawActiveCommandLine(*CommanderController);
+		if (CommanderController->IsInputKeyDown(EKeys::LeftShift) || CommanderController->IsInputKeyDown(EKeys::RightShift))
+		{
+			if (const auto* Sync = CommanderController->GetCommanderNetSyncComponent())
+				for (const auto& Summary : Sync->GetTaskSummaries())
+				{
+					FVector Start = CommanderController->GetSelectedUnitCenter(); int32 Index = 0;
+					for (const auto& Task : Summary.Tasks)
+					{
+						if (FVector(Task.Command.Target).IsNearlyZero()) continue;
+						FVector2D A, B;
+						if (CommanderController->ProjectWorldLocationToScreen(Start, A)
+							&& CommanderController->ProjectWorldLocationToScreen(Task.Command.Target, B))
+						{
+							DrawLine(A.X,A.Y,B.X,B.Y,FLinearColor(.2f,.85f,1,.8f),1.5f);
+							DrawText(FString::FromInt(++Index),FLinearColor::White,B.X,B.Y,GEngine->GetSmallFont());
+						}
+						Start = Task.Command.Target;
+					}
+				}
+		}
 	}
 	DrawBuildingFeedback();
 }

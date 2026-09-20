@@ -18,6 +18,7 @@ class GULISTRIKE_API IGuLiEngineeringVehicle
 	GENERATED_BODY()
 public:
 	virtual EGuLiTeam GetTeam() const = 0;
+	virtual int32 GetUnitTypeId() const = 0;
 	virtual FGuLiControllableActorId GetStableActorId() const = 0;
 	virtual float GetEngineeringBaseSpeed() const = 0;
 	virtual void SetEngineeringPresentationVisible(bool bVisible) = 0;
@@ -42,6 +43,8 @@ class GULISTRIKE_API UGuLiEngineeringTravelComponent : public UActorComponent
 public:
 	UGuLiEngineeringTravelComponent();
 	bool BeginMove(const FVector& Target, float AcceptanceRadius);
+	bool StopAtSafePoint();
+	bool FindGroundPath(const FVector& Target, float& OutLength) const;
 	EGuLiTransitOrderResult PrepareTransport(const FGuLiStrongholdTransitOrder& Order, FGuLiPreparedTransit& Out) const;
 	void BeginTransport(const FGuLiPreparedTransit& Prepared);
 	bool IsInTransit() const { return State.IsPhased(); }

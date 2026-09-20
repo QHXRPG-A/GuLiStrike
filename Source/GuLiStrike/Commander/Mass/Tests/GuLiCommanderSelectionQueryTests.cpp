@@ -27,6 +27,13 @@ namespace GuLiCommanderSelectionTests
 		Request.SeedSoldierId = FGuLiSoldierId(1u);
 		Request.RayOrigin = FVector(0.0, 0.0, 10000.0);
 		Request.RayDirection = FVector(0.0, 0.0, -1.0);
+		if (Kind == EGuLiSelectionKind::SameType)
+		{
+			Request.BoxTopLeftRay = FVector(-6,-6,-1).GetSafeNormal();
+			Request.BoxTopRightRay = FVector(6,-6,-1).GetSafeNormal();
+			Request.BoxBottomRightRay = FVector(6,6,-1).GetSafeNormal();
+			Request.BoxBottomLeftRay = FVector(-6,6,-1).GetSafeNormal();
+		}
 		return Request;
 	}
 
@@ -224,7 +231,7 @@ bool FGuLiCommanderPointHintValidationTest::RunTest(const FString& Parameters)
 
 IMPLEMENT_SIMPLE_AUTOMATION_TEST(
 	FGuLiCommanderSameTypeCapTest,
-	"GuLiStrike.Commander.Selection.SameTypeNearest1000",
+	"GuLiStrike.Commander.Selection.SameTypeScreenAnd500Meters",
 	EAutomationTestFlags::EditorContext | EAutomationTestFlags::EngineFilter)
 
 bool FGuLiCommanderSameTypeCapTest::RunTest(const FString& Parameters)
@@ -238,7 +245,7 @@ bool FGuLiCommanderSameTypeCapTest::RunTest(const FString& Parameters)
 		// Reverse insertion order proves selection is based on distance rather than roster order.
 		for (int32 Index = EligibleCount; Index >= 1; --Index)
 		{
-			Population.Add(MakeCandidate(static_cast<uint32>(Index), FVector((Index - 1) * 1000.0, 0.0, 0.0), 7u));
+			Population.Add(MakeCandidate(static_cast<uint32>(Index), FVector((Index - 1) * 10.0, 0.0, 0.0), 7u));
 		}
 		Population.Add(MakeCandidate(2001u, FVector::ZeroVector, 8u));
 		Population.Add(MakeCandidate(2002u, FVector::ZeroVector, 7u, EGuLiTeam::Blue));
@@ -249,10 +256,9 @@ bool FGuLiCommanderSameTypeCapTest::RunTest(const FString& Parameters)
 		TArray<FGuLiSoldierId> Ids;
 		TestTrue(TEXT("same type request accepted"), ResolveCandidates(
 			MakePointRequest(EGuLiSelectionKind::SameType), EGuLiTeam::Red, Population, Ids));
-		TestEqual(TEXT("999/1000/1001 respects this-operation cap"), Ids.Num(), FMath::Min(EligibleCount, 1000));
+		TestEqual(TEXT("same-type selection uses the overall protocol capacity"), Ids.Num(), EligibleCount);
 		TestTrue(TEXT("clicked seed remains first"), !Ids.IsEmpty() && Ids[0] == FGuLiSoldierId(1u));
-		TestTrue(TEXT("distant same-type allies fill from whole map"), Ids.Contains(FGuLiSoldierId(999u)));
-		TestFalse(TEXT("farther 1001st ally excluded"), Ids.Contains(FGuLiSoldierId(1001u)));
+		TestTrue(TEXT("visible nearby allies included"), Ids.Contains(FGuLiSoldierId(999u)));
 		TestFalse(TEXT("other type excluded"), Ids.Contains(FGuLiSoldierId(2001u)));
 		TestFalse(TEXT("enemy excluded"), Ids.Contains(FGuLiSoldierId(2002u)));
 		TestFalse(TEXT("dead excluded"), Ids.Contains(FGuLiSoldierId(2003u)));
@@ -266,6 +272,19 @@ bool FGuLiCommanderSameTypeCapTest::RunTest(const FString& Parameters)
 	ResolveCandidates(MakePointRequest(EGuLiSelectionKind::SameType), EGuLiTeam::Red, EqualDistances, Ids);
 	TestTrue(TEXT("equal distance uses stable soldier ID order"),
 		Ids == TArray<FGuLiSoldierId>{FGuLiSoldierId(1u), FGuLiSoldierId(2u), FGuLiSoldierId(3u)});
+	const TArray<FCandidate> Boundary = { MakeCandidate(1,FVector::ZeroVector), MakeCandidate(2,FVector(50000,0,0)),
+		MakeCandidate(3,FVector(50001,0,0)), MakeCandidate(4,FVector(0,40000,0)) };
+	auto Request = MakePointRequest(EGuLiSelectionKind::SameType);
+	ResolveCandidates(Request, EGuLiTeam::Red, Boundary, Ids);
+	TestTrue(TEXT("500m boundary is inclusive"), Ids.Contains(FGuLiSoldierId(2)));
+	TestFalse(TEXT("one centimetre beyond radius excluded"), Ids.Contains(FGuLiSoldierId(3)));
+	Request.BoxTopLeftRay = FVector(-6,-3,-1).GetSafeNormal(); Request.BoxTopRightRay = FVector(6,-3,-1).GetSafeNormal();
+	Request.BoxBottomRightRay = FVector(6,3,-1).GetSafeNormal(); Request.BoxBottomLeftRay = FVector(-6,3,-1).GetSafeNormal();
+	ResolveCandidates(Request, EGuLiTeam::Red, Boundary, Ids);
+	TestFalse(TEXT("off-screen unit excluded even inside radius"), Ids.Contains(FGuLiSoldierId(4)));
+	Request.Center = FVector(20000,0,0);
+	ResolveCandidates(Request, EGuLiTeam::Red, Boundary, Ids);
+	TestTrue(TEXT("radius is measured from mouse ground point, not seed"), Ids.Contains(FGuLiSoldierId(3)));
 	return true;
 }
 
@@ -311,7 +330,11 @@ bool FGuLiCommanderAddMembershipTest::RunTest(const FString& Parameters)
 	}
 	const FGuLiSoldierId LowerNewId(1u);
 	CombineMembership(Existing, MakeArrayView(&LowerNewId, 1), EGuLiSelectionModifier::Add, Combined);
-	TestTrue(TEXT("at protocol capacity Add never drops old high IDs to admit a new lower ID"), Combined == Existing);
+	TestEqual(TEXT("overflow remains visible so authority can reject instead of silently truncating"), Combined.Num(), 10001);
+	Existing = {FGuLiSoldierId(1),FGuLiSoldierId(2),FGuLiSoldierId(3)};
+	const FGuLiSoldierId Toggle(2);
+	CombineMembership(Existing, MakeArrayView(&Toggle,1), EGuLiSelectionModifier::Toggle, Combined);
+	TestTrue(TEXT("Shift point toggles only the exact member"), Combined == TArray<FGuLiSoldierId>{FGuLiSoldierId(1),FGuLiSoldierId(3)});
 	return true;
 }
 

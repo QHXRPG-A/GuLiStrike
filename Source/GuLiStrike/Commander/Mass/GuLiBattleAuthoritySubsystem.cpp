@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
+#include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Units/GuLiGroundCrowdManager.h"
 #include "Commander/Network/GuLiCommanderPoseCodec.h"
 
@@ -141,6 +142,7 @@ namespace GuLiCommanderMassPrivate
 		// StateRevision 标识离散状态变化；ActiveOrderId 指向当前批次，0 表示无活动指令。
 		uint32 StateRevision = 1u;
 		uint32 ActiveOrderId = 0u;
+		uint64 TaskGeneration = 0;
 		bool bAutomaticAdvance = false;
 		bool bAttackMoveHolding = false;
 		FNavLocation LastValidNavLocation;
@@ -285,6 +287,7 @@ namespace GuLiCommanderMassPrivate
 
 	struct FMoveMemberPlan
 	{
+		uint64 TaskGeneration = 0;
 		FGuLiSoldierId SoldierId;
 		FGuLiControlCohortId CohortId;
 		int32 CohortMemberIndex = INDEX_NONE;
@@ -1975,6 +1978,15 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 		}
 	}
 	AuthorityState->bPopulationSpawned = true;
+	if (auto* Tasks = GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>())
+	{
+		for (const auto Team : { EGuLiTeam::Red, EGuLiTeam::Blue })
+		{
+			TArray<FGuLiSoldierId> Ids;
+			for (const auto& Soldier : AuthorityState->Soldiers) if (Soldier.Team == Team) Ids.Add(Soldier.SoldierId);
+			Tasks->RegisterSoldiers(Team, Ids);
+		}
+	}
 	RegisterCombatLedgerTargets();
 	UE_LOG(
 		LogGuLiCommanderMass,
@@ -3006,6 +3018,7 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyMovePlans()
 			}
 			const int32* SoldierIndex = AuthorityState->SoldierIndexById.Find(Member.SoldierId.Value);
 			const bool bValidAtCommit = Member.bHasDestination
+				&& SoldierIndex && AuthorityState->Soldiers[*SoldierIndex].TaskGeneration == Member.TaskGeneration
 				&& PreparedMemberIds.Contains(Member.SoldierId.Value)
 				&& SoldierIndex
 				&& AuthorityState->Soldiers.IsValidIndex(*SoldierIndex)
@@ -5633,27 +5646,10 @@ bool UGuLiBattleAuthoritySubsystem::ResolveSelection(
 		}
 	}
 	ExistingIds.Sort();
-	// Legacy native QA can still request Toggle. Player Shift sends Add and never enters this branch.
-	if (Request.Modifier == EGuLiSelectionModifier::Toggle)
-	{
-		const TSet<FGuLiSoldierId> OriginalHits(HitIds);
-		for (const FGuLiControlCohortDescriptor& Cohort : WorkingSelection.Cohorts)
-		{
-			if (Cohort.MemberIds.ContainsByPredicate([&OriginalHits](const FGuLiSoldierId Id)
-				{ return OriginalHits.Contains(Id); }))
-			{
-				for (const FGuLiSoldierId Id : Cohort.MemberIds)
-				{
-					if (ExistingIds.Contains(Id))
-					{
-						HitIds.AddUnique(Id);
-					}
-				}
-			}
-		}
-	}
 	TArray<FGuLiSoldierId> NewIds;
 	GuLiCommanderSelectionQuery::CombineMembership(ExistingIds, HitIds, Request.Modifier, NewIds);
+	if (NewIds.Num() > int32(GULI_MAX_CONTROL_COHORTS * GULI_CONTROL_COHORT_TARGET_SIZE))
+	{ OutAck.Result = EGuLiCommandAckResult::InvalidRequest; return false; }
 	// Membership equality preserves cohort IDs/revision for repeated Shift hits. Changed unions
 	// are regrouped together so hundreds of one-person additions cannot consume 400 cohort slots.
 	if (NewIds != ExistingIds)
@@ -5749,7 +5745,7 @@ bool UGuLiBattleAuthoritySubsystem::RefreshSelection(
 				continue;
 			}
 			const GuLiCommanderMassPrivate::FSoldierRuntime& Soldier = AuthorityState->Soldiers[*SoldierIndex];
-			if (Soldier.Team != Team)
+			if (Soldier.Team != Team || !Soldier.IsAlive())
 			{
 				bMembershipChanged = true;
 				continue;
@@ -5985,6 +5981,7 @@ bool UGuLiBattleAuthoritySubsystem::BeginMovePlanning(
 				continue;
 			}
 			Member.bEligible = true;
+			Member.TaskGeneration = Soldier.TaskGeneration;
 			Job.MaximumMemberRadiusCentimeters = FMath::Max(Job.MaximumMemberRadiusCentimeters,
 				Soldier.AvoidanceRadiusCentimeters);
 			Member.OldReservation = Soldier.bHasFinalDestination
@@ -7224,6 +7221,7 @@ int32 UGuLiBattleAuthoritySubsystem::SpawnSoldierBatch(EGuLiTeam Team, uint16 Un
 		if (SpawnReservedSoldier(Team, UnitTypeId, Locations[Index], Id)) OutIds.Add(Id);
 		--Reserved; // A failed spawn releases its reservation as well.
 	}
+	if (auto* Tasks = GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()) Tasks->RegisterSoldiers(Team, OutIds);
 	return OutIds.Num();
 }
 bool UGuLiBattleAuthoritySubsystem::SpawnDebugSoldier(EGuLiTeam Team, uint16 UnitTypeId,
@@ -7268,6 +7266,68 @@ void UGuLiBattleAuthoritySubsystem::RegisterAutomaticAdvance(TConstArrayView<FGu
 	check(IsAuthorityWorld());
 	for (auto Id : Soldiers)
 		AuthorityState->Soldiers[AuthorityState->SoldierIndexById.FindChecked(Id.Value)].bAutomaticAdvance = true;
+}
+bool UGuLiBattleAuthoritySubsystem::GetTaskSoldierInfo(FGuLiSoldierId Id, EGuLiTeam& Team, uint16& UnitTypeId, FVector& Location) const
+{
+	const int32* Index = AuthorityState ? AuthorityState->SoldierIndexById.Find(Id.Value) : nullptr;
+	if (!Index || !AuthorityState->Soldiers[*Index].IsAlive()) return false;
+	const auto& Soldier = AuthorityState->Soldiers[*Index]; Team = Soldier.Team; UnitTypeId = Soldier.UnitTypeId; Location = Soldier.Location;
+	return true;
+}
+void UGuLiBattleAuthoritySubsystem::StopTaskSoldiers(TConstArrayView<FGuLiSoldierId> Soldiers)
+{
+	using namespace GuLiCommanderMassPrivate;
+	if (!IsAuthorityWorld() || !AuthorityState || !AuthorityState->MassEntitySubsystem.IsValid()) return;
+	auto& Manager = AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
+	for (auto Id : Soldiers)
+	{
+		const int32* Index = AuthorityState->SoldierIndexById.Find(Id.Value);
+		if (!Index) continue;
+		auto& Soldier = AuthorityState->Soldiers[*Index];
+		++Soldier.TaskGeneration;
+		for (auto& Job : AuthorityState->MovePlanningJobs)
+		{
+			if (!Job || Job->Stage == EMovePlanningStage::Completed) continue;
+			for (int32 M = 0; M < Job->Members.Num(); ++M) if (Job->Members[M].SoldierId == Id)
+			{
+				auto& Member = Job->Members[M]; Member.bEligible = false; Member.bStartValid = false;
+				Member.FailureStage = EGuLiMovePlanFailureStage::MemberInvalid; Member.OldReservation = Soldier.Location;
+				ReleaseMoveMemberDestination(*Job, M, false); RemoveMoveMemberFromPreparedFormations(*Job, Id);
+			}
+		}
+		Soldier.ActiveOrderId = 0; Soldier.bAutomaticAdvance = false; Soldier.bAttackMoveHolding = false;
+		Soldier.bHasFinalDestination = false; Soldier.NavigationState = EGuLiSoldierNavigationState::Idle;
+		Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::None; Soldier.PersonalPathPoints.Reset();
+		Soldier.PersonalPathPointIndex = 0; Soldier.Velocity = FVector::ZeroVector; Soldier.bForceMovementUpdate = true;
+		++Soldier.StateRevision;
+		if (!Manager.IsEntityValid(Soldier.Entity)) continue;
+		auto& Order = Manager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
+		Order.ActiveOrderId = 0; Order.bHasMoveTarget = false; Order.OrderRevision = Soldier.StateRevision;
+		auto& Move = Manager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+		Move.CreateNewAction(EMassMovementAction::Stand, *GetWorld()); Move.Center = Soldier.Location; Move.DesiredSpeed = FMassInt16Real(0.f);
+	}
+	AuthorityState->bForceManualAvoidanceRefresh = true;
+}
+bool UGuLiBattleAuthoritySubsystem::SetExplicitSelection(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers,
+	TConstArrayView<FGuLiControllableActorId> Actors, FGuLiCommanderSelectionState& Selection)
+{
+	using namespace GuLiCommanderMassPrivate;
+	if (!AuthorityState || !IsAuthorityWorld() || Soldiers.Num() > int32(GULI_MAX_CONTROL_COHORTS * GULI_CONTROL_COHORT_TARGET_SIZE)
+		|| Actors.Num() > int32(GULI_MAX_CONTROLLABLE_ACTOR_SELECTION)) return false;
+	FGuLiCommanderSelectionState Next; Next.SelectionRevision = Selection.SelectionRevision + 1;
+	if (!Next.SelectionRevision) ++Next.SelectionRevision;
+	TSet<FGuLiSoldierId> Seen;
+	for (auto Id : Soldiers)
+	{
+		EGuLiTeam UnitTeam; uint16 Type; FVector Location;
+		if (Seen.Contains(Id) || !GetTaskSoldierInfo(Id, UnitTeam, Type, Location) || UnitTeam != Team) continue;
+		Seen.Add(Id);
+		if (Next.Cohorts.IsEmpty() || Next.Cohorts.Last().MemberIds.Num() == int32(GULI_CONTROL_COHORT_TARGET_SIZE))
+			Next.Cohorts.AddDefaulted_GetRef().CohortId = FGuLiControlCohortId(AllocateNonZero(AuthorityState->NextControlCohortId));
+		Next.Cohorts.Last().MemberIds.Add(Id); ++Next.Cohorts.Last().AliveCount;
+	}
+	Next.ActorIds.Append(Actors.GetData(), Actors.Num()); Next.AcceptedClientRequestId = Selection.AcceptedClientRequestId;
+	Selection = MoveTemp(Next); return true;
 }
 bool UGuLiBattleAuthoritySubsystem::IsAutomaticallyAdvancing(FGuLiSoldierId Id) const
 {

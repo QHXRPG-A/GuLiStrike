@@ -46,6 +46,25 @@ bool UGuLiEngineeringTravelComponent::BeginMove(const FVector& Target, float Acc
 	if (Target.ContainsNaN() || AcceptanceRadius < 0 || Control->AreActionsLocked()) return false;
 	return MoveOnGround(Target,AcceptanceRadius);
 }
+bool UGuLiEngineeringTravelComponent::StopAtSafePoint()
+{
+	if (!GetOwner()->HasAuthority() || IsInTransit()) return false;
+	Controller().StopMovement();
+	if (auto* Character = Cast<ACharacter>(GetOwner())) Character->GetCharacterMovement()->StopMovementImmediately();
+	return true;
+}
+bool UGuLiEngineeringTravelComponent::FindGroundPath(const FVector& Target, float& OutLength) const
+{
+	auto* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	const auto* Pawn = Cast<APawn>(GetOwner());
+	const auto* Data = Nav && Pawn ? Nav->GetNavDataForProps(Pawn->GetNavAgentPropertiesRef(), Pawn->GetActorLocation()) : nullptr;
+	if (!Data || Target.ContainsNaN()) return false;
+	FPathFindingQuery Query(GetOwner(), *Data, Pawn->GetActorLocation(), Target);
+	Query.SetAllowPartialPaths(false);
+	const auto Path = Nav->FindPathSync(Pawn->GetNavAgentPropertiesRef(), Query);
+	if (!Path.IsSuccessful() || !Path.Path.IsValid() || Path.Path->IsPartial()) return false;
+	OutLength = Path.Path->GetLength(); return true;
+}
 EGuLiTransitOrderResult UGuLiEngineeringTravelComponent::PrepareTransport(
 	const FGuLiStrongholdTransitOrder& Order, FGuLiPreparedTransit& Out) const
 {

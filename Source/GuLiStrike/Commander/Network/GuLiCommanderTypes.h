@@ -17,8 +17,8 @@ inline constexpr uint32 GULI_CONTROL_COHORT_TARGET_SIZE = 25u;
 /** 拥有者选择状态最多 400 个控制组；协议上限不等于当前生成数量。 */
 inline constexpr uint32 GULI_MAX_CONTROL_COHORTS = 400u;
 
-/** Alt 同兵种扩选本次最多选入 1000 人；不限制 Shift 累计选择。 */
-inline constexpr uint32 GULI_MAX_SAME_TYPE_SELECTION = 1000u;
+/** Same-type selection shares the complete selection capacity (screen/radius filter is independent). */
+inline constexpr uint32 GULI_MAX_SAME_TYPE_SELECTION = GULI_MAX_CONTROL_COHORTS * GULI_CONTROL_COHORT_TARGET_SIZE;
 inline constexpr uint32 GULI_MAX_CONTROLLABLE_ACTOR_SELECTION = 64u;
 inline constexpr uint16 GULI_DEFAULT_SOLDIER_UNIT_TYPE_ID = 1u;
 

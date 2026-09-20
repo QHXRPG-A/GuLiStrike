@@ -19,6 +19,7 @@ class UTexture2D;
 class UWidget;
 enum class EGuLiCommanderToolMode : uint8;
 enum class EGuLiCommanderSelectionShape : uint8;
+namespace GuLiOrderNetworkProbe { struct FRun; }
 
 /** Authored button/icon names keep shortcut layout in UMG and behavior in C++. */
 USTRUCT(BlueprintType)
@@ -54,6 +55,7 @@ UCLASS(BlueprintType, Blueprintable)
 class GULISTRIKE_API UGuLiCommanderHUDWidget : public UUserWidget
 {
 	GENERATED_BODY()
+	friend struct GuLiOrderNetworkProbe::FRun;
 
 public:
 	UGuLiCommanderHUDWidget(const FObjectInitializer& ObjectInitializer);
@@ -100,6 +102,10 @@ private:
 	void RefreshUnitTypeCard();
 	uint32 GetCurrentMatchEpoch() const;
 	void BuildMiniMapLayer();
+	void BuildTaskPanel();
+	void RefreshTaskPanel();
+	UFUNCTION() void HandleFocusClicked();
+	UFUNCTION() void HandleStopClicked();
 	void HideReviewOnlyMapWidgets();
 	void BindShortcutControls();
 	void UnbindShortcutControls();
@@ -148,6 +154,11 @@ private:
 
 	UPROPERTY(Transient)
 	TObjectPtr<UGuLiCommanderMiniMapWidget> MiniMapWidget;
+	UPROPERTY(Transient) TObjectPtr<UWidget> TaskPanel;
+	UPROPERTY(Transient) TObjectPtr<UTextBlock> TaskText;
+	UPROPERTY(Transient) TObjectPtr<UButton> FocusButton;
+	UPROPERTY(Transient) TObjectPtr<UButton> StopButton;
+	FTimerHandle TaskRefreshTimer;
 
 	FGuLiCommanderSelectionState CachedSelection;
 	FGuLiCommandAck CachedCommandAck;

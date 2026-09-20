@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Mass/GuLiCommanderSelectionQuery.h"
+#include "Commander/Orders/GuLiSpecialTaskCatalog.h"
 
 namespace GuLiCommanderSelectionQuery
 {
@@ -118,7 +119,7 @@ namespace GuLiCommanderSelectionQuery
 			}
 		}
 
-		const FVector Center = Seed ? Seed->Location : FVector(Request.Center);
+		const FVector Center = FVector(Request.Center);
 		const double RadiusSquared = FMath::Square(static_cast<double>(
 			GuLiCommanderProtocol::GetSelectionRadiusCentimeters(Request.RadiusPreset)));
 		TArray<const FCandidate*> Hits;
@@ -130,7 +131,8 @@ namespace GuLiCommanderSelectionQuery
 				continue;
 			}
 			const bool bHit = Request.Kind == EGuLiSelectionKind::SameType
-				? Candidate.UnitTypeId == Seed->UnitTypeId
+				? Candidate.UnitTypeId == Seed->UnitTypeId && Private::IsInsideBox(Request, Candidate.Location)
+					&& FVector::DistSquared2D(Candidate.Location, Center) <= FMath::Square(GetDefault<UGuLiUnitTaskSettings>()->SameTypeRadiusCentimeters)
 				: (Request.Kind == EGuLiSelectionKind::Box
 					? Private::IsInsideBox(Request, Candidate.Location)
 					: FVector::DistSquared2D(Candidate.Location, Center) <= RadiusSquared);
@@ -146,8 +148,8 @@ namespace GuLiCommanderSelectionQuery
 			const double RhsDistance = FVector::DistSquared2D(Rhs.Location, Center);
 			return LhsDistance != RhsDistance ? LhsDistance < RhsDistance : Lhs.SoldierId < Rhs.SoldierId;
 		});
-		const int32 Limit = static_cast<int32>(Request.Kind == EGuLiSelectionKind::SameType
-			? GULI_MAX_SAME_TYPE_SELECTION : GULI_MAX_CONTROL_COHORTS * GULI_CONTROL_COHORT_TARGET_SIZE);
+		const int32 Limit = static_cast<int32>(GULI_MAX_CONTROL_COHORTS * GULI_CONTROL_COHORT_TARGET_SIZE);
+		if (Hits.Num() > Limit) return false;
 		const int32 Count = FMath::Min(Hits.Num(), Limit);
 		OutIds.Reserve(Count);
 		for (int32 Index = 0; Index < Count; ++Index)
@@ -169,12 +171,11 @@ namespace GuLiCommanderSelectionQuery
 			return;
 		}
 		TSet<FGuLiSoldierId> Members;
-		const int32 Capacity = static_cast<int32>(GULI_MAX_CONTROL_COHORTS * GULI_CONTROL_COHORT_TARGET_SIZE);
 		if (Modifier == EGuLiSelectionModifier::Add || Modifier == EGuLiSelectionModifier::Toggle)
 		{
 			for (const FGuLiSoldierId Id : ExistingIds)
 			{
-				if (Id.IsValid() && Members.Num() < Capacity)
+				if (Id.IsValid())
 				{
 					Members.Add(Id);
 				}
@@ -192,7 +193,7 @@ namespace GuLiCommanderSelectionQuery
 			{
 				Members.Remove(Id);
 			}
-			else if (Members.Num() < Capacity)
+			else
 			{
 				Members.Add(Id);
 			}
