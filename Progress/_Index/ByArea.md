@@ -240,6 +240,7 @@
 | [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-20 |
 | [指挥官部队操作与特殊任务系统 — 技术方案](../DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md) | development | done | 2026-09-20 |
+| [指挥官任务与远端碰撞改动集成复验](../Archive/20260920-指挥官任务与远端碰撞改动集成复验.md) | archive | recorded | 2026-09-20 |
 | [指挥官部队操作与特殊任务系统实施](../Archive/20260920-指挥官部队操作与特殊任务系统.md) | archive | recorded | 2026-09-20 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死](../RequirementDocument/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | requirement | approved | 2026-09-18 |
@@ -435,6 +436,7 @@
 | [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-20 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-20 |
 | [指挥官部队操作与特殊任务系统 — 技术方案](../DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md) | development | done | 2026-09-20 |
+| [指挥官任务与远端碰撞改动集成复验](../Archive/20260920-指挥官任务与远端碰撞改动集成复验.md) | archive | recorded | 2026-09-20 |
 | [指挥官部队操作与特殊任务系统实施](../Archive/20260920-指挥官部队操作与特殊任务系统.md) | archive | recorded | 2026-09-20 |
 | [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
 | [战争机器模型大小适配](../RequirementDocument/20260919-战争机器模型大小适配.md) | requirement | approved | 2026-09-19 |
@@ -1214,6 +1216,7 @@
 |---|---|---|---|
 | [指挥官部队操作与特殊任务系统](../RequirementDocument/20260920-指挥官部队操作与特殊任务系统.md) | requirement | approved | 2026-09-20 |
 | [指挥官部队操作与特殊任务系统 — 技术方案](../DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md) | development | done | 2026-09-20 |
+| [指挥官任务与远端碰撞改动集成复验](../Archive/20260920-指挥官任务与远端碰撞改动集成复验.md) | archive | recorded | 2026-09-20 |
 | [指挥官部队操作与特殊任务系统实施](../Archive/20260920-指挥官部队操作与特殊任务系统.md) | archive | recorded | 2026-09-20 |
 | [导航预烘焙与哈希判新](../RequirementDocument/20260915-导航预烘焙与哈希判新.md) | requirement | approved | 2026-09-15 |
 | [工程车地面动态避障](../RequirementDocument/20260915-工程车地面动态避障.md) | requirement | approved | 2026-09-15 |

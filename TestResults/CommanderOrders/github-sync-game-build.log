@@ -1,0 +1,56 @@
+Using bundled DotNet SDK version: 8.0.412 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" GuLiStrike Win64 Development -Project=D:\UE5.7\test1\GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE -MaxParallelActions=2
+Log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log.txt
+Using 'git status' to determine working set for adaptive non-unity build (D:\UnrealEngine-5.7).
+Using 'git status' to determine working set for adaptive non-unity build (D:\UE5.7\test1).
+Invalidating makefile for GuLiStrike (source file added)
+Project 'GuLiStrike' depends on plugin 'StructUtils' which was deprecated in 5.5 and will soon be removed. Please update your dependencies.
+UHT compiled-in object format Default
+Parsing headers for GuLiStrike
+  Running Internal UnrealHeaderTool D:\UE5.7\test1\GuLiStrike.uproject D:\UE5.7\test1\Intermediate\Build\Win64\GuLiStrike\Development\GuLiStrike.uhtmanifest -WarningsAsErrors
+UHT processed GuLiStrike in 3.1861624 seconds (7 files written)
+Building GuLiStrike...
+Using Visual Studio 2022 14.44.35215 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[Adaptive Build] Excluded from Navmesh unity file: DetourCrowd.cpp
+Executing up to 2 actions based on MaxProcessorCount override
+Using Unreal Build Accelerator local executor to run 30 action(s)
+  Storage capacity 40Gb
+---- Starting trace: 260920_141432 ----
+UbaServer - Listening on 0.0.0.0:1345
+[1/30] Compile [x64] Module.GuLiStrike.1.cpp
+[2/30] Compile [x64] Module.GuLiStrike.10.cpp
+[3/30] Compile [x64] Module.GuLiStrike.12.cpp
+[4/30] Compile [x64] Module.GuLiStrike.11.cpp
+[5/30] Compile [x64] Module.GuLiStrike.13.cpp
+[6/30] Compile [x64] Module.GuLiStrike.14.cpp
+[7/30] Compile [x64] Module.GuLiStrike.16.cpp
+[8/30] Compile [x64] Module.GuLiStrike.15.cpp
+[9/30] Compile [x64] Module.GuLiStrike.18.cpp
+[10/30] Compile [x64] Module.GuLiStrike.17.cpp
+[11/30] Compile [x64] Module.GuLiStrike.19.cpp
+[12/30] Compile [x64] Module.GuLiStrike.2.cpp
+[13/30] Compile [x64] Module.GuLiStrike.21.cpp
+[14/30] Compile [x64] Module.GuLiStrike.20.cpp
+[15/30] Compile [x64] Module.GuLiStrike.22.cpp
+[16/30] Compile [x64] Module.GuLiStrike.23.cpp
+[17/30] Compile [x64] Module.GuLiStrike.24.cpp
+[18/30] Compile [x64] Module.GuLiStrike.25.cpp
+[19/30] Compile [x64] Module.GuLiStrike.26.cpp
+[20/30] Compile [x64] Module.GuLiStrike.27.cpp
+[21/30] Compile [x64] Module.GuLiStrike.3.cpp
+[22/30] Compile [x64] Module.GuLiStrike.28.cpp
+[23/30] Compile [x64] Module.GuLiStrike.4.cpp
+[24/30] Compile [x64] Module.GuLiStrike.5.cpp
+[25/30] Compile [x64] Module.GuLiStrike.6.cpp
+[26/30] Compile [x64] Module.GuLiStrike.7.cpp
+[27/30] Compile [x64] Module.GuLiStrike.8.cpp
+[28/30] Compile [x64] Module.GuLiStrike.9.cpp
+[29/30] Link [x64] GuLiStrike.exe
+  正在创建库 D:\UE5.7\test1\Binaries\Win64\GuLiStrike.lib 和对象 D:\UE5.7\test1\Binaries\Win64\GuLiStrike.exp
+[30/30] WriteMetadata GuLiStrike.target [NoUba]
+
+Trace written to file D:/UnrealEngine-5.7/Engine/Programs/UnrealBuildTool/Log.uba with size 17.4kb
+Total time in Unreal Build Accelerator local executor: 89.07 seconds
+
+Result: Succeeded
+Total execution time: 96.17 seconds
