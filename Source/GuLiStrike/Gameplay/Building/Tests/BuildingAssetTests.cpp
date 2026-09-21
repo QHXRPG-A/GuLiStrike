@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Building/GuLiBuildingCatalog.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 
 #if WITH_DEV_AUTOMATION_TESTS && WITH_EDITOR
 
@@ -18,7 +19,6 @@ namespace GuLiBuildingAssetTests
 	const TCHAR* SentryMaterialPath = TEXT("/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A_mat.Stylized_Turrets_A_mat");
 	const TCHAR* SentryTexturePath = TEXT("/Game/Assets/Props/Buildings/Stylized_Turrets_Tower_Defense/Stylized_Turrets_A.Stylized_Turrets_A");
 	const TCHAR* OutpostPath = TEXT("/Game/GuLiStrike/Buildings/Meshes/SM_OutpostPlaceholder.SM_OutpostPlaceholder");
-	const TCHAR* PreviewPath = TEXT("/Game/GuLiStrike/Buildings/Materials/M_BuildingPlacementPreview.M_BuildingPlacementPreview");
 
 	bool TestVectorNear(
 		FAutomationTestBase& Test,
@@ -66,7 +66,7 @@ bool FBuildingAssetTests::RunTest(const FString& Parameters)
 	UStaticMesh* Outpost = LoadObject<UStaticMesh>(nullptr, OutpostPath);
 	UMaterialInstanceConstant* SentryMaterial = LoadObject<UMaterialInstanceConstant>(nullptr, SentryMaterialPath);
 	UTexture* SentryTexture = LoadObject<UTexture>(nullptr, SentryTexturePath);
-	UMaterialInterface* PreviewMaterial = LoadObject<UMaterialInterface>(nullptr, PreviewPath);
+	UMaterialInterface* PreviewMaterial = GuLiVfx::Load<UMaterialInterface>(nullptr, GuLiVfxIds::BuildingPlacement);
 
 	if (!TestNotNull(TEXT("Building catalog loads"), Catalog)
 		|| !TestNotNull(TEXT("Missile turret target mesh loads"), Missile)
@@ -84,7 +84,7 @@ bool FBuildingAssetTests::RunTest(const FString& Parameters)
 
 	TestTrue(TEXT("The hard-reference catalog is usable"), Catalog->IsUsable());
 	TestEqual(TEXT("The current catalog contains seven definitions"), Catalog->Definitions.Num(), 7);
-	TestTrue(TEXT("The catalog uses the target preview material"), Catalog->PreviewMaterial == PreviewMaterial);
+	TestEqual(TEXT("The catalog uses the registered preview material"), Catalog->PreviewVfxId, GuLiVfxIds::BuildingPlacement);
 
 	struct FExpectedDefinition
 	{

@@ -312,6 +312,7 @@ void UGuLiCommanderNetSyncComponent::OnConnectionBootstrapReset()
 	PendingOrderedSelections.Reset(); PendingOrderedTasks.Reset(); LastOrderedSelectionSequence = 0;
 	LastTaskFeedback.Reset(); TaskSummaries.Reset(); bOrderedSelectionValid = true;
 	PendingTaskSnapshot.Reset(); ReceivedTaskSnapshot.Reset(); PendingGroupCounts.Reset(); ReceivedGroupCounts.Reset();
+	RelatedControlGroups = PendingRelatedGroups = ReceivedRelatedGroups = 0;
 	TaskSnapshotOffset = INDEX_NONE; TaskSnapshotRevision = 0; ReceivedTaskSnapshotRevision = 0; TaskSnapshotSelectionRevision = 0;
 	// The current PlayerState may already be the replacement identity. Cancel through the identity
 	// captured when planning began so an old connection cannot commit after this reset.

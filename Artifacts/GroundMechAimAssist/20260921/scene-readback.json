@@ -1,0 +1,189 @@
+{
+  "requested_map": "/Game/Maps/LVL_GroundMech_FireReview",
+  "mutated_scene": false,
+  "started_play": false,
+  "editor_world": "/Game/Maps/LVL_GroundMech_FireReview.LVL_GroundMech_FireReview",
+  "pie_active": false,
+  "dirty_map_packages": [],
+  "dirty_content_packages": [],
+  "entities": [
+    {
+      "label": "GroundMech_Start_1",
+      "path": "/Game/Maps/LVL_GroundMech_FireReview.LVL_GroundMech_FireReview:PersistentLevel.PlayerStart_2",
+      "class": "/Script/Engine.PlayerStart",
+      "location": [
+        8600.0,
+        -7500.0,
+        421.55853748321533
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        90.0
+      ]
+    },
+    {
+      "label": "GroundMech_Start_2",
+      "path": "/Game/Maps/LVL_GroundMech_FireReview.LVL_GroundMech_FireReview:PersistentLevel.PlayerStart_3",
+      "class": "/Script/Engine.PlayerStart",
+      "location": [
+        9400.0,
+        -7500.0,
+        421.61516189575195
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        90.0
+      ]
+    },
+    {
+      "label": "FireReview_RangeNavigation",
+      "path": "/Game/Maps/LVL_GroundMech_FireReview.LVL_GroundMech_FireReview:PersistentLevel.NavMeshBoundsVolume_0",
+      "class": "/Script/NavigationSystem.NavMeshBoundsVolume",
+      "location": [
+        9000.0,
+        -3250.0,
+        600.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ]
+    },
+    {
+      "label": "FireReview_Red_Sweeper",
+      "path": "/Game/Maps/LVL_GroundMech_FireReview.LVL_GroundMech_FireReview:PersistentLevel.GuLiCommanderDeploymentPoint_0",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        5500.0,
+        -5000.0,
+        11.027498521584866
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -90.0
+      ],
+      "config": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": "1",
+        "rows": "2",
+        "columns": "2",
+        "spacing_centimeters": "700.0",
+        "allow_automatic_fire": "False"
+      }
+    },
+    {
+      "label": "FireReview_Red_WarMachine",
+      "path": "/Game/Maps/LVL_GroundMech_FireReview.LVL_GroundMech_FireReview:PersistentLevel.GuLiCommanderDeploymentPoint_1",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        5000.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -90.0
+      ],
+      "config": {
+        "team": "<GuLiTeam.RED: 1>",
+        "unit_type_id": "2",
+        "rows": "2",
+        "columns": "2",
+        "spacing_centimeters": "2000.0",
+        "allow_automatic_fire": "False"
+      }
+    },
+    {
+      "label": "FireReview_Blue_Sweeper",
+      "path": "/Game/Maps/LVL_GroundMech_FireReview.LVL_GroundMech_FireReview:PersistentLevel.GuLiCommanderDeploymentPoint_2",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        13000.0,
+        -5000.0,
+        -0.050158836317371856
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -90.0
+      ],
+      "config": {
+        "team": "<GuLiTeam.BLUE: 2>",
+        "unit_type_id": "1",
+        "rows": "2",
+        "columns": "2",
+        "spacing_centimeters": "700.0",
+        "allow_automatic_fire": "False"
+      }
+    },
+    {
+      "label": "FireReview_Blue_WarMachine",
+      "path": "/Game/Maps/LVL_GroundMech_FireReview.LVL_GroundMech_FireReview:PersistentLevel.GuLiCommanderDeploymentPoint_3",
+      "class": "/Script/GuLiStrike.GuLiCommanderDeploymentPoint",
+      "location": [
+        13000.0,
+        0.0,
+        79.85263157894737
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -90.0
+      ],
+      "config": {
+        "team": "<GuLiTeam.BLUE: 2>",
+        "unit_type_id": "2",
+        "rows": "2",
+        "columns": "2",
+        "spacing_centimeters": "2000.0",
+        "allow_automatic_fire": "False"
+      }
+    }
+  ],
+  "game_mode": "/Game/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReviewMode.BP_GroundMech_FireReviewMode_C",
+  "role_priority": [
+    "<GuLiCommanderRole.GROUND: 2>",
+    "<GuLiCommanderRole.COMMANDER: 1>",
+    "<GuLiCommanderRole.AIR: 3>"
+  ],
+  "ground_pawn": "/Game/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReview.BP_GroundMech_FireReview_C",
+  "weapons": [
+    {
+      "blueprint": "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light",
+      "enabled": true,
+      "upgrade_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Upgrades.DT_GuLiStrikeMech_Upgrades",
+      "skill_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Skills.DT_GuLiStrikeMech_Skills"
+    },
+    {
+      "blueprint": "/Game/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReview",
+      "enabled": true,
+      "upgrade_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Upgrades.DT_GuLiStrikeMech_Upgrades",
+      "skill_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Skills.DT_GuLiStrikeMech_Skills"
+    }
+  ],
+  "loaded_skills": [
+    {
+      "Name": "BasicMachinegun",
+      "Id": 1,
+      "ProjectileSpeed": 12000,
+      "ProjectileLifetime": 5,
+      "AimAssistEnabled": null,
+      "AimAssistRadiusCentimeters": null
+    },
+    {
+      "Name": "RocketJump",
+      "Id": 2,
+      "ProjectileSpeed": 0,
+      "ProjectileLifetime": 0,
+      "AimAssistEnabled": null,
+      "AimAssistRadiusCentimeters": null
+    }
+  ],
+  "new_schema_loaded": false,
+  "import_pending": true
+}

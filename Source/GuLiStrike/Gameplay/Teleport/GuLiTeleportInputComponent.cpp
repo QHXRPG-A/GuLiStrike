@@ -1,10 +1,12 @@
 #include "Gameplay/Teleport/GuLiTeleportInputComponent.h"
+#include "Gameplay/Data/GuLiGameText.h"
 #include "Gameplay/Skills/GuLiSkillTargeting.h"
 #include "Gameplay/Teleport/GuLiTeleportUnitAdapters.h"
 #include "Gameplay/Teleport/GuLiTeleportFieldActor.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
+#include "Commander/Presentation/GuLiCommanderHUD.h"
 #include "Commander/UI/GuLiCommanderCursorWidget.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Gameplay/CommanderSkills/GuLiCommanderSkillComponent.h"
@@ -36,7 +38,7 @@ TSharedRef<SWidget> UGuLiTeleportHUDWidget::RebuildWidget()
 				[ SNew(STextBlock).Text_Lambda([this]()
 				{
 					const auto* PC=GetOwningPlayer(); const auto* C=PC?PC->FindComponentByClass<UGuLiTeleportInputComponent>():nullptr;
-					return FText::FromString(FString::Printf(TEXT("传送  [T]   Lv.%d"),C?C->GetLevel():1));
+					return FText::FromString(GuLiGameText::Format(TEXT("UI.TeleportInputComponent.163"), {FString::Printf(TEXT("%d"), C?C->GetLevel():1)}));
 				}).Font(FCoreStyle::GetDefaultFontStyle("Regular",16)) ]
 			]
 			+ SVerticalBox::Slot().AutoHeight().Padding(0,5,0,0)
@@ -101,7 +103,7 @@ bool UGuLiTeleportInputComponent::HandlePrimaryAction()
 	if (!bArmed) { return false; }
 	auto* PC = GetCommander();
 	if (!PC || PC->IsCursorOverCommanderUI() || IsHUDHovered()) { return true; }
-	FVector Point; if (!PC->TraceGroundUnderCursor(Point)) { Feedback = TEXT("请点击合法地面"); return true; }
+	FVector Point; if (!PC->TraceGroundUnderCursor(Point)) { Feedback = GuLiGameText::Text(TEXT("UI.TeleportInputComponent.168")); return true; }
 	const auto State = QueryState();
 	if (!CurrentCastId.IsValid() && !bSourcePending)
 	{ bSourcePending = true; ServerSubmit(FGuid::NewGuid(), EGuLiTeleportCommand::Source,{},Point); }
@@ -143,17 +145,17 @@ FText UGuLiTeleportInputComponent::GetStatusText() const
 {
 	const auto S = QueryState();
 	const double Remaining = FMath::Max(0.0,S.Deadline-AGuLiTeleportFieldActor::GetSynchronizedTime(*GetWorld()));
-	if (S.Phase == EGuLiTeleportPhase::Windup) { return FText::FromString(FString::Printf(TEXT("源点充能  %.1f 秒 · 右键取消"),Remaining)); }
-	if (S.Phase == EGuLiTeleportPhase::AwaitingDestination) { return FText::FromString(FString::Printf(TEXT("选择落点 %.1f 秒 · %d 个单位%s"),Remaining,S.ParticipantCount,Feedback.IsEmpty()?TEXT(""):*FString::Printf(TEXT("\n%s"),*Feedback))); }
-	if (S.Phase == EGuLiTeleportPhase::Recovery) { return FText::FromString(TEXT("已落地，正在恢复行动")); }
-	if (S.Phase == EGuLiTeleportPhase::Returning) { return FText::FromString(TEXT("正在送回源点附近")); }
+	if (S.Phase == EGuLiTeleportPhase::Windup) { return FText::FromString(GuLiGameText::Format(TEXT("UI.TeleportInputComponent.164"), {FString::Printf(TEXT("%.1f"), Remaining)})); }
+	if (S.Phase == EGuLiTeleportPhase::AwaitingDestination) { return FText::FromString(GuLiGameText::Format(TEXT("UI.TeleportInputComponent.165"), {FString::Printf(TEXT("%.1f"), Remaining), FString::Printf(TEXT("%d"), S.ParticipantCount), FString(Feedback.IsEmpty()?TEXT(""):*FString::Printf(TEXT("\n%s"),*Feedback))})); }
+	if (S.Phase == EGuLiTeleportPhase::Recovery) { return FText::FromString(GuLiGameText::Text(TEXT("UI.TeleportInputComponent.169"))); }
+	if (S.Phase == EGuLiTeleportPhase::Returning) { return FText::FromString(GuLiGameText::Text(TEXT("UI.TeleportInputComponent.170"))); }
 	if (!Feedback.IsEmpty()) { return FText::FromString(Feedback); }
 	const auto* Data = GetWorld() ? GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr;
 	const auto* Config = Data ? Data->FindTeleportFieldConfig(GetLevel()) : nullptr;
 	const int32 RadiusMeters = Config ? FMath::RoundToInt(Config->RadiusCentimeters / 100.f) : 0;
-	return FText::FromString(bArmed ? TEXT("点击源点 · 右键 / Esc 取消") : (GetLevel() == 4
-		? FString::Printf(TEXT("%d 米 · 可传 WM / Ship 及僚机"), RadiusMeters)
-		: FString::Printf(TEXT("%d 米 · 己方普通部队"), RadiusMeters)));
+	return FText::FromString(bArmed ? GuLiGameText::Text(TEXT("UI.TeleportInputComponent.171")) : (GetLevel() == 4
+		? GuLiGameText::Format(TEXT("UI.TeleportInputComponent.166"), {FString::Printf(TEXT("%d"), RadiusMeters)})
+		: GuLiGameText::Format(TEXT("UI.TeleportInputComponent.167"), {FString::Printf(TEXT("%d"), RadiusMeters)})));
 }
 void UGuLiTeleportInputComponent::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
@@ -161,7 +163,9 @@ void UGuLiTeleportInputComponent::TickComponent(float DeltaTime, ELevelTick Tick
 	auto* PC = GetCommander(); if (!PC) { return; }
 	if (!PC->IsLocalController()) { return; }
 	const bool bCommander = PC->IsCommanderViewActive();
-	if (bCommander && !HUD)
+	const auto* CommanderHUD = Cast<AGuLiCommanderHUD>(PC->GetHUD());
+	const bool bIntegrated = CommanderHUD && CommanderHUD->GetRuntimeHUDWidget();
+	if (bCommander && !bIntegrated && !HUD)
 	{
 		HUD = CreateWidget<UGuLiTeleportHUDWidget>(PC,UGuLiTeleportHUDWidget::StaticClass());
 		HUD->AddToPlayerScreen(30);
@@ -170,7 +174,7 @@ void UGuLiTeleportInputComponent::TickComponent(float DeltaTime, ELevelTick Tick
 		// SetPositionInViewport resets anchors to the top-left in UE 5.7.
 		HUD->SetAnchorsInViewport(FAnchors(1,1));
 	}
-	if (HUD) { HUD->SetVisibility(bCommander ? ESlateVisibility::Visible : ESlateVisibility::Collapsed); }
+	if (HUD) { HUD->SetVisibility(bCommander && !bIntegrated ? ESlateVisibility::Visible : ESlateVisibility::Collapsed); }
 	if (!bCommander) { ClearLocalAim(); return; }
 	if (!bArmed) { return; }
 	const auto S = QueryState();

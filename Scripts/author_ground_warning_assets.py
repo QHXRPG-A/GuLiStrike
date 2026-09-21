@@ -3,6 +3,11 @@ import json
 from pathlib import Path
 import unreal
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())) / "Scripts/Vfx"))
+from vfx_registry import vfx_id, resource as vfx_resource, scale as vfx_scale, require_id, visual_variant
+
 ROOT = '/Game/GuLiStrike/FX/GroundWarning'
 assets = unreal.get_editor_subsystem(unreal.EditorAssetSubsystem)
 edit = unreal.MaterialEditingLibrary
@@ -76,13 +81,13 @@ style_path = ROOT + '/DA_GroundWarning_Red'
 style = assets.load_asset(style_path) if assets.does_asset_exist(style_path) else tools.create_asset(
     'DA_GroundWarning_Red', ROOT, unreal.GuLiGroundWarningStyle, unreal.DataAssetFactory())
 assert style
-for name, value in [('material', mat), ('wave_period', .8), ('ring_width', .025),
+for name, value in [('material_vfx_id', vfx_id('GroundWarning')), ('wave_period', .8), ('ring_width', .025),
                     ('opacity', .85), ('projection_depth', 80.)]:
     style.set_editor_property(name, value)
 assert assets.save_asset(style_path, only_if_is_dirty=False)
 report = {'existing_assets': existing, 'material': path, 'style': style_path,
           'diagnostics': str(diagnostics), 'material_info': str(unreal.MaterialService.get_material_info(path)),
-          'style_readback': {k: str(style.get_editor_property(k)) for k in ['material', 'wave_period', 'ring_width', 'opacity', 'projection_depth']},
+          'style_readback': {k: str(style.get_editor_property(k)) for k in ['material_vfx_id', 'wave_period', 'ring_width', 'opacity', 'projection_depth']},
           'combat_reference_changed': False, 'reference_approval': 'A1 approved by user 2026-09-17'}
 out = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())) / 'outputs/wm01_q'
 out.mkdir(parents=True, exist_ok=True)

@@ -1,0 +1,2287 @@
+{
+	"passed": false,
+	"stage": 5,
+	"pending_samples": 4,
+	"checks":
+	{
+		"initial_move_0": true,
+		"waiting_reuse_0": true,
+		"initial_move_1": true,
+		"waiting_reuse_1": true,
+		"initial_move_2": true,
+		"waiting_reuse_2": true,
+		"initial_move_3": true,
+		"waiting_reuse_3": true,
+		"shift_keeps_near_waypoint_0": true,
+		"running_reuse_0": true,
+		"no_new_queries_0": true,
+		"replacement_preserves_velocity_0": true,
+		"latest_replacement_pending_0": true,
+		"latest_pending_reused_0": true,
+		"shift_keeps_near_waypoint_1": true,
+		"running_reuse_1": true,
+		"no_new_queries_1": true,
+		"replacement_preserves_velocity_1": true,
+		"latest_replacement_pending_1": true,
+		"latest_pending_reused_1": true,
+		"shift_keeps_near_waypoint_2": true,
+		"running_reuse_2": true,
+		"no_new_queries_2": true,
+		"replacement_preserves_velocity_2": true,
+		"latest_replacement_pending_2": true,
+		"latest_pending_reused_2": true,
+		"shift_keeps_near_waypoint_3": true,
+		"running_reuse_3": true,
+		"no_new_queries_3": true,
+		"replacement_preserves_velocity_3": true,
+		"latest_replacement_pending_3": true,
+		"latest_pending_reused_3": true,
+		"latest_target_committed_0": true,
+		"latest_target_committed_1": true,
+		"latest_target_committed_2": true,
+		"latest_target_committed_3": true,
+		"failed_target_keeps_old_task_0": false,
+		"failed_target_keeps_old_task_1": false,
+		"failed_target_keeps_old_task_2": true,
+		"failed_target_keeps_old_task_3": true,
+		"observed_moving_during_planning": true
+	},
+	"samples": [
+		{
+			"time": 4.2173903025686741,
+			"stage": 1,
+			"unit": 0,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-104000.000 Z=-6585.109",
+			"pending": false
+		},
+		{
+			"time": 4.2173903025686741,
+			"stage": 1,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.2173903025686741,
+			"stage": 1,
+			"unit": 2,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-110000.000 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.2173903025686741,
+			"stage": 1,
+			"unit": 3,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.2835447005927563,
+			"stage": 1,
+			"unit": 0,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-104000.000 Z=-6585.109",
+			"pending": false
+		},
+		{
+			"time": 4.2835447005927563,
+			"stage": 1,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.2835447005927563,
+			"stage": 1,
+			"unit": 2,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-110000.000 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.2835447005927563,
+			"stage": 1,
+			"unit": 3,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.3504265993833542,
+			"stage": 1,
+			"unit": 0,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-104000.000 Z=-6585.109",
+			"pending": false
+		},
+		{
+			"time": 4.3504265993833542,
+			"stage": 1,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.3504265993833542,
+			"stage": 1,
+			"unit": 2,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-110000.000 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.3504265993833542,
+			"stage": 1,
+			"unit": 3,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.4023810997605324,
+			"stage": 1,
+			"unit": 0,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-104000.000 Z=-6585.109",
+			"pending": false
+		},
+		{
+			"time": 4.4023810997605324,
+			"stage": 1,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.4023810997605324,
+			"stage": 1,
+			"unit": 2,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-110000.000 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.4023810997605324,
+			"stage": 1,
+			"unit": 3,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.4674636013805866,
+			"stage": 1,
+			"unit": 0,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-104000.000 Z=-6585.109",
+			"pending": false
+		},
+		{
+			"time": 4.4674636013805866,
+			"stage": 1,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.4674636013805866,
+			"stage": 1,
+			"unit": 2,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-110000.000 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.4674636013805866,
+			"stage": 1,
+			"unit": 3,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.5332287028431892,
+			"stage": 1,
+			"unit": 0,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-104000.000 Z=-6585.109",
+			"pending": false
+		},
+		{
+			"time": 4.5332287028431892,
+			"stage": 1,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.5332287028431892,
+			"stage": 1,
+			"unit": 2,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-110000.000 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.5332287028431892,
+			"stage": 1,
+			"unit": 3,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.5845548026263714,
+			"stage": 1,
+			"unit": 0,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-104000.000 Z=-6585.109",
+			"pending": false
+		},
+		{
+			"time": 4.5845548026263714,
+			"stage": 1,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.5845548026263714,
+			"stage": 1,
+			"unit": 2,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-110000.000 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.5845548026263714,
+			"stage": 1,
+			"unit": 3,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.6506469994783401,
+			"stage": 1,
+			"unit": 0,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-104000.000 Z=-6585.109",
+			"pending": false
+		},
+		{
+			"time": 4.6506469994783401,
+			"stage": 1,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.6506469994783401,
+			"stage": 1,
+			"unit": 2,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-110000.000 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.6506469994783401,
+			"stage": 1,
+			"unit": 3,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.7020293995738029,
+			"stage": 1,
+			"unit": 0,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-104000.000 Z=-6585.109",
+			"pending": false
+		},
+		{
+			"time": 4.7020293995738029,
+			"stage": 1,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.7020293995738029,
+			"stage": 1,
+			"unit": 2,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-110000.000 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.7020293995738029,
+			"stage": 1,
+			"unit": 3,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.7676893025636673,
+			"stage": 2,
+			"unit": 0,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-104000.000 Z=-6585.109",
+			"pending": false
+		},
+		{
+			"time": 4.7676893025636673,
+			"stage": 2,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.7676893025636673,
+			"stage": 2,
+			"unit": 2,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-110000.000 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.7676893025636673,
+			"stage": 2,
+			"unit": 3,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.8178203999996185,
+			"stage": 2,
+			"unit": 0,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-104000.000 Z=-6585.109",
+			"pending": false
+		},
+		{
+			"time": 4.8178203999996185,
+			"stage": 2,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.8178203999996185,
+			"stage": 2,
+			"unit": 2,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-110000.000 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.8178203999996185,
+			"stage": 2,
+			"unit": 3,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.8855188004672527,
+			"stage": 2,
+			"unit": 0,
+			"speed": 460.79119100905496,
+			"route": 21,
+			"position": "X=-174953.921 Y=-104000.000 Z=-6585.692",
+			"pending": false
+		},
+		{
+			"time": 4.8855188004672527,
+			"stage": 2,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.8855188004672527,
+			"stage": 2,
+			"unit": 2,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-110000.000 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.8855188004672527,
+			"stage": 2,
+			"unit": 3,
+			"speed": 0,
+			"route": 4294967295,
+			"position": "X=-175000.000 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.9357178024947643,
+			"stage": 2,
+			"unit": 0,
+			"speed": 460.79119100905496,
+			"route": 21,
+			"position": "X=-174953.921 Y=-104000.000 Z=-6585.692",
+			"pending": false
+		},
+		{
+			"time": 4.9357178024947643,
+			"stage": 2,
+			"unit": 1,
+			"speed": 0,
+			"route": 0,
+			"position": "X=-175000.000 Y=-102000.000 Z=-6593.856",
+			"pending": false
+		},
+		{
+			"time": 4.9357178024947643,
+			"stage": 2,
+			"unit": 2,
+			"speed": 6.9931428043013248,
+			"route": 3,
+			"position": "X=-174999.881 Y=-109999.997 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.9357178024947643,
+			"stage": 2,
+			"unit": 3,
+			"speed": 6.9931428044930461,
+			"route": 4,
+			"position": "X=-174999.881 Y=-116000.000 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 4.9871810004115105,
+			"stage": 2,
+			"unit": 0,
+			"speed": 573.68503955913695,
+			"route": 21,
+			"position": "X=-174896.552 Y=-104000.000 Z=-6586.418",
+			"pending": false
+		},
+		{
+			"time": 4.9871810004115105,
+			"stage": 2,
+			"unit": 1,
+			"speed": 460.79115865866243,
+			"route": 22,
+			"position": "X=-174953.921 Y=-102000.000 Z=-6594.116",
+			"pending": false
+		},
+		{
+			"time": 4.9871810004115105,
+			"stage": 2,
+			"unit": 2,
+			"speed": 27.733034220835609,
+			"route": 3,
+			"position": "X=-174998.827 Y=-109999.975 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 4.9871810004115105,
+			"stage": 2,
+			"unit": 3,
+			"speed": 27.73303414175097,
+			"route": 4,
+			"position": "X=-174998.826 Y=-116000.002 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.0379723012447357,
+			"stage": 2,
+			"unit": 0,
+			"speed": 573.68503955913695,
+			"route": 21,
+			"position": "X=-174896.552 Y=-104000.000 Z=-6586.418",
+			"pending": false
+		},
+		{
+			"time": 5.0379723012447357,
+			"stage": 2,
+			"unit": 1,
+			"speed": 460.79115865866243,
+			"route": 22,
+			"position": "X=-174953.921 Y=-102000.000 Z=-6594.116",
+			"pending": false
+		},
+		{
+			"time": 5.0379723012447357,
+			"stage": 2,
+			"unit": 2,
+			"speed": 48.927007997199972,
+			"route": 3,
+			"position": "X=-174996.661 Y=-109999.930 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 5.0379723012447357,
+			"stage": 2,
+			"unit": 3,
+			"speed": 48.927007469701771,
+			"route": 4,
+			"position": "X=-174996.660 Y=-116000.006 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.0897164009511471,
+			"stage": 2,
+			"unit": 0,
+			"speed": 607.96791822450041,
+			"route": 21,
+			"position": "X=-174835.756 Y=-104000.000 Z=-6587.170",
+			"pending": false
+		},
+		{
+			"time": 5.0897164009511471,
+			"stage": 2,
+			"unit": 1,
+			"speed": 573.684985370508,
+			"route": 22,
+			"position": "X=-174896.552 Y=-102000.000 Z=-6594.440",
+			"pending": false
+		},
+		{
+			"time": 5.0897164009511471,
+			"stage": 2,
+			"unit": 2,
+			"speed": 69.891564841754459,
+			"route": 3,
+			"position": "X=-174993.442 Y=-109999.862 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 5.0897164009511471,
+			"stage": 2,
+			"unit": 3,
+			"speed": 69.891564171976924,
+			"route": 4,
+			"position": "X=-174993.441 Y=-116000.011 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.1557862013578415,
+			"stage": 2,
+			"unit": 0,
+			"speed": 607.96791822450041,
+			"route": 21,
+			"position": "X=-174835.756 Y=-104000.000 Z=-6587.170",
+			"pending": false
+		},
+		{
+			"time": 5.1557862013578415,
+			"stage": 2,
+			"unit": 1,
+			"speed": 573.684985370508,
+			"route": 22,
+			"position": "X=-174896.552 Y=-102000.000 Z=-6594.440",
+			"pending": false
+		},
+		{
+			"time": 5.1557862013578415,
+			"stage": 2,
+			"unit": 2,
+			"speed": 97.191569644120563,
+			"route": 3,
+			"position": "X=-174987.648 Y=-109999.740 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 5.1557862013578415,
+			"stage": 2,
+			"unit": 3,
+			"speed": 97.191568401595902,
+			"route": 4,
+			"position": "X=-174987.645 Y=-116000.021 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.2065859027206898,
+			"stage": 2,
+			"unit": 0,
+			"speed": 623.78597362879998,
+			"route": 21,
+			"position": "X=-174773.377 Y=-104000.000 Z=-6588.029",
+			"pending": false
+		},
+		{
+			"time": 5.2065859027206898,
+			"stage": 2,
+			"unit": 1,
+			"speed": 607.96784321170355,
+			"route": 22,
+			"position": "X=-174835.756 Y=-102000.000 Z=-6594.911",
+			"pending": false
+		},
+		{
+			"time": 5.2065859027206898,
+			"stage": 2,
+			"unit": 2,
+			"speed": 117.8984886191157,
+			"route": 3,
+			"position": "X=-174982.038 Y=-109999.622 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 5.2065859027206898,
+			"stage": 2,
+			"unit": 3,
+			"speed": 117.8984853624066,
+			"route": 4,
+			"position": "X=-174982.034 Y=-116000.030 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.2729023024439812,
+			"stage": 2,
+			"unit": 0,
+			"speed": 623.78597362879998,
+			"route": 21,
+			"position": "X=-174773.377 Y=-104000.000 Z=-6588.029",
+			"pending": false
+		},
+		{
+			"time": 5.2729023024439812,
+			"stage": 2,
+			"unit": 1,
+			"speed": 607.96784321170355,
+			"route": 22,
+			"position": "X=-174835.756 Y=-102000.000 Z=-6594.911",
+			"pending": false
+		},
+		{
+			"time": 5.2729023024439812,
+			"stage": 2,
+			"unit": 2,
+			"speed": 144.9688312533342,
+			"route": 3,
+			"position": "X=-174973.129 Y=-109999.435 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 5.2729023024439812,
+			"stage": 2,
+			"unit": 3,
+			"speed": 144.96882628337548,
+			"route": 4,
+			"position": "X=-174973.123 Y=-116000.045 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.3243243992328644,
+			"stage": 2,
+			"unit": 0,
+			"speed": 634.64562362670461,
+			"route": 21,
+			"position": "X=-174709.912 Y=-104000.000 Z=-6588.982",
+			"pending": false
+		},
+		{
+			"time": 5.3243243992328644,
+			"stage": 2,
+			"unit": 1,
+			"speed": 623.78588400416425,
+			"route": 22,
+			"position": "X=-174773.377 Y=-102000.000 Z=-6595.398",
+			"pending": false
+		},
+		{
+			"time": 5.3243243992328644,
+			"stage": 2,
+			"unit": 2,
+			"speed": 166.17050780384457,
+			"route": 3,
+			"position": "X=-174964.896 Y=-109999.262 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 5.3243243992328644,
+			"stage": 2,
+			"unit": 3,
+			"speed": 166.17049927986409,
+			"route": 4,
+			"position": "X=-174964.888 Y=-116000.059 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.3763981014490128,
+			"stage": 2,
+			"unit": 0,
+			"speed": 634.64562362670461,
+			"route": 21,
+			"position": "X=-174709.912 Y=-104000.000 Z=-6588.982",
+			"pending": false
+		},
+		{
+			"time": 5.3763981014490128,
+			"stage": 2,
+			"unit": 1,
+			"speed": 623.78588400416425,
+			"route": 22,
+			"position": "X=-174773.377 Y=-102000.000 Z=-6595.398",
+			"pending": false
+		},
+		{
+			"time": 5.3763981014490128,
+			"stage": 2,
+			"unit": 2,
+			"speed": 187.13137806657437,
+			"route": 3,
+			"position": "X=-174955.679 Y=-109999.068 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 5.3763981014490128,
+			"stage": 2,
+			"unit": 3,
+			"speed": 187.13137065089509,
+			"route": 4,
+			"position": "X=-174955.669 Y=-116000.074 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.4416987001895905,
+			"stage": 2,
+			"unit": 0,
+			"speed": 643.64482372708449,
+			"route": 21,
+			"position": "X=-174645.548 Y=-104000.000 Z=-6589.599",
+			"pending": false
+		},
+		{
+			"time": 5.4416987001895905,
+			"stage": 2,
+			"unit": 1,
+			"speed": 634.6455185218565,
+			"route": 22,
+			"position": "X=-174709.912 Y=-102000.000 Z=-6595.893",
+			"pending": false
+		},
+		{
+			"time": 5.4416987001895905,
+			"stage": 2,
+			"unit": 2,
+			"speed": 214.30215575251592,
+			"route": 3,
+			"position": "X=-174942.142 Y=-109998.784 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 5.4416987001895905,
+			"stage": 2,
+			"unit": 3,
+			"speed": 214.30214224573811,
+			"route": 4,
+			"position": "X=-174942.129 Y=-116000.096 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.4924339018762112,
+			"stage": 2,
+			"unit": 0,
+			"speed": 651.5519856490738,
+			"route": 21,
+			"position": "X=-174580.393 Y=-104000.000 Z=-6590.145",
+			"pending": false
+		},
+		{
+			"time": 5.4924339018762112,
+			"stage": 2,
+			"unit": 1,
+			"speed": 643.64470112463414,
+			"route": 22,
+			"position": "X=-174645.548 Y=-102000.000 Z=-6596.395",
+			"pending": false
+		},
+		{
+			"time": 5.4924339018762112,
+			"stage": 2,
+			"unit": 2,
+			"speed": 234.84961703357192,
+			"route": 3,
+			"position": "X=-174930.707 Y=-109998.544 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 5.4924339018762112,
+			"stage": 2,
+			"unit": 3,
+			"speed": 234.84960048766848,
+			"route": 4,
+			"position": "X=-174930.692 Y=-116000.115 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.5579616017639637,
+			"stage": 2,
+			"unit": 0,
+			"speed": 651.5519856490738,
+			"route": 21,
+			"position": "X=-174580.393 Y=-104000.000 Z=-6590.145",
+			"pending": false
+		},
+		{
+			"time": 5.5579616017639637,
+			"stage": 2,
+			"unit": 1,
+			"speed": 643.64470112463414,
+			"route": 22,
+			"position": "X=-174645.548 Y=-102000.000 Z=-6596.395",
+			"pending": false
+		},
+		{
+			"time": 5.5579616017639637,
+			"stage": 2,
+			"unit": 2,
+			"speed": 262.02354973888544,
+			"route": 3,
+			"position": "X=-174914.003 Y=-109998.193 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 5.5579616017639637,
+			"stage": 2,
+			"unit": 3,
+			"speed": 262.02352868031358,
+			"route": 4,
+			"position": "X=-174913.984 Y=-116000.143 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.6096899025142193,
+			"stage": 2,
+			"unit": 0,
+			"speed": 658.60816432715842,
+			"route": 21,
+			"position": "X=-174514.532 Y=-104000.000 Z=-6590.698",
+			"pending": false
+		},
+		{
+			"time": 5.6096899025142193,
+			"stage": 2,
+			"unit": 1,
+			"speed": 651.55185879471458,
+			"route": 22,
+			"position": "X=-174580.393 Y=-102000.000 Z=-6596.987",
+			"pending": false
+		},
+		{
+			"time": 5.6096899025142193,
+			"stage": 2,
+			"unit": 2,
+			"speed": 282.8127601889542,
+			"route": 3,
+			"position": "X=-174900.003 Y=-109997.899 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 5.6096899025142193,
+			"stage": 2,
+			"unit": 3,
+			"speed": 282.8127327877765,
+			"route": 4,
+			"position": "X=-174899.982 Y=-116000.167 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.6756331995129585,
+			"stage": 2,
+			"unit": 0,
+			"speed": 658.60816432715842,
+			"route": 21,
+			"position": "X=-174514.532 Y=-104000.000 Z=-6590.698",
+			"pending": false
+		},
+		{
+			"time": 5.6756331995129585,
+			"stage": 2,
+			"unit": 1,
+			"speed": 651.55185879471458,
+			"route": 22,
+			"position": "X=-174580.393 Y=-102000.000 Z=-6596.987",
+			"pending": false
+		},
+		{
+			"time": 5.6756331995129585,
+			"stage": 2,
+			"unit": 2,
+			"speed": 310.09379682319383,
+			"route": 3,
+			"position": "X=-174880.036 Y=-109997.480 Z=-6434.642",
+			"pending": false
+		},
+		{
+			"time": 5.6756331995129585,
+			"stage": 2,
+			"unit": 3,
+			"speed": 310.09376401839125,
+			"route": 4,
+			"position": "X=-174880.009 Y=-116000.200 Z=-6405.341",
+			"pending": false
+		},
+		{
+			"time": 5.7263265997171402,
+			"stage": 2,
+			"unit": 0,
+			"speed": 664.92965211994738,
+			"route": 21,
+			"position": "X=-174448.039 Y=-104000.000 Z=-6591.256",
+			"pending": false
+		},
+		{
+			"time": 5.7263265997171402,
+			"stage": 2,
+			"unit": 1,
+			"speed": 658.60804192172611,
+			"route": 22,
+			"position": "X=-174514.532 Y=-102000.000 Z=-6598.124",
+			"pending": false
+		},
+		{
+			"time": 5.7263265997171402,
+			"stage": 2,
+			"unit": 2,
+			"speed": 330.95292687108088,
+			"route": 3,
+			"position": "X=-174863.539 Y=-109997.135 Z=-6434.939",
+			"pending": false
+		},
+		{
+			"time": 5.7263265997171402,
+			"stage": 2,
+			"unit": 3,
+			"speed": 330.95288458210661,
+			"route": 4,
+			"position": "X=-174863.510 Y=-116000.227 Z=-6405.640",
+			"pending": false
+		},
+		{
+			"time": 5.7786392010748386,
+			"stage": 3,
+			"unit": 0,
+			"speed": 664.92965211994738,
+			"route": 21,
+			"position": "X=-174448.039 Y=-104000.000 Z=-6591.256",
+			"pending": true
+		},
+		{
+			"time": 5.7786392010748386,
+			"stage": 3,
+			"unit": 1,
+			"speed": 658.60804192172611,
+			"route": 22,
+			"position": "X=-174514.532 Y=-102000.000 Z=-6598.124",
+			"pending": true
+		},
+		{
+			"time": 5.7786392010748386,
+			"stage": 3,
+			"unit": 2,
+			"speed": 352.18158173118809,
+			"route": 5,
+			"position": "X=-174845.650 Y=-109996.718 Z=-6435.207",
+			"pending": false
+		},
+		{
+			"time": 5.7786392010748386,
+			"stage": 3,
+			"unit": 3,
+			"speed": 352.16557043088568,
+			"route": 6,
+			"position": "X=-174845.616 Y=-116000.322 Z=-6405.909",
+			"pending": false
+		},
+		{
+			"time": 5.844597302377224,
+			"stage": 3,
+			"unit": 0,
+			"speed": 593.34747351999692,
+			"route": 23,
+			"position": "X=-174388.852 Y=-103995.816 Z=-6591.788",
+			"pending": false
+		},
+		{
+			"time": 5.844597302377224,
+			"stage": 3,
+			"unit": 1,
+			"speed": 664.92955483715218,
+			"route": 22,
+			"position": "X=-174448.039 Y=-102000.000 Z=-6599.271",
+			"pending": true
+		},
+		{
+			"time": 5.844597302377224,
+			"stage": 3,
+			"unit": 2,
+			"speed": 379.16184151324745,
+			"route": 5,
+			"position": "X=-174821.345 Y=-109996.016 Z=-6435.489",
+			"pending": false
+		},
+		{
+			"time": 5.844597302377224,
+			"stage": 3,
+			"unit": 3,
+			"speed": 379.13814367949681,
+			"route": 6,
+			"position": "X=-174821.304 Y=-116000.649 Z=-6406.193",
+			"pending": false
+		},
+		{
+			"time": 5.9104865007102489,
+			"stage": 3,
+			"unit": 0,
+			"speed": 589.57528046415405,
+			"route": 23,
+			"position": "X=-174330.125 Y=-103990.605 Z=-6592.324",
+			"pending": false
+		},
+		{
+			"time": 5.9104865007102489,
+			"stage": 3,
+			"unit": 1,
+			"speed": 593.63419698749408,
+			"route": 24,
+			"position": "X=-174388.724 Y=-101997.602 Z=-6600.273",
+			"pending": true
+		},
+		{
+			"time": 5.9104865007102489,
+			"stage": 3,
+			"unit": 2,
+			"speed": 406.00727243306318,
+			"route": 5,
+			"position": "X=-174795.406 Y=-109995.180 Z=-6435.785",
+			"pending": false
+		},
+		{
+			"time": 5.9104865007102489,
+			"stage": 3,
+			"unit": 3,
+			"speed": 405.98379780221114,
+			"route": 6,
+			"position": "X=-174795.357 Y=-116001.092 Z=-6406.489",
+			"pending": false
+		},
+		{
+			"time": 5.9755119010806084,
+			"stage": 3,
+			"unit": 0,
+			"speed": 589.57528046415405,
+			"route": 23,
+			"position": "X=-174330.125 Y=-103990.605 Z=-6592.324",
+			"pending": false
+		},
+		{
+			"time": 5.9755119010806084,
+			"stage": 3,
+			"unit": 1,
+			"speed": 593.63419698749408,
+			"route": 24,
+			"position": "X=-174388.724 Y=-101997.602 Z=-6600.273",
+			"pending": false
+		},
+		{
+			"time": 5.9755119010806084,
+			"stage": 3,
+			"unit": 2,
+			"speed": 432.68672363666633,
+			"route": 5,
+			"position": "X=-174767.677 Y=-109993.770 Z=-6436.110",
+			"pending": false
+		},
+		{
+			"time": 5.9755119010806084,
+			"stage": 3,
+			"unit": 3,
+			"speed": 432.87284560537927,
+			"route": 6,
+			"position": "X=-174767.586 Y=-116001.529 Z=-6406.816",
+			"pending": false
+		},
+		{
+			"time": 6.0428200997412205,
+			"stage": 3,
+			"unit": 0,
+			"speed": 599.27649149332433,
+			"route": 23,
+			"position": "X=-174270.452 Y=-103985.083 Z=-6592.871",
+			"pending": false
+		},
+		{
+			"time": 6.0428200997412205,
+			"stage": 3,
+			"unit": 1,
+			"speed": 589.61855775983781,
+			"route": 24,
+			"position": "X=-174329.838 Y=-101994.616 Z=-6601.069",
+			"pending": false
+		},
+		{
+			"time": 6.0428200997412205,
+			"stage": 3,
+			"unit": 2,
+			"speed": 459.97084849834147,
+			"route": 5,
+			"position": "X=-174737.719 Y=-109991.725 Z=-6436.365",
+			"pending": false
+		},
+		{
+			"time": 6.0428200997412205,
+			"stage": 3,
+			"unit": 3,
+			"speed": 460.2037565996896,
+			"route": 6,
+			"position": "X=-174737.545 Y=-116001.766 Z=-6407.072",
+			"pending": false
+		},
+		{
+			"time": 6.0929647013545036,
+			"stage": 3,
+			"unit": 0,
+			"speed": 610.8740319782454,
+			"route": 23,
+			"position": "X=-174209.628 Y=-103979.418 Z=-6593.000",
+			"pending": false
+		},
+		{
+			"time": 6.0929647013545036,
+			"stage": 3,
+			"unit": 1,
+			"speed": 599.25209801690141,
+			"route": 24,
+			"position": "X=-174269.996 Y=-101991.451 Z=-6601.567",
+			"pending": false
+		},
+		{
+			"time": 6.0929647013545036,
+			"stage": 3,
+			"unit": 2,
+			"speed": 480.34128304881938,
+			"route": 5,
+			"position": "X=-174714.220 Y=-109989.931 Z=-6436.629",
+			"pending": false
+		},
+		{
+			"time": 6.0929647013545036,
+			"stage": 3,
+			"unit": 3,
+			"speed": 480.58404174051714,
+			"route": 6,
+			"position": "X=-174713.965 Y=-116001.867 Z=-6407.336",
+			"pending": false
+		},
+		{
+			"time": 6.1595151014626026,
+			"stage": 3,
+			"unit": 0,
+			"speed": 610.8740319782454,
+			"route": 23,
+			"position": "X=-174209.628 Y=-103979.418 Z=-6593.000",
+			"pending": false
+		},
+		{
+			"time": 6.1595151014626026,
+			"stage": 3,
+			"unit": 1,
+			"speed": 599.25209801690141,
+			"route": 24,
+			"position": "X=-174269.996 Y=-101991.451 Z=-6601.567",
+			"pending": false
+		},
+		{
+			"time": 6.1595151014626026,
+			"stage": 3,
+			"unit": 2,
+			"speed": 507.84745632931265,
+			"route": 5,
+			"position": "X=-174680.909 Y=-109987.244 Z=-6436.912",
+			"pending": false
+		},
+		{
+			"time": 6.1595151014626026,
+			"stage": 3,
+			"unit": 3,
+			"speed": 508.09443376584159,
+			"route": 6,
+			"position": "X=-174680.530 Y=-116002.075 Z=-6407.620",
+			"pending": false
+		},
+		{
+			"time": 6.2109277993440628,
+			"stage": 3,
+			"unit": 0,
+			"speed": 621.9220172132226,
+			"route": 23,
+			"position": "X=-174147.704 Y=-103973.654 Z=-6593.000",
+			"pending": false
+		},
+		{
+			"time": 6.2109277993440628,
+			"stage": 3,
+			"unit": 1,
+			"speed": 610.83746090414911,
+			"route": 24,
+			"position": "X=-174208.999 Y=-101988.204 Z=-6602.075",
+			"pending": false
+		},
+		{
+			"time": 6.2109277993440628,
+			"stage": 3,
+			"unit": 2,
+			"speed": 528.75691127110792,
+			"route": 5,
+			"position": "X=-174654.362 Y=-109985.037 Z=-6436.912",
+			"pending": false
+		},
+		{
+			"time": 6.2109277993440628,
+			"stage": 3,
+			"unit": 3,
+			"speed": 529.00513516649062,
+			"route": 6,
+			"position": "X=-174653.880 Y=-116002.273 Z=-6407.620",
+			"pending": false
+		},
+		{
+			"time": 6.2778586000204086,
+			"stage": 3,
+			"unit": 0,
+			"speed": 621.9220172132226,
+			"route": 23,
+			"position": "X=-174147.704 Y=-103973.654 Z=-6593.000",
+			"pending": false
+		},
+		{
+			"time": 6.2778586000204086,
+			"stage": 3,
+			"unit": 1,
+			"speed": 610.83746090414911,
+			"route": 24,
+			"position": "X=-174208.999 Y=-101988.204 Z=-6602.075",
+			"pending": false
+		},
+		{
+			"time": 6.2778586000204086,
+			"stage": 3,
+			"unit": 2,
+			"speed": 556.36627885477935,
+			"route": 5,
+			"position": "X=-174617.687 Y=-109981.941 Z=-6437.166",
+			"pending": false
+		},
+		{
+			"time": 6.2778586000204086,
+			"stage": 3,
+			"unit": 3,
+			"speed": 556.61513825577708,
+			"route": 6,
+			"position": "X=-174617.059 Y=-116002.557 Z=-6407.620",
+			"pending": false
+		},
+		{
+			"time": 6.3432707004249096,
+			"stage": 3,
+			"unit": 0,
+			"speed": 631.97623895708284,
+			"route": 23,
+			"position": "X=-174084.777 Y=-103967.808 Z=-6593.115",
+			"pending": false
+		},
+		{
+			"time": 6.3432707004249096,
+			"stage": 3,
+			"unit": 1,
+			"speed": 621.88603401632247,
+			"route": 24,
+			"position": "X=-174146.898 Y=-101984.900 Z=-6602.591",
+			"pending": false
+		},
+		{
+			"time": 6.3432707004249096,
+			"stage": 3,
+			"unit": 2,
+			"speed": 583.27059581165452,
+			"route": 5,
+			"position": "X=-174580.174 Y=-109978.745 Z=-6437.166",
+			"pending": false
+		},
+		{
+			"time": 6.3432707004249096,
+			"stage": 3,
+			"unit": 3,
+			"speed": 583.51955370863266,
+			"route": 6,
+			"position": "X=-174579.395 Y=-116002.840 Z=-6407.929",
+			"pending": false
+		},
+		{
+			"time": 6.3938466012477875,
+			"stage": 3,
+			"unit": 0,
+			"speed": 641.02739918559348,
+			"route": 23,
+			"position": "X=-174020.948 Y=-103961.891 Z=-6593.648",
+			"pending": false
+		},
+		{
+			"time": 6.3938466012477875,
+			"stage": 3,
+			"unit": 1,
+			"speed": 631.94336196344875,
+			"route": 24,
+			"position": "X=-174083.793 Y=-101981.550 Z=-6603.117",
+			"pending": false
+		},
+		{
+			"time": 6.3938466012477875,
+			"stage": 3,
+			"unit": 2,
+			"speed": 603.69174005112961,
+			"route": 5,
+			"position": "X=-174550.523 Y=-109976.207 Z=-6437.447",
+			"pending": false
+		},
+		{
+			"time": 6.3938466012477875,
+			"stage": 3,
+			"unit": 3,
+			"speed": 603.94058064706678,
+			"route": 6,
+			"position": "X=-174549.624 Y=-116003.050 Z=-6408.278",
+			"pending": false
+		},
+		{
+			"time": 6.4609507024288177,
+			"stage": 3,
+			"unit": 0,
+			"speed": 641.02739918559348,
+			"route": 23,
+			"position": "X=-174020.948 Y=-103961.891 Z=-6593.648",
+			"pending": false
+		},
+		{
+			"time": 6.4609507024288177,
+			"stage": 3,
+			"unit": 1,
+			"speed": 631.94336196344875,
+			"route": 24,
+			"position": "X=-174083.793 Y=-101981.550 Z=-6603.117",
+			"pending": false
+		},
+		{
+			"time": 6.4609507024288177,
+			"stage": 3,
+			"unit": 2,
+			"speed": 631.44851316711402,
+			"route": 5,
+			"position": "X=-174508.592 Y=-109972.610 Z=-6438.056",
+			"pending": false
+		},
+		{
+			"time": 6.4609507024288177,
+			"stage": 3,
+			"unit": 3,
+			"speed": 618.93308924619691,
+			"route": 6,
+			"position": "X=-174507.767 Y=-116002.593 Z=-6408.642",
+			"pending": false
+		},
+		{
+			"time": 6.5118905007839203,
+			"stage": 3,
+			"unit": 0,
+			"speed": 649.15389720651876,
+			"route": 23,
+			"position": "X=-173956.309 Y=-103955.911 Z=-6594.187",
+			"pending": false
+		},
+		{
+			"time": 6.5118905007839203,
+			"stage": 3,
+			"unit": 1,
+			"speed": 640.99786199825314,
+			"route": 24,
+			"position": "X=-174019.783 Y=-101978.159 Z=-6603.649",
+			"pending": false
+		},
+		{
+			"time": 6.5118905007839203,
+			"stage": 3,
+			"unit": 2,
+			"speed": 652.2042029246785,
+			"route": 5,
+			"position": "X=-174476.013 Y=-109969.811 Z=-6438.307",
+			"pending": false
+		},
+		{
+			"time": 6.5118905007839203,
+			"stage": 3,
+			"unit": 3,
+			"speed": 639.64175354112831,
+			"route": 6,
+			"position": "X=-174475.753 Y=-116000.819 Z=-6408.895",
+			"pending": false
+		},
+		{
+			"time": 6.5788929015398026,
+			"stage": 3,
+			"unit": 0,
+			"speed": 649.15389720651876,
+			"route": 23,
+			"position": "X=-173956.309 Y=-103955.911 Z=-6594.187",
+			"pending": false
+		},
+		{
+			"time": 6.5788929015398026,
+			"stage": 3,
+			"unit": 1,
+			"speed": 640.99786199825314,
+			"route": 24,
+			"position": "X=-174019.783 Y=-101978.159 Z=-6603.649",
+			"pending": false
+		},
+		{
+			"time": 6.5788929015398026,
+			"stage": 3,
+			"unit": 2,
+			"speed": 679.73222702128896,
+			"route": 5,
+			"position": "X=-174431.189 Y=-109965.956 Z=-6438.825",
+			"pending": false
+		},
+		{
+			"time": 6.5788929015398026,
+			"stage": 3,
+			"unit": 3,
+			"speed": 667.15150422936983,
+			"route": 6,
+			"position": "X=-174431.664 Y=-115998.627 Z=-6409.526",
+			"pending": false
+		},
+		{
+			"time": 6.6295145004987717,
+			"stage": 3,
+			"unit": 0,
+			"speed": 656.44535490737439,
+			"route": 23,
+			"position": "X=-173890.942 Y=-103949.872 Z=-6594.732",
+			"pending": false
+		},
+		{
+			"time": 6.6295145004987717,
+			"stage": 3,
+			"unit": 1,
+			"speed": 649.12744181071162,
+			"route": 24,
+			"position": "X=-173954.960 Y=-101974.731 Z=-6604.189",
+			"pending": false
+		},
+		{
+			"time": 6.6295145004987717,
+			"stage": 3,
+			"unit": 2,
+			"speed": 700.5032524635775,
+			"route": 5,
+			"position": "X=-174396.147 Y=-109962.940 Z=-6439.372",
+			"pending": false
+		},
+		{
+			"time": 6.6295145004987717,
+			"stage": 3,
+			"unit": 3,
+			"speed": 687.9192159910076,
+			"route": 6,
+			"position": "X=-174397.168 Y=-115997.009 Z=-6410.065",
+			"pending": false
+		},
+		{
+			"time": 6.6805234998464584,
+			"stage": 3,
+			"unit": 0,
+			"speed": 656.44535490737439,
+			"route": 23,
+			"position": "X=-173890.942 Y=-103949.872 Z=-6594.732",
+			"pending": false
+		},
+		{
+			"time": 6.6805234998464584,
+			"stage": 3,
+			"unit": 1,
+			"speed": 649.12744181071162,
+			"route": 24,
+			"position": "X=-173954.960 Y=-101974.731 Z=-6604.189",
+			"pending": false
+		},
+		{
+			"time": 6.6805234998464584,
+			"stage": 3,
+			"unit": 2,
+			"speed": 721.30138280796666,
+			"route": 5,
+			"position": "X=-174360.007 Y=-109959.829 Z=-6439.654",
+			"pending": false
+		},
+		{
+			"time": 6.6805234998464584,
+			"stage": 3,
+			"unit": 3,
+			"speed": 708.7165588976078,
+			"route": 6,
+			"position": "X=-174361.571 Y=-115995.379 Z=-6410.065",
+			"pending": false
+		},
+		{
+			"time": 6.7460528016090393,
+			"stage": 4,
+			"unit": 0,
+			"speed": 662.9864970767718,
+			"route": 23,
+			"position": "X=-173824.924 Y=-103943.783 Z=-6595.280",
+			"pending": true
+		},
+		{
+			"time": 6.7460528016090393,
+			"stage": 4,
+			"unit": 1,
+			"speed": 656.42167520135774,
+			"route": 24,
+			"position": "X=-173889.410 Y=-101971.270 Z=-6604.734",
+			"pending": true
+		},
+		{
+			"time": 6.7460528016090393,
+			"stage": 4,
+			"unit": 2,
+			"speed": 748.26334564046931,
+			"route": 5,
+			"position": "X=-174311.598 Y=-109955.659 Z=-6439.654",
+			"pending": true
+		},
+		{
+			"time": 6.7460528016090393,
+			"stage": 4,
+			"unit": 3,
+			"speed": 735.67842396657306,
+			"route": 6,
+			"position": "X=-174313.859 Y=-115993.215 Z=-6410.065",
+			"pending": true
+		},
+		{
+			"time": 6.7972430028021336,
+			"stage": 4,
+			"unit": 0,
+			"speed": 668.85429178614265,
+			"route": 23,
+			"position": "X=-173758.321 Y=-103937.647 Z=-6595.832",
+			"pending": true
+		},
+		{
+			"time": 6.7972430028021336,
+			"stage": 4,
+			"unit": 1,
+			"speed": 662.96530372861594,
+			"route": 24,
+			"position": "X=-173823.205 Y=-101967.780 Z=-6605.287",
+			"pending": true
+		},
+		{
+			"time": 6.7972430028021336,
+			"stage": 4,
+			"unit": 2,
+			"speed": 768.95383920216534,
+			"route": 5,
+			"position": "X=-174273.245 Y=-109952.354 Z=-6439.654",
+			"pending": true
+		},
+		{
+			"time": 6.7972430028021336,
+			"stage": 4,
+			"unit": 3,
+			"speed": 756.36885525108028,
+			"route": 6,
+			"position": "X=-174276.039 Y=-115991.497 Z=-6410.065",
+			"pending": true
+		},
+		{
+			"time": 6.8632465004920959,
+			"stage": 4,
+			"unit": 0,
+			"speed": 668.85429178614265,
+			"route": 23,
+			"position": "X=-173758.321 Y=-103937.647 Z=-6595.832",
+			"pending": true
+		},
+		{
+			"time": 6.8632465004920959,
+			"stage": 4,
+			"unit": 1,
+			"speed": 662.96530372861594,
+			"route": 24,
+			"position": "X=-173823.205 Y=-101967.780 Z=-6605.287",
+			"pending": true
+		},
+		{
+			"time": 6.8632465004920959,
+			"stage": 4,
+			"unit": 2,
+			"speed": 796.22396873217588,
+			"route": 5,
+			"position": "X=-174221.109 Y=-109947.860 Z=-6440.253",
+			"pending": false
+		},
+		{
+			"time": 6.8632465004920959,
+			"stage": 4,
+			"unit": 3,
+			"speed": 783.6386118604637,
+			"route": 6,
+			"position": "X=-174224.601 Y=-115989.141 Z=-6410.758",
+			"pending": false
+		},
+		{
+			"time": 6.9149569012224674,
+			"stage": 4,
+			"unit": 0,
+			"speed": 593.8450587077532,
+			"route": 25,
+			"position": "X=-173699.924 Y=-103926.861 Z=-6596.317",
+			"pending": false
+		},
+		{
+			"time": 6.9149569012224674,
+			"stage": 4,
+			"unit": 1,
+			"speed": 668.83532350904068,
+			"route": 24,
+			"position": "X=-173756.414 Y=-101964.264 Z=-6605.844",
+			"pending": true
+		},
+		{
+			"time": 6.9149569012224674,
+			"stage": 4,
+			"unit": 2,
+			"speed": 817.17296426321502,
+			"route": 5,
+			"position": "X=-174179.825 Y=-109944.299 Z=-6440.575",
+			"pending": false
+		},
+		{
+			"time": 6.9149569012224674,
+			"stage": 4,
+			"unit": 3,
+			"speed": 804.58686149971243,
+			"route": 6,
+			"position": "X=-174183.851 Y=-115987.254 Z=-6411.391",
+			"pending": false
+		},
+		{
+			"time": 6.9661918021738529,
+			"stage": 4,
+			"unit": 0,
+			"speed": 593.8450587077532,
+			"route": 25,
+			"position": "X=-173699.924 Y=-103926.861 Z=-6596.317",
+			"pending": false
+		},
+		{
+			"time": 6.9661918021738529,
+			"stage": 4,
+			"unit": 1,
+			"speed": 668.83532350904068,
+			"route": 24,
+			"position": "X=-173756.414 Y=-101964.264 Z=-6605.844",
+			"pending": true
+		},
+		{
+			"time": 6.9661918021738529,
+			"stage": 4,
+			"unit": 2,
+			"speed": 837.99301954227542,
+			"route": 5,
+			"position": "X=-174137.738 Y=-109940.669 Z=-6441.231",
+			"pending": false
+		},
+		{
+			"time": 6.9661918021738529,
+			"stage": 4,
+			"unit": 3,
+			"speed": 813.16755766041842,
+			"route": 6,
+			"position": "X=-174142.568 Y=-115984.523 Z=-6411.710",
+			"pending": false
+		},
+		{
+			"time": 7.0162885002791882,
+			"stage": 4,
+			"unit": 0,
+			"speed": 589.62235724801326,
+			"route": 25,
+			"position": "X=-173642.206 Y=-103914.810 Z=-6596.796",
+			"pending": false
+		},
+		{
+			"time": 7.0162885002791882,
+			"stage": 4,
+			"unit": 1,
+			"speed": 594.10752043600723,
+			"route": 26,
+			"position": "X=-173697.462 Y=-101956.898 Z=-6606.337",
+			"pending": false
+		},
+		{
+			"time": 7.0162885002791882,
+			"stage": 4,
+			"unit": 2,
+			"speed": 858.88331727176808,
+			"route": 5,
+			"position": "X=-174094.450 Y=-109936.933 Z=-6441.562",
+			"pending": false
+		},
+		{
+			"time": 7.0162885002791882,
+			"stage": 4,
+			"unit": 3,
+			"speed": 833.62032506358617,
+			"route": 6,
+			"position": "X=-174100.590 Y=-115980.531 Z=-6412.369",
+			"pending": false
+		},
+		{
+			"time": 7.0663827992975712,
+			"stage": 4,
+			"unit": 0,
+			"speed": 589.62235724801326,
+			"route": 25,
+			"position": "X=-173642.206 Y=-103914.810 Z=-6596.796",
+			"pending": false
+		},
+		{
+			"time": 7.0663827992975712,
+			"stage": 4,
+			"unit": 1,
+			"speed": 594.10752043600723,
+			"route": 26,
+			"position": "X=-173697.462 Y=-101956.898 Z=-6606.337",
+			"pending": false
+		},
+		{
+			"time": 7.0663827992975712,
+			"stage": 4,
+			"unit": 2,
+			"speed": 879.42683219848675,
+			"route": 5,
+			"position": "X=-174050.847 Y=-109933.168 Z=-6442.247",
+			"pending": false
+		},
+		{
+			"time": 7.0663827992975712,
+			"stage": 4,
+			"unit": 3,
+			"speed": 845.10354107297451,
+			"route": 6,
+			"position": "X=-174058.547 Y=-115976.219 Z=-6412.637",
+			"pending": false
+		},
+		{
+			"time": 7.1171624027192593,
+			"stage": 4,
+			"unit": 0,
+			"speed": 599.24497925529465,
+			"route": 25,
+			"position": "X=-173583.608 Y=-103902.274 Z=-6597.283",
+			"pending": false
+		},
+		{
+			"time": 7.1171624027192593,
+			"stage": 4,
+			"unit": 1,
+			"speed": 589.66109606500379,
+			"route": 26,
+			"position": "X=-173639.094 Y=-101948.515 Z=-6606.824",
+			"pending": false
+		},
+		{
+			"time": 7.1171624027192593,
+			"stage": 4,
+			"unit": 2,
+			"speed": 899.97807283095915,
+			"route": 5,
+			"position": "X=-174005.999 Y=-109929.293 Z=-6442.499",
+			"pending": false
+		},
+		{
+			"time": 7.1171624027192593,
+			"stage": 4,
+			"unit": 3,
+			"speed": 863.93584475274031,
+			"route": 6,
+			"position": "X=-174015.556 Y=-115971.776 Z=-6412.637",
+			"pending": false
+		},
+		{
+			"time": 7.1671891994774342,
+			"stage": 4,
+			"unit": 0,
+			"speed": 599.24497925529465,
+			"route": 25,
+			"position": "X=-173583.608 Y=-103902.274 Z=-6597.283",
+			"pending": false
+		},
+		{
+			"time": 7.1671891994774342,
+			"stage": 4,
+			"unit": 1,
+			"speed": 589.66109606500379,
+			"route": 26,
+			"position": "X=-173639.094 Y=-101948.515 Z=-6606.824",
+			"pending": false
+		},
+		{
+			"time": 7.1671891994774342,
+			"stage": 4,
+			"unit": 2,
+			"speed": 899.97796630888081,
+			"route": 5,
+			"position": "X=-173961.460 Y=-109925.444 Z=-6442.499",
+			"pending": false
+		},
+		{
+			"time": 7.1671891994774342,
+			"stage": 4,
+			"unit": 3,
+			"speed": 875.33834523558244,
+			"route": 6,
+			"position": "X=-173972.597 Y=-115966.549 Z=-6412.637",
+			"pending": false
+		},
+		{
+			"time": 7.2172566018998623,
+			"stage": 4,
+			"unit": 0,
+			"speed": 610.82949830577013,
+			"route": 25,
+			"position": "X=-173523.886 Y=-103889.450 Z=-6597.778",
+			"pending": false
+		},
+		{
+			"time": 7.2172566018998623,
+			"stage": 4,
+			"unit": 1,
+			"speed": 599.22122768631721,
+			"route": 26,
+			"position": "X=-173579.814 Y=-101939.766 Z=-6607.319",
+			"pending": false
+		},
+		{
+			"time": 7.2172566018998623,
+			"stage": 4,
+			"unit": 2,
+			"speed": 899.97790527421591,
+			"route": 5,
+			"position": "X=-173916.354 Y=-109921.543 Z=-6442.499",
+			"pending": false
+		},
+		{
+			"time": 7.2172566018998623,
+			"stage": 4,
+			"unit": 3,
+			"speed": 881.58857833079765,
+			"route": 6,
+			"position": "X=-173928.664 Y=-115961.102 Z=-6413.039",
+			"pending": false
+		},
+		{
+			"time": 7.2854977026581764,
+			"stage": 4,
+			"unit": 0,
+			"speed": 621.87797099497891,
+			"route": 25,
+			"position": "X=-173463.083 Y=-103876.400 Z=-6598.284",
+			"pending": false
+		},
+		{
+			"time": 7.2854977026581764,
+			"stage": 4,
+			"unit": 1,
+			"speed": 610.79447750202451,
+			"route": 26,
+			"position": "X=-173519.395 Y=-101930.811 Z=-6607.824",
+			"pending": false
+		},
+		{
+			"time": 7.2854977026581764,
+			"stage": 4,
+			"unit": 2,
+			"speed": 899.97784423818439,
+			"route": 5,
+			"position": "X=-173856.185 Y=-109916.338 Z=-6443.173",
+			"pending": false
+		},
+		{
+			"time": 7.2854977026581764,
+			"stage": 4,
+			"unit": 3,
+			"speed": 883.5800463472101,
+			"route": 6,
+			"position": "X=-173869.857 Y=-115953.776 Z=-6413.721",
+			"pending": false
+		},
+		{
+			"time": 7.351339902728796,
+			"stage": 4,
+			"unit": 0,
+			"speed": 621.87797099497891,
+			"route": 25,
+			"position": "X=-173463.083 Y=-103876.400 Z=-6598.284",
+			"pending": false
+		},
+		{
+			"time": 7.351339902728796,
+			"stage": 4,
+			"unit": 1,
+			"speed": 610.79447750202451,
+			"route": 26,
+			"position": "X=-173519.395 Y=-101930.811 Z=-6607.824",
+			"pending": false
+		},
+		{
+			"time": 7.351339902728796,
+			"stage": 4,
+			"unit": 2,
+			"speed": 899.97778190032557,
+			"route": 5,
+			"position": "X=-173795.988 Y=-109911.128 Z=-6443.885",
+			"pending": false
+		},
+		{
+			"time": 7.351339902728796,
+			"stage": 4,
+			"unit": 3,
+			"speed": 883.88242470338264,
+			"route": 6,
+			"position": "X=-173810.973 Y=-115946.461 Z=-6414.414",
+			"pending": false
+		},
+		{
+			"time": 7.4165195003151894,
+			"stage": 4,
+			"unit": 0,
+			"speed": 631.93535157090855,
+			"route": 25,
+			"position": "X=-173401.293 Y=-103863.153 Z=-6598.798",
+			"pending": false
+		},
+		{
+			"time": 7.4165195003151894,
+			"stage": 4,
+			"unit": 1,
+			"speed": 621.84344836481944,
+			"route": 26,
+			"position": "X=-173457.882 Y=-101921.699 Z=-6608.000",
+			"pending": false
+		},
+		{
+			"time": 7.4165195003151894,
+			"stage": 4,
+			"unit": 2,
+			"speed": 899.97771365150516,
+			"route": 5,
+			"position": "X=-173737.851 Y=-109906.094 Z=-6444.575",
+			"pending": false
+		},
+		{
+			"time": 7.4165195003151894,
+			"stage": 4,
+			"unit": 3,
+			"speed": 883.92561280701148,
+			"route": 6,
+			"position": "X=-173754.098 Y=-115939.397 Z=-6415.090",
+			"pending": false
+		},
+		{
+			"time": 7.4841752015054226,
+			"stage": 4,
+			"unit": 0,
+			"speed": 640.98996224808843,
+			"route": 25,
+			"position": "X=-173338.615 Y=-103849.733 Z=-6599.320",
+			"pending": false
+		},
+		{
+			"time": 7.4841752015054226,
+			"stage": 4,
+			"unit": 1,
+			"speed": 631.90356022245692,
+			"route": 26,
+			"position": "X=-173395.372 Y=-101912.451 Z=-6608.000",
+			"pending": false
+		},
+		{
+			"time": 7.4841752015054226,
+			"stage": 4,
+			"unit": 2,
+			"speed": 899.97763670598817,
+			"route": 5,
+			"position": "X=-173677.337 Y=-109900.851 Z=-6445.177",
+			"pending": false
+		},
+		{
+			"time": 7.4841752015054226,
+			"stage": 4,
+			"unit": 3,
+			"speed": 875.7292480464032,
+			"route": 6,
+			"position": "X=-173695.279 Y=-115930.875 Z=-6415.431",
+			"pending": false
+		},
+		{
+			"time": 7.5345609001815319,
+			"stage": 4,
+			"unit": 0,
+			"speed": 640.98996224808843,
+			"route": 25,
+			"position": "X=-173338.615 Y=-103849.733 Z=-6599.320",
+			"pending": false
+		},
+		{
+			"time": 7.5345609001815319,
+			"stage": 4,
+			"unit": 1,
+			"speed": 631.90356022245692,
+			"route": 26,
+			"position": "X=-173395.372 Y=-101912.451 Z=-6608.000",
+			"pending": false
+		},
+		{
+			"time": 7.5345609001815319,
+			"stage": 4,
+			"unit": 2,
+			"speed": 899.97753906187143,
+			"route": 5,
+			"position": "X=-173631.763 Y=-109896.901 Z=-6445.177",
+			"pending": false
+		},
+		{
+			"time": 7.5345609001815319,
+			"stage": 4,
+			"unit": 3,
+			"speed": 869.93733546126168,
+			"route": 6,
+			"position": "X=-173651.495 Y=-115924.461 Z=-6415.431",
+			"pending": false
+		},
+		{
+			"time": 7.5856292024254799,
+			"stage": 4,
+			"unit": 0,
+			"speed": 649.11967827279693,
+			"route": 25,
+			"position": "X=-173275.139 Y=-103836.157 Z=-6599.849",
+			"pending": false
+		},
+		{
+			"time": 7.5856292024254799,
+			"stage": 4,
+			"unit": 1,
+			"speed": 640.96106940938569,
+			"route": 26,
+			"position": "X=-173331.964 Y=-101903.084 Z=-6608.030",
+			"pending": false
+		},
+		{
+			"time": 7.5856292024254799,
+			"stage": 4,
+			"unit": 2,
+			"speed": 899.97747301941297,
+			"route": 5,
+			"position": "X=-173586.251 Y=-109892.954 Z=-6445.177",
+			"pending": false
+		},
+		{
+			"time": 7.5856292024254799,
+			"stage": 4,
+			"unit": 3,
+			"speed": 879.72363103069983,
+			"route": 6,
+			"position": "X=-173607.308 Y=-115919.024 Z=-6415.806",
+			"pending": false
+		},
+		{
+			"time": 7.6358333006501198,
+			"stage": 4,
+			"unit": 0,
+			"speed": 649.11967827279693,
+			"route": 25,
+			"position": "X=-173275.139 Y=-103836.157 Z=-6599.849",
+			"pending": false
+		},
+		{
+			"time": 7.6358333006501198,
+			"stage": 4,
+			"unit": 1,
+			"speed": 640.96106940938569,
+			"route": 26,
+			"position": "X=-173331.964 Y=-101903.084 Z=-6608.030",
+			"pending": false
+		},
+		{
+			"time": 7.6358333006501198,
+			"stage": 4,
+			"unit": 2,
+			"speed": 899.97741485455981,
+			"route": 5,
+			"position": "X=-173540.639 Y=-109888.998 Z=-6445.882",
+			"pending": false
+		},
+		{
+			"time": 7.6358333006501198,
+			"stage": 4,
+			"unit": 3,
+			"speed": 882.93937866916281,
+			"route": 6,
+			"position": "X=-173562.784 Y=-115913.402 Z=-6416.150",
+			"pending": false
+		},
+		{
+			"time": 7.6860233023762703,
+			"stage": 4,
+			"unit": 0,
+			"speed": 656.41405903191651,
+			"route": 25,
+			"position": "X=-173210.946 Y=-103822.441 Z=-6600.384",
+			"pending": false
+		},
+		{
+			"time": 7.6860233023762703,
+			"stage": 4,
+			"unit": 1,
+			"speed": 649.09347925184477,
+			"route": 26,
+			"position": "X=-173267.750 Y=-101893.610 Z=-6608.643",
+			"pending": false
+		},
+		{
+			"time": 7.6860233023762703,
+			"stage": 4,
+			"unit": 2,
+			"speed": 899.97735595695167,
+			"route": 5,
+			"position": "X=-173496.086 Y=-109885.131 Z=-6446.231",
+			"pending": false
+		},
+		{
+			"time": 7.6860233023762703,
+			"stage": 4,
+			"unit": 3,
+			"speed": 883.67652021480114,
+			"route": 6,
+			"position": "X=-173519.204 Y=-115908.102 Z=-6416.837",
+			"pending": false
+		},
+		{
+			"time": 7.7360248006880283,
+			"stage": 4,
+			"unit": 0,
+			"speed": 656.41405903191651,
+			"route": 25,
+			"position": "X=-173210.946 Y=-103822.441 Z=-6600.384",
+			"pending": false
+		},
+		{
+			"time": 7.7360248006880283,
+			"stage": 4,
+			"unit": 1,
+			"speed": 649.09347925184477,
+			"route": 26,
+			"position": "X=-173267.750 Y=-101893.610 Z=-6608.643",
+			"pending": false
+		},
+		{
+			"time": 7.7360248006880283,
+			"stage": 4,
+			"unit": 2,
+			"speed": 899.97729492123608,
+			"route": 5,
+			"position": "X=-173451.106 Y=-109881.227 Z=-6446.931",
+			"pending": false
+		},
+		{
+			"time": 7.7360248006880283,
+			"stage": 4,
+			"unit": 3,
+			"speed": 883.8738245560296,
+			"route": 6,
+			"position": "X=-173475.207 Y=-115902.610 Z=-6417.179",
+			"pending": false
+		}
+	],
+	"errors": [
+		"failed_target_keeps_old_task_0",
+		"failed_target_keeps_old_task_1"
+	]
+}

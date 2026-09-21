@@ -1,4 +1,5 @@
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
+#include "Gameplay/Units/GuLiEngineeringAIController.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Stronghold/GuLiStrongholdTransitPresentationComponent.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
@@ -45,6 +46,50 @@ bool UGuLiEngineeringTravelComponent::BeginMove(const FVector& Target, float Acc
 	check(GetOwner()->HasAuthority());
 	if (Target.ContainsNaN() || AcceptanceRadius < 0 || Control->AreActionsLocked()) return false;
 	return MoveOnGround(Target,AcceptanceRadius);
+}
+bool UGuLiEngineeringTravelComponent::PrepareGroundMove(
+	const FVector& Target, float AcceptanceRadius, FGuLiPreparedGroundMove& Out) const
+{
+	Out = {};
+	if (!GetOwner()->HasAuthority() || Target.ContainsNaN() || AcceptanceRadius < 0
+		|| Control->AreActionsLocked() || IsRouting()) return false;
+	auto* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+	const auto* Pawn = Cast<APawn>(GetOwner());
+	const auto* AI = Pawn ? Cast<AAIController>(Pawn->GetController()) : nullptr;
+	if (!Nav || !AI || !AI->GetPathFollowingComponent()) return false;
+	FNavLocation Goal;
+	if (!Nav->ProjectPointToNavigation(Target, Goal, INVALID_NAVEXTENT, &Pawn->GetNavAgentPropertiesRef())) return false;
+	Out.Request = FAIMoveRequest(Goal.Location);
+	Out.Request.SetUsePathfinding(true);
+	Out.Request.SetAllowPartialPath(false);
+	Out.Request.SetProjectGoalLocation(false);
+	Out.Request.SetNavigationFilter(AI->GetDefaultNavigationFilterClass());
+	Out.Request.SetAcceptanceRadius(AcceptanceRadius);
+	Out.Request.SetReachTestIncludesAgentRadius(false);
+	Out.Request.SetCanStrafe(true);
+	Out.bAlreadyAtGoal = AI->GetPathFollowingComponent()->HasReached(Out.Request);
+	if (Out.bAlreadyAtGoal) return true;
+	FPathFindingQuery Query;
+	if (AI->BuildPathfindingQuery(Out.Request, Query)) AI->FindPathForMoveRequest(Out.Request, Query, Out.Path);
+	const bool bReady = Out.Path.IsValid() && Out.Path->IsValid() && !Out.Path->IsPartial();
+	if (!bReady)
+		if (auto* Crowd = Cast<UGuLiEngineeringCrowdFollowingComponent>(AI->GetPathFollowingComponent())) Crowd->RefreshParticipation();
+	return bReady;
+}
+bool UGuLiEngineeringTravelComponent::CommitGroundMove(const FGuLiPreparedGroundMove& Prepared)
+{
+	if (!GetOwner()->HasAuthority() || Control->AreActionsLocked() || IsRouting()) return false;
+	if (Prepared.bAlreadyAtGoal)
+	{
+		Controller().GetPathFollowingComponent()->RequestMoveWithImmediateFinish(EPathFollowingResult::Success);
+		return true;
+	}
+	if (!Prepared.Path.IsValid() || !Prepared.Path->IsValid() || Prepared.Path->IsPartial()) return false;
+	// RequestMove validates first, then retires the old path with velocity preserved.
+	// MoveTo/MoveToLocation also finish the old request on failure, so cannot be used here.
+	const bool bCommitted = Controller().RequestMove(Prepared.Request, Prepared.Path).IsValid();
+	if (bCommitted) Controller().bAllowStrafe = Prepared.Request.CanStrafe();
+	return bCommitted;
 }
 bool UGuLiEngineeringTravelComponent::StopAtSafePoint()
 {

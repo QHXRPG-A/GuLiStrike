@@ -11,6 +11,9 @@ import traceback
 from pathlib import Path
 
 import unreal
+import sys
+sys.path.insert(0, str(Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())) / 'Scripts/Vfx'))
+from vfx_registry import vfx_id
 
 
 OWNER = "GuLiStrike.BuildingMVP.20260903"
@@ -302,7 +305,7 @@ def _create_or_load_catalog(preview_material, missile_mesh, sentry_mesh, outpost
         definitions.append(definition)
 
     catalog.set_editor_property("definitions", definitions)
-    catalog.set_editor_property("preview_material", preview_material)
+    catalog.set_editor_property("preview_vfx_id", vfx_id('BuildingPlacement'))
     _set_metadata(catalog, "GuLi.Building.Owner", OWNER)
     _set_metadata(catalog, "GuLi.Building.Schema", 1)
     _save(catalog)

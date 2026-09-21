@@ -1,6 +1,7 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
 
 #include "GuLiStrike.h"
@@ -61,7 +62,6 @@ namespace GuLiCommanderPresentation
 	constexpr float MaximumClockRoundTripMilliseconds = 500.0f;
 	constexpr double MaximumForwardClockCorrectionSeconds = 0.025;
 	constexpr float RingHeight = 7.0f;
-	const FVector RingScale(2.4f, 2.4f, 0.004f);
 	const FLinearColor SelectedColor(1.0f, 0.82f, 0.04f, 0.95f);
 	const FLinearColor RedTeamColor(1.0f, 0.04f, 0.03f, 0.72f);
 	const FLinearColor BlueTeamColor(0.02f, 0.28f, 1.0f, 0.72f);
@@ -282,12 +282,10 @@ AGuLiCommanderPresentationActor::AGuLiCommanderPresentationActor()
 
 	UnitMeshAsset = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(
 		TEXT("/Game/Commander/Units/SM_CommanderFourFRobot_Crowd.SM_CommanderFourFRobot_Crowd")));
-	RingMeshAsset = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(
-		TEXT("/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing")));
+	RingMeshVfxId = GuLiVfxIds::UnitRingMesh;
 	UnitMaterialAsset = TSoftObjectPtr<UMaterialInterface>(FSoftObjectPath(
 		TEXT("/Game/Commander/Units/M_CommanderUnitProxy.M_CommanderUnitProxy")));
-	RingMaterialAsset = TSoftObjectPtr<UMaterialInterface>(FSoftObjectPath(
-		TEXT("/Game/Commander/UI/M_CommanderUnitRing.M_CommanderUnitRing")));
+	RingMaterialVfxId = GuLiVfxIds::UnitRingMaterial;
 }
 
 void AGuLiCommanderPresentationActor::BeginPlay()
@@ -335,24 +333,62 @@ void AGuLiCommanderPresentationActor::BeginPlay()
 	}
 }
 
+uint32 AGuLiCommanderPresentationActor::MakeUnitBatchKey(const uint16 UnitTypeId, const EGuLiTeam Team)
+{
+	return uint32(UnitTypeId) | (uint32(Team) << 16);
+}
+
 UInstancedStaticMeshComponent* AGuLiCommanderPresentationActor::FindUnitInstances(
-	const uint16 UnitTypeId) const
+	const uint16 UnitTypeId, const EGuLiTeam Team) const
+{
+	return FindUnitInstancesByBatch(MakeUnitBatchKey(UnitTypeId, Team));
+}
+
+UInstancedStaticMeshComponent* AGuLiCommanderPresentationActor::FindUnitInstancesByBatch(
+	const uint32 BatchKey) const
 {
 	const TObjectPtr<UInstancedStaticMeshComponent>* Component =
-		UnitInstancesByType.Find(UnitTypeId);
+		UnitInstancesByBatch.Find(BatchKey);
 	return Component ? Component->Get() : nullptr;
+}
+
+UInstancedStaticMeshComponent* AGuLiCommanderPresentationActor::EnsureUnitTeamBatch(
+	const uint16 UnitTypeId, const EGuLiTeam Team)
+{
+	if (auto* Existing = FindUnitInstances(UnitTypeId, Team)) return Existing;
+	const auto* Model = FindUnitInstances(UnitTypeId);
+	if (!Model || !GetWorld() || GetNetMode() == NM_DedicatedServer) return nullptr;
+
+	auto* Component = NewObject<UInstancedStaticMeshComponent>(this,
+		*FString::Printf(TEXT("UnitInstances_Type_%u_Team_%u"), UnitTypeId, uint8(Team)), RF_Transient);
+	if (!Component) return nullptr;
+	Component->SetupAttachment(SceneRoot);
+	ConfigureUnitInstanceComponent(*Component);
+	Component->SetStaticMesh(Model->GetStaticMesh());
+	for (int32 Slot = 0; Slot < Model->GetNumMaterials(); ++Slot)
+		Component->SetMaterial(Slot, Model->GetMaterial(Slot));
+	Component->SetVisibility(Model->IsVisible());
+	Component->SetCustomDepthStencilValue(uint8(Team));
+	Component->SetRenderCustomDepth(Team == EGuLiTeam::Red || Team == EGuLiTeam::Blue);
+	GuLiUnitRenderPolicy::Apply(*Component);
+	AddInstanceComponent(Component);
+	Component->RegisterComponentWithWorld(GetWorld());
+	const uint32 Key = MakeUnitBatchKey(UnitTypeId, Team);
+	UnitInstancesByBatch.Add(Key, Component);
+	UnitInstanceBatchStates.FindOrAdd(Key);
+	return Component;
 }
 
 void AGuLiCommanderPresentationActor::GetUnitInstanceComponents(
 	TArray<UInstancedStaticMeshComponent*>& OutComponents) const
 {
-	OutComponents.Reset(UnitInstancesByType.Num());
-	TArray<uint16> UnitTypeIds;
-	UnitInstancesByType.GetKeys(UnitTypeIds);
-	UnitTypeIds.Sort();
-	for (const uint16 UnitTypeId : UnitTypeIds)
+	OutComponents.Reset(UnitInstancesByBatch.Num());
+	TArray<uint32> Keys;
+	UnitInstancesByBatch.GetKeys(Keys);
+	Keys.Sort();
+	for (const uint32 Key : Keys)
 	{
-		if (UInstancedStaticMeshComponent* Component = FindUnitInstances(UnitTypeId))
+		if (UInstancedStaticMeshComponent* Component = FindUnitInstancesByBatch(Key))
 		{
 			OutComponents.Add(Component);
 		}
@@ -380,7 +416,7 @@ void AGuLiCommanderPresentationActor::ConfigureUnitInstanceComponent(
 
 void AGuLiCommanderPresentationActor::InitializeUnitInstanceBatches()
 {
-	UnitInstancesByType.Reset();
+	UnitInstancesByBatch.Reset();
 	UnitInstanceBatchStates.Reset();
 	LoggedMissingUnitBatchTypes.Reset();
 	bUnitBatchCapacityReserved = false;
@@ -390,8 +426,10 @@ void AGuLiCommanderPresentationActor::InitializeUnitInstanceBatches()
 	}
 
 	ConfigureUnitInstanceComponent(*UnitInstances);
-	UnitInstancesByType.Add(DefaultUnitTypeId, UnitInstances);
-	UnitInstanceBatchStates.FindOrAdd(DefaultUnitTypeId);
+	UnitInstances->SetRenderCustomDepth(false);
+	const uint32 DefaultKey = MakeUnitBatchKey(DefaultUnitTypeId, EGuLiTeam::Unassigned);
+	UnitInstancesByBatch.Add(DefaultKey, UnitInstances);
+	UnitInstanceBatchStates.FindOrAdd(DefaultKey);
 
 	const UGuLiCommanderDataSubsystem* DataSubsystem = GetWorld()
 		? GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>()
@@ -452,8 +490,10 @@ void AGuLiCommanderPresentationActor::InitializeUnitInstanceBatches()
 			Component->SetStaticMesh(UnitInstances->GetStaticMesh());
 		}
 		GuLiUnitRenderPolicy::Apply(*Component);
-		UnitInstancesByType.Add(Definition.UnitTypeId, Component);
-		UnitInstanceBatchStates.FindOrAdd(Definition.UnitTypeId);
+		Component->SetRenderCustomDepth(false);
+		const uint32 Key = MakeUnitBatchKey(Definition.UnitTypeId, EGuLiTeam::Unassigned);
+		UnitInstancesByBatch.Add(Key, Component);
+		UnitInstanceBatchStates.FindOrAdd(Key);
 	}
 	ApplyPresentationPerformanceSettings();
 }
@@ -471,7 +511,7 @@ void AGuLiCommanderPresentationActor::SetUnitInstanceBatchesVisibility(const boo
 uint16 AGuLiCommanderPresentationActor::ResolveUnitBatchTypeId(
 	const uint16 RequestedUnitTypeId)
 {
-	if (UnitInstancesByType.Contains(RequestedUnitTypeId))
+	if (FindUnitInstances(RequestedUnitTypeId))
 	{
 		return RequestedUnitTypeId;
 	}
@@ -485,17 +525,17 @@ uint16 AGuLiCommanderPresentationActor::ResolveUnitBatchTypeId(
 			RequestedUnitTypeId,
 			DefaultUnitTypeId);
 	}
-	return UnitInstancesByType.Contains(DefaultUnitTypeId)
+	return FindUnitInstances(DefaultUnitTypeId)
 		? DefaultUnitTypeId
 		: 0u;
 }
 
 int32 AGuLiCommanderPresentationActor::AcquireUnitInstanceSlot(
-	const uint16 BatchUnitTypeId)
+	const uint16 BatchUnitTypeId, const EGuLiTeam Team)
 {
-	UInstancedStaticMeshComponent* Component = FindUnitInstances(BatchUnitTypeId);
+	UInstancedStaticMeshComponent* Component = EnsureUnitTeamBatch(BatchUnitTypeId, Team);
 	FGuLiCommanderUnitInstanceBatchState* BatchState =
-		UnitInstanceBatchStates.Find(BatchUnitTypeId);
+		UnitInstanceBatchStates.Find(MakeUnitBatchKey(BatchUnitTypeId, Team));
 	if (!Component || !BatchState)
 	{
 		return INDEX_NONE;
@@ -529,18 +569,19 @@ int32 AGuLiCommanderPresentationActor::AcquireUnitInstanceSlot(
 
 void AGuLiCommanderPresentationActor::ReleaseUnitInstanceSlot(
 	const uint16 BatchUnitTypeId,
+	const EGuLiTeam Team,
 	const int32 InstanceIndex)
 {
-	UInstancedStaticMeshComponent* Component = FindUnitInstances(BatchUnitTypeId);
+	UInstancedStaticMeshComponent* Component = FindUnitInstances(BatchUnitTypeId, Team);
 	FGuLiCommanderUnitInstanceBatchState* BatchState =
-		UnitInstanceBatchStates.Find(BatchUnitTypeId);
+		UnitInstanceBatchStates.Find(MakeUnitBatchKey(BatchUnitTypeId, Team));
 	if (!Component || !BatchState
 		|| !BatchState->CachedTransforms.IsValidIndex(InstanceIndex))
 	{
 		return;
 	}
 	const FTransform HiddenTransform = GuLiCommanderPresentation::MakeHiddenTransform();
-	Component->UpdateInstanceTransform(InstanceIndex, HiddenTransform, true, false, false);
+	Component->UpdateInstanceTransform(InstanceIndex, HiddenTransform, true, true, false);
 	BatchState->CachedTransforms[InstanceIndex] = HiddenTransform;
 	BatchState->FreeInstanceIndices.AddUnique(InstanceIndex);
 }
@@ -1235,13 +1276,13 @@ void AGuLiCommanderPresentationActor::ResolveSoftAssets()
 		UE_LOG(LogGuLiStrike, Error, TEXT("Commander presentation could not load unit proxy %s."), *UnitMeshAsset.ToString());
 	}
 
-	if (UStaticMesh* RingMesh = RingMeshAsset.LoadSynchronous())
+	if (UStaticMesh* RingMesh = GuLiVfx::Load<UStaticMesh>(this, RingMeshVfxId))
 	{
 		RingInstances->SetStaticMesh(RingMesh);
 	}
 	else
 	{
-		UE_LOG(LogGuLiStrike, Error, TEXT("Commander presentation could not load ring mesh %s."), *RingMeshAsset.ToString());
+		UE_LOG(LogGuLiStrike, Error, TEXT("Commander presentation could not load ring mesh %s."), *FString::FromInt(RingMeshVfxId));
 	}
 
 	const int32 UnitMaterialSlotCount = FMath::Max(1, UnitInstances->GetNumMaterials());
@@ -1282,13 +1323,13 @@ void AGuLiCommanderPresentationActor::ResolveSoftAssets()
 	}
 
 	GuLiUnitRenderPolicy::Apply(*UnitInstances);
-	if (UMaterialInterface* RingMaterial = RingMaterialAsset.LoadSynchronous())
+	if (UMaterialInterface* RingMaterial = GuLiVfx::Load<UMaterialInterface>(this, RingMaterialVfxId))
 	{
 		RingInstances->SetMaterial(0, RingMaterial);
 	}
 	else
 	{
-		UE_LOG(LogGuLiStrike, Error, TEXT("Commander presentation could not load ring material %s."), *RingMaterialAsset.ToString());
+		UE_LOG(LogGuLiStrike, Error, TEXT("Commander presentation could not load ring material %s."), *FString::FromInt(RingMaterialVfxId));
 	}
 }
 
@@ -2161,7 +2202,7 @@ void AGuLiCommanderPresentationActor::HandleRosterDelta(const FGuLiSoldierRoster
 		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange(uint8(EGuLiSoldierStateChange::All) & ~uint8(EGuLiSoldierStateChange::Order)))) PendingStateIds.Add(Pair.Key);
 		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Team | EGuLiSoldierStateChange::Health | EGuLiSoldierStateChange::Life | EGuLiSoldierStateChange::Phase)) PendingMirrorStates.Add(Pair.Key);
 		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Displacement)) PendingMirrorTransforms.Add(Pair.Key);
-		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Type))
+		if (EnumHasAnyFlags(Pair.Value, EGuLiSoldierStateChange::Type | EGuLiSoldierStateChange::Team))
 		{
 			PendingPoolIds.Add(Pair.Key); RetryPoolIds.Remove(Pair.Key); bPoolChangesPending = true;
 		}
@@ -2263,7 +2304,7 @@ void AGuLiCommanderPresentationActor::HideInstancePool()
 	for (auto& Pair : UnitInstanceBatchStates)
 	{
 		for (auto& Transform : Pair.Value.CachedTransforms) Transform.SetScale3D(FVector::ZeroVector);
-		if (auto* Component = FindUnitInstances(Pair.Key); Component && !Pair.Value.CachedTransforms.IsEmpty())
+		if (auto* Component = FindUnitInstancesByBatch(Pair.Key); Component && !Pair.Value.CachedTransforms.IsEmpty())
 			Component->BatchUpdateInstancesTransforms(0, Pair.Value.CachedTransforms, true, false, true);
 		Pair.Value.DirtyTransformSlots.Reset();
 	}
@@ -2275,7 +2316,7 @@ void AGuLiCommanderPresentationActor::HideInstancePool()
 void AGuLiCommanderPresentationActor::EnsureStableInstancePool(AGuLiSoldierStateReplicator& Replicator)
 {
 	BindRosterSource(&Replicator);
-	if (UnitInstancesByType.IsEmpty() || !RingInstances) return;
+	if (UnitInstancesByBatch.IsEmpty() || !RingInstances) return;
 	if (bReconcilePool)
 	{
 		TRACE_CPUPROFILER_EVENT_SCOPE(GuLiCommanderPresentation_PoolReconcile);
@@ -2294,7 +2335,7 @@ void AGuLiCommanderPresentationActor::EnsureStableInstancePool(AGuLiSoldierState
 	{
 		if (const auto* Handle = SoldierInstanceHandles.Find(Id))
 		{
-			ReleaseUnitInstanceSlot(Handle->BatchUnitTypeId, Handle->UnitInstanceIndex);
+			ReleaseUnitInstanceSlot(Handle->BatchUnitTypeId, Handle->BatchTeam, Handle->UnitInstanceIndex);
 			const int32 RingIndex = Handle->RingInstanceIndex;
 			if (CachedRingTransforms.IsValidIndex(RingIndex))
 			{
@@ -2324,32 +2365,32 @@ void AGuLiCommanderPresentationActor::EnsureStableInstancePool(AGuLiSoldierState
 		const uint16 BatchId = ResolveUnitBatchTypeId(State->UnitTypeId);
 		if (auto* Existing = SoldierInstanceHandles.Find(Id))
 		{
-			if (BatchId != Existing->BatchUnitTypeId)
+			if (BatchId != Existing->BatchUnitTypeId || State->Team != Existing->BatchTeam)
 			{
-				const int32 NewSlot = AcquireUnitInstanceSlot(BatchId);
+				const int32 NewSlot = AcquireUnitInstanceSlot(BatchId, State->Team);
 				if (NewSlot == INDEX_NONE) { RetryPoolIds.Add(Id); PendingPoolIds.Remove(Id); continue; }
-				ReleaseUnitInstanceSlot(Existing->BatchUnitTypeId, Existing->UnitInstanceIndex);
-				Existing->BatchUnitTypeId = BatchId; Existing->UnitInstanceIndex = NewSlot;
+				ReleaseUnitInstanceSlot(Existing->BatchUnitTypeId, Existing->BatchTeam, Existing->UnitInstanceIndex);
+				Existing->BatchUnitTypeId = BatchId; Existing->BatchTeam = State->Team; Existing->UnitInstanceIndex = NewSlot;
 			}
 			Existing->RequestedUnitTypeId = State->UnitTypeId;
 		}
 		else
 		{
-			const int32 UnitIndex = AcquireUnitInstanceSlot(BatchId);
+			const int32 UnitIndex = AcquireUnitInstanceSlot(BatchId, State->Team);
 			if (UnitIndex == INDEX_NONE) { RetryPoolIds.Add(Id); PendingPoolIds.Remove(Id); continue; }
 			const bool bReuse = !FreeRingInstanceIndices.IsEmpty();
 			const auto Hidden = GuLiCommanderPresentation::MakeHiddenTransform();
 			const int32 RingIndex = bReuse ? FreeRingInstanceIndices.Pop(EAllowShrinking::No) : RingInstances->AddInstance(Hidden, true);
 			if (RingIndex == INDEX_NONE || (!bReuse && RingIndex != CachedRingTransforms.Num()))
 			{
-				ReleaseUnitInstanceSlot(BatchId, UnitIndex);
+				ReleaseUnitInstanceSlot(BatchId, State->Team, UnitIndex);
 				if (RingIndex != INDEX_NONE) RingInstances->RemoveInstance(RingIndex);
 				RetryPoolIds.Add(Id); PendingPoolIds.Remove(Id);
 				continue;
 			}
 			if (!bReuse) { CachedRingTransforms.Add(Hidden); CachedRingColors.Add(FLinearColor(-1, -1, -1, -1)); }
 			auto& Handle = SoldierInstanceHandles.Add(Id);
-			Handle.RequestedUnitTypeId = State->UnitTypeId; Handle.BatchUnitTypeId = BatchId;
+			Handle.RequestedUnitTypeId = State->UnitTypeId; Handle.BatchUnitTypeId = BatchId; Handle.BatchTeam = State->Team;
 			Handle.UnitInstanceIndex = UnitIndex; Handle.RingInstanceIndex = RingIndex;
 			PendingStateIds.Add(Id); DirtyRingColorIds.Add(Id);
 		}
@@ -2381,7 +2422,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	AGuLiSoldierStateReplicator* Replicator = FindStateReplicator();
 	// 先检查失效边沿，Replicator/Controller 暂时消失时也要立即隐藏旧表现。
 	if (!UpdateNetworkPresentationSource(Replicator)
-		|| UnitInstancesByType.IsEmpty() || !RingInstances || !GetWorld())
+		|| UnitInstancesByBatch.IsEmpty() || !RingInstances || !GetWorld())
 	{
 		return;
 	}
@@ -2414,7 +2455,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 	{
 		const FGuLiCommanderSoldierInstanceHandle* InstanceHandle =
 			SoldierInstanceHandles.Find(ReliableState.SoldierId);
-		auto* BatchState = InstanceHandle ? UnitInstanceBatchStates.Find(InstanceHandle->BatchUnitTypeId) : nullptr;
+		auto* BatchState = InstanceHandle ? UnitInstanceBatchStates.Find(MakeUnitBatchKey(InstanceHandle->BatchUnitTypeId, InstanceHandle->BatchTeam)) : nullptr;
 		TArray<FTransform>* DesiredUnitTransforms = BatchState ? &BatchState->CachedTransforms : nullptr;
 		if (!InstanceHandle || !DesiredUnitTransforms
 			|| !DesiredUnitTransforms->IsValidIndex(InstanceHandle->UnitInstanceIndex)
@@ -2504,7 +2545,8 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 		UnitTransform.SetScale3D(FVector::ZeroVector);
 		FTransform RingTransform = BuildRingTransform(Soldier.PresentedTransform);
 		RingTransform.SetScale3D(FVector::ZeroVector);
-		if (bAlive)
+		// A failed team-batch allocation must not leave an enemy stencil on a newly friendly unit.
+		if (bAlive && InstanceHandle->BatchTeam == ReliableState.Team)
 		{
 			FTransform Visible = Soldier.PresentedTransform;
 			Visible.SetScale3D(FVector(ModelScale));
@@ -2521,7 +2563,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 				}
 			}
 		}
-		else if (const double* Expire = WreckExpireTimes.Find(ReliableState.SoldierId); Expire && *Expire > LocalNowSeconds)
+		else if (const double* Expire = WreckExpireTimes.Find(ReliableState.SoldierId); !bAlive && Expire && *Expire > LocalNowSeconds)
 		{
 			if (UnitFeedback && UnitFeedback->IsWithinCullDistance(Soldier.PresentedTransform.GetLocation()))
 			{
@@ -2592,7 +2634,7 @@ void AGuLiCommanderPresentationActor::RebuildLocalInstances(const float DeltaSec
 			if (bComplete) Slots.Reset();
 		};
 		for (auto& Pair : UnitInstanceBatchStates)
-			SubmitSlots(FindUnitInstances(Pair.Key), Pair.Value.CachedTransforms, Pair.Value.DirtyTransformSlots);
+			SubmitSlots(FindUnitInstancesByBatch(Pair.Key), Pair.Value.CachedTransforms, Pair.Value.DirtyTransformSlots);
 		SubmitSlots(RingInstances, CachedRingTransforms, DirtyRingTransformSlots);
 		for (const auto Id : DirtyRingColorIds)
 		{
@@ -2630,7 +2672,7 @@ FTransform AGuLiCommanderPresentationActor::BuildRingTransform(
 	FVector RingLocation = RingTransform.GetLocation();
 	RingLocation.Z += GuLiCommanderPresentation::RingHeight;
 	RingTransform.SetLocation(RingLocation);
-	RingTransform.SetScale3D(GuLiCommanderPresentation::RingScale);
+	RingTransform.SetScale3D(GuLiVfx::Scale(this, RingMeshVfxId, GuLiVfx::Scale(this, RingMaterialVfxId)));
 	return RingTransform;
 }
 
@@ -2659,7 +2701,7 @@ void AGuLiCommanderPresentationActor::UpdatePhasedInstances(const TMap<uint16,TA
    Component->SetCollisionEnabled(ECollisionEnabled::NoCollision); Component->SetCanEverAffectNavigation(false);
    Component->SetCastShadow(false); Component->SetStaticMesh(Original->GetStaticMesh());
    GuLiUnitRenderPolicy::ApplyReflectionExclusions(*Component);
-   auto* Material = LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody"));
+   auto* Material = GuLiVfx::Load<UMaterialInterface>(this, GuLiVfxIds::TeleportBody);
    for (int32 Slot=0; Slot<Component->GetNumMaterials(); ++Slot) Component->SetMaterial(Slot,Material);
    Component->RegisterComponent();
   }
@@ -2740,6 +2782,8 @@ void AGuLiCommanderPresentationActor::UpdateHitFlashInstances(
 			Component->SetAffectDistanceFieldLighting(false);
 			Component->SetAffectDynamicIndirectLighting(false);
 			Component->SetVisibleInRayTracing(false);
+			// The live body supplies the team stencil; this temporary overlay must not overwrite it.
+			Component->SetRenderCustomDepth(false);
 			Component->SetStaticMesh(Original->GetStaticMesh());
 			Component->NumCustomDataFloats = 1;
 			for (int32 Slot = 0; Slot < Component->GetNumMaterials(); ++Slot) Component->SetMaterial(Slot, Material);

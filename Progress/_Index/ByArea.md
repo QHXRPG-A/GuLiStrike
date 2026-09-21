@@ -10,6 +10,15 @@
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 全面重构 — 技术方案](../DevelopmentDocumentation/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | development | done | 2026-09-09 |
 | [Ship 僚机客户端 Pawn 与逐架 StateTree 重构实施](../Archive/20260909-Ship僚机客户端Pawn与逐架StateTree重构.md) | archive | recorded | 2026-09-09 |
 
+## animation
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [地面机甲动画蓝图与空中战斗](../RequirementDocument/20260921-地面机甲动画蓝图与空中战斗.md) | requirement | approved | 2026-09-21 |
+| [地面机甲动画蓝图与空中战斗 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md) | development | done | 2026-09-21 |
+| [地面机甲动画空战与下落调参验收](../Archive/20260921-地面机甲动画空战与下落调参验收.md) | archive | recorded | 2026-09-21 |
+| [地面机甲动画与空中战斗阶段实现](../Archive/20260921-地面机甲动画与空中战斗阶段实现.md) | archive | recorded | 2026-09-21 |
+
 ## architecture
 
 | 文档 | 类型 | 状态 | 更新 |
@@ -20,7 +29,11 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-20 |
+| [玩法地图对齐Demo光照](../DevelopmentDocumentation/20260918-玩法地图对齐Demo光照.md) | development | done | 2026-09-21 |
+| [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | done | 2026-09-21 |
+| [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | done | 2026-09-21 |
+| [GuLiStrike 自然地编资源包 — 制作与验收](../DevelopmentDocumentation/20260917-自然地编资源包.md) | development | done | 2026-09-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-21 |
 | [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
 | [两组机甲资源风格统一参考](../RequirementDocument/20260919-两组机甲资源风格统一参考.md) | requirement | approved | 2026-09-19 |
 | [轻型装甲地面玩家接入](../DevelopmentDocumentation/20260919-轻型装甲地面玩家接入.md) | development | done | 2026-09-19 |
@@ -39,9 +52,6 @@
 | [松树林原地图全资源风格重构](../RequirementDocument/20260918-松树林原地图全资源风格重构.md) | requirement | approved | 2026-09-18 |
 | [松树林与三单位同场景对照](../RequirementDocument/20260917-松树林与三单位同场景对照.md) | requirement | approved | 2026-09-18 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-09-18 |
-| [玩法地图对齐Demo光照](../DevelopmentDocumentation/20260918-玩法地图对齐Demo光照.md) | development | verification | 2026-09-18 |
-| [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | verification | 2026-09-18 |
-| [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | verification | 2026-09-18 |
 | [本会话临时文件清理](../Archive/20260918-本会话临时文件清理.md) | archive | recorded | 2026-09-18 |
 | [玩法光照对齐与战争机器拥挤诊断](../Archive/20260918-玩法光照对齐与战争机器拥挤诊断.md) | archive | recorded | 2026-09-18 |
 | [松树林原Demo地图全资源适配交付候选](../Archive/20260918-松树林原Demo地图全资源适配交付候选.md) | archive | recorded | 2026-09-18 |
@@ -52,7 +62,6 @@
 | [Ship第三批支援组件贴图与框线制作](../RequirementDocument/20260917-Ship第三批支援组件贴图与框线制作.md) | requirement | approved | 2026-09-17 |
 | [Ship第二批三组件贴图与框线制作](../RequirementDocument/20260917-Ship第二批三组件贴图与框线制作.md) | requirement | approved | 2026-09-17 |
 | [Ship三组件风格样板制作](../RequirementDocument/20260917-Ship三组件风格样板制作.md) | requirement | approved | 2026-09-17 |
-| [GuLiStrike 自然地编资源包 — 制作与验收](../DevelopmentDocumentation/20260917-自然地编资源包.md) | development | in_progress | 2026-09-17 |
 | [Ship剩余四组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship剩余四组件贴图与框线制作.md) | development | done | 2026-09-17 |
 | [Ship第三批支援组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md) | development | done | 2026-09-17 |
 | [Ship第二批三组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第二批三组件贴图与框线制作.md) | development | done | 2026-09-17 |
@@ -93,8 +102,16 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | done | 2026-09-21 |
+| [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | done | 2026-09-21 |
+| [GuLiStrike 自然地编资源包 — 制作与验收](../DevelopmentDocumentation/20260917-自然地编资源包.md) | development | done | 2026-09-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-21 |
+| [指挥官与飞船共享 HUD 及 Ship UI v1 — 技术方案](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md) | development | done | 2026-09-21 |
+| [指挥官小兵表现层两阶段性能优化 — 技术方案](../DevelopmentDocumentation/20260829-指挥官小兵表现层两阶段性能优化.md) | development | done | 2026-09-21 |
+| [数据管线：Excel 配置飞船数值 — 技术方案](../DevelopmentDocumentation/20260821-数据管线Excel配置.md) | development | done | 2026-09-21 |
+| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-09-20 |
+| [星际争霸 II 局内 UI 参考审计](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI参考审计.md) | reference | reference | 2026-09-20 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-20 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-20 |
 | [两组机甲资源风格统一参考](../RequirementDocument/20260919-两组机甲资源风格统一参考.md) | requirement | approved | 2026-09-19 |
 | [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | development | done | 2026-09-19 |
 | [机甲与武器整批同步UE及总结](../Archive/20260919-机甲与武器整批同步UE及总结.md) | archive | recorded | 2026-09-19 |
@@ -110,8 +127,6 @@
 | [松树林原地图全资源风格重构](../RequirementDocument/20260918-松树林原地图全资源风格重构.md) | requirement | approved | 2026-09-18 |
 | [松树林与三单位同场景对照](../RequirementDocument/20260917-松树林与三单位同场景对照.md) | requirement | approved | 2026-09-18 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-09-18 |
-| [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | verification | 2026-09-18 |
-| [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | verification | 2026-09-18 |
 | [松树林原Demo地图全资源适配交付候选](../Archive/20260918-松树林原Demo地图全资源适配交付候选.md) | archive | recorded | 2026-09-18 |
 | [松树林v1审核通过与原图原位重构授权](../Archive/20260918-松树林v1审核通过与原图原位重构授权.md) | archive | recorded | 2026-09-18 |
 | [松树林风格适配v1候选](../Archive/20260918-松树林风格适配v1候选.md) | archive | recorded | 2026-09-18 |
@@ -123,7 +138,6 @@
 | [基地建造玩法探索草案 v0.1](../RequirementDocument/20260831-基地建造玩法探索.md) | requirement | draft | 2026-09-17 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
 | [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-09-17 |
-| [GuLiStrike 自然地编资源包 — 制作与验收](../DevelopmentDocumentation/20260917-自然地编资源包.md) | development | in_progress | 2026-09-17 |
 | [Ship剩余四组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship剩余四组件贴图与框线制作.md) | development | done | 2026-09-17 |
 | [Ship第三批支援组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md) | development | done | 2026-09-17 |
 | [Ship第二批三组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第二批三组件贴图与框线制作.md) | development | done | 2026-09-17 |
@@ -178,7 +192,6 @@
 | [僚机 FlightNav 弧线验证与局部恢复](../Archive/20260905-僚机FlightNav弧线验证与局部恢复.md) | archive | recorded | 2026-09-05 |
 | [2026-08-24 解决了：CombatAvatarFly 归位勘误——重巡舰体从 Blender 入库，无畏舰/重巡分驻 01/02 文件夹](../Archive/20260824-CombatAvatarFly归位勘误-重巡舰体入库与两舰归位.md) | archive | recorded | 2026-09-05 |
 | [指挥官 WM01 第二兵种与多 ISM 表现](../RequirementDocument/20260904-指挥官WM01第二兵种与多ISM表现.md) | requirement | approved | 2026-09-04 |
-| [指挥官与飞船共享 HUD 及 Ship UI v1 — 技术方案](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md) | development | in_progress | 2026-09-04 |
 | [2026-09-04 解决了：飞船 HUD 贴屏、中央准星样式单一且无法由技能接管](../Archive/20260904-飞船世界空间环绕HUD与技能准星.md) | archive | recorded | 2026-09-04 |
 | [2026-09-04 解决了：指挥官相机越过起伏地面时上下跟随并改变平移速度](../Archive/20260904-指挥官相机稳定巡航.md) | archive | recorded | 2026-09-04 |
 | [2026-09-04 解决了：指挥官大规模移动的NavMesh、手工分离与Mass预测避让持续负载过高](../Archive/20260904-指挥官大规模移动导航与避让降载.md) | archive | recorded | 2026-09-04 |
@@ -201,7 +214,6 @@
 | [2026-08-31 公共战局框架与三类角色接入](../Archive/20260831-公共战局框架与三类角色接入.md) | archive | recorded | 2026-08-31 |
 | [2026-08-29 解决了：指挥官 UI 视觉三轮设计与 HUD 逻辑接入（总归档）](../Archive/20260829-指挥官UI与HUD逻辑接入总归档.md) | archive | recorded | 2026-08-31 |
 | [指挥官小兵表现层两阶段性能优化](../RequirementDocument/20260829-指挥官小兵表现层两阶段性能优化.md) | requirement | approved | 2026-08-30 |
-| [指挥官小兵表现层两阶段性能优化 — 技术方案](../DevelopmentDocumentation/20260829-指挥官小兵表现层两阶段性能优化.md) | development | verification | 2026-08-30 |
 | [2026-08-30 解决了：战斗权威子系统缺少中文阅读说明及赋值后换行影响阅读](../Archive/20260830-战斗权威子系统中文注释与导读.md) | archive | recorded | 2026-08-30 |
 | [指挥官 HUD 逻辑接入与批量小兵血条](../RequirementDocument/20260829-指挥官HUD逻辑接入与批量小兵血条.md) | requirement | approved | 2026-08-29 |
 | [指挥官 UI 与小兵血条视觉设计：开发文档](../DevelopmentDocumentation/20260829-指挥官UI与小兵血条视觉设计.md) | development | done | 2026-08-29 |
@@ -212,7 +224,6 @@
 | [飞船与场景模型尺寸归一 — 技术方案](../DevelopmentDocumentation/20260827-飞船与场景模型尺寸归一.md) | development | done | 2026-08-27 |
 | [2026-08-27 解决了：飞船与场景模型尺寸归一](../Archive/20260827-飞船与场景模型尺寸归一.md) | archive | recorded | 2026-08-27 |
 | [爆炸特效统一归拢至 /Game/Assets/VFX/Explosions](../Archive/20260827-爆炸特效统一归拢至AssetsVFXExplosions.md) | archive | recorded | 2026-08-27 |
-| [数据管线：Excel 配置飞船数值 — 技术方案](../DevelopmentDocumentation/20260821-数据管线Excel配置.md) | development | in_progress | 2026-08-25 |
 | [2026-08-24~25 总归档：飞船 3C 与相机避障体系（滚轮缩放 / 舰体避障六轮演进 / 命中过滤）](../Archive/20260825-飞船3C与相机避障总归档-0824至0825.md) | archive | recorded | 2026-08-25 |
 | [2026-08-25 解决了：相机/避障参数进表（新增 Camera sheet）+ 蓝图覆盖值清理](../Archive/20260825-相机参数进表Camera-sheet与BP覆盖清理.md) | archive | recorded | 2026-08-25 |
 | [2026-08-22~24 第二轮资产整合（总归档）](../Archive/20260824-第二轮资产整合-总归档.md) | archive | recorded | 2026-08-24 |
@@ -235,9 +246,15 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
+| [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | development | done | 2026-09-21 |
+| [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | in_progress | 2026-09-21 |
+| [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | done | 2026-09-21 |
 | [指挥官部队操作与特殊任务系统](../RequirementDocument/20260920-指挥官部队操作与特殊任务系统.md) | requirement | approved | 2026-09-20 |
 | [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
 | [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
+| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-09-20 |
+| [星际争霸 II 局内 UI 参考审计](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI参考审计.md) | reference | reference | 2026-09-20 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-20 |
 | [指挥官部队操作与特殊任务系统 — 技术方案](../DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md) | development | done | 2026-09-20 |
 | [指挥官任务与远端碰撞改动集成复验](../Archive/20260920-指挥官任务与远端碰撞改动集成复验.md) | archive | recorded | 2026-09-20 |
@@ -245,15 +262,12 @@
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [Q导弹圆面打击与赠品建筑防卡死](../RequirementDocument/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | requirement | approved | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
-| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
-| [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | development | in_progress | 2026-09-18 |
 | [建筑World测试数据与环境更新复跑](../Archive/20260918-建筑World测试数据与环境更新复跑.md) | archive | recorded | 2026-09-18 |
 | [Q圆面打击与赠品清场选兵恢复实现](../Archive/20260918-Q圆面打击与赠品清场选兵恢复实现.md) | archive | recorded | 2026-09-18 |
 | [地面机甲弹幕肉鸽与塔防建造](../RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md) | requirement | approved | 2026-09-17 |
 | [基地建造玩法探索草案 v0.1](../RequirementDocument/20260831-基地建造玩法探索.md) | requirement | draft | 2026-09-17 |
 | [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-17 |
 | [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-09-17 |
-| [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | verification | 2026-09-17 |
 | [地面机枪5Hz弹丸与僚机弹效复用](../Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md) | archive | recorded | 2026-09-17 |
 | [地面玩法定稿与弹速基线核查](../Archive/20260917-地面玩法定稿与弹速基线核查.md) | archive | recorded | 2026-09-17 |
 | [实时势力范围与阵营覆盖](../RequirementDocument/20260916-实时势力范围与阵营覆盖.md) | requirement | approved | 2026-09-16 |
@@ -284,17 +298,45 @@
 | [指挥官与地面战争机器最小建造系统 — 技术方案](../DevelopmentDocumentation/20260903-指挥官与地面战争机器最小建造系统.md) | development | done | 2026-09-03 |
 | [2026-09-03 解决了：完成指挥官与地面战争机器最小建造系统](../Archive/20260903-指挥官与地面战争机器最小建造系统.md) | archive | recorded | 2026-09-03 |
 | [指挥官相机、编队导航与移动射击优化](../RequirementDocument/20260901-指挥官相机编队导航与移动射击优化.md) | requirement | approved | 2026-09-01 |
-| [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | in_progress | 2026-09-01 |
 | [2026-08-31 解决了：将基地建造玩法探索草案保存到项目并建立索引](../Archive/20260831-基地建造玩法探索草案落档.md) | archive | recorded | 2026-08-31 |
 
 ## combat
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [地面机甲辅助瞄准](../RequirementDocument/20260921-地面机甲辅助瞄准.md) | requirement | approved | 2026-09-21 |
+| [FireReview双阵营靶场与敌方描边](../RequirementDocument/20260921-FireReview双阵营靶场与敌方描边.md) | requirement | approved | 2026-09-21 |
+| [统一特效目录与ID引用](../RequirementDocument/20260921-统一特效目录与ID引用.md) | requirement | approved | 2026-09-21 |
+| [地面机甲动画蓝图与空中战斗](../RequirementDocument/20260921-地面机甲动画蓝图与空中战斗.md) | requirement | approved | 2026-09-21 |
+| [地面机甲火箭跳](../RequirementDocument/20260920-地面机甲火箭跳.md) | requirement | approved | 2026-09-21 |
+| [机枪子弹统一受击特效](../RequirementDocument/20260920-机枪子弹统一受击特效.md) | requirement | approved | 2026-09-21 |
+| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-21 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-21 |
+| [地面机甲辅助瞄准 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md) | development | verification | 2026-09-21 |
+| [FireReview双阵营靶场与敌方描边 — 技术方案](../DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md) | development | done | 2026-09-21 |
+| [统一特效目录与ID引用 — 技术方案](../DevelopmentDocumentation/20260921-统一特效目录与ID引用.md) | development | done | 2026-09-21 |
+| [地面机甲动画蓝图与空中战斗 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md) | development | done | 2026-09-21 |
+| [地面机甲火箭跳 — 实施与验证](../DevelopmentDocumentation/20260920-地面机甲火箭跳.md) | development | done | 2026-09-21 |
+| [机枪子弹统一受击特效 — 实施与验证](../DevelopmentDocumentation/20260920-机枪子弹统一受击特效.md) | development | done | 2026-09-21 |
+| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
+| [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | development | done | 2026-09-21 |
+| [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | in_progress | 2026-09-21 |
+| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | done | 2026-09-21 |
+| [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | development | done | 2026-09-21 |
+| [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | done | 2026-09-21 |
+| [地面机甲辅助瞄准编译与配置落地](../Archive/20260921-地面机甲辅助瞄准编译与配置落地.md) | archive | recorded | 2026-09-21 |
+| [地面机甲辅助瞄准代码与源表静态交付](../Archive/20260921-地面机甲辅助瞄准代码与源表静态交付.md) | archive | recorded | 2026-09-21 |
+| [FireReview导航阻塞与资产校验修复](../Archive/20260921-FireReview导航阻塞与资产校验修复.md) | archive | recorded | 2026-09-21 |
+| [FireReview双阵营停火靶场与敌方描边静态交付](../Archive/20260921-FireReview双阵营靶场静态交付.md) | archive | recorded | 2026-09-21 |
+| [统一特效目录与ID迁移静态验收](../Archive/20260921-统一特效目录与ID迁移静态验收.md) | archive | recorded | 2026-09-21 |
+| [地面机甲动画空战与下落调参验收](../Archive/20260921-地面机甲动画空战与下落调参验收.md) | archive | recorded | 2026-09-21 |
+| [机枪统一受击补全实机验收](../Archive/20260921-机枪统一受击补全实机验收.md) | archive | recorded | 2026-09-21 |
+| [地面机甲动画与空中战斗阶段实现](../Archive/20260921-地面机甲动画与空中战斗阶段实现.md) | archive | recorded | 2026-09-21 |
+| [地面机甲火箭跳实现与实机反馈调整](../Archive/20260921-地面机甲火箭跳实现与实机反馈调整.md) | archive | recorded | 2026-09-21 |
+| [机枪统一受击实现与验证边界](../Archive/20260921-机枪统一受击实现与验证边界.md) | archive | recorded | 2026-09-21 |
 | [玩家地面机甲开火与Excel升级配置](../RequirementDocument/20260920-玩家地面机甲开火与升级配置.md) | requirement | approved | 2026-09-20 |
 | [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
-| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-20 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-20 |
+| [星际争霸 II 局内 UI 参考审计](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI参考审计.md) | reference | reference | 2026-09-20 |
 | [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | development | verification | 2026-09-20 |
 | [玩家机枪开火与Excel升级候选](../Archive/20260920-玩家机枪开火与Excel升级候选.md) | archive | recorded | 2026-09-20 |
 | [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
@@ -309,8 +351,6 @@
 | [Q导弹圆面打击与赠品建筑防卡死](../RequirementDocument/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | requirement | approved | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
-| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
-| [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | development | in_progress | 2026-09-18 |
 | [Q圆面打击与赠品清场选兵恢复实现](../Archive/20260918-Q圆面打击与赠品清场选兵恢复实现.md) | archive | recorded | 2026-09-18 |
 | [战争机器Q导弹与通用地面预警](../RequirementDocument/20260917-战争机器Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
 | [地面机甲弹幕肉鸽与塔防建造](../RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md) | requirement | approved | 2026-09-17 |
@@ -319,15 +359,12 @@
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
 | [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-09-17 |
 | [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
-| [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | verification | 2026-09-17 |
-| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | in_progress | 2026-09-17 |
 | [地面机枪5Hz弹丸与僚机弹效复用](../Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md) | archive | recorded | 2026-09-17 |
 | [战争机器Q导弹通用预警与切图断言修复](../Archive/20260917-战争机器Q导弹通用预警与切图断言修复.md) | archive | recorded | 2026-09-17 |
 | [地面玩法定稿与弹速基线核查](../Archive/20260917-地面玩法定稿与弹速基线核查.md) | archive | recorded | 2026-09-17 |
 | [扫荡者去线稿与爆炸场景明暗调整](../Archive/20260917-扫荡者去线稿与爆炸场景明暗调整.md) | archive | recorded | 2026-09-17 |
 | [三渲二模型与指定爆炸接入阶段记录](../Archive/20260917-三渲二模型与指定爆炸接入阶段记录.md) | archive | recorded | 2026-09-17 |
 | [僚机对地轰炸动漫爆炸样板](../RequirementDocument/20260916-僚机对地轰炸动漫爆炸样板.md) | requirement | approved | 2026-09-16 |
-| [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | development | verification | 2026-09-16 |
 | [僚机动漫爆炸样板制作与接入](../Archive/20260916-僚机动漫爆炸样板制作与接入.md) | archive | recorded | 2026-09-16 |
 | [Ship组件能力与指挥官技能去GAS重构](../RequirementDocument/20260914-Ship组件能力与指挥官技能去GAS重构.md) | requirement | approved | 2026-09-15 |
 | [Ship组件能力与指挥官技能去GAS重构 — 实施记录](../DevelopmentDocumentation/20260914-Ship组件能力与指挥官技能去GAS重构.md) | development | done | 2026-09-15 |
@@ -415,7 +452,6 @@
 | [指挥官脚环优化与兵种面板](../RequirementDocument/20260830-指挥官脚环优化与兵种面板.md) | requirement | approved | 2026-09-01 |
 | [GAS 学习笔记](../DevelopmentDocumentation/相关读物/GAS/README.md) | reference | reference | 2026-09-01 |
 | [GAS 基础：从 UE 概念到 GuLiStrike 军队技能桥接](../DevelopmentDocumentation/相关读物/GAS/00-GAS基础与GuLiStrike军队技能桥接.md) | reference | reference | 2026-09-01 |
-| [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | in_progress | 2026-09-01 |
 | [小兵扫射与可扩展技能桥接 — 技术方案](../DevelopmentDocumentation/20260901-小兵扫射与指挥官GAS桥接.md) | development | done | 2026-09-01 |
 | [小兵客户端先行移动拖拽诊断 — 技术方案与证据](../DevelopmentDocumentation/20260831-小兵客户端先行移动拖拽诊断.md) | development | done | 2026-09-01 |
 | [指挥官脚环优化与兵种面板 — 技术方案](../DevelopmentDocumentation/20260830-指挥官脚环优化与兵种面板.md) | development | done | 2026-09-01 |
@@ -429,13 +465,33 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [FireReview双阵营靶场与敌方描边](../RequirementDocument/20260921-FireReview双阵营靶场与敌方描边.md) | requirement | approved | 2026-09-21 |
+| [星际2风格指挥官操作指令集](../Gameplay/指挥官操作攻略.md) | gameplay | current | 2026-09-21 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-21 |
+| [FireReview双阵营靶场与敌方描边 — 技术方案](../DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md) | development | done | 2026-09-21 |
+| [星际UI拆解与指挥官界面重构 — 技术方案](../DevelopmentDocumentation/20260920-星际UI拆解与指挥官界面重构.md) | development | done | 2026-09-21 |
+| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
+| [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | development | done | 2026-09-21 |
+| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | done | 2026-09-21 |
+| [指挥官相机稳定巡航 — 技术方案](../DevelopmentDocumentation/20260904-指挥官相机稳定巡航.md) | development | done | 2026-09-21 |
+| [僚机世界空间近距编队与租约恢复 — 技术方案](../DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md) | development | done | 2026-09-21 |
+| [指挥官与飞船共享 HUD 及 Ship UI v1 — 技术方案](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md) | development | done | 2026-09-21 |
+| [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | done | 2026-09-21 |
+| [指挥官小兵表现层两阶段性能优化 — 技术方案](../DevelopmentDocumentation/20260829-指挥官小兵表现层两阶段性能优化.md) | development | done | 2026-09-21 |
+| [指挥官 3C、Soldier 数据化与运行时 GM 调参 — 开发文档](../DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) | development | done | 2026-09-21 |
+| [GuLiStrike：Mass 双端同步架构草案 — 技术方案](../DevelopmentDocumentation/20260827-Mass双端同步架构草案.md) | development | done | 2026-09-21 |
+| [FireReview导航阻塞与资产校验修复](../Archive/20260921-FireReview导航阻塞与资产校验修复.md) | archive | recorded | 2026-09-21 |
+| [FireReview双阵营停火靶场与敌方描边静态交付](../Archive/20260921-FireReview双阵营靶场静态交付.md) | archive | recorded | 2026-09-21 |
+| [星际UI拆解与指挥官界面重构](../RequirementDocument/20260920-星际UI拆解与指挥官界面重构.md) | requirement | approved | 2026-09-20 |
 | [指挥官部队操作与特殊任务系统](../RequirementDocument/20260920-指挥官部队操作与特殊任务系统.md) | requirement | approved | 2026-09-20 |
 | [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
 | [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
+| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-09-20 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-20 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-20 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-20 |
 | [指挥官部队操作与特殊任务系统 — 技术方案](../DevelopmentDocumentation/20260920-指挥官部队操作与特殊任务系统.md) | development | done | 2026-09-20 |
+| [指挥官头像分组与导航重定位勘误](../Archive/20260920-指挥官头像分组与导航重定位勘误.md) | archive | recorded | 2026-09-20 |
+| [星际指挥官界面与游戏文本表](../Archive/20260920-星际指挥官界面与游戏文本表.md) | archive | superseded | 2026-09-20 |
 | [指挥官任务与远端碰撞改动集成复验](../Archive/20260920-指挥官任务与远端碰撞改动集成复验.md) | archive | recorded | 2026-09-20 |
 | [指挥官部队操作与特殊任务系统实施](../Archive/20260920-指挥官部队操作与特殊任务系统.md) | archive | recorded | 2026-09-20 |
 | [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
@@ -456,8 +512,6 @@
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
 | [指挥官单位体型与避障距离配置及接入分析](../DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md) | development | done | 2026-09-18 |
-| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
-| [Q导弹圆面打击与赠品建筑防卡死 — 技术方案](../DevelopmentDocumentation/20260918-Q导弹圆面打击与赠品建筑防卡死.md) | development | in_progress | 2026-09-18 |
 | [指挥官原生碰撞与轻量间距约束探索](../Archive/20260918-指挥官原生碰撞与轻量间距约束探索.md) | archive | recorded | 2026-09-18 |
 | [指挥官体型净距源表与接入分析完成](../Archive/20260918-指挥官体型净距源表与接入分析完成.md) | archive | recorded | 2026-09-18 |
 | [本会话临时文件清理](../Archive/20260918-本会话临时文件清理.md) | archive | recorded | 2026-09-18 |
@@ -469,7 +523,6 @@
 | [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-17 |
 | [《The Riftbreaker（银河破裂者）》拆解：以建筑系统为核心](../DevelopmentDocumentation/相关读物/游戏拆解/TheRiftbreaker建筑系统拆解.md) | reference | reference | 2026-09-17 |
 | [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
-| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | in_progress | 2026-09-17 |
 | [战争机器Q导弹通用预警与切图断言修复](../Archive/20260917-战争机器Q导弹通用预警与切图断言修复.md) | archive | recorded | 2026-09-17 |
 | [扫荡者去线稿与爆炸场景明暗调整](../Archive/20260917-扫荡者去线稿与爆炸场景明暗调整.md) | archive | recorded | 2026-09-17 |
 | [三渲二模型与指定爆炸接入阶段记录](../Archive/20260917-三渲二模型与指定爆炸接入阶段记录.md) | archive | recorded | 2026-09-17 |
@@ -572,9 +625,6 @@
 | [飞船世界空间环绕 HUD 与技能准星](../RequirementDocument/20260904-飞船世界空间环绕HUD与技能准星.md) | requirement | approved | 2026-09-04 |
 | [指挥官相机稳定巡航](../RequirementDocument/20260904-指挥官相机稳定巡航.md) | requirement | approved | 2026-09-04 |
 | [指挥官 WM01 第二兵种与多 ISM 表现](../RequirementDocument/20260904-指挥官WM01第二兵种与多ISM表现.md) | requirement | approved | 2026-09-04 |
-| [指挥官相机稳定巡航 — 技术方案](../DevelopmentDocumentation/20260904-指挥官相机稳定巡航.md) | development | verification | 2026-09-04 |
-| [僚机世界空间近距编队与租约恢复 — 技术方案](../DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md) | development | in_progress | 2026-09-04 |
-| [指挥官与飞船共享 HUD 及 Ship UI v1 — 技术方案](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md) | development | in_progress | 2026-09-04 |
 | [2026-09-04 解决了：指挥官相机越过起伏地面时上下跟随并改变平移速度](../Archive/20260904-指挥官相机稳定巡航.md) | archive | recorded | 2026-09-04 |
 | [2026-09-04 解决了：指挥官大规模移动的NavMesh、手工分离与Mass预测避让持续负载过高](../Archive/20260904-指挥官大规模移动导航与避让降载.md) | archive | recorded | 2026-09-04 |
 | [2026-09-04 解决了：僚机跟随船头旋转、编队过远与运行期租约无恢复重试](../Archive/20260904-僚机世界空间近距编队与租约恢复.md) | archive | recorded | 2026-09-04 |
@@ -612,7 +662,6 @@
 | [04 项目协议与序列化](../DevelopmentDocumentation/相关读物/UE网络教材/04-项目协议与序列化.md) | reference | reference | 2026-09-01 |
 | [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-01 |
 | [移动命令自由扩散与静态寻路线 — 技术方案](../DevelopmentDocumentation/20260901-移动命令自由扩散与静态寻路线.md) | development | done | 2026-09-01 |
-| [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | in_progress | 2026-09-01 |
 | [小兵扫射与可扩展技能桥接 — 技术方案](../DevelopmentDocumentation/20260901-小兵扫射与指挥官GAS桥接.md) | development | done | 2026-09-01 |
 | [指挥官精确选兵与快捷提示栏 — 技术方案](../DevelopmentDocumentation/20260831-指挥官精确选兵与快捷提示栏.md) | development | done | 2026-09-01 |
 | [小兵客户端先行移动拖拽诊断 — 技术方案与证据](../DevelopmentDocumentation/20260831-小兵客户端先行移动拖拽诊断.md) | development | done | 2026-09-01 |
@@ -628,15 +677,12 @@
 | [2026-08-31 解决了：补齐项目网络链路中文注释并编写实战教材](../Archive/20260831-UE网络中文注释与项目教材.md) | archive | recorded | 2026-08-31 |
 | [2026-08-29 解决了：指挥官 UI 视觉三轮设计与 HUD 逻辑接入（总归档）](../Archive/20260829-指挥官UI与HUD逻辑接入总归档.md) | archive | recorded | 2026-08-31 |
 | [指挥官小兵表现层两阶段性能优化](../RequirementDocument/20260829-指挥官小兵表现层两阶段性能优化.md) | requirement | approved | 2026-08-30 |
-| [指挥官小兵表现层两阶段性能优化 — 技术方案](../DevelopmentDocumentation/20260829-指挥官小兵表现层两阶段性能优化.md) | development | verification | 2026-08-30 |
 | [2026-08-30 解决了：战斗权威子系统缺少中文阅读说明及赋值后换行影响阅读](../Archive/20260830-战斗权威子系统中文注释与导读.md) | archive | recorded | 2026-08-30 |
 | [指挥官 HUD 逻辑接入与批量小兵血条](../RequirementDocument/20260829-指挥官HUD逻辑接入与批量小兵血条.md) | requirement | approved | 2026-08-29 |
 | [指挥官 UI 与小兵血条视觉设计：开发文档](../DevelopmentDocumentation/20260829-指挥官UI与小兵血条视觉设计.md) | development | done | 2026-08-29 |
 | [指挥官小兵表现层两阶段性能优化](../Archive/20260829-指挥官小兵表现层两阶段性能优化.md) | archive | recorded | 2026-08-29 |
 | [指挥官 3C、Soldier 数据化与运行时 GM 调参](../RequirementDocument/20260828-指挥官3C与运行时GM调参.md) | requirement | approved | 2026-08-28 |
 | [GuLiStrike：Mass 双端同步架构草案](../RequirementDocument/20260827-Mass双端同步架构草案.md) | requirement | approved | 2026-08-28 |
-| [指挥官 3C、Soldier 数据化与运行时 GM 调参 — 开发文档](../DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) | development | verification | 2026-08-28 |
-| [GuLiStrike：Mass 双端同步架构草案 — 技术方案](../DevelopmentDocumentation/20260827-Mass双端同步架构草案.md) | development | verification | 2026-08-28 |
 | [2026-08-28 归档：指挥官 3C、Soldier 数据化与运行时 GM 调参](../Archive/20260828-指挥官3C与运行时GM调参.md) | archive | recorded | 2026-08-28 |
 | [2026-08-28 解决了：Commander 的 Order 中文术语统一](../Archive/20260828-Commander指令术语统一.md) | archive | recorded | 2026-08-28 |
 | [2026-08-27 总归档：Mass 动态 25 人控制组与双端平滑同步](../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md) | archive | recorded | 2026-08-28 |
@@ -648,6 +694,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [地面机甲辅助瞄准](../RequirementDocument/20260921-地面机甲辅助瞄准.md) | requirement | approved | 2026-09-21 |
+| [地面机甲辅助瞄准 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md) | development | verification | 2026-09-21 |
+| [地面机甲辅助瞄准编译与配置落地](../Archive/20260921-地面机甲辅助瞄准编译与配置落地.md) | archive | recorded | 2026-09-21 |
+| [地面机甲辅助瞄准代码与源表静态交付](../Archive/20260921-地面机甲辅助瞄准代码与源表静态交付.md) | archive | recorded | 2026-09-21 |
 | [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
 | [战争机器模型大小适配](../RequirementDocument/20260919-战争机器模型大小适配.md) | requirement | approved | 2026-09-19 |
 | [Mass单位体型与最小净距](../RequirementDocument/20260919-Mass单位体型与最小净距.md) | requirement | superseded | 2026-09-19 |
@@ -678,6 +728,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [指挥官小兵表现层两阶段性能优化 — 技术方案](../DevelopmentDocumentation/20260829-指挥官小兵表现层两阶段性能优化.md) | development | done | 2026-09-21 |
+| [指挥官 3C、Soldier 数据化与运行时 GM 调参 — 开发文档](../DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) | development | done | 2026-09-21 |
+| [GuLiStrike：Mass 双端同步架构草案 — 技术方案](../DevelopmentDocumentation/20260827-Mass双端同步架构草案.md) | development | done | 2026-09-21 |
+| [数据管线：Excel 配置飞船数值 — 技术方案](../DevelopmentDocumentation/20260821-数据管线Excel配置.md) | development | done | 2026-09-21 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
 | [Ship僚机对地轰炸与对空盘旋攻击 — 技术方案](../DevelopmentDocumentation/20260907-Ship僚机对地轰炸与对空盘旋攻击.md) | development | done | 2026-09-13 |
 | [地图资源密度涂绘与导出](../RequirementDocument/20260910-地图资源密度涂绘与导出.md) | requirement | approved | 2026-09-10 |
@@ -712,17 +766,13 @@
 | [指挥官脚环优化与兵种面板 — 技术方案](../DevelopmentDocumentation/20260830-指挥官脚环优化与兵种面板.md) | development | done | 2026-09-01 |
 | [指挥官 UI 与小兵血条视觉设计](../RequirementDocument/20260829-指挥官UI与小兵血条视觉设计.md) | requirement | approved | 2026-08-31 |
 | [指挥官小兵表现层两阶段性能优化](../RequirementDocument/20260829-指挥官小兵表现层两阶段性能优化.md) | requirement | approved | 2026-08-30 |
-| [指挥官小兵表现层两阶段性能优化 — 技术方案](../DevelopmentDocumentation/20260829-指挥官小兵表现层两阶段性能优化.md) | development | verification | 2026-08-30 |
 | [指挥官小兵表现层两阶段性能优化](../Archive/20260829-指挥官小兵表现层两阶段性能优化.md) | archive | recorded | 2026-08-29 |
 | [指挥官 3C、Soldier 数据化与运行时 GM 调参](../RequirementDocument/20260828-指挥官3C与运行时GM调参.md) | requirement | approved | 2026-08-28 |
-| [指挥官 3C、Soldier 数据化与运行时 GM 调参 — 开发文档](../DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) | development | verification | 2026-08-28 |
-| [GuLiStrike：Mass 双端同步架构草案 — 技术方案](../DevelopmentDocumentation/20260827-Mass双端同步架构草案.md) | development | verification | 2026-08-28 |
 | [2026-08-28 归档：指挥官 3C、Soldier 数据化与运行时 GM 调参](../Archive/20260828-指挥官3C与运行时GM调参.md) | archive | recorded | 2026-08-28 |
 | [2026-08-27 总归档：Mass 动态 25 人控制组与双端平滑同步](../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md) | archive | recorded | 2026-08-28 |
 | [飞船与场景模型尺寸归一 — 技术方案](../DevelopmentDocumentation/20260827-飞船与场景模型尺寸归一.md) | development | done | 2026-08-27 |
 | [2026-08-27 解决了：飞船与场景模型尺寸归一](../Archive/20260827-飞船与场景模型尺寸归一.md) | archive | recorded | 2026-08-27 |
 | [爆炸特效统一归拢至 /Game/Assets/VFX/Explosions](../Archive/20260827-爆炸特效统一归拢至AssetsVFXExplosions.md) | archive | recorded | 2026-08-27 |
-| [数据管线：Excel 配置飞船数值 — 技术方案](../DevelopmentDocumentation/20260821-数据管线Excel配置.md) | development | in_progress | 2026-08-25 |
 | [2026-08-24~25 总归档：飞船 3C 与相机避障体系（滚轮缩放 / 舰体避障六轮演进 / 命中过滤）](../Archive/20260825-飞船3C与相机避障总归档-0824至0825.md) | archive | recorded | 2026-08-25 |
 | [2026-08-25 解决了：相机/避障参数进表（新增 Camera sheet）+ 蓝图覆盖值清理](../Archive/20260825-相机参数进表Camera-sheet与BP覆盖清理.md) | archive | recorded | 2026-08-25 |
 | [2026-08-24 第一批飞船组件拆分入库（总归档）](../Archive/20260824-第一批飞船组件拆分入库-总归档.md) | archive | recorded | 2026-08-24 |
@@ -734,10 +784,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-20 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
-| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [建筑World测试数据与环境更新复跑](../Archive/20260918-建筑World测试数据与环境更新复跑.md) | archive | recorded | 2026-09-18 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-16 |
 | [指挥官白模据点占领与建筑体系](../RequirementDocument/20260914-指挥官白模据点占领与建筑体系.md) | requirement | approved | 2026-09-15 |
@@ -759,12 +809,37 @@
 | [首版 Demo 3v3、Ship 战略机动与高频选牌](../RequirementDocument/20260909-Demo3v3与Ship战略机动及高频选牌.md) | requirement | approved | 2026-09-09 |
 | [蓝矿、红矿、据点维护与三线 Roguelike 成长](../RequirementDocument/20260908-蓝矿红矿与据点维护及三线Roguelike成长.md) | requirement | approved | 2026-09-09 |
 
+## ground-mech
+
+| 文档 | 类型 | 状态 | 更新 |
+|---|---|---|---|
+| [地面机甲辅助瞄准](../RequirementDocument/20260921-地面机甲辅助瞄准.md) | requirement | approved | 2026-09-21 |
+| [FireReview双阵营靶场与敌方描边](../RequirementDocument/20260921-FireReview双阵营靶场与敌方描边.md) | requirement | approved | 2026-09-21 |
+| [地面机甲动画蓝图与空中战斗](../RequirementDocument/20260921-地面机甲动画蓝图与空中战斗.md) | requirement | approved | 2026-09-21 |
+| [地面机甲辅助瞄准 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md) | development | verification | 2026-09-21 |
+| [FireReview双阵营靶场与敌方描边 — 技术方案](../DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md) | development | done | 2026-09-21 |
+| [地面机甲动画蓝图与空中战斗 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md) | development | done | 2026-09-21 |
+| [地面机甲辅助瞄准编译与配置落地](../Archive/20260921-地面机甲辅助瞄准编译与配置落地.md) | archive | recorded | 2026-09-21 |
+| [地面机甲辅助瞄准代码与源表静态交付](../Archive/20260921-地面机甲辅助瞄准代码与源表静态交付.md) | archive | recorded | 2026-09-21 |
+| [FireReview导航阻塞与资产校验修复](../Archive/20260921-FireReview导航阻塞与资产校验修复.md) | archive | recorded | 2026-09-21 |
+| [FireReview双阵营停火靶场与敌方描边静态交付](../Archive/20260921-FireReview双阵营靶场静态交付.md) | archive | recorded | 2026-09-21 |
+| [地面机甲动画空战与下落调参验收](../Archive/20260921-地面机甲动画空战与下落调参验收.md) | archive | recorded | 2026-09-21 |
+| [地面机甲动画与空中战斗阶段实现](../Archive/20260921-地面机甲动画与空中战斗阶段实现.md) | archive | recorded | 2026-09-21 |
+
 ## input
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [地面机甲辅助瞄准](../RequirementDocument/20260921-地面机甲辅助瞄准.md) | requirement | approved | 2026-09-21 |
+| [地面机甲火箭跳](../RequirementDocument/20260920-地面机甲火箭跳.md) | requirement | approved | 2026-09-21 |
+| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-21 |
+| [地面机甲辅助瞄准 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲辅助瞄准.md) | development | verification | 2026-09-21 |
+| [地面机甲火箭跳 — 实施与验证](../DevelopmentDocumentation/20260920-地面机甲火箭跳.md) | development | done | 2026-09-21 |
+| [地面机甲辅助瞄准编译与配置落地](../Archive/20260921-地面机甲辅助瞄准编译与配置落地.md) | archive | recorded | 2026-09-21 |
+| [地面机甲辅助瞄准代码与源表静态交付](../Archive/20260921-地面机甲辅助瞄准代码与源表静态交付.md) | archive | recorded | 2026-09-21 |
+| [地面机甲动画空战与下落调参验收](../Archive/20260921-地面机甲动画空战与下落调参验收.md) | archive | recorded | 2026-09-21 |
+| [地面机甲火箭跳实现与实机反馈调整](../Archive/20260921-地面机甲火箭跳实现与实机反馈调整.md) | archive | recorded | 2026-09-21 |
 | [玩家地面机甲开火与Excel升级配置](../RequirementDocument/20260920-玩家地面机甲开火与升级配置.md) | requirement | approved | 2026-09-20 |
-| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-20 |
 | [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | development | verification | 2026-09-20 |
 | [玩家机枪开火与Excel升级候选](../Archive/20260920-玩家机枪开火与Excel升级候选.md) | archive | recorded | 2026-09-20 |
 | [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
@@ -856,6 +931,7 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
 | [玩家地面机甲与Mass单位立体碰撞](../RequirementDocument/20260920-玩家地面机甲与Mass单位立体碰撞.md) | requirement | approved | 2026-09-20 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-20 |
 | [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | development | verification | 2026-09-20 |
@@ -870,7 +946,6 @@
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官单位体型与避障距离配置及接入分析](../DevelopmentDocumentation/20260918-指挥官单位体型与避障距离配置及接入分析.md) | development | done | 2026-09-18 |
-| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [指挥官原生碰撞与轻量间距约束探索](../Archive/20260918-指挥官原生碰撞与轻量间距约束探索.md) | archive | recorded | 2026-09-18 |
 | [指挥官体型净距源表与接入分析完成](../Archive/20260918-指挥官体型净距源表与接入分析完成.md) | archive | recorded | 2026-09-18 |
 | [玩法光照对齐与战争机器拥挤诊断](../Archive/20260918-玩法光照对齐与战争机器拥挤诊断.md) | archive | recorded | 2026-09-18 |
@@ -899,16 +974,32 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [地面机甲火箭跳](../RequirementDocument/20260920-地面机甲火箭跳.md) | requirement | approved | 2026-09-21 |
+| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-21 |
+| [星际2风格指挥官操作指令集](../Gameplay/指挥官操作攻略.md) | gameplay | current | 2026-09-21 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-21 |
+| [地面机甲火箭跳 — 实施与验证](../DevelopmentDocumentation/20260920-地面机甲火箭跳.md) | development | done | 2026-09-21 |
+| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
+| [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | in_progress | 2026-09-21 |
+| [指挥官相机稳定巡航 — 技术方案](../DevelopmentDocumentation/20260904-指挥官相机稳定巡航.md) | development | done | 2026-09-21 |
+| [僚机世界空间近距编队与租约恢复 — 技术方案](../DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md) | development | done | 2026-09-21 |
+| [指挥官与飞船共享 HUD 及 Ship UI v1 — 技术方案](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md) | development | done | 2026-09-21 |
+| [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | done | 2026-09-21 |
+| [指挥官小兵表现层两阶段性能优化 — 技术方案](../DevelopmentDocumentation/20260829-指挥官小兵表现层两阶段性能优化.md) | development | done | 2026-09-21 |
+| [指挥官 3C、Soldier 数据化与运行时 GM 调参 — 开发文档](../DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) | development | done | 2026-09-21 |
+| [GuLiStrike：Mass 双端同步架构草案 — 技术方案](../DevelopmentDocumentation/20260827-Mass双端同步架构草案.md) | development | done | 2026-09-21 |
+| [地面机甲动画空战与下落调参验收](../Archive/20260921-地面机甲动画空战与下落调参验收.md) | archive | recorded | 2026-09-21 |
+| [地面机甲火箭跳实现与实机反馈调整](../Archive/20260921-地面机甲火箭跳实现与实机反馈调整.md) | archive | recorded | 2026-09-21 |
 | [玩家地面机甲与Mass单位立体碰撞](../RequirementDocument/20260920-玩家地面机甲与Mass单位立体碰撞.md) | requirement | approved | 2026-09-20 |
 | [玩家地面机甲开火与Excel升级配置](../RequirementDocument/20260920-玩家地面机甲开火与升级配置.md) | requirement | approved | 2026-09-20 |
 | [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
 | [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
+| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-09-20 |
 | [资源经济](../Gameplay/资源经济.md) | gameplay | current | 2026-09-20 |
-| [地面机甲](../Gameplay/地面机甲.md) | gameplay | current | 2026-09-20 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-20 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-20 |
 | [玩家地面机甲与Mass单位立体碰撞 — 技术方案与实施记录](../DevelopmentDocumentation/20260920-玩家地面机甲与Mass单位立体碰撞.md) | development | verification | 2026-09-20 |
 | [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | development | verification | 2026-09-20 |
+| [指挥官头像分组与导航重定位勘误](../Archive/20260920-指挥官头像分组与导航重定位勘误.md) | archive | recorded | 2026-09-20 |
 | [机甲Mass碰撞复审修复与验证](../Archive/20260920-机甲Mass碰撞复审修复与验证.md) | archive | recorded | 2026-09-20 |
 | [玩家机枪开火与Excel升级候选](../Archive/20260920-玩家机枪开火与Excel升级候选.md) | archive | recorded | 2026-09-20 |
 | [轻型装甲地面玩家接入](../RequirementDocument/20260919-轻型装甲地面玩家接入.md) | requirement | approved | 2026-09-19 |
@@ -919,14 +1010,12 @@
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
-| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [建筑World测试数据与环境更新复跑](../Archive/20260918-建筑World测试数据与环境更新复跑.md) | archive | recorded | 2026-09-18 |
 | [战争机器Q导弹与通用地面预警](../RequirementDocument/20260917-战争机器Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
 | [地面机甲弹幕肉鸽与塔防建造](../RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md) | requirement | approved | 2026-09-17 |
 | [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-17 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
 | [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
-| [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | verification | 2026-09-17 |
 | [地面机枪5Hz弹丸与僚机弹效复用](../Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md) | archive | recorded | 2026-09-17 |
 | [战争机器Q导弹通用预警与切图断言修复](../Archive/20260917-战争机器Q导弹通用预警与切图断言修复.md) | archive | recorded | 2026-09-17 |
 | [客户端性能优化与压测问题记录](../RequirementDocument/20260915-客户端性能优化与压测问题记录.md) | requirement | approved | 2026-09-16 |
@@ -1014,9 +1103,6 @@
 | [指挥官 WM01 第二兵种与多 ISM 表现](../RequirementDocument/20260904-指挥官WM01第二兵种与多ISM表现.md) | requirement | approved | 2026-09-04 |
 | [僚机世界空间近距编队与租约恢复](../RequirementDocument/20260904-僚机世界空间近距编队与租约恢复.md) | requirement | approved | 2026-09-04 |
 | [飞船世界空间环绕 HUD 与技能准星 — 技术方案](../DevelopmentDocumentation/20260904-飞船世界空间环绕HUD与技能准星.md) | development | done | 2026-09-04 |
-| [指挥官相机稳定巡航 — 技术方案](../DevelopmentDocumentation/20260904-指挥官相机稳定巡航.md) | development | verification | 2026-09-04 |
-| [僚机世界空间近距编队与租约恢复 — 技术方案](../DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md) | development | in_progress | 2026-09-04 |
-| [指挥官与飞船共享 HUD 及 Ship UI v1 — 技术方案](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md) | development | in_progress | 2026-09-04 |
 | [2026-09-04 解决了：飞船 HUD 贴屏、中央准星样式单一且无法由技能接管](../Archive/20260904-飞船世界空间环绕HUD与技能准星.md) | archive | recorded | 2026-09-04 |
 | [2026-09-04 解决了：指挥官相机越过起伏地面时上下跟随并改变平移速度](../Archive/20260904-指挥官相机稳定巡航.md) | archive | recorded | 2026-09-04 |
 | [2026-09-04 解决了：指挥官大规模移动的NavMesh、手工分离与Mass预测避让持续负载过高](../Archive/20260904-指挥官大规模移动导航与避让降载.md) | archive | recorded | 2026-09-04 |
@@ -1054,7 +1140,6 @@
 | [04 项目协议与序列化](../DevelopmentDocumentation/相关读物/UE网络教材/04-项目协议与序列化.md) | reference | reference | 2026-09-01 |
 | [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-01 |
 | [移动命令自由扩散与静态寻路线 — 技术方案](../DevelopmentDocumentation/20260901-移动命令自由扩散与静态寻路线.md) | development | done | 2026-09-01 |
-| [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | in_progress | 2026-09-01 |
 | [小兵扫射与可扩展技能桥接 — 技术方案](../DevelopmentDocumentation/20260901-小兵扫射与指挥官GAS桥接.md) | development | done | 2026-09-01 |
 | [小兵客户端先行移动拖拽诊断 — 技术方案与证据](../DevelopmentDocumentation/20260831-小兵客户端先行移动拖拽诊断.md) | development | done | 2026-09-01 |
 | [指挥官脚环优化与兵种面板 — 技术方案](../DevelopmentDocumentation/20260830-指挥官脚环优化与兵种面板.md) | development | done | 2026-09-01 |
@@ -1069,14 +1154,11 @@
 | [2026-08-31 公共战局框架与三类角色接入](../Archive/20260831-公共战局框架与三类角色接入.md) | archive | recorded | 2026-08-31 |
 | [2026-08-31 解决了：补齐项目网络链路中文注释并编写实战教材](../Archive/20260831-UE网络中文注释与项目教材.md) | archive | recorded | 2026-08-31 |
 | [指挥官小兵表现层两阶段性能优化](../RequirementDocument/20260829-指挥官小兵表现层两阶段性能优化.md) | requirement | approved | 2026-08-30 |
-| [指挥官小兵表现层两阶段性能优化 — 技术方案](../DevelopmentDocumentation/20260829-指挥官小兵表现层两阶段性能优化.md) | development | verification | 2026-08-30 |
 | [2026-08-30 解决了：战斗权威子系统缺少中文阅读说明及赋值后换行影响阅读](../Archive/20260830-战斗权威子系统中文注释与导读.md) | archive | recorded | 2026-08-30 |
 | [指挥官 HUD 逻辑接入与批量小兵血条](../RequirementDocument/20260829-指挥官HUD逻辑接入与批量小兵血条.md) | requirement | approved | 2026-08-29 |
 | [指挥官小兵表现层两阶段性能优化](../Archive/20260829-指挥官小兵表现层两阶段性能优化.md) | archive | recorded | 2026-08-29 |
 | [指挥官 3C、Soldier 数据化与运行时 GM 调参](../RequirementDocument/20260828-指挥官3C与运行时GM调参.md) | requirement | approved | 2026-08-28 |
 | [GuLiStrike：Mass 双端同步架构草案](../RequirementDocument/20260827-Mass双端同步架构草案.md) | requirement | approved | 2026-08-28 |
-| [指挥官 3C、Soldier 数据化与运行时 GM 调参 — 开发文档](../DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) | development | verification | 2026-08-28 |
-| [GuLiStrike：Mass 双端同步架构草案 — 技术方案](../DevelopmentDocumentation/20260827-Mass双端同步架构草案.md) | development | verification | 2026-08-28 |
 | [2026-08-28 归档：指挥官 3C、Soldier 数据化与运行时 GM 调参](../Archive/20260828-指挥官3C与运行时GM调参.md) | archive | recorded | 2026-08-28 |
 | [2026-08-28 解决了：Commander 的 Order 中文术语统一](../Archive/20260828-Commander指令术语统一.md) | archive | recorded | 2026-08-28 |
 | [2026-08-27 总归档：Mass 动态 25 人控制组与双端平滑同步](../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md) | archive | recorded | 2026-08-28 |
@@ -1147,6 +1229,10 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [FireReview双阵营靶场与敌方描边](../RequirementDocument/20260921-FireReview双阵营靶场与敌方描边.md) | requirement | approved | 2026-09-21 |
+| [FireReview双阵营靶场与敌方描边 — 技术方案](../DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md) | development | done | 2026-09-21 |
+| [FireReview导航阻塞与资产校验修复](../Archive/20260921-FireReview导航阻塞与资产校验修复.md) | archive | recorded | 2026-09-21 |
+| [FireReview双阵营停火靶场与敌方描边静态交付](../Archive/20260921-FireReview双阵营靶场静态交付.md) | archive | recorded | 2026-09-21 |
 | [通用敌方描边与普通PIE僚机跳变修复](../RequirementDocument/20260912-通用敌方描边与普通PIE僚机跳变修复.md) | requirement | approved | 2026-09-12 |
 | [僚机玩法门精简](../RequirementDocument/20260912-僚机玩法门精简.md) | requirement | approved | 2026-09-12 |
 | [僚机视觉插值与远端缓冲](../RequirementDocument/20260912-僚机视觉插值与远端缓冲.md) | requirement | approved | 2026-09-12 |
@@ -1170,7 +1256,12 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-20 |
+| [玩法地图对齐Demo光照](../DevelopmentDocumentation/20260918-玩法地图对齐Demo光照.md) | development | done | 2026-09-21 |
+| [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | done | 2026-09-21 |
+| [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | done | 2026-09-21 |
+| [GuLiStrike 自然地编资源包 — 制作与验收](../DevelopmentDocumentation/20260917-自然地编资源包.md) | development | done | 2026-09-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-21 |
+| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | done | 2026-09-21 |
 | [两组机甲资源风格统一参考](../RequirementDocument/20260919-两组机甲资源风格统一参考.md) | requirement | approved | 2026-09-19 |
 | [两组机甲资源风格统一参考 — 制作记录](../DevelopmentDocumentation/20260919-两组机甲资源风格统一参考.md) | development | done | 2026-09-19 |
 | [机甲与武器整批同步UE及总结](../Archive/20260919-机甲与武器整批同步UE及总结.md) | archive | recorded | 2026-09-19 |
@@ -1186,9 +1277,6 @@
 | [松树林原地图全资源风格重构](../RequirementDocument/20260918-松树林原地图全资源风格重构.md) | requirement | approved | 2026-09-18 |
 | [松树林与三单位同场景对照](../RequirementDocument/20260917-松树林与三单位同场景对照.md) | requirement | approved | 2026-09-18 |
 | [GuLiStrike 美术规范](../RequirementDocument/GuLiStrike美术规范.md) | requirement | approved | 2026-09-18 |
-| [玩法地图对齐Demo光照](../DevelopmentDocumentation/20260918-玩法地图对齐Demo光照.md) | development | verification | 2026-09-18 |
-| [松树林原地图全资源风格重构 — 实施记录](../DevelopmentDocumentation/20260918-松树林原地图全资源风格重构.md) | development | verification | 2026-09-18 |
-| [松树林与三单位同场景对照 — 试摆记录](../DevelopmentDocumentation/20260917-松树林与三单位同场景对照.md) | development | verification | 2026-09-18 |
 | [本会话临时文件清理](../Archive/20260918-本会话临时文件清理.md) | archive | recorded | 2026-09-18 |
 | [玩法光照对齐与战争机器拥挤诊断](../Archive/20260918-玩法光照对齐与战争机器拥挤诊断.md) | archive | recorded | 2026-09-18 |
 | [松树林原Demo地图全资源适配交付候选](../Archive/20260918-松树林原Demo地图全资源适配交付候选.md) | archive | recorded | 2026-09-18 |
@@ -1196,8 +1284,6 @@
 | [松树林风格适配v1候选](../Archive/20260918-松树林风格适配v1候选.md) | archive | recorded | 2026-09-18 |
 | [GuLiStrike 自然地编资源包](../RequirementDocument/20260917-自然地编资源包.md) | requirement | approved | 2026-09-17 |
 | [Ship导入与扫荡者战争机器风格重制](../RequirementDocument/20260916-Ship导入与扫荡者战争机器风格重制.md) | requirement | approved | 2026-09-17 |
-| [GuLiStrike 自然地编资源包 — 制作与验收](../DevelopmentDocumentation/20260917-自然地编资源包.md) | development | in_progress | 2026-09-17 |
-| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | in_progress | 2026-09-17 |
 | [松树林与三单位独立试摆](../Archive/20260917-松树林与三单位独立试摆.md) | archive | recorded | 2026-09-17 |
 | [自然资源包参考与植被贴片工艺](../Archive/20260917-自然资源包参考与植被贴片工艺.md) | archive | recorded | 2026-09-17 |
 | [美术规范建立与制作技能接入](../Archive/20260917-美术规范建立与制作技能接入.md) | archive | recorded | 2026-09-17 |
@@ -1242,12 +1328,18 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
+| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | done | 2026-09-21 |
+| [指挥官相机稳定巡航 — 技术方案](../DevelopmentDocumentation/20260904-指挥官相机稳定巡航.md) | development | done | 2026-09-21 |
+| [僚机世界空间近距编队与租约恢复 — 技术方案](../DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md) | development | done | 2026-09-21 |
+| [指挥官与飞船共享 HUD 及 Ship UI v1 — 技术方案](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md) | development | done | 2026-09-21 |
+| [指挥官 3C、Soldier 数据化与运行时 GM 调参 — 开发文档](../DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) | development | done | 2026-09-21 |
+| [数据管线：Excel 配置飞船数值 — 技术方案](../DevelopmentDocumentation/20260821-数据管线Excel配置.md) | development | done | 2026-09-21 |
 | [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
-| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [Ship剩余四组件贴图与框线制作](../RequirementDocument/20260917-Ship剩余四组件贴图与框线制作.md) | requirement | approved | 2026-09-17 |
 | [Ship第三批支援组件贴图与框线制作](../RequirementDocument/20260917-Ship第三批支援组件贴图与框线制作.md) | requirement | approved | 2026-09-17 |
 | [Ship第二批三组件贴图与框线制作](../RequirementDocument/20260917-Ship第二批三组件贴图与框线制作.md) | requirement | approved | 2026-09-17 |
@@ -1259,7 +1351,6 @@
 | [Ship第三批支援组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第三批支援组件贴图与框线制作.md) | development | done | 2026-09-17 |
 | [Ship第二批三组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第二批三组件贴图与框线制作.md) | development | done | 2026-09-17 |
 | [Ship三组件风格样板制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship三组件风格样板制作.md) | development | done | 2026-09-17 |
-| [Ship导入与扫荡者战争机器风格重制 — 实施](../DevelopmentDocumentation/20260916-Ship导入与扫荡者战争机器风格重制.md) | development | in_progress | 2026-09-17 |
 | [Ship组件制作临时资源回收清理](../Archive/20260917-Ship组件制作临时资源回收清理.md) | archive | recorded | 2026-09-17 |
 | [Ship全组件表面交付与UE正式替换](../Archive/20260917-Ship全组件表面交付与UE正式替换.md) | archive | recorded | 2026-09-17 |
 | [Ship剩余四组件原型与火焰标识参考A](../Archive/20260917-Ship剩余四组件原型与火焰标识参考A.md) | archive | recorded | 2026-09-17 |
@@ -1354,9 +1445,6 @@
 | [指挥官相机稳定巡航](../RequirementDocument/20260904-指挥官相机稳定巡航.md) | requirement | approved | 2026-09-04 |
 | [僚机世界空间近距编队与租约恢复](../RequirementDocument/20260904-僚机世界空间近距编队与租约恢复.md) | requirement | approved | 2026-09-04 |
 | [飞船世界空间环绕 HUD 与技能准星 — 技术方案](../DevelopmentDocumentation/20260904-飞船世界空间环绕HUD与技能准星.md) | development | done | 2026-09-04 |
-| [指挥官相机稳定巡航 — 技术方案](../DevelopmentDocumentation/20260904-指挥官相机稳定巡航.md) | development | verification | 2026-09-04 |
-| [僚机世界空间近距编队与租约恢复 — 技术方案](../DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md) | development | in_progress | 2026-09-04 |
-| [指挥官与飞船共享 HUD 及 Ship UI v1 — 技术方案](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md) | development | in_progress | 2026-09-04 |
 | [2026-09-04 解决了：飞船 HUD 贴屏、中央准星样式单一且无法由技能接管](../Archive/20260904-飞船世界空间环绕HUD与技能准星.md) | archive | recorded | 2026-09-04 |
 | [2026-09-04 解决了：指挥官相机越过起伏地面时上下跟随并改变平移速度](../Archive/20260904-指挥官相机稳定巡航.md) | archive | recorded | 2026-09-04 |
 | [2026-09-04 解决了：僚机跟随船头旋转、编队过远与运行期租约无恢复重试](../Archive/20260904-僚机世界空间近距编队与租约恢复.md) | archive | recorded | 2026-09-04 |
@@ -1383,13 +1471,11 @@
 | [2026-08-31 公共战局框架与三类角色接入](../Archive/20260831-公共战局框架与三类角色接入.md) | archive | recorded | 2026-08-31 |
 | [指挥官小兵表现层两阶段性能优化](../Archive/20260829-指挥官小兵表现层两阶段性能优化.md) | archive | recorded | 2026-08-29 |
 | [指挥官 3C、Soldier 数据化与运行时 GM 调参](../RequirementDocument/20260828-指挥官3C与运行时GM调参.md) | requirement | approved | 2026-08-28 |
-| [指挥官 3C、Soldier 数据化与运行时 GM 调参 — 开发文档](../DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) | development | verification | 2026-08-28 |
 | [2026-08-28 归档：指挥官 3C、Soldier 数据化与运行时 GM 调参](../Archive/20260828-指挥官3C与运行时GM调参.md) | archive | recorded | 2026-08-28 |
 | [飞船与场景模型尺寸归一](../RequirementDocument/20260827-飞船与场景模型尺寸归一.md) | requirement | approved | 2026-08-27 |
 | [飞船与场景模型尺寸归一 — 技术方案](../DevelopmentDocumentation/20260827-飞船与场景模型尺寸归一.md) | development | done | 2026-08-27 |
 | [2026-08-27 解决了：飞船与场景模型尺寸归一](../Archive/20260827-飞船与场景模型尺寸归一.md) | archive | recorded | 2026-08-27 |
 | [爆炸特效统一归拢至 /Game/Assets/VFX/Explosions](../Archive/20260827-爆炸特效统一归拢至AssetsVFXExplosions.md) | archive | recorded | 2026-08-27 |
-| [数据管线：Excel 配置飞船数值 — 技术方案](../DevelopmentDocumentation/20260821-数据管线Excel配置.md) | development | in_progress | 2026-08-25 |
 | [2026-08-24~25 总归档：飞船 3C 与相机避障体系（滚轮缩放 / 舰体避障六轮演进 / 命中过滤）](../Archive/20260825-飞船3C与相机避障总归档-0824至0825.md) | archive | recorded | 2026-08-25 |
 | [2026-08-25 解决了：相机避障逻辑提取为 ResolveCameraArmCollision()，Tick 去散落逻辑](../Archive/20260825-相机避障函数化-Tick去散落逻辑.md) | archive | recorded | 2026-08-25 |
 | [2026-08-25 解决了：相机/避障参数进表（新增 Camera sheet）+ 蓝图覆盖值清理](../Archive/20260825-相机参数进表Camera-sheet与BP覆盖清理.md) | archive | recorded | 2026-08-25 |
@@ -1406,15 +1492,30 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [地面机甲火箭跳](../RequirementDocument/20260920-地面机甲火箭跳.md) | requirement | approved | 2026-09-21 |
+| [星际2风格指挥官操作指令集](../Gameplay/指挥官操作攻略.md) | gameplay | current | 2026-09-21 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-21 |
+| [地面机甲火箭跳 — 实施与验证](../DevelopmentDocumentation/20260920-地面机甲火箭跳.md) | development | done | 2026-09-21 |
+| [星际UI拆解与指挥官界面重构 — 技术方案](../DevelopmentDocumentation/20260920-星际UI拆解与指挥官界面重构.md) | development | done | 2026-09-21 |
+| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
+| [指挥官与飞船共享 HUD 及 Ship UI v1 — 技术方案](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md) | development | done | 2026-09-21 |
+| [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | done | 2026-09-21 |
+| [指挥官 3C、Soldier 数据化与运行时 GM 调参 — 开发文档](../DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) | development | done | 2026-09-21 |
+| [GuLiStrike：Mass 双端同步架构草案 — 技术方案](../DevelopmentDocumentation/20260827-Mass双端同步架构草案.md) | development | done | 2026-09-21 |
+| [地面机甲动画空战与下落调参验收](../Archive/20260921-地面机甲动画空战与下落调参验收.md) | archive | recorded | 2026-09-21 |
+| [地面机甲火箭跳实现与实机反馈调整](../Archive/20260921-地面机甲火箭跳实现与实机反馈调整.md) | archive | recorded | 2026-09-21 |
+| [星际UI拆解与指挥官界面重构](../RequirementDocument/20260920-星际UI拆解与指挥官界面重构.md) | requirement | approved | 2026-09-20 |
 | [《星际争霸 II》部队操作在 GuLiStrike 中的实现难度评估](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作落地难度评估.md) | reference | reference | 2026-09-20 |
 | [《星际争霸 II》部队操作逆向拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II部队操作拆解.md) | reference | reference | 2026-09-20 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-20 |
+| [星际争霸 II 局内 UI 架构拆解](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI架构拆解.md) | reference | reference | 2026-09-20 |
+| [星际争霸 II 局内 UI 参考审计](../DevelopmentDocumentation/相关读物/游戏拆解/星际争霸II局内UI参考审计.md) | reference | reference | 2026-09-20 |
 | [建筑](../Gameplay/建筑.md) | gameplay | current | 2026-09-20 |
+| [指挥官头像分组与导航重定位勘误](../Archive/20260920-指挥官头像分组与导航重定位勘误.md) | archive | recorded | 2026-09-20 |
+| [星际指挥官界面与游戏文本表](../Archive/20260920-星际指挥官界面与游戏文本表.md) | archive | superseded | 2026-09-20 |
 | [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
-| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [战争机器Q导弹与通用地面预警](../RequirementDocument/20260917-战争机器Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
 | [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
 | [战争机器Q导弹通用预警与切图断言修复](../Archive/20260917-战争机器Q导弹通用预警与切图断言修复.md) | archive | recorded | 2026-09-17 |
@@ -1447,7 +1548,6 @@
 | [飞船世界空间环绕 HUD 与技能准星](../RequirementDocument/20260904-飞船世界空间环绕HUD与技能准星.md) | requirement | approved | 2026-09-04 |
 | [指挥官 WM01 第二兵种与多 ISM 表现](../RequirementDocument/20260904-指挥官WM01第二兵种与多ISM表现.md) | requirement | approved | 2026-09-04 |
 | [飞船世界空间环绕 HUD 与技能准星 — 技术方案](../DevelopmentDocumentation/20260904-飞船世界空间环绕HUD与技能准星.md) | development | done | 2026-09-04 |
-| [指挥官与飞船共享 HUD 及 Ship UI v1 — 技术方案](../DevelopmentDocumentation/20260902-指挥官与飞船共享HUD及Ship UI v1.md) | development | in_progress | 2026-09-04 |
 | [2026-09-04 解决了：飞船 HUD 贴屏、中央准星样式单一且无法由技能接管](../Archive/20260904-飞船世界空间环绕HUD与技能准星.md) | archive | recorded | 2026-09-04 |
 | [Ship UI v1：NEONCTRL 局内静态 UI](../Archive/20260904-ShipUIv1-NEONCTRL静态UI.md) | archive | recorded | 2026-09-04 |
 | [指挥官与地面战争机器最小建造系统](../RequirementDocument/20260903-指挥官与地面战争机器最小建造系统.md) | requirement | approved | 2026-09-03 |
@@ -1465,7 +1565,6 @@
 | [08 客户端重建与平滑](../DevelopmentDocumentation/相关读物/UE网络教材/08-客户端重建与平滑.md) | reference | reference | 2026-09-01 |
 | [07 士兵状态与姿态发送](../DevelopmentDocumentation/相关读物/UE网络教材/07-士兵状态与姿态发送.md) | reference | reference | 2026-09-01 |
 | [移动命令自由扩散与静态寻路线 — 技术方案](../DevelopmentDocumentation/20260901-移动命令自由扩散与静态寻路线.md) | development | done | 2026-09-01 |
-| [指挥官相机、编队导航与移动射击优化 — 技术方案](../DevelopmentDocumentation/20260901-指挥官相机编队导航与移动射击优化.md) | development | in_progress | 2026-09-01 |
 | [小兵扫射与可扩展技能桥接 — 技术方案](../DevelopmentDocumentation/20260901-小兵扫射与指挥官GAS桥接.md) | development | done | 2026-09-01 |
 | [指挥官精确选兵与快捷提示栏 — 技术方案](../DevelopmentDocumentation/20260831-指挥官精确选兵与快捷提示栏.md) | development | done | 2026-09-01 |
 | [指挥官脚环优化与兵种面板 — 技术方案](../DevelopmentDocumentation/20260830-指挥官脚环优化与兵种面板.md) | development | done | 2026-09-01 |
@@ -1479,8 +1578,6 @@
 | [指挥官 UI 与小兵血条视觉设计：开发文档](../DevelopmentDocumentation/20260829-指挥官UI与小兵血条视觉设计.md) | development | done | 2026-08-29 |
 | [指挥官 3C、Soldier 数据化与运行时 GM 调参](../RequirementDocument/20260828-指挥官3C与运行时GM调参.md) | requirement | approved | 2026-08-28 |
 | [GuLiStrike：Mass 双端同步架构草案](../RequirementDocument/20260827-Mass双端同步架构草案.md) | requirement | approved | 2026-08-28 |
-| [指挥官 3C、Soldier 数据化与运行时 GM 调参 — 开发文档](../DevelopmentDocumentation/20260828-指挥官3C与运行时GM调参.md) | development | verification | 2026-08-28 |
-| [GuLiStrike：Mass 双端同步架构草案 — 技术方案](../DevelopmentDocumentation/20260827-Mass双端同步架构草案.md) | development | verification | 2026-08-28 |
 | [2026-08-28 归档：指挥官 3C、Soldier 数据化与运行时 GM 调参](../Archive/20260828-指挥官3C与运行时GM调参.md) | archive | recorded | 2026-08-28 |
 | [2026-08-27 总归档：Mass 动态 25 人控制组与双端平滑同步](../Archive/20260827-Mass动态25人控制组与双端平滑同步-总归档.md) | archive | recorded | 2026-08-28 |
 | [爆炸特效统一归拢至 /Game/Assets/VFX/Explosions](../Archive/20260827-爆炸特效统一归拢至AssetsVFXExplosions.md) | archive | recorded | 2026-08-27 |
@@ -1490,10 +1587,24 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [统一特效目录与ID引用](../RequirementDocument/20260921-统一特效目录与ID引用.md) | requirement | approved | 2026-09-21 |
+| [地面机甲火箭跳](../RequirementDocument/20260920-地面机甲火箭跳.md) | requirement | approved | 2026-09-21 |
+| [机枪子弹统一受击特效](../RequirementDocument/20260920-机枪子弹统一受击特效.md) | requirement | approved | 2026-09-21 |
+| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-21 |
+| [统一特效目录与ID引用 — 技术方案](../DevelopmentDocumentation/20260921-统一特效目录与ID引用.md) | development | done | 2026-09-21 |
+| [地面机甲火箭跳 — 实施与验证](../DevelopmentDocumentation/20260920-地面机甲火箭跳.md) | development | done | 2026-09-21 |
+| [机枪子弹统一受击特效 — 实施与验证](../DevelopmentDocumentation/20260920-机枪子弹统一受击特效.md) | development | done | 2026-09-21 |
+| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
+| [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | in_progress | 2026-09-21 |
+| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-21 |
+| [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | development | done | 2026-09-21 |
+| [统一特效目录与ID迁移静态验收](../Archive/20260921-统一特效目录与ID迁移静态验收.md) | archive | recorded | 2026-09-21 |
+| [地面机甲动画空战与下落调参验收](../Archive/20260921-地面机甲动画空战与下落调参验收.md) | archive | recorded | 2026-09-21 |
+| [机枪统一受击补全实机验收](../Archive/20260921-机枪统一受击补全实机验收.md) | archive | recorded | 2026-09-21 |
+| [地面机甲火箭跳实现与实机反馈调整](../Archive/20260921-地面机甲火箭跳实现与实机反馈调整.md) | archive | recorded | 2026-09-21 |
+| [机枪统一受击实现与验证边界](../Archive/20260921-机枪统一受击实现与验证边界.md) | archive | recorded | 2026-09-21 |
 | [玩家地面机甲开火与Excel升级配置](../RequirementDocument/20260920-玩家地面机甲开火与升级配置.md) | requirement | approved | 2026-09-20 |
-| [指挥官](../Gameplay/指挥官.md) | gameplay | current | 2026-09-20 |
 | [玩家地面机甲开火与Excel升级配置](../DevelopmentDocumentation/20260920-玩家地面机甲开火与升级配置.md) | development | verification | 2026-09-20 |
-| [GuLiStrike 美术规范 — 维护与验收台账](../DevelopmentDocumentation/GuLiStrike美术规范.md) | development | done | 2026-09-20 |
 | [玩家机枪开火与Excel升级候选](../Archive/20260920-玩家机枪开火与Excel升级候选.md) | archive | recorded | 2026-09-20 |
 | [战争机器导弹范围与特效调整](../RequirementDocument/20260919-战争机器导弹范围与特效调整.md) | requirement | approved | 2026-09-19 |
 | [次级单位技能与地面预警](../Gameplay/次级单位技能与地面预警.md) | gameplay | current | 2026-09-19 |
@@ -1505,17 +1616,14 @@
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
-| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [战争机器Q导弹与通用地面预警](../RequirementDocument/20260917-战争机器Q导弹与通用地面预警.md) | requirement | approved | 2026-09-17 |
 | [地面机甲弹幕肉鸽与塔防建造](../RequirementDocument/20260917-地面机甲弹幕肉鸽与塔防建造.md) | requirement | approved | 2026-09-17 |
 | [GuLiStrike 进度文档体系](../README.md) | reference | reference | 2026-09-17 |
 | [战争机器Q导弹与通用地面预警 — 实施与验证](../DevelopmentDocumentation/20260917-战争机器Q导弹与通用地面预警.md) | development | done | 2026-09-17 |
-| [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | development | verification | 2026-09-17 |
 | [地面机枪5Hz弹丸与僚机弹效复用](../Archive/20260917-地面机枪5Hz弹丸与僚机弹效复用.md) | archive | recorded | 2026-09-17 |
 | [战争机器Q导弹通用预警与切图断言修复](../Archive/20260917-战争机器Q导弹通用预警与切图断言修复.md) | archive | recorded | 2026-09-17 |
 | [美术规范建立与制作技能接入](../Archive/20260917-美术规范建立与制作技能接入.md) | archive | recorded | 2026-09-17 |
 | [僚机对地轰炸动漫爆炸样板](../RequirementDocument/20260916-僚机对地轰炸动漫爆炸样板.md) | requirement | approved | 2026-09-16 |
-| [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | development | verification | 2026-09-16 |
 | [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | development | in_progress | 2026-09-16 |
 | [僚机动漫爆炸样板制作与接入](../Archive/20260916-僚机动漫爆炸样板制作与接入.md) | archive | recorded | 2026-09-16 |
 | [阵营独立通道与点击据点即时运输修复](../Archive/20260915-阵营独立通道与点击据点即时运输修复.md) | archive | recorded | 2026-09-15 |
@@ -1562,15 +1670,16 @@
 
 | 文档 | 类型 | 状态 | 更新 |
 |---|---|---|---|
+| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | done | 2026-09-21 |
+| [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | development | done | 2026-09-21 |
+| [僚机世界空间近距编队与租约恢复 — 技术方案](../DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md) | development | done | 2026-09-21 |
 | [游戏对象与效果统一缩放至0.2倍](../RequirementDocument/20260918-游戏对象与效果统一缩放至0.2倍.md) | requirement | approved | 2026-09-18 |
 | [游戏对象尺度](../Gameplay/游戏对象尺度.md) | gameplay | current | 2026-09-18 |
 | [指挥官传送](../Gameplay/指挥官传送.md) | gameplay | current | 2026-09-18 |
 | [战斗](../Gameplay/战斗.md) | gameplay | current | 2026-09-18 |
-| [游戏对象与效果统一缩放至0.2倍 — 实施记录](../DevelopmentDocumentation/20260918-游戏对象与效果统一缩放至0.2倍.md) | development | in_progress | 2026-09-18 |
 | [GuLiStrike：5v5 大战场玩法策划草案](../RequirementDocument/20260826-5v5大战场玩法草案.md) | requirement | draft | 2026-09-17 |
 | [僚机对地轰炸动漫爆炸样板](../RequirementDocument/20260916-僚机对地轰炸动漫爆炸样板.md) | requirement | approved | 2026-09-16 |
 | [GPU渲染降耗](../RequirementDocument/20260916-GPU渲染降耗.md) | requirement | approved | 2026-09-16 |
-| [僚机对地轰炸动漫爆炸样板 — 实施与验收](../DevelopmentDocumentation/20260916-僚机对地轰炸动漫爆炸样板.md) | development | verification | 2026-09-16 |
 | [GPU渲染降耗 — 技术方案与实施](../DevelopmentDocumentation/20260916-GPU渲染降耗.md) | development | done | 2026-09-16 |
 | [僚机动漫爆炸样板制作与接入](../Archive/20260916-僚机动漫爆炸样板制作与接入.md) | archive | recorded | 2026-09-16 |
 | [GPU渲染降耗实施与三组对照](../Archive/20260916-GPU渲染降耗实施与三组对照.md) | archive | recorded | 2026-09-16 |
@@ -1651,7 +1760,6 @@
 | [僚机 FlightNav 弧线验证与局部恢复](../Archive/20260905-僚机FlightNav弧线验证与局部恢复.md) | archive | recorded | 2026-09-05 |
 | [飞船世界空间环绕 HUD 与技能准星](../RequirementDocument/20260904-飞船世界空间环绕HUD与技能准星.md) | requirement | approved | 2026-09-04 |
 | [僚机世界空间近距编队与租约恢复](../RequirementDocument/20260904-僚机世界空间近距编队与租约恢复.md) | requirement | approved | 2026-09-04 |
-| [僚机世界空间近距编队与租约恢复 — 技术方案](../DevelopmentDocumentation/20260904-僚机世界空间近距编队与租约恢复.md) | development | in_progress | 2026-09-04 |
 | [2026-09-04 解决了：僚机跟随船头旋转、编队过远与运行期租约无恢复重试](../Archive/20260904-僚机世界空间近距编队与租约恢复.md) | archive | recorded | 2026-09-04 |
 | [飞船 GAS 与僚机技能归属 — 开发文档](../DevelopmentDocumentation/20260902-飞船GAS与僚机技能归属.md) | development | done | 2026-09-03 |
 | [2026-09-03 解决了：飞船 GAS、僚机体系与三维导航实现与既有验收（总归档）](../Archive/20260903-飞船GAS僚机体系与三维导航实现与既有验收总归档.md) | archive | recorded | 2026-09-03 |

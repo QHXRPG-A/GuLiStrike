@@ -19,22 +19,20 @@ class GULISTRIKE_API UGuLiUnitFeedbackSettings : public UObject
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") TSoftObjectPtr<UMaterialInterface> HitMaterial;
-	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") TSoftObjectPtr<UMaterialInterface> InstancedHitMaterial;
-	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback|Wreck") TSoftObjectPtr<UMaterialInterface> WreckMaterial;
+	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") int32 HitVfxId = 0;
+	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") int32 InstancedHitVfxId = 0;
+	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback|Wreck") int32 WreckVfxId = 0;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback|Wreck", meta=(ClampMin="1")) int32 MaximumConcurrentWrecks = 64;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback|Wreck", meta=(ClampMin="0.1", Units="s")) float GroundWreckLifetime = 5.0f;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback|Wreck", meta=(ClampMin="1", Units="s")) float FallingWreckMaximumLifetime = 30.0f;
-	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") TArray<TSoftObjectPtr<UNiagaraSystem>> Explosions;
+	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") TArray<int32> ExplosionVfxIds;
 	/** Aerial one-shots, authored for component-transform scaling (including their shockwaves). */
-	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") TArray<TSoftObjectPtr<UNiagaraSystem>> WingmanExplosions;
+	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") TArray<int32> WingmanExplosionVfxIds;
 	/** None uses the component transform; a named float receives the complete size once. */
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") FName GroundExplosionScaleParameter = TEXT("User.Scale");
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback") FName WingmanExplosionScaleParameter;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="1")) int32 MaximumConcurrentExplosions = 64;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0")) float CullDistance = 36000.0f;
-	/** Art calibration for the smallest model in the soldier catalog; model sizes are never hardcoded. */
-	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0.001")) float ReferenceExplosionScale = 1.0f;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0", Units="s")) float HealthBarHoldSeconds = 3.0f;
 	UPROPERTY(Config, EditAnywhere, Category="Unit Feedback", meta=(ClampMin="0.01", Units="s")) float HealthBarFadeSeconds = 0.5f;
 };
@@ -117,8 +115,8 @@ private:
 	UPROPERTY(Transient) TObjectPtr<UMaterialInterface> InstancedHitMaterial;
 	UPROPERTY(Transient) TObjectPtr<UMaterialInterface> WreckMaterial;
 	UPROPERTY(Transient) TArray<TWeakObjectPtr<AGuLiUnitWreck>> ActiveWrecks;
-	UPROPERTY(Transient) TArray<TObjectPtr<UNiagaraSystem>> LoadedExplosions;
-	UPROPERTY(Transient) TArray<TObjectPtr<UNiagaraSystem>> LoadedWingmanExplosions;
+	UPROPERTY(Transient) TArray<int32> LoadedExplosions;
+	UPROPERTY(Transient) TArray<int32> LoadedWingmanExplosions;
 	UPROPERTY(Transient) TArray<FGuLiActiveHitOverlay> ActiveHits;
 	UPROPERTY(Transient) TArray<FGuLiUnitExplosion> ActiveExplosions;
 };

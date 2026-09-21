@@ -10,6 +10,8 @@ from pathlib import Path
 import unreal
 
 ROOT = Path(unreal.Paths.project_dir())
+if (ROOT/'Data/Excel/GuLiStrikeVfx.xlsx').exists():
+    raise RuntimeError('The historical Scale020 migration predates VfxId. Use Scripts/Vfx/import_vfx_tables.py; edit base scales in GuLiStrikeVfx.xlsx.')
 exec((ROOT/'Scripts/Scale020/capture_editor_baseline.py').read_text(encoding='utf-8').split('def main():')[0])
 BASE = json.loads((ROOT/'TestResults/Scale020/editor-baseline.json').read_text(encoding='utf-8'))
 FX = json.loads((ROOT/'TestResults/Scale020/fx-blueprint-baseline.json').read_text(encoding='utf-8'))

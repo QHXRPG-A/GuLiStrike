@@ -8,14 +8,19 @@ import traceback
 from pathlib import Path
 import unreal
 
+import sys
+from pathlib import Path
+sys.path.insert(0,str(Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))/"Scripts/Vfx"))
+from vfx_registry import vfx_id, resource as vfx_resource, scale as vfx_scale, require_id, visual_variant
+
 ROOT=Path('D:/UE5.7/test1')
 OUT=ROOT/'ArtSource/FX/WingmanGroundExplosion_Toon'
 BASE='/Game/GuLiStrike/FX/WingmanWeapons/'
 FIELD=BASE+'DA_WingmanGroundExplosion'
 
 def signature(field):
-    return [{'system':v.system.get_path_name(),'scale':v.scale,'scale_parameter_name':str(v.scale_parameter_name),'random_yaw':v.random_yaw,
-             'maximum_lifetime':v.maximum_lifetime,'additional_layers':[{'system':l.system.get_path_name(),'scale':l.scale} for l in v.additional_layers]}
+    return [{'system':vfx_resource(v.vfx_id),'scale':vfx_scale(v.vfx_id)[0],'scale_parameter_name':str(v.scale_parameter_name),'random_yaw':v.random_yaw,
+             'maximum_lifetime':v.maximum_lifetime,'additional_layers':[{'system':vfx_resource(l.vfx_id),'scale':vfx_scale(l.vfx_id)[0]} for l in v.additional_layers]}
             for v in field.activation_variants]
 
 def install(variant):
@@ -36,12 +41,12 @@ def install(variant):
     system=unreal.load_asset(path);assert system
     result=unreal.NiagaraService.compile_with_results(path)
     assert result.success and not result.errors,str(result)
-    visual.set_editor_property('system',system);visual.set_editor_property('scale',5.)
+    visual.set_editor_property('vfx_id',require_id(path,vfx_scale('WingmanBombardment')))
     visual.set_editor_property('random_yaw',True);visual.set_editor_property('maximum_lifetime',5.25 if variant=='reference' else (2. if variant=='toon' else 3.))
     visual.set_editor_property('scale_parameter_name','User.Area_Scale' if variant=='reference' else 'None')
     layers=[]
     if variant=='old':
-        layer=unreal.GuLiEffectVisualLayer();layer.set_editor_property('system',unreal.load_asset(BASE+'NS_WingmanGroundShockwave_Big_17'));layer.set_editor_property('scale',3.1);layers=[layer]
+        layer=unreal.GuLiEffectVisualLayer();layer.set_editor_property('vfx_id',require_id(BASE+'NS_WingmanGroundShockwave_Big_17',3.1));layers=[layer]
     visual.set_editor_property('additional_layers',layers)
     field.set_editor_property('activation_variants',[visual])
     assert immutable=={n:str(field.get_editor_property(n)) for n in immutable}

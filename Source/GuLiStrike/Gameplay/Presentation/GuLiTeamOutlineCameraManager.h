@@ -19,7 +19,7 @@ public:
 
 private:
 	UPROPERTY(Config, EditDefaultsOnly, Category="Presentation|Outline")
-	TSoftObjectPtr<UMaterialInterface> OutlineMaterial;
+	int32 OutlineVfxId = 0;
 	UPROPERTY(Transient)
 	TObjectPtr<UMaterialInstanceDynamic> OutlineInstance;
 	FPostProcessSettings OutlineSettings;

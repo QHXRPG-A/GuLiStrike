@@ -71,6 +71,7 @@ struct FGuLiSoldierNavigationDebug
 	uint32 LastCompletedOrderId = 0u;
 	uint32 LastFailedOrderId = 0u;
 	FVector Location = FVector::ZeroVector;
+	FVector Velocity = FVector::ZeroVector;
 	FVector LastValidNavLocation = FVector::ZeroVector;
 	FVector FinalSlot = FVector::ZeroVector;
 	FVector CurrentWaypoint = FVector::ZeroVector;
@@ -334,6 +335,8 @@ public:
 	bool IssueAttackMove(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers, const FVector& Destination);
 	void StopAutomaticMove(TConstArrayView<FGuLiSoldierId> Soldiers);
 	void StopTaskSoldiers(TConstArrayView<FGuLiSoldierId> Soldiers);
+	/** Supersede only unfinished planning; keep committed routes, velocity and destination reservations. */
+	void InvalidateTaskSoldierPlans(TConstArrayView<FGuLiSoldierId> Soldiers);
 	bool GetTaskSoldierInfo(FGuLiSoldierId Id, EGuLiTeam& Team, uint16& UnitTypeId, FVector& Location) const;
 	bool SetExplicitSelection(EGuLiTeam Team, TConstArrayView<FGuLiSoldierId> Soldiers,
 		TConstArrayView<FGuLiControllableActorId> Actors, FGuLiCommanderSelectionState& Selection);

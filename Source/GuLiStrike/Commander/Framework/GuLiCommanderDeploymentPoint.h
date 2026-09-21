@@ -31,5 +31,9 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Deployment", meta=(Units="cm"))
 	float SpacingCentimeters = 480.0f;
 
+	/** Initial server-side fire permission; passive targets still take damage normally. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Deployment")
+	bool bAllowAutomaticFire = true;
+
 	FVector GetSlotLocation(int32 SlotIndex) const;
 };

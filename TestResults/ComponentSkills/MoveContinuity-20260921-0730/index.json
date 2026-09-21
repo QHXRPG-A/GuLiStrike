@@ -1,0 +1,104 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "A6139E264767CF542888758F9A6464FC",
+			"instanceName": "DESKTOP-6D3B0FC-73600",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "NVIDIA GeForce RTX 4090",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.20-23.29.45",
+	"succeeded": 5,
+	"succeededWithWarnings": 0,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.34927552938461304,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "AppendCapacityAndSafeCancellation",
+			"fullTestPath": "GuLiStrike.Commander.Orders.AppendCapacityAndSafeCancellation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6139E264767CF542888758F9A6464FC"
+			],
+			"duration": 0.0079807005822658539,
+			"dateTime": "2026.09.20-23.29.44",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ExcelNativeCatalog",
+			"fullTestPath": "GuLiStrike.Commander.Orders.ExcelNativeCatalog",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6139E264767CF542888758F9A6464FC"
+			],
+			"duration": 0.31858760118484497,
+			"dateTime": "2026.09.20-23.29.44",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "InitialAndPersistentLifecycle",
+			"fullTestPath": "GuLiStrike.Commander.Orders.InitialAndPersistentLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6139E264767CF542888758F9A6464FC"
+			],
+			"duration": 0.006139799952507019,
+			"dateTime": "2026.09.20-23.29.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MoveReuseBoundaryAndLifecycle",
+			"fullTestPath": "GuLiStrike.Commander.Orders.MoveReuseBoundaryAndLifecycle",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6139E264767CF542888758F9A6464FC"
+			],
+			"duration": 0.0082623995840549469,
+			"dateTime": "2026.09.20-23.29.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UntrustedCommandValidation",
+			"fullTestPath": "GuLiStrike.Commander.Orders.UntrustedCommandValidation",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"A6139E264767CF542888758F9A6464FC"
+			],
+			"duration": 0.0083050020039081573,
+			"dateTime": "2026.09.20-23.29.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

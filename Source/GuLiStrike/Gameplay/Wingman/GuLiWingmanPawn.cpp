@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Wingman/GuLiWingmanPawn.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Presentation/GuLiTeamOutlineComponent.h"
@@ -328,7 +329,7 @@ void AGuLiWingmanPawn::SetPhaseAppearance(bool bPhased)
 	}
 	if (Control)
 	{
-		auto* Material = bPhased ? LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody")) : nullptr;
+		auto* Material = bPhased ? GuLiVfx::Load<UMaterialInterface>(this, GuLiVfxIds::TeleportBody) : nullptr;
 		Control->ApplyLocalPhaseAppearance(bPhased,Material);
 	}
 	if (bPhased) { bPresentationInteractable = false; UpdateFlightTrail(0.f,true); }
@@ -472,7 +473,7 @@ void AGuLiWingmanPawn::UpdateFlightTrail(const float Opacity, const bool bResetT
 	const float SafeOpacity = FMath::IsFinite(Opacity) ? FMath::Clamp(Opacity, 0.0f, 1.0f) : 0.0f;
 	if (GetNetMode() == NM_DedicatedServer || !GetWorld() || !GetWorld()->IsGameWorld()
 		|| !Runtime.Dynamics.bAlive || IsHidden() || SafeOpacity <= 0.0f
-		|| !VisualMesh || !VisualMesh->GetStaticMesh() || FlightTrailSystem.IsNull() || bFlightTrailLoadFailed)
+		|| !VisualMesh || !VisualMesh->GetStaticMesh() || FlightTrailVfxId <= 0 || bFlightTrailLoadFailed)
 	{
 		StopFlightTrail();
 		return;
@@ -480,7 +481,7 @@ void AGuLiWingmanPawn::UpdateFlightTrail(const float Opacity, const bool bResetT
 
 	if (!FlightTrail)
 	{
-		UNiagaraSystem* System = FlightTrailSystem.LoadSynchronous();
+		UNiagaraSystem* System = GuLiVfx::Load<UNiagaraSystem>(this, FlightTrailVfxId);
 		if (!System)
 		{
 			bFlightTrailLoadFailed = true;
@@ -493,7 +494,7 @@ void AGuLiWingmanPawn::UpdateFlightTrail(const float Opacity, const bool bResetT
 		FlightTrail->SetupAttachment(VisualMesh);
 		// Nozzle location inherits the scaled model; world-space HLSL owns particle dimensions.
 		FlightTrail->SetAbsolute(false, false, true);
-		FlightTrail->SetWorldScale3D(FVector::OneVector);
+		FlightTrail->SetWorldScale3D(GuLiVfx::Scale(this, FlightTrailVfxId));
 		FlightTrail->SetRelativeLocation(FlightTrailOffset);
 		FlightTrail->SetRelativeRotation(FRotator(0.0f, 180.0f, 0.0f));
 		FlightTrail->SetCanEverAffectNavigation(false);

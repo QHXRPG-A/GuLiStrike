@@ -1,0 +1,56 @@
+{
+  "map": "/Game/Maps/LVL_GroundMech_FireReview.LVL_GroundMech_FireReview",
+  "deployments": [
+    {
+      "label": "FireReview_Blue_Sweeper",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": 1,
+      "count": 4,
+      "allow_automatic_fire": false
+    },
+    {
+      "label": "FireReview_Blue_WarMachine",
+      "team": "<GuLiTeam.BLUE: 2>",
+      "unit_type_id": 2,
+      "count": 4,
+      "allow_automatic_fire": false
+    },
+    {
+      "label": "FireReview_Red_Sweeper",
+      "team": "<GuLiTeam.RED: 1>",
+      "unit_type_id": 1,
+      "count": 4,
+      "allow_automatic_fire": false
+    },
+    {
+      "label": "FireReview_Red_WarMachine",
+      "team": "<GuLiTeam.RED: 1>",
+      "unit_type_id": 2,
+      "count": 4,
+      "allow_automatic_fire": false
+    }
+  ],
+  "starts": [
+    {
+      "label": "GroundMech_Start_1",
+      "location": [
+        8600.0,
+        -7500.0,
+        421.55853748321533
+      ]
+    },
+    {
+      "label": "GroundMech_Start_2",
+      "location": [
+        9400.0,
+        -7500.0,
+        421.61516189575195
+      ]
+    }
+  ],
+  "deployment_and_start_config_unchanged": true,
+  "pie_active": false,
+  "game_world": "None",
+  "dirty_maps": [],
+  "dirty_content": []
+}

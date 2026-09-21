@@ -1,4 +1,6 @@
 #include "Gameplay/Teleport/GuLiTeleportFieldActor.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
+#include "Gameplay/Data/GuLiGameText.h"
 #include "Gameplay/Skills/GuLiSkillTargeting.h"
 #include "Gameplay/Teleport/GuLiTeleportUnitAdapters.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
@@ -69,15 +71,15 @@ AGuLiTeleportFieldActor* AGuLiTeleportFieldActor::StartCast(AGuLiBattlePlayerSta
 	const auto* Data = World ? World->GetSubsystem<UGuLiCommanderDataSubsystem>() : nullptr;
 	const auto* Config = Data ? Data->FindTeleportFieldConfig(Level) : nullptr;
 	if (!Commander.HasAuthority() || !CanCast(&Commander) || !GS || !GS->IsMatchInProgress())
-	{ Error = TEXT("当前不能使用指挥官传送"); return nullptr; }
-	if (!Config || !Config->IsValid()) { Error = TEXT("传送配置未就绪"); return nullptr; }
+	{ Error = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.172")); return nullptr; }
+	if (!Config || !Config->IsValid()) { Error = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.173")); return nullptr; }
 	if (const auto* Previous = FindCast(*World,Commander.GetPlayerGuid()); Previous && Previous->State.IsActive())
-	{ Error = TEXT("已有传送正在进行"); return nullptr; }
+	{ Error = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.174")); return nullptr; }
 	FVector GroundLocation;
-	if (!GuLiSkillTargeting::ResolveGround(*World,Point,GroundLocation)) { Error = TEXT("请点击地图内可站立地面"); return nullptr; }
+	if (!GuLiSkillTargeting::ResolveGround(*World,Point,GroundLocation)) { Error = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.175")); return nullptr; }
 	FActorSpawnParameters Params; Params.Owner = Commander.GetOwner();
 	auto* Field = World->SpawnActor<AGuLiTeleportFieldActor>(GroundLocation,FRotator::ZeroRotator,Params);
-	if (!Field) { Error = TEXT("创建法术场失败"); return nullptr; }
+	if (!Field) { Error = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.176")); return nullptr; }
 	Field->SetReplicates(true); Field->Runtime.Reset(new FGuLiTeleportFieldRuntime); Field->Runtime->Commander = &Commander;
 	auto& S = Field->State; S.CastId = FGuid::NewGuid(); S.CommanderId = Commander.GetPlayerGuid(); S.MatchEpoch = GS->GetMatchEpoch();
 	S.Config = *Config; S.Team = Commander.GetTeam(); S.Source = S.Destination = GroundLocation;
@@ -99,7 +101,7 @@ bool AGuLiTeleportFieldActor::ApplyParticipants(bool bPhased, bool bLocked, bool
 	if (!Runtime || !HasAuthority()) { return false; }
 	if (!GuLiTeleportMassAdapter::CanApply(*GetWorld(),Runtime->Units,State.CastId)
 		|| !GuLiTeleportActorAdapter::CanApply(Runtime->Units,State.CastId,bPhased && !Runtime->bCollected)) { return false; }
-	auto* Material = bPhased ? LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody")) : nullptr;
+	auto* Material = bPhased ? GuLiVfx::Load<UMaterialInterface>(this, GuLiVfxIds::TeleportBody) : nullptr;
 	// Membership and every endpoint are checked above. No asynchronous work occurs between these commits.
 	const bool bActors = GuLiTeleportActorAdapter::Apply(*GetWorld(),Runtime->Units,State.CastId,bPhased,bLocked,bDisplace,Material);
 	const bool bMass = bActors && GuLiTeleportMassAdapter::Apply(*GetWorld(),Runtime->Units,State.CastId,bPhased,bLocked,bDisplace);
@@ -111,8 +113,8 @@ void AGuLiTeleportFieldActor::Capture()
 	GuLiTeleportMassAdapter::Collect(*GetWorld(),State,Runtime->Units);
 	GuLiTeleportActorAdapter::Collect(*GetWorld(),State,Runtime->Units);
 	PruneParticipants(); State.ParticipantCount = Runtime->Units.Num();
-	if (Runtime->Units.IsEmpty()) { Finish(TEXT("圈内没有可传送的己方单位")); return; }
-	if (!ApplyParticipants(true,true,true)) { ReturnToSource(TEXT("单位状态已变化，取消传送")); return; }
+	if (Runtime->Units.IsEmpty()) { Finish(GuLiGameText::Text(TEXT("UI.TeleportFieldActor.177"))); return; }
+	if (!ApplyParticipants(true,true,true)) { ReturnToSource(GuLiGameText::Text(TEXT("UI.TeleportFieldActor.178"))); return; }
 	Runtime->bCollected = true;
 	State.Phase = EGuLiTeleportPhase::AwaitingDestination; State.PhaseStartTime = GetSynchronizedTime(*GetWorld());
 	State.Deadline = State.PhaseStartTime+State.Config.MaxTargetWaitSeconds; Publish();
@@ -165,16 +167,16 @@ bool AGuLiTeleportFieldActor::CommitLanding(bool bReturning)
 	State.bLanded = true;
 	State.Phase = EGuLiTeleportPhase::Recovery; State.PhaseStartTime = GetSynchronizedTime(*GetWorld());
 	State.Deadline = State.PhaseStartTime+State.Config.RecoverySeconds;
-	State.Message = bReturning ? TEXT("已安全返回源点附近") : TEXT("传送成功"); Publish(); return true;
+	State.Message = bReturning ? GuLiGameText::Text(TEXT("UI.TeleportFieldActor.179")) : GuLiGameText::Text(TEXT("UI.TeleportFieldActor.180")); Publish(); return true;
 }
 bool AGuLiTeleportFieldActor::SubmitDestination(AGuLiBattlePlayerState& Commander, FVector Point, FString& Error)
 {
 	if (!HasAuthority() || !Runtime || Runtime->Commander != &Commander || !CanCast(&Commander) || State.Phase != EGuLiTeleportPhase::AwaitingDestination)
-	{ Error = TEXT("当前不在选择落点阶段"); return false; }
-	if (GetSynchronizedTime(*GetWorld()) >= State.Deadline) { ReturnToSource(TEXT("落点选择超时")); return false; }
+	{ Error = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.181")); return false; }
+	if (GetSynchronizedTime(*GetWorld()) >= State.Deadline) { ReturnToSource(GuLiGameText::Text(TEXT("UI.TeleportFieldActor.182"))); return false; }
 	FVector GroundLocation;
 	if (!GuLiSkillTargeting::ResolveGround(*GetWorld(),Point,GroundLocation) || !PlanLanding(GroundLocation,false))
-	{ Error = State.Message = TEXT("此处无法容纳整批部队，请选择其他落点"); Publish(); return false; }
+	{ Error = State.Message = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.183")); Publish(); return false; }
 	State.Destination = GroundLocation; return CommitLanding(false);
 }
 void AGuLiTeleportFieldActor::ReturnToSource(const FString& Reason)
@@ -187,7 +189,7 @@ void AGuLiTeleportFieldActor::ReturnToSource(const FString& Reason)
 }
 void AGuLiTeleportFieldActor::Cancel(AGuLiBattlePlayerState& Commander)
 {
-	if (HasAuthority() && Runtime && Runtime->Commander == &Commander) { ReturnToSource(TEXT("已取消传送")); }
+	if (HasAuthority() && Runtime && Runtime->Commander == &Commander) { ReturnToSource(GuLiGameText::Text(TEXT("UI.TeleportFieldActor.184"))); }
 }
 void AGuLiTeleportFieldActor::Finish(const FString& Message)
 {
@@ -210,9 +212,9 @@ void AGuLiTeleportFieldActor::TickAuthority()
 	if (State.Phase == EGuLiTeleportPhase::Returning)
 	{ if (Now >= Runtime->NextReturnAttempt) { ReturnToSource(State.Message); } return; }
 	if (!CanCast(Runtime->Commander.Get()) || !GS || GS->GetMatchEpoch() != uint32(State.MatchEpoch) || !GS->IsMatchInProgress())
-	{ ReturnToSource(TEXT("施法者已离开或失去指挥官资格")); return; }
+	{ ReturnToSource(GuLiGameText::Text(TEXT("UI.TeleportFieldActor.185"))); return; }
 	if (State.Phase == EGuLiTeleportPhase::Windup && Now >= State.Deadline) { Capture(); }
-	else if (State.Phase == EGuLiTeleportPhase::AwaitingDestination && Now >= State.Deadline) { ReturnToSource(TEXT("落点选择超时")); }
+	else if (State.Phase == EGuLiTeleportPhase::AwaitingDestination && Now >= State.Deadline) { ReturnToSource(GuLiGameText::Text(TEXT("UI.TeleportFieldActor.182"))); }
 }
 void AGuLiTeleportFieldActor::Tick(float DeltaSeconds)
 {

@@ -59,48 +59,136 @@ struct FGuLiStrikeMechSkillsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	FString Note;
 
-	/** ProjectileSpeed (float, Necessary) */
+	/** ProjectileSpeed (float, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	float ProjectileSpeed = 0.0f;
 
-	/** ProjectileLifetime (float, Necessary) */
+	/** ProjectileLifetime (float, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	float ProjectileLifetime = 0.0f;
 
-	/** SweepRadius (float, Necessary) */
+	/** SweepRadius (float, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	float SweepRadius = 0.0f;
 
-	/** MuzzleSocket (str, Necessary) */
+	/** MuzzleSocket (str, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	FString MuzzleSocket;
 
-	/** RecoilBone (str, Necessary) */
+	/** RecoilBone (str, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	FString RecoilBone;
 
-	/** RecoilTargetLocalZCentimeters (float, Necessary) */
+	/** RecoilTargetLocalZCentimeters (float, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	float RecoilTargetLocalZCentimeters = 0.0f;
 
-	/** RecoilDuration (float, Necessary) */
+	/** RecoilDuration (float, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	float RecoilDuration = 0.0f;
 
-	/** RecoilCurve (softobject, Necessary) */
+	/** RecoilCurve (softobject, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	TSoftObjectPtr<UObject> RecoilCurve;
 
-	/** WeaponAnimation (softclass, Necessary) */
+	/** WeaponAnimation (softclass, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
 	TSoftClassPtr<UObject> WeaponAnimation;
 
-	/** BulletSystem (softobject, Necessary) */
+	/** BulletVfxId (int, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
-	TSoftObjectPtr<UObject> BulletSystem;
+	int32 BulletVfxId = 0;
 
-	/** MuzzleSystem (softobject, Necessary) */
+	/** MuzzleVfxId (int, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
-	TSoftObjectPtr<UObject> MuzzleSystem;
+	int32 MuzzleVfxId = 0;
+
+	/** ExecutionType (str, Necessary) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	FString ExecutionType;
+
+	/** AbilityClass (softclass, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	TSoftClassPtr<UObject> AbilityClass;
+
+	/** MaxFuel (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float MaxFuel = 0.0f;
+
+	/** InitialFuel (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float InitialFuel = 0.0f;
+
+	/** FuelDrainPerSecond (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float FuelDrainPerSecond = 0.0f;
+
+	/** FuelRecoveryPerSecond (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float FuelRecoveryPerSecond = 0.0f;
+
+	/** FuelRecoveryDelay (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float FuelRecoveryDelay = 0.0f;
+
+	/** ThrustAcceleration (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float ThrustAcceleration = 0.0f;
+
+	/** MaxRiseSpeed (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float MaxRiseSpeed = 0.0f;
+
+	/** JetVfxId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 JetVfxId = 0;
+
+	/** JetSocketLeft (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	FString JetSocketLeft;
+
+	/** JetSocketRight (str, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	FString JetSocketRight;
+
+	/** JetPitchDegrees (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float JetPitchDegrees = 0.0f;
+
+	/** FuelBarVfxId (int, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	int32 FuelBarVfxId = 0;
+
+	/** FuelBarHeight (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float FuelBarHeight = 0.0f;
+
+	/** FuelBarRightOffset (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float FuelBarRightOffset = 0.0f;
+
+	/** FuelBarFadeSeconds (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float FuelBarFadeSeconds = 0.0f;
+
+	/** AirSpeedMultiplier (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float AirSpeedMultiplier = 0.0f;
+
+	/** JetMaxTiltDegrees (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float JetMaxTiltDegrees = 0.0f;
+
+	/** FallGravityMultiplier (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float FallGravityMultiplier = 0.0f;
+
+	/** AimAssistEnabled (bool, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	bool AimAssistEnabled = false;
+
+	/** AimAssistRadiusCentimeters (float, Optional) */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Skills")
+	float AimAssistRadiusCentimeters = 0.0f;
 
 };

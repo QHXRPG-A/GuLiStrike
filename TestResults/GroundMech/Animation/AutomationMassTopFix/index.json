@@ -1,0 +1,794 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "E70EB9F6434A3522803ED9927B5705D2",
+			"instanceName": "DESKTOP-6D3B0FC-12732",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.21-03.08.47",
+	"succeeded": 8,
+	"succeededWithWarnings": 5,
+	"failed": 0,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 1.1915011405944824,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "PlayerPoolAndWire",
+			"fullTestPath": "GuLiStrike.GroundMech.Fire.PlayerPoolAndWire",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.90146499872207642,
+			"dateTime": "2026.09.21-03.08.46",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "Recoil",
+			"fullTestPath": "GuLiStrike.GroundMech.Fire.Recoil",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.0090327002108097076,
+			"dateTime": "2026.09.21-03.08.47",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "UpgradesCadenceAndInterruptions",
+			"fullTestPath": "GuLiStrike.GroundMech.Fire.UpgradesCadenceAndInterruptions",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.1501891016960144,
+			"dateTime": "2026.09.21-03.08.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogAbilitySystem: No GameplayCueNotifyPaths were specified in DefaultGame.ini under [/Script/GameplayAbilities.AbilitySystemGlobals]. Falling back to using all of /Game/. This may be slow on large projects. Consider specifying which paths are to be searched.",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				}
+			],
+			"warnings": 1,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ContinuousTime",
+			"fullTestPath": "GuLiStrike.GroundMech.MassCollision.ContinuousTime",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.0078030973672866821,
+			"dateTime": "2026.09.21-03.08.47",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DynamicObstacleRegistry",
+			"fullTestPath": "GuLiStrike.GroundMech.MassCollision.DynamicObstacleRegistry",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.014051102101802826,
+			"dateTime": "2026.09.21-03.08.47",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FriendlyYield",
+			"fullTestPath": "GuLiStrike.GroundMech.MassCollision.FriendlyYield",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.0088586993515491486,
+			"dateTime": "2026.09.21-03.08.47",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "LandingAndSupport",
+			"fullTestPath": "GuLiStrike.GroundMech.MassCollision.LandingAndSupport",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.015387799590826035,
+			"dateTime": "2026.09.21-03.08.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_4.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				}
+			],
+			"warnings": 16,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "MovementReplay",
+			"fullTestPath": "GuLiStrike.GroundMech.MassCollision.MovementReplay",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.015313200652599335,
+			"dateTime": "2026.09.21-03.08.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_5.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_5.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_5.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_5.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_5.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_5.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_5.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_5.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_5.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				}
+			],
+			"warnings": 9,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "NetworkMove",
+			"fullTestPath": "GuLiStrike.GroundMech.MassCollision.NetworkMove",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.022517401725053787,
+			"dateTime": "2026.09.21-03.08.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_6.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_6.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_6.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_6.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_6.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_6.Untitled:PersistentLevel.GuLiGroundMechCharacter_1)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_6.Untitled:PersistentLevel.GuLiGroundMechCharacter_1)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_6.Untitled:PersistentLevel.GuLiGroundMechCharacter_1)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_6.Untitled:PersistentLevel.GuLiGroundMechCharacter_1)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_6.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_6.Untitled:PersistentLevel.GuLiGroundMechCharacter_1)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				}
+			],
+			"warnings": 11,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "RawSnapshot",
+			"fullTestPath": "GuLiStrike.GroundMech.MassCollision.RawSnapshot",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.013260498642921448,
+			"dateTime": "2026.09.21-03.08.47",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SideSweep",
+			"fullTestPath": "GuLiStrike.GroundMech.MassCollision.SideSweep",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.0080161988735198975,
+			"dateTime": "2026.09.21-03.08.47",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SpatialIndex500",
+			"fullTestPath": "GuLiStrike.GroundMech.MassCollision.SpatialIndex500",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.0079660974442958832,
+			"dateTime": "2026.09.21-03.08.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Info",
+						"message": "500-body grid: buckets=500, raw candidates=1, intersecting bodies=1",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				}
+			],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WorldLanding",
+			"fullTestPath": "GuLiStrike.GroundMech.MassCollision.WorldLanding",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"E70EB9F6434A3522803ED9927B5705D2"
+			],
+			"duration": 0.017640396952629089,
+			"dateTime": "2026.09.21-03.08.47",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_8.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_8.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_8.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_8.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_8.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_8.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_8.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_8.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				},
+				{
+					"event":
+					{
+						"type": "Warning",
+						"message": "LogSkinnedMeshComp: GetSocketInfoByName(Mount_Top): No SkeletalMesh for Component(CharacterMesh0) Actor(GuLiGroundMechCharacter /Temp/Untitled_8.Untitled:PersistentLevel.GuLiGroundMechCharacter_0)",
+						"context": "log",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "",
+					"lineNumber": -1,
+					"timestamp": "2026.09.21-03.08.47"
+				}
+			],
+			"warnings": 9,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

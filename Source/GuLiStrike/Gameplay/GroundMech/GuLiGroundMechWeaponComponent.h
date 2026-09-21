@@ -9,6 +9,9 @@ class UNiagaraSystem;
 class UNiagaraComponent;
 class USkeletalMeshComponent;
 class UGuLiGroundMechWeaponAnimInstance;
+class AGuLiSoldierStateReplicator;
+class AGuLiCommanderPresentationActor;
+class AGuLiWingmanPresentationActor;
 
 namespace GuLiMechFire
 {
@@ -51,16 +54,29 @@ private:
 	bool LoadConfiguration(const FString& Id);
 	bool CanControl(bool bLocal) const;
 	bool AcceptAim(const FVector& Point);
+	/** Keeps the raw cursor/upper-body aim independent from the assisted weapon point. */
+	bool ResolveLocalWeaponAim(FVector& OutPoint);
+	void RefreshAimAssistSources(uint32 MatchEpoch);
+	void QueueAimAssistActor(AActor* Actor);
+	void CacheAimAssistActor(AActor* Actor);
+	void ResetAimAssistSources();
 	void RegisterSource();
 	void AlignGun();
 	void TryFire();
 	USkeletalMeshComponent* Gun() const;
 	UPROPERTY() FGuLiStrikeMechUpgradesRow ActiveUpgrade;
 	UPROPERTY() FGuLiStrikeMechSkillsRow ActiveSkill;
-	UPROPERTY() TObjectPtr<UNiagaraSystem> BulletSystem;
 	UPROPERTY() TObjectPtr<UNiagaraSystem> MuzzleSystem;
 	UPROPERTY() TArray<TObjectPtr<UNiagaraComponent>> MuzzleEffects;
 	TWeakObjectPtr<UGuLiGroundMechWeaponAnimInstance> ConfiguredAnim;
+	TWeakObjectPtr<AGuLiSoldierStateReplicator> AimSoldierStates;
+	TWeakObjectPtr<AGuLiCommanderPresentationActor> AimCommanderPresentation;
+	TWeakObjectPtr<AGuLiWingmanPresentationActor> AimWingmanPresentation;
+	TArray<TWeakObjectPtr<UGuLiCombatHealthComponent>> AimHealthComponents;
+	TArray<TWeakObjectPtr<AActor>> PendingAimActors;
+	FDelegateHandle AimActorSpawnedHandle;
+	uint32 AimMatchEpoch = 0;
+	bool bAimSourcesInitialized = false;
 	bool bConfigured = false;
 	bool bHasAim = false;
 	double NextShotTime = 0;

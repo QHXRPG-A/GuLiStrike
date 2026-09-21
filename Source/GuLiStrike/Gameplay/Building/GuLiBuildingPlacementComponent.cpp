@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
+#include "Gameplay/Data/GuLiGameText.h"
 
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "Battle/Framework/GuLiBattlePlayerController.h"
@@ -184,7 +185,7 @@ void UGuLiBuildingPlacementComponent::ExitBuildMode(const bool bEmitMessage)
 	if (bWasActive && bEmitMessage)
 	{
 		EmitFeedback(
-			NSLOCTEXT("GuLiBuilding", "BuildModeClosed", "已退出建造模式"),
+			GuLiGameText::Get(TEXT("UI.BuildingPlacementComponent.133")),
 			EGuLiBuildingFeedbackTone::Info);
 	}
 }
@@ -215,6 +216,23 @@ bool UGuLiBuildingPlacementComponent::HandleNumberKey(const int32 Number)
 	return true;
 }
 
+bool UGuLiBuildingPlacementComponent::SelectBuildingType(EGuLiBuildingType Type)
+{
+	auto* Catalog = ResolveCatalog();
+	if (!Catalog || !Catalog->FindDefinition(Type)) return false;
+	if (!bBuildModeActive && !EnterBuildMode()) return false;
+	SelectedBuildingType = Type; DestroyPreview(); bHasPreviewCandidate = false;
+	EmitSelectionFeedback(); return true;
+}
+
+FText UGuLiBuildingPlacementComponent::GetPlacementStatusText() const
+{
+	if (!bBuildModeActive) return FText::GetEmpty();
+	return PreviewRejectReason == EGuLiBuildingPlacementRejectReason::None
+		? FText::FromString(GuLiGameText::Text(TEXT("UI.BuildingPlacementComponent.138")))
+		: GetGuLiBuildingPlacementReasonText(PreviewRejectReason);
+}
+
 bool UGuLiBuildingPlacementComponent::HandlePrimaryAction(
 	const bool bWorldInputBlockedByUI)
 {
@@ -225,7 +243,7 @@ bool UGuLiBuildingPlacementComponent::HandlePrimaryAction(
 	if (bWorldInputBlockedByUI)
 	{
 		EmitFeedback(
-			NSLOCTEXT("GuLiBuilding", "CursorOverUI", "无法建造：鼠标位于界面上"),
+			GuLiGameText::Get(TEXT("UI.BuildingPlacementComponent.134")),
 			EGuLiBuildingFeedbackTone::Error);
 		return true;
 	}
@@ -328,7 +346,7 @@ bool UGuLiBuildingPlacementComponent::EnsurePreviewForDefinition(
 	}
 	UWorld* World = GetWorld();
 	APlayerController* PlayerController = GetOwningPlayerController();
-	if (!World || !PlayerController || !CachedCatalog || !CachedCatalog->PreviewMaterial)
+	if (!World || !PlayerController || !CachedCatalog || CachedCatalog->PreviewVfxId <= 0)
 	{
 		return false;
 	}
@@ -340,7 +358,7 @@ bool UGuLiBuildingPlacementComponent::EnsurePreviewForDefinition(
 		AGuLiBuildingPlacementPreview::StaticClass(),
 		FTransform::Identity,
 		Parameters);
-	if (!PreviewActor || !PreviewActor->Configure(Definition, CachedCatalog->PreviewMaterial))
+	if (!PreviewActor || !PreviewActor->Configure(Definition, CachedCatalog->PreviewVfxId))
 	{
 		DestroyPreview();
 		return false;
@@ -905,7 +923,7 @@ void UGuLiBuildingPlacementComponent::ClientReceivePlacementResult_Implementatio
 	{
 		EmitFeedback(
 			FText::Format(
-				NSLOCTEXT("GuLiBuilding", "PlacedFormat", "已建造：{0}"),
+				GuLiGameText::Get(TEXT("UI.BuildingPlacementComponent.135")),
 				GetSelectedDisplayName()),
 			EGuLiBuildingFeedbackTone::Success);
 	}
@@ -919,7 +937,7 @@ void UGuLiBuildingPlacementComponent::EmitSelectionFeedback()
 {
 	EmitFeedback(
 		FText::Format(
-			NSLOCTEXT("GuLiBuilding", "SelectedFormat", "建造：{0}"),
+			GuLiGameText::Get(TEXT("UI.BuildingPlacementComponent.136")),
 			GetSelectedDisplayName()),
 		EGuLiBuildingFeedbackTone::Info);
 }
@@ -929,7 +947,7 @@ void UGuLiBuildingPlacementComponent::EmitRejectedFeedback(
 {
 	EmitFeedback(
 		FText::Format(
-			NSLOCTEXT("GuLiBuilding", "RejectedFormat", "无法建造：{0}"),
+			GuLiGameText::Get(TEXT("UI.BuildingPlacementComponent.137")),
 			GetGuLiBuildingPlacementReasonText(Reason)),
 		EGuLiBuildingFeedbackTone::Error);
 }

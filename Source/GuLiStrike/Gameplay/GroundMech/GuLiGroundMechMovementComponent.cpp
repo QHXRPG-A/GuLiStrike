@@ -5,6 +5,8 @@
 #include "GameFramework/Character.h"
 #include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
 #include "Gameplay/GroundMech/GuLiGroundMechMovementNetwork.h"
+#include "Gameplay/GroundMech/GuLiGroundMechRocketComponent.h"
+#include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Net/UnrealNetwork.h"
 
 namespace
@@ -98,6 +100,10 @@ void UGuLiGroundMechMovementComponent::BeginMoveContext(float Duration)
 }
 float UGuLiGroundMechMovementComponent::GetMaxSpeed() const
 {
+	const auto* Ability = Rocket();
+	const auto* Mech = Cast<AGuLiGroundMechCharacter>(CharacterOwner);
+	if (IsFalling() && Mech && Ability && Ability->IsConfigured())
+		return Mech->GetWalkSpeed() * Ability->GetConfiguration().AirSpeedMultiplier;
 	return IsMassSupportMode() ? MaxWalkSpeed : Super::GetMaxSpeed();
 }
 float UGuLiGroundMechMovementComponent::GetMaxBrakingDeceleration() const
@@ -149,6 +155,25 @@ void UGuLiGroundMechMovementComponent::EndSweepStep()
 void UGuLiGroundMechMovementComponent::PerformMovement(float DeltaTime)
 {
 	BeginMoveContext(DeltaTime);
+	auto* Ability = Rocket();
+	const bool bRocketConfigured = Ability && Ability->IsConfigured();
+	if (bRocketConfigured && CharacterOwner->IsLocallyControlled() && !bReplayingMove)
+	{
+		bRocketHeld = Ability->IsInputHeld();
+		bRocketRequested = Ability->IsAbilityActive();
+	}
+	const bool bGroundedBefore = IsMovingOnGround() || IsMassSupportMode();
+	if (bRocketConfigured && CharacterOwner->HasAuthority()) RocketState.Fuel = Ability->GetFuel();
+	bRocketAllowedThisMove = bRocketConfigured && bRocketHeld && bRocketRequested &&
+		(bReplayingMove || Ability->IsAbilityActive()) && Ability->CanUseRocketControls() &&
+		(bGroundedBefore || IsFalling());
+	bRocketThrusting = bRocketAllowedThisMove && RocketState.Fuel > UE_SMALL_NUMBER;
+	if (bRocketThrusting && bGroundedBefore)
+	{
+		ResetMassSupportState();
+		CharacterOwner->SetBase(nullptr);
+		SetMovementMode(MOVE_Falling);
+	}
 	Super::PerformMovement(DeltaTime);
 	// An idle walker still responds to a moving cylinder entering its space. This is a
 	// zero-time constraint at the move endpoint, not another advancement of Mass time.
@@ -161,7 +186,40 @@ void UGuLiGroundMechMovementComponent::PerformMovement(float DeltaTime)
 		FHitResult Hit;
 		SafeMoveUpdatedComponent(FVector::ZeroVector, UpdatedComponent->GetComponentQuat(), true, Hit);
 	}
+	if (bRocketConfigured)
+	{
+		const auto& Config = Ability->GetConfiguration();
+		if (!bRocketHeld && bGroundedBefore && (IsMovingOnGround() || IsMassSupportMode()))
+		{
+			const float RecoveryTime = FMath::Max(0.f, RocketState.RecoveryElapsed + DeltaTime - Config.FuelRecoveryDelay);
+			RocketState.RecoveryElapsed = FMath::Min(Config.FuelRecoveryDelay, RocketState.RecoveryElapsed + DeltaTime);
+			RocketState.Fuel = FMath::Min(Config.MaxFuel, RocketState.Fuel + RecoveryTime * Config.FuelRecoveryPerSecond);
+		}
+		else RocketState.RecoveryElapsed = 0.f;
+		bRocketThrusting = bRocketAllowedThisMove && RocketState.Fuel > UE_SMALL_NUMBER && IsFalling();
+		Ability->FinishMovement(RocketState.Fuel, bRocketThrusting, bReplayingMove);
+	}
 	EndMoveContext();
+}
+FRotator UGuLiGroundMechMovementComponent::ComputeOrientToMovementRotation(const FRotator& CurrentRotation, float DeltaTime, FRotator& DeltaRotation) const
+{
+	if (IsFalling())
+	{
+		const FVector Horizontal(Velocity.X, Velocity.Y, 0.f);
+		return Horizontal.SizeSquared() >= 25.f ? FRotator(0.f, Horizontal.Rotation().Yaw, 0.f) : CurrentRotation;
+	}
+	return Super::ComputeOrientToMovementRotation(CurrentRotation, DeltaTime, DeltaRotation);
+}
+
+UGuLiGroundMechRocketComponent* UGuLiGroundMechMovementComponent::Rocket() const
+{
+	return GetOwner() ? GetOwner()->FindComponentByClass<UGuLiGroundMechRocketComponent>() : nullptr;
+}
+void UGuLiGroundMechMovementComponent::UpdateFromCompressedFlags(uint8 Flags)
+{
+	Super::UpdateFromCompressedFlags(Flags);
+	bRocketHeld = (Flags & FSavedMove_Character::FLAG_Custom_0) != 0;
+	bRocketRequested = (Flags & FSavedMove_Character::FLAG_Custom_1) != 0;
 }
 void UGuLiGroundMechMovementComponent::StartNewPhysics(float DeltaTime, int32 Iterations)
 {
@@ -325,20 +383,35 @@ void UGuLiGroundMechMovementComponent::PhysFalling(float DeltaTime, int32 Iterat
 	while (Remaining >= MIN_TICK_TIME && Iterations < MaxSimulationIterations && HasValidData() && IsFalling())
 	{
 		++Iterations;
-		const float Step = GetSimulationTimeStep(Remaining, Iterations);
+		float Step = GetSimulationTimeStep(Remaining, Iterations);
+		const auto* Ability = Rocket();
+		const bool bThrust = bRocketAllowedThisMove && RocketState.Fuel > UE_SMALL_NUMBER && Ability;
+		if (bThrust) Step = FMath::Min(Step, RocketState.Fuel / Ability->GetConfiguration().FuelDrainPerSecond);
 		Remaining -= Step;
 		BeginSweepStep(Step);
 		RestorePreAdditiveRootMotionVelocity();
 		const FVector OldVelocity = Velocity;
 		if (!HasAnimRootMotion() && !CurrentRootMotion.HasOverrideVelocity())
 		{
-			TGuardValue<FVector> RestoreAcceleration(Acceleration,
-													 ProjectToGravityFloor(GetFallingLateralAcceleration(Step)));
+			const bool bAirSteering = Ability && Ability->IsConfigured();
+			TGuardValue<FVector> RestoreAcceleration(Acceleration, ProjectToGravityFloor(
+				bAirSteering ? Acceleration : GetFallingLateralAcceleration(Step)));
 			Velocity = ProjectToGravityFloor(Velocity);
 			CalcVelocity(Step, FallingLateralFriction, false, GetMaxBrakingDeceleration());
+			if (bAirSteering) Velocity = Velocity.GetClampedToMaxSize(GetMaxSpeed());
 			Velocity += GetGravitySpaceComponentZ(OldVelocity);
 		}
-		Velocity = NewFallVelocity(Velocity, -GetGravityDirection() * GetGravityZ(), Step);
+		// Faster descent is independent of powered ascent and its existing tuning.
+		// Derive it from this substep's velocity/ability state so replay needs no extra state.
+		const float FallGravity = !bThrust && GetGravitySpaceZ(Velocity) <= 0.f
+			&& Ability && Ability->IsConfigured() ? Ability->GetConfiguration().FallGravityMultiplier : 1.f;
+		Velocity = NewFallVelocity(Velocity, -GetGravityDirection() * GetGravityZ() * FallGravity, Step);
+		if (bThrust)
+		{
+			const auto& Config = Ability->GetConfiguration();
+			Velocity.Z = FMath::Min(Config.MaxRiseSpeed, Velocity.Z + Config.ThrustAcceleration * Step);
+			RocketState.Fuel = FMath::Max(0.f, RocketState.Fuel - Config.FuelDrainPerSecond * Step);
+		}
 		ApplyRootMotionToVelocity(Step);
 		if (bNotifyApex && GetGravitySpaceZ(Velocity) < 0)
 		{
@@ -543,6 +616,7 @@ void UGuLiGroundMechMovementComponent::ApplyExternalDisplacement(const FTransfor
 {
 	if (!CharacterOwner || !CharacterOwner->HasAuthority())
 		return;
+	if (auto* Ability = Rocket()) Ability->Interrupt();
 	ClearMassSupport(true);
 	PreparedMove = {};
 	LastMoveContext = {};
@@ -554,6 +628,7 @@ void UGuLiGroundMechMovementComponent::OnTeleported()
 {
 	if (!bApplyingCorrection)
 	{
+		if (auto* Ability = Rocket()) Ability->Interrupt();
 		ClearMassSupport(true);
 		PreparedMove = {};
 		bPreparedMove = false;
@@ -594,6 +669,7 @@ void UGuLiGroundMechMovementComponent::ServerMoveHandleClientError(float Stamp, 
 	{
 		PendingResponseTimeStamp = Stamp;
 		PendingResponseSupport = SupportState;
+		PendingResponseRocket = RocketState;
 	}
 }
 bool UGuLiGroundMechMovementComponent::ServerCheckClientError(float Stamp, float Delta, const FVector &Accel,
@@ -601,6 +677,8 @@ bool UGuLiGroundMechMovementComponent::ServerCheckClientError(float Stamp, float
 															  UPrimitiveComponent *Base, FName Bone, uint8 Mode)
 {
 	const auto *Data = static_cast<const FGuLiGroundMechMoveData *>(GetCurrentNetworkMoveData());
+	if (Data && (FMath::Abs(Data->RocketEnd.Fuel - RocketState.Fuel) > .05f ||
+		FMath::Abs(Data->RocketEnd.RecoveryElapsed - RocketState.RecoveryElapsed) > .05f)) return true;
 	if (Data && (Data->SupportId != SupportState.SoldierId.Value || Data->SupportEpoch != SupportState.Epoch ||
 				 Data->SupportDisplacement != SupportState.DisplacementRevision))
 		return true;
@@ -615,6 +693,8 @@ void UGuLiGroundMechMovementComponent::AfterValidatedMoveResponse(const FCharact
 {
 	if (bApplyingCorrection)
 	{
+		RocketState = static_cast<const FGuLiGroundMechMoveResponse &>(Response).Rocket;
+		if (auto* Ability = Rocket()) Ability->ConfirmMovementBaseline();
 		SupportState = static_cast<const FGuLiGroundMechMoveResponse &>(Response).Support;
 		SupportState.bHasSourceReference = false;
 		const auto &Acked = static_cast<const FGuLiGroundMechSavedMove &>(*ClientPredictionData->LastAckedMove);

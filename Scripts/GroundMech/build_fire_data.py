@@ -5,6 +5,9 @@ import subprocess
 import tempfile
 
 ROOT = Path(__file__).resolve().parents[2]
+import sys
+sys.path.insert(0,str(ROOT/'Scripts/Vfx'))
+from vfx_registry import vfx_id
 CLI = r'D:\UE5.7\excelize-cli\bin\xlsx.exe'
 BOOK = ROOT / 'Data/Excel/GuLiStrikeMech.xlsx'
 FX = '/Game/GuLiStrike/FX/GroundMech'
@@ -56,9 +59,10 @@ if __name__ == '__main__':
                 ('ProjectileSpeed','float',True),('ProjectileLifetime','float',True),('SweepRadius','float',True),
                 ('MuzzleSocket','str',True),('RecoilBone','str',True),('RecoilTargetLocalZCentimeters','float',True),
                 ('RecoilDuration','float',True),('RecoilCurve','softobject',True),
-                ('WeaponAnimation','softclass',True),('BulletSystem','softobject',True),('MuzzleSystem','softobject',True)],
+                ('WeaponAnimation','softclass',True),('BulletVfxId','int',True),('MuzzleVfxId','int',True),
+                ('AimAssistEnabled','bool',False),('AimAssistRadiusCentimeters','float',False)],
                 [[1,'BasicMachinegun','基础机枪；距离cm、时间s；射速/伤害只在升级表维护',12000,5,15,
                   'Muzzle','Barrel_big',152,0.15,ANIM+'/CF_Machinegun_Recoil.CF_Machinegun_Recoil',
                   ANIM+'/ABP_GroundMech_Machinegun.ABP_GroundMech_Machinegun_C',
-                  FX+'/NS_GroundMech_Bullet.NS_GroundMech_Bullet',FX+'/NS_GroundMech_Muzzle.NS_GroundMech_Muzzle']])
+                  vfx_id('PlayerBullet'),vfx_id('PlayerMuzzle'),True,100]])
     print(BOOK)

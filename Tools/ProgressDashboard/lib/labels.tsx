@@ -27,9 +27,10 @@ export const STATUS_LABELS: Record<string, string> = {
   cancelled: '已取消',
   planned: '规划中',
   in_progress: '实施中',
+  blocked: '阻塞',
   verification: '待验收',
   done: '完成',
-  abandoned: '已放弃',
+  abandoned: '废弃',
   recorded: '已记录',
   current: '当前',
   reference: '参考',
@@ -44,7 +45,8 @@ export const STATUS_LABELS: Record<string, string> = {
 };
 
 export function statusClass(status: string): string {
-  if (status === 'failed') return 'border-red-400/35 bg-red-400/10 text-red-200';
+  if (status === 'failed' || status === 'abandoned' || status === 'blocked')
+    return 'border-red-400/35 bg-red-400/10 text-red-200';
   if (status === 'verification' || status === 'partial')
     return 'border-amber-400/35 bg-amber-400/10 text-amber-200';
   if (status === 'in_progress') return 'border-cyan-400/35 bg-cyan-400/10 text-cyan-200';

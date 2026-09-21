@@ -130,11 +130,12 @@ struct FGuLiCommanderSoldierInstanceHandle
 {
 	uint16 RequestedUnitTypeId = 0u;
 	uint16 BatchUnitTypeId = 0u;
+	EGuLiTeam BatchTeam = EGuLiTeam::Unassigned;
 	int32 UnitInstanceIndex = INDEX_NONE;
 	int32 RingInstanceIndex = INDEX_NONE;
 };
 
-/** Non-UObject state owned by one UnitTypeId ISM batch. */
+/** Non-UObject state owned by one (UnitTypeId, Team) ISM batch. */
 struct FGuLiCommanderUnitInstanceBatchState
 {
 	TArray<int32> DirtyTransformSlots;
@@ -207,14 +208,15 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Commander|Presentation")
 	UInstancedStaticMeshComponent* GetUnitInstances() const { return UnitInstances; }
 
-	/** Exact UnitTypeId lookup. Unknown types return null; runtime fallback is internal and logged once. */
-	UInstancedStaticMeshComponent* FindUnitInstances(uint16 UnitTypeId) const;
+	/** Exact model/team lookup. Unassigned batches also supply team-independent mesh metadata. */
+	UInstancedStaticMeshComponent* FindUnitInstances(uint16 UnitTypeId,
+		EGuLiTeam Team = EGuLiTeam::Unassigned) const;
 	/** Effective mesh scale; logical pose queries deliberately remain unit scale. */
 	float GetUnitPresentationScale(uint16 UnitTypeId) const;
 	/** Scaled mesh-local bounds in actual centimeters; consumers must not scale them again. */
 	FBox GetUnitModelBoundsCentimeters(uint16 UnitTypeId) const;
 
-	/** Returns all type batches in ascending UnitTypeId order for diagnostics and shared settings. */
+	/** Returns all model/team batches in stable order for diagnostics and shared settings. */
 	void GetUnitInstanceComponents(
 		TArray<UInstancedStaticMeshComponent*>& OutComponents) const;
 
@@ -326,8 +328,11 @@ private:
 	void ConfigureUnitInstanceComponent(UInstancedStaticMeshComponent& Component) const;
 	void SetUnitInstanceBatchesVisibility(bool bVisible);
 	uint16 ResolveUnitBatchTypeId(uint16 RequestedUnitTypeId);
-	int32 AcquireUnitInstanceSlot(uint16 BatchUnitTypeId);
-	void ReleaseUnitInstanceSlot(uint16 BatchUnitTypeId, int32 InstanceIndex);
+	static uint32 MakeUnitBatchKey(uint16 UnitTypeId, EGuLiTeam Team);
+	UInstancedStaticMeshComponent* FindUnitInstancesByBatch(uint32 BatchKey) const;
+	UInstancedStaticMeshComponent* EnsureUnitTeamBatch(uint16 UnitTypeId, EGuLiTeam Team);
+	int32 AcquireUnitInstanceSlot(uint16 BatchUnitTypeId, EGuLiTeam Team);
+	void ReleaseUnitInstanceSlot(uint16 BatchUnitTypeId, EGuLiTeam Team, int32 InstanceIndex);
 	void ResolveSoftAssets();
 	AGuLiSoldierStateReplicator* FindStateReplicator();
 	APlayerController* FindLocalController();
@@ -400,9 +405,9 @@ private:
 	UPROPERTY(VisibleAnywhere, Category = "Commander|Presentation")
 	TObjectPtr<UInstancedStaticMeshComponent> UnitInstances;
 
-	/** Components are owned by this Actor; ID1 aliases UnitInstances for compatibility. */
+	/** Actor-owned components; the unassigned default model aliases UnitInstances. */
 	UPROPERTY(Transient)
-	TMap<uint16, TObjectPtr<UInstancedStaticMeshComponent>> UnitInstancesByType;
+	TMap<uint32, TObjectPtr<UInstancedStaticMeshComponent>> UnitInstancesByBatch;
 	UPROPERTY(Transient) TMap<uint16,TObjectPtr<UInstancedStaticMeshComponent>> PhasedInstancesByType;
 	UPROPERTY(Transient) TMap<uint16,TObjectPtr<UInstancedStaticMeshComponent>> HitFlashInstancesByType;
 	UPROPERTY(Transient) TMap<uint16,TObjectPtr<UInstancedStaticMeshComponent>> WreckInstancesByType;
@@ -416,13 +421,13 @@ private:
 	TSoftObjectPtr<UStaticMesh> UnitMeshAsset;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Commander|Presentation")
-	TSoftObjectPtr<UStaticMesh> RingMeshAsset;
+	int32 RingMeshVfxId = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Commander|Presentation")
 	TSoftObjectPtr<UMaterialInterface> UnitMaterialAsset;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Commander|Presentation")
-	TSoftObjectPtr<UMaterialInterface> RingMaterialAsset;
+	int32 RingMaterialVfxId = 0;
 
 	// 基线大于 10 Hz 的一个采样周期；每名士兵再按自己的实际收包间隔自适应增加。
 	UPROPERTY(Config, EditDefaultsOnly, Category = "Commander|Presentation|Smoothing", meta = (ClampMin = "0.0"))
@@ -506,7 +511,7 @@ private:
 	TArray<int32> DirtyRingTransformSlots;
 	TMap<FGuLiSoldierId, FGuLiCommanderSoldierInstanceHandle> SoldierInstanceHandles;
 	TArray<int32> FreeRingInstanceIndices;
-	TMap<uint16, FGuLiCommanderUnitInstanceBatchState> UnitInstanceBatchStates;
+	TMap<uint32, FGuLiCommanderUnitInstanceBatchState> UnitInstanceBatchStates;
 	TSet<uint16> LoggedMissingUnitBatchTypes;
 	TMap<FGuLiSoldierId, FGuLiCommanderPresentedSoldier> PresentedSoldiers;
 	TMap<FGuLiSoldierId, FGuLiCommanderPredictedMove> PredictedMoves;

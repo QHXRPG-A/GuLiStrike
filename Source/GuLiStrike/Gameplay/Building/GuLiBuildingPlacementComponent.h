@@ -39,6 +39,9 @@ public:
 
 	/** Returns true whenever B was consumed, including an eligibility rejection. */
 	bool ToggleBuildMode();
+	/** Explicit catalog selection for commander UI; numeric keys remain control groups. */
+	bool SelectBuildingType(EGuLiBuildingType Type);
+	FText GetPlacementStatusText() const;
 	/** Returns true only when an active build mode consumed the number key. */
 	bool HandleNumberKey(int32 Number);
 	/** Returns true whenever build mode consumed LMB. */

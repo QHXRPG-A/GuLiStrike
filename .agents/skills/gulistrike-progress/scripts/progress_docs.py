@@ -20,6 +20,11 @@ from urllib.parse import unquote
 
 import yaml
 
+try:  # libyaml C 实现与 safe_load 语义等价，423 篇文档解析快数倍
+    from yaml import CSafeLoader as YamlSafeLoader
+except ImportError:  # pragma: no cover
+    from yaml import SafeLoader as YamlSafeLoader
+
 
 SCHEMA = "guli-progress/v1"
 CORE_DIRS = {
@@ -30,7 +35,7 @@ CORE_DIRS = {
 }
 STATUS_VALUES = {
     "requirement": {"draft", "approved", "superseded", "cancelled"},
-    "development": {"planned", "in_progress", "verification", "done", "abandoned"},
+    "development": {"planned", "in_progress", "blocked", "verification", "done", "abandoned"},
     "archive": {"recorded", "superseded"},
     "gameplay": {"current"},
     "backlog": {"current"},
@@ -213,7 +218,7 @@ def split_front_matter(text: str) -> tuple[dict[str, Any], str]:
     if end < 0:
         return {}, text
     raw = text[4:end]
-    parsed = yaml.safe_load(raw) or {}
+    parsed = yaml.load(raw, Loader=YamlSafeLoader) or {}
     if not isinstance(parsed, dict):
         raise ValueError("front matter must be a mapping")
     return parsed, text[end + 5 :]
@@ -966,6 +971,8 @@ def validate(project_root: Path, documents: list[Document] | None = None) -> dic
             warnings.append(issue(doc, "missing_categories", "归档/需求/开发根文档建议填写 categories（可为空数组）"))
         if status in {"draft", "planned", "in_progress", "verification"} and not str(meta.get("next_action", "")).strip():
             errors.append(issue(doc, "missing_next_action", "活跃文档必须填写 next_action"))
+        if status == "blocked" and not str(meta.get("status_note", "")).strip():
+            errors.append(issue(doc, "missing_status_note", "阻塞文档必须在 status_note 填写阻塞说明"))
         size_kb = doc.path.stat().st_size / 1024
         threshold = {"requirement": 20, "development": 30, "gameplay": 30, "archive": 80}.get(kind)
         if meta.get("role") == "root" and threshold and size_kb > threshold:
@@ -1020,6 +1027,7 @@ def derive_stage(requirement: Document | None, development: Document | None) -> 
     status = str(development.metadata.get("status"))
     return {
         "in_progress": "in_progress",
+        "blocked": "blocked",
         "verification": "verification",
         "done": "done",
         "abandoned": "done",
@@ -1122,8 +1130,9 @@ def table(headers: list[str], rows: list[list[Any]]) -> str:
     return "\n".join(output)
 
 
-def generated_files(project_root: Path) -> dict[Path, str]:
-    snapshot = build_snapshot(project_root)
+def generated_files(project_root: Path, snapshot: dict[str, Any] | None = None) -> dict[Path, str]:
+    if snapshot is None:
+        snapshot = build_snapshot(project_root)
     docs_by_id = {doc["id"]: doc for doc in snapshot["documents"]}
     index_root = project_root / "Progress" / "_Index"
     banner = "> 自动生成，请勿手改。运行 `progress_docs.py build` 刷新。\n\n"
@@ -1131,6 +1140,7 @@ def generated_files(project_root: Path) -> dict[Path, str]:
         ("draft", "待确认需求"),
         ("planned", "规划中"),
         ("in_progress", "实施中"),
+        ("blocked", "阻塞中"),
         ("verification", "待验收"),
         ("done", "已完成"),
     ]
@@ -1184,8 +1194,8 @@ def generated_files(project_root: Path) -> dict[Path, str]:
     }
 
 
-def build_indexes(project_root: Path, check_only: bool) -> dict[str, Any]:
-    expected = generated_files(project_root)
+def build_indexes(project_root: Path, check_only: bool, snapshot: dict[str, Any] | None = None) -> dict[str, Any]:
+    expected = generated_files(project_root, snapshot)
     changed = []
     for path, content in expected.items():
         if not path.exists() or read_text(path) != content:

@@ -16,7 +16,7 @@ struct FGuLiStrongholdTransitConfig
 	UPROPERTY() float ExitFlashSeconds = .2f;
 	UPROPERTY() float SpeedMultiplier = 50;
 	UPROPERTY() float ExitRadius = 800;
-	UPROPERTY() TSoftObjectPtr<UMaterialInterface> EnergyMaterial;
-	UPROPERTY() TSoftObjectPtr<UNiagaraSystem> TrailSystem;
-	UPROPERTY() TSoftObjectPtr<UNiagaraSystem> FlashSystem;
+	UPROPERTY() int32 EnergyVfxId = 0;
+	UPROPERTY() int32 TrailVfxId = 0;
+	UPROPERTY() int32 FlashVfxId = 0;
 };

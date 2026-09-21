@@ -44,10 +44,14 @@ public:
 
 	/** Consumes a viewport-pixel click routed by the transparent map button. */
 	bool HandleMapClickAtScreenPosition(const FVector2D& ScreenPixelPosition);
+	bool HandleMapOrderAtScreenPosition(const FVector2D& ScreenPixelPosition, bool bAppend);
 	virtual void SetVisibility(ESlateVisibility InVisibility) override;
 	virtual void ReleaseSlateResources(bool bReleaseChildren) override;
 
 protected:
+	virtual FReply NativeOnMouseButtonDown(const FGeometry&, const FPointerEvent&) override;
+	virtual FReply NativeOnMouseButtonUp(const FGeometry&, const FPointerEvent&) override;
+	virtual FReply NativeOnMouseMove(const FGeometry&, const FPointerEvent&) override;
 	virtual TSharedRef<SWidget> RebuildWidget() override;
 	virtual void NativeConstruct() override;
 	virtual void NativeDestruct() override;
@@ -61,6 +65,8 @@ protected:
 		bool bParentEnabled) const override;
 
 private:
+	bool ResolveScreenWorldPoint(const FVector2D& ScreenPixelPosition, FVector& Point) const;
+	bool bMapDragging = false;
 	friend class SGuLiCommanderMiniMapLayer;
 	friend class FGuLiCommanderMiniMapCacheTest;
 	int32 PaintMapLayer(bool bTerrain, const FGeometry& AllottedGeometry, const FSlateRect& MyCullingRect,

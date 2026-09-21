@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiUnitFeedbackSubsystem.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/CombatEffects/GuLiUnitWreck.h"
 
 #include "Components/MeshComponent.h"
@@ -30,6 +31,7 @@ void UGuLiUnitFeedbackSubsystem::Initialize(FSubsystemCollectionBase& Collection
 {
 	Super::Initialize(Collection);
 	Collection.InitializeDependency<UGuLiCommanderDataSubsystem>();
+	Collection.InitializeDependency<UGuLiVfxRegistrySubsystem>();
 	if (const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>())
 	{
 		for (const FGuLiSoldierDefinition& Definition : Data->GetSoldierDefinitions())
@@ -42,12 +44,12 @@ void UGuLiUnitFeedbackSubsystem::Initialize(FSubsystemCollectionBase& Collection
 	}
 	CosmeticRandom.Initialize(static_cast<int32>(FPlatformTime::Cycles()));
 	const auto* Settings = GetDefault<UGuLiUnitFeedbackSettings>();
-	HitMaterial = Settings->HitMaterial.LoadSynchronous();
-	InstancedHitMaterial = Settings->InstancedHitMaterial.LoadSynchronous();
-	WreckMaterial = Settings->WreckMaterial.LoadSynchronous();
+	HitMaterial = GuLiVfx::Load<UMaterialInterface>(this, Settings->HitVfxId);
+	InstancedHitMaterial = GuLiVfx::Load<UMaterialInterface>(this, Settings->InstancedHitVfxId);
+	WreckMaterial = GuLiVfx::Load<UMaterialInterface>(this, Settings->WreckVfxId);
 	TArray<FSoftObjectPath> Paths;
-	for (const auto& Asset : Settings->Explosions) if (!Asset.IsNull()) Paths.AddUnique(Asset.ToSoftObjectPath());
-	for (const auto& Asset : Settings->WingmanExplosions) if (!Asset.IsNull()) Paths.AddUnique(Asset.ToSoftObjectPath());
+	for (const auto& Asset : Settings->ExplosionVfxIds) { const auto Path = GuLiVfx::Path(this, Asset); if (!Path.IsNull()) Paths.AddUnique(Path); }
+	for (const auto& Asset : Settings->WingmanExplosionVfxIds) { const auto Path = GuLiVfx::Path(this, Asset); if (!Path.IsNull()) Paths.AddUnique(Path); }
 	if (!Paths.IsEmpty())
 	{
 		LoadHandle = UAssetManager::GetStreamableManager().RequestAsyncLoad(Paths,
@@ -58,10 +60,10 @@ void UGuLiUnitFeedbackSubsystem::Initialize(FSubsystemCollectionBase& Collection
 void UGuLiUnitFeedbackSubsystem::FinishLoading()
 {
 	const auto* Settings = GetDefault<UGuLiUnitFeedbackSettings>();
-	for (const auto& Asset : Settings->Explosions)
-		if (UNiagaraSystem* System = Asset.Get()) LoadedExplosions.AddUnique(System);
-	for (const auto& Asset : Settings->WingmanExplosions)
-		if (UNiagaraSystem* System = Asset.Get()) LoadedWingmanExplosions.AddUnique(System);
+	for (const auto& Asset : Settings->ExplosionVfxIds)
+		if (GuLiVfx::Load<UNiagaraSystem>(this, Asset, false)) LoadedExplosions.AddUnique(Asset);
+	for (const auto& Asset : Settings->WingmanExplosionVfxIds)
+		if (GuLiVfx::Load<UNiagaraSystem>(this, Asset, false)) LoadedWingmanExplosions.AddUnique(Asset);
 	const float Now = GetWorld()->GetTimeSeconds();
 	for (const auto& Pending : PendingExplosions)
 		if (Pending.ExpireTime >= Now) SpawnExplosion(Pending.Location, Pending.UnitSize, Pending.bWingman);
@@ -127,8 +129,7 @@ bool UGuLiUnitFeedbackSubsystem::GetActorVisualBounds(const AActor* Actor, FBox&
 
 float UGuLiUnitFeedbackSubsystem::CalculateDestructionScale(const float UnitSize) const
 {
-	const float AuthoredScale = GetDefault<UGuLiUnitFeedbackSettings>()->ReferenceExplosionScale;
-	const float BaseScale = FMath::IsFinite(AuthoredScale) && AuthoredScale > 0.0f ? AuthoredScale : 1.0f;
+	constexpr float BaseScale = 1.0f; // Only the model-size ratio; each VfxId owns its authored scale.
 	if (!FMath::IsFinite(UnitSize) || UnitSize <= UE_SMALL_NUMBER || ReferenceUnitSize <= UE_SMALL_NUMBER)
 		return BaseScale; // Missing visual data uses the approved reference look, never a guessed unit radius.
 	const float Scale = BaseScale * UnitSize / ReferenceUnitSize;
@@ -274,15 +275,19 @@ void UGuLiUnitFeedbackSubsystem::SpawnExplosion(const FVector& Location, float U
 	const auto& Variants = bWingman ? LoadedWingmanExplosions : LoadedExplosions;
 	if (Variants.IsEmpty() || !IsWithinCullDistance(Location)
 		|| ActiveExplosions.Num() >= FMath::Max(1, GetDefault<UGuLiUnitFeedbackSettings>()->MaximumConcurrentExplosions)) return;
-	UNiagaraSystem* System = Variants[CosmeticRandom.RandRange(0, Variants.Num() - 1)];
-	const float Scale = CalculateDestructionScale(UnitSize);
+	const int32 VfxId = Variants[CosmeticRandom.RandRange(0, Variants.Num() - 1)];
+	UNiagaraSystem* System = GuLiVfx::Load<UNiagaraSystem>(this, VfxId, false);
+	const FVector Scale = GuLiVfx::Scale(this, VfxId, FVector(CalculateDestructionScale(UnitSize)));
+	if (!System || !UGuLiVfxRegistrySubsystem::IsValidScale(Scale)) return;
 	const auto* Settings = GetDefault<UGuLiUnitFeedbackSettings>();
 	const FName ScaleParameter = bWingman ? Settings->WingmanExplosionScaleParameter : Settings->GroundExplosionScaleParameter;
+	if (!ScaleParameter.IsNone() && (!FMath::IsNearlyEqual(Scale.X, Scale.Y) || !FMath::IsNearlyEqual(Scale.X, Scale.Z)))
+	{ UE_LOG(LogTemp, Error, TEXT("VfxId %d requires uniform Niagara parameter scale."), VfxId); return; }
 	UNiagaraComponent* Component = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), System, Location,
-		FRotator(0, CosmeticRandom.FRandRange(0, 360), 0), ScaleParameter.IsNone() ? FVector(Scale) : FVector::OneVector,
+		FRotator(0, CosmeticRandom.FRandRange(0, 360), 0), ScaleParameter.IsNone() ? Scale : FVector::OneVector,
 		false, false, ENCPoolMethod::ManualRelease, true);
 	if (!Component) return;
-	if (!ScaleParameter.IsNone()) Component->SetVariableFloat(ScaleParameter, Scale);
+	if (!ScaleParameter.IsNone()) Component->SetVariableFloat(ScaleParameter, Scale.X);
 	Component->SetCastShadow(false);
 	auto& Active = ActiveExplosions.AddDefaulted_GetRef();
 	Active.Component = Component;

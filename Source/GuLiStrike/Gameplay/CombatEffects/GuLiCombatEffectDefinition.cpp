@@ -14,7 +14,7 @@ bool UGuLiSpellFieldDefinition::IsValidDefinition() const
 bool UGuLiProjectileEffectDefinition::IsValidDefinition() const
 {
 	FGuLiProjectileMotionSettings ResolvedMotion;
-	return ResolveMotionSettings(ResolvedMotion) && !ImpactField.IsNull() && FMath::IsFinite(VisualScale) && VisualScale > 0
+	return ResolveMotionSettings(ResolvedMotion) && !ImpactField.IsNull()
 		&& FMath::IsFinite(TrailFadeSeconds) && TrailFadeSeconds >= 0 && TrailFadeSeconds <= 10;
 }
 

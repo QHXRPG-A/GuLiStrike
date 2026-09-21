@@ -13,6 +13,7 @@ import {
   AlertTriangle,
   Archive,
   Boxes,
+  Check,
   CheckCircle2,
   ChevronRight,
   CircleDashed,
@@ -121,12 +122,40 @@ const WORKFLOW: Array<{
   { key: 'draft', label: '草案', hint: '等待确认', icon: CircleDashed },
   { key: 'planned', label: '规划', hint: '方案与排期', icon: FolderKanban },
   { key: 'in_progress', label: '实施', hint: '正在推进', icon: Wrench },
+  { key: 'blocked', label: '阻塞', hint: '遇到阻碍', icon: AlertTriangle },
   { key: 'verification', label: '验收', hint: '等待证据', icon: ClipboardCheck },
   { key: 'done', label: '完成', hint: '已闭环', icon: CheckCircle2 },
 ];
 
+type QueueStatus = 'planned' | 'in_progress' | 'blocked' | 'verification' | 'done' | 'abandoned';
+
+type SetWorkStage = (workId: string, status: QueueStatus, statusNote?: string) => Promise<string | null>;
+
+type QueueSortKey = 'title' | 'stage' | 'tasks' | 'updated';
+
+const QUEUE_STAGE_OPTIONS = ['planned', 'in_progress', 'verification', 'done', 'abandoned'] as const;
+
+const QUEUE_STATUS_LABELS: Record<QueueStatus, string> = {
+  planned: '规划',
+  in_progress: '实施',
+  blocked: '阻塞',
+  verification: '验收',
+  done: '完成',
+  abandoned: '废弃',
+};
+
+const STAGE_ORDER: Record<WorkflowStage, number> = {
+  draft: 0,
+  planned: 1,
+  in_progress: 2,
+  blocked: 3,
+  verification: 4,
+  done: 5,
+};
+
 function stageClass(stage: WorkflowStage): string {
   if (stage === 'in_progress') return 'border-cyan-400/35 bg-cyan-400/8 text-cyan-200';
+  if (stage === 'blocked') return 'border-red-400/35 bg-red-400/8 text-red-200';
   if (stage === 'verification') return 'border-amber-400/35 bg-amber-400/8 text-amber-200';
   if (stage === 'done') return 'border-emerald-400/25 bg-emerald-400/7 text-emerald-200';
   return 'border-slate-600/70 bg-slate-800/55 text-slate-300';
@@ -319,7 +348,7 @@ function WorkList({
             onClick={() => target && documents.has(target) && openDocument(target)}
             className="group flex w-full items-start gap-3 px-1 py-3 text-left transition-colors hover:bg-slate-800/30"
           >
-            <span className={cn('mt-1.5 size-2 shrink-0 rounded-full', item.stage === 'verification' ? 'bg-amber-400' : 'bg-cyan-400')} />
+            <span className={cn('mt-1.5 size-2 shrink-0 rounded-full', item.stage === 'blocked' ? 'bg-red-400' : item.stage === 'verification' ? 'bg-amber-400' : 'bg-cyan-400')} />
             <span className="min-w-0 flex-1">
               <span className="line-clamp-1 text-sm font-medium text-slate-200 group-hover:text-cyan-200">{item.title}</span>
               <span className="mt-1 line-clamp-1 text-xs text-slate-500">{item.next_action || item.summary}</span>
@@ -337,11 +366,13 @@ function Overview({
   openDocument,
   onSelectStage,
   onOpenTasks,
+  onSetStage,
 }: {
   snapshot: Snapshot;
   openDocument: (id: string, anchor?: string) => void;
   onSelectStage: (stage: WorkflowStage) => void;
   onOpenTasks: () => void;
+  onSetStage?: SetWorkStage;
 }) {
   const documents = useMemo(() => new Map(snapshot.documents.map((document) => [document.id, document])), [snapshot.documents]);
   const rootDevelopment = snapshot.documents.filter(
@@ -359,7 +390,7 @@ function Overview({
     return `${item.next_action} ${target?.status_note ?? ''}`;
   };
   const blocked = snapshot.work_items
-    .filter((item) => /(阻塞|失败|未通过|blocked)/i.test(signalText(item)) || item.verification === 'failed')
+    .filter((item) => item.stage === 'blocked' || /(阻塞|失败|未通过|blocked)/i.test(signalText(item)) || item.verification === 'failed')
     .slice(0, 5);
   const pending = snapshot.work_items
     .filter((item) => item.stage === 'draft' || /(待确认|待用户|确认后)/.test(signalText(item)))
@@ -422,7 +453,7 @@ function Overview({
             <CardTitle className="text-slate-100">当前推进队列</CardTitle>
           </CardHeader>
           <CardContent>
-            <WorkQueue items={active.slice(0, 14)} documents={documents} openDocument={openDocument} />
+            <WorkQueue items={active} documents={documents} openDocument={openDocument} onSetStage={onSetStage} />
           </CardContent>
         </Card>
         <Card className="control-card">
@@ -503,49 +534,350 @@ function WorkQueue({
   documents,
   openDocument,
   empty = '当前没有活跃工作',
+  onSetStage,
 }: {
   items: WorkItem[];
   documents: Map<string, ProgressDocument>;
   openDocument: (id: string, anchor?: string) => void;
   empty?: string;
+  onSetStage?: SetWorkStage;
 }) {
+  const [stageFilter, setStageFilter] = useState<WorkflowStage | 'all'>('all');
+  const [sort, setSort] = useState<{ key: QueueSortKey; desc: boolean }>({ key: 'updated', desc: true });
+  const [menuTarget, setMenuTarget] = useState<WorkItem | null>(null);
+  const [menuPos, setMenuPos] = useState<{ x: number; y: number } | null>(null);
+  const [pendingKey, setPendingKey] = useState<string | null>(null);
+  const [actionError, setActionError] = useState('');
+  const viewportRef = useRef<{ w: number; h: number }>({ w: 0, h: 0 });
+  const [blockTarget, setBlockTarget] = useState<WorkItem | null>(null);
+  const [blockNote, setBlockNote] = useState('');
+  const [blockSaving, setBlockSaving] = useState(false);
+  const blockNoteRef = useRef<HTMLTextAreaElement | null>(null);
+
+  const stageCounts = useMemo(() => {
+    const counts: Partial<Record<WorkflowStage, number>> = {};
+    for (const item of items) counts[item.stage] = (counts[item.stage] ?? 0) + 1;
+    return counts;
+  }, [items]);
+
+  const visibleItems = useMemo(() => {
+    const filtered = stageFilter === 'all' ? items : items.filter((item) => item.stage === stageFilter);
+    const comparators: Record<QueueSortKey, (left: WorkItem, right: WorkItem) => number> = {
+      title: (left, right) => left.title.localeCompare(right.title, 'zh-Hans-CN'),
+      stage: (left, right) => STAGE_ORDER[left.stage] - STAGE_ORDER[right.stage],
+      tasks: (left, right) => {
+        if (left.tasks_total && right.tasks_total) {
+          return left.tasks_done / left.tasks_total - right.tasks_done / right.tasks_total;
+        }
+        return (right.tasks_total ? 1 : 0) - (left.tasks_total ? 1 : 0);
+      },
+      updated: (left, right) => left.updated.localeCompare(right.updated) || left.id.localeCompare(right.id),
+    };
+    const direction = sort.desc ? -1 : 1;
+    return [...filtered].sort((left, right) => comparators[sort.key](left, right) * direction);
+  }, [items, stageFilter, sort]);
+
+  const toggleSort = (key: QueueSortKey) =>
+    setSort((current) =>
+      current.key === key
+        ? { key, desc: !current.desc }
+        : { key, desc: key === 'updated' },
+    );
+
+  const closeMenu = useCallback(() => {
+    setMenuTarget(null);
+    setMenuPos(null);
+  }, []);
+
+  useEffect(() => {
+    if (!menuPos) return;
+    const close = () => closeMenu();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeMenu();
+    };
+    const onContextMenuElsewhere = (event: MouseEvent) => {
+      if ((event.target as HTMLElement | null)?.closest?.('[data-queue-row]')) return;
+      closeMenu();
+    };
+    const onResize = () => {
+      // 仅在窗口尺寸真正变化时关闭；截图器等触发的同名事件尺寸未变，不应误关
+      const viewport = viewportRef.current;
+      if (window.innerWidth !== viewport.w || window.innerHeight !== viewport.h) closeMenu();
+    };
+    window.addEventListener('click', close);
+    window.addEventListener('contextmenu', onContextMenuElsewhere);
+    window.addEventListener('resize', onResize);
+    window.addEventListener('scroll', close, true);
+    window.addEventListener('keydown', onKeyDown);
+    return () => {
+      window.removeEventListener('click', close);
+      window.removeEventListener('contextmenu', onContextMenuElsewhere);
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('scroll', close, true);
+      window.removeEventListener('keydown', onKeyDown);
+    };
+  }, [menuPos, closeMenu]);
+
+  const openMenu = (item: WorkItem, event: React.MouseEvent) => {
+    event.preventDefault();
+    setMenuTarget(item);
+    setMenuPos({
+      x: Math.min(event.clientX, window.innerWidth - 216),
+      y: Math.min(event.clientY, window.innerHeight - 200),
+    });
+    viewportRef.current = { w: window.innerWidth, h: window.innerHeight };
+  };
+
+  const applyStage = async (target: WorkItem, status: QueueStatus, statusNote?: string) => {
+    if (!onSetStage || pendingKey) return;
+    setPendingKey(`${target.id}:${status}`);
+    setActionError('');
+    const failure = await onSetStage(target.id, status, statusNote);
+    setPendingKey(null);
+    if (failure) setActionError(`「${target.title}」状态未变更：${failure}`);
+  };
+
+  const openBlockDialog = (item: WorkItem) => {
+    setBlockTarget(item);
+    setBlockNote(documents.get(item.development_id ?? '')?.status_note ?? '');
+    closeMenu();
+  };
+
+  const closeBlockDialog = useCallback(() => {
+    if (!blockSaving) setBlockTarget(null);
+  }, [blockSaving]);
+
+  useEffect(() => {
+    if (!blockTarget) return;
+    blockNoteRef.current?.focus();
+    const onKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') closeBlockDialog();
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [blockTarget, closeBlockDialog]);
+
+  const saveBlock = async () => {
+    if (!blockTarget || !onSetStage || blockSaving) return;
+    const note = blockNote.trim();
+    if (!note) return;
+    const target = blockTarget;
+    setBlockSaving(true);
+    setActionError('');
+    const failure = await onSetStage(target.id, 'blocked', note);
+    setBlockSaving(false);
+    if (failure) setActionError(`「${target.title}」阻塞未记录：${failure}`);
+    else setBlockTarget(null);
+  };
+
   if (!items.length) return <EmptyState label={empty} />;
   return (
-    <div className="overflow-hidden rounded-lg border border-slate-800">
-      <Table>
-        <TableHeader>
-          <TableRow className="border-slate-800 bg-slate-950/65 hover:bg-slate-950/65">
-            <TableHead>工作项</TableHead>
-            <TableHead>阶段</TableHead>
-            <TableHead>任务</TableHead>
-            <TableHead>更新</TableHead>
-          </TableRow>
-        </TableHeader>
-        <TableBody>
-          {items.map((item) => {
-            const target = item.development_id ?? item.requirement_id;
-            return (
-              <TableRow key={item.id} className="border-slate-800/80 hover:bg-slate-800/45">
-                <TableCell className="max-w-[520px] whitespace-normal">
+    <div>
+      <div className="mb-3 flex flex-wrap items-center gap-2">
+        <span className="console-label">阶段筛选</span>
+        {(['all', ...WORKFLOW.map((stage) => stage.key)] as const).map((key) => {
+          const active = stageFilter === key;
+          const count = key === 'all' ? items.length : stageCounts[key] ?? 0;
+          const label = key === 'all' ? '全部' : WORKFLOW.find((stage) => stage.key === key)?.label ?? key;
+          return (
+            <button
+              key={key}
+              type="button"
+              aria-pressed={active}
+              onClick={() => setStageFilter(key)}
+              title={active ? '点击显示全部阶段' : `只看「${label}」阶段`}
+              className={cn('category-chip', active && 'category-chip-active')}
+            >
+              {label}
+              <span className="font-mono text-[10px] opacity-75">{count}</span>
+            </button>
+          );
+        })}
+        <span className="ml-auto flex items-center gap-2 font-mono text-[10px] text-slate-600">
+          {pendingKey !== null && (
+            <span className="flex items-center gap-1 text-cyan-300">
+              <LoaderCircle className="size-3 animate-spin" />
+              写入中…
+            </span>
+          )}
+          {visibleItems.length} 项
+        </span>
+      </div>
+      <div className="overflow-hidden rounded-lg border border-slate-800">
+        <Table>
+          <TableHeader>
+            <TableRow className="border-slate-800 bg-slate-950/65 hover:bg-slate-950/65">
+              {(
+                [
+                  { key: 'title', label: '工作项' },
+                  { key: 'stage', label: '阶段' },
+                  { key: 'tasks', label: '任务' },
+                  { key: 'updated', label: '更新' },
+                ] as const
+              ).map((column) => (
+                <TableHead key={column.key}>
                   <button
                     type="button"
-                    onClick={() => target && documents.has(target) && openDocument(target)}
-                    className="text-left"
+                    onClick={() => toggleSort(column.key)}
+                    title="点击切换排序方向"
+                    className="text-xs uppercase tracking-wider text-slate-500 hover:text-slate-300"
                   >
-                    <span className="line-clamp-1 font-medium text-slate-200 hover:text-cyan-200">{item.title}</span>
-                    <span className="mt-1 block line-clamp-1 text-xs text-slate-500">{item.next_action || item.summary}</span>
+                    {column.label}
+                    {sort.key === column.key && (sort.desc ? ' ↓' : ' ↑')}
                   </button>
-                </TableCell>
-                <TableCell><Badge variant="outline" className={stageClass(item.stage)}>{WORKFLOW.find((stage) => stage.key === item.stage)?.label}</Badge></TableCell>
-                <TableCell className="font-mono text-xs text-slate-400">
-                  {item.tasks_total ? `${item.tasks_done}/${item.tasks_total}` : '—'}
-                </TableCell>
-                <TableCell className="font-mono text-xs text-slate-500">{readableDate(item.updated)}</TableCell>
+                </TableHead>
+              ))}
+            </TableRow>
+          </TableHeader>
+          <TableBody>
+            {visibleItems.length ? (
+              visibleItems.map((item) => {
+                const target = item.development_id ?? item.requirement_id;
+                const rawStatus = documents.get(item.development_id ?? '')?.status;
+                const abandoned = rawStatus === 'abandoned';
+                return (
+                  <TableRow
+                    key={item.id}
+                    data-queue-row=""
+                    className="border-slate-800/80 hover:bg-slate-800/45"
+                    onContextMenu={(event) => openMenu(item, event)}
+                  >
+                    <TableCell className="max-w-[520px] whitespace-normal">
+                      <button
+                        type="button"
+                        onClick={() => target && documents.has(target) && openDocument(target)}
+                        className="text-left"
+                      >
+                        <span className="line-clamp-1 font-medium text-slate-200 hover:text-cyan-200">{item.title}</span>
+                        <span className="mt-1 block line-clamp-1 text-xs text-slate-500">{item.next_action || item.summary}</span>
+                      </button>
+                    </TableCell>
+                    <TableCell>
+                      <Badge
+                        variant="outline"
+                        className={abandoned ? 'border-red-400/35 bg-red-400/8 text-red-200' : stageClass(item.stage)}
+                      >
+                        {abandoned ? '废弃' : WORKFLOW.find((stage) => stage.key === item.stage)?.label}
+                      </Badge>
+                    </TableCell>
+                    <TableCell className="font-mono text-xs text-slate-400">
+                      {item.tasks_total ? `${item.tasks_done}/${item.tasks_total}` : '—'}
+                    </TableCell>
+                    <TableCell className="font-mono text-xs text-slate-500">{readableDate(item.updated)}</TableCell>
+                  </TableRow>
+                );
+              })
+            ) : (
+              <TableRow className="border-0 hover:bg-transparent">
+                <TableCell colSpan={4} className="h-24 text-center text-slate-600">没有匹配阶段的工作项</TableCell>
               </TableRow>
+            )}
+          </TableBody>
+        </Table>
+      </div>
+      {menuTarget && menuPos && (
+        <div
+          role="menu"
+          aria-label="设置工作项阶段"
+          className="fixed z-50 min-w-48 overflow-hidden rounded-lg border border-slate-700 bg-slate-900 py-1 shadow-xl"
+          style={{ left: menuPos.x, top: menuPos.y }}
+        >
+          <p className="max-w-56 truncate border-b border-slate-800 px-3 py-1.5 text-xs font-medium text-slate-400">
+            设置阶段 · {menuTarget.title}
+          </p>
+          {QUEUE_STAGE_OPTIONS.map((key) => {
+            const rawStatus = documents.get(menuTarget.development_id ?? '')?.status;
+            const current = rawStatus === key;
+            const busy = pendingKey === `${menuTarget.id}:${key}`;
+            const disabled = !menuTarget.development_id || current || pendingKey !== null;
+            const destructive = key === 'abandoned';
+            return (
+              <React.Fragment key={key}>
+                {destructive && <div className="my-1 border-t border-slate-800" />}
+                <button
+                  type="button"
+                  role="menuitem"
+                  disabled={disabled}
+                  onClick={() => {
+                    const target = menuTarget;
+                    closeMenu();
+                    void applyStage(target, key);
+                  }}
+                  className={cn(
+                    'flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm hover:bg-slate-800 disabled:cursor-default disabled:opacity-50',
+                    destructive ? 'text-red-300 hover:bg-red-400/10' : 'text-slate-200',
+                  )}
+                >
+                  <Check className={cn('size-3.5 shrink-0', current ? 'opacity-100' : 'opacity-0')} />
+                  <span className="flex-1">{QUEUE_STATUS_LABELS[key]}</span>
+                  {busy && <LoaderCircle className="size-3.5 animate-spin text-slate-400" />}
+                </button>
+              </React.Fragment>
             );
           })}
-        </TableBody>
-      </Table>
+          {!menuTarget.development_id && (
+            <p className="max-w-56 px-3 pb-1.5 pt-1 text-xs leading-5 text-slate-500">
+              该工作项没有开发文档，请在 Markdown 中直接调整状态。
+            </p>
+          )}
+          <div className="my-1 border-t border-slate-800" />
+          <button
+            type="button"
+            role="menuitem"
+            disabled={!menuTarget.development_id || pendingKey !== null}
+            onClick={() => openBlockDialog(menuTarget)}
+            className="flex w-full items-center gap-2 px-3 py-1.5 text-left text-sm text-amber-300 hover:bg-amber-400/10 disabled:cursor-default disabled:opacity-50"
+          >
+            <AlertTriangle className="size-3.5 shrink-0" />
+            <span className="flex-1">记录阻塞点…</span>
+          </button>
+        </div>
+      )}
+      {actionError && <p className="mt-2 text-xs text-red-300">{actionError}</p>}
+      {blockTarget && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/60 p-4">
+          <button
+            type="button"
+            aria-label="关闭阻塞点弹窗"
+            onClick={closeBlockDialog}
+            className="absolute inset-0 cursor-default"
+          />
+          <div
+            className="relative w-full max-w-lg rounded-lg border border-slate-700 bg-slate-900 p-5 shadow-2xl"
+            aria-labelledby="block-dialog-title"
+          >
+            <p className="console-label">BLOCKED NOTE</p>
+            <h3 id="block-dialog-title" className="mt-1 text-base font-semibold text-slate-100">
+              记录阻塞点 · {blockTarget.title}
+            </h3>
+            <p className="mt-1 text-xs leading-5 text-slate-500">
+              保存后说明会写入开发文档的 status_note，并把状态置为「阻塞」。
+            </p>
+            <textarea
+              ref={blockNoteRef}
+              value={blockNote}
+              onChange={(event) => setBlockNote(event.target.value)}
+              maxLength={500}
+              rows={5}
+              placeholder="描述当前卡住的原因、需要的决定或外部依赖……"
+              className="mt-4 w-full resize-none rounded-md border border-slate-700 bg-slate-950/70 p-3 text-sm leading-6 text-slate-200 placeholder:text-slate-600 focus:border-cyan-400/50 focus:outline-none"
+            />
+            <div className="mt-1 flex items-center justify-between">
+              <p className="font-mono text-[10px] text-slate-600">Esc 关闭</p>
+              <p className="font-mono text-[10px] text-slate-600">{blockNote.length}/500</p>
+            </div>
+            <div className="mt-3 flex justify-end gap-2">
+              <Button variant="ghost" size="sm" disabled={blockSaving} onClick={closeBlockDialog}>
+                取消
+              </Button>
+              <Button size="sm" disabled={blockSaving || !blockNote.trim()} onClick={() => void saveBlock()}>
+                {blockSaving && <LoaderCircle className="size-3.5 animate-spin" />}
+                保存并阻塞
+              </Button>
+            </div>
+          </div>
+        </div>
+      )}
     </div>
   );
 }
@@ -554,10 +886,12 @@ function StageView({
   stage,
   snapshot,
   openDocument,
+  onSetStage,
 }: {
   stage: WorkflowStage;
   snapshot: Snapshot;
   openDocument: (id: string, anchor?: string) => void;
+  onSetStage?: SetWorkStage;
 }) {
   const documents = useMemo(() => new Map(snapshot.documents.map((document) => [document.id, document])), [snapshot.documents]);
   const config = WORKFLOW.find((item) => item.key === stage);
@@ -567,12 +901,13 @@ function StageView({
       <SectionHeading
         eyebrow="STAGE FOCUS"
         title={`${config?.label ?? stage} · ${items.length} 个工作项`}
-        description={`${config?.hint ?? ''}。点击条目打开关联文档；数据与总览流水线卡片共享同一份快照。`}
+        description={`${config?.hint ?? ''}。点击条目打开关联文档；右键条目可直接设置阶段状态；数据与总览流水线卡片共享同一份快照。`}
       />
       <WorkQueue
         items={items}
         documents={documents}
         openDocument={openDocument}
+        onSetStage={onSetStage}
         empty={`没有处于「${config?.label ?? stage}」阶段的工作项`}
       />
     </div>
@@ -1562,6 +1897,7 @@ function ViewContent({
   stageFilter,
   onSelectStage,
   onOpenTasks,
+  onSetStage,
 }: {
   view: ViewKey;
   snapshot: Snapshot;
@@ -1569,6 +1905,7 @@ function ViewContent({
   stageFilter: WorkflowStage;
   onSelectStage: (stage: WorkflowStage) => void;
   onOpenTasks: () => void;
+  onSetStage?: SetWorkStage;
 }) {
   if (view === 'overview')
     return (
@@ -1577,9 +1914,11 @@ function ViewContent({
         openDocument={openDocument}
         onSelectStage={onSelectStage}
         onOpenTasks={onOpenTasks}
+        onSetStage={onSetStage}
       />
     );
-  if (view === 'stage') return <StageView stage={stageFilter} snapshot={snapshot} openDocument={openDocument} />;
+  if (view === 'stage')
+    return <StageView stage={stageFilter} snapshot={snapshot} openDocument={openDocument} onSetStage={onSetStage} />;
   if (view === 'tasks') return <TasksView snapshot={snapshot} openDocument={openDocument} />;
   if (view === 'search') return <SearchView openDocument={openDocument} />;
   if (view === 'archive') return <ArchiveTimeline documents={snapshot.documents} openDocument={openDocument} />;
@@ -1670,6 +2009,32 @@ export function ProgressDashboard() {
   }, []);
   const openTasks = useCallback(() => setView('tasks'), []);
 
+  const setWorkStage = useCallback<SetWorkStage>(async (workId, status, statusNote) => {
+    try {
+      const response = await fetch('/api/work-items/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ work_id: workId, status, ...(statusNote?.trim() ? { status_note: statusNote.trim() } : {}) }),
+      });
+      const payload = (await response.json().catch(() => ({}))) as {
+        message?: string;
+        snapshot?: Snapshot;
+        index_error?: string;
+      };
+      if (!response.ok) throw new Error(payload.message || `HTTP ${response.status}`);
+      // 服务端在响应里带回写入后的最新快照：立即整页刷新；缺失时回退到主动拉取
+      if (payload.snapshot && Array.isArray(payload.snapshot.documents)) {
+        setSnapshot(payload.snapshot);
+      } else {
+        await loadSnapshot(true);
+      }
+      if (payload.index_error) return `状态已写入，但索引重建失败（${payload.index_error}）`;
+      return null;
+    } catch (reason) {
+      return (reason as Error).message;
+    }
+  }, [loadSnapshot]);
+
   return (
     <div className="min-h-screen bg-[#060d18] text-slate-200">
       <header className="sticky top-0 z-40 border-b border-slate-800/90 bg-[#07101d]/95 backdrop-blur">
@@ -1678,7 +2043,7 @@ export function ProgressDashboard() {
             <div className="flex size-9 items-center justify-center rounded-md border border-cyan-400/30 bg-cyan-400/8 font-mono text-xs font-bold text-cyan-300">G//S</div>
             <div className="min-w-0">
               <p className="truncate text-sm font-semibold tracking-wide text-slate-100">PROGRESS CONTROL</p>
-              <p className="truncate font-mono text-[9px] tracking-[0.18em] text-slate-600">LOCAL · READ ONLY · 127.0.0.1</p>
+              <p className="truncate font-mono text-[9px] tracking-[0.18em] text-slate-600">LOCAL · 127.0.0.1 · 队列状态可写</p>
             </div>
           </div>
           <div className="ml-auto flex items-center gap-2">
@@ -1754,6 +2119,7 @@ export function ProgressDashboard() {
               stageFilter={stageFilter}
               onSelectStage={openStage}
               onOpenTasks={openTasks}
+              onSetStage={setWorkStage}
             />
           )}
         </main>

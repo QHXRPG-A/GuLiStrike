@@ -28,7 +28,7 @@ public:
 	TArray<FGuLiBuildingDefinition> Definitions;
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = "Building")
-	TObjectPtr<UMaterialInterface> PreviewMaterial;
+	int32 PreviewVfxId = 0;
 
 private:
 	bool bTableResolved = false;

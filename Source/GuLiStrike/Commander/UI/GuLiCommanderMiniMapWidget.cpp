@@ -1,6 +1,7 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/UI/GuLiCommanderMiniMapWidget.h"
+#include "InputCoreTypes.h"
 
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetBlueprintLibrary.h"
@@ -945,8 +946,8 @@ int32 UGuLiCommanderMiniMapWidget::PaintMapLayer(bool bTerrain, const FGeometry&
 	return FMath::Max(PaintLayer, PaintContext.MaxLayer);
 }
 
-bool UGuLiCommanderMiniMapWidget::HandleMapClickAtScreenPosition(
-	const FVector2D& ScreenPixelPosition)
+bool UGuLiCommanderMiniMapWidget::ResolveScreenWorldPoint(
+	const FVector2D& ScreenPixelPosition, FVector& Point) const
 {
 	// 角色复制可以先于旧 HUD 析构到达；迟到点击不得再移动旧指挥相机。
 	const AGuLiCommanderPlayerController* InputOwner = CommanderController.Get();
@@ -997,17 +998,45 @@ bool UGuLiCommanderMiniMapWidget::HandleMapClickAtScreenPosition(
 			ContentBounds,
 			CameraYawDegrees);
 	FVector2D WorldPosition;
-	if (Transform.TryScreenToWorld(LocalPosition, WorldPosition))
-	{
-		if (AGuLiCommanderPlayerController* Controller = CommanderController.Get())
-		{
-			if (AGuLiCommanderCameraPawn* CameraPawn = Controller->GetPawn<AGuLiCommanderCameraPawn>())
-			{
-				CameraPawn->JumpToWorldLocation(
-					FVector(WorldPosition.X, WorldPosition.Y, 0.0));
-				return true;
-			}
-		}
-	}
+	if (!Transform.TryScreenToWorld(LocalPosition, WorldPosition)) return false;
+	Point = FVector(WorldPosition.X, WorldPosition.Y, 0); return true;
+}
+
+bool UGuLiCommanderMiniMapWidget::HandleMapClickAtScreenPosition(const FVector2D& ScreenPixelPosition)
+{
+	FVector Point; auto* PC = CommanderController.Get();
+	if (!PC || PC->IsCommanderMenuOpen() || !ResolveScreenWorldPoint(ScreenPixelPosition, Point)) return false;
+	if (auto* Camera = PC->GetPawn<AGuLiCommanderCameraPawn>()) { Camera->JumpToWorldLocation(Point); return true; }
 	return false;
+}
+bool UGuLiCommanderMiniMapWidget::HandleMapOrderAtScreenPosition(const FVector2D& ScreenPixelPosition, bool bAppend)
+{
+	FVector Point; auto* PC = CommanderController.Get();
+	return PC && ResolveScreenWorldPoint(ScreenPixelPosition, Point) && PC->IssueMapMove(Point, bAppend);
+}
+FReply UGuLiCommanderMiniMapWidget::NativeOnMouseButtonDown(const FGeometry&, const FPointerEvent& Event)
+{
+	FVector2D Pixel, Viewport; USlateBlueprintLibrary::AbsoluteToViewport(this, Event.GetScreenSpacePosition(), Pixel, Viewport);
+	if (Event.GetEffectingButton() == EKeys::RightMouseButton)
+	{ HandleMapOrderAtScreenPosition(Pixel, Event.IsShiftDown()); return FReply::Handled(); }
+	if (Event.GetEffectingButton() == EKeys::LeftMouseButton)
+	{
+		auto* PC = CommanderController.Get();
+		if (PC && PC->IsGroundMoveTargetMode()) HandleMapOrderAtScreenPosition(Pixel, Event.IsShiftDown());
+		else { bMapDragging = HandleMapClickAtScreenPosition(Pixel); if (bMapDragging) return FReply::Handled().CaptureMouse(TakeWidget()); }
+		return FReply::Handled();
+	}
+	return FReply::Unhandled();
+}
+FReply UGuLiCommanderMiniMapWidget::NativeOnMouseButtonUp(const FGeometry&, const FPointerEvent& Event)
+{
+	if (Event.GetEffectingButton() == EKeys::LeftMouseButton) { bMapDragging = false; return FReply::Handled().ReleaseMouseCapture(); }
+	return FReply::Handled();
+}
+FReply UGuLiCommanderMiniMapWidget::NativeOnMouseMove(const FGeometry&, const FPointerEvent& Event)
+{
+	if (!bMapDragging) return FReply::Unhandled();
+	if (!Event.IsMouseButtonDown(EKeys::LeftMouseButton)) { bMapDragging = false; return FReply::Handled().ReleaseMouseCapture(); }
+	FVector2D Pixel, Viewport; USlateBlueprintLibrary::AbsoluteToViewport(this, Event.GetScreenSpacePosition(), Pixel, Viewport);
+	HandleMapClickAtScreenPosition(Pixel); return FReply::Handled();
 }

@@ -137,6 +137,7 @@ namespace GuLiCommanderMassPrivate
 		float Defense = 0.0f;
 		TSharedPtr<const TArray<FGuLiResolvedSkillProfile>> WeaponProfiles;
 		TArray<FSoldierWeaponRuntime> Weapons;
+		bool bAllowAutomaticFire = true;
 		// Unique active skill is independent of automatic weapon slots and advances on SimulationSeconds.
 		FGuLiActiveSkillRuntime ActiveSkill;
 		// StateRevision 标识离散状态变化；ActiveOrderId 指向当前批次，0 表示无活动指令。
@@ -1654,6 +1655,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 	struct FValidatedSpawnSlot
 	{
 		EGuLiTeam Team = EGuLiTeam::Unassigned;
+		bool bAllowAutomaticFire = true;
 		int32 SlotIndex = 0;
 		float FacingYawDegrees = 0.0f;
 		const FGuLiSoldierDefinition* Definition = nullptr;
@@ -1717,6 +1719,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 			}
 			FValidatedSpawnSlot& Slot = ValidatedSpawnSlots.AddDefaulted_GetRef();
 			Slot.Team = Deployment->Team;
+			Slot.bAllowAutomaticFire = Deployment->bAllowAutomaticFire;
 			Slot.SlotIndex = SlotIndex;
 			Slot.FacingYawDegrees = Deployment->GetActorRotation().Yaw;
 			Slot.Definition = Definition;
@@ -1917,6 +1920,7 @@ bool UGuLiBattleAuthoritySubsystem::TrySpawnAuthorityPopulation()
 				Soldier.Entity = EntityHandles[EntityIndex++];
 				Soldier.SoldierId = FGuLiSoldierId(AllocateNonZero(AuthorityState->NextSoldierId));
 				Soldier.Team = Team;
+				Soldier.bAllowAutomaticFire = ValidatedSlot.bAllowAutomaticFire;
 				Soldier.FacingYawDegrees = FacingYaw;
 				InitializeSoldierCombat(Soldier, *ValidatedSlot.Definition, EffectiveRuntimeTuning, Skills);
 				Soldier.AvoidanceRadiusCentimeters = ValidatedSlot.Definition->GetMassAvoidanceRadius(MemberAgentRadiusCentimeters);
@@ -2696,10 +2700,8 @@ void UGuLiBattleAuthoritySubsystem::TickMovePlanning(
 			TArray<FVector> RestoredReservations;
 			for (FMoveMemberPlan& Member : Job.Members)
 			{
-				if (!Member.bEligible)
-				{
-					continue;
-				}
+				// Superseded members still own their committed endpoint (or stopped location).
+				// They no longer participate in this plan, but must still reserve that space.
 				// Pending units continue their old command, so the reservation captured at
 				// request time may no longer describe the endpoint they currently own.
 				bool bHasLiveReservation = false;
@@ -4069,10 +4071,28 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyNavigationRepairs()
 		return;
 	}
 	FMassEntityManager& EntityManager = MassSubsystem->GetMutableEntityManager();
+	auto MarkNavigationRepairDisplacement = [this](FSoldierRuntime& Soldier,
+		const FVector& RepairedLocation)
+	{
+		const float MaximumContinuousStep = FMath::Max(
+			1.0f,
+			MovementSpeedCentimetersPerSecond * GuLiCommanderSimulationTiming::StepSeconds);
+		if (FVector::DistSquared(Soldier.Location, RepairedLocation)
+			<= FMath::Square(MaximumContinuousStep))
+		{
+			return;
+		}
+		// A dynamic-nav rebuild can project a unit out of a newly blocked footprint. This is
+		// an authoritative relocation, not movement integration, so clients must not interpolate it.
+		Soldier.DisplacementFrameFloor = AuthorityState->NextPoseFrameSequence;
+		Soldier.DisplacementLocation = RepairedLocation;
+		Soldier.DisplacementSimulationTime = AuthorityState->SimulationSeconds;
+	};
 
-	auto BlockInvalidated = [this, World, &EntityManager](FSoldierRuntime& Soldier,
+	auto BlockInvalidated = [this, World, &EntityManager, &MarkNavigationRepairDisplacement](FSoldierRuntime& Soldier,
 		const uint32 FailedOrderId)
 	{
+		MarkNavigationRepairDisplacement(Soldier, Soldier.LastValidNavLocation.Location);
 		Soldier.Location = Soldier.LastValidNavLocation.Location;
 		Soldier.Velocity = FVector::ZeroVector;
 		Soldier.LastMovementUpdateSimulationSeconds = AuthorityState->SimulationSeconds;
@@ -4135,8 +4155,12 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyNavigationRepairs()
 			continue;
 		}
 
-		Soldier.LastValidNavLocation = Task.RefreshedCurrentLocation;
-		Soldier.Location = Task.RefreshedCurrentLocation.Location;
+		const FNavLocation RepairedCurrentLocation = Task.bWasArrived && Task.bHadFinalDestination
+			? Task.RepairedFinalLocation
+			: Task.RefreshedCurrentLocation;
+		MarkNavigationRepairDisplacement(Soldier, RepairedCurrentLocation.Location);
+		Soldier.LastValidNavLocation = RepairedCurrentLocation;
+		Soldier.Location = RepairedCurrentLocation.Location;
 		if (Task.bHadFinalDestination)
 		{
 			Soldier.FinalDestination = Task.RepairedFinalLocation;
@@ -4146,11 +4170,6 @@ void UGuLiBattleAuthoritySubsystem::CommitReadyNavigationRepairs()
 				Formation->FinalDestinationBySoldierId.Add(
 					Task.SoldierId.Value, Task.RepairedFinalLocation);
 			}
-		}
-		if (Task.bWasArrived && Task.bHadFinalDestination)
-		{
-			Soldier.LastValidNavLocation = Task.RepairedFinalLocation;
-			Soldier.Location = Task.RepairedFinalLocation.Location;
 		}
 		if (Task.ExpectedOrderId == 0u)
 		{
@@ -6448,12 +6467,14 @@ bool UGuLiBattleAuthoritySubsystem::ApplyExternalUnitState(TConstArrayView<FGuLi
 	if (!CanApplyExternalUnitState(Participants,CastId)) return false;
 	if (bRelocate || bLocked)
 	{
-		TSet<uint32> Displaced;
-		for (const auto& Entry : Participants) Displaced.Add(Entry.Id.Value);
-		for (auto& Job : AuthorityState->MovePlanningJobs)
-			if (Job && Job->Stage != GuLiCommanderMassPrivate::EMovePlanningStage::Completed
-				&& Job->Members.ContainsByPredicate([&Displaced](const auto& Member) { return Displaced.Contains(Member.SoldierId.Value); }))
-				GuLiCommanderMassPrivate::CompleteMovePlanningJobWithSystemFailure(*Job, EGuLiCommandAckResult::Cancelled);
+		TArray<FGuLiSoldierId> Displaced;
+		for (const auto& Entry : Participants)
+		{
+			Displaced.Add(Entry.Id);
+			if (auto* Tasks = GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>())
+				Tasks->CancelPendingMove(FGuLiTaskUnitId::Soldier(Entry.Id));
+		}
+		InvalidateTaskSoldierPlans(Displaced);
 	}
 	for (const auto& Entry : Participants)
 	{
@@ -6847,7 +6868,8 @@ void UGuLiBattleAuthoritySubsystem::TickSoldierCombat()
 	{
 		AuthorityState->CombatSamples.Add({Soldier.SoldierId, Soldier.Team, Soldier.Location,
 			Soldier.IsPresent(), Soldier.ActiveOrderId != 0u, nullptr, nullptr});
-		if (Soldier.CanAct() && Soldier.WeaponProfiles) for (auto& Weapon : Soldier.Weapons)
+		// Passive deployments remain in CombatSamples as targets, but never emit automatic attacks.
+		if (Soldier.bAllowAutomaticFire && Soldier.CanAct() && Soldier.WeaponProfiles) for (auto& Weapon : Soldier.Weapons)
 		{
 			if (!Soldier.WeaponProfiles->IsValidIndex(Weapon.ProfileIndex)) continue;
 			AuthorityState->CombatChannels.Add({Soldier.SoldierId, Soldier.Team, Soldier.Location,
@@ -6976,6 +6998,7 @@ bool UGuLiBattleAuthoritySubsystem::TryGetSoldierNavigationDebug(
 	OutDebug.LastCompletedOrderId = Soldier.LastCompletedOrderId;
 	OutDebug.LastFailedOrderId = Soldier.LastFailedOrderId;
 	OutDebug.Location = Soldier.Location;
+	OutDebug.Velocity = Soldier.Velocity;
 	OutDebug.LastValidNavLocation = Soldier.LastValidNavLocation.Location;
 	OutDebug.FinalSlot = Soldier.FinalDestination.Location;
 	OutDebug.CurrentWaypoint = Soldier.CurrentNavigationWaypoint;
@@ -7256,11 +7279,10 @@ bool UGuLiBattleAuthoritySubsystem::GetTaskSoldierInfo(FGuLiSoldierId Id, EGuLiT
 	const auto& Soldier = AuthorityState->Soldiers[*Index]; Team = Soldier.Team; UnitTypeId = Soldier.UnitTypeId; Location = Soldier.Location;
 	return true;
 }
-void UGuLiBattleAuthoritySubsystem::StopTaskSoldiers(TConstArrayView<FGuLiSoldierId> Soldiers)
+void UGuLiBattleAuthoritySubsystem::InvalidateTaskSoldierPlans(TConstArrayView<FGuLiSoldierId> Soldiers)
 {
 	using namespace GuLiCommanderMassPrivate;
-	if (!IsAuthorityWorld() || !AuthorityState || !AuthorityState->MassEntitySubsystem.IsValid()) return;
-	auto& Manager = AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
+	if (!IsAuthorityWorld() || !AuthorityState) return;
 	for (auto Id : Soldiers)
 	{
 		const int32* Index = AuthorityState->SoldierIndexById.Find(Id.Value);
@@ -7273,10 +7295,30 @@ void UGuLiBattleAuthoritySubsystem::StopTaskSoldiers(TConstArrayView<FGuLiSoldie
 			for (int32 M = 0; M < Job->Members.Num(); ++M) if (Job->Members[M].SoldierId == Id)
 			{
 				auto& Member = Job->Members[M]; Member.bEligible = false; Member.bStartValid = false;
-				Member.FailureStage = EGuLiMovePlanFailureStage::MemberInvalid; Member.OldReservation = Soldier.Location;
+				Member.FailureStage = EGuLiMovePlanFailureStage::MemberInvalid;
+				Member.OldReservation = Soldier.ActiveOrderId && Soldier.bHasFinalDestination
+					? Soldier.FinalDestination.Location : Soldier.Location;
 				ReleaseMoveMemberDestination(*Job, M, false); RemoveMoveMemberFromPreparedFormations(*Job, Id);
+				if (Job->Stage == EMovePlanningStage::ReadyToCommit) Job->Stage = EMovePlanningStage::ReconcileReservations;
 			}
 		}
+	}
+	for (auto& Job : AuthorityState->MovePlanningJobs)
+		if (Job && Job->Stage != EMovePlanningStage::Completed
+			&& !Job->Members.ContainsByPredicate([](const FMoveMemberPlan& Member) { return Member.bEligible; }))
+			CompleteMovePlanningJobWithSystemFailure(*Job, EGuLiCommandAckResult::Cancelled);
+}
+void UGuLiBattleAuthoritySubsystem::StopTaskSoldiers(TConstArrayView<FGuLiSoldierId> Soldiers)
+{
+	using namespace GuLiCommanderMassPrivate;
+	if (!IsAuthorityWorld() || !AuthorityState || !AuthorityState->MassEntitySubsystem.IsValid()) return;
+	InvalidateTaskSoldierPlans(Soldiers);
+	auto& Manager = AuthorityState->MassEntitySubsystem->GetMutableEntityManager();
+	for (auto Id : Soldiers)
+	{
+		const int32* Index = AuthorityState->SoldierIndexById.Find(Id.Value);
+		if (!Index) continue;
+		auto& Soldier = AuthorityState->Soldiers[*Index];
 		Soldier.ActiveOrderId = 0; Soldier.bAutomaticAdvance = false; Soldier.bAttackMoveHolding = false;
 		Soldier.bHasFinalDestination = false; Soldier.NavigationState = EGuLiSoldierNavigationState::Idle;
 		Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::None; Soldier.PersonalPathPoints.Reset();

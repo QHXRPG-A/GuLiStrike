@@ -47,7 +47,7 @@ struct GULISTRIKE_API FGuLiPooledProjectileLaunch
 	/** Optional retained burst lease. Launch acquires its own reference. */
 	FGuid SourceLease;
 	/** Frozen player presentation reference, also usable after the firing Pawn disappears. */
-	TSoftObjectPtr<class UNiagaraSystem> PlayerBulletSystem;
+	int32 PlayerBulletVfxId = 0;
 };
 
 DECLARE_MULTICAST_DELEGATE_TwoParams(FGuLiPooledProjectileStateEvent, const FGuLiCombatEffectState&, bool);
@@ -102,7 +102,6 @@ private:
 		const FVector& Position, float Time, const FGuLiTargetHandle* HitTarget = nullptr);
 	UPROPERTY(Transient) TObjectPtr<UGuLiDamageLedgerSubsystem> Ledger;
 	/** Keep launch references mapped even after the firing Pawn leaves the world. */
-	UPROPERTY(Transient) TArray<TObjectPtr<class UNiagaraSystem>> PlayerBulletAssets;
 	TArray<FSlot> Slots;
 	TArray<int32> FreeSlots;
 	TArray<int32> ActiveSlots;

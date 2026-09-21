@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/UI/GuLiCommanderHUDWidget.h"
+#include "Gameplay/Data/GuLiGameText.h"
 
 #include "Blueprint/SlateBlueprintLibrary.h"
 #include "Blueprint/WidgetTree.h"
@@ -40,11 +41,11 @@ namespace GuLiCommanderHUDWidget
 		switch (Team)
 		{
 		case EGuLiTeam::Blue:
-			return FText::FromString(TEXT("蓝方"));
+			return FText::FromString(GuLiGameText::Text(TEXT("UI.HUDWidget.093")));
 		case EGuLiTeam::Red:
-			return FText::FromString(TEXT("红方"));
+			return FText::FromString(GuLiGameText::Text(TEXT("UI.HUDWidget.094")));
 		default:
-			return FText::FromString(TEXT("未分配"));
+			return FText::FromString(GuLiGameText::Text(TEXT("UI.HUDWidget.095")));
 		}
 	}
 
@@ -53,15 +54,15 @@ namespace GuLiCommanderHUDWidget
 		switch (Role)
 		{
 		case EGuLiCommanderRole::Commander:
-			return FText::FromString(TEXT("指挥官"));
+			return FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleLayout.004")));
 		case EGuLiCommanderRole::Ground:
-			return FText::FromString(TEXT("地面"));
+			return FText::FromString(GuLiGameText::Text(TEXT("UI.HUDWidget.096")));
 		case EGuLiCommanderRole::Air:
-			return FText::FromString(TEXT("空中"));
+			return FText::FromString(GuLiGameText::Text(TEXT("UI.HUDWidget.097")));
 		case EGuLiCommanderRole::Observer:
-			return FText::FromString(TEXT("观察"));
+			return FText::FromString(GuLiGameText::Text(TEXT("UI.HUDWidget.098")));
 		default:
-			return FText::FromString(TEXT("未分配"));
+			return FText::FromString(GuLiGameText::Text(TEXT("UI.HUDWidget.095")));
 		}
 	}
 }
@@ -158,30 +159,6 @@ void UGuLiCommanderHUDWidget::NativeConstruct()
 
 	BuildMiniMapLayer();
 	BuildTaskPanel();
-	HideReviewOnlyMapWidgets();
-	BindShortcutControls();
-	BoxSelectionTexture = LoadObject<UTexture2D>(nullptr,
-		TEXT("/Game/Commander/UI/Textures/Icons/T_UI_Cmd_Box.T_UI_Cmd_Box"));
-	RadiusSelectionTexture = LoadObject<UTexture2D>(nullptr,
-		TEXT("/Game/Commander/UI/Textures/Icons/T_UI_Cmd_Radius.T_UI_Cmd_Radius"));
-
-	if (UButton* MoveButton = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Move"))))
-	{
-		MoveButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleMoveClicked);
-	}
-	if (UButton* Button = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Stop"))))
-	{
-		Button->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleStopClicked);
-		Button->SetToolTipText(FText::FromString(TEXT("停止移动和工作 [S]。\n清空队列，持续停止至新的有效任务命令。")));
-	}
-	if (UButton* SelectButton = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Select"))))
-	{
-		SelectButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleSelectClicked);
-	}
-	if (UButton* MapButton = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_MiniMapJump"))))
-	{
-		MapButton->OnClicked.AddUniqueDynamic(this, &ThisClass::HandleMiniMapClicked);
-	}
 
 	BindRuntimeSources();
 	RefreshInitialState();
@@ -205,6 +182,8 @@ void UGuLiCommanderHUDWidget::NativeConstruct()
 
 void UGuLiCommanderHUDWidget::NativeDestruct()
 {
+	PendingActionModifiers = FModifierKeysState();
+	if (bMenuOpen) SetMenuOpen(false);
 	if (UWorld* World = GetWorld())
 	{
 		World->GetTimerManager().ClearTimer(SourceResolveTimer);
@@ -213,8 +192,8 @@ void UGuLiCommanderHUDWidget::NativeDestruct()
 	}
 	if (FocusButton) FocusButton->OnClicked.RemoveAll(this);
 	if (StopButton) StopButton->OnClicked.RemoveAll(this);
-	if (TaskPanel) TaskPanel->RemoveFromParent();
-	TaskPanel = nullptr; TaskText = nullptr; FocusButton = nullptr; StopButton = nullptr;
+	if (TaskPanel) TaskPanel->SetVisibility(ESlateVisibility::Collapsed);
+	bTaskDrawerOpen = false; HoveredAction.Reset();
 	UnbindRuntimeSources();
 	UnbindShortcutControls();
 	HideShortcutTooltip();
@@ -380,15 +359,7 @@ void UGuLiCommanderHUDWidget::UnbindRuntimeSources()
 void UGuLiCommanderHUDWidget::RefreshInitialState()
 {
 	ResolveRuntimeSources();
-	SetText(TEXT("TXT_Target"), FText::FromString(TEXT("目标未启用")));
-	SetText(TEXT("TXT_Score"), FText::FromString(TEXT("-- : --")));
-	SetText(TEXT("TXT_TeamA"), FText::FromString(TEXT("蓝方")));
-	SetText(TEXT("TXT_TeamB"), FText::FromString(TEXT("红方")));
-	SetText(TEXT("TXT_TacticalValue"), FText::FromString(TEXT("--")));
-	SetText(TEXT("TXT_Energy"), FText::FromString(TEXT("轨道能量  --")));
-	SetText(TEXT("TXT_SquadsTitle"), FText::FromString(TEXT("编队")));
-	SetText(TEXT("TXT_CommandTitle"), FText::FromString(TEXT("指令矩阵")));
-	SetImageFraction(TEXT("I_EnergyFill"), 0.0f);
+	SetText(TEXT("TXT_CommandTitle"), FText::FromString(GuLiGameText::Text(TEXT("UI.ConsoleLayout.011"))));
 
 	if (const UGuLiCommanderNetSyncComponent* NetSync = NetSyncComponent.Get())
 	{
@@ -409,6 +380,7 @@ void UGuLiCommanderHUDWidget::RefreshInitialState()
 			? SoldierStateReplicator->GetSnapshotRevision()
 			: 0u);
 	RefreshCommandControls();
+	RefreshTaskPanel();
 }
 
 void UGuLiCommanderHUDWidget::RefreshSelection(
@@ -505,7 +477,7 @@ void UGuLiCommanderHUDWidget::RefreshCoreAndRoster()
 			FText::FromString(TEXT("{0} · {1} · {2}")),
 			GuLiCommanderHUDWidget::TeamText(LocalTeam),
 			GuLiCommanderHUDWidget::RoleText(Role),
-			FText::FromString(bOnline ? TEXT("在线") : TEXT("同步中"))));
+			FText::FromString(bOnline ? GuLiGameText::Text(TEXT("UI.HUDWidget.099")) : GuLiGameText::Text(TEXT("UI.HUDWidget.100")))));
 
 	int32 BlueTotal = 0;
 	int32 BlueAlive = 0;
@@ -554,8 +526,7 @@ void UGuLiCommanderHUDWidget::RefreshCoreAndRoster()
 	if (PlayerState)
 	{
 		const FGuLiResourceAmounts Inventory = PlayerState->GetResourceInventory();
-		SetText(TEXT("TXT_Energy"), FText::FromString(FString::Printf(
-			TEXT("蓝矿 %d   红矿 %d"), Inventory.Blue, Inventory.Red)));
+		SetText(TEXT("TXT_Energy"), FText::FromString(GuLiGameText::Format(TEXT("UI.HUDWidget.092"), {FString::Printf(TEXT("%d"), Inventory.Blue), FString::Printf(TEXT("%d"), Inventory.Red)})));
 	}
 }
 
@@ -571,162 +542,8 @@ uint32 UGuLiCommanderHUDWidget::GetCurrentMatchEpoch() const
 	return 0u;
 }
 
-void UGuLiCommanderHUDWidget::RefreshUnitTypeCard()
-{
-	if (!CachedSelection.ActorIds.IsEmpty())
-	{
-		const AGuLiBattlePlayerState* PlayerState = CommanderPlayerState.Get();
-		const FGuLiMiningVehiclePrivateState* SelectedVehicleState = nullptr;
-		if (PlayerState)
-		{
-			for (const FGuLiControllableActorId ActorId : CachedSelection.ActorIds)
-			{
-				SelectedVehicleState = PlayerState->FindMiningVehiclePrivateState(ActorId);
-				if (SelectedVehicleState) break;
-			}
-		}
-		if (UWidget* Card = FindRuntimeWidget(TEXT("C_UnitTypeCard")))
-			Card->SetVisibility(SelectedVehicleState
-				? ESlateVisibility::HitTestInvisible
-				: ESlateVisibility::Collapsed);
-		if (!SelectedVehicleState) return;
-		const FGuLiResourceAmounts Cargo = SelectedVehicleState->Cargo;
-		const UGuLiResourceWorldSubsystem* Resources = GetWorld()->GetSubsystem<UGuLiResourceWorldSubsystem>();
-		const int32 Capacity = Resources && Resources->GetEconomyConfig()
-			? Resources->GetEconomyConfig()->CargoCapacity : 10;
-		FString Status;
-		switch (SelectedVehicleState->ControlMode)
-		{
-		case EGuLiMiningControlMode::Auto: Status = TEXT("系统自动调度"); break;
-		case EGuLiMiningControlMode::PlayerOrder: Status = TEXT("执行玩家指令"); break;
-		case EGuLiMiningControlMode::Grace:
-		{
-			const AGameStateBase* GameState = GetWorld()->GetGameState();
-			const float ServerTime = GameState
-				? GameState->GetServerWorldTimeSeconds()
-				: GetWorld()->GetTimeSeconds();
-			Status = FString::Printf(TEXT("%.1fs 后恢复自动"),
-				FMath::Max(0.0f, SelectedVehicleState->GraceEndServerTime - ServerTime));
-			break;
-		}
-		default: Status = TEXT("--"); break;
-		}
-		SetText(TEXT("TXT_UnitTypeName"), FText::FromString(TEXT("采矿车")));
-		SetText(TEXT("TXT_UnitTypeCount"), FText::FromString(FString::Printf(
-			TEXT("%d 辆"), CachedSelection.ActorIds.Num())));
-		SetText(TEXT("TXT_UnitTypeHealth"), FText::FromString(FString::Printf(
-			TEXT("货仓 %d/%d  蓝%d 红%d"), Cargo.Blue + Cargo.Red, Capacity, Cargo.Blue, Cargo.Red)));
-		SetText(TEXT("TXT_UnitTypeStatus"), FText::FromString(Status));
-		SetImageFraction(TEXT("I_UnitTypeHealthFill"), Capacity > 0
-			? static_cast<float>(Cargo.Blue + Cargo.Red) / Capacity : 0.0f);
-		return;
-	}
-	const uint32 MatchEpoch = GetCurrentMatchEpoch();
-	if (MatchEpoch != 0u && CachedSelectionMatchEpoch != 0u
-		&& CachedSelectionMatchEpoch != MatchEpoch)
-	{
-		// Soldier IDs are match-local. Never resolve last match's selection against a new roster.
-		CachedSelection = FGuLiCommanderSelectionState();
-		CachedCommandAck = FGuLiCommandAck();
-		CachedSelectionMatchEpoch = MatchEpoch;
-	}
-	const AGuLiSoldierStateReplicator* Replicator = SoldierStateReplicator.Get();
-	const AGuLiBattlePlayerState* PlayerState = CommanderPlayerState.Get();
-	const bool bReliableStateReady = PlayerState && PlayerState->IsSoldierStreamReady()
-		&& Replicator && Replicator->GetSnapshotRevision() != 0u
-		&& MatchEpoch != 0u && Replicator->GetSnapshotMatchEpoch() == MatchEpoch;
-	if (bReliableStateReady && CachedSelectionMatchEpoch == 0u)
-	{
-		// Selection can arrive before replicated match metadata during initial bootstrap.
-		CachedSelectionMatchEpoch = MatchEpoch;
-	}
-	const FGuLiCommanderUnitTypeSummary Summary = BuildGuLiCommanderUnitTypeSummary(
-		CachedSelection,
-		CachedCommandAck,
-		Replicator ? MakeArrayView(Replicator->GetItems()) : TConstArrayView<FGuLiSoldierStateItem>(),
-		bReliableStateReady && CachedSelectionMatchEpoch == MatchEpoch);
-
-	if (UWidget* Card = FindRuntimeWidget(TEXT("C_UnitTypeCard")))
-	{
-		Card->SetVisibility(Summary.IsVisible()
-			? ESlateVisibility::HitTestInvisible
-			: ESlateVisibility::Collapsed);
-	}
-	FText UnitName = FText::FromString(Summary.bMixedUnitTypes ? TEXT("混合部队") : TEXT("士兵"));
-	if (!Summary.bMixedUnitTypes)
-		if (const auto* Data = GetWorld()->GetSubsystem<UGuLiUnitDataSubsystem>())
-			if (const auto* Definition = Data->FindDefinition(Summary.UnitTypeId); Definition && !Definition->DisplayName.IsEmpty())
-				UnitName = Definition->DisplayName;
-	SetText(TEXT("TXT_UnitTypeName"), UnitName);
-	SetText(
-		TEXT("TXT_UnitTypeCount"),
-		FText::FromString(Summary.bSyncing
-			? FString(TEXT("-- 人"))
-			: FString::Printf(TEXT("%d 人"), Summary.AliveCount)));
-	SetText(
-		TEXT("TXT_UnitTypeHealth"),
-		FText::FromString(Summary.bSyncing
-			? FString(TEXT("-- / --"))
-			: FString::Printf(TEXT("%.2f / %.2f"), Summary.TotalHealth, Summary.TotalMaxHealth)));
-	SetText(TEXT("TXT_UnitTypeStatus"), Summary.CommandStatus);
-	SetImageFraction(TEXT("I_UnitTypeHealthFill"), Summary.GetHealthFraction());
-}
-
-void UGuLiCommanderHUDWidget::RefreshCommandControls()
-{
-	const AGuLiCommanderPlayerController* Controller = CommanderController.Get();
-	const bool bSelect = !Controller
-		|| Controller->GetCommanderToolMode() == EGuLiCommanderToolMode::Select;
-	const bool bCanMove = Controller
-		&& Controller->CanIssueCommanderOrders()
-		&& (!CachedSelection.Cohorts.IsEmpty() || !CachedSelection.ActorIds.IsEmpty());
-
-	for (int32 SlotIndex = 1; SlotIndex <= 5; ++SlotIndex)
-	{
-		SetCommandSlotOpacity(SlotIndex, 0.26f);
-	}
-	SetCommandSlotOpacity(0, bCanMove ? 1.0f : 0.38f);
-	SetCommandSlotOpacity(2, bCanMove ? 1.0f : 0.38f);
-	SetCommandSlotOpacity(6, 1.0f);
-
-	if (UImage* MoveOuter = FindImage(TEXT("I_CmdOuter_00")))
-	{
-		MoveOuter->SetColorAndOpacity(
-			!bSelect ? GuLiCommanderHUDWidget::Cyan : GuLiCommanderHUDWidget::Metal);
-	}
-	if (UImage* SelectOuter = FindImage(TEXT("I_CmdOuter_06")))
-	{
-		SelectOuter->SetColorAndOpacity(
-			bSelect ? GuLiCommanderHUDWidget::Cyan : GuLiCommanderHUDWidget::Metal);
-	}
-	if (UButton* MoveButton = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Move"))))
-	{
-		MoveButton->SetIsEnabled(bCanMove);
-	}
-	if (auto* Button = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Stop")))) Button->SetIsEnabled(bCanMove);
-	const bool bRadius = Controller && Controller->GetSelectionShape() == EGuLiCommanderSelectionShape::Radius;
-	SetText(TEXT("TXT_CmdKey_Move"), FText::FromString(TEXT("M")));
-	SetText(TEXT("TXT_CmdKey_Select"), FText::GetEmpty());
-	SetText(TEXT("TXT_CmdLabel_Select"), FText::FromString(bRadius ? TEXT("范围") : TEXT("框选")));
-	if (UImage* SelectionIcon = FindImage(TEXT("I_CmdIcon_Select")))
-	{
-		SelectionIcon->SetBrushFromTexture(bRadius ? RadiusSelectionTexture.Get() : BoxSelectionTexture.Get());
-	}
-	if (UButton* SelectButton = Cast<UButton>(FindRuntimeWidget(TEXT("BTN_Cmd_Select"))))
-	{
-		const int32 RadiusMeters = Controller
-			? FMath::RoundToInt(GuLiCommanderProtocol::GetSelectionRadiusCentimeters(Controller->GetSelectionRadiusPreset()) / 100.0f)
-			: 80;
-		SelectButton->SetToolTipText(FText::FromString(TEXT("左键点选或拖拽框选。\nShift 点选切换成员；Shift 框选追加。\nEsc 取消未提交的目标模式。")));
-	}
-	for (int32 KeyIndex = 1; KeyIndex <= 5; ++KeyIndex)
-	{
-		const TCHAR* Names[] = { TEXT("Move"),TEXT("Attack"),TEXT("Stop"),TEXT("Hold"),TEXT("Patrol"),TEXT("Rally") };
-		const FString Name = FString(TEXT("TXT_CmdKey_")) + Names[KeyIndex];
-		SetText(*Name, FText::GetEmpty());
-	}
-	SetText(TEXT("TXT_CmdKey_Stop"), FText::FromString(TEXT("S")));
-}
+void UGuLiCommanderHUDWidget::RefreshUnitTypeCard() { RefreshConsoleSelection(); }
+void UGuLiCommanderHUDWidget::RefreshCommandControls() { RefreshConsoleContext(); }
 
 void UGuLiCommanderHUDWidget::HandleToolModeChanged(const EGuLiCommanderToolMode NewMode)
 {
@@ -872,12 +689,17 @@ void UGuLiCommanderHUDWidget::PositionShortcutTooltip()
 	TooltipSlot->SetSize(Bounds.GetSize());
 }
 
+FReply UGuLiCommanderHUDWidget::NativeOnPreviewMouseButtonDown(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
+{
+	// UI may consume modifier keys before PlayerInput sees them. Use this click's event snapshot.
+	if (InMouseEvent.GetEffectingButton() == EKeys::LeftMouseButton)
+		PendingActionModifiers = InMouseEvent.GetModifierKeys();
+	return Super::NativeOnPreviewMouseButtonDown(InGeometry, InMouseEvent);
+}
+
 FReply UGuLiCommanderHUDWidget::NativeOnMouseMove(const FGeometry& InGeometry, const FPointerEvent& InMouseEvent)
 {
-	if (!ActiveShortcutButton.IsNone())
-	{
-		PositionShortcutTooltip();
-	}
+	RefreshActionTooltipAtCursor();
 	return Super::NativeOnMouseMove(InGeometry, InMouseEvent);
 }
 
@@ -1038,6 +860,8 @@ bool UGuLiCommanderHUDWidget::IsWidgetGeometryHit(
 	{
 		return false;
 	}
+	for (const UWidget* Ancestor = Widget; Ancestor; Ancestor = Ancestor->GetParent())
+		if (Ancestor->GetVisibility() == ESlateVisibility::Collapsed || Ancestor->GetVisibility() == ESlateVisibility::Hidden) return false;
 	const FGeometry& Geometry = Widget->GetCachedGeometry();
 	const FVector2D LocalSize = Geometry.GetLocalSize();
 	if (LocalSize.X <= 1.0f || LocalSize.Y <= 1.0f)
@@ -1076,11 +900,9 @@ bool UGuLiCommanderHUDWidget::IsWidgetGeometryReady(const UWidget* Widget) const
 bool UGuLiCommanderHUDWidget::IsScreenPositionBlocked(
 	const FVector2D& ScreenPixelPosition) const
 {
-	return IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_TopStatus")), ScreenPixelPosition)
-		|| IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_MapDesign")), ScreenPixelPosition)
-		|| IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_DockDesign")), ScreenPixelPosition)
-		|| IsWidgetGeometryHit(TaskPanel, ScreenPixelPosition)
-		|| IsWidgetGeometryHit(FindRuntimeWidget(TEXT("SB_ShortcutsDesign")), ScreenPixelPosition);
+	if (bMenuOpen) return true;
+	for (const UWidget* Island : InteractionIslands) if (IsWidgetGeometryHit(Island, ScreenPixelPosition)) return true;
+	return false;
 }
 
 bool UGuLiCommanderHUDWidget::HasValidBlockingGeometry() const

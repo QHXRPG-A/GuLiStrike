@@ -1,3 +1,4 @@
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
 #include "Gameplay/GroundMech/GuLiGroundMechWeaponAnimInstance.h"
@@ -95,14 +96,14 @@ bool FMechFirePoolTest::RunTest(const FString&)
 	FGuLiPooledProjectileLaunch Launch; Launch.Context.MatchEpoch=900; Launch.Context.Source=Source();
 	Launch.Context.ShotId=FGuid::NewGuid(); Launch.Context.RootEventId=Launch.Context.ShotId; Launch.Context.Damage=10;
 	Launch.Position=FVector(0,0,1000); Launch.Speed=12000; Launch.Lifetime=5; Launch.MaximumDistance=60000; Launch.SweepRadius=15;
-	Launch.PlayerBulletSystem=TSoftObjectPtr<UNiagaraSystem>(FSoftObjectPath(TEXT("/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet.NS_GroundMech_Bullet")));
+	Launch.PlayerBulletVfxId=GuLiVfxIds::PlayerBullet;
 	const auto Handle=Pool->Launch(Launch); TestTrue(TEXT("Player launches without soldier or wingman identity"),Handle.IsValid());
 	TestFalse(TEXT("Duplicate live ShotId rejected"),Pool->Launch(Launch).IsValid());
 	FGuLiCombatEffectState State; Pool->Query(Handle,State);
 	bool bOK=false; FNetBitWriter Writer(nullptr,0); State.NetSerialize(Writer,nullptr,bOK); TestTrue(TEXT("Launch serializes"),bOK);
 	FNetBitReader Reader(nullptr,Writer.GetData(),Writer.GetNumBits()); FGuLiCombatEffectState Copy; Copy.NetSerialize(Reader,nullptr,bOK);
 	TestTrue(TEXT("GroundActor survives wire encoding"),bOK && Copy.Source==Source());
-	TestTrue(TEXT("Visual and ShotId survive wire encoding"),Copy.PlayerBulletSystem==State.PlayerBulletSystem && Copy.EffectId==State.EffectId);
+	TestTrue(TEXT("Visual and ShotId survive wire encoding"),Copy.PlayerBulletVfxId==State.PlayerBulletVfxId && Copy.EffectId==State.EffectId);
 	Launch.Context.Damage=20; // Already-flying data is frozen.
 	Pool->Step(1.f/30); Pool->Query(Handle,State); TestTrue(TEXT("First 30 Hz sweep moved 400 cm"),FMath::IsNearlyEqual(State.Location.X,400.,.01));
 	Ledger->UnregisterSource(Source(),Fixture.World); // Retained provenance survives unpossession/destruction.
@@ -225,8 +226,8 @@ namespace GuLiMechFireQA
 	}));
 	UNiagaraSystem* Candidate(const FString& Name)
 	{
-		if (Name==TEXT("bullet")) return LoadObject<UNiagaraSystem>(nullptr,TEXT("/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet"));
-		if (Name==TEXT("muzzle")) return LoadObject<UNiagaraSystem>(nullptr,TEXT("/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Muzzle"));
+		if (Name==TEXT("bullet")) return GuLiVfx::Load<UNiagaraSystem>(nullptr,GuLiVfxIds::PlayerBullet);
+		if (Name==TEXT("muzzle")) return GuLiVfx::Load<UNiagaraSystem>(nullptr,GuLiVfxIds::PlayerMuzzle);
 		return nullptr;
 	}
 	FAutoConsoleCommand InputCommand(TEXT("gs.MechFire.QA.Input"),TEXT("Candidate-only override: bullet|muzzle emitter module input float|vec2|vec3|int value. Use ~ for spaces in input names."),FConsoleCommandWithArgsDelegate::CreateLambda([](const TArray<FString>& Args)
@@ -294,7 +295,7 @@ namespace GuLiMechFireQA
 	{
 		if (Args.Num()!=1 || (Args[0]!=TEXT("bullet") && Args[0]!=TEXT("muzzle"))) return;
 		const bool bBullet=Args[0]==TEXT("bullet");
-		auto* System=LoadObject<UNiagaraSystem>(nullptr,bBullet?TEXT("/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet"):TEXT("/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Muzzle"));
+		auto* System=GuLiVfx::Load<UNiagaraSystem>(nullptr,bBullet?GuLiVfxIds::PlayerBullet:GuLiVfxIds::PlayerMuzzle);
 		if (!System) return; System->Modify();
 		for (auto& Handle:System->GetEmitterHandles()) if (auto* Data=Handle.GetInstance().GetEmitterData())
 		{ Data->bLocalSpace=true; Data->CalculateBoundsMode=ENiagaraEmitterCalculateBoundMode::Fixed; Data->FixedBounds=FBox(FVector(-800),FVector(800)); }

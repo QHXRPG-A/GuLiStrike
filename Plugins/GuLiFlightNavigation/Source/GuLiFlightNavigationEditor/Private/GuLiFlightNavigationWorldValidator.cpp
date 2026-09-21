@@ -12,7 +12,29 @@ bool UGuLiFlightNavigationWorldValidator::CanValidateAsset_Implementation(
 	UObject* InObject,
 	FDataValidationContext& InContext) const
 {
-	return IsValid(InObject) && InObject->IsA<UWorld>();
+	UWorld* World = Cast<UWorld>(InObject);
+	if (!IsValid(World))
+	{
+		return false;
+	}
+
+	const UGuLiFlightNavigationCookSettings* Settings = GetDefault<UGuLiFlightNavigationCookSettings>();
+	if (FGuLiFlightNavigationCookGate::IsWorldRequired(
+		World->GetOutermost()->GetFName(),
+		Settings->RequiredWorldPackages))
+	{
+		return true;
+	}
+	for (TActorIterator<AGuLiFlightNavigationVolume> Iterator(World); Iterator; ++Iterator)
+	{
+		if (IsValid(*Iterator) && Iterator->bNavigationEnabled)
+		{
+			return true;
+		}
+	}
+	// UE 5.7 requires a Valid/Invalid result once this predicate accepts an asset.
+	// Worlds without flight navigation must be excluded before entering validation.
+	return false;
 }
 
 EDataValidationResult UGuLiFlightNavigationWorldValidator::ValidateLoadedAsset_Implementation(
@@ -27,23 +49,6 @@ EDataValidationResult UGuLiFlightNavigationWorldValidator::ValidateLoadedAsset_I
 	}
 
 	const UGuLiFlightNavigationCookSettings* Settings = GetDefault<UGuLiFlightNavigationCookSettings>();
-	const bool bRequiredWorld = FGuLiFlightNavigationCookGate::IsWorldRequired(
-		World->GetOutermost()->GetFName(),
-		Settings->RequiredWorldPackages);
-	bool bContainsEnabledVolume = false;
-	for (TActorIterator<AGuLiFlightNavigationVolume> Iterator(World); Iterator; ++Iterator)
-	{
-		if (IsValid(*Iterator) && Iterator->bNavigationEnabled)
-		{
-			bContainsEnabledVolume = true;
-			break;
-		}
-	}
-	if (!bRequiredWorld && !bContainsEnabledVolume)
-	{
-		return EDataValidationResult::NotValidated;
-	}
-
 	TArray<FGuLiFlightNavigationCookIssue> Issues;
 	if (!FGuLiFlightNavigationCookGate::ValidateWorld(
 		World,

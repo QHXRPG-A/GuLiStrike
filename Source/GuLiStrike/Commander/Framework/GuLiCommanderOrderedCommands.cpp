@@ -1,4 +1,5 @@
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
+#include "Gameplay/Data/GuLiGameText.h"
 #include "Commander/Framework/GuLiCommanderPlayerController.h"
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Commander/Orders/GuLiSpecialTaskCatalog.h"
@@ -8,6 +9,7 @@
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
+#include "GameFramework/Pawn.h"
 
 const TArray<FGuLiUnitTaskSummary>& UGuLiCommanderNetSyncComponent::GetTaskSummaries() const
 {
@@ -19,6 +21,104 @@ void UGuLiCommanderNetSyncComponent::SubmitOrderedSelection(FGuLiSelectionReques
 {
 	const uint32 Sequence = NextOrderedSequence++; if (!NextOrderedSequence) ++NextOrderedSequence;
 	PendingOrderedSelections.Add(Sequence); ServerOrderedSelection(Request, Sequence, GetConnectionGeneration());
+}
+bool UGuLiCommanderNetSyncComponent::SubmitPanelSelection(FGuLiPanelSelectionRequest Request)
+{
+	// Portraits display a confirmed snapshot. Do not reinterpret a stale tile after another selection intent.
+	if (!IsConnectionReady() || HasUnresolvedSelectionIntent())
+	{ LastTaskFeedback = GuLiGameText::Text(TEXT("UI.OrderedCommands.102")); NotifySelectionChanged(); return false; }
+	Request.SelectionRevision = SelectionState.SelectionRevision;
+	const uint32 Sequence = NextOrderedSequence++; if (!NextOrderedSequence) ++NextOrderedSequence;
+	PendingOrderedSelections.Add(Sequence);
+	ServerPanelSelection(Request, Sequence, GetConnectionGeneration());
+	return true;
+}
+
+void UGuLiCommanderNetSyncComponent::ServerPanelSelection_Implementation(
+	FGuLiPanelSelectionRequest Request, uint32 Sequence, uint32 Generation)
+{
+	auto Reject = [&](const TCHAR* Reason)
+	{
+		FGuLiCommandAck Ack; InitializeAck(Ack, Sequence, EGuLiCommandKind::Selection);
+		Ack.Result = EGuLiCommandAckResult::InvalidRequest;
+		ClientTaskReceipt(Ack, Reason, Generation);
+		ClientOrderedSelection(SelectionState, Sequence, false, Generation);
+	};
+	if (!AdmitOrderedSequence(Sequence, Generation))
+	{ Reject(GuLiGameText::Text(TEXT("UI.OrderedCommands.103"))); return; }
+	if (Request.SelectionRevision != SelectionState.SelectionRevision
+		|| Request.SoldierId.IsValid() == Request.ActorId.IsValid()
+		|| uint8(Request.Action) > uint8(EGuLiPanelSelectionAction::RemoveGroup))
+	{ bOrderedSelectionValid = false; Reject(GuLiGameText::Text(TEXT("UI.OrderedCommands.104"))); return; }
+	auto* Authority = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>();
+	const EGuLiTeam Team = GetBattlePlayerState()->GetTeam();
+	TMap<FGuLiSoldierId, uint16> Soldiers;
+	TMap<FGuLiControllableActorId, uint16> Actors;
+	for (const auto& Cohort : SelectionState.Cohorts) for (auto Id : Cohort.MemberIds)
+	{
+		EGuLiTeam Actual; uint16 Type; FVector Position;
+		if (Authority->GetTaskSoldierInfo(Id, Actual, Type, Position) && Actual == Team) Soldiers.Add(Id, Type);
+	}
+	for (TActorIterator<APawn> It(GetWorld()); It; ++It)
+		if (const auto* Vehicle = Cast<IGuLiEngineeringVehicle>(*It); Vehicle && Vehicle->GetTeam() == Team
+			&& SelectionState.ActorIds.Contains(Vehicle->GetStableActorId()))
+			if (const auto* Health = It->FindComponentByClass<UGuLiCombatHealthComponent>(); Health && Health->IsAlive())
+				Actors.Add(Vehicle->GetStableActorId(), uint16(Vehicle->GetUnitTypeId()));
+	const uint16* Type = Request.SoldierId.IsValid() ? Soldiers.Find(Request.SoldierId) : Actors.Find(Request.ActorId);
+	if (!Type) { bOrderedSelectionValid = false; Reject(GuLiGameText::Text(TEXT("UI.OrderedCommands.105"))); return; }
+	const uint16 RequestedType = *Type;
+	TSet<FGuLiSoldierId> GroupSoldiers;
+	TSet<FGuLiControllableActorId> GroupActors;
+	if (Request.Action == EGuLiPanelSelectionAction::SingleGroup
+		|| Request.Action == EGuLiPanelSelectionAction::RemoveGroup)
+	{
+		TArray<FGuLiSoldierId> TypeSoldiers;
+		TArray<FGuLiControllableActorId> TypeActors;
+		for (const auto& Item : Soldiers) if (Item.Value == RequestedType) TypeSoldiers.Add(Item.Key);
+		for (const auto& Item : Actors) if (Item.Value == RequestedType) TypeActors.Add(Item.Key);
+		TypeSoldiers.Sort([](auto A, auto B){ return A.Value < B.Value; });
+		TypeActors.Sort([](auto A, auto B){ return A.Value < B.Value; });
+		const int32 AnchorIndex = Request.SoldierId.IsValid()
+			? TypeSoldiers.IndexOfByKey(Request.SoldierId)
+			: TypeSoldiers.Num() + TypeActors.IndexOfByKey(Request.ActorId);
+		if (AnchorIndex < 0)
+		{
+			bOrderedSelectionValid = false;
+			Reject(GuLiGameText::Text(TEXT("UI.OrderedCommands.105")));
+			return;
+		}
+		const int32 GroupStart = (AnchorIndex / GULI_PANEL_PORTRAIT_GROUP_SIZE)
+			* GULI_PANEL_PORTRAIT_GROUP_SIZE;
+		const int32 GroupEnd = FMath::Min(
+			GroupStart + GULI_PANEL_PORTRAIT_GROUP_SIZE,
+			TypeSoldiers.Num() + TypeActors.Num());
+		for (int32 Index = GroupStart; Index < GroupEnd; ++Index)
+		{
+			if (Index < TypeSoldiers.Num()) GroupSoldiers.Add(TypeSoldiers[Index]);
+			else GroupActors.Add(TypeActors[Index - TypeSoldiers.Num()]);
+		}
+	}
+	auto Keep = [&](bool bSameMember, bool bInGroup, uint16 UnitType)
+	{
+		switch (Request.Action)
+		{
+		case EGuLiPanelSelectionAction::Single: return bSameMember;
+		case EGuLiPanelSelectionAction::Remove: return !bSameMember;
+		case EGuLiPanelSelectionAction::KeepType: return UnitType == RequestedType;
+		case EGuLiPanelSelectionAction::RemoveType: return UnitType != RequestedType;
+		case EGuLiPanelSelectionAction::SingleGroup: return bInGroup;
+		case EGuLiPanelSelectionAction::RemoveGroup: return !bInGroup;
+		default: return false;
+		}
+	};
+	TArray<FGuLiSoldierId> NextSoldiers; TArray<FGuLiControllableActorId> NextActors;
+	for (const auto& Item : Soldiers) if (Keep(Item.Key == Request.SoldierId, GroupSoldiers.Contains(Item.Key), Item.Value)) NextSoldiers.Add(Item.Key);
+	for (const auto& Item : Actors) if (Keep(Item.Key == Request.ActorId, GroupActors.Contains(Item.Key), Item.Value)) NextActors.Add(Item.Key);
+	NextSoldiers.Sort([](auto A, auto B){ return A.Value < B.Value; });
+	NextActors.Sort([](auto A, auto B){ return A.Value < B.Value; });
+	bOrderedSelectionValid = Authority->SetExplicitSelection(Team, NextSoldiers, NextActors, SelectionState);
+	ClientOrderedSelection(SelectionState, Sequence, false, Generation);
+	NotifySelectionChanged(); NextOrderedSummaryTime = 0;
 }
 void UGuLiCommanderNetSyncComponent::SubmitOrderedTask(FGuLiUnitTaskCommand Command)
 {
@@ -55,19 +155,33 @@ void UGuLiCommanderNetSyncComponent::ServerOrderedSelection_Implementation(FGuLi
 	Request.KnownSelectionRevision = SelectionState.SelectionRevision;
 	FGuLiCommandAck Ack;
 	bOrderedSelectionValid = GetWorld()->GetSubsystem<UGuLiBattleAuthoritySubsystem>()->ResolveSelection(*GetBattlePlayerState(), Request, SelectionState, Ack);
-	if (!bOrderedSelectionValid) ClientTaskReceipt(Ack, TEXT("选择未接受：目标或容量无效"), Generation);
+	if (!bOrderedSelectionValid) ClientTaskReceipt(Ack, GuLiGameText::Text(TEXT("UI.OrderedCommands.106")), Generation);
 	ClientOrderedSelection(SelectionState, Sequence, false, Generation); NotifySelectionChanged(); NextOrderedSummaryTime = 0;
 }
 void UGuLiCommanderNetSyncComponent::ServerOrderedTask_Implementation(FGuLiUnitTaskCommand Command, uint32 Sequence, uint32 Generation)
 {
 	FGuLiCommandAck Ack; InitializeAck(Ack, Command.CommandId, EGuLiCommandKind::Move);
 	if (!AdmitOrderedSequence(Sequence, Generation) || !bOrderedSelectionValid)
-	{ Ack.Result = EGuLiCommandAckResult::InvalidRequest; ClientTaskReceipt(Ack, TEXT("命令未接受：连接、顺序或选择无效"), Generation); return; }
+	{ Ack.Result = EGuLiCommandAckResult::InvalidRequest; ClientTaskReceipt(Ack, GuLiGameText::Text(TEXT("UI.OrderedCommands.107")), Generation); return; }
 	if (!SelectionState.SelectionRevision) SelectionState.SelectionRevision = 1;
 	Command.SelectionRevision = SelectionState.SelectionRevision;
 	auto* Tasks = GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>();
 	// The client requests task semantics only. The server resolves context and the authored class.
 	Tasks->BuildContextCommand(SelectionState, Command);
+	const auto* Catalog = GetWorld()->GetSubsystem<UGuLiSpecialTaskCatalog>();
+	const auto* Special = Catalog ? Catalog->Find(Command.SpecialTaskId) : nullptr;
+	const FName Intent = Command.TargetIntent;
+	const bool bTargetMatches = Intent.IsNone()
+		|| (Intent == TEXT("Move") && Command.Kind == EGuLiUnitTaskKind::Move)
+		|| (Intent == TEXT("Mine") && Command.Kind == EGuLiUnitTaskKind::Special && Special && Special->Tag == FGameplayTag::RequestGameplayTag(TEXT("Task.Special.Mining")))
+		|| (Intent == TEXT("Construct") && Command.Kind == EGuLiUnitTaskKind::Special && Special && Special->Tag == FGameplayTag::RequestGameplayTag(TEXT("Task.Special.Construction")))
+		|| (Intent == TEXT("Return") && Command.Kind == EGuLiUnitTaskKind::ReturnToFactory)
+		|| (Intent == TEXT("Transit") && Command.Kind == EGuLiUnitTaskKind::Transit);
+	if (!bTargetMatches)
+	{
+		Ack.Result = EGuLiCommandAckResult::InvalidTarget;
+		ClientTaskReceipt(Ack, GuLiGameText::Text(TEXT("UI.OrderedCommands.108")), Generation); return;
+	}
 	int32 Accepted = 0, Rejected = 0; FString Message;
 	TSet<FGuLiTaskUnitId> AcceptedUnits;
 	const bool bAccepted = Tasks->Submit(*GetBattlePlayerState(), SelectionState, Command, Message, Accepted, Rejected, &AcceptedUnits);
@@ -86,7 +200,7 @@ void UGuLiCommanderNetSyncComponent::ServerOrderedTask_Implementation(FGuLiUnitT
 		Ack.EngineeringResults.Add({Id, AcceptedUnits.Contains(FGuLiTaskUnitId::Actor(Id)) ? EGuLiTransitOrderResult::Accepted : EGuLiTransitOrderResult::InvalidTarget});
 	Ack.Result = !bAccepted ? EGuLiCommandAckResult::InvalidTarget : Rejected ? EGuLiCommandAckResult::PartiallyAccepted : EGuLiCommandAckResult::Accepted;
 	Ack.ServerSelectionRevision = SelectionState.SelectionRevision;
-	const FString Counts = FString::Printf(TEXT("已接收 %d，拒绝 %d"), Accepted, Rejected);
+	const FString Counts = GuLiGameText::Format(TEXT("UI.OrderedCommands.101"), {FString::Printf(TEXT("%d"), Accepted), FString::Printf(TEXT("%d"), Rejected)});
 	ClientTaskReceipt(Ack, Message.IsEmpty() ? Counts : Counts + TEXT("：") + Message, Generation); NextOrderedSummaryTime = 0;
 }
 void UGuLiCommanderNetSyncComponent::ClientOrderedSelection_Implementation(const FGuLiCommanderSelectionState& State,
@@ -106,6 +220,7 @@ void UGuLiCommanderNetSyncComponent::ClientTaskReceipt_Implementation(const FGuL
 	if (Ack.CommandKind == EGuLiCommandKind::Move) PendingOrderedTasks.Remove(Ack.ClientCommandId);
 	if (Generation != GetConnectionGeneration() || !IsConnectionReady()) return;
 	LastTaskFeedback = Message; LastCommandAck = Ack;
+	TGuardValue<bool> TaskReceiptScope(bDispatchingTaskReceipt, true);
 	OnCommandAckChanged.Broadcast(Ack);
 }
 void UGuLiCommanderNetSyncComponent::PruneControlGroup(FGuLiCommanderControlGroup& Group, EGuLiTeam Team) const
@@ -135,7 +250,7 @@ void UGuLiCommanderNetSyncComponent::ServerControlGroup_Implementation(uint8 Slo
 			|| Next.Actors.Num() > int32(GULI_MAX_CONTROLLABLE_ACTOR_SELECTION))
 		{
 			FGuLiCommandAck Ack; InitializeAck(Ack, Sequence, EGuLiCommandKind::Selection); Ack.Result = EGuLiCommandAckResult::InvalidRequest;
-			ClientTaskReceipt(Ack, TEXT("编队超过选择容量"), Generation); ClientOrderedSelection(SelectionState, Sequence, false, Generation); return;
+			ClientTaskReceipt(Ack, GuLiGameText::Text(TEXT("UI.OrderedCommands.109")), Generation); ClientOrderedSelection(SelectionState, Sequence, false, Generation); return;
 		}
 		Group = MoveTemp(Next);
 		if (bSteal)
@@ -164,16 +279,24 @@ void UGuLiCommanderNetSyncComponent::TickOrderedCommands()
 	if (TaskSnapshotOffset == INDEX_NONE)
 	{
 	ControlGroups.SetNum(10); ControlGroupCounts.SetNum(10);
+	TSet<FGuLiSoldierId> SelectedSoldiers;
+	for (const auto& Cohort : SelectionState.Cohorts) for (auto Id : Cohort.MemberIds) SelectedSoldiers.Add(Id);
+	RelatedControlGroups = 0;
 	for (int32 Index=0; Index<10; ++Index)
-	{ PruneControlGroup(ControlGroups[Index], GetBattlePlayerState()->GetTeam()); ControlGroupCounts[Index] = ControlGroups[Index].Soldiers.Num() + ControlGroups[Index].Actors.Num(); }
+	{
+		PruneControlGroup(ControlGroups[Index], GetBattlePlayerState()->GetTeam());
+		const auto& Group = ControlGroups[Index]; ControlGroupCounts[Index] = Group.Soldiers.Num() + Group.Actors.Num();
+		if (Group.Soldiers.ContainsByPredicate([&](auto Id){ return SelectedSoldiers.Contains(Id); })
+			|| Group.Actors.ContainsByPredicate([&](auto Id){ return SelectionState.ActorIds.Contains(Id); })) RelatedControlGroups |= uint16(1 << Index);
+	}
 	GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()->BuildSummary(SelectionState, TaskSummaries);
 	DisplayedTaskSelectionRevision = SelectionState.SelectionRevision;
 	bool bChanged = TaskSnapshotRevision == 0 || TaskSnapshotSelectionRevision != SelectionState.SelectionRevision
-		|| PendingGroupCounts != ControlGroupCounts || PendingTaskSnapshot.Num() != TaskSummaries.Num();
+		|| PendingGroupCounts != ControlGroupCounts || PendingRelatedGroups != RelatedControlGroups || PendingTaskSnapshot.Num() != TaskSummaries.Num();
 	for (int32 Index = 0; !bChanged && Index < TaskSummaries.Num(); ++Index)
 		bChanged = !FGuLiUnitTaskSummary::StaticStruct()->CompareScriptStruct(&TaskSummaries[Index], &PendingTaskSnapshot[Index], 0);
 	if (!bChanged) return;
-	PendingTaskSnapshot = TaskSummaries; PendingGroupCounts = ControlGroupCounts;
+	PendingTaskSnapshot = TaskSummaries; PendingGroupCounts = ControlGroupCounts; PendingRelatedGroups = RelatedControlGroups;
 	TaskSnapshotSelectionRevision = SelectionState.SelectionRevision;
 	if (!++TaskSnapshotRevision) ++TaskSnapshotRevision;
 	TaskSnapshotOffset = 0;
@@ -185,26 +308,26 @@ void UGuLiCommanderNetSyncComponent::TickOrderedCommands()
 		TArray<FGuLiUnitTaskSummary> Chunk;
 		for (int32 Index = 0; Index < Count; ++Index) Chunk.Add(PendingTaskSnapshot[TaskSnapshotOffset + Index]);
 		ClientTaskSnapshot(TaskSnapshotRevision, PendingTaskSnapshot.Num(), TaskSnapshotOffset, Chunk,
-			TaskSnapshotOffset == 0 ? PendingGroupCounts : TArray<int32>{}, TaskSnapshotSelectionRevision, GetConnectionGeneration());
+			TaskSnapshotOffset == 0 ? PendingGroupCounts : TArray<int32>{}, PendingRelatedGroups, TaskSnapshotSelectionRevision, GetConnectionGeneration());
 		TaskSnapshotOffset += Count;
 		if (TaskSnapshotOffset >= PendingTaskSnapshot.Num()) TaskSnapshotOffset = INDEX_NONE;
 	}
 }
 
 void UGuLiCommanderNetSyncComponent::ClientTaskSnapshot_Implementation(uint32 Revision, int32 Total, int32 Offset,
-	const TArray<FGuLiUnitTaskSummary>& Chunk, const TArray<int32>& Counts, uint32 SelectionRevision, uint32 Generation)
+	const TArray<FGuLiUnitTaskSummary>& Chunk, const TArray<int32>& Counts, uint16 RelatedGroups, uint32 SelectionRevision, uint32 Generation)
 {
 	if (Generation != GetConnectionGeneration() || !IsConnectionReady() || Total < 0 || Total > 10064 || Offset < 0 || Offset + Chunk.Num() > Total) return;
 	if (Offset == 0)
 	{
 		if (ReceivedTaskSnapshotRevision && !IsNewerSerial(Revision, ReceivedTaskSnapshotRevision)) return;
-		ReceivedTaskSnapshotRevision = Revision; ReceivedTaskSnapshot.Reset(); ReceivedGroupCounts = Counts;
+		ReceivedTaskSnapshotRevision = Revision; ReceivedTaskSnapshot.Reset(); ReceivedGroupCounts = Counts; ReceivedRelatedGroups = RelatedGroups;
 	}
 	if (Revision != ReceivedTaskSnapshotRevision || Offset != ReceivedTaskSnapshot.Num()) return;
 	ReceivedTaskSnapshot.Append(Chunk);
 	if (ReceivedTaskSnapshot.Num() == Total)
 	{
-		TaskSummaries = MoveTemp(ReceivedTaskSnapshot); ControlGroupCounts = ReceivedGroupCounts;
+		TaskSummaries = MoveTemp(ReceivedTaskSnapshot); ControlGroupCounts = ReceivedGroupCounts; RelatedControlGroups = ReceivedRelatedGroups;
 		DisplayedTaskSelectionRevision = SelectionRevision;
 	}
 }

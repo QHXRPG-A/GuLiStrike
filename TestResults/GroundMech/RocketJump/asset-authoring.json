@@ -1,0 +1,37 @@
+{
+  "success": true,
+  "assets": [
+    "/Game/GuLiStrike/GroundMech/UI/M_RocketFuelArc.M_RocketFuelArc",
+    "/Game/GuLiStrike/GroundMech/Input/IA_Ground_RocketJump.IA_Ground_RocketJump",
+    "/Game/GuLiStrike/GroundMech/Input/IMC_GroundMech.IMC_GroundMech",
+    "/Game/GuLiStrike/GroundMech/BP_GroundMech_Light.BP_GroundMech_Light",
+    "/Game/GuLiStrike/GroundMech/Review/BP_GroundMech_FireReview.BP_GroundMech_FireReview"
+  ],
+  "material": {
+    "scalar_parameters": [
+      "FuelRatio",
+      "Opacity"
+    ],
+    "vector_parameters": [
+      "Color"
+    ]
+  },
+  "table_import": {
+    "asset": "DT_GuLiStrikeMech_Skills",
+    "source_rows": [
+      "BasicMachinegun",
+      "RocketJump"
+    ],
+    "created": false,
+    "row_names": [
+      "BasicMachinegun",
+      "RocketJump"
+    ],
+    "row_checks": {
+      "BasicMachinegun": true,
+      "RocketJump": true
+    },
+    "imported": true
+  },
+  "space_bindings": 1
+}

@@ -189,6 +189,31 @@ namespace GuLiCommanderProtocol
 	GULISTRIKE_API float DequantizeYawDegrees(uint8 QuantizedYaw);
 }
 
+UENUM(BlueprintType)
+enum class EGuLiPanelSelectionAction : uint8
+{
+	Single,
+	Remove,
+	KeepType,
+	RemoveType,
+	SingleGroup,
+	RemoveGroup
+};
+
+/** Portrait cells collapse one stable, type-sorted slice of the confirmed selection. */
+inline constexpr int32 GULI_PANEL_PORTRAIT_GROUP_SIZE = 25;
+
+/** A portrait can only narrow the currently confirmed, server-owned selection. */
+USTRUCT()
+struct FGuLiPanelSelectionRequest
+{
+	GENERATED_BODY()
+	UPROPERTY() EGuLiPanelSelectionAction Action = EGuLiPanelSelectionAction::Single;
+	UPROPERTY() FGuLiSoldierId SoldierId;
+	UPROPERTY() FGuLiControllableActorId ActorId;
+	UPROPERTY() uint32 SelectionRevision = 0;
+};
+
 /** 客户端选兵意图。SeedSoldierId 仅是带射线校验的点选目标提示；最终成员由服务器产生。 */
 USTRUCT()
 struct GULISTRIKE_API FGuLiSelectionRequest

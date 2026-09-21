@@ -14,6 +14,7 @@
 #include "Commander/Presentation/GuLiCommanderPresentationActor.h"
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/UI/GuLiCommanderCursorWidget.h"
+#include "Commander/UI/GuLiCommanderHUDWidget.h"
 #include "Gameplay/Building/GuLiBuildingPlacementComponent.h"
 #include "Blueprint/WidgetLayoutLibrary.h"
 #include "Engine/GameViewportClient.h"
@@ -161,7 +162,11 @@ void AGuLiCommanderPlayerController::EndPlay(const EEndPlayReason::Type EndPlayR
 
 void AGuLiCommanderPlayerController::FlushPressedKeys()
 {
-	if (auto* Mech = Cast<AGuLiGroundMechCharacter>(GetPawn())) Mech->GetWeapon()->SetFireHeld(false);
+	if (auto* Mech = Cast<AGuLiGroundMechCharacter>(GetPawn()))
+	{
+		Mech->GetWeapon()->SetFireHeld(false);
+		Mech->SetRocketJumpInput(false);
+	}
 	CancelSelectionDrag();
 	Super::FlushPressedKeys();
 }
@@ -219,6 +224,8 @@ void AGuLiCommanderPlayerController::SetupInputComponent()
 	};
 	Enhanced.BindAction(MakeAction(EKeys::M), ETriggerEvent::Started, this, &ThisClass::HandleArmMoveToolInput);
 	Enhanced.BindAction(MakeAction(EKeys::S), ETriggerEvent::Started, this, &ThisClass::StopSelectedUnits);
+	Enhanced.BindAction(MakeAction(EKeys::Tab), ETriggerEvent::Started, this, &ThisClass::HandleInspectionTab);
+	Enhanced.BindAction(MakeAction(EKeys::F10), ETriggerEvent::Started, this, &ThisClass::HandleLocalMenu);
 	const FKey Digits[] = { EKeys::Zero,EKeys::One,EKeys::Two,EKeys::Three,EKeys::Four,EKeys::Five,EKeys::Six,EKeys::Seven,EKeys::Eight,EKeys::Nine };
 	for (int32 I = 0; I < 10; ++I)
 		Enhanced.BindAction(MakeAction(Digits[I]), ETriggerEvent::Started, this, &ThisClass::HandleControlGroup, I);
@@ -290,6 +297,7 @@ void AGuLiCommanderPlayerController::CancelSelectionDrag()
 
 bool AGuLiCommanderPlayerController::CanIssueCommanderOrders() const
 {
+	if (IsCommanderMenuOpen()) return false;
 	const AGuLiBattlePlayerState* CommanderPlayerState = GetPlayerState<AGuLiBattlePlayerState>();
 	return CommanderPlayerState
 		&& CommanderPlayerState->IsCommander()
@@ -299,6 +307,7 @@ bool AGuLiCommanderPlayerController::CanIssueCommanderOrders() const
 
 void AGuLiCommanderPlayerController::ActivateSelectionTool()
 {
+	PendingWorkAction = NAME_None;
 	if (TeleportInput && TeleportInput->IsAiming()) { TeleportInput->CancelTeleport(); }
 	if (CommanderToolMode == EGuLiCommanderToolMode::Select)
 	{
@@ -311,6 +320,7 @@ void AGuLiCommanderPlayerController::ActivateSelectionTool()
 
 bool AGuLiCommanderPlayerController::ArmMoveTool()
 {
+	PendingWorkAction = TEXT("Move");
 	if (TeleportInput && TeleportInput->IsAiming()) { TeleportInput->CancelTeleport(); }
 	CancelSelectionDrag();
 	if (!GuLiCommanderToolPolicy::CanArmMove(
@@ -531,6 +541,7 @@ void AGuLiCommanderPlayerController::HandleToggleBuildModeInput()
 {
 	if (TeleportInput && TeleportInput->IsAiming()) { TeleportInput->CancelTeleport(); }
 	CancelSelectionDrag();
+	ActivateSelectionTool();
 	if (BuildingPlacementComponent)
 	{
 		BuildingPlacementComponent->ToggleBuildMode();
@@ -559,6 +570,8 @@ void AGuLiCommanderPlayerController::HandleSelectBuildingSixInput() { BuildingPl
 
 void AGuLiCommanderPlayerController::HandleCancelInput()
 {
+	if (auto* UIHUD = Cast<AGuLiCommanderHUD>(GetHUD()))
+		if (auto* UI = UIHUD->GetRuntimeHUDWidget(); UI && UI->DismissTopLayer()) return;
 	if (TeleportInput && TeleportInput->IsAiming()) { TeleportInput->CancelTeleport(); return; }
 	if (BuildingPlacementComponent && BuildingPlacementComponent->HandleCancelAction())
 	{
@@ -736,10 +749,15 @@ void AGuLiCommanderPlayerController::StopSelectedUnits()
 
 void AGuLiCommanderPlayerController::HandleControlGroup(int32 Slot)
 {
-	if (!CanIssueCommanderOrders()) return;
 	const bool Ctrl = IsInputKeyDown(EKeys::LeftControl) || IsInputKeyDown(EKeys::RightControl);
 	const bool Shift = IsInputKeyDown(EKeys::LeftShift) || IsInputKeyDown(EKeys::RightShift);
 	const bool Alt = IsInputKeyDown(EKeys::LeftAlt) || IsInputKeyDown(EKeys::RightAlt);
+	RecallControlGroupFromUI(Slot, Ctrl, Shift, Alt);
+}
+
+void AGuLiCommanderPlayerController::RecallControlGroupFromUI(int32 Slot, bool Ctrl, bool Shift, bool Alt)
+{
+	if (!CanIssueCommanderOrders() || Slot < 0 || Slot >= 10) return;
 	const double Now = GetWorld()->GetRealTimeSeconds();
 	const bool Focus = !Ctrl && !Shift && !Alt && LastGroupKey == Slot && LastGroupKeyTime >= 0
 		&& Now - LastGroupKeyTime <= GetDefault<UGuLiUnitTaskSettings>()->DoublePressSeconds;
@@ -794,6 +812,22 @@ bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 		|| (!HasConfirmedSelection() && !NetSyncComponent->HasUnresolvedSelectionIntent()))
 	{
 		return false;
+	}
+	if (PendingWorkAction == TEXT("Skill"))
+	{
+		FVector Ground;
+		if (!TraceGroundUnderCursor(Ground)) return false;
+		if (auto* State = GetPlayerState<AGuLiBattlePlayerState>())
+			State->GetCommanderSkills()->ActivateSelectedUnits(true, Ground);
+		ActivateSelectionTool();
+		return true;
+	}
+	// Explicit M ignores contextual resource picking, even when a mineral lies below the cursor.
+	if (PendingWorkAction == TEXT("Move"))
+	{
+		FVector Ground;
+		return TraceGroundUnderCursor(Ground) && IssueMapMove(Ground,
+			IsInputKeyDown(EKeys::LeftShift) || IsInputKeyDown(EKeys::RightShift));
 	}
 
 	FGuLiMoveRequest Request;
@@ -864,6 +898,12 @@ bool AGuLiCommanderPlayerController::TryIssueMoveAtCursor()
 		Command.Kind = EGuLiUnitTaskKind::Special;
 		for (const auto& Definition : GetWorld()->GetSubsystem<UGuLiSpecialTaskCatalog>()->GetDefinitions())
 			if (Definition.Tag == FGameplayTag::RequestGameplayTag(TEXT("Task.Special.Mining"))) { Command.SpecialTaskId = Definition.Id; break; }
+	}
+	Command.TargetIntent = PendingWorkAction;
+	if (PendingWorkAction == TEXT("Move"))
+	{
+		Command.Kind = EGuLiUnitTaskKind::Move; Command.SpecialTaskId = 0; Command.ClusterId = 0;
+		Command.TerritoryId = NAME_None; Command.bGroundMoveOnly = true;
 	}
 	NetSyncComponent->SubmitOrderedTask(Command);
 	return true;
@@ -1216,6 +1256,7 @@ void AGuLiCommanderPlayerController::RestoreCommanderCursor()
 }
 void AGuLiCommanderPlayerController::UpdateCameraInput(const float DeltaTime)
 {
+	if (IsCommanderMenuOpen()) return;
 	AGuLiCommanderCameraPawn* CameraPawn = GetPawn<AGuLiCommanderCameraPawn>();
 	if (!CameraPawn || !IsLocalController())
 	{
@@ -1342,7 +1383,8 @@ bool AGuLiCommanderPlayerController::ProcessMoveCommandAck(const FGuLiCommandAck
 		return true;
 	}
 
-	const bool bAccepted = Ack.IsAccepted() && (Ack.BatchOrderId != 0u || !Ack.EngineeringResults.IsEmpty());
+	const bool bTaskReceipt = NetSyncComponent && NetSyncComponent->IsDispatchingTaskReceipt();
+	const bool bAccepted = Ack.IsAccepted() && (bTaskReceipt || Ack.BatchOrderId != 0u || !Ack.EngineeringResults.IsEmpty());
 	if (!Ack.EngineeringResults.IsEmpty())
 	{
 		TArray<FString> Messages;

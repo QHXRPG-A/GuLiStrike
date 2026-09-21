@@ -1,3 +1,4 @@
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectPresentationSubsystem.h"
 
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -12,19 +13,23 @@
 
 namespace { constexpr int32 LaserBlockSize = 1024; }
 
-int32 UGuLiCombatEffectPresentationSubsystem::AllocateLaserSlot()
+int32 UGuLiCombatEffectPresentationSubsystem::AllocateLaserSlot(const int32 VfxId)
 {
-	if (FreeLaserSlots.IsEmpty())
+	const FVector BaseScale = GuLiVfx::Scale(this, VfxId);
+	if (!UGuLiVfxRegistrySubsystem::IsValidScale(BaseScale)) return INDEX_NONE;
+	auto& FreeSlots = FreeLaserSlots.FindOrAdd(VfxId);
+	if (FreeSlots.IsEmpty())
 	{
 		const int32 First = LaserBlocks.Num() * LaserBlockSize;
 		auto& Block = LaserBlocks.AddDefaulted_GetRef();
+		Block.VfxId = VfxId; Block.BaseScale = BaseScale;
 		Block.Positions.Init(FVector::ZeroVector, LaserBlockSize); Block.MuzzlePositions = Block.Positions;
 		Block.Directions.Init(FVector::ForwardVector, LaserBlockSize);
 		Block.Sizes.Init(FVector2D::ZeroVector, LaserBlockSize); Block.MuzzleSizes = Block.Sizes;
 		Block.Colors.Init(FLinearColor::Transparent, LaserBlockSize); Block.MuzzleColors = Block.Colors;
-		for (int32 Index = First + LaserBlockSize - 1; Index >= First; --Index) FreeLaserSlots.Add(Index);
+		for (int32 Index = First + LaserBlockSize - 1; Index >= First; --Index) FreeSlots.Add(Index);
 	}
-	return FreeLaserSlots.Pop(EAllowShrinking::No);
+	return FreeSlots.Pop(EAllowShrinking::No);
 }
 
 void UGuLiCombatEffectPresentationSubsystem::FreeLaserSlot(const int32 Slot)
@@ -33,7 +38,7 @@ void UGuLiCombatEffectPresentationSubsystem::FreeLaserSlot(const int32 Slot)
 	auto& Block = LaserBlocks[Slot / LaserBlockSize]; const int32 Index = Slot % LaserBlockSize;
 	Block.Colors[Index] = Block.MuzzleColors[Index] = FLinearColor::Transparent;
 	Block.Sizes[Index] = Block.MuzzleSizes[Index] = FVector2D::ZeroVector;
-	FreeLaserSlots.Add(Slot);
+	FreeLaserSlots.FindOrAdd(Block.VfxId).Add(Slot);
 }
 
 void UGuLiCombatEffectPresentationSubsystem::ResetLaserPool()
@@ -46,7 +51,8 @@ void UGuLiCombatEffectPresentationSubsystem::ResetLaserPool()
 void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, const bool bEnabled)
 {
 	Counters.LaserCapacity = LaserBlocks.Num() * LaserBlockSize;
-	Counters.LaserActive = Counters.LaserCapacity - FreeLaserSlots.Num(); Counters.LaserVisible = 0;
+	Counters.LaserActive = Counters.LaserCapacity; Counters.LaserVisible = 0;
+	for (const auto& Pair : FreeLaserSlots) Counters.LaserActive -= Pair.Value.Num();
 	for (auto& Block : LaserBlocks)
 	{
 		Block.Colors.Init(FLinearColor::Transparent, LaserBlockSize); Block.MuzzleColors.Init(FLinearColor::Transparent, LaserBlockSize);
@@ -81,7 +87,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 		if (!bBoltVisible && !bMuzzleVisible) continue;
 		auto& Block = LaserBlocks[Visual.LaserSlot / LaserBlockSize]; const int32 Index = Visual.LaserSlot % LaserBlockSize;
 		const FVector Direction = FVector(State.LaunchDirection).GetSafeNormal();
-		const float AuthoredLength = Catalog->LaserLength * (bGround ? Catalog->GroundMachineGunLengthScale : 1.0f);
+		const float AuthoredLength = Catalog->LaserLength * Block.BaseScale.X;
 		const float Length = FMath::Min(AuthoredLength, static_cast<float>(FVector::Distance(Head, State.LaunchLocation)));
 		FLinearColor Tint = LocalTeam == EGuLiTeam::Unassigned ? FLinearColor::White
 			: (State.SourceTeam == LocalTeam
@@ -94,14 +100,15 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 		{
 			Block.Positions[Index] = Head - Direction * (Length * 0.5f);
 			// The analytic material's central half is the authored core; the outside supplies a soft halo.
-			Block.Sizes[Index] = FVector2D(Catalog->LaserCoreWidth * 2.0f, bGround ? Length : FMath::Max(0.2f, Length));
+			Block.Sizes[Index] = FVector2D(Catalog->LaserCoreWidth * 2.0f * Block.BaseScale.Y,
+				bGround ? Length : FMath::Max(0.2f * Block.BaseScale.X, Length));
 			Block.Colors[Index] = Tint; Block.Bounds += Head; Block.Bounds += Head - Direction * Length;
 			++Counters.LaserVisible;
 		}
 		if (bMuzzleVisible)
 		{
 			Block.MuzzlePositions[Index] = Muzzle + Direction * 15.0f;
-			Block.MuzzleSizes[Index] = FVector2D(Catalog->LaserCoreWidth * 3.0f, 6.0f);
+			Block.MuzzleSizes[Index] = FVector2D(Catalog->LaserCoreWidth * 3.0f * Block.BaseScale.Y, 6.0f * Block.BaseScale.X);
 			Block.MuzzleColors[Index] = Tint; Block.MuzzleColors[Index].A = FMath::Clamp((Visual.LaserMuzzleUntil - LocalNow) / Catalog->LaserMuzzleSeconds, 0.0f, 1.0f);
 			Block.Bounds += Muzzle; Block.Bounds += Muzzle + Direction * 30.0f;
 		}
@@ -117,8 +124,9 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 		bool bActivate = false;
 		if (!IsValid(Block.Component))
 		{
-			UNiagaraSystem* System = Catalog->WingmanLaserSystem.LoadSynchronous();
+			UNiagaraSystem* System = GuLiVfx::Load<UNiagaraSystem>(this, Block.VfxId);
 			if (!System) continue;
+			// World-space positions stay unchanged; apply base scale only to the particle size arrays.
 			Block.Component = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), System, FVector::ZeroVector,
 				FRotator::ZeroRotator, FVector::OneVector, false, false, ENCPoolMethod::ManualRelease, false);
 			if (!Block.Component) continue;
@@ -132,7 +140,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateLaserPool(const float Now, co
 		Arrays::SetNiagaraArrayPosition(Block.Component, TEXT("User.MuzzlePositions"), Block.MuzzlePositions);
 		Arrays::SetNiagaraArrayVector2D(Block.Component, TEXT("User.MuzzleSizes"), Block.MuzzleSizes);
 		Arrays::SetNiagaraArrayColor(Block.Component, TEXT("User.MuzzleColors"), Block.MuzzleColors);
-		Block.Component->SetSystemFixedBounds(Block.Bounds.ExpandBy(FMath::Max(Catalog->LaserCoreWidth * 3.0f, 20.0f)));
+		Block.Component->SetSystemFixedBounds(Block.Bounds.ExpandBy(FMath::Max(Catalog->LaserCoreWidth * 3.0f * Block.BaseScale.Y, 20.0f)));
 		if (bActivate) Block.Component->Activate(true);
 	}
 }

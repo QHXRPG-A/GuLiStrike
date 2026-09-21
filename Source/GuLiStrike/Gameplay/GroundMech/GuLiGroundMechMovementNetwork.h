@@ -9,6 +9,9 @@ class FGuLiGroundMechSavedMove final : public FGuLiExternalSavedMove
 	FGuLiGroundMassMoveContext Context;
 	FGuLiMassSupportState StartSupport, EndSupport;
 	bool bContact = false;
+	FGuLiRocketMoveState RocketStart, RocketEnd;
+	bool bRocketHeld = false, bRocketRequested = false;
+	virtual uint8 GetCompressedFlags() const override;
 	virtual void Clear() override;
 	virtual void SetMoveFor(ACharacter *Character, float Delta, const FVector &Accel,
 							FNetworkPredictionData_Client_Character &Data) override;
@@ -22,6 +25,7 @@ class FGuLiGroundMechSavedMove final : public FGuLiExternalSavedMove
 struct FGuLiGroundMechMoveData final : FGuLiExternalMoveData
 {
 	uint32 SupportEpoch = 0u, SupportId = 0u, SupportDisplacement = 0u;
+	FGuLiRocketMoveState RocketEnd;
 	virtual void ClientFillNetworkMoveData(const FSavedMove_Character &Move, ENetworkMoveType Type) override;
 	virtual bool Serialize(UCharacterMovementComponent &Movement, FArchive &Ar, UPackageMap *Map,
 						   ENetworkMoveType Type) override;
@@ -29,6 +33,7 @@ struct FGuLiGroundMechMoveData final : FGuLiExternalMoveData
 struct FGuLiGroundMechMoveResponse final : FGuLiExternalMoveResponse
 {
 	FGuLiMassSupportState Support;
+	FGuLiRocketMoveState Rocket;
 	virtual void ServerFillResponseData(const UCharacterMovementComponent &Movement,
 										const FClientAdjustment &Adjustment) override;
 	virtual bool Serialize(UCharacterMovementComponent &Movement, FArchive &Ar, UPackageMap *Map) override;

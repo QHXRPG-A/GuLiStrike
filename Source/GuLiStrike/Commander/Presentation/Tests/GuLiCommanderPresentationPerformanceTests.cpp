@@ -459,6 +459,8 @@ bool FGuLiCommanderUnitTypeBatchRoutingTest::RunTest(const FString& Parameters)
 	TArray<FGuLiSoldierStateItem> Snapshot = {SoldierOne, SoldierTwo};
 	Replicator->ApplyAuthoritySnapshot(Snapshot, 1u);
 	Presentation->EnsureStableInstancePool(*Replicator);
+	UnitTypeOne = Presentation->FindUnitInstances(1u, SoldierOne.Team);
+	UnitTypeTwo = Presentation->FindUnitInstances(2u, SoldierTwo.Team);
 	TestEqual(TEXT("UnitTypeId 1 receives one stable slot"),
 		UnitTypeOne ? UnitTypeOne->GetInstanceCount() : 0, 1);
 	TestEqual(TEXT("UnitTypeId 2 receives one stable slot"),
@@ -481,8 +483,9 @@ bool FGuLiCommanderUnitTypeBatchRoutingTest::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Retyping preserves the Soldier's shared-ring slot"),
 		RetypedHandle ? RetypedHandle->RingInstanceIndex : INDEX_NONE,
 		OriginalRingIndex);
-	TestEqual(TEXT("The destination batch expands once"),
-		UnitTypeTwo ? UnitTypeTwo->GetInstanceCount() : 0, 2);
+	const auto* RetypedBatch = Presentation->FindUnitInstances(2u, SoldierOne.Team);
+	TestEqual(TEXT("The destination model/team batch receives one slot"),
+		RetypedBatch ? RetypedBatch->GetInstanceCount() : 0, 1);
 	TestEqual(TEXT("The old UnitTypeId 1 slot is retained for stable reuse"),
 		UnitTypeOne ? UnitTypeOne->GetInstanceCount() : 0, 1);
 

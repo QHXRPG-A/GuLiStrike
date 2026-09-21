@@ -197,8 +197,8 @@ bool FGuLiCommanderDynamicCohortContractTest::RunTest(const FString& Parameters)
 {
 	(void)Parameters;
 
-	TestEqual(TEXT("Ordered task and control-group contracts require battle protocol version 15"),
-		GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(15u));
+	TestEqual(TEXT("Grouped portrait selection requires battle protocol version 17"),
+		GULI_COMMANDER_PROTOCOL_VERSION, static_cast<uint16>(17u));
 	TestEqual(TEXT("Control granularity remains capped at 25 soldiers"),
 		GULI_CONTROL_COHORT_TARGET_SIZE, static_cast<uint32>(25u));
 	TestEqual(TEXT("Authoritative pose contract is captured at 10 Hz"),

@@ -42,6 +42,7 @@ struct GULISTRIKE_API FGuLiCombatEffectVisualCounters
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 ReceivedStates = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 RejectedStates = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 BurstsPlayed = 0;
+	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 MachineGunImpactsPlayed = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int64 SynthesizedGunShots = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 ComponentCount = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effects") int32 LaserActive = 0;
@@ -56,6 +57,8 @@ struct FGuLiLaserRenderBlock
 {
 	GENERATED_BODY()
 	UPROPERTY() TObjectPtr<UNiagaraComponent> Component;
+	int32 VfxId = 0;
+	FVector BaseScale = FVector::OneVector;
 	TArray<FVector> Positions, Directions, MuzzlePositions;
 	TArray<FVector2D> Sizes, MuzzleSizes;
 	TArray<FLinearColor> Colors, MuzzleColors;
@@ -114,13 +117,13 @@ private:
 	};
 	float ServerTime() const;
 	UGuLiCombatEffectCatalog* GetCatalog();
-	UNiagaraComponent* SpawnPooled(UNiagaraSystem* System, FVector Location, float Scale,
+	UNiagaraComponent* SpawnPooled(int32 VfxId, FVector Location, float DynamicScale,
 		float Radius = 0, FRotator Rotation = FRotator::ZeroRotator, FName ScaleParameterName = NAME_None);
 	void Retire(UNiagaraComponent* Component, float Seconds, bool bDeactivate = true);
 	void RemoveVisual(const FGuid& Id, bool bImmediate);
 	void QueueSustainedGunfire(float Now, bool bEnabled);
 	void FlushGunfire();
-	int32 AllocateLaserSlot();
+	int32 AllocateLaserSlot(int32 VfxId);
 	void FreeLaserSlot(int32 Slot);
 	void UpdateLaserPool(float Now, bool bEnabled);
 	void ResetLaserPool();
@@ -141,7 +144,7 @@ private:
 	UPROPERTY(Transient) TMap<FGuid, FGuLiLocalCombatEffect> Visuals;
 	UPROPERTY(Transient) TArray<FGuLiRetiringCombatEffect> Retiring;
 	UPROPERTY(Transient) TArray<FGuLiLaserRenderBlock> LaserBlocks;
-	TArray<int32> FreeLaserSlots;
+	TMap<int32, TArray<int32>> FreeLaserSlots;
 	TMap<EGuLiTargetKind, FPoseProvider> PoseProviders;
 	TMap<EGuLiTargetKind, FMuzzleProvider> MuzzleProviders;
 	mutable TMap<FGuLiTargetHandle, TWeakObjectPtr<AActor>> ShipPoseCache;

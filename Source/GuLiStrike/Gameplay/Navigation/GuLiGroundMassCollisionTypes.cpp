@@ -270,6 +270,11 @@ FGuLiGroundMassContact GuLiGroundMassCollision::Sweep(const FVector &Start, cons
 					}
 				}
 			}
+			// Leaving the top is a separating contact, not an initial side penetration.
+			// Include the existing contact tolerance so quantized support heights do not
+			// turn a vertical takeoff into repeated horizontal depenetration.
+			if (RD.Z > 0.0 && P.Z - HalfHeight >= Body.TopZ - ContactToleranceCentimeters)
+				continue;
 			double Enter = XYEnter, Exit = XYExit;
 			if (!VerticalInterval(P.Z, RD.Z, Body.BottomZ - HalfHeight, Body.TopZ + HalfHeight, Enter, Exit) ||
 				Enter < 0.0 || Enter > 1.0 || Exit < 0.0)

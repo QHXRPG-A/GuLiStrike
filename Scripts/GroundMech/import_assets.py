@@ -57,11 +57,12 @@ def inputs():
     move.set_editor_property('accumulation_behavior',unreal.InputActionAccumulationBehavior.CUMULATIVE);save(move)
     sprint=action('Ground_Sprint',consume=True)
     zoom=action('Ground_Zoom',unreal.InputActionValueType.AXIS1D,True)
+    rocket=action('Ground_RocketJump',consume=True)
     ground_context=create(BASE+'/Input/IMC_GroundMech',unreal.InputMappingContext,unreal.InputMappingContext_Factory())
     def negate(): return unreal.InputModifierNegate(outer=ground_context)
     def swizzle():
         modifier=unreal.InputModifierSwizzleAxis(outer=ground_context); modifier.set_editor_property('order',unreal.InputAxisSwizzle.YXZ); return modifier
-    ctx=context('GroundMech',[mapping(move,'W',[swizzle()]),mapping(move,'S',[negate(),swizzle()]),mapping(move,'A',[negate()]),mapping(move,'D'),mapping(sprint,'LeftShift'),mapping(sprint,'RightShift'),mapping(zoom,'MouseWheelAxis')])
+    ctx=context('GroundMech',[mapping(move,'W',[swizzle()]),mapping(move,'S',[negate(),swizzle()]),mapping(move,'A',[negate()]),mapping(move,'D'),mapping(sprint,'LeftShift'),mapping(sprint,'RightShift'),mapping(zoom,'MouseWheelAxis'),mapping(rocket,'SpaceBar')])
     keys={'Primary':'LeftMouseButton','Secondary':'RightMouseButton','Cancel':'Escape','Build':'B','Slot1':'One','Slot2':'Two','Slot3':'Three','Slot4':'Four','Slot5':'Five','Slot6':'Six','Select':'Seven','Radius':'Add','ZoomIn':'MouseScrollUp','ZoomOut':'MouseScrollDown','UnitSkill':'Q','Teleport':'T'}
     actions={name:action('Battle_'+name,consume=name=='UnitSkill') for name in keys}
     shift=action('Battle_Shift')
@@ -71,7 +72,7 @@ def inputs():
     assert chord.rename(outer=battle_context)
     rows += [mapping(shift,'LeftShift'),mapping(shift,'RightShift'),mapping(actions['Radius'],'Equals',triggers=[chord])]
     context('BattleCommands',rows)
-    return {'mapping_context':ctx,'move_action':move,'sprint_action':sprint,'zoom_action':zoom}
+    return {'mapping_context':ctx,'move_action':move,'sprint_action':sprint,'zoom_action':zoom,'rocket_jump_action':rocket}
 def material(name):
     existing=get(BASE+'/Materials/M_'+name)
     if existing:return existing # v1 shader graphs are authored once; bone reimports leave them intact.
@@ -127,7 +128,10 @@ def run():
     paths={'Legs':'Meshes_Skeletal/Mech_Legs_Lt','Armor':'Meshes/Cockpit_Jet','Shoulder':'Meshes/HalfShoulder_Box','Machinegun':'Meshes_Skeletal/Weapons/Weapons_Machinegun_lvl1'}
     for name,path in paths.items():
         REPORT['stage']=name;checkpoint();meshes[name]=mesh(name,ORIGINAL+'/'+path)
-    bs=unreal.load_asset('/Game/Assets/MechaController/Blueprints/SalvaMeshIntegration/Examples/Mech_Legs_Lt_IdleToRunWithTurnRate')
+    animation_authoring={'__name__':'ground_mech_animation_authoring'}
+    animation_script=ROOT/'Scripts/GroundMech/author_animation_assets.py'
+    exec(compile(animation_script.read_text(encoding='utf-8'),str(animation_script),'exec'),animation_authoring)
+    bs=animation_authoring['copy_sources']()
     REPORT['blendspace_axes']=[{p:str(axis.get_editor_property(p)) for p in ('display_name','min','max')} for axis in bs.get_editor_property('blend_parameters')]
     REPORT['blendspace_samples']=[{'animation':sample.get_editor_property('animation').get_path_name(),'position':list(sample.get_editor_property('sample_value').to_tuple())} for sample in bs.get_editor_property('sample_data')];checkpoint()
     REPORT['stage']='animation';checkpoint()
@@ -156,6 +160,9 @@ def run():
         component=cdo.get_editor_property(prop);component.modify();component.set_static_mesh(meshes[part])
     gun=cdo.get_editor_property('machinegun');gun.modify();gun.set_skeletal_mesh_asset(meshes['Machinegun'])
     save(bp)
+    # Reuse an already-authored graph, or build it on first import, and retain the
+    # production weapon binding. This does not replace the project's styled mesh.
+    animation_authoring['run']()
     factory=unreal.BlueprintFactory();factory.set_editor_property('parent_class',unreal.GuLiCommanderGameMode)
     gm=create(BASE+'/BP_GroundMech_DemoMode',unreal.Blueprint,factory)
     unreal.BlueprintEditorLibrary.compile_blueprint(gm)

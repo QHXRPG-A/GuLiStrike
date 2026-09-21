@@ -1,4 +1,5 @@
 #include "Gameplay/Stronghold/GuLiStrongholdTransitPresentationComponent.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/Data/GuLiSpellFieldDataSubsystem.h"
 #include "Components/StaticMeshComponent.h"
 #include "Engine/StaticMesh.h"
@@ -26,16 +27,16 @@ void UGuLiStrongholdTransitPresentationComponent::ApplyState(const FGuLiStrongho
 	{
 		const auto& Config = *GetWorld()->GetSubsystem<UGuLiSpellFieldDataSubsystem>()->FindStrongholdTransit(State.TransitFieldId);
 		Orb = NewObject<UStaticMeshComponent>(GetOwner());
-		Orb->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,TEXT("/Engine/BasicShapes/Sphere.Sphere")));
-		Orb->SetMaterial(0,Config.EnergyMaterial.LoadSynchronous());
+		Orb->SetStaticMesh(GuLiVfx::Load<UStaticMesh>(this, GuLiVfxIds::TransitOrb));
+		Orb->SetMaterial(0,GuLiVfx::Load<UMaterialInterface>(this, Config.EnergyVfxId));
 		Orb->SetCollisionEnabled(ECollisionEnabled::NoCollision); Orb->SetCanEverAffectNavigation(false); Orb->SetCastShadow(false);
-		Orb->SetWorldScale3D(FVector(10)); Orb->RegisterComponent();
+		Orb->SetWorldScale3D(GuLiVfx::Scale(this, GuLiVfxIds::TransitOrb, GuLiVfx::Scale(this, Config.EnergyVfxId))); Orb->RegisterComponent();
 		Trail = NewObject<UNiagaraComponent>(GetOwner());
-		Trail->SetAutoActivate(false); Trail->SetAsset(Config.TrailSystem.LoadSynchronous()); Trail->RegisterComponent();
+		Trail->SetAutoActivate(false); Trail->SetAsset(GuLiVfx::Load<UNiagaraSystem>(this, Config.TrailVfxId)); Trail->SetWorldScale3D(GuLiVfx::Scale(this, Config.TrailVfxId)); Trail->RegisterComponent();
 		Trail->SetVariableFloat(TEXT("User.Throttle"),1);
 		Flash = NewObject<UNiagaraComponent>(GetOwner());
-		Flash->SetAutoActivate(false); Flash->SetAsset(Config.FlashSystem.LoadSynchronous());
-		Flash->SetAgeUpdateMode(ENiagaraAgeUpdateMode::DesiredAge); Flash->RegisterComponent();
+		Flash->SetAutoActivate(false); Flash->SetAsset(GuLiVfx::Load<UNiagaraSystem>(this, Config.FlashVfxId));
+		Flash->SetAgeUpdateMode(ENiagaraAgeUpdateMode::DesiredAge); Flash->SetWorldScale3D(GuLiVfx::Scale(this, Config.FlashVfxId)); Flash->RegisterComponent();
 	}
 	if (bNewRoute) Trail->DeactivateImmediate();
 	SetComponentTickEnabled(true); UpdatePresentation();

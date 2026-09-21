@@ -1,6 +1,7 @@
-﻿// Copyright Epic Games, Inc. All Rights Reserved.
+// Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Commander/UI/GuLiCommanderHealthBarRenderer.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 
 #include "GuLiStrike.h"
 #include "Commander/Framework/GuLiCommanderNetSyncComponent.h"
@@ -80,10 +81,8 @@ AGuLiCommanderHealthBarRenderer::AGuLiCommanderHealthBarRenderer()
 	HealthBarInstances->SetReceivesDecals(false);
 	HealthBarInstances->NumCustomDataFloats = GuLiCommanderHealthBars::CustomDataFloatCount;
 
-	PlaneMeshAsset = TSoftObjectPtr<UStaticMesh>(FSoftObjectPath(
-		TEXT("/Engine/BasicShapes/Plane.Plane")));
-	HealthBarMaterialAsset = TSoftObjectPtr<UMaterialInterface>(FSoftObjectPath(
-		TEXT("/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitHealthBarWorld.M_UnitHitHealthBarWorld")));
+	PlaneMeshVfxId = GuLiVfxIds::FuelBarPlane;
+	HealthBarVfxId = GuLiVfxIds::UnitHitHealthBar;
 }
 
 void AGuLiCommanderHealthBarRenderer::BeginPlay()
@@ -168,7 +167,7 @@ void AGuLiCommanderHealthBarRenderer::ResolveSoftAssets()
 		return;
 	}
 
-	if (UStaticMesh* PlaneMesh = PlaneMeshAsset.LoadSynchronous())
+	if (UStaticMesh* PlaneMesh = GuLiVfx::Load<UStaticMesh>(this, PlaneMeshVfxId))
 	{
 		HealthBarInstances->SetStaticMesh(PlaneMesh);
 	}
@@ -178,9 +177,10 @@ void AGuLiCommanderHealthBarRenderer::ResolveSoftAssets()
 		bLoggedMissingPlane = true;
 	}
 
-	if (UMaterialInterface* Material = HealthBarMaterialAsset.LoadSynchronous())
+	if (UMaterialInterface* Material = GuLiVfx::Load<UMaterialInterface>(this, HealthBarVfxId))
 	{
 		HealthBarInstances->SetMaterial(0, Material);
+		HealthBarBaseScale = GuLiVfx::Scale(this, PlaneMeshVfxId, GuLiVfx::Scale(this, HealthBarVfxId));
 	}
 	else if (!bLoggedMissingMaterial)
 	{
@@ -586,7 +586,7 @@ void AGuLiCommanderHealthBarRenderer::RebuildLocalInstances()
 		if (MaxDistance > 0 && CullDistance > MaxDistance) return false;
 		const FVector2D Size = CalculateWorldSizeCentimeters(Distance, Camera->GetFOVAngle(), Width, Height);
 		if (Size.X <= UE_SMALL_NUMBER || Size.Y <= UE_SMALL_NUMBER) return false;
-		Out = FTransform(Rotation, Location, FVector(Size.X / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, Size.Y / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, 1));
+		Out = FTransform(Rotation, Location, HealthBarBaseScale * FVector(Size.X / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, Size.Y / GuLiCommanderHealthBars::PlaneMeshSizeCentimeters, 1));
 		return true;
 	};
 	VisibleInstanceCount = 0;

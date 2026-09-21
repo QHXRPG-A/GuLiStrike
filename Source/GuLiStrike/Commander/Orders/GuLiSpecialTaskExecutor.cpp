@@ -1,4 +1,5 @@
 #include "Commander/Orders/GuLiSpecialTaskExecutor.h"
+#include "Gameplay/Data/GuLiGameText.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Gameplay/Data/GuLiCommanderSoldierDefinition.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
@@ -19,7 +20,7 @@ bool UGuLiMiningSpecialTaskExecutor::Validate(UWorld& World, const FGuLiTaskUnit
 	const auto* Resources = World.GetSubsystem<UGuLiResourceWorldSubsystem>();
 	const bool bValid = Cast<AGuLiMiningVehiclePawn>(Unit.Pawn.Get()) && Command.ClusterId && Resources && Resources->IsRuntimeReady()
 		&& Resources->CanTeamMineAt(Unit.Team, Command.ClusterId) && !Resources->IsClusterEmpty(Command.ClusterId);
-	if (!bValid) Error = TEXT("无可采集的目标矿区"); return bValid;
+	if (!bValid) Error = GuLiGameText::Text(TEXT("UI.SpecialTaskExecutor.128")); return bValid;
 }
 bool UGuLiMiningSpecialTaskExecutor::BuildAutomatic(UWorld&, const FGuLiTaskUnitContext& Unit, FGuLiUnitTaskCommand& Command) const
 { return Cast<AGuLiMiningVehiclePawn>(Unit.Pawn.Get()) != nullptr; }
@@ -45,7 +46,7 @@ EGuLiTaskStatus UGuLiMiningSpecialTaskExecutor::Poll(UWorld& World, const FGuLiT
 	if (!Miner->IsManagedTaskComplete()) return EGuLiTaskStatus::Running;
 	if (!Task.bAutomatic && Miner->GetCargo().Blue + Miner->GetCargo().Red == 0
 		&& World.GetSubsystem<UGuLiResourceWorldSubsystem>()->IsClusterEmpty(Task.Command.ClusterId)) return EGuLiTaskStatus::Completed;
-	if (Miner->DidManagedTaskFail()) { Task.Error = TEXT("采矿或返厂路径失效"); return EGuLiTaskStatus::Failed; }
+	if (Miner->DidManagedTaskFail()) { Task.Error = GuLiGameText::Text(TEXT("UI.SpecialTaskExecutor.129")); return EGuLiTaskStatus::Failed; }
 	return EGuLiTaskStatus::WorkUnitComplete;
 }
 bool UGuLiMiningSpecialTaskExecutor::Cancel(UWorld&, const FGuLiTaskUnitContext& Unit, FGuLiTaskExecution&) const
@@ -63,7 +64,7 @@ bool UGuLiConstructionSpecialTaskExecutor::Validate(UWorld& World, const FGuLiTa
 	// An in-flight vehicle has no authoritative ground starting point until it lands.
 	const bool bValid = bTargetValid && (Builder->FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsInTransit()
 		|| Builder->FindComponentByClass<UGuLiConstructionWorkComponent>()->PrepareBuilding(*Building, Position, Length));
-	if (!bValid) Error = TEXT("工地无效或无可达施工位置"); return bValid;
+	if (!bValid) Error = GuLiGameText::Text(TEXT("UI.SpecialTaskExecutor.130")); return bValid;
 }
 bool UGuLiConstructionSpecialTaskExecutor::BuildAutomatic(UWorld& World, const FGuLiTaskUnitContext& Unit, FGuLiUnitTaskCommand& Command) const
 {
@@ -92,11 +93,11 @@ EGuLiTaskStatus UGuLiConstructionSpecialTaskExecutor::Poll(UWorld& World, const 
 	auto* Builder = Cast<AGuLiConstructionVehiclePawn>(Unit.Pawn.Get());
 	auto* Building = World.GetSubsystem<UGuLiBuildingRegistrySubsystem>()->Find(Task.Command.BuildingId);
 	if (!Builder || !Building || Building->GetTeam() != Unit.Team || Building->GetState().Phase == EGuLiBuildingPhase::Destroyed)
-	{ Task.Error = TEXT("工地已失效"); return EGuLiTaskStatus::Failed; }
+	{ Task.Error = GuLiGameText::Text(TEXT("UI.SpecialTaskExecutor.131")); return EGuLiTaskStatus::Failed; }
 	if (Building->IsCompleted()) return EGuLiTaskStatus::WorkUnitComplete;
 	if (UGuLiExternalUnitControlComponent::AreActorActionsLocked(Builder)) return EGuLiTaskStatus::Running;
 	if (!Builder->FindComponentByClass<UGuLiConstructionWorkComponent>()->GetTarget())
-	{ Task.Error = TEXT("施工已中断"); return EGuLiTaskStatus::Failed; }
+	{ Task.Error = GuLiGameText::Text(TEXT("UI.SpecialTaskExecutor.132")); return EGuLiTaskStatus::Failed; }
 	return EGuLiTaskStatus::Running;
 }
 bool UGuLiConstructionSpecialTaskExecutor::Cancel(UWorld&, const FGuLiTaskUnitContext& Unit, FGuLiTaskExecution&) const

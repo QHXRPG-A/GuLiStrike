@@ -1,6 +1,8 @@
 #pragma once
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "AITypes.h"
+#include "NavigationPath.h"
 #include "UObject/Interface.h"
 #include "Gameplay/Units/GuLiEngineeringCommandTypes.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
@@ -35,6 +37,14 @@ struct FGuLiPreparedTransit
 	FVector ClickLocation = FVector::ZeroVector;
 };
 
+/** A complete path prepared without disturbing the currently executing move. */
+struct FGuLiPreparedGroundMove
+{
+	FAIMoveRequest Request;
+	FNavPathSharedPtr Path;
+	bool bAlreadyAtGoal = false;
+};
+
 /** Shared travel entry; vehicle work remains in its owning task component. */
 UCLASS()
 class GULISTRIKE_API UGuLiEngineeringTravelComponent : public UActorComponent
@@ -43,6 +53,8 @@ class GULISTRIKE_API UGuLiEngineeringTravelComponent : public UActorComponent
 public:
 	UGuLiEngineeringTravelComponent();
 	bool BeginMove(const FVector& Target, float AcceptanceRadius);
+	bool PrepareGroundMove(const FVector& Target, float AcceptanceRadius, FGuLiPreparedGroundMove& Out) const;
+	bool CommitGroundMove(const FGuLiPreparedGroundMove& Prepared);
 	bool StopAtSafePoint();
 	bool FindGroundPath(const FVector& Target, float& OutLength) const;
 	EGuLiTransitOrderResult PrepareTransport(const FGuLiStrongholdTransitOrder& Order, FGuLiPreparedTransit& Out) const;

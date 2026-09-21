@@ -15,7 +15,7 @@ categories:
 status: done
 verification: passed
 created: '2026-09-17'
-updated: '2026-09-20'
+updated: '2026-09-21'
 summary: 建立独立规范并接入模型、特效、地编技能；维护参考版本、用户双审记录和UI原图保留规则。
 next_action: 后续美术任务按规范制作，持续登记规则版本、资产例外与用户审核证据。
 relations:
@@ -185,3 +185,11 @@ Ship组件分批制作与审核入口：[首批双联炮/CIWS/Thor](20260917-Shi
 用户明确指定`/Game/Assets/VFX/WeaponBulletVFX/NS/VFX_Smg_Loop`和`VFX_FireGun_Loop`作为已确认参考A，并批准先制作可播放候选、正式接入前完成视觉审核。项目副本为`/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet`及`NS_GroundMech_Muzzle`，前者保留源中央弹道材质与配色、去双侧散射及枪口层，后者提取枪口焰与近口火星并改为逐发有限寿命。
 
 当前B候选与炮管后坐已在`/Game/Maps/LVL_GroundMech_FireReview`实际播放，[62帧连续图、时间轴和采样](../../TestResults/GroundMech/Fire/Review.html)覆盖起始、回缩、复位和消散。Niagara及动画蓝图编译0错误/0警告，单发粒子、池回收和双端同步技术检查通过；没有用户对当前B的通过决定，正式玩家蓝图武器开关保持关闭。全局规范仍v1.2，不改变其他资产审核状态。具体源/目标、镜像枪口轴向修正及边界见[开发记录](20260920-玩家地面机甲开火与升级配置.md)。
+
+## 2026-09-21 地面机甲双喷、飞行倾斜与下落确认
+
+用户指定`VFX_FireGun_Loop`、双喷口与15°飞行腿部倾斜，并已明确批准实施动画蓝图及空中战斗计划。当前版本为`ABP_GroundMech`图表20260921.1、源喷火资源和`FallGravityMultiplier=2`，没有新建或改造Blender模型；模型A/B不适用，既有参考及直接接入授权继续有效。
+
+本日用户针对“鼠标指向空处开火”和“最终连续画面：双喷、腿部倾斜和新版下落效果”明确“这两个我已经验证过了”。据此登记这两项当前UE实机结果通过，依据为[用户确认记录](../../TestResults/GroundMech/Animation/user-verification.json)；当前源码/配置摘要、技术采样与[实施记录](20260921-地面机甲动画蓝图与空中战斗.md)相互关联。旧[连续画面](../../TestResults/GroundMech/Animation/flight-before-fall-tuning.gif)仍明确标作下落调参前版本，不伪装成当前录像。
+
+此决定不扩展为容量条、其他机枪特效或机甲整体外观的独立终验。技术验证、性能边界与用户确认分记；全局美术规范仍为v1.2，没有新增通用风格规则。

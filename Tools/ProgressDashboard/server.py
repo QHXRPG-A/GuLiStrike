@@ -1,5 +1,10 @@
 #!/usr/bin/env python3
-"""Local-only, read-only HTTP server for the GuLiStrike progress dashboard."""
+"""Local-only HTTP server for the GuLiStrike progress dashboard.
+
+Read-only by default, with one narrowly scoped write endpoint:
+POST /api/work-items/status rewrites the ``status``/``updated`` front matter
+of a root development document (whitelisted values only) and rebuilds _Index.
+"""
 
 from __future__ import annotations
 
@@ -61,7 +66,11 @@ class ProgressCache:
         self._search_text: dict[str, str] = {}
 
     def _current_signature(self) -> tuple[int, int, int]:
-        paths = list((PROJECT_ROOT / "Progress").rglob("*.md"))
+        paths = [
+            path
+            for path in (PROJECT_ROOT / "Progress").rglob("*.md")
+            if "_Index" not in path.parts  # 索引是生成物，自身写盘不应触发文档缓存刷新
+        ]
         if not paths:
             return (0, 0, 0)
         stats = [path.stat() for path in paths]
@@ -152,6 +161,111 @@ class ProgressCache:
 
 
 CACHE = ProgressCache()
+
+WRITE_LOCK = threading.Lock()
+WORK_STATUS_ALLOWLIST = ("planned", "in_progress", "blocked", "verification", "done", "abandoned")
+WORK_NOTE_LIMIT = 500
+FRONT_MATTER_PATTERN = re.compile(r"\A---[ \t]*\n(.*?)\n---[ \t]*\n", re.DOTALL)
+
+
+def yaml_single_quoted(text: str) -> str:
+    """把任意文本安全编码为 YAML 单引号标量（内部单引号翻倍，空白折叠）。"""
+    return "'" + re.sub(r"\s+", " ", text).strip().replace("'", "''") + "'"
+
+
+def set_work_item_status(work_id: str, status: str, status_note: str = "") -> tuple[dict[str, Any], HTTPStatus]:
+    """把 work_id 对应的根开发文档 front matter status 改为白名单内的值。
+
+    status_note 非空时一并更新 status_note；blocked 状态要求最终 status_note 非空
+    （阻塞必须附带说明）。
+    """
+    if not DOCUMENT_ID.fullmatch(work_id):
+        return {"error": "invalid_work_id", "message": "work_id 格式不合法。"}, HTTPStatus.BAD_REQUEST
+    if status not in WORK_STATUS_ALLOWLIST:
+        return {
+            "error": "invalid_status",
+            "message": f"状态仅允许：{'、'.join(WORK_STATUS_ALLOWLIST)}。",
+        }, HTTPStatus.BAD_REQUEST
+    note_clean = re.sub(r"\s+", " ", status_note).strip()[:WORK_NOTE_LIMIT]
+    if status_note and not note_clean:
+        return {"error": "invalid_status_note", "message": "阻塞说明不能只有空白字符。"}, HTTPStatus.BAD_REQUEST
+    with WRITE_LOCK:
+        snapshot = CACHE.snapshot()
+        target = next(
+            (
+                document
+                for document in snapshot.get("documents", [])
+                if document.get("work_id") == work_id
+                and document.get("kind") == "development"
+                and document.get("role") == "root"
+            ),
+            None,
+        )
+        if target is None:
+            return {
+                "error": "not_found",
+                "message": "该工作项没有根开发文档，无法在这里设置状态。",
+            }, HTTPStatus.NOT_FOUND
+        if status in {"planned", "in_progress", "verification"} and not str(target.get("next_action", "")).strip():
+            return {
+                "error": "missing_next_action",
+                "message": "活跃状态要求文档先填写 next_action，请在 Markdown 中补充后重试。",
+            }, HTTPStatus.UNPROCESSABLE_ENTITY
+        if status == "blocked" and not note_clean and not str(target.get("status_note", "")).strip():
+            return {
+                "error": "missing_status_note",
+                "message": "阻塞状态必须附带阻塞说明，请填写后重试。",
+            }, HTTPStatus.UNPROCESSABLE_ENTITY
+        if str(target.get("status")) == status and not note_clean:
+            return {"ok": True, "changed": False, "work_id": work_id, "status": status}, HTTPStatus.OK
+        document_path = (PROJECT_ROOT / str(target["path"])).resolve()
+        try:
+            document_path.relative_to((PROJECT_ROOT / "Progress").resolve())
+        except ValueError:
+            return {"error": "invalid_path", "message": "目标文档不在 Progress/ 内。"}, HTTPStatus.BAD_REQUEST
+        text = document_path.read_text(encoding="utf-8")
+        match = FRONT_MATTER_PATTERN.match(text)
+        if match is None:
+            return {"error": "unsupported_document", "message": "未找到 front matter，拒绝写入。"}, HTTPStatus.BAD_REQUEST
+        block = match.group(1)
+        # 日期必须带引号，避免 yaml.safe_load 解析成 datetime.date 破坏索引构建
+        updated_today = f'"{datetime.now().date().isoformat()}"'
+        block, status_count = re.subn(rf"(?m)^status:[^\n]*$", f"status: {status}", block, count=1)
+        block, updated_count = re.subn(r"(?m)^updated:[^\n]*$", f"updated: {updated_today}", block, count=1)
+        if status_count != 1 or updated_count != 1:
+            return {
+                "error": "unsupported_document",
+                "message": "front matter 缺少 status/updated 字段，拒绝写入。",
+            }, HTTPStatus.BAD_REQUEST
+        if note_clean:
+            block, note_count = re.subn(
+                r"(?m)^status_note:[^\n]*$", f"status_note: {yaml_single_quoted(note_clean)}", block, count=1,
+            )
+            if note_count != 1:
+                return {
+                    "error": "unsupported_document",
+                    "message": "front matter 缺少 status_note 字段，拒绝写入。",
+                }, HTTPStatus.BAD_REQUEST
+        new_text = f"---\n{block}\n---\n{text[match.end():]}"
+        document_path.write_text(new_text, encoding="utf-8", newline="\n")
+        index_error: str | None = None
+        # 先刷缓存拿到写入后的完整快照，索引复用同一份快照——只做一次全量解析
+        fresh_snapshot = CACHE.snapshot()
+        try:
+            progress_docs.build_indexes(PROJECT_ROOT, check_only=False, snapshot=fresh_snapshot)
+        except Exception as error:  # 索引失败不回滚状态写入，但必须告知调用方
+            index_error = str(error)
+        # 快照随响应返回：前端一次请求即可更新整页，无需再等轮询
+        result: dict[str, Any] = {
+            "ok": True,
+            "changed": True,
+            "work_id": work_id,
+            "status": status,
+            "snapshot": fresh_snapshot,
+        }
+        if index_error:
+            result["index_error"] = index_error
+        return result, HTTPStatus.OK
 
 
 class ArtSourceCache:
@@ -261,10 +375,40 @@ class DashboardHandler(BaseHTTPRequestHandler):
         self.wfile.write(payload)
 
     def _method_not_allowed(self) -> None:
-        self._json({"error": "read_only", "message": "此服务仅允许 GET 请求。"}, HTTPStatus.METHOD_NOT_ALLOWED)
+        self._json({"error": "read_only", "message": "此路径仅允许 GET 请求。"}, HTTPStatus.METHOD_NOT_ALLOWED)
 
     def do_POST(self) -> None:  # noqa: N802
-        self._method_not_allowed()
+        parsed = urlsplit(self.path)
+        try:
+            if parsed.path == "/api/work-items/status":
+                try:
+                    length = int(self.headers.get("Content-Length", "0"))
+                except ValueError:
+                    length = 0
+                if length <= 0 or length > 4096:
+                    self._json({"error": "invalid_body", "message": "请求体缺失或超过 4KB。"}, HTTPStatus.BAD_REQUEST)
+                    return
+                try:
+                    payload = json.loads(self.rfile.read(length).decode("utf-8"))
+                except (UnicodeDecodeError, json.JSONDecodeError):
+                    self._json({"error": "invalid_body", "message": "请求体不是合法 JSON。"}, HTTPStatus.BAD_REQUEST)
+                    return
+                if not isinstance(payload, dict):
+                    self._json({"error": "invalid_body", "message": "请求体必须是 JSON 对象。"}, HTTPStatus.BAD_REQUEST)
+                    return
+                result, status = set_work_item_status(
+                    str(payload.get("work_id", "")),
+                    str(payload.get("status", "")),
+                    str(payload.get("status_note", ""))[:2048],
+                )
+                self._json(result, status)
+                return
+            self._method_not_allowed()
+        except (BrokenPipeError, ConnectionResetError):
+            return
+        except Exception as error:  # keep local diagnostics useful without exposing a traceback to the browser
+            self.log_error("request failed: %s", error)
+            self._json({"error": "internal_error", "message": str(error)}, HTTPStatus.INTERNAL_SERVER_ERROR)
 
     def do_PUT(self) -> None:  # noqa: N802
         self._method_not_allowed()
@@ -283,7 +427,12 @@ class DashboardHandler(BaseHTTPRequestHandler):
         try:
             if parsed.path == "/api/health":
                 snapshot = CACHE.snapshot()
-                self._json({"ok": True, "read_only": True, "revision": snapshot.get("revision")})
+                self._json({
+                    "ok": True,
+                    "read_only": False,
+                    "queue_status_write": True,
+                    "revision": snapshot.get("revision"),
+                })
                 return
             if parsed.path == "/api/snapshot":
                 self._json(CACHE.snapshot())
@@ -403,7 +552,7 @@ def main() -> int:
     args = parser.parse_args()
     server = ThreadingHTTPServer(("127.0.0.1", args.port), DashboardHandler)
     print(f"GuLiStrike Progress Dashboard: http://127.0.0.1:{args.port}")
-    print("只读服务已启动；按 Ctrl+C 停止。")
+    print("服务已启动（只读 + 队列状态写入）；按 Ctrl+C 停止。")
     try:
         server.serve_forever()
     except KeyboardInterrupt:

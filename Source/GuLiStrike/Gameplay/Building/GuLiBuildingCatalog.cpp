@@ -49,7 +49,7 @@ bool UGuLiBuildingCatalog::ResolveTable()
 }
 bool UGuLiBuildingCatalog::IsUsable() const
 {
-	return PreviewMaterial && !Definitions.IsEmpty()
+	return !Definitions.IsEmpty()
 		&& Definitions.ContainsByPredicate([](const auto& D) { return D.Type == EGuLiBuildingType::MissileTurret; });
 }
 const TCHAR* UGuLiBuildingCatalog::GetDefaultCatalogObjectPath()

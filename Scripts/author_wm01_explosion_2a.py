@@ -7,6 +7,11 @@ import json
 from pathlib import Path
 import unreal
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())) / "Scripts/Vfx"))
+from vfx_registry import vfx_id, resource as vfx_resource, scale as vfx_scale, require_id, visual_variant
+
 ROOT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
 OUT = ROOT / 'outputs/wm01_missile_update_20260919'
 SOURCE = '/Game/Stylized_Explosion_Pack_Vol1/VFX/N_Stylized_Explosion_2A_Classic_Explosion'
@@ -68,7 +73,7 @@ report['saved'].append(DEST)
 field = unreal.load_asset(FIELD)
 variants = list(field.activation_variants)
 assert len(variants) == 1
-variants[0].set_editor_property('system',system)
+variants[0].set_editor_property('vfx_id',vfx_id('CommanderMissileExplosion'))
 variants[0].set_editor_property('scale_parameter_name','User.VisualScale')
 field.set_editor_property('activation_variants',variants)
 assert assets.save_loaded_asset(field,only_if_is_dirty=True)

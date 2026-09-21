@@ -20,6 +20,8 @@ public class GuLiStrike : ModuleRules
 			"StateTreeModule",
 			"GameplayStateTreeModule",
 			"GameplayTags",
+			"GameplayAbilities",
+			"GameplayTasks",
 			"Niagara",
 			"UMG",
 			"Slate",

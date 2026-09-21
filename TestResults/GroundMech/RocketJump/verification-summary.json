@@ -1,0 +1,44 @@
+{
+  "thrust_feedback_pending": true,
+  "current_thrust_cm_s2": 2180,
+  "net_up_acceleration_cm_s2": 1200,
+  "height_cm": 400,
+  "full_capacity_seconds": 5,
+  "max_air_speed_cm_s": 1080.0000000000002,
+  "max_jet_tilt_degrees": 15.000000068689415,
+  "partial_capacity_min_opacity": 1.0,
+  "green_partial_min_opacity": 1.0,
+  "full_to_hidden_observed_s": 1.5225952006876469,
+  "standalone_fuel_gas_max_difference": 0.0,
+  "material": "material-diagnostics.txt",
+  "regression": "existing-regression-final.json",
+  "builds": "builds.json",
+  "net": {
+    "dedicated-final": {
+      "owner_min_fuel": 0.0,
+      "server_min_fuel": 0.0,
+      "remote_jets_seen": true,
+      "remote_ui_count": 0,
+      "server_jet_components": 0,
+      "final_owner_fuel": 100.0,
+      "final_server_fuel": 100.0,
+      "final_position_error_cm": 0.1243691072884299
+    },
+    "listen-host-final": {
+      "owner_min_fuel": 0.0,
+      "server_min_fuel": 0.0,
+      "remote_jets_seen": true,
+      "remote_ui_count": 0,
+      "server_jet_components": 2,
+      "final_owner_fuel": 100.0,
+      "final_server_fuel": 100.0,
+      "final_position_error_cm": 0.0
+    }
+  },
+  "unverified": [
+    "Mass takeoff/landing in live session: existing spawn command rejected in Demo",
+    "external action-lock and cross-map lifecycle not separately exercised",
+    "user final visual approval",
+    "thrust feedback needs clarification"
+  ]
+}

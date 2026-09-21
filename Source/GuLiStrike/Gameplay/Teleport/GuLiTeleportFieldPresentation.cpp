@@ -1,3 +1,4 @@
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/Teleport/GuLiTeleportFieldActor.h"
 #include "Components/DecalComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -25,24 +26,24 @@ void AGuLiTeleportFieldActor::EnsureMaterials()
 		Ground->SetRelativeRotation(FRotator(-90,0,0)); Ground->FadeScreenSize = 0; Ground->RegisterComponent();
 		Beam = NewObject<UStaticMeshComponent>(this,TEXT("TeleportBeam")); Beam->SetupAttachment(GetRootComponent());
 		Beam->SetCollisionEnabled(ECollisionEnabled::NoCollision); Beam->SetCastShadow(false); Beam->SetReceivesDecals(false);
-		Beam->SetStaticMesh(LoadObject<UStaticMesh>(nullptr,TEXT("/Game/GuLiStrike/FX/CommanderTeleport/SM_TeleportCylinder.SM_TeleportCylinder")));
+		Beam->SetStaticMesh(GuLiVfx::Load<UStaticMesh>(this, GuLiVfxIds::TeleportCylinder));
 		Beam->RegisterComponent();
 	}
 	if (!GroundMID)
 	{
-		auto* M = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportGround.M_TeleportGround"));
+		auto* M = GuLiVfx::Load<UMaterialInterface>(this, GuLiVfxIds::TeleportGround);
 		if (M) { GroundMID = UMaterialInstanceDynamic::Create(M,this); Ground->SetDecalMaterial(GroundMID); }
 	}
 	if (!BeamMID)
 	{
-		auto* M = LoadObject<UMaterialInterface>(nullptr, TEXT("/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBeam.M_TeleportBeam"));
+		auto* M = GuLiVfx::Load<UMaterialInterface>(this, GuLiVfxIds::TeleportBeam);
 		if (M) { BeamMID = UMaterialInstanceDynamic::Create(M,this); Beam->SetMaterial(0,BeamMID); }
 	}
 }
 void AGuLiTeleportFieldActor::SetPreview(const FVector& Point, const float Radius, const bool bValid)
 {
 	bPreview = true; SetActorLocation(Point); EnsureMaterials();
-	Ground->DecalSize = FVector(200,Radius/.94f,Radius/.94f);
+	Ground->DecalSize = GuLiVfx::Scale(this, GuLiVfxIds::TeleportGround, FVector(200,Radius/.94f,Radius/.94f));
 	Beam->SetVisibility(false);
 	if (GroundMID)
 	{
@@ -62,7 +63,7 @@ void AGuLiTeleportFieldActor::TickVisuals()
 	const bool bBeam = bLanding || State.Phase == EGuLiTeleportPhase::AwaitingDestination || State.Phase == EGuLiTeleportPhase::Returning;
 	const float Alpha = State.Phase == EGuLiTeleportPhase::Finished ? FMath::Clamp(1.f-float(Elapsed)/.5f,0.f,1.f) : 1.f;
 	SetActorLocation(bLanding ? State.Destination : State.Source);
-	Ground->DecalSize = FVector(200,State.Config.RadiusCentimeters/.94f,State.Config.RadiusCentimeters/.94f);
+	Ground->DecalSize = GuLiVfx::Scale(this, GuLiVfxIds::TeleportGround, FVector(200,State.Config.RadiusCentimeters/.94f,State.Config.RadiusCentimeters/.94f));
 	if (GroundMID)
 	{
 		const float Progress = State.Phase == EGuLiTeleportPhase::Windup ? GuLiTeleport::WindupProgress(State,Now) : (State.Phase == EGuLiTeleportPhase::Finished ? State.FinalProgress : 1.f);
@@ -75,7 +76,7 @@ void AGuLiTeleportFieldActor::TickVisuals()
 		Beam->SetVisibility(bBeam);
 		const float FullHeight = State.Config.BeamHeightCentimeters;
 		const float Height = FullHeight * FMath::Clamp(float(Elapsed)/.25f,0.001f,1.f);
-		Beam->SetRelativeScale3D(FVector(State.Config.RadiusCentimeters/50,State.Config.RadiusCentimeters/50,Height/100));
+		Beam->SetRelativeScale3D(GuLiVfx::Scale(this, GuLiVfxIds::TeleportCylinder, GuLiVfx::Scale(this, GuLiVfxIds::TeleportBeam, FVector(State.Config.RadiusCentimeters/50,State.Config.RadiusCentimeters/50,Height/100))));
 		Beam->SetRelativeLocation(FVector(0,0,bLanding ? FullHeight-Height*.5f : Height*.5f));
 	}
 	if (BeamMID) { BeamMID->SetScalarParameterValue(TEXT("Opacity"),Alpha); }

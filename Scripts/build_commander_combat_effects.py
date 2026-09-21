@@ -1,6 +1,6 @@
 """Author only CommanderWeapons assets through the installed UE5.7 / VibeUE 4.0 APIs.
 
-Run through Scripts/ue_exec.py. Set COMMANDER_FX_STAGE to materials/gunfire-materials/gunfire/gunfire-catalog/flight/explosions/catalog
+Run through Scripts/ue_exec.py. Set COMMANDER_FX_STAGE to materials/gunfire-materials/gunfire/gunfire-catalog/machinegun-impact/flight/explosions/catalog
 in the editor Python globals for a scoped retry. Source marketplace assets are never modified.
 """
 import json
@@ -9,7 +9,13 @@ import traceback
 from pathlib import Path
 import unreal
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())) / "Scripts/Vfx"))
+from vfx_registry import vfx_id, resource as vfx_resource, scale as vfx_scale, require_id, visual_variant
+
 DEST = '/Game/GuLiStrike/FX/CommanderWeapons'
+MACHINEGUN_IMPACT_SOURCE = vfx_resource('MachineGunImpact')
 OUT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())) / 'outputs/commander-combat-effects'
 OUT.mkdir(parents=True, exist_ok=True)
 ASSETS = unreal.get_editor_subsystem(unreal.EditorAssetSubsystem)
@@ -372,9 +378,37 @@ def data_asset(name, cls):
     factory = unreal.DataAssetFactory(); factory.set_editor_property('data_asset_class',cls)
     return require(TOOLS.create_asset(name, DEST, cls, factory), 'Create '+path)
 
+def configure_machinegun_impact(catalog):
+    # The specified source naturally completes after about 1 second. Reuse it
+    # unchanged; the presentation subsystem provides pooled ownership and a 3s cap.
+    system = require(ASSETS.load_asset(MACHINEGUN_IMPACT_SOURCE), 'Load machine-gun impact')
+    require(isinstance(system, unreal.NiagaraSystem), 'Machine-gun impact must be Niagara')
+    impact = unreal.GuLiEffectVisualVariant()
+    impact.set_editor_property('vfx_id', vfx_id('MachineGunImpact'))
+    impact.set_editor_property('scale_parameter_name', 'None')
+    impact.set_editor_property('random_yaw', False)
+    impact.set_editor_property('maximum_lifetime', 3.0)
+    impact.set_editor_property('additional_layers', [])
+    catalog.set_editor_property('machine_gun_impact', impact)
+
+
+def machinegun_impact():
+    catalog = require(ASSETS.load_asset(DEST+'/DA_CommanderCombatEffects'), 'Load existing combat catalog')
+    configure_machinegun_impact(catalog)
+    save(catalog)
+    impact = prop(catalog, 'machine_gun_impact')
+    report['machinegun_impact'] = {
+        'system': vfx_resource(prop(impact, 'vfx_id')),
+        'scale': vfx_scale(prop(impact, 'vfx_id')),
+        'maximum_lifetime': prop(impact, 'maximum_lifetime'),
+    }
+
+
 def configure_gunfire_catalog(catalog):
     catalog.set_editor_property('gunfire_channel',ASSETS.load_asset(DEST+'/NDC_CommanderGunfire'))
-    catalog.set_editor_property('gunfire_system',ASSETS.load_asset(DEST+'/NS_CommanderGunfireBatch'))
+    catalog.set_editor_property('gunfire_vfx_id',vfx_id('CommanderGunfire'))
+    catalog.set_editor_property('ground_machine_gun_vfx_id',vfx_id('GroundMachineGunTracer'))
+    catalog.set_editor_property('wingman_laser_vfx_id',vfx_id('MachineGunTracer'))
     catalog.set_editor_property('tracer_lifetime',.075)
     catalog.set_editor_property('tracer_width',6.0)
     catalog.set_editor_property('muzzle_activity_hold_seconds',2.0)
@@ -391,6 +425,7 @@ def configure_gunfire_catalog(catalog):
     catalog.set_editor_property('tracer_light_radius',360.0)
     catalog.set_editor_property('tracer_light_brightness',25.0)
     catalog.set_editor_property('gunfire_tint',unreal.LinearColor(1.0,.72,.32,1.0))
+    configure_machinegun_impact(catalog)
 
 def gunfire_catalog():
     catalog=data_asset('DA_CommanderCombatEffects',unreal.GuLiCombatEffectCatalog)
@@ -404,16 +439,11 @@ def catalog():
     field.set_editor_property('visual_reference_radius',800.0)
     field.set_editor_property('timing',unreal.GuLiSpellFieldTiming.INSTANT)
     field.set_editor_property('dissipation_seconds',3.0)
-    variants=[]
-    for number in [7,8,9]:
-        v=unreal.GuLiEffectVisualVariant()
-        v.set_editor_property('system',ASSETS.load_asset(DEST+'/NS_WM01_Explosion_'+str(number)))
-        v.set_editor_property('scale',1.0); v.set_editor_property('maximum_lifetime',3.0); variants.append(v)
+    variants=[visual_variant('CommanderMissileExplosion', 'User.VisualScale')]
     field.set_editor_property('activation_variants',variants); save(field)
     projectile=data_asset('DA_WM01_Missile',unreal.GuLiProjectileEffectDefinition)
     projectile.set_editor_property('impact_field',field)
-    projectile.set_editor_property('flight_system',ASSETS.load_asset(DEST+'/NS_WM01_MissileFlight'))
-    projectile.set_editor_property('visual_scale',0.2)
+    projectile.set_editor_property('flight_vfx_id',vfx_id('MissileFlight'))
     projectile.set_editor_property('trail_fade_seconds',.55); save(projectile)
     catalog=data_asset('DA_CommanderCombatEffects',unreal.GuLiCombatEffectCatalog)
     configure_gunfire_catalog(catalog)
@@ -457,7 +487,7 @@ def catalog():
 try:
     for name, func in [('materials',lambda: [material('M_Commander_'+n,s,t) for n,s,t in [('Tracer','beam',False),('Muzzle','muzzle',False),('Exhaust','soft',False),('Smoke','soft',True)]]),
                        ('gunfire-materials',lambda: [material('M_Commander_Tracer','beam',False),material('M_Commander_Muzzle','muzzle',False)]),
-                       ('gunfire',gunfire),('gunfire-catalog',gunfire_catalog),('flight',flight),('explosions',explosions),('catalog',catalog)]:
+                       ('gunfire',gunfire),('gunfire-catalog',gunfire_catalog),('machinegun-impact',machinegun_impact),('flight',flight),('explosions',explosions),('catalog',catalog)]:
         if report['stage'] in ('all', name): func()
     report['success']=True
 except Exception as error:

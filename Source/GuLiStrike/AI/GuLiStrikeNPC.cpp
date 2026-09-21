@@ -10,6 +10,7 @@
 #include "GuLiStrikePickup.h"
 #include "Engine/World.h"
 #include "GuLiStrikeNPCDestruction.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "TimerManager.h"
 
 AGuLiStrikeNPC::AGuLiStrikeNPC()
@@ -114,7 +115,15 @@ void AGuLiStrikeNPC::ProjectileImpact(const FVector& ForwardVector)
 	}
 	
 	// spawn the NPC destruction proxy
-	AGuLiStrikeNPCDestruction* DestructionProxy = GetWorld()->SpawnActor<AGuLiStrikeNPCDestruction>(DestructionProxyClass, GetActorTransform());
+	if (GetNetMode() != NM_DedicatedServer)
+	{
+		if (UClass* EffectClass = GuLiVfx::LoadClass<AGuLiStrikeNPCDestruction>(this, DestructionVfxId))
+		{
+			FTransform Transform = GetActorTransform();
+			Transform.SetScale3D(GuLiVfx::Scale(this, DestructionVfxId, Transform.GetScale3D()));
+			GetWorld()->SpawnActor<AGuLiStrikeNPCDestruction>(EffectClass, Transform);
+		}
+	}
 
 	// hide this actor
 	SetActorHiddenInGame(true);

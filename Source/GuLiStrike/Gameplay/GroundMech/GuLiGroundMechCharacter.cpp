@@ -1,6 +1,8 @@
 #include "Gameplay/GroundMech/GuLiGroundMechCharacter.h"
 #include "Gameplay/GroundMech/GuLiGroundMechMovementComponent.h"
 #include "Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h"
+#include "Gameplay/GroundMech/GuLiGroundMechAbilities.h"
+#include "Gameplay/GroundMech/GuLiGroundMechRocketComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Battle/Framework/GuLiBattlePlayerController.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
@@ -25,6 +27,11 @@ AGuLiGroundMechCharacter::AGuLiGroundMechCharacter(const FObjectInitializer& Ini
 	bAlwaysRelevant = true;
 	bUseControllerRotationYaw = false;
 	Weapon = CreateDefaultSubobject<UGuLiGroundMechWeaponComponent>(TEXT("Weapon"));
+	AbilitySystem = CreateDefaultSubobject<UAbilitySystemComponent>(TEXT("GroundMechAbilitySystem"));
+	AbilitySystem->SetIsReplicated(true);
+	AbilitySystem->SetReplicationMode(EGameplayEffectReplicationMode::Mixed);
+	FuelAttributes = CreateDefaultSubobject<UGuLiGroundMechAttributeSet>(TEXT("GroundMechFuelAttributes"));
+	RocketJump = CreateDefaultSubobject<UGuLiGroundMechRocketComponent>(TEXT("RocketJump"));
 	CreateDefaultSubobject<UGuLiExternalUnitControlComponent>(TEXT("ExternalUnitControl"));
 	GetCapsuleComponent()->InitCapsuleSize(230.f, 374.1898f);
 	GetMesh()->SetCollisionEnabled(ECollisionEnabled::NoCollision);
@@ -68,6 +75,7 @@ AGuLiGroundMechCharacter::AGuLiGroundMechCharacter(const FObjectInitializer& Ini
 void AGuLiGroundMechCharacter::BeginPlay()
 {
 	Super::BeginPlay();
+	RocketJump->RefreshActorInfo();
 	DesiredCameraDistance = StandingHeight * 4.f;
 	DisplayAimYaw = GetActorRotation().Yaw;
 	GetMesh()->AddTickPrerequisiteActor(this);
@@ -76,6 +84,7 @@ void AGuLiGroundMechCharacter::BeginPlay()
 void AGuLiGroundMechCharacter::PawnClientRestart()
 {
 	Super::PawnClientRestart();
+	RocketJump->RefreshActorInfo();
 	RemoveInputContext();
 	const auto* PC = Cast<APlayerController>(GetController());
 	ULocalPlayer* Player = PC ? PC->GetLocalPlayer() : nullptr;
@@ -87,6 +96,7 @@ void AGuLiGroundMechCharacter::PawnClientRestart()
 void AGuLiGroundMechCharacter::RemoveInputContext()
 {
 	Weapon->SetFireHeld(false);
+	RocketJump->Interrupt();
 	if (InputSubsystem.IsValid()) InputSubsystem->RemoveMappingContext(MappingContext);
 	InputSubsystem.Reset();
 	bSprintHeld = false;
@@ -95,6 +105,7 @@ void AGuLiGroundMechCharacter::RemoveInputContext()
 void AGuLiGroundMechCharacter::NotifyControllerChanged()
 {
 	Super::NotifyControllerChanged();
+	RocketJump->RefreshActorInfo();
 	if (!IsLocallyControlled()) RemoveInputContext();
 }
 
@@ -119,7 +130,17 @@ void AGuLiGroundMechCharacter::SetupPlayerInputComponent(UInputComponent* Input)
 	Enhanced.BindAction(SprintAction,ETriggerEvent::Completed,this,&ThisClass::StopSprint);
 	Enhanced.BindAction(SprintAction,ETriggerEvent::Canceled,this,&ThisClass::StopSprint);
 	Enhanced.BindAction(ZoomAction,ETriggerEvent::Triggered,this,&ThisClass::Zoom);
+	if (RocketJumpAction)
+	{
+		Enhanced.BindAction(RocketJumpAction,ETriggerEvent::Started,this,&ThisClass::StartRocketJump);
+		Enhanced.BindAction(RocketJumpAction,ETriggerEvent::Completed,this,&ThisClass::StopRocketJump);
+		Enhanced.BindAction(RocketJumpAction,ETriggerEvent::Canceled,this,&ThisClass::StopRocketJump);
+	}
 }
+
+void AGuLiGroundMechCharacter::SetRocketJumpInput(bool bHeld) { RocketJump->SetRocketJumpInput(bHeld); }
+void AGuLiGroundMechCharacter::StartRocketJump(const FInputActionValue&) { SetRocketJumpInput(true); }
+void AGuLiGroundMechCharacter::StopRocketJump(const FInputActionValue&) { SetRocketJumpInput(false); }
 
 bool AGuLiGroundMechCharacter::CanUseControls() const
 {
@@ -135,8 +156,10 @@ bool AGuLiGroundMechCharacter::CanUseControls() const
 void AGuLiGroundMechCharacter::Move(const FInputActionValue& Value)
 {
 	if (!CanUseControls()) return;
-	const FVector2D Axis = Value.Get<FVector2D>().GetClampedToMaxSize(1.f);
-	const float Magnitude = bSprintHeld ? 1.f : WalkSpeed/GetCharacterMovement()->MaxWalkSpeed;
+	FVector2D Axis = Value.Get<FVector2D>();
+	const bool bAirSteering = GetCharacterMovement()->IsFalling() && RocketJump->IsConfigured();
+	Axis = Axis.GetClampedToMaxSize(1.f);
+	const float Magnitude = bAirSteering || bSprintHeld ? 1.f : WalkSpeed/GetCharacterMovement()->MaxWalkSpeed;
 	// CMC transmits this acceleration magnitude, so walk/run share its existing prediction.
 	AddMovementInput(FVector::ForwardVector,Axis.Y*Magnitude);
 	AddMovementInput(FVector::RightVector,Axis.X*Magnitude);
@@ -151,17 +174,30 @@ void AGuLiGroundMechCharacter::Zoom(const FInputActionValue& Value)
 	DesiredCameraDistance=FMath::Clamp(DesiredCameraDistance-Value.Get<float>()*StandingHeight*.4f,StandingHeight*3.f,StandingHeight*8.f);
 }
 
-void AGuLiGroundMechCharacter::UpdateAim()
+bool AGuLiGroundMechCharacter::GetCursorAimPoint(FVector& OutPoint) const
 {
-	auto& PC = *CastChecked<APlayerController>(GetController());
+	const auto* PC = Cast<APlayerController>(GetController());
+	if (!PC || !IsLocallyControlled() || !Machinegun) return false;
 	FVector Origin,Direction;
-	if (!PC.DeprojectMousePositionToWorld(Origin,Direction)) return;
+	if (!PC->DeprojectMousePositionToWorld(Origin,Direction) || Origin.ContainsNaN() || Direction.ContainsNaN()) return false;
 	FHitResult Hit;
 	FCollisionQueryParams Params(SCENE_QUERY_STAT(GroundMechAim),true,this);
-	if (!GetWorld()->LineTraceSingleByChannel(Hit,Origin,Origin+Direction*600000.f,ECC_Visibility,Params)) return;
-	const FVector ToTarget=Hit.ImpactPoint-GetActorLocation();
+	const FVector End = Origin + Direction.GetSafeNormal() * 600000.f;
+	const bool bHit = GetWorld()->LineTraceSingleByChannel(Hit, Origin, End, ECC_Visibility, Params);
+	const FVector GunLocation = Machinegun->GetComponentLocation();
+	const FVector Offset = ((bHit ? Hit.ImpactPoint : End) - GunLocation).GetClampedToMaxSize(599999.f);
+	if (Offset.SizeSquared() < 1.f) return false;
+	OutPoint = GunLocation + Offset;
+	return true;
+}
+
+void AGuLiGroundMechCharacter::UpdateAim()
+{
+	FVector AimPoint;
+	if (!GetCursorAimPoint(AimPoint)) return;
+	const FVector ToTarget=AimPoint-GetActorLocation();
 	if (ToTarget.SizeSquared2D()<1.f) return;
-	PC.SetControlRotation(FRotator(0,ToTarget.Rotation().Yaw,0));
+	GetController()->SetControlRotation(FRotator(0,ToTarget.Rotation().Yaw,0));
 }
 
 void AGuLiGroundMechCharacter::Tick(float DeltaSeconds)

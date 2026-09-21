@@ -1,0 +1,249 @@
+﻿{
+	"devices": [
+		{
+			"deviceName": "DESKTOP-6D3B0FC",
+			"instance": "34FD17454B439045518A2BA583816B88",
+			"instanceName": "DESKTOP-6D3B0FC-84892",
+			"platform": "WindowsEditor",
+			"oSVersion": "Windows 11 (25H2) [10.0.26200.9457] ",
+			"model": "Default",
+			"gPU": "GameViewer Virtual Display Adapter",
+			"cPUModel": "Intel(R) Core(TM) i9-14900KF",
+			"rAMInGB": 32,
+			"renderMode": "SM6",
+			"rHI": "",
+			"appInstanceLog": ""
+		}
+	],
+	"reportCreatedOn": "2026.09.20-12.54.45",
+	"succeeded": 12,
+	"succeededWithWarnings": 0,
+	"failed": 1,
+	"notRun": 0,
+	"inProcess": 0,
+	"totalDuration": 0.58953940868377686,
+	"comparisonExported": false,
+	"comparisonExportDirectory": "",
+	"tests": [
+		{
+			"testDisplayName": "Activity",
+			"fullTestPath": "GuLiStrike.Commander.UI.HealthBar.Activity",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.32910880446434021,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SizingPolicy",
+			"fullTestPath": "GuLiStrike.Commander.UI.HealthBar.SizingPolicy",
+			"tags": [],
+			"state": "Fail",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.15368999540805817,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'Soldier A health bar uses its own mesh top plus padding' to be 120.000000, but it was 104.000000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\UI\\Tests\\GuLiCommanderHealthBarRendererTests.cpp",
+					"lineNumber": 183,
+					"timestamp": "2026.09.20-12.54.45"
+				},
+				{
+					"event":
+					{
+						"type": "Error",
+						"message": "Expected 'WM01 health bar uses its distinct mesh top plus padding' to be 270.000000, but it was 254.000000 and outside tolerance 0.000100.",
+						"context": "",
+						"artifact": "00000000000000000000000000000000"
+					},
+					"filename": "D:\\UE5.7\\test1\\Source\\GuLiStrike\\Commander\\UI\\Tests\\GuLiCommanderHealthBarRendererTests.cpp",
+					"lineNumber": 189,
+					"timestamp": "2026.09.20-12.54.45"
+				}
+			],
+			"warnings": 0,
+			"errors": 2,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "VisibilityPolicy",
+			"fullTestPath": "GuLiStrike.Commander.UI.HealthBar.VisibilityPolicy",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.0080187991261482239,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ViewportPlacement",
+			"fullTestPath": "GuLiStrike.Commander.UI.HUD.Shortcuts.ViewportPlacement",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.0082635991275310516,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AvailabilityAndReset",
+			"fullTestPath": "GuLiStrike.Commander.UI.HUD.UnitType.AvailabilityAndReset",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.0088660009205341339,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "CommandFeedback",
+			"fullTestPath": "GuLiStrike.Commander.UI.HUD.UnitType.CommandFeedback",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.0084704011678695679,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "DeduplicationAndWeightedHealth",
+			"fullTestPath": "GuLiStrike.Commander.UI.HUD.UnitType.DeduplicationAndWeightedHealth",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.0075957998633384705,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "FractionalHealth",
+			"fullTestPath": "GuLiStrike.Commander.UI.HUD.UnitType.FractionalHealth",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.0079107023775577545,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "SurvivorHealth",
+			"fullTestPath": "GuLiStrike.Commander.UI.HUD.UnitType.SurvivorHealth",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.0091664008796215057,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "AssetContract",
+			"fullTestPath": "GuLiStrike.Commander.UI.HUD.AssetContract",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.015064101666212082,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "ConfigurationAndBoundaries",
+			"fullTestPath": "GuLiStrike.Teleport.ConfigurationAndBoundaries",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.0079893991351127625,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "PawnIdentityMaterialCameraAndRecovery",
+			"fullTestPath": "GuLiStrike.Teleport.PawnIdentityMaterialCameraAndRecovery",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.017098899930715561,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		},
+		{
+			"testDisplayName": "WingmanWholeGroupIdentityAndStalePackets",
+			"fullTestPath": "GuLiStrike.Teleport.WingmanWholeGroupIdentityAndStalePackets",
+			"tags": [],
+			"state": "Success",
+			"deviceInstance": [
+				"34FD17454B439045518A2BA583816B88"
+			],
+			"duration": 0.0082964003086090088,
+			"dateTime": "2026.09.20-12.54.45",
+			"entries": [],
+			"warnings": 0,
+			"errors": 0,
+			"artifacts": []
+		}
+	]
+}

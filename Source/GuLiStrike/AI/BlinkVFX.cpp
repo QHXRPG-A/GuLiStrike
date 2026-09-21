@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "BlinkVFX.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 
 #include "Components/PoseableMeshComponent.h"
 #include "Components/SceneComponent.h"
@@ -36,27 +37,7 @@ ABlinkVFX::ABlinkVFX()
 	HeatwaveMesh->SetCastShadow(false);
 	HeatwaveMesh->SetCanEverAffectNavigation(false);
 
-	// 使用引擎自带球体，无需额外导入网格资源。
-	static ConstructorHelpers::FObjectFinder<UStaticMesh> SphereMesh(TEXT("/Engine/BasicShapes/Sphere.Sphere"));
-	if (SphereMesh.Succeeded())
-	{
-		HeatwaveMesh->SetStaticMesh(SphereMesh.Object);
-	}
 
-	// 加载刚刚生成的两份材质；资源缺失时特效安全地退化为不可见。
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface> AfterimageMaterial(
-		TEXT("/Game/GuLiStrike/FX/M_BlinkAfterimage.M_BlinkAfterimage"));
-	if (AfterimageMaterial.Succeeded())
-	{
-		AfterimageBaseMaterial = AfterimageMaterial.Object;
-	}
-
-	static ConstructorHelpers::FObjectFinder<UMaterialInterface> HeatwaveMaterialAsset(
-		TEXT("/Game/GuLiStrike/FX/M_BlinkHeatwave.M_BlinkHeatwave"));
-	if (HeatwaveMaterialAsset.Succeeded())
-	{
-		HeatwaveBaseMaterial = HeatwaveMaterialAsset.Object;
-	}
 }
 
 void ABlinkVFX::InitializeFromCharacter(
@@ -66,6 +47,10 @@ void ABlinkVFX::InitializeFromCharacter(
 	float InitialAfterimageOpacity,
 	float InLifetime)
 {
+	if (GetNetMode() == NM_DedicatedServer) { SetActorHiddenInGame(true); return; }
+	HeatwaveMesh->SetStaticMesh(GuLiVfx::Load<UStaticMesh>(this, GuLiVfxIds::BlinkSphere));
+	AfterimageBaseMaterial = GuLiVfx::Load<UMaterialInterface>(this, GuLiVfxIds::BlinkAfterimage);
+	HeatwaveBaseMaterial = GuLiVfx::Load<UMaterialInterface>(this, GuLiVfxIds::BlinkHeatwave);
 	AfterimageOpacity = FMath::Clamp(InitialAfterimageOpacity, 0.0f, 1.0f);
 	Lifetime = FMath::Max(InLifetime, KINDA_SMALL_NUMBER);
 
@@ -112,7 +97,7 @@ void ABlinkVFX::InitializeFromCharacter(
 	}
 
 	// 热波从较小尺寸开始，在 Tick 中快速扩张。
-	HeatwaveMesh->SetRelativeScale3D(FVector(0.05f));
+	HeatwaveMesh->SetRelativeScale3D(GuLiVfx::Scale(this, GuLiVfxIds::BlinkSphere, FVector(5.f / 48.f)));
 }
 
 void ABlinkVFX::Tick(float DeltaTime)
@@ -137,8 +122,8 @@ void ABlinkVFX::Tick(float DeltaTime)
 	}
 
 	// EaseOut 让热波先快速扩张，结束时自然减速。
-	const float HeatwaveScale = FMath::InterpEaseOut(0.05f, 0.48f, Progress, 2.0f);
-	HeatwaveMesh->SetRelativeScale3D(FVector(HeatwaveScale));
+	const float HeatwaveScale = FMath::InterpEaseOut(5.f / 48.f, 1.0f, Progress, 2.0f);
+	HeatwaveMesh->SetRelativeScale3D(GuLiVfx::Scale(this, GuLiVfxIds::BlinkSphere, FVector(HeatwaveScale)));
 
 	if (Progress >= 1.0f)
 	{

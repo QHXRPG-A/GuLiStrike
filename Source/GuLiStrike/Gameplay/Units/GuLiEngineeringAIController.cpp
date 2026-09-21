@@ -88,10 +88,16 @@ void UGuLiEngineeringCrowdFollowingComponent::OnPathfindingQuery(FPathFindingQue
 
 void UGuLiEngineeringCrowdFollowingComponent::OnPathFinished(const FPathFollowingResult& Result)
 {
+	if (Result.Flags & FPathFollowingResultFlags::NewRequest)
+	{
+		// RequestMove installs the prepared corridor immediately after this callback.
+		// UCrowdFollowingComponent also clears Detour's velocity, even when the base
+		// path follower preserves character velocity. Keep both for this handover.
+		UPathFollowingComponent::OnPathFinished(Result);
+		return;
+	}
 	Super::OnPathFinished(Result);
-	// RequestMove aborts the previous path while installing a replacement.
-	if (!(Result.Flags & FPathFollowingResultFlags::NewRequest)
-		&& CastChecked<AAIController>(GetOwner())->GetPawn()) // Cleanup can follow UnPossess.
+	if (CastChecked<AAIController>(GetOwner())->GetPawn()) // Cleanup can follow UnPossess.
 		RefreshParticipation();
 }
 

@@ -1,5 +1,6 @@
 #include "Gameplay/GroundMech/GuLiGroundMechMovementNetwork.h"
 #include "Gameplay/GroundMech/GuLiGroundMassContactSubsystem.h"
+#include "Gameplay/GroundMech/GuLiGroundMechRocketComponent.h"
 
 void FGuLiGroundMechStorageDeleter::operator()(FGuLiGroundMechNetworkStorage *Storage) const
 {
@@ -29,12 +30,25 @@ void FGuLiGroundMechSavedMove::Clear()
 	StartSupport = {};
 	EndSupport = {};
 	bContact = false;
+	RocketStart = {}; RocketEnd = {};
+	bRocketHeld = bRocketRequested = false;
+}
+uint8 FGuLiGroundMechSavedMove::GetCompressedFlags() const
+{
+	return FGuLiExternalSavedMove::GetCompressedFlags() |
+		(bRocketHeld ? FLAG_Custom_0 : 0) | (bRocketRequested ? FLAG_Custom_1 : 0);
 }
 void FGuLiGroundMechSavedMove::SetMoveFor(ACharacter *Character, float Delta, const FVector &Accel,
 										  FNetworkPredictionData_Client_Character &Data)
 {
 	FGuLiExternalSavedMove::SetMoveFor(Character, Delta, Accel, Data);
 	auto *Movement = CastChecked<UGuLiGroundMechMovementComponent>(Character->GetCharacterMovement());
+	const auto* Ability = Movement->Rocket();
+	bRocketHeld = Ability && Ability->IsInputHeld();
+	bRocketRequested = Ability && Ability->IsAbilityActive();
+	Movement->bRocketHeld = bRocketHeld;
+	Movement->bRocketRequested = bRocketRequested;
+	RocketStart = Movement->RocketState;
 	Context = Movement->CaptureCollisionMove(Delta);
 	StartSupport = Movement->SupportState;
 	Movement->PreparedMove = Context;
@@ -48,11 +62,14 @@ void FGuLiGroundMechSavedMove::PostUpdate(ACharacter *Character, EPostUpdateMode
 	Context = Movement->LastMoveContext;
 	EndSupport = Movement->SupportState;
 	bContact = Movement->bTouchedMass;
+	RocketEnd = Movement->RocketState;
 }
 void FGuLiGroundMechSavedMove::PrepMoveFor(ACharacter *Character)
 {
 	FGuLiExternalSavedMove::PrepMoveFor(Character);
 	auto *Movement = CastChecked<UGuLiGroundMechMovementComponent>(Character->GetCharacterMovement());
+	Movement->bRocketHeld = bRocketHeld;
+	Movement->bRocketRequested = bRocketRequested;
 	Movement->PreparedMove = Context;
 	Movement->bPreparedMove = true;
 	Movement->bReplayingMove = true;
@@ -62,6 +79,9 @@ void FGuLiGroundMechSavedMove::PrepMoveFor(ACharacter *Character)
 bool FGuLiGroundMechSavedMove::CanCombineWith(const FSavedMovePtr &Move, ACharacter *Character, float MaxDelta) const
 {
 	const auto &Next = static_cast<const FGuLiGroundMechSavedMove &>(*Move);
+	if (bRocketHeld || Next.bRocketHeld || bRocketRequested || Next.bRocketRequested ||
+		RocketStart.Fuel != RocketEnd.Fuel || Next.RocketStart.Fuel != Next.RocketEnd.Fuel ||
+		RocketStart.RecoveryElapsed != RocketEnd.RecoveryElapsed || Next.RocketStart.RecoveryElapsed != Next.RocketEnd.RecoveryElapsed) return false;
 	return !bContact && !Next.bContact && !StartSupport.IsValid() && !EndSupport.IsValid() &&
 		   !Next.StartSupport.IsValid() && !Next.EndSupport.IsValid() && Context.Snapshot == Next.Context.Snapshot &&
 		   FGuLiExternalSavedMove::CanCombineWith(Move, Character, MaxDelta);
@@ -74,6 +94,7 @@ void FGuLiGroundMechSavedMove::CombineWith(const FSavedMove_Character *Old, ACha
 	Context = Previous.Context;
 	Context.Duration = DeltaTime;
 	StartSupport = Previous.StartSupport;
+	RocketStart = Previous.RocketStart;
 	auto *Movement = CastChecked<UGuLiGroundMechMovementComponent>(Character->GetCharacterMovement());
 	Movement->PreparedMove = Context;
 	Movement->bPreparedMove = true;
@@ -85,12 +106,14 @@ void FGuLiGroundMechMoveData::ClientFillNetworkMoveData(const FSavedMove_Charact
 	SupportEpoch = State.Epoch;
 	SupportId = State.SoldierId.Value;
 	SupportDisplacement = State.DisplacementRevision;
+	RocketEnd = static_cast<const FGuLiGroundMechSavedMove &>(Move).RocketEnd;
 }
 bool FGuLiGroundMechMoveData::Serialize(UCharacterMovementComponent &Movement, FArchive &Ar, UPackageMap *Map,
 										ENetworkMoveType Type)
 {
 	const bool bOK = FGuLiExternalMoveData::Serialize(Movement, Ar, Map, Type);
 	Ar << SupportEpoch << SupportId << SupportDisplacement;
+	RocketEnd.Serialize(Ar);
 	return bOK && !Ar.IsError();
 }
 void FGuLiGroundMechMoveResponse::ServerFillResponseData(const UCharacterMovementComponent &Movement,
@@ -104,6 +127,7 @@ void FGuLiGroundMechMoveResponse::ServerFillResponseData(const UCharacterMovemen
 		checkf(Mech.PendingResponseTimeStamp == Adjustment.TimeStamp,
 			   TEXT("Support baseline must accompany its CMC adjustment"));
 		Support = Mech.PendingResponseSupport;
+		Rocket = Mech.PendingResponseRocket;
 	}
 	else
 		Support = {};
@@ -112,7 +136,10 @@ bool FGuLiGroundMechMoveResponse::Serialize(UCharacterMovementComponent &Movemen
 {
 	const bool bOK = FGuLiExternalMoveResponse::Serialize(Movement, Ar, Map);
 	if (IsCorrection())
+	{
 		Support.Serialize(Ar);
+		Rocket.Serialize(Ar);
+	}
 	else if (Ar.IsLoading())
 		Support = {};
 	return bOK && !Ar.IsError();

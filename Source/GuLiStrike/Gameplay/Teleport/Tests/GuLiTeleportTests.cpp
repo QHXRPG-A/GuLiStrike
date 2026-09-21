@@ -1,3 +1,4 @@
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/Teleport/GuLiTeleportTypes.h"
 #if WITH_DEV_AUTOMATION_TESTS
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
@@ -55,7 +56,7 @@ bool FGuLiTeleportPawnIdentityCameraTest::RunTest(const FString& Parameters)
 	auto* Control=Pawn->FindComponentByClass<UGuLiExternalUnitControlComponent>();
 	auto* Movement=Cast<UGuLiExternalCharacterMovementComponent>(Pawn->GetCharacterMovement());
 	auto* Mesh=Pawn->FindComponentByClass<UStaticMeshComponent>();
-	auto* Blue=LoadObject<UMaterialInterface>(nullptr,TEXT("/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody"));
+	auto* Blue=GuLiVfx::Load<UMaterialInterface>(nullptr,GuLiVfxIds::TeleportBody);
 	if (!TestNotNull(TEXT("Generic control"),Control)||!TestNotNull(TEXT("Versioned movement"),Movement)||!TestNotNull(TEXT("Blue translucent material"),Blue)||!Mesh) return false;
 	const auto* OriginalMaterial=Mesh->GetMaterial(0); const FGuid Token=FGuid::NewGuid();
 	const FTransform Source=Pawn->GetActorTransform();

@@ -63,9 +63,9 @@ void UGuLiSpellFieldDataSubsystem::Initialize(FSubsystemCollectionBase& Collecti
 				Transit.AscentSeconds = Row.AscentSeconds; Transit.AccelerationSeconds = Row.AccelerationSeconds;
 				Transit.DecelerationSeconds = Row.DecelerationSeconds; Transit.ExitFlashSeconds = Row.ExitFlashSeconds;
 				Transit.SpeedMultiplier = Row.SpeedMultiplier; Transit.ExitRadius = Row.ExitRadiusCentimeters;
-				Transit.EnergyMaterial = TSoftObjectPtr<UMaterialInterface>(Row.EnergyMaterial.ToSoftObjectPath());
-				Transit.TrailSystem = TSoftObjectPtr<UNiagaraSystem>(Row.TrailSystem.ToSoftObjectPath());
-				Transit.FlashSystem = TSoftObjectPtr<UNiagaraSystem>(Row.FlashSystem.ToSoftObjectPath());
+				Transit.EnergyVfxId = Row.EnergyVfxId;
+				Transit.TrailVfxId = Row.TrailVfxId;
+				Transit.FlashVfxId = Row.FlashVfxId;
 				continue;
 			}
 		}

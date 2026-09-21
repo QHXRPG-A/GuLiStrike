@@ -93,11 +93,14 @@ public:
 	bool HasUnresolvedSelectionIntent() const;
 	/** New UI commands share one reliable actor channel, preserving input order across selection changes. */
 	void SubmitOrderedSelection(FGuLiSelectionRequest Request);
+	bool SubmitPanelSelection(FGuLiPanelSelectionRequest Request);
 	void SubmitOrderedTask(FGuLiUnitTaskCommand Command);
 	void SubmitControlGroup(uint8 Slot, bool bSet, bool bAppend, bool bSteal, bool bFocus);
 	const TArray<FGuLiUnitTaskSummary>& GetTaskSummaries() const;
 	const TArray<int32>& GetControlGroupCounts() const { return ControlGroupCounts; }
+	uint16 GetRelatedControlGroups() const { return DisplayedTaskSelectionRevision == SelectionState.SelectionRevision ? RelatedControlGroups : 0; }
 	const FString& GetLastTaskFeedback() const { return LastTaskFeedback; }
+	bool IsDispatchingTaskReceipt() const { return bDispatchingTaskReceipt; }
 	FGuLiMoveReadyToSendSignature OnMoveReadyToSend;
 
 	// 拥有客户端 → 服务器，可靠选兵 RPC；Request 只含意图，处理结果经 Client ACK 返回。
@@ -237,13 +240,14 @@ protected:
 	virtual void OnConnectionBootstrapReady() override;
 
 private:
+	UFUNCTION(Server, Reliable) void ServerPanelSelection(FGuLiPanelSelectionRequest Request, uint32 Sequence, uint32 Generation);
 	UFUNCTION(Server, Reliable) void ServerOrderedSelection(FGuLiSelectionRequest Request, uint32 Sequence, uint32 Generation);
 	UFUNCTION(Server, Reliable) void ServerOrderedTask(FGuLiUnitTaskCommand Command, uint32 Sequence, uint32 Generation);
 	UFUNCTION(Server, Reliable) void ServerControlGroup(uint8 Slot, bool bSet, bool bAppend, bool bSteal, bool bFocus, uint32 Sequence, uint32 Generation);
 	UFUNCTION(Client, Reliable) void ClientOrderedSelection(const FGuLiCommanderSelectionState& State, uint32 Sequence, bool bFocus, uint32 Generation);
 	UFUNCTION(Client, Reliable) void ClientTaskReceipt(const FGuLiCommandAck& Ack, const FString& Message, uint32 Generation);
 	UFUNCTION(Client, Reliable) void ClientTaskSnapshot(uint32 Revision, int32 Total, int32 Offset,
-		const TArray<FGuLiUnitTaskSummary>& Chunk, const TArray<int32>& Counts, uint32 SelectionRevision, uint32 Generation);
+		const TArray<FGuLiUnitTaskSummary>& Chunk, const TArray<int32>& Counts, uint16 RelatedGroups, uint32 SelectionRevision, uint32 Generation);
 	bool AdmitOrderedSequence(uint32 Sequence, uint32 Generation);
 	void TickOrderedCommands();
 	void PruneControlGroup(FGuLiCommanderControlGroup& Group, EGuLiTeam Team) const;
@@ -253,6 +257,7 @@ private:
 	uint32 LastOrderedSelectionSequence = 0;
 	TSet<uint32> PendingOrderedSelections;
 	TSet<uint32> PendingOrderedTasks;
+	bool bDispatchingTaskReceipt = false;
 	TArray<FGuLiCommanderControlGroup> ControlGroups;
 	bool bOrderedSelectionValid = true;
 	double NextOrderedSummaryTime = 0;
@@ -262,6 +267,7 @@ private:
 	TArray<FGuLiUnitTaskSummary> ReceivedTaskSnapshot;
 	TArray<int32> PendingGroupCounts;
 	TArray<int32> ReceivedGroupCounts;
+	uint16 RelatedControlGroups = 0, PendingRelatedGroups = 0, ReceivedRelatedGroups = 0;
 	uint32 TaskSnapshotRevision = 0;
 	uint32 ReceivedTaskSnapshotRevision = 0;
 	uint32 TaskSnapshotSelectionRevision = 0;

@@ -13,16 +13,14 @@ USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiEffectVisualLayer
 {
 	GENERATED_BODY()
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual") TSoftObjectPtr<UNiagaraSystem> System;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual", meta=(ClampMin="0.001")) float Scale = 1.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual") int32 VfxId = 0;
 };
 
 USTRUCT(BlueprintType)
 struct GULISTRIKE_API FGuLiEffectVisualVariant
 {
 	GENERATED_BODY()
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual") TSoftObjectPtr<UNiagaraSystem> System;
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual", meta=(ClampMin="0.001")) float Scale = 1.0f;
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual") int32 VfxId = 0;
 	/** None preserves component scaling. A named float receives Scale with unit component scale. */
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category="Visual") FName ScaleParameterName;
 	/** Rotates this world-space burst around +Z from the replicated effect seed. */
@@ -49,8 +47,8 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field", meta=(ClampMin="0", Units="s")) float Delay = 0.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field", meta=(ClampMin="0.033", Units="s")) float Duration = 5.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Field", meta=(ClampMin="0.033", Units="s")) float PulseInterval = 1.0f;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") TSoftObjectPtr<UNiagaraSystem> WaitingSystem;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") TSoftObjectPtr<UNiagaraSystem> ActiveLoopSystem;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") int32 WaitingVfxId = 0;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") int32 ActiveLoopVfxId = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") TArray<FGuLiEffectVisualVariant> ActivationVariants;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual", meta=(ClampMin="0", Units="s")) float DissipationSeconds = 3.0f;
 	bool IsValidDefinition() const;
@@ -67,8 +65,7 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") FGuLiProjectileMotionSettings Motion;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Projectile") TSoftObjectPtr<UGuLiSpellFieldDefinition> ImpactField;
 	/** Contains the missile mesh/bright core and flame/ribbon emitters; no replicated visual Actor. */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") TSoftObjectPtr<UNiagaraSystem> FlightSystem;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual", meta=(ClampMin="0.001")) float VisualScale = 0.2f;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual") int32 FlightVfxId = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Visual", meta=(ClampMin="0", Units="s")) float TrailFadeSeconds = 0.5f;
 	/** Resolves the authoritative table profile; invalid authored rows never fall back. */
 	UFUNCTION(BlueprintPure, Category="Projectile")
@@ -97,16 +94,18 @@ class GULISTRIKE_API UGuLiCombatEffectCatalog : public UDataAsset
 public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Weapons") TArray<FGuLiWeaponEffectMount> Mounts;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") TSoftObjectPtr<UNiagaraDataChannelAsset> GunfireChannel;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") TSoftObjectPtr<UNiagaraSystem> GunfireSystem;
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser") TSoftObjectPtr<UNiagaraSystem> WingmanLaserSystem;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") int32 GunfireVfxId = 0;
+	/** Shared one-shot hit feedback for commander, wingman and player machine-gun rounds. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire") FGuLiEffectVisualVariant MachineGunImpact;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser") int32 WingmanLaserVfxId = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser", meta=(ClampMin="1", Units="cm")) float LaserLength = 600.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser", meta=(ClampMin="1", Units="cm")) float LaserCoreWidth = 10.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser", meta=(ClampMin="0")) float LaserIntensity = 24.0f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser") FLinearColor FriendlyLaserTint = FLinearColor(0.05f, 1.0f, 0.12f);
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser") FLinearColor EnemyLaserTint = FLinearColor(1.0f, 0.025f, 0.015f);
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Wingman Laser", meta=(ClampMin="0.01", ClampMax="0.15", Units="s")) float LaserMuzzleSeconds = 0.05f;
-	/** Ground guns reuse the same system, core width, halo and intensity with independent length/color overrides. */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Machine Gun", meta=(ClampMin="0.001")) float GroundMachineGunLengthScale = 0.3f;
+	/** The registry's X/Y base scale controls particle length/width; colors remain source-specific. */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Machine Gun") int32 GroundMachineGunVfxId = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Machine Gun") FLinearColor FriendlyGroundMachineGunTint = FLinearColor(1.0f, 1.0f, 0.0f);
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Machine Gun") FLinearColor EnemyGroundMachineGunTint = FLinearColor(1.0f, 0.025f, 0.015f);
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Gunfire", meta=(ClampMin="0.01", ClampMax="0.15")) float TracerLifetime = 0.075f;

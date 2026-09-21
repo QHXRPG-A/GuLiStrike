@@ -1,0 +1,45 @@
+Using bundled DotNet SDK version: 8.0.412 win-x64
+Running UnrealBuildTool: dotnet "..\..\Engine\Binaries\DotNET\UnrealBuildTool\UnrealBuildTool.dll" GuLiStrikeEditor Win64 Development -Project=D:\UE5.7\test1\GuLiStrike.uproject -WaitMutex -NoHotReloadFromIDE
+Log file: D:\UnrealEngine-5.7\Engine\Programs\UnrealBuildTool\Log.txt
+Using 'git status' to determine working set for adaptive non-unity build (D:\UnrealEngine-5.7).
+Using 'git status' to determine working set for adaptive non-unity build (D:\UE5.7\test1).
+Waiting for 'git status' command to complete
+Parsing headers for GuLiStrikeEditor
+  Running Internal UnrealHeaderTool D:\UE5.7\test1\GuLiStrike.uproject D:\UE5.7\test1\Intermediate\Build\Win64\GuLiStrikeEditor\Development\GuLiStrikeEditor.uhtmanifest -WarningsAsErrors
+UHT processed GuLiStrikeEditor in 7.6348421 seconds (5 files written)
+Building GuLiStrikeEditor...
+Using Visual Studio 2022 14.44.35215 toolchain (C:\Program Files\Microsoft Visual Studio\2022\Professional\VC\Tools\MSVC\14.44.35207) and Windows 10.0.22621.0 SDK (C:\Program Files (x86)\Windows Kits\10).
+[Adaptive Build] Excluded from GuLiStrike unity file: BlinkVFX.cpp, GuLiStrikeNPC.cpp, GuLiCommanderUIRevisionCommands.cpp, GuLiCommanderDeploymentPoint.cpp, GuLiCommanderNetSyncComponent.cpp, GuLiCommanderOrderedCommands.cpp, GuLiCommanderPlayerController.cpp, GuLiCommanderUICommands.cpp, GuLiCommanderSelectionMoveGateTests.cpp, GuLiCommanderToolModeTests.cpp, GuLiBattleAuthoritySubsystem.cpp, GuLiCommanderTypes.cpp, GuLiCommanderNetworkTests.cpp, GuLiSpecialTaskCatalog.cpp, GuLiSpecialTaskExecutor.cpp, GuLiUnitTaskSubsystem.cpp, GuLiUnitTaskTypes.cpp, GuLiMoveContinuityProbe.cpp, GuLiUnitTaskTests.cpp, GuLiCommanderHUD.cpp, GuLiCommanderPresentationActor.cpp, GuLiCommanderPresentationCommands.cpp, GuLiCommanderMoveEndpointHUDTests.cpp, GuLiCommanderPresentationPerformanceTests.cpp, GuLiCommanderActionButton.cpp, GuLiCommanderConsoleLayout.cpp, GuLiCommanderConsoleView.cpp, GuLiCommanderHealthBarRenderer.cpp, GuLiCommanderHUDWidget.cpp, GuLiCommanderMiniMapWidget.cpp, GuLiCommanderTaskPanel.cpp, GuLiCommanderUIPresentation.cpp, GuLiCommanderUITheme.cpp, GuLiCommanderHealthBarRendererTests.cpp, GuLiBuildingCatalog.cpp, GuLiBuildingPlacementComponent.cpp, GuLiBuildingPlacementPreview.cpp, GuLiBuildingTypes.cpp, BuildingAssetTests.cpp, BuildingWorldTests.cpp, GuLiCombatEffectDefinition.cpp, GuLiCombatEffectLaserPresentation.cpp, GuLiCombatEffectPresentationSubsystem.cpp, GuLiCombatEffectTypes.cpp, GuLiGroundWarningSubsystem.cpp, GuLiProjectilePoolSubsystem.cpp, GuLiUnitFeedbackSubsystem.cpp, GuLiCommanderSkillComponent.cpp, GuLiGameText.cpp, GuLiSpellFieldDataSubsystem.cpp, GuLiScale020InterpolationTests.cpp, GuLiScale020Tests.cpp, GuLiGroundMechAbilities.cpp, GuLiGroundMechAnimInstance.cpp, GuLiGroundMechCharacter.cpp, GuLiGroundMechFireTests.cpp, GuLiGroundMechMovementComponent.cpp, GuLiGroundMechMovementNetwork.cpp, GuLiGroundMechRocketComponent.cpp, GuLiGroundMechWeaponComponent.cpp, GuLiGroundMassCollisionTypes.cpp, GuLiTeamOutlineCameraManager.cpp, GuLiMiningVehiclePawn.cpp, GuLiStrongholdNetworkPresentationComponent.cpp, GuLiStrongholdTransitPresentationComponent.cpp, GuLiTeleportFieldActor.cpp, GuLiTeleportFieldPresentation.cpp, GuLiTeleportInputComponent.cpp, GuLiTeleportTests.cpp, GuLiEngineeringAIController.cpp, GuLiEngineeringTravelComponent.cpp, GuLiExternalUnitControlComponent.cpp, GuLiVfxBindingComponent.cpp, GuLiVfxRegistrySubsystem.cpp, GuLiVfxRegistryTests.cpp, GuLiWingmanPawn.cpp
+[Adaptive Build] Excluded from GuLiFlightNavigationEditor unity file: GuLiFlightNavigationWorldValidator.cpp
+[Adaptive Build] Excluded from Navmesh unity file: DetourCrowd.cpp
+[Adaptive Build] Excluded from LevelEditor unity file: SLevelViewport.cpp
+Determining max actions to execute in parallel (24 physical cores, 32 logical cores)
+  Executing up to 24 processes, one per physical core
+  Requested 1.5 GB memory per action, 15.91 GB available: limiting max parallel actions to 10
+Using Unreal Build Accelerator local executor to run 16 action(s)
+  Storage capacity 40Gb
+---- Starting trace: 260921_153452 ----
+UbaServer - Listening on 0.0.0.0:1345
+[1/16] Compile [x64] GuLiGroundMechAbilities.cpp
+[2/16] Compile [x64] GuLiGroundMechAnimInstance.cpp
+[3/16] Compile [x64] GuLiGroundMechMovementNetwork.cpp
+[4/16] Compile [x64] GuLiGroundMechMovementComponent.cpp
+[5/16] Compile [x64] Module.GuLiStrike.11.cpp
+[6/16] Compile [x64] Module.GuLiStrike.12.cpp
+[7/16] Compile [x64] GuLiGroundMechCharacter.cpp
+[8/16] Compile [x64] Module.GuLiStrike.7.cpp
+[9/16] Compile [x64] GuLiGroundMechRocketComponent.cpp
+[10/16] Compile [x64] GuLiGroundMechWeaponComponent.cpp
+[11/16] Compile [x64] Module.GuLiStrike.6.cpp
+[12/16] Compile [x64] GuLiCommanderPlayerController.cpp
+[13/16] Compile [x64] GuLiGroundMechFireTests.cpp
+[14/16] Link [x64] UnrealEditor-GuLiStrike.lib
+  正在创建库 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.lib 和对象 D:/UE5.7/test1/Intermediate/Build/Win64/x64/UnrealEditor/Development/GuLiStrike/UnrealEditor-GuLiStrike.exp
+[15/16] Link [x64] UnrealEditor-GuLiStrike.dll
+[16/16] WriteMetadata GuLiStrikeEditor.target [NoUba]
+
+Trace written to file D:/UnrealEngine-5.7/Engine/Programs/UnrealBuildTool/Log.uba with size 7.3kb
+Total time in Unreal Build Accelerator local executor: 11.45 seconds
+
+Result: Succeeded
+Total execution time: 22.28 seconds

@@ -21,7 +21,7 @@ class GULISTRIKE_API AGuLiBuildingPlacementPreview : public AActor
 public:
 	AGuLiBuildingPlacementPreview();
 
-	bool Configure(const FGuLiBuildingDefinition& Definition, UMaterialInterface* PreviewMaterial);
+	bool Configure(const FGuLiBuildingDefinition& Definition, int32 PreviewVfxId);
 	void SetPlacementTransform(const FVector& GroundLocation, float YawDegrees);
 	void SetPlacementValidity(bool bValid);
 

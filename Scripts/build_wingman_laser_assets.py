@@ -9,6 +9,11 @@ from pathlib import Path
 import traceback
 import unreal
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())) / "Scripts/Vfx"))
+from vfx_registry import vfx_id, resource as vfx_resource, scale as vfx_scale, require_id, visual_variant
+
 ROOT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
 DEST = '/Game/GuLiStrike/FX/WingmanWeapons'
 SYSTEM = DEST + '/NS_WingmanLaserPool'
@@ -117,7 +122,8 @@ def build_system():
     report['settings'] = str(NS.get_all_editable_settings(SYSTEM))
     save(SYSTEM)
     catalog = require(unreal.load_asset(CATALOG), 'Load combat effect catalog')
-    catalog.set_editor_property('wingman_laser_system', system)
+    catalog.set_editor_property('wingman_laser_vfx_id', vfx_id('MachineGunTracer'))
+    catalog.set_editor_property('ground_machine_gun_vfx_id', vfx_id('GroundMachineGunTracer'))
     for key, value in [('laser_length', 600.0), ('laser_core_width', 10.0), ('laser_intensity', 24.0), ('laser_muzzle_seconds', 0.05)]:
         catalog.set_editor_property(key, value)
     catalog.set_editor_property('friendly_laser_tint', unreal.LinearColor(0.05, 1.0, 0.12, 1.0))

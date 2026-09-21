@@ -35,7 +35,7 @@ protected:
 
 	/** Type of destruction proxy to spawn on death */
 	UPROPERTY(EditAnywhere, Category="Destruction")
-	TSubclassOf<AGuLiStrikeNPCDestruction> DestructionProxyClass;
+	int32 DestructionVfxId = 0;
 
 	/** Time to wait after this NPC is hit before destroying it */
 	UPROPERTY(EditAnywhere, Category="Pickup", meta=(ClampMin = 0, ClampMax = 5, Units = "s"))

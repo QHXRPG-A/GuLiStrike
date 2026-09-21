@@ -103,7 +103,7 @@ struct GULISTRIKE_API FGuLiCombatEffectState
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FGuLiTargetHandle Source;
 	/** Frozen faction, allowing flying bolts to retain their color after the source is destroyed. */
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") EGuLiTeam SourceTeam = EGuLiTeam::Unassigned;
-	UPROPERTY() TSoftObjectPtr<UNiagaraSystem> PlayerBulletSystem;
+	UPROPERTY() int32 PlayerBulletVfxId = 0;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") FGuLiTargetHandle Target;
 	UPROPERTY(BlueprintReadOnly, Category="Combat Effect") TSoftObjectPtr<UGuLiProjectileEffectDefinition> ProjectileDefinition;
 	/** Optional generic ground cue, frozen at launch and reconstructed by rendering clients. */

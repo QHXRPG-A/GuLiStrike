@@ -121,4 +121,61 @@ bool FGuLiSpecialTaskCatalogTest::RunTest(const FString&)
 	}
 	World->DestroyWorld(false); GEngine->DestroyWorldContext(World); return true;
 }
+IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiMoveReuseTest, "GuLiStrike.Commander.Orders.MoveReuseBoundaryAndLifecycle", GuLiOrderTests::Flags)
+bool FGuLiMoveReuseTest::RunTest(const FString&)
+{
+	using namespace GuLiOrderTests;
+	auto C = Command(); C.Target = FVector(10000, 10000, 200);
+	FGuLiUnitTaskState Base; Base.Version = 9;
+	FGuLiTaskExecution Move; Move.Command = C; Move.ExecutionId = 42; Move.Version = 9;
+	Move.Status = EGuLiTaskStatus::Running; Move.bStarted = true;
+	Base.Active = Move;
+	for (double Distance : {0., 2499., 2500., 2501.})
+	{
+		auto S = Base; auto Next = C; Next.CommandId = 2;
+		Next.Target = FVector(C.Target) + FVector(Distance, 0, 10000);
+		S.Queue.Add(Command(EGuLiTaskDisposition::Append));
+		const bool Reused = UGuLiUnitTaskSubsystem::ReuseMove(S, Next, 2500);
+		TestEqual(*FString::Printf(TEXT("XY boundary %.0f"), Distance), Reused, Distance <= 2500);
+		if (Reused)
+		{
+			TestEqual(TEXT("Original execution retained"), S.Active->ExecutionId, 42u);
+			TestEqual(TEXT("No planning version bump"), S.Version, uint64(9));
+			TestTrue(TEXT("Original target retained"), FVector(S.Active->Command.Target).Equals(C.Target));
+			TestTrue(TEXT("Replace discards following waypoints"), S.Queue.IsEmpty());
+		}
+	}
+	auto S = Base; auto Next = C;
+	Next.Target = FVector(C.Target) + FVector(2000, 0, 0);
+	TestTrue(TEXT("First nearby click reused"), UGuLiUnitTaskSubsystem::ReuseMove(S, Next, 2500));
+	Next.Target = FVector(C.Target) + FVector(4000, 0, 0);
+	TestFalse(TEXT("Ignored click never moves distance anchor"), UGuLiUnitTaskSubsystem::ReuseMove(S, Next, 2500));
+	for (auto Status : {EGuLiTaskStatus::Waiting, EGuLiTaskStatus::Running, EGuLiTaskStatus::Completed,
+		EGuLiTaskStatus::Failed, EGuLiTaskStatus::Stopped, EGuLiTaskStatus::WaitingSafeExit})
+	{
+		S = Base; S.Active->Status = Status;
+		TestEqual(TEXT("Only unfinished moves reuse"), UGuLiUnitTaskSubsystem::ReuseMove(S, C, 2500),
+			Status == EGuLiTaskStatus::Waiting || Status == EGuLiTaskStatus::Running);
+	}
+	S = Base; S.Active->bPlanning = true;
+	TestTrue(TEXT("Planning retains original job"), UGuLiUnitTaskSubsystem::ReuseMove(S, C, 2500) && S.Active->bPlanning);
+	S = Base; Next = C; Next.Disposition = EGuLiTaskDisposition::Append;
+	TestFalse(TEXT("Shift waypoint is never distance filtered"), UGuLiUnitTaskSubsystem::ReuseMove(S, Next, 2500));
+	Next.Disposition = EGuLiTaskDisposition::Stop;
+	TestFalse(TEXT("Stop is never swallowed"), UGuLiUnitTaskSubsystem::ReuseMove(S, Next, 2500));
+	S.bStopped = true;
+	TestFalse(TEXT("Stopped unit can receive a new move"), UGuLiUnitTaskSubsystem::ReuseMove(S, C, 2500));
+	S = {}; S.Queue = {C, C};
+	TestTrue(TEXT("Waiting head reused before scheduler tick"), UGuLiUnitTaskSubsystem::ReuseMove(S, C, 2500));
+	TestEqual(TEXT("Queued head retained, tail discarded"), S.Queue.Num(), 1);
+	S = Base; auto Replacement = Move; Replacement.Command.Target = FVector(40000, 10000, 0);
+	Replacement.ExecutionId = 43; Replacement.Version = 10; S.PendingMove = Replacement;
+	TestEqual(TEXT("Old and replacement are one manual slot"), S.ManualTaskCount(), 1);
+	TestFalse(TEXT("Pending target takes precedence over old target"), UGuLiUnitTaskSubsystem::ReuseMove(S, C, 2500));
+	TestTrue(TEXT("Pending target deduplicates"), UGuLiUnitTaskSubsystem::ReuseMove(S, Replacement.Command, 2500));
+	TestEqual(TEXT("Pending identity preserved"), S.PendingMove->ExecutionId, 43u);
+	UGuLiUnitTaskSubsystem::Admit(S, Command(EGuLiTaskDisposition::Stop), 32);
+	TestFalse(TEXT("Stop discards replacement state"), S.PendingMove.IsSet());
+	return true;
+}
 #endif

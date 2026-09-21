@@ -115,16 +115,16 @@ struct FGuLiStrikeSpellFieldsFieldsRow : public FTableRowBase
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
 	float ExitRadiusCentimeters = 0.0f;
 
-	/** EnergyMaterial (softobject, Optional) */
+	/** EnergyVfxId (int, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
-	TSoftObjectPtr<UObject> EnergyMaterial;
+	int32 EnergyVfxId = 0;
 
-	/** TrailSystem (softobject, Optional) */
+	/** TrailVfxId (int, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
-	TSoftObjectPtr<UObject> TrailSystem;
+	int32 TrailVfxId = 0;
 
-	/** FlashSystem (softobject, Optional) */
+	/** FlashVfxId (int, Optional) */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Fields")
-	TSoftObjectPtr<UObject> FlashSystem;
+	int32 FlashVfxId = 0;
 
 };

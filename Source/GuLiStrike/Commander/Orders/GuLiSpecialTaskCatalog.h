@@ -16,6 +16,8 @@ public:
 	UPROPERTY(Config, EditAnywhere, meta=(ClampMin="0.1")) float AutomaticRetrySeconds = 1;
 	UPROPERTY(Config, EditAnywhere, meta=(ClampMin="0.05")) float DoublePressSeconds = .3f;
 	UPROPERTY(Config, EditAnywhere, meta=(ClampMin="1")) float SameTypeRadiusCentimeters = 50000;
+	/** Ground-plane distance within which a replacement keeps the current move. */
+	UPROPERTY(Config, EditAnywhere, meta=(ClampMin="0", Units="cm")) float MoveReuseDistanceCentimeters = 2500;
 };
 
 UCLASS()

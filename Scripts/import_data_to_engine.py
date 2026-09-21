@@ -50,6 +50,8 @@ WIRING = {
 
 # 由 C++ Config settings 通过软引用接线；成功导入后不应被误报为未接线。
 CONFIG_WIRED_TABLES = {
+    "DT_GuLiStrikeVfx_Effects",
+    "DT_GuLiStrikeGameTexts_Texts",
     "DT_GuLiStrikeSpecialTasks_Tasks",
     "DT_GuLiStrikeBuildings_Buildings",
     # Ship V3 assets reference these rows; deployed by deploy_wingman_attack_assets.py.
@@ -102,6 +104,32 @@ def write_csv_sidecar(rows, path):
         f.write(buf.getvalue())
 
 
+def vfx_table_matches_source(dt, source_rows):
+    """Stable repeat imports for the three tables participating in the VFX migration."""
+    exported = {row['Name']: row for row in json.loads(unreal.DataTableFunctionLibrary.export_data_table_to_json_string(dt))}
+    if set(exported) != {row['Name'] for row in source_rows}:
+        return False
+    for row in source_rows:
+        for key, value in row.items():
+            actual = exported[row['Name']].get(key)
+            if isinstance(value, dict):
+                if isinstance(actual, str):
+                    actual = dict((axis, float(number)) for axis, number in re.findall(r'([XYZ])=([-+0-9.eE]+)', actual))
+                if not isinstance(actual, dict) or any(not math.isclose(float(actual.get(a, 0)), value[a], rel_tol=1.e-6, abs_tol=1.e-6) for a in 'XYZ'):
+                    return False
+            elif isinstance(value, float):
+                if actual is None or not math.isclose(float(actual), value, rel_tol=5.e-6, abs_tol=1.e-6):return False
+            elif isinstance(value, (int, bool)):
+                if actual != value:return False
+            else:
+                # Unreal may qualify a soft path with its class; compare the complete object path.
+                text = str(actual)
+                if "'" in text:text = text.split("'", 1)[1].rstrip("'")
+                if value == '' and text == 'None':text = ''
+                if text != value:return False
+    return True
+
+
 def import_table(table_name, table_cfg):
     entry = {"asset": table_name}
     try:
@@ -123,6 +151,12 @@ def import_table(table_name, table_cfg):
         asset_path = f"{DEST_PATH}/{table_name}"
         dt = unreal.load_object(None, f"{asset_path}.{table_name}")
         entry["created"] = dt is None
+        if dt and table_name in {'DT_GuLiStrikeVfx_Effects', 'DT_GuLiStrikeMech_Skills', 'DT_GuLiStrikeSpellFields_Fields'} \
+                and dt.get_editor_property('row_struct') == row_struct and vfx_table_matches_source(dt, src_rows):
+            entry.update(imported=True, unchanged=True, row_names=entry['source_rows'],
+                         row_checks={name: True for name in entry['source_rows']})
+            mark('unchanged; verified existing table')
+            return entry
         if dt is None:
             factory = unreal.DataTableFactory()
             factory.set_editor_property("struct", row_struct)

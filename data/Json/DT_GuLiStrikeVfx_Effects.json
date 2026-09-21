@@ -1,0 +1,431 @@
+[
+  {
+    "Name": "GroundWarning",
+    "Id": 1,
+    "Note": "导弹和法术场落点预警圆环材质",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundWarning/M_GroundWarning_Circle.M_GroundWarning_Circle",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "MissileFlight",
+    "Id": 2,
+    "Note": "指挥官与僚机导弹飞行",
+    "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_MissileFlight.NS_WM01_MissileFlight",
+    "Scale": {
+      "X": 0.4,
+      "Y": 0.4,
+      "Z": 0.4
+    }
+  },
+  {
+    "Name": "CommanderGunfire",
+    "Id": 3,
+    "Note": "指挥官批量机枪枪口火焰与示踪表现",
+    "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_CommanderGunfireBatch.NS_CommanderGunfireBatch",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "MachineGunTracer",
+    "Id": 4,
+    "Note": "僚机机枪弹道与枪口闪光",
+    "ResourcePath": "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool.NS_WingmanLaserPool",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "MachineGunImpact",
+    "Id": 5,
+    "Note": "指挥官、僚机、玩家地面机甲机枪命中单位或地形",
+    "ResourcePath": "/Game/Assets/Niagara_Toon_Projectiles_2/Effects/NS_Flash_1.NS_Flash_1",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "CommanderMissileExplosion",
+    "Id": 6,
+    "Note": "指挥官导弹命中爆炸",
+    "ResourcePath": "/Game/GuLiStrike/FX/CommanderWeapons/NS_WM01_Explosion_2A.NS_WM01_Explosion_2A",
+    "Scale": {
+      "X": 6.4,
+      "Y": 6.4,
+      "Z": 6.4
+    }
+  },
+  {
+    "Name": "WingmanBombardment",
+    "Id": 7,
+    "Note": "僚机对地轰炸法术场爆炸",
+    "ResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01.NS_WingmanBombardment_01",
+    "Scale": {
+      "X": 5.0,
+      "Y": 5.0,
+      "Z": 5.0
+    }
+  },
+  {
+    "Name": "PlayerBullet",
+    "Id": 8,
+    "Note": "玩家地面机甲机枪飞行子弹",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Bullet.NS_GroundMech_Bullet",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "PlayerMuzzle",
+    "Id": 9,
+    "Note": "玩家地面机甲机枪枪口闪光",
+    "ResourcePath": "/Game/GuLiStrike/FX/GroundMech/NS_GroundMech_Muzzle.NS_GroundMech_Muzzle",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "RocketJet",
+    "Id": 10,
+    "Note": "玩家地面机甲火箭跳双侧持续喷气",
+    "ResourcePath": "/Game/Assets/VFX/WeaponBulletVFX/NS/VFX_FireGun_Loop.VFX_FireGun_Loop",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "RocketFuelBar",
+    "Id": 11,
+    "Note": "玩家地面机甲火箭跳燃料弧形条材质",
+    "ResourcePath": "/Game/GuLiStrike/GroundMech/UI/M_RocketFuelArc.M_RocketFuelArc",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "TransitEnergy",
+    "Id": 12,
+    "Note": "据点运输能量球、网络节点及连线材质",
+    "ResourcePath": "/Game/GuLiStrike/FX/StrongholdTransit/M_TransitEnergy.M_TransitEnergy",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "TransitTrail",
+    "Id": 13,
+    "Note": "据点运输飞行能量球尾迹",
+    "ResourcePath": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitTrail.NS_TransitTrail",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "TransitFlash",
+    "Id": 14,
+    "Note": "据点运输出发与到达闪光",
+    "ResourcePath": "/Game/GuLiStrike/FX/StrongholdTransit/NS_TransitFlash.NS_TransitFlash",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "TeamOutline",
+    "Id": 15,
+    "Note": "友敌阵营屏幕描边后处理材质",
+    "ResourcePath": "/Game/GuLiStrike/FX/TeamOutline/M_TeamOutline.M_TeamOutline",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "WingmanFlightTrail",
+    "Id": 16,
+    "Note": "僚机飞行尾迹",
+    "ResourcePath": "/Game/GuLiStrike/FX/WingmanFlight/NS_WingmanFlightTrail.NS_WingmanFlightTrail",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "UnitWreck",
+    "Id": 17,
+    "Note": "单位销毁残骸锈蚀材质",
+    "ResourcePath": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitWreckRust.M_UnitWreckRust",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "UnitHit",
+    "Id": 18,
+    "Note": "单位受击闪白覆盖材质",
+    "ResourcePath": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite.M_UnitHitWhite",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "UnitHitInstanced",
+    "Id": 19,
+    "Note": "指挥官实例化单位受击闪白材质",
+    "ResourcePath": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitWhite_Instanced.M_UnitHitWhite_Instanced",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "GroundDestruction",
+    "Id": 20,
+    "Note": "地面单位销毁爆炸，另乘单位体型系数",
+    "ResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/NS_GroundDestruction_03.NS_GroundDestruction_03",
+    "Scale": {
+      "X": 7.55262,
+      "Y": 7.55262,
+      "Z": 7.55262
+    }
+  },
+  {
+    "Name": "WingmanDestruction",
+    "Id": 21,
+    "Note": "僚机销毁爆炸，另乘单位体型系数",
+    "ResourcePath": "/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanDestruction_05.NS_WingmanDestruction_05",
+    "Scale": {
+      "X": 7.55262,
+      "Y": 7.55262,
+      "Z": 7.55262
+    }
+  },
+  {
+    "Name": "UnitHitHealthBar",
+    "Id": 22,
+    "Note": "受击世界血条",
+    "ResourcePath": "/Game/GuLiStrike/FX/UnitFeedback/M_UnitHitHealthBarWorld.M_UnitHitHealthBarWorld",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "BlinkAfterimage",
+    "Id": 23,
+    "Note": "闪现残影材质",
+    "ResourcePath": "/Game/GuLiStrike/FX/M_BlinkAfterimage.M_BlinkAfterimage",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "BlinkHeatwave",
+    "Id": 24,
+    "Note": "闪现热波材质",
+    "ResourcePath": "/Game/GuLiStrike/FX/M_BlinkHeatwave.M_BlinkHeatwave",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "BlinkSphere",
+    "Id": 25,
+    "Note": "闪现热波网格，时间曲线保留为动态系数",
+    "ResourcePath": "/Engine/BasicShapes/Sphere.Sphere",
+    "Scale": {
+      "X": 0.48,
+      "Y": 0.48,
+      "Z": 0.48
+    }
+  },
+  {
+    "Name": "TeleportCylinder",
+    "Id": 26,
+    "Note": "传送光柱网格",
+    "ResourcePath": "/Game/GuLiStrike/FX/CommanderTeleport/SM_TeleportCylinder.SM_TeleportCylinder",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "TeleportGround",
+    "Id": 27,
+    "Note": "传送范围与进度",
+    "ResourcePath": "/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportGround.M_TeleportGround",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "TeleportBeam",
+    "Id": 28,
+    "Note": "传送光柱材质",
+    "ResourcePath": "/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBeam.M_TeleportBeam",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "TeleportBody",
+    "Id": 29,
+    "Note": "传送单位相位覆盖材质",
+    "ResourcePath": "/Game/GuLiStrike/FX/CommanderTeleport/M_TeleportBody.M_TeleportBody",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "UnitRingMesh",
+    "Id": 30,
+    "Note": "指挥官单位选择圈",
+    "ResourcePath": "/Game/Commander/Units/SM_CommanderUnitRing.SM_CommanderUnitRing",
+    "Scale": {
+      "X": 2.4,
+      "Y": 2.4,
+      "Z": 0.004
+    }
+  },
+  {
+    "Name": "UnitRingMaterial",
+    "Id": 31,
+    "Note": "单位选择圈材质",
+    "ResourcePath": "/Game/Commander/UI/M_CommanderUnitRing.M_CommanderUnitRing",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "TransitOrb",
+    "Id": 32,
+    "Note": "运输能量球",
+    "ResourcePath": "/Engine/BasicShapes/Sphere.Sphere",
+    "Scale": {
+      "X": 10.0,
+      "Y": 10.0,
+      "Z": 10.0
+    }
+  },
+  {
+    "Name": "TransitNode",
+    "Id": 33,
+    "Note": "运输网络节点",
+    "ResourcePath": "/Engine/BasicShapes/Sphere.Sphere",
+    "Scale": {
+      "X": 1.2,
+      "Y": 1.2,
+      "Z": 1.2
+    }
+  },
+  {
+    "Name": "TransitEdge",
+    "Id": 34,
+    "Note": "运输网络连线，长度动态计算",
+    "ResourcePath": "/Engine/BasicShapes/Cylinder.Cylinder",
+    "Scale": {
+      "X": 0.16,
+      "Y": 0.16,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "FuelBarPlane",
+    "Id": 35,
+    "Note": "火箭燃料条与受击世界血条共用承载网格",
+    "ResourcePath": "/Engine/BasicShapes/Plane.Plane",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "MiningLaser",
+    "Id": 36,
+    "Note": "采矿与建造激光",
+    "ResourcePath": "/Game/GuLiStrike/FX/Mining/NS_MiningLaser_Green.NS_MiningLaser_Green",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "NpcDestruction",
+    "Id": 37,
+    "Note": "早期 NPC 销毁蓝图；内部碎裂、网格和材质仍由蓝图持有",
+    "ResourcePath": "/Game/GuLiStrike/Blueprints/AI/BP_GuLiStrikeNPCDestruction.BP_TwinStickNPCDestruction_C",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "GroundMachineGunTracer",
+    "Id": 38,
+    "Note": "指挥官地面机枪弹道；X 为长度基础系数，Y 为宽度基础系数",
+    "ResourcePath": "/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool.NS_WingmanLaserPool",
+    "Scale": {
+      "X": 0.3,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  },
+  {
+    "Name": "BuildingPlacement",
+    "Id": 39,
+    "Note": "建筑放置全息预览材质；保留原建筑模型及有效/无效颜色",
+    "ResourcePath": "/Game/GuLiStrike/Buildings/Materials/M_BuildingPlacementPreview.M_BuildingPlacementPreview",
+    "Scale": {
+      "X": 1.0,
+      "Y": 1.0,
+      "Z": 1.0
+    }
+  }
+]

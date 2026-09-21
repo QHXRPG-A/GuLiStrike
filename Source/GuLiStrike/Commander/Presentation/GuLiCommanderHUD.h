@@ -39,6 +39,7 @@ class GULISTRIKE_API AGuLiCommanderHUD : public AHUD
 	GENERATED_BODY()
 
 public:
+	UGuLiCommanderHUDWidget* GetRuntimeHUDWidget() const { return RuntimeHUDWidget; }
 	void ShowCommandFeedback(const FText& Message, bool bAccepted);
 	AGuLiCommanderHUD();
 

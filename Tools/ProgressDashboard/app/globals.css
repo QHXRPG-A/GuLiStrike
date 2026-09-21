@@ -687,7 +687,8 @@ select:focus-visible {
 
 @media (min-width: 720px) {
   .workflow-rail {
-    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
+    /* 6 个阶段节点 + 5 个箭头：节点列等分，箭头列按内容收缩 */
+    grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr) auto minmax(0, 1fr);
   }
 
   .workflow-arrow {

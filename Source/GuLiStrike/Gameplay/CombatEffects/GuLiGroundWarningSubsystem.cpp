@@ -1,4 +1,5 @@
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Components/DecalComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/GameStateBase.h"
@@ -15,7 +16,7 @@ namespace
 
 bool UGuLiGroundWarningStyle::IsValidStyle() const
 {
-	return !Material.IsNull() && FMath::IsFinite(WavePeriod) && WavePeriod >= 0.05f
+	return MaterialVfxId > 0 && FMath::IsFinite(WavePeriod) && WavePeriod >= 0.05f
 		&& FMath::IsFinite(RingWidth) && RingWidth >= 0.001f && RingWidth <= 0.2f
 		&& FMath::IsFinite(Opacity) && Opacity >= 0 && Opacity <= 1
 		&& FMath::IsFinite(ProjectionDepth) && ProjectionDepth > 0 && ProjectionDepth <= 100000;
@@ -61,7 +62,7 @@ bool UGuLiGroundWarningSubsystem::UpsertWarning(const FGuid WarningId, const FGu
 	int32 Slot = Circles.IndexOfByPredicate([&Params](const auto& Circle) { return Circle.References > 0 && SameCircle(Circle.Params, Params); });
 	if (Slot == INDEX_NONE)
 	{
-		auto* BaseMaterial = Params.Style->Material.LoadSynchronous();
+		auto* BaseMaterial = GuLiVfx::Load<UMaterialInterface>(this, Params.Style->MaterialVfxId);
 		if (!BaseMaterial) return false;
 		Slot = Circles.IndexOfByPredicate([](const auto& Circle) { return Circle.References == 0; });
 		if (Slot == INDEX_NONE) Slot = Circles.AddDefaulted();
@@ -84,7 +85,7 @@ bool UGuLiGroundWarningSubsystem::UpsertWarning(const FGuid WarningId, const FGu
 		Circle.Material->SetScalarParameterValue(TEXT("Age"), FMath::Max(0.0, ServerTime() - Params.StartServerSeconds));
 		Circle.Decal->SetDecalMaterial(Circle.Material);
 		// Material's outer boundary is r=.96, so its visible radius is exactly Params.Radius.
-		Circle.Decal->DecalSize = FVector(Params.Style->ProjectionDepth, Params.Radius / .96f, Params.Radius / .96f);
+		Circle.Decal->DecalSize = GuLiVfx::Scale(this, Params.Style->MaterialVfxId, FVector(Params.Style->ProjectionDepth, Params.Radius / .96f, Params.Radius / .96f));
 		Circle.Decal->SetWorldLocationAndRotation(Params.Location, FRotator(-90, 0, 0));
 		Circle.Decal->SetVisibility(ServerTime() >= Params.StartServerSeconds);
 	}

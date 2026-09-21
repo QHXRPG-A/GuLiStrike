@@ -1,0 +1,43 @@
+{
+  "status": "implemented_and_delivered",
+  "date_local": "2026-09-21",
+  "native_builds": {
+    "engine": "D:/UnrealEngine-5.7",
+    "editor_exit": 0,
+    "game_exit": 0,
+    "build_id": "dd3ee083-a0fd-45c8-814e-67fe5ef95e31",
+    "matching_manifests": 8
+  },
+  "existing_automation_regressions": {
+    "succeeded": 8,
+    "succeeded_with_existing_warnings": 5,
+    "failed": 0,
+    "new_tests_added": false
+  },
+  "mass_top_summary": "mass-top-summary-final.json",
+  "dedicated_summary": "dedicated-summary-final.json",
+  "user_acceptance": "user-verification.json",
+  "progress": {
+    "errors": 0,
+    "warnings": 12,
+    "archive_id": "ARC-20260921-005"
+  },
+  "unverified": [
+    "External action-lock operation in this final pass",
+    "Runtime presentation cleanup across map travel",
+    "New animation state reconstruction after external teleport",
+    "High latency/packet loss, packaged runtime and dedicated GPU stress",
+    "Independent final fuel-bar visual acceptance"
+  ],
+  "source_config_sha256": {
+    "Source/GuLiStrike/Gameplay/Navigation/GuLiGroundMassCollisionTypes.cpp": "635edd3bf1e7ee1b01a1b3aff0e03dd7771d2d907b6c961186f4a93c9d243937",
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechMovementComponent.cpp": "1d618ad204695bfde6ff26643cb45bed014fb1280253cb624548a76894eab8a5",
+    "Scripts/GroundMech/author_animation_assets.py": "1bed3fc825ede345e745110f1e8b2f598778f29715197a5f5e6a6b1935e122ac",
+    "Data/Json/DT_GuLiStrikeMech_Skills.json": "9c9bb32721c802ade255883c1fdf5957b7c7adaf20ce50b6e455df600e43cd34"
+  },
+  "automation": {
+    "id": "automation",
+    "state": "absent",
+    "pause_attempt": "App reported the automation does not exist; local automation directory is empty. No recurring continuation remains to pause."
+  }
+}

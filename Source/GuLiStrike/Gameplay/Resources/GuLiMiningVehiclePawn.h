@@ -51,6 +51,7 @@ public:
 	UFUNCTION(BlueprintPure, Category="Resources|Mining")
 	virtual int32 GetUnitTypeId() const override { return UnitTypeId; }
 	bool StartManagedTask(const FGuLiMiningCommand& Command, bool bAutomatic);
+	bool StartPreparedManagedMove(const FGuLiMiningCommand& Command, const FGuLiPreparedGroundMove& Prepared);
 	bool StopManagedTask();
 	bool IsManagedTaskComplete() const { return bManagedTaskComplete; }
 	bool DidManagedTaskFail() const { return bManagedTaskFailed; }

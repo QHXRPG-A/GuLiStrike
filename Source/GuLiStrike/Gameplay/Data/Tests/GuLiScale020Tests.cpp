@@ -7,6 +7,7 @@
 #include "Engine/StaticMesh.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectDefinition.h"
 #include "Gameplay/CombatEffects/GuLiGroundWarningSubsystem.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/Resources/GuLiResourceTypes.h"
 #include "Misc/AutomationTest.h"
 
@@ -51,7 +52,7 @@ bool FGuLiScale020EffectContract::RunTest(const FString& Parameters)
 	TestEqual(TEXT("Warning cycle is still 0.8 s"),Warning->WavePeriod,.8f);
 	TestEqual(TEXT("Missile speed is final cm/s"),Projectile->Motion.Speed,1200.0f);
 	TestEqual(TEXT("Lift duration unchanged"),Projectile->Motion.LiftSeconds,.25f);
-	TestEqual(TEXT("Missile art scale"),Projectile->VisualScale,.2f);
+	TestTrue(TEXT("Missile base scale comes from the VFX registry"), GuLiVfx::Scale(nullptr, GuLiVfxIds::MissileFlight).Equals(FVector(.4), 1.e-6));
 	TestEqual(TEXT("Resource layout migration is versioned"),GULI_RESOURCE_LAYOUT_VERSION,2);
 	return true;
 }
@@ -62,7 +63,7 @@ IMPLEMENT_SIMPLE_AUTOMATION_TEST(FGuLiScale020NetworkContract,
 
 bool FGuLiScale020NetworkContract::RunTest(const FString& Parameters)
 {
-	TestEqual(TEXT("Protocol v12 clients must not share this format"),GULI_BATTLE_PROTOCOL_VERSION,uint16(13));
+	TestTrue(TEXT("Clients predating VfxId must not share this format"), GULI_BATTLE_PROTOCOL_VERSION >= 18u);
 	TestEqual(TEXT("XY quantum"),GULI_POSE_XY_STEP_CENTIMETERS,20.0);
 	TestEqual(TEXT("Z quantum"),GULI_POSE_Z_STEP_CENTIMETERS,2.0);
 	TestEqual(TEXT("Velocity quantum"),GULI_POSE_VELOCITY_STEP_CENTIMETERS_PER_SECOND,20.0);

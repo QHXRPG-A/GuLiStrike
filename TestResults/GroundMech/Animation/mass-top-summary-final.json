@@ -1,0 +1,49 @@
+{
+  "events": {
+    "first_mass_support": 0.0651530995965004,
+    "space_down": 0.5872838981449604,
+    "space_up": 1.888036798685789,
+    "returned_to_mass": 4.478508599102497,
+    "full_on_mass": 6.76406679674983
+  },
+  "samples": 176,
+  "setup": "Continuation on actual Mass support after the previous physical landing. The host selected and stopped the supporting ally with existing selection/native S input. Native Space is the only movement input. No teleport, position, velocity or resource edits during this recording.",
+  "peers": {
+    "client": {
+      "initial_support": 130,
+      "returned_support": 130,
+      "landing_t": 4.444817699491978,
+      "recovery_start_t": 5.475270498543978,
+      "recovery_delay_s": 1.030452799052,
+      "recovery_rate_median": 20.00008529326021,
+      "final_fuel": 100.0,
+      "max_planar_offset_cm": 0.0,
+      "max_rise_cm_s": 1200.0,
+      "states": [
+        "Grounded",
+        "Takeoff",
+        "AirLoop",
+        "Landing"
+      ]
+    },
+    "server": {
+      "initial_support": 130,
+      "returned_support": 130,
+      "landing_t": 4.478508599102497,
+      "recovery_start_t": 5.525389399379492,
+      "recovery_delay_s": 1.0468808002769947,
+      "recovery_rate_median": 20.44083017864012,
+      "final_fuel": 100.0,
+      "max_planar_offset_cm": 0.0,
+      "max_rise_cm_s": 1200.0,
+      "states": [
+        "Grounded",
+        "Takeoff",
+        "AirLoop",
+        "Landing"
+      ]
+    }
+  },
+  "final_position_error_cm": 0.03515627554588718,
+  "passed": true
+}

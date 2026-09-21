@@ -2,6 +2,7 @@ export type WorkflowStage =
   | 'draft'
   | 'planned'
   | 'in_progress'
+  | 'blocked'
   | 'verification'
   | 'done';
 

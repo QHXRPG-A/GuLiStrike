@@ -115,10 +115,11 @@ private:
 	TObjectPtr<UInstancedStaticMeshComponent> HealthBarInstances;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Commander|UI|HealthBar")
-	TSoftObjectPtr<UStaticMesh> PlaneMeshAsset;
+	int32 PlaneMeshVfxId = 0;
 
 	UPROPERTY(EditDefaultsOnly, Category = "Commander|UI|HealthBar")
-	TSoftObjectPtr<UMaterialInterface> HealthBarMaterialAsset;
+	int32 HealthBarVfxId = 0;
+	FVector HealthBarBaseScale = FVector::OneVector;
 
 	TWeakObjectPtr<APlayerController> LocalController;
 	TWeakObjectPtr<UGuLiCommanderNetSyncComponent> BoundNetSync;

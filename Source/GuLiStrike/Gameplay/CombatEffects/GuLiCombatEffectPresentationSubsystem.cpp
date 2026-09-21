@@ -16,6 +16,7 @@
 #include "NiagaraDataChannelFunctionLibrary.h"
 #include "NiagaraFunctionLibrary.h"
 #include "NiagaraSystem.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "ProfilingDebugging/CpuProfilerTrace.h"
 #include "Subsystems/SubsystemCollection.h"
 
@@ -46,7 +47,8 @@ TStatId UGuLiCombatEffectPresentationSubsystem::GetStatId() const { RETURN_QUICK
 
 void UGuLiCombatEffectPresentationSubsystem::Deinitialize()
 {
-	ResetVisuals(); PoseProviders.Reset(); MuzzleProviders.Reset(); Catalog = nullptr; CommanderData = nullptr; Super::Deinitialize();
+	ResetVisuals(); PoseProviders.Reset(); MuzzleProviders.Reset();
+	Catalog = nullptr; CommanderData = nullptr; Super::Deinitialize();
 }
 
 void UGuLiCombatEffectPresentationSubsystem::ResetVisuals()
@@ -78,7 +80,10 @@ float UGuLiCombatEffectPresentationSubsystem::ServerTime() const
 
 UGuLiCombatEffectCatalog* UGuLiCombatEffectPresentationSubsystem::GetCatalog()
 {
-	if (!Catalog) Catalog = GetDefault<UGuLiCombatEffectSettings>()->Catalog.LoadSynchronous();
+	if (!Catalog)
+	{
+		Catalog = GetDefault<UGuLiCombatEffectSettings>()->Catalog.LoadSynchronous();
+	}
 	return Catalog;
 }
 
@@ -193,15 +198,23 @@ bool UGuLiCombatEffectPresentationSubsystem::IsVisibleLocation(FVector Location)
 }
 
 UNiagaraComponent* UGuLiCombatEffectPresentationSubsystem::SpawnPooled(
-	UNiagaraSystem* System, FVector Location, float Scale, float Radius, FRotator Rotation, FName ScaleParameterName)
+	int32 VfxId, FVector Location, float DynamicScale, float Radius, FRotator Rotation, FName ScaleParameterName)
 {
-	if (!System || CVarGuLiCombatEffectVisuals.GetValueOnGameThread() == 0) return nullptr;
+	if (VfxId == 0 || CVarGuLiCombatEffectVisuals.GetValueOnGameThread() == 0) return nullptr;
+	UNiagaraSystem* System = GuLiVfx::Load<UNiagaraSystem>(this, VfxId);
+	const FVector Scale = GuLiVfx::Scale(this, VfxId, FVector(DynamicScale));
+	if (!System || !UGuLiVfxRegistrySubsystem::IsValidScale(Scale)) return nullptr;
+	if (!ScaleParameterName.IsNone() && (!FMath::IsNearlyEqual(Scale.X, Scale.Y) || !FMath::IsNearlyEqual(Scale.X, Scale.Z)))
+	{
+		UE_LOG(LogGuLiCombatEffectVisuals, Error, TEXT("VfxId %d requires uniform scale for its Niagara float parameter."), VfxId);
+		return nullptr;
+	}
 	UNiagaraComponent* Component = UNiagaraFunctionLibrary::SpawnSystemAtLocation(GetWorld(), System, Location,
-		Rotation, ScaleParameterName.IsNone() ? FVector(Scale) : FVector::OneVector, false, false, ENCPoolMethod::ManualRelease, false);
+		Rotation, ScaleParameterName.IsNone() ? Scale : FVector::OneVector, false, false, ENCPoolMethod::ManualRelease, false);
 	if (Component)
 	{
 		Component->SetCastShadow(false);
-		if (!ScaleParameterName.IsNone()) Component->SetVariableFloat(ScaleParameterName, Scale);
+		if (!ScaleParameterName.IsNone()) Component->SetVariableFloat(ScaleParameterName, Scale.X);
 		Component->SetVariableFloat(TEXT("User.Radius"), Radius);
 		Component->SetVariableLinearColor(TEXT("User.Tint"), Catalog ? Catalog->GunfireTint : FLinearColor::White);
 		Component->Activate(true);
@@ -262,6 +275,23 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 			for (int32 Index = 0; Index < 1024; ++Index) Tombstones.Remove(TombstoneOrder[Index]);
 			TombstoneOrder.RemoveAt(0, 1024, EAllowShrinking::No);
 		}
+		// Terminal wire records deliberately omit the source and launch payload. A fresh
+		// hit must work even if its flight was culled, expired locally, or never received.
+		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile && !bFromSnapshot
+			&& (State.EndReason == EGuLiCombatEffectEndReason::Impact || State.EndReason == EGuLiCombatEffectEndReason::Blocked)
+			&& ServerTime() - State.SampleTime <= 0.5f && GetCatalog() && IsVisibleLocation(State.Location))
+		{
+			const FGuLiEffectVisualVariant& Impact = Catalog->MachineGunImpact;
+			if (Impact.VfxId > 0
+				&& FMath::IsFinite(Impact.MaximumLifetime) && Impact.MaximumLifetime > 0.0f)
+			{
+				if (UNiagaraComponent* Burst = SpawnPooled(Impact.VfxId, State.Location, 1.0f))
+				{
+					Retire(Burst, FMath::Min(Impact.MaximumLifetime, 3.0f), false);
+					++Counters.MachineGunImpactsPlayed;
+				}
+			}
+		}
 		return;
 	}
 	// Never resurrect an expired projectile/burst or replay one after a long network stall.
@@ -275,7 +305,9 @@ void UGuLiCombatEffectPresentationSubsystem::ApplyState(const FGuLiCombatEffectS
 		FGuLiLocalCombatEffect Visual; Visual.State = State; Visual.RenderLocation = State.Location;
 		if (State.Kind == EGuLiCombatEffectKind::LinearProjectile)
 		{
-			if (State.Source.Kind != EGuLiTargetKind::GroundActor) Visual.LaserSlot = AllocateLaserSlot();
+			if (State.Source.Kind != EGuLiTargetKind::GroundActor && Catalog)
+				Visual.LaserSlot = AllocateLaserSlot(State.Source.Kind == EGuLiTargetKind::CommanderSoldier
+					? Catalog->GroundMachineGunVfxId : Catalog->WingmanLaserVfxId);
 			if (State.Source.Kind == EGuLiTargetKind::Wingman && !bFromSnapshot && ServerTime() - State.StartTime < 0.35f)
 				Visual.LaserMuzzleUntil = GetWorld()->GetTimeSeconds() + (Catalog ? Catalog->LaserMuzzleSeconds : 0.05f);
 		}
@@ -421,7 +453,8 @@ void UGuLiCombatEffectPresentationSubsystem::FlushGunfire()
 	if (PendingShots.IsEmpty() && !bRefreshMuzzles) return;
 	if (CVarGuLiCombatEffectVisuals.GetValueOnGameThread() == 0) { PendingShots.Reset(); return; }
 	UNiagaraDataChannelAsset* Channel = Catalog->GunfireChannel.LoadSynchronous();
-	UNiagaraSystem* System = Catalog->GunfireSystem.LoadSynchronous();
+	UNiagaraSystem* System = GuLiVfx::Load<UNiagaraSystem>(this, Catalog->GunfireVfxId);
+	const FVector GunfireBaseScale = GuLiVfx::Scale(this, Catalog->GunfireVfxId);
 	if (!Channel || !Channel->Get() || !System)
 	{
 		if (!bChannelWarning) { UE_LOG(LogGuLiCombatEffectVisuals, Warning, TEXT("Gunfire System/Data Channel is missing; no placeholder renderer will be spawned.")); bChannelWarning = true; }
@@ -467,17 +500,17 @@ void UGuLiCombatEffectPresentationSubsystem::FlushGunfire()
 		if (CameraDistanceSquared > FMath::Square(static_cast<double>(Catalog->MaximumVisualDistance)))
 		{ ++Counters.DroppedShots; continue; }
 		FGunfireRow& Row = Rows.AddDefaulted_GetRef();
-		Row.Position = (Start + End) * 0.5;
 		Row.Direction = Delta / Length;
-		Row.Length = Length;
-		Row.Width = Catalog->TracerWidth;
+		Row.Length = Length * GunfireBaseScale.X;
+		Row.Position = Start + Row.Direction * (Row.Length * 0.5f);
+		Row.Width = Catalog->TracerWidth * GunfireBaseScale.Y;
 		Row.Lifetime = Catalog->TracerLifetime;
 		Row.VisualIntensity = 1.25f;
 		Row.CameraDistanceSquared = CameraDistanceSquared;
 		Row.Mode = 0;
 		++TracerRows;
 		GunfireBounds += Start;
-		GunfireBounds += End;
+		GunfireBounds += Start + Row.Direction * Row.Length;
 	}
 	PendingShots.Reset();
 	if (bRefreshMuzzles)
@@ -499,8 +532,8 @@ void UGuLiCombatEffectPresentationSubsystem::FlushGunfire()
 				|| CameraDistanceSquared > FMath::Square(static_cast<double>(Catalog->MaximumVisualDistance))) continue;
 			FGunfireRow& Row = Rows.AddDefaulted_GetRef();
 			Row.Direction = Muzzle.LastDirection;
-			Row.Length = Catalog->MuzzleLength;
-			Row.Width = Catalog->MuzzleWidth;
+			Row.Length = Catalog->MuzzleLength * GunfireBaseScale.X;
+			Row.Width = Catalog->MuzzleWidth * GunfireBaseScale.Y;
 			Row.Lifetime = FMath::Max(Catalog->MuzzleParticleLifetime, MuzzleInterval * 1.5f);
 			const float HashPhase = static_cast<float>(GetTypeHash(Pair.Key) & 0xffffu) / 65535.0f;
 			const float StrobePhase = FMath::Frac(ServerNow * Catalog->MuzzleStrobeRate + HashPhase);
@@ -532,16 +565,18 @@ void UGuLiCombatEffectPresentationSubsystem::FlushGunfire()
 	{
 		FGunfireRow& Row = Rows[TracerLightCandidates[Index]];
 		Row.LightBrightness = Catalog->TracerLightBrightness;
-		Row.LightRadius = Catalog->TracerLightRadius;
+		Row.LightRadius = Catalog->TracerLightRadius * GunfireBaseScale.Z;
 	}
 	for (int32 Index = 0; Index < FMath::Min(Catalog->MaximumMuzzleLightsPerFrame, MuzzleLightCandidates.Num()); ++Index)
 	{
 		FGunfireRow& Row = Rows[MuzzleLightCandidates[Index]];
 		Row.LightBrightness = Catalog->MuzzleLightBrightness;
-		Row.LightRadius = Catalog->MuzzleLightRadius;
+		Row.LightRadius = Catalog->MuzzleLightRadius * GunfireBaseScale.Z;
 	}
-	if (!Gunfire) Gunfire = SpawnPooled(System, FVector::ZeroVector, 1.0f);
+	if (!Gunfire) Gunfire = SpawnPooled(Catalog->GunfireVfxId, FVector::ZeroVector, 1.0f);
 	if (!Gunfire) { Counters.DroppedShots += TracerRows; return; }
+	// NDC supplies world-space positions and dimensions; its particle sizes above own the base scale.
+	Gunfire->SetWorldScale3D(FVector::OneVector);
 	FNDCAccessContextInst Access(Channel->Get()->GetAccessContextType());
 	UNiagaraDataChannelWriter* Writer = UNiagaraDataChannelLibrary::WriteToNiagaraDataChannel_WithContext(
 		GetWorld(), Channel, Access, Rows.Num(), false, true, true, TEXT("GuLiCommanderGunfire"));
@@ -575,7 +610,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateField(FGuLiLocalCombatEffect&
 	const bool bVisible = IsVisibleLocation(Position);
 	if (Now < Visual.State.ActivationTime)
 	{
-		if (!Visual.Waiting && bVisible) Visual.Waiting = SpawnPooled(Definition->WaitingSystem.LoadSynchronous(), Position, FieldScale, Visual.State.Radius);
+		if (!Visual.Waiting && bVisible) Visual.Waiting = SpawnPooled(Definition->WaitingVfxId, Position, FieldScale, Visual.State.Radius);
 		return;
 	}
 	if (Visual.Waiting) { Retire(Visual.Waiting, 0.2f); Visual.Waiting = nullptr; }
@@ -593,14 +628,14 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateField(FGuLiLocalCombatEffect&
 					FRandomStream Random(Visual.State.RandomSeed ^ 0x57494e47);
 					Rotation.Yaw = Random.FRandRange(-180.0f, 180.0f);
 				}
-				if (UNiagaraComponent* Burst = SpawnPooled(Variant.System.LoadSynchronous(), Position,
-					Variant.Scale * FieldScale, Visual.State.Radius, Rotation, Variant.ScaleParameterName))
+				if (UNiagaraComponent* Burst = SpawnPooled(Variant.VfxId, Position,
+					FieldScale, Visual.State.Radius, Rotation, Variant.ScaleParameterName))
 				{ Retire(Burst, Variant.MaximumLifetime, false); ++Counters.BurstsPlayed; }
 				for (const FGuLiEffectVisualLayer& Layer : Variant.AdditionalLayers)
 				{
-					if (!FMath::IsFinite(Layer.Scale) || Layer.Scale <= 0.0f) continue;
-					if (UNiagaraComponent* Burst = SpawnPooled(Layer.System.LoadSynchronous(), Position,
-						Layer.Scale * FieldScale, Visual.State.Radius, Rotation))
+					if (Layer.VfxId <= 0) continue;
+					if (UNiagaraComponent* Burst = SpawnPooled(Layer.VfxId, Position,
+						FieldScale, Visual.State.Radius, Rotation))
 					{ Retire(Burst, Variant.MaximumLifetime, false); ++Counters.BurstsPlayed; }
 				}
 			}
@@ -608,7 +643,7 @@ void UGuLiCombatEffectPresentationSubsystem::UpdateField(FGuLiLocalCombatEffect&
 	}
 	if (Now < Visual.State.EndTime && bVisible)
 	{
-		if (!Visual.ActiveLoop) Visual.ActiveLoop = SpawnPooled(Definition->ActiveLoopSystem.LoadSynchronous(), Position, FieldScale, Visual.State.Radius);
+		if (!Visual.ActiveLoop) Visual.ActiveLoop = SpawnPooled(Definition->ActiveLoopVfxId, Position, FieldScale, Visual.State.Radius);
 	}
 	else if (Visual.ActiveLoop) { Retire(Visual.ActiveLoop, Definition->DissipationSeconds); Visual.ActiveLoop = nullptr; }
 }
@@ -637,7 +672,7 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 				Visual.RenderLocation = bFinished ? FVector(State.Location) : FVector(State.LaunchLocation) + FVector(State.Velocity) * Age;
 				if (bEnabled && !bFinished && IsVisibleLocation(Visual.RenderLocation))
 				{
-					if (!Visual.Flight) Visual.Flight = SpawnPooled(State.PlayerBulletSystem.LoadSynchronous(), Visual.RenderLocation,
+					if (!Visual.Flight) Visual.Flight = SpawnPooled(State.PlayerBulletVfxId, Visual.RenderLocation,
 						1.f, 0, FVector(State.LaunchDirection).Rotation());
 					if (Visual.Flight) Visual.Flight->SetWorldLocationAndRotation(Visual.RenderLocation, FVector(State.LaunchDirection).Rotation());
 				}
@@ -680,8 +715,8 @@ void UGuLiCombatEffectPresentationSubsystem::Tick(float DeltaTime)
 		Visual.RenderLocation = FMath::VInterpTo(Visual.RenderLocation, FVector(Prediction.Location), DeltaTime, 25.0f);
 		if (IsVisibleLocation(Visual.RenderLocation))
 		{
-			if (!Visual.Flight) Visual.Flight = SpawnPooled(Definition->FlightSystem.LoadSynchronous(),
-				Visual.RenderLocation, Definition->VisualScale, 0.0f, FRotator::ZeroRotator, TEXT("User.VisualScale"));
+			if (!Visual.Flight) Visual.Flight = SpawnPooled(Definition->FlightVfxId,
+				Visual.RenderLocation, 1.0f, 0.0f, FRotator::ZeroRotator, TEXT("User.VisualScale"));
 			if (Visual.Flight)
 			{
 				Visual.Flight->SetWorldLocationAndRotation(Visual.RenderLocation, FVector(Prediction.Velocity).Rotation());

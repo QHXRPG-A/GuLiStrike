@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Building/GuLiBuildingTypes.h"
+#include "Gameplay/Data/GuLiGameText.h"
 
 #include "Engine/StaticMesh.h"
 #include "Gameplay/Building/GuLiBuildingCatalog.h"
@@ -135,39 +136,39 @@ FText GetGuLiBuildingPlacementReasonText(const EGuLiBuildingPlacementRejectReaso
 	switch (Reason)
 	{
 	case EGuLiBuildingPlacementRejectReason::None:
-		return NSLOCTEXT("GuLiBuilding", "Accepted", "工地已放置，右键派建造车施工");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.139"));
 	case EGuLiBuildingPlacementRejectReason::NotReady:
-		return NSLOCTEXT("GuLiBuilding", "NotReady", "战局或连接尚未就绪");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.140"));
 	case EGuLiBuildingPlacementRejectReason::UnauthorizedRole:
-		return NSLOCTEXT("GuLiBuilding", "UnauthorizedRole", "当前角色无法建造");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.141"));
 	case EGuLiBuildingPlacementRejectReason::AssetUnavailable:
-		return NSLOCTEXT("GuLiBuilding", "AssetUnavailable", "建造资源不可用");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.142"));
 	case EGuLiBuildingPlacementRejectReason::InvalidRequest:
-		return NSLOCTEXT("GuLiBuilding", "InvalidRequest", "建造请求无效");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.143"));
 	case EGuLiBuildingPlacementRejectReason::NoGround:
-		return NSLOCTEXT("GuLiBuilding", "NoGround", "未找到合法地面");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.144"));
 	case EGuLiBuildingPlacementRejectReason::OutOfRange:
-		return NSLOCTEXT("GuLiBuilding", "OutOfRange", "超出 100 米建造距离");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.145"));
 	case EGuLiBuildingPlacementRejectReason::NoLineOfSight:
-		return NSLOCTEXT("GuLiBuilding", "NoLineOfSight", "目标被遮挡");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.146"));
 	case EGuLiBuildingPlacementRejectReason::SlopeTooSteep:
-		return NSLOCTEXT("GuLiBuilding", "SlopeTooSteep", "地面坡度超过 15 度");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.147"));
 	case EGuLiBuildingPlacementRejectReason::Blocked:
-		return NSLOCTEXT("GuLiBuilding", "Blocked", "建造区域被占用");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.148"));
 	case EGuLiBuildingPlacementRejectReason::BuilderLimitReached:
-		return NSLOCTEXT("GuLiBuilding", "BuilderLimitReached", "个人建筑已达 6 个");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.149"));
 	case EGuLiBuildingPlacementRejectReason::WorldLimitReached:
-		return NSLOCTEXT("GuLiBuilding", "WorldLimitReached", "本局建筑已达 24 个");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.150"));
 	case EGuLiBuildingPlacementRejectReason::RateLimited:
-		return NSLOCTEXT("GuLiBuilding", "RateLimited", "建造请求过快");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.151"));
 	case EGuLiBuildingPlacementRejectReason::Duplicate:
-		return NSLOCTEXT("GuLiBuilding", "Duplicate", "建造请求已过期");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.152"));
 	case EGuLiBuildingPlacementRejectReason::InsufficientResources:
-		return NSLOCTEXT("GuLiBuilding", "InsufficientResources", "团队蓝矿或红矿不足");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.153"));
 	case EGuLiBuildingPlacementRejectReason::SpawnFailed:
-		return NSLOCTEXT("GuLiBuilding", "SpawnFailed", "建筑生成失败");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.154"));
 	default:
-		return NSLOCTEXT("GuLiBuilding", "Unknown", "未知建造错误");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.155"));
 	}
 }
 
@@ -176,18 +177,18 @@ FText GetGuLiBuildingFallbackDisplayName(const EGuLiBuildingType Type)
 	switch (Type)
 	{
 	case EGuLiBuildingType::MissileTurret:
-		return NSLOCTEXT("GuLiBuilding", "MissileTurret", "防空炮");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.156"));
 	case EGuLiBuildingType::SentryTurret:
-		return NSLOCTEXT("GuLiBuilding", "SentryTurret", "哨戒炮");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.157"));
 	case EGuLiBuildingType::Outpost:
-		return NSLOCTEXT("GuLiBuilding", "Outpost", "据点");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.158"));
 	case EGuLiBuildingType::Barracks:
-		return NSLOCTEXT("GuLiBuilding", "Barracks", "基础兵营");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.159"));
 	case EGuLiBuildingType::ShieldGenerator:
-		return NSLOCTEXT("GuLiBuilding", "ShieldGenerator", "护盾发生器");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.160"));
 	case EGuLiBuildingType::Factory:
-		return NSLOCTEXT("GuLiBuilding", "Factory", "矿厂");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.161"));
 	default:
-		return NSLOCTEXT("GuLiBuilding", "UnknownBuilding", "未知建筑");
+		return GuLiGameText::Get(TEXT("UI.BuildingTypes.162"));
 	}
 }

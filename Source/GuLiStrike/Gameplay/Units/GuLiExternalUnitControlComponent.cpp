@@ -1,4 +1,7 @@
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
+#include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
+#include "Commander/Orders/GuLiUnitTaskSubsystem.h"
+#include "Engine/World.h"
 #include "Components/MeshComponent.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
@@ -30,6 +33,10 @@ bool UGuLiExternalUnitControlComponent::ApplyServerState(FGuid Token, bool bPhas
 {
 	if (!GetOwner() || !GetOwner()->HasAuthority() || !Token.IsValid() || Baseline.ContainsNaN()
 		|| (State.bActionsLocked && State.OwnerToken != Token)) { return false; }
+	if (bLocked || bDisplace)
+		if (const auto* Vehicle = Cast<IGuLiEngineeringVehicle>(GetOwner()))
+			if (auto* Tasks = GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>())
+				Tasks->CancelPendingMove(FGuLiTaskUnitId::Actor(Vehicle->GetStableActorId()));
 	if (!State.bActionsLocked && (bLocked || bDisplace))
 	{
 		if (const auto* Character = Cast<ACharacter>(GetOwner()))

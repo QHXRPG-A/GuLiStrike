@@ -61,7 +61,7 @@ void UGuLiProjectilePoolSubsystem::Clear()
 		const uint32 Generation = Slots[Index].Generation;
 		Slots[Index] = {}; Slots[Index].Generation = Generation;
 	}
-	ActiveSlots.Reset(); FreeSlots.Reset(Slots.Num()); ById.Reset(); StepHandles.Reset(); PlayerBulletAssets.Reset();
+	ActiveSlots.Reset(); FreeSlots.Reset(Slots.Num()); ById.Reset(); StepHandles.Reset();
 	for (int32 Index = Slots.Num() - 1; Index >= 0; --Index) FreeSlots.Add(Index);
 	WingmanHistory = {}; GroundHistory = {}; Targets.Reset(); Snapshots.Reset(); SpatialGrid.Reset(); Candidates.Reset();
 	NextGroundStepTime = 0; Stats = {}; Stats.Capacity = Slots.Num();
@@ -115,8 +115,7 @@ FGuLiProjectilePoolHandle UGuLiProjectilePoolSubsystem::Launch(const FGuLiPooled
 	State = {}; State.Kind = EGuLiCombatEffectKind::LinearProjectile;
 	State.EffectId = R.Context.ShotId; State.MatchEpoch = Epoch; State.Sequence = 1;
 	State.Source = (bGround || bPlayer) ? R.Context.Source : GuLiCombatTargets::MakeWingmanTargetHandle(R.Context.Emitter);
-	State.PlayerBulletSystem = R.PlayerBulletSystem;
-	if (bPlayer) if (auto* Asset = R.PlayerBulletSystem.LoadSynchronous()) PlayerBulletAssets.AddUnique(Asset);
+	State.PlayerBulletVfxId = R.PlayerBulletVfxId;
 	State.SourceTeam = Source.Team;
 	State.LaunchLocation = State.Location = R.Position; State.LaunchDirection = R.Direction.GetSafeNormal();
 	State.Motion.Speed = R.Speed; State.Velocity = FVector(State.LaunchDirection) * R.Speed;

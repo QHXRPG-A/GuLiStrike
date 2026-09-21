@@ -1,0 +1,33 @@
+{
+  "progress-build": {
+    "exit_code": 0,
+    "summary": [
+      "{",
+      "  \"mode\": \"write\","
+    ]
+  },
+  "progress-check": {
+    "exit_code": 0,
+    "summary": [
+      "errors=0 warnings=12",
+      "WARNING oversize Progress/Archive/20260901-指挥官选兵移动导航与小兵GAS扫射总归档-0831至0901.md: 88.4KB，建议阈值 80KB"
+    ]
+  },
+  "diff-check": {
+    "exit_code": 0,
+    "summary": []
+  },
+  "final_source_hashes": {
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechWeaponComponent.h": "e504c124f0b8436656f1dcf2864fe594fb3883b03acf1c0bb5a43e269ed25c5b",
+    "Source/GuLiStrike/Gameplay/GroundMech/GuLiGroundMechWeaponComponent.cpp": "d1a77647ff674c1ca7df4f7e352b3d8002a9976f291a0efe67e45d5b60c09842",
+    "Source/GuLiStrike/Gameplay/Data/Generated/GuLiStrikeMechTableRows.h": "9ce489448ab501157c30103982405cc5028c4b5871168c4ef97de77f057af5a1",
+    "Tools/DataPipeline/export_data_from_excel.py": "f1ca12a2d12696bd1104d7ae0a8255a681a99da8b5b9d15c8bcd0d9f0b4d5af4",
+    "Scripts/GroundMech/build_fire_data.py": "b70a2eecbb8db078c3c9d5c5c2e947a98256b99967ac29bd9a326b20332b85da",
+    "Data/Excel/GuLiStrikeMech.xlsx": "09050fe16e1b85ab605d15b578679e456a21d837803e416c30ff8cd7b270a919",
+    "Data/Json/DT_GuLiStrikeMech_Skills.json": "a9f9f54f4c0698ed5363af485b51ec84d297b37821b31c963bedab436b369a79"
+  },
+  "compile": "not_run",
+  "data_table_import": "pending_new_native_schema",
+  "runtime_tests": "not_run",
+  "test_cases_added": false
+}

@@ -1,0 +1,11 @@
+{
+  "source": "Existing Slate pointer QA in disposable two-client PIE sessions; no new test cases.",
+  "red_shift_removed": true,
+  "blue_shift_removed": true,
+  "group_create_append_recall": true,
+  "notes": [
+    "The first blue pointer route aborted when the camera moved; its incomplete key release prevented the immediate retry. Both failed attempts are retained as initial-* and excluded from passing evidence.",
+    "Restarted the owned editor, allowed the camera to settle, and routed the same existing pointer commands with a stable projection. No gameplay, input guard or business assertion was bypassed."
+  ],
+  "passed": true
+}

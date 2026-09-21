@@ -8,6 +8,8 @@ from pathlib import Path
 import unreal
 
 ROOT=Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
+if (ROOT/'Data/Excel/GuLiStrikeVfx.xlsx').exists():
+    raise RuntimeError('This historical three-variant playback predates VfxId. Use Scripts/Vfx/validate_vfx_static.py for the current catalog.')
 OUT=ROOT/'TestResults/Scale020/FXReview'
 OUT.mkdir(parents=True,exist_ok=True)
 unreal.EditorPythonScripting.set_keep_python_script_alive(True)

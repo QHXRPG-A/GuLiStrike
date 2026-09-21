@@ -1,0 +1,71 @@
+{
+  "2": {
+    "states": [
+      {
+        "time": 0.04591690003871918,
+        "state": "Grounded"
+      },
+      {
+        "time": 0.5678806006908417,
+        "state": "Takeoff"
+      },
+      {
+        "time": 0.7693432979285717,
+        "state": "AirLoop"
+      },
+      {
+        "time": 10.202110800892115,
+        "state": "Landing"
+      },
+      {
+        "time": 10.458323799073696,
+        "state": "Grounded"
+      }
+    ],
+    "max_speed": 1080.0000000000002,
+    "max_rise": 1200.0,
+    "max_lean": 1.0,
+    "jet_first": 0.5129241980612278,
+    "jet_last": 5.486541301012039,
+    "shots": 26
+  },
+  "3": {
+    "states": [
+      {
+        "time": 0.04591690003871918,
+        "state": "Grounded"
+      },
+      {
+        "time": 0.5678806006908417,
+        "state": "Takeoff"
+      },
+      {
+        "time": 0.7693432979285717,
+        "state": "AirLoop"
+      },
+      {
+        "time": 10.202110800892115,
+        "state": "Landing"
+      },
+      {
+        "time": 10.458323799073696,
+        "state": "Grounded"
+      }
+    ],
+    "max_speed": 1080.5207078071203,
+    "max_rise": 1183.6666347831488,
+    "max_lean": 1.0,
+    "jet_first": 0.5678806006908417,
+    "jet_last": 5.486541301012039,
+    "shots": 26
+  },
+  "final_position_error_cm": 0.006217858940730954,
+  "interruption": "Editor switched PIE world at about 16 seconds; not a completed 18-second run.",
+  "lean_observed_seconds": {
+    "enter": 0.9918108023703098,
+    "exit": 1.0609422028064728,
+    "sample_step": "about 0.05 s",
+    "exit_context": "landing stopped horizontal movement; pose exits through Landing state blend"
+  },
+  "powered_duration_seconds": 4.973617102950811
+}

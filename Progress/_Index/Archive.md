@@ -4,6 +4,18 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-09-21 | [地面机甲辅助瞄准编译与配置落地](../Archive/20260921-地面机甲辅助瞄准编译与配置落地.md) | ground-mech, combat, input, data | partial | 用户追加授权编译后，源码Editor构建通过且8份BuildId一致；机甲Skills表已导入保存并回读机枪开启/100cm，FireReview待玩家确认效果。 |
+| 2026-09-21 | [地面机甲辅助瞄准代码与源表静态交付](../Archive/20260921-地面机甲辅助瞄准代码与源表静态交付.md) | ground-mech, combat, input, data | partial | 完成辅助射向代码及机甲Excel机枪行开关/100cm半径配置，保存并读回既有FireReview；未编译、未导入新行结构、未运行测试。 |
+| 2026-09-21 | [FireReview导航阻塞与资产校验修复](../Archive/20260921-FireReview导航阻塞与资产校验修复.md) | ground-mech, commander, combat, presentation | partial | 修复动态装饰网格持续更新导航引起的0单位问题，原双端PIE恢复16台；修复飞行导航校验器适用范围，地图保存重载及资产验证通过。 |
+| 2026-09-21 | [FireReview双阵营停火靶场与敌方描边静态交付](../Archive/20260921-FireReview双阵营靶场静态交付.md) | ground-mech, commander, combat, presentation | partial | 两队各8台真实Mass部队的部署已保存并重载核对，停火与阵营描边代码编译通过，实际效果交由玩家确认。 |
+| 2026-09-21 | [统一特效目录与ID迁移静态验收](../Archive/20260921-统一特效目录与ID迁移静态验收.md) | combat, vfx | passed | 39 个特效定义及 41 条使用记录迁入 Excel 目录；资源、类型、Cook 依赖、导入幂等性、5 项自动化检查和源码版 Editor/Game 构建通过。 |
+| 2026-09-21 | [地面机甲动画空战与下落调参验收](../Archive/20260921-地面机甲动画空战与下落调参验收.md) | ground-mech, animation, combat, network, input, ui, vfx | partial | 完成两倍下落导入、Dedicated飞行及输入验证，修复Mass顶面起飞侧碰误判并复验，登记用户对空处开火与当前连续表现的确认。 |
+| 2026-09-21 | [机枪统一受击补全实机验收](../Archive/20260921-机枪统一受击补全实机验收.md) | combat, vfx | passed | 补齐僚机、机甲、指挥官的命中矩阵和原生回合重开；5项既有测试复跑通过，恢复原编辑器环境。 |
+| 2026-09-21 | [地面机甲动画与空中战斗阶段实现](../Archive/20260921-地面机甲动画与空中战斗阶段实现.md) | ground-mech, animation, combat | partial | 完成可编辑动画蓝图、22段项目动画、空中WASD、即时双喷与正式开火；下落倍率待编辑器可用后完成导入验证。 |
+| 2026-09-21 | [地面机甲火箭跳实现与实机反馈调整](../Archive/20260921-地面机甲火箭跳实现与实机反馈调整.md) | combat, network, input, ui, vfx | partial | GAS与Excel火箭跳已接入，未满常显、两倍容量条及1.5倍空中转向通过采样；0.25推力解释和部分实机验收待完成。 |
+| 2026-09-21 | [机枪统一受击实现与验证边界](../Archive/20260921-机枪统一受击实现与验证边界.md) | combat, vfx | partial | 三类机枪统一接入原版NS_Flash_1，保存共享配置与重建脚本；双目标构建、5项现有自动化及指挥官/机甲多人实测通过，完整PIE矩阵仍待补齐。 |
+| 2026-09-20 | [指挥官头像分组与导航重定位勘误](../Archive/20260920-指挥官头像分组与导航重定位勘误.md) | commander, ui, network | partial | 头像由逐单位实例改为同兵种每25名一组，移除实例号和头像长提示；导航修复重定位改用离散位移事件，Game Development构建通过。 |
+| 2026-09-20 | [星际指挥官界面与游戏文本表](../Archive/20260920-星际指挥官界面与游戏文本表.md) | commander, ui | partial | 落地指挥官图标化HUD、可靠头像选择、185条Excel文本与32张参考审计；源码双目标和最后29项回归通过，保留既有失败及人工验收边界。 |
 | 2026-09-20 | [机甲Mass碰撞复审修复与验证](../Archive/20260920-机甲Mass碰撞复审修复与验证.md) | movement, navigation, network, performance | partial | 完成原始姿态解耦、物理子步与连续碰撞、支撑回放校正和障碍注册边界修复；79项自动化及源码双目标构建通过，500单位400步无丢步，联机视觉终验保留未验证。 |
 | 2026-09-20 | [指挥官任务与远端碰撞改动集成复验](../Archive/20260920-指挥官任务与远端碰撞改动集成复验.md) | commander, building, resources | passed | GitHub推送前合入远端581170eb，保留双方Mass改动，解决索引和编号冲突，源码双目标及任务、碰撞、业务、双客户端回归通过。 |
 | 2026-09-20 | [指挥官部队操作与特殊任务系统实施](../Archive/20260920-指挥官部队操作与特殊任务系统.md) | commander, building, resources | passed | 完成按Excel定义的特殊任务、统一队列与指挥官操作，关联自动化、真实业务World、双客户端及源码双目标构建通过。 |

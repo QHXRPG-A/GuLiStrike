@@ -96,3 +96,24 @@ JSON、CSV、DataTable是生成物，不作为日常数值维护入口。
 历史的 `migrate_unit_and_spell_field_tables.py` 在新工作簿存在时会退出，避免重新创建旧维护入口。
 历史的 `migrate_secondary_weapon_tables.py` 识别统一法术场版本后会退出，避免再次拆出 `WeaponFields`。
 本次归并脚本为 `Scripts/consolidate_spell_field_source.py`，完成后重复运行不覆写数值。
+
+## 游戏文本（2026-09-20）
+
+`Data/Excel/GuLiStrikeGameTexts.xlsx / Texts` 是本轮指挥官界面文案唯一编辑源。为直接满足文本维护需求，这张表采用三列特例，不要求其他表的 id/name/Note：
+
+| 行 | A | B | C |
+|---|---|---|---|
+| 1 | 文本id | 介绍 | 内容 |
+| 2 | str | str | str |
+| 3 | Necessary | Necessary | Necessary |
+
+文本id 为稳定英文标识（支持点、下划线），导出为 Name/TextId；介绍说明用途，内容为实际显示文案，可含换行和 `{0}`、`{1}` 等运行数据占位符。不得修改已引用 ID 或删除所需占位符。导出校验空值、元数据、大小写重复 ID 及 C++ 引用缺失。原有表规则不变。
+
+导出仍运行 `python Tools/DataPipeline/export_data_from_excel.py`；结构变化后编译，再在 UE Python 执行 `Scripts/import_game_texts.py`。导入逐字段回读并保存 `DT_GuLiStrikeGameTexts_Texts`。运行时 `GuLiGameText` 只读加载 DataTable，FText 处理参数，缺失项显示 ID 并报告错误。数字格式、标识与兵种／建筑已有名称仍由各自事实源负责，不复制进第二份配置。
+
+
+## 特效目录（2026-09-21）
+
+`Data/Excel/GuLiStrikeVfx.xlsx / Effects` 统一维护视觉资源与三轴基础缩放。资源路径和缩放相同必须合并 ID，用途描述不参与去重。其他源表只存整数 `…VfxId`，可选为 0；必需字段拒绝 0。导出前校验目录、跨表和 INI 引用，错误时不写任何生成物，并生成 `GuLiVfxIds.h` 供 C++ 使用。
+
+导入使用 `Scripts/Vfx/import_vfx_tables.py`，目录资源为真正软引用，DataTable 所在目录已纳入 Cook。完整 API、ID 维护、异步加载、缩放与蓝图说明见 [特效目录维护](../../Scripts/Vfx/README.md)。

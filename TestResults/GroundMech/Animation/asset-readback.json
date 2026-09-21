@@ -1,0 +1,50 @@
+{
+  "source_animations": 22,
+  "blend_samples": [
+    "/Game/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Run.Mech_Legs_Lt_Run",
+    "/Game/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Idle.Mech_Legs_Lt_Idle",
+    "/Game/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Run_Turn_L.Mech_Legs_Lt_Run_Turn_L",
+    "/Game/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Run_Turn_R.Mech_Legs_Lt_Run_Turn_R",
+    "/Game/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Turn_30_L.Mech_Legs_Lt_Turn_30_L",
+    "/Game/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Turn_30_R.Mech_Legs_Lt_Turn_30_R",
+    "/Game/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Walk.Mech_Legs_Lt_Walk",
+    "/Game/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Walk_Turn_70_R.Mech_Legs_Lt_Walk_Turn_70_R",
+    "/Game/GuLiStrike/GroundMech/Animations/Source/Legs/Mech_Legs_Lt_Walk_Turn_70_L.Mech_Legs_Lt_Walk_Turn_70_L"
+  ],
+  "lean_seconds": 1.0,
+  "lean_degrees": 15.0,
+  "root_motion": "<RootMotionMode.IGNORE_ROOT_MOTION: 1>",
+  "hip_nodes": [
+    {
+      "node": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech.ABP_GroundMech:AnimGraph.AnimGraphNode_StateMachine_2.GroundMechLocomotion.AnimStateNode_1.Takeoff.AnimGraphNode_ModifyBone_0",
+      "bone": "Hip_L",
+      "rotation_mode": "<BoneModificationMode.BMM_ADDITIVE: 2>",
+      "rotation_space": "<BoneControlSpace.BCS_COMPONENT_SPACE: 1>"
+    },
+    {
+      "node": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech.ABP_GroundMech:AnimGraph.AnimGraphNode_StateMachine_2.GroundMechLocomotion.AnimStateNode_1.Takeoff.AnimGraphNode_ModifyBone_1",
+      "bone": "Hip_R",
+      "rotation_mode": "<BoneModificationMode.BMM_ADDITIVE: 2>",
+      "rotation_space": "<BoneControlSpace.BCS_COMPONENT_SPACE: 1>"
+    },
+    {
+      "node": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech.ABP_GroundMech:AnimGraph.AnimGraphNode_StateMachine_2.GroundMechLocomotion.AnimStateNode_2.AirLoop.AnimGraphNode_ModifyBone_0",
+      "bone": "Hip_L",
+      "rotation_mode": "<BoneModificationMode.BMM_ADDITIVE: 2>",
+      "rotation_space": "<BoneControlSpace.BCS_COMPONENT_SPACE: 1>"
+    },
+    {
+      "node": "/Game/GuLiStrike/GroundMech/Animations/ABP_GroundMech.ABP_GroundMech:AnimGraph.AnimGraphNode_StateMachine_2.GroundMechLocomotion.AnimStateNode_2.AirLoop.AnimGraphNode_ModifyBone_1",
+      "bone": "Hip_R",
+      "rotation_mode": "<BoneModificationMode.BMM_ADDITIVE: 2>",
+      "rotation_space": "<BoneControlSpace.BCS_COMPONENT_SPACE: 1>"
+    }
+  ],
+  "formal_weapon": {
+    "enabled": true,
+    "skills": "/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Skills.DT_GuLiStrikeMech_Skills",
+    "upgrades": "/Game/GuLiStrike/Data/DT_GuLiStrikeMech_Upgrades.DT_GuLiStrikeMech_Upgrades",
+    "upgrade": "1.1"
+  },
+  "fall_table_import_pending": true
+}

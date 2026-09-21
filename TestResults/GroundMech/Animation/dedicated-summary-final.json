@@ -1,0 +1,280 @@
+{
+  "samples": 516,
+  "duration": 18.00558080151677,
+  "events": [
+    {
+      "t": 0.5142103023827076,
+      "key": "SpaceBar",
+      "value": true
+    },
+    {
+      "t": 0.5142103023827076,
+      "key": "LeftMouseButton",
+      "value": true
+    },
+    {
+      "t": 0.6853072009980679,
+      "key": "SpaceBar",
+      "value": false
+    },
+    {
+      "t": 0.8515289016067982,
+      "key": "SpaceBar",
+      "value": true
+    },
+    {
+      "t": 1.026724398136139,
+      "key": "move",
+      "value": [
+        0,
+        1
+      ]
+    },
+    {
+      "t": 2.003013502806425,
+      "key": "move",
+      "value": [
+        -1,
+        0
+      ]
+    },
+    {
+      "t": 3.040938500314951,
+      "key": "move",
+      "value": [
+        0,
+        -1
+      ]
+    },
+    {
+      "t": 4.028274901211262,
+      "key": "move",
+      "value": [
+        1,
+        0
+      ]
+    },
+    {
+      "t": 5.015175901353359,
+      "key": "move",
+      "value": [
+        1,
+        1
+      ]
+    },
+    {
+      "t": 5.82248480245471,
+      "key": "move",
+      "value": [
+        0,
+        0
+      ]
+    },
+    {
+      "t": 7.005758501589298,
+      "key": "SpaceBar",
+      "value": false
+    },
+    {
+      "t": 11.024581901729107,
+      "key": "LeftMouseButton",
+      "value": false
+    }
+  ],
+  "peers": [
+    {
+      "world": "/Game/Maps/UEDPIE_0_LVL_GroundMech_Demo.LVL_GroundMech_Demo",
+      "mode": 1,
+      "local": false,
+      "max_horizontal_speed": 1080.0000000000002,
+      "max_rise_speed": 1200.0,
+      "min_vertical_speed": -4000.0,
+      "min_fuel": 0.0,
+      "last_fuel": 100.0,
+      "final_shots": 21,
+      "first_jet": 0.6357103027403355,
+      "zero_fuel_first": 5.82248480245471,
+      "state_changes": [
+        [
+          0.06519140303134918,
+          "Grounded"
+        ],
+        [
+          0.6357103027403355,
+          "Takeoff"
+        ],
+        [
+          0.8101097010076046,
+          "AirLoop"
+        ],
+        [
+          9.493378702551126,
+          "Landing"
+        ],
+        [
+          9.782987900078297,
+          "Grounded"
+        ]
+      ],
+      "descent_accel": {
+        "count": 55,
+        "median": -1956.948156307107,
+        "min": -3082.5782584361473,
+        "max": -1388.4061171418775
+      },
+      "air_shot_increments": 18,
+      "niagara_counts": [
+        0
+      ],
+      "cosmetic_shots": 0,
+      "bar_exists": false
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_2_LVL_GroundMech_Demo.LVL_GroundMech_Demo",
+      "mode": 3,
+      "local": false,
+      "max_horizontal_speed": 1080.594743648145,
+      "max_rise_speed": 1167.1121817082167,
+      "min_vertical_speed": -4000.0,
+      "min_fuel": 100.0,
+      "last_fuel": 100.0,
+      "final_shots": 21,
+      "first_jet": 0.6357103027403355,
+      "zero_fuel_first": null,
+      "state_changes": [
+        [
+          0.06519140303134918,
+          "Grounded"
+        ],
+        [
+          0.6357103027403355,
+          "Takeoff"
+        ],
+        [
+          0.8101097010076046,
+          "AirLoop"
+        ],
+        [
+          9.455976400524378,
+          "Landing"
+        ],
+        [
+          9.755162000656128,
+          "Grounded"
+        ]
+      ],
+      "descent_accel": {
+        "count": 56,
+        "median": -1950.595513692194,
+        "min": -2516.644467505872,
+        "max": -983.7060656726084
+      },
+      "air_shot_increments": 18,
+      "niagara_counts": [
+        2
+      ],
+      "cosmetic_shots": 21,
+      "bar_exists": false
+    },
+    {
+      "world": "/Game/Maps/UEDPIE_1_LVL_GroundMech_Demo.LVL_GroundMech_Demo",
+      "mode": 3,
+      "local": true,
+      "max_horizontal_speed": 1080.0000000000002,
+      "max_rise_speed": 1200.0,
+      "min_vertical_speed": -4000.0,
+      "min_fuel": 0.0,
+      "last_fuel": 100.0,
+      "final_shots": 21,
+      "first_jet": 0.5872757025063038,
+      "zero_fuel_first": 5.785750802606344,
+      "state_changes": [
+        [
+          0.06519140303134918,
+          "Grounded"
+        ],
+        [
+          0.5872757025063038,
+          "Takeoff"
+        ],
+        [
+          0.7671476006507874,
+          "AirLoop"
+        ],
+        [
+          9.455976400524378,
+          "Landing"
+        ],
+        [
+          9.755162000656128,
+          "Grounded"
+        ]
+      ],
+      "descent_accel": {
+        "count": 55,
+        "median": -1960.0,
+        "min": -1960.2035703682684,
+        "max": -1959.7936513940926
+      },
+      "air_shot_increments": 18,
+      "niagara_counts": [
+        2
+      ],
+      "cosmetic_shots": 21,
+      "bar_exists": true,
+      "nonfull_bar_visible": true,
+      "full_bar_faded": true,
+      "colors_observed": [
+        [
+          0.18,
+          1.0,
+          0.08
+        ],
+        [
+          1.0,
+          0.035,
+          0.015
+        ],
+        [
+          1.0,
+          0.7,
+          0.03
+        ]
+      ],
+      "first_lean": 1.0645572990179062,
+      "full_lean": 2.0372160002589226,
+      "jet_changes": [
+        [
+          0.06519140303134918,
+          false
+        ],
+        [
+          0.5872757025063038,
+          true
+        ],
+        [
+          0.7287253029644489,
+          false
+        ],
+        [
+          0.9882874973118305,
+          true
+        ],
+        [
+          5.785750802606344,
+          false
+        ]
+      ]
+    }
+  ],
+  "final_owner_server_position_error_cm": 0.0008794441464632508,
+  "owner_server_max_fuel_difference": 1.9242706298828125,
+  "owner_drain_rate_median": 20.00000084772865,
+  "maximum_lean_angle": 15.000000000000513,
+  "ground_contact_time": 9.455976400524378,
+  "recovery_started_time": 10.473418600857258,
+  "recovery_delay_observed": 1.01744220033288,
+  "full_time": 15.476209800690413,
+  "hidden_time": 16.960756201297045,
+  "fade_duration_observed": 1.4845464006066322
+}

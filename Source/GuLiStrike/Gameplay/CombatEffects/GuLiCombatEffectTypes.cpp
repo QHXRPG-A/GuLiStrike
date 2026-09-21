@@ -125,7 +125,7 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 	bool bMapped=true, bVector=true;
 	if (Kind == EGuLiCombatEffectKind::LinearProjectile)
 	{
-		// Straight flight needs one launch payload and a terminal point; player rounds also carry their visual asset.
+		// Straight flight needs one launch payload and a terminal point; player rounds carry only the stable VfxId.
 		if (Phase == EGuLiCombatEffectPhase::Finished)
 		{
 			Location.NetSerialize(Ar, Map, bVector); Ar << SampleTime;
@@ -133,7 +133,13 @@ bool FGuLiCombatEffectState::NetSerialize(FArchive& Ar, UPackageMap* Map, bool& 
 		else
 		{
 			SerializeEffectTarget(Ar, Source, MatchEpoch);
-			if (Source.Kind == EGuLiTargetKind::GroundActor) bMapped &= SerializeEffectAsset(Ar, Map, PlayerBulletSystem);
+			if (Source.Kind == EGuLiTargetKind::GroundActor)
+			{
+				uint32 Id = static_cast<uint32>(PlayerBulletVfxId);
+				Ar.SerializeIntPacked(Id);
+				if (Id > MAX_int32) Ar.SetError();
+				if (Ar.IsLoading()) PlayerBulletVfxId = static_cast<int32>(Id);
+			}
 			LaunchLocation.NetSerialize(Ar, Map, bVector); LaunchDirection.NetSerialize(Ar, Map, bVector);
 			FVector_NetQuantize Muzzle(MuzzleOffset); Muzzle.NetSerialize(Ar, Map, bVector);
 			Ar << Motion.Speed << StartTime << EndTime;

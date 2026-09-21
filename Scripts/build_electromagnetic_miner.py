@@ -7,6 +7,12 @@ import math
 from pathlib import Path
 import unreal
 
+import sys
+from pathlib import Path
+sys.path.insert(0,str(Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))/"Scripts/Vfx"))
+from vfx_registry import vfx_id, resource as vfx_resource, scale as vfx_scale, require_id, visual_variant
+from configure_registry_bindings import configure_blueprints
+
 OUT = Path('D:/UE5.7/test1/outputs/electromagnetic-miner')
 BASE = '/Game/GuLiStrike/Vehicles/ElectromagneticMiner'
 BP = BASE + '/BP_MiningVehicle_TransporterLvl2'
@@ -141,7 +147,7 @@ def build_preserved_vehicle():
         prop('Collector_'+side,'StaticMesh',mesh)
         add('LaserMuzzle_'+side,'SceneComponent','CollectorPivot_'+side,(151,0,0))
         add('MiningLaser_'+side,'NiagaraComponent','LaserMuzzle_'+side)
-        prop('MiningLaser_'+side,'Asset',FX);prop('MiningLaser_'+side,'bAutoActivate','False')
+        prop('MiningLaser_'+side,'Asset','None');prop('MiningLaser_'+side,'bAutoActivate','False')
     vars=[('VehicleBodyLengthCm','float','591.6596'),('MiningRangeBodyLengths','float','3.0'),
           ('MiningRangeCm','float','1774.9788'),('MiningActive','bool','False'),
           ('MiningTargetWorld','FVector','(X=0,Y=0,Z=0)'),('UseWorldTarget','bool','False'),
@@ -158,6 +164,7 @@ def build_preserved_vehicle():
     result=unreal.NiagaraService.compile_with_results(FX);assert result.success,str(result)
     assert unreal.NiagaraService.save_system(FX)
     record('asset-paths.json',dict(vehicle=BP,collector=mesh,beam=FX,source=SOURCE,range_cm=1774.9788))
+    configure_blueprints([BP])
     return BP
 
 class Graph:
@@ -280,6 +287,7 @@ def build_graphs():
     assert S.modify_variable(BP,'VehicleBodyLengthCm',new_category='Mining|Dimensions',new_tooltip='Original chassis length before beam bounds. Centimeters at scale 1: 591.6596.')
     assert S.modify_variable(BP,'MiningRangeBodyLengths',new_category='Mining|Dimensions',new_tooltip='Maximum beam length in vehicle body lengths. Requested default: 3.')
     compile_bp();save(BP);record('graph-readback.json',reports)
+    configure_blueprints([BP])
     return BP
 
 SHOWCASE=BASE+'/Showcase/LVL_ElectromagneticMiner'

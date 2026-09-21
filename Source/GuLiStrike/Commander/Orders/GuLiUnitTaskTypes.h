@@ -45,6 +45,10 @@ struct FGuLiUnitTaskCommand
 	UPROPERTY() uint32 BuildingId = 0;
 	UPROPERTY() uint16 ClusterId = 0;
 	UPROPERTY() FName TerritoryId;
+	/** UI ground-move intent must not turn into contextual construction at the destination. */
+	UPROPERTY() bool bGroundMoveOnly = false;
+	/** Optional UI target-mode constraint, validated before any unit is interrupted. */
+	UPROPERTY() FName TargetIntent;
 	bool IsWellFormed() const;
 };
 
@@ -56,6 +60,9 @@ struct FGuLiUnitTaskView
 	UPROPERTY() EGuLiTaskStatus Status = EGuLiTaskStatus::Waiting;
 	UPROPERTY() bool bAutomatic = false;
 	UPROPERTY() FString DisplayName;
+	/** Presentation target resolved by authority. Zero coordinates alone do not imply a valid target. */
+	UPROPERTY() bool bHasLocation = false;
+	UPROPERTY() FVector_NetQuantize Location = FVector::ZeroVector;
 };
 
 /** Identical queues share one owner-only view; member lists are not replicated in the summary. */
@@ -133,11 +140,13 @@ struct FGuLiUnitTaskState
 	TArray<FGuLiSpecialTaskGrant> Grants;
 	TArray<FGuLiUnitTaskCommand> Queue;
 	TOptional<FGuLiTaskExecution> Active;
+	/** New move being prepared while Active continues along its committed route. Server only. */
+	TOptional<FGuLiTaskExecution> PendingMove;
 	uint64 Version = 0;
 	bool bStopped = false;
 	bool bCancelPending = false;
 	double NextAutomaticTime = 0;
 	FString Error;
 	void ConsumeInitialGrants() { for (auto& Grant : Grants) Grant.ConsumeIfInitial(); }
-	int32 ManualTaskCount() const { return Queue.Num() + (Active.IsSet() && !Active->bAutomatic && !bCancelPending ? 1 : 0); }
+	int32 ManualTaskCount() const { return Queue.Num() + (PendingMove.IsSet() || (Active.IsSet() && !Active->bAutomatic && !bCancelPending) ? 1 : 0); }
 };

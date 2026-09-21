@@ -639,6 +639,22 @@ bool AGuLiMiningVehiclePawn::StopManagedTask()
 	return true;
 }
 
+bool AGuLiMiningVehiclePawn::StartPreparedManagedMove(
+	const FGuLiMiningCommand& Command, const FGuLiPreparedGroundMove& Prepared)
+{
+	if (!HasAuthority() || Command.Type != EGuLiMiningOrderType::Move || IsFactoryManeuverActive()
+		|| UGuLiExternalUnitControlComponent::AreActorActionsLocked(this)) return false;
+	if (!FindComponentByClass<UGuLiEngineeringTravelComponent>()->CommitGroundMove(Prepared)) return false;
+	FinishCurrentTarget();
+	bTaskManaged = true; bManagedTaskComplete = false; bManagedTaskFailed = false;
+	PendingCommand.Reset(); bPendingAutomatic = false; bManualReturnOrder = false;
+	ControlMode = EGuLiMiningControlMode::PlayerOrder;
+	GraceEndServerTime = 0; ActivePlayerRequestId = Command.RequestId;
+	PlayerMoveTarget = Command.Target; TaskState = EGuLiMiningTaskState::PlayerMoving;
+	ForceNetUpdate();
+	return true;
+}
+
 void AGuLiMiningVehiclePawn::FinishCurrentTarget()
 {
     SetMiningVisual(false);

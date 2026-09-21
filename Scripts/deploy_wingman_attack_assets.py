@@ -14,6 +14,11 @@ from pathlib import Path
 import traceback
 import unreal
 
+import sys
+from pathlib import Path
+sys.path.insert(0, str(Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir())) / "Scripts/Vfx"))
+from vfx_registry import vfx_id, resource as vfx_resource, scale as vfx_scale, require_id, visual_variant
+
 ROOT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
 REPORT = ROOT / 'TestResults/WingmanAttack/deployment.json'
 BASE = '/Game/GuLiStrike/Ship/Abilities'
@@ -22,9 +27,9 @@ WINGMAN_PROJECTILE = '/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundMissile
 WINGMAN_IMPACT_FIELD = '/Game/GuLiStrike/FX/WingmanWeapons/DA_WingmanGroundExplosion'
 WINGMAN_EXPLOSION_SOURCE = '/Game/AllExplosions/Niagara/Big/NS_Explosion_Big_17'
 WINGMAN_EXPLOSION_SYSTEM = '/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanGroundExplosion_Big_17'
-WINGMAN_EXPLOSION_VISUAL_SCALE = 5.0
+WINGMAN_EXPLOSION_VISUAL_SCALE = vfx_scale('WingmanBombardment')[0]
 WINGMAN_TOON_EXPLOSION_SYSTEM = '/Game/GuLiStrike/FX/WingmanWeapons/StylizedExplosion/NS_WingmanGroundExplosion_Toon'
-WINGMAN_REFERENCE_EXPLOSION_SYSTEM = '/Game/GuLiStrike/FX/CombatExplosions/NS_WingmanBombardment_01'
+WINGMAN_REFERENCE_EXPLOSION_SYSTEM = vfx_resource('WingmanBombardment').split('.')[0]
 WINGMAN_SHOCKWAVE_SYSTEM = '/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanGroundShockwave_Big_17'
 WINGMAN_SHOCKWAVE_VISUAL_SCALE = 3.1
 SHOCKWAVE_EMITTERS = {'refr_mesh', 'smoke_shockwave'}
@@ -90,12 +95,11 @@ def require_existing_weapon(path, ground):
 def require_projectile_contract(projectile, commander):
     if not isinstance(projectile, unreal.GuLiProjectileEffectDefinition):
         raise RuntimeError('Unexpected projectile definition class: ' + object_path(projectile))
-    expected_scale = 0.2 if commander else 0.4
-    require_close('projectile visual scale', projectile.get_editor_property('visual_scale'), expected_scale)
+    if projectile.get_editor_property('flight_vfx_id') != vfx_id('MissileFlight'):
+        raise RuntimeError('Unexpected missile flight VfxId')
 
 def require_wingman_projectile_references(commander, wingman, allow_legacy_impact=False):
-    if object_path(commander.get_editor_property('flight_system')) != object_path(
-            wingman.get_editor_property('flight_system')):
+    if commander.get_editor_property('flight_vfx_id') != wingman.get_editor_property('flight_vfx_id'):
         raise RuntimeError('Wingman projectile no longer shares the Commander flight System')
     impact = object_path(wingman.get_editor_property('impact_field'))
     allowed = {canonical(WINGMAN_IMPACT_FIELD)}
@@ -106,14 +110,14 @@ def require_wingman_projectile_references(commander, wingman, allow_legacy_impac
 
 def variant_signature(variant):
     return {
-        'system': object_path(variant.get_editor_property('system')),
-        'scale': float(variant.get_editor_property('scale')),
+        'system': vfx_resource(variant.get_editor_property('vfx_id')),
+        'scale': vfx_scale(variant.get_editor_property('vfx_id'))[0],
         'scale_parameter_name': str(variant.get_editor_property('scale_parameter_name')),
         'random_yaw': bool(variant.get_editor_property('random_yaw')),
         'maximum_lifetime': float(variant.get_editor_property('maximum_lifetime')),
         'additional_layers': [
-            {'system': object_path(layer.get_editor_property('system')),
-             'scale': float(layer.get_editor_property('scale'))}
+            {'system': vfx_resource(layer.get_editor_property('vfx_id')),
+             'scale': vfx_scale(layer.get_editor_property('vfx_id'))[0]}
             for layer in variant.get_editor_property('additional_layers')
         ],
     }
@@ -171,13 +175,7 @@ def require_wingman_impact_contract(field, allow_legacy_scale=False):
     if field.get_editor_property('timing') != unreal.GuLiSpellFieldTiming.INSTANT:
         raise RuntimeError('Wingman impact field is not Instant')
     variants = list(field.get_editor_property('activation_variants'))
-    allowed = [expected_variant_signature(), toon_variant_signature(), reference_variant_signature()]
-    if allow_legacy_scale:
-        for old_scale in (1.0, 3.1):
-            legacy = expected_variant_signature()
-            legacy['scale'] = old_scale
-            legacy['additional_layers'] = []
-            allowed.append(legacy)
+    allowed = [reference_variant_signature()]
     actual = variant_signature(variants[0]) if len(variants) == 1 else None
     if actual is None or not any(variant_signatures_match(actual, item) for item in allowed):
         raise RuntimeError('Unknown Wingman impact visual variant')
@@ -383,33 +381,9 @@ def main():
     if not old_set or not commander_projectile:
         raise RuntimeError('Existing formation catalog or WM01 missile is missing')
     require_projectile_contract(commander_projectile, commander=True)
-    explosion_source = unreal.load_asset(WINGMAN_EXPLOSION_SOURCE)
-    if not explosion_source or not isinstance(explosion_source, unreal.NiagaraSystem):
-        raise RuntimeError('Requested Big_17 Niagara System is missing')
-    report['source_niagara'] = compile_niagara(WINGMAN_EXPLOSION_SOURCE)
-    wingman_explosion = unreal.load_asset(WINGMAN_EXPLOSION_SYSTEM)
-    if wingman_explosion:
-        if not isinstance(wingman_explosion, unreal.NiagaraSystem):
-            raise RuntimeError('Unexpected Wingman explosion destination class')
-        destination_compile = compile_niagara(WINGMAN_EXPLOSION_SYSTEM)
-        if destination_compile['emitters'] != report['source_niagara']['emitters']:
-            raise RuntimeError('Existing Wingman explosion is not the known Big_17 duplicate')
     existing_impact = unreal.load_asset(WINGMAN_IMPACT_FIELD)
-    if existing_impact:
-        require_wingman_impact_contract(existing_impact, allow_legacy_scale=True)
-    preserve_toon = uses_toon_explosion(existing_impact)
-    active_variant = variant_signature(existing_impact.activation_variants[0]) if existing_impact else None
-    preserve_reference = bool(active_variant and variant_signatures_match(active_variant, reference_variant_signature()))
-    if preserve_reference:
-        reference_system = unreal.load_asset(WINGMAN_REFERENCE_EXPLOSION_SYSTEM)
-        if not isinstance(reference_system, unreal.NiagaraSystem):
-            raise RuntimeError('Active reference explosion is missing; refusing visual downgrade')
-        report['reference_niagara'] = compile_niagara(WINGMAN_REFERENCE_EXPLOSION_SYSTEM)
-    if preserve_toon:
-        toon_system = unreal.load_asset(WINGMAN_TOON_EXPLOSION_SYSTEM)
-        if not isinstance(toon_system, unreal.NiagaraSystem):
-            raise RuntimeError('Active toon explosion asset is missing; refusing visual downgrade')
-        report['toon_niagara'] = compile_niagara(WINGMAN_TOON_EXPLOSION_SYSTEM)
+    if existing_impact: require_wingman_impact_contract(existing_impact)
+    report['reference_niagara'] = compile_niagara(vfx_resource('WingmanBombardment'))
 
     machine_path = BASE + '/Weapons/DA_WingmanWeapon_MachineGun'
     ground_path = BASE + '/Weapons/DA_WingmanWeapon_GroundMissile'
@@ -441,18 +415,6 @@ def main():
         ]:
             raise RuntimeError('Unknown changes in Wingman V3 grants')
 
-    # Every existing object has now matched either the exact old source or target.
-    if wingman_explosion is None:
-        LIB.make_directory(WINGMAN_EXPLOSION_SYSTEM.rsplit('/', 1)[0])
-        if not LIB.duplicate_asset(WINGMAN_EXPLOSION_SOURCE, WINGMAN_EXPLOSION_SYSTEM):
-            raise RuntimeError('Could not duplicate the requested Big_17 Niagara System')
-        wingman_explosion = unreal.load_asset(WINGMAN_EXPLOSION_SYSTEM)
-    report['wingman_niagara'] = compile_niagara(WINGMAN_EXPLOSION_SYSTEM)
-    if report['wingman_niagara']['emitters'] != report['source_niagara']['emitters']:
-        raise RuntimeError('Big_17 emitter readback changed during duplication')
-    report['explosion_layers'] = ({'preserved_toon': preserve_toon, 'preserved_reference': preserve_reference, 'additional_layers': []}
-                                  if preserve_toon or preserve_reference else partition_explosion_layers())
-
     impact_field = asset(WINGMAN_IMPACT_FIELD, unreal.GuLiSpellFieldDefinition)
     impact_field.set_editor_property("config_id", "WingmanGroundMissile")
     if abs(float(impact_field.get_editor_property('radius')) - 800.0) > 0.001:
@@ -462,20 +424,9 @@ def main():
         impact_field.set_editor_property('timing', unreal.GuLiSpellFieldTiming.INSTANT)
     if abs(float(impact_field.get_editor_property('dissipation_seconds')) - 3.0) > 0.001:
         impact_field.set_editor_property('dissipation_seconds', 3.0)
-    visual = unreal.GuLiEffectVisualVariant()
-    visual.set_editor_property('system', reference_system if preserve_reference else (toon_system if preserve_toon else wingman_explosion))
-    visual.set_editor_property('scale', WINGMAN_EXPLOSION_VISUAL_SCALE)
-    visual.set_editor_property('random_yaw', True)
-    visual.set_editor_property('scale_parameter_name', 'User.Area_Scale' if preserve_reference else 'None')
-    visual.set_editor_property('maximum_lifetime', 5.25 if preserve_reference else (2.0 if preserve_toon else 3.0))
-    wave = unreal.GuLiEffectVisualLayer()
-    wave.set_editor_property('system', unreal.load_asset(WINGMAN_SHOCKWAVE_SYSTEM))
-    wave.set_editor_property('scale', WINGMAN_SHOCKWAVE_VISUAL_SCALE)
-    visual.set_editor_property('additional_layers', [] if preserve_toon or preserve_reference else [wave])
+    visual = visual_variant('WingmanBombardment', 'User.Area_Scale', True, 5.25)
     current_variants = list(impact_field.get_editor_property('activation_variants'))
-    if len(current_variants) != 1 or not variant_signatures_match(
-            variant_signature(current_variants[0]),
-            reference_variant_signature() if preserve_reference else (toon_variant_signature() if preserve_toon else expected_variant_signature())):
+    if len(current_variants) != 1 or not variant_signatures_match(variant_signature(current_variants[0]), reference_variant_signature()):
         impact_field.set_editor_property('activation_variants', [visual])
 
     if wingman_projectile is None:
@@ -487,9 +438,9 @@ def main():
     # Do not inherit the Commander's homing-projectile profile when duplicating FX.
     if wingman_projectile.get_editor_property('motion_profile_row').get_editor_property('data_table'):
         wingman_projectile.set_editor_property('motion_profile_row', unreal.DataTableRowHandle())
-    if abs(float(wingman_projectile.get_editor_property('visual_scale')) - 0.4) > 0.001:
+    if wingman_projectile.get_editor_property('flight_vfx_id') != vfx_id('MissileFlight'):
         wingman_projectile.modify()
-        wingman_projectile.set_editor_property('visual_scale', 0.4)
+        wingman_projectile.set_editor_property('flight_vfx_id', vfx_id('MissileFlight'))
     if object_path(wingman_projectile.get_editor_property('impact_field')) != canonical(WINGMAN_IMPACT_FIELD):
         wingman_projectile.set_editor_property('impact_field', impact_field)
 
@@ -582,12 +533,12 @@ def main():
     report['projectiles'] = {
         'commander': {
             'path': commander_projectile.get_path_name(),
-            'visual_scale': float(commander_projectile.get_editor_property('visual_scale')),
+            'visual_scale': vfx_scale(commander_projectile.get_editor_property('flight_vfx_id'))[0],
         },
         'wingman': {
             'path': wingman_projectile.get_path_name(),
-            'visual_scale': float(wingman_projectile.get_editor_property('visual_scale')),
-            'flight_system': object_path(wingman_projectile.get_editor_property('flight_system')),
+            'visual_scale': vfx_scale(wingman_projectile.get_editor_property('flight_vfx_id'))[0],
+            'flight_system': vfx_resource(wingman_projectile.get_editor_property('flight_vfx_id')),
             'impact_field': object_path(wingman_projectile.get_editor_property('impact_field')),
         },
     }

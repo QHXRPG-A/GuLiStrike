@@ -12,6 +12,9 @@
 #include "Commander/UI/GuLiCommanderMiniMapWidget.h"
 #include "Components/Button.h"
 #include "Components/CanvasPanel.h"
+#include "Components/CanvasPanelSlot.h"
+#include "Components/ProgressBar.h"
+#include "Commander/UI/GuLiCommanderActionButton.h"
 #include "Components/Image.h"
 #include "Components/SizeBox.h"
 #include "Components/TextBlock.h"
@@ -262,14 +265,18 @@ namespace GuLiCommanderUIRevisionCommands
 	{
 		FIntPoint ImageSize;
 		const bool bDockOnly = Args.Num() > 0 && Args[0].Equals(TEXT("dock"), ESearchCase::IgnoreCase);
-		if (bDockOnly) ImageSize = FIntPoint(1120, 260);
+		if (bDockOnly) ImageSize = FIntPoint(1888, 276);
 		else if (Args.Num() > 0 && Args[0] == TEXT("1280x720")) ImageSize = FIntPoint(1280, 720);
 		else if (Args.Num() > 0 && Args[0] == TEXT("1920x1080")) ImageSize = FIntPoint(1920, 1080);
 		else if (Args.Num() > 0 && Args[0] == TEXT("2560x1080")) ImageSize = FIntPoint(2560, 1080);
+		else if (Args.Num() > 0 && Args[0] == TEXT("1366x768")) ImageSize = FIntPoint(1366,768);
+		else if (Args.Num() > 0 && Args[0] == TEXT("2560x1440")) ImageSize = FIntPoint(2560,1440);
+		else if (Args.Num() > 0 && Args[0] == TEXT("3840x2160")) ImageSize = FIntPoint(3840,2160);
+		else if (Args.Num() > 0 && Args[0] == TEXT("3440x1440")) ImageSize = FIntPoint(3440,1440);
 		else
 		{
 			UE_LOG(LogGuLiStrike, Error,
-				TEXT("Usage: gs.Commander.CaptureHUD <1280x720|1920x1080|2560x1080|dock> <output.png>"));
+				TEXT("Usage: gs.Commander.CaptureHUD <1366x768|1920x1080|2560x1440|3840x2160|3440x1440|dock> <output.png>"));
 			return;
 		}
 		const FString OutputArgument = Args.Num() == 2 ? Args[1].TrimQuotes() : FString();
@@ -314,8 +321,8 @@ namespace GuLiCommanderUIRevisionCommands
 				return;
 			}
 			const FName TextNames[] = {
-				TEXT("TXT_UnitTypeName"), TEXT("TXT_UnitTypeCount"), TEXT("TXT_UnitTypeHealth"), TEXT("TXT_UnitTypeStatus"),
-				TEXT("TXT_CmdLabel_Select")
+				TEXT("TXT_UnitTypeName"), TEXT("TXT_SelectionCaption"), TEXT("TXT_TaskSummary"), TEXT("TXT_Page"),
+				TEXT("TXT_Context")
 			};
 			for (const FName TextName : TextNames)
 			{
@@ -357,114 +364,76 @@ namespace GuLiCommanderUIRevisionCommands
 		{
 			return false;
 		}
-		UWidgetTree* Tree = WidgetClass->GetWidgetTreeArchetype();
-		if (!TestNotNull(TEXT("HUD has a real authored widget tree"), Tree))
-		{
-			return false;
-		}
-		UCanvasPanel* UnitCard = Cast<UCanvasPanel>(Tree->FindWidget(TEXT("C_UnitTypeCard")));
-		TestNotNull(TEXT("A unit type owns one collapsible panel"), UnitCard);
-		const FName TextNames[] = {
-			TEXT("TXT_UnitTypeName"), TEXT("TXT_UnitTypeCount"), TEXT("TXT_UnitTypeHealth"), TEXT("TXT_UnitTypeStatus")
-		};
-		for (const FName TextName : TextNames)
-		{
-			UTextBlock* Text = Cast<UTextBlock>(Tree->FindWidget(TextName));
-			if (TestNotNull(FString::Printf(TEXT("Runtime text %s exists"), *TextName.ToString()), Text))
-			{
-				bool bInsideCard = false;
-				for (UPanelWidget* Parent = Text->GetParent(); Parent; Parent = Parent->GetParent())
-				{
-					bInsideCard |= Parent == UnitCard;
-				}
-				TestTrue(FString::Printf(TEXT("%s collapses with its unit panel"), *TextName.ToString()), bInsideCard);
-			}
-		}
-		TestNotNull(TEXT("Real survivor health has a native-fill image"), Cast<UImage>(Tree->FindWidget(TEXT("I_UnitTypeHealthFill"))));
-		TestNull(TEXT("Keyboard-only radius control has no button"), Tree->FindWidget(TEXT("BTN_Cmd_SelectSize")));
-		TestNull(TEXT("Radius label is removed"), Tree->FindWidget(TEXT("TXT_CmdSelectAdjustLabel")));
-		TestNull(TEXT("Static-review watermark is removed"), Tree->FindWidget(TEXT("TXT_VisualOnly")));
-
-		TArray<UWidget*> Widgets;
-		Tree->GetAllWidgets(Widgets);
-		TArray<FString> LegacyWidgets;
-		for (const UWidget* Widget : Widgets)
-		{
-			const FString Name = Widget->GetName();
-			const bool bLegacyCard = Name.StartsWith(TEXT("I_SquadOuter_")) || Name.StartsWith(TEXT("I_SquadBG_"))
-				|| Name.StartsWith(TEXT("I_SquadAccent_")) || Name.StartsWith(TEXT("I_SquadPortrait_"))
-				|| Name.StartsWith(TEXT("I_SquadGlyph_")) || Name.StartsWith(TEXT("I_SquadBar")) || Name.StartsWith(TEXT("I_SquadReady_"))
-				|| Name.StartsWith(TEXT("TXT_SquadNum_")) || Name.StartsWith(TEXT("TXT_SquadRole_"))
-				|| Name.StartsWith(TEXT("TXT_SquadCount_")) || Name == TEXT("TXT_SquadSelected");
-			if (bLegacyCard || Name.Contains(TEXT("CmdSelectAdjust")))
-			{
-				LegacyWidgets.Add(Name);
-			}
-		}
-		TestTrue(FString::Printf(TEXT("No obsolete cohort cards or radius graphics remain: %s"),
-			*FString::Join(LegacyWidgets, TEXT(", "))), LegacyWidgets.IsEmpty());
-
-		for (const FName IslandName : BlockingIslandNames)
-		{
-			USizeBox* Island = Cast<USizeBox>(Tree->FindWidget(IslandName));
-			if (TestNotNull(FString::Printf(TEXT("Native input blocker %s is retained"), *IslandName.ToString()), Island))
-			{
-				TestTrue(FString::Printf(TEXT("%s has positive design area"), *IslandName.ToString()),
-					Island->GetWidthOverride() > 1.0f && Island->GetHeightOverride() > 1.0f);
-				TestTrue(FString::Printf(TEXT("%s remains visible for native geometry blocking"), *IslandName.ToString()),
-					Island->GetVisibility() != ESlateVisibility::Collapsed && Island->GetVisibility() != ESlateVisibility::Hidden);
-			}
-		}
-		if (USizeBox* Dock = Cast<USizeBox>(Tree->FindWidget(TEXT("SB_DockDesign"))))
-		{
-			TestEqual(TEXT("Dock keeps its approved width"), Dock->GetWidthOverride(), 1120.0f);
-			TestEqual(TEXT("Dock keeps its approved height"), Dock->GetHeightOverride(), 204.0f);
-		}
-		USizeBox* Shortcuts = Cast<USizeBox>(Tree->FindWidget(TEXT("SB_ShortcutsDesign")));
-		if (TestNotNull(TEXT("Shortcut strip is a separate blocking island"), Shortcuts))
-		{
-			TestEqual(TEXT("Shortcut strip matches the bottom dock width"), Shortcuts->GetWidthOverride(), 1120.0f);
-			TestEqual(TEXT("Shortcut strip adds exactly 56 design pixels"), Shortcuts->GetHeightOverride(), 56.0f);
-		}
-		TestNotNull(TEXT("Combined dock capture includes the shortcut strip"), Tree->FindWidget(TEXT("SB_CommandDockDesign")));
-		TestNotNull(TEXT("The selection mode uses one replaceable icon"), Cast<UImage>(Tree->FindWidget(TEXT("I_CmdIcon_Select"))));
-		UWidget* Tooltip = Tree->FindWidget(TEXT("C_SelectionTooltip"));
-		if (TestNotNull(TEXT("Tooltip belongs to the viewport rather than a desktop popup"), Tooltip))
-		{
-			TestEqual(TEXT("Tooltip starts hidden"), Tooltip->GetVisibility(), ESlateVisibility::Collapsed);
-		}
-		TestNotNull(TEXT("Tooltip text is authored without Blueprint binding"), Cast<UTextBlock>(Tree->FindWidget(TEXT("TXT_SelectionTooltip"))));
-		for (const FName IconName : {FName(TEXT("I_Shortcut_SameType")), FName(TEXT("I_Shortcut_AddSelection"))})
-		{
-			UImage* Icon = Cast<UImage>(Tree->FindWidget(IconName));
-			if (TestNotNull(FString::Printf(TEXT("Shortcut icon %s is present"), *IconName.ToString()), Icon))
-			{
-				TestEqual(TEXT("Shortcut icons are always bright"), Icon->GetRenderOpacity(), 1.0f);
-				TestNotNull(TEXT("Shortcut uses a real imported texture"), Cast<UTexture2D>(Icon->GetBrush().GetResourceObject()));
-			}
-		}
-		const FName ButtonNames[] = {
-			TEXT("BTN_Cmd_Move"), TEXT("BTN_Cmd_Select"), TEXT("BTN_MiniMapJump"),
-			TEXT("BTN_Shortcut_SameType"), TEXT("BTN_Shortcut_AddSelection")
-		};
-		for (const FName ButtonName : ButtonNames)
-		{
-			UButton* Button = Cast<UButton>(Tree->FindWidget(ButtonName));
-			if (TestNotNull(FString::Printf(TEXT("Existing command button %s is retained"), *ButtonName.ToString()), Button))
-			{
-				TestFalse(FString::Printf(TEXT("%s does not capture keyboard focus"), *ButtonName.ToString()), Button->GetIsFocusable());
-			}
-		}
-		if (UTextBlock* Title = Cast<UTextBlock>(Tree->FindWidget(TEXT("TXT_SquadsTitle"))))
-		{
-			TestEqual(TEXT("Unit-section heading is Chinese only"), Title->GetText().ToString(), FString(TEXT("编队")));
-		}
-		else AddError(TEXT("TXT_SquadsTitle is missing."));
-		if (UTextBlock* Title = Cast<UTextBlock>(Tree->FindWidget(TEXT("TXT_CommandTitle"))))
-		{
-			TestEqual(TEXT("Command-section heading is Chinese only"), Title->GetText().ToString(), FString(TEXT("指令矩阵")));
-		}
-		else AddError(TEXT("TXT_CommandTitle is missing."));
+        // Layout is now authored by the native console; inspect the same tree used at runtime.
+        TStrongObjectPtr<UGuLiCommanderHUDWidget> Preview(NewObject<UGuLiCommanderHUDWidget>(GetTransientPackage(), WidgetClass));
+        Preview->Initialize();
+        Preview->SetDesignerFlags(EWidgetDesignFlags::Designing);
+        TSharedRef<SWidget> SlatePreview = Preview->TakeWidget();
+        UWidgetTree* Tree = Preview->WidgetTree;
+        if (!TestNotNull(TEXT("HUD has a real native widget tree"), Tree)) return false;
+        UCanvasPanel* UnitCard = Cast<UCanvasPanel>(Tree->FindWidget(TEXT("C_UnitTypeCard")));
+        TestNotNull(TEXT("Unit inspection owns one panel"), UnitCard);
+        UTextBlock* Detail = Cast<UTextBlock>(Tree->FindWidget(TEXT("TXT_UnitTypeName")));
+        if (TestNotNull(TEXT("Unit details text exists"), Detail))
+            TestTrue(TEXT("Details stay inside the unit inspection panel"), Detail->GetParent() == UnitCard);
+        TestNotNull(TEXT("Real survivor health has a native progress bar"), Cast<UProgressBar>(Tree->FindWidget(TEXT("PB_UnitTypeHealth"))));
+        TestNull(TEXT("Removed radius control has no button"), Tree->FindWidget(TEXT("BTN_Cmd_SelectSize")));
+        TestNull(TEXT("Radius label is removed"), Tree->FindWidget(TEXT("TXT_CmdSelectAdjustLabel")));
+        TestNull(TEXT("Static-review watermark is removed"), Tree->FindWidget(TEXT("TXT_VisualOnly")));
+        TArray<UWidget*> Widgets; Tree->GetAllWidgets(Widgets);
+        TArray<FString> LegacyWidgets;
+        for (const UWidget* Widget : Widgets)
+        {
+            const FString Name = Widget->GetName();
+            if (Name.StartsWith(TEXT("I_Squad")) || Name.StartsWith(TEXT("TXT_Squad")) || Name.Contains(TEXT("CmdSelectAdjust"))) LegacyWidgets.Add(Name);
+        }
+        TestTrue(FString::Printf(TEXT("No obsolete cohort cards or radius graphics remain: %s"), *FString::Join(LegacyWidgets,TEXT(", "))),LegacyWidgets.IsEmpty());
+        for (const FName IslandName : BlockingIslandNames)
+        {
+            UCanvasPanel* Island = Cast<UCanvasPanel>(Tree->FindWidget(IslandName));
+            if (TestNotNull(FString::Printf(TEXT("Native input blocker %s is retained"), *IslandName.ToString()),Island))
+            {
+                const auto* DesignSlot=Cast<UCanvasPanelSlot>(Island->GetParent()->Slot);
+                TestTrue(TEXT("Input island has positive design area"),DesignSlot && DesignSlot->GetSize().X>1 && DesignSlot->GetSize().Y>1);
+                TestTrue(TEXT("Input island remains visible for geometry blocking"),Island->GetVisibility()!=ESlateVisibility::Collapsed && Island->GetVisibility()!=ESlateVisibility::Hidden);
+            }
+        }
+        auto SizeOf=[&](FName Name)
+        {
+            const auto* Panel=Tree->FindWidget(Name);
+            const auto* DesignSlot=Panel && Panel->GetParent()?Cast<UCanvasPanelSlot>(Panel->GetParent()->Slot):nullptr;
+            return DesignSlot?DesignSlot->GetSize():FVector2D::ZeroVector;
+        };
+        TestEqual(TEXT("Selection dock follows the approved 8x3 layout"),SizeOf(TEXT("SB_DockDesign")),FVector2D(924,224));
+        TestEqual(TEXT("Control-group strip follows the approved layout"),SizeOf(TEXT("SB_ShortcutsDesign")),FVector2D(644,44));
+        TestNotNull(TEXT("Combined dock capture includes the group strip"),Tree->FindWidget(TEXT("SB_CommandDockDesign")));
+        TestNotNull(TEXT("The inspection panel uses a replaceable portrait"),Cast<UImage>(Tree->FindWidget(TEXT("I_UnitTypePortrait"))));
+        UWidget* Tooltip=Tree->FindWidget(TEXT("C_SelectionTooltip"));
+        if (TestNotNull(TEXT("Tooltip belongs to the viewport rather than a desktop popup"),Tooltip))
+            TestEqual(TEXT("Tooltip starts hidden"),Tooltip->GetVisibility(),ESlateVisibility::Collapsed);
+        TestNotNull(TEXT("Tooltip text is authored without Blueprint binding"),Cast<UTextBlock>(Tree->FindWidget(TEXT("TXT_SelectionTooltip"))));
+        for(const FName ButtonName : {FName(TEXT("BTN_Cmd_Move")),FName(TEXT("BTN_Cmd_Stop"))})
+        {
+            const auto* Button=Cast<UGuLiCommanderActionButton>(Tree->FindWidget(ButtonName));
+            if(TestNotNull(TEXT("Command has an imported icon"),Button))
+            {
+                TestEqual(TEXT("Available command icon is bright"),Button->Icon->GetRenderOpacity(),1.f);
+                TestNotNull(TEXT("Command icon references a real texture"),Cast<UTexture2D>(Button->Icon->GetBrush().GetResourceObject()));
+            }
+        }
+        for(const FName ButtonName : {FName(TEXT("BTN_Cmd_Move")),FName(TEXT("BTN_Cmd_Stop")),FName(TEXT("BTN_Cmd_Focus")),FName(TEXT("BTN_Group_0")),FName(TEXT("BTN_Portrait_00"))})
+        {
+            auto* Button=Cast<UButton>(Tree->FindWidget(ButtonName));
+            if(TestNotNull(FString::Printf(TEXT("Console button %s exists"),*ButtonName.ToString()),Button))
+                TestFalse(TEXT("Action buttons do not capture keyboard focus"),Button->GetIsFocusable());
+        }
+        auto* SelectionTitle=Cast<UTextBlock>(Tree->FindWidget(TEXT("TXT_SelectionCaption")));
+        if(TestNotNull(TEXT("Selection heading exists"),SelectionTitle))
+            TestEqual(TEXT("Selection heading is Chinese"),SelectionTitle->GetText().ToString(),FString(TEXT("点选或框选部队")));
+        auto* CommandTitle=Cast<UTextBlock>(Tree->FindWidget(TEXT("TXT_CommandTitle")));
+        if(TestNotNull(TEXT("Command heading exists"),CommandTitle))
+            TestEqual(TEXT("Command heading explains full-selection scope"),CommandTitle->GetText().ToString(),FString(TEXT("部队指令 · 全部选择")));
+        Preview->ReleaseSlateResources(true);
 		return true;
 	}
 #endif // WITH_DEV_AUTOMATION_TESTS

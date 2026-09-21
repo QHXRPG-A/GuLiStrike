@@ -1,6 +1,7 @@
 // Copyright Epic Games, Inc. All Rights Reserved.
 
 #include "Gameplay/Building/GuLiBuildingPlacementPreview.h"
+#include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 
 #include "Components/SceneComponent.h"
 #include "Components/StaticMeshComponent.h"
@@ -40,8 +41,9 @@ AGuLiBuildingPlacementPreview::AGuLiBuildingPlacementPreview()
 
 bool AGuLiBuildingPlacementPreview::Configure(
 	const FGuLiBuildingDefinition& Definition,
-	UMaterialInterface* PreviewMaterial)
+	const int32 PreviewVfxId)
 {
+	UMaterialInterface* PreviewMaterial = GuLiVfx::Load<UMaterialInterface>(this, PreviewVfxId);
 	if (!Definition.IsUsable() || !PreviewMaterial || !PreviewMesh)
 	{
 		return false;
@@ -50,7 +52,7 @@ bool AGuLiBuildingPlacementPreview::Configure(
 	PreviewMesh->SetStaticMesh(Definition.Mesh);
 	PreviewMesh->SetRelativeLocation(Definition.VisualOffset);
 	PreviewMesh->SetRelativeRotation(FRotator::ZeroRotator);
-	PreviewMesh->SetRelativeScale3D(Definition.MeshScale);
+	PreviewMesh->SetRelativeScale3D(GuLiVfx::Scale(this, PreviewVfxId, Definition.MeshScale));
 
 	PreviewMaterialInstance = UMaterialInstanceDynamic::Create(PreviewMaterial, this);
 	if (!PreviewMaterialInstance)

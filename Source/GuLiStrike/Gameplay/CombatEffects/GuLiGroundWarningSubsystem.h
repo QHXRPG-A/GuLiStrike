@@ -15,7 +15,7 @@ class GULISTRIKE_API UGuLiGroundWarningStyle : public UDataAsset
 {
 	GENERATED_BODY()
 public:
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Warning") TSoftObjectPtr<UMaterialInterface> Material;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Warning") int32 MaterialVfxId = 0;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Warning", meta=(ClampMin="0.05", Units="s")) float WavePeriod = 0.8f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Warning", meta=(ClampMin="0.001", ClampMax="0.2")) float RingWidth = 0.025f;
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Ground Warning", meta=(ClampMin="0", ClampMax="1")) float Opacity = 0.85f;

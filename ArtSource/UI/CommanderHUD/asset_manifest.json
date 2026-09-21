@@ -1,0 +1,61 @@
+{
+  "schema": "guli-commander-ui-assets/v1",
+  "vendor_root": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit",
+  "layout_source": "Source/GuLiStrike/Commander/UI/GuLiCommanderConsoleLayout.cpp",
+  "theme": "/Game/Commander/UI/DA_CommanderUITheme.DA_CommanderUITheme",
+  "hud": "/Game/Commander/UI/Widgets/WBP_CommanderHUD.WBP_CommanderHUD",
+  "surfaces": {
+    "panel": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Panels/t_UniversalPanel30.t_UniversalPanel30",
+    "button": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Buttons/t_ButtonLeft.t_ButtonLeft",
+    "bar": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Bars/t_BarLeftFill.t_BarLeftFill",
+    "scroll_thumb": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Bars/t_ScrollBarVerticalHandle.t_ScrollBarVerticalHandle"
+  },
+  "numeric_font": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/fonts/f_Aileron-Regular.f_Aileron-Regular",
+  "game_text_table": "/Game/GuLiStrike/Data/DT_GuLiStrikeGameTexts_Texts",
+  "icons": {
+    "Move": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_arrows_64.t_arrows_64",
+    "Stop": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_pause_64.t_pause_64",
+    "Skill": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_target_64.t_target_64",
+    "Focus": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_target_64.t_target_64",
+    "Tasks": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_menu_64.t_menu_64",
+    "Mine": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_gems_blue_64.t_gems_blue_64",
+    "Return": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_arrow_left_64.t_arrow_left_64",
+    "Construct": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_hammer_64.t_hammer_64",
+    "Transit": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_arrow_right_64.t_arrow_right_64",
+    "Build": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_hammer_64.t_hammer_64",
+    "Teleport": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_bolt_64.t_bolt_64",
+    "Help": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_info_64.t_info_64",
+    "Menu": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_cog_64.t_cog_64",
+    "Unit": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_users_64.t_users_64",
+    "Health": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_heart_red_64.t_heart_red_64",
+    "Shield": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_shield_blue_fire_64.t_shield_blue_fire_64",
+    "Speed": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/IconsThemed/64/t_speed_64.t_speed_64",
+    "Defense": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_shield_grey_64.t_shield_grey_64",
+    "CargoBlue": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_gems_blue_64.t_gems_blue_64",
+    "CargoRed": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_gems_red_64.t_gems_red_64",
+    "Building.1": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_target_64.t_target_64",
+    "Building.2": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_swords_64.t_swords_64",
+    "Building.3": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_flag_64.t_flag_64",
+    "Building.4": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_users_64.t_users_64",
+    "Building.5": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_shield_64.t_shield_64",
+    "Building.6": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_home_64.t_home_64",
+    "Task.Special.Mining": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_gems_blue_64.t_gems_blue_64",
+    "Task.Special.Construction": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_hammer_64.t_hammer_64",
+    "Task.Special.StrongholdAdvance": "/Game/Assets/Dark_GUI_Main_Menu_Pro_Kit/textures/ThemeCommon/Textures/Icons/64/t_arrows_64.t_arrows_64"
+  },
+  "portraits": {
+    "1": "/Game/Commander/UI/Textures/Portraits/T_UI_Sweeper.T_UI_Sweeper",
+    "2": "/Game/Commander/UI/Textures/Portraits/T_UI_WarMachine.T_UI_WarMachine",
+    "3": "/Game/Commander/UI/Textures/Portraits/T_UI_Unit_3.T_UI_Unit_3",
+    "4": "/Game/Commander/UI/Textures/Portraits/T_UI_Unit_4.T_UI_Unit_4"
+  },
+  "portrait_sources": {
+    "3": "/Game/GuLiStrike/Vehicles/ElectromagneticMiner/BP_MiningVehicle_TransporterLvl2.BP_MiningVehicle_TransporterLvl2_C",
+    "4": "/Game/GuLiStrike/Vehicles/ConstructionVehicle/BP_ConstructionVehicle.BP_ConstructionVehicle_C"
+  },
+  "notes": [
+    "SC2 references are analysis only; not imported as game art.",
+    "Vendor textures remain unchanged.",
+    "Chinese uses the existing font fallback."
+  ]
+}

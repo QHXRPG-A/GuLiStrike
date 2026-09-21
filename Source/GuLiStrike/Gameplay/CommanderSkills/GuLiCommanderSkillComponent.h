@@ -26,6 +26,7 @@ public:
 	UFUNCTION(BlueprintPure, Category="Commander|Skills") TArray<FGuLiActiveSkillRuntime> GetGlobalSkills() const { return GlobalRuntime; }
 	UFUNCTION(BlueprintPure, Category="Commander|Skills") TArray<FGuLiUnitSkillRuntimeView> GetSelectedUnitSkills() const;
 	UFUNCTION(BlueprintPure, Category="Commander|Skills") FGuLiActiveSkillReply GetLastReply() const { return LastReply; }
+	const UGuLiCommanderSkillCatalog* GetSkillCatalog() const { return Catalog; }
 	UFUNCTION(BlueprintPure, Category="Commander|Skills") int32 GetGlobalSkillLevel(FName SkillId) const;
 	bool SetServerGlobalSkillLevel(FName SkillId, int32 Level);
 	void CopyMatchStateFrom(const UGuLiCommanderSkillComponent& Other);

@@ -7,6 +7,7 @@
 #include "GuLiGroundMechMovementComponent.generated.h"
 
 class UGuLiGroundMassContactSubsystem;
+class UGuLiGroundMechRocketComponent;
 struct FGuLiGroundMechNetworkStorage;
 struct FGuLiGroundMechStorageDeleter
 {
@@ -38,6 +39,20 @@ struct FGuLiMassSupportState
 	void Serialize(FArchive &Ar);
 };
 
+struct FGuLiRocketMoveState
+{
+	float Fuel = 0.f;
+	float RecoveryElapsed = 0.f;
+	void Serialize(FArchive& Ar)
+	{
+		uint8 Version = 1u;
+		Ar << Version;
+		if (Version != 1u) { Ar.SetError(); return; }
+		Ar << Fuel << RecoveryElapsed;
+		if (Ar.IsLoading() && (!FMath::IsFinite(Fuel) || Fuel < 0.f || !FMath::IsFinite(RecoveryElapsed) || RecoveryElapsed < 0.f)) Ar.SetError();
+	}
+};
+
 /** CMC prediction and world collision, with explicit timed sweeps against Mass data. */
 UCLASS()
 class GULISTRIKE_API UGuLiGroundMechMovementComponent final : public UGuLiExternalCharacterMovementComponent
@@ -53,6 +68,9 @@ class GULISTRIKE_API UGuLiGroundMechMovementComponent final : public UGuLiExtern
 	virtual FNetworkPredictionData_Client *GetPredictionData_Client() const override;
 	virtual float GetMaxSpeed() const override;
 	virtual float GetMaxBrakingDeceleration() const override;
+	virtual FRotator ComputeOrientToMovementRotation(const FRotator& CurrentRotation, float DeltaTime, FRotator& DeltaRotation) const override;
+	UFUNCTION(BlueprintPure, Category="Mech|Movement")
+	bool IsGroundedForAnimation() const { return IsMovingOnGround() || IsMassSupportMode(); }
 	virtual void ApplyExternalDisplacement(const FTransform &Transform) override;
 	virtual void OnTeleported() override;
 	virtual void StartNewPhysics(float DeltaTime, int32 Iterations) override;
@@ -61,6 +79,11 @@ class GULISTRIKE_API UGuLiGroundMechMovementComponent final : public UGuLiExtern
 										  ETeleportType Teleport = ETeleportType::None) override;
 	UFUNCTION(BlueprintPure, Category = "Mech|Mass Collision")
 	FGuLiSoldierId GetMassSupportSoldierId() const { return SupportState.SoldierId; }
+	void InitializeRocketFuel(float Fuel) { RocketState.Fuel = Fuel; RocketState.RecoveryElapsed = 0.f; }
+	void ClearRocketInput() { bRocketHeld = bRocketRequested = bRocketThrusting = bRocketAllowedThisMove = false; }
+	float GetPredictedRocketFuel() const { return RocketState.Fuel; }
+	bool IsRocketThrusting() const { return bRocketThrusting; }
+	virtual void UpdateFromCompressedFlags(uint8 Flags) override;
 #if WITH_DEV_AUTOMATION_TESTS
 	FGuLiMassSupportState TestOnly_GetSupport() const { return SupportState; }
 	FGuLiGroundMassMoveContext TestOnly_GetMoveContext() const { return LastMoveContext; }
@@ -111,6 +134,10 @@ class GULISTRIKE_API UGuLiGroundMechMovementComponent final : public UGuLiExtern
 	void UpdateGroundMechObstacle(float DeltaTime);
 	void UnregisterGroundMechObstacle();
 	void MarkPresentationContacts();
+	UGuLiGroundMechRocketComponent* Rocket() const;
+	FGuLiRocketMoveState RocketState, PendingResponseRocket;
+	bool bRocketHeld = false, bRocketRequested = false, bRocketThrusting = false;
+	bool bRocketAllowedThisMove = false;
 	UPROPERTY(Replicated)
 	FGuLiSoldierId MassSupportSoldierId;
 	FGuLiMassSupportState SupportState;

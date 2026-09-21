@@ -126,12 +126,18 @@ public:
 
 	void ActivateSelectionTool();
 	void FocusSelectedUnits();
+	void InvokeHUDCommand(FName Action);
+	void RecallControlGroupFromUI(int32 Slot, bool bControl, bool bShift, bool bAlt);
+	bool IssueMapMove(const FVector& Point, bool bAppend);
+	bool IsCommanderMenuOpen() const;
 	void StopSelectedUnits();
 	FVector GetSelectedUnitCenter() const { return FindConfirmedSelectionCenter(); }
 	void ToggleSelectionShape();
 	EGuLiCommanderSelectionShape GetSelectionShape() const { return SelectionShape; }
 	bool GetSelectionDragRectangle(FVector2D& OutStart, FVector2D& OutEnd) const;
 	bool ArmMoveTool();
+	bool IsGroundMoveTargetMode() const { return CommanderToolMode == EGuLiCommanderToolMode::Move && PendingWorkAction == TEXT("Move"); }
+	FName GetHUDTargetIntent() const { return PendingWorkAction; }
 	void StepSelectionRadiusUp();
 	EGuLiCommanderToolMode GetCommanderToolMode() const { return CommanderToolMode; }
 
@@ -169,6 +175,8 @@ private:
 	bool BuildPointSelectionRequest(FGuLiSelectionRequest& Request) const;
 	bool BuildSelectionFrustum(FGuLiSelectionRequest& Request, FVector2D Min, FVector2D Max) const;
 	void HandleControlGroup(int32 Slot);
+	void HandleInspectionTab();
+	void HandleLocalMenu();
 	void HandleSceneBookmark(int32 Slot);
 	void SubmitSelectionIntent(FGuLiSelectionRequest Request);
 	void HandleMoveReadyToSend(const FGuLiMoveRequest& Request, const FGuLiCommanderSelectionState& Selection);
@@ -215,6 +223,7 @@ private:
 	TObjectPtr<UGuLiBuildingPlacementComponent> BuildingPlacementComponent;
 
 	EGuLiCommanderToolMode CommanderToolMode = GuLiCommanderToolPolicy::DefaultToolMode;
+	FName PendingWorkAction;
 	EGuLiCommanderSelectionShape SelectionShape = EGuLiCommanderSelectionShape::Box;
 	bool bSelectionMouseDown = false;
 	bool bSelectionDragExceededThreshold = false;

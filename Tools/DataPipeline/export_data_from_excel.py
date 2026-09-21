@@ -31,6 +31,7 @@ import json
 import math
 import re
 import sys
+import tempfile
 from pathlib import Path
 
 import openpyxl
@@ -161,6 +162,8 @@ def check_value(sheet, col, row_idx, raw):
     if t == "int":
         if isinstance(raw, bool) or not isinstance(raw, (int, float)) or float(raw) != int(raw):
             raise SheetError(f"{where}: int 列 '{col['name']}' 的值不是整数: {raw!r}")
+        if col['name'].endswith('VfxId') and col['necessary'] and raw <= 0:
+            raise SheetError(f"{where}: 必需特效 {col['name']} 必须引用正整数 ID")
         return int(raw)
     if t == "float":
         if isinstance(raw, bool) or not isinstance(raw, (int, float)):
@@ -248,6 +251,53 @@ def export_sheet(ws, allow_text_id=False):
     return out_rows, props
 
 
+def export_game_texts(ws):
+    """Game copy has three author-facing columns; TextId is also the stable UE row name."""
+    if ws.title != "Texts":
+        raise SheetError("游戏文本表仅接受 Texts 工作表")
+    expected = [("文本id", "str", "Necessary"), ("介绍", "str", "Necessary"),
+                ("内容", "str", "Necessary")]
+    if ws.max_column != 3:
+        raise SheetError("游戏文本表必须为三列：文本id、介绍、内容")
+    for column, metadata in enumerate(expected, 1):
+        if tuple(ws.cell(row, column).value for row in range(1, 4)) != metadata:
+            raise SheetError(f"{cell_ref(ws.title, 1, column)}: 元数据必须为 {metadata}")
+    rows, seen = [], set()
+    for index in range(4, ws.max_row + 1):
+        if all(ws.cell(index, c).value is None for c in range(1, 4)):
+            continue
+        values = [check_value(ws.title, {"col": c, "name": expected[c-1][0],
+                  "type": "str", "necessary": True}, index, ws.cell(index, c).value) for c in range(1, 4)]
+        ident, introduction, content = values
+        if not re.fullmatch(r"[A-Za-z][A-Za-z0-9_.]*", ident):
+            raise SheetError(f"{cell_ref(ws.title,index,1)}: 文本id必须为稳定英文标识，可含点和下划线")
+        if ident.casefold() in seen:
+            raise SheetError(f"{cell_ref(ws.title,index,1)}: 文本id重复（UE行名不区分大小写）: {ident}")
+        seen.add(ident.casefold())
+        # Preserve intentional whitespace/newlines in copy; only IDs/notes are normalized.
+        content = str(ws.cell(index, 3).value)
+        rows.append({"Name": ident, "TextId": ident, "Introduction": introduction, "Content": content})
+    props = [{"prop": p, "cpp": "FString", "default": None, "comment": f"{label} (str, Necessary)"}
+             for p, label in zip(("TextId", "Introduction", "Content"), ("文本id", "介绍", "内容"))]
+    return rows, props
+
+
+def validate_game_text_references(tables):
+    table = tables.get("DT_GuLiStrikeGameTexts_Texts")
+    if not table:
+        raise SheetError("缺少 GuLiStrikeGameTexts.xlsx / Texts")
+    available = {row["TextId"] for row in table["rows"]}
+    used = set()
+    # Source-only traversal: never inspect binary assets, caches or build products.
+    for source in (PROJECT / "Source/GuLiStrike").rglob("*.cpp"):
+        for ident in re.findall(r'GuLiGameText::(?:Text|Get|Format)\(TEXT\("([A-Za-z0-9_.]+)"\)',
+                                source.read_text(encoding="utf-8-sig")):
+            used.add(ident)
+    missing = used - available
+    if missing:
+        raise SheetError(f"原生 UI 引用缺少游戏文本: {sorted(missing)}")
+
+
 def gen_header_text(stem, sheets_props):
     """Generate one stable native header from tables with explicit provenance."""
     sources = sorted({source["excel"] for entry in sheets_props for source in entry["sources"]})
@@ -295,7 +345,16 @@ def write_if_changed(path, text):
     if path.exists() and path.read_text(encoding="utf-8") == text:
         return False
     path.parent.mkdir(parents=True, exist_ok=True)
-    path.write_text(text, encoding="utf-8", newline="\n")
+    # The running editor/build tools can memory-map generated headers on Windows.
+    # Replace a complete file instead of truncating that mapped file in place.
+    with tempfile.NamedTemporaryFile(mode="w", encoding="utf-8", newline="\n",
+                                     dir=path.parent, suffix=".tmp", delete=False) as output:
+        temporary = Path(output.name)
+        output.write(text)
+    try:
+        temporary.replace(path)
+    finally:
+        temporary.unlink(missing_ok=True)
     return True
 
 
@@ -400,6 +459,54 @@ def validate_special_tasks(tables):
             raise SheetError(f"{label}: ExecutorClass must be a native /Script/Module.Class softclass path")
 
 
+def validate_vfx_references(tables):
+    """Run before writing any output, including unrelated tables and headers."""
+    effects = tables.get('DT_GuLiStrikeVfx_Effects')
+    if not effects:
+        raise SheetError('缺少 GuLiStrikeVfx.xlsx / Effects')
+    ids, definitions = set(), set()
+    for row in effects['rows']:
+        label = 'Effects/' + row['Name']
+        id = row['Id']
+        path = row.get('ResourcePath', '')
+        scale = row.get('Scale', {})
+        if type(id) is not int or not 0 < id <= 2147483647 or id in ids:
+            raise SheetError(f'{label}: 特效 ID 必须是唯一正整数')
+        if not re.fullmatch(r'/(?:Game|Engine|[A-Za-z][A-Za-z0-9_]*)/[A-Za-z0-9_/]+\.[A-Za-z0-9_]+', path):
+            raise SheetError(f'{label}: ResourcePath 必须是完整资源对象路径')
+        if not IDENT_RE.fullmatch(row['Name']):
+            raise SheetError(f'{label}: 特效行名必须是稳定的 C++ 标识符，以生成符号 ID')
+        if set(scale) != {'X', 'Y', 'Z'} or not all(math.isfinite(v) and v > 0 for v in scale.values()):
+            raise SheetError(f'{label}: 基础缩放必须为三个有限正数')
+        key = (path.casefold(), *(scale[k] for k in 'XYZ'))
+        if key in definitions:
+            raise SheetError(f'{label}: 重复的资源路径与基础缩放组合')
+        ids.add(id)
+        definitions.add(key)
+    for line in (PROJECT/'Config/DefaultGame.ini').read_text(encoding='utf-8-sig').splitlines():
+        field, _, value = line.partition('=')
+        if field.lstrip('+').endswith(('VfxId', 'VfxIds')):
+            try:
+                reference = int(value.strip())
+            except ValueError:
+                raise SheetError(f'DefaultGame.ini {field}: 非整数特效 ID')
+            if reference < 0 or reference and reference not in ids:
+                raise SheetError(f'DefaultGame.ini {field}: 悬空特效 ID {reference}')
+    for table, entry in tables.items():
+        for row in entry['rows']:
+            for field, value in row.items():
+                if field.endswith('VfxId') and (type(value) is not int or value < 0 or value and value not in ids):
+                    raise SheetError(f'{table}/{row["Name"]}.{field}: 悬空或非法特效 ID {value}')
+            required = []
+            if table == 'DT_GuLiStrikeMech_Skills':
+                required = ['JetVfxId', 'FuelBarVfxId'] if row.get('ExecutionType') == 'GAS' else ['BulletVfxId', 'MuzzleVfxId']
+            elif table == 'DT_GuLiStrikeSpellFields_Fields' and row.get('FieldType') == 'StrongholdTransit':
+                required = ['EnergyVfxId', 'TrailVfxId', 'FlashVfxId']
+            for field in required:
+                if row.get(field, 0) not in ids:
+                    raise SheetError(f'{table}/{row["Name"]}.{field}: 必需特效未配置')
+
+
 def main():
     workbooks = [w for w in sorted(EXCEL_DIR.glob("*.xlsx")) if not w.name.startswith("~$")]
     if not workbooks:
@@ -435,7 +542,8 @@ def main():
                 is_mech = stem == "GuLiStrikeMech"
                 if is_mech and ws.title not in ("升级表", "技能表"):
                     raise SheetError("机甲表仅接受升级表和技能表")
-                rows, props = export_sheet(ws, allow_text_id=is_mech and ws.title == "升级表")
+                rows, props = export_game_texts(ws) if stem == "GuLiStrikeGameTexts" else \
+                    export_sheet(ws, allow_text_id=is_mech and ws.title == "升级表")
                 if consolidated and stem != SECONDARY_WORKBOOK:
                     retired = {(s, t) for s, t in SECONDARY_TABLE_IDENTITIES.values()
                                if s != "GuLiStrikeSpellFields"}
@@ -468,6 +576,8 @@ def main():
         try:
             validate_building_references(tables)
             validate_special_tasks(tables)
+            validate_game_text_references(tables)
+            validate_vfx_references(tables)
             if any(name.startswith('DT_GuLiStrikeMech_') for name in tables):
                 if not all(name in tables for name in ('DT_GuLiStrikeMech_Upgrades','DT_GuLiStrikeMech_Skills')):
                     raise SheetError('GuLiStrikeMech.xlsx必须同时包含升级表与技能表')
@@ -478,9 +588,37 @@ def main():
                             or not (0 < row['FireRate'] <= 30) or not math.isfinite(row['Damage']) or row['Damage'] <= 0:
                         raise SheetError(f"机甲升级行 {row['Name']} 的ID、技能引用或数值无效")
                 for row in tables['DT_GuLiStrikeMech_Skills']['rows']:
+                    execution = row.get('ExecutionType', 'Weapon')
+                    if execution == 'GAS':
+                        positive = ('MaxFuel', 'FuelDrainPerSecond', 'FuelRecoveryPerSecond',
+                                    'ThrustAcceleration', 'MaxRiseSpeed',
+                                    'FuelBarHeight', 'FuelBarRightOffset', 'FuelBarFadeSeconds', 'AirSpeedMultiplier',
+                                    'FallGravityMultiplier')
+                        if not all(math.isfinite(row.get(key, 0)) and row.get(key, 0) > 0 for key in positive) \
+                                or not math.isfinite(row.get('InitialFuel', -1)) \
+                                or not 0 <= row.get('InitialFuel', -1) <= row['MaxFuel'] \
+                                or not math.isfinite(row.get('FuelRecoveryDelay', -1)) \
+                                or row.get('FuelRecoveryDelay', -1) < 0 \
+                                or not math.isfinite(row.get('JetPitchDegrees', float('nan'))) \
+                                or not math.isfinite(row.get('JetMaxTiltDegrees', float('nan'))) \
+                                or not 0 <= row.get('JetMaxTiltDegrees', -1) <= 15:
+                            raise SheetError(f"机甲GAS技能 {row['Name']} 的容量、推进或显示参数无效")
+                        for key in ('AbilityClass',):
+                            path = row.get(key, '')
+                            if not path.startswith(('/Game/', '/Script/')) or '.' not in path.rsplit('/', 1)[-1]:
+                                raise SheetError(f"机甲GAS技能 {row['Name']}.{key} 必须使用完整对象路径")
+                        if not row.get('JetSocketLeft') or not row.get('JetSocketRight'):
+                            raise SheetError(f"机甲GAS技能 {row['Name']} 缺少左右喷口")
+                        continue
+                    if execution != 'Weapon':
+                        raise SheetError(f"机甲技能 {row['Name']} 不支持 ExecutionType={execution}")
                     if not all(math.isfinite(row[key]) and row[key] > 0 for key in ('ProjectileSpeed','ProjectileLifetime','SweepRadius','RecoilDuration')):
                         raise SheetError(f"机甲技能行 {row['Name']} 的弹丸或后坐参数无效")
-                    for key in ('RecoilCurve','BulletSystem','MuzzleSystem'):
+                    aim_radius = row.get('AimAssistRadiusCentimeters', 0)
+                    if not math.isfinite(aim_radius) or aim_radius < 0 \
+                            or (row.get('AimAssistEnabled', False) and aim_radius <= 0):
+                        raise SheetError(f"机甲技能行 {row['Name']} 的辅助瞄准半径必须有限且非负，启用时须大于0cm")
+                    for key in ('RecoilCurve',):
                         if '.' not in row[key].rsplit('/',1)[-1]:
                             raise SheetError(f"机甲技能 {row['Name']}.{key} 必须使用完整资产对象路径（包名.对象名）")
         except SheetError as e:
@@ -509,6 +647,13 @@ def main():
         print(f"{'GEN' if changed else 'keep'}: {header.relative_to(PROJECT)}"
               + ("（有变化，需重编译）" if changed else "（无变化）"))
     write_if_changed(JSON_DIR / "manifest.json", json.dumps(manifest, ensure_ascii=False, indent=2))
+    # Stable symbolic IDs for native call sites; never duplicate paths or scales in C++.
+    effect_ids = ['// Generated from GuLiStrikeVfx.xlsx / Effects. Do not edit.', '#pragma once',
+                  '#include "CoreTypes.h"', 'namespace GuLiVfxIds', '{']
+    for row in tables['DT_GuLiStrikeVfx_Effects']['rows']:
+        effect_ids.append(f'\tinline constexpr int32 {row["Name"]} = {row["Id"]};')
+    effect_ids.extend(['}', ''])
+    write_if_changed(GEN_HEADER_DIR / 'GuLiVfxIds.h', '\n'.join(effect_ids))
     print(f"manifest: {JSON_DIR / 'manifest.json'}（{len(manifest['tables'])} 表）")
 
 

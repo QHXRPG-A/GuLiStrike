@@ -4,6 +4,12 @@ import traceback
 from pathlib import Path
 import unreal
 
+import sys
+from pathlib import Path
+sys.path.insert(0,str(Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))/"Scripts/Vfx"))
+from vfx_registry import vfx_id, resource as vfx_resource, scale as vfx_scale, require_id, visual_variant
+from configure_registry_bindings import configure_blueprints
+
 PROJECT = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
 OUT = PROJECT / 'TestResults/CommanderStrongholds'
 OUT.mkdir(parents=True, exist_ok=True)
@@ -53,6 +59,7 @@ def main():
     compiled = unreal.BlueprintService.compile_blueprint(builder)
     assert compiled.success, str(compiled)
     save(builder)
+    report['vfx_bindings']=configure_blueprints()
     report['builder_compile'] = str(compiled)
 
     namespace = {'__name__':'stronghold_import'}

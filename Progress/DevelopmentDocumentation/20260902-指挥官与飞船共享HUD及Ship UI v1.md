@@ -14,10 +14,10 @@ areas:
 categories:
 - art
 - gameplay
-status: in_progress
+status: done
 verification: partial
 created: '2026-09-02'
-updated: '2026-09-04'
+updated: "2026-09-21"
 summary: UGuLiCommanderHUDWidget 会在外层 WidgetTree 中按 FName 查找文本、图片、按钮、进度填充和布局岛。若把这些节点移动到嵌套共享 WBP 内部，外层查找可能失效，且不一定产生明显编译错误。因此本轮只共享叶子资源和样式；共享复合
   WBP 仅供新 Ship UI 或无运行时引用的纯装饰区域，且必须在后续 UE 阶段单独验证
 next_action: 保留 Commander 全部既有数据、输入、MiniMap、Tooltip 和生命周期行为

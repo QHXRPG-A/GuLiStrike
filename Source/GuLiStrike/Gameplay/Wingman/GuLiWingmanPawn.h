@@ -91,7 +91,7 @@ private:
 	void StopFlightTrail();
 
 	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Flight VFX")
-	TSoftObjectPtr<UNiagaraSystem> FlightTrailSystem;
+	int32 FlightTrailVfxId = 0;
 
 	/** Mesh-local nozzle position; this mesh faces -X, so its tail is +X. */
 	UPROPERTY(Config, EditDefaultsOnly, Category="Wingman|Flight VFX")

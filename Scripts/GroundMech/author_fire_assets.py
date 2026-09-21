@@ -1,6 +1,7 @@
 """Author the isolated, playable ground-mech fire review candidate in the source editor.
 
-Does not enable the weapon on BP_GroundMech_Light or change its production game mode.
+Preserves production weapon settings and game mode. The animation authoring pass
+binds the production weapon as well as this review copy.
 Run after the Excel export and source Editor build, via Scripts/ue_exec.py.
 """
 import unreal, json, traceback

@@ -352,99 +352,11 @@ def set_commander_brush(bp, textures, widget_name, texture_key, color=WHITE):
 
 
 def reskin_commander(textures):
-    bp = unreal.load_asset(COMMANDER_PATH)
-    if not bp:
-        raise RuntimeError("Commander HUD is missing")
-    before = checked(HELPER.umg_get_widget_info(bp))
-    if before["widget_count"] != 213:
-        raise RuntimeError("Commander contract requires exactly 213 widgets")
-    before_signature = tree_signature(before)
-    islands = ["SB_TopStatus", "SB_MapDesign", "SB_DockDesign", "SB_ShortcutsDesign"]
-    island_contracts = {name: slot_contract(find(bp, name)) for name in islands}
-
-    mapping = {
-        "I_TopOuter": "edge", "I_TopVoid": "background", "I_TopPanel": "details",
-        "I_TopRail": "vector_h", "I_TopRailBottom": "highlight",
-        "I_TopDividerL": "vector_v", "I_TopDividerR": "vector_v",
-        "I_TopNotchL": "quest", "I_TopNotchR": "quest",
-        "I_MapOuter": "slot", "I_MapVoid": "background", "I_MapField": "background",
-        "I_MapRailTop": "vector_h", "I_MapRailBottom": "highlight",
-        "I_DockOuter": "inventory", "I_DockVoid": "background", "I_DockInner": "details",
-        "I_DockRailTop": "vector_h", "I_DockRailBottom": "highlight",
-        "I_CoreOuter": "edge", "I_CoreBG": "background",
-        "I_CorePortraitOuter": "utility", "I_CorePortraitBG": "background",
-        "I_CorePortraitMark": "icon_compass", "I_CorePortraitDot": "quest",
-        "I_RosterTrack": "bar_track", "I_RosterFill": "bar_fill",
-        "I_EnergyTrack": "bar_track", "I_EnergyFill": "bar_fill",
-        "I_CmdSelectActiveRail": "highlight",
-        "I_TitlePlate_Squads": "edge", "I_TitlePlate_Commands": "edge",
-        "I_UnitTypeOuter": "inventory", "I_UnitTypePanel": "background",
-        "I_UnitTypeAccent": "vector_v", "I_UnitTypePortrait": "slot",
-        "I_UnitTypeHealthTrack": "bar_track", "I_UnitTypeHealthFill": "bar_fill",
-        "I_ShortcutRail": "edge", "I_ShortcutPanel": "background",
-        "I_ShortcutAccent": "highlight",
-        "I_ShortcutFrame_SameType": "utility", "I_ShortcutFrame_AddSelection": "utility",
-        "I_SelectionTooltipBorder": "edge", "I_SelectionTooltipBackground": "background",
-    }
-    for index in range(15):
-        mapping["I_CmdOuter_%02d" % index] = "utility"
-        mapping["I_CmdBG_%02d" % index] = "background"
-    for index in range(9):
-        mapping["I_RouteA_%d" % index] = "vector_h"
-    for index in range(7):
-        mapping["I_RouteB_%d" % index] = "vector_v"
-
-    background_keys = {"background", "details"}
-    for widget_name, texture_key in mapping.items():
-        color = PANEL_DARK if texture_key in background_keys else WHITE
-        set_commander_brush(bp, textures, widget_name, texture_key, color)
-
-    # Preserve every text value, font size, hierarchy, and geometry; only unify
-    # the palette with the NEONCTRL cyan / cool-white / warning accents.
-    cyan_tokens = ("Score", "Time", "Value", "Energy", "Count", "Key_", "Title")
-    muted_tokens = ("Label", "Caption", "System", "Status")
-    for row in before["widgets"]:
-        if row["type"] != "TextBlock":
-            continue
-        widget = find(bp, row["name"])
-        color = WHITE
-        if any(token in row["name"] for token in cyan_tokens):
-            color = CYAN
-        if any(token in row["name"] for token in muted_tokens):
-            color = MUTED
-        if row["name"] in ("TXT_TeamB", "TXT_UnitTypeHealth"):
-            color = RED
-        widget.set_color_and_opacity(unreal.SlateColor(unreal.LinearColor(*color)))
-
-    compile_result = checked(HELPER.compile_blueprint(bp))
-    after = checked(HELPER.umg_get_widget_info(bp))
-    after_signature = tree_signature(after)
-    if after_signature != before_signature:
-        raise RuntimeError("Commander name/type/parent contract changed during reskin")
-    for name in islands:
-        if slot_contract(find(bp, name)) != island_contracts[name]:
-            raise RuntimeError("Commander input-island geometry changed: " + name)
-    buttons = [row["name"] for row in after["widgets"] if row["type"] == "Button"]
-    focusable = [name for name in buttons if find(bp, name).get_editor_property("is_focusable")]
-    event_graph = checked(HELPER.get_blueprint_graph_info(bp, "EventGraph"))
-    animations = list(unreal.WidgetService.list_animations(COMMANDER_PATH))
-    view_models = list(unreal.WidgetService.list_view_models(COMMANDER_PATH))
-    mvvm_bindings = list(unreal.WidgetService.list_view_model_bindings(COMMANDER_PATH))
-    if focusable or event_graph["node_count"] != 0 or animations or view_models or mvvm_bindings:
-        raise RuntimeError("Commander focus/graph/animation/MVVM contract failed")
-    return bp, {
-        "compile": compile_result,
-        "widget_count": after["widget_count"],
-        "texture_replacements": len(mapping),
-        "buttons": len(buttons),
-        "focusable_buttons": focusable,
-        "event_graph_nodes": event_graph["node_count"],
-        "animations": len(animations),
-        "view_models": len(view_models),
-        "mvvm_bindings": len(mvvm_bindings),
-        "input_islands_unchanged": True,
-        "tree_contract_unchanged": True,
-    }
+    # Keep the ship authoring path; commander regeneration is owned by the new console.
+    import runpy
+    root = Path(unreal.Paths.convert_relative_path_to_full(unreal.Paths.project_dir()))
+    result = runpy.run_path(str(root / "Scripts/build_commander_sc2_ui.py"), run_name="__main__")["result"]
+    return unreal.load_asset(COMMANDER_PATH), result
 
 
 if unreal.get_editor_subsystem(unreal.LevelEditorSubsystem).is_in_play_in_editor():

@@ -24,6 +24,18 @@
       "struct": "/Script/GuLiStrike.GuLiStrikeCommanderSoldiersRow",
       "row_key_column": "name"
     },
+    "DT_GuLiStrikeGameTexts_Texts": {
+      "excel": "GuLiStrikeGameTexts.xlsx",
+      "sheet": "Texts",
+      "sources": [
+        {
+          "excel": "GuLiStrikeGameTexts.xlsx",
+          "sheet": "Texts"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeGameTextsTextsRow",
+      "row_key_column": "name"
+    },
     "DT_GuLiStrikeMech_Upgrades": {
       "excel": "GuLiStrikeMech.xlsx",
       "sheet": "升级表",
@@ -202,6 +214,18 @@
         }
       ],
       "struct": "/Script/GuLiStrike.GuLiStrikeSpellFieldsFieldsRow",
+      "row_key_column": "name"
+    },
+    "DT_GuLiStrikeVfx_Effects": {
+      "excel": "GuLiStrikeVfx.xlsx",
+      "sheet": "Effects",
+      "sources": [
+        {
+          "excel": "GuLiStrikeVfx.xlsx",
+          "sheet": "Effects"
+        }
+      ],
+      "struct": "/Script/GuLiStrike.GuLiStrikeVfxEffectsRow",
       "row_key_column": "name"
     }
   }
