@@ -13,12 +13,14 @@ public class GuLiStrikeEditor : ModuleRules
 			"Core",
 			"CoreUObject",
 			"Engine",
+			"EditorSubsystem",
 			"GuLiStrike"
 		});
 
 		PrivateDependencyModuleNames.AddRange(new[]
 		{
 			"AssetRegistry",
+			"GeometryCore", "GeometryAlgorithms", "MeshDescription", "StaticMeshDescription",
 			"AIModule",
 			"Json",
 			"Landscape",

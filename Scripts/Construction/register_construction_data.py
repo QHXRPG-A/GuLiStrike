@@ -5,7 +5,7 @@ from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[2]
 CLI = Path('D:/UE5.7/excelize-cli/bin/xlsx.exe')
-OUT = ROOT / 'outputs/construction-20260922'
+OUT = ROOT / 'outputs/construction'
 OUT.mkdir(parents=True, exist_ok=True)
 
 

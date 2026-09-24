@@ -4,6 +4,11 @@
 
 | 日期 | 归档 | 模块 | 验证 | 摘要 |
 |---|---|---|---|---|
+| 2026-09-24 | [尼亚加拉辉光与HUDuiPRO资源迁入](../Archive/20260924-尼亚加拉辉光与HUDuiPRO资源迁入.md) | assets, vfx, ui | partial | 两个外部 ZIP 已迁入 Content/Assets；辉光包的 202 个 UE 包完成编辑器路径迁移，HUDuiPRO 的 5 个原始文件完成落盘核对，但源包有一处包外网格依赖缺失。 |
+| 2026-09-24 | [工程车传送地面校验与建筑屋顶禁行](../Archive/20260924-工程车传送地面校验与建筑屋顶禁行.md) | commander, building, economy, map, network | partial | 修复T传送、据点出口和赠品清场的建筑支撑漏检，普通建筑禁止屋顶站立及屋顶导航；静态检查、授权Editor构建、DLL和默认值加载核对完成，PIE效果待玩家确认。 |
+| 2026-09-24 | [Mass同址卡死复现与R2修复](../Archive/20260924-Mass同址卡死复现与R2修复.md) | commander, network, performance | partial | 同址PIE定位赠品导航范围缓存错误和恢复出口误拒绝；R2编译加载后90秒复测59名现场成员全部离开，10Hz保持。 |
+| 2026-09-24 | [Mass导航恢复编译与加载](../Archive/20260924-Mass导航恢复编译与加载.md) | commander, network, performance | partial | 用户同意编译并加载10Hz导航恢复补丁，源码版Editor构建通过、8份BuildId一致，新DLL与原型图已加载；运行效果待玩家确认。 |
+| 2026-09-24 | [Mass导航失效10Hz恢复修复](../Archive/20260924-Mass导航失效10Hz恢复修复.md) | commander, network, performance | partial | 修复建筑导航重建后脚下引用失效而持续卡住的代码路径，检测10Hz；静态检查及对应Map场景保存核对完成，待编译和玩家验证。 |
 | 2026-09-24 | [Mass随机站位玩家验收](../Archive/20260924-Mass随机站位玩家验收.md) | commander, network, performance | passed | 用户在即时移动、随机唯一站位及模型包围盒间距修复后明确确认符合预期，要求收尾。 |
 | 2026-09-24 | [Mass即时移动与随机站位交付](../Archive/20260924-Mass即时移动与随机站位交付.md) | commander, network, performance | partial | 实现即时移动和共享NavMesh路线，按最新截图反馈改为整单随机唯一站位及模型包围盒间距；编译及100人、混合50人动态数据核对通过，未确认全部到达和完整回归。 |
 | 2026-09-24 | [Mass三阶段耗时与百人响应实测](../Archive/20260924-Mass三阶段耗时与百人响应实测.md) | commander, network, performance | partial | 当前三段计算累计CPU占比为终点检查43.2%、匹配1.3%、路径及连接55.5%；两条100单位命令都未达200ms全部完成。 |

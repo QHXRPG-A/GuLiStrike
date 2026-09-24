@@ -1,0 +1,444 @@
+{
+  "tail_seconds_requested": 9.0,
+  "cutoff_cycle": 1382121940989,
+  "world_tick_count": 1151,
+  "per_game_frame_world_tick_count": {
+    "1": 2,
+    "3": 383
+  },
+  "unattributed_selected_scope_calls": {
+    "SK_RPF_Door": 42460,
+    "SConstraintCanvas": 16896,
+    "NS_Flash": 13873,
+    "SkeletalMeshComponent0": 8867,
+    "FWaitingQueue_Unpark_SignalWaitingThread": 6284,
+    "NS_MiningLaser_Green": 3544,
+    "WaitForTasks": 1526,
+    "DeferredRenderUpdates_GameThread": 768,
+    "Slate_PaintSlowPath": 768,
+    "Slate::AddShapedTextElement": 768,
+    "FViewport_Draw": 386,
+    "ProcessLocalPlayerSlateOperations": 384
+  },
+  "ordinals": {
+    "0": {
+      "world_tick_count": 383,
+      "world_tick_median_ms": 0.176,
+      "world_tick_p95_ms": 0.243,
+      "world_tick_mean_ms": 0.182,
+      "top_scopes_by_exclusive": []
+    },
+    "1": {
+      "world_tick_count": 383,
+      "world_tick_median_ms": 7.193,
+      "world_tick_p95_ms": 17.933,
+      "world_tick_mean_ms": 8.866,
+      "top_scopes_by_exclusive": [
+        {
+          "name": "GuLiCommanderMassStateTreeProcessor_0",
+          "calls": 102,
+          "inclusive_per_world_tick_ms": 1.797,
+          "exclusive_per_world_tick_ms": 1.797
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "calls": 12256,
+          "inclusive_per_world_tick_ms": 0.894,
+          "exclusive_per_world_tick_ms": 0.568
+        },
+        {
+          "name": "GameNetDriver",
+          "calls": 383,
+          "inclusive_per_world_tick_ms": 1.013,
+          "exclusive_per_world_tick_ms": 0.445
+        },
+        {
+          "name": "GuLiCommander_PredictiveAvoidanceCandidateQuery",
+          "calls": 270,
+          "inclusive_per_world_tick_ms": 0.426,
+          "exclusive_per_world_tick_ms": 0.426
+        },
+        {
+          "name": "ProcessUntilTasksComplete",
+          "calls": 2681,
+          "inclusive_per_world_tick_ms": 3.037,
+          "exclusive_per_world_tick_ms": 0.374
+        },
+        {
+          "name": "GuLiCommander_PredictiveAvoidanceBuildGrid",
+          "calls": 270,
+          "inclusive_per_world_tick_ms": 0.319,
+          "exclusive_per_world_tick_ms": 0.319
+        },
+        {
+          "name": "GuLiCommander_SharedRouteWork",
+          "calls": 12220,
+          "inclusive_per_world_tick_ms": 0.282,
+          "exclusive_per_world_tick_ms": 0.268
+        },
+        {
+          "name": "GuLiPlacedBuilding",
+          "calls": 5017,
+          "inclusive_per_world_tick_ms": 0.352,
+          "exclusive_per_world_tick_ms": 0.226
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "calls": 21065,
+          "inclusive_per_world_tick_ms": 0.168,
+          "exclusive_per_world_tick_ms": 0.163
+        },
+        {
+          "name": "GuLiMiningVehiclePawn",
+          "calls": 7429,
+          "inclusive_per_world_tick_ms": 0.164,
+          "exclusive_per_world_tick_ms": 0.141
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "calls": 45577,
+          "inclusive_per_world_tick_ms": 0.252,
+          "exclusive_per_world_tick_ms": 0.122
+        },
+        {
+          "name": "SkeletalMeshComponent0",
+          "calls": 16665,
+          "inclusive_per_world_tick_ms": 0.346,
+          "exclusive_per_world_tick_ms": 0.117
+        },
+        {
+          "name": "GuLiProjectilePool",
+          "calls": 270,
+          "inclusive_per_world_tick_ms": 0.094,
+          "exclusive_per_world_tick_ms": 0.09
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "calls": 21065,
+          "inclusive_per_world_tick_ms": 0.086,
+          "exclusive_per_world_tick_ms": 0.086
+        },
+        {
+          "name": "GuLiCommander_SoldierCombat",
+          "calls": 90,
+          "inclusive_per_world_tick_ms": 0.049,
+          "exclusive_per_world_tick_ms": 0.049
+        },
+        {
+          "name": "GuLiCommander_ManualAvoidanceRefresh",
+          "calls": 90,
+          "inclusive_per_world_tick_ms": 0.044,
+          "exclusive_per_world_tick_ms": 0.044
+        },
+        {
+          "name": "WaitForTasks",
+          "calls": 123,
+          "inclusive_per_world_tick_ms": 0.036,
+          "exclusive_per_world_tick_ms": 0.036
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "calls": 6292,
+          "inclusive_per_world_tick_ms": 0.035,
+          "exclusive_per_world_tick_ms": 0.035
+        },
+        {
+          "name": "SK_RPF_Door",
+          "calls": 42130,
+          "inclusive_per_world_tick_ms": 0.419,
+          "exclusive_per_world_tick_ms": 0.03
+        },
+        {
+          "name": "GuLiPose_Capture",
+          "calls": 90,
+          "inclusive_per_world_tick_ms": 0.027,
+          "exclusive_per_world_tick_ms": 0.027
+        },
+        {
+          "name": "GuLiGroundMassContact_RefreshSnapshot",
+          "calls": 90,
+          "inclusive_per_world_tick_ms": 0.025,
+          "exclusive_per_world_tick_ms": 0.025
+        },
+        {
+          "name": "GuLiPose_Encode",
+          "calls": 1280,
+          "inclusive_per_world_tick_ms": 0.022,
+          "exclusive_per_world_tick_ms": 0.022
+        },
+        {
+          "name": "GuLiCommander_HexCoverage",
+          "calls": 400315,
+          "inclusive_per_world_tick_ms": 0.021,
+          "exclusive_per_world_tick_ms": 0.021
+        },
+        {
+          "name": "GuLiCombatEffects_Runtime",
+          "calls": 383,
+          "inclusive_per_world_tick_ms": 0.114,
+          "exclusive_per_world_tick_ms": 0.019
+        },
+        {
+          "name": "GuLiPose_Send",
+          "calls": 1375,
+          "inclusive_per_world_tick_ms": 0.1,
+          "exclusive_per_world_tick_ms": 0.017
+        },
+        {
+          "name": "GuLiCommander_PredictiveAvoidanceSolve",
+          "calls": 270,
+          "inclusive_per_world_tick_ms": 0.014,
+          "exclusive_per_world_tick_ms": 0.014
+        },
+        {
+          "name": "GuLiCommander_SharedFindPath",
+          "calls": 30,
+          "inclusive_per_world_tick_ms": 0.014,
+          "exclusive_per_world_tick_ms": 0.014
+        },
+        {
+          "name": "UChannel_ReceivedSequencedBunch",
+          "calls": 225,
+          "inclusive_per_world_tick_ms": 0.035,
+          "exclusive_per_world_tick_ms": 0.012
+        },
+        {
+          "name": "ClientReceiveStateBatch",
+          "calls": 117,
+          "inclusive_per_world_tick_ms": 0.009,
+          "exclusive_per_world_tick_ms": 0.009
+        },
+        {
+          "name": "GuLiMining_BuildSlots",
+          "calls": 378,
+          "inclusive_per_world_tick_ms": 0.006,
+          "exclusive_per_world_tick_ms": 0.006
+        },
+        {
+          "name": "GuLiPose_Confirm",
+          "calls": 90,
+          "inclusive_per_world_tick_ms": 0.003,
+          "exclusive_per_world_tick_ms": 0.003
+        },
+        {
+          "name": "GuLiCommanderRoster_ApplyDelta",
+          "calls": 121,
+          "inclusive_per_world_tick_ms": 0.003,
+          "exclusive_per_world_tick_ms": 0.003
+        },
+        {
+          "name": "GuLiPose_Wire",
+          "calls": 1266,
+          "inclusive_per_world_tick_ms": 0.001,
+          "exclusive_per_world_tick_ms": 0.001
+        },
+        {
+          "name": "GuLiEngineering_PathBudget",
+          "calls": 383,
+          "inclusive_per_world_tick_ms": 0.002,
+          "exclusive_per_world_tick_ms": 0.001
+        },
+        {
+          "name": "GuLiPose_Ack",
+          "calls": 90,
+          "inclusive_per_world_tick_ms": 0.004,
+          "exclusive_per_world_tick_ms": 0.001
+        }
+      ]
+    },
+    "2": {
+      "world_tick_count": 383,
+      "world_tick_median_ms": 6.362,
+      "world_tick_p95_ms": 7.713,
+      "world_tick_mean_ms": 6.435,
+      "top_scopes_by_exclusive": [
+        {
+          "name": "ProcessUntilTasksComplete",
+          "calls": 2681,
+          "inclusive_per_world_tick_ms": 4.903,
+          "exclusive_per_world_tick_ms": 1.453
+        },
+        {
+          "name": "NS_MiningLaser_Green",
+          "calls": 770,
+          "inclusive_per_world_tick_ms": 0.891,
+          "exclusive_per_world_tick_ms": 0.888
+        },
+        {
+          "name": "GuLiCommanderPresentation_Interpolation",
+          "calls": 383,
+          "inclusive_per_world_tick_ms": 0.484,
+          "exclusive_per_world_tick_ms": 0.483
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "calls": 12256,
+          "inclusive_per_world_tick_ms": 0.73,
+          "exclusive_per_world_tick_ms": 0.458
+        },
+        {
+          "name": "NS_Flash",
+          "calls": 1076,
+          "inclusive_per_world_tick_ms": 0.201,
+          "exclusive_per_world_tick_ms": 0.199
+        },
+        {
+          "name": "UChannel_ReceivedSequencedBunch",
+          "calls": 7729,
+          "inclusive_per_world_tick_ms": 0.567,
+          "exclusive_per_world_tick_ms": 0.178
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "calls": 45577,
+          "inclusive_per_world_tick_ms": 0.268,
+          "exclusive_per_world_tick_ms": 0.143
+        },
+        {
+          "name": "GuLiCombatEffects_Presentation",
+          "calls": 383,
+          "inclusive_per_world_tick_ms": 0.146,
+          "exclusive_per_world_tick_ms": 0.143
+        },
+        {
+          "name": "GameNetDriver",
+          "calls": 383,
+          "inclusive_per_world_tick_ms": 0.135,
+          "exclusive_per_world_tick_ms": 0.135
+        },
+        {
+          "name": "SkeletalMeshComponent0",
+          "calls": 16900,
+          "inclusive_per_world_tick_ms": 0.422,
+          "exclusive_per_world_tick_ms": 0.131
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "calls": 21065,
+          "inclusive_per_world_tick_ms": 0.125,
+          "exclusive_per_world_tick_ms": 0.124
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "calls": 22632,
+          "inclusive_per_world_tick_ms": 0.121,
+          "exclusive_per_world_tick_ms": 0.121
+        },
+        {
+          "name": "ClientReceiveStateBatch",
+          "calls": 234,
+          "inclusive_per_world_tick_ms": 0.221,
+          "exclusive_per_world_tick_ms": 0.101
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "calls": 21065,
+          "inclusive_per_world_tick_ms": 0.074,
+          "exclusive_per_world_tick_ms": 0.074
+        },
+        {
+          "name": "GuLiCommanderPresentation_RebuildLocalInstances",
+          "calls": 383,
+          "inclusive_per_world_tick_ms": 0.616,
+          "exclusive_per_world_tick_ms": 0.042
+        },
+        {
+          "name": "GuLiGroundMassContact_RefreshSnapshot",
+          "calls": 90,
+          "inclusive_per_world_tick_ms": 0.027,
+          "exclusive_per_world_tick_ms": 0.027
+        },
+        {
+          "name": "GuLiPose_Receive",
+          "calls": 1266,
+          "inclusive_per_world_tick_ms": 0.042,
+          "exclusive_per_world_tick_ms": 0.026
+        },
+        {
+          "name": "SK_RPF_Door",
+          "calls": 42130,
+          "inclusive_per_world_tick_ms": 0.342,
+          "exclusive_per_world_tick_ms": 0.024
+        },
+        {
+          "name": "GuLiCommanderPresentation_InstanceSubmit",
+          "calls": 383,
+          "inclusive_per_world_tick_ms": 0.06,
+          "exclusive_per_world_tick_ms": 0.021
+        },
+        {
+          "name": "GuLiPose_Decode",
+          "calls": 1266,
+          "inclusive_per_world_tick_ms": 0.016,
+          "exclusive_per_world_tick_ms": 0.016
+        },
+        {
+          "name": "GuLiCommanderMiniMap_Snapshot",
+          "calls": 90,
+          "inclusive_per_world_tick_ms": 0.016,
+          "exclusive_per_world_tick_ms": 0.015
+        },
+        {
+          "name": "GuLiCommanderHealthBars_UpdateInstances",
+          "calls": 383,
+          "inclusive_per_world_tick_ms": 0.012,
+          "exclusive_per_world_tick_ms": 0.011
+        },
+        {
+          "name": "GuLiCommanderPresentation_MassBatchSubmit",
+          "calls": 125,
+          "inclusive_per_world_tick_ms": 0.011,
+          "exclusive_per_world_tick_ms": 0.011
+        },
+        {
+          "name": "GuLiCommanderPresentation_MassBatchExecute",
+          "calls": 124,
+          "inclusive_per_world_tick_ms": 0.009,
+          "exclusive_per_world_tick_ms": 0.009
+        },
+        {
+          "name": "WaitForTasks",
+          "calls": 10,
+          "inclusive_per_world_tick_ms": 0.005,
+          "exclusive_per_world_tick_ms": 0.005
+        },
+        {
+          "name": "GuLiCommanderRoster_ApplyDelta",
+          "calls": 126,
+          "inclusive_per_world_tick_ms": 0.005,
+          "exclusive_per_world_tick_ms": 0.004
+        },
+        {
+          "name": "GuLiCommanderHealthBars_MaintainActivity",
+          "calls": 90,
+          "inclusive_per_world_tick_ms": 0.003,
+          "exclusive_per_world_tick_ms": 0.003
+        },
+        {
+          "name": "GuLiCommanderPresentation_StateChanges",
+          "calls": 58,
+          "inclusive_per_world_tick_ms": 0.002,
+          "exclusive_per_world_tick_ms": 0.002
+        },
+        {
+          "name": "GuLiPose_Wire",
+          "calls": 1266,
+          "inclusive_per_world_tick_ms": 0.001,
+          "exclusive_per_world_tick_ms": 0.001
+        },
+        {
+          "name": "GuLiPose_Ack",
+          "calls": 90,
+          "inclusive_per_world_tick_ms": 0.008,
+          "exclusive_per_world_tick_ms": 0.001
+        },
+        {
+          "name": "GuLiCommanderPresentation_PoolDelta",
+          "calls": 16,
+          "inclusive_per_world_tick_ms": 0.001,
+          "exclusive_per_world_tick_ms": 0.001
+        }
+      ]
+    }
+  }
+}

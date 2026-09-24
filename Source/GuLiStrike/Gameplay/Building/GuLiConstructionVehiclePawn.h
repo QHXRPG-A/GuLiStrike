@@ -5,6 +5,7 @@
 #include "GuLiConstructionVehiclePawn.generated.h"
 class UChildActorComponent;
 class UGuLiConstructionWorkComponent;
+class UGuLiConstructionPresentationComponent;
 class UGuLiBuildingLifecycleComponent;
 struct FGuLiSoldierDefinition;
 
@@ -33,6 +34,7 @@ private:
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UChildActorComponent> Presentation;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiEngineeringTravelComponent> Travel;
 	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiConstructionWorkComponent> Work;
+	UPROPERTY(VisibleAnywhere) TObjectPtr<UGuLiConstructionPresentationComponent> ConstructionPresentation;
 	UPROPERTY(Replicated) EGuLiTeam Team = EGuLiTeam::Unassigned;
 	UPROPERTY(Replicated) FGuLiControllableActorId StableId;
 	UPROPERTY(ReplicatedUsing=OnRep_Definition) TSubclassOf<AActor> PresentationClass;

@@ -2,6 +2,7 @@
 #include "Gameplay/Building/GuLiBuildingTypes.h"
 #include "Gameplay/Resources/GuLiResourceMapDefinition.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
+#include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
 #include "Components/StaticMeshComponent.h"
 #include "Components/SkeletalMeshComponent.h"
 #include "Engine/BlueprintGeneratedClass.h"
@@ -46,6 +47,7 @@ UMeshComponent* GuLiBuildingVisuals::CopyMesh(AActor& Owner, USceneComponent& Pa
 	Copy->SetCanEverAffectNavigation(false);
 	Copy->SetReceivesDecals(false);
 	Copy->SetCastShadow(Override == nullptr && Source.CastShadow);
+	if (Override) GuLiUnitRenderPolicy::ApplyReflectionExclusions(*Copy);
 	Copy->SetupAttachment(&Parent);
 	Copy->SetRelativeTransform(RelativeTransform);
 	for (int32 Index = 0; Index < Copy->GetNumMaterials(); ++Index)

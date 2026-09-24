@@ -45,4 +45,9 @@ namespace GuLiVfxIds
 	inline constexpr int32 BuildingConstructionHologram = 40;
 	inline constexpr int32 BuildingConstructionFinish = 41;
 	inline constexpr int32 BuildingPlacementGrid = 42;
+	inline constexpr int32 BuildingConstructionComplete = 43;
+	inline constexpr int32 BuildingConstructionTopLoop = 44;
+	inline constexpr int32 BuildingConstructionLaser = 45;
+	inline constexpr int32 BuildingConstructionColumnTail = 46;
+	inline constexpr int32 BuildingConstructionMote = 47;
 }

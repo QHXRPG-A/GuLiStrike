@@ -26,10 +26,12 @@
 #include "Commander/Mass/Navigation/GuLiNavigationDependency.h"
 #include "Commander/Mass/Navigation/GuLiSharedMoveRoutes.h"
 #include "Containers/Queue.h"
+#include "Components/BoxComponent.h"
 #include "Commander/Mass/Navigation/GuLiIncrementalAssignment.h"
 #include "Commander/Presentation/GuLiCommanderLandscapeQuerySubsystem.h"
 #include "Development/GuLiWingmanQAEvidence.h"
 #include "Engine/World.h"
+#include "Engine/HitResult.h"
 #include "EngineUtils.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Gameplay/CombatEffects/GuLiCombatEffectRuntimeSubsystem.h"
@@ -97,6 +99,10 @@ namespace GuLiCommanderMassPrivate
 	constexpr double GroundMechYieldReturnDelaySeconds = 0.5;
 	constexpr float GroundMechYieldArrivalToleranceCentimeters = 5.0f;
 	constexpr float MaximumSurfaceStepZCentimeters = 50.0f;
+	constexpr float NavigationRepairRingStepCentimeters = 300.0f;
+	constexpr float MaximumNavigationRepairDistanceCentimeters = 600.0f;
+	constexpr double NavigationRepairDistanceToleranceCentimeters = 0.01;
+	constexpr int32 NavigationRepairCandidates = 18; // Exact, nearest, then eight directions at 300/600 cm.
 	constexpr float ProgressDistanceCentimeters = 6.0f;
 	constexpr float CenterlineRecoverySeconds = 1.0f;
 	constexpr float PersonalRecoveryRetrySeconds = 2.0f;
@@ -124,6 +130,7 @@ namespace GuLiCommanderMassPrivate
 	static_assert(FormationColumns == GuLiCommanderNavigationPolicy::MaximumFormationColumns);
 	static_assert(SoldierCountPerFormation == GuLiCommanderNavigationPolicy::FormationMemberCapacity);
 	static_assert(GuLiCommanderNavigationPolicy::MovementUpdateIntervalTicks == 1u);
+	static_assert(GuLiCommanderSimulationTiming::RateHz == 10u, "Navigation repair detection runs once per 10 Hz authority step.");
 
 	struct FSoldierWeaponRuntime
 	{
@@ -216,6 +223,86 @@ namespace GuLiCommanderMassPrivate
 			return FMath::IsFinite(Health) && Health > 0.0f;
 		}
 	};
+
+	void GetNavigationRepairEscape(const FHitResult& Hit, const FVector& BodyCenter, const float Radius,
+		FVector& Normal, double& Depth)
+	{
+		Normal = Hit.Normal;
+		Depth = Hit.PenetrationDepth;
+		// A short building can report the ground-facing MTD even though a walking unit
+		// must leave horizontally. For an upright box, use its nearest horizontal face.
+		const auto* Box = Cast<UBoxComponent>(Hit.GetComponent());
+		if (!Box || Normal.SizeSquared2D() > UE_KINDA_SMALL_NUMBER
+			|| Box->GetUpVector().Z < .999) return;
+		const FVector Local = Box->GetComponentTransform().InverseTransformPositionNoScale(BodyCenter);
+		const FVector Extent = Box->GetScaledBoxExtent();
+		if (FMath::Abs(Local.X) > Extent.X || FMath::Abs(Local.Y) > Extent.Y
+			|| FMath::Abs(Local.Z) > Extent.Z) return;
+		const double DepthX = Extent.X - FMath::Abs(Local.X) + Radius;
+		const double DepthY = Extent.Y - FMath::Abs(Local.Y) + Radius;
+		const FVector LocalNormal = DepthX <= DepthY
+			? FVector(Local.X >= 0. ? 1. : -1., 0, 0)
+			: FVector(0, Local.Y >= 0. ? 1. : -1., 0);
+		Normal = Box->GetComponentQuat().RotateVector(LocalNormal);
+		Depth = FMath::Min(DepthX, DepthY);
+	}
+
+	// A rebuilt tile can strand a body just outside the new walkable surface. Permit only a
+	// short, collision-checked escape, including outward depenetration from a new building.
+	bool IsNavigationRepairSegmentClear(UWorld& World, const FGuLiDynamicObstacleSnapshot& Obstacles,
+		const FSoldierRuntime& Soldier, const FVector& Target)
+	{
+		const FVector Delta = Target - Soldier.Location;
+		const float Radius = Soldier.AvoidanceRadiusCentimeters;
+		if (Target.ContainsNaN() || Soldier.Location.ContainsNaN() || !FMath::IsFinite(Radius) || Radius <= 0.f
+			|| Delta.SizeSquared2D() > FMath::Square(MaximumNavigationRepairDistanceCentimeters + NavigationRepairDistanceToleranceCentimeters)
+			|| FMath::Abs(Delta.Z) > MaximumSurfaceStepZCentimeters
+			|| !Obstacles.IsSegmentClear(Soldier.Location, Target, Radius, true)
+			|| !Obstacles.IsSegmentClear(Target, Target, Radius)) return false;
+
+		// Same body convention as gift-building clearance: foot location + radius + floor clearance.
+		const FVector Lift(0, 0, Radius + 3.f);
+		const FCollisionShape Body = FCollisionShape::MakeSphere(Radius);
+		FCollisionQueryParams Params(SCENE_QUERY_STAT(GuLiMassNavigationRepair), false);
+		Params.bFindInitialOverlaps = true;
+		if (World.OverlapBlockingTestByChannel(Target + Lift, FQuat::Identity, ECC_Pawn, Body, Params)) return false;
+		TArray<FHitResult> Hits;
+		World.SweepMultiByChannel(Hits, Soldier.Location + Lift, Target + Lift, FQuat::Identity, ECC_Pawn, Body, Params);
+		FCollisionQueryParams RemainingGeometry = Params;
+		bool bHasInitialPenetration = false;
+		for (const FHitResult& Hit : Hits)
+		{
+			if (!Hit.bBlockingHit) continue;
+			// Never ignore a wall along the segment. An initial overlap is escapable only along its outward normal.
+			FVector EscapeNormal; double EscapeDepth;
+			GetNavigationRepairEscape(Hit, Soldier.Location + Lift, Radius, EscapeNormal, EscapeDepth);
+			if (!Hit.bStartPenetrating || FVector::DotProduct(Delta, EscapeNormal) <= UE_KINDA_SMALL_NUMBER) return false;
+			RemainingGeometry.AddIgnoredComponent(Hit.GetComponent());
+			bHasInitialPenetration = true;
+		}
+		// Initial hits can hide a second wall. Check the complete segment against every
+		// other component before accepting escape from the original overlapping bodies.
+		if (bHasInitialPenetration && World.SweepTestByChannel(Soldier.Location + Lift, Target + Lift,
+			FQuat::Identity, ECC_Pawn, Body, RemainingGeometry)) return false;
+		// Initial blocking overlaps can shorten a forward sweep. Sweep back from the clear end
+		// as well: the first obstruction must be confined to an original penetration at the start.
+		FHitResult ReverseHit;
+		if (World.SweepSingleByChannel(ReverseHit, Target + Lift, Soldier.Location + Lift,
+			FQuat::Identity, ECC_Pawn, Body, Params))
+		{
+			const bool bOriginalPenetration = Hits.ContainsByPredicate([&](const FHitResult& Hit)
+			{
+				FVector EscapeNormal; double EscapeDepth;
+				GetNavigationRepairEscape(Hit, Soldier.Location + Lift, Radius, EscapeNormal, EscapeDepth);
+				const double OutwardDistance = FVector::DotProduct(Delta, EscapeNormal);
+				return Hit.bBlockingHit && Hit.bStartPenetrating && Hit.GetComponent() == ReverseHit.GetComponent()
+					&& OutwardDistance > UE_KINDA_SMALL_NUMBER && FVector::DotProduct(Delta, ReverseHit.Normal) > 0.
+					&& ReverseHit.Time >= 1. - (EscapeDepth + 1.) / OutwardDistance;
+			});
+			if (!bOriginalPenetration) return false;
+		}
+		return true;
+	}
 
 	FVector ConstrainEnvironmentVelocity(FSoldierRuntime& Soldier,const FGuLiDynamicObstacleSnapshot& Snapshot,FVector Velocity,float Dt,float Speed)
 	{
@@ -583,15 +670,12 @@ namespace GuLiCommanderMassPrivate
 	struct FNavigationRecoveryWork
 	{
 		FGuLiSoldierId Id;
-		uint64 TaskVersion=0;
-		uint32 Order=0, Nav=0, Epoch=0;
-		FNavLocation Start, Final;
-		FVector RequestedFinal=FVector::ZeroVector;
-		TArray<FVector> Path;
-		TSharedPtr<FGuLiNavigationDependency> Navigation;
-		int32 Stage=0, Candidate=0;
-		double Started=0, Progress=0;
-		bool bReady=false, bValid=false, bHadFinal=false;
+		uint64 TaskVersion = 0, LastQueryFrame = MAX_uint64;
+		uint32 Order = 0, Epoch = 0;
+		TWeakObjectPtr<const ANavigationData> NavigationData;
+		FVector Source = FVector::ZeroVector;
+		FNavLocation Target;
+		int32 Candidate = 0;
 	};
 
 
@@ -1616,8 +1700,7 @@ struct FGuLiBattleAuthorityState
 	TWeakObjectPtr<const AGuLiBattlePlayerState> LastManualOwner;
 	struct FCommandGroup { uint32 Batch = 0; double LastUsed = 0; };
 	TMap<TPair<FObjectKey,uint32>,FCommandGroup> CommandGroups;
-	uint64 RecoveryDiscoveryFrame = MAX_uint64;
-	int32 RecoveryDiscoveryRemaining = 0;
+	uint64 RecoveryDetectionSteps = 0;
 	FGuLiNavigationWorkBudget::FAllowance CategoryUsage[4];
 	int32 ReservationBootstrapCursor = 0;
 	TMap<uint32, FGuLiMoveEndpointSnapshot> ActiveEndpoints;
@@ -1625,8 +1708,7 @@ struct FGuLiBattleAuthorityState
 	TSet<uint32> RemovedEndpointIds;
 	TMap<uint32,GuLiCommanderMassPrivate::FNavigationRecoveryWork> RecoveryWork;
 	TQueue<uint32> RecoveryQueue, ReadyRecoveryQueue;
-	uint32 RecoveryScanCursor=0;
-	uint64 RecoveryQueries=0, RecoveryFailures=0;
+	uint64 RecoveryQueries=0, RecoveryFailures=0, RecoveryRepairs=0;
 	double NextPlanningDiagnostic=0;
 	TMap<FIntPoint, TArray<int32>> SpatialGrid;
 	GuLiCommanderNavigationPolicy::FManualAvoidanceSpatialGrid ManualAvoidanceSpatialGrid;
@@ -1772,7 +1854,7 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 	AuthorityState->PlanningBudget.Reset(MovePlanningMilliseconds, MovePositionQueriesPerFrame, MovePathQueriesPerFrame);
 	AuthorityState->CommitBudget.Reset(MoveCommitMilliseconds, 0, 0, FMath::Max(25, MoveCommitMembersPerFrame));
 	auto& Budget = AuthorityState->PlanningBudget;
-	FGuLiNavigationWorkBudget::FAllowance Shares[3]={{.0012,16,2},{.0004,16,2},{.0004,32,0}};
+	FGuLiNavigationWorkBudget::FAllowance Shares[4]={{.0010,16,2},{.0004,16,2},{.0003,24,0},{.0003,8,0}};
 	auto RunCategory=[&](int32 Category,FGuLiNavigationWorkBudget::FAllowance& Allowance)
 	{
 		if (!Budget.CanWork() || Allowance.Seconds<=0) return;
@@ -1784,19 +1866,19 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 			TickSharedNavigation(0);
 		}
 		else if (Category==1) { TickMovePlanning(Budget.Projections,Budget.Paths,false); TickSharedNavigation(1); }
-		else TickSharedNavigation(2);
+		else if (Category==2) TickSharedNavigation(2);
+		else TickNavigationRepairs();
 	};
 	for (int32 Round=0; Round<8 && Budget.CanWork(); ++Round)
 	{
 		RunCategory(0,Shares[0]);
-		for (int32 Offset=0; Offset<2; ++Offset) { const int32 C=1+(GFrameCounter+Offset)%2; RunCategory(C,Shares[C]); }
+		for (int32 Offset=0; Offset<3; ++Offset) { const int32 C=1+(GFrameCounter+Offset)%3; RunCategory(C,Shares[C]); }
 	}
-	for (int32 C=0; C<3; ++C) AuthorityState->CategoryUsage[C]=Shares[C];
-	AuthorityState->CategoryUsage[3]={};
+	for (int32 C=0; C<4; ++C) AuthorityState->CategoryUsage[C]=Shares[C];
 	for (int32 Round=0; Round<8 && Budget.CanWork(); ++Round)
-		for (int32 Offset=0; Offset<3 && Budget.CanWork(); ++Offset)
+		for (int32 Offset=0; Offset<4 && Budget.CanWork(); ++Offset)
 		{
-			const int32 C=(GFrameCounter+Offset)%3;
+			const int32 C=(GFrameCounter+Offset)%4;
 			FGuLiNavigationWorkBudget::FAllowance Borrowed{Budget.LimitSeconds-Budget.Elapsed(),Budget.Projections,Budget.Paths};
 			RunCategory(C,Borrowed);
 			auto& Used=AuthorityState->CategoryUsage[C]; Used.UsedSeconds+=Borrowed.UsedSeconds;
@@ -1807,7 +1889,7 @@ void UGuLiBattleAuthoritySubsystem::Tick(const float DeltaTime)
 	if (auto* Tasks=GetWorld()->GetSubsystem<UGuLiUnitTaskSubsystem>()) Tasks->ConsumeMoveProgress();
 	PublishMoveEndpointChanges();
 
-	// 负 DeltaTime 按 0 处理；每次消耗 1/30 秒，累计上限把本帧模拟工作限制在最多 4 步。
+	// 负 DeltaTime 按 0 处理；每次消耗 0.1 秒，累计上限把本帧模拟工作限制在最多 4 步。
 	const double UnclampedAccumulator = AuthorityState->FixedStepAccumulator
 		+ static_cast<double>(FMath::Max(0.0f, DeltaTime));
 	const double MaximumAccumulator =
@@ -2293,7 +2375,8 @@ void UGuLiBattleAuthoritySubsystem::DestroyAuthorityPopulation()
 	AuthorityState->SoldierIndexById.Reset();
 	AuthorityState->OrderFormations.Reset();
 	AuthorityState->MovePlanningJobs.Reset();
-	AuthorityState->RecoveryWork.Reset(); AuthorityState->RecoveryQueue.Empty(); AuthorityState->ReadyRecoveryQueue.Empty(); AuthorityState->RecoveryScanCursor=0;
+	AuthorityState->RecoveryWork.Reset(); AuthorityState->RecoveryQueue.Empty(); AuthorityState->ReadyRecoveryQueue.Empty();
+	AuthorityState->RecoveryDetectionSteps=0; AuthorityState->RecoveryQueries=0; AuthorityState->RecoveryFailures=0; AuthorityState->RecoveryRepairs=0;
 	AuthorityState->SpatialGrid.Reset();
 	AuthorityState->ManualAvoidanceSpatialGrid.Reset();
 	AuthorityState->ManualAvoidanceAgents.Reset();
@@ -2589,7 +2672,8 @@ void UGuLiBattleAuthoritySubsystem::TickSharedNavigation(int32 Category)
 	while (A.SharedDiscoveryRemaining[Category]>0 && !A.Soldiers.IsEmpty() && Budget.CanWork() && Work++<32)
 	{
 		auto& Cursor=A.SharedDiscoveryCursor[Category]; Cursor%=A.Soldiers.Num(); auto& S=A.Soldiers[Cursor++]; --A.SharedDiscoveryRemaining[Category];
-		if (!S.MoveIntent || !S.ActiveOrderId || !S.CanAct() || S.bAutomaticAdvance!=(Category==1)) continue;
+		if (!S.MoveIntent || !S.ActiveOrderId || !S.CanAct() || S.bAutomaticAdvance!=(Category==1)
+			|| !Data->IsNodeRefValid(S.LastValidNavLocation.NodeRef)) continue;
 		// All slots retain the click's shared corridor. Final spreading must not create one A* per soldier.
 		if (S.bHasDockTarget && S.MoveIntent->InDockingArea(S.Location)) continue;
 		if (S.SharedRoute && S.SharedRoute->Goal==S.RouteGoal && S.SharedRoute->State==FGuLiSharedMoveRoute::EState::Ready
@@ -2980,8 +3064,7 @@ void UGuLiBattleAuthoritySubsystem::HandleNavigationGenerationFinished(
 
 	// A resource cluster disappearing opens space. Existing paths remain legal and must not
 	// be stopped merely because unrelated Recast tiles changed. Only derived local-flow caches
-	// are invalidated; ordinary surface projection failures already enqueue the affected member
-	// in the bounded centerline/personal-path recovery path below.
+	// are invalidated; the 10 Hz detector queues invalid foot coordinates for bounded surface repair.
 	for (FOrderFormationRuntime& Formation : AuthorityState->OrderFormations)
 	{
 		Formation.FlowField.Reset();
@@ -2998,171 +3081,164 @@ void UGuLiBattleAuthoritySubsystem::HandleDynamicObstaclesChanged(const uint32 O
 	AuthorityState->bForceManualAvoidanceRefresh = true;
 }
 
-void UGuLiBattleAuthoritySubsystem::TickNavigationRepairs(int32& RemainingProjectionBudget,int32& RemainingPathBudget)
+void UGuLiBattleAuthoritySubsystem::DetectNavigationRepairs()
 {
 	using namespace GuLiCommanderMassPrivate;
-	if (!AuthorityState || AuthorityState->Soldiers.IsEmpty()) return;
-	FGuLiNavigationWorkBudget::FScope Scope(AuthorityState->PlanningBudget);
-	auto* World=GetWorld(); auto* State=World->GetGameState<AGuLiBattleGameState>();
-	auto* Nav=FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
-	auto* Data=Nav ? GetCommanderNavigationData(*Nav) : nullptr;
-	auto* Registry=World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
-	if (!State || !Data || !Registry) return;
-	const auto Obstacles=Registry->GetSnapshot();
-	// Discovery is cursor based too. No whole-population scan/sort on each personal retry.
-	if (AuthorityState->RecoveryDiscoveryFrame!=GFrameCounter)
-	{ AuthorityState->RecoveryDiscoveryFrame=GFrameCounter; AuthorityState->RecoveryDiscoveryRemaining=FMath::Min(128,AuthorityState->Soldiers.Num()); }
-	for (int32 Discovered=0; Discovered<8 && AuthorityState->RecoveryDiscoveryRemaining>0 && AuthorityState->PlanningBudget.CanWork(); ++Discovered)
+	++AuthorityState->RecoveryDetectionSteps;
+	auto* World = GetWorld();
+	const auto* State = World->GetGameState<AGuLiBattleGameState>();
+	auto* System = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+	const auto* Data = System ? GetCommanderNavigationData(*System) : nullptr;
+	if (!State || !Data) return;
+
+	// Cheap validity detection for every present member on EVERY fixed step, independent of
+	// render rate, selection, movement/attack hold and the amortized navigation-query budget.
+	for (const auto& Soldier : AuthorityState->Soldiers)
 	{
-		--AuthorityState->RecoveryDiscoveryRemaining;
-		auto& Soldier=AuthorityState->Soldiers[AuthorityState->RecoveryScanCursor++ % AuthorityState->Soldiers.Num()];
-		if (!Soldier.CanAct() || AuthorityState->RecoveryWork.Contains(Soldier.SoldierId.Value)) continue;
-		const auto Dependency=Soldier.ActiveNavigation ? Soldier.ActiveNavigation->Check(*Data,AuthorityState->NavigationGeneration,AuthorityState->PlanningBudget)
-			: FGuLiNavigationDependency::ECheck::Valid;
-		if (Dependency==FGuLiNavigationDependency::ECheck::Pending) continue;
-		const bool Stale=!Data->IsNodeRefValid(Soldier.LastValidNavLocation.NodeRef)
-			|| (Soldier.ActiveOrderId && (!Data->IsNodeRefValid(Soldier.FinalDestination.NodeRef)
-				|| Dependency==FGuLiNavigationDependency::ECheck::Invalid));
-		if (!Stale) Soldier.FinalDestinationNavigationGeneration=AuthorityState->NavigationGeneration;
-		const bool Retry=Soldier.ActiveOrderId && Soldier.NavigationState==EGuLiSoldierNavigationState::PersonalPathRecovery
-			&& (Soldier.PersonalPathRetries==0 || (Soldier.PersonalPathRetries==1 && Soldier.NoProgressSeconds>=PersonalRecoveryRetrySeconds));
-		if (!Stale && !Retry) continue;
-		FNavigationRecoveryWork Work; Work.Id=Soldier.SoldierId; Work.Order=Soldier.ActiveOrderId;
-		Work.Nav=AuthorityState->NavigationGeneration; Work.Epoch=State->GetMatchEpoch(); Work.TaskVersion=Soldier.TaskGeneration;
-		Work.bHadFinal=Soldier.bHasFinalDestination && Soldier.ActiveOrderId!=0;
-		Work.RequestedFinal=Soldier.FinalDestination.Location; Work.Started=Work.Progress=FPlatformTime::Seconds();
-		AuthorityState->RecoveryWork.Add(Work.Id.Value,MoveTemp(Work)); AuthorityState->RecoveryQueue.Enqueue(Soldier.SoldierId.Value);
+		if (!Soldier.CanAct() || !Soldier.IsPresent() || Soldier.Location.ContainsNaN()
+			|| Data->IsNodeRefValid(Soldier.LastValidNavLocation.NodeRef)
+			|| AuthorityState->RecoveryWork.Contains(Soldier.SoldierId.Value)) continue;
+		FNavigationRecoveryWork Work;
+		Work.Id = Soldier.SoldierId;
+		Work.TaskVersion = Soldier.TaskGeneration;
+		Work.Order = Soldier.ActiveOrderId;
+		Work.NavigationData = Data;
+		Work.Epoch = State->GetMatchEpoch();
+		Work.Source = Soldier.Location;
+		AuthorityState->RecoveryWork.Add(Work.Id.Value, Work);
+		AuthorityState->RecoveryQueue.Enqueue(Work.Id.Value);
 	}
-	uint32 Id=0;
-	for (int32 Visit=0; Visit<128 && AuthorityState->PlanningBudget.CanWork() && AuthorityState->RecoveryQueue.Dequeue(Id); ++Visit)
+}
+
+void UGuLiBattleAuthoritySubsystem::TickNavigationRepairs()
+{
+	using namespace GuLiCommanderMassPrivate;
+	auto& A = *AuthorityState;
+	if (A.RecoveryQueue.IsEmpty()) return;
+	auto& Budget = A.PlanningBudget;
+	FGuLiNavigationWorkBudget::FScope Scope(Budget);
+	auto* World = GetWorld();
+	const auto* State = World->GetGameState<AGuLiBattleGameState>();
+	auto* System = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+	auto* Data = System ? GetCommanderNavigationData(*System) : nullptr;
+	auto* Registry = World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
+	if (!State || !Data || !Registry) return;
+	const auto Obstacles = Registry->GetSnapshot();
+	uint32 Id = 0;
+	const int32 Visits = FMath::Min(32, A.RecoveryWork.Num());
+	for (int32 Visit = 0; Visit < Visits && Budget.CanWork() && A.RecoveryQueue.Dequeue(Id); ++Visit)
 	{
-		auto* W=AuthorityState->RecoveryWork.Find(Id); const auto* Index=AuthorityState->SoldierIndexById.Find(Id);
-		if (!W || !Index) { AuthorityState->RecoveryWork.Remove(Id); continue; }
-		const auto& Soldier=AuthorityState->Soldiers[*Index];
-		if (!Soldier.CanAct() || W->TaskVersion!=Soldier.TaskGeneration || W->Order!=Soldier.ActiveOrderId
-			|| W->Epoch!=State->GetMatchEpoch())
-		{ AuthorityState->RecoveryWork.Remove(Id); continue; }
-		if (W->Nav!=AuthorityState->NavigationGeneration)
+		auto* Work = A.RecoveryWork.Find(Id);
+		const auto* Index = A.SoldierIndexById.Find(Id);
+		if (!Work || !Index) { A.RecoveryWork.Remove(Id); continue; }
+		const auto& Soldier = A.Soldiers[*Index];
+		if (!Soldier.CanAct() || !Soldier.IsPresent() || Work->TaskVersion != Soldier.TaskGeneration
+			|| Work->Order != Soldier.ActiveOrderId || Work->Epoch != State->GetMatchEpoch()
+			|| Work->NavigationData.Get() != Data || !Work->Source.Equals(Soldier.Location, .01)
+			|| Data->IsNodeRefValid(Soldier.LastValidNavLocation.NodeRef))
+		{ A.RecoveryWork.Remove(Id); continue; }
+		// One candidate per member per world frame; queue rotation shares the budget fairly.
+		if (Work->LastQueryFrame == GFrameCounter || !Budget.TakeProjection())
+		{ A.RecoveryQueue.Enqueue(Id); continue; }
+		Work->LastQueryFrame = GFrameCounter;
+		FGuLiNavigationWorkBudget::FQueryScope Query(Budget);
+		++A.RecoveryQueries;
+		FVector Probe = Work->Source;
+		float Extent = .1f;
+		if (Work->Candidate == 1) Extent = MaximumNavigationRepairDistanceCentimeters;
+		else if (Work->Candidate >= 2)
 		{
-			if (W->Stage>0 && !Data->IsNodeRefValid(W->Start.NodeRef)) W->Stage=0;
-			else if (W->Stage>1 && !Data->IsNodeRefValid(W->Final.NodeRef)) W->Stage=1;
-			if (W->Navigation)
-			{
-				const auto Checked=W->Navigation->Check(*Data,AuthorityState->NavigationGeneration,AuthorityState->PlanningBudget);
-				if (Checked==FGuLiNavigationDependency::ECheck::Pending) { AuthorityState->RecoveryQueue.Enqueue(Id); continue; }
-				if (Checked==FGuLiNavigationDependency::ECheck::Invalid) { W->Stage=FMath::Min(W->Stage,2); W->bReady=false; }
-			}
-			if (W->Stage<2) W->bReady=false;
-			W->Nav=AuthorityState->NavigationGeneration;
+			const int32 Direction = (Work->Candidate - 2) % 8;
+			const int32 Ring = (Work->Candidate - 2) / 8 + 1;
+			const double Angle = UE_DOUBLE_TWO_PI * Direction / 8.;
+			Probe += FVector(FMath::Cos(Angle), FMath::Sin(Angle), 0) * (NavigationRepairRingStepCentimeters * Ring);
+			Extent = NavigationRepairRingStepCentimeters * .5f;
 		}
-		const double Now=FPlatformTime::Seconds();
-		if (Now-W->Started>=30. || Now-W->Progress>=5.) { W->bReady=true; W->bValid=false; }
-		if (!W->bReady && W->Stage<2 && AuthorityState->PlanningBudget.TakeProjection())
+		const bool bValid = ProjectPointToCommanderNavigation(*System, *Data, Probe,
+			FVector(Extent, Extent, MaximumSurfaceStepZCentimeters), Work->Target)
+			&& IsNavigationRepairSegmentClear(*World, *Obstacles, Soldier, Work->Target.Location);
+		if (bValid) A.ReadyRecoveryQueue.Enqueue(Id);
+		else if (++Work->Candidate < NavigationRepairCandidates) A.RecoveryQueue.Enqueue(Id);
+		else
 		{
-			FGuLiNavigationWorkBudget::FQueryScope Query(AuthorityState->PlanningBudget); W->Progress=Now;
-			if (W->Stage==0)
-			{
-				W->bValid=ProjectPointToCommanderNavigation(*Nav,*Data,Soldier.Location,FVector(10,10,5000),W->Start)
-					&& FVector::DistSquared2D(Soldier.Location,W->Start.Location)<=100.;
-				if (W->bValid) { W->Start.Location.X=Soldier.Location.X; W->Start.Location.Y=Soldier.Location.Y; }
-				W->bReady=!W->bValid || !W->bHadFinal; W->Stage=1;
-			}
-			else
-			{
-				FVector Target=W->RequestedFinal;
-				if (W->Candidate) { const int32 Ring=W->Candidate-1; const double Angle=UE_TWO_PI*(Ring%8)/8.;
-					Target+=FVector(FMath::Cos(Angle),FMath::Sin(Angle),0)*50.f*(Ring/8+1); }
-				FMovePlanningJob Reservation; Reservation.Reservations=&AuthorityState->MoveReservations; Reservation.Team=Soldier.Team;
-				Reservation.MaximumMemberRadiusCentimeters=Soldier.AvoidanceRadiusCentimeters; Reservation.ReleasedReservationIds.Add(Id);
-				W->bValid=ProjectPointToCommanderNavigation(*Nav,*Data,Target,FVector(10,10,5000),W->Final)
-					&& FVector::DistSquared2D(Target,W->Final.Location)<=100.
-					&& !IsMoveCandidateBlockedByHardReservation(Reservation,W->Final.Location)
-					&& Obstacles->IsSegmentClear(W->Final.Location,W->Final.Location,Soldier.AvoidanceRadiusCentimeters);
-				if (W->bValid) { W->Stage=2; W->bReady=!W->Order; }
-				else if (++W->Candidate>=33) W->bReady=true;
-			}
+			// No timeout or terminal task failure: the next 10 Hz scan may retry after geometry changes.
+			++A.RecoveryFailures;
+			A.RecoveryWork.Remove(Id);
 		}
-		else if (!W->bReady && W->Stage==2 && AuthorityState->PlanningBudget.TakePath())
-		{
-			FGuLiNavigationWorkBudget::FQueryScope Query(AuthorityState->PlanningBudget); W->Progress=Now;
-			++AuthorityState->PathQueries; ++AuthorityState->PersonalPathQueries; ++AuthorityState->RecoveryQueries;
-			W->bValid=BuildCompletePathQuiet(*Nav,*Data,W->Start,W->Final.Location,W->Path,&W->Navigation,AuthorityState->NavigationGeneration);
-			if (W->bValid || ++W->Candidate>=33) W->bReady=true; else W->Stage=1;
-		}
-		if (W->bReady) AuthorityState->ReadyRecoveryQueue.Enqueue(Id); else AuthorityState->RecoveryQueue.Enqueue(Id);
 	}
 }
 
 void UGuLiBattleAuthoritySubsystem::CommitReadyNavigationRepairs()
 {
 	using namespace GuLiCommanderMassPrivate;
-	if (!AuthorityState || !AuthorityState->MassEntitySubsystem.IsValid()) return;
-	FGuLiNavigationWorkBudget::FScope Scope(AuthorityState->CommitBudget);
-	auto* World=GetWorld(); const auto* State=World->GetGameState<AGuLiBattleGameState>(); if (!State) return;
-	auto& Manager=AuthorityState->MassEntitySubsystem->GetMutableEntityManager(); uint32 Id=0;
-	while (AuthorityState->CommitBudget.CanWork() && AuthorityState->CommitBudget.Members>0 && AuthorityState->ReadyRecoveryQueue.Dequeue(Id))
+	auto& A = *AuthorityState;
+	if (A.ReadyRecoveryQueue.IsEmpty()) return;
+	FGuLiNavigationWorkBudget::FScope Scope(A.CommitBudget);
+	auto* World = GetWorld();
+	const auto* State = World->GetGameState<AGuLiBattleGameState>();
+	auto* System = FNavigationSystem::GetCurrent<UNavigationSystemV1>(World);
+	auto* Data = System ? GetCommanderNavigationData(*System) : nullptr;
+	auto* Registry = World->GetSubsystem<UGuLiDynamicObstacleRegistrySubsystem>();
+	if (!State || !Data || !Registry || !A.MassEntitySubsystem.IsValid()) return;
+	const auto Obstacles = Registry->GetSnapshot();
+	auto& Manager = A.MassEntitySubsystem->GetMutableEntityManager();
+	uint32 Id = 0;
+	while (A.CommitBudget.CanWork() && A.CommitBudget.Members > 0 && A.ReadyRecoveryQueue.Dequeue(Id))
 	{
-		auto* W=AuthorityState->RecoveryWork.Find(Id); const auto* Index=AuthorityState->SoldierIndexById.Find(Id);
-		if (!W || !Index) { AuthorityState->RecoveryWork.Remove(Id); continue; }
-		auto& Soldier=AuthorityState->Soldiers[*Index];
-		if (!Soldier.CanAct() || !Manager.IsEntityValid(Soldier.Entity) || W->TaskVersion!=Soldier.TaskGeneration || W->Order!=Soldier.ActiveOrderId
-			|| W->Epoch!=State->GetMatchEpoch())
-		{ AuthorityState->RecoveryWork.Remove(Id); continue; }
-		if (W->Nav!=AuthorityState->NavigationGeneration || (W->Navigation && W->Navigation->Path.IsValid() && !W->Navigation->Path->IsUpToDate()))
+		const auto* Work = A.RecoveryWork.Find(Id);
+		const auto* Index = A.SoldierIndexById.Find(Id);
+		if (!Work || !Index) { A.RecoveryWork.Remove(Id); continue; }
+		auto& Soldier = A.Soldiers[*Index];
+		if (!Soldier.CanAct() || !Soldier.IsPresent() || !Manager.IsEntityValid(Soldier.Entity)
+			|| Work->TaskVersion != Soldier.TaskGeneration || Work->Order != Soldier.ActiveOrderId
+			|| Work->Epoch != State->GetMatchEpoch() || Work->NavigationData.Get() != Data
+			|| !Work->Source.Equals(Soldier.Location, .01) || !Data->IsNodeRefValid(Work->Target.NodeRef)
+			|| Data->IsNodeRefValid(Soldier.LastValidNavLocation.NodeRef))
+		{ A.RecoveryWork.Remove(Id); continue; }
+		--A.CommitBudget.Members;
+		// Physics/obstacles can change between projection and this fixed-step commit.
+		if (!IsNavigationRepairSegmentClear(*World, *Obstacles, Soldier, Work->Target.Location))
 		{
-			if (W->Nav==AuthorityState->NavigationGeneration) { W->Stage=2; W->bReady=false; }
-			AuthorityState->RecoveryQueue.Enqueue(Id); continue;
+			if (++A.RecoveryWork.FindChecked(Id).Candidate < NavigationRepairCandidates) A.RecoveryQueue.Enqueue(Id);
+			else { ++A.RecoveryFailures; A.RecoveryWork.Remove(Id); }
+			continue;
 		}
-		const double Now=FPlatformTime::Seconds();
-		if (Now-W->Started>=30. || Now-W->Progress>=5.) { W->bValid=false; }
-		// Recast may have replaced polygon references even when the member never moved.
-		// Reuse a projected start only at that position, or inside the same current-generation polygon.
-		const bool bStartStillValid=(FVector::DistSquared2D(Soldier.Location,W->Start.Location)<=1.
-			&& FMath::Abs(Soldier.Location.Z-W->Start.Location.Z)<=MaximumSurfaceStepZCentimeters)
-			|| (Soldier.FinalDestinationNavigationGeneration==W->Nav && Soldier.LastValidNavLocation.NodeRef==W->Start.NodeRef);
-		if (W->bValid && !bStartStillValid)
-		{ W->Stage=0; W->bReady=false; AuthorityState->RecoveryQueue.Enqueue(Id); continue; }
-		--AuthorityState->CommitBudget.Members;
-		if (W->bValid && W->bHadFinal)
+
+		const FVector Previous = Soldier.Location;
+		Soldier.Location = Work->Target.Location;
+		Soldier.LastValidNavLocation = Work->Target;
+		Soldier.Velocity = FVector::ZeroVector;
+		Soldier.SharedRoute.Reset(); Soldier.RouteCursor = 0;
+		Soldier.NavigationFailure = EGuLiSoldierNavigationFailure::None;
+		Soldier.ConsecutiveSurfaceFailures = 0;
+		Soldier.FailureSimulationSeconds = 0;
+		Soldier.bNavigationBudgetPending = false;
+		Soldier.NoProgressSeconds = 0;
+		Soldier.BestWaypointDistanceCentimeters = TNumericLimits<float>::Max();
+		Soldier.bForceMovementUpdate = Soldier.ActiveOrderId != 0;
+		Soldier.CurrentNavigationWaypoint = Soldier.Location;
+		Soldier.LastMovementUpdateSimulationSeconds = A.SimulationSeconds;
+		if (!Previous.Equals(Soldier.Location, .01))
 		{
-			FMovePlanningJob Reservation; Reservation.Reservations=&AuthorityState->MoveReservations; Reservation.Team=Soldier.Team;
-			Reservation.MaximumMemberRadiusCentimeters=Soldier.AvoidanceRadiusCentimeters; Reservation.ReleasedReservationIds.Add(Id);
-			if (IsMoveCandidateBlockedByHardReservation(Reservation,W->Final.Location))
-			{ W->Stage=1; W->bReady=false; AuthorityState->RecoveryQueue.Enqueue(Id); continue; }
-		}
-		Soldier.FinalDestinationNavigationGeneration=AuthorityState->NavigationGeneration;
-		if (W->bValid)
-		{
-			// A changed endpoint is committed together with its new personal path. CommandStart stays static.
-			if (W->bHadFinal) Soldier.FinalDestination=W->Final;
-			Soldier.LastValidNavLocation=FNavLocation(Soldier.Location,W->Start.NodeRef);
-			if (W->Order)
-			{
-				Soldier.ActiveNavigation=MoveTemp(W->Navigation); Soldier.PersonalPathPoints=MoveTemp(W->Path); Soldier.PersonalPathPointIndex=Soldier.PersonalPathPoints.Num()>1 ? 1 : 0;
-				Soldier.NavigationState=EGuLiSoldierNavigationState::PersonalPathRecovery; ++Soldier.PersonalPathRetries;
-				Soldier.NoProgressSeconds=0; Soldier.BestWaypointDistanceCentimeters=TNumericLimits<float>::Max();
-				Soldier.ConsecutiveSurfaceFailures=0; Soldier.TotalSurfaceFailures=0; Soldier.bForceMovementUpdate=true;
-				for (auto& Formation : AuthorityState->OrderFormations) if (Formation.BatchOrderId==W->Order && Formation.FinalDestinationBySoldierId.Contains(Id))
-				{ Formation.FinalDestinationBySoldierId.Add(Id,W->Final); break; }
-			}
-		}
-		else
-		{
-			++AuthorityState->RecoveryFailures;
-			Soldier.LastFailedOrderId=Soldier.ActiveOrderId; Soldier.ActiveOrderId=0; Soldier.Velocity=FVector::ZeroVector;
-			Soldier.Location=Soldier.LastValidNavLocation.Location; Soldier.NavigationState=EGuLiSoldierNavigationState::Blocked;
-			Soldier.NavigationFailure=EGuLiSoldierNavigationFailure::PersonalPathFailed;
-			Soldier.FailureSimulationSeconds=AuthorityState->SimulationSeconds;
+			// Reuse the existing authoritative displacement barrier so stale poses cannot undo repair.
+			Soldier.DisplacementFrameFloor = A.NextPoseFrameSequence;
+			Soldier.DisplacementLocation = Soldier.Location;
+			Soldier.DisplacementSimulationTime = A.SimulationSeconds;
 		}
 		++Soldier.StateRevision;
-		auto& Order=Manager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity);
-		Order.ActiveOrderId=Soldier.ActiveOrderId; Order.OrderRevision=Soldier.StateRevision; Order.bHasMoveTarget=Soldier.ActiveOrderId!=0;
-		Order.FormationTarget=Soldier.FinalDestination.Location;
-		auto& Move=Manager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
-		Move.CreateNewAction(Soldier.ActiveOrderId ? EMassMovementAction::Move : EMassMovementAction::Stand,*World);
-		Move.Center=Soldier.ActiveOrderId ? Soldier.FinalDestination.Location : Soldier.Location;
-		Move.DesiredSpeed=FMassInt16Real(Soldier.ActiveOrderId ? MovementSpeedCentimetersPerSecond : 0.f);
-		RefreshSoldierNavigationState(Soldier.SoldierId); AuthorityState->RecoveryWork.Remove(Id);
+		Manager.GetFragmentDataChecked<FTransformFragment>(Soldier.Entity).SetTransform(
+			FTransform(FRotator(0, Soldier.FacingYawDegrees, 0), Soldier.Location));
+		Manager.GetFragmentDataChecked<FMassVelocityFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+		Manager.GetFragmentDataChecked<FMassForceFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+		Manager.GetFragmentDataChecked<FGuLiMassAvoidanceOutputFragment>(Soldier.Entity).Value = FVector::ZeroVector;
+		Manager.GetFragmentDataChecked<FGuLiMassOrderFragment>(Soldier.Entity).OrderRevision = Soldier.StateRevision;
+		auto& Move = Manager.GetFragmentDataChecked<FMassMoveTargetFragment>(Soldier.Entity);
+		Move.Center = Soldier.Location; Move.DesiredSpeed = FMassInt16Real(0.f);
+		// The intent, fixed dock, automatic/manual mode, command start and task version all survive.
+		RefreshSoldierNavigationState(Soldier.SoldierId);
+		A.bForceManualAvoidanceRefresh = true;
+		++A.RecoveryRepairs;
+		A.RecoveryWork.Remove(Id);
 	}
 }
 // 固定步：提交配置 -> 编队速度 -> 10 Hz 避让缓存/全员位移 -> 按批次收尾 -> 统一攻击/伤害。
@@ -3992,6 +4068,8 @@ void UGuLiBattleAuthoritySubsystem::TickAuthority(const float FixedDeltaSeconds)
 	}
 
 	// Movement, arrival and recovery state are authoritative before combat samples positions.
+	CommitReadyNavigationRepairs();
+	DetectNavigationRepairs();
 	TickSoldierCombat();
 	RetireExpiredSoldiers();
 #if !UE_BUILD_SHIPPING
@@ -5894,6 +5972,10 @@ FString UGuLiBattleAuthoritySubsystem::GetMoveResponseDiagnostics() const
 	Root->SetNumberField(TEXT("slice_overruns"),A.PlanningBudget.FrameSliceOverruns);
 	Root->SetNumberField(TEXT("recovery_pending"),A.RecoveryWork.Num());
 	Root->SetNumberField(TEXT("recovery_failures"),double(A.RecoveryFailures));
+	Root->SetNumberField(TEXT("recovery_detection_hz"),GuLiCommanderSimulationTiming::RateHz);
+	Root->SetNumberField(TEXT("recovery_detection_steps"),double(A.RecoveryDetectionSteps));
+	Root->SetNumberField(TEXT("recovery_queries"),double(A.RecoveryQueries));
+	Root->SetNumberField(TEXT("recovery_repairs"),double(A.RecoveryRepairs));
 	Root->SetStringField(TEXT("movement_pipeline"),TEXT("immediate-shared-navmesh"));
 	Root->SetNumberField(TEXT("shared_queries"),double(A.SharedRoutes.Queries));
 	Root->SetNumberField(TEXT("shared_failures"),double(A.SharedRoutes.FailedQueries));
@@ -5925,6 +6007,7 @@ FString UGuLiBattleAuthoritySubsystem::GetMoveResponseDiagnostics() const
 		S->SetNumberField(TEXT("task_version"),double(Unit.TaskGeneration)); S->SetBoolField(TEXT("automatic"),Unit.bAutomaticAdvance);
 		S->SetNumberField(TEXT("nav_state"),uint8(Unit.NavigationState)); S->SetBoolField(TEXT("budget_pending"),Unit.bNavigationBudgetPending);
 		S->SetNumberField(TEXT("no_progress"),Unit.NoProgressSeconds); S->SetNumberField(TEXT("radius"),Unit.AvoidanceRadiusCentimeters);
+		S->SetBoolField(TEXT("nav_repair_pending"),A.RecoveryWork.Contains(Unit.SoldierId.Value));
 		S->SetArrayField(TEXT("position"),Point(Unit.Location)); S->SetArrayField(TEXT("velocity"),Point(Unit.Velocity));
 		S->SetArrayField(TEXT("legal_position"),Point(Unit.LastValidNavLocation.Location));
 		S->SetNumberField(TEXT("command"),Unit.MoveTrace.Command);

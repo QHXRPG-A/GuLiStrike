@@ -15,6 +15,7 @@
 #include "NavigationSystem.h"
 #include "NavigationData.h"
 #include "Gameplay/Navigation/GuLiEngineeringPathSubsystem.h"
+#include "Gameplay/Navigation/GuLiLandingGround.h"
 #include "Navigation/PathFollowingComponent.h"
 #include "Engine/World.h"
 #include "Net/UnrealNetwork.h"
@@ -174,7 +175,7 @@ bool UGuLiEngineeringTravelComponent::FindExit(FTransform& Transform) const
 		FHitResult Support;
 		if (!GetWorld()->SweepSingleByChannel(Support,Sole+FVector(0,0,1500),Sole-FVector(0,0,1500),
 			Pose.GetRotation(),ECC_Visibility,FCollisionShape::MakeBox(FVector(Bounds.GetExtent().X,Bounds.GetExtent().Y,0.2)),Query)
-			|| Support.bStartPenetrating || Support.ImpactNormal.Z < Pawn.GetCharacterMovement()->GetWalkableFloorZ()
+			|| !GuLiLandingGround::IsWalkableSupport(Support, Pawn.GetCharacterMovement())
 			|| FMath::Abs(Support.Location.Z-Ground.Location.Z)>100) continue;
 		Pose.SetLocation(FVector(Ground.Location.X,Ground.Location.Y,Support.Location.Z+FMath::Max(HalfHeight,-Bounds.Min.Z)+1));
 		if (GetWorld()->OverlapBlockingTestByChannel(Pose.TransformPosition(Bounds.GetCenter()),Pose.GetRotation(),

@@ -1,6 +1,7 @@
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "Gameplay/Building/GuLiBuildingRegistrySubsystem.h"
 #include "Gameplay/Building/GuLiBuildingCatalog.h"
+#include "Gameplay/Building/GuLiBuildingConstructionVisualComponent.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Engine/World.h"
 #include "Net/UnrealNetwork.h"
@@ -15,6 +16,14 @@ UGuLiBuildingLifecycleComponent::UGuLiBuildingLifecycleComponent()
 void UGuLiBuildingLifecycleComponent::BeginPlay()
 {
 	Super::BeginPlay();
+	// Local presentation is automatic for every lifecycle owner, including future Actor classes.
+	if (GetOwner()->GetNetMode() != NM_DedicatedServer
+		&& !GetOwner()->FindComponentByClass<UGuLiBuildingConstructionVisualComponent>())
+	{
+		auto* Visual = NewObject<UGuLiBuildingConstructionVisualComponent>(GetOwner(), NAME_None, RF_Transient);
+		GetOwner()->AddInstanceComponent(Visual);
+		Visual->RegisterComponent();
+	}
 	if (GetOwner()->HasAuthority())
 		if (auto* Health = GetOwner()->FindComponentByClass<UGuLiCombatHealthComponent>())
 			Health->OnDeath.AddDynamic(this, &ThisClass::HandleDeath);
@@ -94,6 +103,7 @@ void UGuLiBuildingLifecycleComponent::AddConstructionWork(float Work)
 	if (State.WorkDone >= GetDefinition().ConstructionWork)
 	{
 		State.Phase = EGuLiBuildingPhase::Completed;
+		ActiveContributors.Reset(); State.bHasActiveBuilders = false;
 		ConstructionSlots.Reset(); ++SlotGeneration; bSlotsPending=false;
 		GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->OnCompleted.Broadcast(*this);
 	}
@@ -111,6 +121,7 @@ void UGuLiBuildingLifecycleComponent::HandleDeath()
 {
 	if (State.Phase == EGuLiBuildingPhase::Destroyed) return;
 	State.Phase = EGuLiBuildingPhase::Destroyed;
+	ActiveContributors.Reset(); State.bHasActiveBuilders = false;
 	ConstructionSlots.Reset(); ++SlotGeneration; bSlotsPending=false; PendingConstructionWork=0; SetComponentTickEnabled(false);
 	OnConstructionStateChanged.Broadcast();
 	auto& Registry = *GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>();

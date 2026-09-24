@@ -382,6 +382,11 @@ try:
             report["unwired"].append(f"{table_name}（WIRING 未登记，已导入但未接线）")
             mark(f"note: {table_name} not in WIRING")
 
+    if any(e.get('asset') == 'DT_GuLiStrikeBuildings_Buildings' and e.get('imported') for e in report['tables']):
+        if hasattr(unreal, 'GuLiConstructionShapeLibrary'):
+            report['construction_shapes'] = json.loads(unreal.GuLiConstructionShapeLibrary.prepare_construction_shapes(False))
+            if not report['construction_shapes'].get('success'):
+                report['errors'].append('Construction footprint generation failed; inspect construction_shapes entries.')
     if any(e.get('asset') == 'DT_GuLiStrikeSecondaryWeapons_Projectiles' and e.get('imported') for e in report['tables']):
         report['projectile_profiles'] = wire_secondary_projectile_profiles()
     if any(e.get('asset') == 'DT_GuLiStrikeShip_WingmanWeapons' and e.get('imported') for e in report['tables']):

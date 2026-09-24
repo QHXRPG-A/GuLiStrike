@@ -2,11 +2,13 @@
 #include "Gameplay/Vfx/GuLiVfxRegistrySubsystem.h"
 #include "Gameplay/Data/GuLiGameText.h"
 #include "Gameplay/Skills/GuLiSkillTargeting.h"
+#include "Gameplay/Navigation/GuLiLandingGround.h"
 #include "Gameplay/Teleport/GuLiTeleportUnitAdapters.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
 #include "Battle/Framework/GuLiBattlePlayerState.h"
 #include "Battle/Framework/GuLiBattleGameState.h"
 #include "GameFramework/PlayerController.h"
+#include "GameFramework/Pawn.h"
 #include "Materials/MaterialInterface.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
@@ -76,7 +78,7 @@ AGuLiTeleportFieldActor* AGuLiTeleportFieldActor::StartCast(AGuLiBattlePlayerSta
 	if (const auto* Previous = FindCast(*World,Commander.GetPlayerGuid()); Previous && Previous->State.IsActive())
 	{ Error = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.174")); return nullptr; }
 	FVector GroundLocation;
-	if (!GuLiSkillTargeting::ResolveGround(*World,Point,GroundLocation)) { Error = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.175")); return nullptr; }
+	if (!GuLiLandingGround::Resolve(*World,Point,GroundLocation)) { Error = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.175")); return nullptr; }
 	FActorSpawnParameters Params; Params.Owner = Commander.GetOwner();
 	auto* Field = World->SpawnActor<AGuLiTeleportFieldActor>(GroundLocation,FRotator::ZeroRotator,Params);
 	if (!Field) { Error = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.176")); return nullptr; }
@@ -144,8 +146,12 @@ bool AGuLiTeleportFieldActor::PlanLanding(FVector Center, bool bReturning)
 			const float Angle = Attempt*2.39996323f;
 			FVector GroundLocation; double SurfaceHeight = 0;
 			const FVector Desired = Center + FVector(Offset.X+FMath::Cos(Angle)*D,Offset.Y+FMath::Sin(Angle)*D,0);
-			if (!GuLiSkillTargeting::ResolveGround(*GetWorld(),Desired,GroundLocation,&SurfaceHeight) || !GuLiTeleport::IsInsideDisc(GroundLocation,Center,Radius)) { continue; }
-			if (Unit.bPreserveGroundClearance) { GroundLocation.Z = SurfaceHeight; }
+			const bool bValidGround = Unit.bPreserveGroundClearance
+				? GuLiSkillTargeting::ResolveGround(*GetWorld(),Desired,GroundLocation,&SurfaceHeight)
+				: GuLiLandingGround::Resolve(*GetWorld(),Desired,GroundLocation,&SurfaceHeight,Cast<APawn>(Unit.Actor.Get()));
+			if (!bValidGround || !GuLiTeleport::IsInsideDisc(GroundLocation,Center,Radius)) { continue; }
+			// Actor capsules rest on physical support; Mass keeps its navigation pivot.
+			if (!Unit.bGroundPivot) { GroundLocation.Z = SurfaceHeight; }
 			Unit.Landing = FTransform(Unit.Original.GetRotation(),GroundLocation+FVector(0,0,Unit.Altitude),Unit.Original.GetScale3D());
 			if (!IsBlocked(Unit)) { Reserved.Add(Unit); bFound = true; break; }
 		}
@@ -175,7 +181,7 @@ bool AGuLiTeleportFieldActor::SubmitDestination(AGuLiBattlePlayerState& Commande
 	{ Error = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.181")); return false; }
 	if (GetSynchronizedTime(*GetWorld()) >= State.Deadline) { ReturnToSource(GuLiGameText::Text(TEXT("UI.TeleportFieldActor.182"))); return false; }
 	FVector GroundLocation;
-	if (!GuLiSkillTargeting::ResolveGround(*GetWorld(),Point,GroundLocation) || !PlanLanding(GroundLocation,false))
+	if (!GuLiLandingGround::Resolve(*GetWorld(),Point,GroundLocation) || !PlanLanding(GroundLocation,false))
 	{ Error = State.Message = GuLiGameText::Text(TEXT("UI.TeleportFieldActor.183")); Publish(); return false; }
 	State.Destination = GroundLocation; return CommitLanding(false);
 }

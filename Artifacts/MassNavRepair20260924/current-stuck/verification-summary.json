@@ -1,0 +1,64 @@
+{
+  "pid": 75840,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "observed_simulation_seconds": 90.10000134259462,
+  "sample_count": 286,
+  "cohort_window_seconds": [
+    10,
+    35
+  ],
+  "region_center_cm": [
+    -18600,
+    60000
+  ],
+  "region_radius_cm": 2500,
+  "cohort_count": 59,
+  "cohort_alive_outside_region": 59,
+  "cohort_dead": 0,
+  "near_count_final": 0,
+  "recovery": {
+    "recovery_pending": 0,
+    "recovery_failures": 0,
+    "recovery_detection_hz": 10,
+    "recovery_detection_steps": 901,
+    "recovery_queries": 284,
+    "recovery_repairs": 87
+  },
+  "buildings_final": [
+    {
+      "name": "GuLiPlacedBuilding_8",
+      "center": [
+        -20000.0,
+        61400.0,
+        -1277.276972933338
+      ],
+      "extent": [
+        345.28803999999946,
+        305.08700600000157,
+        500.0
+      ],
+      "ground_inside_walkable": null
+    },
+    {
+      "name": "GuLiPlacedBuilding_19",
+      "center": [
+        -17900.0,
+        60000.0,
+        -1578.5985372025536
+      ],
+      "extent": [
+        400.0,
+        300.0,
+        200.0
+      ],
+      "ground_inside_walkable": null
+    }
+  ],
+  "long_stuck_region_samples_after40": 0,
+  "max_transient_no_progress": {
+    "seconds": 5.599997043609619,
+    "at_sim_seconds": 27.60000041127205,
+    "soldier_id": 172
+  },
+  "validation_scope": "Requested same-site PIE regression only; no large population, stop/change-order or full obstacle matrix retest."
+}

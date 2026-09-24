@@ -210,7 +210,8 @@ bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* Syst
 	if (!InScope(System) && (!System || !System->GetOutermost()->GetName().StartsWith(
 		TEXT("/Game/GuLiStrike/FX/WingmanFlight/"))))
 	{
-		if (!System || System->GetOutermost()->GetName() != TEXT("/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool")) return false;
+		if (!System || (System->GetOutermost()->GetName() != TEXT("/Game/GuLiStrike/FX/WingmanWeapons/NS_WingmanLaserPool")
+			&& !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/Construction/")))) return false;
 	}
 	ForEachObjectWithOuter(System, [](UObject* Object)
 	{
@@ -224,6 +225,24 @@ bool UGuLiCombatEffectAuthoringLibrary::FinalizeScratchPins(UNiagaraSystem* Syst
 		Node->GetGraph()->NotifyGraphChanged();
 	}, true);
 	return true;
+}
+
+FString UGuLiCombatEffectAuthoringLibrary::GetConstructionCompileDiagnostics(UNiagaraSystem* System)
+{
+	if (!System || !System->GetOutermost()->GetName().StartsWith(TEXT("/Game/GuLiStrike/Buildings/Construction/")))
+		return TEXT("Expected a project construction system");
+	FString Result;
+	ForEachObjectWithOuter(System, [&Result](UObject* Object)
+	{
+		if (auto* Script = Cast<UNiagaraScript>(Object))
+		{
+			const auto& VM = Script->GetVMExecutableData();
+			if (!VM.ErrorMsg.IsEmpty()) Result += Script->GetPathName() + TEXT(": ") + VM.ErrorMsg + TEXT("\n");
+			for (const auto& Event : VM.LastCompileEvents)
+				Result += FString::Printf(TEXT("%s [%d] %s\n"), *Script->GetPathName(), int32(Event.Severity), *Event.Message);
+		}
+	}, true);
+	return Result;
 }
 
 bool UGuLiCombatEffectAuthoringLibrary::WireLaserPoolReader(UNiagaraSystem* System,

@@ -4,6 +4,9 @@
 
 | 工作项 | 阶段 | 验证 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | verification | partial | 玩家在LVL_CommanderMassPrototype的MassNavRepair_GiftEdge确认R2效果。 | 2026-09-24 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | verification | partial | 在已加载屋顶修复的原型地图验证据点出口、赠品清场与矿厂正常入厂；原包围和边界未验证项继续保留。 | 2026-09-24 |
+| [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | verification | partial | 在已加载新代码的 /Game/Maps/LVL_CommanderMassPrototype 的 TeleportGround 观察点验收落位与回源。 | 2026-09-24 |
 | [Mass历史插值与三倍速度纠偏](../DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md) | verification | partial | 定位位置队列长等待中引擎补额、保守预留与命令状态屏障的占比；独立追查导航单步跳点，保留晚加入/重连及紧急状态专项验收。 | 2026-09-23 |
 | [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | verification | partial | 由玩家核对原地图左上角显示、窗口适配和RTT；不自动启动PIE。 | 2026-09-23 |
 | [导航内存优化与对局容量预算](../DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md) | verification | partial | 玩家核对连续纠偏与HUD；服务端异常XY位移、姿态供给及专服容量测量继续后续处理。 | 2026-09-23 |
@@ -42,7 +45,6 @@
 | [Ship第二批三组件贴图与框线制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship第二批三组件贴图与框线制作.md) | done | partial | 查看实际交付总览；现有舰体bottom_mid_0缺失和六个组件未配兼容槽位留作独立玩法工作。 | 2026-09-17 |
 | [Ship三组件风格样板制作 — 实施与审核](../DevelopmentDocumentation/20260917-Ship三组件风格样板制作.md) | done | partial | 查看实际交付总览；现有舰体bottom_mid_0缺失和六个组件未配兼容槽位留作独立玩法工作。 | 2026-09-17 |
 | [GPU渲染降耗 — 技术方案与实施](../DevelopmentDocumentation/20260916-GPU渲染降耗.md) | done | partial | 继续归因未下降的ShadowDepths；后续实机游玩关注FXAA远距闪烁和快速转镜头下的Lumen收敛。 | 2026-09-16 |
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | in_progress | partial | 补齐包围、厂内延后指令及运输边界观察；坡道断言已由9月16日落点修复处理。 | 2026-09-16 |
 | [工程车地面动态避障 — 技术方案](../DevelopmentDocumentation/20260915-工程车地面动态避障.md) | verification | partial | 后续确认旧BuildingWorld测试更新范围，补密集狭路及大规模性能观察。 | 2026-09-15 |
 | [指挥官10Hz权威循环与移动容量压测 — 技术方案](../DevelopmentDocumentation/20260915-指挥官10Hz权威循环与移动容量压测.md) | done | partial | 后续先解决初始名册分片与姿态带宽预算，再以打包分机、长时多轮条件复测部署容量。 | 2026-09-15 |
 | [僚机短激光与炮弹池 — 技术方案](../DevelopmentDocumentation/20260914-僚机短激光与炮弹池.md) | done | partial | 后续另行处理既有失败断言；独立GPU计时与强制扩容未纳入本次实测。 | 2026-09-14 |
@@ -53,7 +55,6 @@
 | [通用敌方描边与普通PIE僚机跳变修复 — 技术方案](../DevelopmentDocumentation/20260912-通用敌方描边与普通PIE僚机跳变修复.md) | done | partial | 用户直接PIE复核手感；旧Coordinator限制测试迁移需另获授权，公网长期丢包表现未验证。 | 2026-09-12 |
 | [僚机玩法门精简 — 技术方案](../DevelopmentDocumentation/20260912-僚机玩法门精简.md) | done | partial | 待用户授权后更新已删除射程/归队门、v7金样和旧Pawn攻击状态的测试预期。 | 2026-09-12 |
 | [僚机视觉插值与远端缓冲 — 技术方案](../DevelopmentDocumentation/20260912-僚机视觉插值与远端缓冲.md) | done | partial | 更新旧 `PerMemberAirGroundAttackExecution` 的空/地攻击状态预期后，重跑完整Pawn套件。 | 2026-09-12 |
-| [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | done | partial | 用户自测最新范围、500米光柱和边缘渐变 | 2026-09-11 |
 | [地图资源密度涂绘与导出 — 技术方案与实施记录](../DevelopmentDocumentation/20260910-地图资源密度涂绘与导出.md) | verification | partial | 保存并重启旧 Editor，在隔离验证地图执行人工验收矩阵并记录证据。 | 2026-09-10 |
 | [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | in_progress | partial | 重启源码版 Editor，完成三分辨率、Commander/Ground/Air、Standalone/Listen/客户端的人工 PIE 验收。 | 2026-09-10 |
 | [僚机飞行尾焰与拖尾 — 实施记录](../DevelopmentDocumentation/20260910-僚机飞行尾焰与拖尾.md) | done | partial | — | 2026-09-10 |

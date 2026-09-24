@@ -6,7 +6,7 @@ import unreal
 
 BASE = '/Game/GuLiStrike/Buildings/Construction'
 OWNER = 'GuLiStrike.Construction.20260922'
-OUT = Path('D:/UE5.7/test1/outputs/construction-20260922')
+OUT = Path('D:/UE5.7/test1/outputs/construction')
 M = unreal.MaterialEditingLibrary
 
 

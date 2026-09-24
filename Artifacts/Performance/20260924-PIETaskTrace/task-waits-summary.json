@@ -1,0 +1,2060 @@
+{
+  "tail_seconds": 12.0,
+  "cutoff_cycle": 1432390605688,
+  "game_frames_selected": 589,
+  "client_world_count": 590,
+  "client_process_count": 4130,
+  "client_wait_count": 587,
+  "truncated_cpu_batches": 0,
+  "truncated_wait_lists_all_threads": 1817,
+  "thread_names": {
+    "2": "GameThread",
+    "3": "Trace",
+    "4": "BackgroundThreadPool #0",
+    "5": "BackgroundThreadPool #1",
+    "6": "Foreground Worker #0",
+    "7": "Foreground Worker #1",
+    "8": "Background Worker #0",
+    "9": "Background Worker #1",
+    "10": "Background Worker #2",
+    "11": "Background Worker #3",
+    "12": "Background Worker #4",
+    "13": "Background Worker #5",
+    "14": "Background Worker #6",
+    "15": "Background Worker #7",
+    "16": "Background Worker #8",
+    "17": "Background Worker #9",
+    "18": "Background Worker #10",
+    "19": "Background Worker #11",
+    "20": "Background Worker #12",
+    "21": "Background Worker #13",
+    "22": "Background Worker #14",
+    "23": "Background Worker #15",
+    "24": "Background Worker #16",
+    "25": "Background Worker #17",
+    "26": "Background Worker #18",
+    "27": "Background Worker #19",
+    "28": "Background Worker #20",
+    "29": "Background Worker #21",
+    "30": "Background Worker #22",
+    "31": "Background Worker #23",
+    "32": "Background Worker #24",
+    "33": "FAsyncWriter_GuLiStrike",
+    "34": "FAssetDataDiscovery",
+    "35": "FMediaTicker",
+    "36": "HttpManagerThread",
+    "37": "OnlineAsyncTaskThreadNull DefaultInstance(1)",
+    "38": "OutputDeviceRedirector",
+    "39": "IOThreadPool #0",
+    "40": "IOThreadPool #1",
+    "41": "IOThreadPool #2",
+    "42": "IOThreadPool #3",
+    "43": "WindowsRawInputThread",
+    "44": "RHIInterruptThread",
+    "45": "RHISubmissionThread",
+    "46": "FMonitoredProcess 0",
+    "47": "DDC IO ThreadPool #0",
+    "48": "DDC IO ThreadPool #1",
+    "49": "DDC IO ThreadPool #2",
+    "50": "DDC IO ThreadPool #3",
+    "51": "FileSystemCacheStoreMaintainer",
+    "52": "ShaderCompilingThread",
+    "53": "Background Worker #25",
+    "54": "Background Worker #26",
+    "55": "Background Worker #27",
+    "56": "HttpConnectionPool",
+    "57": "FAssetDataGatherer",
+    "58": "IoDispatcher",
+    "59": "FMonitoredProcess 1",
+    "61": "FMessageBus.DefaultBus.Router",
+    "62": "RHIThread",
+    "63": "RenderThread 0",
+    "64": "RTHeartBeat 0",
+    "65": "FTcpMessageTransport",
+    "66": "FUdpMessageProcessor.Sender",
+    "67": "FUdpMessageBeacon",
+    "68": "UdpMessageMulticastReceiver",
+    "69": "UdpMessageUnicastReceiver",
+    "70": "Foreground Worker (Standby #0)",
+    "71": "FContentBrowserFileDataDiscovery",
+    "72": "AsyncTaskThread_1",
+    "73": "AsyncTaskThread_2",
+    "74": "AsyncTaskThread_3",
+    "75": "MCPServerThread",
+    "76": "MegascansPlugin1",
+    "77": "FUdpMessageProcessor",
+    "78": "UnrealMCPServerThread",
+    "79": "AudioMixerNullCallbackThread",
+    "80": "AudioMixerRenderThread(1)",
+    "82": "FAndroidDeviceDetectionRunnable",
+    "83": "AsyncTaskThread_4",
+    "84": "FTcpListener",
+    "85": "StallDetectorThread",
+    "86": "Background Worker (Standby #0)",
+    "87": "Background Worker (Standby #1)",
+    "88": "Background Worker (Standby #2)",
+    "89": "Foreground Worker (Standby #1)",
+    "90": "OnlineAsyncTaskThreadNull DefaultInstance(2)",
+    "91": "OnlineAsyncTaskThreadNull Context_1(3)",
+    "92": "AudioMixerNullCallbackThread",
+    "93": "AudioMixerRenderThread(2)",
+    "94": "ScreenSaverInhibitor",
+    "96": "OnlineAsyncTaskThreadNull Context_2(4)",
+    "97": "Background Worker (Standby #3)"
+  },
+  "by_ordinal": {
+    "0": {
+      "inclusive": {
+        "count": 590,
+        "mean_ms": 1.455,
+        "median_ms": 1.399,
+        "p95_ms": 1.821,
+        "max_ms": 2.446
+      },
+      "exclusive": {
+        "count": 590,
+        "mean_ms": 0.116,
+        "median_ms": 0.11,
+        "p95_ms": 0.147,
+        "max_ms": 0.415
+      },
+      "wait_total": {
+        "count": 590,
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0,
+        "max_ms": 0.0
+      },
+      "nested_exclusive_per_call": [
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "mean_ms": 0.255
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "mean_ms": 0.252
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "mean_ms": 0.178
+        },
+        {
+          "name": "ExecuteTask",
+          "mean_ms": 0.149
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "mean_ms": 0.104
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "mean_ms": 0.036
+        },
+        {
+          "name": "SK_RPF_Door",
+          "mean_ms": 0.034
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "mean_ms": 0.031
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "mean_ms": 0.025
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "mean_ms": 0.021
+        },
+        {
+          "name": "SkeletalMeshComponent0",
+          "mean_ms": 0.019
+        },
+        {
+          "name": "NS_CommanderGunfireBatch",
+          "mean_ms": 0.019
+        },
+        {
+          "name": "GuLiCommanderCameraPawn",
+          "mean_ms": 0.017
+        },
+        {
+          "name": "Chassis_Transporter_Cockpit_Lvl2",
+          "mean_ms": 0.015
+        },
+        {
+          "name": "Door",
+          "mean_ms": 0.015
+        },
+        {
+          "name": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::PrePhysics",
+          "mean_ms": 0.015
+        },
+        {
+          "name": "FActorComponentTickFunction::ExecuteTick",
+          "mean_ms": 0.013
+        },
+        {
+          "name": "Top_Turret_2x_Lvl1",
+          "mean_ms": 0.012
+        },
+        {
+          "name": "UPlayerInput::EvaluateInputDelegates",
+          "mean_ms": 0.012
+        },
+        {
+          "name": "Dispatch Processors",
+          "mean_ms": 0.011
+        }
+      ]
+    },
+    "1": {
+      "inclusive": {
+        "count": 590,
+        "mean_ms": 0.046,
+        "median_ms": 0.043,
+        "p95_ms": 0.055,
+        "max_ms": 0.228
+      },
+      "exclusive": {
+        "count": 590,
+        "mean_ms": 0.002,
+        "median_ms": 0.002,
+        "p95_ms": 0.002,
+        "max_ms": 0.046
+      },
+      "wait_total": {
+        "count": 590,
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0,
+        "max_ms": 0.0
+      },
+      "nested_exclusive_per_call": [
+        {
+          "name": "ExecuteTask",
+          "mean_ms": 0.022
+        },
+        {
+          "name": "Chaos.PF",
+          "mean_ms": 0.012
+        },
+        {
+          "name": "ParallelFor",
+          "mean_ms": 0.006
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "mean_ms": 0.003
+        },
+        {
+          "name": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::StartPhysics",
+          "mean_ms": 0.001
+        },
+        {
+          "name": "Chaos_PhysicsParallelFor",
+          "mean_ms": 0.001
+        },
+        {
+          "name": "ParallelFor.Wait",
+          "mean_ms": 0.0
+        }
+      ]
+    },
+    "2": {
+      "inclusive": {
+        "count": 590,
+        "mean_ms": 0.008,
+        "median_ms": 0.006,
+        "p95_ms": 0.008,
+        "max_ms": 0.3
+      },
+      "exclusive": {
+        "count": 590,
+        "mean_ms": 0.001,
+        "median_ms": 0.001,
+        "p95_ms": 0.002,
+        "max_ms": 0.022
+      },
+      "wait_total": {
+        "count": 590,
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0,
+        "max_ms": 0.0
+      },
+      "nested_exclusive_per_call": [
+        {
+          "name": "ExecuteTask",
+          "mean_ms": 0.006
+        },
+        {
+          "name": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::EndPhysics",
+          "mean_ms": 0.0
+        }
+      ]
+    },
+    "3": {
+      "inclusive": {
+        "count": 590,
+        "mean_ms": 0.258,
+        "median_ms": 0.26,
+        "p95_ms": 0.358,
+        "max_ms": 0.738
+      },
+      "exclusive": {
+        "count": 590,
+        "mean_ms": 0.006,
+        "median_ms": 0.006,
+        "p95_ms": 0.008,
+        "max_ms": 0.126
+      },
+      "wait_total": {
+        "count": 590,
+        "mean_ms": 0.257,
+        "median_ms": 0.259,
+        "p95_ms": 0.357,
+        "max_ms": 0.737
+      },
+      "nested_exclusive_per_call": [
+        {
+          "name": "WaitForTasks",
+          "mean_ms": 0.17
+        },
+        {
+          "name": "ExecuteTask",
+          "mean_ms": 0.081
+        }
+      ]
+    },
+    "4": {
+      "inclusive": {
+        "count": 590,
+        "mean_ms": 0.026,
+        "median_ms": 0.026,
+        "p95_ms": 0.032,
+        "max_ms": 0.171
+      },
+      "exclusive": {
+        "count": 590,
+        "mean_ms": 0.004,
+        "median_ms": 0.003,
+        "p95_ms": 0.004,
+        "max_ms": 0.074
+      },
+      "wait_total": {
+        "count": 590,
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0,
+        "max_ms": 0.0
+      },
+      "nested_exclusive_per_call": [
+        {
+          "name": "ExecuteTask",
+          "mean_ms": 0.006
+        },
+        {
+          "name": "CommanderSpringArm",
+          "mean_ms": 0.004
+        },
+        {
+          "name": "WingmanRelay",
+          "mean_ms": 0.003
+        },
+        {
+          "name": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::PostPhysics",
+          "mean_ms": 0.003
+        },
+        {
+          "name": "PerspectiveCamera",
+          "mean_ms": 0.002
+        },
+        {
+          "name": "CameraProxyMeshComponent",
+          "mean_ms": 0.002
+        },
+        {
+          "name": "MassVisualizationComponent EndVisualChanges",
+          "mean_ms": 0.001
+        },
+        {
+          "name": "FActorComponentTickFunction::ExecuteTick",
+          "mean_ms": 0.001
+        },
+        {
+          "name": "DrawFrustumComponent",
+          "mean_ms": 0.001
+        }
+      ]
+    },
+    "5": {
+      "inclusive": {
+        "count": 590,
+        "mean_ms": 0.527,
+        "median_ms": 0.51,
+        "p95_ms": 0.672,
+        "max_ms": 0.982
+      },
+      "exclusive": {
+        "count": 590,
+        "mean_ms": 0.002,
+        "median_ms": 0.002,
+        "p95_ms": 0.003,
+        "max_ms": 0.012
+      },
+      "wait_total": {
+        "count": 590,
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0,
+        "max_ms": 0.0
+      },
+      "nested_exclusive_per_call": [
+        {
+          "name": "GuLiCommanderPresentation_Interpolation",
+          "mean_ms": 0.401
+        },
+        {
+          "name": "UInstancedStaticMeshComponent::BatchUpdateInstancesTransforms",
+          "mean_ms": 0.056
+        },
+        {
+          "name": "GuLiCommanderPresentation_InstanceSubmit",
+          "mean_ms": 0.027
+        },
+        {
+          "name": "GuLiCommanderPresentation_RebuildLocalInstances",
+          "mean_ms": 0.022
+        },
+        {
+          "name": "GuLiCommanderPresentation_MassBatchSubmit",
+          "mean_ms": 0.008
+        },
+        {
+          "name": "ExecuteTask",
+          "mean_ms": 0.003
+        },
+        {
+          "name": "RouteLines",
+          "mean_ms": 0.002
+        },
+        {
+          "name": "ChaosDebugDrawComponent",
+          "mean_ms": 0.002
+        },
+        {
+          "name": "FMaterialBakingModule::OnObjectModified",
+          "mean_ms": 0.002
+        },
+        {
+          "name": "GuLiCommanderPresentationActor",
+          "mean_ms": 0.001
+        },
+        {
+          "name": "FActorComponentTickFunction::ExecuteTick",
+          "mean_ms": 0.001
+        },
+        {
+          "name": "GuLiCommanderPresentation_MassPositionSample",
+          "mean_ms": 0.0
+        }
+      ]
+    },
+    "6": {
+      "inclusive": {
+        "count": 590,
+        "mean_ms": 0.014,
+        "median_ms": 0.005,
+        "p95_ms": 0.044,
+        "max_ms": 0.169
+      },
+      "exclusive": {
+        "count": 590,
+        "mean_ms": 0.001,
+        "median_ms": 0.001,
+        "p95_ms": 0.001,
+        "max_ms": 0.069
+      },
+      "wait_total": {
+        "count": 590,
+        "mean_ms": 0.0,
+        "median_ms": 0.0,
+        "p95_ms": 0.0,
+        "max_ms": 0.0
+      },
+      "nested_exclusive_per_call": [
+        {
+          "name": "GuLiCommanderPresentation_MassBatchExecute",
+          "mean_ms": 0.007
+        },
+        {
+          "name": "ExecuteTask",
+          "mean_ms": 0.004
+        },
+        {
+          "name": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::FrameEnd",
+          "mean_ms": 0.002
+        },
+        {
+          "name": "MassDeferredCommand_Execute",
+          "mean_ms": 0.0
+        }
+      ]
+    }
+  },
+  "top_processes": [
+    {
+      "begin_cycle": 1432396887311,
+      "end_cycle": 1432396911775,
+      "world_id": 1157,
+      "ordinal": 0,
+      "inclusive_ms": 2.446,
+      "exclusive_ms": 0.115,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.36
+        },
+        {
+          "name": "FActorComponentTickFunction::ExecuteTick",
+          "ms": 0.338
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.281
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.245
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.244
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.205
+        },
+        {
+          "name": "Cockpit_Freight_Spoiler",
+          "ms": 0.15
+        },
+        {
+          "name": "UPlayerInput::EvaluateInputDelegates",
+          "ms": 0.081
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.072
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.038
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.034
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.034
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432484603580,
+      "end_cycle": 1432484626536,
+      "world_id": 2441,
+      "ordinal": 0,
+      "inclusive_ms": 2.296,
+      "exclusive_ms": 0.184,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.425
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.282
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.213
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.185
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.162
+        },
+        {
+          "name": "Top_Turret_2x_Lvl1",
+          "ms": 0.147
+        },
+        {
+          "name": "MiningLaser_L",
+          "ms": 0.127
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.108
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.054
+        },
+        {
+          "name": "Door",
+          "ms": 0.054
+        },
+        {
+          "name": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::PrePhysics",
+          "ms": 0.045
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.033
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432486898764,
+      "end_cycle": 1432486920383,
+      "world_id": 2474,
+      "ordinal": 0,
+      "inclusive_ms": 2.162,
+      "exclusive_ms": 0.13,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.508
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.311
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.285
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.161
+        },
+        {
+          "name": "Cockpit_Freight_Spoiler",
+          "ms": 0.115
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.109
+        },
+        {
+          "name": "Door",
+          "ms": 0.068
+        },
+        {
+          "name": "SkeletalMeshComponent0",
+          "ms": 0.048
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.042
+        },
+        {
+          "name": "Chassis_Transporter_Cockpit_Lvl2",
+          "ms": 0.036
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.033
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.03
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432487599442,
+      "end_cycle": 1432487620982,
+      "world_id": 2483,
+      "ordinal": 0,
+      "inclusive_ms": 2.154,
+      "exclusive_ms": 0.346,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.496
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.427
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.186
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.153
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.103
+        },
+        {
+          "name": "Top_Turret_2x_Lvl1",
+          "ms": 0.057
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.037
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.035
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.031
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.029
+        },
+        {
+          "name": "SkeletalMeshComponent0",
+          "ms": 0.02
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.019
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432436950046,
+      "end_cycle": 1432436971414,
+      "world_id": 1730,
+      "ordinal": 0,
+      "inclusive_ms": 2.137,
+      "exclusive_ms": 0.157,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.421
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.343
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.237
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.193
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.163
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.16
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.075
+        },
+        {
+          "name": "EnhPIS_Devices",
+          "ms": 0.055
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.035
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.031
+        },
+        {
+          "name": "LaserMuzzle_R",
+          "ms": 0.03
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.019
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432480798222,
+      "end_cycle": 1432480819429,
+      "world_id": 2384,
+      "ordinal": 0,
+      "inclusive_ms": 2.121,
+      "exclusive_ms": 0.415,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.363
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.351
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.171
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.169
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.101
+        },
+        {
+          "name": "Chassis_Transporter_Cockpit_Lvl2",
+          "ms": 0.083
+        },
+        {
+          "name": "CollectorPivot_L",
+          "ms": 0.073
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.042
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.032
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.031
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.023
+        },
+        {
+          "name": "NS_CommanderGunfireBatch",
+          "ms": 0.021
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432461172598,
+      "end_cycle": 1432461193475,
+      "world_id": 2099,
+      "ordinal": 0,
+      "inclusive_ms": 2.088,
+      "exclusive_ms": 0.213,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.333
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.32
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.308
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.211
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.184
+        },
+        {
+          "name": "CharacterMesh0",
+          "ms": 0.07
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.053
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.042
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.035
+        },
+        {
+          "name": "FActorComponentTickFunction::ExecuteTick",
+          "ms": 0.035
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.032
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.021
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432447875110,
+      "end_cycle": 1432447895953,
+      "world_id": 1898,
+      "ordinal": 0,
+      "inclusive_ms": 2.084,
+      "exclusive_ms": 0.112,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.564
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.469
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.168
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.149
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.138
+        },
+        {
+          "name": "Cockpit_Freight_Spoiler",
+          "ms": 0.046
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.038
+        },
+        {
+          "name": "CharMoveComp",
+          "ms": 0.034
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.034
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.032
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.032
+        },
+        {
+          "name": "CollectorPivot_L",
+          "ms": 0.022
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432393146657,
+      "end_cycle": 1432393167485,
+      "world_id": 1103,
+      "ordinal": 0,
+      "inclusive_ms": 2.083,
+      "exclusive_ms": 0.12,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.729
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.271
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.201
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.17
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.167
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.036
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.034
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.032
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.029
+        },
+        {
+          "name": "NS_CommanderGunfireBatch",
+          "ms": 0.022
+        },
+        {
+          "name": "SkeletalMeshComponent0",
+          "ms": 0.022
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.019
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432456909821,
+      "end_cycle": 1432456930453,
+      "world_id": 2036,
+      "ordinal": 0,
+      "inclusive_ms": 2.063,
+      "exclusive_ms": 0.118,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.605
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.325
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.318
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.164
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.105
+        },
+        {
+          "name": "Dispatch Processors",
+          "ms": 0.042
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.04
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.031
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.03
+        },
+        {
+          "name": "Door",
+          "ms": 0.02
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.019
+        },
+        {
+          "name": "SkeletalMeshComponent0",
+          "ms": 0.019
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432420944757,
+      "end_cycle": 1432420965190,
+      "world_id": 1499,
+      "ordinal": 0,
+      "inclusive_ms": 2.043,
+      "exclusive_ms": 0.121,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.511
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.326
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.214
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.17
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.127
+        },
+        {
+          "name": "MiningLaser_L",
+          "ms": 0.058
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.043
+        },
+        {
+          "name": "Cockpit_Freight_Spoiler",
+          "ms": 0.042
+        },
+        {
+          "name": "GuLiCommanderCameraPawn",
+          "ms": 0.041
+        },
+        {
+          "name": "SkeletalMeshComponent0",
+          "ms": 0.038
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.034
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.032
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432505892906,
+      "end_cycle": 1432505913323,
+      "world_id": 2759,
+      "ordinal": 0,
+      "inclusive_ms": 2.042,
+      "exclusive_ms": 0.207,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.435
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.366
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.27
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.182
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.101
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.096
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.036
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.031
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.028
+        },
+        {
+          "name": "SkeletalMeshComponent0",
+          "ms": 0.022
+        },
+        {
+          "name": "NS_CommanderGunfireBatch",
+          "ms": 0.02
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.018
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432467246314,
+      "end_cycle": 1432467266407,
+      "world_id": 2186,
+      "ordinal": 0,
+      "inclusive_ms": 2.009,
+      "exclusive_ms": 0.326,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.322
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.263
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.26
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.252
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.133
+        },
+        {
+          "name": "Top_Turret_2x_Lvl1",
+          "ms": 0.053
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.036
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.033
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.032
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.026
+        },
+        {
+          "name": "SkeletalMeshComponent0",
+          "ms": 0.024
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.021
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432448714622,
+      "end_cycle": 1432448734434,
+      "world_id": 1910,
+      "ordinal": 0,
+      "inclusive_ms": 1.981,
+      "exclusive_ms": 0.12,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.442
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.327
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.318
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.17
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.109
+        },
+        {
+          "name": "Chassis_Transporter_Cockpit_Lvl2",
+          "ms": 0.102
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.038
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.035
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.032
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.031
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.022
+        },
+        {
+          "name": "SkeletalMeshComponent0",
+          "ms": 0.019
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432453298140,
+      "end_cycle": 1432453317170,
+      "world_id": 1979,
+      "ordinal": 0,
+      "inclusive_ms": 1.903,
+      "exclusive_ms": 0.11,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.406
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.299
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.28
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.173
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.147
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.13
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.033
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.032
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.03
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.02
+        },
+        {
+          "name": "SkeletalMeshComponent0",
+          "ms": 0.019
+        },
+        {
+          "name": "NS_CommanderGunfireBatch",
+          "ms": 0.018
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432394945709,
+      "end_cycle": 1432394964727,
+      "world_id": 1130,
+      "ordinal": 0,
+      "inclusive_ms": 1.902,
+      "exclusive_ms": 0.147,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.472
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.348
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.236
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.163
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.146
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.048
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.033
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.033
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.029
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.021
+        },
+        {
+          "name": "NS_CommanderGunfireBatch",
+          "ms": 0.017
+        },
+        {
+          "name": "Door",
+          "ms": 0.015
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432406945843,
+      "end_cycle": 1432406964793,
+      "world_id": 1298,
+      "ordinal": 0,
+      "inclusive_ms": 1.895,
+      "exclusive_ms": 0.169,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.428
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.386
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.167
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.134
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.122
+        },
+        {
+          "name": "FActorComponentTickFunction::ExecuteTick",
+          "ms": 0.09
+        },
+        {
+          "name": "GuLiCommanderCameraPawn",
+          "ms": 0.044
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.036
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.034
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.03
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.028
+        },
+        {
+          "name": "Cockpit_Freight_Spoiler",
+          "ms": 0.023
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432406060372,
+      "end_cycle": 1432406079310,
+      "world_id": 1286,
+      "ordinal": 0,
+      "inclusive_ms": 1.894,
+      "exclusive_ms": 0.215,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.326
+        },
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.24
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.236
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.229
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.162
+        },
+        {
+          "name": "CollectorPivot_L",
+          "ms": 0.116
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.033
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.032
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.029
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.027
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.018
+        },
+        {
+          "name": "NS_CommanderGunfireBatch",
+          "ms": 0.018
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432469404414,
+      "end_cycle": 1432469423291,
+      "world_id": 2216,
+      "ordinal": 0,
+      "inclusive_ms": 1.888,
+      "exclusive_ms": 0.115,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.312
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.27
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.247
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.245
+        },
+        {
+          "name": "DoEntityCompaction",
+          "ms": 0.128
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.114
+        },
+        {
+          "name": "FActorComponentTickFunction::ExecuteTick",
+          "ms": 0.07
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.037
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.033
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.032
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.03
+        },
+        {
+          "name": "GuLiResourceFactoryActor",
+          "ms": 0.022
+        }
+      ],
+      "waits": []
+    },
+    {
+      "begin_cycle": 1432409952768,
+      "end_cycle": 1432409971569,
+      "world_id": 1340,
+      "ordinal": 0,
+      "inclusive_ms": 1.88,
+      "exclusive_ms": 0.106,
+      "task_wait_total_ms": 0.0,
+      "task_wait_count": 0,
+      "top_nested_exclusive": [
+        {
+          "name": "UCharacterMovementComponent_TickComponent",
+          "ms": 0.493
+        },
+        {
+          "name": "USkeletalMeshComponent_TickAnimation",
+          "ms": 0.256
+        },
+        {
+          "name": "USkinnedMeshComponent_TickComponent",
+          "ms": 0.239
+        },
+        {
+          "name": "USkeletalMeshComponent_CompleteParallelAnimationEvaluation",
+          "ms": 0.165
+        },
+        {
+          "name": "ExecuteTask",
+          "ms": 0.133
+        },
+        {
+          "name": "AnimSingleNodeInstance",
+          "ms": 0.101
+        },
+        {
+          "name": "NS_CommanderGunfireBatch",
+          "ms": 0.039
+        },
+        {
+          "name": "GuLiCommanderPlayerController",
+          "ms": 0.034
+        },
+        {
+          "name": "SK_RPF_Door",
+          "ms": 0.032
+        },
+        {
+          "name": "FMassProcessingPhase::ExecuteTick EMassProcessingPhase::PrePhysics",
+          "ms": 0.031
+        },
+        {
+          "name": "FWaitingQueue_Unpark_SignalWaitingThread",
+          "ms": 0.025
+        },
+        {
+          "name": "Mass Processor Task",
+          "ms": 0.018
+        }
+      ],
+      "waits": []
+    }
+  ],
+  "top_task_waits": [
+    {
+      "begin_cycle": 1432410858569,
+      "end_cycle": 1432410865938,
+      "duration_ms": 0.737,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432410858559,
+      "task_ids": [
+        218446381
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432483439226,
+      "end_cycle": 1432483445220,
+      "duration_ms": 0.599,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432483439213,
+      "task_ids": [
+        219133172
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432419561484,
+      "end_cycle": 1432419566905,
+      "duration_ms": 0.542,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432419561477,
+      "task_ids": [
+        218527168
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432450947208,
+      "end_cycle": 1432450952456,
+      "duration_ms": 0.525,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432450947200,
+      "task_ids": [
+        218825220
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432396065698,
+      "end_cycle": 1432396070719,
+      "duration_ms": 0.502,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432396065689,
+      "task_ids": [
+        218313605
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432406399655,
+      "end_cycle": 1432406404676,
+      "duration_ms": 0.502,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432406399647,
+      "task_ids": [
+        218405972
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432393497973,
+      "end_cycle": 1432393502802,
+      "duration_ms": 0.483,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432393497965,
+      "task_ids": [
+        218290537
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432452919216,
+      "end_cycle": 1432452923976,
+      "duration_ms": 0.476,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432452919206,
+      "task_ids": [
+        218844474
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432395167769,
+      "end_cycle": 1432395172366,
+      "duration_ms": 0.46,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432395167760,
+      "task_ids": [
+        218305922
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432483934388,
+      "end_cycle": 1432483938818,
+      "duration_ms": 0.443,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432483934380,
+      "task_ids": [
+        219137019
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432484282700,
+      "end_cycle": 1432484287036,
+      "duration_ms": 0.434,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432484282690,
+      "task_ids": [
+        219140848
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432397789547,
+      "end_cycle": 1432397793845,
+      "duration_ms": 0.43,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432397789539,
+      "task_ids": [
+        218329001
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432500484621,
+      "end_cycle": 1432500488900,
+      "duration_ms": 0.428,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432500484614,
+      "task_ids": [
+        219295037
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432412717122,
+      "end_cycle": 1432412721351,
+      "duration_ms": 0.423,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432412717115,
+      "task_ids": [
+        218463700
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432471287392,
+      "end_cycle": 1432471291612,
+      "duration_ms": 0.422,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432471287383,
+      "task_ids": [
+        219017929
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432472831447,
+      "end_cycle": 1432472835558,
+      "duration_ms": 0.411,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432472831437,
+      "task_ids": [
+        219033284
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432491148209,
+      "end_cycle": 1432491152282,
+      "duration_ms": 0.407,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432491148199,
+      "task_ids": [
+        219206218
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432476063785,
+      "end_cycle": 1432476067833,
+      "duration_ms": 0.405,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432476063776,
+      "task_ids": [
+        219064027
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432447232437,
+      "end_cycle": 1432447236353,
+      "duration_ms": 0.392,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432447232426,
+      "task_ids": [
+        218790623
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432487245116,
+      "end_cycle": 1432487248970,
+      "duration_ms": 0.385,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432487245106,
+      "task_ids": [
+        219167782
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432469222430,
+      "end_cycle": 1432469226272,
+      "duration_ms": 0.384,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432469222421,
+      "task_ids": [
+        218998664
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432476608491,
+      "end_cycle": 1432476612264,
+      "duration_ms": 0.377,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432476608482,
+      "task_ids": [
+        219067895
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432507447589,
+      "end_cycle": 1432507451352,
+      "duration_ms": 0.376,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432507447577,
+      "task_ids": [
+        219364183
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432479806176,
+      "end_cycle": 1432479809923,
+      "duration_ms": 0.375,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432479806167,
+      "task_ids": [
+        219098575
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432419940335,
+      "end_cycle": 1432419944006,
+      "duration_ms": 0.367,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432419940327,
+      "task_ids": [
+        218530997
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432456039556,
+      "end_cycle": 1432456043175,
+      "duration_ms": 0.362,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432456039546,
+      "task_ids": [
+        218875211
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432471494812,
+      "end_cycle": 1432471498396,
+      "duration_ms": 0.358,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432471494802,
+      "task_ids": [
+        219019855
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432453797236,
+      "end_cycle": 1432453800817,
+      "duration_ms": 0.358,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432453797228,
+      "task_ids": [
+        218852145
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432504288997,
+      "end_cycle": 1432504292571,
+      "duration_ms": 0.357,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432504288990,
+      "task_ids": [
+        219333419
+      ],
+      "ids_truncated": false
+    },
+    {
+      "begin_cycle": 1432456424799,
+      "end_cycle": 1432456428369,
+      "duration_ms": 0.357,
+      "process_ordinal": 3,
+      "process_begin_cycle": 1432456424791,
+      "task_ids": [
+        218879075
+      ],
+      "ids_truncated": false
+    }
+  ]
+}

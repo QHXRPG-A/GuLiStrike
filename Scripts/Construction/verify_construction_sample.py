@@ -5,7 +5,8 @@ import time
 from pathlib import Path
 import unreal
 
-OUT = Path('D:/UE5.7/test1/outputs/construction-20260922')
+OUT = Path('D:/UE5.7/test1/outputs/construction')
+OUT.mkdir(parents=True, exist_ok=True)
 
 
 class ConstructionSampleReview:

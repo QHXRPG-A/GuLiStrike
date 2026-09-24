@@ -35,7 +35,7 @@ def run():
     original = {a.get_path_name(): record(a) for a in actors if a not in owned}
     specs = [
         ('ConstructionReview_Placement', review_position,
-         '建造表现样板：使用本地图正常指挥官入口。B进入建造模式，在建造菜单选择矿厂。\n'
+         '建造表现样板：使用本地图正常指挥官入口。B进入建造模式，在建造菜单选择任意建筑（1–6）。\n'
          '鼠标移动位置按1米吸附；R每次旋转90度，四次恢复初始方向。\n'
          '建筑占地区域的格子：可放置为绿色，不可放置为红色；左键确认。'),
         ('ConstructionReview_Progress', review_position + unreal.Vector(0, 900, 0),
@@ -45,8 +45,13 @@ def run():
         ('ConstructionReview_Mining', review_position + unreal.Vector(1000, 0, 0),
          '通行回归：施工效果不移动建筑碰撞、坡道或矿车停靠点。\n'
          '矿厂完工后验证门动画、矿车入厂卸货与离厂；只在工厂完整落地后启用正常功能。\n'
-         '当前仅矿厂启用施工表现，其他建筑在样板效果确认后推广；放置网格与R旋转适用于全部可建造建筑。'),
+         '六类建筑均已启用通用施工表现；施工框沿真实基底轮廓升起，放置网格与R旋转适用于全部可建造建筑。'),
     ]
+    names = ['防空炮', '哨戒炮', '前哨', '兵营', '护盾发生器', '矿厂']
+    for index, x in enumerate([-6500, -3800, -500, 3000, 5700, 9200], 1):
+        specs.append((f'ConstructionReview_Type{index}', unreal.Vector(x, 76000, -1260),
+            f'{index}：{names[index-1]}建造验证区。B进入建造模式，再选对应建筑。\n'
+            'R每次旋转90度；观察基底轮廓、停工呼吸、双紫色光束及完工底部闪光。'))
     notes = []
     with unreal.ScopedEditorTransaction('Prepare construction review anchors'):
         for label, position, text in specs:
@@ -77,7 +82,9 @@ def main():
         result['success'] = True
     except Exception as error:
         result = {'success': False, 'error': str(error)}
-    Path('D:/UE5.7/test1/outputs/construction-20260922/scene.json').write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
+    output = Path('D:/UE5.7/test1/outputs/construction-vfx/scene.json')
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
     unreal.MCPythonHelper.submit_result(json.dumps(result, ensure_ascii=True))
 
 

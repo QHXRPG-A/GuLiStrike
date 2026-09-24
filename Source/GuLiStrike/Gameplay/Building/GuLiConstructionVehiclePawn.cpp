@@ -2,6 +2,7 @@
 #include "Commander/Orders/GuLiUnitTaskSubsystem.h"
 #include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
 #include "Gameplay/Building/GuLiConstructionWorkComponent.h"
+#include "Gameplay/Building/GuLiConstructionPresentationComponent.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
 #include "Gameplay/Units/GuLiExternalCharacterMovementComponent.h"
@@ -34,6 +35,7 @@ AGuLiConstructionVehiclePawn::AGuLiConstructionVehiclePawn(const FObjectInitiali
 	CreateDefaultSubobject<UGuLiExternalUnitControlComponent>(TEXT("ExternalControl"));
 	Travel = CreateDefaultSubobject<UGuLiEngineeringTravelComponent>(TEXT("Travel"));
 	Work = CreateDefaultSubobject<UGuLiConstructionWorkComponent>(TEXT("ConstructionWork"));
+	ConstructionPresentation = CreateDefaultSubobject<UGuLiConstructionPresentationComponent>(TEXT("ConstructionPresentation"));
 	Presentation = CreateDefaultSubobject<UChildActorComponent>(TEXT("Presentation"));
 	Presentation->SetupAttachment(GetCapsuleComponent());
 	Presentation->OnChildActorCreated().AddStatic(&GuLiUnitRenderPolicy::ApplyToActor);
@@ -72,10 +74,12 @@ void AGuLiConstructionVehiclePawn::OnRep_Definition()
 		TravelBounds += VisualMesh->CalcBounds(VisualMesh->GetComponentTransform().GetRelativeTransform(GetActorTransform())).GetBox();
 	}
 	SetEngineeringPresentationVisible(!Travel->IsInTransit());
+	ConstructionPresentation->InitializePresentation(Child);
 }
 void AGuLiConstructionVehiclePawn::SetEngineeringPresentationVisible(bool bVisible)
 {
 	if (AActor* Child = Presentation->GetChildActor()) Child->SetActorHiddenInGame(!bVisible);
+	if (!bVisible) ConstructionPresentation->HideBeams();
 }
 EGuLiTransitOrderResult AGuLiConstructionVehiclePawn::IssueStrongholdTransit(
 	const FGuLiStrongholdTransitOrder& Order, EGuLiTeam RequestingTeam)

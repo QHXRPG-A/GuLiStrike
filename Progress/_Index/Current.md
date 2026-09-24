@@ -25,7 +25,6 @@
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
 | [地面机枪飞行弹丸与僚机弹效复用](../DevelopmentDocumentation/20260917-地面机甲弹幕肉鸽与塔防建造.md) | building, combat, network, vfx | 6/6 (100%) | 跟踪既有导弹夹具和挂点断言失配；地面弹丸、配色与5Hz专项留待后续安排。 | 2026-09-21 |
-| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | building, commander, data, economy, map | 18/20 (90%) | 补齐包围、厂内延后指令及运输边界观察；坡道断言已由9月16日落点修复处理。 | 2026-09-16 |
 | [游戏内 GM 分页浮层面板 — 技术方案](../DevelopmentDocumentation/20260910-游戏内GM分页浮层面板.md) | combat, commander, network, ui | 5/6 (83%) | 重启源码版 Editor，完成三分辨率、Commander/Ground/Air、Standalone/Listen/客户端的人工 PIE 验收。 | 2026-09-10 |
 | [地图战略点标注与数据导出工具 — 技术方案](../DevelopmentDocumentation/20260906-地图战略点标注与数据导出工具.md) | assets, building, commander, data-pipeline, map-authoring | 15/22 (68%) | M2 完整验收（实现完成，交互矩阵待验收） | 2026-09-07 |
 | [DIY 飞船（模块化装配 + 飞行中热切换） — 技术方案](../DevelopmentDocumentation/20260820-DIY飞船.md) | assets, network, ship, ui | 28/29 (97%) | 用户手动加 7 个 socket（教程见下，坐标已定稿） | 2026-09-05 |
@@ -38,6 +37,9 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
+| [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | commander, network, performance | 9/11 (82%) | 玩家在LVL_CommanderMassPrototype的MassNavRepair_GiftEdge确认R2效果。 | 2026-09-24 |
+| [指挥官白模据点占领与建筑体系 — 技术方案](../DevelopmentDocumentation/20260914-指挥官白模据点占领与建筑体系.md) | building, commander, data, economy, map | 18/20 (90%) | 在已加载屋顶修复的原型地图验证据点出口、赠品清场与矿厂正常入厂；原包围和边界未验证项继续保留。 | 2026-09-24 |
+| [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | combat, commander, network, ship, ui, vfx, wingman | 8/8 (100%) | 在已加载新代码的 /Game/Maps/LVL_CommanderMassPrototype 的 TeleportGround 观察点验收落位与回源。 | 2026-09-24 |
 | [Mass历史插值与三倍速度纠偏](../DevelopmentDocumentation/20260923-Mass历史插值与三倍速度纠偏.md) | commander, movement, network, performance | 13/15 (87%) | 定位位置队列长等待中引擎补额、保守预留与命令状态屏障的占比；独立追查导航单步跳点，保留晚加入/重连及紧急状态专项验收。 | 2026-09-23 |
 | [游戏左上角帧率与延迟显示](../DevelopmentDocumentation/20260923-游戏左上角帧率与延迟显示.md) | commander, performance, ui | 3/4 (75%) | 由玩家核对原地图左上角显示、窗口适配和RTT；不自动启动PIE。 | 2026-09-23 |
 | [导航内存优化与对局容量预算](../DevelopmentDocumentation/20260922-导航内存优化与对局容量预算.md) | navigation, performance | 11/13 (85%) | 玩家核对连续纠偏与HUD；服务端异常XY位移、姿态供给及专服容量测量继续后续处理。 | 2026-09-23 |
@@ -59,7 +61,6 @@
 
 | 工作项 | 模块 | 任务 | 下一步 | 更新 |
 |---|---|---|---|---|
-| [Mass分帧寻路与避障稳定性](../DevelopmentDocumentation/20260923-Mass分帧寻路与避障稳定性.md) | commander, network, performance | — | 本次响应与随机站位已获玩家验收；大人口合法部署及完整环境回归另列后续范围。 | 2026-09-24 |
 | [FireReview双阵营靶场与敌方描边 — 技术方案](../DevelopmentDocumentation/20260921-FireReview双阵营靶场与敌方描边.md) | combat, commander, ground-mech, presentation | 9/9 (100%) | 玩家在/Game/Maps/LVL_GroundMech_FireReview确认两队待命、敌方红色描边及受击销毁效果。 | 2026-09-21 |
 | [统一特效目录与ID引用 — 技术方案](../DevelopmentDocumentation/20260921-统一特效目录与ID引用.md) | combat, vfx | 6/6 (100%) | — | 2026-09-21 |
 | [地面机甲动画蓝图与空中战斗 — 技术方案](../DevelopmentDocumentation/20260921-地面机甲动画蓝图与空中战斗.md) | animation, combat, ground-mech | 8/8 (100%) | 按后续实际使用反馈调整；未覆盖专项和容量条视觉终验见本文边界。 | 2026-09-21 |
@@ -117,7 +118,6 @@
 | [红蓝矿棋盘与自动采矿闭环 — 技术方案](../DevelopmentDocumentation/20260911-红蓝矿棋盘与自动采矿闭环.md) | commander, economy, map, navigation, network | 15/15 (100%) | — | 2026-09-12 |
 | [Ship 僚机对空攻击—盘旋冷却循环 — 技术方案](../DevelopmentDocumentation/20260911-Ship僚机对空攻击盘旋冷却循环.md) | combat, network, ship, wingman | 5/5 (100%) | — | 2026-09-11 |
 | [飞船骨骼部件与Socket保留 — 技术方案](../DevelopmentDocumentation/20260911-飞船骨骼部件与Socket保留.md) | assets, combat, ship | 7/7 (100%) | — | 2026-09-11 |
-| [指挥官双点传送技能 — 技术方案](../DevelopmentDocumentation/20260910-指挥官双点传送技能.md) | combat, commander, network, ship, ui, vfx, wingman | 8/8 (100%) | 用户自测最新范围、500米光柱和边缘渐变 | 2026-09-11 |
 | [Ship 僚机三维往返缠斗与随机转向 — 技术方案与验证](../DevelopmentDocumentation/20260907-Ship僚机三维往返缠斗与随机转向.md) | combat, commander, network, ship, wingman | — | — | 2026-09-11 |
 | [双矿单位矿模型 UE 导入](../DevelopmentDocumentation/20260910-双矿单位矿模型UE导入.md) | art, economy | 5/5 (100%) | 用户在UE中审核资源；后续另行确认矿量与采矿状态接入。 | 2026-09-10 |
 | [双矿单位矿模型与 Blender 审核](../DevelopmentDocumentation/20260910-双矿单位矿模型与Blender审核.md) | art, economy | 7/7 (100%) | UE导入已按后续指令交付，用户可在UE中继续审核造型、材质和尺度。 | 2026-09-10 |

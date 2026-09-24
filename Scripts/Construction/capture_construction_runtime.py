@@ -24,7 +24,8 @@ def run():
         camera.set_actor_location_and_rotation(position,
             unreal.MathLibrary.find_look_at_rotation(position, center + unreal.Vector(0, 0, 180)), False, True)
         capture.capture_scene()
-        directory = 'D:/UE5.7/test1/outputs/construction-20260922'
+        directory = 'D:/UE5.7/test1/outputs/construction'
+        Path(directory).mkdir(parents=True, exist_ok=True)
         unreal.RenderingLibrary.export_render_target(world, target, directory, label + '.png')
         return {'image': directory + '/' + label + '.png'}
     finally:

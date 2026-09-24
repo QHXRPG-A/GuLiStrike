@@ -514,13 +514,15 @@ private:
 	/** Advances candidate projection/routing budgets once per rendered world frame. */
 	void TickMovePlanning(int32& RemainingProjectionBudget, int32& RemainingPathBudget, bool bManualFirst);
 
-	/** Advances a NavMesh-generation repair job without exceeding the shared per-frame query budgets. */
-	void TickNavigationRepairs(int32& RemainingProjectionBudget, int32& RemainingPathBudget);
+	/** Checks foot polygon validity once per 10 Hz authority step, without issuing navigation queries. */
+	void DetectNavigationRepairs();
+	/** Projects bounded surface-repair candidates within the shared world-frame budget; no personal paths. */
+	void TickNavigationRepairs();
 
 	/** Commits accepted intents each world frame, independently of the 10 Hz position step. */
 	void CommitReadyMovePlans();
 
-	/** Applies one completed navigation repair at a 10 Hz boundary before movement reads its results. */
+	/** Rechecks and commits safe foot-coordinate repairs at a 10 Hz boundary, preserving commands/slots. */
 	void CommitReadyNavigationRepairs();
 
 	/** 在固定步边界交替迁移 Even/Odd Archetype，以替换只读共享的移动参数。 */

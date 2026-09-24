@@ -1,6 +1,6 @@
 #include "Gameplay/Teleport/GuLiTeleportInputComponent.h"
 #include "Gameplay/Data/GuLiGameText.h"
-#include "Gameplay/Skills/GuLiSkillTargeting.h"
+#include "Gameplay/Navigation/GuLiLandingGround.h"
 #include "Gameplay/Teleport/GuLiTeleportUnitAdapters.h"
 #include "Gameplay/Teleport/GuLiTeleportFieldActor.h"
 #include "Gameplay/Data/GuLiCommanderDataSubsystem.h"
@@ -188,7 +188,7 @@ void UGuLiTeleportInputComponent::TickComponent(float DeltaTime, ELevelTick Tick
 		const auto* Data = GetWorld()->GetSubsystem<UGuLiCommanderDataSubsystem>();
 		const auto* Config = S.IsActive() ? &S.Config : (Data ? Data->FindTeleportFieldConfig(GetLevel()) : nullptr);
 		FVector Ground;
-		const bool bValid = GuLiSkillTargeting::ResolveGround(*GetWorld(),Point,Ground);
+		const bool bValid = GuLiLandingGround::Resolve(*GetWorld(),Point,Ground);
 		if (Preview && Config) { Preview->SetActorHiddenInGame(false); Preview->SetPreview(bValid?Ground:Point,Config->RadiusCentimeters,bValid); }
 	}
 	else if (Preview) { Preview->SetActorHiddenInGame(true); }

@@ -1,0 +1,56 @@
+{
+  "editor_pid": 76292,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype",
+  "is_pie": false,
+  "building_defaults": {
+    "collision_profile": "BlockAll",
+    "step_up": "<CanBeCharacterBase.ECB_NO: 0>",
+    "slope": "<Struct 'WalkableSlopeOverride' (0x000001E07444E190) {walkable_slope_behavior: WalkableSlope_Unwalkable, walkable_slope_angle: 0.000000}>",
+    "dynamic_obstacle": true,
+    "obstacle_area": "NavArea_Null",
+    "modifier_area": "NavArea_Null"
+  },
+  "saved_scene_markers": [
+    {
+      "label": "TeleportGround_Source",
+      "class": "Note",
+      "location": [
+        3000.0,
+        72500.0,
+        -1200.0
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "TeleportGround_Roof",
+      "class": "Note",
+      "location": [
+        1400.0,
+        80000.0,
+        -1200.0
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "TeleportGround_TransitExit",
+      "class": "Note",
+      "location": [
+        1400.0,
+        60000.0,
+        -1200.0
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "TeleportGround_Overview",
+      "class": "CameraActor",
+      "location": [
+        6500.0,
+        85000.0,
+        6000.0
+      ],
+      "editor_only": true
+    }
+  ],
+  "boundary": "Loaded class defaults and saved editor entities only; no PIE or runtime landing test."
+}

@@ -12,9 +12,9 @@ const FGuLiBuildingDefinition* UGuLiBuildingCatalog::FindById(int32 Id) const
 {
 	return Definitions.FindByPredicate([Id](const auto& D) { return D.DefinitionId == Id; });
 }
-bool UGuLiBuildingCatalog::ResolveTable()
+bool UGuLiBuildingCatalog::ResolveTable(bool bForceRefresh)
 {
-	if (bTableResolved) return true;
+	if (bTableResolved && !bForceRefresh) return true;
 	const auto* Table = LoadObject<UDataTable>(nullptr,
 		TEXT("/Game/GuLiStrike/Data/DT_GuLiStrikeBuildings_Buildings.DT_GuLiStrikeBuildings_Buildings"));
 	if (!Table || Table->GetRowStruct() != FGuLiStrikeBuildingsBuildingsRow::StaticStruct())

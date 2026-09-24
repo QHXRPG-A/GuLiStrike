@@ -20,7 +20,8 @@ def configure_blueprints(paths=None):
             if not service.add_component(path,'GuLiVfxBindingComponent',component):
                 raise RuntimeError('Failed to add VFX bindings: '+path)
             changed=True
-        value='('+','.join(f'(ComponentName="MiningLaser_{side}",VfxId={vfx_id("MiningLaser")})' for side in ['L','R'])+')'
+        effect='BuildingConstructionLaser' if '/ConstructionVehicle/' in path else 'MiningLaser'
+        value='('+','.join(f'(ComponentName="MiningLaser_{side}",VfxId={vfx_id(effect)})' for side in ['L','R'])+')'
         current=service.get_component_property(path,component,'Bindings')
         if current!=value:
             if not service.set_component_property(path,component,'Bindings',value):raise RuntimeError('Binding write failed')
@@ -35,7 +36,7 @@ def configure_blueprints(paths=None):
             if not result.success:raise RuntimeError('Blueprint compile failed: '+str(result))
             if not unreal.EditorAssetLibrary.save_asset(path,only_if_is_dirty=True):raise RuntimeError('Blueprint save failed')
         readback=service.get_component_property(path,component,'Bindings')
-        if str(vfx_id('MiningLaser')) not in readback:raise RuntimeError('Blueprint ID readback mismatch')
+        if str(vfx_id(effect)) not in readback:raise RuntimeError('Blueprint ID readback mismatch')
         reports.append({'path':path,'changed':changed,'compiled':changed,'bindings':readback})
     return reports
 

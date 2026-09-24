@@ -1,0 +1,463 @@
+{
+  "soldier": {
+    "id": 157,
+    "team": 1,
+    "unit_type": 1,
+    "alive": true,
+    "can_act": true,
+    "order": 189,
+    "revision": 12,
+    "task_version": 0,
+    "automatic": true,
+    "nav_state": 1,
+    "budget_pending": false,
+    "no_progress": 13.800016403198242,
+    "radius": 150,
+    "nav_repair_pending": true,
+    "position": [
+      -17614.77255018934,
+      59777.62013190803,
+      -1777.0898814516877
+    ],
+    "velocity": [
+      0,
+      0,
+      0
+    ],
+    "legal_position": [
+      -17614.77255018934,
+      59777.62013190803,
+      -1777.0898814516877
+    ],
+    "command": 0,
+    "accepted_at": 16916626.675281,
+    "direction_at": 16916626.7399212,
+    "displacement_at": 0,
+    "movement_target": [
+      -79801.15069005566,
+      1409.4844326493685,
+      -1645.9577997052756
+    ],
+    "waypoint": [
+      -79801.15069005566,
+      1409.4844326493685,
+      -1645.9577997052756
+    ],
+    "has_dock": true,
+    "route": 0,
+    "hex_points": 25,
+    "slot_pitch": 302.1048278808594,
+    "slot_members": 25,
+    "slot_assignments": 25,
+    "start": [
+      -17614.77255018934,
+      59777.62013190803,
+      -1777.0898814516877
+    ],
+    "end": [
+      -79650.09826086691,
+      1147.853985902234,
+      -1651.4301300048828
+    ]
+  },
+  "candidates": [
+    {
+      "index": 0,
+      "point": null
+    },
+    {
+      "index": 1,
+      "point": [
+        -17670.0,
+        59869.0,
+        -1777.2209167480469
+      ],
+      "distance_xy": 106.77242858104853,
+      "height_delta": -0.13103529635918676,
+      "overlaps": [
+        "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+      ],
+      "forward": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "depth": 227.620132,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ],
+      "reverse": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "depth": 304.377625,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ]
+    },
+    {
+      "index": 2,
+      "point": [
+        -17314.77255018934,
+        59777.62013190803,
+        -1777.2209167480469
+      ],
+      "distance_xy": 300.0,
+      "height_delta": -0.13103529635918676,
+      "overlaps": [],
+      "forward": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "depth": 227.620132,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ],
+      "reverse": [
+        {
+          "blocking": true,
+          "penetrating": false,
+          "time": 0.11742492765188217,
+          "normal": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "depth": 0.0,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ]
+    },
+    {
+      "index": 3,
+      "point": [
+        -17347.0,
+        59989.75216626399,
+        -1777.2209167480469
+      ],
+      "distance_xy": 341.616947230231,
+      "height_delta": -0.13103529635918676,
+      "overlaps": [],
+      "forward": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "depth": 227.620132,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ],
+      "reverse": [
+        {
+          "blocking": true,
+          "penetrating": false,
+          "time": 0.011203537695109844,
+          "normal": [
+            1.0,
+            0.0,
+            0.0
+          ],
+          "depth": 0.0,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ]
+    },
+    {
+      "index": 4,
+      "point": [
+        -17670.0,
+        60077.62013190803,
+        -1777.2209167480469
+      ],
+      "distance_xy": 305.0410975796359,
+      "height_delta": -0.13103529635918676,
+      "overlaps": [
+        "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+      ],
+      "forward": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "depth": 227.620132,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ],
+      "reverse": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "depth": 304.377625,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ]
+    },
+    {
+      "index": 5,
+      "point": [
+        -17826.904584545304,
+        59989.75216626399,
+        -1777.2209167480469
+      ],
+      "distance_xy": 299.9999999999992,
+      "height_delta": -0.13103529635918676,
+      "overlaps": [
+        "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+      ],
+      "forward": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "depth": 227.620132,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ],
+      "reverse": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "depth": 304.377625,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ]
+    },
+    {
+      "index": 6,
+      "point": [
+        -17914.77255018934,
+        59869.0,
+        -1777.2209167480469
+      ],
+      "distance_xy": 313.60848249450487,
+      "height_delta": -0.13103529635918676,
+      "overlaps": [
+        "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+      ],
+      "forward": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "depth": 227.620132,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ],
+      "reverse": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            0.0,
+            -1.0
+          ],
+          "depth": 304.377625,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ]
+    },
+    {
+      "index": 7,
+      "point": [
+        -17826.904584545304,
+        59546.0,
+        -1777.2209167480469
+      ],
+      "distance_xy": 314.0826093643075,
+      "height_delta": -0.13103529635918676,
+      "overlaps": [],
+      "forward": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "depth": 227.620132,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ],
+      "reverse": [
+        {
+          "blocking": true,
+          "penetrating": false,
+          "time": 0.01726965606212616,
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "depth": 0.0,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ]
+    },
+    {
+      "index": 8,
+      "point": [
+        -17614.77255018934,
+        59477.62013190803,
+        -1777.1014498459426
+      ],
+      "distance_xy": 300.0,
+      "height_delta": -0.01156839425493672,
+      "overlaps": [],
+      "forward": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "depth": 227.620132,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ],
+      "reverse": [
+        {
+          "blocking": true,
+          "penetrating": false,
+          "time": 0.24126628041267395,
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "depth": 0.0,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ]
+    },
+    {
+      "index": 9,
+      "point": [
+        -17402.640515833376,
+        59565.488097552065,
+        -1777.1807906800702
+      ],
+      "distance_xy": 299.9999999999992,
+      "height_delta": -0.090909228382543,
+      "overlaps": [],
+      "forward": [
+        {
+          "blocking": true,
+          "penetrating": true,
+          "time": 0.0,
+          "normal": [
+            0.0,
+            -1.0,
+            0.0
+          ],
+          "depth": 227.620132,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ],
+      "reverse": [
+        {
+          "blocking": true,
+          "penetrating": false,
+          "time": 0.054254233837127686,
+          "normal": [
+            0.5723362795112936,
+            -0.8200190138985625,
+            0.0
+          ],
+          "depth": 0.0,
+          "component": "/Game/Maps/UEDPIE_0_LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.GuLiPlacedBuilding_19.BuildingCollision"
+        }
+      ]
+    }
+  ],
+  "simulation_seconds": 209.90000312775373,
+  "buildings": [
+    {
+      "name": "GuLiPlacedBuilding_8",
+      "center": [
+        -20000.0,
+        61400.0,
+        -1277.276972933338
+      ],
+      "extent": [
+        345.28803999999946,
+        305.08700600000157,
+        500.0
+      ],
+      "failsafe_extent": "<Struct 'Vector' (0x00000209280FB950) {x: 100.000000, y: 100.000000, z: 100.000000}>",
+      "include_agent_height": "True",
+      "area_class": "<Object '/Script/NavigationSystem.NavArea_Null' (0x00007FF415F0AD18) Class 'Class'>"
+    },
+    {
+      "name": "GuLiPlacedBuilding_19",
+      "center": [
+        -17900.0,
+        60000.0,
+        -1578.5985372025536
+      ],
+      "extent": [
+        400.0,
+        300.0,
+        200.0
+      ],
+      "failsafe_extent": "<Struct 'Vector' (0x00000209280F3F50) {x: 100.000000, y: 100.000000, z: 100.000000}>",
+      "include_agent_height": "True",
+      "area_class": "<Object '/Script/NavigationSystem.NavArea_Null' (0x00007FF415F0AD18) Class 'Class'>"
+    }
+  ]
+}

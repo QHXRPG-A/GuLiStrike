@@ -25,9 +25,12 @@ public:
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool WireGunfireReader(UNiagaraSystem* System, UNiagaraDataChannelAsset* Channel,
 		UNiagaraScript* EmitterSpawnScript, UNiagaraScript* EmitterUpdateScript, UNiagaraScript* ParticleSpawnScript, FString& Error);
-	/** Fixes VibeUE dynamic pin order for CommanderWeapons and WingmanFlight only. Does not save. */
+	/** Fixes VibeUE dynamic pin order for the project's supported VFX folders, including Construction. Does not save. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool FinalizeScratchPins(UNiagaraSystem* System);
+	/** Read the native Niagara compiler messages omitted by VibeUE's validity-only report. */
+	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
+	static FString GetConstructionCompileDiagnostics(UNiagaraSystem* System);
 	/** Bind project-owned laser particle slots to User arrays. Editor-only; does not save. */
 	UFUNCTION(BlueprintCallable, Category="Combat Effects|Editor")
 	static bool WireLaserPoolReader(UNiagaraSystem* System, UNiagaraScript* ParticleUpdateScript, bool bMuzzle, FString& Error);

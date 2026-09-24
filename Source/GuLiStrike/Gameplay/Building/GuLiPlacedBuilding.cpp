@@ -37,8 +37,12 @@ AGuLiPlacedBuilding::AGuLiPlacedBuilding()
 	CollisionRoot->SetBoxExtent(FVector(20.0f));
 	CollisionRoot->SetCollisionProfileName(UCollisionProfile::BlockAll_ProfileName);
 	CollisionRoot->SetGenerateOverlapEvents(false);
-	// Export the real footprint. NavModifier ignores collision components whose
-	// navigation flag is disabled, regardless of their physical blocking profile.
+	CollisionRoot->CanCharacterStepUpOn = ECB_No;
+	CollisionRoot->SetWalkableSlopeOverride(FWalkableSlopeOverride(WalkableSlope_Unwalkable, 0.f));
+	// Export only a forbidden footprint, never box triangles that could create a
+	// roof polygon. Keep navigation relevance for the modifier's actual bounds.
+	CollisionRoot->bDynamicObstacle = true;
+	CollisionRoot->SetAreaClassOverride(UNavArea_Null::StaticClass());
 	CollisionRoot->SetCanEverAffectNavigation(true);
 
 	VisualMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("BuildingVisual"));

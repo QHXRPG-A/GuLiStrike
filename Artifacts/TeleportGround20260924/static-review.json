@@ -1,0 +1,51 @@
+{
+  "files": [
+    {
+      "path": "Source/GuLiStrike/Gameplay/Navigation/GuLiLandingGround.h",
+      "sha256": "f648e903ec474f9b207b3168c9737ad77f0d7905816f7dda7da19bf2c8315839"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Navigation/GuLiLandingGround.cpp",
+      "sha256": "043acbd36da39845f987e8ed1959701e252f1d325fcd70624401ba345abc2462"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiPlacedBuilding.cpp",
+      "sha256": "379939a6074686278aeef2d55b2444c763a562da0b076ce1fa22075101488ec7"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Building/GuLiGiftBuildingClearance.cpp",
+      "sha256": "d3a18e9a6e07a580e979f09c3587140dab20dc26ac7b23c03a605daedebf1bcd"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Units/GuLiEngineeringTravelComponent.cpp",
+      "sha256": "146b34397b956aab834ee6dd0fc6a6d450ccaa3f0754b4e3c65e4ef9a89e69d0"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportFieldActor.cpp",
+      "sha256": "089c9872685de10c235e99153618fe049f5fdf86aa2ab36de39941ce28952667"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/Teleport/GuLiTeleportInputComponent.cpp",
+      "sha256": "eb85f75bc0004f66f971d1f2d7041f40ff11ac28a643494195c0f8f9ad3112e1"
+    },
+    {
+      "path": "Source/GuLiStrike/Gameplay/CommanderSkills/GuLiCommanderSkillComponent.cpp",
+      "sha256": "1731c9935d59069f5751feb117dabe11af6883e5fa4ee45f1b355d9f019f8908"
+    }
+  ],
+  "static_review": [
+    "Whitespace and conflict marker check passed.",
+    "UE 5.7 source declarations inspected for APawn nav props, CharacterMovement IsWalkable, shape NavArea override and dynamic obstacle export.",
+    "Engine and NavigationSystem dependencies already present.",
+    "Placed-building initialization, gift staging and destruction lifetimes inspected.",
+    "Ground-only support policy applied to T landing/return/preview, stronghold exit, and gift displacement.",
+    "Factory normal movement/work positioning and flight clearance logic preserved.",
+    "Existing 0.1-second stronghold exit cadence and candidate budget unchanged.",
+    "Raw Teleport request support is checked before generic skill projection; other skill ground targeting remains unchanged."
+  ],
+  "authoring_script_syntax": "passed",
+  "native_compile": "Succeeded: authorized GuLiStrikeEditor Win64 Development, exit 0, 36.85 seconds",
+  "runtime_validation": "not_run",
+  "build_receipt": "build-editor-result.json",
+  "loaded_defaults_receipt": "loaded-config.json"
+}

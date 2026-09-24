@@ -1,6 +1,7 @@
 #include "Gameplay/Building/GuLiConstructionWorkComponent.h"
 #include "Gameplay/Building/GuLiBuildingLifecycleComponent.h"
 #include "Gameplay/Building/GuLiBuildingRegistrySubsystem.h"
+#include "Gameplay/Building/GuLiConstructionPresentationComponent.h"
 #include "Gameplay/Resources/GuLiResourceWorldSubsystem.h"
 #include "Gameplay/Navigation/GuLiDynamicObstacleRegistry.h"
 #include "Gameplay/Units/GuLiEngineeringTravelComponent.h"
@@ -18,10 +19,22 @@ void UGuLiConstructionWorkComponent::BeginPlay()
 {
     Super::BeginPlay();
     if (GetOwner()->HasAuthority()) GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->RegisterConstructionPrototype(*CastChecked<ACharacter>(GetOwner()));
+    if (GetOwner()->HasAuthority())
+    {
+        GetOwner()->FindComponentByClass<UGuLiCombatHealthComponent>()->OnDeath.AddDynamic(this, &ThisClass::StopWork);
+        GetOwner()->FindComponentByClass<UGuLiEngineeringTravelComponent>()->OnTransportStarted.AddUObject(this, &ThisClass::SuspendConstructionEffects);
+        ControlStateHandle = GetOwner()->FindComponentByClass<UGuLiExternalUnitControlComponent>()->OnStateApplied.AddWeakLambda(this, [this]
+        {
+            if (UGuLiExternalUnitControlComponent::AreActorActionsLocked(GetOwner())) SuspendConstructionEffects();
+        });
+    }
 }
 void UGuLiConstructionWorkComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
     StopWork();
+    if (auto* Travel = GetOwner()->FindComponentByClass<UGuLiEngineeringTravelComponent>()) Travel->OnTransportStarted.RemoveAll(this);
+    if (auto* Control = GetOwner()->FindComponentByClass<UGuLiExternalUnitControlComponent>()) Control->OnStateApplied.Remove(ControlStateHandle);
+    if (auto* Health = GetOwner()->FindComponentByClass<UGuLiCombatHealthComponent>()) Health->OnDeath.RemoveDynamic(this, &ThisClass::StopWork);
     if (GetOwner()->HasAuthority()) GetWorld()->GetSubsystem<UGuLiBuildingRegistrySubsystem>()->UnregisterConstructionPrototype(*CastChecked<ACharacter>(GetOwner()));
     Super::EndPlay(Reason);
 }
@@ -58,6 +71,7 @@ bool UGuLiConstructionWorkComponent::PrepareBuilding(const UGuLiBuildingLifecycl
 
 void UGuLiConstructionWorkComponent::StopWork()
 {
+    PublishConstructionActivity(false);
     if (auto* Building = Target.Get()) Building->ReleaseConstructionSlot(*CastChecked<ACharacter>(GetOwner()), Reservation);
     if (auto* Travel = GetOwner()->FindComponentByClass<UGuLiEngineeringTravelComponent>()) Travel->StopAtSafePoint();
     Target.Reset(); Reservation = {}; Intent = {};
@@ -80,6 +94,7 @@ void UGuLiConstructionWorkComponent::SelectPosition()
 void UGuLiConstructionWorkComponent::CancelOrder(const FString& Reason, bool bRejectPosition, bool bUnreachable)
 {
     if (bOrderCancelled) return;
+    PublishConstructionActivity(false);
     if (bRejectPosition && Intent.IsValid())
     {
         Rejected.Add({ Intent.Slot, bUnreachable ? TNumericLimits<double>::Max() : GetWorld()->GetTimeSeconds() + 1.0,
@@ -122,6 +137,7 @@ bool UGuLiConstructionWorkComponent::AreAllPositionsRejected(const UGuLiBuilding
 bool UGuLiConstructionWorkComponent::BeginBehaviorMove()
 {
     if (IsTerminalFailure()) return false;
+    PublishConstructionActivity(false);
     if (!Target->IsConstructionPositionAvailable(*CastChecked<ACharacter>(GetOwner()), Intent))
     {
         CancelOrder(TEXT("目标施工位已被占用，退单"), true);
@@ -209,7 +225,7 @@ void UGuLiConstructionWorkComponent::TickComponent(float Dt, ELevelTick TickType
     Super::TickComponent(Dt, TickType, Function);
     if (!GetOwner()->HasAuthority()) return;
     if (!GetOwner()->FindComponentByClass<UGuLiCombatHealthComponent>()->IsAlive()) { StopWork(); return; }
-    if (bOrderCancelled) return;
+    if (bOrderCancelled) { PublishConstructionActivity(false); return; }
     if (GetWorld()->GetTimeSeconds() >= NextPositionCheck)
     {
         NextPositionCheck = GetWorld()->GetTimeSeconds() + .2;
@@ -224,9 +240,30 @@ void UGuLiConstructionWorkComponent::TickComponent(float Dt, ELevelTick TickType
             CancelOrder(TEXT("途中施工位已被占用或失效，退单"), true);
         else if (HasLocalReplacement()) CancelOrder(TEXT("当前据点出现可用工单，取消外据点工单并重新接单"));
     }
-    if (IsTerminalFailure() || GetBehaviorResult() != EGuLiCommanderWorkResult::Running
-        || UGuLiExternalUnitControlComponent::AreActorActionsLocked(GetOwner())) return;
-    if (bApplyingWork && !GetOwner()->FindComponentByClass<UGuLiEngineeringTravelComponent>()->IsRouting()
+    const auto* Travel = GetOwner()->FindComponentByClass<UGuLiEngineeringTravelComponent>();
+    const bool bCanWork = !IsTerminalFailure() && GetBehaviorResult() == EGuLiCommanderWorkResult::Running
+        && !UGuLiExternalUnitControlComponent::AreActorActionsLocked(GetOwner())
+        && bApplyingWork && !Travel->IsRouting() && !Travel->IsInTransit() && !Travel->IsWaitingForPath()
+        && Travel->GetMoveStatus() != EGuLiEngineeringMoveStatus::Moving
         && Target->ValidateConstructionSlot(*CastChecked<ACharacter>(GetOwner()), Reservation)
-        && FVector::Dist2D(GetOwner()->GetActorLocation(), WorkPosition) <= 100) Target->AccumulateConstructionWork(Dt);
+        && FVector::Dist2D(GetOwner()->GetActorLocation(), WorkPosition) <= 100 && Dt > 0;
+    PublishConstructionActivity(bCanWork);
+    if (bCanWork) Target->AccumulateConstructionWork(Dt);
+}
+
+void UGuLiConstructionWorkComponent::SuspendConstructionEffects()
+{
+    PublishConstructionActivity(false);
+}
+
+void UGuLiConstructionWorkComponent::PublishConstructionActivity(bool bActive)
+{
+    if (!GetOwner()->HasAuthority()) return;
+    auto* Building = bActive ? Target.Get() : nullptr;
+    if (auto* Previous = ContributingTo.Get(); Previous && Previous != Building)
+        Previous->SetConstructionContributor(*GetOwner(), false);
+    ContributingTo = Building;
+    if (Building) Building->SetConstructionContributor(*GetOwner(), true);
+    if (auto* Visual = GetOwner()->FindComponentByClass<UGuLiConstructionPresentationComponent>())
+        Visual->SetConstructionAuthority(Building);
 }

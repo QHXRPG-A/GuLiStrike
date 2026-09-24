@@ -3,6 +3,7 @@
 #include "Gameplay/Building/GuLiConstructionWorkComponent.h"
 #include "Gameplay/Resources/GuLiMiningVehiclePawn.h"
 #include "Gameplay/Units/GuLiExternalUnitControlComponent.h"
+#include "Gameplay/Navigation/GuLiLandingGround.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Battle/Combat/GuLiCombatDamageLedger.h"
 #include "Components/CapsuleComponent.h"
@@ -12,7 +13,6 @@
 #include "GameFramework/Pawn.h"
 #include "AIController.h"
 #include "NavRelevantComponent.h"
-#include "NavigationSystem.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 
@@ -163,7 +163,6 @@ bool FGuLiGiftBuildingClearance::Commit(AActor& Building, const AActor& Supporti
 	for (const FBox& Box : Footprints)
 		if (S.World.OverlapBlockingTestByChannel(Box.GetCenter(), FQuat::Identity, ECC_Pawn, FCollisionShape::MakeBox(Box.GetExtent()), BuildingQuery))
 		{ OutFailure = TEXT("Gift attachment footprint overlaps an immovable obstacle."); return false; }
-	auto* Nav = FNavigationSystem::GetCurrent<UNavigationSystemV1>(&S.World);
 	TArray<int32> Planned;
 	int32 RemainingProjections = 256;
 	for (int32 Index = 0; Index < Units.Num(); ++Index)
@@ -195,25 +194,11 @@ bool FGuLiGiftBuildingClearance::Commit(AActor& Building, const AActor& Supporti
 			{
 				if (--RemainingProjections < 0)
 				{ OutFailure = TEXT("Gift clearance projection budget exhausted; retry another candidate."); return false; }
-				FHitResult Ground;
-				if (!S.World.LineTraceSingleByObjectType(Ground, Destination + FVector(0,0,5000), Destination - FVector(0,0,10000),
-					FCollisionObjectQueryParams(ECC_WorldStatic), Query) || Ground.bStartPenetrating
-					|| !GuLiBuildingPlacementPolicy::IsSlopeAllowed(Ground.ImpactNormal)) continue;
 				FVector Projected;
-				if (Unit.Soldier.IsValid())
-				{
-					if (!Authority->ProjectExternalUnitLocation(Ground.ImpactPoint, Projected)) continue;
-					Destination = Projected;
-				}
-				else
-				{
-					const auto* Movement = Unit.Pawn->FindComponentByClass<UNavMovementComponent>();
-					const auto* Data = Nav && Movement ? Nav->GetNavDataForProps(Movement->GetNavAgentPropertiesRef(), Ground.ImpactPoint) : nullptr;
-					FNavLocation Location;
-					if (!Data || !Nav->ProjectPointToNavigation(Ground.ImpactPoint,Location,FVector(20,20,500),Data)
-						|| FVector::DistSquared2D(Ground.ImpactPoint,Location.Location) > 10000.0) continue;
-					Destination = Location.Location + FVector(0,0,Unit.HalfHeight + 3);
-				}
+				double SurfaceHeight = 0;
+				if (!GuLiLandingGround::Resolve(S.World,Destination,Projected,&SurfaceHeight,Unit.Pawn.Get())) continue;
+				Destination = Unit.Soldier.IsValid() ? Projected
+					: FVector(Projected.X,Projected.Y,SurfaceHeight+Unit.HalfHeight+3);
 			}
 			const FVector Center = Destination + (Unit.Soldier.IsValid() ? FVector(0,0,Unit.HalfHeight+3) : FVector::ZeroVector);
 			if (Intersects(Unit,Center) || S.World.OverlapBlockingTestByChannel(Center,FQuat::Identity,ECC_Pawn,
@@ -260,7 +245,13 @@ bool FGuLiGiftBuildingClearance::Commit(AActor& Building, const AActor& Supporti
 	}
 	for (const auto& Entry : S.Actors) if (auto* Actor = Entry.Actor.Get()) Actor->SetActorEnableCollision(Entry.bCollision);
 	for (const auto& Entry : S.Primitives) if (auto* Component = Entry.Component.Get()) Component->SetCanEverAffectNavigation(Entry.bNavigation);
-	for (const auto& Entry : S.Navigation) if (auto* Component = Entry.Component.Get()) Component->SetNavigationRelevancy(Entry.bRelevant);
+	for (const auto& Entry : S.Navigation) if (auto* Component = Entry.Component.Get())
+	{
+		// Initialization may cache the failsafe bounds while staging has collision and
+		// navigation disabled. Recompute from the restored bodies before publishing.
+		Component->UpdateNavigationBounds();
+		Component->SetNavigationRelevancy(Entry.bRelevant);
+	}
 	S.bCommitted = true;
 	Building.ForceNetUpdate();
 	UE_LOG(LogTemp,Display,TEXT("[GULI_GIFT_CLEARANCE] building=%s moved=%d mass=%d actors=%d"),*Building.GetName(),Planned.Num(),Mass.Num(),AppliedActors.Num());

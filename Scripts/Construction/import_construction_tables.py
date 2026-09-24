@@ -22,7 +22,9 @@ def main():
         result = {'success': True, 'report': run()}
     except Exception as error:
         result = {'success': False, 'error': str(error)}
-    Path('D:/UE5.7/test1/outputs/construction-20260922/import.json').write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
+    output = Path('D:/UE5.7/test1/outputs/construction/import.json')
+    output.parent.mkdir(parents=True, exist_ok=True)
+    output.write_text(json.dumps(result, ensure_ascii=False, indent=2), encoding='utf-8')
     unreal.MCPythonHelper.submit_result(json.dumps(result, ensure_ascii=True))
 
 

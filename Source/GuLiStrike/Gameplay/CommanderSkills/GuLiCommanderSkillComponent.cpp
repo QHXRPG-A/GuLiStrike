@@ -6,6 +6,7 @@
 #include "Commander/Network/GuLiSoldierStateReplicator.h"
 #include "Commander/Mass/GuLiBattleAuthoritySubsystem.h"
 #include "Gameplay/Skills/GuLiSkillTargeting.h"
+#include "Gameplay/Navigation/GuLiLandingGround.h"
 #include "Engine/World.h"
 #include "EngineUtils.h"
 #include "GameFramework/Pawn.h"
@@ -167,7 +168,12 @@ FGuLiActiveSkillReply UGuLiCommanderSkillComponent::ExecuteServerRequest(const F
 	}
 	TGuardValue<bool> ExecutingGuard(bExecuting, true);
 	bool bGroundValid = false; FVector Ground = FVector::ZeroVector;
-	if (Request.bHasGroundPoint) bGroundValid = GuLiSkillTargeting::ResolveGround(*GetWorld(), Request.GroundPoint, Ground);
+	// Validate the original teleport click before any generic projection can
+	// replace a roof hit with a nearby ground point and erase its support identity.
+	if (Request.bHasGroundPoint)
+		bGroundValid = Request.GlobalSkillId == TEXT("Teleport")
+			? GuLiLandingGround::Resolve(*GetWorld(), Request.GroundPoint, Ground)
+			: GuLiSkillTargeting::ResolveGround(*GetWorld(), Request.GroundPoint, Ground);
 	if (Request.GlobalSkillId.IsNone())
 	{
 		const auto& Selection = PC->GetCommanderNetSyncComponent()->GetSelectionState();

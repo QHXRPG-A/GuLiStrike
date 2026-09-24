@@ -32,6 +32,7 @@ struct FGuLiBuildingLifecycleState
 	UPROPERTY() EGuLiBuildingOrigin Origin = EGuLiBuildingOrigin::Manual;
 	UPROPERTY() FGuid BuilderGuid;
 	UPROPERTY(BlueprintReadOnly) float WorkDone = 0;
+	UPROPERTY(BlueprintReadOnly) bool bHasActiveBuilders = false;
 };
 
 UCLASS(ClassGroup=(GuLiStrike), meta=(BlueprintSpawnableComponent))
@@ -46,6 +47,8 @@ public:
 	void InitializeBuilding(int32 DefinitionId, int32 TerritoryIndex, EGuLiBuildingOrigin Origin, bool bCompleted, const FGuid& Builder = FGuid());
 	void AddConstructionWork(float Work);
 	void AccumulateConstructionWork(float Work);
+	/** Only actual work contributors belong here; a reservation or an accepted order is insufficient. */
+	void SetConstructionContributor(AActor& Vehicle, bool bActive);
 	virtual void TickComponent(float Dt, ELevelTick TickType, FActorComponentTickFunction* Function) override;
 	void PrepareConstructionSlots(ACharacter& Prototype);
 	bool BuildNextConstructionSlot();
@@ -83,4 +86,5 @@ private:
 	int32 NextSlotSample = 0;
 	bool bSlotsPending = true;
 	float PendingConstructionWork = 0;
+	TSet<TWeakObjectPtr<AActor>> ActiveContributors;
 };

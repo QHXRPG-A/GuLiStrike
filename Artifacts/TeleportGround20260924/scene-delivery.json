@@ -1,0 +1,230 @@
+{
+  "saved": true,
+  "map": "/Game/Maps/LVL_CommanderMassPrototype",
+  "actor_count": 126,
+  "related_entities": [
+    {
+      "label": "TeleportGround_Source",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_14",
+      "class": "Note",
+      "location": [
+        3000.0,
+        72500.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "text": "传送落地检查：先编译并加载2026-09-24屋顶修复。使用原型图正常指挥官入口、默认工程车与建筑。按T圈住工程车，收取后把目标放在R1C5兵营附近的空地，使范围包含屋顶；目标中心直接点屋顶应显示无效，范围覆盖屋顶时车辆应改选建筑外可走地面。落地后下达普通移动，确认车辆能离开；取消/超时回源也应使用同样的地面检查。"
+    },
+    {
+      "label": "TeleportGround_Roof",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_15",
+      "class": "Note",
+      "location": [
+        1400.0,
+        80000.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "text": "普通建筑屋顶观察：运行时兵营名义中心XY=(1400,80000)，赠品清场可能偏移槽位。建筑保留实体碰撞，导航只导出NavArea_Null障碍，不生成屋顶可走面；角色禁止踏上与站立。传送和赠品挪人均检查真实支撑表面、该单位导航及同层高度；不得落到屋顶或其他单位上。此Note是观察标记，实际建筑由既有开局/占点赠品流程生成。"
+    },
+    {
+      "label": "TeleportGround_TransitExit",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_16",
+      "class": "Note",
+      "location": [
+        1400.0,
+        60000.0,
+        -1200.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "text": "据点出口观察：沿用真实部队占领R2C5并生成赠品，选工程车右键己方R2C5据点模型运输。出口周边含兵营等建筑时，工程车必须在建筑外可走地面落位；无安全位置保持空中等待，10Hz重试。矿厂坡道与卸货地板仍供正常地面行驶使用；落地后继续观察普通移动及矿车入厂卸货。占点生成赠品挪开车辆时同样不得把车辆放到邻楼顶部。"
+    },
+    {
+      "label": "TeleportGround_Overview",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.CameraActor_3",
+      "class": "CameraActor",
+      "location": [
+        6500.0,
+        85000.0,
+        6000.0
+      ],
+      "rotation": [
+        132.0,
+        -45.0,
+        180.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true
+    },
+    {
+      "label": "CommanderPlayerStart_Red",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.PlayerStart_0",
+      "class": "PlayerStart",
+      "location": [
+        0.0,
+        72500.0,
+        233.91437530517578
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        -90.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": false
+    },
+    {
+      "label": "StateTreeReview_Construction",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_2",
+      "class": "Note",
+      "location": [
+        1800.0,
+        72500.0,
+        -1266.0856246948242
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "text": "施工验收\n每队8建造车；B进入建造，在基地合法平地放置可负担建筑。\n每车自主接单：当前据点优先，同级最早工单优先；无本地单时接其他据点。\n途中不占位，到位抢位；发现占位冲突退单。外据点单途中可换为当前据点新单；已施工车暂停接单。\n验证四车协作、S停止、手动命令和完工通行。"
+    },
+    {
+      "label": "StateTreeReview_StrongholdAdvance",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_3",
+      "class": "Note",
+      "location": [
+        0.0,
+        60000.0,
+        -1278.6026000976562
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "text": "据点推进与运输：R2C5\n红方从R1C5推进，沿用相邻占领、围合及运输规则。\n检查中央四向坡道、四角据点和易主后的运输通道。"
+    },
+    {
+      "label": "ConstructionReview_Mining",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.Note_6",
+      "class": "Note",
+      "location": [
+        5000.0,
+        80000.0,
+        500.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": true,
+      "text": "通行回归：施工效果不移动建筑碰撞、坡道或矿车停靠点。\n矿厂完工后验证门动画、矿车入厂卸货与离厂；只在工厂完整落地后启用正常功能。\n当前仅矿厂启用施工表现，其他建筑在样板效果确认后推广；放置网格与R旋转适用于全部可建造建筑。"
+    },
+    {
+      "label": "RecastNavMesh-Default",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-Default",
+      "class": "RecastNavMesh",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": false,
+      "agent_radius": 6.800000190734863,
+      "agent_height": 28.799999237060547
+    },
+    {
+      "label": "RecastNavMesh-CommanderSoldier",
+      "path": "/Game/Maps/LVL_CommanderMassPrototype.LVL_CommanderMassPrototype:PersistentLevel.RecastNavMesh-CommanderSoldier",
+      "class": "RecastNavMesh",
+      "location": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "rotation": [
+        0.0,
+        0.0,
+        0.0
+      ],
+      "scale": [
+        1.0,
+        1.0,
+        1.0
+      ],
+      "editor_only": false,
+      "agent_radius": 150.0,
+      "agent_height": 28.799999237060547
+    }
+  ],
+  "unrelated_transforms_preserved": true,
+  "entry": "Existing commander T skill, construction vehicles, right-click friendly outpost transit, and gift clearance.",
+  "validation": "Editor entity readback only. Native compilation/loading is documented by separate build and loaded-config receipts; this script does not start PIE or automation."
+}

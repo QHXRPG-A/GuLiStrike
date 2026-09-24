@@ -22,7 +22,7 @@ public:
 	bool IsOrderCancelled() const { return bOrderCancelled; }
 	const FString& GetOrderReason() const { return OrderReason; }
 	UFUNCTION(BlueprintPure, Category="Construction") FString GetConstructionDebug() const;
-	void StopWork();
+	UFUNCTION() void StopWork();
 	bool BeginBehaviorMove();
 	bool BeginBehaviorConstruction();
 	EGuLiCommanderWorkPhase GetBehaviorPhase() const;
@@ -31,6 +31,10 @@ public:
 	UGuLiBuildingLifecycleComponent* GetTarget() const { return Target.Get(); }
 private:
 	TWeakObjectPtr<UGuLiBuildingLifecycleComponent> Target;
+	TWeakObjectPtr<UGuLiBuildingLifecycleComponent> ContributingTo;
+	void PublishConstructionActivity(bool bActive);
+	void SuspendConstructionEffects();
+	FDelegateHandle ControlStateHandle;
 	FVector WorkPosition = FVector::ZeroVector;
 	bool bMoveRequested = false;
 	bool bApplyingWork = false;

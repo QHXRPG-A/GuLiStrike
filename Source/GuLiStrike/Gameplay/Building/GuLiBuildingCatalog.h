@@ -18,7 +18,7 @@ class GULISTRIKE_API UGuLiBuildingCatalog : public UDataAsset
 public:
 	const FGuLiBuildingDefinition* FindDefinition(EGuLiBuildingType Type) const;
 	const FGuLiBuildingDefinition* FindById(int32 Id) const;
-	bool ResolveTable();
+	bool ResolveTable(bool bForceRefresh = false);
 	bool IsUsable() const;
 
 	static const TCHAR* GetDefaultCatalogObjectPath();

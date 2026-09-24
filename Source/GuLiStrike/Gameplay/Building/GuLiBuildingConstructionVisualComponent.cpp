@@ -7,6 +7,15 @@
 #include "Components/MeshComponent.h"
 #include "Materials/MaterialInstanceDynamic.h"
 #include "GameFramework/Actor.h"
+#include "Gameplay/Presentation/GuLiUnitRenderPolicy.h"
+#include "Components/StaticMeshComponent.h"
+#include "Components/SkeletalMeshComponent.h"
+#include "Engine/StaticMesh.h"
+#include "NiagaraComponent.h"
+#include "NiagaraSystem.h"
+#include "NiagaraFunctionLibrary.h"
+#include "NiagaraDataInterfaceArrayFunctionLibrary.h"
+#include "TimerManager.h"
 
 UGuLiBuildingConstructionVisualComponent::UGuLiBuildingConstructionVisualComponent()
 {
@@ -26,6 +35,7 @@ void UGuLiBuildingConstructionVisualComponent::BeginPlay()
 void UGuLiBuildingConstructionVisualComponent::EndPlay(const EEndPlayReason::Type Reason)
 {
 	if (Lifecycle) Lifecycle->OnConstructionStateChanged.Remove(StateChangedHandle);
+	GetWorld()->GetTimerManager().ClearTimer(SourceRetryTimer);
 	ClearPresentation();
 	Super::EndPlay(Reason);
 }
@@ -33,7 +43,8 @@ void UGuLiBuildingConstructionVisualComponent::EndPlay(const EEndPlayReason::Typ
 void UGuLiBuildingConstructionVisualComponent::RefreshVisualSources()
 {
 	if (!HasBegunPlay() || GetOwner()->GetNetMode() == NM_DedicatedServer) return;
-	ClearPresentation();
+	StopTopEffect();
+	ClearMeshes(); // A model rebind must neither kill nor replay an in-flight completion burst.
 	bAssetsFailed = false;
 	RefreshState();
 }
@@ -43,20 +54,35 @@ void UGuLiBuildingConstructionVisualComponent::RefreshState()
 	if (!Lifecycle || !Lifecycle->GetState().InstanceId || GetOwner()->GetNetMode() == NM_DedicatedServer) return;
 	const auto& State = Lifecycle->GetState();
 	const auto* Settings = GetDefault<UGuLiBuildingConstructionSettings>();
-	if (!Settings->EnabledDefinitionIds.Contains(State.DefinitionId) || State.Phase == EGuLiBuildingPhase::Destroyed)
+	if (ObservedInstance != State.InstanceId)
+	{
+		ClearPresentation();
+		ObservedInstance = State.InstanceId;
+		bObservedUnderConstruction = false;
+		bCompletionPlayed = false;
+	}
+	if (!Settings->bEnabled || State.Phase == EGuLiBuildingPhase::Destroyed)
 	{
 		ClearPresentation();
 		return;
 	}
 	if (State.Phase == EGuLiBuildingPhase::Completed)
 	{
-		if (bConstructing) FinishConstruction();
+		if (bObservedUnderConstruction && !bCompletionPlayed)
+		{
+			bCompletionPlayed = true; // Set before playing; model rebinding and duplicate notifications are harmless.
+			StopTopEffect();
+			PlayCompletionEffect();
+			if (bConstructing) FinishConstruction();
+		}
 		return; // A completed initial snapshot never replays the finishing effect.
 	}
+	bObservedUnderConstruction = true;
 	if (!bConstructing && !BeginConstruction()) return;
 	InterpolationStart = DisplayedProgress;
 	InterpolationElapsed = 0.0f;
 	TargetProgress = FMath::Max(DisplayedProgress, Lifecycle->GetConstructionProgress());
+	UpdateTopEffect();
 	SetComponentTickEnabled(TargetProgress > DisplayedProgress);
 }
 
@@ -82,11 +108,20 @@ bool UGuLiBuildingConstructionVisualComponent::BeginConstruction()
 		for (UMeshComponent* Mesh : Meshes)
 			if (Mesh->IsVisible() && !Mesh->bHiddenInGame && !Mesh->ComponentHasTag(TEXT("GuLiConstructionProxy")))
 			{
+				const auto* Static = Cast<UStaticMeshComponent>(Mesh);
+				const auto* Skeletal = Cast<USkeletalMeshComponent>(Mesh);
+				if (!(Static && Static->GetStaticMesh()) && !(Skeletal && Skeletal->GetSkeletalMeshAsset())) continue;
 				Sources.Add(Mesh);
 				Bounds += Mesh->Bounds.GetBox();
 			}
 	}
-	if (Sources.IsEmpty() || !Bounds.IsValid) return false; // Presentation may arrive after lifecycle replication.
+	if (Sources.IsEmpty() || !Bounds.IsValid)
+	{
+		if (!GetWorld()->GetTimerManager().IsTimerActive(SourceRetryTimer))
+			GetWorld()->GetTimerManager().SetTimer(SourceRetryTimer, this, &ThisClass::RefreshState, .2f, true);
+		return false;
+	}
+	GetWorld()->GetTimerManager().ClearTimer(SourceRetryTimer);
 	HologramMaterial = UMaterialInstanceDynamic::Create(Hologram, this);
 	FinishMaterial = UMaterialInstanceDynamic::Create(Finish, this);
 	HologramMaterial->SetScalarParameterValue(TEXT("EffectAlpha"), 1.0f);
@@ -126,7 +161,9 @@ bool UGuLiBuildingConstructionVisualComponent::BeginConstruction()
 			Light->SetVisibility(false, false);
 		}
 	}
-	RiseHeight = FMath::Max(1.0f, float(Bounds.Max.Z - Lifecycle->GetGroundLocation().Z + 1.0));
+	ModelTop = float(Bounds.Max.Z);
+	RiseHeight = FMath::Max(1.0f, ModelTop - float(Lifecycle->GetGroundLocation().Z) + 1.0f);
+	ResolveShape();
 	DisplayedProgress = TargetProgress = Lifecycle->GetConstructionProgress();
 	bConstructing = true;
 	ApplyProgress();
@@ -135,8 +172,10 @@ bool UGuLiBuildingConstructionVisualComponent::BeginConstruction()
 
 void UGuLiBuildingConstructionVisualComponent::ApplyProgress()
 {
-	if (SolidRoot) SolidRoot->SetRelativeLocation(FVector(0, 0, -RiseHeight * (1.0f - DisplayedProgress)));
+	if (SolidRoot) SolidRoot->SetRelativeLocation(GetOwner()->GetActorTransform().InverseTransformVector(
+		FVector(0, 0, -RiseHeight * (1.0f - DisplayedProgress))));
 	for (UMeshComponent* Solid : Solids) Solid->SetVisibility(DisplayedProgress > 0.0f);
+	UpdateTopEffect();
 }
 
 void UGuLiBuildingConstructionVisualComponent::RestoreOriginals()
@@ -170,7 +209,7 @@ void UGuLiBuildingConstructionVisualComponent::TickComponent(float Dt, ELevelTic
 		FinishElapsed += Dt;
 		const float Alpha = 1.0f - FMath::Clamp(FinishElapsed / FMath::Max(0.01f, GetDefault<UGuLiBuildingConstructionSettings>()->FinishSeconds), 0.0f, 1.0f);
 		FinishMaterial->SetScalarParameterValue(TEXT("EffectAlpha"), Alpha);
-		if (Alpha <= 0.0f) ClearPresentation();
+		if (Alpha <= 0.0f) ClearMeshes(); // The longer bottom burst finishes on its own.
 	}
 	else if (bConstructing)
 	{
@@ -183,6 +222,15 @@ void UGuLiBuildingConstructionVisualComponent::TickComponent(float Dt, ELevelTic
 
 void UGuLiBuildingConstructionVisualComponent::ClearPresentation()
 {
+	GetWorld()->GetTimerManager().ClearTimer(SourceRetryTimer);
+	StopTopEffect();
+	if (IsValid(CompletionEffect)) CompletionEffect->DestroyComponent();
+	CompletionEffect = nullptr;
+	ClearMeshes();
+}
+
+void UGuLiBuildingConstructionVisualComponent::ClearMeshes()
+{
 	RestoreOriginals();
 	for (UMeshComponent* Mesh : Solids) if (Mesh) Mesh->DestroyComponent();
 	for (UMeshComponent* Mesh : Ghosts) if (Mesh) Mesh->DestroyComponent();
@@ -191,6 +239,9 @@ void UGuLiBuildingConstructionVisualComponent::ClearPresentation()
 	if (GhostRoot) GhostRoot->DestroyComponent();
 	SolidRoot = nullptr; GhostRoot = nullptr;
 	HologramMaterial = nullptr; FinishMaterial = nullptr;
+	Shape = nullptr; WorldContours.Reset(); ContourLengths.Reset();
+	EffectPoints.Reset(); EffectTangents.Reset(); EffectLengths.Reset();
+	++ShapeRevision;
 	bConstructing = false; bFinishing = false;
 	SetComponentTickEnabled(false);
 }
